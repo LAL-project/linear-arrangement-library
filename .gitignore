@@ -1,0 +1,8 @@
+*.html
+cpp-docs/
+*.pro.user
+lal-debug/
+lal-release/
+build-debug/
+build-release/
+build/

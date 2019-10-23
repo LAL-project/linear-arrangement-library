@@ -1,0 +1,183 @@
+#
+# Users of the library might need to change the variables:
+#
+#    - PYTHON_INCLUDE
+#    - LAL_PY_INSTALL
+#
+# If you are working on Windows, change the first set of variables.
+# If you are working on Linux, change the second set of variables.
+#
+
+ifeq ($(OS),Windows_NT)
+	# Python 3 include dir
+	PYTHON_INCLUDE	= C:/programming/Python37/include
+	# Directory where LAL's interface will be installed to
+	LAL_PY_INSTALL	= C:/programming/python_lib
+	# Python3 linkage
+	PYTHON_LIBRARY	= -lpython37 -lpython3
+else
+	# Python 3 include dir
+	PYTHON_INCLUDE	= /usr/include/python3.6
+	# Directory where LAL's interface will be installed to
+	LAL_PY_INSTALL	= /usr/lib/python3.6
+	# Python3 linkage (not needed)
+	PYTHON_LIBRARY	= 
+endif
+
+########################################################################
+# VARIABLES
+
+# Compiler to be used
+CXX				= g++
+# Flags for 'g++'
+COMMON_FLAGS	= -std=c++17 -fPIC -fopenmp
+FLAGS_DEB		= $(COMMON_FLAGS) -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
+FLAGS_REL		= $(COMMON_FLAGS) -O3 -DNDEBUG
+LIBS_DEB		= -llaldebug -lgmp -fopenmp $(PYTHON_LIBRARY)
+LIBS_REL		= -llal -lgmp -fopenmp $(PYTHON_LIBRARY)
+INCLUDES		= -I$(PYTHON_INCLUDE)
+
+# OS-dependent variables
+ifeq ($(OS),Windows_NT)
+	# OS directory
+	OS_DIR	= win
+	# Python module's extension
+	SO_EXT	= pyd
+else
+	# OS directory
+	# (this is not technically correct, but does the job for now)
+	OS_DIR	= linux
+	# Python module's extension
+	SO_EXT	= so
+endif
+
+# Architecture of the system
+ARCH 			= $(shell getconf LONG_BIT)
+ARCH_DIR 		= $(OS_DIR)/$(ARCH)
+
+# SWIG flags
+SWIG_FLAGS_32	= -DSWIGWORDSIZE32
+SWIG_FLAGS_64 	= -DSWIGWORDSIZE64
+ifeq ($(OS),Windows_NT)
+	SWIG_FLAGS_ARCH = $(SWIG_FLAGS_32)
+else
+	SWIG_FLAGS_ARCH = $(SWIG_FLAGS_$(ARCH))
+endif
+
+########################################################################
+# Local module and interface file names
+
+# module base name
+LAL_BNAME		= lal
+LAL_DEB_BNAME	= $(LAL_BNAME)debug
+LAL_REL_BNAME	= $(LAL_BNAME)
+
+# python Debug/Release file
+LOC_LAL_PDF		= $(LAL_DEB_BNAME).py
+LOC_LAL_PRF		= $(LAL_REL_BNAME).py
+LAL_PY_DEB_FILE	= $(ARCH_DIR)/$(LOC_LAL_PDF)
+LAL_PY_REL_FILE	= $(ARCH_DIR)/$(LOC_LAL_PRF)
+
+# wrap Debug/Release file
+LAL_WRAP_DEB	= $(ARCH_DIR)/$(LAL_BNAME)_wrap_debug
+LAL_WRAP_REL	= $(ARCH_DIR)/$(LAL_BNAME)_wrap
+
+# LAL Debug/Release .so
+LOC_LAL_DEB_SO	= _$(LAL_DEB_BNAME).$(SO_EXT)
+LOC_LAL_REL_SO	= _$(LAL_REL_BNAME).$(SO_EXT)
+LAL_DEB_SO		= $(ARCH_DIR)/$(LOC_LAL_DEB_SO)
+LAL_REL_SO		= $(ARCH_DIR)/$(LOC_LAL_REL_SO)
+
+########################################################################
+# Common modules
+
+# Module base name
+DSE_BNAME		= dataset_error
+# Python file
+LOC_DSE_PF		= $(DSE_BNAME).py
+DSE_PY_FILE		= $(ARCH_DIR)/$(LOC_DSE_PF)
+# Wrap file
+DSE_WRAP		= $(ARCH_DIR)/$(DSE_BNAME)_wrap
+# Module file
+LOC_DSE_SO		= _$(DSE_BNAME).$(SO_EXT)
+DSE_SO			= $(ARCH_DIR)/$(LOC_DSE_SO)
+
+########################################################################
+# GOALS
+
+COMMON_SO		= $(DSE_SO)
+ALL_DEB_SO		= $(COMMON_SO) $(LAL_DEB_SO)
+ALL_REL_SO		= $(COMMON_SO) $(LAL_REL_SO)
+
+debug: directories $(ALL_DEB_SO)
+release: directories $(ALL_REL_SO)
+directories: $(ARCH_DIR)
+$(ARCH_DIR):
+	mkdir -p $(ARCH_DIR)
+
+installDSE:
+	# dataset_error
+	cp $(DSE_SO) $(LAL_PY_INSTALL)/$(LOC_DSE_SO)
+	cp $(DSE_PY_FILE) $(LAL_PY_INSTALL)/$(LOC_DSE_PF)
+
+installdebug: $(LAL_DEB_SO)
+	cp $(LAL_DEB_SO) $(LAL_PY_INSTALL)/$(LOC_LAL_DEB_SO)
+	cp $(LAL_PY_DEB_FILE) $(LAL_PY_INSTALL)/$(LOC_LAL_PDF)
+	make -f Makefile.dist installDSE
+
+installrelease: $(LAL_REL_SO)
+	cp $(LAL_REL_SO) $(LAL_PY_INSTALL)/$(LOC_LAL_REL_SO)
+	cp $(LAL_PY_REL_FILE) $(LAL_PY_INSTALL)/$(LOC_LAL_PRF)
+	make -f Makefile.dist installDSE
+
+########################################################################
+# BUILDING RULES
+
+# -- COMMON SHARED OBJECTS
+
+# dataset_error
+$(DSE_SO): $(DSE_WRAP).o
+	$(CXX) -shared -fPIC -o $@ $<
+$(DSE_WRAP).o: $(DSE_WRAP).cxx
+	$(CXX) $(FLAGS_REL) -o $@ -c $< $(INCLUDES)
+$(DSE_WRAP).cxx: $(DSE_BNAME).i
+	swig $(SWIG_FLAGS_ARCH) -Wall -c++ -python -py3 -o $@ $(DSE_BNAME).i
+
+# -- LIBRARY SHARED OBJECTS
+
+# DEBUG
+$(LAL_DEB_SO): $(LAL_WRAP_DEB).o
+	$(CXX) -shared -fPIC -o $@ $< $(LIBS_DEB)
+$(LAL_WRAP_DEB).o: $(LAL_WRAP_DEB).cxx
+	$(CXX) $(FLAGS_DEB) -o $@ -c $< $(INCLUDES)
+$(LAL_WRAP_DEB).cxx: $(LAL_DEB_BNAME).i lal_impl.i
+	swig $(SWIG_FLAGS_ARCH) -DDEBUG -Wall -c++ -python -py3 -o $@ $(LAL_DEB_BNAME).i
+
+# RELEASE
+$(LAL_REL_SO): $(LAL_WRAP_REL).o
+	$(CXX) -shared -fPIC -o $@ $< $(LIBS_REL) 
+$(LAL_WRAP_REL).o: $(LAL_WRAP_REL).cxx
+	$(CXX) $(FLAGS_REL) -o $@ -c $< $(INCLUDES)
+$(LAL_WRAP_REL).cxx: $(LAL_REL_BNAME).i lal_impl.i
+	swig $(SWIG_FLAGS_ARCH) -Wall -c++ -python -py3 -o $@ $(LAL_REL_BNAME).i
+
+########################################################################
+# CLEANING RULES
+
+clean:
+	rm -f $(LAL_DEB_SO)
+	rm -f $(LAL_REL_SO)
+	rm -f $(ARCH_DIR)/*.o
+
+distclean:
+	rm -rf $(ARCH_DIR)
+
+uninstall:
+	# lal
+	rm -f $(LAL_PY_INSTALL)/$(LOC_LAL_REL_SO)
+	rm -f $(LAL_PY_INSTALL)/$(LOC_LAL_PRF)
+	rm -f $(LAL_PY_INSTALL)/$(LOC_LAL_DEB_SO)
+	rm -f $(LAL_PY_INSTALL)/$(LOC_LAL_PDF)
+	# common
+	rm -f $(LAL_PY_INSTALL)/$(LOC_DSE_SO)
+	rm -f $(LAL_PY_INSTALL)/$(LOC_DSE_PF)
