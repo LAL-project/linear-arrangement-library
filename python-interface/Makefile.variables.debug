@@ -1,0 +1,34 @@
+########################################################################
+# COMPILATION FLAGS
+
+FLAGS		= $(COMMON_FLAGS) -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
+
+ifeq ($(DIST),local)
+LAL_LIB		= -L $(LAL_DIR)/lal-debug -llaldebug
+else
+LAL_LIB		= -llaldebug
+endif
+
+LIBS		= $(LAL_LIB) -lgmp -fopenmp $(PYTHON_LIBRARY)
+SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
+
+########################################################################
+# MODULES
+
+# lal
+LAL_BNAME	= lal
+LAL_MNAME	= $(LAL_BNAME)debug
+
+# dataset_error
+DSE_BNAME	= dataset_error
+DSE_MNAME	= $(DSE_BNAME)
+
+########################################################################
+# DEPENDENCIES IN MODULES
+
+# LAL compilation object
+ifeq ($(DIST),local)
+LAL_LIB_DEP	= $(LAL_DIR)/lal-debug/liblaldebug.a
+else
+LAL_LIB_DEP	=
+endif

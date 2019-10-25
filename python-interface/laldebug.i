@@ -1,3 +1,3 @@
 %module laldebug
 
-%include lal_impl.i
+%include _lal_impl.i

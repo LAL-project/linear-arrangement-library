@@ -1,3 +1,5 @@
+%import dataset_error.i
+
 %{
 
 // -- C++ includes
@@ -9,17 +11,18 @@
 #include <lal/definitions.hpp>
 #include <lal/graph.hpp>
 
+// io operations
+#include <lal/io/edge_list.hpp>
+#include <lal/io/dataset_error.hpp>
+#include <lal/io/treebank_processor.hpp>
+#include <lal/io/treebank_reader.hpp>
+#include <lal/io/treebank_dataset.hpp>
+
 // generation of graphs
 #include <lal/generation/free_ulab_trees.hpp>
 #include <lal/generation/free_lab_trees.hpp>
 #include <lal/generation/rand_free_lab_trees.hpp>
 #include <lal/generation/rand_free_ulab_trees.hpp>
-
-// io operations
-#include <lal/io/edge_list.hpp>
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_dataset.hpp>
 
 // linear arrangements
 #include <lal/linarr/C.hpp>
@@ -37,11 +40,6 @@
 
 %}
 
-// --------------------------
-// Enumerations
-
-%import dataset_error.i
-
 // --------------
 // C++ interfaces
 
@@ -50,11 +48,6 @@
 %include std_vector.i
 %include std_pair.i
 %include typemaps.i
-
-// -----------------
-// renaming of types
-
-%apply uint64_t& INOUT { lal::size& };
 
 // -------------------------
 // renaming of C++ templates
@@ -74,12 +67,6 @@ namespace std {
 	
 	%template(list_node_list) vector<vector<lal::node> >;
 }
-
-// ---------------------------------
-// renaming of methods and operators
-
-%rename(__mod__) operator% (uint64_t) const;
-%rename(__mod__) operator% (const integer&) const;
 
 // ---------------------
 // basic data structures
@@ -120,6 +107,12 @@ namespace std {
 
 // ----------
 // EXTENSIONS
+
+// ---------------------------------
+// renaming of methods and operators
+
+%rename(__mod__) operator% (uint64_t) const;
+%rename(__mod__) operator% (const integer&) const;
 
 // -----------------------
 // extending C++ templates

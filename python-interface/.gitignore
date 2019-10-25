@@ -2,3 +2,5 @@
 *.o
 *.pyd
 __pycache__
+linux/
+windows/
