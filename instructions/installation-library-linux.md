@@ -19,11 +19,12 @@ You will need a compiler that supports the ```C++17``` standard.
 
 ## Compiling and installing LAL
 
-The following commands provide an easy and quick way of downloading, compiling and installing the library.
+The following commands provide an easy and quick way of downloading, compiling and installing the library. First, download LAL's sources from its [github page](https://github.com/lluisalemanypuig/linear-arrangement-library.git)
+
+	git clone https://github.com/lluisalemanypuig/linear-arrangement-library.git
 
 ### RELEASE mode
 
-	git clone https://github.com/lluisalemanypuig/linear-arrangement-library.git
 	cd linear-arrangement-library ; mkdir lal-release ; cd lal-release
 	cmake ../lal
 	make -j 4
@@ -31,10 +32,8 @@ The following commands provide an easy and quick way of downloading, compiling a
 
 ### DEBUG mode
 
-	git clone https://github.com/lluisalemanypuig/linear-arrangement-library.git
 	cd linear-arrangement-library ; mkdir lal-debug ; cd lal-debug
 	cmake -DCMAKE_BUILD_TYPE=Debug ../lal
 	make -j 4
 	sudo make install
 
-		

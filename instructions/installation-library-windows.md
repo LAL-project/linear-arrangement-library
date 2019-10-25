@@ -91,6 +91,10 @@ Alternatively, the sources can be compiled and installed following these steps:
 		make check -j 4
 		make install
 
+### Compiler
+
+You will need a compiler that supports the ```C++17``` standard.
+
 ## 2. Compiling and installing LAL
 
 The library can be installed in both ```RELEASE``` and ```DEBUG``` mode. First of all
