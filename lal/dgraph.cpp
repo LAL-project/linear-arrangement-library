@@ -153,15 +153,15 @@ bool dgraph::has_edge(node u, node v) const {
 }
 
 vector<edge> dgraph::edges() const {
-	vector<edge> all_edges;
+	vector<edge> all_edges(m_num_edges);
+	auto it = all_edges.begin();
 
 	// insert all edges into a set to get only those that are unique
-	for (uint32_t i = 0; i < m_adjacency_list.size(); ++i) {
-		lcit it = m_adjacency_list[i].begin();
-		while (it != m_adjacency_list[i].end()) {
-
-			edge e(i, *it);
-			all_edges.push_back(e);
+	for (node u = 0; u < n_nodes() and it != all_edges.end(); ++u) {
+		auto adj_u = get_neighbours(u);
+		for (size_t i = 0; i < adj_u.size() and it != all_edges.end(); ++i) {
+			node v = m_adjacency_list[u][i];
+			*it = edge(u, v);
 			++it;
 		}
 	}
@@ -170,11 +170,25 @@ vector<edge> dgraph::edges() const {
 }
 
 ugraph dgraph::to_undirected() const {
-	vector<edge> dir_edges = edges();
+	// build list of undirected edges
+	set<edge> all_undir_edges;
+
+	// insert all edges into a set to get only those that are unique
+	for (node u = 0; u < n_nodes(); ++u) {
+		for (node v : get_neighbours(u)) {
+			all_undir_edges.insert(
+				u < v ? edge(u, v) : edge(v, u)
+			);
+		}
+	}
+
 	ugraph g(n_nodes());
-	g.add_edges(dir_edges);
+	g.add_edges(vector<edge>(all_undir_edges.begin(), all_undir_edges.end()));
 	return g;
 }
+
+bool dgraph::is_directed() const { return true; }
+bool dgraph::is_undirected() const { return false; }
 
 /* PRIVATE */
 

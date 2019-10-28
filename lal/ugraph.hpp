@@ -100,6 +100,8 @@ class ugraph : public graph {
 
 		std::vector<edge> edges() const;
 
+		bool is_directed() const;
+		bool is_undirected() const;
 };
 
 } // -- namespace lal

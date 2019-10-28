@@ -101,6 +101,9 @@ class dgraph : public graph {
 
 		std::vector<edge> edges() const;
 
+		bool is_directed() const;
+		bool is_undirected() const;
+
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
 		 * @return Returns an object of typ undirected graph.

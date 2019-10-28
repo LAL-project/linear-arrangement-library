@@ -213,6 +213,11 @@ class graph {
 		 */
 		bool is_normalised() const;
 
+		/// Returns whether this graph is directed or not.
+		virtual bool is_directed() const = 0;
+		/// Returns whether this graph is undirected or not.
+		virtual bool is_undirected() const = 0;
+
 		/**
 		 * @brief Constructs the adjacency matrix of the graph.
 		 * @param[out] mat The adjacency matrix of the graph. @e mat[i][j]

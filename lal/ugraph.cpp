@@ -46,7 +46,6 @@
 // C++ includes
 #include <algorithm>
 #include <cmath>
-#include <set>
 using namespace std;
 
 // Use insertion sort to resort the vector (if needed)
@@ -170,43 +169,24 @@ bool ugraph::has_edge(node u, node v) const {
 }
 
 vector<edge> ugraph::edges() const {
-	set<edge> unique_edges;
+	vector<edge> all_edges(m_num_edges);
+	auto it = all_edges.begin();
 
 	// insert all edges into a set to get only those that are unique
-	for (uint32_t i = 0; i < m_adjacency_list.size(); ++i) {
-		lcit it = m_adjacency_list[i].begin();
-		while (it != m_adjacency_list[i].end()) {
-
-			edge e;
-			if (i < *it) {
-				e = edge(i, *it);
-			}
-			else {
-				e = edge(*it, i);
-			}
-
-			bool new_edge = unique_edges.find(e) == unique_edges.end();
-			if (new_edge) {
-				unique_edges.insert(e);
-			}
-			++it;
+	for (node u = 0; u < n_nodes() and it != all_edges.end(); ++u) {
+		auto adj_u = get_neighbours(u);
+		for (size_t i = 0; i < adj_u.size() and it != all_edges.end(); ++i) {
+			node v = m_adjacency_list[u][i];
+			*it = edge(u, v);
+			it += u < v;
 		}
-	}
-
-	vector<edge> all_edges(unique_edges.size());
-
-	// Dump all unique edges from the set into the vector 'all_edges'.
-	// The size of the vector is equal to 'num_edges'
-	set<edge>::const_iterator it = unique_edges.begin();
-	vector<edge>::iterator eit = all_edges.begin();
-	while (it != unique_edges.end()) {
-		*eit = *it;
-		++it;
-		++eit;
 	}
 
 	return all_edges;
 }
+
+bool ugraph::is_directed() const { return false; }
+bool ugraph::is_undirected() const { return true; }
 
 /* PRIVATE */
 
