@@ -10,6 +10,8 @@
 // library's main directory
 #include <lal/definitions.hpp>
 #include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
+#include <lal/dgraph.hpp>
 
 // io operations
 #include <lal/io/edge_list.hpp>
@@ -74,6 +76,8 @@ namespace std {
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
 %include "../lal/graph.hpp"
+%include "../lal/ugraph.hpp"
+%include "../lal/dgraph.hpp"
 
 // -------------
 // io operations
