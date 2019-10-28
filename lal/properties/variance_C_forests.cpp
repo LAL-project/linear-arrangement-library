@@ -67,7 +67,7 @@ namespace properties {
  *	- accumulates the neighbour degree product and neighbour degree sum
  */
 inline void find_tree_vertices(
-	const graph& g, node u,
+	const ugraph& g, node u,
 	vector<node>& tree_nodes, vector<bool>& vis,
 	bigint& nk2, bigint& this_nk2, bigint& nk3, bigint& Lg,
 	bigint *nds
@@ -112,7 +112,7 @@ inline void find_tree_vertices(
 // m: number of edges of the WHOLE TREE
 inline void compute_data_tree
 (
-	const graph& g, const vector<node>& tree_nodes,
+	const ugraph& g, const vector<node>& tree_nodes,
 	const bigint *nds, const bigint& nk2,
 	bigint& n_paths_4, bigint& n_paths_5,
 	bigint& ks_p_kt__x__ku_p_kv, bigint& inner_ks_x_kt__p__ku_x_kv,
@@ -155,7 +155,7 @@ inline void compute_data_tree
 
 inline void compute_data_forest
 (
-	const graph& g, const bigint& n, const bigint& m,
+	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
 	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
 	bigint& sum_adjs__x__sum_degs, bigint& sum_prod_pair_adj_deg
@@ -227,7 +227,7 @@ inline void compute_data_forest
 	free(all_memory);
 }
 
-rational variance_C_forest_rational(const graph& g) {
+rational variance_C_forest_rational(const ugraph& g) {
 	const bigint n = g.n_nodes();
 	const bigint m = g.n_edges();
 
@@ -293,7 +293,7 @@ rational variance_C_forest_rational(const graph& g) {
 	return V;
 }
 
-double variance_C_forest(const graph& g) {
+double variance_C_forest(const ugraph& g) {
 	rational V = variance_C_forest_rational(g);
 	return V.to_double();
 }

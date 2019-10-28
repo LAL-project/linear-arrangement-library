@@ -51,15 +51,13 @@
 namespace lal {
 
 /**
- * @brief Graph class.
+ * @brief Abstract class for graphs.
  *
- * Simple class implementing an unweighted, undirected graph, using
- * the adjacency list data structure.
- *
- * This class is not implemented to allow deletions of nodes or edges.
+ * Simple class implementing an undirected graph, using the adjacency
+ * list data structure.
  *
  * An object of this class must be initialised either with its constructor
- * or with the @ref init(size) method. Edges can then be added one by one
+ * or with the @ref init(uint32_t) method. Edges can then be added one by one
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */
@@ -73,7 +71,7 @@ class graph {
 		 */
 		graph(uint32_t n);
 		/// Default destructor.
-		~graph();
+		virtual ~graph();
 
 		/**
 		 * @brief Allocate memory for @e n nodes.
@@ -138,38 +136,29 @@ class graph {
 		bool check_normalised();
 
 		/**
-		 * @brief Adds an undirected edge.
-		 *
-		 * Adds an undirected edge between vertices u and v assuming it does
-		 * not exist.
-		 *
-		 * In case @e norm is true then only the affected adjacency
-		 * lists by the insertion are sorted.
-		 *
-		 * The cost of this operation increases if @e norm is true and also
-		 * depending on whether the graph was normalised or not before the
-		 * call to this method.
+		 * @brief Adds an edge to the graph.
 		 * @param u Valid node index: \f$0 \le u < n\f$.
 		 * @param v Valid node index: \f$0 \le v < n\f$.
 		 * @param norm Should the graph be normalised?
 		 * @pre \f$u \neq v\f$. The edge \f$\{u,v\}\f$ is not part of the graph.
-		 * @post If @e norm is true and the graph was normalised before
-		 * the call then the graph is guaranteed to be normalised after the
-		 * addition.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
 		 */
-		graph& add_edge(node u, node v, bool norm = false);
+		virtual graph& add_edge(node u, node v, bool norm = false) = 0;
 
 		/**
-		 * @brief Adds all undirected edges in @ref edges.
+		 * @brief Adds a list of edges to the graph.
 		 *
 		 * This operation is faster than calling @ref add_edge(node,node,bool)
 		 * since the edges are added in bulk.
 		 * @param edges The edges to be added.
-		 * @param norm Normalise the graph after the inserions.
+		 * @param norm Normalise the graph after the insertions.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
 		 */
-		graph& add_edges(const std::vector<edge>& edges, bool norm = true);
+		virtual graph& add_edges(const std::vector<edge>& edges, bool norm = true) = 0;
 
 		/**
 		 * @brief Deletes all edges and nodes from the graph.
@@ -185,7 +174,7 @@ class graph {
 		bool has_node(node u) const;
 
 		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
-		bool has_edge(node u, node v) const;
+		virtual bool has_edge(node u, node v) const = 0;
 
 		/// Returns the number of ndoes.
 		uint32_t n_nodes() const;
@@ -193,13 +182,8 @@ class graph {
 		/// Returns the number of edges.
 		uint32_t n_edges() const;
 
-		/**
-		 * @brief Returns all edges of this graph.
-		 *
-		 * The edges are returned in increasing lexicographic order.
-		 * @param[out] e The edges of the graph.
-		 */
-		void edges(std::vector<edge>& e) const;
+		/// Returns all edges of this graph.
+		virtual std::vector<edge> edges() const = 0;
 
 		/**
 		 * @brief Returns the neighbourhood of node @e u.
@@ -211,13 +195,11 @@ class graph {
 		/**
 		 * @brief Returns the neighbourhood of node @e u.
 		 * @param u Node whose neighbourhood is to be returned.
-		 * @param[out] neighs The neighbours of @e u. A node @e v is adjacent
-		 * to @e u if, and only if, @e neighs[v] evaluates to true.
 		 * @return Returns the list of nodes adjacent to node @e u as a list
 		 * of Boolean values.
 		 * @pre This vector must have size the number of nodes of this graph.
 		 */
-		void get_bool_neighbours(node u, neighbourhood_B& neighs) const;
+		neighbourhood_B get_bool_neighbours(node u) const;
 
 		/// Returns the number of neighbours of u.
 		uint32_t degree(node u) const;
@@ -238,7 +220,7 @@ class graph {
 		 */
 		void get_adjacency_matrix(std::vector<std::vector<bool> >& mat) const;
 
-	private:
+	protected:
 		/// Data structure that implements the graph.
 		std::vector<neighbourhood> m_adjacency_list;
 		/// Amount of edges of this graph.
@@ -252,7 +234,7 @@ class graph {
 		 */
 		bool m_normalised = true;
 
-	private:
+	protected:
 		/**
 		 * @brief Find node in a neighbourhood list.
 		 *

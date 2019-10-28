@@ -244,7 +244,7 @@ void free_ulab_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-graph free_ulab_trees::get_tree() const {
+ugraph free_ulab_trees::get_tree() const {
 	return convert::level_sequence_to_tree(m_L, m_n);
 }
 

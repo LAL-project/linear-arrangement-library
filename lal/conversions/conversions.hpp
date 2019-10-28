@@ -44,7 +44,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace convert {
@@ -55,7 +55,7 @@ namespace convert {
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graph level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
+ugraph level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
 
 /**
  * @brief Converts a linear sequence of a tree to a graph structure.
@@ -68,7 +68,7 @@ graph level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graph linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
+ugraph linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
 
 /**
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
@@ -81,7 +81,7 @@ graph linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graph Prufer_sequence_to_tree(const std::vector<uint32_t>& S, uint32_t n);
+ugraph Prufer_sequence_to_tree(const std::vector<uint32_t>& S, uint32_t n);
 
 } // -- namespace convert
 } // -- namespace lal

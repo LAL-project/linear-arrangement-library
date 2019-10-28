@@ -87,7 +87,7 @@ void rand_free_ulab_trees::init(uint32_t _n, uint32_t seed) {
 	m_TREE = vector<uint32_t>(m_n + 1);
 }
 
-graph rand_free_ulab_trees::make_rand_tree() {
+ugraph rand_free_ulab_trees::make_rand_tree() {
 	if (m_n <= 1) {
 		m_TREE[1] = 0;
 		return convert::linear_sequence_to_tree(m_TREE, m_n);

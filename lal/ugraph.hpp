@@ -37,97 +37,69 @@
  *          Resarch Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#include <lal/generation/free_lab_trees.hpp>
 
-// C includes
-#include <assert.h>
+#pragma once
 
 // C++ includes
-#include <algorithm>
-#include <iterator>
-#include <limits>
-using namespace std;
-
-#define inf numeric_limits<size>::max()
+#include <vector>
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/graph.hpp>
 
 namespace lal {
-namespace generate {
 
-// PUBLIC
+/**
+ * @brief Undirected graph class.
+ *
+ * Simple class implementing an undirected graph, using the adjacency
+ * list data structure.
+ *
+ * An object of this class must be initialised either with its constructor
+ * or with the @ref init(uint32_t) method. Edges can then be added one by one
+ * (see @ref add_edge(node,node,bool) ) or all at the same time (see
+ * @ref add_edges(const std::vector<edge>&, bool) ).
+ */
+class ugraph : public graph {
+	public:
+		/// Default constructor.
+		ugraph();
+		/**
+		 * @brief Constructor with number of nodes.
+		 * @param n Number of nodes.
+		 */
+		ugraph(uint32_t n);
+		/// Default destructor.
+		~ugraph();
 
-free_lab_trees::free_lab_trees() { }
-free_lab_trees::free_lab_trees(uint32_t _n) {
-	init(_n);
-}
-free_lab_trees::~free_lab_trees() { }
+		/* OPERATORS */
 
-void free_lab_trees::init(uint32_t _n) {
-	m_n = _n;
-	if (m_n == 2) {
-		m_sm = vector<bool>(1, false);
-		// there is only one tree we can make
-		return;
-	}
+		/* MODIFIERS */
 
-	m_it = 0;
-	m_sm = vector<bool>(m_n - 2, false);
-	m_seq = vector<uint32_t>(m_n - 2, 0);
-	// place 'it' at the end of the sequence
-	m_it = m_n - 3;
-	// make sure that the first call to next()
-	// produces the sequence 0 0 ... 0
-	m_seq[m_it] = numeric_limits<uint32_t>::max();
-	m_L = m_n - 2;
-}
+		/**
+		 * @brief Adds an undirected edge.
+		 *
+		 * For more details see @ref graph::add_edge(node,node,bool)
+		 */
+		ugraph& add_edge(node u, node v, bool norm = false);
 
-bool free_lab_trees::has_next() const {
-	if (m_n == 2) {
-		return not m_sm[0];
-	}
-	return not m_sm[m_n - 3];
-}
+		/**
+		 * @brief Adds a list of undirected edges.
+		 *
+		 * For more details see @ref graph::add_edges(const std::vector<edge>&,bool)
+		 */
+		ugraph& add_edges(const std::vector<edge>& edges, bool norm = true);
 
-void free_lab_trees::next() {
-	if (m_n == 2) {
-		// there is only one tree we can make
-		m_sm[0] = true;
-		return;
-	}
+		/* SETTERS */
 
-	while (m_it > 0 and m_seq[m_it] == m_n - 1) {
-		--m_it;
-	}
-	++m_seq[m_it];
+		/* GETTERS */
 
-	if (m_seq[m_it] == m_n - 1) {
-		m_sm[m_it] =
-			(m_it == 0) or
-			(m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
-	}
+		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
+		bool has_edge(node u, node v) const;
 
-	++m_it;
-	if (m_it < m_n - 2) {
-		auto _it = m_seq.begin();
-		advance(_it, m_it); // until C++17
-		fill(_it, m_seq.end(), 0);
-	}
-	m_it = m_n - 3;
-}
+		std::vector<edge> edges() const;
 
-ugraph free_lab_trees::get_tree() const {
-	if (m_n == 2) {
-		ugraph g(2);
-		g.add_edges({edge(0,1)});
-		return g;
-	}
+};
 
-	return convert::Prufer_sequence_to_tree(m_seq, m_n);
-}
-
-} // -- namespace generate
 } // -- namespace lal
-

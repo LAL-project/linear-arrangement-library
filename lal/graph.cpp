@@ -37,7 +37,7 @@
  *          Resarch Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
+
 #include <lal/graph.hpp>
 
 // C includes
@@ -48,23 +48,6 @@
 #include <cmath>
 #include <set>
 using namespace std;
-
-// Use insertion sort to resort the vector (if needed)
-// assuming that a new element has been appended at the end
-// potentially making the vector unsorted.
-// Assume vector is an adjacency list.
-template<class T>
-inline void resort(vector<T>& v) {
-	if (v.size() <= 1) { return; }
-	size_t i = v.size() - 1;
-	while (i >= 1) {
-		// strict '>' since there can't be repeated values.
-		if (v[i - 1] > v[i]) {
-			std::swap(v[i - 1], v[i]);
-		}
-		--i;
-	}
-}
 
 namespace lal {
 using namespace numeric;
@@ -132,79 +115,6 @@ bool graph::check_normalised() {
 	return true;
 }
 
-graph& graph::add_edge(node u, node v, bool to_norm) {
-	assert(not has_edge(u,v));
-	assert(u != v);
-	assert(has_node(u));
-	assert(has_node(v));
-
-	neighbourhood& nu = m_adjacency_list[u];
-	neighbourhood& nv = m_adjacency_list[v];
-	nu.push_back(v);
-	nv.push_back(u);
-	++m_num_edges;
-
-	if (m_normalised) {
-		// the graph was normalised
-		if (to_norm) {
-			// keep it normalised. Insertion sort
-			// applied to the last nodes added
-			resort(nu);
-			resort(nv);
-		}
-		else {
-			// Even though we have not been asked to normalise the
-			// graph, it may still be so... This means we have to
-			// check whether the graph is still normalised. We may
-			// be lucky....
-			size_t su = nu.size();
-			size_t sv = nv.size();
-			if (su > 1 and sv > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
-			}
-			else if (su > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1];
-			}
-			else if (sv > 1) {
-				m_normalised = nv[sv - 2] < nv[sv - 1];
-			}
-		}
-	}
-	else if (to_norm) {
-		// the graph needs to be normalised,
-		// from a non-normalised state
-		normalise();
-	}
-
-	return *this;
-}
-
-graph& graph::add_edges(const std::vector<edge>& edges, bool to_norm) {
-	for (const edge& e : edges) {
-		node u = e.first;
-		node v = e.second;
-		assert(not has_edge(u,v));
-		assert(u != v);
-
-		neighbourhood& nu = m_adjacency_list[u];
-		neighbourhood& nv = m_adjacency_list[v];
-		nu.push_back(v);
-		nv.push_back(u);
-		++m_num_edges;
-	}
-
-	if (to_norm) {
-		// normalise directly, it might save us time
-		normalise();
-	}
-	else {
-		// only check
-		check_normalised();
-	}
-
-	return *this;
-}
-
 void graph::clear() {
 	m_num_edges = 0;
 	m_normalised = true;
@@ -222,19 +132,6 @@ bool graph::has_node(node u) const {
 	return u < m_adjacency_list.size();
 }
 
-bool graph::has_edge(node u, node v) const {
-	assert(has_node(u));
-	assert(has_node(v));
-
-	const neighbourhood& nu = m_adjacency_list[u];
-	const neighbourhood& nv = m_adjacency_list[v];
-
-	if (nu.size() <= nv.size()) {
-		return cget_neighbour_position(nu, v) != nu.end();
-	}
-	return cget_neighbour_position(nv, u) != nv.end();
-}
-
 uint32_t graph::n_nodes() const {
 	return static_cast<uint32_t>(m_adjacency_list.size());
 }
@@ -243,51 +140,16 @@ uint32_t graph::n_edges() const {
 	return m_num_edges;
 }
 
-void graph::edges(vector<edge>& all_edges) const {
-	std::set<edge> unique_edges;
-
-	// insert all edges into a set to get only those that are unique
-	for (uint32_t i = 0; i < m_adjacency_list.size(); ++i) {
-		lcit it = m_adjacency_list[i].begin();
-		while (it != m_adjacency_list[i].end()) {
-
-			edge e;
-			if (i < *it) {
-				e = edge(i, *it);
-			}
-			else {
-				e = edge(*it, i);
-			}
-
-			bool new_edge = unique_edges.find(e) == unique_edges.end();
-			if (new_edge) {
-				unique_edges.insert(e);
-			}
-			++it;
-		}
-	}
-
-	// Dump all unique edges from the set into the vector 'all_edges'.
-	// The size of the vector is equal to 'num_edges'
-	uint32_t i = 0;
-	all_edges.resize(unique_edges.size());
-	set<edge>::const_iterator it = unique_edges.begin();
-	while (it != unique_edges.end()) {
-		all_edges[i] = *it;
-		++it;
-		++i;
-	}
-}
-
 const neighbourhood& graph::get_neighbours(node u) const {
 	return m_adjacency_list[u];
 }
 
-void graph::get_bool_neighbours(node u, neighbourhood_B& neighs) const {
-	assert(neighs.size() == m_adjacency_list.size());
+neighbourhood_B graph::get_bool_neighbours(node u) const {
+	neighbourhood_B neighs(m_adjacency_list.size(), false);
 	for (const node& v : get_neighbours(u)) {
 		neighs[v] = true;
 	}
+	return neighs;
 }
 
 uint32_t graph::degree(node u) const {
@@ -304,7 +166,7 @@ void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 	for (node u = 0; u < N; ++u) {
 		const neighbourhood& nu = get_neighbours(u);
 		for (const node& v : nu) {
-			mat[u][v] = mat[v][u] = true;
+			mat[u][v] = true;
 		}
 	}
 }

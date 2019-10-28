@@ -65,7 +65,7 @@ namespace linarr {
 #define sorted_edge(u,v)		\
 	(u < v ? edge(u,v) : edge(v,u) )
 
-uint32_t __n_crossings_stack_based(const graph& g, const vector<node>& T) {
+uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& T) {
 	const uint32_t n = static_cast<uint32_t>(T.size());
 	if (n < 4) {
 		return 0;
@@ -162,7 +162,7 @@ uint32_t __n_crossings_stack_based(const graph& g, const vector<node>& T) {
 	return C;
 }
 
-uint32_t n_crossings_stack_based(const graph& g, const vector<node>& arr) {
+uint32_t n_crossings_stack_based(const ugraph& g, const vector<node>& arr) {
 	return macros::call_with_empty_arrangement(__n_crossings_stack_based, g, arr);
 }
 

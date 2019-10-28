@@ -43,7 +43,7 @@
 #include <functional>
 #include <numeric>
 
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace macros {
@@ -60,8 +60,8 @@ namespace macros {
  */
 template<typename T>
 T call_with_empty_arrangement(
-	T (*F)(const graph&, const std::vector<node>&),
-	const graph& g, const std::vector<node>& arr
+	T (*F)(const ugraph&, const std::vector<node>&),
+	const ugraph& g, const std::vector<node>& arr
 )
 {
 	if (arr.size() != 0) {

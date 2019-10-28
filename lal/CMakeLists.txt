@@ -118,6 +118,8 @@ target_sources(
 	${TargetStringLibrary}
 	PRIVATE
 		graph.cpp
+		ugraph.cpp
+		dgraph.cpp
 		conversions/conversions.cpp
 		generation/free_lab_trees.cpp
 		generation/free_ulab_trees.cpp
@@ -156,6 +158,8 @@ target_sources(
 # but via several custom variables
 set(LIBLAL_MAIN_HEADER
 	graph.hpp
+	ugraph.hpp
+	dgraph.hpp
 	definitions.hpp
 	C.hpp
 	D.hpp

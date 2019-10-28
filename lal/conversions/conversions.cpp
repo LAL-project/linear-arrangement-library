@@ -49,11 +49,11 @@ using namespace std;
 namespace lal {
 namespace convert {
 
-graph level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+ugraph level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 1);
 
-	graph t(n);
+	ugraph t(n);
 
 	// 'stack' of root candidates
 	vector<node> s(n, 0);
@@ -79,10 +79,10 @@ graph level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	return t;
 }
 
-graph linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+ugraph linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(L.size() == n + 1);
 
-	graph t(n);
+	ugraph t(n);
 	for (uint32_t i = 1; i <= n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
@@ -94,14 +94,14 @@ graph linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	return t;
 }
 
-graph Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
+ugraph Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);
 	for (uint32_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}
-	graph t(n);
+	ugraph t(n);
 
 	// for each number in the sequence seq[i], find the first
 	// lowest-numbered node, j, with degree equal to 1, add

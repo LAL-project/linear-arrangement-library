@@ -52,14 +52,14 @@ namespace properties {
 /* -------------------------- */
 /* EXPECTATION OF C: E_rla[C] */
 
-rational expectation_C_first_rational(const graph& g) {
+rational expectation_C_first_rational(const ugraph& g) {
 	rational Ec;
 	Ec = size_Q_integer(g);
 	Ec /= 3;
 	return Ec;
 }
 
-double expectation_C_first(const graph& g) {
+double expectation_C_first(const ugraph& g) {
 	return size_Q(g)/3.0;
 }
 

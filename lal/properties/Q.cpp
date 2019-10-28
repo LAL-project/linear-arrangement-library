@@ -53,7 +53,7 @@ using namespace numeric;
 
 namespace properties {
 
-void enumerate_Q(const graph& g, vector<edge_pair>& Q) {
+void enumerate_Q(const ugraph& g, vector<edge_pair>& Q) {
 	const node n = static_cast<node>(g.n_nodes());
 	Q.clear();
 
@@ -81,7 +81,7 @@ void enumerate_Q(const graph& g, vector<edge_pair>& Q) {
 	}}
 }
 
-integer size_Q_integer(const graph& g) {
+integer size_Q_integer(const ugraph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -97,7 +97,7 @@ integer size_Q_integer(const graph& g) {
 	return q;
 }
 
-uint32_t size_Q(const graph& g) {
+uint32_t size_Q(const ugraph& g) {
 	// sum of squared degrees
 	uint32_t nk2 = 0;
 	for (node u = 0; u < g.n_nodes(); ++u) {

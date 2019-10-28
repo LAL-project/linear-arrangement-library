@@ -51,7 +51,7 @@ using namespace numeric;
 
 namespace properties {
 
-rational second_mmt_degree_rational(const graph& g) {
+rational second_mmt_degree_rational(const ugraph& g) {
 	integer S(0);
 	integer du(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -65,7 +65,7 @@ rational second_mmt_degree_rational(const graph& g) {
 	return k2;
 }
 
-double second_mmt_degree(const graph& g) {
+double second_mmt_degree(const ugraph& g) {
 	double k2 = 0.0;
 	for (node u = 0; u < g.n_nodes(); ++u) {
 		uint32_t du = g.degree(u);
@@ -74,7 +74,7 @@ double second_mmt_degree(const graph& g) {
 	return k2/g.n_nodes();
 }
 
-rational third_mmt_degree_rational(const graph& g) {
+rational third_mmt_degree_rational(const ugraph& g) {
 	integer S(0);
 	integer du(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -88,7 +88,7 @@ rational third_mmt_degree_rational(const graph& g) {
 	return k3;
 }
 
-double third_mmt_degree(const graph& g) {
+double third_mmt_degree(const ugraph& g) {
 	double k3 = 0.0;
 	for (node u = 0; u < g.n_nodes(); ++u) {
 		uint32_t du = g.degree(u);

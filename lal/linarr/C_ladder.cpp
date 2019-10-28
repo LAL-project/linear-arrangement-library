@@ -55,7 +55,7 @@ namespace lal {
 namespace linarr {
 
 inline uint32_t __n_crossings_ladder(
-	const graph& g, const vector<node>& T,
+	const ugraph& g, const vector<node>& T,
 	vector<bool>& bn,
 	uint32_t * __restrict__ pi,
 	uint32_t * __restrict__ L1
@@ -81,7 +81,7 @@ inline uint32_t __n_crossings_ladder(
 		uint32_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
-		g.get_bool_neighbours(u, bn);
+		bn = g.get_bool_neighbours(u);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
 			node v = T[q];
@@ -98,7 +98,7 @@ inline uint32_t __n_crossings_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint32_t __n_crossings_ladder(const graph& g, const vector<node>& T) {
+uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& T) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -127,14 +127,14 @@ uint32_t __n_crossings_ladder(const graph& g, const vector<node>& T) {
 	return C;
 }
 
-uint32_t n_crossings_ladder(const graph& g, const vector<node>& arr) {
+uint32_t n_crossings_ladder(const ugraph& g, const vector<node>& arr) {
 	return macros::call_with_empty_arrangement(__n_crossings_ladder, g, arr);
 }
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 void n_crossings_ladder_list
-(const graph& g, const vector<vector<node> >& Ts, vector<uint32_t>& cs)
+(const ugraph& g, const vector<vector<node> >& Ts, vector<uint32_t>& cs)
 {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {

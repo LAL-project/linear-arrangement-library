@@ -69,10 +69,10 @@ void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
 }
 
-graph rand_free_lab_trees::make_rand_tree() {
+ugraph rand_free_lab_trees::make_rand_tree() {
 	if (m_n == 2) {
 		// how many trees of 2 vertices can we make??
-		graph t(2);
+		ugraph t(2);
 		t.add_edges({edge(0,1)});
 		return t;
 	}

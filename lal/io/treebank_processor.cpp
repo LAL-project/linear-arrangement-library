@@ -55,7 +55,7 @@ using namespace std;
 #include <lal/io/treebank_dataset.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/definitions.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/properties/Q.hpp>
@@ -139,7 +139,7 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 
 inline void process_tree(
 	const vector<bool>& what_fs, char sep,
-	const graph& t, ofstream& out_lang_file
+	const ugraph& t, ofstream& out_lang_file
 )
 {
 	// default linear arrangement
@@ -353,7 +353,7 @@ treebank_processor::processor_error treebank_processor::process
 			out_lang_file << endl;
 		}
 
-		graph t;
+		ugraph t;
 		// process the current treebank
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();

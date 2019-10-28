@@ -28,8 +28,10 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
-    graph.hpp \
     definitions.hpp \
+    dgraph.hpp \
+    graph.hpp \
+    ugraph.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \
     numeric/integer.hpp \
@@ -56,7 +58,9 @@ HEADERS += \
     io.hpp
 
 SOURCES += \
+    dgraph.cpp \
     graph.cpp \
+    ugraph.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \
     numeric/integer.cpp \

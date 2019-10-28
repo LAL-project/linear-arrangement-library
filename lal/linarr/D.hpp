@@ -45,7 +45,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace linarr {
@@ -61,7 +61,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$D\f$.
  */
-uint32_t sum_length_edges(const graph& g, const std::vector<node>& arr = {});
+uint32_t sum_length_edges(const ugraph& g, const std::vector<node>& arr = {});
 
 } // -- namespace linarr
 } // -- namespace lal

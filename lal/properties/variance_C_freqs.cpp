@@ -177,14 +177,14 @@ namespace properties {
 // ---------------------
 // Number of crossings C
 
-rational variance_C_freqs_rational(const graph& g, uint32_t nthreads) {
+rational variance_C_freqs_rational(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
 	vector<edge_pair> Q;
 	enumerate_Q(g, Q);
 	return variance_C_freqs_Q_rational(Q, nthreads);
 }
 
-double variance_C_freqs(const graph& g, uint32_t nthreads) {
+double variance_C_freqs(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
 	vector<edge_pair> Q;
 	enumerate_Q(g, Q);

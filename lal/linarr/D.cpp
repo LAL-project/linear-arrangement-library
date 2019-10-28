@@ -54,7 +54,7 @@ using namespace std;
 namespace lal {
 namespace linarr {
 
-uint32_t __sum_length_edges(const graph& g, const vector<node>& arr) {
+uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
 	const node n = g.n_nodes();
 
 	// translation table:
@@ -86,7 +86,7 @@ uint32_t __sum_length_edges(const graph& g, const vector<node>& arr) {
 	return l;
 }
 
-uint32_t sum_length_edges(const graph& g, const vector<node>& arr) {
+uint32_t sum_length_edges(const ugraph& g, const vector<node>& arr) {
 	return macros::call_with_empty_arrangement(__sum_length_edges, g, arr);
 }
 

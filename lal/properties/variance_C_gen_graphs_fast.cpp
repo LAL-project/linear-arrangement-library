@@ -105,7 +105,7 @@ namespace properties {
 
 inline void compute_data_gen_graphs
 (
-	const graph& g, const bigint& n, const bigint& m,
+	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
 	bigint& n_paths_5, bigint& pair_C3_L2,
@@ -254,7 +254,7 @@ inline void compute_data_gen_graphs
  */
 inline void compute_data_gen_graphs_reuse
 (
-	const graph& g, const bigint& n, const bigint& m,
+	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
 	bigint& n_paths_5, bigint& pair_C3_L2,
@@ -447,7 +447,7 @@ inline void compute_data_gen_graphs_reuse
 	free(all_memory);
 }
 
-rational variance_C_rational(const graph& g) {
+rational variance_C_rational(const ugraph& g) {
 	assert(g.is_normalised());
 
 	const bigint n = g.n_nodes();
@@ -540,7 +540,7 @@ rational variance_C_rational(const graph& g) {
 	return V;
 }
 
-double variance_C(const graph& g) {
+double variance_C(const ugraph& g) {
 	assert(g.is_normalised());
 
 	rational V = variance_C_rational(g);

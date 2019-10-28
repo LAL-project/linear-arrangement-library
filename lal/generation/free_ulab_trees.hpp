@@ -44,7 +44,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 #include <lal/definitions.hpp>
 
 namespace lal {
@@ -128,7 +128,7 @@ class free_ulab_trees {
 		 * @ref next must have been called at least once.
 		 * @return Returns the tree generated with method @ref next().
 		 */
-		graph get_tree() const;
+		ugraph get_tree() const;
 
 	private:
 		/// Canonical level sequence of the tree.

@@ -144,7 +144,7 @@ inline int64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	return f/2;
 }
 
-rational __get_approximate_C_2_rational(const graph& g, const vector<node>& T) {
+rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) {
 	rational Ec2(0);
 	const uint32_t n = g.n_nodes();
 
@@ -194,11 +194,11 @@ rational __get_approximate_C_2_rational(const graph& g, const vector<node>& T) {
 	return Ec2;
 }
 
-rational approximate_C_2_rational(const graph& g, const vector<node>& T) {
+rational approximate_C_2_rational(const ugraph& g, const vector<node>& T) {
 	return macros::call_with_empty_arrangement(__get_approximate_C_2_rational, g, T);
 }
 
-double approximate_C_2(const graph& g, const vector<node>& T) {
+double approximate_C_2(const ugraph& g, const vector<node>& T) {
 	rational Ec2 = approximate_C_2_rational(g, T);
 	return Ec2.to_double();
 }

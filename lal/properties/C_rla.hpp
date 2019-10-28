@@ -42,7 +42,7 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -57,13 +57,13 @@ namespace properties {
  * @param g The input graph.
  * @return Returns \f$E[C]\f$ as a rational value.
  */
-numeric::rational expectation_C_first_rational(const graph& g);
+numeric::rational expectation_C_first_rational(const ugraph& g);
 /**
  * @brief Computes the the expectation of the first moment of C.
  * @param g The input graph.
  * @return Returns \f$E[C]\f$.
  */
-double expectation_C_first(const graph& g);
+double expectation_C_first(const ugraph& g);
 
 /* ----------------------- */
 /* VARIANCE OF C: V_rla[C] */
@@ -82,7 +82,7 @@ double expectation_C_first(const graph& g);
  * @param nthreads Number of threads. Default: 8.
  * @return Returns the exact value of \f$V[C]\f$.
  */
-numeric::rational variance_C_freqs_rational(const graph& g, uint32_t nthreads = 8);
+numeric::rational variance_C_freqs_rational(const ugraph& g, uint32_t nthreads = 8);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
@@ -94,7 +94,7 @@ numeric::rational variance_C_freqs_rational(const graph& g, uint32_t nthreads = 
  * @param nthreads Number of threads. Default: 8.
  * @return Returns the exact value of \f$V[C]\f$.
  */
-double variance_C_freqs(const graph& g, uint32_t nthreads = 8);
+double variance_C_freqs(const ugraph& g, uint32_t nthreads = 8);
 
 /**
  * @brief Computes the variance of the number of crossings of a graph.
@@ -130,7 +130,7 @@ double variance_C_freqs_Q(const std::vector<edge_pair>& Q, uint32_t nthreads = 8
  * @return Returns the exact value of \f$V[C]\f$ as a rational value.
  */
 numeric::rational variance_C_rational_Q
-(const graph& g, const std::vector<edge_pair>& Q);
+(const ugraph& g, const std::vector<edge_pair>& Q);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
@@ -139,7 +139,7 @@ numeric::rational variance_C_rational_Q
  * @param Q Set of pairs of independent edges \f$Q(G)\f$.
  * @return Returns the exact value of \f$V[C]\f$.
  */
-double variance_C_Q(const graph& g, const std::vector<edge_pair>& Q);
+double variance_C_Q(const ugraph& g, const std::vector<edge_pair>& Q);
 
 /**
  * @brief Computes the variance of the number of crossings of a graph.
@@ -149,7 +149,7 @@ double variance_C_Q(const graph& g, const std::vector<edge_pair>& Q);
  * @return Returns the exact value of \f$V[C]\f$ as a rational value.
  * @pre Method @ref graph::is_normalised() must evaluate to true.
  */
-numeric::rational variance_C_rational(const graph& g);
+numeric::rational variance_C_rational(const ugraph& g);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
@@ -158,7 +158,7 @@ numeric::rational variance_C_rational(const graph& g);
  * @return Returns the exact value of \f$V[C]\f$.
  * @pre Method @ref graph::is_normalised() must evaluate to true.
  */
-double variance_C(const graph& g);
+double variance_C(const ugraph& g);
 
 // --------------------
 // VARIANCE FOR FORESTS
@@ -171,7 +171,7 @@ double variance_C(const graph& g);
  * @param g Input forest.
  * @return Returns the exact value of \f$V[C]\f$ as a rational value.
  */
-numeric::rational variance_C_forest_rational(const graph& g);
+numeric::rational variance_C_forest_rational(const ugraph& g);
 /**
  * @brief Computes the variance of the number of crossings of a forest.
  *
@@ -180,7 +180,7 @@ numeric::rational variance_C_forest_rational(const graph& g);
  * @param g Input forest.
  * @return Returns the exact value of \f$V[C]\f$.
  */
-double variance_C_forest(const graph& g);
+double variance_C_forest(const ugraph& g);
 
 // ------------------
 // VARIANCE FOR TREES
@@ -193,7 +193,7 @@ double variance_C_forest(const graph& g);
  * @param g Input tree.
  * @return Returns the exact value of \f$V[C]\f$ as a rational value.
  */
-numeric::rational variance_C_tree_rational(const graph& g);
+numeric::rational variance_C_tree_rational(const ugraph& g);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
@@ -202,7 +202,7 @@ numeric::rational variance_C_tree_rational(const graph& g);
  * @param g Input tree.
  * @return Returns the exact value of \f$V[C]\f$.
  */
-double variance_C_tree(const graph& g);
+double variance_C_tree(const ugraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

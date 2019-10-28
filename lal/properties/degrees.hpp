@@ -44,7 +44,7 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -61,7 +61,7 @@ namespace properties {
  * @param[in] g Input graph.
  * @return Returns the exact second moment of degree about zero.
  */
-numeric::rational second_mmt_degree_rational(const graph& g);
+numeric::rational second_mmt_degree_rational(const ugraph& g);
 /**
  * @brief Computes the second moment of degree of a graph.
  *
@@ -74,7 +74,7 @@ numeric::rational second_mmt_degree_rational(const graph& g);
  * @param[in] g Input graph.
  * @return Returns the exact second moment of degree about zero.
  */
-double second_mmt_degree(const graph& g);
+double second_mmt_degree(const ugraph& g);
 
 /**
  * @brief Computes the third moment of degree of a graph.
@@ -88,7 +88,7 @@ double second_mmt_degree(const graph& g);
  * @param[in] g Input graph.
  * @return Returns the exact third moment of degree about zero.
  */
-numeric::rational third_mmt_degree_rational(const graph& g);
+numeric::rational third_mmt_degree_rational(const ugraph& g);
 /**
  * @brief Computes the third moment of degree of a graph.
  *
@@ -101,7 +101,7 @@ numeric::rational third_mmt_degree_rational(const graph& g);
  * @param[in] g Input graph.
  * @return Returns the exact third moment of degree about zero.
  */
-double third_mmt_degree(const graph& g);
+double third_mmt_degree(const ugraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

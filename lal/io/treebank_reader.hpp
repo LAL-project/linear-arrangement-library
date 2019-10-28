@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/io/dataset_error.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace io {
@@ -96,7 +96,7 @@ class treebank_reader {
 		/**
 		 * @brief Retrieves the next tree in the file.
 		 * @return  In case the function returns
-		 * @ref dse_empty_line the user should not call get_tree.
+		 * @ref empty_line the user should not call get_tree.
 		 * @post Increments the amount of trees found.
 		 */
 		dataset_error next_tree();
@@ -118,7 +118,7 @@ class treebank_reader {
 		const std::string& get_treebank_filename() const;
 
 		/// Returns the current tree.
-		graph get_tree() const;
+		ugraph get_tree() const;
 
 	private:
 		/// Language of the treebank

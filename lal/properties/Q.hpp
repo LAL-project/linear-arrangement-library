@@ -46,7 +46,7 @@
 // lal includes
 #include <lal/numeric/integer.hpp>
 #include <lal/definitions.hpp>
-#include <lal/graph.hpp>
+#include <lal/ugraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -60,21 +60,21 @@ namespace properties {
  * @param[in] G Input graph \f$G\f$.
  * @param[out] Q Set \f$Q(G)\f$.
  */
-void enumerate_Q(const graph& G, std::vector<edge_pair>& Q);
+void enumerate_Q(const ugraph& G, std::vector<edge_pair>& Q);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  * @param[in] G Input graph.
  * @return Returns the size of \f$Q(G)\f$ as a rational value.
  */
-numeric::integer size_Q_integer(const graph& G);
+numeric::integer size_Q_integer(const ugraph& G);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  * @param[in] G Input graph.
  * @returns The size of \f$Q(G)\f$.
  */
-uint32_t size_Q(const graph& G);
+uint32_t size_Q(const ugraph& G);
 
 } // -- namespace properties
 } // -- namespace lal
