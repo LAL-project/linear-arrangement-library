@@ -76,6 +76,10 @@ edge edge_iterator::next() {
 	return edge_to_return;
 }
 
+void edge_iterator::reset() {
+	go_to_first_edge();
+}
+
 /* PRIVATE */
 
 void edge_iterator::go_to_first_edge() {

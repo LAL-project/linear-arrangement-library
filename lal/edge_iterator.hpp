@@ -74,6 +74,13 @@ class edge_iterator {
 		/// Returns the next edge.
 		edge next();
 
+		/**
+		 * @brief Sets the iterator at the beginning of the set of edges.
+		 * @post The next call to method @ref next() returns the first edge
+		 * of the graph.
+		 */
+		void reset();
+
 	private:
 		/// The graph whose edges have to be iterated on.
 		const graph& m_G;
