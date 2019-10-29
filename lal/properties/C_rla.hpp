@@ -146,19 +146,23 @@ double variance_C_Q(const ugraph& g, const std::vector<edge_pair>& Q);
  *
  * Computes \f$V[C]\f$ on the given graph.
  * @param g Input graph.
+ * @param reuse The algorithm will reuse computations in order to compute
+ * the variance faster. Note: this might be too memory-consuming.
  * @return Returns the exact value of \f$V[C]\f$ as a rational value.
  * @pre Method @ref graph::is_normalised() must evaluate to true.
  */
-numeric::rational variance_C_rational(const ugraph& g);
+numeric::rational variance_C_rational(const ugraph& g, bool resue = true);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
  * Computes \f$V[C]\f$ on the given graph.
  * @param g Input graph.
+ * @param reuse The algorithm will reuse computations in order to compute
+ * the variance faster. Note: this might be too memory-consuming.
  * @return Returns the exact value of \f$V[C]\f$.
  * @pre Method @ref graph::is_normalised() must evaluate to true.
  */
-double variance_C(const ugraph& g);
+double variance_C(const ugraph& g, bool resue = true);
 
 // --------------------
 // VARIANCE FOR FORESTS

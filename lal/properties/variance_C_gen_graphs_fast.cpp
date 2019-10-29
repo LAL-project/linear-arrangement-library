@@ -54,6 +54,7 @@ typedef uint64_t bigint;
 
 // lal includes
 #include <lal/properties/Q.hpp>
+#include <lal/edge_iterator.hpp>
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
@@ -162,17 +163,20 @@ inline void compute_data_gen_graphs
 	}
 
 	size_t idx1, idx2;
-
 	bigint npaths4_c1 = 0;
 	bigint npaths4_c2 = 0;
-	for (node s = 0; s < n; ++s) {
-	const neighbourhood& Ns = g.get_neighbours(s);
-	bigint ks = g.degree(s);
-	for (node t : Ns) {
-	const neighbourhood& Nt = g.get_neighbours(t);
-	bigint kt = g.degree(t);
-	// no repetitions from this point on: process each edge once
-	if (s > t) { continue; }
+
+	edge_iterator e_it(g);
+	while (e_it.has_next()) {
+		const edge e = e_it.next();
+		// first node
+		const node s = e.first;
+		const bigint ks = g.degree(s);
+		const neighbourhood& Ns = g.get_neighbours(s);
+		// second node
+		const node t = e.second;
+		const bigint kt = g.degree(t);
+		const neighbourhood& Nt = g.get_neighbours(t);
 
 		// for each neighbour of 's' different from 't'
 		for (node u : Ns) {
@@ -228,7 +232,6 @@ inline void compute_data_gen_graphs
 
 		npaths[s] += nds[t] - 2*(kt + common_st);
 		npaths[t] += nds[s] - 2*(ks + common_st);
-	}
 	}
 
 	for (node s = 0; s < n; ++s) {
@@ -317,14 +320,18 @@ inline void compute_data_gen_graphs_reuse
 
 	bigint npaths4_c1 = 0;
 	bigint npaths4_c2 = 0;
-	for (node s = 0; s < n; ++s) {
-	const neighbourhood& Ns = g.get_neighbours(s);
-	bigint ks = g.degree(s);
-	for (node t : Ns) {
-	const neighbourhood& Nt = g.get_neighbours(t);
-	bigint kt = g.degree(t);
-	// no repetitions from this point on: process each edge once
-	if (s > t) { continue; }
+
+	edge_iterator e_it(g);
+	while (e_it.has_next()) {
+		const edge e = e_it.next();
+		// first node
+		const node s = e.first;
+		const bigint ks = g.degree(s);
+		const neighbourhood& Ns = g.get_neighbours(s);
+		// second node
+		const node t = e.second;
+		const bigint kt = g.degree(t);
+		const neighbourhood& Nt = g.get_neighbours(t);
 
 		for (node u : Ns) {
 			if (u == t) { continue; }
@@ -430,7 +437,6 @@ inline void compute_data_gen_graphs_reuse
 		npaths[s] += nds[t] - 2*(kt + common_st);
 		npaths[t] += nds[s] - 2*(ks + common_st);
 	}
-	}
 
 	for (node s = 0; s < n; ++s) {
 		sum_adjs__x__sum_degs += g.degree(s)*npaths[s];
@@ -447,7 +453,7 @@ inline void compute_data_gen_graphs_reuse
 	free(all_memory);
 }
 
-rational variance_C_rational(const ugraph& g) {
+rational variance_C_rational(const ugraph& g, bool reuse) {
 	assert(g.is_normalised());
 
 	const bigint n = g.n_nodes();
@@ -484,20 +490,6 @@ rational variance_C_rational(const ugraph& g) {
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
 	bigint sum__pair__adj_x_deg = 0;
-
-	double p = static_cast<double>(n)/static_cast<double>(m);
-	bool reuse = true;
-
-	// small cases when we should not reuse computations
-	if (n <= 10 and p < 0.76)      { reuse = false; }
-	else if (n <= 20 and p < 0.43) { reuse = false; }
-	else if (n <= 30 and p < 0.30) { reuse = false; }
-	else if (n <= 40 and p < 0.25) { reuse = false; }
-	else if (n <= 60 and p < 0.22) { reuse = false; }
-	else if (n <= 90 and p < 0.17) { reuse = false; }
-
-	if (p <= 0.03) { reuse = false; }
-	if (p < 0.10 and n <= 1000) { reuse = false; }
 
 	if (reuse) {
 		compute_data_gen_graphs_reuse
@@ -540,10 +532,10 @@ rational variance_C_rational(const ugraph& g) {
 	return V;
 }
 
-double variance_C(const ugraph& g) {
+double variance_C(const ugraph& g, bool reuse) {
 	assert(g.is_normalised());
 
-	rational V = variance_C_rational(g);
+	rational V = variance_C_rational(g, reuse);
 	return V.to_double();
 }
 

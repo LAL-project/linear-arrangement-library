@@ -49,6 +49,7 @@ using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>
+#include <lal/edge_iterator.hpp>
 
 typedef uint64_t bigint;
 
@@ -108,13 +109,13 @@ inline void compute_data_tree
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
 	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
 
-	// st
-	for (node s = 0; s < n - 1; ++s) {
-	bigint ks = g.degree(s);
-	for (node t : g.get_neighbours(s)) {
-	bigint kt = g.degree(t);
-	// no repetitions from this point on
-	if (s > t) { continue; }
+	edge_iterator e_it(g);
+	while (e_it.has_next()) {
+		const edge st = e_it.next();
+		const node s = st.first;
+		const bigint ks = g.degree(s);
+		const node t = st.second;
+		const bigint kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
@@ -132,7 +133,6 @@ inline void compute_data_tree
 		ks_x_kt__p__ku_x_kv -= ks*kt*(ks + kt);
 		ks_p_kt__x__ku_p_kv +=
 			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
-	}
 	}
 
 	// we counted the amount of 5-paths twice
