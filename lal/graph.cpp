@@ -90,8 +90,8 @@ void graph::disjoint_union(const graph& g) {
 
 void graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
-		neighbourhood& nu = m_adjacency_list[u];
-		if (not std::is_sorted(nu.begin(), nu.end())) {
+		const neighbourhood& nu = m_adjacency_list[u];
+		if (not is_sorted(nu.begin(), nu.end())) {
 			sort(m_adjacency_list[u].begin(), m_adjacency_list[u].end());
 		}
 	}
@@ -101,9 +101,8 @@ void graph::normalise() {
 bool graph::check_normalised() {
 	// check that every adjacency list is sorted
 	for (node u = 0; u < n_nodes(); ++u) {
-		neighbourhood& nu = m_adjacency_list[u];
-		bool s = std::is_sorted(nu.begin(), nu.end());
-		if (not s) {
+		const neighbourhood& nu = m_adjacency_list[u];
+		if (not is_sorted(nu.begin(), nu.end())) {
 			// if some is not then the graph is not normalised
 			m_normalised = false;
 			return false;
@@ -161,7 +160,7 @@ bool graph::is_normalised() const {
 }
 
 void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
-	uint32_t N = n_nodes();
+	const uint32_t N = n_nodes();
 	mat = vector<vector<bool> >(N, vector<bool>(N, false));
 	for (node u = 0; u < N; ++u) {
 		const neighbourhood& nu = get_neighbours(u);

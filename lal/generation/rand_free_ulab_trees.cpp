@@ -107,28 +107,28 @@ ugraph rand_free_ulab_trees::make_rand_tree() {
 	}
 	else {
 		// n is even...
-		double k = m_Tn[m_n/2].to_double() + 1;
-		double k_2 = k*(k - 1)*0.5;
+		const double k = m_Tn[m_n/2].to_double() + 1;
+		const double k_2 = k*(k - 1)*0.5;
 		prob = k_2/m_Tn[m_n].to_double();
 	}
 	assert(prob <= 1.0);
 
-	double bicent_prob = m_unif(m_gen);
+	const double bicent_prob = m_unif(m_gen);
 	if (bicent_prob <= prob) {
 		// tree will have two centroids
 		bicenter(m_n);
 		return convert::linear_sequence_to_tree(m_TREE, m_n);
 	}
 
-	uint32_t m = m_n - 1;
-	uint32_t q = (m_n - 1)/2;
+	const uint32_t m = m_n - 1;
+	const uint32_t q = (m_n - 1)/2;
 
 	// compute forest
 	vector<uint32_t> ROOTS(m_n - 1, 0);
 
 	// make a forest on (n - 1) vertices
-	pair<uint32_t, uint32_t> nr_nt = forest(m,q, 0,1, ROOTS);
-	uint32_t nt = nr_nt.second;
+	const pair<uint32_t, uint32_t> nr_nt = forest(m,q, 0,1, ROOTS);
+	const uint32_t nt = nr_nt.second;
 
 	// join all roots of the connected components
 	// into a new vertex, placed at the end of
@@ -202,7 +202,7 @@ void rand_free_ulab_trees::compute_T() {
 		return;
 	}
 
-	int last = static_cast<int>(m_Tn.size());
+	const int last = static_cast<int>(m_Tn.size());
 	m_Tn.resize(m_n + 1);
 
 	// using the algorithm in the book...
@@ -213,8 +213,8 @@ void rand_free_ulab_trees::compute_T() {
 		integer s = 0;
 		for (uint32_t d = 1; d <= LAST; ++d) {
 			int i = to_int32(LAST) + 1;
-			integer td = m_Tn[d]*d;
 			int j = 1;
+			const integer td = m_Tn[d]*d;
 			while (j <= to_int32(LAST) and i > 0) {
 				i -= to_int32(d);
 				if (i > 0) {
@@ -245,7 +245,7 @@ void rand_free_ulab_trees::compute_Amq_rec(uint32_t m, uint32_t q) {
 
 	integer s(0);
 	for (uint32_t j = 1; j <= m; ++j) {
-		uint32_t sup = std::min( m/j, q );
+		const uint32_t sup = std::min( m/j, q );
 		for (uint32_t d = 1; d <= sup; ++d) {
 			compute_Amq_rec(m - j*d, q);
 			compute_Amq_rec(d - 1, q);
@@ -258,8 +258,8 @@ void rand_free_ulab_trees::compute_Amq_rec(uint32_t m, uint32_t q) {
 }
 
 void rand_free_ulab_trees::compute_Amq() {
-	uint32_t m = m_n - 1;
-	uint32_t q = (m_n - 1)/2;
+	const uint32_t m = m_n - 1;
+	const uint32_t q = (m_n - 1)/2;
 
 	// if Amq is already computed, do nothing
 	if (m_Amq.find(q) != m_Amq.end()) {
@@ -270,10 +270,11 @@ void rand_free_ulab_trees::compute_Amq() {
 	// if this variabe is even, for future odd values
 	// that are just one unit away from 'm'. (same 'q',
 	// but different 'm', basically).
-	uint32_t mm = m;
+	const uint32_t mm = m + (m%2 == 0);
+	/*
 	if (m%2 == 0) {
 		++mm;
-	}
+	}*/
 
 	m_Amq[q] = vector<integer>(mm + 1, 0);
 	compute_Amq_rec(mm, q);
@@ -283,7 +284,8 @@ void rand_free_ulab_trees::choose_jd_from_T(uint32_t k, uint32_t& j, uint32_t& d
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
 	// will have found our pair
-	double r = m_unif(m_gen);
+
+	const double r = m_unif(m_gen);
 	double z = (k - 1)*m_Tn[k].to_double()*r;
 
 	// Generate all possible pairs. For each pair calculate
@@ -314,7 +316,7 @@ void rand_free_ulab_trees::choose_jd_from_Amq(uint32_t m, uint32_t q, uint32_t& 
 	// every iteration and when it reaches a value below 0 we
 	// will have found our pair
 
-	double r = m_unif(m_gen);
+	const double r = m_unif(m_gen);
 	double z = m_Amq[q][m].to_double()*m*r;
 
 	// Generate all possible pairs. For each pair calculate
@@ -374,16 +376,16 @@ pair<uint32_t,uint32_t> rand_free_ulab_trees::ranrut(uint32_t k, uint32_t lr, ui
 	// as in the book, m = j*d.
 
 	// generate T' (a random rooted tree of k - m vertices)
-	pair<uint32_t,uint32_t> lr1_nt = ranrut(k - j*d, lr,nt);
-	uint32_t lr1 = lr1_nt.first;	// lr1: index of the root of T'
-	nt = lr1_nt.second;			// nt: where to store T''
+	const pair<uint32_t,uint32_t> lr1_nt = ranrut(k - j*d, lr,nt);
+	const uint32_t lr1 = lr1_nt.first;	// lr1: index of the root of T'
+	nt = lr1_nt.second;					// nt: where to store T''
 
 	// generate T'' (a random rooted tree of d vertices)
 	// NOTE!! recall that we have to make j copies of T''
 	// and that now we are making one copy which is already
 	// connected to the root of T'
-	pair<uint32_t,uint32_t> lr2_nt = ranrut(d, lr1,nt);
-	uint32_t lr2 = lr2_nt.first;
+	const pair<uint32_t,uint32_t> lr2_nt = ranrut(d, lr1,nt);
+	const uint32_t lr2 = lr2_nt.first;
 	nt = lr2_nt.second;
 
 	// make j-1 copies of T'' and connect them to T'
@@ -414,16 +416,16 @@ void rand_free_ulab_trees::bicenter(uint32_t k) {
 	if (k == 0) {
 		return;
 	}
-	uint32_t h = k/2;
 
-	double prob = 1.0/(m_Tn[h].to_double() + 1.0);
+	const uint32_t h = k/2;
+	const double prob = 1.0/(m_Tn[h].to_double() + 1.0);
+	const double r = m_unif(m_gen);
 
-	double r = m_unif(m_gen);
 	if (r <= prob) {
 		// step B1: make one tree and make a SINGLE copy
-		pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
-		uint32_t lr = lr_nt.first;
-		uint32_t nt = lr_nt.second;
+		const pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
+		const uint32_t lr = lr_nt.first;
+		const uint32_t nt = lr_nt.second;
 		m_TREE[nt] = lr;
 		for (uint32_t v = nt + 1; v < nt + h; ++v) {
 			m_TREE[v] = nt + m_TREE[v - h] - lr;
@@ -431,7 +433,7 @@ void rand_free_ulab_trees::bicenter(uint32_t k) {
 	}
 	else {
 		// step B2: generate two trees
-		pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
+		const pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
 		ranrut(h, lr_nt.first, lr_nt.second);
 	}
 }
@@ -462,7 +464,7 @@ pair<uint32_t,uint32_t> rand_free_ulab_trees::forest
 
 	// make a forest of trees of 'm - j*d' vertices in
 	// total, so that each tree has at most 'q' vertices
-	pair<uint32_t,uint32_t> nr_nt = forest(m - j*d,q, r_idx,nt, ROOTS);
+	const pair<uint32_t,uint32_t> nr_nt = forest(m - j*d,q, r_idx,nt, ROOTS);
 	r_idx = nr_nt.first;
 	nt = nr_nt.second;
 
@@ -475,17 +477,19 @@ pair<uint32_t,uint32_t> rand_free_ulab_trees::forest
 	// of the last root generated. This is in ROOTS[nr - 1],
 	// or it is as long as nr > 0. Recall that 'nr' is stored
 	// in 'r_idx'
-	uint32_t lr = 0;
+
+	uint32_t lr = (r_idx > 0 ? ROOTS[r_idx - 1] : 0);
+	/*uint32_t lr = 0;
 	if (r_idx > 0) {
 		lr = ROOTS[r_idx - 1];
-	}
+	}*/
 
 	// generate a random rooted tree T', stored in TREE,
 	// starting at position 'nt'. Recall that the last
 	// root generated is stored in variable 'lr'.
 	// "The last root generated" actually is
 	// "the index in TREE of the last root generated"
-	pair<uint32_t,uint32_t> lr_nt = ranrut(d, lr, nt);
+	const pair<uint32_t,uint32_t> lr_nt = ranrut(d, lr, nt);
 	lr = lr_nt.first;
 	nt = lr_nt.second;
 

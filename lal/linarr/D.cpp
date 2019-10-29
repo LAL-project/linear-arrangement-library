@@ -71,11 +71,11 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
 	edge_iterator e_it(g);
 	while (e_it.has_next()) {
 		const edge e = e_it.next();
-		const node u = e.first;
-		const node v = e.second;
+		const node s = e.first;
+		const node t = e.second;
 
 		// accumulate length of edge
-		l += (T[u] >= T[v] ? T[u] - T[v] : T[v] - T[u]);
+		l += (T[s] >= T[t] ? T[s] - T[t] : T[t] - T[s]);
 	}
 	free(T);
 	return l;

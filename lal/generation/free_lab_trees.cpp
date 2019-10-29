@@ -112,7 +112,7 @@ void free_lab_trees::next() {
 	++m_it;
 	if (m_it < m_n - 2) {
 		auto _it = m_seq.begin();
-		advance(_it, m_it); // until C++17
+		advance(_it, m_it);
 		fill(_it, m_seq.end(), 0);
 	}
 	m_it = m_n - 3;

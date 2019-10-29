@@ -103,8 +103,8 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We may
 			// be lucky....
-			size_t su = nu.size();
-			size_t sv = nv.size();
+			const size_t su = nu.size();
+			const size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}
@@ -176,7 +176,7 @@ vector<edge> ugraph::edges() const {
 	for (node u = 0; u < n_nodes() and it != all_edges.end(); ++u) {
 		auto adj_u = get_neighbours(u);
 		for (size_t i = 0; i < adj_u.size() and it != all_edges.end(); ++i) {
-			node v = m_adjacency_list[u][i];
+			const node v = m_adjacency_list[u][i];
 			*it = edge(u, v);
 			it += u < v;
 		}

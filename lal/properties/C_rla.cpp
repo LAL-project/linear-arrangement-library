@@ -60,9 +60,8 @@ rational expectation_C_first_rational(const ugraph& g) {
 }
 
 double expectation_C_first(const ugraph& g) {
-	return size_Q(g)/3.0;
+	return static_cast<double>(size_Q(g))/3.0;
 }
 
 } // -- namespace properties
 } // -- namespace lal
-

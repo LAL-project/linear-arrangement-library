@@ -74,7 +74,7 @@ numeric::integer size_Q_integer(const ugraph& G);
  * @param[in] G Input graph.
  * @returns The size of \f$Q(G)\f$.
  */
-uint32_t size_Q(const ugraph& G);
+uint64_t size_Q(const ugraph& G);
 
 } // -- namespace properties
 } // -- namespace lal

@@ -74,7 +74,7 @@ inline uint32_t __n_crossings_ladder(
 
 	// no need to reach the last position of the arrangement
 	for (uint32_t p = 0; p < n - 1; ++p) {
-		node u = T[p];
+		const node u = T[p];
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement

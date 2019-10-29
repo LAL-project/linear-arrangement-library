@@ -77,10 +77,10 @@ uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& T) {
 	ps = pt = pu = pv = 0; // so compiler doesn't cry
 
 	for (const edge_pair& ep : Q) {
-		node s = ep.first.first;
-		node t = ep.first.second;
-		node u = ep.second.first;
-		node v = ep.second.second;
+		const node s = ep.first.first;
+		const node t = ep.first.second;
+		const node u = ep.second.first;
+		const node v = ep.second.second;
 
 		sort2(pi[s],pi[t], ps,pt)
 		sort2(pi[u],pi[v], pu,pv)

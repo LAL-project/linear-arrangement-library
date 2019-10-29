@@ -145,7 +145,7 @@ inline uint32_t __n_crossings_dyn_prog(
 	uint32_t C = 0;
 
 	for (uint32_t pu = 0; pu < n - 3; ++pu) {
-		node u = T[pu];
+		const node u = T[pu];
 
 		const neighbourhood& Nu = g.get_neighbours(u);
 		for (const node& v : Nu) {
@@ -180,7 +180,7 @@ uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& T) {
 	/* allocate memory */
 
 	// size of pi + size of M + size of K
-	uint32_t total_elements = n + 2*(n - 3)*(n - 3);
+	const uint32_t total_elements = n + 2*(n - 3)*(n - 3);
 	uint32_t * __restrict__ all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
 	// actual linear arrangement (following notation used in the thesis):
@@ -219,7 +219,7 @@ void n_crossings_dyn_prog_list
 	cs.resize(Ts.size());
 
 	// size of pi + size of M + size of K
-	uint32_t total_elements = n + 2*(n - 3)*(n - 3);
+	const uint32_t total_elements = n + 2*(n - 3)*(n - 3);
 	uint32_t * __restrict__ all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
 	// actual linear arrangement (following notation used in the thesis):

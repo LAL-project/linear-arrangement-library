@@ -140,10 +140,10 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& T) {
 	uint32_t C = 0;
 
 	for (uint32_t pu = 0; pu < n; ++pu) {
-		node u = T[pu];
+		const node u = T[pu];
 
 		for (node v : adjP[u]) {
-			edge uv = sorted_edge(u,v);
+			const edge uv = sorted_edge(u,v);
 			idx = edge_to_idx[ uv ];
 
 			uint32_t on_top = S.remove( make_pair(idx, uv) );

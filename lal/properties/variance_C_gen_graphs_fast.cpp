@@ -119,9 +119,9 @@ inline void compute_data_gen_graphs
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	bigint bytes = (n + n)*sizeof(bigint);
-	bigint *all_memory = static_cast<bigint *>(malloc(bytes));
-	memset(all_memory, 0, bytes);
+	const bigint n_bytes = (n + n)*sizeof(bigint);
+	bigint *all_memory = static_cast<bigint *>(malloc(n_bytes));
+	memset(all_memory, 0, n_bytes);
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
 	bigint *nds = &all_memory[0];
@@ -138,11 +138,11 @@ inline void compute_data_gen_graphs
 	// precompute useful data
 
 	for (node s = 0; s < n; ++s) {
-		bigint ks = g.degree(s);
+		const bigint ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 		for (node t : g.get_neighbours(s)) {
-			bigint kt = g.degree(t);
+			const bigint kt = g.degree(t);
 			Lg += ks*kt;
 			nds[s] += kt;
 		}
@@ -158,7 +158,7 @@ inline void compute_data_gen_graphs
 	ks_p_kt__x__ku_p_kv = nk2*nk2;
 
 	for (node s = 0; s < n; ++s) {
-		bigint ks = g.degree(s);
+		const bigint ks = g.degree(s);
 		npaths[s] = (nds[s] + 2 - 2*ks)*ks;
 	}
 
@@ -183,7 +183,7 @@ inline void compute_data_gen_graphs
 			if (u == t) { continue; }
 
 			const neighbourhood& Nu = g.get_neighbours(u);
-			bigint ku = g.degree(u);
+			const bigint ku = g.degree(u);
 
 			bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
 			bigint common_ut = 0;
@@ -199,7 +199,7 @@ inline void compute_data_gen_graphs
 			if (u == s) { continue; }
 
 			const neighbourhood& Nu = g.get_neighbours(u);
-			bigint ku = g.degree(u);
+			const bigint ku = g.degree(u);
 
 			bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
 			bigint common_us = 0;
@@ -270,9 +270,9 @@ inline void compute_data_gen_graphs_reuse
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	bigint bytes = (n + n)*sizeof(bigint);
-	bigint *all_memory = static_cast<bigint *>(malloc(bytes));
-	memset(all_memory, 0, bytes);
+	const bigint n_bytes = (n + n)*sizeof(bigint);
+	bigint *all_memory = static_cast<bigint *>(malloc(n_bytes));
+	memset(all_memory, 0, n_bytes);
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
 	bigint *nds = &all_memory[0];
@@ -289,11 +289,11 @@ inline void compute_data_gen_graphs_reuse
 	// precompute useful data
 
 	for (node s = 0; s < n; ++s) {
-		bigint ks = g.degree(s);
+		const bigint ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 		for (node t : g.get_neighbours(s)) {
-			bigint kt = g.degree(t);
+			const bigint kt = g.degree(t);
 			Lg += ks*kt;
 			nds[s] += kt;
 		}
@@ -314,7 +314,7 @@ inline void compute_data_gen_graphs_reuse
 	ks_p_kt__x__ku_p_kv = nk2*nk2;
 
 	for (node s = 0; s < n; ++s) {
-		bigint ks = g.degree(s);
+		const bigint ks = g.degree(s);
 		npaths[s] = (nds[s] + 2 - 2*ks)*ks;
 	}
 
@@ -385,7 +385,7 @@ inline void compute_data_gen_graphs_reuse
 			}
 
 			bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
-			bigint ku = g.degree(u);
+			const bigint ku = g.degree(u);
 			n_paths_5 += (ks - 1 - us_neighs)*(ku - 1 - us_neighs) + 1 - common_us;
 			n_cycles_4 += common_us;
 		}

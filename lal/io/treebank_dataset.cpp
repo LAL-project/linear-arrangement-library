@@ -79,7 +79,7 @@ dataset_error treebank_dataset::init
 	}
 
 	// open new dataset
-	m_list.open(full_name.c_str());
+	m_list.open(full_name);
 	if (m_list >> m_lang >> m_tbf) {
 		// do nothing, there are more trees
 	}

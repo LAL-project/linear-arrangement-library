@@ -81,15 +81,15 @@ inline void compute_data_gen_graphs_Q
 	g.get_adjacency_matrix(A);
 
 	for (const edge_pair& ep : Q) {
-		node s = ep.first.first;
-		node t = ep.first.second;
-		node u = ep.second.first;
-		node v = ep.second.second;
+		const node s = ep.first.first;
+		const node t = ep.first.second;
+		const node u = ep.second.first;
+		const node v = ep.second.second;
 
-		bigint ks = g.degree(s);
-		bigint kt = g.degree(t);
-		bigint ku = g.degree(u);
-		bigint kv = g.degree(v);
+		const bigint ks = g.degree(s);
+		const bigint kt = g.degree(t);
+		const bigint ku = g.degree(u);
+		const bigint kv = g.degree(v);
 
 		n_cycles_4 += A[s][v]*A[u][t] + A[s][u]*A[t][v];
 

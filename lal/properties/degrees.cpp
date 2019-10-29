@@ -66,12 +66,7 @@ rational second_mmt_degree_rational(const ugraph& g) {
 }
 
 double second_mmt_degree(const ugraph& g) {
-	double k2 = 0.0;
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		uint32_t du = g.degree(u);
-		k2 += du*du;
-	}
-	return k2/g.n_nodes();
+	return second_mmt_degree_rational(g).to_double();
 }
 
 rational third_mmt_degree_rational(const ugraph& g) {
@@ -89,12 +84,7 @@ rational third_mmt_degree_rational(const ugraph& g) {
 }
 
 double third_mmt_degree(const ugraph& g) {
-	double k3 = 0.0;
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		uint32_t du = g.degree(u);
-		k3 += du*du*du;
-	}
-	return k3/g.n_nodes();
+	return third_mmt_degree_rational(g).to_double();
 }
 
 } // -- namespace properties

@@ -67,7 +67,7 @@ namespace properties {
  *	- accumulates the neighbour degree product and neighbour degree sum
  */
 inline void find_tree_vertices(
-	const ugraph& g, node u,
+	const ugraph& g, const node u,
 	vector<node>& tree_nodes, vector<bool>& vis,
 	bigint& nk2, bigint& this_nk2, bigint& nk3, bigint& Lg,
 	bigint *nds
@@ -80,7 +80,7 @@ inline void find_tree_vertices(
 	vis[u] = true;
 	tree_nodes.push_back(u);
 
-	bigint ku = g.degree(u);
+	const bigint ku = g.degree(u);
 	this_nk2 += ku*ku;
 	nk3 += ku*ku*ku;
 
@@ -126,10 +126,10 @@ inline void compute_data_tree
 
 	// st
 	for (node ps = 0; ps < n; ++ps) {
-	node s = tree_nodes[ps];
-	bigint ks = g.degree(s);
+	const node s = tree_nodes[ps];
+	const bigint ks = g.degree(s);
 	for (node t : g.get_neighbours(s)) {
-	bigint kt = g.degree(t);
+	const bigint kt = g.degree(t);
 	// no repetitions from this point on
 	if (s > t) { continue; }
 
@@ -137,8 +137,8 @@ inline void compute_data_tree
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
 					 (ks - 1)*(nds[t] - kt - ks + 1);
 
-		bigint eps1 = nds[s] - kt;
-		bigint eps2 = nds[t] - ks;
+		const bigint eps1 = nds[s] - kt;
+		const bigint eps2 = nds[t] - ks;
 
 		sum_adjs__x__sum_degs +=
 			(ks - 1)*(kt - 1)*(ks + kt) + (kt - 1)*eps1 + (ks - 1)*eps2;

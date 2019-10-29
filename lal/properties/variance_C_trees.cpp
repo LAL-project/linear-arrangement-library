@@ -89,13 +89,13 @@ inline void compute_data_tree
 	// precompute useful data
 
 	for (node s = 0; s < n; ++s) {
-		uint32_t ks = g.degree(s);
+		const uint32_t ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		nds[s] = 0;
 		for (const node& t : g.get_neighbours(s)) {
-			uint32_t kt = g.degree(t);
+			const uint32_t kt = g.degree(t);
 			Lg += ks*kt;
 			nds[s] += kt;
 		}
@@ -121,8 +121,8 @@ inline void compute_data_tree
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
 					 (ks - 1)*(nds[t] - kt - ks + 1);
 
-		bigint eps1 = nds[s] - kt;
-		bigint eps2 = nds[t] - ks;
+		const bigint eps1 = nds[s] - kt;
+		const bigint eps2 = nds[t] - ks;
 
 		sum_adjs__x__sum_degs +=
 			(ks - 1)*(kt - 1)*(ks + kt) + (kt - 1)*eps1 + (ks - 1)*eps2;

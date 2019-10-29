@@ -52,8 +52,8 @@ using namespace numeric;
 
 namespace linarr {
 
-inline int64_t alpha(int64_t n, int64_t d1, int64_t d2) {
-	int64_t f = 0.0;
+inline constexpr int64_t alpha(int64_t n, int64_t d1, int64_t d2) {
+	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
 		// sum(d1 - 1, i, 1, n - d2 - d1)
@@ -94,7 +94,7 @@ inline int64_t alpha(int64_t n, int64_t d1, int64_t d2) {
 	return f;
 }
 
-inline int64_t beta(int64_t n, int64_t d1, int64_t d2) {
+inline constexpr int64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	int64_t f = 0;
 
 	// positions s1 < s2
@@ -155,6 +155,7 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) 
 		pi[ T[i] ] = i;
 	}
 
+	// iterate over the elements of Q
 	for (node s = 0; s < n; ++s) {
 	const neighbourhood& Nu = g.get_neighbours(s);
 	for (node t : Nu) {
@@ -199,8 +200,7 @@ rational approximate_C_2_rational(const ugraph& g, const vector<node>& T) {
 }
 
 double approximate_C_2(const ugraph& g, const vector<node>& T) {
-	rational Ec2 = approximate_C_2_rational(g, T);
-	return Ec2.to_double();
+	return approximate_C_2_rational(g, T).to_double();
 }
 
 } // -- namespace linarr

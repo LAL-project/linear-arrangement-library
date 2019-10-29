@@ -73,21 +73,22 @@ uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& T) {
 		pi[ T[i] ] = i;
 	}
 
+	// iterate over the elements of Q
 	for (node u = 0; u < g.n_nodes(); ++u) {
-	uint32_t pu = pi[u];
+	const uint32_t pu = pi[u];
 	const neighbourhood& Nu = g.get_neighbours(u);
 	for (const node& v : Nu) {
-		uint32_t pv = pi[v];
+		const uint32_t pv = pi[v];
 
 		if (pu >= pv) { continue; }
 		// 'u' and 'v' is a pair of connected nodes such that 'u'
 		// is "to the left of" 'v' in the linear arrangement 'seq'
 
-		uint32_t begin = pi[u] + 1;
-		uint32_t end = pi[v] - 1;
+		const uint32_t begin = pi[u] + 1;
+		const uint32_t end = pi[v] - 1;
 		for (uint32_t pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
-		node w = T[pw];
+		const node w = T[pw];
 		const neighbourhood& Nw = g.get_neighbours(w);
 		for (const node& z : Nw) {
 

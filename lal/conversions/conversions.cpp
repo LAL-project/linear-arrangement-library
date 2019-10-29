@@ -108,7 +108,7 @@ ugraph Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// the edge (j, seq[i]) to the tree, and decrement the degrees
 	// of j and seq[i].
 	for (uint32_t v = 0; v < L; ++v) {
-		uint32_t value = seq[v];
+		const uint32_t value = seq[v];
 		bool node_found = false;
 		node w = 0;
 		while (w < n and not node_found) {

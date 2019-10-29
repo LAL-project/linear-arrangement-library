@@ -158,7 +158,7 @@ inline void process_tree(
 		props[k3_idx] = properties::third_mmt_degree(t);
 	}
 	if (what_fs[size_Q_idx]) {
-		props[size_Q_idx] = properties::size_Q(t);
+		props[size_Q_idx] = static_cast<double>(properties::size_Q(t));
 	}
 
 	// ------------
@@ -325,18 +325,18 @@ treebank_processor::processor_error treebank_processor::process
 		// iterate to next language
 		treebank_reader& tbread = tbds.get_treebank_reader();
 
-		string lang = tbread.what_language();
+		const string lang = tbread.what_language();
 		if (v) {
 			cout << "Processing language: " << lang
 				 << " (file: '" << tbread.get_treebank_filename()
 				 << "')" << endl;
 		}
 
-		string full_out_file = m_out_dir + "/" + lang + ".txt";
+		const string full_out_file = m_out_dir + "/" + lang + ".txt";
 
 		// output file stream
 		ofstream out_lang_file;
-		out_lang_file.open(full_out_file.c_str());
+		out_lang_file.open(full_out_file);
 		// since the output directory exists there is no
 		// need to check for is_open()
 

@@ -57,8 +57,6 @@ void enumerate_Q(const ugraph& g, vector<edge_pair>& Q) {
 	const node n = static_cast<node>(g.n_nodes());
 	Q.clear();
 
-	pair<node,node> st, uv;
-
 	// st
 	for (node s = 0; s < n; ++s) {
 	for (node t : g.get_neighbours(s)) {
@@ -74,9 +72,7 @@ void enumerate_Q(const ugraph& g, vector<edge_pair>& Q) {
 			if (t == v or t == u) { continue; }
 
 			// no common endpoints
-			st = make_pair(s, t);
-			uv = make_pair(u, v);
-			Q.push_back( make_pair(st, uv) );
+			Q.push_back( make_pair(edge(s,t), edge(u,v)) );
 		}}
 	}}
 }
@@ -85,11 +81,11 @@ integer size_Q_integer(const ugraph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		uint32_t ku = g.degree(u);
+		const uint32_t ku = g.degree(u);
 		nk2 += ku*ku;
 	}
 
-	uint32_t m = g.n_edges();
+	const uint32_t m = g.n_edges();
 	integer q(0);
 	q.init_ui(m*(m + 1));
 	q -= nk2;
@@ -97,15 +93,8 @@ integer size_Q_integer(const ugraph& g) {
 	return q;
 }
 
-uint32_t size_Q(const ugraph& g) {
-	// sum of squared degrees
-	uint32_t nk2 = 0;
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		uint32_t ku = g.degree(u);
-		nk2 += ku*ku;
-	}
-	uint32_t m = g.n_edges();
-	return (m*(m + 1) - nk2)/2;
+uint64_t size_Q(const ugraph& g) {
+	return size_Q_integer(g).to_uint();
 }
 
 } // -- namespace properties
