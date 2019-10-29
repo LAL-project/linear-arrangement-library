@@ -82,8 +82,8 @@ uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& T) {
 		node u = ep.second.first;
 		node v = ep.second.second;
 
-		sort2(pi[s],pi[t], ps,pt);
-		sort2(pi[u],pi[v], pu,pv);
+		sort2(pi[s],pi[t], ps,pt)
+		sort2(pi[u],pi[v], pu,pv)
 
 		C += (ps < pu and pu < pt and pt < pv) or
 			 (pu < ps and ps < pv and pv < pt);
