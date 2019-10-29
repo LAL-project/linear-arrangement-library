@@ -1,16 +1,16 @@
-# MODE OF COMPILATION AND DISTRIBUTION
+# BUILD OF COMPILATION AND DISTRIBUTION
 # compilation is debug by default
-ifeq ($(MODE), )
-MODE = debug
+ifeq ($(BUILD), )
+BUILD = debug
 endif
 # distribution is local by default
 ifeq ($(DIST), )
 DIST = local
 endif
 
-ifneq ($(MODE),debug)
-ifneq ($(MODE),release)
-$(info Error: invalid value for MODE variable: $(MODE))
+ifneq ($(BUILD),debug)
+ifneq ($(BUILD),release)
+$(info Error: invalid value for BUILD variable: $(BUILD))
 endif
 endif
 # distribution is local by default
@@ -80,10 +80,10 @@ endif
 
 # set lib and flags according to the mode of compilation
 # define LAL's directory and dependencies
-ifeq ($(MODE),debug)
+ifeq ($(BUILD),debug)
 	include Makefile.variables.debug
 else
-ifeq ($(MODE),release)
+ifeq ($(BUILD),release)
 	include Makefile.variables.release
 endif
 endif

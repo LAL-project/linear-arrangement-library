@@ -120,6 +120,7 @@ target_sources(
 		graph.cpp
 		ugraph.cpp
 		dgraph.cpp
+		edge_iterator.cpp
 		conversions/conversions.cpp
 		generation/free_lab_trees.cpp
 		generation/free_ulab_trees.cpp
@@ -160,6 +161,7 @@ set(LIBLAL_MAIN_HEADER
 	graph.hpp
 	ugraph.hpp
 	dgraph.hpp
+	edge_iterator.hpp
 	definitions.hpp
 	C.hpp
 	D.hpp
