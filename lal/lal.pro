@@ -30,6 +30,7 @@ INCLUDEPATH += ..
 HEADERS += \
     definitions.hpp \
     dgraph.hpp \
+    edge_iterator.hpp \
     graph.hpp \
     ugraph.hpp \
     io/dataset_error.hpp \
@@ -59,6 +60,7 @@ HEADERS += \
 
 SOURCES += \
     dgraph.cpp \
+    edge_iterator.cpp \
     graph.cpp \
     ugraph.cpp \
     io/treebank_dataset.cpp \
