@@ -49,6 +49,9 @@
 #include <set>
 using namespace std;
 
+// lal includes
+#include <lal/utils/sort_integers.hpp>
+
 namespace lal {
 using namespace numeric;
 
@@ -90,9 +93,9 @@ void graph::disjoint_union(const graph& g) {
 
 void graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
-		const neighbourhood& nu = m_adjacency_list[u];
+		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
-			sort(m_adjacency_list[u].begin(), m_adjacency_list[u].end());
+			sort_1_n(nu, n_nodes());
 		}
 	}
 	m_normalised = true;

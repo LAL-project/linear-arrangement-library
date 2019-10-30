@@ -49,22 +49,8 @@
 #include <set>
 using namespace std;
 
-// Use insertion sort to resort the vector (if needed)
-// assuming that a new element has been appended at the end
-// potentially making the vector unsorted.
-// Assume vector is an adjacency list.
-template<class T>
-inline void resort(vector<T>& v) {
-	if (v.size() <= 1) { return; }
-	size_t i = v.size() - 1;
-	while (i >= 1) {
-		// strict '>' since there can't be repeated values.
-		if (v[i - 1] > v[i]) {
-			std::swap(v[i - 1], v[i]);
-		}
-		--i;
-	}
-}
+// lal includes
+#include <lal/utils/sort_integers.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -94,7 +80,7 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			resort(nu);
+			macros::sort_1_n(nu, n_nodes());
 		}
 		else {
 			// Even though we have not been asked to normalise the

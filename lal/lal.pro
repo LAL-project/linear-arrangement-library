@@ -56,7 +56,8 @@ HEADERS += \
     D.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
-    io.hpp
+    io.hpp \
+    utils/sort_integers.hpp
 
 SOURCES += \
     dgraph.cpp \
