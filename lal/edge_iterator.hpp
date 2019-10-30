@@ -71,7 +71,11 @@ class edge_iterator {
 		/// Returns true if there are edges left to be iterated over.
 		bool has_next() const;
 
-		/// Returns the next edge.
+		/**
+		 * @brief Returns the next edge.
+		 * @post Moves the iterator to the next edge in the graph, if there
+		 * is any.
+		 */
 		edge next();
 
 		/**

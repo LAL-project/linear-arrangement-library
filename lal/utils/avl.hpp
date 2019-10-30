@@ -45,6 +45,8 @@
 #include <vector>
 #include <cmath>
 
+namespace lal {
+
 template<class T>
 class AVL {
 	public:
@@ -620,3 +622,5 @@ class AVL {
 			return n;
 		}
 };
+
+} // -- namespace lal
