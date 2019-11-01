@@ -50,9 +50,11 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
-#include <lal/edge_iterator.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
+using namespace iterators;
+
 namespace linarr {
 
 uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
@@ -68,9 +70,10 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
 	// sum of lengths
 	uint32_t l = 0;
 
-	edge_iterator e_it(g);
-	while (e_it.has_next()) {
-		const edge e = e_it.next();
+	edge_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge e = it.get_edge();
 		const node s = e.first;
 		const node t = e.second;
 

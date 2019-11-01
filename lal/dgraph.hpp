@@ -74,6 +74,8 @@ class dgraph : public graph {
 		/// Default destructor.
 		~dgraph();
 
+		void init(uint32_t n);
+
 		/* OPERATORS */
 
 		/* MODIFIERS */
@@ -104,11 +106,18 @@ class dgraph : public graph {
 		bool is_directed() const;
 		bool is_undirected() const;
 
+		/// Returns the in-degree of a node.
+		uint32_t in_degree(node u) const;
+
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
 		 * @return Returns an object of typ undirected graph.
 		 */
 		ugraph to_undirected() const;
+
+	private:
+		/// In-degree per vertex.
+		std::vector<uint32_t> m_in_degree;
 };
 
 } // -- namespace lal

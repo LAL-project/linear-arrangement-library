@@ -40,43 +40,58 @@
 
 #pragma once
 
+// C++ includes
+#include <tuple>
+
 // lal includes
 #include <lal/graph.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
+namespace iterators {
 
 /**
- * @brief Edge iterator class.
+ * @brief Iterator over the set \f$Q\f$ of a graph.
  *
- * This class is used to easily iterate over the edges of a graph.
+ * This class is used to easily iterate over the elements of the set \f$Q\f$
+ * of a graph.
  *
- * This class iterates over the edges of a graph in increasing lexicographic
- * order. For undirected graphs, the edge returned is an edge (u,v) so that
- * the inequality \f$u < v\f$ always holds. For directed graphs, this is not
- * always true. However, the edge returned always has left-to-right direction.
+ * This class iterates over the independent pairs of edges of a graph. For
+ * undirected graphs, the edges of the pair returned are edges \f$(u,v)\f$
+ * so that the inequality \f$u < v\f$ always holds. For directed graphs, this
+ * is not always true, since the edges returned always has left-to-right direction.
  *
- * Bear in mind, however, that the graph whose edges are being iterated on
- * cannot possibly be modified in any way through this class.
+ * Bear in mind, however, that this class does not modify in any way the
+ * graph it is initialised with.
+ *
+ * The correct usage of this class is
+ * @code
+ *		Q_iterator it(g);
+ *		while (it.has_next()) {
+ *			it.next();
+ *			edge_pair q = it.get_pair();
+ *			// ...
+ *		}
+ * @endcode
  */
-class edge_iterator {
+class Q_iterator {
 	public:
 		/**
 		 * @brief Constructor
 		 * @param g Constant reference to the graph over which we iterate.
 		 */
-		edge_iterator(const graph& g);
+		Q_iterator(const graph& g);
 		/// Destructor.
-		~edge_iterator();
+		~Q_iterator();
 
-		/// Returns true if there are edges left to be iterated over.
+		/// Returns true if there are pairs of independent edges left to be iterated over.
 		bool has_next() const;
 
-		/**
-		 * @brief Returns the next edge.
-		 * @post Moves the iterator to the next edge in the graph, if there
-		 * is any.
-		 */
-		edge next();
+		/// Moves the iterator to the next pair, if there is any.
+		void next();
+
+		/// Returns the current edge pair.
+		edge_pair get_pair() const;
 
 		/**
 		 * @brief Sets the iterator at the beginning of the set of edges.
@@ -85,40 +100,28 @@ class edge_iterator {
 		 */
 		void reset();
 
+	public:
+		typedef std::pair<node,std::size_t> E_pointer;
+
 	private:
-		/// The graph whose edges have to be iterated on.
+		/// Graph we are iterating on
 		const graph& m_G;
 
-		/// Current vertex
-		node m_u = 0;
-		/// Position within node @ref m_u's neighbourhood
-		size_t m_p = 0;
-		/// Is there a next edge to iterate over?
-		bool m_exists_next = false;
+		/// Current pointers to the first edge.
+		E_pointer m_cur1 = E_pointer(0,0);
+		/// Current pointers to the second edge.
+		E_pointer m_cur2 = E_pointer(0,0);
+
+		/// Is there a next pair of independent edges?
+		bool m_exists_next = true;
+		/// Current pair of independent edges.
+		edge_pair m_cur_pair = edge_pair(edge(0,0),edge(0,0));
 
 	private:
-		/**
-		 * @brief Finds the first edge of the graph
-		 *
-		 * Places the pointers @ref m_u and @ref m_p so that @ref next()
-		 * returns the first edge.
-		 */
-		void go_to_first_edge();
+		/// Returns the pair of independent edges pointed by @ref m_cur1 and @ref m_cur2.
+		edge_pair make_current_pair() const;
 
-		/**
-		 * @brief Finds the next node to iterate on.
-		 *
-		 * Places the pointers @ref m_u and @ref m_p so that @ref next()
-		 * returns the next edge in line, of a directed graph.
-		 */
-		void find_next_node_directed();
-		/**
-		 * @brief Finds the next node to iterate on.
-		 *
-		 * Places the pointers @ref m_u and @ref m_p so that @ref next()
-		 * returns the next edge in line, of a directed graph.
-		 */
-		void find_next_node_undirected();
 };
 
+} // -- namespace iterators
 } // -- namespace lal

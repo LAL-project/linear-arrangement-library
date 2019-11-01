@@ -38,25 +38,21 @@
  *
  ********************************************************************/
 
-#include <lal/edge_iterator.hpp>
+#include <lal/iterators/edge_iterator.hpp>
+
+// C includes
+#include <assert.h>
 
 // C++ includes
-#include <iostream>
 using namespace std;
 
-inline void advance_base_node(const lal::graph& g, lal::node& u) {
-	while (u < g.n_nodes() and g.degree(u) == 0) { ++u; }
-}
-
-inline void advance_pointer(const lal::graph& g, lal::node u, size_t& p) {
-	auto nb = g.get_neighbours(u);
-	while (p < nb.size() and nb[p] < u) { ++p; }
-}
-
 namespace lal {
+namespace iterators {
+
+typedef edge_iterator::E_pointer E_pointer;
 
 edge_iterator::edge_iterator(const graph& g) : m_G(g) {
-	go_to_first_edge();
+	reset();
 }
 edge_iterator::~edge_iterator() { }
 
@@ -64,65 +60,111 @@ bool edge_iterator::has_next() const {
 	return m_exists_next;
 }
 
-edge edge_iterator::next() {
-	// build the edge that is next in line
-	edge edge_to_return(m_u, m_G.get_neighbours(m_u)[m_p]);
-	if (m_G.is_directed()) {
-		find_next_node_directed();
-	}
-	else {
-		find_next_node_undirected();
-	}
-	return edge_to_return;
+void edge_iterator::next() {
+	m_cur_edge = make_current_edge();
+
+	// find the next edge
+	auto _p = find_next_edge();
+	m_exists_next = _p.first;
+	m_cur = _p.second;
+}
+
+edge edge_iterator::get_edge() const {
+	return m_cur_edge;
 }
 
 void edge_iterator::reset() {
-	go_to_first_edge();
+	m_exists_next = true;
+	start_at(0);
 }
 
-/* PRIVATE */
+void edge_iterator::start_at(node _u) {
+	m_cur.first = _u;
+	m_cur.second = static_cast<size_t>(-1);
 
-void edge_iterator::go_to_first_edge() {
-	m_p = 0;
-	// find the first vertex with at least one neighbour
-	m_u = 0;
-	advance_base_node(m_G, m_u);
-	if (m_u < m_G.n_nodes()) {
+	auto [found, new_pointer] = find_next_edge();
+	if (not found) {
+		// if we can't find the next edge, then there is no next...
+		m_exists_next = false;
+		return;
+	}
+
+	// since an edge was found, store it in current
+	m_cur = new_pointer;
+	m_cur_edge = make_current_edge();
+
+	// how do we know there is a next edge?
+	// well, find it!
+	auto [f2, _] = find_next_edge();
+	m_exists_next = f2;
+
+#ifdef DEBUG
+	if (m_G.n_edges() == 1) {
+		assert(m_exists_next == false);
+	}
+#endif
+
+	// this is the case of the graph having only one edge
+	if (not m_exists_next) {
 		m_exists_next = true;
 	}
 }
 
-void edge_iterator::find_next_node_directed() {
-	if (m_p < m_G.degree(m_u) - 1) {
-		++m_p;
+/* PRIVATE */
+
+edge edge_iterator::make_current_edge() const {
+	const node s = m_cur.first;
+	const node t = m_G.get_neighbours(s)[m_cur.second];
+	return edge(s,t);
+}
+
+pair<bool, E_pointer> edge_iterator::find_next_edge() const {
+	return (
+		m_G.is_directed() ?
+			find_next_edge_directed() :
+			find_next_edge_undirected()
+	);
+}
+
+pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
+	const uint32_t n = m_G.n_nodes();
+
+	node s = m_cur.first;
+	size_t pt = m_cur.second;
+	bool found = false;
+
+	++pt;
+	if (s < n and pt < m_G.degree(s)) {
+		found = true;
 	}
 	else {
-		m_p = 0;
-		++m_u;
-		advance_base_node(m_G, m_u);
+		pt = 0;
+		++s;
+		while (s < n and m_G.degree(s) == 0) { ++s; }
+		found = s < n;
 	}
-	m_exists_next = (m_u != m_G.n_nodes());
+	return make_pair(found, E_pointer(s, pt));
 }
 
-void edge_iterator::find_next_node_undirected() {
-	++m_p;
+pair<bool, E_pointer> edge_iterator::find_next_edge_undirected() const {
+	const uint32_t n = m_G.n_nodes();
 
-	bool found_next = false;
-	while (not found_next and m_u < m_G.n_nodes()) {
+	node s = m_cur.first;
+	size_t pt = m_cur.second + 1;
+	bool found = false;
 
-		// place m_p at the first position such that "u < g[u][p]"
-		advance_pointer(m_G, m_u, m_p);
+	while (s < n and not found) {
+		auto Ns = m_G.get_neighbours(s);
+		while (pt < Ns.size() and s > Ns[pt]) { ++pt; }
 
-		if (m_p < m_G.degree(m_u)) {
-			found_next = true;
-		}
-		else {
-			m_p = 0;
-			++m_u;
-			advance_base_node(m_G, m_u);
+		found = pt < Ns.size();
+		if (not found) {
+			++s;
+			pt = 0;
 		}
 	}
-	m_exists_next = (m_u != m_G.n_nodes());
+	return make_pair(found, E_pointer(s, pt));
 }
 
+} // -- namespace iterators
 } // -- namespace lal

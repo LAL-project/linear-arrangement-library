@@ -86,6 +86,16 @@ namespace generate {}
 namespace io {}
 
 /**
+ * @brief Iterators namespace.
+ * 
+ * This namespace contains classes useful for iterating through the graph.
+ * These classes iterate
+ * - over the set of edges (see @ref edge_iterator).
+ * - over the set of pairs of independent edges \f$Q\f$ (see @ref Q_iterator).
+ */
+namespace iterators {}
+
+/**
  * @brief Linear arrangements namespace.
  * 
  * This namespace holds all operations related to linear arrangements.

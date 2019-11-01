@@ -58,8 +58,15 @@ using namespace numeric;
 /* PUBLIC */
 
 dgraph::dgraph() : graph() { }
-dgraph::dgraph(uint32_t n) : graph(n) { }
+dgraph::dgraph(uint32_t n) : graph(n) {
+	m_in_degree.resize(n);
+}
 dgraph::~dgraph() { }
+
+void dgraph::init(uint32_t n) {
+	graph::init(n);
+	m_in_degree = vector<uint32_t>(n, 0);
+}
 
 /* OPERATORS */
 
@@ -73,6 +80,7 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 
 	neighbourhood& nu = m_adjacency_list[u];
 	nu.push_back(v);
+	m_in_degree[v] += 1;
 	++m_num_edges;
 
 	if (m_normalised) {
@@ -112,6 +120,7 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 
 		neighbourhood& nu = m_adjacency_list[u];
 		nu.push_back(v);
+		m_in_degree[v] += 1;
 		++m_num_edges;
 	}
 
@@ -156,6 +165,14 @@ vector<edge> dgraph::edges() const {
 	return all_edges;
 }
 
+bool dgraph::is_directed() const { return true; }
+bool dgraph::is_undirected() const { return false; }
+
+uint32_t dgraph::in_degree(node u) const {
+	assert(has_node(u));
+	return m_in_degree[u];
+}
+
 ugraph dgraph::to_undirected() const {
 	// build list of undirected edges
 	set<edge> all_undir_edges;
@@ -173,9 +190,6 @@ ugraph dgraph::to_undirected() const {
 	g.add_edges(vector<edge>(all_undir_edges.begin(), all_undir_edges.end()));
 	return g;
 }
-
-bool dgraph::is_directed() const { return true; }
-bool dgraph::is_undirected() const { return false; }
 
 /* PRIVATE */
 

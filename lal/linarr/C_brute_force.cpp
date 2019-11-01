@@ -49,8 +49,10 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
+#include <lal/iterators/Q_iterator.hpp>
 
 namespace lal {
+using namespace iterators;
 
 #define idx(i,j, C) ((i)*(C) + (j))
 
@@ -73,7 +75,8 @@ uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& T) {
 		pi[ T[i] ] = i;
 	}
 
-	// iterate over the elements of Q
+	// iterate over the pairs of edges that will potentially cross
+	// using the information given in the linear arrangement
 	for (node u = 0; u < g.n_nodes(); ++u) {
 	const uint32_t pu = pi[u];
 	const neighbourhood& Nu = g.get_neighbours(u);

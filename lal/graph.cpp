@@ -45,12 +45,16 @@
 
 // C++ includes
 #include <algorithm>
+#include <iostream>
 #include <cmath>
 #include <set>
 using namespace std;
 
 // lal includes
 #include <lal/utils/sort_integers.hpp>
+#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/Q_iterator.hpp>
+#include <lal/properties/Q.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -95,7 +99,7 @@ void graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
-			sort_1_n(nu, n_nodes());
+			macros::sort_1_n(nu, n_nodes());
 		}
 	}
 	m_normalised = true;
@@ -140,6 +144,30 @@ uint32_t graph::n_nodes() const {
 
 uint32_t graph::n_edges() const {
 	return m_num_edges;
+}
+
+vector<edge> graph::edges() const {
+	vector<edge> e(n_edges());
+	auto it = e.begin();
+	iterators::edge_iterator e_it(*this);
+	while (e_it.has_next()) {
+		e_it.next();
+		*it = e_it.get_edge();
+		++it;
+	}
+	return e;
+}
+
+vector<edge_pair> graph::Q() const {
+	vector<edge_pair> q(properties::size_Q(*this));
+	auto vec_it = q.begin();
+	iterators::Q_iterator q_it(*this);
+	while (q_it.has_next()) {
+		q_it.next();
+		*vec_it = q_it.get_pair();
+		++vec_it;
+	}
+	return q;
 }
 
 const neighbourhood& graph::get_neighbours(node u) const {

@@ -48,13 +48,13 @@
 using namespace std;
 
 // lal includes
-#include <lal/properties/Q.hpp>
-#include <lal/edge_iterator.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 typedef uint64_t bigint;
 
 namespace lal {
 using namespace numeric;
+using namespace iterators;
 
 namespace properties {
 
@@ -109,9 +109,10 @@ inline void compute_data_tree
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
 	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
 
-	edge_iterator e_it(g);
-	while (e_it.has_next()) {
-		const edge st = e_it.next();
+	edge_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge st = it.get_edge();
 		const node s = st.first;
 		const bigint ks = g.degree(s);
 		const node t = st.second;

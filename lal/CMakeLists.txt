@@ -120,7 +120,8 @@ target_sources(
 		graph.cpp
 		ugraph.cpp
 		dgraph.cpp
-		edge_iterator.cpp
+		iterators/edge_iterator.cpp
+		iterators/Q_iterator.cpp
 		conversions/conversions.cpp
 		generation/free_lab_trees.cpp
 		generation/free_ulab_trees.cpp
@@ -161,11 +162,14 @@ set(LIBLAL_MAIN_HEADER
 	graph.hpp
 	ugraph.hpp
 	dgraph.hpp
-	edge_iterator.hpp
 	definitions.hpp
 	C.hpp
 	D.hpp
 	io.hpp
+)
+set(LIBLAL_ITERATORS_HEADER
+	iterators/edge_iterator.hpp
+	iterators/Q_iterator.hpp
 )
 set(LIBLAL_CONVERSIONS_HEADER
 	conversions/conversions.hpp
@@ -213,6 +217,7 @@ install(
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
+install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_CONVERSIONS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/conversions)
 install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generation)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)

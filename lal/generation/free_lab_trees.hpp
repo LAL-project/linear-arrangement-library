@@ -74,6 +74,16 @@ namespace generate {
  *
  * The algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a)
  * and decodes them using the algorithm in \cite Alonso1995a.
+ *
+ * The correct usage of this class is
+ * @code
+ *		free_lab_trees flt(n);
+ *		while (flt.has_next()) {
+ *			flt.next();
+ *			tree e = it.get_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class free_lab_trees {
 	public:

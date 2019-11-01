@@ -45,43 +45,27 @@
 using namespace std;
 
 // lal includes
+#include <lal/dgraph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/properties/degrees.hpp>
+#include <lal/iterators/Q_iterator.hpp>
+
+#define get_degree(g, u)												\
+	(g.is_directed() ?													\
+		g.degree(u) + static_cast<const dgraph&>(g).in_degree(u) :		\
+		g.degree(u))
 
 namespace lal {
 using namespace numeric;
+using namespace iterators;
 
 namespace properties {
 
-void enumerate_Q(const ugraph& g, vector<edge_pair>& Q) {
-	const node n = static_cast<node>(g.n_nodes());
-	Q.clear();
-
-	// st
-	for (node s = 0; s < n; ++s) {
-	for (node t : g.get_neighbours(s)) {
-	if (s > t) continue;
-
-		// uv
-		for (node u = s + 1; u < n; ++u) {
-		for (node v : g.get_neighbours(u)) {
-		if (u > v) continue;
-
-			// s != u and t != u
-			if (s == v or s == u) { continue; }
-			if (t == v or t == u) { continue; }
-
-			// no common endpoints
-			Q.push_back( make_pair(edge(s,t), edge(u,v)) );
-		}}
-	}}
-}
-
-integer size_Q_integer(const ugraph& g) {
+integer size_Q_integer(const graph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint32_t ku = g.degree(u);
+		const uint32_t ku = get_degree(g, u);
 		nk2 += ku*ku;
 	}
 
@@ -93,7 +77,7 @@ integer size_Q_integer(const ugraph& g) {
 	return q;
 }
 
-uint64_t size_Q(const ugraph& g) {
+uint64_t size_Q(const graph& g) {
 	return size_Q_integer(g).to_uint();
 }
 

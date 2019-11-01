@@ -52,9 +52,6 @@ using namespace std;
 
 typedef uint64_t bigint;
 
-// lal includes
-#include <lal/properties/Q.hpp>
-
 namespace lal {
 using namespace numeric;
 

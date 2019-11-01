@@ -51,9 +51,6 @@ using namespace std;
 
 typedef uint64_t bigint;
 
-// lal includes
-#include <lal/properties/Q.hpp>
-
 enum class frequency_type : int8_t {
 	invalid,
 	f00, f01, f021, f022,
@@ -65,26 +62,26 @@ using namespace numeric;
 
 /* UTILITIES */
 
-inline
+inline constexpr
 int tau(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
 	return
 		static_cast<int>(st == wx or st == yz) +
 		static_cast<int>(uv == wx or uv == yz);
 }
 
-inline
+inline constexpr
 int share(const edge& e1, const edge& e2) {
 	return
 		static_cast<int>(e1.first == e2.first or e1.first == e2.second) +
 		static_cast<int>(e1.second == e2.first or e1.second == e2.second);
 }
 
-inline
+inline constexpr
 int phi(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
 	return share(st, wx) + share(st, yz) + share(uv, wx) + share(uv, yz);
 }
 
-inline
+inline constexpr
 int subtype(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
 	int e1e3 = share(st, wx);
 	int e1e4 = share(st, yz);
@@ -100,7 +97,7 @@ int subtype(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
 	return 1;
 }
 
-inline
+inline constexpr
 frequency_type edge_pair_type(const edge_pair& ep1, const edge_pair& ep2)
 {
 	const edge& st = ep1.first;
@@ -108,8 +105,8 @@ frequency_type edge_pair_type(const edge_pair& ep1, const edge_pair& ep2)
 	const edge& wx = ep2.first;
 	const edge& yz = ep2.second;
 
-	int t = tau(st, uv, wx, yz);
-	int p = phi(st, uv, wx, yz);
+	const int t = tau(st, uv, wx, yz);
+	const int p = phi(st, uv, wx, yz);
 
 	if (t == 2) {
 		// the only frequency type with tau=2
@@ -179,15 +176,13 @@ namespace properties {
 
 rational variance_C_freqs_rational(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
-	vector<edge_pair> Q;
-	enumerate_Q(g, Q);
+	vector<edge_pair> Q = g.Q();
 	return variance_C_freqs_Q_rational(Q, nthreads);
 }
 
 double variance_C_freqs(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
-	vector<edge_pair> Q;
-	enumerate_Q(g, Q);
+	vector<edge_pair> Q = g.Q();
 	return variance_C_freqs_Q(Q, nthreads);
 }
 

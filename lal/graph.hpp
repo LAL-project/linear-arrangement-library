@@ -78,7 +78,7 @@ class graph {
 		 * @param n Number of nodes.
 		 * @post The previous graph structure is cleared. See @ref clear.
 		 */
-		void init(uint32_t n);
+		virtual void init(uint32_t n);
 
 		/* OPERATORS */
 
@@ -183,7 +183,16 @@ class graph {
 		uint32_t n_edges() const;
 
 		/// Returns all edges of this graph.
-		virtual std::vector<edge> edges() const = 0;
+		std::vector<edge> edges() const;
+
+		/**
+		 * @brief Returns all independent pairs of edges of this graph.
+		 *
+		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+		 * no nodes.
+		 */
+		std::vector<edge_pair> Q() const;
 
 		/**
 		 * @brief Returns the neighbourhood of node @e u.
@@ -201,7 +210,12 @@ class graph {
 		 */
 		neighbourhood_B get_bool_neighbours(node u) const;
 
-		/// Returns the number of neighbours of u.
+		/**
+		 * @brief Returns the number of neighbours of @e u.
+		 * @param u Node to be queried.
+		 * @return In undirected graphs, returns the number of neighbours. In
+		 * a directed graph, returns the out-degree of a node.
+		 */
 		uint32_t degree(node u) const;
 
 		/**

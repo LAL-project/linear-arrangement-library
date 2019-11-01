@@ -46,35 +46,24 @@
 // lal includes
 #include <lal/numeric/integer.hpp>
 #include <lal/definitions.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graph.hpp>
 
 namespace lal {
 namespace properties {
 
 /**
- * @brief Enumerates the elements of \f$Q(G)\f$.
- *
- * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
- * \f$E(G) \times E(G)\f$, that are independent, that is, that share
- * no nodes.
- * @param[in] G Input graph \f$G\f$.
- * @param[out] Q Set \f$Q(G)\f$.
- */
-void enumerate_Q(const ugraph& G, std::vector<edge_pair>& Q);
-
-/**
  * @brief Compute the size of \f$Q(G)\f$.
- * @param[in] G Input graph.
+ * @param G Input graph.
  * @return Returns the size of \f$Q(G)\f$ as a rational value.
  */
-numeric::integer size_Q_integer(const ugraph& G);
+numeric::integer size_Q_integer(const graph& G);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
- * @param[in] G Input graph.
+ * @param G Input graph.
  * @returns The size of \f$Q(G)\f$.
  */
-uint64_t size_Q(const ugraph& G);
+uint64_t size_Q(const graph& G);
 
 } // -- namespace properties
 } // -- namespace lal

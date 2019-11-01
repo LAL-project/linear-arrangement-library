@@ -53,8 +53,7 @@ using namespace std;
 typedef uint64_t bigint;
 
 // lal includes
-#include <lal/properties/Q.hpp>
-#include <lal/edge_iterator.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
@@ -94,6 +93,7 @@ typedef map<lal::edge, useful_info_pairs>::const_iterator CIT;
 
 namespace lal {
 using namespace numeric;
+using namespace iterators;
 
 namespace properties {
 
@@ -166,9 +166,10 @@ inline void compute_data_gen_graphs
 	bigint npaths4_c1 = 0;
 	bigint npaths4_c2 = 0;
 
-	edge_iterator e_it(g);
-	while (e_it.has_next()) {
-		const edge e = e_it.next();
+	edge_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge e = it.get_edge();
 		// first node
 		const node s = e.first;
 		const bigint ks = g.degree(s);
@@ -321,9 +322,10 @@ inline void compute_data_gen_graphs_reuse
 	bigint npaths4_c1 = 0;
 	bigint npaths4_c2 = 0;
 
-	edge_iterator e_it(g);
-	while (e_it.has_next()) {
-		const edge e = e_it.next();
+	edge_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge e = it.get_edge();
 		// first node
 		const node s = e.first;
 		const bigint ks = g.degree(s);
