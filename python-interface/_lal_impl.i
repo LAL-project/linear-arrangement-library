@@ -12,7 +12,10 @@
 #include <lal/graph.hpp>
 #include <lal/ugraph.hpp>
 #include <lal/dgraph.hpp>
-#include <lal/edge_iterator.hpp>
+
+// iterators
+#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/Q_iterator.hpp>
 
 // io operations
 #include <lal/io/edge_list.hpp>
@@ -79,7 +82,11 @@ namespace std {
 %include "../lal/graph.hpp"
 %include "../lal/ugraph.hpp"
 %include "../lal/dgraph.hpp"
-%include "../lal/edge_iterator.hpp"
+
+// -------------
+// io operations
+%include "../lal/iterators/edge_iterator.hpp"
+%include "../lal/iterators/Q_iterator.hpp"
 
 // -------------
 // io operations
