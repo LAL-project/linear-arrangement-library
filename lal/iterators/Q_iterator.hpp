@@ -45,7 +45,6 @@
 
 // lal includes
 #include <lal/graph.hpp>
-#include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
 namespace iterators {
