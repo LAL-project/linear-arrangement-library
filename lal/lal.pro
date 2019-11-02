@@ -31,6 +31,7 @@ HEADERS += \
     definitions.hpp \
     dgraph.hpp \
     graph.hpp \
+    iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
     ugraph.hpp \

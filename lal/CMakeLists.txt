@@ -166,6 +166,7 @@ set(LIBLAL_MAIN_HEADER
 	C.hpp
 	D.hpp
 	io.hpp
+	iterators.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/edge_iterator.hpp
