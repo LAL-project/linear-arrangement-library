@@ -44,12 +44,7 @@
 #include <assert.h>
 
 // C++ includes
-#include <iostream>
 using namespace std;
-
-#define neg_1 static_cast<size_t>(-1)
-#define edge_out(e) "(" << e.first << ", " << e.second << ")"
-#define edge_pair_out(p) "(" << edge_out(p.first) << ", " << edge_out(p.second) << ")"
 
 namespace lal {
 namespace iterators {
@@ -176,7 +171,6 @@ bool Q_iterator::has_next() const {
 void Q_iterator::next() {
 	m_cur_pair = make_current_pair();
 	assert(not share_vertices(m_cur_pair));
-	//cout << "Current pair:" << edge_pair_out(m_cur_pair) << endl;
 
 	// find the next edge
 	auto [found, new_cur1, new_cur2] =
@@ -201,8 +195,8 @@ void Q_iterator::reset() {
 		return;
 	}
 
-	m_cur1 = E_pointer(0,0);
-	m_cur2 = E_pointer(1,neg_1);
+	m_cur1 = E_pointer(0, 0);
+	m_cur2 = E_pointer(1, static_cast<size_t>(-1));
 
 	auto [found, new_cur1, new_cur2] =
 		find_next_pair(
