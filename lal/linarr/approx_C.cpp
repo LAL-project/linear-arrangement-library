@@ -46,6 +46,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
+#include <lal/iterators/Q_iterator.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -155,41 +156,33 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) 
 		pi[ T[i] ] = i;
 	}
 
-	// iterate over the elements of Q
-	for (node s = 0; s < n; ++s) {
-	const neighbourhood& Nu = g.get_neighbours(s);
-	for (node t : Nu) {
-	if (s > t) { continue; }
+	iterators::Q_iterator q(g);
+	while (q.has_next()) {
+		q.next();
+		const edge_pair st_uv = q.get_pair();
+		const edge st = st_uv.first;
+		const edge uv = st_uv.second;
+		const node s = st.first;
+		const node t = st.second;
+		const node u = uv.first;
+		const node v = uv.second;
 
-		// unique edge {s,t}
-		for (node u = s + 1; u < n; ++u) {
-		const neighbourhood& Nw = g.get_neighbours(u);
-		for (node v : Nw) {
-		if (u > v) { continue; }
+		int64_t al;
+		uint64_t be;
 
-			// unique edge {u,v}
+		int64_t len_st = std::abs(pi[s] - pi[t]);
+		int64_t len_uv = std::abs(pi[u] - pi[v]);
+		if (len_st <= len_uv) {
+			al = alpha(n, len_st, len_uv);
+			be = static_cast<uint64_t>(beta(n, len_st, len_uv));
+		}
+		else {
+			al = alpha(n, len_uv, len_st);
+			be = static_cast<uint64_t>(beta(n, len_uv, len_st));
+		}
 
-			// s != u and t != u
-			if (s == v or s == u) { continue; }
-			if (t == v or t == u) { continue; }
-
-			int64_t al;
-			uint64_t be;
-
-			int64_t len_st = std::abs(pi[s] - pi[t]);
-			int64_t len_uv = std::abs(pi[u] - pi[v]);
-			if (len_st <= len_uv) {
-				al = alpha(n, len_st, len_uv);
-				be = static_cast<uint64_t>(beta(n, len_st, len_uv));
-			}
-			else {
-				al = alpha(n, len_uv, len_st);
-				be = static_cast<uint64_t>(beta(n, len_uv, len_st));
-			}
-
-			Ec2 += rational(al, be);
-		}}
-	}}
+		Ec2 += rational(al, be);
+	}
 
 	free(pi);
 	return Ec2;
