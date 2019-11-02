@@ -80,7 +80,7 @@ namespace generate {
  *		free_lab_trees flt(n);
  *		while (flt.has_next()) {
  *			flt.next();
- *			tree e = it.get_tree();
+ *			ugraph e = it.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -107,7 +107,6 @@ class free_lab_trees {
 		 * and with different values for parameter @e n.
 		 * @param n The number of vertices of the trees to be
 		 * generated.
-		 * @pre \f$n > 1\f$.
 		 */
 		void init(uint32_t n);
 

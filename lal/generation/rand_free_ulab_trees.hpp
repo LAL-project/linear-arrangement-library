@@ -84,7 +84,6 @@ class rand_free_ulab_trees {
 		 * needed. Initialises the random number generator.
 		 * @param n Number of nodes of the tree.
 		 * @param seed Integer value used to seed the random number generator.
-		 * @pre \f$n > 1\f$.
 		 */
 		void init(uint32_t n, uint32_t seed = 0);
 

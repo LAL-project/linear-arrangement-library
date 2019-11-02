@@ -57,6 +57,8 @@ rand_free_lab_trees::~rand_free_lab_trees() { }
 
 void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
+	if (m_n <= 2) { return; }
+
 	m_seq = vector<uint32_t>(m_n - 2);
 
 	if (seed == 0) {
@@ -70,10 +72,10 @@ void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 }
 
 ugraph rand_free_lab_trees::make_rand_tree() {
+	if (m_n <= 1) { return ugraph(m_n); }
 	if (m_n == 2) {
-		// how many trees of 2 vertices can we make??
 		ugraph t(2);
-		t.add_edges({edge(0,1)});
+		t.add_edge(0,1);
 		return t;
 	}
 

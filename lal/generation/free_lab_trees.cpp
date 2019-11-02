@@ -67,7 +67,7 @@ free_lab_trees::~free_lab_trees() { }
 
 void free_lab_trees::init(uint32_t _n) {
 	m_n = _n;
-	if (m_n == 2) {
+	if (m_n <= 2) {
 		m_sm = vector<bool>(1, false);
 		// there is only one tree we can make
 		return;
@@ -85,14 +85,14 @@ void free_lab_trees::init(uint32_t _n) {
 }
 
 bool free_lab_trees::has_next() const {
-	if (m_n == 2) {
+	if (m_n <= 2) {
 		return not m_sm[0];
 	}
 	return not m_sm[m_n - 3];
 }
 
 void free_lab_trees::next() {
-	if (m_n == 2) {
+	if (m_n <= 2) {
 		// there is only one tree we can make
 		m_sm[0] = true;
 		return;
@@ -119,10 +119,11 @@ void free_lab_trees::next() {
 }
 
 ugraph free_lab_trees::get_tree() const {
+	if (m_n <= 1) { return ugraph(m_n); }
 	if (m_n == 2) {
-		ugraph g(2);
-		g.add_edges({edge(0,1)});
-		return g;
+		ugraph t(2);
+		t.add_edge(0,1);
+		return t;
 	}
 
 	return convert::Prufer_sequence_to_tree(m_seq, m_n);

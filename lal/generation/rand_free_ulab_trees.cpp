@@ -72,6 +72,7 @@ rand_free_ulab_trees::~rand_free_ulab_trees() { }
 
 void rand_free_ulab_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
+	if (m_n <= 1) { return; }
 
 	if (seed == 0) {
 		random_device rd;
@@ -88,14 +89,11 @@ void rand_free_ulab_trees::init(uint32_t _n, uint32_t seed) {
 }
 
 ugraph rand_free_ulab_trees::make_rand_tree() {
-	if (m_n <= 1) {
-		m_TREE[1] = 0;
-		return convert::linear_sequence_to_tree(m_TREE, m_n);
-	}
+	if (m_n <= 1) { return ugraph(m_n); }
 	if (m_n == 2) {
-		m_TREE[1] = 0;
-		m_TREE[2] = 1;
-		return convert::linear_sequence_to_tree(m_TREE, m_n);
+		ugraph t(2);
+		t.add_edge(0,1);
+		return t;
 	}
 
 	std::fill(m_TREE.begin(), m_TREE.end(), 0);

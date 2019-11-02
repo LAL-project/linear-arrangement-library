@@ -69,10 +69,13 @@ void free_ulab_trees::init(uint32_t _n) {
 	m_L = vector<uint32_t>(m_n, 0);
 	m_W = vector<uint32_t>(m_n, 0);
 
-	if (m_n == 2) {
-		// n=2 is a very simple case
-		m_L[0] = 1;
-		m_L[1] = 2;
+	// simplest cases
+	if (m_n == 0) {
+		m_is_last = true;
+		return;
+	}
+	if (m_n <= 2) {
+		m_is_last = false;
 		return;
 	}
 
@@ -96,7 +99,7 @@ void free_ulab_trees::init(uint32_t _n) {
 		m_L[i] = i - k + 2;
 	}
 
-	if (m_n == 2 or m_n == 3) {
+	if (m_n <= 3) {
 		m_first_it = false;
 	}
 }
@@ -106,7 +109,7 @@ bool free_ulab_trees::has_next() const {
 }
 
 void free_ulab_trees::next() {
-	if (m_n == 2) {
+	if (m_n <= 2) {
 		m_is_last = true;
 		return;
 	}
@@ -245,6 +248,12 @@ void free_ulab_trees::next() {
 }
 
 ugraph free_ulab_trees::get_tree() const {
+	if (m_n <= 1) { return ugraph(m_n); }
+	if (m_n == 2) {
+		ugraph t(2);
+		t.add_edge(0,1);
+		return t;
+	}
 	return convert::level_sequence_to_tree(m_L, m_n);
 }
 

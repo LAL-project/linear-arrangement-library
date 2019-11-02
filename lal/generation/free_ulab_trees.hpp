@@ -76,6 +76,16 @@ namespace generate {
  * The algorithm implemented can be found in the work by Wright
  * et al. (see \cite Wright1986a). The definition of the public
  * and private members of this class follow the notation in this work.
+ *
+ * The correct usage of this class is
+ * @code
+ *		free_lab_trees flt(n);
+ *		while (flt.has_next()) {
+ *			flt.next();
+ *			ugraph e = it.get_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class free_ulab_trees {
 	public:
@@ -99,7 +109,6 @@ class free_ulab_trees {
 		 * and with different values for parameter @e n.
 		 * @param n The number of vertices of the trees to be
 		 * generated.
-		 * @pre \f$n > 1\f$.
 		 */
 		void init(uint32_t n);
 
