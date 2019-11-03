@@ -111,7 +111,7 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 	return *this;
 }
 
-ugraph& ugraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
+ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
 		node u = e.first;
 		node v = e.second;
@@ -152,23 +152,6 @@ bool ugraph::has_edge(node u, node v) const {
 		return cget_neighbour_position(nu, v) != nu.end();
 	}
 	return cget_neighbour_position(nv, u) != nv.end();
-}
-
-vector<edge> ugraph::edges() const {
-	vector<edge> all_edges(m_num_edges);
-	auto it = all_edges.begin();
-
-	// insert all edges into a set to get only those that are unique
-	for (node u = 0; u < n_nodes() and it != all_edges.end(); ++u) {
-		auto adj_u = get_neighbours(u);
-		for (size_t i = 0; i < adj_u.size() and it != all_edges.end(); ++i) {
-			const node v = m_adjacency_list[u][i];
-			*it = edge(u, v);
-			it += u < v;
-		}
-	}
-
-	return all_edges;
 }
 
 bool ugraph::is_directed() const { return false; }

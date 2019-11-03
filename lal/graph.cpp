@@ -45,7 +45,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <iostream>
 #include <cmath>
 #include <set>
 using namespace std;
@@ -58,18 +57,19 @@ using namespace std;
 
 namespace lal {
 using namespace numeric;
+using namespace iterators;
 
 /* PUBLIC */
 
 graph::graph() { }
 graph::graph(uint32_t n) {
-	m_adjacency_list = vector<neighbourhood>(n);
+	init(n);
 }
 graph::~graph() { }
 
 void graph::init(uint32_t n) {
 	clear();
-	m_adjacency_list = vector<neighbourhood>(n);
+	_init(n);
 }
 
 /* OPERATORS */
@@ -98,9 +98,7 @@ void graph::disjoint_union(const graph& g) {
 void graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
-		if (not is_sorted(nu.begin(), nu.end())) {
-			macros::sort_1_n(nu, n_nodes());
-		}
+		macros::sort_1_n(nu, n_nodes());
 	}
 	m_normalised = true;
 }
@@ -124,9 +122,6 @@ bool graph::check_normalised() {
 void graph::clear() {
 	m_num_edges = 0;
 	m_normalised = true;
-	/*for (size i = 0; i < adjacency_list.size(); ++i) {
-		adjacency_list[i].clear();
-	}*/
 	m_adjacency_list.clear();
 }
 
@@ -149,7 +144,7 @@ uint32_t graph::n_edges() const {
 vector<edge> graph::edges() const {
 	vector<edge> e(n_edges());
 	auto it = e.begin();
-	iterators::edge_iterator e_it(*this);
+	edge_iterator e_it(*this);
 	while (e_it.has_next()) {
 		e_it.next();
 		*it = e_it.get_edge();
@@ -161,7 +156,7 @@ vector<edge> graph::edges() const {
 vector<edge_pair> graph::Q() const {
 	vector<edge_pair> q(properties::size_Q(*this));
 	auto vec_it = q.begin();
-	iterators::Q_iterator q_it(*this);
+	Q_iterator q_it(*this);
 	while (q_it.has_next()) {
 		q_it.next();
 		*vec_it = q_it.get_pair();
@@ -193,15 +188,22 @@ bool graph::is_normalised() const {
 void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 	const uint32_t N = n_nodes();
 	mat = vector<vector<bool> >(N, vector<bool>(N, false));
-	for (node u = 0; u < N; ++u) {
-		const neighbourhood& nu = get_neighbours(u);
-		for (const node& v : nu) {
-			mat[u][v] = true;
-		}
+	edge_iterator it(*this);
+	while (it.has_next()) {
+		it.next();
+		const auto [u,v] = it.get_edge();
+		mat[u][v] = true;
+		mat[v][u] = (is_undirected() ? true : mat[v][u]);
 	}
 }
 
-/* PRIVATE */
+/* PROTECTED */
+
+void graph::_init(uint32_t n) {
+	m_num_edges = 0;
+	m_normalised = true;
+	m_adjacency_list = vector<neighbourhood>(n);
+}
 
 lcit graph::cget_neighbour_position(const neighbourhood& n, node u) const {
 	lcit cit = n.begin();

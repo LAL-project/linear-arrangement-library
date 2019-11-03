@@ -120,6 +120,7 @@ target_sources(
 		graph.cpp
 		ugraph.cpp
 		dgraph.cpp
+		rooted_directed_tree.cpp
 		iterators/edge_iterator.cpp
 		iterators/Q_iterator.cpp
 		conversions/conversions.cpp
@@ -127,6 +128,7 @@ target_sources(
 		generation/free_ulab_trees.cpp
 		generation/rand_free_lab_trees.cpp
 		generation/rand_free_ulab_trees.cpp
+		generation/rand_rooted_lab_dir_trees.cpp
 		io/edge_list.cpp
 		io/treebank_processor.cpp
 		io/treebank_dataset.cpp
@@ -162,6 +164,7 @@ set(LIBLAL_MAIN_HEADER
 	graph.hpp
 	ugraph.hpp
 	dgraph.hpp
+	rooted_directed_tree.hpp
 	definitions.hpp
 	C.hpp
 	D.hpp
@@ -180,6 +183,7 @@ set(LIBLAL_GENERATION_HEADER
 	generation/rand_free_lab_trees.hpp
 	generation/free_ulab_trees.hpp
 	generation/rand_free_ulab_trees.hpp
+	generation/rand_rooted_lab_dir_trees.hpp
 )
 set(LIBLAL_IO_HEADER
 	io/edge_list.hpp

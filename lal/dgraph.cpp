@@ -51,6 +51,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/sort_integers.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -58,15 +59,10 @@ using namespace numeric;
 /* PUBLIC */
 
 dgraph::dgraph() : graph() { }
-dgraph::dgraph(uint32_t n) : graph(n) {
-	m_in_degree.resize(n);
+dgraph::dgraph(uint32_t n) {
+	init(n);
 }
 dgraph::~dgraph() { }
-
-void dgraph::init(uint32_t n) {
-	graph::init(n);
-	m_in_degree = vector<uint32_t>(n, 0);
-}
 
 /* OPERATORS */
 
@@ -148,23 +144,6 @@ bool dgraph::has_edge(node u, node v) const {
 	return cget_neighbour_position(nu, v) != nu.end();
 }
 
-vector<edge> dgraph::edges() const {
-	vector<edge> all_edges(m_num_edges);
-	auto it = all_edges.begin();
-
-	// insert all edges into a set to get only those that are unique
-	for (node u = 0; u < n_nodes() and it != all_edges.end(); ++u) {
-		auto adj_u = get_neighbours(u);
-		for (size_t i = 0; i < adj_u.size() and it != all_edges.end(); ++i) {
-			const node v = m_adjacency_list[u][i];
-			*it = edge(u, v);
-			++it;
-		}
-	}
-
-	return all_edges;
-}
-
 bool dgraph::is_directed() const { return true; }
 bool dgraph::is_undirected() const { return false; }
 
@@ -174,21 +153,21 @@ uint32_t dgraph::in_degree(node u) const {
 }
 
 ugraph dgraph::to_undirected() const {
-	// build list of undirected edges
-	set<edge> all_undir_edges;
-
-	// insert all edges into a set to get only those that are unique
-	for (node u = 0; u < n_nodes(); ++u) {
-		for (node v : get_neighbours(u)) {
-			all_undir_edges.insert(
-				u < v ? edge(u, v) : edge(v, u)
-			);
-		}
-	}
-
 	ugraph g(n_nodes());
-	g.add_edges(vector<edge>(all_undir_edges.begin(), all_undir_edges.end()));
+	g.add_edges(edges());
 	return g;
+}
+
+void dgraph::clear() {
+	graph::clear();
+	m_in_degree.clear();
+}
+
+/* PROTECTED */
+
+void dgraph::_init(uint32_t n) {
+	graph::_init(n);
+	m_in_degree = vector<uint32_t>(n, 0);
 }
 
 /* PRIVATE */

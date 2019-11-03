@@ -37,64 +37,75 @@
  *          Resarch Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#pragma once
+
+#include <lal/rooted_directed_tree.hpp>
+
+// C includes
+#include <assert.h>
 
 // C++ includes
 #include <vector>
-#include <random>
-
-// lal includes
-#include <lal/ugraph.hpp>
-#include <lal/definitions.hpp>
+#include <queue>
+using namespace std;
 
 namespace lal {
-namespace generate {
 
-/**
- * @brief Non-deterministic free labelled tree generator.
- *
- * Generates uniformly at random free labelled trees.
- *
- * Every call to @ref make_rand_tree generates a uniformly random Prüfer
- * sequence (see \cite Pruefer1918a), which is then used to build its
- * corresponding free labelled tree using algorithm in \cite Alonso1995a.
- */
-class rand_free_lab_trees {
-	public:
-		/// Default constructor.
-		rand_free_lab_trees();
-		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_lab_trees(uint32_t n, uint32_t seed = 0);
-		/// Default Destructor.
-		virtual ~rand_free_lab_trees();
+rooted_directed_tree::rooted_directed_tree() : dgraph() { }
+rooted_directed_tree::rooted_directed_tree(uint32_t n) : dgraph(n) { }
+rooted_directed_tree::rooted_directed_tree(const ugraph& g, node r) : dgraph() {
+	init_rooted(g, r);
+}
+rooted_directed_tree::~rooted_directed_tree() { }
 
-		/**
-		 * @brief Sets the size of the labelled trees to generate.
-		 *
-		 * Initialises the random number generator.
-		 * @param n Number of nodes of the tree.
-		 * @param seed Integer value used to seed the random number generator.
-		 */
-		void init(uint32_t n, uint32_t seed = 0);
+void rooted_directed_tree::init_rooted(const ugraph& g, node r) {
+	// assert(is_tree(g));
+	if (g.n_nodes() == 0) {
+		init(0);
+		m_r = 0;
+		return;
+	}
 
-		/**
-		 * @brief Generates uniformly at random a free labelled tree.
-		 * @pre The generator must have been initialised.
-		 * @return Returns a labelled tree.
-		 */
-		ugraph make_rand_tree();
+	// build list of directed edges out of 'g' ...
+	vector<edge> dir_edges(g.n_edges());
+	auto it_dir_edges = dir_edges.begin();
 
-	protected:
-		/// Number of nodes of the tree.
-		uint32_t m_n;
-		/// Random number generator.
-		std::mt19937 m_gen;
-		/// Distribution of the numbers.
-		std::uniform_int_distribution<uint32_t> m_unif;
-		/// Prüfer sequence.
-		std::vector<uint32_t> m_seq;
-};
+	// .. with a BFS on the tree, starting at 'r'
+	vector<bool> vis(g.n_nodes(), false);
+	queue<node> Q;
+	Q.push(r);
+	vis[r] = true;
+	while (not Q.empty()) {
+		node s = Q.front();
+		Q.pop();
 
-} // -- namespace generate
+		// for each neighbour of t
+		for (auto t : g.get_neighbours(s)) {
+			if (not vis[t]) {
+				*it_dir_edges = edge(s,t);
+				++it_dir_edges;
+				Q.push(t);
+				vis[t] = true;
+			}
+		}
+	}
+
+	// construct rooted directed tree
+	init(g.n_nodes());
+	add_edges(dir_edges);
+	m_r = r;
+}
+
+void rooted_directed_tree::set_root(node r) {
+	assert(has_node(r));
+	m_r = r;
+}
+node rooted_directed_tree::get_root() const { return m_r; }
+
+bool rooted_directed_tree::is_root(node r) const {
+	assert(has_node(r));
+	return m_in_degree[r];
+}
+
+/* PRIVATE */
+
 } // -- namespace lal

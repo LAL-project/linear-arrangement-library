@@ -40,95 +40,85 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
-#include <lal/definitions.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/graph.hpp>
+#include <lal/dgraph.hpp>
 #include <lal/ugraph.hpp>
 
 namespace lal {
 
 /**
- * @brief Directed graph class.
+ * @brief Rooted directed tree class.
  *
- * Simple class implementing a directed graph, using the adjacency
- * list data structure.
+ * This class represents a rooted directed tree. The edges are oriented from
+ * the root to the leaves.
  *
- * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool) ).
+ * This class is built from an undirected tree by orienting its edges from
+ * a chosen node. This node represents the root of the directed rooted tree.
  */
-class dgraph : public graph {
+class rooted_directed_tree : public dgraph {
 	public:
 		/// Default constructor.
-		dgraph();
+		rooted_directed_tree();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dgraph(uint32_t n);
-		/// Default destructor.
-		virtual ~dgraph();
-
-		/* OPERATORS */
-
-		/* MODIFIERS */
+		rooted_directed_tree(uint32_t n);
+		/**
+		 * @brief Constructor with undirected tree and root node.
+		 *
+		 * Constructs a rooted directed tree from an undirected tree and one of
+		 * its nodes as the root of the rooted tree.
+		 * @param g Undirected tree.
+		 * @param r Root of the directed tree. A node of @e g.
+		 * @pre The graph @e g must be a tree.
+		 */
+		rooted_directed_tree(const ugraph& g, node r);
+		/// Destructor
+		~rooted_directed_tree();
 
 		/**
-		 * @brief Adds a directed edge.
+		 * @brief Constructor with undirected tree and root node.
 		 *
-		 * For more details see @ref graph::add_edge(node,node,bool)
+		 * Constructs a rooted directed tree from an undirected tree and one of
+		 * its nodes as the root of the rooted tree.
+		 * @param g Undirected tree.
+		 * @param r Root of the directed tree. A node of @e g.
+		 * @pre The graph @e g must be a tree.
 		 */
-		dgraph& add_edge(node u, node v, bool norm = false);
-
-		/**
-		 * @brief Adds a list of directed edges.
-		 *
-		 * For more details see @ref graph::add_edges(const std::vector<edge>&,bool)
-		 */
-		dgraph& add_edges(const std::vector<edge>& edges, bool norm = true);
+		void init_rooted(const ugraph& g, node r);
 
 		/* SETTERS */
 
+		/**
+		 * @brief Sets the root of this tree.
+		 *
+		 * This value is simply stored for a later retrieval.
+		 * @param r Root of the tree.
+		 * @pre @e r is a node of this graph.
+		 */
+		void set_root(node r);
+
 		/* GETTERS */
 
-		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
-		bool has_edge(node u, node v) const;
-
-		bool is_directed() const;
-		bool is_undirected() const;
-
-		/// Returns the in-degree of a node.
-		uint32_t in_degree(node u) const;
+		/// Returns the root of this tree.
+		node get_root() const;
 
 		/**
-		 * @brief Converts this directed graph into an undirected graph.
-		 * @return Returns an object of typ undirected graph.
+		 * @brief Is node @e r the root of this tree?
+		 * @param r Node of the tree.
+		 * @return Returns whether the node is the root or not. A node is the
+		 * root of a tree if its in-degree equals 0.
 		 */
-		ugraph to_undirected() const;
+		bool is_root(node r) const;
 
+	private:
 		/**
-		 * @brief Deletes all edges and nodes from the graph.
+		 * @brief Root of the tree.
 		 *
-		 * Frees the memory occupied by this graph. For more details, see
-		 * @ref graph::clear().
+		 * This variable provides constant-time access to the node with null in-degree.
 		 */
-		void clear();
-
-	protected:
-		/// In-degree per vertex.
-		std::vector<uint32_t> m_in_degree;
-
-	protected:
-		/**
-		 * @brief Only initialises memory.
-		 * @param n Number of nodes.
-		 */
-		void _init(uint32_t n);
+		node m_r = 0;
 };
 
 } // -- namespace lal

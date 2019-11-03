@@ -98,8 +98,6 @@ class ugraph : public graph {
 		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
 		bool has_edge(node u, node v) const;
 
-		std::vector<edge> edges() const;
-
 		bool is_directed() const;
 		bool is_undirected() const;
 };

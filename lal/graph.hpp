@@ -75,10 +75,12 @@ class graph {
 
 		/**
 		 * @brief Allocate memory for @e n nodes.
+		 *
+		 * Calls @ref clear and @ref _init(uint32_t).
 		 * @param n Number of nodes.
 		 * @post The previous graph structure is cleared. See @ref clear.
 		 */
-		virtual void init(uint32_t n);
+		void init(uint32_t n);
 
 		/* OPERATORS */
 
@@ -162,9 +164,11 @@ class graph {
 
 		/**
 		 * @brief Deletes all edges and nodes from the graph.
-		 * @post The graph is normalised.
+		 *
+		 * Frees the memory occupied by this graph.
+		 * @post The graph is normalised. The number of edges is 0.
 		 */
-		void clear();
+		virtual void clear();
 
 		/* SETTERS */
 
@@ -254,6 +258,12 @@ class graph {
 		bool m_normalised = true;
 
 	protected:
+		/**
+		 * @brief Only initialises memory.
+		 * @param n Number of nodes.
+		 */
+		virtual void _init(uint32_t n);
+
 		/**
 		 * @brief Find node in a neighbourhood list.
 		 *

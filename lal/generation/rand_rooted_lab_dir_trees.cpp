@@ -37,64 +37,33 @@
  *          Resarch Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#pragma once
+
+#include <lal/generation/rand_rooted_lab_dir_trees.hpp>
 
 // C++ includes
-#include <vector>
-#include <random>
-
-// lal includes
-#include <lal/ugraph.hpp>
-#include <lal/definitions.hpp>
+using namespace std;
 
 namespace lal {
 namespace generate {
 
-/**
- * @brief Non-deterministic free labelled tree generator.
- *
- * Generates uniformly at random free labelled trees.
- *
- * Every call to @ref make_rand_tree generates a uniformly random Prüfer
- * sequence (see \cite Pruefer1918a), which is then used to build its
- * corresponding free labelled tree using algorithm in \cite Alonso1995a.
- */
-class rand_free_lab_trees {
-	public:
-		/// Default constructor.
-		rand_free_lab_trees();
-		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_lab_trees(uint32_t n, uint32_t seed = 0);
-		/// Default Destructor.
-		virtual ~rand_free_lab_trees();
+rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees() : rand_free_lab_trees() { }
 
-		/**
-		 * @brief Sets the size of the labelled trees to generate.
-		 *
-		 * Initialises the random number generator.
-		 * @param n Number of nodes of the tree.
-		 * @param seed Integer value used to seed the random number generator.
-		 */
-		void init(uint32_t n, uint32_t seed = 0);
+rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees(uint32_t n, uint32_t seed)
+	: rand_free_lab_trees(n, seed)
+{
 
-		/**
-		 * @brief Generates uniformly at random a free labelled tree.
-		 * @pre The generator must have been initialised.
-		 * @return Returns a labelled tree.
-		 */
-		ugraph make_rand_tree();
+}
+rand_rooted_lab_dir_trees::~rand_rooted_lab_dir_trees() { }
 
-	protected:
-		/// Number of nodes of the tree.
-		uint32_t m_n;
-		/// Random number generator.
-		std::mt19937 m_gen;
-		/// Distribution of the numbers.
-		std::uniform_int_distribution<uint32_t> m_unif;
-		/// Prüfer sequence.
-		std::vector<uint32_t> m_seq;
-};
+void rand_rooted_lab_dir_trees::init(uint32_t n, uint32_t seed) {
+	rand_free_lab_trees::init(n, seed);
+}
+
+rooted_directed_tree rand_rooted_lab_dir_trees::make_rand_tree() {
+	ugraph t = rand_free_lab_trees::make_rand_tree();
+	node r = m_unif(m_gen);
+	return rooted_directed_tree(t, r);
+}
 
 } // -- namespace generate
 } // -- namespace lal
