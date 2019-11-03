@@ -64,7 +64,7 @@ namespace convert {}
  * @brief Namespace for the generation of different types of graphs.
  * 
  * This namespace contains algorithms for the generation of
- * certain types of graphs, for example: all unique free and
+ * certain types of graphs, for example: all unique free,
  * unlabelled trees.
  */
 namespace generate {}
