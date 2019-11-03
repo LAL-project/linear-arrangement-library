@@ -12,6 +12,7 @@
 #include <lal/graph.hpp>
 #include <lal/ugraph.hpp>
 #include <lal/dgraph.hpp>
+#include <lal/rooted_directed_tree.hpp>
 
 // iterators
 #include <lal/iterators/edge_iterator.hpp>
@@ -29,6 +30,7 @@
 #include <lal/generation/free_lab_trees.hpp>
 #include <lal/generation/rand_free_lab_trees.hpp>
 #include <lal/generation/rand_free_ulab_trees.hpp>
+#include <lal/generation/rand_rooted_lab_dir_trees.hpp>
 
 // linear arrangements
 #include <lal/linarr/C.hpp>
@@ -82,6 +84,7 @@ namespace std {
 %include "../lal/graph.hpp"
 %include "../lal/ugraph.hpp"
 %include "../lal/dgraph.hpp"
+%include "../lal/rooted_directed_tree.hpp"
 
 // -------------
 // io operations
@@ -117,6 +120,7 @@ namespace std {
 %include "../lal/generation/free_lab_trees.hpp"
 %include "../lal/generation/rand_free_lab_trees.hpp"
 %include "../lal/generation/rand_free_ulab_trees.hpp"
+%include "../lal/generation/rand_rooted_lab_dir_trees.hpp"
 
 // ----------
 // EXTENSIONS
