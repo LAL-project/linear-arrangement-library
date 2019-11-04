@@ -95,6 +95,12 @@ void rooted_directed_tree::init_rooted(const ugraph& g, node r) {
 	m_r = r;
 }
 
+/* MODIFIERS */
+
+void rooted_directed_tree::disjoint_union(const graph& ) { }
+
+/* SETTERS */
+
 void rooted_directed_tree::set_root(node r) {
 	assert(has_node(r));
 	m_r = r;

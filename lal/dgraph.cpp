@@ -68,6 +68,19 @@ dgraph::~dgraph() { }
 
 /* MODIFIERS */
 
+void dgraph::disjoint_union(const graph& g) {
+	graph::disjoint_union(g);
+
+	// if the call to 'graph::disjoint_union' did not
+	// fail then graph 'g' is a directed graph
+	const dgraph& dg = static_cast<const dgraph&>(g);
+
+	m_in_degree.insert(
+		m_in_degree.end(),
+		dg.m_in_degree.begin(), dg.m_in_degree.end()
+	);
+}
+
 dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 	assert(not has_edge(u,v));
 	assert(u != v);

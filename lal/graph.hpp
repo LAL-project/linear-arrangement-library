@@ -111,10 +111,12 @@ class graph {
 		 * All the vertices in @e g are relabelled starting at @e n,
 		 * the number of vertices of the current graph.
 		 * @param g Input graph.
+		 * @pre This graph and @e g must be of the same type (both must
+		 * be either undirected, or both directed).
 		 * @post The graph is normalised only if it was normalised before
 		 * the call and @e g is also normalised.
 		 */
-		void disjoint_union(const graph& g);
+		virtual void disjoint_union(const graph& g);
 
 		/**
 		 * @brief Normalises the graph.

@@ -49,10 +49,10 @@ namespace lal {
 /**
  * @brief Rooted directed tree class.
  *
- * This class represents a rooted directed tree. The edges are oriented from
- * the root to the leaves.
+ * This class represents a rooted directed tree. The edges should be oriented
+ * from the root to the leaves.
  *
- * This class is built from an undirected tree by orienting its edges from
+ * This class can be built from an undirected tree by orienting its edges from
  * a chosen node. This node represents the root of the directed rooted tree.
  */
 class rooted_directed_tree : public dgraph {
@@ -87,6 +87,11 @@ class rooted_directed_tree : public dgraph {
 		 * @pre The graph @e g must be a tree.
 		 */
 		void init_rooted(const ugraph& g, node r);
+
+		/* MODIFIERS */
+
+		/// Does nothing. Do not use.
+		void disjoint_union(const graph&);
 
 		/* SETTERS */
 

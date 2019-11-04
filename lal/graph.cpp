@@ -77,6 +77,10 @@ void graph::init(uint32_t n) {
 /* MODIFIERS */
 
 void graph::disjoint_union(const graph& g) {
+	// If I'm directed, g must be directed.
+	// If I'm undirected, g must be undirected.
+	assert(is_directed() ? g.is_directed() : g.is_undirected());
+
 	uint32_t n = n_nodes();
 	m_num_edges += g.m_num_edges;
 

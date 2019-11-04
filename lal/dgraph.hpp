@@ -79,6 +79,20 @@ class dgraph : public graph {
 		/* MODIFIERS */
 
 		/**
+		 * @brief Disjoint union of graphs.
+		 *
+		 * Given a graph, append it to the current graph.
+		 *
+		 * All the vertices in @e g are relabelled starting at @e n,
+		 * the number of vertices of the current graph.
+		 * @param g Input graph.
+		 * @pre Graph @e g must be directed.
+		 * @post The graph is normalised only if it was normalised before
+		 * the call and @e g is also normalised.
+		 */
+		void disjoint_union(const graph& g);
+
+		/**
 		 * @brief Adds a directed edge.
 		 *
 		 * For more details see @ref graph::add_edge(node,node,bool)
