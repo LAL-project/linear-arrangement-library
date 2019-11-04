@@ -34,7 +34,7 @@
  *          Office S124, Omega building
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://www.cs.upc.edu/~rferrericancho/
- *          Resarch Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
+ *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
 
