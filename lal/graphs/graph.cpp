@@ -104,7 +104,7 @@ void graph::disjoint_union(const graph& g) {
 void graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
-		utils::sort_1_n(nu, n_nodes());
+		utils::sort_1_n(nu.begin(), nu.end());
 	}
 	m_normalised = true;
 }

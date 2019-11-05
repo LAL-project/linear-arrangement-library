@@ -42,12 +42,13 @@
 
 // C++ includes
 #include <algorithm>
+#include <iterator>
 #include <vector>
 
 namespace lal {
 namespace utils {
 
-/*
+/**
  * @brief Insertion sort.
  */
 template<typename It>
@@ -64,37 +65,48 @@ void insertion_sort(It begin, It end) {
 	}
 }
 
-/*
- * @brief Sort integer values within the range [0,n)
+/**
+ * @brief Sort integer values within the range \f$[0,n)\f$
  *
- * The range was named [1,n] so as to avoid naming it as "sort_0_n",
- * since it is quite misleading.
- * @param v Vector to be sorted.
- * @param n Upper bound of the interval.
+ * The value \f$n\f$ represents the maximum value within the vector.
+ * @param begin Iterator at the beginning of the container.
+ * @param end Iterator at the end of the container.
  * @post v is sorted.
  */
-template<typename T>
-typename std::enable_if<std::is_integral<T>::value, void>::type
-sort_1_n(std::vector<T>& v, size_t n)
+template<typename It>
+typename std::enable_if
+<
+	std::is_integral< typename std::iterator_traits<It>::value_type >::value,
+	void
+>
+::type
+sort_1_n(It begin, It end)
 {
-	if (v.size() <= 1) { return; }
-	if (v.size() <= 14) {
-		insertion_sort(v.begin(), v.end());
+	size_t size = std::distance(begin, end);
+	if (size <= 1) { return; }
+	if (size <= 14) {
+		insertion_sort(begin, end);
 		return;
 	}
-	if (v.size() <= 30) {
-		std::sort(v.begin(), v.end());
+	if (size <= 30) {
+		std::sort(begin, end);
 		return;
 	}
 
-	std::vector<bool> seen(n, false);
-	for (auto it = v.begin(); it != v.end(); ++it) {
+	// maximum element within vector
+	const auto M = *std::max_element(begin, end) + 1;
+
+	// fill "bit" vector
+	std::vector<bool> seen(M, false);
+	for (auto it = begin; it != end; ++it) {
 		seen[*it] = true;
 	}
 
+	// sort elements, increasingly
 	auto seenit = seen.begin();
-	auto vit = v.begin();
-	for (T i = 0; i < n and vit != v.end(); ++i, ++seenit) {
+	auto vit = begin;
+	typename std::iterator_traits<It>::value_type i;
+	for (i = 0; i < M and vit != end; ++i, ++seenit) {
 		*vit = i;
 		vit += *seenit;
 	}
