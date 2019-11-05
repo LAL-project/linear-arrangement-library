@@ -203,7 +203,7 @@ uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
 }
 
 uint32_t n_crossings_dyn_prog(const ugraph& g, const vector<node>& arr) {
-	return macros::call_with_empty_arrangement(__n_crossings_dyn_prog, g, arr);
+	return utils::call_with_empty_arrangement(__n_crossings_dyn_prog, g, arr);
 }
 
 vector<uint32_t> n_crossings_dyn_prog_list

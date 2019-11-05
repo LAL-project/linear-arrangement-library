@@ -183,7 +183,7 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& pi)
 }
 
 rational approximate_C_2_rational(const ugraph& g, const vector<node>& pi) {
-	return macros::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
+	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
 double approximate_C_2(const ugraph& g, const vector<node>& pi) {

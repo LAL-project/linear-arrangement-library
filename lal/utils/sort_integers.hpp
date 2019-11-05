@@ -45,7 +45,7 @@
 #include <vector>
 
 namespace lal {
-namespace macros {
+namespace utils {
 
 /*
  * @brief Insertion sort.
@@ -100,5 +100,5 @@ sort_1_n(std::vector<T>& v, size_t n)
 	}
 }
 
-} // -- namspace macros
+} // -- namspace utils
 } // -- namespace lal

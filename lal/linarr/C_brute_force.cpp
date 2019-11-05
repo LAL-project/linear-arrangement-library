@@ -114,7 +114,7 @@ uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 }
 
 uint32_t n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
-	return macros::call_with_empty_arrangement(__n_crossings_brute_force, g, pi);
+	return utils::call_with_empty_arrangement(__n_crossings_brute_force, g, pi);
 }
 
 } // -- namespace linarr

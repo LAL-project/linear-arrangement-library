@@ -64,7 +64,7 @@ uint64_t __headedness_rational(const dgraph& g, const vector<node>& pi) {
 }
 
 rational headedness_rational(const dgraph& g, const vector<node>& pi) {
-	const uint64_t etr = macros::call_with_empty_arrangement(__headedness_rational, g, pi);
+	const uint64_t etr = utils::call_with_empty_arrangement(__headedness_rational, g, pi);
 	// avoid warning conversion
 	rational h;
 	h.init_ui(etr, g.n_edges());

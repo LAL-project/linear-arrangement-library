@@ -135,7 +135,7 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
 	}
 
 	// stack of the algorithm
-	AVL<pair<uint32_t, edge> > S;
+	utils::AVL<pair<uint32_t, edge> > S;
 
 	uint32_t C = 0;
 
@@ -163,7 +163,7 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
 }
 
 uint32_t n_crossings_stack_based(const ugraph& g, const vector<node>& arr) {
-	return macros::call_with_empty_arrangement(__n_crossings_stack_based, g, arr);
+	return utils::call_with_empty_arrangement(__n_crossings_stack_based, g, arr);
 }
 
 } // -- namespace linarr

@@ -48,7 +48,7 @@
 #include <lal/definitions.hpp>
 
 namespace lal {
-namespace macros {
+namespace utils {
 
 /**
  * @brief Call a function @e F that does not admit empty arrangements.

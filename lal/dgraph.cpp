@@ -97,7 +97,7 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			macros::sort_1_n(nu, n_nodes());
+			utils::sort_1_n(nu, n_nodes());
 		}
 		else {
 			// Even though we have not been asked to normalise the
@@ -124,8 +124,8 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
 		node u = e.first;
 		node v = e.second;
-		assert(not has_edge(u,v));
 		assert(u != v);
+		assert(not has_edge(u,v));
 
 		neighbourhood& nu = m_adjacency_list[u];
 		nu.push_back(v);

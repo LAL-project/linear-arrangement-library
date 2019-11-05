@@ -128,7 +128,7 @@ uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& pi) {
 }
 
 uint32_t n_crossings_ladder(const ugraph& g, const vector<node>& pi) {
-	return macros::call_with_empty_arrangement(__n_crossings_ladder, g, pi);
+	return utils::call_with_empty_arrangement(__n_crossings_ladder, g, pi);
 }
 
 vector<uint32_t> n_crossings_ladder_list

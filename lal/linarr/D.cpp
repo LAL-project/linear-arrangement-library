@@ -75,7 +75,7 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
 }
 
 uint32_t sum_length_edges(const ugraph& g, const vector<node>& arr) {
-	return macros::call_with_empty_arrangement(__sum_length_edges, g, arr);
+	return utils::call_with_empty_arrangement(__sum_length_edges, g, arr);
 }
 
 } // -- namespace linarr
