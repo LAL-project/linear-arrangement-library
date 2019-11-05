@@ -48,6 +48,8 @@
 using namespace std;
 
 namespace lal {
+using namespace graphs;
+
 namespace linarr {
 
 #define max2(a,b) std::max(a,b)

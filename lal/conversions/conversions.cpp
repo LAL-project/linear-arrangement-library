@@ -47,6 +47,8 @@
 using namespace std;
 
 namespace lal {
+using namespace graphs;
+
 namespace convert {
 
 ugraph level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {

@@ -37,55 +37,71 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#include <lal/generation/rand_free_lab_trees.hpp>
+
+#pragma once
 
 // C++ includes
-using namespace std;
+#include <vector>
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
-using namespace graphs;
+namespace graphs {
 
-namespace generate {
+/**
+ * @brief Undirected graph class.
+ *
+ * Simple class implementing an undirected graph, using the adjacency
+ * list data structure.
+ *
+ * An object of this class must be initialised either with its constructor
+ * or with the @ref init(uint32_t) method. Edges can then be added one by one
+ * (see @ref add_edge(node,node,bool) ) or all at the same time (see
+ * @ref add_edges(const std::vector<edge>&, bool) ).
+ */
+class ugraph : public graph {
+	public:
+		/// Default constructor.
+		ugraph();
+		/**
+		 * @brief Constructor with number of nodes.
+		 * @param n Number of nodes.
+		 */
+		ugraph(uint32_t n);
+		/// Default destructor.
+		~ugraph();
 
-rand_free_lab_trees::rand_free_lab_trees() { }
-rand_free_lab_trees::rand_free_lab_trees(uint32_t _n, uint32_t seed) {
-	init(_n, seed);
-}
-rand_free_lab_trees::~rand_free_lab_trees() { }
+		/* OPERATORS */
 
-void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
-	m_n = _n;
-	if (m_n <= 2) { return; }
+		/* MODIFIERS */
 
-	m_seq = vector<uint32_t>(m_n - 2);
+		/**
+		 * @brief Adds an undirected edge.
+		 *
+		 * For more details see @ref graph::add_edge(node,node,bool)
+		 */
+		ugraph& add_edge(node u, node v, bool norm = false);
 
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
-	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
-}
+		/**
+		 * @brief Adds a list of undirected edges.
+		 *
+		 * For more details see @ref graph::add_edges(const std::vector<edge>&,bool)
+		 */
+		ugraph& add_edges(const std::vector<edge>& edges, bool norm = true);
 
-ugraph rand_free_lab_trees::make_rand_tree() {
-	if (m_n <= 1) { return ugraph(m_n); }
-	if (m_n == 2) {
-		ugraph t(2);
-		t.add_edge(0,1);
-		return t;
-	}
+		/* SETTERS */
 
-	for (uint32_t i = 0; i < m_n - 2; ++i) {
-		m_seq[i] = m_unif(m_gen);
-	}
-	return convert::Prufer_sequence_to_tree(m_seq, m_n);
-}
+		/* GETTERS */
 
-} // -- namespace generate
+		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
+		bool has_edge(node u, node v) const;
+
+		bool is_directed() const;
+		bool is_undirected() const;
+};
+
+} // -- namespace graphs
 } // -- namespace lal

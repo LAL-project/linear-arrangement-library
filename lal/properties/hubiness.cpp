@@ -44,6 +44,7 @@
 #include <assert.h>
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace properties {

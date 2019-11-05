@@ -49,6 +49,7 @@
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
+namespace graphs {
 
 /**
  * @brief Abstract class for graphs.
@@ -283,4 +284,5 @@ class graph {
 		lit get_neighbour_position(neighbourhood& n, node u);
 };
 
+} // -- namespace graphs
 } // -- namespace lal

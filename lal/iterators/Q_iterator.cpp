@@ -47,6 +47,8 @@
 using namespace std;
 
 namespace lal {
+using namespace graphs;
+
 namespace iterators {
 
 /* LOCAL FUNCTIONS */

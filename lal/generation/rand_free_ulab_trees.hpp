@@ -46,7 +46,7 @@
 #include <map>
 
 // lal includes
-#include <lal/ugraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 #include <lal/definitions.hpp>
 #include <lal/numeric/integer.hpp>
 
@@ -92,7 +92,7 @@ class rand_free_ulab_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns an unlabelled tree.
 		 */
-		ugraph make_rand_tree();
+		graphs::ugraph make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

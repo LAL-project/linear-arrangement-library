@@ -53,6 +53,7 @@ using namespace std;
 #include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
+using namespace graphs;
 using namespace iterators;
 
 namespace linarr {

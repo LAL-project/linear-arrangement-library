@@ -55,6 +55,8 @@ using namespace std;
 #include <lal/conversions/conversions.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace generate {
 
 // PUBLIC

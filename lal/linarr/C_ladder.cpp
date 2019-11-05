@@ -52,6 +52,8 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace linarr {
 
 inline uint32_t __n_crossings_ladder(

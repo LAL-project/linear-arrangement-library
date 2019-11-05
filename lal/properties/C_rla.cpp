@@ -45,6 +45,7 @@
 #include <lal/properties/C_rla.hpp>
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace properties {

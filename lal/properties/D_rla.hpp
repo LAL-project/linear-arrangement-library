@@ -42,7 +42,7 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -59,7 +59,7 @@ namespace properties {
  * @param g The input graph.
  * @return Returns \f$E[D]\f$ as a rational value.
  */
-numeric::rational expectation_D_first_rational(const ugraph& g);
+numeric::rational expectation_D_first_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the the expectation of the first moment of D.
  *
@@ -67,7 +67,7 @@ numeric::rational expectation_D_first_rational(const ugraph& g);
  * @param g The input graph.
  * @return Returns \f$E[D]\f$.
  */
-double expectation_D_first(const ugraph& g);
+double expectation_D_first(const graphs::ugraph& g);
 
 /* ----------------------- */
 /* VARIANCE OF D: V_rla[D] */
@@ -81,7 +81,7 @@ double expectation_D_first(const ugraph& g);
  * @param g Input graph.
  * @return Returns the exact value of \f$V[D]\f$ as a rational value.
  */
-numeric::rational variance_D_rational(const ugraph& g);
+numeric::rational variance_D_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the variance of the sum of the length of edges.
  *
@@ -91,7 +91,7 @@ numeric::rational variance_D_rational(const ugraph& g);
  * @param g Input graph.
  * @return Returns the exact value of \f$V[D]\f$.
  */
-double variance_D(const ugraph& g);
+double variance_D(const graphs::ugraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

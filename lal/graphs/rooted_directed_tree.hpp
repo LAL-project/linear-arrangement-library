@@ -41,10 +41,11 @@
 #pragma once
 
 // lal includes
-#include <lal/dgraph.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
+namespace graphs {
 
 /**
  * @brief Rooted directed tree class.
@@ -126,4 +127,5 @@ class rooted_directed_tree : public dgraph {
 		node m_r = 0;
 };
 
+} // -- namespace graphs
 } // -- namespace lal

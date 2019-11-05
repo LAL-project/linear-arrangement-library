@@ -94,10 +94,10 @@ endif
 ifeq ($(DIST),local)
 LAL_DIR = ..
 LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
-                  $(LAL_DIR)/lal/graph.hpp \
-                  $(LAL_DIR)/lal/ugraph.hpp \
-                  $(LAL_DIR)/lal/dgraph.hpp \
-                  $(LAL_DIR)/lal/rooted_directed_tree.hpp \
+                  $(LAL_DIR)/lal/graphs/graph.hpp \
+                  $(LAL_DIR)/lal/graphs/ugraph.hpp \
+                  $(LAL_DIR)/lal/graphs/dgraph.hpp \
+                  $(LAL_DIR)/lal/graphs/rooted_directed_tree.hpp \
                   $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
                   $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
 				  $(LAL_DIR)/lal/conversions/conversions.hpp \

@@ -47,6 +47,7 @@ using namespace std;
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace properties {

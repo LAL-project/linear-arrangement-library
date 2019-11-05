@@ -44,7 +44,7 @@
 #include <utility>
 
 // lal includes
-#include <lal/graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace iterators {
@@ -78,7 +78,7 @@ class edge_iterator {
 		 * @brief Constructor
 		 * @param g Constant reference to the graph over which we iterate.
 		 */
-		edge_iterator(const graph& g);
+		edge_iterator(const graphs::graph& g);
 		/// Destructor.
 		~edge_iterator();
 
@@ -116,7 +116,7 @@ class edge_iterator {
 
 	private:
 		/// The graph whose edges have to be iterated on.
-		const graph& m_G;
+		const graphs::graph& m_G;
 		/// Pointer to the next edge.
 		E_pointer m_cur;
 		/// Is there a next edge to iterate over?

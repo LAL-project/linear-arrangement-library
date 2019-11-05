@@ -44,7 +44,7 @@
 #include <string>
 
 // lal includes
-#include <lal/graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace io {
@@ -68,7 +68,7 @@ namespace io {
  * @return Returns 'false' if the file could not be opened. Returns 'true'
  * if the graph was read successfully.
  */
-bool read_edge_list(const std::string& filename, graph& g, bool norm = true);
+bool read_edge_list(const std::string& filename, graphs::graph& g, bool norm = true);
 
 } // -- namespace io
 } // -- namespace lal

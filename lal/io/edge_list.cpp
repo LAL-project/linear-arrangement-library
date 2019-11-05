@@ -50,6 +50,8 @@ using namespace std;
 #include <lal/definitions.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace io {
 
 bool read_edge_list(const std::string& filename, graph& g, bool norm) {

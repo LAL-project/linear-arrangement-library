@@ -9,10 +9,10 @@
 
 // library's main directory
 #include <lal/definitions.hpp>
-#include <lal/graph.hpp>
-#include <lal/ugraph.hpp>
-#include <lal/dgraph.hpp>
-#include <lal/rooted_directed_tree.hpp>
+#include <lal/graphs/graph.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/rooted_directed_tree.hpp>
 
 // iterators
 #include <lal/iterators/edge_iterator.hpp>
@@ -80,12 +80,15 @@ namespace std {
 // ---------------------
 // basic data structures
 
+// numeric
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
-%include "../lal/graph.hpp"
-%include "../lal/ugraph.hpp"
-%include "../lal/dgraph.hpp"
-%include "../lal/rooted_directed_tree.hpp"
+
+// graphs
+%include "../lal/graphs/graph.hpp"
+%include "../lal/graphs/ugraph.hpp"
+%include "../lal/graphs/dgraph.hpp"
+%include "../lal/graphs/rooted_directed_tree.hpp"
 
 // -------------
 // io operations

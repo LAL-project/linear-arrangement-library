@@ -44,7 +44,7 @@
 #include <tuple>
 
 // lal includes
-#include <lal/graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace iterators {
@@ -79,7 +79,7 @@ class Q_iterator {
 		 * @brief Constructor
 		 * @param g Constant reference to the graph over which we iterate.
 		 */
-		Q_iterator(const graph& g);
+		Q_iterator(const graphs::graph& g);
 		/// Destructor.
 		~Q_iterator();
 
@@ -104,7 +104,7 @@ class Q_iterator {
 
 	private:
 		/// Graph we are iterating on
-		const graph& m_G;
+		const graphs::graph& m_G;
 
 		/// Current pointers to the first edge.
 		E_pointer m_cur1 = E_pointer(0,0);

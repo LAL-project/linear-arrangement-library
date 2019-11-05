@@ -53,6 +53,8 @@ using namespace std;
 #include <lal/conversions/conversions.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace generate {
 
 free_ulab_trees::free_ulab_trees() { }

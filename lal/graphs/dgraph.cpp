@@ -37,8 +37,8 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#include <lal/ugraph.hpp>
+
+#include <lal/graphs/dgraph.hpp>
 
 // C includes
 #include <assert.h>
@@ -46,34 +46,52 @@
 // C++ includes
 #include <algorithm>
 #include <cmath>
+#include <set>
 using namespace std;
 
 // lal includes
 #include <lal/utils/sort_integers.hpp>
+#include <lal/iterators/edge_iterator.hpp>
 
 namespace lal {
 using namespace numeric;
 
+namespace graphs {
+
 /* PUBLIC */
 
-ugraph::ugraph() : graph() { }
-ugraph::ugraph(uint32_t n) : graph(n) { }
-ugraph::~ugraph() { }
+dgraph::dgraph() : graph() { }
+dgraph::dgraph(uint32_t n) {
+	init(n);
+}
+dgraph::~dgraph() { }
 
 /* OPERATORS */
 
 /* MODIFIERS */
 
-ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
+void dgraph::disjoint_union(const graph& g) {
+	graph::disjoint_union(g);
+
+	// if the call to 'graph::disjoint_union' did not
+	// fail then graph 'g' is a directed graph
+	const dgraph& dg = static_cast<const dgraph&>(g);
+
+	m_in_degree.insert(
+		m_in_degree.end(),
+		dg.m_in_degree.begin(), dg.m_in_degree.end()
+	);
+}
+
+dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 	assert(not has_edge(u,v));
 	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
 
 	neighbourhood& nu = m_adjacency_list[u];
-	neighbourhood& nv = m_adjacency_list[v];
 	nu.push_back(v);
-	nv.push_back(u);
+	m_in_degree[v] += 1;
 	++m_num_edges;
 
 	if (m_normalised) {
@@ -82,24 +100,17 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
 			utils::sort_1_n(nu, n_nodes());
-			utils::sort_1_n(nv, n_nodes());
 		}
 		else {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
-			// check whether the graph is still normalised. We may
+			// check whether the graph is still normalised. We might
 			// be lucky....
 			const size_t su = nu.size();
-			const size_t sv = nv.size();
-			if (su > 1 and sv > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
-			}
-			else if (su > 1) {
+			m_normalised = (su <= 1 ? m_normalised : nu[su - 2] < nu[su - 1]);
+			/*if (su > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1];
-			}
-			else if (sv > 1) {
-				m_normalised = nv[sv - 2] < nv[sv - 1];
-			}
+			}*/
 		}
 	}
 	else if (to_norm) {
@@ -111,17 +122,16 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 	return *this;
 }
 
-ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
+dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
 		node u = e.first;
 		node v = e.second;
-		assert(not has_edge(u,v));
 		assert(u != v);
+		assert(not has_edge(u,v));
 
 		neighbourhood& nu = m_adjacency_list[u];
-		neighbourhood& nv = m_adjacency_list[v];
 		nu.push_back(v);
-		nv.push_back(u);
+		m_in_degree[v] += 1;
 		++m_num_edges;
 	}
 
@@ -141,23 +151,42 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 
 /* GETTERS */
 
-bool ugraph::has_edge(node u, node v) const {
+bool dgraph::has_edge(node u, node v) const {
 	assert(has_node(u));
 	assert(has_node(v));
 
 	const neighbourhood& nu = m_adjacency_list[u];
-	const neighbourhood& nv = m_adjacency_list[v];
-
-	if (nu.size() <= nv.size()) {
-		return cget_neighbour_position(nu, v) != nu.end();
-	}
-	return cget_neighbour_position(nv, u) != nv.end();
+	return cget_neighbour_position(nu, v) != nu.end();
 }
 
-bool ugraph::is_directed() const { return false; }
-bool ugraph::is_undirected() const { return true; }
+bool dgraph::is_directed() const { return true; }
+bool dgraph::is_undirected() const { return false; }
+
+uint32_t dgraph::in_degree(node u) const {
+	assert(has_node(u));
+	return m_in_degree[u];
+}
+
+ugraph dgraph::to_undirected() const {
+	ugraph g(n_nodes());
+	g.add_edges(edges());
+	return g;
+}
+
+void dgraph::clear() {
+	graph::clear();
+	m_in_degree.clear();
+}
+
+/* PROTECTED */
+
+void dgraph::_init(uint32_t n) {
+	graph::_init(n);
+	m_in_degree = vector<uint32_t>(n, 0);
+}
 
 /* PRIVATE */
 
+} // -- namespace graphs
 } // -- namespace lal
 

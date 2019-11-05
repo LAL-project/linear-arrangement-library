@@ -52,6 +52,7 @@ using namespace std;
 
 namespace lal {
 #define idx(i,j, C) ((i)*(C) + (j))
+using namespace graphs;
 
 namespace linarr {
 

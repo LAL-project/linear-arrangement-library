@@ -55,7 +55,7 @@ using namespace std;
 #include <lal/io/treebank_dataset.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/definitions.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/properties/Q.hpp>
@@ -66,6 +66,8 @@ using namespace std;
 #define NUM_TREE_FEATURES 14
 
 namespace lal {
+using namespace graphs;
+
 namespace io {
 
 inline size_t enum2index(const treebank_processor::tree_feature& tf) {

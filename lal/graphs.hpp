@@ -40,66 +40,7 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
-// lal includes
-#include <lal/definitions.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/graph.hpp>
-
-namespace lal {
-
-/**
- * @brief Undirected graph class.
- *
- * Simple class implementing an undirected graph, using the adjacency
- * list data structure.
- *
- * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool) ).
- */
-class ugraph : public graph {
-	public:
-		/// Default constructor.
-		ugraph();
-		/**
-		 * @brief Constructor with number of nodes.
-		 * @param n Number of nodes.
-		 */
-		ugraph(uint32_t n);
-		/// Default destructor.
-		~ugraph();
-
-		/* OPERATORS */
-
-		/* MODIFIERS */
-
-		/**
-		 * @brief Adds an undirected edge.
-		 *
-		 * For more details see @ref graph::add_edge(node,node,bool)
-		 */
-		ugraph& add_edge(node u, node v, bool norm = false);
-
-		/**
-		 * @brief Adds a list of undirected edges.
-		 *
-		 * For more details see @ref graph::add_edges(const std::vector<edge>&,bool)
-		 */
-		ugraph& add_edges(const std::vector<edge>& edges, bool norm = true);
-
-		/* SETTERS */
-
-		/* GETTERS */
-
-		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
-		bool has_edge(node u, node v) const;
-
-		bool is_directed() const;
-		bool is_undirected() const;
-};
-
-} // -- namespace lal
+#include <lal/graphs/graph.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/rooted_directed_tree.hpp>

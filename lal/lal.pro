@@ -29,15 +29,16 @@ INCLUDEPATH += ..
 # PROJECT FILES
 HEADERS += \
     definitions.hpp \
-    dgraph.hpp \
     generation/rand_rooted_lab_dir_trees.hpp \
-    graph.hpp \
+    graphs.hpp \
+    graphs/dgraph.hpp \
+    graphs/graph.hpp \
+    graphs/rooted_directed_tree.hpp \
+    graphs/ugraph.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
     linarr/headedness.hpp \
-    rooted_directed_tree.hpp \
-    ugraph.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \
     numeric/integer.hpp \
@@ -66,15 +67,15 @@ HEADERS += \
     utils/sort_integers.hpp
 
 SOURCES += \
-    dgraph.cpp \
     generation/rand_rooted_lab_dir_trees.cpp \
-    graph.cpp \
+    graphs/dgraph.cpp \
+    graphs/graph.cpp \
+    graphs/rooted_directed_tree.cpp \
+    graphs/ugraph.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/headedness.cpp \
     properties/hubiness.cpp \
-    rooted_directed_tree.cpp \
-    ugraph.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \
     numeric/integer.cpp \

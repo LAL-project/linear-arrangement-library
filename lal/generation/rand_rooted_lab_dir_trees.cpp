@@ -44,6 +44,8 @@
 using namespace std;
 
 namespace lal {
+using namespace graphs;
+
 namespace generate {
 
 rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees() : rand_free_lab_trees() { }

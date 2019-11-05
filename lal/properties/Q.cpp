@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/dgraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/iterators/Q_iterator.hpp>
@@ -56,6 +56,7 @@ using namespace std;
 		g.degree(u))
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 using namespace iterators;
 

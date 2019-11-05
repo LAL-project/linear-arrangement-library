@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 // C includes
 #include <assert.h>
@@ -58,6 +58,8 @@ using namespace std;
 namespace lal {
 using namespace numeric;
 using namespace iterators;
+
+namespace graphs {
 
 /* PUBLIC */
 
@@ -235,5 +237,6 @@ lit graph::get_neighbour_position(neighbourhood& n, node u) {
 	return n.end();
 }
 
+} // -- namespace graphs
 } // -- namespace lal
 

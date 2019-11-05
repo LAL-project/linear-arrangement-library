@@ -51,6 +51,7 @@ using namespace std;
 #define to_int64(x) static_cast<int64_t>(x)
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace linarr {

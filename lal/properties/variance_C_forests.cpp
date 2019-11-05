@@ -52,6 +52,7 @@ using namespace std;
 typedef uint64_t bigint;
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace properties {

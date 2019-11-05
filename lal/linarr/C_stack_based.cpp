@@ -60,6 +60,8 @@ using namespace std;
 typedef pair<uint32_t,lal::edge> indexed_edge;
 
 namespace lal {
+using namespace graphs;
+
 namespace linarr {
 
 #define sorted_edge(u,v)		\

@@ -46,7 +46,7 @@
 // lal includes
 #include <lal/numeric/integer.hpp>
 #include <lal/definitions.hpp>
-#include <lal/graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace properties {
@@ -56,14 +56,14 @@ namespace properties {
  * @param G Input graph.
  * @return Returns the size of \f$Q(G)\f$ as a rational value.
  */
-numeric::integer size_Q_integer(const graph& G);
+numeric::integer size_Q_integer(const graphs::graph& G);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  * @param G Input graph.
  * @returns The size of \f$Q(G)\f$.
  */
-uint64_t size_Q(const graph& G);
+uint64_t size_Q(const graphs::graph& G);
 
 } // -- namespace properties
 } // -- namespace lal

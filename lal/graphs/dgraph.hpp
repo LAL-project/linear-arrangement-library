@@ -46,10 +46,11 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/graph.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graphs/graph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
+namespace graphs {
 
 /**
  * @brief Directed graph class.
@@ -145,4 +146,5 @@ class dgraph : public graph {
 		void _init(uint32_t n);
 };
 
+} // -- namespace graphs
 } // -- namespace lal

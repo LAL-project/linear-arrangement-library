@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/rooted_directed_tree.hpp>
+#include <lal/graphs/rooted_directed_tree.hpp>
 
 // C includes
 #include <assert.h>
@@ -54,6 +54,8 @@ using namespace std;
 
 namespace lal {
 using namespace utils;
+
+namespace graphs {
 
 rooted_directed_tree::rooted_directed_tree() : dgraph() { }
 rooted_directed_tree::rooted_directed_tree(uint32_t n) : dgraph(n) { }
@@ -110,4 +112,5 @@ bool rooted_directed_tree::is_root(node r) const {
 
 /* PRIVATE */
 
+} // -- namespace graphs
 } // -- namespace lal

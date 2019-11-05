@@ -55,6 +55,7 @@ using namespace std;
 #define to_uint32(x) static_cast<uint32_t>(x)
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 namespace generate {

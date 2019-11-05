@@ -44,7 +44,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/dgraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
@@ -69,7 +69,7 @@ namespace linarr {
  * @return Returns the headedness ratio as an exact rational number.
  */
 numeric::rational headedness_rational
-(const dgraph& g, const std::vector<node>& pi = {});
+(const graphs::dgraph& g, const std::vector<node>& pi = {});
 
 /**
  * @brief Computes headedness of a directed graph.
@@ -90,7 +90,7 @@ numeric::rational headedness_rational
  * @return Returns the headedness ratio as an exact rational number.
  */
 double headedness
-(const dgraph& g, const std::vector<node>& pi = {});
+(const graphs::dgraph& g, const std::vector<node>& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

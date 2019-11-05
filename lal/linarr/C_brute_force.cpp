@@ -52,6 +52,7 @@ using namespace std;
 #include <lal/iterators/Q_iterator.hpp>
 
 namespace lal {
+using namespace graphs;
 using namespace iterators;
 
 #define idx(i,j, C) ((i)*(C) + (j))

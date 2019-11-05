@@ -44,7 +44,7 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/ugraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -61,7 +61,7 @@ namespace properties {
  * @param[in] g Input graph.
  * @return Returns the exact second moment of degree about zero.
  */
-numeric::rational second_mmt_degree_rational(const ugraph& g);
+numeric::rational second_mmt_degree_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the second moment of degree of a graph.
  *
@@ -74,7 +74,7 @@ numeric::rational second_mmt_degree_rational(const ugraph& g);
  * @param[in] g Input graph.
  * @return Returns the exact second moment of degree about zero.
  */
-double second_mmt_degree(const ugraph& g);
+double second_mmt_degree(const graphs::ugraph& g);
 
 /**
  * @brief Computes the third moment of degree of a graph as a rational value.
@@ -88,7 +88,7 @@ double second_mmt_degree(const ugraph& g);
  * @param[in] g Input graph.
  * @return Returns the exact third moment of degree about zero.
  */
-numeric::rational third_mmt_degree_rational(const ugraph& g);
+numeric::rational third_mmt_degree_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the third moment of degree of a graph.
  *
@@ -101,7 +101,7 @@ numeric::rational third_mmt_degree_rational(const ugraph& g);
  * @param[in] g Input graph.
  * @return Returns the exact third moment of degree about zero.
  */
-double third_mmt_degree(const ugraph& g);
+double third_mmt_degree(const graphs::ugraph& g);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -121,7 +121,7 @@ double third_mmt_degree(const ugraph& g);
  * @pre \f$n > 3\f$.
  * @return Returns the hubiness coefficient.
  */
-numeric::rational hubiness_rational(const ugraph& g);
+numeric::rational hubiness_rational(const graphs::ugraph& g);
 
 /**
  * @brief Computes the hubiness coefficient.
@@ -141,7 +141,7 @@ numeric::rational hubiness_rational(const ugraph& g);
  * @pre \f$n > 2\f$.
  * @return Returns the hubiness coefficient.
  */
-double hubiness(const ugraph& g);
+double hubiness(const graphs::ugraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

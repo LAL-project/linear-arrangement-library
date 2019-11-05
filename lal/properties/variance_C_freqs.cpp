@@ -58,6 +58,7 @@ enum class frequency_type : int8_t {
 };
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 
 /* UTILITIES */

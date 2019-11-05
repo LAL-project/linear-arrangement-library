@@ -92,6 +92,7 @@ typedef map<lal::edge, useful_info_pairs>::iterator IT;
 typedef map<lal::edge, useful_info_pairs>::const_iterator CIT;
 
 namespace lal {
+using namespace graphs;
 using namespace numeric;
 using namespace iterators;
 
