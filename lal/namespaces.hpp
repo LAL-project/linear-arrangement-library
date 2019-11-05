@@ -70,6 +70,13 @@ namespace convert {}
 namespace generate {}
 
 /**
+ * @brief Namespace for the graphs data structures.
+ * 
+ * This namespace contains the data structures that implement graphs.
+ */
+namespace graphs {}
+
+/**
  * @brief Input/Output functions.
  * 
  * This namespace contains the functions for input/output operations.
