@@ -44,11 +44,16 @@
 #include <assert.h>
 
 // C++ includes
+#include <iostream>
 #include <vector>
 #include <queue>
 using namespace std;
 
+// lal includes
+#include <lal/utils/bfs.hpp>
+
 namespace lal {
+using namespace utils;
 
 rooted_directed_tree::rooted_directed_tree() : dgraph() { }
 rooted_directed_tree::rooted_directed_tree(uint32_t n) : dgraph(n) { }
@@ -69,25 +74,16 @@ void rooted_directed_tree::init_rooted(const ugraph& g, node r) {
 	vector<edge> dir_edges(g.n_edges());
 	auto it_dir_edges = dir_edges.begin();
 
-	// .. with a BFS on the tree, starting at 'r'
-	vector<bool> vis(g.n_nodes(), false);
-	queue<node> Q;
-	Q.push(r);
-	vis[r] = true;
-	while (not Q.empty()) {
-		node s = Q.front();
-		Q.pop();
-
-		// for each neighbour of t
-		for (auto t : g.get_neighbours(s)) {
-			if (not vis[t]) {
-				*it_dir_edges = edge(s,t);
-				++it_dir_edges;
-				Q.push(t);
-				vis[t] = true;
-			}
+	BFS<ugraph,node> bfs(g);
+	bfs.start_at(
+		r,
+		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> bool { return false; },
+		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> void { },
+		[&](const ugraph&, node s, node t, const vector<bool>&, const queue<node>&) -> void {
+			*it_dir_edges = edge(s,t);
+			++it_dir_edges;
 		}
-	}
+	);
 
 	// construct rooted directed tree
 	init(g.n_nodes());
