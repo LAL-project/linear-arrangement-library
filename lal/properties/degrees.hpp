@@ -50,7 +50,7 @@ namespace lal {
 namespace properties {
 
 /**
- * @brief Computes the second moment of degree of a graph.
+ * @brief Computes the second moment of degree of a graph as a rational value.
  *
  * Computes the second moment of degree about zero, \f$\langle k^2 \rangle\f$,
  * of a graph using rational values:
@@ -77,7 +77,7 @@ numeric::rational second_mmt_degree_rational(const ugraph& g);
 double second_mmt_degree(const ugraph& g);
 
 /**
- * @brief Computes the third moment of degree of a graph.
+ * @brief Computes the third moment of degree of a graph as a rational value.
  *
  * Computes the third moment of degree about zero, \f$\langle k^3 \rangle\f$,
  * of a graph using rational values:
@@ -102,6 +102,46 @@ numeric::rational third_mmt_degree_rational(const ugraph& g);
  * @return Returns the exact third moment of degree about zero.
  */
 double third_mmt_degree(const ugraph& g);
+
+/**
+ * @brief Computes the hubiness coefficient as an exact rational number.
+ *
+ * The hubiness coefficient is defined as.
+ *
+ * \f$ h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
+ *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }
+ * \f$,
+ *
+ * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
+ * are the second moment of degree about 0 (see @ref second_mmt_degree_rational)
+ * of a star and linear tree respectively.
+ *
+ * See \cite Ferrer2018a for details.
+ * @param g Input graph.
+ * @pre \f$n > 3\f$.
+ * @return Returns the hubiness coefficient.
+ */
+numeric::rational hubiness_rational(const ugraph& g);
+
+/**
+ * @brief Computes the hubiness coefficient.
+ *
+ * The hubiness coefficient is defined as.
+ *
+ * \f$ h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
+ *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }
+ * \f$,
+ *
+ * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
+ * are the second moment of degree about 0 (see @ref second_mmt_degree_rational)
+ * of a star and linear tree respectively.
+ *
+ * See \cite Ferrer2018a for details.
+ * @param g Input graph.
+ * @pre \f$n > 2\f$.
+ * @return Returns the hubiness coefficient.
+ */
+double hubiness(const ugraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

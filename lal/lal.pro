@@ -71,6 +71,7 @@ SOURCES += \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/headedness.cpp \
+    properties/hubiness.cpp \
     rooted_directed_tree.cpp \
     ugraph.cpp \
     io/treebank_dataset.cpp \
