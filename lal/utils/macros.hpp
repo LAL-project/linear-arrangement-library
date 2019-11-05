@@ -58,10 +58,10 @@ namespace macros {
  * @param arr Arrangement.
  * @return Returns the value function @e F returns.
  */
-template<typename T>
+template<typename T, class G>
 T call_with_empty_arrangement(
-	T (*F)(const ugraph&, const std::vector<node>&),
-	const ugraph& g, const std::vector<node>& arr
+	T (*F)(const G&, const std::vector<node>&),
+	const G& g, const std::vector<node>& arr
 )
 {
 	if (arr.size() != 0) {

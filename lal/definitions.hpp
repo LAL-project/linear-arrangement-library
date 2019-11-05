@@ -41,7 +41,6 @@
 #pragma once
 
 // C++ includes
-#include <utility>
 #include <cstdint>
 #include <vector>
 #include <string>
