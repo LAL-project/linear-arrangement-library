@@ -61,7 +61,7 @@ namespace linarr {
  * arrangement. If the arrangement is not specified, the identity arrangement
  * is used.
  * @param Q The set \f$Q(G)\f$ of a graph.
- * @param arr Linear arrangement of the vertices. If @e pi[u] = p then
+ * @param pi Linear arrangement of the vertices. If @e pi[u] = p then
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
@@ -166,7 +166,7 @@ uint32_t n_crossings_stack_based
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational approximate_C_2_rational
-(const ugraph& g, const std::vector<node>& arr = {});
+(const ugraph& g, const std::vector<node>& pi = {});
 /**
  * @brief Approximate the number of crossings.
  *
