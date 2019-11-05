@@ -43,7 +43,6 @@
 // C++ includes
 #include <algorithm>
 #include <iterator>
-#include <vector>
 
 namespace lal {
 namespace utils {

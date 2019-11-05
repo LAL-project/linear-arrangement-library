@@ -56,15 +56,15 @@ namespace graphs {
  * This class can be built from an undirected tree by orienting its edges from
  * a chosen node. This node represents the root of the directed rooted tree.
  */
-class rooted_directed_tree : public dgraph {
+class rdtree : public dgraph {
 	public:
 		/// Default constructor.
-		rooted_directed_tree();
+		rdtree();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		rooted_directed_tree(uint32_t n);
+		rdtree(uint32_t n);
 		/**
 		 * @brief Constructor with undirected tree and root node.
 		 *
@@ -74,9 +74,9 @@ class rooted_directed_tree : public dgraph {
 		 * @param r Root of the directed tree. A node of @e g.
 		 * @pre The graph @e g must be a tree.
 		 */
-		rooted_directed_tree(const ugraph& g, node r);
+		rdtree(const ugraph& g, node r);
 		/// Destructor
-		~rooted_directed_tree();
+		~rdtree();
 
 		/**
 		 * @brief Constructor with undirected tree and root node.

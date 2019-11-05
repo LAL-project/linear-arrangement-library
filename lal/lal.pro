@@ -33,7 +33,7 @@ HEADERS += \
     graphs.hpp \
     graphs/dgraph.hpp \
     graphs/graph.hpp \
-    graphs/rooted_directed_tree.hpp \
+    graphs/rdtree.hpp \
     graphs/ugraph.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
@@ -70,7 +70,7 @@ SOURCES += \
     generation/rand_rooted_lab_dir_trees.cpp \
     graphs/dgraph.cpp \
     graphs/graph.cpp \
-    graphs/rooted_directed_tree.cpp \
+    graphs/rdtree.cpp \
     graphs/ugraph.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \

@@ -120,7 +120,7 @@ target_sources(
 		graphs/graph.cpp
 		graphs/ugraph.cpp
 		graphs/dgraph.cpp
-		graphs/rooted_directed_tree.cpp
+		graphs/rdtree.cpp
 		iterators/edge_iterator.cpp
 		iterators/Q_iterator.cpp
 		conversions/conversions.cpp
@@ -173,7 +173,7 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/graph.hpp
 	graphs/ugraph.hpp
 	graphs/dgraph.hpp
-	graphs/rooted_directed_tree.hpp
+	graphs/rdtree.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/edge_iterator.hpp

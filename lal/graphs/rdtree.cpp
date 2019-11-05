@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rooted_directed_tree.hpp>
+#include <lal/graphs/rdtree.hpp>
 
 // C includes
 #include <assert.h>
@@ -57,14 +57,14 @@ using namespace utils;
 
 namespace graphs {
 
-rooted_directed_tree::rooted_directed_tree() : dgraph() { }
-rooted_directed_tree::rooted_directed_tree(uint32_t n) : dgraph(n) { }
-rooted_directed_tree::rooted_directed_tree(const ugraph& g, node r) : dgraph() {
+rdtree::rdtree() : dgraph() { }
+rdtree::rdtree(uint32_t n) : dgraph(n) { }
+rdtree::rdtree(const ugraph& g, node r) : dgraph() {
 	init_rooted(g, r);
 }
-rooted_directed_tree::~rooted_directed_tree() { }
+rdtree::~rdtree() { }
 
-void rooted_directed_tree::init_rooted(const ugraph& g, node r) {
+void rdtree::init_rooted(const ugraph& g, node r) {
 	// assert(is_tree(g));
 	if (g.n_nodes() == 0) {
 		init(0);
@@ -95,17 +95,17 @@ void rooted_directed_tree::init_rooted(const ugraph& g, node r) {
 
 /* MODIFIERS */
 
-void rooted_directed_tree::disjoint_union(const graph& ) { }
+void rdtree::disjoint_union(const graph& ) { }
 
 /* SETTERS */
 
-void rooted_directed_tree::set_root(node r) {
+void rdtree::set_root(node r) {
 	assert(has_node(r));
 	m_r = r;
 }
-node rooted_directed_tree::get_root() const { return m_r; }
+node rdtree::get_root() const { return m_r; }
 
-bool rooted_directed_tree::is_root(node r) const {
+bool rdtree::is_root(node r) const {
 	assert(has_node(r));
 	return m_in_degree[r];
 }
