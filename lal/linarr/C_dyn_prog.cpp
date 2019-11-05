@@ -58,9 +58,9 @@ namespace linarr {
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 inline uint32_t __n_crossings_dyn_prog(
-	const ugraph& g, const vector<node>& T,
+	const ugraph& g, const vector<node>& pi,
 	vector<bool>& bn,
-	uint32_t * __restrict__ pi,
+	uint32_t * __restrict__ T,
 	uint32_t * __restrict__ M,
 	uint32_t * __restrict__ K
 )
@@ -69,7 +69,7 @@ inline uint32_t __n_crossings_dyn_prog(
 
 	// compute pi
 	for (uint32_t i = 0; i < n; ++i) {
-		pi[ T[i] ] = i;
+		T[ pi[i] ] = i;
 	}
 
 	/* fill matrix M */
@@ -171,7 +171,7 @@ inline uint32_t __n_crossings_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& T) {
+uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -183,9 +183,9 @@ uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& T) {
 	const uint32_t total_elements = n + 2*(n - 3)*(n - 3);
 	uint32_t * __restrict__ all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t * __restrict__ pi = &all_memory[0];
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
 	uint32_t * __restrict__ M = &all_memory[0 + n];
 	// matrix K (without 3 of its columns and rows)
@@ -195,7 +195,7 @@ uint32_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& T) {
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint32_t C = __n_crossings_dyn_prog(g, T, bool_neighs, pi,M,K);
+	uint32_t C = __n_crossings_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
 	free(all_memory);
@@ -206,25 +206,25 @@ uint32_t n_crossings_dyn_prog(const ugraph& g, const vector<node>& arr) {
 	return macros::call_with_empty_arrangement(__n_crossings_dyn_prog, g, arr);
 }
 
-void n_crossings_dyn_prog_list
-(const ugraph& g, const vector<vector<node> >& Ts, vector<uint32_t>& cs)
+vector<uint32_t> n_crossings_dyn_prog_list
+(const ugraph& g, const vector<vector<node> >& pis)
 {
+	vector<uint32_t> cs(pis.size(), 0);
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
-		cs = vector<uint32_t>(Ts.size(), 0);
-		return;
+		return cs;
 	}
 
 	/* allocate memory */
-	cs.resize(Ts.size());
+	cs.resize(pis.size());
 
 	// size of pi + size of M + size of K
 	const uint32_t total_elements = n + 2*(n - 3)*(n - 3);
 	uint32_t * __restrict__ all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t * __restrict__ pi = &all_memory[0];
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
 	uint32_t * __restrict__ M = &all_memory[0 + n];
 	// matrix K (without 3 of its columns and rows)
@@ -234,13 +234,14 @@ void n_crossings_dyn_prog_list
 	vector<bool> bool_neighs(n, false);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < Ts.size(); ++i) {
-		cs[i] = __n_crossings_dyn_prog(g, Ts[i], bool_neighs, pi,M,K);
+	for (size_t i = 0; i < pis.size(); ++i) {
+		cs[i] = __n_crossings_dyn_prog(g, pis[i], bool_neighs, T,M,K);
 		bool_neighs.assign(n, false);
 	}
 
 	/* free memory */
 	free(all_memory);
+	return cs;
 }
 
 } // -- namespace linarr

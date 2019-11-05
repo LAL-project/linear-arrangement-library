@@ -57,16 +57,7 @@ using namespace iterators;
 
 namespace linarr {
 
-uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
-	const node n = g.n_nodes();
-
-	// translation table:
-	// T[u] = p <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
-	for (uint32_t i = 0; i < n; ++i) {
-		T[ arr[i] ] = i;
-	}
-
+uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
 	// sum of lengths
 	uint32_t l = 0;
 
@@ -78,9 +69,8 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& arr) {
 		const node t = e.second;
 
 		// accumulate length of edge
-		l += (T[s] >= T[t] ? T[s] - T[t] : T[t] - T[s]);
+		l += (pi[s] >= pi[t] ? pi[s] - pi[t] : pi[t] - pi[s]);
 	}
-	free(T);
 	return l;
 }
 

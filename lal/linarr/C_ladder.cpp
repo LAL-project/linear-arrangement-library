@@ -55,9 +55,9 @@ namespace lal {
 namespace linarr {
 
 inline uint32_t __n_crossings_ladder(
-	const ugraph& g, const vector<node>& T,
+	const ugraph& g, const vector<node>& pi,
 	vector<bool>& bn,
-	uint32_t * __restrict__ pi,
+	uint32_t * __restrict__ T,
 	uint32_t * __restrict__ L1
 )
 {
@@ -65,7 +65,7 @@ inline uint32_t __n_crossings_ladder(
 
 	/* initialise memory */
 	for (uint32_t i = 0; i < n; ++i) {
-		pi[ T[i] ] = i;
+		T[ pi[i] ] = i;
 		L1[i] = 0;
 	}
 
@@ -98,7 +98,7 @@ inline uint32_t __n_crossings_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& T) {
+uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -110,9 +110,9 @@ uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& T) {
 	const uint32_t total_elements = n + n;
 	uint32_t *all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t * __restrict__ pi = &all_memory[0];
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode)
 	uint32_t * __restrict__ L1 = &all_memory[n];
 
@@ -120,38 +120,35 @@ uint32_t __n_crossings_ladder(const ugraph& g, const vector<node>& T) {
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint32_t C = __n_crossings_ladder(g, T, bool_neighs, pi,L1);
+	uint32_t C = __n_crossings_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
 	free(all_memory);
 	return C;
 }
 
-uint32_t n_crossings_ladder(const ugraph& g, const vector<node>& arr) {
-	return macros::call_with_empty_arrangement(__n_crossings_ladder, g, arr);
+uint32_t n_crossings_ladder(const ugraph& g, const vector<node>& pi) {
+	return macros::call_with_empty_arrangement(__n_crossings_ladder, g, pi);
 }
 
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
-void n_crossings_ladder_list
-(const ugraph& g, const vector<vector<node> >& Ts, vector<uint32_t>& cs)
+vector<uint32_t> n_crossings_ladder_list
+(const ugraph& g, const vector<vector<node> >& pis)
 {
+	vector<uint32_t> cs(pis.size(), 0);
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
-		cs = vector<uint32_t>(Ts.size(), 0);
-		return;
+		return cs;
 	}
 
 	/* allocate memory */
-	cs.resize(Ts.size());
 
 	// size of pi + size of L1
 	const uint32_t total_elements = n + n;
 	uint32_t *all_memory = static_cast<uint32_t *>(malloc(total_elements*sizeof(uint32_t)));
 
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t * __restrict__ pi = &all_memory[0];
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode)
 	uint32_t * __restrict__ L1 = &all_memory[n];
 
@@ -159,13 +156,14 @@ void n_crossings_ladder_list
 	vector<bool> bool_neighs(n, false);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < Ts.size(); ++i) {
-		cs[i] = __n_crossings_ladder(g, Ts[i], bool_neighs, pi,L1);
+	for (size_t i = 0; i < pis.size(); ++i) {
+		cs[i] = __n_crossings_ladder(g, pis[i], bool_neighs, T,L1);
 		bool_neighs.assign(n, false);
 	}
 
 	/* free memory */
 	free(all_memory);
+	return cs;
 }
 
 } // -- namespace linarr

@@ -65,17 +65,17 @@ namespace linarr {
 #define sorted_edge(u,v)		\
 	(u < v ? edge(u,v) : edge(v,u) )
 
-uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& T) {
-	const uint32_t n = static_cast<uint32_t>(T.size());
+uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
+	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
 
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t *pi = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
 	for (uint32_t i = 0; i < n; ++i) {
-		pi[ T[i] ] = i;
+		T[ pi[i] ] = i;
 	}
 
 	// make adjacency lists, sorted by edge length
@@ -158,7 +158,7 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& T) {
 		S.join_sorted_all_greater(adjN[u]);
 	}
 
-	free(pi);
+	free(T);
 	return C;
 }
 

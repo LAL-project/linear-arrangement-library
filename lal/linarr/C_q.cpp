@@ -57,17 +57,10 @@ namespace linarr {
 	(a < b) && ((sa=a) & (sb=b));	\
 	(a > b) && ((sa=b) & (sb=a));
 
-uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& T) {
-	const uint32_t n = static_cast<uint32_t>(T.size());
+uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& pi) {
+	const uint32_t n = static_cast<uint32_t>(pi.size());
 	if (n < 4) {
 		return 0;
-	}
-
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	uint32_t *pi = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
-	for (uint32_t i = 0; i < n; ++i) {
-		pi[ T[i] ] = i;
 	}
 
 	// number of crossings
@@ -89,13 +82,12 @@ uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& T) {
 			 (pu < ps and ps < pv and pv < pt);
 	}
 
-	free(pi);
 	return C;
 }
 
-uint32_t n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& arr) {
-	if (arr.size() != 0) {
-		return __n_crossings_Q(Q, arr);
+uint32_t n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& pi) {
+	if (pi.size() != 0) {
+		return __n_crossings_Q(Q, pi);
 	}
 	// note: the number of vertices of
 	// the graph is unknown... work it out!
@@ -103,9 +95,9 @@ uint32_t n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& arr) {
 	for (const edge_pair& p : Q) {
 		n = max4(p.first.first, p.first.second, p.second.first, p.second.second);
 	}
-	vector<node> T(n);
-	iota(T.begin(), T.end(), 0);
-	return __n_crossings_Q(Q, T);
+	vector<node> _pi(n);
+	iota(_pi.begin(), _pi.end(), 0);
+	return __n_crossings_Q(Q, _pi);
 }
 
 } // -- namespace linarr

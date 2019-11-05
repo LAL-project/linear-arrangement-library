@@ -48,6 +48,8 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 
+#define to_int64(x) static_cast<int64_t>(x)
+
 namespace lal {
 using namespace numeric;
 
@@ -145,16 +147,9 @@ inline constexpr int64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	return f/2;
 }
 
-rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) {
+rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& pi) {
 	rational Ec2(0);
 	const uint32_t n = g.n_nodes();
-
-	// actual linear arrangement (following notation used in the thesis):
-	// pi[u] = p <-> node u is at position p
-	int64_t *pi = static_cast<int64_t *>( malloc(n*sizeof(int64_t)) );
-	for (uint32_t i = 0; i < n; ++i) {
-		pi[ T[i] ] = i;
-	}
 
 	iterators::Q_iterator q(g);
 	while (q.has_next()) {
@@ -170,8 +165,8 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) 
 		int64_t al;
 		uint64_t be;
 
-		int64_t len_st = std::abs(pi[s] - pi[t]);
-		int64_t len_uv = std::abs(pi[u] - pi[v]);
+		int64_t len_st = std::abs(to_int64(pi[s]) - to_int64(pi[t]));
+		int64_t len_uv = std::abs(to_int64(pi[u]) - to_int64(pi[v]));
 		if (len_st <= len_uv) {
 			al = alpha(n, len_st, len_uv);
 			be = static_cast<uint64_t>(beta(n, len_st, len_uv));
@@ -184,16 +179,15 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& T) 
 		Ec2 += rational(al, be);
 	}
 
-	free(pi);
 	return Ec2;
 }
 
-rational approximate_C_2_rational(const ugraph& g, const vector<node>& T) {
-	return macros::call_with_empty_arrangement(__get_approximate_C_2_rational, g, T);
+rational approximate_C_2_rational(const ugraph& g, const vector<node>& pi) {
+	return macros::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
-double approximate_C_2(const ugraph& g, const vector<node>& T) {
-	return approximate_C_2_rational(g, T).to_double();
+double approximate_C_2(const ugraph& g, const vector<node>& pi) {
+	return approximate_C_2_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

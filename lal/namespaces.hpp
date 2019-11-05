@@ -102,11 +102,12 @@ namespace iterators {}
  * For example, it contains:
  * - Computation of the number of crossings \f$C\f$.
  * - Computation of the sum of the length of edges \f$D\f$.
+ * - Computation of headedness of directed graphs.
  * 
  * All linear arrangements are vectors of length as many nodes as
  * the corresponding graph has. If @e a is a linear arrangement then
- * the @e p-th position of @e a contains the node in that position of
- * the arrangement. Formally, \f$a[p] = u\f$ if, and only if, node @e u
+ * the @e u-th position of @e a contains the position in that node in
+ * the arrangement. Formally, \f$a[u] = p\f$ if, and only if, node @e u
  * is at position @e p in the linear arrangement.
  */
 namespace linarr {}
