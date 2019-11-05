@@ -186,7 +186,7 @@ class graph {
 		uint32_t n_nodes() const;
 
 		/// Returns the number of edges.
-		uint32_t n_edges() const;
+		uint64_t n_edges() const;
 
 		/// Returns all edges of this graph.
 		std::vector<edge> edges() const;
@@ -249,7 +249,7 @@ class graph {
 		/// Data structure that implements the graph.
 		std::vector<neighbourhood> m_adjacency_list;
 		/// Amount of edges of this graph.
-		uint32_t m_num_edges = 0;
+		uint64_t m_num_edges = 0;
 		/**
 		 * @brief Is this graph normalised?
 		 *

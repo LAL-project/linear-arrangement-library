@@ -69,7 +69,7 @@ integer size_Q_integer(const graph& g) {
 		nk2 += ku*ku;
 	}
 
-	const uint32_t m = g.n_edges();
+	const uint64_t m = g.n_edges();
 	integer q(0);
 	q.init_ui(m*(m + 1));
 	q -= nk2;

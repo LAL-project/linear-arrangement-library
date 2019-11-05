@@ -141,7 +141,7 @@ uint32_t graph::n_nodes() const {
 	return static_cast<uint32_t>(m_adjacency_list.size());
 }
 
-uint32_t graph::n_edges() const {
+uint64_t graph::n_edges() const {
 	return m_num_edges;
 }
 

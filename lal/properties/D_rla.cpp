@@ -60,8 +60,7 @@ rational expectation_D_first_rational(const ugraph& g) {
 }
 
 double expectation_D_first(const ugraph& g) {
-	double Ed = (g.n_nodes() + 1)*g.n_edges();
-	return Ed/3;
+	return expectation_D_first_rational(g).to_double();
 }
 
 /* ----------------------- */
@@ -100,8 +99,7 @@ rational variance_D_rational(const ugraph& g) {
 }
 
 double variance_D(const ugraph& g) {
-	rational V = variance_D_rational(g);
-	return V.to_double();
+	return variance_D_rational(g).to_double();
 }
 
 } // -- namespace properties
