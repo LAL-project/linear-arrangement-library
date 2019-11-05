@@ -140,6 +140,7 @@ target_sources(
 		linarr/C_stack_based.cpp
 		linarr/D.cpp
 		linarr/approx_C.cpp
+		linarr/headedness.cpp
 		numeric/gmp_utils.cpp
 		numeric/integer.cpp
 		numeric/rational.cpp
@@ -196,6 +197,7 @@ set(
 	LIBLAL_LINARR_HEADER
 	linarr/C.hpp
 	linarr/D.hpp
+	linarr/headedness.hpp
 )
 set(
 	LIBLAL_NUMERIC_HEADER

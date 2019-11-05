@@ -35,6 +35,7 @@ HEADERS += \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
+    linarr/headedness.hpp \
     rooted_directed_tree.hpp \
     ugraph.hpp \
     io/dataset_error.hpp \
@@ -69,6 +70,7 @@ SOURCES += \
     graph.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
+    linarr/headedness.cpp \
     rooted_directed_tree.cpp \
     ugraph.cpp \
     io/treebank_dataset.cpp \
