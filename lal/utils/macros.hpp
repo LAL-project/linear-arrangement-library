@@ -40,10 +40,12 @@
  
 #pragma once
 
+// C++ includes
 #include <functional>
 #include <numeric>
 
-#include <lal/ugraph.hpp>
+// lal includes
+#include <lal/definitions.hpp>
 
 namespace lal {
 namespace macros {
