@@ -59,6 +59,7 @@ HEADERS += \
     properties/C_rla.hpp \
     C.hpp \
     D.hpp \
+    utils/bfs.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
