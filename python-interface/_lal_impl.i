@@ -35,6 +35,7 @@
 // linear arrangements
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
+#include <lal/linarr/headedness.hpp>
 
 // numeric
 #include <lal/numeric/integer.hpp>
@@ -112,6 +113,7 @@ namespace std {
 
 %include "../lal/linarr/C.hpp"
 %include "../lal/linarr/D.hpp"
+%include "../lal/linarr/headedness.hpp"
 
 // --------------------
 // generation of graphs

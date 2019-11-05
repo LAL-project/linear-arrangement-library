@@ -95,6 +95,11 @@ ifeq ($(DIST),local)
 LAL_DIR = ..
 LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
                   $(LAL_DIR)/lal/graph.hpp \
+                  $(LAL_DIR)/lal/ugraph.hpp \
+                  $(LAL_DIR)/lal/dgraph.hpp \
+                  $(LAL_DIR)/lal/rooted_directed_tree.hpp \
+                  $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
+                  $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
 				  $(LAL_DIR)/lal/conversions/conversions.hpp \
 				  $(LAL_DIR)/lal/generation/free_ulab_trees.hpp \
 				  $(LAL_DIR)/lal/generation/free_lab_trees.hpp \
@@ -106,6 +111,7 @@ LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
 				  $(LAL_DIR)/lal/io/treebank_reader.hpp \
 				  $(LAL_DIR)/lal/linarr/C.hpp \
 				  $(LAL_DIR)/lal/linarr/D.hpp \
+				  $(LAL_DIR)/lal/linarr/headedness.hpp \
 				  $(LAL_DIR)/lal/numeric/gmp_utils.hpp \
 				  $(LAL_DIR)/lal/numeric/integer.hpp \
 				  $(LAL_DIR)/lal/numeric/rational.hpp \
