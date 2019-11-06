@@ -11,6 +11,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/graph.hpp>
 #include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/rutree.hpp>
 #include <lal/graphs/dgraph.hpp>
 #include <lal/graphs/rdtree.hpp>
 
@@ -45,6 +46,7 @@
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/degrees.hpp>
+#include <lal/properties/mhd.hpp>
 #include <lal/properties/Q.hpp>
 
 %}
@@ -87,6 +89,7 @@ namespace std {
 // graphs
 %include "../lal/graphs/graph.hpp"
 %include "../lal/graphs/ugraph.hpp"
+%include "../lal/graphs/rutree.hpp"
 %include "../lal/graphs/dgraph.hpp"
 %include "../lal/graphs/rdtree.hpp"
 
@@ -106,10 +109,11 @@ namespace std {
 // --------------------
 // properties of graphs
 
-%include "../lal/properties/Q.hpp"
-%include "../lal/properties/degrees.hpp"
 %include "../lal/properties/C_rla.hpp"
 %include "../lal/properties/D_rla.hpp"
+%include "../lal/properties/degrees.hpp"
+%include "../lal/properties/mhd.hpp"
+%include "../lal/properties/Q.hpp"
 
 // -------------------
 // linear arrangements
