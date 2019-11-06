@@ -38,80 +38,86 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rdtree.hpp>
-
-// C includes
-#include <assert.h>
-
-// C++ includes
-#include <vector>
-using namespace std;
+#pragma once
 
 // lal includes
-#include <lal/utils/bfs.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
-using namespace utils;
-
 namespace graphs {
 
-rdtree::rdtree() : dgraph() { }
-rdtree::rdtree(uint32_t n) : dgraph(n) { }
-rdtree::rdtree(const ugraph& g, node r) : dgraph() {
-	init_rooted(g, r);
-}
-rdtree::~rdtree() { }
+/**
+ * @brief Rooted undirected tree class.
+ *
+ * This class represents a rooted undirected tree.
+ *
+ * This class can be built from an undirected tree by orienting its edges from
+ * a chosen node. This node represents the root of the directed rooted tree.
+ */
+class rutree : public ugraph {
+	public:
+		/// Default constructor
+		rutree();
+		/**
+		 * @brief Constructor with number of nodes.
+		 * @param n Number of nodes.
+		 */
+		rutree(uint32_t n);
+		/**
+		 * @brief Constructor with undirected tree and root node.
+		 *
+		 * Constructs a rooted undirected tree from an undirected tree
+		 * and one of its nodes as the root of the rooted tree.
+		 *
+		 * It simply copies the tree into its own structure and keeps the
+		 * root node.
+		 * @param t Undirected tree.
+		 * @param r Root of the directed tree. A node of @e g.
+		 * @pre The graph @e t must be a tree.
+		 */
+		rutree(const ugraph& t, node r);
+		/// Default destructor
+		~rutree();
 
-void rdtree::init_rooted(const ugraph& tree, node r) {
-	// assert(is_tree(t));
+		/**
+		 * @brief Initialiser with undirected tree and root node.
+		 *
+		 * Constructs a rooted undirected tree from an undirected tree
+		 * and one of its nodes as the root of the rooted tree.
+		 *
+		 * It simply copies the tree into its own structure and keeps the
+		 * root node.
+		 * @param t Undirected tree.
+		 * @param r Root of the directed tree. A node of @e g.
+		 * @pre The graph @e t must be a tree.
+		 */
+		void init_rooted(const ugraph& t, node r);
 
-	if (tree.n_nodes() == 0) {
-		init(0);
-		m_r = 0;
-		return;
-	}
+		/* MODIFIERS */
 
-	// build list of directed edges out of 'g' ...
-	vector<edge> dir_edges(tree.n_edges());
-	auto it_dir_edges = dir_edges.begin();
+		/// Does nothing. Do not use.
+		void disjoint_union(const graph&);
 
-	BFS<ugraph,node> bfs(tree);
-	bfs.start_at(
-		r,
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> bool { return false; },
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> void { },
-		[&](const ugraph&, node s, node t, const vector<bool>&, const queue<node>&) -> void {
-			*it_dir_edges = edge(s,t);
-			++it_dir_edges;
-		}
-	);
+		/* SETTERS */
 
-	// construct rooted directed tree
-	init(tree.n_nodes());
-	add_edges(dir_edges);
-	m_r = r;
-}
+		/**
+		 * @brief Sets the root of this tree.
+		 *
+		 * This value is simply stored for later queries.
+		 * @param r Root of the tree.
+		 * @pre @e r is a node of this graph.
+		 */
+		void set_root(node r);
 
-/* MODIFIERS */
+		/* GETTERS */
 
-void rdtree::disjoint_union(const graph& ) {
-	assert(false);
-}
+		/// Returns the root of this tree.
+		node get_root() const;
 
-/* SETTERS */
-
-void rdtree::set_root(node r) {
-	assert(has_node(r));
-	m_r = r;
-}
-node rdtree::get_root() const { return m_r; }
-
-bool rdtree::is_root(node r) const {
-	assert(has_node(r));
-	return m_in_degree[r];
-}
-
-/* PRIVATE */
+	private:
+		/// Root of the tree
+		node m_r = 0;
+};
 
 } // -- namespace graphs
 } // -- namespace lal

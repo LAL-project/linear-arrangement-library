@@ -34,6 +34,7 @@ HEADERS += \
     graphs/dgraph.hpp \
     graphs/graph.hpp \
     graphs/rdtree.hpp \
+    graphs/rutree.hpp \
     graphs/ugraph.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
@@ -60,6 +61,7 @@ HEADERS += \
     properties/C_rla.hpp \
     C.hpp \
     D.hpp \
+    properties/mhd.hpp \
     utils/bfs.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
@@ -71,6 +73,7 @@ SOURCES += \
     graphs/dgraph.cpp \
     graphs/graph.cpp \
     graphs/rdtree.cpp \
+    graphs/rutree.cpp \
     graphs/ugraph.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
@@ -85,6 +88,7 @@ SOURCES += \
     properties/degrees.cpp \
     properties/Q.cpp \
     linarr/D.cpp \
+    properties/mhd.cpp \
     properties/variance_C_gen_graphs_fast.cpp \
     linarr/C_brute_force.cpp \
     linarr/C_dyn_prog.cpp \

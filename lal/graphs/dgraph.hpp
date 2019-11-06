@@ -140,10 +140,12 @@ class dgraph : public graph {
 
 	protected:
 		/**
-		 * @brief Only initialises memory.
+		 * @brief Initialises the memory of the @ref dgraph class.
 		 * @param n Number of nodes.
 		 */
 		void _init(uint32_t n);
+		/// Clears the memory of the @ref dgraph class.
+		void _clear();
 };
 
 } // -- namespace graphs

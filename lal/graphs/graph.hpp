@@ -171,7 +171,7 @@ class graph {
 		 * Frees the memory occupied by this graph.
 		 * @post The graph is normalised. The number of edges is 0.
 		 */
-		virtual void clear();
+		void clear();
 
 		/* SETTERS */
 
@@ -266,6 +266,8 @@ class graph {
 		 * @param n Number of nodes.
 		 */
 		virtual void _init(uint32_t n);
+		/// Clears the memory of the @ref graph class.
+		virtual void _clear();
 
 		/**
 		 * @brief Find node in a neighbourhood list.

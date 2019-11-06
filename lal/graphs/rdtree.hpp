@@ -70,22 +70,22 @@ class rdtree : public dgraph {
 		 *
 		 * Constructs a rooted directed tree from an undirected tree and one of
 		 * its nodes as the root of the rooted tree.
-		 * @param g Undirected tree.
+		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e g must be a tree.
+		 * @pre The graph @e t must be a tree.
 		 */
-		rdtree(const ugraph& g, node r);
+		rdtree(const ugraph& t, node r);
 		/// Destructor
 		~rdtree();
 
 		/**
-		 * @brief Constructor with undirected tree and root node.
+		 * @brief Initialiser with undirected tree and root node.
 		 *
 		 * Constructs a rooted directed tree from an undirected tree and one of
 		 * its nodes as the root of the rooted tree.
-		 * @param g Undirected tree.
+		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e g must be a tree.
+		 * @pre The graph @e t must be a tree.
 		 */
 		void init_rooted(const ugraph& g, node r);
 
@@ -99,7 +99,7 @@ class rdtree : public dgraph {
 		/**
 		 * @brief Sets the root of this tree.
 		 *
-		 * This value is simply stored for a later retrieval.
+		 * This value is simply stored for later queries.
 		 * @param r Root of the tree.
 		 * @pre @e r is a node of this graph.
 		 */

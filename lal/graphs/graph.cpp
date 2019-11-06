@@ -126,9 +126,7 @@ bool graph::check_normalised() {
 }
 
 void graph::clear() {
-	m_num_edges = 0;
-	m_normalised = true;
-	m_adjacency_list.clear();
+	_clear();
 }
 
 /* SETTERS */
@@ -209,6 +207,12 @@ void graph::_init(uint32_t n) {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);
+}
+
+void graph::_clear() {
+	m_num_edges = 0;
+	m_normalised = true;
+	m_adjacency_list.clear();
 }
 
 lcit graph::cget_neighbour_position(const neighbourhood& n, node u) const {

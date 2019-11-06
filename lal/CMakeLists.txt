@@ -119,6 +119,7 @@ target_sources(
 	PRIVATE
 		graphs/graph.cpp
 		graphs/ugraph.cpp
+		graphs/rutree.cpp
 		graphs/dgraph.cpp
 		graphs/rdtree.cpp
 		iterators/edge_iterator.cpp
@@ -153,6 +154,7 @@ target_sources(
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_gen_graphs_fast.cpp
 		properties/variance_C_trees.cpp
+		properties/mhd.cpp
 )
 
 # **********************************************************************
@@ -172,6 +174,7 @@ set(LIBLAL_MAIN_HEADER
 set(LIBLAL_GRAPHS_HEADER
 	graphs/graph.hpp
 	graphs/ugraph.hpp
+	graphs/rutree.hpp
 	graphs/dgraph.hpp
 	graphs/rdtree.hpp
 )
@@ -212,8 +215,9 @@ set(
 	LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp
 	properties/D_rla.hpp
-	properties/Q.hpp
 	properties/degrees.hpp
+	properties/mhd.hpp
+	properties/Q.hpp
 )
 
 # **********************************************************************

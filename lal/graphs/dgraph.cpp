@@ -173,16 +173,16 @@ ugraph dgraph::to_undirected() const {
 	return g;
 }
 
-void dgraph::clear() {
-	graph::clear();
-	m_in_degree.clear();
-}
-
 /* PROTECTED */
 
 void dgraph::_init(uint32_t n) {
 	graph::_init(n);
 	m_in_degree = vector<uint32_t>(n, 0);
+}
+
+void dgraph::_clear() {
+	graph::_clear();
+	m_in_degree.clear();
 }
 
 /* PRIVATE */

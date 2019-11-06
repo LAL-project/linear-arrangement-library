@@ -72,7 +72,7 @@ class ugraph : public graph {
 		 */
 		ugraph(uint32_t n);
 		/// Default destructor.
-		~ugraph();
+		virtual ~ugraph();
 
 		/* OPERATORS */
 

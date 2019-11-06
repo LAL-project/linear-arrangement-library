@@ -38,80 +38,42 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rdtree.hpp>
-
-// C includes
-#include <assert.h>
+#include <lal/properties/mhd.hpp>
 
 // C++ includes
-#include <vector>
 using namespace std;
 
 // lal includes
 #include <lal/utils/bfs.hpp>
 
 namespace lal {
+using namespace graphs;
+using namespace numeric;
 using namespace utils;
 
-namespace graphs {
+namespace properties {
 
-rdtree::rdtree() : dgraph() { }
-rdtree::rdtree(uint32_t n) : dgraph(n) { }
-rdtree::rdtree(const ugraph& g, node r) : dgraph() {
-	init_rooted(g, r);
-}
-rdtree::~rdtree() { }
+rational MHD_rational(const rutree& tree) {
+	int64_t sum_distances = 0;
+	vector<uint32_t> levels(tree.n_nodes(), 0);
 
-void rdtree::init_rooted(const ugraph& tree, node r) {
-	// assert(is_tree(t));
-
-	if (tree.n_nodes() == 0) {
-		init(0);
-		m_r = 0;
-		return;
-	}
-
-	// build list of directed edges out of 'g' ...
-	vector<edge> dir_edges(tree.n_edges());
-	auto it_dir_edges = dir_edges.begin();
-
-	BFS<ugraph,node> bfs(tree);
+	BFS<rutree,node> bfs(tree);
 	bfs.start_at(
-		r,
+		tree.get_root(),
 		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> bool { return false; },
 		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> void { },
 		[&](const ugraph&, node s, node t, const vector<bool>&, const queue<node>&) -> void {
-			*it_dir_edges = edge(s,t);
-			++it_dir_edges;
+			levels[t] = levels[s] + 1;
+			sum_distances += levels[t];
 		}
 	);
 
-	// construct rooted directed tree
-	init(tree.n_nodes());
-	add_edges(dir_edges);
-	m_r = r;
+	return rational(sum_distances, tree.n_edges());
 }
 
-/* MODIFIERS */
-
-void rdtree::disjoint_union(const graph& ) {
-	assert(false);
+double MHD(const rutree& t) {
+	return MHD_rational(t).to_double();
 }
 
-/* SETTERS */
-
-void rdtree::set_root(node r) {
-	assert(has_node(r));
-	m_r = r;
-}
-node rdtree::get_root() const { return m_r; }
-
-bool rdtree::is_root(node r) const {
-	assert(has_node(r));
-	return m_in_degree[r];
-}
-
-/* PRIVATE */
-
-} // -- namespace graphs
+} // -- namespace properties
 } // -- namespace lal

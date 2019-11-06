@@ -38,80 +38,32 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rdtree.hpp>
-
-// C includes
-#include <assert.h>
-
-// C++ includes
-#include <vector>
-using namespace std;
+#pragma once
 
 // lal includes
-#include <lal/utils/bfs.hpp>
+#include <lal/graphs/rutree.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
-using namespace utils;
+namespace properties {
 
-namespace graphs {
+/**
+ * @brief Mean Hierarchical Distance as an exact rational value.
+ *
+ * For details, see \cite Jing2015.
+ * @param t Input rooted undirected tree.
+ * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
+ */
+numeric::rational MHD_rational(const graphs::rutree& t);
 
-rdtree::rdtree() : dgraph() { }
-rdtree::rdtree(uint32_t n) : dgraph(n) { }
-rdtree::rdtree(const ugraph& g, node r) : dgraph() {
-	init_rooted(g, r);
-}
-rdtree::~rdtree() { }
+/**
+ * @brief Mean Hierarchical Distance.
+ *
+ * For details, see \cite Jing2015.
+ * @param t Input rooted undirected tree.
+ * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
+ */
+double MHD(const graphs::rutree& t);
 
-void rdtree::init_rooted(const ugraph& tree, node r) {
-	// assert(is_tree(t));
-
-	if (tree.n_nodes() == 0) {
-		init(0);
-		m_r = 0;
-		return;
-	}
-
-	// build list of directed edges out of 'g' ...
-	vector<edge> dir_edges(tree.n_edges());
-	auto it_dir_edges = dir_edges.begin();
-
-	BFS<ugraph,node> bfs(tree);
-	bfs.start_at(
-		r,
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> bool { return false; },
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> void { },
-		[&](const ugraph&, node s, node t, const vector<bool>&, const queue<node>&) -> void {
-			*it_dir_edges = edge(s,t);
-			++it_dir_edges;
-		}
-	);
-
-	// construct rooted directed tree
-	init(tree.n_nodes());
-	add_edges(dir_edges);
-	m_r = r;
-}
-
-/* MODIFIERS */
-
-void rdtree::disjoint_union(const graph& ) {
-	assert(false);
-}
-
-/* SETTERS */
-
-void rdtree::set_root(node r) {
-	assert(has_node(r));
-	m_r = r;
-}
-node rdtree::get_root() const { return m_r; }
-
-bool rdtree::is_root(node r) const {
-	assert(has_node(r));
-	return m_in_degree[r];
-}
-
-/* PRIVATE */
-
-} // -- namespace graphs
+} // -- namespace properties
 } // -- namespace lal

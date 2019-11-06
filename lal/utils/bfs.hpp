@@ -148,15 +148,12 @@ class BFS {
 		 * node of the traversal.
 		 * @param proc_neigh It is called in line 15 used to perform some
 		 * operation on each of the neighbours.
-		 * @param proc_vis_neighs Should the traversal call the @e proc_neigh
-		 * function for already-visited neighbours?
 		 */
 		void start_at(
 			node source,
 			bfs_terminate terminate,
 			bfs_process_current proc_curr,
-			bfs_process_neighbour proc_neig,
-			bool proc_vis_neighs = false
+			bfs_process_neighbour proc_neig
 		)
 		{
 			const uint32_t n = m_G.n_nodes();
@@ -180,7 +177,7 @@ class BFS {
 						// Process the neighbour found.
 						// This is always called: even if it has been
 						// visited before.
-						if ((m_vis[t] and proc_vis_neighs) or not m_vis[t]) {
+						if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
 							proc_neig(m_G, s, t, m_vis, m_Q);
 						}
 						if (not m_vis[t]) {
@@ -192,6 +189,17 @@ class BFS {
 			}
 		}
 
+		/* SETTERS */
+
+		/*
+		 * @brief Should the algorithm call the neighbour processing function
+		 * for already visited neighbours?
+		 * @param v Either true or false.
+		 */
+		void process_visited_neighbours(bool v) {
+			m_proc_vis_neighs = v;
+		}
+
 	private:
 		// Constant reference to the graph.
 		const G& m_G;
@@ -199,6 +207,8 @@ class BFS {
 		std::queue<node> m_Q;
 		// The set of visited nodes.
 		std::vector<bool> m_vis;
+		// Should we process already visitied neighbours?
+		bool m_proc_vis_neighs = false;
 };
 
 } // -- namespace utils

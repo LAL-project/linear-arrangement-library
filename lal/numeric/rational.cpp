@@ -130,7 +130,9 @@ void rational::set_str(const std::string& s) {
 	mpq_canonicalize(m_val);
 }
 void rational::set_integer(const integer& n, const integer& d) {
-	copy(integers_to_rational(n, d));
+	mpq_set_num(m_val, n.get_raw_value());
+	mpq_set_den(m_val, d.get_raw_value());
+	mpq_canonicalize(m_val);
 }
 void rational::copy(const rational& r) {
 	mpq_set(m_val, r.m_val);

@@ -280,17 +280,6 @@ class rational {
 		/// Converts this rational to a double-precision floating-point value.
 		void as_double(double& d) const;
 
-		/// Returns a rational value using two integers as numerator and denominator.
-		static inline
-		rational integers_to_rational(const integer& n, const integer& d) {
-			rational r;
-			r.init();
-			mpq_set_num(r.m_val, n.get_raw_value());
-			mpq_set_den(r.m_val, d.get_raw_value());
-			mpq_canonicalize(r.m_val);
-			return r;
-		}
-
 	private:
 		/// Structure from GMP storing the integer's value.
 		mpq_t m_val;
