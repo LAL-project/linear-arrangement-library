@@ -87,7 +87,7 @@ class rdtree : public dgraph {
 		 * @param r Root of the directed tree. A node of @e g.
 		 * @pre The graph @e t must be a tree.
 		 */
-		void init_rooted(const ugraph& g, node r);
+		void init_rooted(const ugraph& t, node r);
 
 		/* MODIFIERS */
 
