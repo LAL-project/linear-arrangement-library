@@ -40,12 +40,5 @@
 
 #pragma once
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
-
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_dataset.hpp>
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/dataset_error.hpp>
-#include <lal/io/edge_list.hpp>
+#include <lal/numeric/integer.hpp>
+#include <lal/numeric/rational.hpp>

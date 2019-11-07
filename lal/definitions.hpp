@@ -59,11 +59,6 @@ typedef std::vector<node> neighbourhood;
 /// Boolean neighbourhood.
 typedef std::vector<bool> neighbourhood_B;
 
-/// Constant iterator over a list of nodes.
-typedef neighbourhood::const_iterator lcit;
-/// Iterator over a list of nodes.
-typedef neighbourhood::iterator lit;
-
 /// Major version number of the library's current state.
 static const std::string& __lal_major_verno = "2019";
 /// Minor version number of the library's current state.

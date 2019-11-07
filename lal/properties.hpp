@@ -40,12 +40,8 @@
 
 #pragma once
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
-
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_dataset.hpp>
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/dataset_error.hpp>
-#include <lal/io/edge_list.hpp>
+#include <lal/properties/degrees.hpp>
+#include <lal/properties/C_rla.hpp>
+#include <lal/properties/D_rla.hpp>
+#include <lal/properties/mhd.hpp>
+#include <lal/properties/Q.hpp>

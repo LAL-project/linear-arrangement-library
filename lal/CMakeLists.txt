@@ -125,7 +125,7 @@ target_sources(
 		graphs/urtree.cpp
 		graphs/dgraph.cpp
 		graphs/dtree.cpp
-		graphs/rdtree.cpp
+		graphs/drtree.cpp
 		iterators/edge_iterator.cpp
 		iterators/Q_iterator.cpp
 		conversions/conversions.cpp
@@ -168,12 +168,16 @@ target_sources(
 # These are not installed through the usual PUBLIC_HEADER property,
 # but via several custom variables
 set(LIBLAL_MAIN_HEADER
-	definitions.hpp
 	C.hpp
 	D.hpp
+	definitions.hpp
+	generation.hpp
 	graphs.hpp
 	io.hpp
 	iterators.hpp
+	linarr.hpp
+	numeric.hpp
+	properties.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/graph.hpp
@@ -184,14 +188,11 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/urtree.hpp
 	graphs/dgraph.hpp
 	graphs/dtree.hpp
-	graphs/rdtree.hpp
+	graphs/drtree.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/edge_iterator.hpp
 	iterators/Q_iterator.hpp
-)
-set(LIBLAL_CONVERSIONS_HEADER
-	conversions/conversions.hpp
 )
 set(LIBLAL_GENERATION_HEADER
 	generation/free_lab_trees.hpp
@@ -241,7 +242,6 @@ install(
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
 install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
 install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
-install(FILES ${LIBLAL_CONVERSIONS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/conversions)
 install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generation)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
 install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)

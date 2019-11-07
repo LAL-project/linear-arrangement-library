@@ -29,6 +29,7 @@ INCLUDEPATH += ..
 # PROJECT FILES
 HEADERS += \
     definitions.hpp \
+    generation.hpp \
     generation/rand_rooted_lab_dir_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
@@ -43,13 +44,16 @@ HEADERS += \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
+    linarr.hpp \
     linarr/headedness.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \
+    numeric.hpp \
     numeric/integer.hpp \
     numeric/rational.hpp \
     numeric/gmp_utils.hpp \
     io/edge_list.hpp \
+    properties.hpp \
     properties/degrees.hpp \
     properties/Q.hpp \
     linarr/C.hpp \
