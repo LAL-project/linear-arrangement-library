@@ -9,49 +9,25 @@
 
 // library's main directory
 #include <lal/definitions.hpp>
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/tree.hpp>
-#include <lal/graphs/rtree.hpp>
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/utree.hpp>
-#include <lal/graphs/urtree.hpp>
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/dtree.hpp>
-#include <lal/graphs/drtree.hpp>
+#include <lal/graphs.hpp>
 
 // iterators
-#include <lal/iterators/edge_iterator.hpp>
-#include <lal/iterators/Q_iterator.hpp>
+#include <lal/iterators.hpp>
 
 // io operations
-#include <lal/io/edge_list.hpp>
-#include <lal/io/dataset_error.hpp>
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_dataset.hpp>
+#include <lal/io.hpp>
 
 // generation of graphs
-#include <lal/generation/free_ulab_trees.hpp>
-#include <lal/generation/free_lab_trees.hpp>
-#include <lal/generation/rand_free_lab_trees.hpp>
-#include <lal/generation/rand_free_ulab_trees.hpp>
-#include <lal/generation/rand_rooted_lab_dir_trees.hpp>
+#include <lal/generation.hpp>
 
 // linear arrangements
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
-#include <lal/linarr/headedness.hpp>
+#include <lal/linarr.hpp>
 
 // numeric
-#include <lal/numeric/integer.hpp>
-#include <lal/numeric/rational.hpp>
+#include <lal/numeric.hpp>
 
 // properties
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/mhd.hpp>
-#include <lal/properties/Q.hpp>
+#include <lal/properties.hpp>
 
 %}
 
@@ -90,7 +66,10 @@ namespace std {
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
 
-// graphs (only those that can be instantiated)
+// graphs
+%include "../lal/graphs/graph.hpp"
+%include "../lal/graphs/tree.hpp"
+%include "../lal/graphs/rtree.hpp"
 %include "../lal/graphs/ugraph.hpp"
 %include "../lal/graphs/utree.hpp"
 %include "../lal/graphs/urtree.hpp"
@@ -242,7 +221,7 @@ namespace std {
 	}
 }
 
-%extend lal::graph {
+%extend lal::graphs::graph {
 	std::string __str__() const {
 		std::ostringstream out;
 		out << *$self;
