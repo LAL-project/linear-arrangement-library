@@ -40,76 +40,64 @@
 
 #pragma once
 
-// C++ includes
-#include <algorithm>
-#include <iterator>
+#include <lal/utils/bfs.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
 namespace utils {
 
-/**
- * @brief Insertion sort.
+/*
+ * @brief Returns true if, and only if, the graph has cycles.
+ * @param g Input graph.
  */
-template<typename It>
-void insertion_sort(It begin, It end) {
-	for (It i = begin + 1; i != end; ++i) {
-		It nj = i;
-		It j = i - 1;
-		while (*j > *nj and j != begin) {
-			std::swap(*j, *nj);
-			--j;
-			--nj;
+inline
+bool graph_has_cycles(const graphs::ugraph& g) {
+	typedef graphs::ugraph G;
+	const auto n = g.n_nodes();
+
+	// parent[s] = t <->
+	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER)
+	// After 't' comes 's'
+	std::vector<node> parent(n);
+	// a cycle was found
+	bool cycle_found = false;
+
+	// BFS traversal object
+	BFS<G> bfs_trav(g);
+	bfs_trav.process_visited_neighbours(true);
+	// functions for the traversal
+	bfs_trav.set_terminate(
+	[&cycle_found](const BFS<G>&, node) -> bool {
+		return cycle_found;
+	}
+	);
+	bfs_trav.set_process_neighbour(
+	[&](const BFS<G>& bfs, node s, node t) -> void {
+		if (bfs.node_was_visited(t)) {
+			// if t was visted before then
+			//     "s -> t" and later "t -> s"
+			// or
+			//     "s -> ..." and later "... -> s"
+			//     where '...' does not contain 't'
+			if (parent[s] != t) {
+				// node t was reached from some node
+				// other than 's' in previous iterations
+				cycle_found = true;
+			}
 		}
-		if (*j > *nj) { std::swap(*j, *nj); }
+		parent[t] = s;
 	}
+	);
+
+	// find cycles
+	for (node u = 0; u < n and not cycle_found; ++u) {
+		if (not bfs_trav.node_was_visited(u)) {
+			bfs_trav.clear_queue();
+			bfs_trav.start_at(u);
+		}
+	}
+	return cycle_found;
 }
 
-/**
- * @brief Sort integer values within the range \f$[0,n)\f$ increasingly.
- *
- * The value \f$n\f$ represents the maximum value within the vector.
- * @param begin Iterator at the beginning of the container.
- * @param end Iterator at the end of the container.
- * @post v is sorted.
- */
-template<typename It>
-typename std::enable_if
-<
-	std::is_integral< typename std::iterator_traits<It>::value_type >::value,
-	void
->
-::type
-sort_1_n(It begin, It end)
-{
-	size_t size = std::distance(begin, end);
-	if (size <= 1) { return; }
-	if (size <= 14) {
-		insertion_sort(begin, end);
-		return;
-	}
-	if (size <= 30) {
-		std::sort(begin, end);
-		return;
-	}
-
-	// maximum element within vector
-	const auto M = *std::max_element(begin, end) + 1;
-
-	// fill "bit" vector
-	std::vector<bool> seen(M, false);
-	for (auto it = begin; it != end; ++it) {
-		seen[*it] = true;
-	}
-
-	// sort elements, increasingly
-	auto seenit = seen.begin();
-	auto vit = begin;
-	typename std::iterator_traits<It>::value_type i;
-	for (i = 0; i < M and vit != end; ++i, ++seenit) {
-		*vit = i;
-		vit += *seenit;
-	}
-}
-
-} // -- namspace utils
+} // -- namespace utils
 } // -- namespace lal

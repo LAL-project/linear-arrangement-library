@@ -40,76 +40,54 @@
 
 #pragma once
 
-// C++ includes
-#include <algorithm>
-#include <iterator>
+#include <lal/graphs/dgraph.hpp>
 
 namespace lal {
 namespace utils {
 
-/**
- * @brief Insertion sort.
- */
-template<typename It>
-void insertion_sort(It begin, It end) {
-	for (It i = begin + 1; i != end; ++i) {
-		It nj = i;
-		It j = i - 1;
-		while (*j > *nj and j != begin) {
-			std::swap(*j, *nj);
-			--j;
-			--nj;
-		}
-		if (*j > *nj) { std::swap(*j, *nj); }
-	}
-}
-
-/**
- * @brief Sort integer values within the range \f$[0,n)\f$ increasingly.
- *
- * The value \f$n\f$ represents the maximum value within the vector.
- * @param begin Iterator at the beginning of the container.
- * @param end Iterator at the end of the container.
- * @post v is sorted.
- */
-template<typename It>
-typename std::enable_if
-<
-	std::is_integral< typename std::iterator_traits<It>::value_type >::value,
-	void
->
-::type
-sort_1_n(It begin, It end)
+inline bool __find_cycle
+(
+	const graphs::graph& g, node u,
+	std::vector<bool>& visited, std::vector<bool>& in_stack
+)
 {
-	size_t size = std::distance(begin, end);
-	if (size <= 1) { return; }
-	if (size <= 14) {
-		insertion_sort(begin, end);
-		return;
-	}
-	if (size <= 30) {
-		std::sort(begin, end);
-		return;
+	if (visited[u]) { return false; }
+
+	visited[u] = true;
+
+	in_stack[u] = true;
+	for (node v : g.get_neighbours(u)) {
+		if (in_stack[v]) {
+			return true;
+		}
+		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
+			return true;
+		}
 	}
 
-	// maximum element within vector
-	const auto M = *std::max_element(begin, end) + 1;
-
-	// fill "bit" vector
-	std::vector<bool> seen(M, false);
-	for (auto it = begin; it != end; ++it) {
-		seen[*it] = true;
-	}
-
-	// sort elements, increasingly
-	auto seenit = seen.begin();
-	auto vit = begin;
-	typename std::iterator_traits<It>::value_type i;
-	for (i = 0; i < M and vit != end; ++i, ++seenit) {
-		*vit = i;
-		vit += *seenit;
-	}
+	in_stack[u] = false;
+	return false;
 }
 
-} // -- namspace utils
+/*
+ * @brief Returns true if, and only if, the graph has cycles.
+ * @param g Input graph.
+ */
+bool graph_has_cycles(const graphs::dgraph& g) {
+
+	const uint32_t n = g.n_nodes();
+	std::vector<bool> vis(n, false);
+	std::vector<bool> in_stack(n, false);
+
+	bool has_cycle = false;
+	for (node u = 0; u < n and not has_cycle; ++u) {
+		if (not vis[u]) {
+			has_cycle = __find_cycle(g, u, vis, in_stack);
+		}
+	}
+
+	return has_cycle;
+}
+
+} // -- namespace utils
 } // -- namespace lal

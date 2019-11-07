@@ -48,66 +48,64 @@
 namespace lal {
 namespace utils {
 
-template<class G, typename node>
+template<class G, typename node = typename G::graph_node_type>
 class BFS {
 	public:
 		/*
-		 * @brief Terminating function.
+		 * @brief BFS early terminating function.
 		 *
 		 * Returns true if the @ref BFS algorithm should terminate.
 		 *
 		 * For more details on when this function is called see @ref start_at.
-		 * @param g The graph being traversed.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
-		 * @param vis The set of visited nodes.
-		 * @param Q The queue of the traversal.
 		 */
-		typedef std::function<
-		bool (const G& g, node s, const std::vector<bool>& vis,
-			  const std::queue<node>& Q)
-		> bfs_terminate;
+		typedef std::function<bool (const BFS<G>& bfs, node s)> bfs_terminate;
 
 		/*
-		 * @brief Node processing function.
+		 * @brief BFS node processing function.
 		 *
 		 * Processes the current node visited.
 		 *
 		 * For more details on when this function is called see @ref start_at.
-		 * @param g The graph being traversed.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
-		 * @param vis The set of visited nodes.
-		 * @param Q The queue of the traversal.
 		 */
-		typedef std::function<
-		void (const G& g, node s, const std::vector<bool>& vis,
-			const std::queue<node>& Q)
-		> bfs_process_current;
+		typedef std::function<void (const BFS<G>& bfs, node s)> bfs_process_current;
 
 		/*
-		 * @brief Node processing function.
+		 * @brief BFS node processing function.
 		 *
 		 * Processes the next visited node. The direction of the vertices
-		 * visited is always s -> t.
+		 * visited passed as parameter is always s -> t.
 		 *
 		 * For more details on when this function is called see @ref start_at.
-		 * @param g The graph being traversed.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
 		 * @param t The node neighbour of @e u visited by the algorithm.
-		 * @param vis The set of visited nodes.
-		 * @param Q The queue of the traversal.
 		 */
-		typedef std::function<
-			void (
-				const G& g, node s, node t,
-				const std::vector<bool>& vis, const std::queue<node>& Q
-			)
-		> bfs_process_neighbour;
+		typedef std::function<void (const BFS<G>& bfs, node s, node t)> bfs_process_neighbour;
 
 	public:
 		// Constructor
-		BFS(const G& g) : m_G(g) { }
+		BFS(const G& g) : m_G(g) {
+			reset();
+		}
 		// Destructor
 		~BFS() { }
+
+		// Set the BFS to its initial state.
+		void reset() {
+			const uint32_t n = m_G.n_nodes();
+			m_vis = std::vector<bool>(n, false);
+
+			set_terminate_default();
+			set_process_current_default();
+			set_process_neighbour_default();
+		}
 
 		/*
 		 * @brief Generic Breadth-First search algorithm.
@@ -122,15 +120,15 @@ class BFS {
 		 *	 4.	while Q is not empty do
 		 *	 5.		v = Q.front
 		 *	 6.		remove Q's front
-		 *	 7.		proc_curr(G,v,vis)
-		 *	 8.		if terminate(G,v,vis) then Finish traversal
+		 *	 7.		proc_curr(v)
+		 *	 8.		if terminate(v) then Finish traversal
 		 *	 9.		else
 		 *	10.			Nv = neighbourhood of v
 		 *	11.			for each w in Nv do
 		 *  12.				if w has not been visited before, or it has been
 		 *	13.					and we must process all previously visited nodes
 		 *	14.				then
-		 *	15.					proc_neigh(G,u,w,vis)
+		 *	15.					proc_neigh(u,w)
 		 *	16.				if w not visited before then
 		 *	17.					push w into Q
 		 *	18.					mark w as visited in vis
@@ -139,6 +137,11 @@ class BFS {
 		 *	21.		endif
 		 *	22.	endwhile
 		 * </pre>
+		 *
+		 * However, the queue of this object is not cleared before or after
+		 * calling this function. The user of this class has call method
+		 * @ref clear_queue if they want the queue to be empty at the beginning
+		 * of every traversal.
 		 *
 		 * @param source The node where the algorithm starts at.
 		 * @param terminate The terminating function. It is used as a termination
@@ -149,15 +152,8 @@ class BFS {
 		 * @param proc_neigh It is called in line 15 used to perform some
 		 * operation on each of the neighbours.
 		 */
-		void start_at(
-			node source,
-			bfs_terminate terminate,
-			bfs_process_current proc_curr,
-			bfs_process_neighbour proc_neig
-		)
-		{
-			const uint32_t n = m_G.n_nodes();
-			m_vis = std::vector<bool>(n);
+		void start_at(node source) {
+			m_start_node = source;
 			m_Q.push(source);
 			m_vis[source] = true;
 			bool term = false;
@@ -167,10 +163,10 @@ class BFS {
 				m_Q.pop();
 
 				// process current vertex
-				proc_curr(m_G, s, m_vis, m_Q);
+				m_proc_cur(*this, s);
 
 				// check user-defined termination condition
-				term = terminate(m_G, s, m_vis, m_Q);
+				term = m_term(*this, s);
 
 				if (not term) {
 					for (const node& t : m_G.get_neighbours(s)) {
@@ -178,7 +174,7 @@ class BFS {
 						// This is always called: even if it has been
 						// visited before.
 						if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
-							proc_neig(m_G, s, t, m_vis, m_Q);
+							m_proc_neigh(*this, s, t);
 						}
 						if (not m_vis[t]) {
 							m_Q.push(t);
@@ -191,6 +187,21 @@ class BFS {
 
 		/* SETTERS */
 
+		void set_terminate_default()
+		{ m_term = [](const BFS<G>&, node) -> bool { return false; }; }
+		void set_terminate(bfs_terminate f)
+		{ m_term = f; }
+
+		void set_process_current_default()
+		{ m_proc_cur = [](const BFS<G>&, node) -> void { }; }
+		void set_process_current(bfs_process_current f)
+		{ m_proc_cur = f; }
+
+		void set_process_neighbour_default()
+		{ m_proc_neigh = [](const BFS<G>&, node, node) -> void { }; }
+		void set_process_neighbour(bfs_process_neighbour f)
+		{ m_proc_neigh = f; }
+
 		/*
 		 * @brief Should the algorithm call the neighbour processing function
 		 * for already visited neighbours?
@@ -200,16 +211,58 @@ class BFS {
 			m_proc_vis_neighs = v;
 		}
 
+		// Sets all nodes to not visited
+		void reset_visited() {
+			std::fill(m_vis.begin(), m_vis.end(), false);
+		}
+
+		// Empties the queue used for the traversal
+		void clear_queue() {
+			while (not m_Q.empty()) { m_Q.pop(); }
+		}
+
+		node get_start_node() const { return m_start_node; }
+
+		// Returns the set of visited nodes.
+		bool node_was_visited(node u) const { return m_vis[u]; }
+
 	private:
 		// Constant reference to the graph.
 		const G& m_G;
+		// node where the traversal starts at
+		node m_start_node;
 		// The queue of the traversal.
 		std::queue<node> m_Q;
 		// The set of visited nodes.
 		std::vector<bool> m_vis;
 		// Should we process already visitied neighbours?
 		bool m_proc_vis_neighs = false;
+
+	private:
+		// Terminating function.
+		bfs_terminate m_term;
+		// Process current vertex function
+		bfs_process_current m_proc_cur;
+		// Process neighbour vertex function
+		bfs_process_neighbour m_proc_neigh;
 };
+
+/*
+ * @brief Returns true if, and only if, node target is reachable from node source.
+ * @param g Input graph.
+ * @param source Node where the search starts at.
+ * @param target The node we want to know whether it is reachable from @e
+ * source or not.
+ */
+template<class G, typename node = typename G::graph_node_type>
+bool is_node_reachable_from(const G& g, node source, node target) {
+	BFS<G> bfs(g);
+	bfs.set_terminate(
+		[target](const BFS<G>&, node s) -> bool { return (s == target); }
+	);
+	bfs.start_at(source);
+	return bfs.node_was_visited(target);
+}
 
 } // -- namespace utils
 } // -- namespace lal
