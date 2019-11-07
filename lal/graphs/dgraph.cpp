@@ -156,7 +156,7 @@ bool dgraph::has_edge(node u, node v) const {
 	assert(has_node(v));
 
 	const neighbourhood& nu = m_adjacency_list[u];
-	return cget_neighbour_position(nu, v) != nu.end();
+	return find(nu.begin(), nu.end(), v) != nu.end();
 }
 
 bool dgraph::is_directed() const { return true; }

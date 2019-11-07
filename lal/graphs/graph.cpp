@@ -215,32 +215,6 @@ void graph::_clear() {
 	m_adjacency_list.clear();
 }
 
-lcit graph::cget_neighbour_position(const neighbourhood& n, node u) const {
-	lcit cit = n.begin();
-	while (cit != n.end()) {
-		if (*cit == u) {
-			return cit;
-		}
-		else {
-			++cit;
-		}
-	}
-	return n.end();
-}
-
-lit graph::get_neighbour_position(neighbourhood& n, node u) {
-	lit it = n.begin();
-	while (it != n.end()) {
-		if (*it == u) {
-			return it;
-		}
-		else {
-			++it;
-		}
-	}
-	return n.end();
-}
-
 } // -- namespace graphs
 } // -- namespace lal
 

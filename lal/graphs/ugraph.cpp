@@ -152,10 +152,10 @@ bool ugraph::has_edge(node u, node v) const {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
-	if (nu.size() <= nv.size()) {
-		return cget_neighbour_position(nu, v) != nu.end();
-	}
-	return cget_neighbour_position(nv, u) != nv.end();
+	return (nu.size() <= nv.size() ?
+		find(nu.begin(), nu.end(), v) != nu.end() :
+		find(nv.begin(), nv.end(), v) != nu.end()
+	);
 }
 
 bool ugraph::is_directed() const { return false; }

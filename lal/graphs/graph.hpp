@@ -82,9 +82,9 @@ class graph {
 		std::ostream& operator<< (std::ostream& os, const graph& d) {
 			for (uint32_t i = 0; i < d.m_adjacency_list.size(); ++i) {
 				os << i << ":";
-				lcit begin = d.m_adjacency_list[i].begin();
-				lcit end = d.m_adjacency_list[i].end();
-				for (lcit it = begin; it != end; ++it) {
+				auto begin = d.m_adjacency_list[i].begin();
+				auto end = d.m_adjacency_list[i].end();
+				for (auto it = begin; it != end; ++it) {
 					os << " " << *it;
 				}
 				if (i < d.m_adjacency_list.size() - 1) {
@@ -246,22 +246,6 @@ class graph {
 		virtual void _init(uint32_t n);
 		/// Clears memory for the @ref graph class only.
 		virtual void _clear();
-
-		/**
-		 * @brief Find node in a neighbourhood list.
-		 *
-		 * Returns a constant iterator to node u in the neighbourhood n
-		 * of some node in the graph.
-		 */
-		lcit cget_neighbour_position(const neighbourhood& n, node u) const;
-
-		/**
-		 * @brief Find node in a neighbourhood list.
-		 *
-		 * Returns an iterator to node u in the neighbourhood n
-		 * of some node in the graph.
-		 */
-		lit get_neighbour_position(neighbourhood& n, node u);
 };
 
 } // -- namespace graphs
