@@ -93,23 +93,10 @@ class edge_iterator {
 
 		/**
 		 * @brief Sets the iterator at the beginning of the set of edges.
-		 *
-		 * Same as calling @ref start_at(node) with parameter value 0.
 		 * @post The next call to method @ref next() returns the first edge
 		 * of the graph.
 		 */
 		void reset();
-
-		/**
-		 * @brief Start iterating edges at the given node.
-		 *
-		 * Its used is not recommended.
-		 * @param u Starting node
-		 * @post The first edge returned by @ref next(), if any, will be the
-		 * smallest edge in lexicographic increasing order to a hypothetical
-		 * edge with first node @e u.
-		 */
-		void start_at(node u);
 
 	public:
 		typedef std::pair<node,std::size_t> E_pointer;

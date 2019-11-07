@@ -118,9 +118,13 @@ target_sources(
 	${TargetStringLibrary}
 	PRIVATE
 		graphs/graph.cpp
+		graphs/tree.cpp
+		graphs/rtree.cpp
 		graphs/ugraph.cpp
-		graphs/rutree.cpp
+		graphs/utree.cpp
+		graphs/urtree.cpp
 		graphs/dgraph.cpp
+		graphs/dtree.cpp
 		graphs/rdtree.cpp
 		iterators/edge_iterator.cpp
 		iterators/Q_iterator.cpp
@@ -173,9 +177,13 @@ set(LIBLAL_MAIN_HEADER
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/graph.hpp
+	graphs/tree.hpp
+	graphs/rtree.hpp
 	graphs/ugraph.hpp
-	graphs/rutree.hpp
+	graphs/utree.hpp
+	graphs/urtree.hpp
 	graphs/dgraph.hpp
+	graphs/dtree.hpp
 	graphs/rdtree.hpp
 )
 set(LIBLAL_ITERATORS_HEADER

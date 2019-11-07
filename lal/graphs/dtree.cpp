@@ -38,86 +38,78 @@
  *
  ********************************************************************/
 
-#pragma once
+#include <lal/graphs/dtree.hpp>
+
+// C includes
+#include <assert.h>
+
+// C++ includes
+using namespace std;
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
+#include <lal/utils/bfs.hpp>
+#include <lal/utils/cycles_undirected.hpp>
 
 namespace lal {
 namespace graphs {
 
-/**
- * @brief Rooted undirected tree class.
- *
- * This class represents a rooted undirected tree.
- *
- * This class can be built from an undirected tree by orienting its edges from
- * a chosen node. This node represents the root of the directed rooted tree.
- */
-class rutree : public ugraph {
-	public:
-		/// Default constructor
-		rutree();
-		/**
-		 * @brief Constructor with number of nodes.
-		 * @param n Number of nodes.
-		 */
-		rutree(uint32_t n);
-		/**
-		 * @brief Constructor with undirected tree and root node.
-		 *
-		 * Constructs a rooted undirected tree from an undirected tree
-		 * and one of its nodes as the root of the rooted tree.
-		 *
-		 * It simply copies the tree into its own structure and keeps the
-		 * root node.
-		 * @param t Undirected tree.
-		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e t must be a tree.
-		 */
-		rutree(const ugraph& t, node r);
-		/// Default destructor
-		~rutree();
+dtree::dtree() : dgraph() { }
+dtree::dtree(uint32_t n) : dgraph(n) { }
+dtree::~dtree() { }
 
-		/**
-		 * @brief Initialiser with undirected tree and root node.
-		 *
-		 * Constructs a rooted undirected tree from an undirected tree
-		 * and one of its nodes as the root of the rooted tree.
-		 *
-		 * It simply copies the tree into its own structure and keeps the
-		 * root node.
-		 * @param t Undirected tree.
-		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e t must be a tree.
-		 */
-		void init_rooted(const ugraph& t, node r);
+dtree& dtree::add_edge(node s, node t, bool norm) {
+#if defined DEBUG
+	assert(can_add_edge(s,t));
+#endif
 
-		/* MODIFIERS */
+	dgraph::add_edge(s,t, norm);
+	return *this;
+}
 
-		/// Does nothing. Do not use.
-		void disjoint_union(const graph&);
+dtree& dtree::add_edges(const vector<edge>& edges, bool norm) {
+	dgraph::add_edges(edges, norm);
 
-		/* SETTERS */
+#if defined DEBUG
+	utree copy = to_undirected();
+	assert(not utils::graph_has_cycles(copy));
+#endif
+	return *this;
+}
 
-		/**
-		 * @brief Sets the root of this tree.
-		 *
-		 * This value is simply stored for later queries.
-		 * @param r Root of the tree.
-		 * @pre @e r is a node of this graph.
-		 */
-		void set_root(node r);
+bool dtree::can_add_edge(node s, node t) const {
+	// if the tree already has n-1 edges then
+	// adding another edge will produce a cycle
+	if (n_edges() + 1 > n_nodes() - 1) {
+		return false;
+	}
 
-		/* GETTERS */
+	// Convert the graph to undirected graph. Slow, I know...
+	ugraph undir_tree = to_undirected();
+	// check that adding this edge does not produce cyces
+	return not utils::is_node_reachable_from(undir_tree, s, t);
+}
 
-		/// Returns the root of this tree.
-		node get_root() const;
+bool dtree::can_add_edges(const std::vector<edge>& edges) const {
+	// in a tree we must have m <= n - 1
+	const uint64_t more_m = edges.size();
+	if (n_edges() + more_m > n_nodes() - 1) {
+		return false;
+	}
 
-	private:
-		/// Root of the tree
-		node m_r = 0;
-};
+	// Convert the graph to undirected graph. Slow, I know...
+	utree undir_tree = to_undirected();
+
+	// add the edges
+	undir_tree.add_edges(edges);
+	// check that there are no cycles
+	return not utils::graph_has_cycles(undir_tree);
+}
+
+utree dtree::to_undirected() const {
+	utree g(n_nodes());
+	g.add_edges(edges());
+	return g;
+}
 
 } // -- namespace graphs
 } // -- namespace lal

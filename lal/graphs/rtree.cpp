@@ -38,41 +38,19 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rutree.hpp>
-
-// C includes
-#include <assert.h>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace graphs {
 
-rutree::rutree() : ugraph() { }
-rutree::rutree(uint32_t n) : ugraph(n) { }
-rutree::rutree(const ugraph& t, node r) : ugraph() {
-	init_rooted(t, r);
-}
-rutree::~rutree() { }
+rtree::rtree() { }
+rtree::~rtree() { }
 
-void rutree::init_rooted(const ugraph& t, node r) {
-	// assert(is_tree(t));
-	clear();
-	*static_cast<ugraph *>(this) = t;
+void rtree::set_root(node r) {
 	m_r = r;
 }
 
-/* MODIFIERS */
-
-void rutree::disjoint_union(const graph& ) {
-	assert(false);
-}
-
-/* SETTERS */
-
-void rutree::set_root(node r) {
-	assert(has_node(r));
-	m_r = r;
-}
-node rutree::get_root() const { return m_r; }
+node rtree::get_root() const { return m_r; }
 
 } // -- namespace graphs
 } // -- namespace lal

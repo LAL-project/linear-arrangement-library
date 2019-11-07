@@ -62,7 +62,7 @@ namespace graphs {
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */
-class ugraph : public graph {
+class ugraph : virtual public graph {
 	public:
 		/// Default constructor.
 		ugraph();
@@ -79,24 +79,35 @@ class ugraph : public graph {
 		/* MODIFIERS */
 
 		/**
-		 * @brief Adds an undirected edge.
-		 *
-		 * For more details see @ref graph::add_edge(node,node,bool)
+		 * @brief Adds an edge to the graph.
+		 * @param s Valid node index: \f$0 \le s < n\f$.
+		 * @param t Valid node index: \f$0 \le t < n\f$.
+		 * @param norm Should the graph be normalised?
+		 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
 		 */
-		ugraph& add_edge(node u, node v, bool norm = false);
+		virtual ugraph& add_edge(node s, node t, bool norm = false);
 
 		/**
-		 * @brief Adds a list of undirected edges.
+		 * @brief Adds a list of edges to the graph.
 		 *
-		 * For more details see @ref graph::add_edges(const std::vector<edge>&,bool)
+		 * This operation is faster than calling @ref add_edge(node,node,bool)
+		 * since the edges are added in bulk.
+		 * @param edges The edges to be added.
+		 * @param norm Normalise the graph after the insertions.
+		 * @pre All the edges in @e edges must meet the precondition of method
+		 * @ref add_edge(node,node,bool).
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
 		 */
-		ugraph& add_edges(const std::vector<edge>& edges, bool norm = true);
+		virtual ugraph& add_edges(const std::vector<edge>& edges, bool norm = true);
 
 		/* SETTERS */
 
 		/* GETTERS */
 
-		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
+		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 		bool has_edge(node u, node v) const;
 
 		bool is_directed() const;

@@ -41,8 +41,8 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -50,21 +50,22 @@ namespace graphs {
 /**
  * @brief Rooted directed tree class.
  *
- * This class represents a rooted directed tree. The edges should be oriented
- * from the root to the leaves.
+ * This class represents a rooted directed tree. The edges can be oriented
+ * either inwards (towards the root, an anti-arborescence) or outwards (away
+ * from the roots, towards the leaves, an arborescence).
  *
- * This class can be built from an undirected tree by orienting its edges from
- * a chosen node. This node represents the root of the directed rooted tree.
+ * This class can be built from an undirected tree and by orienting its edges
+ * from a chosen node, the root, or by inserting edges one by one.
  */
-class rdtree : public dgraph {
+class drtree : public dtree, virtual public rtree {
 	public:
 		/// Default constructor.
-		rdtree();
+		drtree();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		rdtree(uint32_t n);
+		drtree(uint32_t n);
 		/**
 		 * @brief Constructor with undirected tree and root node.
 		 *
@@ -72,11 +73,13 @@ class rdtree : public dgraph {
 		 * its nodes as the root of the rooted tree.
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e t must be a tree.
+		 * @param arb If true then this graph is an arborescence, i.e., the edges
+		 * point towards the leaves (away from the root). If false, then this tree
+		 * is an anti-arborescence, i.e., the edges point towards the root.
 		 */
-		rdtree(const ugraph& t, node r);
+		drtree(const utree& t, node r, bool arb = true);
 		/// Destructor
-		~rdtree();
+		~drtree();
 
 		/**
 		 * @brief Initialiser with undirected tree and root node.
@@ -85,46 +88,11 @@ class rdtree : public dgraph {
 		 * its nodes as the root of the rooted tree.
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e t must be a tree.
+		 * @param arb If true then this graph is an arborescence, i.e., the edges
+		 * point towards the leaves (away from the root). If false, then this tree
+		 * is an anti-arborescence, i.e., the edges point towards the root.
 		 */
-		void init_rooted(const ugraph& t, node r);
-
-		/* MODIFIERS */
-
-		/// Does nothing. Do not use.
-		void disjoint_union(const graph&);
-
-		/* SETTERS */
-
-		/**
-		 * @brief Sets the root of this tree.
-		 *
-		 * This value is simply stored for later queries.
-		 * @param r Root of the tree.
-		 * @pre @e r is a node of this graph.
-		 */
-		void set_root(node r);
-
-		/* GETTERS */
-
-		/// Returns the root of this tree.
-		node get_root() const;
-
-		/**
-		 * @brief Is node @e r the root of this tree?
-		 * @param r Node of the tree.
-		 * @return Returns whether the node is the root or not. A node is the
-		 * root of a tree if its in-degree equals 0.
-		 */
-		bool is_root(node r) const;
-
-	private:
-		/**
-		 * @brief Root of the tree.
-		 *
-		 * This variable provides constant-time access to the node with null in-degree.
-		 */
-		node m_r = 0;
+		void init_rooted(const utree& t, node r, bool arb = true);
 };
 
 } // -- namespace graphs

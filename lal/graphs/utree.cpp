@@ -37,100 +37,72 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#include <lal/generation/free_lab_trees.hpp>
+
+#include <lal/graphs/utree.hpp>
 
 // C includes
 #include <assert.h>
 
 // C++ includes
-#include <algorithm>
-#include <iterator>
-#include <limits>
 using namespace std;
 
-#define inf numeric_limits<size>::max()
-
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/bfs.hpp>
+#include <lal/utils/cycles_undirected.hpp>
 
 namespace lal {
-using namespace graphs;
+namespace graphs {
 
-namespace generate {
-
-// PUBLIC
-
-free_lab_trees::free_lab_trees() { }
-free_lab_trees::free_lab_trees(uint32_t _n) {
-	init(_n);
-}
-free_lab_trees::~free_lab_trees() { }
-
-void free_lab_trees::init(uint32_t _n) {
-	m_n = _n;
-	if (m_n <= 2) {
-		m_sm = vector<bool>(1, false);
-		// there is only one tree we can make
-		return;
-	}
-
-	m_it = 0;
-	m_sm = vector<bool>(m_n - 2, false);
-	m_seq = vector<uint32_t>(m_n - 2, 0);
-	// place 'it' at the end of the sequence
-	m_it = m_n - 3;
-	// make sure that the first call to next()
-	// produces the sequence 0 0 ... 0
-	m_seq[m_it] = numeric_limits<uint32_t>::max();
-	m_L = m_n - 2;
+utree::utree() : ugraph() { }
+utree::utree(uint32_t n) : ugraph(n) { }
+utree::utree(const ugraph& t) : ugraph(t.n_nodes()) {
+	// Note: add_edges already checks that 't' is a tree or not. It does
+	// so implicitly: after the addition of the edges, the method looks
+	// for cycles in the graph. If there are, some assertion will fail
+	add_edges(t.edges());
 }
 
-bool free_lab_trees::has_next() const {
-	if (m_n <= 2) {
-		return not m_sm[0];
-	}
-	return not m_sm[m_n - 3];
+utree& utree::add_edge(node s, node t, bool norm) {
+#if defined DEBUG
+	assert(can_add_edge(s,t));
+#endif
+
+	ugraph::add_edge(s,t, norm);
+	return *this;
 }
 
-void free_lab_trees::next() {
-	if (m_n <= 2) {
-		// there is only one tree we can make
-		m_sm[0] = true;
-		return;
-	}
-
-	while (m_it > 0 and m_seq[m_it] == m_n - 1) {
-		--m_it;
-	}
-	++m_seq[m_it];
-
-	if (m_seq[m_it] == m_n - 1) {
-		m_sm[m_it] =
-			(m_it == 0) or
-			(m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
-	}
-
-	++m_it;
-	if (m_it < m_n - 2) {
-		auto _it = m_seq.begin();
-		advance(_it, m_it);
-		fill(_it, m_seq.end(), 0);
-	}
-	m_it = m_n - 3;
+utree& utree::add_edges(const vector<edge>& edges, bool norm) {
+	ugraph::add_edges(edges, norm);
+	assert(not utils::graph_has_cycles(*this));
+	return *this;
 }
 
-utree free_lab_trees::get_tree() const {
-	if (m_n <= 1) { return utree(m_n); }
-	if (m_n == 2) {
-		utree t(2);
-		t.add_edge(0,1);
-		return t;
+bool utree::can_add_edge(node s, node t) const {
+	// if the tree already has n-1 edges then
+	// adding another edge will produce a cycle
+	if (n_edges() + 1 > n_nodes() - 1) {
+		return false;
 	}
 
-	return convert::Prufer_sequence_to_tree(m_seq, m_n);
+	// check that adding this edge does not produce cyces
+	return not utils::is_node_reachable_from(*this, s, t);
 }
 
-} // -- namespace generate
+bool utree::can_add_edges(const vector<edge>& edges) const {
+	// in a tree we must have m <= n - 1
+	const uint64_t more_m = edges.size();
+	if (n_edges() + more_m > n_nodes() - 1) {
+		return false;
+	}
+
+	// Copy the current graph
+	ugraph copy = *this;
+	// add the edges to the copy
+	copy.add_edges(edges, false);
+
+	// check that there are no cycles in the copy
+	return not utils::graph_has_cycles(copy);
+}
+
+} // -- namespace graphs
 } // -- namespace lal
-

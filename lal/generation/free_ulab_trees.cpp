@@ -249,10 +249,10 @@ void free_ulab_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-ugraph free_ulab_trees::get_tree() const {
-	if (m_n <= 1) { return ugraph(m_n); }
+utree free_ulab_trees::get_tree() const {
+	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
-		ugraph t(2);
+		utree t(2);
 		t.add_edge(0,1);
 		return t;
 	}

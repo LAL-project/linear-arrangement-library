@@ -41,7 +41,7 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/rutree.hpp>
+#include <lal/graphs/urtree.hpp>
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
@@ -54,7 +54,7 @@ namespace properties {
  * @param t Input rooted undirected tree.
  * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
  */
-numeric::rational MHD_rational(const graphs::rutree& t);
+numeric::rational MHD_rational(const graphs::urtree& t);
 
 /**
  * @brief Mean Hierarchical Distance.
@@ -63,7 +63,7 @@ numeric::rational MHD_rational(const graphs::rutree& t);
  * @param t Input rooted undirected tree.
  * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
  */
-double MHD(const graphs::rutree& t);
+double MHD(const graphs::urtree& t);
 
 } // -- namespace properties
 } // -- namespace lal

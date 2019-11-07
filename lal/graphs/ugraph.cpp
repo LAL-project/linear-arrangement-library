@@ -59,23 +59,25 @@ namespace graphs {
 /* PUBLIC */
 
 ugraph::ugraph() : graph() { }
-ugraph::ugraph(uint32_t n) : graph(n) { }
+ugraph::ugraph(uint32_t n) {
+	init(n);
+}
 ugraph::~ugraph() { }
 
 /* OPERATORS */
 
 /* MODIFIERS */
 
-ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
-	assert(not has_edge(u,v));
-	assert(u != v);
-	assert(has_node(u));
-	assert(has_node(v));
+ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
+	assert(not has_edge(s,t));
+	assert(s != t);
+	assert(has_node(s));
+	assert(has_node(t));
 
-	neighbourhood& nu = m_adjacency_list[u];
-	neighbourhood& nv = m_adjacency_list[v];
-	nu.push_back(v);
-	nv.push_back(u);
+	neighbourhood& ns = m_adjacency_list[s];
+	neighbourhood& nt = m_adjacency_list[t];
+	ns.push_back(t);
+	nt.push_back(s);
 	++m_num_edges;
 
 	if (m_normalised) {
@@ -83,24 +85,24 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			utils::sort_1_n(nu.begin(), nu.end());
-			utils::sort_1_n(nv.begin(), nv.end());
+			utils::sort_1_n(ns.begin(), ns.end());
+			utils::sort_1_n(nt.begin(), nt.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We may
 			// be lucky....
-			const size_t su = nu.size();
-			const size_t sv = nv.size();
+			const size_t su = ns.size();
+			const size_t sv = nt.size();
 			if (su > 1 and sv > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
+				m_normalised = ns[su - 2] < ns[su - 1] and nt[sv - 2] < nt[sv - 1];
 			}
 			else if (su > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1];
+				m_normalised = ns[su - 2] < ns[su - 1];
 			}
 			else if (sv > 1) {
-				m_normalised = nv[sv - 2] < nv[sv - 1];
+				m_normalised = nt[sv - 2] < nt[sv - 1];
 			}
 		}
 	}

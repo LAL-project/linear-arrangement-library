@@ -44,14 +44,14 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/utree.hpp>
 #include <lal/definitions.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Deterministic free unlabelled tree generator.
+ * @brief Exhaustive free unlabelled tree generator.
  *
  * Generates all the nonisomorphic free unlabelled trees
  * of a certain size.
@@ -137,7 +137,7 @@ class free_ulab_trees {
 		 * @ref next must have been called at least once.
 		 * @return Returns the tree generated with method @ref next().
 		 */
-		graphs::ugraph get_tree() const;
+		graphs::utree get_tree() const;
 
 	private:
 		/// Canonical level sequence of the tree.

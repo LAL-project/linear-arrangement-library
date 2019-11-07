@@ -45,6 +45,7 @@
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/utree.hpp>
 
 namespace lal {
 namespace properties {
@@ -121,7 +122,7 @@ double third_mmt_degree(const graphs::ugraph& g);
  * @pre \f$n > 3\f$.
  * @return Returns the hubiness coefficient.
  */
-numeric::rational hubiness_rational(const graphs::ugraph& g);
+numeric::rational hubiness_rational(const graphs::utree& g);
 
 /**
  * @brief Computes the hubiness coefficient.
@@ -141,7 +142,7 @@ numeric::rational hubiness_rational(const graphs::ugraph& g);
  * @pre \f$n > 2\f$.
  * @return Returns the hubiness coefficient.
  */
-double hubiness(const graphs::ugraph& g);
+double hubiness(const graphs::utree& g);
 
 } // -- namespace properties
 } // -- namespace lal

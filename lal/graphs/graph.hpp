@@ -46,7 +46,6 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/numeric/rational.hpp>
 
 namespace lal {
 namespace graphs {
@@ -58,9 +57,11 @@ namespace graphs {
  * list data structure.
  *
  * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool) ).
+ * or with the @ref init method. Edges can then be added one by one
+ * by calling its subclass' methods @e add_edge or @e add_edges methods.
+ *
+ * In most classes of graphs it is allowed to use the @ref graph::disjoint_union
+ * operation, which will join two graphs into a single one.
  */
 class graph {
 	public:
@@ -73,15 +74,6 @@ class graph {
 		graph(uint32_t n);
 		/// Default destructor.
 		virtual ~graph();
-
-		/**
-		 * @brief Allocate memory for @e n nodes.
-		 *
-		 * Calls @ref clear and @ref _init(uint32_t).
-		 * @param n Number of nodes.
-		 * @post The previous graph structure is cleared. See @ref clear.
-		 */
-		void init(uint32_t n);
 
 		/* OPERATORS */
 
@@ -103,6 +95,22 @@ class graph {
 		}
 
 		/* MODIFIERS */
+
+		/**
+		 * @brief Allocate memory for @e n nodes.
+		 *
+		 * Calls @ref clear and @ref _init(uint32_t).
+		 * @param n Number of nodes.
+		 * @post The previous graph structure is cleared. See @ref clear.
+		 */
+		void init(uint32_t n);
+		/**
+		 * @brief Deletes all edges and nodes from the graph.
+		 *
+		 * Frees the memory occupied by this graph.
+		 * @post The graph is normalised. The number of edges is 0.
+		 */
+		void clear();
 
 		/**
 		 * @brief Disjoint union of graphs.
@@ -139,39 +147,6 @@ class graph {
 		 * method @ref is_normalised evaluates to true.
 		 */
 		bool check_normalised();
-
-		/**
-		 * @brief Adds an edge to the graph.
-		 * @param u Valid node index: \f$0 \le u < n\f$.
-		 * @param v Valid node index: \f$0 \le v < n\f$.
-		 * @param norm Should the graph be normalised?
-		 * @pre \f$u \neq v\f$. The edge \f$\{u,v\}\f$ is not part of the graph.
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual graph& add_edge(node u, node v, bool norm = false) = 0;
-
-		/**
-		 * @brief Adds a list of edges to the graph.
-		 *
-		 * This operation is faster than calling @ref add_edge(node,node,bool)
-		 * since the edges are added in bulk.
-		 * @param edges The edges to be added.
-		 * @param norm Normalise the graph after the insertions.
-		 * @pre All the edges in @e edges must meet the precondition of method
-		 * @ref add_edge(node,node,bool).
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual graph& add_edges(const std::vector<edge>& edges, bool norm = true) = 0;
-
-		/**
-		 * @brief Deletes all edges and nodes from the graph.
-		 *
-		 * Frees the memory occupied by this graph.
-		 * @post The graph is normalised. The number of edges is 0.
-		 */
-		void clear();
 
 		/* SETTERS */
 
@@ -221,9 +196,9 @@ class graph {
 		 * @brief Returns the number of neighbours of @e u.
 		 * @param u Node to be queried.
 		 * @return In undirected graphs, returns the number of neighbours. In
-		 * a directed graph, returns the out-degree of a node.
+		 * a directed graph, returns the number of outgoing and ingoing edges.
 		 */
-		uint32_t degree(node u) const;
+		virtual uint32_t degree(node u) const;
 
 		/**
 		 * @brief Returns whether this graph is normalised or not.
@@ -246,6 +221,9 @@ class graph {
 		 */
 		void get_adjacency_matrix(std::vector<std::vector<bool> >& mat) const;
 
+	public:
+		typedef node graph_node_type;
+
 	protected:
 		/// Data structure that implements the graph.
 		std::vector<neighbourhood> m_adjacency_list;
@@ -262,11 +240,11 @@ class graph {
 
 	protected:
 		/**
-		 * @brief Only initialises memory.
+		 * @brief Initialises memory for the @ref graph class only.
 		 * @param n Number of nodes.
 		 */
 		virtual void _init(uint32_t n);
-		/// Clears the memory of the @ref graph class.
+		/// Clears memory for the @ref graph class only.
 		virtual void _clear();
 
 		/**

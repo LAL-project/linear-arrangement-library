@@ -40,124 +40,105 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
-#include <lal/definitions.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/tree.hpp>
+#include <lal/graphs/utree.hpp>
 
 namespace lal {
 namespace graphs {
 
 /**
- * @brief Directed graph class.
+ * @brief Directed tree class.
  *
- * Simple class implementing a directed graph, using the adjacency
- * list data structure.
+ * This class implements a directed tree. It can be initialised just like
+ * class @ref dgraph is.
  *
- * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool) ).
+ * This class offers almost the same features as the @ref dgraph class. There
+ * is one exception, however. One of the methods is not allowed to be used,
+ * method @ref dgraph::disjoint_union, which has been made private.
+ *
+ * Moreover, at every addition of an edge, a debug compilation of the library
+ * will check that such addition does not produce cycles.
  */
-class dgraph : virtual public graph {
+class dtree : public dgraph, virtual public tree {
 	public:
-		/// Default constructor.
-		dgraph();
+		/// Default constructor
+		dtree();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dgraph(uint32_t n);
+		dtree(uint32_t n);
 		/// Default destructor.
-		virtual ~dgraph();
-
-		/* OPERATORS */
-
-		/* MODIFIERS */
+		virtual ~dtree();
 
 		/**
-		 * @brief Adds a directed edge to the graph.
+		 * @brief Adds a directed edge to the tree.
+		 *
+		 * This operation checks that the edge added does not produce cycles,
+		 * but only in a @e  compilation of the library.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Should the graph be normalised?
-		 * @pre \f$u \neq v\f$. The directed edge \f$(s,t)\f$ is not part of the graph.
+		 * @pre Conditions are that \f$s \neq t\f$ and the edge \f$(s,t)\f$
+		 * is not part of the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual dgraph& add_edge(node s, node t, bool norm = false);
+		dtree& add_edge(node s, node t, bool norm = true);
 
 		/**
 		 * @brief Adds a list of directed edges to the graph.
 		 *
-		 * This operation is faster than calling @ref add_edge(node,node,bool)
-		 * since the edges are added in bulk.
+		 * This operation is faster than calling @ref add_edge since the
+		 * edges are added in bulk.
+		 *
+		 * However, unlike function @ref add_edge, this only checks that
+		 * the addition of the edges have not produced cycles only after they
+		 * have been added.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
+		 * @pre None of the subsets of the list of edges can produce cycles
+		 * when added.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual dgraph& add_edges(const std::vector<edge>& edges, bool norm = true);
+		dtree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
 		/**
-		 * @brief Disjoint union of graphs.
+		 * @brief Can this edge be added?
 		 *
-		 * Given a graph, append it to the current graph.
+		 * In a tree, this edge can only be added if it does not produce cycles.
+		 * @param s First node of the edge.
+		 * @param t Second node of the edge.
+		 * @return Returns whether the addition of this new edge can be added
+		 * to the tree without producing cycles.
+		 */
+		bool can_add_edge(node s, node t) const;
+		/**
+		 * @brief Can these edges be added?
 		 *
-		 * All the vertices in @e g are relabelled starting at @e n,
-		 * the number of vertices of the current graph.
-		 * @param g Input graph.
-		 * @pre Graph @e g must be directed.
-		 * @post The graph is normalised only if it was normalised before
-		 * the call and @e g is also normalised.
+		 * In a tree, these edges can only be added if their addition to the
+		 * tree do not produce cycles.
+		 * @param edges List of edges.
+		 * @return Returns whether the addition of these new edges can be added
+		 * to the tree without producing cycles.
 		 */
-		void disjoint_union(const graph& g);
-
-		/* SETTERS */
-
-		/* GETTERS */
-
-		/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
-		bool has_edge(node u, node v) const;
-
-		bool is_directed() const;
-		bool is_undirected() const;
+		bool can_add_edges(const std::vector<edge>& edges) const;
 
 		/**
-		 * @brief Returns the number of neighbours of @e u.
-		 * @param u Node to be queried.
-		 * @return Returns the number of outgoing and ingoing edges, i.e.,
-		 * the sum of the out- and in-degree.
+		 * @brief Converts this directed tree into a undirected tree.
+		 * @return Returns an object of type undirected tree.
 		 */
-		uint32_t degree(node u) const;
-		/// Returns the in-degree of a node.
-		uint32_t in_degree(node u) const;
-		/// Returns the out-degree of a node.
-		uint32_t out_degree(node u) const;
+		utree to_undirected() const;
 
-		/**
-		 * @brief Converts this directed graph into an undirected graph.
-		 * @return Returns an object of typ undirected graph.
-		 */
-		ugraph to_undirected() const;
-
-	protected:
-		/// In-degree per vertex.
-		std::vector<uint32_t> m_in_degree;
-
-	protected:
-		/**
-		 * @brief Initialises memory for the @ref dgraph class only.
-		 * @param n Number of nodes.
-		 */
-		void _init(uint32_t n);
-		/// Clears memory for the @ref graph class only.
-		void _clear();
+	private:
+		using dgraph::to_undirected;
+		// trees should not have this method
+		using dgraph::disjoint_union;
 };
 
 } // -- namespace graphs

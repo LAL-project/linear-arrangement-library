@@ -61,10 +61,10 @@ void rand_rooted_lab_dir_trees::init(uint32_t n, uint32_t seed) {
 	rand_free_lab_trees::init(n, seed);
 }
 
-rdtree rand_rooted_lab_dir_trees::make_rand_tree() {
-	ugraph t = rand_free_lab_trees::make_rand_tree();
+drtree rand_rooted_lab_dir_trees::make_rand_tree() {
+	utree t = rand_free_lab_trees::make_rand_tree();
 	node r = m_unif(m_gen);
-	return rdtree(t, r);
+	return drtree(t, r);
 }
 
 } // -- namespace generate

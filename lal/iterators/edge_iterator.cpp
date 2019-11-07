@@ -46,6 +46,9 @@
 // C++ includes
 using namespace std;
 
+// lal includes
+#include <lal/graphs/dgraph.hpp>
+
 namespace lal {
 using namespace graphs;
 
@@ -77,11 +80,8 @@ edge edge_iterator::get_edge() const {
 
 void edge_iterator::reset() {
 	m_exists_next = true;
-	start_at(0);
-}
 
-void edge_iterator::start_at(node _u) {
-	m_cur.first = _u;
+	m_cur.first = 0;
 	m_cur.second = static_cast<size_t>(-1);
 
 	auto [found, new_pointer] = find_next_edge();
@@ -135,14 +135,16 @@ pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
 	size_t pt = m_cur.second;
 	bool found = false;
 
+	const dgraph& dG = dynamic_cast<const dgraph&>(m_G);
+
 	++pt;
-	if (s < n and pt < m_G.degree(s)) {
+	if (s < n and pt < dG.out_degree(s)) {
 		found = true;
 	}
 	else {
 		pt = 0;
 		++s;
-		while (s < n and m_G.degree(s) == 0) { ++s; }
+		while (s < n and dG.out_degree(s) == 0) { ++s; }
 		found = s < n;
 	}
 	return make_pair(found, E_pointer(s, pt));

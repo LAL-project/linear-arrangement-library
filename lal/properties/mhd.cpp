@@ -53,25 +53,23 @@ using namespace utils;
 
 namespace properties {
 
-rational MHD_rational(const rutree& tree) {
+rational MHD_rational(const urtree& tree) {
 	int64_t sum_distances = 0;
 	vector<uint32_t> levels(tree.n_nodes(), 0);
 
-	BFS<rutree,node> bfs(tree);
-	bfs.start_at(
-		tree.get_root(),
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> bool { return false; },
-		[](const ugraph&, node, const vector<bool>&, const queue<node>&) -> void { },
-		[&](const ugraph&, node s, node t, const vector<bool>&, const queue<node>&) -> void {
-			levels[t] = levels[s] + 1;
-			sum_distances += levels[t];
-		}
+	BFS<urtree> bfs(tree);
+	bfs.set_process_neighbour(
+	[&](const BFS<urtree>&, node s, node t) -> void {
+		levels[t] = levels[s] + 1;
+		sum_distances += levels[t];
+	}
 	);
+	bfs.start_at(tree.get_root());
 
 	return rational(sum_distances, tree.n_edges());
 }
 
-double MHD(const rutree& t) {
+double MHD(const urtree& t) {
 	return MHD_rational(t).to_double();
 }
 

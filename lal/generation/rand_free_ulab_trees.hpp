@@ -46,7 +46,7 @@
 #include <map>
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/utree.hpp>
 #include <lal/definitions.hpp>
 #include <lal/numeric/integer.hpp>
 
@@ -54,7 +54,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Non-deterministic free unlabelled tree generator.
+ * @brief Random free unlabelled tree generator.
  *
  * Generates uniformly at random free unlabelled trees.
  *
@@ -92,7 +92,7 @@ class rand_free_ulab_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns an unlabelled tree.
 		 */
-		graphs::ugraph make_rand_tree();
+		graphs::utree make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

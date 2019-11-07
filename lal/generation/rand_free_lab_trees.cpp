@@ -73,10 +73,10 @@ void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
 }
 
-ugraph rand_free_lab_trees::make_rand_tree() {
-	if (m_n <= 1) { return ugraph(m_n); }
+utree rand_free_lab_trees::make_rand_tree() {
+	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
-		ugraph t(2);
+		utree t(2);
 		t.add_edge(0,1);
 		return t;
 	}

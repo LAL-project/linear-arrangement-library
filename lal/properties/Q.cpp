@@ -50,11 +50,6 @@ using namespace std;
 #include <lal/properties/degrees.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 
-#define get_degree(g, u)												\
-	(g.is_directed() ?													\
-		g.degree(u) + static_cast<const dgraph&>(g).in_degree(u) :		\
-		g.degree(u))
-
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -66,7 +61,7 @@ integer size_Q_integer(const graph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint32_t ku = get_degree(g, u);
+		const uint32_t ku = g.degree(u);
 		nk2 += ku*ku;
 	}
 

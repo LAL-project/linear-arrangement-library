@@ -32,10 +32,14 @@ HEADERS += \
     generation/rand_rooted_lab_dir_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
+    graphs/drtree.hpp \
+    graphs/dtree.hpp \
     graphs/graph.hpp \
-    graphs/rdtree.hpp \
-    graphs/rutree.hpp \
+    graphs/rtree.hpp \
+    graphs/tree.hpp \
     graphs/ugraph.hpp \
+    graphs/urtree.hpp \
+    graphs/utree.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
@@ -63,6 +67,8 @@ HEADERS += \
     D.hpp \
     properties/mhd.hpp \
     utils/bfs.hpp \
+    utils/cycles_directed.hpp \
+    utils/cycles_undirected.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
@@ -71,10 +77,14 @@ HEADERS += \
 SOURCES += \
     generation/rand_rooted_lab_dir_trees.cpp \
     graphs/dgraph.cpp \
+    graphs/drtree.cpp \
+    graphs/dtree.cpp \
     graphs/graph.cpp \
-    graphs/rdtree.cpp \
-    graphs/rutree.cpp \
+    graphs/rtree.cpp \
+    graphs/tree.cpp \
     graphs/ugraph.cpp \
+    graphs/urtree.cpp \
+    graphs/utree.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/headedness.cpp \

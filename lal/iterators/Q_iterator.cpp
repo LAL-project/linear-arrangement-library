@@ -46,6 +46,9 @@
 // C++ includes
 using namespace std;
 
+// lal includes
+#include <lal/graphs/dgraph.hpp>
+
 namespace lal {
 using namespace graphs;
 
@@ -77,7 +80,7 @@ bool share_vertices(const graph& g, const E_pointer& p1, const E_pointer& p2) {
 
 static tuple<bool, E_pointer, E_pointer>
 find_next_pair_directed(
-	const graph& g, node s, size_t pt, node u, size_t pv
+	const dgraph& g, node s, size_t pt, node u, size_t pv
 )
 {
 	// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
@@ -88,7 +91,7 @@ find_next_pair_directed(
 		return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
 	}
 	// base case 2: consumed neighbours of 's'
-	if (pt >= g.degree(s)) {
+	if (pt >= g.out_degree(s)) {
 		return find_next_pair_directed(g, s+1, 0, s+2, 0);
 	}
 	// base case 3: consumed second pointer
@@ -97,7 +100,7 @@ find_next_pair_directed(
 		return find_next_pair_directed(g, s, pt + 1, s + 1, 0);
 	}
 	// base case 4: consumed neighbours of 'u'
-	if (pv >= g.degree(u)) {
+	if (pv >= g.out_degree(u)) {
 		// advance second pointer
 		return find_next_pair_directed(g, s, pt, u + 1, 0);
 	}
@@ -154,7 +157,7 @@ find_next_pair(const graph& g, node s, size_t pt, node u, size_t pv)
 {
 	return (
 		g.is_directed() ?
-			find_next_pair_directed(g, s,pt,u,pv) :
+			find_next_pair_directed(dynamic_cast<const dgraph&>(g), s,pt,u,pv) :
 			find_next_pair_undirected(g, s,pt,u,pv)
 	);
 }

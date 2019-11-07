@@ -65,12 +65,12 @@ namespace graphs {
 
 graph::graph() { }
 graph::graph(uint32_t n) {
-	init(n);
+	_init(n);
 }
 graph::~graph() { }
 
 void graph::init(uint32_t n) {
-	clear();
+	_clear();
 	_init(n);
 }
 

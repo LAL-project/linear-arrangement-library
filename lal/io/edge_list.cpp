@@ -48,6 +48,8 @@ using namespace std;
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -73,8 +75,12 @@ bool read_edge_list(const std::string& filename, graph& g, bool norm) {
 	fin.close();
 
 	g.init(max_vert_idx + 1);
-	g.add_edges(edge_list, norm);
-
+	if (g.is_directed()) {
+		dynamic_cast<dgraph&>(g).add_edges(edge_list, norm);
+	}
+	else {
+		dynamic_cast<ugraph&>(g).add_edges(edge_list, norm);
+	}
 	return true;
 }
 

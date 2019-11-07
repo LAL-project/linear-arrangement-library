@@ -37,100 +37,36 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#include <lal/generation/free_lab_trees.hpp>
 
-// C includes
-#include <assert.h>
-
-// C++ includes
-#include <algorithm>
-#include <iterator>
-#include <limits>
-using namespace std;
-
-#define inf numeric_limits<size>::max()
+#pragma once
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
-using namespace graphs;
+namespace graphs {
 
-namespace generate {
+/**
+ * @brief Tree graph class.
+ *
+ * This class is just a class that inherits from @ref graph so as to allow
+ * passing classes that inherit from this class to functions that only accept
+ * attributes of type @ref graph.
+ *
+ * Tree-like data structures that might be useful for the user are:
+ * - @ref utree
+ * - @ref dtree
+ * - @ref urtree
+ * - @ref drtree
+ */
+class tree : virtual public graph {
+	public:
+		tree();
+		virtual ~tree();
 
-// PUBLIC
+		/// Returns whether this graph is an actual tree or not.
+		bool is_tree() const;
+};
 
-free_lab_trees::free_lab_trees() { }
-free_lab_trees::free_lab_trees(uint32_t _n) {
-	init(_n);
-}
-free_lab_trees::~free_lab_trees() { }
-
-void free_lab_trees::init(uint32_t _n) {
-	m_n = _n;
-	if (m_n <= 2) {
-		m_sm = vector<bool>(1, false);
-		// there is only one tree we can make
-		return;
-	}
-
-	m_it = 0;
-	m_sm = vector<bool>(m_n - 2, false);
-	m_seq = vector<uint32_t>(m_n - 2, 0);
-	// place 'it' at the end of the sequence
-	m_it = m_n - 3;
-	// make sure that the first call to next()
-	// produces the sequence 0 0 ... 0
-	m_seq[m_it] = numeric_limits<uint32_t>::max();
-	m_L = m_n - 2;
-}
-
-bool free_lab_trees::has_next() const {
-	if (m_n <= 2) {
-		return not m_sm[0];
-	}
-	return not m_sm[m_n - 3];
-}
-
-void free_lab_trees::next() {
-	if (m_n <= 2) {
-		// there is only one tree we can make
-		m_sm[0] = true;
-		return;
-	}
-
-	while (m_it > 0 and m_seq[m_it] == m_n - 1) {
-		--m_it;
-	}
-	++m_seq[m_it];
-
-	if (m_seq[m_it] == m_n - 1) {
-		m_sm[m_it] =
-			(m_it == 0) or
-			(m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
-	}
-
-	++m_it;
-	if (m_it < m_n - 2) {
-		auto _it = m_seq.begin();
-		advance(_it, m_it);
-		fill(_it, m_seq.end(), 0);
-	}
-	m_it = m_n - 3;
-}
-
-utree free_lab_trees::get_tree() const {
-	if (m_n <= 1) { return utree(m_n); }
-	if (m_n == 2) {
-		utree t(2);
-		t.add_edge(0,1);
-		return t;
-	}
-
-	return convert::Prufer_sequence_to_tree(m_seq, m_n);
-}
-
-} // -- namespace generate
+} // -- namespace graphs
 } // -- namespace lal
-

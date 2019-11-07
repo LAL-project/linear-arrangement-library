@@ -45,13 +45,15 @@
 
 // lal includes
 #include <lal/generation/rand_free_lab_trees.hpp>
-#include <lal/graphs/rdtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Non-deterministic rooted labelled directed trees generator.
+ * @brief Random rooted labelled directed trees generator.
+ *
+ * Generates uniformly at random rooted labelled trees.
  *
  * This class is used to generate rooted directed trees uniformly at random.
  *
@@ -83,7 +85,7 @@ class rand_rooted_lab_dir_trees : public rand_free_lab_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns a labelled tree generated uniformly at random.
 		 */
-		graphs::rdtree make_rand_tree();
+		graphs::drtree make_rand_tree();
 };
 
 } // -- namespace generate

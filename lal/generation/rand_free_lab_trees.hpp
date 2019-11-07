@@ -45,14 +45,14 @@
 #include <random>
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/utree.hpp>
 #include <lal/definitions.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Non-deterministic free labelled tree generator.
+ * @brief Random free labelled tree generator.
  *
  * Generates uniformly at random free labelled trees.
  *
@@ -83,7 +83,7 @@ class rand_free_lab_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns a labelled tree.
 		 */
-		graphs::ugraph make_rand_tree();
+		graphs::utree make_rand_tree();
 
 	protected:
 		/// Number of nodes of the tree.

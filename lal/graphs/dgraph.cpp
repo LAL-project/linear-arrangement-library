@@ -70,28 +70,15 @@ dgraph::~dgraph() { }
 
 /* MODIFIERS */
 
-void dgraph::disjoint_union(const graph& g) {
-	graph::disjoint_union(g);
+dgraph& dgraph::add_edge(node s, node t, bool to_norm) {
+	assert(not has_edge(s,t));
+	assert(s != t);
+	assert(has_node(s));
+	assert(has_node(t));
 
-	// if the call to 'graph::disjoint_union' did not
-	// fail then graph 'g' is a directed graph
-	const dgraph& dg = static_cast<const dgraph&>(g);
-
-	m_in_degree.insert(
-		m_in_degree.end(),
-		dg.m_in_degree.begin(), dg.m_in_degree.end()
-	);
-}
-
-dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
-	assert(not has_edge(u,v));
-	assert(u != v);
-	assert(has_node(u));
-	assert(has_node(v));
-
-	neighbourhood& nu = m_adjacency_list[u];
-	nu.push_back(v);
-	m_in_degree[v] += 1;
+	neighbourhood& ns = m_adjacency_list[s];
+	ns.push_back(t);
+	m_in_degree[t] += 1;
 	++m_num_edges;
 
 	if (m_normalised) {
@@ -99,15 +86,15 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			utils::sort_1_n(nu.begin(), nu.end());
+			utils::sort_1_n(ns.begin(), ns.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We might
 			// be lucky....
-			const size_t su = nu.size();
-			m_normalised = (su <= 1 ? m_normalised : nu[su - 2] < nu[su - 1]);
+			const size_t su = ns.size();
+			m_normalised = (su <= 1 ? m_normalised : ns[su - 2] < ns[su - 1]);
 			/*if (su > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1];
 			}*/
@@ -147,6 +134,19 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 	return *this;
 }
 
+void dgraph::disjoint_union(const graph& g) {
+	graph::disjoint_union(g);
+
+	// if the call to 'graph::disjoint_union' did not
+	// fail then graph 'g' is a directed graph
+	const dgraph& dg = dynamic_cast<const dgraph&>(g);
+
+	m_in_degree.insert(
+		m_in_degree.end(),
+		dg.m_in_degree.begin(), dg.m_in_degree.end()
+	);
+}
+
 /* SETTERS */
 
 /* GETTERS */
@@ -162,9 +162,18 @@ bool dgraph::has_edge(node u, node v) const {
 bool dgraph::is_directed() const { return true; }
 bool dgraph::is_undirected() const { return false; }
 
+uint32_t dgraph::degree(node u) const {
+	return in_degree(u) + out_degree(u);
+}
+
 uint32_t dgraph::in_degree(node u) const {
 	assert(has_node(u));
 	return m_in_degree[u];
+}
+
+uint32_t dgraph::out_degree(node u) const {
+	assert(has_node(u));
+	return graph::degree(u);
 }
 
 ugraph dgraph::to_undirected() const {

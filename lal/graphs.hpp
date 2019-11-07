@@ -42,6 +42,6 @@
 
 #include <lal/graphs/graph.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/rutree.hpp>
+#include <lal/graphs/urtree.hpp>
 #include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/rdtree.hpp>
+#include <lal/graphs/drtree.hpp>

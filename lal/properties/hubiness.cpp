@@ -49,10 +49,10 @@ using namespace numeric;
 
 namespace properties {
 
-rational hubiness_rational(const ugraph& g) {
+rational hubiness_rational(const utree& g) {
 	const uint32_t n = g.n_nodes();
 
-	// for n <= 2, <k^2>_star = <k^2>_linear
+	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 	assert(n > 3);
@@ -63,7 +63,7 @@ rational hubiness_rational(const ugraph& g) {
 	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const ugraph& g) {
+double hubiness(const utree& g) {
 	return hubiness_rational(g).to_double();
 }
 
