@@ -95,9 +95,14 @@ ifeq ($(DIST),local)
 LAL_DIR = ..
 LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
                   $(LAL_DIR)/lal/graphs/graph.hpp \
+                  $(LAL_DIR)/lal/graphs/tree.hpp \
+                  $(LAL_DIR)/lal/graphs/rtree.hpp \
                   $(LAL_DIR)/lal/graphs/ugraph.hpp \
+                  $(LAL_DIR)/lal/graphs/utree.hpp \
+                  $(LAL_DIR)/lal/graphs/urtree.hpp \
                   $(LAL_DIR)/lal/graphs/dgraph.hpp \
-                  $(LAL_DIR)/lal/graphs/rdtree.hpp \
+                  $(LAL_DIR)/lal/graphs/dtree.hpp \
+                  $(LAL_DIR)/lal/graphs/drtree.hpp \
                   $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
                   $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
 				  $(LAL_DIR)/lal/conversions/conversions.hpp \

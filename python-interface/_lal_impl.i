@@ -10,10 +10,14 @@
 // library's main directory
 #include <lal/definitions.hpp>
 #include <lal/graphs/graph.hpp>
+#include <lal/graphs/tree.hpp>
+#include <lal/graphs/rtree.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/rutree.hpp>
+#include <lal/graphs/utree.hpp>
+#include <lal/graphs/urtree.hpp>
 #include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/rdtree.hpp>
+#include <lal/graphs/dtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
 // iterators
 #include <lal/iterators/edge_iterator.hpp>
@@ -86,12 +90,13 @@ namespace std {
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
 
-// graphs
-%include "../lal/graphs/graph.hpp"
+// graphs (only those that can be instantiated)
 %include "../lal/graphs/ugraph.hpp"
-%include "../lal/graphs/rutree.hpp"
+%include "../lal/graphs/utree.hpp"
+%include "../lal/graphs/urtree.hpp"
 %include "../lal/graphs/dgraph.hpp"
-%include "../lal/graphs/rdtree.hpp"
+%include "../lal/graphs/dtree.hpp"
+%include "../lal/graphs/drtree.hpp"
 
 // -------------
 // io operations
