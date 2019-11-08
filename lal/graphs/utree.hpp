@@ -72,7 +72,7 @@ class utree : public ugraph, virtual public tree {
 		/**
 		 * @brief Constructor from graph
 		 * @param t Input graph.
-		 * @pre t must be a tree.
+		 * @pre @e t must be a tree.
 		 */
 		utree(const ugraph& t);
 
