@@ -73,6 +73,7 @@ HEADERS += \
     utils/bfs.hpp \
     utils/cycles_directed.hpp \
     utils/cycles_undirected.hpp \
+    utils/is_tree.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
@@ -92,16 +93,15 @@ SOURCES += \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/headedness.cpp \
-    properties/hubiness.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \
     numeric/integer.cpp \
     numeric/rational.cpp \
     numeric/gmp_utils.cpp \
     io/edge_list.cpp \
-    properties/degrees.cpp \
     properties/Q.cpp \
     linarr/D.cpp \
+    properties/degrees.cpp \
     properties/mhd.cpp \
     properties/variance_C_gen_graphs_fast.cpp \
     linarr/C_brute_force.cpp \

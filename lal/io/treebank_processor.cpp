@@ -154,10 +154,10 @@ inline void process_tree(
 
 	// <k^2>, <k^3>, |Q|
 	if (what_fs[k2_idx]) {
-		props[k2_idx] = properties::second_mmt_degree(t);
+		props[k2_idx] = properties::mmt_degree(t, 2);
 	}
 	if (what_fs[k3_idx]) {
-		props[k3_idx] = properties::third_mmt_degree(t);
+		props[k3_idx] = properties::mmt_degree(t, 3);
 	}
 	if (what_fs[size_Q_idx]) {
 		props[size_Q_idx] = static_cast<double>(properties::size_Q(t));

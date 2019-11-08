@@ -45,64 +45,104 @@
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 #include <lal/graphs/utree.hpp>
 
 namespace lal {
 namespace properties {
 
 /**
- * @brief Computes the second moment of degree of a graph as a rational value.
+ * @brief Computes the \f$p-th\f$ moment of degree about zero of a directed
+ * graph as an exact rational value.
  *
- * Computes the second moment of degree about zero, \f$\langle k^2 \rangle\f$,
- * of a graph using rational values:
+ * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * \f$\langle k^p \rangle\f$, of a graph using:
  *
- * \f$\langle k^2 \rangle = \frac{1}{n} \sum_{i=1}^n k_i^2 \f$.
+ * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph.
- * @param[in] g Input graph.
- * @return Returns the exact second moment of degree about zero.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational second_mmt_degree_rational(const graphs::ugraph& g);
+numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
 /**
- * @brief Computes the second moment of degree of a graph.
+ * @brief Computes the \f$p-th\f$ moment of degree about zero of a directed
+ * graph.
  *
- * Computes the second moment of degree about zero, \f$\langle k^2 \rangle\f$,
- * of a graph using floating point values of double precision:
+ * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * \f$\langle k^p \rangle\f$, of a graph using:
  *
- * \f$\langle k^2 \rangle = \frac{1}{n} \sum_{i=1}^n k_i^2 \f$.
+ * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph.
- * @param[in] g Input graph.
- * @return Returns the exact second moment of degree about zero.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-double second_mmt_degree(const graphs::ugraph& g);
+double mmt_degree(const graphs::graph& g, uint64_t p);
 
 /**
- * @brief Computes the third moment of degree of a graph as a rational value.
+ * @brief Computes the \f$p-th\f$ moment of in-degree about zero of a directed
+ * graph as an exact rational value.
  *
- * Computes the third moment of degree about zero, \f$\langle k^3 \rangle\f$,
- * of a graph using rational values:
+ * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
  *
- * \f$\langle k^3 \rangle = \frac{1}{n} \sum_{i=1}^n k_i^3 \f$.
+ * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph.
- * @param[in] g Input graph.
- * @return Returns the exact third moment of degree about zero.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational third_mmt_degree_rational(const graphs::ugraph& g);
+numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
 /**
- * @brief Computes the third moment of degree of a graph.
+ * @brief Computes the \f$p-th\f$ moment of in-degree about zero of a directed
+ * graph.
  *
- * Computes the third moment of degree about zero, \f$\langle k^3 \rangle\f$,
- * of a graph using floating point values of double precision:
+ * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
  *
- * \f$\langle k^3 \rangle = \frac{1}{n} \sum_{i=1}^n k_i^3 \f$.
+ * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph.
- * @param[in] g Input graph.
- * @return Returns the exact third moment of degree about zero.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-double third_mmt_degree(const graphs::ugraph& g);
+double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
+
+/**
+ * @brief Computes the \f$p-th\f$ moment of out-degree about zero of a directed
+ * graph as an exact rational value.
+ *
+ * Computes the \f$p-th\f$ moment of out-degree about zero,
+ * \f$\langle k_{out}^p \rangle\f$, of a directed graph using:
+ *
+ * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ */
+numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint64_t p);
+/**
+ * @brief Computes the \f$p-th\f$ moment of out-degree about zero of a directed
+ * graph.
+ *
+ * Computes the \f$p-th\f$ moment of out-degree about zero,
+ * \f$\langle k_{out}^p \rangle\f$, of a directed graph using:
+ *
+ * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ */
+double mmt_out_degree(const graphs::dgraph& g, uint64_t p);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
