@@ -73,8 +73,7 @@ inline bool __find_cycle
  * @brief Returns true if, and only if, the graph has cycles.
  * @param g Input graph.
  */
-bool graph_has_cycles(const graphs::dgraph& g) {
-
+inline bool has_cycles(const graphs::dgraph& g) {
 	const uint32_t n = g.n_nodes();
 	std::vector<bool> vis(n, false);
 	std::vector<bool> in_stack(n, false);

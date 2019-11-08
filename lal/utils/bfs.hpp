@@ -221,10 +221,15 @@ class BFS {
 			while (not m_Q.empty()) { m_Q.pop(); }
 		}
 
+		/* GETTERS */
+
 		node get_start_node() const { return m_start_node; }
 
 		// Returns the set of visited nodes.
 		bool node_was_visited(node u) const { return m_vis[u]; }
+
+		// Return visited nodes information
+		const std::vector<bool> get_visited() const { return m_vis; }
 
 	private:
 		// Constant reference to the graph.

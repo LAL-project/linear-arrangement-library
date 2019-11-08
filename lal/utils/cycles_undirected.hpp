@@ -50,8 +50,7 @@ namespace utils {
  * @brief Returns true if, and only if, the graph has cycles.
  * @param g Input graph.
  */
-inline
-bool graph_has_cycles(const graphs::ugraph& g) {
+inline bool has_cycles(const graphs::ugraph& g) {
 	typedef graphs::ugraph G;
 	const auto n = g.n_nodes();
 
