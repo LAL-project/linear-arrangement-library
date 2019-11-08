@@ -49,6 +49,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/bfs.hpp>
+#include <lal/utils/is_tree.hpp>
 
 namespace lal {
 using namespace utils;
@@ -57,13 +58,16 @@ namespace graphs {
 
 drtree::drtree() : dtree() { }
 drtree::drtree(uint32_t n) : dtree(n) { }
-drtree::drtree(const utree& g, node r, bool arb) : dtree() {
-	init_rooted(g, r, arb);
+drtree::drtree(const utree& t, node r, bool arb) : dtree() {
+	// assert(utils::is_tree(t));
+	// the assertion above is done in "init_rooted" method
+	init_rooted(t, r, arb);
 }
 drtree::~drtree() { }
 
 void drtree::init_rooted(const utree& _t, node r, bool arb) {
-	// assert(is_tree(t));
+	assert(utils::is_tree(_t));
+
 	if (_t.n_nodes() == 0) {
 		dgraph::init(0);
 		m_r = 0;

@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/bfs.hpp>
-#include <lal/utils/cycles_undirected.hpp>
+#include <lal/utils/cycles_directed.hpp>
 
 namespace lal {
 namespace graphs {
@@ -70,8 +70,7 @@ dtree& dtree::add_edges(const vector<edge>& edges, bool norm) {
 	dgraph::add_edges(edges, norm);
 
 #if defined DEBUG
-	utree copy = to_undirected();
-	assert(not utils::graph_has_cycles(copy));
+	assert(not utils::has_cycles(*this));
 #endif
 	return *this;
 }
@@ -83,10 +82,12 @@ bool dtree::can_add_edge(node s, node t) const {
 		return false;
 	}
 
-	// Convert the graph to undirected graph. Slow, I know...
-	ugraph undir_tree = to_undirected();
-	// check that adding this edge does not produce cyces
-	return not utils::is_node_reachable_from(undir_tree, s, t);
+	// copy the graph
+	dgraph copy = *this;
+	// add the edges
+	copy.add_edge(s, t);
+	// check that there are no cycles
+	return not utils::has_cycles(copy);
 }
 
 bool dtree::can_add_edges(const std::vector<edge>& edges) const {
@@ -96,13 +97,12 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 		return false;
 	}
 
-	// Convert the graph to undirected graph. Slow, I know...
-	utree undir_tree = to_undirected();
-
+	// copy the graph
+	dgraph copy = *this;
 	// add the edges
-	undir_tree.add_edges(edges);
+	copy.add_edges(edges);
 	// check that there are no cycles
-	return not utils::graph_has_cycles(undir_tree);
+	return not utils::has_cycles(copy);
 }
 
 utree dtree::to_undirected() const {

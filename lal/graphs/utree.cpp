@@ -49,6 +49,7 @@ using namespace std;
 // lal includes
 #include <lal/utils/bfs.hpp>
 #include <lal/utils/cycles_undirected.hpp>
+#include <lal/utils/is_tree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -56,9 +57,8 @@ namespace graphs {
 utree::utree() : ugraph() { }
 utree::utree(uint32_t n) : ugraph(n) { }
 utree::utree(const ugraph& t) : ugraph(t.n_nodes()) {
-	// Note: add_edges already checks that 't' is a tree or not. It does
-	// so implicitly: after the addition of the edges, the method looks
-	// for cycles in the graph. If there are, some assertion will fail
+	// check that the input graph is a tree
+	assert(utils::is_tree(t));
 	add_edges(t.edges());
 }
 
@@ -73,7 +73,13 @@ utree& utree::add_edge(node s, node t, bool norm) {
 
 utree& utree::add_edges(const vector<edge>& edges, bool norm) {
 	ugraph::add_edges(edges, norm);
-	assert(not utils::graph_has_cycles(*this));
+	// NOTE: we can't do
+	//     assert(utils::is_tree(*this));
+	// because the tree might not be complete and lack some
+	// edges. If we asserted "is_tree", we would require the
+	// user to insert ALL edges at once, even though they might
+	// not be available.
+	assert(not utils::has_cycles(*this));
 	return *this;
 }
 
@@ -84,7 +90,9 @@ bool utree::can_add_edge(node s, node t) const {
 		return false;
 	}
 
-	// check that adding this edge does not produce cyces
+	// Check that adding this edge does not produce cycles.
+	// Adding edge (u,v) produces cycles if 'u' is already
+	// reachable from 'v' or viceversa.
 	return not utils::is_node_reachable_from(*this, s, t);
 }
 
@@ -95,13 +103,12 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 		return false;
 	}
 
-	// Copy the current graph
+	// 1. copy the current graph
 	ugraph copy = *this;
-	// add the edges to the copy
+	// 2. add the edges to the copy
 	copy.add_edges(edges, false);
-
-	// check that there are no cycles in the copy
-	return not utils::graph_has_cycles(copy);
+	// 3. check that there are no cycles in the copy
+	return not utils::has_cycles(copy);
 }
 
 } // -- namespace graphs
