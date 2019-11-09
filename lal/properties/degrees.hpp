@@ -154,7 +154,7 @@ double mmt_out_degree(const graphs::dgraph& g, uint64_t p);
  * \f$,
  *
  * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
- * are the second moment of degree about 0 (see @ref second_mmt_degree_rational)
+ * are the second moment of degree about 0 (see @ref mmt_degree_rational)
  * of a star and linear tree respectively.
  *
  * See \cite Ferrer2018a for details.
@@ -174,7 +174,7 @@ numeric::rational hubiness_rational(const graphs::utree& g);
  * \f$,
  *
  * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
- * are the second moment of degree about 0 (see @ref second_mmt_degree_rational)
+ * are the second moment of degree about 0 (see @ref mmt_degree_rational)
  * of a star and linear tree respectively.
  *
  * See \cite Ferrer2018a for details.
