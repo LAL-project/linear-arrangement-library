@@ -41,7 +41,6 @@
 #include <lal/io/edge_list.hpp>
 
 // C++ includes
-#include <iostream>
 #include <filesystem>
 #include <fstream>
 using namespace std;

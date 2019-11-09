@@ -65,7 +65,7 @@ namespace properties {
 
 inline void compute_data_tree
 (
-	const ugraph& g, const bigint& n, const bigint& m,
+	const utree& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
 	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
 	bigint& sum_adjs__x__sum_degs, bigint& sum_prod_pair_adj_deg
@@ -146,7 +146,7 @@ inline void compute_data_tree
 	free(all_memory);
 }
 
-rational variance_C_tree_rational(const ugraph& g) {
+rational variance_C_tree_rational(const utree& g) {
 	const bigint n = g.n_nodes();
 	const bigint m = g.n_edges();
 
@@ -212,7 +212,7 @@ rational variance_C_tree_rational(const ugraph& g) {
 	return V;
 }
 
-double variance_C_tree(const ugraph& g) {
+double variance_C_tree(const utree& g) {
 	rational V = variance_C_tree_rational(g);
 	return V.to_double();
 }

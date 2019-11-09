@@ -45,7 +45,6 @@
 #include <omp.h>
 
 // C++ includes
-#include <iostream>
 #include <vector>
 using namespace std;
 

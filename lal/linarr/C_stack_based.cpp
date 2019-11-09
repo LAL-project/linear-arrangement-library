@@ -50,7 +50,6 @@
 #include <cmath>
 #include <list>
 #include <map>
-#include <iostream>
 using namespace std;
 
 // lal includes
