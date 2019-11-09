@@ -91,6 +91,12 @@ bool utree::can_add_edge(node s, node t) const {
 		return false;
 	}
 
+	// the edge cannot be in the graph twice:
+	// this is not a multigraph
+	if (has_edge(s,t)) {
+		return false;
+	}
+
 	// Check that adding this edge does not produce cycles.
 	// Adding edge (u,v) produces cycles if 'u' is already
 	// reachable from 'v' or viceversa.
@@ -102,6 +108,13 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 	const uint64_t more_m = edges.size();
 	if (n_edges() + more_m > n_nodes() - 1) {
 		return false;
+	}
+
+	// check that none of the edges exist
+	for (auto e : edges) {
+		if (has_edge(e.first, e.second)) {
+			return false;
+		}
 	}
 
 	// 1. copy the current graph

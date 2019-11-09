@@ -58,6 +58,11 @@ bool is_tree(const graphs::ugraph& g) {
 	typedef graphs::ugraph G;
 	const auto n = g.n_nodes();
 
+	// simple cases
+	if (n <= 1) { return true; }
+	if (n == 2 and g.n_edges() == 1) { return true; }
+	if (n == 3 and g.n_edges() == 2) { return true; }
+
 	// parent[s] = t <->
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER)
 	// After 't' comes 's'

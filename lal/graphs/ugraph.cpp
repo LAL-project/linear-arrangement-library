@@ -154,7 +154,7 @@ bool ugraph::has_edge(node u, node v) const {
 
 	return (nu.size() <= nv.size() ?
 		find(nu.begin(), nu.end(), v) != nu.end() :
-		find(nv.begin(), nv.end(), v) != nv.end()
+		find(nv.begin(), nv.end(), u) != nv.end()
 	);
 }
 

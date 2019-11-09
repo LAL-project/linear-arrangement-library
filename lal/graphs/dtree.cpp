@@ -82,12 +82,19 @@ bool dtree::can_add_edge(node s, node t) const {
 		return false;
 	}
 
+	// the edge cannot be in the graph twice:
+	// this is not a multigraph
+	if (has_edge(s,t)) {
+		return false;
+	}
+
 	// copy the graph
 	dgraph copy = *this;
 	// add the edges
 	copy.add_edge(s, t);
-	// check that there are no cycles
-	return not utils::has_cycles(copy);
+	// convert the directed graph to an undirected graph
+	// and make sure that there are no loops in that
+	return not utils::has_cycles(copy.to_undirected());
 }
 
 bool dtree::can_add_edges(const std::vector<edge>& edges) const {
@@ -97,12 +104,20 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 		return false;
 	}
 
+	// check that none of the edges exist
+	for (auto e : edges) {
+		if (has_edge(e.first, e.second)) {
+			return false;
+		}
+	}
+
 	// copy the graph
 	dgraph copy = *this;
 	// add the edges
 	copy.add_edges(edges);
-	// check that there are no cycles
-	return not utils::has_cycles(copy);
+	// convert the directed graph to an undirected graph
+	// and make sure that there are no loops in that
+	return not utils::has_cycles(copy.to_undirected());
 }
 
 utree dtree::to_undirected() const {
