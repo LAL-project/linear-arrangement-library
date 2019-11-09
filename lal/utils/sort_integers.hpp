@@ -47,9 +47,7 @@
 namespace lal {
 namespace utils {
 
-/**
- * @brief Insertion sort.
- */
+/// Insertiong sort
 template<typename It>
 void insertion_sort(It begin, It end) {
 	for (It i = begin + 1; i != end; ++i) {
@@ -65,9 +63,10 @@ void insertion_sort(It begin, It end) {
 }
 
 /**
- * @brief Sort integer values within the range \f$[0,n)\f$ increasingly.
+ * @brief Sort integer values within the range \f$[m,M)\f$ increasingly.
  *
- * The value \f$n\f$ represents the maximum value within the vector.
+ * The values \f$m,M\f$ represent the minimum and maximum values within the
+ * vector, respectively.
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
  * @post v is sorted.
@@ -92,21 +91,23 @@ sort_1_n(It begin, It end)
 		return;
 	}
 
-	// maximum element within vector
-	const auto M = *std::max_element(begin, end) + 1;
+	// maximum & minimum elements within vector
+	const auto [m_it,M_it] = std::minmax_element(begin, end);
+	const auto m = *m_it;
+	const auto M = *M_it;
 
 	// fill "bit" vector
-	std::vector<bool> seen(M, false);
+	std::vector<bool> seen(M - m + 1, false);
 	for (auto it = begin; it != end; ++it) {
-		seen[*it] = true;
+		seen[*it - m] = true;
 	}
 
 	// sort elements, increasingly
 	auto seenit = seen.begin();
 	auto vit = begin;
 	typename std::iterator_traits<It>::value_type i;
-	for (i = 0; i < M and vit != end; ++i, ++seenit) {
-		*vit = i;
+	for (i = 0; i < M - m + 1 and vit != end; ++i, ++seenit) {
+		*vit = i + m;
 		vit += *seenit;
 	}
 }
