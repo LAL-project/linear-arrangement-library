@@ -50,7 +50,7 @@
 namespace lal {
 namespace utils {
 
-/**
+/*
  * @brief Call a function @e F that does not admit empty arrangements.
  *
  * In case the arrangement @e arr is empty, function @e F is passed the

@@ -54,10 +54,10 @@ namespace lal {
 namespace numeric {
 
 /**
- * @brief Rational number.
+ * @brief Exact rational number.
  *
- * This class wraps the rational data structure from GMP
- * (the mpq_t) with operators for an easy usage.
+ * This class wraps the @e mpq_t data structure from GMP
+ * with operators for an easy usage.
  *
  * In order to be used, it must first be initialised, with
  * one of the following methods:

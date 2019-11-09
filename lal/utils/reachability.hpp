@@ -40,52 +40,27 @@
 
 #pragma once
 
-#include <lal/graphs/dgraph.hpp>
+// lal includes
+#include <lal/utils/bfs.hpp>
 
 namespace lal {
 namespace utils {
 
-inline bool __find_cycle
-(
-	const graphs::graph& g, node u,
-	std::vector<bool>& visited, std::vector<bool>& in_stack
-)
-{
-	if (visited[u]) { return false; }
-
-	visited[u] = true;
-
-	in_stack[u] = true;
-	for (node v : g.get_neighbours(u)) {
-		if (in_stack[v]) {
-			return true;
-		}
-		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
-			return true;
-		}
-	}
-
-	in_stack[u] = false;
-	return false;
-}
-
 /*
- * @brief Returns true if, and only if, the graph has cycles.
+ * @brief Returns true if, and only if, node target is reachable from node source.
  * @param g Input graph.
+ * @param source Node where the search starts at.
+ * @param target The node we want to know whether it is reachable from @e
+ * source or not.
  */
-inline bool has_cycles(const graphs::dgraph& g) {
-	const uint32_t n = g.n_nodes();
-	std::vector<bool> vis(n, false);
-	std::vector<bool> in_stack(n, false);
-
-	bool has_cycle = false;
-	for (node u = 0; u < n and not has_cycle; ++u) {
-		if (not vis[u]) {
-			has_cycle = __find_cycle(g, u, vis, in_stack);
-		}
-	}
-
-	return has_cycle;
+template<class G, typename node = typename G::graph_node_type>
+bool is_node_reachable_from(const G& g, node source, node target) {
+	BFS<G> bfs(g);
+	bfs.set_terminate(
+		[target](const BFS<G>&, node s) -> bool { return (s == target); }
+	);
+	bfs.start_at(source);
+	return bfs.node_was_visited(target);
 }
 
 } // -- namespace utils

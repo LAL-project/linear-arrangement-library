@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/bfs.hpp>
-#include <lal/utils/cycles_directed.hpp>
+#include <lal/utils/cycles.hpp>
 
 namespace lal {
 namespace graphs {

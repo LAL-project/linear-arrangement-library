@@ -302,10 +302,11 @@ class AVL {
 
 			if (std::abs(n->bf) <= 1) { return n; }
 
-			if (n->bf == -2) {
-				return (n->left->bf <= 0 ? left_left_case(n) : left_right_case(n));
-			}
-			return (n->right->bf >= 0 ? right_right_case(n) : right_left_case(n));
+			return (
+				n->bf == -2 ?
+					(n->left->bf <= 0 ? left_left_case(n) : left_right_case(n)) :
+					(n->right->bf >= 0 ? right_right_case(n) : right_left_case(n))
+			);
 
 			/*
 			if (n->bf == -2) {

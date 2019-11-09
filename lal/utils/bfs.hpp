@@ -252,22 +252,5 @@ class BFS {
 		bfs_process_neighbour m_proc_neigh;
 };
 
-/*
- * @brief Returns true if, and only if, node target is reachable from node source.
- * @param g Input graph.
- * @param source Node where the search starts at.
- * @param target The node we want to know whether it is reachable from @e
- * source or not.
- */
-template<class G, typename node = typename G::graph_node_type>
-bool is_node_reachable_from(const G& g, node source, node target) {
-	BFS<G> bfs(g);
-	bfs.set_terminate(
-		[target](const BFS<G>&, node s) -> bool { return (s == target); }
-	);
-	bfs.start_at(source);
-	return bfs.node_was_visited(target);
-}
-
 } // -- namespace utils
 } // -- namespace lal

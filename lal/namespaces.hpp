@@ -142,16 +142,15 @@ namespace numeric {
  * 
  * This namespace contains basic properties of graphs including, but
  * not limited to:
- * - the computation of the second and third moment of
- * degree about zero \f$ \langle k^2 \rangle, \langle k^3 \rangle \f$,
- * -  the enumeration of all elements of \f$Q\f$ and the computation of
- * its size, \f$|Q|\f$,
- * - the computation of the variance of \f$D\f$ and \f$C\f$ (with
- * functions for trees in the latter case).
+ * - hubiness,
+ * - Mean Hierarchical Distance
+ * - computation of the moments of degree about zero \f$ \langle k^p \rangle\f$,
+ * - computation of the amount of pairs of independent edges \f$Q\f$,
+ * - computation of the variance of \f$D\f$ and \f$C\f$ (with adhoc functions for trees in the latter case),
  * 
- * Some of the calculations are done using exact rational arithmetic
- * (using rational numbers as defined in @ref numeric::rational), and
- * others are done using floating point values of double precision.
+ * All calculations can be retrieved as exact rational numbers
+ * (see @ref numeric::rational), but also as floating point values of
+ * double precision.
  */
 namespace properties {}
 

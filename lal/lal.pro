@@ -71,12 +71,12 @@ HEADERS += \
     D.hpp \
     properties/mhd.hpp \
     utils/bfs.hpp \
-    utils/cycles_directed.hpp \
-    utils/cycles_undirected.hpp \
+    utils/cycles.hpp \
     utils/is_tree.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
+    utils/reachability.hpp \
     utils/sort_integers.hpp
 
 SOURCES += \

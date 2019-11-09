@@ -52,10 +52,10 @@ namespace lal {
 namespace properties {
 
 /**
- * @brief Computes the \f$p-th\f$ moment of degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
  *
- * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * Computes the \f$p\f$-th moment of in-degree about zero,
  * \f$\langle k^p \rangle\f$, of a graph using:
  *
  * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
@@ -67,10 +67,10 @@ namespace properties {
  */
 numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
 /**
- * @brief Computes the \f$p-th\f$ moment of degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph.
  *
- * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * Computes the \f$p\f$-th moment of in-degree about zero,
  * \f$\langle k^p \rangle\f$, of a graph using:
  *
  * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
@@ -83,10 +83,10 @@ numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
 double mmt_degree(const graphs::graph& g, uint64_t p);
 
 /**
- * @brief Computes the \f$p-th\f$ moment of in-degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
  *
- * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * Computes the \f$p\f$-th moment of in-degree about zero,
  * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
  *
  * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
@@ -98,10 +98,10 @@ double mmt_degree(const graphs::graph& g, uint64_t p);
  */
 numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
 /**
- * @brief Computes the \f$p-th\f$ moment of in-degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph.
  *
- * Computes the \f$p-th\f$ moment of in-degree about zero,
+ * Computes the \f$p\f$-th moment of in-degree about zero,
  * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
  *
  * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
@@ -114,10 +114,10 @@ numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
 double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
 
 /**
- * @brief Computes the \f$p-th\f$ moment of out-degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
  *
- * Computes the \f$p-th\f$ moment of out-degree about zero,
+ * Computes the \f$p\f$-th moment of out-degree about zero,
  * \f$\langle k_{out}^p \rangle\f$, of a directed graph using:
  *
  * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.
@@ -129,10 +129,10 @@ double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
  */
 numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint64_t p);
 /**
- * @brief Computes the \f$p-th\f$ moment of out-degree about zero of a directed
+ * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph.
  *
- * Computes the \f$p-th\f$ moment of out-degree about zero,
+ * Computes the \f$p\f$-th moment of out-degree about zero,
  * \f$\langle k_{out}^p \rangle\f$, of a directed graph using:
  *
  * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.

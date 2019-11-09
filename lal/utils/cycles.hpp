@@ -40,15 +40,69 @@
 
 #pragma once
 
-#include <lal/utils/bfs.hpp>
 #include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/utils/bfs.hpp>
 
 namespace lal {
 namespace utils {
 
+namespace __lal {
+
 /*
  * @brief Returns true if, and only if, the graph has cycles.
  * @param g Input graph.
+ * @param u Node of the directed graph
+ * @param visited For each node, has it been visited?
+ * @param in_stack For each node, is it in the recursion stack?
+ */
+inline bool __find_cycle
+(
+	const graphs::graph& g, node u,
+	std::vector<bool>& visited, std::vector<bool>& in_stack
+)
+{
+	if (visited[u]) { return false; }
+	visited[u] = true;
+
+	in_stack[u] = true;
+	for (node v : g.get_neighbours(u)) {
+		if (in_stack[v]) {
+			return true;
+		}
+		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
+			return true;
+		}
+	}
+
+	in_stack[u] = false;
+	return false;
+}
+} // -- namespace __lal
+
+/*
+ * @brief Returns true if, and only if, the graph has cycles.
+ * @param g Input graph.
+ * @returns Returns whether the graph has cycles or not.
+ */
+inline bool has_cycles(const graphs::dgraph& g) {
+	const uint32_t n = g.n_nodes();
+	std::vector<bool> vis(n, false);
+	std::vector<bool> in_stack(n, false);
+
+	bool has_cycle = false;
+	for (node u = 0; u < n and not has_cycle; ++u) {
+		if (not vis[u]) {
+			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
+		}
+	}
+	return has_cycle;
+}
+
+/*
+ * @brief Returns true if, and only if, the graph has cycles.
+ * @param g Input graph.
+ * @returns Returns whether the graph has cycles or not.
  */
 inline bool has_cycles(const graphs::ugraph& g) {
 	typedef graphs::ugraph G;

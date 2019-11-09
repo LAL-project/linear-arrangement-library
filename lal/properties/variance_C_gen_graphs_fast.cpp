@@ -99,11 +99,8 @@ using namespace iterators;
 namespace properties {
 
 // ------------------------------
-// Variance of C in using formula
+// Variance of C (using formula)
 // GENERAL GRAPHS
-
-// -----------------------------------------------------------------------------
-// without Q
 
 inline void compute_data_gen_graphs
 (
@@ -254,8 +251,8 @@ inline void compute_data_gen_graphs
 /* Warning:
  * 'pair_C3_L2' is, by 3 times, larger than the actual amount of
  * pairs of disjoint cycle of 3 vertices and edge. This is done
- * so as to avoid changes in the rational numbers used to compute
- * the variance.
+ * so that we don't have to change the rational numbers used to
+ * compute the variance.
  */
 inline void compute_data_gen_graphs_reuse
 (
@@ -537,7 +534,6 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 
 double variance_C(const ugraph& g, bool reuse) {
 	assert(g.is_normalised());
-
 	rational V = variance_C_rational(g, reuse);
 	return V.to_double();
 }

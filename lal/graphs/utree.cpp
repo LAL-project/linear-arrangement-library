@@ -48,8 +48,9 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/bfs.hpp>
-#include <lal/utils/cycles_undirected.hpp>
+#include <lal/utils/cycles.hpp>
 #include <lal/utils/is_tree.hpp>
+#include <lal/utils/reachability.hpp>
 
 namespace lal {
 namespace graphs {

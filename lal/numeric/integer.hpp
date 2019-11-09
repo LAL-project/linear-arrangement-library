@@ -52,10 +52,10 @@ namespace lal {
 namespace numeric {
 
 /**
- * @brief Big integer.
+ * @brief Arbitrary precision integer.
  *
- * This class wraps the integer data structure from GMP
- * (the mpz_t) with operators for an easy usage.
+ * This class wraps the @e mpz_t data structure from GMP
+ * with operators for an easy usage.
  *
  * In order to be used, it must first be initialised, with
  * one of the following methods:
