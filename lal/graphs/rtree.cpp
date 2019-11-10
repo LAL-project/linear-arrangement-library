@@ -48,9 +48,14 @@ rtree::~rtree() { }
 
 void rtree::set_root(node r) {
 	m_r = r;
+	m_root_set = true;
 }
 
 node rtree::get_root() const { return m_r; }
+
+/* PROTECTED */
+
+bool rtree::is_root_set() const { return m_root_set; }
 
 } // -- namespace graphs
 } // -- namespace lal
