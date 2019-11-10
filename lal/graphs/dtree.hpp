@@ -130,7 +130,7 @@ class dtree : public dgraph, virtual public tree {
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
 		/**
-		 * @brief Converts this directed tree into a undirected tree.
+		 * @brief Converts this directed tree into an undirected tree.
 		 * @return Returns an object of type undirected tree.
 		 */
 		utree to_undirected() const;
