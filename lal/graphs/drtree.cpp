@@ -45,6 +45,7 @@
 
 // C++ includes
 #include <vector>
+#include <queue>
 using namespace std;
 
 // lal includes
@@ -99,11 +100,76 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 	// construct rooted directed tree
 	dgraph::init(_t.n_nodes());
 	add_edges(dir_edges);
-	m_r = r;
+	set_root(r);
+	m_drtree_type = (arb ? arboresence : anti_arborescence);
 }
+
+void drtree::find_drtree_type() {
+	assert(is_root_set());
+
+	// Easy case: the tree is NOT an anti-arborescence.
+	// Do a BFS from the root. Make sure that all leaves have
+	// been reached. If so, the tree is an arborescence.
+	if (out_degree(get_root()) > 0) {
+		BFS<drtree> bfs(*this);
+		bfs.start_at(get_root());
+		auto vis_nodes = bfs.get_visited();
+		bool all_vis = find(vis_nodes.begin(), vis_nodes.end(), false) == vis_nodes.end();
+
+		// if some node was not visited then the tree
+		// will remain unclassified
+		m_drtree_type = (all_vis ? arboresence : none);
+		return;
+	}
+
+	// Difficult case: the is NOT an arborescence.
+	// It might be an anti-arborescence.
+
+	// find all vertices with null in-degree
+	queue<node> Q;
+	for (node u = 0; u < n_nodes(); ++u) {
+		if (in_degree(u) == 0) {
+			Q.push(u);
+		}
+	}
+
+	BFS<drtree> bfs(*this);
+	bfs.process_visited_neighbours(true);
+
+	// we need to know that "climbing" from each
+	// leaf up the tree leads to the root
+	node last_visited;
+	bfs.set_process_current(
+	[&last_visited](const BFS<drtree>&, node s) -> void {
+		last_visited = s;
+	}
+	);
+
+	m_drtree_type = anti_arborescence;
+	while (not Q.empty() and m_drtree_type == anti_arborescence) {
+		node next = Q.front();
+		Q.pop();
+		bfs.start_at(next);
+		m_drtree_type = (
+			last_visited == get_root() ? anti_arborescence : none
+		);
+	}
+
+	// just for the sake of testing
+#if defined DEBUG
+	auto vis = bfs.get_visited();
+	assert(find(vis.begin(), vis.end(), false) == vis.end());
+#endif
+}
+
+/* GETTERS */
 
 urtree drtree::to_undirected() const {
 	return urtree(dtree::to_undirected(), get_root());
+}
+
+drtree::rooted_directed_tree_type drtree::get_drtree_type() const {
+	return m_drtree_type;
 }
 
 } // -- namespace graphs

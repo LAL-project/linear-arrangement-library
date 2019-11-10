@@ -52,13 +52,36 @@ namespace graphs {
  * @brief Rooted directed tree class.
  *
  * This class represents a rooted directed tree. The edges can be oriented
- * either inwards (towards the root, an anti-arborescence) or outwards (away
- * from the roots, towards the leaves, an arborescence).
+ * either outwards (away from the roots, towards the leaves, an arborescence)
+ * or inwards (towards the root, an anti-arborescence).
  *
  * This class can be built from an undirected tree and by orienting its edges
- * from a chosen node, the root, or by inserting edges one by one.
+ * from a chosen node, the root, or by inserting edges one by one. In the latter
+ * case, the user is recommended to use method @ref find_drtree_type() in
+ * order to determine if the tree is an arborescence, an anti-arborescence,
+ * or neither (see @ref rooted_directed_tree_type).
  */
 class drtree : public dtree, virtual public rtree {
+	public:
+		enum rooted_directed_tree_type {
+			/**
+			 * An arboresence is a rooted directed tree in which all the edges
+			 * point away from the root, i.e., towards the leaves.
+			 */
+			arboresence,
+			/**
+			 * An anti-arboresence is a rooted directed tree in which all the
+			 * edges point towards the root, i.e., away from the leaves.
+			 */
+			anti_arborescence,
+			/**
+			 * If the direction of the edges of this tree is not uniform
+			 * (either always inwards, or always outwards), the tree has no
+			 * particular type.
+			 */
+			none
+		};
+
 	public:
 		/// Default constructor.
 		drtree();
@@ -77,10 +100,13 @@ class drtree : public dtree, virtual public rtree {
 		 * @param arb If true then this graph is an arborescence, i.e., the edges
 		 * point towards the leaves (away from the root). If false, then this tree
 		 * is an anti-arborescence, i.e., the edges point towards the root.
+		 * @post Sets the type of directed rooted tree (see @ref m_drtree_type).
 		 */
 		drtree(const utree& t, node r, bool arb = true);
 		/// Destructor
 		~drtree();
+
+		/* MODIFIERS */
 
 		/**
 		 * @brief Initialiser with undirected tree and root node.
@@ -92,14 +118,46 @@ class drtree : public dtree, virtual public rtree {
 		 * @param arb If true then this graph is an arborescence, i.e., the edges
 		 * point towards the leaves (away from the root). If false, then this tree
 		 * is an anti-arborescence, i.e., the edges point towards the root.
+		 * @post Sets the type of directed rooted tree (see @ref m_drtree_type).
 		 */
 		void init_rooted(const utree& t, node r, bool arb = true);
+
+		/**
+		 * @brief Calculates the type of directed rooted tree.
+		 *
+		 * If the tree was constructed via the constructor
+		 * @ref drtree(const utree&, node, bool) or via the method
+		 * @ref init_rooted(const utree&, node, bool)
+		 * then there is no need to call this method.
+		 */
+		void find_drtree_type();
+
+		/* GETTERS */
 
 		/**
 		 * @brief Converts this directed rooted tree into an undirected rooted tree.
 		 * @return Returns an object of type undirected tree.
 		 */
 		urtree to_undirected() const;
+
+		/**
+		 * @brief Returns the type of directed rooted tree.
+		 *
+		 * See @ref rooted_directed_tree_type for details.
+		 * @return Returns the type of directed rooted tree.
+		 * @pre The root has been set via @ref set_root(node).
+		 */
+		rooted_directed_tree_type get_drtree_type() const;
+
+	private:
+		/**
+		 * @brief Type of rooted directed tree.
+		 *
+		 * This parameter is decided during the construction of the tree via
+		 * constructor @ref drtree(const utree&,node,bool), or via calling
+		 * method @ref find_drtree_type().
+		 */
+		rooted_directed_tree_type m_drtree_type = none;
 };
 
 } // -- namespace graphs
