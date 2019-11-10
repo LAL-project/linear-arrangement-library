@@ -40,6 +40,9 @@
  
 #include <lal/linarr/C.hpp>
 
+// C includes
+#include <assert.h>
+
 // C++ includes
 #include <numeric>
 using namespace std;
@@ -49,6 +52,7 @@ using namespace std;
 #include <lal/iterators/Q_iterator.hpp>
 
 #define to_int64(x) static_cast<int64_t>(x)
+#define to_uint64(x) static_cast<uint64_t>(x)
 
 namespace lal {
 using namespace graphs;
@@ -56,7 +60,16 @@ using namespace numeric;
 
 namespace linarr {
 
-inline constexpr int64_t alpha(int64_t n, int64_t d1, int64_t d2) {
+// NOTE: the type of parameters n,d1,d2 should be a SIGNED integer
+// since the substractions within the methods might make the result
+// negative (until it is compensated and made positive before "return").
+// Although it should be okay (an unsigned integer can "suffer" an
+// underflow, e.g., "uint x = 10 - 23", and later "suffer" an overflow,
+// e.g., "x += 50", and the result should be, in the end, positive), I
+// don't like overflows and underflows. Besides, I might need to debug
+// this thing at some point and I might want them negative, so...
+
+inline constexpr uint64_t alpha(int64_t n, int64_t d1, int64_t d2) {
 	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -72,33 +85,22 @@ inline constexpr int64_t alpha(int64_t n, int64_t d1, int64_t d2) {
 
 	// positions s2 < s1
 	if (d1 + d2 <= n) {
-		// sum(d1 - 1, i, 1 + d2, n - d1)
 		f += (d1 - 1)*(n - d2 - d1);
 	}
-	if (d1 <= d2) {
+	if (1 + d2 - d1 >= 1) {
 		if (1 + d2 <= n - d1) {
-			// sum(i + d1 - d2 - 1, i, 1 + d2 - d1, d2)
 			f += (d1*(d1 - 1))/2;
 		}
 		else {
-			// sum(i + d1 - d2 - 1, i, 1 + d2 - d1, n - d1)
-			f += ((d2 - n)*(d2 - n + 1))/2;
+			f += ((n - d2)*(n - d2 - 1))/2;
 		}
 	}
-	else {
-		if (1 + d2 <= n - d1) {
-			// sum(i + d1 - d2 - 1, i, 1, d2)
-			f += (d2*(2*d1 - d2 - 1))/2;
-		}
-		else {
-			// sum(i + d1 - d2 - 1, i, 1, n - d1)
-			f += ((d1 - n)*(2*d2 - d1 - n + 1))/2;
-		}
-	}
-	return f;
+
+	assert(f >= 0);
+	return to_uint64(f);
 }
 
-inline constexpr int64_t beta(int64_t n, int64_t d1, int64_t d2) {
+inline constexpr uint64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	int64_t f = 0;
 
 	// positions s1 < s2
@@ -144,8 +146,8 @@ inline constexpr int64_t beta(int64_t n, int64_t d1, int64_t d2) {
 			f += (d1 - n)*(d1 - n + 1);
 		}
 	}
-
-	return f/2;
+	assert(f >= 0);
+	return to_uint64(f/2);
 }
 
 rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& pi) {
@@ -163,21 +165,15 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& pi)
 		const node u = uv.first;
 		const node v = uv.second;
 
-		int64_t al;
-		uint64_t be;
-
 		int64_t len_st = std::abs(to_int64(pi[s]) - to_int64(pi[t]));
 		int64_t len_uv = std::abs(to_int64(pi[u]) - to_int64(pi[v]));
-		if (len_st <= len_uv) {
-			al = alpha(n, len_st, len_uv);
-			be = static_cast<uint64_t>(beta(n, len_st, len_uv));
-		}
-		else {
-			al = alpha(n, len_uv, len_st);
-			be = static_cast<uint64_t>(beta(n, len_uv, len_st));
-		}
 
-		Ec2 += rational(al, be);
+		const auto [al, be] =
+		(len_st <= len_uv ?
+			make_pair(alpha(n, len_st, len_uv), beta(n, len_st, len_uv)) :
+			make_pair(alpha(n, len_uv, len_st), beta(n, len_uv, len_st))
+		);
+		Ec2 += rational(to_int64(al), be);
 	}
 
 	return Ec2;
