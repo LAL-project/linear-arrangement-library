@@ -56,7 +56,7 @@ urtree::~urtree() { }
 void urtree::init_rooted(const utree& t, node r) {
 	clear();
 	*static_cast<ugraph *>(this) = t;
-	m_r = r;
+	set_root(r);
 }
 
 } // -- namespace graphs
