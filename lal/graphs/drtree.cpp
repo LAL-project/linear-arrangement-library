@@ -102,5 +102,9 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 	m_r = r;
 }
 
+urtree drtree::to_undirected() const {
+	return urtree(dtree::to_undirected(), get_root());
+}
+
 } // -- namespace graphs
 } // -- namespace lal

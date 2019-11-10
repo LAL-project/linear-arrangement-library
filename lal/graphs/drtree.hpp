@@ -43,6 +43,7 @@
 // lal includes
 #include <lal/graphs/dtree.hpp>
 #include <lal/graphs/rtree.hpp>
+#include <lal/graphs/urtree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -93,6 +94,12 @@ class drtree : public dtree, virtual public rtree {
 		 * is an anti-arborescence, i.e., the edges point towards the root.
 		 */
 		void init_rooted(const utree& t, node r, bool arb = true);
+
+		/**
+		 * @brief Converts this directed rooted tree into an undirected rooted tree.
+		 * @return Returns an object of type undirected tree.
+		 */
+		urtree to_undirected() const;
 };
 
 } // -- namespace graphs
