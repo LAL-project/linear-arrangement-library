@@ -68,6 +68,8 @@ class rtree : virtual public tree {
 		/// Return the root of this tree.
 		node get_root() const;
 
+		virtual bool is_rooted() const;
+
 	protected:
 		/// Root of the tree.
 		node m_r;

@@ -66,6 +66,9 @@ class tree : virtual public graph {
 
 		/// Returns whether this graph is an actual tree or not.
 		bool is_tree() const;
+
+		/// Returns whether this tree is a rooted tree.
+		virtual bool is_rooted() const = 0;
 };
 
 } // -- namespace graphs

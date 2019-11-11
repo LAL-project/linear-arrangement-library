@@ -93,6 +93,7 @@ class urtree : public utree, virtual public rtree {
 		 */
 		void init_rooted(const utree& t, node r);
 
+		bool is_rooted() const;
 };
 
 } // -- namespace graphs

@@ -68,7 +68,7 @@ class drtree : public dtree, virtual public rtree {
 			 * An arboresence is a rooted directed tree in which all the edges
 			 * point away from the root, i.e., towards the leaves.
 			 */
-			arboresence,
+			arborescence,
 			/**
 			 * An anti-arboresence is a rooted directed tree in which all the
 			 * edges point towards the root, i.e., away from the leaves.
@@ -148,6 +148,8 @@ class drtree : public dtree, virtual public rtree {
 		 * @pre The root has been set via @ref set_root(node).
 		 */
 		rooted_directed_tree_type get_drtree_type() const;
+
+		bool is_rooted() const;
 
 	private:
 		/**

@@ -53,6 +53,8 @@ void rtree::set_root(node r) {
 
 node rtree::get_root() const { return m_r; }
 
+bool rtree::is_rooted() const { return true; }
+
 /* PROTECTED */
 
 bool rtree::is_root_set() const { return m_root_set; }

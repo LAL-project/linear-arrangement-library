@@ -132,6 +132,8 @@ class utree : public ugraph, virtual public tree {
 		 */
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
+		virtual bool is_rooted() const;
+
 	private:
 		// trees should not have this method
 		using ugraph::disjoint_union;

@@ -135,6 +135,8 @@ class dtree : public dgraph, virtual public tree {
 		 */
 		utree to_undirected() const;
 
+		virtual bool is_rooted() const;
+
 	private:
 		using dgraph::to_undirected;
 		// trees should not have this method

@@ -125,5 +125,7 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 	return not utils::has_cycles(copy);
 }
 
+bool utree::is_rooted() const { return false; }
+
 } // -- namespace graphs
 } // -- namespace lal

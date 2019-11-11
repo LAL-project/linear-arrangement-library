@@ -101,13 +101,13 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 	dgraph::init(_t.n_nodes());
 	add_edges(dir_edges);
 	set_root(r);
-	m_drtree_type = (arb ? arboresence : anti_arborescence);
+	m_drtree_type = (arb ? arborescence : anti_arborescence);
 }
 
 void drtree::find_drtree_type() {
 	assert(is_root_set());
 
-	// Easy case: the tree is NOT an anti-arborescence.
+	// First case: the tree is NOT an anti-arborescence.
 	// Do a BFS from the root. Make sure that all leaves have
 	// been reached. If so, the tree is an arborescence.
 	if (out_degree(get_root()) > 0) {
@@ -118,48 +118,20 @@ void drtree::find_drtree_type() {
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		m_drtree_type = (all_vis ? arboresence : none);
+		m_drtree_type = (all_vis ? arborescence : none);
 		return;
 	}
 
-	// Difficult case: the is NOT an arborescence.
-	// It might be an anti-arborescence.
-
-	// find all vertices with null in-degree
-	queue<node> Q;
+	// Second case: the tree is NOT an arborescence.
+	// It might be an anti-arborescence. All vertices'
+	// out-degree, excepting the root's, must be exactly 1
+	bool all_one = true;
 	for (node u = 0; u < n_nodes(); ++u) {
-		if (in_degree(u) == 0) {
-			Q.push(u);
+		if (u != get_root() and out_degree(u) != 1) {
+			all_one = false;
 		}
 	}
-
-	BFS<drtree> bfs(*this);
-	bfs.process_visited_neighbours(true);
-
-	// we need to know that "climbing" from each
-	// leaf up the tree leads to the root
-	node last_visited;
-	bfs.set_process_current(
-	[&last_visited](const BFS<drtree>&, node s) -> void {
-		last_visited = s;
-	}
-	);
-
-	m_drtree_type = anti_arborescence;
-	while (not Q.empty() and m_drtree_type == anti_arborescence) {
-		node next = Q.front();
-		Q.pop();
-		bfs.start_at(next);
-		m_drtree_type = (
-			last_visited == get_root() ? anti_arborescence : none
-		);
-	}
-
-	// just for the sake of testing
-#if defined DEBUG
-	auto vis = bfs.get_visited();
-	assert(find(vis.begin(), vis.end(), false) == vis.end());
-#endif
+	m_drtree_type = (all_one ? anti_arborescence : none);
 }
 
 /* GETTERS */
@@ -171,6 +143,8 @@ urtree drtree::to_undirected() const {
 drtree::rooted_directed_tree_type drtree::get_drtree_type() const {
 	return m_drtree_type;
 }
+
+bool drtree::is_rooted() const { return true; }
 
 } // -- namespace graphs
 } // -- namespace lal

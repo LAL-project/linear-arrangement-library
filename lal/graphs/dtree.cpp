@@ -126,5 +126,7 @@ utree dtree::to_undirected() const {
 	return g;
 }
 
+bool dtree::is_rooted() const { return false; }
+
 } // -- namespace graphs
 } // -- namespace lal

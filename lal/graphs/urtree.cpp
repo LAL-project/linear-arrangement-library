@@ -59,5 +59,7 @@ void urtree::init_rooted(const utree& t, node r) {
 	set_root(r);
 }
 
+bool urtree::is_rooted() const { return true; }
+
 } // -- namespace graphs
 } // -- namespace lal
