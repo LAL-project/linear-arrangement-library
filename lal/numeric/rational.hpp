@@ -127,13 +127,6 @@ class rational {
 
 		/* OPERATORS */
 
-		/// Standard output operator
-		inline friend
-		std::ostream& operator<< (std::ostream& os, const rational& r) {
-			os << r.to_string();
-			return os;
-		}
-
 		/// Assignation operator.
 		rational& operator= (int64_t i);
 		/// Assignation operator.

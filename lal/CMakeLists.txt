@@ -207,6 +207,7 @@ set(LIBLAL_IO_HEADER
 	io/dataset_error.hpp
 	io/treebank_dataset.hpp
 	io/treebank_reader.hpp
+	io/stdout.hpp
 )
 set(
 	LIBLAL_LINARR_HEADER

@@ -52,8 +52,7 @@ namespace graphs {
  * @brief Rooted directed tree class.
  *
  * This class represents a rooted directed tree. The edges can be oriented
- * either outwards (away from the roots, towards the leaves, an arborescence)
- * or inwards (towards the root, an anti-arborescence).
+ * either outwards or inwards (see @ref rooted_directed_tree_type for details).
  *
  * This class can be built from an undirected tree and by orienting its edges
  * from a chosen node, the root, or by inserting edges one by one. In the latter
@@ -63,6 +62,15 @@ namespace graphs {
  */
 class drtree : public dtree, virtual public rtree {
 	public:
+		/**
+		 * @brief Types of rooted directed trees.
+		 *
+		 * In this library, we distinguish between three disjoint types of
+		 * directed trees:
+		 * - Arborescences (see @ref arborescence).
+		 * - Anti-arborescences (see @ref anti_arborescence).
+		 * - None of the above (see @ref none).
+		 */
 		enum rooted_directed_tree_type {
 			/**
 			 * An arboresence is a rooted directed tree in which all the edges

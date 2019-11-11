@@ -42,7 +42,6 @@
 
 // C++ includes
 #include <cstdint>
-#include <fstream>
 #include <string>
 
 // gmp includes
@@ -109,13 +108,6 @@ class integer {
 		void copy(const integer& i);
 
 		/* OPERATORS */
-
-		/// Standard output operator
-		inline friend
-		std::ostream& operator<< (std::ostream& os, const integer& i) {
-			os << i.get_string();
-			return os;
-		}
 
 		/// Assignation operator.
 		integer& operator= (int64_t i);
@@ -232,9 +224,9 @@ class integer {
 		/* CONVERTERS */
 
 		/// Converts this integer to a string.
-		std::string get_string() const;
+		std::string to_string() const;
 		/// Converts this integer to a string.
-		void to_string(std::string& s) const;
+		void as_string(std::string& s) const;
 
 	private:
 		/// Structure from GMP storing the integer's value.

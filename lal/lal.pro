@@ -41,6 +41,7 @@ HEADERS += \
     graphs/ugraph.hpp \
     graphs/urtree.hpp \
     graphs/utree.hpp \
+    io/stdout.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \

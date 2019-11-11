@@ -236,13 +236,13 @@ double integer::to_double() const {
 
 /* CONVERTERS */
 
-string integer::get_string() const {
+string integer::to_string() const {
 	std::string k;
-	to_string(k);
+	as_string(k);
 	return k;
 }
 
-void integer::to_string(string& s) const {
+void integer::as_string(string& s) const {
 	if (!is_initialized()) {
 		s = "integer uninitialized";
 		return;

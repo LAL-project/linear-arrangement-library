@@ -41,7 +41,6 @@
 #pragma once
 
 // C++ includes
-#include <fstream>
 #include <vector>
 
 // lal includes
@@ -76,23 +75,6 @@ class graph {
 		virtual ~graph();
 
 		/* OPERATORS */
-
-		/// Standard output operator.
-		inline friend
-		std::ostream& operator<< (std::ostream& os, const graph& d) {
-			for (uint32_t i = 0; i < d.m_adjacency_list.size(); ++i) {
-				os << i << ":";
-				auto begin = d.m_adjacency_list[i].begin();
-				auto end = d.m_adjacency_list[i].end();
-				for (auto it = begin; it != end; ++it) {
-					os << " " << *it;
-				}
-				if (i < d.m_adjacency_list.size() - 1) {
-					os << std::endl;
-				}
-			}
-			return os;
-		}
 
 		/* MODIFIERS */
 
@@ -220,9 +202,6 @@ class graph {
 		 * is true if, and only if, there exists an edge between @e i and @e j.
 		 */
 		void get_adjacency_matrix(std::vector<std::vector<bool> >& mat) const;
-
-	public:
-		typedef node graph_node_type;
 
 	protected:
 		/// Data structure that implements the graph.

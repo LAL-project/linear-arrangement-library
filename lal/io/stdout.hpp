@@ -38,26 +38,72 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rtree.hpp>
+#pragma once
 
-namespace lal {
-namespace graphs {
+// C++ includes
+#include <fstream>
 
-rtree::rtree() { }
-rtree::~rtree() { }
+// lal includes
+#include <lal/graphs/graph.hpp>
+#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
-void rtree::set_root(node r) {
-	m_r = r;
-	m_root_set = true;
+/**
+ * @brief Standard output operator for most graphs.
+ *
+ * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
+ * @param os ostream C++ object
+ * @param g Input graph.
+ * @returns Returns the output stream.
+ */
+inline std::ostream& operator<< (std::ostream& os, const lal::graphs::graph& g) {
+	const uint32_t N = g.n_nodes();
+	for (lal::node u = 0; u < N; ++u) {
+		os << u << ":";
+		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
 }
 
-node rtree::get_root() const { return m_r; }
+/// Standard output operator for undirected rooted graphs (see @ref lal::graphs::urtree).
+inline std::ostream& operator<< (std::ostream& os, const lal::graphs::urtree& g) {
+	const uint32_t N = g.n_nodes();
+	const std::string pad = (g.has_root() ? " " : "");
+	for (lal::node u = 0; u < N; ++u) {
+		os << (u == g.get_root() ? "*" : pad) << u << ":";
+		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
+}
 
-bool rtree::is_rooted() const { return true; }
+/// Standard output operator for directed rooted graphs (see @ref lal::graphs::drtree).
+inline std::ostream& operator<< (std::ostream& os, const lal::graphs::drtree& g) {
+	const uint32_t N = g.n_nodes();
+	const std::string pad = (g.has_root() ? " " : "");
+	for (lal::node u = 0; u < N; ++u) {
+		os << (u == g.get_root() ? "*" : pad) << u << ":";
+		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
+}
 
-/* PROTECTED */
+/// Standard output operator for the @ref integer class.
+inline std::ostream& operator<< (std::ostream& os, const lal::numeric::integer& i) {
+	os << i.to_string();
+	return os;
+}
 
-bool rtree::has_root() const { return m_root_set; }
-
-} // -- namespace graphs
-} // -- namespace lal
+/// Standard output operator for the @ref rational class.
+inline std::ostream& operator<< (std::ostream& os, const lal::numeric::rational& r) {
+	os << r.to_string();
+	return os;
+}

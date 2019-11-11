@@ -49,3 +49,4 @@
 #include <lal/io/treebank_reader.hpp>
 #include <lal/io/dataset_error.hpp>
 #include <lal/io/edge_list.hpp>
+#include <lal/io/stdout.hpp>

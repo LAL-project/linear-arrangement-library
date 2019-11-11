@@ -70,15 +70,14 @@ class rtree : virtual public tree {
 
 		virtual bool is_rooted() const;
 
+		/// Returns whether the root has been set or not.
+		bool has_root() const;
+
 	protected:
 		/// Root of the tree.
 		node m_r;
 		/// Is the root set?
 		bool m_root_set = false;
-
-	protected:
-		/// Returns whether the root has been set or not.
-		bool is_root_set() const;
 };
 
 } // -- namespace graphs

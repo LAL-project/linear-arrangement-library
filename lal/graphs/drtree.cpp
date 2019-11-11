@@ -105,7 +105,7 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 }
 
 void drtree::find_drtree_type() {
-	assert(is_root_set());
+	assert(has_root());
 
 	// First case: the tree is NOT an anti-arborescence.
 	// Do a BFS from the root. Make sure that all leaves have
