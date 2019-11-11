@@ -114,6 +114,7 @@ LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
 				  $(LAL_DIR)/lal/io/treebank_processor.hpp \
 				  $(LAL_DIR)/lal/io/treebank_dataset.hpp \
 				  $(LAL_DIR)/lal/io/treebank_reader.hpp \
+				  $(LAL_DIR)/lal/io/basic_output.hpp \
 				  $(LAL_DIR)/lal/linarr/C.hpp \
 				  $(LAL_DIR)/lal/linarr/D.hpp \
 				  $(LAL_DIR)/lal/linarr/headedness.hpp \

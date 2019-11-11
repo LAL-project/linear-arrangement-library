@@ -45,10 +45,13 @@
 #include <vector>
 #include <queue>
 
+// lal includes
+#include <lal/definitions.hpp>
+
 namespace lal {
 namespace utils {
 
-template<class G, typename node = typename G::graph_node_type>
+template<class G, typename node = typename lal::node>
 class BFS {
 	public:
 		/*

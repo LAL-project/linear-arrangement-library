@@ -38,41 +38,32 @@
  *
  ********************************************************************/
 
-#pragma once
+#include <lal/io/basic_output.hpp>
 
 // C++ includes
-#include <fstream>
+using namespace std;
 
-// lal includes
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/urtree.hpp>
-#include <lal/graphs/drtree.hpp>
+namespace lal {
+using namespace graphs;
+using namespace numeric;
 
-/**
- * @brief Standard output operator for most graphs.
- *
- * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
- * @param os ostream C++ object
- * @param g Input graph.
- * @returns Returns the output stream.
- */
-inline std::ostream& operator<< (std::ostream& os, const lal::graphs::graph& g) {
-	const uint32_t N = g.n_nodes();
-	for (lal::node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	return os;
+ostream& operator<< (ostream& os, const graph& g)
+{
+   const uint32_t N = g.n_nodes();
+   for (node u = 0; u < N; ++u) {
+	   os << u << ":";
+	   for (auto v : g.get_neighbours(u)) {
+		   os << " " << v;
+	   }
+	   os << (u < N - 1 ? "\n" : "");
+   }
+   return os;
 }
 
-/// Standard output operator for undirected rooted graphs (see @ref lal::graphs::urtree).
-inline std::ostream& operator<< (std::ostream& os, const lal::graphs::urtree& g) {
+ostream& operator<< (ostream& os, const urtree& g) {
 	const uint32_t N = g.n_nodes();
-	const std::string pad = (g.has_root() ? " " : "");
-	for (lal::node u = 0; u < N; ++u) {
+	const string pad = (g.has_root() ? " " : "");
+	for (node u = 0; u < N; ++u) {
 		os << (u == g.get_root() ? "*" : pad) << u << ":";
 		for (auto v : g.get_neighbours(u)) {
 			os << " " << v;
@@ -82,11 +73,10 @@ inline std::ostream& operator<< (std::ostream& os, const lal::graphs::urtree& g)
 	return os;
 }
 
-/// Standard output operator for directed rooted graphs (see @ref lal::graphs::drtree).
-inline std::ostream& operator<< (std::ostream& os, const lal::graphs::drtree& g) {
+ostream& operator<< (ostream& os, const drtree& g) {
 	const uint32_t N = g.n_nodes();
-	const std::string pad = (g.has_root() ? " " : "");
-	for (lal::node u = 0; u < N; ++u) {
+	const string pad = (g.has_root() ? " " : "");
+	for (node u = 0; u < N; ++u) {
 		os << (u == g.get_root() ? "*" : pad) << u << ":";
 		for (auto v : g.get_neighbours(u)) {
 			os << " " << v;
@@ -96,14 +86,14 @@ inline std::ostream& operator<< (std::ostream& os, const lal::graphs::drtree& g)
 	return os;
 }
 
-/// Standard output operator for the @ref integer class.
-inline std::ostream& operator<< (std::ostream& os, const lal::numeric::integer& i) {
+ostream& operator<< (ostream& os, const integer& i) {
 	os << i.to_string();
 	return os;
 }
 
-/// Standard output operator for the @ref rational class.
-inline std::ostream& operator<< (std::ostream& os, const lal::numeric::rational& r) {
+ostream& operator<< (ostream& os, const rational& r) {
 	os << r.to_string();
 	return os;
 }
+
+} // -- namespace lal

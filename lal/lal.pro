@@ -41,7 +41,7 @@ HEADERS += \
     graphs/ugraph.hpp \
     graphs/urtree.hpp \
     graphs/utree.hpp \
-    io/stdout.hpp \
+    io/basic_output.hpp \
     iterators.hpp \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
@@ -91,6 +91,7 @@ SOURCES += \
     graphs/ugraph.cpp \
     graphs/urtree.cpp \
     graphs/utree.cpp \
+    io/basic_output.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/headedness.cpp \

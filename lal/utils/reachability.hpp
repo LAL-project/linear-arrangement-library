@@ -53,7 +53,7 @@ namespace utils {
  * @param target The node we want to know whether it is reachable from @e
  * source or not.
  */
-template<class G, typename node = typename G::graph_node_type>
+template<class G, typename node = typename lal::node>
 bool is_node_reachable_from(const G& g, node source, node target) {
 	BFS<G> bfs(g);
 	bfs.set_terminate(

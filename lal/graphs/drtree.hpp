@@ -42,6 +42,7 @@
 
 // lal includes
 #include <lal/graphs/dtree.hpp>
+#include <lal/graphs/utree.hpp>
 #include <lal/graphs/rtree.hpp>
 #include <lal/graphs/urtree.hpp>
 

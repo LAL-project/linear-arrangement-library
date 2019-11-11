@@ -138,6 +138,7 @@ target_sources(
 		io/treebank_processor.cpp
 		io/treebank_dataset.cpp
 		io/treebank_reader.cpp
+		io/basic_output.cpp
 		linarr/C_brute_force.cpp
 		linarr/C_dyn_prog.cpp
 		linarr/C_ladder.cpp
@@ -207,7 +208,7 @@ set(LIBLAL_IO_HEADER
 	io/dataset_error.hpp
 	io/treebank_dataset.hpp
 	io/treebank_reader.hpp
-	io/stdout.hpp
+	io/basic_output.hpp
 )
 set(
 	LIBLAL_LINARR_HEADER

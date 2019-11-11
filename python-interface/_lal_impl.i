@@ -86,6 +86,7 @@ namespace std {
 // io operations
 
 %include "../lal/io/edge_list.hpp"
+%include "../lal/io/basic_output.hpp"
 %include "../lal/io/treebank_processor.hpp"
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset.hpp"
@@ -115,17 +116,14 @@ namespace std {
 %include "../lal/generation/rand_free_ulab_trees.hpp"
 %include "../lal/generation/rand_rooted_lab_dir_trees.hpp"
 
-// ----------
-// EXTENSIONS
-
 // ---------------------------------
 // renaming of methods and operators
 
 %rename(__mod__) operator% (uint64_t) const;
 %rename(__mod__) operator% (const integer&) const;
 
-// -----------------------
-// extending C++ templates
+// ----------------------------
+// Extending some C++ templates
 
 %extend std::vector<bool> {
 	std::string __str__() const {
@@ -205,6 +203,32 @@ namespace std {
 // -------------------------
 // Extendind the C++ classes
 
+// -- GRAPHS
+
+%extend lal::graphs::graph {
+	std::string __str__() const {
+		std::ostringstream out;
+		out << *$self;
+		return out.str();
+	}
+}
+%extend lal::graphs::urtree {
+	std::string __str__() const {
+		std::ostringstream out;
+		out << *$self;
+		return out.str();
+	}
+}
+%extend lal::graphs::drtree {
+	std::string __str__() const {
+		std::ostringstream out;
+		out << *$self;
+		return out.str();
+	}
+}
+
+// -- NUMERIC
+
 %extend lal::numeric::integer {
 	std::string __str__() const {
 		std::ostringstream out;
@@ -212,16 +236,7 @@ namespace std {
 		return out.str();
 	}
 }
-
 %extend lal::numeric::rational {
-	std::string __str__() const {
-		std::ostringstream out;
-		out << *$self;
-		return out.str();
-	}
-}
-
-%extend lal::graphs::graph {
 	std::string __str__() const {
 		std::ostringstream out;
 		out << *$self;
