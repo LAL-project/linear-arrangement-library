@@ -52,8 +52,6 @@ using namespace std;
 #include <lal/utils/sort_integers.hpp>
 
 namespace lal {
-using namespace numeric;
-
 namespace graphs {
 
 /* PUBLIC */

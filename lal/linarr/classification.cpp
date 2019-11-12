@@ -204,7 +204,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	return tree_structure_type::none;
 }
 
-tree_structure_type get_syn_dep_tree_type(const urtree& t, const vector<node>& pi) {
+tree_structure_type get_tree_structure_type(const urtree& t, const vector<node>& pi) {
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 

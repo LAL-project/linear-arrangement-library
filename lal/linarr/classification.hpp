@@ -59,7 +59,7 @@ namespace linarr {
  * @return Returns the class of projective structure. If the class could not
  * be determined the method returns @ref none
  */
-tree_structure_type get_syn_dep_tree_type
+tree_structure_type get_tree_structure_type
 (const graphs::urtree& t, const std::vector<node>& pi = {});
 
 } // -- namespace linarr

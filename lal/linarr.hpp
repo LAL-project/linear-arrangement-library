@@ -43,3 +43,6 @@
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/headedness.hpp>
+
+#include <lal/linarr/tree_structure_type.hpp>
+#include <lal/linarr/classification.hpp>

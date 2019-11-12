@@ -117,7 +117,7 @@ namespace iterators {}
  * - Computation of the number of crossings \f$C\f$.
  * - Computation of the sum of the length of edges \f$D\f$.
  * - Computation of headedness of directed graphs.
- * - Classification of trees into classes (see @ref syn_dep_tree_type).
+ * - Classification of trees into classes (see @ref tree_structure_type).
  */
 namespace linarr {}
 

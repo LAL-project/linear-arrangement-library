@@ -41,11 +41,12 @@
 #pragma once
 
 #include <lal/graphs/graph.hpp>
-#include <lal/graphs/tree.hpp>
-#include <lal/graphs/rtree.hpp>
 
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/dgraph.hpp>
+
+#include <lal/graphs/tree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 #include <lal/graphs/utree.hpp>
 #include <lal/graphs/dtree.hpp>
