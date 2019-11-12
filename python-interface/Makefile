@@ -93,43 +93,61 @@ endif
 
 ifeq ($(DIST),local)
 LAL_DIR = ..
-LAL_DEP_HEADERS	= $(LAL_DIR)/lal/definitions.hpp \
-                  $(LAL_DIR)/lal/graphs/graph.hpp \
-                  $(LAL_DIR)/lal/graphs/tree.hpp \
-                  $(LAL_DIR)/lal/graphs/rtree.hpp \
-                  $(LAL_DIR)/lal/graphs/ugraph.hpp \
-                  $(LAL_DIR)/lal/graphs/utree.hpp \
-                  $(LAL_DIR)/lal/graphs/urtree.hpp \
+LAL_DEP_HEADERS	= $(LAL_DIR)/lal/C.hpp \
+				  $(LAL_DIR)/lal/D.hpp \
+				  $(LAL_DIR)/lal/definitions.hpp \
+				  $(LAL_DIR)/lal/generation.hpp \
+				  $(LAL_DIR)/lal/graphs.hpp \
+				  $(LAL_DIR)/lal/io.hpp \
+				  $(LAL_DIR)/lal/iterators.hpp \
+				  $(LAL_DIR)/lal/linarr.hpp \
+				  $(LAL_DIR)/lal/numeric.hpp \
+				  $(LAL_DIR)/lal/properties.hpp \
+                  $(LAL_DIR)/lal/generation/free_lab_trees.hpp \
+				  $(LAL_DIR)/lal/generation/free_ulab_trees.hpp \
+				  $(LAL_DIR)/lal/generation/rand_free_lab_trees.hpp \
+				  $(LAL_DIR)/lal/generation/rand_free_ulab_trees.hpp \
+				  $(LAL_DIR)/lal/generation/rand_rooted_lab_dir_trees.hpp \
                   $(LAL_DIR)/lal/graphs/dgraph.hpp \
                   $(LAL_DIR)/lal/graphs/dtree.hpp \
                   $(LAL_DIR)/lal/graphs/drtree.hpp \
-                  $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
-                  $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
-				  $(LAL_DIR)/lal/conversions/conversions.hpp \
-				  $(LAL_DIR)/lal/generation/free_ulab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/free_lab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/rand_free_lab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/rand_free_ulab_trees.hpp \
-				  $(LAL_DIR)/lal/io/edge_list.hpp \
-				  $(LAL_DIR)/lal/io/treebank_processor.hpp \
-				  $(LAL_DIR)/lal/io/treebank_dataset.hpp \
-				  $(LAL_DIR)/lal/io/treebank_reader.hpp \
+                  $(LAL_DIR)/lal/graphs/graph.hpp \
+                  $(LAL_DIR)/lal/graphs/output.hpp \
+                  $(LAL_DIR)/lal/graphs/rtree.hpp \
+                  $(LAL_DIR)/lal/graphs/tree.hpp \
+                  $(LAL_DIR)/lal/graphs/ugraph.hpp \
+                  $(LAL_DIR)/lal/graphs/urtree.hpp \
+                  $(LAL_DIR)/lal/graphs/utree.hpp \
 				  $(LAL_DIR)/lal/io/basic_output.hpp \
+				  $(LAL_DIR)/lal/io/dataset_error.hpp \
+				  $(LAL_DIR)/lal/io/edge_list.hpp \
+				  $(LAL_DIR)/lal/io/treebank_dataset.hpp \
+				  $(LAL_DIR)/lal/io/treebank_processor.hpp \
+				  $(LAL_DIR)/lal/io/treebank_reader.hpp \
+				  $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
+                  $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
 				  $(LAL_DIR)/lal/linarr/C.hpp \
+				  $(LAL_DIR)/lal/linarr/classification.hpp \
 				  $(LAL_DIR)/lal/linarr/D.hpp \
 				  $(LAL_DIR)/lal/linarr/headedness.hpp \
+				  $(LAL_DIR)/lal/linarr/tree_structure_type.hpp \
 				  $(LAL_DIR)/lal/numeric/gmp_utils.hpp \
 				  $(LAL_DIR)/lal/numeric/integer.hpp \
+				  $(LAL_DIR)/lal/numeric/output.hpp \
 				  $(LAL_DIR)/lal/numeric/rational.hpp \
-				  $(LAL_DIR)/lal/properties/Q.hpp \
-				  $(LAL_DIR)/lal/properties/degrees.hpp \
 				  $(LAL_DIR)/lal/properties/C_rla.hpp \
-				  $(LAL_DIR)/lal/properties/D_rla.hpp
+				  $(LAL_DIR)/lal/properties/D_rla.hpp \
+				  $(LAL_DIR)/lal/properties/degrees.hpp \
+				  $(LAL_DIR)/lal/properties/mhd.hpp \
+				  $(LAL_DIR)/lal/properties/Q.hpp
+
 DSE_DEP_HEADERS	= $(LAL_DIR)/lal/io/dataset_error.hpp
+TST_DEP_HEADERS	= $(LAL_DIR)/lal/linarr/tree_structure_type.hpp
 else
 LAL_DIR 		= 
 LAL_DEP_HEADERS	=
 DSE_DEP_HEADERS	=
+TST_DEP_HEADERS =
 endif
 
 # ----------------
@@ -151,10 +169,18 @@ DSE_WRAP		= $(ARCH_DIR)/$(DSE_MNAME)_wrap
 _DSE_SO			= _$(DSE_MNAME).$(SO_EXT)
 DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
 
+# tree_structure_type module
+TST_MIMPL		= $(TST_BNAME).i
+_TST_PF			= $(TST_MNAME).py
+TST_PY_FILE		= $(ARCH_DIR)/$(_TST_PF)
+TST_WRAP		= $(ARCH_DIR)/$(TST_MNAME)_wrap
+_TST_SO			= _$(TST_MNAME).$(SO_EXT)
+TST_SO			= $(ARCH_DIR)/$(_TST_SO)
+
 ########################################################################
 # GOALS
 
-SUBMODULES		= $(DSE_SO)
+SUBMODULES		= $(DSE_SO) $(TST_SO)
 ALL_SO			= $(SUBMODULES) $(LAL_SO)
 
 all: directories $(ALL_SO)
@@ -179,6 +205,13 @@ $(DSE_WRAP).o: $(DSE_WRAP).cxx
 $(DSE_WRAP).cxx: $(DSE_MNAME).i $(DSE_DEP_HEADERS) $(DSE_MIMPL)
 	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MNAME).i
 
+$(TST_SO): $(TST_WRAP).o $(LAL_LIB_DEP)
+	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+$(TST_WRAP).o: $(TST_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(TST_WRAP).cxx: $(TST_MNAME).i $(TST_DEP_HEADERS) $(TST_MIMPL)
+	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TST_MNAME).i
+
 ########################################################################
 # CLEANING RULES
 
@@ -197,9 +230,14 @@ install: $(LAL_SO)
 	# install dataset_error
 	cp $(DSE_SO) $(LAL_PY_INSTALL)/$(_DSE_SO)
 	cp $(DSE_PY_FILE) $(LAL_PY_INSTALL)/$(_DSE_PF)
+	# install tree_structure_type
+	cp $(TST_SO) $(LAL_PY_INSTALL)/$(_TST_SO)
+	cp $(TST_PY_FILE) $(LAL_PY_INSTALL)/$(_TST_PF)
 	
 uninstall:
 	rm -f $(LAL_PY_INSTALL)/$(_LAL_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_LAL_PF)
 	rm -f $(LAL_PY_INSTALL)/$(_DSE_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_DSE_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_TST_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_TST_PF)

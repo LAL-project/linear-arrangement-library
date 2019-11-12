@@ -23,6 +23,10 @@ LAL_MNAME	= $(LAL_BNAME)debug
 DSE_BNAME	= dataset_error
 DSE_MNAME	= $(DSE_BNAME)
 
+# TREE_STRUCTURE_TYPE
+TST_BNAME	= tree_structure_type
+TST_MNAME	= $(TST_BNAME)
+
 ########################################################################
 # DEPENDENCIES IN MODULES
 

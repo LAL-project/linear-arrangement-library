@@ -1,4 +1,5 @@
 %import dataset_error.i
+%import tree_structure_type.i
 
 %{
 
@@ -7,18 +8,20 @@
 
 // -- lal includes
 
-// library's main directory
+// library's types
 #include <lal/definitions.hpp>
-#include <lal/graphs.hpp>
 
-// iterators
-#include <lal/iterators.hpp>
+// generation of graphs
+#include <lal/generation.hpp>
+
+// graphs
+#include <lal/graphs.hpp>
 
 // io operations
 #include <lal/io.hpp>
 
-// generation of graphs
-#include <lal/generation.hpp>
+// iterators
+#include <lal/iterators.hpp>
 
 // linear arrangements
 #include <lal/linarr.hpp>
@@ -38,7 +41,6 @@
 %include std_string.i
 %include std_vector.i
 %include std_pair.i
-%include typemaps.i
 
 // -------------------------
 // renaming of C++ templates
@@ -59,23 +61,32 @@ namespace std {
 	%template(list_node_list) vector<vector<lal::node> >;
 }
 
+%ignore lal::graphs::operator<<;
+%ignore lal::numeric::operator<<;
+
 // ---------------------
 // basic data structures
 
 // numeric
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
+%include "../lal/numeric/output.hpp"
 
 // graphs
 %include "../lal/graphs/graph.hpp"
+%include "../lal/graphs/ugraph.hpp"
+%include "../lal/graphs/dgraph.hpp"
+
 %include "../lal/graphs/tree.hpp"
 %include "../lal/graphs/rtree.hpp"
-%include "../lal/graphs/ugraph.hpp"
+
 %include "../lal/graphs/utree.hpp"
-%include "../lal/graphs/urtree.hpp"
-%include "../lal/graphs/dgraph.hpp"
 %include "../lal/graphs/dtree.hpp"
+
+%include "../lal/graphs/urtree.hpp"
 %include "../lal/graphs/drtree.hpp"
+
+%include "../lal/graphs/output.hpp"
 
 // -------------
 // io operations
@@ -85,11 +96,12 @@ namespace std {
 // -------------
 // io operations
 
+// %include "../lal/io/basic_output.hpp"
+// %include "../lal/io/dataset_error.hpp"
 %include "../lal/io/edge_list.hpp"
-%include "../lal/io/basic_output.hpp"
-%include "../lal/io/treebank_processor.hpp"
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset.hpp"
+%include "../lal/io/treebank_processor.hpp"
 
 // --------------------
 // properties of graphs
@@ -104,8 +116,10 @@ namespace std {
 // linear arrangements
 
 %include "../lal/linarr/C.hpp"
+%include "../lal/linarr/classification.hpp"
 %include "../lal/linarr/D.hpp"
 %include "../lal/linarr/headedness.hpp"
+// %include "../lal/linarr/tree_structure_type.hpp"
 
 // --------------------
 // generation of graphs
@@ -212,14 +226,7 @@ namespace std {
 		return out.str();
 	}
 }
-%extend lal::graphs::urtree {
-	std::string __str__() const {
-		std::ostringstream out;
-		out << *$self;
-		return out.str();
-	}
-}
-%extend lal::graphs::drtree {
+%extend lal::graphs::rtree {
 	std::string __str__() const {
 		std::ostringstream out;
 		out << *$self;
