@@ -45,6 +45,7 @@
 
 // C++ includes
 #include <iostream>
+#include <set>
 using namespace std;
 
 // lal includes
@@ -53,8 +54,11 @@ using namespace std;
 #include <lal/linarr/C.hpp>
 #include <lal/iterators/edge_iterator.hpp>
 
+#define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
+
 namespace lal {
 using namespace graphs;
+using namespace iterators;
 
 namespace linarr {
 
@@ -150,11 +154,74 @@ inline uint32_t __get_discont(const uint32_t n, const vector<vector<node> >& yie
 	return max_dis;
 }
 
+inline uint32_t __is_1EC(const urtree& Tree, const vector<node>& pi) {
+	const uint32_t n = Tree.n_nodes();
+	vector<node> T(n);
+	for (node u = 0; u < n; ++u) {
+		T[ pi[u] ] = u;
+	}
+
+	bool _1ec = false;
+
+	edge_iterator it1(Tree);
+	while (it1.has_next()) {
+		it1.next();
+		// check other edges crossing the current edge
+		const node s = it1.get_edge().first;
+		const node t = it1.get_edge().second;
+		cout << "Current edge: " << s << "," << t << endl;
+		const auto [p, q] = sort2(pi[s], pi[t]);
+		cout << "At position:  " << pi[s] << "," << pi[t] << endl;
+
+		// the edges crossing the current edge
+		set<edge> crossing;
+
+		// iterate over the nodes between the endpoints
+		// of 'dep' in the linear arrangement
+		for (auto r = p + 1; r < q; ++r) {
+			const node u = T[r];
+			cout << "    inspecting node " << u << " at " << r << endl;
+			for (const node v : Tree.get_neighbours(u)) {
+				cout << "        neighbour " << v << " at " << pi[v] << endl;
+				if (pi[v] < p or q < pi[v]) {
+					// the edge (u,v) crosses (s,t)
+					crossing.insert(sort2(u,v));
+					cout << "    edge " << u << "," << v << " crosses current." << endl;
+					cout << "    at   " << pi[u] << "," << pi[v] << endl;
+				}
+			}
+		}
+
+		// compute the number of common nodes among
+		// the edges that cross the current edge
+		uint32_t common = 0;
+		if (crossing.size() > 1) {
+			for (auto cit1 = crossing.begin(); cit1 != crossing.end(); ++cit1) {
+				auto cit2 = cit1;
+				++cit2;
+				for (; cit2 != crossing.end(); ++cit2) {
+					common += (
+						cit1->first == cit2->first or cit1->first == cit2->second or
+						cit1->second == cit2->first or cit1->second == cit2->second
+					);
+				}
+			}
+		}
+		cout << "common vertices found: " << common << endl;
+		if (common >= 1) {
+			_1ec = true;
+		}
+	}
+
+	return _1ec;
+}
+
 tree_structure_type __get_syn_dep_tree_type(
 	const urtree& Tree, const std::vector<node>& pi
 )
 {
 	uint32_t C = n_crossings_stack_based(Tree, pi);
+	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?
 		return (__is_root_covered(Tree, pi) ?
@@ -197,11 +264,13 @@ tree_structure_type __get_syn_dep_tree_type(
 		}();
 	}
 
-	if (C == 1) { return tree_structure_type::none; }
+	if (C == 1) {
+		// we need C > 1 for 1-EC structures
+		return tree_structure_type::none;
+	}
 
-	cout << "probably 1-EC" << endl;
-
-	return tree_structure_type::none;
+	bool is_1EC = __is_1EC(Tree, pi);
+	return (is_1EC ? tree_structure_type::EC_1 : tree_structure_type::none);
 }
 
 tree_structure_type get_tree_structure_type(const urtree& t, const vector<node>& pi) {
