@@ -45,6 +45,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
 
 namespace lal {
@@ -53,15 +54,39 @@ namespace linarr {
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
- * Given a graph and a permutation of its vertices, computes the sum of the
- * length of the graph's edges in the arrangement. If the arrangement is not
- * specified, the identity arrangement is used.
+ * Given a graph and a linear arrangement of its vertices, computes the sum of
+ * the length of the graph's edges in the arrangement. If the arrangement is
+ * not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param arr Permutation of the vertices. If @e arr[p] = u then
+ * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$D\f$.
  */
-uint32_t sum_length_edges(const graphs::ugraph& g, const std::vector<node>& arr = {});
+uint32_t sum_length_edges(const graphs::ugraph& g, const std::vector<node>& pi = {});
+
+/**
+ * @brief Computes the mean edge length as an exact rational value.
+ *
+ * Given a graph and a linear arrangement of its vertices, computes the mean
+ * edge length, or the mean dependency distance (see \cite Jing2015).
+ * @param g Input graph.
+ * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @return Returns Jing's and Liu's \f$MDD\f$.
+ */
+numeric::rational MDD_rational(const graphs::ugraph& g, const std::vector<node>& pi = {});
+
+/**
+ * @brief Computes the mean edge length as an exact rational value.
+ *
+ * Given a graph and a linear arrangement of its vertices, computes the mean
+ * edge length, or the mean dependency distance (see \cite Jing2015).
+ * @param g Input graph.
+ * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @return Returns Jing's and Liu's \f$MDD\f$.
+ */
+double MDD(const graphs::ugraph& g, const std::vector<node>& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

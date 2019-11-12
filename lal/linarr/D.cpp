@@ -54,9 +54,12 @@ using namespace std;
 
 namespace lal {
 using namespace graphs;
+using namespace numeric;
 using namespace iterators;
 
 namespace linarr {
+
+/* D */
 
 uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
 	// sum of lengths
@@ -75,8 +78,24 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
 	return l;
 }
 
-uint32_t sum_length_edges(const ugraph& g, const vector<node>& arr) {
-	return utils::call_with_empty_arrangement(__sum_length_edges, g, arr);
+uint32_t sum_length_edges(const ugraph& g, const vector<node>& pi) {
+	return utils::call_with_empty_arrangement(__sum_length_edges, g, pi);
+}
+
+/* MDD */
+
+rational __MDD_rational(const ugraph& g, const vector<node>& pi) {
+	uint32_t D = sum_length_edges(g, pi);
+	rational MDD(D, g.n_edges());
+	return MDD;
+}
+
+rational MDD_rational(const ugraph& g, const vector<node>& pi) {
+	return utils::call_with_empty_arrangement(__MDD_rational, g, pi);
+}
+
+double MDD(const ugraph& g, const vector<node>& pi) {
+	return MDD_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

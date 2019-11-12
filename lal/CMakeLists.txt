@@ -117,35 +117,35 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
-		graphs/graph.cpp
-		graphs/tree.cpp
-		graphs/rtree.cpp
-		graphs/ugraph.cpp
-		graphs/utree.cpp
-		graphs/urtree.cpp
-		graphs/dgraph.cpp
-		graphs/dtree.cpp
-		graphs/drtree.cpp
-		iterators/edge_iterator.cpp
-		iterators/Q_iterator.cpp
 		conversions/conversions.cpp
 		generation/free_lab_trees.cpp
 		generation/free_ulab_trees.cpp
 		generation/rand_free_lab_trees.cpp
 		generation/rand_free_ulab_trees.cpp
 		generation/rand_rooted_lab_dir_trees.cpp
+		graphs/dgraph.cpp
+		graphs/dtree.cpp
+		graphs/drtree.cpp
+		graphs/graph.cpp
+		graphs/rtree.cpp
+		graphs/tree.cpp
+		graphs/ugraph.cpp
+		graphs/urtree.cpp
+		graphs/utree.cpp
 		io/edge_list.cpp
-		io/treebank_processor.cpp
 		io/treebank_dataset.cpp
+		io/treebank_processor.cpp
 		io/treebank_reader.cpp
-		io/basic_output.cpp
+		iterators/edge_iterator.cpp
+		iterators/Q_iterator.cpp
+		linarr/approx_C.cpp
 		linarr/C_brute_force.cpp
 		linarr/C_dyn_prog.cpp
 		linarr/C_ladder.cpp
 		linarr/C_q.cpp
 		linarr/C_stack_based.cpp
+		linarr/classification.cpp
 		linarr/D.cpp
-		linarr/approx_C.cpp
 		linarr/headedness.cpp
 		numeric/gmp_utils.cpp
 		numeric/integer.cpp
@@ -153,13 +153,13 @@ target_sources(
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/degrees.cpp
+		properties/mhd.cpp
 		properties/Q.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_freqs.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_gen_graphs_fast.cpp
 		properties/variance_C_trees.cpp
-		properties/mhd.cpp
 )
 
 # **********************************************************************
@@ -180,50 +180,51 @@ set(LIBLAL_MAIN_HEADER
 	numeric.hpp
 	properties.hpp
 )
+set(LIBLAL_GENERATION_HEADER
+	generation/free_lab_trees.hpp
+	generation/free_ulab_trees.hpp
+	generation/rand_free_lab_trees.hpp
+	generation/rand_free_ulab_trees.hpp
+	generation/rand_rooted_lab_dir_trees.hpp
+)
 set(LIBLAL_GRAPHS_HEADER
-	graphs/graph.hpp
-	graphs/tree.hpp
-	graphs/rtree.hpp
-	graphs/ugraph.hpp
-	graphs/utree.hpp
-	graphs/urtree.hpp
 	graphs/dgraph.hpp
 	graphs/dtree.hpp
 	graphs/drtree.hpp
+	graphs/graph.hpp
+	graphs/output.hpp
+	graphs/rtree.hpp
+	graphs/tree.hpp
+	graphs/ugraph.hpp
+	graphs/urtree.hpp
+	graphs/utree.hpp
+)
+set(LIBLAL_IO_HEADER
+	io/basic_output.hpp
+	io/dataset_error.hpp
+	io/edge_list.hpp
+	io/treebank_dataset.hpp
+	io/treebank_processor.hpp
+	io/treebank_reader.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/edge_iterator.hpp
 	iterators/Q_iterator.hpp
 )
-set(LIBLAL_GENERATION_HEADER
-	generation/free_lab_trees.hpp
-	generation/rand_free_lab_trees.hpp
-	generation/free_ulab_trees.hpp
-	generation/rand_free_ulab_trees.hpp
-	generation/rand_rooted_lab_dir_trees.hpp
-)
-set(LIBLAL_IO_HEADER
-	io/edge_list.hpp
-	io/treebank_processor.hpp
-	io/dataset_error.hpp
-	io/treebank_dataset.hpp
-	io/treebank_reader.hpp
-	io/basic_output.hpp
-)
-set(
-	LIBLAL_LINARR_HEADER
+set(LIBLAL_LINARR_HEADER
 	linarr/C.hpp
+	linarr/classification.hpp
 	linarr/D.hpp
 	linarr/headedness.hpp
+	linarr/tree_structure_type.hpp
 )
-set(
-	LIBLAL_NUMERIC_HEADER
+set(LIBLAL_NUMERIC_HEADER
 	numeric/gmp_utils.hpp
 	numeric/integer.hpp
+	numeric/output.hpp
 	numeric/rational.hpp
 )
-set(
-	LIBLAL_PROPERTIES_HEADER
+set(LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp
@@ -242,10 +243,10 @@ install(
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
-install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
-install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generation)
+install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
+install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
 install(FILES ${LIBLAL_NUMERIC_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/numeric)
 install(FILES ${LIBLAL_PROPERTIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)

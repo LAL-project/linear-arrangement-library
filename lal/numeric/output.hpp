@@ -38,62 +38,29 @@
  *
  ********************************************************************/
 
-#include <lal/io/basic_output.hpp>
+#pragma once
 
 // C++ includes
-using namespace std;
+#include <ostream>
+
+// lal includes
+#include <lal/numeric/integer.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
+namespace numeric {
 
-ostream& operator<< (ostream& os, const graph& g)
-{
-   const uint32_t N = g.n_nodes();
-   for (node u = 0; u < N; ++u) {
-	   os << u << ":";
-	   for (auto v : g.get_neighbours(u)) {
-		   os << " " << v;
-	   }
-	   os << (u < N - 1 ? "\n" : "");
-   }
-   return os;
-}
-
-ostream& operator<< (ostream& os, const urtree& g) {
-	const uint32_t N = g.n_nodes();
-	const string pad = (g.has_root() ? " " : "");
-	for (node u = 0; u < N; ++u) {
-		os << (u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	return os;
-}
-
-ostream& operator<< (ostream& os, const drtree& g) {
-	const uint32_t N = g.n_nodes();
-	const string pad = (g.has_root() ? " " : "");
-	for (node u = 0; u < N; ++u) {
-		os << (u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	return os;
-}
-
-ostream& operator<< (ostream& os, const integer& i) {
+/// Standard output operator for the @ref integer class.
+inline std::ostream& operator<< (std::ostream& os, const integer& i) {
 	os << i.to_string();
 	return os;
 }
 
-ostream& operator<< (ostream& os, const rational& r) {
+/// Standard output operator for the @ref rational class.
+inline std::ostream& operator<< (std::ostream& os, const rational& r) {
 	os << r.to_string();
 	return os;
 }
 
+} // -- namespace graphs
 } // -- namespace lal

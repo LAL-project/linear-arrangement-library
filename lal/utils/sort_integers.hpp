@@ -78,7 +78,7 @@ typename std::enable_if
 	void
 >
 ::type
-sort_1_n(It begin, It end)
+sort_1_n_inc(It begin, It end)
 {
 	size_t size = std::distance(begin, end);
 	if (size <= 1) { return; }

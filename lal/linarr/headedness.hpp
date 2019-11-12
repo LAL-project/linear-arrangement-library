@@ -64,7 +64,7 @@ namespace linarr {
  * A value of 0 indicates perfect left branching, and a value of 1 indicates
  * perfect right-branching.
  * @param g Input graph.
- * @param pi Permutation of the vertices. If @e pi[u] = p then
+ * @param pi Permutation of the vertices. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns the headedness ratio as an exact rational number.
  */
@@ -85,7 +85,7 @@ numeric::rational headedness_rational
  * A value of 0 indicates perfect left branching, and a value of 1 indicates
  * perfect right-branching.
  * @param g Input graph.
- * @param pi Permutation of the vertices. If @e pi[u] = p then
+ * @param pi Permutation of the vertices. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns the headedness ratio as an exact rational number.
  */

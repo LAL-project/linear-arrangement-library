@@ -106,16 +106,18 @@ namespace iterators {}
  * @brief Linear arrangements namespace.
  * 
  * This namespace holds all operations related to linear arrangements.
+ * 
+ * All linear arrangements are vectors of as many nodes as the
+ * corresponding graph has. If \f$\pi\f$ is a linear arrangement then
+ * the @e u-th position of \f$\pi\f$ contains the position of that node in
+ * the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, node @e u
+ * is at position @e p in the linear arrangement.
+ * 
  * For example, it contains:
  * - Computation of the number of crossings \f$C\f$.
  * - Computation of the sum of the length of edges \f$D\f$.
  * - Computation of headedness of directed graphs.
- * 
- * All linear arrangements are vectors of length as many nodes as
- * the corresponding graph has. If @e a is a linear arrangement then
- * the @e u-th position of @e a contains the position in that node in
- * the arrangement. Formally, \f$a[u] = p\f$ if, and only if, node @e u
- * is at position @e p in the linear arrangement.
+ * - Classification of trees into classes (see @ref syn_dep_tree_type).
  */
 namespace linarr {}
 

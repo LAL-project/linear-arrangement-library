@@ -40,35 +40,6 @@
 
 #pragma once
 
-#include <ostream>
-
 // lal includes
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/urtree.hpp>
-#include <lal/graphs/drtree.hpp>
-
-namespace lal {
-
-/**
- * @brief Standard output operator for most graphs.
- *
- * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
- * @param os ostream C++ object
- * @param g Input graph.
- * @returns Returns the output stream.
- */
-std::ostream& operator<< (std::ostream& os, const lal::graphs::graph& g);
-
-/// Standard output operator for undirected rooted graphs (see @ref lal::graphs::urtree).
-std::ostream& operator<< (std::ostream& os, const lal::graphs::urtree& g);
-
-/// Standard output operator for directed rooted graphs (see @ref lal::graphs::drtree).
-std::ostream& operator<< (std::ostream& os, const lal::graphs::drtree& g);
-
-/// Standard output operator for the @ref integer class.
-std::ostream& operator<< (std::ostream& os, const lal::numeric::integer& i);
-
-/// Standard output operator for the @ref rational class.
-std::ostream& operator<< (std::ostream& os, const lal::numeric::rational& r);
-
-} // -- namespace lal
+#include <lal/graphs/output.hpp>
+#include <lal/numeric/output.hpp>

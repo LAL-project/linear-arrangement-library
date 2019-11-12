@@ -36,6 +36,7 @@ HEADERS += \
     graphs/drtree.hpp \
     graphs/dtree.hpp \
     graphs/graph.hpp \
+    graphs/output.hpp \
     graphs/rtree.hpp \
     graphs/tree.hpp \
     graphs/ugraph.hpp \
@@ -46,11 +47,14 @@ HEADERS += \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
     linarr.hpp \
+    linarr/classification.hpp \
     linarr/headedness.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \
+    linarr/tree_structure_type.hpp \
     numeric.hpp \
     numeric/integer.hpp \
+    numeric/output.hpp \
     numeric/rational.hpp \
     numeric/gmp_utils.hpp \
     io/edge_list.hpp \
@@ -91,9 +95,9 @@ SOURCES += \
     graphs/ugraph.cpp \
     graphs/urtree.cpp \
     graphs/utree.cpp \
-    io/basic_output.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
+    linarr/classification.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \

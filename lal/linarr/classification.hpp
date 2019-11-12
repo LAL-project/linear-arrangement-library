@@ -37,42 +37,30 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
+
 #pragma once
 
-// C++ includes
-#include <functional>
-#include <numeric>
-
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/graphs/urtree.hpp>
+#include <lal/linarr/tree_structure_type.hpp>
 
 namespace lal {
-namespace utils {
+namespace linarr {
 
-/*
- * @brief Call a function @e F that does not admit empty arrangements.
+/**
+ * @brief Computes the type of syntactic dependency tree
  *
- * In case the arrangement @e arr is empty, function @e F is passed the
- * identity arrangement.
- * @param F Function to call.
- * @param g Input graph.
- * @param arr Arrangement.
- * @return Returns the value function @e F returns.
+ * Given an undirected rooted tree and a linear arrangement of its vertices,
+ * computes the class of projective structure the tree belongs to.
+ *
+ * @param t Input tree.
+ * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @return Returns the class of projective structure. If the class could not
+ * be determined the method returns @ref none
  */
-template<typename T, class G>
-T call_with_empty_arrangement(
-	T (*F)(const G&, const std::vector<node>&),
-	const G& g, const std::vector<node>& pi
-)
-{
-	if (pi.size() != 0) {
-		return F(g,pi);
-	}
-	std::vector<node> __pi(g.n_nodes());
-	std::iota(__pi.begin(), __pi.end(), 0);
-	return F(g,__pi);
-}
+tree_structure_type get_syn_dep_tree_type
+(const graphs::urtree& t, const std::vector<node>& pi = {});
 
-} // -- namespace macros
+} // -- namespace linarr
 } // -- namespace lal

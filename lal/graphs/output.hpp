@@ -37,42 +37,60 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
-#include <functional>
-#include <numeric>
+#include <ostream>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/graphs/graph.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
-namespace utils {
+namespace graphs {
 
-/*
- * @brief Call a function @e F that does not admit empty arrangements.
+/**
+ * @brief Standard output operator for most graphs.
  *
- * In case the arrangement @e arr is empty, function @e F is passed the
- * identity arrangement.
- * @param F Function to call.
+ * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
+ * @param os ostream C++ object
  * @param g Input graph.
- * @param arr Arrangement.
- * @return Returns the value function @e F returns.
+ * @returns Returns the output stream.
  */
-template<typename T, class G>
-T call_with_empty_arrangement(
-	T (*F)(const G&, const std::vector<node>&),
-	const G& g, const std::vector<node>& pi
-)
+inline std::ostream& operator<< (std::ostream& os, const graph& g)
 {
-	if (pi.size() != 0) {
-		return F(g,pi);
-	}
-	std::vector<node> __pi(g.n_nodes());
-	std::iota(__pi.begin(), __pi.end(), 0);
-	return F(g,__pi);
+   const uint32_t N = g.n_nodes();
+   for (node u = 0; u < N; ++u) {
+	   os << u << ":";
+	   for (auto v : g.get_neighbours(u)) {
+		   os << " " << v;
+	   }
+	   os << (u < N - 1 ? "\n" : "");
+   }
+   return os;
 }
 
-} // -- namespace macros
+/**
+ * @brief Standard output operator for rooted trees.
+ *
+ * Usable by: @ref drtree, @ref urtree.
+ * @param os ostream C++ object
+ * @param g Input graph.
+ * @returns Returns the output stream.
+ */
+inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
+	const uint32_t N = g.n_nodes();
+	const std::string pad = (g.has_root() ? " " : "");
+	for (node u = 0; u < N; ++u) {
+		os << (u == g.get_root() ? "*" : pad) << u << ":";
+		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
+}
+
+} // -- namespace graphs
 } // -- namespace lal
