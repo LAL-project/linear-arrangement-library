@@ -71,7 +71,7 @@ using namespace graphs;
 
 namespace io {
 
-inline std::string tree_feature_string(const treebank_processor::tree_feature& tf) {
+inline string tree_feature_string(const treebank_processor::tree_feature& tf) {
 	switch (tf) {
 	case treebank_processor::tree_feature::n: return "n";
 	case treebank_processor::tree_feature::k2: return "k2";
@@ -92,7 +92,7 @@ inline std::string tree_feature_string(const treebank_processor::tree_feature& t
 	return "???";
 }
 
-inline std::string processor_error_string(const treebank_processor::processor_error& pe) {
+inline string processor_error_string(const treebank_processor::processor_error& pe) {
 	switch (pe) {
 	case treebank_processor::processor_error::none: return "No error";
 	case treebank_processor::processor_error::missing_parent: return "Parent directory not given";
@@ -293,8 +293,8 @@ treebank_processor::treebank_processor(bool all_fs) {
 }
 
 treebank_processor::treebank_processor(
-	const std::string& pdir, const std::string& file,
-	const std::string& odir, bool all_fs
+	const string& pdir, const string& file,
+	const string& odir, bool all_fs
 )
 {
 	m_par_dir = pdir;

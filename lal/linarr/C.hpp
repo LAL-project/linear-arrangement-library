@@ -220,7 +220,7 @@ std::vector<uint64_t> n_crossings_list
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */
 
 /**
- * @brief Approximate the number of crossings.
+ * @brief Approximates the number of crossings.
  *
  * Given a linear arrangement, which determines the length of the edges, predict
  * the number of crossings conditioned by the length of the edges in the
@@ -231,22 +231,16 @@ std::vector<uint64_t> n_crossings_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
-numeric::rational approximate_C_2_rational
+numeric::rational approximate_C_rational
 (const graphs::ugraph& g, const std::vector<node>& pi = {});
+
 /**
- * @brief Approximate the number of crossings.
+ * @brief Approximates the number of crossings.
  *
- * Given a linear arrangement, which determines the length of the edges, predict
- * the number of crossings conditioned by the length of the edges in the
- * linear arrangement. Implementation of \cite Ferrer2014a.  If the arrangement
- * is not specified, the identity arrangement is used.
- * @param g Input graph.
- * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
+ * See @ref approximate_C_rational for details.
+ * @return The return value is a floating point value.
  */
-double approximate_C_2
-(const graphs::ugraph& g, const std::vector<node>& pi = {});
+double approximate_C(const graphs::ugraph& g, const std::vector<node>& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

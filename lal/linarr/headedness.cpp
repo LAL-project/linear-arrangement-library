@@ -72,7 +72,7 @@ rational headedness_rational(const dgraph& g, const vector<node>& pi) {
 	return h;
 }
 
-double headedness(const dgraph& g, const std::vector<node>& arr) {
+double headedness(const dgraph& g, const vector<node>& arr) {
 	return headedness_rational(g, arr).to_double();
 }
 

@@ -64,7 +64,7 @@ namespace io {
  * the contents of the file.
  * @param[in] filename Name of the file.
  * @param[out] g Graph read from the file.
- * @param[in] norm Should the graph be normalised? See @ref graph::is_normalised()
+ * @param[in] norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
  * @return Returns 'false' if the file could not be opened. Returns 'true'
  * if the graph was read successfully.
  */

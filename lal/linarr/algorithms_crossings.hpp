@@ -46,8 +46,8 @@ namespace linarr {
 /**
  * @brief The different algorithms for computing the number of crossings.
  *
- * This enumeration's values can be used to choose the algorithm the
- * function @ref n_crossings uses to compute the number of crossings.
+ * This enumeration's values can be used to choose the algorithm the functions
+ * @ref n_crossings and @ref n_crossings_list use to compute the number of crossings.
  */
 enum class algorithms_crossings {
 	/// Brute force computation of the number of crossings.

@@ -144,7 +144,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 
 	/* compute number of crossings */
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	for (uint32_t pu = 0; pu < n - 3; ++pu) {
 		const node u = T[pu];

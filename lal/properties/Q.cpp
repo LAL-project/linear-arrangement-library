@@ -46,14 +46,11 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/dgraph.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/properties/degrees.hpp>
-#include <lal/iterators/Q_iterator.hpp>
+#include <lal/numeric/integer.hpp>
 
 namespace lal {
 using namespace graphs;
 using namespace numeric;
-using namespace iterators;
 
 namespace properties {
 

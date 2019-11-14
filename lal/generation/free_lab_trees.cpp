@@ -52,7 +52,7 @@ using namespace std;
 #define inf numeric_limits<size>::max()
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -128,7 +128,7 @@ utree free_lab_trees::get_tree() const {
 		return t;
 	}
 
-	return convert::Prufer_sequence_to_tree(m_seq, m_n);
+	return utils::Prufer_sequence_to_tree(m_seq, m_n);
 }
 
 } // -- namespace generate

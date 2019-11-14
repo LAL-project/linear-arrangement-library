@@ -63,9 +63,9 @@ numeric::rational expectation_D_first_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the the expectation of the first moment of D.
  *
- * This function uses the formulae derived in \cite Ferrer2019a.
+ * See @ref expectation_D_first_rational for details.
  * @param g The input graph.
- * @return Returns \f$E[D]\f$.
+ * @return The return value is a floating point value.
  */
 double expectation_D_first(const graphs::ugraph& g);
 
@@ -85,11 +85,9 @@ numeric::rational variance_D_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the variance of the sum of the length of edges.
  *
- * Computes \f$V[D]\f$.
- *
- * This function uses the formula derived in \cite Ferrer2019a.
- * @param g Input graph.
- * @return Returns the exact value of \f$V[D]\f$.
+ * See @ref variance_D_rational for details.
+ * @param g The input graph.
+ * @return The return value is a floating point value.
  */
 double variance_D(const graphs::ugraph& g);
 

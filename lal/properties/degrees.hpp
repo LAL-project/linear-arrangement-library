@@ -68,17 +68,12 @@ namespace properties {
 numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
- * graph.
+ * graph as an exact rational value.
  *
- * Computes the \f$p\f$-th moment of in-degree about zero,
- * \f$\langle k^p \rangle\f$, of a graph using:
- *
- * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
- *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * See @ref mmt_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The return value is a floating point value.
  */
 double mmt_degree(const graphs::graph& g, uint64_t p);
 
@@ -99,17 +94,12 @@ double mmt_degree(const graphs::graph& g, uint64_t p);
 numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
- * graph.
+ * graph as an exact rational value.
  *
- * Computes the \f$p\f$-th moment of in-degree about zero,
- * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
- *
- * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
- *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * See @ref mmt_in_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The return value is a floating point value.
  */
 double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
 
@@ -130,17 +120,12 @@ double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
 numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint64_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
- * graph.
+ * graph as an exact rational value.
  *
- * Computes the \f$p\f$-th moment of out-degree about zero,
- * \f$\langle k_{out}^p \rangle\f$, of a directed graph using:
- *
- * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.
- *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * See @ref mmt_out_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The return value is a floating point value.
  */
 double mmt_out_degree(const graphs::dgraph& g, uint64_t p);
 
@@ -165,22 +150,11 @@ double mmt_out_degree(const graphs::dgraph& g, uint64_t p);
 numeric::rational hubiness_rational(const graphs::utree& g);
 
 /**
- * @brief Computes the hubiness coefficient.
+ * @brief Computes the hubiness coefficient as an exact rational number.
  *
- * The hubiness coefficient is defined as.
- *
- * \f$ h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
- *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }
- * \f$,
- *
- * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
- * are the second moment of degree about 0 (see @ref mmt_degree_rational)
- * of a star and linear tree respectively.
- *
- * See \cite Ferrer2018a for details.
+ * See @ref hubiness_rational for details.
  * @param g Input graph.
- * @pre \f$n > 2\f$.
- * @return Returns the hubiness coefficient.
+ * @return The return value is a floating point value.
  */
 double hubiness(const graphs::utree& g);
 

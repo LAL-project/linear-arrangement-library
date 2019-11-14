@@ -49,7 +49,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -63,11 +63,7 @@ treebank_reader::~treebank_reader() {}
 
 // MODIFIERS
 
-dataset_error treebank_reader::init(
-	const std::string& file,
-	const std::string& lang
-)
-{
+dataset_error treebank_reader::init(const string& file, const string& lang) {
 	m_treebank.close();
 	m_language = lang;
 	m_num_trees = 0;
@@ -133,7 +129,7 @@ ugraph treebank_reader::get_tree() const {
 	}
 
 	uint32_t n = static_cast<uint32_t>(L.size()) - 1;
-	return convert::linear_sequence_to_tree(L, n);
+	return utils::linear_sequence_to_tree(L, n);
 }
 
 } // -- namespace io

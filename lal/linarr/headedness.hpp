@@ -51,7 +51,7 @@ namespace lal {
 namespace linarr {
 
 /**
- * @brief Computes headedness of a directed graph as an exact rational number.
+ * @brief Computes the headedness of a directed graph as an exact rational number.
  *
  * Given a graph and a permutation of its vertices, computes the ratio of
  * right-branching edges over the total amount of edges. More precisely, computes
@@ -68,29 +68,15 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns the headedness ratio as an exact rational number.
  */
-numeric::rational headedness_rational
-(const graphs::dgraph& g, const std::vector<node>& pi = {});
+numeric::rational headedness_rational(const graphs::dgraph& g, const std::vector<node>& pi);
 
 /**
- * @brief Computes headedness of a directed graph.
+ * @brief Computes the headedness of a linearly arranged directed graph.
  *
- * Given a graph and a permutation of its vertices, computes the ratio of
- * right-branching edges over the total amount of edges. More precisely, computes
- *
- * \f$h = \frac{r}{m}\f$
- *
- * where \f$r\f$ is the number of right-branching edges and \f$m\f$ is the number
- * of edges of the graph.
- *
- * A value of 0 indicates perfect left branching, and a value of 1 indicates
- * perfect right-branching.
- * @param g Input graph.
- * @param pi Permutation of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Returns the headedness ratio as an exact rational number.
+ * See @ref headedness_rational for details.
+ * @return The return value is a floating point value.
  */
-double headedness
-(const graphs::dgraph& g, const std::vector<node>& pi = {});
+double headedness(const graphs::dgraph& g, const std::vector<node>& pi);
 
 } // -- namespace linarr
 } // -- namespace lal

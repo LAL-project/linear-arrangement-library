@@ -53,17 +53,18 @@ namespace properties {
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
- * @param G Input graph.
- * @return Returns the size of \f$Q(G)\f$ as a rational value.
+ * @param g Input graph.
+ * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-numeric::integer size_Q_integer(const graphs::graph& G);
-
+numeric::integer size_Q_integer(const graphs::graph& g);
 /**
  * @brief Compute the size of \f$Q(G)\f$.
- * @param G Input graph.
- * @returns The size of \f$Q(G)\f$.
+ *
+ * See @ref size_Q_integer for details.
+ * @param g Input graph.
+ * @return The return value is a simple 64-bit unsigned integer.
  */
-uint64_t size_Q(const graphs::graph& G);
+uint64_t size_Q(const graphs::graph& g);
 
 } // -- namespace properties
 } // -- namespace lal

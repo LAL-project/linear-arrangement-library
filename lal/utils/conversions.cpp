@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 // C includes
 #include <assert.h>
@@ -49,7 +49,7 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-namespace convert {
+namespace utils {
 
 utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check

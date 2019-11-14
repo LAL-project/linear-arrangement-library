@@ -48,8 +48,9 @@ namespace lal {
 namespace properties {
 
 /**
- * @brief Mean Hierarchical Distance as an exact rational value.
+ * @brief Mean Hierarchical Distance.
  *
+ * The value is computed as an exact rational value.
  * For details, see \cite Jing2015.
  * @param t Input rooted undirected tree.
  * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
@@ -59,9 +60,9 @@ numeric::rational MHD_rational(const graphs::urtree& t);
 /**
  * @brief Mean Hierarchical Distance.
  *
- * For details, see \cite Jing2015.
+ * See @ref MHD_rational for details.
  * @param t Input rooted undirected tree.
- * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
+ * @return The return value is a floating point value.
  */
 double MHD(const graphs::urtree& t);
 

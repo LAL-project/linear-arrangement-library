@@ -67,7 +67,6 @@ HEADERS += \
     generation/free_ulab_trees.hpp \
     generation/free_lab_trees.hpp \
     generation/rand_free_lab_trees.hpp \
-    conversions/conversions.hpp \
     io/treebank_processor.hpp \
     io/treebank_reader.hpp \
     generation/rand_free_ulab_trees.hpp \
@@ -77,6 +76,7 @@ HEADERS += \
     D.hpp \
     properties/mhd.hpp \
     utils/bfs.hpp \
+    utils/conversions.hpp \
     utils/cycles.hpp \
     utils/is_tree.hpp \
     utils/macros.hpp \
@@ -121,11 +121,11 @@ SOURCES += \
     properties/variance_C_trees.cpp \
     generation/free_lab_trees.cpp \
     generation/rand_free_lab_trees.cpp \
-    conversions/conversions.cpp \
     io/treebank_processor.cpp \
     io/treebank_reader.cpp \
     generation/rand_free_ulab_trees.cpp \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \
-    linarr/approx_C.cpp
+    linarr/approx_C.cpp \
+    utils/conversions.cpp

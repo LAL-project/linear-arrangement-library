@@ -179,12 +179,12 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<node>& pi)
 	return Ec2;
 }
 
-rational approximate_C_2_rational(const ugraph& g, const vector<node>& pi) {
+rational approximate_C_rational(const ugraph& g, const vector<node>& pi) {
 	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
-double approximate_C_2(const ugraph& g, const vector<node>& pi) {
-	return approximate_C_2_rational(g, pi).to_double();
+double approximate_C(const ugraph& g, const vector<node>& pi) {
+	return approximate_C_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

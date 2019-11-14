@@ -79,12 +79,11 @@ numeric::rational MDD_rational(const graphs::ugraph& g, const std::vector<node>&
 /**
  * @brief Computes the mean edge length as an exact rational value.
  *
- * Given a graph and a linear arrangement of its vertices, computes the mean
- * edge length, or the mean dependency distance (see \cite Jing2015).
+ * See @ref MDD_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
- * @return Returns Jing's and Liu's \f$MDD\f$.
+ * @return The return value is a floating point value.
  */
 double MDD(const graphs::ugraph& g, const std::vector<node>& pi = {});
 

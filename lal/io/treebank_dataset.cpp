@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 namespace lal {
 namespace io {
@@ -59,7 +59,7 @@ treebank_dataset::treebank_dataset() {
 treebank_dataset::~treebank_dataset() {}
 
 dataset_error treebank_dataset::init
-(const std::string& pdir, const std::string& main_file)
+(const string& pdir, const string& main_file)
 {
 	// close current dataset (if any)
 	m_list.close();

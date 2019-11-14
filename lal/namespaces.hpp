@@ -52,15 +52,6 @@
 namespace lal {
 
 /**
- * @brief Conversion functions.
- * 
- * This namespace contains functions for converting sequences
- * into graphs. Two examples of sequences are: Prufer sequences
- * (see \cite Pruefer1918a), and level sequences of a tree.
- */
-namespace convert {}
-
-/**
  * @brief Namespace for the generation of different types of graphs.
  * 
  * This namespace contains algorithms for the generation of
@@ -83,7 +74,7 @@ namespace graphs {}
  * 
  * This includes reading a graph (or collection of graphs) from
  * a file. The formats supported for reading are:
- * - Edge list. See function @ref read_edge_list(const std::string&, graph&, bool)
+ * - Edge list. See function @ref read_edge_list(const std::string&, graphs::graph&, bool)
  * 
  * Other features contained in this namespace are:
  * - Processing of whole corpora of treebanks automatically (see @ref io::treebank_processor)
@@ -113,20 +104,24 @@ namespace iterators {}
  * the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, node @e u
  * is at position @e p in the linear arrangement.
  * 
- * For example, it contains:
- * - Computation of the number of crossings \f$C\f$.
- * - Computation of the sum of the length of edges \f$D\f$.
- * - Computation of headedness of directed graphs.
- * - Classification of trees into classes (see @ref tree_structure_type).
+ * It contains the computation of:
+ * - the number of crossings \f$C\f$ (see @ref n_crossings).
+ * - the sum of the length of edges \f$D\f$.
+ * - the headedness of directed graphs (see @ref headedness).
+ * - the Mean Dependency Distance for single trees (see @ref MDD).
+ * 
+ * It also contains methods for the classification of trees into projective
+ * classes (see @ref tree_structure_type for the supported classes and
+ * @ref get_tree_structure_type for the function to classify the trees).
  */
 namespace linarr {}
 
 /**
  * @brief Numeric namespace.
  *
- * This namespace contains the data structures that wrap the
- * basic structures of the GMP library for big integer exact
- * rational representation.
+ * This namespace contains the data structures that wrap the basic structures
+ * of the GMP library for integers of arbitrary precision (see @ref integer)
+ * and exact rational numbers (see @ref rational).
  */
 namespace numeric {
 
@@ -144,11 +139,19 @@ namespace numeric {
  * 
  * This namespace contains basic properties of graphs including, but
  * not limited to:
- * - hubiness,
- * - Mean Hierarchical Distance
- * - computation of the moments of degree about zero \f$ \langle k^p \rangle\f$,
- * - computation of the amount of pairs of independent edges \f$Q\f$,
- * - computation of the variance of \f$D\f$ and \f$C\f$ (with adhoc functions for trees in the latter case),
+ * - hubiness (see @ref hubiness),
+ * - Mean Hierarchical Distance (see @ref MHD),
+ * - computation of the moments of:
+ * 		- degree about zero \f$ \langle k^p \rangle\f$ (see @ref mmt_degree),
+ * 		- in-degree about zero \f$ \langle k_{in}^p \rangle\f$ (see @ref mmt_in_degree),
+ * 		- out-degree about zero \f$ \langle k_{out}^p \rangle\f$ (see @ref mmt_out_degree),
+ * - computation of the amount of pairs of independent edges \f$Q\f$ (see @ref size_Q),
+ * - computation of the variance of \f$V_{rla}[D]\f$ (see @ref variance_D),
+ * - computation of \f$V_{rla}[C]\f$:
+ * 		- in general graphs (see @ref variance_C_freqs, @ref variance_C_freqs_Q,
+ * 			@ref variance_C_Q, and @ref variance_C)
+ * 		- in forests (see @ref variance_C_forest)
+ * 		- in trees (see @ref variance_C_tree).
  * 
  * All calculations can be retrieved as exact rational numbers
  * (see @ref numeric::rational), but also as floating point values of

@@ -81,7 +81,7 @@ inline uint64_t __compute_ladder(
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement
-		uint32_t S = 0;
+		uint64_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
 		bn = g.get_bool_neighbours(u);
