@@ -23,9 +23,13 @@ LAL_MNAME	= $(LAL_BNAME)
 DSE_BNAME	= dataset_error
 DSE_MNAME	= $(DSE_BNAME)
 
-# TREE_STRUCTURE_TYPE
+# tree_structure_type
 TST_BNAME	= tree_structure_type
 TST_MNAME	= $(TST_BNAME)
+
+# algorithms_crossings
+ALGCR_BNAME	= algorithms_crossings
+ALGCR_MNAME	= $(ALGCR_BNAME)
 
 ########################################################################
 # DEPENDENCIES IN MODULES
