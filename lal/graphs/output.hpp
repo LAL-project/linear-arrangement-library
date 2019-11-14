@@ -83,7 +83,7 @@ inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
 	const uint32_t N = g.n_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	for (node u = 0; u < N; ++u) {
-		os << (u == g.get_root() ? "*" : pad) << u << ":";
+		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
 		for (auto v : g.get_neighbours(u)) {
 			os << " " << v;
 		}

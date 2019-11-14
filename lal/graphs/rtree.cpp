@@ -55,8 +55,6 @@ node rtree::get_root() const { return m_r; }
 
 bool rtree::is_rooted() const { return true; }
 
-/* PROTECTED */
-
 bool rtree::has_root() const { return m_root_set; }
 
 } // -- namespace graphs

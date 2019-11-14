@@ -111,8 +111,8 @@ dgraph& dgraph::add_edge(node s, node t, bool to_norm) {
 
 dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
-		node u = e.first;
-		node v = e.second;
+		const node u = e.first;
+		const node v = e.second;
 		assert(u != v);
 		assert(not has_edge(u,v));
 
@@ -156,6 +156,10 @@ bool dgraph::has_edge(node u, node v) const {
 	assert(has_node(v));
 
 	const neighbourhood& nu = m_adjacency_list[u];
+
+	if (is_normalised() and nu.size() >= 64) {
+		return binary_search(nu.begin(), nu.end(), v);
+	}
 	return find(nu.begin(), nu.end(), v) != nu.end();
 }
 

@@ -115,8 +115,8 @@ ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
 
 ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
-		node u = e.first;
-		node v = e.second;
+		const node u = e.first;
+		const node v = e.second;
 		assert(not has_edge(u,v));
 		assert(u != v);
 
@@ -150,6 +150,12 @@ bool ugraph::has_edge(node u, node v) const {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
+	if (is_normalised() and std::min(nu.size(), nv.size()) >= 64) {
+		return (nu.size() <= nv.size() ?
+			binary_search(nu.begin(), nu.end(), v) :
+			binary_search(nv.begin(), nv.end(), u)
+		);
+	}
 	return (nu.size() <= nv.size() ?
 		find(nu.begin(), nu.end(), v) != nu.end() :
 		find(nv.begin(), nv.end(), u) != nv.end()
