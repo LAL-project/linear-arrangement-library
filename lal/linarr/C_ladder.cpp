@@ -111,9 +111,9 @@ uint64_t __call_n_crossings_ladder(const ugraph& g, const vector<node>& pi) {
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
 	// array L1 (same as in the pseudocode)
-	uint64_t *L1 = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
+	uint64_t * __restrict__ L1 = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
 
@@ -144,16 +144,16 @@ vector<uint64_t> __n_crossings_ladder_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
 	// array L1 (same as in the pseudocode)
-	uint64_t *L1 = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
+	uint64_t * __restrict__ L1 = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == 0);
+		assert(pis[i].size() == n);
 
 		// compute C
 		cs[i] = __compute_ladder(g, pis[i], bool_neighs, T,L1);

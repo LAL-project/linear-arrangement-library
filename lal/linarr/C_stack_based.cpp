@@ -157,7 +157,6 @@ inline uint64_t __compute_crossings_stack_based(
 		S.join_sorted_all_greater(adjN[u]);
 	}
 
-	free(T);
 	return C;
 }
 
@@ -171,7 +170,7 @@ inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<node>
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
 
 	uint64_t C = __compute_crossings_stack_based(g, pi, T);
 
@@ -198,12 +197,12 @@ vector<uint64_t> __n_crossings_stack_based_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == 0);
+		assert(pis[i].size() == n);
 
 		// compute C
 		cs[i] = __compute_crossings_stack_based(g, pis[i], T);

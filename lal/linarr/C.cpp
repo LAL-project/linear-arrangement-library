@@ -51,10 +51,14 @@ namespace linarr {
 uint64_t n_crossings
 (const ugraph& g, const vector<node>& pi, const algorithms_crossings& A) {
 	switch (A) {
-	case algorithms_crossings::brute_force: return __n_crossings_brute_force(g, pi);
-	case algorithms_crossings::dynamic_programming: return __n_crossings_dyn_prog(g, pi);
-	case algorithms_crossings::ladder: return __n_crossings_ladder(g, pi);
-	case algorithms_crossings::stack_based: return __n_crossings_stack_based(g, pi);
+	case algorithms_crossings::brute_force:
+		return __n_crossings_brute_force(g, pi);
+	case algorithms_crossings::dynamic_programming:
+		return __n_crossings_dyn_prog(g, pi);
+	case algorithms_crossings::ladder:
+		return __n_crossings_ladder(g, pi);
+	case algorithms_crossings::stack_based:
+		return __n_crossings_stack_based(g, pi);
 	}
 
 	// wrong value of enumeration
@@ -65,15 +69,19 @@ vector<uint64_t> n_crossings_list
 (const ugraph& g, const vector<vector<node> >& pis, const algorithms_crossings& A)
 {
 	switch (A) {
-	case algorithms_crossings::brute_force: return __n_crossings_brute_force_list(g, pis);
-	case algorithms_crossings::dynamic_programming: return __n_crossings_dyn_prog_list(g, pis);
-	case algorithms_crossings::ladder: return __n_crossings_ladder_list(g, pis);
-	case algorithms_crossings::stack_based: return __n_crossings_stack_based_list(g, pis);
+	case algorithms_crossings::brute_force:
+		return __n_crossings_brute_force_list(g, pis);
+	case algorithms_crossings::dynamic_programming:
+		return __n_crossings_dyn_prog_list(g, pis);
+	case algorithms_crossings::ladder:
+		return __n_crossings_ladder_list(g, pis);
+	case algorithms_crossings::stack_based:
+		return __n_crossings_stack_based_list(g, pis);
 	}
 
 	// wrong value of enumeration
 	return vector<uint64_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 
-} // -- linarr
-} // -- lal
+} // -- namespace linarr
+} // -- namespace lal

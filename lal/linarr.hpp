@@ -40,6 +40,7 @@
 
 #pragma once
 
+#include <lal/linarr/algorithms_crossings.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/headedness.hpp>

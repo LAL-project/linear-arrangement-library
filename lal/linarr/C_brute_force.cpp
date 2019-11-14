@@ -60,17 +60,12 @@ using namespace iterators;
 
 namespace linarr {
 
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
-uint64_t __compute_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
+uint64_t __compute_crossings_brute_force(
+	const ugraph& g, const vector<node>& pi,
+	uint32_t * __restrict__ T
+)
+{
 	const uint32_t n = g.n_nodes();
-	if (n < 4) {
-		return 0;
-	}
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
@@ -103,20 +98,42 @@ uint64_t __compute_crossings_brute_force(const ugraph& g, const vector<node>& pi
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
-			// 'w' is "in front of" 'z' in the random seq 'seq'.
+			// 'w' is "to the left of" 'z' in the random seq 'seq'.
 			// Formally: pi[w] < pi[z]
 
 			// Also, by construction: pi[u] < pi[w]
-			C += pi[w] < pi[z] and pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+			C += pi[w] < pi[z] and
+				 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
 		}}
 	}}
 
+	return C;
+}
+
+// T: translation table, inverse of pi:
+// T[p] = u <-> at position p we find node u
+uint64_t __call_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
+	const uint32_t n = g.n_nodes();
+	if (n < 4) {
+		return 0;
+	}
+
+	/* allocate memory */
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+
+	// compute the number of crossings
+	uint64_t C = __compute_crossings_brute_force(g, pi, T);
+
+	/* free memory */
 	free(T);
 	return C;
 }
 
 uint64_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
-	return utils::call_with_empty_arrangement(__compute_crossings_brute_force, g, pi);
+	return utils::call_with_empty_arrangement(__call_crossings_brute_force, g, pi);
 }
 
 vector<uint64_t> __n_crossings_brute_force_list
@@ -129,14 +146,23 @@ vector<uint64_t> __n_crossings_brute_force_list
 		return cs;
 	}
 
+	/* allocate memory */
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == 0);
+		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_crossings_brute_force(g, pis[i]);
+		cs[i] = __compute_crossings_brute_force(g, pis[i], T);
 	}
+
+	/* free memory */
+	free(T);
 	return cs;
 }
 

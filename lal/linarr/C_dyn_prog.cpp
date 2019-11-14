@@ -63,8 +63,8 @@ inline uint64_t __compute_crossings_dyn_prog(
 	const ugraph& g, const vector<node>& pi,
 	vector<bool>& bn,
 	uint32_t * __restrict__ T,
-	uint64_t * __restrict__ M,
-	uint64_t * __restrict__ K
+	uint32_t * __restrict__ M,
+	uint32_t * __restrict__ K
 )
 {
 	const uint32_t n = g.n_nodes();
@@ -78,7 +78,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 
 	for (uint32_t pu = 0; pu < n - 3; ++pu) {
 		// node at position pu + 1
-		node u = T[pu + 1];
+		const node u = T[pu + 1];
 
 		bn = g.get_bool_neighbours(u);
 
@@ -115,14 +115,14 @@ inline uint64_t __compute_crossings_dyn_prog(
 	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
 
 	// pointer for next row in K
-	uint64_t * __restrict__ next_k_it;
+	uint32_t * __restrict__ next_k_it;
 	// pointer for M
-	uint64_t * __restrict__ m_it;
+	uint32_t * __restrict__ m_it;
 	// pointer for K
-	uint64_t * __restrict__ k_it;
+	uint32_t * __restrict__ k_it;
 
 	for (uint32_t ii = 1; ii < n - 3; ++ii) {
-		uint32_t i = n - 3 - ii - 1;
+		const uint32_t i = n - 3 - ii - 1;
 
 		//m_it = &M[i][i];
 		m_it = &M[ idx(i,i, n-3) ];
@@ -130,7 +130,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 		// place k_it at the beginning of i-th row ("beginning" here means
 		// the first column with non-redundant information: the upper half
 		// of the matrix)
-		k_it = &K[ idx(i,i,(n - 3)) ];
+		k_it = &K[ idx(i,i, n-3) ];
 
 		// place next_k_it at the same column as k_it but at the next row
 		next_k_it = k_it + n - 3;
@@ -183,14 +183,16 @@ uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	uint32_t * __restrict__ T =
+		static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
 
 	// memory used by the algorithm
-	uint64_t * __restrict__ alg_memory = static_cast<uint64_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint64_t)));
+	uint32_t * __restrict__ alg_memory =
+		static_cast<uint32_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint32_t)));
 	// matrix M (without 3 of its columns and rows)
-	uint64_t * __restrict__ M = &alg_memory[0 + n];
+	uint32_t * __restrict__ M = &alg_memory[0];
 	// matrix K (without 3 of its columns and rows)
-	uint64_t * __restrict__ K = &alg_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * __restrict__ K = &alg_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
@@ -204,8 +206,8 @@ uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
 	return C;
 }
 
-uint64_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& arr) {
-	return utils::call_with_empty_arrangement(__call_crossings_dyn_prog, g, arr);
+uint64_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
+	return utils::call_with_empty_arrangement(__call_crossings_dyn_prog, g, pi);
 }
 
 vector<uint64_t> __n_crossings_dyn_prog_list
@@ -223,14 +225,16 @@ vector<uint64_t> __n_crossings_dyn_prog_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	uint32_t * __restrict__ T =
+		static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
 
 	// memory used by the algorithm
-	uint64_t * __restrict__ alg_memory = static_cast<uint64_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint64_t)));
+	uint32_t * __restrict__ alg_memory =
+		static_cast<uint32_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint32_t)));
 	// matrix M (without 3 of its columns and rows)
-	uint64_t * __restrict__ M = &alg_memory[0 + n];
+	uint32_t * __restrict__ M = &alg_memory[0 ];
 	// matrix K (without 3 of its columns and rows)
-	uint64_t * __restrict__ K = &alg_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * __restrict__ K = &alg_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
@@ -238,7 +242,7 @@ vector<uint64_t> __n_crossings_dyn_prog_list
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == 0);
+		assert(pis[i].size() == n);
 
 		// compute C
 		cs[i] = __compute_crossings_dyn_prog(g, pis[i], bool_neighs, T,M,K);
