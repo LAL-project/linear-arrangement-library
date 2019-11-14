@@ -70,7 +70,7 @@ class graph {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		graph(uint32_t n);
+		graph(uint64_t n);
 		/// Default destructor.
 		virtual ~graph();
 
@@ -81,11 +81,11 @@ class graph {
 		/**
 		 * @brief Allocate memory for @e n nodes.
 		 *
-		 * Calls @ref clear and @ref _init(uint32_t).
+		 * Calls @ref clear and @ref _init(uint64_t).
 		 * @param n Number of nodes.
 		 * @post The previous graph structure is cleared. See @ref clear.
 		 */
-		void init(uint32_t n);
+		void init(uint64_t n);
 		/**
 		 * @brief Deletes all edges and nodes from the graph.
 		 *
@@ -141,7 +141,7 @@ class graph {
 		virtual bool has_edge(node u, node v) const = 0;
 
 		/// Returns the number of ndoes.
-		uint32_t n_nodes() const;
+		uint64_t n_nodes() const;
 
 		/// Returns the number of edges.
 		uint64_t n_edges() const;
@@ -180,7 +180,7 @@ class graph {
 		 * @return In undirected graphs, returns the number of neighbours. In
 		 * a directed graph, returns the number of outgoing and ingoing edges.
 		 */
-		virtual uint32_t degree(node u) const;
+		virtual uint64_t degree(node u) const;
 
 		/**
 		 * @brief Returns whether this graph is normalised or not.
@@ -222,7 +222,7 @@ class graph {
 		 * @brief Initialises memory for the @ref graph class only.
 		 * @param n Number of nodes.
 		 */
-		virtual void _init(uint32_t n);
+		virtual void _init(uint64_t n);
 		/// Clears memory for the @ref graph class only.
 		virtual void _clear();
 };

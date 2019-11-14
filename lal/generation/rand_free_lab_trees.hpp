@@ -65,7 +65,7 @@ class rand_free_lab_trees {
 		/// Default constructor.
 		rand_free_lab_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_lab_trees(uint32_t n, uint32_t seed = 0);
+		rand_free_lab_trees(uint64_t n, uint64_t seed = 0);
 		/// Default Destructor.
 		virtual ~rand_free_lab_trees();
 
@@ -76,7 +76,7 @@ class rand_free_lab_trees {
 		 * @param n Number of nodes of the tree.
 		 * @param seed Integer value used to seed the random number generator.
 		 */
-		void init(uint32_t n, uint32_t seed = 0);
+		void init(uint64_t n, uint64_t seed = 0);
 
 		/**
 		 * @brief Generates uniformly at random a free labelled tree.
@@ -87,13 +87,13 @@ class rand_free_lab_trees {
 
 	protected:
 		/// Number of nodes of the tree.
-		uint32_t m_n;
+		uint64_t m_n;
 		/// Random number generator.
 		std::mt19937 m_gen;
 		/// Distribution of the numbers.
-		std::uniform_int_distribution<uint32_t> m_unif;
+		std::uniform_int_distribution<uint64_t> m_unif;
 		/// Prüfer sequence.
-		std::vector<uint32_t> m_seq;
+		std::vector<uint64_t> m_seq;
 };
 
 } // -- namespace generate

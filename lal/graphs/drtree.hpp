@@ -98,7 +98,7 @@ class drtree : public dtree, virtual public rtree {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		drtree(uint32_t n);
+		drtree(uint64_t n);
 		/**
 		 * @brief Constructor with undirected tree and root node.
 		 *

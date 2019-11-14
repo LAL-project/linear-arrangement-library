@@ -92,7 +92,7 @@ class free_ulab_trees {
 		/// Default constructor.
 		free_ulab_trees();
 		/// Constructor with size of tree.
-		free_ulab_trees(uint32_t n);
+		free_ulab_trees(uint64_t n);
 		/// Default destructor
 		~free_ulab_trees();
 
@@ -110,7 +110,7 @@ class free_ulab_trees {
 		 * @param n The number of vertices of the trees to be
 		 * generated.
 		 */
-		void init(uint32_t n);
+		void init(uint64_t n);
 
 		/**
 		 * @brief Returns whether there are more trees to generate.
@@ -141,38 +141,38 @@ class free_ulab_trees {
 
 	private:
 		/// Canonical level sequence of the tree.
-		std::vector<uint32_t> m_L;
+		std::vector<uint64_t> m_L;
 		/**
 		 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
 		 * corresponding to the parent of the vertex corresponding to \f$l_i\f$.
 		 */
-		std::vector<uint32_t> m_W;
+		std::vector<uint64_t> m_W;
 
 		/// Largest integer such that \f$l_p \neq 2\f$.
-		uint32_t m_p;
+		uint64_t m_p;
 		/// Largest integer such that \f$q < p, \; l_q = l_p - 1\f$.
-		uint32_t m_q;
+		uint64_t m_q;
 
 		/// Maximum level number in the first principal subsequence.
-		uint32_t m_h1;
+		uint64_t m_h1;
 		/// Maximum level number in the second principal subsequence.
-		uint32_t m_h2;
+		uint64_t m_h2;
 
 		/**
 		 * @brief An index to the first element of \f$L_2\f$.
 		 *
 		 * \f$L_2\f$ is the second principal subsequence of \f$L\f$.
 		 */
-		uint32_t m_c;
+		uint64_t m_c;
 		/**
 		 * @brief Exactly \f$m - 1\f$.
 		 *
 		 * Read the paper: page 542, first paragraph.
 		 */
-		uint32_t m_r;
+		uint64_t m_r;
 
 		/// Number of vertices of the trees.
-		uint32_t m_n;
+		uint64_t m_n;
 
 		/// Was the last tree generated?
 		bool m_is_last = false;

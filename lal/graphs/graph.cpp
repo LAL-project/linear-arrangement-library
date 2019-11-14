@@ -64,12 +64,12 @@ namespace graphs {
 /* PUBLIC */
 
 graph::graph() { }
-graph::graph(uint32_t n) {
+graph::graph(uint64_t n) {
 	_init(n);
 }
 graph::~graph() { }
 
-void graph::init(uint32_t n) {
+void graph::init(uint64_t n) {
 	_clear();
 	_init(n);
 }
@@ -83,7 +83,7 @@ void graph::disjoint_union(const graph& g) {
 	// If I'm undirected, g must be undirected.
 	assert(is_directed() ? g.is_directed() : g.is_undirected());
 
-	uint32_t n = n_nodes();
+	const uint64_t n = n_nodes();
 	m_num_edges += g.m_num_edges;
 
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -137,8 +137,8 @@ bool graph::has_node(node u) const {
 	return u < m_adjacency_list.size();
 }
 
-uint32_t graph::n_nodes() const {
-	return static_cast<uint32_t>(m_adjacency_list.size());
+uint64_t graph::n_nodes() const {
+	return m_adjacency_list.size();
 }
 
 uint64_t graph::n_edges() const {
@@ -181,8 +181,8 @@ neighbourhood_B graph::get_bool_neighbours(node u) const {
 	return neighs;
 }
 
-uint32_t graph::degree(node u) const {
-	return static_cast<uint32_t>(m_adjacency_list[u].size());
+uint64_t graph::degree(node u) const {
+	return m_adjacency_list[u].size();
 }
 
 bool graph::is_normalised() const {
@@ -190,8 +190,8 @@ bool graph::is_normalised() const {
 }
 
 void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
-	const uint32_t N = n_nodes();
-	mat = vector<vector<bool> >(N, vector<bool>(N, false));
+	const uint64_t n = n_nodes();
+	mat = vector<vector<bool> >(n, vector<bool>(n, false));
 	edge_iterator it(*this);
 	while (it.has_next()) {
 		it.next();
@@ -203,7 +203,7 @@ void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 
 /* PROTECTED */
 
-void graph::_init(uint32_t n) {
+void graph::_init(uint64_t n) {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);

@@ -68,7 +68,7 @@ class utree : public ugraph, virtual public tree {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		utree(uint32_t n);
+		utree(uint64_t n);
 		/**
 		 * @brief Constructor from graph
 		 * @param t Input graph.

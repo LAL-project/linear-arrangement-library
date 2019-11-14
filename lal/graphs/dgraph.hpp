@@ -59,7 +59,7 @@ namespace graphs {
  * list data structure.
  *
  * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
+ * or with the @ref init(uint64_t) method. Edges can then be added one by one
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */
@@ -71,7 +71,7 @@ class dgraph : virtual public graph {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dgraph(uint32_t n);
+		dgraph(uint64_t n);
 		/// Default destructor.
 		virtual ~dgraph();
 
@@ -134,11 +134,11 @@ class dgraph : virtual public graph {
 		 * @return Returns the number of outgoing and ingoing edges, i.e.,
 		 * the sum of the out- and in-degree.
 		 */
-		uint32_t degree(node u) const;
+		uint64_t degree(node u) const;
 		/// Returns the in-degree of a node.
-		uint32_t in_degree(node u) const;
+		uint64_t in_degree(node u) const;
 		/// Returns the out-degree of a node.
-		uint32_t out_degree(node u) const;
+		uint64_t out_degree(node u) const;
 
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
@@ -148,14 +148,14 @@ class dgraph : virtual public graph {
 
 	protected:
 		/// In-degree per vertex.
-		std::vector<uint32_t> m_in_degree;
+		std::vector<uint64_t> m_in_degree;
 
 	protected:
 		/**
 		 * @brief Initialises memory for the @ref dgraph class only.
 		 * @param n Number of nodes.
 		 */
-		void _init(uint32_t n);
+		void _init(uint64_t n);
 		/// Clears memory for the @ref graph class only.
 		void _clear();
 };

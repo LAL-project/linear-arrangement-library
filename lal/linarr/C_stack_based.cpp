@@ -56,25 +56,24 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 #include <lal/utils/avl.hpp>
 
-typedef pair<uint32_t,lal::edge> indexed_edge;
+typedef pair<uint64_t,lal::edge> indexed_edge;
 
 namespace lal {
 using namespace graphs;
 
 namespace linarr {
 
-#define sorted_edge(u,v)		\
-	(u < v ? edge(u,v) : edge(v,u) )
+#define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
 
 inline uint64_t __compute_crossings_stack_based(
-	const ugraph& g, const vector<node>& pi,
-	uint32_t * __restrict__ T
+	const ugraph& g, const vector<position>& pi,
+	node * __restrict__ T
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
-	for (uint32_t i = 0; i < n; ++i) {
-		T[ pi[i] ] = i;
+	for (node u = 0; u < n; ++u) {
+		T[ pi[u] ] = u;
 	}
 
 	// make adjacency lists, sorted by edge length
@@ -119,12 +118,12 @@ inline uint64_t __compute_crossings_stack_based(
 	}
 
 	// relation between edges and their insertion index
-	map<edge, uint32_t> edge_to_idx;
-	uint32_t idx = 0;
+	map<edge, uint64_t> edge_to_idx;
+	uint64_t idx = 0;
 
 	// 3. ... assign indices now
-	for (uint32_t pu = 0; pu < n; ++pu) {
-		node u = T[pu];
+	for (position pu = 0; pu < n; ++pu) {
+		const node u = T[pu];
 		for (auto& v : adjN[u]) {
 			v.first = idx;
 
@@ -134,11 +133,11 @@ inline uint64_t __compute_crossings_stack_based(
 	}
 
 	// stack of the algorithm
-	utils::AVL<pair<uint32_t, edge> > S;
+	utils::AVL<pair<uint64_t, edge> > S;
 
 	uint64_t C = 0;
 
-	for (uint32_t pu = 0; pu < n; ++pu) {
+	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 
 		for (node v : adjP[u]) {
@@ -160,8 +159,8 @@ inline uint64_t __compute_crossings_stack_based(
 	return C;
 }
 
-inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
-	const uint32_t n = g.n_nodes();
+inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<position>& pi) {
+	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -170,7 +169,7 @@ inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<node>
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	uint64_t C = __compute_crossings_stack_based(g, pi, T);
 
@@ -179,14 +178,14 @@ inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<node>
 	return C;
 }
 
-uint64_t __n_crossings_stack_based(const ugraph& g, const vector<node>& arr) {
-	return utils::call_with_empty_arrangement(__call_crossings_stack_based, g, arr);
+uint64_t __n_crossings_stack_based(const ugraph& g, const vector<position>& pi) {
+	return utils::call_with_empty_arrangement(__call_crossings_stack_based, g, pi);
 }
 
 vector<uint64_t> __n_crossings_stack_based_list
-(const ugraph& g, const vector<vector<node> >& pis)
+(const ugraph& g, const vector<vector<position> >& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -197,7 +196,7 @@ vector<uint64_t> __n_crossings_stack_based_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	node * __restrict__ T = static_cast<node *>(malloc(n*sizeof(node)));
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {

@@ -60,29 +60,29 @@ namespace linarr {
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 inline uint64_t __compute_crossings_dyn_prog(
-	const ugraph& g, const vector<node>& pi,
+	const ugraph& g, const vector<position>& pi,
 	vector<bool>& bn,
-	uint32_t * __restrict__ T,
-	uint32_t * __restrict__ M,
-	uint32_t * __restrict__ K
+	node * __restrict__ T,
+	uint64_t * __restrict__ M,
+	uint64_t * __restrict__ K
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	// compute pi
-	for (uint32_t i = 0; i < n; ++i) {
+	for (node i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
 
 	/* fill matrix M */
 
-	for (uint32_t pu = 0; pu < n - 3; ++pu) {
+	for (position pu = 0; pu < n - 3; ++pu) {
 		// node at position pu + 1
 		const node u = T[pu + 1];
 
 		bn = g.get_bool_neighbours(u);
 
-		uint32_t k = g.degree(u);
+		uint64_t k = g.degree(u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -94,7 +94,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
-		for (uint32_t i = 3; i < n; ++i) {
+		for (uint64_t i = 3; i < n; ++i) {
 			k -= bn[T[i - 1]];
 
 			// the row corresponding to node 'u' in M is
@@ -104,25 +104,27 @@ inline uint64_t __compute_crossings_dyn_prog(
 			//M[pu][i - 3] = k;
 			M[ idx(pu,i-3, n-3) ] = k;
 
+			// clear boolean neighbours so that at the next
+			// iteration all its values are valid
 			bn[T[i - 1]] = false;
 		}
 	}
 
 	/* fill matrix K */
-	memset(K, 0, (n - 3)*(n - 3)*sizeof(uint32_t));
+	memset(K, 0, (n - 3)*(n - 3)*sizeof(uint64_t));
 
 	// special case for ii = 0 (see next for loop)
 	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
 
 	// pointer for next row in K
-	uint32_t * __restrict__ next_k_it;
+	uint64_t * __restrict__ next_k_it;
 	// pointer for M
-	uint32_t * __restrict__ m_it;
+	uint64_t * __restrict__ m_it;
 	// pointer for K
-	uint32_t * __restrict__ k_it;
+	uint64_t * __restrict__ k_it;
 
-	for (uint32_t ii = 1; ii < n - 3; ++ii) {
-		const uint32_t i = n - 3 - ii - 1;
+	for (uint64_t ii = 1; ii < n - 3; ++ii) {
+		const uint64_t i = n - 3 - ii - 1;
 
 		//m_it = &M[i][i];
 		m_it = &M[ idx(i,i, n-3) ];
@@ -135,7 +137,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 		// place next_k_it at the same column as k_it but at the next row
 		next_k_it = k_it + n - 3;
 
-		for (uint32_t j = i; j < n - 3; ++j) {
+		for (uint64_t j = i; j < n - 3; ++j) {
 			//K[i][j] = M[i][j] + K[i + 1][j];
 
 			*k_it++ = *m_it++ + *next_k_it++;
@@ -146,7 +148,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 
 	uint64_t C = 0;
 
-	for (uint32_t pu = 0; pu < n - 3; ++pu) {
+	for (position pu = 0; pu < n - 3; ++pu) {
 		const node u = T[pu];
 
 		const neighbourhood& Nu = g.get_neighbours(u);
@@ -173,26 +175,24 @@ inline uint64_t __compute_crossings_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
-	const uint32_t n = g.n_nodes();
+uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<position>& pi) {
+	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
 
 	/* allocate memory */
+	const size_t n_bytes = n + 2*(n - 3)*(n - 3);
+	uint64_t * __restrict__ all_memory =
+		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T =
-		static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
-
-	// memory used by the algorithm
-	uint32_t * __restrict__ alg_memory =
-		static_cast<uint32_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint32_t)));
+	position * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
-	uint32_t * __restrict__ M = &alg_memory[0];
+	uint64_t * __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows)
-	uint32_t * __restrict__ K = &alg_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
@@ -201,19 +201,18 @@ uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
 	uint64_t C = __compute_crossings_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
-	free(T);
-	free(alg_memory);
+	free(all_memory);
 	return C;
 }
 
-uint64_t __n_crossings_dyn_prog(const ugraph& g, const vector<node>& pi) {
+uint64_t __n_crossings_dyn_prog(const ugraph& g, const vector<position>& pi) {
 	return utils::call_with_empty_arrangement(__call_crossings_dyn_prog, g, pi);
 }
 
 vector<uint64_t> __n_crossings_dyn_prog_list
 (const ugraph& g, const vector<vector<node> >& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -221,20 +220,17 @@ vector<uint64_t> __n_crossings_dyn_prog_list
 	}
 
 	/* allocate memory */
-	cs.resize(pis.size());
+	const size_t n_bytes = n + 2*(n - 3)*(n - 3);
+	uint64_t * __restrict__ all_memory =
+		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T =
-		static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
-
-	// memory used by the algorithm
-	uint32_t * __restrict__ alg_memory =
-		static_cast<uint32_t *>(malloc(2*(n - 3)*(n - 3)*sizeof(uint32_t)));
+	position * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
-	uint32_t * __restrict__ M = &alg_memory[0 ];
+	uint64_t * __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows)
-	uint32_t * __restrict__ K = &alg_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
@@ -250,8 +246,7 @@ vector<uint64_t> __n_crossings_dyn_prog_list
 	}
 
 	/* free memory */
-	free(T);
-	free(alg_memory);
+	free(all_memory);
 	return cs;
 }
 

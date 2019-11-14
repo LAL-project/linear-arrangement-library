@@ -53,7 +53,7 @@ using namespace numeric;
 
 namespace linarr {
 
-uint64_t __headedness_rational(const dgraph& g, const vector<node>& pi) {
+uint64_t __headedness_rational(const dgraph& g, const vector<position>& pi) {
 	uint64_t edges_to_right = 0;
 	iterators::edge_iterator it(g);
 	while (it.has_next()) {
@@ -64,11 +64,10 @@ uint64_t __headedness_rational(const dgraph& g, const vector<node>& pi) {
 	return edges_to_right;
 }
 
-rational headedness_rational(const dgraph& g, const vector<node>& pi) {
+rational headedness_rational(const dgraph& g, const vector<position>& pi) {
 	const uint64_t etr = utils::call_with_empty_arrangement(__headedness_rational, g, pi);
 	// avoid warning conversion
-	rational h;
-	h.init_ui(etr, g.n_edges());
+	rational h = rational_from_ui(etr, g.n_edges());
 	return h;
 }
 

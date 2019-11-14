@@ -56,7 +56,7 @@ namespace lal {
 namespace graphs {
 
 utree::utree() : ugraph() { }
-utree::utree(uint32_t n) : ugraph(n) { }
+utree::utree(uint64_t n) : ugraph(n) { }
 utree::utree(const ugraph& t) : ugraph(t.n_nodes()) {
 	// check that the input graph is a tree
 	assert(utils::is_tree(t));

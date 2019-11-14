@@ -71,7 +71,7 @@ class rand_free_ulab_trees {
 		/// Default constructor.
 		rand_free_ulab_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_ulab_trees(uint32_t n, uint32_t seed = 0);
+		rand_free_ulab_trees(uint64_t n, uint64_t seed = 0);
 		/// Default destructor.
 		~rand_free_ulab_trees();
 
@@ -85,7 +85,7 @@ class rand_free_ulab_trees {
 		 * @param n Number of nodes of the tree.
 		 * @param seed Integer value used to seed the random number generator.
 		 */
-		void init(uint32_t n, uint32_t seed = 0);
+		void init(uint64_t n, uint64_t seed = 0);
 
 		/**
 		 * @brief Generates uniformly at random a free unlabelled tree.
@@ -117,7 +117,7 @@ class rand_free_ulab_trees {
 
 	private:
 		/// Number of nodes of the tree.
-		uint32_t m_n = 0;
+		uint64_t m_n = 0;
 		/// Random number generator.
 		std::mt19937 m_gen;
 		/// Distribution of the numbers.
@@ -137,7 +137,7 @@ class rand_free_ulab_trees {
 		 * and \f$q=(n - 1)/2\f$ there is only one value of \f$q\f$ for each
 		 * \f$n\f$, so we do not need a matrix.
 		 */
-		std::map<uint32_t, std::vector<numeric::integer> > m_Amq;
+		std::map<uint64_t, std::vector<numeric::integer> > m_Amq;
 
 		/**
 		 * @brief List that encodes the tree.
@@ -146,7 +146,7 @@ class rand_free_ulab_trees {
 		 * A value of '0' indicates the root. A strictly positive value
 		 * indicates the parent.
 		 */
-		std::vector<uint32_t> m_TREE;
+		std::vector<uint64_t> m_TREE;
 
 	private:
 
@@ -169,7 +169,7 @@ class rand_free_ulab_trees {
 		 * @param q Maximum number of vertices of each connected component of
 		 * the forest.
 		 */
-		void compute_Amq_rec(uint32_t m, uint32_t q);
+		void compute_Amq_rec(uint64_t m, uint64_t q);
 		/**
 		 * @brief Computes the values \f$\alpha_{m,q}\f$ for \f$m=n-1, q=m/2\f$.
 		 *
@@ -188,7 +188,7 @@ class rand_free_ulab_trees {
 		 * @param j Integer \f$j \ge 1\f$, \f$jd \le n\f$.
 		 * @param d Integer \f$j \ge 1\f$, \f$jd \le n\f$.
 		 */
-		void choose_jd_from_T(uint32_t k, uint32_t& j, uint32_t& d);
+		void choose_jd_from_T(uint64_t k, uint64_t& j, uint64_t& d);
 
 		/**
 		 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -202,7 +202,7 @@ class rand_free_ulab_trees {
 		 * @param[out] j Integer \f$j \ge 1\f$, \f$jd \le n\f$.
 		 * @param[out] d Integer \f$j \ge 1\f$, \f$jd \le n\f$.
 		 */
-		void choose_jd_from_Amq(uint32_t m, uint32_t q, uint32_t& j, uint32_t& d);
+		void choose_jd_from_Amq(uint64_t m, uint64_t q, uint64_t& j, uint64_t& d);
 
 		/**
 		 * @brief Generates uniformly at random a rooted unlabelled tree
@@ -213,9 +213,9 @@ class rand_free_ulab_trees {
 		 * @return Returns two new indices: the last root generated
 		 * and where to store the next tree in @ref m_TREE.
 		 */
-		std::pair<uint32_t,uint32_t> ranrut(uint32_t k, uint32_t lr, uint32_t nt);
+		std::pair<uint64_t,uint64_t> ranrut(uint64_t k, uint64_t lr, uint64_t nt);
 		/// Generates a tree of @e k vertices with two centroids.
-		void bicenter(uint32_t k);
+		void bicenter(uint64_t k);
 		/**
 		 * @brief Generates uniformly at random a forest of @e m vertices.
 		 *
@@ -231,8 +231,8 @@ class rand_free_ulab_trees {
 		 * @return Returns two new indices: where to store the next root in
 		 * @e roots and where to store the next tree in @ref m_TREE.
 		 */
-		std::pair<uint32_t,uint32_t> forest
-		(uint32_t m, uint32_t q, uint32_t r_idx,uint32_t nt, std::vector<uint32_t>& roots);
+		std::pair<uint64_t,uint64_t> forest
+		(uint64_t m, uint64_t q, uint64_t r_idx,uint64_t nt, std::vector<uint64_t>& roots);
 };
 
 } // -- namespace generate

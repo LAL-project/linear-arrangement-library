@@ -61,9 +61,9 @@ namespace linarr {
 
 /* D */
 
-uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
+uint64_t __sum_length_edges(const ugraph& g, const vector<position>& pi) {
 	// sum of lengths
-	uint32_t l = 0;
+	uint64_t l = 0;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
@@ -78,23 +78,23 @@ uint32_t __sum_length_edges(const ugraph& g, const vector<node>& pi) {
 	return l;
 }
 
-uint32_t sum_length_edges(const ugraph& g, const vector<node>& pi) {
+uint64_t sum_length_edges(const ugraph& g, const vector<position>& pi) {
 	return utils::call_with_empty_arrangement(__sum_length_edges, g, pi);
 }
 
 /* MDD */
 
-rational __MDD_rational(const ugraph& g, const vector<node>& pi) {
-	uint32_t D = sum_length_edges(g, pi);
-	rational MDD(D, g.n_edges());
+rational __MDD_rational(const ugraph& g, const vector<position>& pi) {
+	uint64_t D = sum_length_edges(g, pi);
+	rational MDD = rational_from_ui(D, g.n_edges());
 	return MDD;
 }
 
-rational MDD_rational(const ugraph& g, const vector<node>& pi) {
+rational MDD_rational(const ugraph& g, const vector<position>& pi) {
 	return utils::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 
-double MDD(const ugraph& g, const vector<node>& pi) {
+double MDD(const ugraph& g, const vector<position>& pi) {
 	return MDD_rational(g, pi).to_double();
 }
 

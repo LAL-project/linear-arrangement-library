@@ -58,13 +58,12 @@ integer size_Q_integer(const graph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint32_t ku = g.degree(u);
+		const uint64_t ku = g.degree(u);
 		nk2 += ku*ku;
 	}
 
 	const uint64_t m = g.n_edges();
-	integer q(0);
-	q.init_ui(m*(m + 1));
+	integer q = integer_from_ui(m*(m + 1));
 	q -= nk2;
 	q /= 2;
 	return q;

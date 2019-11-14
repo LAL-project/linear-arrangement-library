@@ -63,7 +63,7 @@ bool read_edge_list(const string& filename, graph& g, bool norm) {
 	ifstream fin;
 	fin.open(filename);
 
-	uint32_t max_vert_idx = 0;
+	uint64_t max_vert_idx = 0;
 	vector<edge> edge_list;
 	node u, v;
 	while (fin >> u >> v) {

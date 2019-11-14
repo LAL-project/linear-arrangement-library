@@ -48,8 +48,6 @@
 #include <vector>
 using namespace std;
 
-typedef uint64_t bigint;
-
 enum class frequency_type : int8_t {
 	invalid,
 	f00, f01, f021, f022,
@@ -208,9 +206,9 @@ rational variance_C_freqs_Q_rational(const vector<edge_pair>& Q, uint32_t nthrea
 	rational V(0);
 
 	// values of the frequencies
-	bigint f021(0), f022(0),	f03(0);
-	bigint f04(0),	f12(0),		f13(0);
-	bigint f24(0);
+	uint64_t f021(0), f022(0),	f03(0);
+	uint64_t f04(0),	f12(0),		f13(0);
+	uint64_t f24(0);
 
 	const size_t frac = Q.size()/nthreads;
 
@@ -225,13 +223,13 @@ rational variance_C_freqs_Q_rational(const vector<edge_pair>& Q, uint32_t nthrea
 	}
 	else {
 		// values of each frequency per thread
-		vector<bigint> _f021(nthreads, 0), _f022(nthreads, 0), _f03(nthreads, 0);
-		vector<bigint> _f04(nthreads, 0), _f12(nthreads, 0), _f13(nthreads, 0);
-		vector<bigint> _f24(nthreads, 0);
+		vector<uint64_t> _f021(nthreads, 0), _f022(nthreads, 0), _f03(nthreads, 0);
+		vector<uint64_t> _f04(nthreads, 0), _f12(nthreads, 0), _f13(nthreads, 0);
+		vector<uint64_t> _f24(nthreads, 0);
 
 		#pragma omp parallel num_threads(nthreads)
 		{
-		uint32_t tid = static_cast<uint32_t>(omp_get_thread_num());
+		const size_t tid = static_cast<size_t>(omp_get_thread_num());
 
 		size_t begin = tid*frac;
 		size_t end = (tid + 1)*frac;
@@ -255,7 +253,7 @@ rational variance_C_freqs_Q_rational(const vector<edge_pair>& Q, uint32_t nthrea
 		}
 
 		// reduce
-		for (uint32_t i = 0; i < nthreads; ++i) {
+		for (uint16_t i = 0; i < nthreads; ++i) {
 			f021 += _f021[i];	f022 += _f022[i];	f03 += _f03[i];
 			f04 += _f04[i];		f12 += _f12[i];		f13 += _f13[i];
 			f24 += _f24[i];

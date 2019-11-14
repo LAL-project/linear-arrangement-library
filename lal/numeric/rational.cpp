@@ -122,7 +122,7 @@ void rational::set_si(int64_t n, uint64_t d) {
 	mpq_canonicalize(m_val);
 }
 void rational::set_ui(uint64_t n, uint64_t d) {
-	mpq_set_si(m_val, n, d);
+	mpq_set_ui(m_val, n, d);
 	mpq_canonicalize(m_val);
 }
 void rational::set_str(const std::string& s) {

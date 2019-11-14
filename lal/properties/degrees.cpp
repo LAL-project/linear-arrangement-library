@@ -60,9 +60,11 @@ template<class G>
 inline rational __mmt_x_degree_rational
 (
 	const G& g, uint64_t p,
-	const std::function<uint32_t(const G& _g, node _u)>& D
+	const std::function<uint64_t(const G& _g, node _u)>& D
 )
 {
+	const integer M = integer_from_ui(g.n_nodes());
+
 	integer S(0);
 	integer du(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -71,9 +73,7 @@ inline rational __mmt_x_degree_rational
 		du ^= p;
 		S += du;
 	}
-	rational k2 = S;
-	k2 /= static_cast<int64_t>(g.n_nodes());
-	return k2;
+	return rational(S, M);
 }
 
 // moment of degree
@@ -81,7 +81,7 @@ inline rational __mmt_x_degree_rational
 rational mmt_degree_rational(const graph& g, uint64_t p) {
 	return __mmt_x_degree_rational<graph>(
 		g, p,
-		[](const graph& _g, node _u) -> uint32_t
+		[](const graph& _g, node _u) -> uint64_t
 		{ return _g.degree(_u); }
 	);
 }
@@ -95,7 +95,7 @@ double mmt_degree(const graph& g, uint64_t p) {
 rational mmt_in_degree_rational(const dgraph& g, uint64_t p) {
 	return __mmt_x_degree_rational<dgraph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint32_t
+		[](const dgraph& _g, node _u) -> uint64_t
 		{ return _g.in_degree(_u); }
 	);
 }
@@ -109,7 +109,7 @@ double mmt_in_degree(const dgraph& g, uint64_t p) {
 rational mmt_out_degree_rational(const dgraph& g, uint64_t p) {
 	return __mmt_x_degree_rational<dgraph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint32_t
+		[](const dgraph& _g, node _u) -> uint64_t
 		{ return _g.out_degree(_u); }
 	);
 }
@@ -121,15 +121,15 @@ double mmt_out_degree(const dgraph& g, uint64_t p) {
 // hubiness
 
 rational hubiness_rational(const utree& g) {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 	assert(n > 3);
 
-	const rational k2_linear(4*n - 6, n);
-	const rational k2_star = n - 1;
+	const rational k2_linear = rational_from_ui(4*n - 6, n);
+	const rational k2_star = rational_from_ui(n - 1);
 	const rational k2_graph = mmt_degree_rational(g, 2);
 	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }

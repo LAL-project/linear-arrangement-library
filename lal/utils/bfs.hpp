@@ -102,7 +102,7 @@ class BFS {
 
 		// Set the BFS to its initial state.
 		void reset() {
-			const uint32_t n = m_G.n_nodes();
+			const uint64_t n = m_G.n_nodes();
 			m_vis = std::vector<bool>(n, false);
 
 			set_terminate_default();

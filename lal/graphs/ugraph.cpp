@@ -57,7 +57,7 @@ namespace graphs {
 /* PUBLIC */
 
 ugraph::ugraph() : graph() { }
-ugraph::ugraph(uint32_t n) {
+ugraph::ugraph(uint64_t n) {
 	init(n);
 }
 ugraph::~ugraph() { }

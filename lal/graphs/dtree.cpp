@@ -54,7 +54,7 @@ namespace lal {
 namespace graphs {
 
 dtree::dtree() : dgraph() { }
-dtree::dtree(uint32_t n) : dgraph(n) { }
+dtree::dtree(uint64_t n) : dgraph(n) { }
 dtree::~dtree() { }
 
 dtree& dtree::add_edge(node s, node t, bool norm) {

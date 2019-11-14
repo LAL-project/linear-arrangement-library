@@ -242,5 +242,12 @@ inline void swap_integer(integer& a, integer& b) {
 	b = copy;
 }
 
+/// Make an integer from a 64-bit unsigned integer value.
+inline integer integer_from_ui(uint64_t n) {
+	integer i;
+	i.init_ui(n);
+	return i;
+}
+
 } // -- namespace numeric
 } // -- namespace lal

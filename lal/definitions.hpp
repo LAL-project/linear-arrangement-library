@@ -48,7 +48,9 @@
 namespace lal {
 
 /// Node type.
-typedef uint32_t node;
+typedef uint64_t node;
+/// Node's position type.
+typedef uint64_t position;
 
 /// Edge type
 typedef std::pair<node, node> edge;

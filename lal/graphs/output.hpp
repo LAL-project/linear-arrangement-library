@@ -60,13 +60,13 @@ namespace graphs {
  */
 inline std::ostream& operator<< (std::ostream& os, const graph& g)
 {
-   const uint32_t N = g.n_nodes();
-   for (node u = 0; u < N; ++u) {
+   const uint64_t n = g.n_nodes();
+   for (node u = 0; u < n; ++u) {
 	   os << u << ":";
 	   for (auto v : g.get_neighbours(u)) {
 		   os << " " << v;
 	   }
-	   os << (u < N - 1 ? "\n" : "");
+	   os << (u < n - 1 ? "\n" : "");
    }
    return os;
 }
@@ -80,7 +80,7 @@ inline std::ostream& operator<< (std::ostream& os, const graph& g)
  * @returns Returns the output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
-	const uint32_t N = g.n_nodes();
+	const uint64_t N = g.n_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";

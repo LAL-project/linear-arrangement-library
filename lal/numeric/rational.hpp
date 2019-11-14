@@ -287,5 +287,12 @@ inline void swap_rational(rational& a, rational& b) {
 	b = copy;
 }
 
+/// Make a rational value from two 64-bit unsigned integers
+inline rational rational_from_ui(uint64_t n, uint64_t d = 1) {
+	rational R;
+	R.init_ui(n, d);
+	return R;
+}
+
 } // -- namespace numeric
 } // -- namespace lal

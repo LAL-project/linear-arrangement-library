@@ -62,7 +62,7 @@ using namespace iterators;
 
 namespace linarr {
 
-inline bool __is_root_covered(const urtree& T, const vector<node>& pi) {
+inline bool __is_root_covered(const urtree& T, const vector<position>& pi) {
 	const node R = T.get_root();
 	iterators::edge_iterator it(T);
 	while (it.has_next()) {
@@ -112,9 +112,9 @@ void __get_yields(
 }
 
 inline bool __disjoint_yields(
-	const uint32_t n,
+	const uint64_t n,
 	const vector<vector<node> >& yields,
-	const vector<node>& pi
+	const vector<position>& pi
 )
 {
 	bool disjoint_yields = true;
@@ -140,10 +140,10 @@ inline bool __disjoint_yields(
 	return disjoint_yields;
 }
 
-inline uint32_t __get_discont(const uint32_t n, const vector<vector<node> >& yields) {
-	uint32_t max_dis = 0;
+inline uint64_t __get_discont(const uint64_t n, const vector<vector<node> >& yields) {
+	uint64_t max_dis = 0;
 	for (node u = 0; u < n; ++u) {
-		uint32_t dis = 0;
+		uint64_t dis = 0;
 		for (size_t i = 1; i < yields[u].size(); ++i) {
 			if (yields[u][i] - yields[u][i - 1] > 1) {
 				++dis;
@@ -154,8 +154,8 @@ inline uint32_t __get_discont(const uint32_t n, const vector<vector<node> >& yie
 	return max_dis;
 }
 
-inline uint32_t __is_1EC(const urtree& Tree, const vector<node>& pi) {
-	const uint32_t n = Tree.n_nodes();
+inline uint64_t __is_1EC(const urtree& Tree, const vector<position>& pi) {
+	const uint64_t n = Tree.n_nodes();
 	vector<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
@@ -217,7 +217,7 @@ inline uint32_t __is_1EC(const urtree& Tree, const vector<node>& pi) {
 }
 
 tree_structure_type __get_syn_dep_tree_type(
-	const urtree& Tree, const vector<node>& pi
+	const urtree& Tree, const vector<position>& pi
 )
 {
 	uint64_t C = __n_crossings_stack_based(Tree, pi);
@@ -230,7 +230,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	}
 
 	// compute the yield of each node
-	const uint32_t n = Tree.n_nodes();
+	const uint64_t n = Tree.n_nodes();
 	vector<vector<node> > yields(n);
 	vector<bool> vis(n, false);
 
@@ -240,7 +240,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	bool disjoint_yields = __disjoint_yields(n, yields, pi);
 
 	// discontinuities in the yields
-	uint32_t max_dis = (disjoint_yields ? __get_discont(n, yields) : 0);
+	uint64_t max_dis = (disjoint_yields ? __get_discont(n, yields) : 0);
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested
@@ -273,7 +273,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	return (is_1EC ? tree_structure_type::EC_1 : tree_structure_type::none);
 }
 
-tree_structure_type get_tree_structure_type(const urtree& t, const vector<node>& pi) {
+tree_structure_type get_tree_structure_type(const urtree& t, const vector<position>& pi) {
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 

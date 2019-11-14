@@ -60,7 +60,7 @@ namespace linarr {
  * be determined the method returns @ref tree_structure_type::none
  */
 tree_structure_type get_tree_structure_type
-(const graphs::urtree& t, const std::vector<node>& pi = {});
+(const graphs::urtree& t, const std::vector<position>& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

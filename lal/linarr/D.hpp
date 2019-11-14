@@ -62,7 +62,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$D\f$.
  */
-uint32_t sum_length_edges(const graphs::ugraph& g, const std::vector<node>& pi = {});
+uint64_t sum_length_edges(const graphs::ugraph& g, const std::vector<position>& pi = {});
 
 /**
  * @brief Computes the mean edge length as an exact rational value.
@@ -74,7 +74,7 @@ uint32_t sum_length_edges(const graphs::ugraph& g, const std::vector<node>& pi =
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns Jing's and Liu's \f$MDD\f$.
  */
-numeric::rational MDD_rational(const graphs::ugraph& g, const std::vector<node>& pi = {});
+numeric::rational MDD_rational(const graphs::ugraph& g, const std::vector<position>& pi = {});
 
 /**
  * @brief Computes the mean edge length as an exact rational value.
@@ -85,7 +85,7 @@ numeric::rational MDD_rational(const graphs::ugraph& g, const std::vector<node>&
  * node @e u is placed in position @e p of the arrangement.
  * @return The return value is a floating point value.
  */
-double MDD(const graphs::ugraph& g, const std::vector<node>& pi = {});
+double MDD(const graphs::ugraph& g, const std::vector<position>& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

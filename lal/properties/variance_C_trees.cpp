@@ -50,8 +50,6 @@ using namespace std;
 // lal includes
 #include <lal/iterators/edge_iterator.hpp>
 
-typedef uint64_t bigint;
-
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -65,38 +63,38 @@ namespace properties {
 
 inline void compute_data_tree
 (
-	const utree& g, const bigint& n, const bigint& m,
-	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum_prod_pair_adj_deg
+	const utree& g, const uint64_t& n, const uint64_t& m,
+	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
+	uint64_t& ks_p_kt__x__ku_p_kv, uint64_t& ks_x_kt__p__ku_x_kv,
+	uint64_t& sum_adjs__x__sum_degs, uint64_t& sum_prod_pair_adj_deg
 )
 {
 	// -----------------------------------------
 	// auxiliary memory and additional variables
 
 	// Auxiliar memory. Stores sum of degrees and sum of products of degrees.
-	bigint *all_memory = static_cast<bigint *>(malloc(n*sizeof(bigint)));
+	uint64_t *all_memory = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	bigint *nds = &all_memory[0];
+	uint64_t *nds = &all_memory[0];
 	// n<k^2>: second moment of degree about zero multiplied by n
-	bigint nk2 = 0;
+	uint64_t nk2 = 0;
 	// n<k^3>: third moment of degree about zero multiplied by n
-	bigint nk3 = 0;
+	uint64_t nk3 = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	bigint Lg = 0;
+	uint64_t Lg = 0;
 
 	// ----------------------
 	// precompute useful data
 
 	for (node s = 0; s < n; ++s) {
-		const uint32_t ks = g.degree(s);
+		const uint64_t ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		nds[s] = 0;
 		for (const node& t : g.get_neighbours(s)) {
-			const uint32_t kt = g.degree(t);
+			const uint64_t kt = g.degree(t);
 			Lg += ks*kt;
 			nds[s] += kt;
 		}
@@ -115,16 +113,16 @@ inline void compute_data_tree
 		it.next();
 		const edge st = it.get_edge();
 		const node s = st.first;
-		const bigint ks = g.degree(s);
+		const uint64_t ks = g.degree(s);
 		const node t = st.second;
-		const bigint kt = g.degree(t);
+		const uint64_t kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
 					 (ks - 1)*(nds[t] - kt - ks + 1);
 
-		const bigint eps1 = nds[s] - kt;
-		const bigint eps2 = nds[t] - ks;
+		const uint64_t eps1 = nds[s] - kt;
+		const uint64_t eps2 = nds[t] - ks;
 
 		sum_adjs__x__sum_degs +=
 			(ks - 1)*(kt - 1)*(ks + kt) + (kt - 1)*eps1 + (ks - 1)*eps2;
@@ -147,32 +145,32 @@ inline void compute_data_tree
 }
 
 rational variance_C_tree_rational(const utree& g) {
-	const bigint n = g.n_nodes();
-	const bigint m = g.n_edges();
+	const uint64_t n = g.n_nodes();
+	const uint64_t m = g.n_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
 
-	// bigint of set Q
-	bigint Qs = 0;
+	// uint64_t of set Q
+	uint64_t Qs = 0;
 
 	// n_G(L_4)
-	bigint n_paths_4 = 0;
+	uint64_t n_paths_4 = 0;
 	// n_G(L_5)
-	bigint n_paths_5 = 0;
+	uint64_t n_paths_5 = 0;
 
 	// k_s + k_t + k_u + k_v
-	bigint KG = 0;
+	uint64_t KG = 0;
 	// (k_s + k_t)(k_u + k_v)
-	bigint ks_p_kt__x__ku_p_kv = 0;
+	uint64_t ks_p_kt__x__ku_p_kv = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint ks_x_kt__p__ku_x_kv = 0;
+	uint64_t ks_x_kt__p__ku_x_kv = 0;
 
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint sum_adjs__x__sum_degs = 0;
+	uint64_t sum_adjs__x__sum_degs = 0;
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint sum_prod_pair_adj_deg = 0;
+	uint64_t sum_prod_pair_adj_deg = 0;
 
 	compute_data_tree
 	(

@@ -52,16 +52,16 @@ using namespace graphs;
 namespace generate {
 
 rand_free_lab_trees::rand_free_lab_trees() { }
-rand_free_lab_trees::rand_free_lab_trees(uint32_t _n, uint32_t seed) {
+rand_free_lab_trees::rand_free_lab_trees(uint64_t _n, uint64_t seed) {
 	init(_n, seed);
 }
 rand_free_lab_trees::~rand_free_lab_trees() { }
 
-void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
+void rand_free_lab_trees::init(uint64_t _n, uint64_t seed) {
 	m_n = _n;
 	if (m_n <= 2) { return; }
 
-	m_seq = vector<uint32_t>(m_n - 2);
+	m_seq = vector<uint64_t>(m_n - 2);
 
 	if (seed == 0) {
 		random_device rd;
@@ -70,7 +70,7 @@ void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 	else {
 		m_gen = mt19937(seed);
 	}
-	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
+	m_unif = uniform_int_distribution<uint64_t>(0, m_n - 1);
 }
 
 utree rand_free_lab_trees::make_rand_tree() {
@@ -81,7 +81,7 @@ utree rand_free_lab_trees::make_rand_tree() {
 		return t;
 	}
 
-	for (uint32_t i = 0; i < m_n - 2; ++i) {
+	for (uint64_t i = 0; i < m_n - 2; ++i) {
 		m_seq[i] = m_unif(m_gen);
 	}
 	return utils::Prufer_sequence_to_tree(m_seq, m_n);

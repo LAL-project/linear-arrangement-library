@@ -54,8 +54,7 @@ namespace properties {
 /* EXPECTATION OF C: E_rla[C] */
 
 rational expectation_C_first_rational(const ugraph& g) {
-	rational Ec;
-	Ec = size_Q_integer(g);
+	rational Ec = size_Q_integer(g);
 	Ec /= 3;
 	return Ec;
 }

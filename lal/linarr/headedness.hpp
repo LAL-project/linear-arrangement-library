@@ -68,7 +68,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns the headedness ratio as an exact rational number.
  */
-numeric::rational headedness_rational(const graphs::dgraph& g, const std::vector<node>& pi);
+numeric::rational headedness_rational(const graphs::dgraph& g, const std::vector<position>& pi);
 
 /**
  * @brief Computes the headedness of a linearly arranged directed graph.
@@ -76,7 +76,7 @@ numeric::rational headedness_rational(const graphs::dgraph& g, const std::vector
  * See @ref headedness_rational for details.
  * @return The return value is a floating point value.
  */
-double headedness(const graphs::dgraph& g, const std::vector<node>& pi);
+double headedness(const graphs::dgraph& g, const std::vector<position>& pi);
 
 } // -- namespace linarr
 } // -- namespace lal

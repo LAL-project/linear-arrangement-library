@@ -61,12 +61,12 @@ using namespace iterators;
 namespace linarr {
 
 uint64_t __compute_crossings_brute_force(
-	const ugraph& g, const vector<node>& pi,
-	uint32_t * __restrict__ T
+	const ugraph& g, const vector<position>& pi,
+	node * __restrict__ T
 )
 {
-	const uint32_t n = g.n_nodes();
-	for (uint32_t i = 0; i < n; ++i) {
+	const uint64_t n = g.n_nodes();
+	for (uint64_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
 
@@ -76,21 +76,21 @@ uint64_t __compute_crossings_brute_force(
 	// using the information given in the linear arrangement
 	for (node u = 0; u < g.n_nodes(); ++u) {
 	// 'pu' is the position of node 'u'
-	const uint32_t pu = pi[u];
+	const position pu = pi[u];
 	const neighbourhood& Nu = g.get_neighbours(u);
 	for (const node& v : Nu) {
 	// 'pv' is the position of node 'v'
-	const uint32_t pv = pi[v];
+	const position pv = pi[v];
 	if (pu >= pv) { continue; }
 
 		// 'u' and 'v' is a pair of connected nodes such that 'u'
 		// is "to the left of" 'v' in the linear arrangement 'seq'
 
 		// iterate through the positions between 'u' and 'v'
-		const uint32_t begin = pi[u] + 1;
-		const uint32_t end = pi[v] - 1;
+		const position begin = pi[u] + 1;
+		const position end = pi[v] - 1;
 
-		for (uint32_t pw = begin; pw <= end; ++pw) {
+		for (position pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
 		const node w = T[pw];
 		const neighbourhood& Nw = g.get_neighbours(w);
@@ -112,8 +112,8 @@ uint64_t __compute_crossings_brute_force(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
-	const uint32_t n = g.n_nodes();
+uint64_t __call_crossings_brute_force(const ugraph& g, const vector<position>& pi) {
+	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -122,7 +122,7 @@ uint64_t __call_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	// compute the number of crossings
 	uint64_t C = __compute_crossings_brute_force(g, pi, T);
@@ -132,14 +132,14 @@ uint64_t __call_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 	return C;
 }
 
-uint64_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
+uint64_t __n_crossings_brute_force(const ugraph& g, const vector<position>& pi) {
 	return utils::call_with_empty_arrangement(__call_crossings_brute_force, g, pi);
 }
 
 vector<uint64_t> __n_crossings_brute_force_list
 (const ugraph& g, const vector<vector<node> >& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -150,7 +150,7 @@ vector<uint64_t> __n_crossings_brute_force_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint32_t * __restrict__ T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {

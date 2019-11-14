@@ -84,7 +84,7 @@ find_next_pair_directed(
 )
 {
 	// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	// base case 1: consumed all pairs
 	if (s == n) {
@@ -118,7 +118,7 @@ find_next_pair_undirected(
 )
 {
 	// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-	const uint32_t n = g.n_nodes();
+	const uint64_t n = g.n_nodes();
 
 	// base case 1: consumed all pairs
 	if (s == n) {

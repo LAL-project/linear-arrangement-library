@@ -61,7 +61,7 @@ namespace graphs {
 /* PUBLIC */
 
 dgraph::dgraph() : graph() { }
-dgraph::dgraph(uint32_t n) {
+dgraph::dgraph(uint64_t n) {
 	init(n);
 }
 dgraph::~dgraph() { }
@@ -166,16 +166,16 @@ bool dgraph::has_edge(node u, node v) const {
 bool dgraph::is_directed() const { return true; }
 bool dgraph::is_undirected() const { return false; }
 
-uint32_t dgraph::degree(node u) const {
+uint64_t dgraph::degree(node u) const {
 	return in_degree(u) + out_degree(u);
 }
 
-uint32_t dgraph::in_degree(node u) const {
+uint64_t dgraph::in_degree(node u) const {
 	assert(has_node(u));
 	return m_in_degree[u];
 }
 
-uint32_t dgraph::out_degree(node u) const {
+uint64_t dgraph::out_degree(node u) const {
 	assert(has_node(u));
 	return graph::degree(u);
 }
@@ -188,9 +188,9 @@ ugraph dgraph::to_undirected() const {
 
 /* PROTECTED */
 
-void dgraph::_init(uint32_t n) {
+void dgraph::_init(uint64_t n) {
 	graph::_init(n);
-	m_in_degree = vector<uint32_t>(n, 0);
+	m_in_degree = vector<uint64_t>(n, 0);
 }
 
 void dgraph::_clear() {

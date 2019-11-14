@@ -49,7 +49,7 @@ using namespace graphs;
 namespace linarr {
 
 uint64_t n_crossings
-(const ugraph& g, const vector<node>& pi, const algorithms_crossings& A) {
+(const ugraph& g, const vector<position>& pi, const algorithms_crossings& A) {
 	switch (A) {
 	case algorithms_crossings::brute_force:
 		return __n_crossings_brute_force(g, pi);

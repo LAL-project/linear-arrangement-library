@@ -63,7 +63,7 @@ class urtree : public utree, virtual public rtree {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		urtree(uint32_t n);
+		urtree(uint64_t n);
 		/**
 		 * @brief Constructor with undirected tree and root node.
 		 *
