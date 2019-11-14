@@ -47,26 +47,13 @@
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
+#include <lal/linarr/algorithms_crossings.hpp>
 
 namespace lal {
 namespace linarr {
 
 /* -------------------------------------- */
 /* COMPUTATION OF THE NUMBER OF CROSSINGS */
-
-/**
- * @brief Computes the number of edge crossings in a linear arrangement.
- *
- * Given the set \f$Q\f$ of a graph, and a linear arrangement of its vertices,
- * computes by brute force the number of edges that cross in such linear
- * arrangement. If the arrangement is not specified, the identity arrangement
- * is used.
- * @param Q The set \f$Q(G)\f$ of a graph.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Returns \f$C\f$.
- */
-uint32_t n_crossings_Q(const std::vector<edge_pair>& Q, const std::vector<node>& pi = {});
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -79,7 +66,22 @@ uint32_t n_crossings_Q(const std::vector<edge_pair>& Q, const std::vector<node>&
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint32_t n_crossings_brute_force(const graphs::ugraph& g, const std::vector<node>& pi = {});
+uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const std::vector<node>& pi = {});
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph, and a linear arrangement of its vertices, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @param g Input graph.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre None of the arrangements can be empty.
+ */
+std::vector<uint64_t> __n_crossings_brute_force_list
+(const graphs::ugraph& g, const std::vector<std::vector<node> >& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -93,7 +95,7 @@ uint32_t n_crossings_brute_force(const graphs::ugraph& g, const std::vector<node
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint32_t n_crossings_dyn_prog(const graphs::ugraph& g, const std::vector<node>& pi = {});
+uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const std::vector<node>& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -101,11 +103,13 @@ uint32_t n_crossings_dyn_prog(const graphs::ugraph& g, const std::vector<node>& 
  * using dynamic programming the number of edges that cross in every linear
  * arrangement.
  * @param g Input graph.
- * @param pis List of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi[u]=p\f$ then node @e u is placed in position @e p of the arrangement.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre None of the arrangements can be empty.
  */
-std::vector<uint32_t> n_crossings_dyn_prog_list
+std::vector<uint64_t> __n_crossings_dyn_prog_list
 (const graphs::ugraph& g, const std::vector<std::vector<node> >& pis);
 
 /**
@@ -120,8 +124,7 @@ std::vector<uint32_t> n_crossings_dyn_prog_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint32_t n_crossings_ladder(const graphs::ugraph& g, const std::vector<node>& pi = {});
-
+uint64_t __n_crossings_ladder(const graphs::ugraph& g, const std::vector<node>& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -129,13 +132,29 @@ uint32_t n_crossings_ladder(const graphs::ugraph& g, const std::vector<node>& pi
  * using dynamic programming the number of edges that cross in such linear
  * arrangement.
  * @param g Input graph.
- * @param pis @param pis List of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi[u]=p\f$ then node @e u is placed in position @e p of the arrangement.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre None of the arrangements can be empty.
  */
-std::vector<uint32_t> n_crossings_ladder_list
+std::vector<uint64_t> __n_crossings_ladder_list
 (const graphs::ugraph& g, const std::vector<std::vector<node> >& pis);
 
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph, and a linear arrangements of its vertices, computes
+ * using the algorithm by K. Palios and G. Pitsiladis the number of edges that
+ * cross in such linear arrangement. If the arrangement is not specified, the
+ * identity arrangement is used.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @return Returns \f$C\f$.
+ */
+uint64_t __n_crossings_stack_based
+(const graphs::ugraph& g, const std::vector<node>& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -144,12 +163,58 @@ std::vector<uint32_t> n_crossings_ladder_list
  * cross in such linear arrangement. If the arrangement is not specified, the
  * identity arrangement is used.
  * @param g Input graph.
- * @param pi A linear arrangement of the vertices.If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Returns \f$C\f$.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre None of the arrangements can be empty.
  */
-uint32_t n_crossings_stack_based
-(const graphs::ugraph& g, const std::vector<node>& pi = {});
+std::vector<uint64_t> __n_crossings_stack_based_list
+(const graphs::ugraph& g, const std::vector<std::vector<node> >& pis);
+
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph, and a list of linear arrangements of its vertices, computes
+ * the number of crossings using the algorithm specified by the parameter @e A.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @param A Algorithm to use to compute the number of crossings. Default:
+ * @ref algorithms_crossings::stack_based.
+ * @return Returns \f$C\f$.
+ * @pre The preconditions of this function are the same as those of:
+ * - @ref __n_crossings_brute_force
+ * - @ref __n_crossings_dyn_prog
+ * - @ref __n_crossings_ladder
+ * - @ref __n_crossings_stack_based
+ */
+uint64_t n_crossings(
+	const graphs::ugraph& g, const std::vector<node>& pi = {},
+	const algorithms_crossings& A = algorithms_crossings::stack_based
+);
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph, and a list of linear arrangements of its vertices, computes
+ * the number of crossings for each of the linear arrangements using the
+ * algorithm specified by the parameter @e A.
+ * @param g Input graph.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @param A Algorithm to use to compute the number of crossings. Default:
+ * @ref algorithms_crossings::stack_based.
+ * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre The preconditions of this function are the same as those of:
+ * - @ref __n_crossings_brute_force_list
+ * - @ref __n_crossings_dyn_prog_list
+ * - @ref __n_crossings_ladder_list
+ * - @ref __n_crossings_stack_based_list
+ */
+std::vector<uint64_t> n_crossings_list
+(const graphs::ugraph& g, const std::vector<std::vector<node> >& pis,
+ const algorithms_crossings& A = algorithms_crossings::stack_based);
 
 /* ---------------------------------------- */
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */

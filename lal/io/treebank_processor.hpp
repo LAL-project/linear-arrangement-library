@@ -123,35 +123,35 @@ class treebank_processor {
 		 *
 		 * Features that can be computed for each tree.
 		 */
-		enum tree_feature {
+		enum class tree_feature {
 			/// Number of nodes of the tree.
-			tf_n,
+			n,
 			/// Second moment of degree \f$\langle k^2 \rangle\f$.
-			tf_k2,
+			k2,
 			/// Third moment of degree \f$\langle k^3 \rangle\f$.
-			tf_k3,
+			k3,
 			/// Size of the set Q \f$|Q|\f$.
-			tf_size_Q,
+			size_Q,
 			/// Number of crossings \f$C\f$.
-			tf_C,
+			C,
 			/// First moment of expectation of C \f$E[C]\f$.
-			tf_C_exp_1,
+			C_exp_1,
 			/// Second moment of expectation of C \f$E[C^2]\f$.
-			tf_C_exp_2,
+			C_exp_2,
 			/// Variance of C \f$V[C]\f$.
-			tf_C_var,
+			C_var,
 			/// z-score of C: \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
-			tf_C_z,
+			C_z,
 			/// Sum of length of edges \f$D\f$.
-			tf_D,
+			D,
 			/// First moment of expectation of D \f$E[D]\f$.
-			tf_D_exp_1,
+			D_exp_1,
 			/// Second moment of expectation of D \f$E[D^2]\f$.
-			tf_D_exp_2,
+			D_exp_2,
 			/// Variance of D \f$V[D]\f$.
-			tf_D_var,
+			D_var,
 			/// z-score of D: \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
-			tf_D_z
+			D_z
 		};
 
 		/**
@@ -163,25 +163,25 @@ class treebank_processor {
 		 *
 		 * Some of these errors are common to @ref dataset_error.
 		 */
-		enum processor_error {
+		enum class processor_error {
 			/// The dataset was processed successfully.
-			pe_none,
+			none,
 			/// Parent directory was not given.
-			pe_missing_parent,
+			missing_parent,
 			/// Main file was not given.
-			pe_missing_main,
+			missing_main,
 			/// Output directory was not given.
-			pe_missing_output,
+			missing_output,
 			/// Parent directory could not be found.
-			pe_no_parent,
+			no_parent,
 			/// Main file could not be found.
-			pe_no_main,
+			no_main,
 			/// Output directory could not be found.
-			pe_no_output,
+			no_output,
 			/// One of the treebank files could not be found.
-			pe_no_treebank,
+			no_treebank,
 			/// No features at all were given to the processor.
-			pe_no_features
+			no_features
 		};
 
 	public:
@@ -236,7 +236,7 @@ class treebank_processor {
 		 * description.
 		 *
 		 * However, it may fail to do so. In this case it will return a value
-		 * different from @ref pe_none.
+		 * different from @ref processor_error::none.
 		 * @param sep Separator character.
 		 * @param header Should a header be written?
 		 * @param v Output progress on standard output.
@@ -245,53 +245,6 @@ class treebank_processor {
 		 */
 		processor_error process
 		(char sep = '\t', bool header = true, bool v = false) const;
-
-		/// Returns a string for each value of @ref tree_feature.
-		static inline std::string tree_feature_string(const tree_feature& tf) {
-			switch (tf) {
-			case tf_n: return "n";
-			case tf_k2: return "k2";
-			case tf_k3: return "k3";
-			case tf_size_Q: return "size_Q";
-			case tf_C: return "C";
-			case tf_C_exp_1: return "C_exp_1";
-			case tf_C_exp_2: return "C_exp_2";
-			case tf_C_var: return "C_var";
-			case tf_C_z: return "C_z";
-			case tf_D: return "D";
-			case tf_D_exp_1: return "D_exp_1";
-			case tf_D_exp_2: return "D_exp_2";
-			case tf_D_var: return "D_var";
-			case tf_D_z: return "D_z";
-			}
-			// should never happen
-			return "???";
-		}
-
-		/**
-		 * @brief Returns a description of each processing error.
-		 *
-		 * There are several types of problems that can arise while processing
-		 * a dataset. These are described in @ref processor_error. This method
-		 * provides a more human-readable description of these errors.
-		 * @param pe The type of processing error.
-		 * @return Returns a string describing the error.
-		 */
-		static inline std::string processor_error_string(const processor_error& pe) {
-			switch (pe) {
-			case processor_error::pe_none: return "No error";
-			case processor_error::pe_missing_parent: return "Parent directory not given";
-			case processor_error::pe_missing_main: return "Main file not given";
-			case processor_error::pe_missing_output: return "Output directory not given";
-			case processor_error::pe_no_parent: return "Parent directory not found";
-			case processor_error::pe_no_main: return "Main file not found";
-			case processor_error::pe_no_output: return "Output directory not found";
-			case processor_error::pe_no_treebank: return "Some tree bank file could not be found";
-			case processor_error::pe_no_features: return "No features to be output";
-			}
-			// should never happen
-			return "Wrong value for process_error parameter";
-		}
 
 	private:
 		/// Parent directory.

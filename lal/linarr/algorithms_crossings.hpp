@@ -40,31 +40,29 @@
 
 #pragma once
 
-// C++ includes
-#include <string>
-
 namespace lal {
-namespace io {
+namespace linarr {
 
 /**
- * @brief Possible errors that can arise while processing a dataset.
+ * @brief The different algorithms for computing the number of crossings.
  *
- * There are several reasons why a dataset could not be processed.
- * Because of this, certain methods return one of these values instead
- * of a plain 'false' value.
+ * This enumeration's values can be used to choose the algorithm the
+ * function @ref n_crossings uses to compute the number of crossings.
  */
-enum class dataset_error {
-	/// No error.
-	no_error,
-	/// Parent directory could not be found.
-	no_parent_dir,
-	/// Main file could not be found.
-	no_main_file,
-	/// One of the treebank files could not be found.
-	no_treebank_file,
-	/// The reader found an empty line.
-	empty_line
+enum class algorithms_crossings {
+	/// Brute force computation of the number of crossings.
+	/// Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
+	brute_force,
+	/// Dynamic programming algorithm. Faster than @ref algorithms_crossings::brute_force.
+	/// Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$
+	dynamic_programming,
+	/// Another dynamic programming algorithm. Faster than @ref algorithms_crossings::dynamic_programming.
+	/// Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$
+	ladder,
+	/// Algorithm based on sorting. Faster than @ref algorithms_crossings::brute_force.
+	/// Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$
+	stack_based
 };
 
-} // -- namespace io
+} // -- namespace linarr
 } // -- namespace lal

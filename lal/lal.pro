@@ -47,6 +47,7 @@ HEADERS += \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
     linarr.hpp \
+    linarr/algorithms_crossings.hpp \
     linarr/classification.hpp \
     linarr/headedness.hpp \
     io/dataset_error.hpp \
@@ -97,6 +98,7 @@ SOURCES += \
     graphs/utree.cpp \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
+    linarr/C.cpp \
     linarr/classification.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \
@@ -120,7 +122,6 @@ SOURCES += \
     generation/free_lab_trees.cpp \
     generation/rand_free_lab_trees.cpp \
     conversions/conversions.cpp \
-    linarr/C_q.cpp \
     io/treebank_processor.cpp \
     io/treebank_reader.cpp \
     generation/rand_free_ulab_trees.cpp \

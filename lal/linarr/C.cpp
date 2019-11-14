@@ -37,14 +37,10 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
+
 #include <lal/linarr/C.hpp>
 
-// C includes
-#include <string.h>
-
 // C++ includes
-#include <numeric>
 using namespace std;
 
 namespace lal {
@@ -52,55 +48,32 @@ using namespace graphs;
 
 namespace linarr {
 
-#define max2(a,b) std::max(a,b)
-#define max4(a,b,c,d) max2(max2(a,b),max2(c,d))
-
-#define sort2(a,b, sa,sb)			\
-	(a < b) && ((sa=a) & (sb=b));	\
-	(a > b) && ((sa=b) & (sb=a));
-
-uint32_t __n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& pi) {
-	const uint32_t n = static_cast<uint32_t>(pi.size());
-	if (n < 4) {
-		return 0;
+uint64_t n_crossings
+(const ugraph& g, const vector<node>& pi, const algorithms_crossings& A) {
+	switch (A) {
+	case algorithms_crossings::brute_force: return __n_crossings_brute_force(g, pi);
+	case algorithms_crossings::dynamic_programming: return __n_crossings_dyn_prog(g, pi);
+	case algorithms_crossings::ladder: return __n_crossings_ladder(g, pi);
+	case algorithms_crossings::stack_based: return __n_crossings_stack_based(g, pi);
 	}
 
-	// number of crossings
-	uint32_t C = 0;
-
-	uint32_t ps,pt,pu,pv;
-	ps = pt = pu = pv = 0; // so compiler doesn't cry
-
-	for (const edge_pair& ep : Q) {
-		const node s = ep.first.first;
-		const node t = ep.first.second;
-		const node u = ep.second.first;
-		const node v = ep.second.second;
-
-		sort2(pi[s],pi[t], ps,pt)
-		sort2(pi[u],pi[v], pu,pv)
-
-		C += (ps < pu and pu < pt and pt < pv) or
-			 (pu < ps and ps < pv and pv < pt);
-	}
-
-	return C;
+	// wrong value of enumeration
+	return g.n_edges()*g.n_edges();
 }
 
-uint32_t n_crossings_Q(const vector<edge_pair>& Q, const vector<node>& pi) {
-	if (pi.size() != 0) {
-		return __n_crossings_Q(Q, pi);
+vector<uint64_t> n_crossings_list
+(const ugraph& g, const vector<vector<node> >& pis, const algorithms_crossings& A)
+{
+	switch (A) {
+	case algorithms_crossings::brute_force: return __n_crossings_brute_force_list(g, pis);
+	case algorithms_crossings::dynamic_programming: return __n_crossings_dyn_prog_list(g, pis);
+	case algorithms_crossings::ladder: return __n_crossings_ladder_list(g, pis);
+	case algorithms_crossings::stack_based: return __n_crossings_stack_based_list(g, pis);
 	}
-	// note: the number of vertices of
-	// the graph is unknown... work it out!
-	uint32_t n = 0;
-	for (const edge_pair& p : Q) {
-		n = max4(p.first.first, p.first.second, p.second.first, p.second.second);
-	}
-	vector<node> _pi(n);
-	iota(_pi.begin(), _pi.end(), 0);
-	return __n_crossings_Q(Q, _pi);
+
+	// wrong value of enumeration
+	return vector<uint64_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // -- linarr
+} // -- lal

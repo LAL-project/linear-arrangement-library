@@ -42,6 +42,7 @@
 
 // C includes
 #include <string.h>
+#include <assert.h>
 
 // C++ includes
 #include <numeric>
@@ -61,7 +62,7 @@ namespace linarr {
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
+uint64_t __compute_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -74,7 +75,7 @@ uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 		T[ pi[i] ] = i;
 	}
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
@@ -114,8 +115,29 @@ uint32_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
 	return C;
 }
 
-uint32_t n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
-	return utils::call_with_empty_arrangement(__n_crossings_brute_force, g, pi);
+uint64_t __n_crossings_brute_force(const ugraph& g, const vector<node>& pi) {
+	return utils::call_with_empty_arrangement(__compute_crossings_brute_force, g, pi);
+}
+
+vector<uint64_t> __n_crossings_brute_force_list
+(const ugraph& g, const vector<vector<node> >& pis)
+{
+	const uint32_t n = g.n_nodes();
+
+	vector<uint64_t> cs(pis.size(), 0);
+	if (n < 4) {
+		return cs;
+	}
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == 0);
+
+		// compute C
+		cs[i] = __compute_crossings_brute_force(g, pis[i]);
+	}
+	return cs;
 }
 
 } // -- namespace linarr

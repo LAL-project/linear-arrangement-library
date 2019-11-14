@@ -220,7 +220,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	const urtree& Tree, const std::vector<node>& pi
 )
 {
-	uint32_t C = n_crossings_stack_based(Tree, pi);
+	uint32_t C = __n_crossings_stack_based(Tree, pi);
 	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?

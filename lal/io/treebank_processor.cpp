@@ -64,28 +64,66 @@ using namespace std;
 #include <lal/properties/C_rla.hpp>
 
 #define NUM_TREE_FEATURES 14
+#define to_double(x) static_cast<double>(x)
 
 namespace lal {
 using namespace graphs;
 
 namespace io {
 
+inline std::string tree_feature_string(const treebank_processor::tree_feature& tf) {
+	switch (tf) {
+	case treebank_processor::tree_feature::n: return "n";
+	case treebank_processor::tree_feature::k2: return "k2";
+	case treebank_processor::tree_feature::k3: return "k3";
+	case treebank_processor::tree_feature::size_Q: return "size_Q";
+	case treebank_processor::tree_feature::C: return "C";
+	case treebank_processor::tree_feature::C_exp_1: return "C_exp_1";
+	case treebank_processor::tree_feature::C_exp_2: return "C_exp_2";
+	case treebank_processor::tree_feature::C_var: return "C_var";
+	case treebank_processor::tree_feature::C_z: return "C_z";
+	case treebank_processor::tree_feature::D: return "D";
+	case treebank_processor::tree_feature::D_exp_1: return "D_exp_1";
+	case treebank_processor::tree_feature::D_exp_2: return "D_exp_2";
+	case treebank_processor::tree_feature::D_var: return "D_var";
+	case treebank_processor::tree_feature::D_z: return "D_z";
+	}
+	// should never happen
+	return "???";
+}
+
+inline std::string processor_error_string(const treebank_processor::processor_error& pe) {
+	switch (pe) {
+	case treebank_processor::processor_error::none: return "No error";
+	case treebank_processor::processor_error::missing_parent: return "Parent directory not given";
+	case treebank_processor::processor_error::missing_main: return "Main file not given";
+	case treebank_processor::processor_error::missing_output: return "Output directory not given";
+	case treebank_processor::processor_error::no_parent: return "Parent directory not found";
+	case treebank_processor::processor_error::no_main: return "Main file not found";
+	case treebank_processor::processor_error::no_output: return "Output directory not found";
+	case treebank_processor::processor_error::no_treebank: return "Some tree bank file could not be found";
+	case treebank_processor::processor_error::no_features: return "No features to be output";
+	}
+	// should never happen
+	return "Wrong value for process_error parameter";
+}
+
 inline size_t enum2index(const treebank_processor::tree_feature& tf) {
 	switch (tf) {
-	case treebank_processor::tree_feature::tf_n: return 0;
-	case treebank_processor::tree_feature::tf_k2: return 1;
-	case treebank_processor::tree_feature::tf_k3: return 2;
-	case treebank_processor::tree_feature::tf_size_Q: return 3;
-	case treebank_processor::tree_feature::tf_C: return 4;
-	case treebank_processor::tree_feature::tf_C_exp_1: return 5;
-	case treebank_processor::tree_feature::tf_C_exp_2: return 6;
-	case treebank_processor::tree_feature::tf_C_var: return 7;
-	case treebank_processor::tree_feature::tf_C_z: return 8;
-	case treebank_processor::tree_feature::tf_D: return 9;
-	case treebank_processor::tree_feature::tf_D_exp_1: return 10;
-	case treebank_processor::tree_feature::tf_D_exp_2: return 11;
-	case treebank_processor::tree_feature::tf_D_var: return 12;
-	case treebank_processor::tree_feature::tf_D_z: return 13;
+	case treebank_processor::tree_feature::n: return 0;
+	case treebank_processor::tree_feature::k2: return 1;
+	case treebank_processor::tree_feature::k3: return 2;
+	case treebank_processor::tree_feature::size_Q: return 3;
+	case treebank_processor::tree_feature::C: return 4;
+	case treebank_processor::tree_feature::C_exp_1: return 5;
+	case treebank_processor::tree_feature::C_exp_2: return 6;
+	case treebank_processor::tree_feature::C_var: return 7;
+	case treebank_processor::tree_feature::C_z: return 8;
+	case treebank_processor::tree_feature::D: return 9;
+	case treebank_processor::tree_feature::D_exp_1: return 10;
+	case treebank_processor::tree_feature::D_exp_2: return 11;
+	case treebank_processor::tree_feature::D_var: return 12;
+	case treebank_processor::tree_feature::D_z: return 13;
 	}
 	// should never happen
 	return NUM_TREE_FEATURES;
@@ -93,20 +131,20 @@ inline size_t enum2index(const treebank_processor::tree_feature& tf) {
 
 inline treebank_processor::tree_feature index2enum(size_t i) {
 	switch (i) {
-	case 0: return treebank_processor::tree_feature::tf_n;
-	case 1: return treebank_processor::tree_feature::tf_k2;
-	case 2: return treebank_processor::tree_feature::tf_k3;
-	case 3: return treebank_processor::tree_feature::tf_size_Q;
-	case 4: return treebank_processor::tree_feature::tf_C;
-	case 5: return treebank_processor::tree_feature::tf_C_exp_1;
-	case 6: return treebank_processor::tree_feature::tf_C_exp_2;
-	case 7: return treebank_processor::tree_feature::tf_C_var;
-	case 8: return treebank_processor::tree_feature::tf_C_z;
-	case 9: return treebank_processor::tree_feature::tf_D;
-	case 10: return treebank_processor::tree_feature::tf_D_exp_1;
-	case 11: return treebank_processor::tree_feature::tf_D_exp_2;
-	case 12: return treebank_processor::tree_feature::tf_D_var;
-	case 13: return treebank_processor::tree_feature::tf_D_z;
+	case 0: return treebank_processor::tree_feature::n;
+	case 1: return treebank_processor::tree_feature::k2;
+	case 2: return treebank_processor::tree_feature::k3;
+	case 3: return treebank_processor::tree_feature::size_Q;
+	case 4: return treebank_processor::tree_feature::C;
+	case 5: return treebank_processor::tree_feature::C_exp_1;
+	case 6: return treebank_processor::tree_feature::C_exp_2;
+	case 7: return treebank_processor::tree_feature::C_var;
+	case 8: return treebank_processor::tree_feature::C_z;
+	case 9: return treebank_processor::tree_feature::D;
+	case 10: return treebank_processor::tree_feature::D_exp_1;
+	case 11: return treebank_processor::tree_feature::D_exp_2;
+	case 12: return treebank_processor::tree_feature::D_var;
+	case 13: return treebank_processor::tree_feature::D_z;
 	}
 	// should never happen
 	cerr << "=========================================================" << endl;
@@ -117,23 +155,23 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 	cerr << "    This is an invalid value." << endl;
 	cerr << "    Should be <" << NUM_TREE_FEATURES << endl;
 	cerr << "=========================================================" << endl;
-	return treebank_processor::tree_feature::tf_D_z;
+	return treebank_processor::tree_feature::D_z;
 }
 
-#define n_idx enum2index(treebank_processor::tree_feature::tf_n)
-#define k2_idx enum2index(treebank_processor::tree_feature::tf_k2)
-#define k3_idx enum2index(treebank_processor::tree_feature::tf_k3)
-#define size_Q_idx enum2index(treebank_processor::tree_feature::tf_size_Q)
-#define C_idx enum2index(treebank_processor::tree_feature::tf_C)
-#define C_exp1_idx enum2index(treebank_processor::tree_feature::tf_C_exp_1)
-#define C_exp2_idx enum2index(treebank_processor::tree_feature::tf_C_exp_2)
-#define C_var_idx enum2index(treebank_processor::tree_feature::tf_C_var)
-#define C_z_idx enum2index(treebank_processor::tree_feature::tf_C_z)
-#define D_idx enum2index(treebank_processor::tree_feature::tf_D)
-#define D_exp1_idx enum2index(treebank_processor::tree_feature::tf_D_exp_1)
-#define D_exp2_idx enum2index(treebank_processor::tree_feature::tf_D_exp_2)
-#define D_var_idx enum2index(treebank_processor::tree_feature::tf_D_var)
-#define D_z_idx enum2index(treebank_processor::tree_feature::tf_D_z)
+#define n_idx enum2index(treebank_processor::tree_feature::n)
+#define k2_idx enum2index(treebank_processor::tree_feature::k2)
+#define k3_idx enum2index(treebank_processor::tree_feature::k3)
+#define size_Q_idx enum2index(treebank_processor::tree_feature::size_Q)
+#define C_idx enum2index(treebank_processor::tree_feature::C)
+#define C_exp1_idx enum2index(treebank_processor::tree_feature::C_exp_1)
+#define C_exp2_idx enum2index(treebank_processor::tree_feature::C_exp_2)
+#define C_var_idx enum2index(treebank_processor::tree_feature::C_var)
+#define C_z_idx enum2index(treebank_processor::tree_feature::C_z)
+#define D_idx enum2index(treebank_processor::tree_feature::D)
+#define D_exp1_idx enum2index(treebank_processor::tree_feature::D_exp_1)
+#define D_exp2_idx enum2index(treebank_processor::tree_feature::D_exp_2)
+#define D_var_idx enum2index(treebank_processor::tree_feature::D_var)
+#define D_z_idx enum2index(treebank_processor::tree_feature::D_z)
 
 // CLASS METHODS
 
@@ -188,12 +226,12 @@ inline void process_tree(
 			props[C_exp1_idx] = properties::expectation_C_first(t);
 		}
 		// we need to compute C, whether we like it or not
-		props[C_idx] = linarr::n_crossings_ladder(t, __linarr);
+		props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
 		props[C_z_idx] = (props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx]);
 	}
 	else {
 		if (what_fs[C_idx]) {
-			props[C_idx] = linarr::n_crossings_ladder(t, __linarr);
+			props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
 		}
 	}
 
@@ -287,41 +325,41 @@ treebank_processor::processor_error treebank_processor::process
 {
 	// first, check that there is something to be computed
 	if (m_what_fs.size() == 0) {
-		return processor_error::pe_no_features;
+		return processor_error::no_features;
 	}
 
 	// second, check reader was initialised
 	if (m_par_dir == "none") {
-		return processor_error::pe_missing_parent;
+		return processor_error::missing_parent;
 	}
 	if (m_main_list == "none") {
-		return processor_error::pe_missing_main;
+		return processor_error::missing_main;
 	}
 	if (m_out_dir == "none") {
-		return processor_error::pe_missing_output;
+		return processor_error::missing_output;
 	}
 
 	treebank_dataset tbds;
 	dataset_error dserr = tbds.init(m_par_dir, m_main_list);
 
 	if (dserr == dataset_error::no_parent_dir) {
-		return processor_error::pe_no_parent;
+		return processor_error::no_parent;
 	}
 	if (dserr == dataset_error::no_main_file) {
-		return processor_error::pe_no_main;
+		return processor_error::no_main;
 	}
 
 	// make sure output directory exists
 	struct stat info;
 	if (m_out_dir != "." and stat(m_out_dir.c_str(), &info) != 0) {
-		return processor_error::pe_no_output;
+		return processor_error::no_output;
 	}
 
 	// process dataset using treebank_dataset class
 	while (tbds.has_language()) {
 		dserr = tbds.next_language();
 		if (dserr == dataset_error::no_treebank_file) {
-			return processor_error::pe_no_treebank;
+			return processor_error::no_treebank;
 		}
 
 		// iterate to next language
@@ -359,7 +397,7 @@ treebank_processor::processor_error treebank_processor::process
 		// process the current treebank
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();
-			if (err == empty_line) {
+			if (err == dataset_error::empty_line) {
 				// empty line, skip...
 			}
 			else {
@@ -374,7 +412,7 @@ treebank_processor::processor_error treebank_processor::process
 		}
 	}
 
-	return processor_error::pe_none;
+	return processor_error::none;
 }
 
 } // -- namespace io

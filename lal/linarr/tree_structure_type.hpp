@@ -53,22 +53,24 @@ namespace linarr {
  * its vertices, we can classify the tree in several different classes.
  *
  * We can currently identify the following structures:
- * - Projective structures (see @ref projective). A structure is projective if
- * it is planar and the root is not covered by any dependency.
- * - Planar structures (see @ref planar). A structure is planar if none of its
- * dependencies cross. Two dependencies \f$(s,t), (u,v)\f$ cross if, and only if,
- * their positions in the arrangement are interleaved, i.e., if
- * \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
+ * - Projective structures (see @ref tree_structure_type::projective). A
+ * structure is projective if it is planar and the root is not covered by any
+ * dependency.
+ * - Planar structures (see @ref tree_structure_type::planar). A structure is
+ * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
+ * cross if, and only if, their positions in the arrangement are interleaved,
+ * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
  * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
  * - Well nested trees with maximum degree gap \f$k\f$, usually denoted as
  * \f$WG_k\f$. We support:
- *		- \f$WG_i\f$ (for \f$1\le i \le 10\f$, see @ref WG_1, ..., @ref WG_10).
- *		- \f$WG_k\f$ (for \f$k > 10\f$, see @ref WG_k).
- * - 1-Endpoint Crossing (see @ref EC_1). A structure has the property of being 1-endpoint
- * crossing if, given any dependency, all other dependencies crossing it
- * are incident to a common node.
+ *		- \f$WG_i\f$ (for \f$1\le i \le 10\f$, see
+ *		@ref tree_structure_type::WG_1, ..., @ref tree_structure_type::WG_10).
+ *		- \f$WG_k\f$ (for \f$k > 10\f$, see @ref tree_structure_type::WG_k).
+ * - 1-Endpoint Crossing (see @ref tree_structure_type::EC_1). A structure has
+ * the property of being 1-endpoint crossing if, given any dependency, all
+ * other dependencies crossing it are incident to a common node.
  */
-enum tree_structure_type {
+enum class tree_structure_type {
 	// Projective structures
 
 	/// Projective structures.

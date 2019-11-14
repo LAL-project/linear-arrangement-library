@@ -53,11 +53,11 @@ namespace utils {
 /*
  * @brief Call a function @e F that does not admit empty arrangements.
  *
- * In case the arrangement @e arr is empty, function @e F is passed the
+ * In case the arrangement @e pi is empty, function @e F is passed the
  * identity arrangement.
  * @param F Function to call.
  * @param g Input graph.
- * @param arr Arrangement.
+ * @param pi Arrangement.
  * @return Returns the value function @e F returns.
  */
 template<typename T, class G>

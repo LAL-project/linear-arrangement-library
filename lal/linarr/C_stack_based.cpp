@@ -66,15 +66,13 @@ namespace linarr {
 #define sorted_edge(u,v)		\
 	(u < v ? edge(u,v) : edge(v,u) )
 
-uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
+inline uint64_t __compute_crossings_stack_based(
+	const ugraph& g, const vector<node>& pi,
+	uint32_t * __restrict__ T
+)
+{
 	const uint32_t n = g.n_nodes();
-	if (n < 4) {
-		return 0;
-	}
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
@@ -138,7 +136,7 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
 	// stack of the algorithm
 	utils::AVL<pair<uint32_t, edge> > S;
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	for (uint32_t pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
@@ -147,7 +145,7 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
 			const edge uv = sorted_edge(u,v);
 			idx = edge_to_idx[ uv ];
 
-			uint32_t on_top = S.remove( make_pair(idx, uv) );
+			uint64_t on_top = S.remove( make_pair(idx, uv) );
 			C += on_top;
 
 			/*
@@ -163,8 +161,57 @@ uint32_t __n_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
 	return C;
 }
 
-uint32_t n_crossings_stack_based(const ugraph& g, const vector<node>& arr) {
-	return utils::call_with_empty_arrangement(__n_crossings_stack_based, g, arr);
+inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<node>& pi) {
+	const uint32_t n = g.n_nodes();
+	if (n < 4) {
+		return 0;
+	}
+
+	/* allocate memory */
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t *T = static_cast<uint32_t *>( malloc(n*sizeof(uint32_t)) );
+
+	uint64_t C = __compute_crossings_stack_based(g, pi, T);
+
+	/* free memory */
+	free(T);
+	return C;
+}
+
+uint64_t __n_crossings_stack_based(const ugraph& g, const vector<node>& arr) {
+	return utils::call_with_empty_arrangement(__call_crossings_stack_based, g, arr);
+}
+
+vector<uint64_t> __n_crossings_stack_based_list
+(const ugraph& g, const vector<vector<node> >& pis)
+{
+	const uint32_t n = g.n_nodes();
+
+	vector<uint64_t> cs(pis.size(), 0);
+	if (n < 4) {
+		return cs;
+	}
+
+	/* allocate memory */
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	uint32_t *T = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == 0);
+
+		// compute C
+		cs[i] = __compute_crossings_stack_based(g, pis[i], T);
+	}
+
+	/* free memory */
+	free(T);
+	return cs;
 }
 
 } // -- namespace linarr

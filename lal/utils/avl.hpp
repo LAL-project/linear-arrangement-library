@@ -57,8 +57,8 @@ class AVL {
 			root = nullptr;
 		}
 
-		unsigned int remove(const T& x) {
-			unsigned int top = 0;
+		uint64_t remove(const T& x) {
+			uint64_t top = 0;
 			root = remove(root, x, top);
 			return top;
 		}
@@ -119,12 +119,12 @@ class AVL {
 			// Amount of nodes in the rooted at this node.
 			// Number of nodes in the left and right subtrees
 			// plus this node.
-			unsigned int tree_size = 0;
+			uint64_t tree_size = 0;
 			// Maximum height of the left and right subtrees' height
-			unsigned int height = 0;
+			uint64_t height = 0;
 			// balance factor of a node:
 			// right subtree's height - left subtree's height
-			int bf = 0;
+			int64_t bf = 0;
 
 			// parent of this node
 			tree_node *parent = nullptr;
@@ -136,14 +136,14 @@ class AVL {
 			~tree_node() = default;
 
 			void compute_height() {
-				int lh = (left != nullptr ? left->height : -1);
-				int rh = (right != nullptr ? right->height : -1);
+				int64_t lh = (left != nullptr ? left->height : -1);
+				int64_t rh = (right != nullptr ? right->height : -1);
 				height = std::max(lh, rh) + 1;
 				bf = rh - lh;
 			}
 			void compute_size() {
-				unsigned int ls = (left != nullptr ? left->tree_size : 0);
-				unsigned int rs = (right != nullptr ? right->tree_size : 0);
+				uint64_t ls = (left != nullptr ? left->tree_size : 0);
+				uint64_t rs = (right != nullptr ? right->tree_size : 0);
 				tree_size = 1 + ls + rs;
 			}
 			void update() {
@@ -165,10 +165,10 @@ class AVL {
 				n->side = side;
 			}
 
-			unsigned int left_size() const {
+			uint64_t left_size() const {
 				return (left == nullptr ? 0 : left->tree_size);
 			}
-			unsigned int right_size() const {
+			uint64_t right_size() const {
 				return (right == nullptr ? 0 : right->tree_size);
 			}
 		};
@@ -424,7 +424,7 @@ class AVL {
 		// with exist in the tree then we will always find this element in the
 		// tree, so there will be work to be done after each recursive call to
 		// 'remove'.
-		tree_node *remove(tree_node *n, const T& x, unsigned int& on_top) {
+		tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) {
 			if (n == nullptr) {
 				// not found
 				on_top = 0;
@@ -477,7 +477,7 @@ class AVL {
 			// or the largest in the left subtree,
 			// depending on the height
 
-			unsigned int dummy;
+			uint64_t dummy;
 			if (L->height > R->height) {
 				tree_node *lL = L;
 				while (lL->right != nullptr) {
@@ -517,9 +517,9 @@ class AVL {
 			// find right-most node such that its height
 			// is either (T2->height) or (T2->height + 1)
 			// in T1
-			const unsigned int h = T2->height;
+			const uint64_t h = T2->height;
 			tree_node *v = T1;
-			unsigned int hp = v->height;
+			uint64_t hp = v->height;
 			while (hp > h + 1 and v != nullptr) {
 				hp = (v->bf == -1 ? hp - 2 : hp - 1);
 				v = v->right;
@@ -563,9 +563,9 @@ class AVL {
 			// find right-most node such that its height
 			// is either (T1->height) or (T1->height + 1)
 			// in T2
-			const unsigned int h = T1->height;
+			const uint64_t h = T1->height;
 			tree_node *v = T2;
-			unsigned int hp = v->height;
+			uint64_t hp = v->height;
 			while (hp > h + 1 and v != nullptr) {
 				hp = (v->bf == -1 ? hp - 2 : hp - 1);
 				v = v->left;
