@@ -50,7 +50,7 @@ using namespace std;
 #define inf numeric_limits<uint32_t>::max()
 
 // custom includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -256,7 +256,7 @@ utree free_ulab_trees::get_tree() const {
 		t.add_edge(0,1);
 		return t;
 	}
-	return convert::level_sequence_to_tree(m_L, m_n);
+	return utils::level_sequence_to_tree(m_L, m_n);
 }
 
 } // -- namespace generate

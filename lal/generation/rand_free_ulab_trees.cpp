@@ -49,7 +49,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/conversions/conversions.hpp>
+#include <lal/utils/conversions.hpp>
 
 #define to_int32(x) static_cast<int32_t>(x)
 #define to_uint32(x) static_cast<uint32_t>(x)
@@ -116,7 +116,7 @@ utree rand_free_ulab_trees::make_rand_tree() {
 	if (bicent_prob <= prob) {
 		// tree will have two centroids
 		bicenter(m_n);
-		return convert::linear_sequence_to_tree(m_TREE, m_n);
+		return utils::linear_sequence_to_tree(m_TREE, m_n);
 	}
 
 	const uint32_t m = m_n - 1;
@@ -148,7 +148,7 @@ utree rand_free_ulab_trees::make_rand_tree() {
 	assert(nz == 1);
 #endif
 
-	return convert::linear_sequence_to_tree(m_TREE, m_n);
+	return utils::linear_sequence_to_tree(m_TREE, m_n);
 }
 
 void rand_free_ulab_trees::clear() {
