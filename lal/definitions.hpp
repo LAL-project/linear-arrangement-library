@@ -52,7 +52,20 @@ typedef uint64_t node;
 /// Node's position type.
 typedef uint64_t position;
 
-/// Type for a linear arrangement of the vertices of a graph.
+/**
+ * @brief A linear arrangement of the vertices of a graph.
+ *
+ * If @e pi is a linear arrangement of @e n vertices:
+ * @code
+	LINARR pi(n);
+ * @endcode
+ * then the @e u-th position gives the position of vertex @e u
+ * in the arrangement:
+ * @code
+	position pu = pi[u];
+ * @endcode
+ *
+ */
 typedef std::vector<position> LINARR;
 
 /// Edge type
