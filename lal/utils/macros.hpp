@@ -62,14 +62,14 @@ namespace utils {
  */
 template<typename T, class G>
 T call_with_empty_arrangement(
-	T (*F)(const G&, const std::vector<node>&),
+	T (*F)(const G&, const LINARR&),
 	const G& g, const LINARR& pi
 )
 {
 	if (pi.size() != 0) {
 		return F(g,pi);
 	}
-	std::vector<node> __pi(g.n_nodes());
+	LINARR __pi(g.n_nodes());
 	std::iota(__pi.begin(), __pi.end(), 0);
 	return F(g,__pi);
 }

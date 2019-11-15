@@ -111,7 +111,7 @@ rational MDD_1level_rational(
 	uint64_t sumD = 0;
 	uint64_t sumM = 0;
 	if (pis.size() == 0) {
-		const vector<position> empty_arr;
+		const LINARR empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {
 			sumD +=
 			utils::call_with_empty_arrangement(__sum_length_edges, Gs[i], empty_arr);
@@ -146,7 +146,7 @@ rational MDD_2level_rational(
 
 	rational sum_MDD(0);
 	if (pis.size() == 0) {
-		const vector<position> empty_arr;
+		const LINARR empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {
 			sum_MDD += MDD_rational(Gs[i], empty_arr);
 		}
