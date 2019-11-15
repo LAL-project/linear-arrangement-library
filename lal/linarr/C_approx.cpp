@@ -150,7 +150,7 @@ inline constexpr uint64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	return to_uint64(f/2);
 }
 
-rational __get_approximate_C_2_rational(const ugraph& g, const vector<position>& pi) {
+rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 	rational Ec2(0);
 	const uint64_t n = g.n_nodes();
 
@@ -179,11 +179,11 @@ rational __get_approximate_C_2_rational(const ugraph& g, const vector<position>&
 	return Ec2;
 }
 
-rational approximate_C_rational(const ugraph& g, const vector<position>& pi) {
+rational approximate_C_rational(const ugraph& g, const LINARR& pi) {
 	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
-double approximate_C(const ugraph& g, const vector<position>& pi) {
+double approximate_C(const ugraph& g, const LINARR& pi) {
 	return approximate_C_rational(g, pi).to_double();
 }
 

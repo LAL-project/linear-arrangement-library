@@ -62,7 +62,7 @@ using namespace iterators;
 
 namespace linarr {
 
-inline bool __is_root_covered(const urtree& T, const vector<position>& pi) {
+inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 	const node R = T.get_root();
 	iterators::edge_iterator it(T);
 	while (it.has_next()) {
@@ -114,7 +114,7 @@ void __get_yields(
 inline bool __disjoint_yields(
 	const uint64_t n,
 	const vector<vector<node> >& yields,
-	const vector<position>& pi
+	const LINARR& pi
 )
 {
 	bool disjoint_yields = true;
@@ -154,7 +154,7 @@ inline uint64_t __get_discont(const uint64_t n, const vector<vector<node> >& yie
 	return max_dis;
 }
 
-inline uint64_t __is_1EC(const urtree& Tree, const vector<position>& pi) {
+inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 	const uint64_t n = Tree.n_nodes();
 	vector<node> T(n);
 	for (node u = 0; u < n; ++u) {
@@ -217,7 +217,7 @@ inline uint64_t __is_1EC(const urtree& Tree, const vector<position>& pi) {
 }
 
 tree_structure_type __get_syn_dep_tree_type(
-	const urtree& Tree, const vector<position>& pi
+	const urtree& Tree, const LINARR& pi
 )
 {
 	uint64_t C = __n_crossings_stack_based(Tree, pi);
@@ -273,7 +273,7 @@ tree_structure_type __get_syn_dep_tree_type(
 	return (is_1EC ? tree_structure_type::EC_1 : tree_structure_type::none);
 }
 
-tree_structure_type get_tree_structure_type(const urtree& t, const vector<position>& pi) {
+tree_structure_type get_tree_structure_type(const urtree& t, const LINARR& pi) {
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 

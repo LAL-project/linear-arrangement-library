@@ -99,6 +99,7 @@ SOURCES += \
     iterators/Q_iterator.cpp \
     iterators/edge_iterator.cpp \
     linarr/C.cpp \
+    linarr/C_approx.cpp \
     linarr/classification.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \
@@ -127,5 +128,4 @@ SOURCES += \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \
-    linarr/approx_C.cpp \
     utils/conversions.cpp

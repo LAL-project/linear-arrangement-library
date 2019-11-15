@@ -60,8 +60,8 @@ using namespace iterators;
 
 namespace linarr {
 
-uint64_t __compute_crossings_brute_force(
-	const ugraph& g, const vector<position>& pi,
+uint64_t __compute_C_brute_force(
+	const ugraph& g, const LINARR& pi,
 	node * __restrict__ T
 )
 {
@@ -112,7 +112,7 @@ uint64_t __compute_crossings_brute_force(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_crossings_brute_force(const ugraph& g, const vector<position>& pi) {
+uint64_t __call_C_brute_force(const ugraph& g, const LINARR& pi) {
 	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -125,19 +125,19 @@ uint64_t __call_crossings_brute_force(const ugraph& g, const vector<position>& p
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	// compute the number of crossings
-	uint64_t C = __compute_crossings_brute_force(g, pi, T);
+	uint64_t C = __compute_C_brute_force(g, pi, T);
 
 	/* free memory */
 	free(T);
 	return C;
 }
 
-uint64_t __n_crossings_brute_force(const ugraph& g, const vector<position>& pi) {
-	return utils::call_with_empty_arrangement(__call_crossings_brute_force, g, pi);
+uint64_t __n_crossings_brute_force(const ugraph& g, const LINARR& pi) {
+	return utils::call_with_empty_arrangement(__call_C_brute_force, g, pi);
 }
 
 vector<uint64_t> __n_crossings_brute_force_list
-(const ugraph& g, const vector<vector<node> >& pis)
+(const ugraph& g, const vector<LINARR>& pis)
 {
 	const uint64_t n = g.n_nodes();
 
@@ -158,7 +158,7 @@ vector<uint64_t> __n_crossings_brute_force_list
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_crossings_brute_force(g, pis[i], T);
+		cs[i] = __compute_C_brute_force(g, pis[i], T);
 	}
 
 	/* free memory */

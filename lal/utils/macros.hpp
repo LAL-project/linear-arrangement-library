@@ -63,7 +63,7 @@ namespace utils {
 template<typename T, class G>
 T call_with_empty_arrangement(
 	T (*F)(const G&, const std::vector<node>&),
-	const G& g, const std::vector<position>& pi
+	const G& g, const LINARR& pi
 )
 {
 	if (pi.size() != 0) {

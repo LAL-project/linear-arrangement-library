@@ -260,12 +260,12 @@ inline void process_tree(
 			props[D_exp1_idx] = properties::expectation_D_first(t);
 		}
 		// we need to compute D, whether we like it or not
-		props[D_idx] = linarr::sum_length_edges(t, __linarr);
+		props[D_idx] = to_double(linarr::sum_length_edges(t, __linarr));
 		props[D_z_idx] = (props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx]);
 	}
 	else {
 		if (what_fs[D_idx]) {
-			props[D_idx] = linarr::sum_length_edges(t, __linarr);
+			props[D_idx] = to_double(linarr::sum_length_edges(t, __linarr));
 		}
 	}
 

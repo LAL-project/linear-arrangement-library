@@ -61,7 +61,7 @@ namespace linarr {
 
 /* D */
 
-uint64_t __sum_length_edges(const ugraph& g, const vector<position>& pi) {
+uint64_t __sum_length_edges(const ugraph& g, const LINARR& pi) {
 	// sum of lengths
 	uint64_t l = 0;
 
@@ -78,24 +78,94 @@ uint64_t __sum_length_edges(const ugraph& g, const vector<position>& pi) {
 	return l;
 }
 
-uint64_t sum_length_edges(const ugraph& g, const vector<position>& pi) {
+uint64_t sum_length_edges(const ugraph& g, const LINARR& pi) {
 	return utils::call_with_empty_arrangement(__sum_length_edges, g, pi);
 }
 
 /* MDD */
 
-rational __MDD_rational(const ugraph& g, const vector<position>& pi) {
+rational __MDD_rational(const ugraph& g, const LINARR& pi) {
 	uint64_t D = sum_length_edges(g, pi);
 	rational MDD = rational_from_ui(D, g.n_edges());
 	return MDD;
 }
 
-rational MDD_rational(const ugraph& g, const vector<position>& pi) {
+rational MDD_rational(const ugraph& g, const LINARR& pi) {
 	return utils::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 
-double MDD(const ugraph& g, const vector<position>& pi) {
+double MDD(const ugraph& g, const LINARR& pi) {
 	return MDD_rational(g, pi).to_double();
+}
+
+/* 1-level METRICS */
+
+rational MDD_1level_rational(
+	const vector<ugraph>& Gs, const vector<LINARR>& pis
+)
+{
+	// the number of graphs and number of linear arrangements
+	// must coincide unless no arrangement was given.
+	assert(pis.size() == 0 or Gs.size() == pis.size());
+
+	uint64_t sumD = 0;
+	uint64_t sumM = 0;
+	if (pis.size() == 0) {
+		const vector<position> empty_arr;
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			sumD +=
+			utils::call_with_empty_arrangement(__sum_length_edges, Gs[i], empty_arr);
+			sumM += Gs[i].n_edges();
+		}
+	}
+	else {
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			assert(Gs[i].n_nodes() == pis[i].size());
+
+			sumD += __sum_length_edges(Gs[i], pis[i]);
+			sumM += Gs[i].n_edges();
+		}
+	}
+	return rational_from_ui(sumD, sumM);
+}
+
+double MDD_1level(
+	const vector<graphs::ugraph>& Gs, const vector<LINARR>& pis
+)
+{
+	return MDD_1level_rational(Gs, pis).to_double();
+}
+
+/* 2-level METRICS */
+
+rational MDD_2level_rational(
+	const vector<ugraph>& Gs, const vector<LINARR>& pis
+)
+{
+	assert(pis.size() == 0 or Gs.size() == pis.size());
+
+	rational sum_MDD(0);
+	if (pis.size() == 0) {
+		const vector<position> empty_arr;
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			sum_MDD += MDD_rational(Gs[i], empty_arr);
+		}
+	}
+	else {
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			assert(Gs[i].n_nodes() == pis[i].size());
+
+			sum_MDD += MDD_rational(Gs[i], pis[i]);
+		}
+	}
+	return sum_MDD/static_cast<int64_t>(Gs.size());
+}
+
+double MDD_2level(
+	const vector<graphs::ugraph>& Gs, const vector<LINARR>& pis
+)
+{
+	return MDD_2level_rational(Gs, pis).to_double();
 }
 
 } // -- namespace linarr

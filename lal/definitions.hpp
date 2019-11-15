@@ -52,6 +52,9 @@ typedef uint64_t node;
 /// Node's position type.
 typedef uint64_t position;
 
+/// Type for a linear arrangement of the vertices of a graph.
+typedef std::vector<position> LINARR;
+
 /// Edge type
 typedef std::pair<node, node> edge;
 /// Edge pair type.

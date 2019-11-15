@@ -57,8 +57,8 @@ using namespace graphs;
 
 namespace linarr {
 
-inline uint64_t __compute_ladder(
-	const ugraph& g, const vector<position>& pi,
+inline uint64_t __compute_C_ladder(
+	const ugraph& g, const LINARR& pi,
 	vector<bool>& bn,
 	uint64_t * __restrict__ T,
 	uint64_t * __restrict__ L1
@@ -101,7 +101,7 @@ inline uint64_t __compute_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_n_crossings_ladder(const ugraph& g, const vector<position>& pi) {
+uint64_t __call_C_ladder(const ugraph& g, const LINARR& pi) {
 	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -121,19 +121,19 @@ uint64_t __call_n_crossings_ladder(const ugraph& g, const vector<position>& pi) 
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint64_t C = __compute_ladder(g, pi, bool_neighs, T,L1);
+	uint64_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
 	free(all_memory);
 	return C;
 }
 
-uint64_t __n_crossings_ladder(const ugraph& g, const vector<position>& pi) {
-	return utils::call_with_empty_arrangement(__call_n_crossings_ladder, g, pi);
+uint64_t __n_crossings_ladder(const ugraph& g, const LINARR& pi) {
+	return utils::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
 vector<uint64_t> __n_crossings_ladder_list
-(const ugraph& g, const vector<vector<position> >& pis)
+(const ugraph& g, const vector<LINARR>& pis)
 {
 	const uint64_t n = g.n_nodes();
 
@@ -161,7 +161,7 @@ vector<uint64_t> __n_crossings_ladder_list
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_ladder(g, pis[i], bool_neighs, T,L1);
+		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs, T,L1);
 		bool_neighs.assign(n, false);
 	}
 

@@ -44,15 +44,15 @@
 #include <assert.h>
 
 // C++ includes
-#include <iostream>
 #include <numeric>
 using namespace std;
 
 // lal includes
 #include <lal/utils/conversions.hpp>
 
-#define to_int64(x) static_cast<int64_t>(x)
-#define to_uint64(x) static_cast<uint64_t>(x)
+#define _to_int64(x) static_cast<int64_t>(x)
+#define _to_uint64(x) static_cast<uint64_t>(x)
+#define _to_double(x) static_cast<double>(x)
 
 namespace lal {
 using namespace graphs;
@@ -206,18 +206,18 @@ void rand_free_ulab_trees::compute_T() {
 
 	// using the algorithm in the book...
 
-	uint64_t LAST = to_uint64(last) - 1;
+	uint64_t LAST = _to_uint64(last) - 1;
 	//Tn[1] = 1;
 	while (LAST < m_n) {
 		integer s = 0;
 		for (uint64_t d = 1; d <= LAST; ++d) {
-			int64_t i = to_int64(LAST) + 1;
+			int64_t i = _to_int64(LAST) + 1;
 			int64_t j = 1;
 			const integer td = m_Tn[d]*d;
-			while (j <= to_int64(LAST) and i > 0) {
-				i -= to_int64(d);
+			while (j <= _to_int64(LAST) and i > 0) {
+				i -= _to_int64(d);
 				if (i > 0) {
-					s += m_Tn[to_uint64(i)]*td;
+					s += m_Tn[_to_uint64(i)]*td;
 				}
 				j += 1;
 			}
@@ -285,7 +285,7 @@ void rand_free_ulab_trees::choose_jd_from_T(uint64_t k, uint64_t& j, uint64_t& d
 	// will have found our pair
 
 	const double r = m_unif(m_gen);
-	double z = (k - 1)*m_Tn[k].to_double()*r;
+	double z = (m_Tn[k]*(k - 1)).to_double()*r;
 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
@@ -301,7 +301,7 @@ void rand_free_ulab_trees::choose_jd_from_T(uint64_t k, uint64_t& j, uint64_t& d
 		}
 		else {
 			// substract weight of current pair
-			z -= m_Tn[k - j*d].to_double()*m_Tn[d].to_double()*d;
+			z -= m_Tn[k - j*d].to_double()*m_Tn[d].to_double()*_to_double(d);
 			// if 'z' has not reached 0 then generate next pair
 			if (z > 0) {
 				++j;
@@ -316,7 +316,7 @@ void rand_free_ulab_trees::choose_jd_from_Amq(uint64_t m, uint64_t q, uint64_t& 
 	// will have found our pair
 
 	const double r = m_unif(m_gen);
-	double z = m_Amq[q][m].to_double()*m*r;
+	double z = m_Amq[q][m].to_double()*_to_double(m)*_to_double(r);
 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
@@ -340,7 +340,9 @@ void rand_free_ulab_trees::choose_jd_from_Amq(uint64_t m, uint64_t q, uint64_t& 
 			// NOTE: Amq[q] is supposed to exist
 			assert(m_Amq.find(q) != m_Amq.end());
 
-			z -= (m_Tn[d].to_double())*(m_Amq[q][m - j*d].to_double())*d;
+			z -= (m_Tn[d].to_double())*
+				 (m_Amq[q][m - j*d].to_double())*
+				 _to_double(d);
 			// if 'z' has not reached 0 then generate next pair
 			if (z > 0) {
 				++j;

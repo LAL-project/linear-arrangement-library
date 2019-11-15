@@ -59,8 +59,8 @@ namespace linarr {
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint64_t __compute_crossings_dyn_prog(
-	const ugraph& g, const vector<position>& pi,
+inline uint64_t __compute_C_dyn_prog(
+	const ugraph& g, const LINARR& pi,
 	vector<bool>& bn,
 	node * __restrict__ T,
 	uint64_t * __restrict__ M,
@@ -175,7 +175,7 @@ inline uint64_t __compute_crossings_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<position>& pi) {
+uint64_t __call_C_dyn_prog(const ugraph& g, const LINARR& pi) {
 	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -198,19 +198,19 @@ uint64_t __call_crossings_dyn_prog(const ugraph& g, const vector<position>& pi) 
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint64_t C = __compute_crossings_dyn_prog(g, pi, bool_neighs, T,M,K);
+	uint64_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
 	free(all_memory);
 	return C;
 }
 
-uint64_t __n_crossings_dyn_prog(const ugraph& g, const vector<position>& pi) {
-	return utils::call_with_empty_arrangement(__call_crossings_dyn_prog, g, pi);
+uint64_t __n_crossings_dyn_prog(const ugraph& g, const LINARR& pi) {
+	return utils::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
 vector<uint64_t> __n_crossings_dyn_prog_list
-(const ugraph& g, const vector<vector<node> >& pis)
+(const ugraph& g, const vector<LINARR>& pis)
 {
 	const uint64_t n = g.n_nodes();
 
@@ -241,7 +241,7 @@ vector<uint64_t> __n_crossings_dyn_prog_list
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_crossings_dyn_prog(g, pis[i], bool_neighs, T,M,K);
+		cs[i] = __compute_C_dyn_prog(g, pis[i], bool_neighs, T,M,K);
 		bool_neighs.assign(n, false);
 	}
 

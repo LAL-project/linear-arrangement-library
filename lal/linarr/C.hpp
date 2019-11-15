@@ -66,7 +66,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const std::vector<position>& pi = {});
+uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -81,7 +81,7 @@ uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const std::vector<po
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint64_t> __n_crossings_brute_force_list
-(const graphs::ugraph& g, const std::vector<std::vector<position> >& pis);
+(const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -95,7 +95,7 @@ std::vector<uint64_t> __n_crossings_brute_force_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const std::vector<position>& pi = {});
+uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -110,7 +110,7 @@ uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const std::vector<posit
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint64_t> __n_crossings_dyn_prog_list
-(const graphs::ugraph& g, const std::vector<std::vector<position> >& pis);
+(const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -124,7 +124,7 @@ std::vector<uint64_t> __n_crossings_dyn_prog_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_ladder(const graphs::ugraph& g, const std::vector<position>& pi = {});
+uint64_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -139,7 +139,7 @@ uint64_t __n_crossings_ladder(const graphs::ugraph& g, const std::vector<positio
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint64_t> __n_crossings_ladder_list
-(const graphs::ugraph& g, const std::vector<std::vector<position> >& pis);
+(const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -154,7 +154,7 @@ std::vector<uint64_t> __n_crossings_ladder_list
  * @return Returns \f$C\f$.
  */
 uint64_t __n_crossings_stack_based
-(const graphs::ugraph& g, const std::vector<position>& pi = {});
+(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -170,7 +170,7 @@ uint64_t __n_crossings_stack_based
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint64_t> __n_crossings_stack_based_list
-(const graphs::ugraph& g, const std::vector<std::vector<position> >& pis);
+(const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -190,7 +190,7 @@ std::vector<uint64_t> __n_crossings_stack_based_list
  * - @ref __n_crossings_stack_based
  */
 uint64_t n_crossings(
-	const graphs::ugraph& g, const std::vector<position>& pi = {},
+	const graphs::ugraph& g, const LINARR& pi = {},
 	const algorithms_crossings& A = algorithms_crossings::stack_based
 );
 /**
@@ -213,7 +213,7 @@ uint64_t n_crossings(
  * - @ref __n_crossings_stack_based_list
  */
 std::vector<uint64_t> n_crossings_list
-(const graphs::ugraph& g, const std::vector<std::vector<position> >& pis,
+(const graphs::ugraph& g, const std::vector<LINARR>& pis,
  const algorithms_crossings& A = algorithms_crossings::stack_based);
 
 /* ---------------------------------------- */
@@ -232,7 +232,7 @@ std::vector<uint64_t> n_crossings_list
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational approximate_C_rational
-(const graphs::ugraph& g, const std::vector<position>& pi = {});
+(const graphs::ugraph& g, const LINARR& pi = {});
 
 /**
  * @brief Approximates the number of crossings.
@@ -240,7 +240,7 @@ numeric::rational approximate_C_rational
  * See @ref approximate_C_rational for details.
  * @return The return value is a floating point value.
  */
-double approximate_C(const graphs::ugraph& g, const std::vector<position>& pi = {});
+double approximate_C(const graphs::ugraph& g, const LINARR& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -65,8 +65,8 @@ namespace linarr {
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
 
-inline uint64_t __compute_crossings_stack_based(
-	const ugraph& g, const vector<position>& pi,
+inline uint64_t __compute_C_stack_based(
+	const ugraph& g, const LINARR& pi,
 	node * __restrict__ T
 )
 {
@@ -159,7 +159,7 @@ inline uint64_t __compute_crossings_stack_based(
 	return C;
 }
 
-inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<position>& pi) {
+inline uint64_t __call_C_stack_based(const ugraph& g, const LINARR& pi) {
 	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -171,19 +171,19 @@ inline uint64_t __call_crossings_stack_based(const ugraph& g, const vector<posit
 	// T[p] = u <-> node u is at position p
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
-	uint64_t C = __compute_crossings_stack_based(g, pi, T);
+	uint64_t C = __compute_C_stack_based(g, pi, T);
 
 	/* free memory */
 	free(T);
 	return C;
 }
 
-uint64_t __n_crossings_stack_based(const ugraph& g, const vector<position>& pi) {
-	return utils::call_with_empty_arrangement(__call_crossings_stack_based, g, pi);
+uint64_t __n_crossings_stack_based(const ugraph& g, const LINARR& pi) {
+	return utils::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
 vector<uint64_t> __n_crossings_stack_based_list
-(const ugraph& g, const vector<vector<position> >& pis)
+(const ugraph& g, const vector<LINARR>& pis)
 {
 	const uint64_t n = g.n_nodes();
 
@@ -204,7 +204,7 @@ vector<uint64_t> __n_crossings_stack_based_list
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_crossings_stack_based(g, pis[i], T);
+		cs[i] = __compute_C_stack_based(g, pis[i], T);
 	}
 
 	/* free memory */
