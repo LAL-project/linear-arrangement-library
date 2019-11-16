@@ -55,7 +55,9 @@ utree level_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 	// a little sanity check
 	assert(L[0] == 1);
 
-	utree t(n);
+	// edges of the tree
+	vector<edge> edges(n - 1);
+	auto eit = edges.begin();
 
 	// 'stack' of root candidates
 	vector<node> s(n, 0);
@@ -71,28 +73,38 @@ utree level_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 		// for this vertex
 		node r = s[it];
 
-		// add the vertex...
-		t.add_edge(r, i);
+		// add the edge...
+		*eit++ = edge(r,i);
 
 		// this is the next potential root
 		++it;
 		s[it] = i;
 	}
+
+	utree t(n);
+	t.add_edges(edges);
 	return t;
 }
 
 utree linear_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 	assert(L.size() == n + 1);
 
-	utree t(n);
+	// edges of the tree
+	vector<edge> edges(n - 1);
+	auto eit = edges.begin();
+
 	for (uint64_t i = 1; i <= n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
 		}
 		else {
-			t.add_edge(i - 1, L[i] - 1);
+			// add the edge...
+			*eit++ = edge(i - 1, L[i] - 1);
 		}
 	}
+
+	utree t(n);
+	t.add_edges(edges);
 	return t;
 }
 
@@ -103,7 +115,10 @@ utree Prufer_sequence_to_tree(const vector<uint64_t>& seq, uint64_t n) {
 	for (uint64_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}
-	utree t(n);
+
+	// edges of the tree
+	vector<edge> edges(n - 1);
+	auto eit = edges.begin();
 
 	// for each number in the sequence seq[i], find the first
 	// lowest-numbered node, j, with degree equal to 1, add
@@ -115,7 +130,8 @@ utree Prufer_sequence_to_tree(const vector<uint64_t>& seq, uint64_t n) {
 		node w = 0;
 		while (w < n and not node_found) {
 			if (degree[w] == 1) {
-				t.add_edge(value, w);
+				*eit++ = edge(value, w);
+
 				degree[value] -= 1;
 				degree[w] -= 1;
 				node_found = true;
@@ -139,7 +155,10 @@ utree Prufer_sequence_to_tree(const vector<uint64_t>& seq, uint64_t n) {
 	}
 
 	// add edge (u,v) to the tree
-	t.add_edge(u, v);
+	*eit++ = edge(u, v);
+
+	utree t(n);
+	t.add_edges(edges);
 	return t;
 }
 

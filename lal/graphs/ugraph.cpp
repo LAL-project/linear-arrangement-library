@@ -115,15 +115,13 @@ ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
 
 ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+		const node s = e.first;
+		const node t = e.second;
 		assert(not has_edge(u,v));
 		assert(u != v);
 
-		neighbourhood& nu = m_adjacency_list[u];
-		neighbourhood& nv = m_adjacency_list[v];
-		nu.push_back(v);
-		nv.push_back(u);
+		m_adjacency_list[s].push_back(t);
+		m_adjacency_list[t].push_back(s);
 		++m_num_edges;
 	}
 
