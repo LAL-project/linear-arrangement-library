@@ -117,15 +117,14 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
-		conversions/conversions.cpp
 		generation/free_lab_trees.cpp
 		generation/free_ulab_trees.cpp
 		generation/rand_free_lab_trees.cpp
 		generation/rand_free_ulab_trees.cpp
 		generation/rand_rooted_lab_dir_trees.cpp
 		graphs/dgraph.cpp
-		graphs/dtree.cpp
 		graphs/drtree.cpp
+		graphs/dtree.cpp
 		graphs/graph.cpp
 		graphs/rtree.cpp
 		graphs/tree.cpp
@@ -138,11 +137,11 @@ target_sources(
 		io/treebank_reader.cpp
 		iterators/edge_iterator.cpp
 		iterators/Q_iterator.cpp
-		linarr/approx_C.cpp
+		linarr/C.cpp
+		linarr/C_approx.cpp
 		linarr/C_brute_force.cpp
 		linarr/C_dyn_prog.cpp
 		linarr/C_ladder.cpp
-		linarr/C_q.cpp
 		linarr/C_stack_based.cpp
 		linarr/classification.cpp
 		linarr/D.cpp
@@ -160,6 +159,7 @@ target_sources(
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_gen_graphs_fast.cpp
 		properties/variance_C_trees.cpp
+		utils/conversions.cpp
 )
 
 # **********************************************************************
@@ -212,6 +212,11 @@ set(LIBLAL_ITERATORS_HEADER
 	iterators/Q_iterator.hpp
 )
 set(LIBLAL_LINARR_HEADER
+	linarr/1level.hpp
+	linarr/1level_impl.hpp
+	linarr/2level.hpp
+	linarr/2level_impl.hpp
+	linarr/algorithms_crossings.hpp
 	linarr/C.hpp
 	linarr/classification.hpp
 	linarr/D.hpp

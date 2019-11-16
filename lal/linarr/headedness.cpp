@@ -53,7 +53,7 @@ using namespace numeric;
 
 namespace linarr {
 
-uint64_t __headedness_rational(const dgraph& g, const LINARR& pi) {
+inline uint64_t __headedness_rational(const dgraph& g, const LINARR& pi) {
 	uint64_t edges_to_right = 0;
 	iterators::edge_iterator it(g);
 	while (it.has_next()) {

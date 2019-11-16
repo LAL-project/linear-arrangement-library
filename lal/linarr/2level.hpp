@@ -40,13 +40,56 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_crossings.hpp>
-#include <lal/linarr/tree_structure_type.hpp>
+// C++ includes
+#include <vector>
 
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
-#include <lal/linarr/headedness.hpp>
-#include <lal/linarr/classification.hpp>
+// lal includes
+#include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
 
-#include <lal/linarr/1level.hpp>
-#include <lal/linarr/2level.hpp>
+namespace lal {
+namespace linarr {
+
+/* 2-LEVEL METRICS */
+
+/**
+ * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
+ *
+ * Given a list of graphs and a linear arrangement of the vertices for each of
+ * them, computes the 2-level Mean Dependency Distance, i.e., it computes the
+ * average Mean Dependency Distance of the graphs in the list.
+ *
+ * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
+ * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$S_{<d>}/k\f$, where
+ * \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean dependency
+ * distances of every graph (see @ref MDD_rational for details on the definition
+ * of the Mean Dependency Distance).
+ *
+ * @param Gs List of input graphs.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return Returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs.
+ */
+template<class G>
+numeric::rational MDD_2level_rational
+(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
+
+/**
+ * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
+ *
+ * See @ref MDD_2level_rational for details.
+ * @param Gs List of input graphs.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return The return value is a floating point value.
+ */
+template<class G>
+double MDD_2level
+(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
+
+} // -- namespace linarr
+} // -- namespace lal
+
+#include <lal/linarr/2level_impl.hpp>

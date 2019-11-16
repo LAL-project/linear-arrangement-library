@@ -60,7 +60,7 @@ template<class G>
 inline rational __mmt_x_degree_rational
 (
 	const G& g, uint64_t p,
-	const std::function<uint64_t(const G& _g, node _u)>& D
+	const function<uint64_t(const G& _g, node _u)>& D
 )
 {
 	const integer M = integer_from_ui(g.n_nodes());

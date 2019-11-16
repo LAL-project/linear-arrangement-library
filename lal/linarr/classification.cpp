@@ -82,7 +82,7 @@ inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 	return false;
 }
 
-void __get_yields(
+inline void __get_yields(
 	const urtree& t, node u,
 	vector<bool>& vis,
 	vector<vector<node> >& yields
@@ -216,7 +216,7 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 	return _1ec;
 }
 
-tree_structure_type __get_syn_dep_tree_type(
+inline tree_structure_type __get_syn_dep_tree_type(
 	const urtree& Tree, const LINARR& pi
 )
 {

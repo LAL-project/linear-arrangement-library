@@ -45,10 +45,6 @@
 #include <assert.h>
 
 // C++ includes
-#include <algorithm>
-#include <numeric>
-#include <cmath>
-#include <list>
 #include <map>
 using namespace std;
 
@@ -179,6 +175,7 @@ inline uint64_t __call_C_stack_based(const ugraph& g, const LINARR& pi) {
 }
 
 uint64_t __n_crossings_stack_based(const ugraph& g, const LINARR& pi) {
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 

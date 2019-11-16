@@ -41,11 +41,9 @@
 #include <lal/linarr/C.hpp>
 
 // C includes
-#include <string.h>
 #include <assert.h>
 
 // C++ includes
-#include <numeric>
 using namespace std;
 
 // lal includes
@@ -60,7 +58,7 @@ using namespace iterators;
 
 namespace linarr {
 
-uint64_t __compute_C_brute_force(
+inline uint64_t __compute_C_brute_force(
 	const ugraph& g, const LINARR& pi,
 	node * __restrict__ T
 )
@@ -112,7 +110,7 @@ uint64_t __compute_C_brute_force(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-uint64_t __call_C_brute_force(const ugraph& g, const LINARR& pi) {
+inline uint64_t __call_C_brute_force(const ugraph& g, const LINARR& pi) {
 	const uint64_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -133,6 +131,7 @@ uint64_t __call_C_brute_force(const ugraph& g, const LINARR& pi) {
 }
 
 uint64_t __n_crossings_brute_force(const ugraph& g, const LINARR& pi) {
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_brute_force, g, pi);
 }
 

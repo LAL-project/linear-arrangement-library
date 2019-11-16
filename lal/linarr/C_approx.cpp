@@ -44,7 +44,6 @@
 #include <assert.h>
 
 // C++ includes
-#include <numeric>
 using namespace std;
 
 // lal includes
@@ -60,16 +59,7 @@ using namespace numeric;
 
 namespace linarr {
 
-// NOTE: the type of parameters n,d1,d2 should be a SIGNED integer
-// since the substractions within the methods might make the result
-// negative (until it is compensated and made positive before "return").
-// Although it should be okay (an unsigned integer can "suffer" an
-// underflow, e.g., "uint x = 10 - 23", and later "suffer" an overflow,
-// e.g., "x += 50", and the result should be, in the end, positive), I
-// don't like overflows and underflows. Besides, I might need to debug
-// this thing at some point and I might want them negative, so...
-
-inline constexpr uint64_t alpha(int64_t n, int64_t d1, int64_t d2) {
+inline constexpr uint64_t alpha(uint64_t n, uint64_t d1, uint64_t d2) {
 	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -100,7 +90,7 @@ inline constexpr uint64_t alpha(int64_t n, int64_t d1, int64_t d2) {
 	return to_uint64(f);
 }
 
-inline constexpr uint64_t beta(int64_t n, int64_t d1, int64_t d2) {
+inline constexpr uint64_t beta(uint64_t n, uint64_t d1, uint64_t d2) {
 	int64_t f = 0;
 
 	// positions s1 < s2
@@ -150,7 +140,7 @@ inline constexpr uint64_t beta(int64_t n, int64_t d1, int64_t d2) {
 	return to_uint64(f/2);
 }
 
-rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
+inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 	rational Ec2(0);
 	const uint64_t n = g.n_nodes();
 
@@ -165,8 +155,8 @@ rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 		const node u = uv.first;
 		const node v = uv.second;
 
-		int64_t len_st = std::abs(to_int64(pi[s]) - to_int64(pi[t]));
-		int64_t len_uv = std::abs(to_int64(pi[u]) - to_int64(pi[v]));
+		const uint64_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
+		const uint64_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
@@ -180,6 +170,7 @@ rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 }
 
 rational approximate_C_rational(const ugraph& g, const LINARR& pi) {
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 

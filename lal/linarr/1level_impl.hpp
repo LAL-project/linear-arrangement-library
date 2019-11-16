@@ -40,13 +40,49 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_crossings.hpp>
-#include <lal/linarr/tree_structure_type.hpp>
+// C includes
+#if defined DEBUG
+#include <assert.h>
+#endif
 
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
-#include <lal/linarr/headedness.hpp>
-#include <lal/linarr/classification.hpp>
-
+// lal includes
 #include <lal/linarr/1level.hpp>
-#include <lal/linarr/2level.hpp>
+
+namespace lal {
+namespace linarr {
+
+template<class G>
+numeric::rational MDD_1level_rational
+(const std::vector<G>& Gs, const std::vector<LINARR>& pis)
+{
+#if defined DEBUG
+	// the number of graphs and number of linear arrangements
+	// must coincide unless no arrangement was given.
+	assert(pis.size() == 0 or Gs.size() == pis.size());
+#endif
+
+	uint64_t sumD = 0;
+	uint64_t sumM = 0;
+	if (pis.size() == 0) {
+		const LINARR empty_arr;
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			sumD += sum_length_edges(Gs[i], empty_arr);
+			sumM += Gs[i].n_edges();
+		}
+	}
+	else {
+		for (size_t i = 0; i < Gs.size(); ++i) {
+			sumD += sum_length_edges(Gs[i], pis[i]);
+			sumM += Gs[i].n_edges();
+		}
+	}
+	return numeric::rational_from_ui(sumD, sumM);
+}
+
+template<class G>
+double MDD_1level(const std::vector<G>& Gs, const std::vector<LINARR>& pis) {
+	return MDD_1level_rational(Gs, pis).to_double();
+}
+
+} // -- namespace linarr
+} // -- namespace lal

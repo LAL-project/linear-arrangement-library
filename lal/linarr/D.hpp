@@ -51,6 +51,8 @@
 namespace lal {
 namespace linarr {
 
+/* D */
+
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
@@ -63,7 +65,9 @@ namespace linarr {
  * @return Returns \f$D\f$.
  */
 uint64_t sum_length_edges
-(const graphs::ugraph& g, const LINARR& pi = {});
+(const graphs::graph& g, const LINARR& pi = {});
+
+/* MDD */
 
 /**
  * @brief Computes the mean edge length.
@@ -79,7 +83,7 @@ uint64_t sum_length_edges
  * @return Returns Jing's and Liu's \f$MDD\f$ for a single tree.
  */
 numeric::rational MDD_rational
-(const graphs::ugraph& g, const LINARR& pi = {});
+(const graphs::graph& g, const LINARR& pi = {});
 
 /**
  * @brief Computes the mean edge length as an exact rational value.
@@ -90,83 +94,7 @@ numeric::rational MDD_rational
  * node @e u is placed in position @e p of the arrangement.
  * @return The return value is a floating point value.
  */
-double MDD(const graphs::ugraph& g, const LINARR& pi = {});
-
-/* 1-LEVEL METRICS */
-
-/**
- * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
- *
- * Given a list of graphs and a linear arrangement of the vertices for each of
- * them, computes the 1-level Mean Dependency Distance as the quotient of
- * \f$D\f$, the sum of all the \f$D_i\f$, where \f$D_i\f$ is the sum of the
- * edge lengths of tree \f$i\f$, and of \f$M\f$ the sum of the number of edges
- * of all the trees.
- *
- * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
- * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
- * - \f$D = \sum_{i=1}^k D(G_i, \pi_i)\f$ is the sum of edge lengths of every
- * graph.
- * - \f$M = \sum_{i=1}^k |E(G_i)|\f$ is the sum of the number of edges of every
- * graph.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
- * @return Returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs.
- */
-numeric::rational MDD_1level_rational
-(const std::vector<graphs::ugraph>& Gs, const std::vector<LINARR>& pis = {});
-
-/**
- * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
- *
- * See @ref MDD_1level_rational for details.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
- * @return The return value is a floating point value.
- */
-double MDD_1level
-(const std::vector<graphs::ugraph>& Gs, const std::vector<LINARR>& pis = {});
-
-/* 2-LEVEL METRICS */
-
-/**
- * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
- *
- * Given a list of graphs and a linear arrangement of the vertices for each of
- * them, computes the 2-level Mean Dependency Distance, i.e., it computes the
- * average Mean Dependency Distance of the graphs in the list.
- *
- * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
- * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$S_{<d>}/k\f$, where
- * \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean dependency
- * distances of every graph (see @ref MDD_rational for details on the definition
- * of the Mean Dependency Distance).
- *
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
- * @return Returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs.
- */
-numeric::rational MDD_2level_rational
-(const std::vector<graphs::ugraph>& Gs, const std::vector<LINARR>& pis = {});
-
-/**
- * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
- *
- * See @ref MDD_2level_rational for details.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
- * @return The return value is a floating point value.
- */
-double MDD_2level
-(const std::vector<graphs::ugraph>& Gs, const std::vector<LINARR>& pis = {});
+double MDD(const graphs::graph& g, const LINARR& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -47,6 +47,10 @@ HEADERS += \
     iterators/Q_iterator.hpp \
     iterators/edge_iterator.hpp \
     linarr.hpp \
+    linarr/1level.hpp \
+    linarr/1level_impl.hpp \
+    linarr/2level.hpp \
+    linarr/2level_impl.hpp \
     linarr/algorithms_crossings.hpp \
     linarr/classification.hpp \
     linarr/headedness.hpp \

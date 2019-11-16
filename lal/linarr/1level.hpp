@@ -41,47 +41,57 @@
 #pragma once
 
 // C++ includes
-#include <cstdint>
 #include <vector>
-#include <string>
+
+// lal includes
+#include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
+namespace linarr {
 
-/// Node type.
-typedef uint64_t node;
-/// Node's position type.
-typedef uint64_t position;
+/* 1-LEVEL METRICS */
 
 /**
- * @brief A linear arrangement of the vertices of a graph.
+ * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
  *
- * If @e pi is a linear arrangement of @e n vertices:
- * @code
-	LINARR pi(n);
- * @endcode
- * then the @e u-th position gives the position of vertex @e u
- * in the arrangement:
- * @code
-	position pu = pi[u];
- * @endcode
+ * Given a list of graphs and a linear arrangement of the vertices for each of
+ * them, computes the 1-level Mean Dependency Distance as the quotient of
+ * \f$D\f$, the sum of all the \f$D_i\f$, where \f$D_i\f$ is the sum of the
+ * edge lengths of tree \f$i\f$, and of \f$M\f$ the sum of the number of edges
+ * of all the trees.
  *
+ * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
+ * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
+ * - \f$D = \sum_{i=1}^k D(G_i, \pi_i)\f$ is the sum of edge lengths of every
+ * graph.
+ * - \f$M = \sum_{i=1}^k |E(G_i)|\f$ is the sum of the number of edges of every
+ * graph.
+ * @param Gs List of input graphs.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return Returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs.
  */
-typedef std::vector<position> LINARR;
+template<class G>
+numeric::rational MDD_1level_rational
+(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
 
-/// Edge type
-typedef std::pair<node, node> edge;
-/// Edge pair type.
-typedef std::pair<edge,edge> edge_pair;
-/// List of nodes.
-typedef std::vector<node> neighbourhood;
-/// Boolean neighbourhood.
-typedef std::vector<bool> neighbourhood_B;
+/**
+ * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
+ *
+ * See @ref MDD_1level_rational for details.
+ * @param Gs List of input graphs.
+ * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
+ * arrangement.
+ * @return The return value is a floating point value.
+ */
+template<class G>
+double MDD_1level
+(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
 
-/// Major version number of the library's current state.
-static const std::string __lal_major_verno = "2019";
-/// Minor version number of the library's current state.
-static const std::string __lal_minor_verno = "07";
-/// Patch version number of the library's current state.
-static const std::string __lal_patch_verno = "00";
-
+} // -- namespace linarr
 } // -- namespace lal
+
+#include <lal/linarr/1level_impl.hpp>
