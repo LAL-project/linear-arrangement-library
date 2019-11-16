@@ -4,10 +4,10 @@
 
 %{
 
-// -- C++ includes
+// C++ includes
 #include <sstream>
 
-// -- lal includes
+// lal includes
 
 // library's types
 #include <lal/definitions.hpp>
@@ -52,18 +52,20 @@ namespace std {
 	%template(edge_pair) pair<lal::edge, lal::edge>;
 	
 	%template(bool_list) vector<bool>;
-	%template(node_list) vector<lal::node>;
+	%template(uint64_list) vector<uint64_t>;
 	
 	%template(edge_list) vector<lal::edge>;
 	%template(edge_pair_list) vector<lal::edge_pair>;
-	%template(rational_list) vector<lal::numeric::rational>;
-	%template(string_list) vector<string>;
 	
 	%template(list_node_list) vector<vector<lal::node> >;
 }
 
 %ignore lal::graphs::operator<<;
 %ignore lal::numeric::operator<<;
+%ignore lal::numeric::integer::operator-();
+%ignore lal::numeric::rational::operator-();
+%ignore lal::numeric::integer::operator=;
+%ignore lal::numeric::rational::operator=;
 
 // ---------------------
 // basic data structures
@@ -90,7 +92,7 @@ namespace std {
 %include "../lal/graphs/output.hpp"
 
 // -------------
-// io operations
+// iterators
 %include "../lal/iterators/edge_iterator.hpp"
 %include "../lal/iterators/Q_iterator.hpp"
 
@@ -116,12 +118,14 @@ namespace std {
 // -------------------
 // linear arrangements
 
+%include "../lal/linarr/1level.hpp"
+%include "../lal/linarr/2level.hpp"
 // %include "../lal/linarr/algorithms_crossings.hpp"
 %include "../lal/linarr/C.hpp"
-// %include "../lal/linarr/tree_structure_type.hpp"
 %include "../lal/linarr/classification.hpp"
 %include "../lal/linarr/D.hpp"
 %include "../lal/linarr/headedness.hpp"
+// %include "../lal/linarr/tree_structure_type.hpp"
 
 // --------------------
 // generation of graphs
@@ -252,3 +256,34 @@ namespace std {
 		return out.str();
 	}
 }
+
+// --------------------------------
+// Extendind the function templates
+
+%template(MDD_1level_rational_ugraph)	lal::linarr::MDD_1level_rational<lal::graphs::ugraph>;
+%template(MDD_1level_rational_dgraph)	lal::linarr::MDD_1level_rational<lal::graphs::dgraph>;
+%template(MDD_1level_rational_utree)	lal::linarr::MDD_1level_rational<lal::graphs::utree>;
+%template(MDD_1level_rational_urtree)	lal::linarr::MDD_1level_rational<lal::graphs::urtree>;
+%template(MDD_1level_rational_dtree)	lal::linarr::MDD_1level_rational<lal::graphs::dtree>;
+%template(MDD_1level_rational_drtree)	lal::linarr::MDD_1level_rational<lal::graphs::drtree>;
+
+%template(MDD_1level_ugraph)	lal::linarr::MDD_1level<lal::graphs::ugraph>;
+%template(MDD_1level_dgraph)	lal::linarr::MDD_1level<lal::graphs::dgraph>;
+%template(MDD_1level_utree)		lal::linarr::MDD_1level<lal::graphs::utree>;
+%template(MDD_1level_urtree)	lal::linarr::MDD_1level<lal::graphs::urtree>;
+%template(MDD_1level_dtree)		lal::linarr::MDD_1level<lal::graphs::dtree>;
+%template(MDD_1level_drtree)	lal::linarr::MDD_1level<lal::graphs::drtree>;
+
+%template(MDD_2level_rational_ugraph)	lal::linarr::MDD_2level_rational<lal::graphs::ugraph>;
+%template(MDD_2level_rational_dgraph)	lal::linarr::MDD_2level_rational<lal::graphs::dgraph>;
+%template(MDD_2level_rational_utree)	lal::linarr::MDD_2level_rational<lal::graphs::utree>;
+%template(MDD_2level_rational_urtree)	lal::linarr::MDD_2level_rational<lal::graphs::urtree>;
+%template(MDD_2level_rational_dtree)	lal::linarr::MDD_2level_rational<lal::graphs::dtree>;
+%template(MDD_2level_rational_drtree)	lal::linarr::MDD_2level_rational<lal::graphs::drtree>;
+
+%template(MDD_2level_ugraph)	lal::linarr::MDD_2level<lal::graphs::ugraph>;
+%template(MDD_2level_dgraph)	lal::linarr::MDD_2level<lal::graphs::dgraph>;
+%template(MDD_2level_utree)		lal::linarr::MDD_2level<lal::graphs::utree>;
+%template(MDD_2level_urtree)	lal::linarr::MDD_2level<lal::graphs::urtree>;
+%template(MDD_2level_dtree)		lal::linarr::MDD_2level<lal::graphs::dtree>;
+%template(MDD_2level_drtree)	lal::linarr::MDD_2level<lal::graphs::drtree>;
