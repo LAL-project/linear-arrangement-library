@@ -117,8 +117,8 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
 		const node s = e.first;
 		const node t = e.second;
-		assert(not has_edge(u,v));
-		assert(u != v);
+		assert(not has_edge(s,t));
+		assert(s != t);
 
 		m_adjacency_list[s].push_back(t);
 		m_adjacency_list[t].push_back(s);
