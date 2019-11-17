@@ -45,12 +45,12 @@
 
 // C++ includes
 #include <iostream>
-#include <set>
 using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
 #include <lal/utils/sort_integers.hpp>
+#include <lal/graphs/output.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/iterators/edge_iterator.hpp>
 
@@ -67,15 +67,16 @@ inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 	iterators::edge_iterator it(T);
 	while (it.has_next()) {
 		it.next();
-		edge e = it.get_edge();
+		const edge e = it.get_edge();
 		const node s = e.first;
 		const node t = e.second;
-		if (pi[s] < pi[R] and pi[R] < pi[t]) {
-			// the root is covered
-			return true;
-		}
-		else if (pi[t] < pi[R] and pi[R] < pi[s]) {
-			// the root is covered
+
+		bool covered =
+			(pi[s] < pi[R] and pi[R] < pi[t]) or
+			(pi[t] < pi[R] and pi[R] < pi[s]);
+
+		// the root is covered
+		if (covered) {
 			return true;
 		}
 	}
@@ -83,27 +84,30 @@ inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 }
 
 inline void __get_yields(
-	const urtree& t, node u,
+	const urtree& t, const LINARR& pi,
+	node u,
 	vector<bool>& vis,
-	vector<vector<node> >& yields
+	vector<vector<position> >& yields
 )
 {
+	// add this vertex to its own yield
+	auto& yu = yields[u];
+	yu.push_back(pi[u]);
+
 	vis[u] = true;
 	if (t.degree(u) == 1) {
 		// it is either the root or a leaf
 		if (vis[ t.get_neighbours(u)[0] ]) {
 			// its only neighbour has been visited --> leaf
-			// nothing else to do, stop recursion
+			// stop recursion
 			return;
 		}
 	}
 
 	for (node v : t.get_neighbours(u)) {
 		if (not vis[v]) {
-			__get_yields(t, v, vis, yields);
-			auto& yu = yields[u];
-			auto& yv = yields[v];
-			yu.push_back(v);
+			__get_yields(t,pi, v, vis, yields);
+			const auto& yv = yields[v];
 			yu.insert(yu.end(), yv.begin(), yv.end());
 		}
 	}
@@ -111,41 +115,52 @@ inline void __get_yields(
 	utils::sort_1_n_inc(yields[u].begin(), yields[u].end());
 }
 
+#define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 inline bool __disjoint_yields(
-	const uint64_t n,
-	const vector<vector<node> >& yields,
-	const LINARR& pi
+	const uint64_t n, const vector<vector<position> >& yields
 )
 {
 	bool disjoint_yields = true;
+	// for every pair of vertices
 	for (node u = 0; u < n; ++u) {
 	for (node v = u + 1; v < n; ++v) {
-		if (yields[u].size() == 0 or yields[v].size() == 0) { continue; }
+		const auto& yu = yields[u];
+		const auto& yv = yields[v];
 
-		for (size_t iu_1 = 0; iu_1 < yields[u].size(); ++iu_1) {
-		const node u1 = yields[u][iu_1];
-		for (size_t iu_2 = iu_1 + 1; iu_2 < yields[u].size(); ++iu_2) {
-		const node u2 = yields[u][iu_2];
-		for (size_t iv_1 = 0; iv_1 < yields[v].size(); ++iv_1) {
-		const node v1 = yields[v][iv_1];
-		for (size_t iv_2 = iv_1 + 1; iv_2 < yields[v].size(); ++iv_2) {
-		const node v2 = yields[v][iv_2];
+		for (size_t iu_1 = 0;        iu_1 < yu.size(); ++iu_1) {
+		const position u1 = yu[iu_1];
+		for (size_t iu_2 = iu_1 + 1; iu_2 < yu.size(); ++iu_2) {
+		const position u2 = yu[iu_2];
+		// sorted values u1,u2
+		const auto [su1,su2] = sort2(u1, u2);
+
+		for (size_t iv_1 = 0;        iv_1 < yv.size(); ++iv_1) {
+		const position v1 = yv[iv_1];
+		for (size_t iv_2 = iv_1 + 1; iv_2 < yv.size(); ++iv_2) {
+		const position v2 = yv[iv_2];
+		// sorted values v1,v2
+		const auto [sv1,sv2] = sort2(v1, v2);
 
 			disjoint_yields =
-				disjoint_yields and not
-				((pi[u1] < pi[v1] and pi[v1] < pi[u2] and pi[u2] < pi[v2]) or
-				 (pi[v1] < pi[u1] and pi[u1] < pi[v2] and pi[v2] < pi[u2]));
+				(su1 < sv1 and sv1 < su2 and su2 < sv2) or
+				(sv1 < su1 and su1 < sv2 and sv2 < su2);
+
+			if (disjoint_yields) { return true; }
 		}}}}
 	}}
-	return disjoint_yields;
+
+	return false;
 }
 
-inline uint64_t __get_discont(const uint64_t n, const vector<vector<node> >& yields) {
+inline
+uint64_t __get_n_discont(const uint64_t n, const vector<vector<node> >& yields)
+{
 	uint64_t max_dis = 0;
 	for (node u = 0; u < n; ++u) {
+		const auto& yu = yields[u];
 		uint64_t dis = 0;
-		for (size_t i = 1; i < yields[u].size(); ++i) {
-			if (yields[u][i] - yields[u][i - 1] > 1) {
+		for (size_t i = 1; i < yu.size(); ++i) {
+			if (yu[i] - yu[i - 1] > 1) {
 				++dis;
 			}
 		}
@@ -161,10 +176,11 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 		T[ pi[u] ] = u;
 	}
 
+	bool classified = false;
 	bool _1ec = false;
 
 	edge_iterator it1(Tree);
-	while (it1.has_next()) {
+	while (it1.has_next() and not classified) {
 		it1.next();
 		// check other edges crossing the current edge
 		const node s = it1.get_edge().first;
@@ -174,7 +190,7 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 		cout << "At position:  " << pi[s] << "," << pi[t] << endl;
 
 		// the edges crossing the current edge
-		set<edge> crossing;
+		vector<edge> crossing;
 
 		// iterate over the nodes between the endpoints
 		// of 'dep' in the linear arrangement
@@ -185,7 +201,7 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 				cout << "        neighbour " << v << " at " << pi[v] << endl;
 				if (pi[v] < p or q < pi[v]) {
 					// the edge (u,v) crosses (s,t)
-					crossing.insert(sort2(u,v));
+					crossing.push_back(sort2(u,v));
 					cout << "    edge " << u << "," << v << " crosses current." << endl;
 					cout << "    at   " << pi[u] << "," << pi[v] << endl;
 				}
@@ -196,7 +212,8 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 		// the edges that cross the current edge
 		uint32_t common = 0;
 		if (crossing.size() > 1) {
-			for (auto cit1 = crossing.begin(); cit1 != crossing.end(); ++cit1) {
+			auto cit1 = crossing.begin();
+			for (; cit1 != crossing.end(); ++cit1) {
 				auto cit2 = cit1;
 				++cit2;
 				for (; cit2 != crossing.end(); ++cit2) {
@@ -207,9 +224,18 @@ inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 				}
 			}
 		}
+
+		// If this tree does not belong to 1-EC,finish.
+		// Continue otherwise.
 		cout << "common vertices found: " << common << endl;
-		if (common >= 1) {
+		if (common == 1) {
 			_1ec = true;
+		}
+		else {
+			// There are 2 or more common nodes.
+			// This class is not defined.
+			_1ec = false;
+			classified = true;
 		}
 	}
 
@@ -231,16 +257,16 @@ inline tree_structure_type __get_syn_dep_tree_type(
 
 	// compute the yield of each node
 	const uint64_t n = Tree.n_nodes();
-	vector<vector<node> > yields(n);
+	vector<vector<position> > yields(n);
 	vector<bool> vis(n, false);
 
-	__get_yields(Tree, Tree.get_root(), vis, yields);
+	__get_yields(Tree,pi, Tree.get_root(), vis, yields);
 
 	// are the yields non-interleaving?
-	bool disjoint_yields = __disjoint_yields(n, yields, pi);
+	bool disjoint_yields = __disjoint_yields(n, yields);
 
 	// discontinuities in the yields
-	uint64_t max_dis = (disjoint_yields ? __get_discont(n, yields) : 0);
+	const uint64_t max_dis = (disjoint_yields ? __get_n_discont(n, yields) : 0);
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested
