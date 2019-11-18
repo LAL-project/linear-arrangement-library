@@ -81,7 +81,7 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 
 	BFS<ugraph> bfs(_t);
 	bfs.set_process_neighbour(
-	[&](const BFS<ugraph>&, node s, node t) -> void {
+	[&](const BFS<ugraph>&, const node s, const node t) -> void {
 		if (arb) {
 			// the tree is an arborescence, i.e., the
 			// edges point away from the root
@@ -113,12 +113,10 @@ void drtree::find_drtree_type() {
 	if (out_degree(get_root()) > 0) {
 		BFS<drtree> bfs(*this);
 		bfs.start_at(get_root());
-		auto vis_nodes = bfs.get_visited();
-		bool all_vis = find(vis_nodes.begin(), vis_nodes.end(), false) == vis_nodes.end();
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		m_drtree_type = (all_vis ? arborescence : none);
+		m_drtree_type = (bfs.all_visited() ? arborescence : none);
 		return;
 	}
 

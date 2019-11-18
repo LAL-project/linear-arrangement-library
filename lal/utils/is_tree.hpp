@@ -75,12 +75,12 @@ bool is_tree(const graphs::ugraph& g) {
 	bfs_trav.process_visited_neighbours(true);
 	// functions for the traversal
 	bfs_trav.set_terminate(
-	[&cycle_found](const BFS<G>&, node) -> bool {
+	[&cycle_found](const BFS<G>&, const node) -> bool {
 		return cycle_found;
 	}
 	);
 	bfs_trav.set_process_neighbour(
-	[&](const BFS<G>& bfs, node s, node t) -> void {
+	[&](const BFS<G>& bfs, const node s, const node t) -> void {
 		if (bfs.node_was_visited(t)) {
 			// if t was visted before then
 			//     "s -> t" and later "t -> s"
@@ -99,9 +99,7 @@ bool is_tree(const graphs::ugraph& g) {
 
 	// find cycles
 	bfs_trav.start_at(0);
-	auto vis = bfs_trav.get_visited();
-	bool all_vis = std::find(vis.begin(), vis.end(), false) == vis.end();
-	return not cycle_found and all_vis;
+	return not cycle_found and bfs_trav.all_visited();
 }
 
 } // -- namespace utils

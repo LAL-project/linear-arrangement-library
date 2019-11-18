@@ -120,12 +120,12 @@ inline bool has_cycles(const graphs::ugraph& g) {
 	bfs_trav.process_visited_neighbours(true);
 	// functions for the traversal
 	bfs_trav.set_terminate(
-	[&cycle_found](const BFS<G>&, node) -> bool {
+	[&cycle_found](const BFS<G>&, const node) -> bool {
 		return cycle_found;
 	}
 	);
 	bfs_trav.set_process_neighbour(
-	[&](const BFS<G>& bfs, node s, node t) -> void {
+	[&](const BFS<G>& bfs, const node s, const node t) -> void {
 		if (bfs.node_was_visited(t)) {
 			// if t was visted before then
 			//     "s -> t" and later "t -> s"

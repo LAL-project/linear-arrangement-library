@@ -64,7 +64,9 @@ class BFS {
 		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
 		 */
-		typedef std::function<bool (const BFS<G>& bfs, node s)> bfs_terminate;
+		typedef
+		std::function<bool (const BFS<G>& bfs, const node s)>
+		bfs_terminate;
 
 		/*
 		 * @brief BFS node processing function.
@@ -76,7 +78,9 @@ class BFS {
 		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
 		 */
-		typedef std::function<void (const BFS<G>& bfs, node s)> bfs_process_current;
+		typedef
+		std::function<void (const BFS<G>& bfs, const node s)>
+		bfs_process_current;
 
 		/*
 		 * @brief BFS node processing function.
@@ -90,7 +94,9 @@ class BFS {
 		 * @param s The node at the front of the queue of the algorithm.
 		 * @param t The node neighbour of @e u visited by the algorithm.
 		 */
-		typedef std::function<void (const BFS<G>& bfs, node s, node t)> bfs_process_neighbour;
+		typedef
+		std::function<void (const BFS<G>& bfs, const node s, const node t)>
+		bfs_process_neighbour;
 
 	public:
 		// Constructor
@@ -155,8 +161,7 @@ class BFS {
 		 * @param proc_neigh It is called in line 15 used to perform some
 		 * operation on each of the neighbours.
 		 */
-		void start_at(node source) {
-			m_start_node = source;
+		void start_at(const node source) {
 			m_Q.push(source);
 			m_vis[source] = true;
 			bool term = false;
@@ -191,17 +196,17 @@ class BFS {
 		/* SETTERS */
 
 		void set_terminate_default()
-		{ m_term = [](const BFS<G>&, node) -> bool { return false; }; }
+		{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
 		void set_terminate(bfs_terminate f)
 		{ m_term = f; }
 
 		void set_process_current_default()
-		{ m_proc_cur = [](const BFS<G>&, node) -> void { }; }
+		{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
 		void set_process_current(bfs_process_current f)
 		{ m_proc_cur = f; }
 
 		void set_process_neighbour_default()
-		{ m_proc_neigh = [](const BFS<G>&, node, node) -> void { }; }
+		{ m_proc_neigh = [](const BFS<G>&, const node, const node) -> void { }; }
 		void set_process_neighbour(bfs_process_neighbour f)
 		{ m_proc_neigh = f; }
 
@@ -226,10 +231,12 @@ class BFS {
 
 		/* GETTERS */
 
-		node get_start_node() const { return m_start_node; }
-
 		// Returns the set of visited nodes.
 		bool node_was_visited(node u) const { return m_vis[u]; }
+
+		bool all_visited() const {
+			return find(m_vis.begin(), m_vis.end(), false) == m_vis.end();
+		}
 
 		// Return visited nodes information
 		const std::vector<bool> get_visited() const { return m_vis; }
@@ -237,8 +244,6 @@ class BFS {
 	private:
 		// Constant reference to the graph.
 		const G& m_G;
-		// node where the traversal starts at
-		node m_start_node;
 		// The queue of the traversal.
 		std::queue<node> m_Q;
 		// The set of visited nodes.

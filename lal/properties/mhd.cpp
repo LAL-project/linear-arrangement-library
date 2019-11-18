@@ -59,7 +59,7 @@ rational MHD_rational(const urtree& tree) {
 
 	BFS<urtree> bfs(tree);
 	bfs.set_process_neighbour(
-	[&](const BFS<urtree>&, node s, node t) -> void {
+	[&](const BFS<urtree>&, const node s, const node t) -> void {
 		levels[t] = levels[s] + 1;
 		sum_distances += levels[t];
 	}

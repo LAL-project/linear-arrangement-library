@@ -64,7 +64,7 @@ namespace linarr {
 
 inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 	const node R = T.get_root();
-	iterators::edge_iterator it(T);
+	edge_iterator it(T);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();
