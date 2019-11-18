@@ -72,11 +72,9 @@ inline void compute_data_tree
 	// -----------------------------------------
 	// auxiliary memory and additional variables
 
-	// Auxiliar memory. Stores sum of degrees and sum of products of degrees.
-	uint64_t *all_memory = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
-
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	uint64_t *nds = &all_memory[0];
+	uint64_t *nds = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
+
 	// n<k^2>: second moment of degree about zero multiplied by n
 	uint64_t nk2 = 0;
 	// n<k^3>: third moment of degree about zero multiplied by n
@@ -85,17 +83,21 @@ inline void compute_data_tree
 	uint64_t Lg = 0;
 
 	// ----------------------
-	// precompute useful data
+	// precompute data
 
 	for (node s = 0; s < n; ++s) {
 		const uint64_t ks = g.degree(s);
+		// calculate n*<k^2>, n*<k^3>
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		nds[s] = 0;
-		for (const node& t : g.get_neighbours(s)) {
+		for (node t : g.get_neighbours(s)) {
 			const uint64_t kt = g.degree(t);
+
+			// calculate sum_{st in E} k_s*k_t
 			Lg += ks*kt;
+			// calculate for each s in V: sum_{t in Gamma(s)} k_t
 			nds[s] += kt;
 		}
 	}
@@ -137,10 +139,9 @@ inline void compute_data_tree
 	// we counted the amount of 5-paths twice
 	n_paths_5 /= 2;
 	// similarly, some things were counted twice
-	//ks_x_kt__p__ku_x_kv /= 2;
 	Phi_2 /= 2;
 
-	free(all_memory);
+	free(nds);
 }
 
 rational variance_C_tree_rational(const utree& g) {
