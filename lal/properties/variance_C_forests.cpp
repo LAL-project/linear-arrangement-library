@@ -49,90 +49,76 @@
 #include <queue>
 using namespace std;
 
+// lal includes
+#include <lal/iterators/edge_iterator.hpp>
+
 typedef uint64_t bigint;
 
 namespace lal {
 using namespace graphs;
 using namespace numeric;
+using namespace iterators;
 
 namespace properties {
 
-/*
- * Starting at vertex 'u', perform a BFS search to find
- * the connected components of the tree that vertex 'u'
- * belongs to.
- *
- * While finding the vertices in the connected component:
- *	- accumulates the sum of squares and cubes of the degrees
- *	- accumulates the value Lg = sum_{st in E} k_s*k_t
- *	- accumulates the neighbour degree product and neighbour degree sum
- */
-inline void find_tree_vertices(
-	const ugraph& g, const node u,
-	vector<node>& tree_nodes, vector<bool>& vis,
-	bigint& nk2, bigint& this_nk2, bigint& nk3, bigint& Lg,
-	bigint *nds
-)
-{
-	this_nk2 = 0;
-
-	queue<node> q;
-	q.push(u);
-	vis[u] = true;
-	tree_nodes.push_back(u);
-
-	const bigint ku = g.degree(u);
-	this_nk2 += ku*ku;
-	nk3 += ku*ku*ku;
-
-	while (not q.empty()) {
-		node s = q.front();
-		q.pop();
-		bigint ks = g.degree(s);
-
-		for (const node& t : g.get_neighbours(s)) {
-			if (not vis[t]) {
-				q.push(t);
-				tree_nodes.push_back(t);
-				vis[t] = true;
-
-				bigint kt = g.degree(t);
-				this_nk2 += kt*kt;
-				nk3 += kt*kt*kt;
-				Lg += kt*ks;
-
-				nds[s] += kt;
-				nds[t] += ks;
-			}
-		}
-	}
-
-	nk2 += this_nk2;
-}
-
-// m: number of edges of the WHOLE TREE
-inline void compute_data_tree
+inline void compute_data_forest
 (
-	const ugraph& g, const vector<node>& tree_nodes,
-	const bigint *nds, const bigint& nk2,
-	bigint& n_paths_4, bigint& n_paths_5,
+	const ugraph& g, const bigint& n, const bigint& m,
+	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
 )
 {
-	bigint n = tree_nodes.size();
+	// -----------------------------------------
+	// auxiliary memory and additional variables
 
-	// ------------------------
-	// start computing terms
+	// neighbour's degree sum: nds_s = sum_{st in E} k_t*(k_t - 1)
+	bigint *nds = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 
-	// st
-	for (node ps = 0; ps < n; ++ps) {
-	const node s = tree_nodes[ps];
-	const bigint ks = g.degree(s);
-	for (node t : g.get_neighbours(s)) {
-	const bigint kt = g.degree(t);
-	// no repetitions from this point on
-	if (s > t) { continue; }
+	// n<k^2>: second moment of degree about zero multiplied by n
+	uint64_t nk2 = 0;
+	// n<k^3>: third moment of degree about zero multiplied by n
+	uint64_t nk3 = 0;
+	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
+	uint64_t Lg = 0;
+
+	// ----------------------
+	// precompute data
+
+	for (node s = 0; s < n; ++s) {
+		const bigint ks = g.degree(s);
+		// calculate n*<k^2>, n*<k^3>
+		nk2 += ks*ks;
+		nk3 += ks*ks*ks;
+
+		nds[s] = 0;
+		for (node t : g.get_neighbours(s)) {
+			const bigint kt = g.degree(t);
+
+			// calculate sum_{st in E} k_s*k_t
+			Lg += ks*kt;
+			// calculate for each s in V: sum_{t in Gamma(s)} k_t
+			nds[s] += kt;
+		}
+	}
+	Lg /= 2;
+
+	// --------------------
+	// compute the variance
+
+	Qs = (m*(m + 1) - nk2)/2;
+	KG = (m + 1)*nk2 - nk3 - 2*Lg;
+	Phi_1 += (m + 1)*Lg;
+
+	edge_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge st = it.get_edge();
+		const node s = st.first;
+		const node t = st.second;
+
+		const bigint ks = g.degree(s);
+		const bigint kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
@@ -148,71 +134,6 @@ inline void compute_data_tree
 		Phi_2 +=
 			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
-	}
-}
-
-inline void compute_data_forest
-(
-	const ugraph& g, const bigint& n, const bigint& m,
-	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
-	bigint& Phi_1, bigint& Phi_2,
-	bigint& Lambda_1, bigint& Lambda_2
-)
-{
-	// Auxiliar memory. Stores sum of degrees and sum of products of degrees.
-	const bigint bytes = n*sizeof(bigint);
-	bigint *all_memory = static_cast<bigint *>(malloc(bytes));
-
-	// neighbour's degree sum: nds_s = sum_{st in E} k_t*(k_t - 1)
-	bigint *nds = &all_memory[0];
-	memset(all_memory, 0, bytes);
-
-	bigint n_vis = 0;
-	vector<bool> vis(n, false);
-	// nodes of each tree
-	vector<vector<node> > trees;
-	// first non-visited node in vis
-	node first_non_vis = 0;
-	// sum of squares and cubes of degrees per tree
-	bigint nk2 = 0, nk3 = 0;
-	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	bigint Lg = 0;
-
-	// -----------------------------
-	// retrieve connected components
-
-	while (n_vis < n) {
-		while (vis[first_non_vis]) {
-			++first_non_vis;
-		}
-
-		bigint tnk2;
-		trees.push_back(vector<node>());
-		find_tree_vertices(
-			g, first_non_vis, trees.back(), vis,
-			nk2, tnk2, nk3, Lg, nds
-		);
-
-		n_vis += trees.back().size();
-	}
-
-	// ------------------------
-	// start computing variance
-
-	// the size of Q of a forest can be calculated
-	// just like the size of Q of any simple graph
-	Qs = (m*(m + 1) - nk2)/2;
-	KG = (m + 1)*nk2 - nk3 - 2*Lg;
-	Phi_1 = (m + 1)*Lg;
-
-	for (const vector<node>& T : trees) {
-		compute_data_tree(
-			g, T, nds, nk2,
-			n_paths_4, n_paths_5,
-			Phi_1, Phi_2,
-			Lambda_1, Lambda_2
-		);
-	}
 
 	// finish calculating Lambda_2
 	Lambda_2 += Lambda_1;
@@ -220,10 +141,9 @@ inline void compute_data_forest
 	// we counted the amount of 5-paths twice
 	n_paths_5 /= 2;
 	// similarly, some things were counted twice
-	//ks_x_kt__p__ku_x_kv /= 2;
 	Phi_2 /= 2;
 
-	free(all_memory);
+	free(nds);
 }
 
 rational variance_C_forest_rational(const ugraph& g) {
