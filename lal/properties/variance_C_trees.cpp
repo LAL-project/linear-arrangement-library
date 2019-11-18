@@ -58,7 +58,6 @@ using namespace iterators;
 namespace properties {
 
 // ------------------------------
-// Variance of C in using formula
 // TREES
 
 inline void compute_data_tree
@@ -72,7 +71,7 @@ inline void compute_data_tree
 	// -----------------------------------------
 	// auxiliary memory and additional variables
 
-	// neighbour's degree sum: nds_s = sum_{st in E} k_t
+	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
 	uint64_t *nds = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 
 	// n<k^2>: second moment of degree about zero multiplied by n
@@ -108,15 +107,16 @@ inline void compute_data_tree
 
 	Qs = (n*(n - 1) - nk2)/2;
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
-	Phi_1 = (m + 1)*Lg;
+	Phi_1 += (m + 1)*Lg;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		const edge st = it.get_edge();
 		const node s = st.first;
-		const uint64_t ks = g.degree(s);
 		const node t = st.second;
+
+		const uint64_t ks = g.degree(s);
 		const uint64_t kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
@@ -133,7 +133,8 @@ inline void compute_data_tree
 		Phi_2 +=
 			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
-	// complete calculating Lambda_2
+
+	// finish calculating Lambda_2
 	Lambda_2 += Lambda_1;
 
 	// we counted the amount of 5-paths twice

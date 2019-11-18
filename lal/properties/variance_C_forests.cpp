@@ -42,17 +42,13 @@
 
 // C includes
 #include <assert.h>
-#include <string.h>
 
 // C++ includes
 #include <vector>
-#include <queue>
 using namespace std;
 
 // lal includes
 #include <lal/iterators/edge_iterator.hpp>
-
-typedef uint64_t bigint;
 
 namespace lal {
 using namespace graphs;
@@ -61,19 +57,22 @@ using namespace iterators;
 
 namespace properties {
 
+// ------------------------------
+// FORESTS
+
 inline void compute_data_forest
 (
-	const ugraph& g, const bigint& n, const bigint& m,
-	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
-	bigint& Phi_1, bigint& Phi_2,
-	bigint& Lambda_1, bigint& Lambda_2
+	const ugraph& g, const uint64_t& n, const uint64_t& m,
+	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
+	uint64_t& Phi_1, uint64_t& Phi_2,
+	uint64_t& Lambda_1, uint64_t& Lambda_2
 )
 {
 	// -----------------------------------------
 	// auxiliary memory and additional variables
 
-	// neighbour's degree sum: nds_s = sum_{st in E} k_t*(k_t - 1)
-	bigint *nds = static_cast<bigint *>(malloc(n*sizeof(bigint)));
+	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
+	uint64_t *nds = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 
 	// n<k^2>: second moment of degree about zero multiplied by n
 	uint64_t nk2 = 0;
@@ -86,14 +85,14 @@ inline void compute_data_forest
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.degree(s);
+		const uint64_t ks = g.degree(s);
 		// calculate n*<k^2>, n*<k^3>
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		nds[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const bigint kt = g.degree(t);
+			const uint64_t kt = g.degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
 			Lg += ks*kt;
@@ -103,8 +102,8 @@ inline void compute_data_forest
 	}
 	Lg /= 2;
 
-	// --------------------
-	// compute the variance
+	// ------------------------
+	// start computing variance
 
 	Qs = (m*(m + 1) - nk2)/2;
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
@@ -117,15 +116,15 @@ inline void compute_data_forest
 		const node s = st.first;
 		const node t = st.second;
 
-		const bigint ks = g.degree(s);
-		const bigint kt = g.degree(t);
+		const uint64_t ks = g.degree(s);
+		const uint64_t kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
 					 (ks - 1)*(nds[t] - kt - ks + 1);
 
-		const bigint eps1 = nds[s] - kt;
-		const bigint eps2 = nds[t] - ks;
+		const uint64_t eps1 = nds[s] - kt;
+		const uint64_t eps2 = nds[t] - ks;
 
 		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
 		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
@@ -147,32 +146,32 @@ inline void compute_data_forest
 }
 
 rational variance_C_forest_rational(const ugraph& g) {
-	const bigint n = g.n_nodes();
-	const bigint m = g.n_edges();
+	const uint64_t n = g.n_nodes();
+	const uint64_t m = g.n_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
 
-	// bigint of set Q
-	bigint Qs = 0;
+	// uint64_t of set Q
+	uint64_t Qs = 0;
 
 	// n_G(L_4)
-	bigint n_paths_4 = 0;
+	uint64_t n_paths_4 = 0;
 	// n_G(L_5)
-	bigint n_paths_5 = 0;
+	uint64_t n_paths_5 = 0;
 
 	// k_s + k_t + k_u + k_v
-	bigint KG = 0;
+	uint64_t KG = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint Phi_1 = 0;
+	uint64_t Phi_1 = 0;
 	// (k_s + k_t)(k_u + k_v)
-	bigint Phi_2 = 0;
+	uint64_t Phi_2 = 0;
 
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint Lambda_1 = 0;
+	uint64_t Lambda_1 = 0;
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint Lambda_2 = 0;
+	uint64_t Lambda_2 = 0;
 
 	compute_data_forest
 	(
