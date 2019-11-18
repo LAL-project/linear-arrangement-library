@@ -69,8 +69,8 @@ inline void compute_data_gen_graphs_Q
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
 	bigint& n_paths_5, bigint& pair_C3_L2,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum__pair__adj_x_deg
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 	// adjacency matrix
@@ -93,16 +93,16 @@ inline void compute_data_gen_graphs_Q
 		n_paths_4 += A[s][u] + A[s][v] + A[t][u] + A[t][v];
 
 		Kg += ks + kt + ku + kv;
-		ks_p_kt__x__ku_p_kv += (ks + kt)*(ku + kv);
-		ks_x_kt__p__ku_x_kv += (ks*kt + ku*kv);
+		Phi_2 += (ks + kt)*(ku + kv);
+		Phi_1 += (ks*kt + ku*kv);
 
 		graphlet += (A[t][u] + A[s][v])*(A[t][v] + A[s][u]);
 
-		sum_adjs__x__sum_degs +=
+		Lambda_2 +=
 			(A[s][u] + A[s][v] + A[t][u] + A[t][v])*
 			(ks + kt + ku + kv);
 
-		sum__pair__adj_x_deg +=
+		Lambda_1 +=
 			ks*(A[t][u] + A[t][v]) +
 			kt*(A[s][u] + A[s][v]) +
 			ku*(A[s][v] + A[t][v]) +
@@ -154,16 +154,16 @@ rational variance_C_rational_Q(const ugraph& g, const vector<edge_pair>& Q) {
 
 	// k_s + k_t + k_u + k_v
 	bigint Kg = 0;
-	// (k_s + k_t)(k_u + k_v)
-	bigint ks_p_kt__x__ku_p_kv = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint ks_x_kt__p__ku_x_kv = 0;
+	bigint Phi_1 = 0;
+	// (k_s + k_t)(k_u + k_v)
+	bigint Phi_2 = 0;
 
-	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint sum_adjs__x__sum_degs = 0;
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint sum__pair__adj_x_deg = 0;
+	bigint Lambda_1 = 0;
+	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
+	bigint Lambda_2 = 0;
 
 	compute_data_gen_graphs_Q
 	(
@@ -171,8 +171,8 @@ rational variance_C_rational_Q(const ugraph& g, const vector<edge_pair>& Q) {
 		Qs, Kg,
 		n_paths_4, n_cycles_4, graphlet,
 		n_paths_5, pair_C3_L2,
-		ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-		sum_adjs__x__sum_degs, sum__pair__adj_x_deg
+		Phi_1, Phi_2,
+		Lambda_1, Lambda_2
 	);
 
 	integer J(0);
@@ -194,16 +194,16 @@ rational variance_C_rational_Q(const ugraph& g, const vector<edge_pair>& Q) {
 	J.init_ui(n_cycles_4);
 	V -= rational(3,45)*J;
 
-	J.init_ui(sum__pair__adj_x_deg);
+	J.init_ui(Lambda_1);
 	V -= rational(1,60)*J;
 
-	J.init_ui(sum_adjs__x__sum_degs);
+	J.init_ui(Lambda_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_p_kt__x__ku_p_kv);
+	J.init_ui(Phi_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_x_kt__p__ku_x_kv);
+	J.init_ui(Phi_1);
 	V -= rational(1,90)*J;
 
 	J.init_ui(graphlet);
@@ -215,8 +215,7 @@ rational variance_C_rational_Q(const ugraph& g, const vector<edge_pair>& Q) {
 }
 
 double variance_C_Q(const ugraph& g, const vector<edge_pair>& Q) {
-	rational V = variance_C_rational_Q(g, Q);
-	return V.to_double();
+	return variance_C_rational_Q(g, Q).to_double();
 }
 
 } // -- namespace properties

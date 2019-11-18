@@ -65,8 +65,8 @@ inline void compute_data_tree
 (
 	const utree& g, const uint64_t& n, const uint64_t& m,
 	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
-	uint64_t& ks_p_kt__x__ku_p_kv, uint64_t& ks_x_kt__p__ku_x_kv,
-	uint64_t& sum_adjs__x__sum_degs, uint64_t& sum_prod_pair_adj_deg
+	uint64_t& Phi_1, uint64_t& Phi_2,
+	uint64_t& Lambda_1, uint64_t& Lambda_2
 )
 {
 	// -----------------------------------------
@@ -106,7 +106,7 @@ inline void compute_data_tree
 
 	Qs = (n*(n - 1) - nk2)/2;
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
-	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
+	Phi_1 = (m + 1)*Lg;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
@@ -124,22 +124,21 @@ inline void compute_data_tree
 		const uint64_t eps1 = nds[s] - kt;
 		const uint64_t eps2 = nds[t] - ks;
 
-		sum_adjs__x__sum_degs +=
-			(ks - 1)*(kt - 1)*(ks + kt) + (kt - 1)*eps1 + (ks - 1)*eps2;
+		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
+		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
 
-		sum_prod_pair_adj_deg +=
-			(ks - 1)*eps2 + (kt - 1)*eps1;
-
-		ks_x_kt__p__ku_x_kv -= ks*kt*(ks + kt);
-		ks_p_kt__x__ku_p_kv +=
+		Phi_1 -= ks*kt*(ks + kt);
+		Phi_2 +=
 			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
+	// complete calculating Lambda_2
+	Lambda_2 += Lambda_1;
 
 	// we counted the amount of 5-paths twice
 	n_paths_5 /= 2;
 	// similarly, some things were counted twice
 	//ks_x_kt__p__ku_x_kv /= 2;
-	ks_p_kt__x__ku_p_kv /= 2;
+	Phi_2 /= 2;
 
 	free(all_memory);
 }
@@ -161,23 +160,23 @@ rational variance_C_tree_rational(const utree& g) {
 
 	// k_s + k_t + k_u + k_v
 	uint64_t KG = 0;
-	// (k_s + k_t)(k_u + k_v)
-	uint64_t ks_p_kt__x__ku_p_kv = 0;
 	// (k_s*k_t + k_u*k_v)
-	uint64_t ks_x_kt__p__ku_x_kv = 0;
+	uint64_t Phi_1 = 0;
+	// (k_s + k_t)(k_u + k_v)
+	uint64_t Phi_2 = 0;
 
-	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	uint64_t sum_adjs__x__sum_degs = 0;
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	uint64_t sum_prod_pair_adj_deg = 0;
+	uint64_t Lambda_1 = 0;
+	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
+	uint64_t Lambda_2 = 0;
 
 	compute_data_tree
 	(
 		g, n, m,
 		Qs, n_paths_4, n_paths_5, KG,
-		ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-		sum_adjs__x__sum_degs, sum_prod_pair_adj_deg
+		Phi_1, Phi_2,
+		Lambda_1, Lambda_2
 	);
 
 	integer J(0);
@@ -196,23 +195,22 @@ rational variance_C_tree_rational(const utree& g) {
 	J.init_ui(KG);
 	V += rational(1,90)*J;
 
-	J.init_ui(sum_prod_pair_adj_deg);
+	J.init_ui(Lambda_1);
 	V -= rational(1,60)*J;
 
-	J.init_ui(sum_adjs__x__sum_degs);
+	J.init_ui(Lambda_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_p_kt__x__ku_p_kv);
+	J.init_ui(Phi_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_x_kt__p__ku_x_kv);
+	J.init_ui(Phi_1);
 	V -= rational(1,90)*J;
 	return V;
 }
 
 double variance_C_tree(const utree& g) {
-	rational V = variance_C_tree_rational(g);
-	return V.to_double();
+	return variance_C_tree_rational(g).to_double();
 }
 
 } // -- namespace properties

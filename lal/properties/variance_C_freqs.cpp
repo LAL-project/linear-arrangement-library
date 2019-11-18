@@ -81,10 +81,10 @@ int phi(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
 
 inline constexpr
 int subtype(const edge& st, const edge& uv, const edge& wx, const edge& yz) {
-	int e1e3 = share(st, wx);
-	int e1e4 = share(st, yz);
-	int e2e3 = share(uv, wx);
-	int e2e4 = share(uv, yz);
+	const int e1e3 = share(st, wx);
+	const int e1e4 = share(st, yz);
+	const int e2e3 = share(uv, wx);
+	const int e2e4 = share(uv, yz);
 
 	if (e1e3 == 1 and e1e4 == 0 and e2e3 == 0 and e2e4 == 1) {
 		return 2;
@@ -136,7 +136,7 @@ frequency_type edge_pair_type(const edge_pair& ep1, const edge_pair& ep2)
 	}
 
 	// tau=0, phi=2
-	int s = subtype(st, uv, wx, yz);
+	const int s = subtype(st, uv, wx, yz);
 	if (s == 1) {
 		return frequency_type::f021;
 	}
@@ -174,14 +174,12 @@ namespace properties {
 
 rational variance_C_freqs_rational(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
-	vector<edge_pair> Q = g.Q();
-	return variance_C_freqs_Q_rational(Q, nthreads);
+	return variance_C_freqs_Q_rational(g.Q(), nthreads);
 }
 
 double variance_C_freqs(const ugraph& g, uint32_t nthreads) {
 	// compute set Q(g)
-	vector<edge_pair> Q = g.Q();
-	return variance_C_freqs_Q(Q, nthreads);
+	return variance_C_freqs_Q(g.Q(), nthreads);
 }
 
 rational variance_C_freqs_Q_rational(const vector<edge_pair>& Q, uint32_t nthreads) {
@@ -276,8 +274,7 @@ rational variance_C_freqs_Q_rational(const vector<edge_pair>& Q, uint32_t nthrea
 
 double variance_C_freqs_Q(const vector<edge_pair>& Q, uint32_t nthreads) {
 	assert(nthreads > 0);
-	rational V = variance_C_freqs_Q_rational(Q, nthreads);
-	return V.to_double();
+	return variance_C_freqs_Q_rational(Q, nthreads).to_double();
 }
 
 } // -- namespace properties

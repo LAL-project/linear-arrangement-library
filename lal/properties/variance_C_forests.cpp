@@ -116,8 +116,8 @@ inline void compute_data_tree
 	const ugraph& g, const vector<node>& tree_nodes,
 	const bigint *nds, const bigint& nk2,
 	bigint& n_paths_4, bigint& n_paths_5,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& inner_ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum_prod_pair_adj_deg
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 	bigint n = tree_nodes.size();
@@ -141,14 +141,11 @@ inline void compute_data_tree
 		const bigint eps1 = nds[s] - kt;
 		const bigint eps2 = nds[t] - ks;
 
-		sum_adjs__x__sum_degs +=
-			(ks - 1)*(kt - 1)*(ks + kt) + (kt - 1)*eps1 + (ks - 1)*eps2;
+		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
+		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
 
-		sum_prod_pair_adj_deg +=
-			(ks - 1)*eps2 + (kt - 1)*eps1;
-
-		inner_ks_x_kt__p__ku_x_kv -= ks*kt*(ks + kt);
-		ks_p_kt__x__ku_p_kv +=
+		Phi_1 -= ks*kt*(ks + kt);
+		Phi_2 +=
 			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
 	}
@@ -158,8 +155,8 @@ inline void compute_data_forest
 (
 	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum_prod_pair_adj_deg
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 	// Auxiliar memory. Stores sum of degrees and sum of products of degrees.
@@ -177,11 +174,9 @@ inline void compute_data_forest
 	// first non-visited node in vis
 	node first_non_vis = 0;
 	// sum of squares and cubes of degrees per tree
-	bigint nk2, nk3;
+	bigint nk2 = 0, nk3 = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	bigint Lg;
-
-	nk2 = nk3 = Lg = 0;
+	bigint Lg = 0;
 
 	// -----------------------------
 	// retrieve connected components
@@ -208,22 +203,25 @@ inline void compute_data_forest
 	// just like the size of Q of any simple graph
 	Qs = (m*(m + 1) - nk2)/2;
 	KG = (m + 1)*nk2 - nk3 - 2*Lg;
-	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
+	Phi_1 = (m + 1)*Lg;
 
 	for (const vector<node>& T : trees) {
 		compute_data_tree(
 			g, T, nds, nk2,
 			n_paths_4, n_paths_5,
-			ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-			sum_adjs__x__sum_degs, sum_prod_pair_adj_deg
+			Phi_1, Phi_2,
+			Lambda_1, Lambda_2
 		);
 	}
+
+	// finish calculating Lambda_2
+	Lambda_2 += Lambda_1;
 
 	// we counted the amount of 5-paths twice
 	n_paths_5 /= 2;
 	// similarly, some things were counted twice
 	//ks_x_kt__p__ku_x_kv /= 2;
-	ks_p_kt__x__ku_p_kv /= 2;
+	Phi_2 /= 2;
 
 	free(all_memory);
 }
@@ -245,23 +243,23 @@ rational variance_C_forest_rational(const ugraph& g) {
 
 	// k_s + k_t + k_u + k_v
 	bigint KG = 0;
-	// (k_s + k_t)(k_u + k_v)
-	bigint ks_p_kt__x__ku_p_kv = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint ks_x_kt__p__ku_x_kv = 0;
+	bigint Phi_1 = 0;
+	// (k_s + k_t)(k_u + k_v)
+	bigint Phi_2 = 0;
 
-	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint sum_adjs__x__sum_degs = 0;
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint sum_prod_pair_adj_deg = 0;
+	bigint Lambda_1 = 0;
+	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
+	bigint Lambda_2 = 0;
 
 	compute_data_forest
 	(
 		g, n, m,
 		Qs, n_paths_4, n_paths_5, KG,
-		ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-		sum_adjs__x__sum_degs, sum_prod_pair_adj_deg
+		Phi_1, Phi_2,
+		Lambda_1, Lambda_2
 	);
 
 	integer J(0);
@@ -280,23 +278,22 @@ rational variance_C_forest_rational(const ugraph& g) {
 	J.init_ui(KG);
 	V += rational(1,90)*J;
 
-	J.init_ui(sum_prod_pair_adj_deg);
+	J.init_ui(Lambda_1);
 	V -= rational(1,60)*J;
 
-	J.init_ui(sum_adjs__x__sum_degs);
+	J.init_ui(Lambda_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_p_kt__x__ku_p_kv);
+	J.init_ui(Phi_2);
 	V += rational(1,180)*J;
 
-	J.init_ui(ks_x_kt__p__ku_x_kv);
+	J.init_ui(Phi_1);
 	V -= rational(1,90)*J;
 	return V;
 }
 
 double variance_C_forest(const ugraph& g) {
-	rational V = variance_C_forest_rational(g);
-	return V.to_double();
+	return variance_C_forest_rational(g).to_double();
 }
 
 } // -- namespace properties

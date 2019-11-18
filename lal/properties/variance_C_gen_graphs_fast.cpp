@@ -108,8 +108,8 @@ inline void compute_data_gen_graphs
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
 	bigint& n_paths_5, bigint& pair_C3_L2,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum__pair__adj_x_deg
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 
@@ -152,8 +152,8 @@ inline void compute_data_gen_graphs
 
 	Qs = (m*(m + 1) - nk2)/2;
 	Kg = (m + 1)*nk2 - nk3 - 2*Lg;
-	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
-	ks_p_kt__x__ku_p_kv = nk2*nk2;
+	Phi_1 = (m + 1)*Lg;
+	Phi_2 = nk2*nk2;
 
 	for (node s = 0; s < n; ++s) {
 		const bigint ks = g.degree(s);
@@ -218,13 +218,13 @@ inline void compute_data_gen_graphs
 			pair_C3_L2 += m - ks - kt - g.degree(Ns[idx2]) + 3;
 		)
 
-		ks_x_kt__p__ku_x_kv -= ks*kt*(ks + kt);
-		ks_p_kt__x__ku_p_kv -=
+		Phi_1 -= ks*kt*(ks + kt);
+		Phi_2 -=
 			(ks + kt)*(nds[s] + nds[t] + kt*(kt - 1) + ks*(ks - 1));
 
-		sum__pair__adj_x_deg += ks*(nds[t] - ks - kt + 1) + (kt - 1)*(nds[s] - kt);
-		sum__pair__adj_x_deg += kt*(nds[s] - ks - kt + 1) + (ks - 1)*(nds[t] - ks);
-		sum__pair__adj_x_deg -= 2*common_st*(ks + kt);
+		Lambda_1 += ks*(nds[t] - ks - kt + 1) + (kt - 1)*(nds[s] - kt);
+		Lambda_1 += kt*(nds[s] - ks - kt + 1) + (ks - 1)*(nds[t] - ks);
+		Lambda_1 -= 2*common_st*(ks + kt);
 
 		npaths4_c1 += nds[t] + nds[s];
 		npaths4_c2 += common_st;
@@ -234,15 +234,15 @@ inline void compute_data_gen_graphs
 	}
 
 	for (node s = 0; s < n; ++s) {
-		sum_adjs__x__sum_degs += g.degree(s)*npaths[s];
+		Lambda_2 += g.degree(s)*npaths[s];
 	}
 
-	ks_p_kt__x__ku_p_kv /= 2;
+	Phi_2 /= 2;
 	n_paths_4 = m - nk2 + npaths4_c1/2 - npaths4_c2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
-	sum__pair__adj_x_deg /= 2;
+	Lambda_1 /= 2;
 
 	// deallocate memory
 	free(all_memory);
@@ -260,8 +260,8 @@ inline void compute_data_gen_graphs_reuse
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
 	bigint& n_paths_5, bigint& pair_C3_L2,
-	bigint& ks_p_kt__x__ku_p_kv, bigint& ks_x_kt__p__ku_x_kv,
-	bigint& sum_adjs__x__sum_degs, bigint& sum__pair__adj_x_deg
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 
@@ -309,8 +309,8 @@ inline void compute_data_gen_graphs_reuse
 
 	Qs = (m*(m + 1) - nk2)/2;
 	Kg = (m + 1)*nk2 - nk3 - 2*Lg;
-	ks_x_kt__p__ku_x_kv = (m + 1)*Lg;
-	ks_p_kt__x__ku_p_kv = nk2*nk2;
+	Phi_1 = (m + 1)*Lg;
+	Phi_2 = nk2*nk2;
 
 	for (node s = 0; s < n; ++s) {
 		const bigint ks = g.degree(s);
@@ -423,13 +423,13 @@ inline void compute_data_gen_graphs_reuse
 		graphlet += deg_sum_st - 2*common_st;
 		pair_C3_L2 += common_st*(m - ks - kt + 3) - deg_sum_st;
 
-		ks_x_kt__p__ku_x_kv -= ks*kt*(ks + kt);
-		ks_p_kt__x__ku_p_kv -=
+		Phi_1 -= ks*kt*(ks + kt);
+		Phi_2 -=
 			(ks + kt)*(nds[s] + nds[t] + kt*(kt - 1) + ks*(ks - 1));
 
-		sum__pair__adj_x_deg += ks*(nds[t] - ks - kt + 1) + (kt - 1)*(nds[s] - kt);
-		sum__pair__adj_x_deg += kt*(nds[s] - ks - kt + 1) + (ks - 1)*(nds[t] - ks);
-		sum__pair__adj_x_deg -= 2*common_st*(ks + kt);
+		Lambda_1 += ks*(nds[t] - ks - kt + 1) + (kt - 1)*(nds[s] - kt);
+		Lambda_1 += kt*(nds[s] - ks - kt + 1) + (ks - 1)*(nds[t] - ks);
+		Lambda_1 -= 2*common_st*(ks + kt);
 
 		npaths4_c1 += nds[t] + nds[s];
 		npaths4_c2 += common_st;
@@ -439,15 +439,15 @@ inline void compute_data_gen_graphs_reuse
 	}
 
 	for (node s = 0; s < n; ++s) {
-		sum_adjs__x__sum_degs += g.degree(s)*npaths[s];
+		Lambda_2 += g.degree(s)*npaths[s];
 	}
 
-	ks_p_kt__x__ku_p_kv /= 2;
+	Phi_2 /= 2;
 	n_paths_4 = m - nk2 + npaths4_c1/2 - npaths4_c2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
-	sum__pair__adj_x_deg /= 2;
+	Lambda_1 /= 2;
 
 	// deallocate memory
 	free(all_memory);
@@ -480,16 +480,16 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 
 	// k_s + k_t + k_u + k_v
 	bigint Kg = 0;
-	// (k_s + k_t)(k_u + k_v)
-	bigint ks_p_kt__x__ku_p_kv = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint ks_x_kt__p__ku_x_kv = 0;
+	bigint Phi_1 = 0;
+	// (k_s + k_t)(k_u + k_v)
+	bigint Phi_2 = 0;
 
-	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint sum_adjs__x__sum_degs = 0;
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint sum__pair__adj_x_deg = 0;
+	bigint Lambda_1 = 0;
+	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
+	bigint Lambda_2 = 0;
 
 	if (reuse) {
 		compute_data_gen_graphs_reuse
@@ -498,8 +498,8 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 			Qs, Kg,
 			n_paths_4, n_cycles_4, graphlet,
 			n_paths_5, pair_C3_L2,
-			ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-			sum_adjs__x__sum_degs, sum__pair__adj_x_deg
+			Phi_1, Phi_2,
+			Lambda_1, Lambda_2
 		);
 	}
 	else {
@@ -509,8 +509,8 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 			Qs, Kg,
 			n_paths_4, n_cycles_4, graphlet,
 			n_paths_5, pair_C3_L2,
-			ks_p_kt__x__ku_p_kv, ks_x_kt__p__ku_x_kv,
-			sum_adjs__x__sum_degs, sum__pair__adj_x_deg
+			Phi_1, Phi_2,
+			Lambda_1, Lambda_2
 		);
 	}
 
@@ -518,24 +518,23 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 
 	// V[C]
 	rational V(0);
-	J.init_ui((m + 2)*Qs);				V += rational(2,45)*J;
-	J.init_ui((2*m + 7)*n_paths_4);		V -= rational(1,180)*J;
-	J.init_ui(n_paths_5);				V -= rational(1,180)*J;
-	J.init_ui(Kg);						V += rational(1,90)*J;
-	J.init_ui(n_cycles_4);				V -= rational(3,45)*J;
-	J.init_ui(sum__pair__adj_x_deg);	V -= rational(1,60)*J;
-	J.init_ui(sum_adjs__x__sum_degs);	V += rational(1,180)*J;
-	J.init_ui(ks_p_kt__x__ku_p_kv);		V += rational(1,180)*J;
-	J.init_ui(ks_x_kt__p__ku_x_kv);		V -= rational(1,90)*J;
-	J.init_ui(graphlet);				V += rational(1,30)*J;
-	J.init_ui(pair_C3_L2);				V += rational(1,30)*J;
+	J.init_ui((m + 2)*Qs);			V += rational(2,45)*J;
+	J.init_ui((2*m + 7)*n_paths_4);	V -= rational(1,180)*J;
+	J.init_ui(n_paths_5);			V -= rational(1,180)*J;
+	J.init_ui(Kg);					V += rational(1,90)*J;
+	J.init_ui(n_cycles_4);			V -= rational(3,45)*J;
+	J.init_ui(Lambda_1);			V -= rational(1,60)*J;
+	J.init_ui(Lambda_2);			V += rational(1,180)*J;
+	J.init_ui(Phi_2);				V += rational(1,180)*J;
+	J.init_ui(Phi_1);				V -= rational(1,90)*J;
+	J.init_ui(graphlet);			V += rational(1,30)*J;
+	J.init_ui(pair_C3_L2);			V += rational(1,30)*J;
 	return V;
 }
 
 double variance_C(const ugraph& g, bool reuse) {
 	assert(g.is_normalised());
-	rational V = variance_C_rational(g, reuse);
-	return V.to_double();
+	return variance_C_rational(g, reuse).to_double();
 }
 
 } // -- namespace properties
