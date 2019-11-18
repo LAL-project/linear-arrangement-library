@@ -19,7 +19,7 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -DNDEBUG -fstrict-aliasing
 QMAKE_CXXFLAGS +=										\
     -Wpedantic -Wshadow -Wall -Wextra -Wconversion		\
     -Wold-style-cast -Wrestrict -Wduplicated-cond		\
-    -Wnon-virtual-dtor -Woverloaded-virtual
+    -Wnon-virtual-dtor -Woverloaded-virtual -Wshadow
 
 QMAKE_CXXFLAGS += -fopenmp
 
