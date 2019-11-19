@@ -54,7 +54,7 @@ using namespace numeric;
 
 namespace properties {
 
-integer size_Q_integer(const graph& g) {
+inline integer __size_Q_integer(const ugraph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -67,6 +67,28 @@ integer size_Q_integer(const graph& g) {
 	q -= nk2;
 	q /= 2;
 	return q;
+}
+
+inline integer __size_Q_integer(const dgraph& g) {
+	// sum of squared degrees
+	integer nk2(0);
+	for (node u = 0; u < g.n_nodes(); ++u) {
+		const uint64_t ku = g.in_degree(u) + g.out_degree(u);
+		nk2 += ku*ku;
+	}
+
+	const uint64_t m = g.n_edges();
+	integer q = integer_from_ui(m*(m + 1));
+	q -= nk2;
+	q /= 2;
+	return q;
+}
+
+integer size_Q_integer(const graph& g) {
+	return (g.is_directed() ?
+		__size_Q_integer(dynamic_cast<const dgraph&>(g)) :
+		__size_Q_integer(dynamic_cast<const ugraph&>(g))
+	);
 }
 
 uint64_t size_Q(const graph& g) {

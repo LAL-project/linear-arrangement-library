@@ -108,8 +108,8 @@ void drtree::find_drtree_type() {
 	assert(has_root());
 
 	// First case: the tree is NOT an anti-arborescence.
-	// Do a BFS from the root. Make sure that all leaves have
-	// been reached. If so, the tree is an arborescence.
+	// Do a BFS from the root. Make sure that all leaves
+	// can be reached. If so, the tree is an arborescence.
 	if (out_degree(get_root()) > 0) {
 		BFS<drtree> bfs(*this);
 		bfs.start_at(get_root());

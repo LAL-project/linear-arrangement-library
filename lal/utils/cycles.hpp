@@ -43,6 +43,7 @@
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/dgraph.hpp>
 #include <lal/utils/bfs.hpp>
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 namespace utils {
@@ -56,9 +57,10 @@ namespace __lal {
  * @param visited For each node, has it been visited?
  * @param in_stack For each node, is it in the recursion stack?
  */
+template<class G>
 inline bool __find_cycle
 (
-	const graphs::graph& g, node u,
+	const G& g, node u,
 	std::vector<bool>& visited, std::vector<bool>& in_stack
 )
 {

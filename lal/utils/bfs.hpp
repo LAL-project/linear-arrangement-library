@@ -47,6 +47,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 namespace utils {

@@ -44,47 +44,109 @@
 #include <ostream>
 
 // lal includes
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
 namespace lal {
 namespace graphs {
 
 /**
- * @brief Standard output operator for most graphs.
+ * @brief Standard output operator for undirected graphs.
  *
  * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
  * @param os ostream C++ object
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const graph& g)
+inline std::ostream& operator<< (std::ostream& os, const ugraph& g)
 {
-   const uint64_t n = g.n_nodes();
-   for (node u = 0; u < n; ++u) {
-	   os << u << ":";
-	   for (auto v : g.get_neighbours(u)) {
-		   os << " " << v;
-	   }
-	   os << (u < n - 1 ? "\n" : "");
-   }
-   return os;
+	const auto N = g.n_nodes();
+	for (node u = 0; u < N; ++u) {
+		os << u << ":";
+		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
 }
 
 /**
- * @brief Standard output operator for rooted trees.
+ * @brief Standard output operator for directed graphs.
+ *
+ * Usable by: @ref ugraph, @ref dgraph, @ref utree, @ref dtree
+ * @param os ostream C++ object
+ * @param g Input graph.
+ * @returns Returns the output stream.
+ */
+inline std::ostream& operator<< (std::ostream& os, const dgraph& g)
+{
+	const auto N = g.n_nodes();
+	os << "out:" << "\n";
+	for (node u = 0; u < N; ++u) {
+		os << u << ":";
+		for (auto v : g.get_out_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	os << "\n" << "in:" << "\n";
+	for (node u = 0; u < N; ++u) {
+		os << u << ":";
+		for (auto v : g.get_in_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
+}
+
+/**
+ * @brief Standard output operator for undirected rooted trees.
  *
  * Usable by: @ref drtree, @ref urtree.
  * @param os ostream C++ object
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
-	const uint64_t N = g.n_nodes();
+inline std::ostream& operator<< (std::ostream& os, const urtree& g) {
+	const auto N = g.n_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
 		for (auto v : g.get_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	return os;
+}
+
+/**
+ * @brief Standard output operator for directed rooted trees.
+ *
+ * Usable by: @ref drtree, @ref urtree.
+ * @param os ostream C++ object
+ * @param g Input graph.
+ * @returns Returns the output stream.
+ */
+inline std::ostream& operator<< (std::ostream& os, const drtree& g) {
+	const auto N = g.n_nodes();
+	const std::string pad = (g.has_root() ? " " : "");
+	os << "out:" << "\n";
+	for (node u = 0; u < N; ++u) {
+		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
+		for (auto v : g.get_out_neighbours(u)) {
+			os << " " << v;
+		}
+		os << (u < N - 1 ? "\n" : "");
+	}
+	os << "\n" << "in:" << "\n";
+	for (node u = 0; u < N; ++u) {
+		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
+		for (auto v : g.get_in_neighbours(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");

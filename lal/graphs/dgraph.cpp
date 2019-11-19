@@ -70,31 +70,76 @@ dgraph::~dgraph() { }
 
 /* MODIFIERS */
 
-dgraph& dgraph::add_edge(node s, node t, bool to_norm) {
-	assert(not has_edge(s,t));
-	assert(s != t);
-	assert(has_node(s));
-	assert(has_node(t));
+void dgraph::normalise() {
+	for (node u = 0; u < n_nodes(); ++u) {
+		neighbourhood& out_nu = m_adjacency_list[u];
+		if (not is_sorted(out_nu.begin(), out_nu.end())) {
+			utils::sort_1_n_inc(out_nu.begin(), out_nu.end());
+		}
+		neighbourhood& in_nu = m_in_adjacency_list[u];
+		if (not is_sorted(in_nu.begin(), in_nu.end())) {
+			utils::sort_1_n_inc(in_nu.begin(), in_nu.end());
+		}
+	}
+	m_normalised = true;
+}
 
-	neighbourhood& ns = m_adjacency_list[s];
-	ns.push_back(t);
-	m_in_degree[t] += 1;
+bool dgraph::check_normalised() {
+	if (not graph::check_normalised()) { return false; }
+
+	// check that every adjacency list is sorted
+	for (node u = 0; u < n_nodes(); ++u) {
+		const neighbourhood& out_nu = m_adjacency_list[u];
+		if (not is_sorted(out_nu.begin(), out_nu.end())) {
+			// if some is not then the graph is not normalised
+			m_normalised = false;
+			return false;
+		}
+
+		const neighbourhood& in_nu = m_in_adjacency_list[u];
+		if (not is_sorted(in_nu.begin(), in_nu.end())) {
+			// if some is not then the graph is not normalised
+			m_normalised = false;
+			return false;
+		}
+	}
+	// all adjacency lists are sorted so
+	// the graph is normalised
+	m_normalised = true;
+	return true;
+}
+
+dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
+	assert(not has_edge(u,v));
+	assert(u != v);
+	assert(has_node(u));
+	assert(has_node(v));
+
+	neighbourhood& out_u = m_adjacency_list[u];
+	out_u.push_back(v);
+	neighbourhood& in_v = m_in_adjacency_list[v];
+	m_in_adjacency_list[v].push_back(u);
 	++m_num_edges;
 
 	if (m_normalised) {
 		// the graph was normalised
 		if (to_norm) {
-			// keep it normalised. Insertion sort
-			// applied to the last nodes added
-			utils::sort_1_n_inc(ns.begin(), ns.end());
+			// keep it normalised
+			utils::sort_1_n_inc(out_u.begin(), out_u.end());
+			utils::sort_1_n_inc(in_v.begin(), in_v.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We might
 			// be lucky....
-			const size_t su = ns.size();
-			m_normalised = (su <= 1 ? m_normalised : ns[su - 2] < ns[su - 1]);
+			const size_t out_u_s = out_u.size();
+			const bool out_u_norm =
+				(out_u_s <= 1 ? m_normalised : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
+			const size_t in_v_s = in_v.size();
+			const bool in_v_norm =
+				(in_v_s <= 1 ? m_normalised : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
+			m_normalised = m_normalised and out_u_norm and in_v_norm;
 			/*if (su > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1];
 			}*/
@@ -116,9 +161,8 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 		assert(u != v);
 		assert(not has_edge(u,v));
 
-		neighbourhood& nu = m_adjacency_list[u];
-		nu.push_back(v);
-		m_in_degree[v] += 1;
+		m_adjacency_list[u].push_back(v);
+		m_in_adjacency_list[v].push_back(u);
 		++m_num_edges;
 	}
 
@@ -141,9 +185,9 @@ void dgraph::disjoint_union(const graph& g) {
 	// fail then graph 'g' is a directed graph
 	const dgraph& dg = dynamic_cast<const dgraph&>(g);
 
-	m_in_degree.insert(
-		m_in_degree.end(),
-		dg.m_in_degree.begin(), dg.m_in_degree.end()
+	m_in_adjacency_list.insert(
+		m_in_adjacency_list.end(),
+		dg.m_in_adjacency_list.begin(), dg.m_in_adjacency_list.end()
 	);
 }
 
@@ -155,29 +199,48 @@ bool dgraph::has_edge(node u, node v) const {
 	assert(has_node(u));
 	assert(has_node(v));
 
-	const neighbourhood& nu = m_adjacency_list[u];
+	const neighbourhood& out_u = m_adjacency_list[u];
+	const neighbourhood& in_v = m_in_adjacency_list[v];
 
-	if (is_normalised() and nu.size() >= 64) {
-		return binary_search(nu.begin(), nu.end(), v);
+	if (is_normalised() and std::min(out_u.size(), in_v.size()) >= 64) {
+		return (out_u.size() <= in_v.size() ?
+			binary_search(out_u.begin(), out_u.end(), v) :
+			binary_search(in_v.begin(), in_v.end(), u)
+		);
 	}
-	return find(nu.begin(), nu.end(), v) != nu.end();
+	return (out_u.size() <= in_v.size() ?
+		find(out_u.begin(), out_u.end(), v) != out_u.end() :
+		find(in_v.begin(), in_v.end(), u) != in_v.end()
+	);
 }
 
 bool dgraph::is_directed() const { return true; }
 bool dgraph::is_undirected() const { return false; }
 
-uint64_t dgraph::degree(node u) const {
-	return in_degree(u) + out_degree(u);
+const neighbourhood& dgraph::get_neighbours(node u) const {
+	return get_out_neighbours(u);
 }
 
-uint64_t dgraph::in_degree(node u) const {
+uint64_t dgraph::degree(node u) const {
+	return out_degree(u);
+}
+
+const neighbourhood& dgraph::get_out_neighbours(node u) const {
 	assert(has_node(u));
-	return m_in_degree[u];
+	return m_adjacency_list[u];
+}
+const neighbourhood& dgraph::get_in_neighbours(node u) const {
+	assert(has_node(u));
+	return m_in_adjacency_list[u];
 }
 
 uint64_t dgraph::out_degree(node u) const {
 	assert(has_node(u));
-	return graph::degree(u);
+	return m_adjacency_list[u].size();
+}
+uint64_t dgraph::in_degree(node u) const {
+	assert(has_node(u));
+	return m_in_adjacency_list[u].size();
 }
 
 ugraph dgraph::to_undirected() const {
@@ -190,12 +253,12 @@ ugraph dgraph::to_undirected() const {
 
 void dgraph::_init(uint64_t n) {
 	graph::_init(n);
-	m_in_degree = vector<uint64_t>(n, 0);
+	m_in_adjacency_list = vector<neighbourhood>(n);
 }
 
 void dgraph::_clear() {
 	graph::_clear();
-	m_in_degree.clear();
+	m_in_adjacency_list.clear();
 }
 
 /* PRIVATE */

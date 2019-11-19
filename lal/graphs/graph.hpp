@@ -119,7 +119,7 @@ class graph {
 		 * normalised or not.
 		 * @post Method @ref is_normalised evaluates to true.
 		 */
-		void normalise();
+		virtual void normalise();
 
 		/**
 		 * @brief Checks if the graph is normalised.
@@ -128,11 +128,27 @@ class graph {
 		 * In case it is, attribute @ref m_normalised is set to true, so
 		 * method @ref is_normalised evaluates to true.
 		 */
-		bool check_normalised();
+		virtual bool check_normalised();
 
 		/* SETTERS */
 
 		/* GETTERS */
+
+		/**
+		 * @brief Returns the neighbourhood of node @e u.
+		 * @param u Node.
+		 * @return In undirected graphs, returns the list of nodes adjacent to
+		 * node @e u. In a directed graph, returns the outgoing vertices.
+		 */
+		virtual const neighbourhood& get_neighbours(node u) const = 0;
+
+		/**
+		 * @brief Returns the number of neighbours of @e u.
+		 * @param u Node to be queried.
+		 * @return In undirected graphs, returns the number of neighbours. In
+		 * a directed graph, returns the number of outgoing edges.
+		 */
+		virtual uint64_t degree(node u) const = 0;
 
 		/// Returns true if node @e u is in this graph.
 		bool has_node(node u) const;
@@ -157,30 +173,6 @@ class graph {
 		 * no nodes.
 		 */
 		std::vector<edge_pair> Q() const;
-
-		/**
-		 * @brief Returns the neighbourhood of node @e u.
-		 * @param u Node whose neighbourhood is to be returned.
-		 * @return Returns the list of nodes adjacent to node @e u.
-		 */
-		const neighbourhood& get_neighbours(node u) const;
-
-		/**
-		 * @brief Returns the neighbourhood of node @e u.
-		 * @param u Node whose neighbourhood is to be returned.
-		 * @return Returns the list of nodes adjacent to node @e u as a list
-		 * of Boolean values.
-		 * @pre This vector must have size the number of nodes of this graph.
-		 */
-		neighbourhood_B get_bool_neighbours(node u) const;
-
-		/**
-		 * @brief Returns the number of neighbours of @e u.
-		 * @param u Node to be queried.
-		 * @return In undirected graphs, returns the number of neighbours. In
-		 * a directed graph, returns the number of outgoing and ingoing edges.
-		 */
-		virtual uint64_t degree(node u) const;
 
 		/**
 		 * @brief Returns whether this graph is normalised or not.
@@ -211,9 +203,14 @@ class graph {
 		/**
 		 * @brief Is this graph normalised?
 		 *
-		 * A graph is normalised iff every node's adjacency list is sorted in
-		 * increasing order. It is set to 'true' in its initialisation and
-		 * destruction (when @ref clear() method is called).
+		 * An undirected graph is normalised iff every node's adjacency list is
+		 * sorted in increasing order.
+		 *
+		 * In directed graphs, however, it is necessary that the adjacency lists
+		 * of the out-neighbours and in-neighbours of vertices be sorted.
+		 *
+		 * This attribute is set to 'true' in all graph's initialisation
+		 * and destruction (when @ref clear() method is called).
 		 */
 		bool m_normalised = true;
 

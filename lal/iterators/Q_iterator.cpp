@@ -91,7 +91,7 @@ find_next_pair_directed(
 		return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
 	}
 	// base case 2: consumed neighbours of 's'
-	if (pt >= g.out_degree(s)) {
+	if (pt >= g.degree(s)) {
 		return find_next_pair_directed(g, s+1, 0, s+2, 0);
 	}
 	// base case 3: consumed second pointer
@@ -100,7 +100,7 @@ find_next_pair_directed(
 		return find_next_pair_directed(g, s, pt + 1, s + 1, 0);
 	}
 	// base case 4: consumed neighbours of 'u'
-	if (pv >= g.out_degree(u)) {
+	if (pv >= g.degree(u)) {
 		// advance second pointer
 		return find_next_pair_directed(g, s, pt, u + 1, 0);
 	}

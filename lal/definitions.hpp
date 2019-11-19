@@ -74,8 +74,6 @@ typedef std::pair<node, node> edge;
 typedef std::pair<edge,edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
-/// Boolean neighbourhood.
-typedef std::vector<bool> neighbourhood_B;
 
 /// Major version number of the library's current state.
 static const std::string __lal_major_verno = "2019";

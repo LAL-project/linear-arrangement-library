@@ -48,6 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/dgraph.hpp>
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace graphs;

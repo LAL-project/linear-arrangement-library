@@ -79,6 +79,10 @@ class dgraph : virtual public graph {
 
 		/* MODIFIERS */
 
+		void normalise();
+
+		bool check_normalised();
+
 		/**
 		 * @brief Adds a directed edge to the graph.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
@@ -128,17 +132,29 @@ class dgraph : virtual public graph {
 		bool is_directed() const;
 		bool is_undirected() const;
 
-		/**
-		 * @brief Returns the number of neighbours of @e u.
-		 * @param u Node to be queried.
-		 * @return Returns the number of outgoing and ingoing edges, i.e.,
-		 * the sum of the out- and in-degree.
-		 */
+		/// Same as @ref get_out_neighbours.
+		const neighbourhood& get_neighbours(node u) const;
+
+		/// Same as @ref out_degree.
 		uint64_t degree(node u) const;
-		/// Returns the in-degree of a node.
-		uint64_t in_degree(node u) const;
+
+		/**
+		 * @brief Returns the out-neighbours of node @e u
+		 * @param u Node
+		 * @return Returns the list of nodes leaving node @e u.
+		 */
+		const neighbourhood& get_out_neighbours(node u) const;
+		/**
+		 * @brief Returns the in-neighbours of node @e u
+		 * @param u Node
+		 * @return Returns the list of nodes entering at node @e u.
+		 */
+		const neighbourhood& get_in_neighbours(node u) const;
+
 		/// Returns the out-degree of a node.
 		uint64_t out_degree(node u) const;
+		/// Returns the in-degree of a node.
+		uint64_t in_degree(node u) const;
 
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
@@ -147,8 +163,8 @@ class dgraph : virtual public graph {
 		ugraph to_undirected() const;
 
 	protected:
-		/// In-degree per vertex.
-		std::vector<uint64_t> m_in_degree;
+		/// In-neighbours for every node.
+		std::vector<neighbourhood> m_in_adjacency_list;
 
 	protected:
 		/**

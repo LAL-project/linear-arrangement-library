@@ -66,16 +66,16 @@ ugraph::~ugraph() { }
 
 /* MODIFIERS */
 
-ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
-	assert(not has_edge(s,t));
-	assert(s != t);
-	assert(has_node(s));
-	assert(has_node(t));
+ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
+	assert(not has_edge(u,v));
+	assert(u != v);
+	assert(has_node(u));
+	assert(has_node(v));
 
-	neighbourhood& ns = m_adjacency_list[s];
-	neighbourhood& nt = m_adjacency_list[t];
-	ns.push_back(t);
-	nt.push_back(s);
+	neighbourhood& nu = m_adjacency_list[u];
+	neighbourhood& nv = m_adjacency_list[v];
+	nu.push_back(v);
+	nv.push_back(u);
 	++m_num_edges;
 
 	if (m_normalised) {
@@ -83,24 +83,24 @@ ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			utils::sort_1_n_inc(ns.begin(), ns.end());
-			utils::sort_1_n_inc(nt.begin(), nt.end());
+			utils::sort_1_n_inc(nu.begin(), nu.end());
+			utils::sort_1_n_inc(nv.begin(), nv.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We may
 			// be lucky....
-			const size_t su = ns.size();
-			const size_t sv = nt.size();
+			const size_t su = nu.size();
+			const size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
-				m_normalised = ns[su - 2] < ns[su - 1] and nt[sv - 2] < nt[sv - 1];
+				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}
 			else if (su > 1) {
-				m_normalised = ns[su - 2] < ns[su - 1];
+				m_normalised = nu[su - 2] < nu[su - 1];
 			}
 			else if (sv > 1) {
-				m_normalised = nt[sv - 2] < nt[sv - 1];
+				m_normalised = nv[sv - 2] < nv[sv - 1];
 			}
 		}
 	}
@@ -115,13 +115,13 @@ ugraph& ugraph::add_edge(node s, node t, bool to_norm) {
 
 ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
-		const node s = e.first;
-		const node t = e.second;
-		assert(not has_edge(s,t));
-		assert(s != t);
+		const node u = e.first;
+		const node v = e.second;
+		assert(not has_edge(u,v));
+		assert(u != v);
 
-		m_adjacency_list[s].push_back(t);
-		m_adjacency_list[t].push_back(s);
+		m_adjacency_list[u].push_back(v);
+		m_adjacency_list[v].push_back(u);
 		++m_num_edges;
 	}
 
@@ -140,6 +140,16 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 /* SETTERS */
 
 /* GETTERS */
+
+const neighbourhood& ugraph::get_neighbours(node u) const {
+	assert(has_node(u));
+	return m_adjacency_list[u];
+}
+
+uint64_t ugraph::degree(node u) const {
+	assert(has_node(u));
+	return m_adjacency_list[u].size();
+}
 
 bool ugraph::has_edge(node u, node v) const {
 	assert(has_node(u));

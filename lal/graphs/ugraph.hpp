@@ -106,6 +106,20 @@ class ugraph : virtual public graph {
 
 		/* GETTERS */
 
+		/**
+		 * @brief Returns the neighbourhood of node @e u.
+		 * @param u Node.
+		 * @return Returns the list of nodes adjacent to node @e u.
+		 */
+		const neighbourhood& get_neighbours(node u) const;
+
+		/**
+		 * @brief Returns the number of neighbours of @e u.
+		 * @param u Node to be queried.
+		 * @return Returns the number of adjacent nodes.
+		 */
+		uint64_t degree(node u) const;
+
 		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 		bool has_edge(node u, node v) const;
 

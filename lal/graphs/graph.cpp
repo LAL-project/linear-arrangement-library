@@ -171,22 +171,6 @@ vector<edge_pair> graph::Q() const {
 	return q;
 }
 
-const neighbourhood& graph::get_neighbours(node u) const {
-	return m_adjacency_list[u];
-}
-
-neighbourhood_B graph::get_bool_neighbours(node u) const {
-	neighbourhood_B neighs(m_adjacency_list.size(), false);
-	for (const node& v : get_neighbours(u)) {
-		neighs[v] = true;
-	}
-	return neighs;
-}
-
-uint64_t graph::degree(node u) const {
-	return m_adjacency_list[u].size();
-}
-
 bool graph::is_normalised() const {
 	return m_normalised;
 }

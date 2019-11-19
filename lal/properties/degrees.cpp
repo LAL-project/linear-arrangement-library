@@ -78,11 +78,12 @@ inline rational __mmt_x_degree_rational
 
 // moment of degree
 
+#define _in_degree(g,u) dynamic_cast<const dgraph&>(g).degree(u)
 rational mmt_degree_rational(const graph& g, uint64_t p) {
 	return __mmt_x_degree_rational<graph>(
 		g, p,
 		[](const graph& _g, node _u) -> uint64_t
-		{ return _g.degree(_u); }
+		{ return _g.degree(_u) + (_g.is_directed() ? _in_degree(_g,_u) : 0); }
 	);
 }
 
@@ -110,7 +111,7 @@ rational mmt_out_degree_rational(const dgraph& g, uint64_t p) {
 	return __mmt_x_degree_rational<dgraph>(
 		g, p,
 		[](const dgraph& _g, node _u) -> uint64_t
-		{ return _g.out_degree(_u); }
+		{ return _g.degree(_u); }
 	);
 }
 

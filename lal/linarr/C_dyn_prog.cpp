@@ -50,9 +50,17 @@ using namespace std;
 // lal includes
 #include <lal/utils/macros.hpp>
 
-namespace lal {
 #define idx(i,j, C) ((i)*(C) + (j))
+
+namespace lal {
 using namespace graphs;
+
+inline
+void get_bool_neighbours(const ugraph& g, node u, vector<bool>& neighs) {
+	for (node v : g.get_neighbours(u)) {
+		neighs[v] = true;
+	}
+}
 
 namespace linarr {
 
@@ -79,7 +87,7 @@ inline uint64_t __compute_C_dyn_prog(
 		// node at position pu + 1
 		const node u = T[pu + 1];
 
-		bn = g.get_bool_neighbours(u);
+		get_bool_neighbours(g, u, bn);
 
 		uint64_t k = g.degree(u);
 
