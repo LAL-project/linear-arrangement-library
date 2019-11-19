@@ -59,7 +59,7 @@ using namespace numeric;
 
 namespace linarr {
 
-inline constexpr uint64_t alpha(uint64_t n, uint64_t d1, uint64_t d2) {
+inline constexpr uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) {
 	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -90,7 +90,7 @@ inline constexpr uint64_t alpha(uint64_t n, uint64_t d1, uint64_t d2) {
 	return to_uint64(f);
 }
 
-inline constexpr uint64_t beta(uint64_t n, uint64_t d1, uint64_t d2) {
+inline constexpr uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) {
 	int64_t f = 0;
 
 	// positions s1 < s2
@@ -160,8 +160,12 @@ inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
-			make_pair(alpha(n, len_st, len_uv), beta(n, len_st, len_uv)) :
-			make_pair(alpha(n, len_uv, len_st), beta(n, len_uv, len_st))
+			make_pair(
+				alpha(to_int64(n), to_int64(len_st), to_int64(len_uv)),
+				beta(to_int64(n), to_int64(len_st), to_int64(len_uv))) :
+			make_pair(
+				alpha(to_int64(n), to_int64(len_uv), to_int64(len_st)),
+				beta(to_int64(n), to_int64(len_uv), to_int64(len_st)))
 		);
 		Ec2 += rational(to_int64(al), be);
 	}
