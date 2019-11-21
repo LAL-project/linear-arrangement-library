@@ -1,0 +1,127 @@
+# ----------------
+# MODULE variables
+
+# ** documentation
+# "name" represents the name of the module: name=DSE, or name=TST, ...
+# name_MAIN_INT		# module main interface (.i) file (e.g. name.i)
+# name_SUB_INT		# module secondary interface (.i) file (e.g. _name_impl.i)
+# name_MOD_DEPS		# dependencies of the module
+# _name_PF			# without-directory python file
+# name_PY_FILE		# with-directory python file
+# name_WRAP			# with-directory wrapper (.cxx) file
+# _name_SO			# without-directory shared (.so / .pyd) file
+# name_SO			# with-directory shared (.so / .pyd) file
+
+# ENUMERATIONS
+
+# -- dataset_error module
+DSE_MAIN_INT	= submodules/$(DSE_INAME).i
+DSE_SUB_INT		= submodules/$(DSE_BNAME)_impl.i
+DSE_MOD_DEPS	= $(DSE_MAIN_INT) $(DSE_SUB_INT) $(DSE_DEP_HDRS)
+_DSE_PF			= $(DSE_INAME).py
+DSE_PY_FILE		= $(ARCH_DIR)/$(_DSE_PF)
+DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
+_DSE_SO			= _$(DSE_INAME).$(SO_EXT)
+DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
+
+# -- tree_structure_type module
+TST_MAIN_INT	= submodules/$(TST_INAME).i
+TST_SUB_INT		= submodules/$(TST_BNAME)_impl.i
+TST_MOD_DEPS	= $(TST_MAIN_INT) $(TST_SUB_INT) $(TST_DEP_HDRS)
+_TST_PF			= $(TST_INAME).py
+TST_PY_FILE		= $(ARCH_DIR)/$(_TST_PF)
+TST_WRAP		= $(ARCH_DIR)/$(TST_INAME)_wrap
+_TST_SO			= _$(TST_INAME).$(SO_EXT)
+TST_SO			= $(ARCH_DIR)/$(_TST_SO)
+
+# -- algorithm_crossings module
+ALGCR_MAIN_INT	= submodules/$(ALGCR_INAME).i
+ALGCR_SUB_INT	= submodules/$(ALGCR_BNAME)_impl.i
+ALGCR_MOD_DEPS	= $(ALGCR_MAIN_INT) $(ALGCR_SUB_INT) $(ALGCR_DEP_HDRS)
+_ALGCR_PF		= $(ALGCR_INAME).py
+ALGCR_PY_FILE	= $(ARCH_DIR)/$(_ALGCR_PF)
+ALGCR_WRAP		= $(ARCH_DIR)/$(ALGCR_INAME)_wrap
+_ALGCR_SO		= _$(ALGCR_INAME).$(SO_EXT)
+ALGCR_SO		= $(ARCH_DIR)/$(_ALGCR_SO)
+
+# CLASSES AND METHODS
+
+# -- generation module
+GEN_MAIN_INT	= submodules/$(GEN_INAME).i
+GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
+GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DEP_HDRS)
+_GEN_PF			= $(GEN_INAME).py
+GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
+GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
+_GEN_SO			= _$(GEN_INAME).$(SO_EXT)
+GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
+
+# -- graphs module
+GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
+GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
+GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DEP_HDRS)
+_GRAPHS_PF		= $(GRAPHS_INAME).py
+GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
+GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
+_GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
+GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
+
+# -- io module
+IO_MAIN_INT		= submodules/$(IO_INAME).i
+IO_SUB_INT		= submodules/$(IO_BNAME)_impl.i
+IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DEP_HDRS)
+_IO_PF			= $(IO_INAME).py
+IO_PY_FILE		= $(ARCH_DIR)/$(_IO_PF)
+IO_WRAP			= $(ARCH_DIR)/$(IO_INAME)_wrap
+_IO_SO			= _$(IO_INAME).$(SO_EXT)
+IO_SO			= $(ARCH_DIR)/$(_IO_SO)
+
+# -- iterators module
+ITER_MAIN_INT	= submodules/$(ITER_INAME).i
+ITER_SUB_INT	= submodules/$(ITER_BNAME)_impl.i
+ITER_MOD_DEPS	= $(ITER_MAIN_INT) $(ITER_SUB_INT) $(ITER_DEP_HDRS)
+_ITER_PF		= $(ITER_INAME).py
+ITER_PY_FILE	= $(ARCH_DIR)/$(_ITER_PF)
+ITER_WRAP		= $(ARCH_DIR)/$(ITER_INAME)_wrap
+_ITER_SO		= _$(ITER_INAME).$(SO_EXT)
+ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
+
+# -- linarr module
+LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
+LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
+LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DEP_HDRS)
+_LINARR_PF		= $(LINARR_INAME).py
+LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
+LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
+_LINARR_SO		= _$(LINARR_INAME).$(SO_EXT)
+LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
+
+# -- numeric module
+NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
+NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
+NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DEP_HDRS)
+_NMRC_PF		= $(NMRC_INAME).py
+NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
+NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
+_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
+NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
+
+# -- properties module
+PROP_MAIN_INT	= submodules/$(PROP_INAME).i
+PROP_SUB_INT	= submodules/$(PROP_BNAME)_impl.i
+PROP_MOD_DEPS	= $(PROP_MAIN_INT) $(PROP_SUB_INT) $(PROP_DEP_HDRS)
+_PROP_PF		= $(PROP_INAME).py
+PROP_PY_FILE	= $(ARCH_DIR)/$(_PROP_PF)
+PROP_WRAP		= $(ARCH_DIR)/$(PROP_INAME)_wrap
+_PROP_SO		= _$(PROP_INAME).$(SO_EXT)
+PROP_SO			= $(ARCH_DIR)/$(_PROP_SO)
+
+# -- lal module (library's main module)
+LAL_MAIN_INT	= $(LAL_INAME).i
+LAL_SUB_INT		= 
+LAL_MOD_DEPS	= $(LAL_MAIN_INT) $(LAL_SUB_INT) $(LAL_DEP_HDRS)
+_LAL_PF			= $(LAL_INAME).py
+LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
+LAL_WRAP		= $(ARCH_DIR)/$(LAL_INAME)_wrap
+_LAL_SO			= _$(LAL_INAME).$(SO_EXT)
+LAL_SO			= $(ARCH_DIR)/$(_LAL_SO)

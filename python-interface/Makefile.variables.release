@@ -15,28 +15,61 @@ SWIG_FLAGS	+= -DNDEBUG
 ########################################################################
 # MODULES
 
-# lal
-LAL_BNAME	= lal
-LAL_MNAME	= $(LAL_BNAME)
+# documentation
+# "name" represents the name of the module: name=DSE, or name=TST, ...
+# name_BNAME		# module's base name
+# name_INAME		# module's interface file (.i) name without extension
 
-# dataset_error
+# -- dataset_error
 DSE_BNAME	= dataset_error
-DSE_MNAME	= $(DSE_BNAME)
+DSE_INAME	= $(DSE_BNAME)
 
-# tree_structure_type
+# -- tree_structure_type
 TST_BNAME	= tree_structure_type
-TST_MNAME	= $(TST_BNAME)
+TST_INAME	= $(TST_BNAME)
 
-# algorithms_crossings
+# -- algorithms_crossings
 ALGCR_BNAME	= algorithms_crossings
-ALGCR_MNAME	= $(ALGCR_BNAME)
+ALGCR_INAME	= $(ALGCR_BNAME)
+
+# -- generation
+GEN_BNAME	= generation
+GEN_INAME	= $(GEN_BNAME)
+
+# -- graphs
+GRAPHS_BNAME= graphs
+GRAPHS_INAME= $(GRAPHS_BNAME)
+
+# -- io
+IO_BNAME	= io
+IO_INAME	= $(IO_BNAME)
+
+# -- iterators
+ITER_BNAME	= iterators
+ITER_INAME	= $(ITER_BNAME)
+
+# -- linarr
+LINARR_BNAME= linarr
+LINARR_INAME= $(LINARR_BNAME)
+
+# -- numeric
+NMRC_BNAME	= numeric
+NMRC_INAME	= $(NMRC_BNAME)
+
+# -- properties
+PROP_BNAME	= properties
+PROP_INAME	= $(PROP_BNAME)
+
+# -- lal (library's main module)
+LAL_BNAME	= lal
+LAL_INAME	= $(LAL_BNAME)
 
 ########################################################################
 # DEPENDENCIES IN MODULES
 
 # LAL compilation object
 ifeq ($(DIST),local)
-LAL_LIB_DEP	= $(LAL_DIR)/lal-release/liblal.a
+LIBRARY_SHARED_DEP	= $(LAL_DIR)/lal-release/liblal.a
 else
-LAL_LIB_DEP	=
+LIBRARY_SHARED_DEP	=
 endif

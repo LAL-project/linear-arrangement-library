@@ -24,6 +24,8 @@ endif
 # VARIABLES
 PYTHON_INCLUDE	= /usr/include/python3.6/
 
+LAL_DIR = ..
+
 # OS-dependent variables
 ifeq ($(OS),Windows_NT)
 	# OS directory
@@ -89,108 +91,29 @@ endif
 endif
 
 # ------------
-# DEPENDENCIES
+# DEPENDENCIES (of the modules)
 
-ifeq ($(DIST),local)
-LAL_DIR = ..
-LAL_DEP_HEADERS	= $(LAL_DIR)/lal/C.hpp \
-				  $(LAL_DIR)/lal/D.hpp \
-				  $(LAL_DIR)/lal/definitions.hpp \
-				  $(LAL_DIR)/lal/generation.hpp \
-				  $(LAL_DIR)/lal/graphs.hpp \
-				  $(LAL_DIR)/lal/io.hpp \
-				  $(LAL_DIR)/lal/iterators.hpp \
-				  $(LAL_DIR)/lal/linarr.hpp \
-				  $(LAL_DIR)/lal/numeric.hpp \
-				  $(LAL_DIR)/lal/properties.hpp \
-				  $(LAL_DIR)/lal/generation/free_lab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/free_ulab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/rand_free_lab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/rand_free_ulab_trees.hpp \
-				  $(LAL_DIR)/lal/generation/rand_rooted_lab_dir_trees.hpp \
-				  $(LAL_DIR)/lal/graphs/dgraph.hpp \
-				  $(LAL_DIR)/lal/graphs/dtree.hpp \
-				  $(LAL_DIR)/lal/graphs/drtree.hpp \
-				  $(LAL_DIR)/lal/graphs/graph.hpp \
-				  $(LAL_DIR)/lal/graphs/output.hpp \
-				  $(LAL_DIR)/lal/graphs/rtree.hpp \
-				  $(LAL_DIR)/lal/graphs/tree.hpp \
-				  $(LAL_DIR)/lal/graphs/ugraph.hpp \
-				  $(LAL_DIR)/lal/graphs/urtree.hpp \
-				  $(LAL_DIR)/lal/graphs/utree.hpp \
-				  $(LAL_DIR)/lal/io/basic_output.hpp \
-				  $(LAL_DIR)/lal/io/edge_list.hpp \
-				  $(LAL_DIR)/lal/io/treebank_dataset.hpp \
-				  $(LAL_DIR)/lal/io/treebank_processor.hpp \
-				  $(LAL_DIR)/lal/io/treebank_reader.hpp \
-				  $(LAL_DIR)/lal/iterators/edge_iterator.hpp \
-				  $(LAL_DIR)/lal/iterators/Q_iterator.hpp \
-				  $(LAL_DIR)/lal/linarr/algorithms_crossings.hpp \
-				  $(LAL_DIR)/lal/linarr/C.hpp \
-				  $(LAL_DIR)/lal/linarr/classification.hpp \
-				  $(LAL_DIR)/lal/linarr/D.hpp \
-				  $(LAL_DIR)/lal/linarr/headedness.hpp \
-				  $(LAL_DIR)/lal/numeric/gmp_utils.hpp \
-				  $(LAL_DIR)/lal/numeric/integer.hpp \
-				  $(LAL_DIR)/lal/numeric/output.hpp \
-				  $(LAL_DIR)/lal/numeric/rational.hpp \
-				  $(LAL_DIR)/lal/properties/C_rla.hpp \
-				  $(LAL_DIR)/lal/properties/D_rla.hpp \
-				  $(LAL_DIR)/lal/properties/degrees.hpp \
-				  $(LAL_DIR)/lal/properties/mhd.hpp \
-				  $(LAL_DIR)/lal/properties/Q.hpp
-
-DSE_DEP_HDRS	= $(LAL_DIR)/lal/io/dataset_error.hpp
-TST_DEP_HDRS	= $(LAL_DIR)/lal/linarr/tree_structure_type.hpp
-ALGCR_DEP_HDRS	= $(LAL_DIR)/lal/linarr/algorithms_crossings.hpp
-else
-LAL_DIR 		= 
-LAL_DEP_HEADERS	=
-DSE_DEP_HDRS	=
-ALGCR_DEP_HDRS	= 
-TST_DEP_HDRS =
-endif
+include Makefile.module.dependencies
 
 # ----------------
 # MODULE variables
 
-# lal module
-LAL_MIMPL		= _$(LAL_BNAME)_impl.i
-_LAL_PF			= $(LAL_MNAME).py
-LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
-LAL_WRAP		= $(ARCH_DIR)/$(LAL_MNAME)_wrap
-_LAL_SO			= _$(LAL_MNAME).$(SO_EXT)
-LAL_SO			= $(ARCH_DIR)/$(_LAL_SO)
-
-# dataset_error module
-DSE_MIMPL		= $(DSE_BNAME).i
-_DSE_PF			= $(DSE_MNAME).py
-DSE_PY_FILE		= $(ARCH_DIR)/$(_DSE_PF)
-DSE_WRAP		= $(ARCH_DIR)/$(DSE_MNAME)_wrap
-_DSE_SO			= _$(DSE_MNAME).$(SO_EXT)
-DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
-
-# tree_structure_type module
-TST_MIMPL		= $(TST_BNAME).i
-_TST_PF			= $(TST_MNAME).py
-TST_PY_FILE		= $(ARCH_DIR)/$(_TST_PF)
-TST_WRAP		= $(ARCH_DIR)/$(TST_MNAME)_wrap
-_TST_SO			= _$(TST_MNAME).$(SO_EXT)
-TST_SO			= $(ARCH_DIR)/$(_TST_SO)
-
-# algorithm_crossings module
-ALGCR_MIMPL		= $(ALGCR_BNAME).i
-_ALGCR_PF		= $(ALGCR_MNAME).py
-ALGCR_PY_FILE	= $(ARCH_DIR)/$(_ALGCR_PF)
-ALGCR_WRAP		= $(ARCH_DIR)/$(ALGCR_MNAME)_wrap
-_ALGCR_SO		= _$(ALGCR_MNAME).$(SO_EXT)
-ALGCR_SO		= $(ARCH_DIR)/$(_ALGCR_SO)
+include Makefile.module.variables
 
 ########################################################################
 # GOALS
 
-SUBMODULES		= $(DSE_SO) $(TST_SO) $(ALGCR_SO)
-ALL_SO			= $(SUBMODULES) $(LAL_SO)
+SUBMODULES	= $(DSE_SO) 	\
+			  $(TST_SO) 	\
+			  $(ALGCR_SO) 	\
+			  $(GEN_SO) 	\
+			  $(GRAPHS_SO) 	\
+			  $(IO_SO)		\
+			  $(ITER_SO)	\
+			  $(LINARR_SO)	\
+			  $(NMRC_SO)	\
+			  $(PROP_SO)
+ALL_SO		= $(SUBMODULES) $(LAL_SO)
 
 all: directories $(ALL_SO)
 directories: $(ARCH_DIR)
@@ -200,33 +123,7 @@ $(ARCH_DIR):
 ########################################################################
 # BUILDING RULES
 
-$(LAL_SO): $(LAL_WRAP).o $(LAL_LIB_DEP) $(SUBMODULES)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
-$(LAL_WRAP).o: $(LAL_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(LAL_WRAP).cxx: $(LAL_MNAME).i $(LAL_DEP_HEADERS) $(LAL_MIMPL)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MNAME).i
-
-$(DSE_SO): $(DSE_WRAP).o $(LAL_LIB_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
-$(DSE_WRAP).o: $(DSE_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(DSE_WRAP).cxx: $(DSE_MNAME).i $(DSE_DEP_HDRS) $(DSE_MIMPL)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MNAME).i
-
-$(TST_SO): $(TST_WRAP).o $(LAL_LIB_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
-$(TST_WRAP).o: $(TST_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(TST_WRAP).cxx: $(TST_MNAME).i $(TST_DEP_HDRS) $(TST_MIMPL)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TST_MNAME).i
-
-$(ALGCR_SO): $(ALGCR_WRAP).o $(LAL_LIB_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
-$(ALGCR_WRAP).o: $(ALGCR_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALGCR_WRAP).cxx: $(ALGCR_MNAME).i $(ALGCR_DEP_HDRS) $(ALGCR_MIMPL)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALGCR_MNAME).i
+include Makefile.module.rules
 
 ########################################################################
 # CLEANING RULES
@@ -240,19 +137,29 @@ distclean:
 	rm -rf $(ARCH_DIR)
 
 install: $(LAL_SO)
-	# install LAL
 	cp $(LAL_SO) $(LAL_PY_INSTALL)/$(_LAL_SO)
 	cp $(LAL_PY_FILE) $(LAL_PY_INSTALL)/$(_LAL_PF)
-	# install dataset_error
 	cp $(DSE_SO) $(LAL_PY_INSTALL)/$(_DSE_SO)
 	cp $(DSE_PY_FILE) $(LAL_PY_INSTALL)/$(_DSE_PF)
-	# install tree_structure_type
 	cp $(TST_SO) $(LAL_PY_INSTALL)/$(_TST_SO)
 	cp $(TST_PY_FILE) $(LAL_PY_INSTALL)/$(_TST_PF)
-	# install algorithms_crossings
 	cp $(ALGCR_SO) $(LAL_PY_INSTALL)/$(_ALGCR_SO)
 	cp $(ALGCR_PY_FILE) $(LAL_PY_INSTALL)/$(_ALGCR_PF)
-	
+	cp $(GEN_SO) $(LAL_PY_INSTALL)/$(_GEN_SO)
+	cp $(GEN_PY_FILE) $(LAL_PY_INSTALL)/$(_GEN_PF)
+	cp $(GRAPHS_SO) $(LAL_PY_INSTALL)/$(_GRAPHS_SO)
+	cp $(GRAPHS_PY_FILE) $(LAL_PY_INSTALL)/$(_GRAPHS_PF)
+	cp $(IO_SO) $(LAL_PY_INSTALL)/$(_IO_SO)
+	cp $(IO_PY_FILE) $(LAL_PY_INSTALL)/$(_IO_PF)
+	cp $(ITER_SO) $(LAL_PY_INSTALL)/$(_ITER_SO)
+	cp $(ITER_PY_FILE) $(LAL_PY_INSTALL)/$(_ITER_PF)
+	cp $(LINARR_SO) $(LAL_PY_INSTALL)/$(_LINARR_SO)
+	cp $(LINARR_PY_FILE) $(LAL_PY_INSTALL)/$(_LINARR_PF)
+	cp $(NMRC_SO) $(LAL_PY_INSTALL)/$(_NMRC_SO)
+	cp $(NMRC_PY_FILE) $(LAL_PY_INSTALL)/$(_NMRC_PF)
+	cp $(PROP_SO) $(LAL_PY_INSTALL)/$(_PROP_SO)
+	cp $(PROP_PY_FILE) $(LAL_PY_INSTALL)/$(_PROP_PF)
+
 uninstall:
 	rm -f $(LAL_PY_INSTALL)/$(_LAL_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_LAL_PF)
@@ -262,3 +169,17 @@ uninstall:
 	rm -f $(LAL_PY_INSTALL)/$(_TST_PF)
 	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_GEN_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_GEN_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_GRAPHS_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_GRAPHS_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_IO_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_IO_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_ITER_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_ITER_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_LINARR_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_LINARR_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_NMRC_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_NMRC_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_PROP_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_PROP_PF)
