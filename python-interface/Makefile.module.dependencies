@@ -3,6 +3,7 @@ LAL_DEP_HEADERS	=
 DSE_DEP_HDRS	= $(LAL_DIR)/lal/io/dataset_error.hpp
 TST_DEP_HDRS	= $(LAL_DIR)/lal/linarr/tree_structure_type.hpp
 ALGCR_DEP_HDRS	= $(LAL_DIR)/lal/linarr/algorithms_crossings.hpp
+DEFS_DEP_HDRS	= $(LAL_DIR)/lal/definitions.hpp
 GEN_DEP_HDRS	= $(LAL_DIR)/lal/generation/free_lab_trees.hpp \
 				  $(LAL_DIR)/lal/generation/free_ulab_trees.hpp \
 				  $(LAL_DIR)/lal/generation/rand_free_lab_trees.hpp \
@@ -47,6 +48,7 @@ LAL_DEP_HEADERS	=
 DSE_DEP_HDRS	=
 TST_DEP_HDRS	=
 ALGCR_DEP_HDRS	=
+DEFS_DEP_HDRS	=
 GEN_DEP_HDRS	=
 GRAPHS_DEP_HDRS	=
 IO_DEP_HDRS		=

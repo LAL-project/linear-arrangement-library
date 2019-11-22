@@ -1,11 +1,11 @@
-%module tree_structure_type
+%module laldataset_error
 
-%include tree_structure_type_impl.i
+%include laldataset_error_impl.i
 
 %pythoncode %{
-__mod_name = "tree_structure_type"
+__mod_name = "laldataset_error"
 __mod = __import__(__mod_name)
-__to_replace = "tree_structure_type_"
+__to_replace = "dataset_error_"
 __replace_length = len(__to_replace)
 for name in dir(__mod):
     if name.find(__to_replace) == 0:

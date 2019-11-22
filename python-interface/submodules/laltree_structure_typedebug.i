@@ -1,11 +1,11 @@
-%module algorithms_crossings
+%module laltree_structure_typedebug
 
-%include algorithms_crossings_impl.i
+%include laltree_structure_type_impl.i
 
 %pythoncode %{
-__mod_name = "algorithms_crossings"
+__mod_name = "laltree_structure_typedebug"
 __mod = __import__(__mod_name)
-__to_replace = "algorithms_crossings_"
+__to_replace = "tree_structure_type_"
 __replace_length = len(__to_replace)
 for name in dir(__mod):
     if name.find(__to_replace) == 0:

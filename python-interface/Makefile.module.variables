@@ -46,15 +46,25 @@ ALGCR_SO		= $(ARCH_DIR)/$(_ALGCR_SO)
 
 # CLASSES AND METHODS
 
-# -- generation module
-GEN_MAIN_INT	= submodules/$(GEN_INAME).i
-GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
-GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DEP_HDRS)
-_GEN_PF			= $(GEN_INAME).py
-GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
-GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
-_GEN_SO			= _$(GEN_INAME).$(SO_EXT)
-GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
+# -- definitions module
+DEFS_MAIN_INT	= submodules/$(DEFS_INAME).i
+DEFS_SUB_INT	= submodules/$(DEFS_BNAME)_impl.i
+DEFS_MOD_DEPS	= $(DEFS_MAIN_INT) $(DEFS_SUB_INT) $(DEFS_DEP_HDRS)
+_DEFS_PF		= $(DEFS_INAME).py
+DEFS_PY_FILE	= $(ARCH_DIR)/$(_DEFS_PF)
+DEFS_WRAP		= $(ARCH_DIR)/$(DEFS_INAME)_wrap
+_DEFS_SO		= _$(DEFS_INAME).$(SO_EXT)
+DEFS_SO			= $(ARCH_DIR)/$(_DEFS_SO)
+
+# -- numeric module
+NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
+NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
+NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DEP_HDRS)
+_NMRC_PF		= $(NMRC_INAME).py
+NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
+NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
+_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
+NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
 
 # -- graphs module
 GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
@@ -65,6 +75,16 @@ GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
 GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
 _GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
 GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
+
+# -- generation module
+GEN_MAIN_INT	= submodules/$(GEN_INAME).i
+GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
+GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DEP_HDRS)
+_GEN_PF			= $(GEN_INAME).py
+GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
+GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
+_GEN_SO			= _$(GEN_INAME).$(SO_EXT)
+GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
 
 # -- io module
 IO_MAIN_INT		= submodules/$(IO_INAME).i
@@ -95,16 +115,6 @@ LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
 _LINARR_SO		= _$(LINARR_INAME).$(SO_EXT)
 LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
-
-# -- numeric module
-NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
-NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
-NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DEP_HDRS)
-_NMRC_PF		= $(NMRC_INAME).py
-NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
-NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
-_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
-NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
 
 # -- properties module
 PROP_MAIN_INT	= submodules/$(PROP_INAME).i

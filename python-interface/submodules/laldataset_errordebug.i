@@ -1,9 +1,9 @@
-%module dataset_errordebug
+%module laldataset_errordebug
 
-%include dataset_error_impl.i
+%include laldataset_error_impl.i
 
 %pythoncode %{
-__mod_name = "dataset_errordebug"
+__mod_name = "laldataset_errordebug"
 __mod = __import__(__mod_name)
 __to_replace = "dataset_error_"
 __replace_length = len(__to_replace)

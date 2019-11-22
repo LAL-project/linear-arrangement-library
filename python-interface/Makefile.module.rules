@@ -30,6 +30,14 @@ $(ALGCR_WRAP).cxx: $(ALGCR_MOD_DEPS)
 
 # CLASSES AND METHODS
 
+# definitions module
+$(DEFS_SO): $(DEFS_WRAP).o $(LIBRARY_SHARED_DEP)
+	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+$(DEFS_WRAP).o: $(DEFS_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
+	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
+
 # generation
 $(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)

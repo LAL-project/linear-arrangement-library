@@ -21,43 +21,47 @@ SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
 # name_INAME		# module's interface file (.i) name without extension
 
 # -- dataset_error
-DSE_BNAME	= dataset_error
+DSE_BNAME	= laldataset_error
 DSE_INAME	= $(DSE_BNAME)debug
 
 # -- tree_structure_type
-TST_BNAME	= tree_structure_type
+TST_BNAME	= laltree_structure_type
 TST_INAME	= $(TST_BNAME)debug
 
 # -- algorithms_crossings
-ALGCR_BNAME	= algorithms_crossings
+ALGCR_BNAME	= lalalgorithms_crossings
 ALGCR_INAME	= $(ALGCR_BNAME)debug
 
+# -- definitions
+DEFS_BNAME	= laldefinitions
+DEFS_INAME	= $(DEFS_BNAME)debug
+
 # -- generation
-GEN_BNAME	= generation
+GEN_BNAME	= lalgeneration
 GEN_INAME	= $(GEN_BNAME)debug
 
 # -- graphs
-GRAPHS_BNAME= graphs
+GRAPHS_BNAME= lalgraphs
 GRAPHS_INAME= $(GRAPHS_BNAME)debug
 
 # -- io
-IO_BNAME	= io
+IO_BNAME	= lalio
 IO_INAME	= $(IO_BNAME)debug
 
 # -- iterators
-ITER_BNAME	= iterators
+ITER_BNAME	= laliterators
 ITER_INAME	= $(ITER_BNAME)debug
 
 # -- linarr
-LINARR_BNAME= linarr
+LINARR_BNAME= lallinarr
 LINARR_INAME= $(LINARR_BNAME)debug
 
 # -- numeric
-NMRC_BNAME	= numeric
+NMRC_BNAME	= lalnumeric
 NMRC_INAME	= $(NMRC_BNAME)debug
 
 # -- properties
-PROP_BNAME	= properties
+PROP_BNAME	= lalproperties
 PROP_INAME	= $(PROP_BNAME)debug
 
 # -- lal (library's main module)

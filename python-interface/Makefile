@@ -106,6 +106,7 @@ include Makefile.module.variables
 SUBMODULES	= $(DSE_SO) 	\
 			  $(TST_SO) 	\
 			  $(ALGCR_SO) 	\
+			  $(DEFS_SO) 	\
 			  $(GEN_SO) 	\
 			  $(GRAPHS_SO) 	\
 			  $(IO_SO)		\
@@ -145,6 +146,8 @@ install: $(LAL_SO)
 	cp $(TST_PY_FILE) $(LAL_PY_INSTALL)/$(_TST_PF)
 	cp $(ALGCR_SO) $(LAL_PY_INSTALL)/$(_ALGCR_SO)
 	cp $(ALGCR_PY_FILE) $(LAL_PY_INSTALL)/$(_ALGCR_PF)
+	cp $(DEFS_SO) $(LAL_PY_INSTALL)/$(_DEFS_SO)
+	cp $(DEFS_PY_FILE) $(LAL_PY_INSTALL)/$(_DEFS_PF)
 	cp $(GEN_SO) $(LAL_PY_INSTALL)/$(_GEN_SO)
 	cp $(GEN_PY_FILE) $(LAL_PY_INSTALL)/$(_GEN_PF)
 	cp $(GRAPHS_SO) $(LAL_PY_INSTALL)/$(_GRAPHS_SO)
@@ -169,6 +172,8 @@ uninstall:
 	rm -f $(LAL_PY_INSTALL)/$(_TST_PF)
 	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_PF)
+	rm -f $(LAL_PY_INSTALL)/$(_DEFS_SO)
+	rm -f $(LAL_PY_INSTALL)/$(_DEFS_PF)
 	rm -f $(LAL_PY_INSTALL)/$(_GEN_SO)
 	rm -f $(LAL_PY_INSTALL)/$(_GEN_PF)
 	rm -f $(LAL_PY_INSTALL)/$(_GRAPHS_SO)

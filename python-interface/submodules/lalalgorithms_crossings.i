@@ -1,11 +1,11 @@
-%module dataset_error
+%module lalalgorithms_crossings
 
-%include dataset_error_impl.i
+%include lalalgorithms_crossings_impl.i
 
 %pythoncode %{
-__mod_name = "dataset_error"
+__mod_name = "lalalgorithms_crossings"
 __mod = __import__(__mod_name)
-__to_replace = "dataset_error_"
+__to_replace = "algorithms_crossings_"
 __replace_length = len(__to_replace)
 for name in dir(__mod):
     if name.find(__to_replace) == 0:
