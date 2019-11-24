@@ -89,7 +89,8 @@ GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
 # -- io module
 IO_MAIN_INT		= submodules/$(IO_INAME).i
 IO_SUB_INT		= submodules/$(IO_BNAME)_impl.i
-IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DEP_HDRS)
+IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DEP_HDRS) 		\
+				  submodules/lalio_rename_enums.i
 _IO_PF			= $(IO_INAME).py
 IO_PY_FILE		= $(ARCH_DIR)/$(_IO_PF)
 IO_WRAP			= $(ARCH_DIR)/$(IO_INAME)_wrap

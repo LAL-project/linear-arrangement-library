@@ -91,9 +91,9 @@ endif
 endif
 
 # ------------
-# DEPENDENCIES (of the modules)
+# DEPENDENCIES (headers)
 
-include Makefile.module.dependencies
+include Makefile.module.headdep
 
 # ----------------
 # MODULE variables
