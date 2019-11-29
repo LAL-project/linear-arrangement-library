@@ -116,12 +116,10 @@ SOURCES += \
     linarr/D.cpp \
     properties/degrees.cpp \
     properties/mhd.cpp \
-    properties/variance_C_gen_graphs_fast.cpp \
     linarr/C_brute_force.cpp \
     linarr/C_dyn_prog.cpp \
     linarr/C_ladder.cpp \
     generation/free_ulab_trees.cpp \
-    properties/variance_C_freqs.cpp \
     properties/variance_C_gen_graphs.cpp \
     properties/variance_C_trees.cpp \
     generation/free_lab_trees.cpp \
