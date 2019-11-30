@@ -72,14 +72,14 @@ inline void compute_data_forest
 	// auxiliary memory and additional variables
 
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
-	uint64_t *nds = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
+	uint64_t *xi = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
 
 	// n<k^2>: second moment of degree about zero multiplied by n
 	uint64_t nk2 = 0;
 	// n<k^3>: third moment of degree about zero multiplied by n
 	uint64_t nk3 = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	uint64_t Lg = 0;
+	uint64_t psi = 0;
 
 	// ----------------------
 	// precompute data
@@ -90,24 +90,25 @@ inline void compute_data_forest
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
-		nds[s] = 0;
+		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
 			const uint64_t kt = g.degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
-			Lg += ks*kt;
+			psi += ks*kt;
 			// calculate for each s in V: sum_{t in Gamma(s)} k_t
-			nds[s] += kt;
+			xi[s] += kt;
 		}
 	}
-	Lg /= 2;
+	psi /= 2;
 
 	// ------------------------
 	// start computing variance
 
 	Qs = (m*(m + 1) - nk2)/2;
-	KG = (m + 1)*nk2 - nk3 - 2*Lg;
-	Phi_1 += (m + 1)*Lg;
+	KG = (m + 1)*nk2 - nk3 - 2*psi;
+	Phi_1 = (m + 1)*psi;
+	Phi_2 = 0;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
@@ -120,18 +121,17 @@ inline void compute_data_forest
 		const uint64_t kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
-		n_paths_5 += (kt - 1)*(nds[s] - kt - ks + 1) +
-					 (ks - 1)*(nds[t] - kt - ks + 1);
+		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
+					 (ks - 1)*(xi[t] - kt - ks + 1);
 
-		const uint64_t eps1 = nds[s] - kt;
-		const uint64_t eps2 = nds[t] - ks;
+		const uint64_t eps1 = xi[s] - kt;
+		const uint64_t eps2 = xi[t] - ks;
 
 		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
 		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
 
 		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 +=
-			(ks + kt)*(nk2 - nds[s] - nds[t] - kt*(kt - 1) - ks*(ks - 1));
+		Phi_2 += (ks + kt)*(nk2 - xi[s] - xi[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
 
 	// finish calculating Lambda_2
@@ -142,7 +142,7 @@ inline void compute_data_forest
 	// similarly, some things were counted twice
 	Phi_2 /= 2;
 
-	free(nds);
+	free(xi);
 }
 
 rational variance_C_forest_rational(const ugraph& g) {

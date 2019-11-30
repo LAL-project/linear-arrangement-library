@@ -58,19 +58,24 @@ typedef uint64_t bigint;
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
 
-#define iterate(i,Ni, j,Nj, JOB)				\
-	i=0; j=0;									\
-	while (i < Ni.size() and j < Nj.size())	{	\
-		if (Ni[i] == Nj[j]) {					\
-			JOB;								\
-			++i; ++j;							\
-		}										\
-		else {									\
-			auto __Ni_i = Ni[i];				\
-			auto __Nj_j = Nj[j];				\
-			i += (__Ni_i < __Nj_j);				\
-			j += (__Ni_i > __Nj_j);				\
-		}										\
+/* This macro has two local variables: __i, __j
+ * The first variable, __i, iterates over Ni.
+ * The first variable, __j, iterates over Nj.
+ */
+#define iterate(Ni, Nj, JOB)						\
+	size_t __i = 0;									\
+	size_t __j = 0;									\
+	while (__i < Ni.size() and __j < Nj.size())	{	\
+		if (Ni[__i] == Nj[__j]) {					\
+			JOB;									\
+			++__i; ++__j;							\
+		}											\
+		else {										\
+			auto __Ni_i = Ni[__i];					\
+			auto __Nj_j = Nj[__j];					\
+			__i += (__Ni_i < __Nj_j);				\
+			__j += (__Ni_i > __Nj_j);				\
+		}											\
 	}
 
 struct useful_info_pairs {
@@ -88,7 +93,6 @@ struct useful_info_pairs {
 	}
 };
 
-typedef map<lal::edge, useful_info_pairs>::iterator IT;
 typedef map<lal::edge, useful_info_pairs>::const_iterator CIT;
 
 namespace lal {
@@ -106,13 +110,12 @@ inline void compute_data_gen_graphs
 (
 	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
-	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
+	bigint& n_paths_4, bigint& n_cycles_4, bigint& paw,
 	bigint& n_paths_5, bigint& pair_C3_L2,
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
 )
 {
-
 	// ------------------------------------------------
 	// local variables (some store precomputed data)
 
@@ -130,7 +133,7 @@ inline void compute_data_gen_graphs
 	// sum of degrees cubed
 	bigint nk3 = 0;
 	// sum_{st in E} k_s*k_t
-	bigint Lg = 0;
+	bigint psi = 0;
 
 	// ------------------------------------------------
 	// precompute useful data
@@ -141,18 +144,18 @@ inline void compute_data_gen_graphs
 		nk3 += ks*ks*ks;
 		for (node t : g.get_neighbours(s)) {
 			const bigint kt = g.degree(t);
-			Lg += ks*kt;
+			psi += ks*kt;
 			xi[s] += kt;
 		}
 	}
-	Lg /= 2;
+	psi /= 2;
 
 	// ------------------------------------------------
 	// compute the variance
 
 	Qs = (m*(m + 1) - nk2)/2;
-	Kg = (m + 1)*nk2 - nk3 - 2*Lg;
-	Phi_1 = (m + 1)*Lg;
+	Kg = (m + 1)*nk2 - nk3 - 2*psi;
+	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
 	for (node s = 0; s < n; ++s) {
@@ -160,9 +163,8 @@ inline void compute_data_gen_graphs
 		npaths[s] = (xi[s] + 2 - 2*ks)*ks;
 	}
 
-	size_t idx1, idx2;
-	bigint npaths4_c1 = 0;
-	bigint npaths4_c2 = 0;
+	bigint mu1 = 0;
+	bigint mu2 = 0;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
@@ -186,7 +188,7 @@ inline void compute_data_gen_graphs
 
 			bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
 			bigint common_ut = 0;
-			iterate(idx1,Nu, idx2,Nt,
+			iterate(Nu, Nt,
 				++common_ut;
 			)
 
@@ -202,7 +204,7 @@ inline void compute_data_gen_graphs
 
 			bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
 			bigint common_us = 0;
-			iterate(idx1,Nu, idx2,Ns,
+			iterate(Nu, Ns,
 				++common_us;
 			)
 
@@ -212,21 +214,23 @@ inline void compute_data_gen_graphs
 		}
 
 		bigint common_st = 0;
-		iterate(idx1,Nt, idx2,Ns,
+		iterate(Nt, Ns,
 			++common_st;
-			graphlet += g.degree(Ns[idx2]) - 2;
-			pair_C3_L2 += m - ks - kt - g.degree(Ns[idx2]) + 3;
+			// NOTE: '__j' is a local variable within the 'iterate'
+			// definition. It is the iterator of the Ns list.
+			paw += g.degree(Ns[__j]) - 2;
+			pair_C3_L2 += m - ks - kt - g.degree(Ns[__j]) + 3;
 		)
 
 		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - (xi[s] + xi[t]));
+		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
 		Lambda_1 += ks*(xi[t] - ks - kt + 1) + (kt - 1)*(xi[s] - kt);
 		Lambda_1 += kt*(xi[s] - ks - kt + 1) + (ks - 1)*(xi[t] - ks);
 		Lambda_1 -= 2*common_st*(ks + kt);
 
-		npaths4_c1 += xi[t] + xi[s];
-		npaths4_c2 += common_st;
+		mu1 += xi[t] + xi[s];
+		mu2 += common_st;
 
 		npaths[s] += xi[t] - 2*(kt + common_st);
 		npaths[t] += xi[s] - 2*(ks + common_st);
@@ -237,7 +241,7 @@ inline void compute_data_gen_graphs
 	}
 
 	Phi_2 /= 2;
-	n_paths_4 = m - nk2 + npaths4_c1/2 - npaths4_c2;
+	n_paths_4 = m - nk2 + mu1/2 - mu2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
@@ -257,7 +261,7 @@ inline void compute_data_gen_graphs_reuse
 (
 	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
-	bigint& n_paths_4, bigint& n_cycles_4, bigint& graphlet,
+	bigint& n_paths_4, bigint& n_cycles_4, bigint& paw,
 	bigint& n_paths_5, bigint& pair_C3_L2,
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
@@ -281,7 +285,7 @@ inline void compute_data_gen_graphs_reuse
 	// sum of degrees cubed
 	bigint nk3 = 0;
 	// sum_{st in E} k_s*k_t
-	bigint Lg = 0;
+	bigint psi = 0;
 
 	// ------------------------------------------------
 	// precompute useful data
@@ -292,32 +296,30 @@ inline void compute_data_gen_graphs_reuse
 		nk3 += ks*ks*ks;
 		for (node t : g.get_neighbours(s)) {
 			const bigint kt = g.degree(t);
-			Lg += ks*kt;
+			psi += ks*kt;
 			xi[s] += kt;
 		}
 	}
-	Lg /= 2;
+	psi /= 2;
 
 	// hash table to reuse computations
 	map<edge, useful_info_pairs> saving_comps;
-	// indices to iterate over (sorted) adjacency lists
-	size_t idx1, idx2;
 
 	// ------------------------------------------------
 	// compute the variance
 
 	Qs = (m*(m + 1) - nk2)/2;
-	Kg = (m + 1)*nk2 - nk3 - 2*Lg;
-	Phi_1 = (m + 1)*Lg;
-	Phi_2 = nk2*nk2;
+	Kg = (m + 1)*nk2 - nk3 - 2*psi;
+	Phi_1 = (m + 1)*psi;
+	Phi_2 = 0;
 
 	for (node s = 0; s < n; ++s) {
 		const bigint ks = g.degree(s);
 		npaths[s] = (xi[s] + 2 - 2*ks)*ks;
 	}
 
-	bigint npaths4_c1 = 0;
-	bigint npaths4_c2 = 0;
+	bigint mu1 = 0;
+	bigint mu2 = 0;
 
 	edge_iterator it(g);
 	while (it.has_next()) {
@@ -343,9 +345,9 @@ inline void compute_data_gen_graphs_reuse
 			else {
 				const neighbourhood& Nu = g.get_neighbours(u);
 				bigint deg_sum = 0;
-				iterate(idx1,Nt, idx2,Nu,
+				iterate(Nt, Nu,
 					++common_ut;
-					deg_sum += g.degree(Nu[idx2]);
+					deg_sum += g.degree(Nu[__j]);
 				)
 				saving_comps.insert(
 					make_pair(
@@ -372,9 +374,9 @@ inline void compute_data_gen_graphs_reuse
 				// compute values and store them
 				const neighbourhood& Nu = g.get_neighbours(u);
 				bigint deg_sum = 0;
-				iterate(idx1,Ns, idx2,Nu,
+				iterate(Ns, Nu,
 					++common_us;
-					deg_sum += g.degree(Nu[idx2]);
+					deg_sum += g.degree(Nu[__j]);
 				)
 				saving_comps.insert(
 					make_pair(
@@ -405,9 +407,9 @@ inline void compute_data_gen_graphs_reuse
 			// compute values and store them
 			// common neighbours of 's' and 't'
 
-			iterate(idx1,Ns, idx2,Nt,
-					++common_st;
-					deg_sum_st += g.degree(Nt[idx2]);
+			iterate(Ns, Nt,
+				++common_st;
+				deg_sum_st += g.degree(Nt[__j]);
 			)
 
 			saving_comps.insert(
@@ -419,19 +421,18 @@ inline void compute_data_gen_graphs_reuse
 
 		n_cycles_4 -= kt - 1;
 
-		graphlet += deg_sum_st - 2*common_st;
+		paw += deg_sum_st - 2*common_st;
 		pair_C3_L2 += common_st*(m - ks - kt + 3) - deg_sum_st;
 
 		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 -=
-			(ks + kt)*(xi[s] + xi[t] + kt*(kt - 1) + ks*(ks - 1));
+		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
 		Lambda_1 += ks*(xi[t] - ks - kt + 1) + (kt - 1)*(xi[s] - kt);
 		Lambda_1 += kt*(xi[s] - ks - kt + 1) + (ks - 1)*(xi[t] - ks);
 		Lambda_1 -= 2*common_st*(ks + kt);
 
-		npaths4_c1 += xi[t] + xi[s];
-		npaths4_c2 += common_st;
+		mu1 += xi[t] + xi[s];
+		mu2 += common_st;
 
 		npaths[s] += xi[t] - 2*(kt + common_st);
 		npaths[t] += xi[s] - 2*(ks + common_st);
@@ -442,7 +443,7 @@ inline void compute_data_gen_graphs_reuse
 	}
 
 	Phi_2 /= 2;
-	n_paths_4 = m - nk2 + npaths4_c1/2 - npaths4_c2;
+	n_paths_4 = m - nk2 + mu1/2 - mu2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
@@ -472,7 +473,7 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 	bigint n_cycles_4 = 0;
 
 	// (a_{tu} + a_{sv})(a_{tv} + a_{su})
-	bigint graphlet = 0;
+	bigint paw = 0;
 	// the amount of pairs of disjoint
 	// triangle and edge in the graph.
 	bigint pair_C3_L2 = 0;
@@ -495,7 +496,7 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 		(
 			g, n, m,
 			Qs, Kg,
-			n_paths_4, n_cycles_4, graphlet,
+			n_paths_4, n_cycles_4, paw,
 			n_paths_5, pair_C3_L2,
 			Phi_1, Phi_2,
 			Lambda_1, Lambda_2
@@ -506,7 +507,7 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 		(
 			g, n, m,
 			Qs, Kg,
-			n_paths_4, n_cycles_4, graphlet,
+			n_paths_4, n_cycles_4, paw,
 			n_paths_5, pair_C3_L2,
 			Phi_1, Phi_2,
 			Lambda_1, Lambda_2
@@ -526,13 +527,12 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 	J.init_ui(Lambda_2);			V += rational(1,180)*J;
 	J.init_ui(Phi_2);				V += rational(1,180)*J;
 	J.init_ui(Phi_1);				V -= rational(1,90)*J;
-	J.init_ui(graphlet);			V += rational(1,30)*J;
+	J.init_ui(paw);					V += rational(1,30)*J;
 	J.init_ui(pair_C3_L2);			V += rational(1,30)*J;
 	return V;
 }
 
 double variance_C(const ugraph& g, bool reuse) {
-	assert(g.is_normalised());
 	return variance_C_rational(g, reuse).to_double();
 }
 
