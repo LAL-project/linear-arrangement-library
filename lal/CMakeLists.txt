@@ -155,9 +155,7 @@ target_sources(
 		properties/mhd.cpp
 		properties/Q.cpp
 		properties/variance_C_forests.cpp
-		properties/variance_C_freqs.cpp
 		properties/variance_C_gen_graphs.cpp
-		properties/variance_C_gen_graphs_fast.cpp
 		properties/variance_C_trees.cpp
 		utils/conversions.cpp
 )
