@@ -16,7 +16,8 @@ del laldataset_errordebug
 __definitions = laldefinitionsdebug
 del laldefinitionsdebug
 
-# import oneself as io
+# import oneself as io for later renaming
+# of functions in "lalio_rename_enums.i"
 import laliodebug as io
 %}
 

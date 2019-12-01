@@ -19,7 +19,7 @@ for name in dir(__mod):
 		setattr(__mod, new_name, getattr(__mod, name))
 		delattr(__mod, name)
 	
-del start_lal, new_name
+del start_lal, new_name, name
 del __mod_name, __mod
 
 __definitions = definitions

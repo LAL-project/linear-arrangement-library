@@ -45,7 +45,6 @@
 %template(__MDD_2level_drtree)	lal::linarr::MDD_2level<lal::graphs::drtree>;
 
 %pythoncode %{
-
 def MDD_1level_rational(g, l):
 	return __dict__[ "__MDD_1level_rational_" + str(type(g))[7:] ](g, l)
 
