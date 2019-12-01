@@ -49,6 +49,7 @@
 using namespace std;
 
 // lal includes
+#include <lal/properties/Q.hpp>
 #include <lal/utils/sort_integers.hpp>
 
 namespace lal {
@@ -140,6 +141,10 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 /* SETTERS */
 
 /* GETTERS */
+
+std::vector<edge_pair> ugraph::Q() const {
+	return graph::Q(properties::size_Q(*this));
+}
 
 const neighbourhood& ugraph::get_neighbours(node u) const {
 	assert(has_node(u));

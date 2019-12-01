@@ -51,7 +51,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/sort_integers.hpp>
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/properties/Q.hpp>
 
 namespace lal {
 namespace graphs {
@@ -192,6 +192,10 @@ void dgraph::disjoint_union(const graph& g) {
 /* SETTERS */
 
 /* GETTERS */
+
+std::vector<edge_pair> dgraph::Q() const {
+	return graph::Q(properties::size_Q(*this));
+}
 
 bool dgraph::has_edge(node u, node v) const {
 	assert(has_node(u));

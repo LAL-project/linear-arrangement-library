@@ -107,6 +107,15 @@ class ugraph : virtual public graph {
 		/* GETTERS */
 
 		/**
+		 * @brief Returns all independent pairs of edges of this graph.
+		 *
+		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+		 * no nodes.
+		 */
+		std::vector<edge_pair> Q() const;
+
+		/**
 		 * @brief Returns the neighbourhood of node @e u.
 		 * @param u Node.
 		 * @return Returns the list of nodes adjacent to node @e u.

@@ -125,6 +125,15 @@ class dgraph : virtual public graph {
 
 		/* GETTERS */
 
+		/**
+		 * @brief Returns all independent pairs of edges of this graph.
+		 *
+		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+		 * no nodes.
+		 */
+		std::vector<edge_pair> Q() const;
+
 		/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
 		bool has_edge(node u, node v) const;
 

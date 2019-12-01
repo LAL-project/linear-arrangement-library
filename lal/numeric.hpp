@@ -42,3 +42,5 @@
 
 #include <lal/numeric/integer.hpp>
 #include <lal/numeric/rational.hpp>
+
+#include <lal/numeric/output.hpp>

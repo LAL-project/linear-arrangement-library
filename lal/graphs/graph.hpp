@@ -166,15 +166,6 @@ class graph {
 		std::vector<edge> edges() const;
 
 		/**
-		 * @brief Returns all independent pairs of edges of this graph.
-		 *
-		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-		 * no nodes.
-		 */
-		std::vector<edge_pair> Q() const;
-
-		/**
 		 * @brief Returns whether this graph is normalised or not.
 		 *
 		 * A graph is normalised if every node's adjacency list is sorted
@@ -222,6 +213,16 @@ class graph {
 		virtual void _init(uint64_t n);
 		/// Clears memory for the @ref graph class only.
 		virtual void _clear();
+
+		/**
+		 * @brief Returns all independent pairs of edges of this graph.
+		 *
+		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+		 * no nodes.
+		 * @param q The size of \f$Q\f$.
+		 */
+		std::vector<edge_pair> Q(uint64_t q) const;
 };
 
 } // -- namespace graphs

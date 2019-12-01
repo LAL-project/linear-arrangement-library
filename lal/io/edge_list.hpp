@@ -44,7 +44,8 @@
 #include <string>
 
 // lal includes
-#include <lal/graphs/graph.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 
 namespace lal {
 namespace io {
@@ -68,7 +69,27 @@ namespace io {
  * @return Returns 'false' if the file could not be opened. Returns 'true'
  * if the graph was read successfully.
  */
-bool read_edge_list(const std::string& filename, graphs::graph& g, bool norm = true);
+bool read_edge_list(const std::string& filename, graphs::ugraph& g, bool norm = true);
+/**
+ * @brief Reads a graph in edge list format.
+ *
+ * This format consists of a list of all the graph's edges. Each edge
+ * is described as a pair of indices of the nodes at each end of the
+ * edge.
+ *
+ * Nodes are usually labelled with indices starting at 0, so this value
+ * is accepted. The resulting number of nodes of the graph will be the
+ * maximum index in the file plus 1.
+ *
+ * The current contents of the graph will be cleared and replaced by
+ * the contents of the file.
+ * @param[in] filename Name of the file.
+ * @param[out] g Graph read from the file.
+ * @param[in] norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
+ * @return Returns 'false' if the file could not be opened. Returns 'true'
+ * if the graph was read successfully.
+ */
+bool read_edge_list(const std::string& filename, graphs::dgraph& g, bool norm = true);
 
 } // -- namespace io
 } // -- namespace lal

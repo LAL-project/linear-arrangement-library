@@ -80,7 +80,7 @@ bool share_vertices(const graph& g, const E_pointer& p1, const E_pointer& p2) {
 
 static tuple<bool, E_pointer, E_pointer>
 find_next_pair_directed(
-	const dgraph& g, node s, size_t pt, node u, size_t pv
+	const graph& g, node s, size_t pt, node u, size_t pv
 )
 {
 	// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
@@ -157,7 +157,7 @@ find_next_pair(const graph& g, node s, size_t pt, node u, size_t pv)
 {
 	return (
 		g.is_directed() ?
-			find_next_pair_directed(dynamic_cast<const dgraph&>(g), s,pt,u,pv) :
+			find_next_pair_directed(g, s,pt,u,pv) :
 			find_next_pair_undirected(g, s,pt,u,pv)
 	);
 }

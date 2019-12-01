@@ -55,7 +55,8 @@ using namespace graphs;
 
 namespace io {
 
-bool read_edge_list(const string& filename, graph& g, bool norm) {
+template<class G>
+inline bool __read_edge_list(const string& filename, G& g, bool norm) {
 	if (not filesystem::exists(filename)) {
 		return false;
 	}
@@ -74,13 +75,16 @@ bool read_edge_list(const string& filename, graph& g, bool norm) {
 	fin.close();
 
 	g.init(max_vert_idx + 1);
-	if (g.is_directed()) {
-		dynamic_cast<dgraph&>(g).add_edges(edge_list, norm);
-	}
-	else {
-		dynamic_cast<ugraph&>(g).add_edges(edge_list, norm);
-	}
+	g.add_edges(edge_list, norm);
 	return true;
+}
+
+bool read_edge_list(const string& filename, ugraph& g, bool norm) {
+	return __read_edge_list(filename, g, norm);
+}
+
+bool read_edge_list(const string& filename, dgraph& g, bool norm) {
+	return __read_edge_list(filename, g, norm);
 }
 
 } // -- namespace io

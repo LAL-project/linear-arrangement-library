@@ -53,3 +53,5 @@
 
 #include <lal/graphs/urtree.hpp>
 #include <lal/graphs/drtree.hpp>
+
+#include <lal/graphs/output.hpp>

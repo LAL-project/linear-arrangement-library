@@ -136,16 +136,14 @@ pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
 	size_t pt = m_cur.second;
 	bool found = false;
 
-	const dgraph& dG = dynamic_cast<const dgraph&>(m_G);
-
 	++pt;
-	if (s < n and pt < dG.out_degree(s)) {
+	if (s < n and pt < m_G.degree(s)) {
 		found = true;
 	}
 	else {
 		pt = 0;
 		++s;
-		while (s < n and dG.out_degree(s) == 0) { ++s; }
+		while (s < n and m_G.degree(s) == 0) { ++s; }
 		found = s < n;
 	}
 	return make_pair(found, E_pointer(s, pt));

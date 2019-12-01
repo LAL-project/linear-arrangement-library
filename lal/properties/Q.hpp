@@ -46,7 +46,8 @@
 // lal includes
 #include <lal/numeric/integer.hpp>
 #include <lal/definitions.hpp>
-#include <lal/graphs/graph.hpp>
+#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/dgraph.hpp>
 
 namespace lal {
 namespace properties {
@@ -56,7 +57,7 @@ namespace properties {
  * @param g Input graph.
  * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-numeric::integer size_Q_integer(const graphs::graph& g);
+numeric::integer size_Q_integer(const graphs::ugraph& g);
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
@@ -64,7 +65,22 @@ numeric::integer size_Q_integer(const graphs::graph& g);
  * @param g Input graph.
  * @return The return value is a simple 64-bit unsigned integer.
  */
-uint64_t size_Q(const graphs::graph& g);
+uint64_t size_Q(const graphs::ugraph& g);
+
+/**
+ * @brief Compute the size of \f$Q(G)\f$.
+ * @param g Input graph.
+ * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
+ */
+numeric::integer size_Q_integer(const graphs::dgraph& g);
+/**
+ * @brief Compute the size of \f$Q(G)\f$.
+ *
+ * See @ref size_Q_integer for details.
+ * @param g Input graph.
+ * @return The return value is a simple 64-bit unsigned integer.
+ */
+uint64_t size_Q(const graphs::dgraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

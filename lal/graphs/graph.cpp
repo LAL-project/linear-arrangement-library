@@ -159,18 +159,6 @@ vector<edge> graph::edges() const {
 	return e;
 }
 
-vector<edge_pair> graph::Q() const {
-	vector<edge_pair> q(properties::size_Q(*this));
-	auto vec_it = q.begin();
-	Q_iterator q_it(*this);
-	while (q_it.has_next()) {
-		q_it.next();
-		*vec_it = q_it.get_pair();
-		++vec_it;
-	}
-	return q;
-}
-
 bool graph::is_normalised() const {
 	return m_normalised;
 }
@@ -199,6 +187,18 @@ void graph::_clear() {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list.clear();
+}
+
+vector<edge_pair> graph::Q(uint64_t qs) const {
+	vector<edge_pair> q(qs);
+	auto vec_it = q.begin();
+	Q_iterator q_it(*this);
+	while (q_it.has_next()) {
+		q_it.next();
+		*vec_it = q_it.get_pair();
+		++vec_it;
+	}
+	return q;
 }
 
 } // -- namespace graphs
