@@ -61,8 +61,8 @@ numeric::rational MDD_1level_rational
 	assert(pis.size() == 0 or Gs.size() == pis.size());
 #endif
 
-	uint64_t sumD = 0;
-	uint64_t sumM = 0;
+	uint32_t sumD = 0;
+	uint32_t sumM = 0;
 	if (pis.size() == 0) {
 		const LINARR empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {

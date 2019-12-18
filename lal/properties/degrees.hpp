@@ -65,7 +65,7 @@ namespace properties {
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
+numeric::rational mmt_degree_rational(const graphs::graph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
@@ -75,7 +75,7 @@ numeric::rational mmt_degree_rational(const graphs::graph& g, uint64_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_degree(const graphs::graph& g, uint64_t p);
+double mmt_degree(const graphs::graph& g, uint32_t p);
 
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
@@ -91,7 +91,7 @@ double mmt_degree(const graphs::graph& g, uint64_t p);
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
+numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
@@ -101,7 +101,7 @@ numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint64_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
+double mmt_in_degree(const graphs::dgraph& g, uint32_t p);
 
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
@@ -117,7 +117,7 @@ double mmt_in_degree(const graphs::dgraph& g, uint64_t p);
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint64_t p);
+numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
@@ -127,7 +127,7 @@ numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint64_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_out_degree(const graphs::dgraph& g, uint64_t p);
+double mmt_out_degree(const graphs::dgraph& g, uint32_t p);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.

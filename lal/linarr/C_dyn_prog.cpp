@@ -66,15 +66,15 @@ namespace linarr {
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint64_t __compute_C_dyn_prog(
+inline uint32_t __compute_C_dyn_prog(
 	const ugraph& g, const LINARR& pi,
 	vector<bool>& bn,
 	node * __restrict__ T,
-	uint64_t * __restrict__ M,
-	uint64_t * __restrict__ K
+	uint32_t * __restrict__ M,
+	uint32_t * __restrict__ K
 )
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
 	// compute pi
 	for (node i = 0; i < n; ++i) {
@@ -89,7 +89,7 @@ inline uint64_t __compute_C_dyn_prog(
 
 		get_bool_neighbours(g, u, bn);
 
-		uint64_t k = g.degree(u);
+		uint32_t k = g.degree(u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -101,7 +101,7 @@ inline uint64_t __compute_C_dyn_prog(
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
-		for (uint64_t i = 3; i < n; ++i) {
+		for (uint32_t i = 3; i < n; ++i) {
 			k -= bn[T[i - 1]];
 
 			// the row corresponding to node 'u' in M is
@@ -118,20 +118,20 @@ inline uint64_t __compute_C_dyn_prog(
 	}
 
 	/* fill matrix K */
-	memset(K, 0, (n - 3)*(n - 3)*sizeof(uint64_t));
+	memset(K, 0, (n - 3)*(n - 3)*sizeof(uint32_t));
 
 	// special case for ii = 0 (see next for loop)
 	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
 
 	// pointer for next row in K
-	uint64_t * __restrict__ next_k_it;
+	uint32_t * __restrict__ next_k_it;
 	// pointer for M
-	uint64_t * __restrict__ m_it;
+	uint32_t * __restrict__ m_it;
 	// pointer for K
-	uint64_t * __restrict__ k_it;
+	uint32_t * __restrict__ k_it;
 
-	for (uint64_t ii = 1; ii < n - 3; ++ii) {
-		const uint64_t i = n - 3 - ii - 1;
+	for (uint32_t ii = 1; ii < n - 3; ++ii) {
+		const uint32_t i = n - 3 - ii - 1;
 
 		//m_it = &M[i][i];
 		m_it = &M[ idx(i,i, n-3) ];
@@ -144,7 +144,7 @@ inline uint64_t __compute_C_dyn_prog(
 		// place next_k_it at the same column as k_it but at the next row
 		next_k_it = k_it + n - 3;
 
-		for (uint64_t j = i; j < n - 3; ++j) {
+		for (uint32_t j = i; j < n - 3; ++j) {
 			//K[i][j] = M[i][j] + K[i + 1][j];
 
 			*k_it++ = *m_it++ + *next_k_it++;
@@ -153,7 +153,7 @@ inline uint64_t __compute_C_dyn_prog(
 
 	/* compute number of crossings */
 
-	uint64_t C = 0;
+	uint32_t C = 0;
 
 	for (position pu = 0; pu < n - 3; ++pu) {
 		const node u = T[pu];
@@ -182,63 +182,63 @@ inline uint64_t __compute_C_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint64_t __call_C_dyn_prog(const ugraph& g, const LINARR& pi) {
-	const uint64_t n = g.n_nodes();
+inline uint32_t __call_C_dyn_prog(const ugraph& g, const LINARR& pi) {
+	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
 
 	/* allocate memory */
-	const size_t n_bytes = n + 2*(n - 3)*(n - 3);
-	uint64_t * __restrict__ all_memory =
-		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
+	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	uint32_t * __restrict__ all_memory =
+		static_cast<uint32_t *>(malloc(n_elems*sizeof(uint32_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
 	position * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
-	uint64_t * __restrict__ M = &all_memory[n];
+	uint32_t * __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows)
-	uint64_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint64_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
+	uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
 	free(all_memory);
 	return C;
 }
 
-uint64_t __n_crossings_dyn_prog(const ugraph& g, const LINARR& pi) {
+uint32_t __n_crossings_dyn_prog(const ugraph& g, const LINARR& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
-vector<uint64_t> __n_crossings_dyn_prog_list
+vector<uint32_t> __n_crossings_dyn_prog_list
 (const ugraph& g, const vector<LINARR>& pis)
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
 
 	/* allocate memory */
 	const size_t n_bytes = n + 2*(n - 3)*(n - 3);
-	uint64_t * __restrict__ all_memory =
-		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
+	uint32_t * __restrict__ all_memory =
+		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
 	position * __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows)
-	uint64_t * __restrict__ M = &all_memory[n];
+	uint32_t * __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows)
-	uint64_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);

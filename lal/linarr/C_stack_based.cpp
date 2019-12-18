@@ -52,7 +52,7 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 #include <lal/utils/avl.hpp>
 
-typedef pair<uint64_t,lal::edge> indexed_edge;
+typedef pair<uint32_t,lal::edge> indexed_edge;
 
 namespace lal {
 using namespace graphs;
@@ -61,12 +61,12 @@ namespace linarr {
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
 
-inline uint64_t __compute_C_stack_based(
+inline uint32_t __compute_C_stack_based(
 	const ugraph& g, const LINARR& pi,
 	node * __restrict__ T
 )
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
@@ -114,8 +114,8 @@ inline uint64_t __compute_C_stack_based(
 	}
 
 	// relation between edges and their insertion index
-	map<edge, uint64_t> edge_to_idx;
-	uint64_t idx = 0;
+	map<edge, uint32_t> edge_to_idx;
+	uint32_t idx = 0;
 
 	// 3. ... assign indices now
 	for (position pu = 0; pu < n; ++pu) {
@@ -129,9 +129,9 @@ inline uint64_t __compute_C_stack_based(
 	}
 
 	// stack of the algorithm
-	utils::AVL<pair<uint64_t, edge> > S;
+	utils::AVL<pair<uint32_t, edge> > S;
 
-	uint64_t C = 0;
+	uint32_t C = 0;
 
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
@@ -140,7 +140,7 @@ inline uint64_t __compute_C_stack_based(
 			const edge uv = sorted_edge(u,v);
 			idx = edge_to_idx[ uv ];
 
-			uint64_t on_top = S.remove( make_pair(idx, uv) );
+			uint32_t on_top = static_cast<uint32_t>(S.remove( make_pair(idx, uv) ));
 			C += on_top;
 
 			/*
@@ -155,8 +155,8 @@ inline uint64_t __compute_C_stack_based(
 	return C;
 }
 
-inline uint64_t __call_C_stack_based(const ugraph& g, const LINARR& pi) {
-	const uint64_t n = g.n_nodes();
+inline uint32_t __call_C_stack_based(const ugraph& g, const LINARR& pi) {
+	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -167,24 +167,24 @@ inline uint64_t __call_C_stack_based(const ugraph& g, const LINARR& pi) {
 	// T[p] = u <-> node u is at position p
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
-	uint64_t C = __compute_C_stack_based(g, pi, T);
+	uint32_t C = __compute_C_stack_based(g, pi, T);
 
 	/* free memory */
 	free(T);
 	return C;
 }
 
-uint64_t __n_crossings_stack_based(const ugraph& g, const LINARR& pi) {
+uint32_t __n_crossings_stack_based(const ugraph& g, const LINARR& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
-vector<uint64_t> __n_crossings_stack_based_list
+vector<uint32_t> __n_crossings_stack_based_list
 (const ugraph& g, const vector<LINARR>& pis)
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}

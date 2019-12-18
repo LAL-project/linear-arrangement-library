@@ -58,19 +58,19 @@ integer size_Q_integer(const ugraph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint64_t ku = g.degree(u);
+		const uint32_t ku = g.degree(u);
 		nk2 += ku*ku;
 	}
 
-	const uint64_t m = g.n_edges();
+	const uint32_t m = g.n_edges();
 	integer q = integer_from_ui(m*(m + 1));
 	q -= nk2;
 	q /= 2;
 	return q;
 }
 
-uint64_t size_Q(const ugraph& g) {
-	return size_Q_integer(g).to_uint();
+uint32_t size_Q(const ugraph& g) {
+	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
 }
 
 integer size_Q_integer(const dgraph& g) {
@@ -88,8 +88,8 @@ integer size_Q_integer(const dgraph& g) {
 	return q;
 }
 
-uint64_t size_Q(const dgraph& g) {
-	return size_Q_integer(g).to_uint();
+uint32_t size_Q(const dgraph& g) {
+	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
 }
 
 } // -- namespace properties

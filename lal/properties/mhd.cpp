@@ -54,8 +54,8 @@ using namespace utils;
 namespace properties {
 
 rational MHD_rational(const urtree& tree) {
-	int64_t sum_distances = 0;
-	vector<uint64_t> levels(tree.n_nodes(), 0);
+	uint32_t sum_distances = 0;
+	vector<uint32_t> levels(tree.n_nodes(), 0);
 
 	BFS<urtree> bfs(tree);
 	bfs.set_process_neighbour(

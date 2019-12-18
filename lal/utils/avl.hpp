@@ -57,8 +57,8 @@ class AVL {
 			root = nullptr;
 		}
 
-		uint64_t remove(const T& x) {
-			uint64_t top = 0;
+		size_t remove(const T& x) {
+			size_t top = 0;
 			root = remove(root, x, top);
 			return top;
 		}

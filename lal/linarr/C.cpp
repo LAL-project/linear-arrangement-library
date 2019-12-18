@@ -48,7 +48,7 @@ using namespace graphs;
 
 namespace linarr {
 
-uint64_t n_crossings
+uint32_t n_crossings
 (const ugraph& g, const LINARR& pi, const algorithms_crossings& A) {
 	switch (A) {
 	case algorithms_crossings::brute_force:
@@ -65,7 +65,7 @@ uint64_t n_crossings
 	return g.n_edges()*g.n_edges();
 }
 
-vector<uint64_t> n_crossings_list
+vector<uint32_t> n_crossings_list
 (const ugraph& g, const vector<LINARR>& pis, const algorithms_crossings& A)
 {
 	switch (A) {
@@ -80,7 +80,7 @@ vector<uint64_t> n_crossings_list
 	}
 
 	// wrong value of enumeration
-	return vector<uint64_t>(pis.size(), g.n_edges()*g.n_edges());
+	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 
 } // -- namespace linarr

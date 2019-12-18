@@ -70,7 +70,7 @@ class graph {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		graph(uint64_t n);
+		graph(uint32_t n);
 		/// Default destructor.
 		virtual ~graph();
 
@@ -85,7 +85,7 @@ class graph {
 		 * @param n Number of nodes.
 		 * @post The previous graph structure is cleared. See @ref clear.
 		 */
-		void init(uint64_t n);
+		void init(uint32_t n);
 		/**
 		 * @brief Deletes all edges and nodes from the graph.
 		 *
@@ -148,7 +148,7 @@ class graph {
 		 * @return In undirected graphs, returns the number of neighbours. In
 		 * a directed graph, returns the number of outgoing edges.
 		 */
-		virtual uint64_t degree(node u) const = 0;
+		virtual uint32_t degree(node u) const = 0;
 
 		/// Returns true if node @e u is in this graph.
 		bool has_node(node u) const;
@@ -157,10 +157,10 @@ class graph {
 		virtual bool has_edge(node u, node v) const = 0;
 
 		/// Returns the number of ndoes.
-		uint64_t n_nodes() const;
+		uint32_t n_nodes() const;
 
 		/// Returns the number of edges.
-		uint64_t n_edges() const;
+		uint32_t n_edges() const;
 
 		/// Returns all edges of this graph.
 		std::vector<edge> edges() const;
@@ -190,7 +190,7 @@ class graph {
 		/// Data structure that implements the graph.
 		std::vector<neighbourhood> m_adjacency_list;
 		/// Amount of edges of this graph.
-		uint64_t m_num_edges = 0;
+		uint32_t m_num_edges = 0;
 		/**
 		 * @brief Is this graph normalised?
 		 *
@@ -210,7 +210,7 @@ class graph {
 		 * @brief Initialises memory for the @ref graph class only.
 		 * @param n Number of nodes.
 		 */
-		virtual void _init(uint64_t n);
+		virtual void _init(uint32_t n);
 		/// Clears memory for the @ref graph class only.
 		virtual void _clear();
 
@@ -222,7 +222,7 @@ class graph {
 		 * no nodes.
 		 * @param q The size of \f$Q\f$.
 		 */
-		std::vector<edge_pair> Q(uint64_t q) const;
+		std::vector<edge_pair> Q(uint32_t q) const;
 };
 
 } // -- namespace graphs

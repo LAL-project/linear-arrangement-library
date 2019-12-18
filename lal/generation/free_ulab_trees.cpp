@@ -47,7 +47,7 @@
 #include <limits>
 using namespace std;
 
-#define inf numeric_limits<uint64_t>::max()
+#define inf numeric_limits<uint32_t>::max()
 
 // custom includes
 #include <lal/utils/conversions.hpp>
@@ -58,18 +58,18 @@ using namespace graphs;
 namespace generate {
 
 free_ulab_trees::free_ulab_trees() { }
-free_ulab_trees::free_ulab_trees(uint64_t _n) {
+free_ulab_trees::free_ulab_trees(uint32_t _n) {
 	init(_n);
 }
 free_ulab_trees::~free_ulab_trees() { }
 
-void free_ulab_trees::init(uint64_t _n) {
+void free_ulab_trees::init(uint32_t _n) {
 	m_is_last = false;
 	m_first_it = true;
 	m_n = _n;
 
-	m_L = vector<uint64_t>(m_n, 0);
-	m_W = vector<uint64_t>(m_n, 0);
+	m_L = vector<uint32_t>(m_n, 0);
+	m_W = vector<uint32_t>(m_n, 0);
 
 	// simplest cases
 	if (m_n == 0) {
@@ -81,7 +81,7 @@ void free_ulab_trees::init(uint64_t _n) {
 		return;
 	}
 
-	uint64_t k = m_n/2 + 1;
+	uint32_t k = m_n/2 + 1;
 	m_p = (m_n == 4 ? 3 : m_n);
 	m_q = m_n - 1;
 	m_h1 = k;
@@ -90,13 +90,13 @@ void free_ulab_trees::init(uint64_t _n) {
 	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
 
 	// initialise L and W
-	for (uint64_t i = 0; i < k; ++i) {
+	for (uint32_t i = 0; i < k; ++i) {
 		m_W[i] = i;
 		m_L[i] = i + 1;
 	}
 	m_W[k] = 1;
 	m_L[k] = 2;
-	for (uint64_t i = k + 1; i < m_n; ++i) {
+	for (uint32_t i = k + 1; i < m_n; ++i) {
 		m_W[i] = i;
 		m_L[i] = i - k + 2;
 	}
@@ -167,13 +167,13 @@ void free_ulab_trees::next() {
 		m_c = inf;
 	}
 
-	uint64_t oldp = m_p;
-	uint64_t delta = m_q - m_p;
-	uint64_t oldLq = m_L[m_q - 1];
-	uint64_t oldWq = m_W[m_q - 1];
+	uint32_t oldp = m_p;
+	uint32_t delta = m_q - m_p;
+	uint32_t oldLq = m_L[m_q - 1];
+	uint32_t oldWq = m_W[m_q - 1];
 	m_p = inf;
 
-	for (uint64_t i = oldp; i <= m_n; ++i) {
+	for (uint32_t i = oldp; i <= m_n; ++i) {
 		m_L[i - 1] = m_L[i + delta - 1];
 		if (m_L[i - 1] == 2) {
 			m_W[i - 1] = 1;
@@ -215,7 +215,7 @@ void free_ulab_trees::next() {
 	}
 	if (fixit) {
 		m_r = m_n - m_h1 + 1;
-		for (uint64_t i = m_r + 1; i <= m_n; ++i) {
+		for (uint32_t i = m_r + 1; i <= m_n; ++i) {
 			m_L[i - 1] = i - m_r + 1;
 			m_W[i - 1] = i - 1;
 		}

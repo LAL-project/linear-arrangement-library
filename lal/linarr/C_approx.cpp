@@ -50,8 +50,8 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 
-#define to_int64(x) static_cast<int64_t>(x)
-#define to_uint64(x) static_cast<uint64_t>(x)
+#define to_int32(x) static_cast<int32_t>(x)
+#define to_uint32(x) static_cast<uint32_t>(x)
 
 namespace lal {
 using namespace graphs;
@@ -59,8 +59,8 @@ using namespace numeric;
 
 namespace linarr {
 
-inline constexpr uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) {
-	int64_t f = 0;
+inline constexpr uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
+	int32_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
 		// sum(d1 - 1, i, 1, n - d2 - d1)
@@ -87,11 +87,11 @@ inline constexpr uint64_t alpha(const int64_t n, const int64_t d1, const int64_t
 	}
 
 	assert(f >= 0);
-	return to_uint64(f);
+	return to_uint32(f);
 }
 
-inline constexpr uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) {
-	int64_t f = 0;
+inline constexpr uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
+	int32_t f = 0;
 
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -137,12 +137,12 @@ inline constexpr uint64_t beta(const int64_t n, const int64_t d1, const int64_t 
 		}
 	}
 	assert(f >= 0);
-	return to_uint64(f/2);
+	return to_uint32(f/2);
 }
 
 inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 	rational Ec2(0);
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
 	iterators::Q_iterator q(g);
 	while (q.has_next()) {
@@ -155,19 +155,19 @@ inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi
 		const node u = uv.first;
 		const node v = uv.second;
 
-		const uint64_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
-		const uint64_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
+		const uint32_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
+		const uint32_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
 			make_pair(
-				alpha(to_int64(n), to_int64(len_st), to_int64(len_uv)),
-				beta(to_int64(n), to_int64(len_st), to_int64(len_uv))) :
+				alpha(to_int32(n), to_int32(len_st), to_int32(len_uv)),
+				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))) :
 			make_pair(
-				alpha(to_int64(n), to_int64(len_uv), to_int64(len_st)),
-				beta(to_int64(n), to_int64(len_uv), to_int64(len_st)))
+				alpha(to_int32(n), to_int32(len_uv), to_int32(len_st)),
+				beta(to_int32(n), to_int32(len_uv), to_int32(len_st)))
 		);
-		Ec2 += rational(to_int64(al), be);
+		Ec2 += rational(to_int32(al), be);
 	}
 
 	return Ec2;

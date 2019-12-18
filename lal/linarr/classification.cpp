@@ -117,7 +117,7 @@ inline void __get_yields(
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 inline bool __disjoint_yields(
-	const uint64_t n, const vector<vector<position> >& yields
+	const uint32_t n, const vector<vector<position> >& yields
 )
 {
 	bool disjoint_yields = true;
@@ -153,12 +153,12 @@ inline bool __disjoint_yields(
 }
 
 inline
-uint64_t __get_n_discont(const uint64_t n, const vector<vector<node> >& yields)
+uint32_t __get_n_discont(const uint32_t n, const vector<vector<node> >& yields)
 {
-	uint64_t max_dis = 0;
+	uint32_t max_dis = 0;
 	for (node u = 0; u < n; ++u) {
 		const auto& yu = yields[u];
-		uint64_t dis = 0;
+		uint32_t dis = 0;
 		for (size_t i = 1; i < yu.size(); ++i) {
 			if (yu[i] - yu[i - 1] > 1) {
 				++dis;
@@ -169,8 +169,8 @@ uint64_t __get_n_discont(const uint64_t n, const vector<vector<node> >& yields)
 	return max_dis;
 }
 
-inline uint64_t __is_1EC(const urtree& Tree, const LINARR& pi) {
-	const uint64_t n = Tree.n_nodes();
+inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
+	const uint32_t n = Tree.n_nodes();
 	vector<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
@@ -246,7 +246,7 @@ inline tree_structure_type __get_syn_dep_tree_type(
 	const urtree& Tree, const LINARR& pi
 )
 {
-	uint64_t C = __n_crossings_stack_based(Tree, pi);
+	uint32_t C = __n_crossings_stack_based(Tree, pi);
 	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?
@@ -256,7 +256,7 @@ inline tree_structure_type __get_syn_dep_tree_type(
 	}
 
 	// compute the yield of each node
-	const uint64_t n = Tree.n_nodes();
+	const uint32_t n = Tree.n_nodes();
 	vector<vector<position> > yields(n);
 	vector<bool> vis(n, false);
 
@@ -266,7 +266,7 @@ inline tree_structure_type __get_syn_dep_tree_type(
 	bool disjoint_yields = __disjoint_yields(n, yields);
 
 	// discontinuities in the yields
-	const uint64_t max_dis = (disjoint_yields ? __get_n_discont(n, yields) : 0);
+	const uint32_t max_dis = (disjoint_yields ? __get_n_discont(n, yields) : 0);
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested

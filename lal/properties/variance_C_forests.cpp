@@ -50,6 +50,8 @@ using namespace std;
 // lal includes
 #include <lal/iterators/edge_iterator.hpp>
 
+typedef uint64_t bigint;
+
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -62,37 +64,37 @@ namespace properties {
 
 inline void compute_data_forest
 (
-	const ugraph& g, const uint64_t& n, const uint64_t& m,
-	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
-	uint64_t& Phi_1, uint64_t& Phi_2,
-	uint64_t& Lambda_1, uint64_t& Lambda_2
+	const ugraph& g, const bigint& n, const bigint& m,
+	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
+	bigint& Phi_1, bigint& Phi_2,
+	bigint& Lambda_1, bigint& Lambda_2
 )
 {
 	// -----------------------------------------
 	// auxiliary memory and additional variables
 
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
-	uint64_t *xi = static_cast<uint64_t *>(malloc(n*sizeof(uint64_t)));
+	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 
 	// n<k^2>: second moment of degree about zero multiplied by n
-	uint64_t nk2 = 0;
+	bigint nk2 = 0;
 	// n<k^3>: third moment of degree about zero multiplied by n
-	uint64_t nk3 = 0;
+	bigint nk3 = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	uint64_t psi = 0;
+	bigint psi = 0;
 
 	// ----------------------
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const uint64_t ks = g.degree(s);
+		const bigint ks = g.degree(s);
 		// calculate n*<k^2>, n*<k^3>
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const uint64_t kt = g.degree(t);
+			const bigint kt = g.degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
 			psi += ks*kt;
@@ -117,15 +119,15 @@ inline void compute_data_forest
 		const node s = st.first;
 		const node t = st.second;
 
-		const uint64_t ks = g.degree(s);
-		const uint64_t kt = g.degree(t);
+		const bigint ks = g.degree(s);
+		const bigint kt = g.degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
 					 (ks - 1)*(xi[t] - kt - ks + 1);
 
-		const uint64_t eps1 = xi[s] - kt;
-		const uint64_t eps2 = xi[t] - ks;
+		const bigint eps1 = xi[s] - kt;
+		const bigint eps2 = xi[t] - ks;
 
 		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
 		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
@@ -146,32 +148,32 @@ inline void compute_data_forest
 }
 
 rational variance_C_forest_rational(const ugraph& g) {
-	const uint64_t n = g.n_nodes();
-	const uint64_t m = g.n_edges();
+	const bigint n = g.n_nodes();
+	const bigint m = g.n_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
 
-	// uint64_t of set Q
-	uint64_t Qs = 0;
+	// bigint of set Q
+	bigint Qs = 0;
 
 	// n_G(L_4)
-	uint64_t n_paths_4 = 0;
+	bigint n_paths_4 = 0;
 	// n_G(L_5)
-	uint64_t n_paths_5 = 0;
+	bigint n_paths_5 = 0;
 
 	// k_s + k_t + k_u + k_v
-	uint64_t KG = 0;
+	bigint KG = 0;
 	// (k_s*k_t + k_u*k_v)
-	uint64_t Phi_1 = 0;
+	bigint Phi_1 = 0;
 	// (k_s + k_t)(k_u + k_v)
-	uint64_t Phi_2 = 0;
+	bigint Phi_2 = 0;
 
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	uint64_t Lambda_1 = 0;
+	bigint Lambda_1 = 0;
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	uint64_t Lambda_2 = 0;
+	bigint Lambda_2 = 0;
 
 	compute_data_forest
 	(

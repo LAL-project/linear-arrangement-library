@@ -73,7 +73,7 @@ numeric::rational MDD_2level_rational
 			sum_MDD += MDD_rational(Gs[i], pis[i]);
 		}
 	}
-	return sum_MDD/static_cast<int64_t>(Gs.size());
+	return sum_MDD/static_cast<int32_t>(Gs.size());
 }
 
 template<class G>

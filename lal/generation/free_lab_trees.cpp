@@ -62,12 +62,12 @@ namespace generate {
 // PUBLIC
 
 free_lab_trees::free_lab_trees() { }
-free_lab_trees::free_lab_trees(uint64_t _n) {
+free_lab_trees::free_lab_trees(uint32_t _n) {
 	init(_n);
 }
 free_lab_trees::~free_lab_trees() { }
 
-void free_lab_trees::init(uint64_t _n) {
+void free_lab_trees::init(uint32_t _n) {
 	m_n = _n;
 	if (m_n <= 2) {
 		m_sm = vector<bool>(1, false);
@@ -77,12 +77,12 @@ void free_lab_trees::init(uint64_t _n) {
 
 	m_it = 0;
 	m_sm = vector<bool>(m_n - 2, false);
-	m_seq = vector<uint64_t>(m_n - 2, 0);
+	m_seq = vector<uint32_t>(m_n - 2, 0);
 	// place 'it' at the end of the sequence
 	m_it = m_n - 3;
 	// make sure that the first call to next()
 	// produces the sequence 0 0 ... 0
-	m_seq[m_it] = numeric_limits<uint64_t>::max();
+	m_seq[m_it] = numeric_limits<uint32_t>::max();
 	m_L = m_n - 2;
 }
 

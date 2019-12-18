@@ -64,7 +64,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$D\f$.
  */
-uint64_t sum_length_edges
+uint32_t sum_length_edges
 (const graphs::graph& g, const LINARR& pi = {});
 
 /* MDD */

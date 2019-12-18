@@ -61,36 +61,36 @@ void get_bool_neighbours(const ugraph& g, node u, vector<bool>& neighs) {
 
 namespace linarr {
 
-inline uint64_t __compute_C_ladder(
+inline uint32_t __compute_C_ladder(
 	const ugraph& g, const LINARR& pi,
 	vector<bool>& bn,
-	uint64_t * __restrict__ T,
-	uint64_t * __restrict__ L1
+	uint32_t * __restrict__ T,
+	uint32_t * __restrict__ L1
 )
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
 	/* initialise memory */
-	for (uint64_t i = 0; i < n; ++i) {
+	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 		L1[i] = 0;
 	}
 
 	/* compute number of crossings */
-	uint64_t C = 0;
+	uint32_t C = 0;
 
 	// no need to reach the last position of the arrangement
-	for (uint64_t p = 0; p < n - 1; ++p) {
+	for (uint32_t p = 0; p < n - 1; ++p) {
 		const node u = T[p];
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement
-		uint64_t S = 0;
+		uint32_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
 		get_bool_neighbours(g, u, bn);
 
-		for (uint64_t q = p + 1; q < n; ++q) {
+		for (uint32_t q = p + 1; q < n; ++q) {
 			node v = T[q];
 			S += L1[q];
 			if (bn[v]) {
@@ -105,58 +105,58 @@ inline uint64_t __compute_C_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint64_t __call_C_ladder(const ugraph& g, const LINARR& pi) {
-	const uint64_t n = g.n_nodes();
+inline uint32_t __call_C_ladder(const ugraph& g, const LINARR& pi) {
+	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
 	}
 
 	/* allocate memory */
-	const uint64_t n_bytes = n + n;
-	uint64_t * __restrict__ all_memory =
-		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
+	const uint32_t n_bytes = n + n;
+	uint32_t * __restrict__ all_memory =
+		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint64_t * __restrict__ T = &all_memory[0];
+	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode)
-	uint64_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint64_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
+	uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
 	free(all_memory);
 	return C;
 }
 
-uint64_t __n_crossings_ladder(const ugraph& g, const LINARR& pi) {
+uint32_t __n_crossings_ladder(const ugraph& g, const LINARR& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
-vector<uint64_t> __n_crossings_ladder_list
+vector<uint32_t> __n_crossings_ladder_list
 (const ugraph& g, const vector<LINARR>& pis)
 {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
 
 	/* allocate memory */
-	const uint64_t n_bytes = n + n;
-	uint64_t * __restrict__ all_memory =
-		static_cast<uint64_t *>(malloc(n_bytes*sizeof(uint64_t)));
+	const uint32_t n_bytes = n + n;
+	uint32_t * __restrict__ all_memory =
+		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	uint64_t * __restrict__ T = &all_memory[0];
+	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode)
-	uint64_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
 	vector<bool> bool_neighs(n, false);
 

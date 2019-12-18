@@ -130,7 +130,7 @@ pair<bool, E_pointer> edge_iterator::find_next_edge() const {
 }
 
 pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
-	const uint64_t n = m_G.n_nodes();
+	const uint32_t n = m_G.n_nodes();
 
 	node s = m_cur.first;
 	size_t pt = m_cur.second;
@@ -150,7 +150,7 @@ pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
 }
 
 pair<bool, E_pointer> edge_iterator::find_next_edge_undirected() const {
-	const uint64_t n = m_G.n_nodes();
+	const uint32_t n = m_G.n_nodes();
 
 	node s = m_cur.first;
 	size_t pt = m_cur.second + 1;

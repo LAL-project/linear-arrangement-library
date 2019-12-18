@@ -47,7 +47,7 @@ namespace lal {
 namespace graphs {
 
 urtree::urtree() : utree() { }
-urtree::urtree(uint64_t n) : utree(n) { }
+urtree::urtree(uint32_t n) : utree(n) { }
 urtree::urtree(const utree& t, node r) : utree() {
 	init_rooted(t, r);
 }

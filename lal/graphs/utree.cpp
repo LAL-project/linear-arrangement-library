@@ -56,7 +56,7 @@ namespace lal {
 namespace graphs {
 
 utree::utree() : ugraph() { }
-utree::utree(uint64_t n) : ugraph(n) { }
+utree::utree(uint32_t n) : ugraph(n) { }
 utree::utree(const ugraph& t) : ugraph(t.n_nodes()) {
 	// check that the input graph is a tree
 	assert(utils::is_tree(t));
@@ -105,7 +105,7 @@ bool utree::can_add_edge(node s, node t) const {
 
 bool utree::can_add_edges(const vector<edge>& edges) const {
 	// in a tree we must have m <= n - 1
-	const uint64_t more_m = edges.size();
+	const auto more_m = edges.size();
 	if (n_edges() + more_m > n_nodes() - 1) {
 		return false;
 	}

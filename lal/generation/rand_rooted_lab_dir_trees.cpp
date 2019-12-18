@@ -50,14 +50,14 @@ namespace generate {
 
 rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees() : rand_free_lab_trees() { }
 
-rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees(uint64_t n, uint64_t seed)
+rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees(uint32_t n, uint32_t seed)
 	: rand_free_lab_trees(n, seed)
 {
 
 }
 rand_rooted_lab_dir_trees::~rand_rooted_lab_dir_trees() { }
 
-void rand_rooted_lab_dir_trees::init(uint64_t n, uint64_t seed) {
+void rand_rooted_lab_dir_trees::init(uint32_t n, uint32_t seed) {
 	rand_free_lab_trees::init(n, seed);
 }
 

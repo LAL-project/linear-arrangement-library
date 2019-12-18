@@ -66,7 +66,7 @@ namespace linarr {
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {});
+uint32_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -80,7 +80,7 @@ uint64_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
-std::vector<uint64_t> __n_crossings_brute_force_list
+std::vector<uint32_t> __n_crossings_brute_force_list
 (const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
@@ -95,7 +95,7 @@ std::vector<uint64_t> __n_crossings_brute_force_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
+uint32_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -109,7 +109,7 @@ uint64_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
-std::vector<uint64_t> __n_crossings_dyn_prog_list
+std::vector<uint32_t> __n_crossings_dyn_prog_list
 (const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
@@ -124,7 +124,7 @@ std::vector<uint64_t> __n_crossings_dyn_prog_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
+uint32_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -138,7 +138,7 @@ uint64_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
-std::vector<uint64_t> __n_crossings_ladder_list
+std::vector<uint32_t> __n_crossings_ladder_list
 (const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
@@ -153,7 +153,7 @@ std::vector<uint64_t> __n_crossings_ladder_list
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns \f$C\f$.
  */
-uint64_t __n_crossings_stack_based
+uint32_t __n_crossings_stack_based
 (const graphs::ugraph& g, const LINARR& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -169,7 +169,7 @@ uint64_t __n_crossings_stack_based
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
-std::vector<uint64_t> __n_crossings_stack_based_list
+std::vector<uint32_t> __n_crossings_stack_based_list
 (const graphs::ugraph& g, const std::vector<LINARR>& pis);
 
 /**
@@ -189,7 +189,7 @@ std::vector<uint64_t> __n_crossings_stack_based_list
  * - @ref __n_crossings_ladder
  * - @ref __n_crossings_stack_based
  */
-uint64_t n_crossings(
+uint32_t n_crossings(
 	const graphs::ugraph& g, const LINARR& pi = {},
 	const algorithms_crossings& A = algorithms_crossings::stack_based
 );
@@ -212,7 +212,7 @@ uint64_t n_crossings(
  * - @ref __n_crossings_ladder_list
  * - @ref __n_crossings_stack_based_list
  */
-std::vector<uint64_t> n_crossings_list
+std::vector<uint32_t> n_crossings_list
 (const graphs::ugraph& g, const std::vector<LINARR>& pis,
  const algorithms_crossings& A = algorithms_crossings::stack_based);
 

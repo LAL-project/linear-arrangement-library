@@ -128,7 +128,7 @@ ugraph treebank_reader::get_tree() const {
 		L.push_back(k);
 	}
 
-	uint64_t n = static_cast<uint64_t>(L.size()) - 1;
+	uint32_t n = static_cast<uint32_t>(L.size()) - 1;
 	return utils::linear_sequence_to_tree(L, n);
 }
 

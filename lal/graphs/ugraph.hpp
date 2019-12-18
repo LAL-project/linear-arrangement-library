@@ -69,7 +69,7 @@ class ugraph : virtual public graph {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		ugraph(uint64_t n);
+		ugraph(uint32_t n);
 		/// Default destructor.
 		virtual ~ugraph();
 
@@ -127,7 +127,7 @@ class ugraph : virtual public graph {
 		 * @param u Node to be queried.
 		 * @return Returns the number of adjacent nodes.
 		 */
-		uint64_t degree(node u) const;
+		uint32_t degree(node u) const;
 
 		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 		bool has_edge(node u, node v) const;

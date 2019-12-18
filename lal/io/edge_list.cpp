@@ -64,9 +64,11 @@ inline bool __read_edge_list(const string& filename, G& g, bool norm) {
 	ifstream fin;
 	fin.open(filename);
 
-	uint64_t max_vert_idx = 0;
 	vector<edge> edge_list;
+
+	node max_vert_idx = 0;
 	node u, v;
+
 	while (fin >> u >> v) {
 		edge_list.push_back(edge(u, v));
 		max_vert_idx = std::max(max_vert_idx, u);

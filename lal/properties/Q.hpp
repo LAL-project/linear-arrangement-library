@@ -65,7 +65,7 @@ numeric::integer size_Q_integer(const graphs::ugraph& g);
  * @param g Input graph.
  * @return The return value is a simple 64-bit unsigned integer.
  */
-uint64_t size_Q(const graphs::ugraph& g);
+uint32_t size_Q(const graphs::ugraph& g);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
@@ -80,7 +80,7 @@ numeric::integer size_Q_integer(const graphs::dgraph& g);
  * @param g Input graph.
  * @return The return value is a simple 64-bit unsigned integer.
  */
-uint64_t size_Q(const graphs::dgraph& g);
+uint32_t size_Q(const graphs::dgraph& g);
 
 } // -- namespace properties
 } // -- namespace lal

@@ -59,7 +59,7 @@ namespace graphs {
 /* PUBLIC */
 
 dgraph::dgraph() : graph() { }
-dgraph::dgraph(uint64_t n) {
+dgraph::dgraph(uint32_t n) {
 	init(n);
 }
 dgraph::~dgraph() { }
@@ -131,10 +131,10 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We might
 			// be lucky....
-			const size_t out_u_s = out_u.size();
+			const auto out_u_s = out_u.size();
 			const bool out_u_norm =
 				(out_u_s <= 1 ? m_normalised : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
-			const size_t in_v_s = in_v.size();
+			const auto in_v_s = in_v.size();
 			const bool in_v_norm =
 				(in_v_s <= 1 ? m_normalised : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
 			m_normalised = m_normalised and out_u_norm and in_v_norm;
@@ -223,7 +223,7 @@ const neighbourhood& dgraph::get_neighbours(node u) const {
 	return get_out_neighbours(u);
 }
 
-uint64_t dgraph::degree(node u) const {
+uint32_t dgraph::degree(node u) const {
 	return out_degree(u);
 }
 
@@ -236,13 +236,13 @@ const neighbourhood& dgraph::get_in_neighbours(node u) const {
 	return m_in_adjacency_list[u];
 }
 
-uint64_t dgraph::out_degree(node u) const {
+uint32_t dgraph::out_degree(node u) const {
 	assert(has_node(u));
-	return m_adjacency_list[u].size();
+	return static_cast<uint32_t>(m_adjacency_list[u].size());
 }
-uint64_t dgraph::in_degree(node u) const {
+uint32_t dgraph::in_degree(node u) const {
 	assert(has_node(u));
-	return m_in_adjacency_list[u].size();
+	return static_cast<uint32_t>(m_in_adjacency_list[u].size());
 }
 
 ugraph dgraph::to_undirected() const {
@@ -253,7 +253,7 @@ ugraph dgraph::to_undirected() const {
 
 /* PROTECTED */
 
-void dgraph::_init(uint64_t n) {
+void dgraph::_init(uint32_t n) {
 	graph::_init(n);
 	m_in_adjacency_list = vector<neighbourhood>(n);
 }

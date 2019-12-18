@@ -48,9 +48,9 @@
 namespace lal {
 
 /// Node type.
-typedef uint64_t node;
+typedef uint32_t node;
 /// Node's position type.
-typedef uint64_t position;
+typedef uint32_t position;
 
 /**
  * @brief A linear arrangement of the vertices of a graph.

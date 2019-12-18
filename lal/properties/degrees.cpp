@@ -59,8 +59,8 @@ namespace properties {
 template<class G>
 inline rational __mmt_x_degree_rational
 (
-	const G& g, uint64_t p,
-	const function<uint64_t(const G& _g, node _u)>& D
+	const G& g, uint32_t p,
+	const function<uint32_t(const G& _g, node _u)>& D
 )
 {
 	const integer M = integer_from_ui(g.n_nodes());
@@ -79,50 +79,50 @@ inline rational __mmt_x_degree_rational
 // moment of degree
 
 #define _in_degree(g,u) dynamic_cast<const dgraph&>(g).degree(u)
-rational mmt_degree_rational(const graph& g, uint64_t p) {
+rational mmt_degree_rational(const graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<graph>(
 		g, p,
-		[](const graph& _g, node _u) -> uint64_t
+		[](const graph& _g, node _u) -> uint32_t
 		{ return _g.degree(_u) + (_g.is_directed() ? _in_degree(_g,_u) : 0); }
 	);
 }
 
-double mmt_degree(const graph& g, uint64_t p) {
+double mmt_degree(const graph& g, uint32_t p) {
 	return mmt_degree_rational(g,p).to_double();
 }
 
 // moment of in-degree
 
-rational mmt_in_degree_rational(const dgraph& g, uint64_t p) {
+rational mmt_in_degree_rational(const dgraph& g, uint32_t p) {
 	return __mmt_x_degree_rational<dgraph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint64_t
+		[](const dgraph& _g, node _u) -> uint32_t
 		{ return _g.in_degree(_u); }
 	);
 }
 
-double mmt_in_degree(const dgraph& g, uint64_t p) {
+double mmt_in_degree(const dgraph& g, uint32_t p) {
 	return mmt_in_degree_rational(g,p).to_double();
 }
 
 // moment of out-degree
 
-rational mmt_out_degree_rational(const dgraph& g, uint64_t p) {
+rational mmt_out_degree_rational(const dgraph& g, uint32_t p) {
 	return __mmt_x_degree_rational<dgraph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint64_t
+		[](const dgraph& _g, node _u) -> uint32_t
 		{ return _g.degree(_u); }
 	);
 }
 
-double mmt_out_degree(const dgraph& g, uint64_t p) {
+double mmt_out_degree(const dgraph& g, uint32_t p) {
 	return mmt_out_degree_rational(g,p).to_double();
 }
 
 // hubiness
 
 rational hubiness_rational(const utree& g) {
-	const uint64_t n = g.n_nodes();
+	const uint32_t n = g.n_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:

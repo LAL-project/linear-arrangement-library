@@ -90,7 +90,7 @@ class free_lab_trees {
 		/// Default constructor.
 		free_lab_trees();
 		/// Constructor with size of tree.
-		free_lab_trees(uint64_t m_n);
+		free_lab_trees(uint32_t m_n);
 		/// Default destructor.
 		~free_lab_trees();
 
@@ -108,7 +108,7 @@ class free_lab_trees {
 		 * @param n The number of vertices of the trees to be
 		 * generated.
 		 */
-		void init(uint64_t n);
+		void init(uint32_t n);
 
 		/**
 		 * @brief Returns whether there are more trees to generate.
@@ -143,13 +143,13 @@ class free_lab_trees {
 		 *
 		 * Size of the sequence: \f$n - 2\f$.
 		 */
-		uint64_t m_n;
+		uint32_t m_n;
 		/// Iterator on the sequence.
-		uint64_t m_it;
+		uint32_t m_it;
 		/// Left-most position with value \f$n-1\f$.
-		uint64_t m_L;
+		uint32_t m_L;
 		/// Prüfer sequence.
-		std::vector<uint64_t> m_seq;
+		std::vector<uint32_t> m_seq;
 		/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
 		std::vector<bool> m_sm;
 };

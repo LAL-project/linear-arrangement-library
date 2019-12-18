@@ -58,7 +58,7 @@ using namespace utils;
 namespace graphs {
 
 drtree::drtree() : dtree() { }
-drtree::drtree(uint64_t n) : dtree(n) { }
+drtree::drtree(uint32_t n) : dtree(n) { }
 drtree::drtree(const utree& t, node r, bool arb) : dtree() {
 	// assert(utils::is_tree(t));
 	// the assertion above is done in "init_rooted" method

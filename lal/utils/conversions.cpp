@@ -51,7 +51,7 @@ using namespace graphs;
 
 namespace utils {
 
-utree level_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
+utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 1);
 
@@ -61,7 +61,7 @@ utree level_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 
 	// 'stack' of root candidates
 	vector<node> s(n, 0);
-	uint64_t it = 0;
+	uint32_t it = 0;
 	for (node i = 1; i < n; ++i) {
 		// decrease the pointer to the 'stack'
 		// to reach the desired level
@@ -86,14 +86,14 @@ utree level_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 	return t;
 }
 
-utree linear_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
+utree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(L.size() == n + 1);
 
 	// edges of the tree
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
 
-	for (uint64_t i = 1; i <= n; ++i) {
+	for (uint32_t i = 1; i <= n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
 		}
@@ -108,11 +108,11 @@ utree linear_sequence_to_tree(const vector<uint64_t>& L, uint64_t n) {
 	return t;
 }
 
-utree Prufer_sequence_to_tree(const vector<uint64_t>& seq, uint64_t n) {
+utree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// initialisation
-	const uint64_t L = n - 2;
-	vector<uint64_t> degree(n, 1);
-	for (uint64_t i = 0; i < L; ++i) {
+	const uint32_t L = n - 2;
+	vector<uint32_t> degree(n, 1);
+	for (uint32_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}
 
@@ -124,8 +124,8 @@ utree Prufer_sequence_to_tree(const vector<uint64_t>& seq, uint64_t n) {
 	// lowest-numbered node, j, with degree equal to 1, add
 	// the edge (j, seq[i]) to the tree, and decrement the degrees
 	// of j and seq[i].
-	for (uint64_t v = 0; v < L; ++v) {
-		const uint64_t value = seq[v];
+	for (uint32_t v = 0; v < L; ++v) {
+		const auto value = seq[v];
 		bool node_found = false;
 		node w = 0;
 		while (w < n and not node_found) {

@@ -69,7 +69,7 @@ class dtree : public dgraph, virtual public tree {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dtree(uint64_t n);
+		dtree(uint32_t n);
 		/// Default destructor.
 		virtual ~dtree();
 

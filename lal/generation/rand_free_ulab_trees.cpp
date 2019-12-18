@@ -50,8 +50,8 @@ using namespace std;
 // lal includes
 #include <lal/utils/conversions.hpp>
 
-#define _to_int64(x) static_cast<int64_t>(x)
-#define _to_uint64(x) static_cast<uint64_t>(x)
+#define _to_int32(x) static_cast<int32_t>(x)
+#define _to_uint32(x) static_cast<uint32_t>(x)
 #define _to_double(x) static_cast<double>(x)
 
 namespace lal {
@@ -65,13 +65,13 @@ namespace generate {
 rand_free_ulab_trees::rand_free_ulab_trees() {
 	init_T();
 }
-rand_free_ulab_trees::rand_free_ulab_trees(uint64_t _n, uint64_t seed) {
+rand_free_ulab_trees::rand_free_ulab_trees(uint32_t _n, uint32_t seed) {
 	init_T();
 	init(_n, seed);
 }
 rand_free_ulab_trees::~rand_free_ulab_trees() { }
 
-void rand_free_ulab_trees::init(uint64_t _n, uint64_t seed) {
+void rand_free_ulab_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
 	if (m_n <= 1) { return; }
 
@@ -86,7 +86,7 @@ void rand_free_ulab_trees::init(uint64_t _n, uint64_t seed) {
 
 	compute_T();
 	compute_Amq();
-	m_TREE = vector<uint64_t>(m_n + 1);
+	m_TREE = vector<uint32_t>(m_n + 1);
 }
 
 utree rand_free_ulab_trees::make_rand_tree() {
@@ -119,20 +119,20 @@ utree rand_free_ulab_trees::make_rand_tree() {
 		return utils::linear_sequence_to_tree(m_TREE, m_n);
 	}
 
-	const uint64_t m = m_n - 1;
-	const uint64_t q = (m_n - 1)/2;
+	const uint32_t m = m_n - 1;
+	const uint32_t q = (m_n - 1)/2;
 
 	// compute forest
-	vector<uint64_t> ROOTS(m_n - 1, 0);
+	vector<uint32_t> ROOTS(m_n - 1, 0);
 
 	// make a forest on (n - 1) vertices
-	const pair<uint64_t, uint64_t> nr_nt = forest(m,q, 0,1, ROOTS);
-	const uint64_t nt = nr_nt.second;
+	const pair<uint32_t, uint32_t> nr_nt = forest(m,q, 0,1, ROOTS);
+	const uint32_t nt = nr_nt.second;
 
 	// join all roots of the connected components
 	// into a new vertex, placed at the end of
 	// the array TREE
-	for (uint64_t r : ROOTS) {
+	for (uint32_t r : ROOTS) {
 		if (r != 0) {
 			m_TREE[r] = nt;
 		}
@@ -141,8 +141,8 @@ utree rand_free_ulab_trees::make_rand_tree() {
 #if defined DEBUG
 	// make sure that the number of zeroes
 	// is EXACTLY one
-	uint64_t nz = 0;
-	for (uint64_t i = 1; i < m_TREE.size(); ++i) {
+	uint32_t nz = 0;
+	for (uint32_t i = 1; i < m_TREE.size(); ++i) {
 		nz += (m_TREE[i] == 0);
 	}
 	assert(nz == 1);
@@ -206,18 +206,18 @@ void rand_free_ulab_trees::compute_T() {
 
 	// using the algorithm in the book...
 
-	uint64_t LAST = _to_uint64(last) - 1;
+	uint32_t LAST = _to_uint32(last) - 1;
 	//Tn[1] = 1;
 	while (LAST < m_n) {
 		integer s = 0;
-		for (uint64_t d = 1; d <= LAST; ++d) {
-			int64_t i = _to_int64(LAST) + 1;
-			int64_t j = 1;
+		for (uint32_t d = 1; d <= LAST; ++d) {
+			int32_t i = _to_int32(LAST) + 1;
+			int32_t j = 1;
 			const integer td = m_Tn[d]*d;
-			while (j <= _to_int64(LAST) and i > 0) {
-				i -= _to_int64(d);
+			while (j <= _to_int32(LAST) and i > 0) {
+				i -= _to_int32(d);
 				if (i > 0) {
-					s += m_Tn[_to_uint64(i)]*td;
+					s += m_Tn[_to_uint32(i)]*td;
 				}
 				j += 1;
 			}
@@ -227,7 +227,7 @@ void rand_free_ulab_trees::compute_T() {
 	}
 }
 
-void rand_free_ulab_trees::compute_Amq_rec(uint64_t m, uint64_t q) {
+void rand_free_ulab_trees::compute_Amq_rec(uint32_t m, uint32_t q) {
 	if (m == 0) {
 		m_Amq[q][m] = 1;
 		return;
@@ -243,9 +243,9 @@ void rand_free_ulab_trees::compute_Amq_rec(uint64_t m, uint64_t q) {
 	}
 
 	integer s(0);
-	for (uint64_t j = 1; j <= m; ++j) {
-		const uint64_t sup = std::min( m/j, q );
-		for (uint64_t d = 1; d <= sup; ++d) {
+	for (uint32_t j = 1; j <= m; ++j) {
+		const uint32_t sup = std::min( m/j, q );
+		for (uint32_t d = 1; d <= sup; ++d) {
 			compute_Amq_rec(m - j*d, q);
 			compute_Amq_rec(d - 1, q);
 			const integer& A1 = m_Amq[q][m - j*d];
@@ -257,8 +257,8 @@ void rand_free_ulab_trees::compute_Amq_rec(uint64_t m, uint64_t q) {
 }
 
 void rand_free_ulab_trees::compute_Amq() {
-	const uint64_t m = m_n - 1;
-	const uint64_t q = (m_n - 1)/2;
+	const uint32_t m = m_n - 1;
+	const uint32_t q = (m_n - 1)/2;
 
 	// if Amq is already computed, do nothing
 	if (m_Amq.find(q) != m_Amq.end()) {
@@ -269,7 +269,7 @@ void rand_free_ulab_trees::compute_Amq() {
 	// if this variabe is even, for future odd values
 	// that are just one unit away from 'm'. (same 'q',
 	// but different 'm', basically).
-	const uint64_t mm = m + (m%2 == 0);
+	const uint32_t mm = m + (m%2 == 0);
 	/*
 	if (m%2 == 0) {
 		++mm;
@@ -279,7 +279,7 @@ void rand_free_ulab_trees::compute_Amq() {
 	compute_Amq_rec(mm, q);
 }
 
-void rand_free_ulab_trees::choose_jd_from_T(uint64_t k, uint64_t& j, uint64_t& d) {
+void rand_free_ulab_trees::choose_jd_from_T(uint32_t k, uint32_t& j, uint32_t& d) {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
 	// will have found our pair
@@ -310,7 +310,7 @@ void rand_free_ulab_trees::choose_jd_from_T(uint64_t k, uint64_t& j, uint64_t& d
 	}
 }
 
-void rand_free_ulab_trees::choose_jd_from_Amq(uint64_t m, uint64_t q, uint64_t& j, uint64_t& d) {
+void rand_free_ulab_trees::choose_jd_from_Amq(uint32_t m, uint32_t q, uint32_t& j, uint32_t& d) {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
 	// will have found our pair
@@ -351,7 +351,7 @@ void rand_free_ulab_trees::choose_jd_from_Amq(uint64_t m, uint64_t q, uint64_t& 
 	}
 }
 
-pair<uint64_t,uint64_t> rand_free_ulab_trees::ranrut(uint64_t k, uint64_t lr, uint64_t nt) {
+pair<uint32_t,uint32_t> rand_free_ulab_trees::ranrut(uint32_t k, uint32_t lr, uint32_t nt) {
 	if (k == 0) {
 		// do nothing
 		return make_pair(lr,nt);
@@ -366,7 +366,7 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::ranrut(uint64_t k, uint64_t lr, ui
 		return make_pair(nt, nt + 2);
 	}
 
-	uint64_t j, d;
+	uint32_t j, d;
 	choose_jd_from_T(k, j,d);
 
 	// both 'j' and 'd' must be strictly positive.
@@ -377,25 +377,25 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::ranrut(uint64_t k, uint64_t lr, ui
 	// as in the book, m = j*d.
 
 	// generate T' (a random rooted tree of k - m vertices)
-	const pair<uint64_t,uint64_t> lr1_nt = ranrut(k - j*d, lr,nt);
-	const uint64_t lr1 = lr1_nt.first;	// lr1: index of the root of T'
+	const pair<uint32_t,uint32_t> lr1_nt = ranrut(k - j*d, lr,nt);
+	const uint32_t lr1 = lr1_nt.first;	// lr1: index of the root of T'
 	nt = lr1_nt.second;					// nt: where to store T''
 
 	// generate T'' (a random rooted tree of d vertices)
 	// NOTE!! recall that we have to make j copies of T''
 	// and that now we are making one copy which is already
 	// connected to the root of T'
-	const pair<uint64_t,uint64_t> lr2_nt = ranrut(d, lr1,nt);
-	const uint64_t lr2 = lr2_nt.first;
+	const pair<uint32_t,uint32_t> lr2_nt = ranrut(d, lr1,nt);
+	const uint32_t lr2 = lr2_nt.first;
 	nt = lr2_nt.second;
 
 	// make j-1 copies of T'' and connect them to T'
 	// T'' is contained in TREE[lr2:(lr2 + d)]
-	for (uint64_t c = 1; c < j; ++c) {
+	for (uint32_t c = 1; c < j; ++c) {
 		// each new copy's root is a child of the root of T'
 		m_TREE[nt] = lr1;
 		// make a copy of T''
-		for (uint64_t v = nt + 1; v < nt + d; ++v) {
+		for (uint32_t v = nt + 1; v < nt + d; ++v) {
 			// 'v - c*d' is the position of 'v' relative to
 			// the root of the 'c'-th copy, but translated
 			// to make it relative to the first copy's root.
@@ -413,34 +413,34 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::ranrut(uint64_t k, uint64_t lr, ui
 	return make_pair(lr1, nt);
 }
 
-void rand_free_ulab_trees::bicenter(uint64_t k) {
+void rand_free_ulab_trees::bicenter(uint32_t k) {
 	if (k == 0) {
 		return;
 	}
 
-	const uint64_t h = k/2;
+	const uint32_t h = k/2;
 	const double prob = 1.0/(m_Tn[h].to_double() + 1.0);
 	const double r = m_unif(m_gen);
 
 	if (r <= prob) {
 		// step B1: make one tree and make a SINGLE copy
-		const pair<uint64_t,uint64_t> lr_nt = ranrut(h, 0, 1);
-		const uint64_t lr = lr_nt.first;
-		const uint64_t nt = lr_nt.second;
+		const pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
+		const uint32_t lr = lr_nt.first;
+		const uint32_t nt = lr_nt.second;
 		m_TREE[nt] = lr;
-		for (uint64_t v = nt + 1; v < nt + h; ++v) {
+		for (uint32_t v = nt + 1; v < nt + h; ++v) {
 			m_TREE[v] = nt + m_TREE[v - h] - lr;
 		}
 	}
 	else {
 		// step B2: generate two trees
-		const pair<uint64_t,uint64_t> lr_nt = ranrut(h, 0, 1);
+		const pair<uint32_t,uint32_t> lr_nt = ranrut(h, 0, 1);
 		ranrut(h, lr_nt.first, lr_nt.second);
 	}
 }
 
-pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
-(uint64_t m, uint64_t q, uint64_t r_idx, uint64_t nt, vector<uint64_t>& ROOTS)
+pair<uint32_t,uint32_t> rand_free_ulab_trees::forest
+(uint32_t m, uint32_t q, uint32_t r_idx, uint32_t nt, vector<uint32_t>& ROOTS)
 {
 	if (m == 0) {
 		// forest of 0 vertices
@@ -460,12 +460,12 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
 		return make_pair(r_idx + 1, nt + 1);
 	}
 
-	uint64_t j, d;
+	uint32_t j, d;
 	choose_jd_from_Amq(m, q, j,d);
 
 	// make a forest of trees of 'm - j*d' vertices in
 	// total, so that each tree has at most 'q' vertices
-	const pair<uint64_t,uint64_t> nr_nt = forest(m - j*d,q, r_idx,nt, ROOTS);
+	const pair<uint32_t,uint32_t> nr_nt = forest(m - j*d,q, r_idx,nt, ROOTS);
 	r_idx = nr_nt.first;
 	nt = nr_nt.second;
 
@@ -479,8 +479,8 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
 	// or it is as long as nr > 0. Recall that 'nr' is stored
 	// in 'r_idx'
 
-	uint64_t lr = (r_idx > 0 ? ROOTS[r_idx - 1] : 0);
-	/*uint64_t lr = 0;
+	uint32_t lr = (r_idx > 0 ? ROOTS[r_idx - 1] : 0);
+	/*uint32_t lr = 0;
 	if (r_idx > 0) {
 		lr = ROOTS[r_idx - 1];
 	}*/
@@ -490,7 +490,7 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
 	// root generated is stored in variable 'lr'.
 	// "The last root generated" actually is
 	// "the index in TREE of the last root generated"
-	const pair<uint64_t,uint64_t> lr_nt = ranrut(d, lr, nt);
+	const pair<uint32_t,uint32_t> lr_nt = ranrut(d, lr, nt);
 	lr = lr_nt.first;
 	nt = lr_nt.second;
 
@@ -500,7 +500,7 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
 
 	// make 'j - 1' copies of the tree generated in the
 	// previous call and exit
-	for (uint64_t k = 1; k < j; ++k) {
+	for (uint32_t k = 1; k < j; ++k) {
 		// the copy has a root which must
 		// be stored appropriately
 		ROOTS[r_idx] = nt;
@@ -510,7 +510,7 @@ pair<uint64_t,uint64_t> rand_free_ulab_trees::forest
 		// specify to what vertex this new copy's
 		// root is pointing to because it is done
 		// at the end of function make_rand_tree()
-		for (uint64_t v = nt + 1; v < nt + d; ++v) {
+		for (uint32_t v = nt + 1; v < nt + d; ++v) {
 			// for details on why this assignment
 			// see end of method ranrut()
 			m_TREE[v] = nt + m_TREE[v - k*d] - lr;

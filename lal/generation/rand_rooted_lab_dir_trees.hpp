@@ -67,7 +67,7 @@ class rand_rooted_lab_dir_trees : public rand_free_lab_trees {
 		/// Default constructor.
 		rand_rooted_lab_dir_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_rooted_lab_dir_trees(uint64_t n, uint64_t seed = 0);
+		rand_rooted_lab_dir_trees(uint32_t n, uint32_t seed = 0);
 		/// Default constructor.
 		~rand_rooted_lab_dir_trees();
 
@@ -78,7 +78,7 @@ class rand_rooted_lab_dir_trees : public rand_free_lab_trees {
 		 * @param n Number of nodes of the tree.
 		 * @param seed Integer value used to seed the random number generator.
 		 */
-		void init(uint64_t n, uint64_t seed = 0);
+		void init(uint32_t n, uint32_t seed = 0);
 
 		/**
 		 * @brief Generates uniformly at random a free labelled tree.

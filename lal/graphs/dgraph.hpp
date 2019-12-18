@@ -70,7 +70,7 @@ class dgraph : virtual public graph {
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dgraph(uint64_t n);
+		dgraph(uint32_t n);
 		/// Default destructor.
 		virtual ~dgraph();
 
@@ -144,7 +144,7 @@ class dgraph : virtual public graph {
 		const neighbourhood& get_neighbours(node u) const;
 
 		/// Same as @ref out_degree.
-		uint64_t degree(node u) const;
+		uint32_t degree(node u) const;
 
 		/**
 		 * @brief Returns the out-neighbours of node @e u
@@ -160,9 +160,9 @@ class dgraph : virtual public graph {
 		const neighbourhood& get_in_neighbours(node u) const;
 
 		/// Returns the out-degree of a node.
-		uint64_t out_degree(node u) const;
+		uint32_t out_degree(node u) const;
 		/// Returns the in-degree of a node.
-		uint64_t in_degree(node u) const;
+		uint32_t in_degree(node u) const;
 
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
@@ -179,7 +179,7 @@ class dgraph : virtual public graph {
 		 * @brief Initialises memory for the @ref dgraph class only.
 		 * @param n Number of nodes.
 		 */
-		void _init(uint64_t n);
+		void _init(uint32_t n);
 		/// Clears memory for the @ref graph class only.
 		void _clear();
 };

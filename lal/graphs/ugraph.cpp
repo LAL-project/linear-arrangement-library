@@ -58,7 +58,7 @@ namespace graphs {
 /* PUBLIC */
 
 ugraph::ugraph() : graph() { }
-ugraph::ugraph(uint64_t n) {
+ugraph::ugraph(uint32_t n) {
 	init(n);
 }
 ugraph::~ugraph() { }
@@ -92,8 +92,8 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We may
 			// be lucky....
-			const size_t su = nu.size();
-			const size_t sv = nv.size();
+			const auto su = nu.size();
+			const auto sv = nv.size();
 			if (su > 1 and sv > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}
@@ -151,9 +151,9 @@ const neighbourhood& ugraph::get_neighbours(node u) const {
 	return m_adjacency_list[u];
 }
 
-uint64_t ugraph::degree(node u) const {
+uint32_t ugraph::degree(node u) const {
 	assert(has_node(u));
-	return m_adjacency_list[u].size();
+	return static_cast<uint32_t>(m_adjacency_list[u].size());
 }
 
 bool ugraph::has_edge(node u, node v) const {

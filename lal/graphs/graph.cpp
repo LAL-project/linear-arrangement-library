@@ -64,12 +64,12 @@ namespace graphs {
 /* PUBLIC */
 
 graph::graph() { }
-graph::graph(uint64_t n) {
+graph::graph(uint32_t n) {
 	_init(n);
 }
 graph::~graph() { }
 
-void graph::init(uint64_t n) {
+void graph::init(uint32_t n) {
 	_clear();
 	_init(n);
 }
@@ -83,7 +83,7 @@ void graph::disjoint_union(const graph& g) {
 	// If I'm undirected, g must be undirected.
 	assert(is_directed() ? g.is_directed() : g.is_undirected());
 
-	const uint64_t n = n_nodes();
+	const uint32_t n = n_nodes();
 	m_num_edges += g.m_num_edges;
 
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -139,11 +139,11 @@ bool graph::has_node(node u) const {
 	return u < m_adjacency_list.size();
 }
 
-uint64_t graph::n_nodes() const {
-	return m_adjacency_list.size();
+uint32_t graph::n_nodes() const {
+	return static_cast<uint32_t>(m_adjacency_list.size());
 }
 
-uint64_t graph::n_edges() const {
+uint32_t graph::n_edges() const {
 	return m_num_edges;
 }
 
@@ -164,7 +164,7 @@ bool graph::is_normalised() const {
 }
 
 void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
-	const uint64_t n = n_nodes();
+	const auto n = n_nodes();
 	mat = vector<vector<bool> >(n, vector<bool>(n, false));
 	edge_iterator it(*this);
 	while (it.has_next()) {
@@ -177,7 +177,7 @@ void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 
 /* PROTECTED */
 
-void graph::_init(uint64_t n) {
+void graph::_init(uint32_t n) {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);
@@ -189,7 +189,7 @@ void graph::_clear() {
 	m_adjacency_list.clear();
 }
 
-vector<edge_pair> graph::Q(uint64_t qs) const {
+vector<edge_pair> graph::Q(uint32_t qs) const {
 	vector<edge_pair> q(qs);
 	auto vec_it = q.begin();
 	Q_iterator q_it(*this);
