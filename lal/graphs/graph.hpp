@@ -81,7 +81,7 @@ class graph {
 		/**
 		 * @brief Allocate memory for @e n nodes.
 		 *
-		 * Calls @ref clear and @ref _init(uint64_t).
+		 * Calls @ref clear and @ref _init(uint32_t).
 		 * @param n Number of nodes.
 		 * @post The previous graph structure is cleared. See @ref clear.
 		 */

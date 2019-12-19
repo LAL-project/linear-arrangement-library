@@ -74,7 +74,8 @@ namespace graphs {}
  * 
  * This includes reading a graph (or collection of graphs) from
  * a file. The formats supported for reading are:
- * - Edge list. See function @ref read_edge_list(const std::string&, graphs::graph&, bool)
+ * - Edge list. See functions @ref read_edge_list(const std::string&, graphs::ugraph&, bool)
+ * and @ref read_edge_list(const std::string&, graphs::dgraph&, bool).
  * 
  * Other features contained in this namespace are:
  * - Processing of whole corpora of treebanks automatically (see @ref io::treebank_processor)
@@ -148,9 +149,8 @@ namespace numeric {
  * - computation of the amount of pairs of independent edges \f$Q\f$ (see @ref size_Q),
  * - computation of the variance of \f$V_{rla}[D]\f$ (see @ref variance_D),
  * - computation of \f$V_{rla}[C]\f$:
- * 		- in general graphs (see @ref variance_C_freqs, @ref variance_C_freqs_Q,
- * 			@ref variance_C_Q, and @ref variance_C)
- * 		- in forests (see @ref variance_C_forest)
+ * 		- in general graphs (see @ref variance_C),
+ * 		- in forests (see @ref variance_C_forest),
  * 		- in trees (see @ref variance_C_tree).
  * 
  * All calculations can be retrieved as exact rational numbers

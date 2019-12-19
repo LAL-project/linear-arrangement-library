@@ -58,7 +58,7 @@ namespace graphs {
  * list data structure.
  *
  * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint64_t) method. Edges can then be added one by one
+ * or with the @ref init(uint32_t) method. Edges can then be added one by one
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */

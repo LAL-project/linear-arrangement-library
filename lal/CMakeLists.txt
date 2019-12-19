@@ -187,8 +187,8 @@ set(LIBLAL_GENERATION_HEADER
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/dgraph.hpp
-	graphs/dtree.hpp
 	graphs/drtree.hpp
+	graphs/dtree.hpp
 	graphs/graph.hpp
 	graphs/output.hpp
 	graphs/rtree.hpp
