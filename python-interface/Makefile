@@ -1,11 +1,11 @@
-# BUILD OF COMPILATION AND DISTRIBUTION
+# BUILD OF COMPILATION AND ENVIRRIBUTION
 # compilation is debug by default
 ifeq ($(BUILD), )
 BUILD = debug
 endif
-# distribution is local by default
-ifeq ($(DIST), )
-DIST = local
+# distribution is devel by default
+ifeq ($(ENVIR), )
+ENVIR = devel
 endif
 
 ifneq ($(BUILD),debug)
@@ -13,18 +13,30 @@ ifneq ($(BUILD),release)
 $(info Error: invalid value for BUILD variable: $(BUILD))
 endif
 endif
-# distribution is local by default
-ifneq ($(DIST),local)
-ifneq ($(DIST),dist)
-$(info Error: invalid value for DIST variable: $(DIST))
+# distribution is devel by default
+ifneq ($(ENVIR),devel)
+ifneq ($(ENVIR),dist)
+$(info Error: invalid value for ENVIR variable: $(ENVIR))
 endif
 endif
 
 ########################################################################
 # VARIABLES
-PYTHON_INCLUDE	= /usr/include/python3.6/
+PYTHON_INC_DIR	= /usr/include/python3.6/
 
-LAL_DIR = ..
+ifeq ($(ENVIR), devel)
+	LAL_INC_DIR = ..
+	ifeq ($(BUILD), debug)
+		LAL_LIB_DIR = ../lal-debug
+	else
+		LAL_LIB_DIR = ../lal-release
+	endif
+else
+	# where are LAL's include files
+	LAL_INC_DIR = /home/lluis/Desktop/include
+	# where are LAL's library files
+	LAL_LIB_DIR = /home/lluis/Desktop/lib
+endif
 
 # OS-dependent variables
 ifeq ($(OS),Windows_NT)
@@ -42,17 +54,17 @@ endif
 
 ifeq ($(OS),Windows_NT)
 	# Python 3 include dir
-	PYTHON_INCLUDE	= C:/programming/Python37/include
+	PYTHON_INC_DIR	= C:/programming/Python37/include
 	# Directory where LAL's interface will be installed to
-	LAL_PY_INSTALL	= C:/programming/python_lib
+	LAL_PY_DEST	= C:/programming/python_lib
 	# Python3 linkage
 	PYTHON_LIBRARY	= -lpython37 -lpython3
 else
 	# Python 3 include dir
-	PYTHON_INCLUDE	= /usr/include/python3.6
+	PYTHON_INC_DIR	= /usr/include/python3.6
 	# Directory where LAL's interface will be installed to
-	LAL_PY_INSTALL	= /usr/lib/python3.6
-	# Python3 linkage (not needed)
+	LAL_PY_DEST		= /home/lluis/Desktop/lib/python3.6
+	# Python3 linkage (not needed in Linux?)
 	PYTHON_LIBRARY	=
 endif
 
@@ -72,13 +84,8 @@ endif
 # Compiler to be used
 CXX				= g++
 # Flags for 'g++'
-COMMON_FLAGS	= -std=c++17 -fPIC -fopenmp
-INCLUDES		= -I$(PYTHON_INCLUDE)
-
-ifeq ($(DIST),local)
-INCLUDES		+= -I$(LAL_DIR)
-else
-endif
+FLAGS			= -std=c++17 -fPIC -fopenmp
+INCLUDES		= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
 
 # set lib and flags according to the mode of compilation
 # define LAL's directory and dependencies
@@ -138,53 +145,53 @@ distclean:
 	rm -rf $(ARCH_DIR)
 
 install: $(LAL_SO)
-	cp $(LAL_SO) $(LAL_PY_INSTALL)/$(_LAL_SO)
-	cp $(LAL_PY_FILE) $(LAL_PY_INSTALL)/$(_LAL_PF)
-	cp $(DSE_SO) $(LAL_PY_INSTALL)/$(_DSE_SO)
-	cp $(DSE_PY_FILE) $(LAL_PY_INSTALL)/$(_DSE_PF)
-	cp $(TST_SO) $(LAL_PY_INSTALL)/$(_TST_SO)
-	cp $(TST_PY_FILE) $(LAL_PY_INSTALL)/$(_TST_PF)
-	cp $(ALGCR_SO) $(LAL_PY_INSTALL)/$(_ALGCR_SO)
-	cp $(ALGCR_PY_FILE) $(LAL_PY_INSTALL)/$(_ALGCR_PF)
-	cp $(DEFS_SO) $(LAL_PY_INSTALL)/$(_DEFS_SO)
-	cp $(DEFS_PY_FILE) $(LAL_PY_INSTALL)/$(_DEFS_PF)
-	cp $(GEN_SO) $(LAL_PY_INSTALL)/$(_GEN_SO)
-	cp $(GEN_PY_FILE) $(LAL_PY_INSTALL)/$(_GEN_PF)
-	cp $(GRAPHS_SO) $(LAL_PY_INSTALL)/$(_GRAPHS_SO)
-	cp $(GRAPHS_PY_FILE) $(LAL_PY_INSTALL)/$(_GRAPHS_PF)
-	cp $(IO_SO) $(LAL_PY_INSTALL)/$(_IO_SO)
-	cp $(IO_PY_FILE) $(LAL_PY_INSTALL)/$(_IO_PF)
-	cp $(ITER_SO) $(LAL_PY_INSTALL)/$(_ITER_SO)
-	cp $(ITER_PY_FILE) $(LAL_PY_INSTALL)/$(_ITER_PF)
-	cp $(LINARR_SO) $(LAL_PY_INSTALL)/$(_LINARR_SO)
-	cp $(LINARR_PY_FILE) $(LAL_PY_INSTALL)/$(_LINARR_PF)
-	cp $(NMRC_SO) $(LAL_PY_INSTALL)/$(_NMRC_SO)
-	cp $(NMRC_PY_FILE) $(LAL_PY_INSTALL)/$(_NMRC_PF)
-	cp $(PROP_SO) $(LAL_PY_INSTALL)/$(_PROP_SO)
-	cp $(PROP_PY_FILE) $(LAL_PY_INSTALL)/$(_PROP_PF)
+	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
+	cp $(LAL_PY_FILE) $(LAL_PY_DEST)/$(_LAL_PF)
+	cp $(DSE_SO) $(LAL_PY_DEST)/$(_DSE_SO)
+	cp $(DSE_PY_FILE) $(LAL_PY_DEST)/$(_DSE_PF)
+	cp $(TST_SO) $(LAL_PY_DEST)/$(_TST_SO)
+	cp $(TST_PY_FILE) $(LAL_PY_DEST)/$(_TST_PF)
+	cp $(ALGCR_SO) $(LAL_PY_DEST)/$(_ALGCR_SO)
+	cp $(ALGCR_PY_FILE) $(LAL_PY_DEST)/$(_ALGCR_PF)
+	cp $(DEFS_SO) $(LAL_PY_DEST)/$(_DEFS_SO)
+	cp $(DEFS_PY_FILE) $(LAL_PY_DEST)/$(_DEFS_PF)
+	cp $(GEN_SO) $(LAL_PY_DEST)/$(_GEN_SO)
+	cp $(GEN_PY_FILE) $(LAL_PY_DEST)/$(_GEN_PF)
+	cp $(GRAPHS_SO) $(LAL_PY_DEST)/$(_GRAPHS_SO)
+	cp $(GRAPHS_PY_FILE) $(LAL_PY_DEST)/$(_GRAPHS_PF)
+	cp $(IO_SO) $(LAL_PY_DEST)/$(_IO_SO)
+	cp $(IO_PY_FILE) $(LAL_PY_DEST)/$(_IO_PF)
+	cp $(ITER_SO) $(LAL_PY_DEST)/$(_ITER_SO)
+	cp $(ITER_PY_FILE) $(LAL_PY_DEST)/$(_ITER_PF)
+	cp $(LINARR_SO) $(LAL_PY_DEST)/$(_LINARR_SO)
+	cp $(LINARR_PY_FILE) $(LAL_PY_DEST)/$(_LINARR_PF)
+	cp $(NMRC_SO) $(LAL_PY_DEST)/$(_NMRC_SO)
+	cp $(NMRC_PY_FILE) $(LAL_PY_DEST)/$(_NMRC_PF)
+	cp $(PROP_SO) $(LAL_PY_DEST)/$(_PROP_SO)
+	cp $(PROP_PY_FILE) $(LAL_PY_DEST)/$(_PROP_PF)
 
 uninstall:
-	rm -f $(LAL_PY_INSTALL)/$(_LAL_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_LAL_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_DSE_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_DSE_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_TST_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_TST_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_ALGCR_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_DEFS_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_DEFS_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_GEN_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_GEN_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_GRAPHS_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_GRAPHS_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_IO_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_IO_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_ITER_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_ITER_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_LINARR_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_LINARR_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_NMRC_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_NMRC_PF)
-	rm -f $(LAL_PY_INSTALL)/$(_PROP_SO)
-	rm -f $(LAL_PY_INSTALL)/$(_PROP_PF)
+	rm -f $(LAL_PY_DEST)/$(_LAL_SO)
+	rm -f $(LAL_PY_DEST)/$(_LAL_PF)
+	rm -f $(LAL_PY_DEST)/$(_DSE_SO)
+	rm -f $(LAL_PY_DEST)/$(_DSE_PF)
+	rm -f $(LAL_PY_DEST)/$(_TST_SO)
+	rm -f $(LAL_PY_DEST)/$(_TST_PF)
+	rm -f $(LAL_PY_DEST)/$(_ALGCR_SO)
+	rm -f $(LAL_PY_DEST)/$(_ALGCR_PF)
+	rm -f $(LAL_PY_DEST)/$(_DEFS_SO)
+	rm -f $(LAL_PY_DEST)/$(_DEFS_PF)
+	rm -f $(LAL_PY_DEST)/$(_GEN_SO)
+	rm -f $(LAL_PY_DEST)/$(_GEN_PF)
+	rm -f $(LAL_PY_DEST)/$(_GRAPHS_SO)
+	rm -f $(LAL_PY_DEST)/$(_GRAPHS_PF)
+	rm -f $(LAL_PY_DEST)/$(_IO_SO)
+	rm -f $(LAL_PY_DEST)/$(_IO_PF)
+	rm -f $(LAL_PY_DEST)/$(_ITER_SO)
+	rm -f $(LAL_PY_DEST)/$(_ITER_PF)
+	rm -f $(LAL_PY_DEST)/$(_LINARR_SO)
+	rm -f $(LAL_PY_DEST)/$(_LINARR_PF)
+	rm -f $(LAL_PY_DEST)/$(_NMRC_SO)
+	rm -f $(LAL_PY_DEST)/$(_NMRC_PF)
+	rm -f $(LAL_PY_DEST)/$(_PROP_SO)
+	rm -f $(LAL_PY_DEST)/$(_PROP_PF)

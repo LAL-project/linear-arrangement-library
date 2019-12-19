@@ -1,16 +1,20 @@
 ########################################################################
 # COMPILATION FLAGS
 
-FLAGS		= $(COMMON_FLAGS) -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
-
-ifeq ($(DIST),local)
-LAL_LIB		= -L $(LAL_DIR)/lal-debug -llaldebug
-else
-LAL_LIB		= -llaldebug
-endif
-
-LIBS		= $(LAL_LIB) -lgmp -fopenmp $(PYTHON_LIBRARY)
+FLAGS		+= -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
+LIBS		+= -L $(LAL_LIB_DIR) -llaldebug -lgmp -fopenmp $(PYTHON_LIBRARY)
 SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
+
+########################################################################
+# DEPENDENCIES IN MODULES
+
+# LAL compilation object
+ifeq ($(ENVIR),devel)
+	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblaldebug.a
+else
+	# this is not needed
+	LIBRARY_SHARED_DEP	=
+endif
 
 ########################################################################
 # MODULES
@@ -67,13 +71,3 @@ PROP_INAME	= $(PROP_BNAME)debug
 # -- lal (library's main module)
 LAL_BNAME	= lal
 LAL_INAME	= $(LAL_BNAME)debug
-
-########################################################################
-# DEPENDENCIES IN MODULES
-
-# LAL compilation object
-ifeq ($(DIST),local)
-LIBRARY_SHARED_DEP	= $(LAL_DIR)/lal-debug/liblaldebug.a
-else
-LIBRARY_SHARED_DEP	=
-endif

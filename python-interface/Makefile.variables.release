@@ -1,16 +1,20 @@
 ########################################################################
 # COMPILATION FLAGS
 
-FLAGS		= $(COMMON_FLAGS) -O3 -DNDEBUG
-
-ifeq ($(DIST),local)
-LAL_LIB		= -L $(LAL_DIR)/lal-release -llal
-else
-LAL_LIB		= -llal
-endif
-
-LIBS		= $(LAL_LIB) -lgmp -fopenmp $(PYTHON_LIBRARY)
+FLAGS		+= -O3 -DNDEBUG
+LIBS		+= -L $(LAL_LIB_DIR) -llal -lgmp -fopenmp $(PYTHON_LIBRARY)
 SWIG_FLAGS	+= -DNDEBUG
+
+########################################################################
+# DEPENDENCIES IN MODULES
+
+# LAL compilation object
+ifeq ($(ENVIR),devel)
+	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblal.a
+else
+	# this is not needed
+	LIBRARY_SHARED_DEP	=
+endif
 
 ########################################################################
 # MODULES
@@ -34,7 +38,7 @@ ALGCR_INAME	= $(ALGCR_BNAME)
 
 # -- definitions
 DEFS_BNAME	= laldefinitions
-DEFS_INAME	= $(DEFS_BNAME)debug
+DEFS_INAME	= $(DEFS_BNAME)
 
 # -- generation
 GEN_BNAME	= lalgeneration
@@ -67,13 +71,3 @@ PROP_INAME	= $(PROP_BNAME)
 # -- lal (library's main module)
 LAL_BNAME	= lal
 LAL_INAME	= $(LAL_BNAME)
-
-########################################################################
-# DEPENDENCIES IN MODULES
-
-# LAL compilation object
-ifeq ($(DIST),local)
-LIBRARY_SHARED_DEP	= $(LAL_DIR)/lal-release/liblal.a
-else
-LIBRARY_SHARED_DEP	=
-endif
