@@ -8,7 +8,8 @@ GEN_DEP_HDRS	= $(LAL_INC_DIR)/lal/generation/free_lab_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/free_ulab_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/rand_free_lab_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/rand_free_ulab_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_rooted_lab_dir_trees.hpp
+				  $(LAL_INC_DIR)/lal/generation/rand_rooted_lab_dir_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/rand_rooted_ulab_trees.hpp
 GRAPHS_DEP_HDRS	= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
 				  $(LAL_INC_DIR)/lal/graphs/dtree.hpp \
 				  $(LAL_INC_DIR)/lal/graphs/drtree.hpp \

@@ -33,9 +33,9 @@ ifeq ($(ENVIR), devel)
 	endif
 else
 	# where are LAL's include files
-	LAL_INC_DIR = /home/lluis/Desktop/include
+	LAL_INC_DIR = /usr/local/include
 	# where are LAL's library files
-	LAL_LIB_DIR = /home/lluis/Desktop/lib
+	LAL_LIB_DIR = /usr/local/lib
 endif
 
 # OS-dependent variables
@@ -63,7 +63,7 @@ else
 	# Python 3 include dir
 	PYTHON_INC_DIR	= /usr/include/python3.6
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= /home/lluis/Desktop/lib/python3.6
+	LAL_PY_DEST		= /usr/lib/python3.6
 	# Python3 linkage (not needed in Linux?)
 	PYTHON_LIBRARY	=
 endif
