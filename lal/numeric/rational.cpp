@@ -173,9 +173,9 @@ rational& rational::operator= (const rational& r) {
 	return *this;
 }
 
-bool rational::operator== (int64_t i) const				{ rational r(i); 	return mpq_cmp(m_val, r.m_val) == 0; }
-bool rational::operator== (const integer& i) const		{ rational r(i); 	return mpq_cmp(m_val, r.m_val) == 0; }
-bool rational::operator== (const rational& r) const		{					return mpq_cmp(m_val, r.m_val) == 0; }
+bool rational::operator== (int64_t i) const				{ rational r(i); 	return mpq_equal(m_val, r.m_val) != 0; }
+bool rational::operator== (const integer& i) const		{ rational r(i); 	return mpq_equal(m_val, r.m_val) != 0; }
+bool rational::operator== (const rational& r) const		{					return mpq_equal(m_val, r.m_val) != 0; }
 
 bool rational::operator!= (int64_t i) const				{ return not (*this == i); }
 bool rational::operator!= (const integer& i) const		{ return not (*this == i); }
