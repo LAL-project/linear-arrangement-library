@@ -62,7 +62,12 @@ namespace generate {
  */
 class rand_free_lab_trees {
 	public:
-		/// Default constructor.
+		/**
+		 * @brief Default constructor.
+		 *
+		 * When constructed this way, the class needs to be initialised.
+		 * See @ref init(uint32_t, uint32_t).
+		 */
 		rand_free_lab_trees();
 		/// Constructor with size of tree and seed for the random number generator.
 		rand_free_lab_trees(uint32_t n, uint32_t seed = 0);

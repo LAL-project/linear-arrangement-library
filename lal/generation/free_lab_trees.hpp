@@ -87,10 +87,15 @@ namespace generate {
  */
 class free_lab_trees {
 	public:
-		/// Default constructor.
+		/**
+		 * @brief Default constructor.
+		 *
+		 * When constructed this way, the class needs to be initialised.
+		 * See @ref init(uint32_t).
+		 */
 		free_lab_trees();
-		/// Constructor with size of tree.
-		free_lab_trees(uint32_t m_n);
+		/// Constructor with number of vertices.
+		free_lab_trees(uint32_t n);
 		/// Default destructor.
 		~free_lab_trees();
 

@@ -89,9 +89,14 @@ namespace generate {
  */
 class free_ulab_trees {
 	public:
-		/// Default constructor.
+		/**
+		 * @brief Default constructor.
+		 *
+		 * When constructed this way, the class needs to be initialised.
+		 * See @ref init(uint32_t).
+		 */
 		free_ulab_trees();
-		/// Constructor with size of tree.
+		/// Constructor with number of vertices.
 		free_ulab_trees(uint32_t n);
 		/// Default destructor
 		~free_ulab_trees();
