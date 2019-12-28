@@ -31,6 +31,7 @@ HEADERS += \
     definitions.hpp \
     generation.hpp \
     generation/rand_rooted_lab_dir_trees.hpp \
+    generation/rand_rooted_ulab_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
     graphs/drtree.hpp \
@@ -91,6 +92,7 @@ HEADERS += \
 
 SOURCES += \
     generation/rand_rooted_lab_dir_trees.cpp \
+    generation/rand_rooted_ulab_trees.cpp \
     graphs/dgraph.cpp \
     graphs/drtree.cpp \
     graphs/dtree.cpp \

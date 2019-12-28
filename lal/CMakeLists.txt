@@ -122,6 +122,7 @@ target_sources(
 		generation/rand_free_lab_trees.cpp
 		generation/rand_free_ulab_trees.cpp
 		generation/rand_rooted_lab_dir_trees.cpp
+		generation/rand_rooted_ulab_trees.cpp
 		graphs/dgraph.cpp
 		graphs/drtree.cpp
 		graphs/dtree.cpp
@@ -184,6 +185,7 @@ set(LIBLAL_GENERATION_HEADER
 	generation/rand_free_lab_trees.hpp
 	generation/rand_free_ulab_trees.hpp
 	generation/rand_rooted_lab_dir_trees.hpp
+	generation/rand_rooted_ulab_trees.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/dgraph.hpp
