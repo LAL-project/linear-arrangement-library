@@ -73,7 +73,7 @@ graphs::utree linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n
 /*
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
  *
- * For details on Prüfer sequences, see |cite Pruefer1918a.
+ * For details on Prüfer sequences, see \cite Pruefer1918a.
  *
  * The algorithm used to decode the sequence is the one presented in
  * \cite Alonso1995a.

@@ -48,7 +48,7 @@ namespace lal {
 namespace graphs {
 
 /**
- * @brief Rooted undirected tree class.
+ * @brief Undirected rooted tree class.
  *
  * This class represents a rooted undirected tree.
  *

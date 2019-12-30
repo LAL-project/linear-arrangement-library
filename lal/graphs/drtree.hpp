@@ -50,7 +50,7 @@ namespace lal {
 namespace graphs {
 
 /**
- * @brief Rooted directed tree class.
+ * @brief Directed rooted tree class.
  *
  * This class represents a rooted directed tree. The edges can be oriented
  * either outwards or inwards (see @ref rooted_directed_tree_type for details).
