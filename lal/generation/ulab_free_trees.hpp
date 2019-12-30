@@ -79,7 +79,7 @@ namespace generate {
  *
  * The correct usage of this class is
  * @code
- *		free_lab_trees flt(n);
+ *		ulab_free_trees flt(n);
  *		while (flt.has_next()) {
  *			flt.next();
  *			ugraph e = it.get_tree();
@@ -87,7 +87,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class free_ulab_trees {
+class ulab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -95,11 +95,11 @@ class free_ulab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t).
 		 */
-		free_ulab_trees();
+		ulab_free_trees();
 		/// Constructor with number of vertices.
-		free_ulab_trees(uint32_t n);
+		ulab_free_trees(uint32_t n);
 		/// Default destructor
-		~free_ulab_trees();
+		~ulab_free_trees();
 
 		/**
 		 * @brief Initialises the generator.

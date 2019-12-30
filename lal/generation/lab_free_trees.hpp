@@ -77,7 +77,7 @@ namespace generate {
  *
  * The correct usage of this class is
  * @code
- *		free_lab_trees flt(n);
+ *		lab_free_trees flt(n);
  *		while (flt.has_next()) {
  *			flt.next();
  *			ugraph e = it.get_tree();
