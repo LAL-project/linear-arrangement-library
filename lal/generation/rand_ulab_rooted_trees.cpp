@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/generation/rand_rooted_ulab_trees.hpp>
+#include <lal/generation/rand_ulab_rooted_trees.hpp>
 
 // C includes
 #include <assert.h>
@@ -62,17 +62,17 @@ using namespace graphs;
 
 namespace generate {
 
-rand_rooted_ulab_trees::rand_rooted_ulab_trees() {
+rand_ulab_rooted_trees::rand_ulab_rooted_trees() {
 	init_rn();
 }
 
-rand_rooted_ulab_trees::rand_rooted_ulab_trees(uint32_t _n, uint32_t seed) {
+rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
 	init_rn();
 	init(_n, seed);
 }
-rand_rooted_ulab_trees::~rand_rooted_ulab_trees() { }
+rand_ulab_rooted_trees::~rand_ulab_rooted_trees() { }
 
-void rand_rooted_ulab_trees::init(uint32_t _n, uint32_t seed) {
+void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
 	if (m_n <= 1) { return; }
 
@@ -89,7 +89,7 @@ void rand_rooted_ulab_trees::init(uint32_t _n, uint32_t seed) {
 	m_tree = vector<uint32_t>(m_n);
 }
 
-vector<uint32_t> rand_rooted_ulab_trees::make_rand_tree() {
+vector<uint32_t> rand_ulab_rooted_trees::make_rand_tree() {
 	// call with an invalid index for the 'root of the last tree added'
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
@@ -107,7 +107,7 @@ vector<uint32_t> rand_rooted_ulab_trees::make_rand_tree() {
 	*/
 }
 
-void rand_rooted_ulab_trees::clear() {
+void rand_ulab_rooted_trees::clear() {
 	m_rn.clear();
 	init_rn();
 }
@@ -115,7 +115,7 @@ void rand_rooted_ulab_trees::clear() {
 /* PROTECTED */
 
 pair<uint32_t,uint32_t>
-rand_rooted_ulab_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const string& tab)
+rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const string& tab)
 {
 	//cout << tab << "n= " << n << endl;
 	//cout << tab << "lr= " << lr << endl;
@@ -206,7 +206,7 @@ rand_rooted_ulab_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const strin
 	return make_pair(root_Tp, nt);
 }
 
-void rand_rooted_ulab_trees::init_rn() {
+void rand_ulab_rooted_trees::init_rn() {
 	// from the OEIS: https://oeis.org/A000081
 	m_rn = vector<integer>(31);
 	m_rn[0] = 0;
@@ -242,7 +242,7 @@ void rand_rooted_ulab_trees::init_rn() {
 	m_rn[30] = integer("354426847597");
 }
 
-const integer& rand_rooted_ulab_trees::get_rn(uint32_t n) {
+const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -274,7 +274,7 @@ const integer& rand_rooted_ulab_trees::get_rn(uint32_t n) {
 }
 
 pair<uint32_t, uint32_t>
-rand_rooted_ulab_trees::choose_jd_from_T(uint32_t n)
+rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair

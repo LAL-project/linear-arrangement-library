@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/generation/rand_free_lab_trees.hpp>
+#include <lal/generation/rand_lab_free_trees.hpp>
 
 // C++ includes
 using namespace std;
@@ -51,13 +51,13 @@ using namespace graphs;
 
 namespace generate {
 
-rand_free_lab_trees::rand_free_lab_trees() { }
-rand_free_lab_trees::rand_free_lab_trees(uint32_t _n, uint32_t seed) {
+rand_lab_free_trees::rand_lab_free_trees() { }
+rand_lab_free_trees::rand_lab_free_trees(uint32_t _n, uint32_t seed) {
 	init(_n, seed);
 }
-rand_free_lab_trees::~rand_free_lab_trees() { }
+rand_lab_free_trees::~rand_lab_free_trees() { }
 
-void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
+void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
 	if (m_n <= 2) { return; }
 
@@ -73,7 +73,7 @@ void rand_free_lab_trees::init(uint32_t _n, uint32_t seed) {
 	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
 }
 
-utree rand_free_lab_trees::make_rand_tree() {
+utree rand_lab_free_trees::make_rand_tree() {
 	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
 		utree t(2);

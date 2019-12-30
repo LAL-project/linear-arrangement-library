@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/generation/free_ulab_trees.hpp>
+#include <lal/generation/ulab_free_trees.hpp>
 
 // C includes
 #include <assert.h>

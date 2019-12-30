@@ -4,12 +4,12 @@ DSE_DEP_HDRS	= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
 TST_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/tree_structure_type.hpp
 ALGCR_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp
 DEFS_DEP_HDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
-GEN_DEP_HDRS	= $(LAL_INC_DIR)/lal/generation/free_lab_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/free_ulab_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_free_lab_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_free_ulab_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_rooted_lab_dir_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_rooted_ulab_trees.hpp
+GEN_DEP_HDRS	= $(LAL_INC_DIR)/lal/generation/lab_free_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/ulab_free_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/rand_lab_free_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/rand_ulab_free_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/rand_lab_dir_rooted_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/rand_ulab_rooted_trees.hpp
 GRAPHS_DEP_HDRS	= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
 				  $(LAL_INC_DIR)/lal/graphs/dtree.hpp \
 				  $(LAL_INC_DIR)/lal/graphs/drtree.hpp \

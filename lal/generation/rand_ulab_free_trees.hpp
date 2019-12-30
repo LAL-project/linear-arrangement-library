@@ -50,13 +50,13 @@
 #include <lal/graphs/utree.hpp>
 #include <lal/definitions.hpp>
 #include <lal/numeric/integer.hpp>
-#include <lal/generation/rand_rooted_ulab_trees.hpp>
+#include <lal/generation/rand_ulab_rooted_trees.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Random free unlabelled tree generator.
+ * @brief Random unlabelled free tree generator.
  *
  * Generates uniformly at random free unlabelled trees.
  *
@@ -70,7 +70,7 @@ namespace generate {
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.
  */
-class rand_free_ulab_trees : public rand_rooted_ulab_trees {
+class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -78,11 +78,11 @@ class rand_free_ulab_trees : public rand_rooted_ulab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_free_ulab_trees();
+		rand_ulab_free_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_ulab_trees(uint32_t n, uint32_t seed = 0);
+		rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
 		/// Default destructor.
-		~rand_free_ulab_trees();
+		~rand_ulab_free_trees();
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.

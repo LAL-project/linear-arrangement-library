@@ -53,7 +53,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Random rooted unlabelled tree generator.
+ * @brief Random unlabelled rooted tree generator.
  *
  * Generates uniformly at random rooted unlabelled trees.
  *
@@ -64,7 +64,7 @@ namespace generate {
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.
  */
-class rand_rooted_ulab_trees {
+class rand_ulab_rooted_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -72,11 +72,11 @@ class rand_rooted_ulab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_rooted_ulab_trees();
+		rand_ulab_rooted_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_rooted_ulab_trees(uint32_t n, uint32_t seed = 0);
+		rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
 		/// Default destructor.
-		virtual ~rand_rooted_ulab_trees();
+		virtual ~rand_ulab_rooted_trees();
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.

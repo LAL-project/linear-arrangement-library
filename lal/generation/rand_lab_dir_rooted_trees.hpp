@@ -44,14 +44,14 @@
 #include <random>
 
 // lal includes
-#include <lal/generation/rand_free_lab_trees.hpp>
+#include <lal/generation/rand_lab_free_trees.hpp>
 #include <lal/graphs/drtree.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Random rooted labelled directed trees generator.
+ * @brief Random labelled directed rooted trees generator.
  *
  * Generates uniformly at random rooted labelled trees.
  *
@@ -62,7 +62,7 @@ namespace generate {
  * uniformly at random. This node plays the role of the root of the rooted
  * labelled directed tree. The edges are oriented away from the root.
  */
-class rand_rooted_lab_dir_trees : public rand_free_lab_trees {
+class rand_lab_dir_rooted_trees : public rand_lab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -70,11 +70,11 @@ class rand_rooted_lab_dir_trees : public rand_free_lab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_rooted_lab_dir_trees();
+		rand_lab_dir_rooted_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_rooted_lab_dir_trees(uint32_t n, uint32_t seed = 0);
+		rand_lab_dir_rooted_trees(uint32_t n, uint32_t seed = 0);
 		/// Default constructor.
-		~rand_rooted_lab_dir_trees();
+		~rand_lab_dir_rooted_trees();
 
 		/**
 		 * @brief Sets the size of the labelled trees to generate.

@@ -51,7 +51,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive free labelled tree generator.
+ * @brief Exhaustive labelled free tree generator.
  *
  * Generates all the labelled trees of a certain size.
  *
@@ -85,7 +85,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class free_lab_trees {
+class lab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -93,11 +93,11 @@ class free_lab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t).
 		 */
-		free_lab_trees();
+		lab_free_trees();
 		/// Constructor with number of vertices.
-		free_lab_trees(uint32_t n);
+		lab_free_trees(uint32_t n);
 		/// Default destructor.
-		~free_lab_trees();
+		~lab_free_trees();
 
 		/**
 		 * @brief Initialises the generator.

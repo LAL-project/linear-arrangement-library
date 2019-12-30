@@ -30,8 +30,12 @@ INCLUDEPATH += ..
 HEADERS += \
     definitions.hpp \
     generation.hpp \
-    generation/rand_rooted_lab_dir_trees.hpp \
-    generation/rand_rooted_ulab_trees.hpp \
+    generation/lab_free_trees.hpp \
+    generation/rand_lab_dir_rooted_trees.hpp \
+    generation/rand_lab_free_trees.hpp \
+    generation/rand_ulab_free_trees.hpp \
+    generation/rand_ulab_rooted_trees.hpp \
+    generation/ulab_free_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
     graphs/drtree.hpp \
@@ -69,12 +73,8 @@ HEADERS += \
     properties/Q.hpp \
     linarr/C.hpp \
     linarr/D.hpp \
-    generation/free_ulab_trees.hpp \
-    generation/free_lab_trees.hpp \
-    generation/rand_free_lab_trees.hpp \
     io/treebank_processor.hpp \
     io/treebank_reader.hpp \
-    generation/rand_free_ulab_trees.hpp \
     properties/D_rla.hpp \
     properties/C_rla.hpp \
     C.hpp \
@@ -91,8 +91,12 @@ HEADERS += \
     utils/sort_integers.hpp
 
 SOURCES += \
-    generation/rand_rooted_lab_dir_trees.cpp \
-    generation/rand_rooted_ulab_trees.cpp \
+    generation/lab_free_trees.cpp \
+    generation/rand_lab_dir_rooted_trees.cpp \
+    generation/rand_lab_free_trees.cpp \
+    generation/rand_ulab_free_trees.cpp \
+    generation/rand_ulab_rooted_trees.cpp \
+    generation/ulab_free_trees.cpp \
     graphs/dgraph.cpp \
     graphs/drtree.cpp \
     graphs/dtree.cpp \
@@ -121,14 +125,10 @@ SOURCES += \
     linarr/C_brute_force.cpp \
     linarr/C_dyn_prog.cpp \
     linarr/C_ladder.cpp \
-    generation/free_ulab_trees.cpp \
     properties/variance_C_gen_graphs.cpp \
     properties/variance_C_trees.cpp \
-    generation/free_lab_trees.cpp \
-    generation/rand_free_lab_trees.cpp \
     io/treebank_processor.cpp \
     io/treebank_reader.cpp \
-    generation/rand_free_ulab_trees.cpp \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \

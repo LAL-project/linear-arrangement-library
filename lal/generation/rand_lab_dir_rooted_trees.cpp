@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/generation/rand_rooted_lab_dir_trees.hpp>
+#include <lal/generation/rand_lab_dir_rooted_trees.hpp>
 
 // C++ includes
 using namespace std;
@@ -48,21 +48,21 @@ using namespace graphs;
 
 namespace generate {
 
-rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees() : rand_free_lab_trees() { }
+rand_lab_dir_rooted_trees::rand_lab_dir_rooted_trees() : rand_lab_free_trees() { }
 
-rand_rooted_lab_dir_trees::rand_rooted_lab_dir_trees(uint32_t n, uint32_t seed)
-	: rand_free_lab_trees(n, seed)
+rand_lab_dir_rooted_trees::rand_lab_dir_rooted_trees(uint32_t n, uint32_t seed)
+	: rand_lab_free_trees(n, seed)
 {
 
 }
-rand_rooted_lab_dir_trees::~rand_rooted_lab_dir_trees() { }
+rand_lab_dir_rooted_trees::~rand_lab_dir_rooted_trees() { }
 
-void rand_rooted_lab_dir_trees::init(uint32_t n, uint32_t seed) {
-	rand_free_lab_trees::init(n, seed);
+void rand_lab_dir_rooted_trees::init(uint32_t n, uint32_t seed) {
+	rand_lab_free_trees::init(n, seed);
 }
 
-drtree rand_rooted_lab_dir_trees::make_rand_tree() {
-	utree t = rand_free_lab_trees::make_rand_tree();
+drtree rand_lab_dir_rooted_trees::make_rand_tree() {
+	utree t = rand_lab_free_trees::make_rand_tree();
 	node r = m_unif(m_gen);
 	return drtree(t, r);
 }

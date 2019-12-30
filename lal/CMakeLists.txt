@@ -117,12 +117,12 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
-		generation/free_lab_trees.cpp
-		generation/free_ulab_trees.cpp
-		generation/rand_free_lab_trees.cpp
-		generation/rand_free_ulab_trees.cpp
-		generation/rand_rooted_lab_dir_trees.cpp
-		generation/rand_rooted_ulab_trees.cpp
+		generation/lab_free_trees.cpp
+		generation/ulab_free_trees.cpp
+		generation/rand_lab_free_trees.cpp
+		generation/rand_ulab_free_trees.cpp
+		generation/rand_lab_dir_rooted_trees.cpp
+		generation/rand_ulab_rooted_trees.cpp
 		graphs/dgraph.cpp
 		graphs/drtree.cpp
 		graphs/dtree.cpp
@@ -180,12 +180,12 @@ set(LIBLAL_MAIN_HEADER
 	properties.hpp
 )
 set(LIBLAL_GENERATION_HEADER
-	generation/free_lab_trees.hpp
-	generation/free_ulab_trees.hpp
-	generation/rand_free_lab_trees.hpp
-	generation/rand_free_ulab_trees.hpp
-	generation/rand_rooted_lab_dir_trees.hpp
-	generation/rand_rooted_ulab_trees.hpp
+	generation/lab_free_trees.hpp
+	generation/ulab_free_trees.hpp
+	generation/rand_lab_free_trees.hpp
+	generation/rand_ulab_free_trees.hpp
+	generation/rand_lab_dir_rooted_trees.hpp
+	generation/rand_ulab_rooted_trees.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/dgraph.hpp

@@ -60,7 +60,7 @@ namespace generate {
  * sequence (see \cite Pruefer1918a), which is then used to build its
  * corresponding free labelled tree using algorithm in \cite Alonso1995a.
  */
-class rand_free_lab_trees {
+class rand_lab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -68,11 +68,11 @@ class rand_free_lab_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_free_lab_trees();
+		rand_lab_free_trees();
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_free_lab_trees(uint32_t n, uint32_t seed = 0);
+		rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
 		/// Default Destructor.
-		virtual ~rand_free_lab_trees();
+		virtual ~rand_lab_free_trees();
 
 		/**
 		 * @brief Sets the size of the labelled trees to generate.

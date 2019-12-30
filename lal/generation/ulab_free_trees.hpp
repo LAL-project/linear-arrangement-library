@@ -51,7 +51,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive free unlabelled tree generator.
+ * @brief Exhaustive unlabelled free tree generator.
  *
  * Generates all the nonisomorphic free unlabelled trees
  * of a certain size.

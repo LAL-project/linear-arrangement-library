@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/generation/free_lab_trees.hpp>
+#include <lal/generation/lab_free_trees.hpp>
 
 // C includes
 #include <assert.h>
@@ -61,13 +61,13 @@ namespace generate {
 
 // PUBLIC
 
-free_lab_trees::free_lab_trees() { }
-free_lab_trees::free_lab_trees(uint32_t _n) {
+lab_free_trees::lab_free_trees() { }
+lab_free_trees::lab_free_trees(uint32_t _n) {
 	init(_n);
 }
-free_lab_trees::~free_lab_trees() { }
+lab_free_trees::~lab_free_trees() { }
 
-void free_lab_trees::init(uint32_t _n) {
+void lab_free_trees::init(uint32_t _n) {
 	m_n = _n;
 	if (m_n <= 2) {
 		m_sm = vector<bool>(1, false);
@@ -86,14 +86,14 @@ void free_lab_trees::init(uint32_t _n) {
 	m_L = m_n - 2;
 }
 
-bool free_lab_trees::has_next() const {
+bool lab_free_trees::has_next() const {
 	if (m_n <= 2) {
 		return not m_sm[0];
 	}
 	return not m_sm[m_n - 3];
 }
 
-void free_lab_trees::next() {
+void lab_free_trees::next() {
 	if (m_n <= 2) {
 		// there is only one tree we can make
 		m_sm[0] = true;
@@ -120,7 +120,7 @@ void free_lab_trees::next() {
 	m_it = m_n - 3;
 }
 
-utree free_lab_trees::get_tree() const {
+utree lab_free_trees::get_tree() const {
 	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
 		utree t(2);

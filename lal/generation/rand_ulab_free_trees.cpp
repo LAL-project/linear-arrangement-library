@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/generation/rand_free_ulab_trees.hpp>
+#include <lal/generation/rand_ulab_free_trees.hpp>
 
 // C includes
 #include <assert.h>
@@ -106,19 +106,68 @@ utree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
 
 /* PUBLIC */
 
-rand_free_ulab_trees::rand_free_ulab_trees() : rand_rooted_ulab_trees() {
+rand_ulab_free_trees::rand_ulab_free_trees() : rand_ulab_rooted_trees() {
 }
-rand_free_ulab_trees::rand_free_ulab_trees(uint32_t _n, uint32_t seed) {
+rand_ulab_free_trees::rand_ulab_free_trees(uint32_t _n, uint32_t seed) {
 	init(_n, seed);
 }
-rand_free_ulab_trees::~rand_free_ulab_trees() { }
+rand_ulab_free_trees::~rand_ulab_free_trees() { }
 
-void rand_free_ulab_trees::init(uint32_t _n, uint32_t seed) {
-	rand_rooted_ulab_trees::init(_n, seed);
+void rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
+	rand_ulab_rooted_trees::init(_n, seed);
 	init_fn();
 }
 
-utree rand_free_ulab_trees::make_rand_tree() {
+utree rand_ulab_free_trees::make_rand_tree() {
+
+	uint32_t N = m_n;
+
+	vector<node> pool_nodes(N);
+	iota(pool_nodes.begin(), pool_nodes.end(), 0);
+	size_t max_idx = pool_nodes.size() - 1;
+
+	uniform_int_distribution<size_t> m_unif_int;
+	m_unif_int = uniform_int_distribution<size_t>(0, max_idx);
+
+	cout << "Available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
+
+	size_t u_idx = m_unif_int(m_gen);
+	node u = pool_nodes[u_idx];
+	swap(pool_nodes[u_idx], pool_nodes[max_idx]);
+	--max_idx;
+
+	cout << "    choose node u= " << u << " (idx: " << u_idx << ")" << endl;
+	cout << "    available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
+
+	vector<edge> edges(N - 1);
+	auto e_it = edges.begin();
+	while (e_it != edges.end()) {
+		m_unif_int = uniform_int_distribution<size_t>(0, max_idx);
+		const size_t v_idx = m_unif_int(m_gen);
+		const node v = pool_nodes[v_idx];
+		swap(pool_nodes[v_idx], pool_nodes[max_idx]);
+		--max_idx;
+
+		cout << "    choose node v= " << v << " (idx: " << v_idx << ")"  << endl;
+		cout << "    available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
+		cout << "    edge: {" << u << ", " << v << "}" << endl;
+
+		*e_it = edge(u,v);
+
+		u = v;
+		++e_it;
+	}
+
+	utree T(m_n);
+	T.add_edges(edges);
+
+	//cout << T << endl;
+	char k;
+	cin >> k;
+
+	return T;
+
+	/*
 	//__kout << "make_rand_tree::" << endl;
 
 	if (m_n <= 1) { return utree(m_n); }
@@ -182,10 +231,11 @@ utree rand_free_ulab_trees::make_rand_tree() {
 	const utree T = make_tree(m_n, m_tree);
 	assert(T.is_tree());
 	return T;
+	*/
 }
 
-void rand_free_ulab_trees::clear() {
-	rand_rooted_ulab_trees::clear();
+void rand_ulab_free_trees::clear() {
+	rand_ulab_rooted_trees::clear();
 	m_fn.clear();
 	m_alpha.clear();
 	init_fn();
@@ -205,7 +255,7 @@ void rand_free_ulab_trees::clear() {
  *	number of times.
  *
  */
-uint32_t rand_free_ulab_trees::forest
+uint32_t rand_ulab_free_trees::forest
 (uint32_t m, uint32_t q, uint32_t nt, const string& tab)
 {
 	//__kout << tab << "Make a forest F of " << m << " vertices..." << endl;
@@ -281,7 +331,7 @@ uint32_t rand_free_ulab_trees::forest
 	return nt;
 }
 
-void rand_free_ulab_trees::bicenter(uint32_t n) {
+void rand_ulab_free_trees::bicenter(uint32_t n) {
 	// make sure that the number of vertices is even
 	assert(n%2 == 0);
 	if (n == 0) {
@@ -329,7 +379,7 @@ void rand_free_ulab_trees::bicenter(uint32_t n) {
 	assert(nt == m_n);
 }
 
-const integer& rand_free_ulab_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
+const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
 
 	if (alpha_exists(m,q)) {
 		// already computed
@@ -362,7 +412,7 @@ const integer& rand_free_ulab_trees::get_alpha_mq(const uint32_t m, const uint32
 	return get_alpha(m,q);
 }
 
-void rand_free_ulab_trees::init_fn() {
+void rand_ulab_free_trees::init_fn() {
 	// from the OEIS: https://oeis.org/A000055
 
 	m_fn = vector<integer>(31);
@@ -399,7 +449,7 @@ void rand_free_ulab_trees::init_fn() {
 	m_fn[30] = integer("14830871802");
 }
 
-const integer& rand_free_ulab_trees::get_fn(const uint32_t n) {
+const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
@@ -440,7 +490,7 @@ const integer& rand_free_ulab_trees::get_fn(const uint32_t n) {
 }
 
 pair<uint32_t, uint32_t>
-rand_free_ulab_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
+rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
