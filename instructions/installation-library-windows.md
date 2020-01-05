@@ -109,12 +109,10 @@ Now it only remains to compile and install the library
 
 	$ mkdir lal-release ; cd lal-release
 	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ ../lal
-	$ make -j4
-	$ make install
+	$ make -j4 && make install
 
 ### DEBUG mode
 
 	$ mkdir lal-debug ; cd lal-debug
 	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
-	$ make -j4
-	$ make install
+	$ make -j4 && make install
