@@ -22,7 +22,6 @@ endif
 
 ########################################################################
 # VARIABLES
-PYTHON_INC_DIR	= /usr/include/python3.6/
 
 ifeq ($(ENVIR), devel)
 	LAL_INC_DIR = ..
