@@ -31,20 +31,25 @@ The following instructions for installing the library from sources assumes that 
 
 	* 0.3.1. Extract the files and move them to
 
-			C:/programming/cmake-3.15.0/
+			C:/programming/cmake/
 
 	* 0.3.2. Add to the PATH environment variable the path
 
-			C:/programming/cmake-3.15.0/bin
+			C:/programming/cmake/bin
 
-- 0.4. Since we are going to be installing several libraries, create the following directories, and add them to the _PATH_ environment variable.
+- 0.4. Since we are going to be installing several libraries, create the following directories
 
 		C:/programming/c++/bin
 		C:/programming/c++/include
 		C:/programming/c++/lib
 		C:/programming/c++/share
+	
+	* 0.4.1. Add the following directories to the _PATH_ environment variable
+	
+			C:/programming/c++/bin
+			C:/programming/c++/lib
 
-- 0.5. Moreover, add the following environment variable, and set its contents to the path to its right
+- 0.5. Moreover, add the following environment variables, and set their contents to directory to their right
 
 		LIBRARY_PATH			C:/programming/c++/lib
 		CPLUS_INCLUDE_PATH		C:/programming/c++/include
