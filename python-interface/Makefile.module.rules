@@ -6,7 +6,7 @@
 
 # dataset_error module
 $(DSE_SO): $(DSE_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(DSE_WRAP).o: $(DSE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
@@ -14,7 +14,7 @@ $(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
 
 # tree_structure_type module
 $(TST_SO): $(TST_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(TST_WRAP).o: $(TST_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(TST_WRAP).cxx: $(TST_MOD_DEPS)
@@ -22,7 +22,7 @@ $(TST_WRAP).cxx: $(TST_MOD_DEPS)
 
 # algorithms_crossings module
 $(ALGCR_SO): $(ALGCR_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(ALGCR_WRAP).o: $(ALGCR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ALGCR_WRAP).cxx: $(ALGCR_MOD_DEPS)
@@ -32,7 +32,7 @@ $(ALGCR_WRAP).cxx: $(ALGCR_MOD_DEPS)
 
 # definitions module
 $(DEFS_SO): $(DEFS_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(DEFS_WRAP).o: $(DEFS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
@@ -40,7 +40,7 @@ $(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
 
 # generation
 $(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(GEN_WRAP).o: $(GEN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GEN_WRAP).cxx: $(GEN_MOD_DEPS)
@@ -48,7 +48,7 @@ $(GEN_WRAP).cxx: $(GEN_MOD_DEPS)
 
 # graphs module
 $(GRAPHS_SO): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(GRAPHS_WRAP).o: $(GRAPHS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS)
@@ -56,7 +56,7 @@ $(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS)
 
 # io module
 $(IO_SO): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(IO_WRAP).o: $(IO_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(IO_WRAP).cxx: $(IO_MOD_DEPS)
@@ -64,7 +64,7 @@ $(IO_WRAP).cxx: $(IO_MOD_DEPS)
 
 # iterators module
 $(ITER_SO): $(ITER_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(ITER_WRAP).o: $(ITER_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ITER_WRAP).cxx: $(ITER_MOD_DEPS)
@@ -72,7 +72,7 @@ $(ITER_WRAP).cxx: $(ITER_MOD_DEPS)
 
 # linarr module
 $(LINARR_SO): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(LINARR_WRAP).o: $(LINARR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS)
@@ -80,7 +80,7 @@ $(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS)
 
 # numeric  module
 $(NMRC_SO): $(NMRC_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(NMRC_WRAP).o: $(NMRC_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(NMRC_WRAP).cxx: $(NMRC_MOD_DEPS)
@@ -88,7 +88,7 @@ $(NMRC_WRAP).cxx: $(NMRC_MOD_DEPS)
 
 # properties  module
 $(PROP_SO): $(PROP_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(PROP_WRAP).o: $(PROP_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
@@ -96,7 +96,7 @@ $(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
 
 # lal module (library's main module)
 $(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
-	$(CXX) $(FLAGS) -shared -fPIC -o $@ $< $(LIBS)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(LAL_WRAP).o: $(LAL_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
