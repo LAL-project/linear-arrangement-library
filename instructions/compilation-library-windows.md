@@ -1,6 +1,6 @@
 # Installation of LAL and its dependencies (Windows)
 
-Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them (step 0). Then, we list the library's dependencies and explain how to install them, from sources (step 1). We finish by explaining how to compile and install this library from sources (step 2). Instructions given in step 1 and step 2, assume that the user has done the basic setup explained in step 0. Other steps can be followed, but we do not provide them. The reader is encouraged to read through all steps before actually performing any of them.
+Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them (step 0). Then, we list the library's dependencies and explain how to install them, from sources (step 1). We finish by explaining how to compile and install this library from sources (step 2). Instructions given in step 1 and step 2, assume that the you have done the basic setup explained in step 0. Other steps can be followed, but we do not provide them. You are encouraged to read through all steps before actually performing any of them.
 
 ## 0. Downloading the necessary tools and doing a basic setup of the system
 

@@ -1,6 +1,6 @@
 # Installation of the interface for Python (Windows)
 
-This library has been interfaced to [Python 3](https://www.python.org/) using the software [SWIG](http://www.swig.org/) (version 4.0.1). In order to compile the interface, users need to install the `SWIG` tool in their system. As for the rest, one only needs the `make` tool.
+This library has been interfaced to [Python 3](https://www.python.org/) using the software [SWIG](http://www.swig.org/) (version 4.0.1). In order to compile the interface, you need to have the `SWIG` tool installed in your system. As for the rest, you only need the `make` tool.
 
 ## Installing Python 3
 
@@ -23,7 +23,7 @@ and then add this path to the `PATH` environment variable.
 
 ## Configuring the _Makefile_
 
-In order to compile the interface, the user has to configure one of the build files. For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor version the interface has been tested on is `6` (i.e., we have been using Python 3.6), but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, the user has to modify the variables in the file [Makefile](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/python-interface/Makefile) accordingly.
+In order to compile the interface, you need to configure one of the build files (change a few variables' contents). For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor version the interface has been tested on is `6` (i.e., we have been using Python 3.6), but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, you have to modify some of the variables in the file [Makefile](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/python-interface/Makefile) accordingly.
 
 First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example, if you installed LAL from sources and followed the instructions in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file, you will need
 
@@ -36,7 +36,7 @@ Secondly, specify the directory where Python's header files are located at, and 
 
 	PYTHON_INC_DIR = C:/programming/Python36/include
 
-Thirdly, the user also can choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
+Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
 
 	LAL_PY_INSTALL = C:/programming/python_lib
 
@@ -47,7 +47,7 @@ Fourth, one has to specify Python's minor version in another variable so that th
 
 match your minor version (replace `x` for the minor version of your choice).
 
-Last but not least the user must specify the compiler to be used. One requirement is that the compiler used has to support for `C++17`'s standard. In particular, the compiler must support the flags
+Last but not least, you must specify the compiler to be used. One requirement is that the compiler used has to support for `C++17`'s standard. In particular, the compiler must support the flags
 
 	FLAGS = -std=c++17 -fPIC -fopenmp
 
@@ -83,4 +83,4 @@ It only remains one final step. Navigate to the directory that the user specifie
 
 	liblal.dll liblaldebug.dll
 
-into the directory that the user specified in the variable `LAL_PY_INSTALL` so that python can load the DLLs correctly.
+into the directory that you specified in the variable `LAL_PY_INSTALL` so that python can load the DLLs correctly.
