@@ -31,6 +31,9 @@ ifeq ($(ENVIR), devel)
 		LAL_LIB_DIR = ../lal-release
 	endif
 else
+	# --------------------------------
+	# FOR BOTH LINUX AND WINDOWS USERS
+	
 	# where are LAL's include files
 	LAL_INC_DIR = /usr/local/include
 	# where are LAL's library files
@@ -52,6 +55,9 @@ else
 endif
 
 ifeq ($(OS),Windows_NT)
+	# ----------------------
+	# FOR WINDOWS USERS ONLY
+
 	# Python 3 include dir
 	PYTHON_INC_DIR	= C:/programming/Python37/include
 	# Directory where LAL's interface will be installed to
@@ -59,6 +65,9 @@ ifeq ($(OS),Windows_NT)
 	# Python3 linkage
 	PYTHON_LIBRARY	= -lpython37 -lpython3
 else
+	# --------------------
+	# FOR LINUX USERS ONLY
+	
 	# Python 3 include dir
 	PYTHON_INC_DIR	= /usr/include/python3.6
 	# Directory where LAL's interface will be installed to

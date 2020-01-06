@@ -1,39 +1,16 @@
-# Installation of LAL and its dependencies (Linux)
+# Installation of the binaries (Linux)
 
-In this file is detailed step by step the compilation and installation process of this library and all its dependencies from sources.
+You should have been provided with three folders
+- `docs`: this contains the Doxygen documentation for the C++ code.
+- `include`: this contains the header files `.hpp` of the C++ code.
+- `lib`: this includes a `python3.6` directory which contains several `.so` and `.py` files.
 
-## Installing the dependencies
+The easiest solution for installing the library is to move the `include` and `lib` folders into the `/usr` directory.
 
-### GMP
+Alternatively, place the `include` and `lib` folders in a directory of your choice, say, `/L/A/L/` and run the following commands:
 
-The GMP library can be installed via the typical package managers, or from sources, following the usual procedure. First, download the source files and issue
+	$ export PYTHONPATH=/L/A/L/lib/python3.6:$PYTHONPATH
+	$ export LD_LIBRARY_PATH=/L/A/L/lib/:$LD_LIBRARY_PATH
+	$ sudo ldconfig
 
-	./configure --enable-cxx
-	make -j 4
-	make check -j 4
-	sudo make install
-
-### Compiler
-
-You will need a compiler that supports the ```C++17``` standard.
-
-## Compiling and installing LAL
-
-The following commands provide an easy and quick way of downloading, compiling and installing the library. First, download LAL's sources from its [github page](https://github.com/lluisalemanypuig/linear-arrangement-library.git)
-
-	git clone https://github.com/lluisalemanypuig/linear-arrangement-library.git
-
-### RELEASE mode
-
-	cd linear-arrangement-library ; mkdir lal-release ; cd lal-release
-	cmake ../lal
-	make -j 4
-	sudo make install
-
-### DEBUG mode
-
-	cd linear-arrangement-library ; mkdir lal-debug ; cd lal-debug
-	cmake -DCMAKE_BUILD_TYPE=Debug ../lal
-	make -j 4
-	sudo make install
-
+You are recommended to add the first two in their `.bashrc` file, or equivalent.

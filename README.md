@@ -1,31 +1,39 @@
 # Linear Arrangement Library
 
-This library implements several algorithms to solve problems related to these
-arrangements:
+This library implements several algorithms to solve problems related to linear arrangements. For example, it implements algorithms for
 
-- Calculation of the variance of the number of crossings.
-- Efficient algorithms to compute the number of crossings.
+- calculation of the expectation and variance of the number of crossings,
+- calculation of the expectation and variance of the sum of the length of the edges,
+- efficient algorithms to compute the number of crossings,
+- calculation of optimal arrangements with respect to the sum of the length of the edges,
+- and many others.
 
-This library offers special functions for trees, a data structure commonly used in many fields.
+Some of the algorithms listed above are optimised for trees. The library also provides functions for generation of
 
-The library also provides functions for:
-
-- Random generation of labelled and unlabelled free trees.
-- Deterministic (and exhaustive) generation of labelled and unlabelled free trees.
+- random generation of labelled and unlabelled free trees,
+- exhaustive generation of labelled and unlabelled free trees,
+- random generation of labelled rooted trees.
 
 ## Installation of the library
 
-We wrote different sets of instructions for installing LAL for
+We wrote different sets of instructions for installing LAL's compiled distribution files for
 
 - Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-library-windows.md) file.
 - Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-library-linux.md) file.
 
-## Python interface
+## Compilation and installation of the library from sources
 
-We wrote different sets of instructions for installing LAL's Python interface for
+We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-python-interface-windows.md) file.
-- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-python-interface-linux.md) file.
+- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file.
+- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-linux.md) file.
+
+## Compilation and installation of the Python interface
+
+We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
+
+- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-windows.md) file.
+- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-linux.md) file.
 
 ## Author information
 
@@ -37,10 +45,10 @@ This library is being made thanks to the effort of these people (in alphabetical
 
 ## Citing the library
 
-So far, we can not provide any formal citation for it. Please, contact any of the authors for further information about this matter.
+For now we do not have any formal publication of this library, so we do not have a preferred way of citing it. Please, contact any of the authors for further information about this matter.
 
 ## Documentation
 
 The C++ documentation can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
 
-	doxygen doxyconfig/doxyfile
+	$ doxygen doxyconfig/doxyfile
