@@ -69,12 +69,12 @@ ifeq ($(OS),Windows_NT)
 	# FOR WINDOWS USERS ONLY
 
 	# Python 3 include dir
-	PYTHON_INC_DIR	= C:/programming/Python36/include
+	PYTHON_INC_DIR	= C:/programming/Python38/include
 	# Python3 library directory
-	PYTHON_LIBRARY	= C:/programming/Python36/libs
+	PYTHON_LIBRARY	= C:/programming/Python38/libs
 	# Python3 linkage
 	MAJOR_PY_LINK	= -lpython3
-	MINOR_PY_LINK	= -lpython36
+	MINOR_PY_LINK	= -lpython38
 	# Directory where LAL's interface will be installed to
 	LAL_PY_DEST		= C:/programming/python_lib
 else
@@ -82,14 +82,14 @@ else
 	# FOR LINUX USERS ONLY
 	
 	# Python 3 include dir
-	PYTHON_INC_DIR	= /usr/include/python3.6
+	PYTHON_INC_DIR	= /usr/include/python3.8
 	# Python3 library directory
-	PYTHON_LIBRARY	= /usr/lib/python3.6
+	PYTHON_LIBRARY	= /usr/lib/x86_64-linux-gnu/
 	# Python3 linkage
-	MAJOR_PY_LINK	= -lpython3
-	MINOR_PY_LINK	= -lpython36
+	MAJOR_PY_LINK	=
+	MINOR_PY_LINK	= -lpython38
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= /usr/lib/python3.6
+	LAL_PY_DEST		= /usr/lib/python3.8
 endif
 
 # Architecture of the system
@@ -121,8 +121,23 @@ ifeq ($(BUILD),release)
 endif
 endif
 
-# complete linkage command
-LIBS += -lgmp -fopenmp -L $(PYTHON_LIBRARY) $(MINOR_PY_LINK) -L $(PYTHON_LIBRARY) $(MAJOR_PY_LINK)
+# complete linkage flags
+LIBS += -lgmp -fopenmp
+ifeq ($(PYTHON_LIBRARY), )
+	ifneq ($(MINOR_PY_LINK), )
+		LIBS += -L $(MINOR_PY_LINK)
+	endif
+	ifneq ($(MAJOR_PY_LINK), )
+		LIBS += -L $(MAJOR_PY_LINK)
+	endif
+else
+	ifneq ($(MINOR_PY_LINK), )
+		LIBS += -L $(PYTHON_LIBRARY) $(MINOR_PY_LINK)
+	endif
+	ifneq ($(MAJOR_PY_LINK), )
+		LIBS += -L $(PYTHON_LIBRARY) $(MAJOR_PY_LINK)
+	endif
+endif
 
 # ------------
 # DEPENDENCIES (headers)

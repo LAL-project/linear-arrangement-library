@@ -36,8 +36,6 @@ Secondly, specify the version of Python against which the interface is linked. I
 	# Python3 linkage
 	MAJOR_PY_LINK   = -lpython3
 	MINOR_PY_LINK   = -lpython36
-	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST     = C:/programming/python_lib
 
 Recall to replace the `6` in the examples above with the minor version of Python installed in your system.
 
