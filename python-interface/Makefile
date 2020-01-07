@@ -31,13 +31,23 @@ ifeq ($(ENVIR), devel)
 		LAL_LIB_DIR = ../lal-release
 	endif
 else
-	# --------------------------------
-	# FOR BOTH LINUX AND WINDOWS USERS
+ifeq ($(OS),Windows_NT)
+	# ----------------------
+	# FOR WINDOWS USERS ONLY
+	
+	# where are LAL's include files
+	LAL_INC_DIR = C:/programming/c++/include
+	# where are LAL's library files
+	LAL_LIB_DIR = C:/programming/c++/lib
+else
+	# --------------------
+	# FOR LINUX USERS ONLY
 	
 	# where are LAL's include files
 	LAL_INC_DIR = /usr/local/include
 	# where are LAL's library files
 	LAL_LIB_DIR = /usr/local/lib
+endif
 endif
 
 # OS-dependent variables
@@ -59,21 +69,27 @@ ifeq ($(OS),Windows_NT)
 	# FOR WINDOWS USERS ONLY
 
 	# Python 3 include dir
-	PYTHON_INC_DIR	= C:/programming/Python37/include
-	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST	= C:/programming/python_lib
+	PYTHON_INC_DIR	= C:/programming/Python36/include
+	# Python3 library directory
+	PYTHON_LIBRARY	= C:/programming/Python36/libs
 	# Python3 linkage
-	PYTHON_LIBRARY	= -lpython37 -lpython3
+	MAJOR_PY_LINK	= -lpython3
+	MINOR_PY_LINK	= -lpython36
+	# Directory where LAL's interface will be installed to
+	LAL_PY_DEST		= C:/programming/python_lib
 else
 	# --------------------
 	# FOR LINUX USERS ONLY
 	
 	# Python 3 include dir
 	PYTHON_INC_DIR	= /usr/include/python3.6
+	# Python3 library directory
+	PYTHON_LIBRARY	= /usr/lib/python3.6
+	# Python3 linkage
+	MAJOR_PY_LINK	= -lpython3
+	MINOR_PY_LINK	= -lpython36
 	# Directory where LAL's interface will be installed to
 	LAL_PY_DEST		= /usr/lib/python3.6
-	# Python3 linkage (not needed in Linux?)
-	PYTHON_LIBRARY	=
 endif
 
 # Architecture of the system
@@ -104,6 +120,9 @@ ifeq ($(BUILD),release)
 	include Makefile.variables.release
 endif
 endif
+
+# complete linkage command
+LIBS += -lgmp -fopenmp -L $(PYTHON_LIBRARY) $(MINOR_PY_LINK) -L $(PYTHON_LIBRARY) $(MAJOR_PY_LINK)
 
 # ------------
 # DEPENDENCIES (headers)

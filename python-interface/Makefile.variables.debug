@@ -2,7 +2,7 @@
 # COMPILATION FLAGS
 
 FLAGS		+= -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
-LIBS		+= -L $(LAL_LIB_DIR) -llaldebug -lgmp -fopenmp $(PYTHON_LIBRARY)
+LIBS		+= -L $(LAL_LIB_DIR) -llaldebug
 SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
 
 ########################################################################
