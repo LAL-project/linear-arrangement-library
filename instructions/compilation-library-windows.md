@@ -49,8 +49,8 @@ Here we first detail step by step the configuration of the Windows system in ord
 
 - 0.5. Moreover, add the following environment variables, and set their contents to directory to their right
 
-		LIBRARY_PATH			C:/programming/c++/lib
-		CPLUS_INCLUDE_PATH		C:/programming/c++/include
+		CPLUS_INCLUDE_PATH      C:/programming/c++/include
+		LIBRARY_PATH            C:/programming/c++/lib
 
 The next steps require using the Git-Bash command-line interface. In order to launch it, double click on the file
 
@@ -95,7 +95,7 @@ You will need a compiler that supports the `C++17` standard. We use GNU's `g++` 
 
 ## 2. Compiling and installing LAL
 
-The library can be installed in both `RELEASE` and `DEBUG` mode. First of all
+The library can be installed in both `Release` and `Debug` mode. First of all
 
 - Download LAL's source files from its [github page](https://github.com/lluisalemanypuig/linear-arrangement-library.git) either using a web browser or the command-line terminal
 
@@ -108,13 +108,13 @@ The library can be installed in both `RELEASE` and `DEBUG` mode. First of all
 
 Now it only remains to compile and install the library
 
-### RELEASE mode
+### Release build
 
 	$ mkdir lal-release ; cd lal-release
 	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ ../lal
 	$ make -j4 && make install
 
-### DEBUG mode
+### Debug build
 
 	$ mkdir lal-debug ; cd lal-debug
 	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal

@@ -1,16 +1,16 @@
 # Installation of the binaries (Linux)
 
 You should have been provided with three folders
-- `docs`: this contains the Doxygen documentation for the C++ code.
-- `include`: this contains the header files `.hpp` of the C++ code.
-- `lib`: this includes a `python3.6` directory which contains several `.so` and `.py` files.
+- `docs`: contains the Doxygen documentation for the C++ code.
+- `include`: contains the header files `.hpp` of the C++ code.
+- `lib`: contains LAL's `.so` files.
+- `python3.x`: contains the `.py` and `.so` files for Python version `3.x`.
 
-The easiest solution for installing the library is to move the `include` and `lib` folders into the `/usr` directory.
+The easiest solution for installing the library is to move the `include` and `lib` folders into the `/usr` directory. Folder `python3.x` should be moved into `/usr/lib`.
 
-Alternatively, place the `include` and `lib` folders in a directory of your choice, say, `/L/A/L/` and run the following commands:
+Alternatively, place the `include` and `lib` folders in a directory of your choice, say, `/path/to/LAL` and run the following commands:
 
-	$ export PYTHONPATH=/L/A/L/lib/python3.6:$PYTHONPATH
-	$ export LD_LIBRARY_PATH=/L/A/L/lib/:$LD_LIBRARY_PATH
-	$ sudo ldconfig
+	$ export PYTHONPATH=/path/to/LAL/python3.x:$PYTHONPATH
+	$ export LD_LIBRARY_PATH=/path/to/LAL/lib:$LD_LIBRARY_PATH
 
-You are recommended to add the first two in their `.bashrc` file, or equivalent.
+Remember to replace the `x` with the appropriate minor version of Python. You are recommended to add them in your `.bashrc` file, or equivalent.

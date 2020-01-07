@@ -35,6 +35,10 @@ We wrote different sets of instructions for compiling and installing LAL's Pytho
 - Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-windows.md) file.
 - Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-linux.md) file.
 
+## Compile a program that uses LAL
+
+See [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.
+
 ## Author information
 
 This library is being made thanks to the effort of these people (in alphabetical order):

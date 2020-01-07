@@ -6,7 +6,9 @@ In this file is detailed step by step the compilation and installation process o
 
 ### GMP
 
-The GMP library can be installed via the typical package managers, or from sources, following the usual procedure. First, download the source files and issue
+The [GMP](https://gmplib.org/) library can be installed via the typical package managers following the usual procedure.
+
+Alternatively, it can be installed from sources. First, download the source files and issue
 
 	$ ./configure --enable-cxx
 	$ make -j4
@@ -27,17 +29,15 @@ The following commands are used to compile the library in both `debug` and `rele
 
 	-DCMAKE_INSTALL_PREFIX=directory
 
-### RELEASE build
+### Release build
 
 	$ cd linear-arrangement-library ; mkdir lal-release ; cd lal-release
 	$ cmake ../lal
-	$ make -j4
-	$ make install
+	$ make -j4 && make install
 
-### DEBUG build
+### Debug build
 
 	$ cd linear-arrangement-library ; mkdir lal-debug ; cd lal-debug
 	$ cmake -DCMAKE_BUILD_TYPE=Debug ../lal
-	$ make -j4
-	$ make install
+	$ make -j4 && make install
 

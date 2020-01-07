@@ -4,26 +4,21 @@ This library has been interfaced to [Python 3](https://www.python.org/) using th
 
 ## Installing Python 3
 
-Go to Python's [webpage](https://www.python.org/) and download one of the `3.x` builds for Windows. We have tested the interface with Python 3.6, but any `3.x` should work. Python builds for Windows can be found [here](https://www.python.org/downloads/windows/). When installing Python, make sure to check the box that says `Add Python 3.x to PATH`. If you did not check it, you can add them after the installation manually. Add to the `PATH` environment varialbe the paths
-
-	(...)/Python3x/Scripts/
-	(...)/Python3x/
-
-where `x` is the minor version of Python and (...) represents the path to the installation directory of Python. We recommend using
-
-	C:/programming/
+Go to Python's [webpage](https://www.python.org/) and download one of the `3.x` builds for Windows. We have tested the interface with Python 3.6, but any `3.x` should work. Python builds for Windows can be found [here](https://www.python.org/downloads/windows/). When installing Python, make sure to check the box that says `Add Python 3.x to PATH`.
 
 ## Installing SWIG
 
-Download and install SWIG from its webpage. Authors of SWIG already provide downloadable files with prebuilt executables for windows. Download these and install them in your system. It is key to include the path to the installation folder in the `PATH` environment variable. For example, one can install SWIG in
+Download and install `SWIG` from its webpage. Authors of `SWIG` already provide downloadable files with prebuilt executables for windows. Download these and install them in your system. It is key to include the path to the installation folder in the `PATH` environment variable. For example, you can install SWIG in
 
 	C:/programming/swig
 
-and then add this path to the `PATH` environment variable.
+and then add the path you used to the `PATH` environment variable.
 
 ## Configuring the _Makefile_
 
-In order to compile the interface, you need to configure one of the build files (change a few variables' contents). For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor version the interface has been tested on is `6` (i.e., we have been using Python 3.6), but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, you have to modify some of the variables in the file [Makefile](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/python-interface/Makefile) accordingly.
+In order to compile the interface, you need to configure one of the build files (change a few variables' contents). For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor version the interface has been tested on is `6` (i.e., we have been using Python 3.6), but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, you have to modify some of the variables in the _Makefile_ file within directory
+	
+	linear-arrangement-library/python-interface/Makefile
 
 First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example, if you installed LAL from sources and followed the instructions in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file, you will need
 
@@ -32,18 +27,24 @@ First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example,
 	# where are LAL's library files
 	LAL_LIB_DIR = C:/programming/c++/bin
 
-Secondly, specify the directory where Python's header files are located at, and where to find the binaries. To do this, modify the variable `PYTHON_INC_DIR`. For example, 
+Secondly, specify the version of Python against which the interface is linked. Indicate where Python's header files are located at, and where to find the binaries. To do this, modify the variables `PYTHON_INC_DIR`, `PYTHON_LIBRARY`, `MAJOR_PY_LINK` and `MINOR_PY_LINK`. For example, 
 
-	PYTHON_INC_DIR = C:/programming/Python36/include
+	# Python 3 include dir
+	PYTHON_INC_DIR  = C:/programming/Python36/include
+	# Python3 library directory
+	PYTHON_LIBRARY  = C:/programming/Python36/libs
+	# Python3 linkage
+	MAJOR_PY_LINK   = -lpython3
+	MINOR_PY_LINK   = -lpython36
+	# Directory where LAL's interface will be installed to
+	LAL_PY_DEST     = C:/programming/python_lib
+
+Recall to replace the `6` in the examples above with the minor version of Python installed in your system.
 
 Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
 
+	# Directory where LAL's interface will be installed to
 	LAL_PY_INSTALL = C:/programming/python_lib
-
-Fourth, one has to specify Python's minor version in another variable so that the linkage can be done properly. For this modify the variable `PYTHON_LIBRARY` so that the contents of
-
-	# Python3 linkage
-	PYTHON_LIBRARY = -lpython3x -lpython3
 
 match your minor version (replace `x` for the minor version of your choice).
 
@@ -79,8 +80,8 @@ We offer two different builds for the python interface `debug` and `release`. Ea
 
 ## Using the Python interface
 
-It only remains one final step. Navigate to the directory that the user specified in the variable `LAL_LIB_DIR`. Now copy the files
+It only remains one final step. This step depends on the minor version of Python you have. You need to help Python find LAL's `.dll` files
 
 	liblal.dll liblaldebug.dll
 
-into the directory that you specified in the variable `LAL_PY_INSTALL` so that python can load the DLLs correctly.
+Locate the destination directory of these files you chose when installing LAL from sources. In some minor versions of Python it suffices to add to the `PATH` environment variable of your system the path to these files. Furthermore, you need add to the `PYTHONPATH` environment variable the directory where the interface has been installed. This is the value that you gave to the directory that you gave to the variable `LAL_PY_INSTALL` so that python can find the `.py` files.
