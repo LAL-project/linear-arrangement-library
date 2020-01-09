@@ -119,55 +119,6 @@ void rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
 }
 
 utree rand_ulab_free_trees::make_rand_tree() {
-
-	uint32_t N = m_n;
-
-	vector<node> pool_nodes(N);
-	iota(pool_nodes.begin(), pool_nodes.end(), 0);
-	size_t max_idx = pool_nodes.size() - 1;
-
-	uniform_int_distribution<size_t> m_unif_int;
-	m_unif_int = uniform_int_distribution<size_t>(0, max_idx);
-
-	cout << "Available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
-
-	size_t u_idx = m_unif_int(m_gen);
-	node u = pool_nodes[u_idx];
-	swap(pool_nodes[u_idx], pool_nodes[max_idx]);
-	--max_idx;
-
-	cout << "    choose node u= " << u << " (idx: " << u_idx << ")" << endl;
-	cout << "    available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
-
-	vector<edge> edges(N - 1);
-	auto e_it = edges.begin();
-	while (e_it != edges.end()) {
-		m_unif_int = uniform_int_distribution<size_t>(0, max_idx);
-		const size_t v_idx = m_unif_int(m_gen);
-		const node v = pool_nodes[v_idx];
-		swap(pool_nodes[v_idx], pool_nodes[max_idx]);
-		--max_idx;
-
-		cout << "    choose node v= " << v << " (idx: " << v_idx << ")"  << endl;
-		cout << "    available nodes: " << pool_nodes << " (max: " << max_idx << ")" << endl;
-		cout << "    edge: {" << u << ", " << v << "}" << endl;
-
-		*e_it = edge(u,v);
-
-		u = v;
-		++e_it;
-	}
-
-	utree T(m_n);
-	T.add_edges(edges);
-
-	//cout << T << endl;
-	char k;
-	cin >> k;
-
-	return T;
-
-	/*
 	//__kout << "make_rand_tree::" << endl;
 
 	if (m_n <= 1) { return utree(m_n); }
@@ -231,7 +182,6 @@ utree rand_ulab_free_trees::make_rand_tree() {
 	const utree T = make_tree(m_n, m_tree);
 	assert(T.is_tree());
 	return T;
-	*/
 }
 
 void rand_ulab_free_trees::clear() {
