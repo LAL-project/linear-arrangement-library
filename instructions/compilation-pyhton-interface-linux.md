@@ -21,7 +21,7 @@ Secondly, specify the version of Python against which the interface is linked. I
 	PYTHON_LIBRARY  = /usr/lib/x86_64-linux-gnu/
 	# Python3 linkage
 	MAJOR_PY_LINK   = # not needed
-	MINOR_PY_LINK   = -lpython38
+	MINOR_PY_LINK   = -lpython3.8
 
 Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
 

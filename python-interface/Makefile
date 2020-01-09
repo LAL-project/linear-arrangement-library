@@ -87,7 +87,7 @@ else
 	PYTHON_LIBRARY	= /usr/lib/x86_64-linux-gnu/
 	# Python3 linkage
 	MAJOR_PY_LINK	=
-	MINOR_PY_LINK	= -lpython38
+	MINOR_PY_LINK	= -lpython3.8
 	# Directory where LAL's interface will be installed to
 	LAL_PY_DEST		= /usr/lib/python3.8
 endif
