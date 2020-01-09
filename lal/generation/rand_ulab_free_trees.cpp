@@ -119,8 +119,6 @@ void rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
 }
 
 utree rand_ulab_free_trees::make_rand_tree() {
-	//__kout << "make_rand_tree::" << endl;
-
 	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
 		utree t(2);
@@ -135,37 +133,23 @@ utree rand_ulab_free_trees::make_rand_tree() {
 
 	std::fill(m_tree.begin(), m_tree.end(), 0);
 
-	//__kout << "compute probability to make a bicentroidal tree" << endl;
-
 	// calculate the probability of generating a bicentroidal tree
 	rational bicent_prob = 0;
 	if (m_n%2 == 0) {
 		// if n is even...
 		const integer k = get_rn(m_n/2) + 1;
-		//__kout << "m_n/2= " << m_n/2 << endl;
-		//__kout << "m_rn[" << m_n/2 << "]+1= " << k << endl;
-		//__kout << "m_rn[" << m_n << "]+1= " << m_rn[m_n] << endl;
-
 		const integer k_choose_2 = (k*(k - 1))/2;
 		bicent_prob = rational(k_choose_2, get_fn(m_n));
-		//__kout << bicent_prob << endl;
-
-		//bicent_prob = 0.5;
 	}
 	assert(bicent_prob.to_double() <= 1.0);
 
-	//__kout << "probability: " << bicent_prob << " ~ " << bicent_prob.to_double() << endl;
-
 	// with probability 'bicent_prob' the tree will be bicentroidal
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
-		//__kout << "    Make a bicentroidal tree!" << endl;
 		bicenter(m_n);
 		const utree T = make_tree(m_n, m_tree);
 		assert(T.is_tree());
 		return T;
 	}
-
-	//__kout << "Make a random forest and then join the trees into a single root" << endl;
 
 	// -----------------------------------
 	// make a forest on (n - 1) vertices
@@ -193,7 +177,6 @@ void rand_ulab_free_trees::clear() {
 
 /* PRIVATE */
 
-
 /* PLEASE, NOTE!
  *
  *	-- T is the random free tree that this method's calle (make_rand_tree)
@@ -208,8 +191,6 @@ void rand_ulab_free_trees::clear() {
 uint32_t rand_ulab_free_trees::forest
 (uint32_t m, uint32_t q, uint32_t nt, const string& tab)
 {
-	//__kout << tab << "Make a forest F of " << m << " vertices..." << endl;
-
 	if (m == 0) {
 		// Forest of 0 vertices
 		return nt;
@@ -229,37 +210,21 @@ uint32_t rand_ulab_free_trees::forest
 
 	auto [j, d] = choose_jd_from_alpha(m, q);
 
-	//__kout << tab << "Choose forest F' of " << m-j*d << " vertices..." << endl;
-	//__kout << tab << "    m= " << m << endl;
-	//__kout << tab << "    j= " << j << endl;
-	//__kout << tab << "    d= " << d << endl;
-	//__kout << tab << "Contents before: " << m_tree << endl;
-
 	// Make a forest F' of trees of m - j*d vertices in
 	// total, so that each tree has at most q vertices
 	nt = forest(m - j*d,q, nt, tab + "    ");
-
-	//__kout << tab << "Contents after:  " << m_tree << endl;
 
 	// The forest is now in m_tree, and the roots in m_roots.
 	// The root of the last tree generated is stored in nr in m_roots.
 	// The root of the next tree generated has to be stored in nr in m_roots
 	// The next tree has to be stored at nt in m_tree
 
-	//__kout << tab << "Making rooted T' of " << d << " vertices..." << endl;
-	//__kout << tab << "Contents before: " << m_tree << endl;
-
 	// Generate a random rooted tree T' in m_tree starting at position nt.
 	// Join this tree to T's root (vertex 0)
 	uint32_t root_Tp;
 	std::tie(root_Tp, nt) = ranrut(d, 0, nt, tab);
 
-	//__kout << tab << "Contents after:  " << m_tree << endl;
-	//__kout << tab << "Making " << j-1 << " copies..." << endl;
-
 	for (uint32_t c = 1; c < j; ++c) {
-
-		//__kout << tab << "    Contents before " << c << "-th copy: " <<  m_tree << endl;
 
 		// Each of the copies of T' has to be adjoined to F', i.e.,
 		// do not connect them to the forest's root. Instead,
@@ -275,7 +240,6 @@ uint32_t rand_ulab_free_trees::forest
 		}
 		nt += d;
 
-		//__kout << tab << "    Contents after " << c << "-th copy:  " << m_tree << endl;
 	}
 
 	return nt;
@@ -289,23 +253,12 @@ void rand_ulab_free_trees::bicenter(uint32_t n) {
 	}
 	const uint32_t h = n/2;
 
-	//__kout << "Make first tree..." << endl;
-
 	// for both steps, make one tree ...
 	auto [lr, nt] = ranrut(h, 0, 0);
 
-	//__kout << "Contents: " << m_tree << endl;
-
 	const rational prob(1, get_rn(h) + 1);
-	//__kout << "probability of making a copy= " << prob << " ~ "
-	//	 << prob.to_double() << endl;
-	//__kout << "    h= " << h << endl;
-	//__kout << "    m_rn[" << h << "]= " << m_rn[h] << endl;
-
 	if (m_unif(m_gen) <= prob.to_double()) {
 		// step B1: ... and make a SINGLE copy
-
-		//__kout << "Make a copy..." << endl;
 
 		m_tree[nt] = lr;
 		for (uint32_t v = nt + 1; v < nt + h; ++v) {
@@ -313,16 +266,10 @@ void rand_ulab_free_trees::bicenter(uint32_t n) {
 		}
 		lr = nt;
 		nt += h;
-
-		//__kout << "Contents: " << m_tree << endl;
 	}
 	else {
-
-		//__kout << "Make another tree..." << endl;
 		// step B2: generate another tree
 		tie(lr,nt) = ranrut(h, lr, nt);
-
-		//__kout << "Contents: " << m_tree << endl;
 	}
 
 	// for the sake of debugging
@@ -405,13 +352,9 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 		return m_fn[n];
 	}
 
-	//__kout << "* tn for n= " << n << endl;
-
 	integer tk(0);
 	uint32_t k = static_cast<uint32_t>(m_fn.size());
 	while (k <= n) {
-
-		//__kout << "*     computing for k= " << k << endl;
 
 		// if k=0 then tk=1
 		// else tk=0
