@@ -126,10 +126,7 @@ inline void compute_data_forest
 		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
 					 (ks - 1)*(xi[t] - kt - ks + 1);
 
-		const bigint eps1 = xi[s] - kt;
-		const bigint eps2 = xi[t] - ks;
-
-		Lambda_1 += (ks - 1)*eps2 + (kt - 1)*eps1;
+		Lambda_1 += (ks - 1)*(xi[t] - ks) + (kt - 1)*(xi[s] - kt);
 		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
 
 		Phi_1 -= ks*kt*(ks + kt);

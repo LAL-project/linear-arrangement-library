@@ -120,14 +120,10 @@ inline void compute_data_gen_graphs
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	const bigint n_bytes = (n + n)*sizeof(bigint);
-	bigint *all_memory = static_cast<bigint *>(malloc(n_bytes));
-	memset(all_memory, 0, n_bytes);
+	bigint *all_memory = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
 	bigint *xi = &all_memory[0];
-	// number of 4-paths through each vertex
-	bigint *npaths = &all_memory[n];
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -142,6 +138,8 @@ inline void compute_data_gen_graphs
 		const bigint ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
+
+		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
 			const bigint kt = g.degree(t);
 			psi += ks*kt;
@@ -157,11 +155,6 @@ inline void compute_data_gen_graphs
 	Kg = (m + 1)*nk2 - nk3 - 2*psi;
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
-
-	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.degree(s);
-		npaths[s] = (xi[s] + 2 - 2*ks)*ks;
-	}
 
 	bigint mu1 = 0;
 	bigint mu2 = 0;
@@ -213,39 +206,34 @@ inline void compute_data_gen_graphs
 			n_cycles_4 += common_us - 1;
 		}
 
+		bigint deg_sum_st = 0;
 		bigint common_st = 0;
-		iterate(Nt, Ns,
+		iterate(Ns, Nt,
 			++common_st;
-			// NOTE: '__j' is a local variable within the 'iterate'
-			// definition. It is the iterator of the Ns list.
-			paw += g.degree(Ns[__j]) - 2;
-			pair_C3_L2 += m - ks - kt - g.degree(Ns[__j]) + 3;
+			paw += g.degree(Ns[__i]) - 2;
+			pair_C3_L2 += m - ks - kt - g.degree(Ns[__i]) + 3;
+			deg_sum_st += g.degree(Ns[__i]);
 		)
 
 		Phi_1 -= ks*kt*(ks + kt);
 		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
-		Lambda_1 += ks*(xi[t] - ks - kt + 1) + (kt - 1)*(xi[s] - kt);
-		Lambda_1 += kt*(xi[s] - ks - kt + 1) + (ks - 1)*(xi[t] - ks);
-		Lambda_1 -= 2*common_st*(ks + kt);
-
 		mu1 += xi[t] + xi[s];
 		mu2 += common_st;
 
-		npaths[s] += xi[t] - 2*(kt + common_st);
-		npaths[t] += xi[s] - 2*(ks + common_st);
+		Lambda_1 += (kt - 1)*(xi[s] - kt) + (ks - 1)*(xi[t] - ks);
+		Lambda_1 -= 2*deg_sum_st;
+
+		Lambda_2 += (ks + kt)*( (ks - 1)*(kt - 1) - common_st );
 	}
 
-	for (node s = 0; s < n; ++s) {
-		Lambda_2 += g.degree(s)*npaths[s];
-	}
+	Lambda_2 += Lambda_1;
 
 	Phi_2 /= 2;
 	n_paths_4 = m - nk2 + mu1/2 - mu2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
-	Lambda_1 /= 2;
 
 	// deallocate memory
 	free(all_memory);
@@ -272,14 +260,10 @@ inline void compute_data_gen_graphs_reuse
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	const bigint n_bytes = (n + n)*sizeof(bigint);
-	bigint *all_memory = static_cast<bigint *>(malloc(n_bytes));
-	memset(all_memory, 0, n_bytes);
+	bigint *all_memory = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
 	bigint *xi = &all_memory[0];
-	// number of 4-paths through each vertex
-	bigint *npaths = &all_memory[n];
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -294,6 +278,8 @@ inline void compute_data_gen_graphs_reuse
 		const bigint ks = g.degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
+
+		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
 			const bigint kt = g.degree(t);
 			psi += ks*kt;
@@ -312,11 +298,6 @@ inline void compute_data_gen_graphs_reuse
 	Kg = (m + 1)*nk2 - nk3 - 2*psi;
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
-
-	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.degree(s);
-		npaths[s] = (xi[s] + 2 - 2*ks)*ks;
-	}
 
 	bigint mu1 = 0;
 	bigint mu2 = 0;
@@ -427,27 +408,23 @@ inline void compute_data_gen_graphs_reuse
 		Phi_1 -= ks*kt*(ks + kt);
 		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
-		Lambda_1 += ks*(xi[t] - ks - kt + 1) + (kt - 1)*(xi[s] - kt);
-		Lambda_1 += kt*(xi[s] - ks - kt + 1) + (ks - 1)*(xi[t] - ks);
-		Lambda_1 -= 2*common_st*(ks + kt);
-
 		mu1 += xi[t] + xi[s];
 		mu2 += common_st;
 
-		npaths[s] += xi[t] - 2*(kt + common_st);
-		npaths[t] += xi[s] - 2*(ks + common_st);
+		Lambda_1 += (kt - 1)*(xi[s] - kt) + (ks - 1)*(xi[t] - ks);
+		Lambda_1 -= 2*deg_sum_st;
+
+		Lambda_2 += (ks + kt)*( (ks - 1)*(kt - 1) - common_st );
 	}
 
-	for (node s = 0; s < n; ++s) {
-		Lambda_2 += g.degree(s)*npaths[s];
-	}
+	// finish calculating Lambda_2
+	Lambda_2 += Lambda_1;
 
 	Phi_2 /= 2;
 	n_paths_4 = m - nk2 + mu1/2 - mu2;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
-	Lambda_1 /= 2;
 
 	// deallocate memory
 	free(all_memory);
