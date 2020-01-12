@@ -89,22 +89,19 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_tree = vector<uint32_t>(m_n);
 }
 
-vector<uint32_t> rand_ulab_rooted_trees::make_rand_tree() {
+urtree rand_ulab_rooted_trees::make_rand_tree() {
 	// call with an invalid index for the 'root of the last tree added'
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	return vector<uint32_t>(m_tree);
-	/*
 	urtree rT(m_n);
 	rT.set_root(0);
 	vector<edge> edges(m_n - 1);
 	for (node u = 1; u < m_n; ++u) {
-		edges[u - 1] = edge(u, m_TREE[u]);
+		edges[u - 1] = edge(u, m_tree[u]);
 	}
 	rT.add_edges(edges);
 	return rT;
-	*/
 }
 
 void rand_ulab_rooted_trees::clear() {

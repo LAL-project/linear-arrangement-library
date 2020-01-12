@@ -53,39 +53,37 @@ namespace generate {
 /**
  * @brief Exhaustive labelled free tree generator.
  *
- * Generates all the labelled trees of a certain size.
+ * Generates all the labelled free trees of a given number of vertices.
  *
- * In order to use this class, the user must first provide
- * the size \f$n\f$ in the constructor or in the @ref init
- * method of the trees to be generated (number of vertices).
+ * In order to use this class, you must first provide the size \f$n\f$ of the
+ * tree (number of vertices) in the constructor or in the @ref init method of
+ * the trees to be generated.
  *
- * Then, call method @ref next to modify the internal state
- * that will allow the user to construct the tree by calling
- * method @ref get_tree.
+ * Then, call method @ref next to modify the internal state that will allow the
+ * user to construct the tree by calling method @ref get_tree.
  *
- * All the free labelled trees are generated when
- * method @ref has_next returns false. At this point, method
- * @ref get_tree will always construct the same tree.
+ * All the free labelled trees have been generated when method @ref has_next
+ * returns false. At this point, method @ref get_tree will always construct a
+ * star tree of \f$n\f$ vertices.
  *
- * In order to restart the generation of these trees, call
- * method @ref init again. It is allowed, at this point, and
- * at any time, to call @ref init with the same size of the
- * trees, or with a different one.
+ * In order to restart the generation of these trees, call method @ref init
+ * again. It is allowed, at any time, to call @ref init with the same size of
+ * the trees, or with a different one.
  *
  * The algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a)
  * and decodes them using the algorithm in \cite Alonso1995a.
  *
  * The correct usage of this class is
  * @code
- *		lab_free_trees flt(n);
- *		while (flt.has_next()) {
- *			flt.next();
- *			ugraph e = it.get_tree();
+ *		all_lab_free_trees TreeGen(n);
+ *		while (TreeGen.has_next()) {
+ *			TreeGen.next();
+ *			utree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
  */
-class lab_free_trees {
+class all_lab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -93,11 +91,11 @@ class lab_free_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t).
 		 */
-		lab_free_trees();
+		all_lab_free_trees();
 		/// Constructor with number of vertices.
-		lab_free_trees(uint32_t n);
+		all_lab_free_trees(uint32_t n);
 		/// Default destructor.
-		~lab_free_trees();
+		~all_lab_free_trees();
 
 		/**
 		 * @brief Initialises the generator.

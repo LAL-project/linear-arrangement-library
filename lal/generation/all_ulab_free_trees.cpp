@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/generation/ulab_free_trees.hpp>
+#include <lal/generation/all_ulab_free_trees.hpp>
 
 // C includes
 #include <assert.h>
@@ -57,13 +57,13 @@ using namespace graphs;
 
 namespace generate {
 
-ulab_free_trees::ulab_free_trees() { }
-ulab_free_trees::ulab_free_trees(uint32_t _n) {
+all_ulab_free_trees::all_ulab_free_trees() { }
+all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) {
 	init(_n);
 }
-ulab_free_trees::~ulab_free_trees() { }
+all_ulab_free_trees::~all_ulab_free_trees() { }
 
-void ulab_free_trees::init(uint32_t _n) {
+void all_ulab_free_trees::init(uint32_t _n) {
 	m_is_last = false;
 	m_first_it = true;
 	m_n = _n;
@@ -106,11 +106,11 @@ void ulab_free_trees::init(uint32_t _n) {
 	}
 }
 
-bool ulab_free_trees::has_next() const {
+bool all_ulab_free_trees::has_next() const {
 	return not m_is_last;
 }
 
-void ulab_free_trees::next() {
+void all_ulab_free_trees::next() {
 	if (m_n <= 2) {
 		m_is_last = true;
 		return;
@@ -249,7 +249,7 @@ void ulab_free_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-utree ulab_free_trees::get_tree() const {
+utree all_ulab_free_trees::get_tree() const {
 	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
 		utree t(2);

@@ -63,6 +63,15 @@ namespace generate {
  *
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.
+ *
+ * The correct usage of this class is
+ * @code
+ *		rand_ulab_rooted_trees TreeGen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			urtree T = TreeGen.make_rand_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_ulab_rooted_trees {
 	public:
@@ -94,9 +103,9 @@ class rand_ulab_rooted_trees {
 		/**
 		 * @brief Generates uniformly at random a free unlabelled tree.
 		 * @pre The generator must have been initialised.
-		 * @return Returns an unlabelled tree.
+		 * @return Returns an unlabelled rooted tree.
 		 */
-		std::vector<uint32_t> make_rand_tree();
+		graphs::urtree make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

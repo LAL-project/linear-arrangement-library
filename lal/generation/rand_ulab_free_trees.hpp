@@ -69,6 +69,15 @@ namespace generate {
  *
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.
+ *
+ * The correct usage of this class is
+ * @code
+ *		rand_ulab_free_trees TreeGen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			utree T = TreeGen.make_rand_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 	public:

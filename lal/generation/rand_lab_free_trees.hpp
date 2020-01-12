@@ -59,6 +59,15 @@ namespace generate {
  * Every call to @ref make_rand_tree generates a uniformly random Prüfer
  * sequence (see \cite Pruefer1918a), which is then used to build its
  * corresponding free labelled tree using algorithm in \cite Alonso1995a.
+ *
+ * The correct usage of this class is
+ * @code
+ *		rand_lab_free_trees TreeGen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			utree T = TreeGen.make_rand_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_lab_free_trees {
 	public:

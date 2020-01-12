@@ -30,12 +30,12 @@ INCLUDEPATH += ..
 HEADERS += \
     definitions.hpp \
     generation.hpp \
-    generation/lab_free_trees.hpp \
-    generation/rand_lab_dir_rooted_trees.hpp \
+    generation/all_lab_free_trees.hpp \
+    generation/all_ulab_free_trees.hpp \
     generation/rand_lab_free_trees.hpp \
+    generation/rand_lab_rooted_trees.hpp \
     generation/rand_ulab_free_trees.hpp \
     generation/rand_ulab_rooted_trees.hpp \
-    generation/ulab_free_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
     graphs/drtree.hpp \
@@ -91,12 +91,12 @@ HEADERS += \
     utils/sort_integers.hpp
 
 SOURCES += \
-    generation/lab_free_trees.cpp \
-    generation/rand_lab_dir_rooted_trees.cpp \
+    generation/all_lab_free_trees.cpp \
+    generation/all_ulab_free_trees.cpp \
     generation/rand_lab_free_trees.cpp \
+    generation/rand_lab_rooted_trees.cpp \
     generation/rand_ulab_free_trees.cpp \
     generation/rand_ulab_rooted_trees.cpp \
-    generation/ulab_free_trees.cpp \
     graphs/dgraph.cpp \
     graphs/drtree.cpp \
     graphs/dtree.cpp \
