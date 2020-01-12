@@ -133,12 +133,8 @@ inline void compute_data_forest
 		Phi_2 += (ks + kt)*(nk2 - xi[s] - xi[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
 
-	// finish calculating Lambda_2
 	Lambda_2 += Lambda_1;
-
-	// we counted the amount of 5-paths twice
 	n_paths_5 /= 2;
-	// similarly, some things were counted twice
 	Phi_2 /= 2;
 
 	free(xi);

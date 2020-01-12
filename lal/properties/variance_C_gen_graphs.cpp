@@ -63,6 +63,7 @@ typedef uint64_t bigint;
  * The first variable, __j, iterates over Nj.
  */
 #define iterate(Ni, Nj, JOB)						\
+{													\
 	size_t __i = 0;									\
 	size_t __j = 0;									\
 	while (__i < Ni.size() and __j < Nj.size())	{	\
@@ -76,7 +77,8 @@ typedef uint64_t bigint;
 			__i += (__Ni_i < __Nj_j);				\
 			__j += (__Ni_i > __Nj_j);				\
 		}											\
-	}
+	}												\
+}
 
 struct useful_info_pairs {
 	// number of common neighbours
@@ -106,7 +108,7 @@ namespace properties {
 // Variance of C (using formula)
 // GENERAL GRAPHS
 
-inline void compute_data_gen_graphs
+inline void compute_data_gen_graphs_no_reuse
 (
 	const ugraph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
@@ -120,10 +122,7 @@ inline void compute_data_gen_graphs
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	bigint *all_memory = static_cast<bigint *>(malloc(n*sizeof(bigint)));
-
-	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	bigint *xi = &all_memory[0];
+	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -132,7 +131,7 @@ inline void compute_data_gen_graphs
 	bigint psi = 0;
 
 	// ------------------------------------------------
-	// precompute useful data
+	// precompute data
 
 	for (node s = 0; s < n; ++s) {
 		const bigint ks = g.degree(s);
@@ -179,12 +178,12 @@ inline void compute_data_gen_graphs
 			const neighbourhood& Nu = g.get_neighbours(u);
 			const bigint ku = g.degree(u);
 
-			bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
 			bigint common_ut = 0;
 			iterate(Nu, Nt,
 				++common_ut;
 			)
 
+			const bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
 			n_paths_5 += (kt - 1 - ut_neighs)*(ku - 1 - ut_neighs) + 1;
 			n_paths_5 -= common_ut;
 		}
@@ -195,14 +194,15 @@ inline void compute_data_gen_graphs
 			const neighbourhood& Nu = g.get_neighbours(u);
 			const bigint ku = g.degree(u);
 
-			bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
 			bigint common_us = 0;
 			iterate(Nu, Ns,
 				++common_us;
 			)
 
+			const bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
 			n_paths_5 += (ks - 1 - us_neighs)*(ku - 1 - us_neighs) + 1;
 			n_paths_5 -= common_us;
+
 			n_cycles_4 += common_us - 1;
 		}
 
@@ -210,10 +210,11 @@ inline void compute_data_gen_graphs
 		bigint common_st = 0;
 		iterate(Ns, Nt,
 			++common_st;
-			paw += g.degree(Ns[__i]) - 2;
-			pair_C3_L2 += m - ks - kt - g.degree(Ns[__i]) + 3;
 			deg_sum_st += g.degree(Ns[__i]);
 		)
+
+		paw += deg_sum_st - 2*common_st;
+		pair_C3_L2 += (m - ks - kt + 3)*common_st - deg_sum_st;
 
 		Phi_1 -= ks*kt*(ks + kt);
 		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
@@ -236,7 +237,7 @@ inline void compute_data_gen_graphs
 	pair_C3_L2 /= 3;
 
 	// deallocate memory
-	free(all_memory);
+	free(xi);
 }
 
 /* Warning:
@@ -259,11 +260,8 @@ inline void compute_data_gen_graphs_reuse
 	// ------------------------------------------------
 	// local variables (some store precomputed data)
 
-	// allocate memory for all arrays
-	bigint *all_memory = static_cast<bigint *>(malloc(n*sizeof(bigint)));
-
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	bigint *xi = &all_memory[0];
+	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -272,7 +270,7 @@ inline void compute_data_gen_graphs_reuse
 	bigint psi = 0;
 
 	// ------------------------------------------------
-	// precompute useful data
+	// precompute data
 
 	for (node s = 0; s < n; ++s) {
 		const bigint ks = g.degree(s);
@@ -337,8 +335,8 @@ inline void compute_data_gen_graphs_reuse
 					));
 			}
 
-			bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
-			bigint ku = g.degree(u);
+			const bool ut_neighs = std::binary_search(Nt.begin(), Nt.end(), u);
+			const bigint ku = g.degree(u);
 			n_paths_5 += (kt - 1 - ut_neighs)*(ku - 1 - ut_neighs) + 1 - common_ut;
 		}
 
@@ -366,9 +364,10 @@ inline void compute_data_gen_graphs_reuse
 					));
 			}
 
-			bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
+			const bool us_neighs = std::binary_search(Ns.begin(), Ns.end(), u);
 			const bigint ku = g.degree(u);
 			n_paths_5 += (ks - 1 - us_neighs)*(ku - 1 - us_neighs) + 1 - common_us;
+
 			n_cycles_4 += common_us;
 		}
 
@@ -417,9 +416,7 @@ inline void compute_data_gen_graphs_reuse
 		Lambda_2 += (ks + kt)*( (ks - 1)*(kt - 1) - common_st );
 	}
 
-	// finish calculating Lambda_2
 	Lambda_2 += Lambda_1;
-
 	Phi_2 /= 2;
 	n_paths_4 = m - nk2 + mu1/2 - mu2;
 	n_cycles_4 /= 4;
@@ -427,7 +424,7 @@ inline void compute_data_gen_graphs_reuse
 	pair_C3_L2 /= 3;
 
 	// deallocate memory
-	free(all_memory);
+	free(xi);
 }
 
 rational variance_C_rational(const ugraph& g, bool reuse) {
@@ -480,7 +477,7 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 		);
 	}
 	else {
-		compute_data_gen_graphs
+		compute_data_gen_graphs_no_reuse
 		(
 			g, n, m,
 			Qs, Kg,
