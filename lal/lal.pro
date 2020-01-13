@@ -28,6 +28,7 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    namespaces.hpp \
     definitions.hpp \
     generation.hpp \
     generation/all_lab_free_trees.hpp \
@@ -49,8 +50,8 @@ HEADERS += \
     graphs/utree.hpp \
     io/basic_output.hpp \
     iterators.hpp \
+    iterators/E_iterator.hpp \
     iterators/Q_iterator.hpp \
-    iterators/edge_iterator.hpp \
     linarr.hpp \
     linarr/1level.hpp \
     linarr/1level_impl.hpp \
@@ -106,8 +107,8 @@ SOURCES += \
     graphs/ugraph.cpp \
     graphs/urtree.cpp \
     graphs/utree.cpp \
+    iterators/E_iterator.cpp \
     iterators/Q_iterator.cpp \
-    iterators/edge_iterator.cpp \
     linarr/C.cpp \
     linarr/C_approx.cpp \
     linarr/classification.cpp \

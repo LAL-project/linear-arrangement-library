@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 // C includes
 #include <assert.h>
@@ -55,18 +55,16 @@ using namespace graphs;
 
 namespace iterators {
 
-typedef edge_iterator::E_pointer E_pointer;
-
-edge_iterator::edge_iterator(const graph& g) : m_G(g) {
+E_iterator::E_iterator(const graph& g) : m_G(g) {
 	reset();
 }
-edge_iterator::~edge_iterator() { }
+E_iterator::~E_iterator() { }
 
-bool edge_iterator::has_next() const {
+bool E_iterator::has_next() const {
 	return m_exists_next;
 }
 
-void edge_iterator::next() {
+void E_iterator::next() {
 	m_cur_edge = make_current_edge();
 
 	// find the next edge
@@ -75,11 +73,11 @@ void edge_iterator::next() {
 	m_cur = _p.second;
 }
 
-edge edge_iterator::get_edge() const {
+edge E_iterator::get_edge() const {
 	return m_cur_edge;
 }
 
-void edge_iterator::reset() {
+void E_iterator::reset() {
 	m_exists_next = true;
 
 	m_cur.first = 0;
@@ -115,13 +113,13 @@ void edge_iterator::reset() {
 
 /* PRIVATE */
 
-edge edge_iterator::make_current_edge() const {
+edge E_iterator::make_current_edge() const {
 	const node s = m_cur.first;
 	const node t = m_G.get_neighbours(s)[m_cur.second];
 	return edge(s,t);
 }
 
-pair<bool, E_pointer> edge_iterator::find_next_edge() const {
+pair<bool, E_iterator::E_pointer> E_iterator::find_next_edge() const {
 	return (
 		m_G.is_directed() ?
 			find_next_edge_directed() :
@@ -129,7 +127,7 @@ pair<bool, E_pointer> edge_iterator::find_next_edge() const {
 	);
 }
 
-pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
+pair<bool, E_iterator::E_pointer> E_iterator::find_next_edge_directed() const {
 	const uint32_t n = m_G.n_nodes();
 
 	node s = m_cur.first;
@@ -149,7 +147,7 @@ pair<bool, E_pointer> edge_iterator::find_next_edge_directed() const {
 	return make_pair(found, E_pointer(s, pt));
 }
 
-pair<bool, E_pointer> edge_iterator::find_next_edge_undirected() const {
+pair<bool, E_iterator::E_pointer> E_iterator::find_next_edge_undirected() const {
 	const uint32_t n = m_G.n_nodes();
 
 	node s = m_cur.first;

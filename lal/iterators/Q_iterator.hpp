@@ -65,7 +65,7 @@ namespace iterators {
  *
  * The correct usage of this class is
  * @code
- *		Q_iterator it(g);
+ *		Q_iterator it(g); // g is a graph
  *		while (it.has_next()) {
  *			it.next();
  *			edge_pair q = it.get_pair();
@@ -99,7 +99,7 @@ class Q_iterator {
 		 */
 		void reset();
 
-	public:
+	private:
 		typedef std::pair<node,std::size_t> E_pointer;
 
 	private:

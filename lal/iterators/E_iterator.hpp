@@ -57,14 +57,14 @@ namespace iterators {
  * This class iterates over the edges of a graph. For undirected graphs, the
  * edge returned is an edge \f$(u,v)\f$ so that the inequality \f$u < v\f$
  * always holds. For directed graphs, this is not always true since the edge
- * returned always has left-to-right direction.
+ * returned always has left-to-right orientation.
  *
  * Bear in mind, however, that this class does not modify in any way the
  * graph it is initialised with.
  *
  * The correct usage of this class is
  * @code
- *		edge_iterator it(g);
+ *		E_iterator it(g); // g is a graph
  *		while (it.has_next()) {
  *			it.next();
  *			edge e = it.get_edge();
@@ -72,15 +72,15 @@ namespace iterators {
  *		}
  * @endcode
  */
-class edge_iterator {
+class E_iterator {
 	public:
 		/**
 		 * @brief Constructor
 		 * @param g Constant reference to the graph over which we iterate.
 		 */
-		edge_iterator(const graphs::graph& g);
+		E_iterator(const graphs::graph& g);
 		/// Destructor.
-		~edge_iterator();
+		~E_iterator();
 
 		/// Returns true if there are edges left to be iterated over.
 		bool has_next() const;
@@ -98,7 +98,7 @@ class edge_iterator {
 		 */
 		void reset();
 
-	public:
+	private:
 		typedef std::pair<node,std::size_t> E_pointer;
 
 	private:

@@ -56,7 +56,8 @@ namespace iterators {
 
 /* LOCAL FUNCTIONS */
 
-typedef Q_iterator::E_pointer E_pointer;
+// same as Q_iterator::E_pointer
+typedef std::pair<node,std::size_t> sE_pointer;
 
 static inline
 bool share_vertices(const edge_pair& st_uv) {
@@ -70,7 +71,7 @@ bool share_vertices(const edge_pair& st_uv) {
 }
 
 static inline
-bool share_vertices(const graph& g, const E_pointer& p1, const E_pointer& p2) {
+bool share_vertices(const graph& g, const sE_pointer& p1, const sE_pointer& p2) {
 	const node s = p1.first;
 	const node t = g.get_neighbours(s)[p1.second];
 	const node u = p2.first;
@@ -78,7 +79,7 @@ bool share_vertices(const graph& g, const E_pointer& p1, const E_pointer& p2) {
 	return share_vertices(edge_pair(edge(s,t),edge(u,v)));
 }
 
-static tuple<bool, E_pointer, E_pointer>
+static tuple<bool, sE_pointer, sE_pointer>
 find_next_pair_directed(
 	const graph& g, node s, size_t pt, node u, size_t pv
 )
@@ -88,7 +89,7 @@ find_next_pair_directed(
 
 	// base case 1: consumed all pairs
 	if (s == n) {
-		return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
+		return make_tuple(false, sE_pointer(s,pt), sE_pointer(u,pv));
 	}
 	// base case 2: consumed neighbours of 's'
 	if (pt >= g.degree(s)) {
@@ -105,14 +106,14 @@ find_next_pair_directed(
 		return find_next_pair_directed(g, s, pt, u + 1, 0);
 	}
 
-	if (share_vertices(g, E_pointer(s,pt), E_pointer(u,pv))) {
+	if (share_vertices(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
 		return find_next_pair_directed(g, s, pt, u, pv + 1);
 	}
 
-	return make_tuple(true, E_pointer(s,pt), E_pointer(u,pv));
+	return make_tuple(true, sE_pointer(s,pt), sE_pointer(u,pv));
 }
 
-static tuple<bool, E_pointer, E_pointer>
+static tuple<bool, sE_pointer, sE_pointer>
 find_next_pair_undirected(
 	const graph& g, node s, size_t pt, node u, size_t pv
 )
@@ -122,7 +123,7 @@ find_next_pair_undirected(
 
 	// base case 1: consumed all pairs
 	if (s == n) {
-		return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
+		return make_tuple(false, sE_pointer(s,pt), sE_pointer(u,pv));
 	}
 	// base case 2: consumed neighbours of 's'
 	if (pt >= g.degree(s)) {
@@ -145,14 +146,14 @@ find_next_pair_undirected(
 	}
 
 	auto Nu = g.get_neighbours(u);
-	if (u > Nu[pv] or share_vertices(g, E_pointer(s,pt), E_pointer(u,pv))) {
+	if (u > Nu[pv] or share_vertices(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
 		return find_next_pair_undirected(g, s, pt, u, pv + 1);
 	}
 
-	return make_tuple(true, E_pointer(s,pt), E_pointer(u,pv));
+	return make_tuple(true, sE_pointer(s,pt), sE_pointer(u,pv));
 }
 
-static tuple<bool, E_pointer, E_pointer>
+static tuple<bool, sE_pointer, sE_pointer>
 find_next_pair(const graph& g, node s, size_t pt, node u, size_t pv)
 {
 	return (
