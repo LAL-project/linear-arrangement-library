@@ -52,13 +52,6 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-inline
-void get_bool_neighbours(const ugraph& g, node u, vector<bool>& neighs) {
-	for (node v : g.get_neighbours(u)) {
-		neighs[v] = true;
-	}
-}
-
 namespace linarr {
 
 inline uint32_t __compute_C_ladder(
@@ -88,7 +81,7 @@ inline uint32_t __compute_C_ladder(
 		uint32_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
-		get_bool_neighbours(g, u, bn);
+		utils::get_bool_neighbours(g, u, bn);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
 			node v = T[q];

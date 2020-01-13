@@ -78,10 +78,12 @@ double expectation_C_first(const graphs::ugraph& g);
  * @brief Computes the variance of the number of crossings of a graph.
  *
  * Computes \f$V_{rla}[C]\f$ on the given graph. This function implements the
- * most efficient method to compute \f$V_{rla}[C]\f$ to our knowledge. Since
- * there are many computations that can be resued, setting @e reuse to 'true'
- * can help speed up the algorithm. Warning: reusing memory might be too
- * memory consumption for large graphs.
+ * algorithm in \cite Alemany2020b for general graphs, which stems from the
+ * study in \cite Alemany2020a.
+ *
+ * Since there are many computations that can be resued, setting @e reuse to
+ * 'true' can help speed up the algorithm. Warning: reusing memory might be too
+ * memory-consuming for large graphs (handle with care).
  * @param g Input graph.
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
@@ -106,9 +108,11 @@ double variance_C(const graphs::ugraph& g, bool reuse = true);
 /**
  * @brief Computes the variance of the number of crossings of a forest.
  *
- * Computes \f$V_{rla}[C]\f$ on the given forest. This function computes the
- * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
- * forests. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
+ * Computes \f$V_{rla}[C]\f$ on the given forest. This function implements the
+ * algorithm in \cite Alemany2020b for forests, which stems from the study in
+ * \cite Alemany2020a.
+ *
+ * Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
  * @param g Input forest.
  * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre The input graph @e g is a forest.

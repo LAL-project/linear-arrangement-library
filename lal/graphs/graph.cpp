@@ -51,7 +51,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/sort_integers.hpp>
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/properties/Q.hpp>
 
@@ -150,7 +150,7 @@ uint32_t graph::n_edges() const {
 vector<edge> graph::edges() const {
 	vector<edge> e(n_edges());
 	auto it = e.begin();
-	edge_iterator e_it(*this);
+	E_iterator e_it(*this);
 	while (e_it.has_next()) {
 		e_it.next();
 		*it = e_it.get_edge();
@@ -166,7 +166,7 @@ bool graph::is_normalised() const {
 void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 	const auto n = n_nodes();
 	mat = vector<vector<bool> >(n, vector<bool>(n, false));
-	edge_iterator it(*this);
+	E_iterator it(*this);
 	while (it.has_next()) {
 		it.next();
 		const auto [u,v] = it.get_edge();

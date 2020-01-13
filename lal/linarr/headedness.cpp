@@ -45,7 +45,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -55,7 +55,7 @@ namespace linarr {
 
 inline uint32_t __headedness_rational(const dgraph& g, const LINARR& pi) {
 	uint32_t edges_to_right = 0;
-	iterators::edge_iterator it(g);
+	iterators::E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		edge e = it.get_edge();

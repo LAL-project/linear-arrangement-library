@@ -67,8 +67,7 @@ namespace linarr {
  *
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
+ * When omitted, \f$\pi_I\f$ is used for all graphs.
  * @return Returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs.
  */
 template<class G>
@@ -81,8 +80,7 @@ numeric::rational MDD_2level_rational
  * See @ref MDD_2level_rational for details.
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
+ * When omitted, \f$\pi_I\f$ is used for all graphs.
  * @return The return value is a floating point value.
  */
 template<class G>

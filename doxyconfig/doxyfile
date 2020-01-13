@@ -38,13 +38,13 @@ PROJECT_NAME           = "LAL: Linear Arrangement Library"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 2019/06/15
+PROJECT_NUMBER         = 2020/01/13
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "A graph library focused on algorithms on linear arrangements of graphs."
+PROJECT_BRIEF          = "A library focused on algorithms on linear arrangements of graphs."
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55

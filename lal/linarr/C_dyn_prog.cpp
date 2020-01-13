@@ -55,13 +55,6 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-inline
-void get_bool_neighbours(const ugraph& g, node u, vector<bool>& neighs) {
-	for (node v : g.get_neighbours(u)) {
-		neighs[v] = true;
-	}
-}
-
 namespace linarr {
 
 // T: translation table, inverse of pi:
@@ -87,7 +80,7 @@ inline uint32_t __compute_C_dyn_prog(
 		// node at position pu + 1
 		const node u = T[pu + 1];
 
-		get_bool_neighbours(g, u, bn);
+		utils::get_bool_neighbours(g, u, bn);
 
 		uint32_t k = g.degree(u);
 

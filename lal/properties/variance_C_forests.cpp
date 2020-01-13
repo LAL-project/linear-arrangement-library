@@ -48,7 +48,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 typedef uint64_t bigint;
 
@@ -112,7 +112,7 @@ inline void compute_data_forest
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
-	edge_iterator it(g);
+	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		const edge st = it.get_edge();

@@ -64,8 +64,7 @@ namespace linarr {
  * A value of 0 indicates perfect left branching, and a value of 1 indicates
  * perfect right-branching.
  * @param g Input graph.
- * @param pi Permutation of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Permutation of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns the headedness ratio as an exact rational number.
  */
 numeric::rational headedness_rational(const graphs::dgraph& g, const LINARR& pi = {});
@@ -74,6 +73,8 @@ numeric::rational headedness_rational(const graphs::dgraph& g, const LINARR& pi 
  * @brief Computes the headedness of a linearly arranged directed graph.
  *
  * See @ref headedness_rational for details.
+ * @param g Input graph.
+ * @param pi Permutation of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
 double headedness(const graphs::dgraph& g, const LINARR& pi = {});

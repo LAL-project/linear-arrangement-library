@@ -51,7 +51,7 @@ namespace properties {
  * @brief Mean Hierarchical Distance.
  *
  * The value is computed as an exact rational value.
- * For details, see \cite Jing2015.
+ * For details, see \cite Jing2015a.
  * @param t Input rooted undirected tree.
  * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
  */

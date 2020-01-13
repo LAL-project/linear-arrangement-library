@@ -55,15 +55,17 @@ namespace lal {
  * @brief Namespace for the generation of different types of graphs.
  * 
  * This namespace contains algorithms for the generation of
- * certain types of graphs, for example: all unique free,
- * unlabelled trees.
+ * certain types of graphs, for example: all unique unlabelled free trees.
  */
 namespace generate {}
 
 /**
  * @brief Namespace for the graphs data structures.
  * 
- * This namespace contains the data structures that implement graphs.
+ * This namespace contains the data structures that implement graphs. Note that,
+ * although we do not support labelled graphs, the vertices of these graphs
+ * carry a label, a number between 0 and \f$n-1\f$, where \f$n\f$ is the number
+ * of vertices of the graph.
  */
 namespace graphs {}
 
@@ -89,7 +91,7 @@ namespace io {}
  * 
  * This namespace contains classes useful for iterating through the graph.
  * These classes iterate
- * - over the set of edges (see @ref edge_iterator).
+ * - over the set of edges (see @ref E_iterator).
  * - over the set of pairs of independent edges \f$Q\f$ (see @ref Q_iterator).
  */
 namespace iterators {}
@@ -97,15 +99,19 @@ namespace iterators {}
 /**
  * @brief Linear arrangements namespace.
  * 
- * This namespace holds all operations related to linear arrangements.
+ * This namespace contains all operations related to linear arrangements.
  * 
- * All linear arrangements are vectors of as many nodes as the
+ * All linear arrangements are vectors of as many vertices as the
  * corresponding graph has. If \f$\pi\f$ is a linear arrangement then
- * the @e u-th position of \f$\pi\f$ contains the position of that node in
- * the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, node @e u
+ * the @e u-th position of \f$\pi\f$ contains the position of that vertex in
+ * the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, vertex @e u
  * is at position @e p in the linear arrangement.
+ *
+ * The identity arrangement \f$\pi_I\f$ is a special case of linear arrangement
+ * used in many functions. Such an arrangement is one that maps each vertex
+ * into the position corresponding to their label, i.e., \f$ \pi_I(u) = u\f$.
  * 
- * It contains the computation of:
+ * This namespace contains the computation of:
  * - the number of crossings \f$C\f$ (see @ref n_crossings).
  * - the sum of the length of edges \f$D\f$.
  * - the headedness of directed graphs (see @ref headedness).

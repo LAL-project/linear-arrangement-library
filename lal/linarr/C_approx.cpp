@@ -59,7 +59,8 @@ using namespace numeric;
 
 namespace linarr {
 
-inline constexpr uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
+inline constexpr
+uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
 	int32_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -90,7 +91,8 @@ inline constexpr uint32_t alpha(const int32_t n, const int32_t d1, const int32_t
 	return to_uint32(f);
 }
 
-inline constexpr uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
+inline constexpr
+uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 	int32_t f = 0;
 
 	// positions s1 < s2
@@ -140,7 +142,8 @@ inline constexpr uint32_t beta(const int32_t n, const int32_t d1, const int32_t 
 	return to_uint32(f/2);
 }
 
-inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
+inline
+rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 	rational Ec2(0);
 	const uint32_t n = g.n_nodes();
 
@@ -162,10 +165,12 @@ inline rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi
 		(len_st <= len_uv ?
 			make_pair(
 				alpha(to_int32(n), to_int32(len_st), to_int32(len_uv)),
-				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))) :
+				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))
+			) :
 			make_pair(
 				alpha(to_int32(n), to_int32(len_uv), to_int32(len_st)),
-				beta(to_int32(n), to_int32(len_uv), to_int32(len_st)))
+				beta(to_int32(n), to_int32(len_uv), to_int32(len_st))
+			)
 		);
 		Ec2 += rational(to_int32(al), be);
 	}

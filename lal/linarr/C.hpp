@@ -62,8 +62,7 @@ namespace linarr {
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
 uint32_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {});
@@ -75,8 +74,6 @@ uint32_t __n_crossings_brute_force(const graphs::ugraph& g, const LINARR& pi = {
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -91,8 +88,7 @@ std::vector<uint32_t> __n_crossings_brute_force_list
  * arrangement. If the arrangement is not specified, the identity arrangement
  * is used.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
 uint32_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
@@ -104,8 +100,6 @@ uint32_t __n_crossings_dyn_prog(const graphs::ugraph& g, const LINARR& pi = {});
  * arrangement.
  * @param g Input graph.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -120,8 +114,7 @@ std::vector<uint32_t> __n_crossings_dyn_prog_list
  * arrangement. If the arrangement is not specified, the identity arrangement
  * is used.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
 uint32_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
@@ -133,8 +126,6 @@ uint32_t __n_crossings_ladder(const graphs::ugraph& g, const LINARR& pi = {});
  * arrangement.
  * @param g Input graph.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -149,8 +140,7 @@ std::vector<uint32_t> __n_crossings_ladder_list
  * cross in such linear arrangement. If the arrangement is not specified, the
  * identity arrangement is used.
  * @param g Input graph.
- * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi A linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
 uint32_t __n_crossings_stack_based
@@ -164,8 +154,6 @@ uint32_t __n_crossings_stack_based
  * identity arrangement is used.
  * @param g Input graph.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -178,8 +166,7 @@ std::vector<uint32_t> __n_crossings_stack_based_list
  * Given a graph, and a list of linear arrangements of its vertices, computes
  * the number of crossings using the algorithm specified by the parameter @e A.
  * @param g Input graph.
- * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi A linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_crossings::stack_based.
  * @return Returns \f$C\f$.
@@ -201,8 +188,6 @@ uint32_t n_crossings(
  * algorithm specified by the parameter @e A.
  * @param g Input graph.
  * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * If \f$\pi_i[u]=p\f$ then node @e u is placed in position @e p of the \f$i\f$-th
- * arrangement.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_crossings::stack_based.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
@@ -227,8 +212,7 @@ std::vector<uint32_t> n_crossings_list
  * linear arrangement. Implementation of \cite Ferrer2014a. If the arrangement
  * is not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi A linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi A linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational approximate_C_rational
@@ -238,6 +222,8 @@ numeric::rational approximate_C_rational
  * @brief Approximates the number of crossings.
  *
  * See @ref approximate_C_rational for details.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
 double approximate_C(const graphs::ugraph& g, const LINARR& pi = {});

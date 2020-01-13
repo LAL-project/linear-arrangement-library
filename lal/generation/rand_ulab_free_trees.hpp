@@ -65,7 +65,7 @@ namespace generate {
  * This is algorithm relies on the @e ranrut procedure (see \cite Nijenhuis1978a,
  * chapter 29) and runs in about the same time. The implementation of Wilf's
  * paper (see @ref make_rand_tree, @ref forest, and @ref bicenter) includes
- * the correction in Wilf's paper, as pointed out in \cite CorrectionWilf.
+ * the correction in Wilf's paper, as pointed out in \cite GiacXcas_Manual.
  *
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.

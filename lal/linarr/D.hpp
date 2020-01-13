@@ -60,8 +60,7 @@ namespace linarr {
  * the length of the graph's edges in the arrangement. If the arrangement is
  * not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$D\f$.
  */
 uint32_t sum_length_edges
@@ -73,13 +72,12 @@ uint32_t sum_length_edges
  * @brief Computes the mean edge length.
  *
  * Given a graph and a linear arrangement of its vertices, computes the average
- * edge length, or the mean dependency distance (see \cite Jing2015).
+ * edge length, or the mean dependency distance (see \cite Jing2015a).
  *
  * It simply computes the sum of the length of the edges of the graph given the
  * arrangement \f$\pi\f$ and divides the sum by the number of edges.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return Returns Jing's and Liu's \f$MDD\f$ for a single tree.
  */
 numeric::rational MDD_rational
@@ -90,8 +88,7 @@ numeric::rational MDD_rational
  *
  * See @ref MDD_rational for details.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. If @e \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
+ * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
 double MDD(const graphs::graph& g, const LINARR& pi = {});

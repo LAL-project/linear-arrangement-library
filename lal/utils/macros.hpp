@@ -74,5 +74,12 @@ T call_with_empty_arrangement(
 	return F(g,__pi);
 }
 
+template<class G>
+void get_bool_neighbours(const G& g, node u, std::vector<bool>& neighs) {
+	for (node v : g.get_neighbours(u)) {
+		neighs[v] = true;
+	}
+}
+
 } // -- namespace macros
 } // -- namespace lal

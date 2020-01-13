@@ -49,7 +49,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -64,7 +64,7 @@ inline uint32_t __sum_length_edges(const graph& g, const LINARR& pi) {
 	// sum of lengths
 	uint32_t l = 0;
 
-	edge_iterator it(g);
+	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();

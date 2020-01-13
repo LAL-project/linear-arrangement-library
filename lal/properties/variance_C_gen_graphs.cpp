@@ -53,7 +53,7 @@ using namespace std;
 typedef uint64_t bigint;
 
 // lal includes
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
@@ -158,7 +158,7 @@ inline void compute_data_gen_graphs_no_reuse
 	bigint mu1 = 0;
 	bigint mu2 = 0;
 
-	edge_iterator it(g);
+	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();
@@ -300,7 +300,7 @@ inline void compute_data_gen_graphs_reuse
 	bigint mu1 = 0;
 	bigint mu2 = 0;
 
-	edge_iterator it(g);
+	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();

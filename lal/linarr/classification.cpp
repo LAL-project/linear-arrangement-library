@@ -52,7 +52,7 @@ using namespace std;
 #include <lal/utils/sort_integers.hpp>
 #include <lal/graphs/output.hpp>
 #include <lal/linarr/C.hpp>
-#include <lal/iterators/edge_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 
@@ -64,7 +64,7 @@ namespace linarr {
 
 inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 	const node R = T.get_root();
-	edge_iterator it(T);
+	E_iterator it(T);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();
@@ -146,9 +146,9 @@ inline bool __disjoint_yields(
 				(sv1 < su1 and su1 < sv2 and sv2 < su2);
 
 			if (disjoint_yields) { return true; }
+
 		}}}}
 	}}
-
 	return false;
 }
 
@@ -179,7 +179,7 @@ inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 	bool classified = false;
 	bool _1ec = false;
 
-	edge_iterator it1(Tree);
+	E_iterator it1(Tree);
 	while (it1.has_next() and not classified) {
 		it1.next();
 		// check other edges crossing the current edge
