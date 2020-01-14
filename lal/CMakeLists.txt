@@ -136,7 +136,7 @@ target_sources(
 		io/treebank_dataset.cpp
 		io/treebank_processor.cpp
 		io/treebank_reader.cpp
-		iterators/edge_iterator.cpp
+		iterators/E_iterator.cpp
 		iterators/Q_iterator.cpp
 		linarr/C.cpp
 		linarr/C_approx.cpp
@@ -208,7 +208,7 @@ set(LIBLAL_IO_HEADER
 	io/treebank_reader.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
-	iterators/edge_iterator.hpp
+	iterators/E_iterator.hpp
 	iterators/Q_iterator.hpp
 )
 set(LIBLAL_LINARR_HEADER
