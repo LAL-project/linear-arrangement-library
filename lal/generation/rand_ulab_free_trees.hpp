@@ -65,7 +65,8 @@ namespace generate {
  * This is algorithm relies on the @e ranrut procedure (see \cite Nijenhuis1978a,
  * chapter 29) and runs in about the same time. The implementation of Wilf's
  * paper (see @ref make_rand_tree, @ref forest, and @ref bicenter) includes
- * the correction in Wilf's paper, as pointed out in \cite GiacXcas_Manual.
+ * the correction in Wilf's paper (see \cite Wilf1981a), as pointed out in
+ * \cite GiacXcas_Manual.
  *
  * Users interested in generating trees of large size (of 100 vertices
  * or more) are recommended to take a look at @ref clear method.
@@ -109,8 +110,11 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 
 		/**
 		 * @brief Generates uniformly at random a free unlabelled tree.
-		 * @pre The generator must have been initialised.
-		 * @return Returns an unlabelled tree.
+		 *
+		 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
+		 * pointed out in \cite GiacXcas_Manual.
+		 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
+		 * @return Returns an unlabelled free tree.
 		 */
 		graphs::utree make_rand_tree();
 
@@ -193,11 +197,12 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		void init_fn();
 
 		/**
-		 * @brief Computes and returns the value \f$t_n\f$.
+		 * @brief Computes and returns the value \f$f_n\f$.
 		 *
-		 * Copmutes the @e n-th position of @ref m_fn.
+		 * The value \f$f_n\f$ is the number of unlabelled free trees on \f$n\f$
+		 * vertices. The method implements Otter's formula (see \cite Otter1948a).
 		 * @param n Number of vertices of the tree.
-		 * @return Returns \f$t_n\f$.
+		 * @return Returns \f$f_n\f$.
 		 */
 		const numeric::integer& get_fn(const uint32_t n);
 

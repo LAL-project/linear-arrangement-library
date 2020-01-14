@@ -44,45 +44,12 @@
 #include <assert.h>
 
 // C++ includes
-#include <iostream>
 #include <numeric>
 using namespace std;
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/numeric/output.hpp>
 #include <lal/utils/conversions.hpp>
-
-#define _to_int32(x) static_cast<int32_t>(x)
-#define _to_uint32(x) static_cast<uint32_t>(x)
-#define _to_double(x) static_cast<double>(x)
-
-namespace std {
-template<typename T>
-ostream& operator<< (ostream& os, const vector<T>& v) {
-	if (v.size() > 0) {
-		os << v[0];
-		for (size_t i = 1; i < v.size(); ++i) {
-			os << ", " << v[i];
-		}
-	}
-	return os;
-}
-
-template<typename T>
-ostream& operator<< (ostream& os, const stack<T>& v) {
-	stack<T> copy = v;
-	if (not copy.empty()) {
-		os << copy.top();
-		copy.pop();
-		while (not copy.empty()) {
-			os << ", " << copy.top();
-			copy.pop();
-		}
-	}
-	return os;
-}
-}
 
 #define get_alpha(m,q) (m_alpha[make_pair(m,q)])
 #define alpha_exists(m,q) (m_alpha.find(make_pair(m,q)) != m_alpha.end())
@@ -93,7 +60,7 @@ using namespace numeric;
 
 namespace generate {
 
-static inline
+inline
 utree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
 	utree T(m_n);
 	vector<edge> edges(m_n - 1);
@@ -136,20 +103,37 @@ utree rand_ulab_free_trees::make_rand_tree() {
 	// calculate the probability of generating a bicentroidal tree
 	rational bicent_prob = 0;
 	if (m_n%2 == 0) {
-		// if n is even...
+		/* The following is a correction of Wilf's algorithm. Instead of
+		 * calculating
+		 *			bicent_prob = {1 + r_(n/2)}{2}/r_n
+		 * we calculate
+		 *			bicent_prob = {1 + r_(n/2)}{2}/f_n
+		 *
+		 * where
+		 *		r_n: the number of unlabelled rooted trees of n vertices
+		 *		f_n: the number of unlabelled free trees of n vertices
+		 *		{n}{k}: is read as "n choose k"
+		 *
+		 * We followed the correction pointed out in the reference to
+		 * Giac/Xcas's manual (cited in the documentation of this class).
+		 */
 		const integer k = get_rn(m_n/2) + 1;
-		const integer k_choose_2 = (k*(k - 1))/2;
-		bicent_prob = rational(k_choose_2, get_fn(m_n));
+		const integer k_choose_2 = k*(k - 1);
+		bicent_prob = rational(k_choose_2, get_fn(m_n)*2);
 	}
 	assert(bicent_prob.to_double() <= 1.0);
 
-	// with probability 'bicent_prob' the tree will be bicentroidal
+	// -----------------------------------
+	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
 		const utree T = make_tree(m_n, m_tree);
 		assert(T.is_tree());
 		return T;
 	}
+
+	// -----------------------------------
+	// the tree has one centroid
 
 	// -----------------------------------
 	// make a forest on (n - 1) vertices
@@ -278,6 +262,14 @@ void rand_ulab_free_trees::bicenter(uint32_t n) {
 
 const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
 
+	/* This algorithm can be compared to the algorithm in
+	 *		https://github.com/marohnicluka/giac/blob/master/graphe.cc#L7149
+	 * (implementation of several Giac's functions)
+	 *
+	 * The output of this algorithm and the one following the link
+	 * coincide up to n=400.
+	 */
+
 	if (alpha_exists(m,q)) {
 		// already computed
 		return get_alpha(m,q);
@@ -352,29 +344,30 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 		return m_fn[n];
 	}
 
-	integer tk(0);
+	// Compute f_k using Otter's formula (see reference in documentation)
+	integer f_k(0);
 	uint32_t k = static_cast<uint32_t>(m_fn.size());
 	while (k <= n) {
 
-		// if k=0 then tk=1
-		// else tk=0
-		tk = (k == 0);
-
-		if (k%2 != 0) {
-			tk += get_rn(k);
-		}
-		else {
-			tk += get_rn(k) + get_rn(k/2)/2;
+		// for k=0, f_k=1.
+		f_k = (k == 0);
+		f_k += get_rn(k);
+		if (k%2 == 0) {
+			f_k += get_rn(k/2)/2;
 		}
 
+		// compute this sum into an integer
+		// so as to avoid the use of rational
 		integer s(0);
 		for (uint32_t j = 0; j <= k; ++j) {
 			s += get_rn(j)*get_rn(k - j);
 		}
+		// the sum above must be even
+		assert(s%2 == 0);
+		f_k -= (s/2);
 
-		tk -= (s/2);
 		m_fn.push_back(integer());
-		m_fn[k] = tk;
+		m_fn[k] = f_k;
 
 		++k;
 	}
