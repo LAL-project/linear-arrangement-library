@@ -96,6 +96,8 @@ endif
 ARCH 			= $(shell getconf LONG_BIT)
 ARCH_DIR 		= $(OS_DIR)/$(ARCH)
 
+# SWIG executable
+SWIG_EXE		= swig
 # SWIG flags
 SWIG_FLAGS_32	= -DSWIGWORDSIZE32
 SWIG_FLAGS_64 	= -DSWIGWORDSIZE64
@@ -106,10 +108,10 @@ else
 endif
 
 # Compiler to be used
-CXX				= g++
-# Flags for 'g++'
-FLAGS			= -std=c++17 -fPIC -fopenmp
-INCLUDES		= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
+CXX			= g++
+# Flags for compiler
+FLAGS		= -std=c++17 -fPIC -fopenmp
+INCLUDES	= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
 
 # set lib and flags according to the mode of compilation
 # define LAL's directory and dependencies

@@ -10,7 +10,7 @@ $(DSE_SO): $(DSE_WRAP).o $(LIBRARY_SHARED_DEP)
 $(DSE_WRAP).o: $(DSE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MAIN_INT)
 
 # tree_structure_type module
 $(TST_SO): $(TST_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -18,7 +18,7 @@ $(TST_SO): $(TST_WRAP).o $(LIBRARY_SHARED_DEP)
 $(TST_WRAP).o: $(TST_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(TST_WRAP).cxx: $(TST_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TST_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TST_MAIN_INT)
 
 # algorithms_crossings module
 $(ALGCR_SO): $(ALGCR_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -26,7 +26,7 @@ $(ALGCR_SO): $(ALGCR_WRAP).o $(LIBRARY_SHARED_DEP)
 $(ALGCR_WRAP).o: $(ALGCR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ALGCR_WRAP).cxx: $(ALGCR_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALGCR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALGCR_MAIN_INT)
 
 # CLASSES AND METHODS
 
@@ -36,7 +36,7 @@ $(DEFS_SO): $(DEFS_WRAP).o $(LIBRARY_SHARED_DEP)
 $(DEFS_WRAP).o: $(DEFS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
 
 # generation
 $(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -44,7 +44,7 @@ $(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
 $(GEN_WRAP).o: $(GEN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GEN_WRAP).cxx: $(GEN_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GEN_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GEN_MAIN_INT)
 
 # graphs module
 $(GRAPHS_SO): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -52,7 +52,7 @@ $(GRAPHS_SO): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
 $(GRAPHS_WRAP).o: $(GRAPHS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GRAPHS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GRAPHS_MAIN_INT)
 
 # io module
 $(IO_SO): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -60,7 +60,7 @@ $(IO_SO): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
 $(IO_WRAP).o: $(IO_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(IO_WRAP).cxx: $(IO_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(IO_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(IO_MAIN_INT)
 
 # iterators module
 $(ITER_SO): $(ITER_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -68,7 +68,7 @@ $(ITER_SO): $(ITER_WRAP).o $(LIBRARY_SHARED_DEP)
 $(ITER_WRAP).o: $(ITER_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ITER_WRAP).cxx: $(ITER_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ITER_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ITER_MAIN_INT)
 
 # linarr module
 $(LINARR_SO): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -76,7 +76,7 @@ $(LINARR_SO): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
 $(LINARR_WRAP).o: $(LINARR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LINARR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LINARR_MAIN_INT)
 
 # numeric  module
 $(NMRC_SO): $(NMRC_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -84,7 +84,7 @@ $(NMRC_SO): $(NMRC_WRAP).o $(LIBRARY_SHARED_DEP)
 $(NMRC_WRAP).o: $(NMRC_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(NMRC_WRAP).cxx: $(NMRC_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(NMRC_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(NMRC_MAIN_INT)
 
 # properties  module
 $(PROP_SO): $(PROP_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -92,7 +92,7 @@ $(PROP_SO): $(PROP_WRAP).o $(LIBRARY_SHARED_DEP)
 $(PROP_WRAP).o: $(PROP_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(PROP_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(PROP_MAIN_INT)
 
 # lal module (library's main module)
 $(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
@@ -100,6 +100,6 @@ $(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
 $(LAL_WRAP).o: $(LAL_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
-	swig $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
 
 
