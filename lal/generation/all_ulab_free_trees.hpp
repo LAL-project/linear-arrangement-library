@@ -62,7 +62,7 @@ namespace generate {
  * Then, call method @ref next to modify the internal state that will allow the
  * user to construct the tree by calling method @ref get_tree.
  *
- * All the free unlabelled trees have been generated when method @ref has_next
+ * All the unlabelled free trees have been generated when method @ref has_next
  * returns false. At this point, method @ref get_tree will always construct a
  * star tree of \f$n\f$ vertices.
  *

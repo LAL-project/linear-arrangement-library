@@ -46,6 +46,8 @@
 // C++ includes
 using namespace std;
 
+#define to_uint32(x) static_cast<uint32_t>(x)
+
 namespace lal {
 using namespace graphs;
 
@@ -53,32 +55,41 @@ namespace utils {
 
 utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
-	assert(L[0] == 1);
+	assert(L[0] == 0);
+	assert(L[1] == 1);
+	assert(to_uint32(L.size()) == n + 1);
 
 	// edges of the tree
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
 
-	// 'stack' of root candidates
-	vector<node> s(n, 0);
-	uint32_t it = 0;
-	for (node i = 1; i < n; ++i) {
-		// decrease the pointer to the 'stack'
-		// to reach the desired level
-		if (it + 2 > L[i]) {
-			it = L[i] - 2;
+	// 'stack' of root candidates: vertex at every level in {1,...,N}.
+	// at position j, lev[j], store the last vertex added
+	// at level j.
+	vector<node> lev(n+1, 0);
+	uint32_t stack_it = 0;
+
+	// evidently,
+	lev[0] = 1;
+
+	for (node i = 2; i <= n; ++i) {
+
+		// find in the stack the vertex which
+		// has to be connected to vertex 'i'.
+		if (lev[stack_it] + 2 > L[i]) {
+			stack_it = L[i] - 2 + 1;
 		}
 
-		// the top of the stack is the root
-		// for this vertex
-		node r = s[it];
+		// the top of the stack is the parent of this vertex
+		const node r = lev[stack_it];
 
 		// add the edge...
-		*eit++ = edge(r,i);
+		*eit++ = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
 
-		// this is the next potential root
-		++it;
-		s[it] = i;
+		// the last vertex added at level L[i] is i.
+		++stack_it;
+		assert(stack_it == L[i]);
+		lev[stack_it] = i;
 	}
 
 	utree t(n);
