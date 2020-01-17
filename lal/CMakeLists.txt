@@ -119,6 +119,7 @@ target_sources(
 	PRIVATE
 		generation/all_lab_free_trees.cpp
 		generation/all_ulab_free_trees.cpp
+		generation/all_ulab_rooted_trees.cpp
 		generation/rand_lab_free_trees.cpp
 		generation/rand_lab_rooted_trees.cpp
 		generation/rand_ulab_free_trees.cpp
@@ -182,6 +183,7 @@ set(LIBLAL_MAIN_HEADER
 set(LIBLAL_GENERATION_HEADER
 	generation/all_lab_free_trees.hpp
 	generation/all_ulab_free_trees.hpp
+	generation/all_ulab_rooted_trees.hpp
 	generation/rand_lab_free_trees.hpp
 	generation/rand_lab_rooted_trees.hpp
 	generation/rand_ulab_free_trees.hpp

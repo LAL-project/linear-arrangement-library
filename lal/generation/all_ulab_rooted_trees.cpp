@@ -38,12 +38,112 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/generation/all_lab_free_trees.hpp>
-#include <lal/generation/all_ulab_free_trees.hpp>
 #include <lal/generation/all_ulab_rooted_trees.hpp>
-#include <lal/generation/rand_lab_free_trees.hpp>
-#include <lal/generation/rand_lab_rooted_trees.hpp>
-#include <lal/generation/rand_ulab_free_trees.hpp>
-#include <lal/generation/rand_ulab_rooted_trees.hpp>
+
+// C++ includes
+#include <numeric>
+using namespace std;
+
+// lal includes
+#include <lal/utils/conversions.hpp>
+
+// lal includes
+
+namespace lal {
+using namespace graphs;
+
+namespace generate {
+
+all_ulab_rooted_trees::all_ulab_rooted_trees() { }
+all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) {
+	init(_n);
+}
+
+all_ulab_rooted_trees::~all_ulab_rooted_trees() { }
+
+void all_ulab_rooted_trees::init(uint32_t _n) {
+	m_is_first = true;
+	m_n = _n;
+
+	// simplest cases
+	if (m_n == 0) {
+		m_is_last = true;
+		return;
+	}
+
+	m_is_last = false;
+
+	m_save = vector<node>(m_n+1, 0);
+	m_prev = vector<node>(m_n+1, 0);
+	m_L = vector<node>(m_n+1, 0);
+
+	// -------------------
+	// generate first tree
+
+	std::iota(m_L.begin(), m_L.end(), 0);
+	m_p = m_n;
+	if (m_p > 1) {
+		for (uint32_t i = 1; i <= m_p - 1; ++i) {
+			m_prev[i] = i;
+			m_save[i] = 0;
+		}
+	}
+}
+
+bool all_ulab_rooted_trees::has_next() const {
+	return not m_is_last;
+}
+
+void all_ulab_rooted_trees::next() {
+	if (m_n <= 2) {
+		m_is_last = true;
+		return;
+	}
+
+	if (m_is_first) {
+		m_is_first = false;
+		return;
+	}
+
+	m_L[m_p] = m_L[m_p] - 1;
+	if (m_p < m_n and (m_L[m_p] != 2 or m_L[m_p - 1] != 2)) {
+		const uint32_t diff = m_p - m_prev[m_L[m_p]];
+		while (m_p < m_n) {
+			m_save[m_p] = m_prev[m_L[m_p]];
+			m_prev[m_L[m_p]] = m_p;
+			++m_p;
+			m_L[m_p] = m_L[m_p - diff];
+		}
+	}
+	while (m_L[m_p] == 2) {
+		--m_p;
+		m_prev[m_L[m_p]] = m_save[m_p];
+	}
+
+	m_is_last = (m_p <= 1);
+}
+
+urtree all_ulab_rooted_trees::get_tree() const {
+	if (m_n == 0) {
+		return urtree(0);
+	}
+	if (m_n == 1) {
+		urtree rT(1);
+		rT.set_root(0);
+		return rT;
+	}
+	if (m_n == 2) {
+		urtree rT(2);
+		rT.set_root(0);
+		rT.add_edge(0,1);
+		return rT;
+	}
+
+	// dummy tree!
+	utree t(m_n);
+	t = utils::level_sequence_to_tree(m_L, m_n);
+	return urtree(t, 0);
+}
+
+} // -- namespace generate
+} // -- namespace lal

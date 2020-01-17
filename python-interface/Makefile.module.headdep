@@ -6,6 +6,7 @@ ALGCR_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp
 DEFS_DEP_HDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
 GEN_DEP_HDRS	= $(LAL_INC_DIR)/lal/generation/all_lab_free_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/all_ulab_free_trees.hpp \
+				  $(LAL_INC_DIR)/lal/generation/all_ulab_rooted_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/rand_lab_free_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/rand_lab_rooted_trees.hpp \
 				  $(LAL_INC_DIR)/lal/generation/rand_ulab_free_trees.hpp \
