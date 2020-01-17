@@ -89,7 +89,8 @@ HEADERS += \
     utils/avl.hpp \
     io.hpp \
     utils/reachability.hpp \
-    utils/sort_integers.hpp
+    utils/sort_integers.hpp \
+    utils/std_utils.hpp
 
 SOURCES += \
     generation/all_lab_free_trees.cpp \
