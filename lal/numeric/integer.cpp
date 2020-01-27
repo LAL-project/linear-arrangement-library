@@ -129,22 +129,22 @@ integer& integer::operator= (const integer& i) {
 	return *this;
 }
 
-bool integer::operator== (uint64_t i) const			{ return mpz_cmp_si(m_val, i) == 0; }
+bool integer::operator== (int64_t i) const			{ return mpz_cmp_si(m_val, i) == 0; }
 bool integer::operator== (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) == 0; }
 
-bool integer::operator!= (uint64_t i) const			{ return not (*this == i); }
+bool integer::operator!= (int64_t i) const			{ return not (*this == i); }
 bool integer::operator!= (const integer& i) const	{ return not (*this == i); }
 
-bool integer::operator< (uint64_t i) const			{ return mpz_cmp_si(m_val, i)  < 0; }
+bool integer::operator< (int64_t i) const			{ return mpz_cmp_si(m_val, i)  < 0; }
 bool integer::operator< (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) < 0; }
 
-bool integer::operator<= (uint64_t i) const			{ return mpz_cmp_si(m_val, i)  <= 0; }
+bool integer::operator<= (int64_t i) const			{ return mpz_cmp_si(m_val, i)  <= 0; }
 bool integer::operator<= (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) <= 0; }
 
-bool integer::operator> (uint64_t i) const			{ return mpz_cmp_si(m_val, i)  > 0; }
+bool integer::operator> (int64_t i) const			{ return mpz_cmp_si(m_val, i)  > 0; }
 bool integer::operator> (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) > 0; }
 
-bool integer::operator>= (uint64_t i) const			{ return mpz_cmp_si(m_val, i)  >= 0; }
+bool integer::operator>= (int64_t i) const			{ return mpz_cmp_si(m_val, i)  >= 0; }
 bool integer::operator>= (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) >= 0; }
 
 integer integer::operator+ (uint64_t i) const		{ integer a(*this); a += i; return a; }
@@ -161,10 +161,10 @@ integer& integer::operator- ()						{ mpz_neg(m_val, m_val);		return *this; }
 integer& integer::operator-= (uint64_t i)			{ mpz_sub_ui(m_val, m_val, i);	return *this; }
 integer& integer::operator-= (const integer& i)		{ mpz_sub(m_val, m_val, i.m_val);	return *this; }
 
-integer integer::operator* (uint64_t i) const		{ integer a(*this); a *= i;	return a; }
+integer integer::operator* (int64_t i) const		{ integer a(*this); a *= i;	return a; }
 integer integer::operator* (const integer& i) const	{ integer a(*this); a *= i;	return a; }
 
-integer& integer::operator*= (uint64_t i)			{ mpz_mul_ui(m_val, m_val, i);	return *this; }
+integer& integer::operator*= (int64_t i)			{ mpz_mul_si(m_val, m_val, i);	return *this; }
 integer& integer::operator*= (const integer& i)		{ mpz_mul(m_val, m_val, i.m_val);	return *this; }
 
 integer integer::operator/ (uint64_t i) const		{ integer a(*this); a /= i;	return a; }
@@ -193,7 +193,6 @@ uint64_t integer::operator% (uint64_t i) const {
 	mpz_clear(r);
 	return m;
 }
-
 integer integer::operator% (const integer& i) const {
 	integer r;
 	r.init();
