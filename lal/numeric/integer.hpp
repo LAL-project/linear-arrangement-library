@@ -115,76 +115,76 @@ class integer {
 		integer& operator= (const integer& i);
 
 		/// Equality operator.
-		bool operator== (uint64_t i) const;
+		bool operator== (int64_t i) const;
 		/// Equality operator.
 		bool operator== (const integer& i) const;
 
 		/// Difference operator.
-		bool operator!= (uint64_t i) const;
+		bool operator!= (int64_t i) const;
 		/// Difference operator.
 		bool operator!= (const integer& i) const;
 
 		/// Less than operator.
-		bool operator< (uint64_t i) const;
+		bool operator< (int64_t i) const;
 		/// Less than operator.
 		bool operator< (const integer& i) const;
 
 		/// Less than or equal to operator.
-		bool operator<= (uint64_t i) const;
+		bool operator<= (int64_t i) const;
 		/// Less than or equal to operator.
 		bool operator<= (const integer& i) const;
 
 		/// Greater than operator.
-		bool operator> (uint64_t i) const;
+		bool operator> (int64_t i) const;
 		/// Greater than operator.
 		bool operator> (const integer& i) const;
 
 		/// Greater than or equal to operator.
-		bool operator>= (uint64_t i) const;
+		bool operator>= (int64_t i) const;
 		/// Greater than or equal to operator.
 		bool operator>= (const integer& i) const;
 
 		/// Addition operator. Returns a new object of type 'integer'.
-		integer operator+ (uint64_t i) const;
+		integer operator+ (int64_t i) const;
 		/// Addition operator. Returns a new object of type 'integer'.
 		integer operator+ (const integer& i) const;
 
 		/// Addition operator. Modifies the current instance.
-		integer& operator+= (uint64_t i);
+		integer& operator+= (int64_t i);
 		/// Addition operator. Modifies the current instance.
 		integer& operator+= (const integer& i);
 
 		/// Minus unary operator. Returns a new object of type 'integer'.
 		integer operator- () const;
 		/// Substraction operator. Returns a new object of type 'integer'.
-		integer operator- (uint64_t i) const;
+		integer operator- (int64_t i) const;
 		/// Substraction operator. Returns a new object of type 'integer'.
 		integer operator- (const integer& i) const;
 
 		/// Minus unary operator. Modifies the current instance.
 		integer& operator- ();
 		/// Substraction operator. Modifies the current instance.
-		integer& operator-= (uint64_t i);
+		integer& operator-= (int64_t i);
 		/// Substraction operator. Modifies the current instance.
 		integer& operator-= (const integer& i);
 
 		/// Product operator. Returns a new object of type 'integer'.
-		integer operator* (uint64_t i) const;
+		integer operator* (int64_t i) const;
 		/// Product operator. Returns a new object of type 'integer'.
 		integer operator* (const integer& i) const;
 
 		/// Product operator. Modifies the current instance.
-		integer& operator*= (uint64_t i);
+		integer& operator*= (int64_t i);
 		/// Product operator. Modifies the current instance.
 		integer& operator*= (const integer& i);
 
 		/// Quotient operator. Returns a new object of type 'integer'.
-		integer operator/ (uint64_t i) const;
+		integer operator/ (int64_t i) const;
 		/// Quotient operator. Returns a new object of type 'integer'.
 		integer operator/ (const integer& i) const;
 
 		/// Quotient operator. Modifies the current instance.
-		integer& operator/= (uint64_t i);
+		integer& operator/= (int64_t i);
 		/// Quotient operator. Modifies the current instance.
 		integer& operator/= (const integer& i);
 
