@@ -102,6 +102,11 @@ void integer::init_str(const std::string& s) {
 	set_str(s);
 }
 
+void integer::init_mpz(const mpz_t& mpz) {
+	init();
+	mpz_set(m_val, mpz);
+}
+
 void integer::clear() {
 	if (not is_initialized()) {
 		return;
@@ -116,6 +121,9 @@ void integer::set_si(int64_t i)		{ mpz_set_si(m_val, i); }
 void integer::set_ui(uint64_t i)	{ mpz_set_ui(m_val, i); }
 void integer::set_str(const std::string& s)	{
 	mpz_set_str(m_val, s.c_str(), 10);
+}
+void integer::set_mpz(const mpz_t& mpz) {
+	mpz_set(m_val, mpz);
 }
 void integer::copy(const integer& i){ mpz_set(m_val, i.m_val); }
 
@@ -247,6 +255,10 @@ uint64_t integer::to_uint() const {
 
 double integer::to_double() const {
 	return mpz_get_d(m_val);
+}
+
+void integer::swap(integer& i) {
+	mpz_swap(m_val, i.m_val);
 }
 
 /* CONVERTERS */

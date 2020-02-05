@@ -108,6 +108,11 @@ void rational::init_integer(const integer& n, const integer& d) {
 	set_integer(n, d);
 }
 
+void rational::init_mpq(const mpq_t& mpq) {
+	init();
+	mpq_set(m_val, mpq);
+}
+
 void rational::clear() {
 	if (is_initialized()) {
 		mpq_clear(m_val);
@@ -133,6 +138,9 @@ void rational::set_integer(const integer& n, const integer& d) {
 	mpq_set_num(m_val, n.get_raw_value());
 	mpq_set_den(m_val, d.get_raw_value());
 	mpq_canonicalize(m_val);
+}
+void rational::set_mpq(const mpq_t& mpq) {
+	mpq_set(m_val, mpq);
 }
 void rational::copy(const rational& r) {
 	mpq_set(m_val, r.m_val);
@@ -321,7 +329,20 @@ integer rational::to_integer() const {
 }
 
 void rational::as_integer(integer& i) const {
-	i.init_str(to_string());
+	mpz_t num, den;
+	mpz_inits(num, den, NULL);
+
+	mpq_get_num(num, m_val);
+	mpq_get_den(den, m_val);
+
+	// if numerator is not 1 then divide numerator by denominator.
+	if (mpz_cmp_si(num, 1) != 0) {
+		mpz_div(num, num, den);
+	}
+
+	i.init_mpz(num);
+
+	mpz_clears(num, den, NULL);
 }
 
 double rational::to_double() const {

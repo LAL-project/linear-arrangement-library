@@ -92,6 +92,8 @@ class integer {
 		void init_ui(uint64_t i);
 		/// Initialises this integer with the value in string @e s.
 		void init_str(const std::string& s);
+		/// Initialises this integer with the value in @e mpz.
+		void init_mpz(const mpz_t& mpz);
 
 		/// Clear the memory of this integer.
 		void clear();
@@ -104,6 +106,8 @@ class integer {
 		void set_ui(uint64_t i);
 		/// Overwrites the value of this integer with the contents in @e s.
 		void set_str(const std::string& s);
+		/// Overwrites the value of this integer with the value in @e mpz.
+		void set_mpz(const mpz_t& mpz);
 		/// Overwrites the value of this integer with the value in @e i.
 		void copy(const integer& i);
 
@@ -221,6 +225,9 @@ class integer {
 		/// Converts this integer to a double-precision floating-point value.
 		double to_double() const;
 
+		/// Swaps the value of this integer with integer @e i's value.
+		void swap(integer& i);
+
 		/* CONVERTERS */
 
 		/// Converts this integer to a string.
@@ -234,13 +241,6 @@ class integer {
 		/// Is this integer initialised?
 		bool m_initialized = false;
 };
-
-/// Swaps the contents of the two integers.
-inline void swap_integer(integer& a, integer& b) {
-	integer copy = a;
-	a = b;
-	b = copy;
-}
 
 /// Make an integer from a 64-bit unsigned integer value.
 inline integer integer_from_ui(uint64_t n) {
