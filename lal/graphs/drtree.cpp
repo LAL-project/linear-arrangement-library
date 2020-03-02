@@ -101,7 +101,8 @@ void drtree::init_rooted(const utree& _t, node r, bool arb) {
 	dgraph::init(_t.n_nodes());
 	add_edges(dir_edges);
 	set_root(r);
-	m_drtree_type = (arb ? arborescence : anti_arborescence);
+	m_drtree_type = (arb ? rooted_directed_tree_type::arborescence :
+						   rooted_directed_tree_type::anti_arborescence);
 }
 
 void drtree::find_drtree_type() {
@@ -116,7 +117,8 @@ void drtree::find_drtree_type() {
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		m_drtree_type = (bfs.all_visited() ? arborescence : none);
+		m_drtree_type = (bfs.all_visited() ? rooted_directed_tree_type::arborescence :
+											 rooted_directed_tree_type::none);
 		return;
 	}
 
@@ -129,7 +131,8 @@ void drtree::find_drtree_type() {
 			all_one = false;
 		}
 	}
-	m_drtree_type = (all_one ? anti_arborescence : none);
+	m_drtree_type = (all_one ? rooted_directed_tree_type::anti_arborescence :
+							   rooted_directed_tree_type::none);
 }
 
 /* GETTERS */

@@ -72,7 +72,7 @@ class drtree : public dtree, virtual public rtree {
 		 * - Anti-arborescences (see @ref anti_arborescence).
 		 * - None of the above (see @ref none).
 		 */
-		enum rooted_directed_tree_type {
+		enum class rooted_directed_tree_type {
 			/**
 			 * An arboresence is a rooted directed tree in which all the edges
 			 * point away from the root, i.e., towards the leaves.
@@ -168,7 +168,7 @@ class drtree : public dtree, virtual public rtree {
 		 * constructor @ref drtree(const utree&,node,bool), or via calling
 		 * method @ref find_drtree_type().
 		 */
-		rooted_directed_tree_type m_drtree_type = none;
+		rooted_directed_tree_type m_drtree_type = rooted_directed_tree_type::none;
 };
 
 } // -- namespace graphs

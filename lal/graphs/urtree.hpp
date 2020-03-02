@@ -52,8 +52,8 @@ namespace graphs {
  *
  * This class represents a rooted undirected tree.
  *
- * This class can be built from an undirected tree a chosen node, the root, or
- * by inserting edges one by one.
+ * This class can be built from an undirected tree and a chosen node, the
+ * root, or by inserting edges one by one.
  */
 class urtree : public utree, virtual public rtree {
 	public:
