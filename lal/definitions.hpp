@@ -76,9 +76,9 @@ typedef std::pair<edge,edge> edge_pair;
 typedef std::vector<node> neighbourhood;
 
 /// Major version number of the library's current state.
-static const std::string __lal_major_verno = "2019";
+static const std::string __lal_major_verno = "2020";
 /// Minor version number of the library's current state.
-static const std::string __lal_minor_verno = "07";
+static const std::string __lal_minor_verno = "03";
 /// Patch version number of the library's current state.
 static const std::string __lal_patch_verno = "00";
 
