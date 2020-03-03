@@ -47,7 +47,7 @@
 namespace lal {
 namespace utils {
 
-/// Insertiong sort
+// Insertion sort
 template<typename It>
 void insertion_sort(It begin, It end) {
 	for (It i = begin + 1; i != end; ++i) {
@@ -62,7 +62,7 @@ void insertion_sort(It begin, It end) {
 	}
 }
 
-/**
+/*
  * @brief Sort integer values within the range \f$[m,M)\f$ increasingly.
  *
  * The values \f$m,M\f$ represent the minimum and maximum values within the
@@ -115,7 +115,7 @@ sort_1_n_inc(It begin, It end)
 	}
 }
 
-/**
+/*
  * @brief Sort integer values within the range \f$[m,M)\f$ increasingly.
  *
  * The values \f$m,M\f$ represent the minimum and maximum values within the

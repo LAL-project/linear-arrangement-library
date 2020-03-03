@@ -50,6 +50,10 @@
 namespace lal {
 namespace utils {
 
+// Function used to tell the compiler what is not used.
+template<class T>
+inline void UNUSED(const T& x) { (void)x; }
+
 /*
  * @brief Call a function @e F that does not admit empty arrangements.
  *
@@ -74,9 +78,19 @@ T call_with_empty_arrangement(
 	return F(g,__pi);
 }
 
+/* @brief Retrieves the neighbours of a vertex in a graph as a list of
+ * boolean values.
+ *
+ * Sets to true the positions in @e neighs that correspond to the vertices
+ * neighours of @e u.
+ * @param g Input graph.
+ * @param u Input vertex.
+ * @param neighs Boolean list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
+ */
 template<class G>
 void get_bool_neighbours(const G& g, node u, std::vector<bool>& neighs) {
-	for (node v : g.get_neighbours(u)) {
+	for (const node v : g.get_neighbours(u)) {
 		neighs[v] = true;
 	}
 }
