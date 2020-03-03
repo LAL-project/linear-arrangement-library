@@ -269,14 +269,14 @@ class rational {
 
 		/**
 		 * @brief Converts this rational to an integer value.
-		 * @return Returns \f$ \floor{n/d} \f$ where \f$n,d\f$ are, respectively,
-		 * the numerator and denominator.
+		 * @return Returns \f$ \left\lfloor n/d \right\rfloor \f$ where
+		 * \f$n,d\f$ are, respectively, the numerator and denominator.
 		 */
 		integer to_integer() const;
 		/**
 		 * @brief Converts this rational to an integer value.
-		 * @return Returns \f$ \floor{n/d} \f$ where \f$n,d\f$ are, respectively,
-		 * the numerator and denominator.
+		 * @return Returns \f$ \left\lfloor n/d \right\rfloor \f$ where
+		 * \f$n,d\f$ are, respectively, the numerator and denominator.
 		 */
 		void as_integer(integer& i) const;
 

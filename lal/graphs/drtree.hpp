@@ -68,9 +68,9 @@ class drtree : public dtree, virtual public rtree {
 		 *
 		 * In this library, we distinguish between three disjoint types of
 		 * directed trees:
-		 * - Arborescences (see @ref arborescence).
-		 * - Anti-arborescences (see @ref anti_arborescence).
-		 * - None of the above (see @ref none).
+		 * - Arborescences (see @ref rooted_directed_tree_type::arborescence).
+		 * - Anti-arborescences (see @ref rooted_directed_tree_type::anti_arborescence).
+		 * - None of the above (see @ref rooted_directed_tree_type::none).
 		 */
 		enum class rooted_directed_tree_type {
 			/**
@@ -85,8 +85,8 @@ class drtree : public dtree, virtual public rtree {
 			anti_arborescence,
 			/**
 			 * If the direction of the edges of this tree is not uniform
-			 * (either always inwards, or always outwards), the tree has no
-			 * particular type.
+			 * (it is uniform when they always point towards or outwards the
+			 * root), the tree has no particular type.
 			 */
 			none
 		};
