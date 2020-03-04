@@ -18,7 +18,7 @@
 # 		treebank_processor.tree_feature_k2
 # 		treebank_processor.tree_feature_k3
 # 		....
-# Our aim in this piece of code is to make two subclasses so that
+# Our aim in this piece of code is to make two subclasses so that the
 # values of the enumerations "tree_feature" and "processor_error"
 # are members of classes, namely, we want class "treebank_processor"
 # to be usable in this way:
@@ -32,8 +32,9 @@
 # 		treebank_processor.tree_feature.k3
 # 		....
 
-# -----------------------
-# Make the two subclasses
+
+# -------------------
+# Make the subclasses
 
 class processor_error:
 	__dummy_attr = 0
