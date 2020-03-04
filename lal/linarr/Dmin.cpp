@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019-2020
+ *  Copyright (C) 2019
  *
  *  This file is part of Linear Arrangement Library.
  *
@@ -44,75 +44,37 @@
  *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
  *
  ********************************************************************/
- 
-#pragma once
+
+#include <lal/linarr/D.hpp>
 
 // C++ includes
-#include <vector>
+using namespace std;
 
 // lal includes
-#include <lal/definitions.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/utree.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
+#include <utils/macros.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace linarr {
 
-/* D */
+pair<uint32_t, LINARR> compute_Dmin
+(const graphs::utree& t, const algorithms_Dmin& a)
+{
+	utils::UNUSED(t);
+	utils::UNUSED(a);
 
-/**
- * @brief Computes the sum of the length of the edges in a linear arrangement.
- *
- * Given a graph and a linear arrangement of its vertices, computes the sum of
- * the length of the graph's edges in the arrangement. If the arrangement is
- * not specified, the identity arrangement is used.
- * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$D\f$.
- */
-uint32_t sum_length_edges
-(const graphs::graph& g, const LINARR& pi = {});
+	switch (a) {
+	case algorithms_Dmin::Shiloach:
+		// call Shiloach's algorithm
+		break;
+	case algorithms_Dmin::Chung:
+		// call Fan Chung's algorithm
+		break;
+	}
 
-/**
- * @brief Computes the minimum value of \f$D\f$.
- *
- * Calculates the minimum value of the sum of the length of the edges \f$D\f$
- * and returns a linear arrangement yielding this value.
- * @param t Input tree.
- * @param a The algorithm to be chosen.
- * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
- */
-std::pair<uint32_t, LINARR> compute_Dmin
-(const graphs::utree& t, const algorithms_Dmin& a = algorithms_Dmin::Shiloach);
-
-/* MDD */
-
-/**
- * @brief Computes the mean edge length.
- *
- * Given a graph and a linear arrangement of its vertices, computes the average
- * edge length, or the mean dependency distance (see \cite Jing2015a).
- *
- * It simply computes the sum of the length of the edges of the graph given the
- * arrangement \f$\pi\f$ and divides the sum by the number of edges.
- * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
- * @return Returns Jing's and Liu's \f$MDD\f$ for a single tree.
- */
-numeric::rational MDD_rational
-(const graphs::graph& g, const LINARR& pi = {});
-
-/**
- * @brief Computes the mean edge length as an exact rational value.
- *
- * See @ref MDD_rational for details.
- * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
- * @return The return value is a floating point value.
- */
-double MDD(const graphs::graph& g, const LINARR& pi = {});
+	return make_pair(0, LINARR());
+}
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -55,49 +55,17 @@ namespace utils {
 template<class G, typename node = typename lal::node>
 class BFS {
 	public:
-		/*
-		 * @brief BFS early terminating function.
-		 *
-		 * Returns true if the @ref BFS algorithm should terminate.
-		 *
-		 * For more details on when this function is called see @ref start_at.
-		 * @param BFS The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 */
-		typedef
-		std::function<bool (const BFS<G>& bfs, const node s)>
-		bfs_terminate;
-
-		/*
-		 * @brief BFS node processing function.
-		 *
-		 * Processes the current node visited.
-		 *
-		 * For more details on when this function is called see @ref start_at.
-		 * @param BFS The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 */
 		typedef
 		std::function<void (const BFS<G>& bfs, const node s)>
-		bfs_process_current;
+		bfs_process_one;
 
-		/*
-		 * @brief BFS node processing function.
-		 *
-		 * Processes the next visited node. The direction of the vertices
-		 * visited passed as parameter is always s -> t.
-		 *
-		 * For more details on when this function is called see @ref start_at.
-		 * @param BFS The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 * @param t The node neighbour of @e u visited by the algorithm.
-		 */
 		typedef
 		std::function<void (const BFS<G>& bfs, const node s, const node t)>
-		bfs_process_neighbour;
+		bfs_process_two;
+
+		typedef
+		std::function<bool (const BFS<G>& bfs, const node s)>
+		bfs_bool_function;
 
 	public:
 		// Constructor
@@ -111,10 +79,12 @@ class BFS {
 		void reset() {
 			const uint64_t n = m_G.n_nodes();
 			m_vis = std::vector<bool>(n, false);
+			clear_queue();
 
 			set_terminate_default();
 			set_process_current_default();
 			set_process_neighbour_default();
+			set_vertex_add_default();
 		}
 
 		/*
@@ -139,7 +109,7 @@ class BFS {
 		 *	13.					and we must process all previously visited nodes
 		 *	14.				then
 		 *	15.					proc_neigh(u,w)
-		 *	16.				if w not visited before then
+		 *	16.				if w not visited before and vertex_add(w) then
 		 *	17.					push w into Q
 		 *	18.					mark w as visited in vis
 		 *	19.				endif
@@ -148,68 +118,73 @@ class BFS {
 		 *	22.	endwhile
 		 * </pre>
 		 *
-		 * However, the queue of this object is not cleared before or after
-		 * calling this function. The user of this class has call method
-		 * @ref clear_queue if they want the queue to be empty at the beginning
-		 * of every traversal.
+		 * Users of this class should be aware that the queue of this object is
+		 * not cleared before or after calling this function. The users of this
+		 * class has call method @ref clear_queue if they want the queue to be
+		 * empty at the beginning of every traversal.
 		 *
-		 * @param source The node where the algorithm starts at.
-		 * @param terminate The terminating function. It is used as a termination
-		 * condition in line 8.
-		 * @param proc_curr The function to process the currently visited node.
-		 * It is called in line 7 used to perform some operation on the current
-		 * node of the traversal.
-		 * @param proc_neigh It is called in line 15 used to perform some
-		 * operation on each of the neighbours.
+		 * In order to configure this class, see methods:
+		 * - @ref set_terminate
+		 * - @ref set_process_current
+		 * - @ref set_process_neighbour
+		 * - @ref set_vertex_add
+		 * which, respectively, set a user-defined value to the attributes:
+		 * - @ref m_term
+		 * - @ref m_proc_cur
+		 * - @ref m_proc_neigh
+		 * - @ref m_add_vertex
+		 *
+		 * The defaul behaviours are:
+		 * - @ref m_term: return false (never terminate early)
+		 * - @ref m_proc_cur: do nothing (do not process)
+		 * - @ref m_proc_neigh: do nothing (do not process)
+		 * - @ref m_add_vertex: return true (always the vertex to the queue)
+		 *
+		 * @param source The vertex where the algorithm starts at.
 		 */
 		void start_at(const node source) {
 			m_Q.push(source);
 			m_vis[source] = true;
-			bool term = false;
+			do_traversal();
+		}
 
-			while (not m_Q.empty() and not term) {
-				const node s = m_Q.front();
-				m_Q.pop();
-
-				// process current vertex
-				m_proc_cur(*this, s);
-
-				// check user-defined termination condition
-				term = m_term(*this, s);
-
-				if (not term) {
-					for (const node& t : m_G.get_neighbours(s)) {
-						// Process the neighbour found.
-						// This is always called: even if it has been
-						// visited before.
-						if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
-							m_proc_neigh(*this, s, t);
-						}
-						if (not m_vis[t]) {
-							m_Q.push(t);
-							m_vis[t] = true;
-						}
-					}
-				}
+		/* @brief Perform a BFS traversal starting at a list of vertices
+		 *
+		 * Perform a BFS traversal whose queue is assigned a list of vertices
+		 * @e sources instead of just one vertex. See @ref start_at(node) for
+		 * details on how the traversal works.
+		 *
+		 * @param sources The list of nodes where the traversal starts at.
+		 */
+		void start_at(const std::vector<node>& sources) {
+			for (const node& u : sources) {
+				m_Q.push(u);
+				m_vis[u] = true;
 			}
+			do_traversal();
 		}
 
 		/* SETTERS */
 
 		void set_terminate_default()
 		{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
-		void set_terminate(bfs_terminate f)
+		void set_terminate(bfs_bool_function f)
 		{ m_term = f; }
 
 		void set_process_current_default()
 		{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
-		void set_process_current(bfs_process_current f)
+		void set_process_current(bfs_process_one f)
 		{ m_proc_cur = f; }
 
 		void set_process_neighbour_default()
 		{ m_proc_neigh = [](const BFS<G>&, const node, const node) -> void { }; }
-		void set_process_neighbour(bfs_process_neighbour f)
+		void set_process_neighbour(bfs_process_two f)
 		{ m_proc_neigh = f; }
+
+		void set_vertex_add_default()
+		{ m_add_vertex = [](const BFS<G>&, const node) -> bool { return true; }; }
+		void set_vertex_add(bfs_bool_function f)
+		{ m_add_vertex = f; }
 
 		/*
 		 * @brief Should the algorithm call the neighbour processing function
@@ -240,7 +215,37 @@ class BFS {
 		}
 
 		// Return visited nodes information
-		const std::vector<bool> get_visited() const { return m_vis; }
+		const std::vector<bool>& get_visited() const { return m_vis; }
+
+	private:
+
+		inline
+		void do_traversal() {
+			while (not m_Q.empty()) {
+				const node s = m_Q.front();
+				m_Q.pop();
+
+				// process current vertex
+				m_proc_cur(*this, s);
+
+				// check user-defined early termination condition
+				if (m_term(*this, s)) { break; }
+
+				for (const node& t : m_G.get_neighbours(s)) {
+					// Process the neighbour found.
+					// This is always called: even if it has been
+					// visited before.
+					if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
+						m_proc_neigh(*this, s, t);
+					}
+
+					if (not m_vis[t] and m_add_vertex(*this, t)) {
+						m_Q.push(t);
+						m_vis[t] = true;
+					}
+				}
+			}
+		}
 
 	private:
 		// Constant reference to the graph.
@@ -253,12 +258,55 @@ class BFS {
 		bool m_proc_vis_neighs = false;
 
 	private:
-		// Terminating function.
-		bfs_terminate m_term;
-		// Process current vertex function
-		bfs_process_current m_proc_cur;
-		// Process neighbour vertex function
-		bfs_process_neighbour m_proc_neigh;
+		/*
+		 * @brief BFS early terminating function.
+		 *
+		 * Returns true if the @ref BFS algorithm should terminate.
+		 *
+		 * For more details on when this function is called see @ref start_at.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
+		 * @param s The node at the front of the queue of the algorithm.
+		 */
+		bfs_bool_function m_term;
+
+		/*
+		 * @brief BFS vertex processing function.
+		 *
+		 * Processes the current node visited.
+		 *
+		 * For more details on when this function is called see @ref start_at.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
+		 * @param s The node at the front of the queue of the algorithm.
+		 */
+		bfs_process_one m_proc_cur;
+
+		/*
+		 * @brief BFS vertex processing function.
+		 *
+		 * Processes the next visited node. The direction of the vertices
+		 * visited passed as parameter is always s -> t.
+		 *
+		 * For more details on when this function is called see @ref start_at.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
+		 * @param s The node at the front of the queue of the algorithm.
+		 * @param t The node neighbour of @e u visited by the algorithm.
+		 */
+		bfs_process_two m_proc_neigh;
+
+		/*
+		 * @brief BFS node addition function.
+		 *
+		 * Determines whether a vertex @e s should be added to the queue or not.
+		 *
+		 * For more details on when this function is called see @ref start_at.
+		 * @param BFS The object containing the traversal. This also contains
+		 * several attributes that might be useful to guide the traversal.
+		 * @param s The vertex candidate for addition.
+		 */
+		bfs_bool_function m_add_vertex;
 };
 
 } // -- namespace utils

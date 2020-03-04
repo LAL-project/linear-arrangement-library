@@ -3,6 +3,7 @@
 %import laldefinitions.i
 %import laltree_structure_type.i
 %import lalalgorithms_crossings.i
+%import lalalgorithms_Dmin.i
 %import lalgraphs.i
 %import lalnumeric.i
 
@@ -14,6 +15,9 @@ del laltree_structure_type
 
 algorithms_crossings = lalalgorithms_crossings
 del lalalgorithms_crossings
+
+algorithms_Dmin = lalalgorithms_Dmin
+del lalalgorithms_Dmin
 
 graphs = lalgraphs
 del lalgraphs

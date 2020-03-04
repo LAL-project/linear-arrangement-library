@@ -29,6 +29,7 @@ IO_DEP_HDRS		= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 ITER_DEP_HDRS	= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
 				  $(LAL_INC_DIR)/lal/iterators/Q_iterator.hpp
 LINARR_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp \
+				  $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp \
 				  $(LAL_INC_DIR)/lal/linarr/C.hpp \
 				  $(LAL_INC_DIR)/lal/linarr/classification.hpp \
 				  $(LAL_INC_DIR)/lal/linarr/D.hpp \

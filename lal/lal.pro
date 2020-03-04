@@ -28,6 +28,7 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    linarr/algorithms_Dmin.hpp \
     namespaces.hpp \
     definitions.hpp \
     generation.hpp \
@@ -114,6 +115,7 @@ SOURCES += \
     iterators/Q_iterator.cpp \
     linarr/C.cpp \
     linarr/C_approx.cpp \
+    linarr/Dmin.cpp \
     linarr/classification.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \

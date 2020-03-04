@@ -44,6 +44,16 @@ ALGCR_WRAP		= $(ARCH_DIR)/$(ALGCR_INAME)_wrap
 _ALGCR_SO		= _$(ALGCR_INAME).$(SO_EXT)
 ALGCR_SO		= $(ARCH_DIR)/$(_ALGCR_SO)
 
+# -- algorithm_Dmin module
+ALGDM_MAIN_INT	= submodules/$(ALGDM_INAME).i
+ALGDM_SUB_INT	= submodules/$(ALGDM_BNAME)_impl.i
+ALGDM_MOD_DEPS	= $(ALGDM_MAIN_INT) $(ALGDM_SUB_INT) $(ALGDM_DEP_HDRS)
+_ALGDM_PF		= $(ALGDM_INAME).py
+ALGDM_PY_FILE	= $(ARCH_DIR)/$(_ALGDM_PF)
+ALGDM_WRAP		= $(ARCH_DIR)/$(ALGDM_INAME)_wrap
+_ALGDM_SO		= _$(ALGDM_INAME).$(SO_EXT)
+ALGDM_SO		= $(ARCH_DIR)/$(_ALGDM_SO)
+
 # CLASSES AND METHODS
 
 # -- definitions module

@@ -36,6 +36,10 @@ TST_INAME	= $(TST_BNAME)
 ALGCR_BNAME	= lalalgorithms_crossings
 ALGCR_INAME	= $(ALGCR_BNAME)
 
+# -- algorithms_crossings
+ALGDM_BNAME	= lalalgorithms_Dmin
+ALGDM_INAME	= $(ALGDM_BNAME)
+
 # -- definitions
 DEFS_BNAME	= laldefinitions
 DEFS_INAME	= $(DEFS_BNAME)

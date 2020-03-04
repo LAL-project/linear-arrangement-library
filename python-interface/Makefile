@@ -157,6 +157,7 @@ include Makefile.module.variables
 SUBMODULES	= $(DSE_SO) 	\
 			  $(TST_SO) 	\
 			  $(ALGCR_SO) 	\
+			  $(ALGDM_SO) 	\
 			  $(DEFS_SO) 	\
 			  $(GEN_SO) 	\
 			  $(GRAPHS_SO) 	\
