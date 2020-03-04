@@ -40,11 +40,8 @@
 
 #include <lal/generation/rand_ulab_rooted_trees.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
-#include <iostream>
+#include <cassert>
 using namespace std;
 
 // lal includes

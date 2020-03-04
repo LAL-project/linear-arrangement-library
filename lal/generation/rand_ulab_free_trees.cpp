@@ -40,10 +40,8 @@
 
 #include <lal/generation/rand_ulab_free_trees.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 #include <numeric>
 using namespace std;
 

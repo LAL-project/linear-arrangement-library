@@ -40,10 +40,8 @@
 
 #include <lal/graphs/utree.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 using namespace std;
 
 // lal includes
@@ -78,7 +76,7 @@ utree& utree::add_edges(const vector<edge>& edges, bool norm) {
 	//     assert(utils::is_tree(*this));
 	// because the tree might not be complete and lack some
 	// edges. If we asserted "is_tree", we would require the
-	// user to insert ALL edges at once, even though they might
+	// user to insert ALL edges at once, but they might
 	// not be available.
 	assert(not utils::has_cycles(*this));
 	return *this;

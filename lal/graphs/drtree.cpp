@@ -40,10 +40,8 @@
 
 #include <lal/graphs/drtree.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 #include <vector>
 #include <queue>
 using namespace std;

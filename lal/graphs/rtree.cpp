@@ -40,6 +40,9 @@
 
 #include <lal/graphs/rtree.hpp>
 
+// C++ includes
+#include <cassert>
+
 namespace lal {
 namespace graphs {
 

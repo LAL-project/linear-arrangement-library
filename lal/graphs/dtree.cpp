@@ -40,10 +40,8 @@
 
 #include <lal/graphs/dtree.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 using namespace std;
 
 // lal includes

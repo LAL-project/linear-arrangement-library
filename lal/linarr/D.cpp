@@ -40,10 +40,8 @@
  
 #include <lal/linarr/D.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 #include <numeric>
 using namespace std;
 

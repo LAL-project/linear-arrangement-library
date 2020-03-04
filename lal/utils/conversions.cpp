@@ -40,10 +40,8 @@
  
 #include <lal/utils/conversions.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 using namespace std;
 
 #define to_uint32(x) static_cast<uint32_t>(x)

@@ -40,10 +40,8 @@
  
 #include <lal/generation/all_ulab_free_trees.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 #include <limits>
 using namespace std;
 

@@ -40,10 +40,8 @@
  
 #include <lal/properties/C_rla.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 #include <vector>
 using namespace std;
 

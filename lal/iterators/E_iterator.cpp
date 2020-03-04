@@ -40,10 +40,8 @@
 
 #include <lal/iterators/E_iterator.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
+#include <cassert>
 using namespace std;
 
 // lal includes

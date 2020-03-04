@@ -41,11 +41,11 @@
 #include <lal/properties/C_rla.hpp>
 
 // C includes
-#include <assert.h>
 #include <string.h>
 
 // C++ includes
 #include <algorithm>
+#include <cassert>
 #include <vector>
 #include <map>
 using namespace std;

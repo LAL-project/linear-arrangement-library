@@ -40,11 +40,9 @@
 
 #include <lal/linarr/classification.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 // lal includes

@@ -40,6 +40,9 @@
 
 #pragma once
 
+// C++ includes
+#include <vector>
+
 // lal includes
 #include <lal/graphs/tree.hpp>
 

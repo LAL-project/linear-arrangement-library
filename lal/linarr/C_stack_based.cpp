@@ -42,9 +42,9 @@
 
 // C includes
 #include <string.h>
-#include <assert.h>
 
 // C++ includes
+#include <cassert>
 #include <map>
 using namespace std;
 

@@ -40,12 +40,10 @@
  
 #include <lal/generation/all_lab_free_trees.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
 #include <algorithm>
 #include <iterator>
+#include <cassert>
 #include <limits>
 using namespace std;
 

@@ -40,8 +40,8 @@
 
 #include <lal/graphs/urtree.hpp>
 
-// C includes
-#include <assert.h>
+// C++ includes
+#include <cassert>
 
 namespace lal {
 namespace graphs {

@@ -40,9 +40,9 @@
 
 #pragma once
 
-// C includes
+// C++ includes
 #if defined DEBUG
-#include <assert.h>
+#include <cassert>
 #endif
 
 // lal includes

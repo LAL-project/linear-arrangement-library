@@ -40,11 +40,9 @@
 
 #include <lal/properties/degrees.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
 #include <functional>
+#include <cassert>
 using namespace std;
 
 namespace lal {

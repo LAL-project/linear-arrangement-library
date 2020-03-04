@@ -40,11 +40,9 @@
 
 #include <lal/graphs/dgraph.hpp>
 
-// C includes
-#include <assert.h>
-
 // C++ includes
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <set>
 using namespace std;
