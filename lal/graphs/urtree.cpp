@@ -42,12 +42,16 @@
 
 // C++ includes
 #include <cassert>
+#include <vector>
+using namespace std;
 
 namespace lal {
 namespace graphs {
 
 urtree::urtree() : utree() { }
-urtree::urtree(uint32_t n) : utree(n) { }
+urtree::urtree(uint32_t n) : utree(n) {
+	rtree::rtree_init();
+}
 urtree::urtree(const utree& t, node r) : utree() {
 	init_rooted(t, r);
 }
@@ -57,9 +61,31 @@ void urtree::init_rooted(const utree& t, node r) {
 	clear();
 	*static_cast<ugraph *>(this) = t;
 	set_root(r);
+	rtree::rtree_init();
 }
 
 bool urtree::is_rooted() const { return true; }
+
+void urtree::calculate_nodes_subtrees() {
+	assert(is_tree());
+	m_num_verts_subtree_valid = true;
+	m_num_verts_subtree = vector<uint32_t>(n_nodes());
+	vector<bool> vis(n_nodes(), false);
+	calc_nodes_subtree(get_root(), vis);
+}
+
+/* PRIVATE */
+
+void urtree::calc_nodes_subtree(node r, vector<bool>& vis) {
+	m_num_verts_subtree[r] = 1;
+	vis[r] = true;
+	for (const node u : get_neighbours(r)) {
+		if (not vis[u]) {
+			calc_nodes_subtree(u, vis);
+			m_num_verts_subtree[r] += m_num_verts_subtree[u];
+		}
+	}
+}
 
 } // -- namespace graphs
 } // -- namespace lal

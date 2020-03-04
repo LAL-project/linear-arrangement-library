@@ -64,7 +64,18 @@ class tree : virtual public graph {
 		tree();
 		virtual ~tree();
 
-		/// Returns whether this graph is an actual tree or not.
+		/**
+		 * @brief Returns whether this graph is an actual tree or not.
+		 *
+		 * Returns true if the number of edges is one less than the
+		 * number of vertices. Note that this would not really be true if the
+		 * addition of edges was not constrained. Since it is constrained in a
+		 * way that no cycles can be produced (see @ref utree::add_edge,
+		 * @ref utree::add_edges, @ref dtree::add_edge, @ref dtree::add_edges),
+		 * then we only need to check for the number of edges.
+		 *
+		 * For further characterisations of a tree, see \cite Tree_Wikipedia.
+		 */
 		bool is_tree() const;
 
 		/// Returns whether this tree is a rooted tree.

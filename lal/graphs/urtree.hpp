@@ -94,6 +94,20 @@ class urtree : public utree, virtual public rtree {
 		void init_rooted(const utree& t, node r);
 
 		bool is_rooted() const;
+
+		void calculate_nodes_subtrees();
+
+	private:
+
+		/**
+		 * @brief Calculates the number of vertices of the tree rooted rooted at @e r
+		 * on undirected trees.
+		 * @param r Root of the subtree.
+		 * @param vis Visited vertices.
+		 * @post The attribute @ref m_num_verts_subtree[@e r] contains the number
+		 * of vertices of the subtree rooted at @e r.
+		 */
+		void calc_nodes_subtree(node r, std::vector<bool>& vis);
 };
 
 } // -- namespace graphs

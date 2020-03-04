@@ -42,6 +42,7 @@
 
 // C++ includes
 #include <cassert>
+using namespace std;
 
 namespace lal {
 namespace graphs {
@@ -52,6 +53,7 @@ rtree::~rtree() { }
 void rtree::set_root(node r) {
 	m_r = r;
 	m_root_set = true;
+	m_num_verts_subtree_valid = false;
 }
 
 node rtree::get_root() const { return m_r; }
@@ -59,6 +61,21 @@ node rtree::get_root() const { return m_r; }
 bool rtree::is_rooted() const { return true; }
 
 bool rtree::has_root() const { return m_root_set; }
+
+uint32_t rtree::n_nodes_subtree(node u) const {
+	assert(has_node(u));
+	return m_num_verts_subtree[u];
+}
+
+bool rtree::n_nodes_subtree_valid() const {
+	return m_num_verts_subtree_valid;
+}
+
+/* PROTECTED */
+
+void rtree::rtree_init() {
+	m_num_verts_subtree = vector<uint32_t>(n_nodes());
+}
 
 } // -- namespace graphs
 } // -- namespace lal

@@ -50,7 +50,7 @@ bool tree::is_tree() const {
 	// NOTE: this would not really be true if the addition of edges
 	// was not constrained. Since it is, in a way that no cycles can
 	// be produced, then we only need to check for the number of edges.
-	return n_edges() == n_nodes() - 1;
+	return (n_nodes() == 0 ? true : n_edges() == n_nodes() - 1);
 
 	// NOTE 2: this is only true in a debug compilation of the library.
 }
