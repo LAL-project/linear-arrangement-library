@@ -54,8 +54,7 @@ namespace graphs {
 /**
  * @brief Directed graph class.
  *
- * Simple class implementing a directed graph, using the adjacency
- * list data structure.
+ * Class implementing a directed graph, using the adjacency list data structure.
  *
  * An object of this class must be initialised either with its constructor
  * or with the @ref init(uint32_t) method. Edges can then be added one by one
@@ -175,13 +174,10 @@ class dgraph : virtual public graph {
 		std::vector<neighbourhood> m_in_adjacency_list;
 
 	protected:
-		/**
-		 * @brief Initialises memory for the @ref dgraph class only.
-		 * @param n Number of nodes.
-		 */
-		void _init(uint32_t n);
-		/// Clears memory for the @ref graph class only.
-		void _clear();
+		/// Initialises memory of @ref dgraph class.
+		virtual void _init(uint32_t n);
+		/// Clears the memory used by this directed graph
+		virtual void _clear();
 };
 
 } // -- namespace graphs

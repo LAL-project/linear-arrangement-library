@@ -42,6 +42,7 @@
 
 // C++ includes
 #include <algorithm>
+//#include <iostream>
 #include <cassert>
 #include <cmath>
 #include <set>
@@ -70,6 +71,10 @@ graph::~graph() { }
 void graph::init(uint32_t n) {
 	_clear();
 	_init(n);
+}
+
+void graph::clear() {
+	_clear();
 }
 
 /* OPERATORS */
@@ -127,10 +132,6 @@ bool graph::check_normalised() {
 	return true;
 }
 
-void graph::clear() {
-	_clear();
-}
-
 /* SETTERS */
 
 /* GETTERS */
@@ -178,12 +179,14 @@ void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
 /* PROTECTED */
 
 void graph::_init(uint32_t n) {
+	//cout << "graph::_init(uint32_t)" << endl;
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);
 }
 
 void graph::_clear() {
+	//cout << "graph::_clear()" << endl;
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list.clear();

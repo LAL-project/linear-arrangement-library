@@ -52,15 +52,16 @@ namespace graphs {
 /**
  * @brief Abstract class for graphs.
  *
- * Simple class implementing an undirected graph, using the adjacency
- * list data structure.
+ * Class used as an interface for all subclasses of graphs. This means that this
+ * class cannot be instantiated.
  *
- * An object of this class must be initialised either with its constructor
- * or with the @ref init method. Edges can then be added one by one
- * by calling its subclass' methods @e add_edge or @e add_edges methods.
- *
- * In most classes of graphs it is allowed to use the @ref graph::disjoint_union
- * operation, which will join two graphs into a single one.
+ * A usual way of initialising classes inheriting from this one is to use one
+ * of the @ref init methods available. Depending on the subclass, this method
+ * admits either the number of vertices of the graph or a whole other graph and
+ * further information (see @ref drtree::init_rooted(const utree&, node, drtree::drtree_type).
+ * While these classes' internal memory can be initialised, it can also be cleared
+ * using method @ref clear. Each class reimplements this method to carry this
+ * task appropriately.
  */
 class graph {
 	public:
@@ -79,20 +80,19 @@ class graph {
 		/* MODIFIERS */
 
 		/**
-		 * @brief Allocate memory for @e n nodes.
+		 * @brief Allocates the necessary memory for this class.
 		 *
-		 * Calls @ref clear and @ref _init(uint32_t).
+		 * See @ref _init for details.
 		 * @param n Number of nodes.
-		 * @post The previous graph structure is cleared. See @ref clear.
 		 */
-		void init(uint32_t n);
+		virtual void init(uint32_t n);
 		/**
-		 * @brief Deletes all edges and nodes from the graph.
+		 * @brief Frees the memory occupied by this graph.
 		 *
-		 * Frees the memory occupied by this graph.
+		 * See @ref _clear for details.
 		 * @post The graph is normalised. The number of edges is 0.
 		 */
-		void clear();
+		virtual void clear();
 
 		/**
 		 * @brief Disjoint union of graphs.
@@ -206,12 +206,9 @@ class graph {
 		bool m_normalised = true;
 
 	protected:
-		/**
-		 * @brief Initialises memory for the @ref graph class only.
-		 * @param n Number of nodes.
-		 */
+		/// Initialises memory of @ref graph class.
 		virtual void _init(uint32_t n);
-		/// Clears memory for the @ref graph class only.
+		/// Clears memory for the @ref graph class.
 		virtual void _clear();
 
 		/**

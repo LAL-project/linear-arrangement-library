@@ -41,7 +41,7 @@
 #include <lal/graphs/utree.hpp>
 
 // C++ includes
-#include <iostream>
+//#include <iostream>
 #include <cassert>
 using namespace std;
 
@@ -125,6 +125,18 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 }
 
 bool utree::is_rooted() const { return false; }
+
+/* PROTECTED */
+
+void utree::_init(uint32_t n) {
+	//cout << "utree::_init(uint32_t)" << endl;
+	ugraph::_init(n);
+}
+
+void utree::_clear() {
+	//cout << "utree::_clear()" << endl;
+	ugraph::_clear();
+}
 
 } // -- namespace graphs
 } // -- namespace lal

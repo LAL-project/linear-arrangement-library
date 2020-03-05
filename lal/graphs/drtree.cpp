@@ -41,6 +41,7 @@
 #include <lal/graphs/drtree.hpp>
 
 // C++ includes
+//#include <iostream>
 #include <cassert>
 #include <vector>
 #include <queue>
@@ -56,8 +57,9 @@ using namespace utils;
 namespace graphs {
 
 drtree::drtree() : dtree() { }
-drtree::drtree(uint32_t n) : dtree(n) {
-	rtree::rtree_init();
+drtree::drtree(uint32_t n) {
+	drtree::_init(n);
+	rtree::tree_init(n);
 }
 drtree::drtree(const utree& t, node r, drtree_type arb) : dtree() {
 	// assert(utils::is_tree(t));
@@ -73,18 +75,19 @@ void drtree::set_root(node r) {
 
 void drtree::init_rooted(const utree& _t, node r, drtree_type arb) {
 	assert(utils::is_tree(_t));
+	assert(arb == drtree_type::arborescence or arb == drtree_type::anti_arborescence);
 
 	if (_t.n_nodes() == 0) {
-		dgraph::init(0);
-		m_r = 0;
-		rtree::rtree_init();
+		dtree::_init(0);
+		rtree::tree_init(0);
 		return;
 	}
 
-	// build list of directed edges out of 'g' ...
+	// list of directed edges out of 'g'
 	vector<edge> dir_edges(_t.n_edges());
 	auto it_dir_edges = dir_edges.begin();
 
+	// build list of directed edges using a breadth-first search
 	BFS<ugraph> bfs(_t);
 	bfs.set_process_neighbour(
 	[&](const BFS<ugraph>&, const node s, const node t) -> void {
@@ -104,14 +107,14 @@ void drtree::init_rooted(const utree& _t, node r, drtree_type arb) {
 	bfs.start_at(r);
 
 	// construct rooted directed tree
+	rtree::tree_init(n_nodes());
 	dgraph::init(_t.n_nodes());
+
 	add_edges(dir_edges);
 	set_root(r);
 	m_drtree_type = arb;
 
 	m_drtree_type_valid = true;
-
-	rtree::rtree_init();
 }
 
 void drtree::find_drtree_type() {
@@ -147,6 +150,16 @@ void drtree::find_drtree_type() {
 							   drtree_type::none);
 }
 
+void drtree::calculate_nodes_subtrees() {
+	assert(is_tree());
+	assert(has_root());
+	assert(is_tree_type_valid());
+	assert(get_drtree_type() == drtree_type::arborescence);
+
+	m_num_verts_subtree_valid = true;
+	calc_nodes_subtree(get_root());
+}
+
 /* GETTERS */
 
 urtree drtree::to_undirected() const {
@@ -163,10 +176,20 @@ bool drtree::is_tree_type_valid() const {
 
 bool drtree::is_rooted() const { return true; }
 
-void drtree::calculate_nodes_subtrees() {
-	assert(is_tree());
-	m_num_verts_subtree_valid = true;
-	calc_nodes_subtree(get_root());
+/* PROTECTED */
+
+void drtree::_init(uint32_t n) {
+	//cout << "drtree::_init(uint32_t)" << endl;
+	rtree::tree_init(n);
+	dtree::_init(n);
+	m_drtree_type_valid = false;
+}
+
+void drtree::_clear() {
+	//cout << "drtree::_clear()" << endl;
+	rtree::tree_clear();
+	dtree::_clear();
+	m_drtree_type_valid = false;
 }
 
 /* PRIVATE */

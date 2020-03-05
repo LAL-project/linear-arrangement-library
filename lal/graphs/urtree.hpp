@@ -86,16 +86,23 @@ class urtree : public utree, virtual public rtree {
 		 * and one of its nodes as the root of the rooted tree.
 		 *
 		 * It simply copies the tree into its own structure and keeps the
-		 * root node.
+		 * root node. For this reason, @e t need not be a tree (see @ref is_tree).
+		 * Namely, this method admits trees with fewer edges than the number
+		 * of vertices minus 1.
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @pre The graph @e t must be a tree.
 		 */
 		void init_rooted(const utree& t, node r);
 
 		bool is_rooted() const;
 
 		void calculate_nodes_subtrees();
+
+	protected:
+		/// Initialises memory of @ref urtree class.
+		virtual void _init(uint32_t n);
+		/// Clears the memory used by this undirected rooted tree.
+		virtual void _clear();
 
 	private:
 

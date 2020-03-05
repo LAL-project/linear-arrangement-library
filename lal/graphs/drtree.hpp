@@ -52,13 +52,14 @@ namespace graphs {
 /**
  * @brief Directed rooted tree class.
  *
- * This class represents a rooted directed tree. The edges can be oriented
- * either outwards or inwards (see @ref drtree_type for details).
+ * This class represents a rooted directed tree (see @ref rtree class for information
+ * on rooted trees). The edges can be oriented either outwards or inwards (see
+ * @ref drtree_type for details).
  *
  * This class can be built in two different ways:
  * - from an undirected tree and by orienting its edges from a chosen node, i.e.,
- * the root,
- * - by inserting edges one by one.
+ * the root (see @ref init_rooted),
+ * - by inserting edges one by one or in bulk (see @ref add_edge and @ref add_edges)..
  *
  * In the latter case, the user is recommended to use method @ref find_drtree_type()
  * in order to determine if the tree is an arborescence, an anti-arborescence,
@@ -120,8 +121,19 @@ class drtree : public dtree, virtual public rtree {
 
 		/* MODIFIERS */
 
-		// This method is re-implemented to change the value
-		// of m_drtree_type_valid accordingly.
+		/**
+		 * @brief Set the root of this tree.
+		 *
+		 * Changing the root of a rooted tree invalidates information dependant
+		 * on the tree. See the postconditions for details.
+		 *
+		 * @param r Vertex that represents the root.
+		 * @post Method @ref has_root returns true.
+		 * @post Values in @ref m_num_verts_subtree are invalidated. Call method
+		 * @ref calculate_nodes_subtrees to update them.
+		 * @post Attribute @ref drtree::m_drtree_type) is invalidated. Call
+		 * method @ref drtree::find_drtree_type() to update it.
+		 */
 		void set_root(node r);
 
 		/**
@@ -129,12 +141,18 @@ class drtree : public dtree, virtual public rtree {
 		 *
 		 * Constructs a rooted directed tree from an undirected tree and one of
 		 * its nodes as the root of the rooted tree.
+		 *
+		 * Since the edges are oriented, method @ref is_tree must be true on
+		 * parameter @e t (otherwise, some edges might not be reachable from
+		 * the root and hence completely undirectable).
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @param arb If true then this graph is an arborescence, i.e., the edges
-		 * point towards the leaves (away from the root). If false, then this tree
-		 * is an anti-arborescence, i.e., the edges point towards the root.
-		 * @post Sets the type of directed rooted tree (see @ref m_drtree_type).
+		 * @param arb The type of directed rooted tree.
+		 * @pre Parameter @e arb must be either @ref drtree_type::arborescence
+		 * or @ref drtree_type::anti_arborescence.
+		 * @post Method @ref has_root returns true.
+		 * @post Method @ref is_tree returns true.
+		 * @post Method @ref is_tree_type_valid returns true.
 		 */
 		void init_rooted
 		(const utree& t, node r, drtree_type arb = drtree_type::arborescence);
@@ -142,21 +160,29 @@ class drtree : public dtree, virtual public rtree {
 		/**
 		 * @brief Calculates the type of directed rooted tree.
 		 *
-		 * This method should be if the user is interested in knowing this
-		 * tree's type (see @ref drtree_type) and method
-		 * @ref is_tree_type_valid returns false.
+		 * Examines the orientation of the tree with respect to the root and
+		 * to the leaves. Then, determines the tree's type (see @ref drtree_type)
+		 * according to this orientation.
+		 *
 		 * @pre This object is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
+		 * @post Method @ref is_tree_type_valid evaluates to true.
 		 */
 		void find_drtree_type();
 
+		/**
+		 * @brief Calculates the number of vertices at every rooted subtree.
+		 * @pre The object must be a tree (see @ref is_tree()).
+		 * @pre The tree must have a root (see @ref has_root()).
+		 * @pre Method @ref is_tree_type_valid must return true.
+		 * @pre The tree must be an @ref drtree_type::arborescence.
+		 * @post Method @ref n_nodes_subtree_valid returns true.
+		 */
+		void calculate_nodes_subtrees();
+
 		/* GETTERS */
 
-		/**
-		 * @brief Converts this directed rooted tree into an undirected rooted
-		 * tree.
-		 * @return Returns an object of type undirected tree.
-		 */
+		/// Converts this directed rooted tree into an undirected rooted tree.
 		urtree to_undirected() const;
 
 		/**
@@ -178,7 +204,11 @@ class drtree : public dtree, virtual public rtree {
 
 		bool is_rooted() const;
 
-		void calculate_nodes_subtrees();
+	protected:
+		/// Initialises memory of @ref drtree class.
+		virtual void _init(uint32_t n);
+		/// Clears the memory used by this directed rooted tree.
+		virtual void _clear();
 
 	private:
 		/**

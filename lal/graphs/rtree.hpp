@@ -52,11 +52,21 @@ namespace graphs {
 /**
  * @brief Rooted tree class.
  *
- * This class only provides the protected attribute that represents the root
- * of a tree (attribute @ref m_r). Since this class cannot be instantiated,
- * the user should use the classes:
- * - @ref urtree
- * - @ref drtree
+ * This class provides its users with an abstraction of rooted trees. This
+ * class of trees are similar to regular trees but with an specially labelled
+ * vertex that represents the root. However, since it cannot be instantiated,
+ * users of the library should use the classes @ref urtree and/or @ref drtree.
+ *
+ * Moreover, the root allows defining further properties on these graphs. For
+ * example, the user can query information regarding subtrees of these trees
+ * (see methods @ref n_nodes_subtree and @ref calculate_nodes_subtrees).
+ *
+ * This class allows flexibility of use of rooted trees regarding root's
+ * choice. Method @ref set_root allows setting changing the root of rooted
+ * trees multiple times and at any time. However, any information dependant
+ * on the root becomes invalid upon any change of the root. For example, the
+ * size of each subtree of this tree is not valid (see @ref n_nodes_subtree_valid)
+ * until the tree has a root (see @ref has_root).
  */
 class rtree : virtual public tree {
 	public:
@@ -75,11 +85,20 @@ class rtree : virtual public tree {
 		 * @post Method @ref has_root returns true.
 		 * @post Values in @ref m_num_verts_subtree are invalidated. Call method
 		 * @ref calculate_nodes_subtrees to update them.
-		 * @post In @ref drtree trees, the attribute @ref drtree::m_drtree_type)
-		 * is invalidated. Call method @ref drtree::find_drtree_type() to update
-		 * it.
 		 */
 		virtual void set_root(node r);
+
+		/* MODIFIERS */
+
+		/**
+		 * @brief Calculates the number of vertices at every rooted subtree.
+		 * @pre The object must be a tree (see @ref is_tree()).
+		 * @pre The tree must have a root (see @ref has_root()).
+		 * @post Method @ref n_nodes_subtree_valid returns true.
+		 */
+		virtual void calculate_nodes_subtrees() = 0;
+
+		/* GETTERS */
 
 		/// Return the root of this tree.
 		node get_root() const;
@@ -105,18 +124,6 @@ class rtree : virtual public tree {
 		 */
 		bool n_nodes_subtree_valid() const;
 
-		/* MODIFIERS */
-
-		/**
-		 * @brief Calculates the number of vertices at every rooted subtree.
-		 *
-		 * In case the tree is a @ref drtree, this method only works for those
-		 * trees that are arborescences.
-		 * @pre The object must be a tree (see @ref is_tree()).
-		 * @pre The tree must have a root (see @ref has_root()).
-		 */
-		virtual void calculate_nodes_subtrees() = 0;
-
 	protected:
 		/// Root of the tree.
 		node m_r;
@@ -137,11 +144,10 @@ class rtree : virtual public tree {
 		bool m_num_verts_subtree_valid = false;
 
 	protected:
-		/**
-		 * @brief Initialises the memory of rooted trees.
-		 * @pre The number of nodes must be available.
-		 */
-		void rtree_init();
+		/// Initialises memory of @ref rtree class.
+		virtual void tree_init(uint32_t n);
+		/// Clears the memory used by this rooted tree.
+		virtual void tree_clear();
 };
 
 } // -- namespace graphs

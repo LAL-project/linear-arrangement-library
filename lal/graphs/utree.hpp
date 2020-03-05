@@ -56,9 +56,6 @@ namespace graphs {
  * This class offers almost the same features as the @ref ugraph class. There
  * is one exception, however. One of the methods is not allowed to be used,
  * method @ref ugraph::disjoint_union, which has been made private.
- *
- * Moreover, at every addition of an edge, a debug compilation of the library
- * will check that such addition does not produce cycles.
  */
 class utree : public ugraph, virtual public tree {
 	public:
@@ -80,12 +77,12 @@ class utree : public ugraph, virtual public tree {
 		 * @brief Adds an edge to the tree.
 		 *
 		 * This operation checks that the edge added does not produce cycles,
-		 * but only in a @e  compilation of the library.
+		 * but only in a @e debug compilation of the library.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Should the graph be normalised?
-		 * @pre Conditions are that \f$s \neq t\f$ and the edge \f$\{s,t\}\f$
-		 * is not part of the graph.
+		 * @pre \f$s \neq t\f$
+		 * @pre Edge \f$\{s,t\}\f$ is not part of the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
@@ -107,32 +104,20 @@ class utree : public ugraph, virtual public tree {
 		 * @pre None of the subsets of the list of edges can produce cycles
 		 * when added.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
+		 * after the addition of the edges.
 		 */
 		utree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
-		/**
-		 * @brief Can this edge be added?
-		 *
-		 * In a tree, this edge can only be added if it does not produce cycles.
-		 * @param s First node of the edge.
-		 * @param t Second node of the edge.
-		 * @return Returns whether the addition of this new edge can be added
-		 * to the tree without producing cycles.
-		 */
 		bool can_add_edge(node s, node t) const;
-		/**
-		 * @brief Can these edges be added?
-		 *
-		 * In a tree, these edges can only be added if their addition to the
-		 * tree do not produce cycles.
-		 * @param edges List of edges.
-		 * @return Returns whether the addition of these new edges can be added
-		 * to the tree without producing cycles.
-		 */
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
 		virtual bool is_rooted() const;
+
+	protected:
+		/// Initialises memory of @ref utree class.
+		virtual void _init(uint32_t n);
+		/// Clears the memory used by this undirected tree.
+		virtual void _clear();
 
 	private:
 		// trees should not have this method

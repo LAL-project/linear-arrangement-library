@@ -41,6 +41,7 @@
 #include <lal/graphs/urtree.hpp>
 
 // C++ includes
+//#include <iostream>
 #include <cassert>
 #include <vector>
 using namespace std;
@@ -49,8 +50,9 @@ namespace lal {
 namespace graphs {
 
 urtree::urtree() : utree() { }
-urtree::urtree(uint32_t n) : utree(n) {
-	rtree::rtree_init();
+urtree::urtree(uint32_t n) {
+	utree::_init(n);
+	rtree::tree_init(n);
 }
 urtree::urtree(const utree& t, node r) : utree() {
 	init_rooted(t, r);
@@ -58,20 +60,37 @@ urtree::urtree(const utree& t, node r) : utree() {
 urtree::~urtree() { }
 
 void urtree::init_rooted(const utree& t, node r) {
-	clear();
+	_clear();
+
+	rtree::tree_init(t.n_nodes());
 	*static_cast<ugraph *>(this) = t;
 	set_root(r);
-	rtree::rtree_init();
 }
 
 bool urtree::is_rooted() const { return true; }
 
 void urtree::calculate_nodes_subtrees() {
 	assert(is_tree());
+	assert(has_root());
+
 	m_num_verts_subtree_valid = true;
 	m_num_verts_subtree = vector<uint32_t>(n_nodes());
 	vector<bool> vis(n_nodes(), false);
 	calc_nodes_subtree(get_root(), vis);
+}
+
+/* PROTECTED */
+
+void urtree::_init(uint32_t n) {
+	//cout << "urtree::_init(uint32_t)" << endl;
+	rtree::tree_init(n);
+	utree::_init(n);
+}
+
+void urtree::_clear() {
+	//cout << "urtree::_clear()" << endl;
+	rtree::_clear();
+	utree::_clear();
 }
 
 /* PRIVATE */

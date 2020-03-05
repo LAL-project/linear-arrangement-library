@@ -50,14 +50,22 @@ namespace graphs {
  * @brief Tree graph class.
  *
  * This class is just a class that inherits from @ref graph so as to allow
- * passing classes that inherit from this class to functions that only accept
- * attributes of type @ref graph.
+ * passing classes that inherit from this class as parameters to functions
+ * that only accept attributes of type @ref graph.
  *
- * Tree-like data structures that might be useful for the user are:
+ * Classes that implement different abstractions of trees and that inherit from
+ * this class are:
  * - @ref utree
  * - @ref dtree
  * - @ref urtree
  * - @ref drtree
+ *
+ * In these classes the addition of edges is constrained so as to ensure that
+ * the edges added actually yield trees, i.e., that cycles are never produced.
+ * For the sake of efficiency, only debug compilations of the library
+ * (compilations where the DEBUG symbol is defined) check that such additions
+ * do not produce cycles. In case of doubt, one can query the class using methods
+ * @ref can_add_edge or @ref can_add_edges prior to adding one or more edges.
  */
 class tree : virtual public graph {
 	public:
@@ -80,6 +88,33 @@ class tree : virtual public graph {
 
 		/// Returns whether this tree is a rooted tree.
 		virtual bool is_rooted() const = 0;
+
+		/**
+		 * @brief Can this edge be added?
+		 *
+		 * In a tree, this edge can only be added if it does not produce cycles.
+		 * @param s First node of the edge.
+		 * @param t Second node of the edge.
+		 * @return Returns whether the addition of this new edge can be added
+		 * to the tree without producing cycles.
+		 */
+		virtual bool can_add_edge(node s, node t) const = 0;
+		/**
+		 * @brief Can these edges be added?
+		 *
+		 * In a tree, these edges can only be added if their addition to the
+		 * tree do not produce cycles.
+		 * @param edges List of edges.
+		 * @return Returns whether the addition of these new edges can be added
+		 * to the tree without producing cycles.
+		 */
+		virtual bool can_add_edges(const std::vector<edge>& edges) const = 0;
+
+	protected:
+		/// Initialises memory of @ref rtree class.
+		virtual void tree_init(uint32_t n);
+		/// Clears the memory used by this rooted tree.
+		virtual void tree_clear();
 };
 
 } // -- namespace graphs

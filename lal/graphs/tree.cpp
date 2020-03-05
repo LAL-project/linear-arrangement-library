@@ -40,6 +40,12 @@
 
 #include <lal/graphs/tree.hpp>
 
+//#include <iostream>
+//using namespace std;
+
+// lal includes
+#include <lal/utils/macros.hpp>
+
 namespace lal {
 namespace graphs {
 
@@ -53,6 +59,17 @@ bool tree::is_tree() const {
 	return (n_nodes() == 0 ? true : n_edges() == n_nodes() - 1);
 
 	// NOTE 2: this is only true in a debug compilation of the library.
+}
+
+/* PROTECTED */
+
+void tree::tree_init(uint32_t n) {
+	utils::UNUSED(n);
+	//cout << "tree::tree_init(uint32_t)" << endl;
+}
+
+void tree::tree_clear() {
+	//cout << "tree::tree_clear()" << endl;
 }
 
 } // -- namespace graphs

@@ -53,8 +53,7 @@ namespace graphs {
 /**
  * @brief Undirected graph class.
  *
- * Simple class implementing an undirected graph, using the adjacency
- * list data structure.
+ * Class implementing an undirected graph, using the adjacency list data structure.
  *
  * An object of this class must be initialised either with its constructor
  * or with the @ref init(uint32_t) method. Edges can then be added one by one
@@ -134,6 +133,12 @@ class ugraph : virtual public graph {
 
 		bool is_directed() const;
 		bool is_undirected() const;
+
+	protected:
+		/// Initialises memory of @ref ugraph class.
+		virtual void _init(uint32_t n);
+		/// Clears the memory used by this undirected graph
+		virtual void _clear();
 };
 
 } // -- namespace graphs
