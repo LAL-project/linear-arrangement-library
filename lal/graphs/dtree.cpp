@@ -41,7 +41,6 @@
 #include <lal/graphs/dtree.hpp>
 
 // C++ includes
-//#include <iostream>
 #include <cassert>
 using namespace std;
 
@@ -130,12 +129,10 @@ bool dtree::is_rooted() const { return false; }
 /* PROTECTED */
 
 void dtree::_init(uint32_t n) {
-	//cout << "dtree::_init(uint32_t)" << endl;
 	dgraph::_init(n);
 }
 
 void dtree::_clear() {
-	//cout << "dtree::_clear()" << endl;
 	dgraph::_clear();
 }
 

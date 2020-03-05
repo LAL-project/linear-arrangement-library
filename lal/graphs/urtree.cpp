@@ -41,7 +41,6 @@
 #include <lal/graphs/urtree.hpp>
 
 // C++ includes
-//#include <iostream>
 #include <cassert>
 #include <vector>
 using namespace std;
@@ -82,13 +81,11 @@ void urtree::calculate_nodes_subtrees() {
 /* PROTECTED */
 
 void urtree::_init(uint32_t n) {
-	//cout << "urtree::_init(uint32_t)" << endl;
 	rtree::tree_init(n);
 	utree::_init(n);
 }
 
 void urtree::_clear() {
-	//cout << "urtree::_clear()" << endl;
 	rtree::_clear();
 	utree::_clear();
 }

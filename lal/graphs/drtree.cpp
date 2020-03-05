@@ -41,7 +41,6 @@
 #include <lal/graphs/drtree.hpp>
 
 // C++ includes
-//#include <iostream>
 #include <cassert>
 #include <vector>
 #include <queue>
@@ -179,14 +178,12 @@ bool drtree::is_rooted() const { return true; }
 /* PROTECTED */
 
 void drtree::_init(uint32_t n) {
-	//cout << "drtree::_init(uint32_t)" << endl;
 	rtree::tree_init(n);
 	dtree::_init(n);
 	m_drtree_type_valid = false;
 }
 
 void drtree::_clear() {
-	//cout << "drtree::_clear()" << endl;
 	rtree::tree_clear();
 	dtree::_clear();
 	m_drtree_type_valid = false;

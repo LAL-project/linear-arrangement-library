@@ -40,12 +40,6 @@
 
 #include <lal/graphs/tree.hpp>
 
-//#include <iostream>
-//using namespace std;
-
-// lal includes
-#include <lal/utils/macros.hpp>
-
 namespace lal {
 namespace graphs {
 
@@ -63,14 +57,9 @@ bool tree::is_tree() const {
 
 /* PROTECTED */
 
-void tree::tree_init(uint32_t n) {
-	utils::UNUSED(n);
-	//cout << "tree::tree_init(uint32_t)" << endl;
-}
+void tree::tree_init(uint32_t) { }
 
-void tree::tree_clear() {
-	//cout << "tree::tree_clear()" << endl;
-}
+void tree::tree_clear() { }
 
 } // -- namespace graphs
 } // -- namespace lal

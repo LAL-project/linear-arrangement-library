@@ -41,7 +41,6 @@
 #include <lal/graphs/rtree.hpp>
 
 // C++ includes
-//#include <iostream>
 #include <cassert>
 using namespace std;
 
@@ -75,7 +74,6 @@ bool rtree::n_nodes_subtree_valid() const {
 /* PROTECTED */
 
 void rtree::tree_init(uint32_t n) {
-	//cout << "rtree::tree_init()" << endl;
 	tree::tree_init(n);
 	m_num_verts_subtree = vector<uint32_t>(n);
 	m_num_verts_subtree_valid = false;
@@ -83,7 +81,6 @@ void rtree::tree_init(uint32_t n) {
 }
 
 void rtree::tree_clear() {
-	//cout << "rtree::tree_clear()" << endl;
 	tree::tree_clear();
 	m_num_verts_subtree.clear();
 	m_num_verts_subtree_valid = false;

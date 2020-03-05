@@ -42,7 +42,6 @@
 
 // C++ includes
 #include <algorithm>
-//#include <iostream>
 #include <cassert>
 #include <cmath>
 using namespace std;
@@ -256,13 +255,11 @@ ugraph dgraph::to_undirected() const {
 /* PROTECTED */
 
 void dgraph::_init(uint32_t n) {
-	//cout << "dgraph::_init(uint32_t)" << endl;
 	graph::_init(n);
 	m_in_adjacency_list = vector<neighbourhood>(n);
 }
 
 void dgraph::_clear() {
-	//cout << "dgraph::_clear()" << endl;
 	graph::_clear();
 	m_in_adjacency_list.clear();
 }

@@ -42,7 +42,6 @@
 
 // C++ includes
 #include <algorithm>
-//#include <iostream>
 #include <cassert>
 #include <cmath>
 using namespace std;
@@ -180,12 +179,10 @@ bool ugraph::is_undirected() const { return true; }
 /* PROTECTED */
 
 void ugraph::_init(uint32_t n) {
-	//cout << "ugraph::_init(uint32_t)" << endl;
 	graph::_init(n);
 }
 
 void ugraph::_clear() {
-	//cout << "ugraph::_clear()" << endl;
 	graph::_clear();
 }
 
