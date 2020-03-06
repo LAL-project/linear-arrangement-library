@@ -57,10 +57,9 @@ namespace __lal {
  * @param visited For each node, has it been visited?
  * @param in_stack For each node, is it in the recursion stack?
  */
-template<class G>
 inline bool __find_cycle
 (
-	const G& g, node u,
+	const graphs::dgraph& g, node u,
 	std::vector<bool>& visited, std::vector<bool>& in_stack
 )
 {
@@ -83,7 +82,7 @@ inline bool __find_cycle
 } // -- namespace __lal
 
 /*
- * @brief Returns true if, and only if, the graph has cycles.
+ * @brief Returns true if, and only if, the graph has DIRECTED cycles.
  * @param g Input graph.
  * @returns Returns whether the graph has cycles or not.
  */
@@ -102,7 +101,7 @@ inline bool has_cycles(const graphs::dgraph& g) {
 }
 
 /*
- * @brief Returns true if, and only if, the graph has cycles.
+ * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  * @param g Input graph.
  * @returns Returns whether the graph has cycles or not.
  */
@@ -118,17 +117,17 @@ inline bool has_cycles(const graphs::ugraph& g) {
 	bool cycle_found = false;
 
 	// BFS traversal object
-	BFS<G> bfs_trav(g);
-	bfs_trav.process_visited_neighbours(true);
+	BFS<G> bfs(g);
+	bfs.process_visited_neighbours(true);
 	// functions for the traversal
-	bfs_trav.set_terminate(
+	bfs.set_terminate(
 	[&cycle_found](const BFS<G>&, const node) -> bool {
 		return cycle_found;
 	}
 	);
-	bfs_trav.set_process_neighbour(
-	[&](const BFS<G>& bfs, const node s, const node t) -> void {
-		if (bfs.node_was_visited(t)) {
+	bfs.set_process_neighbour(
+	[&](const BFS<G>& _bfs, const node s, const node t) -> void {
+		if (_bfs.node_was_visited(t)) {
 			// if t was visted before then
 			//     "s -> t" and later "t -> s"
 			// or
@@ -146,9 +145,9 @@ inline bool has_cycles(const graphs::ugraph& g) {
 
 	// find cycles
 	for (node u = 0; u < n and not cycle_found; ++u) {
-		if (not bfs_trav.node_was_visited(u)) {
-			bfs_trav.clear_queue();
-			bfs_trav.start_at(u);
+		if (not bfs.node_was_visited(u)) {
+			bfs.clear_queue();
+			bfs.start_at(u);
 		}
 	}
 	return cycle_found;
