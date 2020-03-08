@@ -170,9 +170,7 @@ void rand_ulab_free_trees::clear() {
  *	number of times.
  *
  */
-uint32_t rand_ulab_free_trees::forest
-(uint32_t m, uint32_t q, uint32_t nt, const string& tab)
-{
+uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	if (m == 0) {
 		// Forest of 0 vertices
 		return nt;
@@ -194,7 +192,7 @@ uint32_t rand_ulab_free_trees::forest
 
 	// Make a forest F' of trees of m - j*d vertices in
 	// total, so that each tree has at most q vertices
-	nt = forest(m - j*d,q, nt, tab + "    ");
+	nt = forest(m - j*d,q, nt);
 
 	// The forest is now in m_tree, and the roots in m_roots.
 	// The root of the last tree generated is stored in nr in m_roots.
@@ -204,7 +202,7 @@ uint32_t rand_ulab_free_trees::forest
 	// Generate a random rooted tree T' in m_tree starting at position nt.
 	// Join this tree to T's root (vertex 0)
 	uint32_t root_Tp;
-	std::tie(root_Tp, nt) = ranrut(d, 0, nt, tab);
+	std::tie(root_Tp, nt) = ranrut(d, 0, nt);
 
 	for (uint32_t c = 1; c < j; ++c) {
 

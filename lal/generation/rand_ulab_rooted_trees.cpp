@@ -109,12 +109,8 @@ void rand_ulab_rooted_trees::clear() {
 /* PROTECTED */
 
 pair<uint32_t,uint32_t>
-rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const string& tab)
+rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 {
-	//cout << tab << "n= " << n << endl;
-	//cout << tab << "lr= " << lr << endl;
-	//cout << tab << "nt= " << nt << endl;
-
 	if (n == 0) {
 		// The new tree has no vertices.
 		// The returned indices are:
@@ -158,7 +154,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const strin
 
 	// -------------------------------------------------------------
 	// Generate T' (a random rooted tree of n - j*d vertices)
-	const auto [root_Tp, store_Tpp] = ranrut(n - j*d, lr,nt, tab + "    ");
+	const auto [root_Tp, store_Tpp] = ranrut(n - j*d, lr,nt);
 
 	// -------------------------------------------------------------
 	// Generate T'' (a random rooted tree of d vertices)
@@ -167,7 +163,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt, const strin
 	//	  2. One of the copies has already been made, and is
 	//		 already connected to the root of T'.
 	//	  3. root_Tpp is the position of the root of the first copy of T''.
-	const auto [root_Tpp, nt2] = ranrut(d, root_Tp,store_Tpp, tab + "     ");
+	const auto [root_Tpp, nt2] = ranrut(d, root_Tp,store_Tpp);
 
 	// -------------------------------------------------------------
 	// Make j - 1 copies of T'' and connect them to T'.

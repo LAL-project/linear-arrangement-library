@@ -163,8 +163,7 @@ class rand_ulab_rooted_trees {
 		 * @return Returns two indices: the index of the root of the last
 		 * tree generated and where to store the next tree in @ref m_tree.
 		 */
-		std::pair<uint32_t,uint32_t> ranrut
-		(uint32_t n, uint32_t lr, uint32_t nt, const std::string& tab = "");
+		std::pair<uint32_t,uint32_t> ranrut(uint32_t n, uint32_t lr, uint32_t nt);
 
 		/// Initialiases @ref m_rn with 31 values from the OEIS (see \cite OEIS_A000081).
 		void init_rn();

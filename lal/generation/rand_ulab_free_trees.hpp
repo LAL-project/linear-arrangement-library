@@ -42,8 +42,6 @@
 
 // C++ includes
 #include <vector>
-#include <random>
-#include <stack>
 #include <map>
 
 // lal includes
@@ -169,13 +167,11 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * Each tree in the forest has at most @e q vertices.
 		 * @param m Integer \f$m \ge 0\f$.
 		 * @param q Integer \f$0 \le q \le m\f$.
-		 * @param nt Index to @ref m_tree indicating where to store the next
-		 * tree.
+		 * @param nt Index to @ref m_tree indicating where to store the next tree.
 		 * @return Returns the position where to store the following
 		 * trees/forests in @ref m_tree.
 		 */
-		uint32_t forest
-		(uint32_t m, uint32_t q, uint32_t nt, const std::string& tab = "");
+		uint32_t forest(uint32_t m, uint32_t q, uint32_t nt);
 
 		/// Generates a tree of @e n vertices with two centroids.
 		void bicenter(uint32_t n);
