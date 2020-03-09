@@ -40,7 +40,6 @@
 
 #pragma once
 
-#include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/dgraph.hpp>
 #include <lal/utils/bfs.hpp>
 #include <lal/utils/macros.hpp>
@@ -86,7 +85,7 @@ inline bool __find_cycle
  * @param g Input graph.
  * @returns Returns whether the graph has cycles or not.
  */
-inline bool has_cycles(const graphs::dgraph& g) {
+inline bool has_directed_cycles(const graphs::dgraph& g) {
 	const uint64_t n = g.n_nodes();
 	std::vector<bool> vis(n, false);
 	std::vector<bool> in_stack(n, false);
@@ -102,31 +101,53 @@ inline bool has_cycles(const graphs::dgraph& g) {
 
 /*
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
+ *
+ * In case the input graph is a directed graph, reverse edges are considered.
  * @param g Input graph.
  * @returns Returns whether the graph has cycles or not.
  */
-inline bool has_cycles(const graphs::ugraph& g) {
-	typedef graphs::ugraph G;
+template<class G>
+inline bool has_undirected_cycles(const G& g) {
+	// BFS traversal object
+	BFS<G> bfs(g);
+	return has_undirected_cycles(g, bfs);
+}
+
+/*
+ * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
+ *
+ * In case the input graph is a directed graph, reverse edges are considered.
+ * @param g Input graph.
+ * @returns Returns whether the graph has cycles or not.
+ */
+template<class G>
+inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	const auto n = g.n_nodes();
 
 	// parent[s] = t <->
-	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER)
-	// After 't' comes 's'
+	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
+	// Note that read operations "if (parent[s] != t)" always come after
+	// the first write "parent[t] = s".
 	std::vector<node> parent(n);
 	// a cycle was found
 	bool cycle_found = false;
 
-	// BFS traversal object
-	BFS<G> bfs(g);
+	// we need to traverse "reversed edges" in directed graphs
+	bfs.set_use_rev_edges(g.is_directed());
+	// we need this to detect cycles
 	bfs.process_visited_neighbours(true);
-	// functions for the traversal
+	// -- functions for the traversal
 	bfs.set_terminate(
-	[&cycle_found](const BFS<G>&, const node) -> bool {
-		return cycle_found;
-	}
+	[&cycle_found](const auto, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
-	[&](const BFS<G>& _bfs, const node s, const node t) -> void {
+	[&](const auto& _bfs, node s, node t, bool) -> void {
+		// Since we want to do the traversal on the directed graphs likewise on
+		// the undirected graphs, the direction is ignored. We do not want to
+		// treat the vertices 's' and 't' as in the edge "t->s" but as in the
+		// edge "s->t" so as to mimic an "undirected traversal" on directed
+		// graphs.
+
 		if (_bfs.node_was_visited(t)) {
 			// if t was visted before then
 			//     "s -> t" and later "t -> s"
@@ -134,7 +155,7 @@ inline bool has_cycles(const graphs::ugraph& g) {
 			//     "s -> ..." and later "... -> s"
 			//     where '...' does not contain 't'
 			if (parent[s] != t) {
-				// node t was reached from some node
+				// node 't' was reached from some node
 				// other than 's' in previous iterations
 				cycle_found = true;
 			}

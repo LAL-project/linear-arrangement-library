@@ -41,7 +41,7 @@
 #pragma once
 
 #include <lal/utils/bfs.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/utils/cycles.hpp>
 
 namespace lal {
 namespace utils {
@@ -50,56 +50,26 @@ namespace utils {
  * @brief Returns true if, and only if, the graph is a tree.
  *
  * By definition, an undirected graph is a tree if it does not contain
- * cycles and has one single connected component.
+ * cycles and has one single connected component. Note that isloated vertices
+ * count as single connected components.
+ *
+ * In an attempt to extend the usage of this method, directed graphs are
+ * also allowed. In this case, since the data structure allows it, the
+ * algorithm looks for undirected cycles in the directed graph.
  * @param g Input graph.
  */
-inline
-bool is_tree(const graphs::ugraph& g) {
-	typedef graphs::ugraph G;
+template<class G>
+inline bool is_tree(const G& g) {
 	const auto n = g.n_nodes();
 
 	// simple cases
 	if (n <= 1) { return true; }
-	if (n == 2 and g.n_edges() == 1) { return true; }
-	if (n == 3 and g.n_edges() == 2) { return true; }
+	if (n == 2) { return g.n_edges() == 1; }
+	if (n == 3) { return g.n_edges() == 2; }
 
-	// parent[s] = t <->
-	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER)
-	// After 't' comes 's'
-	std::vector<node> parent(n);
-	// a cycle was found
-	bool cycle_found = false;
-
-	// BFS traversal object
-	BFS<G> bfs_trav(g);
-	bfs_trav.process_visited_neighbours(true);
-	// functions for the traversal
-	bfs_trav.set_terminate(
-	[&cycle_found](const BFS<G>&, const node) -> bool {
-		return cycle_found;
-	}
-	);
-	bfs_trav.set_process_neighbour(
-	[&](const BFS<G>& bfs, const node s, const node t) -> void {
-		if (bfs.node_was_visited(t)) {
-			// if t was visted before then
-			//     "s -> t" and later "t -> s"
-			// or
-			//     "s -> ..." and later "... -> s"
-			//     where '...' does not contain 't'
-			if (parent[s] != t) {
-				// node t was reached from some node
-				// other than 's' in previous iterations
-				cycle_found = true;
-			}
-		}
-		parent[t] = s;
-	}
-	);
-
-	// find cycles
-	bfs_trav.start_at(0);
-	return not cycle_found and bfs_trav.all_visited();
+	BFS<G> bfs(g);
+	const bool cycle_found = has_undirected_cycles(g, bfs);
+	return not cycle_found and bfs.all_visited();
 }
 
 } // -- namespace utils
