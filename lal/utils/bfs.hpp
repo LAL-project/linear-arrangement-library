@@ -47,7 +47,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
 namespace utils {
@@ -74,11 +75,7 @@ template<class G, typename node = typename lal::node>
 class BFS {
 	public:
 		typedef std::function<void (const BFS<G>& bfs, node s)> bfs_process_one;
-
-		typedef
-		std::function<void (const BFS<G>& bfs, node s, node t, bool)>
-		bfs_process_two;
-
+		typedef std::function<void (const BFS<G>& bfs, node s, node t, bool)> bfs_process_two;
 		typedef std::function<bool (const BFS<G>& bfs, node s)> bfs_bool_function;
 
 	public:
@@ -187,15 +184,12 @@ class BFS {
 
 		void deal_with_neighbour(node s, node t, bool dir) {
 			// Process the neighbour found.
-			// This is always called: even if it has been
-			// visited before.
 			if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
 				m_proc_out_neigh(*this, s, t, dir);
 			}
 
 			if (not m_vis[t] and m_add_vertex(*this, t)) {
 				m_Q.push(t);
-				m_vis[t] = true;
 			}
 		}
 
@@ -275,6 +269,9 @@ class BFS {
 			while (not m_Q.empty()) {
 				const node s = m_Q.front();
 				m_Q.pop();
+
+				// set vertex as visited
+				m_vis[s] = true;
 
 				// process current vertex
 				m_proc_cur(*this, s);
