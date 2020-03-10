@@ -51,7 +51,13 @@ rtree::rtree() { }
 rtree::~rtree() { }
 
 void rtree::set_root(node r) {
-	m_r = r;
+	// if the tree is empty simply consider it has a root...
+	// although it really doesn't
+
+	if (n_nodes() > 0) {
+		assert(has_node(r));
+		m_r = r;
+	}
 	m_root_set = true;
 	m_num_verts_subtree_valid = false;
 }
