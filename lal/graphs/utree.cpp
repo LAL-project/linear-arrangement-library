@@ -60,6 +60,7 @@ utree::utree(const ugraph& t) : ugraph(t.n_nodes()) {
 	assert(utils::is_tree(t));
 	add_edges(t.edges());
 }
+utree::~utree() { }
 
 utree& utree::add_edge(node s, node t, bool norm) {
 #if defined DEBUG
@@ -78,7 +79,7 @@ utree& utree::add_edges(const vector<edge>& edges, bool norm) {
 	// edges. If we asserted "is_tree", we would require the
 	// user to insert ALL edges at once, but they might
 	// not be available.
-	assert(not utils::has_cycles(*this));
+	assert(not utils::has_undirected_cycles(*this));
 	return *this;
 }
 
@@ -120,7 +121,7 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 	// 2. add the edges to the copy
 	copy.add_edges(edges, false);
 	// 3. check that there are no cycles in the copy
-	return not utils::has_cycles(copy);
+	return not utils::has_undirected_cycles(copy);
 }
 
 bool utree::is_rooted() const { return false; }

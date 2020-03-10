@@ -72,6 +72,8 @@ class utree : public ugraph, virtual public tree {
 		 * @pre @e t must be a tree.
 		 */
 		utree(const ugraph& t);
+		/// Destructor
+		virtual ~utree();
 
 		/**
 		 * @brief Adds an edge to the tree.

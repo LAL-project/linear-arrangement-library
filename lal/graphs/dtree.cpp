@@ -65,11 +65,11 @@ dtree& dtree::add_edge(node s, node t, bool norm) {
 }
 
 dtree& dtree::add_edges(const vector<edge>& edges, bool norm) {
-	dgraph::add_edges(edges, norm);
-
 #if defined DEBUG
-	assert(not utils::has_cycles(*this));
+	assert(can_add_edges(edges));
 #endif
+
+	dgraph::add_edges(edges, norm);
 	return *this;
 }
 
@@ -88,11 +88,11 @@ bool dtree::can_add_edge(node s, node t) const {
 
 	// copy the graph
 	dgraph copy = *this;
-	// add the edges
+	// add the edge
 	copy.add_edge(s, t);
 	// convert the directed graph to an undirected graph
 	// and make sure that there are no loops in that
-	return not utils::has_cycles(copy.to_undirected());
+	return not utils::has_undirected_cycles(copy);
 }
 
 bool dtree::can_add_edges(const std::vector<edge>& edges) const {
@@ -103,7 +103,7 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 	}
 
 	// check that none of the edges exist
-	for (auto e : edges) {
+	for (const edge& e : edges) {
 		if (has_edge(e.first, e.second)) {
 			return false;
 		}
@@ -115,7 +115,7 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 	copy.add_edges(edges);
 	// convert the directed graph to an undirected graph
 	// and make sure that there are no loops in that
-	return not utils::has_cycles(copy.to_undirected());
+	return not utils::has_undirected_cycles(copy);
 }
 
 utree dtree::to_undirected() const {

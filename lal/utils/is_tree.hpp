@@ -40,6 +40,7 @@
 
 #pragma once
 
+// lal includes
 #include <lal/utils/bfs.hpp>
 #include <lal/utils/cycles.hpp>
 
@@ -59,16 +60,16 @@ namespace utils {
  * @param g Input graph.
  */
 template<class G>
-inline bool is_tree(const G& g) {
-	const auto n = g.n_nodes();
+bool is_tree(const G& t) {
+	const auto n = t.n_nodes();
 
 	// simple cases
 	if (n <= 1) { return true; }
-	if (n == 2) { return g.n_edges() == 1; }
-	if (n == 3) { return g.n_edges() == 2; }
+	if (n == 2) { return t.n_edges() == 1; }
+	if (n == 3) { return t.n_edges() == 2; }
 
-	BFS<G> bfs(g);
-	const bool cycle_found = has_undirected_cycles(g, bfs);
+	BFS<G> bfs(t);
+	const bool cycle_found = has_undirected_cycles(t, bfs);
 	return not cycle_found and bfs.all_visited();
 }
 
