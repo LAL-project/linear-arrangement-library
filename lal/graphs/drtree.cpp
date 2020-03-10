@@ -43,12 +43,12 @@
 // C++ includes
 #include <cassert>
 #include <vector>
-#include <queue>
 using namespace std;
 
 // lal includes
-#include <lal/utils/bfs.hpp>
 #include <lal/utils/is_tree.hpp>
+#include <lal/utils/bfs.hpp>
+#include <lal/utils/size_subtrees.hpp>
 
 namespace lal {
 using namespace utils;
@@ -73,12 +73,11 @@ void drtree::set_root(node r) {
 }
 
 void drtree::init_rooted(const utree& _t, node r, drtree_type arb) {
-	assert(utils::is_tree(_t));
+	assert(_t.is_tree());
 	assert(arb == drtree_type::arborescence or arb == drtree_type::anti_arborescence);
 
 	if (_t.n_nodes() == 0) {
-		dtree::_init(0);
-		rtree::tree_init(0);
+		_init(0);
 		return;
 	}
 
@@ -87,32 +86,38 @@ void drtree::init_rooted(const utree& _t, node r, drtree_type arb) {
 	auto it_dir_edges = dir_edges.begin();
 
 	// build list of directed edges using a breadth-first search
-	BFS<ugraph> bfs(_t);
-	bfs.set_process_neighbour(
-	[&](const BFS<ugraph>&, const node s, const node t) -> void {
-		if (arb == drtree_type::arborescence) {
+	BFS<utree> bfs(_t);
+	if (arb == drtree_type::arborescence) {
+		bfs.set_process_neighbour(
+		[&](const BFS<utree>&, const node s, const node t, bool) -> void {
 			// the tree is an arborescence, i.e., the
 			// edges point away from the root
 			*it_dir_edges = edge(s,t);
+			++it_dir_edges;
 		}
-		else {
+		);
+	}
+	else {
+		bfs.set_process_neighbour(
+		[&](const BFS<utree>&, const node s, const node t, bool) -> void {
 			// the tree is an anti-arborescence, i.e., the
 			// edges point towards the root
 			*it_dir_edges = edge(t,s);
+			++it_dir_edges;
 		}
-		++it_dir_edges;
+		);
 	}
-	);
 	bfs.start_at(r);
 
 	// construct rooted directed tree
-	rtree::tree_init(n_nodes());
-	dgraph::init(_t.n_nodes());
+	_init(_t.n_nodes());
 
-	add_edges(dir_edges);
+	// set root and add edges
 	set_root(r);
-	m_drtree_type = arb;
+	add_edges(dir_edges);
 
+	// set directed tree type
+	m_drtree_type = arb;
 	m_drtree_type_valid = true;
 }
 
@@ -149,14 +154,22 @@ void drtree::find_drtree_type() {
 							   drtree_type::none);
 }
 
-void drtree::calculate_nodes_subtrees() {
+void drtree::recalc_size_subtrees(bool rev) {
 	assert(is_tree());
 	assert(has_root());
-	assert(is_tree_type_valid());
-	assert(get_drtree_type() == drtree_type::arborescence);
+	if (not rev) {
+		assert(is_tree_type_valid());
+		assert(get_drtree_type() == drtree_type::arborescence);
+	}
 
-	m_num_verts_subtree_valid = true;
-	calc_nodes_subtree(get_root());
+	m_recalc_size_subtrees = false;
+	vector<bool> vis(n_nodes(), false);
+	if (rev) {
+		utils::get_directed_size_subtrees(*this, get_root(), vis, m_size_subtrees);
+	}
+	else {
+		utils::get_undirected_size_subtrees(*this, get_root(), vis, m_size_subtrees);
+	}
 }
 
 /* GETTERS */
@@ -175,6 +188,108 @@ bool drtree::is_tree_type_valid() const {
 
 bool drtree::is_rooted() const { return true; }
 
+vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
+	// if the tree does not have edges, return an empty list.
+	if (n_nodes() <= 1) { return vector<edge>(); }
+
+	assert(is_tree());
+	assert(has_root());
+	assert(has_node(r));
+
+	const auto n = n_nodes();
+
+	bool r_parent_set = false;
+	node r_parent = n;
+
+	// -----------------------
+	// find parent of vertex r
+	BFS<drtree> bfs(*this);
+	bfs.set_use_rev_edges(true);
+	bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
+	bfs.set_process_neighbour(
+	[&](const auto&, node s, node t, bool) -> void {
+		if (t == r) {
+			r_parent = s;
+			r_parent_set = true;
+		}
+	}
+	);
+	bfs.start_at(get_root());
+
+	// -----------------------------
+	// retrieve edges of the subtree
+
+	// reset the bfs
+	bfs.reset();
+
+	// stop the bfs from going further than 'r''s parent
+	// in case such parent exists
+	if (r_parent_set) {
+		bfs.set_visited(r_parent);
+	}
+
+	// data structures for vertex relabelling
+	vector<node> labels(n_nodes(), n);
+	// we need vertex 'r' to be relabelled to 0.
+	labels[r] = 0;
+	node next_label = 1;
+
+	// retrieve edges and relabel them at the same time
+	vector<edge> es;
+	bfs.set_process_neighbour(
+	[&](const auto&, node s, node t, bool dir) -> void {
+		// change the orientation of the edge whenever appropriate
+		// dir: true  ---> "s->t"
+		// dir: false ---> "t->s"
+		if (not dir) { std::swap(s,t); }
+
+		edge e;
+		// relabel vertices
+		if (relab) {
+			// relabel first vertex
+			if (labels[s] == n) {
+				labels[s] = next_label;
+				++next_label;
+			}
+			e.first = labels[s];
+			// relabel second vertex
+			if (labels[t] == n) {
+				labels[t] = next_label;
+				++next_label;
+			}
+			e.second = labels[t];
+		}
+		else {
+			e = edge(s,t);
+		}
+		es.push_back(e);
+	}
+	);
+	// start the bfs again, this time at 'r'
+	bfs.start_at(r);
+	return es;
+}
+
+drtree drtree::get_subtree(node r) const {
+	// if the tree does not have edges, return a copy.
+	if (n_nodes() <= 1) { return *this; }
+
+	assert(has_root());
+	assert(is_tree());
+	assert(has_node(r));
+
+	// retrieve the list of edges with their vertices relabelled
+	const vector<edge> es = get_edges_subtree(r, true);
+	// number of vertices of subtree
+	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
+
+	// make subtree
+	drtree sub(n_verts);
+	sub.set_root(0);
+	sub.add_edges(es);
+	return sub;
+}
+
 /* PROTECTED */
 
 void drtree::_init(uint32_t n) {
@@ -187,16 +302,6 @@ void drtree::_clear() {
 	rtree::tree_clear();
 	dtree::_clear();
 	m_drtree_type_valid = false;
-}
-
-/* PRIVATE */
-
-void drtree::calc_nodes_subtree(node r) {
-	m_num_verts_subtree[r] = 1;
-	for (const node u : get_neighbours(r)) {
-		calc_nodes_subtree(u);
-		m_num_verts_subtree[r] += m_num_verts_subtree[u];
-	}
 }
 
 } // -- namespace graphs

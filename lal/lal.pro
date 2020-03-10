@@ -91,6 +91,7 @@ HEADERS += \
     utils/avl.hpp \
     io.hpp \
     utils/reachability.hpp \
+    utils/size_subtrees.hpp \
     utils/sort_integers.hpp \
     utils/std_utils.hpp
 

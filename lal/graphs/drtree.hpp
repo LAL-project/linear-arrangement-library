@@ -116,8 +116,10 @@ class drtree : public dtree, virtual public rtree {
 		 * @post Sets the type of directed rooted tree (see @ref m_drtree_type).
 		 */
 		drtree(const utree& t, node r, drtree_type arb = drtree_type::arborescence);
+		/// Default copy constructor.
+		drtree(const drtree&) = default;
 		/// Destructor
-		~drtree();
+		virtual ~drtree();
 
 		/* MODIFIERS */
 
@@ -129,8 +131,8 @@ class drtree : public dtree, virtual public rtree {
 		 *
 		 * @param r Vertex that represents the root.
 		 * @post Method @ref has_root returns true.
-		 * @post Values in @ref m_num_verts_subtree are invalidated. Call method
-		 * @ref calculate_nodes_subtrees to update them.
+		 * @post Values in @ref m_size_subtrees are invalidated. Call method
+		 * @ref recalc_size_subtrees to update them.
 		 * @post Attribute @ref drtree::m_drtree_type) is invalidated. Call
 		 * method @ref drtree::find_drtree_type() to update it.
 		 */
@@ -172,13 +174,19 @@ class drtree : public dtree, virtual public rtree {
 
 		/**
 		 * @brief Calculates the number of vertices at every rooted subtree.
+		 *
+		 * The method can traverse the directed tree using reversed edges, i.e.,
+		 * from a root vertex 's' the method can follow out-edges (of the form
+		 * s->t) and in-edges (of the form t->s). If parameter @e rev is true
+		 * then the method uses both.
+		 * @param rev Should reversed edges be used?
 		 * @pre The object must be a tree (see @ref is_tree()).
 		 * @pre The tree must have a root (see @ref has_root()).
-		 * @pre Method @ref is_tree_type_valid must return true.
-		 * @pre The tree must be an @ref drtree_type::arborescence.
-		 * @post Method @ref n_nodes_subtree_valid returns true.
+		 * @pre In case @e rev is true, method @ref is_tree_type_valid must
+		 * return true and the tree must be an @ref drtree_type::arborescence.
+		 * @post Method @ref need_recalc_size_subtrees returns false.
 		 */
-		void calculate_nodes_subtrees();
+		void recalc_size_subtrees(bool rev = true);
 
 		/* GETTERS */
 
@@ -198,11 +206,26 @@ class drtree : public dtree, virtual public rtree {
 		 * @brief Is the value that returns @ref get_drtree_type valid?
 		 *
 		 * If the value returned is false, then call @ref find_drtree_type.
-		 * @return Returns whether @ref m_drtree_type is valid or not.
+		 * @return Returns whether @ref m_drtree_type should be recalculated
+		 * or not.
 		 */
 		bool is_tree_type_valid() const;
 
 		bool is_rooted() const;
+
+		std::vector<edge> get_edges_subtree(node r, bool relab) const;
+
+		/**
+		 * @brief Retrieve the subtree rooted at node r.
+		 * @param r Root of the subtree.
+		 * @return Returns a tree containing the vertices of the subtree
+		 * rooted at vertex @e r.
+		 * @pre This graph is a tree (see @ref is_tree).
+		 * @pre This tree has a root (see @ref has_root).
+		 * @post The subtree keeps the orientation of the edges in the original
+		 * tree.
+		 */
+		drtree get_subtree(node r) const;
 
 	protected:
 		/// Initialises memory of @ref drtree class.
@@ -221,17 +244,6 @@ class drtree : public dtree, virtual public rtree {
 		drtree_type m_drtree_type = drtree_type::none;
 		/// Are the contents of @ref m_drtree_type valid?
 		bool m_drtree_type_valid = false;
-
-	private:
-		/**
-		 * @brief Calculates the number of vertices of the tree rooted rooted
-		 * at @e r on undirected trees.
-		 * @param r Root of the subtree.
-		 * @post The attribute @ref m_num_verts_subtree[@e r] contains the
-		 * number of vertices of the subtree rooted at @e r.
-		 */
-		void calc_nodes_subtree(node r);
-
 };
 
 } // -- namespace graphs

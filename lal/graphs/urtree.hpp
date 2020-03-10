@@ -76,8 +76,10 @@ class urtree : public utree, virtual public rtree {
 		 * @param r Root of the directed tree. A node of @e g.
 		 */
 		urtree(const utree& t, node r);
+		/// Default copy constructor.
+		urtree(const urtree&) = default;
 		/// Default destructor
-		~urtree();
+		virtual ~urtree();
 
 		/**
 		 * @brief Initialiser with undirected tree and root node.
@@ -96,25 +98,31 @@ class urtree : public utree, virtual public rtree {
 
 		bool is_rooted() const;
 
-		void calculate_nodes_subtrees();
+		std::vector<edge> get_edges_subtree(node r, bool relab) const;
+
+		/**
+		 * @brief Retrieve the subtree rooted at node r.
+		 * @param r Root of the subtree.
+		 * @return Returns a tree containing the vertices of the subtree
+		 * rooted at vertex @e r.
+		 * @pre This graph is a tree (see @ref is_tree).
+		 * @pre This tree has a root (see @ref has_root).
+		 */
+		urtree get_subtree(node r) const;
+
+		/**
+		 * @brief Calculates the number of vertices at every rooted subtree.
+		 * @pre The object must be a tree (see @ref is_tree()).
+		 * @pre The tree must have a root (see @ref has_root()).
+		 * @post Method @ref need_recalc_size_subtrees returns false.
+		 */
+		void recalc_size_subtrees();
 
 	protected:
 		/// Initialises memory of @ref urtree class.
 		virtual void _init(uint32_t n);
 		/// Clears the memory used by this undirected rooted tree.
 		virtual void _clear();
-
-	private:
-
-		/**
-		 * @brief Calculates the number of vertices of the tree rooted rooted at @e r
-		 * on undirected trees.
-		 * @param r Root of the subtree.
-		 * @param vis Visited vertices.
-		 * @post The attribute @ref m_num_verts_subtree[@e r] contains the number
-		 * of vertices of the subtree rooted at @e r.
-		 */
-		void calc_nodes_subtree(node r, std::vector<bool>& vis);
 };
 
 } // -- namespace graphs

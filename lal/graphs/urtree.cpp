@@ -45,7 +45,13 @@
 #include <vector>
 using namespace std;
 
+// lal includes
+#include <lal/utils/bfs.hpp>
+#include <lal/utils/size_subtrees.hpp>
+
 namespace lal {
+using namespace utils;
+
 namespace graphs {
 
 urtree::urtree() : utree() { }
@@ -60,22 +66,117 @@ urtree::~urtree() { }
 
 void urtree::init_rooted(const utree& t, node r) {
 	_clear();
+	_init(t.n_nodes());
 
-	rtree::tree_init(t.n_nodes());
 	*static_cast<ugraph *>(this) = t;
 	set_root(r);
 }
 
 bool urtree::is_rooted() const { return true; }
 
-void urtree::calculate_nodes_subtrees() {
+vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
+	// if the tree does not have edges, return an empty list.
+	if (n_nodes() <= 1) { return vector<edge>(); }
+
+	assert(is_tree());
+	assert(has_root());
+	assert(has_node(r));
+
+	const auto n = n_nodes();
+
+	bool r_parent_set = false;
+	node r_parent = n;
+
+	// -----------------------
+	// find parent of vertex r
+	BFS<urtree> bfs(*this);
+	bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
+	bfs.set_process_neighbour(
+	[&](const auto&, node s, node t, bool) -> void {
+		if (t == r) {
+			r_parent = s;
+			r_parent_set = true;
+		}
+	}
+	);
+	bfs.start_at(get_root());
+
+	// -----------------------------
+	// retrieve edges of the subtree
+
+	// reset the bfs
+	bfs.reset();
+
+	// stop the bfs from going further than 'r''s parent
+	// in case such parent exists
+	if (r_parent_set) {
+		bfs.set_visited(r_parent);
+	}
+
+	// data structures for vertex relabelling
+	vector<node> labels(n_nodes(), n);
+	// we need vertex 'r' to be relabelled to 0.
+	labels[r] = 0;
+	node next_label = 1;
+
+	// retrieve edges and relabel them at the same time
+	vector<edge> es;
+	bfs.set_process_neighbour(
+	[&](const auto&, node s, node t, bool) -> void {
+		edge e;
+		// relabel vertices
+		if (relab) {
+			// relabel first vertex
+			if (labels[s] == n) {
+				labels[s] = next_label;
+				++next_label;
+			}
+			e.first = labels[s];
+			// relabel second vertex
+			if (labels[t] == n) {
+				labels[t] = next_label;
+				++next_label;
+			}
+			e.second = labels[t];
+		}
+		else {
+			e = edge(s,t);
+		}
+		es.push_back(e);
+	}
+	);
+	// start the bfs again, this time at 'r'
+	bfs.start_at(r);
+	return es;
+}
+
+urtree urtree::get_subtree(node r) const {
+	// if the tree does not have edges, return a copy.
+	if (n_nodes() <= 1) { return *this; }
+
+	assert(is_tree());
+	assert(has_root());
+	assert(has_node(r));
+
+	// retrieve the list of edges with their vertices relabelled
+	const vector<edge> es = get_edges_subtree(r, true);
+	// number of vertices of subtree
+	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
+
+	// make subtree
+	urtree sub(n_verts);
+	sub.set_root(0);
+	sub.add_edges(es);
+	return sub;
+}
+
+void urtree::recalc_size_subtrees() {
 	assert(is_tree());
 	assert(has_root());
 
-	m_num_verts_subtree_valid = true;
-	m_num_verts_subtree = vector<uint32_t>(n_nodes());
+	m_recalc_size_subtrees = false;
 	vector<bool> vis(n_nodes(), false);
-	calc_nodes_subtree(get_root(), vis);
+	utils::get_undirected_size_subtrees(*this, get_root(), vis, m_size_subtrees);
 }
 
 /* PROTECTED */
@@ -88,19 +189,6 @@ void urtree::_init(uint32_t n) {
 void urtree::_clear() {
 	rtree::_clear();
 	utree::_clear();
-}
-
-/* PRIVATE */
-
-void urtree::calc_nodes_subtree(node r, vector<bool>& vis) {
-	m_num_verts_subtree[r] = 1;
-	vis[r] = true;
-	for (const node u : get_neighbours(r)) {
-		if (not vis[u]) {
-			calc_nodes_subtree(u, vis);
-			m_num_verts_subtree[r] += m_num_verts_subtree[u];
-		}
-	}
 }
 
 } // -- namespace graphs

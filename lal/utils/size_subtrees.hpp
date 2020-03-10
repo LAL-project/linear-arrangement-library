@@ -38,60 +38,77 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rtree.hpp>
-
 // C++ includes
-#include <cassert>
-using namespace std;
+#include <vector>
+
+// lal includes
+#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
 namespace lal {
-namespace graphs {
+namespace utils {
 
-rtree::rtree() { }
-rtree::~rtree() { }
-
-void rtree::set_root(node r) {
-	// if the tree is empty simply consider it has a root...
-	// although it really doesn't
-
-	if (n_nodes() > 0) {
-		assert(has_node(r));
-		m_r = r;
+/*
+ * @brief Calculate the size of every subtree of tree @e t.
+ *
+ * The method starts calculating the sizes at vertex @e r.
+ * The method assumes that the vector @e sizes is initialised appropriately
+ * (e.g., it has the right size).
+ * This method is different from @ref get_undirected_size_subtrees because
+ * it follows reversed edges.
+ * @param t Input rooted tree.
+ * @param r Start calculating sizes of subtrees at this vertex.
+ * @param vis Mark vertices as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable vertex
+ * from @e r.
+ */
+inline void get_directed_size_subtrees(
+	const graphs::drtree& t, node r,
+	std::vector<bool>& vis, std::vector<uint32_t>& sizes
+)
+{
+	sizes[r] = 1;
+	vis[r] = true;
+	for (node u : t.get_neighbours(r)) {
+		if (not vis[u]) {
+			get_directed_size_subtrees(t, u, vis, sizes);
+			sizes[r] += sizes[u];
+		}
 	}
-	m_root_set = true;
-	m_recalc_size_subtrees = true;
+	for (node u : t.get_in_neighbours(r)) {
+		if (not vis[u]) {
+			get_directed_size_subtrees(t, u, vis, sizes);
+			sizes[r] += sizes[u];
+		}
+	}
 }
 
-node rtree::get_root() const { return m_r; }
-
-bool rtree::is_rooted() const { return true; }
-
-bool rtree::has_root() const { return m_root_set; }
-
-uint32_t rtree::n_nodes_subtree(node u) const {
-	assert(has_node(u));
-	return m_size_subtrees[u];
+/*
+ * @brief Calculate the size of every subtree of tree @e t.
+ *
+ * The method starts calculating the sizes at vertex @e r.
+ * The method assumes that the vector @e sizes is initialised appropriately
+ * (e.g., it has the right size).
+ * @param t Input rooted tree.
+ * @param r Start calculating sizes of subtrees at this vertex.
+ * @param vis Mark vertices as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable vertex
+ * from @e r.
+ */
+inline void get_undirected_size_subtrees(
+	const graphs::rtree& t, node r,
+	std::vector<bool>& vis, std::vector<uint32_t>& sizes
+)
+{
+	sizes[r] = 1;
+	vis[r] = true;
+	for (node u : t.get_neighbours(r)) {
+		if (not vis[u]) {
+			get_undirected_size_subtrees(t, u, vis, sizes);
+			sizes[r] += sizes[u];
+		}
+	}
 }
 
-bool rtree::need_recalc_size_subtrees() const {
-	return m_recalc_size_subtrees;
-}
-
-/* PROTECTED */
-
-void rtree::tree_init(uint32_t n) {
-	tree::tree_init(n);
-	m_size_subtrees = vector<uint32_t>(n);
-	m_recalc_size_subtrees = true;
-	m_root_set = false;
-}
-
-void rtree::tree_clear() {
-	tree::tree_clear();
-	m_size_subtrees.clear();
-	m_recalc_size_subtrees = true;
-	m_root_set = false;
-}
-
-} // -- namespace graphs
+} // -- namespace utils
 } // -- namespace lal

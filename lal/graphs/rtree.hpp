@@ -58,14 +58,16 @@ namespace graphs {
  * users of the library should use the classes @ref urtree and/or @ref drtree.
  *
  * Moreover, the root allows defining further properties on these graphs. For
- * example, the user can query information regarding subtrees of these trees
- * (see methods @ref n_nodes_subtree and @ref calculate_nodes_subtrees).
+ * example, the user can query information regarding subtrees of a particular
+ * rooted tree (see methods @ref n_nodes_subtree and
+ * @ref urtree::recalc_size_subtrees or @ref drtree::recalc_size_subtrees).
  *
  * This class allows flexibility of use of rooted trees regarding root's
- * choice. Method @ref set_root allows setting changing the root of rooted
- * trees multiple times and at any time. However, any information dependant
+ * choice. Method @ref set_root allows changing the root of rooted trees
+ * multiple times and at any time. However, any information dependent
  * on the root becomes invalid upon any change of the root. For example, the
- * size of each subtree of this tree is not valid (see @ref n_nodes_subtree_valid)
+ * size of each subtree of this tree is not valid (see attribute
+ * @ref m_recalc_size_subtrees and method @ref need_recalc_size_subtrees)
  * until the tree has a root (see @ref has_root).
  */
 class rtree : virtual public tree {
@@ -80,23 +82,14 @@ class rtree : virtual public tree {
 		 *
 		 * Changing the root of a rooted tree invalidates information dependant
 		 * on the tree. See the postconditions for details.
-		 *
 		 * @param r Vertex that represents the root.
 		 * @post Method @ref has_root returns true.
-		 * @post Values in @ref m_num_verts_subtree are invalidated. Call method
-		 * @ref calculate_nodes_subtrees to update them.
+		 * @post Values in @ref m_size_subtrees are invalidated, i.e., method
+		 * @ref need_recalc_size_subtrees returns true.
 		 */
 		virtual void set_root(node r);
 
 		/* MODIFIERS */
-
-		/**
-		 * @brief Calculates the number of vertices at every rooted subtree.
-		 * @pre The object must be a tree (see @ref is_tree()).
-		 * @pre The tree must have a root (see @ref has_root()).
-		 * @post Method @ref n_nodes_subtree_valid returns true.
-		 */
-		virtual void calculate_nodes_subtrees() = 0;
 
 		/* GETTERS */
 
@@ -111,18 +104,58 @@ class rtree : virtual public tree {
 		/**
 		 * @brief Returns the number of vertices of the subtree rooted at @e u.
 		 * @param u Vertex of the tree.
-		 * @return Returns @ref m_num_verts_subtree[u]
-		 * @pre Method @ref n_nodes_subtree_valid returns true.
+		 * @return Returns @ref m_size_subtrees[u].
+		 * @pre Method @ref need_recalc_size_subtrees returns false.
 		 */
 		uint32_t n_nodes_subtree(node u) const;
 
 		/**
-		 * @brief Are the values that returns @ref n_nodes_subtree valid?
+		 * @brief Is a recalculation of the subtree's sizes needed?
 		 *
-		 * If the value returned is false, then call @ref calculate_nodes_subtrees.
-		 * @return Returns whether @ref m_num_verts_subtree is valid or not.
+		 * If the method returns true, then call @ref drtree::recalc_size_subtrees
+		 * or @ref urtree::recalc_size_subtrees accordingly.
+		 * @return Returns whether @ref m_size_subtrees should be recalculated
+		 * or not.
 		 */
-		bool n_nodes_subtree_valid() const;
+		bool need_recalc_size_subtrees() const;
+
+		/**
+		 * @brief Retrieve the edges of the subtree rooted at @e r.
+		 *
+		 * The list of edges returned contains labels that depend on the parameter
+		 * @e relab. If @e relab is true then the vertices are relabelled to
+		 * numbers in \f$[0, n_r)\f$, where \f$n_r\f$ is the number of vertices
+		 * of the subtree rooted at @e r, rather than keeping the original
+		 * labelling of numbers in \f$[0,n)\f$, where @e n is the number of
+		 * vertices of the tree.
+		 *
+		 * In case of directed trees, the subtree is extracted regardless of the
+		 * orientation of the edges. For example, consider an anti-arborescence
+		 * of a complete binary tree of 7 vertices, whose edges are
+		 * <pre>
+		 * 0 <- 1
+		 *		1 <- 3
+		 *		1 <- 4
+		 * 0 <- 2
+		 *		2 <- 5
+		 *		2 <- 6
+		 * </pre>
+		 * The edges of the subtree rooted at 1 are "3 -> 1" and "4 -> 1".
+		 * Moreover, the orientation of the edges is guaranteed to be
+		 * first-vertex-to-second-vertex.
+		 *
+		 * Regardless of the directedness of the graph, this method can be seen
+		 * as a way of relabelling vertices when @e r is the root of the tree
+		 * and @e relab is true.
+		 * @param r Root vertex of the subtree.
+		 * @param relab Should the vertices be relabelled?
+		 * @return Returns a list of edges.
+		 * @pre This graph is a tree (see @ref is_tree).
+		 * @pre This tree has a root (see @ref has_root).
+		 * @post Whenever @e relab is true, the label of the first vertex of
+		 * the first edge is guaranteed to be vertex '0'.
+		 */
+		virtual std::vector<edge> get_edges_subtree(node r, bool relab = false) const = 0;
 
 	protected:
 		/// Root of the tree.
@@ -133,15 +166,12 @@ class rtree : virtual public tree {
 		/**
 		 * @brief Number of vertices of the subtrees rooted at a certain vertex.
 		 *
-		 * Given a vertex @e u, @ref m_num_verts_subtree[u] gives the number
+		 * Given a vertex @e u, @ref m_size_subtrees[u] gives the number
 		 * of vertices of the subtree rooted at @e u.
-		 *
-		 * This attribute is only valid for @ref urtree and for @ref drtree
-		 * that are arborescences (see @ref drtree::drtree_type::arborescence).
 		 */
-		std::vector<uint32_t> m_num_verts_subtree;
-		/// Are the contents of @ref m_num_verts_subtree valid?
-		bool m_num_verts_subtree_valid = false;
+		std::vector<uint32_t> m_size_subtrees;
+		/// Are the contents of @ref m_size_subtrees valid?
+		bool m_recalc_size_subtrees = true;
 
 	protected:
 		/// Initialises memory of @ref rtree class.
