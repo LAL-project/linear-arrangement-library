@@ -98,7 +98,7 @@ class urtree : public utree, virtual public rtree {
 
 		bool is_rooted() const;
 
-		std::vector<edge> get_edges_subtree(node r, bool relab) const;
+		std::vector<edge> get_edges_subtree(node r, bool relab = false) const;
 
 		/**
 		 * @brief Retrieve the subtree rooted at node r.
