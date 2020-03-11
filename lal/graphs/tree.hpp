@@ -138,7 +138,6 @@ class tree : virtual public graph {
 		 */
 		virtual std::tuple<char, node, node> get_centre() const = 0;
 
-
 	protected:
 		/// Initialises memory of @ref rtree class.
 		virtual void tree_init(uint32_t n);
