@@ -47,6 +47,7 @@ using namespace std;
 // lal includes
 #include <lal/utils/bfs.hpp>
 #include <lal/utils/cycles.hpp>
+#include <lal/utils/tree_centre.hpp>
 
 namespace lal {
 namespace graphs {
@@ -72,6 +73,10 @@ dtree& dtree::add_edges(const vector<edge>& edges, bool norm) {
 	dgraph::add_edges(edges, norm);
 	return *this;
 }
+
+/* GETTERS */
+
+bool dtree::is_rooted() const { return false; }
 
 bool dtree::can_add_edge(node s, node t) const {
 	// if the tree already has n-1 edges then
@@ -118,13 +123,16 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 	return not utils::has_undirected_cycles(copy);
 }
 
+tuple<char, node, node> dtree::get_centre() const {
+	assert(is_tree());
+	return utils::retrieve_centre(*this, 0);
+}
+
 utree dtree::to_undirected() const {
 	utree g(n_nodes());
 	g.add_edges(edges());
 	return g;
 }
-
-bool dtree::is_rooted() const { return false; }
 
 /* PROTECTED */
 

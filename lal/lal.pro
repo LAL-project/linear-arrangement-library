@@ -93,7 +93,8 @@ HEADERS += \
     utils/reachability.hpp \
     utils/size_subtrees.hpp \
     utils/sort_integers.hpp \
-    utils/std_utils.hpp
+    utils/std_utils.hpp \
+    utils/tree_centre.hpp
 
 SOURCES += \
     generation/all_lab_free_trees.cpp \

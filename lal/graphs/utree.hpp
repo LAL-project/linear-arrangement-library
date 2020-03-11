@@ -40,6 +40,9 @@
 
 #pragma once
 
+// C++ includes
+#include <tuple>
+
 // lal includes
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/tree.hpp>
@@ -110,10 +113,14 @@ class utree : public ugraph, virtual public tree {
 		 */
 		utree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
+		/* GETTERS */
+
+		virtual bool is_rooted() const;
+
 		bool can_add_edge(node s, node t) const;
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
-		virtual bool is_rooted() const;
+		std::tuple<char, node, node> get_centre() const;
 
 	protected:
 		/// Initialises memory of @ref utree class.

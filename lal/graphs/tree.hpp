@@ -40,6 +40,9 @@
 
 #pragma once
 
+// C++ includes
+#include <tuple>
+
 // lal includes
 #include <lal/graphs/graph.hpp>
 
@@ -72,6 +75,8 @@ class tree : virtual public graph {
 		tree();
 		virtual ~tree();
 
+		/* GETTERS */
+
 		/**
 		 * @brief Returns whether this graph is an actual tree or not.
 		 *
@@ -82,7 +87,8 @@ class tree : virtual public graph {
 		 * @ref utree::add_edges, @ref dtree::add_edge, @ref dtree::add_edges),
 		 * then we only need to check for the number of edges.
 		 *
-		 * For further characterisations of a tree, see \cite Tree_Wikipedia.
+		 * For further characterisations of a tree see \cite Harary1969a
+		 * (chapter 4, page 33).
 		 */
 		bool is_tree() const;
 
@@ -109,6 +115,29 @@ class tree : virtual public graph {
 		 * to the tree without producing cycles.
 		 */
 		virtual bool can_add_edges(const std::vector<edge>& edges) const = 0;
+
+		/**
+		 * @brief Calculates the centre of this tree.
+		 *
+		 * The centre of a graph is the collection of central vertices. A vertex
+		 * is central if it has minimum eccentricity, where the eccentricity of
+		 * a vertex is the maximum distance from this vertex to another vertex.
+		 * Formally, the eccentricity of a vertex @e u is
+		 * \f$ ecc(u) = max_{v\in V} d(u,v) \f$,
+		 * where \f$d(u,v)\f$ denotes distance within the graph.
+		 *
+		 * This function calculates the centre of a tree. In this simpler case,
+		 * the centre of a tree \f$T\f$, \f$Z(T)\f$, is the centre of \f$T'\f$
+		 * where \f$T'\f$ is the tree resulting from removing \f$T\f$'s leaves.
+		 * For other characterisations of centre of a tree see \cite Harary1969a
+		 * (chapter 4, page 35).
+		 * @return Returns a tuple where the first value gives the size of the
+		 * tree's centre (1 or 2 vertices). The second value is always valid,
+		 * whereas the second is only valid when the first value equals 2.
+		 * @pre This graph is a tree (see method @ref is_tree).
+		 */
+		virtual std::tuple<char, node, node> get_centre() const = 0;
+
 
 	protected:
 		/// Initialises memory of @ref rtree class.

@@ -40,6 +40,9 @@
 
 #pragma once
 
+// C++ includes
+#include <tuple>
+
 // lal includes
 #include <lal/graphs/dgraph.hpp>
 #include <lal/graphs/tree.hpp>
@@ -105,16 +108,20 @@ class dtree : public dgraph, virtual public tree {
 		 */
 		dtree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
+		/* GETTERS */
+
+		virtual bool is_rooted() const;
+
 		bool can_add_edge(node s, node t) const;
 		bool can_add_edges(const std::vector<edge>& edges) const;
+
+		std::tuple<char, node, node> get_centre() const;
 
 		/**
 		 * @brief Converts this directed tree into an undirected tree.
 		 * @return Returns an object of type undirected tree.
 		 */
 		utree to_undirected() const;
-
-		virtual bool is_rooted() const;
 
 	protected:
 		/// Initialises memory of @ref dtree class.

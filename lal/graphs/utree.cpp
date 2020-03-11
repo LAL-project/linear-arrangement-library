@@ -49,6 +49,7 @@ using namespace std;
 #include <lal/utils/cycles.hpp>
 #include <lal/utils/is_tree.hpp>
 #include <lal/utils/reachability.hpp>
+#include <lal/utils/tree_centre.hpp>
 
 namespace lal {
 namespace graphs {
@@ -82,6 +83,10 @@ utree& utree::add_edges(const vector<edge>& edges, bool norm) {
 	assert(not utils::has_undirected_cycles(*this));
 	return *this;
 }
+
+/* GETTERS */
+
+bool utree::is_rooted() const { return false; }
 
 bool utree::can_add_edge(node s, node t) const {
 	// if the tree already has n-1 edges then
@@ -124,7 +129,10 @@ bool utree::can_add_edges(const vector<edge>& edges) const {
 	return not utils::has_undirected_cycles(copy);
 }
 
-bool utree::is_rooted() const { return false; }
+tuple<char, node, node> utree::get_centre() const {
+	assert(is_tree());
+	return utils::retrieve_centre(*this, 0);
+}
 
 /* PROTECTED */
 
