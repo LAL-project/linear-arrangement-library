@@ -131,6 +131,9 @@ class tree : virtual public graph {
 		 * where \f$T'\f$ is the tree resulting from removing \f$T\f$'s leaves.
 		 * For other characterisations of centre of a tree see \cite Harary1969a
 		 * (chapter 4, page 35).
+		 *
+		 * In case of directed trees (see @ref dtree), the centre is calculated
+		 * assuming that the edges are not directed.
 		 * @return Returns a pair of vertices the first is always guaranteed to
 		 * be a valid vertex index. The second vertex is valid only when its
 		 * value is strictly smaller than the number of vertices. If the second
