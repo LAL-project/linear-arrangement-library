@@ -87,10 +87,13 @@ class BFS {
 		// Destructor
 		virtual ~BFS() { }
 
-		// Set the BFS to its initial state.
+		// Set the BFS to its default state.
 		void reset() {
 			reset_visited();
 			clear_queue();
+
+			set_use_rev_edges(false);
+			set_process_visited_neighbours(false);
 
 			set_terminate_default();
 			set_process_current_default();
@@ -114,10 +117,8 @@ class BFS {
 
 		/* SETTERS */
 
-		// set whether the traversal can use back edges
-		void set_use_rev_edges(bool use) {
-			m_use_rev_edges = use;
-		}
+		// set whether the traversal can use reversed edges
+		void set_use_rev_edges(bool use) { m_use_rev_edges = use; }
 
 		// see @ref m_term
 		void set_terminate_default()
@@ -133,9 +134,9 @@ class BFS {
 
 		// see @ref m_proc_neigh
 		void set_process_neighbour_default()
-		{ m_proc_out_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
+		{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
 		void set_process_neighbour(bfs_process_two f)
-		{ m_proc_out_neigh = f; }
+		{ m_proc_neigh = f; }
 
 		// see @ref m_add_vertex
 		void set_vertex_add_default()
@@ -148,9 +149,7 @@ class BFS {
 		 * for already visited neighbours?
 		 * @param v Either true or false.
 		 */
-		void process_visited_neighbours(bool v) {
-			m_proc_vis_neighs = v;
-		}
+		void set_process_visited_neighbours(bool v) { m_proc_vis_neighs = v; }
 
 		// Sets all nodes to not visited.
 		void reset_visited() {
@@ -177,19 +176,23 @@ class BFS {
 			return find(m_vis.begin(), m_vis.end(), false) == m_vis.end();
 		}
 
+		const G& get_graph() const { return m_G; }
+
 		// Return visited nodes information
 		const std::vector<bool>& get_visited() const { return m_vis; }
 
 	protected:
 
 		void deal_with_neighbour(node s, node t, bool dir) {
-			// Process the neighbour found.
+			// Process the neighbour 't' of 's'.
 			if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
-				m_proc_out_neigh(*this, s, t, dir);
+				m_proc_neigh(*this, s, t, dir);
 			}
 
 			if (not m_vis[t] and m_add_vertex(*this, t)) {
 				m_Q.push(t);
+				// set vertex as visited
+				m_vis[t] = true;
 			}
 		}
 
@@ -228,15 +231,17 @@ class BFS {
 		 * <pre>
 		 * ProcessNeighbourhood(graph, u, Nv):
 		 *	 1. for each w in Nv do
-		 *   2.		if w has not been visited before, or it has been
-		 *	 3.			but already visited vertices have to be processed
+		 *   2.		if w has not been visited before, or it has been but
+		 *	 3.			already-visited vertices have to be processed
 		 *	 4.		then
 		 *	 5.			proc_neigh(u,w)
-		 *	 6.		if w not visited before and vertex_add(w) then
-		 *	 7.			push w into Q
-		 *	 8.			mark w as visited in vis
-		 *	 9.		endif
-		 *	10.	endfor
+		 *	 6.		endif
+		 *	 7.
+		 *	 8.		if w not visited before and vertex_add(w) then
+		 *	 9.			push w into Q
+		 *	10.			mark w as visited in vis
+		 *	11.		endif
+		 *	12.	endfor
 		 * </pre>
 		 *
 		 * <pre>
@@ -269,9 +274,6 @@ class BFS {
 			while (not m_Q.empty()) {
 				const node s = m_Q.front();
 				m_Q.pop();
-
-				// set vertex as visited
-				m_vis[s] = true;
 
 				// process current vertex
 				m_proc_cur(*this, s);
@@ -321,10 +323,10 @@ class BFS {
 		bfs_process_one m_proc_cur;
 
 		/*
-		 * @brief BFS out-neighbour vertex processing function.
+		 * @brief BFS neighbour vertex processing function.
 		 *
 		 * Processes the next visited vertex. The direction of the vertices
-		 * visited passed as parameters is given the boolean parameter. If
+		 * visited passed as parameters is given by the boolean parameter. If
 		 * it is true then the edge is s -> t. If it is false then the edge is
 		 * t -> s.
 		 *
@@ -334,7 +336,7 @@ class BFS {
 		 * @param s The vertex at the front of the queue of the algorithm.
 		 * @param t The vertex neighbour of @e u visited by the algorithm.
 		 */
-		bfs_process_two m_proc_out_neigh;
+		bfs_process_two m_proc_neigh;
 
 		/*
 		 * @brief BFS node addition function.
