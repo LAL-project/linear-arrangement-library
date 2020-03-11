@@ -120,7 +120,7 @@ class utree : public ugraph, virtual public tree {
 		bool can_add_edge(node s, node t) const;
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
-		std::tuple<char, node, node> get_centre() const;
+		std::pair<node, node> get_centre() const;
 
 	protected:
 		/// Initialises memory of @ref utree class.

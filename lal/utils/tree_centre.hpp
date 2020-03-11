@@ -44,7 +44,6 @@
 #endif
 
 #include <vector>
-#include <tuple>
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -76,7 +75,7 @@ template<
 	class G,
 	typename std::enable_if<std::is_base_of<graphs::tree, G>::value, int>::type = 0
 >
-std::tuple<char, node, node> retrieve_centre(const G& T, node x) {
+std::pair<node, node> retrieve_centre(const G& T, node x) {
 	const auto n = T.n_nodes();
 	BFS<G> bfs(T);
 	bfs.set_use_rev_edges(T.is_directed());
@@ -188,7 +187,7 @@ std::tuple<char, node, node> retrieve_centre(const G& T, node x) {
 #if defined DEBUG
 		assert(size_trimmed == 1);
 #endif
-		return std::make_tuple(1, single_center, n + 1);
+		return std::make_pair(single_center, n);
 	}
 
 	// ---------------------------------------------------
@@ -213,7 +212,7 @@ std::tuple<char, node, node> retrieve_centre(const G& T, node x) {
 #if defined DEBUG
 	assert(size_trimmed == 2);
 #endif
-	return std::make_tuple(2, v1, v2);
+	return std::make_pair(v1, v2);
 }
 
 } // -- namespace utils

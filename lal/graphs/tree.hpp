@@ -131,12 +131,13 @@ class tree : virtual public graph {
 		 * where \f$T'\f$ is the tree resulting from removing \f$T\f$'s leaves.
 		 * For other characterisations of centre of a tree see \cite Harary1969a
 		 * (chapter 4, page 35).
-		 * @return Returns a tuple where the first value gives the size of the
-		 * tree's centre (1 or 2 vertices). The second value is always valid,
-		 * whereas the second is only valid when the first value equals 2.
+		 * @return Returns a pair of vertices the first is always guaranteed to
+		 * be a valid vertex index. The second vertex is valid only when its
+		 * value is strictly smaller than the number of vertices. If the second
+		 * value is valid then the tree has two central vertices.
 		 * @pre This graph is a tree (see method @ref is_tree).
 		 */
-		virtual std::tuple<char, node, node> get_centre() const = 0;
+		virtual std::pair<node, node> get_centre() const = 0;
 
 	protected:
 		/// Initialises memory of @ref rtree class.

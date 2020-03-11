@@ -123,7 +123,7 @@ bool dtree::can_add_edges(const std::vector<edge>& edges) const {
 	return not utils::has_undirected_cycles(copy);
 }
 
-tuple<char, node, node> dtree::get_centre() const {
+pair<node, node> dtree::get_centre() const {
 	assert(is_tree());
 	return utils::retrieve_centre(*this, 0);
 }

@@ -115,7 +115,7 @@ class dtree : public dgraph, virtual public tree {
 		bool can_add_edge(node s, node t) const;
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
-		std::tuple<char, node, node> get_centre() const;
+		std::pair<node, node> get_centre() const;
 
 		/**
 		 * @brief Converts this directed tree into an undirected tree.
