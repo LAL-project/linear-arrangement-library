@@ -70,13 +70,11 @@ void dgraph::normalise() {
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
-		if (not is_sorted(out_nu.begin(), out_nu.end())) {
-			//utils::sort_1_n_inc(out_nu.begin(), out_nu.end());
+		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
 			utils::sort_1_n_inc_mem(out_nu.begin(), out_nu.end(), mem, 0);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not is_sorted(in_nu.begin(), in_nu.end())) {
-			//utils::sort_1_n_inc(in_nu.begin(), in_nu.end());
+		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
 			utils::sort_1_n_inc_mem(in_nu.begin(), in_nu.end(), mem, 0);
 		}
 	}
@@ -89,14 +87,14 @@ bool dgraph::check_normalised() {
 	// check that every adjacency list is sorted
 	for (node u = 0; u < n_nodes(); ++u) {
 		const neighbourhood& out_nu = m_adjacency_list[u];
-		if (not is_sorted(out_nu.begin(), out_nu.end())) {
+		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_normalised = false;
 			return false;
 		}
 
 		const neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not is_sorted(in_nu.begin(), in_nu.end())) {
+		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_normalised = false;
 			return false;
@@ -109,18 +107,18 @@ bool dgraph::check_normalised() {
 }
 
 dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
-	assert(not has_edge(u,v));
-	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
+	assert(u != v);
+	assert(not has_edge(u,v));
 
 	neighbourhood& out_u = m_adjacency_list[u];
 	out_u.push_back(v);
 	neighbourhood& in_v = m_in_adjacency_list[v];
-	m_in_adjacency_list[v].push_back(u);
+	in_v.push_back(u);
 	++m_num_edges;
 
-	if (m_normalised) {
+	if (is_normalised()) {
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
@@ -157,6 +155,8 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+		assert(has_node(u));
+		assert(has_node(v));
 		assert(u != v);
 		assert(not has_edge(u,v));
 
@@ -174,6 +174,75 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 		check_normalised();
 	}
 
+	return *this;
+}
+
+dgraph& dgraph::remove_edge(node u, node v, bool norm) {
+	assert(has_node(u));
+	assert(has_node(v));
+	assert(u != v);
+	assert(has_edge(u,v));
+	--m_num_edges;
+
+	neighbourhood& out_u = m_adjacency_list[u];
+	neighbourhood& in_v = m_in_adjacency_list[v];
+
+	remove_single_edge(u,v, out_u, in_v);
+
+	// if (is_normalised()) {
+	//		if (norm)     ... the graph is normalised. No need to check.
+	//      if (not norm) ... the graph is normalised. No need to check.
+	// }
+	// if (not is_normalised()) {
+	//      if (norm)     ... NORMALISE THE GRAPH
+	//      if (not norm) ... Check if the result is normalised. It could be...
+	// }
+
+	if (not is_normalised()) {
+		if (norm) {
+			normalise();
+		}
+		else {
+			// we might have been lucky...
+			check_normalised();
+		}
+	}
+	return *this;
+}
+
+dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm) {
+	for (const edge& e : edges) {
+		const node u = e.first;
+		const node v = e.second;
+		assert(has_node(u));
+		assert(has_node(v));
+		assert(u != v);
+		assert(has_edge(u,v));
+		--m_num_edges;
+
+		neighbourhood& out_u = m_adjacency_list[u];
+		neighbourhood& in_v = m_in_adjacency_list[v];
+		remove_single_edge(u,v, out_u, in_v);
+	}
+
+	// if (is_normalised()) {
+	//		if (norm)     ... the graph is normalised. No need to check.
+	//      if (not norm) ... the graph is normalised. No need to check.
+	// }
+	// if (not is_normalised()) {
+	//      if (norm)     ... NORMALISE THE GRAPH
+	//      if (not norm) ... Check if the result is normalised. It could be...
+	// }
+
+	if (not is_normalised()) {
+		if (norm) {
+			normalise();
+		}
+		else {
+			// we might have been lucky...
+			check_normalised();
+		}
+	}
 	return *this;
 }
 
@@ -207,13 +276,13 @@ bool dgraph::has_edge(node u, node v) const {
 
 	if (is_normalised() and std::min(out_u.size(), in_v.size()) >= 64) {
 		return (out_u.size() <= in_v.size() ?
-			binary_search(out_u.begin(), out_u.end(), v) :
-			binary_search(in_v.begin(), in_v.end(), u)
+			std::binary_search(out_u.begin(), out_u.end(), v) :
+			std::binary_search(in_v.begin(), in_v.end(), u)
 		);
 	}
 	return (out_u.size() <= in_v.size() ?
-		find(out_u.begin(), out_u.end(), v) != out_u.end() :
-		find(in_v.begin(), in_v.end(), u) != in_v.end()
+		std::find(out_u.begin(), out_u.end(), v) != out_u.end() :
+		std::find(in_v.begin(), in_v.end(), u) != in_v.end()
 	);
 }
 
@@ -265,6 +334,33 @@ void dgraph::_clear() {
 }
 
 /* PRIVATE */
+
+void dgraph::remove_single_edge(
+	node u, node v, neighbourhood& out_u, neighbourhood& in_v
+)
+{
+	// it_v: pointer to vertex v in out_u
+	// it_u: pointer to vertex u in in_v
+	vector<node>::iterator it_v, it_u;
+
+	// find the vertices in the lists
+	if (is_normalised()) {
+		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+	}
+	else {
+		it_v = std::find(out_u.begin(), out_u.end(), v);
+		it_u = std::find(in_v.begin(), in_v.end(), u);
+	}
+
+	// check that the iterators point to the correct value
+	assert(*it_v == v);
+	assert(*it_u == u);
+
+	// remove edges from the lists
+	out_u.erase(it_v);
+	in_v.erase(it_u);
+}
 
 } // -- namespace graphs
 } // -- namespace lal

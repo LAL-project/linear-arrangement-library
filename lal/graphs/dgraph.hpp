@@ -85,7 +85,7 @@ class dgraph : virtual public graph {
 		 * @brief Adds a directed edge to the graph.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
-		 * @param norm Should the graph be normalised?
+		 * @param norm Normalise the graph after the insertion.
 		 * @pre \f$u \neq v\f$. The directed edge \f$(s,t)\f$ is not part of the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
@@ -95,8 +95,8 @@ class dgraph : virtual public graph {
 		/**
 		 * @brief Adds a list of directed edges to the graph.
 		 *
-		 * This operation is faster than calling @ref add_edge(node,node,bool)
-		 * since the edges are added in bulk.
+		 * This operation is faster than adding edges one by one with
+		 * @ref add_edge(node,node,bool) since the edges are added in bulk.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @pre All the edges in @e edges must meet the precondition of method
@@ -105,6 +105,31 @@ class dgraph : virtual public graph {
 		 * after the addition of the edge.
 		 */
 		virtual dgraph& add_edges(const std::vector<edge>& edges, bool norm = true);
+
+		/**
+		 * @brief Remove an edge from this graph.
+		 * @param s Valid node index: \f$0 \le s < n\f$.
+		 * @param t Valid node index: \f$0 \le t < n\f$.
+		 * @param norm Normalise the graph after the deletion.
+		 * @pre The edge must exist.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
+		 */
+		dgraph& remove_edge(node s, node t, bool norm = true);
+
+		/**
+		 * @brief Remove an edge from this graph.
+		 *
+		 * This operation is faster than removing edges one by one with
+		 * @ref remove_edge(node,node,bool) since the edges are removed in bulk.
+		 * @param edges The edges to be deleted.
+		 * @param norm Normalise the graph after the deletion.
+		 * @pre All the edges in @e edges must meet the precondition of method
+		 * @ref add_edge(node,node,bool).
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
+		 */
+		dgraph& remove_edges(const std::vector<edge>& edges, bool norm = true);
 
 		/**
 		 * @brief Disjoint union of graphs.
@@ -178,6 +203,17 @@ class dgraph : virtual public graph {
 		virtual void _init(uint32_t n);
 		/// Clears the memory used by this directed graph
 		virtual void _clear();
+
+	private:
+		/**
+		 * @brief Removes a single edge.
+		 * @param u First vertex of edge.
+		 * @param v Second vertex of edge.
+		 * @param out_u Out-neighbourhood of vertex @e u.
+		 * @param in_v In-neighbourhood of vertex @e v.
+		 */
+		void remove_single_edge
+		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
 
 } // -- namespace graphs

@@ -77,7 +77,7 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 	nv.push_back(u);
 	++m_num_edges;
 
-	if (m_normalised) {
+	if (is_normalised()) {
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised. Insertion sort
@@ -136,6 +136,78 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm) {
 	return *this;
 }
 
+ugraph& ugraph::remove_edge(node u, node v, bool norm) {
+	assert(has_node(u));
+	assert(has_node(v));
+	assert(u != v);
+	assert(has_edge(u,v));
+	--m_num_edges;
+
+	neighbourhood& nu = m_adjacency_list[u];
+	neighbourhood& nv = m_adjacency_list[v];
+
+	remove_single_edge(u,v, nu, nv);
+
+	// if (is_normalised()) {
+	//		if (norm)     ... the graph is normalised. No need to check.
+	//      if (not norm) ... the graph is normalised. No need to check.
+	// }
+	// if (not is_normalised()) {
+	//      if (norm)     ... NORMALISE THE GRAPH
+	//      if (not norm) ... the result of deleting edges is certainly
+	//                        not normalised since the deletion of edges
+	//                        keeps the normalisation invariant. No need
+	//                        to check.
+	// }
+
+	if (not is_normalised()) {
+		if (norm) {
+			normalise();
+		}
+		else {
+			// we might have been lucky...
+			check_normalised();
+		}
+	}
+	return *this;
+}
+
+ugraph& ugraph::remove_edges(const std::vector<edge>& edges, bool norm) {
+	for (const edge& e : edges) {
+		const node u = e.first;
+		const node v = e.second;
+		assert(has_node(u));
+		assert(has_node(v));
+		assert(u != v);
+		assert(has_edge(u,v));
+		--m_num_edges;
+
+		neighbourhood& nu = m_adjacency_list[u];
+		neighbourhood& nv = m_adjacency_list[v];
+		remove_single_edge(u,v, nu, nv);
+	}
+
+	// if (is_normalised()) {
+	//		if (norm)     ... the graph is normalised. No need to check.
+	//      if (not norm) ... the graph is normalised. No need to check.
+	// }
+	// if (not is_normalised()) {
+	//      if (norm)     ... NORMALISE THE GRAPH
+	//      if (not norm) ... Check if the result is normalised. It could be...
+	// }
+
+	if (not is_normalised()) {
+		if (norm) {
+			normalise();
+		}
+		else {
+			// we might have been lucky...
+			check_normalised();
+		}
+	}
+	return *this;
+}
+
 /* SETTERS */
 
 /* GETTERS */
@@ -187,6 +259,33 @@ void ugraph::_clear() {
 }
 
 /* PRIVATE */
+
+void ugraph::remove_single_edge(
+	node u, node v, neighbourhood& out_u, neighbourhood& in_v
+)
+{
+	// it_v: pointer to vertex v in out_u
+	// it_u: pointer to vertex u in in_v
+	vector<node>::iterator it_v, it_u;
+
+	// find the vertices in the lists
+	if (is_normalised()) {
+		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+	}
+	else {
+		it_v = std::find(out_u.begin(), out_u.end(), v);
+		it_u = std::find(in_v.begin(), in_v.end(), u);
+	}
+
+	// check that the iterators point to the correct value
+	assert(*it_v == v);
+	assert(*it_u == u);
+
+	// remove edges from the lists
+	out_u.erase(it_v);
+	in_v.erase(it_u);
+}
 
 } // -- namespace graphs
 } // -- namespace lal
