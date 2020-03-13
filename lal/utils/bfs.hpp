@@ -183,10 +183,10 @@ class BFS {
 
 	protected:
 
-		void deal_with_neighbour(node s, node t, bool dir) {
+		void deal_with_neighbour(node s, node t, bool ltr) {
 			// Process the neighbour 't' of 's'.
 			if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
-				m_proc_neigh(*this, s, t, dir);
+				m_proc_neigh(*this, s, t, ltr);
 			}
 
 			if (not m_vis[t] and m_add_vertex(*this, t)) {
