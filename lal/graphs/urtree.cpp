@@ -121,11 +121,10 @@ vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
 
 	// retrieve edges and relabel them at the same time
 	vector<edge> es;
-	bfs.set_process_neighbour(
-	[&](const auto&, node s, node t, bool) -> void {
-		edge e;
-		// relabel vertices
-		if (relab) {
+	if (relab) {
+		bfs.set_process_neighbour(
+		[&](const auto&, node s, node t, bool) -> void {
+			edge e;
 			// relabel first vertex
 			if (labels[s] == n) {
 				labels[s] = next_label;
@@ -138,13 +137,18 @@ vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
 				++next_label;
 			}
 			e.second = labels[t];
+			es.push_back(e);
 		}
-		else {
-			e = edge(s,t);
-		}
-		es.push_back(e);
+		);
 	}
-	);
+	else {
+		bfs.set_process_neighbour(
+		[&](const auto&, node s, node t, bool) -> void {
+			es.push_back(edge(s,t));
+		}
+		);
+	}
+
 	// start the bfs again, this time at 'r'
 	bfs.start_at(r);
 	return es;

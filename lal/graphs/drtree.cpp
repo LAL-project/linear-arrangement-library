@@ -198,29 +198,34 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 
 	const auto n = n_nodes();
 
+	// parent of vertex 'r'
 	bool r_parent_set = false;
 	node r_parent = n;
 
+	BFS<drtree> bfs(*this);
+
 	// -----------------------
 	// find parent of vertex r
-	BFS<drtree> bfs(*this);
-	bfs.set_use_rev_edges(true);
-	bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
-	bfs.set_process_neighbour(
-	[&](const auto&, node s, node t, bool) -> void {
-		if (t == r) {
-			r_parent = s;
-			r_parent_set = true;
+	if (r != get_root()) {
+		bfs.set_use_rev_edges(true);
+		bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
+		bfs.set_process_neighbour(
+		[&](const auto&, node s, node t, bool) -> void {
+			if (t == r) {
+				r_parent = s;
+				r_parent_set = true;
+			}
 		}
+		);
+		bfs.start_at(get_root());
 	}
-	);
-	bfs.start_at(get_root());
 
 	// -----------------------------
 	// retrieve edges of the subtree
 
 	// reset the bfs
 	bfs.reset();
+	bfs.set_use_rev_edges(true);
 
 	// stop the bfs from going further than 'r''s parent
 	// in case such parent exists
@@ -236,16 +241,16 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 
 	// retrieve edges and relabel them at the same time
 	vector<edge> es;
-	bfs.set_process_neighbour(
-	[&](const auto&, node s, node t, bool dir) -> void {
-		// change the orientation of the edge whenever appropriate
-		// dir: true  ---> "s->t"
-		// dir: false ---> "t->s"
-		if (not dir) { std::swap(s,t); }
+	// relabel vertices
+	if (relab) {
+		bfs.set_process_neighbour(
+		[&](const auto&, node s, node t, bool ltr) -> void {
+			// change the orientation of the edge whenever appropriate
+			// ltr: true  ---> "s->t"
+			// ltr: false ---> "t->s"
+			if (not ltr) { std::swap(s,t); }
 
-		edge e;
-		// relabel vertices
-		if (relab) {
+			edge e;
 			// relabel first vertex
 			if (labels[s] == n) {
 				labels[s] = next_label;
@@ -258,13 +263,21 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 				++next_label;
 			}
 			e.second = labels[t];
+			es.push_back(e);
 		}
-		else {
-			e = edge(s,t);
-		}
-		es.push_back(e);
+		);
 	}
-	);
+	else {
+		bfs.set_process_neighbour(
+		[&](const auto&, node s, node t, bool dir) -> void {
+			// change the orientation of the edge whenever appropriate
+			// dir: true  ---> "s->t"
+			// dir: false ---> "t->s"
+			if (not dir) { std::swap(s,t); }
+			es.push_back(edge(s,t));
+		}
+		);
+	}
 	// start the bfs again, this time at 'r'
 	bfs.start_at(r);
 	return es;
