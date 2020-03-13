@@ -42,17 +42,37 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-
 #include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/tree.hpp>
 #include <lal/utils/bfs.hpp>
 #include <lal/utils/std_utils.hpp>
 
 namespace lal {
 namespace utils {
+
+namespace __lal {
+
+inline uint32_t __degree_for_centre(const graphs::dgraph& g, const node s)
+{ return g.out_degree(s) + g.in_degree(s); }
+
+inline uint32_t __degree_for_centre(const graphs::ugraph& g, const node s)
+{ return g.degree(s); }
+
+inline node __get_only_neighbour(const graphs::dgraph& g, const node s) {
+	return
+	(g.out_degree(s) == 0 ? g.get_in_neighbours(s)[0] : g.get_out_neighbours(s)[0]);
+}
+
+inline node __get_only_neighbour(const graphs::ugraph& g, const node s) {
+	return g.get_neighbours(s)[0];
+}
+
+} // -- namespace __lal
 
 /*
  * @brief Calculate the centre of the connected component that has vertex @e s.
@@ -69,7 +89,8 @@ namespace utils {
  * @returns Returns a tuple of three values. The first is a numerical value
  * that indicates how many vertices are in the centre of the tree. The other
  * two are the vertices in the centre. If the has a single central vertex,
- * only the first vertex is valid.
+ * only the first vertex is valid. It is guaranteed that the first value is
+ * smaller than the second.
  */
 template<
 	class G,
@@ -77,17 +98,21 @@ template<
 >
 std::pair<node, node> retrieve_centre(const G& T, node x) {
 	const auto n = T.n_nodes();
+
+	// First simple case:
+	// in case the component of x has only one vertex (vertex x)...
+	if (__lal::__degree_for_centre(T, x) == 0) {
+		return std::make_pair(x, n);
+	}
+
 	BFS<G> bfs(T);
-	bfs.set_use_rev_edges(T.is_directed());
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
 	// full degree of every vertex of the tree
 	std::vector<uint32_t> trimmed_degree(n, 0);
-	// number of vertices in the trimmed tree
-	uint32_t size_trimmed = n;
-	// number of vertices in the connected component
-	uint32_t component_size = 0;
+	// number of vertices in the connected_component
+	uint32_t size_trimmed = 0;
 
 	// leaves left to process
 	//   l0: leaves in the current tree
@@ -104,20 +129,30 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	// 4. calculate amount of leaves left to process
 	bfs.set_process_current(
 	[&](const auto&, node s) -> void {
-		++component_size;
-		trimmed_degree[s] = T.degree(s);
-		if (T.degree(s) == 1) {
+		++size_trimmed;
+		trimmed_degree[s] = __lal::__degree_for_centre(T, s);
+		if (trimmed_degree[s] == 1) {
 			tree_leaves.push_back(s);
 			++l0;
 		}
 	}
 	);
+	bfs.set_use_rev_edges(T.is_directed());
 	bfs.start_at(x);
 
+	// Second simple case:
+	// if the connected component has two vertices then
+	if (size_trimmed == 2) {
+		// case component_size==1 is actually the first simple case
+		const node v1 = x;
+		const node v2 = __lal::__get_only_neighbour(T, x);
+		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
+	}
+
+	// Third case: the component has three vertices or more...
+
 	// ---------------------------------------------------
-	// -- reset the bfs
 	bfs.reset();
-	bfs.set_use_rev_edges(T.is_directed());
 
 	// ---------------------------------------------------
 	// retrieve the centre of the connected component
@@ -131,11 +166,11 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 		//     After trimming once, the trimmed tree can't be trimmed
 		//     any further.
 		// --> size_trimmed <= 2
-		//     Note that a (trimmed) linear tree (or path graph) has two
-		//     leaves. This means that the first condition is true. However,
-		//     this does not mean we have calculated the centre because
-		//     there still is a big amount of leaves to trim. Therefore, we
-		//     need a trimmed tree of at most 2 vertices to finish.
+		//     Note that a (trimmed) linear tree (or path graph) has two leaves.
+		//     This means that the conditions so far are true. However, this
+		//     does not mean we have calculated the centre because there still
+		//     is a big amount of leaves to trim. Therefore, we need a trimmed
+		//     tree of at most 2 vertices to finish.
 		return (l0 == 1 or l0 == 2) and l1 == 0 and size_trimmed <= 2;
 	}
 	);
@@ -146,7 +181,8 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	bfs.set_process_visited_neighbours(true);
 	bfs.set_process_neighbour(
-	[&](const auto&, node s, node t, bool) -> void {
+	[&](const auto&, node s, node t, bool) -> void
+	{
 		// ignore the edge if one of its vertices has already been trimmed out.
 		if (trimmed_degree[s] == 0) { return; }
 		if (trimmed_degree[t] == 0) { return; }
@@ -181,6 +217,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	);
 
 	// do the bfs from the leaves inwards
+	bfs.set_use_rev_edges(T.is_directed());
 	bfs.start_at(tree_leaves);
 
 	if (has_single_center) {
@@ -212,7 +249,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 #if defined DEBUG
 	assert(size_trimmed == 2);
 #endif
-	return std::make_pair(v1, v2);
+	return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 }
 
 } // -- namespace utils
