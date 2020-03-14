@@ -95,13 +95,11 @@ inline string tree_feature_string(const treebank_processor::tree_feature& tf) {
 inline string processor_error_string(const treebank_processor::processor_error& pe) {
 	switch (pe) {
 	case treebank_processor::processor_error::none: return "No error";
-	case treebank_processor::processor_error::missing_parent: return "Parent directory not given";
-	case treebank_processor::processor_error::missing_main: return "Main file not given";
-	case treebank_processor::processor_error::missing_output: return "Output directory not given";
-	case treebank_processor::processor_error::no_parent: return "Parent directory not found";
-	case treebank_processor::processor_error::no_main: return "Main file not found";
-	case treebank_processor::processor_error::no_output: return "Output directory not found";
-	case treebank_processor::processor_error::no_treebank: return "Some tree bank file could not be found";
+	case treebank_processor::processor_error::need_main_file: return "Main file not given";
+	case treebank_processor::processor_error::need_output_directory: return "Output directory not given";
+	case treebank_processor::processor_error::missing_main_file: return "Main file not found";
+	case treebank_processor::processor_error::missing_output_directory: return "Output directory not found";
+	case treebank_processor::processor_error::missing_treebank_file: return "Some tree bank file could not be found";
 	case treebank_processor::processor_error::no_features: return "No features to be output";
 	}
 	// should never happen
@@ -153,7 +151,7 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 	cerr << "    Function: 'treebank_processor::tree_feature index2enum(size_t i)'" << endl;
 	cerr << "    Value of parameter 'i' is: " << i << endl;
 	cerr << "    This is an invalid value." << endl;
-	cerr << "    Should be <" << NUM_TREE_FEATURES << endl;
+	cerr << "    The value should be less than " << NUM_TREE_FEATURES << endl;
 	cerr << "=========================================================" << endl;
 	return treebank_processor::tree_feature::D_z;
 }
@@ -285,19 +283,15 @@ inline void process_tree(
 // PUBLIC
 
 treebank_processor::treebank_processor(bool all_fs) {
-	m_par_dir = "none";
 	m_out_dir = "none";
 	m_main_list = "none";
 
 	m_what_fs = vector<bool>(NUM_TREE_FEATURES, all_fs);
 }
 
-treebank_processor::treebank_processor(
-	const string& pdir, const string& file,
-	const string& odir, bool all_fs
-)
+treebank_processor::treebank_processor
+(const string& file, const string& odir, bool all_fs)
 {
-	m_par_dir = pdir;
 	m_main_list = file;
 	m_out_dir = odir;
 
@@ -307,9 +301,8 @@ treebank_processor::treebank_processor(
 treebank_processor::~treebank_processor() {}
 
 void treebank_processor::init
-(const string& pdir, const string& file, const string& odir, bool all_fs)
+(const string& file, const string& odir, bool all_fs)
 {
-	m_par_dir = pdir;
 	m_main_list = file;
 	m_out_dir = odir;
 
@@ -318,6 +311,9 @@ void treebank_processor::init
 
 void treebank_processor::add_feature(const tree_feature& fs) {
 	m_what_fs[ enum2index(fs) ] = true;
+}
+void treebank_processor::remove_feature(const tree_feature& fs) {
+	m_what_fs[ enum2index(fs) ] = false;
 }
 
 treebank_processor::processor_error treebank_processor::process
@@ -328,38 +324,32 @@ treebank_processor::processor_error treebank_processor::process
 		return processor_error::no_features;
 	}
 
-	// second, check reader was initialised
-	if (m_par_dir == "none") {
-		return processor_error::missing_parent;
-	}
+	// second, check that the reader was initialised
 	if (m_main_list == "none") {
-		return processor_error::missing_main;
+		return processor_error::need_main_file;
 	}
 	if (m_out_dir == "none") {
-		return processor_error::missing_output;
+		return processor_error::need_output_directory;
 	}
 
 	treebank_dataset tbds;
-	dataset_error dserr = tbds.init(m_par_dir, m_main_list);
+	dataset_error dserr = tbds.init(m_main_list);
 
-	if (dserr == dataset_error::no_parent_dir) {
-		return processor_error::no_parent;
-	}
-	if (dserr == dataset_error::no_main_file) {
-		return processor_error::no_main;
+	if (dserr == dataset_error::missing_main_file) {
+		return processor_error::missing_main_file;
 	}
 
 	// make sure output directory exists
 	struct stat info;
 	if (m_out_dir != "." and stat(m_out_dir.c_str(), &info) != 0) {
-		return processor_error::no_output;
+		return processor_error::missing_output_directory;
 	}
 
 	// process dataset using treebank_dataset class
 	while (tbds.has_language()) {
 		dserr = tbds.next_language();
-		if (dserr == dataset_error::no_treebank_file) {
-			return processor_error::no_treebank;
+		if (dserr == dataset_error::missing_treebank_file) {
+			return processor_error::missing_treebank_file;
 		}
 
 		// iterate to next language

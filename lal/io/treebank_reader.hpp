@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/io/dataset_error.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/utree.hpp>
 
 namespace lal {
 namespace io {
@@ -57,19 +57,46 @@ namespace io {
  * @brief Treebank reader class.
  *
  * This class offers a simple interface for iterating over the trees in a single
- * treebank file, henceforth the treebank.
+ * treebank file, henceforth the treebank. Each tree is represented as a list
+ * of whole positive numbers (including zero), each representing a vertex of the
+ * tree. The number 0 denotes the root of the tree, and number at a certain
+ * position indicates its parent vertex. For example, when number 4 is at
+ * position 9 it means that vertex 9 has parent vertex 4. Therefore, if number 0
+ * is at position 1 it means that vertex 1 is the root of the tree. A complete
+ * example of such a tree's representation is the following
+ *
+ *       0 3 4 1 6 3
+ *
+ * which should be interpreted as
+ *
+ *		predecessor:         0 3 4 1 6 3
+ *		vertex of the tree:  1 2 3 4 5 6
  *
  * In order to use it, this class has to be first initialised with the treebank
- * and, optionally, the language it was made from. Once initialised, the user can
- * iterate over the trees within the file by calling @ref next_tree(). This function
- * can only be called as long as @ref has_tree() returns true. Retrieving the
- * trees is done by calling the function @ref get_tree().
+ * file and, optionally, the language it was made from. Once initialised, the
+ * user can iterate over the trees within the file by calling @ref next_tree.
+ * This function can only be called as long as @ref has_tree returns true.
+ * Retrieving the trees is done by calling the function @ref get_tree.
  *
  * If the user did not initialise this class (for example, it was returned by
  * the class @ref treebank_dataset), then method @ref get_treebank_filename
  * and @ref what_language might prove useful for debugging since they return,
  * respectively, the full name (path included) of the treebank and the language
  * it corresponds to.
+ *
+ * The correct usage of this class is given in the following piece of code.
+ * @code
+ *		auto tbread = treebank_reader();
+ *		// it is advisable to check for errors
+ *		tbread.init(main_file);
+ *		while (tbread.has_tree()) {
+ *			// again, check for errors
+ *			tbread.next_tree();
+ *			auto t = tbread.get_tree();
+ *			// process tree 't'
+ *			// ....
+ *		}
+ * @endcode
  */
 class treebank_reader {
 	public:
@@ -84,7 +111,7 @@ class treebank_reader {
 		 * @brief Initialises the treebank reader
 		 * @param file Treebank file.
 		 * @param lang Language of the treebank.
-		 * @return Returns dataset_error::dse_none on success.
+		 * @return If any error occurred, returns its type.
 		 * @post The amount of trees processed, @ref m_num_trees, is always
 		 * set to 0.
 		 */
@@ -118,7 +145,7 @@ class treebank_reader {
 		const std::string& get_treebank_filename() const;
 
 		/// Returns the current tree.
-		graphs::ugraph get_tree() const;
+		graphs::utree get_tree() const;
 
 	private:
 		/// Language of the treebank

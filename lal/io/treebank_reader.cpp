@@ -72,7 +72,7 @@ dataset_error treebank_reader::init(const string& file, const string& lang) {
 	m_treebank.open(m_treebank_file.c_str());
 
 	if (not m_treebank.is_open()) {
-		return dataset_error::no_treebank_file;
+		return dataset_error::missing_treebank_file;
 	}
 	return dataset_error::no_error;
 }
@@ -114,7 +114,7 @@ const string& treebank_reader::get_treebank_filename() const {
 	return m_treebank_file;
 }
 
-ugraph treebank_reader::get_tree() const {
+utree treebank_reader::get_tree() const {
 	// parse tree in line
 	stringstream ss(m_file_line);
 

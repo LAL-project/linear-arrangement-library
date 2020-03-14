@@ -56,12 +56,10 @@ namespace io {
 enum class dataset_error {
 	/// No error.
 	no_error,
-	/// Parent directory could not be found.
-	no_parent_dir,
-	/// Main file could not be found.
-	no_main_file,
-	/// One of the treebank files could not be found.
-	no_treebank_file,
+	/// Main file could not be found in disk.
+	missing_main_file,
+	/// One of the treebank files could not be found in disk.
+	missing_treebank_file,
 	/// The reader found an empty line.
 	empty_line
 };

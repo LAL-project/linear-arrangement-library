@@ -51,78 +51,47 @@ namespace io {
  * @brief Treebank dataset processor.
  *
  * This class, the objects of which will be referred to as the "processor", is
- * an interface for processing a whole treebank dataset. This class offers an
- * automatic way of processing a corpora of treebanks by computing a series of
- * values, available within this library, automatically and outputting all these
- * values into a file, which can be read the same way a csv file can be read.
+ * an interface for processing a whole treebank dataset and produce data for
+ * a fixed set of features. It is meant to ease processing treebanks if the
+ * features to be calculated are considered in this class. See the enumeration
+ * @ref tree_feature for details on the features available. Each feature
+ * can be set to be calculated via method @ref add_feature. However, the processor
+ * can be initialised with all features set (see @ref init), and then have some
+ * of them removed via method @ref remove_feature.
  *
- * Assume a treebank dataset is a set of files, each containing several syntactic
- * dependency trees of a language. Each file is referenced inside a "main file list",
- * henceforth called the main file. The main file indicates, for each language,
- * its file with the syntactic dependency trees. For example, the main file
- * \a stanford.txt could contain:
+ * A treebank dataset is made up of a set of files, each containing several
+ * syntactic dependency trees of sentences of the corresponding language.
+ * Each file is referenced within a "main file list", henceforth called the
+ * main file. The main file indicates, for each language, a file with the
+ * syntactic dependency trees. For example, a main file \a stanford.txt
+ * could contain:
  *
- *		arabic stanford/stanford-ar-all.heads2
- *		eus stanford/stanford-eu-all.heads2
- *		ben stanford/stanford-bn-all.heads2
+ *		arb path/to/file/ar-all.heads2
+ *		eus path/to/file/eu-all.heads2
+ *		ben path/to/file/bn-all.heads2
  *		...
  *
- * This processor works as follows: the user has to give the directory
- * in which the main file is located at (henceforth, the parent directory),
- * and the name of this file, without the leading path. For example, to read
- * the dataset \a Documents/datasets/stanford.txt the processor has to be
- * initialised with the parent directory \a Documents/datasets and the
- * main file \a stanford.txt.
+ * where the first column contains a string referencing the language (e.g., an
+ * ISO code, or simply the name of the language), and the second column contains
+ * the full path to the file with the syntactic dependency trees. The processor
+ * has to be initialised with such file via method @ref init. Then, the treebank
+ * is processed via method @ref process.
  *
- * It is important to notice that the files referenced inside the main
- * must be done so with paths relative to the parent directory. Using the
- * previous example, we could have the following file directory structure:
- *
- *		Documents/
- *		| ...
- *		| datasets/
- *			| ...
- *			| stanford.txt
- *			| stanford/
- *				| stanford-ar-all.heads2
- *				| stanford-eu-all.heads2
- *				| stanford-bn-all.heads2
- *				| ...
- *
- * Therefore, if \a D is the parent directory, \a F is the main file then
- * all the files containing the syntactic dependency trees \a T in the main
- * file \a F must be reachable by concatenating \a D and \a T.
- *
- * The processor will read every language's tree bank, indicated in the main
- * file, and process all trees found. For each language, the processor will
- * compute a list of features (fully described in @ref tree_feature) of every
- * tree in the order that the user provided them via method @ref add_feature.
- * The class will produce an output file for each language inside an output
- * directory, provided by the user. These files will contain as many rows as
- * there are trees in the corresponding tree banks, with one optional row at
- * the begining of the file: the header.
- *
- * The list of features to be computed is, by default, empty, unless stated
- * otherwise in the constructor methods, or in the @ref init.
- *
- * Each output file will be stored in the output directory, which must exist
- * prior to processing the dataset, and they will be named after the language
- * the treebank belongs to.
- *
- * The output files are organised in columns, each corresponding to a feature.
- * The columns will be separated by either a default tab character '\\t', or by
- * any other character chosen by the user. Also, the user may choose not to
- * have a header output at the begining of each file.
- *
- * In order to produce an output, use method @ref process.
+ * The usage of this class is a lot simpler than that of class @ref treebank_dataset.
+ * See code for details.
+ * @code
+ *		auto tbproc = treebank_processor();
+ *		// initialise the processor without features
+ *		tbproc.init(main_file, output_dir, false);
+ *		tbproc.add_feature(treebank_processor::tree_feature::C);
+ *		tbproc.add_feature(treebank_processor::tree_feature::D_var);
+ *		// it is advisable to check for errors
+ *		tbproc.process();
+ * @endcode
  */
 class treebank_processor {
 	public:
-		/**
-		 * @brief Features to be output.
-		 *
-		 * Features that can be computed for each tree.
-		 */
+		/// @brief Features that can be computed for each tree.
 		enum class tree_feature {
 			/// Number of nodes of the tree.
 			n,
@@ -166,20 +135,16 @@ class treebank_processor {
 		enum class processor_error {
 			/// The dataset was processed successfully.
 			none,
-			/// Parent directory was not given.
-			missing_parent,
 			/// Main file was not given.
-			missing_main,
+			need_main_file,
 			/// Output directory was not given.
-			missing_output,
-			/// Parent directory could not be found.
-			no_parent,
+			need_output_directory,
 			/// Main file could not be found.
-			no_main,
+			missing_main_file,
 			/// Output directory could not be found.
-			no_output,
+			missing_output_directory,
 			/// One of the treebank files could not be found.
-			no_treebank,
+			missing_treebank_file,
 			/// No features at all were given to the processor.
 			no_features
 		};
@@ -198,14 +163,12 @@ class treebank_processor {
 		 *
 		 * If the parameter is true, the list is initialised with all
 		 * features possible.
-		 * @param pdir Parent directory.
 		 * @param file Main file's name.
 		 * @param odir Output directory.
 		 * @param all_fs Should the feature list contain all possible features?
 		 */
 		treebank_processor
-		(const std::string& pdir, const std::string& file,
-		 const std::string& odir, bool all_fs = false);
+		(const std::string& file, const std::string& odir, bool all_fs = false);
 		/// Destructor.
 		~treebank_processor();
 
@@ -214,20 +177,23 @@ class treebank_processor {
 		 *
 		 * If the parameter @e all_fs is true, the list is initialised with all
 		 * features possible.
-		 * @param pdir Parent directory.
 		 * @param file Main file.
 		 * @param odir Output directory.
 		 * @param all_fs Should the feature list contain all possible features?
 		 */
 		void init
-		(const std::string& pdir, const std::string& file,
-		 const std::string& odir, bool all_fs = false);
+		(const std::string& file, const std::string& odir, bool all_fs = false);
 
 		/**
-		 * @brief Add another feature to be computed.
+		 * @brief Adds a feature to the processor.
 		 * @param fs Feature to be added.
 		 */
 		void add_feature(const tree_feature& fs);
+		/**
+		 * @brief Removes a feature from the processor.
+		 * @param fs Feature to be removed.
+		 */
+		void remove_feature(const tree_feature& fs);
 
 		/**
 		 * @brief Process the dataset.
@@ -247,8 +213,6 @@ class treebank_processor {
 		(char sep = '\t', bool header = true, bool v = false) const;
 
 	private:
-		/// Parent directory.
-		std::string m_par_dir;
 		/// Output directory.
 		std::string m_out_dir;
 		/// File containing the list of languages and their treebanks.

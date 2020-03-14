@@ -52,34 +52,23 @@ namespace lal {
 namespace io {
 
 treebank_dataset::treebank_dataset() {
-	m_par_dir = "none";
 	m_main_list = "none";
 }
 
 treebank_dataset::~treebank_dataset() {}
 
-dataset_error treebank_dataset::init
-(const string& pdir, const string& main_file)
+dataset_error treebank_dataset::init(const string& main_file)
 {
 	// close current dataset (if any)
 	m_list.close();
 
-	m_par_dir = pdir;
 	m_main_list = main_file;
-
-	// make sure directories and files exist
-	if (not filesystem::exists(m_par_dir)) {
-		return dataset_error::no_parent_dir;
-	}
-
-	const string full_name = m_par_dir + "/" + m_main_list;
-
-	if (not filesystem::exists(full_name)) {
-		return dataset_error::no_main_file;
+	if (not filesystem::exists(m_main_list)) {
+		return dataset_error::missing_main_file;
 	}
 
 	// open new dataset
-	m_list.open(full_name);
+	m_list.open(m_main_list);
 	if (m_list >> m_lang >> m_tbf) {
 		// do nothing, there are more trees
 	}
@@ -95,7 +84,7 @@ bool treebank_dataset::has_language() const {
 }
 
 dataset_error treebank_dataset::next_language() {
-	dataset_error dserr = m_tree_read.init(m_par_dir + "/" + m_tbf, m_lang);
+	dataset_error dserr = m_tree_read.init(m_tbf, m_lang);
 	if (dserr != dataset_error::no_error) {
 		return dserr;
 	}

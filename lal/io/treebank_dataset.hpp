@@ -60,50 +60,58 @@ namespace io {
  * the information produced is limited to the capabilities of this library.
  *
  * A treebank dataset is made up of a set of files, each containing several
- * syntactic dependency trees of a language. Each file is referenced within
- * a "main file list", henceforth called the main file. The main file indicates,
- * for each language, a file with the syntactic dependency trees. For example,
- * the main file \a stanford.txt could contain:
+ * syntactic dependency trees of sentences of the corresponding language.
+ * Each file is referenced within a "main file list", henceforth called the
+ * main file. The main file indicates, for each language, a file with the
+ * syntactic dependency trees. For example, the main file \a stanford.txt
+ * could contain:
  *
- *		arabic stanford/stanford-ar-all.heads2
- *		eus stanford/stanford-eu-all.heads2
- *		ben stanford/stanford-bn-all.heads2
+ *		arb path/to/file/ar-all.heads2
+ *		eus path/to/file/eu-all.heads2
+ *		ben path/to/file/bn-all.heads2
  *		...
  *
- * This reader works as follows: the user has to indicate the directory
- * in which the main file is located at (henceforth called the parent directory),
- * and the name of this file, without the leading path. For example, to read
- * the dataset \a Documents/datasets/stanford.txt the reader has to be
- * initialised with the parent directory \a Documents/datasets and the
- * main file \a stanford.txt.
+ * where the first column contains a string referencing the language (e.g., an
+ * ISO code, or simply the name of the language), and the second column contains
+ * the full path to the file with the syntactic dependency trees.
+ *
+ *
+ *
+ * This reader works as follows: the user has to initialise the reader with the
+ * main file (the main file list). For example, to read the Stanford dataset the
+ * reader has to be initialised with the main file \a stanford.txt which could
+ * contain the contents examplified above.
  *
  * It is important to notice that the files referenced within the main file
- * must be done so with paths relative to the parent directory. Using the
- * previous example, we could have the following file directory structure:
+ * must be done so with full paths, i.e., paths relative to the system's root.
  *
- *		Documents/
- *		| ...
- *		| datasets/
- *			| ...
- *			| stanford.txt
- *			| stanford/
- *				| stanford-ar-all.heads2
- *				| stanford-eu-all.heads2
- *				| stanford-bn-all.heads2
- *				| ...
- *
- * Therefore, if \a D is the parent directory and \a F is the main file then
- * all the files containing the syntactic dependency trees \a T referenced
- * within the main file \a F have to be be reachable by concatenating \a D
- * and \a T.
- *
- * This class only processes through main file: it iterates through the list
+ * This class only processes the main file: it iterates through the list
  * of files within the main file using the method @ref next_language(). This
  * method can be called as long as method @ref has_language() returns true.
  * Each call to @ref next_language() builds an internal object of type
  * @ref treebank_reader which allows the user to iterate through the trees
  * within the corresponding file. This object can be retrieved by calling
  * method @ref get_treebank_reader().
+ *
+ * The correct usage of this class is given in the following piece of code.
+ * @code
+ *		auto tbds = treebank_dataset();
+ *		// remember to check for errors
+ *		tbds.init(mainf)
+ *		while (tbds.has_language()) {
+ *			// errors are not likely, but it is
+ *			// advisable remember to check for errors
+ *			tbds.next_language();
+ *			auto tbread = tbds.get_treebank_reader();
+ *			while (tbread.has_tree()) {
+ *				// again, check for errors
+ *				tbread.next_tree();
+ *				auto t = tbread.get_tree();
+ *				// custom processing of tree 't'
+ *				// ....
+ *			}
+ *		}
+ * @endcode
  */
 class treebank_dataset {
 	public:
@@ -114,11 +122,10 @@ class treebank_dataset {
 
 		/**
 		 * @brief Initialise the reader with a new dataset.
-		 * @param pdir Parent directory.
 		 * @param main_file Main file.
+		 * @return If any occurred then returns its type.
 		 */
-		dataset_error init
-		(const std::string& pdir, const std::string& main_file);
+		dataset_error init( const std::string& main_file);
 
 		/// Returns whether there is a next treebank to be read.
 		bool has_language() const;
@@ -134,8 +141,6 @@ class treebank_dataset {
 		treebank_reader& get_treebank_reader();
 
 	private:
-		/// Parent directory.
-		std::string m_par_dir;
 		/// File containing the list of languages and their treebanks.
 		std::string m_main_list;
 
