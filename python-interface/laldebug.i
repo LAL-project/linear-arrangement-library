@@ -10,6 +10,8 @@
 %import submodules/lalpropertiesdebug.i
 
 %pythoncode %{
+# remove 'lal' and 'debug' from the module's names.
+
 __mod_name = "laldebug"
 __mod = __import__(__mod_name)
 for name in dir(__mod):

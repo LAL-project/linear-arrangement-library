@@ -12,12 +12,12 @@
 # _name_SO			# without-directory shared (.so / .pyd) file
 # name_SO			# with-directory shared (.so / .pyd) file
 
-# ENUMERATIONS
+# ENUMERATIONS and CLASSIFICATIONS
 
 # -- dataset_error module
-DSE_MAIN_INT	= submodules/$(DSE_INAME).i
-DSE_SUB_INT		= submodules/$(DSE_BNAME)_impl.i
-DSE_MOD_DEPS	= $(DSE_MAIN_INT) $(DSE_SUB_INT) $(DSE_DEP_HDRS)
+DSE_MAIN_INT	= submodules/enums/$(DSE_INAME).i
+DSE_SUB_INT		= submodules/enums/$(DSE_BNAME)_impl.i
+DSE_MOD_DEPS	= $(DSE_MAIN_INT) $(DSE_SUB_INT) $(DSE_DPHDRS)
 _DSE_PF			= $(DSE_INAME).py
 DSE_PY_FILE		= $(ARCH_DIR)/$(_DSE_PF)
 DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
@@ -25,41 +25,42 @@ _DSE_SO			= _$(DSE_INAME).$(SO_EXT)
 DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
 
 # -- tree_structure_type module
-TST_MAIN_INT	= submodules/$(TST_INAME).i
-TST_SUB_INT		= submodules/$(TST_BNAME)_impl.i
-TST_MOD_DEPS	= $(TST_MAIN_INT) $(TST_SUB_INT) $(TST_DEP_HDRS)
-_TST_PF			= $(TST_INAME).py
-TST_PY_FILE		= $(ARCH_DIR)/$(_TST_PF)
-TST_WRAP		= $(ARCH_DIR)/$(TST_INAME)_wrap
-_TST_SO			= _$(TST_INAME).$(SO_EXT)
-TST_SO			= $(ARCH_DIR)/$(_TST_SO)
+TREE_STR_MAIN_INT	= submodules/enums/$(TREE_STR_INAME).i
+TREE_STR_SUB_INT	= submodules/enums/$(TREE_STR_BNAME)_impl.i
+TREE_STR_MOD_DEPS	= $(TREE_STR_MAIN_INT) $(TREE_STR_SUB_INT) $(TREE_STR_DPHDRS)
+_TREE_STR_PF		= $(TREE_STR_INAME).py
+TREE_STR_PY_FILE	= $(ARCH_DIR)/$(_TREE_STR_PF)
+TREE_STR_WRAP		= $(ARCH_DIR)/$(TREE_STR_INAME)_wrap
+_TREE_STR_SO		= _$(TREE_STR_INAME).$(SO_EXT)
+TREE_STR_SO			= $(ARCH_DIR)/$(_TREE_STR_SO)
 
 # -- algorithm_crossings module
-ALGCR_MAIN_INT	= submodules/$(ALGCR_INAME).i
-ALGCR_SUB_INT	= submodules/$(ALGCR_BNAME)_impl.i
-ALGCR_MOD_DEPS	= $(ALGCR_MAIN_INT) $(ALGCR_SUB_INT) $(ALGCR_DEP_HDRS)
-_ALGCR_PF		= $(ALGCR_INAME).py
-ALGCR_PY_FILE	= $(ARCH_DIR)/$(_ALGCR_PF)
-ALGCR_WRAP		= $(ARCH_DIR)/$(ALGCR_INAME)_wrap
-_ALGCR_SO		= _$(ALGCR_INAME).$(SO_EXT)
-ALGCR_SO		= $(ARCH_DIR)/$(_ALGCR_SO)
+ALG_CROSS_MAIN_INT	= submodules/enums/$(ALG_CROSS_INAME).i
+ALG_CROSS_SUB_INT	= submodules/enums/$(ALG_CROSS_BNAME)_impl.i
+ALG_CROSS_MOD_DEPS	= $(ALG_CROSS_MAIN_INT) $(ALG_CROSS_SUB_INT) $(ALG_CROSS_DPHDRS)
+_ALG_CROSS_PF		= $(ALG_CROSS_INAME).py
+ALG_CROSS_PY_FILE	= $(ARCH_DIR)/$(_ALG_CROSS_PF)
+ALG_CROSS_WRAP		= $(ARCH_DIR)/$(ALG_CROSS_INAME)_wrap
+_ALG_CROSS_SO		= _$(ALG_CROSS_INAME).$(SO_EXT)
+ALG_CROSS_SO		= $(ARCH_DIR)/$(_ALG_CROSS_SO)
 
 # -- algorithm_Dmin module
-ALGDM_MAIN_INT	= submodules/$(ALGDM_INAME).i
-ALGDM_SUB_INT	= submodules/$(ALGDM_BNAME)_impl.i
-ALGDM_MOD_DEPS	= $(ALGDM_MAIN_INT) $(ALGDM_SUB_INT) $(ALGDM_DEP_HDRS)
-_ALGDM_PF		= $(ALGDM_INAME).py
-ALGDM_PY_FILE	= $(ARCH_DIR)/$(_ALGDM_PF)
-ALGDM_WRAP		= $(ARCH_DIR)/$(ALGDM_INAME)_wrap
-_ALGDM_SO		= _$(ALGDM_INAME).$(SO_EXT)
-ALGDM_SO		= $(ARCH_DIR)/$(_ALGDM_SO)
+ALG_DMIN_MAIN_INT	= submodules/enums/$(ALG_DMIN_INAME).i
+ALG_DMIN_SUB_INT	= submodules/enums/$(ALG_DMIN_BNAME)_impl.i
+ALG_DMIN_MOD_DEPS	= $(ALG_DMIN_MAIN_INT) $(ALG_DMIN_SUB_INT) $(ALG_DMIN_DPHDRS)
+_ALG_DMIN_PF		= $(ALG_DMIN_INAME).py
+ALG_DMIN_PY_FILE	= $(ARCH_DIR)/$(_ALG_DMIN_PF)
+ALG_DMIN_WRAP		= $(ARCH_DIR)/$(ALG_DMIN_INAME)_wrap
+_ALG_DMIN_SO		= _$(ALG_DMIN_INAME).$(SO_EXT)
+ALG_DMIN_SO			= $(ARCH_DIR)/$(_ALG_DMIN_SO)
+
 
 # CLASSES AND METHODS
 
 # -- definitions module
 DEFS_MAIN_INT	= submodules/$(DEFS_INAME).i
 DEFS_SUB_INT	= submodules/$(DEFS_BNAME)_impl.i
-DEFS_MOD_DEPS	= $(DEFS_MAIN_INT) $(DEFS_SUB_INT) $(DEFS_DEP_HDRS)
+DEFS_MOD_DEPS	= $(DEFS_MAIN_INT) $(DEFS_SUB_INT) $(DEFS_DPHDRS)
 _DEFS_PF		= $(DEFS_INAME).py
 DEFS_PY_FILE	= $(ARCH_DIR)/$(_DEFS_PF)
 DEFS_WRAP		= $(ARCH_DIR)/$(DEFS_INAME)_wrap
@@ -69,7 +70,7 @@ DEFS_SO			= $(ARCH_DIR)/$(_DEFS_SO)
 # -- numeric module
 NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
 NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
-NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DEP_HDRS)
+NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DPHDRS)
 _NMRC_PF		= $(NMRC_INAME).py
 NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
 NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
@@ -79,7 +80,7 @@ NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
 # -- graphs module
 GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
 GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
-GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DEP_HDRS) 		\
+GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS) \
 				  submodules/lalgraphs_rename_enums.i
 _GRAPHS_PF		= $(GRAPHS_INAME).py
 GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
@@ -90,7 +91,7 @@ GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
 # -- generation module
 GEN_MAIN_INT	= submodules/$(GEN_INAME).i
 GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
-GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DEP_HDRS)
+GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DPHDRS)
 _GEN_PF			= $(GEN_INAME).py
 GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
 GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
@@ -100,8 +101,9 @@ GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
 # -- io module
 IO_MAIN_INT		= submodules/$(IO_INAME).i
 IO_SUB_INT		= submodules/$(IO_BNAME)_impl.i
-IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DEP_HDRS) 		\
-				  submodules/lalio_rename_enums.i
+IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DPHDRS) 		\
+				  submodules/lalio_rename_enums.i					\
+				  $(DSE_MOD_DEPS)
 _IO_PF			= $(IO_INAME).py
 IO_PY_FILE		= $(ARCH_DIR)/$(_IO_PF)
 IO_WRAP			= $(ARCH_DIR)/$(IO_INAME)_wrap
@@ -111,7 +113,7 @@ IO_SO			= $(ARCH_DIR)/$(_IO_SO)
 # -- iterators module
 ITER_MAIN_INT	= submodules/$(ITER_INAME).i
 ITER_SUB_INT	= submodules/$(ITER_BNAME)_impl.i
-ITER_MOD_DEPS	= $(ITER_MAIN_INT) $(ITER_SUB_INT) $(ITER_DEP_HDRS)
+ITER_MOD_DEPS	= $(ITER_MAIN_INT) $(ITER_SUB_INT) $(ITER_DPHDRS)
 _ITER_PF		= $(ITER_INAME).py
 ITER_PY_FILE	= $(ARCH_DIR)/$(_ITER_PF)
 ITER_WRAP		= $(ARCH_DIR)/$(ITER_INAME)_wrap
@@ -121,7 +123,8 @@ ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
 # -- linarr module
 LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
 LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
-LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DEP_HDRS)
+LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DPHDRS)	\
+				  $(TREE_STR_MOD_DEPS) $(ALG_CROSS_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
 _LINARR_PF		= $(LINARR_INAME).py
 LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
@@ -131,7 +134,7 @@ LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
 # -- properties module
 PROP_MAIN_INT	= submodules/$(PROP_INAME).i
 PROP_SUB_INT	= submodules/$(PROP_BNAME)_impl.i
-PROP_MOD_DEPS	= $(PROP_MAIN_INT) $(PROP_SUB_INT) $(PROP_DEP_HDRS)
+PROP_MOD_DEPS	= $(PROP_MAIN_INT) $(PROP_SUB_INT) $(PROP_DPHDRS)
 _PROP_PF		= $(PROP_INAME).py
 PROP_PY_FILE	= $(ARCH_DIR)/$(_PROP_PF)
 PROP_WRAP		= $(ARCH_DIR)/$(PROP_INAME)_wrap
@@ -141,7 +144,10 @@ PROP_SO			= $(ARCH_DIR)/$(_PROP_SO)
 # -- lal module (library's main module)
 LAL_MAIN_INT	= $(LAL_INAME).i
 LAL_SUB_INT		= 
-LAL_MOD_DEPS	= $(LAL_MAIN_INT) $(LAL_SUB_INT) $(LAL_DEP_HDRS)
+LAL_MOD_DEPS	= $(LAL_MAIN_INT) $(LAL_SUB_INT) $(LAL_DPHDRS)			\
+				  $(DEFS_MOD_DEPS) $(NMRC_MOD_DEPS) $(GRAPHS_MOD_DEPS)	\
+				  $(GEN_MOD_DEPS) $(IO_MOD_DEPS) $(ITER_MOD_DEPS)		\
+				  $(ITER_MOD_DEPS) $(LINARR_MOD_DEPS) $(PROP_MOD_DEPS)
 _LAL_PF			= $(LAL_INAME).py
 LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
 LAL_WRAP		= $(ARCH_DIR)/$(LAL_INAME)_wrap

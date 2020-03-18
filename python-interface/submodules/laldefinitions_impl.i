@@ -23,6 +23,7 @@ namespace std {
 	%template(edge_pair) pair<lal::edge, lal::edge>;
 	
 	%template(uint32_list) vector<uint32_t>;
+	%template(bool_list) vector<bool>;
 	
 	%template(edge_list) vector<lal::edge>;
 	%template(edge_pair_list) vector<lal::edge_pair>;

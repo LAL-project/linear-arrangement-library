@@ -2,7 +2,7 @@
 
 %import laldefinitionsdebug.i
 %import lalgraphsdebug.i
-%import laldataset_errordebug.i
+%import enums/laldataset_errordebug.i
 
 %include lalio_impl.i
 

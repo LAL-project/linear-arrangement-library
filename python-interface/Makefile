@@ -154,17 +154,17 @@ include Makefile.module.variables
 ########################################################################
 # GOALS
 
-SUBMODULES	= $(DSE_SO) 	\
-			  $(TST_SO) 	\
-			  $(ALGCR_SO) 	\
-			  $(ALGDM_SO) 	\
-			  $(DEFS_SO) 	\
-			  $(GEN_SO) 	\
-			  $(GRAPHS_SO) 	\
-			  $(IO_SO)		\
-			  $(ITER_SO)	\
-			  $(LINARR_SO)	\
-			  $(NMRC_SO)	\
+SUBMODULES	= $(DSE_SO) 		\
+			  $(TREE_STR_SO) 	\
+			  $(ALG_CROSS_SO) 	\
+			  $(ALG_DMIN_SO)	\
+			  $(DEFS_SO) 		\
+			  $(GEN_SO) 		\
+			  $(GRAPHS_SO) 		\
+			  $(IO_SO)			\
+			  $(ITER_SO)		\
+			  $(LINARR_SO)		\
+			  $(NMRC_SO)		\
 			  $(PROP_SO)
 ALL_SO		= $(SUBMODULES) $(LAL_SO)
 
@@ -190,16 +190,14 @@ distclean:
 	rm -rf $(ARCH_DIR)
 
 install: $(LAL_SO)
-	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
-	cp $(LAL_PY_FILE) $(LAL_PY_DEST)/$(_LAL_PF)
 	cp $(DSE_SO) $(LAL_PY_DEST)/$(_DSE_SO)
 	cp $(DSE_PY_FILE) $(LAL_PY_DEST)/$(_DSE_PF)
-	cp $(TST_SO) $(LAL_PY_DEST)/$(_TST_SO)
-	cp $(TST_PY_FILE) $(LAL_PY_DEST)/$(_TST_PF)
-	cp $(ALGCR_SO) $(LAL_PY_DEST)/$(_ALGCR_SO)
-	cp $(ALGCR_PY_FILE) $(LAL_PY_DEST)/$(_ALGCR_PF)
-	cp $(ALGDM_SO) $(LAL_PY_DEST)/$(_ALGDM_SO)
-	cp $(ALGDM_PY_FILE) $(LAL_PY_DEST)/$(_ALGDM_PF)
+	cp $(TREE_STR_SO) $(LAL_PY_DEST)/$(_TREE_STR_SO)
+	cp $(TREE_STR_PY_FILE) $(LAL_PY_DEST)/$(_TREE_STR_PF)
+	cp $(ALG_CROSS_SO) $(LAL_PY_DEST)/$(_ALG_CROSS_SO)
+	cp $(ALG_CROSS_PY_FILE) $(LAL_PY_DEST)/$(_ALG_CROSS_PF)
+	cp $(ALG_DMIN_SO) $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
+	cp $(ALG_DMIN_PY_FILE) $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
 	cp $(DEFS_SO) $(LAL_PY_DEST)/$(_DEFS_SO)
 	cp $(DEFS_PY_FILE) $(LAL_PY_DEST)/$(_DEFS_PF)
 	cp $(GEN_SO) $(LAL_PY_DEST)/$(_GEN_SO)
@@ -216,18 +214,18 @@ install: $(LAL_SO)
 	cp $(NMRC_PY_FILE) $(LAL_PY_DEST)/$(_NMRC_PF)
 	cp $(PROP_SO) $(LAL_PY_DEST)/$(_PROP_SO)
 	cp $(PROP_PY_FILE) $(LAL_PY_DEST)/$(_PROP_PF)
+	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
+	cp $(LAL_PY_FILE) $(LAL_PY_DEST)/$(_LAL_PF)
 
 uninstall:
-	rm -f $(LAL_PY_DEST)/$(_LAL_SO)
-	rm -f $(LAL_PY_DEST)/$(_LAL_PF)
 	rm -f $(LAL_PY_DEST)/$(_DSE_SO)
 	rm -f $(LAL_PY_DEST)/$(_DSE_PF)
-	rm -f $(LAL_PY_DEST)/$(_TST_SO)
-	rm -f $(LAL_PY_DEST)/$(_TST_PF)
-	rm -f $(LAL_PY_DEST)/$(_ALGCR_SO)
-	rm -f $(LAL_PY_DEST)/$(_ALGCR_PF)
-	rm -f $(LAL_PY_DEST)/$(_ALGDM_SO)
-	rm -f $(LAL_PY_DEST)/$(_ALGDM_PF)
+	rm -f $(LAL_PY_DEST)/$(_TREE_STR_SO)
+	rm -f $(LAL_PY_DEST)/$(_TREE_STR_PF)
+	rm -f $(LAL_PY_DEST)/$(_ALG_CROSS_SO)
+	rm -f $(LAL_PY_DEST)/$(_ALG_CROSS_PF)
+	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
+	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
 	rm -f $(LAL_PY_DEST)/$(_DEFS_SO)
 	rm -f $(LAL_PY_DEST)/$(_DEFS_PF)
 	rm -f $(LAL_PY_DEST)/$(_GEN_SO)
@@ -244,3 +242,5 @@ uninstall:
 	rm -f $(LAL_PY_DEST)/$(_NMRC_PF)
 	rm -f $(LAL_PY_DEST)/$(_PROP_SO)
 	rm -f $(LAL_PY_DEST)/$(_PROP_PF)
+	rm -f $(LAL_PY_DEST)/$(_LAL_SO)
+	rm -f $(LAL_PY_DEST)/$(_LAL_PF)

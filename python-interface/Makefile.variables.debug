@@ -29,16 +29,16 @@ DSE_BNAME	= laldataset_error
 DSE_INAME	= $(DSE_BNAME)debug
 
 # -- tree_structure_type
-TST_BNAME	= laltree_structure_type
-TST_INAME	= $(TST_BNAME)debug
+TREE_STR_BNAME	= laltree_structure
+TREE_STR_INAME	= $(TREE_STR_BNAME)debug
 
 # -- algorithms_crossings
-ALGCR_BNAME	= lalalgorithms_crossings
-ALGCR_INAME	= $(ALGCR_BNAME)debug
+ALG_CROSS_BNAME	= lalalgorithms_crossings
+ALG_CROSS_INAME	= $(ALG_CROSS_BNAME)debug
 
 # -- algorithms_crossings
-ALGDM_BNAME	= lalalgorithms_Dmin
-ALGDM_INAME	= $(ALGDM_BNAME)debug
+ALG_DMIN_BNAME	= lalalgorithms_Dmin
+ALG_DMIN_INAME	= $(ALG_DMIN_BNAME)debug
 
 # -- definitions
 DEFS_BNAME	= laldefinitions

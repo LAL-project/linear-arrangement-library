@@ -2,7 +2,7 @@
 
 %import laldefinitions.i
 %import lalgraphs.i
-%import laldataset_error.i
+%import enums/laldataset_error.i
 
 %include lalio_impl.i
 

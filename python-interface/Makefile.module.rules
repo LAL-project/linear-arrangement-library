@@ -12,29 +12,31 @@ $(DSE_WRAP).o: $(DSE_WRAP).cxx
 $(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MAIN_INT)
 
-# tree_structure_type module
-$(TST_SO): $(TST_WRAP).o $(LIBRARY_SHARED_DEP)
+# tree_structure module
+$(TREE_STR_SO): $(TREE_STR_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(TST_WRAP).o: $(TST_WRAP).cxx
+$(TREE_STR_WRAP).o: $(TREE_STR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(TST_WRAP).cxx: $(TST_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TST_MAIN_INT)
+$(TREE_STR_WRAP).cxx: $(TREE_STR_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_STR_MAIN_INT)
+	echo "del cvar" >> $(TREE_STR_PY_FILE)
 
 # algorithms_crossings module
-$(ALGCR_SO): $(ALGCR_WRAP).o $(LIBRARY_SHARED_DEP)
+$(ALG_CROSS_SO): $(ALG_CROSS_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(ALGCR_WRAP).o: $(ALGCR_WRAP).cxx
+$(ALG_CROSS_WRAP).o: $(ALG_CROSS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALGCR_WRAP).cxx: $(ALGCR_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALGCR_MAIN_INT)
+$(ALG_CROSS_WRAP).cxx: $(ALG_CROSS_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_CROSS_MAIN_INT)
 
 # algorithms_Dmin module
-$(ALGDM_SO): $(ALGDM_WRAP).o $(LIBRARY_SHARED_DEP)
+$(ALG_DMIN_SO): $(ALG_DMIN_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(ALGDM_WRAP).o: $(ALGDM_WRAP).cxx
+$(ALG_DMIN_WRAP).o: $(ALG_DMIN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALGDM_WRAP).cxx: $(ALGDM_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALGDM_MAIN_INT)
+$(ALG_DMIN_WRAP).cxx: $(ALG_DMIN_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_DMIN_MAIN_INT)
+
 
 # CLASSES AND METHODS
 

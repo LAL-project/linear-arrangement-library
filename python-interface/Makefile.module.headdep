@@ -1,62 +1,78 @@
 ifeq ($(ENVIR),devel)
-LAL_DEP_HEADERS	=
-DSE_DEP_HDRS	= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
-TST_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/tree_structure_type.hpp
-ALGCR_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp
-DEFS_DEP_HDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
-GEN_DEP_HDRS	= $(LAL_INC_DIR)/lal/generation/all_lab_free_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/all_ulab_free_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/all_ulab_rooted_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_lab_free_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_lab_rooted_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_ulab_free_trees.hpp \
-				  $(LAL_INC_DIR)/lal/generation/rand_ulab_rooted_trees.hpp
-GRAPHS_DEP_HDRS	= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/dtree.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/drtree.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/output.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/rtree.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/ugraph.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/urtree.hpp \
-				  $(LAL_INC_DIR)/lal/graphs/utree.hpp
-IO_DEP_HDRS		= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
-				  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
-				  $(LAL_INC_DIR)/lal/io/treebank_dataset.hpp \
-				  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
-				  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp
-ITER_DEP_HDRS	= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
-				  $(LAL_INC_DIR)/lal/iterators/Q_iterator.hpp
-LINARR_DEP_HDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/C.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/classification.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/D.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/1level.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/1level_impl.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
-				  $(LAL_INC_DIR)/lal/linarr/2level_impl.hpp
-NMRC_DEP_HDRS	= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
-				  $(LAL_INC_DIR)/lal/numeric/rational.hpp \
-				  $(LAL_INC_DIR)/lal/numeric/gmp_utils.hpp
-PROP_DEP_HDRS	= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
-				  $(LAL_INC_DIR)/lal/properties/D_rla.hpp \
-				  $(LAL_INC_DIR)/lal/properties/degrees.hpp \
-				  $(LAL_INC_DIR)/lal/properties/mhd.hpp \
-				  $(LAL_INC_DIR)/lal/properties/Q.hpp
+LAL_DPHDRS			=
+
+DSE_DPHDRS			= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
+
+TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp
+
+ALG_CROSS_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp
+
+ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
+
+DEFS_DPHDRS			= $(LAL_INC_DIR)/lal/definitions.hpp
+
+GEN_DPHDRS			= $(LAL_INC_DIR)/lal/generation/all_lab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/all_ulab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/all_ulab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/rand_lab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/rand_lab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/rand_ulab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generation/rand_ulab_rooted_trees.hpp
+
+GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/dtree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/drtree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/output.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/rtree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/ugraph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/urtree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/utree.hpp
+
+IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
+					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_dataset.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp
+
+ITER_DPHDRS			= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
+					  $(LAL_INC_DIR)/lal/iterators/Q_iterator.hpp
+
+LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/1level_impl.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/2level_impl.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/tree_structure_class.hpp
+
+NMRC_DPHDRS			= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
+					  $(LAL_INC_DIR)/lal/numeric/rational.hpp \
+					  $(LAL_INC_DIR)/lal/numeric/gmp_utils.hpp
+
+PROP_DPHDRS			= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
+					  $(LAL_INC_DIR)/lal/properties/D_rla.hpp \
+					  $(LAL_INC_DIR)/lal/properties/degrees.hpp \
+					  $(LAL_INC_DIR)/lal/properties/mhd.hpp \
+					  $(LAL_INC_DIR)/lal/properties/Q.hpp
 else
-LAL_DEP_HEADERS	=
-DSE_DEP_HDRS	=
-TST_DEP_HDRS	=
-ALGCR_DEP_HDRS	=
-DEFS_DEP_HDRS	=
-GEN_DEP_HDRS	=
-GRAPHS_DEP_HDRS	=
-IO_DEP_HDRS		=
-ITER_DEP_HDRS	=
-LINARR_DEP_HDRS =
-NMRC_DEP_HDRS	=
-PROP_DEP_HDRS	=
+LAL_DPHDRS			=
+DSE_DPHDRS			=
+TREE_STR_DPHDRS			=
+ALG_CROSS_DPHDRS	=
+ALG_DMIN_DPHDRS		=
+TREE_STR_DPHDRS		=
+DEFS_DPHDRS			=
+GEN_DPHDRS			=
+GRAPHS_DPHDRS		=
+IO_DPHDRS			=
+ITER_DPHDRS			=
+LINARR_DPHDRS 		=
+NMRC_DPHDRS			=
+PROP_DPHDRS			=
 endif

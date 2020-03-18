@@ -10,6 +10,8 @@
 %import submodules/lalproperties.i
 
 %pythoncode %{
+# remove 'lal' from the module's names.
+
 __mod_name = "lal"
 __mod = __import__(__mod_name)
 for name in dir(__mod):
