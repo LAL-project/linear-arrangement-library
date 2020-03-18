@@ -44,7 +44,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/conversions.hpp>
+#include <lal/utils/graphs/trees/conversions.hpp>
 
 namespace lal {
 using namespace graphs;

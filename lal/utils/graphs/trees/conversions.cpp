@@ -38,7 +38,7 @@
  *
  ********************************************************************/
  
-#include <lal/utils/conversions.hpp>
+#include <lal/utils/graphs/trees/conversions.hpp>
 
 // C++ includes
 #include <cassert>

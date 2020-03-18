@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>
-#include <lal/utils/sort_integers.hpp>
+#include <lal/utils/std/sort_integers.hpp>
 
 namespace lal {
 namespace graphs {

@@ -44,7 +44,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/bfs.hpp>
+#include <lal/utils/graphs/bfs.hpp>
 
 namespace lal {
 using namespace graphs;

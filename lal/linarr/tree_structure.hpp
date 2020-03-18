@@ -49,28 +49,24 @@ namespace linarr {
 /**
  * @brief The different types of syntactic dependency tree structures.
  *
- * Given a tree (not necessarily directed) and a linear arrangement of
- * its vertices, we can classify the tree in several different classes.
+ * Any tree can be classified when its vertices are linearly arranged into
+ * several different classes.
  *
  * We can currently identify the following structures:
- * - Projective structures (see @ref tree_structure_type::projective). A
+ * - Projective structures (see @ref tree_structure::projective). A
  * structure is projective if it is planar and the root is not covered by any
  * dependency.
- * - Planar structures (see @ref tree_structure_type::planar). A structure is
+ * - Planar structures (see @ref tree_structure::planar). A structure is
  * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
  * cross if, and only if, their positions in the arrangement are interleaved,
  * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
  * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
- * - Well nested trees with maximum degree gap \f$k\f$, usually denoted as
- * \f$WG_k\f$. We support:
- *		- \f$WG_i\f$ (for \f$1\le i \le 10\f$, see
- *		@ref tree_structure_type::WG_1, ..., @ref tree_structure_type::WG_10).
- *		- \f$WG_k\f$ (for \f$k > 10\f$, see @ref tree_structure_type::WG_k).
- * - 1-Endpoint Crossing (see @ref tree_structure_type::EC_1). A structure has
+ * - Well nested trees with maximum degree gap 1, usually denoted as \f$WG_1\f$.
+ * - 1-Endpoint Crossing (see @ref tree_structure::EC_1). A structure has
  * the property of being 1-endpoint crossing if, given any dependency, all
  * other dependencies crossing it are incident to a common node.
  */
-enum class tree_structure_type {
+enum class tree_structure {
 	// Projective structures
 
 	/// Projective structures.
@@ -82,26 +78,6 @@ enum class tree_structure_type {
 
 	/// Well nested trees with maximum degree gap 1.
 	WG_1,
-	/// Well nested trees with maximum degree gap 2.
-	WG_2,
-	/// Well nested trees with maximum degree gap 3.
-	WG_3,
-	/// Well nested trees with maximum degree gap 4.
-	WG_4,
-	/// Well nested trees with maximum degree gap 5.
-	WG_5,
-	/// Well nested trees with maximum degree gap 6.
-	WG_6,
-	/// Well nested trees with maximum degree gap 7.
-	WG_7,
-	/// Well nested trees with maximum degree gap 8.
-	WG_8,
-	/// Well nested trees with maximum degree gap 9.
-	WG_9,
-	/// Well nested trees with maximum degree gap 10.
-	WG_10,
-	/// Well nested trees with maximum degree gap \f$k>10\f$.
-	WG_k,
 
 	/// 1-Endpoint Crossing.
 	EC_1,
@@ -109,6 +85,16 @@ enum class tree_structure_type {
 	/// The structure could not be classified.
 	none
 };
+
+/// Number of elements within enumeration @ref tree_structure.
+static const size_t __tree_structure_size = 5;
+
+// This assertion ensures that the value of '__tree_structure_size' is correct.
+static_assert(
+	__tree_structure_size == 1 + static_cast<size_t>(tree_structure::none),
+"Constant '__tree_structure_size' does not contain the correct number of \
+elements within enumeration 'tree_structure'."
+);
 
 } // -- namespace linarr
 } // -- namespace lal

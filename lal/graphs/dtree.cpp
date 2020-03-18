@@ -45,9 +45,9 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/bfs.hpp>
-#include <lal/utils/cycles.hpp>
-#include <lal/utils/tree_centre.hpp>
+#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/cycles.hpp>
+#include <lal/utils/graphs/trees/tree_centre.hpp>
 
 namespace lal {
 namespace graphs {

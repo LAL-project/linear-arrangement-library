@@ -41,26 +41,37 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/urtree.hpp>
-#include <lal/linarr/tree_structure_type.hpp>
+#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/cycles.hpp>
 
 namespace lal {
-namespace linarr {
+namespace utils {
 
-/**
- * @brief Computes the type of syntactic dependency tree
+/*
+ * @brief Returns true if, and only if, the graph is a tree.
  *
- * Given an undirected rooted tree and a linear arrangement of its vertices,
- * computes the class of projective structure the tree belongs to.
+ * By definition, an undirected graph is a tree if it does not contain
+ * cycles and has one single connected component. Note that isloated vertices
+ * count as single connected components.
  *
- * @param t Input tree.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Returns the class of projective structure. If the class could not
- * be determined the method returns @ref tree_structure_type::none
+ * In an attempt to extend the usage of this method, directed graphs are
+ * also allowed. In this case, since the data structure allows it, the
+ * algorithm looks for undirected cycles in the directed graph.
+ * @param g Input graph.
  */
-tree_structure_type get_tree_structure_type
-(const graphs::urtree& t, const LINARR& pi = {});
+template<class G>
+bool is_graph_a_tree(const G& t) {
+	const auto n = t.n_nodes();
 
-} // -- namespace linarr
+	// simple cases
+	if (n <= 1) { return true; }
+	if (n == 2) { return t.n_edges() == 1; }
+	if (n == 3) { return t.n_edges() == 2; }
+
+	BFS<G> bfs(t);
+	const bool cycle_found = has_undirected_cycles(t, bfs);
+	return not cycle_found and bfs.all_visited();
+}
+
+} // -- namespace utils
 } // -- namespace lal

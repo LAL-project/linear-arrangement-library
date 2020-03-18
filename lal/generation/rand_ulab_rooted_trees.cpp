@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/conversions.hpp>
+#include <lal/utils/graphs/trees/conversions.hpp>
 
 #define _to_int32(x) static_cast<int32_t>(x)
 #define to_uint32(x) static_cast<uint32_t>(x)

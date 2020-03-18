@@ -46,9 +46,9 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/is_tree.hpp>
-#include <lal/utils/bfs.hpp>
-#include <lal/utils/size_subtrees.hpp>
+#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/trees/is_tree.hpp>
+#include <lal/utils/graphs/trees/size_subtrees.hpp>
 
 namespace lal {
 using namespace utils;

@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/classification.hpp>
+#include <lal/linarr/tree_structure_class.hpp>
 
 // C++ includes
 #include <iostream>
@@ -46,13 +46,16 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
-#include <lal/utils/sort_integers.hpp>
 #include <lal/graphs/output.hpp>
 #include <lal/linarr/C.hpp>
+#include <lal/linarr/tree_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/utils/macros.hpp>
+#include <lal/utils/std/sort_integers.hpp>
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
+#define enum_to_int(e) static_cast<size_t>(e)
+#define set_type(v, e) v[enum_to_int(e)] = true
 
 namespace lal {
 using namespace graphs;
@@ -240,17 +243,22 @@ inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 	return _1ec;
 }
 
-inline tree_structure_type __get_syn_dep_tree_type(
+inline vector<bool> __get_syn_dep_tree_type(
 	const urtree& Tree, const LINARR& pi
 )
 {
+	vector<bool> cl(__tree_structure_size, false);
+
 	uint32_t C = __n_crossings_stack_based(Tree, pi);
 	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?
-		return (__is_root_covered(Tree, pi) ?
-			tree_structure_type::planar :
-			tree_structure_type::projective);
+		auto t =
+			__is_root_covered(Tree, pi) ?
+			tree_structure::planar :
+			tree_structure::projective;
+		set_type(cl, t);
+		return cl;
 	}
 
 	// compute the yield of each node
@@ -268,36 +276,24 @@ inline tree_structure_type __get_syn_dep_tree_type(
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested
-
-		// is WG_k
-		return
-		[max_dis]() -> tree_structure_type {
-			switch (max_dis) {
-			case 1: return tree_structure_type::WG_1;
-			case 2: return tree_structure_type::WG_2;
-			case 3: return tree_structure_type::WG_3;
-			case 4: return tree_structure_type::WG_4;
-			case 5: return tree_structure_type::WG_5;
-			case 6: return tree_structure_type::WG_6;
-			case 7: return tree_structure_type::WG_7;
-			case 8: return tree_structure_type::WG_8;
-			case 9: return tree_structure_type::WG_9;
-			case 10: return tree_structure_type::WG_10;
-			}
-			return tree_structure_type::WG_k;
-		}();
+		auto t = max_dis == 1 ? tree_structure::WG_1 : tree_structure::none;
+		set_type(cl, t);
+		return cl;
 	}
 
 	if (C == 1) {
 		// we need C > 1 for 1-EC structures
-		return tree_structure_type::none;
+		set_type(cl, tree_structure::none);
+		return cl;
 	}
 
-	bool is_1EC = __is_1EC(Tree, pi);
-	return (is_1EC ? tree_structure_type::EC_1 : tree_structure_type::none);
+	const bool is_1EC = __is_1EC(Tree, pi);
+	auto t = is_1EC ? tree_structure::EC_1 : tree_structure::none;
+	set_type(cl, t);
+	return cl;
 }
 
-tree_structure_type get_tree_structure_type(const urtree& t, const LINARR& pi) {
+vector<bool> get_tree_structure_type(const urtree& t, const LINARR& pi) {
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 

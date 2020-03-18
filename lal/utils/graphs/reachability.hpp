@@ -41,7 +41,7 @@
 #pragma once
 
 // lal includes
-#include <lal/utils/bfs.hpp>
+#include <lal/utils/graphs/bfs.hpp>
 
 namespace lal {
 namespace utils {

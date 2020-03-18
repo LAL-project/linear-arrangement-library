@@ -29,6 +29,8 @@ INCLUDEPATH += ..
 # PROJECT FILES
 HEADERS += \
     linarr/algorithms_Dmin.hpp \
+    linarr/tree_structure.hpp \
+    linarr/tree_structure_class.hpp \
     namespaces.hpp \
     definitions.hpp \
     generation.hpp \
@@ -60,11 +62,9 @@ HEADERS += \
     linarr/2level.hpp \
     linarr/2level_impl.hpp \
     linarr/algorithms_crossings.hpp \
-    linarr/classification.hpp \
     linarr/headedness.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \
-    linarr/tree_structure_type.hpp \
     numeric.hpp \
     numeric/integer.hpp \
     numeric/output.hpp \
@@ -83,18 +83,18 @@ HEADERS += \
     C.hpp \
     D.hpp \
     properties/mhd.hpp \
-    utils/bfs.hpp \
-    utils/conversions.hpp \
-    utils/cycles.hpp \
-    utils/is_tree.hpp \
+    utils/graphs/bfs.hpp \
+    utils/graphs/cycles.hpp \
+    utils/graphs/reachability.hpp \
+    utils/graphs/trees/conversions.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
-    utils/reachability.hpp \
-    utils/size_subtrees.hpp \
-    utils/sort_integers.hpp \
-    utils/std_utils.hpp \
-    utils/tree_centre.hpp
+    utils/graphs/trees/is_tree.hpp \
+    utils/graphs/trees/size_subtrees.hpp \
+    utils/graphs/trees/tree_centre.hpp \
+    utils/std/sort_integers.hpp \
+    utils/std/std_utils.hpp
 
 SOURCES += \
     generation/all_lab_free_trees.cpp \
@@ -118,10 +118,10 @@ SOURCES += \
     linarr/C.cpp \
     linarr/C_approx.cpp \
     linarr/Dmin.cpp \
-    linarr/classification.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \
+    linarr/tree_structure_class.cpp \
     numeric/integer.cpp \
     numeric/rational.cpp \
     numeric/gmp_utils.cpp \
@@ -140,4 +140,4 @@ SOURCES += \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \
-    utils/conversions.cpp
+    utils/graphs/trees/conversions.cpp

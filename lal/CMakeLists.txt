@@ -145,9 +145,9 @@ target_sources(
 		linarr/C_dyn_prog.cpp
 		linarr/C_ladder.cpp
 		linarr/C_stack_based.cpp
-		linarr/classification.cpp
 		linarr/D.cpp
 		linarr/headedness.cpp
+		linarr/tree_structure_class.cpp
 		numeric/gmp_utils.cpp
 		numeric/integer.cpp
 		numeric/rational.cpp
@@ -159,7 +159,7 @@ target_sources(
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_trees.cpp
-		utils/conversions.cpp
+		utils/graphs/trees/conversions.cpp
 )
 
 # **********************************************************************
@@ -219,11 +219,12 @@ set(LIBLAL_LINARR_HEADER
 	linarr/2level.hpp
 	linarr/2level_impl.hpp
 	linarr/algorithms_crossings.hpp
+	linarr/algorithms_Dmin.hpp
 	linarr/C.hpp
-	linarr/classification.hpp
 	linarr/D.hpp
 	linarr/headedness.hpp
-	linarr/tree_structure_type.hpp
+	linarr/tree_structure.hpp
+	linarr/tree_structure_class.hpp
 )
 set(LIBLAL_NUMERIC_HEADER
 	numeric/gmp_utils.hpp

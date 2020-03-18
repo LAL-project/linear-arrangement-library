@@ -47,7 +47,7 @@ using namespace std;
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/utils/conversions.hpp>
+#include <lal/utils/graphs/trees/conversions.hpp>
 
 #define get_alpha(m,q) (m_alpha[make_pair(m,q)])
 #define alpha_exists(m,q) (m_alpha.find(make_pair(m,q)) != m_alpha.end())

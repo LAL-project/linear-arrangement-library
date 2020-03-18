@@ -41,7 +41,7 @@
 #pragma once
 
 #include <lal/graphs/dgraph.hpp>
-#include <lal/utils/bfs.hpp>
+#include <lal/utils/graphs/bfs.hpp>
 #include <lal/utils/macros.hpp>
 
 namespace lal {
