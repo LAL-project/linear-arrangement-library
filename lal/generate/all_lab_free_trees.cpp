@@ -38,10 +38,16 @@
  *
  ********************************************************************/
  
-#include <lal/generation/rand_lab_free_trees.hpp>
+#include <lal/generate/all_lab_free_trees.hpp>
 
 // C++ includes
+#include <algorithm>
+#include <iterator>
+#include <cassert>
+#include <limits>
 using namespace std;
+
+#define inf numeric_limits<size>::max()
 
 // lal includes
 #include <lal/utils/graphs/trees/conversions.hpp>
@@ -51,29 +57,68 @@ using namespace graphs;
 
 namespace generate {
 
-rand_lab_free_trees::rand_lab_free_trees() { }
-rand_lab_free_trees::rand_lab_free_trees(uint32_t _n, uint32_t seed) {
-	init(_n, seed);
-}
-rand_lab_free_trees::~rand_lab_free_trees() { }
+// PUBLIC
 
-void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
+all_lab_free_trees::all_lab_free_trees() { }
+all_lab_free_trees::all_lab_free_trees(uint32_t _n) {
+	init(_n);
+}
+all_lab_free_trees::~all_lab_free_trees() { }
+
+void all_lab_free_trees::init(uint32_t _n) {
 	m_n = _n;
-	if (m_n <= 2) { return; }
-
-	m_seq = vector<uint32_t>(m_n - 2);
-
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
+	if (m_n <= 2) {
+		m_sm = vector<bool>(1, false);
+		// there is only one tree we can make
+		return;
 	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
+
+	m_it = 0;
+	m_sm = vector<bool>(m_n - 2, false);
+	m_seq = vector<uint32_t>(m_n - 2, 0);
+	// place 'it' at the end of the sequence
+	m_it = m_n - 3;
+	// make sure that the first call to next()
+	// produces the sequence 0 0 ... 0
+	m_seq[m_it] = numeric_limits<uint32_t>::max();
+	m_L = m_n - 2;
 }
 
-utree rand_lab_free_trees::make_rand_tree() {
+bool all_lab_free_trees::has_next() const {
+	if (m_n <= 2) {
+		return not m_sm[0];
+	}
+	return not m_sm[m_n - 3];
+}
+
+void all_lab_free_trees::next() {
+	if (m_n <= 2) {
+		// there is only one tree we can make
+		m_sm[0] = true;
+		return;
+	}
+
+	while (m_it > 0 and m_seq[m_it] == m_n - 1) {
+		--m_it;
+	}
+	++m_seq[m_it];
+
+	if (m_seq[m_it] == m_n - 1) {
+		m_sm[m_it] =
+			(m_it == 0) or
+			(m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
+	}
+
+	++m_it;
+	if (m_it < m_n - 2) {
+		auto _it = m_seq.begin();
+		advance(_it, m_it);
+		fill(_it, m_seq.end(), 0);
+	}
+	m_it = m_n - 3;
+}
+
+utree all_lab_free_trees::get_tree() const {
 	if (m_n <= 1) { return utree(m_n); }
 	if (m_n == 2) {
 		utree t(2);
@@ -81,11 +126,9 @@ utree rand_lab_free_trees::make_rand_tree() {
 		return t;
 	}
 
-	for (uint32_t i = 0; i < m_n - 2; ++i) {
-		m_seq[i] = m_unif(m_gen);
-	}
 	return utils::Prufer_sequence_to_tree(m_seq, m_n);
 }
 
 } // -- namespace generate
 } // -- namespace lal
+

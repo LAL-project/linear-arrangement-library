@@ -38,12 +38,34 @@
  *
  ********************************************************************/
 
-#pragma once
+#include <lal/generate/rand_lab_rooted_trees.hpp>
 
-#include <lal/generation/all_lab_free_trees.hpp>
-#include <lal/generation/all_ulab_free_trees.hpp>
-#include <lal/generation/all_ulab_rooted_trees.hpp>
-#include <lal/generation/rand_lab_free_trees.hpp>
-#include <lal/generation/rand_lab_rooted_trees.hpp>
-#include <lal/generation/rand_ulab_free_trees.hpp>
-#include <lal/generation/rand_ulab_rooted_trees.hpp>
+// C++ includes
+using namespace std;
+
+namespace lal {
+using namespace graphs;
+
+namespace generate {
+
+rand_lab_rooted_trees::rand_lab_rooted_trees() : rand_lab_free_trees() { }
+
+rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
+	: rand_lab_free_trees(n, seed)
+{
+
+}
+rand_lab_rooted_trees::~rand_lab_rooted_trees() { }
+
+void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
+	rand_lab_free_trees::init(n, seed);
+}
+
+urtree rand_lab_rooted_trees::make_rand_tree() {
+	utree t = rand_lab_free_trees::make_rand_tree();
+	node r = m_unif(m_gen);
+	return urtree(t, r);
+}
+
+} // -- namespace generate
+} // -- namespace lal

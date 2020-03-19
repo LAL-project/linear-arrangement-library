@@ -33,14 +33,14 @@ HEADERS += \
     linarr/tree_structure_class.hpp \
     namespaces.hpp \
     definitions.hpp \
-    generation.hpp \
-    generation/all_lab_free_trees.hpp \
-    generation/all_ulab_free_trees.hpp \
-    generation/all_ulab_rooted_trees.hpp \
-    generation/rand_lab_free_trees.hpp \
-    generation/rand_lab_rooted_trees.hpp \
-    generation/rand_ulab_free_trees.hpp \
-    generation/rand_ulab_rooted_trees.hpp \
+    generate.hpp \
+    generate/all_lab_free_trees.hpp \
+    generate/all_ulab_free_trees.hpp \
+    generate/all_ulab_rooted_trees.hpp \
+    generate/rand_lab_free_trees.hpp \
+    generate/rand_lab_rooted_trees.hpp \
+    generate/rand_ulab_free_trees.hpp \
+    generate/rand_ulab_rooted_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
     graphs/drtree.hpp \
@@ -97,13 +97,13 @@ HEADERS += \
     utils/std/std_utils.hpp
 
 SOURCES += \
-    generation/all_lab_free_trees.cpp \
-    generation/all_ulab_free_trees.cpp \
-    generation/all_ulab_rooted_trees.cpp \
-    generation/rand_lab_free_trees.cpp \
-    generation/rand_lab_rooted_trees.cpp \
-    generation/rand_ulab_free_trees.cpp \
-    generation/rand_ulab_rooted_trees.cpp \
+    generate/all_lab_free_trees.cpp \
+    generate/all_ulab_free_trees.cpp \
+    generate/all_ulab_rooted_trees.cpp \
+    generate/rand_lab_free_trees.cpp \
+    generate/rand_lab_rooted_trees.cpp \
+    generate/rand_ulab_free_trees.cpp \
+    generate/rand_ulab_rooted_trees.cpp \
     graphs/dgraph.cpp \
     graphs/drtree.cpp \
     graphs/dtree.cpp \

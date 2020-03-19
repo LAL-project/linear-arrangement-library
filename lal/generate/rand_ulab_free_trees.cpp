@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/generation/rand_ulab_free_trees.hpp>
+#include <lal/generate/rand_ulab_free_trees.hpp>
 
 // C++ includes
 #include <cassert>

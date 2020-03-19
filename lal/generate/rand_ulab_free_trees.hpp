@@ -48,7 +48,7 @@
 #include <lal/graphs/utree.hpp>
 #include <lal/definitions.hpp>
 #include <lal/numeric/integer.hpp>
-#include <lal/generation/rand_ulab_rooted_trees.hpp>
+#include <lal/generate/rand_ulab_rooted_trees.hpp>
 
 namespace lal {
 namespace generate {

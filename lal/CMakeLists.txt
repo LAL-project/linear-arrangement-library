@@ -117,13 +117,13 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
-		generation/all_lab_free_trees.cpp
-		generation/all_ulab_free_trees.cpp
-		generation/all_ulab_rooted_trees.cpp
-		generation/rand_lab_free_trees.cpp
-		generation/rand_lab_rooted_trees.cpp
-		generation/rand_ulab_free_trees.cpp
-		generation/rand_ulab_rooted_trees.cpp
+		generate/all_lab_free_trees.cpp
+		generate/all_ulab_free_trees.cpp
+		generate/all_ulab_rooted_trees.cpp
+		generate/rand_lab_free_trees.cpp
+		generate/rand_lab_rooted_trees.cpp
+		generate/rand_ulab_free_trees.cpp
+		generate/rand_ulab_rooted_trees.cpp
 		graphs/dgraph.cpp
 		graphs/drtree.cpp
 		graphs/dtree.cpp
@@ -172,7 +172,7 @@ set(LIBLAL_MAIN_HEADER
 	C.hpp
 	D.hpp
 	definitions.hpp
-	generation.hpp
+	generate.hpp
 	graphs.hpp
 	io.hpp
 	iterators.hpp
@@ -181,13 +181,13 @@ set(LIBLAL_MAIN_HEADER
 	properties.hpp
 )
 set(LIBLAL_GENERATION_HEADER
-	generation/all_lab_free_trees.hpp
-	generation/all_ulab_free_trees.hpp
-	generation/all_ulab_rooted_trees.hpp
-	generation/rand_lab_free_trees.hpp
-	generation/rand_lab_rooted_trees.hpp
-	generation/rand_ulab_free_trees.hpp
-	generation/rand_ulab_rooted_trees.hpp
+	generate/all_lab_free_trees.hpp
+	generate/all_ulab_free_trees.hpp
+	generate/all_ulab_rooted_trees.hpp
+	generate/rand_lab_free_trees.hpp
+	generate/rand_lab_rooted_trees.hpp
+	generate/rand_ulab_free_trees.hpp
+	generate/rand_ulab_rooted_trees.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/dgraph.hpp
@@ -251,7 +251,7 @@ install(
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
-install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generation)
+install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generate)
 install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
 install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
