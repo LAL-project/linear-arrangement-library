@@ -93,8 +93,10 @@ HEADERS += \
     utils/graphs/trees/is_tree.hpp \
     utils/graphs/trees/size_subtrees.hpp \
     utils/graphs/trees/tree_centre.hpp \
-    utils/std/sort_integers.hpp \
-    utils/std/std_utils.hpp
+    utils/sorting/bit_sort.hpp \
+    utils/sorting/counting_sort.hpp \
+    utils/sorting/insertion_sort.hpp \
+    utils/std_utils.hpp
 
 SOURCES += \
     generate/all_lab_free_trees.cpp \

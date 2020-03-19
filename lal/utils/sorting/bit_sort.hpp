@@ -44,11 +44,25 @@
 #include <algorithm>
 #include <iterator>
 
+// lal includes
+#include <lal/utils/sorting/insertion_sort.hpp>
+
 namespace lal {
 namespace utils {
 
 namespace __lal {
 
+/*
+ * @brief Sorts the elements within range [begin, end)
+ *
+ * @param begin Iterator at the beginning of the container.
+ * @param end Iterator at the end of the container.
+ * @param seen The bit vector used to sort.
+ * @pre All values of @e mem must be set to false.
+ * @pre All values within [begin, end) must be unique.
+ * @post All the values of @e seen are set to false.
+ * @post The elements in the range [begin,end) are sorted increasingly.
+ */
 template<
 	typename It,
 	typename T = typename std::iterator_traits<It>::value_type,
@@ -81,21 +95,6 @@ void __bit_sort(It begin, It end, const T& m, std::vector<bool>& seen) {
 
 } // -- namespace __lal
 
-// Insertion sort
-template<typename It>
-void insertion_sort(It begin, It end) {
-	for (It i = begin + 1; i != end; ++i) {
-		It nj = i;
-		It j = i - 1;
-		while (*j > *nj and j != begin) {
-			std::swap(*j, *nj);
-			--j;
-			--nj;
-		}
-		if (*j > *nj) { std::swap(*j, *nj); }
-	}
-}
-
 /*
  * @brief Sort integer values increasingly.
  *
@@ -103,8 +102,9 @@ void insertion_sort(It begin, It end) {
  * @param end Iterator at the end of the container.
  * @param seen The bit vector used to sort.
  * @pre All values of @e mem must be set to false.
- * @post The elements in the range [begin,end) is sorted. All the values of
- * @e seen are set to false.
+ * @pre All values within [begin, end) must be unique.
+ * @post All the values of @e seen are set to false.
+ * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
 	typename It,
@@ -133,7 +133,8 @@ void bit_sort_mem(It begin, It end, std::vector<bool>& seen)
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @post The elements in the range [begin,end) is sorted.
+ * @pre All values within [begin, end) must be unique.
+ * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
 	typename It,
