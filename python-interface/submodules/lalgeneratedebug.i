@@ -1,9 +1,9 @@
-%module lalgenerationdebug
+%module lalgeneratedebug
 
 %import laldefinitionsdebug.i
 %import lalgraphsdebug.i
 
-%include lalgeneration_impl.i
+%include lalgenerate_impl.i
 
 %pythoncode %{
 graphs = lalgraphsdebug

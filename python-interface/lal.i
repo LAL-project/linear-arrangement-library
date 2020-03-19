@@ -3,7 +3,7 @@
 %import submodules/laldefinitions.i
 %import submodules/lalgraphs.i
 %import submodules/lalnumeric.i
-%import submodules/lalgeneration.i
+%import submodules/lalgenerate.i
 %import submodules/laliterators.i
 %import submodules/lalio.i
 %import submodules/lallinarr.i

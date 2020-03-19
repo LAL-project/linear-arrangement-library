@@ -44,8 +44,8 @@ ALG_DMIN_INAME	= $(ALG_DMIN_BNAME)debug
 DEFS_BNAME	= laldefinitions
 DEFS_INAME	= $(DEFS_BNAME)debug
 
-# -- generation
-GEN_BNAME	= lalgeneration
+# -- generate
+GEN_BNAME	= lalgenerate
 GEN_INAME	= $(GEN_BNAME)debug
 
 # -- graphs

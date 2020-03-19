@@ -88,7 +88,7 @@ GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
 _GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
 GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
 
-# -- generation module
+# -- generate module
 GEN_MAIN_INT	= submodules/$(GEN_INAME).i
 GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
 GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DPHDRS)

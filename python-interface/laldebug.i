@@ -3,7 +3,7 @@
 %import submodules/laldefinitionsdebug.i
 %import submodules/lalgraphsdebug.i
 %import submodules/lalnumericdebug.i
-%import submodules/lalgenerationdebug.i
+%import submodules/lalgeneratedebug.i
 %import submodules/laliteratorsdebug.i
 %import submodules/laliodebug.i
 %import submodules/lallinarrdebug.i

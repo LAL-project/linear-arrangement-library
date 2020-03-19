@@ -1,9 +1,9 @@
-%module lalgeneration
+%module lalgenerate
 
 %import laldefinitions.i
 %import lalgraphs.i
 
-%include lalgeneration_impl.i
+%include lalgenerate_impl.i
 
 %pythoncode %{
 graphs = lalgraphs

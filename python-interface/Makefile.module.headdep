@@ -11,13 +11,13 @@ ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
 
 DEFS_DPHDRS			= $(LAL_INC_DIR)/lal/definitions.hpp
 
-GEN_DPHDRS			= $(LAL_INC_DIR)/lal/generation/all_lab_free_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/all_ulab_free_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/all_ulab_rooted_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/rand_lab_free_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/rand_lab_rooted_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/rand_ulab_free_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generation/rand_ulab_rooted_trees.hpp
+GEN_DPHDRS			= $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/all_ulab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/all_ulab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/rand_lab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/rand_lab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/rand_ulab_free_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/rand_ulab_rooted_trees.hpp
 
 GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/dtree.hpp \
