@@ -71,11 +71,11 @@ void dgraph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
-			utils::sort_1_n_inc_mem(out_nu.begin(), out_nu.end(), mem, 0);
+			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
-			utils::sort_1_n_inc_mem(in_nu.begin(), in_nu.end(), mem, 0);
+			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
 		}
 	}
 	m_normalised = true;
@@ -122,8 +122,8 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
-			utils::sort_1_n_inc(out_u.begin(), out_u.end());
-			utils::sort_1_n_inc(in_v.begin(), in_v.end());
+			utils::bit_sort(out_u.begin(), out_u.end());
+			utils::bit_sort(in_v.begin(), in_v.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the

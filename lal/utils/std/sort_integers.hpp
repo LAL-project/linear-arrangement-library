@@ -47,6 +47,40 @@
 namespace lal {
 namespace utils {
 
+namespace __lal {
+
+template<
+	typename It,
+	typename T = typename std::iterator_traits<It>::value_type,
+	typename std::enable_if <std::is_integral<T>::value, int>::type = 0
+>
+void __bit_sort(It begin, It end, const T& m, std::vector<bool>& seen) {
+	// fill bit vector
+	for (auto it = begin; it != end; ++it) {
+		seen[*it - m] = true;
+	}
+
+	// pointer to container
+	It range = begin;
+	// pointer to see
+	size_t seenit = 0;
+	// element to assign to container
+	T i = m;
+
+	while (range != end) {
+		// assign value to container
+		*range = i;
+		range += seen[seenit];
+
+		// move pointer in bit vector
+		seen[seenit] = false;
+		++i;
+		++seenit;
+	}
+}
+
+} // -- namespace __lal
+
 // Insertion sort
 template<typename It>
 void insertion_sort(It begin, It end) {
@@ -63,22 +97,50 @@ void insertion_sort(It begin, It end) {
 }
 
 /*
- * @brief Sort integer values within the range \f$[m,M)\f$ increasingly.
+ * @brief Sort integer values increasingly.
  *
- * The values \f$m,M\f$ represent the minimum and maximum values within the
- * vector, respectively.
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @post v is sorted.
+ * @param seen The bit vector used to sort.
+ * @pre All values of @e mem must be set to false.
+ * @post The elements in the range [begin,end) is sorted. All the values of
+ * @e seen are set to false.
  */
-template<typename It>
-typename std::enable_if
-<
-	std::is_integral< typename std::iterator_traits<It>::value_type >::value,
-	void
+template<
+	typename It,
+	typename T = typename std::iterator_traits<It>::value_type,
+	typename std::enable_if <std::is_integral<T>::value, int>::type = 0
 >
-::type
-sort_1_n_inc(It begin, It end)
+void bit_sort_mem(It begin, It end, std::vector<bool>& seen)
+{
+	size_t size = std::distance(begin, end);
+	if (size <= 1) { return; }
+	if (size <= 14) {
+		insertion_sort(begin, end);
+		return;
+	}
+	if (size <= 30) {
+		std::sort(begin, end);
+		return;
+	}
+
+	// sort
+	__lal::__bit_sort(begin,end, static_cast<T>(0), seen);
+}
+
+/*
+ * @brief Sort integer values increasingly.
+ *
+ * @param begin Iterator at the beginning of the container.
+ * @param end Iterator at the end of the container.
+ * @post The elements in the range [begin,end) is sorted.
+ */
+template<
+	typename It,
+	typename T = typename std::iterator_traits<It>::value_type,
+	typename std::enable_if<std::is_integral<T>::value, int>::type = 0
+>
+void bit_sort(It begin, It end)
 {
 	size_t size = std::distance(begin, end);
 	if (size <= 1) { return; }
@@ -96,79 +158,11 @@ sort_1_n_inc(It begin, It end)
 	const auto m = *m_it;
 	const auto M = *M_it;
 
-	// fill "bit" vector
+	// bit vector
 	std::vector<bool> seen(M - m + 1, false);
-	for (auto it = begin; it != end; ++it) {
-		seen[*it - m] = true;
-	}
 
-	// pointer to the bit vector
-	auto seenit = seen.begin();
-	// pointer to [begin,end)
-	auto vit = begin;
-
-	// sort elements, increasingly
-	typename std::iterator_traits<It>::value_type i;
-	for (i = 0; i < M - m + 1 and vit != end; ++i, ++seenit) {
-		*vit = i + m;
-		vit += *seenit;
-	}
-}
-
-/*
- * @brief Sort integer values within the range \f$[m,M)\f$ increasingly.
- *
- * The values \f$m,M\f$ represent the minimum and maximum values within the
- * vector, respectively.
- * @param begin Iterator at the beginning of the container.
- * @param end Iterator at the end of the container.
- * @param mem The "bit" vector used to sort. Its size must be equal to
- * *std::max(begin, end).
- * @param min The minimum value that the values in [begin,end) @e could take
- * (not necessarily equal to *std::min(begin,end)).
- * @pre All values of @e mem must be set to false.
- * @post v is sorted. All the values of @e mem are set to false.
- */
-template<typename It>
-typename std::enable_if
-<
-	std::is_integral< typename std::iterator_traits<It>::value_type >::value,
-	void
->
-::type
-sort_1_n_inc_mem(
-	It begin, It end,
-	std::vector<bool>& seen,
-	const typename std::iterator_traits<It>::value_type min
-)
-{
-	size_t size = std::distance(begin, end);
-	if (size <= 1) { return; }
-	if (size <= 14) {
-		insertion_sort(begin, end);
-		return;
-	}
-	if (size <= 30) {
-		std::sort(begin, end);
-		return;
-	}
-
-	// fill "bit" vector
-	for (auto it = begin; it != end; ++it) {
-		seen[*it] = true;
-	}
-
-	// pointer to [begin,end)
-	auto vit = begin;
-
-	// sort elements, increasingly
-	typename std::iterator_traits<It>::value_type i = min;
-	for (auto seenit = seen.begin(); seenit != seen.end(); ++seenit) {
-		*vit = i;
-		vit += *seenit;
-		*seenit = 0;
-		++i;
-	}
+	// sort
+	__lal::__bit_sort(begin,end, m, seen);
 }
 
 } // -- namspace utils

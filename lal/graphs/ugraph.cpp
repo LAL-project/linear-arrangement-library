@@ -82,8 +82,8 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 		if (to_norm) {
 			// keep it normalised. Insertion sort
 			// applied to the last nodes added
-			utils::sort_1_n_inc(nu.begin(), nu.end());
-			utils::sort_1_n_inc(nv.begin(), nv.end());
+			utils::bit_sort(nu.begin(), nu.end());
+			utils::bit_sort(nv.begin(), nv.end());
 		}
 		else {
 			// Even though we have not been asked to normalise the

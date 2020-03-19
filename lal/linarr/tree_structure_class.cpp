@@ -113,7 +113,7 @@ inline void __get_yields(
 		}
 	}
 
-	utils::sort_1_n_inc(yields[u].begin(), yields[u].end());
+	utils::bit_sort(yields[u].begin(), yields[u].end());
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
