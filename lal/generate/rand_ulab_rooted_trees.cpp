@@ -46,10 +46,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/graphs/trees/conversions.hpp>
-
-#define _to_int32(x) static_cast<int32_t>(x)
-#define to_uint32(x) static_cast<uint32_t>(x)
-#define _to_double(x) static_cast<double>(x)
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -244,12 +241,12 @@ const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 		for (uint32_t d = 1; d <= k; ++d) {
 			const integer td = m_rn[d]*d;
 
-			int32_t i = _to_int32(k) + 1;
+			int32_t i = utils::to_int32(k) + 1;
 			int32_t j = 1;
-			while (j <= _to_int32(k) and i > 0) {
-				i -= _to_int32(d);
+			while (j <= utils::to_int32(k) and i > 0) {
+				i -= utils::to_int32(d);
 				if (i > 0) {
-					s += m_rn[to_uint32(i)]*td;
+					s += m_rn[utils::to_uint32(i)]*td;
 				}
 				++j;
 			}

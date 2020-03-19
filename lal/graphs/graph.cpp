@@ -48,10 +48,10 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/std/sort_integers.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/properties/Q.hpp>
+#include <lal/utils/sorting/bit_sort.hpp>
 
 namespace lal {
 using namespace numeric;

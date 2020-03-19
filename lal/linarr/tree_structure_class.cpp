@@ -51,7 +51,7 @@ using namespace std;
 #include <lal/linarr/tree_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/utils/macros.hpp>
-#include <lal/utils/std/sort_integers.hpp>
+#include <lal/utils/sorting/bit_sort.hpp>
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define enum_to_int(e) static_cast<size_t>(e)

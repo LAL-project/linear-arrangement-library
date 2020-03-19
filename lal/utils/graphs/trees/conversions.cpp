@@ -44,7 +44,8 @@
 #include <cassert>
 using namespace std;
 
-#define to_uint32(x) static_cast<uint32_t>(x)
+// lal includes
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -55,7 +56,7 @@ utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 0);
 	assert(L[1] == 1);
-	assert(to_uint32(L.size()) == n + 1);
+	assert(utils::to_uint32(L.size()) == n + 1);
 
 	// edges of the tree
 	vector<edge> edges(n - 1);

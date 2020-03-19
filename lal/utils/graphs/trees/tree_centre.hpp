@@ -50,7 +50,7 @@
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/tree.hpp>
 #include <lal/utils/graphs/bfs.hpp>
-#include <lal/utils/std/std_utils.hpp>
+#include <lal/utils/std_utils.hpp>
 
 namespace lal {
 namespace utils {

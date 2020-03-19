@@ -47,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/std/sort_integers.hpp>
+#include <lal/utils/sorting/bit_sort.hpp>
 #include <lal/properties/Q.hpp>
 
 namespace lal {

@@ -50,6 +50,20 @@
 namespace lal {
 namespace utils {
 
+// Conversion functions
+template<typename In, typename Out = uint32_t>
+inline constexpr Out to_uint32(const In& x) { return static_cast<Out>(x); }
+template<typename In, typename Out = int32_t>
+inline constexpr Out to_int32(const In& x) { return static_cast<Out>(x); }
+
+template<typename In, typename Out = uint64_t>
+inline constexpr Out to_uint64(const In& x) { return static_cast<Out>(x); }
+template<typename In, typename Out = int64_t>
+inline constexpr Out to_int64(const In& x) { return static_cast<Out>(x); }
+
+template<typename In, typename Out = double>
+inline constexpr Out to_double(const In& x) { return static_cast<Out>(x); }
+
 // Function used to tell the compiler what is not used.
 template<class T>
 inline void UNUSED(const T& x) { (void)x; }

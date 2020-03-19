@@ -62,9 +62,9 @@ using namespace std;
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
+#include <lal/utils/macros.hpp>
 
 #define NUM_TREE_FEATURES 14
-#define to_double(x) static_cast<double>(x)
 
 namespace lal {
 using namespace graphs;
@@ -224,12 +224,12 @@ inline void process_tree(
 			props[C_exp1_idx] = properties::expectation_C_first(t);
 		}
 		// we need to compute C, whether we like it or not
-		props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
+		props[C_idx] = utils::to_double(linarr::__n_crossings_ladder(t, __linarr));
 		props[C_z_idx] = (props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx]);
 	}
 	else {
 		if (what_fs[C_idx]) {
-			props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
+			props[C_idx] = utils::to_double(linarr::__n_crossings_ladder(t, __linarr));
 		}
 	}
 
@@ -258,12 +258,12 @@ inline void process_tree(
 			props[D_exp1_idx] = properties::expectation_D_first(t);
 		}
 		// we need to compute D, whether we like it or not
-		props[D_idx] = to_double(linarr::sum_length_edges(t, __linarr));
+		props[D_idx] = utils::to_double(linarr::sum_length_edges(t, __linarr));
 		props[D_z_idx] = (props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx]);
 	}
 	else {
 		if (what_fs[D_idx]) {
-			props[D_idx] = to_double(linarr::sum_length_edges(t, __linarr));
+			props[D_idx] = utils::to_double(linarr::sum_length_edges(t, __linarr));
 		}
 	}
 

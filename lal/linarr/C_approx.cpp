@@ -48,9 +48,6 @@ using namespace std;
 #include <lal/utils/macros.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 
-#define to_int32(x) static_cast<int32_t>(x)
-#define to_uint32(x) static_cast<uint32_t>(x)
-
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -86,7 +83,7 @@ uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
 	}
 
 	assert(f >= 0);
-	return to_uint32(f);
+	return utils::to_uint32(f);
 }
 
 inline constexpr
@@ -137,7 +134,7 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 		}
 	}
 	assert(f >= 0);
-	return to_uint32(f/2);
+	return utils::to_uint32(f/2);
 }
 
 inline
@@ -162,15 +159,15 @@ rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 		const auto [al, be] =
 		(len_st <= len_uv ?
 			make_pair(
-				alpha(to_int32(n), to_int32(len_st), to_int32(len_uv)),
-				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))
+				alpha(utils::to_int32(n), utils::to_int32(len_st), utils::to_int32(len_uv)),
+				beta(utils::to_int32(n), utils::to_int32(len_st), utils::to_int32(len_uv))
 			) :
 			make_pair(
-				alpha(to_int32(n), to_int32(len_uv), to_int32(len_st)),
-				beta(to_int32(n), to_int32(len_uv), to_int32(len_st))
+				alpha(utils::to_int32(n), utils::to_int32(len_uv), utils::to_int32(len_st)),
+				beta(utils::to_int32(n), utils::to_int32(len_uv), utils::to_int32(len_st))
 			)
 		);
-		Ec2 += rational(to_int32(al), be);
+		Ec2 += rational(utils::to_int32(al), be);
 	}
 
 	return Ec2;
