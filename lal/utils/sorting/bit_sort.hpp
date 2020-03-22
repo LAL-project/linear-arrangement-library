@@ -40,6 +40,9 @@
 
 #pragma once
 
+// C includes
+#include <string.h>
+
 // C++ includes
 #include <algorithm>
 #include <iterator>
@@ -57,7 +60,8 @@ namespace __lal {
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @param seen The bit vector used to sort.
+ * @param seen The bit array used to sort. The pointer points at the first
+ * element of the array.
  * @pre All values of @e mem must be set to false.
  * @pre All values within [begin, end) must be unique.
  * @post All the values of @e seen are set to false.
@@ -68,10 +72,10 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type,
 	typename std::enable_if <std::is_integral<T>::value, int>::type = 0
 >
-void __bit_sort(It begin, It end, const T& m, std::vector<bool>& seen) {
-	// fill bit vector
+void __bit_sort(It begin, It end, const T& m, char *seen) {
+	// fill bit array
 	for (auto it = begin; it != end; ++it) {
-		seen[*it - m] = true;
+		seen[*it - m] = 1;
 	}
 
 	// pointer to container
@@ -86,8 +90,8 @@ void __bit_sort(It begin, It end, const T& m, std::vector<bool>& seen) {
 		*range = i;
 		range += seen[seenit];
 
-		// move pointer in bit vector
-		seen[seenit] = false;
+		// move pointer in bit array
+		seen[seenit] = 0;
 		++i;
 		++seenit;
 	}
@@ -100,7 +104,8 @@ void __bit_sort(It begin, It end, const T& m, std::vector<bool>& seen) {
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @param seen The bit vector used to sort.
+ * @param seen The bit array used to sort. The pointer points at the first
+ * element of the array.
  * @pre All values of @e mem must be set to false.
  * @pre All values within [begin, end) must be unique.
  * @post All the values of @e seen are set to false.
@@ -111,7 +116,7 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type,
 	typename std::enable_if <std::is_integral<T>::value, int>::type = 0
 >
-void bit_sort_mem(It begin, It end, std::vector<bool>& seen)
+void bit_sort_mem(It begin, It end, char *seen)
 {
 	size_t size = std::distance(begin, end);
 	if (size <= 1) { return; }
@@ -154,16 +159,19 @@ void bit_sort(It begin, It end)
 		return;
 	}
 
-	// maximum & minimum elements within vector
+	// maximum & minimum elements within array
 	const auto [m_it,M_it] = std::minmax_element(begin, end);
 	const auto m = *m_it;
 	const auto M = *M_it;
 
-	// bit vector
-	std::vector<bool> seen(M - m + 1, false);
+	// bit array
+	char *seen = static_cast<char *>(malloc( (M - m + 1)*sizeof(char) ));
+	memset(seen, 0, (M - m + 1)*sizeof(char) );
 
 	// sort
 	__lal::__bit_sort(begin,end, m, seen);
+
+	free(seen);
 }
 
 } // -- namspace utils
