@@ -104,12 +104,12 @@ void graph::disjoint_union(const graph& g) {
 }
 
 void graph::normalise() {
-	vector<bool> mem(n_nodes(), false);
+	vector<char> mem(n_nodes(), 0);
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
 			//utils::sort_1_n_inc(nu.begin(), nu.end());
-			utils::bit_sort_mem(nu.begin(), nu.end(), mem);
+			utils::bit_sort_mem(nu.begin(), nu.end(), &mem[0]);
 		}
 	}
 	m_normalised = true;

@@ -66,16 +66,16 @@ dgraph::~dgraph() { }
 /* MODIFIERS */
 
 void dgraph::normalise() {
-	vector<bool> mem(n_nodes(), false);
+	vector<char> mem(n_nodes(), 0);
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
-			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
+			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), &mem[0]);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
-			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
+			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), &mem[0]);
 		}
 	}
 	m_normalised = true;
