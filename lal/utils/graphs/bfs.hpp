@@ -59,17 +59,17 @@ namespace utils {
  * functions. The user can set:
  * - a function used for early termination of the traversal
  * (see @ref set_terminate),
- * - a function that processes the current vertex in the traversal
+ * - a function that processes the current node in the traversal
  * (see @ref set_process_current),
  * - a function that processes the current edge in the traversal
  * (see @ref set_process_neighbour),
- * - a function that can decide when to add another vertex to the queue of the
- * traversal (see @ref set_vertex_add).
+ * - a function that can decide when to add another node to the queue of the
+ * traversal (see @ref set_node_add).
  *
  * This bfs traversal can also use "reversed edges" when doing traversals on
- * directed graphs. A back edge in a directed graph of a vertex u is a vertex
+ * directed graphs. A back edge in a directed graph of a node u is a node
  * that points to u, namely, the directed edge is of the form (v,u), for another
- * vertex v of the graph. This can be set via the @ref set_use_back_edges method.
+ * node v of the graph. This can be set via the @ref set_use_back_edges method.
  */
 template<class G, typename node = typename lal::node>
 class BFS {
@@ -98,7 +98,7 @@ class BFS {
 			set_terminate_default();
 			set_process_current_default();
 			set_process_neighbour_default();
-			set_vertex_add_default();
+			set_node_add_default();
 		}
 
 		void start_at(node source) {
@@ -138,11 +138,11 @@ class BFS {
 		void set_process_neighbour(bfs_process_two f)
 		{ m_proc_neigh = f; }
 
-		// see @ref m_add_vertex
-		void set_vertex_add_default()
-		{ m_add_vertex = [](const BFS<G>&, const node) -> bool { return true; }; }
-		void set_vertex_add(bfs_bool_function f)
-		{ m_add_vertex = f; }
+		// see @ref m_add_node
+		void set_node_add_default()
+		{ m_add_node = [](const BFS<G>&, const node) -> bool { return true; }; }
+		void set_node_add(bfs_bool_function f)
+		{ m_add_node = f; }
 
 		/*
 		 * @brief Should the algorithm call the neighbour processing function
@@ -161,7 +161,7 @@ class BFS {
 			while (not m_Q.empty()) { m_Q.pop(); }
 		}
 
-		// Set vertex @e u as visited.
+		// Set node @e u as visited.
 		void set_visited(node u, bool vis = true) {
 			m_vis[u] = vis;
 		}
@@ -171,7 +171,7 @@ class BFS {
 		// Returns the set of visited nodes.
 		bool node_was_visited(node u) const { return m_vis[u]; }
 
-		// have all vertices been visited?
+		// have all nodes been visited?
 		bool all_visited() const {
 			return find(m_vis.begin(), m_vis.end(), false) == m_vis.end();
 		}
@@ -189,9 +189,9 @@ class BFS {
 				m_proc_neigh(*this, s, t, ltr);
 			}
 
-			if (not m_vis[t] and m_add_vertex(*this, t)) {
+			if (not m_vis[t] and m_add_node(*this, t)) {
 				m_Q.push(t);
-				// set vertex as visited
+				// set node as visited
 				m_vis[t] = true;
 			}
 		}
@@ -232,12 +232,12 @@ class BFS {
 		 * ProcessNeighbourhood(graph, u, Nv):
 		 *	 1. for each w in Nv do
 		 *   2.		if w has not been visited before, or it has been but
-		 *	 3.			already-visited vertices have to be processed
+		 *	 3.			already-visited nodes have to be processed
 		 *	 4.		then
 		 *	 5.			proc_neigh(u,w)
 		 *	 6.		endif
 		 *	 7.
-		 *	 8.		if w not visited before and vertex_add(w) then
+		 *	 8.		if w not visited before and node_add(w) then
 		 *	 9.			push w into Q
 		 *	10.			mark w as visited in vis
 		 *	11.		endif
@@ -265,7 +265,7 @@ class BFS {
 		 *	17.	endwhile
 		 * </pre>
 		 *
-		 * Note that lines (...) extend the neighbourhood of a vertex "Nv"
+		 * Note that lines (...) extend the neighbourhood of a node "Nv"
 		 * depending of the type of graph. If the graph is directed and
 		 * the user wants to process "reversed edges", then the neighbourhood
 		 * is not limited to "out-neighbours", but also to "in-neighbours".
@@ -275,7 +275,7 @@ class BFS {
 				const node s = m_Q.front();
 				m_Q.pop();
 
-				// process current vertex
+				// process current node
 				m_proc_cur(*this, s);
 
 				// check user-defined early termination condition
@@ -306,26 +306,26 @@ class BFS {
 		 * For more details on when this function is called see @ref do_traversal.
 		 * @param BFS The object containing the traversal. This also contains
 		 * several attributes that might be useful to guide the traversal.
-		 * @param s The vertex at the front of the queue of the algorithm.
+		 * @param s The node at the front of the queue of the algorithm.
 		 */
 		bfs_bool_function m_term;
 
 		/*
-		 * @brief BFS vertex processing function.
+		 * @brief BFS node processing function.
 		 *
-		 * Processes the current vertex visited.
+		 * Processes the current node visited.
 		 *
 		 * For more details on when this function is called see @ref do_traversal.
 		 * @param BFS The object containing the traversal. This also contains
 		 * several attributes that might be useful to guide the traversal.
-		 * @param s The vertex at the front of the queue of the algorithm.
+		 * @param s The node at the front of the queue of the algorithm.
 		 */
 		bfs_process_one m_proc_cur;
 
 		/*
-		 * @brief BFS neighbour vertex processing function.
+		 * @brief BFS neighbour node processing function.
 		 *
-		 * Processes the next visited vertex. The direction of the vertices
+		 * Processes the next visited node. The direction of the nodes
 		 * visited passed as parameters is given by the boolean parameter. If
 		 * it is true then the edge is s -> t. If it is false then the edge is
 		 * t -> s.
@@ -333,22 +333,22 @@ class BFS {
 		 * For more details on when this function is called see @ref do_traversal.
 		 * @param BFS The object containing the traversal. This also contains
 		 * several attributes that might be useful to guide the traversal.
-		 * @param s The vertex at the front of the queue of the algorithm.
-		 * @param t The vertex neighbour of @e u visited by the algorithm.
+		 * @param s The node at the front of the queue of the algorithm.
+		 * @param t The node neighbour of @e u visited by the algorithm.
 		 */
 		bfs_process_two m_proc_neigh;
 
 		/*
 		 * @brief BFS node addition function.
 		 *
-		 * Determines whether a vertex @e s should be added to the queue or not.
+		 * Determines whether a node @e s should be added to the queue or not.
 		 *
 		 * For more details on when this function is called see @ref do_traversal.
 		 * @param BFS The object containing the traversal. This also contains
 		 * several attributes that might be useful to guide the traversal.
-		 * @param s The vertex candidate for addition.
+		 * @param s The node candidate for addition.
 		 */
-		bfs_bool_function m_add_vertex;
+		bfs_bool_function m_add_node;
 };
 
 } // -- namespace utils

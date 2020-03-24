@@ -108,8 +108,8 @@ utree rand_ulab_free_trees::make_rand_tree() {
 		 *			bicent_prob = {1 + r_(n/2)}{2}/f_n
 		 *
 		 * where
-		 *		r_n: the number of unlabelled rooted trees of n vertices
-		 *		f_n: the number of unlabelled free trees of n vertices
+		 *		r_n: the number of unlabelled rooted trees of n nodes
+		 *		f_n: the number of unlabelled free trees of n nodes
 		 *		{n}{k}: is read as "n choose k"
 		 *
 		 * We followed the correction pointed out in the reference to
@@ -134,14 +134,14 @@ utree rand_ulab_free_trees::make_rand_tree() {
 	// the tree has one centroid
 
 	// -----------------------------------
-	// make a forest on (n - 1) vertices
+	// make a forest on (n - 1) nodes
 	const uint32_t m = m_n - 1;
 	const uint32_t q = (m_n - 1)/2;
 
 	// parameters:
-	//     m: make a forest of m vertices
+	//     m: make a forest of m nodes
 	//     q: needed to choose pairs (j,d)
-	//     1: where to start storing vertices in m_tree
+	//     1: where to start storing nodes in m_tree
 	forest(m,q, 1);
 	// -----------------------------------
 
@@ -172,14 +172,14 @@ void rand_ulab_free_trees::clear() {
  */
 uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	if (m == 0) {
-		// Forest of 0 vertices
+		// Forest of 0 nodes
 		return nt;
 	}
 	if (m == 1) {
-		// forest of 1 vertex, i.e., a single vertex
+		// forest of 1 node, i.e., a single node
 		assert(q >= 1);
 
-		// this vertex should be connected to the root of T
+		// this node should be connected to the root of T
 		m_tree[nt] = 0;
 
 		// No need to modify m_tree since we are adding a root, and the
@@ -190,8 +190,8 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 
 	auto [j, d] = choose_jd_from_alpha(m, q);
 
-	// Make a forest F' of trees of m - j*d vertices in
-	// total, so that each tree has at most q vertices
+	// Make a forest F' of trees of m - j*d nodes in
+	// total, so that each tree has at most q nodes
 	nt = forest(m - j*d,q, nt);
 
 	// The forest is now in m_tree, and the roots in m_roots.
@@ -200,7 +200,7 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	// The next tree has to be stored at nt in m_tree
 
 	// Generate a random rooted tree T' in m_tree starting at position nt.
-	// Join this tree to T's root (vertex 0)
+	// Join this tree to T's root (node 0)
 	uint32_t root_Tp;
 	std::tie(root_Tp, nt) = ranrut(d, 0, nt);
 
@@ -209,7 +209,7 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 		// Each of the copies of T' has to be adjoined to F', i.e.,
 		// do not connect them to the forest's root. Instead,
 		// leave them orphan until the end of the procedure connects
-		// them to the parent vertex.
+		// them to the parent node.
 		m_tree[nt] = 0;
 
 		// Copy the tree structure.
@@ -226,7 +226,7 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 }
 
 void rand_ulab_free_trees::bicenter(uint32_t n) {
-	// make sure that the number of vertices is even
+	// make sure that the number of nodes is even
 	assert(n%2 == 0);
 	if (n == 0) {
 		return;

@@ -91,7 +91,7 @@ void graph::disjoint_union(const graph& g) {
 	for (node u = 0; u < g.n_nodes(); ++u) {
 		// add new edges by appending all the neighbours of 'u' in 'g'
 		m_adjacency_list.push_back( g.get_neighbours(u) );
-		// relabel the vertices
+		// relabel the nodes
 		for (node& v : m_adjacency_list.back()) {
 			v += n;
 		}

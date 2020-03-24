@@ -51,7 +51,7 @@ namespace utils {
  * @brief Returns true if, and only if, the graph is a tree.
  *
  * By definition, an undirected graph is a tree if it does not contain
- * cycles and has one single connected component. Note that isloated vertices
+ * cycles and has one single connected component. Note that isloated nodes
  * count as single connected components.
  *
  * In an attempt to extend the usage of this method, directed graphs are

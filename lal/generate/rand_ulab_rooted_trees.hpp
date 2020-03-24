@@ -61,14 +61,14 @@ namespace generate {
  * uniformly at random using the @e ranrut procedure (see \cite Nijenhuis1978a,
  * chapter 29).
  *
- * Users interested in generating trees of large size (of 100 vertices
+ * Users interested in generating trees of large size (of 100 nodes
  * or more) are recommended to take a look at @ref clear method.
  *
  * The correct usage of this class is
  * @code
  *		rand_ulab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			urtree T = TreeGen.make_rand_tree();
+ *			lal::graphs::urtree T = TreeGen.make_rand_tree();
  *			// ...
  *		}
  * @endcode
@@ -116,9 +116,9 @@ class rand_ulab_rooted_trees {
 		 * that are costly to compute every time they are needed, they are
 		 * stored in memory and reused over time.
 		 *
-		 * So, if the user wants to generate trees of 1000 vertices there will
+		 * So, if the user wants to generate trees of 1000 nodes there will
 		 * be too much memory occupied (and unused) if then this class is used
-		 * to generate trees of 10 vertices. In cases like this it is
+		 * to generate trees of 10 nodes. In cases like this it is
 		 * recommended to clear the memory occupied.
 		 *
 		 * @post After calling this method, the contents of the attributes
@@ -145,7 +145,7 @@ class rand_ulab_rooted_trees {
 		/**
 		 * @brief List that encodes the tree.
 		 *
-		 * This list has @e n+1 values for @ref m_n vertices.
+		 * This list has @e n+1 values for @ref m_n nodes.
 		 * The first position is the root.
 		 */
 		std::vector<uint32_t> m_tree;
@@ -153,12 +153,12 @@ class rand_ulab_rooted_trees {
 	protected:
 
 		/**
-		 * @brief Generates uniformly at random a rooted unlabelled tree of @e n vertices.
+		 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
 		 *
 		 * The first call to this method should have @e lr = @ref m_n + 1.
-		 * @param n Number of vertices of the rooted tree to generate.
-		 * @param lr Root (vertex) of the last tree added. @ref m_tree[@e lr]
-		 * is the vertex that the root points to.
+		 * @param n Number of nodes of the rooted tree to generate.
+		 * @param lr Pointer to the root of the last tree added.
+		 *     @ref m_tree[@e lr] is the node that the root points to.
 		 * @param nt Index to @ref m_tree where we have to place the new tree.
 		 * @return Returns two indices: the index of the root of the last
 		 * tree generated and where to store the next tree in @ref m_tree.
@@ -181,7 +181,7 @@ class rand_ulab_rooted_trees {
 		 *
 		 * Probability of choosing \f$(j,d)\f$ is:
 		 * \f$\frac{d \cdot t_{k - jd} \cdot t_d}{(k - 1)t_k}\f$.
-		 * @param n Number of vertices.
+		 * @param n Number of nodes.
 		 * @returns Returns a pair of integers \f$(j,d)\f$ such that
 		 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 		 */

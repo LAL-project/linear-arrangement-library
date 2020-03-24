@@ -90,7 +90,7 @@ class urtree : public utree, virtual public rtree {
 		 * It simply copies the tree into its own structure and keeps the
 		 * root node. For this reason, @e t need not be a tree (see @ref is_tree).
 		 * Namely, this method admits trees with fewer edges than the number
-		 * of vertices minus 1.
+		 * of nodes minus 1.
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
 		 */
@@ -103,15 +103,15 @@ class urtree : public utree, virtual public rtree {
 		/**
 		 * @brief Retrieve the subtree rooted at node r.
 		 * @param r Root of the subtree.
-		 * @return Returns a tree containing the vertices of the subtree
-		 * rooted at vertex @e r.
+		 * @return Returns a tree containing the nodes of the subtree
+		 * rooted at node @e r.
 		 * @pre This graph is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
 		 */
 		urtree get_subtree(node r) const;
 
 		/**
-		 * @brief Calculates the number of vertices at every rooted subtree.
+		 * @brief Calculates the number of nodes at every rooted subtree.
 		 * @pre The object must be a tree (see @ref is_tree()).
 		 * @pre The tree must have a root (see @ref has_root()).
 		 * @post Method @ref need_recalc_size_subtrees returns false.

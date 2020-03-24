@@ -136,8 +136,8 @@ class dgraph : virtual public graph {
 		 *
 		 * Given a graph, append it to the current graph.
 		 *
-		 * All the vertices in @e g are relabelled starting at @e n,
-		 * the number of vertices of the current graph.
+		 * All the nodes in @e g are relabelled starting at @e n,
+		 * the number of nodes of the current graph.
 		 * @param g Input graph.
 		 * @pre Graph @e g must be directed.
 		 * @post The graph is normalised only if it was normalised before
@@ -207,10 +207,10 @@ class dgraph : virtual public graph {
 	private:
 		/**
 		 * @brief Removes a single edge.
-		 * @param u First vertex of edge.
-		 * @param v Second vertex of edge.
-		 * @param out_u Out-neighbourhood of vertex @e u.
-		 * @param in_v In-neighbourhood of vertex @e v.
+		 * @param u First node of edge.
+		 * @param v Second node of edge.
+		 * @param out_u Out-neighbourhood of node @e u.
+		 * @param in_v In-neighbourhood of node @e v.
 		 */
 		void remove_single_edge
 		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);

@@ -59,15 +59,15 @@ namespace properties {
  * @param g The input graph.
  * @return Returns \f$E[D]\f$ as a rational value.
  */
-numeric::rational expectation_D_first_rational(const graphs::ugraph& g);
+numeric::rational expectation_D_rational(const graphs::ugraph& g);
 /**
  * @brief Computes the the expectation of the first moment of D.
  *
- * See @ref expectation_D_first_rational for details.
+ * See @ref expectation_D_rational for details.
  * @param g The input graph.
  * @return The return value is a floating point value.
  */
-double expectation_D_first(const graphs::ugraph& g);
+double expectation_D(const graphs::ugraph& g);
 
 /* ----------------------- */
 /* VARIANCE OF D: V_rla[D] */

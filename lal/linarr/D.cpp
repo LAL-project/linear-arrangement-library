@@ -58,7 +58,7 @@ namespace linarr {
 
 /* D */
 
-inline uint32_t __sum_length_edges(const graph& g, const LINARR& pi) {
+inline uint32_t __sum_length_edges(const graph& g, const linearrgmnt& pi) {
 	// sum of lengths
 	uint32_t l = 0;
 
@@ -75,24 +75,24 @@ inline uint32_t __sum_length_edges(const graph& g, const LINARR& pi) {
 	return l;
 }
 
-uint32_t sum_length_edges(const graph& g, const LINARR& pi) {
+uint32_t sum_length_edges(const graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__sum_length_edges, g, pi);
 }
 
 /* MDD */
 
-inline rational __MDD_rational(const graph& g, const LINARR& pi) {
+inline rational __MDD_rational(const graph& g, const linearrgmnt& pi) {
 	const uint32_t D = sum_length_edges(g, pi);
 	return rational_from_ui(D, g.n_edges());
 }
 
-rational MDD_rational(const graph& g, const LINARR& pi) {
+rational MDD_rational(const graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 
-double MDD(const graph& g, const LINARR& pi) {
+double MDD(const graph& g, const linearrgmnt& pi) {
 	return MDD_rational(g, pi).to_double();
 }
 

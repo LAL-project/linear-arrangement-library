@@ -64,7 +64,7 @@ namespace generate {
  * @code
  *		rand_lab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			utree T = TreeGen.make_rand_tree();
+ *			lal::graphs::utree T = TreeGen.make_rand_tree();
  *			// ...
  *		}
  * @endcode

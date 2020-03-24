@@ -142,7 +142,7 @@ void drtree::find_drtree_type() {
 	}
 
 	// Second case: the tree is NOT an arborescence.
-	// It might be an anti-arborescence. All vertices'
+	// It might be an anti-arborescence. All nodes'
 	// out-degree, excepting the root's, must be exactly 1
 	bool all_one = true;
 	for (node u = 0; u < n_nodes(); ++u) {
@@ -198,14 +198,14 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 
 	const auto n = n_nodes();
 
-	// parent of vertex 'r'
+	// parent of node 'r'
 	bool r_parent_set = false;
 	node r_parent = n;
 
 	BFS<drtree> bfs(*this);
 
 	// -----------------------
-	// find parent of vertex r
+	// find parent of node r
 	if (r != get_root()) {
 		bfs.set_use_rev_edges(true);
 		bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
@@ -233,15 +233,15 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 		bfs.set_visited(r_parent);
 	}
 
-	// data structures for vertex relabelling
+	// data structures for node relabelling
 	vector<node> labels(n_nodes(), n);
-	// we need vertex 'r' to be relabelled to 0.
+	// we need node 'r' to be relabelled to 0.
 	labels[r] = 0;
 	node next_label = 1;
 
 	// retrieve edges and relabel them at the same time
 	vector<edge> es;
-	// relabel vertices
+	// relabel nodes
 	if (relab) {
 		bfs.set_process_neighbour(
 		[&](const auto&, node s, node t, bool ltr) -> void {
@@ -251,13 +251,13 @@ vector<edge> drtree::get_edges_subtree(node r, bool relab) const {
 			if (not ltr) { std::swap(s,t); }
 
 			edge e;
-			// relabel first vertex
+			// relabel first node
 			if (labels[s] == n) {
 				labels[s] = next_label;
 				++next_label;
 			}
 			e.first = labels[s];
-			// relabel second vertex
+			// relabel second node
 			if (labels[t] == n) {
 				labels[t] = next_label;
 				++next_label;
@@ -291,9 +291,9 @@ drtree drtree::get_subtree(node r) const {
 	assert(is_tree());
 	assert(has_node(r));
 
-	// retrieve the list of edges with their vertices relabelled
+	// retrieve the list of edges with their nodes relabelled
 	const vector<edge> es = get_edges_subtree(r, true);
-	// number of vertices of subtree
+	// number of nodes of subtree
 	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
 
 	// make subtree

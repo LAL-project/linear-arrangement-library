@@ -138,7 +138,7 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 }
 
 inline
-rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
+rational __get_approximate_C_2_rational(const ugraph& g, const linearrgmnt& pi) {
 	rational Ec2(0);
 	const uint32_t n = g.n_nodes();
 
@@ -173,12 +173,12 @@ rational __get_approximate_C_2_rational(const ugraph& g, const LINARR& pi) {
 	return Ec2;
 }
 
-rational approximate_C_rational(const ugraph& g, const LINARR& pi) {
+rational approximate_C_rational(const ugraph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
-double approximate_C(const ugraph& g, const LINARR& pi) {
+double approximate_C(const ugraph& g, const linearrgmnt& pi) {
 	return approximate_C_rational(g, pi).to_double();
 }
 

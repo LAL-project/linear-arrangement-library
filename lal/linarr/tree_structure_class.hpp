@@ -52,17 +52,17 @@ namespace linarr {
 /**
  * @brief Computes the type of syntactic dependency tree
  *
- * Given an undirected rooted tree and a linear arrangement of its vertices,
+ * Given an undirected rooted tree and a linear arrangement of its nodes,
  * computes the class of projective structure the tree belongs to.
  *
  * @param t Input tree.
- * @param pi Linear arrangement of the vertices. If \f$\pi[u]=p\f$ then
+ * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @return Returns the class of projective structure. If the class could not
  * be determined the method returns @ref tree_structure_type::none
  */
 std::vector<bool> get_tree_structure_type
-(const graphs::urtree& t, const LINARR& pi = {});
+(const graphs::urtree& t, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

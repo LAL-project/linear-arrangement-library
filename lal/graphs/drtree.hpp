@@ -173,10 +173,10 @@ class drtree : public dtree, virtual public rtree {
 		void find_drtree_type();
 
 		/**
-		 * @brief Calculates the number of vertices at every rooted subtree.
+		 * @brief Calculates the number of nodes at every rooted subtree.
 		 *
 		 * The method can traverse the directed tree using reversed edges, i.e.,
-		 * from a root vertex 's' the method can follow out-edges (of the form
+		 * from a root node 's' the method can follow out-edges (of the form
 		 * s->t) and in-edges (of the form t->s). If parameter @e rev is true
 		 * then the method uses both.
 		 * @param rev Should reversed edges be used?
@@ -218,8 +218,8 @@ class drtree : public dtree, virtual public rtree {
 		/**
 		 * @brief Retrieve the subtree rooted at node r.
 		 * @param r Root of the subtree.
-		 * @return Returns a tree containing the vertices of the subtree
-		 * rooted at vertex @e r.
+		 * @return Returns a tree containing the nodes of the subtree
+		 * rooted at node @e r.
 		 * @pre This graph is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
 		 * @post The subtree keeps the orientation of the edges in the original

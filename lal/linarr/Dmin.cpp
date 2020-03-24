@@ -58,7 +58,7 @@ using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, LINARR> compute_Dmin
+pair<uint32_t, linearrgmnt> compute_Dmin
 (const graphs::utree& t, const algorithms_Dmin& a)
 {
 	utils::UNUSED(t);
@@ -73,7 +73,7 @@ pair<uint32_t, LINARR> compute_Dmin
 		break;
 	}
 
-	return make_pair(0, LINARR());
+	return make_pair(0, linearrgmnt());
 }
 
 } // -- namespace linarr

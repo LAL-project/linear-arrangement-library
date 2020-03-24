@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/io/dataset_error.hpp>
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/urtree.hpp>
 
 namespace lal {
 namespace io {
@@ -58,19 +58,19 @@ namespace io {
  *
  * This class offers a simple interface for iterating over the trees in a single
  * treebank file, henceforth the treebank. Each tree is represented as a list
- * of whole positive numbers (including zero), each representing a vertex of the
+ * of whole positive numbers (including zero), each representing a node of the
  * tree. The number 0 denotes the root of the tree, and number at a certain
- * position indicates its parent vertex. For example, when number 4 is at
- * position 9 it means that vertex 9 has parent vertex 4. Therefore, if number 0
- * is at position 1 it means that vertex 1 is the root of the tree. A complete
+ * position indicates its parent node. For example, when number 4 is at
+ * position 9 it means that node 9 has parent node 4. Therefore, if number 0
+ * is at position 1 it means that node 1 is the root of the tree. A complete
  * example of such a tree's representation is the following
  *
  *       0 3 4 1 6 3
  *
  * which should be interpreted as
  *
- *		predecessor:         0 3 4 1 6 3
- *		vertex of the tree:  1 2 3 4 5 6
+ *		predecessor:       0 3 4 1 6 3
+ *		node of the tree:  1 2 3 4 5 6
  *
  * In order to use it, this class has to be first initialised with the treebank
  * file and, optionally, the language it was made from. Once initialised, the
@@ -86,13 +86,13 @@ namespace io {
  *
  * The correct usage of this class is given in the following piece of code.
  * @code
- *		auto tbread = treebank_reader();
+ *		treebank_reader tbread = treebank_reader();
  *		// it is advisable to check for errors
  *		tbread.init(main_file);
  *		while (tbread.has_tree()) {
  *			// again, check for errors
  *			tbread.next_tree();
- *			auto t = tbread.get_tree();
+ *			lal::graphs::urtree t = tbread.get_tree();
  *			// process tree 't'
  *			// ....
  *		}
@@ -145,7 +145,7 @@ class treebank_reader {
 		const std::string& get_treebank_filename() const;
 
 		/// Returns the current tree.
-		graphs::utree get_tree() const;
+		graphs::urtree get_tree() const;
 
 	private:
 		/// Language of the treebank

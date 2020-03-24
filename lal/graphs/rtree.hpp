@@ -54,7 +54,7 @@ namespace graphs {
  *
  * This class provides its users with an abstraction of rooted trees. This
  * class of trees are similar to regular trees but with an specially labelled
- * vertex that represents the root. However, since it cannot be instantiated,
+ * node that represents the root. However, since it cannot be instantiated,
  * users of the library should use the classes @ref urtree and/or @ref drtree.
  *
  * Moreover, the root allows defining further properties on these graphs. For
@@ -102,7 +102,7 @@ class rtree : virtual public tree {
 		bool has_root() const;
 
 		/**
-		 * @brief Returns the number of vertices of the subtree rooted at @e u.
+		 * @brief Returns the number of nodes of the subtree rooted at @e u.
 		 * @param u Vertex of the tree.
 		 * @return Returns @ref m_size_subtrees[u].
 		 * @pre Method @ref need_recalc_size_subtrees returns false.
@@ -123,15 +123,15 @@ class rtree : virtual public tree {
 		 * @brief Retrieve the edges of the subtree rooted at @e r.
 		 *
 		 * The list of edges returned contains labels that depend on the parameter
-		 * @e relab. If @e relab is true then the vertices are relabelled to
-		 * numbers in \f$[0, n_r)\f$, where \f$n_r\f$ is the number of vertices
+		 * @e relab. If @e relab is true then the nodes are relabelled to
+		 * numbers in \f$[0, n_r)\f$, where \f$n_r\f$ is the number of nodes
 		 * of the subtree rooted at @e r, rather than keeping the original
 		 * labelling of numbers in \f$[0,n)\f$, where @e n is the number of
-		 * vertices of the tree.
+		 * nodes of the tree.
 		 *
 		 * In case of directed trees, the subtree is extracted regardless of the
 		 * orientation of the edges. For example, consider an anti-arborescence
-		 * of a complete binary tree of 7 vertices, whose edges are
+		 * of a complete binary tree of 7 nodes, whose edges are
 		 * <pre>
 		 * 0 <- 1
 		 *		1 <- 3
@@ -142,18 +142,18 @@ class rtree : virtual public tree {
 		 * </pre>
 		 * The edges of the subtree rooted at 1 are "3 -> 1" and "4 -> 1".
 		 * Moreover, the orientation of the edges is guaranteed to be
-		 * first-vertex-to-second-vertex.
+		 * first-node-to-second-node.
 		 *
 		 * Regardless of the directedness of the graph, this method can be seen
-		 * as a way of relabelling vertices when @e r is the root of the tree
+		 * as a way of relabelling nodes when @e r is the root of the tree
 		 * and @e relab is true.
-		 * @param r Root vertex of the subtree.
-		 * @param relab Should the vertices be relabelled?
+		 * @param r Root node of the subtree.
+		 * @param relab Should the nodes be relabelled?
 		 * @return Returns a list of edges.
 		 * @pre This graph is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
-		 * @post Whenever @e relab is true, the label of the first vertex of
-		 * the first edge is guaranteed to be vertex '0'.
+		 * @post Whenever @e relab is true, the label of the first node of
+		 * the first edge is guaranteed to be node '0'.
 		 */
 		virtual std::vector<edge> get_edges_subtree(node r, bool relab = false) const = 0;
 
@@ -164,10 +164,10 @@ class rtree : virtual public tree {
 		bool m_root_set = false;
 
 		/**
-		 * @brief Number of vertices of the subtrees rooted at a certain vertex.
+		 * @brief Number of nodes of the subtrees rooted at a certain node.
 		 *
-		 * Given a vertex @e u, @ref m_size_subtrees[u] gives the number
-		 * of vertices of the subtree rooted at @e u.
+		 * Given a node @e u, @ref m_size_subtrees[u] gives the number
+		 * of nodes of the subtree rooted at @e u.
 		 */
 		std::vector<uint32_t> m_size_subtrees;
 		/// Are the contents of @ref m_size_subtrees valid?

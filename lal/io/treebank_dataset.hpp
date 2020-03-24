@@ -95,18 +95,18 @@ namespace io {
  *
  * The correct usage of this class is given in the following piece of code.
  * @code
- *		auto tbds = treebank_dataset();
+ *		treebank_dataset tbds = treebank_dataset();
  *		// remember to check for errors
  *		tbds.init(mainf)
  *		while (tbds.has_language()) {
  *			// errors are not likely, but it is
  *			// advisable remember to check for errors
  *			tbds.next_language();
- *			auto tbread = tbds.get_treebank_reader();
+ *			treebank_reader tbread = tbds.get_treebank_reader();
  *			while (tbread.has_tree()) {
  *				// again, check for errors
  *				tbread.next_tree();
- *				auto t = tbread.get_tree();
+ *				lal::graphs::urtree t = tbread.get_tree();
  *				// custom processing of tree 't'
  *				// ....
  *			}

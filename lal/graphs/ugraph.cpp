@@ -264,11 +264,11 @@ void ugraph::remove_single_edge(
 	node u, node v, neighbourhood& out_u, neighbourhood& in_v
 )
 {
-	// it_v: pointer to vertex v in out_u
-	// it_u: pointer to vertex u in in_v
+	// it_v: pointer to node v in out_u
+	// it_u: pointer to node u in in_v
 	vector<node>::iterator it_v, it_u;
 
-	// find the vertices in the lists
+	// find the nodes in the lists
 	if (is_normalised()) {
 		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
 		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);

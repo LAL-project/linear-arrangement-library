@@ -49,7 +49,7 @@ namespace linarr {
 /**
  * @brief The different types of syntactic dependency tree structures.
  *
- * Any tree can be classified when its vertices are linearly arranged into
+ * Any tree can be classified when its nodes are linearly arranged into
  * several different classes.
  *
  * We can currently identify the following structures:

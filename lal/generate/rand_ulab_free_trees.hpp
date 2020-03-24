@@ -66,14 +66,14 @@ namespace generate {
  * the correction in Wilf's paper (see \cite Wilf1981a), as pointed out in
  * \cite GiacXcas_Manual (page 38).
  *
- * Users interested in generating trees of large size (of 100 vertices
+ * Users interested in generating trees of large size (of 100 nodes
  * or more) are recommended to take a look at @ref clear method.
  *
  * The correct usage of this class is
  * @code
  *		rand_ulab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			utree T = TreeGen.make_rand_tree();
+ *			lal::graphs::utree T = TreeGen.make_rand_tree();
  *			// ...
  *		}
  * @endcode
@@ -125,9 +125,9 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * and @ref m_alpha) that are costly to compute every time they are
 		 * needed, they are stored in memory and reused over time.
 		 *
-		 * So, if the user wants to generate trees of 1000 vertices there will
+		 * So, if the user wants to generate trees of 1000 nodes there will
 		 * be too much memory occupied (and unused) if then this class is used
-		 * to generate trees of 10 vertices. In cases like this it is
+		 * to generate trees of 10 nodes. In cases like this it is
 		 * recommended to clear the memory occupied.
 		 *
 		 * @post After calling this method, the contents of the attributes
@@ -142,7 +142,7 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * @brief Values \f$\alpha_{m,q}\f$.
 		 *
 		 * \f$\alpha_{m,q}\f$ is he number of rooted forests of \f$m\f$
-		 * vertices whose trees have at most \f$q\f$ vertices each. See
+		 * nodes whose trees have at most \f$q\f$ nodes each. See
 		 * \cite Wilf1981a.
 		 *
 		 * Since \f$m\f$ and \f$q\f$ are usually calculated as \f$m=n-1\f$
@@ -161,10 +161,10 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 	private:
 
 		/**
-		 * @brief Generates uniformly at random a forest of @e m vertices.
+		 * @brief Generates uniformly at random a forest of @e m nodes.
 		 *
-		 * Makes a random forest of @e m vertices and stores it in @ref m_tree.
-		 * Each tree in the forest has at most @e q vertices.
+		 * Makes a random forest of @e m nodes and stores it in @ref m_tree.
+		 * Each tree in the forest has at most @e q nodes.
 		 * @param m Integer \f$m \ge 0\f$.
 		 * @param q Integer \f$0 \le q \le m\f$.
 		 * @param nt Index to @ref m_tree indicating where to store the next tree.
@@ -173,7 +173,7 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 */
 		uint32_t forest(uint32_t m, uint32_t q, uint32_t nt);
 
-		/// Generates a tree of @e n vertices with two centroids.
+		/// Generates a tree of @e n nodes with two centroids.
 		void bicenter(uint32_t n);
 
 		/**
@@ -182,8 +182,8 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * Stores the calculated value in @ref m_alpha. In case the value has
 		 * already been calculated, this method does nothing. See \cite Wilf1981a
 		 * for details on \f$\alpha(m,q)\f$.
-		 * @param m Number of vertices of the forest.
-		 * @param q Maximum number of vertices of each connected component of
+		 * @param m Number of nodes of the forest.
+		 * @param q Maximum number of nodes of each connected component of
 		 * the forest.
 		 * @return Returns \f$\alpha(m,q)\f$
 		 */
@@ -196,8 +196,8 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * @brief Computes and returns the value \f$f_n\f$.
 		 *
 		 * The value \f$f_n\f$ is the number of unlabelled free trees on \f$n\f$
-		 * vertices. The method implements Otter's formula (see \cite Otter1948a).
-		 * @param n Number of vertices of the tree.
+		 * nodes. The method implements Otter's formula (see \cite Otter1948a).
+		 * @param n Number of nodes of the tree.
 		 * @return Returns \f$f_n\f$.
 		 */
 		const numeric::integer& get_fn(const uint32_t n);
@@ -209,8 +209,8 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * Probability of choosing \f$(j,d)\f$ is:
 		 * \f$\frac{d \cdot \alpha_{m - jd, q} \cdot t_d}{m\alpha_{m, q}}\f$.
 		 * Here, @e q is fixed to \f$(n - 1)/2\f$ where @e n is @ref m_n.
-		 * @param m Amount of vertices.
-		 * @param q Maximum amount of vertices per connected component.
+		 * @param m Amount of nodes.
+		 * @param q Maximum amount of nodes per connected component.
 		 * @returns Returns a pair of integers \f$(j,d)\f$ such that
 		 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 		 */

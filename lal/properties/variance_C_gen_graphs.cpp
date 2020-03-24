@@ -83,7 +83,7 @@ typedef uint64_t bigint;
 struct useful_info_pairs {
 	// number of common neighbours
 	uint64_t common;
-	// sum of the degrees of the common vertices
+	// sum of the degrees of the common nodes
 	uint64_t sum_deg_common;
 
 	useful_info_pairs() {
@@ -242,7 +242,7 @@ inline void compute_data_gen_graphs_no_reuse
 
 /* Warning:
  * 'pair_C3_L2' is, by 3 times, larger than the actual amount of
- * pairs of disjoint cycle of 3 vertices and edge. This is done
+ * pairs of disjoint cycle of 3 nodes and edge. This is done
  * so that we don't have to change the rational numbers used to
  * compute the variance.
  */
@@ -371,9 +371,9 @@ inline void compute_data_gen_graphs_reuse
 			n_cycles_4 += common_us;
 		}
 
-		// number of common vertices
+		// number of common nodes
 		bigint common_st = 0;
-		// sum of the degrees of the common vertices
+		// sum of the degrees of the common nodes
 		bigint deg_sum_st = 0;
 		auto it_st = saving_comps.begin();
 		if (map_has_key(saving_comps, sorted_edge(s,t), it_st)) {

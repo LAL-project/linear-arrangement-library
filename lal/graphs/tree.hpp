@@ -81,7 +81,7 @@ class tree : virtual public graph {
 		 * @brief Returns whether this graph is an actual tree or not.
 		 *
 		 * Returns true if the number of edges is one less than the
-		 * number of vertices. Note that this would not really be true if the
+		 * number of nodes. Note that this would not really be true if the
 		 * addition of edges was not constrained. Since it is constrained in a
 		 * way that no cycles can be produced (see @ref utree::add_edge,
 		 * @ref utree::add_edges, @ref dtree::add_edge, @ref dtree::add_edges),
@@ -119,10 +119,10 @@ class tree : virtual public graph {
 		/**
 		 * @brief Calculates the centre of this tree.
 		 *
-		 * The centre of a graph is the collection of central vertices. A vertex
+		 * The centre of a graph is the collection of central nodes. A node
 		 * is central if it has minimum eccentricity, where the eccentricity of
-		 * a vertex is the maximum distance from this vertex to another vertex.
-		 * Formally, the eccentricity of a vertex @e u is
+		 * a node is the maximum distance from this node to another node.
+		 * Formally, the eccentricity of a node @e u is
 		 * \f$ ecc(u) = max_{v\in V} d(u,v) \f$,
 		 * where \f$d(u,v)\f$ denotes distance within the graph.
 		 *
@@ -134,10 +134,10 @@ class tree : virtual public graph {
 		 *
 		 * In case of directed trees (see @ref dtree), the centre is calculated
 		 * assuming that the edges are not directed.
-		 * @return Returns a pair of vertices the first is always guaranteed to
-		 * be a valid vertex index. The second vertex is valid only when its
-		 * value is strictly smaller than the number of vertices. If the second
-		 * value is valid then the tree has two central vertices.
+		 * @return Returns a pair of nodes the first is always guaranteed to
+		 * be a valid node index. The second node is valid only when its
+		 * value is strictly smaller than the number of nodes. If the second
+		 * value is valid then the tree has two central nodes.
 		 * @pre This graph is a tree (see method @ref is_tree).
 		 */
 		virtual std::pair<node, node> get_centre() const = 0;

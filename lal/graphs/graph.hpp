@@ -57,7 +57,7 @@ namespace graphs {
  *
  * A usual way of initialising classes inheriting from this one is to use one
  * of the @ref init methods available. Depending on the subclass, this method
- * admits either the number of vertices of the graph or a whole other graph and
+ * admits either the number of nodes of the graph or a whole other graph and
  * further information (see @ref drtree::init_rooted(const utree&, node, drtree::drtree_type).
  * While these classes' internal memory can be initialised, it can also be cleared
  * using method @ref clear. Each class reimplements this method to carry this
@@ -99,8 +99,8 @@ class graph {
 		 *
 		 * Given a graph, append it to the current graph.
 		 *
-		 * All the vertices in @e g are relabelled starting at @e n,
-		 * the number of vertices of the current graph.
+		 * All the nodes in @e g are relabelled starting at @e n,
+		 * the number of nodes of the current graph.
 		 * @param g Input graph.
 		 * @pre This graph and @e g must be of the same type (both must
 		 * be either undirected, or both directed).
@@ -138,7 +138,7 @@ class graph {
 		 * @brief Returns the neighbourhood of node @e u.
 		 * @param u Node.
 		 * @return In undirected graphs, returns the list of nodes adjacent to
-		 * node @e u. In a directed graph, returns the outgoing vertices.
+		 * node @e u. In a directed graph, returns the outgoing nodes.
 		 */
 		virtual const neighbourhood& get_neighbours(node u) const = 0;
 
@@ -198,7 +198,7 @@ class graph {
 		 * sorted in increasing order.
 		 *
 		 * In directed graphs, however, it is necessary that the adjacency lists
-		 * of the out-neighbours and in-neighbours of vertices be sorted.
+		 * of the out-neighbours and in-neighbours of nodes be sorted.
 		 *
 		 * This attribute is set to 'true' in all graph's initialisation
 		 * and destruction (when @ref clear() method is called).

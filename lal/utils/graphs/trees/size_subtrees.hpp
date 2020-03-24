@@ -51,15 +51,15 @@ namespace utils {
 /*
  * @brief Calculate the size of every subtree of tree @e t.
  *
- * The method starts calculating the sizes at vertex @e r.
+ * The method starts calculating the sizes at node @e r.
  * The method assumes that the vector @e sizes is initialised appropriately
  * (e.g., it has the right size).
  * This method is different from @ref get_undirected_size_subtrees because
  * it follows reversed edges.
  * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this vertex.
- * @param vis Mark vertices as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable vertex
+ * @param r Start calculating sizes of subtrees at this node.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
 inline void get_directed_size_subtrees(
@@ -86,13 +86,13 @@ inline void get_directed_size_subtrees(
 /*
  * @brief Calculate the size of every subtree of tree @e t.
  *
- * The method starts calculating the sizes at vertex @e r.
+ * The method starts calculating the sizes at node @e r.
  * The method assumes that the vector @e sizes is initialised appropriately
  * (e.g., it has the right size).
  * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this vertex.
- * @param vis Mark vertices as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable vertex
+ * @param r Start calculating sizes of subtrees at this node.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
 inline void get_undirected_size_subtrees(

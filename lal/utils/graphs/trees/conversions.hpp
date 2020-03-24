@@ -45,6 +45,7 @@
 
 // lal includes
 #include <lal/graphs/utree.hpp>
+#include <lal/graphs/urtree.hpp>
 
 namespace lal {
 namespace utils {
@@ -53,9 +54,9 @@ namespace utils {
  * @brief Converts the level sequence of a tree into a graph structure.
  *
  * Examples of level sequences:
- * -- linear tree of n vertices:
+ * -- linear tree of n nodes:
  *		0 1 2 3 4 ... (n-1) n
- * -- star tree of n vertices
+ * -- star tree of n nodes
  *		0 1 2 2 2 .... 2 2
  *        |------------| > (n-1) two's
  *
@@ -74,7 +75,7 @@ graphs::utree level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n)
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
  *
- * A linear sequence of a tree of @e n vertices is an array of
+ * A linear sequence of a tree of @e n nodes is an array of
  * @e n + 1 integers where the values in the positions from 1 to @e n, both
  * included, describe the tree. The value '0' indicates the root, while a
  * strictly positive value indicates parent node.
@@ -82,7 +83,7 @@ graphs::utree level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n)
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graphs::utree linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
+graphs::urtree linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
 
 /*
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.

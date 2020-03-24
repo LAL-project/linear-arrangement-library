@@ -63,7 +63,7 @@ using namespace iterators;
 
 namespace linarr {
 
-inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
+inline bool __is_root_covered(const urtree& T, const linearrgmnt& pi) {
 	const node R = T.get_root();
 	E_iterator it(T);
 	while (it.has_next()) {
@@ -85,13 +85,13 @@ inline bool __is_root_covered(const urtree& T, const LINARR& pi) {
 }
 
 inline void __get_yields(
-	const urtree& t, const LINARR& pi,
+	const urtree& t, const linearrgmnt& pi,
 	node u,
 	vector<bool>& vis,
 	vector<vector<position> >& yields
 )
 {
-	// add this vertex to its own yield
+	// add this node to its own yield
 	auto& yu = yields[u];
 	yu.push_back(pi[u]);
 
@@ -122,7 +122,7 @@ inline bool __disjoint_yields(
 )
 {
 	bool disjoint_yields = true;
-	// for every pair of vertices
+	// for every pair of nodes
 	for (node u = 0; u < n; ++u) {
 	for (node v = u + 1; v < n; ++v) {
 		const auto& yu = yields[u];
@@ -170,7 +170,7 @@ uint32_t __get_n_discont(const uint32_t n, const vector<vector<node> >& yields)
 	return max_dis;
 }
 
-inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
+inline uint32_t __is_1EC(const urtree& Tree, const linearrgmnt& pi) {
 	const uint32_t n = Tree.n_nodes();
 	vector<node> T(n);
 	for (node u = 0; u < n; ++u) {
@@ -228,7 +228,7 @@ inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 
 		// If this tree does not belong to 1-EC,finish.
 		// Continue otherwise.
-		cout << "common vertices found: " << common << endl;
+		cout << "common nodes found: " << common << endl;
 		if (common == 1) {
 			_1ec = true;
 		}
@@ -244,7 +244,7 @@ inline uint32_t __is_1EC(const urtree& Tree, const LINARR& pi) {
 }
 
 inline vector<bool> __get_syn_dep_tree_type(
-	const urtree& Tree, const LINARR& pi
+	const urtree& Tree, const linearrgmnt& pi
 )
 {
 	vector<bool> cl(__tree_structure_size, false);
@@ -293,7 +293,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 	return cl;
 }
 
-vector<bool> get_tree_structure_type(const urtree& t, const LINARR& pi) {
+vector<bool> get_tree_structure_type(const urtree& t, const linearrgmnt& pi) {
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 

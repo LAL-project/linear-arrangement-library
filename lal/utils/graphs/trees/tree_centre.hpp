@@ -75,21 +75,21 @@ inline node __get_only_neighbour(const graphs::ugraph& g, const node s) {
 } // -- namespace __lal
 
 /*
- * @brief Calculate the centre of the connected component that has vertex @e s.
+ * @brief Calculate the centre of the connected component that has node @e s.
  *
  * A graph of type @ref graphs::tree t may not be a complete tree so it has
  * several connected components. Vertex 's' belongs to one of these connected
  * components.
  *
- * This method finds the central vertices of the connected components vertex
+ * This method finds the central nodes of the connected components node
  * 'x' belongs to.
  *
  * @param t Input tree.
- * @param x Input vertex.
+ * @param x Input node.
  * @returns Returns a tuple of three values. The first is a numerical value
- * that indicates how many vertices are in the centre of the tree. The other
- * two are the vertices in the centre. If the has a single central vertex,
- * only the first vertex is valid. It is guaranteed that the first value is
+ * that indicates how many nodes are in the centre of the tree. The other
+ * two are the nodes in the centre. If the has a single central node,
+ * only the first node is valid. It is guaranteed that the first value is
  * smaller than the second.
  */
 template<
@@ -100,7 +100,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	const auto n = T.n_nodes();
 
 	// First simple case:
-	// in case the component of x has only one vertex (vertex x)...
+	// in case the component of x has only one node (node x)...
 	if (__lal::__degree_for_centre(T, x) == 0) {
 		return std::make_pair(x, n);
 	}
@@ -109,9 +109,9 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
-	// full degree of every vertex of the tree
+	// full degree of every node of the tree
 	std::vector<uint32_t> trimmed_degree(n, 0);
-	// number of vertices in the connected_component
+	// number of nodes in the connected_component
 	uint32_t size_trimmed = 0;
 
 	// leaves left to process
@@ -122,7 +122,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	// ---------------------------------------------------
 	// Initialise data:
-	// 1. calculate number of vertices in the current tree
+	// 1. calculate number of nodes in the current tree
 	//    (actually, connected component)
 	// 2. fill in 'degree' values
 	// 3. retrieve connected component's leaves
@@ -141,7 +141,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	bfs.start_at(x);
 
 	// Second simple case:
-	// if the connected component has two vertices then
+	// if the connected component has two nodes then
 	if (size_trimmed == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = x;
@@ -149,7 +149,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
-	// Third case: the component has three vertices or more...
+	// Third case: the component has three nodes or more...
 
 	// ---------------------------------------------------
 	bfs.reset();
@@ -170,7 +170,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 		//     This means that the conditions so far are true. However, this
 		//     does not mean we have calculated the centre because there still
 		//     is a big amount of leaves to trim. Therefore, we need a trimmed
-		//     tree of at most 2 vertices to finish.
+		//     tree of at most 2 nodes to finish.
 		return (l0 == 1 or l0 == 2) and l1 == 0 and size_trimmed <= 2;
 	}
 	);
@@ -183,7 +183,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	bfs.set_process_neighbour(
 	[&](const auto&, node s, node t, bool) -> void
 	{
-		// ignore the edge if one of its vertices has already been trimmed out.
+		// ignore the edge if one of its nodes has already been trimmed out.
 		if (trimmed_degree[s] == 0) { return; }
 		if (trimmed_degree[t] == 0) { return; }
 
@@ -210,9 +210,9 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	}
 	);
 
-	// add the next vertex only if its degree
+	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
-	bfs.set_vertex_add(
+	bfs.set_node_add(
 	[&](const auto&, node s) -> bool { return (trimmed_degree[s] == 1); }
 	);
 
@@ -232,7 +232,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	bfs.reset();
 	bfs.set_use_rev_edges(T.is_directed());
 
-	// retrieve the two central vertices
+	// retrieve the two central nodes
 
 	node v1, v2;
 	v1 = v2 = n;

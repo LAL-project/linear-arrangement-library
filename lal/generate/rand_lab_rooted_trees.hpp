@@ -66,7 +66,7 @@ namespace generate {
  * @code
  *		rand_lab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			urtree T = TreeGen.make_rand_tree();
+ *			lal::graphs::urtree T = TreeGen.make_rand_tree();
  *			// ...
  *		}
  * @endcode

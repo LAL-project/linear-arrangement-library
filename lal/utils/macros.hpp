@@ -80,25 +80,25 @@ inline void UNUSED(const T& x) { (void)x; }
  */
 template<typename T, class G>
 T call_with_empty_arrangement(
-	T (*F)(const G&, const LINARR&),
-	const G& g, const LINARR& pi
+	T (*F)(const G&, const linearrgmnt&),
+	const G& g, const linearrgmnt& pi
 )
 {
 	if (pi.size() != 0) {
 		return F(g,pi);
 	}
-	LINARR __pi(g.n_nodes());
+	linearrgmnt __pi(g.n_nodes());
 	std::iota(__pi.begin(), __pi.end(), 0);
 	return F(g,__pi);
 }
 
-/* @brief Retrieves the neighbours of a vertex in a graph as a list of
+/* @brief Retrieves the neighbours of a node in a graph as a list of
  * boolean values.
  *
- * Sets to true the positions in @e neighs that correspond to the vertices
+ * Sets to true the positions in @e neighs that correspond to the nodes
  * neighours of @e u.
  * @param g Input graph.
- * @param u Input vertex.
+ * @param u Input node.
  * @param neighs Boolean list of neighbours of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */

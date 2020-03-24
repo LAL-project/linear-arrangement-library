@@ -88,7 +88,7 @@ vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
 	node r_parent = n;
 
 	// -----------------------
-	// find parent of vertex r
+	// find parent of node r
 	BFS<urtree> bfs(*this);
 	bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
 	bfs.set_process_neighbour(
@@ -113,9 +113,9 @@ vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
 		bfs.set_visited(r_parent);
 	}
 
-	// data structures for vertex relabelling
+	// data structures for node relabelling
 	vector<node> labels(n_nodes(), n);
-	// we need vertex 'r' to be relabelled to 0.
+	// we need node 'r' to be relabelled to 0.
 	labels[r] = 0;
 	node next_label = 1;
 
@@ -125,13 +125,13 @@ vector<edge> urtree::get_edges_subtree(node r, bool relab) const {
 		bfs.set_process_neighbour(
 		[&](const auto&, node s, node t, bool) -> void {
 			edge e;
-			// relabel first vertex
+			// relabel first node
 			if (labels[s] == n) {
 				labels[s] = next_label;
 				++next_label;
 			}
 			e.first = labels[s];
-			// relabel second vertex
+			// relabel second node
 			if (labels[t] == n) {
 				labels[t] = next_label;
 				++next_label;
@@ -162,9 +162,9 @@ urtree urtree::get_subtree(node r) const {
 	assert(has_root());
 	assert(has_node(r));
 
-	// retrieve the list of edges with their vertices relabelled
+	// retrieve the list of edges with their nodes relabelled
 	const vector<edge> es = get_edges_subtree(r, true);
-	// number of vertices of subtree
+	// number of nodes of subtree
 	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
 
 	// make subtree

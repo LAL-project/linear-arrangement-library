@@ -49,10 +49,10 @@ namespace generate {
 /**
  * @brief Exhaustive unlabelled rooted tree generator.
  *
- * Generates all the unlabelled rooted trees of a given number of vertices.
+ * Generates all the unlabelled rooted trees of a given number of nodes.
  *
  * In order to use this class, you must first provide the size \f$n\f$ of the
- * tree (number of vertices) in the constructor or in the @ref init method of
+ * tree (number of nodes) in the constructor or in the @ref init method of
  * the trees to be generated.
  *
  * Then, call method @ref next to modify the internal state that will allow the
@@ -60,7 +60,7 @@ namespace generate {
  *
  * All the unlabelled rooted trees have been generated when method @ref has_next
  * returns false. At this point, method @ref get_tree will always construct a
- * star tree of \f$n\f$ vertices rooted at its central vertex.
+ * star tree of \f$n\f$ nodes rooted at its central node.
  *
  * In order to restart the generation of these trees, call method @ref init
  * again. It is allowed, at any time, to call @ref init with the same size of
@@ -75,7 +75,7 @@ namespace generate {
  *		all_ulab_rooted_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
- *			urtree T = TreeGen.get_tree();
+ *			lal::graphs::urtree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -89,7 +89,7 @@ class all_ulab_rooted_trees {
 		 * See @ref init(uint32_t).
 		 */
 		all_ulab_rooted_trees();
-		/// Constructor with number of vertices.
+		/// Constructor with number of nodes.
 		all_ulab_rooted_trees(uint32_t n);
 		/// Default destructor
 		~all_ulab_rooted_trees();
@@ -105,7 +105,7 @@ class all_ulab_rooted_trees {
 		 *
 		 * It is allowed to call this method two or more times,
 		 * and with different values for parameter @e n.
-		 * @param n The number of vertices of the trees to be
+		 * @param n The number of nodes of the trees to be
 		 * generated.
 		 */
 		void init(uint32_t n);
@@ -138,7 +138,7 @@ class all_ulab_rooted_trees {
 		graphs::urtree get_tree() const;
 
 	private:
-		/// Number of vertices of the tree
+		/// Number of nodes of the tree
 		uint32_t m_n;
 
 		/// Is the current tree the last tree to be generated?

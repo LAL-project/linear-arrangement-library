@@ -107,7 +107,7 @@ pair<uint32_t,uint32_t>
 rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 {
 	if (n == 0) {
-		// The new tree has no vertices.
+		// The new tree has no nodes.
 		// The returned indices are:
 		//    lr: because we haven't generated any new tree (so, no new root),
 		//    nt: because the place where to store the next tree to be generated
@@ -115,7 +115,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 		return make_pair(lr,nt);
 	}
 	if (n == 1) {
-		// The new tree has a single vertex, to be stored in 'nt'.
+		// The new tree has a single node, to be stored in 'nt'.
 		// This node has to point to root of the last tree that was generated.
 		m_tree[nt] = lr;
 
@@ -126,11 +126,11 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 		return make_pair(nt, nt + 1);
 	}
 	if (n == 2) {
-		// The new tree has two vertices.
+		// The new tree has two nodes.
 		// The root, placed at 'nt', points to root of the last tree generated.
 		m_tree[nt] = lr;
 
-		// The second vertex, placed at 'nt+1', points to this tree's root,
+		// The second node, placed at 'nt+1', points to this tree's root,
 		// placed at 'nt'.
 		m_tree[nt + 1] = nt;
 		// The returned indices are:
@@ -148,11 +148,11 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 	assert(d > 0);
 
 	// -------------------------------------------------------------
-	// Generate T' (a random rooted tree of n - j*d vertices)
+	// Generate T' (a random rooted tree of n - j*d nodes)
 	const auto [root_Tp, store_Tpp] = ranrut(n - j*d, lr,nt);
 
 	// -------------------------------------------------------------
-	// Generate T'' (a random rooted tree of d vertices)
+	// Generate T'' (a random rooted tree of d nodes)
 	// NOTE:
 	//    1. We have to have j copies of T''.
 	//	  2. One of the copies has already been made, and is
@@ -162,7 +162,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 
 	// -------------------------------------------------------------
 	// Make j - 1 copies of T'' and connect them to T'.
-	// The vertices of T'' are placed in TREE[root_Tpp:(root_Tpp + d - 1)]
+	// The nodes of T'' are placed in TREE[root_Tpp:(root_Tpp + d - 1)]
 
 	nt = nt2;
 	for (uint32_t c = 1; c < j; ++c) {
@@ -177,7 +177,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 
 			// 'TREE[v - c*d] - root_Tpp' is the increment with
 			// respect to the new root ('nt') so that the
-			// vertex in 'v' eventually connects with 'nt'.
+			// node in 'v' eventually connects with 'nt'.
 			m_tree[v] = nt + m_tree[v - c*d] - root_Tpp;
 		}
 		nt += d;

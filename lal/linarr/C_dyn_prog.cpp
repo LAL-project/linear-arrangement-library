@@ -60,7 +60,7 @@ namespace linarr {
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 inline uint32_t __compute_C_dyn_prog(
-	const ugraph& g, const LINARR& pi,
+	const ugraph& g, const linearrgmnt& pi,
 	vector<bool>& bn,
 	node * __restrict__ T,
 	uint32_t * __restrict__ M,
@@ -175,7 +175,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_dyn_prog(const ugraph& g, const LINARR& pi) {
+inline uint32_t __call_C_dyn_prog(const ugraph& g, const linearrgmnt& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -205,13 +205,13 @@ inline uint32_t __call_C_dyn_prog(const ugraph& g, const LINARR& pi) {
 	return C;
 }
 
-uint32_t __n_crossings_dyn_prog(const ugraph& g, const LINARR& pi) {
+uint32_t __n_crossings_dyn_prog(const ugraph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return utils::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
 vector<uint32_t> __n_crossings_dyn_prog_list
-(const ugraph& g, const vector<LINARR>& pis)
+(const ugraph& g, const vector<linearrgmnt>& pis)
 {
 	const uint32_t n = g.n_nodes();
 

@@ -53,10 +53,10 @@ namespace generate {
 /**
  * @brief Exhaustive unlabelled free tree generator.
  *
- * Generates all the unlabelled free trees of a given number of vertices.
+ * Generates all the unlabelled free trees of a given number of nodes.
  *
  * In order to use this class, you must first provide the size \f$n\f$ of the
- * tree (number of vertices) in the constructor or in the @ref init method of
+ * tree (number of nodes) in the constructor or in the @ref init method of
  * the trees to be generated.
  *
  * Then, call method @ref next to modify the internal state that will allow the
@@ -64,7 +64,7 @@ namespace generate {
  *
  * All the unlabelled free trees have been generated when method @ref has_next
  * returns false. At this point, method @ref get_tree will always construct a
- * star tree of \f$n\f$ vertices.
+ * star tree of \f$n\f$ nodes.
  *
  * In order to restart the generation of these trees, call method @ref init
  * again. It is allowed, at any time, to call @ref init with the same size of
@@ -79,7 +79,7 @@ namespace generate {
  *		all_ulab_free_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
- *			utree T = TreeGen.get_tree();
+ *			lal::graphs::utree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -93,7 +93,7 @@ class all_ulab_free_trees {
 		 * See @ref init(uint32_t).
 		 */
 		all_ulab_free_trees();
-		/// Constructor with number of vertices.
+		/// Constructor with number of nodes.
 		all_ulab_free_trees(uint32_t n);
 		/// Default destructor
 		~all_ulab_free_trees();
@@ -109,7 +109,7 @@ class all_ulab_free_trees {
 		 *
 		 * It is allowed to call this method two or more times,
 		 * and with different values for parameter @e n.
-		 * @param n The number of vertices of the trees to be
+		 * @param n The number of nodes of the trees to be
 		 * generated.
 		 */
 		void init(uint32_t n);
@@ -146,7 +146,7 @@ class all_ulab_free_trees {
 		std::vector<uint32_t> m_L;
 		/**
 		 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
-		 * corresponding to the parent of the vertex corresponding to \f$l_i\f$.
+		 * corresponding to the parent of the node corresponding to \f$l_i\f$.
 		 */
 		std::vector<uint32_t> m_W;
 
@@ -173,7 +173,7 @@ class all_ulab_free_trees {
 		 */
 		uint32_t m_r;
 
-		/// Number of vertices of the trees.
+		/// Number of nodes of the trees.
 		uint32_t m_n;
 
 		/// Was the last tree generated?

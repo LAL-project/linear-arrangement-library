@@ -202,14 +202,14 @@ inline void process_tree(
 	// ------------
 	// V[C], E[C^2]
 	if (what_fs[C_var_idx] or what_fs[C_exp2_idx]) {
-		props[C_exp1_idx] = properties::expectation_C_first(t);
+		props[C_exp1_idx] = properties::expectation_C(t);
 		props[C_var_idx] = properties::variance_C_tree(t);
 		props[C_exp2_idx] = props[C_var_idx] + props[C_exp1_idx]*props[C_exp1_idx];
 	}
 	else {
 		// none of V[C], E[C^2] were asked, but if...
 		if (what_fs[C_exp1_idx]) {
-			props[C_exp1_idx] = properties::expectation_C_first(t);
+			props[C_exp1_idx] = properties::expectation_C(t);
 		}
 	}
 
@@ -221,7 +221,7 @@ inline void process_tree(
 		}
 		// we need E[C]
 		if (not what_fs[C_exp1_idx] and not what_fs[C_var_idx]) {
-			props[C_exp1_idx] = properties::expectation_C_first(t);
+			props[C_exp1_idx] = properties::expectation_C(t);
 		}
 		// we need to compute C, whether we like it or not
 		props[C_idx] = utils::to_double(linarr::__n_crossings_ladder(t, __linarr));
@@ -236,14 +236,14 @@ inline void process_tree(
 	// ------------
 	// V[D], E[D^2]
 	if (what_fs[D_var_idx] or what_fs[D_exp2_idx]) {
-		props[D_exp1_idx] = properties::expectation_D_first(t);
+		props[D_exp1_idx] = properties::expectation_D(t);
 		props[D_var_idx] = properties::variance_D(t);
 		props[D_exp2_idx] = props[D_var_idx] + props[D_exp1_idx]*props[D_exp1_idx];
 	}
 	else {
 		// none of V[D], E[D^2] were asked, but if...
 		if (what_fs[D_exp1_idx]) {
-			props[D_exp1_idx] = properties::expectation_D_first(t);
+			props[D_exp1_idx] = properties::expectation_D(t);
 		}
 	}
 
@@ -255,7 +255,7 @@ inline void process_tree(
 		}
 		// we need E[D]
 		if (not what_fs[D_exp1_idx] and not what_fs[D_var_idx]) {
-			props[D_exp1_idx] = properties::expectation_D_first(t);
+			props[D_exp1_idx] = properties::expectation_D(t);
 		}
 		// we need to compute D, whether we like it or not
 		props[D_idx] = utils::to_double(linarr::sum_length_edges(t, __linarr));

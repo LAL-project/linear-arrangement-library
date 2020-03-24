@@ -58,7 +58,7 @@ namespace iterators {
 typedef std::pair<node,std::size_t> sE_pointer;
 
 static inline
-bool share_vertices(const edge_pair& st_uv) {
+bool share_nodes(const edge_pair& st_uv) {
 	const edge& st = st_uv.first;
 	const edge& uv = st_uv.second;
 	const node s = st.first;
@@ -69,12 +69,12 @@ bool share_vertices(const edge_pair& st_uv) {
 }
 
 static inline
-bool share_vertices(const graph& g, const sE_pointer& p1, const sE_pointer& p2) {
+bool share_nodes(const graph& g, const sE_pointer& p1, const sE_pointer& p2) {
 	const node s = p1.first;
 	const node t = g.get_neighbours(s)[p1.second];
 	const node u = p2.first;
 	const node v = g.get_neighbours(u)[p2.second];
-	return share_vertices(edge_pair(edge(s,t),edge(u,v)));
+	return share_nodes(edge_pair(edge(s,t),edge(u,v)));
 }
 
 static tuple<bool, sE_pointer, sE_pointer>
@@ -104,7 +104,7 @@ find_next_pair_directed(
 		return find_next_pair_directed(g, s, pt, u + 1, 0);
 	}
 
-	if (share_vertices(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
+	if (share_nodes(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
 		return find_next_pair_directed(g, s, pt, u, pv + 1);
 	}
 
@@ -144,7 +144,7 @@ find_next_pair_undirected(
 	}
 
 	auto Nu = g.get_neighbours(u);
-	if (u > Nu[pv] or share_vertices(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
+	if (u > Nu[pv] or share_nodes(g, sE_pointer(s,pt), sE_pointer(u,pv))) {
 		return find_next_pair_undirected(g, s, pt, u, pv + 1);
 	}
 
@@ -174,7 +174,7 @@ bool Q_iterator::has_next() const {
 
 void Q_iterator::next() {
 	m_cur_pair = make_current_pair();
-	assert(not share_vertices(m_cur_pair));
+	assert(not share_nodes(m_cur_pair));
 
 	// find the next edge
 	auto [found, new_cur1, new_cur2] =
@@ -214,7 +214,7 @@ void Q_iterator::reset() {
 		return;
 	}
 
-	assert(not share_vertices(m_G, new_cur1, new_cur2));
+	assert(not share_nodes(m_G, new_cur1, new_cur2));
 
 	// since a pair was found, store it in current
 	m_cur1 = new_cur1;

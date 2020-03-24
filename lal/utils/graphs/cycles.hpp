@@ -144,7 +144,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	[&](const auto& _bfs, node s, node t, bool) -> void {
 		// Since we want to do the traversal on the directed graphs likewise on
 		// the undirected graphs, the direction is ignored. We do not want to
-		// treat the vertices 's' and 't' as in the edge "t->s" but as in the
+		// treat the nodes 's' and 't' as in the edge "t->s" but as in the
 		// edge "s->t" so as to mimic an "undirected traversal" on directed
 		// graphs.
 

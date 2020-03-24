@@ -55,7 +55,7 @@ namespace linarr {
 /**
  * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
  *
- * Given a list of graphs and a linear arrangement of the vertices for each of
+ * Given a list of graphs and a linear arrangement of the nodes for each of
  * them, computes the 2-level Mean Dependency Distance, i.e., it computes the
  * average Mean Dependency Distance of the graphs in the list.
  *
@@ -66,26 +66,26 @@ namespace linarr {
  * of the Mean Dependency Distance).
  *
  * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.
  * @return Returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs.
  */
 template<class G>
 numeric::rational MDD_2level_rational
-(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
+(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis = {});
 
 /**
  * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
  *
  * See @ref MDD_2level_rational for details.
  * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the vertices \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.
  * @return The return value is a floating point value.
  */
 template<class G>
 double MDD_2level
-(const std::vector<G>& Gs, const std::vector<LINARR>& pis = {});
+(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis = {});
 
 } // -- namespace linarr
 } // -- namespace lal

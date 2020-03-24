@@ -80,7 +80,7 @@ namespace io {
  * The usage of this class is a lot simpler than that of class @ref treebank_dataset.
  * See code for details.
  * @code
- *		auto tbproc = treebank_processor();
+ *		treebank_processor tbproc = treebank_processor();
  *		// initialise the processor without features
  *		tbproc.init(main_file, output_dir, false);
  *		tbproc.add_feature(treebank_processor::tree_feature::C);

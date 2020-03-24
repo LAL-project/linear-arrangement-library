@@ -62,8 +62,8 @@ utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
 
-	// 'stack' of root candidates: vertex at every level in {1,...,N}.
-	// at position j, lev[j], store the last vertex added
+	// 'stack' of root candidates: node at every level in {1,...,N}.
+	// at position j, lev[j], store the last node added
 	// at level j.
 	vector<node> lev(n+1, 0);
 	uint32_t stack_it = 0;
@@ -73,19 +73,19 @@ utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 
 	for (node i = 2; i <= n; ++i) {
 
-		// find in the stack the vertex which
-		// has to be connected to vertex 'i'.
+		// find in the stack the node which
+		// has to be connected to node 'i'.
 		if (lev[stack_it] + 2 > L[i]) {
 			stack_it = L[i] - 2 + 1;
 		}
 
-		// the top of the stack is the parent of this vertex
+		// the top of the stack is the parent of this node
 		const node r = lev[stack_it];
 
 		// add the edge...
 		*eit++ = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
 
-		// the last vertex added at level L[i] is i.
+		// the last node added at level L[i] is i.
 		++stack_it;
 		assert(stack_it == L[i]);
 		lev[stack_it] = i;
@@ -96,24 +96,32 @@ utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	return t;
 }
 
-utree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+urtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(L.size() == n + 1);
 
 	// edges of the tree
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
+	// node of the tree
+	bool root_set = false;
+	node r = 0; // initiliase variable so compiler does not cry
 
 	for (uint32_t i = 1; i <= n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
+			r = i - 1;
+			root_set = true;
 		}
 		else {
 			// add the edge...
 			*eit++ = edge(i - 1, L[i] - 1);
 		}
 	}
+	// root must have been set.
+	assert(root_set);
 
-	utree t(n);
+	urtree t(n);
+	t.set_root(r);
 	t.add_edges(edges);
 	return t;
 }

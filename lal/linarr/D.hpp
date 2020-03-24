@@ -65,15 +65,15 @@ namespace linarr {
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
- * Given a graph and a linear arrangement of its vertices, computes the sum of
+ * Given a graph and a linear arrangement of its nodes, computes the sum of
  * the length of the graph's edges in the arrangement. If the arrangement is
  * not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
+ * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$D\f$.
  */
 uint32_t sum_length_edges
-(const graphs::graph& g, const LINARR& pi = {});
+(const graphs::graph& g, const linearrgmnt& pi = {});
 
 /**
  * @brief Computes the minimum value of \f$D\f$.
@@ -84,7 +84,7 @@ uint32_t sum_length_edges
  * @param a The algorithm to be chosen.
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
-std::pair<uint32_t, LINARR> compute_Dmin
+std::pair<uint32_t, linearrgmnt> compute_Dmin
 (const graphs::utree& t, const algorithms_Dmin& a = algorithms_Dmin::Shiloach);
 
 /* MDD */
@@ -92,27 +92,27 @@ std::pair<uint32_t, LINARR> compute_Dmin
 /**
  * @brief Computes the mean edge length.
  *
- * Given a graph and a linear arrangement of its vertices, computes the average
+ * Given a graph and a linear arrangement of its nodes, computes the average
  * edge length, or the mean dependency distance (see \cite Jing2015a).
  *
  * It simply computes the sum of the length of the edges of the graph given the
  * arrangement \f$\pi\f$ and divides the sum by the number of edges.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
+ * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns Jing's and Liu's \f$MDD\f$ for a single tree.
  */
 numeric::rational MDD_rational
-(const graphs::graph& g, const LINARR& pi = {});
+(const graphs::graph& g, const linearrgmnt& pi = {});
 
 /**
  * @brief Computes the mean edge length as an exact rational value.
  *
  * See @ref MDD_rational for details.
  * @param g Input graph.
- * @param pi Linear arrangement of the vertices. When omitted, \f$\pi_I\f$ is used.
+ * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double MDD(const graphs::graph& g, const LINARR& pi = {});
+double MDD(const graphs::graph& g, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal
