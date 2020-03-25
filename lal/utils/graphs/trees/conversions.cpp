@@ -102,21 +102,29 @@ urtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// edges of the tree
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
-	// node of the tree
+
+#if defined DEBUG
+	// variable to make sure that the root has been set
 	bool root_set = false;
-	node r = 0; // initiliase variable so compiler does not cry
+#endif
+	// root node of the tree (initiliased
+	// so compiler does not cry)
+	node r = 0;
 
 	for (uint32_t i = 1; i <= n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
 			r = i - 1;
+#if defined DEBUG
 			root_set = true;
+#endif
 		}
 		else {
 			// add the edge...
 			*eit++ = edge(i - 1, L[i] - 1);
 		}
 	}
+
 	// root must have been set.
 	assert(root_set);
 

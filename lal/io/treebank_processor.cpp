@@ -177,7 +177,7 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 
 inline void process_tree(
 	const vector<bool>& what_fs, char sep,
-	const ugraph& t, ofstream& out_lang_file
+	const urtree& t, ofstream& out_lang_file
 )
 {
 	// default linear arrangement
@@ -383,7 +383,7 @@ treebank_processor::processor_error treebank_processor::process
 			out_lang_file << endl;
 		}
 
-		ugraph t;
+		urtree t;
 		// process the current treebank
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();
