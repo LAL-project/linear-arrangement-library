@@ -76,18 +76,24 @@ enum class tree_structure {
 
 	// Mildly non-projective
 
-	/// Well nested trees with maximum degree gap 1.
+	/// Well nested trees with maximum gap-degree 1.
 	WG_1,
 
 	/// 1-Endpoint Crossing.
 	EC_1,
+
+	/// MH-4
+	MH4,
+
+	/// MH-5
+	MH5,
 
 	/// The structure could not be classified.
 	none
 };
 
 /// Number of elements within enumeration @ref tree_structure.
-static const size_t __tree_structure_size = 5;
+static const size_t __tree_structure_size = 7;
 
 // This assertion ensures that the value of '__tree_structure_size' is correct.
 static_assert(
