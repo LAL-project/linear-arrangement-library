@@ -53,34 +53,48 @@ namespace linarr {
  * several different classes.
  *
  * We can currently identify the following structures:
- * - Projective structures (see @ref tree_structure::projective). A
- * structure is projective if it is planar and the root is not covered by any
- * dependency.
- * - Planar structures (see @ref tree_structure::planar). A structure is
- * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
- * cross if, and only if, their positions in the arrangement are interleaved,
- * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
- * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
- * - Well nested trees with maximum degree gap 1, usually denoted as \f$WG_1\f$.
- * - 1-Endpoint Crossing (see @ref tree_structure::EC_1). A structure has
- * the property of being 1-endpoint crossing if, given any dependency, all
- * other dependencies crossing it are incident to a common node.
+ * - Projective structures (see @ref tree_structure::projective),
+ * - Planar structures (see @ref tree_structure::planar),
+ * - Well nested trees with maximum degree gap 1 (see @ref tree_structure::WG1),
+ * - 1-Endpoint Crossing (see @ref tree_structure::EC1),
+ * - Multi-headed 4 (see @ref tree_structure::MH4),
+ * - Multi-headed 5 (see @ref tree_structure::MH5),
  */
 enum class tree_structure {
 	// Projective structures
 
-	/// Projective structures.
+	/**
+	 * @brief Projective structures.
+	 *
+	 * A structure is projective if it is planar and the root is not covered by
+	 * any dependency.
+	 */
 	projective,
-	/// Planar structures.
+
+	/**
+	 * @brief Planar structures.
+	 *
+	 * A structure is
+	 * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
+	 * cross if, and only if, their positions in the arrangement are interleaved,
+	 * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
+	 * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
+	 */
 	planar,
 
 	// Mildly non-projective
 
 	/// Well nested trees with maximum gap-degree 1.
-	WG_1,
+	WG1,
 
-	/// 1-Endpoint Crossing.
-	EC_1,
+	/**
+	 * @brief 1-Endpoint Crossing.
+	 *
+	 * A structure has the property of being 1-endpoint crossing if, given any
+	 * dependency, all other dependencies crossing it are incident to a common
+	 * node.
+	 */
+	EC1,
 
 	/// MH-4
 	MH4,
