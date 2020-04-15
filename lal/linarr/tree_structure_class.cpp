@@ -55,13 +55,28 @@ using namespace std;
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define enum_to_int(e) static_cast<size_t>(e)
-#define set_type(v, e) v[enum_to_int(e)] = true
 
 namespace lal {
 using namespace graphs;
 using namespace iterators;
 
 namespace linarr {
+
+inline void __set_type(vector<bool>& cls, const tree_structure& ts) {
+	cls[enum_to_int(ts)] = true;
+
+	if (ts == tree_structure::projective) {
+		cls[enum_to_int(tree_structure::projective)] = true;
+		cls[enum_to_int(tree_structure::planar)] = true;
+		cls[enum_to_int(tree_structure::EC1)] = true;
+		cls[enum_to_int(tree_structure::WG1)] = true;
+	}
+	else if (ts == tree_structure::planar) {
+		cls[enum_to_int(tree_structure::planar)] = true;
+		cls[enum_to_int(tree_structure::EC1)] = true;
+		cls[enum_to_int(tree_structure::WG1)] = true;
+	}
+}
 
 inline bool __is_root_covered(const urtree& T, const linearrgmnt& pi) {
 	const node R = T.get_root();
@@ -257,7 +272,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 			__is_root_covered(Tree, pi) ?
 			tree_structure::planar :
 			tree_structure::projective;
-		set_type(cl, t);
+		__set_type(cl, t);
 		return cl;
 	}
 
@@ -276,24 +291,29 @@ inline vector<bool> __get_syn_dep_tree_type(
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested
-		auto t = max_dis == 1 ? tree_structure::WG_1 : tree_structure::none;
-		set_type(cl, t);
+		auto t = max_dis == 1 ? tree_structure::WG1 : tree_structure::none;
+		__set_type(cl, t);
 		return cl;
 	}
 
 	if (C == 1) {
 		// we need C > 1 for 1-EC structures
-		set_type(cl, tree_structure::none);
+		__set_type(cl, tree_structure::none);
 		return cl;
 	}
 
 	const bool is_1EC = __is_1EC(Tree, pi);
-	auto t = is_1EC ? tree_structure::EC_1 : tree_structure::none;
-	set_type(cl, t);
+	auto t = is_1EC ? tree_structure::EC1 : tree_structure::none;
+	__set_type(cl, t);
 	return cl;
 }
 
 vector<bool> get_tree_structure_type(const urtree& t, const linearrgmnt& pi) {
+	if (t.n_nodes() <= 2) {
+		vector<bool> cls(__tree_structure_size);
+		__set_type(cls, tree_structure::projective);
+		return cls;
+	}
 	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
 }
 
