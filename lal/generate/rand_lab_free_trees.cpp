@@ -59,9 +59,6 @@ rand_lab_free_trees::~rand_lab_free_trees() { }
 
 void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
-	if (m_n <= 2) { return; }
-
-	m_seq = vector<uint32_t>(m_n - 2);
 
 	if (seed == 0) {
 		random_device rd;
@@ -71,6 +68,10 @@ void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 		m_gen = mt19937(seed);
 	}
 	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
+
+	if (m_n <= 2) { return; }
+
+	m_seq = vector<uint32_t>(m_n - 2);
 }
 
 utree rand_lab_free_trees::make_rand_tree() {
