@@ -67,14 +67,10 @@ dataset_error treebank_dataset::init(const string& main_file)
 		return dataset_error::missing_main_file;
 	}
 
-	// open new dataset
+	// open new dataset and read the first line
 	m_list.open(m_main_list);
-	if (m_list >> m_lang >> m_tbf) {
-		// do nothing, there are more trees
-	}
-	else {
-		m_lang = m_tbf = "none";
-	}
+	step_line();
+
 	return dataset_error::no_error;
 }
 
@@ -84,22 +80,32 @@ bool treebank_dataset::has_language() const {
 }
 
 dataset_error treebank_dataset::next_language() {
-	dataset_error dserr = m_tree_read.init(m_tbf, m_lang);
+	// build path to treebank file
+	filesystem::path M(m_main_list);
+	M.replace_filename(m_tbf);
+
+	dataset_error dserr = m_tree_read.init(M.c_str(), m_lang);
 	if (dserr != dataset_error::no_error) {
 		return dserr;
 	}
 
+	step_line();
+	return dataset_error::no_error;
+}
+
+treebank_reader& treebank_dataset::get_treebank_reader() {
+	return m_tree_read;
+}
+
+/* PRIVATE */
+
+void treebank_dataset::step_line() {
 	if (m_list >> m_lang >> m_tbf) {
 		// do nothing, there are more trees
 	}
 	else {
 		m_lang = m_tbf = "none";
 	}
-	return dataset_error::no_error;
-}
-
-treebank_reader& treebank_dataset::get_treebank_reader() {
-	return m_tree_read;
 }
 
 } // -- namespace io

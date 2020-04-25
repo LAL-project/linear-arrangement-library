@@ -125,7 +125,7 @@ class treebank_dataset {
 		 * @param main_file Main file.
 		 * @return If any occurred then returns its type.
 		 */
-		dataset_error init( const std::string& main_file);
+		dataset_error init(const std::string& main_file);
 
 		/// Returns whether there is a next treebank to be read.
 		bool has_language() const;
@@ -153,6 +153,10 @@ class treebank_dataset {
 		std::string m_lang;
 		/// Current treebank file.
 		std::string m_tbf;
+
+	private:
+		/// Consumes one line of the main file @ref m_main_list.
+		void step_line();
 };
 
 } // -- namespace io
