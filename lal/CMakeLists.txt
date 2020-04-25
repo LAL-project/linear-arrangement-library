@@ -146,6 +146,7 @@ target_sources(
 		linarr/C_ladder.cpp
 		linarr/C_stack_based.cpp
 		linarr/D.cpp
+		linarr/Dmin.cpp
 		linarr/headedness.cpp
 		linarr/tree_structure_class.cpp
 		numeric/gmp_utils.cpp
