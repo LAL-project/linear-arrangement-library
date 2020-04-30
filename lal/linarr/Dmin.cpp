@@ -51,7 +51,7 @@
 using namespace std;
 
 // lal includes
-#include <utils/macros.hpp>
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace graphs;
