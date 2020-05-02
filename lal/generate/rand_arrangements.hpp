@@ -56,6 +56,8 @@ namespace generate {
  * @param seed Use a random seed for the random number generator.
  * @return Returns a projective arrangement chosen uniformly at random from
  * the space of all projective arrangements of @e t.
+ * @pre The object @e t must be a tree.
+ * @pre The tree @e t must have a root.
  */
 linearrgmnt rand_projective_arrgmnt(const graphs::drtree& t, bool seed = true);
 
@@ -69,6 +71,8 @@ linearrgmnt rand_projective_arrgmnt(const graphs::drtree& t, bool seed = true);
  * @param seed Use a random seed for the random number generator.
  * @return Returns a projective arrangement chosen uniformly at random from
  * the space of all projective arrangements of @e t.
+ * @pre The object @e t must be a tree.
+ * @pre The tree @e t must have a root.
  */
 linearrgmnt rand_projective_arrgmnt(const graphs::urtree& t, bool seed = true);
 

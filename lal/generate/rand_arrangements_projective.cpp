@@ -42,10 +42,10 @@
 
 // C++ includes
 #include <algorithm>
+#include <cassert>
 #include <random>
 #include <vector>
 using namespace std;
-
 
 // --------------------
 
@@ -122,9 +122,9 @@ void random_data(
 
 	// fill interval with the root vertex and its children
 	vector<node>& interval = vdata[r].interval;
-	interval[n_children] = r;
+	interval[0] = r;
 	for (size_t i = 0; i < neighs.size(); ++i) {
-		interval[i] = neighs[i];
+		interval[i+1] = neighs[i];
 	}
 
 	// shuffle the positions
@@ -139,6 +139,9 @@ void random_data(
 }
 
 linearrgmnt rand_projective_arrgmnt(const drtree& t, bool seed) {
+	assert(t.is_tree());
+	assert(t.has_root());
+
 	if (t.n_nodes() == 1) {
 		return linearrgmnt(1, 0);
 	}
@@ -185,22 +188,25 @@ void random_data(
 
 	// fill interval with the root vertex and its children
 	vector<node>& interval = vdata[r].interval;
-	interval[n_children] = r;
-	for (
-		size_t interval_it = 0, neighs_it = 0;
-		neighs_it < neighs.size();
-		++neighs_it
+	interval[0] = r;
+
+	size_t interval_it = 1;
+	for (size_t neighs_it = 0;
+		 interval_it < interval.size() and neighs_it < neighs.size();
+		 ++neighs_it
 	)
 	{
 		const node vi = neighs[neighs_it];
 		interval[interval_it] = vi;
 
-		//if (r != T.get_root() and vi == parent) { i += 0; }
-		//else { i += 1; }
-
-		//if (r == T.get_root() or vi != parent) { i += 1; }
-		//else { i += 0; }
-		interval_it += (r == T.get_root() or vi != parent ? 1 : 0);
+		// Skip vertex 'vi' if it is the parent of 'r'.
+		// Vertex 'vi' is the parent of 'r' if:
+		//    -- 'r' is not the root of the tree
+		//    -- 'vi' equals 'parent'
+		// The effect of this is that if 'interval_it' the vertex 'vi'
+		// written in 'interval' is going to be overwritten in the
+		// next iteration.
+		interval_it += (r == T.get_root() or vi != parent);
 	}
 
 	// shuffle the positions
@@ -209,14 +215,21 @@ void random_data(
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them inductively.
 
-	for (const node& v : neighs) {
-		if (r == T.get_root() or v != parent) {
-			random_data(T, r, v, vdata, gen);
+	for (const node& vi : neighs) {
+		// Skip vertex 'vi' if it is the parent of 'r'.
+		// Vertex 'vi' is the parent of 'r' if:
+		//    -- 'r' is not the root of the tree
+		//    -- 'vi' equals 'parent'
+		if (r == T.get_root() or vi != parent) {
+			random_data(T, r, vi, vdata, gen);
 		}
 	}
 }
 
 linearrgmnt rand_projective_arrgmnt(const urtree& t, bool seed) {
+	assert(t.is_tree());
+	assert(t.has_root());
+
 	if (t.n_nodes() == 1) {
 		return linearrgmnt(1, 0);
 	}
