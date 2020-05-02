@@ -11,10 +11,11 @@
 %include "../lal/generate/all_ulab_free_trees.hpp"
 %include "../lal/generate/all_ulab_rooted_trees.hpp"
 
-// this is a base class.
+// This is a base class. It needs to be put before 'rand_lab_free_trees'.
 %include "../lal/generate/rand_ulab_rooted_trees.hpp"
 
 %include "../lal/generate/rand_lab_free_trees.hpp"
 %include "../lal/generate/rand_lab_rooted_trees.hpp"
 %include "../lal/generate/rand_ulab_free_trees.hpp"
 
+%include "../lal/generate/random_arrangements.hpp"

@@ -27,6 +27,7 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    generate/rand_arrangements.hpp \
     linarr/algorithms_Dmin.hpp \
     linarr/tree_structure.hpp \
     linarr/tree_structure_class.hpp \
@@ -101,6 +102,7 @@ SOURCES += \
     generate/all_lab_free_trees.cpp \
     generate/all_ulab_free_trees.cpp \
     generate/all_ulab_rooted_trees.cpp \
+    generate/rand_arrangements_projective.cpp \
     generate/rand_lab_free_trees.cpp \
     generate/rand_lab_rooted_trees.cpp \
     generate/rand_ulab_free_trees.cpp \

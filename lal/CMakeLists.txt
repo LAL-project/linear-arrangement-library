@@ -120,6 +120,7 @@ target_sources(
 		generate/all_lab_free_trees.cpp
 		generate/all_ulab_free_trees.cpp
 		generate/all_ulab_rooted_trees.cpp
+		generate/rand_arrangements_projective.cpp
 		generate/rand_lab_free_trees.cpp
 		generate/rand_lab_rooted_trees.cpp
 		generate/rand_ulab_free_trees.cpp
@@ -185,6 +186,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/all_lab_free_trees.hpp
 	generate/all_ulab_free_trees.hpp
 	generate/all_ulab_rooted_trees.hpp
+	generate/rand_arrangements.hpp
 	generate/rand_lab_free_trees.hpp
 	generate/rand_lab_rooted_trees.hpp
 	generate/rand_ulab_free_trees.hpp

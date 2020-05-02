@@ -40,13 +40,37 @@
 
 #pragma once
 
-#include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/generate/all_ulab_free_trees.hpp>
-#include <lal/generate/all_ulab_rooted_trees.hpp>
+#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/drtree.hpp>
 
-#include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/generate/rand_lab_rooted_trees.hpp>
-#include <lal/generate/rand_ulab_free_trees.hpp>
-#include <lal/generate/rand_ulab_rooted_trees.hpp>
+namespace lal {
+namespace generate {
 
-#include <lal/generate/rand_arrangements.hpp>
+/**
+ * @brief Returns a uniformly random projective arrangement.
+ *
+ * A projective arrangement of a directed rooted tree is one in which the
+ * root is not covered by any of the tree's edges and there are no edge
+ * crossings.
+ * @param t Input directed rooted tree.
+ * @param seed Use a random seed for the random number generator.
+ * @return Returns a projective arrangement chosen uniformly at random from
+ * the space of all projective arrangements of @e t.
+ */
+linearrgmnt rand_projective_arrgmnt(const graphs::drtree& t, bool seed = true);
+
+/**
+ * @brief Returns a uniformly random projective arrangement.
+ *
+ * A projective arrangement of a directed rooted tree is one in which the
+ * root is not covered by any of the tree's edges and there are no edge
+ * crossings.
+ * @param t Input undirected rooted tree.
+ * @param seed Use a random seed for the random number generator.
+ * @return Returns a projective arrangement chosen uniformly at random from
+ * the space of all projective arrangements of @e t.
+ */
+linearrgmnt rand_projective_arrgmnt(const graphs::urtree& t, bool seed = true);
+
+} // -- namespace generate
+} // -- namespace lal
