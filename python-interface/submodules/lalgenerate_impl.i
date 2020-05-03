@@ -18,4 +18,4 @@
 %include "../lal/generate/rand_lab_rooted_trees.hpp"
 %include "../lal/generate/rand_ulab_free_trees.hpp"
 
-%include "../lal/generate/random_arrangements.hpp"
+%include "../lal/generate/rand_arrangements.hpp"
