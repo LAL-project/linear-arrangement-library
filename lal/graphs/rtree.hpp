@@ -179,8 +179,8 @@ class rtree : public dgraph, virtual public tree {
 		/**
 		 * @brief Initialiser with tree and root node.
 		 *
-		 * Constructs a rooted directed tree from an undirected tree and one of
-		 * its nodes as the root of the rooted tree.
+		 * Constructs a rooted tree from a free tree and one of its nodes as
+		 * the root of the rooted tree.
 		 *
 		 * Since the edges are oriented, method @ref is_tree must be true on
 		 * parameter @e t (otherwise, some edges might not be reachable from

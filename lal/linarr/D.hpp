@@ -99,7 +99,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin
  * arrangement \f$\pi\f$ and divides the sum by the number of edges.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns Jing's and Liu's \f$MDD\f$ for a single tree.
+ * @return Returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational MDD_rational
 (const graphs::graph& g, const linearrgmnt& pi = {});

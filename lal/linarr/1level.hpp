@@ -55,11 +55,11 @@ namespace linarr {
 /**
  * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
  *
- * Given a list of graphs and a linear arrangement of the nodes for each of
- * them, computes the 1-level Mean Dependency Distance as the quotient of
- * \f$D\f$, the sum of all the \f$D_i\f$, where \f$D_i\f$ is the sum of the
- * edge lengths of tree \f$i\f$, and of \f$M\f$ the sum of the number of edges
- * of all the trees.
+ * Given a list of graphs \f$L_i\f$ and a linear arrangement of the nodes for
+ * each of them, computes the 1-level Mean Dependency Distance as the quotient
+ * of \f$D\f$, the sum of all the \f$D_i\f$, where \f$D_i\f$ is the sum of the
+ * edge lengths of the \f$i\f$-th graph, and of \f$M\f$ the sum of the number
+ * of edges of all the graphs.
  *
  * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
  * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$D/M\f$, where

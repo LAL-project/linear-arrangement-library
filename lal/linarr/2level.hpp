@@ -60,10 +60,10 @@ namespace linarr {
  * average Mean Dependency Distance of the graphs in the list.
  *
  * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
- * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$S_{<d>}/k\f$, where
- * \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean dependency
- * distances of every graph (see @ref MDD_rational for details on the definition
- * of the Mean Dependency Distance).
+ * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$(1/k)S_{<d>}\f$,
+ * where \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean
+ * dependency distances of every graph (see @ref MDD_rational for details on
+ * the definition of the Mean Dependency Distance).
  *
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.

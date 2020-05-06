@@ -52,8 +52,8 @@ namespace properties {
  *
  * The value is computed as an exact rational value.
  * For details, see \cite Jing2015a.
- * @param t Input rooted undirected tree.
- * @return Returns the Mean Hierarchical Distance of a rooted undirected tree.
+ * @param t Input rooted tree.
+ * @return Returns the Mean Hierarchical Distance of a rooted tree.
  */
 numeric::rational MHD_rational(const graphs::rtree& t);
 
@@ -61,7 +61,7 @@ numeric::rational MHD_rational(const graphs::rtree& t);
  * @brief Mean Hierarchical Distance.
  *
  * See @ref MHD_rational for details.
- * @param t Input rooted undirected tree.
+ * @param t Input rooted tree.
  * @return The return value is a floating point value.
  */
 double MHD(const graphs::rtree& t);
