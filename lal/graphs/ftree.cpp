@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/dtree.hpp>
+#include <lal/graphs/ftree.hpp>
 
 // C++ includes
 #include <cassert>
@@ -47,39 +47,48 @@ using namespace std;
 // lal includes
 #include <lal/utils/graphs/bfs.hpp>
 #include <lal/utils/graphs/cycles.hpp>
-#include <lal/utils/graphs/trees/tree_centre.hpp>
+#include <lal/utils/graphs/reachability.hpp>
+#include <lal/utils/graphs/trees/is_tree.hpp>
 
 namespace lal {
 namespace graphs {
 
-dtree::dtree() : dgraph() { }
-dtree::dtree(uint32_t n) : dgraph(n) { }
-dtree::~dtree() { }
+ftree::ftree() { }
+ftree::ftree(uint32_t n) : ugraph(n) { }
+ftree::ftree(const ugraph& t) : ugraph(t.n_nodes()) {
+	// check that the input graph is a ftree
+	assert(utils::is_graph_a_tree(t));
+	add_edges(t.edges());
+}
+ftree::~ftree() { }
 
-dtree& dtree::add_edge(node s, node t, bool norm) {
+ftree& ftree::add_edge(node s, node t, bool norm) {
 #if defined DEBUG
 	assert(can_add_edge(s,t));
 #endif
 
-	dgraph::add_edge(s,t, norm);
+	ugraph::add_edge(s,t, norm);
 	return *this;
 }
 
-dtree& dtree::add_edges(const vector<edge>& edges, bool norm) {
-#if defined DEBUG
-	assert(can_add_edges(edges));
-#endif
-
-	dgraph::add_edges(edges, norm);
+ftree& ftree::add_edges(const vector<edge>& edges, bool norm) {
+	ugraph::add_edges(edges, norm);
+	// NOTE: we can't do
+	//     assert(utils::is_ftree(*this));
+	// because the ftree might not be complete and lack some
+	// edges. If we asserted "is_ftree", we would require the
+	// user to insert ALL edges at once, but the edges might
+	// not be available.
+	assert(not utils::has_undirected_cycles(*this));
 	return *this;
 }
 
 /* GETTERS */
 
-bool dtree::is_rooted() const { return false; }
+bool ftree::is_rooted() const { return false; }
 
-bool dtree::can_add_edge(node s, node t) const {
-	// if the tree already has n-1 edges then
+bool ftree::can_add_edge(node s, node t) const {
+	// if the ftree already has n-1 edges then
 	// adding another edge will produce a cycle
 	if (n_edges() + 1 > n_nodes() - 1) {
 		return false;
@@ -91,57 +100,44 @@ bool dtree::can_add_edge(node s, node t) const {
 		return false;
 	}
 
-	// copy the graph
-	dgraph copy = *this;
-	// add the edge
-	copy.add_edge(s, t);
-	// convert the directed graph to an undirected graph
-	// and make sure that there are no loops in that
-	return not utils::has_undirected_cycles(copy);
+	// Check that adding this edge does not produce cycles.
+	// Adding edge (u,v) produces cycles if 'u' is already
+	// reachable from 'v' or viceversa.
+	return not utils::is_node_reachable_from(*this, s, t);
 }
 
-bool dtree::can_add_edges(const std::vector<edge>& edges) const {
-	// in a tree we must have m <= n - 1
-	const uint64_t more_m = edges.size();
+bool ftree::can_add_edges(const vector<edge>& edges) const {
+	// in a ftree we must have m <= n - 1
+	const auto more_m = edges.size();
 	if (n_edges() + more_m > n_nodes() - 1) {
 		return false;
 	}
 
 	// check that none of the edges exist
-	for (const edge& e : edges) {
+	for (auto e : edges) {
 		if (has_edge(e.first, e.second)) {
 			return false;
 		}
 	}
 
-	// copy the graph
-	dgraph copy = *this;
-	// add the edges
-	copy.add_edges(edges);
-	// convert the directed graph to an undirected graph
-	// and make sure that there are no loops in that
+	// 1. copy the current graph
+	ugraph copy = *this;
+	// 2. add the edges to the copy
+	copy.add_edges(edges, false);
+	// 3. check that there are no cycles in the copy
 	return not utils::has_undirected_cycles(copy);
-}
-
-pair<node, node> dtree::get_centre() const {
-	assert(is_tree());
-	return utils::retrieve_centre(*this, 0);
-}
-
-utree dtree::to_undirected() const {
-	utree g(n_nodes());
-	g.add_edges(edges());
-	return g;
 }
 
 /* PROTECTED */
 
-void dtree::_init(uint32_t n) {
-	dgraph::_init(n);
+void ftree::_init(uint32_t n) {
+	tree::tree_init(n);
+	ugraph::_init(n);
 }
 
-void dtree::_clear() {
-	dgraph::_clear();
+void ftree::_clear() {
+	tree::tree_clear();
+	ugraph::_clear();
 }
 
 } // -- namespace graphs

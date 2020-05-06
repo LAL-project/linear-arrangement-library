@@ -40,9 +40,6 @@
 
 #pragma once
 
-// C++ includes
-#include <tuple>
-
 // lal includes
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/tree.hpp>
@@ -51,32 +48,29 @@ namespace lal {
 namespace graphs {
 
 /**
- * @brief Undirected tree class.
+ * @brief Free tree graph class.
  *
- * This class implements an undirected tree. It can be initialised just like
- * class @ref ugraph is.
+ * This class constrains the addition of edges so that the resulting graphs
+ * does not contain cycles. Furthermore, the edges added are undirected.
  *
- * This class offers almost the same features as the @ref ugraph class. There
- * is one exception, however. One of the methods is not allowed to be used,
- * method @ref ugraph::disjoint_union, which has been made private.
+ * For another type of tree-like graphs, see @ref rtree.
  */
-class utree : public ugraph, virtual public tree {
+class ftree : public ugraph, virtual public tree {
 	public:
 		/// Default constructor.
-		utree();
+		ftree();
+		/// Default constructor.
+		ftree(uint32_t n);
 		/**
-		 * @brief Constructor with number of nodes.
-		 * @param n Number of nodes.
+		 * @brief Constructor with undirected graph.
+		 * @param t An undirected graph.
+		 * @pre Graph @e t is a tree.
 		 */
-		utree(uint32_t n);
-		/**
-		 * @brief Constructor from graph
-		 * @param t Input graph.
-		 * @pre @e t must be a tree.
-		 */
-		utree(const ugraph& t);
-		/// Destructor
-		virtual ~utree();
+		ftree(const ugraph& t);
+		/// Default destructor.
+		virtual ~ftree();
+
+		/* MODIFIERS */
 
 		/**
 		 * @brief Adds an edge to the tree.
@@ -91,7 +85,7 @@ class utree : public ugraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		utree& add_edge(node s, node t, bool norm = true);
+		ftree& add_edge(node s, node t, bool norm = true);
 
 		/**
 		 * @brief Adds a list of edges to the graph.
@@ -111,26 +105,38 @@ class utree : public ugraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edges.
 		 */
-		utree& add_edges(const std::vector<edge>& edges, bool norm = true);
+		ftree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
 		/* GETTERS */
 
-		virtual bool is_rooted() const;
+		bool is_rooted() const;
 
+		/**
+		 * @brief Can this edge be added?
+		 *
+		 * In a tree, this edge can only be added if it does not produce cycles.
+		 * @param s First node of the edge.
+		 * @param t Second node of the edge.
+		 * @return Returns whether the addition of this new edge can be added
+		 * to the tree without producing cycles.
+		 */
 		bool can_add_edge(node s, node t) const;
+		/**
+		 * @brief Can these edges be added?
+		 *
+		 * In a tree, these edges can only be added if their addition to the
+		 * tree do not produce cycles.
+		 * @param edges List of edges.
+		 * @return Returns whether the addition of these new edges can be added
+		 * to the tree without producing cycles.
+		 */
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
-		std::pair<node, node> get_centre() const;
-
 	protected:
-		/// Initialises memory of @ref utree class.
+		/// Initialises memory of @ref rtree class.
 		virtual void _init(uint32_t n);
-		/// Clears the memory used by this undirected tree.
+		/// Clears the memory used by this rooted tree.
 		virtual void _clear();
-
-	private:
-		// trees should not have this method
-		using ugraph::disjoint_union;
 };
 
 } // -- namespace graphs

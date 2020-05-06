@@ -45,7 +45,7 @@
 #include <map>
 
 // lal includes
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/ftree.hpp>
 #include <lal/definitions.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
@@ -114,7 +114,7 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
 		 * @return Returns an unlabelled free tree.
 		 */
-		graphs::utree make_rand_tree();
+		graphs::ftree make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

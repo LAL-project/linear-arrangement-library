@@ -43,7 +43,6 @@
 
 // lal includes
 #include <lal/graphs/rtree.hpp>
-#include <lal/graphs/drtree.hpp>
 
 namespace lal {
 namespace utils {
@@ -62,8 +61,8 @@ namespace utils {
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
-inline void get_directed_size_subtrees(
-	const graphs::drtree& t, node r,
+inline void get_size_subtrees_follow_reversed(
+	const graphs::rtree& t, node r,
 	std::vector<bool>& vis, std::vector<uint32_t>& sizes
 )
 {
@@ -71,13 +70,13 @@ inline void get_directed_size_subtrees(
 	vis[r] = true;
 	for (node u : t.get_neighbours(r)) {
 		if (not vis[u]) {
-			get_directed_size_subtrees(t, u, vis, sizes);
+			get_size_subtrees_follow_reversed(t, u, vis, sizes);
 			sizes[r] += sizes[u];
 		}
 	}
 	for (node u : t.get_in_neighbours(r)) {
 		if (not vis[u]) {
-			get_directed_size_subtrees(t, u, vis, sizes);
+			get_size_subtrees_follow_reversed(t, u, vis, sizes);
 			sizes[r] += sizes[u];
 		}
 	}
@@ -95,7 +94,7 @@ inline void get_directed_size_subtrees(
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
-inline void get_undirected_size_subtrees(
+inline void get_size_subtrees(
 	const graphs::rtree& t, node r,
 	std::vector<bool>& vis, std::vector<uint32_t>& sizes
 )
@@ -104,7 +103,7 @@ inline void get_undirected_size_subtrees(
 	vis[r] = true;
 	for (node u : t.get_neighbours(r)) {
 		if (not vis[u]) {
-			get_undirected_size_subtrees(t, u, vis, sizes);
+			get_size_subtrees(t, u, vis, sizes);
 			sizes[r] += sizes[u];
 		}
 	}

@@ -123,26 +123,24 @@ void all_ulab_rooted_trees::next() {
 	m_is_last = (m_p <= 1);
 }
 
-urtree all_ulab_rooted_trees::get_tree() const {
+rtree all_ulab_rooted_trees::get_tree() const {
 	if (m_n == 0) {
-		return urtree(0);
+		return rtree(0);
 	}
 	if (m_n == 1) {
-		urtree rT(1);
+		rtree rT(1);
 		rT.set_root(0);
 		return rT;
 	}
 	if (m_n == 2) {
-		urtree rT(2);
-		rT.set_root(0);
+		rtree rT(2);
 		rT.add_edge(0,1);
+		rT.set_root(0);
 		return rT;
 	}
 
-	// dummy tree!
-	utree t(m_n);
-	t = utils::level_sequence_to_tree(m_L, m_n);
-	return urtree(t, 0);
+	ftree t = utils::level_sequence_to_tree(m_L, m_n);
+	return rtree(t, 0);
 }
 
 } // -- namespace generate

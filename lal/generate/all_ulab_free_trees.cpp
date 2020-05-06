@@ -247,10 +247,10 @@ void all_ulab_free_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-utree all_ulab_free_trees::get_tree() const {
-	if (m_n <= 1) { return utree(m_n); }
+ftree all_ulab_free_trees::get_tree() const {
+	if (m_n <= 1) { return ftree(m_n); }
 	if (m_n == 2) {
-		utree t(2);
+		ftree t(2);
 		t.add_edge(0,1);
 		return t;
 	}

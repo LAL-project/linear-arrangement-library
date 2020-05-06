@@ -119,7 +119,7 @@ double mmt_out_degree(const dgraph& g, uint32_t p) {
 
 // hubiness
 
-rational hubiness_rational(const utree& g) {
+rational hubiness_rational(const ftree& g) {
 	const uint32_t n = g.n_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -133,7 +133,7 @@ rational hubiness_rational(const utree& g) {
 	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const utree& g) {
+double hubiness(const ftree& g) {
 	return hubiness_rational(g).to_double();
 }
 

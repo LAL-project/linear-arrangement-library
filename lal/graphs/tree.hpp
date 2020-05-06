@@ -40,9 +40,6 @@
 
 #pragma once
 
-// C++ includes
-#include <tuple>
-
 // lal includes
 #include <lal/graphs/graph.hpp>
 
@@ -52,23 +49,17 @@ namespace graphs {
 /**
  * @brief Tree graph class.
  *
- * This class is just a class that inherits from @ref graph so as to allow
- * passing classes that inherit from this class as parameters to functions
- * that only accept attributes of type @ref graph.
- *
- * Classes that implement different abstractions of trees and that inherit from
- * this class are:
- * - @ref utree
- * - @ref dtree
- * - @ref urtree
- * - @ref drtree
+ * This is an abstract class for those tree-like graphs. Classes that implement
+ * different abstractions of trees and that inherit from this class are:
+ * - @ref ftree : free trees,
+ * - @ref rtree : rooted trees.
  *
  * In these classes the addition of edges is constrained so as to ensure that
  * the edges added actually yield trees, i.e., that cycles are never produced.
  * For the sake of efficiency, only debug compilations of the library
  * (compilations where the DEBUG symbol is defined) check that such additions
  * do not produce cycles. In case of doubt, one can query the class using methods
- * @ref can_add_edge or @ref can_add_edges prior to adding one or more edges.
+ * @ref can_add_edge or @ref can_add_edges prior to adding one or several edges.
  */
 class tree : virtual public graph {
 	public:
@@ -83,9 +74,9 @@ class tree : virtual public graph {
 		 * Returns true if the number of edges is one less than the
 		 * number of nodes. Note that this would not really be true if the
 		 * addition of edges was not constrained. Since it is constrained in a
-		 * way that no cycles can be produced (see @ref utree::add_edge,
-		 * @ref utree::add_edges, @ref dtree::add_edge, @ref dtree::add_edges),
-		 * then we only need to check for the number of edges.
+		 * way that no cycles can be produced (see @ref ftree::add_edge,
+		 * @ref ftree::add_edges), then we only need to check for the number
+		 * of edges.
 		 *
 		 * For further characterisations of a tree see \cite Harary1969a
 		 * (chapter 4, page 33).
@@ -105,6 +96,7 @@ class tree : virtual public graph {
 		 * to the tree without producing cycles.
 		 */
 		virtual bool can_add_edge(node s, node t) const = 0;
+
 		/**
 		 * @brief Can these edges be added?
 		 *
@@ -116,37 +108,15 @@ class tree : virtual public graph {
 		 */
 		virtual bool can_add_edges(const std::vector<edge>& edges) const = 0;
 
-		/**
-		 * @brief Calculates the centre of this tree.
-		 *
-		 * The centre of a graph is the collection of central nodes. A node
-		 * is central if it has minimum eccentricity, where the eccentricity of
-		 * a node is the maximum distance from this node to another node.
-		 * Formally, the eccentricity of a node @e u is
-		 * \f$ ecc(u) = max_{v\in V} d(u,v) \f$,
-		 * where \f$d(u,v)\f$ denotes distance within the graph.
-		 *
-		 * This function calculates the centre of a tree. In this simpler case,
-		 * the centre of a tree \f$T\f$, \f$Z(T)\f$, is the centre of \f$T'\f$
-		 * where \f$T'\f$ is the tree resulting from removing \f$T\f$'s leaves.
-		 * For other characterisations of centre of a tree see \cite Harary1969a
-		 * (chapter 4, page 35).
-		 *
-		 * In case of directed trees (see @ref dtree), the centre is calculated
-		 * assuming that the edges are not directed.
-		 * @return Returns a pair of nodes the first is always guaranteed to
-		 * be a valid node index. The second node is valid only when its
-		 * value is strictly smaller than the number of nodes. If the second
-		 * value is valid then the tree has two central nodes.
-		 * @pre This graph is a tree (see method @ref is_tree).
-		 */
-		virtual std::pair<node, node> get_centre() const = 0;
-
 	protected:
 		/// Initialises memory of @ref rtree class.
 		virtual void tree_init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void tree_clear();
+
+	private:
+		// trees should not have this method
+		using graph::disjoint_union;
 };
 
 } // -- namespace graphs

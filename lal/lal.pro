@@ -43,15 +43,12 @@ HEADERS += \
     generate/rand_ulab_rooted_trees.hpp \
     graphs.hpp \
     graphs/dgraph.hpp \
-    graphs/drtree.hpp \
-    graphs/dtree.hpp \
     graphs/graph.hpp \
     graphs/output.hpp \
     graphs/rtree.hpp \
     graphs/tree.hpp \
+    graphs/ftree.hpp \
     graphs/ugraph.hpp \
-    graphs/urtree.hpp \
-    graphs/utree.hpp \
     io/basic_output.hpp \
     iterators.hpp \
     iterators/E_iterator.hpp \
@@ -108,14 +105,11 @@ SOURCES += \
     generate/rand_ulab_free_trees.cpp \
     generate/rand_ulab_rooted_trees.cpp \
     graphs/dgraph.cpp \
-    graphs/drtree.cpp \
-    graphs/dtree.cpp \
     graphs/graph.cpp \
     graphs/rtree.cpp \
     graphs/tree.cpp \
+    graphs/ftree.cpp \
     graphs/ugraph.cpp \
-    graphs/urtree.cpp \
-    graphs/utree.cpp \
     iterators/E_iterator.cpp \
     iterators/Q_iterator.cpp \
     linarr/C.cpp \

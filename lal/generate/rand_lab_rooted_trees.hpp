@@ -45,7 +45,7 @@
 
 // lal includes
 #include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace generate {
@@ -99,7 +99,7 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns a labelled tree generated uniformly at random.
 		 */
-		graphs::urtree make_rand_tree();
+		graphs::rtree make_rand_tree();
 };
 
 } // -- namespace generate

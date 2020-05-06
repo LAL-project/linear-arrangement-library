@@ -44,7 +44,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace linarr {
@@ -62,7 +62,7 @@ namespace linarr {
  * be determined the method returns @ref tree_structure_type::none
  */
 std::vector<bool> get_tree_structure_type
-(const graphs::urtree& t, const linearrgmnt& pi = {});
+(const graphs::rtree& t, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

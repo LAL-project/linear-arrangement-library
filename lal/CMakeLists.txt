@@ -126,14 +126,11 @@ target_sources(
 		generate/rand_ulab_free_trees.cpp
 		generate/rand_ulab_rooted_trees.cpp
 		graphs/dgraph.cpp
-		graphs/drtree.cpp
-		graphs/dtree.cpp
+		graphs/ftree.cpp
 		graphs/graph.cpp
 		graphs/rtree.cpp
 		graphs/tree.cpp
 		graphs/ugraph.cpp
-		graphs/urtree.cpp
-		graphs/utree.cpp
 		io/edge_list.cpp
 		io/treebank_dataset.cpp
 		io/treebank_processor.cpp
@@ -194,15 +191,12 @@ set(LIBLAL_GENERATION_HEADER
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/dgraph.hpp
-	graphs/drtree.hpp
-	graphs/dtree.hpp
+	graphs/ftree.hpp
 	graphs/graph.hpp
 	graphs/output.hpp
 	graphs/rtree.hpp
 	graphs/tree.hpp
 	graphs/ugraph.hpp
-	graphs/urtree.hpp
-	graphs/utree.hpp
 )
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp

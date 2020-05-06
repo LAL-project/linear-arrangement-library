@@ -46,8 +46,7 @@
 // lal includes
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/urtree.hpp>
-#include <lal/graphs/drtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -55,7 +54,7 @@ namespace graphs {
 /**
  * @brief Standard output operator for undirected graphs.
  *
- * Usable by @ref ugraph, @ref utree.
+ * Usable by @ref ugraph, @ref ftree.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns Returns the output stream.
@@ -76,7 +75,7 @@ inline std::ostream& operator<< (std::ostream& os, const ugraph& g)
 /**
  * @brief Standard output operator for directed graphs.
  *
- * Usable by @ref dgraph, @ref dtree.
+ * Usable only by @ref dgraph.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns Returns the output stream.
@@ -104,35 +103,14 @@ inline std::ostream& operator<< (std::ostream& os, const dgraph& g)
 }
 
 /**
- * @brief Standard output operator for undirected rooted trees.
- *
- * Usable by @ref urtree.
- * @param os ostream C++ object.
- * @param g Input graph.
- * @returns Returns the output stream.
- */
-inline std::ostream& operator<< (std::ostream& os, const urtree& g) {
-	const auto N = g.n_nodes();
-	const std::string pad = (g.has_root() ? " " : "");
-	for (node u = 0; u < N; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	return os;
-}
-
-/**
  * @brief Standard output operator for directed rooted trees.
  *
- * Usable by @ref drtree.
+ * Usable by @ref rtree.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const drtree& g) {
+inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
 	const auto N = g.n_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	os << "out:" << "\n";

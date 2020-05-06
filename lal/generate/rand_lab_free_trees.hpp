@@ -45,7 +45,7 @@
 #include <random>
 
 // lal includes
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/ftree.hpp>
 #include <lal/definitions.hpp>
 
 namespace lal {
@@ -97,7 +97,7 @@ class rand_lab_free_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns a labelled tree.
 		 */
-		graphs::utree make_rand_tree();
+		graphs::ftree make_rand_tree();
 
 	protected:
 		/// Number of nodes of the tree.

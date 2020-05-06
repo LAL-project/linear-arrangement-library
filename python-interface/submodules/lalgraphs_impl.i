@@ -9,7 +9,6 @@
 
 // lal includes
 #include <lal/graphs.hpp>
-#include <lal/graphs/output.hpp>
 
 %}
 
@@ -21,13 +20,8 @@
 %include "../lal/graphs/dgraph.hpp"
 
 %include "../lal/graphs/tree.hpp"
+%include "../lal/graphs/ftree.hpp"
 %include "../lal/graphs/rtree.hpp"
-
-%include "../lal/graphs/utree.hpp"
-%include "../lal/graphs/dtree.hpp"
-
-%include "../lal/graphs/urtree.hpp"
-%include "../lal/graphs/drtree.hpp"
 
 %ignore lal::graphs::operator<<;
 %include "../lal/graphs/output.hpp"
@@ -49,14 +43,14 @@
 		return out.str();
 	}
 }
-%extend lal::graphs::urtree {
+%extend lal::graphs::rtree {
 	std::string __str__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
 	}
 }
-%extend lal::graphs::drtree {
+%extend lal::graphs::ftree {
 	std::string __str__() const {
 		std::ostringstream out;
 		out << *$self;

@@ -44,8 +44,8 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/utree.hpp>
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace utils {
@@ -70,7 +70,8 @@ namespace utils {
  *
  * @return Returns the tree built with the sequence level @e L.
  */
-graphs::utree level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
+graphs::ftree level_sequence_to_tree
+(const std::vector<uint32_t>& L, uint32_t n);
 
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
@@ -81,9 +82,10 @@ graphs::utree level_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n)
  * strictly positive value indicates parent node.
  * @param L The linear sequence. It must have size @e n + 1.
  * @param n Number of nodes of the tree.
- * @return Returns the tree built with @e L.
+ * @return Returns the rooted tree built with @e L. The tree is an arborescence.
  */
-graphs::urtree linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t n);
+graphs::rtree linear_sequence_to_tree
+(const std::vector<uint32_t>& L, uint32_t n);
 
 /*
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
@@ -96,7 +98,8 @@ graphs::urtree linear_sequence_to_tree(const std::vector<uint32_t>& L, uint32_t 
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graphs::utree Prufer_sequence_to_tree(const std::vector<uint32_t>& S, uint32_t n);
+graphs::ftree Prufer_sequence_to_tree
+(const std::vector<uint32_t>& S, uint32_t n);
 
 } // -- namespace utils
 } // -- namespace lal

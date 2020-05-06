@@ -40,8 +40,7 @@
 
 #pragma once
 
-#include <lal/graphs/urtree.hpp>
-#include <lal/graphs/drtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace generate {
@@ -59,22 +58,7 @@ namespace generate {
  * @pre The object @e t must be a tree.
  * @pre The tree @e t must have a root.
  */
-linearrgmnt rand_projective_arrgmnt(const graphs::drtree& t, bool seed = true);
-
-/**
- * @brief Returns a uniformly random projective arrangement.
- *
- * A projective arrangement of a directed rooted tree is one in which the
- * root is not covered by any of the tree's edges and there are no edge
- * crossings.
- * @param t Input undirected rooted tree.
- * @param seed Use a random seed for the random number generator.
- * @return Returns a projective arrangement chosen uniformly at random from
- * the space of all projective arrangements of @e t.
- * @pre The object @e t must be a tree.
- * @pre The tree @e t must have a root.
- */
-linearrgmnt rand_projective_arrgmnt(const graphs::urtree& t, bool seed = true);
+linearrgmnt rand_projective_arrgmnt(const graphs::rtree& t, bool seed = true);
 
 } // -- namespace generate
 } // -- namespace lal

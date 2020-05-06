@@ -59,7 +59,7 @@ using namespace graphs;
 namespace linarr {
 
 pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::utree& t, const algorithms_Dmin& a)
+(const graphs::tree& t, const algorithms_Dmin& a)
 {
 	utils::UNUSED(t);
 	utils::UNUSED(a);

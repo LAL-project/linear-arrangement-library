@@ -1,64 +1,64 @@
 
 %pythoncode %{
 
-# In this piece of code we modify class "drtree".
+# In this piece of code we modify class "rtree".
 #
 # In this piece of code we create one subclass for this class,
-# for the only enumeration it has: "drtree_type".
-# As created by SWIG, class "drtree" has attributes of the
+# for the only enumeration it has: "rtree_type".
+# As created by SWIG, class "rtree" has attributes of the
 # form:
-# 		drtree.drtree_type_arborescence
-# 		drtree.drtree_type_anti_arborescence
-# 		drtree.drtree_type_none
+# 		rtree.rtree_type_arborescence
+# 		rtree.rtree_type_anti_arborescence
+# 		rtree.rtree_type_none
 #
 # Our aim in this piece of code is to make a subclass so that the
-# values of the enumeration "drtree_type" are members of a class, namely,
-# we want class "drtree" to be usable in this way:
-# 		drtree.drtree_type.arborescence
-# 		drtree.drtree_type.anti_arborescence
-# 		drtree.drtree_type.none
+# values of the enumeration "rtree_type" are members of a class, namely,
+# we want class "rtree" to be usable in this way:
+# 		rtree.rtree_type.arborescence
+# 		rtree.rtree_type.anti_arborescence
+# 		rtree.rtree_type.none
 #
 
 
 # -------------------
 # Make the subclasses
 
-class drtree_type:
+class rtree_type:
 	__dummy_attr = 0
 
 # --------------------------------------------
 # add the enumaration values to the subclasses
-DRtree = graphs.drtree
+Rtree = graphs.rtree
 
 # dirrottree_type
-DRtree_enum_vals = list(filter(lambda k: k.find("drtree_type_") == 0, DRtree.__dict__.keys()))
-for enval_name in DRtree_enum_vals:
+Rtree_enum_vals = list(filter(lambda k: k.find("rtree_type_") == 0, Rtree.__dict__.keys()))
+for enval_name in Rtree_enum_vals:
 	# make new enumeration value name
-	new_enval_name = enval_name[len("drtree_type_"):]
-	# set attribute to class "drtree_type"
-	setattr(drtree_type, new_enval_name, getattr(DRtree, enval_name))
-	# delete enumeration value from "drtree"
-	delattr(DRtree, enval_name)
+	new_enval_name = enval_name[len("rtree_type_"):]
+	# set attribute to class "rtree_type"
+	setattr(rtree_type, new_enval_name, getattr(Rtree, enval_name))
+	# delete enumeration value from "rtree"
+	delattr(Rtree, enval_name)
 
 # -------------------------------------------
 # clean up dummy attributes of the subclasses
-delattr(drtree_type, "_drtree_type__dummy_attr")
+delattr(rtree_type, "_rtree_type__dummy_attr")
 
 # ------------------------------------------------
-# make the subclasses attributes of class "drtree"
+# make the subclasses attributes of class "rtree"
 
 # set the subclasses
-setattr(DRtree, "drtree_type", drtree_type)
+setattr(Rtree, "rtree_type", rtree_type)
 
 # ------------------------
 # clean up local variables
-del DRtree
-del DRtree_enum_vals
+del Rtree
+del Rtree_enum_vals
 del enval_name
 del new_enval_name
 
 # even the classes!
-del drtree_type
+del rtree_type
 
 # and the 'graphs' module
 del graphs

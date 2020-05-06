@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/io/dataset_error.hpp>
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace io {
@@ -145,7 +145,7 @@ class treebank_reader {
 		const std::string& get_treebank_filename() const;
 
 		/// Returns the current tree.
-		graphs::urtree get_tree() const;
+		graphs::rtree get_tree() const;
 
 	private:
 		/// Language of the treebank

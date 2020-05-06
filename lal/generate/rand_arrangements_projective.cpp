@@ -45,18 +45,12 @@
 #include <cassert>
 #include <random>
 #include <vector>
+
+#include <iostream>
+#include <lal/utils/std_utils.hpp>
 using namespace std;
 
-// --------------------
-
-struct _data {
-	_data() { }
-	~_data() { }
-
-	// From position to node:
-	// interval[i] = u <-> at position 'i' there is node 'u'
-	vector<lal::node> interval;
-};
+typedef vector<lal::node> interval;
 
 // --------------------
 
@@ -65,27 +59,22 @@ using namespace graphs;
 
 namespace generate {
 
-template<class Tree>
 void put_in_arrangement(
-	const Tree& T, node r,
-	const vector<_data>& vdata,
+	const rtree& T, node r,
+	const vector<interval>& data,
 	uint32_t& pos, linearrgmnt& arr
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t n_children =
-		(T.is_directed() ?
-			T.degree(r) :
-			T.degree(r) - (r == T.get_root() ? 0 : 1)
-		);
+	const uint32_t d_out = T.degree(r);
 
 	// vertex 'r' is a leaf
-	if (n_children == 0) {
+	if (d_out == 0) {
 		arr[r] = pos;
 		pos += 1;
 		return;
 	}
-	const vector<node>& interval = vdata[r].interval;
+	const vector<node>& interval = data[r];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
@@ -93,24 +82,22 @@ void put_in_arrangement(
 			pos += 1;
 		}
 		else {
-			put_in_arrangement(T, vi, vdata, pos, arr);
+			put_in_arrangement(T, vi, data, pos, arr);
 		}
 	}
 }
 
-/* -------------------------------------------------------------------------- */
-
 template<class GEN>
 void random_data(
-	const drtree& T, node r,
+	const rtree& T, node r,
 	// Its size must be equal to the number of vertices of the tree.
-	vector<_data>& vdata,
+	vector<interval>& data,
 	// random number generator
 	GEN& gen
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t n_children = T.out_degree(r);
+	const uint32_t d_out = T.out_degree(r);
 	const neighbourhood& neighs = T.get_out_neighbours(r);
 
 	// Choose random positions for the intervals corresponding to the
@@ -118,30 +105,30 @@ void random_data(
 	// have to be made with respect to 'r'. Remember: there are n_children+1
 	// possibilities.
 
-	vdata[r].interval = vector<node>(n_children + 1);
+	cout << "    d_out+1= " << d_out+1 << endl;
+	data[r] = vector<node>(d_out + 1);
 
 	// fill interval with the root vertex and its children
-	vector<node>& interval = vdata[r].interval;
-	interval[0] = r;
+	interval& inter = data[r];
+	inter[0] = r;
 	for (size_t i = 0; i < neighs.size(); ++i) {
-		interval[i+1] = neighs[i];
+		inter[i+1] = neighs[i];
 	}
 
+	cout << inter << endl;
+
 	// shuffle the positions
-	shuffle(interval.begin(), interval.end(), gen);
+	shuffle(inter.begin(), inter.end(), gen);
 
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them inductively.
 
 	for (const node& v : neighs) {
-		random_data(T, v, vdata, gen);
+		random_data(T, v, data, gen);
 	}
 }
 
-linearrgmnt rand_projective_arrgmnt(const drtree& t, bool seed) {
-	assert(t.is_tree());
-	assert(t.has_root());
-
+linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
 	if (t.n_nodes() == 1) {
 		return linearrgmnt(1, 0);
 	}
@@ -152,97 +139,13 @@ linearrgmnt rand_projective_arrgmnt(const drtree& t, bool seed) {
 		gen = mt19937(rd());
 	}
 
+	cout << "phase 1" << endl;
+
 	// phase 1 -- generate random data
-	vector<_data> vdata(t.n_nodes());
+	vector<interval> vdata(t.n_nodes());
 	random_data(t, t.get_root(), vdata, gen);
 
-	// phase 2 -- construct arrangement
-	linearrgmnt arr(t.n_nodes());
-	uint32_t pos = 0;
-	put_in_arrangement(t, t.get_root(), vdata, pos, arr);
-
-	return arr;
-}
-
-/* -------------------------------------------------------------------------- */
-
-template<class GEN>
-void random_data(
-	const urtree& T, node parent, node r,
-	// Its size must be equal to the number of vertices of the tree.
-	vector<_data>& vdata,
-	// random number generator
-	GEN& gen
-)
-{
-	// number of children of 'r' with respect to the tree's root
-	const uint32_t n_children = T.degree(r) - (r == T.get_root() ? 0 : 1);
-	const neighbourhood& neighs = T.get_neighbours(r);
-
-	// Choose random positions for the intervals corresponding to the
-	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'. Remember: there are n_children+1
-	// possibilities.
-
-	vdata[r].interval = vector<node>(n_children + 1);
-
-	// fill interval with the root vertex and its children
-	vector<node>& interval = vdata[r].interval;
-	interval[0] = r;
-
-	size_t interval_it = 1;
-	for (size_t neighs_it = 0;
-		 interval_it < interval.size() and neighs_it < neighs.size();
-		 ++neighs_it
-	)
-	{
-		const node vi = neighs[neighs_it];
-		interval[interval_it] = vi;
-
-		// Skip vertex 'vi' if it is the parent of 'r'.
-		// Vertex 'vi' is the parent of 'r' if:
-		//    -- 'r' is not the root of the tree
-		//    -- 'vi' equals 'parent'
-		// The effect of this is that if 'interval_it' the vertex 'vi'
-		// written in 'interval' is going to be overwritten in the
-		// next iteration.
-		interval_it += (r == T.get_root() or vi != parent);
-	}
-
-	// shuffle the positions
-	shuffle(interval.begin(), interval.end(), gen);
-
-	// Choose random positions for the intervals corresponding to the
-	// other vertices. Compute them inductively.
-
-	for (const node& vi : neighs) {
-		// Skip vertex 'vi' if it is the parent of 'r'.
-		// Vertex 'vi' is the parent of 'r' if:
-		//    -- 'r' is not the root of the tree
-		//    -- 'vi' equals 'parent'
-		if (r == T.get_root() or vi != parent) {
-			random_data(T, r, vi, vdata, gen);
-		}
-	}
-}
-
-linearrgmnt rand_projective_arrgmnt(const urtree& t, bool seed) {
-	assert(t.is_tree());
-	assert(t.has_root());
-
-	if (t.n_nodes() == 1) {
-		return linearrgmnt(1, 0);
-	}
-
-	mt19937 gen;
-	if (seed) {
-		random_device rd;
-		gen = mt19937(rd());
-	}
-
-	// phase 1 -- generate random data
-	vector<_data> vdata(t.n_nodes());
-	random_data(t, t.n_nodes()+1, t.get_root(), vdata, gen);
+	cout << "phase 2" << endl;
 
 	// phase 2 -- construct arrangement
 	linearrgmnt arr(t.n_nodes());

@@ -59,8 +59,8 @@ using namespace numeric;
 namespace generate {
 
 inline
-utree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
-	utree T(m_n);
+ftree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
+	ftree T(m_n);
 	vector<edge> edges(m_n - 1);
 	for (node u = 1; u < m_n; ++u) {
 		edges[u - 1] = edge(u, m_tree[u]);
@@ -83,15 +83,15 @@ void rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
 	init_fn();
 }
 
-utree rand_ulab_free_trees::make_rand_tree() {
-	if (m_n <= 1) { return utree(m_n); }
+ftree rand_ulab_free_trees::make_rand_tree() {
+	if (m_n <= 1) { return ftree(m_n); }
 	if (m_n == 2) {
-		utree t(2);
+		ftree t(2);
 		t.add_edge(0,1);
 		return t;
 	}
 	if (m_n == 3) {
-		utree t(3);
+		ftree t(3);
 		t.add_edges({edge(0,1),edge(1,2)});
 		return t;
 	}
@@ -125,7 +125,7 @@ utree rand_ulab_free_trees::make_rand_tree() {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
-		const utree T = make_tree(m_n, m_tree);
+		const ftree T = make_tree(m_n, m_tree);
 		assert(T.is_tree());
 		return T;
 	}
@@ -145,7 +145,7 @@ utree rand_ulab_free_trees::make_rand_tree() {
 	forest(m,q, 1);
 	// -----------------------------------
 
-	const utree T = make_tree(m_n, m_tree);
+	const ftree T = make_tree(m_n, m_tree);
 	assert(T.is_tree());
 	return T;
 }

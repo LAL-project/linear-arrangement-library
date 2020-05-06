@@ -78,7 +78,7 @@ inline void __set_type(vector<bool>& cls, const tree_structure& ts) {
 	}
 }
 
-inline bool __is_root_covered(const urtree& T, const linearrgmnt& pi) {
+inline bool __is_root_covered(const rtree& T, const linearrgmnt& pi) {
 	const node R = T.get_root();
 	E_iterator it(T);
 	while (it.has_next()) {
@@ -100,7 +100,7 @@ inline bool __is_root_covered(const urtree& T, const linearrgmnt& pi) {
 }
 
 inline void __get_yields(
-	const urtree& t, const linearrgmnt& pi,
+	const rtree& t, const linearrgmnt& pi,
 	node u,
 	vector<bool>& vis,
 	vector<vector<position> >& yields
@@ -185,7 +185,7 @@ uint32_t __get_n_discont(const uint32_t n, const vector<vector<node> >& yields)
 	return max_dis;
 }
 
-inline uint32_t __is_1EC(const urtree& Tree, const linearrgmnt& pi) {
+inline uint32_t __is_1EC(const rtree& Tree, const linearrgmnt& pi) {
 	const uint32_t n = Tree.n_nodes();
 	vector<node> T(n);
 	for (node u = 0; u < n; ++u) {
@@ -259,12 +259,12 @@ inline uint32_t __is_1EC(const urtree& Tree, const linearrgmnt& pi) {
 }
 
 inline vector<bool> __get_syn_dep_tree_type(
-	const urtree& Tree, const linearrgmnt& pi
+	const rtree& Tree, const linearrgmnt& pi
 )
 {
 	vector<bool> cl(__tree_structure_size, false);
 
-	uint32_t C = __n_crossings_stack_based(Tree, pi);
+	uint32_t C = __n_crossings_stack_based(Tree.to_undirected(), pi);
 	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?
@@ -308,13 +308,13 @@ inline vector<bool> __get_syn_dep_tree_type(
 	return cl;
 }
 
-vector<bool> get_tree_structure_type(const urtree& t, const linearrgmnt& pi) {
-	if (t.n_nodes() <= 2) {
+vector<bool> get_tree_structure_type(const rtree& rT, const linearrgmnt& pi) {
+	if (rT.n_nodes() <= 2) {
 		vector<bool> cls(__tree_structure_size);
 		__set_type(cls, tree_structure::projective);
 		return cls;
 	}
-	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, t, pi);
+	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
 }
 
 } // -- namespace linarr

@@ -52,7 +52,7 @@ using namespace graphs;
 
 namespace utils {
 
-utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+ftree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 0);
 	assert(L[1] == 1);
@@ -91,12 +91,12 @@ utree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 		lev[stack_it] = i;
 	}
 
-	utree t(n);
+	ftree t(n);
 	t.add_edges(edges);
 	return t;
 }
 
-urtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+rtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(L.size() == n + 1);
 
 	// edges of the tree
@@ -128,13 +128,12 @@ urtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// root must have been set.
 	assert(root_set);
 
-	urtree t(n);
-	t.set_root(r);
+	ftree t(n);
 	t.add_edges(edges);
-	return t;
+	return rtree(t, r);
 }
 
-utree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
+ftree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);
@@ -183,7 +182,7 @@ utree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// add edge (u,v) to the tree
 	*eit++ = edge(u, v);
 
-	utree t(n);
+	ftree t(n);
 	t.add_edges(edges);
 	return t;
 }

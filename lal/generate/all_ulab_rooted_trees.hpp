@@ -41,7 +41,7 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace generate {
@@ -135,7 +135,7 @@ class all_ulab_rooted_trees {
 		 * @ref next must have been called at least once.
 		 * @return Returns the tree generated with method @ref next().
 		 */
-		graphs::urtree get_tree() const;
+		graphs::rtree get_tree() const;
 
 	private:
 		/// Number of nodes of the tree

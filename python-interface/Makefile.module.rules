@@ -111,5 +111,3 @@ $(LAL_WRAP).o: $(LAL_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
-
-

@@ -84,7 +84,7 @@
  * 
  * \subsection ss3_s1 The different types of graphs
  * 
- * As it should be expected, this library offers a number of different graph abstractions: undirected graphs (see @ref lal::graphs::ugraph), directed graphs (see @ref lal::graphs::dgraph), undirected trees (see @ref lal::graphs::utree), directed trees (see @ref lal::graphs::dtree), undirected rooted trees (see @ref lal::graphs::urtree) and , directed rooted trees (see @ref lal::graphs::drtree), all of which can be found within the @ref lal::graphs namespace.
+ * As it should be expected, this library offers a number of different graph abstractions: undirected graphs (see @ref lal::graphs::ugraph), directed graphs (see @ref lal::graphs::dgraph), free trees (see @ref lal::graphs::ftree) and roted trees (see @ref lal::graphs::rtree), all of which can be found within the @ref lal::graphs namespace.
  * 
  * \subsubsection sss1_ss3_s1 The internal structure of graphs
  * 
@@ -92,14 +92,14 @@
  * 
  * Due to most graphs being sparse, the data structure of choice are adjacency lists where each vertex has a list of neighbouring nodes, or simply neighbours, associated to it. The user can affect the order of appearance of neighbours in multiple ways. One of them is, evidently, the order in which edges are added. Another way is via the @ref lal::graphs::graph::normalise function, which sorts every list of neighbours increasingly. By default, the addition of edges is normalising, namely the following code
  * @code
- * lal::graphs::utree t(4);
+ * lal::graphs::ftree t(4);
  * t.add_edge(0,1,false).add_edge(0,3,false).add_edge(0,2,false);
  * t.normalise();
  * cout << t << endl;
  * @endcode
  * produces the same output as
  * @code
- * lal::graphs::utree t(4);
+ * lal::graphs::ftree t(4);
  * t.add_edge(0,1).add_edge(0,3).add_edge(0,2);
  * cout << t << endl;
  * @endcode
@@ -115,14 +115,14 @@
  * 
  * Now, many functions (see those fuctions within the @ref lal::linarr namespace) admit a linear arrangement which can be empty. Whenever it is empty, i.e., the value of the parameter is an empty vector, the positions of the nodes of the graphs in question are given by their implicit label. Such empty arrangement is called, in the context of the library, the identity arrangement symbolised with \f$\pi_I\f$. Therefore, the following measurement of the sum of the lengths of the edges are equivalent
  * @code
- * lal::graphs::utree t(4);
+ * lal::graphs::ftree t(4);
  * t.add_edges({edge(0,1), edge(1,2), edge(2,3)});
  * uint32_t D1 = linarr::sum_length_edges(t);
  * uint32_t D2 = linarr::sum_length_edges(t, {0,1,2,3});
  * @endcode
  * The possibility of expliciting a linear arrangement increases the flexibility of the library. For example, for the purposes of illustration, one can calculate the expected sum of the length of the edges as follows
  * @code
- * lal::graphs::utree t(4);
+ * lal::graphs::ftree t(4);
  * t.add_edges({edge(0,1), edge(1,2), edge(2,3)});
  * lal::numeric::rational Dt = 0;
  * lal::linearrgmnt arr = {0,1,2,3};
@@ -161,13 +161,13 @@
  * 
  * On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
  * @code
- * lal::graphs::utree t;
+ * lal::graphs::ftree t;
  * lal::io::read_edge_list(t);
  * double var_C = lal::properties::variance_C(t);
  * @endcode
  * but if not
  * @code
- * lal::graphs::utree t;
+ * lal::graphs::ftree t;
  * lal::io::read_edge_list(t, false);
  * // ...
  * @endcode

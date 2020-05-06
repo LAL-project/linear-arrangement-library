@@ -54,7 +54,7 @@
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/tree.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 
 namespace lal {
@@ -85,7 +85,7 @@ uint32_t sum_length_edges
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::utree& t, const algorithms_Dmin& a = algorithms_Dmin::Shiloach);
+(const graphs::tree& t, const algorithms_Dmin& a = algorithms_Dmin::Shiloach);
 
 /* MDD */
 

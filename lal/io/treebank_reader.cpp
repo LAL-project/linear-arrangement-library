@@ -114,7 +114,7 @@ const string& treebank_reader::get_treebank_filename() const {
 	return m_treebank_file;
 }
 
-urtree treebank_reader::get_tree() const {
+rtree treebank_reader::get_tree() const {
 	// parse tree in line
 	stringstream ss(m_file_line);
 

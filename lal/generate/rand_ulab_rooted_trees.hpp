@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/urtree.hpp>
+#include <lal/graphs/rtree.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
@@ -105,7 +105,7 @@ class rand_ulab_rooted_trees {
 		 * @pre The generator must have been initialised.
 		 * @return Returns an unlabelled rooted tree.
 		 */
-		graphs::urtree make_rand_tree();
+		graphs::rtree make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

@@ -46,7 +46,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
 #include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/ftree.hpp>
 
 namespace lal {
 namespace properties {
@@ -147,7 +147,7 @@ double mmt_out_degree(const graphs::dgraph& g, uint32_t p);
  * @pre \f$n > 3\f$.
  * @return Returns the hubiness coefficient.
  */
-numeric::rational hubiness_rational(const graphs::utree& g);
+numeric::rational hubiness_rational(const graphs::ftree& g);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -156,7 +156,7 @@ numeric::rational hubiness_rational(const graphs::utree& g);
  * @param g Input graph.
  * @return The return value is a floating point value.
  */
-double hubiness(const graphs::utree& g);
+double hubiness(const graphs::ftree& g);
 
 } // -- namespace properties
 } // -- namespace lal

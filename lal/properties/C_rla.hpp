@@ -43,7 +43,7 @@
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/utree.hpp>
+#include <lal/graphs/ftree.hpp>
 
 namespace lal {
 namespace properties {
@@ -139,7 +139,7 @@ double variance_C_forest(const graphs::ugraph& g);
  * @param g Input tree.
  * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-numeric::rational variance_C_tree_rational(const graphs::utree& g);
+numeric::rational variance_C_tree_rational(const graphs::ftree& g);
 /**
  * @brief Computes the variance of the number of crossings of a tree.
  *
@@ -147,7 +147,7 @@ numeric::rational variance_C_tree_rational(const graphs::utree& g);
  * @param g Input tree.
  * @return The return value is a floating point value.
  */
-double variance_C_tree(const graphs::utree& g);
+double variance_C_tree(const graphs::ftree& g);
 
 } // -- namespace properties
 } // -- namespace lal

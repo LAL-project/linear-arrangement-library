@@ -74,10 +74,10 @@ void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_seq = vector<uint32_t>(m_n - 2);
 }
 
-utree rand_lab_free_trees::make_rand_tree() {
-	if (m_n <= 1) { return utree(m_n); }
+ftree rand_lab_free_trees::make_rand_tree() {
+	if (m_n <= 1) { return ftree(m_n); }
 	if (m_n == 2) {
-		utree t(2);
+		ftree t(2);
 		t.add_edge(0,1);
 		return t;
 	}

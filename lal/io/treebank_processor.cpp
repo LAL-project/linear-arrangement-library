@@ -177,11 +177,13 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 
 inline void process_tree(
 	const vector<bool>& what_fs, char sep,
-	const urtree& t, ofstream& out_lang_file
+	const rtree& rT, ofstream& out_lang_file
 )
 {
+	const ftree t = rT.to_undirected();
+
 	// default linear arrangement
-	vector<node> __linarr(t.n_nodes());
+	vector<node> __linarr(rT.n_nodes());
 	iota(__linarr.begin(), __linarr.end(), 0);
 
 	// -----------------------------------------------------------
@@ -258,19 +260,19 @@ inline void process_tree(
 			props[D_exp1_idx] = properties::expectation_D(t);
 		}
 		// we need to compute D, whether we like it or not
-		props[D_idx] = utils::to_double(linarr::sum_length_edges(t, __linarr));
+		props[D_idx] = utils::to_double(linarr::sum_length_edges(rT, __linarr));
 		props[D_z_idx] = (props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx]);
 	}
 	else {
 		if (what_fs[D_idx]) {
-			props[D_idx] = utils::to_double(linarr::sum_length_edges(t, __linarr));
+			props[D_idx] = utils::to_double(linarr::sum_length_edges(rT, __linarr));
 		}
 	}
 
 	// ---------------
 	// output features
 	if (what_fs[0]) {
-		out_lang_file << t.n_nodes();
+		out_lang_file << rT.n_nodes();
 	}
 	for (size_t i = 1; i < what_fs.size(); ++i) {
 		if (what_fs[i]) {
@@ -383,7 +385,7 @@ treebank_processor::processor_error treebank_processor::process
 			out_lang_file << endl;
 		}
 
-		urtree t;
+		rtree rT;
 		// process the current treebank
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();
@@ -391,8 +393,8 @@ treebank_processor::processor_error treebank_processor::process
 				// empty line, skip...
 			}
 			else {
-				t = tbread.get_tree();
-				process_tree(m_what_fs, sep, t, out_lang_file);
+				rT = tbread.get_tree();
+				process_tree(m_what_fs, sep, rT, out_lang_file);
 			}
 		}
 
