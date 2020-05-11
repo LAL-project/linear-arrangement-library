@@ -117,48 +117,132 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
+		# generate namespace
+		generate/all_lab_free_trees.hpp
 		generate/all_lab_free_trees.cpp
+		generate/all_ulab_free_trees.hpp
 		generate/all_ulab_free_trees.cpp
+		generate/all_ulab_rooted_trees.hpp
 		generate/all_ulab_rooted_trees.cpp
+		generate/rand_arrangements.hpp
 		generate/rand_arrangements_projective.cpp
+		generate/rand_lab_free_trees.hpp
 		generate/rand_lab_free_trees.cpp
+		generate/rand_lab_rooted_trees.hpp
 		generate/rand_lab_rooted_trees.cpp
+		generate/rand_ulab_free_trees.hpp
 		generate/rand_ulab_free_trees.cpp
+		generate/rand_ulab_rooted_trees.hpp
 		generate/rand_ulab_rooted_trees.cpp
+
+		# graphs namespace
+		graphs/dgraph.hpp
 		graphs/dgraph.cpp
+		graphs/ftree.hpp
 		graphs/ftree.cpp
+		graphs/graph.hpp
 		graphs/graph.cpp
+		graphs/output.hpp
+		graphs/rtree.hpp
 		graphs/rtree.cpp
+		graphs/tree.hpp
 		graphs/tree.cpp
+		graphs/ugraph.hpp
 		graphs/ugraph.cpp
+
+		# io namespace
+		io/basic_output.hpp
+		io/dataset_error.hpp
+		io/edge_list.hpp
 		io/edge_list.cpp
+		io/treebank_dataset.hpp
 		io/treebank_dataset.cpp
+		io/treebank_processor.hpp
 		io/treebank_processor.cpp
+		io/treebank_reader.hpp
 		io/treebank_reader.cpp
+
+		# iterators namespace
+		iterators/E_iterator.hpp
 		iterators/E_iterator.cpp
+		iterators/Q_iterator.hpp
 		iterators/Q_iterator.cpp
+
+		# linarr namespace
+		linarr/1level.hpp
+		linarr/1level_impl.hpp
+		linarr/2level.hpp
+		linarr/2level_impl.hpp
+		linarr/algorithms_crossings.hpp
+		linarr/algorithms_Dmin.hpp
+		linarr/C.hpp
 		linarr/C.cpp
 		linarr/C_approx.cpp
 		linarr/C_brute_force.cpp
 		linarr/C_dyn_prog.cpp
 		linarr/C_ladder.cpp
 		linarr/C_stack_based.cpp
+		linarr/D.hpp
 		linarr/D.cpp
 		linarr/Dmin.cpp
+		linarr/headedness.hpp
 		linarr/headedness.cpp
+		linarr/tree_structure.hpp
+		linarr/tree_structure_class.hpp
 		linarr/tree_structure_class.cpp
+
+		# numeric namespace
+		numeric/gmp_utils.hpp
 		numeric/gmp_utils.cpp
+		numeric/integer.hpp
 		numeric/integer.cpp
+		numeric/output.hpp
+		numeric/rational.hpp
 		numeric/rational.cpp
+
+		# properties namespace
+		properties/C_rla.hpp
 		properties/C_rla.cpp
+		properties/D_rla.hpp
 		properties/D_rla.cpp
+		properties/degrees.hpp
 		properties/degrees.cpp
+		properties/mhd.hpp
 		properties/mhd.cpp
+		properties/Q.hpp
 		properties/Q.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_trees.cpp
+
+		# utils namespace -- not to be installed
+		utils/avl.hpp
+		utils/macros.hpp
+		utils/std_utils.hpp
+		utils/graphs/bfs.hpp
+		utils/graphs/cycles.hpp
+		utils/graphs/reachability.hpp
+		utils/graphs/trees/conversions.hpp
+		utils/graphs/trees/is_tree.hpp
+		utils/graphs/trees/size_subtrees.hpp
+		utils/graphs/trees/tree_centre.hpp
 		utils/graphs/trees/conversions.cpp
+		utils/sorting/bit_sort.hpp
+		utils/sorting/counting_sort.hpp
+		utils/sorting/insertion_sort.hpp
+
+		# general headers
+		C.hpp
+		D.hpp
+		definitions.hpp
+		generate.hpp
+		graphs.hpp
+		io.hpp
+		iterators.hpp
+		linarr.hpp
+		namespaces.hpp
+		numeric.hpp
+		properties.hpp
 )
 
 # **********************************************************************
