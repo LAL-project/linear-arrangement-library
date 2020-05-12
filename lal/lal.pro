@@ -28,6 +28,7 @@ INCLUDEPATH += ..
 # PROJECT FILES
 HEADERS += \
     generate/rand_arrangements.hpp \
+    linarr/Dmin.hpp \
     linarr/algorithms_Dmin.hpp \
     linarr/tree_structure.hpp \
     linarr/tree_structure_class.hpp \
@@ -84,6 +85,7 @@ HEADERS += \
     utils/graphs/cycles.hpp \
     utils/graphs/reachability.hpp \
     utils/graphs/trees/conversions.hpp \
+    utils/graphs/trees/make_projecitve_arr.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \
@@ -115,6 +117,9 @@ SOURCES += \
     linarr/C.cpp \
     linarr/C_approx.cpp \
     linarr/Dmin.cpp \
+    linarr/Dmin_Projective.cpp \
+    linarr/Dmin_Unconstrained_FC.cpp \
+    linarr/Dmin_Unconstrained_YS.cpp \
     linarr/headedness.cpp \
     io/treebank_dataset.cpp \
     linarr/C_stack_based.cpp \
