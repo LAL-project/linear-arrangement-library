@@ -32,11 +32,11 @@ DSE_INAME	= $(DSE_BNAME)
 TREE_STR_BNAME	= laltree_structure
 TREE_STR_INAME	= $(TREE_STR_BNAME)
 
-# -- algorithms_crossings
-ALG_CROSS_BNAME	= lalalgorithms_crossings
-ALG_CROSS_INAME	= $(ALG_CROSS_BNAME)
+# -- algorithms_C
+ALG_C_BNAME	= lalalgorithms_C
+ALG_C_INAME	= $(ALG_C_BNAME)
 
-# -- algorithms_crossings
+# -- algorithms_C
 ALG_DMIN_BNAME	= lalalgorithms_Dmin
 ALG_DMIN_INAME	= $(ALG_DMIN_BNAME)
 

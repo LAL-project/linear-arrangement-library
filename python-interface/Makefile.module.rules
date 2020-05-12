@@ -21,13 +21,13 @@ $(TREE_STR_WRAP).cxx: $(TREE_STR_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_STR_MAIN_INT)
 	echo "del cvar" >> $(TREE_STR_PY_FILE)
 
-# algorithms_crossings module
-$(ALG_CROSS_SO): $(ALG_CROSS_WRAP).o $(LIBRARY_SHARED_DEP)
+# algorithms_C module
+$(ALG_C_SO): $(ALG_C_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(ALG_CROSS_WRAP).o: $(ALG_CROSS_WRAP).cxx
+$(ALG_C_WRAP).o: $(ALG_C_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALG_CROSS_WRAP).cxx: $(ALG_CROSS_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_CROSS_MAIN_INT)
+$(ALG_C_WRAP).cxx: $(ALG_C_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_C_MAIN_INT)
 
 # algorithms_Dmin module
 $(ALG_DMIN_SO): $(ALG_DMIN_WRAP).o $(LIBRARY_SHARED_DEP)

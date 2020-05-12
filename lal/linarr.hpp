@@ -40,12 +40,13 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_crossings.hpp>
+#include <lal/linarr/algorithms_C.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 #include <lal/linarr/tree_structure.hpp>
 
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
+#include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/headedness.hpp>
 #include <lal/linarr/tree_structure_class.hpp>
 

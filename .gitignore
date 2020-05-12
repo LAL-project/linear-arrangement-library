@@ -1,8 +1,11 @@
-*.html
 cpp-docs/
-*.pro.user
+
+lal/lal.pro.user
+lal/CMakeLists.txt.user
+
 lal-debug/
 lal-release/
+
 build-debug/
 build-release/
 build/

@@ -28,13 +28,6 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
  *
- *      Juan Luis Esteban (esteban@cs.upc.edu)
- *          LOGPROG: Logics and Programming Research Group
- *          Office 110, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~esteban/
- *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
- *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
@@ -45,13 +38,11 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/D.hpp>
+#include <lal/linarr/Dmin.hpp>
 
 // C++ includes
+#include <cassert>
 using namespace std;
-
-// lal includes
-#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -59,18 +50,42 @@ using namespace graphs;
 namespace linarr {
 
 pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::tree& t, const algorithms_Dmin& a)
+(const graphs::rtree& t, const algorithms_Dmin& a)
 {
-	utils::UNUSED(t);
-	utils::UNUSED(a);
-
 	switch (a) {
-	case algorithms_Dmin::Shiloach:
-		// call Shiloach's algorithm
-		break;
-	case algorithms_Dmin::Chung:
-		// call Fan Chung's algorithm
-		break;
+
+	// check for invalid choices of algorithm
+	case algorithms_Dmin::Unconstrained_YS:
+	case algorithms_Dmin::Unconstrained_FC:
+		assert(false);
+		break;  // in release compilations the
+				// function must return nothing.
+
+	// call Gildea and Temperly's algorithm
+	case algorithms_Dmin::Projective:
+		return compute_Dmin_Projective(t);
+	}
+
+	return make_pair(0, linearrgmnt());
+}
+
+pair<uint32_t, linearrgmnt> compute_Dmin
+(const graphs::ftree& t, const algorithms_Dmin& a)
+{
+	switch (a) {
+
+	// check for invalid choices of algorithm
+	case algorithms_Dmin::Projective:
+		assert(false);
+		break;  // in release compilations the
+				// function must return nothing.
+
+	// call Yossi Shiloach's algorithm
+	case algorithms_Dmin::Unconstrained_YS:
+		return compute_Dmin_Unconstrained_YS(t);
+	// call Fan Chung's algorithm
+	case algorithms_Dmin::Unconstrained_FC:
+		return compute_Dmin_Unconstrained_FC(t);
 	}
 
 	return make_pair(0, linearrgmnt());

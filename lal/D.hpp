@@ -42,3 +42,6 @@
 
 #include <lal/linarr/D.hpp>
 #include <lal/properties/D_rla.hpp>
+
+#include <lal/linarr/algorithms_Dmin.hpp>
+#include <lal/linarr/Dmin.hpp>

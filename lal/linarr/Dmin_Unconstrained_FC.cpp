@@ -22,47 +22,36 @@
  *
  *  Contact:
  *
- *      Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *      Juan Luis Esteban (esteban@cs.upc.edu)
+ *          LOGPROG: Logics and Programming Research Group
+ *          Office 110, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://www.cs.upc.edu/~esteban/
+ *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
+ *
+ *		Lluís Alemany Puig (lalemany@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
  *
- *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
- *          CQL (Complexity and Quantitative Linguistics Lab)
- *          Office S124, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~rferrericancho/
- *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
- *
  ********************************************************************/
 
-#pragma once
+#include <lal/linarr/Dmin.hpp>
 
 // C++ includes
-#include <vector>
-
-// lal includes
-#include <lal/graphs/rtree.hpp>
+#include <cassert>
+using namespace std;
 
 namespace lal {
+using namespace graphs;
+
 namespace linarr {
 
-/**
- * @brief Computes the type of syntactic dependency tree
- *
- * Given an undirected rooted tree and a linear arrangement of its nodes,
- * computes the class of projective structure the tree belongs to.
- *
- * @param t Input tree.
- * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
- * node @e u is placed in position @e p of the arrangement.
- * @return Returns the class of projective structure. If the class could not
- * be determined the method returns @ref tree_structure::none
- */
-std::vector<bool> classify_tree_structure
-(const graphs::rtree& t, const linearrgmnt& pi = {});
+pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC(const ftree& t) {
+	assert(t.is_tree());
+	return make_pair(0, linearrgmnt(0));
+}
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -1,11 +1,11 @@
-%module lalalgorithms_crossings
+%module lalalgorithms_C
 
-%include lalalgorithms_crossings_impl.i
+%include lalalgorithms_C_impl.i
 
 %pythoncode %{
-__mod_name = "lalalgorithms_crossings"
+__mod_name = "lalalgorithms_C"
 __mod = __import__(__mod_name)
-__to_replace = "algorithms_crossings_"
+__to_replace = "algorithms_C_"
 __replace_length = len(__to_replace)
 for name in dir(__mod):
     if name.find(__to_replace) == 0:

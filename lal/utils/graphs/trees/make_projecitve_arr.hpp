@@ -38,53 +38,60 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/C.hpp>
+#pragma once
 
 // C++ includes
-#include <cassert>
-using namespace std;
+#include <vector>
+
+// lal includes
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
-using namespace graphs;
+namespace utils {
 
-namespace linarr {
+// projective_interval[p] = u <-> at position 'p' we find node 'u'
+typedef std::vector<lal::node> projective_interval;
 
-uint32_t n_crossings
-(const ugraph& g, const linearrgmnt& pi, const algorithms_C& A) {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return __n_crossings_brute_force(g, pi);
-	case algorithms_C::dynamic_programming:
-		return __n_crossings_dyn_prog(g, pi);
-	case algorithms_C::ladder:
-		return __n_crossings_ladder(g, pi);
-	case algorithms_C::stack_based:
-		return __n_crossings_stack_based(g, pi);
-	}
-
-	// wrong value of enumeration
-	assert(false);
-	return g.n_edges()*g.n_edges();
-}
-
-vector<uint32_t> n_crossings_list
-(const ugraph& g, const vector<linearrgmnt>& pis, const algorithms_C& A)
+namespace __lal {
+inline void __put_in_arrangement(
+	const graphs::rtree& T, node r,
+	const std::vector<projective_interval>& data,
+	uint32_t& pos, linearrgmnt& arr
+)
 {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return __n_crossings_brute_force_list(g, pis);
-	case algorithms_C::dynamic_programming:
-		return __n_crossings_dyn_prog_list(g, pis);
-	case algorithms_C::ladder:
-		return __n_crossings_ladder_list(g, pis);
-	case algorithms_C::stack_based:
-		return __n_crossings_stack_based_list(g, pis);
-	}
+	// number of children of 'r' with respect to the tree's root
+	const uint32_t d_out = T.degree(r);
 
-	// wrong value of enumeration
-	assert(false);
-	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
+	// vertex 'r' is a leaf
+	if (d_out == 0) {
+		arr[r] = pos;
+		pos += 1;
+		return;
+	}
+	const std::vector<node>& interval = data[r];
+	for (size_t i = 0; i < interval.size(); ++i) {
+		const node vi = interval[i];
+		if (vi == r) {
+			arr[vi] = pos;
+			pos += 1;
+		}
+		else {
+			__put_in_arrangement(T, vi, data, pos, arr);
+		}
+	}
+}
+} // -- namespace __lal
+
+inline void put_in_arrangement(
+	const graphs::rtree& T,
+	const std::vector<projective_interval>& data,
+	linearrgmnt& arr
+)
+{
+	uint32_t pos = 0;
+	__lal::__put_in_arrangement(T,T.get_root(),data,pos,arr);
 }
 
-} // -- namespace linarr
+
+} // -- namespace utils
 } // -- namespace lal

@@ -46,7 +46,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/linarr/algorithms_crossings.hpp>
+#include <lal/linarr/algorithms_C.hpp>
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
@@ -178,7 +178,7 @@ std::vector<uint32_t> __n_crossings_stack_based_list
  */
 uint32_t n_crossings(
 	const graphs::ugraph& g, const linearrgmnt& pi = {},
-	const algorithms_crossings& A = algorithms_crossings::stack_based
+	const algorithms_C& A = algorithms_C::stack_based
 );
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -199,7 +199,7 @@ uint32_t n_crossings(
  */
 std::vector<uint32_t> n_crossings_list
 (const graphs::ugraph& g, const std::vector<linearrgmnt>& pis,
- const algorithms_crossings& A = algorithms_crossings::stack_based);
+ const algorithms_C& A = algorithms_C::stack_based);
 
 /* ---------------------------------------- */
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */

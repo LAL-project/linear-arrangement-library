@@ -38,52 +38,100 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/C.hpp>
+#include <lal/linarr/Dmin.hpp>
 
 // C++ includes
 #include <cassert>
 using namespace std;
 
+// lal includes
+#include <lal/linarr/D.hpp>
+#include <lal/utils/sorting/counting_sort.hpp>
+#include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
+
+typedef pair<lal::node,uint32_t> nodesize;
+
 namespace lal {
 using namespace graphs;
+using namespace utils;
 
 namespace linarr {
 
-uint32_t n_crossings
-(const ugraph& g, const linearrgmnt& pi, const algorithms_C& A) {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return __n_crossings_brute_force(g, pi);
-	case algorithms_C::dynamic_programming:
-		return __n_crossings_dyn_prog(g, pi);
-	case algorithms_C::ladder:
-		return __n_crossings_ladder(g, pi);
-	case algorithms_C::stack_based:
-		return __n_crossings_stack_based(g, pi);
+void place_subtrees_of(
+	const rtree& t, node r, vector<projective_interval>& data
+)
+{
+	const uint32_t d_out = t.out_degree(r);
+	projective_interval& interval = data[r];
+	interval = projective_interval(d_out + 1);
+
+	if (d_out == 0) {
+		// base case -- vertex 'r' is a leaf
+		data[r][0] = 0;
+		return;
 	}
 
-	// wrong value of enumeration
-	assert(false);
-	return g.n_edges()*g.n_edges();
+	// get the sizes of the subtrees
+	uint32_t max_size = 0;
+	vector<nodesize> children(d_out);
+	for (size_t i = 0; i < t.out_degree(r); ++i) {
+		const node vi = t.get_out_neighbours(r)[i];
+		children[i].first = vi;
+		children[i].second = t.n_nodes_subtree(vi);
+		if (max_size < children[i].second) {
+			max_size = children[i].second;
+		}
+	}
+
+	// sort the sizes
+	typedef vector<nodesize>::iterator it;
+	auto key = [](const nodesize& v) -> size_t {
+		return static_cast<size_t>(v.second);
+	};
+	utils::counting_sort<it, nodesize>
+	(children.begin(), children.end(), max_size, key);
+
+	// place the children
+	size_t leftpos = 0;
+	size_t rightpos = data[r].size() - 1;
+	bool left = true;
+	for (int32_t i = static_cast<int32_t>(d_out); i >= 0; --i) {
+		if (left) {
+			left = false;
+			interval[leftpos] = children[i].first;
+			++leftpos;
+		}
+		else {
+			left = true;
+			interval[rightpos] = children[i].first;
+			--rightpos;
+		}
+	}
+
+	// Place 'r'.
+	// NOTE: 'leftpos' and 'rightpos' must be equal
+	assert(leftpos == rightpos);
+	interval[leftpos] = r;
 }
 
-vector<uint32_t> n_crossings_list
-(const ugraph& g, const vector<linearrgmnt>& pis, const algorithms_C& A)
-{
-	switch (A) {
-	case algorithms_C::brute_force:
-		return __n_crossings_brute_force_list(g, pis);
-	case algorithms_C::dynamic_programming:
-		return __n_crossings_dyn_prog_list(g, pis);
-	case algorithms_C::ladder:
-		return __n_crossings_ladder_list(g, pis);
-	case algorithms_C::stack_based:
-		return __n_crossings_stack_based_list(g, pis);
+pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
+	assert(t.is_tree());
+	assert(t.has_root());
+	assert(t.rtree_type_valid() and
+		   t.get_rtree_type() == rtree::rtree_type::arborescence);
+	assert(not t.need_recalc_size_subtrees());
+
+	linearrgmnt arr(t.n_nodes());
+
+	vector<projective_interval> data(t.n_nodes());
+	for (node u = 0; u < t.n_nodes(); ++u) {
+		place_subtrees_of(t, u, data);
 	}
 
-	// wrong value of enumeration
-	assert(false);
-	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
+	utils::put_in_arrangement(t, data, arr);
+
+	const uint32_t D = sum_length_edges(t, arr);
+	return make_pair(D, arr);
 }
 
 } // -- namespace linarr

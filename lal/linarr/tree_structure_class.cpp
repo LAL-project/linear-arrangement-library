@@ -308,7 +308,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 	return cl;
 }
 
-vector<bool> get_tree_structure_type(const rtree& rT, const linearrgmnt& pi) {
+vector<bool> classify_tree_structure(const rtree& rT, const linearrgmnt& pi) {
 	if (rT.n_nodes() <= 2) {
 		vector<bool> cls(__tree_structure_size);
 		__set_type(cls, tree_structure::projective);

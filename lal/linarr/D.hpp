@@ -28,13 +28,6 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
  *
- *      Juan Luis Esteban (esteban@cs.upc.edu)
- *          LOGPROG: Logics and Programming Research Group
- *          Office 110, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~esteban/
- *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
- *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
@@ -54,8 +47,6 @@
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/tree.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
 
 namespace lal {
 namespace linarr {
@@ -74,18 +65,6 @@ namespace linarr {
  */
 uint32_t sum_length_edges
 (const graphs::graph& g, const linearrgmnt& pi = {});
-
-/**
- * @brief Computes the minimum value of \f$D\f$.
- *
- * Calculates the minimum value of the sum of the length of the edges \f$D\f$
- * and returns a linear arrangement yielding this value.
- * @param t Input tree.
- * @param a The algorithm to be chosen.
- * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
- */
-std::pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::tree& t, const algorithms_Dmin& a = algorithms_Dmin::Shiloach);
 
 /* MDD */
 

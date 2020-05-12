@@ -45,53 +45,22 @@
 #include <cassert>
 #include <random>
 #include <vector>
-
-#include <iostream>
-#include <lal/utils/std_utils.hpp>
 using namespace std;
 
-typedef vector<lal::node> interval;
-
-// --------------------
+// lal includes
+#include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
 
 namespace lal {
 using namespace graphs;
+using namespace utils;
 
 namespace generate {
-
-void put_in_arrangement(
-	const rtree& T, node r,
-	const vector<interval>& data,
-	uint32_t& pos, linearrgmnt& arr
-)
-{
-	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.degree(r);
-
-	// vertex 'r' is a leaf
-	if (d_out == 0) {
-		arr[r] = pos;
-		pos += 1;
-		return;
-	}
-	const vector<node>& interval = data[r];
-	for (size_t i = 0; i < interval.size(); ++i) {
-		const node vi = interval[i];
-		if (vi == r) {
-			arr[vi] = pos;
-			pos += 1;
-		}
-		else {
-			put_in_arrangement(T, vi, data, pos, arr);
-		}
-	}
-}
 
 template<class GEN>
 void random_data(
 	const rtree& T, node r,
 	// Its size must be equal to the number of vertices of the tree.
-	vector<interval>& data,
+	vector<projective_interval>& data,
 	// random number generator
 	GEN& gen
 )
@@ -102,30 +71,20 @@ void random_data(
 
 	// Choose random positions for the intervals corresponding to the
 	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'. Remember: there are n_children+1
+	// have to be made with respect to 'r'. Remember: there are d_out+1
 	// possibilities.
 
-	cout << "    d_out+1= " << d_out+1 << endl;
 	data[r] = vector<node>(d_out + 1);
 
 	// fill interval with the root vertex and its children
-	interval& inter = data[r];
-	inter[0] = r;
+	projective_interval& interval = data[r];
+	interval[0] = r;
 	for (size_t i = 0; i < neighs.size(); ++i) {
-		inter[i+1] = neighs[i];
+		interval[i+1] = neighs[i];
 	}
-
-	cout << inter << endl;
 
 	// shuffle the positions
-	shuffle(inter.begin(), inter.end(), gen);
-
-	// Choose random positions for the intervals corresponding to the
-	// other vertices. Compute them inductively.
-
-	for (const node& v : neighs) {
-		random_data(T, v, data, gen);
-	}
+	shuffle(interval.begin(), interval.end(), gen);
 }
 
 linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
@@ -139,18 +98,15 @@ linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
 		gen = mt19937(rd());
 	}
 
-	cout << "phase 1" << endl;
+	// generate random data
+	vector<projective_interval> vdata(t.n_nodes());
+	for (node u = 0; u < t.n_nodes(); ++u) {
+		random_data(t, u, vdata, gen);
+	}
 
-	// phase 1 -- generate random data
-	vector<interval> vdata(t.n_nodes());
-	random_data(t, t.get_root(), vdata, gen);
-
-	cout << "phase 2" << endl;
-
-	// phase 2 -- construct arrangement
+	// construct arrangement
 	linearrgmnt arr(t.n_nodes());
-	uint32_t pos = 0;
-	put_in_arrangement(t, t.get_root(), vdata, pos, arr);
+	put_in_arrangement(t, vdata, arr);
 
 	return arr;
 }
