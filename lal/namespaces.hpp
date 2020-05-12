@@ -59,7 +59,7 @@
  * - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::MDD_1level and @ref lal::linarr::MDD_2level),
  * - the mean hierarchical distance (see @ref lal::properties::MHD),
  * - the headedness of a tree (see @ref lal::linarr::headedness),
- * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::get_tree_structure_type).
+ * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::classify_tree_structure).
  * 
  * Other algorithms, also gathered in the same namespaces, offer the computation of optimal arrangements. For example, it is offered
  * - the computation of the minimal arrangements with respect to the sum of edge lengths (see @ref lal::linarr::compute_Dmin), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin).
@@ -249,7 +249,7 @@ namespace iterators {}
  * 
  * It also contains methods for the classification of trees into projective
  * classes (see @ref tree_structure for the supported classes and see function
- * @ref get_tree_structure_type to know how to classify the trees).
+ * @ref classify_tree_structure to know how to classify the trees).
  */
 namespace linarr {}
 

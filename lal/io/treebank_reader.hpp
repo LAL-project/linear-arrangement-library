@@ -122,8 +122,8 @@ class treebank_reader {
 
 		/**
 		 * @brief Retrieves the next tree in the file.
-		 * @return  In case the function returns
-		 * @ref empty_line the user should not call get_tree.
+		 * @return In case the function returns @ref dataset_error::empty_line
+		 * method @ref get_tree should not be called.
 		 * @post Increments the amount of trees found.
 		 */
 		dataset_error next_tree();
