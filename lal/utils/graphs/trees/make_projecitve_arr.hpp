@@ -68,7 +68,7 @@ inline void __put_in_arrangement(
 		pos += 1;
 		return;
 	}
-	const std::vector<node>& interval = data[r];
+	const projective_interval& interval = data[r];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
@@ -89,7 +89,7 @@ inline void put_in_arrangement(
 )
 {
 	uint32_t pos = 0;
-	__lal::__put_in_arrangement(T,T.get_root(),data,pos,arr);
+	__lal::__put_in_arrangement(T, T.get_root(), data, pos, arr);
 }
 
 

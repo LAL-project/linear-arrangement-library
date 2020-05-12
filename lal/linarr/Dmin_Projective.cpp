@@ -41,6 +41,7 @@
 #include <lal/linarr/Dmin.hpp>
 
 // C++ includes
+#include <iostream>
 #include <cassert>
 using namespace std;
 
@@ -49,7 +50,7 @@ using namespace std;
 #include <lal/utils/sorting/counting_sort.hpp>
 #include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
 
-typedef pair<lal::node,uint32_t> nodesize;
+#include <lal/utils/std_utils.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -57,21 +58,81 @@ using namespace utils;
 
 namespace linarr {
 
-void place_subtrees_of(
-	const rtree& t, node r, vector<projective_interval>& data
+typedef u_char place;
+#define LEFT_PLACE 0
+#define RIGHT_PLACE 1
+#define ROOT_PLACE 2
+
+#define right_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2 - 1)
+#define left_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2)
+
+#define get_int_size(v) (t.out_degree(v) + 1)
+
+position pos_in_interval(uint32_t int_size, place P) {
+	if (int_size == 1) { return 0; }
+
+	switch (P) {
+		case LEFT_PLACE: return left_placed_pos(int_size);
+		case RIGHT_PLACE: return right_placed_pos(int_size);
+	}
+	return int_size/2;
+}
+
+bool start_left_right(uint32_t int_size, place P) {
+	switch (P) {
+		case LEFT_PLACE: return (int_size%2 == 1 ? false : true);
+		case RIGHT_PLACE: return (int_size%2 == 1 ? true : false);
+	}
+	return true;
+}
+
+/*
+ * t: the rooted tree.
+ * r: the vertex root of the subtree whose interval is to be made
+ * place: where, respect to its parent, has 'r' been placed in the
+ *		interval.
+ *		PLACED_LEFT, PLACED_RIGHT, NOT_PLACED
+ *		The last value is only valid for the root
+ * data: the interval of every vertex.
+ */
+uint32_t make_interval_of(
+	const rtree& t, node r, place r_place,
+	vector<projective_interval>& data
 )
 {
 	const uint32_t d_out = t.out_degree(r);
-	projective_interval& interval = data[r];
-	interval = projective_interval(d_out + 1);
+	const uint32_t r_int_size = get_int_size(r);
 
-	if (d_out == 0) {
+	projective_interval& interval = data[r];
+	interval = projective_interval(r_int_size);
+
+	if (r_int_size == 1) {
 		// base case -- vertex 'r' is a leaf
-		data[r][0] = 0;
-		return;
+		data[r][0] = r;
+		return 0;
 	}
 
+	if (r_int_size == 2) {
+		const node vi = t.get_out_neighbours(r)[0];
+		uint32_t D;
+
+		if (r_place == LEFT_PLACE) {
+			interval[0] = vi;
+			interval[1] = r;
+			D = make_interval_of(t, vi, LEFT_PLACE, data);
+		}
+		else {
+			interval[0] = r;
+			interval[1] = vi;
+			D = make_interval_of(t, vi, RIGHT_PLACE, data);
+		}
+		return D + 1;
+	}
+
+	// -----------------------------
 	// get the sizes of the subtrees
+
+	typedef pair<lal::node,uint32_t> nodesize;
 	uint32_t max_size = 0;
 	vector<nodesize> children(d_out);
 	for (size_t i = 0; i < t.out_degree(r); ++i) {
@@ -83,54 +144,117 @@ void place_subtrees_of(
 		}
 	}
 
-	// sort the sizes
+	// -------------------------
+	// sort the children by size
+
 	typedef vector<nodesize>::iterator it;
 	auto key = [](const nodesize& v) -> size_t {
 		return static_cast<size_t>(v.second);
 	};
 	utils::counting_sort<it, nodesize>
-	(children.begin(), children.end(), max_size, key);
+	(children.begin(), children.end(), max_size + 1, key);
 
-	// place the children
-	size_t leftpos = 0;
-	size_t rightpos = data[r].size() - 1;
-	bool left = true;
-	for (int32_t i = static_cast<int32_t>(d_out); i >= 0; --i) {
+	// ---------------------------
+	// first, choose 'r's position
+
+	const size_t root_pos = pos_in_interval(r_int_size, r_place);
+
+	// and place the root
+	interval[root_pos] = r;
+
+	// ------------------------
+	// then, place the children
+
+	size_t leftpos = root_pos - 1;
+	size_t rightpos = root_pos + 1;
+
+	// left == "start placing children to the left of the root or not"
+	bool left = start_left_right(r_int_size, r_place);
+
+	// size of the intervals from the root to the left end
+	uint32_t acc_size_left = 0;
+	// size of the intervals from the root to the right end
+	uint32_t acc_size_right = 0;
+
+	// total sum of length of edges + the length of the edge from 'r'
+	// to its parent, if any
+	uint32_t D = 0;
+	// total sum of lengths of edges from 'r' to 'vi'
+	uint32_t d = 0;
+
+	// while placing the children calculate the
+	// length of the edge from 'r' to vertex 'vi'
+	for (const auto& p : children) {
+		const node vi = p.first;
+		const uint32_t vi_int_size = get_int_size(vi);
+
 		if (left) {
+			d += acc_size_left;
+
+			// make the interval of 'vi'
+			D += make_interval_of(t, vi, LEFT_PLACE, data);
+
 			left = false;
-			interval[leftpos] = children[i].first;
-			++leftpos;
+			interval[leftpos] = vi;
+			--leftpos;
+			acc_size_left += vi_int_size;
 		}
 		else {
+			d += acc_size_right;
+
+			// make the interval of 'vi'
+			D += make_interval_of(t, vi, RIGHT_PLACE, data);
+
 			left = true;
-			interval[rightpos] = children[i].first;
-			--rightpos;
+			interval[rightpos] = vi;
+			++rightpos;
+			acc_size_right += vi_int_size;
 		}
+
+		// this is key!
+		d += 1;
 	}
 
-	// Place 'r'.
-	// NOTE: 'leftpos' and 'rightpos' must be equal
-	assert(leftpos == rightpos);
-	interval[leftpos] = r;
+	if (r_place == ROOT_PLACE) {
+		D += 0;
+	}
+	else if (r_place == LEFT_PLACE) {
+		D += acc_size_right;
+	}
+	else if (r_place == RIGHT_PLACE) {
+		D += acc_size_left;
+	}
+
+	return D + d;
 }
 
 pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
+	const uint32_t n = t.n_nodes();
+	if (n == 1) {
+		return make_pair(0, linearrgmnt(0,0));
+	}
+
 	assert(t.is_tree());
 	assert(t.has_root());
 	assert(t.rtree_type_valid() and
 		   t.get_rtree_type() == rtree::rtree_type::arborescence);
 	assert(not t.need_recalc_size_subtrees());
 
-	linearrgmnt arr(t.n_nodes());
+	linearrgmnt arr(n);
 
+	// construct the optimal intervals
 	vector<projective_interval> data(t.n_nodes());
-	for (node u = 0; u < t.n_nodes(); ++u) {
-		place_subtrees_of(t, u, data);
-	}
+	uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
 
+	// construct the arrangement
 	utils::put_in_arrangement(t, data, arr);
 
-	const uint32_t D = sum_length_edges(t, arr);
+#if defined DEBUG
+	// check that the value of D has been computed correctly
+	const uint32_t _D = sum_length_edges(t, arr);
+	assert(D == _D);
+#endif
+
 	return make_pair(D, arr);
 }
 
