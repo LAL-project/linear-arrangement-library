@@ -22,33 +22,36 @@
  *
  *  Contact:
  *
- *      Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *      Juan Luis Esteban (esteban@cs.upc.edu)
+ *          LOGPROG: Logics and Programming Research Group
+ *          Office 110, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://www.cs.upc.edu/~esteban/
+ *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
+ *
+ *		Lluís Alemany Puig (lalemany@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
  *
- *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
- *          CQL (Complexity and Quantitative Linguistics Lab)
- *          Office S124, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~rferrericancho/
- *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
- *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/linarr/algorithms_crossings.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/linarr/tree_structure.hpp>
-
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
 #include <lal/linarr/Dmin.hpp>
-#include <lal/linarr/headedness.hpp>
-#include <lal/linarr/tree_structure_class.hpp>
 
-#include <lal/linarr/1level.hpp>
-#include <lal/linarr/2level.hpp>
+// C++ includes
+#include <cassert>
+using namespace std;
+
+namespace lal {
+using namespace graphs;
+
+namespace linarr {
+
+pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC(const ftree& t) {
+	assert(t.is_tree());
+	return make_pair(0, linearrgmnt(0));
+}
+
+} // -- namespace linarr
+} // -- namespace lal
