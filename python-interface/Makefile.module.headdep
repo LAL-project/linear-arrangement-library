@@ -5,7 +5,7 @@ DSE_DPHDRS			= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
 
 TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp
 
-ALG_CROSS_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp
+ALG_C_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_C.hpp
 
 ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
 
@@ -41,10 +41,11 @@ LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/1level_impl.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level_impl.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/algorithms_crossings.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/algorithms_C.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/Dmin.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/tree_structure_class.hpp
@@ -62,7 +63,7 @@ else
 LAL_DPHDRS			=
 DSE_DPHDRS			=
 TREE_STR_DPHDRS		=
-ALG_CROSS_DPHDRS	=
+ALG_C_DPHDRS		=
 ALG_DMIN_DPHDRS		=
 TREE_STR_DPHDRS		=
 DEFS_DPHDRS			=

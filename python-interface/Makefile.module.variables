@@ -1,7 +1,10 @@
 # ----------------
 # MODULE variables
 
-# ** documentation
+# *******************
+# ** documentation **
+# *******************
+
 # "name" represents the name of the module: name=DSE, or name=TST, ...
 # name_MAIN_INT		# module main interface (.i) file (e.g. name.i)
 # name_SUB_INT		# module secondary interface (.i) file (e.g. _name_impl.i)
@@ -35,14 +38,14 @@ _TREE_STR_SO		= _$(TREE_STR_INAME).$(SO_EXT)
 TREE_STR_SO			= $(ARCH_DIR)/$(_TREE_STR_SO)
 
 # -- algorithm_crossings module
-ALG_CROSS_MAIN_INT	= submodules/enums/$(ALG_CROSS_INAME).i
-ALG_CROSS_SUB_INT	= submodules/enums/$(ALG_CROSS_BNAME)_impl.i
-ALG_CROSS_MOD_DEPS	= $(ALG_CROSS_MAIN_INT) $(ALG_CROSS_SUB_INT) $(ALG_CROSS_DPHDRS)
-_ALG_CROSS_PF		= $(ALG_CROSS_INAME).py
-ALG_CROSS_PY_FILE	= $(ARCH_DIR)/$(_ALG_CROSS_PF)
-ALG_CROSS_WRAP		= $(ARCH_DIR)/$(ALG_CROSS_INAME)_wrap
-_ALG_CROSS_SO		= _$(ALG_CROSS_INAME).$(SO_EXT)
-ALG_CROSS_SO		= $(ARCH_DIR)/$(_ALG_CROSS_SO)
+ALG_C_MAIN_INT	= submodules/enums/$(ALG_C_INAME).i
+ALG_C_SUB_INT	= submodules/enums/$(ALG_C_BNAME)_impl.i
+ALG_C_MOD_DEPS	= $(ALG_C_MAIN_INT) $(ALG_C_SUB_INT) $(ALG_C_DPHDRS)
+_ALG_C_PF		= $(ALG_C_INAME).py
+ALG_C_PY_FILE	= $(ARCH_DIR)/$(_ALG_C_PF)
+ALG_C_WRAP		= $(ARCH_DIR)/$(ALG_C_INAME)_wrap
+_ALG_C_SO		= _$(ALG_C_INAME).$(SO_EXT)
+ALG_C_SO		= $(ARCH_DIR)/$(_ALG_C_SO)
 
 # -- algorithm_Dmin module
 ALG_DMIN_MAIN_INT	= submodules/enums/$(ALG_DMIN_INAME).i
@@ -124,7 +127,7 @@ ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
 LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
 LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
 LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DPHDRS)	\
-				  $(TREE_STR_MOD_DEPS) $(ALG_CROSS_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
+				  $(TREE_STR_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
 _LINARR_PF		= $(LINARR_INAME).py
 LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap

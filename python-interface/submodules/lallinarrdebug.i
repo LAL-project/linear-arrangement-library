@@ -2,7 +2,7 @@
 
 %import laldefinitionsdebug.i
 %import enums/laltree_structuredebug.i
-%import enums/lalalgorithms_crossingsdebug.i
+%import enums/lalalgorithms_Cdebug.i
 %import enums/lalalgorithms_Dmindebug.i
 %import lalgraphsdebug.i
 %import lalnumericdebug.i
@@ -13,8 +13,8 @@
 tree_structure = laltree_structuredebug
 del laltree_structuredebug
 
-algorithms_crossings = lalalgorithms_crossingsdebug
-del lalalgorithms_crossingsdebug
+algorithms_C = lalalgorithms_Cdebug
+del lalalgorithms_Cdebug
 
 algorithms_Dmin = lalalgorithms_Dmindebug
 del lalalgorithms_Dmindebug
