@@ -41,6 +41,7 @@
 #pragma once
 
 // C++ includes
+#include <algorithm> // std::swap
 
 namespace lal {
 namespace utils {
