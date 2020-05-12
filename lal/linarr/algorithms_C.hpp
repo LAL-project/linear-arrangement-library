@@ -49,7 +49,7 @@ namespace linarr {
  * This enumeration's values can be used to choose the algorithm the functions
  * @ref n_crossings and @ref n_crossings_list use to compute the number of crossings.
  */
-enum class algorithms_crossings {
+enum class algorithms_C {
 	/// Brute force computation of the number of crossings.
 	/// Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
 	brute_force,

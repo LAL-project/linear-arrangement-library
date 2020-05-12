@@ -29,6 +29,7 @@ INCLUDEPATH += ..
 HEADERS += \
     generate/rand_arrangements.hpp \
     linarr/Dmin.hpp \
+    linarr/algorithms_C.hpp \
     linarr/algorithms_Dmin.hpp \
     linarr/tree_structure.hpp \
     linarr/tree_structure_class.hpp \
@@ -59,7 +60,6 @@ HEADERS += \
     linarr/1level_impl.hpp \
     linarr/2level.hpp \
     linarr/2level_impl.hpp \
-    linarr/algorithms_crossings.hpp \
     linarr/headedness.hpp \
     io/dataset_error.hpp \
     io/treebank_dataset.hpp \

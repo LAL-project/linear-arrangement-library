@@ -41,6 +41,7 @@
 #include <lal/linarr/C.hpp>
 
 // C++ includes
+#include <cassert>
 using namespace std;
 
 namespace lal {
@@ -49,37 +50,39 @@ using namespace graphs;
 namespace linarr {
 
 uint32_t n_crossings
-(const ugraph& g, const linearrgmnt& pi, const algorithms_crossings& A) {
+(const ugraph& g, const linearrgmnt& pi, const algorithms_C& A) {
 	switch (A) {
-	case algorithms_crossings::brute_force:
+	case algorithms_C::brute_force:
 		return __n_crossings_brute_force(g, pi);
-	case algorithms_crossings::dynamic_programming:
+	case algorithms_C::dynamic_programming:
 		return __n_crossings_dyn_prog(g, pi);
-	case algorithms_crossings::ladder:
+	case algorithms_C::ladder:
 		return __n_crossings_ladder(g, pi);
-	case algorithms_crossings::stack_based:
+	case algorithms_C::stack_based:
 		return __n_crossings_stack_based(g, pi);
 	}
 
 	// wrong value of enumeration
+	assert(false);
 	return g.n_edges()*g.n_edges();
 }
 
 vector<uint32_t> n_crossings_list
-(const ugraph& g, const vector<linearrgmnt>& pis, const algorithms_crossings& A)
+(const ugraph& g, const vector<linearrgmnt>& pis, const algorithms_C& A)
 {
 	switch (A) {
-	case algorithms_crossings::brute_force:
+	case algorithms_C::brute_force:
 		return __n_crossings_brute_force_list(g, pis);
-	case algorithms_crossings::dynamic_programming:
+	case algorithms_C::dynamic_programming:
 		return __n_crossings_dyn_prog_list(g, pis);
-	case algorithms_crossings::ladder:
+	case algorithms_C::ladder:
 		return __n_crossings_ladder_list(g, pis);
-	case algorithms_crossings::stack_based:
+	case algorithms_C::stack_based:
 		return __n_crossings_stack_based_list(g, pis);
 	}
 
 	// wrong value of enumeration
+	assert(false);
 	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 

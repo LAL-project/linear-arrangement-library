@@ -40,7 +40,7 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_crossings.hpp>
+#include <lal/linarr/algorithms_C.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 #include <lal/linarr/tree_structure.hpp>
 
