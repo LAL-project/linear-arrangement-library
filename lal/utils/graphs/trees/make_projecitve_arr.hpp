@@ -49,10 +49,11 @@
 namespace lal {
 namespace utils {
 
+// projective_interval[p] = u <-> at position 'p' we find node 'u'
 typedef std::vector<lal::node> projective_interval;
 
 namespace __lal {
-void __put_in_arrangement(
+inline void __put_in_arrangement(
 	const graphs::rtree& T, node r,
 	const std::vector<projective_interval>& data,
 	uint32_t& pos, linearrgmnt& arr
@@ -79,9 +80,9 @@ void __put_in_arrangement(
 		}
 	}
 }
-}
+} // -- namespace __lal
 
-void put_in_arrangement(
+inline void put_in_arrangement(
 	const graphs::rtree& T,
 	const std::vector<projective_interval>& data,
 	linearrgmnt& arr
