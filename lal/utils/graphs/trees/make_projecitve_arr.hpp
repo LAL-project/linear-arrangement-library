@@ -38,78 +38,59 @@
  *
  ********************************************************************/
 
-#include <lal/generate/rand_arrangements.hpp>
+#pragma once
 
 // C++ includes
-#include <algorithm>
-#include <cassert>
-#include <random>
 #include <vector>
-using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
+#include <lal/graphs/rtree.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace utils;
+namespace utils {
 
-namespace generate {
+typedef std::vector<lal::node> projective_interval;
 
-template<class GEN>
-void random_data(
-	const rtree& T, node r,
-	// Its size must be equal to the number of vertices of the tree.
-	vector<projective_interval>& data,
-	// random number generator
-	GEN& gen
+namespace __lal {
+void __put_in_arrangement(
+	const graphs::rtree& T, node r,
+	const std::vector<projective_interval>& data,
+	uint32_t& pos, linearrgmnt& arr
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.out_degree(r);
-	const neighbourhood& neighs = T.get_out_neighbours(r);
+	const uint32_t d_out = T.degree(r);
 
-	// Choose random positions for the intervals corresponding to the
-	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'. Remember: there are d_out+1
-	// possibilities.
-
-	data[r] = vector<node>(d_out + 1);
-
-	// fill interval with the root vertex and its children
-	projective_interval& interval = data[r];
-	interval[0] = r;
-	for (size_t i = 0; i < neighs.size(); ++i) {
-		interval[i+1] = neighs[i];
+	// vertex 'r' is a leaf
+	if (d_out == 0) {
+		arr[r] = pos;
+		pos += 1;
+		return;
 	}
-
-	// shuffle the positions
-	shuffle(interval.begin(), interval.end(), gen);
+	const std::vector<node>& interval = data[r];
+	for (size_t i = 0; i < interval.size(); ++i) {
+		const node vi = interval[i];
+		if (vi == r) {
+			arr[vi] = pos;
+			pos += 1;
+		}
+		else {
+			__put_in_arrangement(T, vi, data, pos, arr);
+		}
+	}
+}
 }
 
-linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
-	if (t.n_nodes() == 1) {
-		return linearrgmnt(1, 0);
-	}
-
-	mt19937 gen;
-	if (seed) {
-		random_device rd;
-		gen = mt19937(rd());
-	}
-
-	// generate random data
-	vector<projective_interval> vdata(t.n_nodes());
-	for (node u = 0; u < t.n_nodes(); ++u) {
-		random_data(t, u, vdata, gen);
-	}
-
-	// construct arrangement
-	linearrgmnt arr(t.n_nodes());
-	put_in_arrangement(t, vdata, arr);
-
-	return arr;
+void put_in_arrangement(
+	const graphs::rtree& T,
+	const std::vector<projective_interval>& data,
+	linearrgmnt& arr
+)
+{
+	uint32_t pos = 0;
+	__lal::__put_in_arrangement(T,T.get_root(),data,pos,arr);
 }
 
-} // -- namespace generate
+
+} // -- namespace utils
 } // -- namespace lal
