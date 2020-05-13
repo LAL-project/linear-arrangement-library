@@ -93,12 +93,13 @@ bool start_left_right(uint32_t int_size, place P) {
  *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
  *		The last value is only valid for the root of the whole tree.
  * data: the interval of every vertex.
+ * 		data[v][p] = u <-> vertex 'u' is at position 'p' of vertex 'v's interval
  *
  * Returns the sum of the length of the edges incident to vertex 'r' plus
- * the length of the edge from 'r' to its parent above the vertices of
- * 'r's interval. Such length is defined as the number of vertices to the
- * left of 'r' if 'r_place' is RIGHT_PLACE, or as the number of vertices to
- * the right of 'r' if 'r_place' is LEFT_PLACE.
+ * the length of the anchor of the edge from 'r' to its parent. Such length
+ * is defined as the number of vertices to the left of 'r' if 'r_place'
+ * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
+ * 'r_place' is LEFT_PLACE.
  */
 uint32_t make_interval_of(
 	const rtree& t, node r, place r_place,
