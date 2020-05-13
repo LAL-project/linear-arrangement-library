@@ -89,11 +89,16 @@ bool start_left_right(uint32_t int_size, place P) {
 /*
  * t: the rooted tree.
  * r: the vertex root of the subtree whose interval is to be made
- * place: where, respect to its parent, has 'r' been placed in the
- *		interval.
- *		PLACED_LEFT, PLACED_RIGHT, NOT_PLACED
- *		The last value is only valid for the root
+ * place: where, respect to its parent, has 'r' been placed in the interval.
+ *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
+ *		The last value is only valid for the root of the whole tree.
  * data: the interval of every vertex.
+ *
+ * Returns the sum of the length of the edges incident to vertex 'r' plus
+ * the length of the edge from 'r' to its parent above the vertices of
+ * 'r's interval. Such length is defined as the number of vertices to the
+ * left of 'r' if 'r_place' is RIGHT_PLACE, or as the number of vertices to
+ * the right of 'r' if 'r_place' is LEFT_PLACE.
  */
 uint32_t make_interval_of(
 	const rtree& t, node r, place r_place,
@@ -107,7 +112,6 @@ uint32_t make_interval_of(
 	interval = projective_interval(r_int_size);
 
 	if (r_int_size == 1) {
-		// base case -- vertex 'r' is a leaf
 		data[r][0] = r;
 		return 0;
 	}
@@ -115,7 +119,6 @@ uint32_t make_interval_of(
 	if (r_int_size == 2) {
 		const node vi = t.get_out_neighbours(r)[0];
 		uint32_t D;
-
 		if (r_place == LEFT_PLACE) {
 			interval[0] = vi;
 			interval[1] = r;
@@ -186,7 +189,6 @@ uint32_t make_interval_of(
 	// length of the edge from 'r' to vertex 'vi'
 	for (const auto& p : children) {
 		const node vi = p.first;
-		const uint32_t vi_int_size = get_int_size(vi);
 
 		if (left) {
 			d += acc_size_left;
@@ -197,7 +199,7 @@ uint32_t make_interval_of(
 			left = false;
 			interval[leftpos] = vi;
 			--leftpos;
-			acc_size_left += vi_int_size;
+			acc_size_left += t.n_nodes_subtree(vi);
 		}
 		else {
 			d += acc_size_right;
@@ -208,7 +210,7 @@ uint32_t make_interval_of(
 			left = true;
 			interval[rightpos] = vi;
 			++rightpos;
-			acc_size_right += vi_int_size;
+			acc_size_right += t.n_nodes_subtree(vi);
 		}
 
 		// this is key!
@@ -248,12 +250,6 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
 
 	// construct the arrangement
 	utils::put_in_arrangement(t, data, arr);
-
-#if defined DEBUG
-	// check that the value of D has been computed correctly
-	const uint32_t _D = sum_length_edges(t, arr);
-	assert(D == _D);
-#endif
 
 	return make_pair(D, arr);
 }
