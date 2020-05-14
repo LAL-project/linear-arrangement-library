@@ -60,7 +60,7 @@ template<class GEN>
 void random_data(
 	const rtree& T, node r,
 	// Its size must be equal to the number of vertices of the tree.
-	vector<projective_interval>& data,
+	vector<vector<node>>& data,
 	// random number generator
 	GEN& gen
 )
@@ -77,7 +77,7 @@ void random_data(
 	data[r] = vector<node>(d_out + 1);
 
 	// fill interval with the root vertex and its children
-	projective_interval& interval = data[r];
+	vector<node>& interval = data[r];
 	interval[0] = r;
 	for (size_t i = 0; i < neighs.size(); ++i) {
 		interval[i+1] = neighs[i];
@@ -99,7 +99,7 @@ linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
 	}
 
 	// generate random data
-	vector<projective_interval> vdata(t.n_nodes());
+	vector<vector<node>> vdata(t.n_nodes());
 	for (node u = 0; u < t.n_nodes(); ++u) {
 		random_data(t, u, vdata, gen);
 	}

@@ -103,14 +103,14 @@ bool start_left_right(uint32_t int_size, place P) {
  */
 uint32_t make_interval_of(
 	const rtree& t, node r, place r_place,
-	vector<projective_interval>& data
+	vector<vector<node>>& data
 )
 {
 	const uint32_t d_out = t.out_degree(r);
 	const uint32_t r_int_size = get_int_size(r);
 
-	projective_interval& interval = data[r];
-	interval = projective_interval(r_int_size);
+	vector<node>& interval = data[r];
+	interval = vector<node>(r_int_size);
 
 	if (r_int_size == 1) {
 		data[r][0] = r;
@@ -244,7 +244,7 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
 	assert(not t.need_recalc_size_subtrees());
 
 	// construct the optimal intervals
-	vector<projective_interval> data(t.n_nodes());
+	vector<vector<node>> data(t.n_nodes());
 	uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement

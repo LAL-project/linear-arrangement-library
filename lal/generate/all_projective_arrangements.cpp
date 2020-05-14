@@ -54,8 +54,7 @@ using namespace utils;
 
 namespace generate {
 
-all_proj_arr::all_proj_arr(const rtree& rT)
-	: m_rT(rT)
+all_proj_arr::all_proj_arr(const rtree& rT) : m_rT(rT)
 {
 	assert(m_rT.is_tree());
 	assert(m_rT.has_root());
@@ -63,14 +62,13 @@ all_proj_arr::all_proj_arr(const rtree& rT)
 		   m_rT.get_rtree_type() == rtree::rtree_type::arborescence);
 	assert(not m_rT.need_recalc_size_subtrees());
 
-
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
 	m_por_vertices = vector<node>();
-
 
 	post_order_vertex_ordering(m_rT.get_root());
 	canonical_interval_tree(m_rT.get_root());
 }
+
 all_proj_arr::~all_proj_arr() {}
 
 bool all_proj_arr::has_next() const {
