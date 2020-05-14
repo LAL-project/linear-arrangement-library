@@ -85,10 +85,18 @@ rtree& rtree::add_edges(const vector<edge>& edges, bool norm) {
 }
 
 bool rtree::find_rtree_type() {
-	//assert(is_tree());
+	assert(is_tree());
 	assert(has_root());
 
 	m_rtree_type_valid = true;
+
+	// assign arborescence type to trees of 1 vertex
+	if (n_nodes() == 1) {
+		// the out-degree of the root is equal to and so it
+		// would be assumed that it is not an arborescence
+		m_rtree_type = rtree_type::arborescence;
+		return true;
+	}
 
 	// First case: the tree is NOT an anti-arborescence.
 	// Do a BFS from the root. Make sure that all leaves

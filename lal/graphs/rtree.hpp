@@ -167,6 +167,7 @@ class rtree : public dgraph, virtual public tree {
 		 * to the leaves. Then, determines the tree's type (see @ref rtree_type)
 		 * according to this orientation.
 		 *
+		 * If the tree has only one vertex the type is @ref rtree_type::arborescence.
 		 * @pre This object is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
 		 * @post Method @ref rtree_type_valid evaluates to true.
