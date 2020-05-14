@@ -26,15 +26,14 @@
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
+ *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Office S124, Omega building
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~rferrericancho/
- *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
+ *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
  
