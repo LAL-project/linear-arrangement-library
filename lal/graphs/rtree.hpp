@@ -188,6 +188,7 @@ class rtree : public dgraph, virtual public tree {
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
 		 * @param arb The type of directed rooted tree.
+		 * @pre Parameter @e t must be a tree (see @ref is_tree).
 		 * @pre Parameter @e arb must be either @ref rtree_type::arborescence
 		 * or @ref rtree_type::anti_arborescence.
 		 * @post Method @ref has_root returns true.

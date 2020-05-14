@@ -130,7 +130,6 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	const uint32_t n = _t.n_nodes();
 
 	assert(_t.is_tree());
-	assert(rtree_type_valid());
 	assert(arb == rtree_type::arborescence or arb == rtree_type::anti_arborescence);
 
 	if (n == 0) {
