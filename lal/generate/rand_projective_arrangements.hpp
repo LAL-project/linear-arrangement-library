@@ -56,6 +56,10 @@ namespace generate {
  * the space of all projective arrangements of @e t.
  * @pre The object @e t must be a tree.
  * @pre The tree @e t must have a root.
+ * @pre The tree @e T must have a valid rooted tree type (see
+ * @ref graphs::rtree::rtree_type_valid()) and it must be either
+ * an @ref graphs::rtree::rtree_type::arborescence or
+ * an @ref graphs::rtree::rtree_type::anti_arborescence.
  */
 linearrgmnt rand_projective_arrgmnt(const graphs::rtree& t, bool seed = true);
 

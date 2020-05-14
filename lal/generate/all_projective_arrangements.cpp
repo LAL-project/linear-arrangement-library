@@ -47,6 +47,10 @@ using namespace std;
 // lal includes
 #include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
 
+#define degree_tree(T, u)										\
+	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+		T.out_degree(u) : T.in_degree(u) )
+
 namespace lal {
 using namespace graphs;
 using namespace utils;
@@ -58,8 +62,8 @@ all_proj_arr::all_proj_arr(const rtree& rT) : m_rT(rT)
 	assert(m_rT.is_tree());
 	assert(m_rT.has_root());
 	assert(m_rT.rtree_type_valid() and
-		   m_rT.get_rtree_type() == rtree::rtree_type::arborescence);
-	assert(not m_rT.need_recalc_size_subtrees());
+		   (m_rT.get_rtree_type() == rtree::rtree_type::arborescence or
+			m_rT.get_rtree_type() == rtree::rtree_type::anti_arborescence));
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
 	m_por_vertices = vector<node>();
@@ -108,7 +112,7 @@ linearrgmnt all_proj_arr::get_arrangement() const {
 /* PRIVATE */
 
 void all_proj_arr::post_order_vertex_ordering(node r) {
-	const uint32_t d_out = m_rT.out_degree(r);
+	const uint32_t d_out = degree_tree(m_rT, r);
 	// leaf
 	if (d_out == 0) {
 		m_por_vertices.push_back(r);
@@ -129,13 +133,13 @@ void all_proj_arr::canonical_interval_tree(node r) {
 }
 
 void all_proj_arr::canonical_interval_single(node u) {
-	const uint32_t d_out = m_rT.out_degree(u);
+	const uint32_t d = degree_tree(m_rT, u);
 	vector<node>& inter_u = m_intervals[u];
 
-	inter_u = vector<node>(d_out + 1);
+	inter_u = vector<node>(d + 1);
 	inter_u[0] = u;
 	const vector<node>& outneighs = m_rT.get_out_neighbours(u);
-	for (uint32_t i = 0; i < d_out; ++i) {
+	for (uint32_t i = 0; i < d; ++i) {
 		const node ui = outneighs[i];
 		inter_u[i + 1] = ui;
 	}

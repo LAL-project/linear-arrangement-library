@@ -49,6 +49,14 @@ using namespace std;
 // lal includes
 #include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
 
+#define degree_vertex(T, u)										\
+	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+		T.out_degree(u) : T.in_degree(u) )
+
+#define neighbours_vertex(T, u)									\
+	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+		T.get_out_neighbours(u) : T.get_in_neighbours(u) )
+
 namespace lal {
 using namespace graphs;
 using namespace utils;
@@ -65,15 +73,15 @@ void random_data(
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.out_degree(r);
-	const neighbourhood& neighs = T.get_out_neighbours(r);
+	const uint32_t deg = degree_vertex(T, r);
+	const neighbourhood& neighs = neighbours_vertex(T, r);
 
 	// Choose random positions for the intervals corresponding to the
 	// vertex 'r' and to the trees rooted at 'r's children. These choices
 	// have to be made with respect to 'r'. Remember: there are d_out+1
 	// possibilities.
 
-	data[r] = vector<node>(d_out + 1);
+	data[r] = vector<node>(deg + 1);
 
 	// fill interval with the root vertex and its children
 	vector<node>& interval = data[r];
@@ -87,6 +95,12 @@ void random_data(
 }
 
 linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
+	assert(t.is_tree());
+	assert(t.has_root());
+	assert(t.rtree_type_valid() and
+		   (t.get_rtree_type() == rtree::rtree_type::arborescence or
+			t.get_rtree_type() == rtree::rtree_type::anti_arborescence));
+
 	if (t.n_nodes() == 1) {
 		return linearrgmnt(1, 0);
 	}
