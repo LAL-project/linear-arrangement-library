@@ -82,16 +82,16 @@ inline void __put_in_arrangement(
 }
 } // -- namespace __lal
 
-inline void put_in_arrangement(
+inline linearrgmnt put_in_arrangement(
 	const graphs::rtree& T,
-	const std::vector<projective_interval>& data,
-	linearrgmnt& arr
+	const std::vector<projective_interval>& data
 )
 {
+	linearrgmnt arr(T.n_nodes());
 	uint32_t pos = 0;
 	__lal::__put_in_arrangement(T, T.get_root(), data, pos, arr);
+	return arr;
 }
-
 
 } // -- namespace utils
 } // -- namespace lal

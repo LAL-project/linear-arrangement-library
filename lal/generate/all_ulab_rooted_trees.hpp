@@ -121,7 +121,7 @@ class all_ulab_rooted_trees {
 		bool has_next() const;
 
 		/**
-		 * @brief Generates next tree.
+		 * @brief Generates the next tree.
 		 *
 		 * Modifies the internal state so that the next tree
 		 * can be retrieved using method @ref get_tree.

@@ -243,14 +243,12 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
 		   t.get_rtree_type() == rtree::rtree_type::arborescence);
 	assert(not t.need_recalc_size_subtrees());
 
-	linearrgmnt arr(n);
-
 	// construct the optimal intervals
 	vector<projective_interval> data(t.n_nodes());
 	uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
-	utils::put_in_arrangement(t, data, arr);
+	linearrgmnt arr = put_in_arrangement(t, data);
 
 	return make_pair(D, arr);
 }

@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/generate/rand_arrangements.hpp>
+#include <lal/generate/rand_projective_arrangements.hpp>
 
 // C++ includes
 #include <algorithm>
@@ -104,11 +104,7 @@ linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
 		random_data(t, u, vdata, gen);
 	}
 
-	// construct arrangement
-	linearrgmnt arr(t.n_nodes());
-	put_in_arrangement(t, vdata, arr);
-
-	return arr;
+	return put_in_arrangement(t, vdata);
 }
 
 } // -- namespace generate
