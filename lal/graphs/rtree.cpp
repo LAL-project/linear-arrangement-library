@@ -127,11 +127,14 @@ bool rtree::find_rtree_type() {
 }
 
 void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
+	const uint32_t n = _t.n_nodes();
+
 	assert(_t.is_tree());
+	assert(rtree_type_valid());
 	assert(arb == rtree_type::arborescence or arb == rtree_type::anti_arborescence);
 
-	if (_t.n_nodes() == 0) {
-		_init(0);
+	if (n == 0) {
+		rtree::_init(0);
 		set_root(0);
 		return;
 	}
@@ -140,7 +143,9 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	vector<edge> dir_edges(_t.n_edges());
 	auto it_dir_edges = dir_edges.begin();
 
-	// build list of directed edges using a breadth-first search
+	// Build list of directed edges using a breadth-first search.
+	// This is needed to make the edges point in the direction
+	// indicated by the rooted tree type.
 	BFS<ftree> bfs(_t);
 	if (arb == rtree_type::arborescence) {
 		bfs.set_process_neighbour(
@@ -165,31 +170,29 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	bfs.start_at(r);
 
 	// construct rooted tree
-	rtree::_init(_t.n_nodes());
+	rtree::_init(n);
 
 	// set root and add edges
 	set_root(r);
 	add_edges(dir_edges);
 
 	// set directed tree type
-	m_rtree_type = arb;
+	set_rtree_type(arb);
 }
 
-void rtree::recalc_size_subtrees(bool rev) {
+void rtree::recalc_size_subtrees() {
 	assert(is_tree());
 	assert(has_root());
-	if (not rev) {
-		assert(rtree_type_valid());
-		assert(get_rtree_type() == rtree_type::arborescence);
-	}
+	assert(rtree_type_valid());
+	assert(get_rtree_type() == rtree_type::arborescence or
+		   get_rtree_type() == rtree_type::anti_arborescence);
 
 	m_recalc_size_subtrees = false;
-	vector<bool> vis(n_nodes(), false);
-	if (rev) {
-		utils::get_size_subtrees_follow_reversed(*this, get_root(), vis, m_size_subtrees);
+	if (get_rtree_type() == rtree_type::anti_arborescence) {
+		utils::get_size_subtrees_anti_arborescence(*this, get_root(), m_size_subtrees);
 	}
 	else {
-		utils::get_size_subtrees(*this, get_root(), vis, m_size_subtrees);
+		utils::get_size_subtrees_arborescence(*this, get_root(), m_size_subtrees);
 	}
 }
 
@@ -284,30 +287,38 @@ bool rtree::need_recalc_size_subtrees() const {
 	return m_recalc_size_subtrees;
 }
 
-vector<edge> rtree::get_edges_subtree(node r, bool relab) const {
+vector<edge> rtree::get_edges_subtree(node u, bool relab) const {
 	// if the tree does not have edges, return an empty list.
 	if (n_nodes() <= 1) { return vector<edge>(); }
 
-	assert(has_node(r));
+	assert(is_tree());
+	assert(has_root());
+	assert(rtree_type_valid());
+	assert(get_rtree_type() == rtree_type::arborescence or
+		   get_rtree_type() == rtree_type::anti_arborescence);
 
-	const auto n = n_nodes();
+	assert(has_node(u));
 
-	// parent of node 'r'
-	bool r_parent_set = false;
-	node r_parent = n;
+	const uint32_t n = n_nodes();
+	const bool is_anti = get_rtree_type() == rtree_type::anti_arborescence;
+
+	// parent of node 'u'
+	bool u_parent_set = false;
+	node u_parent = n;
 
 	BFS<rtree> bfs(*this);
 
 	// -----------------------
-	// find parent of node r
-	if (r != get_root()) {
-		bfs.set_use_rev_edges(true);
-		bfs.set_terminate( [&](const auto&, node) { return r_parent_set; } );
+	// find parent of node u
+
+	if (u != get_root()) {
+		bfs.set_use_rev_edges(is_anti);
+		bfs.set_terminate( [&](const auto&, node) { return u_parent_set; } );
 		bfs.set_process_neighbour(
 		[&](const auto&, node s, node t, bool) -> void {
-			if (t == r) {
-				r_parent = s;
-				r_parent_set = true;
+			if (t == u) {
+				u_parent = s;
+				u_parent_set = true;
 			}
 		}
 		);
@@ -319,18 +330,18 @@ vector<edge> rtree::get_edges_subtree(node r, bool relab) const {
 
 	// reset the bfs
 	bfs.reset();
-	bfs.set_use_rev_edges(true);
+	bfs.set_use_rev_edges(is_anti);
 
 	// stop the bfs from going further than 'r''s parent
 	// in case such parent exists
-	if (r_parent_set) {
-		bfs.set_visited(r_parent);
+	if (u_parent_set) {
+		bfs.set_visited(u_parent);
 	}
 
 	// data structures for node relabelling
 	vector<node> labels(n_nodes(), n);
 	// we need node 'r' to be relabelled to 0.
-	labels[r] = 0;
+	labels[u] = 0;
 	node next_label = 1;
 
 	// retrieve edges and relabel them at the same time
@@ -372,21 +383,25 @@ vector<edge> rtree::get_edges_subtree(node r, bool relab) const {
 		}
 		);
 	}
-	// start the bfs again, this time at 'r'
-	bfs.start_at(r);
+	// start the bfs again, this time at 'u'
+	bfs.start_at(u);
 	return es;
 }
 
-rtree rtree::get_subtree(node r) const {
+rtree rtree::get_subtree(node u) const {
 	// if the tree does not have edges, return a copy.
 	if (n_nodes() <= 1) { return *this; }
 
-	assert(has_root());
 	assert(is_tree());
-	assert(has_node(r));
+	assert(has_root());
+	assert(rtree_type_valid());
+	assert(get_rtree_type() == rtree_type::arborescence or
+		   get_rtree_type() == rtree_type::anti_arborescence);
+
+	assert(has_node(u));
 
 	// retrieve the list of edges with their nodes relabelled
-	const vector<edge> es = get_edges_subtree(r, true);
+	const vector<edge> es = get_edges_subtree(u, true);
 	// number of nodes of subtree
 	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
 

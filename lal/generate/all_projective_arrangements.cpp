@@ -61,9 +61,9 @@ all_proj_arr::all_proj_arr(const rtree& rT) : m_rT(rT)
 {
 	assert(m_rT.is_tree());
 	assert(m_rT.has_root());
-	assert(m_rT.rtree_type_valid() and
-		   (m_rT.get_rtree_type() == rtree::rtree_type::arborescence or
-			m_rT.get_rtree_type() == rtree::rtree_type::anti_arborescence));
+	assert(m_rT.rtree_type_valid());
+	assert(m_rT.get_rtree_type() == rtree::rtree_type::arborescence or
+		   m_rT.get_rtree_type() == rtree::rtree_type::anti_arborescence);
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
 	m_por_vertices = vector<node>();

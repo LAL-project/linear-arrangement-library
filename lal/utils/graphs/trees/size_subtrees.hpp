@@ -60,24 +60,14 @@ namespace utils {
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
-inline void get_size_subtrees_follow_reversed(
-	const graphs::rtree& t, node r,
-	std::vector<bool>& vis, std::vector<uint32_t>& sizes
+inline void get_size_subtrees_anti_arborescence(
+	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
 	sizes[r] = 1;
-	vis[r] = true;
-	for (node u : t.get_neighbours(r)) {
-		if (not vis[u]) {
-			get_size_subtrees_follow_reversed(t, u, vis, sizes);
-			sizes[r] += sizes[u];
-		}
-	}
 	for (node u : t.get_in_neighbours(r)) {
-		if (not vis[u]) {
-			get_size_subtrees_follow_reversed(t, u, vis, sizes);
-			sizes[r] += sizes[u];
-		}
+		get_size_subtrees_anti_arborescence(t, u, sizes);
+		sizes[r] += sizes[u];
 	}
 }
 
@@ -93,18 +83,14 @@ inline void get_size_subtrees_follow_reversed(
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  */
-inline void get_size_subtrees(
-	const graphs::rtree& t, node r,
-	std::vector<bool>& vis, std::vector<uint32_t>& sizes
+inline void get_size_subtrees_arborescence(
+	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
 	sizes[r] = 1;
-	vis[r] = true;
 	for (node u : t.get_neighbours(r)) {
-		if (not vis[u]) {
-			get_size_subtrees(t, u, vis, sizes);
-			sizes[r] += sizes[u];
-		}
+		get_size_subtrees_arborescence(t, u, sizes);
+		sizes[r] += sizes[u];
 	}
 }
 

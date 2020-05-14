@@ -170,9 +170,9 @@ class rtree : public dgraph, virtual public tree {
 		 * @pre This object is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
 		 * @post Method @ref rtree_type_valid evaluates to true.
-		 * @return Returns true if the type is correct (either rtree_type::arborescence
-		 * or rtree_type::anti_arborescence). Returns false if the type is none
-		 * of those two.
+		 * @return Returns true if the type is either @ref rtree_type::arborescence
+		 * or rtree_type::anti_arborescence. Returns false if the type is
+		 * @ref rtree_type::none.
 		 */
 		bool find_rtree_type();
 
@@ -202,16 +202,18 @@ class rtree : public dgraph, virtual public tree {
 		 *
 		 * The method can traverse the directed tree using reversed edges, i.e.,
 		 * from a root node 's' the method can follow out-edges (of the form
-		 * s->t) and in-edges (of the form t->s). If parameter @e rev is true
-		 * then the method uses both.
-		 * @param rev Should reversed edges be used?
+		 * s->t) and in-edges (of the form t->s). If the tree is an
+		 * @ref rtree_type::anti_arborescence the method follows reversed edges.
+		 * If the tree is an @ref rtree_type::arborescence the method follows
+		 * "regular" edges.
 		 * @pre The object must be a tree (see @ref is_tree()).
 		 * @pre The tree must have a root (see @ref has_root()).
 		 * @pre In case @e rev is true, method @ref rtree_type_valid must
-		 * return true and the tree must be an @ref rtree_type::arborescence.
+		 * return true and the tree must be an @ref rtree_type::arborescence
+		 * or an an @ref rtree_type::anti_arborescence.
 		 * @post Method @ref need_recalc_size_subtrees returns false.
 		 */
-		void recalc_size_subtrees(bool rev = true);
+		void recalc_size_subtrees();
 
 		/* SETTERS */
 
@@ -287,12 +289,12 @@ class rtree : public dgraph, virtual public tree {
 		bool need_recalc_size_subtrees() const;
 
 		/**
-		 * @brief Retrieve the edges of the subtree rooted at @e r.
+		 * @brief Retrieve the edges of the subtree rooted at @e u.
 		 *
 		 * The list of edges returned contains labels that depend on the parameter
 		 * @e relab. If @e relab is true then the nodes are relabelled to
-		 * numbers in \f$[0, n_r)\f$, where \f$n_r\f$ is the number of nodes
-		 * of the subtree rooted at @e r, rather than keeping the original
+		 * numbers in \f$[0, n_u)\f$, where \f$n_u\f$ is the number of nodes
+		 * of the subtree rooted at @e u, rather than keeping the original
 		 * labelling of numbers in \f$[0,n)\f$, where @e n is the number of
 		 * nodes of the tree.
 		 *
@@ -312,29 +314,35 @@ class rtree : public dgraph, virtual public tree {
 		 * first-node-to-second-node.
 		 *
 		 * Regardless of the directedness of the graph, this method can be seen
-		 * as a way of relabelling nodes when @e r is the root of the tree
+		 * as a way of relabelling nodes when @e u is the root of the tree
 		 * and @e relab is true.
-		 * @param r Root node of the subtree.
+		 * @param u Root node of the subtree.
 		 * @param relab Should the nodes be relabelled?
 		 * @return Returns a list of edges.
-		 * @pre This graph is a tree (see @ref is_tree).
-		 * @pre This tree has a root (see @ref has_root).
+		 * @pre The object must be a tree (see @ref is_tree()).
+		 * @pre The tree must have a root (see @ref has_root()).
+		 * @pre In case @e rev is true, method @ref rtree_type_valid must
+		 * return true and the tree must be an @ref rtree_type::arborescence
+		 * or an an @ref rtree_type::anti_arborescence.
 		 * @post Whenever @e relab is true, the label of the first node of
 		 * the first edge is guaranteed to be node '0'.
 		 */
-		std::vector<edge> get_edges_subtree(node r, bool relab = false) const;
+		std::vector<edge> get_edges_subtree(node u, bool relab = false) const;
 
 		/**
-		 * @brief Retrieve the subtree rooted at node r.
-		 * @param r Root of the subtree.
+		 * @brief Retrieve the subtree rooted at node @e u.
+		 * @param u Root of the subtree.
 		 * @return Returns a tree containing the nodes of the subtree
-		 * rooted at node @e r.
-		 * @pre This graph is a tree (see @ref is_tree).
-		 * @pre This tree has a root (see @ref has_root).
+		 * rooted at node @e u.
+		 * @pre The object must be a tree (see @ref is_tree()).
+		 * @pre The tree must have a root (see @ref has_root()).
+		 * @pre In case @e rev is true, method @ref rtree_type_valid must
+		 * return true and the tree must be an @ref rtree_type::arborescence
+		 * or an an @ref rtree_type::anti_arborescence.
 		 * @post The subtree keeps the orientation of the edges in the original
 		 * tree.
 		 */
-		rtree get_subtree(node r) const;
+		rtree get_subtree(node u) const;
 
 		/// Converts this rooted tree into a free tree (see class @ref tree).
 		ftree to_undirected() const;
