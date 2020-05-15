@@ -95,8 +95,9 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 
 		/**
 		 * @brief Generates uniformly at random a free labelled tree.
+		 * @return Returns a labelled tree generated uniformly at random. The
+		 * tree is a an @ref graphs::rtree::rtree_type::arborescence rooted at vertex 0.
 		 * @pre The generator must have been initialised.
-		 * @return Returns a labelled tree generated uniformly at random.
 		 */
 		graphs::rtree make_rand_tree();
 };

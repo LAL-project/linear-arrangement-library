@@ -51,8 +51,9 @@
  * 
  * The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank dataset processing. We offer a class that automatically processes a dataset and computes several metrics based on the capabilities of the library. See class @ref lal::io::treebank_processor for details. We also provide classes for custom processing of treebanks (see @ref lal::io::treebank_dataset and @ref lal::io::treebank_reader).
  * 
- * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include
- * - the sum of edge lengths (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
+ * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
+ * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
+ * - calculation of optimal arrangements of free and rooted trees (see @ref lal::linarr::compute_Dmin(const graphs::rtree&, const algorithms_Dmin&) and @ref lal::linarr::compute_Dmin(const graphs::ftree&, const algorithms_Dmin&)); we have implemented several algorithms (see @ref lal::linarr::algorithms_Dmin),
  * - the number of crossings (see @ref lal::linarr::n_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
  * - any moment of the degree of the vertices of a graph (@ref lal::properties::mmt_degree),
  * - the mean dependency distance (see @ref lal::linarr::MDD),
@@ -64,13 +65,15 @@
  * Other algorithms, also gathered in the same namespaces, offer the computation of optimal arrangements. For example, it is offered
  * - the computation of the minimal arrangements with respect to the sum of edge lengths (see @ref lal::linarr::compute_Dmin), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin).
  * 
- * As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the @ref lal::generate namespace. We have implemented existing techniques for enumerating all
- * - labelled/unlabelled free trees,
- * - unlabelled rooted trees,
+ * As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the @ref lal::generate namespace. We have implemented existing techniques (cited accordingly) or made or own to enumerate
+ * - all labelled/unlabelled free trees,
+ * - all unlabelled rooted trees,
+ * - all projective arrangements of rooted trees,
  * 
- * for generating uniformly at random,
+ * and to generate uniformly at random
  * 
- * - labelled/unlabelled free/rooted trees.
+ * - labelled/unlabelled free/rooted trees,
+ * - projective arrangements of rooted trees.
  * 
  * The documentation of each class include usage examples.
  * 
@@ -103,6 +106,22 @@
  * t.add_edge(0,1).add_edge(0,3).add_edge(0,2);
  * cout << t << endl;
  * @endcode
+ * which is
+@verbatim
+0: 1 2 3
+1: 0
+2: 0
+3: 0
+@endverbatim
+ * The output is easy to interpret: the first line indicates the nodes are incident to vertex 0, the second line indicates the nodes incident to vertex 1, and so on. Without normalisation, the output is
+@verbatim
+0: 1 3 2
+1: 0
+2: 0
+3: 0
+@endverbatim
+ * where only the first line changes.
+ * 
  * Such normalisation is required by some of the algorithms in this library. Without proper normalisation, the algorithms are not likely to compute correct values. The parameter that governs the graphs' normalisation is called the normalisation parameter.
  * 
  * The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see @ref lal::graphs::dgraph::in_degree) and in-neighbours (see @ref lal::graphs::dgraph::get_in_neighbours).
@@ -157,7 +176,7 @@
  * }
  * t.add_edges(e);
  * @endcode
- * Similar reasoning should be applied to the deletion of edges.
+ * A similar reasoning should be applied to the deletion of edges.
  * 
  * On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
  * @code

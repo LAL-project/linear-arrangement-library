@@ -54,12 +54,7 @@ namespace generate {
  * @param seed Use a random seed for the random number generator.
  * @return Returns a projective arrangement chosen uniformly at random from
  * the space of all projective arrangements of @e t.
- * @pre The object @e t must be a tree.
- * @pre The tree @e t must have a root.
- * @pre The tree @e T must have a valid rooted tree type (see
- * @ref graphs::rtree::rtree_type_valid()) and it must be either
- * an @ref graphs::rtree::rtree_type::arborescence or
- * an @ref graphs::rtree::rtree_type::anti_arborescence.
+ * @pre The object @e t must be a rooted tree (see @ref graphs::rtree::is_rooted_tree).
  */
 linearrgmnt rand_projective_arrgmnt(const graphs::rtree& t, bool seed = true);
 

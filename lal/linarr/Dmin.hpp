@@ -57,10 +57,7 @@ namespace linarr {
  * This function implements Gildea and Temperley's algorithm published in \cite Gildea2007a.
  *
  * @param t Input rooted tree.
- * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
- * @pre The tree must have a root (see @ref graphs::rtree::has_root).
- * @pre The tree must be an arborescence (see
- * @ref graphs::rtree::rtree_type_valid and @ref graphs::rtree::get_rtree_type).
+ * @pre The object @e t must be a valid rooted tree (see @ref graphs::rtree::is_rooted_tree).
  * @pre The tree must have the size of its subtrees calculated (see
  * @ref graphs::rtree::need_recalc_size_subtrees).
  */
@@ -95,7 +92,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS
 std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC
 (const graphs::ftree& t);
 
-/* -- */
+/* -------------------------------------------------------------------------- */
 
 /**
  * @brief Computes the minimum value of \f$D\f$ in rooted trees.

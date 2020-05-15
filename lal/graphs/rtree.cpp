@@ -83,17 +83,29 @@ rtree& rtree::add_edges(const vector<edge>& edges, bool norm) {
 	return *this;
 }
 
+rtree& rtree::remove_edge(node s, node t, bool norm) {
+	dgraph::remove_edge(s,t, norm);
+	m_rtree_type_valid = false;
+	m_need_recalc_size_subtrees = true;
+	return *this;
+}
+
+rtree& rtree::remove_edges(const std::vector<edge>& edges, bool norm) {
+	dgraph::remove_edges(edges, norm);
+	m_rtree_type_valid = false;
+	m_need_recalc_size_subtrees = true;
+	return *this;
+}
+
 bool rtree::find_rtree_type() {
 	assert(is_tree());
 	assert(has_root());
-
-	m_rtree_type_valid = true;
 
 	// assign arborescence type to trees of 1 vertex
 	if (n_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
-		m_rtree_type = rtree_type::arborescence;
+		set_rtree_type(rtree_type::arborescence);
 		return true;
 	}
 
@@ -106,7 +118,8 @@ bool rtree::find_rtree_type() {
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		m_rtree_type = (bfs.all_visited() ?
+		set_rtree_type(
+			bfs.all_visited() ?
 			rtree_type::arborescence : rtree_type::none);
 	}
 	else {
@@ -119,7 +132,8 @@ bool rtree::find_rtree_type() {
 				all_one = false;
 			}
 		}
-		m_rtree_type = (all_one ?
+		set_rtree_type(
+			all_one ?
 			rtree_type::anti_arborescence : rtree_type::none);
 	}
 
@@ -135,6 +149,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	if (n == 0) {
 		rtree::_init(0);
 		set_root(0);
+		set_rtree_type(arb);
 		return;
 	}
 
@@ -180,13 +195,9 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 }
 
 void rtree::recalc_size_subtrees() {
-	assert(is_tree());
-	assert(has_root());
-	assert(rtree_type_valid());
-	assert(get_rtree_type() == rtree_type::arborescence or
-		   get_rtree_type() == rtree_type::anti_arborescence);
+	assert(is_rooted_tree());
 
-	m_recalc_size_subtrees = false;
+	m_need_recalc_size_subtrees = false;
 	if (get_rtree_type() == rtree_type::anti_arborescence) {
 		utils::get_size_subtrees_anti_arborescence(*this, get_root(), m_size_subtrees);
 	}
@@ -206,7 +217,7 @@ void rtree::set_root(node r) {
 		m_root = r;
 	}
 	m_has_root = true;
-	m_recalc_size_subtrees = true;
+	m_need_recalc_size_subtrees = true;
 	m_rtree_type_valid = false;
 }
 
@@ -264,7 +275,14 @@ bool rtree::can_add_edges(const std::vector<edge>& edges) const {
 
 bool rtree::is_rooted() const { return true; }
 
+bool rtree::is_rooted_tree() const {
+	return is_tree() and has_root() and rtree_type_valid() and
+	(get_rtree_type() == rtree_type::arborescence or
+	 get_rtree_type() == rtree_type::anti_arborescence);
+}
+
 rtree::rtree_type rtree::get_rtree_type() const {
+	assert(rtree_type_valid());
 	return m_rtree_type;
 }
 bool rtree::rtree_type_valid() const {
@@ -283,19 +301,14 @@ uint32_t rtree::n_nodes_subtree(node u) const {
 }
 
 bool rtree::need_recalc_size_subtrees() const {
-	return m_recalc_size_subtrees;
+	return m_need_recalc_size_subtrees;
 }
 
 vector<edge> rtree::get_edges_subtree(node u, bool relab) const {
 	// if the tree does not have edges, return an empty list.
 	if (n_nodes() <= 1) { return vector<edge>(); }
 
-	assert(is_tree());
-	assert(has_root());
-	assert(rtree_type_valid());
-	assert(get_rtree_type() == rtree_type::arborescence or
-		   get_rtree_type() == rtree_type::anti_arborescence);
-
+	assert(is_rooted_tree());
 	assert(has_node(u));
 
 	const uint32_t n = n_nodes();
@@ -422,7 +435,7 @@ void rtree::_init(uint32_t n) {
 	dgraph::_init(n);
 	m_size_subtrees = vector<uint32_t>(n);
 	m_rtree_type_valid = false;
-	m_recalc_size_subtrees = true;
+	m_need_recalc_size_subtrees = true;
 }
 
 void rtree::_clear() {
@@ -430,7 +443,7 @@ void rtree::_clear() {
 	dgraph::_clear();
 	m_size_subtrees.clear();
 	m_rtree_type_valid = false;
-	m_recalc_size_subtrees = true;
+	m_need_recalc_size_subtrees = true;
 }
 
 } // -- namespace graphs

@@ -124,22 +124,21 @@ void all_ulab_rooted_trees::next() {
 
 rtree all_ulab_rooted_trees::get_tree() const {
 	if (m_n == 0) {
-		return rtree(0);
+		return rtree(ftree(0), 0, rtree::rtree_type::arborescence);
 	}
 	if (m_n == 1) {
-		rtree rT(1);
-		rT.set_root(0);
-		return rT;
+		return rtree(ftree(1), 0, rtree::rtree_type::arborescence);
 	}
 	if (m_n == 2) {
 		rtree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
+		rT.set_rtree_type(rtree::rtree_type::arborescence);
 		return rT;
 	}
 
 	ftree t = utils::level_sequence_to_tree(m_L, m_n);
-	return rtree(t, 0);
+	return rtree(t, 0, rtree::rtree_type::arborescence);
 }
 
 } // -- namespace generate

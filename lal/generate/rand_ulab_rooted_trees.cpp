@@ -81,8 +81,8 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 }
 
 rtree rand_ulab_rooted_trees::make_rand_tree() {
-	if (m_n == 1) {
-		return rtree(ftree(1), 0, rtree::rtree_type::arborescence);
+	if (m_n <= 1) {
+		return rtree(ftree(m_n), 0, rtree::rtree_type::arborescence);
 	}
 
 	// call with an invalid index for the 'root of the last tree added'

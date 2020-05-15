@@ -95,11 +95,7 @@ void random_data(
 }
 
 linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
-	assert(t.is_tree());
-	assert(t.has_root());
-	assert(t.rtree_type_valid());
-	assert(t.get_rtree_type() == rtree::rtree_type::arborescence or
-		   t.get_rtree_type() == rtree::rtree_type::anti_arborescence);
+	assert(t.is_rooted_tree());
 
 	if (t.n_nodes() == 1) {
 		return linearrgmnt(1, 0);

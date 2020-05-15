@@ -47,8 +47,8 @@ namespace linarr {
  * length of the edges \f$D\f$.
  *
  * This enumeration's values are used to choose the algorithm the functions
- * @ref compute_Dmin(const rtree&, const algorithms_Dmin&) and
- * @ref compute_Dmin(const ftree&, const algorithms_Dmin&)
+ * @ref compute_Dmin(const graphs::rtree&, const algorithms_Dmin&) and
+ * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&)
  * use to compute the minimum value of the sum of the length the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
@@ -64,7 +64,7 @@ enum class algorithms_Dmin {
 	 * This option uses Gildea and Temperley's algorithm published in \cite Gildea2007a.
      *
 	 * This algorithm is allowed only in function
-	 * @ref linarr::compute_Dmin(const graphs::rtree&, const algorithms_Dmin&),
+	 * @ref compute_Dmin(const graphs::rtree&, const algorithms_Dmin&),
 	 * i.e., in the function that accepts rooted trees.
      */
     Projective,
@@ -82,7 +82,7 @@ enum class algorithms_Dmin {
      * in \cite Esteban2017a.
 	 *
 	 * This algorithm is allowed only in function
-	 * @ref linarr::compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
+	 * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
 	 * i.e., in the function that accepts free trees.
      */
     Unconstrained_YS,
@@ -95,7 +95,7 @@ enum class algorithms_Dmin {
      * This option uses Fan Chung's algorithm published in \cite Chung1984a.
 	 *
 	 * This algorithm is allowed only in function
-	 * @ref linarr::compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
+	 * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
 	 * i.e., in the function that accepts free trees.
      */
     Unconstrained_FC

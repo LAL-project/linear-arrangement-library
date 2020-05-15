@@ -75,12 +75,8 @@ class all_proj_arr {
 		/**
 		 * @brief Constructor with constant reference to a rooted tree.
 		 * @param T Rooted tree
-		 * @pre The object @e T must be a tree.
-		 * @pre The tree @e T must have a root.
-		 * @pre The tree @e T must have a valid rooted tree type (see
-		 * @ref graphs::rtree::rtree_type_valid()) and it must be either
-		 * an @ref graphs::rtree::rtree_type::arborescence or
-		 * an @ref graphs::rtree::rtree_type::anti_arborescence.
+		 * @pre The object @e T is a valid rooted tree (see
+		 * @ref graphs::rtree::is_rooted_tree).
 		 */
 		all_proj_arr(const graphs::rtree& T);
 		/// Default destructor.

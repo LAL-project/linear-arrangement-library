@@ -66,8 +66,7 @@ inline uint32_t __headedness_rational(const dgraph& g, const linearrgmnt& pi) {
 rational headedness_rational(const dgraph& g, const linearrgmnt& pi) {
 	const uint32_t etr = utils::call_with_empty_arrangement(__headedness_rational, g, pi);
 	// avoid warning conversion
-	rational h = rational_from_ui(etr, g.n_edges());
-	return h;
+	return rational_from_ui(etr, g.n_edges());
 }
 
 double headedness(const dgraph& g, const vector<node>& arr) {
