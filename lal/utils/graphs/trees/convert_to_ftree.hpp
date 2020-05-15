@@ -37,55 +37,53 @@
  *
  ********************************************************************/
  
-#include <lal/generate/rand_lab_free_trees.hpp>
+#pragma once
 
 // C++ includes
-using namespace std;
+#include <vector>
 
 // lal includes
-#include <lal/utils/graphs/trees/convert_to_ftree.hpp>
+#include <lal/graphs/ftree.hpp>
 
 namespace lal {
-using namespace graphs;
+namespace utils {
 
-namespace generate {
+/*
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
+ * Examples of level sequences:
+ * -- linear tree of n nodes:
+ *		0 1 2 3 4 ... (n-1) n
+ * -- star tree of n nodes
+ *		0 1 2 2 2 .... 2 2
+ *        |------------| > (n-1) two's
+ *
+ * @param L The level sequence, in preorder.
+ * @param n Number of nodes of the tree.
+ *
+ * @pre n >= 2.
+ * @pre The size of L is exactly @e n + 1.
+ * @pre The first value of a sequence must be a zero.
+ * @pre The second value of a sequence must be a one.
+ *
+ * @return Returns the tree built with the sequence level @e L.
+ */
+graphs::ftree level_sequence_to_tree
+(const std::vector<uint32_t>& L, uint32_t n);
 
-rand_lab_free_trees::rand_lab_free_trees() { }
-rand_lab_free_trees::rand_lab_free_trees(uint32_t _n, uint32_t seed) {
-	init(_n, seed);
-}
-rand_lab_free_trees::~rand_lab_free_trees() { }
+/*
+ * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
+ *
+ * For details on Prüfer sequences, see \cite Pruefer1918a.
+ *
+ * The algorithm used to decode the sequence is the one presented in
+ * \cite Alonso1995a.
+ * @param S The Prufer sequence sequence.
+ * @param n Number of nodes of the tree.
+ * @return Returns the tree built with @e L.
+ */
+graphs::ftree Prufer_sequence_to_tree
+(const std::vector<uint32_t>& S, uint32_t n);
 
-void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
-	m_n = _n;
-
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
-	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
-
-	if (m_n <= 2) { return; }
-
-	m_seq = vector<uint32_t>(m_n - 2);
-}
-
-ftree rand_lab_free_trees::make_rand_tree() {
-	if (m_n <= 1) { return ftree(m_n); }
-	if (m_n == 2) {
-		ftree t(2);
-		t.add_edge(0,1);
-		return t;
-	}
-
-	for (uint32_t i = 0; i < m_n - 2; ++i) {
-		m_seq[i] = m_unif(m_gen);
-	}
-	return utils::Prufer_sequence_to_tree(m_seq, m_n);
-}
-
-} // -- namespace generate
+} // -- namespace utils
 } // -- namespace lal

@@ -36,41 +36,17 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
 #include <vector>
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
 #include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace utils {
-
-/*
- * @brief Converts the level sequence of a tree into a graph structure.
- *
- * Examples of level sequences:
- * -- linear tree of n nodes:
- *		0 1 2 3 4 ... (n-1) n
- * -- star tree of n nodes
- *		0 1 2 2 2 .... 2 2
- *        |------------| > (n-1) two's
- *
- * @param L The level sequence, in preorder.
- * @param n Number of nodes of the tree.
- *
- * @pre n >= 2.
- * @pre The size of L is exactly @e n + 1.
- * @pre The first value of a sequence must be a zero.
- * @pre The second value of a sequence must be a one.
- *
- * @return Returns the tree built with the sequence level @e L.
- */
-graphs::ftree level_sequence_to_tree
-(const std::vector<uint32_t>& L, uint32_t n);
 
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
@@ -85,20 +61,6 @@ graphs::ftree level_sequence_to_tree
  */
 graphs::rtree linear_sequence_to_tree
 (const std::vector<uint32_t>& L, uint32_t n);
-
-/*
- * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
- *
- * For details on Prüfer sequences, see \cite Pruefer1918a.
- *
- * The algorithm used to decode the sequence is the one presented in
- * \cite Alonso1995a.
- * @param S The Prufer sequence sequence.
- * @param n Number of nodes of the tree.
- * @return Returns the tree built with @e L.
- */
-graphs::ftree Prufer_sequence_to_tree
-(const std::vector<uint32_t>& S, uint32_t n);
 
 } // -- namespace utils
 } // -- namespace lal

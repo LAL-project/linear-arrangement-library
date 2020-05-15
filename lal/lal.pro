@@ -85,7 +85,8 @@ HEADERS += \
     utils/graphs/bfs.hpp \
     utils/graphs/cycles.hpp \
     utils/graphs/reachability.hpp \
-    utils/graphs/trees/conversions.hpp \
+    utils/graphs/trees/convert_to_ftree.hpp \
+    utils/graphs/trees/convert_to_rtree.hpp \
     utils/graphs/trees/make_projecitve_arr.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
@@ -144,4 +145,5 @@ SOURCES += \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \
-    utils/graphs/trees/conversions.cpp
+    utils/graphs/trees/convert_to_ftree.cpp \
+    utils/graphs/trees/convert_to_rtree.cpp

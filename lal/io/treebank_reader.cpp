@@ -48,7 +48,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/conversions.hpp>
+#include <lal/utils/graphs/trees/convert_to_rtree.hpp>
 
 namespace lal {
 using namespace graphs;

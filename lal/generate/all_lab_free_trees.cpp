@@ -49,7 +49,7 @@ using namespace std;
 #define inf numeric_limits<size>::max()
 
 // lal includes
-#include <lal/utils/graphs/trees/conversions.hpp>
+#include <lal/utils/graphs/trees/convert_to_ftree.hpp>
 
 namespace lal {
 using namespace graphs;
