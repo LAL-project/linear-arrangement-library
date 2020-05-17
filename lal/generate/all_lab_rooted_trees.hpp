@@ -122,8 +122,6 @@ class all_lab_rooted_trees {
 	private:
 		/// Number of nodes of the generated trees.
 		uint32_t m_n;
-		/// Does exist a next labelled rooted tree?
-		bool m_has_next;
 
 		/// Labelled free tree generator.
 		all_lab_free_trees m_lab_free_tree_gen;

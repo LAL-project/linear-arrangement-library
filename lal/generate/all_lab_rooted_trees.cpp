@@ -44,9 +44,6 @@
 #include <vector>
 using namespace std;
 
-// lal includes
-#include <lal/graphs/output.hpp>
-
 namespace lal {
 using namespace graphs;
 
@@ -63,11 +60,11 @@ void all_lab_rooted_trees::init(uint32_t n) {
 	m_lab_free_tree_gen.init(m_n);
 
 	m_cur_root = m_n - 1;
-	m_has_next = true;
 }
 
 bool all_lab_rooted_trees::has_next() const {
-	return m_has_next;
+	return
+	not( m_cur_root + 1 >= m_n and (not m_lab_free_tree_gen.has_next()));
 }
 
 void all_lab_rooted_trees::next() {
@@ -79,11 +76,6 @@ void all_lab_rooted_trees::next() {
 	else {
 		++m_cur_root;
 	}
-
-	const bool finished =
-		m_cur_root + 1 >= m_n and (not m_lab_free_tree_gen.has_next());
-
-	m_has_next = not finished;
 }
 
 rtree all_lab_rooted_trees::get_tree() const {
