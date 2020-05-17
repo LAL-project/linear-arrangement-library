@@ -44,8 +44,8 @@
 #include <map>
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
 #include <lal/definitions.hpp>
+#include <lal/graphs/ftree.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
 
@@ -55,14 +55,14 @@ namespace generate {
 /**
  * @brief Random unlabelled free tree generator.
  *
- * Generates uniformly at random free unlabelled trees.
+ * Generates uniformly at random unlabelled free trees.
  *
- * Every call to @ref make_rand_tree generates uniformly at random a free
- * unlabelled tree using the algorithm described in \cite Wilf1981a.
- * This is algorithm relies on the @e ranrut procedure (see \cite Nijenhuis1978a,
+ * Every call to @ref make_rand_tree generates uniformly at random an unlabelled
+ * free tree using the algorithm described in \cite Wilf1981a. This is
+ * algorithm relies on the @ref ranrut procedure (see \cite Nijenhuis1978a,
  * chapter 29) and runs in about the same time. The implementation of Wilf's
- * paper (see @ref make_rand_tree, @ref forest, and @ref bicenter) includes
- * the correction in Wilf's paper (see \cite Wilf1981a), as pointed out in
+ * paper (see \cite Wilf1981a) in functions @ref make_rand_tree, @ref forest,
+ * and @ref bicenter includes the correction pointed out in
  * \cite GiacXcas_Manual (page 38).
  *
  * Users interested in generating trees of large size (of 100 nodes

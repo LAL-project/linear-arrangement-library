@@ -44,20 +44,18 @@
 #include <random>
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
 #include <lal/definitions.hpp>
+#include <lal/graphs/ftree.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Random free labelled tree generator.
+ * @brief Random labelled free tree generator.
  *
- * Generates uniformly at random free labelled trees.
- *
- * Every call to @ref make_rand_tree generates a uniformly random Prüfer
- * sequence (see \cite Pruefer1918a), which is then used to build its
- * corresponding free labelled tree using algorithm in \cite Alonso1995a.
+ * Generates uniformly at random labelled free trees. The algorithm uses
+ * uniformly random Prüfer sequences (see \cite Pruefer1918a). The construction
+ * of the free labelled tree uses the algorithm in \cite Alonso1995a.
  *
  * The correct usage of this class is
  * @code

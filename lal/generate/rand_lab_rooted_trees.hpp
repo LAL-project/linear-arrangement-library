@@ -43,8 +43,8 @@
 #include <random>
 
 // lal includes
-#include <lal/generate/rand_lab_free_trees.hpp>
 #include <lal/graphs/rtree.hpp>
+#include <lal/generate/rand_lab_free_trees.hpp>
 
 namespace lal {
 namespace generate {

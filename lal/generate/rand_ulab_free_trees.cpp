@@ -112,7 +112,7 @@ ftree rand_ulab_free_trees::make_rand_tree() {
 		 *		{n}{k}: is read as "n choose k"
 		 *
 		 * We followed the correction pointed out in the reference to
-		 * Giac/Xcas's manual (cited in the documentation of this class).
+		 * Giac/Xcas's manual (read the documentation of this class).
 		 */
 		const integer k = get_rn(m_n/2) + 1;
 		const integer k_choose_2 = k*(k - 1);

@@ -39,7 +39,11 @@
 
 #pragma once
 
+// C++ includes
+#include <vector>
+
 // lal includes
+#include <lal/definitions.hpp>
 #include <lal/graphs/rtree.hpp>
 
 namespace lal {
@@ -48,7 +52,10 @@ namespace generate {
 /**
  * @brief Exhaustive unlabelled rooted tree generator.
  *
- * Generates all the unlabelled rooted trees of a given number of nodes.
+ * Generates all the unlabelled rooted trees of a given number of nodes. The
+ * algorithm implemented can be found in \cite Beyer1980a. The definition of
+ * the public and private members of this class follow the notation in this
+ * work.
  *
  * In order to use this class, you must first provide the size \f$n\f$ of the
  * tree (number of nodes) in the constructor or in the @ref init method of
@@ -64,10 +71,6 @@ namespace generate {
  * In order to restart the generation of these trees, call method @ref init
  * again. It is allowed, at any time, to call @ref init with the same size of
  * the trees, or with a different one.
- *
- * The algorithm implemented can be found in the work by Beyer et al. (see
- * \cite Beyer1980a). The definition of the public and private members of this
- * class follow the notation in this work.
  *
  * The correct usage of this class is
  * @code
