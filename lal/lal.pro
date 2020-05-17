@@ -27,6 +27,7 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    generate/all_lab_rooted_trees.hpp \
     generate/all_projective_arrangements.hpp \
     generate/rand_projective_arrangements.hpp \
     linarr/Dmin.hpp \
@@ -101,6 +102,7 @@ HEADERS += \
 
 SOURCES += \
     generate/all_lab_free_trees.cpp \
+    generate/all_lab_rooted_trees.cpp \
     generate/all_projective_arrangements.cpp \
     generate/all_ulab_free_trees.cpp \
     generate/all_ulab_rooted_trees.cpp \

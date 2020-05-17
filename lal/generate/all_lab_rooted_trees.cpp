@@ -37,17 +37,59 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/generate/all_lab_free_trees.hpp>
 #include <lal/generate/all_lab_rooted_trees.hpp>
-#include <lal/generate/all_ulab_free_trees.hpp>
-#include <lal/generate/all_ulab_rooted_trees.hpp>
 
-#include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/generate/rand_lab_rooted_trees.hpp>
-#include <lal/generate/rand_ulab_free_trees.hpp>
-#include <lal/generate/rand_ulab_rooted_trees.hpp>
+// C++ includes
+#include <cassert>
+#include <vector>
+using namespace std;
 
-#include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/generate/rand_projective_arrangements.hpp>
+// lal includes
+#include <lal/graphs/output.hpp>
+
+namespace lal {
+using namespace graphs;
+
+namespace generate {
+
+all_lab_rooted_trees::all_lab_rooted_trees() { }
+all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) {
+	init(n);
+}
+all_lab_rooted_trees::~all_lab_rooted_trees() { }
+
+void all_lab_rooted_trees::init(uint32_t n) {
+	m_n = n;
+	m_lab_free_tree_gen.init(m_n);
+
+	m_cur_root = m_n - 1;
+	m_has_next = true;
+}
+
+bool all_lab_rooted_trees::has_next() const {
+	return m_has_next;
+}
+
+void all_lab_rooted_trees::next() {
+	if (m_cur_root == m_n - 1) {
+		m_cur_root = 0;
+		m_lab_free_tree_gen.next();
+		m_cur_ftree = m_lab_free_tree_gen.get_tree();
+	}
+	else {
+		++m_cur_root;
+	}
+
+	const bool finished =
+		m_cur_root + 1 >= m_n and (not m_lab_free_tree_gen.has_next());
+
+	m_has_next = not finished;
+}
+
+rtree all_lab_rooted_trees::get_tree() const {
+	assert(m_cur_root < m_n);
+	return rtree(m_cur_ftree, m_cur_root);
+}
+
+} // -- namespace generate
+} // -- namespace lal
