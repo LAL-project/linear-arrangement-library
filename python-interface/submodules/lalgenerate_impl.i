@@ -8,6 +8,7 @@
 %include stdint.i
 
 %include "../lal/generate/all_lab_free_trees.hpp"
+%include "../lal/generate/all_lab_rooted_trees.hpp"
 %include "../lal/generate/all_ulab_free_trees.hpp"
 %include "../lal/generate/all_ulab_rooted_trees.hpp"
 
