@@ -153,6 +153,8 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 		return;
 	}
 
+	assert(_t.has_node(r));
+
 	// list of directed edges out of 'g'
 	vector<edge> dir_edges(_t.n_edges());
 	auto it_dir_edges = dir_edges.begin();
