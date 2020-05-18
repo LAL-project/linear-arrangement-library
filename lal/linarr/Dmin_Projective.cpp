@@ -67,9 +67,8 @@ typedef u_char place;
 
 #define get_int_size(v) (t.out_degree(v) + 1)
 
-position pos_in_interval(uint32_t int_size, place P) {
+constexpr position pos_in_interval(uint32_t int_size, place P) {
 	if (int_size == 1) { return 0; }
-
 	switch (P) {
 		case LEFT_PLACE: return left_placed_pos(int_size);
 		case RIGHT_PLACE: return right_placed_pos(int_size);
@@ -77,7 +76,7 @@ position pos_in_interval(uint32_t int_size, place P) {
 	return int_size/2;
 }
 
-bool start_left_right(uint32_t int_size, place P) {
+constexpr bool start_left_right(uint32_t int_size, place P) {
 	switch (P) {
 		case LEFT_PLACE: return (int_size%2 == 1 ? false : true);
 		case RIGHT_PLACE: return (int_size%2 == 1 ? true : false);
@@ -118,6 +117,13 @@ uint32_t make_interval_of(
 
 	if (r_int_size == 2) {
 		const node vi = t.get_out_neighbours(r)[0];
+		interval[0] = (r_place == LEFT_PLACE ? vi : r);
+		interval[1] = (r_place == RIGHT_PLACE ? r : vi);
+		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
+		const uint32_t D = make_interval_of(t, vi, vi_place, data);
+		return D + 1;
+
+		/*
 		uint32_t D;
 		if (r_place == LEFT_PLACE) {
 			interval[0] = vi;
@@ -130,6 +136,7 @@ uint32_t make_interval_of(
 			D = make_interval_of(t, vi, RIGHT_PLACE, data);
 		}
 		return D + 1;
+		*/
 	}
 
 	// -----------------------------
@@ -189,7 +196,34 @@ uint32_t make_interval_of(
 	// length of the edge from 'r' to vertex 'vi'
 	for (const auto& p : children) {
 		const node vi = p.first;
+		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
+		// make the interval of 'vi'
+		D += make_interval_of(t, vi, vi_place, data);
+
+		// accumulate size of interval
+		d += (left ? acc_size_left : acc_size_right);
+		// add length of edge over root 'r'
+		d += 1;
+
+		// place vertex vi
+		interval[(left ? leftpos : rightpos)] = vi;
+
+		// 1. increase/decrease right/left position
+		// 2. accumulate size of subtree rooted at vi
+		if (left) {
+			--leftpos;
+			acc_size_left += t.n_nodes_subtree(vi);
+		}
+		else {
+			++rightpos;
+			acc_size_right += t.n_nodes_subtree(vi);
+		}
+
+		// go to the other side
+		left = not left;
+
+		/*
 		if (left) {
 			d += acc_size_left;
 
@@ -212,11 +246,14 @@ uint32_t make_interval_of(
 			++rightpos;
 			acc_size_right += t.n_nodes_subtree(vi);
 		}
-
-		// this is key!
-		d += 1;
+		*/
 	}
 
+	D +=
+	(r_place == ROOT_PLACE ? 0 :
+	 r_place == LEFT_PLACE ? acc_size_right : acc_size_left);
+
+	/*
 	if (r_place == ROOT_PLACE) {
 		D += 0;
 	}
@@ -226,6 +263,7 @@ uint32_t make_interval_of(
 	else if (r_place == RIGHT_PLACE) {
 		D += acc_size_left;
 	}
+	*/
 
 	return D + d;
 }
