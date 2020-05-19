@@ -51,6 +51,10 @@ using namespace std;
 	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
 		T.out_degree(u) : T.in_degree(u) )
 
+#define neighs_tree(T, u)										\
+	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+		T.get_out_neighbours(u) : T.get_in_neighbours(u) )
+
 namespace lal {
 using namespace graphs;
 using namespace utils;
@@ -99,23 +103,22 @@ void all_proj_arr::next() {
 }
 
 linearrgmnt all_proj_arr::get_arrangement() const {
-	if (m_rT.n_nodes() == 1) {
-		return linearrgmnt(1);
-	}
-	return put_in_arrangement(m_rT, m_intervals);
+	return (m_rT.n_nodes() == 1 ?
+			linearrgmnt(1) : put_in_arrangement(m_rT, m_intervals));
 }
 
 /* PRIVATE */
 
 void all_proj_arr::post_order_vertex_ordering(node r) {
 	const uint32_t d_out = degree_tree(m_rT, r);
+	const neighbourhood& neighs_r = neighs_tree(m_rT, r);
 	// leaf
 	if (d_out == 0) {
 		m_por_vertices.push_back(r);
 		return;
 	}
 	// internal node
-	for (node vi : m_rT.get_out_neighbours(r)) {
+	for (node vi : neighs_r) {
 		post_order_vertex_ordering(vi);
 	}
 	m_por_vertices.push_back(r);
@@ -123,20 +126,22 @@ void all_proj_arr::post_order_vertex_ordering(node r) {
 
 void all_proj_arr::canonical_interval_tree(node r) {
 	canonical_interval_single(r);
-	for (node u : m_rT.get_out_neighbours(r)) {
+	const neighbourhood& neighs_r = neighs_tree(m_rT, r);
+	for (node u : neighs_r) {
 		canonical_interval_tree(u);
 	}
 }
 
 void all_proj_arr::canonical_interval_single(node u) {
 	const uint32_t d = degree_tree(m_rT, u);
+	const neighbourhood& neighs_r = neighs_tree(m_rT, u);
+
 	vector<node>& inter_u = m_intervals[u];
 
 	inter_u = vector<node>(d + 1);
 	inter_u[0] = u;
-	const vector<node>& outneighs = m_rT.get_out_neighbours(u);
 	for (uint32_t i = 0; i < d; ++i) {
-		const node ui = outneighs[i];
+		const node ui = neighs_r[i];
 		inter_u[i + 1] = ui;
 	}
 }
