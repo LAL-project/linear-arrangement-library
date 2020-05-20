@@ -88,7 +88,7 @@ HEADERS += \
     utils/graphs/reachability.hpp \
     utils/graphs/trees/convert_to_ftree.hpp \
     utils/graphs/trees/convert_to_rtree.hpp \
-    utils/graphs/trees/make_projecitve_arr.hpp \
+    utils/graphs/trees/make_projective_arr.hpp \
     utils/macros.hpp \
     utils/avl.hpp \
     io.hpp \

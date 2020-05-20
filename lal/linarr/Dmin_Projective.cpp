@@ -47,7 +47,7 @@ using namespace std;
 // lal includes
 #include <lal/linarr/D.hpp>
 #include <lal/utils/sorting/counting_sort.hpp>
-#include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
+#include <lal/utils/graphs/trees/make_projective_arr.hpp>
 
 namespace lal {
 using namespace graphs;

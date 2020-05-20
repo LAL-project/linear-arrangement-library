@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/make_projecitve_arr.hpp>
+#include <lal/utils/graphs/trees/make_projective_arr.hpp>
 
 #define degree_tree(T, u)										\
 	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
