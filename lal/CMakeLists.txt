@@ -239,7 +239,8 @@ target_sources(
 
 		# utils namespace -- not to be installed
 		# -- headers
-		utils/graphs/trees/conversions.hpp
+		utils/graphs/trees/convert_to_ftree.hpp
+		utils/graphs/trees/convert_to_rtree.hpp
 		utils/graphs/trees/is_tree.hpp
 		utils/graphs/trees/make_projective_arr.hpp
 		utils/graphs/trees/size_subtrees.hpp
@@ -254,7 +255,8 @@ target_sources(
 		utils/macros.hpp
 		utils/std_utils.hpp
 		# -- sources
-		utils/graphs/trees/conversions.cpp
+		utils/graphs/trees/convert_to_ftree.cpp
+		utils/graphs/trees/convert_to_rtree.cpp
 
 		# lal namespace
 		# -- heaers
