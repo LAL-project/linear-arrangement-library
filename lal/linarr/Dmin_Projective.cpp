@@ -244,6 +244,7 @@ uint32_t make_interval_of(
 			++rightpos;
 			acc_size_right += t.n_nodes_subtree(vi);
 		}
+		d += 1;
 		*/
 	}
 
@@ -262,7 +263,6 @@ uint32_t make_interval_of(
 		D += acc_size_left;
 	}
 	*/
-
 	return D + d;
 }
 
