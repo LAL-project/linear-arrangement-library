@@ -40,7 +40,6 @@
 #include <lal/linarr/Dmin.hpp>
 
 // C++ includes
-#include <iostream>
 #include <cassert>
 using namespace std;
 
