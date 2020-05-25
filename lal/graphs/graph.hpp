@@ -98,21 +98,6 @@ class graph {
 		virtual void clear();
 
 		/**
-		 * @brief Disjoint union of graphs.
-		 *
-		 * Given a graph, append it to the current graph.
-		 *
-		 * All the nodes in @e g are relabelled starting at @e n,
-		 * the number of nodes of the current graph.
-		 * @param g Input graph.
-		 * @pre This graph and @e g must be of the same type (both must
-		 * be either undirected, or both directed).
-		 * @post The graph is normalised only if it was normalised before
-		 * the call and @e g is also normalised.
-		 */
-		virtual void disjoint_union(const graph& g);
-
-		/**
 		 * @brief Normalises the graph.
 		 *
 		 * Sorts every node's adjacency list in increasing order.
@@ -213,6 +198,21 @@ class graph {
 		virtual void _init(uint32_t n);
 		/// Clears memory for the @ref graph class.
 		virtual void _clear();
+
+		/**
+		 * @brief Disjoint union of graphs.
+		 *
+		 * Given a graph, append it to the current graph.
+		 *
+		 * All the nodes in @e g are relabelled starting at @e n,
+		 * the number of nodes of the current graph.
+		 * @param g Input graph.
+		 * @pre This graph and @e g must be of the same type (both must
+		 * be either undirected, or both directed).
+		 * @post The graph is normalised only if it was normalised before
+		 * the call and @e g is also normalised.
+		 */
+		void __disjoint_union(const graph& g);
 
 		/**
 		 * @brief Returns all independent pairs of edges of this graph.

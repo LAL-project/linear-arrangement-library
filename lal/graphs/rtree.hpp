@@ -206,6 +206,30 @@ class rtree : public dgraph, virtual public tree {
 		rtree& remove_edges(const std::vector<edge>& edges, bool norm = true);
 
 		/**
+		 * @brief Disjoint union of trees.
+		 *
+		 * Given a rooted tree, append it to the current tree.
+		 *
+		 * All the nodes in @e t are relabelled starting at @e n, the number
+		 * of nodes of the current tree.
+		 *
+		 * If the current graph has no vertices, then the contents of @e t
+		 * are simply copied into this graph.
+		 * @param t Input tree.
+		 * @param connect_roots The root of the current tree and the root of
+		 * @e t are joined by an edge.
+		 * @pre If @e connect_roots is true then the current needs to have a
+		 * root (see method @ref has_root).
+		 * @post The root (if set) of the current tree is kept.
+		 * @post The type of rooted tree (if set) of the current tree is kept.
+		 * @post If @e connect_roots is true then method @ref is_rooted_tree()
+		 * returns true. Said method returns false if otherwise.
+		 * @post The size of the subtrees needs recalculating (method
+		 * @ref need_recalc_size_subtrees() returns true).
+		 */
+		void disjoint_union(const rtree& t, bool connect_roots = true);
+
+		/**
 		 * @brief Calculates the type of directed rooted tree.
 		 *
 		 * Examines the orientation of the tree with respect to the root and
@@ -336,7 +360,8 @@ class rtree : public dgraph, virtual public tree {
 
 		/// Return the root of this tree.
 		node get_root() const;
-		/// Returns whether this rooted tree's root has been set or not.
+		/// Returns whether this rooted tree's root has been set or not
+		/// (see @ref set_root).
 		bool has_root() const;
 
 		/**
@@ -440,6 +465,9 @@ class rtree : public dgraph, virtual public tree {
 		virtual void _init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void _clear();
+
+	private:
+		using dgraph::disjoint_union;
 };
 
 } // -- namespace graphs

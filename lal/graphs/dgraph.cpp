@@ -245,17 +245,28 @@ dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm) {
 	return *this;
 }
 
-void dgraph::disjoint_union(const graph& g) {
-	graph::disjoint_union(g);
+void dgraph::disjoint_union(const dgraph& g) {
+	// number of vertices before adding the out-neighbours
+	const uint32_t n = n_nodes();
 
-	// if the call to 'graph::disjoint_union' did not
-	// fail then graph 'g' is a directed graph
-	const dgraph& dg = dynamic_cast<const dgraph&>(g);
+	// this call updates the out-neighbours adjacency list,
+	// as well as the number of edges and the graph's normalisation
+	graph::__disjoint_union(g);
 
-	m_in_adjacency_list.insert(
-		m_in_adjacency_list.end(),
-		dg.m_in_adjacency_list.begin(), dg.m_in_adjacency_list.end()
-	);
+	// update the in-neighbours adjacency list
+	for (node u = 0; u < g.n_nodes(); ++u) {
+		// add new edges by appending all the neighbours of 'u' in 'g'
+		m_in_adjacency_list.push_back( g.get_in_neighbours(u) );
+		// relabel the nodes
+		for (node& v : m_in_adjacency_list.back()) {
+			v += n;
+		}
+	}
+
+	// If one or none of the two graphs involved are normalised,
+	// the result is not normalised.
+	// If both graphs are normalised, the result is normalised.
+	m_normalised = m_normalised and g.is_normalised();
 }
 
 /* SETTERS */
@@ -363,4 +374,3 @@ void dgraph::remove_single_edge(
 
 } // -- namespace graphs
 } // -- namespace lal
-

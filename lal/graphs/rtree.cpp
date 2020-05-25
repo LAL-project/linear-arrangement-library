@@ -97,6 +97,33 @@ rtree& rtree::remove_edges(const std::vector<edge>& edges, bool norm) {
 	return *this;
 }
 
+void rtree::disjoint_union(const rtree& t, bool connect_roots) {
+	const uint32_t prev_n = n_nodes();
+	if (prev_n == 0) {
+		*this = t;
+		return;
+	}
+
+	// join trees
+	dgraph::disjoint_union(t);
+
+	// connect the roots if necessary
+	if (connect_roots) {
+		assert(has_root());
+		add_edge(get_root(), prev_n + t.get_root());
+	}
+	else {
+		// If connect_roots is false then the graph is going to
+		// lack an edge (until inserted by someone). Nothing to do.
+	}
+
+	// - keep the tree's root (if any)
+	// - do not change the type of rooted tree
+
+	// -> size of subtrees need recalculating
+	m_need_recalc_size_subtrees = true;
+}
+
 bool rtree::find_rtree_type() {
 	assert(is_tree());
 	assert(has_root());
@@ -200,6 +227,8 @@ void rtree::recalc_size_subtrees() {
 	assert(is_rooted_tree());
 
 	m_need_recalc_size_subtrees = false;
+	m_size_subtrees.resize(n_nodes(), 0);
+
 	if (get_rtree_type() == rtree_type::anti_arborescence) {
 		utils::get_size_subtrees_anti_arborescence(*this, get_root(), m_size_subtrees);
 	}
@@ -291,7 +320,10 @@ bool rtree::rtree_type_valid() const {
 	return m_rtree_type_valid;
 }
 
-node rtree::get_root() const { return m_root; }
+node rtree::get_root() const {
+	assert(has_root());
+	return m_root;
+}
 
 bool rtree::has_root() const {
 	return m_has_root;
@@ -406,12 +438,7 @@ rtree rtree::get_subtree(node u) const {
 	// if the tree does not have edges, return a copy.
 	if (n_nodes() <= 1) { return *this; }
 
-	assert(is_tree());
-	assert(has_root());
-	assert(rtree_type_valid());
-	assert(get_rtree_type() == rtree_type::arborescence or
-		   get_rtree_type() == rtree_type::anti_arborescence);
-
+	assert(is_rooted_tree());
 	assert(has_node(u));
 
 	// retrieve the list of edges with their nodes relabelled
@@ -435,7 +462,6 @@ ftree rtree::to_undirected() const {
 void rtree::_init(uint32_t n) {
 	tree::tree_init(n);
 	dgraph::_init(n);
-	m_size_subtrees = vector<uint32_t>(n);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 }

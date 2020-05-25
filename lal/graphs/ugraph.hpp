@@ -125,6 +125,19 @@ class ugraph : virtual public graph {
 		 */
 		ugraph& remove_edges(const std::vector<edge>& edges, bool norm = true);
 
+		/**
+		 * @brief Disjoint union of graphs.
+		 *
+		 * Given a graph, append it to the current graph.
+		 *
+		 * All the nodes in @e g are relabelled starting at @e n,
+		 * the number of nodes of the current graph.
+		 * @param g Input graph.
+		 * @post The graph is normalised only if it was normalised before
+		 * the call and @e g is also normalised.
+		 */
+		void disjoint_union(const ugraph& g);
+
 		/* SETTERS */
 
 		/* GETTERS */

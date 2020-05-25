@@ -112,10 +112,6 @@ class tree : virtual public graph {
 		virtual void tree_init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void tree_clear();
-
-	private:
-		// trees should not have this method
-		using graph::disjoint_union;
 };
 
 } // -- namespace graphs

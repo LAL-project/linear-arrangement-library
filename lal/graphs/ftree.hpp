@@ -106,6 +106,19 @@ class ftree : public ugraph, virtual public tree {
 		 */
 		ftree& add_edges(const std::vector<edge>& edges, bool norm = true);
 
+		/**
+		 * @brief Disjoint union of trees.
+		 *
+		 * Given a free tree, append it to the current tree.
+		 *
+		 * All the nodes in @e t are relabelled starting at @e n,
+		 * the number of nodes of the current tree.
+		 * @param t Input tree.
+		 * @post The current tree is not an actual tree, i.e., method
+		 * @ref is_tree() returns false since the resulting tree lacks an edge.
+		 */
+		void disjoint_union(const ftree& t);
+
 		/* GETTERS */
 
 		bool is_rooted() const;
@@ -136,6 +149,9 @@ class ftree : public ugraph, virtual public tree {
 		virtual void _init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void _clear();
+
+	private:
+		using ugraph::disjoint_union;
 };
 
 } // -- namespace graphs

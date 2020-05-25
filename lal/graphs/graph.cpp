@@ -79,29 +79,6 @@ void graph::clear() {
 
 /* MODIFIERS */
 
-void graph::disjoint_union(const graph& g) {
-	// If I'm directed, g must be directed.
-	// If I'm undirected, g must be undirected.
-	assert(is_directed() ? g.is_directed() : g.is_undirected());
-
-	const uint32_t n = n_nodes();
-	m_num_edges += g.m_num_edges;
-
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		// add new edges by appending all the neighbours of 'u' in 'g'
-		m_adjacency_list.push_back( g.get_neighbours(u) );
-		// relabel the nodes
-		for (node& v : m_adjacency_list.back()) {
-			v += n;
-		}
-	}
-
-	// If one or none of the two graphs involved are normalised,
-	// the result is not normalised.
-	// If both graphs are normalised, the result is normalised.
-	m_normalised = m_normalised and g.is_normalised();
-}
-
 void graph::normalise() {
 	vector<char> mem(n_nodes(), 0);
 	for (node u = 0; u < n_nodes(); ++u) {
@@ -188,6 +165,29 @@ void graph::_clear() {
 	m_adjacency_list.clear();
 }
 
+void graph::__disjoint_union(const graph& g) {
+	// If I'm directed, g must be directed.
+	// If I'm undirected, g must be undirected.
+	assert(is_directed() ? g.is_directed() : g.is_undirected());
+
+	const uint32_t n = n_nodes();
+	m_num_edges += g.m_num_edges;
+
+	for (node u = 0; u < g.n_nodes(); ++u) {
+		// add new edges by appending all the neighbours of 'u' in 'g'
+		m_adjacency_list.push_back( g.get_neighbours(u) );
+		// relabel the nodes
+		for (node& v : m_adjacency_list.back()) {
+			v += n;
+		}
+	}
+
+	// If one or none of the two graphs involved are normalised,
+	// the result is not normalised.
+	// If both graphs are normalised, the result is normalised.
+	m_normalised = m_normalised and g.is_normalised();
+}
+
 vector<edge_pair> graph::Q(uint32_t qs) const {
 	vector<edge_pair> q(qs);
 	auto vec_it = q.begin();
@@ -202,4 +202,3 @@ vector<edge_pair> graph::Q(uint32_t qs) const {
 
 } // -- namespace graphs
 } // -- namespace lal
-

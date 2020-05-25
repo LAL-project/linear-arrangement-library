@@ -36,7 +36,7 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/graphs/ugraph.hpp>
 
 // C++ includes
@@ -209,6 +209,11 @@ ugraph& ugraph::remove_edges(const std::vector<edge>& edges, bool norm) {
 	return *this;
 }
 
+void ugraph::disjoint_union(const ugraph& g) {
+	graph::__disjoint_union(g);
+	// nothing else to do
+}
+
 /* SETTERS */
 
 /* GETTERS */
@@ -290,4 +295,3 @@ void ugraph::remove_single_edge(
 
 } // -- namespace graphs
 } // -- namespace lal
-

@@ -82,6 +82,14 @@ ftree& ftree::add_edges(const vector<edge>& edges, bool norm) {
 	return *this;
 }
 
+void ftree::disjoint_union(const ftree& t) {
+	// tree 't' and tree 'this' do not have cycles, so the disjoint
+	// union of both trees does not have cycles.
+	// Nothing to check.
+
+	ugraph::disjoint_union(t);
+}
+
 /* GETTERS */
 
 bool ftree::is_rooted() const { return false; }
@@ -119,7 +127,7 @@ bool ftree::can_add_edges(const vector<edge>& edges) const {
 		}
 	}
 
-	// 1. copy the current graph
+	// 1. copy the current tree into an undirected graph
 	ugraph copy = *this;
 	// 2. add the edges to the copy
 	copy.add_edges(edges, false);

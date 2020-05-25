@@ -138,11 +138,10 @@ class dgraph : virtual public graph {
 		 * All the nodes in @e g are relabelled starting at @e n,
 		 * the number of nodes of the current graph.
 		 * @param g Input graph.
-		 * @pre Graph @e g must be directed.
 		 * @post The graph is normalised only if it was normalised before
 		 * the call and @e g is also normalised.
 		 */
-		void disjoint_union(const graph& g);
+		void disjoint_union(const dgraph& g);
 
 		/* SETTERS */
 
@@ -204,6 +203,7 @@ class dgraph : virtual public graph {
 		virtual void _clear();
 
 	private:
+
 		/**
 		 * @brief Removes a single edge.
 		 * @param u First node of edge.
