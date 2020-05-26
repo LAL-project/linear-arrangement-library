@@ -39,24 +39,48 @@
 
 #pragma once
 
+// C++ includes
+#include <random>
+
+// lal includes
 #include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Returns a uniformly random projective arrangement.
+ * @brief Class to generate uniformly random projective arrangements of a rooted tree.
  *
  * A projective arrangement of a directed rooted tree is one in which the
  * root is not covered by any of the tree's edges and there are no edge
  * crossings.
- * @param t Input directed rooted tree.
- * @param seed Use a random seed for the random number generator.
- * @return Returns a projective arrangement chosen uniformly at random from
- * the space of all projective arrangements of @e t.
- * @pre The object @e t must be a rooted tree (see @ref graphs::rtree::is_rooted_tree).
  */
-linearrgmnt rand_projective_arrgmnt(const graphs::rtree& t, bool seed = true);
+class rand_projective_arrgmnt {
+	public:
+		/**
+		 * @brief Constructor with tree
+		 * @param rT Rooted tree
+		 * @param seed Boolean value that indicates whether the random number
+		 * generator should be seeded or not.
+		 * @pre The object @e t must be a rooted tree (see @ref graphs::rtree::is_rooted_tree).
+		 */
+		rand_projective_arrgmnt(const graphs::rtree& rT, bool seed = true);
+		~rand_projective_arrgmnt();
+
+		/**
+		 * @brief Make a random projective arrangement of a rooted tree.
+		 * @return Returns a projective arrangement chosen uniformly at random
+		 * chosen amongst all projective arrangements of @e t.
+		 */
+		linearrgmnt make_rand_arrgmnt();
+
+	private:
+		/// The rooted tree of we are making projective arrangements uniformly at random.
+		const graphs::rtree& m_rT;
+
+		/// Random number generator
+		std::mt19937 gen;
+};
 
 } // -- namespace generate
 } // -- namespace lal

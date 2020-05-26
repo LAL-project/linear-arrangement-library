@@ -63,57 +63,50 @@ using namespace utils;
 
 namespace generate {
 
-template<class GEN>
-void random_data(
-	const rtree& T, node r,
-	// Its size must be equal to the number of vertices of the tree.
-	vector<vector<node>>& data,
-	// random number generator
-	GEN& gen
-)
+rand_projective_arrgmnt::rand_projective_arrgmnt(const rtree& rT, bool seed)
+	: m_rT(rT)
 {
-	// number of children of 'r' with respect to the tree's root
-	const uint32_t deg = degree_vertex(T, r);
-	const neighbourhood& neighs = neighbours_vertex(T, r);
-
-	// Choose random positions for the intervals corresponding to the
-	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'. Remember: there are d_out+1
-	// possibilities.
-
-	data[r] = vector<node>(deg + 1);
-
-	// fill interval with the root vertex and its children
-	vector<node>& interval = data[r];
-	interval[0] = r;
-	for (size_t i = 0; i < neighs.size(); ++i) {
-		interval[i+1] = neighs[i];
-	}
-
-	// shuffle the positions
-	shuffle(interval.begin(), interval.end(), gen);
-}
-
-linearrgmnt rand_projective_arrgmnt(const rtree& t, bool seed) {
-	assert(t.is_rooted_tree());
-
-	if (t.n_nodes() == 1) {
-		return linearrgmnt(1, 0);
-	}
-
-	mt19937 gen;
+	assert(rT.is_rooted_tree());
 	if (seed) {
 		random_device rd;
 		gen = mt19937(rd());
 	}
+}
+rand_projective_arrgmnt::~rand_projective_arrgmnt() { }
 
-	// generate random data
-	vector<vector<node>> vdata(t.n_nodes());
-	for (node u = 0; u < t.n_nodes(); ++u) {
-		random_data(t, u, vdata, gen);
+linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
+	if (m_rT.n_nodes() == 1) {
+		return linearrgmnt(1, 0);
 	}
 
-	return put_in_arrangement(t, vdata);
+	// the random data of all vertices
+	vector<vector<node>> vdata(m_rT.n_nodes());
+
+	for (node u = 0; u < m_rT.n_nodes(); ++u) {
+		// -- generate random data for a single vertex
+
+		// number of children of 'r' with respect to the tree's root
+		const uint32_t deg = degree_vertex(m_rT, u);
+		const neighbourhood& neighs = neighbours_vertex(m_rT, u);
+
+		// Choose random positions for the intervals corresponding to the
+		// vertex 'r' and to the trees rooted at 'r's children. These choices
+		// have to be made with respect to 'r'. Remember: there are d_out+1
+		// possibilities.
+
+		vdata[u] = vector<node>(deg + 1);
+
+		// fill interval with the root vertex and its children
+		vector<node>& interval = vdata[u];
+		interval[0] = u;
+		for (size_t i = 0; i < neighs.size(); ++i) {
+			interval[i+1] = neighs[i];
+		}
+
+		// shuffle the positions
+		shuffle(interval.begin(), interval.end(), gen);
+	}
+	return put_in_arrangement(m_rT, vdata);
 }
 
 } // -- namespace generate
