@@ -54,7 +54,7 @@ namespace graphs {
 
 /* PUBLIC */
 
-dgraph::dgraph() : graph() { }
+dgraph::dgraph() { }
 dgraph::dgraph(uint32_t n) {
 	init(n);
 }

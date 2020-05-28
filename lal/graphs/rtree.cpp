@@ -54,7 +54,7 @@ using namespace utils;
 
 namespace graphs {
 
-rtree::rtree() : dgraph() { }
+rtree::rtree() { }
 rtree::rtree(uint32_t n) : dgraph(n) {
 	rtree::_init(n);
 }

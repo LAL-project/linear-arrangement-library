@@ -172,9 +172,9 @@ class ugraph : virtual public graph {
 		bool is_undirected() const;
 
 	protected:
-		/// Initialises memory of @ref ugraph class.
+		/// Initialises memory of @ref ugraph and @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory used by this undirected graph
+		/// Clears the memory of @ref ugraph and @ref graph classes.
 		virtual void _clear();
 
 	private:

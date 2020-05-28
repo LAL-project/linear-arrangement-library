@@ -53,10 +53,7 @@ using namespace graphs;
 
 namespace generate {
 
-rand_ulab_rooted_trees::rand_ulab_rooted_trees() {
-	init_rn();
-}
-
+rand_ulab_rooted_trees::rand_ulab_rooted_trees() { }
 rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
 	init_rn();
 	init(_n, seed);

@@ -70,10 +70,11 @@ ftree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
 
 /* PUBLIC */
 
-rand_ulab_free_trees::rand_ulab_free_trees() : rand_ulab_rooted_trees() {
-}
-rand_ulab_free_trees::rand_ulab_free_trees(uint32_t _n, uint32_t seed) {
-	init(_n, seed);
+rand_ulab_free_trees::rand_ulab_free_trees() { }
+rand_ulab_free_trees::rand_ulab_free_trees(uint32_t _n, uint32_t seed)
+	: rand_ulab_rooted_trees(_n, seed)
+{
+	init_fn();
 }
 rand_ulab_free_trees::~rand_ulab_free_trees() { }
 

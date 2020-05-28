@@ -461,9 +461,9 @@ class rtree : public dgraph, virtual public tree {
 		bool m_need_recalc_size_subtrees = true;
 
 	protected:
-		/// Initialises memory of @ref rtree class.
+		/// Initialises memory of @ref rtree, @ref ugraph and @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory used by this rooted tree.
+		/// Clears the memory of @ref rtree, @ref ugraph and @ref graph classes.
 		virtual void _clear();
 
 	private:

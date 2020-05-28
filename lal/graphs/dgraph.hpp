@@ -197,9 +197,9 @@ class dgraph : virtual public graph {
 		std::vector<neighbourhood> m_in_adjacency_list;
 
 	protected:
-		/// Initialises memory of @ref dgraph class.
+		/// Initialises memory of @ref dgraph and @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory used by this directed graph
+		/// Clears the memory of @ref dgraph and @ref graph classes.
 		virtual void _clear();
 
 	private:

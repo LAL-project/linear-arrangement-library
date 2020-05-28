@@ -145,9 +145,9 @@ class ftree : public ugraph, virtual public tree {
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
 	protected:
-		/// Initialises memory of @ref rtree class.
+		/// Initialises memory of @ref ftree, @ref ugraph and @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory used by this rooted tree.
+		/// Clears the memory of @ref ftree, @ref ugraph and @ref graph classes.
 		virtual void _clear();
 
 	private:
