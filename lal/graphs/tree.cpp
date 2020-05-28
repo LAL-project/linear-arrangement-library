@@ -42,8 +42,8 @@
 namespace lal {
 namespace graphs {
 
-tree::tree() { }
-tree::~tree() { }
+//tree::tree() { }
+//tree::~tree() { }
 
 bool tree::is_tree() const {
 	// NOTE: this would not really be true if the addition of edges

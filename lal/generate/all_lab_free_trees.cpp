@@ -58,11 +58,11 @@ namespace generate {
 
 // PUBLIC
 
-all_lab_free_trees::all_lab_free_trees() { }
+//all_lab_free_trees::all_lab_free_trees() { }
 all_lab_free_trees::all_lab_free_trees(uint32_t _n) {
 	init(_n);
 }
-all_lab_free_trees::~all_lab_free_trees() { }
+//all_lab_free_trees::~all_lab_free_trees() { }
 
 void all_lab_free_trees::init(uint32_t _n) {
 	m_n = _n;

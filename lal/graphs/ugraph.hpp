@@ -62,14 +62,14 @@ namespace graphs {
 class ugraph : virtual public graph {
 	public:
 		/// Default constructor.
-		ugraph();
+		ugraph() = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
 		ugraph(uint32_t n);
 		/// Default destructor.
-		virtual ~ugraph();
+		virtual ~ugraph() = default;
 
 		/* OPERATORS */
 

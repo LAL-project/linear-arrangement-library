@@ -60,11 +60,11 @@ namespace graphs {
 
 /* PUBLIC */
 
-graph::graph() { }
+//graph::graph() { }
 graph::graph(uint32_t n) {
 	_init(n);
 }
-graph::~graph() { }
+//graph::~graph() { }
 
 void graph::init(uint32_t n) {
 	_clear();

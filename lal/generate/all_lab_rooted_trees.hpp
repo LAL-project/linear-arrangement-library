@@ -70,11 +70,11 @@ class all_lab_rooted_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t).
 		 */
-		all_lab_rooted_trees();
+		all_lab_rooted_trees() = default;
 		/// Constructor with number of nodes.
 		all_lab_rooted_trees(uint32_t n);
 		/// Default destructor.
-		~all_lab_rooted_trees();
+		~all_lab_rooted_trees() = default;
 
 		/**
 		 * @brief Initialises the generator.

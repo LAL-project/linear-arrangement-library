@@ -54,11 +54,11 @@ namespace graphs {
 
 /* PUBLIC */
 
-dgraph::dgraph() { }
+//dgraph::dgraph() { }
 dgraph::dgraph(uint32_t n) {
 	init(n);
 }
-dgraph::~dgraph() { }
+//dgraph::~dgraph() { }
 
 /* OPERATORS */
 

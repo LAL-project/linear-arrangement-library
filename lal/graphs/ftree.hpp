@@ -57,7 +57,7 @@ namespace graphs {
 class ftree : public ugraph, virtual public tree {
 	public:
 		/// Default constructor.
-		ftree();
+		ftree() = default;
 		/// Default constructor.
 		ftree(uint32_t n);
 		/**
@@ -67,7 +67,7 @@ class ftree : public ugraph, virtual public tree {
 		 */
 		ftree(const ugraph& t);
 		/// Default destructor.
-		virtual ~ftree();
+		virtual ~ftree() = default;
 
 		/* MODIFIERS */
 

@@ -129,13 +129,13 @@ class rtree : public dgraph, virtual public tree {
 
 	public:
 		/// Default constructor.
-		rtree();
+		rtree() = default;
 		/// Constructor with number of nodes and root node.
 		rtree(uint32_t n);
 		/// Constructor with tree and root node.
 		rtree(const ftree& t, node r, rtree_type arb = rtree_type::arborescence);
 		/// Default destructor
-		virtual ~rtree();
+		virtual ~rtree() = default;
 
 		/* MODIFIERS */
 

@@ -69,14 +69,14 @@ namespace graphs {
 class graph {
 	public:
 		/// Default constructor.
-		graph();
+		graph() = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
 		graph(uint32_t n);
 		/// Default destructor.
-		virtual ~graph();
+		virtual ~graph() = default;
 
 		/* OPERATORS */
 

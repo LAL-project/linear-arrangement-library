@@ -85,11 +85,11 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_ulab_free_trees();
+		rand_ulab_free_trees() = default;
 		/// Constructor with size of tree and seed for the random number generator.
 		rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
 		/// Default destructor.
-		~rand_ulab_free_trees();
+		~rand_ulab_free_trees() = default;
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.

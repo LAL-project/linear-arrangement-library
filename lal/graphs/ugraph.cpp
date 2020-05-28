@@ -54,11 +54,11 @@ namespace graphs {
 
 /* PUBLIC */
 
-ugraph::ugraph() : graph() { }
+//ugraph::ugraph() : graph() { }
 ugraph::ugraph(uint32_t n) {
 	init(n);
 }
-ugraph::~ugraph() { }
+//ugraph::~ugraph() { }
 
 /* OPERATORS */
 

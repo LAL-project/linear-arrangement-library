@@ -63,14 +63,14 @@ namespace graphs {
 class dgraph : virtual public graph {
 	public:
 		/// Default constructor.
-		dgraph();
+		dgraph() = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
 		dgraph(uint32_t n);
 		/// Default destructor.
-		virtual ~dgraph();
+		virtual ~dgraph() = default;
 
 		/* OPERATORS */
 

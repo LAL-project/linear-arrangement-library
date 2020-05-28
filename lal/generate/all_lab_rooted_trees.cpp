@@ -49,11 +49,11 @@ using namespace graphs;
 
 namespace generate {
 
-all_lab_rooted_trees::all_lab_rooted_trees() { }
+//all_lab_rooted_trees::all_lab_rooted_trees() { }
 all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) {
 	init(n);
 }
-all_lab_rooted_trees::~all_lab_rooted_trees() { }
+//all_lab_rooted_trees::~all_lab_rooted_trees() { }
 
 void all_lab_rooted_trees::init(uint32_t n) {
 	m_n = n;

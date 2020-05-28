@@ -52,14 +52,14 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-ftree::ftree() { }
+//ftree::ftree() { }
 ftree::ftree(uint32_t n) : ugraph(n) { }
 ftree::ftree(const ugraph& t) : ugraph(t.n_nodes()) {
 	// check that the input graph is a ftree
 	assert(utils::is_graph_a_tree(t));
 	add_edges(t.edges());
 }
-ftree::~ftree() { }
+//ftree::~ftree() { }
 
 ftree& ftree::add_edge(node s, node t, bool norm) {
 #if defined DEBUG

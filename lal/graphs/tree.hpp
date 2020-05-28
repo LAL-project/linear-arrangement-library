@@ -62,8 +62,8 @@ namespace graphs {
  */
 class tree : virtual public graph {
 	public:
-		tree();
-		virtual ~tree();
+		tree() = default;
+		virtual ~tree() = default;
 
 		/* GETTERS */
 

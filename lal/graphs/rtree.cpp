@@ -54,14 +54,14 @@ using namespace utils;
 
 namespace graphs {
 
-rtree::rtree() { }
+//rtree::rtree() { }
 rtree::rtree(uint32_t n) : dgraph(n) {
 	rtree::_init(n);
 }
 rtree::rtree(const ftree& t, node r, rtree_type type) {
 	init_rooted(t, r, type);
 }
-rtree::~rtree() { }
+//rtree::~rtree() { }
 
 /* MODIFIERS */
 

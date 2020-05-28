@@ -53,12 +53,11 @@ using namespace graphs;
 
 namespace generate {
 
-all_ulab_rooted_trees::all_ulab_rooted_trees() { }
+//all_ulab_rooted_trees::all_ulab_rooted_trees() { }
 all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) {
 	init(_n);
 }
-
-all_ulab_rooted_trees::~all_ulab_rooted_trees() { }
+//all_ulab_rooted_trees::~all_ulab_rooted_trees() { }
 
 void all_ulab_rooted_trees::init(uint32_t _n) {
 	m_is_first = true;

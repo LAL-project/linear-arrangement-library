@@ -90,11 +90,11 @@ class all_ulab_free_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t).
 		 */
-		all_ulab_free_trees();
+		all_ulab_free_trees() = default;
 		/// Constructor with number of nodes.
 		all_ulab_free_trees(uint32_t n);
 		/// Default destructor
-		~all_ulab_free_trees();
+		~all_ulab_free_trees() = default;
 
 		/**
 		 * @brief Initialises the generator.

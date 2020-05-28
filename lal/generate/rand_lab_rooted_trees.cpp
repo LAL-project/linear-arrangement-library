@@ -47,14 +47,12 @@ using namespace graphs;
 
 namespace generate {
 
-rand_lab_rooted_trees::rand_lab_rooted_trees() : rand_lab_free_trees() { }
-
+//rand_lab_rooted_trees::rand_lab_rooted_trees() : rand_lab_free_trees() { }
 rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
 	: rand_lab_free_trees(n, seed)
 {
-
 }
-rand_lab_rooted_trees::~rand_lab_rooted_trees() { }
+//rand_lab_rooted_trees::~rand_lab_rooted_trees() { }
 
 void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
 	rand_lab_free_trees::init(n, seed);
