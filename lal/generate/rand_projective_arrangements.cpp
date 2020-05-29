@@ -69,7 +69,7 @@ rand_projective_arrgmnt::rand_projective_arrgmnt(const rtree& rT, bool seed)
 	assert(rT.is_rooted_tree());
 	if (seed) {
 		random_device rd;
-		gen = mt19937(rd());
+		m_gen = mt19937(rd());
 	}
 }
 rand_projective_arrgmnt::~rand_projective_arrgmnt() { }
@@ -104,7 +104,7 @@ linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
 		}
 
 		// shuffle the positions
-		shuffle(interval.begin(), interval.end(), gen);
+		shuffle(interval.begin(), interval.end(), m_gen);
 	}
 	return put_in_arrangement(m_rT, vdata);
 }

@@ -79,7 +79,7 @@ class rand_projective_arrgmnt {
 		const graphs::rtree& m_rT;
 
 		/// Random number generator
-		std::mt19937 gen;
+		std::mt19937 m_gen;
 };
 
 } // -- namespace generate
