@@ -109,19 +109,17 @@ void rtree::disjoint_union(const rtree& t, bool connect_roots) {
 
 	// connect the roots if necessary
 	if (connect_roots) {
-		assert(has_root());
-		add_edge(get_root(), prev_n + t.get_root());
+		const node this_r = get_root();
+		const node t_r = prev_n + t.get_root();
+		add_edge(this_r, t_r);
 	}
-	else {
-		// If connect_roots is false then the graph is going to
-		// lack an edge (until inserted by someone). Nothing to do.
-	}
+	// If connect_roots is false then the graph is going to
+	// lack an edge (until inserted by someone). Nothing to do.
 
 	// - keep the tree's root (if any)
-	// - do not change the type of rooted tree
-
-	// -> size of subtrees need recalculating
+	// - size of subtrees need recalculating
 	m_need_recalc_size_subtrees = true;
+	// - do not change the type of rooted tree
 }
 
 bool rtree::find_rtree_type() {
