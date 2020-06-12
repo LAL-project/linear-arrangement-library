@@ -227,11 +227,11 @@ void rtree::recalc_size_subtrees() {
 	m_need_recalc_size_subtrees = false;
 	m_size_subtrees.resize(n_nodes(), 0);
 
-	if (get_rtree_type() == rtree_type::anti_arborescence) {
-		utils::get_size_subtrees_anti_arborescence(*this, get_root(), m_size_subtrees);
+	if (get_rtree_type() == rtree_type::arborescence) {
+		utils::get_size_subtrees_arborescence(*this, get_root(), m_size_subtrees);
 	}
 	else {
-		utils::get_size_subtrees_arborescence(*this, get_root(), m_size_subtrees);
+		utils::get_size_subtrees_anti_arborescence(*this, get_root(), m_size_subtrees);
 	}
 }
 
