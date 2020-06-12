@@ -41,57 +41,131 @@
 #include <vector>
 
 // lal includes
+#include <lal/graphs/ftree.hpp>
 #include <lal/graphs/rtree.hpp>
 
 namespace lal {
 namespace utils {
 
+namespace __lal {
+
 /*
- * @brief Calculate the size of every subtree of tree @e t.
+ * @brief Calculate the size of every subtree of the free tree @e t.
  *
- * The method starts calculating the sizes at node @e r.
- * The method assumes that the vector @e sizes is initialised appropriately
- * (e.g., it has the right size).
- * This method is different from @ref get_undirected_size_subtrees because
- * it follows reversed edges.
  * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this node.
+ * @param r The first call to this method, node @e r is interpreted as its
+ * hypothetical root.
  * @param vis Mark nodes as visited as the algorithm goes on.
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
  */
-inline void get_size_subtrees_anti_arborescence(
-	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
+void get_size_subtrees(
+	const graphs::ftree& t, node r,
+	std::vector<bool>& vis,
+	std::vector<uint32_t>& sizes
 )
 {
 	sizes[r] = 1;
-	for (node u : t.get_in_neighbours(r)) {
-		get_size_subtrees_anti_arborescence(t, u, sizes);
-		sizes[r] += sizes[u];
+	vis[r] = true;
+	for (node u : t.get_neighbours(r)) {
+		if (not vis[u]) {
+			get_size_subtrees(t, u, vis, sizes);
+			sizes[r] += sizes[u];
+		}
 	}
 }
 
 /*
- * @brief Calculate the size of every subtree of tree @e t.
+ * @brief Calculate the size of every subtree of arborescence @e t.
  *
  * The method starts calculating the sizes at node @e r.
- * The method assumes that the vector @e sizes is initialised appropriately
- * (e.g., it has the right size).
  * @param t Input rooted tree.
  * @param r Start calculating sizes of subtrees at this node.
  * @param vis Mark nodes as visited as the algorithm goes on.
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
  */
-inline void get_size_subtrees_arborescence(
+void get_size_subtrees_arb(
 	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
 	sizes[r] = 1;
 	for (node u : t.get_neighbours(r)) {
-		get_size_subtrees_arborescence(t, u, sizes);
+		get_size_subtrees_arb(t, u, sizes);
 		sizes[r] += sizes[u];
 	}
+}
+
+/*
+ * @brief Calculate the size of every subtree of anti-arborescence @e t.
+ *
+ * The method starts calculating the sizes at node @e r.
+ * @param t Input rooted tree.
+ * @param r Start calculating sizes of subtrees at this node.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
+ * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
+ */
+void get_size_subtrees_aarb(
+	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
+)
+{
+	sizes[r] = 1;
+	for (node u : t.get_in_neighbours(r)) {
+		get_size_subtrees_aarb(t, u, sizes);
+		sizes[r] += sizes[u];
+	}
+}
+
+} // -- namespace __lal
+
+/*
+ * @brief Calculate the size of every subtree of tree @e t.
+ *
+ * The method starts calculating the sizes at node @e r. Since rooted trees
+ * have directed edges, starting at a node different from the tree's root
+ * may not calculate every subtree's size.
+ * @param t Input rooted tree.
+ * @param r Start calculating sizes of subtrees at this node.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
+ * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
+ */
+void get_size_subtrees(
+	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
+)
+{
+	if (t.get_rtree_type() == graphs::rtree::rtree_type::arborescence) {
+		__lal::get_size_subtrees_arb(t, r, sizes);
+	}
+	else {
+		__lal::get_size_subtrees_aarb(t, r, sizes);
+	}
+}
+
+/*
+ * @brief Calculate the size of every subtree of the free tree @e t.
+ *
+ * The method starts calculating the sizes at node @e r, that is, calculates
+ * the sizes of every subtree considering @e r as its root.
+ * @param t Input rooted tree.
+ * @param r Hypothetical root of the free tree.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
+ * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
+ */
+void get_size_subtrees(
+	const graphs::ftree& t, node r, std::vector<uint32_t>& sizes
+)
+{
+	// visited vertices
+	std::vector<bool> vis(t.n_nodes(), false);
+	__lal::get_size_subtrees(t, r, vis, sizes);
 }
 
 } // -- namespace utils
