@@ -60,7 +60,7 @@ namespace __lal {
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-void get_size_subtrees(
+inline void get_size_subtrees(
 	const graphs::ftree& t, node r,
 	std::vector<bool>& vis,
 	std::vector<uint32_t>& sizes
@@ -87,7 +87,7 @@ void get_size_subtrees(
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-void get_size_subtrees_arb(
+inline void get_size_subtrees_arb(
 	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
@@ -109,7 +109,7 @@ void get_size_subtrees_arb(
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-void get_size_subtrees_aarb(
+inline void get_size_subtrees_aarb(
 	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
@@ -135,7 +135,7 @@ void get_size_subtrees_aarb(
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-void get_size_subtrees(
+inline void get_size_subtrees(
 	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
@@ -159,7 +159,7 @@ void get_size_subtrees(
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-void get_size_subtrees(
+inline void get_size_subtrees(
 	const graphs::ftree& t, node r, std::vector<uint32_t>& sizes
 )
 {

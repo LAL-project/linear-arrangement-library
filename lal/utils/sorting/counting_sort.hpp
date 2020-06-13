@@ -60,9 +60,10 @@ namespace utils {
  *
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
- * @param M Integer value that has to be, at least, one unit larger than the
- * largest key obtained with function @e key.
- * @param key Function that returns an integer value used to compare the elements.
+ * @param M Integer value equal to the largest key that can be obtained with
+ * function @e key.
+ * @param key Function that returns a single integer value used to compare the
+ * elements.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
@@ -70,16 +71,20 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type
 >
 void counting_sort(
-	It begin, It end, const size_t M, const std::function<size_t (const T&)>& key
+	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key
 )
 {
+	// increase
+	const size_t M = _M + 1;
+
+	// size of the container to be sorted
 	const size_t S = std::distance(begin, end);
 
 	// allocate memory
 	T *output = static_cast<T *>(malloc(S*sizeof(T)));
 	size_t *count = static_cast<size_t *>(malloc(M*sizeof(size_t)));
 
-	// initialise memory (when needed)
+	// initialise memory
 	memset(count, 0, M*sizeof(size_t));
 
 	// calculate frequency of each element
