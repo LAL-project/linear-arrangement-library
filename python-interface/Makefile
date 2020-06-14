@@ -1,4 +1,11 @@
-# BUILD OF COMPILATION AND ENVIRRIBUTION
+# BUILD OF COMPILATION AND ENVIRONMENT
+
+# BUILD: debug/release
+# ENVIR: devel (development) / dist (distribution)
+#	* development: only for developers
+#	* distribution: used to install the python interface to your
+#		system.
+
 # compilation is debug by default
 ifeq ($(BUILD), )
 BUILD = debug
@@ -43,9 +50,9 @@ else
 	# --------------------
 	# FOR LINUX USERS ONLY
 	
-	# where are LAL's include files
+	# location of LAL's header files
 	LAL_INC_DIR = /usr/local/include
-	# where are LAL's library files
+	# location of LAL's library files
 	LAL_LIB_DIR = /usr/local/lib
 endif
 endif
