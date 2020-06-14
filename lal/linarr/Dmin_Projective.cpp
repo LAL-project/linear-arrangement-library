@@ -54,7 +54,7 @@ using namespace utils;
 
 namespace linarr {
 
-typedef u_char place;
+typedef char place;
 #define LEFT_PLACE 0
 #define RIGHT_PLACE 1
 #define ROOT_PLACE 2
@@ -63,6 +63,10 @@ typedef u_char place;
 #define left_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2)
 
 #define get_int_size(v) (t.out_degree(v) + 1)
+
+#define get_neighbours(t,u) \
+	(t.get_rtree_type() == rtree::rtree_type::arborescence ? \
+	t.get_out_neighbours(u) : t.get_in_neighbours(u))
 
 constexpr position pos_in_interval(uint32_t int_size, place P) {
 	if (int_size == 1) { return 0; }
@@ -113,9 +117,9 @@ uint32_t make_interval_of(
 	}
 
 	if (r_int_size == 2) {
-		const node vi = t.get_out_neighbours(r)[0];
+		const node vi = get_neighbours(t,r)[0];
 		interval[0] = (r_place == LEFT_PLACE ? vi : r);
-		interval[1] = (r_place == RIGHT_PLACE ? r : vi);
+		interval[1] = (r_place == LEFT_PLACE ? r : vi);
 		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
 		const uint32_t D = make_interval_of(t, vi, vi_place, data);
 		return D + 1;
@@ -143,7 +147,7 @@ uint32_t make_interval_of(
 	uint32_t max_size = 0;
 	vector<nodesize> children(d_out);
 	for (size_t i = 0; i < t.out_degree(r); ++i) {
-		const node vi = t.get_out_neighbours(r)[i];
+		const node vi = get_neighbours(t,r)[i];
 		children[i].first = vi;
 		children[i].second = t.n_nodes_subtree(vi);
 		if (max_size < children[i].second) {
@@ -266,16 +270,12 @@ uint32_t make_interval_of(
 }
 
 pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
+	assert(t.is_rooted_tree());
+
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
 		return make_pair(0, linearrgmnt(0,0));
 	}
-
-	assert(t.is_tree());
-	assert(t.has_root());
-	assert(t.rtree_type_valid() and
-		   t.get_rtree_type() == rtree::rtree_type::arborescence);
-	assert(not t.need_recalc_size_subtrees());
 
 	// construct the optimal intervals
 	vector<vector<node>> data(t.n_nodes());
