@@ -45,9 +45,6 @@
 // C++ includes
 #include <functional>
 
-// lal includes
-#include <lal/utils/sorting/insertion_sort.hpp>
-
 namespace lal {
 namespace utils {
 
@@ -79,11 +76,6 @@ void counting_sort(
 
 	// size of the container to be sorted
 	const size_t S = std::distance(begin, end);
-	std::vector<T> original(S);
-	auto it2 = begin;
-	for (size_t i = 0; i < S; ++i, ++it2) {
-		original[i] = *it2;
-	}
 
 	// allocate memory
 	T *output = static_cast<T *>(malloc(S*sizeof(T)));
