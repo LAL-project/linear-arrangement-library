@@ -44,7 +44,6 @@
 
 // C++ includes
 #include <functional>
-#include <vector>
 
 // lal includes
 #include <lal/utils/sorting/insertion_sort.hpp>
@@ -71,7 +70,8 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type
 >
 void counting_sort(
-	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key
+	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key,
+	bool increasing = true
 )
 {
 	// increase
@@ -79,6 +79,11 @@ void counting_sort(
 
 	// size of the container to be sorted
 	const size_t S = std::distance(begin, end);
+	std::vector<T> original(S);
+	auto it2 = begin;
+	for (size_t i = 0; i < S; ++i, ++it2) {
+		original[i] = *it2;
+	}
 
 	// allocate memory
 	T *output = static_cast<T *>(malloc(S*sizeof(T)));
@@ -106,8 +111,17 @@ void counting_sort(
 	}
 
 	// calculate output
-	it = begin;
-	for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
+	if (increasing) {
+		it = begin;
+		for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
+	}
+	else {
+		it = begin;
+		for (size_t k = S - 1; k > 0; --k, ++it) {
+			*it = output[k];
+		}
+		*it = output[0];
+	}
 
 	// free memory
 	free(output);
