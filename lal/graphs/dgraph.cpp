@@ -129,10 +129,10 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We might
 			// be lucky....
-			const auto out_u_s = out_u.size();
+			const size_t out_u_s = out_u.size();
 			const bool out_u_norm =
 				(out_u_s <= 1 ? m_normalised : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
-			const auto in_v_s = in_v.size();
+			const size_t in_v_s = in_v.size();
 			const bool in_v_norm =
 				(in_v_s <= 1 ? m_normalised : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
 			m_normalised = m_normalised and out_u_norm and in_v_norm;

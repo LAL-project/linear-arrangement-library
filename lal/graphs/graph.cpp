@@ -39,6 +39,9 @@
 
 #include <lal/graphs/graph.hpp>
 
+// C includes
+#include <string.h>
+
 // C++ includes
 #include <algorithm>
 #include <cassert>
@@ -80,15 +83,19 @@ void graph::clear() {
 /* MODIFIERS */
 
 void graph::normalise() {
-	vector<char> mem(n_nodes(), 0);
+	char *mem = static_cast<char *>(malloc(n_nodes()*sizeof(char)));
+	memset(mem, 0, n_nodes()*sizeof(char));
+
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
 			//utils::sort_1_n_inc(nu.begin(), nu.end());
-			utils::bit_sort_mem(nu.begin(), nu.end(), &mem[0]);
+			utils::bit_sort_mem(nu.begin(), nu.end(), mem);
 		}
 	}
 	m_normalised = true;
+
+	free(mem);
 }
 
 bool graph::check_normalised() {
@@ -137,18 +144,6 @@ vector<edge> graph::edges() const {
 
 bool graph::is_normalised() const {
 	return m_normalised;
-}
-
-void graph::get_adjacency_matrix(vector<vector<bool> >& mat) const {
-	const auto n = n_nodes();
-	mat = vector<vector<bool> >(n, vector<bool>(n, false));
-	E_iterator it(*this);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
-		mat[u][v] = true;
-		mat[v][u] = (is_undirected() ? true : mat[v][u]);
-	}
 }
 
 /* PROTECTED */

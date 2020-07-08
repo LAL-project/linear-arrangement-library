@@ -89,8 +89,8 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm) {
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We may
 			// be lucky....
-			const auto su = nu.size();
-			const auto sv = nv.size();
+			const size_t su = nu.size();
+			const size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}

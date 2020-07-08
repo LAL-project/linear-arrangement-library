@@ -167,13 +167,6 @@ class graph {
 		/// Returns whether this graph is undirected or not.
 		virtual bool is_undirected() const = 0;
 
-		/**
-		 * @brief Constructs the adjacency matrix of the graph.
-		 * @param[out] mat The adjacency matrix of the graph. @e mat[i][j]
-		 * is true if, and only if, there exists an edge between @e i and @e j.
-		 */
-		void get_adjacency_matrix(std::vector<std::vector<bool> >& mat) const;
-
 	protected:
 		/// Data structure that implements the graph.
 		std::vector<neighbourhood> m_adjacency_list;
