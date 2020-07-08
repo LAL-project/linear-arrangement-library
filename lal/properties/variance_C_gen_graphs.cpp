@@ -316,8 +316,7 @@ inline void compute_data_gen_graphs_reuse
 			if (u == t) { continue; }
 
 			bigint common_ut = 0;
-			CIT it_ut;
-			if (map_has_key(saving_comps, sorted_edge(u,t), it_ut)) {
+			if (CIT it_ut; map_has_key(saving_comps, sorted_edge(u,t), it_ut)) {
 				common_ut = it_ut->second.common;
 			}
 			else {
@@ -344,8 +343,7 @@ inline void compute_data_gen_graphs_reuse
 
 			// precompute data
 			bigint common_us = 0;
-			CIT it_su;
-			if (map_has_key(saving_comps, sorted_edge(u,s), it_su)) {
+			if (CIT it_su; map_has_key(saving_comps, sorted_edge(u,s), it_su)) {
 				common_us = it_su->second.common;
 			}
 			else {
@@ -374,8 +372,7 @@ inline void compute_data_gen_graphs_reuse
 		bigint common_st = 0;
 		// sum of the degrees of the common nodes
 		bigint deg_sum_st = 0;
-		auto it_st = saving_comps.begin();
-		if (map_has_key(saving_comps, sorted_edge(s,t), it_st)) {
+		if (CIT it_st; map_has_key(saving_comps, sorted_edge(s,t), it_st)) {
 			// if the neighbours were not searched then the variables
 			// 'sum_deg_common_st' and 'common_st' are equal to '0',
 			// so we must initialise them now

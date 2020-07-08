@@ -53,10 +53,7 @@ namespace properties {
 /* EXPECTATION OF D: E_rla[D] */
 
 rational expectation_D_rational(const ugraph& g) {
-	rational Ed;
-	Ed.init_ui((g.n_nodes() + 1)*g.n_edges());
-	Ed /= 3;
-	return Ed;
+	return rational((g.n_nodes() + 1)*g.n_edges(), 3);
 }
 
 double expectation_D(const ugraph& g) {
@@ -67,30 +64,25 @@ double expectation_D(const ugraph& g) {
 /* VARIANCE OF D: V_rla[D] */
 
 rational variance_D_rational(const ugraph& g) {
-	rational Ed(0), Ed2(0);
-
 	// E_rla[D]
-	Ed = expectation_D_rational(g);
+	const rational Ed = expectation_D_rational(g);
 	// E_rla[D^2]
-	integer n, m;
-	n.init_ui(g.n_nodes());
-	m.init_ui(g.n_edges());
+	const integer n = g.n_nodes();
+	const integer m = g.n_edges();
 
 	// calculate expectations of types
-	rational E0((n + 1)*(n*5 + 4));
-	E0 /= 45;
-	rational E1((n + 1)*(n*7 + 4));
-	E1 /= 60;
-	rational E2(n*(n + 1));
-	E2 /= 6;
+	const rational E0((n + 1)*(n*5 + 4), 45);
+	const rational E1((n + 1)*(n*7 + 4), 60);
+	const rational E2(n*(n + 1), 6);
 
 	// calculate frequencies
-	integer f0 = size_Q_integer(g)*2;
-	integer f2(m);
-	integer f1(m*(m - 1) - f0);
+	const integer f0 = size_Q_integer(g)*2;
+	const integer f2(m);
+	const integer f1(m*(m - 1) - f0);
 
 	// calculate second moment
-	Ed2 = E0*f0;
+	rational Ed2 = 0;
+	Ed2 += E0*f0;
 	Ed2 += E1*f1;
 	Ed2 += E2*f2;
 
