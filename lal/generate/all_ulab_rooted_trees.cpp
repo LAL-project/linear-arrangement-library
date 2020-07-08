@@ -103,7 +103,9 @@ void all_ulab_rooted_trees::next() {
 		return;
 	}
 
-	m_L[m_p] = m_L[m_p] - 1;
+	//m_L[m_p] = m_L[m_p] - 1;
+	--m_L[m_p];
+
 	if (m_p < m_n and (m_L[m_p] != 2 or m_L[m_p - 1] != 2)) {
 		const uint32_t diff = m_p - m_prev[m_L[m_p]];
 		while (m_p < m_n) {

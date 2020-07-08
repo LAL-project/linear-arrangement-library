@@ -228,9 +228,7 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 void rand_ulab_free_trees::bicenter(uint32_t n) {
 	// make sure that the number of nodes is even
 	assert(n%2 == 0);
-	if (n == 0) {
-		return;
-	}
+	if (n == 0) { return; }
 	const uint32_t h = n/2;
 
 	// for both steps, make one tree ...
@@ -402,9 +400,8 @@ rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 			z -= (get_rn(d)*get_alpha_mq(m-j*d, q)*d).to_double();
 
 			// if 'z' has not reached 0 then generate next pair
-			if (z > 0) {
-				++j;
-			}
+			//if (z > 0) { ++j; }
+			j += (z > 0 ? 1 : 0);
 		}
 	}
 

@@ -66,10 +66,17 @@ namespace generate {
 rand_projective_arrgmnt::rand_projective_arrgmnt(const rtree& rT, bool seed)
 	: m_rT(rT)
 {
-	assert(rT.is_rooted_tree());
+	assert(m_rT.is_rooted_tree());
 	if (seed) {
 		random_device rd;
 		m_gen = mt19937(rd());
+	}
+
+	// initialise the random data of all vertices
+	rdata = vector<vector<node>>(m_rT.n_nodes());
+	for (node u = 0; u < m_rT.n_nodes(); ++u) {
+		const uint32_t deg = degree_vertex(m_rT, u);
+		rdata[u] = vector<node>(deg + 1);
 	}
 }
 rand_projective_arrgmnt::~rand_projective_arrgmnt() { }
@@ -79,14 +86,10 @@ linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
 		return linearrgmnt(1, 0);
 	}
 
-	// the random data of all vertices
-	vector<vector<node>> vdata(m_rT.n_nodes());
-
 	for (node u = 0; u < m_rT.n_nodes(); ++u) {
 		// -- generate random data for a single vertex
 
 		// number of children of 'r' with respect to the tree's root
-		const uint32_t deg = degree_vertex(m_rT, u);
 		const neighbourhood& neighs = neighbours_vertex(m_rT, u);
 
 		// Choose random positions for the intervals corresponding to the
@@ -94,10 +97,8 @@ linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
 		// have to be made with respect to 'r'. Remember: there are d_out+1
 		// possibilities.
 
-		vdata[u] = vector<node>(deg + 1);
-
 		// fill interval with the root vertex and its children
-		vector<node>& interval = vdata[u];
+		vector<node>& interval = rdata[u];
 		interval[0] = u;
 		for (size_t i = 0; i < neighs.size(); ++i) {
 			interval[i+1] = neighs[i];
@@ -106,7 +107,9 @@ linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
 		// shuffle the positions
 		shuffle(interval.begin(), interval.end(), m_gen);
 	}
-	return put_in_arrangement(m_rT, vdata);
+
+	// generate arrangement from data
+	return put_in_arrangement(m_rT, rdata);
 }
 
 } // -- namespace generate

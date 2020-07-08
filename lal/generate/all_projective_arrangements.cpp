@@ -97,9 +97,10 @@ void all_proj_arr::next() {
 		++i;
 	}
 
-	if (i == m_por_vertices.size() and not has_perm) {
+	/*if (i == m_por_vertices.size() and not has_perm) {
 		m_has_next = false;
-	}
+	}*/
+	m_has_next = i != m_por_vertices.size() or has_perm;
 }
 
 linearrgmnt all_proj_arr::get_arrangement() const {

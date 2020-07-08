@@ -248,9 +248,12 @@ const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 			int32_t j = 1;
 			while (j <= utils::to_int32(k) and i > 0) {
 				i -= utils::to_int32(d);
-				if (i > 0) {
-					s += m_rn[utils::to_uint32(i)]*td;
-				}
+
+				// --
+				//if (i > 0) { s += m_rn[utils::to_uint32(i)]*td; }
+				s += (i > 0 ? m_rn[utils::to_uint32(i)]*td : 0);
+				// --
+
 				++j;
 			}
 		}
@@ -288,9 +291,11 @@ rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 			// substract weight of current pair
 			weight -= (get_rn(n - j*d)*get_rn(d)*d).to_double();
 			// if 'z' has not reached 0 then generate next pair
-			if (weight > 0) {
-				++j;
-			}
+
+			// --
+			//if (weight > 0) { ++j; }
+			j += (weight > 0 ? 1 : 0);
+			// --
 		}
 	}
 

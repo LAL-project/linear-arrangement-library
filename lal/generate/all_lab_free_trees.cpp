@@ -102,11 +102,18 @@ void all_lab_free_trees::next() {
 	}
 	++m_seq[m_it];
 
+	/*
 	if (m_seq[m_it] == m_n - 1) {
 		m_sm[m_it] =
-			(m_it == 0) or
-			(m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
+		(m_it == 0) or (m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
 	}
+	*/
+	m_sm[m_it] =
+	(m_seq[m_it] == m_n - 1 ?
+		(m_it == 0) or (m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1)
+		:
+		m_sm[m_it]
+	);
 
 	++m_it;
 	if (m_it < m_n - 2) {

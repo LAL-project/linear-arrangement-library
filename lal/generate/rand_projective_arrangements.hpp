@@ -78,6 +78,14 @@ class rand_projective_arrgmnt {
 		/// The rooted tree of we are making projective arrangements uniformly at random.
 		const graphs::rtree& m_rT;
 
+		/**
+		 * @brief The random data for all vertices
+		 *
+		 * This is a member of the class to avoid its initialisation at
+		 * every call to @ref make_rand_arrgmnt.
+		 */
+		std::vector<std::vector<node>> rdata;
+
 		/// Random number generator
 		std::mt19937 m_gen;
 };

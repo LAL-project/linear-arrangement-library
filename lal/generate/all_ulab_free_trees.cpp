@@ -62,7 +62,7 @@ all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) {
 
 void all_ulab_free_trees::init(uint32_t _n) {
 	m_is_last = false;
-	m_first_it = true;
+	//m_first_it = true;
 	m_n = _n;
 
 	m_L = vector<uint32_t>(m_n+1, 0);
@@ -98,9 +98,8 @@ void all_ulab_free_trees::init(uint32_t _n) {
 		m_L[i] = i - k + 1;
 	}
 
-	if (m_n <= 3) {
-		m_first_it = false;
-	}
+	//if (m_n <= 3) { m_first_it = false; }
+	m_first_it = m_n > 3;
 }
 
 bool all_ulab_free_trees::has_next() const {
@@ -120,21 +119,28 @@ void all_ulab_free_trees::next() {
 	// implementation copied "as is" from the cited paper
 	// in the description of the class. Read the paper...
 
-	bool fixit = false;
-	if (
+	const bool cond1 =
 		(m_c == m_n + 1) or
 		(m_p == m_h2 and (
 			(m_L[m_h1] == m_L[m_h2] + 1 and m_n - m_h2 > m_r - m_h1)
 			or
 			(m_L[m_h1] == m_L[m_h2] and m_n - m_h2 + 1 < m_r - m_h1)
-		))
-	)
-	{
+		));
+
+	const bool fixit = cond1 and (m_L[m_r] > 3);
+
+	if (cond1) {
 		if (m_L[m_r] > 3) {
 			m_p = m_r;
 			m_q = m_W[m_r];
-			if (m_h1 == m_r) { --m_h1; }
-			fixit = true;
+
+			// --
+			//if (m_h1 == m_r) { --m_h1; }
+			m_h1 = m_h1 - (m_h1 == m_r ? 1 : 0);
+			// --
+
+			// variable 'fixit' is set in a few lines above this.
+			//fixit = true;
 		}
 		else {
 			m_p = m_r;
@@ -146,9 +152,11 @@ void all_ulab_free_trees::next() {
 	bool needr, needc, needh2;
 	needr = needc = needh2 = false;
 
-	if (m_p <= m_h1) {
-		m_h1 = m_p - 1;
-	}
+	// --
+	//if (m_p <= m_h1) { m_h1 = m_p - 1; }
+	m_h1 = (m_p <= m_h1 ? m_p - 1 : m_h1);
+	// --
+
 	if (m_p <= m_r) {
 		needr = true;
 	}
@@ -156,9 +164,8 @@ void all_ulab_free_trees::next() {
 		needh2 = true;
 	}
 	else if (m_L[m_h2] == m_L[m_h1] - 1 and m_n - m_h2 == m_r - m_h1) {
-		if (m_p <= m_c) {
-			needc = true;
-		}
+		//if (m_p <= m_c) { needc = true; }
+		needc = (m_p <= m_c ? true : needc);
 	}
 	else {
 		m_c = inf;
@@ -177,19 +184,27 @@ void all_ulab_free_trees::next() {
 		}
 		else {
 			m_p = i;
-			if (m_L[i] == oldLq) {
-				m_q = oldWq;
-			}
-			else {
-				m_q = m_W[i + delta] - delta;
-			}
+
+			// --
+			/*if (m_L[i] == oldLq) { m_q = oldWq; }
+			else { m_q = m_W[i + delta] - delta; }*/
+			m_q = (m_L[i] == oldLq ? oldWq : m_W[i + delta] - delta);
+			// --
+
 			m_W[i] = m_q;
 		}
-		if (needr and m_L[i] == 2) {
+
+		// --
+		/*if (needr and m_L[i] == 2) {
 			needr = false;
 			needh2 = true;
 			m_r = i - 1;
-		}
+		}*/
+		m_r = (needr and m_L[i] == 2 ? i - 1 : m_r);
+		needh2 = (needr and m_L[i] == 2 ? true : needh2);
+		needr = (needr and m_L[i] == 2 ? false : needr);
+		// --
+
 		if (needh2 and m_L[i] <= m_L[i - 1] and i > m_r + 1) {
 			needh2 = false;
 			m_h2 = i - 1;
@@ -201,13 +216,18 @@ void all_ulab_free_trees::next() {
 			}
 		}
 		if (needc) {
-			if (m_L[i] != m_L[m_h1 - m_h2 + i] - 1) {
+
+			// --
+			/*if (m_L[i] != m_L[m_h1 - m_h2 + i] - 1) {
 				needc = false;
 				m_c = i;
 			}
 			else {
 				m_c = i + 1;
-			}
+			}*/
+			needc = m_L[i] == m_L[m_h1 - m_h2 + i] - 1;
+			m_c = (m_L[i] != m_L[m_h1 - m_h2 + i] - 1 ? i : i + 1);
+			// --
 		}
 	}
 	if (fixit) {
@@ -224,22 +244,23 @@ void all_ulab_free_trees::next() {
 	}
 	else {
 		if (m_p == inf) {
-			if (m_L[oldp - 1] != 2) {
-				m_p = oldp - 1;
-			}
-			else {
-				m_p = oldp - 2;
-			}
+
+			// --
+			/*if (m_L[oldp - 1] != 2) { m_p = oldp - 1; }
+			else { m_p = oldp - 2; }*/
+			m_p = (m_L[oldp - 1] != 2 ? oldp - 1 : oldp - 2);
+			// --
+
 			m_q = m_W[m_p];
 		}
 		if (needh2) {
 			m_h2 = m_n;
-			if (m_L[m_h2] == m_L[m_h1] - 1 and m_h1 == m_r) {
-				m_c = m_n + 1;
-			}
-			else {
-				m_c = inf;
-			}
+
+			// --
+			/*if (m_L[m_h2] == m_L[m_h1] - 1 and m_h1 == m_r) { m_c = m_n + 1; }
+			else { m_c = inf; }*/
+			m_c = (m_L[m_h2] == m_L[m_h1] - 1 and m_h1 == m_r ? m_n + 1 : inf);
+			// --
 		}
 	}
 
