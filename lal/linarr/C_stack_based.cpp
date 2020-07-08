@@ -137,9 +137,10 @@ inline uint32_t __compute_C_stack_based(
 
 		for (node v : adjP[u]) {
 			const edge uv = sorted_edge(u,v);
-			idx = edge_to_idx[ uv ];
-
-			uint32_t on_top = static_cast<uint32_t>(S.remove( make_pair(idx, uv) ));
+			const uint32_t on_top =
+				static_cast<uint32_t>(
+					S.remove(make_pair(edge_to_idx[uv], uv))
+				);
 			C += on_top;
 
 			/*

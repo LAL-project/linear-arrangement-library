@@ -120,7 +120,7 @@ inline uint32_t __call_C_brute_force(const ugraph& g, const linearrgmnt& pi) {
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	// compute the number of crossings
-	uint32_t C = __compute_C_brute_force(g, pi, T);
+	const uint32_t C = __compute_C_brute_force(g, pi, T);
 
 	/* free memory */
 	free(T);

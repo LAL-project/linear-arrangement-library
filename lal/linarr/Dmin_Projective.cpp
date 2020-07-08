@@ -150,9 +150,11 @@ uint32_t make_interval_of(
 		const node vi = get_neighbours(t,r)[i];
 		children[i].first = vi;
 		children[i].second = t.n_nodes_subtree(vi);
-		if (max_size < children[i].second) {
+
+		/*if (max_size < children[i].second) {
 			max_size = children[i].second;
-		}
+		}*/
+		max_size = std::max(max_size, children[i].second);
 	}
 
 	// -------------------------
@@ -199,7 +201,7 @@ uint32_t make_interval_of(
 		const node vi = p.first;
 		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
-		// make the interval of 'vi'
+		// recursive call: make the interval of 'vi'
 		D += make_interval_of(t, vi, vi_place, data);
 
 		// accumulate size of interval
@@ -212,14 +214,11 @@ uint32_t make_interval_of(
 
 		// 1. increase/decrease right/left position
 		// 2. accumulate size of subtree rooted at vi
-		if (left) {
-			--leftpos;
-			acc_size_left += t.n_nodes_subtree(vi);
-		}
-		else {
-			++rightpos;
-			acc_size_right += t.n_nodes_subtree(vi);
-		}
+		leftpos -= (left ? 1 : 0);
+		acc_size_left += (left ? t.n_nodes_subtree(vi) : 0);
+
+		rightpos += (left ? 0 : 1);
+		acc_size_right += (left ? 0 : t.n_nodes_subtree(vi));
 
 		// go to the other side
 		left = not left;
@@ -279,10 +278,10 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
 
 	// construct the optimal intervals
 	vector<vector<node>> data(t.n_nodes());
-	uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
+	const uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
-	linearrgmnt arr = put_in_arrangement(t, data);
+	const linearrgmnt arr = put_in_arrangement(t, data);
 
 	return make_pair(D, arr);
 }

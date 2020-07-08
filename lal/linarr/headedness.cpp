@@ -57,7 +57,7 @@ inline uint32_t __headedness_rational(const dgraph& g, const linearrgmnt& pi) {
 	iterators::E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		edge e = it.get_edge();
+		const edge e = it.get_edge();
 		edges_to_right += pi[e.first] < pi[e.second];
 	}
 	return edges_to_right;

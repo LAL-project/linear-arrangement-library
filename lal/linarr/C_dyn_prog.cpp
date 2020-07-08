@@ -163,9 +163,13 @@ inline uint32_t __compute_C_dyn_prog(
 			 * to avoid making illegal memory accesses.
 			 */
 
-			if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+
+			// --
+			/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
 				C += K[idx(pu,pi[v]-2, n-3)];
-			}
+			}*/
+			// --
+			C += (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1 ? K[idx(pu,pi[v]-2, n-3)] : 0);
 		}
 	}
 

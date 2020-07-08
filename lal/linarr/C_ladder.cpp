@@ -81,12 +81,18 @@ inline uint32_t __compute_C_ladder(
 		utils::get_bool_neighbours(g, u, bn);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
-			node v = T[q];
+			const node v = T[q];
 			S += L1[q];
-			if (bn[v]) {
+
+			// --
+			/*if (bn[v]) {
 				C += S - L1[q];
 				++L1[q];
-			}
+			}*/
+			C += (bn[v] ? S - L1[q] : 0);
+			L1[q] += (bn[v] ? 1 : 0);
+			// --
+
 			bn[v] = false;
 		}
 	}
@@ -115,7 +121,7 @@ inline uint32_t __call_C_ladder(const ugraph& g, const linearrgmnt& pi) {
 	vector<bool> bool_neighs(n, false);
 
 	/* compute number of crossings */
-	uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
+	const uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
 	free(all_memory);
