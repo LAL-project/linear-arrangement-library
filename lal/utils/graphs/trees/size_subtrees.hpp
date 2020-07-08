@@ -76,50 +76,6 @@ inline void get_size_subtrees(
 	}
 }
 
-/*
- * @brief Calculate the size of every subtree of arborescence @e t.
- *
- * The method starts calculating the sizes at node @e r.
- * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this node.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
- */
-inline void get_size_subtrees_arb(
-	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
-)
-{
-	sizes[r] = 1;
-	for (node u : t.get_neighbours(r)) {
-		get_size_subtrees_arb(t, u, sizes);
-		sizes[r] += sizes[u];
-	}
-}
-
-/*
- * @brief Calculate the size of every subtree of anti-arborescence @e t.
- *
- * The method starts calculating the sizes at node @e r.
- * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this node.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
- */
-inline void get_size_subtrees_aarb(
-	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
-)
-{
-	sizes[r] = 1;
-	for (node u : t.get_in_neighbours(r)) {
-		get_size_subtrees_aarb(t, u, sizes);
-		sizes[r] += sizes[u];
-	}
-}
-
 } // -- namespace __lal
 
 /*
@@ -139,11 +95,14 @@ inline void get_size_subtrees(
 	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
 )
 {
-	if (t.get_rtree_type() == graphs::rtree::rtree_type::arborescence) {
-		__lal::get_size_subtrees_arb(t, r, sizes);
-	}
-	else {
-		__lal::get_size_subtrees_aarb(t, r, sizes);
+	const neighbourhood& neighs =
+		(t.get_rtree_type() == graphs::rtree::rtree_type::arborescence ?
+			 t.get_neighbours(r) : t.get_in_neighbours(r)
+		);
+	sizes[r] = 1;
+	for (node u : neighs) {
+		get_size_subtrees(t, u, sizes);
+		sizes[r] += sizes[u];
 	}
 }
 
