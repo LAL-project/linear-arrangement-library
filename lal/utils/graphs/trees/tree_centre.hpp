@@ -37,6 +37,8 @@
  *
  ********************************************************************/
 
+#pragma once
+
 // C++ includes
 #if defined DEBUG
 #include <cassert>
