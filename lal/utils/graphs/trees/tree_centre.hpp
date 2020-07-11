@@ -77,6 +77,11 @@ inline node __get_only_neighbour(const graphs::ugraph& g, const node s) {
 /*
  * @brief Calculate the centre of the connected component that has node @e x.
  *
+ * Here, "centre" should NOT be confused with "centroid". The center is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex.
+ *
  * A graph of type @ref graphs::tree may lack some edges tree so it has
  * several connected components. Vertex @e x belongs to one of these connected
  * components.
