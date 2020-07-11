@@ -239,6 +239,7 @@ target_sources(
 
 		# utils namespace -- not to be installed
 		# -- headers
+		utils/Dmin/common.hpp
 		utils/graphs/trees/convert_to_ftree.hpp
 		utils/graphs/trees/convert_to_rtree.hpp
 		utils/graphs/trees/is_tree.hpp
@@ -255,6 +256,7 @@ target_sources(
 		utils/macros.hpp
 		utils/std_utils.hpp
 		# -- sources
+		utils/Dmin/common.cpp
 		utils/graphs/trees/convert_to_ftree.cpp
 		utils/graphs/trees/convert_to_rtree.cpp
 

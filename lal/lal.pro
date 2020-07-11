@@ -83,6 +83,7 @@ HEADERS += \
     C.hpp \
     D.hpp \
     properties/mhd.hpp \
+    utils/Dmin/common.hpp \
     utils/graphs/bfs.hpp \
     utils/graphs/cycles.hpp \
     utils/graphs/reachability.hpp \
@@ -147,5 +148,6 @@ SOURCES += \
     properties/variance_C_forests.cpp \
     properties/D_rla.cpp \
     properties/C_rla.cpp \
+    utils/Dmin/common.cpp \
     utils/graphs/trees/convert_to_ftree.cpp \
     utils/graphs/trees/convert_to_rtree.cpp
