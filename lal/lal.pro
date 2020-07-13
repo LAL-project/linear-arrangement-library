@@ -84,9 +84,9 @@ HEADERS += \
     D.hpp \
     properties/mhd.hpp \
     utils/Dmin/common.hpp \
-    utils/graphs/bfs.hpp \
     utils/graphs/cycles.hpp \
     utils/graphs/reachability.hpp \
+    utils/graphs/traversal.hpp \
     utils/graphs/trees/convert_to_ftree.hpp \
     utils/graphs/trees/convert_to_rtree.hpp \
     utils/graphs/trees/make_projective_arr.hpp \
