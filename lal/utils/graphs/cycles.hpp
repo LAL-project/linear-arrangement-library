@@ -40,7 +40,7 @@
 #pragma once
 
 #include <lal/graphs/dgraph.hpp>
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 #include <lal/utils/macros.hpp>
 
 namespace lal {
@@ -137,7 +137,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&cycle_found](const auto, const node) -> bool { return cycle_found; }
+	[&cycle_found](const auto&, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
 	[&](const auto& _bfs, node s, node t, bool) -> void {
@@ -166,7 +166,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	// find cycles
 	for (node u = 0; u < n and not cycle_found; ++u) {
 		if (not bfs.node_was_visited(u)) {
-			bfs.clear_queue();
+			bfs.clear_structure();
 			bfs.start_at(u);
 		}
 	}

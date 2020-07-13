@@ -40,7 +40,7 @@
 #pragma once
 
 // lal includes
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
 namespace utils {
@@ -56,7 +56,7 @@ template<class G, typename node = typename lal::node>
 bool is_node_reachable_from(const G& g, const node source, const node target) {
 	BFS<G> bfs(g);
 	bfs.set_terminate(
-		[target](const BFS<G>&, const node s) -> bool { return (s == target); }
+		[target](const auto&, const node s) -> bool { return (s == target); }
 	);
 	bfs.start_at(source);
 	return bfs.node_was_visited(target);

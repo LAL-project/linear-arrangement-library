@@ -50,7 +50,7 @@
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/rtree.hpp>
 #include <lal/graphs/ftree.hpp>
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
 namespace utils {

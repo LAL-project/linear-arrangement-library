@@ -44,7 +44,6 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/bfs.hpp>
 #include <lal/utils/graphs/cycles.hpp>
 #include <lal/utils/graphs/reachability.hpp>
 #include <lal/utils/graphs/trees/is_tree.hpp>

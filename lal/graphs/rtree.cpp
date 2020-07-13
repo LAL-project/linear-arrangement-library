@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 #include <lal/utils/graphs/trees/is_tree.hpp>
 #include <lal/utils/graphs/trees/size_subtrees.hpp>
 
@@ -190,7 +190,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	BFS<ftree> bfs(_t);
 	if (arb == rtree_type::arborescence) {
 		bfs.set_process_neighbour(
-		[&](const BFS<ftree>&, const node s, const node t, bool) -> void {
+		[&](const auto&, const node s, const node t, bool) -> void {
 			// the tree is an arborescence, i.e., the
 			// edges point away from the root
 			*it_dir_edges = edge(s,t);
@@ -200,7 +200,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	}
 	else {
 		bfs.set_process_neighbour(
-		[&](const BFS<ftree>&, const node s, const node t, bool) -> void {
+		[&](const auto&, const node s, const node t, bool) -> void {
 			// the tree is an anti-arborescence, i.e., the
 			// edges point towards the root
 			*it_dir_edges = edge(t,s);

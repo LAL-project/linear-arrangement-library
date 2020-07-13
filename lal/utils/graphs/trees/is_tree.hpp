@@ -40,7 +40,7 @@
 #pragma once
 
 // lal includes
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 #include <lal/utils/graphs/cycles.hpp>
 
 namespace lal {
