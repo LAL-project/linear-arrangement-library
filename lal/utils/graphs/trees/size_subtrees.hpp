@@ -45,6 +45,7 @@
 // lal includes
 #include <lal/graphs/ftree.hpp>
 #include <lal/graphs/rtree.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
 namespace utils {
@@ -81,6 +82,27 @@ inline void get_size_subtrees(
 } // -- namespace __lal
 
 /*
+ * @brief Calculate the size of every subtree of the free tree @e t.
+ *
+ * The method starts calculating the sizes at node @e r, that is, calculates
+ * the sizes of every subtree considering @e r as its root.
+ * @param t Input rooted tree.
+ * @param r Hypothetical root of the free tree.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node
+ * from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
+ */
+inline void get_size_subtrees(
+	const graphs::ftree& t, node r, std::vector<uint32_t>& sizes
+)
+{
+	// visited vertices
+	std::vector<bool> vis(t.n_nodes(), false);
+	__lal::get_size_subtrees(t, r, vis, sizes);
+}
+
+/*
  * @brief Calculate the size of every subtree of tree @e t.
  *
  * The method starts calculating the sizes at node @e r. Since rooted trees
@@ -101,32 +123,12 @@ inline void get_size_subtrees(
 		(t.get_rtree_type() == graphs::rtree::rtree_type::arborescence ?
 			 t.get_neighbours(r) : t.get_in_neighbours(r)
 		);
+
 	sizes[r] = 1;
 	for (node u : neighs) {
 		get_size_subtrees(t, u, sizes);
 		sizes[r] += sizes[u];
 	}
-}
-
-/*
- * @brief Calculate the size of every subtree of the free tree @e t.
- *
- * The method starts calculating the sizes at node @e r, that is, calculates
- * the sizes of every subtree considering @e r as its root.
- * @param t Input rooted tree.
- * @param r Hypothetical root of the free tree.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
- */
-inline void get_size_subtrees(
-	const graphs::ftree& t, node r, std::vector<uint32_t>& sizes
-)
-{
-	// visited vertices
-	std::vector<bool> vis(t.n_nodes(), false);
-	__lal::get_size_subtrees(t, r, vis, sizes);
 }
 
 } // -- namespace utils
