@@ -43,7 +43,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/bfs.hpp>
+#include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -58,7 +58,7 @@ rational MHD_rational(const rtree& tree) {
 
 	BFS<rtree> bfs(tree);
 	bfs.set_process_neighbour(
-	[&](const BFS<rtree>&, const node s, const node t, bool) -> void {
+	[&](const auto&, const node s, const node t, bool) -> void {
 		levels[t] = levels[s] + 1;
 		sum_distances += levels[t];
 	}
