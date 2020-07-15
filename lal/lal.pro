@@ -30,6 +30,7 @@ HEADERS += \
     generate/all_lab_rooted_trees.hpp \
     generate/all_projective_arrangements.hpp \
     generate/rand_projective_arrangements.hpp \
+    lal_version.hpp \
     linarr/Dmin.hpp \
     linarr/algorithms_C.hpp \
     linarr/algorithms_Dmin.hpp \

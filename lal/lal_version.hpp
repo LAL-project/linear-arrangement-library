@@ -40,41 +40,15 @@
 #pragma once
 
 // C++ includes
-#include <cstdint>
-#include <vector>
 #include <string>
 
 namespace lal {
 
-/// Node type.
-typedef uint32_t node;
-/// Node's position type.
-typedef uint32_t position;
+/// Major version number of the library's current state.
+static const std::string __lal_major_verno = "2020";
+/// Minor version number of the library's current state.
+static const std::string __lal_minor_verno = "03";
+/// Patch version number of the library's current state.
+static const std::string __lal_patch_verno = "00";
 
-/**
- * @brief A linear arrangement of the nodes of a graph.
- *
- * If @e pi is a linear arrangement of @e n nodes:
- * @code
-	lal::linearrgmnt pi(n);
- * @endcode
- * then the @e u-th position gives the position of node @e u
- * in the arrangement:
- * @code
-	position pu = pi[u];
- * @endcode
- * 
- * For the sake of simplicity, we refer to the arrangement \f$ \pi[i]=i \f$,
- * where \f$i\f$ denotes both the nodes of the graph and a position in the
- * linear arrangement, as the identity arrangement and is denoted by \f$\pi_I\f$.
- */
-typedef std::vector<position> linearrgmnt;
-
-/// Edge type
-typedef std::pair<node, node> edge;
-/// Edge pair type.
-typedef std::pair<edge,edge> edge_pair;
-/// List of nodes.
-typedef std::vector<node> neighbourhood;
-
-} // -- namespace lal
+};
