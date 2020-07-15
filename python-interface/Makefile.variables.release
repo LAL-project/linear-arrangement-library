@@ -44,6 +44,10 @@ ALG_DMIN_INAME	= $(ALG_DMIN_BNAME)
 DEFS_BNAME	= laldefinitions
 DEFS_INAME	= $(DEFS_BNAME)
 
+# -- version
+VERSION_BNAME	= lalversion
+VERSION_INAME	= $(VERSION_BNAME)
+
 # -- generate
 GEN_BNAME	= lalgenerate
 GEN_INAME	= $(GEN_BNAME)

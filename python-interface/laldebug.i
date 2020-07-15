@@ -1,5 +1,6 @@
 %module laldebug
 
+%import submodules/lalversiondebug.i
 %import submodules/laldefinitionsdebug.i
 %import submodules/lalgraphsdebug.i
 %import submodules/lalnumericdebug.i

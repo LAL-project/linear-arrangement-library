@@ -1,5 +1,6 @@
 %module lal
 
+%import submodules/lalversion.i
 %import submodules/laldefinitions.i
 %import submodules/lalgraphs.i
 %import submodules/lalnumeric.i
