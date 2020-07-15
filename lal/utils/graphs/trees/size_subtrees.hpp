@@ -40,12 +40,11 @@
 #pragma once
 
 // C++ includes
-#include <vector>
+#include <cstring>
 
 // lal includes
 #include <lal/graphs/ftree.hpp>
 #include <lal/graphs/rtree.hpp>
-#include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
 namespace utils {
@@ -65,14 +64,13 @@ namespace __lal {
  */
 inline void get_size_subtrees(
 	const graphs::ftree& t, node r,
-	std::vector<bool>& vis,
-	std::vector<uint32_t>& sizes
+	char *vis, uint32_t *sizes
 )
 {
 	sizes[r] = 1;
-	vis[r] = true;
+	vis[r] = 1;
 	for (node u : t.get_neighbours(r)) {
-		if (not vis[u]) {
+		if (vis[u] == 0) {
 			get_size_subtrees(t, u, vis, sizes);
 			sizes[r] += sizes[u];
 		}
@@ -94,12 +92,14 @@ inline void get_size_subtrees(
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::ftree& t, node r, std::vector<uint32_t>& sizes
+	const graphs::ftree& t, node r, uint32_t *sizes
 )
 {
 	// visited vertices
-	std::vector<bool> vis(t.n_nodes(), false);
+	char *vis = static_cast<char *>(malloc(t.n_nodes()*sizeof(char)));
+	memset(vis, 0, t.n_nodes()*sizeof(char));
 	__lal::get_size_subtrees(t, r, vis, sizes);
+	free(vis);
 }
 
 /*
@@ -116,13 +116,13 @@ inline void get_size_subtrees(
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::rtree& t, node r, std::vector<uint32_t>& sizes
+	const graphs::rtree& t, node r, uint32_t *sizes
 )
 {
 	const neighbourhood& neighs =
-		(t.get_rtree_type() == graphs::rtree::rtree_type::arborescence ?
-			 t.get_neighbours(r) : t.get_in_neighbours(r)
-		);
+	(t.get_rtree_type() == graphs::rtree::rtree_type::arborescence ?
+		 t.get_neighbours(r) : t.get_in_neighbours(r)
+	);
 
 	sizes[r] = 1;
 	for (node u : neighs) {

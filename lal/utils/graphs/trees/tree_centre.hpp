@@ -47,7 +47,6 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/tree.hpp>
 #include <lal/graphs/rtree.hpp>
 #include <lal/graphs/ftree.hpp>
 #include <lal/utils/graphs/traversal.hpp>
@@ -57,18 +56,18 @@ namespace utils {
 
 namespace __lal {
 
-inline uint32_t __degree_for_centre(const graphs::dgraph& g, const node s)
+inline uint32_t __degree_for_centre(const graphs::rtree& g, const node s)
 { return g.out_degree(s) + g.in_degree(s); }
 
-inline uint32_t __degree_for_centre(const graphs::ugraph& g, const node s)
+inline uint32_t __degree_for_centre(const graphs::ftree& g, const node s)
 { return g.degree(s); }
 
-inline node __get_only_neighbour(const graphs::dgraph& g, const node s) {
+inline node __get_only_neighbour(const graphs::rtree& g, const node s) {
 	return
 	(g.out_degree(s) == 0 ? g.get_in_neighbours(s)[0] : g.get_out_neighbours(s)[0]);
 }
 
-inline node __get_only_neighbour(const graphs::ugraph& g, const node s) {
+inline node __get_only_neighbour(const graphs::ftree& g, const node s) {
 	return g.get_neighbours(s)[0];
 }
 
