@@ -147,12 +147,16 @@ class rtree : public dgraph, virtual public tree {
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Should the graph be normalised?
+		 * @param check_norm If @e norm is false then, should we check whether
+		 * the result is normalised or not? This might be useful in case the
+		 * resulting graph is normalised.
 		 * @pre \f$s \neq t\f$
 		 * @pre Edge \f$\{s,t\}\f$ is not part of the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		rtree& add_edge(node s, node t, bool norm = true);
+		rtree& add_edge
+		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
 		 * @brief Adds a list of edges to the graph.
@@ -165,6 +169,9 @@ class rtree : public dgraph, virtual public tree {
 		 * have been added.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
+		 * @param check_norm If @e norm is false then, should we check whether
+		 * the result is normalised or not? This might be useful in case the
+		 * resulting graph is normalised.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge.
 		 * @pre None of the subsets of the list of edges can produce cycles
@@ -172,13 +179,17 @@ class rtree : public dgraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edges.
 		 */
-		rtree& add_edges(const std::vector<edge>& edges, bool norm = true);
+		rtree& add_edges
+		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
 		 * @brief Remove an edge from this graph.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Normalise the graph after the deletion.
+		 * @param check_norm If @e norm is false then, should we check whether
+		 * the result is normalised or not? This might be useful in case the
+		 * resulting graph is normalised.
 		 * @pre The edge must exist.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
@@ -186,7 +197,8 @@ class rtree : public dgraph, virtual public tree {
 		 * invalidated, i.e., method @ref rtree_type_valid returns false
 		 * and @ref need_recalc_size_subtrees returns true.
 		 */
-		rtree& remove_edge(node s, node t, bool norm = true);
+		rtree& remove_edge
+		(node s, node t, bool norm = true, bool check_norm = true);
 
 		/**
 		 * @brief Remove an edge from this graph.
@@ -195,6 +207,9 @@ class rtree : public dgraph, virtual public tree {
 		 * @ref remove_edge(node,node,bool) since the edges are removed in bulk.
 		 * @param edges The edges to be deleted.
 		 * @param norm Normalise the graph after the deletion.
+		 * @param check_norm If @e norm is false then, should we check whether
+		 * the result is normalised or not? This might be useful in case the
+		 * resulting graph is normalised.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
@@ -203,7 +218,8 @@ class rtree : public dgraph, virtual public tree {
 		 * invalidated, i.e., method @ref rtree_type_valid returns false
 		 * and @ref need_recalc_size_subtrees returns true.
 		 */
-		rtree& remove_edges(const std::vector<edge>& edges, bool norm = true);
+		rtree& remove_edges
+		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
 		 * @brief Disjoint union of trees.

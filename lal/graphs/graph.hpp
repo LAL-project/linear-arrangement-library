@@ -141,7 +141,8 @@ class graph {
 		/// Returns true if node @e u is in this graph.
 		bool has_node(node u) const;
 
-		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
+		/// Returns true if the undirected edge (@e u, @e v) exists in the
+		/// graph.
 		virtual bool has_edge(node u, node v) const = 0;
 
 		/// Returns the number of ndoes.

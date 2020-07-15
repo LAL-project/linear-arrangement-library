@@ -48,6 +48,7 @@ using namespace std;
 // lal includes
 #include <lal/utils/sorting/bit_sort.hpp>
 #include <lal/properties/Q.hpp>
+#include <lal/graphs/output.hpp>
 
 namespace lal {
 namespace graphs {
@@ -65,18 +66,20 @@ dgraph::dgraph(uint32_t n) {
 /* MODIFIERS */
 
 void dgraph::normalise() {
-	vector<char> mem(n_nodes(), 0);
+	char *mem = static_cast<char *>(malloc(n_nodes()*sizeof(char *)));
+	memset(mem, 0, n_nodes()*sizeof(char *));
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
-			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), &mem[0]);
+			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
-			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), &mem[0]);
+			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
 		}
 	}
+	free(mem);
 	m_normalised = true;
 }
 
@@ -105,7 +108,7 @@ bool dgraph::check_normalised() {
 	return true;
 }
 
-dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
+dgraph& dgraph::add_edge(node u, node v, bool to_norm, bool check_norm) {
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -124,7 +127,7 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 			utils::bit_sort(out_u.begin(), out_u.end());
 			utils::bit_sort(in_v.begin(), in_v.end());
 		}
-		else {
+		else if (check_norm) {
 			// Even though we have not been asked to normalise the
 			// graph, it may still be so... This means we have to
 			// check whether the graph is still normalised. We might
@@ -140,17 +143,32 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm) {
 				m_normalised = nu[su - 2] < nu[su - 1];
 			}*/
 		}
+		else {
+			m_normalised = false;
+		}
 	}
-	else if (to_norm) {
-		// the graph needs to be normalised,
-		// from a non-normalised state
-		normalise();
+	else {
+		// the graph was not normalised.
+
+		if (to_norm) {
+			// the graph needs to be normalised,
+			// from a non-normalised state
+			normalise();
+		}
+		else if (check_norm) {
+			// the graph is certainly not normalised --
+			// no need to check anything
+		}
+		else {
+			// not 'to_norm' and not 'check_norm' --
+			// no need to check anything
+		}
 	}
 
 	return *this;
 }
 
-dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
+dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -168,15 +186,19 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm) {
 		// normalise directly, it might save us time
 		normalise();
 	}
-	else {
+	else if (check_norm) {
 		// only check
 		check_normalised();
+	}
+	else {
+		// not 'to_norm' and not 'check_norm' --
+		// no need to check anything
 	}
 
 	return *this;
 }
 
-dgraph& dgraph::remove_edge(node u, node v, bool norm) {
+dgraph& dgraph::remove_edge(node u, node v, bool norm, bool check_norm) {
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -189,27 +211,34 @@ dgraph& dgraph::remove_edge(node u, node v, bool norm) {
 	remove_single_edge(u,v, out_u, in_v);
 
 	// if (is_normalised()) {
-	//		if (norm)     ... the graph is normalised. No need to check.
-	//      if (not norm) ... the graph is normalised. No need to check.
+	//		Removing an edge does not change normalisation
 	// }
 	// if (not is_normalised()) {
+	//		Since the graph was not normalised, we need to do something about it now.
 	//      if (norm)     ... NORMALISE THE GRAPH
-	//      if (not norm) ... Check if the result is normalised. It could be...
+	//      if (not norm) ... the result of deleting edges is certainly
+	//                        not normalised since the deletion of edges
+	//                        keeps the normalisation invariant. No need
+	//                        to check.
 	// }
 
 	if (not is_normalised()) {
 		if (norm) {
 			normalise();
 		}
-		else {
+		else if (check_norm) {
 			// we might have been lucky...
 			check_normalised();
+		}
+		else {
+			// not 'to_norm' and not 'check_norm' --
+			// no need to check anything
 		}
 	}
 	return *this;
 }
 
-dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm) {
+dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -224,22 +253,19 @@ dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm) {
 		remove_single_edge(u,v, out_u, in_v);
 	}
 
-	// if (is_normalised()) {
-	//		if (norm)     ... the graph is normalised. No need to check.
-	//      if (not norm) ... the graph is normalised. No need to check.
-	// }
-	// if (not is_normalised()) {
-	//      if (norm)     ... NORMALISE THE GRAPH
-	//      if (not norm) ... Check if the result is normalised. It could be...
-	// }
+	// see comments in method ugraph::remove_edge for details
 
 	if (not is_normalised()) {
 		if (norm) {
 			normalise();
 		}
-		else {
+		else if (check_norm) {
 			// we might have been lucky...
 			check_normalised();
+		}
+		else {
+			// not 'to_norm' and not 'check_norm' --
+			// no need to check anything
 		}
 	}
 	return *this;

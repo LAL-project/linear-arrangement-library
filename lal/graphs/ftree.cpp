@@ -60,17 +60,17 @@ ftree::ftree(const ugraph& t) : ugraph(t.n_nodes()) {
 }
 //ftree::~ftree() { }
 
-ftree& ftree::add_edge(node s, node t, bool norm) {
+ftree& ftree::add_edge(node s, node t, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edge(s,t));
 #endif
 
-	ugraph::add_edge(s,t, norm);
+	ugraph::add_edge(s,t, norm, check_norm);
 	return *this;
 }
 
-ftree& ftree::add_edges(const vector<edge>& edges, bool norm) {
-	ugraph::add_edges(edges, norm);
+ftree& ftree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
+	ugraph::add_edges(edges, norm, check_norm);
 	// NOTE: we can't do
 	//     assert(utils::is_ftree(*this));
 	// because the ftree might not be complete and lack some

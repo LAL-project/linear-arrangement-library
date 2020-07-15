@@ -65,33 +65,33 @@ rtree::rtree(const ftree& t, node r, rtree_type type) {
 
 /* MODIFIERS */
 
-rtree& rtree::add_edge(node s, node t, bool norm) {
+rtree& rtree::add_edge(node s, node t, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edge(s,t));
 #endif
 
-	dgraph::add_edge(s,t, norm);
+	dgraph::add_edge(s,t, norm, check_norm);
 	return *this;
 }
 
-rtree& rtree::add_edges(const vector<edge>& edges, bool norm) {
+rtree& rtree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edges(edges));
 #endif
 
-	dgraph::add_edges(edges, norm);
+	dgraph::add_edges(edges, norm, check_norm);
 	return *this;
 }
 
-rtree& rtree::remove_edge(node s, node t, bool norm) {
-	dgraph::remove_edge(s,t, norm);
+rtree& rtree::remove_edge(node s, node t, bool norm, bool check_norm) {
+	dgraph::remove_edge(s,t, norm, check_norm);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
-rtree& rtree::remove_edges(const std::vector<edge>& edges, bool norm) {
-	dgraph::remove_edges(edges, norm);
+rtree& rtree::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+	dgraph::remove_edges(edges, norm, check_norm);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
