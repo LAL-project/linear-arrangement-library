@@ -269,6 +269,7 @@ target_sources(
 		graphs.hpp
 		io.hpp
 		iterators.hpp
+		lal_version.hpp
 		linarr.hpp
 		namespaces.hpp
 		numeric.hpp
@@ -289,6 +290,7 @@ set(LIBLAL_MAIN_HEADER
 	graphs.hpp
 	io.hpp
 	iterators.hpp
+	lal_version.hpp
 	linarr.hpp
 	numeric.hpp
 	properties.hpp
