@@ -56,7 +56,7 @@ namespace utils {
  *		0 1 2 3 4 ... (n-1) n
  * -- star tree of n nodes
  *		0 1 2 2 2 .... 2 2
- *        |------------| > (n-1) two's
+ *          |------------| > (n-1) two's
  *
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
