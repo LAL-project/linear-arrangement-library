@@ -167,7 +167,7 @@ inline uint32_t __call_C_stack_based(const ugraph& g, const linearrgmnt& pi) {
 	// T[p] = u <-> node u is at position p
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
-	uint32_t C = __compute_C_stack_based(g, pi, T);
+	const uint32_t C = __compute_C_stack_based(g, pi, T);
 
 	/* free memory */
 	free(T);
