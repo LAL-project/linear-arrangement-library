@@ -129,6 +129,7 @@ std::pair<node, node> retrieve_centroid(const T& t, node x) {
 	// allocate and initialise memory
 	char *vis = static_cast<char *>(malloc(n*sizeof(char))); // not used for G=ftree
 	uint32_t *sizes = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
+	const auto dealloc = [&]() -> void { free(vis); free(sizes); };
 
 	// size of the connected component
 	uint32_t size_cc = 0;
@@ -139,8 +140,12 @@ std::pair<node, node> retrieve_centroid(const T& t, node x) {
 	);
 	bfs.start_at(x);
 
-	if (size_cc == 1) { return std::make_pair(x, n); }
+	if (size_cc == 1) {
+		dealloc();
+		return std::make_pair(x, n);
+	}
 	if (size_cc == 2) {
+		dealloc();
 		const node u = x;
 		const node v = __lal::__only_neighbour(t,x);
 		return (u < v ? std::make_pair(u,v) : std::make_pair(v,u));
@@ -178,8 +183,7 @@ std::pair<node, node> retrieve_centroid(const T& t, node x) {
 	// start at one of the central vertices
 	bfs.start_at(centre.first);
 
-	free(sizes);
-	free(vis);
+	dealloc();
 	return (ct1 < ct2 ? std::make_pair(ct1,ct2) : std::make_pair(ct2,ct1));
 }
 
