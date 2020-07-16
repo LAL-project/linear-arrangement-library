@@ -50,28 +50,10 @@
 #include <lal/graphs/rtree.hpp>
 #include <lal/graphs/ftree.hpp>
 #include <lal/utils/graphs/traversal.hpp>
+#include <lal/utils/graphs/trees/centre_centroid_utils.hpp>
 
 namespace lal {
 namespace utils {
-
-namespace __lal {
-
-inline uint32_t __degree_for_centre(const graphs::rtree& g, const node s)
-{ return g.out_degree(s) + g.in_degree(s); }
-
-inline uint32_t __degree_for_centre(const graphs::ftree& g, const node s)
-{ return g.degree(s); }
-
-inline node __get_only_neighbour(const graphs::rtree& g, const node s) {
-	return
-	(g.out_degree(s) == 0 ? g.get_in_neighbours(s)[0] : g.get_out_neighbours(s)[0]);
-}
-
-inline node __get_only_neighbour(const graphs::ftree& g, const node s) {
-	return g.get_neighbours(s)[0];
-}
-
-} // -- namespace __lal
 
 /*
  * @brief Calculate the centre of the connected component that has node @e x.
@@ -104,7 +86,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (__lal::__degree_for_centre(T, x) == 0) {
+	if (__lal::__degree(T, x) == 0) {
 		return std::make_pair(x, n);
 	}
 
@@ -125,14 +107,15 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	// ---------------------------------------------------
 	// Initialise data:
-	// 1. calculate number of nodes in the current connected component ('size_trimmed')
+	// 1. calculate number of nodes in the current connected component
+	//    ('size_trimmed')
 	// 2. fill in 'trimmed_degree' values
 	// 3. retrieve connected component's leaves ('tree_leaves')
 	// 4. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
 	[&](const auto&, node s) -> void {
 		++size_trimmed;
-		trimmed_degree[s] = __lal::__degree_for_centre(T, s);
+		trimmed_degree[s] = __lal::__degree(T, s);
 		if (trimmed_degree[s] == 1) {
 			tree_leaves.push_back(s);
 			++l0;
@@ -147,7 +130,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	if (size_trimmed == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = x;
-		const node v2 = __lal::__get_only_neighbour(T, x);
+		const node v2 = __lal::__only_neighbour(T, x);
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 

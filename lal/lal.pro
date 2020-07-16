@@ -85,6 +85,7 @@ HEADERS += \
 	properties/mhd.hpp \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
+    utils/graphs/trees/centre_centroid_utils.hpp \
 	utils/macros.hpp \
 	utils/avl.hpp \
 	utils/std_utils.hpp \
@@ -146,6 +147,7 @@ SOURCES += \
 	properties/mhd.cpp \
 	properties/variance_C_gen_graphs.cpp \
 	properties/variance_C_trees.cpp \
+	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
 	utils/Dmin/common.cpp \
