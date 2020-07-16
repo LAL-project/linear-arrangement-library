@@ -99,6 +99,7 @@ HEADERS += \
 	utils/graphs/trees/is_tree.hpp \
 	utils/graphs/trees/size_subtrees.hpp \
 	utils/graphs/trees/tree_centre.hpp \
+	utils/graphs/trees/tree_centroid.hpp \
 	utils/sorting/bit_sort.hpp \
 	utils/sorting/counting_sort.hpp \
 	utils/sorting/insertion_sort.hpp
