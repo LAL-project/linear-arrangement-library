@@ -29,6 +29,12 @@
  *          Webpage: https://www.cs.upc.edu/~esteban/
  *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
  *
+ *      Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://cqllab.upc.edu/people/lalemany/
+ *
  ********************************************************************/
 
 #include <lal/linarr/Dmin.hpp>
@@ -40,7 +46,14 @@
 #include <list>
 using namespace std;
 
+#include <lal/graphs/output.hpp>
 #include <lal/utils/Dmin/common.hpp>
+#include <lal/utils/graphs/traversal.hpp>
+#include <lal/utils/graphs/trees/size_subtrees.hpp>
+#include <lal/utils/graphs/trees/tree_centroid.hpp>
+#include <lal/utils/graphs/trees/tree_centre.hpp>
+#include <lal/utils/sorting/counting_sort.hpp>
+#include <lal/utils/std_utils.hpp>
 
 #define LEFT_ANCHOR -1
 #define RIGHT_ANCHOR 1
@@ -49,20 +62,10 @@ using namespace std;
 #define TO_THE_RIGHT 1 // Not used
 #define TO_THE_LEFT -1 // Not used
 
-typedef vector<vector<uint32_t> > adjacency_matrix;
-// Neither row 0 nor column 0 is used.
+#define to_uint32(x) static_cast<uint32_t>(x)
 
-typedef vector<vector<uint32_t> > size_matrix;
-// Neither row 0 nor column 0 is used
-// It's the same as adjacency_matrix but is
-// used to keep the sizes of all subtrees
-// using all nodes as roots.
-// elem[i][j] is the size of the subtree
-// rooted in j in the tree rooted in i
-// In one matrix there can be several
-// unconnected trees.
-
-typedef vector<pair<uint32_t,uint32_t> > ordering;
+typedef pair<uint32_t,lal::node> size_node;
+typedef vector<size_node> ordering;
 // Elements are size and root of subtrees ordered by size
 
 namespace lal {
@@ -70,233 +73,271 @@ using namespace graphs;
 
 namespace linarr {
 
-uint32_t get_v_star(adjacency_matrix & g, const size_matrix & s, const vector<uint32_t> & list_of_nodes)
-// For free (unanchored) trees
-// Elements de v are all the nodes connected among them in g
-{
-	uint32_t n=g.size()-1;
-	uint32_t number_of_nodes=list_of_nodes.size();
-	uint32_t h=number_of_nodes/2;
-	uint32_t v_star=0;
-	uint32_t i=0;
-	bool v_star_found=false;
-	while(i<number_of_nodes and not v_star_found){
-		uint32_t j=1;
-		bool tree_too_big=false;
-		while (not tree_too_big and j<=n){
-			uint32_t ith_root=list_of_nodes[i];
-			if (g[ith_root][j]==1){
-				if (s[ith_root][j]>h) tree_too_big=true;
-				else j++;
-			}
-			else j++;
-		}
-		if (not tree_too_big) {
-			v_star=list_of_nodes[i];
-			v_star_found=true;
-		}
-		if (not v_star_found) ++i;
-	}
-	return v_star;
-}
-
-uint32_t calculate_p(uint32_t root, uint32_t anchored, const ordering & ord, uint32_t & s_0, uint32_t & s_1)
+uint32_t calculate_p_alpha(
+	const char anchored, const ordering& ord,
+	uint32_t& s_0, uint32_t& s_1
+)
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
-	assert(anchored==NO_ANCHOR or anchored==ANCHOR);
-	uint32_t n=1; // Counting root
-	for (uint32_t i=0;i<ord.size();++i) n+=ord[i].first;
+	assert(anchored == NO_ANCHOR or anchored == ANCHOR);
+
 	// n is number of nodes
-	uint32_t k=ord.size(); // number of subtrees
-	--k; // T_0, T_1, ..., T_k
+	uint32_t n = 1; // Counting root
+	for (size_t i = 0; i < ord.size(); ++i) { n += ord[i].first; }
+
+	// number of subtrees
+	const uint32_t k = to_uint32(ord.size() - 1);
+
 	uint32_t n_0 = ord[0].first;
-	uint32_t max_p;
-	// not anchored
-	if (anchored==NO_ANCHOR){
-		max_p = k/2; // Maximum possible p_alpha
-		if (max_p==0) return 0;
-		uint32_t sum=0;
-		for (uint32_t i=0;i<=2*max_p;++i) sum+=ord[i].first;
-		uint32_t n_star=n-sum;
-		uint32_t tricky_formula=(n_0+2)/2+(n_star+2)/2;
+	uint32_t max_p = 0;
+
+	if (anchored == NO_ANCHOR) {
+		// -- not anchored
+
+		// Maximum possible p_alpha
+		max_p = k/2;
+		if (max_p == 0) { return 0; }
+
+		uint32_t sum = 0;
+		for (uint32_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].first; }
+
+		uint32_t n_star = n - sum;
+		uint32_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+
 		// n_0 >= n_1 >= ... >= n_k
-		uint32_t n_p=ord[2*max_p].first;
-		while(max_p>0 and n_p <= tricky_formula){
-			sum-=ord[2*max_p].first;
-			sum-=ord[2*max_p-1].first;
+		uint32_t n_p = ord[2*max_p].first;
+		while (max_p > 0 and n_p <= tricky_formula) {
+			sum -= ord[2*max_p].first + ord[2*max_p - 1].first;
+
 			--max_p;
-			n_star=n-sum;
-			tricky_formula=(n_0+2)/2+(n_star+2)/2;
-			if (max_p>0) n_p=ord[2*max_p].first;
+			n_star = n - sum;
+			tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+
+			// --
+			//if (max_p > 0) { n_p = ord[2*max_p].first; }
+			n_p = (max_p > 0 ? ord[2*max_p].first : n_p);
+			// --
 		}
-		s_0=0;
-		s_1=0;
-		for(uint32_t i=1;i<max_p;++i) {
-			s_0+=i*(ord[2*i+1].first+ord[2*i+2].first);
+		s_0 = max_p*(n_star + 1 + n_0);
+		s_1 = 0;
+		for (uint32_t i = 1; i < max_p; ++i) {
+			s_0 += i*(ord[2*i + 1].first + ord[2*i + 2].first);
 		}
-		s_0+=max_p*(n_star+1+n_0);
 	}
-	// anchored
-	else{
-		max_p=(k+1)/2;
-		if (max_p==0) return 0;
-		uint32_t sum=0;
-		for (uint32_t i=0;i<=2*max_p-1;++i) sum+=ord[i].first;
-		uint32_t n_star=n-sum;
-		uint32_t tricky_formula=(n_0+2)/2+(n_star+2)/2;
-		uint32_t n_p=ord[2*max_p-1].first;
-		while(max_p>0 and n_p <= tricky_formula){
-			sum-=ord[2*max_p-1].first;
-			sum-=ord[2*max_p-2].first;
+	else {
+		// -- anchored
+
+		// Maximum possible p_alpha
+		max_p = (k + 1)/2;
+		if (max_p == 0) { return 0; }
+
+		uint32_t sum = 0;
+		for (uint32_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].first; }
+		uint32_t n_star = n - sum;
+		uint32_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+		uint32_t n_p = ord[2*max_p - 1].first;
+		while (max_p > 0 and n_p <= tricky_formula) {
+			sum -= ord[2*max_p - 1].first;
+			sum -= ord[2*max_p - 2].first;
 			--max_p;
-			n_star=n-sum;
-			tricky_formula=(n_0+2)/2+(n_star+2)/2;
-			if (max_p>0) n_p=ord[2*max_p-1].first;
+			n_star = n - sum;
+			tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+
+			// --
+			//if (max_p > 0) { n_p = ord[2*max_p - 1].first; }
+			n_p = (max_p > 0 ? ord[2*max_p - 1].first : n_p);
+			// --
 		}
-		s_1=0; s_0=0;
-		for(uint32_t i=1;i<max_p;++i) {
-			s_1+=i*(ord[2*i].first+ord[2*i+1].first);
+		s_0 = 0;
+		s_1 = max_p*(n_star + 1 + n_0) - 1;
+		for (uint32_t i = 1; i < max_p; ++i) {
+			s_1 += i*(ord[2*i].first + ord[2*i + 1].first);
 		}
-		s_1+=max_p*(n_star+1+n_0)-1;
 	}
 	return max_p;
-
 }
 
-void calculate_mla(adjacency_matrix & g, int alpha, uint32_t root_or_anchor, uint32_t start, vector<uint32_t> & mla, uint32_t & cost)
-// start means the leftmost position in the mla for the subtree
-// we could also have an anologous finish (rightmost position) but it is not needed
-{
-	assert(alpha==NO_ANCHOR or alpha==RIGHT_ANCHOR or alpha==LEFT_ANCHOR);
+// t: input forest a single connected component of which has to be arranged
+// alpha: indicates whether the connected component of 't' is rooted or anchored
+// root_or_anchor: node used as a reference to the said connected component
+// start: position where to start placing the vertices (the leftmost position
+//     in the mla for the subtree). We could also have an anologous finish
+//     (rightmost position) but it is not needed
 
-	vector<uint32_t> node_vector;
-	reachable_nodes(g,node_vector,root_or_anchor);
-	uint32_t size_tree=node_vector.size(); // Size of the tree
+void calculate_mla_YS(
+	ftree& t,
+	char alpha, node root_or_anchor, uint32_t start,
+	linearrgmnt& mla, uint32_t& cost
+)
+{
+	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
+
+	vector<node> reachable;
+	{
+	utils::BFS<ftree> bfs(t);
+	bfs.set_process_current(
+		// add 1 to vertices so that they range in [1,n]
+		[&](const auto&, node u) { reachable.push_back(u + 1); }
+	);
+	bfs.start_at(root_or_anchor - 1);
+	}
+
+	// Size of the tree
+	const uint32_t size_tree = to_uint32(reachable.size());
 	assert(size_tree>0);
 
 	// Base case
-	if (size_tree==1) {
-		cost=0;
-		mla[root_or_anchor-1]=start;
+	if (size_tree == 1) {
+		cost = 0;
+		mla[root_or_anchor - 1] = start;
 		return;
 	}
 
 	// Recursion for COST A
-	size_matrix s;
-	size_of_all_subtrees_from_all_nodes(g,s,node_vector);
+	const node v_star = (
+		alpha == NO_ANCHOR ?
+			utils::retrieve_centroid(t, root_or_anchor - 1).first + 1 :
+			root_or_anchor
+	);
 
-	uint32_t v_star;
-	if (alpha==NO_ANCHOR) v_star=get_v_star(g,s,node_vector);
-	else v_star=root_or_anchor;
+	// Let 'T_v' to be a tree rooted at vertex 'v'.
+	// Order subtrees of 'T_v' by size.
+	ordering ord(t.degree(v_star - 1));
+	{
+	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
+	// of 'T_v' rooted at vertex 'u'. Now,
+	//     s[u] := the size of the subtree 'T_v[u]'
+	vector<uint32_t> s(t.n_nodes());
+	utils::get_size_subtrees(t, v_star - 1, &s[0]);
 
+	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
+	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
+	for (size_t i = 0; i < v_star_neighs.size(); ++i) {
+		// i-th child of v_star
+		const node ui = v_star_neighs[i];
+		// size of subtree rooted at 'ui'
+		const uint32_t s_ui = s[ui];
 
-	ordering ord;
-	order_subtrees_by_size(g,s[v_star],v_star,ord);
+		ord[i].first = s_ui;
+		M = std::max(M, s_ui);
+		ord[i].second = ui + 1;
+	}
+	utils::counting_sort<ordering::iterator, size_node>
+	(
+		ord.begin(), ord.end(), M,
+		[](const size_node& p) { return p.first; },
+		false // <- sort decreasingly
+	);
+	}
 
-	uint32_t v_0,n_0;
-	v_0=ord[0].second; // Root of biggest subtree
-	n_0=ord[0].first; // Size of biggest subtree
+	const node v_0 = ord[0].second; // Root of biggest subtree
+	const uint32_t n_0 = ord[0].first; // Size of biggest subtree
 
-	g[v_star][v_0]=g[v_0][v_star]=0;
+	t.remove_edge(v_star - 1, v_0 - 1, false, false);
 
-	uint32_t c1,c2;
+	uint32_t c1 = 0;
+	calculate_mla_YS(t, RIGHT_ANCHOR, v_0, start, mla, c1);
 
-	calculate_mla(g,RIGHT_ANCHOR,v_0,start,mla,c1);
-	if (alpha==NO_ANCHOR) calculate_mla(g,LEFT_ANCHOR,v_star,start+n_0,mla,c2);
-	else calculate_mla(g,NO_ANCHOR,v_star,start+n_0,mla,c2);
+	uint32_t c2 = 0;
+	calculate_mla_YS(t, (alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR), v_star, start + n_0, mla, c2);
 
-	// Cost for A-recursion
-	if (alpha==NO_ANCHOR) cost=c1+c2+1;
-	else cost=c1+c2+size_tree-n_0;
+	// Cost for recursion A
+	cost = (alpha == NO_ANCHOR ? c1 + c2 + 1 : c1 + c2 + size_tree - n_0);
 
-	// Reconstructing g
-	g[v_star][v_0]=g[v_0][v_star]=1;
+	// reconstructing t
+	t.add_edge(v_star - 1, v_0 - 1, false, false);
 
 	// Recursion B
-	uint32_t s_0,s_1;
-	uint32_t p_alpha=0;
 
 	// left or right anchored is not important for the cost
-	uint32_t anchored = NO_ANCHOR;
-	if (alpha==RIGHT_ANCHOR or alpha==LEFT_ANCHOR) anchored=ANCHOR;
+	const char anchored =
+		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
 
-	p_alpha=calculate_p(v_star,anchored,ord,s_0,s_1);
+	uint32_t s_0 = 0;
+	uint32_t s_1 = 0;
+	const uint32_t p_alpha = calculate_p_alpha(anchored,ord,s_0,s_1);
 
-
-	uint32_t cost_B=0;
+	uint32_t cost_B = 0;
 	vector<uint32_t> mla_B;
 	mla_B=mla;
 
-	if (p_alpha!=0){
+	if (p_alpha != 0) {
+		vector<edge> edges(2*p_alpha - anchored);
+
 		// number of nodes not in the central tree
-		uint32_t n_not_central_tree=0;
-		for (uint32_t i=1;i<=2*p_alpha-anchored;++i){
-			uint32_t r=ord[i].second;
-			n_not_central_tree+=ord[i].first;
-			g[v_star][r]=g[r][v_star]=0;
+		uint32_t n_not_central_tree = 0;
+		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+			const node r = ord[i].second;
+			n_not_central_tree += ord[i].first;
+			edges[i - 1].first = v_star - 1;
+			edges[i - 1].second = r - 1;
 		}
+		t.remove_edges(edges, false, false);
+
 		// T_1, T_3, ...
-		uint32_t start_aux=start;
-		for (uint32_t i=1;i<=2*p_alpha-anchored;i=i+2){
-			uint32_t c_aux;
-			uint32_t r=ord[i].second;
-			calculate_mla(g,RIGHT_ANCHOR,r,start_aux,mla_B,c_aux);
-			cost_B+=c_aux;
-			start_aux+=ord[i].first;
+		uint32_t start_aux = start;
+		for (uint32_t i = 1; i <= 2*p_alpha - anchored; i = i + 2) {
+			uint32_t c_aux = 0;
+			const node r = ord[i].second;
+			calculate_mla_YS(t, RIGHT_ANCHOR, r, start_aux, mla_B, c_aux);
+			cost_B += c_aux;
+			start_aux += ord[i].first;
 		}
 
 		// T-(T_1, T_2, ...)
-		uint32_t c;
-		calculate_mla(g,NO_ANCHOR,v_star,start_aux,mla_B,c);
+		uint32_t c = 0;
+		calculate_mla_YS(t, NO_ANCHOR, v_star, start_aux, mla_B, c);
 		// number of nodes in the central tree
-		uint32_t n_central_tree=size_tree-n_not_central_tree;
-		cost_B+=c;
-		start_aux+=n_central_tree;
+		const uint32_t n_central_tree = size_tree - n_not_central_tree;
+		cost_B += c;
+		start_aux += n_central_tree;
 
 		// ..., T_4, T_2
-		for (uint32_t i=2*p_alpha-2*anchored;i>=2;i=i-2){
-			uint32_t c_aux;
-			uint32_t r=ord[i].second;
-			calculate_mla(g,LEFT_ANCHOR,r,start_aux,mla_B,c_aux);
-			cost_B+=c_aux;
-			start_aux+=ord[i].first;
+		for (uint32_t i = 2*p_alpha - 2*anchored; i >= 2; i = i - 2) {
+			uint32_t c_aux = 0;
+			const node r = ord[i].second;
+			calculate_mla_YS(t, LEFT_ANCHOR, r, start_aux, mla_B, c_aux);
+			cost_B += c_aux;
+			start_aux += ord[i].first;
 		}
 
-		// Reconstructing g
-		for (uint32_t i=1;i<=2*p_alpha-anchored;++i){
-			uint32_t r=ord[i].second;
-			g[v_star][r]=g[r][v_star]=1;
+		// reconstructing t
+		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+			const node r = ord[i].second;
+			edges[i - 1].first = v_star - 1;
+			edges[i - 1].second = r - 1;
 		}
+		t.add_edges(edges, false, false);
 
 		// We add the anchors part not previously added
-		if (alpha==NO_ANCHOR) cost_B+=s_0;
-		else cost_B+=s_1;
+		cost_B += (alpha == NO_ANCHOR ? s_0 : s_1);
 	}
 
 	// We choose B-recursion only if it is better
-	if (p_alpha!=0){
-		if (cost_B<cost){
+	if (p_alpha != 0) {
+		if (cost_B < cost) {
 			mla.swap(mla_B);
-			cost=cost_B;
+			cost = cost_B;
 		}
 	}
+
 	// flipping arrangement if needed
-	if (alpha==RIGHT_ANCHOR) {
+	if (alpha == RIGHT_ANCHOR) {
 		// the tree is right-anchored and the root is too much to the left
-		if (2*(mla[v_star-1]-start+1)<=size_tree){
-			for(uint32_t i=0;i<size_tree;++i){
-				uint32_t aux = start+size_tree-1-mla[node_vector[i]-1]+start;
-				mla[node_vector[i]-1]=aux;
+		if (2*(mla[v_star - 1] - start + 1) <= size_tree) {
+			for(uint32_t i = 0; i < size_tree; ++i) {
+				const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
+				mla[reachable[i] - 1] = aux;
 			}
 		}
 	}
-	else if (alpha==LEFT_ANCHOR){
+	else if (alpha == LEFT_ANCHOR) {
 		// the tree is left-anchored and the root is too much to the right
-		if(2*(start+size_tree-1-mla[v_star-1]+1)<=size_tree){
-			for(uint32_t i=0;i<size_tree;++i){
-				uint32_t aux = start+size_tree-1-mla[node_vector[i]-1]+start;
-				mla[node_vector[i]-1]=aux;
+		if (2*(start + size_tree - 1 - mla[v_star - 1] + 1) <= size_tree) {
+			for (uint32_t i = 0; i < size_tree; ++i) {
+				const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
+				mla[reachable[i] - 1] = aux;
 			}
 		}
 	}
@@ -305,22 +346,11 @@ void calculate_mla(adjacency_matrix & g, int alpha, uint32_t root_or_anchor, uin
 pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const ftree& t) {
 	assert(t.is_tree());
 
-	const uint32_t n = t.n_nodes();
+	linearrgmnt arrangement(t.n_nodes(),0);
+	uint32_t c = 0;
 
-	adjacency_matrix g;
-	g = adjacency_matrix (n+1,vector<uint32_t> (n+1,0));
-	for (node u = 0; u < t.n_nodes(); ++u) {
-		for (const node v : t.get_neighbours(u)) {
-			g[u + 1][v + 1] = g[v + 1][u + 1] = 1;
-		}
-	}
-
-	vector<uint32_t> arrangement(n,0);
-
-	uint32_t c;
-	uint32_t alpha=0;
-	//calculate_mla(g,alpha,1,1,arrangement,c);
-	calculate_mla(g,alpha,1,0,arrangement,c);
+	ftree T = t;
+	calculate_mla_YS(T, 0, 1, 0, arrangement, c);
 
 	return make_pair(c, arrangement);
 }
