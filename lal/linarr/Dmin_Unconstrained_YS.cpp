@@ -40,33 +40,24 @@
 #include <lal/linarr/Dmin.hpp>
 
 // C++ includes
-#include <algorithm>
 #include <cassert>
 #include <vector>
-#include <list>
 using namespace std;
 
-#include <lal/graphs/output.hpp>
-#include <lal/utils/Dmin/common.hpp>
 #include <lal/utils/graphs/traversal.hpp>
 #include <lal/utils/graphs/trees/size_subtrees.hpp>
 #include <lal/utils/graphs/trees/tree_centroid.hpp>
-#include <lal/utils/graphs/trees/tree_centre.hpp>
 #include <lal/utils/sorting/counting_sort.hpp>
-#include <lal/utils/std_utils.hpp>
 
 #define LEFT_ANCHOR -1
 #define RIGHT_ANCHOR 1
 #define NO_ANCHOR 0
-#define ANCHOR 1 // It is used for parameter anchored in calculate_p in Shiloach's algorithm
-#define TO_THE_RIGHT 1 // Not used
-#define TO_THE_LEFT -1 // Not used
+#define ANCHOR 1
 
 #define to_uint32(x) static_cast<uint32_t>(x)
 
 typedef pair<uint32_t,lal::node> size_node;
 typedef vector<size_node> ordering;
-// Elements are size and root of subtrees ordered by size
 
 namespace lal {
 using namespace graphs;
@@ -74,17 +65,13 @@ using namespace graphs;
 namespace linarr {
 
 uint32_t calculate_p_alpha(
-	const char anchored, const ordering& ord,
+	const uint32_t n, const char anchored, const ordering& ord,
 	uint32_t& s_0, uint32_t& s_1
 )
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
 	assert(anchored == NO_ANCHOR or anchored == ANCHOR);
-
-	// n is number of nodes
-	uint32_t n = 1; // Counting root
-	for (size_t i = 0; i < ord.size(); ++i) { n += ord[i].first; }
 
 	// number of subtrees
 	const uint32_t k = to_uint32(ord.size() - 1);
@@ -158,13 +145,13 @@ uint32_t calculate_p_alpha(
 	return max_p;
 }
 
-// t: input forest a single connected component of which has to be arranged
-// alpha: indicates whether the connected component of 't' is rooted or anchored
-// root_or_anchor: node used as a reference to the said connected component
+// t: input forest a single connected component of which has to be arranged.
+// alpha: indicates whether the connected component of 't' is rooted or anchored.
+// root_or_anchor: node used as a reference to the said connected component.
+//     Its value is within [1,n]
 // start: position where to start placing the vertices (the leftmost position
 //     in the mla for the subtree). We could also have an anologous finish
-//     (rightmost position) but it is not needed
-
+//     (rightmost position) but it is not needed.
 void calculate_mla_YS(
 	ftree& t,
 	char alpha, node root_or_anchor, uint32_t start,
@@ -177,7 +164,7 @@ void calculate_mla_YS(
 	{
 	utils::BFS<ftree> bfs(t);
 	bfs.set_process_current(
-		// add 1 to vertices so that they range in [1,n]
+		// add '1' to vertices so that they range in [1,n]
 		[&](const auto&, node u) { reachable.push_back(u + 1); }
 	);
 	bfs.start_at(root_or_anchor - 1);
@@ -185,7 +172,7 @@ void calculate_mla_YS(
 
 	// Size of the tree
 	const uint32_t size_tree = to_uint32(reachable.size());
-	assert(size_tree>0);
+	assert(size_tree > 0);
 
 	// Base case
 	if (size_tree == 1) {
@@ -208,8 +195,8 @@ void calculate_mla_YS(
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	vector<uint32_t> s(t.n_nodes());
-	utils::get_size_subtrees(t, v_star - 1, &s[0]);
+	uint32_t *s = static_cast<uint32_t *>(malloc(t.n_nodes()*sizeof(uint32_t)));
+	utils::get_size_subtrees(t, v_star - 1, s);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
@@ -229,11 +216,13 @@ void calculate_mla_YS(
 		[](const size_node& p) { return p.first; },
 		false // <- sort decreasingly
 	);
+	free(s);
 	}
 
-	const node v_0 = ord[0].second; // Root of biggest subtree
-	const uint32_t n_0 = ord[0].first; // Size of biggest subtree
+	const node v_0 = ord[0].second;		// Root of biggest subtree
+	const uint32_t n_0 = ord[0].first;	// Size of biggest subtree
 
+	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
 
 	uint32_t c1 = 0;
@@ -245,7 +234,7 @@ void calculate_mla_YS(
 	// Cost for recursion A
 	cost = (alpha == NO_ANCHOR ? c1 + c2 + 1 : c1 + c2 + size_tree - n_0);
 
-	// reconstructing t
+	// reconstruct t
 	t.add_edge(v_star - 1, v_0 - 1, false, false);
 
 	// Recursion B
@@ -256,11 +245,10 @@ void calculate_mla_YS(
 
 	uint32_t s_0 = 0;
 	uint32_t s_1 = 0;
-	const uint32_t p_alpha = calculate_p_alpha(anchored,ord,s_0,s_1);
+	const uint32_t p_alpha = calculate_p_alpha(size_tree, anchored, ord, s_0, s_1);
 
 	uint32_t cost_B = 0;
-	vector<uint32_t> mla_B;
-	mla_B=mla;
+	vector<uint32_t> mla_B(mla);
 
 	if (p_alpha != 0) {
 		vector<edge> edges(2*p_alpha - anchored);
@@ -302,12 +290,12 @@ void calculate_mla_YS(
 			start_aux += ord[i].first;
 		}
 
-		// reconstructing t
-		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+		// reconstruct t
+		/*for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			const node r = ord[i].second;
 			edges[i - 1].first = v_star - 1;
 			edges[i - 1].second = r - 1;
-		}
+		}*/
 		t.add_edges(edges, false, false);
 
 		// We add the anchors part not previously added
