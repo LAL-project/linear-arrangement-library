@@ -247,7 +247,7 @@ void calculate_mla_YS(
 	const uint32_t p_alpha = calculate_p_alpha(size_tree, anchored, ord, s_0, s_1);
 
 	uint32_t cost_B = 0;
-	vector<uint32_t> mla_B(mla);
+	linearrgmnt mla_B(mla);
 
 	if (p_alpha != 0) {
 		vector<edge> edges(2*p_alpha - anchored);
