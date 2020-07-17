@@ -81,7 +81,9 @@ rtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	}
 
 	// root must have been set.
+#if defined DEBUG
 	assert(root_set);
+#endif
 
 	ftree t(n);
 	t.add_edges(edges);
