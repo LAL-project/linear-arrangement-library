@@ -339,29 +339,24 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 	}
 
 	// Compute f_k using Otter's formula (see reference in documentation)
-	integer f_k(0);
+	rational f_k(0);
+	integer s(0);
 	uint32_t k = static_cast<uint32_t>(m_fn.size());
 	while (k <= n) {
 
 		// for k=0, f_k=1.
 		f_k = (k == 0);
 		f_k += get_rn(k);
-		if (k%2 == 0) {
-			f_k += get_rn(k/2)/2;
-		}
+		f_k += (k%2 == 0 ? rational(get_rn(k/2), 2) : rational(0));
 
-		// compute this sum into an integer
-		// so as to avoid the use of rational
-		integer s(0);
+		s = 0;
 		for (uint32_t j = 0; j <= k; ++j) {
 			s += get_rn(j)*get_rn(k - j);
 		}
-		// the sum above must be even
-		assert(s%2 == 0);
-		f_k -= (s/2);
+		f_k -= rational(s,2);
 
-		m_fn.push_back(integer());
-		m_fn[k] = f_k;
+		m_fn.push_back(f_k.to_integer());
+		m_fn[k] = f_k.to_integer();
 
 		++k;
 	}
