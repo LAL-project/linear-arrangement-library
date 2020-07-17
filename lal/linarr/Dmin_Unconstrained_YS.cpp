@@ -23,7 +23,6 @@
  *  Contact:
  *
  *      Juan Luis Esteban (esteban@cs.upc.edu)
- *          LOGPROG: Logics and Programming Research Group
  *          Office 110, Omega building
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://www.cs.upc.edu/~esteban/
@@ -154,7 +153,7 @@ uint32_t calculate_p_alpha(
 //     (rightmost position) but it is not needed.
 void calculate_mla_YS(
 	ftree& t,
-	char alpha, node root_or_anchor, uint32_t start,
+	char alpha, node root_or_anchor, position start,
 	linearrgmnt& mla, uint32_t& cost
 )
 {
@@ -338,7 +337,7 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const ftree& t) {
 	uint32_t c = 0;
 
 	ftree T = t;
-	calculate_mla_YS(T, 0, 1, 0, arrangement, c);
+	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);
 
 	return make_pair(c, arrangement);
 }
