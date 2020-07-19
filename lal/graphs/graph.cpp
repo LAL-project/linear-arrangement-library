@@ -39,12 +39,10 @@
 
 #include <lal/graphs/graph.hpp>
 
-// C includes
-#include <string.h>
-
 // C++ includes
 #include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <cmath>
 #include <set>
 using namespace std;

@@ -39,11 +39,9 @@
 
 #pragma once
 
-// C includes
-#include <string.h>
-
 // C++ includes
 #include <functional>
+#include <cstring>
 
 namespace lal {
 namespace utils {

@@ -39,12 +39,10 @@
  
 #include <lal/properties/C_rla.hpp>
 
-// C includes
-#include <string.h>
-
 // C++ includes
 #include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <vector>
 #include <map>
 using namespace std;

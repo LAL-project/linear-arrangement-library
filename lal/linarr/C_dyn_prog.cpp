@@ -39,11 +39,9 @@
  
 #include <lal/linarr/C.hpp>
 
-// C includes
-#include <string.h>
-
 // C++ includes
 #include <cassert>
+#include <cstring>
 using namespace std;
 
 // lal includes

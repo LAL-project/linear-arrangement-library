@@ -42,10 +42,10 @@
 // C includes
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <string.h>
 
 // C++ includes
 #include <iostream>
+#include <cstring>
 #include <numeric>
 #include <cmath>
 using namespace std;

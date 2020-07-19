@@ -39,12 +39,10 @@
 
 #pragma once
 
-// C includes
-#include <string.h>
-
 // C++ includes
 #include <algorithm>
 #include <iterator>
+#include <cstring>
 
 // lal includes
 #include <lal/utils/sorting/insertion_sort.hpp>
