@@ -106,6 +106,17 @@ void mpz_zero(mpz_t& z);
 // Initialise a gmp's integer variable to one.
 void mpz_one(mpz_t& o);
 
+/*
+ * @brief Move the contents of 'source' to 'target'.
+ *
+ * The contents are moved in a way that 'source' no longer has them.
+ * @param[out] target The mpz_t with the contents of 'source'.
+ * @param[in] source The mpz_t whose contents we want.
+ * @pre @e source must be initialised.
+ * @post @e source does not hold any value.
+ */
+void steal_from(mpz_t target, mpz_t source);
+
 /* Getters of mpz_t objects */
 
 // Return the amount of bytes of a gmp's integer value.

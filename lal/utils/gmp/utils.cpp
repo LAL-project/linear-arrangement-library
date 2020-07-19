@@ -182,6 +182,19 @@ void mpz_one(mpz_t& o) {
 	mpz_init_set_ui(o, 1);
 }
 
+void steal_from(mpz_t target, mpz_t source) {
+	// "steal" contents of 'source' and give them to 'target'
+	target[0]._mp_alloc = source[0]._mp_alloc;
+	target[0]._mp_size = source[0]._mp_size;
+	target[0]._mp_d = source[0]._mp_d;
+
+	// We need to make sure 'i' is not going to be
+	// cleared, otherwise we'll loose the contents in *this.
+	source[0]._mp_alloc = 0;
+	source[0]._mp_size = 0;
+	source[0]._mp_d = nullptr;
+}
+
 size_t mpz_bytes(const mpz_t& v) {
 	size_t alloc = static_cast<size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;
