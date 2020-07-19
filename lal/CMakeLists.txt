@@ -245,7 +245,7 @@ target_sources(
 		utils/graphs/trees/make_projective_arr.hpp
 		utils/graphs/trees/size_subtrees.hpp
 		utils/graphs/trees/tree_centre.hpp
-		utils/graphs/bfs.hpp
+		utils/graphs/traversal.hpp
 		utils/graphs/cycles.hpp
 		utils/graphs/reachability.hpp
 		utils/sorting/bit_sort.hpp
