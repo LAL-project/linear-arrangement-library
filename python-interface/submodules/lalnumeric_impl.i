@@ -6,7 +6,6 @@
 
 // lal includes
 #include <lal/numeric.hpp>
-#include <lal/numeric/output.hpp>
 
 %}
 

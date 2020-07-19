@@ -54,7 +54,7 @@ LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 
 NMRC_DPHDRS			= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
 					  $(LAL_INC_DIR)/lal/numeric/rational.hpp \
-					  $(LAL_INC_DIR)/lal/numeric/gmp_utils.hpp
+					  $(LAL_INC_DIR)/lal/numeric/output.hpp
 
 PROP_DPHDRS			= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/D_rla.hpp \
