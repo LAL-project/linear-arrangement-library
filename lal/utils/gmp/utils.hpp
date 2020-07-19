@@ -50,7 +50,7 @@ namespace utils {
 
 /* Other arithmetic operations */
 
-/**
+/*
  * @brief Computes the exponentiation of a big integer to another big integer.
  *
  * Fast exponentiation algorithm.
@@ -63,7 +63,7 @@ namespace utils {
  */
 void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e);
 
-/**
+/*
  * @brief Rational-Integer division.
  *
  * Divide a rational \f$r\f$ by an integer \f$k\f$.
@@ -72,7 +72,7 @@ void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e);
  */
 void mpz_divide_mpq(mpq_t& r, const mpz_t& k);
 
-/**
+/*
  * @brief Rational-Rational division.
  *
  * Divide a rational \f$r_1\f$ by another rational \f$r_2\f$.
@@ -81,7 +81,7 @@ void mpz_divide_mpq(mpq_t& r, const mpz_t& k);
  */
 void mpq_divide_mpq(mpq_t& r1, const mpq_t& r2);
 
-/**
+/*
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
@@ -90,7 +90,7 @@ void mpq_divide_mpq(mpq_t& r1, const mpq_t& r2);
  */
 void operate_power(mpq_t& r, uint64_t p);
 
-/**
+/*
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
@@ -101,14 +101,14 @@ void operate_power(mpq_t& r, const mpz_t& p);
 
 /* Fast initializers */
 
-/// Initialise a gmp's integer variable to zero.
+// Initialise a gmp's integer variable to zero.
 void mpz_zero(mpz_t& z);
-/// Initialise a gmp's integer variable to one.
+// Initialise a gmp's integer variable to one.
 void mpz_one(mpz_t& o);
 
 /* Getters of mpz_t objects */
 
-/// Return the amount of bytes of a gmp's integer value.
+// Return the amount of bytes of a gmp's integer value.
 size_t mpz_bytes(const mpz_t& v);
 
 } // -- namespace utils
