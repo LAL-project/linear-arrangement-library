@@ -40,7 +40,7 @@
 #include <lal/numeric/integer.hpp>
 
 // C++ includes
-#include <cmath>
+#include <cassert>
 using namespace std;
 
 // lal includes
@@ -61,20 +61,20 @@ namespace numeric {
 
 //integer::integer() { }
 
-integer::integer(integer&& i) {
-	if (i.is_initialized()) {
-		init();
-		mpz_set(m_val, i.m_val);
-		i.clear();
-	}
-}
-
 integer::integer(int64_t i) {
 	init_si(i);
 }
 
 integer::integer(const std::string& s) {
 	init_str(s);
+}
+
+integer::integer(integer&& i) {
+	assert(i.is_initialised());
+
+	init();
+	mpz_set(m_val, i.m_val);
+	i.clear();
 }
 
 integer::integer(const integer& i) {
@@ -125,12 +125,20 @@ void integer::clear() {
 
 /* SET VALUE */
 
-void integer::set_si(int64_t i)		{ mpz_set_si(m_val, i); }
-void integer::set_ui(uint64_t i)	{ mpz_set_ui(m_val, i); }
+void integer::set_si(int64_t i) {
+	assert(is_initialised());
+	mpz_set_si(m_val, i);
+}
+void integer::set_ui(uint64_t i) {
+	assert(is_initialised());
+	mpz_set_ui(m_val, i);
+}
 void integer::set_str(const std::string& s)	{
+	assert(is_initialised());
 	mpz_set_str(m_val, s.c_str(), 10);
 }
 void integer::set_mpz(const mpz_t& mpz) {
+	assert(is_initialised());
 	mpz_set(m_val, mpz);
 }
 
@@ -142,9 +150,7 @@ integer& integer::operator= (int64_t i) {
 }
 
 integer& integer::operator= (const integer& i) {
-	if (not i.is_initialized()) {
-		return *this;
-	}
+	assert(i.is_initialised());
 
 	init();
 	mpz_set(m_val, i.m_val);
@@ -152,9 +158,7 @@ integer& integer::operator= (const integer& i) {
 }
 
 integer& integer::operator= (integer&& i) {
-	if (not i.is_initialized()) {
-		return *this;
-	}
+	assert(i.is_initialised());
 
 	init();
 	mpz_set(m_val, i.m_val);

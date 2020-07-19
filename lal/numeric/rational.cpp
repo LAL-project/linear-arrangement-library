@@ -40,6 +40,7 @@
 #include <lal/numeric/rational.hpp>
 
 // C++ includes
+#include <cassert>
 using namespace std;
 
 // lal includes
@@ -63,6 +64,14 @@ rational::rational(const integer& n, const integer& d) {
 
 rational::rational(const std::string& s) {
 	init_str(s);
+}
+
+rational::rational(rational&& r) {
+	assert(r.is_initialised());
+
+	init();
+	mpq_set(m_val, r.m_val);
+	r.clear();
 }
 
 rational::rational(const rational& r) {
@@ -99,9 +108,7 @@ void rational::init_str(const std::string& s) {
 }
 
 void rational::init_integer(const integer& n, const integer& d) {
-	if (not (n.is_initialized() and d.is_initialized())) {
-		return;
-	}
+	assert(n.is_initialized() and d.is_initialized());
 
 	init();
 	set_integer(n, d);
@@ -134,6 +141,7 @@ void rational::set_str(const std::string& s) {
 	mpq_canonicalize(m_val);
 }
 void rational::set_integer(const integer& n, const integer& d) {
+	assert(n.is_initialized() and d.is_initialized());
 	mpq_set_num(m_val, n.get_raw_value());
 	mpq_set_den(m_val, d.get_raw_value());
 	mpq_canonicalize(m_val);
