@@ -61,7 +61,6 @@ using namespace std;
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
-#include <lal/utils/macros.hpp>
 
 #define NUM_TREE_FEATURES 14
 #define to_double(x) static_cast<double>(x)

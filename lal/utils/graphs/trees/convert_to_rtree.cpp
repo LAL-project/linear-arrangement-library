@@ -43,9 +43,6 @@
 #include <cassert>
 using namespace std;
 
-// lal includes
-#include <lal/utils/macros.hpp>
-
 namespace lal {
 using namespace graphs;
 
@@ -80,8 +77,8 @@ rtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 		}
 	}
 
-	// root must have been set.
 #if defined DEBUG
+	// root must have been set.
 	assert(root_set);
 #endif
 

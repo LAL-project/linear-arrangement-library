@@ -44,8 +44,8 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
 #include <lal/iterators/Q_iterator.hpp>
+#include <lal/utils/macros.hpp>
 
 namespace lal {
 using namespace graphs;

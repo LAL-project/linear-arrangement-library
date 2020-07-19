@@ -44,9 +44,6 @@
 #include <cassert>
 using namespace std;
 
-// lal includes
-#include <lal/utils/macros.hpp>
-
 #define to_uint32(x) static_cast<uint32_t>(x)
 
 namespace lal {

@@ -41,7 +41,6 @@
 
 #include <lal/graphs/dgraph.hpp>
 #include <lal/utils/graphs/traversal.hpp>
-#include <lal/utils/macros.hpp>
 
 namespace lal {
 namespace utils {
