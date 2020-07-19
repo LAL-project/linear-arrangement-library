@@ -70,7 +70,7 @@ integer::integer(const std::string& s) {
 }
 
 integer::integer(integer&& i) {
-	assert(i.is_initialised());
+	assert(i.is_initialized());
 
 	init();
 	mpz_set(m_val, i.m_val);
@@ -126,19 +126,19 @@ void integer::clear() {
 /* SET VALUE */
 
 void integer::set_si(int64_t i) {
-	assert(is_initialised());
+	assert(is_initialized());
 	mpz_set_si(m_val, i);
 }
 void integer::set_ui(uint64_t i) {
-	assert(is_initialised());
+	assert(is_initialized());
 	mpz_set_ui(m_val, i);
 }
 void integer::set_str(const std::string& s)	{
-	assert(is_initialised());
+	assert(is_initialized());
 	mpz_set_str(m_val, s.c_str(), 10);
 }
 void integer::set_mpz(const mpz_t& mpz) {
-	assert(is_initialised());
+	assert(is_initialized());
 	mpz_set(m_val, mpz);
 }
 
@@ -150,7 +150,7 @@ integer& integer::operator= (int64_t i) {
 }
 
 integer& integer::operator= (const integer& i) {
-	assert(i.is_initialised());
+	assert(i.is_initialized());
 
 	init();
 	mpz_set(m_val, i.m_val);
@@ -158,7 +158,7 @@ integer& integer::operator= (const integer& i) {
 }
 
 integer& integer::operator= (integer&& i) {
-	assert(i.is_initialised());
+	assert(i.is_initialized());
 
 	init();
 	mpz_set(m_val, i.m_val);
@@ -231,7 +231,7 @@ integer& integer::operator^= (uint64_t i) {
 }
 
 integer& integer::operator^= (const integer& i) {
-	gmp_utils::mpz_pow_mpz(m_val, m_val, i.m_val);
+	utils::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
 
@@ -260,7 +260,7 @@ int32_t integer::get_sign() const {
 }
 
 size_t integer::bytes() const {
-	return (is_initialized() ? gmp_utils::mpz_bytes(m_val) : 0);
+	return (is_initialized() ? utils::mpz_bytes(m_val) : 0);
 }
 
 const mpz_t& integer::get_raw_value() const	{

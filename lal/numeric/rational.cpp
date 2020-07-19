@@ -67,7 +67,7 @@ rational::rational(const std::string& s) {
 }
 
 rational::rational(rational&& r) {
-	assert(r.is_initialised());
+	assert(r.is_initialized());
 
 	init();
 	mpq_set(m_val, r.m_val);
@@ -263,38 +263,38 @@ rational rational::operator/ (const rational& r) const	{ rational k(*this); k /=
 
 rational& rational::operator/= (int64_t I) {
 	integer i(I);
-	gmp_utils::mpz_divide_mpq(m_val, i.get_raw_value());
+	utils::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;
 }
 
 rational& rational::operator/= (const integer& i) {
-	gmp_utils::mpz_divide_mpq(m_val, i.get_raw_value());
+	utils::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;
 }
 rational& rational::operator/= (const rational& r) {
-	gmp_utils::mpq_divide_mpq(m_val, r.m_val);
+	utils::mpq_divide_mpq(m_val, r.m_val);
 	return *this;
 }
 
 rational rational::operator^ (uint64_t p) const {
 	rational r(*this);
-	gmp_utils::operate_power(r.m_val, p);
+	utils::operate_power(r.m_val, p);
 	return r;
 }
 
 rational rational::operator^ (const integer& p) const {
 	rational r(*this);
-	gmp_utils::operate_power(r.m_val, p.get_raw_value());
+	utils::operate_power(r.m_val, p.get_raw_value());
 	return r;
 }
 
 rational& rational::operator^= (uint64_t p) {
-	gmp_utils::operate_power(m_val, p);
+	utils::operate_power(m_val, p);
 	return *this;
 }
 
 rational& rational::operator^= (const integer& p) {
-	gmp_utils::operate_power(m_val, p.get_raw_value());
+	utils::operate_power(m_val, p.get_raw_value());
 	return *this;
 }
 
@@ -319,8 +319,8 @@ size_t rational::bytes() const {
 	mpq_get_num(num, m_val);
 	mpq_get_den(den, m_val);
 
-	size_t bs = gmp_utils::mpz_bytes(num) +
-				gmp_utils::mpz_bytes(den);
+	size_t bs = utils::mpz_bytes(num) +
+				utils::mpz_bytes(den);
 
 	mpz_clears(num, den, NULL);
 
