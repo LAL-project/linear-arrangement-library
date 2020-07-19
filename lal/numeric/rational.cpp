@@ -67,11 +67,31 @@ rational::rational(const std::string& s) {
 }
 
 rational::rational(rational&& r) {
+	// If 'r' is not initialized then 'this->m_val[0]' attributes
+	// will contain unitialised attributes, which can cause
+	// undefined behaviour when clearing *this. Also, valgrind
+	// will complain when testing.
 	assert(r.is_initialized());
 
-	init();
-	mpq_set(m_val, r.m_val);
-	r.clear();
+	// '*this' need not be initialised using mpz_init()
+	m_initialized = true;
+
+	// retrieve numerator and denominator
+	mpz_t r_num, r_den;
+	mpz_inits(r_num, r_den, NULL);
+	mpq_get_num(r_num, r.m_val);
+	mpq_get_den(r_den, r.m_val);
+
+	// steal contents
+	mpz_t t_num, t_den;
+	utils::steal_from(t_num, r_num);
+	utils::steal_from(t_den, r_den);
+
+	// set contents to '*this'
+	mpq_set_num(m_val, t_num);
+	mpq_set_den(m_val, t_den);
+
+	r.m_initialized = false; // better be safe than sorry
 }
 
 rational::rational(const rational& r) {

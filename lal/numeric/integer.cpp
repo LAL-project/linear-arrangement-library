@@ -55,8 +55,6 @@ using namespace std;
 namespace lal {
 namespace numeric {
 
-// NON-CLASS PRIVATE
-
 // PUBLIC
 
 //integer::integer() { }
@@ -70,11 +68,17 @@ integer::integer(const std::string& s) {
 }
 
 integer::integer(integer&& i) {
+	// If 'i' is not initialized then 'this->m_val[0]' attributes
+	// will contain unitialised attributes, which can cause
+	// undefined behaviour when clearing *this. Also, valgrind
+	// will complain when testing.
 	assert(i.is_initialized());
 
-	init();
-	mpz_set(m_val, i.m_val);
-	i.clear();
+	// '*this' need not be initialised using mpz_init()
+	m_initialized = true;
+	utils::steal_from(m_val, i.m_val);
+
+	i.m_initialized = false; // better be safe than sorry
 }
 
 integer::integer(const integer& i) {
