@@ -211,12 +211,10 @@ target_sources(
 
 		# numeric namespace
 		# -- headers
-		numeric/gmp_utils.hpp
 		numeric/integer.hpp
 		numeric/output.hpp
 		numeric/rational.hpp
 		# -- sources
-		numeric/gmp_utils.cpp
 		numeric/integer.cpp
 		numeric/rational.cpp
 
@@ -240,6 +238,7 @@ target_sources(
 		# utils namespace -- not to be installed
 		# -- headers
 		utils/Dmin/common.hpp
+		utils/gmp/utils.hpp
 		utils/graphs/trees/convert_to_ftree.hpp
 		utils/graphs/trees/convert_to_rtree.hpp
 		utils/graphs/trees/is_tree.hpp
@@ -257,6 +256,7 @@ target_sources(
 		utils/std_utils.hpp
 		# -- sources
 		utils/Dmin/common.cpp
+		utils/gmp/utils.cpp
 		utils/graphs/trees/convert_to_ftree.cpp
 		utils/graphs/trees/convert_to_rtree.cpp
 

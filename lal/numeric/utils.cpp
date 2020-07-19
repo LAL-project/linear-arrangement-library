@@ -37,7 +37,7 @@
  *
  ********************************************************************/
  
-#include <lal/numeric/gmp_utils.hpp>
+#include <lal/utils/gmp/utils.hpp>
 
 namespace lal {
 namespace numeric {

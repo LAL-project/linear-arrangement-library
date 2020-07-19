@@ -69,7 +69,6 @@ HEADERS += \
 	numeric/integer.hpp \
 	numeric/output.hpp \
 	numeric/rational.hpp \
-	numeric/gmp_utils.hpp \
 	io/edge_list.hpp \
 	io.hpp \
 	io/basic_output.hpp \
@@ -85,6 +84,7 @@ HEADERS += \
 	properties/mhd.hpp \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
+    utils/gmp/utils.hpp \
     utils/graphs/trees/centre_centroid_utils.hpp \
 	utils/macros.hpp \
 	utils/avl.hpp \
@@ -142,7 +142,7 @@ SOURCES += \
 	io/treebank_reader.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
-	numeric/gmp_utils.cpp \
+    numeric/utils.cpp \
 	properties/Q.cpp \
 	properties/degrees.cpp \
 	properties/mhd.cpp \
