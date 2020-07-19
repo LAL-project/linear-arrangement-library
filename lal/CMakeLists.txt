@@ -343,7 +343,6 @@ set(LIBLAL_LINARR_HEADER
 	linarr/tree_structure_class.hpp
 )
 set(LIBLAL_NUMERIC_HEADER
-	numeric/gmp_utils.hpp
 	numeric/integer.hpp
 	numeric/output.hpp
 	numeric/rational.hpp
