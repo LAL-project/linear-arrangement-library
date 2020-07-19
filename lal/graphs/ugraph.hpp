@@ -63,6 +63,10 @@ class ugraph : virtual public graph {
 	public:
 		/// Default constructor.
 		ugraph() = default;
+		/// Default move constructor.
+		ugraph(ugraph&&) = default;
+		/// Default copy constructor.
+		ugraph(const ugraph&) = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
@@ -72,6 +76,11 @@ class ugraph : virtual public graph {
 		virtual ~ugraph() = default;
 
 		/* OPERATORS */
+
+		/// Default move assignment operator.
+		ugraph& operator= (ugraph&&) = default;
+		/// Default copy assignment operator.
+		ugraph& operator= (const ugraph&) = default;
 
 		/* MODIFIERS */
 

@@ -58,6 +58,10 @@ class ftree : public ugraph, virtual public tree {
 	public:
 		/// Default constructor.
 		ftree() = default;
+		/// Default move constructor.
+		ftree(ftree&&) = default;
+		/// Default copy constructor.
+		ftree(const ftree&) = default;
 		/// Default constructor.
 		ftree(uint32_t n);
 		/**
@@ -68,6 +72,11 @@ class ftree : public ugraph, virtual public tree {
 		ftree(const ugraph& t);
 		/// Default destructor.
 		virtual ~ftree() = default;
+
+		/// Default move assignment operator.
+		ftree& operator= (ftree&&) = default;
+		/// Default copy assignment operator.
+		ftree& operator= (const ftree&) = default;
 
 		/* MODIFIERS */
 

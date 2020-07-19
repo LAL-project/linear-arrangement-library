@@ -59,7 +59,16 @@ namespace numeric {
 
 // PUBLIC
 
-integer::integer() { }
+//integer::integer() { }
+
+integer::integer(integer&& i) {
+	if (i.is_initialized()) {
+		init();
+		mpz_set(m_val, i.m_val);
+		i.clear();
+	}
+}
+
 integer::integer(int64_t i) {
 	init_si(i);
 }
@@ -124,7 +133,6 @@ void integer::set_str(const std::string& s)	{
 void integer::set_mpz(const mpz_t& mpz) {
 	mpz_set(m_val, mpz);
 }
-void integer::copy(const integer& i){ mpz_set(m_val, i.m_val); }
 
 /* OPERATORS */
 
@@ -139,7 +147,18 @@ integer& integer::operator= (const integer& i) {
 	}
 
 	init();
-	copy(i);
+	mpz_set(m_val, i.m_val);
+	return *this;
+}
+
+integer& integer::operator= (integer&& i) {
+	if (not i.is_initialized()) {
+		return *this;
+	}
+
+	init();
+	mpz_set(m_val, i.m_val);
+	i.clear();
 	return *this;
 }
 
@@ -257,7 +276,11 @@ double integer::to_double() const {
 }
 
 void integer::swap(integer& i) {
-	mpz_swap(m_val, i.m_val);
+	if (is_initialized() or i.is_initialized()) {
+		init();
+		i.init();
+		mpz_swap(m_val, i.m_val);
+	}
 }
 
 /* CONVERTERS */

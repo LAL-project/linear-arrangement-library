@@ -65,6 +65,8 @@ class tree : virtual public graph {
 		tree() = default;
 		virtual ~tree() = default;
 
+		/* OPERATORS */
+
 		/* GETTERS */
 
 		/**

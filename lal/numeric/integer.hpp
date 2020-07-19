@@ -71,11 +71,13 @@ namespace numeric {
 class integer {
 	public:
 		/// Default constructor.
-		integer();
+		integer() = default;
 		/// Constructor with unsigned integer value.
 		integer(int64_t i);
 		/// Constructor with string.
 		integer(const std::string& i);
+		/// Move constructor.
+		integer(integer&& i);
 		/// Copy constructor.
 		integer(const integer& i);
 		/// Destructor.
@@ -107,15 +109,15 @@ class integer {
 		void set_str(const std::string& s);
 		/// Overwrites the value of this integer with the value in @e mpz.
 		void set_mpz(const mpz_t& mpz);
-		/// Overwrites the value of this integer with the value in @e i.
-		void copy(const integer& i);
 
 		/* OPERATORS */
 
-		/// Assignation operator.
+		/// Assignment operator.
 		integer& operator= (int64_t i);
-		/// Assignation operator.
+		/// Assignment operator.
 		integer& operator= (const integer& i);
+		/// Move assignment operator.
+		integer& operator= (integer&& i);
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;

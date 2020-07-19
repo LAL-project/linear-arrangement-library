@@ -130,12 +130,21 @@ class rtree : public dgraph, virtual public tree {
 	public:
 		/// Default constructor.
 		rtree() = default;
+		/// Default move constructor.
+		rtree(rtree&&) = default;
+		/// Default copy constructor.
+		rtree(const rtree&) = default;
 		/// Constructor with number of nodes and root node.
 		rtree(uint32_t n);
 		/// Constructor with tree and root node.
 		rtree(const ftree& t, node r, rtree_type arb = rtree_type::arborescence);
 		/// Default destructor
 		virtual ~rtree() = default;
+
+		/// Default move assignment operator.
+		rtree& operator= (rtree&&) = default;
+		/// Default copy assignment operator.
+		rtree& operator= (const rtree&) = default;
 
 		/* MODIFIERS */
 

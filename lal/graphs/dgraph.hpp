@@ -64,6 +64,10 @@ class dgraph : virtual public graph {
 	public:
 		/// Default constructor.
 		dgraph() = default;
+		/// Default move constructor.
+		dgraph(dgraph&&) = default;
+		/// Default copy constructor.
+		dgraph(const dgraph&) = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
@@ -72,7 +76,10 @@ class dgraph : virtual public graph {
 		/// Default destructor.
 		virtual ~dgraph() = default;
 
-		/* OPERATORS */
+		/// Default move assignment operator.
+		dgraph& operator= (dgraph&&) = default;
+		/// Default copy assignment operator.
+		dgraph& operator= (const dgraph&) = default;
 
 		/* MODIFIERS */
 

@@ -75,13 +75,15 @@ namespace numeric {
 class rational {
 	public:
 		/// Default constructor.
-		rational();
+		rational() = default;
 		/// Constructor with numerator and denominator.
 		rational(int64_t n, uint64_t d = 1);
 		/// Constructor with integer.
 		rational(const integer& n, const integer& d = 1);
 		/// Constructor with string.
 		rational(const std::string& s);
+		/// Move constructor.
+		rational(rational&& r);
 		/// Copy constructor.
 		rational(const rational& r);
 		/// Destructor.
@@ -117,8 +119,6 @@ class rational {
 		void set_integer(const integer& n, const integer& d = 1);
 		/// Overwrites the value of this rational with the value in @e mpq.
 		void set_mpq(const mpq_t& mpq);
-		/// Overwrites the value of this rational with the value in @e r.
-		void copy(const rational& r);
 
 		/**
 		 * @brief Changes numerator and denominator.
@@ -130,12 +130,16 @@ class rational {
 
 		/* OPERATORS */
 
-		/// Assignation operator.
+		/// Assignment operator.
 		rational& operator= (int64_t i);
-		/// Assignation operator.
+		/// Assignment operator.
 		rational& operator= (const integer& i);
-		/// Assignation operator.
-		rational& operator= (const rational& r);
+		/// Assignment operator.
+		rational& operator= (const rational& i);
+		/// Move assignment operator.
+		rational& operator= (integer&& i);
+		/// Move assignment operator.
+		rational& operator= (rational&& r);
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;
@@ -285,18 +289,11 @@ class rational {
 		void as_double(double& d) const;
 
 	private:
-		/// Structure from GMP storing the integer's value.
+		/// Structure from GMP storing the rational's value.
 		mpq_t m_val;
 		/// Is this rational initialised?
 		bool m_initialized = false;
 };
-
-/// Swaps the contents of two rational values.
-inline void swap_rational(rational& a, rational& b) {
-	rational copy = a;
-	a = b;
-	b = copy;
-}
 
 /// Make a rational value from two 64-bit unsigned integers
 inline rational rational_from_ui(uint64_t n, uint64_t d = 1) {

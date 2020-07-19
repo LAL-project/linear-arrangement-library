@@ -52,7 +52,7 @@ namespace numeric {
 
 // PUBLIC
 
-rational::rational() { }
+//rational::rational() { }
 rational::rational(int64_t n, uint64_t d) {
 	init_si(n, d);
 }
@@ -141,9 +141,6 @@ void rational::set_integer(const integer& n, const integer& d) {
 void rational::set_mpq(const mpq_t& mpq) {
 	mpq_set(m_val, mpq);
 }
-void rational::copy(const rational& r) {
-	mpq_set(m_val, r.m_val);
-}
 
 void rational::invert() {
 	mpq_inv(m_val, m_val);
@@ -176,7 +173,28 @@ rational& rational::operator= (const rational& r) {
 	}
 
 	init();
-	copy(r);
+	mpq_set(m_val, r.m_val);
+	return *this;
+}
+
+rational& rational::operator= (integer&& i) {
+	if (not i.is_initialized()) {
+		return *this;
+	}
+
+	init_integer(i);
+	i.clear();
+	return *this;
+}
+
+rational& rational::operator= (rational&& r) {
+	if (not r.is_initialized()) {
+		return *this;
+	}
+
+	init();
+	mpq_set(m_val, r.m_val);
+	r.clear();
 	return *this;
 }
 
