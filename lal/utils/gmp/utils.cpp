@@ -40,8 +40,7 @@
 #include <lal/utils/gmp/utils.hpp>
 
 namespace lal {
-namespace numeric {
-namespace gmp_utils {
+namespace utils {
 
 void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) {
 	if (mpz_fits_ulong_p(e)) {
@@ -162,8 +161,8 @@ void operate_power(mpq_t& res, const mpz_t& p) {
 	mpq_get_den(den, res);
 
 	// operate power
-	gmp_utils::mpz_pow_mpz(num, num, p);
-	gmp_utils::mpz_pow_mpz(den, den, p);
+	mpz_pow_mpz(num, num, p);
+	mpz_pow_mpz(den, den, p);
 
 	// set value into 'res'
 	mpq_set_num(res, num);
@@ -188,6 +187,5 @@ size_t mpz_bytes(const mpz_t& v) {
 	return sizeof(mp_limb_t)*alloc;
 }
 
-} // -- namespace gmp_utils
 } // -- namespace numeric
 } // -- namespace lal

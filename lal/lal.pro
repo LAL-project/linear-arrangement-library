@@ -142,7 +142,6 @@ SOURCES += \
 	io/treebank_reader.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
-    numeric/utils.cpp \
 	properties/Q.cpp \
 	properties/degrees.cpp \
 	properties/mhd.cpp \
@@ -152,5 +151,6 @@ SOURCES += \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
 	utils/Dmin/common.cpp \
+	utils/gmp/utils.cpp \
 	utils/graphs/trees/convert_to_ftree.cpp \
 	utils/graphs/trees/convert_to_rtree.cpp

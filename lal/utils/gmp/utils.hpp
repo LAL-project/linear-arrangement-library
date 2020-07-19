@@ -46,8 +46,7 @@
 #include <gmp.h>
 
 namespace lal {
-namespace numeric {
-namespace gmp_utils {
+namespace utils {
 
 /* Other arithmetic operations */
 
@@ -112,6 +111,5 @@ void mpz_one(mpz_t& o);
 /// Return the amount of bytes of a gmp's integer value.
 size_t mpz_bytes(const mpz_t& v);
 
-} // -- namespace gmp_utils
-} // -- namespace numeric
+} // -- namespace utils
 } // -- namespace lal
