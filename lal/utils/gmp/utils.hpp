@@ -99,28 +99,52 @@ void operate_power(mpq_t& r, uint64_t p);
  */
 void operate_power(mpq_t& r, const mpz_t& p);
 
-/* Fast initializers */
-
-// Initialise a gmp's integer variable to zero.
-void mpz_zero(mpz_t& z);
-// Initialise a gmp's integer variable to one.
-void mpz_one(mpz_t& o);
-
-/*
- * @brief Move the contents of 'source' to 'target'.
- *
- * The contents are moved in a way that 'source' no longer has them.
- * @param[out] target The mpz_t with the contents of 'source'.
- * @param[in] source The mpz_t whose contents we want.
- * @pre @e source must be initialised.
- * @post @e source does not hold any value.
- */
-void steal_from(mpz_t target, mpz_t source);
-
 /* Getters of mpz_t objects */
 
 // Return the amount of bytes of a gmp's integer value.
 size_t mpz_bytes(const mpz_t& v);
+
+/* Moving gmp types */
+
+/*
+ * @brief Move the contents from 'source' to 'target'.
+ *
+ * The contents are moved in a way that 'source' no longer has them.
+ * @param[in] source The mpz_t whose contents we want.
+ * @param[out] target The mpz_t with the contents of 'source'.
+ * @pre @e source must be initialised.
+ * @pre Optionally, target can be initialised, but should not have been
+ * assigned any value (otherwise its contents are never going to be freed,
+ * thus causing memory leaks).
+ * @post @e source does not hold any value.
+ */
+void move_mpz_to_mpz(mpz_t& source, mpz_t& target);
+
+/*
+ * @brief Move the contents from 'source' to 'target'.
+ *
+ * The contents are moved in a way that 'source' no longer has them.
+ * @param[in] source The mpq_t whose contents we want.
+ * @param[out] target The mpq_t with the contents of 'source'.
+ * @pre @e source must be initialised.
+ * @pre @e target should not be initialised (otherwise its contents
+ * are never going to be freed, thus causing memory leaks).
+ * @post @e source does not hold any value.
+ */
+void move_mpq_to_mpq(mpq_t& source, mpq_t& target);
+
+/*
+ * @brief Move the contents from 'source' to 'target'.
+ *
+ * The contents are moved in a way that 'source' no longer has them.
+ * @param[in] source The mpq_t whose contents we want.
+ * @param[out] target The mpq_t with the contents of 'source'.
+ * @pre @e source must be initialised.
+ * @pre @e target should not be initialised (otherwise its contents
+ * are never going to be freed, thus causing memory leaks).
+ * @post @e source does not hold any value.
+ */
+void move_mpz_to_mpq(mpz_t& source, mpq_t& target);
 
 } // -- namespace utils
 } // -- namespace lal

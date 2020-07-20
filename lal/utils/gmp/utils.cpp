@@ -174,30 +174,38 @@ void operate_power(mpq_t& res, const mpz_t& p) {
 	mpz_clears(num, den, nullptr);
 }
 
-void mpz_zero(mpz_t& z) {
-	mpz_init_set_ui(z, 0);
-}
-
-void mpz_one(mpz_t& o) {
-	mpz_init_set_ui(o, 1);
-}
-
-void steal_from(mpz_t target, mpz_t source) {
-	// "steal" contents of 'source' and give them to 'target'
-	target[0]._mp_alloc = source[0]._mp_alloc;
-	target[0]._mp_size = source[0]._mp_size;
-	target[0]._mp_d = source[0]._mp_d;
-
-	// We need to make sure 'i' is not going to be
-	// cleared, otherwise we'll loose the contents in *this.
-	source[0]._mp_alloc = 0;
-	source[0]._mp_size = 0;
-	source[0]._mp_d = nullptr;
-}
-
 size_t mpz_bytes(const mpz_t& v) {
 	size_t alloc = static_cast<size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;
+}
+
+// Steal contents of 'source' and give them to 'target'
+inline void steal_from(__mpz_struct& source, __mpz_struct& target) {
+	target._mp_alloc = source._mp_alloc;
+	target._mp_size = source._mp_size;
+	target._mp_d = source._mp_d;
+
+	// We need to make sure 'source' is not going to be
+	// cleared, otherwise we'll loose the contents in *this.
+	source._mp_alloc = 0;
+	source._mp_size = 0;
+	source._mp_d = nullptr;
+}
+
+void move_mpz_to_mpz(mpz_t& source, mpz_t& target) {
+	steal_from(source[0], target[0]);
+}
+
+void move_mpq_to_mpq(mpq_t& source, mpq_t& target) {
+	steal_from(source[0]._mp_num, target[0]._mp_num);
+	steal_from(source[0]._mp_den, target[0]._mp_den);
+}
+
+void move_mpz_to_mpq(mpz_t& source, mpq_t& target) {
+	steal_from(source[0], target[0]._mp_num);
+	mpz_t one;
+	mpz_init_set_ui(one, 1);
+	steal_from(one[0], target[0]._mp_den);
 }
 
 } // -- namespace numeric
