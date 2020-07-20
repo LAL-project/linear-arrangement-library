@@ -74,10 +74,14 @@ integer::integer(integer&& i) {
 	// will complain when testing.
 	assert(i.is_initialized());
 
-	// '*this' need not be initialised using mpz_init()
+	if (is_initialized()) {
+		// if this integer was initialised (and quite likely,
+		// given a value) the mpz_t must be freed
+		mpz_clear(m_val);
+	}
+	// steal 'i's contents
+	utils::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
-	utils::steal_from(m_val, i.m_val);
-
 	i.m_initialized = false; // better be safe than sorry
 }
 
@@ -164,9 +168,15 @@ integer& integer::operator= (const integer& i) {
 integer& integer::operator= (integer&& i) {
 	assert(i.is_initialized());
 
-	init();
-	mpz_set(m_val, i.m_val);
-	i.clear();
+	if (is_initialized()) {
+		// if this integer was initialised (and quite likely,
+		// given a value) the mpz_t must be freed
+		mpz_clear(m_val);
+	}
+	// steal 'i's contents
+	utils::move_mpz_to_mpz(i.m_val, m_val);
+	m_initialized = true;
+	i.m_initialized = false; // better be safe than sorry
 	return *this;
 }
 
