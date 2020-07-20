@@ -70,6 +70,8 @@ namespace numeric {
  */
 class integer {
 	public:
+		friend class rational;
+	public:
 		/// Default constructor.
 		integer() = default;
 		/// Constructor with unsigned integer value.
