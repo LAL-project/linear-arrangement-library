@@ -83,6 +83,8 @@ class rational {
 		/// Constructor with string.
 		rational(const std::string& s);
 		/// Move constructor.
+		rational(integer&& r);
+		/// Move constructor.
 		rational(rational&& r);
 		/// Copy constructor.
 		rational(const rational& r);

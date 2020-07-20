@@ -66,6 +66,24 @@ rational::rational(const std::string& s) {
 	init_str(s);
 }
 
+rational::rational(integer&& i) {
+	// If 'r' is not initialized then 'this->m_val[0]' attributes
+	// will contain unitialised attributes, which can cause
+	// undefined behaviour when clearing *this. Also, valgrind
+	// will complain when testing.
+	assert(i.is_initialized());
+
+	if (is_initialized()) {
+		// if this rational was initialised (and quite likely,
+		// given a value) the mpq_t must be freed
+		clear();
+	}
+	// steal 'r's contents
+	utils::move_mpz_to_mpq(i.m_val, m_val);
+	m_initialized = true;
+	i.m_initialized = false; // better be safe than sorry
+}
+
 rational::rational(rational&& r) {
 	// If 'r' is not initialized then 'this->m_val[0]' attributes
 	// will contain unitialised attributes, which can cause
@@ -73,29 +91,19 @@ rational::rational(rational&& r) {
 	// will complain when testing.
 	assert(r.is_initialized());
 
-	// '*this' need not be initialised using mpz_init()
+	if (is_initialized()) {
+		// if this rational was initialised (and quite likely,
+		// given a value) the mpq_t must be freed
+		clear();
+	}
+	// steal 'r's contents
+	utils::move_mpq_to_mpq(r.m_val, m_val);
 	m_initialized = true;
-
-	// retrieve numerator and denominator
-	mpz_t r_num, r_den;
-	mpz_inits(r_num, r_den, NULL);
-	mpq_get_num(r_num, r.m_val);
-	mpq_get_den(r_den, r.m_val);
-
-	// steal contents
-	mpz_t t_num, t_den;
-	utils::steal_from(t_num, r_num);
-	utils::steal_from(t_den, r_den);
-
-	// set contents to '*this'
-	mpq_set_num(m_val, t_num);
-	mpq_set_den(m_val, t_den);
-
 	r.m_initialized = false; // better be safe than sorry
 }
 
 rational::rational(const rational& r) {
-	*this = r;
+	init_mpq(r.m_val);
 }
 
 rational::~rational() {
@@ -210,8 +218,15 @@ rational& rational::operator= (integer&& i) {
 		return *this;
 	}
 
-	init_integer(i);
-	i.clear();
+	if (is_initialized()) {
+		// if this rational was initialised (and quite likely,
+		// given a value) the mpq_t must be freed
+		clear();
+	}
+	// steal 'r's contents
+	utils::move_mpz_to_mpq(i.m_val, m_val);
+	m_initialized = true;
+	i.m_initialized = false; // better be safe than sorry
 	return *this;
 }
 
@@ -220,9 +235,15 @@ rational& rational::operator= (rational&& r) {
 		return *this;
 	}
 
-	init();
-	mpq_set(m_val, r.m_val);
-	r.clear();
+	if (is_initialized()) {
+		// if this rational was initialised (and quite likely,
+		// given a value) the mpq_t must be freed
+		clear();
+	}
+	// steal 'r's contents
+	utils::move_mpq_to_mpq(r.m_val, m_val);
+	m_initialized = true;
+	r.m_initialized = false; // better be safe than sorry
 	return *this;
 }
 
