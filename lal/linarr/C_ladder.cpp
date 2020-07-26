@@ -89,8 +89,8 @@ inline uint32_t __compute_C_ladder(
 				C += S - L1[q];
 				++L1[q];
 			}*/
-			C += (bn[v] ? S - L1[q] : 0);
-			L1[q] += (bn[v] ? 1 : 0);
+			C += bn[v]*(S - L1[q]);
+			L1[q] += bn[v];
 			// --
 
 			bn[v] = false;

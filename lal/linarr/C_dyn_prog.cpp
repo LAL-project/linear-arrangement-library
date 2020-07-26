@@ -167,7 +167,8 @@ inline uint32_t __compute_C_dyn_prog(
 				C += K[idx(pu,pi[v]-2, n-3)];
 			}*/
 			// --
-			C += (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1 ? K[idx(pu,pi[v]-2, n-3)] : 0);
+			const bool cond = pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1;
+			C += cond*K[idx(pu,pi[v]-2, n-3)];
 		}
 	}
 
