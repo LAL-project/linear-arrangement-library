@@ -46,6 +46,7 @@ using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
+#include <lal/utils/graphs/utils.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 
@@ -58,13 +59,14 @@ namespace linarr {
 // T[p] = u <-> at position p we find node u
 inline uint32_t __compute_C_dyn_prog(
 	const ugraph& g, const linearrgmnt& pi,
-	vector<bool>& bn,
+	char * __restrict__ bn,
 	node * __restrict__ T,
 	uint32_t * __restrict__ M,
 	uint32_t * __restrict__ K
 )
-{
+{	
 	const uint32_t n = g.n_nodes();
+	memset(bn, 0, n*sizeof(char));
 
 	// compute pi
 	for (node i = 0; i < n; ++i) {
@@ -197,13 +199,15 @@ inline uint32_t __call_C_dyn_prog(const ugraph& g, const linearrgmnt& pi) {
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	vector<bool> bool_neighs(n, false);
+	char * __restrict__ bool_neighs =
+		static_cast<char *>(malloc(n*sizeof(char)));
 
 	/* compute number of crossings */
-	uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
+	const uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
 	free(all_memory);
+	free(bool_neighs);
 	return C;
 }
 
@@ -236,7 +240,8 @@ vector<uint32_t> __n_crossings_dyn_prog_list
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	vector<bool> bool_neighs(n, false);
+	char * __restrict__ bool_neighs =
+		static_cast<char *>(malloc(n*sizeof(char)));
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -245,11 +250,14 @@ vector<uint32_t> __n_crossings_dyn_prog_list
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog(g, pis[i], bool_neighs, T,M,K);
-		bool_neighs.assign(n, false);
+
+		// contents of 'bool_neighs' is set to 0 inside the function
+		//bool_neighs.assign(n, false);
 	}
 
 	/* free memory */
 	free(all_memory);
+	free(bool_neighs);
 	return cs;
 }
 

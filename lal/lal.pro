@@ -86,6 +86,7 @@ HEADERS += \
 	properties/C_rla.hpp \
     utils/gmp/utils.hpp \
     utils/graphs/trees/centre_centroid_utils.hpp \
+    utils/graphs/utils.hpp \
 	utils/macros.hpp \
 	utils/avl.hpp \
 	utils/std_utils.hpp \

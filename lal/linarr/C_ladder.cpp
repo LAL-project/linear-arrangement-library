@@ -41,10 +41,12 @@
 
 // C++ includes
 #include <cassert>
+#include <cstring>
 using namespace std;
 
 // lal includes
 #include <lal/utils/macros.hpp>
+#include <lal/utils/graphs/utils.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -53,12 +55,13 @@ namespace linarr {
 
 inline uint32_t __compute_C_ladder(
 	const ugraph& g, const linearrgmnt& pi,
-	vector<bool>& bn,
+	char * __restrict__ bn,
 	uint32_t * __restrict__ T,
 	uint32_t * __restrict__ L1
 )
 {
 	const uint32_t n = g.n_nodes();
+	memset(bn, 0, n*sizeof(char));
 
 	/* initialise memory */
 	for (uint32_t i = 0; i < n; ++i) {
@@ -118,13 +121,15 @@ inline uint32_t __call_C_ladder(const ugraph& g, const linearrgmnt& pi) {
 	// array L1 (same as in the pseudocode)
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	vector<bool> bool_neighs(n, false);
+	char * __restrict__ bool_neighs =
+		static_cast<char *>(malloc(n*sizeof(char)));
 
 	/* compute number of crossings */
 	const uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
 	free(all_memory);
+	free(bool_neighs);
 	return C;
 }
 
@@ -154,7 +159,8 @@ vector<uint32_t> __n_crossings_ladder_list
 	// array L1 (same as in the pseudocode)
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	vector<bool> bool_neighs(n, false);
+	char * __restrict__ bool_neighs =
+		static_cast<char *>(malloc(n*sizeof(char)));
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -163,11 +169,14 @@ vector<uint32_t> __n_crossings_ladder_list
 
 		// compute C
 		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs, T,L1);
-		bool_neighs.assign(n, false);
+
+		// contents of 'bool_neighs' is set to 0 inside the function
+		//bool_neighs.assign(n, false);
 	}
 
 	/* free memory */
 	free(all_memory);
+	free(bool_neighs);
 	return cs;
 }
 

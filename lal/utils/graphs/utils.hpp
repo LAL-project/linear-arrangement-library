@@ -39,42 +39,52 @@
 
 #pragma once
 
-// C++ includes
-#include <functional>
-#include <numeric>
-
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/ugraph.hpp>
 
 namespace lal {
 namespace utils {
 
-// Function used to tell the compiler what is not used.
-template<class T>
-inline void UNUSED(const T& x) { (void)x; }
-
-/*
- * @brief Call a function @e F that does not admit empty arrangements.
+/* @brief Retrieves the neighbours of a node in an undirected graph as a
+ * list of 0-1 values.
  *
- * In case the arrangement @e pi is empty, function @e F is passed the
- * identity arrangement.
- * @param F Function to call.
+ * Sets to 1 the positions in @e neighs that correspond to the nodes
+ * neighours of @e u.
  * @param g Input graph.
- * @param pi Arrangement.
- * @return Returns the value function @e F returns.
+ * @param u Input node.
+ * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
  */
-template<typename T, class G>
-T call_with_empty_arrangement(
-	T (*F)(const G&, const linearrgmnt&),
-	const G& g, const linearrgmnt& pi
+inline void get_bool_neighbours(
+	const graphs::ugraph& g, node u, char *neighs
 )
 {
-	if (pi.size() != 0) {
-		return F(g,pi);
+	for (const node v : g.get_neighbours(u)) {
+		neighs[v] = 1;
 	}
-	linearrgmnt __pi(g.n_nodes());
-	std::iota(__pi.begin(), __pi.end(), 0);
-	return F(g,__pi);
+}
+
+/* @brief Retrieves the neighbours of a node in an undirected graph as a
+ * list of 0-1 values.
+ *
+ * Sets to 1 the positions in @e neighs that correspond to the nodes
+ * neighours of @e u.
+ * @param g Input graph.
+ * @param u Input node.
+ * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
+ */
+inline void get_bool_neighbours(
+	const graphs::dgraph& g, node u, char *neighs
+)
+{
+	for (const node v : g.get_in_neighbours(u)) {
+		neighs[v] = 1;
+	}
+	for (const node v : g.get_out_neighbours(u)) {
+		neighs[v] = 1;
+	}
 }
 
 } // -- namespace utils
