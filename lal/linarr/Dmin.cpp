@@ -5,7 +5,9 @@
  *
  *  Copyright (C) 2019
  *
- *  This file is part of Linear Arrangement Library.
+ *  This file is part of Linear Arrangement Library. To see the full code
+ *  visit the webpage:
+ *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
  *
  *  Linear Arrangement Library is free software: you can redistribute it
  *  and/or modify it under the terms of the GNU Affero General Public License

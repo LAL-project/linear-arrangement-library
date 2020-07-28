@@ -5,7 +5,9 @@
  *
  *  Copyright (C) 2019-2020
  *
- *  This file is part of Linear Arrangement Library.
+ *  This file is part of Linear Arrangement Library. To see the full code
+ *  visit the webpage:
+ *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
  *
  *  Linear Arrangement Library is free software: you can redistribute it
  *  and/or modify it under the terms of the GNU Affero General Public License
@@ -26,15 +28,14 @@
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Research Gate: https://www.researchgate.net/profile/Lluis_Alemany-Puig
+ *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
  *          Office S124, Omega building
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~rferrericancho/
- *          Research Gate: https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
+ *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
  
