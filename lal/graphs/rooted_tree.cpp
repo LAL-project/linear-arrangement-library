@@ -60,7 +60,7 @@ namespace graphs {
 rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
 	rooted_tree::_init(n);
 }
-rooted_tree::rooted_tree(const free_tree& t, node r, rtree_type type) {
+rooted_tree::rooted_tree(const free_tree& t, node r, rooted_tree_type type) {
 	init_rooted(t, r, type);
 }
 //rtree::~rtree() { }
@@ -132,7 +132,7 @@ bool rooted_tree::find_rtree_type() {
 	if (n_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
-		set_rtree_type(rtree_type::arborescence);
+		set_rtree_type(rooted_tree_type::arborescence);
 		return true;
 	}
 
@@ -147,7 +147,7 @@ bool rooted_tree::find_rtree_type() {
 		// will remain unclassified
 		set_rtree_type(
 			bfs.all_visited() ?
-			rtree_type::arborescence : rtree_type::none);
+			rooted_tree_type::arborescence : rooted_tree_type::none);
 	}
 	else {
 		// Second case: the tree is NOT an arborescence.
@@ -161,17 +161,17 @@ bool rooted_tree::find_rtree_type() {
 		}
 		set_rtree_type(
 			all_one ?
-			rtree_type::anti_arborescence : rtree_type::none);
+			rooted_tree_type::anti_arborescence : rooted_tree_type::none);
 	}
 
-	return m_rtree_type != rtree_type::none;
+	return m_rtree_type != rooted_tree_type::none;
 }
 
-void rooted_tree::init_rooted(const free_tree& _t, node r, rtree_type arb) {
+void rooted_tree::init_rooted(const free_tree& _t, node r, rooted_tree_type arb) {
 	const uint32_t n = _t.n_nodes();
 
 	assert(_t.is_tree());
-	assert(arb == rtree_type::arborescence or arb == rtree_type::anti_arborescence);
+	assert(arb == rooted_tree_type::arborescence or arb == rooted_tree_type::anti_arborescence);
 
 	if (n == 0) {
 		rooted_tree::_init(0);
@@ -190,7 +190,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r, rtree_type arb) {
 	// This is needed to make the edges point in the direction
 	// indicated by the rooted tree type.
 	BFS<free_tree> bfs(_t);
-	if (arb == rtree_type::arborescence) {
+	if (arb == rooted_tree_type::arborescence) {
 		bfs.set_process_neighbour(
 		[&](const auto&, const node s, const node t, bool) -> void {
 			// the tree is an arborescence, i.e., the
@@ -247,7 +247,7 @@ void rooted_tree::set_root(node r) {
 	m_rtree_type_valid = false;
 }
 
-void rooted_tree::set_rtree_type(const rtree_type& type) {
+void rooted_tree::set_rtree_type(const rooted_tree_type& type) {
 	m_rtree_type = type;
 	m_rtree_type_valid = true;
 }
@@ -303,11 +303,11 @@ bool rooted_tree::is_rooted() const { return true; }
 
 bool rooted_tree::is_rooted_tree() const {
 	return is_tree() and has_root() and rtree_type_valid() and
-	(get_rtree_type() == rtree_type::arborescence or
-	 get_rtree_type() == rtree_type::anti_arborescence);
+	(get_rtree_type() == rooted_tree_type::arborescence or
+	 get_rtree_type() == rooted_tree_type::anti_arborescence);
 }
 
-rooted_tree::rtree_type rooted_tree::get_rtree_type() const {
+rooted_tree::rooted_tree_type rooted_tree::get_rtree_type() const {
 	assert(rtree_type_valid());
 	return m_rtree_type;
 }
@@ -341,7 +341,7 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	assert(has_node(u));
 
 	const uint32_t n = n_nodes();
-	const bool is_anti = get_rtree_type() == rtree_type::anti_arborescence;
+	const bool is_anti = get_rtree_type() == rooted_tree_type::anti_arborescence;
 
 	// parent of node 'u'
 	bool u_parent_set = false;

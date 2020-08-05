@@ -110,7 +110,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * - Anti-arborescences (see @ref rtree_type::anti_arborescence).
 		 * - None of the above (see @ref rtree_type::none).
 		 */
-		enum class rtree_type {
+		enum class rooted_tree_type {
 			/**
 			 * An arboresence is a rooted directed tree in which all the edges
 			 * point away from the root, i.e., towards the leaves.
@@ -139,7 +139,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// Constructor with number of nodes and root node.
 		rooted_tree(uint32_t n);
 		/// Constructor with tree and root node.
-		rooted_tree(const free_tree& t, node r, rtree_type arb = rtree_type::arborescence);
+		rooted_tree(const free_tree& t, node r, rooted_tree_type arb = rooted_tree_type::arborescence);
 		/// Default destructor
 		virtual ~rooted_tree() = default;
 
@@ -292,7 +292,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @post Method @ref is_rooted_tree returns true.
 		 */
 		void init_rooted
-		(const free_tree& t, node r, rtree_type arb = rtree_type::arborescence);
+		(const free_tree& t, node r, rooted_tree_type arb = rooted_tree_type::arborescence);
 
 		/**
 		 * @brief Calculates the number of nodes at every rooted subtree.
@@ -336,7 +336,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * underlying rooted tree.
 		 * @post Method @ref rtree_type_valid returns true.
 		 */
-		void set_rtree_type(const rtree_type& type);
+		void set_rtree_type(const rooted_tree_type& type);
 
 		/* GETTERS */
 
@@ -381,7 +381,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @brief Returns the type of this rooted tree.
 		 * @pre Method @ref rtree_type_valid returns true.
 		 */
-		rtree_type get_rtree_type() const;
+		rooted_tree_type get_rtree_type() const;
 		/// Is the rooted type valid?
 		bool rtree_type_valid() const;
 
@@ -473,7 +473,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * method @ref find_rtree_type(), or given by the user in
 		 * @ref set_rtree_type.
 		 */
-		rtree_type m_rtree_type = rtree_type::none;
+		rooted_tree_type m_rtree_type = rooted_tree_type::none;
 		/// Are the contents of @ref m_rtree_type valid?
 		bool m_rtree_type_valid = false;
 

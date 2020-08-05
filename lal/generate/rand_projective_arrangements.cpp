@@ -51,12 +51,12 @@ using namespace std;
 // lal includes
 #include <lal/utils/graphs/trees/make_projective_arr.hpp>
 
-#define degree_vertex(T, u)										\
-	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+#define degree_vertex(T, u)													\
+	(T.get_rtree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
 		T.out_degree(u) : T.in_degree(u) )
 
-#define neighbours_vertex(T, u)									\
-	(T.get_rtree_type() == rtree::rtree_type::arborescence ?	\
+#define neighbours_vertex(T, u)												\
+	(T.get_rtree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
 		T.get_out_neighbours(u) : T.get_in_neighbours(u) )
 
 namespace lal {
