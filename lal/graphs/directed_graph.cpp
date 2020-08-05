@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 
 // C++ includes
 #include <algorithm>
@@ -58,7 +58,7 @@ namespace graphs {
 /* PUBLIC */
 
 //dgraph::dgraph() { }
-dgraph::dgraph(uint32_t n) {
+directed_graph::directed_graph(uint32_t n) {
 	init(n);
 }
 //dgraph::~dgraph() { }
@@ -67,7 +67,7 @@ dgraph::dgraph(uint32_t n) {
 
 /* MODIFIERS */
 
-void dgraph::normalise() {
+void directed_graph::normalise() {
 	char *mem = static_cast<char *>(malloc(n_nodes()*sizeof(char *)));
 	memset(mem, 0, n_nodes()*sizeof(char *));
 
@@ -85,7 +85,7 @@ void dgraph::normalise() {
 	m_normalised = true;
 }
 
-bool dgraph::check_normalised() {
+bool directed_graph::check_normalised() {
 	if (not graph::check_normalised()) { return false; }
 
 	// check that every adjacency list is sorted
@@ -110,7 +110,7 @@ bool dgraph::check_normalised() {
 	return true;
 }
 
-dgraph& dgraph::add_edge(node u, node v, bool to_norm, bool check_norm) {
+directed_graph& directed_graph::add_edge(node u, node v, bool to_norm, bool check_norm) {
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -170,7 +170,7 @@ dgraph& dgraph::add_edge(node u, node v, bool to_norm, bool check_norm) {
 	return *this;
 }
 
-dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm, bool check_norm) {
+directed_graph& directed_graph::add_edges(const std::vector<edge>& edges, bool to_norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -200,7 +200,7 @@ dgraph& dgraph::add_edges(const std::vector<edge>& edges, bool to_norm, bool che
 	return *this;
 }
 
-dgraph& dgraph::remove_edge(node u, node v, bool norm, bool check_norm) {
+directed_graph& directed_graph::remove_edge(node u, node v, bool norm, bool check_norm) {
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -240,7 +240,7 @@ dgraph& dgraph::remove_edge(node u, node v, bool norm, bool check_norm) {
 	return *this;
 }
 
-dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+directed_graph& directed_graph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -273,7 +273,7 @@ dgraph& dgraph::remove_edges(const std::vector<edge>& edges, bool norm, bool che
 	return *this;
 }
 
-void dgraph::disjoint_union(const dgraph& g) {
+void directed_graph::disjoint_union(const directed_graph& g) {
 	// number of vertices before adding the out-neighbours
 	const uint32_t n = n_nodes();
 
@@ -301,11 +301,11 @@ void dgraph::disjoint_union(const dgraph& g) {
 
 /* GETTERS */
 
-std::vector<edge_pair> dgraph::Q() const {
+std::vector<edge_pair> directed_graph::Q() const {
 	return graph::Q(properties::size_Q(*this));
 }
 
-bool dgraph::has_edge(node u, node v) const {
+bool directed_graph::has_edge(node u, node v) const {
 	assert(has_node(u));
 	assert(has_node(v));
 
@@ -324,56 +324,56 @@ bool dgraph::has_edge(node u, node v) const {
 	);
 }
 
-bool dgraph::is_directed() const { return true; }
-bool dgraph::is_undirected() const { return false; }
+bool directed_graph::is_directed() const { return true; }
+bool directed_graph::is_undirected() const { return false; }
 
-const neighbourhood& dgraph::get_neighbours(node u) const {
+const neighbourhood& directed_graph::get_neighbours(node u) const {
 	return get_out_neighbours(u);
 }
 
-uint32_t dgraph::degree(node u) const {
+uint32_t directed_graph::degree(node u) const {
 	return out_degree(u);
 }
 
-const neighbourhood& dgraph::get_out_neighbours(node u) const {
+const neighbourhood& directed_graph::get_out_neighbours(node u) const {
 	assert(has_node(u));
 	return m_adjacency_list[u];
 }
-const neighbourhood& dgraph::get_in_neighbours(node u) const {
+const neighbourhood& directed_graph::get_in_neighbours(node u) const {
 	assert(has_node(u));
 	return m_in_adjacency_list[u];
 }
 
-uint32_t dgraph::out_degree(node u) const {
+uint32_t directed_graph::out_degree(node u) const {
 	assert(has_node(u));
 	return static_cast<uint32_t>(m_adjacency_list[u].size());
 }
-uint32_t dgraph::in_degree(node u) const {
+uint32_t directed_graph::in_degree(node u) const {
 	assert(has_node(u));
 	return static_cast<uint32_t>(m_in_adjacency_list[u].size());
 }
 
-ugraph dgraph::to_undirected() const {
-	ugraph g(n_nodes());
+undirected_graph directed_graph::to_undirected() const {
+	undirected_graph g(n_nodes());
 	g.add_edges(edges());
 	return g;
 }
 
 /* PROTECTED */
 
-void dgraph::_init(uint32_t n) {
+void directed_graph::_init(uint32_t n) {
 	graph::_init(n);
 	m_in_adjacency_list = vector<neighbourhood>(n);
 }
 
-void dgraph::_clear() {
+void directed_graph::_clear() {
 	graph::_clear();
 	m_in_adjacency_list.clear();
 }
 
 /* PRIVATE */
 
-void dgraph::remove_single_edge(
+void directed_graph::remove_single_edge(
 	node u, node v, neighbourhood& out_u, neighbourhood& in_v
 )
 {

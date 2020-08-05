@@ -27,6 +27,10 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    graphs/directed_graph.hpp \
+    graphs/free_tree.hpp \
+    graphs/rooted_tree.hpp \
+    graphs/undirected_graph.hpp \
     lal_version.hpp \
 	namespaces.hpp \
 	definitions.hpp \
@@ -42,13 +46,9 @@ HEADERS += \
 	generate/rand_ulab_rooted_trees.hpp \
 	generate/rand_projective_arrangements.hpp \
 	graphs.hpp \
-	graphs/dgraph.hpp \
 	graphs/graph.hpp \
 	graphs/output.hpp \
-	graphs/rtree.hpp \
 	graphs/tree.hpp \
-	graphs/ftree.hpp \
-	graphs/ugraph.hpp \
 	iterators.hpp \
 	iterators/E_iterator.hpp \
 	iterators/Q_iterator.hpp \
@@ -116,12 +116,12 @@ SOURCES += \
 	generate/rand_projective_arrangements.cpp \
 	generate/rand_ulab_free_trees.cpp \
 	generate/rand_ulab_rooted_trees.cpp \
-	graphs/dgraph.cpp \
+    graphs/directed_graph.cpp \
+    graphs/free_tree.cpp \
 	graphs/graph.cpp \
-	graphs/rtree.cpp \
+    graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
-	graphs/ftree.cpp \
-	graphs/ugraph.cpp \
+    graphs/undirected_graph.cpp \
 	iterators/E_iterator.cpp \
 	iterators/Q_iterator.cpp \
 	linarr/C.cpp \

@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace utils {
@@ -70,7 +70,7 @@ namespace utils {
  *
  * @return Returns the tree built with the sequence level @e L.
  */
-graphs::ftree level_sequence_to_tree
+graphs::free_tree level_sequence_to_tree
 (const std::vector<uint32_t>& L, uint32_t n);
 
 /*
@@ -84,7 +84,7 @@ graphs::ftree level_sequence_to_tree
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graphs::ftree Prufer_sequence_to_tree
+graphs::free_tree Prufer_sequence_to_tree
 (const std::vector<uint32_t>& S, uint32_t n);
 
 } // -- namespace utils

@@ -63,7 +63,7 @@ namespace properties {
 
 inline void compute_data_forest
 (
-	const ugraph& g, const bigint& n, const bigint& m,
+	const undirected_graph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
@@ -139,7 +139,7 @@ inline void compute_data_forest
 	free(xi);
 }
 
-rational variance_C_forest_rational(const ugraph& g) {
+rational variance_C_forest_rational(const undirected_graph& g) {
 	const bigint n = g.n_nodes();
 	const bigint m = g.n_edges();
 
@@ -190,7 +190,7 @@ rational variance_C_forest_rational(const ugraph& g) {
 	return V;
 }
 
-double variance_C_forest(const ugraph& g) {
+double variance_C_forest(const undirected_graph& g) {
 	return variance_C_forest_rational(g).to_double();
 }
 

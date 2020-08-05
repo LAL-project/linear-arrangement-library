@@ -45,7 +45,7 @@
 #include <random>
 
 // lal includes
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -66,7 +66,7 @@ class rand_projective_arrgmnt {
 		 * generator should be seeded or not.
 		 * @pre The object @e t must be a rooted tree (see @ref graphs::rtree::is_rooted_tree).
 		 */
-		rand_projective_arrgmnt(const graphs::rtree& rT, bool seed = true);
+		rand_projective_arrgmnt(const graphs::rooted_tree& rT, bool seed = true);
 		~rand_projective_arrgmnt();
 
 		/**
@@ -78,7 +78,7 @@ class rand_projective_arrgmnt {
 
 	private:
 		/// The rooted tree of we are making projective arrangements uniformly at random.
-		const graphs::rtree& m_rT;
+		const graphs::rooted_tree& m_rT;
 
 		/**
 		 * @brief The random data for all vertices

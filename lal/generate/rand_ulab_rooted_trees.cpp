@@ -81,16 +81,16 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_tree = vector<uint32_t>(m_n);
 }
 
-rtree rand_ulab_rooted_trees::make_rand_tree() {
+rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	if (m_n <= 1) {
-		return rtree(ftree(m_n), 0, rtree::rtree_type::arborescence);
+		return rooted_tree(free_tree(m_n), 0, rooted_tree::rtree_type::arborescence);
 	}
 
 	// call with an invalid index for the 'root of the last tree added'
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	rtree rT(m_n);
+	rooted_tree rT(m_n);
 	vector<edge> edges(m_n - 1);
 	for (node u = 1; u < m_n; ++u) {
 		// in order to construct an arborescence
@@ -99,7 +99,7 @@ rtree rand_ulab_rooted_trees::make_rand_tree() {
 	}
 	rT.set_root(0);
 	rT.add_edges(edges);
-	rT.set_rtree_type(rtree::rtree_type::arborescence);
+	rT.set_rtree_type(rooted_tree::rtree_type::arborescence);
 	return rT;
 }
 

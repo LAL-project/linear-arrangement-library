@@ -49,8 +49,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/rtree.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/utils/graphs/traversal.hpp>
 #include <lal/utils/graphs/trees/centre_centroid_utils.hpp>
 

@@ -397,7 +397,7 @@ void calculate_mla_chung(adjacency_matrix & g, int root, uint32_t one_node, uint
 	}
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC(const ftree& t) {
+pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC(const free_tree& t) {
 	assert(t.is_tree());
 
 	const uint32_t n = t.n_nodes();

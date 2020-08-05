@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -140,7 +140,7 @@ class all_ulab_rooted_trees {
 		 * @pre The generator must have been initialised, and method
 		 * @ref next must have been called at least once.
 		 */
-		graphs::rtree get_tree() const;
+		graphs::rooted_tree get_tree() const;
 
 	private:
 		/// Number of nodes of the tree

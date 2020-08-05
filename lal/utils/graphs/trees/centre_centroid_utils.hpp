@@ -42,26 +42,26 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace utils {
 
 namespace __lal {
 
-inline uint32_t __degree(const graphs::rtree& t, const node s)
+inline uint32_t __degree(const graphs::rooted_tree& t, const node s)
 { return t.out_degree(s) + t.in_degree(s); }
 
-inline uint32_t __degree(const graphs::ftree& t, const node s)
+inline uint32_t __degree(const graphs::free_tree& t, const node s)
 { return t.degree(s); }
 
-inline node __only_neighbour(const graphs::rtree& t, const node s) {
+inline node __only_neighbour(const graphs::rooted_tree& t, const node s) {
 	return
 	(t.out_degree(s) == 0 ? t.get_in_neighbours(s)[0] : t.get_out_neighbours(s)[0]);
 }
 
-inline node __only_neighbour(const graphs::ftree& t, const node s) {
+inline node __only_neighbour(const graphs::free_tree& t, const node s) {
 	return t.get_neighbours(s)[0];
 }
 

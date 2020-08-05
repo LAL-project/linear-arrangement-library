@@ -45,9 +45,9 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace properties {
@@ -92,7 +92,7 @@ double mmt_degree(const graphs::graph& g, uint32_t p);
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint32_t p);
+numeric::rational mmt_in_degree_rational(const graphs::directed_graph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
@@ -102,7 +102,7 @@ numeric::rational mmt_in_degree_rational(const graphs::dgraph& g, uint32_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_in_degree(const graphs::dgraph& g, uint32_t p);
+double mmt_in_degree(const graphs::directed_graph& g, uint32_t p);
 
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
@@ -118,7 +118,7 @@ double mmt_in_degree(const graphs::dgraph& g, uint32_t p);
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint32_t p);
+numeric::rational mmt_out_degree_rational(const graphs::directed_graph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
@@ -128,7 +128,7 @@ numeric::rational mmt_out_degree_rational(const graphs::dgraph& g, uint32_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_out_degree(const graphs::dgraph& g, uint32_t p);
+double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -148,7 +148,7 @@ double mmt_out_degree(const graphs::dgraph& g, uint32_t p);
  * @pre \f$n > 3\f$.
  * @return Returns the hubiness coefficient.
  */
-numeric::rational hubiness_rational(const graphs::ftree& g);
+numeric::rational hubiness_rational(const graphs::free_tree& g);
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -157,7 +157,7 @@ numeric::rational hubiness_rational(const graphs::ftree& g);
  * @param g Input graph.
  * @return The return value is a floating point value.
  */
-double hubiness(const graphs::ftree& g);
+double hubiness(const graphs::free_tree& g);
 
 } // -- namespace properties
 } // -- namespace lal

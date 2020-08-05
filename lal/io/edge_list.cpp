@@ -48,8 +48,8 @@ using namespace std;
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -82,11 +82,11 @@ inline bool __read_edge_list(const string& filename, G& g, bool norm) {
 	return true;
 }
 
-bool read_edge_list(const string& filename, ugraph& g, bool norm) {
+bool read_edge_list(const string& filename, undirected_graph& g, bool norm) {
 	return __read_edge_list(filename, g, norm);
 }
 
-bool read_edge_list(const string& filename, dgraph& g, bool norm) {
+bool read_edge_list(const string& filename, directed_graph& g, bool norm) {
 	return __read_edge_list(filename, g, norm);
 }
 

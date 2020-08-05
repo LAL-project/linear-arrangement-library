@@ -54,11 +54,11 @@ namespace properties {
 /* -------------------------- */
 /* EXPECTATION OF C: E_rla[C] */
 
-rational expectation_C_rational(const ugraph& g) {
+rational expectation_C_rational(const undirected_graph& g) {
 	return rational(size_Q_integer(g), 3);
 }
 
-double expectation_C(const ugraph& g) {
+double expectation_C(const undirected_graph& g) {
 	return expectation_C_rational(g).to_double();
 }
 

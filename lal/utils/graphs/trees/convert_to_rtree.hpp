@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace utils {
@@ -61,7 +61,7 @@ namespace utils {
  * @param n Number of nodes of the tree.
  * @return Returns the rooted tree built with @e L. The tree is an arborescence.
  */
-graphs::rtree linear_sequence_to_tree
+graphs::rooted_tree linear_sequence_to_tree
 (const std::vector<uint32_t>& L, uint32_t n);
 
 } // -- namespace utils

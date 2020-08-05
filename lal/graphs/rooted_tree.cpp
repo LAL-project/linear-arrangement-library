@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 // C++ includes
 #include <cassert>
@@ -57,49 +57,49 @@ using namespace utils;
 namespace graphs {
 
 //rtree::rtree() { }
-rtree::rtree(uint32_t n) : dgraph(n) {
-	rtree::_init(n);
+rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
+	rooted_tree::_init(n);
 }
-rtree::rtree(const ftree& t, node r, rtree_type type) {
+rooted_tree::rooted_tree(const free_tree& t, node r, rtree_type type) {
 	init_rooted(t, r, type);
 }
 //rtree::~rtree() { }
 
 /* MODIFIERS */
 
-rtree& rtree::add_edge(node s, node t, bool norm, bool check_norm) {
+rooted_tree& rooted_tree::add_edge(node s, node t, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edge(s,t));
 #endif
 
-	dgraph::add_edge(s,t, norm, check_norm);
+	directed_graph::add_edge(s,t, norm, check_norm);
 	return *this;
 }
 
-rtree& rtree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
+rooted_tree& rooted_tree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edges(edges));
 #endif
 
-	dgraph::add_edges(edges, norm, check_norm);
+	directed_graph::add_edges(edges, norm, check_norm);
 	return *this;
 }
 
-rtree& rtree::remove_edge(node s, node t, bool norm, bool check_norm) {
-	dgraph::remove_edge(s,t, norm, check_norm);
+rooted_tree& rooted_tree::remove_edge(node s, node t, bool norm, bool check_norm) {
+	directed_graph::remove_edge(s,t, norm, check_norm);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
-rtree& rtree::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
-	dgraph::remove_edges(edges, norm, check_norm);
+rooted_tree& rooted_tree::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+	directed_graph::remove_edges(edges, norm, check_norm);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
-void rtree::disjoint_union(const rtree& t, bool connect_roots) {
+void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
 	const uint32_t prev_n = n_nodes();
 	if (prev_n == 0) {
 		*this = t;
@@ -107,7 +107,7 @@ void rtree::disjoint_union(const rtree& t, bool connect_roots) {
 	}
 
 	// join trees
-	dgraph::disjoint_union(t);
+	directed_graph::disjoint_union(t);
 
 	// connect the roots if necessary
 	if (connect_roots) {
@@ -124,7 +124,7 @@ void rtree::disjoint_union(const rtree& t, bool connect_roots) {
 	// - do not change the type of rooted tree
 }
 
-bool rtree::find_rtree_type() {
+bool rooted_tree::find_rtree_type() {
 	assert(is_tree());
 	assert(has_root());
 
@@ -140,7 +140,7 @@ bool rtree::find_rtree_type() {
 	// Do a BFS from the root. Make sure that all leaves
 	// can be reached. If so, the tree is an arborescence.
 	if (out_degree(get_root()) > 0) {
-		BFS<rtree> bfs(*this);
+		BFS<rooted_tree> bfs(*this);
 		bfs.start_at(get_root());
 
 		// if some node was not visited then the tree
@@ -167,14 +167,14 @@ bool rtree::find_rtree_type() {
 	return m_rtree_type != rtree_type::none;
 }
 
-void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
+void rooted_tree::init_rooted(const free_tree& _t, node r, rtree_type arb) {
 	const uint32_t n = _t.n_nodes();
 
 	assert(_t.is_tree());
 	assert(arb == rtree_type::arborescence or arb == rtree_type::anti_arborescence);
 
 	if (n == 0) {
-		rtree::_init(0);
+		rooted_tree::_init(0);
 		set_root(0);
 		set_rtree_type(arb);
 		return;
@@ -189,7 +189,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	// Build list of directed edges using a breadth-first search.
 	// This is needed to make the edges point in the direction
 	// indicated by the rooted tree type.
-	BFS<ftree> bfs(_t);
+	BFS<free_tree> bfs(_t);
 	if (arb == rtree_type::arborescence) {
 		bfs.set_process_neighbour(
 		[&](const auto&, const node s, const node t, bool) -> void {
@@ -213,7 +213,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	bfs.start_at(r);
 
 	// construct rooted tree
-	rtree::_init(n);
+	rooted_tree::_init(n);
 
 	// set root and add edges
 	set_root(r);
@@ -223,7 +223,7 @@ void rtree::init_rooted(const ftree& _t, node r, rtree_type arb) {
 	set_rtree_type(arb);
 }
 
-void rtree::recalc_size_subtrees() {
+void rooted_tree::recalc_size_subtrees() {
 	assert(is_rooted_tree());
 
 	m_need_recalc_size_subtrees = false;
@@ -234,7 +234,7 @@ void rtree::recalc_size_subtrees() {
 
 /* SETTERS */
 
-void rtree::set_root(node r) {
+void rooted_tree::set_root(node r) {
 	// if the tree is empty simply consider it has a root...
 	// although it really doesn't
 
@@ -247,14 +247,14 @@ void rtree::set_root(node r) {
 	m_rtree_type_valid = false;
 }
 
-void rtree::set_rtree_type(const rtree_type& type) {
+void rooted_tree::set_rtree_type(const rtree_type& type) {
 	m_rtree_type = type;
 	m_rtree_type_valid = true;
 }
 
 /* GETTERS */
 
-bool rtree::can_add_edge(node s, node t) const {
+bool rooted_tree::can_add_edge(node s, node t) const {
 	// if the tree already has n-1 edges then
 	// adding another edge will produce a cycle
 	if (n_edges() + 1 > n_nodes() - 1) {
@@ -268,7 +268,7 @@ bool rtree::can_add_edge(node s, node t) const {
 	}
 
 	// copy the graph
-	dgraph copy = *this;
+	directed_graph copy = *this;
 	// add the edge
 	copy.add_edge(s, t);
 	// convert the directed graph to an undirected graph
@@ -276,7 +276,7 @@ bool rtree::can_add_edge(node s, node t) const {
 	return not utils::has_undirected_cycles(copy);
 }
 
-bool rtree::can_add_edges(const std::vector<edge>& edges) const {
+bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
 	// in a tree we must have m <= n - 1
 	const uint64_t more_m = edges.size();
 	if (n_edges() + more_m > n_nodes() - 1) {
@@ -291,7 +291,7 @@ bool rtree::can_add_edges(const std::vector<edge>& edges) const {
 	}
 
 	// copy the graph
-	dgraph copy = *this;
+	directed_graph copy = *this;
 	// add the edges
 	copy.add_edges(edges);
 	// convert the directed graph to an undirected graph
@@ -299,41 +299,41 @@ bool rtree::can_add_edges(const std::vector<edge>& edges) const {
 	return not utils::has_undirected_cycles(copy);
 }
 
-bool rtree::is_rooted() const { return true; }
+bool rooted_tree::is_rooted() const { return true; }
 
-bool rtree::is_rooted_tree() const {
+bool rooted_tree::is_rooted_tree() const {
 	return is_tree() and has_root() and rtree_type_valid() and
 	(get_rtree_type() == rtree_type::arborescence or
 	 get_rtree_type() == rtree_type::anti_arborescence);
 }
 
-rtree::rtree_type rtree::get_rtree_type() const {
+rooted_tree::rtree_type rooted_tree::get_rtree_type() const {
 	assert(rtree_type_valid());
 	return m_rtree_type;
 }
-bool rtree::rtree_type_valid() const {
+bool rooted_tree::rtree_type_valid() const {
 	return m_rtree_type_valid;
 }
 
-node rtree::get_root() const {
+node rooted_tree::get_root() const {
 	assert(has_root());
 	return m_root;
 }
 
-bool rtree::has_root() const {
+bool rooted_tree::has_root() const {
 	return m_has_root;
 }
 
-uint32_t rtree::n_nodes_subtree(node u) const {
+uint32_t rooted_tree::n_nodes_subtree(node u) const {
 	assert(has_node(u));
 	return m_size_subtrees[u];
 }
 
-bool rtree::need_recalc_size_subtrees() const {
+bool rooted_tree::need_recalc_size_subtrees() const {
 	return m_need_recalc_size_subtrees;
 }
 
-vector<edge> rtree::get_edges_subtree(node u, bool relab) const {
+vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// if the tree does not have edges, return an empty list.
 	if (n_nodes() <= 1) { return vector<edge>(); }
 
@@ -347,7 +347,7 @@ vector<edge> rtree::get_edges_subtree(node u, bool relab) const {
 	bool u_parent_set = false;
 	node u_parent = n;
 
-	BFS<rtree> bfs(*this);
+	BFS<rooted_tree> bfs(*this);
 
 	// -----------------------
 	// find parent of node u
@@ -429,7 +429,7 @@ vector<edge> rtree::get_edges_subtree(node u, bool relab) const {
 	return es;
 }
 
-rtree rtree::get_subtree(node u) const {
+rooted_tree rooted_tree::get_subtree(node u) const {
 	// if the tree does not have edges, return a copy.
 	if (n_nodes() <= 1) { return *this; }
 
@@ -442,28 +442,28 @@ rtree rtree::get_subtree(node u) const {
 	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
 
 	// make subtree
-	rtree sub(n_verts);
+	rooted_tree sub(n_verts);
 	sub.set_root(0);
 	sub.add_edges(es);
 	return sub;
 }
 
-ftree rtree::to_undirected() const {
-	return ftree(dgraph::to_undirected());
+free_tree rooted_tree::to_undirected() const {
+	return free_tree(directed_graph::to_undirected());
 }
 
 /* PROTECTED */
 
-void rtree::_init(uint32_t n) {
+void rooted_tree::_init(uint32_t n) {
 	tree::tree_init(n);
-	dgraph::_init(n);
+	directed_graph::_init(n);
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;
 }
 
-void rtree::_clear() {
+void rooted_tree::_clear() {
 	tree::tree_clear();
-	dgraph::_clear();
+	directed_graph::_clear();
 	m_size_subtrees.clear();
 	m_rtree_type_valid = false;
 	m_need_recalc_size_subtrees = true;

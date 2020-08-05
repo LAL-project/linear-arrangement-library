@@ -45,14 +45,14 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace utils {
 
 namespace __lal {
 inline void __put_in_arrangement(
-	const graphs::rtree& T, node r,
+	const graphs::rooted_tree& T, node r,
 	const std::vector<std::vector<lal::node>>& data,
 	uint32_t& pos, linearrgmnt& arr
 )
@@ -81,7 +81,7 @@ inline void __put_in_arrangement(
 } // -- namespace __lal
 
 inline linearrgmnt put_in_arrangement(
-	const graphs::rtree& T,
+	const graphs::rooted_tree& T,
 	const std::vector<std::vector<lal::node>>& data
 )
 {

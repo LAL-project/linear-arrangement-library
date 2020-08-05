@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 // C++ includes
 #include <cassert>
@@ -54,25 +54,25 @@ namespace lal {
 namespace graphs {
 
 //ftree::ftree() { }
-ftree::ftree(uint32_t n) : ugraph(n) { }
-ftree::ftree(const ugraph& t) : ugraph(t.n_nodes()) {
+free_tree::free_tree(uint32_t n) : undirected_graph(n) { }
+free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
 	// check that the input graph is a ftree
 	assert(utils::is_graph_a_tree(t));
 	add_edges(t.edges());
 }
 //ftree::~ftree() { }
 
-ftree& ftree::add_edge(node s, node t, bool norm, bool check_norm) {
+free_tree& free_tree::add_edge(node s, node t, bool norm, bool check_norm) {
 #if defined DEBUG
 	assert(can_add_edge(s,t));
 #endif
 
-	ugraph::add_edge(s,t, norm, check_norm);
+	undirected_graph::add_edge(s,t, norm, check_norm);
 	return *this;
 }
 
-ftree& ftree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
-	ugraph::add_edges(edges, norm, check_norm);
+free_tree& free_tree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
+	undirected_graph::add_edges(edges, norm, check_norm);
 	// NOTE: we can't do
 	//     assert(utils::is_ftree(*this));
 	// because the ftree might not be complete and lack some
@@ -83,19 +83,19 @@ ftree& ftree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
 	return *this;
 }
 
-void ftree::disjoint_union(const ftree& t) {
+void free_tree::disjoint_union(const free_tree& t) {
 	// tree 't' and tree 'this' do not have cycles, so the disjoint
 	// union of both trees does not have cycles.
 	// Nothing to check.
 
-	ugraph::disjoint_union(t);
+	undirected_graph::disjoint_union(t);
 }
 
 /* GETTERS */
 
-bool ftree::is_rooted() const { return false; }
+bool free_tree::is_rooted() const { return false; }
 
-bool ftree::can_add_edge(node s, node t) const {
+bool free_tree::can_add_edge(node s, node t) const {
 	// if the ftree already has n-1 edges then
 	// adding another edge will produce a cycle
 	if (n_edges() + 1 > n_nodes() - 1) {
@@ -114,7 +114,7 @@ bool ftree::can_add_edge(node s, node t) const {
 	return not utils::is_node_reachable_from(*this, s, t);
 }
 
-bool ftree::can_add_edges(const vector<edge>& edges) const {
+bool free_tree::can_add_edges(const vector<edge>& edges) const {
 	// in a ftree we must have m <= n - 1
 	const auto more_m = edges.size();
 	if (n_edges() + more_m > n_nodes() - 1) {
@@ -129,7 +129,7 @@ bool ftree::can_add_edges(const vector<edge>& edges) const {
 	}
 
 	// 1. copy the current tree into an undirected graph
-	ugraph copy = *this;
+	undirected_graph copy = *this;
 	// 2. add the edges to the copy
 	copy.add_edges(edges, false);
 	// 3. check that there are no cycles in the copy
@@ -138,14 +138,14 @@ bool ftree::can_add_edges(const vector<edge>& edges) const {
 
 /* PROTECTED */
 
-void ftree::_init(uint32_t n) {
+void free_tree::_init(uint32_t n) {
 	tree::tree_init(n);
-	ugraph::_init(n);
+	undirected_graph::_init(n);
 }
 
-void ftree::_clear() {
+void free_tree::_clear() {
 	tree::tree_clear();
-	ugraph::_clear();
+	undirected_graph::_clear();
 }
 
 } // -- namespace graphs

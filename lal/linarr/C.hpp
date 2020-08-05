@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/algorithms_C.hpp>
 #include <lal/numeric/rational.hpp>
 
@@ -66,7 +66,7 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
-uint32_t __n_crossings_brute_force(const graphs::ugraph& g, const linearrgmnt& pi = {});
+uint32_t __n_crossings_brute_force(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -79,7 +79,7 @@ uint32_t __n_crossings_brute_force(const graphs::ugraph& g, const linearrgmnt& p
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> __n_crossings_brute_force_list
-(const graphs::ugraph& g, const std::vector<linearrgmnt>& pis);
+(const graphs::undirected_graph& g, const std::vector<linearrgmnt>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -92,7 +92,7 @@ std::vector<uint32_t> __n_crossings_brute_force_list
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
-uint32_t __n_crossings_dyn_prog(const graphs::ugraph& g, const linearrgmnt& pi = {});
+uint32_t __n_crossings_dyn_prog(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -105,7 +105,7 @@ uint32_t __n_crossings_dyn_prog(const graphs::ugraph& g, const linearrgmnt& pi =
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> __n_crossings_dyn_prog_list
-(const graphs::ugraph& g, const std::vector<linearrgmnt>& pis);
+(const graphs::undirected_graph& g, const std::vector<linearrgmnt>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -118,7 +118,7 @@ std::vector<uint32_t> __n_crossings_dyn_prog_list
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$C\f$.
  */
-uint32_t __n_crossings_ladder(const graphs::ugraph& g, const linearrgmnt& pi = {});
+uint32_t __n_crossings_ladder(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -131,7 +131,7 @@ uint32_t __n_crossings_ladder(const graphs::ugraph& g, const linearrgmnt& pi = {
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> __n_crossings_ladder_list
-(const graphs::ugraph& g, const std::vector<linearrgmnt>& pis);
+(const graphs::undirected_graph& g, const std::vector<linearrgmnt>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -145,7 +145,7 @@ std::vector<uint32_t> __n_crossings_ladder_list
  * @return Returns \f$C\f$.
  */
 uint32_t __n_crossings_stack_based
-(const graphs::ugraph& g, const linearrgmnt& pi = {});
+(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -159,7 +159,7 @@ uint32_t __n_crossings_stack_based
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> __n_crossings_stack_based_list
-(const graphs::ugraph& g, const std::vector<linearrgmnt>& pis);
+(const graphs::undirected_graph& g, const std::vector<linearrgmnt>& pis);
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -178,7 +178,7 @@ std::vector<uint32_t> __n_crossings_stack_based_list
  * - @ref __n_crossings_stack_based
  */
 uint32_t n_crossings(
-	const graphs::ugraph& g, const linearrgmnt& pi = {},
+	const graphs::undirected_graph& g, const linearrgmnt& pi = {},
 	const algorithms_C& A = algorithms_C::stack_based
 );
 /**
@@ -199,7 +199,7 @@ uint32_t n_crossings(
  * - @ref __n_crossings_stack_based_list
  */
 std::vector<uint32_t> n_crossings_list
-(const graphs::ugraph& g, const std::vector<linearrgmnt>& pis,
+(const graphs::undirected_graph& g, const std::vector<linearrgmnt>& pis,
  const algorithms_C& A = algorithms_C::stack_based);
 
 /* ---------------------------------------- */
@@ -217,7 +217,7 @@ std::vector<uint32_t> n_crossings_list
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational approximate_C_rational
-(const graphs::ugraph& g, const linearrgmnt& pi = {});
+(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 
 /**
  * @brief Approximates the number of crossings.
@@ -227,7 +227,7 @@ numeric::rational approximate_C_rational
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double approximate_C(const graphs::ugraph& g, const linearrgmnt& pi = {});
+double approximate_C(const graphs::undirected_graph& g, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -45,9 +45,9 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/tree.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -99,7 +99,7 @@ namespace graphs {
  * use the constructor @ref rtree(const ftree&, node, rtree_type), or the
  * method @ref init_rooted, in order to build rooted trees.
  */
-class rtree : public dgraph, virtual public tree {
+class rooted_tree : public directed_graph, virtual public tree {
 	public:
 		/**
 		 * @brief Types of rooted directed trees.
@@ -131,22 +131,22 @@ class rtree : public dgraph, virtual public tree {
 
 	public:
 		/// Default constructor.
-		rtree() = default;
+		rooted_tree() = default;
 		/// Default move constructor.
-		rtree(rtree&&) = default;
+		rooted_tree(rooted_tree&&) = default;
 		/// Default copy constructor.
-		rtree(const rtree&) = default;
+		rooted_tree(const rooted_tree&) = default;
 		/// Constructor with number of nodes and root node.
-		rtree(uint32_t n);
+		rooted_tree(uint32_t n);
 		/// Constructor with tree and root node.
-		rtree(const ftree& t, node r, rtree_type arb = rtree_type::arborescence);
+		rooted_tree(const free_tree& t, node r, rtree_type arb = rtree_type::arborescence);
 		/// Default destructor
-		virtual ~rtree() = default;
+		virtual ~rooted_tree() = default;
 
 		/// Default move assignment operator.
-		rtree& operator= (rtree&&) = default;
+		rooted_tree& operator= (rooted_tree&&) = default;
 		/// Default copy assignment operator.
-		rtree& operator= (const rtree&) = default;
+		rooted_tree& operator= (const rooted_tree&) = default;
 
 		/* MODIFIERS */
 
@@ -166,7 +166,7 @@ class rtree : public dgraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		rtree& add_edge
+		rooted_tree& add_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -190,7 +190,7 @@ class rtree : public dgraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edges.
 		 */
-		rtree& add_edges
+		rooted_tree& add_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
@@ -208,7 +208,7 @@ class rtree : public dgraph, virtual public tree {
 		 * invalidated, i.e., method @ref rtree_type_valid returns false
 		 * and @ref need_recalc_size_subtrees returns true.
 		 */
-		rtree& remove_edge
+		rooted_tree& remove_edge
 		(node s, node t, bool norm = true, bool check_norm = true);
 
 		/**
@@ -229,7 +229,7 @@ class rtree : public dgraph, virtual public tree {
 		 * invalidated, i.e., method @ref rtree_type_valid returns false
 		 * and @ref need_recalc_size_subtrees returns true.
 		 */
-		rtree& remove_edges
+		rooted_tree& remove_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
@@ -254,7 +254,7 @@ class rtree : public dgraph, virtual public tree {
 		 * @post The size of the subtrees needs recalculating (method
 		 * @ref need_recalc_size_subtrees() returns true).
 		 */
-		void disjoint_union(const rtree& t, bool connect_roots = true);
+		void disjoint_union(const rooted_tree& t, bool connect_roots = true);
 
 		/**
 		 * @brief Calculates the type of directed rooted tree.
@@ -292,7 +292,7 @@ class rtree : public dgraph, virtual public tree {
 		 * @post Method @ref is_rooted_tree returns true.
 		 */
 		void init_rooted
-		(const ftree& t, node r, rtree_type arb = rtree_type::arborescence);
+		(const free_tree& t, node r, rtree_type arb = rtree_type::arborescence);
 
 		/**
 		 * @brief Calculates the number of nodes at every rooted subtree.
@@ -454,10 +454,10 @@ class rtree : public dgraph, virtual public tree {
 		 * @post The subtree keeps the orientation of the edges in the original
 		 * tree.
 		 */
-		rtree get_subtree(node u) const;
+		rooted_tree get_subtree(node u) const;
 
 		/// Converts this rooted tree into a free tree (see class @ref tree).
-		ftree to_undirected() const;
+		free_tree to_undirected() const;
 
 	protected:
 		/// Root of the tree.
@@ -494,8 +494,11 @@ class rtree : public dgraph, virtual public tree {
 		virtual void _clear();
 
 	private:
-		using dgraph::disjoint_union;
+		using directed_graph::disjoint_union;
 };
+
+/// Shorthand for @ref rooted_graph.
+typedef rooted_tree rtree;
 
 } // -- namespace graphs
 } // -- namespace lal

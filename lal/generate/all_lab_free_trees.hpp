@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -138,7 +138,7 @@ class all_lab_free_trees {
 		 * @ref next must have been called at least once.
 		 * @return Returns the tree generated with method @ref next().
 		 */
-		graphs::ftree get_tree() const;
+		graphs::free_tree get_tree() const;
 
 	private:
 		/**

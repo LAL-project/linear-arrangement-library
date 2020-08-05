@@ -80,9 +80,9 @@ void all_lab_rooted_trees::next() {
 	}
 }
 
-rtree all_lab_rooted_trees::get_tree() const {
+rooted_tree all_lab_rooted_trees::get_tree() const {
 	assert(m_cur_root < m_n);
-	return rtree(m_cur_ftree, m_cur_root);
+	return rooted_tree(m_cur_ftree, m_cur_root);
 }
 
 } // -- namespace generate

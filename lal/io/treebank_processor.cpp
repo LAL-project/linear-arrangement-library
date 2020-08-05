@@ -56,7 +56,7 @@ using namespace std;
 #include <lal/io/treebank_dataset.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/definitions.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/properties/Q.hpp>
@@ -178,10 +178,10 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 
 inline void process_tree(
 	const vector<bool>& what_fs, char sep,
-	const rtree& rT, ofstream& out_lang_file
+	const rooted_tree& rT, ofstream& out_lang_file
 )
 {
-	const ftree t = rT.to_undirected();
+	const free_tree t = rT.to_undirected();
 
 	// default linear arrangement
 	vector<node> __linarr(rT.n_nodes());
@@ -386,7 +386,7 @@ treebank_processor::processor_error treebank_processor::process
 			out_lang_file << endl;
 		}
 
-		rtree rT;
+		rooted_tree rT;
 		// process the current treebank
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();

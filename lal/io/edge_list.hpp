@@ -45,8 +45,8 @@
 #include <string>
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 
 namespace lal {
 namespace io {
@@ -70,7 +70,7 @@ namespace io {
  * @return Returns 'false' if the file could not be opened. Returns 'true'
  * if the graph was read successfully.
  */
-bool read_edge_list(const std::string& filename, graphs::ugraph& g, bool norm = true);
+bool read_edge_list(const std::string& filename, graphs::undirected_graph& g, bool norm = true);
 /**
  * @brief Reads a graph in edge list format.
  *
@@ -90,7 +90,7 @@ bool read_edge_list(const std::string& filename, graphs::ugraph& g, bool norm = 
  * @return Returns 'false' if the file could not be opened. Returns 'true'
  * if the graph was read successfully.
  */
-bool read_edge_list(const std::string& filename, graphs::dgraph& g, bool norm = true);
+bool read_edge_list(const std::string& filename, graphs::directed_graph& g, bool norm = true);
 
 } // -- namespace io
 } // -- namespace lal

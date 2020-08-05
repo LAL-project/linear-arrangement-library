@@ -42,8 +42,8 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 
 namespace lal {
@@ -64,7 +64,7 @@ namespace linarr {
  * @ref graphs::rtree::need_recalc_size_subtrees).
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin_Projective
-(const graphs::rtree& t);
+(const graphs::rooted_tree& t);
 
 /**
  * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
@@ -79,7 +79,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin_Projective
  * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS
-(const graphs::ftree& t);
+(const graphs::free_tree& t);
 
 /**
  * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
@@ -92,7 +92,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS
  * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC
-(const graphs::ftree& t);
+(const graphs::free_tree& t);
 
 /* -------------------------------------------------------------------------- */
 
@@ -111,7 +111,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::rtree& t, const algorithms_Dmin& a);
+(const graphs::rooted_tree& t, const algorithms_Dmin& a);
 
 /**
  * @brief Computes the minimum value of \f$D\f$ in free trees.
@@ -130,7 +130,7 @@ std::pair<uint32_t, linearrgmnt> compute_Dmin
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linearrgmnt> compute_Dmin
-(const graphs::ftree& t, const algorithms_Dmin& a);
+(const graphs::free_tree& t, const algorithms_Dmin& a);
 
 } // -- namespace linarr
 } // -- namespace lal

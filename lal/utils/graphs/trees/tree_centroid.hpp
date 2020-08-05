@@ -49,8 +49,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/rtree.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/utils/graphs/trees/tree_centre.hpp>
 #include <lal/utils/graphs/trees/size_subtrees.hpp>
 #include <lal/utils/graphs/traversal.hpp>
@@ -62,7 +62,7 @@ namespace utils {
 namespace __lal {
 
 inline bool is_centroidal(
-	const graphs::rtree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
+	const graphs::rooted_tree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
 )
 {
 	memset(sizes, 0, t.n_nodes()*sizeof(uint32_t));
@@ -82,7 +82,7 @@ inline bool is_centroidal(
 }
 
 inline bool is_centroidal(
-	const graphs::ftree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
+	const graphs::free_tree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
 )
 {
 	memset(sizes, 0, t.n_nodes()*sizeof(uint32_t));

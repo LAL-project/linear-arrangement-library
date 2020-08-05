@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace linarr {
@@ -63,7 +63,7 @@ namespace linarr {
  * be determined the method returns @ref tree_structure::none
  */
 std::vector<bool> classify_tree_structure
-(const graphs::rtree& t, const linearrgmnt& pi = {});
+(const graphs::rooted_tree& t, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

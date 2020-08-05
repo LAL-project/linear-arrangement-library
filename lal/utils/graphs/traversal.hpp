@@ -49,8 +49,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace utils {
@@ -219,7 +219,7 @@ class GR_TR {
 		// process neighbours
 		//     when the graph is an undirected graph
 		template<class GG = G,
-		typename std::enable_if<std::is_base_of<graphs::ugraph, GG>::value, int>::type = 0
+		typename std::enable_if<std::is_base_of<graphs::undirected_graph, GG>::value, int>::type = 0
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_neighbours(s)) {
@@ -228,7 +228,7 @@ class GR_TR {
 		}
 		//     when the graph is a directed graph
 		template<class GG = G,
-		typename std::enable_if<std::is_base_of<graphs::dgraph, GG>::value, int>::type = 0
+		typename std::enable_if<std::is_base_of<graphs::directed_graph, GG>::value, int>::type = 0
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_neighbours(s)) {

@@ -52,7 +52,7 @@ using namespace graphs;
 
 namespace utils {
 
-ftree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+free_tree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 0);
 	assert(L[1] == 1);
@@ -91,12 +91,12 @@ ftree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 		lev[stack_it] = i;
 	}
 
-	ftree t(n);
+	free_tree t(n);
 	t.add_edges(edges);
 	return t;
 }
 
-ftree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
+free_tree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);
@@ -145,7 +145,7 @@ ftree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	// add edge (u,v) to the tree
 	*eit++ = edge(u, v);
 
-	ftree t(n);
+	free_tree t(n);
 	t.add_edges(edges);
 	return t;
 }

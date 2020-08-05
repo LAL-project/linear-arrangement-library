@@ -51,7 +51,7 @@ using namespace graphs;
 namespace linarr {
 
 pair<uint32_t, linearrgmnt> compute_Dmin
-(const rtree& t, const algorithms_Dmin& a)
+(const rooted_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
 
@@ -71,7 +71,7 @@ pair<uint32_t, linearrgmnt> compute_Dmin
 }
 
 pair<uint32_t, linearrgmnt> compute_Dmin
-(const ftree& t, const algorithms_Dmin& a)
+(const free_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
 

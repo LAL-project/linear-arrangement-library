@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
@@ -107,7 +107,7 @@ class rand_ulab_rooted_trees {
 		 * @ref graphs::rtree::rtree_type::arborescence rooted at vertex 0.
 		 * @pre The generator must have been initialised.
 		 */
-		graphs::rtree make_rand_tree();
+		graphs::rooted_tree make_rand_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

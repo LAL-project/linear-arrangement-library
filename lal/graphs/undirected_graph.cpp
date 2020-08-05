@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 // C++ includes
 #include <algorithm>
@@ -57,7 +57,7 @@ namespace graphs {
 /* PUBLIC */
 
 //ugraph::ugraph() : graph() { }
-ugraph::ugraph(uint32_t n) {
+undirected_graph::undirected_graph(uint32_t n) {
 	init(n);
 }
 //ugraph::~ugraph() { }
@@ -66,7 +66,7 @@ ugraph::ugraph(uint32_t n) {
 
 /* MODIFIERS */
 
-ugraph& ugraph::add_edge(node u, node v, bool to_norm, bool check_norm) {
+undirected_graph& undirected_graph::add_edge(node u, node v, bool to_norm, bool check_norm) {
 	assert(not has_edge(u,v));
 	assert(u != v);
 	assert(has_node(u));
@@ -127,7 +127,7 @@ ugraph& ugraph::add_edge(node u, node v, bool to_norm, bool check_norm) {
 	return *this;
 }
 
-ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm, bool check_norm) {
+undirected_graph& undirected_graph::add_edges(const vector<edge>& edges, bool to_norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -157,7 +157,7 @@ ugraph& ugraph::add_edges(const vector<edge>& edges, bool to_norm, bool check_no
 	return *this;
 }
 
-ugraph& ugraph::remove_edge(node u, node v, bool norm, bool check_norm) {
+undirected_graph& undirected_graph::remove_edge(node u, node v, bool norm, bool check_norm) {
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -197,7 +197,7 @@ ugraph& ugraph::remove_edge(node u, node v, bool norm, bool check_norm) {
 	return *this;
 }
 
-ugraph& ugraph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+undirected_graph& undirected_graph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -230,7 +230,7 @@ ugraph& ugraph::remove_edges(const std::vector<edge>& edges, bool norm, bool che
 	return *this;
 }
 
-void ugraph::disjoint_union(const ugraph& g) {
+void undirected_graph::disjoint_union(const undirected_graph& g) {
 	graph::__disjoint_union(g);
 	// nothing else to do
 }
@@ -239,21 +239,21 @@ void ugraph::disjoint_union(const ugraph& g) {
 
 /* GETTERS */
 
-std::vector<edge_pair> ugraph::Q() const {
+std::vector<edge_pair> undirected_graph::Q() const {
 	return graph::Q(properties::size_Q(*this));
 }
 
-const neighbourhood& ugraph::get_neighbours(node u) const {
+const neighbourhood& undirected_graph::get_neighbours(node u) const {
 	assert(has_node(u));
 	return m_adjacency_list[u];
 }
 
-uint32_t ugraph::degree(node u) const {
+uint32_t undirected_graph::degree(node u) const {
 	assert(has_node(u));
 	return static_cast<uint32_t>(m_adjacency_list[u].size());
 }
 
-bool ugraph::has_edge(node u, node v) const {
+bool undirected_graph::has_edge(node u, node v) const {
 	assert(has_node(u));
 	assert(has_node(v));
 
@@ -272,22 +272,22 @@ bool ugraph::has_edge(node u, node v) const {
 	);
 }
 
-bool ugraph::is_directed() const { return false; }
-bool ugraph::is_undirected() const { return true; }
+bool undirected_graph::is_directed() const { return false; }
+bool undirected_graph::is_undirected() const { return true; }
 
 /* PROTECTED */
 
-void ugraph::_init(uint32_t n) {
+void undirected_graph::_init(uint32_t n) {
 	graph::_init(n);
 }
 
-void ugraph::_clear() {
+void undirected_graph::_clear() {
 	graph::_clear();
 }
 
 /* PRIVATE */
 
-void ugraph::remove_single_edge(
+void undirected_graph::remove_single_edge(
 	node u, node v, neighbourhood& out_u, neighbourhood& in_v
 )
 {

@@ -42,7 +42,7 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/tree.hpp>
 
 namespace lal {
@@ -56,29 +56,29 @@ namespace graphs {
  *
  * For another type of tree-like graphs, see @ref rtree.
  */
-class ftree : public ugraph, virtual public tree {
+class free_tree : public undirected_graph, virtual public tree {
 	public:
 		/// Default constructor.
-		ftree() = default;
+		free_tree() = default;
 		/// Default move constructor.
-		ftree(ftree&&) = default;
+		free_tree(free_tree&&) = default;
 		/// Default copy constructor.
-		ftree(const ftree&) = default;
+		free_tree(const free_tree&) = default;
 		/// Default constructor.
-		ftree(uint32_t n);
+		free_tree(uint32_t n);
 		/**
 		 * @brief Constructor with undirected graph.
 		 * @param t An undirected graph.
 		 * @pre Graph @e t is a tree.
 		 */
-		ftree(const ugraph& t);
+		free_tree(const undirected_graph& t);
 		/// Default destructor.
-		virtual ~ftree() = default;
+		virtual ~free_tree() = default;
 
 		/// Default move assignment operator.
-		ftree& operator= (ftree&&) = default;
+		free_tree& operator= (free_tree&&) = default;
 		/// Default copy assignment operator.
-		ftree& operator= (const ftree&) = default;
+		free_tree& operator= (const free_tree&) = default;
 
 		/* MODIFIERS */
 
@@ -98,7 +98,7 @@ class ftree : public ugraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		ftree& add_edge
+		free_tree& add_edge
 		(node s, node t, bool norm = true, bool check_norm = true);
 
 		/**
@@ -122,7 +122,7 @@ class ftree : public ugraph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edges.
 		 */
-		ftree& add_edges
+		free_tree& add_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
@@ -136,7 +136,7 @@ class ftree : public ugraph, virtual public tree {
 		 * @post The current tree is not an actual tree, i.e., method
 		 * @ref is_tree() returns false since the resulting tree lacks an edge.
 		 */
-		void disjoint_union(const ftree& t);
+		void disjoint_union(const free_tree& t);
 
 		/* GETTERS */
 
@@ -170,8 +170,11 @@ class ftree : public ugraph, virtual public tree {
 		virtual void _clear();
 
 	private:
-		using ugraph::disjoint_union;
+		using undirected_graph::disjoint_union;
 };
+
+/// Shorthand for @ref free_tree.
+typedef free_tree ftree;
 
 } // -- namespace graphs
 } // -- namespace lal

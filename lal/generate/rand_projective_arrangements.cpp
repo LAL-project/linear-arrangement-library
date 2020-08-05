@@ -65,7 +65,7 @@ using namespace utils;
 
 namespace generate {
 
-rand_projective_arrgmnt::rand_projective_arrgmnt(const rtree& rT, bool seed)
+rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, bool seed)
 	: m_rT(rT)
 {
 	assert(m_rT.is_rooted_tree());

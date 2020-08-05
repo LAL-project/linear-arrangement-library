@@ -103,7 +103,7 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
  * 'r_place' is LEFT_PLACE.
  */
 uint32_t make_interval_of(
-	const rtree& t, node r, place r_place,
+	const rooted_tree& t, node r, place r_place,
 	vector<vector<node>>& data
 )
 {
@@ -270,7 +270,7 @@ uint32_t make_interval_of(
 	return D + d;
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rtree& t) {
+pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
 
 	const uint32_t n = t.n_nodes();

@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -80,7 +80,7 @@ class all_proj_arr {
 		 * @pre The object @e T is a valid rooted tree (see
 		 * @ref graphs::rtree::is_rooted_tree).
 		 */
-		all_proj_arr(const graphs::rtree& T);
+		all_proj_arr(const graphs::rooted_tree& T);
 		/// Default destructor.
 		~all_proj_arr();
 
@@ -109,7 +109,7 @@ class all_proj_arr {
 
 	private:
 		/// Constant reference to rooted tree.
-		const graphs::rtree& m_rT;
+		const graphs::rooted_tree& m_rT;
 
 		/// The interval of every node of the tree
 		std::vector<std::vector<node>> m_intervals;

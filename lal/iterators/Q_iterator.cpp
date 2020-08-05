@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 
 namespace lal {
 using namespace graphs;

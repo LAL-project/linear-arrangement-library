@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -119,7 +119,7 @@ class all_lab_rooted_trees {
 		 * @ref next must have been called at least once.
 		 * @return Returns the tree generated with method @ref next().
 		 */
-		graphs::rtree get_tree() const;
+		graphs::rooted_tree get_tree() const;
 
 	private:
 		/// Number of nodes of the generated trees.
@@ -128,7 +128,7 @@ class all_lab_rooted_trees {
 		/// Labelled free tree generator.
 		all_lab_free_trees m_lab_free_tree_gen;
 		/// Current labelled free tree.
-		graphs::ftree m_cur_ftree;
+		graphs::free_tree m_cur_ftree;
 		/// Current root.
 		node m_cur_root;
 };

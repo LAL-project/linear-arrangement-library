@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
@@ -55,7 +55,7 @@ using namespace numeric;
 
 namespace properties {
 
-integer size_Q_integer(const ugraph& g) {
+integer size_Q_integer(const undirected_graph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -70,11 +70,11 @@ integer size_Q_integer(const ugraph& g) {
 	return q;
 }
 
-uint32_t size_Q(const ugraph& g) {
+uint32_t size_Q(const undirected_graph& g) {
 	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
 }
 
-integer size_Q_integer(const dgraph& g) {
+integer size_Q_integer(const directed_graph& g) {
 	// sum of squared degrees
 	integer nk2(0);
 	for (node u = 0; u < g.n_nodes(); ++u) {
@@ -89,7 +89,7 @@ integer size_Q_integer(const dgraph& g) {
 	return q;
 }
 
-uint32_t size_Q(const dgraph& g) {
+uint32_t size_Q(const directed_graph& g) {
 	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
 }
 

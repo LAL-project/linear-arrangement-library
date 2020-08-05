@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace linarr {

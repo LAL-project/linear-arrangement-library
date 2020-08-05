@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
@@ -68,7 +68,7 @@ namespace linarr {
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns the headedness ratio as an exact rational number.
  */
-numeric::rational headedness_rational(const graphs::dgraph& g, const linearrgmnt& pi = {});
+numeric::rational headedness_rational(const graphs::directed_graph& g, const linearrgmnt& pi = {});
 
 /**
  * @brief Computes the headedness of a linearly arranged directed graph.
@@ -78,7 +78,7 @@ numeric::rational headedness_rational(const graphs::dgraph& g, const linearrgmnt
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double headedness(const graphs::dgraph& g, const linearrgmnt& pi = {});
+double headedness(const graphs::directed_graph& g, const linearrgmnt& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -54,18 +54,18 @@ namespace properties {
 /* -------------------------- */
 /* EXPECTATION OF D: E_rla[D] */
 
-rational expectation_D_rational(const ugraph& g) {
+rational expectation_D_rational(const undirected_graph& g) {
 	return rational((g.n_nodes() + 1)*g.n_edges(), 3);
 }
 
-double expectation_D(const ugraph& g) {
+double expectation_D(const undirected_graph& g) {
 	return expectation_D_rational(g).to_double();
 }
 
 /* ----------------------- */
 /* VARIANCE OF D: V_rla[D] */
 
-rational variance_D_rational(const ugraph& g) {
+rational variance_D_rational(const undirected_graph& g) {
 	// E_rla[D]
 	const rational Ed = expectation_D_rational(g);
 	// E_rla[D^2]
@@ -92,7 +92,7 @@ rational variance_D_rational(const ugraph& g) {
 	return Ed2 - Ed*Ed;
 }
 
-double variance_D(const ugraph& g) {
+double variance_D(const undirected_graph& g) {
 	return variance_D_rational(g).to_double();
 }
 

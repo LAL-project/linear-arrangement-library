@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/graph.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace graphs {
@@ -62,26 +62,26 @@ namespace graphs {
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */
-class dgraph : virtual public graph {
+class directed_graph : virtual public graph {
 	public:
 		/// Default constructor.
-		dgraph() = default;
+		directed_graph() = default;
 		/// Default move constructor.
-		dgraph(dgraph&&) = default;
+		directed_graph(directed_graph&&) = default;
 		/// Default copy constructor.
-		dgraph(const dgraph&) = default;
+		directed_graph(const directed_graph&) = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		dgraph(uint32_t n);
+		directed_graph(uint32_t n);
 		/// Default destructor.
-		virtual ~dgraph() = default;
+		virtual ~directed_graph() = default;
 
 		/// Default move assignment operator.
-		dgraph& operator= (dgraph&&) = default;
+		directed_graph& operator= (directed_graph&&) = default;
 		/// Default copy assignment operator.
-		dgraph& operator= (const dgraph&) = default;
+		directed_graph& operator= (const directed_graph&) = default;
 
 		/* MODIFIERS */
 
@@ -102,7 +102,7 @@ class dgraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual dgraph& add_edge
+		virtual directed_graph& add_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -120,7 +120,7 @@ class dgraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual dgraph& add_edges
+		virtual directed_graph& add_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
@@ -135,7 +135,7 @@ class dgraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		dgraph& remove_edge
+		directed_graph& remove_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -153,7 +153,7 @@ class dgraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		dgraph& remove_edges
+		directed_graph& remove_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
@@ -167,7 +167,7 @@ class dgraph : virtual public graph {
 		 * @post The graph is normalised only if it was normalised before
 		 * the call and @e g is also normalised.
 		 */
-		void disjoint_union(const dgraph& g);
+		void disjoint_union(const directed_graph& g);
 
 		/* SETTERS */
 
@@ -216,7 +216,7 @@ class dgraph : virtual public graph {
 		 * @brief Converts this directed graph into an undirected graph.
 		 * @return Returns an object of typ undirected graph.
 		 */
-		ugraph to_undirected() const;
+		undirected_graph to_undirected() const;
 
 	protected:
 		/// In-neighbours for every node.
@@ -240,6 +240,9 @@ class dgraph : virtual public graph {
 		void remove_single_edge
 		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
+
+/// Shorthand for @ref directed_graph.
+typedef directed_graph dgraph;
 
 } // -- namespace graphs
 } // -- namespace lal

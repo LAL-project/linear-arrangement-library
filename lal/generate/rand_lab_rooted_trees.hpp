@@ -45,7 +45,7 @@
 #include <random>
 
 // lal includes
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/rand_lab_free_trees.hpp>
 
 namespace lal {
@@ -101,7 +101,7 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 		 * tree is a an @ref graphs::rtree::rtree_type::arborescence rooted at vertex 0.
 		 * @pre The generator must have been initialised.
 		 */
-		graphs::rtree make_rand_tree();
+		graphs::rooted_tree make_rand_tree();
 };
 
 } // -- namespace generate

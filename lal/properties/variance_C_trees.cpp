@@ -50,11 +50,11 @@ namespace properties {
 // ------------------------------
 // TREES
 
-rational variance_C_tree_rational(const ftree& g) {
+rational variance_C_tree_rational(const free_tree& g) {
 	return variance_C_forest_rational(g);
 }
 
-double variance_C_tree(const ftree& g) {
+double variance_C_tree(const free_tree& g) {
 	return variance_C_tree_rational(g).to_double();
 }
 

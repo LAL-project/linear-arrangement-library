@@ -63,7 +63,7 @@ using namespace utils;
 
 namespace generate {
 
-all_proj_arr::all_proj_arr(const rtree& rT) : m_rT(rT)
+all_proj_arr::all_proj_arr(const rooted_tree& rT) : m_rT(rT)
 {
 	assert(m_rT.is_rooted_tree());
 

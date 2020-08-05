@@ -92,35 +92,35 @@ double mmt_degree(const graph& g, uint32_t p) {
 
 // moment of in-degree
 
-rational mmt_in_degree_rational(const dgraph& g, uint32_t p) {
-	return __mmt_x_degree_rational<dgraph>(
+rational mmt_in_degree_rational(const directed_graph& g, uint32_t p) {
+	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint32_t
+		[](const directed_graph& _g, node _u) -> uint32_t
 		{ return _g.in_degree(_u); }
 	);
 }
 
-double mmt_in_degree(const dgraph& g, uint32_t p) {
+double mmt_in_degree(const directed_graph& g, uint32_t p) {
 	return mmt_in_degree_rational(g,p).to_double();
 }
 
 // moment of out-degree
 
-rational mmt_out_degree_rational(const dgraph& g, uint32_t p) {
-	return __mmt_x_degree_rational<dgraph>(
+rational mmt_out_degree_rational(const directed_graph& g, uint32_t p) {
+	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
-		[](const dgraph& _g, node _u) -> uint32_t
+		[](const directed_graph& _g, node _u) -> uint32_t
 		{ return _g.degree(_u); }
 	);
 }
 
-double mmt_out_degree(const dgraph& g, uint32_t p) {
+double mmt_out_degree(const directed_graph& g, uint32_t p) {
 	return mmt_out_degree_rational(g,p).to_double();
 }
 
 // hubiness
 
-rational hubiness_rational(const ftree& g) {
+rational hubiness_rational(const free_tree& g) {
 	const uint32_t n = g.n_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -134,7 +134,7 @@ rational hubiness_rational(const ftree& g) {
 	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const ftree& g) {
+double hubiness(const free_tree& g) {
 	return hubiness_rational(g).to_double();
 }
 

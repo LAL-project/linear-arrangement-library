@@ -43,8 +43,8 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/ftree.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace properties {
@@ -59,7 +59,7 @@ namespace properties {
  * @param g The input graph.
  * @return Returns \f$E[C]\f$ as a rational value.
  */
-numeric::rational expectation_C_rational(const graphs::ugraph& g);
+numeric::rational expectation_C_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the the expectation of the first moment of C.
  *
@@ -67,7 +67,7 @@ numeric::rational expectation_C_rational(const graphs::ugraph& g);
  * @param g The input graph.
  * @return The return value is a floating point value.
  */
-double expectation_C(const graphs::ugraph& g);
+double expectation_C(const graphs::undirected_graph& g);
 
 /* ----------------------- */
 /* VARIANCE OF C: V_rla[C] */
@@ -91,7 +91,7 @@ double expectation_C(const graphs::ugraph& g);
  * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre Method @ref graphs::graph::is_normalised() must evaluate to true.
  */
-numeric::rational variance_C_rational(const graphs::ugraph& g, bool reuse = true);
+numeric::rational variance_C_rational(const graphs::undirected_graph& g, bool reuse = true);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
@@ -101,7 +101,7 @@ numeric::rational variance_C_rational(const graphs::ugraph& g, bool reuse = true
  * the variance faster. Note: this might be too memory-consuming.
  * @return The return value is a floating point value.
  */
-double variance_C(const graphs::ugraph& g, bool reuse = true);
+double variance_C(const graphs::undirected_graph& g, bool reuse = true);
 
 // --------------------
 // VARIANCE FOR FORESTS
@@ -118,7 +118,7 @@ double variance_C(const graphs::ugraph& g, bool reuse = true);
  * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre The input graph @e g is a forest.
  */
-numeric::rational variance_C_forest_rational(const graphs::ugraph& g);
+numeric::rational variance_C_forest_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the variance of the number of crossings of a forest.
  *
@@ -126,7 +126,7 @@ numeric::rational variance_C_forest_rational(const graphs::ugraph& g);
  * @param g Input forest.
  * @return The return value is a floating point value.
  */
-double variance_C_forest(const graphs::ugraph& g);
+double variance_C_forest(const graphs::undirected_graph& g);
 
 // ------------------
 // VARIANCE FOR TREES
@@ -140,7 +140,7 @@ double variance_C_forest(const graphs::ugraph& g);
  * @param g Input tree.
  * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-numeric::rational variance_C_tree_rational(const graphs::ftree& g);
+numeric::rational variance_C_tree_rational(const graphs::free_tree& g);
 /**
  * @brief Computes the variance of the number of crossings of a tree.
  *
@@ -148,7 +148,7 @@ numeric::rational variance_C_tree_rational(const graphs::ftree& g);
  * @param g Input tree.
  * @return The return value is a floating point value.
  */
-double variance_C_tree(const graphs::ftree& g);
+double variance_C_tree(const graphs::free_tree& g);
 
 } // -- namespace properties
 } // -- namespace lal

@@ -109,7 +109,7 @@ namespace properties {
 
 inline void compute_data_gen_graphs_no_reuse
 (
-	const ugraph& g, const bigint& n, const bigint& m,
+	const undirected_graph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& paw,
 	bigint& n_paths_5, bigint& pair_C3_L2,
@@ -247,7 +247,7 @@ inline void compute_data_gen_graphs_no_reuse
  */
 inline void compute_data_gen_graphs_reuse
 (
-	const ugraph& g, const bigint& n, const bigint& m,
+	const undirected_graph& g, const bigint& n, const bigint& m,
 	bigint& Qs, bigint& Kg,
 	bigint& n_paths_4, bigint& n_cycles_4, bigint& paw,
 	bigint& n_paths_5, bigint& pair_C3_L2,
@@ -423,7 +423,7 @@ inline void compute_data_gen_graphs_reuse
 	free(xi);
 }
 
-rational variance_C_rational(const ugraph& g, bool reuse) {
+rational variance_C_rational(const undirected_graph& g, bool reuse) {
 	assert(g.is_normalised());
 
 	const bigint n = g.n_nodes();
@@ -502,7 +502,7 @@ rational variance_C_rational(const ugraph& g, bool reuse) {
 	return V;
 }
 
-double variance_C(const ugraph& g, bool reuse) {
+double variance_C(const undirected_graph& g, bool reuse) {
 	return variance_C_rational(g, reuse).to_double();
 }
 

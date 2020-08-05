@@ -125,23 +125,23 @@ void all_ulab_rooted_trees::next() {
 	m_is_last = (m_p <= 1);
 }
 
-rtree all_ulab_rooted_trees::get_tree() const {
+rooted_tree all_ulab_rooted_trees::get_tree() const {
 	if (m_n == 0) {
-		return rtree(ftree(0), 0, rtree::rtree_type::arborescence);
+		return rooted_tree(free_tree(0), 0, rooted_tree::rtree_type::arborescence);
 	}
 	if (m_n == 1) {
-		return rtree(ftree(1), 0, rtree::rtree_type::arborescence);
+		return rooted_tree(free_tree(1), 0, rooted_tree::rtree_type::arborescence);
 	}
 	if (m_n == 2) {
-		rtree rT(2);
+		rooted_tree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
-		rT.set_rtree_type(rtree::rtree_type::arborescence);
+		rT.set_rtree_type(rooted_tree::rtree_type::arborescence);
 		return rT;
 	}
 
-	ftree t = utils::level_sequence_to_tree(m_L, m_n);
-	return rtree(t, 0, rtree::rtree_type::arborescence);
+	free_tree t = utils::level_sequence_to_tree(m_L, m_n);
+	return rooted_tree(t, 0, rooted_tree::rtree_type::arborescence);
 }
 
 } // -- namespace generate

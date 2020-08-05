@@ -143,20 +143,20 @@ target_sources(
 		
 		# graphs namespace
 		# --headers
-		graphs/dgraph.hpp
-		graphs/ftree.hpp
+		graphs/directed_graph.hpp
+		graphs/free_tree.hpp
 		graphs/graph.hpp
 		graphs/output.hpp
-		graphs/rtree.hpp
+		graphs/rooted_tree.hpp
 		graphs/tree.hpp
-		graphs/ugraph.hpp
+		graphs/undirected_graph.hpp
 		# -- sources
-		graphs/dgraph.cpp
-		graphs/ftree.cpp
+		graphs/directed_graph.cpp
+		graphs/free_tree.cpp
 		graphs/graph.cpp
-		graphs/rtree.cpp
+		graphs/rooted_tree.cpp
 		graphs/tree.cpp
-		graphs/ugraph.cpp
+		graphs/undirected_graph.cpp
 
 		# io namespace
 		# -- header
@@ -308,13 +308,13 @@ set(LIBLAL_GENERATION_HEADER
 	generate/rand_ulab_rooted_trees.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
-	graphs/dgraph.hpp
-	graphs/ftree.hpp
+	graphs/directed_graph.hpp
+	graphs/free_tree.hpp
 	graphs/graph.hpp
 	graphs/output.hpp
-	graphs/rtree.hpp
+	graphs/rooted_tree.hpp
 	graphs/tree.hpp
-	graphs/ugraph.hpp
+	graphs/undirected_graph.hpp
 )
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp

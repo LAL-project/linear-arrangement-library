@@ -42,8 +42,8 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/ugraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace utils {
@@ -59,7 +59,7 @@ namespace utils {
  * @pre The contents of @e neighs must be all 0 (or false).
  */
 inline void get_bool_neighbours(
-	const graphs::ugraph& g, node u, char *neighs
+	const graphs::undirected_graph& g, node u, char *neighs
 )
 {
 	for (const node v : g.get_neighbours(u)) {
@@ -78,7 +78,7 @@ inline void get_bool_neighbours(
  * @pre The contents of @e neighs must be all 0 (or false).
  */
 inline void get_bool_neighbours(
-	const graphs::dgraph& g, node u, char *neighs
+	const graphs::directed_graph& g, node u, char *neighs
 )
 {
 	for (const node v : g.get_in_neighbours(u)) {

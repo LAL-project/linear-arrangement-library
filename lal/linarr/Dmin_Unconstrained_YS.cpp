@@ -154,7 +154,7 @@ uint32_t calculate_p_alpha(
 //     in the mla for the subtree). We could also have an anologous finish
 //     (rightmost position) but it is not needed.
 void calculate_mla_YS(
-	ftree& t,
+	free_tree& t,
 	char alpha, node root_or_anchor, position start,
 	linearrgmnt& mla, uint32_t& cost
 )
@@ -163,7 +163,7 @@ void calculate_mla_YS(
 
 	vector<node> reachable;
 	{
-	utils::BFS<ftree> bfs(t);
+	utils::BFS<free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
 		[&](const auto&, node u) { reachable.push_back(u + 1); }
@@ -332,13 +332,13 @@ void calculate_mla_YS(
 	}
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const ftree& t) {
+pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const free_tree& t) {
 	assert(t.is_tree());
 
 	linearrgmnt arrangement(t.n_nodes(),0);
 	uint32_t c = 0;
 
-	ftree T = t;
+	free_tree T = t;
 	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);
 
 	return make_pair(c, arrangement);

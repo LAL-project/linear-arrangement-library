@@ -45,9 +45,9 @@
 #include <ostream>
 
 // lal includes
-#include <lal/graphs/ugraph.hpp>
-#include <lal/graphs/dgraph.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -60,7 +60,7 @@ namespace graphs {
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const ugraph& g)
+inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
 {
 	const auto N = g.n_nodes();
 	for (node u = 0; u < N; ++u) {
@@ -81,7 +81,7 @@ inline std::ostream& operator<< (std::ostream& os, const ugraph& g)
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const dgraph& g)
+inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
 {
 	const auto N = g.n_nodes();
 	os << "out:" << "\n";
@@ -111,7 +111,7 @@ inline std::ostream& operator<< (std::ostream& os, const dgraph& g)
  * @param g Input graph.
  * @returns Returns the output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const rtree& g) {
+inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g) {
 	const auto N = g.n_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	os << "out:" << "\n";

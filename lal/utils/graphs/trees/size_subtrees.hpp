@@ -45,8 +45,8 @@
 #include <cstring>
 
 // lal includes
-#include <lal/graphs/ftree.hpp>
-#include <lal/graphs/rtree.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace utils {
@@ -65,7 +65,7 @@ namespace __lal {
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::ftree& t, node r, char *vis, uint32_t *sizes
+	const graphs::free_tree& t, node r, char *vis, uint32_t *sizes
 )
 {
 	sizes[r] = 1;
@@ -90,7 +90,7 @@ inline void get_size_subtrees(
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::rtree& t, node r, char *vis, uint32_t *sizes
+	const graphs::rooted_tree& t, node r, char *vis, uint32_t *sizes
 )
 {
 	sizes[r] = 1;
@@ -125,7 +125,7 @@ inline void get_size_subtrees(
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::rtree& t, node r, uint32_t *sizes
+	const graphs::rooted_tree& t, node r, uint32_t *sizes
 )
 {
 	// visited vertices
@@ -148,7 +148,7 @@ inline void get_size_subtrees(
  * @pre Parameter @e sizes has size the number of vertices.
  */
 inline void get_size_subtrees(
-	const graphs::ftree& t, node r, uint32_t *sizes
+	const graphs::free_tree& t, node r, uint32_t *sizes
 )
 {
 	// visited vertices

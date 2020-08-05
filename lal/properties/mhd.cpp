@@ -54,11 +54,11 @@ using namespace utils;
 
 namespace properties {
 
-rational MHD_rational(const rtree& tree) {
+rational MHD_rational(const rooted_tree& tree) {
 	uint32_t sum_distances = 0;
 	vector<uint32_t> levels(tree.n_nodes(), 0);
 
-	BFS<rtree> bfs(tree);
+	BFS<rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		levels[t] = levels[s] + 1;
@@ -70,7 +70,7 @@ rational MHD_rational(const rtree& tree) {
 	return rational(sum_distances, tree.n_edges());
 }
 
-double MHD(const rtree& t) {
+double MHD(const rooted_tree& t) {
 	return MHD_rational(t).to_double();
 }
 

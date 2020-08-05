@@ -50,7 +50,7 @@ using namespace graphs;
 
 namespace utils {
 
-rtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(L.size() == n + 1);
 
 	// edges of the tree
@@ -84,9 +84,9 @@ rtree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	assert(root_set);
 #endif
 
-	ftree t(n);
+	free_tree t(n);
 	t.add_edges(edges);
-	return rtree(t, r);
+	return rooted_tree(t, r);
 }
 
 } // -- namespace convert

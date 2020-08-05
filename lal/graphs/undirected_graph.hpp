@@ -61,28 +61,28 @@ namespace graphs {
  * (see @ref add_edge(node,node,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool) ).
  */
-class ugraph : virtual public graph {
+class undirected_graph : virtual public graph {
 	public:
 		/// Default constructor.
-		ugraph() = default;
+		undirected_graph() = default;
 		/// Default move constructor.
-		ugraph(ugraph&&) = default;
+		undirected_graph(undirected_graph&&) = default;
 		/// Default copy constructor.
-		ugraph(const ugraph&) = default;
+		undirected_graph(const undirected_graph&) = default;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		ugraph(uint32_t n);
+		undirected_graph(uint32_t n);
 		/// Default destructor.
-		virtual ~ugraph() = default;
+		virtual ~undirected_graph() = default;
 
 		/* OPERATORS */
 
 		/// Default move assignment operator.
-		ugraph& operator= (ugraph&&) = default;
+		undirected_graph& operator= (undirected_graph&&) = default;
 		/// Default copy assignment operator.
-		ugraph& operator= (const ugraph&) = default;
+		undirected_graph& operator= (const undirected_graph&) = default;
 
 		/* MODIFIERS */
 
@@ -98,7 +98,7 @@ class ugraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual ugraph& add_edge
+		virtual undirected_graph& add_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -116,7 +116,7 @@ class ugraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual ugraph& add_edges
+		virtual undirected_graph& add_edges
 		(const std::vector<edge>& edges, bool norm = false, bool check_norm = true);
 
 		/**
@@ -131,7 +131,7 @@ class ugraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		ugraph& remove_edge
+		undirected_graph& remove_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -149,7 +149,7 @@ class ugraph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		ugraph& remove_edges
+		undirected_graph& remove_edges
 		(const std::vector<edge>& edges, bool norm = false, bool check_norm = true);
 
 		/**
@@ -163,7 +163,7 @@ class ugraph : virtual public graph {
 		 * @post The graph is normalised only if it was normalised before
 		 * the call and @e g is also normalised.
 		 */
-		void disjoint_union(const ugraph& g);
+		void disjoint_union(const undirected_graph& g);
 
 		/* SETTERS */
 
@@ -215,6 +215,9 @@ class ugraph : virtual public graph {
 		void remove_single_edge
 		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
+
+/// Shorthand for @ref undirected_graph.
+typedef undirected_graph ugraph;
 
 } // -- namespace graphs
 } // -- namespace lal

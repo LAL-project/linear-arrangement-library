@@ -41,7 +41,7 @@
 
 #pragma once
 
-#include <lal/graphs/dgraph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/utils/graphs/traversal.hpp>
 
 namespace lal {
@@ -58,7 +58,7 @@ namespace __lal {
  */
 inline bool __find_cycle
 (
-	const graphs::dgraph& g, node u,
+	const graphs::directed_graph& g, node u,
 	std::vector<bool>& visited, std::vector<bool>& in_stack
 )
 {
@@ -85,7 +85,7 @@ inline bool __find_cycle
  * @param g Input graph.
  * @returns Returns whether the graph has cycles or not.
  */
-inline bool has_directed_cycles(const graphs::dgraph& g) {
+inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint64_t n = g.n_nodes();
 	std::vector<bool> vis(n, false);
 	std::vector<bool> in_stack(n, false);
