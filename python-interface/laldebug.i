@@ -1,5 +1,17 @@
 %module laldebug
 
+%{
+#include <lal/definitions.hpp>
+#include <lal/graphs.hpp>
+#include <lal/generate.hpp>
+#include <lal/graphs.hpp>
+#include <lal/io.hpp>
+#include <lal/iterators.hpp>
+#include <lal/linarr.hpp>
+#include <lal/numeric.hpp>
+#include <lal/properties.hpp>
+%}
+
 %import submodules/lalversiondebug.i
 %import submodules/laldefinitionsdebug.i
 %import submodules/lalgraphsdebug.i

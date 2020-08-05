@@ -1,5 +1,17 @@
 %module lal
 
+%{
+#include <lal/definitions.hpp>
+#include <lal/graphs.hpp>
+#include <lal/generate.hpp>
+#include <lal/graphs.hpp>
+#include <lal/io.hpp>
+#include <lal/iterators.hpp>
+#include <lal/linarr.hpp>
+#include <lal/numeric.hpp>
+#include <lal/properties.hpp>
+%}
+
 %import submodules/lalversion.i
 %import submodules/laldefinitions.i
 %import submodules/lalgraphs.i

@@ -22,13 +22,13 @@ GEN_DPHDRS			= $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_rooted_trees.hpp
 
-GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/dgraph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/ftree.hpp \
+GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/free_tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/output.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/rtree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/rooted_tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/ugraph.hpp
+					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp
 
 IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \

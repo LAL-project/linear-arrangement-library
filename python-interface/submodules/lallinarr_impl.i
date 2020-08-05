@@ -17,25 +17,25 @@
 // --------------------------------
 // Extendind the function templates
 
-%template(__MDD_1level_rational_ugraph)	lal::linarr::MDD_1level_rational<lal::graphs::ugraph>;
-%template(__MDD_1level_rational_dgraph)	lal::linarr::MDD_1level_rational<lal::graphs::dgraph>;
-%template(__MDD_1level_rational_ftree)	lal::linarr::MDD_1level_rational<lal::graphs::ftree>;
-%template(__MDD_1level_rational_rtree)	lal::linarr::MDD_1level_rational<lal::graphs::rtree>;
+%template(__MDD_1level_rational_undirected_graph)	lal::linarr::MDD_1level_rational<lal::graphs::undirected_graph>;
+%template(__MDD_1level_rational_directed_graph)		lal::linarr::MDD_1level_rational<lal::graphs::directed_graph>;
+%template(__MDD_1level_rational_free_tree)			lal::linarr::MDD_1level_rational<lal::graphs::free_tree>;
+%template(__MDD_1level_rational_rooted_tree)		lal::linarr::MDD_1level_rational<lal::graphs::rooted_tree>;
 
-%template(__MDD_1level_ugraph)	lal::linarr::MDD_1level<lal::graphs::ugraph>;
-%template(__MDD_1level_dgraph)	lal::linarr::MDD_1level<lal::graphs::dgraph>;
-%template(__MDD_1level_ftree)	lal::linarr::MDD_1level<lal::graphs::ftree>;
-%template(__MDD_1level_rtree)	lal::linarr::MDD_1level<lal::graphs::rtree>;
+%template(__MDD_1level_undirected_graph)	lal::linarr::MDD_1level<lal::graphs::undirected_graph>;
+%template(__MDD_1level_directed_graph)		lal::linarr::MDD_1level<lal::graphs::directed_graph>;
+%template(__MDD_1level_free_tree)			lal::linarr::MDD_1level<lal::graphs::free_tree>;
+%template(__MDD_1level_rooted_tree)			lal::linarr::MDD_1level<lal::graphs::rooted_tree>;
 
-%template(__MDD_2level_rational_ugraph)	lal::linarr::MDD_2level_rational<lal::graphs::ugraph>;
-%template(__MDD_2level_rational_dgraph)	lal::linarr::MDD_2level_rational<lal::graphs::dgraph>;
-%template(__MDD_2level_rational_ftree)	lal::linarr::MDD_2level_rational<lal::graphs::ftree>;
-%template(__MDD_2level_rational_rtree)	lal::linarr::MDD_2level_rational<lal::graphs::rtree>;
+%template(__MDD_2level_rational_undirected_graph)	lal::linarr::MDD_2level_rational<lal::graphs::undirected_graph>;
+%template(__MDD_2level_rational_directed_graph)		lal::linarr::MDD_2level_rational<lal::graphs::directed_graph>;
+%template(__MDD_2level_rational_free_tree)			lal::linarr::MDD_2level_rational<lal::graphs::free_tree>;
+%template(__MDD_2level_rational_rooted_tree)		lal::linarr::MDD_2level_rational<lal::graphs::rooted_tree>;
 
-%template(__MDD_2level_ugraph)	lal::linarr::MDD_2level<lal::graphs::ugraph>;
-%template(__MDD_2level_dgraph)	lal::linarr::MDD_2level<lal::graphs::dgraph>;
-%template(__MDD_2level_ftree)	lal::linarr::MDD_2level<lal::graphs::ftree>;
-%template(__MDD_2level_rtree)	lal::linarr::MDD_2level<lal::graphs::rtree>;
+%template(__MDD_2level_undirected_graph)	lal::linarr::MDD_2level<lal::graphs::undirected_graph>;
+%template(__MDD_2level_directed_graph)		lal::linarr::MDD_2level<lal::graphs::directed_graph>;
+%template(__MDD_2level_free_tree)			lal::linarr::MDD_2level<lal::graphs::free_tree>;
+%template(__MDD_2level_rooted_tree)			lal::linarr::MDD_2level<lal::graphs::rooted_tree>;
 
 %pythoncode %{
 def MDD_1level_rational(g, l):
