@@ -335,8 +335,8 @@ void calculate_mla_YS(
 pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const free_tree& t) {
 	assert(t.is_tree());
 
-	linearrgmnt arrangement(t.n_nodes(),0);
 	uint32_t c = 0;
+	linearrgmnt arrangement(t.n_nodes(),0);
 
 	free_tree T = t;
 	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);
