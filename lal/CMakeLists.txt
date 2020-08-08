@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10.2)
 # needed includes to make CMake work include(CheckCXXCompilerFlag)
 # installation directories (platform dependent)
 include(GNUInstallDirs)
+include(CheckCXXCompilerFlag)
 
 # **********************************************************************
 # Custom functions
@@ -236,7 +237,6 @@ target_sources(
 
 		# utils namespace -- not to be installed
 		# -- headers
-		internal/Dmin/common.hpp
 		internal/gmp/utils.hpp
 		internal/graphs/trees/convert_to_ftree.hpp
 		internal/graphs/trees/convert_to_rtree.hpp
