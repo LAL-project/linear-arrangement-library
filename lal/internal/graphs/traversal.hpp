@@ -69,7 +69,7 @@ namespace internal {
  *			// do stuff (2)
  *		}
  * }
- * the DFS traversal only allows for (1).
+ * this DFS traversal only allows for (1).
  *
  * Users of this class can control the traversal by setting custom control-flow
  * functions. The user can set:

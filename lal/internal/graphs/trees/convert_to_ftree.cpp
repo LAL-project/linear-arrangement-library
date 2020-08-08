@@ -150,5 +150,5 @@ free_tree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
 	return t;
 }
 
-} // -- namespace convert
+} // -- namespace internal
 } // -- namespace lal

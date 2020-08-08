@@ -89,5 +89,5 @@ rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	return rooted_tree(t, r);
 }
 
-} // -- namespace convert
+} // -- namespace internal
 } // -- namespace lal

@@ -210,5 +210,5 @@ void move_mpz_to_mpq(mpz_t& source, mpq_t& target) {
 	steal_from(one[0], target[0]._mp_den);
 }
 
-} // -- namespace numeric
+} // -- namespace internal
 } // -- namespace lal
