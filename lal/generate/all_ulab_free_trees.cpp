@@ -276,7 +276,7 @@ free_tree all_ulab_free_trees::get_tree() const {
 		t.add_edge(0,1);
 		return t;
 	}
-	return internal::level_sequence_to_tree(m_L, m_n);
+	return internal::level_sequence_to_ftree(m_L, m_n);
 }
 
 } // -- namespace generate

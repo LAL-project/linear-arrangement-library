@@ -52,7 +52,7 @@ using namespace graphs;
 
 namespace internal {
 
-free_tree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
 	// a little sanity check
 	assert(L[0] == 0);
 	assert(L[1] == 1);
@@ -96,7 +96,7 @@ free_tree level_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	return t;
 }
 
-free_tree Prufer_sequence_to_tree(const vector<uint32_t>& seq, uint32_t n) {
+free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);

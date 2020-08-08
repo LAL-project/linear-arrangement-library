@@ -50,7 +50,7 @@ using namespace graphs;
 
 namespace internal {
 
-rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L) {
+rooted_tree linear_sequence_to_rtree(const vector<uint32_t>& L) {
 	const uint32_t n = static_cast<uint32_t>(L.size());
 
 	// edges of the tree

@@ -70,7 +70,7 @@ namespace internal {
  *
  * @return Returns the tree built with the sequence level @e L.
  */
-graphs::free_tree level_sequence_to_tree
+graphs::free_tree level_sequence_to_ftree
 (const std::vector<uint32_t>& L, uint32_t n);
 
 /*
@@ -84,7 +84,7 @@ graphs::free_tree level_sequence_to_tree
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graphs::free_tree Prufer_sequence_to_tree
+graphs::free_tree Prufer_sequence_to_ftree
 (const std::vector<uint32_t>& S, uint32_t n);
 
 } // -- namespace internal

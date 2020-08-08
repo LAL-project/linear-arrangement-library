@@ -125,7 +125,7 @@ rooted_tree treebank_reader::get_tree() const {
 	node k;
 	while (ss >> k) { L.push_back(k); }
 
-	return internal::linear_sequence_to_tree(L);
+	return internal::linear_sequence_to_rtree(L);
 }
 
 } // -- namespace io

@@ -134,7 +134,7 @@ free_tree all_lab_free_trees::get_tree() const {
 		return t;
 	}
 
-	return internal::Prufer_sequence_to_tree(m_seq, m_n);
+	return internal::Prufer_sequence_to_ftree(m_seq, m_n);
 }
 
 } // -- namespace generate

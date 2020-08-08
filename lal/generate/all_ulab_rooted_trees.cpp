@@ -140,7 +140,7 @@ rooted_tree all_ulab_rooted_trees::get_tree() const {
 		return rT;
 	}
 
-	free_tree t = internal::level_sequence_to_tree(m_L, m_n);
+	free_tree t = internal::level_sequence_to_ftree(m_L, m_n);
 	return rooted_tree(t, 0, rooted_tree::rooted_tree_type::arborescence);
 }
 
