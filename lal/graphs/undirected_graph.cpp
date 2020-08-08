@@ -49,7 +49,7 @@ using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>
-#include <lal/utils/sorting/bit_sort.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 
 namespace lal {
 namespace graphs {
@@ -82,8 +82,8 @@ undirected_graph& undirected_graph::add_edge(node u, node v, bool to_norm, bool 
 		// the graph was normalised
 		if (to_norm) {
 			// Keep it normalised. The attribute m_normalised need not be updated.
-			utils::bit_sort(nu.begin(), nu.end());
-			utils::bit_sort(nv.begin(), nv.end());
+			internal::bit_sort(nu.begin(), nu.end());
+			internal::bit_sort(nv.begin(), nv.end());
 		}
 		else if (check_norm) {
 			// Even though we are not asked to normalise the graph, it may be

@@ -47,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
+#include <lal/internal/macros.hpp>
 #include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
@@ -78,7 +78,7 @@ inline uint32_t __sum_length_edges(const graph& g, const linearrgmnt& pi) {
 
 uint32_t sum_length_edges(const graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__sum_length_edges, g, pi);
+	return internal::call_with_empty_arrangement(__sum_length_edges, g, pi);
 }
 
 /* MDD */
@@ -90,7 +90,7 @@ inline rational __MDD_rational(const graph& g, const linearrgmnt& pi) {
 
 rational MDD_rational(const graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__MDD_rational, g, pi);
+	return internal::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 
 double MDD(const graph& g, const linearrgmnt& pi) {

@@ -47,7 +47,7 @@ using namespace std;
 
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/utils/macros.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -131,7 +131,7 @@ inline uint32_t __call_C_brute_force(const undirected_graph& g, const linearrgmn
 
 uint32_t __n_crossings_brute_force(const undirected_graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__call_C_brute_force, g, pi);
+	return internal::call_with_empty_arrangement(__call_C_brute_force, g, pi);
 }
 
 vector<uint32_t> __n_crossings_brute_force_list

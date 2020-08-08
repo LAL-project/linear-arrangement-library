@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/convert_to_ftree.hpp>
+#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
 
 #define to_int32(x) static_cast<int32_t>(x)
 #define to_uint32(x) static_cast<uint32_t>(x)

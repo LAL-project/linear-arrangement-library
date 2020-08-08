@@ -46,9 +46,9 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/cycles.hpp>
-#include <lal/utils/graphs/reachability.hpp>
-#include <lal/utils/graphs/trees/is_tree.hpp>
+#include <lal/internal/graphs/cycles.hpp>
+#include <lal/internal/graphs/reachability.hpp>
+#include <lal/internal/graphs/trees/is_tree.hpp>
 
 namespace lal {
 namespace graphs {
@@ -57,7 +57,7 @@ namespace graphs {
 free_tree::free_tree(uint32_t n) : undirected_graph(n) { }
 free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
 	// check that the input graph is a ftree
-	assert(utils::is_graph_a_tree(t));
+	assert(internal::is_graph_a_tree(t));
 	add_edges(t.edges());
 }
 //ftree::~ftree() { }
@@ -79,7 +79,7 @@ free_tree& free_tree::add_edges(const vector<edge>& edges, bool norm, bool check
 	// edges. If we asserted "is_ftree", we would require the
 	// user to insert ALL edges at once, but the edges might
 	// not be available.
-	assert(not utils::has_undirected_cycles(*this));
+	assert(not internal::has_undirected_cycles(*this));
 	return *this;
 }
 
@@ -111,7 +111,7 @@ bool free_tree::can_add_edge(node s, node t) const {
 	// Check that adding this edge does not produce cycles.
 	// Adding edge (u,v) produces cycles if 'u' is already
 	// reachable from 'v' or viceversa.
-	return not utils::is_node_reachable_from(*this, s, t);
+	return not internal::is_node_reachable_from(*this, s, t);
 }
 
 bool free_tree::can_add_edges(const vector<edge>& edges) const {
@@ -133,7 +133,7 @@ bool free_tree::can_add_edges(const vector<edge>& edges) const {
 	// 2. add the edges to the copy
 	copy.add_edges(edges, false);
 	// 3. check that there are no cycles in the copy
-	return not utils::has_undirected_cycles(copy);
+	return not internal::has_undirected_cycles(copy);
 }
 
 /* PROTECTED */

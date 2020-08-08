@@ -47,12 +47,12 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/D.hpp>
-#include <lal/utils/sorting/counting_sort.hpp>
-#include <lal/utils/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/sorting/counting_sort.hpp>
+#include <lal/internal/graphs/trees/make_projective_arr.hpp>
 
 namespace lal {
 using namespace graphs;
-using namespace utils;
+using namespace internal;
 
 namespace linarr {
 
@@ -166,7 +166,7 @@ uint32_t make_interval_of(
 	auto key = [](const nodesize& v) -> size_t {
 		return static_cast<size_t>(v.second);
 	};
-	utils::counting_sort<it, nodesize>
+	internal::counting_sort<it, nodesize>
 	(children.begin(), children.end(), max_size + 1, key);
 
 	// ---------------------------

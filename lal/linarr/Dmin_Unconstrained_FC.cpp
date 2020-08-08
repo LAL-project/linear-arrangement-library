@@ -45,10 +45,10 @@
 #include <vector>
 using namespace std;
 
-#include <lal/utils/graphs/traversal.hpp>
-#include <lal/utils/graphs/trees/tree_centroid.hpp>
-#include <lal/utils/graphs/trees/size_subtrees.hpp>
-#include <lal/utils/sorting/counting_sort.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/trees/tree_centroid.hpp>
+#include <lal/internal/graphs/trees/size_subtrees.hpp>
+#include <lal/internal/sorting/counting_sort.hpp>
 
 #define LEFT_ANCHOR -1
 #define RIGHT_ANCHOR 1
@@ -187,7 +187,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
 	uint32_t *s = static_cast<uint32_t *>(malloc(t.n_nodes()*sizeof(uint32_t)));
-	utils::get_size_subtrees(t, u - 1, s);
+	internal::get_size_subtrees(t, u - 1, s);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbours(u - 1);
@@ -201,7 +201,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 		M = std::max(M, s_ui);
 		ord[i].second = ui + 1;
 	}
-	utils::counting_sort<ordering::iterator, size_node>
+	internal::counting_sort<ordering::iterator, size_node>
 	(
 		ord.begin(), ord.end(), M,
 		[](const size_node& p) { return p.first; },
@@ -226,7 +226,7 @@ void calculate_mla_chung(
 {
 	vector<node> reachable;
 	{
-	utils::BFS<free_tree> bfs(t);
+	internal::BFS<free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
 		[&](const auto&, node u) { reachable.push_back(u + 1); }
@@ -248,7 +248,7 @@ void calculate_mla_chung(
 	}
 
 	if (root == NO_ANCHOR) {
-		const node u = utils::retrieve_centroid(t, one_node - 1).first + 1;
+		const node u = internal::retrieve_centroid(t, one_node - 1).first + 1;
 
 		ordering ord;
 		get_ordering(t, u, ord);

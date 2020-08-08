@@ -53,7 +53,7 @@ using namespace std;
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/properties/Q.hpp>
-#include <lal/utils/sorting/bit_sort.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -90,7 +90,7 @@ void graph::normalise() {
 		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
 			//utils::sort_1_n_inc(nu.begin(), nu.end());
-			utils::bit_sort_mem(nu.begin(), nu.end(), mem);
+			internal::bit_sort_mem(nu.begin(), nu.end(), mem);
 		}
 	}
 	m_normalised = true;

@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/gmp/utils.hpp>
+#include <lal/internal/gmp/utils.hpp>
 
 /* This macro takes a signed integer and converts it into an unsigned
  * integer. First, drops the negative sign (if appropriate) and then
@@ -82,7 +82,7 @@ integer::integer(integer&& i) {
 		mpz_clear(m_val);
 	}
 	// steal 'i's contents
-	utils::move_mpz_to_mpz(i.m_val, m_val);
+	internal::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
 }
@@ -176,7 +176,7 @@ integer& integer::operator= (integer&& i) {
 		mpz_clear(m_val);
 	}
 	// steal 'i's contents
-	utils::move_mpz_to_mpz(i.m_val, m_val);
+	internal::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
 	return *this;
@@ -247,7 +247,7 @@ integer& integer::operator^= (uint64_t i) {
 }
 
 integer& integer::operator^= (const integer& i) {
-	utils::mpz_pow_mpz(m_val, m_val, i.m_val);
+	internal::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
 
@@ -276,7 +276,7 @@ int32_t integer::get_sign() const {
 }
 
 size_t integer::bytes() const {
-	return (is_initialized() ? utils::mpz_bytes(m_val) : 0);
+	return (is_initialized() ? internal::mpz_bytes(m_val) : 0);
 }
 
 const mpz_t& integer::get_raw_value() const	{

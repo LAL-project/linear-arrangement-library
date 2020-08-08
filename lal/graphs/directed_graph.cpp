@@ -48,7 +48,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/sorting/bit_sort.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/graphs/output.hpp>
 
@@ -74,11 +74,11 @@ void directed_graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
-			utils::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
+			internal::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
-			utils::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
+			internal::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
 		}
 	}
 	free(mem);
@@ -126,8 +126,8 @@ directed_graph& directed_graph::add_edge(node u, node v, bool to_norm, bool chec
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
-			utils::bit_sort(out_u.begin(), out_u.end());
-			utils::bit_sort(in_v.begin(), in_v.end());
+			internal::bit_sort(out_u.begin(), out_u.end());
+			internal::bit_sort(in_v.begin(), in_v.end());
 		}
 		else if (check_norm) {
 			// Even though we have not been asked to normalise the

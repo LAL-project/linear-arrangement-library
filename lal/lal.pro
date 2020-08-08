@@ -84,25 +84,25 @@ HEADERS += \
 	properties/mhd.hpp \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
-    utils/gmp/utils.hpp \
-    utils/graphs/trees/centre_centroid_utils.hpp \
-    utils/graphs/utils.hpp \
-	utils/macros.hpp \
-	utils/avl.hpp \
-	utils/std_utils.hpp \
-	utils/graphs/cycles.hpp \
-	utils/graphs/reachability.hpp \
-	utils/graphs/traversal.hpp \
-	utils/graphs/trees/convert_to_ftree.hpp \
-	utils/graphs/trees/convert_to_rtree.hpp \
-	utils/graphs/trees/make_projective_arr.hpp \
-	utils/graphs/trees/is_tree.hpp \
-	utils/graphs/trees/size_subtrees.hpp \
-	utils/graphs/trees/tree_centre.hpp \
-	utils/graphs/trees/tree_centroid.hpp \
-	utils/sorting/bit_sort.hpp \
-	utils/sorting/counting_sort.hpp \
-	utils/sorting/insertion_sort.hpp
+	internal/gmp/utils.hpp \
+	internal/graphs/trees/centre_centroid_utils.hpp \
+	internal/graphs/utils.hpp \
+	internal/macros.hpp \
+	internal/avl.hpp \
+	internal/std_utils.hpp \
+	internal/graphs/cycles.hpp \
+	internal/graphs/reachability.hpp \
+	internal/graphs/traversal.hpp \
+	internal/graphs/trees/convert_to_ftree.hpp \
+	internal/graphs/trees/convert_to_rtree.hpp \
+	internal/graphs/trees/make_projective_arr.hpp \
+	internal/graphs/trees/is_tree.hpp \
+	internal/graphs/trees/size_subtrees.hpp \
+	internal/graphs/trees/tree_centre.hpp \
+	internal/graphs/trees/tree_centroid.hpp \
+	internal/sorting/bit_sort.hpp \
+	internal/sorting/counting_sort.hpp \
+	internal/sorting/insertion_sort.hpp
 
 SOURCES += \
     generate/all_lab_free_trees.cpp \
@@ -150,6 +150,6 @@ SOURCES += \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
-	utils/gmp/utils.cpp \
-	utils/graphs/trees/convert_to_ftree.cpp \
-	utils/graphs/trees/convert_to_rtree.cpp
+	internal/gmp/utils.cpp \
+	internal/graphs/trees/convert_to_ftree.cpp \
+	internal/graphs/trees/convert_to_rtree.cpp

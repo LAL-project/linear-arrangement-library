@@ -47,12 +47,12 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/traversal.hpp>
-#include <lal/utils/graphs/trees/is_tree.hpp>
-#include <lal/utils/graphs/trees/size_subtrees.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/trees/is_tree.hpp>
+#include <lal/internal/graphs/trees/size_subtrees.hpp>
 
 namespace lal {
-using namespace utils;
+using namespace internal;
 
 namespace graphs {
 
@@ -229,7 +229,7 @@ void rooted_tree::recalc_size_subtrees() {
 	m_need_recalc_size_subtrees = false;
 	m_size_subtrees.resize(n_nodes(), 0);
 
-	utils::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
+	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
 /* SETTERS */
@@ -273,7 +273,7 @@ bool rooted_tree::can_add_edge(node s, node t) const {
 	copy.add_edge(s, t);
 	// convert the directed graph to an undirected graph
 	// and make sure that there are no loops in that
-	return not utils::has_undirected_cycles(copy);
+	return not internal::has_undirected_cycles(copy);
 }
 
 bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
@@ -296,7 +296,7 @@ bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
 	copy.add_edges(edges);
 	// convert the directed graph to an undirected graph
 	// and make sure that there are no loops in that
-	return not utils::has_undirected_cycles(copy);
+	return not internal::has_undirected_cycles(copy);
 }
 
 bool rooted_tree::is_rooted() const { return true; }

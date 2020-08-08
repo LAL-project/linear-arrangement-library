@@ -47,8 +47,8 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
-#include <lal/utils/graphs/utils.hpp>
+#include <lal/internal/macros.hpp>
+#include <lal/internal/graphs/utils.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -83,7 +83,7 @@ inline uint32_t __compute_C_ladder(
 		uint32_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
-		utils::get_bool_neighbours(g, u, bn);
+		internal::get_bool_neighbours(g, u, bn);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
 			const node v = T[q];
@@ -137,7 +137,7 @@ inline uint32_t __call_C_ladder(const undirected_graph& g, const linearrgmnt& pi
 
 uint32_t __n_crossings_ladder(const undirected_graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__call_C_ladder, g, pi);
+	return internal::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
 vector<uint32_t> __n_crossings_ladder_list

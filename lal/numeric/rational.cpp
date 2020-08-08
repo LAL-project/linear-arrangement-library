@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/gmp/utils.hpp>
+#include <lal/internal/gmp/utils.hpp>
 
 namespace lal {
 namespace numeric {
@@ -81,7 +81,7 @@ rational::rational(integer&& i) {
 		clear();
 	}
 	// steal 'r's contents
-	utils::move_mpz_to_mpq(i.m_val, m_val);
+	internal::move_mpz_to_mpq(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
 }
@@ -99,7 +99,7 @@ rational::rational(rational&& r) {
 		clear();
 	}
 	// steal 'r's contents
-	utils::move_mpq_to_mpq(r.m_val, m_val);
+	internal::move_mpq_to_mpq(r.m_val, m_val);
 	m_initialized = true;
 	r.m_initialized = false; // better be safe than sorry
 }
@@ -226,7 +226,7 @@ rational& rational::operator= (integer&& i) {
 		clear();
 	}
 	// steal 'r's contents
-	utils::move_mpz_to_mpq(i.m_val, m_val);
+	internal::move_mpz_to_mpq(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
 	return *this;
@@ -243,7 +243,7 @@ rational& rational::operator= (rational&& r) {
 		clear();
 	}
 	// steal 'r's contents
-	utils::move_mpq_to_mpq(r.m_val, m_val);
+	internal::move_mpq_to_mpq(r.m_val, m_val);
 	m_initialized = true;
 	r.m_initialized = false; // better be safe than sorry
 	return *this;
@@ -306,38 +306,38 @@ rational rational::operator/ (const rational& r) const	{ rational k(*this); k /=
 
 rational& rational::operator/= (int64_t I) {
 	integer i(I);
-	utils::mpz_divide_mpq(m_val, i.get_raw_value());
+	internal::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;
 }
 
 rational& rational::operator/= (const integer& i) {
-	utils::mpz_divide_mpq(m_val, i.get_raw_value());
+	internal::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;
 }
 rational& rational::operator/= (const rational& r) {
-	utils::mpq_divide_mpq(m_val, r.m_val);
+	internal::mpq_divide_mpq(m_val, r.m_val);
 	return *this;
 }
 
 rational rational::operator^ (uint64_t p) const {
 	rational r(*this);
-	utils::operate_power(r.m_val, p);
+	internal::operate_power(r.m_val, p);
 	return r;
 }
 
 rational rational::operator^ (const integer& p) const {
 	rational r(*this);
-	utils::operate_power(r.m_val, p.get_raw_value());
+	internal::operate_power(r.m_val, p.get_raw_value());
 	return r;
 }
 
 rational& rational::operator^= (uint64_t p) {
-	utils::operate_power(m_val, p);
+	internal::operate_power(m_val, p);
 	return *this;
 }
 
 rational& rational::operator^= (const integer& p) {
-	utils::operate_power(m_val, p.get_raw_value());
+	internal::operate_power(m_val, p.get_raw_value());
 	return *this;
 }
 
@@ -362,8 +362,8 @@ size_t rational::bytes() const {
 	mpq_get_num(num, m_val);
 	mpq_get_den(den, m_val);
 
-	size_t bs = utils::mpz_bytes(num) +
-				utils::mpz_bytes(den);
+	size_t bs = internal::mpz_bytes(num) +
+				internal::mpz_bytes(den);
 
 	mpz_clears(num, den, NULL);
 

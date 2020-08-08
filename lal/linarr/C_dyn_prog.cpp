@@ -47,8 +47,8 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
-#include <lal/utils/graphs/utils.hpp>
+#include <lal/internal/macros.hpp>
+#include <lal/internal/graphs/utils.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 
@@ -81,7 +81,7 @@ inline uint32_t __compute_C_dyn_prog(
 		// node at position pu + 1
 		const node u = T[pu + 1];
 
-		utils::get_bool_neighbours(g, u, bn);
+		internal::get_bool_neighbours(g, u, bn);
 
 		uint32_t k = g.degree(u);
 
@@ -215,7 +215,7 @@ inline uint32_t __call_C_dyn_prog(const undirected_graph& g, const linearrgmnt& 
 
 uint32_t __n_crossings_dyn_prog(const undirected_graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
+	return internal::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
 vector<uint32_t> __n_crossings_dyn_prog_list

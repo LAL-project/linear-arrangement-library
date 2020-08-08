@@ -51,8 +51,8 @@ using namespace std;
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/tree_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/utils/macros.hpp>
-#include <lal/utils/sorting/bit_sort.hpp>
+#include <lal/internal/macros.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define enum_to_int(e) static_cast<size_t>(e)
@@ -129,7 +129,7 @@ inline void __get_yields(
 		}
 	}
 
-	utils::bit_sort(yields[u].begin(), yields[u].end());
+	internal::bit_sort(yields[u].begin(), yields[u].end());
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
@@ -315,7 +315,7 @@ vector<bool> classify_tree_structure(const rooted_tree& rT, const linearrgmnt& p
 		__set_type(cls, tree_structure::projective);
 		return cls;
 	}
-	return utils::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
+	return internal::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
 }
 
 } // -- namespace linarr

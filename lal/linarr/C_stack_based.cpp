@@ -48,8 +48,8 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
-#include <lal/utils/avl.hpp>
+#include <lal/internal/macros.hpp>
+#include <lal/internal/avl.hpp>
 
 typedef pair<uint32_t,lal::edge> indexed_edge;
 
@@ -128,7 +128,7 @@ inline uint32_t __compute_C_stack_based(
 	}
 
 	// stack of the algorithm
-	utils::AVL<pair<uint32_t, edge> > S;
+	internal::AVL<pair<uint32_t, edge> > S;
 
 	uint32_t C = 0;
 
@@ -176,7 +176,7 @@ inline uint32_t __call_C_stack_based(const undirected_graph& g, const linearrgmn
 
 uint32_t __n_crossings_stack_based(const undirected_graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__call_C_stack_based, g, pi);
+	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
 vector<uint32_t> __n_crossings_stack_based_list

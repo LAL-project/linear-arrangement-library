@@ -51,7 +51,7 @@ using namespace std;
 #define inf numeric_limits<size>::max()
 
 // lal includes
-#include <lal/utils/graphs/trees/convert_to_ftree.hpp>
+#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -134,7 +134,7 @@ free_tree all_lab_free_trees::get_tree() const {
 		return t;
 	}
 
-	return utils::Prufer_sequence_to_tree(m_seq, m_n);
+	return internal::Prufer_sequence_to_tree(m_seq, m_n);
 }
 
 } // -- namespace generate

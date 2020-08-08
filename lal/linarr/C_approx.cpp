@@ -47,7 +47,7 @@ using namespace std;
 
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/utils/macros.hpp>
+#include <lal/internal/macros.hpp>
 
 #define to_int32(x) static_cast<int32_t>(x)
 #define to_uint32(x) static_cast<uint32_t>(x)
@@ -179,7 +179,7 @@ rational __get_approximate_C_2_rational(const undirected_graph& g, const linearr
 
 rational approximate_C_rational(const undirected_graph& g, const linearrgmnt& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
-	return utils::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
+	return internal::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 
 double approximate_C(const undirected_graph& g, const linearrgmnt& pi) {

@@ -45,12 +45,12 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/traversal.hpp>
+#include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
 using namespace graphs;
 using namespace numeric;
-using namespace utils;
+using namespace internal;
 
 namespace properties {
 

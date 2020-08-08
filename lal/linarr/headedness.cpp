@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/macros.hpp>
+#include <lal/internal/macros.hpp>
 #include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
@@ -66,7 +66,7 @@ inline uint32_t __headedness_rational(const directed_graph& g, const linearrgmnt
 }
 
 rational headedness_rational(const directed_graph& g, const linearrgmnt& pi) {
-	const uint32_t etr = utils::call_with_empty_arrangement(__headedness_rational, g, pi);
+	const uint32_t etr = internal::call_with_empty_arrangement(__headedness_rational, g, pi);
 	// avoid warning conversion
 	return rational_from_ui(etr, g.n_edges());
 }

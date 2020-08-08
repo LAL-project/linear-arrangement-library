@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/convert_to_ftree.hpp>
+#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -86,7 +86,7 @@ free_tree rand_lab_free_trees::make_rand_tree() {
 	for (uint32_t i = 0; i < m_n - 2; ++i) {
 		m_seq[i] = m_unif(m_gen);
 	}
-	return utils::Prufer_sequence_to_tree(m_seq, m_n);
+	return internal::Prufer_sequence_to_tree(m_seq, m_n);
 }
 
 } // -- namespace generate

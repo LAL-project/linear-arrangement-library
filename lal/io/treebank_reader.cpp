@@ -50,7 +50,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/utils/graphs/trees/convert_to_rtree.hpp>
+#include <lal/internal/graphs/trees/convert_to_rtree.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -130,7 +130,7 @@ rooted_tree treebank_reader::get_tree() const {
 	}
 
 	uint32_t n = static_cast<uint32_t>(L.size()) - 1;
-	return utils::linear_sequence_to_tree(L, n);
+	return internal::linear_sequence_to_tree(L, n);
 }
 
 } // -- namespace io
