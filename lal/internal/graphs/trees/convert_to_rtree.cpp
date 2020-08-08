@@ -50,8 +50,8 @@ using namespace graphs;
 
 namespace internal {
 
-rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
-	assert(L.size() == n + 1);
+rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L) {
+	const uint32_t n = static_cast<uint32_t>(L.size());
 
 	// edges of the tree
 	vector<edge> edges(n - 1);
@@ -65,17 +65,19 @@ rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
 	// so compiler does not cry)
 	node r = 0;
 
-	for (uint32_t i = 1; i <= n; ++i) {
+	for (uint32_t i = 0; i < n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
-			r = i - 1;
+			r = i;
 #if defined DEBUG
 			root_set = true;
 #endif
 		}
 		else {
-			// add the edge...
-			*eit++ = edge(i - 1, L[i] - 1);
+			// add the edge
+			// i ranges in [0,n-1]
+			// L[i] ranges in [1,n]
+			*eit++ = edge(i, L[i] - 1);
 		}
 	}
 

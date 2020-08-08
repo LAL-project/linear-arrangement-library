@@ -121,16 +121,11 @@ rooted_tree treebank_reader::get_tree() const {
 
 	// parent of each node
 	vector<node> L;
-	// add a dummy value so that conversion
-	// code can be made more readable
-	L.push_back(0);
+	// read parents
 	node k;
-	while (ss >> k) {
-		L.push_back(k);
-	}
+	while (ss >> k) { L.push_back(k); }
 
-	uint32_t n = static_cast<uint32_t>(L.size()) - 1;
-	return internal::linear_sequence_to_tree(L, n);
+	return internal::linear_sequence_to_tree(L);
 }
 
 } // -- namespace io
