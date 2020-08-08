@@ -90,7 +90,6 @@ HEADERS += \
 	utils/macros.hpp \
 	utils/avl.hpp \
 	utils/std_utils.hpp \
-	utils/Dmin/common.hpp \
 	utils/graphs/cycles.hpp \
 	utils/graphs/reachability.hpp \
 	utils/graphs/traversal.hpp \
@@ -151,7 +150,6 @@ SOURCES += \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
-	utils/Dmin/common.cpp \
 	utils/gmp/utils.cpp \
 	utils/graphs/trees/convert_to_ftree.cpp \
 	utils/graphs/trees/convert_to_rtree.cpp

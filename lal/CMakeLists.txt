@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-# needed includes to make CMake work
-include(CheckCXXCompilerFlag)
+# needed includes to make CMake work include(CheckCXXCompilerFlag)
 # installation directories (platform dependent)
 include(GNUInstallDirs)
 
@@ -255,7 +254,6 @@ target_sources(
 		utils/macros.hpp
 		utils/std_utils.hpp
 		# -- sources
-		utils/Dmin/common.cpp
 		utils/gmp/utils.cpp
 		utils/graphs/trees/convert_to_ftree.cpp
 		utils/graphs/trees/convert_to_rtree.cpp
