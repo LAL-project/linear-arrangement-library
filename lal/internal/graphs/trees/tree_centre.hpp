@@ -51,11 +51,11 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/utils/graphs/traversal.hpp>
-#include <lal/utils/graphs/trees/centre_centroid_utils.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/trees/centre_centroid_utils.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /*
  * @brief Calculate the centre of the connected component that has node @e x.
@@ -251,5 +251,5 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 }
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

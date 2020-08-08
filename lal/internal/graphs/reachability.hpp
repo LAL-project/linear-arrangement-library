@@ -42,37 +42,27 @@
 #pragma once
 
 // lal includes
-#include <lal/utils/graphs/traversal.hpp>
-#include <lal/utils/graphs/cycles.hpp>
+#include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /*
- * @brief Returns true if, and only if, the graph is a tree.
- *
- * By definition, an undirected graph is a tree if it does not contain
- * cycles and has one single connected component. Note that isloated nodes
- * count as single connected components.
- *
- * In an attempt to extend the usage of this method, directed graphs are
- * also allowed. In this case, since the data structure allows it, the
- * algorithm looks for undirected cycles in the directed graph.
+ * @brief Returns true if, and only if, node target is reachable from node source.
  * @param g Input graph.
+ * @param source Node where the search starts at.
+ * @param target The node we want to know whether it is reachable from
+ * @e source or not.
  */
-template<class G>
-bool is_graph_a_tree(const G& t) {
-	const auto n = t.n_nodes();
-
-	// simple cases
-	if (n <= 1) { return true; }
-	if (n == 2) { return t.n_edges() == 1; }
-	if (n == 3) { return t.n_edges() == 2; }
-
-	BFS<G> bfs(t);
-	const bool cycle_found = has_undirected_cycles(t, bfs);
-	return not cycle_found and bfs.all_visited();
+template<class G, typename node = typename lal::node>
+bool is_node_reachable_from(const G& g, const node source, const node target) {
+	BFS<G> bfs(g);
+	bfs.set_terminate(
+		[target](const auto&, const node s) -> bool { return (s == target); }
+	);
+	bfs.start_at(source);
+	return bfs.node_was_visited(target);
 }
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

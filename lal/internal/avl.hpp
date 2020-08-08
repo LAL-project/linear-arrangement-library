@@ -47,7 +47,7 @@
 #include <cmath>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 template<class T>
 class AVL {
@@ -626,5 +626,5 @@ class AVL {
 		}
 };
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

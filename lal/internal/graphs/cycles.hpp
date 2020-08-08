@@ -42,10 +42,10 @@
 #pragma once
 
 #include <lal/graphs/directed_graph.hpp>
-#include <lal/utils/graphs/traversal.hpp>
+#include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 namespace __lal {
 
@@ -174,5 +174,5 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	return cycle_found;
 }
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

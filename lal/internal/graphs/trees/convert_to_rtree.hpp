@@ -41,28 +41,28 @@
 
 #pragma once
 
+// C++ includes
+#include <vector>
+
 // lal includes
-#include <lal/utils/graphs/traversal.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /*
- * @brief Returns true if, and only if, node target is reachable from node source.
- * @param g Input graph.
- * @param source Node where the search starts at.
- * @param target The node we want to know whether it is reachable from
- * @e source or not.
+ * @brief Converts a linear sequence of a tree to a graph structure.
+ *
+ * A linear sequence of a tree of @e n nodes is an array of
+ * @e n + 1 integers where the values in the positions from 1 to @e n, both
+ * included, describe the tree. The value '0' indicates the root, while a
+ * strictly positive value indicates parent node.
+ * @param L The linear sequence. It must have size @e n + 1.
+ * @param n Number of nodes of the tree.
+ * @return Returns the rooted tree built with @e L. The tree is an arborescence.
  */
-template<class G, typename node = typename lal::node>
-bool is_node_reachable_from(const G& g, const node source, const node target) {
-	BFS<G> bfs(g);
-	bfs.set_terminate(
-		[target](const auto&, const node s) -> bool { return (s == target); }
-	);
-	bfs.start_at(source);
-	return bfs.node_was_visited(target);
-}
+graphs::rooted_tree linear_sequence_to_tree
+(const std::vector<uint32_t>& L, uint32_t n);
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

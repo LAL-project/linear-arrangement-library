@@ -38,46 +38,54 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
-
+ 
 #pragma once
 
 // C++ includes
-#include <functional>
-#include <numeric>
+#include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
-namespace utils {
-
-// Function used to tell the compiler what is not used.
-template<class T>
-inline void UNUSED(const T& x) { (void)x; }
+namespace internal {
 
 /*
- * @brief Call a function @e F that does not admit empty arrangements.
+ * @brief Converts the level sequence of a tree into a graph structure.
  *
- * In case the arrangement @e pi is empty, function @e F is passed the
- * identity arrangement.
- * @param F Function to call.
- * @param g Input graph.
- * @param pi Arrangement.
- * @return Returns the value function @e F returns.
+ * Examples of level sequences:
+ * -- linear tree of n nodes:
+ *		0 1 2 3 4 ... (n-1) n
+ * -- star tree of n nodes
+ *		0 1 2 2 2 .... 2 2
+ *          |------------| > (n-1) two's
+ *
+ * @param L The level sequence, in preorder.
+ * @param n Number of nodes of the tree.
+ *
+ * @pre n >= 2.
+ * @pre The size of L is exactly @e n + 1.
+ * @pre The first value of a sequence must be a zero.
+ * @pre The second value of a sequence must be a one.
+ *
+ * @return Returns the tree built with the sequence level @e L.
  */
-template<typename T, class G>
-T call_with_empty_arrangement(
-	T (*F)(const G&, const linearrgmnt&),
-	const G& g, const linearrgmnt& pi
-)
-{
-	if (pi.size() != 0) {
-		return F(g,pi);
-	}
-	linearrgmnt __pi(g.n_nodes());
-	std::iota(__pi.begin(), __pi.end(), 0);
-	return F(g,__pi);
-}
+graphs::free_tree level_sequence_to_tree
+(const std::vector<uint32_t>& L, uint32_t n);
 
-} // -- namespace utils
+/*
+ * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
+ *
+ * For details on Prüfer sequences, see \cite Pruefer1918a.
+ *
+ * The algorithm used to decode the sequence is the one presented in
+ * \cite Alonso1995a.
+ * @param S The Prufer sequence sequence.
+ * @param n Number of nodes of the tree.
+ * @return Returns the tree built with @e L.
+ */
+graphs::free_tree Prufer_sequence_to_tree
+(const std::vector<uint32_t>& S, uint32_t n);
+
+} // -- namespace internal
 } // -- namespace lal

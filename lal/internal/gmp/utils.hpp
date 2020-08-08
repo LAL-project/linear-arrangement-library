@@ -48,7 +48,7 @@
 #include <gmp.h>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /* Other arithmetic operations */
 
@@ -148,5 +148,5 @@ void move_mpq_to_mpq(mpq_t& source, mpq_t& target);
  */
 void move_mpz_to_mpq(mpz_t& source, mpq_t& target);
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

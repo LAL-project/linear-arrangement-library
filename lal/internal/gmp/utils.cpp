@@ -39,10 +39,10 @@
  *
  ********************************************************************/
  
-#include <lal/utils/gmp/utils.hpp>
+#include <lal/internal/gmp/utils.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) {
 	if (mpz_fits_ulong_p(e)) {

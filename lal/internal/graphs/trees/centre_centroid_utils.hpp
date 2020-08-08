@@ -42,52 +42,30 @@
 #pragma once
 
 // lal includes
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
- * list of 0-1 values.
- *
- * Sets to 1 the positions in @e neighs that correspond to the nodes
- * neighours of @e u.
- * @param g Input graph.
- * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
- * @pre The contents of @e neighs must be all 0 (or false).
- */
-inline void get_bool_neighbours(
-	const graphs::undirected_graph& g, node u, char *neighs
-)
-{
-	for (const node v : g.get_neighbours(u)) {
-		neighs[v] = 1;
-	}
+namespace __lal {
+
+inline uint32_t __degree(const graphs::rooted_tree& t, const node s)
+{ return t.out_degree(s) + t.in_degree(s); }
+
+inline uint32_t __degree(const graphs::free_tree& t, const node s)
+{ return t.degree(s); }
+
+inline node __only_neighbour(const graphs::rooted_tree& t, const node s) {
+	return
+	(t.out_degree(s) == 0 ? t.get_in_neighbours(s)[0] : t.get_out_neighbours(s)[0]);
 }
 
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
- * list of 0-1 values.
- *
- * Sets to 1 the positions in @e neighs that correspond to the nodes
- * neighours of @e u.
- * @param g Input graph.
- * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
- * @pre The contents of @e neighs must be all 0 (or false).
- */
-inline void get_bool_neighbours(
-	const graphs::directed_graph& g, node u, char *neighs
-)
-{
-	for (const node v : g.get_in_neighbours(u)) {
-		neighs[v] = 1;
-	}
-	for (const node v : g.get_out_neighbours(u)) {
-		neighs[v] = 1;
-	}
+inline node __only_neighbour(const graphs::free_tree& t, const node s) {
+	return t.get_neighbours(s)[0];
 }
 
-} // -- namespace utils
+} // -- namespace __lal
+
+} // -- namespace internal
 } // -- namespace lal

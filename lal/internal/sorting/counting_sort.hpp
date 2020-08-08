@@ -41,31 +41,84 @@
 
 #pragma once
 
-// lal includes
-#include <lal/graphs/free_tree.hpp>
-#include <lal/graphs/rooted_tree.hpp>
+// C++ includes
+#include <functional>
+#include <cstring>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
-namespace __lal {
+/*
+ * @brief Counting sort algorithm.
+ *
+ * This algorithm is interesting for sorting containers with non-unique values.
+ * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
+ *
+ * @param begin Iterator at the beginning of the range.
+ * @param end Iterator at the end of the range.
+ * @param M Integer value equal to the largest key that can be obtained with
+ * function @e key.
+ * @param key Function that returns a single integer value used to compare the
+ * elements.
+ * @post The elements in the range [begin,end) are sorted increasingly.
+ */
+template<
+	typename It,
+	typename T = typename std::iterator_traits<It>::value_type
+>
+void counting_sort(
+	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key,
+	bool increasing = true
+)
+{
+	// increase
+	const size_t M = _M + 1;
 
-inline uint32_t __degree(const graphs::rooted_tree& t, const node s)
-{ return t.out_degree(s) + t.in_degree(s); }
+	// size of the container to be sorted
+	const size_t S = std::distance(begin, end);
 
-inline uint32_t __degree(const graphs::free_tree& t, const node s)
-{ return t.degree(s); }
+	// allocate memory
+	T *output = static_cast<T *>(malloc(S*sizeof(T)));
+	size_t *count = static_cast<size_t *>(malloc(M*sizeof(size_t)));
 
-inline node __only_neighbour(const graphs::rooted_tree& t, const node s) {
-	return
-	(t.out_degree(s) == 0 ? t.get_in_neighbours(s)[0] : t.get_out_neighbours(s)[0]);
+	// initialise memory
+	memset(count, 0, M*sizeof(size_t));
+
+	// calculate frequency of each element
+	for (auto it = begin; it != end; ++it) {
+		const size_t elem_key = key(*it);
+		count[elem_key] += 1;
+	}
+
+	size_t total = 0;
+	for (size_t k = 0; k < M; ++k) {
+		std::tie(count[k], total)
+			= std::make_pair(total, count[k] + total);
+	}
+	auto it = begin;
+	for (; it != end; ++it) {
+		const size_t elem_key = key(*it);
+		output[count[elem_key]] = *it;
+		count[elem_key] += 1;
+	}
+
+	// calculate output
+	if (increasing) {
+		it = begin;
+		for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
+	}
+	else {
+		it = begin;
+		for (size_t k = S - 1; k > 0; --k, ++it) {
+			*it = output[k];
+		}
+		*it = output[0];
+	}
+
+	// free memory
+	free(output);
+	free(count);
 }
 
-inline node __only_neighbour(const graphs::free_tree& t, const node s) {
-	return t.get_neighbours(s)[0];
-}
-
-} // -- namespace __lal
-
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

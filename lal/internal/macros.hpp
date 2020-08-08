@@ -43,82 +43,41 @@
 
 // C++ includes
 #include <functional>
-#include <cstring>
+#include <numeric>
+
+// lal includes
+#include <lal/definitions.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
+
+// Function used to tell the compiler what is not used.
+template<class T>
+inline void UNUSED(const T& x) { (void)x; }
 
 /*
- * @brief Counting sort algorithm.
+ * @brief Call a function @e F that does not admit empty arrangements.
  *
- * This algorithm is interesting for sorting containers with non-unique values.
- * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
- *
- * @param begin Iterator at the beginning of the range.
- * @param end Iterator at the end of the range.
- * @param M Integer value equal to the largest key that can be obtained with
- * function @e key.
- * @param key Function that returns a single integer value used to compare the
- * elements.
- * @post The elements in the range [begin,end) are sorted increasingly.
+ * In case the arrangement @e pi is empty, function @e F is passed the
+ * identity arrangement.
+ * @param F Function to call.
+ * @param g Input graph.
+ * @param pi Arrangement.
+ * @return Returns the value function @e F returns.
  */
-template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type
->
-void counting_sort(
-	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key,
-	bool increasing = true
+template<typename T, class G>
+T call_with_empty_arrangement(
+	T (*F)(const G&, const linearrgmnt&),
+	const G& g, const linearrgmnt& pi
 )
 {
-	// increase
-	const size_t M = _M + 1;
-
-	// size of the container to be sorted
-	const size_t S = std::distance(begin, end);
-
-	// allocate memory
-	T *output = static_cast<T *>(malloc(S*sizeof(T)));
-	size_t *count = static_cast<size_t *>(malloc(M*sizeof(size_t)));
-
-	// initialise memory
-	memset(count, 0, M*sizeof(size_t));
-
-	// calculate frequency of each element
-	for (auto it = begin; it != end; ++it) {
-		const size_t elem_key = key(*it);
-		count[elem_key] += 1;
+	if (pi.size() != 0) {
+		return F(g,pi);
 	}
-
-	size_t total = 0;
-	for (size_t k = 0; k < M; ++k) {
-		std::tie(count[k], total)
-			= std::make_pair(total, count[k] + total);
-	}
-	auto it = begin;
-	for (; it != end; ++it) {
-		const size_t elem_key = key(*it);
-		output[count[elem_key]] = *it;
-		count[elem_key] += 1;
-	}
-
-	// calculate output
-	if (increasing) {
-		it = begin;
-		for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
-	}
-	else {
-		it = begin;
-		for (size_t k = S - 1; k > 0; --k, ++it) {
-			*it = output[k];
-		}
-		*it = output[0];
-	}
-
-	// free memory
-	free(output);
-	free(count);
+	linearrgmnt __pi(g.n_nodes());
+	std::iota(__pi.begin(), __pi.end(), 0);
+	return F(g,__pi);
 }
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

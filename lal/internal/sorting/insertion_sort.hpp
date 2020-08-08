@@ -42,54 +42,33 @@
 #pragma once
 
 // C++ includes
-#include <vector>
-
-// lal includes
-#include <lal/graphs/rooted_tree.hpp>
+#include <algorithm> // std::swap
 
 namespace lal {
-namespace utils {
+namespace internal {
 
-namespace __lal {
-inline void __put_in_arrangement(
-	const graphs::rooted_tree& T, node r,
-	const std::vector<std::vector<lal::node>>& data,
-	uint32_t& pos, linearrgmnt& arr
-)
-{
-	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.degree(r);
-
-	// vertex 'r' is a leaf
-	if (d_out == 0) {
-		arr[r] = pos;
-		pos += 1;
-		return;
-	}
-	const std::vector<lal::node>& interval = data[r];
-	for (size_t i = 0; i < interval.size(); ++i) {
-		const node vi = interval[i];
-		if (vi == r) {
-			arr[vi] = pos;
-			pos += 1;
+/*
+ * @brief Insertion sort.
+ *
+ * @param begin Iterator at the beginning of the container.
+ * @param end Iterator at the end of the container.
+ * @post The elements in the range [begin,end) are sorted increasingly.
+ */
+template<typename It>
+void insertion_sort(It begin, It end) {
+	for (It i = begin + 1; i != end; ++i) {
+		It nj = i;
+		It j = i - 1;
+		while (*j > *nj and j != begin) {
+			std::swap(*j, *nj);
+			--j;
+			--nj;
 		}
-		else {
-			__put_in_arrangement(T, vi, data, pos, arr);
-		}
+		if (*j > *nj) { std::swap(*j, *nj); }
 	}
 }
-} // -- namespace __lal
 
-inline linearrgmnt put_in_arrangement(
-	const graphs::rooted_tree& T,
-	const std::vector<std::vector<lal::node>>& data
-)
-{
-	linearrgmnt arr(T.n_nodes());
-	uint32_t pos = 0;
-	__lal::__put_in_arrangement(T, T.get_root(), data, pos, arr);
-	return arr;
-}
-
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal
+
+

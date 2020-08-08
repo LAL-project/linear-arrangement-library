@@ -49,7 +49,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 namespace __lal {
 
@@ -158,5 +158,5 @@ inline void get_size_subtrees(
 	free(vis);
 }
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

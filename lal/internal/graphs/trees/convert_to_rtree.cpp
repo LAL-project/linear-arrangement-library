@@ -39,36 +39,55 @@
  *
  ********************************************************************/
 
-#pragma once
+#include <lal/internal/graphs/trees/convert_to_rtree.hpp>
 
 // C++ includes
-#include <algorithm> // std::swap
+#include <cassert>
+using namespace std;
 
 namespace lal {
-namespace utils {
+using namespace graphs;
 
-/*
- * @brief Insertion sort.
- *
- * @param begin Iterator at the beginning of the container.
- * @param end Iterator at the end of the container.
- * @post The elements in the range [begin,end) are sorted increasingly.
- */
-template<typename It>
-void insertion_sort(It begin, It end) {
-	for (It i = begin + 1; i != end; ++i) {
-		It nj = i;
-		It j = i - 1;
-		while (*j > *nj and j != begin) {
-			std::swap(*j, *nj);
-			--j;
-			--nj;
+namespace internal {
+
+rooted_tree linear_sequence_to_tree(const vector<uint32_t>& L, uint32_t n) {
+	assert(L.size() == n + 1);
+
+	// edges of the tree
+	vector<edge> edges(n - 1);
+	auto eit = edges.begin();
+
+#if defined DEBUG
+	// variable to make sure that the root has been set
+	bool root_set = false;
+#endif
+	// root node of the tree (initiliased
+	// so compiler does not cry)
+	node r = 0;
+
+	for (uint32_t i = 1; i <= n; ++i) {
+		if (L[i] == 0) {
+			// root, do nothing
+			r = i - 1;
+#if defined DEBUG
+			root_set = true;
+#endif
 		}
-		if (*j > *nj) { std::swap(*j, *nj); }
+		else {
+			// add the edge...
+			*eit++ = edge(i - 1, L[i] - 1);
+		}
 	}
+
+#if defined DEBUG
+	// root must have been set.
+	assert(root_set);
+#endif
+
+	free_tree t(n);
+	t.add_edges(edges);
+	return rooted_tree(t, r);
 }
 
-} // -- namespace utils
+} // -- namespace convert
 } // -- namespace lal
-
-

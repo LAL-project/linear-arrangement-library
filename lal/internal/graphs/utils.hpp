@@ -41,28 +41,53 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
-#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
-/*
- * @brief Converts a linear sequence of a tree to a graph structure.
+/* @brief Retrieves the neighbours of a node in an undirected graph as a
+ * list of 0-1 values.
  *
- * A linear sequence of a tree of @e n nodes is an array of
- * @e n + 1 integers where the values in the positions from 1 to @e n, both
- * included, describe the tree. The value '0' indicates the root, while a
- * strictly positive value indicates parent node.
- * @param L The linear sequence. It must have size @e n + 1.
- * @param n Number of nodes of the tree.
- * @return Returns the rooted tree built with @e L. The tree is an arborescence.
+ * Sets to 1 the positions in @e neighs that correspond to the nodes
+ * neighours of @e u.
+ * @param g Input graph.
+ * @param u Input node.
+ * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
  */
-graphs::rooted_tree linear_sequence_to_tree
-(const std::vector<uint32_t>& L, uint32_t n);
+inline void get_bool_neighbours(
+	const graphs::undirected_graph& g, node u, char *neighs
+)
+{
+	for (const node v : g.get_neighbours(u)) {
+		neighs[v] = 1;
+	}
+}
 
-} // -- namespace utils
+/* @brief Retrieves the neighbours of a node in an undirected graph as a
+ * list of 0-1 values.
+ *
+ * Sets to 1 the positions in @e neighs that correspond to the nodes
+ * neighours of @e u.
+ * @param g Input graph.
+ * @param u Input node.
+ * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
+ */
+inline void get_bool_neighbours(
+	const graphs::directed_graph& g, node u, char *neighs
+)
+{
+	for (const node v : g.get_in_neighbours(u)) {
+		neighs[v] = 1;
+	}
+	for (const node v : g.get_out_neighbours(u)) {
+		neighs[v] = 1;
+	}
+}
+
+} // -- namespace internal
 } // -- namespace lal

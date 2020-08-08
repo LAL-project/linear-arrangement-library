@@ -47,10 +47,10 @@
 #include <cstring>
 
 // lal includes
-#include <lal/utils/sorting/insertion_sort.hpp>
+#include <lal/internal/sorting/insertion_sort.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 namespace __lal {
 

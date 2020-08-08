@@ -53,7 +53,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /* This class implements an abstract graph traversal traversal. It can be
  * instantiated with std::queue<> or with std::stack<> in order to obtain a
@@ -387,5 +387,5 @@ using BFS = GR_TR<std::queue<node>, G, node>;
 template<class G, typename node = typename lal::node>
 using DFS = GR_TR<std::stack<node>, G, node>;
 
-} // -- namespace utils
+} // -- namespace internal
 } // -- namespace lal

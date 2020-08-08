@@ -38,54 +38,41 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
-#include <lal/graphs/free_tree.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/cycles.hpp>
 
 namespace lal {
-namespace utils {
+namespace internal {
 
 /*
- * @brief Converts the level sequence of a tree into a graph structure.
+ * @brief Returns true if, and only if, the graph is a tree.
  *
- * Examples of level sequences:
- * -- linear tree of n nodes:
- *		0 1 2 3 4 ... (n-1) n
- * -- star tree of n nodes
- *		0 1 2 2 2 .... 2 2
- *          |------------| > (n-1) two's
+ * By definition, an undirected graph is a tree if it does not contain
+ * cycles and has one single connected component. Note that isloated nodes
+ * count as single connected components.
  *
- * @param L The level sequence, in preorder.
- * @param n Number of nodes of the tree.
- *
- * @pre n >= 2.
- * @pre The size of L is exactly @e n + 1.
- * @pre The first value of a sequence must be a zero.
- * @pre The second value of a sequence must be a one.
- *
- * @return Returns the tree built with the sequence level @e L.
+ * In an attempt to extend the usage of this method, directed graphs are
+ * also allowed. In this case, since the data structure allows it, the
+ * algorithm looks for undirected cycles in the directed graph.
+ * @param g Input graph.
  */
-graphs::free_tree level_sequence_to_tree
-(const std::vector<uint32_t>& L, uint32_t n);
+template<class G>
+bool is_graph_a_tree(const G& t) {
+	const auto n = t.n_nodes();
 
-/*
- * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
- *
- * For details on Prüfer sequences, see \cite Pruefer1918a.
- *
- * The algorithm used to decode the sequence is the one presented in
- * \cite Alonso1995a.
- * @param S The Prufer sequence sequence.
- * @param n Number of nodes of the tree.
- * @return Returns the tree built with @e L.
- */
-graphs::free_tree Prufer_sequence_to_tree
-(const std::vector<uint32_t>& S, uint32_t n);
+	// simple cases
+	if (n <= 1) { return true; }
+	if (n == 2) { return t.n_edges() == 1; }
+	if (n == 3) { return t.n_edges() == 2; }
 
-} // -- namespace utils
+	BFS<G> bfs(t);
+	const bool cycle_found = has_undirected_cycles(t, bfs);
+	return not cycle_found and bfs.all_visited();
+}
+
+} // -- namespace internal
 } // -- namespace lal
