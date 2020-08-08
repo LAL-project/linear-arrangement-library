@@ -87,5 +87,19 @@ graphs::free_tree level_sequence_to_ftree
 graphs::free_tree Prufer_sequence_to_ftree
 (const std::vector<uint32_t>& S, uint32_t n);
 
+/*
+ * @brief Converts a linear sequence of a tree to a graph structure.
+ *
+ * A linear sequence of a tree of @e n nodes is an array of @e n integers
+ * where the values in the positions from 0 to @e n-1, both included, describe
+ * the tree. The value '0' indicates the root, while a strictly positive value
+ * indicates the parent node.
+ * @param L The linear sequence.
+ * @return Returns the free tree built with @e L along with the root indicated
+ * by the sequence.
+ */
+std::pair<graphs::free_tree, node>
+linear_sequence_to_ftree(const std::vector<uint32_t>& L);
+
 } // -- namespace internal
 } // -- namespace lal

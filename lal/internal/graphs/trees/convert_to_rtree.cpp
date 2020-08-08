@@ -45,50 +45,17 @@
 #include <cassert>
 using namespace std;
 
+// lal includes
+#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
+
 namespace lal {
 using namespace graphs;
 
 namespace internal {
 
 rooted_tree linear_sequence_to_rtree(const vector<uint32_t>& L) {
-	const uint32_t n = static_cast<uint32_t>(L.size());
-
-	// edges of the tree
-	vector<edge> edges(n - 1);
-	auto eit = edges.begin();
-
-#if defined DEBUG
-	// variable to make sure that the root has been set
-	bool root_set = false;
-#endif
-	// root node of the tree (initiliased
-	// so compiler does not cry)
-	node r = 0;
-
-	for (uint32_t i = 0; i < n; ++i) {
-		if (L[i] == 0) {
-			// root, do nothing
-			r = i;
-#if defined DEBUG
-			root_set = true;
-#endif
-		}
-		else {
-			// add the edge
-			// i ranges in [0,n-1]
-			// L[i] ranges in [1,n]
-			*eit++ = edge(i, L[i] - 1);
-		}
-	}
-
-#if defined DEBUG
-	// root must have been set.
-	assert(root_set);
-#endif
-
-	free_tree t(n);
-	t.add_edges(edges);
-	return rooted_tree(t, r);
+	const auto [tree, root] = linear_sequence_to_ftree(L);
+	return rooted_tree(tree, root);
 }
 
 } // -- namespace internal
