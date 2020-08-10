@@ -444,6 +444,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	// make subtree
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
+	sub.set_rtree_type(rooted_tree_type::arborescence);
 	sub.add_edges(es);
 	return sub;
 }
