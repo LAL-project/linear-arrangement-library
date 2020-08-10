@@ -65,13 +65,16 @@ using namespace internal;
 
 namespace generate {
 
-rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, bool seed)
+rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t seed)
 	: m_rT(rT)
 {
 	assert(m_rT.is_rooted_tree());
-	if (seed) {
+	if (seed == 0) {
 		random_device rd;
 		m_gen = mt19937(rd());
+	}
+	else {
+		m_gen = mt19937(seed);
 	}
 
 	// initialise the random data of all vertices
