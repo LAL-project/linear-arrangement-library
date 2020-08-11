@@ -53,7 +53,7 @@ namespace lal {
 namespace linarr {
 
 template<class G>
-numeric::rational MDD_1level_rational
+numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis)
 {
 #if defined DEBUG
@@ -81,8 +81,9 @@ numeric::rational MDD_1level_rational
 }
 
 template<class G>
-double MDD_1level(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis) {
-	return MDD_1level_rational(Gs, pis).to_double();
+double mean_dependency_distance_1level
+(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis) {
+	return mean_dependency_distance_1level_rational(Gs, pis).to_double();
 }
 
 } // -- namespace linarr

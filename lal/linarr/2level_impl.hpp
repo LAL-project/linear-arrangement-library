@@ -66,12 +66,12 @@ numeric::rational MDD_2level_rational
 	if (pis.size() == 0) {
 		const linear_arrangement empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {
-			sum_MDD += MDD_rational(Gs[i], empty_arr);
+			sum_MDD += mean_dependency_distance_rational(Gs[i], empty_arr);
 		}
 	}
 	else {
 		for (size_t i = 0; i < Gs.size(); ++i) {
-			sum_MDD += MDD_rational(Gs[i], pis[i]);
+			sum_MDD += mean_dependency_distance_rational(Gs[i], pis[i]);
 		}
 	}
 	return sum_MDD/static_cast<int64_t>(Gs.size());
