@@ -15,17 +15,17 @@
 
 %ignorewarn("graph - Move constructor ignored") graph(graph &&);
 %ignorewarn("tree - Move constructor ignored") tree(tree &&);
-%ignorewarn("ugraph - Move constructor ignored") undirected_graph(undirected_graph &&);
-%ignorewarn("dgraph - Move constructor ignored") directed_graph(directed_graph &&);
-%ignorewarn("rtree - Move constructor ignored") rooted_tree(rooted_tree &&);
-%ignorewarn("ftree - Move constructor ignored") free_tree(free_tree &&);
+%ignorewarn("undirected_graph - Move constructor ignored") undirected_graph(undirected_graph &&);
+%ignorewarn("directed_graph - Move constructor ignored") directed_graph(directed_graph &&);
+%ignorewarn("rooted_tree - Move constructor ignored") rooted_tree(rooted_tree &&);
+%ignorewarn("free_tree - Move constructor ignored") free_tree(free_tree &&);
 
 %ignorewarn("graph - Move assignment ignored") graph::operator=(graph &&);
 %ignorewarn("tree - Move assignment ignored") tree::operator=(tree &&);
-%ignorewarn("ugraph - Move assignment ignored") undirected_graph::operator=(undirected_graph &&);
-%ignorewarn("dgraph - Move assignment ignored") directed_graph::operator=(directed_graph &&);
-%ignorewarn("rtree - Move assignment ignored") rooted_tree::operator=(rooted_tree &&);
-%ignorewarn("ftree - Move assignment ignored") free_tree::operator=(free_tree &&);
+%ignorewarn("undirected_graph - Move assignment ignored") undirected_graph::operator=(undirected_graph &&);
+%ignorewarn("directed_graph - Move assignment ignored") directed_graph::operator=(directed_graph &&);
+%ignorewarn("rooted_tree - Move assignment ignored") rooted_tree::operator=(rooted_tree &&);
+%ignorewarn("free_tree - Move assignment ignored") free_tree::operator=(free_tree &&);
 
 %ignore lal::graphs::operator<<;
 

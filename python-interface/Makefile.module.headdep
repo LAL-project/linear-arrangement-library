@@ -59,7 +59,7 @@ NMRC_DPHDRS			= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
 PROP_DPHDRS			= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/D_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/degrees.hpp \
-					  $(LAL_INC_DIR)/lal/properties/mhd.hpp \
+					  $(LAL_INC_DIR)/lal/properties/mean_hierarchical_distance.hpp \
 					  $(LAL_INC_DIR)/lal/properties/Q.hpp
 
 VERSION_DPHDRS		= $(LAL_INC_DIR)/lal/lal_version.hpp
