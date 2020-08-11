@@ -102,11 +102,11 @@ class graph {
 		/**
 		 * @brief Normalises the graph.
 		 *
-		 * Sorts every node's adjacency list in increasing order.
+		 * Sorts this graph's adjacency list structure in increasing order.
 		 *
 		 * Besides expensive, this method may be unnecessary. Method
-		 * @ref check_normalised() checks in linear time if the graph is
-		 * normalised or not.
+		 * @ref check_normalised() checks whether the graph is normalised or
+		 * not; in case it is, using this method is completely unnecessary.
 		 * @post Method @ref is_normalised evaluates to true.
 		 */
 		virtual void normalise();
@@ -114,9 +114,9 @@ class graph {
 		/**
 		 * @brief Checks if the graph is normalised.
 		 *
-		 * Checks, in linear time, that the graph is normalised or not.
-		 * In case it is, attribute @ref m_normalised is set to true, so
-		 * method @ref is_normalised evaluates to true.
+		 * Checks, whether the graph's adjacency structure is normalised or not.
+		 * In case it is, attribute @ref m_normalised is set to true, so method
+		 * @ref is_normalised evaluates to true.
 		 */
 		virtual bool check_normalised();
 

@@ -85,8 +85,25 @@ class directed_graph : virtual public graph {
 
 		/* MODIFIERS */
 
+		/**
+		 * @brief Normalises the graph.
+		 *
+		 * Sorts every node's out- and in-adjacency list in increasing order.
+		 *
+		 * Besides expensive, this method may be unnecessary. Method
+		 * @ref check_normalised() checks whether the graph is normalised or
+		 * not; in case it is, using this method is completely unnecessary.
+		 * @post Method @ref is_normalised evaluates to true.
+		 */
 		void normalise();
 
+		/**
+		 * @brief Checks if the graph is normalised.
+		 *
+		 * Checks, whether the graph is normalised or not. In case it is,
+		 * attribute @ref m_normalised is set to true, so method
+		 * @ref is_normalised evaluates to true.
+		 */
 		bool check_normalised();
 
 		/**
