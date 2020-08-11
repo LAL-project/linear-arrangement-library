@@ -477,9 +477,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * calling method @ref find_rooted_tree_type(), or given by the user in
 		 * @ref set_rooted_tree_type.
 		 */
-		rooted_tree_type m_rooted_tree_type = rooted_tree_type::none;
+		rooted_tree_type m_rtree_type = rooted_tree_type::none;
 		/// Are the contents of @ref m_rooted_tree_type valid?
-		bool m_rooted_tree_type_valid = false;
+		bool m_rtree_type_valid = false;
 
 		/**
 		 * @brief Number of nodes of the subtrees rooted at a certain node.
