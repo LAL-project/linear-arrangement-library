@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/properties/mhd.hpp>
+#include <lal/properties/mean_hierarchical_distance.hpp>
 
 // C++ includes
 using namespace std;

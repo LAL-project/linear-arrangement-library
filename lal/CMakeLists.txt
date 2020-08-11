@@ -223,13 +223,13 @@ target_sources(
 		properties/C_rla.hpp
 		properties/D_rla.hpp
 		properties/degrees.hpp
-		properties/mhd.hpp
+		properties/mean_hierarchical_distance.hpp
 		properties/Q.hpp
 		# -- sources
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/degrees.cpp
-		properties/mhd.cpp
+		properties/mean_hierarchical_distance.cpp
 		properties/Q.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp

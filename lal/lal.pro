@@ -81,7 +81,6 @@ HEADERS += \
 	properties.hpp \
 	properties/degrees.hpp \
 	properties/Q.hpp \
-	properties/mhd.hpp \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
 	internal/gmp/utils.hpp \
@@ -102,7 +101,8 @@ HEADERS += \
 	internal/graphs/trees/tree_centroid.hpp \
 	internal/sorting/bit_sort.hpp \
 	internal/sorting/counting_sort.hpp \
-	internal/sorting/insertion_sort.hpp
+	internal/sorting/insertion_sort.hpp \
+    properties/mean_hierarchical_distance.hpp
 
 SOURCES += \
     generate/all_lab_free_trees.cpp \
@@ -144,7 +144,7 @@ SOURCES += \
 	numeric/rational.cpp \
 	properties/Q.cpp \
 	properties/degrees.cpp \
-	properties/mhd.cpp \
+    properties/mean_hierarchical_distance.cpp \
 	properties/variance_C_gen_graphs.cpp \
 	properties/variance_C_trees.cpp \
 	properties/variance_C_forests.cpp \
