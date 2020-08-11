@@ -63,7 +63,8 @@ namespace graphs {
  * A usual way of initialising classes inheriting from this one is to use one
  * of the @ref init methods available. Depending on the subclass, this method
  * admits either the number of nodes of the graph or a whole other graph and
- * further information (see @ref rtree::init_rooted(const ftree&, node, rtree_type).
+ * further information (see
+ * @ref rooted_tree::init_rooted(const ftree&,node,rooted_tree_type).
  * While these classes' internal memory can be initialised, it can also be cleared
  * using method @ref clear. Each class reimplements this method to carry this
  * task appropriately.

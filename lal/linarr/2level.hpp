@@ -54,7 +54,7 @@ namespace linarr {
 /* 2-LEVEL METRICS */
 
 /**
- * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
+ * @brief Computes the 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
  * Given a list of graphs and a linear arrangement of the nodes for each of
  * them, computes the 2-level Mean Dependency Distance, i.e., it computes the
@@ -63,8 +63,8 @@ namespace linarr {
  * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
  * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$(1/k)S_{<d>}\f$,
  * where \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean
- * dependency distances of every graph (see @ref MDD_rational for details on
- * the definition of the Mean Dependency Distance).
+ * dependency distances of every graph (see @ref mean_dependency_distance_rational
+ * for details on the definition of the Mean Dependency Distance).
  *
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
@@ -76,9 +76,9 @@ numeric::rational mean_dependency_distance_2level_rational
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 /**
- * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
+ * @brief Computes the 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
- * See @ref MDD_2level_rational for details.
+ * See @ref mean_dependency_distance_2level_rational for details.
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.

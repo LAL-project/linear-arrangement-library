@@ -77,9 +77,9 @@ class tree : virtual public graph {
 		 * Returns true if the number of edges is one less than the
 		 * number of nodes. Note that this would not really be true if the
 		 * addition of edges was not constrained. Since it is constrained in a
-		 * way that no cycles can be produced (see @ref ftree::add_edge,
-		 * @ref ftree::add_edges), then we only need to check for the number
-		 * of edges.
+		 * way that no cycles can be produced (for example, see
+		 * @ref free_tree::add_edge, or @ref free_tree::add_edges), then we
+		 * only need to check for the number of edges.
 		 *
 		 * For further characterisations of a tree see \cite Harary1969a
 		 * (chapter 4, page 33).
@@ -112,7 +112,7 @@ class tree : virtual public graph {
 		virtual bool can_add_edges(const std::vector<edge>& edges) const = 0;
 
 	protected:
-		/// Initialises memory of @ref rtree class.
+		/// Initialises memory of @ref tree classes.
 		virtual void tree_init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void tree_clear();

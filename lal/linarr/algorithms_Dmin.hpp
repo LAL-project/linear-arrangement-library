@@ -49,8 +49,8 @@ namespace linarr {
  * length of the edges \f$D\f$.
  *
  * This enumeration's values are used to choose the algorithm the functions
- * @ref compute_Dmin(const graphs::rtree&, const algorithms_Dmin&) and
- * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&)
+ * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin&) and
+ * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&)
  * use to compute the minimum value of the sum of the length the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
@@ -66,15 +66,16 @@ enum class algorithms_Dmin {
 	 * This option uses Gildea and Temperley's algorithm published in \cite Gildea2007a.
      *
 	 * This algorithm is allowed only in function
-	 * @ref compute_Dmin(const graphs::rtree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts rooted trees.
+	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
+	 * i.e., in the function that accepts rooted trees. One can call directly
+	 * function @ref Dmin_Projective.
      */
     Projective,
 
 	/* ALGORITHMS FOR FREE TREES */
 
     /**
-     * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
+     * @brief Algorithm to calculate unconstrained an optimal linearization of free trees.
      *
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
@@ -84,12 +85,13 @@ enum class algorithms_Dmin {
      * in \cite Esteban2017a.
 	 *
 	 * This algorithm is allowed only in function
-	 * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees.
+	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
+	 * i.e., in the function that accepts free trees. One can call directly
+	 * function @ref Dmin_Unconstrained_YS.
      */
     Unconstrained_YS,
     /**
-     * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
+     * @brief Algorithm to calculate unconstrained an optimal linearization of free trees.
      *
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
@@ -97,8 +99,9 @@ enum class algorithms_Dmin {
      * This option uses Fan Chung's algorithm published in \cite Chung1984a.
 	 *
 	 * This algorithm is allowed only in function
-	 * @ref compute_Dmin(const graphs::ftree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees.
+	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
+	 * i.e., in the function that accepts free trees. One can call directly
+	 * function @ref Dmin_Unconstrained_FC.
      */
     Unconstrained_FC
 };

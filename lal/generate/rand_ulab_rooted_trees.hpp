@@ -104,7 +104,8 @@ class rand_ulab_rooted_trees {
 		/**
 		 * @brief Generates uniformly at random a free unlabelled tree.
 		 * @return Returns an unlabelled rooted tree. The tree is a an
-		 * @ref graphs::rtree::rtree_type::arborescence rooted at vertex 0.
+		 * @ref graphs::rooted_tree::rooted_tree_type::arborescence rooted
+		 * at vertex 0.
 		 * @pre The generator must have been initialised.
 		 */
 		graphs::rooted_tree make_rand_tree();

@@ -64,7 +64,8 @@ class rand_projective_arrgmnt {
 		 * @param rT Rooted tree
 		 * @param seed Boolean value that indicates whether the random number
 		 * generator should be seeded or not.
-		 * @pre The object @e t must be a rooted tree (see @ref graphs::rtree::is_rooted_tree).
+		 * @pre The object @e t must be a rooted tree (see
+		 * @ref graphs::rooted_tree::is_rooted_tree).
 		 */
 		rand_projective_arrgmnt(const graphs::rooted_tree& rT, uint32_t seed = 0);
 		~rand_projective_arrgmnt();

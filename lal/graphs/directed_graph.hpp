@@ -59,8 +59,8 @@ namespace graphs {
  *
  * An object of this class must be initialised either with its constructor
  * or with the @ref init(uint32_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool) ).
+ * (see @ref add_edge(node,node,bool,bool) ) or all at the same time (see
+ * @ref add_edges(const std::vector<edge>&, bool,bool) ).
  */
 class directed_graph : virtual public graph {
 	public:
@@ -127,7 +127,7 @@ class directed_graph : virtual public graph {
 		 * @brief Adds a list of directed edges to the graph.
 		 *
 		 * This operation is faster than adding edges one by one with
-		 * @ref add_edge(node,node,bool) since the edges are added in bulk.
+		 * @ref add_edge(node,node,bool,bool) since the edges are added in bulk.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether
@@ -135,7 +135,7 @@ class directed_graph : virtual public graph {
 		 * resulting graph is normalised. If @e norm is true then @e check_norm
 		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
-		 * @ref add_edge(node,node,bool).
+		 * @ref add_edge(node,node,bool,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
@@ -162,7 +162,8 @@ class directed_graph : virtual public graph {
 		 * @brief Remove an edge from this graph.
 		 *
 		 * This operation is faster than removing edges one by one with
-		 * @ref remove_edge(node,node,bool) since the edges are removed in bulk.
+		 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
+		 * bulk.
 		 * @param edges The edges to be deleted.
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether
@@ -170,7 +171,7 @@ class directed_graph : virtual public graph {
 		 * resulting graph is normalised. If @e norm is true then @e check_norm
 		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
-		 * @ref add_edge(node,node,bool).
+		 * @ref add_edge(node,node,bool,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */

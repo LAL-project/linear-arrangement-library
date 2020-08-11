@@ -54,13 +54,13 @@ enum class algorithms_C {
 	/// Brute force computation of the number of crossings.
 	/// Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
 	brute_force,
-	/// Dynamic programming algorithm. Faster than @ref algorithms_crossings::brute_force.
+	/// Dynamic programming algorithm.
 	/// Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$
 	dynamic_programming,
-	/// Another dynamic programming algorithm. Faster than @ref algorithms_crossings::dynamic_programming.
+	/// Dynamic programming algorithm.
 	/// Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$
 	ladder,
-	/// Algorithm based on sorting. Faster than @ref algorithms_crossings::brute_force.
+	/// Algorithm based on sorting.
 	/// Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$
 	stack_based
 };

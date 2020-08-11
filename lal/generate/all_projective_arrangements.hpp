@@ -78,7 +78,7 @@ class all_proj_arr {
 		 * @brief Constructor with constant reference to a rooted tree.
 		 * @param T Rooted tree
 		 * @pre The object @e T is a valid rooted tree (see
-		 * @ref graphs::rtree::is_rooted_tree).
+		 * @ref graphs::rooted_tree::is_rooted_tree).
 		 */
 		all_proj_arr(const graphs::rooted_tree& T);
 		/// Default destructor.

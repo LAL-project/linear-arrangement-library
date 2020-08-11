@@ -70,7 +70,7 @@ uint32_t sum_length_edges
 /* MDD */
 
 /**
- * @brief Computes the mean edge length.
+ * @brief Computes the mean dependency distance \f$MDD\f$ as an exact rational value.
  *
  * Given a graph and a linear arrangement of its nodes, computes the average
  * edge length, or the mean dependency distance (see \cite Jing2015a).
@@ -85,9 +85,9 @@ numeric::rational mean_dependency_distance_rational
 (const graphs::graph& g, const linear_arrangement& pi = {});
 
 /**
- * @brief Computes the mean edge length as an exact rational value.
+ * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
  *
- * See @ref MDD_rational for details.
+ * See @ref mean_dependency_distance_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.

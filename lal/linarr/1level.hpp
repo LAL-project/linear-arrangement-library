@@ -54,7 +54,7 @@ namespace linarr {
 /* 1-LEVEL METRICS */
 
 /**
- * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
+ * @brief Computes the 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
  * Given a list of graphs \f$L_i\f$ and a linear arrangement of the nodes for
  * each of them, computes the 1-level Mean Dependency Distance as the quotient
@@ -78,9 +78,9 @@ numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 /**
- * @brief Computes the 1-level Mean Dependency Distance over an ensemble of graphs.
+ * @brief Computes the 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
- * See @ref MDD_1level_rational for details.
+ * See @ref mean_dependency_distance_1level_rational for details.
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.

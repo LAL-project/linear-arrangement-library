@@ -59,9 +59,9 @@ namespace linarr {
  * This function implements Gildea and Temperley's algorithm published in \cite Gildea2007a.
  *
  * @param t Input rooted tree.
- * @pre The object @e t must be a valid rooted tree (see @ref graphs::rtree::is_rooted_tree).
+ * @pre The object @e t must be a valid rooted tree (see @ref graphs::rooted_tree::is_rooted_tree).
  * @pre The tree must have the size of its subtrees calculated (see
- * @ref graphs::rtree::need_recalc_size_subtrees).
+ * @ref graphs::rooted_tree::size_subtrees_valid).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Projective
 (const graphs::rooted_tree& t);
@@ -76,7 +76,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Projective
  * The implementation of this algorithm uses the corrections published
  * in \cite Esteban2017a.
  *
- * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
+ * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
 (const graphs::free_tree& t);
@@ -89,7 +89,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
  *
  * This function implements Fan Chung's algorithm published in \cite Chung1984a.
  *
- * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
+ * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
 (const graphs::free_tree& t);
@@ -107,7 +107,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
  * @pre The preconditions of this function have to meet the preconditions of
  * the function that is called:
  * - if @e a is @ref algorithms_Dmin::Projective the function called is
- * @ref compute_Dmin_Projective.
+ * @ref Dmin_Projective.
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linear_arrangement> Dmin
@@ -124,9 +124,9 @@ std::pair<uint32_t, linear_arrangement> Dmin
  * @pre The preconditions of this function have to meet the preconditions of
  * the function that is called:
  * - if @e a is @ref algorithms_Dmin::Unconstrained_YS the function called is
- * @ref compute_Dmin_Unconstrained_YS.
+ * @ref Dmin_Unconstrained_YS.
  * - if @e a is @ref algorithms_Dmin::Unconstrained_FC the function called is
- * @ref compute_Dmin_Unconstrained_FC.
+ * @ref Dmin_Unconstrained_FC.
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linear_arrangement> Dmin

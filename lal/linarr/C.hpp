@@ -74,7 +74,7 @@ uint32_t __n_crossings_brute_force(const graphs::undirected_graph& g, const line
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -100,7 +100,7 @@ uint32_t __n_crossings_dyn_prog(const graphs::undirected_graph& g, const linear_
  * using dynamic programming the number of edges that cross in every linear
  * arrangement.
  * @param g Input graph.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -126,7 +126,7 @@ uint32_t __n_crossings_ladder(const graphs::undirected_graph& g, const linear_ar
  * using dynamic programming the number of edges that cross in such linear
  * arrangement.
  * @param g Input graph.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -154,7 +154,7 @@ uint32_t __n_crossings_stack_based
  * cross in such linear arrangement. If the arrangement is not specified, the
  * identity arrangement is used.
  * @param g Input graph.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
@@ -169,7 +169,7 @@ std::vector<uint32_t> __n_crossings_stack_based_list
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref algorithms_crossings::stack_based.
+ * @ref algorithms_C::stack_based.
  * @return Returns \f$C\f$.
  * @pre The preconditions of this function are the same as those of:
  * - @ref __n_crossings_brute_force
@@ -188,9 +188,9 @@ uint32_t n_crossings(
  * the number of crossings for each of the linear arrangements using the
  * algorithm specified by the parameter @e A.
  * @param g Input graph.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref algorithms_crossings::stack_based.
+ * @ref algorithms_C::stack_based.
  * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre The preconditions of this function are the same as those of:
  * - @ref __n_crossings_brute_force_list
