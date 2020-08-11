@@ -81,7 +81,7 @@ uint32_t sum_length_edges
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns Jing's and Liu's \f$MDD\f$.
  */
-numeric::rational MDD_rational
+numeric::rational mean_dependency_distance_rational
 (const graphs::graph& g, const linear_arrangement& pi = {});
 
 /**
@@ -92,7 +92,8 @@ numeric::rational MDD_rational
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double MDD(const graphs::graph& g, const linear_arrangement& pi = {});
+double mean_dependency_distance
+(const graphs::graph& g, const linear_arrangement& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

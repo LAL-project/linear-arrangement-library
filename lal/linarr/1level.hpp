@@ -74,7 +74,7 @@ namespace linarr {
  * @return Returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs.
  */
 template<class G>
-numeric::rational MDD_1level_rational
+numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 /**
@@ -87,7 +87,7 @@ numeric::rational MDD_1level_rational
  * @return The return value is a floating point value.
  */
 template<class G>
-double MDD_1level
+double mean_dependency_distance_1level
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 } // -- namespace linarr

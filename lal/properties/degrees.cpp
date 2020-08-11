@@ -59,7 +59,7 @@ template<class G>
 inline rational __mmt_x_degree_rational
 (
 	const G& g, uint32_t p,
-	const function<uint32_t(const G& _g, node _u)>& D
+	const function<uint32_t(const G&, node)>& D
 )
 {
 	const integer M = integer_from_ui(g.n_nodes());
@@ -75,18 +75,31 @@ inline rational __mmt_x_degree_rational
 	return rational(S, M);
 }
 
+// -----------------------------------------------------------------------------
+
 // moment of degree
 
-#define _in_degree(g,u) dynamic_cast<const dgraph&>(g).degree(u)
-rational mmt_degree_rational(const graph& g, uint32_t p) {
-	return __mmt_x_degree_rational<graph>(
+rational mmt_degree_rational(const undirected_graph& g, uint32_t p) {
+	return __mmt_x_degree_rational<undirected_graph>(
 		g, p,
-		[](const graph& _g, node _u) -> uint32_t
-		{ return _g.degree(_u) + (_g.is_directed() ? _in_degree(_g,_u) : 0); }
+		[](const undirected_graph& _g, node _u) -> uint32_t
+		{ return _g.degree(_u); }
 	);
 }
 
-double mmt_degree(const graph& g, uint32_t p) {
+double mmt_degree(const undirected_graph& g, uint32_t p) {
+	return mmt_degree_rational(g,p).to_double();
+}
+
+rational mmt_degree_rational(const directed_graph& g, uint32_t p) {
+	return __mmt_x_degree_rational<directed_graph>(
+		g, p,
+		[](const directed_graph& _g, node _u) -> uint32_t
+		{ return _g.out_degree(_u) + _g.in_degree(_u); }
+	);
+}
+
+double mmt_degree(const directed_graph& g, uint32_t p) {
 	return mmt_degree_rational(g,p).to_double();
 }
 

@@ -63,7 +63,7 @@ namespace linarr {
  * @pre The tree must have the size of its subtrees calculated (see
  * @ref graphs::rtree::need_recalc_size_subtrees).
  */
-std::pair<uint32_t, linear_arrangement> compute_Dmin_Projective
+std::pair<uint32_t, linear_arrangement> Dmin_Projective
 (const graphs::rooted_tree& t);
 
 /**
@@ -78,7 +78,7 @@ std::pair<uint32_t, linear_arrangement> compute_Dmin_Projective
  *
  * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
  */
-std::pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_YS
+std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
 (const graphs::free_tree& t);
 
 /**
@@ -91,7 +91,7 @@ std::pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_YS
  *
  * @pre The object must be a tree (see @ref graphs::rtree::is_tree).
  */
-std::pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_FC
+std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
 (const graphs::free_tree& t);
 
 /* -------------------------------------------------------------------------- */
@@ -110,7 +110,7 @@ std::pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_FC
  * @ref compute_Dmin_Projective.
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
-std::pair<uint32_t, linear_arrangement> compute_Dmin
+std::pair<uint32_t, linear_arrangement> Dmin
 (const graphs::rooted_tree& t, const algorithms_Dmin& a);
 
 /**
@@ -129,7 +129,7 @@ std::pair<uint32_t, linear_arrangement> compute_Dmin
  * @ref compute_Dmin_Unconstrained_FC.
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
-std::pair<uint32_t, linear_arrangement> compute_Dmin
+std::pair<uint32_t, linear_arrangement> Dmin
 (const graphs::free_tree& t, const algorithms_Dmin& a);
 
 } // -- namespace linarr

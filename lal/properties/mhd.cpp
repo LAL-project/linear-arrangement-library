@@ -54,7 +54,7 @@ using namespace internal;
 
 namespace properties {
 
-rational MHD_rational(const rooted_tree& tree) {
+rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	uint32_t sum_distances = 0;
 	vector<uint32_t> levels(tree.n_nodes(), 0);
 
@@ -70,8 +70,8 @@ rational MHD_rational(const rooted_tree& tree) {
 	return rational(sum_distances, tree.n_edges());
 }
 
-double MHD(const rooted_tree& t) {
-	return MHD_rational(t).to_double();
+double mean_hierarchical_distance(const rooted_tree& t) {
+	return mean_hierarchical_distance_rational(t).to_double();
 }
 
 } // -- namespace properties

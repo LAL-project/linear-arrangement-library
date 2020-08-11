@@ -88,13 +88,13 @@ inline rational __MDD_rational(const graph& g, const linear_arrangement& pi) {
 	return rational_from_ui(D, g.n_edges());
 }
 
-rational MDD_rational(const graph& g, const linear_arrangement& pi) {
+rational mean_dependency_distance_rational(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 
-double MDD(const graph& g, const linear_arrangement& pi) {
-	return MDD_rational(g, pi).to_double();
+double mean_dependency_distance(const graph& g, const linear_arrangement& pi) {
+	return mean_dependency_distance_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

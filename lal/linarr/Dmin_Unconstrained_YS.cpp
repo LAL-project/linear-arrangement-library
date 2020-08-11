@@ -332,7 +332,7 @@ void calculate_mla_YS(
 	}
 }
 
-pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_YS(const free_tree& t) {
+pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 	assert(t.is_tree());
 
 	uint32_t c = 0;

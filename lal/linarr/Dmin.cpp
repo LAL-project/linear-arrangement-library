@@ -50,7 +50,7 @@ using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, linear_arrangement> compute_Dmin
+pair<uint32_t, linear_arrangement> Dmin
 (const rooted_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
@@ -64,13 +64,13 @@ pair<uint32_t, linear_arrangement> compute_Dmin
 
 	// call Gildea and Temperly's algorithm
 	case algorithms_Dmin::Projective:
-		return compute_Dmin_Projective(t);
+		return Dmin_Projective(t);
 	}
 
 	return make_pair(0, linear_arrangement());
 }
 
-pair<uint32_t, linear_arrangement> compute_Dmin
+pair<uint32_t, linear_arrangement> Dmin
 (const free_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
@@ -83,10 +83,10 @@ pair<uint32_t, linear_arrangement> compute_Dmin
 
 	// call Yossi Shiloach's algorithm
 	case algorithms_Dmin::Unconstrained_YS:
-		return compute_Dmin_Unconstrained_YS(t);
+		return Dmin_Unconstrained_YS(t);
 	// call Fan Chung's algorithm
 	case algorithms_Dmin::Unconstrained_FC:
-		return compute_Dmin_Unconstrained_FC(t);
+		return Dmin_Unconstrained_FC(t);
 	}
 
 	return make_pair(0, linear_arrangement());

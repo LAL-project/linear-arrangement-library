@@ -53,20 +53,21 @@ namespace lal {
 namespace properties {
 
 /**
- * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
- * graph as an exact rational value.
+ * @brief Computes the \f$p\f$-th moment of degree about zero of a graph as
+ * an exact rational value.
  *
- * Computes the \f$p\f$-th moment of in-degree about zero,
+ * Computes the \f$p\f$-th moment of degree about zero,
  * \f$\langle k^p \rangle\f$, of a graph using:
  *
- * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k^p_i \f$.
+ * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k_i^p \f$.
  *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_i\f$ is the
+ * degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Moment of degree.
  * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
  */
-numeric::rational mmt_degree_rational(const graphs::graph& g, uint32_t p);
+numeric::rational mmt_degree_rational(const graphs::undirected_graph& g, uint32_t p);
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
@@ -76,7 +77,34 @@ numeric::rational mmt_degree_rational(const graphs::graph& g, uint32_t p);
  * @param p Moment of degree.
  * @return The return value is a floating point value.
  */
-double mmt_degree(const graphs::graph& g, uint32_t p);
+double mmt_degree(const graphs::undirected_graph& g, uint32_t p);
+
+/**
+ * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
+ * graph as an exact rational value.
+ *
+ * Computes the \f$p\f$-th moment of degree about zero,
+ * \f$\langle k^p \rangle\f$, of a graph using:
+ *
+ * \f$\langle k^p \rangle = \frac{1}{n} \sum_{i=1}^n k_i^p \f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_i\f$ is the
+ * in-degree plus the out-degree of vertex \f$i\f$.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ */
+numeric::rational mmt_degree_rational(const graphs::directed_graph& g, uint32_t p);
+/**
+ * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
+ * graph as an exact rational value.
+ *
+ * See @ref mmt_degree_rational for details.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @return The return value is a floating point value.
+ */
+double mmt_degree(const graphs::directed_graph& g, uint32_t p);
 
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed

@@ -270,7 +270,7 @@ uint32_t make_interval_of(
 	return D + d;
 }
 
-pair<uint32_t, linear_arrangement> compute_Dmin_Projective(const rooted_tree& t) {
+pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
 
 	const uint32_t n = t.n_nodes();
