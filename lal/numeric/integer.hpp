@@ -41,12 +41,12 @@
  
 #pragma once
 
+// gmp includes
+#include <gmp.h>
+
 // C++ includes
 #include <cstdint>
 #include <string>
-
-// gmp includes
-#include <gmp.h>
 
 namespace lal {
 namespace numeric {
@@ -97,8 +97,6 @@ class integer {
 		void init_ui(uint64_t i);
 		/// Initialises this integer with the value in string @e s.
 		void init_str(const std::string& s);
-		/// Initialises this integer with the value in @e mpz.
-		void init_mpz(const mpz_t& mpz);
 
 		/// Clear the memory of this integer.
 		void clear();
@@ -111,8 +109,6 @@ class integer {
 		void set_ui(uint64_t i);
 		/// Overwrites the value of this integer with the contents in @e s.
 		void set_str(const std::string& s);
-		/// Overwrites the value of this integer with the value in @e mpz.
-		void set_mpz(const mpz_t& mpz);
 
 		/* OPERATORS */
 
@@ -239,6 +235,10 @@ class integer {
 		std::string to_string() const;
 		/// Converts this integer to a string.
 		void as_string(std::string& s) const;
+
+	private:
+		/// Initialises this integer with the value in @e mpz.
+		void init_mpz(const mpz_t& mpz);
 
 	private:
 		/// Structure from GMP storing the integer's value.

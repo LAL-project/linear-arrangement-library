@@ -51,8 +51,6 @@ using namespace std;
 namespace lal {
 namespace numeric {
 
-// PRIVATE
-
 // PUBLIC
 
 //rational::rational() { }
@@ -144,11 +142,6 @@ void rational::init_integer(const integer& n, const integer& d) {
 	set_integer(n, d);
 }
 
-void rational::init_mpq(const mpq_t& mpq) {
-	init();
-	mpq_set(m_val, mpq);
-}
-
 void rational::clear() {
 	if (is_initialized()) {
 		mpq_clear(m_val);
@@ -175,9 +168,6 @@ void rational::set_integer(const integer& n, const integer& d) {
 	mpq_set_num(m_val, n.get_raw_value());
 	mpq_set_den(m_val, d.get_raw_value());
 	mpq_canonicalize(m_val);
-}
-void rational::set_mpq(const mpq_t& mpq) {
-	mpq_set(m_val, mpq);
 }
 
 void rational::invert() {
@@ -419,6 +409,13 @@ double rational::to_double() const {
 
 void rational::as_double(double& d) const {
 	d = mpq_get_d(m_val);
+}
+
+// PRIVATE
+
+void rational::init_mpq(const mpq_t& mpq) {
+	init();
+	mpq_set(m_val, mpq);
 }
 
 } // -- namespace numeric

@@ -105,8 +105,6 @@ class rational {
 		void init_str(const std::string& s);
 		/// Initialises this rational as \f$n/d\f$.
 		void init_integer(const integer& n, const integer& d = 1);
-		/// Initialises this rational with the value in @e mpq.
-		void init_mpq(const mpq_t& mpq);
 
 		/// Clear the memory of this rational.
 		void clear();
@@ -121,8 +119,6 @@ class rational {
 		void set_str(const std::string& s);
 		/// Overwrites the value of this rational with the value \f$n/d\f$.
 		void set_integer(const integer& n, const integer& d = 1);
-		/// Overwrites the value of this rational with the value in @e mpq.
-		void set_mpq(const mpq_t& mpq);
 
 		/**
 		 * @brief Changes numerator and denominator.
@@ -291,6 +287,10 @@ class rational {
 		double to_double() const;
 		/// Converts this rational to a double-precision floating-point value.
 		void as_double(double& d) const;
+
+	private:
+		/// Initialises this rational with the value in @e mpq.
+		void init_mpq(const mpq_t& mpq);
 
 	private:
 		/// Structure from GMP storing the rational's value.

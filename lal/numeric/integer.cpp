@@ -120,11 +120,6 @@ void integer::init_str(const std::string& s) {
 	set_str(s);
 }
 
-void integer::init_mpz(const mpz_t& mpz) {
-	init();
-	mpz_set(m_val, mpz);
-}
-
 void integer::clear() {
 	if (not is_initialized()) {
 		return;
@@ -146,10 +141,6 @@ void integer::set_ui(uint64_t i) {
 void integer::set_str(const std::string& s)	{
 	assert(is_initialized());
 	mpz_set_str(m_val, s.c_str(), 10);
-}
-void integer::set_mpz(const mpz_t& mpz) {
-	assert(is_initialized());
-	mpz_set(m_val, mpz);
 }
 
 /* OPERATORS */
@@ -279,7 +270,7 @@ size_t integer::bytes() const {
 	return (is_initialized() ? internal::mpz_bytes(m_val) : 0);
 }
 
-const mpz_t& integer::get_raw_value() const	{
+const mpz_t& integer::get_raw_value() const {
 	return m_val;
 }
 
@@ -321,6 +312,13 @@ void integer::as_string(string& s) const {
 	buf = mpz_get_str(buf, 10, m_val);
 	s = std::string(buf);
 	free(buf);
+}
+
+// PRIVATE
+
+void integer::init_mpz(const mpz_t& mpz) {
+	init();
+	mpz_set(m_val, mpz);
 }
 
 } // -- namespace numeric
