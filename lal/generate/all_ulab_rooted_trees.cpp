@@ -136,7 +136,7 @@ rooted_tree all_ulab_rooted_trees::get_tree() const {
 		rooted_tree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
-		rT.set_rtree_type(rooted_tree::rooted_tree_type::arborescence);
+		rT.set_rooted_tree_type(rooted_tree::rooted_tree_type::arborescence);
 		return rT;
 	}
 

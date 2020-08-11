@@ -99,7 +99,7 @@ rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	}
 	rT.set_root(0);
 	rT.add_edges(edges);
-	rT.set_rtree_type(rooted_tree::rooted_tree_type::arborescence);
+	rT.set_rooted_tree_type(rooted_tree::rooted_tree_type::arborescence);
 	return rT;
 }
 

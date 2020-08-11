@@ -276,7 +276,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @post Method @ref rtree_type_valid evaluates to true if the tree is
 		 * an rtree_type::arborescence or an rtree_type::anti_arborescence.
 		 */
-		bool find_rtree_type();
+		bool find_rooted_tree_type();
 
 		/**
 		 * @brief Initialiser with tree and root node.
@@ -314,7 +314,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * or an an @ref rtree_type::anti_arborescence.
 		 * @post Method @ref need_recalc_size_subtrees returns false.
 		 */
-		void recalc_size_subtrees();
+		void calculate_size_subtrees();
 
 		/* SETTERS */
 
@@ -340,7 +340,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * underlying rooted tree.
 		 * @post Method @ref rtree_type_valid returns true.
 		 */
-		void set_rtree_type(const rooted_tree_type& type);
+		void set_rooted_tree_type(const rooted_tree_type& type);
 
 		/* GETTERS */
 
@@ -385,9 +385,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @brief Returns the type of this rooted tree.
 		 * @pre Method @ref rtree_type_valid returns true.
 		 */
-		rooted_tree_type get_rtree_type() const;
+		rooted_tree_type get_rooted_tree_type() const;
 		/// Is the rooted type valid?
-		bool rtree_type_valid() const;
+		bool rooted_tree_type_valid() const;
 
 		/// Return the root of this tree.
 		node get_root() const;
@@ -410,7 +410,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @return Returns whether @ref m_size_subtrees should be recalculated
 		 * or not.
 		 */
-		bool need_recalc_size_subtrees() const;
+		bool size_subtrees_valid() const;
 
 		/**
 		 * @brief Retrieve the edges of the subtree rooted at @e u.

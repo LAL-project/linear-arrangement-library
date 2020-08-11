@@ -124,7 +124,7 @@ void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
 	// - do not change the type of rooted tree
 }
 
-bool rooted_tree::find_rtree_type() {
+bool rooted_tree::find_rooted_tree_type() {
 	assert(is_tree());
 	assert(has_root());
 
@@ -132,7 +132,7 @@ bool rooted_tree::find_rtree_type() {
 	if (n_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
-		set_rtree_type(rooted_tree_type::arborescence);
+		set_rooted_tree_type(rooted_tree_type::arborescence);
 		return true;
 	}
 
@@ -145,7 +145,7 @@ bool rooted_tree::find_rtree_type() {
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		set_rtree_type(
+		set_rooted_tree_type(
 			bfs.all_visited() ?
 			rooted_tree_type::arborescence : rooted_tree_type::none);
 	}
@@ -159,7 +159,7 @@ bool rooted_tree::find_rtree_type() {
 				all_one = false;
 			}
 		}
-		set_rtree_type(
+		set_rooted_tree_type(
 			all_one ?
 			rooted_tree_type::anti_arborescence : rooted_tree_type::none);
 	}
@@ -176,7 +176,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r, rooted_tree_type arb)
 	if (n == 0) {
 		rooted_tree::_init(0);
 		set_root(0);
-		set_rtree_type(arb);
+		set_rooted_tree_type(arb);
 		return;
 	}
 
@@ -220,10 +220,10 @@ void rooted_tree::init_rooted(const free_tree& _t, node r, rooted_tree_type arb)
 	add_edges(dir_edges);
 
 	// set directed tree type
-	set_rtree_type(arb);
+	set_rooted_tree_type(arb);
 }
 
-void rooted_tree::recalc_size_subtrees() {
+void rooted_tree::calculate_size_subtrees() {
 	assert(is_rooted_tree());
 
 	m_need_recalc_size_subtrees = false;
@@ -247,7 +247,7 @@ void rooted_tree::set_root(node r) {
 	m_rtree_type_valid = false;
 }
 
-void rooted_tree::set_rtree_type(const rooted_tree_type& type) {
+void rooted_tree::set_rooted_tree_type(const rooted_tree_type& type) {
 	m_rtree_type = type;
 	m_rtree_type_valid = true;
 }
@@ -302,16 +302,16 @@ bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
 bool rooted_tree::is_rooted() const { return true; }
 
 bool rooted_tree::is_rooted_tree() const {
-	return is_tree() and has_root() and rtree_type_valid() and
-	(get_rtree_type() == rooted_tree_type::arborescence or
-	 get_rtree_type() == rooted_tree_type::anti_arborescence);
+	return is_tree() and has_root() and rooted_tree_type_valid() and
+	(get_rooted_tree_type() == rooted_tree_type::arborescence or
+	 get_rooted_tree_type() == rooted_tree_type::anti_arborescence);
 }
 
-rooted_tree::rooted_tree_type rooted_tree::get_rtree_type() const {
-	assert(rtree_type_valid());
+rooted_tree::rooted_tree_type rooted_tree::get_rooted_tree_type() const {
+	assert(rooted_tree_type_valid());
 	return m_rtree_type;
 }
-bool rooted_tree::rtree_type_valid() const {
+bool rooted_tree::rooted_tree_type_valid() const {
 	return m_rtree_type_valid;
 }
 
@@ -329,7 +329,7 @@ uint32_t rooted_tree::n_nodes_subtree(node u) const {
 	return m_size_subtrees[u];
 }
 
-bool rooted_tree::need_recalc_size_subtrees() const {
+bool rooted_tree::size_subtrees_valid() const {
 	return m_need_recalc_size_subtrees;
 }
 
@@ -341,7 +341,7 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	assert(has_node(u));
 
 	const uint32_t n = n_nodes();
-	const bool is_anti = get_rtree_type() == rooted_tree_type::anti_arborescence;
+	const bool is_anti = get_rooted_tree_type() == rooted_tree_type::anti_arborescence;
 
 	// parent of node 'u'
 	bool u_parent_set = false;
@@ -444,7 +444,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	// make subtree
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
-	sub.set_rtree_type(rooted_tree_type::arborescence);
+	sub.set_rooted_tree_type(rooted_tree_type::arborescence);
 	sub.add_edges(es);
 	return sub;
 }

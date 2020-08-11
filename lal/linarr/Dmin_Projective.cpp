@@ -66,8 +66,8 @@ typedef char place;
 
 #define get_int_size(v) (t.out_degree(v) + 1)
 
-#define get_neighbours(t,u)													\
-	(t.get_rtree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
+#define get_neighbours(t,u)														\
+	(t.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
 	t.get_out_neighbours(u) : t.get_in_neighbours(u))
 
 constexpr position pos_in_interval(uint32_t int_size, place P) {
