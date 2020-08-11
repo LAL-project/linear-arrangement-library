@@ -73,7 +73,7 @@ namespace linarr {
  */
 template<class G>
 numeric::rational MDD_2level_rational
-(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis = {});
+(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 /**
  * @brief Computes the 2-level Mean Dependency Distance over an ensemble of graphs.
@@ -86,7 +86,7 @@ numeric::rational MDD_2level_rational
  */
 template<class G>
 double MDD_2level
-(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis = {});
+(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
 
 } // -- namespace linarr
 } // -- namespace lal

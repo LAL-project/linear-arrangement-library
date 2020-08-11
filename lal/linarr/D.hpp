@@ -65,7 +65,7 @@ namespace linarr {
  * @return Returns \f$D\f$.
  */
 uint32_t sum_length_edges
-(const graphs::graph& g, const linearrgmnt& pi = {});
+(const graphs::graph& g, const linear_arrangement& pi = {});
 
 /* MDD */
 
@@ -82,7 +82,7 @@ uint32_t sum_length_edges
  * @return Returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational MDD_rational
-(const graphs::graph& g, const linearrgmnt& pi = {});
+(const graphs::graph& g, const linear_arrangement& pi = {});
 
 /**
  * @brief Computes the mean edge length as an exact rational value.
@@ -92,7 +92,7 @@ numeric::rational MDD_rational
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double MDD(const graphs::graph& g, const linearrgmnt& pi = {});
+double MDD(const graphs::graph& g, const linear_arrangement& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

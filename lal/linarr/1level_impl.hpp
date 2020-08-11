@@ -54,7 +54,7 @@ namespace linarr {
 
 template<class G>
 numeric::rational MDD_1level_rational
-(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis)
+(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis)
 {
 #if defined DEBUG
 	// the number of graphs and number of linear arrangements
@@ -65,7 +65,7 @@ numeric::rational MDD_1level_rational
 	uint64_t sumD = 0;
 	uint64_t sumM = 0;
 	if (pis.size() == 0) {
-		const linearrgmnt empty_arr;
+		const linear_arrangement empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {
 			sumD += sum_length_edges(Gs[i], empty_arr);
 			sumM += Gs[i].n_edges();
@@ -81,7 +81,7 @@ numeric::rational MDD_1level_rational
 }
 
 template<class G>
-double MDD_1level(const std::vector<G>& Gs, const std::vector<linearrgmnt>& pis) {
+double MDD_1level(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis) {
 	return MDD_1level_rational(Gs, pis).to_double();
 }
 

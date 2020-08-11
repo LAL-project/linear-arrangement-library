@@ -156,7 +156,7 @@ uint32_t calculate_p_alpha(
 void calculate_mla_YS(
 	free_tree& t,
 	char alpha, node root_or_anchor, position start,
-	linearrgmnt& mla, uint32_t& cost
+	linear_arrangement& mla, uint32_t& cost
 )
 {
 	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
@@ -249,7 +249,7 @@ void calculate_mla_YS(
 	const uint32_t p_alpha = calculate_p_alpha(size_tree, anchored, ord, s_0, s_1);
 
 	uint32_t cost_B = 0;
-	linearrgmnt mla_B(mla);
+	linear_arrangement mla_B(mla);
 
 	if (p_alpha != 0) {
 		vector<edge> edges(2*p_alpha - anchored);
@@ -332,11 +332,11 @@ void calculate_mla_YS(
 	}
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_YS(const free_tree& t) {
+pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_YS(const free_tree& t) {
 	assert(t.is_tree());
 
 	uint32_t c = 0;
-	linearrgmnt arrangement(t.n_nodes(),0);
+	linear_arrangement arrangement(t.n_nodes(),0);
 
 	free_tree T = t;
 	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);

@@ -51,7 +51,7 @@ using namespace graphs;
 namespace linarr {
 
 uint32_t n_crossings
-(const undirected_graph& g, const linearrgmnt& pi, const algorithms_C& A) {
+(const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
 	switch (A) {
 	case algorithms_C::brute_force:
 		return __n_crossings_brute_force(g, pi);
@@ -69,7 +69,7 @@ uint32_t n_crossings
 }
 
 vector<uint32_t> n_crossings_list
-(const undirected_graph& g, const vector<linearrgmnt>& pis, const algorithms_C& A)
+(const undirected_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
 {
 	switch (A) {
 	case algorithms_C::brute_force:

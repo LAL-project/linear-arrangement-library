@@ -54,7 +54,7 @@ namespace __lal {
 inline void __put_in_arrangement(
 	const graphs::rooted_tree& T, node r,
 	const std::vector<std::vector<lal::node>>& data,
-	uint32_t& pos, linearrgmnt& arr
+	uint32_t& pos, linear_arrangement& arr
 )
 {
 	// number of children of 'r' with respect to the tree's root
@@ -80,12 +80,12 @@ inline void __put_in_arrangement(
 }
 } // -- namespace __lal
 
-inline linearrgmnt put_in_arrangement(
+inline linear_arrangement put_in_arrangement(
 	const graphs::rooted_tree& T,
 	const std::vector<std::vector<lal::node>>& data
 )
 {
-	linearrgmnt arr(T.n_nodes());
+	linear_arrangement arr(T.n_nodes());
 	uint32_t pos = 0;
 	__lal::__put_in_arrangement(T, T.get_root(), data, pos, arr);
 	return arr;

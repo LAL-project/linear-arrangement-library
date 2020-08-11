@@ -221,7 +221,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 void calculate_mla_chung(
 	free_tree& t,
 	char root, node one_node, position start,
-	linearrgmnt& mla, uint32_t& cost
+	linear_arrangement& mla, uint32_t& cost
 )
 {
 	vector<node> reachable;
@@ -294,7 +294,7 @@ void calculate_mla_chung(
 				t.add_edge(u - 1, ord[i].second - 1);
 
 				uint32_t c_i = 0;
-				linearrgmnt arr_aux = mla;
+				linear_arrangement arr_aux = mla;
 				uint32_t start_aux = start;
 
 				// Left part of the arrangement
@@ -399,7 +399,7 @@ void calculate_mla_chung(
 				t.add_edge(one_node - 1, ord[i].second - 1, false, false);
 
 				uint32_t c_i = 0;
-				linearrgmnt arr_aux = mla;
+				linear_arrangement arr_aux = mla;
 				uint32_t start_aux = start;
 
 				// Left part of the arrangement
@@ -486,11 +486,11 @@ void calculate_mla_chung(
 	}
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Unconstrained_FC(const free_tree& t) {
+pair<uint32_t, linear_arrangement> compute_Dmin_Unconstrained_FC(const free_tree& t) {
 	assert(t.is_tree());
 
 	uint32_t c = 0;
-	linearrgmnt arr(t.n_nodes(),0);
+	linear_arrangement arr(t.n_nodes(),0);
 
 	free_tree T = t;
 	calculate_mla_chung(T, NO_ANCHOR, 1, 0, arr, c);

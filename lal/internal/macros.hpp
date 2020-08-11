@@ -67,14 +67,14 @@ inline void UNUSED(const T& x) { (void)x; }
  */
 template<typename T, class G>
 T call_with_empty_arrangement(
-	T (*F)(const G&, const linearrgmnt&),
-	const G& g, const linearrgmnt& pi
+	T (*F)(const G&, const linear_arrangement&),
+	const G& g, const linear_arrangement& pi
 )
 {
 	if (pi.size() != 0) {
 		return F(g,pi);
 	}
-	linearrgmnt __pi(g.n_nodes());
+	linear_arrangement __pi(g.n_nodes());
 	std::iota(__pi.begin(), __pi.end(), 0);
 	return F(g,__pi);
 }

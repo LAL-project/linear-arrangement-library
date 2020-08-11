@@ -86,9 +86,9 @@ rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t
 }
 rand_projective_arrgmnt::~rand_projective_arrgmnt() { }
 
-linearrgmnt rand_projective_arrgmnt::make_rand_arrgmnt() {
+linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
 	if (m_rT.n_nodes() == 1) {
-		return linearrgmnt(1, 0);
+		return linear_arrangement(1, 0);
 	}
 
 	for (node u = 0; u < m_rT.n_nodes(); ++u) {

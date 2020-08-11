@@ -74,7 +74,7 @@ class rand_projective_arrgmnt {
 		 * @return Returns a projective arrangement chosen uniformly at random
 		 * chosen amongst all projective arrangements of @e t.
 		 */
-		linearrgmnt make_rand_arrgmnt();
+		linear_arrangement make_rand_arrgmnt();
 
 	private:
 		/// The rooted tree of we are making projective arrangements uniformly at random.

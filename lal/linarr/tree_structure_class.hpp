@@ -63,7 +63,7 @@ namespace linarr {
  * be determined the method returns @ref tree_structure::none
  */
 std::vector<bool> classify_tree_structure
-(const graphs::rooted_tree& t, const linearrgmnt& pi = {});
+(const graphs::rooted_tree& t, const linear_arrangement& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

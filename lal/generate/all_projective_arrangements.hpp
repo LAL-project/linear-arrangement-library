@@ -105,7 +105,7 @@ class all_proj_arr {
 		 * @pre Method @ref next must have been called at least once.
 		 * @return Returns the arrangement generated with method @ref next().
 		 */
-		linearrgmnt get_arrangement() const;
+		linear_arrangement get_arrangement() const;
 
 	private:
 		/// Constant reference to rooted tree.

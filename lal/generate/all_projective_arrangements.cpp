@@ -105,9 +105,9 @@ void all_proj_arr::next() {
 	m_has_next = i != m_por_vertices.size() or has_perm;
 }
 
-linearrgmnt all_proj_arr::get_arrangement() const {
+linear_arrangement all_proj_arr::get_arrangement() const {
 	return (m_rT.n_nodes() == 1 ?
-			linearrgmnt(1) : put_in_arrangement(m_rT, m_intervals));
+			linear_arrangement(1) : put_in_arrangement(m_rT, m_intervals));
 }
 
 /* PRIVATE */

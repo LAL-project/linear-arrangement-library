@@ -270,12 +270,12 @@ uint32_t make_interval_of(
 	return D + d;
 }
 
-pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rooted_tree& t) {
+pair<uint32_t, linear_arrangement> compute_Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
-		return make_pair(0, linearrgmnt(0,0));
+		return make_pair(0, linear_arrangement(0,0));
 	}
 
 	// construct the optimal intervals
@@ -283,7 +283,7 @@ pair<uint32_t, linearrgmnt> compute_Dmin_Projective(const rooted_tree& t) {
 	const uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
-	const linearrgmnt arr = put_in_arrangement(t, data);
+	const linear_arrangement arr = put_in_arrangement(t, data);
 
 	return make_pair(D, arr);
 }

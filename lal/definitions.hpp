@@ -70,7 +70,7 @@ typedef uint32_t position;
  * where \f$i\f$ denotes both the nodes of the graph and a position in the
  * linear arrangement, as the identity arrangement and is denoted by \f$\pi_I\f$.
  */
-typedef std::vector<position> linearrgmnt;
+typedef std::vector<position> linear_arrangement;
 
 /// Edge type
 typedef std::pair<node, node> edge;
