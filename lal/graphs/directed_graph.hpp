@@ -96,7 +96,8 @@ class directed_graph : virtual public graph {
 		 * @param norm Normalise the graph after the insertion.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre \f$u \neq v\f$. The directed edge \f$(s,t)\f$ is not part of
 		 * the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
@@ -114,7 +115,8 @@ class directed_graph : virtual public graph {
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
@@ -130,7 +132,8 @@ class directed_graph : virtual public graph {
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre The edge must exist.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
@@ -147,7 +150,8 @@ class directed_graph : virtual public graph {
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised

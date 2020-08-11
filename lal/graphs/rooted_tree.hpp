@@ -160,7 +160,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @param norm Should the graph be normalised?
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre \f$s \neq t\f$
 		 * @pre Edge \f$\{s,t\}\f$ is not part of the graph.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
@@ -182,7 +183,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge.
 		 * @pre None of the subsets of the list of edges can produce cycles
@@ -200,7 +202,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre The edge must exist.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
@@ -209,7 +212,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * and @ref need_recalc_size_subtrees returns true.
 		 */
 		rooted_tree& remove_edge
-		(node s, node t, bool norm = true, bool check_norm = true);
+		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
 		 * @brief Remove an edge from this graph.
@@ -220,7 +223,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether
 		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised.
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
 		 * @pre All the edges in @e edges must meet the precondition of method
 		 * @ref add_edge(node,node,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
