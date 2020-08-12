@@ -244,9 +244,12 @@ target_sources(
 		internal/graphs/trees/make_projective_arr.hpp
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
+		internal/graphs/trees/tree_centroid.hpp
+		internal/graphs/trees/centre_centroid_utils.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/reachability.hpp
+		internal/graphs/utils.hpp
 		internal/sorting/bit_sort.hpp
 		internal/sorting/counting_sort.hpp
 		internal/sorting/insertion_sort.hpp
