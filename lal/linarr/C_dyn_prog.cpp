@@ -57,10 +57,12 @@ using namespace graphs;
 
 namespace linarr {
 
+#define degree_graph(G,v) (G.is_undirected() ? G.degree(v) : G.out_degree(v) + G.in_degree(v))
+
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 inline uint32_t __compute_C_dyn_prog(
-	const undirected_graph& g, const linear_arrangement& pi,
+	const graph& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
 	node * __restrict__ T,
 	uint32_t * __restrict__ M,
@@ -83,7 +85,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 		internal::get_bool_neighbours(g, u, bn);
 
-		uint32_t k = g.degree(u);
+		uint32_t k = degree_graph(g,u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -155,17 +157,12 @@ inline uint32_t __compute_C_dyn_prog(
 		const neighbourhood& Nu = g.get_neighbours(u);
 		for (const node& v : Nu) {
 
-			/* 'u' and 'v' is an edge of the graph.
-			 *
-			 * In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
-			 * then 'u' is "in front of" 'v' in the linear arrangement.
-			 * This explains the first condition 'pu < pi[v]'.
-			 *
-			 * The second condition '2 <= pi[v] and pi[v] < n -1' is used
-			 * to avoid making illegal memory accesses.
-			 */
-
-
+			// 'u' and 'v' is an edge of the graph.
+			// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
+			// then 'u' is "in front of" 'v' in the linear arrangement.
+			// This explains the first condition 'pu < pi[v]'.
+			// The second condition '2 <= pi[v] and pi[v] < n -1' is used
+			// to avoid making illegal memory accesses.
 			// --
 			/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
 				C += K[idx(pu,pi[v]-2, n-3)];
@@ -174,6 +171,25 @@ inline uint32_t __compute_C_dyn_prog(
 			const bool cond = pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1;
 			C += cond*K[idx(pu,pi[v]-2, n-3)];
 		}
+		if (g.is_directed()) {
+			const neighbourhood& Nu_in = g.get_in_neighbours(u);
+			for (const node& v : Nu_in) {
+
+				// 'u' and 'v' is an edge of the graph.
+				// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
+				// then 'u' is "in front of" 'v' in the linear arrangement.
+				// This explains the first condition 'pu < pi[v]'.
+				// The second condition '2 <= pi[v] and pi[v] < n -1' is used
+				// to avoid making illegal memory accesses.
+				// --
+				/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+					C += K[idx(pu,pi[v]-2, n-3)];
+				}*/
+				// --
+				const bool cond = pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1;
+				C += cond*K[idx(pu,pi[v]-2, n-3)];
+			}
+		}
 	}
 
 	return C;
@@ -181,7 +197,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_dyn_prog(const undirected_graph& g, const linear_arrangement& pi) {
+inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -213,13 +229,13 @@ inline uint32_t __call_C_dyn_prog(const undirected_graph& g, const linear_arrang
 	return C;
 }
 
-uint32_t __n_crossings_dyn_prog(const undirected_graph& g, const linear_arrangement& pi) {
+uint32_t __n_crossings_dyn_prog(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
 vector<uint32_t> __n_crossings_dyn_prog_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis)
+(const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 

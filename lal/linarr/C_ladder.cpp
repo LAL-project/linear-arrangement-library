@@ -56,7 +56,7 @@ using namespace graphs;
 namespace linarr {
 
 inline uint32_t __compute_C_ladder(
-	const undirected_graph& g, const linear_arrangement& pi,
+	const graph& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
 	uint32_t * __restrict__ T,
 	uint32_t * __restrict__ L1
@@ -106,7 +106,7 @@ inline uint32_t __compute_C_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_ladder(const undirected_graph& g, const linear_arrangement& pi) {
+inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -135,13 +135,13 @@ inline uint32_t __call_C_ladder(const undirected_graph& g, const linear_arrangem
 	return C;
 }
 
-uint32_t __n_crossings_ladder(const undirected_graph& g, const linear_arrangement& pi) {
+uint32_t __n_crossings_ladder(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
 vector<uint32_t> __n_crossings_ladder_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis)
+(const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 

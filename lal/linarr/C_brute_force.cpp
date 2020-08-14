@@ -57,8 +57,8 @@ using namespace iterators;
 
 namespace linarr {
 
-inline uint32_t __compute_C_brute_force(
-	const undirected_graph& g, const linear_arrangement& pi,
+inline uint32_t __compute_C_brute_force_undir(
+	const graph& g, const linear_arrangement& pi,
 	node * __restrict__ T
 )
 {
@@ -72,26 +72,61 @@ inline uint32_t __compute_C_brute_force(
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
 	for (node u = 0; u < g.n_nodes(); ++u) {
-	// 'pu' is the position of node 'u'
-	const position pu = pi[u];
-	const neighbourhood& Nu = g.get_neighbours(u);
-	for (const node& v : Nu) {
-	// 'pv' is the position of node 'v'
-	const position pv = pi[v];
-	if (pu >= pv) { continue; }
+		// 'pu' is the position of node 'u'
+		const position pu = pi[u];
+		const neighbourhood& Nu = g.get_neighbours(u);
+		for (const node& v : Nu) {
+			// 'pv' is the position of node 'v'
+			const position pv = pi[v];
+			if (pu >= pv) { continue; }
 
-		// 'u' and 'v' is a pair of connected nodes such that 'u'
-		// is "to the left of" 'v' in the linear arrangement 'seq'
+			// 'u' and 'v' is a pair of connected nodes such that 'u'
+			// is "to the left of" 'v' in the linear arrangement 'seq'
 
-		// iterate through the positions between 'u' and 'v'
-		const position begin = pi[u] + 1;
-		const position end = pi[v] - 1;
+			// iterate through the positions between 'u' and 'v'
+			const position begin = pi[u] + 1;
+			const position end = pi[v] - 1;
 
-		for (position pw = begin; pw <= end; ++pw) {
+			for (position pw = begin; pw <= end; ++pw) {
+				// 'w' is the node at position 'pw'
+				const node w = T[pw];
+				const neighbourhood& Nw = g.get_neighbours(w);
+				for (const node& z : Nw) {
+
+					// if     pi[w] < pi[z]    then
+					// 'w' and 'z' is a pair of connected nodes such that
+					// 'w' is "to the left of" 'z' in the random seq 'seq'.
+					// Formally: pi[w] < pi[z]
+
+					// Also, by construction: pi[u] < pi[w]
+					C += pi[w] < pi[z] and
+						 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+				}
+			}
+		}
+	}
+
+	return C;
+}
+
+inline void __inner_computation_dir(
+	const graph& g, node u, node v,
+	const linear_arrangement& pi, const node * __restrict__ T,
+	uint32_t& C
+)
+{
+	// 'u' and 'v' is a pair of connected nodes such that 'u'
+	// is "to the left of" 'v' in the linear arrangement 'seq'
+
+	// iterate through the positions between 'u' and 'v'
+	const position begin = pi[u] + 1;
+	const position end = pi[v] - 1;
+
+	for (position pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
 		const node w = T[pw];
-		const neighbourhood& Nw = g.get_neighbours(w);
-		for (const node& z : Nw) {
+		const neighbourhood& Nw_out = g.get_out_neighbours(w);
+		for (const node& z : Nw_out) {
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
@@ -101,15 +136,66 @@ inline uint32_t __compute_C_brute_force(
 			// Also, by construction: pi[u] < pi[w]
 			C += pi[w] < pi[z] and
 				 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
-		}}
-	}}
+		}
+		const neighbourhood& Nw_in = g.get_in_neighbours(w);
+		for (const node& z : Nw_in) {
+
+			// if     pi[w] < pi[z]    then
+			// 'w' and 'z' is a pair of connected nodes such that
+			// 'w' is "to the left of" 'z' in the random seq 'seq'.
+			// Formally: pi[w] < pi[z]
+
+			// Also, by construction: pi[u] < pi[w]
+			C += pi[w] < pi[z] and
+				 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+		}
+	}
+}
+inline uint32_t __compute_C_brute_force_dir(
+	const graph& g, const linear_arrangement& pi,
+	node * __restrict__ T
+)
+{
+	const uint32_t n = g.n_nodes();
+	for (uint32_t i = 0; i < n; ++i) {
+		T[ pi[i] ] = i;
+	}
+
+	uint32_t C = 0;
+
+	// iterate over the pairs of edges that will potentially cross
+	// using the information given in the linear arrangement
+	for (node u = 0; u < g.n_nodes(); ++u) {
+		// 'pu' is the position of node 'u'
+		const position pu = pi[u];
+		const neighbourhood& Nu_out = g.get_out_neighbours(u);
+		for (const node& v : Nu_out) {
+			// 'pv' is the position of node 'v'
+			const position pv = pi[v];
+			if (pu >= pv) { continue; }
+
+			// 'u' and 'v' is a pair of connected nodes such that 'u'
+			// is "to the left of" 'v' in the linear arrangement 'seq'
+			__inner_computation_dir(g,u,v,pi,T,C);
+		}
+		const neighbourhood& Nu_in = g.get_in_neighbours(u);
+		for (const node& v : Nu_in) {
+			// 'pv' is the position of node 'v'
+			const position pv = pi[v];
+			if (pu >= pv) { continue; }
+
+			// 'u' and 'v' is a pair of connected nodes such that 'u'
+			// is "to the left of" 'v' in the linear arrangement 'seq'
+			__inner_computation_dir(g,u,v,pi,T,C);
+		}
+	}
 
 	return C;
 }
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_brute_force(const undirected_graph& g, const linear_arrangement& pi) {
+inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -122,20 +208,24 @@ inline uint32_t __call_C_brute_force(const undirected_graph& g, const linear_arr
 	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
 
 	// compute the number of crossings
-	const uint32_t C = __compute_C_brute_force(g, pi, T);
+	const uint32_t C = (
+		g.is_undirected() ?
+			__compute_C_brute_force_undir(g, pi, T) :
+			__compute_C_brute_force_dir(g, pi, T)
+	);
 
 	/* free memory */
 	free(T);
 	return C;
 }
 
-uint32_t __n_crossings_brute_force(const undirected_graph& g, const linear_arrangement& pi) {
+uint32_t __n_crossings_brute_force(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_brute_force, g, pi);
 }
 
 vector<uint32_t> __n_crossings_brute_force_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis)
+(const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 
@@ -156,7 +246,11 @@ vector<uint32_t> __n_crossings_brute_force_list
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_C_brute_force(g, pis[i], T);
+		cs[i] = (
+			g.is_undirected() ?
+				__compute_C_brute_force_undir(g, pis[i], T) :
+				__compute_C_brute_force_dir(g, pis[i], T)
+		);
 	}
 
 	/* free memory */

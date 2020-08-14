@@ -59,9 +59,10 @@ using namespace graphs;
 namespace linarr {
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
+#define my_abs_diff(a,b) (a < b ? b - a : a - b)
 
 inline uint32_t __compute_C_stack_based(
-	const undirected_graph& g, const linear_arrangement& pi,
+	const graph& g, const linear_arrangement& pi,
 	node * __restrict__ T
 )
 {
@@ -77,8 +78,10 @@ inline uint32_t __compute_C_stack_based(
 
 	for (node u = 0; u < n; ++u) {
 		// 1. fill vectors ...
-		const neighbourhood& nu = g.get_neighbours(u);
-		for (const node& v : nu) {
+
+		// if the graph is undirected this is the same as g.get_neighbours
+		const neighbourhood& Nu_out = g.get_out_neighbours(u);
+		for (const node& v : Nu_out) {
 			if (pi[v] < pi[u]) {
 				// oriented edge (v,u), "enters" node u
 				adjP[u].push_back(v);
@@ -91,12 +94,30 @@ inline uint32_t __compute_C_stack_based(
 				adjN[u].push_back( indexed_edge(0, sorted_edge(u,v)) );
 			}
 		}
+		if (g.is_directed()) {
+			const neighbourhood& Nu_in = g.get_in_neighbours(u);
+			for (const node& v : Nu_in) {
+				if (pi[v] < pi[u]) {
+					// oriented edge (v,u), "enters" node u
+					adjP[u].push_back(v);
+				}
+				else {
+					// Oriented edge (u,v), "leaves" node u,.
+					// Indices are assigned in step 3. It has to be done
+					// in this order since the indices are dependent on
+					// the ordering of the edges w.r.t. their edge length.
+					adjN[u].push_back( indexed_edge(0, sorted_edge(u,v)) );
+				}
+			}
+		}
 
 		// 2. ... sort contents ...
 
 		// 2.1. sort increasingly
-		auto sort_edge_length1 = [&u,pi](const node& v, const node& w) {
-			return std::abs(int(pi[u]) - int(pi[v])) < std::abs(int(pi[u]) - int(pi[w]));
+		auto sort_edge_length1 =
+		[&u,pi](const node& v, const node& w) {
+			return my_abs_diff(pi[u],pi[v]) < my_abs_diff(pi[u],pi[w]);
+			//return std::abs(int(pi[u]) - int(pi[v])) < std::abs(int(pi[u]) - int(pi[w]));
 		};
 		sort(adjP[u].begin(), adjP[u].end(), sort_edge_length1);
 
@@ -107,7 +128,8 @@ inline uint32_t __compute_C_stack_based(
 			const edge& e2 = ie2.second;
 			const node& v = (e1.first == u ? e1.second : e1.first);
 			const node& w = (e2.first == u ? e2.second : e2.first);
-			return std::abs(int(pi[u]) - int(pi[v])) > std::abs(int(pi[u]) - int(pi[w]));
+			return my_abs_diff(pi[u],pi[v]) > my_abs_diff(pi[u],pi[w]);
+			//return std::abs(int(pi[u]) - int(pi[v])) > std::abs(int(pi[u]) - int(pi[w]));
 		};
 		sort(adjN[u].begin(), adjN[u].end(), sort_edge_length2);
 	}
@@ -155,7 +177,7 @@ inline uint32_t __compute_C_stack_based(
 	return C;
 }
 
-inline uint32_t __call_C_stack_based(const undirected_graph& g, const linear_arrangement& pi) {
+inline uint32_t __call_C_stack_based(const graph& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -174,13 +196,13 @@ inline uint32_t __call_C_stack_based(const undirected_graph& g, const linear_arr
 	return C;
 }
 
-uint32_t __n_crossings_stack_based(const undirected_graph& g, const linear_arrangement& pi) {
+uint32_t __n_crossings_stack_based(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
 vector<uint32_t> __n_crossings_stack_based_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis)
+(const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 
