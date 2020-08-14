@@ -89,5 +89,34 @@ inline void get_bool_neighbours(
 	}
 }
 
+/* @brief Retrieves the neighbours of a node in an undirected graph as a
+ * list of 0-1 values.
+ *
+ * Sets to 1 the positions in @e neighs that correspond to the nodes
+ * neighours of @e u.
+ * @param g Input graph.
+ * @param u Input node.
+ * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @pre The contents of @e neighs must be all 0 (or false).
+ */
+inline void get_bool_neighbours(
+	const graphs::graph& g, node u, char *neighs
+)
+{
+	if (g.is_directed()) {
+		for (const node v : g.get_in_neighbours(u)) {
+			neighs[v] = 1;
+		}
+		for (const node v : g.get_out_neighbours(u)) {
+			neighs[v] = 1;
+		}
+	}
+	else {
+		for (const node v : g.get_neighbours(u)) {
+			neighs[v] = 1;
+		}
+	}
+}
+
 } // -- namespace internal
 } // -- namespace lal
