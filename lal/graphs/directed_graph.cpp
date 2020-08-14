@@ -331,10 +331,6 @@ const neighbourhood& directed_graph::get_neighbours(node u) const {
 	return get_out_neighbours(u);
 }
 
-uint32_t directed_graph::degree(node u) const {
-	return out_degree(u);
-}
-
 const neighbourhood& directed_graph::get_out_neighbours(node u) const {
 	assert(has_node(u));
 	return m_adjacency_list[u];
@@ -342,6 +338,10 @@ const neighbourhood& directed_graph::get_out_neighbours(node u) const {
 const neighbourhood& directed_graph::get_in_neighbours(node u) const {
 	assert(has_node(u));
 	return m_in_adjacency_list[u];
+}
+
+uint32_t directed_graph::degree(node u) const {
+	return out_degree(u);
 }
 
 uint32_t directed_graph::out_degree(node u) const {

@@ -191,11 +191,33 @@ class undirected_graph : virtual public graph {
 		const neighbourhood& get_neighbours(node u) const;
 
 		/**
+		 * @brief Returns the out-neighbours of node @e u.
+		 *
+		 * This is the same as @ref get_neighbours(node).
+		 * @param u Node
+		 * @return Returns the list of nodes leaving node @e u.
+		 */
+		const neighbourhood& get_out_neighbours(node u) const;
+		/**
+		 * @brief Returns the in-neighbours of node @e u.
+		 *
+		 * This is the same as @ref get_neighbours(node).
+		 * @param u Node
+		 * @return Returns the list of nodes entering at node @e u.
+		 */
+		const neighbourhood& get_in_neighbours(node u) const;
+
+		/**
 		 * @brief Returns the number of neighbours of @e u.
 		 * @param u Node to be queried.
 		 * @return Returns the number of adjacent nodes.
 		 */
 		uint32_t degree(node u) const;
+
+		/// Same as @ref degree
+		uint32_t out_degree(node u) const;
+		/// Same as @ref degree
+		uint32_t in_degree(node u) const;
 
 		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 		bool has_edge(node u, node v) const;

@@ -213,9 +213,6 @@ class directed_graph : virtual public graph {
 		/// Same as @ref get_out_neighbours.
 		const neighbourhood& get_neighbours(node u) const;
 
-		/// Same as @ref out_degree.
-		uint32_t degree(node u) const;
-
 		/**
 		 * @brief Returns the out-neighbours of node @e u
 		 * @param u Node
@@ -228,6 +225,9 @@ class directed_graph : virtual public graph {
 		 * @return Returns the list of nodes entering at node @e u.
 		 */
 		const neighbourhood& get_in_neighbours(node u) const;
+
+		/// Same as @ref out_degree.
+		uint32_t degree(node u) const;
 
 		/// Returns the out-degree of a node.
 		uint32_t out_degree(node u) const;

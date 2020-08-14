@@ -134,12 +134,30 @@ class graph {
 		virtual const neighbourhood& get_neighbours(node u) const = 0;
 
 		/**
+		 * @brief Returns the out-neighbours of node @e u.
+		 * @param u Node
+		 * @return Returns the list of nodes leaving node @e u.
+		 */
+		virtual const neighbourhood& get_out_neighbours(node u) const = 0;
+		/**
+		 * @brief Returns the in-neighbours of node @e u.
+		 * @param u Node
+		 * @return Returns the list of nodes entering at node @e u.
+		 */
+		virtual const neighbourhood& get_in_neighbours(node u) const = 0;
+
+		/**
 		 * @brief Returns the number of neighbours of @e u.
 		 * @param u Node to be queried.
 		 * @return In undirected graphs, returns the number of neighbours. In
 		 * a directed graph, returns the number of outgoing edges.
 		 */
 		virtual uint32_t degree(node u) const = 0;
+
+		/// Returns the out-degree of a node.
+		virtual uint32_t out_degree(node u) const = 0;
+		/// Returns the in-degree of a node.
+		virtual uint32_t in_degree(node u) const = 0;
 
 		/// Returns true if node @e u is in this graph.
 		bool has_node(node u) const;

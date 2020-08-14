@@ -248,9 +248,24 @@ const neighbourhood& undirected_graph::get_neighbours(node u) const {
 	return m_adjacency_list[u];
 }
 
+const neighbourhood& undirected_graph::get_out_neighbours(node u) const {
+	return get_neighbours(u);
+}
+
+const neighbourhood& undirected_graph::get_in_neighbours(node u) const {
+	return get_neighbours(u);
+}
+
 uint32_t undirected_graph::degree(node u) const {
 	assert(has_node(u));
 	return static_cast<uint32_t>(m_adjacency_list[u].size());
+}
+
+uint32_t undirected_graph::out_degree(node u) const {
+	return degree(u);
+}
+uint32_t undirected_graph::in_degree(node u) const {
+	return degree(u);
 }
 
 bool undirected_graph::has_edge(node u, node v) const {
