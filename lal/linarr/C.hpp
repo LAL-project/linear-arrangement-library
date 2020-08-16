@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/graph.hpp>
 #include <lal/linarr/algorithms_C.hpp>
 #include <lal/numeric/rational.hpp>
 
