@@ -193,7 +193,7 @@ class undirected_graph : virtual public graph {
 		/**
 		 * @brief Returns the out-neighbours of node @e u.
 		 *
-		 * This is the same as @ref get_neighbours(node).
+		 * This is the same as @ref get_neighbours.
 		 * @param u Node
 		 * @return Returns the list of nodes leaving node @e u.
 		 */
@@ -201,7 +201,7 @@ class undirected_graph : virtual public graph {
 		/**
 		 * @brief Returns the in-neighbours of node @e u.
 		 *
-		 * This is the same as @ref get_neighbours(node).
+		 * This is the same as @ref get_neighbours.
 		 * @param u Node
 		 * @return Returns the list of nodes entering at node @e u.
 		 */

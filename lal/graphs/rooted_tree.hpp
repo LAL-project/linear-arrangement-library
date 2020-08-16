@@ -94,7 +94,7 @@ namespace graphs {
  * multiple times and at any time. However, any information dependent
  * on the root becomes invalid upon any change of the root. This information
  * includes, and may not be lmited to, the type of rooted tree (see
- * @ref m_rooted_tree_type) and the size of the subtrees (see @ref m_size_subtrees).
+ * @ref m_rtree_type) and the size of the subtrees (see @ref m_size_subtrees).
  * For this reason, is is strongly recommended to build a free tree first and
  * use the constructor @ref rooted_tree(const ftree&, node, rooted_tree_type), or the
  * method @ref init_rooted, in order to build rooted trees.
@@ -478,7 +478,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @ref set_rooted_tree_type.
 		 */
 		rooted_tree_type m_rtree_type = rooted_tree_type::none;
-		/// Are the contents of @ref m_rooted_tree_type valid?
+		/// Are the contents of @ref m_rtree_type valid?
 		bool m_rtree_type_valid = false;
 
 		/**
