@@ -154,6 +154,16 @@ PROP_WRAP		= $(ARCH_DIR)/$(PROP_INAME)_wrap
 _PROP_SO		= _$(PROP_INAME).$(SO_EXT)
 PROP_SO			= $(ARCH_DIR)/$(_PROP_SO)
 
+# -- utilities module
+UTILS_MAIN_INT	= submodules/$(UTILS_INAME).i
+UTILS_SUB_INT	= submodules/$(UTILS_BNAME)_impl.i
+UTILS_MOD_DEPS	= $(UTILS_MAIN_INT) $(UTILS_SUB_INT) $(UTILS_DPHDRS)
+_UTILS_PF		= $(UTILS_INAME).py
+UTILS_PY_FILE	= $(ARCH_DIR)/$(_UTILS_PF)
+UTILS_WRAP		= $(ARCH_DIR)/$(UTILS_INAME)_wrap
+_UTILS_SO		= _$(UTILS_INAME).$(SO_EXT)
+UTILS_SO		= $(ARCH_DIR)/$(_UTILS_SO)
+
 # -- lal module (library's main module)
 LAL_MAIN_INT	= $(LAL_INAME).i
 LAL_SUB_INT		= 

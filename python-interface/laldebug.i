@@ -10,6 +10,7 @@
 #include <lal/linarr.hpp>
 #include <lal/numeric.hpp>
 #include <lal/properties.hpp>
+#include <lal/utilities.hpp>
 %}
 
 %import submodules/lalversiondebug.i
@@ -21,6 +22,7 @@
 %import submodules/laliodebug.i
 %import submodules/lallinarrdebug.i
 %import submodules/lalpropertiesdebug.i
+%import submodules/lalutilitiesdebug.i
 
 %pythoncode %{
 # remove 'lal' and 'debug' from the module's names.

@@ -76,6 +76,10 @@ NMRC_INAME	= $(NMRC_BNAME)debug
 PROP_BNAME	= lalproperties
 PROP_INAME	= $(PROP_BNAME)debug
 
+# -- utilities
+UTILS_BNAME	= lalutilities
+UTILS_INAME	= $(UTILS_BNAME)debug
+
 # -- lal (library's main module)
 LAL_BNAME	= lal
 LAL_INAME	= $(LAL_BNAME)debug

@@ -10,6 +10,7 @@
 #include <lal/linarr.hpp>
 #include <lal/numeric.hpp>
 #include <lal/properties.hpp>
+#include <lal/utilities.hpp>
 %}
 
 %import submodules/lalversion.i
@@ -21,6 +22,7 @@
 %import submodules/lalio.i
 %import submodules/lallinarr.i
 %import submodules/lalproperties.i
+%import submodules/lalutilities.i
 
 %pythoncode %{
 # remove 'lal' from the module's names.

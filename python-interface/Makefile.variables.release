@@ -76,6 +76,10 @@ NMRC_INAME	= $(NMRC_BNAME)
 PROP_BNAME	= lalproperties
 PROP_INAME	= $(PROP_BNAME)
 
+# -- utilities
+UTILS_BNAME	= lalutilities
+UTILS_INAME	= $(UTILS_BNAME)
+
 # -- lal (library's main module)
 LAL_BNAME	= lal
 LAL_INAME	= $(LAL_BNAME)

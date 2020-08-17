@@ -173,6 +173,7 @@ SUBMODULES	= $(DSE_SO) 		\
 			  $(LINARR_SO)		\
 			  $(NMRC_SO)		\
 			  $(PROP_SO)		\
+			  $(UTILS_SO)		\
 			  $(VERSION_SO)
 ALL_SO		= $(SUBMODULES) $(LAL_SO)
 
@@ -222,6 +223,8 @@ install: $(LAL_SO)
 	cp $(NMRC_PY_FILE) $(LAL_PY_DEST)/$(_NMRC_PF)
 	cp $(PROP_SO) $(LAL_PY_DEST)/$(_PROP_SO)
 	cp $(PROP_PY_FILE) $(LAL_PY_DEST)/$(_PROP_PF)
+	cp $(UTILS_SO) $(LAL_PY_DEST)/$(_UTILS_SO)
+	cp $(UTILS_PY_FILE) $(LAL_PY_DEST)/$(_UTILS_PF)
 	cp $(VERSION_SO) $(LAL_PY_DEST)/$(_VERSION_SO)
 	cp $(VERSION_PY_FILE) $(LAL_PY_DEST)/$(_VERSION_PF)
 	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
@@ -252,6 +255,8 @@ uninstall:
 	rm -f $(LAL_PY_DEST)/$(_NMRC_PF)
 	rm -f $(LAL_PY_DEST)/$(_PROP_SO)
 	rm -f $(LAL_PY_DEST)/$(_PROP_PF)
+	rm -f $(LAL_PY_DEST)/$(_UTILS_SO)
+	rm -f $(LAL_PY_DEST)/$(_UTILS_PF)
 	rm -f $(LAL_PY_DEST)/$(_VERSION_SO)
 	rm -f $(LAL_PY_DEST)/$(_VERSION_PF)
 	rm -f $(LAL_PY_DEST)/$(_LAL_SO)

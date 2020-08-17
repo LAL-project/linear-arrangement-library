@@ -113,6 +113,14 @@ $(PROP_WRAP).o: $(PROP_WRAP).cxx
 $(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(PROP_MAIN_INT)
 
+# utilities  module
+$(UTILS_SO): $(UTILS_WRAP).o $(LIBRARY_SHARED_DEP)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
+$(UTILS_WRAP).o: $(UTILS_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(UTILS_WRAP).cxx: $(UTILS_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(UTILS_MAIN_INT)
+
 # lal module (library's main module)
 $(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)

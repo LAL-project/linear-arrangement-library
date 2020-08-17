@@ -62,6 +62,8 @@ PROP_DPHDRS			= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/mean_hierarchical_distance.hpp \
 					  $(LAL_INC_DIR)/lal/properties/Q.hpp
 
+UTILS_DPHDRS		= $(LAL_INC_DIR)/lal/utilities/tree_isomorphism.hpp
+
 VERSION_DPHDRS		= $(LAL_INC_DIR)/lal/lal_version.hpp
 else
 LAL_DPHDRS			=
@@ -78,4 +80,5 @@ ITER_DPHDRS			=
 LINARR_DPHDRS 		=
 NMRC_DPHDRS			=
 PROP_DPHDRS			=
+UTILS_DPHDRS		=
 endif
