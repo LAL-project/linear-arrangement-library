@@ -80,7 +80,7 @@ numeric::rational mean_dependency_distance_2level_rational
 template<class G>
 double mean_dependency_distance_2level
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis) {
-	return MDD_2level_rational(Gs, pis).to_double();
+	return mean_dependency_distance_2level_rational(Gs, pis).to_double();
 }
 
 } // -- namespace linarr
