@@ -74,6 +74,22 @@ enum class algorithms_Dmin {
 
 	/* ALGORITHMS FOR FREE TREES */
 
+	/**
+	 * @brief Algorithm to calculate optimal planar arrangements of free trees.
+	 *
+	 * Computes an optimal planar linear arrangement for free trees.
+	 * A planar linear arrangement is an arrangement in which there are
+	 * no edge crossings.
+	 *
+	 * This option uses Hochberg and Stallmann's algorithm published in \cite Hochberg2003a.
+	 *
+	 * This algorithm is allowed only in function
+	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin& a),
+	 * i.e., in the function that accepts free trees. One can call directly
+	 * function @ref Dmin_Planar.
+	 */
+	Planar,
+
     /**
      * @brief Algorithm to calculate unconstrained an optimal linearization of free trees.
      *

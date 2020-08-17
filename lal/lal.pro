@@ -30,7 +30,7 @@ HEADERS += \
     graphs/directed_graph.hpp \
     graphs/free_tree.hpp \
     graphs/rooted_tree.hpp \
-    graphs/undirected_graph.hpp \
+	graphs/undirected_graph.hpp \
     lal_version.hpp \
 	namespaces.hpp \
 	definitions.hpp \
@@ -120,12 +120,13 @@ SOURCES += \
 	graphs/graph.cpp \
     graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
-    graphs/undirected_graph.cpp \
+	graphs/undirected_graph.cpp \
 	iterators/E_iterator.cpp \
 	iterators/Q_iterator.cpp \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
+    linarr/Dmin_Planar.cpp \
 	linarr/Dmin_Projective.cpp \
 	linarr/Dmin_Unconstrained_FC.cpp \
 	linarr/Dmin_Unconstrained_YS.cpp \

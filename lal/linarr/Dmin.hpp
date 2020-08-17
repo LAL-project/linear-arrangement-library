@@ -67,6 +67,21 @@ std::pair<uint32_t, linear_arrangement> Dmin_Projective
 (const graphs::rooted_tree& t);
 
 /**
+ * @brief Algorithm to calculate optimal planar arrangements of free trees.
+ *
+ * Computes an optimal planar linear arrangement for free trees.
+ * A planar linear arrangement is an arrangement in which there are
+ * no edge crossings.
+ *
+ * This function implements Hochberg and Stallmann's algorithm published in \cite Hochberg2003a.
+ *
+ * @param t Input tree.
+ * @pre The object @e t must be a tree (see @ref graphs::free_tree::is_tree).
+ */
+std::pair<uint32_t, linear_arrangement> Dmin_Planar
+(const graphs::free_tree& t);
+
+/**
  * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
  *
  * Computes an unconstrained optimal linear arrangement of a free tree and

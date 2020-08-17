@@ -203,6 +203,7 @@ target_sources(
 		linarr/C_stack_based.cpp
 		linarr/D.cpp
 		linarr/Dmin.cpp
+		linarr/Dmin_Planar.cpp
 		linarr/Dmin_Projective.cpp
 		linarr/Dmin_Unconstrained_FC.cpp
 		linarr/Dmin_Unconstrained_YS.cpp

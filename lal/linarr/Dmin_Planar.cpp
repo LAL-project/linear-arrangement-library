@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019
+ *  Copyright (C) 2019-2020
  *
  *  This file is part of Linear Arrangement Library. To see the full code
  *  visit the webpage:
@@ -30,69 +30,26 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
- *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
- *          CQL (Complexity and Quantitative Linguistics Lab)
- *          Office S124, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
- *
  ********************************************************************/
 
 #include <lal/linarr/Dmin.hpp>
 
 // C++ includes
+#include <iostream>
+#include <vector>
+#include <algorithm>
 #include <cassert>
 using namespace std;
+
+// lal includes
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, linear_arrangement> Dmin
-(const rooted_tree& t, const algorithms_Dmin& a)
-{
-	switch (a) {
-
-	// check for invalid choices of algorithm
-	case algorithms_Dmin::Planar:
-	case algorithms_Dmin::Unconstrained_YS:
-	case algorithms_Dmin::Unconstrained_FC:
-		assert(false);
-		break;  // in release compilations the
-				// function must return nothing.
-
-	// call Gildea and Temperly's algorithm
-	case algorithms_Dmin::Projective:
-		return Dmin_Projective(t);
-	}
-
-	return make_pair(0, linear_arrangement());
-}
-
-pair<uint32_t, linear_arrangement> Dmin
-(const free_tree& t, const algorithms_Dmin& a)
-{
-	switch (a) {
-
-	// check for invalid choices of algorithm
-	case algorithms_Dmin::Projective:
-		assert(false);
-		break;  // in release compilations the
-				// function must return nothing.
-
-	// call Hochberg and Stallman's algorithm
-	case algorithms_Dmin::Planar:
-		return Dmin_Planar(t);
-	// call Yossi Shiloach's algorithm
-	case algorithms_Dmin::Unconstrained_YS:
-		return Dmin_Unconstrained_YS(t);
-	// call Fan Chung's algorithm
-	case algorithms_Dmin::Unconstrained_FC:
-		return Dmin_Unconstrained_FC(t);
-	}
-
+pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree&) {
 	return make_pair(0, linear_arrangement());
 }
 
