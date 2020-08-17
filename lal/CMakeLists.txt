@@ -235,8 +235,14 @@ target_sources(
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_trees.cpp
+		
+		# utilities namespace
+		# -- headers
+		utilities/tree_isomorphism.hpp
+		# -- sources
+		utilities/tree_isomorphism.cpp
 
-		# utils namespace -- not to be installed
+		# internal namespace -- not to be installed
 		# -- headers
 		internal/gmp/utils.hpp
 		internal/graphs/trees/convert_to_ftree.hpp
@@ -276,6 +282,7 @@ target_sources(
 		namespaces.hpp
 		numeric.hpp
 		properties.hpp
+		utilities.hpp
 )
 
 # **********************************************************************
@@ -296,6 +303,7 @@ set(LIBLAL_MAIN_HEADER
 	linarr.hpp
 	numeric.hpp
 	properties.hpp
+	utilities.hpp
 )
 set(LIBLAL_GENERATION_HEADER
 	generate/all_lab_free_trees.hpp
@@ -356,6 +364,9 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/mhd.hpp
 	properties/Q.hpp
 )
+set(LIBLAL_UTILITIES_HEADER
+	utilities/tree_isomorphism.hpp
+)
 
 # **********************************************************************
 # INSTALLATION OF LIBRARY
@@ -375,6 +386,7 @@ install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
 install(FILES ${LIBLAL_NUMERIC_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/numeric)
 install(FILES ${LIBLAL_PROPERTIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)
+install(FILES ${LIBLAL_UTILITIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/utilities)
 
 # **********************************************************************
 # COMPILATION FLAGS

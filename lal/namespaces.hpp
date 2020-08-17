@@ -295,7 +295,7 @@ namespace numeric {
 /**
  * @brief Properties of graphs.
  * 
- * This namespace contains basic properties of graphs including, but
+ * This namespace contains properties of graphs including, but
  * not limited to:
  * - hubiness (see @ref hubiness),
  * - Mean Hierarchical Distance (see @ref mean_hierarchical_distance),
@@ -315,5 +315,18 @@ namespace numeric {
  * double precision.
  */
 namespace properties {}
+
+/**
+ * @brief Set of utilities.
+ *
+ * This namespace contains several utilities for the library and experiments.
+ * On top the @ref generate utilities, this library includes (in this namespace)
+ * the following functions:
+ * - Isomorphism tests. For free trees (see
+ * @ref are_trees_isomorphic(const graphs::free_tree&,const graphs::free_tree&))
+ * and for rooted trees (see
+ * @ref are_trees_isomorphic(const graphs::rooted_tree&,const graphs::rooted_tree&)).
+ */
+namespace utilities {}
 
 } // -- namespace lal

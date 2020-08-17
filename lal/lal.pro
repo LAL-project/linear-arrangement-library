@@ -102,7 +102,9 @@ HEADERS += \
 	internal/sorting/bit_sort.hpp \
 	internal/sorting/counting_sort.hpp \
 	internal/sorting/insertion_sort.hpp \
-    properties/mean_hierarchical_distance.hpp
+    properties/mean_hierarchical_distance.hpp \
+	utilities.hpp \
+	utilities/tree_isomorphism.hpp
 
 SOURCES += \
     generate/all_lab_free_trees.cpp \
@@ -153,4 +155,5 @@ SOURCES += \
 	properties/C_rla.cpp \
 	internal/gmp/utils.cpp \
 	internal/graphs/trees/convert_to_ftree.cpp \
-	internal/graphs/trees/convert_to_rtree.cpp
+	internal/graphs/trees/convert_to_rtree.cpp \
+	utilities/tree_isomorphism.cpp
