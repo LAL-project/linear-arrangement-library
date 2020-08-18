@@ -55,17 +55,22 @@ using namespace graphs;
 
 namespace utilities {
 
-/* Returns whether the input trees are NOT isomorphic. Returns TRUE if:
+/* Returns whether the input trees are, might be, or are not isomorphic.
+ *
+ * Returns 0 if the trees ARE isomorphic
+ * Returns 1 if the trees ARE NOT isomorphic:
  * - number of vertices do not coincide
  * - number of leaves do not coincide
  * - second moment of degree do not coincide
+ * Returns 2 if the trees MIGHT BE isomorphic
  */
 template<class T>
-bool fast_non_iso(const T& t1, const T& t2) {
+int fast_non_iso(const T& t1, const T& t2) {
 	// check number of nodes
-	if (t1.n_nodes() != t2.n_nodes()) { return true; }
+	if (t1.n_nodes() != t2.n_nodes()) { return 1; }
 
 	const uint32_t n = t1.n_nodes();
+	if (n <= 2) { return 0; }
 
 	uint32_t nL_t1 = 0; // number of leaves of t1
 	uint32_t nL_t2 = 0; // number of leaves of t2
@@ -86,31 +91,74 @@ bool fast_non_iso(const T& t1, const T& t2) {
 	}
 
 	// check number of leaves
-	if (nL_t1 != nL_t2) { return true; }
+	if (nL_t1 != nL_t2) { return 1; }
 	// check maximum degree
-	if (maxdeg_t1 != maxdeg_t2) { return true; }
+	if (maxdeg_t1 != maxdeg_t2) { return 1; }
 	// check sum of squared degrees
-	if (k2_t1 != k2_t2) { return true; }
+	if (k2_t1 != k2_t2) { return 1; }
 
-	return false;
+	return 2;
+}
+
+// -----------------------------------------------------------------------------
+
+void assign_name(const rooted_tree& t, node v, string& name) {
+	if (t.degree(v) == 0) {
+		name = "10";
+		return;
+	}
+
+	vector<string> names_children(t.degree(v));
+	size_t i = 0;
+	for (node u : t.get_neighbours(v)) {
+		string name_u;
+		assign_name(t,u, name_u);
+		names_children[i] = name_u;
+		++i;
+	}
+
+	sort(names_children.begin(), names_children.end());
+	string join;
+	for (const string& nc : names_children) {
+		join += nc;
+	}
+	name = "1" + join + "0";
+
+	names_children.clear();
+	join.clear();
 }
 
 bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
-	if (fast_non_iso(t1,t2)) { return false; }
-	return false;
+	const int discard = fast_non_iso(t1,t2);
+	if (discard == 0) { return true; }
+	if (discard == 1) { return false; }
+
+	const node r1 = t1.get_root();
+	const node r2 = t2.get_root();
+
+	string name_r1, name_r2;
+	assign_name(t1, r1, name_r1);
+	assign_name(t2, r2, name_r2);
+	return name_r1 == name_r2;
 }
 
+// -----------------------------------------------------------------------------
+
 bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) {
-	if (fast_non_iso(t1,t2)) { return false; }
+	const int discard = fast_non_iso(t1,t2);
+	if (discard == 0) { return true; }
+	if (discard == 1) { return false; }
+
 	const uint32_t n = t1.n_nodes();
+	if (n == 3) { return true; }
 
 	// find centres of the trees
 	const auto c1 = internal::retrieve_centre(t1, 0);
 	const auto c2 = internal::retrieve_centre(t2, 0);
 
 	// check centre sizes
-	const uint32_t size1 = (c1.second == n ? 2 : 1);
-	const uint32_t size2 = (c2.second == n ? 2 : 1);
+	const uint32_t size1 = (c1.second < n ? 2 : 1);
+	const uint32_t size2 = (c2.second < n ? 2 : 1);
 	if (size1 != size2) { return false; }
 
 	const rooted_tree rt1 = rooted_tree(t1, c1.first);
