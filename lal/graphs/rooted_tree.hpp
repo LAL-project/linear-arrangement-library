@@ -501,8 +501,5 @@ class rooted_tree : public directed_graph, virtual public tree {
 		using directed_graph::disjoint_union;
 };
 
-/// Shorthand for @ref rooted_tree.
-typedef rooted_tree rtree;
-
 } // -- namespace graphs
 } // -- namespace lal

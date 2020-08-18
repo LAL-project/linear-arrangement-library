@@ -270,8 +270,5 @@ class directed_graph : virtual public graph {
 		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
 
-/// Shorthand for @ref directed_graph.
-typedef directed_graph dgraph;
-
 } // -- namespace graphs
 } // -- namespace lal

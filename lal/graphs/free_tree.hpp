@@ -175,8 +175,5 @@ class free_tree : public undirected_graph, virtual public tree {
 		using undirected_graph::disjoint_union;
 };
 
-/// Shorthand for @ref free_tree.
-typedef free_tree ftree;
-
 } // -- namespace graphs
 } // -- namespace lal

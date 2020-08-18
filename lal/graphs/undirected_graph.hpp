@@ -243,8 +243,5 @@ class undirected_graph : virtual public graph {
 		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
 
-/// Shorthand for @ref undirected_graph.
-typedef undirected_graph ugraph;
-
 } // -- namespace graphs
 } // -- namespace lal
