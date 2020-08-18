@@ -45,10 +45,12 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <set>
 using namespace std;
 
 // lal includes
 #include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/graphs/output.hpp>
 
@@ -355,7 +357,20 @@ uint32_t directed_graph::in_degree(node u) const {
 
 undirected_graph directed_graph::to_undirected() const {
 	undirected_graph g(n_nodes());
-	g.add_edges(edges());
+
+	set<edge> my_edges;
+
+	// add edges so that none are repeated
+	iterators::E_iterator it(*this);
+	while (it.has_next()) {
+		it.next();
+		const edge e = it.get_edge();
+		my_edges.insert(
+			e.first < e.second ? e : edge(e.second, e.first)
+		);
+	}
+
+	g.add_edges(vector<edge>(my_edges.begin(), my_edges.end()));
 	return g;
 }
 

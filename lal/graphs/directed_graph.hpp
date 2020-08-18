@@ -236,7 +236,14 @@ class directed_graph : virtual public graph {
 
 		/**
 		 * @brief Converts this directed graph into an undirected graph.
-		 * @return Returns an object of typ undirected graph.
+		 *
+		 * The undirected graph returned connects two vertices \f$u,v\f$ if
+		 * these two vertices are connected by a directed edge (\f$(u,v)\f$ or
+		 * \f$(v,u)\f$) in this graph. In other words, if two vertices are
+		 * connected by a single directed edge, the direction is dropped. If
+		 * two edges are connected by two directed edges (of opposite directions)
+		 * then the two are merged into a single undirected edge.
+		 * @return Returns this graph in which the edges are undirected.
 		 */
 		undirected_graph to_undirected() const;
 
