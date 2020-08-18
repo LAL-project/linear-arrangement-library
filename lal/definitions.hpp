@@ -44,7 +44,6 @@
 // C++ includes
 #include <cstdint>
 #include <vector>
-#include <string>
 
 namespace lal {
 
