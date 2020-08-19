@@ -361,7 +361,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp
-	properties/mhd.hpp
+	properties/mean_hierarchical_distance.hpp
 	properties/Q.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
