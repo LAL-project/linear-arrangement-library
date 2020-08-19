@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-# needed includes to make CMake work include(CheckCXXCompilerFlag)
+# needed includes to make CMake work
+include(CheckCXXCompilerFlag)
 # installation directories (platform dependent)
 include(GNUInstallDirs)
-include(CheckCXXCompilerFlag)
 
 # **********************************************************************
 # Custom functions
