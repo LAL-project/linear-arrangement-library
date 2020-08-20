@@ -54,6 +54,9 @@ pair<uint32_t, linear_arrangement> Dmin
 (const rooted_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
+	// call Gildea and Temperly's algorithm
+	case algorithms_Dmin::Projective:
+		return Dmin_Projective(t);
 
 	// check for invalid choices of algorithm
 	case algorithms_Dmin::Planar:
@@ -62,10 +65,6 @@ pair<uint32_t, linear_arrangement> Dmin
 		assert(false);
 		break;  // in release compilations the
 				// function must return nothing.
-
-	// call Gildea and Temperly's algorithm
-	case algorithms_Dmin::Projective:
-		return Dmin_Projective(t);
 	}
 
 	return make_pair(0, linear_arrangement());
