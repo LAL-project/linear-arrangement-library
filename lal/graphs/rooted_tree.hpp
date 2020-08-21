@@ -268,14 +268,14 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * according to this orientation.
 		 *
 		 * If the tree has only one vertex the type is @ref rooted_tree_type::arborescence.
-		 * @return Returns true if the type is either @ref rooted_tree_type::arborescence
-		 * or rooted_tree_type::anti_arborescence. Returns false if the type is
-		 * @ref rooted_tree_type::none.
 		 * @pre This object is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
 		 * @post Method @ref rooted_tree_type_valid evaluates to true if the tree is
 		 * an @ref rooted_tree_type::arborescence or an
 		 * @ref rooted_tree_type::anti_arborescence.
+		 * @return Returns true if the type is either @ref rooted_tree_type::arborescence
+		 * or rooted_tree_type::anti_arborescence. Returns false if the type is
+		 * @ref rooted_tree_type::none.
 		 */
 		bool find_rooted_tree_type();
 
