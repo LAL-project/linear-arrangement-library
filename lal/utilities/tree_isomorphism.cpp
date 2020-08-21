@@ -128,7 +128,13 @@ void assign_name(const rooted_tree& t, node v, string& name) {
 	join.clear();
 }
 
+// -----------------------------------------------------------------------------
+
 bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
+	if (t1.get_rooted_tree_type() != t2.get_rooted_tree_type()) {
+		return false;
+	}
+
 	const int discard = fast_non_iso(t1,t2);
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
@@ -141,8 +147,6 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	assign_name(t2, r2, name_r2);
 	return name_r1 == name_r2;
 }
-
-// -----------------------------------------------------------------------------
 
 bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) {
 	const int discard = fast_non_iso(t1,t2);
