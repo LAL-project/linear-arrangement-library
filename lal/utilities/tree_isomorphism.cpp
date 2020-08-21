@@ -174,8 +174,15 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) {
 	}
 
 	// the centres have two vertices
-	const rooted_tree rt2 = rooted_tree(t2, c2.second);
-	return are_trees_isomorphic(rt1, rt2);
+
+	// try with the first centre of the second tree
+	const rooted_tree rt2_1 = rooted_tree(t2, c2.first);
+	const bool iso1 = are_trees_isomorphic(rt1, rt2_1);
+	if (iso1) { return true; }
+
+	// try with the second centre of the second tree
+	const rooted_tree rt2_2 = rooted_tree(t2, c2.second);
+	return are_trees_isomorphic(rt1, rt2_2);
 }
 
 } // -- namespace utilities
