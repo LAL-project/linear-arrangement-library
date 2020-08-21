@@ -108,16 +108,16 @@ void assign_name(const rooted_tree& t, node v, string& name) {
 		return;
 	}
 
+	// make childrens' names
 	vector<string> names_children(t.degree(v));
 	size_t i = 0;
 	for (node u : t.get_neighbours(v)) {
-		string name_u;
-		assign_name(t,u, name_u);
-		names_children[i] = name_u;
+		assign_name(t,u, names_children[i]);
 		++i;
 	}
-
 	sort(names_children.begin(), names_children.end());
+
+	// join the names in a single string
 	string join;
 	for (const string& nc : names_children) {
 		join += nc;
