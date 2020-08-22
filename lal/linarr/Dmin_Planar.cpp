@@ -30,27 +30,49 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
+ *      Juan Luis Esteban (esteban@cs.upc.edu)
+ *          Office 110, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://www.cs.upc.edu/~esteban/
+ *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
+ *
  ********************************************************************/
 
 #include <lal/linarr/Dmin.hpp>
 
 // C++ includes
-#include <iostream>
-#include <vector>
-#include <algorithm>
 #include <cassert>
 using namespace std;
 
 // lal includes
-#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/internal/graphs/trees/tree_centroid.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree&) {
-	return make_pair(0, linear_arrangement());
+pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
+	assert(t.is_tree());
+
+	// In short, Hochberg and Stallmann described their algorithm
+	// as rooting a free tree at one of its centroidal vertices and
+	// arranging it so that the root is not covered and the arrangement
+	// yields minimum D.
+
+	// Therefore, they proved that any optimal projective arrangement of a
+	// free tree (T) rooted at one of its centroidal vertices (T_c) yields
+	// the same value of D as any of the optimal planar arrangements
+	// of T. For this reason, any optimal projective arrangement of T_c
+	// is an optimal planar arrangement of T.
+
+	const node c = internal::retrieve_centroid(t,0).first;
+	const rooted_tree rt(t, c);
+
+	// Use Gildea and Temperley's algorithm to calculate an optimal
+	// projective arrangement.
+	return Dmin_Projective(rt);
 }
 
 } // -- namespace linarr
