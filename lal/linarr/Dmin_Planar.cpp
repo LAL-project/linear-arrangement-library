@@ -35,6 +35,13 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://www.cs.upc.edu/~esteban/
  *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
+ * 
+ *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Office S124, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
 
