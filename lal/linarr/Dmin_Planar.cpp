@@ -52,6 +52,7 @@
 using namespace std;
 
 // lal includes
+#include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 
@@ -75,7 +76,8 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	// is an optimal planar arrangement of T.
 
 	const node c = internal::retrieve_centroid(t,0).first;
-	const rooted_tree rt(t, c);
+	rooted_tree rt(t, c);
+	rt.calculate_size_subtrees();
 
 	// Use Gildea and Temperley's algorithm to calculate an optimal
 	// projective arrangement.
