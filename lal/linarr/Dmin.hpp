@@ -73,7 +73,8 @@ std::pair<uint32_t, linear_arrangement> Dmin_Projective
  * A planar linear arrangement is an arrangement in which there are
  * no edge crossings.
  *
- * This function implements Hochberg and Stallmann's algorithm published in \cite Hochberg2003a.
+ * This function implements an algorithm first published by Iordanskii in
+ * \cite Iordanskii1987a and later by Hochberg and Stallmann's in \cite Hochberg2003a.
  *
  * @param t Input tree.
  * @pre The object @e t must be a tree (see @ref graphs::free_tree::is_tree).

@@ -54,7 +54,7 @@ namespace graphs {
  * This class constrains the addition of edges so that the resulting graphs
  * does not contain cycles. Furthermore, the edges added are undirected.
  *
- * For another type of tree-like graphs, see @ref rtree.
+ * For another type of tree-like graphs, see @ref rooted_tree.
  */
 class free_tree : public undirected_graph, virtual public tree {
 	public:
@@ -166,9 +166,11 @@ class free_tree : public undirected_graph, virtual public tree {
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
 	protected:
-		/// Initialises memory of @ref ftree, @ref ugraph and @ref graph classes.
+		/// Initialises memory of @ref free_tree, @ref undirected_graph and
+		/// @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory of @ref ftree, @ref ugraph and @ref graph classes.
+		/// Clears the memory of @ref free_tree, @ref undirected_graph and
+		/// @ref graph classes.
 		virtual void _clear();
 
 	private:

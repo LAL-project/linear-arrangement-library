@@ -67,8 +67,8 @@ enum class algorithms_Dmin {
      *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts rooted trees. One can call directly
-	 * function @ref Dmin_Projective.
+	 * i.e., in the function that accepts rooted trees. Alternatively, one can
+	 * call directly function @ref Dmin_Projective.
      */
     Projective,
 
@@ -81,12 +81,14 @@ enum class algorithms_Dmin {
 	 * A planar linear arrangement is an arrangement in which there are
 	 * no edge crossings.
 	 *
-	 * This option uses Hochberg and Stallmann's algorithm published in \cite Hochberg2003a.
+	 * This option uses an algorithm first published by Iordanskii in
+	 * \cite Iordanskii1987a and later by Hochberg and Stallmann's in
+	 * \cite Hochberg2003a.
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts free trees. One can call directly
-	 * function @ref Dmin_Planar.
+	 * i.e., in the function that accepts free trees. Alternatively, one can
+	 * call directly function @ref Dmin_Planar.
 	 */
 	Planar,
 
@@ -102,8 +104,8 @@ enum class algorithms_Dmin {
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees. One can call directly
-	 * function @ref Dmin_Unconstrained_YS.
+	 * i.e., in the function that accepts free trees. Alternatively, one can
+	 * call directly function @ref Dmin_Unconstrained_YS.
      */
     Unconstrained_YS,
     /**
@@ -116,8 +118,8 @@ enum class algorithms_Dmin {
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees. One can call directly
-	 * function @ref Dmin_Unconstrained_FC.
+	 * i.e., in the function that accepts free trees. Alternatively, one can
+	 * call directly function @ref Dmin_Unconstrained_FC.
      */
     Unconstrained_FC
 };

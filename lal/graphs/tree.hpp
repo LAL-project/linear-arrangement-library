@@ -52,8 +52,7 @@ namespace graphs {
  *
  * This is an abstract class for those tree-like graphs. Classes that implement
  * different abstractions of trees and that inherit from this class are:
- * - @ref ftree : free trees,
- * - @ref rtree : rooted trees.
+ * @ref free_tree, @ref rooted_tree.
  *
  * In these classes the addition of edges is constrained so as to ensure that
  * the edges added actually yield trees, i.e., that cycles are never produced.

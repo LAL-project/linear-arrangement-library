@@ -68,9 +68,9 @@ namespace graphs {
  * Rooted trees can be constructed in two different ways:
  * - Using an already-constructed free tree via a class constructor, where
  * users have to indicate the root and the type of the rooted tree (see
- * @ref rooted_tree(const ftree&, node, rooted_tree_type)). Alternatively, one
+ * @ref rooted_tree(const free_tree&, node, rooted_tree_type)). Alternatively, one
  * can use the method @ref init_rooted, which has the same set of parameters.
- * - Adding edge after edge. In this class, as in @ref ftree, this addition is
+ * - Adding edge after edge. In this class, as in @ref free_tree, this addition is
  * constrained so that the graph the underlying undirected graph does not contain
  * cycles. Before, or after, the addition of all the edges, it is recommended
  * the root be set using @ref set_root. If the edges have been added in a
@@ -96,7 +96,7 @@ namespace graphs {
  * includes, and may not be lmited to, the type of rooted tree (see
  * @ref m_rtree_type) and the size of the subtrees (see @ref m_size_subtrees).
  * For this reason, is is strongly recommended to build a free tree first and
- * use the constructor @ref rooted_tree(const ftree&, node, rooted_tree_type), or the
+ * use the constructor @ref rooted_tree(const free_tree&, node, rooted_tree_type), or the
  * method @ref init_rooted, in order to build rooted trees.
  */
 class rooted_tree : public directed_graph, virtual public tree {
@@ -473,7 +473,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @brief Type of rooted directed tree.
 		 *
 		 * This parameter is decided during the construction of the tree via
-		 * constructor @ref rooted_tree(const ftree&,node,rooted_tree_type), via
+		 * constructor @ref rooted_tree(const free_tree&,node,rooted_tree_type), via
 		 * calling method @ref find_rooted_tree_type(), or given by the user in
 		 * @ref set_rooted_tree_type.
 		 */
@@ -492,9 +492,11 @@ class rooted_tree : public directed_graph, virtual public tree {
 		bool m_need_recalc_size_subtrees = true;
 
 	protected:
-		/// Initialises memory of @ref rooted_tree, @ref ugraph and @ref graph classes.
+		/// Initialises memory of @ref rooted_tree, @ref undirected_graph and
+		/// @ref graph classes.
 		virtual void _init(uint32_t n);
-		/// Clears the memory of @ref rooted_tree, @ref ugraph and @ref graph classes.
+		/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
+		/// @ref graph classes.
 		virtual void _clear();
 
 	private:

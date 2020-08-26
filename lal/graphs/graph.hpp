@@ -55,16 +55,13 @@ namespace graphs {
  *
  * Class used as an interface for all types of graphs. This means that this
  * class cannot be instantiated. The classes that can be instantiated are
- * - @ref ugraph : undirected graphs,
- * - @ref dgraph : directed graphs,
- * - @ref ftree : free trees,
- * - @ref rtree : rooted trees.
+ * @ref undirected_graph, @ref directed_graph, @ref free_tree, @ref rooted_tree.
  *
  * A usual way of initialising classes inheriting from this one is to use one
  * of the @ref init methods available. Depending on the subclass, this method
  * admits either the number of nodes of the graph or a whole other graph and
  * further information (see
- * @ref rooted_tree::init_rooted(const ftree&,node,rooted_tree_type).
+ * @ref rooted_tree::init_rooted(const free_tree&,node,rooted_tree_type).
  * While these classes' internal memory can be initialised, it can also be cleared
  * using method @ref clear. Each class reimplements this method to carry this
  * task appropriately.
