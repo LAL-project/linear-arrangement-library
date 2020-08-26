@@ -43,7 +43,7 @@
 
 // C++ includes
 #include <functional>
-#include <vector>
+#include <cstring>
 #include <queue>
 #include <stack>
 
@@ -87,7 +87,7 @@ namespace internal {
  * that points to u, namely, the directed edge is of the form (v,u), for another
  * node v of the graph. This can be set via the @ref set_use_back_edges method.
  */
-template<class S, class G, typename node = typename lal::node>
+template<class S, class G>
 class GR_TR {
 	public:
 		typedef std::function<void (const GR_TR<S,G>&, node)> graph_traversal_process_one;
@@ -97,11 +97,15 @@ class GR_TR {
 	public:
 		// Constructor
 		GR_TR(const G& g) : m_G(g) {
-			m_vis = std::vector<bool>(g.n_nodes());
+			//m_vis = std::vector<bool>(g.n_nodes());
+			m_vis = static_cast<char *>(malloc(m_G.n_nodes()*sizeof(char)));
+
 			reset();
 		}
 		// Destructor
-		virtual ~GR_TR() { }
+		virtual ~GR_TR() {
+			if (m_vis != nullptr) { free(m_vis); }
+		}
 
 		// Set the graph_traversal to its default state.
 		void reset() {
@@ -169,7 +173,7 @@ class GR_TR {
 
 		// Sets all nodes to not visited.
 		void reset_visited() {
-			std::fill(m_vis.begin(), m_vis.end(), false);
+			memset(m_vis, 0, sizeof(char)*m_G.n_nodes());
 		}
 
 		// Empties the structure used for the traversal.
@@ -184,7 +188,7 @@ class GR_TR {
 		void clear_structure() { std::queue<node> q; m_X.swap(q); }
 
 		// Set node @e u as visited.
-		void set_visited(node u, bool vis = true) { m_vis[u] = vis; }
+		void set_visited(node u, char vis = 1) { m_vis[u] = vis; }
 
 		/* GETTERS */
 
@@ -193,14 +197,16 @@ class GR_TR {
 
 		// have all nodes been visited?
 		bool all_visited() const {
-			return find(m_vis.begin(), m_vis.end(), false) == m_vis.end();
+			const auto begin = &m_vis[0];
+			const auto end = &m_vis[m_G.n_nodes()];
+			return find(begin, end, 0) == end;
 		}
 
 		// returns the graph
 		const G& get_graph() const { return m_G; }
 
 		// Return visited nodes information
-		const std::vector<bool>& get_visited() const { return m_vis; }
+		const char *get_visited() const { return m_vis; }
 
 	protected:
 		void deal_with_neighbour(node s, node t, bool ltr) {
@@ -321,7 +327,7 @@ class GR_TR {
 		// The structure of the traversal (either a queue or a stack).
 		S m_X;
 		// The set of visited nodes.
-		std::vector<bool> m_vis;
+		char *m_vis = nullptr;
 		// Should we process already visitied neighbours?
 		bool m_proc_vis_neighs = false;
 		// Use back edges in directed graphs.
@@ -381,11 +387,8 @@ class GR_TR {
 		graph_traversal_bool_function m_add_node;
 };
 
-template<class G, typename node = typename lal::node>
-using BFS = GR_TR<std::queue<node>, G, node>;
-
-template<class G, typename node = typename lal::node>
-using DFS = GR_TR<std::stack<node>, G, node>;
+template<class G> using BFS = GR_TR<std::queue<node>, G>;
+template<class G> using DFS = GR_TR<std::stack<node>, G>;
 
 } // -- namespace internal
 } // -- namespace lal
