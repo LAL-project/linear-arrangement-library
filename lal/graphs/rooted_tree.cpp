@@ -390,11 +390,11 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// relabel nodes
 	if (relab) {
 		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool ltr) -> void {
+		[&](const auto&, node s, node t, bool dir) -> void {
 			// change the orientation of the edge whenever appropriate
-			// ltr: true  ---> "s->t"
-			// ltr: false ---> "t->s"
-			if (not ltr) { std::swap(s,t); }
+			// dir: true  ---> "s->t"
+			// dir: false ---> "t->s"
+			if (not dir) { std::swap(s,t); }
 
 			edge e;
 			// relabel first node
