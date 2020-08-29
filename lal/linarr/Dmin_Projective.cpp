@@ -166,7 +166,7 @@ uint32_t make_interval_of(
 	auto key = [](const nodesize& v) -> size_t {
 		return static_cast<size_t>(v.second);
 	};
-	internal::counting_sort<it, nodesize>
+	internal::counting_sort<it, nodesize, true>
 	(children.begin(), children.end(), max_size + 1, key);
 
 	// ---------------------------

@@ -43,6 +43,7 @@
 
 // C++ includes
 #include <cstring>
+#include <cstdlib>
 
 // lal includes
 #include <lal/graphs/free_tree.hpp>

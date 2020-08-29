@@ -201,11 +201,10 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 		M = std::max(M, s_ui);
 		ord[i].second = ui + 1;
 	}
-	internal::counting_sort<ordering::iterator, size_node>
+	internal::counting_sort<ordering::iterator, size_node, false>
 	(
 		ord.begin(), ord.end(), M,
-		[](const size_node& p) { return p.first; },
-		false // <- sort decreasingly
+		[](const size_node& p) { return p.first; }
 	);
 	free(s);
 	}

@@ -64,11 +64,11 @@ namespace internal {
  */
 template<
 	typename It,
-	typename T = typename std::iterator_traits<It>::value_type
+	typename T = typename std::iterator_traits<It>::value_type,
+	bool increasing
 >
 void counting_sort(
-	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key,
-	bool increasing = true
+	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key
 )
 {
 	// increase
@@ -103,7 +103,7 @@ void counting_sort(
 	}
 
 	// calculate output
-	if (increasing) {
+	if constexpr (increasing) {
 		it = begin;
 		for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
 	}

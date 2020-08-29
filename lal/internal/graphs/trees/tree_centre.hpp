@@ -52,7 +52,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/centre_centroid_utils.hpp>
+#include <lal/internal/graphs/trees/utils.hpp>
 
 namespace lal {
 namespace internal {

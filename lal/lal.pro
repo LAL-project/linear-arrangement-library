@@ -47,7 +47,7 @@ HEADERS += \
 	graphs/rooted_tree.hpp \
 	graphs/undirected_graph.hpp \
 	internal/gmp/utils.hpp \
-	internal/graphs/trees/centre_centroid_utils.hpp \
+	internal/graphs/trees/utils.hpp \
 	internal/graphs/utils.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \

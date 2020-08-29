@@ -54,7 +54,7 @@
 #include <lal/internal/graphs/trees/tree_centre.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/centre_centroid_utils.hpp>
+#include <lal/internal/graphs/trees/utils.hpp>
 
 namespace lal {
 namespace internal {
