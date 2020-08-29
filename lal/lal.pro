@@ -11,9 +11,9 @@ CONFIG(debug, debug|release) {
 TARGET = laldebug
 }
 
-QMAKE_CXXFLAGS_DEBUG += -O0 -DDEBUG -D_GLIBCXX_DEBUG
+QMAKE_CXXFLAGS_DEBUG += -O3 -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -O3 -DNDEBUG -fstrict-aliasing
+QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 
 QMAKE_CXXFLAGS +=										\
     -Wpedantic -Wshadow -Wall -Wextra -Wconversion		\
