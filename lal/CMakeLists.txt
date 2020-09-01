@@ -252,7 +252,7 @@ target_sources(
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
 		internal/graphs/trees/tree_centroid.hpp
-		internal/graphs/trees/centre_centroid_utils.hpp
+		internal/graphs/trees/utils.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/reachability.hpp
