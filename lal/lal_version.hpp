@@ -49,7 +49,7 @@ namespace lal {
 /// Major version number of the library's current state.
 static const std::string __lal_major_verno = "2020";
 /// Minor version number of the library's current state.
-static const std::string __lal_minor_verno = "03";
+static const std::string __lal_minor_verno = "09";
 /// Patch version number of the library's current state.
 static const std::string __lal_patch_verno = "00";
 
