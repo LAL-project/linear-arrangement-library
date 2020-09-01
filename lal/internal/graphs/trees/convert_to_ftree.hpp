@@ -98,8 +98,8 @@ graphs::free_tree Prufer_sequence_to_ftree
  * @return Returns the free tree built with @e L along with the root indicated
  * by the sequence.
  */
-std::pair<graphs::free_tree, node>
-linear_sequence_to_ftree(const std::vector<uint32_t>& L);
+std::pair<graphs::free_tree, node> linear_sequence_to_ftree
+(const std::vector<uint32_t>& L);
 
 } // -- namespace internal
 } // -- namespace lal
