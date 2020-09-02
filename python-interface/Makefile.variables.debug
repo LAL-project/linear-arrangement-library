@@ -1,7 +1,7 @@
 ########################################################################
 # COMPILATION FLAGS
 
-FLAGS		+= -g -O0 -DDEBUG -D_GLIBCXX_DEBUG
+FLAGS		+= -g -O3 -DDEBUG -D_GLIBCXX_DEBUG
 LIBS		+= -L $(LAL_LIB_DIR) -llaldebug
 SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
 

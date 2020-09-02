@@ -151,7 +151,7 @@ endif
 # ------------
 # DEPENDENCIES (headers)
 
-include Makefile.module.headdep
+include Makefile.headers
 
 # ----------------
 # MODULE variables
