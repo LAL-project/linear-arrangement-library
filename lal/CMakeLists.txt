@@ -409,13 +409,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # Optimisation flags
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	message(STATUS "Adding flags for 'debug' mode")
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_GLIBCXX_DEBUG")
-endif()
-
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-	message(STATUS "Adding flags for 'release' mode")
+	add_debug_flag(-O3)
+	add_debug_flag(-DDEBUG)
+	add_debug_flag(-D_GLIBCXX_DEBUG)
+else()
+	# these two are added by default
+	#add_release_flag(-O3)
+	#add_release_flag(-DNDEBUG)
+	add_release_flag(-UDEBUG)
 	add_release_flag(-fstrict-aliasing)
 endif()
 
