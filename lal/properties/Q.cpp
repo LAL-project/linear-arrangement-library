@@ -56,41 +56,37 @@ using namespace numeric;
 namespace properties {
 
 integer size_Q_integer(const undirected_graph& g) {
-	// sum of squared degrees
-	integer nk2(0);
+	const uint64_t m = g.n_edges();
+	integer q2 = integer_from_ui(m*(m + 1));
+
+	// substract sum of squared degrees
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint32_t ku = g.degree(u);
-		nk2 += ku*ku;
+		const uint64_t ku = g.degree(u);
+		q2 -= ku*ku;
 	}
 
-	const uint32_t m = g.n_edges();
-	integer q = integer_from_ui(m*(m + 1));
-	q -= nk2;
-	q /= 2;
-	return q;
+	return q2/2;
 }
 
-uint32_t size_Q(const undirected_graph& g) {
-	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
+uint64_t size_Q(const undirected_graph& g) {
+	return size_Q_integer(g).to_uint();
 }
 
 integer size_Q_integer(const directed_graph& g) {
-	// sum of squared degrees
-	integer nk2(0);
+	const uint32_t m = g.n_edges();
+	integer q2 = integer_from_ui(m*(m - 1));
+
 	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint64_t ku = g.in_degree(u) + g.out_degree(u);
-		nk2 += ku*ku;
+		const uint64_t ku_in = g.in_degree(u);
+		const uint64_t ku_out = g.out_degree(u);
+		q2 -= (ku_in + ku_out)*(ku_in + ku_out - 1);
 	}
 
-	const uint64_t m = g.n_edges();
-	integer q = integer_from_ui(m*(m + 1));
-	q -= nk2;
-	q /= 2;
-	return q;
+	return q2/2;
 }
 
-uint32_t size_Q(const directed_graph& g) {
-	return static_cast<uint32_t>(size_Q_integer(g).to_uint());
+uint64_t size_Q(const directed_graph& g) {
+	return size_Q_integer(g).to_uint();
 }
 
 } // -- namespace properties
