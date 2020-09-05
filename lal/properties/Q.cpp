@@ -43,15 +43,22 @@
 
 // C++ includes
 #include <cmath>
+#include <map>
 using namespace std;
 
 // lal includes
-#include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/integer.hpp>
+#include <lal/iterators/E_iterator.hpp>
+
+#define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
+inline int64_t sum(uint32_t n, uint32_t t) {
+	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
+}
 
 namespace lal {
 using namespace graphs;
 using namespace numeric;
+using namespace iterators;
 
 namespace properties {
 
@@ -73,16 +80,54 @@ uint64_t size_Q(const undirected_graph& g) {
 }
 
 integer size_Q_integer(const directed_graph& g) {
-	const uint32_t m = g.n_edges();
-	integer q2 = integer_from_ui(m*(m - 1));
+	const uint32_t n = g.n_nodes();
+	map<edge, uint64_t> collapsed_edges;
 
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		const uint64_t ku_in = g.in_degree(u);
-		const uint64_t ku_out = g.out_degree(u);
-		q2 -= (ku_in + ku_out)*(ku_in + ku_out - 1);
+	E_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const edge e = it.get_edge();
+		const node u = e.first;
+		const node v = e.second;
+
+		const edge es = sorted_edge(u,v);
+		const auto it_es = collapsed_edges.find(es);
+		if (it_es == collapsed_edges.end()) {
+			collapsed_edges.insert(make_pair(es, 1));
+		}
+		else {
+			it_es->second = 2;
+		}
 	}
 
-	return q2/2;
+	integer q = 0;
+
+	for (node u = 0; u < n; ++u) {
+		uint32_t no_u = 0;
+		uint32_t t_u = 0;
+		for (node v : g.get_out_neighbours(u)) {
+			// u -> v
+			const bool edge_vu = g.has_edge(v,u);
+			no_u += not edge_vu;
+			t_u += edge_vu;
+		}
+		for (node v : g.get_in_neighbours(u)) {
+			// v -> u
+			const bool edge_uv = g.has_edge(u,v);
+			no_u += not edge_uv;
+		}
+		q -= sum(no_u, t_u);
+	}
+
+	uint32_t no = 0;
+	uint32_t t = 0;
+	for (const auto& p : collapsed_edges) {
+		no += (p.second == 1);
+		t += (p.second == 2);
+	}
+	q += sum(no, t);
+
+	return q;
 }
 
 uint64_t size_Q(const directed_graph& g) {
