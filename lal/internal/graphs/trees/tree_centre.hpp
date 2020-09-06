@@ -81,19 +81,19 @@ namespace internal {
  * has smaller index value than the second.
  */
 template<
-	class G,
-	typename std::enable_if<std::is_base_of<graphs::tree, G>::value, int>::type = 0
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
-std::pair<node, node> retrieve_centre(const G& T, node x) {
-	const auto n = T.n_nodes();
+std::pair<node, node> retrieve_centre(const T& t, node x) {
+	const auto n = t.n_nodes();
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (__lal::__degree(T, x) == 0) {
+	if (__lal::__degree(t, x) == 0) {
 		return std::make_pair(x, n);
 	}
 
-	BFS<G> bfs(T);
+	BFS<T> bfs(t);
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
@@ -116,16 +116,16 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	// 3. retrieve connected component's leaves ('tree_leaves')
 	// 4. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
-	[&](const auto&, node s) -> void {
+	[&](const auto&, node u) -> void {
 		++size_trimmed;
-		trimmed_degree[s] = __lal::__degree(T, s);
-		if (trimmed_degree[s] == 1) {
-			tree_leaves.push_back(s);
+		trimmed_degree[u] = __lal::__degree(t, u);
+		if (trimmed_degree[u] == 1) {
+			tree_leaves.push_back(u);
 			++l0;
 		}
 	}
 	);
-	bfs.set_use_rev_edges(T.is_directed());
+	bfs.set_use_rev_edges(t.is_directed());
 	bfs.start_at(x);
 
 	// Second simple case:
@@ -133,7 +133,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	if (size_trimmed == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = x;
-		const node v2 = __lal::__only_neighbour(T, x);
+		const node v2 = __lal::__only_neighbour(t, x);
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
@@ -168,29 +168,29 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	bfs.set_process_visited_neighbours(true);
 	bfs.set_process_neighbour(
-	[&](const auto&, node s, node t, bool) -> void
+	[&](const auto&, node u, node v, bool) -> void
 	{
 		// ignore the edge if one of its nodes has already been trimmed out.
-		if (trimmed_degree[s] == 0) { return; }
-		if (trimmed_degree[t] == 0) { return; }
+		if (trimmed_degree[u] == 0) { return; }
+		if (trimmed_degree[v] == 0) { return; }
 
 		// trim node 's':
 		//  1) its degree is set to null, 2) node 't' loses a neighbour, so
 		//  its degree is reduced by 1. 3) the size of the trimmed tree
 		//  decreases by 1.
-		trimmed_degree[s] = 0;
-		--trimmed_degree[t];
+		trimmed_degree[u] = 0;
+		--trimmed_degree[v];
 		--size_trimmed;
 
-		if (trimmed_degree[t] == 0) {
+		if (trimmed_degree[v] == 0) {
 			has_single_center = true;
-			single_center = t;
+			single_center = v;
 		}
 
 		// leaves left to process in the current trimmed tree
 		--l0;
 		// leaves left to process in the next trimmed tree
-		if (trimmed_degree[t] == 1) {
+		if (trimmed_degree[v] == 1) {
 			++l1;
 			if (l0 == 0) {
 				// l0 <- l1
@@ -204,11 +204,11 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
 	bfs.set_node_add(
-	[&](const auto&, node s) -> bool { return (trimmed_degree[s] == 1); }
+	[&](const auto&, node, node v) -> bool { return (trimmed_degree[v] == 1); }
 	);
 
 	// do the bfs from the leaves inwards
-	bfs.set_use_rev_edges(T.is_directed());
+	bfs.set_use_rev_edges(t.is_directed());
 	bfs.start_at(tree_leaves);
 
 	if (has_single_center) {
@@ -229,7 +229,7 @@ std::pair<node, node> retrieve_centre(const G& T, node x) {
 
 	// -- reset the bfs
 	bfs.reset();
-	bfs.set_use_rev_edges(T.is_directed());
+	bfs.set_use_rev_edges(t.is_directed());
 
 	node v1, v2;
 	v1 = v2 = n;
