@@ -209,6 +209,9 @@ class GR_TR {
 		const char *get_visited() const { return m_vis; }
 
 	protected:
+		// ltr: is the 'natural' orientation of the vertices "s -> t"?
+		//      If true, then there is an edge in the graph (s,t)
+		//      If false, the edge in the graph is (t,s)
 		void deal_with_neighbour(node s, node t, bool ltr) {
 			// Process the neighbour 't' of 's'.
 			if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
@@ -229,6 +232,9 @@ class GR_TR {
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_neighbours(s)) {
+				// Edges are processed in the direction "s -> t".
+				// This is also the 'natural' orientation of the edge,
+				// so this explains the 'true'.
 				deal_with_neighbour(s, t, true);
 			}
 		}
@@ -237,12 +243,18 @@ class GR_TR {
 		typename std::enable_if<std::is_base_of<graphs::directed_graph, GG>::value, int>::type = 0
 		>
 		void process_neighbours(node s) {
-			for (const node& t : m_G.get_neighbours(s)) {
+			for (const node& t : m_G.get_out_neighbours(s)) {
+				// Edges are processed in the direction "s -> t".
+				// This is also the 'natural' orientation of the edge,
+				// hence the 'true'.
 				deal_with_neighbour(s, t, true);
 			}
 			// process in-neighbours whenever appropriate
 			if (m_use_rev_edges) {
 				for (const node& t : m_G.get_in_neighbours(s)) {
+					// Edges are processed in the direction "s -> t".
+					// However, the 'natural' orientation of the edge
+					// is "t -> s", hence the 'false'.
 					deal_with_neighbour(s, t, false);
 				}
 			}

@@ -105,7 +105,8 @@ inline bool is_centroidal(
  * of (at most) two vertices that have minimum eccentricity. The centroid is the
  * set of (at most) two vertices that have minimum weight, where the weight is
  * the maximum size of the subtrees rooted at that vertex. In both case, if
- * the set has two vertices then they are adjacent in the tree.
+ * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
+ * for further details.
  *
  * A graph of type @ref graphs::tree may lack some edges tree so it has several
  * connected components. Vertex @e x belongs to one of these connected
