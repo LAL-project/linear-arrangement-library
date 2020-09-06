@@ -89,9 +89,10 @@ namespace internal {
 template<class G>
 class BFS {
 	public:
-		typedef std::function<void (const BFS<G>&, node)> graph_traversal_process_one;
-		typedef std::function<void (const BFS<G>&, node, node, bool)> graph_traversal_process_two;
-		typedef std::function<bool (const BFS<G>&, node)> graph_traversal_bool_function;
+		typedef std::function<void (const BFS<G>&, node)> BFS_process_one;
+		typedef std::function<void (const BFS<G>&, node, node, bool)> BFS_process_two;
+		typedef std::function<bool (const BFS<G>&, node)> BFS_bool_one;
+		typedef std::function<bool (const BFS<G>&, node, node)> BFS_bool_two;
 
 	public:
 		// Constructor
@@ -142,25 +143,25 @@ class BFS {
 		// see @ref m_term
 		void set_terminate_default()
 		{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
-		void set_terminate(const graph_traversal_bool_function& f)
+		void set_terminate(const BFS_bool_one& f)
 		{ m_term = f; }
 
 		// see @ref m_proc_cur
 		void set_process_current_default()
 		{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
-		void set_process_current(const graph_traversal_process_one& f)
+		void set_process_current(const BFS_process_one& f)
 		{ m_proc_cur = f; }
 
 		// see @ref m_proc_neigh
 		void set_process_neighbour_default()
 		{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
-		void set_process_neighbour(const graph_traversal_process_two& f)
+		void set_process_neighbour(const BFS_process_two& f)
 		{ m_proc_neigh = f; }
 
 		// see @ref m_add_node
 		void set_node_add_default()
-		{ m_add_node = [](const BFS<G>&, const node) -> bool { return true; }; }
-		void set_node_add(const graph_traversal_bool_function& f)
+		{ m_add_node = [](const BFS<G>&, const node, const node) -> bool { return true; }; }
+		void set_node_add(const BFS_bool_two& f)
 		{ m_add_node = f; }
 
 		/*
@@ -208,7 +209,7 @@ class BFS {
 				m_proc_neigh(*this, s, t, ltr);
 			}
 
-			if (not m_vis[t] and m_add_node(*this, t)) {
+			if (not m_vis[t] and m_add_node(*this, s, t)) {
 				m_X.push(t);
 				// set node as visited
 				m_vis[t] = true;
@@ -335,7 +336,7 @@ class BFS {
 		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
 		 */
-		graph_traversal_bool_function m_term;
+		BFS_bool_one m_term;
 
 		/*
 		 * @brief graph_traversal node processing function.
@@ -347,7 +348,7 @@ class BFS {
 		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node at the front of the queue of the algorithm.
 		 */
-		graph_traversal_process_one m_proc_cur;
+		BFS_process_one m_proc_cur;
 
 		/*
 		 * @brief graph_traversal neighbour node processing function.
@@ -363,7 +364,7 @@ class BFS {
 		 * @param s The node at the front of the queue of the algorithm.
 		 * @param t The node neighbour of @e u visited by the algorithm.
 		 */
-		graph_traversal_process_two m_proc_neigh;
+		BFS_process_two m_proc_neigh;
 
 		/*
 		 * @brief graph_traversal node addition function.
@@ -375,7 +376,7 @@ class BFS {
 		 * several attributes that might be useful to guide the traversal.
 		 * @param s The node candidate for addition.
 		 */
-		graph_traversal_bool_function m_add_node;
+		BFS_bool_two m_add_node;
 };
 
 } // -- namespace internal
