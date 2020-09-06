@@ -83,6 +83,7 @@ integer size_Q_integer(const directed_graph& g) {
 	const uint32_t n = g.n_nodes();
 	map<edge, uint64_t> collapsed_edges;
 
+	// count the amount of edges that collapse into a single one
 	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
@@ -100,8 +101,11 @@ integer size_Q_integer(const directed_graph& g) {
 		}
 	}
 
+	// the size of Q
 	integer q = 0;
 
+	// for each vertex, count how many pairs of
+	// non-independent we can make
 	for (node u = 0; u < n; ++u) {
 		uint32_t no_u = 0;
 		uint32_t t_u = 0;
@@ -119,6 +123,7 @@ integer size_Q_integer(const directed_graph& g) {
 		q -= sum(no_u, t_u);
 	}
 
+	// count how many total pairs of edges we can make
 	uint32_t no = 0;
 	uint32_t t = 0;
 	for (const auto& p : collapsed_edges) {
