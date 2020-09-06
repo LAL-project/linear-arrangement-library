@@ -44,9 +44,9 @@
 // C++ includes
 #include <cstring>
 #include <cstdlib>
+#include <map>
 
 // lal includes
-#include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
@@ -55,9 +55,9 @@ namespace internal {
 namespace __lal {
 
 /*
- * @brief Calculate the size of every subtree of the free tree @e t.
+ * @brief Calculate the size of every subtree of the tree @e t.
  *
- * @param t Input rooted tree.
+ * @param t Input tree.
  * @param r The first call to this method, node @e r is interpreted as its
  * hypothetical root.
  * @param vis Mark nodes as visited as the algorithm goes on.
@@ -65,8 +65,12 @@ namespace __lal {
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-inline void get_size_subtrees(
-	const graphs::free_tree& t, node r, char *vis, uint32_t *sizes
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+void get_size_subtrees(
+	const T& t, node r, char *vis, uint32_t *sizes
 )
 {
 	sizes[r] = 1;
@@ -77,40 +81,72 @@ inline void get_size_subtrees(
 			sizes[r] += sizes[u];
 		}
 	}
-}
-
-/*
- * @brief Calculate the size of every subtree of the free tree @e t.
- *
- * @param t Input rooted tree.
- * @param r The first call to this method, node @e r is interpreted as its
- * hypothetical root.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
- */
-inline void get_size_subtrees(
-	const graphs::rooted_tree& t, node r, char *vis, uint32_t *sizes
-)
-{
-	sizes[r] = 1;
-	vis[r] = 1;
-	for (const node u : t.get_neighbours(r)) {
-		if (vis[u] == 0) {
-			get_size_subtrees(t, u, vis, sizes);
-			sizes[r] += sizes[u];
-		}
-	}
+	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
 	for (const node u : t.get_in_neighbours(r)) {
 		if (vis[u] == 0) {
 			get_size_subtrees(t, u, vis, sizes);
 			sizes[r] += sizes[u];
 		}
 	}
+	}
 }
 
 } // -- namespace __lal
+
+/*
+ * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
+ * from \$(u,v)\f$.
+ *
+ * This function calculates the map relating each edge \f$(u, v)\f$ with the
+ * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
+ * \f$u\f$. This is an implementation of the algorithm described in
+ * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
+ * section 6 (page 65)).
+ * @param t Input tree.
+ * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
+ * @param u First vertex of the edge.
+ * @param v Second vertex of the edge.
+ * @param[out] sizes_edge The map.
+ * @pre Vertices @e u and @e v belong to the same connected component.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+uint32_t calculate_suvs(
+	const T& t, uint32_t n, node u, node v, std::map<edge, uint32_t>& sizes_edge
+)
+{
+	const auto it_uv = sizes_edge.find(edge(u,v));
+	if (it_uv != sizes_edge.end()) {
+		return it_uv->second;
+	}
+	const auto it_vu = sizes_edge.find(edge(v,u));
+	if (it_vu != sizes_edge.end()) {
+		const uint32_t k = n - it_vu->second;
+		sizes_edge.insert(std::make_pair(edge(v,u), k));
+		return k;
+	}
+
+	uint32_t r = 1;
+	for (node w : t.get_out_neighbours(v)) {
+		if (w != u) {
+			r += calculate_suvs(t,n, v, w, sizes_edge);
+		}
+	}
+
+	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	for (node w : t.get_in_neighbours(v)) {
+		if (w != u) {
+			r += calculate_suvs(t,n, v, w, sizes_edge);
+		}
+	}
+	}
+
+	sizes_edge.insert(std::make_pair(edge(u,v), r));
+	sizes_edge.insert(std::make_pair(edge(v,u), n - r));
+	return r;
+}
 
 /*
  * @brief Calculate the size of every subtree of tree @e t.
@@ -121,35 +157,15 @@ inline void get_size_subtrees(
  * @param t Input rooted tree.
  * @param r Start calculating sizes of subtrees at this node.
  * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
+ * @param sizes The size of the subtree rooted at every reachable node from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-inline void get_size_subtrees(
-	const graphs::rooted_tree& t, node r, uint32_t *sizes
-)
-{
-	// visited vertices
-	char *vis = static_cast<char *>(malloc(t.n_nodes()*sizeof(char)));
-	memset(vis, 0, t.n_nodes()*sizeof(char));
-	__lal::get_size_subtrees(t, r, vis, sizes);
-	free(vis);
-}
-
-/*
- * @brief Calculate the size of every subtree of the free tree @e t.
- *
- * The method starts calculating the sizes at node @e r, that is, calculates
- * the sizes of every subtree considering @e r as its root.
- * @param t Input rooted tree.
- * @param r Hypothetical root of the free tree.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node
- * from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
- */
-inline void get_size_subtrees(
-	const graphs::free_tree& t, node r, uint32_t *sizes
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+void get_size_subtrees(
+	const T& t, node r, uint32_t *sizes
 )
 {
 	// visited vertices
