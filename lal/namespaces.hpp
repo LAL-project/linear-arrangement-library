@@ -281,16 +281,7 @@ namespace linarr {}
  * of the GMP library for integers of arbitrary precision (see @ref integer)
  * and exact rational numbers (see @ref rational).
  */
-namespace numeric {
-
-	/**
-	 * @brief GMP utils.
-	 *
-	 * This namespace contains a collection of useful algorithms
-	 * for manipulating the basic data structures of the GMP library.
-	 */
-	namespace gmp_utils {}
-}
+namespace numeric {}
 
 /**
  * @brief Properties of graphs.
