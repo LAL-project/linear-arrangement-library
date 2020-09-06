@@ -41,7 +41,7 @@ See [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/m
 
 ## Author information
 
-This library is being made thanks to the effort of these people (in alphabetical order):
+This library is the result of the joint effort of several people (in alphabetical order):
 
 - Alemany-Puig, Lluís (see his Research Gate profile [here](https://www.researchgate.net/profile/Lluis_Alemany-Puig)).
 - Esteban, Juan Luis (see his webpage [here](https://www.cs.upc.edu/~esteban/) and his Research Gate profile [here](https://www.researchgate.net/profile/Juan_Esteban13))
