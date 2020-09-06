@@ -46,52 +46,47 @@
 #include <cassert>
 #endif
 #include <cstring>
+#include <map>
 
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/graphs/free_tree.hpp>
-#include <lal/internal/graphs/trees/tree_centre.hpp>
-#include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/utils.hpp>
+#include <lal/internal/graphs/trees/size_subtrees.hpp>
 
 namespace lal {
 namespace internal {
 
 namespace __lal {
 
-inline bool is_centroidal(
-	const graphs::rooted_tree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
+/*
+ * @brief Returns whether the vertex @e u is a centroidal tree
+ *
+ * @param t Input tree.
+ * @param n Number of vertices of the connected component to which vertex @e u belongs.
+ * @param u Vertex to be classified as centroidal.
+ * @param sizes See documentation of method internal::calculate_suvs.
+ * @return Returns whether vertex @e u is centroidal or not.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+bool is_centroidal(
+	const T& t, uint32_t n, node u, const std::map<edge, uint32_t>& sizes
 )
 {
-	memset(sizes, 0, t.n_nodes()*sizeof(uint32_t));
-	memset(vis, 0, t.n_nodes()*sizeof(char));
-	get_size_subtrees(t, u, vis, sizes);
-	for (const node v : t.get_neighbours(u)) {
-		if (sizes[v] > size_cc/2) {
-			return false;
-		}
+	for (node v : t.get_out_neighbours(u)) {
+		const edge e(u,v);
+		const auto it = sizes.find(e);
+		if (it->second > n/2) { return false; }
 	}
-	for (const node v : t.get_in_neighbours(u)) {
-		if (sizes[v] > size_cc/2) {
-			return false;
-		}
+	if constexpr (std::is_same<graphs::rooted_tree,T>::value) {
+	for (node v : t.get_in_neighbours(u)) {
+		const edge e(u,v);
+		const auto it = sizes.find(e);
+		if (it->second > n/2) { return false; }
 	}
-	return true;
-}
-
-inline bool is_centroidal(
-	const graphs::free_tree& t, uint32_t size_cc, node u, char *vis, uint32_t *sizes
-)
-{
-	memset(sizes, 0, t.n_nodes()*sizeof(uint32_t));
-	memset(vis, 0, t.n_nodes()*sizeof(char));
-	__lal::get_size_subtrees(t, u, vis, sizes);
-	for (const node v : t.get_neighbours(u)) {
-		if (sizes[v] > size_cc/2) {
-			return false;
-		}
 	}
 	return true;
 }
@@ -108,15 +103,16 @@ inline bool is_centroidal(
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * A graph of type @ref graphs::tree may lack some edges tree so it has several
- * connected components. Vertex @e x belongs to one of these connected
- * components.
+ * A graph of type @ref graphs::tree may lack some edges tree so it can have
+ * several connected components. Vertex @e x belongs to one of these connected
+ * components. So, this method finds the centroidal nodes of the connected
+ * component node @e x belongs to.
  *
- * This method finds the central nodes of the connected
- * components node 'x' belongs to.
- *
+ * This function uses @ref internal::calculate_suvs, an algorithm described
+ * in \cite Hochberg2003a (see function's documentation for details).
  * @param t Input tree.
  * @param x Input node.
+ * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
  * @returns Returns a tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
@@ -126,68 +122,105 @@ template<
 	class T,
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
-std::pair<node, node> retrieve_centroid(const T& t, node x) {
-	const uint32_t n = t.n_nodes();
+std::pair<node, node> retrieve_centroid(
+	const T& t, node x, std::map<edge, uint32_t>& sizes_edge
+)
+{
+	// actual number of vertices of the tree
+	const uint32_t N = t.n_nodes();
 
-	// allocate and initialise memory
-	char *vis = static_cast<char *>(malloc(n*sizeof(char))); // not used for G=ftree
-	uint32_t *sizes = static_cast<uint32_t *>(malloc(n*sizeof(uint32_t)));
-	const auto dealloc = [&]() -> void { free(vis); free(sizes); };
-
-	// size of the connected component
-	uint32_t size_cc = 0;
+	// calculate the size of the connected component
+	uint32_t n = 0;
+	{
 	BFS<T> bfs(t);
-	bfs.set_use_rev_edges(t.is_rooted());
-	bfs.set_process_current(
-	[&](const auto&, node) -> void { ++size_cc; }
-	);
+	bfs.set_use_rev_edges(t.is_directed());
+	bfs.set_process_current( [&](const auto&, node) -> void { ++n; } );
 	bfs.start_at(x);
-
-	if (size_cc == 1) {
-		dealloc();
-		return std::make_pair(x, n);
 	}
-	if (size_cc == 2) {
-		dealloc();
-		const node u = x;
-		const node v = __lal::__only_neighbour(t,x);
-		return (u < v ? std::make_pair(u,v) : std::make_pair(v,u));
+	if (n == 1) {
+		return std::make_pair(x, t.n_nodes());
 	}
 
-	// retrieve the centre of the tree
-	const auto centre = retrieve_centre(t, x);
+	{
+	// empty the map
+	std::map<edge, uint32_t> empty;
+	sizes_edge.swap(empty);
+	}
 
-	bfs.reset();
-	bfs.set_use_rev_edges(t.is_rooted());
+	for (node y : t.get_out_neighbours(x)) {
+		calculate_suvs(t,n, x, y, sizes_edge);
+	}
+	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	for (node y : t.get_in_neighbours(x)) {
+		if (y != x) {
+			calculate_suvs(t,n, x, y, sizes_edge);
+		}
+	}
+	}
 
-	// --
-	// find the centroid of the tree
-	node ct1, ct2;
-	ct1 = ct2 = n;
+	node c1 = N + 1;
+	node c2 = N + 1;
+	BFS<T> bfs(t);
 
-	// early termination of the procedure
-	bfs.set_terminate(
-	[&](const auto&, node) -> bool { return ct2 != n; }
+	// find the first centroidal vertex
+	bfs.set_terminate( [&](const auto&, node) -> bool { return c1 < n; } );
+	bfs.set_node_add(
+	[&](const auto&, node u, node v) -> bool {
+		// add vertex 'v' to the queue only if the size s(u,v) > n/2
+		const edge e(u,v);
+		const auto it = sizes_edge.find(e);
+		return it->second > n/2;
+	}
 	);
-	// finding the centroidal vertices
 	bfs.set_process_current(
-	[&](const auto&, node s) -> void {
-		// process only internal vertices
-		if (__lal::__degree(t, s) > 1) {
-
-			const bool is = __lal::is_centroidal(t, size_cc, s, vis, sizes);
-			if (is) {
-				if (ct1 == n) { ct1 = s; }
-				else { ct2 = s; }
-			}
+	[&](const auto&, node u) -> void {
+		if (__lal::is_centroidal(t,n, u, sizes_edge)) {
+			c1 = u;
 		}
 	}
 	);
-	// start at one of the central vertices
-	bfs.start_at(centre.first);
+	bfs.set_use_rev_edges(t.is_directed());
+	bfs.start_at(x);
 
-	dealloc();
-	return (ct1 < ct2 ? std::make_pair(ct1,ct2) : std::make_pair(ct2,ct1));
+#if defined DEBUG
+	assert(c1 < N);
+#endif
+
+	// inspect neighbours of the centroidal vertex
+	// found to find (quite likely) a second
+	for (node u : t.get_out_neighbours(c1)) {
+		if (__lal::is_centroidal(t,n, u, sizes_edge)) {
+			c2 = u;
+			break;
+		}
+	}
+	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	if (c2 >= N) {
+		for (node u : t.get_in_neighbours(c1)) {
+			if (__lal::is_centroidal(t,n, u, sizes_edge)) {
+				c2 = u;
+				break;
+			}
+		}
+	}
+	}
+
+	return (c1 < c2 ? std::make_pair(c1, c2) : std::make_pair(c2, c1));
+}
+
+/*
+ * @brief Calculate the centroid of the connected component that has node @e x.
+ *
+ * For details on the parameters and return value see documentation of the
+ * function above.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+std::pair<node, node> retrieve_centroid(const T& t, node x) {
+	std::map<edge, uint32_t> sizes_edge;
+	return retrieve_centroid(t, x, sizes_edge);
 }
 
 } // -- namespace internal
