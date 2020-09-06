@@ -54,21 +54,7 @@
 namespace lal {
 namespace internal {
 
-/* This class implements an abstract graph traversal traversal. It can be
- * instantiated with std::queue<> or with std::stack<> in order to obtain a
- * Breadth-First Search (BFS) or a Depth-First Search (DFS).
- *
- * NOTE: we can say that the DFS is a "forward" DFS, i.e., processing the vertices
- * and the edges can only be done when exploring a branch "forwards". Unlike
- * in a custom recursion, for example,
- * void f(node u) {
- *		// do stuff (1)
- *		for (node v : neighbours(u)) {
- *			f(u);
- *			// do stuff (2)
- *		}
- * }
- * this DFS traversal only allows for (1).
+/* This class implements an abstract graph breadth-first traversal.
  *
  * Users of this class can control the traversal by setting custom control-flow
  * functions. The user can set:
