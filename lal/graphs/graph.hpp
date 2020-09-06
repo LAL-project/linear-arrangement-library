@@ -234,7 +234,7 @@ class graph {
 		 * no nodes.
 		 * @param q The size of \f$Q\f$.
 		 */
-		std::vector<edge_pair> Q(uint32_t q) const;
+		std::vector<edge_pair> Q(uint64_t q) const;
 };
 
 } // -- namespace graphs

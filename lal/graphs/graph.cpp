@@ -183,7 +183,7 @@ void graph::__disjoint_union(const graph& g) {
 	m_normalised = m_normalised and g.is_normalised();
 }
 
-vector<edge_pair> graph::Q(uint32_t qs) const {
+vector<edge_pair> graph::Q(uint64_t qs) const {
 	vector<edge_pair> q(qs);
 	auto vec_it = q.begin();
 	Q_iterator q_it(*this);
