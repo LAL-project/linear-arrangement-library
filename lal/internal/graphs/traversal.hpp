@@ -45,7 +45,6 @@
 #include <functional>
 #include <cstring>
 #include <queue>
-#include <stack>
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -87,23 +86,23 @@ namespace internal {
  * that points to u, namely, the directed edge is of the form (v,u), for another
  * node v of the graph. This can be set via the @ref set_use_back_edges method.
  */
-template<class S, class G>
-class GR_TR {
+template<class G>
+class BFS {
 	public:
-		typedef std::function<void (const GR_TR<S,G>&, node)> graph_traversal_process_one;
-		typedef std::function<void (const GR_TR<S,G>&, node, node, bool)> graph_traversal_process_two;
-		typedef std::function<bool (const GR_TR<S,G>&, node)> graph_traversal_bool_function;
+		typedef std::function<void (const BFS<G>&, node)> graph_traversal_process_one;
+		typedef std::function<void (const BFS<G>&, node, node, bool)> graph_traversal_process_two;
+		typedef std::function<bool (const BFS<G>&, node)> graph_traversal_bool_function;
 
 	public:
 		// Constructor
-		GR_TR(const G& g) : m_G(g) {
+		BFS(const G& g) : m_G(g) {
 			//m_vis = std::vector<bool>(g.n_nodes());
 			m_vis = static_cast<char *>(malloc(m_G.n_nodes()*sizeof(char)));
 
 			reset();
 		}
 		// Destructor
-		virtual ~GR_TR() {
+		virtual ~BFS() {
 			if (m_vis != nullptr) { free(m_vis); }
 		}
 
@@ -142,25 +141,25 @@ class GR_TR {
 
 		// see @ref m_term
 		void set_terminate_default()
-		{ m_term = [](const GR_TR<S,G>&, const node) -> bool { return false; }; }
+		{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
 		void set_terminate(const graph_traversal_bool_function& f)
 		{ m_term = f; }
 
 		// see @ref m_proc_cur
 		void set_process_current_default()
-		{ m_proc_cur = [](const GR_TR<S,G>&, const node) -> void { }; }
+		{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
 		void set_process_current(const graph_traversal_process_one& f)
 		{ m_proc_cur = f; }
 
 		// see @ref m_proc_neigh
 		void set_process_neighbour_default()
-		{ m_proc_neigh = [](const GR_TR<S,G>&, const node, const node, bool) -> void { }; }
+		{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
 		void set_process_neighbour(const graph_traversal_process_two& f)
 		{ m_proc_neigh = f; }
 
 		// see @ref m_add_node
 		void set_node_add_default()
-		{ m_add_node = [](const GR_TR<S,G>&, const node) -> bool { return true; }; }
+		{ m_add_node = [](const BFS<G>&, const node) -> bool { return true; }; }
 		void set_node_add(const graph_traversal_bool_function& f)
 		{ m_add_node = f; }
 
@@ -176,15 +175,6 @@ class GR_TR {
 			memset(m_vis, 0, sizeof(char)*m_G.n_nodes());
 		}
 
-		// Empties the structure used for the traversal.
-		template<class SS = S,
-		typename std::enable_if<std::is_same<SS, std::stack<node>>::value, int >::type = 0
-		>
-		void clear_structure() { std::stack<node> s; m_X.swap(s); }
-
-		template<class SS = S,
-		typename std::enable_if<std::is_same<SS, std::queue<node>>::value, int >::type = 0
-		>
 		void clear_structure() { std::queue<node> q; m_X.swap(q); }
 
 		// Set node @e u as visited.
@@ -260,17 +250,6 @@ class GR_TR {
 			}
 		}
 
-		// Returns the next node to be processed.
-		// This means we have to access m_X but each structure has different
-		// methods.
-		template<class SS = S,
-		typename std::enable_if<std::is_same<SS, std::stack<node>>::value, int >::type = 0
-		>
-		node next_node() const { return m_X.top(); }
-
-		template<class SS = S,
-		typename std::enable_if<std::is_same<SS, std::queue<node>>::value, int >::type = 0
-		>
 		node next_node() const { return m_X.front(); }
 
 		/* The graph_traversal traversal is implemented as follows:
@@ -337,7 +316,7 @@ class GR_TR {
 		// Constant reference to the graph.
 		const G& m_G;
 		// The structure of the traversal (either a queue or a stack).
-		S m_X;
+		std::queue<node> m_X;
 		// The set of visited nodes.
 		char *m_vis = nullptr;
 		// Should we process already visitied neighbours?
@@ -398,9 +377,6 @@ class GR_TR {
 		 */
 		graph_traversal_bool_function m_add_node;
 };
-
-template<class G> using BFS = GR_TR<std::queue<node>, G>;
-template<class G> using DFS = GR_TR<std::stack<node>, G>;
 
 } // -- namespace internal
 } // -- namespace lal
