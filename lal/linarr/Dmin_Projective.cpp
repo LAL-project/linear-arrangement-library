@@ -125,21 +125,6 @@ uint32_t make_interval_of(
 		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
 		const uint32_t D = make_interval_of(t, vi, vi_place, data);
 		return D + 1;
-
-		/*
-		uint32_t D;
-		if (r_place == LEFT_PLACE) {
-			interval[0] = vi;
-			interval[1] = r;
-			D = make_interval_of(t, vi, LEFT_PLACE, data);
-		}
-		else {
-			interval[0] = r;
-			interval[1] = vi;
-			D = make_interval_of(t, vi, RIGHT_PLACE, data);
-		}
-		return D + 1;
-		*/
 	}
 
 	// -----------------------------
@@ -152,22 +137,20 @@ uint32_t make_interval_of(
 		const node vi = get_neighbours(t,r)[i];
 		children[i].first = vi;
 		children[i].second = t.n_nodes_subtree(vi);
-
-		/*if (max_size < children[i].second) {
-			max_size = children[i].second;
-		}*/
 		max_size = std::max(max_size, children[i].second);
 	}
 
 	// -------------------------
 	// sort the children by size
 
+	{
 	typedef vector<nodesize>::iterator it;
 	auto key = [](const nodesize& v) -> size_t {
 		return static_cast<size_t>(v.second);
 	};
 	internal::counting_sort<it, nodesize, true>
 	(children.begin(), children.end(), max_size + 1, key);
+	}
 
 	// ---------------------------
 	// first, choose 'r's position
@@ -192,7 +175,7 @@ uint32_t make_interval_of(
 	uint32_t acc_size_right = 0;
 
 	// total sum of length of edges + the length of the edge from 'r'
-	// to its parent, if any
+	// to its parent (if any)
 	uint32_t D = 0;
 	// total sum of lengths of edges from 'r' to 'vi'
 	uint32_t d = 0;
@@ -224,49 +207,13 @@ uint32_t make_interval_of(
 
 		// go to the other side
 		left = not left;
-
-		/*
-		if (left) {
-			d += acc_size_left;
-
-			// make the interval of 'vi'
-			D += make_interval_of(t, vi, LEFT_PLACE, data);
-
-			left = false;
-			interval[leftpos] = vi;
-			--leftpos;
-			acc_size_left += t.n_nodes_subtree(vi);
-		}
-		else {
-			d += acc_size_right;
-
-			// make the interval of 'vi'
-			D += make_interval_of(t, vi, RIGHT_PLACE, data);
-
-			left = true;
-			interval[rightpos] = vi;
-			++rightpos;
-			acc_size_right += t.n_nodes_subtree(vi);
-		}
-		d += 1;
-		*/
 	}
 
+	// accumulate sum of lengths of edges of the subtrees
 	D +=
 	(r_place == ROOT_PLACE ? 0 :
 	 r_place == LEFT_PLACE ? acc_size_right : acc_size_left);
 
-	/*
-	if (r_place == ROOT_PLACE) {
-		D += 0;
-	}
-	else if (r_place == LEFT_PLACE) {
-		D += acc_size_right;
-	}
-	else if (r_place == RIGHT_PLACE) {
-		D += acc_size_left;
-	}
-	*/
 	return D + d;
 }
 
