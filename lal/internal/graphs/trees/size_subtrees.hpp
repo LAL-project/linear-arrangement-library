@@ -94,6 +94,35 @@ void get_size_subtrees(
 } // -- namespace __lal
 
 /*
+ * @brief Calculate the size of every subtree of tree @e t.
+ *
+ * The method starts calculating the sizes at node @e r. Since rooted trees
+ * have directed edges, starting at a node different from the tree's root
+ * may not calculate every subtree's size.
+ * @param t Input rooted tree.
+ * @param r Start calculating sizes of subtrees at this node.
+ * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param sizes The size of the subtree rooted at every reachable node from @e r.
+ * @pre Parameter @e sizes has size the number of vertices.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+void get_size_subtrees(
+	const T& t, node r, uint32_t *sizes
+)
+{
+	// visited vertices
+	char *vis = static_cast<char *>(malloc(t.n_nodes()*sizeof(char)));
+	memset(vis, 0, t.n_nodes()*sizeof(char));
+	__lal::get_size_subtrees(t, r, vis, sizes);
+	free(vis);
+}
+
+namespace __lal {
+
+/*
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from \$(u,v)\f$.
  *
@@ -148,31 +177,40 @@ uint32_t calculate_suvs(
 	return r;
 }
 
+} // -- namespace __lal
+
 /*
- * @brief Calculate the size of every subtree of tree @e t.
+ * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
+ * from vertex @e x.
  *
- * The method starts calculating the sizes at node @e r. Since rooted trees
- * have directed edges, starting at a node different from the tree's root
- * may not calculate every subtree's size.
- * @param t Input rooted tree.
- * @param r Start calculating sizes of subtrees at this node.
- * @param vis Mark nodes as visited as the algorithm goes on.
- * @param sizes The size of the subtree rooted at every reachable node from @e r.
- * @pre Parameter @e sizes has size the number of vertices.
+ * This function calculates the map relating each edge \f$(u, v)\f$ with the
+ * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
+ * \f$u\f$. This is an implementation of the algorithm described in
+ * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
+ * section 6 (page 65)).
+ * @param t Input tree.
+ * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
+ * @param x A vertex indicating what connected component should be investigated
+ * @param[out] sizes_edge The map.
  */
 template<
 	class T,
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
-void get_size_subtrees(
-	const T& t, node r, uint32_t *sizes
+void calculate_suvs(
+	const T& t, uint32_t n, node x, std::map<edge, uint32_t>& sizes_edge
 )
 {
-	// visited vertices
-	char *vis = static_cast<char *>(malloc(t.n_nodes()*sizeof(char)));
-	memset(vis, 0, t.n_nodes()*sizeof(char));
-	__lal::get_size_subtrees(t, r, vis, sizes);
-	free(vis);
+	for (node y : t.get_out_neighbours(x)) {
+		__lal::calculate_suvs(t,n, x, y, sizes_edge);
+	}
+	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	for (node y : t.get_in_neighbours(x)) {
+		if (y != x) {
+			__lal::calculate_suvs(t,n, x, y, sizes_edge);
+		}
+	}
+	}
 }
 
 } // -- namespace internal

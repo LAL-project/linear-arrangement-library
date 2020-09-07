@@ -147,16 +147,8 @@ std::pair<node, node> retrieve_centroid(
 	sizes_edge.swap(empty);
 	}
 
-	for (node y : t.get_out_neighbours(x)) {
-		calculate_suvs(t,n, x, y, sizes_edge);
-	}
-	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
-	for (node y : t.get_in_neighbours(x)) {
-		if (y != x) {
-			calculate_suvs(t,n, x, y, sizes_edge);
-		}
-	}
-	}
+	// calculate s(u,v) with H&S algorithm
+	calculate_suvs(t,n, x, sizes_edge);
 
 	node c1 = N + 1;
 	node c2 = N + 1;
