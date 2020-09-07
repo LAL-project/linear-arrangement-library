@@ -47,12 +47,17 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/D.hpp>
-#include <lal/internal/sorting/counting_sort.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/sorting/counting_sort.hpp>
+
+typedef std::tuple<uint32_t,lal::edge> t2;
+typedef std::vector<t2> t2_vec;
+typedef t2_vec::iterator t2_vec_it;
 
 namespace lal {
 using namespace graphs;
-using namespace internal;
+using namespace iterators;
 
 namespace linarr {
 
@@ -103,11 +108,11 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
  * 'r_place' is LEFT_PLACE.
  */
 uint32_t make_interval_of(
-	const rooted_tree& t, node r, place r_place,
+	const rooted_tree& t, const vector<vector<pair<node,uint32_t>>>& M,
+	node r, place r_place,
 	vector<vector<node>>& data
 )
 {
-	const uint32_t d_out = t.out_degree(r);
 	const uint32_t r_int_size = get_int_size(r);
 
 	vector<node>& interval = data[r];
@@ -123,34 +128,15 @@ uint32_t make_interval_of(
 		interval[0] = (r_place == LEFT_PLACE ? vi : r);
 		interval[1] = (r_place == LEFT_PLACE ? r : vi);
 		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
-		const uint32_t D = make_interval_of(t, vi, vi_place, data);
+		const uint32_t D = make_interval_of(t, M, vi, vi_place, data);
 		return D + 1;
 	}
 
 	// -----------------------------
 	// get the sizes of the subtrees
 
-	typedef pair<lal::node,uint32_t> nodesize;
-	uint32_t max_size = 0;
-	vector<nodesize> children(d_out);
-	for (size_t i = 0; i < t.out_degree(r); ++i) {
-		const node vi = get_neighbours(t,r)[i];
-		children[i].first = vi;
-		children[i].second = t.n_nodes_subtree(vi);
-		max_size = std::max(max_size, children[i].second);
-	}
-
-	// -------------------------
-	// sort the children by size
-
-	{
-	typedef vector<nodesize>::iterator it;
-	auto key = [](const nodesize& v) -> size_t {
-		return static_cast<size_t>(v.second);
-	};
-	internal::counting_sort<it, nodesize, true>
-	(children.begin(), children.end(), max_size + 1, key);
-	}
+	typedef pair<node,uint32_t> nodesize;
+	const vector<nodesize>& children = M[r];
 
 	// ---------------------------
 	// first, choose 'r's position
@@ -187,7 +173,7 @@ uint32_t make_interval_of(
 		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
 		// recursive call: make the interval of 'vi'
-		D += make_interval_of(t, vi, vi_place, data);
+		D += make_interval_of(t, M, vi, vi_place, data);
 
 		// accumulate size of interval
 		d += (left ? acc_size_left : acc_size_right);
@@ -219,18 +205,58 @@ uint32_t make_interval_of(
 
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
+	assert(t.size_subtrees_valid());
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
 
+	// for every edge (u,v), store the tuple
+	//    (n_v, (u,v))
+	// at L[u]
+	vector<t2> L;
+	{
+	E_iterator Eit(t);
+	while (Eit.has_next()) {
+		Eit.next();
+		const edge e = Eit.get_edge();
+		const node v = e.second;
+		L.push_back(tuple(t.n_nodes_subtree(v), e));
+	}
+	}
+
+	// sort all tuples in L using the first key (size of the subtree)
+	internal::counting_sort<t2_vec_it, t2, true>(
+		L.begin(), L.end(), n,
+		[](const t2& T) -> size_t { return std::get<0>(T); }
+	);
+
+	// M[u] : adjacency list of vertex u sorted increasingly according
+	// to the sizes of the subtrees.
+	vector<vector<pair<node,uint32_t>>> M(n);
+	for (const auto& T : L) {
+		const uint32_t nv = std::get<0>(T);
+		const node u = std::get<1>(T).first;
+		const node v = std::get<1>(T).second;
+		M[u].push_back(make_pair(v,nv));
+		assert(t.has_edge(u,v));
+		assert(t.n_nodes_subtree(v) == nv);
+	}
+
+#if defined DEBUG
+	for (node u = 0; u < n; ++u) {
+		assert(M[u].size() == t.degree(u));
+	}
+#endif
+
 	// construct the optimal intervals
 	vector<vector<node>> data(t.n_nodes());
-	const uint32_t D = make_interval_of(t, t.get_root(), ROOT_PLACE, data);
+
+	const uint32_t D = make_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
-	const linear_arrangement arr = put_in_arrangement(t, data);
+	const linear_arrangement arr = internal::put_in_arrangement(t, data);
 
 	return make_pair(D, arr);
 }
