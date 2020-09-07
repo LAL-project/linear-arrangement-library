@@ -330,7 +330,7 @@ uint32_t rooted_tree::n_nodes_subtree(node u) const {
 }
 
 bool rooted_tree::size_subtrees_valid() const {
-	return m_need_recalc_size_subtrees;
+	return not m_need_recalc_size_subtrees;
 }
 
 vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
