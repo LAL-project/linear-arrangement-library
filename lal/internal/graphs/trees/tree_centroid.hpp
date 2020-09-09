@@ -46,52 +46,17 @@
 #include <cassert>
 #endif
 #include <cstring>
-#include <map>
+#include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
+#include <lal/internal/sorting/counting_sort.hpp>
 
 namespace lal {
 namespace internal {
-
-namespace __lal {
-
-/*
- * @brief Returns whether the vertex @e u is a centroidal tree
- *
- * @param t Input tree.
- * @param n Number of vertices of the connected component to which vertex @e u belongs.
- * @param u Vertex to be classified as centroidal.
- * @param sizes See documentation of method internal::calculate_suvs.
- * @return Returns whether vertex @e u is centroidal or not.
- */
-template<
-	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
->
-bool is_centroidal(
-	const T& t, uint32_t n, node u, const std::map<edge, uint32_t>& sizes
-)
-{
-	for (node v : t.get_out_neighbours(u)) {
-		const edge e(u,v);
-		const auto it = sizes.find(e);
-		if (it->second > n/2) { return false; }
-	}
-	if constexpr (std::is_same<graphs::rooted_tree,T>::value) {
-	for (node v : t.get_in_neighbours(u)) {
-		const edge e(u,v);
-		const auto it = sizes.find(e);
-		if (it->second > n/2) { return false; }
-	}
-	}
-	return true;
-}
-
-} // -- namespace __lal
 
 /*
  * @brief Calculate the centroid of the connected component that has node @e x.
@@ -123,7 +88,7 @@ template<
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 std::pair<node, node> retrieve_centroid(
-	const T& t, node x, std::map<edge, uint32_t>& sizes_edge
+	const T& t, node x, std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
@@ -141,60 +106,68 @@ std::pair<node, node> retrieve_centroid(
 		return std::make_pair(x, t.n_nodes());
 	}
 
+	// empty the vector
 	{
-	// empty the map
-	std::map<edge, uint32_t> empty;
+	std::vector<std::pair<edge, uint32_t>> empty;
 	sizes_edge.swap(empty);
 	}
 
-	// calculate s(u,v) with H&S algorithm
+	// calculate s(u,v) with H&S algorithm (lemma 8)
 	calculate_suvs(t,n, x, sizes_edge);
 
-	node c1 = N + 1;
-	node c2 = N + 1;
-	BFS<T> bfs(t);
+	{
+	// sort all tuples in sizes_edge using the sizes
+	typedef std::pair<edge,uint32_t> t2;
+	typedef std::vector<t2>::iterator t2_vec_it;
+	internal::counting_sort<t2_vec_it, t2, false>(
+		sizes_edge.begin(), sizes_edge.end(), n,
+		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
+	);
+	}
+
+	// put the s(u,v) into an adjacency list
+	// M[u] : adjacency list of vertex u sorted increasingly according
+	// to the sizes of the subtrees.
+	std::vector<std::vector<std::pair<node,uint32_t>>> M(N);
+	for (const auto& edge_value : sizes_edge) {
+		const edge& e = edge_value.first;
+		const node u = e.first;
+		const node v = e.second;
+		const uint32_t suv = edge_value.second;
+		M[u].push_back(std::make_pair(v,suv));
+	}
 
 	// find the first centroidal vertex
-	bfs.set_terminate( [&](const auto&, node) -> bool { return c1 < n; } );
-	bfs.set_node_add(
-	[&](const auto&, node u, node v) -> bool {
-		// add vertex 'v' to the queue only if the size s(u,v) > n/2
-		const edge e(u,v);
-		const auto it = sizes_edge.find(e);
-		return it->second > n/2;
-	}
-	);
-	bfs.set_process_current(
-	[&](const auto&, node u) -> void {
-		if (__lal::is_centroidal(t,n, u, sizes_edge)) {
-			c1 = u;
+	node c1 = N + 1;
+	bool some_greater = true;
+	node u = x;
+	do {
+		some_greater = false;
+		for (const auto& p : M[u]) {
+			const node v = p.first;
+			const uint32_t suv = p.second;
+			if (suv > n/2) {
+				some_greater = true;
+				u = v;
+				break;
+			}
 		}
 	}
-	);
-	bfs.set_use_rev_edges(t.is_directed());
-	bfs.start_at(x);
+	while (some_greater);
+	c1 = u;
 
 #if defined DEBUG
 	assert(c1 < N);
 #endif
 
-	// inspect neighbours of the centroidal vertex
-	// found to find (quite likely) a second
-	for (node u : t.get_out_neighbours(c1)) {
-		if (__lal::is_centroidal(t,n, u, sizes_edge)) {
-			c2 = u;
+	// find the second centroidal vertex
+	node c2 = N + 1;
+	for (const auto& p : M[c1]) {
+		const node v = p.first;
+		if (M[v][0].second <= n/2) {
+			c2 = v;
 			break;
 		}
-	}
-	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
-	if (c2 >= N) {
-		for (node u : t.get_in_neighbours(c1)) {
-			if (__lal::is_centroidal(t,n, u, sizes_edge)) {
-				c2 = u;
-				break;
-			}
-		}
-	}
 	}
 
 	return (c1 < c2 ? std::make_pair(c1, c2) : std::make_pair(c2, c1));
@@ -211,7 +184,7 @@ template<
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 std::pair<node, node> retrieve_centroid(const T& t, node x) {
-	std::map<edge, uint32_t> sizes_edge;
+	std::vector<std::pair<edge, uint32_t>> sizes_edge;
 	return retrieve_centroid(t, x, sizes_edge);
 }
 

@@ -42,9 +42,12 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <cstring>
 #include <cstdlib>
-#include <map>
+#include <vector>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -126,16 +129,19 @@ namespace __lal {
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from \$(u,v)\f$.
  *
- * This function calculates the map relating each edge \f$(u, v)\f$ with the
+ * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
  * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
  * \f$u\f$. This is an implementation of the algorithm described in
  * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
  * section 6 (page 65)).
+ *
+ * Notice that the values are not stored in an actual map (std::map, or similar),
+ * but in a vector.
  * @param t Input tree.
  * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
  * @param u First vertex of the edge.
  * @param v Second vertex of the edge.
- * @param[out] sizes_edge The map.
+ * @param[out] sizes_edge The vector of tuples.
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
 template<
@@ -143,20 +149,10 @@ template<
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 uint32_t calculate_suvs(
-	const T& t, uint32_t n, node u, node v, std::map<edge, uint32_t>& sizes_edge
+	const T& t, uint32_t n, node u, node v,
+	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
-	const auto it_uv = sizes_edge.find(edge(u,v));
-	if (it_uv != sizes_edge.end()) {
-		return it_uv->second;
-	}
-	const auto it_vu = sizes_edge.find(edge(v,u));
-	if (it_vu != sizes_edge.end()) {
-		const uint32_t k = n - it_vu->second;
-		sizes_edge.insert(std::make_pair(edge(v,u), k));
-		return k;
-	}
-
 	uint32_t r = 1;
 	for (node w : t.get_out_neighbours(v)) {
 		if (w != u) {
@@ -172,8 +168,8 @@ uint32_t calculate_suvs(
 	}
 	}
 
-	sizes_edge.insert(std::make_pair(edge(u,v), r));
-	sizes_edge.insert(std::make_pair(edge(v,u), n - r));
+	sizes_edge.push_back(std::make_pair(edge(u,v), r));
+	sizes_edge.push_back(std::make_pair(edge(v,u), n - r));
 	return r;
 }
 
@@ -183,22 +179,15 @@ uint32_t calculate_suvs(
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * This function calculates the map relating each edge \f$(u, v)\f$ with the
- * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
- * \f$u\f$. This is an implementation of the algorithm described in
- * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
- * section 6 (page 65)).
- * @param t Input tree.
- * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
- * @param x A vertex indicating what connected component should be investigated
- * @param[out] sizes_edge The map.
+ * See @ref __lal::calculate_suvs for details.
  */
 template<
 	class T,
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 void calculate_suvs(
-	const T& t, uint32_t n, node x, std::map<edge, uint32_t>& sizes_edge
+	const T& t, uint32_t n, node x,
+	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
 	for (node y : t.get_out_neighbours(x)) {
@@ -211,6 +200,10 @@ void calculate_suvs(
 		}
 	}
 	}
+
+#if defined DEBUG
+	assert(sizes_edge.size() <= 2*(t.n_nodes()) - 1);
+#endif
 }
 
 } // -- namespace internal
