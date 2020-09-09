@@ -51,9 +51,8 @@ using namespace std;
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
-typedef std::tuple<uint32_t,lal::edge> t2;
-typedef std::vector<t2> t2_vec;
-typedef t2_vec::iterator t2_vec_it;
+typedef std::pair<uint32_t,lal::edge> t2;
+typedef std::vector<t2>::iterator t2_vec_it;
 
 namespace lal {
 using namespace graphs;
@@ -222,7 +221,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		L.push_back(tuple(t.n_nodes_subtree(v), e));
+		L.push_back(make_pair(t.n_nodes_subtree(v), e));
 	}
 	}
 
