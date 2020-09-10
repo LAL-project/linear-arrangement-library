@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <cassert>
-#include <cstring>
 using namespace std;
 
 // lal includes
@@ -70,7 +69,8 @@ inline uint32_t __compute_C_dyn_prog(
 )
 {	
 	const uint32_t n = g.n_nodes();
-	memset(bn, 0, n*sizeof(char));
+	std::fill(&bn[0], &bn[n], 0);
+	std::fill(&K[0], &K[(n - 3)*(n - 3)], 0);
 
 	// compute pi
 	for (node i = 0; i < n; ++i) {
@@ -114,7 +114,6 @@ inline uint32_t __compute_C_dyn_prog(
 	}
 
 	/* fill matrix K */
-	memset(K, 0, (n - 3)*(n - 3)*sizeof(uint32_t));
 
 	// special case for ii = 0 (see next for loop)
 	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
@@ -168,8 +167,9 @@ inline uint32_t __compute_C_dyn_prog(
 				C += K[idx(pu,pi[v]-2, n-3)];
 			}*/
 			// --
-			const bool cond = pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1;
-			C += cond*K[idx(pu,pi[v]-2, n-3)];
+			if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+				C += K[idx(pu,pi[v]-2, n-3)];
+			}
 		}
 		if (g.is_directed()) {
 			const neighbourhood& Nu_in = g.get_in_neighbours(u);
@@ -186,8 +186,9 @@ inline uint32_t __compute_C_dyn_prog(
 					C += K[idx(pu,pi[v]-2, n-3)];
 				}*/
 				// --
-				const bool cond = pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1;
-				C += cond*K[idx(pu,pi[v]-2, n-3)];
+				if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+					C += K[idx(pu,pi[v]-2, n-3)];
+				}
 			}
 		}
 	}
@@ -205,27 +206,25 @@ inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) 
 
 	/* allocate memory */
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	uint32_t * __restrict__ all_memory =
-		static_cast<uint32_t *>(malloc(n_elems*sizeof(uint32_t)));
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
 
 	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
+	// T[p] = u <-> node u is at position p ( size n )
 	position * __restrict__ T = &all_memory[0];
-	// matrix M (without 3 of its columns and rows)
+	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint32_t * __restrict__ M = &all_memory[n];
-	// matrix K (without 3 of its columns and rows)
+	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs =
-		static_cast<char *>(malloc(n*sizeof(char)));
+	char * __restrict__ bool_neighs = new char[n];
 
 	/* compute number of crossings */
 	const uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
 
 	/* free memory */
-	free(all_memory);
-	free(bool_neighs);
+	delete[] all_memory;
+	delete[] bool_neighs;
 	return C;
 }
 
@@ -245,21 +244,19 @@ vector<uint32_t> __n_crossings_dyn_prog_list
 	}
 
 	/* allocate memory */
-	const size_t n_bytes = n + 2*(n - 3)*(n - 3);
-	uint32_t * __restrict__ all_memory =
-		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
+	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
 
 	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
+	// T[p] = u <-> node u is at position p ( size n )
 	position * __restrict__ T = &all_memory[0];
-	// matrix M (without 3 of its columns and rows)
+	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint32_t * __restrict__ M = &all_memory[n];
-	// matrix K (without 3 of its columns and rows)
+	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs =
-		static_cast<char *>(malloc(n*sizeof(char)));
+	char * __restrict__ bool_neighs = new char[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -274,8 +271,8 @@ vector<uint32_t> __n_crossings_dyn_prog_list
 	}
 
 	/* free memory */
-	free(all_memory);
-	free(bool_neighs);
+	delete[] all_memory;
+	delete[] bool_neighs;
 	return cs;
 }
 

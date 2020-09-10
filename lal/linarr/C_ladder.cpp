@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <cassert>
-#include <cstring>
 using namespace std;
 
 // lal includes
@@ -63,9 +62,8 @@ inline uint32_t __compute_C_ladder(
 )
 {
 	const uint32_t n = g.n_nodes();
-	memset(bn, 0, n*sizeof(char));
-
-	/* initialise memory */
+	// initialise memory
+	std::fill(&bn[0], &bn[n], 0);
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 		L1[i] = 0;
@@ -98,7 +96,7 @@ inline uint32_t __compute_C_ladder(
 			L1[q] += bn[v];
 			// --
 
-			bn[v] = false;
+			bn[v] = 0;
 		}
 	}
 	return C;
@@ -113,25 +111,23 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 	}
 
 	/* allocate memory */
-	const uint32_t n_bytes = n + n;
-	uint32_t * __restrict__ all_memory =
-		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
+	const uint32_t n_elems = n + n;
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
 
 	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
+	// T[p] = u <-> node u is at position p ( size n )
 	uint32_t * __restrict__ T = &all_memory[0];
-	// array L1 (same as in the pseudocode)
+	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs =
-		static_cast<char *>(malloc(n*sizeof(char)));
+	char * __restrict__ bool_neighs = new char[n];
 
 	/* compute number of crossings */
 	const uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
 
 	/* free memory */
-	free(all_memory);
-	free(bool_neighs);
+	delete[] all_memory;
+	delete[] bool_neighs;
 	return C;
 }
 
@@ -151,18 +147,16 @@ vector<uint32_t> __n_crossings_ladder_list
 	}
 
 	/* allocate memory */
-	const uint32_t n_bytes = n + n;
-	uint32_t * __restrict__ all_memory =
-		static_cast<uint32_t *>(malloc(n_bytes*sizeof(uint32_t)));
+	const uint32_t n_elems = n + n;
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
 
 	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
+	// T[p] = u <-> node u is at position p ( size n )
 	uint32_t * __restrict__ T = &all_memory[0];
-	// array L1 (same as in the pseudocode)
+	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs =
-		static_cast<char *>(malloc(n*sizeof(char)));
+	char * __restrict__ bool_neighs = new char[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -177,8 +171,8 @@ vector<uint32_t> __n_crossings_ladder_list
 	}
 
 	/* free memory */
-	free(all_memory);
-	free(bool_neighs);
+	delete[] all_memory;
+	delete[] bool_neighs;
 	return cs;
 }
 

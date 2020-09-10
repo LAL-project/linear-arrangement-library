@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <functional>
-#include <cstring>
 #include <queue>
 
 // lal includes
@@ -84,13 +83,13 @@ class BFS {
 		// Constructor
 		BFS(const G& g) : m_G(g) {
 			//m_vis = std::vector<bool>(g.n_nodes());
-			m_vis = static_cast<char *>(malloc(m_G.n_nodes()*sizeof(char)));
+			m_vis = new char[m_G.n_nodes()]{0};
 
 			reset();
 		}
 		// Destructor
 		virtual ~BFS() {
-			if (m_vis != nullptr) { free(m_vis); }
+			if (m_vis != nullptr) { delete[] m_vis; }
 		}
 
 		// Set the graph_traversal to its default state.
@@ -159,7 +158,7 @@ class BFS {
 
 		// Sets all nodes to not visited.
 		void reset_visited() {
-			memset(m_vis, 0, sizeof(char)*m_G.n_nodes());
+			std::fill(&m_vis[0], &m_vis[m_G.n_nodes()], 0);
 		}
 
 		void clear_structure() { std::queue<node> q; m_X.swap(q); }

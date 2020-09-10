@@ -73,7 +73,7 @@ inline void compute_data_forest
 	// auxiliary memory and additional variables
 
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
-	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
+	bigint *xi = new bigint[n];
 
 	// n<k^2>: second moment of degree about zero multiplied by n
 	bigint nk2 = 0;
@@ -136,7 +136,7 @@ inline void compute_data_forest
 	n_paths_5 /= 2;
 	Phi_2 /= 2;
 
-	free(xi);
+	delete[] xi;
 }
 
 rational variance_C_forest_rational(const undirected_graph& g) {

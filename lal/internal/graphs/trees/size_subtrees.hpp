@@ -45,8 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <cstring>
-#include <cstdlib>
 #include <vector>
 
 // lal includes
@@ -117,10 +115,9 @@ void get_size_subtrees(
 )
 {
 	// visited vertices
-	char *vis = static_cast<char *>(malloc(t.n_nodes()*sizeof(char)));
-	memset(vis, 0, t.n_nodes()*sizeof(char));
+	char *vis = new char[t.n_nodes()]{0};
 	__lal::get_size_subtrees(t, r, vis, sizes);
-	free(vis);
+	delete[] vis;
 }
 
 namespace __lal {

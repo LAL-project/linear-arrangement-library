@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <cassert>
-#include <cstring>
 #include <map>
 using namespace std;
 
@@ -187,12 +186,12 @@ inline uint32_t __call_C_stack_based(const graph& g, const linear_arrangement& p
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
+	node * __restrict__ T = new node[n];
 
 	const uint32_t C = __compute_C_stack_based(g, pi, T);
 
 	/* free memory */
-	free(T);
+	delete[] T;
 	return C;
 }
 
@@ -215,7 +214,7 @@ vector<uint32_t> __n_crossings_stack_based_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = static_cast<node *>(malloc(n*sizeof(node)));
+	node * __restrict__ T = new node[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -227,7 +226,7 @@ vector<uint32_t> __n_crossings_stack_based_list
 	}
 
 	/* free memory */
-	free(T);
+	delete[] T;
 	return cs;
 }
 

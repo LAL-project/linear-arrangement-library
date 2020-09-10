@@ -196,7 +196,7 @@ void calculate_mla_YS(
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	uint32_t *s = static_cast<uint32_t *>(malloc(t.n_nodes()*sizeof(uint32_t)));
+	uint32_t *s = new uint32_t[t.n_nodes()];
 	internal::get_size_subtrees(t, v_star - 1, s);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -216,7 +216,7 @@ void calculate_mla_YS(
 		ord.begin(), ord.end(), M,
 		[](const size_node& p) { return p.first; }
 	);
-	free(s);
+	delete[] s;
 	}
 
 	const node v_0 = ord[0].second;		// Root of biggest subtree

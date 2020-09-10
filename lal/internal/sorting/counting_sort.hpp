@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <functional>
-#include <cstring>
 
 namespace lal {
 namespace internal {
@@ -78,11 +77,8 @@ void counting_sort(
 	const size_t S = std::distance(begin, end);
 
 	// allocate memory
-	T *output = static_cast<T *>(malloc(S*sizeof(T)));
-	size_t *count = static_cast<size_t *>(malloc(M*sizeof(size_t)));
-
-	// initialise memory
-	memset(count, 0, M*sizeof(size_t));
+	T *output = new T[S];
+	size_t *count = new size_t[M]{0};
 
 	// calculate frequency of each element
 	for (auto it = begin; it != end; ++it) {
@@ -116,8 +112,8 @@ void counting_sort(
 	}
 
 	// free memory
-	free(output);
-	free(count);
+	delete[] output;
+	delete[] count;
 }
 
 } // -- namespace internal

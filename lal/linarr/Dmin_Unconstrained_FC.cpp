@@ -182,11 +182,11 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 	ord = ordering(t.degree(u - 1));
-	{
+
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	uint32_t *s = static_cast<uint32_t *>(malloc(t.n_nodes()*sizeof(uint32_t)));
+	uint32_t *s = new uint32_t[t.n_nodes()];
 	internal::get_size_subtrees(t, u - 1, s);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -198,16 +198,16 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 		const uint32_t s_ui = s[ui];
 
 		ord[i].first = s_ui;
-		M = std::max(M, s_ui);
 		ord[i].second = ui + 1;
+
+		M = std::max(M, s_ui);
 	}
 	internal::counting_sort<ordering::iterator, size_node, false>
 	(
 		ord.begin(), ord.end(), M,
 		[](const size_node& p) { return p.first; }
 	);
-	free(s);
-	}
+	delete[] s;
 }
 
 // t: input forest a single connected component of which has to be arranged.

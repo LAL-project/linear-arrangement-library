@@ -205,7 +205,7 @@ inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& p
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
+	node * __restrict__ T = new node[n];
 
 	// compute the number of crossings
 	const uint32_t C = (
@@ -215,7 +215,7 @@ inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& p
 	);
 
 	/* free memory */
-	free(T);
+	delete[] T;
 	return C;
 }
 
@@ -238,7 +238,7 @@ vector<uint32_t> __n_crossings_brute_force_list
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = static_cast<node *>( malloc(n*sizeof(node)) );
+	node * __restrict__ T = new node[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -254,7 +254,7 @@ vector<uint32_t> __n_crossings_brute_force_list
 	}
 
 	/* free memory */
-	free(T);
+	delete[] T;
 	return cs;
 }
 

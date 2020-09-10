@@ -44,7 +44,6 @@
 // C++ includes
 #include <algorithm>
 #include <cassert>
-#include <cstring>
 #include <cmath>
 #include <set>
 using namespace std;
@@ -83,8 +82,7 @@ void graph::clear() {
 /* MODIFIERS */
 
 void graph::normalise() {
-	char *mem = static_cast<char *>(malloc(n_nodes()*sizeof(char)));
-	memset(mem, 0, n_nodes()*sizeof(char));
+	char *mem = new char[n_nodes()]{0};
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
@@ -95,7 +93,7 @@ void graph::normalise() {
 	}
 	m_normalised = true;
 
-	free(mem);
+	delete[] mem;
 }
 
 bool graph::check_normalised() {

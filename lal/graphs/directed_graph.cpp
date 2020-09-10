@@ -70,8 +70,7 @@ directed_graph::directed_graph(uint32_t n) {
 /* MODIFIERS */
 
 void directed_graph::normalise() {
-	char *mem = static_cast<char *>(malloc(n_nodes()*sizeof(char *)));
-	memset(mem, 0, n_nodes()*sizeof(char *));
+	char *mem = new char[n_nodes()]{0};
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
@@ -83,8 +82,9 @@ void directed_graph::normalise() {
 			internal::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
 		}
 	}
-	free(mem);
 	m_normalised = true;
+
+	delete[] mem;
 }
 
 bool directed_graph::check_normalised() {

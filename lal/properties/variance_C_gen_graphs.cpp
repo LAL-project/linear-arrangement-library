@@ -44,7 +44,6 @@
 // C++ includes
 #include <algorithm>
 #include <cassert>
-#include <cstring>
 #include <vector>
 #include <map>
 using namespace std;
@@ -121,7 +120,7 @@ inline void compute_data_gen_graphs_no_reuse
 	// local variables (some store precomputed data)
 
 	// allocate memory for all arrays
-	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
+	bigint *xi = new bigint[n]{0};
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -236,7 +235,7 @@ inline void compute_data_gen_graphs_no_reuse
 	pair_C3_L2 /= 3;
 
 	// deallocate memory
-	free(xi);
+	delete[] xi;
 }
 
 /* Warning:
@@ -260,7 +259,7 @@ inline void compute_data_gen_graphs_reuse
 	// local variables (some store precomputed data)
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	bigint *xi = static_cast<bigint *>(malloc(n*sizeof(bigint)));
+	bigint *xi = new bigint[n];
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -420,7 +419,7 @@ inline void compute_data_gen_graphs_reuse
 	pair_C3_L2 /= 3;
 
 	// deallocate memory
-	free(xi);
+	delete[] xi;
 }
 
 rational variance_C_rational(const undirected_graph& g, bool reuse) {

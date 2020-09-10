@@ -44,7 +44,6 @@
 // C++ includes
 #include <algorithm>
 #include <iterator>
-#include <cstring>
 
 // lal includes
 #include <lal/internal/sorting/insertion_sort.hpp>
@@ -164,13 +163,12 @@ void bit_sort(It begin, It end)
 	const auto M = *M_it;
 
 	// bit array
-	char *seen = static_cast<char *>(malloc( (M - m + 1)*sizeof(char) ));
-	memset(seen, 0, (M - m + 1)*sizeof(char) );
+	char *seen = new char[M - m + 1]{0};
 
 	// sort
 	__lal::__bit_sort(begin,end, m, seen);
 
-	free(seen);
+	delete[] seen;
 }
 
 } // -- namspace utils
