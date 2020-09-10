@@ -58,34 +58,22 @@ namespace internal {
  * @param neighs 0-1 list of neighbours of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */
+template<
+	class G,
+	// this method can't be used by objects of class 'graphs::graph'
+	typename std::enable_if<!std::is_same<graphs::graph, G>::value, int>::type = 0
+>
 inline void get_bool_neighbours(
-	const graphs::undirected_graph& g, node u, char *neighs
+	const G& g, node u, char *neighs
 )
 {
-	for (const node v : g.get_neighbours(u)) {
-		neighs[v] = 1;
-	}
-}
-
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
- * list of 0-1 values.
- *
- * Sets to 1 the positions in @e neighs that correspond to the nodes
- * neighours of @e u.
- * @param g Input graph.
- * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
- * @pre The contents of @e neighs must be all 0 (or false).
- */
-inline void get_bool_neighbours(
-	const graphs::directed_graph& g, node u, char *neighs
-)
-{
-	for (const node v : g.get_in_neighbours(u)) {
-		neighs[v] = 1;
-	}
 	for (const node v : g.get_out_neighbours(u)) {
 		neighs[v] = 1;
+	}
+	if constexpr (std::is_base_of<graphs::directed_graph, G>::value) {
+	for (const node v : g.get_out_neighbours(u)) {
+		neighs[v] = 1;
+	}
 	}
 }
 
