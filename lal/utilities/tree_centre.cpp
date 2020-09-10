@@ -39,8 +39,27 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/utilities/tree_isomorphism.hpp>
 #include <lal/utilities/tree_centre.hpp>
-#include <lal/utilities/tree_centroid.hpp>
+
+// C++ includes
+#include <cassert>
+using namespace std;
+
+// lal includes
+#include <lal/internal/graphs/trees/tree_centre.hpp>
+
+namespace lal {
+namespace utilities {
+
+pair<node, node> get_centre(const graphs::rooted_tree& t) {
+	assert(t.is_tree());
+	return internal::retrieve_centre(t, 0);
+}
+
+pair<node, node> get_centre(const graphs::free_tree& t) {
+	assert(t.is_tree());
+	return internal::retrieve_centre(t, 0);
+}
+
+} // -- namespace utilities
+} // -- namespace lal

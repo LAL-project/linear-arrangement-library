@@ -41,6 +41,47 @@
 
 #pragma once
 
-#include <lal/utilities/tree_isomorphism.hpp>
-#include <lal/utilities/tree_centre.hpp>
-#include <lal/utilities/tree_centroid.hpp>
+// lal includes
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
+
+namespace lal {
+namespace utilities {
+
+/**
+ * @brief Calculate the centroid of a rooted tree.
+ *
+ * Here, "centroid" should not be confused with "centre". The centre is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex. In both case, if
+ * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
+ * for further details.
+ * @param t Input tree.
+ * @returns Returns a tuple of two values: the nodes in the centre. If the
+ * tree has a single central node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
+ * @pre Method graphs::rooted_tree::is_tree returns true.
+ */
+std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
+
+/**
+ * @brief Calculate the centroid of a free tree.
+ *
+ * Here, "centre" should not be confused with "centroid". The center is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
+ * for further details.
+ * @param t Input tree.
+ * @returns Returns a tuple of two values: the nodes in the centre. If the
+ * tree has a single central node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
+ * @pre Method graphs::rooted_tree::is_tree returns true.
+ */
+std::pair<node, node> get_centroid(const graphs::free_tree& t);
+
+} // -- namespace utilities
+} // -- namespace lal
