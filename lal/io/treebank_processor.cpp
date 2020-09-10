@@ -47,7 +47,6 @@
 
 // C++ includes
 #include <iostream>
-#include <cstring>
 #include <numeric>
 #include <cmath>
 using namespace std;
