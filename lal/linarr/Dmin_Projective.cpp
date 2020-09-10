@@ -51,8 +51,7 @@ using namespace std;
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
-typedef std::pair<uint32_t,lal::edge> t2;
-typedef std::vector<t2>::iterator t2_vec_it;
+typedef std::pair<lal::node,uint32_t> node_size;
 
 namespace lal {
 using namespace graphs;
@@ -93,6 +92,9 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
 
 /*
  * t: the rooted tree.
+ * M: adjacency matrix of the tree with extra information: for each vertex,
+ *		attach an integer that represents the size of the subtree rooted
+ *		at that vertex. Each adjacency list is sorted INCREASINGLY by that size.
  * r: the vertex root of the subtree whose interval is to be made
  * place: where, respect to its parent, has 'r' been placed in the interval.
  *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
@@ -106,8 +108,8 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-uint32_t make_interval_of(
-	const rooted_tree& t, const vector<vector<pair<node,uint32_t>>>& M,
+uint32_t optimal_interval_of(
+	const rooted_tree& t, const vector<vector<node_size>>& M,
 	node r, place r_place,
 	vector<vector<node>>& data
 )
@@ -127,15 +129,14 @@ uint32_t make_interval_of(
 		interval[0] = (r_place == LEFT_PLACE ? vi : r);
 		interval[1] = (r_place == LEFT_PLACE ? r : vi);
 		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
-		const uint32_t D = make_interval_of(t, M, vi, vi_place, data);
+		const uint32_t D = optimal_interval_of(t, M, vi, vi_place, data);
 		return D + 1;
 	}
 
 	// -----------------------------
 	// get the sizes of the subtrees
 
-	typedef pair<node,uint32_t> nodesize;
-	const vector<nodesize>& children = M[r];
+	const auto& children = M[r];
 
 	// ---------------------------
 	// first, choose 'r's position
@@ -172,7 +173,7 @@ uint32_t make_interval_of(
 		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
 		// recursive call: make the interval of 'vi'
-		D += make_interval_of(t, M, vi, vi_place, data);
+		D += optimal_interval_of(t, M, vi, vi_place, data);
 
 		// accumulate size of interval
 		d += (left ? acc_size_left : acc_size_right);
@@ -211,33 +212,36 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
 
+	typedef pair<edge,uint32_t> edge_size;
+	typedef vector<edge_size>::iterator edge_size_t;
+
 	// for every edge (u,v), store the tuple
 	//    (n_v, (u,v))
 	// at L[u]
-	vector<t2> L;
+	vector<edge_size> L;
 	{
 	E_iterator Eit(t);
 	while (Eit.has_next()) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		L.push_back(make_pair(t.n_nodes_subtree(v), e));
+		L.push_back(make_pair(e,t.n_nodes_subtree(v)));
 	}
 	}
 
-	// sort all tuples in L using the first key (size of the subtree)
-	internal::counting_sort<t2_vec_it, t2, true>(
+	// sort all tuples in L using the size of the subtree
+	internal::counting_sort<edge_size_t, edge_size, true>(
 		L.begin(), L.end(), n,
-		[](const t2& T) -> size_t { return std::get<0>(T); }
+		[](const edge_size& T) -> size_t { return std::get<1>(T); }
 	);
 
 	// M[u] : adjacency list of vertex u sorted increasingly according
 	// to the sizes of the subtrees.
-	vector<vector<pair<node,uint32_t>>> M(n);
+	vector<vector<node_size>> M(n);
 	for (const auto& T : L) {
-		const uint32_t nv = std::get<0>(T);
-		const node u = std::get<1>(T).first;
-		const node v = std::get<1>(T).second;
+		const node u = std::get<0>(T).first;
+		const node v = std::get<0>(T).second;
+		const uint32_t nv = std::get<1>(T);
 		M[u].push_back(make_pair(v,nv));
 		assert(t.has_edge(u,v));
 		assert(t.n_nodes_subtree(v) == nv);
@@ -252,7 +256,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// construct the optimal intervals
 	vector<vector<node>> data(t.n_nodes());
 
-	const uint32_t D = make_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
+	const uint32_t D = optimal_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
 	const linear_arrangement arr = internal::put_in_arrangement(t, data);
