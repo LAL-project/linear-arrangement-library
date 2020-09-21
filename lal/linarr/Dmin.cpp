@@ -45,6 +45,9 @@
 #include <cassert>
 using namespace std;
 
+// lal includes
+#include <lal/internal/graphs/trees/Dmin.hpp>
+
 namespace lal {
 using namespace graphs;
 
@@ -56,7 +59,7 @@ pair<uint32_t, linear_arrangement> Dmin
 	switch (a) {
 	// call Gildea and Temperly's algorithm
 	case algorithms_Dmin::Projective:
-		return Dmin_Projective(t);
+		return internal::Dmin_Projective(t);
 
 	// check for invalid choices of algorithm
 	case algorithms_Dmin::Planar:
@@ -83,13 +86,13 @@ pair<uint32_t, linear_arrangement> Dmin
 
 	// call Hochberg and Stallman's algorithm
 	case algorithms_Dmin::Planar:
-		return Dmin_Planar(t);
+		return internal::Dmin_Planar(t);
 	// call Yossi Shiloach's algorithm
 	case algorithms_Dmin::Unconstrained_YS:
-		return Dmin_Unconstrained_YS(t);
+		return internal::Dmin_Unconstrained_YS(t);
 	// call Fan Chung's algorithm
 	case algorithms_Dmin::Unconstrained_FC:
-		return Dmin_Unconstrained_FC(t);
+		return internal::Dmin_Unconstrained_FC(t);
 	}
 
 	return make_pair(0, linear_arrangement());

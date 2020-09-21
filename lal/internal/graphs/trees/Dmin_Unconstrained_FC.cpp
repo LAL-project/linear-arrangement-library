@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/Dmin.hpp>
+#include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
 #include <cassert>
@@ -62,7 +62,7 @@ typedef vector<size_node> ordering;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 int calculate_q(uint32_t n, const ordering & ord) {
 	const uint32_t k = to_uint32(ord.size() - 1);
@@ -497,5 +497,5 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 	return make_pair(c, arr);
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

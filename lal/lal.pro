@@ -47,6 +47,7 @@ HEADERS += \
 	graphs/rooted_tree.hpp \
 	graphs/undirected_graph.hpp \
 	internal/gmp/utils.hpp \
+	internal/graphs/trees/Dmin.hpp \
 	internal/graphs/trees/utils.hpp \
 	internal/graphs/utils.hpp \
 	internal/macros.hpp \
@@ -128,6 +129,10 @@ SOURCES += \
 	internal/gmp/utils.cpp \
 	internal/graphs/trees/convert_to_ftree.cpp \
 	internal/graphs/trees/convert_to_rtree.cpp \
+	internal/graphs/trees/Dmin_Planar.cpp \
+	internal/graphs/trees/Dmin_Projective.cpp \
+	internal/graphs/trees/Dmin_Unconstrained_FC.cpp \
+	internal/graphs/trees/Dmin_Unconstrained_YS.cpp \
 	io/treebank_dataset.cpp \
 	io/edge_list.cpp \
 	io/treebank_processor.cpp \
@@ -137,10 +142,6 @@ SOURCES += \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
-    linarr/Dmin_Planar.cpp \
-	linarr/Dmin_Projective.cpp \
-	linarr/Dmin_Unconstrained_FC.cpp \
-	linarr/Dmin_Unconstrained_YS.cpp \
 	linarr/headedness.cpp \
 	linarr/C_stack_based.cpp \
 	linarr/tree_structure_class.cpp \

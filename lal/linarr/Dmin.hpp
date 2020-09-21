@@ -50,69 +50,6 @@ namespace lal {
 namespace linarr {
 
 /**
- * @brief Algorithm to calculate optimal projective arrangements of rooted trees.
- *
- * Computes an optimal projective linear arrangement for rooted trees.
- * A projective linear arrangement is an arrangement in which there are
- * no edge crossings and the root is not covered by any edge.
- *
- * This function implements Gildea and Temperley's algorithm published in \cite Gildea2007a.
- *
- * @param t Input rooted tree.
- * @pre The object @e t must be a valid rooted tree (see @ref graphs::rooted_tree::is_rooted_tree).
- * @pre The tree must have the size of its subtrees calculated (see
- * @ref graphs::rooted_tree::size_subtrees_valid).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Projective
-(const graphs::rooted_tree& t);
-
-/**
- * @brief Algorithm to calculate optimal planar arrangements of free trees.
- *
- * Computes an optimal planar linear arrangement for free trees.
- * A planar linear arrangement is an arrangement in which there are
- * no edge crossings.
- *
- * This function implements an algorithm first published by Iordanskii in
- * \cite Iordanskii1987a and later by Hochberg and Stallmann's in \cite Hochberg2003a.
- *
- * @param t Input tree.
- * @pre The object @e t must be a tree (see @ref graphs::free_tree::is_tree).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Planar
-(const graphs::free_tree& t);
-
-/**
- * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
- *
- * Computes an unconstrained optimal linear arrangement of a free tree and
- * the value of its cost, i.e., the sum of the lengths of the edges.
- *
- * This function implements Yossi Shiloach's algorithm published in \cite Shiloach1979a.
- * The implementation of this algorithm uses the corrections published
- * in \cite Esteban2017a.
- *
- * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
-(const graphs::free_tree& t);
-
-/**
- * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
- *
- * Computes an unconstrained optimal linear arrangement of a free tree and
- * the value of its cost, i.e., the sum of the lengths of the edges.
- *
- * This function implements Fan Chung's algorithm published in \cite Chung1984a.
- *
- * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
-(const graphs::free_tree& t);
-
-/* -------------------------------------------------------------------------- */
-
-/**
  * @brief Computes the minimum value of \f$D\f$ in rooted trees.
  *
  * Calculates the minimum value of \f$D\f$ and returns a linear arrangement

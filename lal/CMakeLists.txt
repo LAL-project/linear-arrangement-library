@@ -203,10 +203,6 @@ target_sources(
 		linarr/C_stack_based.cpp
 		linarr/D.cpp
 		linarr/Dmin.cpp
-		linarr/Dmin_Planar.cpp
-		linarr/Dmin_Projective.cpp
-		linarr/Dmin_Unconstrained_FC.cpp
-		linarr/Dmin_Unconstrained_YS.cpp
 		linarr/headedness.cpp
 		linarr/tree_structure_class.cpp
 
@@ -247,6 +243,7 @@ target_sources(
 		internal/gmp/utils.hpp
 		internal/graphs/trees/convert_to_ftree.hpp
 		internal/graphs/trees/convert_to_rtree.hpp
+		internal/graphs/trees/Dmin.hpp
 		internal/graphs/trees/is_tree.hpp
 		internal/graphs/trees/make_projective_arr.hpp
 		internal/graphs/trees/size_subtrees.hpp
@@ -267,6 +264,10 @@ target_sources(
 		internal/gmp/utils.cpp
 		internal/graphs/trees/convert_to_ftree.cpp
 		internal/graphs/trees/convert_to_rtree.cpp
+		internal/graphs/trees/Dmin_Planar.cpp
+		internal/graphs/trees/Dmin_Projective.cpp
+		internal/graphs/trees/Dmin_Unconstrained_FC.cpp
+		internal/graphs/trees/Dmin_Unconstrained_YS.cpp
 
 		# lal namespace
 		# -- heaers

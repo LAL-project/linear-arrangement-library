@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/Dmin.hpp>
+#include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
 #include <cassert>
@@ -57,7 +57,7 @@ namespace lal {
 using namespace graphs;
 using namespace iterators;
 
-namespace linarr {
+namespace internal {
 
 typedef char place;
 #define LEFT_PLACE 0
@@ -108,7 +108,7 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-uint32_t optimal_interval_of(
+uint32_t Dmin_Pr__optimal_interval_of(
 	const rooted_tree& t, const vector<vector<node_size>>& M,
 	node r, place r_place,
 	vector<vector<node>>& data
@@ -129,7 +129,7 @@ uint32_t optimal_interval_of(
 		interval[0] = (r_place == LEFT_PLACE ? vi : r);
 		interval[1] = (r_place == LEFT_PLACE ? r : vi);
 		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
-		const uint32_t D = optimal_interval_of(t, M, vi, vi_place, data);
+		const uint32_t D = Dmin_Pr__optimal_interval_of(t, M, vi, vi_place, data);
 		return D + 1;
 	}
 
@@ -173,7 +173,7 @@ uint32_t optimal_interval_of(
 		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
 		// recursive call: make the interval of 'vi'
-		D += optimal_interval_of(t, M, vi, vi_place, data);
+		D += Dmin_Pr__optimal_interval_of(t, M, vi, vi_place, data);
 
 		// accumulate size of interval
 		d += (left ? acc_size_left : acc_size_right);
@@ -253,10 +253,11 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	}
 #endif
 
-	// construct the optimal intervals
+	// the optimal intervals
 	vector<vector<node>> data(t.n_nodes());
 
-	const uint32_t D = optimal_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
+	// construct the optimal intervals
+	const uint32_t D = Dmin_Pr__optimal_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
 
 	// construct the arrangement
 	const linear_arrangement arr = internal::put_in_arrangement(t, data);
@@ -264,5 +265,5 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	return make_pair(D, arr);
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

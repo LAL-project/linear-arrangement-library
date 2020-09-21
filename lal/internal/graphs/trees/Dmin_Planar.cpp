@@ -45,7 +45,7 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/Dmin.hpp>
+#include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
 #include <cassert>
@@ -59,7 +59,7 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	assert(t.is_tree());
@@ -84,5 +84,5 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	return Dmin_Projective(rt);
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

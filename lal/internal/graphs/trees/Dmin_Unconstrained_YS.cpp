@@ -38,7 +38,7 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/Dmin.hpp>
+#include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
 #include <cassert>
@@ -63,7 +63,7 @@ typedef vector<size_node> ordering;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 uint32_t calculate_p_alpha(
 	const uint32_t n, const char anchored, const ordering& ord,
@@ -343,5 +343,5 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 	return make_pair(c, arrangement);
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal
