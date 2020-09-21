@@ -57,10 +57,7 @@ namespace linarr {
  * of algorithm for its calculation.
  * @param t Input tree.
  * @param a The algorithm to be chosen.
- * @pre The preconditions of this function have to meet the preconditions of
- * the function that is called:
- * - if @e a is @ref algorithms_Dmin::Projective the function called is
- * @ref Dmin_Projective.
+ * @pre @t must be a valid tree (see @ref tree::is_tree()).
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linear_arrangement> Dmin
@@ -74,12 +71,7 @@ std::pair<uint32_t, linear_arrangement> Dmin
  * of algorithm for its calculation.
  * @param t Input tree.
  * @param a The algorithm to be chosen.
- * @pre The preconditions of this function have to meet the preconditions of
- * the function that is called:
- * - if @e a is @ref algorithms_Dmin::Unconstrained_YS the function called is
- * @ref Dmin_Unconstrained_YS.
- * - if @e a is @ref algorithms_Dmin::Unconstrained_FC the function called is
- * @ref Dmin_Unconstrained_FC.
+ * @pre @t must be a valid tree (see @ref tree::is_tree()).
  * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
  */
 std::pair<uint32_t, linear_arrangement> Dmin
