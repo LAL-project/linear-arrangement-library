@@ -53,6 +53,13 @@ namespace internal {
  * This algorithm is interesting for sorting containers with non-unique values.
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
+ * Template parameters:
+ * @param It Iterator type
+ * @param T Iterated type
+ * @param increasing: when true, the result is sorted increasingly. When false,
+ * the result is sorted decreasingly.
+ *
+ * Function paremeters:
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
  * @param M Integer value equal to the largest key that can be obtained with
