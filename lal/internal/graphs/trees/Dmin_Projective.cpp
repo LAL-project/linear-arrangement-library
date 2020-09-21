@@ -170,6 +170,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// length of the edge from 'r' to vertex 'vi'
 	for (const auto& p : children) {
 		const node vi = p.first;
+		const uint32_t svi = p.second;
 		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
 
 		// recursive call: make the interval of 'vi'
@@ -186,10 +187,10 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		// 1. increase/decrease right/left position
 		// 2. accumulate size of subtree rooted at vi
 		leftpos -= (left ? 1 : 0);
-		acc_size_left += (left ? t.n_nodes_subtree(vi) : 0);
+		acc_size_left += (left ? svi : 0);
 
 		rightpos += (left ? 0 : 1);
-		acc_size_right += (left ? 0 : t.n_nodes_subtree(vi));
+		acc_size_right += (left ? 0 : svi);
 
 		// go to the other side
 		left = not left;
@@ -203,9 +204,17 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	return D + d;
 }
 
+uint32_t Dmin_Pr__optimal_interval_of(
+	const rooted_tree& t,
+	const vector<vector<pair<node,uint32_t>>>& M,
+	node r, vector<vector<node>>& data
+)
+{
+	return Dmin_Pr__optimal_interval_of(t, M, r, ROOT_PLACE, data);
+}
+
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
-	assert(t.size_subtrees_valid());
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
@@ -244,7 +253,6 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		const uint32_t nv = std::get<1>(T);
 		M[u].push_back(make_pair(v,nv));
 		assert(t.has_edge(u,v));
-		assert(t.n_nodes_subtree(v) == nv);
 	}
 
 #if defined DEBUG

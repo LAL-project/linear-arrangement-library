@@ -48,6 +48,30 @@ namespace lal {
 namespace internal {
 
 /*
+ * t: the rooted tree.
+ * M: adjacency matrix of the tree with extra information: for each vertex,
+ *		attach an integer that represents the size of the subtree rooted
+ *		at that vertex. Each adjacency list is sorted INCREASINGLY by that size.
+ * r: the vertex root of the subtree whose interval is to be made
+ * data: the interval of every vertex.
+ * 		data[v][p] = u <-> vertex 'u' is at position 'p' of vertex 'v's interval
+ *
+ * Returns the sum of the length of the edges incident to vertex 'r' plus
+ * the length of the anchor of the edge from 'r' to its parent. Such length
+ * is defined as the number of vertices to the left of 'r' if 'r_place'
+ * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
+ * 'r_place' is LEFT_PLACE.
+ *
+ * See implementation for all details of this method.
+ */
+uint32_t Dmin_Pr__optimal_interval_of(
+	const graphs::rooted_tree& t,
+	const std::vector<std::vector<std::pair<lal::node,uint32_t>>>& M,
+	node r,
+	std::vector<std::vector<node>>& data
+);
+
+/*
  * @brief Algorithm to calculate optimal projective arrangements of rooted trees.
  *
  * Computes an optimal projective linear arrangement for rooted trees.

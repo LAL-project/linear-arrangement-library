@@ -54,12 +54,38 @@ using namespace std;
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/internal/graphs/trees/make_projective_arr.hpp>
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace internal {
+
+inline void make_directed(
+	const rooted_tree& rt, vector<vector<pair<node,uint32_t>>>& M
+)
+{
+	for (node u = 0; u < rt.n_nodes(); ++u) {
+		for (node v : rt.get_out_neighbours(u)) {
+			// find 'u' in M[v] and remove it
+
+			auto& Mv = M[v];
+			auto it = Mv.begin();
+
+			bool found = false;
+			while (not found and it != Mv.end()) {
+				if (it->first == u) {
+					Mv.erase(it);
+					found = true;
+				}
+				else {
+					++it;
+				}
+			}
+		}
+	}
+}
 
 pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	assert(t.is_tree());
@@ -75,13 +101,30 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	// of T. For this reason, any optimal projective arrangement of T_c
 	// is an optimal planar arrangement of T.
 
-	const node c = internal::retrieve_centroid(t,0).first;
-	rooted_tree rt(t, c);
-	rt.calculate_size_subtrees();
+	vector<vector<pair<node,uint32_t>>> M;
+	vector<pair<edge, uint32_t>> sizes_edge;
 
-	// Use Gildea and Temperley's algorithm to calculate an optimal
-	// projective arrangement.
-	return Dmin_Projective(rt);
+	// find the centroid of the tree
+	const node c = internal::retrieve_centroid(t,0, M,sizes_edge).first;
+
+	// root the free tree
+	const rooted_tree rt(t, c);
+
+	// convert M into a directed adjacency matrix
+	make_directed(rt, M);
+
+	// the optimal intervals
+	vector<vector<node>> data(t.n_nodes());
+
+	// construct the optimal intervals using Gildea and Temperley's
+	// algorithm to calculate an optimal projective arrangement.
+	const uint32_t D =
+	Dmin_Pr__optimal_interval_of(rt, M, rt.get_root(), data);
+
+	// construct the arrangement
+	const linear_arrangement arr = internal::put_in_arrangement(rt, data);
+
+	return make_pair(D, arr);
 }
 
 } // -- namespace internal
