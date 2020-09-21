@@ -76,6 +76,9 @@ namespace internal {
  * in \cite Hochberg2003a (see function's documentation for details).
  * @param t Input tree.
  * @param x Input node.
+ * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of
+ * pairs (v,sv) where @e v is a neighbour of @e u and @e sv is the size of the
+ * subtree rooted at @e v with parent @e u. The list is sorted increasingly.
  * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
  * @returns Returns a tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
@@ -87,7 +90,9 @@ template<
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 std::pair<node, node> retrieve_centroid(
-	const T& t, node x, std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	const T& t, node x,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
@@ -118,7 +123,7 @@ std::pair<node, node> retrieve_centroid(
 	// sort all tuples in sizes_edge using the sizes
 	typedef std::pair<edge,uint32_t> t2;
 	typedef std::vector<t2>::iterator t2_vec_it;
-	internal::counting_sort<t2_vec_it, t2, false>(
+	internal::counting_sort<t2_vec_it, t2, true>(
 		sizes_edge.begin(), sizes_edge.end(), n,
 		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
 	);
@@ -127,7 +132,7 @@ std::pair<node, node> retrieve_centroid(
 	// put the s(u,v) into an adjacency list
 	// M[u] : adjacency list of vertex u sorted increasingly according
 	// to the sizes of the subtrees.
-	std::vector<std::vector<std::pair<node,uint32_t>>> M(N);
+	M.resize(N);
 	for (const auto& edge_value : sizes_edge) {
 		const edge& e = edge_value.first;
 		const node u = e.first;
@@ -163,7 +168,7 @@ std::pair<node, node> retrieve_centroid(
 	node c2 = N + 1;
 	for (const auto& p : M[c1]) {
 		const node v = p.first;
-		if (M[v][0].second <= n/2) {
+		if (M[v].back().second <= n/2) {
 			c2 = v;
 			break;
 		}
@@ -183,8 +188,9 @@ template<
 	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
 >
 std::pair<node, node> retrieve_centroid(const T& t, node x) {
+	std::vector<std::vector<std::pair<node,uint32_t>>> M;
 	std::vector<std::pair<edge, uint32_t>> sizes_edge;
-	return retrieve_centroid(t, x, sizes_edge);
+	return retrieve_centroid(t, x, M, sizes_edge);
 }
 
 } // -- namespace internal
