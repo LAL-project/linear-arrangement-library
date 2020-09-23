@@ -234,8 +234,12 @@ target_sources(
 		
 		# utilities namespace
 		# -- headers
+		utilities/tree_centre.hpp
+		utilities/tree_centroid.hpp
 		utilities/tree_isomorphism.hpp
 		# -- sources
+		utilities/tree_centre.cpp
+		utilities/tree_centroid.cpp
 		utilities/tree_isomorphism.cpp
 
 		# internal namespace -- not to be installed
@@ -366,6 +370,8 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/Q.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
+	utilities/tree_centre.hpp
+	utilities/tree_centroid.hpp
 	utilities/tree_isomorphism.hpp
 )
 
