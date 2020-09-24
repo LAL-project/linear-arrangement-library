@@ -64,6 +64,10 @@ typedef char place;
 #define RIGHT_PLACE 1
 #define ROOT_PLACE 2
 
+typedef char direction;
+#define TO_LEFT 1
+#define TO_RIGHT 2
+
 #define right_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2 - 1)
 #define left_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2)
 
@@ -82,12 +86,12 @@ constexpr position pos_in_interval(uint32_t int_size, place P) {
 	return int_size/2;
 }
 
-constexpr bool start_left_right(uint32_t int_size, place P) {
+constexpr direction start_left_right(uint32_t int_size, place P) {
 	switch (P) {
-		case LEFT_PLACE: return (int_size%2 == 1 ? false : true);
-		case RIGHT_PLACE: return (int_size%2 == 1 ? true : false);
+		case LEFT_PLACE: return (int_size%2 == 1 ? TO_RIGHT : TO_LEFT);
+		case RIGHT_PLACE: return (int_size%2 == 1 ? TO_LEFT : TO_RIGHT);
 	}
-	return true;
+	return TO_LEFT;
 }
 
 /*
@@ -102,7 +106,7 @@ constexpr bool start_left_right(uint32_t int_size, place P) {
  * data: the interval of every vertex.
  * 		data[v][p] = u <-> vertex 'u' is at position 'p' of vertex 'v's interval
  *
- * Returns the sum of the length of the edges incident to vertex 'r' plus
+ * Returns the sum of the length of the outgoing edges from vertex 'r' plus
  * the length of the anchor of the edge from 'r' to its parent. Such length
  * is defined as the number of vertices to the left of 'r' if 'r_place'
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
@@ -133,14 +137,10 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		return D + 1;
 	}
 
-	// -----------------------------
-	// get the sizes of the subtrees
-
+	// sizes of the subtrees
 	const auto& children = M[r];
 
-	// ---------------------------
-	// first, choose 'r's position
-
+	// choose 'r's position
 	const size_t root_pos = pos_in_interval(r_int_size, r_place);
 
 	// and place the root
@@ -153,7 +153,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	size_t rightpos = root_pos + 1;
 
 	// left == "start placing children to the left of the root or not"
-	bool left = start_left_right(r_int_size, r_place);
+	direction dir = start_left_right(r_int_size, r_place);
 
 	// size of the intervals from the root to the left end
 	uint32_t acc_size_left = 0;
@@ -170,30 +170,33 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// length of the edge from 'r' to vertex 'vi'
 	for (const auto& p : children) {
 		const node vi = p.first;
-		const uint32_t svi = p.second;
-		const place vi_place = (left ? LEFT_PLACE : RIGHT_PLACE);
+		const uint32_t ni = p.second;
+		// the place of 'vi' with respect to 'r'
+		const place vi_place = (dir == TO_LEFT ? LEFT_PLACE : RIGHT_PLACE);
 
 		// recursive call: make the interval of 'vi'
-		D += Dmin_Pr__optimal_interval_of(t, M, vi, vi_place, data);
+		D += Dmin_Pr__optimal_interval_of(
+			t, M, vi, vi_place, data
+		);
 
 		// accumulate size of interval
-		d += (left ? acc_size_left : acc_size_right);
+		d += (dir == TO_LEFT ? acc_size_left : acc_size_right);
 		// add length of edge over root 'r'
 		d += 1;
 
 		// place vertex vi
-		interval[(left ? leftpos : rightpos)] = vi;
+		interval[(dir == TO_LEFT ? leftpos : rightpos)] = vi;
 
 		// 1. increase/decrease right/left position
 		// 2. accumulate size of subtree rooted at vi
-		leftpos -= (left ? 1 : 0);
-		acc_size_left += (left ? svi : 0);
+		leftpos -= (dir == TO_LEFT ? 1 : 0);
+		acc_size_left += (dir == TO_LEFT ? ni : 0);
 
-		rightpos += (left ? 0 : 1);
-		acc_size_right += (left ? 0 : svi);
+		rightpos += (dir == TO_LEFT ? 0 : 1);
+		acc_size_right += (dir == TO_LEFT ? 0 : ni);
 
-		// go to the other side
-		left = not left;
+		// change direction
+		dir = (dir == TO_LEFT ? TO_RIGHT : TO_LEFT);
 	}
 
 	// accumulate sum of lengths of edges of the subtrees
@@ -265,7 +268,9 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	vector<vector<node>> data(t.n_nodes());
 
 	// construct the optimal intervals
-	const uint32_t D = Dmin_Pr__optimal_interval_of(t, M, t.get_root(), ROOT_PLACE, data);
+	const uint32_t D = Dmin_Pr__optimal_interval_of(
+		t, M, t.get_root(), ROOT_PLACE, data
+	);
 
 	// construct the arrangement
 	const linear_arrangement arr = internal::put_in_arrangement(t, data);
