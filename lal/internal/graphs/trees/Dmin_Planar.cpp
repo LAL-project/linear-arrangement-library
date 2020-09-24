@@ -118,11 +118,9 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 
 	// construct the optimal intervals using Gildea and Temperley's
 	// algorithm to calculate an optimal projective arrangement.
+	linear_arrangement arr(t.n_nodes());
 	const uint32_t D =
-	Dmin_Pr__optimal_interval_of(rt, M, rt.get_root(), data);
-
-	// construct the arrangement
-	const linear_arrangement arr = internal::put_in_arrangement(rt, data);
+	Dmin_Pr__optimal_interval_of(rt, M, rt.get_root(), arr);
 
 	return make_pair(D, arr);
 }

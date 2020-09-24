@@ -68,7 +68,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	const graphs::rooted_tree& t,
 	const std::vector<std::vector<std::pair<lal::node,uint32_t>>>& M,
 	node r,
-	std::vector<std::vector<node>>& data
+	linear_arrangement& arr
 );
 
 /*

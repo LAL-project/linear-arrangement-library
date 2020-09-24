@@ -42,6 +42,7 @@
 #include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
+#include <iostream>
 #include <cassert>
 using namespace std;
 
@@ -59,52 +60,21 @@ using namespace iterators;
 
 namespace internal {
 
-typedef char place;
-#define LEFT_PLACE 0
-#define RIGHT_PLACE 1
-#define ROOT_PLACE 2
-
-typedef char direction;
-#define TO_LEFT 1
-#define TO_RIGHT 2
-
-#define right_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2 - 1)
-#define left_placed_pos(int_size) (int_size%2 == 1 ? int_size/2 : int_size/2)
-
-#define get_int_size(v) (t.out_degree(v) + 1)
-
-#define get_neighbours(t,u)														\
-	(t.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
-	t.get_out_neighbours(u) : t.get_in_neighbours(u))
-
-constexpr position pos_in_interval(uint32_t int_size, place P) {
-	if (int_size == 1) { return 0; }
-	switch (P) {
-		case LEFT_PLACE: return left_placed_pos(int_size);
-		case RIGHT_PLACE: return right_placed_pos(int_size);
-	}
-	return int_size/2;
-}
-
-constexpr direction start_left_right(uint32_t int_size, place P) {
-	switch (P) {
-		case LEFT_PLACE: return (int_size%2 == 1 ? TO_RIGHT : TO_LEFT);
-		case RIGHT_PLACE: return (int_size%2 == 1 ? TO_LEFT : TO_RIGHT);
-	}
-	return TO_LEFT;
-}
+enum class place : uint8_t {
+	LEFT_OF, RIGHT_OF, NONE_OF
+};
 
 /*
- * t: the rooted tree.
  * M: adjacency matrix of the tree with extra information: for each vertex,
  *		attach an integer that represents the size of the subtree rooted
  *		at that vertex. Each adjacency list is sorted INCREASINGLY by that size.
  * r: the vertex root of the subtree whose interval is to be made
- * place: where, respect to its parent, has 'r' been placed in the interval.
+ * r_place: where, respect to its parent, has 'r' been placed in the interval.
  *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
  *		The last value is only valid for the root of the whole tree.
- * data: the interval of every vertex.
- * 		data[v][p] = u <-> vertex 'u' is at position 'p' of vertex 'v's interval
+ * ini, fin: left and right limits of the positions of the arrangement in which
+ *		the tree has to be arranged. Note that the limits are included [ini,fin].
+ * arr: the arrangement of the tree
  *
  * Returns the sum of the length of the outgoing edges from vertex 'r' plus
  * the length of the anchor of the edge from 'r' to its parent. Such length
@@ -113,51 +83,31 @@ constexpr direction start_left_right(uint32_t int_size, place P) {
  * 'r_place' is LEFT_PLACE.
  */
 uint32_t Dmin_Pr__optimal_interval_of(
-	const rooted_tree& t, const vector<vector<node_size>>& M,
-	node r, place r_place,
-	vector<vector<node>>& data
+	const vector<vector<node_size>>& M, const node r,
+	const place r_place,
+	position ini, position fin,
+	linear_arrangement& arr
 )
 {
-	const uint32_t r_int_size = get_int_size(r);
-
-	vector<node>& interval = data[r];
-	interval = vector<node>(r_int_size);
-
-	if (r_int_size == 1) {
-		data[r][0] = r;
-		return 0;
-	}
-
-	if (r_int_size == 2) {
-		const node vi = get_neighbours(t,r)[0];
-		interval[0] = (r_place == LEFT_PLACE ? vi : r);
-		interval[1] = (r_place == LEFT_PLACE ? r : vi);
-		const place vi_place = (r_place == LEFT_PLACE ? LEFT_PLACE : RIGHT_PLACE);
-		const uint32_t D = Dmin_Pr__optimal_interval_of(t, M, vi, vi_place, data);
-		return D + 1;
-	}
+	assert(ini <= fin);
 
 	// sizes of the subtrees
 	const auto& children = M[r];
 
-	// choose 'r's position
-	const size_t root_pos = pos_in_interval(r_int_size, r_place);
-
-	// and place the root
-	interval[root_pos] = r;
-
 	// -- place the children --
 
-	size_t leftpos = root_pos - 1;
-	size_t rightpos = root_pos + 1;
-
-	// left == "start placing children to the left of the root or not"
-	direction dir = start_left_right(r_int_size, r_place);
+	// work out the starting side of the first-largest subtree
+	bool left_side = (r_place == place::RIGHT_OF ? false : true);
 
 	// size of the intervals from the root to the left end
 	uint32_t acc_size_left = 0;
 	// size of the intervals from the root to the right end
 	uint32_t acc_size_right = 0;
+
+	// number of intervals to the left of the root
+	uint32_t n_intervals_left = 0;
+	// number of intervals to the right of the root
+	uint32_t n_intervals_right = 0;
 
 	// total sum of length of edges + the length of the edge from 'r'
 	// to its parent (if any)
@@ -167,41 +117,44 @@ uint32_t Dmin_Pr__optimal_interval_of(
 
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
-	for (const auto& p : children) {
-		const node vi = p.first;
-		const uint32_t ni = p.second;
-		// the place of 'vi' with respect to 'r'
-		const place vi_place = (dir == TO_LEFT ? LEFT_PLACE : RIGHT_PLACE);
+	for (auto it = children.rbegin(); it != children.rend(); ++it) {
+		const node vi = it->first;
+		const uint32_t ni = it->second;
 
 		// recursive call: make the interval of 'vi'
 		D += Dmin_Pr__optimal_interval_of(
-			t, M, vi, vi_place, data
+			M, vi,
+			(left_side ? place::LEFT_OF : place::RIGHT_OF),
+			(left_side ? ini : fin - ni + 1), (left_side ? ini + ni - 1 : fin),
+			arr
 		);
 
 		// accumulate size of interval
-		d += (dir == TO_LEFT ? acc_size_left : acc_size_right);
+		d += ni*(left_side ? n_intervals_left : n_intervals_right);
 		// add length of edge over root 'r'
 		d += 1;
 
-		// place vertex vi
-		interval[(dir == TO_LEFT ? leftpos : rightpos)] = vi;
+		// number of intervals to the left and right of the root
+		n_intervals_left += (left_side ? 1 : 0);
+		n_intervals_right += (left_side ? 0 : 1);
 
-		// 1. increase/decrease right/left position
-		// 2. accumulate size of subtree rooted at vi
-		leftpos -= (dir == TO_LEFT ? 1 : 0);
-		rightpos += (dir == TO_LEFT ? 0 : 1);
+		// accumulate size of subtree rooted at vi
+		acc_size_left += (left_side ? ni : 0);
+		acc_size_right += (left_side ? 0 : ni);
 
-		acc_size_left += (dir == TO_LEFT ? ni : 0);
-		acc_size_right += (dir == TO_LEFT ? 0 : ni);
+		// update limits of embedding
+		ini += (left_side ? ni : 0);
+		fin -= (left_side ? 0 : ni);
 
-		// change direction
-		dir = (dir == TO_LEFT ? TO_RIGHT : TO_LEFT);
+		// change side
+		left_side = not left_side;
 	}
+	arr[r] = ini;
 
-	// accumulate sum of lengths of edges of the subtrees
+	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
-	(r_place == ROOT_PLACE ? 0 :
-	 r_place == LEFT_PLACE ? acc_size_right : acc_size_left);
+	(r_place == place::NONE_OF ? 0 :
+	 r_place == place::LEFT_OF ? acc_size_right : acc_size_left);
 
 	return D + d;
 }
@@ -209,10 +162,13 @@ uint32_t Dmin_Pr__optimal_interval_of(
 uint32_t Dmin_Pr__optimal_interval_of(
 	const rooted_tree& t,
 	const vector<vector<pair<node,uint32_t>>>& M,
-	node r, vector<vector<node>>& data
+	node r, linear_arrangement& arr
 )
 {
-	return Dmin_Pr__optimal_interval_of(t, M, r, ROOT_PLACE, data);
+	const uint32_t n = t.n_nodes();
+	return Dmin_Pr__optimal_interval_of(
+		M, r, place::NONE_OF, 0,n-1, arr
+	);
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
@@ -263,16 +219,11 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	}
 #endif
 
-	// the optimal intervals
-	vector<vector<node>> data(t.n_nodes());
-
 	// construct the optimal intervals
+	linear_arrangement arr(n);
 	const uint32_t D = Dmin_Pr__optimal_interval_of(
-		t, M, t.get_root(), ROOT_PLACE, data
+		M, t.get_root(), place::NONE_OF, 0,n-1, arr
 	);
-
-	// construct the arrangement
-	const linear_arrangement arr = internal::put_in_arrangement(t, data);
 
 	return make_pair(D, arr);
 }
