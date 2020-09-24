@@ -146,8 +146,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// and place the root
 	interval[root_pos] = r;
 
-	// ------------------------
-	// then, place the children
+	// -- place the children --
 
 	size_t leftpos = root_pos - 1;
 	size_t rightpos = root_pos + 1;
@@ -190,9 +189,9 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		// 1. increase/decrease right/left position
 		// 2. accumulate size of subtree rooted at vi
 		leftpos -= (dir == TO_LEFT ? 1 : 0);
-		acc_size_left += (dir == TO_LEFT ? ni : 0);
-
 		rightpos += (dir == TO_LEFT ? 0 : 1);
+
+		acc_size_left += (dir == TO_LEFT ? ni : 0);
 		acc_size_right += (dir == TO_LEFT ? 0 : ni);
 
 		// change direction
