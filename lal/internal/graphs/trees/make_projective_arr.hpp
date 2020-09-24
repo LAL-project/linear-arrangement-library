@@ -62,16 +62,14 @@ inline void __put_in_arrangement(
 
 	// vertex 'r' is a leaf
 	if (d_out == 0) {
-		arr[r] = pos;
-		pos += 1;
+		arr[r] = pos++;
 		return;
 	}
 	const std::vector<lal::node>& interval = data[r];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
-			arr[vi] = pos;
-			pos += 1;
+			arr[vi] = pos++;
 		}
 		else {
 			__put_in_arrangement(T, vi, data, pos, arr);
