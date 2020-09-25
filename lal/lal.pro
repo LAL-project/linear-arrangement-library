@@ -15,10 +15,17 @@ QMAKE_CXXFLAGS_DEBUG += -O3 -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 
-QMAKE_CXXFLAGS +=										\
-    -Wpedantic -Wshadow -Wall -Wextra -Wconversion		\
-    -Wold-style-cast -Wrestrict -Wduplicated-cond		\
-    -Wnon-virtual-dtor -Woverloaded-virtual
+QMAKE_CXXFLAGS +=			\
+    -Wall					\   # contains -Wpessimizing-move
+	-Wpedantic				\
+	-Wshadow				\
+	-Wextra					\   # contains -Wredundant-move
+	-Wconversion			\
+	-Wold-style-cast		\
+	-Wrestrict				\
+	-Wduplicated-cond		\
+	-Wnon-virtual-dtor		\
+	-Woverloaded-virtual
 
 QMAKE_CXXFLAGS += -fopenmp
 
