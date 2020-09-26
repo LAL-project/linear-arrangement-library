@@ -29,4 +29,6 @@ namespace std {
 	%template(edge_pair_list) vector<lal::edge_pair>;
 	
 	%template(list_node_list) vector<vector<lal::node> >;
+	
+	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
 }

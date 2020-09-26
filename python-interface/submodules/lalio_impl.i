@@ -7,7 +7,13 @@
 
 %}
 
+// --------------
+// C++ interfaces
+
 %include std_string.i
+
+// --------------
+// lal interfaces
 
 %include "../lal/io/edge_list.hpp"
 

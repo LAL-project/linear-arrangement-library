@@ -7,12 +7,10 @@
 %include lalproperties_impl.i
 
 %pythoncode %{
-graphs = lalgraphsdebug
-del lalgraphsdebug
-
-numeric = lalnumericdebug
-del lalnumericdebug
-
 __definitions = laldefinitionsdebug
 del laldefinitionsdebug
+
+# remove unnecessary modules
+del lalgraphsdebug
+del lalnumericdebug
 %}

@@ -6,9 +6,9 @@
 %include lalutilities_impl.i
 
 %pythoncode %{
-graphs = lalgraphsdebug
-del lalgraphsdebug
-
 __definitions = laldefinitionsdebug
 del laldefinitionsdebug
+
+# remove unnecessary modules
+del lalgraphsdebug
 %}

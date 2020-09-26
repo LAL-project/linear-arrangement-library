@@ -19,12 +19,10 @@ del lalalgorithms_Cdebug
 algorithms_Dmin = lalalgorithms_Dmindebug
 del lalalgorithms_Dmindebug
 
-graphs = lalgraphsdebug
-del lalgraphsdebug
-
-numeric = lalnumericdebug
-del lalnumericdebug
-
 __definitions = laldefinitionsdebug
 del laldefinitionsdebug
+
+# remove unnecessary modules
+del lalgraphs
+del lalnumeric
 %}

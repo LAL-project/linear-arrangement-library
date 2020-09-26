@@ -19,12 +19,10 @@ del lalalgorithms_C
 algorithms_Dmin = lalalgorithms_Dmin
 del lalalgorithms_Dmin
 
-graphs = lalgraphs
-del lalgraphs
-
-numeric = lalnumeric
-del lalnumeric
-
 __definitions = laldefinitions
 del laldefinitions
+
+# remove unnecessary modules
+del lalgraphs
+del lalnumeric
 %}

@@ -30,7 +30,8 @@ DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
 # -- tree_structure_type module
 TREE_STR_MAIN_INT	= submodules/enums/$(TREE_STR_INAME).i
 TREE_STR_SUB_INT	= submodules/enums/$(TREE_STR_BNAME)_impl.i
-TREE_STR_MOD_DEPS	= $(TREE_STR_MAIN_INT) $(TREE_STR_SUB_INT) $(TREE_STR_DPHDRS)
+TREE_STR_MOD_DEPS	= $(TREE_STR_MAIN_INT) $(TREE_STR_SUB_INT) $(TREE_STR_DPHDRS) 	\
+					  submodules/enums/rename_enum_contents.i
 _TREE_STR_PF		= $(TREE_STR_INAME).py
 TREE_STR_PY_FILE	= $(ARCH_DIR)/$(_TREE_STR_PF)
 TREE_STR_WRAP		= $(ARCH_DIR)/$(TREE_STR_INAME)_wrap
@@ -40,7 +41,8 @@ TREE_STR_SO			= $(ARCH_DIR)/$(_TREE_STR_SO)
 # -- algorithm_crossings module
 ALG_C_MAIN_INT	= submodules/enums/$(ALG_C_INAME).i
 ALG_C_SUB_INT	= submodules/enums/$(ALG_C_BNAME)_impl.i
-ALG_C_MOD_DEPS	= $(ALG_C_MAIN_INT) $(ALG_C_SUB_INT) $(ALG_C_DPHDRS)
+ALG_C_MOD_DEPS	= $(ALG_C_MAIN_INT) $(ALG_C_SUB_INT) $(ALG_C_DPHDRS) 	\
+				  submodules/enums/rename_enum_contents.i
 _ALG_C_PF		= $(ALG_C_INAME).py
 ALG_C_PY_FILE	= $(ARCH_DIR)/$(_ALG_C_PF)
 ALG_C_WRAP		= $(ARCH_DIR)/$(ALG_C_INAME)_wrap
@@ -50,7 +52,8 @@ ALG_C_SO		= $(ARCH_DIR)/$(_ALG_C_SO)
 # -- algorithm_Dmin module
 ALG_DMIN_MAIN_INT	= submodules/enums/$(ALG_DMIN_INAME).i
 ALG_DMIN_SUB_INT	= submodules/enums/$(ALG_DMIN_BNAME)_impl.i
-ALG_DMIN_MOD_DEPS	= $(ALG_DMIN_MAIN_INT) $(ALG_DMIN_SUB_INT) $(ALG_DMIN_DPHDRS)
+ALG_DMIN_MOD_DEPS	= $(ALG_DMIN_MAIN_INT) $(ALG_DMIN_SUB_INT) $(ALG_DMIN_DPHDRS) 	\
+					  submodules/enums/rename_enum_contents.i
 _ALG_DMIN_PF		= $(ALG_DMIN_INAME).py
 ALG_DMIN_PY_FILE	= $(ARCH_DIR)/$(_ALG_DMIN_PF)
 ALG_DMIN_WRAP		= $(ARCH_DIR)/$(ALG_DMIN_INAME)_wrap

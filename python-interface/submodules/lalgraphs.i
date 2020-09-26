@@ -1,7 +1,6 @@
 %module lalgraphs
 
 %import laldefinitions.i
-
 %include lalgraphs_impl.i
 
 %pythoncode %{

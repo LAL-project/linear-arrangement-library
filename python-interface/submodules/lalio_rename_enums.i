@@ -81,13 +81,16 @@ setattr(tbpr, "tree_feature", tree_feature)
 
 # ------------------------
 # clean up local variables
+
 del tbpr
 del prerr_enum_vals, tf_enum_vals
 del enval_name
 del new_enval_name
+
 # even the classes!
 del processor_error
 del tree_feature
+
 # and the 'io' module
 del io
 %}

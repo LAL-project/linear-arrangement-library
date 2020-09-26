@@ -35,7 +35,12 @@ for name in dir(__mod):
 		new_name = name[(start_lal + 3):]
 		setattr(__mod, new_name, getattr(__mod, name))
 		delattr(__mod, name)
-	
+
+delattr(__mod, "algorithms_C")
+delattr(__mod, "algorithms_Dmin")
+delattr(__mod, "dataset_error")
+delattr(__mod, "tree_structure")
+
 del start_lal, new_name, name
 del __mod_name, __mod
 

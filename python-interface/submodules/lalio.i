@@ -7,14 +7,14 @@
 %include lalio_impl.i
 
 %pythoncode %{
-graphs = lalgraphs
-del lalgraphs
-
 dataset_error = laldataset_error
 del laldataset_error
 
 __definitions = laldefinitions
 del laldefinitions
+
+# remove unnecessary modules
+del lalgraphs
 
 # import oneself as io for later renaming
 # of functions in "lalio_rename_enums.i"
