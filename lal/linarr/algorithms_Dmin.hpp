@@ -67,8 +67,7 @@ enum class algorithms_Dmin {
      *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts rooted trees. Alternatively, one can
-	 * call directly function @ref Dmin_Projective.
+	 * i.e., in the function that accepts rooted trees.
      */
     Projective,
 
@@ -87,8 +86,7 @@ enum class algorithms_Dmin {
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts free trees. Alternatively, one can
-	 * call directly function @ref Dmin_Planar.
+	 * i.e., in the function that accepts free trees.
 	 */
 	Planar,
 
@@ -104,8 +102,7 @@ enum class algorithms_Dmin {
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees. Alternatively, one can
-	 * call directly function @ref Dmin_Unconstrained_YS.
+	 * i.e., in the function that accepts free trees.
      */
     Unconstrained_YS,
     /**
@@ -118,8 +115,7 @@ enum class algorithms_Dmin {
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees. Alternatively, one can
-	 * call directly function @ref Dmin_Unconstrained_FC.
+	 * i.e., in the function that accepts free trees.
      */
     Unconstrained_FC
 };
