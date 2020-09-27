@@ -52,7 +52,6 @@ using namespace std;
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
-#include <lal/graphs/output.hpp>
 
 namespace lal {
 namespace graphs {
