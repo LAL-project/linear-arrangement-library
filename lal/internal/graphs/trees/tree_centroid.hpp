@@ -57,6 +57,91 @@
 namespace lal {
 namespace internal {
 
+namespace __lal {
+
+// N: actual number of vertices of the tree
+// n: size of the connected component of x
+// x: start at node x
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+std::pair<node, node> retrieve_centroid(
+	const T& t,
+	const uint32_t N, const uint32_t n, const node x,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+)
+{
+#if defined DEBUG
+	assert(n > 0);
+#endif
+
+	// empty the vector
+	{
+	std::vector<std::pair<edge, uint32_t>> empty;
+	sizes_edge.swap(empty);
+	}
+
+	// calculate s(u,v) with H&S algorithm (lemma 8)
+	internal::calculate_suvs(t,n, x, sizes_edge);
+
+	{
+	// sort all tuples in sizes_edge using the sizes
+	typedef std::pair<edge,uint32_t> t2;
+	typedef std::vector<t2>::iterator t2_vec_it;
+	internal::counting_sort<t2_vec_it, t2, false>(
+		sizes_edge.begin(), sizes_edge.end(), n,
+		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
+	);
+	}
+
+	// put the s(u,v) into an adjacency list
+	// M[u] : adjacency list of vertex u sorted decreasingly according
+	// to the sizes of the subtrees.
+	M.resize(N);
+	for (const auto& edge_value : sizes_edge) {
+		const edge& e = edge_value.first;
+		const node u = e.first;
+		const node v = e.second;
+		const uint32_t suv = edge_value.second;
+		M[u].push_back(std::make_pair(v,suv));
+	}
+
+	// find the first centroidal vertex
+	node c1 = N + 1;
+	bool found = false;
+	node u = x;
+	while (not found) {
+		const auto& p = M[u][0];
+		const node v = p.first;
+		const uint32_t suv = p.second;
+		u = (suv > n/2 ? v : u);
+		found = suv <= n/2;
+	}
+	c1 = u;
+
+#if defined DEBUG
+	assert(c1 < N);
+#endif
+
+	// find the second centroidal vertex
+	node c2 = N + 1;
+	for (const auto& p : M[c1]) {
+		const node v = p.first;
+		if (M[v][0].second <= n/2) {
+			c2 = v;
+			break;
+		}
+	}
+
+	return (c1 < c2 ? std::make_pair(c1, c2) : std::make_pair(c2, c1));
+}
+
+} // -- namespace __lal
+
+// -----------------------------------------------------------------------------
+
 /*
  * @brief Calculate the centroid of the connected component that has node @e x.
  *
@@ -77,8 +162,8 @@ namespace internal {
  * @param t Input tree.
  * @param x Input node.
  * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of
- * pairs (v,sv) where @e v is a neighbour of @e u and @e sv is the size of the
- * subtree rooted at @e v with parent @e u. The list is sorted increasingly.
+ * pairs \f$(v,sv)\f$ where @e v is a neighbour of @e u and @e sv is the size of
+ * the subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
  * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
  * @returns Returns a tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
@@ -95,9 +180,6 @@ std::pair<node, node> retrieve_centroid(
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
-	// actual number of vertices of the tree
-	const uint32_t N = t.n_nodes();
-
 	// calculate the size of the connected component
 	uint32_t n = 0;
 	{
@@ -110,71 +192,12 @@ std::pair<node, node> retrieve_centroid(
 		return std::make_pair(x, t.n_nodes());
 	}
 
-	// empty the vector
-	{
-	std::vector<std::pair<edge, uint32_t>> empty;
-	sizes_edge.swap(empty);
-	}
-
-	// calculate s(u,v) with H&S algorithm (lemma 8)
-	calculate_suvs(t,n, x, sizes_edge);
-
-	{
-	// sort all tuples in sizes_edge using the sizes
-	typedef std::pair<edge,uint32_t> t2;
-	typedef std::vector<t2>::iterator t2_vec_it;
-	internal::counting_sort<t2_vec_it, t2, true>(
-		sizes_edge.begin(), sizes_edge.end(), n,
-		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
+	return
+	__lal::retrieve_centroid(
+		t,
+		t.n_nodes(), n, x,
+		M, sizes_edge
 	);
-	}
-
-	// put the s(u,v) into an adjacency list
-	// M[u] : adjacency list of vertex u sorted increasingly according
-	// to the sizes of the subtrees.
-	M.resize(N);
-	for (const auto& edge_value : sizes_edge) {
-		const edge& e = edge_value.first;
-		const node u = e.first;
-		const node v = e.second;
-		const uint32_t suv = edge_value.second;
-		M[u].push_back(std::make_pair(v,suv));
-	}
-
-	// find the first centroidal vertex
-	node c1 = N + 1;
-	bool some_greater = true;
-	node u = x;
-	do {
-		some_greater = false;
-		for (const auto& p : M[u]) {
-			const node v = p.first;
-			const uint32_t suv = p.second;
-			if (suv > n/2) {
-				some_greater = true;
-				u = v;
-				break;
-			}
-		}
-	}
-	while (some_greater);
-	c1 = u;
-
-#if defined DEBUG
-	assert(c1 < N);
-#endif
-
-	// find the second centroidal vertex
-	node c2 = N + 1;
-	for (const auto& p : M[c1]) {
-		const node v = p.first;
-		if (M[v].back().second <= n/2) {
-			c2 = v;
-			break;
-		}
-	}
-
-	return (c1 < c2 ? std::make_pair(c1, c2) : std::make_pair(c2, c1));
 }
 
 /*
@@ -191,6 +214,73 @@ std::pair<node, node> retrieve_centroid(const T& t, node x) {
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;
 	std::vector<std::pair<edge, uint32_t>> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
+}
+
+// -----------------------------------------------------------------------------
+
+/*
+ * @brief Calculate the centroid of the tree @e t.
+ *
+ * Here, "centroid" should NOT be confused with "centre". The centre is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex. In both case, if
+ * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
+ * for further details.
+ *
+ * This function uses @ref internal::calculate_suvs, an algorithm described
+ * in \cite Hochberg2003a (see function's documentation for details).
+ * @param t Input tree.
+ * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of
+ * pairs (v,sv) where @e v is a neighbour of @e u and @e sv is the size of the
+ * subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
+ * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
+ * @returns Returns a tuple of two values: the nodes in the centroid. If the
+ * tree has a single centroidal node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
+ * @pre The tree @e t is a full tree.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+std::pair<node, node> retrieve_centroid(
+	const T& t,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+)
+{
+	if (t.n_nodes() == 1) {
+		return std::make_pair(0, 1);
+	}
+
+	return
+	__lal::retrieve_centroid(
+		t,
+		t.n_nodes(), t.n_nodes(), 0,
+		M, sizes_edge
+	);
+}
+
+/*
+ * @brief Calculate the centroid of the free tree @e t.
+ *
+ * For details on the parameters and return value see documentation of the
+ * function above.
+ */
+template<
+	class T,
+	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+>
+std::pair<node, node> retrieve_centroid(const T& t) {
+	if (t.n_nodes() == 1) {
+		return std::make_pair(0, 1);
+	}
+
+	std::vector<std::vector<std::pair<node,uint32_t>>> M;
+	std::vector<std::pair<edge, uint32_t>> sizes_edge;
+	return retrieve_centroid(t, M, sizes_edge);
 }
 
 } // -- namespace internal
