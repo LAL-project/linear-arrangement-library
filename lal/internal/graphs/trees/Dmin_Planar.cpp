@@ -105,7 +105,7 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	vector<pair<edge, uint32_t>> sizes_edge;
 
 	// find the centroid of the tree
-	const node c = internal::retrieve_centroid(t,0, M,sizes_edge).first;
+	const node c = internal::retrieve_centroid(t, M,sizes_edge).first;
 
 	// root the free tree
 	const rooted_tree rt(t, c);
