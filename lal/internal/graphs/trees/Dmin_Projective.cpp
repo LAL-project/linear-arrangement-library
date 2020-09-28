@@ -58,6 +58,8 @@ using namespace std;
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
+typedef std::pair<lal::edge,uint32_t> edge_size;
+typedef std::vector<edge_size>::iterator edge_size_t;
 typedef std::pair<lal::node,uint32_t> node_size;
 
 namespace lal {
@@ -73,7 +75,7 @@ enum class place : uint8_t {
 /*
  * M: adjacency matrix of the tree with extra information: for each vertex,
  *		attach an integer that represents the size of the subtree rooted
- *		at that vertex. Each adjacency list is sorted INCREASINGLY by that size.
+ *		at that vertex. Each adjacency list is sorted DECREASINGLY by that size.
  * r: the vertex root of the subtree whose interval is to be made
  * r_place: where, respect to its parent, has 'r' been placed in the interval.
  *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
@@ -123,7 +125,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
-	for (auto it = children.rbegin(); it != children.rend(); ++it) {
+	for (auto it = children.begin(); it != children.end(); ++it) {
 		const node vi = it->first;
 		const uint32_t ni = it->second;
 
@@ -141,16 +143,16 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		d += 1;
 
 		// number of intervals to the left and right of the root
-		n_intervals_left += (left_side ? 1 : 0);
-		n_intervals_right += (left_side ? 0 : 1);
+		n_intervals_left += left_side;
+		n_intervals_right += not left_side;
 
 		// accumulate size of subtree rooted at vi
-		acc_size_left += (left_side ? ni : 0);
-		acc_size_right += (left_side ? 0 : ni);
+		acc_size_left += left_side*ni;
+		acc_size_right += (not left_side)*ni;
 
 		// update limits of embedding
-		ini += (left_side ? ni : 0);
-		fin -= (left_side ? 0 : ni);
+		ini += left_side*ni;
+		fin -= (not left_side)*ni;
 
 		// change side
 		left_side = not left_side;
@@ -185,9 +187,6 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
 
-	typedef pair<edge,uint32_t> edge_size;
-	typedef vector<edge_size>::iterator edge_size_t;
-
 	// for every edge (u,v), store the tuple
 	//    (n_v, (u,v))
 	// at L[u]
@@ -203,12 +202,12 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	}
 
 	// sort all tuples in L using the size of the subtree
-	internal::counting_sort<edge_size_t, edge_size, true>(
+	internal::counting_sort<edge_size_t, edge_size, false>(
 		L.begin(), L.end(), n,
 		[](const edge_size& T) -> size_t { return std::get<1>(T); }
 	);
 
-	// M[u] : adjacency list of vertex u sorted increasingly according
+	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	vector<vector<node_size>> M(n);
 	for (const auto& T : L) {
