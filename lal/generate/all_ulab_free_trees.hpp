@@ -135,9 +135,9 @@ class all_ulab_free_trees {
 
 		/**
 		 * @brief Constructs the current tree.
+		 * @return Returns the tree generated with method @ref next().
 		 * @pre The generator must have been initialised, and method
 		 * @ref next must have been called at least once.
-		 * @return Returns the tree generated with method @ref next().
 		 */
 		graphs::free_tree get_tree() const;
 

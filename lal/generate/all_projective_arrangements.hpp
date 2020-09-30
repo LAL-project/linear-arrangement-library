@@ -102,8 +102,8 @@ class all_proj_arr {
 
 		/**
 		 * @brief Constructs the current arrangement.
-		 * @pre Method @ref next must have been called at least once.
 		 * @return Returns the arrangement generated with method @ref next().
+		 * @pre Method @ref next must have been called at least once.
 		 */
 		linear_arrangement get_arrangement() const;
 

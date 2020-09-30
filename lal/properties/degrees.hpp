@@ -173,8 +173,8 @@ double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
  *
  * See \cite Ferrer2018a for details.
  * @param g Input graph.
- * @pre \f$n > 3\f$.
  * @return Returns the hubiness coefficient.
+ * @pre \f$n > 3\f$.
  */
 numeric::rational hubiness_rational(const graphs::free_tree& g);
 

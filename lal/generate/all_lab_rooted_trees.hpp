@@ -115,9 +115,9 @@ class all_lab_rooted_trees {
 
 		/**
 		 * @brief Constructs the current tree.
+		 * @return Returns the tree generated with method @ref next().
 		 * @pre The generator must have been initialised, and method
 		 * @ref next must have been called at least once.
-		 * @return Returns the tree generated with method @ref next().
 		 */
 		graphs::rooted_tree get_tree() const;
 

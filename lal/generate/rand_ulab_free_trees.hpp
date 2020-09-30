@@ -112,8 +112,8 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 *
 		 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
 		 * pointed out in \cite GiacXcas_Manual.
-		 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
 		 * @return Returns an unlabelled free tree.
+		 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
 		 */
 		graphs::free_tree make_rand_tree();
 
