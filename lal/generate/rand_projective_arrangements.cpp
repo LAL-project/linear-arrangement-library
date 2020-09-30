@@ -51,14 +51,6 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
 
-#define degree_vertex(T, u)														\
-	(T.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
-		T.out_degree(u) : T.in_degree(u) )
-
-#define neighbours_vertex(T, u)													\
-	(T.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
-		T.get_out_neighbours(u) : T.get_in_neighbours(u) )
-
 namespace lal {
 using namespace graphs;
 using namespace internal;
@@ -80,7 +72,7 @@ rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t
 	// initialise the random data of all vertices
 	rdata = vector<vector<node>>(m_rT.n_nodes());
 	for (node u = 0; u < m_rT.n_nodes(); ++u) {
-		const uint32_t deg = degree_vertex(m_rT, u);
+		const uint32_t deg = m_rT.out_degree(u);
 		rdata[u] = vector<node>(deg + 1);
 	}
 }
@@ -95,7 +87,7 @@ linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
 		// -- generate random data for a single vertex
 
 		// number of children of 'r' with respect to the tree's root
-		const neighbourhood& neighs = neighbours_vertex(m_rT, u);
+		const neighbourhood& neighs = m_rT.get_out_neighbours(u);
 
 		// Choose random positions for the intervals corresponding to the
 		// vertex 'r' and to the trees rooted at 'r's children. These choices

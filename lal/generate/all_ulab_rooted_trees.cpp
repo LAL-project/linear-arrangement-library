@@ -127,21 +127,21 @@ void all_ulab_rooted_trees::next() {
 
 rooted_tree all_ulab_rooted_trees::get_tree() const {
 	if (m_n == 0) {
-		return rooted_tree(free_tree(0), 0, rooted_tree::rooted_tree_type::arborescence);
+		return rooted_tree(free_tree(0), 0);
 	}
 	if (m_n == 1) {
-		return rooted_tree(free_tree(1), 0, rooted_tree::rooted_tree_type::arborescence);
+		return rooted_tree(free_tree(1), 0);
 	}
 	if (m_n == 2) {
 		rooted_tree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
-		rT.set_rooted_tree_type(rooted_tree::rooted_tree_type::arborescence);
+		rT.set_valid_orientation(true);
 		return rT;
 	}
 
-	free_tree t = internal::level_sequence_to_ftree(m_L, m_n);
-	return rooted_tree(t, 0, rooted_tree::rooted_tree_type::arborescence);
+	const free_tree t = internal::level_sequence_to_ftree(m_L, m_n);
+	return rooted_tree(t, 0);
 }
 
 } // -- namespace generate

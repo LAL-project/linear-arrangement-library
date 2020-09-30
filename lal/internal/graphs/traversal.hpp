@@ -186,7 +186,7 @@ class BFS {
 
 	protected:
 		// ltr: is the 'natural' orientation of the vertices "s -> t"?
-		//      If true, then there is an edge in the graph (s,t)
+		//      If true, then the edge in the graph is (s,t)
 		//      If false, the edge in the graph is (t,s)
 		void deal_with_neighbour(node s, node t, bool ltr) {
 			// Process the neighbour 't' of 's'.

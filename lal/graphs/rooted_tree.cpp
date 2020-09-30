@@ -60,8 +60,8 @@ namespace graphs {
 rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
 	rooted_tree::_init(n);
 }
-rooted_tree::rooted_tree(const free_tree& t, node r, rooted_tree_type type) {
-	init_rooted(t, r, type);
+rooted_tree::rooted_tree(const free_tree& t, node r) {
+	init_rooted(t, r);
 }
 //rtree::~rtree() { }
 
@@ -87,14 +87,14 @@ rooted_tree& rooted_tree::add_edges(const vector<edge>& edges, bool norm, bool c
 
 rooted_tree& rooted_tree::remove_edge(node s, node t, bool norm, bool check_norm) {
 	directed_graph::remove_edge(s,t, norm, check_norm);
-	m_rtree_type_valid = false;
+	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
 rooted_tree& rooted_tree::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
 	directed_graph::remove_edges(edges, norm, check_norm);
-	m_rtree_type_valid = false;
+	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
@@ -119,12 +119,11 @@ void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
 	// lack an edge (until inserted by someone). Nothing to do.
 
 	// - keep the tree's root (if any)
-	// - size of subtrees need recalculating
+	// - size of subtrees needs recalculating
 	m_need_recalc_size_subtrees = true;
-	// - do not change the type of rooted tree
 }
 
-bool rooted_tree::find_rooted_tree_type() {
+bool rooted_tree::find_edge_orientation() {
 	assert(is_tree());
 	assert(has_root());
 
@@ -132,8 +131,8 @@ bool rooted_tree::find_rooted_tree_type() {
 	if (n_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
-		set_rooted_tree_type(rooted_tree_type::arborescence);
-		return true;
+		set_valid_orientation(true);
+		return m_valid_orientation;
 	}
 
 	// First case: the tree is NOT an anti-arborescence.
@@ -145,38 +144,29 @@ bool rooted_tree::find_rooted_tree_type() {
 
 		// if some node was not visited then the tree
 		// will remain unclassified
-		set_rooted_tree_type(
-			bfs.all_visited() ?
-			rooted_tree_type::arborescence : rooted_tree_type::none);
+		set_valid_orientation(bfs.all_visited());
 	}
 	else {
 		// Second case: the tree is NOT an arborescence.
-		// It might be an anti-arborescence. All nodes'
-		// out-degree, excepting the root's, must be exactly 1
-		bool all_one = true;
-		for (node u = 0; u < n_nodes(); ++u) {
-			if (u != get_root() and out_degree(u) != 1) {
-				all_one = false;
-			}
-		}
-		set_rooted_tree_type(
-			all_one ?
-			rooted_tree_type::anti_arborescence : rooted_tree_type::none);
+		// In this case we do not consider the tree to be (validly) rooted
+		set_valid_orientation(false);
 	}
 
-	return m_rtree_type != rooted_tree_type::none;
+	return m_valid_orientation;
 }
 
-void rooted_tree::init_rooted(const free_tree& _t, node r, rooted_tree_type arb) {
-	const uint32_t n = _t.n_nodes();
+void rooted_tree::set_valid_orientation(bool v) {
+	m_valid_orientation = v;
+}
 
+void rooted_tree::init_rooted(const free_tree& _t, node r) {
+	const uint32_t n = _t.n_nodes();
 	assert(_t.is_tree());
-	assert(arb == rooted_tree_type::arborescence or arb == rooted_tree_type::anti_arborescence);
+	set_valid_orientation(true);
 
 	if (n == 0) {
 		rooted_tree::_init(0);
 		set_root(0);
-		set_rooted_tree_type(arb);
 		return;
 	}
 
@@ -190,37 +180,22 @@ void rooted_tree::init_rooted(const free_tree& _t, node r, rooted_tree_type arb)
 	// This is needed to make the edges point in the direction
 	// indicated by the rooted tree type.
 	BFS<free_tree> bfs(_t);
-	if (arb == rooted_tree_type::arborescence) {
-		bfs.set_process_neighbour(
-		[&](const auto&, const node s, const node t, bool) -> void {
-			// the tree is an arborescence, i.e., the
-			// edges point away from the root
-			*it_dir_edges = edge(s,t);
-			++it_dir_edges;
-		}
-		);
+	bfs.set_process_neighbour(
+	[&](const auto&, const node s, const node t, bool) -> void {
+		// the tree is an arborescence, i.e., the
+		// edges point away from the root
+		*it_dir_edges = edge(s,t);
+		++it_dir_edges;
 	}
-	else {
-		bfs.set_process_neighbour(
-		[&](const auto&, const node s, const node t, bool) -> void {
-			// the tree is an anti-arborescence, i.e., the
-			// edges point towards the root
-			*it_dir_edges = edge(t,s);
-			++it_dir_edges;
-		}
-		);
-	}
+	);
 	bfs.start_at(r);
 
-	// construct rooted tree
+	// allocate rooted tree
 	rooted_tree::_init(n);
 
 	// set root and add edges
 	set_root(r);
 	add_edges(dir_edges);
-
-	// set directed tree type
-	set_rooted_tree_type(arb);
 }
 
 void rooted_tree::calculate_size_subtrees() {
@@ -244,12 +219,7 @@ void rooted_tree::set_root(node r) {
 	}
 	m_has_root = true;
 	m_need_recalc_size_subtrees = true;
-	m_rtree_type_valid = false;
-}
-
-void rooted_tree::set_rooted_tree_type(const rooted_tree_type& type) {
-	m_rtree_type = type;
-	m_rtree_type_valid = true;
+	set_valid_orientation(false);
 }
 
 /* GETTERS */
@@ -302,17 +272,11 @@ bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
 bool rooted_tree::is_rooted() const { return true; }
 
 bool rooted_tree::is_rooted_tree() const {
-	return is_tree() and has_root() and rooted_tree_type_valid() and
-	(get_rooted_tree_type() == rooted_tree_type::arborescence or
-	 get_rooted_tree_type() == rooted_tree_type::anti_arborescence);
+	return is_tree() and has_root() and is_orientation_valid();
 }
 
-rooted_tree::rooted_tree_type rooted_tree::get_rooted_tree_type() const {
-	assert(rooted_tree_type_valid());
-	return m_rtree_type;
-}
-bool rooted_tree::rooted_tree_type_valid() const {
-	return m_rtree_type_valid;
+bool rooted_tree::is_orientation_valid() const {
+	return m_valid_orientation;
 }
 
 node rooted_tree::get_root() const {
@@ -341,7 +305,6 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	assert(has_node(u));
 
 	const uint32_t n = n_nodes();
-	const bool is_anti = get_rooted_tree_type() == rooted_tree_type::anti_arborescence;
 
 	// parent of node 'u'
 	bool u_parent_set = false;
@@ -353,7 +316,7 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// find parent of node u
 
 	if (u != get_root()) {
-		bfs.set_use_rev_edges(is_anti);
+		bfs.set_use_rev_edges(false);
 		bfs.set_terminate( [&](const auto&, node) { return u_parent_set; } );
 		bfs.set_process_neighbour(
 		[&](const auto&, node s, node t, bool) -> void {
@@ -371,7 +334,7 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 
 	// reset the bfs
 	bfs.reset();
-	bfs.set_use_rev_edges(is_anti);
+	bfs.set_use_rev_edges(false);
 
 	// stop the bfs from going further than 'r''s parent
 	// in case such parent exists
@@ -390,11 +353,11 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// relabel nodes
 	if (relab) {
 		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool dir) -> void {
+		[&](const auto&, node s, node t, bool left_to_right) -> void {
 			// change the orientation of the edge whenever appropriate
-			// dir: true  ---> "s->t"
-			// dir: false ---> "t->s"
-			if (not dir) { std::swap(s,t); }
+			// left_to_right: true  ---> "s->t"
+			// left_to_right: false ---> "t->s"
+			if (not left_to_right) { std::swap(s,t); }
 
 			edge e;
 			// relabel first node
@@ -444,7 +407,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	// make subtree
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
-	sub.set_rooted_tree_type(rooted_tree_type::arborescence);
+	sub.set_valid_orientation(true);
 	sub.add_edges(es);
 	return sub;
 }
@@ -458,7 +421,7 @@ free_tree rooted_tree::to_undirected() const {
 void rooted_tree::_init(uint32_t n) {
 	tree::tree_init(n);
 	directed_graph::_init(n);
-	m_rtree_type_valid = false;
+	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
 }
 
@@ -466,7 +429,7 @@ void rooted_tree::_clear() {
 	tree::tree_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
-	m_rtree_type_valid = false;
+	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
 }
 

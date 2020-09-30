@@ -67,8 +67,9 @@ namespace utilities {
  * @param t1 Input rooted tree.
  * @param t2 Input rooted tree.
  * @return Returns whether the input trees are isomorphic or not. If the rooted
- * trees are not of the same type (see @ref graphs::rooted_tree::rooted_tree_type)
- * the trees are considered to be non-isomorphic.
+ * trees do not have both a valid edge orientation (see
+ * @ref graphs::rooted_tree::is_orientation_valid) the trees are considered to
+ * be non-isomorphic.
  */
 bool are_trees_isomorphic(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2);
 

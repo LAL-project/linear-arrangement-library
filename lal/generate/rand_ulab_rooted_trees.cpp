@@ -83,7 +83,7 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 
 rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	if (m_n <= 1) {
-		return rooted_tree(free_tree(m_n), 0, rooted_tree::rooted_tree_type::arborescence);
+		return rooted_tree(free_tree(m_n), 0);
 	}
 
 	// call with an invalid index for the 'root of the last tree added'
@@ -99,7 +99,7 @@ rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	}
 	rT.set_root(0);
 	rT.add_edges(edges);
-	rT.set_rooted_tree_type(rooted_tree::rooted_tree_type::arborescence);
+	rT.set_valid_orientation(true);
 	return rT;
 }
 

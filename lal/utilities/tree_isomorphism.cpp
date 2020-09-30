@@ -131,7 +131,7 @@ void assign_name(const rooted_tree& t, node v, string& name) {
 // -----------------------------------------------------------------------------
 
 bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
-	if (t1.get_rooted_tree_type() != t2.get_rooted_tree_type()) {
+	if (t1.is_orientation_valid() != t2.is_orientation_valid()) {
 		return false;
 	}
 

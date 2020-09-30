@@ -49,14 +49,6 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
 
-#define degree_tree(T, u)														\
-	(T.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
-		T.out_degree(u) : T.in_degree(u) )
-
-#define neighs_tree(T, u)														\
-	(T.get_rooted_tree_type() == rooted_tree::rooted_tree_type::arborescence ?	\
-		T.get_out_neighbours(u) : T.get_in_neighbours(u) )
-
 namespace lal {
 using namespace graphs;
 using namespace internal;
@@ -113,8 +105,8 @@ linear_arrangement all_proj_arr::get_arrangement() const {
 /* PRIVATE */
 
 void all_proj_arr::post_order_vertex_ordering(node r) {
-	const uint32_t d_out = degree_tree(m_rT, r);
-	const neighbourhood& neighs_r = neighs_tree(m_rT, r);
+	const uint32_t d_out = m_rT.out_degree(r);
+	const neighbourhood& neighs_r = m_rT.get_out_neighbours(r);
 	// leaf
 	if (d_out == 0) {
 		m_por_vertices.push_back(r);
@@ -129,15 +121,15 @@ void all_proj_arr::post_order_vertex_ordering(node r) {
 
 void all_proj_arr::canonical_interval_tree(node r) {
 	canonical_interval_single(r);
-	const neighbourhood& neighs_r = neighs_tree(m_rT, r);
+	const neighbourhood& neighs_r = m_rT.get_out_neighbours(r);
 	for (node u : neighs_r) {
 		canonical_interval_tree(u);
 	}
 }
 
 void all_proj_arr::canonical_interval_single(node u) {
-	const uint32_t d = degree_tree(m_rT, u);
-	const neighbourhood& neighs_r = neighs_tree(m_rT, u);
+	const uint32_t d = m_rT.out_degree(u);
+	const neighbourhood& neighs_r = m_rT.get_out_neighbours(u);
 
 	vector<node>& inter_u = m_intervals[u];
 

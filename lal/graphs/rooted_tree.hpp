@@ -56,79 +56,51 @@ namespace graphs {
  * @brief Rooted tree graph class.
  *
  * This class provides its users with an abstraction of rooted trees. Rooted
- * trees are free trees in which one vertex has been designates as the root.
- * Furthermore, in the context of this library, these trees' edges are directed.
- * Depending on the orientation of the edges with respect to the root, a rooted
- * tree can be of two types:
- * - @ref rooted_tree_type::arborescence, in which the edges are oriented away from
- * the root, or
- * - @ref rooted_tree_type::anti_arborescence, in which the edges are oriented towards
- * the root.
+ * trees are free trees in which one vertex has been designated as the root.
+ * Furthermore, in the context of this library, these trees' edges are always
+ * oriented towards the leaves (away from the root); this is known as an
+ * arborescence. Many methods require objects of this class to be valid rooted
+ * trees: the object must be a tree (see @ref is_tree), must have a root (see
+ * @ref has_root), and be a valid rooted tree (be an arborescence, that is,
+ * see @ref is_orientation_valid).
  *
  * Rooted trees can be constructed in two different ways:
  * - Using an already-constructed free tree via a class constructor, where
- * users have to indicate the root and the type of the rooted tree (see
- * @ref rooted_tree(const free_tree&, node, rooted_tree_type)). Alternatively, one
- * can use the method @ref init_rooted, which has the same set of parameters.
- * - Adding edge after edge. In this class, as in @ref free_tree, this addition is
- * constrained so that the graph the underlying undirected graph does not contain
- * cycles. Before, or after, the addition of all the edges, it is recommended
+ * users have to indicate the root (see @ref rooted_tree(const free_tree&, node)).
+ * Alternatively, one can use the method @ref init_rooted, which has the same set
+ * of parameters.
+ * - Adding edge after edge. In this class, as in @ref free_tree, this addition
+ * is constrained so that the underlying undirected graph does not contain cycles.
+ * Before (or after) the addition of all the edges, it is recommended
  * the root be set using @ref set_root. If the edges have been added in a
- * systematic fashion and the type of rooted tree is known, it is recommended
- * to be set by the user via method @ref set_rooted_tree_type. If it is unkown, use
- * method @ref find_rooted_tree_type.
+ * systematic fashion -- so it is known whether the tree is an arborescence or
+ * not --, it is recommended that the validity of the tree be set by the user
+ * via method @ref set_rtree_valid. If it is not known (or it can't be guaranteed)
+ * that the resulting tree is an arborescence, use method @ref find_rtree_is_valid.
  *
  * Adding edges one by one has a serious drawback. In case the edges do not
  * have a consistent orientation (either always pointing away from the root
  * or always pointing towards it), the resulting graph is not considered to be
  * a valid rooted tree (see @ref is_rooted_tree). Due to efficiency reasons,
  * orientation of edges is not checked before or after their addition. Recall
- * that removal of edges is allwed at every moment.
+ * that removal of edges is allowed at every moment.
  *
  * The root allows defining further properties on these graphs. For example,
  * the user can query information regarding subtrees of a particular rooted tree
- * (see methods @ref n_nodes_subtree and @ref calculate_size_subtrees).
+ * (see methods @ref n_nodes_subtree, @ref calculate_size_subtrees,
+ * @ref get_edges_subtree, and @ref get_subtree).
  *
  * This class allows flexibility of use of rooted trees regarding the root's
  * choice. Method @ref set_root allows changing the root of rooted trees
  * multiple times and at any time. However, any information dependent
  * on the root becomes invalid upon any change of the root. This information
- * includes, and may not be lmited to, the type of rooted tree (see
- * @ref m_rtree_type) and the size of the subtrees (see @ref m_size_subtrees).
- * For this reason, is is strongly recommended to build a free tree first and
- * use the constructor @ref rooted_tree(const free_tree&, node, rooted_tree_type), or the
- * method @ref init_rooted, in order to build rooted trees.
+ * includes, and may not be limited to, the type of rooted tree and the size
+ * of the subtrees (see @ref n_nodes_subtree). For this reason, is is strongly
+ * recommended to build a free tree first and use the constructor
+ * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted,
+ * in order to build rooted trees.
  */
 class rooted_tree : public directed_graph, virtual public tree {
-	public:
-		/**
-		 * @brief Types of rooted directed trees.
-		 *
-		 * In this library, we distinguish between three disjoint types of
-		 * directed trees:
-		 * - Arborescences (see @ref rooted_tree_type::arborescence).
-		 * - Anti-arborescences (see @ref rooted_tree_type::anti_arborescence).
-		 * - None of the above (see @ref rooted_tree_type::none).
-		 */
-		enum class rooted_tree_type {
-			/**
-			 * An arboresence is a rooted directed tree in which all the edges
-			 * point away from the root, i.e., towards the leaves.
-			 */
-			arborescence,
-			/**
-			 * An anti-arboresence is a rooted directed tree in which all the
-			 * edges point towards the root, i.e., away from the leaves.
-			 */
-			anti_arborescence,
-			/**
-			 * If the direction of the edges of this tree is not uniform
-			 * (it is uniform when they always point towards or outwards the
-			 * root), the tree has no particular type.
-			 */
-			none
-		};
-
 	public:
 		/// Default constructor.
 		rooted_tree() = default;
@@ -139,7 +111,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// Constructor with number of nodes and root node.
 		rooted_tree(uint32_t n);
 		/// Constructor with tree and root node.
-		rooted_tree(const free_tree& t, node r, rooted_tree_type arb = rooted_tree_type::arborescence);
+		rooted_tree(const free_tree& t, node r);
 		/// Default destructor
 		virtual ~rooted_tree() = default;
 
@@ -207,9 +179,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @pre The edge must exist.
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
-		 * @post The type of rooted tree and the size of the subtrees are
-		 * invalidated, i.e., method @ref rooted_tree_type_valid returns false
-		 * and @ref size_subtrees_valid returns true.
+		 * @post The validity of rooted tree and the size of the subtrees are
+		 * invalidated, i.e., methods @ref is_orientation_valid and
+		 * @ref size_subtrees_valid return false.
 		 */
 		rooted_tree& remove_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
@@ -229,9 +201,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @ref add_edge(node,node,bool,bool).
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
-		 * @post The type of rooted tree and the size of the subtrees are
-		 * invalidated, i.e., method @ref rooted_tree_type_valid returns false
-		 * and @ref size_subtrees_valid returns true.
+		 * @post The validity of the rooted tree and the size of the subtrees
+		 * are invalidated, i.e., methods @ref is_orientation_valid and
+		 * @ref size_subtrees_valid return false.
 		 */
 		rooted_tree& remove_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
@@ -261,23 +233,41 @@ class rooted_tree : public directed_graph, virtual public tree {
 		void disjoint_union(const rooted_tree& t, bool connect_roots = true);
 
 		/**
-		 * @brief Calculates the type of directed rooted tree.
+		 * @brief Finds the orientation of the edges.
 		 *
-		 * Examines the orientation of the tree with respect to the root and
-		 * to the leaves. Then, determines the tree's type (see @ref rooted_tree_type)
-		 * according to this orientation.
+		 * It is mandatory that this tree be an arborescence. Therefore, when
+		 * the tree has been built by adding edges (see @ref add_edge, add_edges),
+		 * the user must tell this class whether what has been built is an
+		 * arborescence or not. One can do this by calling method
+		 * @ref find_rtree_is_valid or by setting the type directly using
+		 * method @ref set_valid_orientation.
 		 *
-		 * If the tree has only one vertex the type is @ref rooted_tree_type::arborescence.
+		 * This method examines the orientation of the tree's edges with respect
+		 * to the root and to the leaves, i.e., it determines whether all edges
+		 * are oriented towards the leaves (away from the root).
+		 * @return Returns true if the tree is an arborescence. Returns false
+		 * otherwise.
 		 * @pre This object is a tree (see @ref is_tree).
 		 * @pre This tree has a root (see @ref has_root).
-		 * @post Method @ref rooted_tree_type_valid evaluates to true if the tree is
-		 * an @ref rooted_tree_type::arborescence or an
-		 * @ref rooted_tree_type::anti_arborescence.
-		 * @return Returns true if the type is either @ref rooted_tree_type::arborescence
-		 * or rooted_tree_type::anti_arborescence. Returns false if the type is
-		 * @ref rooted_tree_type::none.
+		 * @post Method @ref is_orientation_valid evaluates to true if the tree is
+		 * an arborescence, or to false if it not an arborescence.
 		 */
-		bool find_rooted_tree_type();
+		bool find_edge_orientation();
+
+		/**
+		 * @brief Sets wether the type of the rooted tree is valid or not.
+		 *
+		 * It is mandatory that this tree be an arborescence. Therefore, when
+		 * the tree has been built by adding edges (see @ref add_edge, add_edges),
+		 * the user must tell this class whether what has been built is an
+		 * arborescence or not. One can do this by calling method
+		 * @ref find_rtree_is_valid or by setting the type directly using
+		 * method @ref set_valid_orientation.
+		 * @param valid Boolean value telling whether the tree is valid or not.
+		 * @post Method @ref is_orientation_valid returns the value set by this
+		 * function.
+		 */
+		void set_valid_orientation(bool valid);
 
 		/**
 		 * @brief Initialiser with tree and root node.
@@ -290,29 +280,15 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * the root and hence completely undirectable).
 		 * @param t Undirected tree.
 		 * @param r Root of the directed tree. A node of @e g.
-		 * @param arb The type of directed rooted tree.
 		 * @pre Parameter @e t must be a tree (see @ref is_tree).
-		 * @pre Parameter @e arb must be either @ref rooted_tree_type::arborescence
-		 * or @ref rooted_tree_type::anti_arborescence.
 		 * @post Method @ref is_rooted_tree returns true.
 		 */
-		void init_rooted
-		(const free_tree& t, node r, rooted_tree_type arb = rooted_tree_type::arborescence);
+		void init_rooted(const free_tree& t, node r);
 
 		/**
 		 * @brief Calculates the number of nodes at every rooted subtree.
-		 *
-		 * The method can traverse the directed tree using reversed edges, i.e.,
-		 * from a root node 's' the method can follow out-edges (of the form
-		 * s->t) and in-edges (of the form t->s). If the tree is an
-		 * @ref rooted_tree_type::anti_arborescence the method follows reversed
-		 * edges. If the tree is an @ref rooted_tree_type::arborescence the
-		 * method follows "regular" edges.
 		 * @pre The object must be a tree (see @ref is_tree()).
 		 * @pre The tree must have a root (see @ref has_root()).
-		 * @pre In case @e rev is true, method @ref rooted_tree_type_valid must
-		 * return true and the tree must be an @ref rooted_tree_type::arborescence
-		 * or an an @ref rooted_tree_type::anti_arborescence.
 		 * @post Method @ref size_subtrees_valid returns false.
 		 */
 		void calculate_size_subtrees();
@@ -330,18 +306,6 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * invalidated.
 		 */
 		void set_root(node r);
-
-		/**
-		 * @brief Sets the type of rooted tree.
-		 *
-		 * It is mandatory to call this method after calling @ref set_root, in
-		 * case that method is ever called.
-		 * @param type Type of the tree.
-		 * @pre The type of tree in @e type must match the actual type of the
-		 * underlying rooted tree.
-		 * @post Method @ref rooted_tree_type_valid returns true.
-		 */
-		void set_rooted_tree_type(const rooted_tree_type& type);
 
 		/* GETTERS */
 
@@ -375,24 +339,24 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * - the underlying undirected graph is connected and does not contain
 		 * cycles (see @ref is_tree()),
 		 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root),
-		 * - the type of rooted tree is valid (see @ref rooted_tree_type_valid)
-		 * and the rooted tree type is either @ref rooted_tree_type::arborescence,
-		 * or @ref rooted_tree_type::anti_arborescence.
+		 * - the orientation of the edges is valid (see @ref is_orientation_valid).
 		 * @return Returns whether this tree is a valid rooted tree or not.
 		 */
 		bool is_rooted_tree() const;
 
 		/**
-		 * @brief Returns the type of this rooted tree.
-		 * @pre Method @ref rooted_tree_type_valid returns true.
+		 * @brief Is the orientation of the edges valid?
+		 *
+		 * The edges' orientation is valid if they are all oriented towards the
+		 * leaves (away from the root).
+		 * @return Returns @ref m_valid_orientation.
 		 */
-		rooted_tree_type get_rooted_tree_type() const;
-		/// Is the rooted type valid?
-		bool rooted_tree_type_valid() const;
+		bool is_orientation_valid() const;
 
 		/// Return the root of this tree.
 		node get_root() const;
-		/// Returns whether this rooted tree's root has been set or not (see @ref set_root).
+		/// Returns whether this rooted tree's root has been set or not
+		/// (see @ref set_root).
 		bool has_root() const;
 
 		/**
@@ -469,17 +433,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// Has the root been set?
 		bool m_has_root = false;
 
-		/**
-		 * @brief Type of rooted directed tree.
-		 *
-		 * This parameter is decided during the construction of the tree via
-		 * constructor @ref rooted_tree(const free_tree&,node,rooted_tree_type), via
-		 * calling method @ref find_rooted_tree_type(), or given by the user in
-		 * @ref set_rooted_tree_type.
-		 */
-		rooted_tree_type m_rtree_type = rooted_tree_type::none;
-		/// Are the contents of @ref m_rtree_type valid?
-		bool m_rtree_type_valid = false;
+		/// Is the orientation of the edges valid?
+		bool m_valid_orientation = false;
 
 		/**
 		 * @brief Number of nodes of the subtrees rooted at a certain node.
