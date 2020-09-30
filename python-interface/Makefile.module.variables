@@ -96,8 +96,7 @@ NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
 # -- graphs module
 GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
 GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
-GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS) \
-				  submodules/lalgraphs_rename_enums.i
+GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS)
 _GRAPHS_PF		= $(GRAPHS_INAME).py
 GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
 GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
