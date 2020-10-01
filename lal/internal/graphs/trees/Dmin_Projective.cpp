@@ -61,6 +61,7 @@ using namespace std;
 typedef std::pair<lal::edge,uint32_t> edge_size;
 typedef std::vector<edge_size>::iterator edge_size_t;
 typedef std::pair<lal::node,uint32_t> node_size;
+typedef char place;
 
 namespace lal {
 using namespace graphs;
@@ -68,9 +69,17 @@ using namespace iterators;
 
 namespace internal {
 
-enum class place : uint8_t {
-	LEFT_OF, RIGHT_OF, NONE_OF
-};
+#define PLACE_LEFT_OF 0
+#define PLACE_RIGHT_OF 1
+#define PLACE_NONE_OF 2
+
+#define RIGHT_SIDE 0
+#define LEFT_SIDE 1
+
+// if s = 0 then (s+1)&0x1 = 1
+// if s = 1 then (s+1)&0x1 = 0
+#define other_side(s) ((s + 1)&0x1)
+//#define other_side(s) (s == RIGHT_SIDE ? LEFT_SIDE : RIGHT_SIDE)
 
 /*
  * M: adjacency matrix of the tree with extra information: for each vertex,
@@ -105,7 +114,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// -- place the children --
 
 	// work out the starting side of the first-largest subtree
-	bool left_side = (r_place == place::RIGHT_OF ? false : true);
+	uint32_t side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
 
 	// size of the intervals from the root to the left end
 	uint32_t acc_size_left = 0;
@@ -132,37 +141,38 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		// recursive call: make the interval of 'vi'
 		D += Dmin_Pr__optimal_interval_of(
 			M, vi,
-			(left_side ? place::LEFT_OF : place::RIGHT_OF),
-			(left_side ? ini : fin - ni + 1), (left_side ? ini + ni - 1 : fin),
+			(side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
+			(side == LEFT_SIDE ? ini : fin - ni + 1),
+			(side == LEFT_SIDE ? ini + ni - 1 : fin),
 			arr
 		);
 
 		// accumulate size of interval
-		d += ni*(left_side ? n_intervals_left : n_intervals_right);
+		d += ni*(side == LEFT_SIDE ? n_intervals_left : n_intervals_right);
 		// add length of edge over root 'r'
 		d += 1;
 
 		// number of intervals to the left and right of the root
-		n_intervals_left += left_side;
-		n_intervals_right += not left_side;
+		n_intervals_left += side;
+		n_intervals_right += other_side(side);
 
 		// accumulate size of subtree rooted at vi
-		acc_size_left += left_side*ni;
-		acc_size_right += (not left_side)*ni;
+		acc_size_left += side*ni;
+		acc_size_right += other_side(side)*ni;
 
 		// update limits of embedding
-		ini += left_side*ni;
-		fin -= (not left_side)*ni;
+		ini += side*ni;
+		fin -= other_side(side)*ni;
 
 		// change side
-		left_side = not left_side;
+		side = other_side(side);
 	}
 	arr[r] = ini;
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
-	(r_place == place::NONE_OF ? 0 :
-	 r_place == place::LEFT_OF ? acc_size_right : acc_size_left);
+	(r_place == PLACE_NONE_OF ? 0 :
+	 r_place == PLACE_LEFT_OF ? acc_size_right : acc_size_left);
 
 	return D + d;
 }
@@ -175,7 +185,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 {
 	const uint32_t n = t.n_nodes();
 	return Dmin_Pr__optimal_interval_of(
-		M, r, place::NONE_OF, 0,n-1, arr
+		M, r, PLACE_NONE_OF, 0,n-1, arr
 	);
 }
 
@@ -227,7 +237,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// construct the optimal intervals
 	linear_arrangement arr(n);
 	const uint32_t D = Dmin_Pr__optimal_interval_of(
-		M, t.get_root(), place::NONE_OF, 0,n-1, arr
+		M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr
 	);
 
 	return make_pair(D, arr);
