@@ -182,6 +182,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 
 	if (n == 0) {
 		rooted_tree::_init(0);
+		set_valid_orientation(true);
 		set_root(0);
 		return;
 	}
@@ -209,8 +210,9 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	// allocate rooted tree
 	rooted_tree::_init(n);
 
-	// set root and add edges
+	// set root, add edges, and set valid orientation
 	set_root(r);
+	set_valid_orientation(true);
 	add_edges(dir_edges);
 }
 
