@@ -43,7 +43,6 @@
 
 // lal includes
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/cycles.hpp>
 
 namespace lal {
 namespace internal {
@@ -53,25 +52,27 @@ namespace internal {
  *
  * By definition, an undirected graph is a tree if it does not contain
  * cycles and has one single connected component. Note that isloated nodes
- * count as single connected components.
- *
- * In an attempt to extend the usage of this method, directed graphs are
- * also allowed. In this case, since the data structure allows it, the
- * algorithm looks for undirected cycles in the directed graph.
+ * count as single connected components. Directed graphs are allowed.
  * @param g Input graph.
  */
 template<class G>
-bool is_graph_a_tree(const G& t) {
-	const auto n = t.n_nodes();
+bool is_graph_a_tree(const G& g) {
+	const auto n = g.n_nodes();
 
 	// simple cases
 	if (n <= 1) { return true; }
-	if (n == 2) { return t.n_edges() == 1; }
-	if (n == 3) { return t.n_edges() == 2; }
+	if (n == 2) { return g.n_edges() == 1; }
+	if (n == 3) { return g.n_edges() == 2; }
 
-	BFS<G> bfs(t);
-	const bool cycle_found = has_undirected_cycles(t, bfs);
-	return not cycle_found and bfs.all_visited();
+	// check exact amount of edges
+	if (g.n_edges() != g.n_nodes() - 1) { return false; }
+
+	// visit all vertices, if all vertices
+	// were visited then the graph is a tree
+	BFS<G> bfs(g);
+	bfs.set_use_rev_edges(g.is_directed());
+	bfs.start_at(0);
+	return bfs.all_visited();
 }
 
 } // -- namespace internal
