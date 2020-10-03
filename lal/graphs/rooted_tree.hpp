@@ -74,9 +74,10 @@ namespace graphs {
  * Before (or after) the addition of all the edges, it is recommended
  * the root be set using @ref set_root. If the edges have been added in a
  * systematic fashion -- so it is known whether the tree is an arborescence or
- * not --, it is recommended that the validity of the tree be set by the user
- * via method @ref set_rtree_valid. If it is not known (or it can't be guaranteed)
- * that the resulting tree is an arborescence, use method @ref find_rtree_is_valid.
+ * not --, it is recommended that the validity of the edges' orientation be set
+ * by the user via method @ref set_valid_orientation. If it is not known (or it
+ * can't be guaranteed) that the resulting tree is an arborescence, use
+ * method @ref find_edge_orientation.
  *
  * Adding edges one by one has a serious drawback. In case the edges do not
  * have a consistent orientation (either always pointing away from the root
@@ -239,7 +240,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * the tree has been built by adding edges (see @ref add_edge, add_edges),
 		 * the user must tell this class whether what has been built is an
 		 * arborescence or not. One can do this by calling method
-		 * @ref find_rtree_is_valid or by setting the type directly using
+		 * @ref find_edge_orientation or by setting the type directly using
 		 * method @ref set_valid_orientation.
 		 *
 		 * This method examines the orientation of the tree's edges with respect
@@ -261,7 +262,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * the tree has been built by adding edges (see @ref add_edge, add_edges),
 		 * the user must tell this class whether what has been built is an
 		 * arborescence or not. One can do this by calling method
-		 * @ref find_rtree_is_valid or by setting the type directly using
+		 * @ref find_edge_orientation or by setting the type directly using
 		 * method @ref set_valid_orientation.
 		 * @param valid Boolean value telling whether the tree is valid or not.
 		 * @post Method @ref is_orientation_valid returns the value set by this
