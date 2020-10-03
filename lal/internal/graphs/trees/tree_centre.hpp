@@ -45,12 +45,14 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/output.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
@@ -58,8 +60,15 @@ namespace internal {
 
 namespace __lal {
 
-inline uint32_t treedeg(const graphs::free_tree& t, node u) { return t.degree(u); }
-inline uint32_t treedeg(const graphs::rooted_tree& t, node u) { return t.out_degree(u) + t.in_degree(u); }
+inline uint32_t tree_deg(const graphs::free_tree& t, node u) { return t.degree(u); }
+inline uint32_t tree_deg(const graphs::rooted_tree& t, node u) { return t.out_degree(u) + t.in_degree(u); }
+inline node only_neighbour(const graphs::free_tree& t, node u) { return t.get_neighbours(u)[0]; }
+inline node only_neighbour(const graphs::rooted_tree& t, node u) {
+	return (
+		t.out_degree(u) == 0 ?
+		t.get_in_neighbours(u)[0] : t.get_out_neighbours(u)[0]
+	);
+}
 
 } // -- namespace __lal
 
@@ -95,7 +104,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (__lal::treedeg(t, x) == 0) {
+	if (__lal::tree_deg(t, x) == 0) {
 		return std::make_pair(x, n);
 	}
 
@@ -124,7 +133,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	bfs.set_process_current(
 	[&](const auto&, node u) -> void {
 		++size_trimmed;
-		trimmed_degree[u] = __lal::treedeg(t, u);
+		trimmed_degree[u] = __lal::tree_deg(t, u);
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);
 			++l0;
@@ -139,7 +148,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	if (size_trimmed == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = x;
-		const node v2 = t.get_out_neighbours(x)[0];
+		const node v2 = __lal::only_neighbour(t, x);
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
