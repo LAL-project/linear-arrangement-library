@@ -81,6 +81,9 @@ undirected_graph& undirected_graph::add_edge(
 	nv.push_back(u);
 	++m_num_edges;
 
+	// do the extra work!
+	extra_work_per_edge_add(u, v);
+
 	if (is_normalised()) {
 		// the graph was normalised
 		if (to_norm) {
@@ -145,6 +148,9 @@ undirected_graph& undirected_graph::add_edges(
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
 		++m_num_edges;
+
+		// do the extra work!
+		extra_work_per_edge_add(u, v);
 	}
 
 	if (to_norm) {
@@ -175,7 +181,6 @@ undirected_graph& undirected_graph::remove_edge(
 
 	neighbourhood& nu = m_adjacency_list[u];
 	neighbourhood& nv = m_adjacency_list[v];
-
 	remove_single_edge(u,v, nu, nv);
 
 	// if (is_normalised()) {
@@ -341,6 +346,9 @@ void undirected_graph::remove_single_edge(
 	// remove edges from the lists
 	out_u.erase(it_v);
 	in_v.erase(it_u);
+
+	// do the extra work!
+	extra_work_per_edge_remove(u, v);
 }
 
 } // -- namespace graphs

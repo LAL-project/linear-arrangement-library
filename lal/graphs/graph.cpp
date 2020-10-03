@@ -193,5 +193,8 @@ vector<edge_pair> graph::Q(uint64_t qs) const {
 	return q;
 }
 
+void graph::extra_work_per_edge_add(node, node) { }
+void graph::extra_work_per_edge_remove(node, node) { }
+
 } // -- namespace graphs
 } // -- namespace lal

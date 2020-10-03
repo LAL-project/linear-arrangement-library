@@ -235,6 +235,11 @@ class graph {
 		 * @param q The size of \f$Q\f$.
 		 */
 		std::vector<edge_pair> Q(uint64_t q) const;
+
+		/// Do some extra work after edge {@e u,@e v} has been added.
+		virtual void extra_work_per_edge_add(node u, node v);
+		/// Do some extra work after edge {@e u,@e v} has been removed.
+		virtual void extra_work_per_edge_remove(node u, node v);
 };
 
 } // -- namespace graphs
