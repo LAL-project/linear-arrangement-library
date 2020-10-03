@@ -111,7 +111,10 @@ bool directed_graph::check_normalised() {
 	return true;
 }
 
-directed_graph& directed_graph::add_edge(node u, node v, bool to_norm, bool check_norm) {
+directed_graph& directed_graph::add_edge(
+	node u, node v, bool to_norm, bool check_norm
+)
+{
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -171,7 +174,10 @@ directed_graph& directed_graph::add_edge(node u, node v, bool to_norm, bool chec
 	return *this;
 }
 
-directed_graph& directed_graph::add_edges(const std::vector<edge>& edges, bool to_norm, bool check_norm) {
+directed_graph& directed_graph::add_edges(
+	const std::vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -201,7 +207,10 @@ directed_graph& directed_graph::add_edges(const std::vector<edge>& edges, bool t
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edge(node u, node v, bool norm, bool check_norm) {
+directed_graph& directed_graph::remove_edge(
+	node u, node v, bool norm, bool check_norm
+)
+{
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -241,7 +250,10 @@ directed_graph& directed_graph::remove_edge(node u, node v, bool norm, bool chec
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+directed_graph& directed_graph::remove_edges(
+	const std::vector<edge>& edges, bool norm, bool check_norm
+)
+{
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;

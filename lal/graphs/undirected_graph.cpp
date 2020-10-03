@@ -66,7 +66,10 @@ undirected_graph::undirected_graph(uint32_t n) {
 
 /* MODIFIERS */
 
-undirected_graph& undirected_graph::add_edge(node u, node v, bool to_norm, bool check_norm) {
+undirected_graph& undirected_graph::add_edge(
+	node u, node v, bool to_norm, bool check_norm
+)
+{
 	assert(not has_edge(u,v));
 	assert(u != v);
 	assert(has_node(u));
@@ -127,7 +130,10 @@ undirected_graph& undirected_graph::add_edge(node u, node v, bool to_norm, bool 
 	return *this;
 }
 
-undirected_graph& undirected_graph::add_edges(const vector<edge>& edges, bool to_norm, bool check_norm) {
+undirected_graph& undirected_graph::add_edges(
+	const vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
@@ -157,7 +163,10 @@ undirected_graph& undirected_graph::add_edges(const vector<edge>& edges, bool to
 	return *this;
 }
 
-undirected_graph& undirected_graph::remove_edge(node u, node v, bool norm, bool check_norm) {
+undirected_graph& undirected_graph::remove_edge(
+	node u, node v, bool norm, bool check_norm
+)
+{
 	assert(has_node(u));
 	assert(has_node(v));
 	assert(u != v);
@@ -197,7 +206,10 @@ undirected_graph& undirected_graph::remove_edge(node u, node v, bool norm, bool 
 	return *this;
 }
 
-undirected_graph& undirected_graph::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+undirected_graph& undirected_graph::remove_edges(
+	const std::vector<edge>& edges, bool norm, bool check_norm
+)
+{
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;

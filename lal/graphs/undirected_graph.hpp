@@ -134,7 +134,7 @@ class undirected_graph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		undirected_graph& remove_edge
+		virtual undirected_graph& remove_edge
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
@@ -154,7 +154,7 @@ class undirected_graph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		undirected_graph& remove_edges
+		virtual undirected_graph& remove_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**
