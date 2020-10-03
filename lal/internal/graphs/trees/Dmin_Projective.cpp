@@ -48,7 +48,6 @@
 #include <lal/internal/graphs/trees/Dmin.hpp>
 
 // C++ includes
-#include <iostream>
 #include <cassert>
 using namespace std;
 
