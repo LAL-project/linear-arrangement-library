@@ -41,6 +41,9 @@
 
 #pragma once
 
+// C++ includes
+#include <vector>
+
 // lal includes
 #include <lal/graphs/graph.hpp>
 
@@ -97,7 +100,7 @@ class tree : virtual public graph {
 		 * @return Returns whether the addition of this new edge can be added
 		 * to the tree without producing cycles.
 		 */
-		virtual bool can_add_edge(node s, node t) const = 0;
+		bool can_add_edge(node s, node t) const;
 
 		/**
 		 * @brief Can these edges be added?
@@ -108,13 +111,30 @@ class tree : virtual public graph {
 		 * @return Returns whether the addition of these new edges can be added
 		 * to the tree without producing cycles.
 		 */
-		virtual bool can_add_edges(const std::vector<edge>& edges) const = 0;
+		bool can_add_edges(const std::vector<edge>& edges) const;
+
+	protected:
+		/// The root of every vertex in the union-find data structure
+		std::vector<node> m_root_of;
+		/**
+		 * @brief The size of the connected component that a @e root belongs to.
+		 *
+		 * Formally, @e m_size_of[v] is the size of the connected component of
+		 * a @e root vertex @e v. A vertex @e u is a root vertex if there
+		 * exists a vertex @e w such that @ref m_root_of[w] = u.
+		 *
+		 * In this context, root is within the union-find data structure.
+		 */
+		std::vector<uint32_t> m_root_size;
 
 	protected:
 		/// Initialises memory of @ref tree classes.
 		virtual void tree_init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void tree_clear();
+
+		void extra_work_per_edge_add(node u, node v);
+		void extra_work_per_edge_remove(node u, node v);
 };
 
 } // -- namespace graphs

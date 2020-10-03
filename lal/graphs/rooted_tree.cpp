@@ -61,38 +61,41 @@ rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
 	rooted_tree::_init(n);
 }
 rooted_tree::rooted_tree(const free_tree& t, node r) {
+	rooted_tree::_init(t.n_nodes());
 	init_rooted(t, r);
 }
 //rtree::~rtree() { }
 
 /* MODIFIERS */
 
-rooted_tree& rooted_tree::add_edge(node s, node t, bool norm, bool check_norm) {
-#if defined DEBUG
-	assert(can_add_edge(s,t));
-#endif
+rooted_tree& rooted_tree::add_edge(node u, node v, bool norm, bool check_norm) {
+	assert(can_add_edge(u,v));
 
-	directed_graph::add_edge(s,t, norm, check_norm);
+	directed_graph::add_edge(u,v, norm, check_norm);
 	return *this;
 }
 
-rooted_tree& rooted_tree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
-#if defined DEBUG
+rooted_tree& rooted_tree::add_edges(
+	const vector<edge>& edges, bool norm, bool check_norm
+)
+{
 	assert(can_add_edges(edges));
-#endif
 
 	directed_graph::add_edges(edges, norm, check_norm);
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edge(node s, node t, bool norm, bool check_norm) {
-	directed_graph::remove_edge(s,t, norm, check_norm);
+rooted_tree& rooted_tree::remove_edge(node u, node v, bool norm, bool check_norm) {
+	directed_graph::remove_edge(u,v, norm, check_norm);
 	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edges(const std::vector<edge>& edges, bool norm, bool check_norm) {
+rooted_tree& rooted_tree::remove_edges(
+	const std::vector<edge>& edges, bool norm, bool check_norm
+)
+{
 	directed_graph::remove_edges(edges, norm, check_norm);
 	set_valid_orientation(false);
 	m_need_recalc_size_subtrees = true;
@@ -106,8 +109,20 @@ void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
 		return;
 	}
 
+	const node pre_join = n_nodes();
+
 	// join trees
 	directed_graph::disjoint_union(t);
+
+	// join union-find
+#define append(A, B) A.insert(A.end(), B.begin(), B.end())
+	append(m_root_of, t.m_root_of);
+	append(m_root_size, t.m_root_size);
+
+	// update the labels of the vertices' root of the union find
+	for (node u = pre_join; u < n_nodes(); ++u) {
+		m_root_of[u] += pre_join;
+	}
 
 	// connect the roots if necessary
 	if (connect_roots) {
@@ -115,8 +130,10 @@ void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
 		const node t_r = prev_n + t.get_root();
 		add_edge(this_r, t_r);
 	}
+
 	// If connect_roots is false then the graph is going to
-	// lack an edge (until inserted by someone). Nothing to do.
+	// lack an edge (until inserted later by someone).
+	// Nothing to do.
 
 	// - keep the tree's root (if any)
 	// - size of subtrees needs recalculating
@@ -223,51 +240,6 @@ void rooted_tree::set_root(node r) {
 }
 
 /* GETTERS */
-
-bool rooted_tree::can_add_edge(node s, node t) const {
-	// if the tree already has n-1 edges then
-	// adding another edge will produce a cycle
-	if (n_edges() + 1 > n_nodes() - 1) {
-		return false;
-	}
-
-	// the edge cannot be in the graph twice:
-	// this is not a multigraph
-	if (has_edge(s,t)) {
-		return false;
-	}
-
-	// copy the graph
-	directed_graph copy = *this;
-	// add the edge
-	copy.add_edge(s, t);
-	// convert the directed graph to an undirected graph
-	// and make sure that there are no loops in that
-	return not internal::has_undirected_cycles(copy);
-}
-
-bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const {
-	// in a tree we must have m <= n - 1
-	const uint64_t more_m = edges.size();
-	if (n_edges() + more_m > n_nodes() - 1) {
-		return false;
-	}
-
-	// check that none of the edges exist
-	for (const edge& e : edges) {
-		if (has_edge(e.first, e.second)) {
-			return false;
-		}
-	}
-
-	// copy the graph
-	directed_graph copy = *this;
-	// add the edges
-	copy.add_edges(edges);
-	// convert the directed graph to an undirected graph
-	// and make sure that there are no loops in that
-	return not internal::has_undirected_cycles(copy);
-}
 
 bool rooted_tree::is_rooted() const { return true; }
 
@@ -421,16 +393,13 @@ free_tree rooted_tree::to_undirected() const {
 void rooted_tree::_init(uint32_t n) {
 	tree::tree_init(n);
 	directed_graph::_init(n);
-	set_valid_orientation(false);
-	m_need_recalc_size_subtrees = true;
+	m_size_subtrees = vector<uint32_t>(n, 0);
 }
 
 void rooted_tree::_clear() {
 	tree::tree_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
-	set_valid_orientation(false);
-	m_need_recalc_size_subtrees = true;
 }
 
 } // -- namespace graphs

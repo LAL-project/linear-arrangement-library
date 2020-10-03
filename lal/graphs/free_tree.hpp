@@ -144,27 +144,6 @@ class free_tree : public undirected_graph, virtual public tree {
 
 		bool is_rooted() const;
 
-		/**
-		 * @brief Can this edge be added?
-		 *
-		 * In a tree, this edge can only be added if it does not produce cycles.
-		 * @param s First node of the edge.
-		 * @param t Second node of the edge.
-		 * @return Returns whether the addition of this new edge can be added
-		 * to the tree without producing cycles.
-		 */
-		bool can_add_edge(node s, node t) const;
-		/**
-		 * @brief Can these edges be added?
-		 *
-		 * In a tree, these edges can only be added if their addition to the
-		 * tree do not produce cycles.
-		 * @param edges List of edges.
-		 * @return Returns whether the addition of these new edges can be added
-		 * to the tree without producing cycles.
-		 */
-		bool can_add_edges(const std::vector<edge>& edges) const;
-
 	protected:
 		/// Initialises memory of @ref free_tree, @ref undirected_graph and
 		/// @ref graph classes.

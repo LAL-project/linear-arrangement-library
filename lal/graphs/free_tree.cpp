@@ -46,6 +46,7 @@
 using namespace std;
 
 // lal includes
+//#include <lal/graphs/output.hpp>
 #include <lal/internal/graphs/cycles.hpp>
 #include <lal/internal/graphs/reachability.hpp>
 #include <lal/internal/graphs/trees/is_tree.hpp>
@@ -54,87 +55,55 @@ namespace lal {
 namespace graphs {
 
 //ftree::ftree() { }
-free_tree::free_tree(uint32_t n) : undirected_graph(n) { }
+free_tree::free_tree(uint32_t n) : undirected_graph(n) {
+	free_tree::_init(n);
+}
 free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
 	// check that the input graph is a ftree
 	assert(internal::is_graph_a_tree(t));
+
+	free_tree::_init(t.n_nodes());
 	add_edges(t.edges());
 }
 //ftree::~ftree() { }
 
-free_tree& free_tree::add_edge(node s, node t, bool norm, bool check_norm) {
-#if defined DEBUG
-	assert(can_add_edge(s,t));
-#endif
-
-	undirected_graph::add_edge(s,t, norm, check_norm);
+free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
+	assert(can_add_edge(u,v));
+	undirected_graph::add_edge(u,v, norm, check_norm);
 	return *this;
 }
 
-free_tree& free_tree::add_edges(const vector<edge>& edges, bool norm, bool check_norm) {
+free_tree& free_tree::add_edges(
+	const vector<edge>& edges, bool norm, bool check_norm
+)
+{
+	assert(can_add_edges(edges));
 	undirected_graph::add_edges(edges, norm, check_norm);
-	// NOTE: we can't do
-	//     assert(utils::is_ftree(*this));
-	// because the ftree might not be complete and lack some
-	// edges. If we asserted "is_ftree", we would require the
-	// user to insert ALL edges at once, but the edges might
-	// not be available.
-	assert(not internal::has_undirected_cycles(*this));
 	return *this;
 }
 
 void free_tree::disjoint_union(const free_tree& t) {
+	const node pre_join = n_nodes();
+
 	// tree 't' and tree 'this' do not have cycles, so the disjoint
 	// union of both trees does not have cycles.
 	// Nothing to check.
-
 	undirected_graph::disjoint_union(t);
+
+	// join union-find
+#define vec_join(A, B) A.insert(A.end(), B.begin(), B.end())
+	vec_join(m_root_of, t.m_root_of);
+	vec_join(m_root_size, t.m_root_size);
+
+	// update the labels of the vertices' root of the union find
+	for (node u = pre_join; u < n_nodes(); ++u) {
+		m_root_of[u] += pre_join;
+	}
 }
 
 /* GETTERS */
 
 bool free_tree::is_rooted() const { return false; }
-
-bool free_tree::can_add_edge(node s, node t) const {
-	// if the ftree already has n-1 edges then
-	// adding another edge will produce a cycle
-	if (n_edges() + 1 > n_nodes() - 1) {
-		return false;
-	}
-
-	// the edge cannot be in the graph twice:
-	// this is not a multigraph
-	if (has_edge(s,t)) {
-		return false;
-	}
-
-	// Check that adding this edge does not produce cycles.
-	// Adding edge (u,v) produces cycles if 'u' is already
-	// reachable from 'v' or viceversa.
-	return not internal::is_node_reachable_from(*this, s, t);
-}
-
-bool free_tree::can_add_edges(const vector<edge>& edges) const {
-	// in a ftree we must have m <= n - 1
-	const auto more_m = edges.size();
-	if (n_edges() + more_m > n_nodes() - 1) {
-		return false;
-	}
-
-	// check that none of the edges exist
-	for (auto e : edges) {
-		if (has_edge(e.first, e.second)) {
-			return false;
-		}
-	}
-
-	// 1. copy the current tree into an undirected graph
-	undirected_graph copy = *this;
-	// 2. add the edges to the copy
-	copy.add_edges(edges, false);
-	// 3. check that there are no cycles in the copy
-	return not internal::has_undirected_cycles(copy);
-}
 
 /* PROTECTED */
 
