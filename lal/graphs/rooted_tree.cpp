@@ -48,7 +48,6 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/is_tree.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 
 namespace lal {
