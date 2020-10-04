@@ -50,7 +50,6 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
@@ -181,13 +180,7 @@ std::pair<node, node> retrieve_centroid(
 )
 {
 	// calculate the size of the connected component
-	uint32_t n = 0;
-	{
-	BFS<T> bfs(t);
-	bfs.set_use_rev_edges(t.is_directed());
-	bfs.set_process_current( [&](const auto&, node) -> void { ++n; } );
-	bfs.start_at(x);
-	}
+	const uint32_t n = t.n_nodes_component(x);
 	if (n == 1) {
 		return std::make_pair(x, t.n_nodes());
 	}

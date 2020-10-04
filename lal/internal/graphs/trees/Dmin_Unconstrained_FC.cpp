@@ -223,16 +223,17 @@ void calculate_mla_chung(
 	linear_arrangement& mla, uint32_t& cost
 )
 {
-	vector<node> reachable;
+	vector<node> reachable(t.n_nodes_component(one_node - 1));
 	{
+	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
-		[&](const auto&, node u) { reachable.push_back(u + 1); }
+		[&](const auto&, node u) { *it = u + 1; ++it; }
 	);
 	bfs.start_at(one_node - 1);
 	}
-	const uint32_t size_tree = to_uint32(reachable.size());
+	const uint32_t size_tree = t.n_nodes_component(one_node - 1);
 
 	assert(size_tree > 0);
 	assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);

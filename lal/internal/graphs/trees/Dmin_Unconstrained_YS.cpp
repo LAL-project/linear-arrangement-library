@@ -161,18 +161,19 @@ void calculate_mla_YS(
 {
 	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
-	vector<node> reachable;
+	vector<node> reachable(t.n_nodes_component(root_or_anchor - 1));
 	{
+	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
-		[&](const auto&, node u) { reachable.push_back(u + 1); }
+		[&](const auto&, node u) { *it = u + 1; ++it; }
 	);
 	bfs.start_at(root_or_anchor - 1);
 	}
 
 	// Size of the tree
-	const uint32_t size_tree = to_uint32(reachable.size());
+	const uint32_t size_tree = t.n_nodes_component(root_or_anchor - 1);
 	assert(size_tree > 0);
 
 	// Base case

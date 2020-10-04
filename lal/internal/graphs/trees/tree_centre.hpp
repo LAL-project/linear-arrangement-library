@@ -104,8 +104,17 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (__lal::tree_deg(t, x) == 0) {
+	if (t.n_nodes_component(x) == 1) {
 		return std::make_pair(x, n);
+	}
+
+	// Second simple case:
+	// if the connected component has two nodes then
+	if (t.n_nodes_component(x) == 2) {
+		// case component_size==1 is actually the first simple case
+		const node v1 = x;
+		const node v2 = __lal::only_neighbour(t, x);
+		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
 	BFS<T> bfs(t);
@@ -115,7 +124,10 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	// full degree of every node of the connected component
 	std::vector<uint32_t> trimmed_degree(n, 0);
 	// number of nodes in the connected_component
-	uint32_t size_trimmed = 0;
+	uint32_t size_trimmed = t.n_nodes_component(x);
+#if defined DEBUG
+	uint32_t __size_trimmed = 0; // for debugging purposes only
+#endif
 
 	// leaves left to process
 	//   l0: leaves in the current tree
@@ -125,14 +137,14 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// ---------------------------------------------------
 	// Initialise data:
-	// 1. calculate number of nodes in the current connected component
-	//    ('size_trimmed')
-	// 2. fill in 'trimmed_degree' values
-	// 3. retrieve connected component's leaves ('tree_leaves')
-	// 4. calculate amount of leaves left to process ('l0')
+	// 1. fill in 'trimmed_degree' values
+	// 2. retrieve connected component's leaves ('tree_leaves')
+	// 3. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
 	[&](const auto&, node u) -> void {
-		++size_trimmed;
+#if defined DEBUG
+		++__size_trimmed;
+#endif
 		trimmed_degree[u] = __lal::tree_deg(t, u);
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);
@@ -143,14 +155,10 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.start_at(x);
 
-	// Second simple case:
-	// if the connected component has two nodes then
-	if (size_trimmed == 2) {
-		// case component_size==1 is actually the first simple case
-		const node v1 = x;
-		const node v2 = __lal::only_neighbour(t, x);
-		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
-	}
+#if defined DEBUG
+	// make sure that the method n_nodes_component returns a correct value
+	assert(__size_trimmed == size_trimmed);
+#endif
 
 	// Third case: the component has three nodes or more...
 
