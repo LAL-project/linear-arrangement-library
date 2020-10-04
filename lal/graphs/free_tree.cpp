@@ -83,7 +83,11 @@ free_tree& free_tree::add_edges(
 }
 
 void free_tree::disjoint_union(const free_tree& t) {
-	const node pre_join = n_nodes();
+	const node prev_n = n_nodes();
+	if (prev_n == 0) {
+		*this = t;
+		return;
+	}
 
 	// tree 't' and tree 'this' do not have cycles, so the disjoint
 	// union of both trees does not have cycles.
@@ -96,8 +100,8 @@ void free_tree::disjoint_union(const free_tree& t) {
 	vec_join(m_root_size, t.m_root_size);
 
 	// update the labels of the vertices' root of the union find
-	for (node u = pre_join; u < n_nodes(); ++u) {
-		m_root_of[u] += pre_join;
+	for (node u = prev_n; u < n_nodes(); ++u) {
+		m_root_of[u] += prev_n;
 	}
 }
 
