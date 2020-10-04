@@ -340,10 +340,10 @@ class rooted_tree : public directed_graph, virtual public tree {
 		bool has_root() const;
 
 		/**
-		 * @brief Returns the number of nodes of the subtree rooted at @e u.
+		 * @brief Get the size of a subtree rooted at a given node.
 		 * @param u Vertex of the tree.
-		 * @return Returns @ref m_size_subtrees[u].
-		 * @pre Method @ref size_subtrees_valid returns false.
+		 * @return Returns the number of nodes of the subtree rooted at @e u.
+		 * @pre Method @ref size_subtrees_valid returns true.
 		 */
 		uint32_t n_nodes_subtree(node u) const;
 
