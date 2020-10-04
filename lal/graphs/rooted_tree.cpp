@@ -67,7 +67,10 @@ rooted_tree::rooted_tree(const free_tree& t, node r) {
 
 /* MODIFIERS */
 
-rooted_tree& rooted_tree::add_edge(node u, node v, bool norm, bool check_norm) {
+rooted_tree& rooted_tree::add_edge(
+	node u, node v, bool norm, bool check_norm
+)
+{
 	assert(can_add_edge(u,v));
 
 	directed_graph::add_edge(u,v, norm, check_norm);
@@ -84,9 +87,12 @@ rooted_tree& rooted_tree::add_edges(
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edge(node u, node v, bool norm, bool check_norm) {
+rooted_tree& rooted_tree::remove_edge(
+	node u, node v, bool norm, bool check_norm
+)
+{
 	directed_graph::remove_edge(u,v, norm, check_norm);
-	set_valid_orientation(false);
+	m_valid_orientation = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
@@ -96,47 +102,60 @@ rooted_tree& rooted_tree::remove_edges(
 )
 {
 	directed_graph::remove_edges(edges, norm, check_norm);
-	set_valid_orientation(false);
+	m_valid_orientation = false;
 	m_need_recalc_size_subtrees = true;
 	return *this;
 }
 
-void rooted_tree::disjoint_union(const rooted_tree& t, bool connect_roots) {
+void rooted_tree::disjoint_union(
+	const rooted_tree& t, bool connect_roots
+)
+{
 	const uint32_t prev_n = n_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
 	}
 
-	const node pre_join = n_nodes();
+#define append(A, B) A.insert(A.end(), B.begin(), B.end())
 
 	// join trees
 	directed_graph::disjoint_union(t);
+	append(m_size_subtrees, t.m_size_subtrees);
 
-	// join union-find
-#define append(A, B) A.insert(A.end(), B.begin(), B.end())
+	// update union-find (1/3)
 	append(m_root_of, t.m_root_of);
 	append(m_root_size, t.m_root_size);
-
-	// update the labels of the vertices' root of the union find
-	for (node u = pre_join; u < n_nodes(); ++u) {
-		m_root_of[u] += pre_join;
+	// update the labels of the vertices' root of the union find (2/3)
+	for (node u = prev_n; u < n_nodes(); ++u) {
+		m_root_of[u] += prev_n;
 	}
 
-	// connect the roots if necessary
+	// connect the roots if told to do so
 	if (connect_roots) {
+		assert(has_root());
+		assert(t.has_root());
+
 		const node this_r = get_root();
 		const node t_r = prev_n + t.get_root();
+		if (size_subtrees_valid() and t.size_subtrees_valid()) {
+			// update the size under the root
+			m_size_subtrees[this_r] += m_size_subtrees[t_r];
+			m_need_recalc_size_subtrees = false;
+		}
+		else {
+			m_need_recalc_size_subtrees = true;
+		}
+
+		// this operation also updates the
+		// union-find data structure (3/3)
 		add_edge(this_r, t_r);
 	}
-
-	// If connect_roots is false then the graph is going to
-	// lack an edge (until inserted later by someone).
-	// Nothing to do.
-
-	// - keep the tree's root (if any)
-	// - size of subtrees needs recalculating
-	m_need_recalc_size_subtrees = true;
+	else {
+		// if roots are not connected then
+		// the sizes need to be recalculated
+		m_need_recalc_size_subtrees = true;
+	}
 }
 
 bool rooted_tree::find_edge_orientation() {
@@ -147,7 +166,7 @@ bool rooted_tree::find_edge_orientation() {
 	if (n_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
-		set_valid_orientation(true);
+		m_valid_orientation = true;
 		return m_valid_orientation;
 	}
 
@@ -165,7 +184,7 @@ bool rooted_tree::find_edge_orientation() {
 	else {
 		// Second case: the tree is NOT an arborescence.
 		// In this case we do not consider the tree to be (validly) rooted
-		set_valid_orientation(false);
+		m_valid_orientation = false;
 	}
 
 	return m_valid_orientation;
@@ -178,11 +197,11 @@ void rooted_tree::set_valid_orientation(bool v) {
 void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	const uint32_t n = _t.n_nodes();
 	assert(_t.is_tree());
-	set_valid_orientation(true);
+	m_valid_orientation = true;
 
 	if (n == 0) {
 		rooted_tree::_init(0);
-		set_valid_orientation(true);
+		m_valid_orientation = true;
 		set_root(0);
 		return;
 	}
@@ -212,16 +231,13 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 
 	// set root, add edges, and set valid orientation
 	set_root(r);
-	set_valid_orientation(true);
+	m_valid_orientation = true;
 	add_edges(dir_edges);
 }
 
 void rooted_tree::calculate_size_subtrees() {
 	assert(is_rooted_tree());
-
 	m_need_recalc_size_subtrees = false;
-	m_size_subtrees.resize(n_nodes(), 0);
-
 	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
@@ -237,7 +253,7 @@ void rooted_tree::set_root(node r) {
 	}
 	m_has_root = true;
 	m_need_recalc_size_subtrees = true;
-	set_valid_orientation(false);
+	m_valid_orientation = false;
 }
 
 /* GETTERS */
@@ -380,7 +396,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	// make subtree
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
-	sub.set_valid_orientation(true);
+	sub.m_valid_orientation = true;
 	sub.add_edges(es);
 	return sub;
 }
@@ -394,7 +410,7 @@ free_tree rooted_tree::to_undirected() const {
 void rooted_tree::_init(uint32_t n) {
 	tree::tree_init(n);
 	directed_graph::_init(n);
-	m_size_subtrees = vector<uint32_t>(n, 0);
+	m_size_subtrees = vector<uint32_t>(n);
 }
 
 void rooted_tree::_clear() {

@@ -212,24 +212,27 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/**
 		 * @brief Disjoint union of trees.
 		 *
-		 * Given a rooted tree, append it to the current tree.
+		 * Append a rooted tree to this tree. All the nodes in @e t are relabelled
+		 * starting at @e n, the number of nodes of the current tree. If the
+		 * current graph has no vertices, then the contents of @e t are simply
+		 * copied into this graph.
 		 *
-		 * All the nodes in @e t are relabelled starting at @e n, the number
-		 * of nodes of the current tree.
-		 *
-		 * If the current graph has no vertices, then the contents of @e t
-		 * are simply copied into this graph.
 		 * @param t Input tree.
 		 * @param connect_roots The root of the current tree and the root of
 		 * @e t are joined by an edge.
-		 * @pre If @e connect_roots is true then the current needs to have a
-		 * root (see method @ref has_root).
+		 * @pre If @e connect_roots is true then both trees need to have a root
+		 * (see method @ref has_root).
 		 * @post The root (if set) of the current tree is kept.
-		 * @post The type of rooted tree (if set) of the current tree is kept.
-		 * @post If @e connect_roots is true then method @ref is_rooted_tree()
-		 * returns true. Said method returns false if otherwise.
-		 * @post The size of the subtrees needs recalculating (method
-		 * @ref size_subtrees_valid() returns true).
+		 * @post Copying the edges of @e t into this tree retains their original
+		 * orientation.
+		 * @post The size of the subtrees might need recalculating:
+		 * - If method @ref size_subtrees_valid() returns true for both trees then
+		 * the subtree sizes are updated and do not need to be recalculated and
+		 * method @ref size_subtrees_valid() still returns true.
+		 * - If for one of the tw graphs method @ref size_subtrees_valid() returns
+		 * false then it will still return false after this operation.
+		 * @post The graph resulting from the union is normalised only if the
+		 * two graphs were normalised prior to the union.
 		 */
 		void disjoint_union(const rooted_tree& t, bool connect_roots = true);
 
@@ -237,7 +240,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @brief Finds the orientation of the edges.
 		 *
 		 * It is mandatory that this tree be an arborescence. Therefore, when
-		 * the tree has been built by adding edges (see @ref add_edge, add_edges),
+		 * the tree has been built by adding edges (see @ref add_edge, @ref add_edges),
 		 * the user must tell this class whether what has been built is an
 		 * arborescence or not. One can do this by calling method
 		 * @ref find_edge_orientation or by setting the type directly using
@@ -367,23 +370,19 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * nodes of the tree.
 		 *
 		 * In case of directed trees, the subtree is extracted regardless of the
-		 * orientation of the edges. For example, consider an anti-arborescence
-		 * of a complete binary tree of 7 nodes, whose edges are
+		 * orientation of the edges. For example, consider the following
+		 * complete binary tree of 7 nodes, whose edges are
 		 * <pre>
-		 * 0 <- 1
-		 *		1 <- 3
-		 *		1 <- 4
-		 *   <- 2
-		 *		2 <- 5
-		 *		2 <- 6
+		 * 0 -> 1 -> 3
+		 *        -> 4
+		 *   -> 2 -> 5
+		 *        -> 6
 		 * </pre>
-		 * The edges of the subtree rooted at 1 are "3 -> 1" and "4 -> 1".
-		 * Moreover, the orientation of the edges is guaranteed to be
-		 * first-node-to-second-node.
+		 * The edges of the subtree rooted at 1 are "1 -> 3" and "1 -> 4".
+		 * Moreover, the orientation of the edges in the new tree is kept.
 		 *
-		 * Regardless of the directedness of the graph, this method can be seen
-		 * as a way of relabelling nodes when @e u is the root of the tree
-		 * and @e relab is true.
+		 * This method can be seen as a way of relabelling nodes when @e u is
+		 * the root of the tree and @e relab is true.
 		 * @param u Root node of the subtree.
 		 * @param relab Should the nodes be relabelled?
 		 * @return Returns a list of edges.
