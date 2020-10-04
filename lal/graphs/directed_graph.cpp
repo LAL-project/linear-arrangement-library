@@ -308,11 +308,6 @@ void directed_graph::disjoint_union(const directed_graph& g) {
 			v += n;
 		}
 	}
-
-	// If one or none of the two graphs involved are normalised,
-	// the result is not normalised.
-	// If both graphs are normalised, the result is normalised.
-	m_normalised = m_normalised and g.is_normalised();
 }
 
 /* SETTERS */
