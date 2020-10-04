@@ -47,99 +47,12 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {
 namespace graphs {
 
 /* NON-MEMBER FUNCTIONS */
-
-void __update_roots_add(
-	const tree& t, node u, node v,
-	vector<node>& root_of, vector<uint32_t>& root_size
-)
-{
-	// 'u' and 'v' are not connected, so they belong to
-	// (different) connected components of the tree.
-
-	// 'parent' and 'child' determine a direction to be used later.
-	// 'new_root' is the new root for one of the vertices
-	node parent, child, new_root;
-
-	const node root_u = root_of[u];
-	const node root_v = root_of[v];
-
-	const uint32_t size_u = root_size[root_u];
-	const uint32_t size_v = root_size[root_v];
-	const uint32_t new_size = size_u + size_v;
-
-	if (size_u < size_v) {
-		root_of[root_u] = root_v;
-		root_of[u] = root_v;
-
-		new_root = root_v;
-		root_size[new_root] = new_size;
-
-		// update roots in the direction of v -> u
-		parent = v; child = u;
-	}
-	else {
-		root_of[root_v] = root_u;
-		root_of[v] = root_u;
-
-		new_root = root_u;
-		root_size[new_root] = new_size;
-
-		// update roots in the direction of u -> v
-		parent = u; child = v;
-	}
-
-	// update roots of the smaller component,
-	// in the direction parent -> child
-	internal::BFS<tree> bfs(t);
-	bfs.set_use_rev_edges(t.is_directed());
-	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = new_root; }
-	);
-	bfs.set_visited(parent); // avoid going backwards
-	bfs.start_at(child);
-}
-
-void __update_roots_remove(
-	const tree& t, node u, node v,
-	vector<node>& root_of, vector<uint32_t>& root_size
-)
-{
-	// 'u' and 'v' are connected
-	assert(root_of[u] == root_of[v]);
-
-	const uint32_t size_uv = root_size[root_of[u]];
-
-	internal::BFS<tree> bfs(t);
-
-	// --- update u's info ---
-
-	// Update the root of the vertices reachable from 'u'.
-	//   (also calculate the size of u's component)
-	uint32_t size_u = 0;
-	bfs.set_use_rev_edges(t.is_directed());
-	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = u; ++size_u; }
-	);
-	bfs.start_at(u);
-	root_of[u] = u;
-	root_size[u] = size_u;
-
-	// --- update v's info ---
-
-	// Update the root of the vertices reachable from 'v'.
-	//   (there is no need to reset the BFS object)
-	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = v; }
-	);
-	bfs.start_at(v);
-	root_of[v] = v;
-	root_size[v] = size_uv - size_u;
-}
 
 /* MEMBER FUNCTIONS */
 
@@ -199,7 +112,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 		// either the edge exists or there
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
-		__update_roots_add(*this, u, v, _root_of, _size_of);
+		internal::UnionFind_update_roots_add(*this, u, v, _root_of, _size_of);
 	}
 	return true;
 }
@@ -221,10 +134,10 @@ void tree::tree_clear() {
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {
-	__update_roots_add(*this, u, v, m_root_of, m_root_size);
+	internal::UnionFind_update_roots_add(*this, u, v, m_root_of, m_root_size);
 }
 void tree::extra_work_per_edge_remove(node u, node v) {
-	__update_roots_remove(*this, u, v, m_root_of, m_root_size);
+	internal::UnionFind_update_roots_remove(*this, u, v, m_root_of, m_root_size);
 }
 
 } // -- namespace graphs

@@ -55,6 +55,7 @@ HEADERS += \
 	graphs/undirected_graph.hpp \
 	internal/gmp/utils.hpp \
 	internal/graphs/trees/Dmin.hpp \
+	internal/graphs/union_find.hpp \
 	internal/graphs/utils.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
