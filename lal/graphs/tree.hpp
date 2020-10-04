@@ -113,6 +113,21 @@ class tree : virtual public graph {
 		 */
 		bool can_add_edges(const std::vector<edge>& edges) const;
 
+		/**
+		 * @brief Amount of nodes in a connected component of the tree.
+		 *
+		 * When tree has had an edge removed, or when it is not completely
+		 * built, i.e., it lack some edges, the resulting graph is clearly
+		 * a forest. This function returns the size of the forest node @e u
+		 * belongs to.
+		 *
+		 * In directed trees one has to see this amount as the number of nodes
+		 * of the component in the undirected version of the forest.
+		 * @param u Input node.
+		 * @return Returns the size of the connected component of @e u.
+		 */
+		uint32_t n_nodes_component(node u) const;
+
 	protected:
 		/// The root of every vertex in the union-find data structure
 		std::vector<node> m_root_of;

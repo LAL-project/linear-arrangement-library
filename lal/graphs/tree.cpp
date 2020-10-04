@@ -117,6 +117,11 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 	return true;
 }
 
+uint32_t tree::n_nodes_component(node u) const {
+	assert(has_node(u));
+	return m_root_size[m_root_of[u]];
+}
+
 /* PROTECTED */
 
 void tree::tree_init(uint32_t n) {
