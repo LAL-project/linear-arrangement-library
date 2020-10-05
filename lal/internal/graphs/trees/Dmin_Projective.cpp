@@ -190,6 +190,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	assert(t.is_rooted_tree());
+	assert(t.size_subtrees_valid());
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
