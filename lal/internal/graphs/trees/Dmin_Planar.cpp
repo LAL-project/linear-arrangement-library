@@ -90,6 +90,11 @@ inline void make_directed(
 pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	assert(t.is_tree());
 
+	const uint32_t n = t.n_nodes();
+	if (n == 1) {
+		return make_pair(0, linear_arrangement(0,0));
+	}
+
 	// In short, Hochberg and Stallmann described their algorithm
 	// as rooting a free tree at one of its centroidal vertices and
 	// arranging it so that the root is not covered and the arrangement
