@@ -59,7 +59,6 @@ HEADERS += \
 	internal/graphs/utils.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
-	internal/std_utils.hpp \
 	internal/graphs/cycles.hpp \
 	internal/graphs/reachability.hpp \
 	internal/graphs/traversal.hpp \
