@@ -10,5 +10,5 @@ __definitions = laldefinitionsdebug
 del laldefinitionsdebug
 
 # remove unnecessary modules
-del lalgraphs
+del lalgraphsdebug
 %}
