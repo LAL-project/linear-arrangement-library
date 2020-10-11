@@ -69,8 +69,9 @@ enum class algorithms_Dmin {
 	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
 	 * i.e., in the function that accepts rooted trees.
 	 *
-	 * @pre A precondition of usage is that the rooted has to have the size
-	 * of its subtrees calculated (see @ref graphs::rooted_tree::calculate_size_subtrees
+	 * These are the preconditions of usage of this algorithm.
+	 * @pre The rooted has to have the size of its subtrees calculated
+	 * (see @ref graphs::rooted_tree::calculate_size_subtrees
 	 * and @ref graphs::rooted_tree::size_subtrees_valid);
      */
     Projective,

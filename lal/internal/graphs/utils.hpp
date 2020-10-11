@@ -60,7 +60,7 @@ namespace internal {
  */
 template<
 	class G,
-	// this method can't be used by objects of class 'graphs::graph'
+	// this method can ONLY be used by objects of type 'graphs::graph'
 	typename std::enable_if<!std::is_same<graphs::graph, G>::value, int>::type = 0
 >
 inline void get_bool_neighbours(
