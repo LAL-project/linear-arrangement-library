@@ -43,6 +43,9 @@
 
 // C++ includes
 #include <vector>
+#if defined DEBUG
+#include <cassert>
+#endif
 
 // lal includes
 #include <lal/graphs/graph.hpp>
@@ -126,7 +129,12 @@ class tree : virtual public graph {
 		 * @param u Input node.
 		 * @return Returns the size of the connected component of @e u.
 		 */
-		uint32_t n_nodes_component(node u) const;
+		inline uint32_t n_nodes_component(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return m_root_size[m_root_of[u]];
+		}
 
 	protected:
 		/// The root of every vertex in the union-find data structure

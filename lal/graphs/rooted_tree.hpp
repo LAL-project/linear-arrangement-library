@@ -43,6 +43,9 @@
 
 // C++ includes
 #include <vector>
+#if defined DEBUG
+#include <cassert>
+#endif
 
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
@@ -313,7 +316,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 
 		/* GETTERS */
 
-		bool is_rooted() const;
+		inline bool is_rooted() const { return true; }
 
 		/**
 		 * @brief Is this tree a valid rooted tree?
@@ -325,7 +328,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * - the orientation of the edges is valid (see @ref is_orientation_valid).
 		 * @return Returns whether this tree is a valid rooted tree or not.
 		 */
-		bool is_rooted_tree() const;
+		inline bool is_rooted_tree() const {
+			return is_tree() and has_root() and is_orientation_valid();
+		}
 
 		/**
 		 * @brief Is the orientation of the edges valid?
@@ -334,13 +339,22 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * leaves (away from the root).
 		 * @return Returns @ref m_valid_orientation.
 		 */
-		bool is_orientation_valid() const;
+		inline bool is_orientation_valid() const {
+			return m_valid_orientation;
+		}
 
 		/// Return the root of this tree.
-		node get_root() const;
+		inline node get_root() const {
+#if defined DEBUG
+			assert(has_root());
+#endif
+			return m_root;
+		}
 		/// Returns whether this rooted tree's root has been set or not
 		/// (see @ref set_root).
-		bool has_root() const;
+		inline bool has_root() const {
+			return m_has_root;
+		}
 
 		/**
 		 * @brief Get the size of a subtree rooted at a given node.
@@ -348,7 +362,12 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @return Returns the number of nodes of the subtree rooted at @e u.
 		 * @pre Method @ref size_subtrees_valid returns true.
 		 */
-		uint32_t n_nodes_subtree(node u) const;
+		inline uint32_t n_nodes_subtree(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return m_size_subtrees[u];
+		}
 
 		/**
 		 * @brief Is a recalculation of the subtree's sizes needed?
@@ -357,7 +376,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @return Returns whether @ref m_size_subtrees should be recalculated
 		 * or not.
 		 */
-		bool size_subtrees_valid() const;
+		inline bool size_subtrees_valid() const {
+			return not m_need_recalc_size_subtrees;
+		}
 
 		/**
 		 * @brief Retrieve the edges of the subtree rooted at @e u.

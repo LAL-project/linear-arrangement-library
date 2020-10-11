@@ -107,8 +107,6 @@ void free_tree::disjoint_union(const free_tree& t) {
 
 /* GETTERS */
 
-bool free_tree::is_rooted() const { return false; }
-
 /* PROTECTED */
 
 void free_tree::_init(uint32_t n) {

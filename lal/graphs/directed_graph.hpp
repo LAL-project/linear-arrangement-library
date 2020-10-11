@@ -43,6 +43,9 @@
 
 // C++ includes
 #include <vector>
+#if defined DEBUG
+#include <cassert>
+#endif
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -207,32 +210,56 @@ class directed_graph : virtual public graph {
 		/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
 		bool has_edge(node u, node v) const;
 
-		bool is_directed() const;
-		bool is_undirected() const;
-
 		/// Same as @ref get_out_neighbours.
-		const neighbourhood& get_neighbours(node u) const;
+		inline const neighbourhood& get_neighbours(node u) const {
+			return get_out_neighbours(u);
+		}
 
 		/**
 		 * @brief Returns the out-neighbours of node @e u
 		 * @param u Node
 		 * @return Returns the list of nodes leaving node @e u.
 		 */
-		const neighbourhood& get_out_neighbours(node u) const;
+		inline const neighbourhood& get_out_neighbours(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return m_adjacency_list[u];
+		}
 		/**
 		 * @brief Returns the in-neighbours of node @e u
 		 * @param u Node
 		 * @return Returns the list of nodes entering at node @e u.
 		 */
-		const neighbourhood& get_in_neighbours(node u) const;
+		inline const neighbourhood& get_in_neighbours(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return m_in_adjacency_list[u];
+		}
 
 		/// Same as @ref out_degree.
-		uint32_t degree(node u) const;
+		inline uint32_t degree(node u) const {
+			return out_degree(u);
+		}
 
 		/// Returns the out-degree of a node.
-		uint32_t out_degree(node u) const;
+		inline uint32_t out_degree(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return static_cast<uint32_t>(m_adjacency_list[u].size());
+		}
 		/// Returns the in-degree of a node.
-		uint32_t in_degree(node u) const;
+		inline uint32_t in_degree(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return static_cast<uint32_t>(m_in_adjacency_list[u].size());
+		}
+
+		inline bool is_directed() const { return true; }
+		inline bool is_undirected() const { return false; }
 
 		/**
 		 * @brief Converts this directed graph into an undirected graph.

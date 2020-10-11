@@ -142,7 +142,7 @@ class free_tree : public undirected_graph, virtual public tree {
 
 		/* GETTERS */
 
-		bool is_rooted() const;
+		inline bool is_rooted() const { return false; }
 
 	protected:
 		/// Initialises memory of @ref free_tree, @ref undirected_graph and

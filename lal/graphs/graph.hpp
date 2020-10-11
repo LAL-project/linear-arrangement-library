@@ -157,17 +157,23 @@ class graph {
 		virtual uint32_t in_degree(node u) const = 0;
 
 		/// Returns true if node @e u is in this graph.
-		bool has_node(node u) const;
+		inline bool has_node(node u) const {
+			return u < n_nodes();
+		}
 
 		/// Returns true if the undirected edge (@e u, @e v) exists in the
 		/// graph.
 		virtual bool has_edge(node u, node v) const = 0;
 
 		/// Returns the number of ndoes.
-		uint32_t n_nodes() const;
+		inline uint32_t n_nodes() const {
+			return static_cast<uint32_t>(m_adjacency_list.size());
+		}
 
 		/// Returns the number of edges.
-		uint32_t n_edges() const;
+		inline uint32_t n_edges() const {
+			return m_num_edges;
+		}
 
 		/// Returns all edges of this graph.
 		std::vector<edge> edges() const;
@@ -179,7 +185,9 @@ class graph {
 		 * increasingly. For this, use method @ref normalise().
 		 * @return Returns the value of @ref m_normalised.
 		 */
-		bool is_normalised() const;
+		inline bool is_normalised() const {
+			return m_normalised;
+		}
 
 		/// Returns whether this graph is directed or not.
 		virtual bool is_directed() const = 0;

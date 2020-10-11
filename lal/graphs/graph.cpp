@@ -116,18 +116,6 @@ bool graph::check_normalised() {
 
 /* GETTERS */
 
-bool graph::has_node(node u) const {
-	return u < m_adjacency_list.size();
-}
-
-uint32_t graph::n_nodes() const {
-	return static_cast<uint32_t>(m_adjacency_list.size());
-}
-
-uint32_t graph::n_edges() const {
-	return m_num_edges;
-}
-
 vector<edge> graph::edges() const {
 	vector<edge> e(n_edges());
 	auto it = e.begin();
@@ -138,10 +126,6 @@ vector<edge> graph::edges() const {
 		++it;
 	}
 	return e;
-}
-
-bool graph::is_normalised() const {
-	return m_normalised;
 }
 
 /* PROTECTED */

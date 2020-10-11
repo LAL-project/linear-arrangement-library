@@ -72,7 +72,6 @@ rooted_tree& rooted_tree::add_edge(
 )
 {
 	assert(can_add_edge(u,v));
-
 	directed_graph::add_edge(u,v, norm, check_norm);
 	return *this;
 }
@@ -82,7 +81,6 @@ rooted_tree& rooted_tree::add_edges(
 )
 {
 	assert(can_add_edges(edges));
-
 	directed_graph::add_edges(edges, norm, check_norm);
 	return *this;
 }
@@ -257,34 +255,6 @@ void rooted_tree::set_root(node r) {
 }
 
 /* GETTERS */
-
-bool rooted_tree::is_rooted() const { return true; }
-
-bool rooted_tree::is_rooted_tree() const {
-	return is_tree() and has_root() and is_orientation_valid();
-}
-
-bool rooted_tree::is_orientation_valid() const {
-	return m_valid_orientation;
-}
-
-node rooted_tree::get_root() const {
-	assert(has_root());
-	return m_root;
-}
-
-bool rooted_tree::has_root() const {
-	return m_has_root;
-}
-
-uint32_t rooted_tree::n_nodes_subtree(node u) const {
-	assert(has_node(u));
-	return m_size_subtrees[u];
-}
-
-bool rooted_tree::size_subtrees_valid() const {
-	return not m_need_recalc_size_subtrees;
-}
 
 vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// if the tree does not have edges, return an empty list.

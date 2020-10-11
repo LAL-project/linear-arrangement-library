@@ -42,6 +42,9 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <vector>
 
 // lal includes
@@ -188,7 +191,12 @@ class undirected_graph : virtual public graph {
 		 * @param u Node.
 		 * @return Returns the list of nodes adjacent to node @e u.
 		 */
-		const neighbourhood& get_neighbours(node u) const;
+		inline const neighbourhood& get_neighbours(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return m_adjacency_list[u];
+		}
 
 		/**
 		 * @brief Returns the out-neighbours of node @e u.
@@ -197,7 +205,9 @@ class undirected_graph : virtual public graph {
 		 * @param u Node
 		 * @return Returns the list of nodes leaving node @e u.
 		 */
-		const neighbourhood& get_out_neighbours(node u) const;
+		inline const neighbourhood& get_out_neighbours(node u) const {
+			return get_neighbours(u);
+		}
 		/**
 		 * @brief Returns the in-neighbours of node @e u.
 		 *
@@ -205,25 +215,32 @@ class undirected_graph : virtual public graph {
 		 * @param u Node
 		 * @return Returns the list of nodes entering at node @e u.
 		 */
-		const neighbourhood& get_in_neighbours(node u) const;
+		inline const neighbourhood& get_in_neighbours(node u) const {
+			return get_neighbours(u);
+		}
 
 		/**
 		 * @brief Returns the number of neighbours of @e u.
 		 * @param u Node to be queried.
 		 * @return Returns the number of adjacent nodes.
 		 */
-		uint32_t degree(node u) const;
+		inline uint32_t degree(node u) const {
+#if defined DEBUG
+			assert(has_node(u));
+#endif
+			return static_cast<uint32_t>(m_adjacency_list[u].size());
+		}
 
 		/// Same as @ref degree
-		uint32_t out_degree(node u) const;
+		inline uint32_t out_degree(node u) const { return degree(u); }
 		/// Same as @ref degree
-		uint32_t in_degree(node u) const;
+		inline uint32_t in_degree(node u) const { return degree(u); }
 
 		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 		bool has_edge(node u, node v) const;
 
-		bool is_directed() const;
-		bool is_undirected() const;
+		inline bool is_directed() const { return false; }
+		inline bool is_undirected() const { return true; }
 
 	protected:
 		/// Initialises memory of @ref undirected_graph and @ref graph classes.
