@@ -73,11 +73,11 @@ void directed_graph::normalise() {
 
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
-		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
+		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			internal::bit_sort_mem(out_nu.begin(), out_nu.end(), mem);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
+		if (not is_sorted(in_nu.begin(), in_nu.end())) {
 			internal::bit_sort_mem(in_nu.begin(), in_nu.end(), mem);
 		}
 	}
@@ -92,14 +92,14 @@ bool directed_graph::check_normalised() {
 	// check that every adjacency list is sorted
 	for (node u = 0; u < n_nodes(); ++u) {
 		const neighbourhood& out_nu = m_adjacency_list[u];
-		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
+		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_normalised = false;
 			return false;
 		}
 
 		const neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
+		if (not is_sorted(in_nu.begin(), in_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_normalised = false;
 			return false;
@@ -178,7 +178,7 @@ directed_graph& directed_graph::add_edge(
 }
 
 directed_graph& directed_graph::add_edges(
-	const std::vector<edge>& edges, bool to_norm, bool check_norm
+	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
 	for (const edge& e : edges) {
@@ -256,7 +256,7 @@ directed_graph& directed_graph::remove_edge(
 }
 
 directed_graph& directed_graph::remove_edges(
-	const std::vector<edge>& edges, bool norm, bool check_norm
+	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
 	for (const edge& e : edges) {
@@ -314,7 +314,7 @@ void directed_graph::disjoint_union(const directed_graph& g) {
 
 /* GETTERS */
 
-std::vector<edge_pair> directed_graph::Q() const {
+vector<edge_pair> directed_graph::Q() const {
 	return graph::Q(properties::size_Q(*this));
 }
 
@@ -325,15 +325,15 @@ bool directed_graph::has_edge(node u, node v) const {
 	const neighbourhood& out_u = m_adjacency_list[u];
 	const neighbourhood& in_v = m_in_adjacency_list[v];
 
-	if (is_normalised() and std::min(out_u.size(), in_v.size()) >= 64) {
+	if (is_normalised() and min(out_u.size(), in_v.size()) >= 64) {
 		return (out_u.size() <= in_v.size() ?
-			std::binary_search(out_u.begin(), out_u.end(), v) :
-			std::binary_search(in_v.begin(), in_v.end(), u)
+			binary_search(out_u.begin(), out_u.end(), v) :
+			binary_search(in_v.begin(), in_v.end(), u)
 		);
 	}
 	return (out_u.size() <= in_v.size() ?
-		std::find(out_u.begin(), out_u.end(), v) != out_u.end() :
-		std::find(in_v.begin(), in_v.end(), u) != in_v.end()
+		find(out_u.begin(), out_u.end(), v) != out_u.end() :
+		find(in_v.begin(), in_v.end(), u) != in_v.end()
 	);
 }
 
@@ -380,12 +380,12 @@ void directed_graph::remove_single_edge(
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+		it_v = lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = lower_bound(in_v.begin(), in_v.end(), u);
 	}
 	else {
-		it_v = std::find(out_u.begin(), out_u.end(), v);
-		it_u = std::find(in_v.begin(), in_v.end(), u);
+		it_v = find(out_u.begin(), out_u.end(), v);
+		it_u = find(in_v.begin(), in_v.end(), u);
 	}
 
 	// check that the iterators point to the correct value

@@ -212,7 +212,7 @@ undirected_graph& undirected_graph::remove_edge(
 }
 
 undirected_graph& undirected_graph::remove_edges(
-	const std::vector<edge>& edges, bool norm, bool check_norm
+	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
 	for (const edge& e : edges) {
@@ -256,7 +256,7 @@ void undirected_graph::disjoint_union(const undirected_graph& g) {
 
 /* GETTERS */
 
-std::vector<edge_pair> undirected_graph::Q() const {
+vector<edge_pair> undirected_graph::Q() const {
 	return graph::Q(properties::size_Q(*this));
 }
 
@@ -267,7 +267,7 @@ bool undirected_graph::has_edge(node u, node v) const {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
-	if (is_normalised() and std::min(nu.size(), nv.size()) >= 64) {
+	if (is_normalised() and min(nu.size(), nv.size()) >= 64) {
 		return (nu.size() <= nv.size() ?
 			binary_search(nu.begin(), nu.end(), v) :
 			binary_search(nv.begin(), nv.end(), u)
@@ -301,14 +301,14 @@ void undirected_graph::remove_single_edge(
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+		it_v = lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = lower_bound(in_v.begin(), in_v.end(), u);
 
 		// after removing this edge the normalisation does not change.
 	}
 	else {
-		it_v = std::find(out_u.begin(), out_u.end(), v);
-		it_u = std::find(in_v.begin(), in_v.end(), u);
+		it_v = find(out_u.begin(), out_u.end(), v);
+		it_u = find(in_v.begin(), in_v.end(), u);
 	}
 
 	// check that the iterators point to the correct value
