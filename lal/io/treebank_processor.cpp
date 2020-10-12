@@ -182,10 +182,6 @@ inline void process_tree(
 {
 	const free_tree t = rT.to_undirected();
 
-	// default linear arrangement
-	vector<node> __linarr(rT.n_nodes());
-	iota(__linarr.begin(), __linarr.end(), 0);
-
 	// -----------------------------------------------------------
 	// compute features in a way that does not repeat computations
 	double props[NUM_TREE_FEATURES];
@@ -226,12 +222,12 @@ inline void process_tree(
 			props[C_exp1_idx] = properties::expectation_C(t);
 		}
 		// we need to compute C, whether we like it or not
-		props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
+		props[C_idx] = to_double(linarr::n_crossings(t));
 		props[C_z_idx] = (props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx]);
 	}
 	else {
 		if (what_fs[C_idx]) {
-			props[C_idx] = to_double(linarr::__n_crossings_ladder(t, __linarr));
+			props[C_idx] = to_double(linarr::n_crossings(t));
 		}
 	}
 
@@ -260,12 +256,12 @@ inline void process_tree(
 			props[D_exp1_idx] = properties::expectation_D(t);
 		}
 		// we need to compute D, whether we like it or not
-		props[D_idx] = to_double(linarr::sum_length_edges(rT, __linarr));
+		props[D_idx] = to_double(linarr::sum_length_edges(rT));
 		props[D_z_idx] = (props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx]);
 	}
 	else {
 		if (what_fs[D_idx]) {
-			props[D_idx] = to_double(linarr::sum_length_edges(rT, __linarr));
+			props[D_idx] = to_double(linarr::sum_length_edges(rT));
 		}
 	}
 

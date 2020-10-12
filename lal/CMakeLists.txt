@@ -197,10 +197,6 @@ target_sources(
 		# -- sources
 		linarr/C.cpp
 		linarr/C_approx.cpp
-		linarr/C_brute_force.cpp
-		linarr/C_dyn_prog.cpp
-		linarr/C_ladder.cpp
-		linarr/C_stack_based.cpp
 		linarr/D.cpp
 		linarr/Dmin.cpp
 		linarr/headedness.cpp
@@ -244,7 +240,12 @@ target_sources(
 
 		# internal namespace -- not to be installed
 		# -- headers
+		internal/avl.hpp
+		internal/macros.hpp
 		internal/gmp/utils.hpp
+		internal/sorting/bit_sort.hpp
+		internal/sorting/counting_sort.hpp
+		internal/sorting/insertion_sort.hpp
 		internal/graphs/trees/convert_to_ftree.hpp
 		internal/graphs/trees/convert_to_rtree.hpp
 		internal/graphs/trees/Dmin.hpp
@@ -253,19 +254,18 @@ target_sources(
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
 		internal/graphs/trees/tree_centroid.hpp
+		internal/graphs/algorithms_crossings.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/union_find.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/reachability.hpp
 		internal/graphs/utils.hpp
-		internal/sorting/bit_sort.hpp
-		internal/sorting/counting_sort.hpp
-		internal/sorting/insertion_sort.hpp
-		internal/avl.hpp
-		internal/macros.hpp
-		internal/std_utils.hpp
 		# -- sources
 		internal/gmp/utils.cpp
+		internal/graphs/C_brute_force.cpp
+		internal/graphs/C_dyn_prog.cpp
+		internal/graphs/C_ladder.cpp
+		internal/graphs/C_stack_based.cpp
 		internal/graphs/trees/convert_to_ftree.cpp
 		internal/graphs/trees/convert_to_rtree.cpp
 		internal/graphs/trees/Dmin_Planar.cpp

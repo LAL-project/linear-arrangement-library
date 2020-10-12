@@ -53,12 +53,16 @@ HEADERS += \
 	graphs/free_tree.hpp \
 	graphs/rooted_tree.hpp \
 	graphs/undirected_graph.hpp \
+	internal/macros.hpp \
+	internal/avl.hpp \
+	internal/sorting/bit_sort.hpp \
+	internal/sorting/counting_sort.hpp \
+	internal/sorting/insertion_sort.hpp \
 	internal/gmp/utils.hpp \
+	internal/graphs/algorithms_crossings.hpp \
 	internal/graphs/trees/Dmin.hpp \
 	internal/graphs/union_find.hpp \
 	internal/graphs/utils.hpp \
-	internal/macros.hpp \
-	internal/avl.hpp \
 	internal/graphs/cycles.hpp \
 	internal/graphs/reachability.hpp \
 	internal/graphs/traversal.hpp \
@@ -69,9 +73,6 @@ HEADERS += \
 	internal/graphs/trees/size_subtrees.hpp \
 	internal/graphs/trees/tree_centre.hpp \
 	internal/graphs/trees/tree_centroid.hpp \
-	internal/sorting/bit_sort.hpp \
-	internal/sorting/counting_sort.hpp \
-	internal/sorting/insertion_sort.hpp \
 	io/edge_list.hpp \
 	io.hpp \
 	io/basic_output.hpp \
@@ -133,6 +134,10 @@ SOURCES += \
 	graphs/tree.cpp \
 	graphs/undirected_graph.cpp \
 	internal/gmp/utils.cpp \
+	internal/graphs/C_brute_force.cpp \
+	internal/graphs/C_dyn_prog.cpp \
+	internal/graphs/C_ladder.cpp \
+	internal/graphs/C_stack_based.cpp \
 	internal/graphs/trees/convert_to_ftree.cpp \
 	internal/graphs/trees/convert_to_rtree.cpp \
 	internal/graphs/trees/Dmin_Planar.cpp \
@@ -149,12 +154,8 @@ SOURCES += \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
 	linarr/headedness.cpp \
-	linarr/C_stack_based.cpp \
 	linarr/tree_structure_class.cpp \
 	linarr/D.cpp \
-	linarr/C_brute_force.cpp \
-	linarr/C_dyn_prog.cpp \
-	linarr/C_ladder.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \

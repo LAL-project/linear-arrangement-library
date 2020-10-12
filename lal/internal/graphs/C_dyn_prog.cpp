@@ -39,7 +39,7 @@
  *
  ********************************************************************/
  
-#include <lal/linarr/C.hpp>
+#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
 #include <cassert>
@@ -54,7 +54,7 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 #define degree_graph(G,v) (G.is_undirected() ? G.degree(v) : G.out_degree(v) + G.in_degree(v))
 
@@ -228,12 +228,12 @@ inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) 
 	return C;
 }
 
-uint32_t __n_crossings_dyn_prog(const graph& g, const linear_arrangement& pi) {
+uint32_t n_C_dynamic_programming(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
-vector<uint32_t> __n_crossings_dyn_prog_list
+vector<uint32_t> n_C_dynamic_programming_list
 (const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
@@ -276,7 +276,7 @@ vector<uint32_t> __n_crossings_dyn_prog_list
 	return cs;
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal
 
 

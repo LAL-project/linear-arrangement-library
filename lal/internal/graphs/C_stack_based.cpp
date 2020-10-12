@@ -39,7 +39,7 @@
  *
  ********************************************************************/
  
-#include <lal/linarr/C.hpp>
+#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
 #include <cassert>
@@ -55,7 +55,7 @@ typedef pair<uint32_t,lal::edge> indexed_edge;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
@@ -195,12 +195,12 @@ inline uint32_t __call_C_stack_based(const graph& g, const linear_arrangement& p
 	return C;
 }
 
-uint32_t __n_crossings_stack_based(const graph& g, const linear_arrangement& pi) {
+uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
-vector<uint32_t> __n_crossings_stack_based_list
+vector<uint32_t> n_C_stack_based_list
 (const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
@@ -230,5 +230,5 @@ vector<uint32_t> __n_crossings_stack_based_list
 	return cs;
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

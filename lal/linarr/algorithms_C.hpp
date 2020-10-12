@@ -51,17 +51,34 @@ namespace linarr {
  * @ref n_crossings and @ref n_crossings_list use to compute the number of crossings.
  */
 enum class algorithms_C {
-	/// Brute force computation of the number of crossings.
-	/// Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
+	/**
+	 * @brief Brute force computation of the number of crossings.
+	 *
+	 * Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
+	 *
+	 * These are the preconditions of usage of this algorithm.
+	 * @pre The rooted has to have the size of its subtrees calculated
+	 * (see @ref graphs::rooted_tree::calculate_size_subtrees
+	 * and @ref graphs::rooted_tree::size_subtrees_valid).
+	 */
 	brute_force,
-	/// Dynamic programming algorithm.
-	/// Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$
+	/**
+	 * @brief Dynamic programming algorithm.
+	 *
+	 * Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$
+	 */
 	dynamic_programming,
-	/// Dynamic programming algorithm.
-	/// Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$
+	/**
+	 * @brief Dynamic programming algorithm.
+	 *
+	 * Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$
+	 */
 	ladder,
-	/// Algorithm based on sorting.
-	/// Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$
+	/**
+	 * @brief Algorithm based on sorting.
+	 *
+	 * Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$
+	 */
 	stack_based
 };
 

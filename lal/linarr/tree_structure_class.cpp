@@ -265,7 +265,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 {
 	vector<bool> cl(__tree_structure_size, false);
 
-	uint32_t C = __n_crossings_stack_based(Tree.to_undirected(), pi);
+	uint32_t C = n_crossings(Tree, pi);
 	cout << "C= " << C << endl;
 	if (C == 0) {
 		// projective or planar?

@@ -39,7 +39,7 @@
  *
  ********************************************************************/
  
-#include <lal/linarr/C.hpp>
+#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
 #include <cassert>
@@ -52,7 +52,7 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
 inline uint32_t __compute_C_ladder(
 	const graph& g, const linear_arrangement& pi,
@@ -131,12 +131,12 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 	return C;
 }
 
-uint32_t __n_crossings_ladder(const graph& g, const linear_arrangement& pi) {
+uint32_t n_C_ladder(const graph& g, const linear_arrangement& pi) {
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 	return internal::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
-vector<uint32_t> __n_crossings_ladder_list
+vector<uint32_t> n_C_ladder_list
 (const graph& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
@@ -176,5 +176,5 @@ vector<uint32_t> __n_crossings_ladder_list
 	return cs;
 }
 
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

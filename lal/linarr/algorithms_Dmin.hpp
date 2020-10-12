@@ -72,7 +72,7 @@ enum class algorithms_Dmin {
 	 * These are the preconditions of usage of this algorithm.
 	 * @pre The rooted has to have the size of its subtrees calculated
 	 * (see @ref graphs::rooted_tree::calculate_size_subtrees
-	 * and @ref graphs::rooted_tree::size_subtrees_valid);
+	 * and @ref graphs::rooted_tree::size_subtrees_valid).
      */
     Projective,
 
