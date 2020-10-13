@@ -56,21 +56,26 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* PUBLIC */
+/* CONSTRUCTORS */
 
-//dgraph::dgraph() { }
 directed_graph::directed_graph(uint32_t n) {
 	init(n);
 }
-//dgraph::~dgraph() { }
+directed_graph::directed_graph(directed_graph&& d) {
+	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
+}
 
 /* OPERATORS */
+
+directed_graph& directed_graph::operator= (directed_graph&& d) {
+	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
+	return *this;
+}
 
 /* MODIFIERS */
 
 void directed_graph::normalise() {
 	char *mem = new char[n_nodes()]{0};
-
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
@@ -82,7 +87,6 @@ void directed_graph::normalise() {
 		}
 	}
 	m_normalised = true;
-
 	delete[] mem;
 }
 
@@ -366,6 +370,14 @@ void directed_graph::_init(uint32_t n) {
 void directed_graph::_clear() {
 	graph::_clear();
 	m_in_adjacency_list.clear();
+}
+
+void directed_graph::move_full_directed_graph(directed_graph&& d) {
+	// move-assign parent class
+	move_full_graph(std::move(static_cast<graph&>(d)));
+
+	// move-assign this class' members
+	m_in_adjacency_list = std::move(d.m_in_adjacency_list);
 }
 
 /* PRIVATE */

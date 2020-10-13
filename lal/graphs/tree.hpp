@@ -69,10 +69,23 @@ namespace graphs {
  */
 class tree : virtual public graph {
 	public:
+		/* CONSTRUCTORS */
+
+		/// Default constructor.
 		tree() = default;
+		/// Default move constructor.
+		tree(tree&&);
+		/// Default copy constructor.
+		tree(const tree&) = default;
+		/// Default destructor.
 		virtual ~tree() = default;
 
 		/* OPERATORS */
+
+		/// Move assignment operator.
+		tree& operator= (tree&&);
+		/// Default copy assignment operator.
+		tree& operator= (const tree&) = default;
 
 		/* GETTERS */
 
@@ -155,6 +168,8 @@ class tree : virtual public graph {
 		virtual void tree_init(uint32_t n);
 		/// Clears the memory used by this rooted tree.
 		virtual void tree_clear();
+		/// Moves all members of this class and the parent class.
+		void move_only_tree(tree&& g);
 
 		void extra_work_per_edge_add(node u, node v);
 		void extra_work_per_edge_remove(node u, node v);

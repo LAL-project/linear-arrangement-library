@@ -46,15 +46,13 @@
 using namespace std;
 
 // lal includes
-//#include <lal/graphs/output.hpp>
-#include <lal/internal/graphs/cycles.hpp>
-#include <lal/internal/graphs/reachability.hpp>
 #include <lal/internal/graphs/trees/is_tree.hpp>
 
 namespace lal {
 namespace graphs {
 
-//ftree::ftree() { }
+/* CONSTRUCTORS */
+
 free_tree::free_tree(uint32_t n) : undirected_graph(n) {
 	free_tree::_init(n);
 }
@@ -65,7 +63,18 @@ free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) 
 	free_tree::_init(t.n_nodes());
 	add_edges(t.edges());
 }
-//ftree::~ftree() { }
+free_tree::free_tree(free_tree&& f) {
+	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
+}
+
+/* OPERATORS */
+
+free_tree& free_tree::operator= (free_tree&& r) {
+	move_full_free_tree(std::move(static_cast<free_tree&>(r)));
+	return *this;
+}
+
+/* MODIFIERS */
 
 free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
 	assert(can_add_edge(u,v));
@@ -117,6 +126,16 @@ void free_tree::_init(uint32_t n) {
 void free_tree::_clear() {
 	tree::tree_clear();
 	undirected_graph::_clear();
+}
+
+void free_tree::move_full_free_tree(free_tree&& f) {
+	// move-assign undirected_graph class
+	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(f)));
+
+	// move-assign only tree's members
+	move_only_tree(std::move(static_cast<tree&>(f)));
+
+	// move this class' members
 }
 
 } // -- namespace graphs

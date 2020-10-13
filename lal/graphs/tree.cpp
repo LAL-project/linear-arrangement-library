@@ -52,12 +52,20 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* NON-MEMBER FUNCTIONS */
+/* CONSTRUCTORS */
 
-/* MEMBER FUNCTIONS */
+tree::tree(tree&& t) {
+	move_only_tree(std::move(static_cast<tree&>(t)));
+}
 
-//tree::tree() { }
-//tree::~tree() { }
+/* OPERATORS */
+
+tree& tree::operator= (tree&& t) {
+	move_only_tree(std::move(static_cast<tree&>(t)));
+	return *this;
+}
+
+/* GETTERS */
 
 bool tree::is_tree() const {
 	// NOTE: this would not really be true if the addition of edges
@@ -68,8 +76,6 @@ bool tree::is_tree() const {
 	// NOTE 2: this is only true in a debug compilation of the library
 	// since a release compilation does not actually constrain the addition
 }
-
-/* GETTERS */
 
 bool tree::can_add_edge(node u, node v) const {
 	assert(has_node(u));
@@ -131,6 +137,12 @@ void tree::tree_init(uint32_t n) {
 void tree::tree_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
+}
+
+void tree::move_only_tree(tree&& t) {
+	// move this class' members
+	m_root_of = std::move(t.m_root_of);
+	m_root_size = std::move(t.m_root_size);
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {

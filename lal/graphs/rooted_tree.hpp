@@ -106,10 +106,12 @@ namespace graphs {
  */
 class rooted_tree : public directed_graph, virtual public tree {
 	public:
+		/* CONSTRUCTORS */
+
 		/// Default constructor.
 		rooted_tree() = default;
-		/// Default move constructor.
-		rooted_tree(rooted_tree&&) = default;
+		/// Move constructor.
+		rooted_tree(rooted_tree&&);
 		/// Default copy constructor.
 		rooted_tree(const rooted_tree&) = default;
 		/// Constructor with number of nodes and root node.
@@ -119,8 +121,10 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// Default destructor
 		virtual ~rooted_tree() = default;
 
-		/// Default move assignment operator.
-		rooted_tree& operator= (rooted_tree&&) = default;
+		/* OPERATORS */
+
+		/// Move assignment operator.
+		rooted_tree& operator= (rooted_tree&&);
 		/// Default copy assignment operator.
 		rooted_tree& operator= (const rooted_tree&) = default;
 
@@ -429,7 +433,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 
 	protected:
 		/// Root of the tree.
-		node m_root;
+		node m_root = 0;
 		/// Has the root been set?
 		bool m_has_root = false;
 
@@ -453,6 +457,9 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
 		/// @ref graph classes.
 		virtual void _clear();
+
+		/// Moves all members of this class and the parent class.
+		void move_full_rooted_tree(rooted_tree&& r);
 
 	private:
 		using directed_graph::disjoint_union;

@@ -68,6 +68,8 @@ namespace graphs {
  */
 class graph {
 	public:
+		/* CONSTRUCTORS */
+
 		/// Default constructor.
 		graph() = default;
 		/**
@@ -75,10 +77,19 @@ class graph {
 		 * @param n Number of nodes.
 		 */
 		graph(uint32_t n);
+		/// Default move constructor.
+		graph(graph&&) = default;
+		/// Default copy constructor.
+		graph(const graph&) = default;
 		/// Default destructor.
 		virtual ~graph() = default;
 
 		/* OPERATORS */
+
+		/// Move assignment operator.
+		graph& operator= (graph&&) = default;
+		/// Default copy assignment operator.
+		graph& operator= (const graph&) = default;
 
 		/* MODIFIERS */
 
@@ -217,6 +228,8 @@ class graph {
 		virtual void _init(uint32_t n);
 		/// Clears memory for the @ref graph class.
 		virtual void _clear();
+		/// Moves all members of this class.
+		void move_full_graph(graph&& g);
 
 		/**
 		 * @brief Disjoint union of graphs.

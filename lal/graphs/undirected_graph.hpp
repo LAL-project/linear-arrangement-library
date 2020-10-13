@@ -66,10 +66,12 @@ namespace graphs {
  */
 class undirected_graph : virtual public graph {
 	public:
+		/* CONSTRUCTORS */
+
 		/// Default constructor.
 		undirected_graph() = default;
 		/// Default move constructor.
-		undirected_graph(undirected_graph&&) = default;
+		undirected_graph(undirected_graph&&);
 		/// Default copy constructor.
 		undirected_graph(const undirected_graph&) = default;
 		/**
@@ -82,8 +84,8 @@ class undirected_graph : virtual public graph {
 
 		/* OPERATORS */
 
-		/// Default move assignment operator.
-		undirected_graph& operator= (undirected_graph&&) = default;
+		/// Move assignment operator.
+		undirected_graph& operator= (undirected_graph&&);
 		/// Default copy assignment operator.
 		undirected_graph& operator= (const undirected_graph&) = default;
 
@@ -247,6 +249,9 @@ class undirected_graph : virtual public graph {
 		virtual void _init(uint32_t n);
 		/// Clears the memory of @ref undirected_graph and @ref graph classes.
 		virtual void _clear();
+
+		/// Moves all members of this class and the parent class.
+		void move_full_undirected_graph(undirected_graph&& g);
 
 	private:
 		/**

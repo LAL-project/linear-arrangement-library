@@ -55,7 +55,8 @@ using namespace internal;
 
 namespace graphs {
 
-//rtree::rtree() { }
+/* CONSTRUCTORS */
+
 rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
 	rooted_tree::_init(n);
 }
@@ -63,7 +64,16 @@ rooted_tree::rooted_tree(const free_tree& t, node r) {
 	rooted_tree::_init(t.n_nodes());
 	init_rooted(t, r);
 }
-//rtree::~rtree() { }
+rooted_tree::rooted_tree(rooted_tree&& r) {
+	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
+}
+
+/* OPERATORS */
+
+rooted_tree& rooted_tree::operator= (rooted_tree&& r) {
+	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
+	return *this;
+}
 
 /* MODIFIERS */
 
@@ -387,6 +397,26 @@ void rooted_tree::_clear() {
 	tree::tree_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
+}
+
+void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
+	// move-assign directed_graph class
+	move_full_directed_graph(std::move(static_cast<directed_graph&>(r)));
+
+	// move-assign only tree's members
+	move_only_tree(std::move(static_cast<tree&>(r)));
+
+	// move this class' members
+	m_root = std::move(r.m_root);
+	m_has_root = std::move(r.m_has_root);
+	m_valid_orientation = std::move(r.m_valid_orientation);
+	m_size_subtrees = std::move(r.m_size_subtrees);
+	m_need_recalc_size_subtrees = std::move(r.m_need_recalc_size_subtrees);
+
+	r.m_root = 0;
+	r.m_has_root = false;
+	r.m_valid_orientation = false;
+	r.m_need_recalc_size_subtrees = true;
 }
 
 } // -- namespace graphs

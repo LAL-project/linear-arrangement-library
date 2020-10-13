@@ -54,15 +54,21 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* PUBLIC */
+/* CONSTRUCTORS */
 
-//ugraph::ugraph() : graph() { }
+undirected_graph::undirected_graph(undirected_graph&& u) {
+	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
+}
 undirected_graph::undirected_graph(uint32_t n) {
 	init(n);
 }
-//ugraph::~ugraph() { }
 
 /* OPERATORS */
+
+undirected_graph& undirected_graph::operator= (undirected_graph&& u) {
+	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
+	return *this;
+}
 
 /* MODIFIERS */
 
@@ -287,6 +293,13 @@ void undirected_graph::_init(uint32_t n) {
 
 void undirected_graph::_clear() {
 	graph::_clear();
+}
+
+void undirected_graph::move_full_undirected_graph(undirected_graph&& u) {
+	// move-assign parent class
+	move_full_graph(std::move(static_cast<graph&>(u)));
+
+	// move-assign this class' members
 }
 
 /* PRIVATE */

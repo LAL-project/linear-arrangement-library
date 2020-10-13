@@ -67,10 +67,12 @@ namespace graphs {
  */
 class directed_graph : virtual public graph {
 	public:
+		/* CONSTRUCTORS */
+
 		/// Default constructor.
 		directed_graph() = default;
-		/// Default move constructor.
-		directed_graph(directed_graph&&) = default;
+		/// Move constructor.
+		directed_graph(directed_graph&&);
 		/// Default copy constructor.
 		directed_graph(const directed_graph&) = default;
 		/**
@@ -81,8 +83,10 @@ class directed_graph : virtual public graph {
 		/// Default destructor.
 		virtual ~directed_graph() = default;
 
-		/// Default move assignment operator.
-		directed_graph& operator= (directed_graph&&) = default;
+		/* OPERATORS */
+
+		/// Move assignment operator.
+		directed_graph& operator= (directed_graph&&);
 		/// Default copy assignment operator.
 		directed_graph& operator= (const directed_graph&) = default;
 
@@ -283,6 +287,8 @@ class directed_graph : virtual public graph {
 		virtual void _init(uint32_t n);
 		/// Clears the memory of @ref directed_graph and @ref graph classes.
 		virtual void _clear();
+		/// Moves all members of this class and the parent class.
+		void move_full_directed_graph(directed_graph&& g);
 
 	private:
 

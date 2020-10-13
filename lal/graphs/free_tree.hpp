@@ -58,10 +58,12 @@ namespace graphs {
  */
 class free_tree : public undirected_graph, virtual public tree {
 	public:
+		/* CONSTRUCTORS */
+
 		/// Default constructor.
 		free_tree() = default;
-		/// Default move constructor.
-		free_tree(free_tree&&) = default;
+		/// Move constructor.
+		free_tree(free_tree&&);
 		/// Default copy constructor.
 		free_tree(const free_tree&) = default;
 		/// Default constructor.
@@ -75,8 +77,10 @@ class free_tree : public undirected_graph, virtual public tree {
 		/// Default destructor.
 		virtual ~free_tree() = default;
 
-		/// Default move assignment operator.
-		free_tree& operator= (free_tree&&) = default;
+		/* OPERATORS */
+
+		/// Move assignment operator.
+		free_tree& operator= (free_tree&&);
 		/// Default copy assignment operator.
 		free_tree& operator= (const free_tree&) = default;
 
@@ -151,6 +155,9 @@ class free_tree : public undirected_graph, virtual public tree {
 		/// Clears the memory of @ref free_tree, @ref undirected_graph and
 		/// @ref graph classes.
 		virtual void _clear();
+
+		/// Moves all members of this class and the parent class.
+		void move_full_free_tree(free_tree&& f);
 
 	private:
 		using undirected_graph::disjoint_union;

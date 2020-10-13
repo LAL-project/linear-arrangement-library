@@ -60,13 +60,15 @@ using namespace iterators;
 
 namespace graphs {
 
-/* PUBLIC */
+/* CONSTRUCTORS */
 
-//graph::graph() { }
 graph::graph(uint32_t n) {
 	_init(n);
 }
-//graph::~graph() { }
+
+/* OPERATORS */
+
+/* MODIFIERS */
 
 void graph::init(uint32_t n) {
 	_clear();
@@ -77,13 +79,8 @@ void graph::clear() {
 	_clear();
 }
 
-/* OPERATORS */
-
-/* MODIFIERS */
-
 void graph::normalise() {
 	char *mem = new char[n_nodes()]{0};
-
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
@@ -92,7 +89,6 @@ void graph::normalise() {
 		}
 	}
 	m_normalised = true;
-
 	delete[] mem;
 }
 
@@ -140,6 +136,15 @@ void graph::_clear() {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list.clear();
+}
+
+void graph::move_full_graph(graph&& g) {
+	m_adjacency_list = std::move(g.m_adjacency_list);
+	m_num_edges = std::move(g.m_num_edges);
+	m_normalised = std::move(g.m_normalised);
+
+	g.m_num_edges = 0;
+	g.m_normalised = false;
 }
 
 void graph::__disjoint_union(const graph& g) {
