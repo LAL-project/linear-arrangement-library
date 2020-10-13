@@ -67,11 +67,10 @@ rational::rational(const std::string& s) {
 }
 
 rational::rational(integer&& i) {
-	// If 'r' is not initialized then 'this->m_val[0]' attributes
-	// will contain unitialised attributes, which can cause
-	// undefined behaviour when clearing *this. Also, valgrind
-	// will complain when testing.
-	assert(i.is_initialized());
+	if (not i.is_initialized()) {
+		clear();
+		return;
+	}
 
 	if (is_initialized()) {
 		// if this rational was initialised (and quite likely,
@@ -85,11 +84,10 @@ rational::rational(integer&& i) {
 }
 
 rational::rational(rational&& r) {
-	// If 'r' is not initialized then 'this->m_val[0]' attributes
-	// will contain unitialised attributes, which can cause
-	// undefined behaviour when clearing *this. Also, valgrind
-	// will complain when testing.
-	assert(r.is_initialized());
+	if (not r.is_initialized()) {
+		clear();
+		return;
+	}
 
 	if (is_initialized()) {
 		// if this rational was initialised (and quite likely,
@@ -188,6 +186,7 @@ rational& rational::operator= (int64_t i) {
 
 rational& rational::operator= (const integer& i) {
 	if (not i.is_initialized()) {
+		clear();
 		return *this;
 	}
 
@@ -197,6 +196,7 @@ rational& rational::operator= (const integer& i) {
 
 rational& rational::operator= (const rational& r) {
 	if (not r.is_initialized()) {
+		clear();
 		return *this;
 	}
 
@@ -207,6 +207,7 @@ rational& rational::operator= (const rational& r) {
 
 rational& rational::operator= (integer&& i) {
 	if (not i.is_initialized()) {
+		clear();
 		return *this;
 	}
 
@@ -224,6 +225,7 @@ rational& rational::operator= (integer&& i) {
 
 rational& rational::operator= (rational&& r) {
 	if (not r.is_initialized()) {
+		clear();
 		return *this;
 	}
 
@@ -362,24 +364,6 @@ size_t rational::bytes() const {
 
 /* CONVERTERS */
 
-string rational::to_string() const {
-	string k;
-	as_string(k);
-	return k;
-}
-
-void rational::as_string(string& s) const {
-	if (not is_initialized()) {
-		s = "uninitialized";
-		return;
-	}
-
-	char *buf = nullptr;
-	buf = mpq_get_str(buf, 10, m_val);
-	s = string(buf);
-	free(buf);
-}
-
 integer rational::to_integer() const {
 	integer i(0);
 	as_integer(i);
@@ -409,6 +393,44 @@ double rational::to_double() const {
 
 void rational::as_double(double& d) const {
 	d = mpq_get_d(m_val);
+}
+
+string rational::to_string() const {
+	string k;
+	as_string(k);
+	return k;
+}
+
+void rational::as_string(string& s) const {
+	if (not is_initialized()) {
+		s = "uninitialized";
+		return;
+	}
+
+	char *buf = nullptr;
+	buf = mpq_get_str(buf, 10, m_val);
+	s = string(buf);
+	free(buf);
+}
+
+void rational::swap(rational& r) {
+	const bool this_ini = is_initialized();
+	const bool i_ini = r.is_initialized();
+
+	if (not this_ini and not i_ini) {
+		// do nothing
+		return;
+	}
+	else if (not this_ini and i_ini) {
+		*this = std::move(r);
+	}
+	else if (this_ini and not i_ini) {
+		r = std::move(*this);
+	}
+	else {
+		// simply swap the values
+		mpq_swap(m_val, r.m_val);
+	}
 }
 
 // PRIVATE

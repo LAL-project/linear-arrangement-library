@@ -70,11 +70,10 @@ integer::integer(const std::string& s) {
 }
 
 integer::integer(integer&& i) {
-	// If 'i' is not initialized then 'this->m_val[0]' attributes
-	// will contain unitialised attributes, which can cause
-	// undefined behaviour when clearing *this. Also, valgrind
-	// will complain when testing.
-	assert(i.is_initialized());
+	if (not i.is_initialized()) {
+		clear();
+		return;
+	}
 
 	if (is_initialized()) {
 		// if this integer was initialised (and quite likely,
@@ -151,7 +150,10 @@ integer& integer::operator= (int64_t i) {
 }
 
 integer& integer::operator= (const integer& i) {
-	assert(i.is_initialized());
+	if (not i.is_initialized()) {
+		clear();
+		return *this;
+	}
 
 	init();
 	mpz_set(m_val, i.m_val);
@@ -159,7 +161,10 @@ integer& integer::operator= (const integer& i) {
 }
 
 integer& integer::operator= (integer&& i) {
-	assert(i.is_initialized());
+	if (not i.is_initialized()) {
+		clear();
+		return *this;
+	}
 
 	if (is_initialized()) {
 		// if this integer was initialised (and quite likely,
@@ -274,6 +279,8 @@ const mpz_t& integer::get_raw_value() const {
 	return m_val;
 }
 
+/* CONVERTERS */
+
 int64_t integer::to_int() const {
 	return mpz_get_si(m_val);
 }
@@ -285,16 +292,6 @@ uint64_t integer::to_uint() const {
 double integer::to_double() const {
 	return mpz_get_d(m_val);
 }
-
-void integer::swap(integer& i) {
-	if (is_initialized() or i.is_initialized()) {
-		init();
-		i.init();
-		mpz_swap(m_val, i.m_val);
-	}
-}
-
-/* CONVERTERS */
 
 string integer::to_string() const {
 	std::string k;
@@ -312,6 +309,28 @@ void integer::as_string(string& s) const {
 	buf = mpz_get_str(buf, 10, m_val);
 	s = std::string(buf);
 	free(buf);
+}
+
+/* OTHERS */
+
+void integer::swap(integer& i) {
+	const bool this_ini = is_initialized();
+	const bool i_ini = i.is_initialized();
+
+	if (not this_ini and not i_ini) {
+		// do nothing
+		return;
+	}
+	else if (not this_ini and i_ini) {
+		*this = std::move(i);
+	}
+	else if (this_ini and not i_ini) {
+		i = std::move(*this);
+	}
+	else {
+		// simply swap the values
+		mpz_swap(m_val, i.m_val);
+	}
 }
 
 // PRIVATE

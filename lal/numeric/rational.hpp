@@ -265,11 +265,6 @@ class rational {
 
 		/* CONVERTERS */
 
-		/// Converts this integer to a string.
-		std::string to_string() const;
-		/// Converts this integer to a string.
-		void as_string(std::string& s) const;
-
 		/**
 		 * @brief Converts this rational to an integer value.
 		 * @return Returns \f$ \left\lfloor n/d \right\rfloor \f$ where
@@ -287,6 +282,24 @@ class rational {
 		double to_double() const;
 		/// Converts this rational to a double-precision floating-point value.
 		void as_double(double& d) const;
+
+		/// Converts this integer to a string.
+		std::string to_string() const;
+		/// Converts this integer to a string.
+		void as_string(std::string& s) const;
+
+		/* OTHERS */
+
+		/**
+		 * @brief Swaps the value of this rational with rational @e r's value.
+		 *
+		 * - If none of the rationals is initialised, it does nothing.
+		 * - If only one of the rationals is initialised, moves the contents
+		 * of the initialised rational to the other. At the end, one of the two
+		 * rationals is left uninitiliased.
+		 * - If both rationals are initialised, swaps the values they contain.
+		 */
+		void swap(rational& r);
 
 	private:
 		/// Initialises this rational with the value in @e mpq.

@@ -219,6 +219,9 @@ class integer {
 		size_t bytes() const;
 		/// Returns the underlying gmp data structure.
 		const mpz_t& get_raw_value() const;
+
+		/* CONVERTERS */
+
 		/// Converts this integer to a signed 64-bit integer.
 		int64_t to_int() const;
 		/// Converts this integer to an unsigned 64-bit integer.
@@ -226,15 +229,23 @@ class integer {
 		/// Converts this integer to a double-precision floating-point value.
 		double to_double() const;
 
-		/// Swaps the value of this integer with integer @e i's value.
-		void swap(integer& i);
-
-		/* CONVERTERS */
-
 		/// Converts this integer to a string.
 		std::string to_string() const;
 		/// Converts this integer to a string.
 		void as_string(std::string& s) const;
+
+		/* OTHERS */
+
+		/**
+		 * @brief Swaps the value of this integer with integer @e i's value.
+		 *
+		 * - If none of the integers is initialised, it does nothing.
+		 * - If only one of the integers is initialised, moves the contents
+		 * of the initialised integer to the other. At the end, one of the two
+		 * integers is left uninitiliased.
+		 * - If both integers are initialised, swaps the values they contain.
+		 */
+		void swap(integer& i);
 
 	private:
 		/// Initialises this integer with the value in @e mpz.
