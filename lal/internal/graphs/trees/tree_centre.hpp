@@ -45,14 +45,12 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <iostream>
 #include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/graphs/output.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
