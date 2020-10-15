@@ -80,7 +80,7 @@ integer::integer(integer&& i) {
 		// given a value) the mpz_t must be freed
 		mpz_clear(m_val);
 	}
-	// steal 'i's contents
+	// move 'i's contents
 	internal::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
@@ -171,7 +171,7 @@ integer& integer::operator= (integer&& i) {
 		// given a value) the mpz_t must be freed
 		mpz_clear(m_val);
 	}
-	// steal 'i's contents
+	// move 'i's contents
 	internal::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
 	i.m_initialized = false; // better be safe than sorry
@@ -262,10 +262,6 @@ integer integer::operator% (const integer& i) const {
 }
 
 /* GETTERS */
-
-bool integer::is_initialized() const {
-	return m_initialized;
-}
 
 int32_t integer::get_sign() const {
 	return mpz_sgn(m_val);

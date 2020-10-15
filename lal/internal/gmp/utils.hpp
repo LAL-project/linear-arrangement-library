@@ -139,14 +139,29 @@ void move_mpq_to_mpq(mpq_t& source, mpq_t& target);
  * @brief Move the contents from 'source' to 'target'.
  *
  * The contents are moved in a way that 'source' no longer has them.
- * @param[in] source The mpq_t whose contents we want.
+ * @param[in] source The mpz_t whose contents we want (numerator).
+ * @param[out] target The mpq_t with the contents of 'source'.
+ * @pre @e source must be initialised.
+ * @pre @e target should not be initialised (otherwise its contents
+ * are never going to be freed, thus causing memory leaks).
+ * @post @e source does not hold any value.
+ * @post The denominator of @e target is initialised to 1
+ */
+void move_mpz_to_mpq(mpz_t& source, mpq_t& target);
+
+/*
+ * @brief Move the contents from 'source' to 'target'.
+ *
+ * The contents are moved in a way that 'source' no longer has them.
+ * @param[in] source_n The mpz_t whose contents we want (numerator).
+ * @param[in] source_d The mpz_t whose contents we want (denominator).
  * @param[out] target The mpq_t with the contents of 'source'.
  * @pre @e source must be initialised.
  * @pre @e target should not be initialised (otherwise its contents
  * are never going to be freed, thus causing memory leaks).
  * @post @e source does not hold any value.
  */
-void move_mpz_to_mpq(mpz_t& source, mpq_t& target);
+void move_mpz_to_mpq(mpz_t& source_n, mpz_t& source_d, mpq_t& target);
 
 } // -- namespace internal
 } // -- namespace lal

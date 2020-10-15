@@ -211,7 +211,7 @@ class integer {
 		/* GETTERS */
 
 		/// Returns whether this object is initialised or not.
-		bool is_initialized() const;
+		constexpr bool is_initialized() const { return m_initialized; }
 		/// Returns the sign of this integer.
 		int32_t get_sign() const;
 

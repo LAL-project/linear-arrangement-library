@@ -84,8 +84,10 @@ class rational {
 		rational(const integer& n, const integer& d = 1);
 		/// Constructor with string.
 		rational(const std::string& s);
-		/// Move constructor.
-		rational(integer&& r);
+		/// Move constructor with one integer.
+		rational(integer&& n);
+		/// Move constructor with two integers.
+		rational(integer&& n, integer&& d);
 		/// Move constructor.
 		rational(rational&& r);
 		/// Copy constructor.
@@ -256,7 +258,7 @@ class rational {
 		/* GETTERS */
 
 		/// Returns whether this object is initialised or not.
-		bool is_initialized() const;
+		constexpr bool is_initialized() const { return m_initialized; }
 		/// Returns the sign of this rational.
 		int32_t get_sign() const;
 

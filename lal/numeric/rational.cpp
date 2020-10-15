@@ -59,6 +59,7 @@ rational::rational(int64_t n, uint64_t d) {
 }
 
 rational::rational(const integer& n, const integer& d) {
+	if (not n.is_initialized() or not d.is_initialized()) { clear(); return; }
 	init_integer(n, d);
 }
 
@@ -66,41 +67,52 @@ rational::rational(const std::string& s) {
 	init_str(s);
 }
 
-rational::rational(integer&& i) {
-	if (not i.is_initialized()) {
-		clear();
-		return;
-	}
+rational::rational(integer&& n) {
+	if (not n.is_initialized()) { clear(); return; }
 
 	if (is_initialized()) {
 		// if this rational was initialised (and quite likely,
 		// given a value) the mpq_t must be freed
 		clear();
 	}
-	// steal 'r's contents
-	internal::move_mpz_to_mpq(i.m_val, m_val);
+	// move 'n's contents and initialise denominator to 1
+	internal::move_mpz_to_mpq(n.m_val, m_val);
 	m_initialized = true;
-	i.m_initialized = false; // better be safe than sorry
+	n.m_initialized = false;
+}
+
+rational::rational(integer&& n, integer&& d) {
+	if (not n.is_initialized() or not d.is_initialized()) { clear(); return; }
+
+	if (is_initialized()) {
+		// if this rational was initialised (and quite likely,
+		// given a value) the mpq_t must be freed
+		clear();
+	}
+
+	// move 'n's contents and initialise denominator to 1
+	internal::move_mpz_to_mpq(n.m_val, d.m_val, m_val);
+	m_initialized = true;
+	n.m_initialized = false;
+	d.m_initialized = false;
 }
 
 rational::rational(rational&& r) {
-	if (not r.is_initialized()) {
-		clear();
-		return;
-	}
+	if (not r.is_initialized()) { clear(); return; }
 
 	if (is_initialized()) {
 		// if this rational was initialised (and quite likely,
 		// given a value) the mpq_t must be freed
 		clear();
 	}
-	// steal 'r's contents
+	// move 'r's contents
 	internal::move_mpq_to_mpq(r.m_val, m_val);
 	m_initialized = true;
 	r.m_initialized = false; // better be safe than sorry
 }
 
 rational::rational(const rational& r) {
+	if (not r.is_initialized()) { clear(); return; }
 	init_mpq(r.m_val);
 }
 
@@ -111,9 +123,7 @@ rational::~rational() {
 /* ALLOC AND DEALLOC */
 
 void rational::init() {
-	if (is_initialized()) {
-		return;
-	}
+	if (is_initialized()) { return; }
 	mpq_init(m_val);
 	m_initialized = true;
 }
@@ -143,8 +153,8 @@ void rational::init_integer(const integer& n, const integer& d) {
 void rational::clear() {
 	if (is_initialized()) {
 		mpq_clear(m_val);
-		m_initialized = false;
 	}
+	m_initialized = false;
 }
 
 /* SET VALUE */
@@ -175,12 +185,7 @@ void rational::invert() {
 /* OPERATORS */
 
 rational& rational::operator= (int64_t i) {
-	if (is_initialized()) {
-		set_si(i);
-	}
-	else {
-		init_si(i);
-	}
+	init_si(i);
 	return *this;
 }
 
@@ -216,10 +221,10 @@ rational& rational::operator= (integer&& i) {
 		// given a value) the mpq_t must be freed
 		clear();
 	}
-	// steal 'r's contents
+	// move 'r's contents
 	internal::move_mpz_to_mpq(i.m_val, m_val);
 	m_initialized = true;
-	i.m_initialized = false; // better be safe than sorry
+	i.m_initialized = false; // i is no longer initialised
 	return *this;
 }
 
@@ -234,10 +239,10 @@ rational& rational::operator= (rational&& r) {
 		// given a value) the mpq_t must be freed
 		clear();
 	}
-	// steal 'r's contents
+	// move 'r's contents
 	internal::move_mpq_to_mpq(r.m_val, m_val);
 	m_initialized = true;
-	r.m_initialized = false; // better be safe than sorry
+	r.m_initialized = false; // r is no longer initialised
 	return *this;
 }
 
@@ -334,10 +339,6 @@ rational& rational::operator^= (const integer& p) {
 }
 
 /* GETTERS */
-
-bool rational::is_initialized() const {
-	return m_initialized;
-}
 
 int rational::get_sign() const {
 	return mpq_sgn(m_val);
