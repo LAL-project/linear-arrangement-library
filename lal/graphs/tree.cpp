@@ -46,7 +46,6 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {
@@ -106,7 +105,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 	}
 
 	vector<uint32_t> _root_of = m_root_of;
-	vector<uint32_t> _size_of = m_root_size;
+	vector<uint32_t> _root_size = m_root_size;
 
 	for (const edge& e : edges) {
 		const node u = e.first;
@@ -118,7 +117,9 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 		// either the edge exists or there
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
-		internal::UnionFind_update_roots_add(*this, u, v, _root_of, _size_of);
+		internal::UnionFind_update_roots_add(
+			*this, u, v, &_root_of[0], &_root_size[0]
+		);
 	}
 	return true;
 }
@@ -126,8 +127,8 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 /* PROTECTED */
 
 void tree::tree_init(uint32_t n) {
-	m_root_of = vector<uint32_t>(n, n);
-	m_root_size = vector<uint32_t>(n, 0);
+	m_root_of = vector<uint32_t>(n);
+	m_root_size = vector<uint32_t>(n);
 	for (node u = 0; u < n; ++u) {
 		m_root_of[u] = u;
 		m_root_size[u] = 1;
@@ -146,10 +147,14 @@ void tree::move_only_tree(tree&& t) {
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {
-	internal::UnionFind_update_roots_add(*this, u, v, m_root_of, m_root_size);
+	internal::UnionFind_update_roots_add(
+		*this, u, v, &m_root_of[0], &m_root_size[0]
+	);
 }
 void tree::extra_work_per_edge_remove(node u, node v) {
-	internal::UnionFind_update_roots_remove(*this, u, v, m_root_of, m_root_size);
+	internal::UnionFind_update_roots_remove(
+		*this, u, v, &m_root_of[0], &m_root_size[0]
+	);
 }
 
 } // -- namespace graphs

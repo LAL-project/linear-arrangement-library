@@ -42,10 +42,7 @@
 #pragma once
 
 // C++ includes
-#if defined DEBUG
 #include <cassert>
-#endif
-#include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -57,7 +54,8 @@ namespace internal {
 template<class T>
 void UnionFind_update_roots_add(
 	const T& t, node u, node v,
-	std::vector<node>& root_of, std::vector<uint32_t>& root_size
+	node *root_of,
+	uint32_t *root_size
 )
 {
 	// 'u' and 'v' are not connected, so they belong to
@@ -109,13 +107,12 @@ void UnionFind_update_roots_add(
 template<class T>
 void UnionFind_update_roots_remove(
 	const T& t, node u, node v,
-	std::vector<node>& root_of, std::vector<uint32_t>& root_size
+	node *root_of,
+	uint32_t *root_size
 )
 {
 	// 'u' and 'v' are connected
-#if defined DEBUG
 	assert(root_of[u] == root_of[v]);
-#endif
 
 	const uint32_t size_uv = root_size[root_of[u]];
 
