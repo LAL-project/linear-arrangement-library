@@ -57,7 +57,7 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-rooted_tree::rooted_tree(uint32_t n) : directed_graph(n) {
+rooted_tree::rooted_tree(uint32_t n) {
 	rooted_tree::_init(n);
 }
 rooted_tree::rooted_tree(const free_tree& t, node r) {
@@ -92,6 +92,16 @@ rooted_tree& rooted_tree::add_edges(
 {
 	assert(can_add_edges(edges));
 	directed_graph::add_edges(edges, norm, check_norm);
+	return *this;
+}
+
+rooted_tree& rooted_tree::add_all_edges(
+	const vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
+	assert(can_add_edges(edges));
+	directed_graph::add_all_edges(edges, to_norm, check_norm);
+	fill_union_find();
 	return *this;
 }
 
@@ -240,7 +250,8 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	// set root, add edges, and set valid orientation
 	set_root(r);
 	m_valid_orientation = true;
-	add_edges(dir_edges);
+	add_all_edges(dir_edges);
+	fill_union_find();
 }
 
 void rooted_tree::calculate_size_subtrees() {
@@ -377,7 +388,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
 	sub.m_valid_orientation = true;
-	sub.add_edges(es);
+	sub.add_all_edges(es);
 	return sub;
 }
 
@@ -388,13 +399,13 @@ free_tree rooted_tree::to_undirected() const {
 /* PROTECTED */
 
 void rooted_tree::_init(uint32_t n) {
-	tree::tree_init(n);
+	tree::tree_only_init(n);
 	directed_graph::_init(n);
 	m_size_subtrees = vector<uint32_t>(n);
 }
 
 void rooted_tree::_clear() {
-	tree::tree_clear();
+	tree::tree_only_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
 }
@@ -404,14 +415,14 @@ void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
 	move_full_directed_graph(std::move(static_cast<directed_graph&>(r)));
 
 	// move-assign only tree's members
-	move_only_tree(std::move(static_cast<tree&>(r)));
+	tree_only_move(std::move(static_cast<tree&>(r)));
 
 	// move this class' members
-	m_root = std::move(r.m_root);
-	m_has_root = std::move(r.m_has_root);
-	m_valid_orientation = std::move(r.m_valid_orientation);
+	m_root = r.m_root;
+	m_has_root = r.m_has_root;
+	m_valid_orientation = r.m_valid_orientation;
 	m_size_subtrees = std::move(r.m_size_subtrees);
-	m_need_recalc_size_subtrees = std::move(r.m_need_recalc_size_subtrees);
+	m_need_recalc_size_subtrees = r.m_need_recalc_size_subtrees;
 
 	r.m_root = 0;
 	r.m_has_root = false;

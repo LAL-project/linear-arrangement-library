@@ -90,15 +90,16 @@ rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	rooted_tree rT(m_n);
 	vector<edge> edges(m_n - 1);
 	for (node u = 1; u < m_n; ++u) {
 		// in order to construct an arborescence
 		// orient edges away from the root (node 0).
 		edges[u - 1] = edge(m_tree[u], u);
 	}
+
+	rooted_tree rT(m_n);
 	rT.set_root(0);
-	rT.add_edges(edges);
+	rT.add_all_edges(edges);
 	rT.set_valid_orientation(true);
 	return rT;
 }

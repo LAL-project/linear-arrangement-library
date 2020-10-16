@@ -164,15 +164,25 @@ class tree : virtual public graph {
 		std::vector<uint32_t> m_root_size;
 
 	protected:
-		/// Initialises memory of @ref tree classes.
-		virtual void tree_init(uint32_t n);
-		/// Clears the memory used by this rooted tree.
-		virtual void tree_clear();
-		/// Moves all members of this class and the parent class.
-		void move_only_tree(tree&& g);
+		/**
+		 * @brief Initialises only the memory of class @ref tree.
+		 * @param n Number of vertices
+		 * @param init_UF
+		 * - If false, initialises the Union-Find data
+		 * structure to represent the independent set of n vertices.
+		 * - If false, it only allocates its memory.
+		 */
+		void tree_only_init(uint32_t n);
+		/// Clears the memory used by only class @ref tree.
+		void tree_only_clear();
+		/// Moves only members of class @ref tree.
+		void tree_only_move(tree&& g);
 
 		void extra_work_per_edge_add(node u, node v);
 		void extra_work_per_edge_remove(node u, node v);
+
+		/// Fills the Union-Find data structure assuming that the tree is complete.
+		void fill_union_find();
 };
 
 } // -- namespace graphs

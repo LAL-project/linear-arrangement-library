@@ -54,17 +54,17 @@ namespace graphs {
 /* CONSTRUCTORS */
 
 free_tree::free_tree(uint32_t n) : undirected_graph(n) {
-	free_tree::_init(n);
+	free_tree::tree_only_init(n);
+}
+free_tree::free_tree(free_tree&& f) {
+	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
 }
 free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
 	// check that the input graph is a ftree
 	assert(internal::is_graph_a_tree(t));
 
-	free_tree::_init(t.n_nodes());
-	add_edges(t.edges());
-}
-free_tree::free_tree(free_tree&& f) {
-	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
+	free_tree::tree_only_init(t.n_nodes());
+	add_all_edges(t.edges());
 }
 
 /* OPERATORS */
@@ -91,6 +91,16 @@ free_tree& free_tree::add_edges(
 	return *this;
 }
 
+free_tree& free_tree::add_all_edges(
+	const vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
+	assert(can_add_edges(edges));
+	undirected_graph::add_all_edges(edges, to_norm, check_norm);
+	fill_union_find();
+	return *this;
+}
+
 void free_tree::disjoint_union(const free_tree& t) {
 	const node prev_n = n_nodes();
 	if (prev_n == 0) {
@@ -99,8 +109,8 @@ void free_tree::disjoint_union(const free_tree& t) {
 	}
 
 	// tree 't' and tree 'this' do not have cycles, so the disjoint
-	// union of both trees does not have cycles.
-	// Nothing to check.
+	// union of both trees does not have cycles. However, the resulting
+	// tree will lack an edge.
 	undirected_graph::disjoint_union(t);
 
 	// join union-find
@@ -119,13 +129,13 @@ void free_tree::disjoint_union(const free_tree& t) {
 /* PROTECTED */
 
 void free_tree::_init(uint32_t n) {
-	tree::tree_init(n);
 	undirected_graph::_init(n);
+	tree::tree_only_init(n);
 }
 
 void free_tree::_clear() {
-	tree::tree_clear();
 	undirected_graph::_clear();
+	tree::tree_only_clear();
 }
 
 void free_tree::move_full_free_tree(free_tree&& f) {
@@ -133,7 +143,7 @@ void free_tree::move_full_free_tree(free_tree&& f) {
 	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(f)));
 
 	// move-assign only tree's members
-	move_only_tree(std::move(static_cast<tree&>(f)));
+	tree_only_move(std::move(static_cast<tree&>(f)));
 
 	// move this class' members
 }

@@ -54,13 +54,13 @@ namespace graphs {
 /* CONSTRUCTORS */
 
 tree::tree(tree&& t) {
-	move_only_tree(std::move(static_cast<tree&>(t)));
+	tree_only_move(std::move(static_cast<tree&>(t)));
 }
 
 /* OPERATORS */
 
 tree& tree::operator= (tree&& t) {
-	move_only_tree(std::move(static_cast<tree&>(t)));
+	tree_only_move(std::move(static_cast<tree&>(t)));
 	return *this;
 }
 
@@ -126,7 +126,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 
 /* PROTECTED */
 
-void tree::tree_init(uint32_t n) {
+void tree::tree_only_init(uint32_t n) {
 	m_root_of = vector<uint32_t>(n);
 	m_root_size = vector<uint32_t>(n);
 	for (node u = 0; u < n; ++u) {
@@ -135,12 +135,12 @@ void tree::tree_init(uint32_t n) {
 	}
 }
 
-void tree::tree_clear() {
+void tree::tree_only_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
 }
 
-void tree::move_only_tree(tree&& t) {
+void tree::tree_only_move(tree&& t) {
 	// move this class' members
 	m_root_of = std::move(t.m_root_of);
 	m_root_size = std::move(t.m_root_size);
@@ -155,6 +155,15 @@ void tree::extra_work_per_edge_remove(node u, node v) {
 	internal::UnionFind_update_roots_remove(
 		*this, u, v, &m_root_of[0], &m_root_size[0]
 	);
+}
+
+void tree::fill_union_find() {
+	for (node u = 0; u < n_nodes(); ++u) {
+		// all vertices point to root zero
+		m_root_of[u] = 0;
+	}
+	// the size of the connected component of the root 0 is n
+	m_root_size[0] = n_nodes();
 }
 
 } // -- namespace graphs

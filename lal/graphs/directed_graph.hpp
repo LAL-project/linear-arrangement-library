@@ -92,29 +92,15 @@ class directed_graph : virtual public graph {
 
 		/* MODIFIERS */
 
-		/**
-		 * @brief Normalises the graph.
-		 *
-		 * Sorts every node's out- and in-adjacency list in increasing order.
-		 *
-		 * Besides expensive, this method may be unnecessary. Method
-		 * @ref check_normalised() checks whether the graph is normalised or
-		 * not; in case it is, using this method is completely unnecessary.
-		 * @post Method @ref is_normalised evaluates to true.
-		 */
 		void normalise();
 
-		/**
-		 * @brief Checks if the graph is normalised.
-		 *
-		 * Checks, whether the graph is normalised or not. In case it is,
-		 * attribute @ref m_normalised is set to true, so method
-		 * @ref is_normalised evaluates to true.
-		 */
 		bool check_normalised();
 
 		/**
 		 * @brief Adds a directed edge to the graph.
+		 *
+		 * For developers: method @ref directed_graph::extra_work_per_edge is
+		 * called after the edge has been added.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Normalise the graph after the insertion.
@@ -135,6 +121,9 @@ class directed_graph : virtual public graph {
 		 *
 		 * This operation is faster than adding edges one by one with
 		 * @ref add_edge(node,node,bool,bool) since the edges are added in bulk.
+		 *
+		 * For developers: method @ref directed_graph::extra_work_per_edge is
+		 * called for every edge added.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether
@@ -147,6 +136,27 @@ class directed_graph : virtual public graph {
 		 * after the addition of the edge.
 		 */
 		virtual directed_graph& add_edges
+		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+
+		/**
+		 * @brief Adds a list of edges to the graph.
+		 *
+		 * This list of tedges is assumed to be all the edges that are going
+		 * to be added to this graph. This means that the internal data structures
+		 * are constructed more efficiently than when adding edges one by one
+		 * (see @ref add_edge) or in several chunks (see @ref add_edges).
+		 * @param edges The edges to be added.
+		 * @param norm Normalise the graph after the insertions.
+		 * @param check_norm If @e norm is false then, should we check whether
+		 * the result is normalised or not? This might be useful in case the
+		 * resulting graph is normalised. If @e norm is true then @e check_norm
+		 * is ignored.
+		 * @pre There are no repeated edges in the list.
+		 * @pre The graph is empty prior to the addition.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
+		 */
+		virtual directed_graph& add_all_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**

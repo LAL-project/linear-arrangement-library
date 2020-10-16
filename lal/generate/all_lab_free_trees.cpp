@@ -130,7 +130,7 @@ free_tree all_lab_free_trees::get_tree() const {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
-		t.add_edge(0,1);
+		t.add_all_edges(vector<edge>{edge(0,1)});
 		return t;
 	}
 

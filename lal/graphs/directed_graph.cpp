@@ -119,9 +119,6 @@ directed_graph& directed_graph::add_edge(
 	node u, node v, bool to_norm, bool check_norm
 )
 {
-	assert(has_node(u));
-	assert(has_node(v));
-	assert(u != v);
 	assert(not has_edge(u,v));
 
 	neighbourhood& out_u = m_adjacency_list[u];
@@ -188,9 +185,6 @@ directed_graph& directed_graph::add_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
-		assert(has_node(u));
-		assert(has_node(v));
-		assert(u != v);
 		assert(not has_edge(u,v));
 
 		m_adjacency_list[u].push_back(v);
@@ -217,13 +211,39 @@ directed_graph& directed_graph::add_edges(
 	return *this;
 }
 
+directed_graph& directed_graph::add_all_edges(
+	const vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
+	for (const edge& e : edges) {
+		const node u = e.first;
+		const node v = e.second;
+		assert(not has_edge(u,v));
+
+		m_adjacency_list[u].push_back(v);
+		m_in_adjacency_list[v].push_back(u);
+	}
+	m_num_edges = static_cast<uint32_t>(edges.size());
+
+	if (to_norm) {
+		// normalise directly, it might save us time
+		normalise();
+	}
+	else if (check_norm) {
+		// only check
+		check_normalised();
+	}
+	else {
+		// not 'to_norm' and not 'check_norm' --
+		// no need to check anything
+	}
+	return *this;
+}
+
 directed_graph& directed_graph::remove_edge(
 	node u, node v, bool norm, bool check_norm
 )
 {
-	assert(has_node(u));
-	assert(has_node(v));
-	assert(u != v);
 	assert(has_edge(u,v));
 	--m_num_edges;
 
@@ -266,9 +286,6 @@ directed_graph& directed_graph::remove_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
-		assert(has_node(u));
-		assert(has_node(v));
-		assert(u != v);
 		assert(has_edge(u,v));
 		--m_num_edges;
 
@@ -323,6 +340,7 @@ vector<edge_pair> directed_graph::Q() const {
 }
 
 bool directed_graph::has_edge(node u, node v) const {
+	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
 

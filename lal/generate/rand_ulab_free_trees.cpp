@@ -61,12 +61,12 @@ namespace generate {
 
 inline
 free_tree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
-	free_tree T(m_n);
 	vector<edge> edges(m_n - 1);
 	for (node u = 1; u < m_n; ++u) {
 		edges[u - 1] = edge(u, m_tree[u]);
 	}
-	T.add_edges(edges);
+	free_tree T(m_n);
+	T.add_all_edges(edges);
 	return T;
 }
 
@@ -115,7 +115,8 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 		 *		{n}{k}: is read as "n choose k"
 		 *
 		 * We followed the correction pointed out in the reference to
-		 * Giac/Xcas's manual (read the documentation of this class).
+		 * Giac/Xcas's manual (read the documentation of this class
+		 * for a reference).
 		 */
 		const integer k = get_rn(m_n/2) + 1;
 		const integer k_choose_2 = k*(k - 1);
@@ -127,9 +128,13 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
+#if defined DEBUG
 		const free_tree T = make_tree(m_n, m_tree);
 		assert(T.is_tree());
 		return T;
+#else
+		return make_tree(m_n, m_tree);
+#endif
 	}
 
 	// -----------------------------------
@@ -147,9 +152,13 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	forest(m,q, 1);
 	// -----------------------------------
 
-	const free_tree T = make_tree(m_n, m_tree);
-	assert(T.is_tree());
-	return T;
+#if defined DEBUG
+		const free_tree T = make_tree(m_n, m_tree);
+		assert(T.is_tree());
+		return T;
+#else
+		return make_tree(m_n, m_tree);
+#endif
 }
 
 void rand_ulab_free_trees::clear() {

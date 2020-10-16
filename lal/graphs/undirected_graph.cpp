@@ -45,6 +45,9 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#if defined DEBUG
+#include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -77,9 +80,6 @@ undirected_graph& undirected_graph::add_edge(
 )
 {
 	assert(not has_edge(u,v));
-	assert(u != v);
-	assert(has_node(u));
-	assert(has_node(v));
 
 	neighbourhood& nu = m_adjacency_list[u];
 	neighbourhood& nv = m_adjacency_list[v];
@@ -146,10 +146,7 @@ undirected_graph& undirected_graph::add_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
-		assert(has_node(u));
-		assert(has_node(v));
 		assert(not has_edge(u,v));
-		assert(u != v);
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
@@ -171,7 +168,35 @@ undirected_graph& undirected_graph::add_edges(
 		// not 'to_norm' and not 'check_norm' --
 		// no need to check anything
 	}
+	return *this;
+}
 
+undirected_graph& undirected_graph::add_all_edges(
+	const vector<edge>& edges, bool to_norm, bool check_norm
+)
+{
+	for (const edge& e : edges) {
+		const node u = e.first;
+		const node v = e.second;
+		assert(not has_edge(u,v));
+
+		m_adjacency_list[u].push_back(v);
+		m_adjacency_list[v].push_back(u);
+	}
+	m_num_edges = static_cast<uint32_t>(edges.size());
+
+	if (to_norm) {
+		// normalise directly, it might save us time
+		normalise();
+	}
+	else if (check_norm) {
+		// only check
+		check_normalised();
+	}
+	else {
+		// not 'to_norm' and not 'check_norm' --
+		// no need to check anything
+	}
 	return *this;
 }
 
@@ -179,9 +204,6 @@ undirected_graph& undirected_graph::remove_edge(
 	node u, node v, bool norm, bool check_norm
 )
 {
-	assert(has_node(u));
-	assert(has_node(v));
-	assert(u != v);
 	assert(has_edge(u,v));
 	--m_num_edges;
 
@@ -224,9 +246,6 @@ undirected_graph& undirected_graph::remove_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
-		assert(has_node(u));
-		assert(has_node(v));
-		assert(u != v);
 		assert(has_edge(u,v));
 		--m_num_edges;
 
@@ -267,6 +286,7 @@ vector<edge_pair> undirected_graph::Q() const {
 }
 
 bool undirected_graph::has_edge(node u, node v) const {
+	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
 
