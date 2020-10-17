@@ -82,69 +82,42 @@ inline uint32_t __compute_C_stack_based(
 	// relate each edge to an index
 	map<edge, uint32_t> edge_to_idx;
 
-	for (node u = 0; u < n; ++u) {
-		// 1. fill vectors ...
+	// Retrieve all edges of the graph to sort
+	vector<edge> edges = g.edges();
 
-		// if the graph is undirected this is the same as g.get_neighbours
-		const neighbourhood& Nu_out = g.get_out_neighbours(u);
-		for (const node& v : Nu_out) {
-			if (pi[v] < pi[u]) {
-				// oriented edge (v,u), "enters" node u
-				adjP[u].push_back(v);
-			}
-			else {
-				// Oriented edge (u,v), "leaves" node u.
-				// Indices are assigned in step 3. It has to be done
-				// in this order since the indices are dependent on
-				// the ordering of the edges w.r.t. their edge length.
-				adjN[u].push_back( indexed_edge(0, sorted_edge(u,v)) );
-			}
-		}
-		if (g.is_directed()) {
-			const neighbourhood& Nu_in = g.get_in_neighbours(u);
-			for (const node& v : Nu_in) {
-				if (pi[v] < pi[u]) {
-					// oriented edge (v,u), "enters" node u
-					adjP[u].push_back(v);
-				}
-				else {
-					// Oriented edge (u,v), "leaves" node u,.
-					// Indices are assigned in step 3. It has to be done
-					// in this order since the indices are dependent on
-					// the ordering of the edges w.r.t. their edge length.
-					adjN[u].push_back( indexed_edge(0, sorted_edge(u,v)) );
-				}
-			}
-		}
+	// sort edges of the graph by increasing edge length
+	internal::counting_sort<vector<edge>::iterator, edge, true>
+	(
+	edges.begin(), edges.end(),
+	n-1, // length of the longest edge
+	[&](const edge& e) -> size_t {
+		const node u = e.first;
+		const node v = e.second;
+		return my_abs_diff(pi[u],pi[v]);
+	}
+	);
 
-		// 2. ... sort contents ...
-
-		// 2.1. sort increasingly
-		internal::counting_sort<vector<node>::iterator, node, true>
-		(
-		adjP[u].begin(), adjP[u].end(),
-		n-1, // length of the longest edge
-		[&u,&pi](node v) -> size_t {
-			return my_abs_diff(pi[u],pi[v]);
-		}
-		);
-
-		// 2.2. sort decreasingly
-		internal::counting_sort<vector<indexed_edge>::iterator, indexed_edge, false>
-		(
-		adjN[u].begin(), adjN[u].end(),
-		n-1, // length of the longest edge
-		[&pi](const indexed_edge& ie) -> size_t {
-			const edge& e = ie.second;
-			const node _u = e.first;
-			const node _v = e.second;
-			return my_abs_diff(pi[_u],pi[_v]);
-		}
-		);
+#define process_edge(U,V)									\
+	if (pi[V] < pi[U]) {									\
+		/* oriented edge (V,U), "enters" node U */			\
+		adjP[U].push_back(V);								\
+	}														\
+	else {													\
+		/* Oriented edge (U,V), "leaves" node U. */			\
+		adjN[U].push_back(make_pair(0, sorted_edge(U,V)));	\
 	}
 
-	// 3. ... assign indices now
-	// Relate each edge with its insertion index
+	// fill adjP and adjN at the same time
+	for (size_t i = 0; i < edges.size(); ++i) {
+		const edge& ei = edges[i];
+		process_edge(ei.first, ei.second)
+		process_edge(ei.second, ei.first)
+	}
+
+	for (node u = 0; u < n; ++u) {
+		std::reverse(adjN[u].begin(), adjN[u].end());
+	}
+
 	uint32_t idx = 0;
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
