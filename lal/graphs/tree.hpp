@@ -71,21 +71,21 @@ class tree : virtual public graph {
 	public:
 		/* CONSTRUCTORS */
 
-		/// Default constructor.
-		tree() = default;
-		/// Default move constructor.
+		/// Empty constructor.
+		tree();
+		/// Copy constructor.
+		tree(const tree&);
+		/// Move constructor.
 		tree(tree&&);
-		/// Default copy constructor.
-		tree(const tree&) = default;
-		/// Default destructor.
-		virtual ~tree() = default;
+		/// Destructor.
+		virtual ~tree();
 
 		/* OPERATORS */
 
+		/// Copy assignment operator.
+		tree& operator= (const tree&);
 		/// Move assignment operator.
 		tree& operator= (tree&&);
-		/// Default copy assignment operator.
-		tree& operator= (const tree&) = default;
 
 		/* GETTERS */
 
@@ -175,8 +175,11 @@ class tree : virtual public graph {
 		void tree_only_init(uint32_t n);
 		/// Clears the memory used by only class @ref tree.
 		void tree_only_clear();
+
+		/// Copies only members of class @ref tree.
+		void tree_only_copy(const tree& t);
 		/// Moves only members of class @ref tree.
-		void tree_only_move(tree&& g);
+		void tree_only_move(tree&& t);
 
 		void extra_work_per_edge_add(node u, node v);
 		void extra_work_per_edge_remove(node u, node v);

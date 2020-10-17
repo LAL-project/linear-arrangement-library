@@ -60,29 +60,29 @@ class free_tree : public undirected_graph, virtual public tree {
 	public:
 		/* CONSTRUCTORS */
 
-		/// Default empty constructor.
-		free_tree() = default;
+		/// Empty constructor.
+		free_tree();
 		/// Constructor with number of vertices.
 		free_tree(uint32_t n);
+		/// Copy constructor.
+		free_tree(const free_tree&);
 		/// Move constructor.
 		free_tree(free_tree&&);
-		/// Default copy constructor.
-		free_tree(const free_tree&) = default;
 		/**
 		 * @brief Copy constructor with undirected graph.
 		 * @param t An undirected graph.
 		 * @pre Graph @e t is a tree.
 		 */
 		free_tree(const undirected_graph& t);
-		/// Default destructor.
-		virtual ~free_tree() = default;
+		/// Destructor.
+		virtual ~free_tree();
 
 		/* OPERATORS */
 
+		/// Copy assignment operator.
+		free_tree& operator= (const free_tree&);
 		/// Move assignment operator.
 		free_tree& operator= (free_tree&&);
-		/// Default copy assignment operator.
-		free_tree& operator= (const free_tree&) = default;
 
 		/* MODIFIERS */
 
@@ -183,6 +183,8 @@ class free_tree : public undirected_graph, virtual public tree {
 		/// @ref graph classes.
 		virtual void _clear();
 
+		/// Copies all members of this class and the parent class.
+		void copy_full_free_tree(const free_tree& f);
 		/// Moves all members of this class and the parent class.
 		void move_full_free_tree(free_tree&& f);
 

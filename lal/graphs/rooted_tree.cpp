@@ -57,18 +57,28 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
+rooted_tree::rooted_tree() : tree(), directed_graph() { }
 rooted_tree::rooted_tree(uint32_t n) {
 	rooted_tree::_init(n);
+}
+rooted_tree::rooted_tree(const rooted_tree& r) : graph(), tree(), directed_graph() {
+	copy_full_rooted_tree(r);
+}
+rooted_tree::rooted_tree(rooted_tree&& r) {
+	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
 }
 rooted_tree::rooted_tree(const free_tree& t, node r) {
 	rooted_tree::_init(t.n_nodes());
 	init_rooted(t, r);
 }
-rooted_tree::rooted_tree(rooted_tree&& r) {
-	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
-}
+rooted_tree::~rooted_tree() { }
 
 /* OPERATORS */
+
+rooted_tree& rooted_tree::operator= (const rooted_tree& r) {
+	copy_full_rooted_tree(r);
+	return *this;
+}
 
 rooted_tree& rooted_tree::operator= (rooted_tree&& r) {
 	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
@@ -408,6 +418,21 @@ void rooted_tree::_clear() {
 	tree::tree_only_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
+}
+
+void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {
+	// copy directed_graph class
+	copy_full_directed_graph(r);
+
+	// copy only tree's members
+	tree_only_copy(r);
+
+	// copy this class' members
+	m_root = r.m_root;
+	m_has_root = r.m_has_root;
+	m_valid_orientation = r.m_valid_orientation;
+	m_size_subtrees = r.m_size_subtrees;
+	m_need_recalc_size_subtrees = r.m_need_recalc_size_subtrees;
 }
 
 void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {

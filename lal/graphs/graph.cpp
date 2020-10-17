@@ -62,11 +62,28 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
+graph::graph() { }
 graph::graph(uint32_t n) {
 	_init(n);
 }
+graph::graph(const graph& g) {
+	copy_full_graph(g);
+}
+graph::graph(graph&& g) {
+	move_full_graph(std::move(static_cast<graph&>(g)));
+}
+graph::~graph() { }
 
 /* OPERATORS */
+
+graph& graph::operator= (const graph& g) {
+	copy_full_graph(g);
+	return *this;
+}
+graph& graph::operator= (graph&& g) {
+	move_full_graph(std::move(static_cast<graph&>(g)));
+	return *this;
+}
 
 /* MODIFIERS */
 
@@ -136,6 +153,12 @@ void graph::_clear() {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list.clear();
+}
+
+void graph::copy_full_graph(const graph& g) {
+	m_adjacency_list = g.m_adjacency_list;
+	m_num_edges = g.m_num_edges;
+	m_normalised = g.m_normalised;
 }
 
 void graph::move_full_graph(graph&& g) {

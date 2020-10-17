@@ -59,15 +59,24 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-undirected_graph::undirected_graph(undirected_graph&& u) {
-	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
-}
+undirected_graph::undirected_graph() : graph() { }
 undirected_graph::undirected_graph(uint32_t n) {
 	init(n);
 }
+undirected_graph::undirected_graph(const undirected_graph& u) : graph() {
+	copy_full_undirected_graph(u);
+}
+undirected_graph::undirected_graph(undirected_graph&& u) {
+	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
+}
+undirected_graph::~undirected_graph() { }
 
 /* OPERATORS */
 
+undirected_graph& undirected_graph::operator= (const undirected_graph& u) {
+	copy_full_undirected_graph(u);
+	return *this;
+}
 undirected_graph& undirected_graph::operator= (undirected_graph&& u) {
 	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
 	return *this;
@@ -313,6 +322,13 @@ void undirected_graph::_init(uint32_t n) {
 
 void undirected_graph::_clear() {
 	graph::_clear();
+}
+
+void undirected_graph::copy_full_undirected_graph(const undirected_graph& u) {
+	// copy parent class
+	copy_full_graph(u);
+
+	// copy this class' members
 }
 
 void undirected_graph::move_full_undirected_graph(undirected_graph&& u) {

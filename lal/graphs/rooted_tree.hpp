@@ -108,25 +108,25 @@ class rooted_tree : public directed_graph, virtual public tree {
 	public:
 		/* CONSTRUCTORS */
 
-		/// Default constructor.
-		rooted_tree() = default;
-		/// Move constructor.
-		rooted_tree(rooted_tree&&);
-		/// Default copy constructor.
-		rooted_tree(const rooted_tree&) = default;
+		/// Empty constructor.
+		rooted_tree();
 		/// Constructor with number of nodes and root node.
 		rooted_tree(uint32_t n);
+		/// Copy constructor.
+		rooted_tree(const rooted_tree&);
+		/// Move constructor.
+		rooted_tree(rooted_tree&&);
 		/// Constructor with tree and root node.
 		rooted_tree(const free_tree& t, node r);
-		/// Default destructor
-		virtual ~rooted_tree() = default;
+		/// Destructor
+		virtual ~rooted_tree();
 
 		/* OPERATORS */
 
+		/// Copy assignment operator.
+		rooted_tree& operator= (const rooted_tree&);
 		/// Move assignment operator.
 		rooted_tree& operator= (rooted_tree&&);
-		/// Default copy assignment operator.
-		rooted_tree& operator= (const rooted_tree&) = default;
 
 		/* MODIFIERS */
 
@@ -483,6 +483,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/// @ref graph classes.
 		virtual void _clear();
 
+		/// Copies all members of this class and the parent class.
+		void copy_full_rooted_tree(const rooted_tree& r);
 		/// Moves all members of this class and the parent class.
 		void move_full_rooted_tree(rooted_tree&& r);
 

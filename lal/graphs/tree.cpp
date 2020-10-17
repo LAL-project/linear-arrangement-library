@@ -53,11 +53,21 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
+tree::tree() { }
+tree::tree(const tree& t) : graph() {
+	tree_only_copy(t);
+}
 tree::tree(tree&& t) {
 	tree_only_move(std::move(static_cast<tree&>(t)));
 }
+tree::~tree() { }
 
 /* OPERATORS */
+
+tree& tree::operator= (const tree& t) {
+	tree_only_copy(t);
+	return *this;
+}
 
 tree& tree::operator= (tree&& t) {
 	tree_only_move(std::move(static_cast<tree&>(t)));
@@ -138,6 +148,12 @@ void tree::tree_only_init(uint32_t n) {
 void tree::tree_only_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
+}
+
+void tree::tree_only_copy(const tree& t) {
+	// copy this class' members
+	m_root_of = t.m_root_of;
+	m_root_size = t.m_root_size;
 }
 
 void tree::tree_only_move(tree&& t) {

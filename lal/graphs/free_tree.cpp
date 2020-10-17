@@ -53,8 +53,12 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
+free_tree::free_tree() : tree(), undirected_graph() { }
 free_tree::free_tree(uint32_t n) : undirected_graph(n) {
 	free_tree::tree_only_init(n);
+}
+free_tree::free_tree(const free_tree& f) : graph(), tree(), undirected_graph() {
+	copy_full_free_tree(f);
 }
 free_tree::free_tree(free_tree&& f) {
 	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
@@ -66,11 +70,17 @@ free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) 
 	free_tree::tree_only_init(t.n_nodes());
 	add_all_edges(t.edges());
 }
+free_tree::~free_tree() { }
 
 /* OPERATORS */
 
-free_tree& free_tree::operator= (free_tree&& r) {
-	move_full_free_tree(std::move(static_cast<free_tree&>(r)));
+free_tree& free_tree::operator= (const free_tree& f) {
+	copy_full_free_tree(f);
+	return *this;
+}
+
+free_tree& free_tree::operator= (free_tree&& f) {
+	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
 	return *this;
 }
 
@@ -136,6 +146,16 @@ void free_tree::_init(uint32_t n) {
 void free_tree::_clear() {
 	undirected_graph::_clear();
 	tree::tree_only_clear();
+}
+
+void free_tree::copy_full_free_tree(const free_tree& f) {
+	// copy undirected_graph class
+	copy_full_undirected_graph(f);
+
+	// copy only tree's members
+	tree_only_copy(f);
+
+	// copy this class' members
 }
 
 void free_tree::move_full_free_tree(free_tree&& f) {

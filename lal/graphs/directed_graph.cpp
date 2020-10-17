@@ -58,14 +58,24 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
+directed_graph::directed_graph() : graph() { }
 directed_graph::directed_graph(uint32_t n) {
 	init(n);
+}
+directed_graph::directed_graph(const directed_graph& d) : graph() {
+	copy_full_directed_graph(d);
 }
 directed_graph::directed_graph(directed_graph&& d) {
 	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
 }
+directed_graph::~directed_graph() { }
 
 /* OPERATORS */
+
+directed_graph& directed_graph::operator= (const directed_graph& d) {
+	copy_full_directed_graph(d);
+	return *this;
+}
 
 directed_graph& directed_graph::operator= (directed_graph&& d) {
 	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
@@ -388,6 +398,14 @@ void directed_graph::_init(uint32_t n) {
 void directed_graph::_clear() {
 	graph::_clear();
 	m_in_adjacency_list.clear();
+}
+
+void directed_graph::copy_full_directed_graph(const directed_graph& d) {
+	// copy parent class
+	copy_full_graph(d);
+
+	// copy this class' members
+	m_in_adjacency_list = d.m_in_adjacency_list;
 }
 
 void directed_graph::move_full_directed_graph(directed_graph&& d) {

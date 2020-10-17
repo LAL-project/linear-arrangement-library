@@ -69,26 +69,26 @@ class directed_graph : virtual public graph {
 	public:
 		/* CONSTRUCTORS */
 
-		/// Default constructor.
-		directed_graph() = default;
-		/// Move constructor.
-		directed_graph(directed_graph&&);
-		/// Default copy constructor.
-		directed_graph(const directed_graph&) = default;
+		/// Empty constructor.
+		directed_graph();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
 		directed_graph(uint32_t n);
-		/// Default destructor.
-		virtual ~directed_graph() = default;
+		/// Copy constructor.
+		directed_graph(const directed_graph&);
+		/// Move constructor.
+		directed_graph(directed_graph&&);
+		/// Destructor.
+		virtual ~directed_graph();
 
 		/* OPERATORS */
 
+		/// Copy assignment operator.
+		directed_graph& operator= (const directed_graph&);
 		/// Move assignment operator.
 		directed_graph& operator= (directed_graph&&);
-		/// Default copy assignment operator.
-		directed_graph& operator= (const directed_graph&) = default;
 
 		/* MODIFIERS */
 
@@ -297,8 +297,11 @@ class directed_graph : virtual public graph {
 		virtual void _init(uint32_t n);
 		/// Clears the memory of @ref directed_graph and @ref graph classes.
 		virtual void _clear();
+
+		/// Copies all members of this class and the parent class.
+		void copy_full_directed_graph(const directed_graph& d);
 		/// Moves all members of this class and the parent class.
-		void move_full_directed_graph(directed_graph&& g);
+		void move_full_directed_graph(directed_graph&& d);
 
 	private:
 

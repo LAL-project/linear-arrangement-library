@@ -70,26 +70,26 @@ class graph {
 	public:
 		/* CONSTRUCTORS */
 
-		/// Default constructor.
-		graph() = default;
+		/// Empty constructor.
+		graph();
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
 		graph(uint32_t n);
-		/// Default move constructor.
-		graph(graph&&) = default;
-		/// Default copy constructor.
-		graph(const graph&) = default;
-		/// Default destructor.
-		virtual ~graph() = default;
+		/// Copy constructor.
+		graph(const graph&);
+		/// Move constructor.
+		graph(graph&&);
+		/// Destructor.
+		virtual ~graph();
 
 		/* OPERATORS */
 
+		/// Copy assignment operator.
+		graph& operator= (const graph&);
 		/// Move assignment operator.
-		graph& operator= (graph&&) = default;
-		/// Default copy assignment operator.
-		graph& operator= (const graph&) = default;
+		graph& operator= (graph&&);
 
 		/* MODIFIERS */
 
@@ -228,6 +228,9 @@ class graph {
 		virtual void _init(uint32_t n);
 		/// Clears memory for the @ref graph class.
 		virtual void _clear();
+
+		/// Copies all members of this class.
+		void copy_full_graph(const graph& g);
 		/// Moves all members of this class.
 		void move_full_graph(graph&& g);
 
