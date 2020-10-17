@@ -77,6 +77,9 @@ void counting_sort(
 	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key
 )
 {
+	// nothing to do if there are no elements to sort
+	if (begin == end) { return; }
+
 	// increase
 	const size_t M = _M + 1;
 
