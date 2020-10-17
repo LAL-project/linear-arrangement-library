@@ -49,6 +49,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/macros.hpp>
 #include <lal/internal/avl.hpp>
+#include <lal/internal/sorting/counting_sort.hpp>
 
 typedef pair<uint32_t,lal::edge> indexed_edge;
 
@@ -67,13 +68,19 @@ inline uint32_t __compute_C_stack_based(
 {
 	const uint32_t n = g.n_nodes();
 
+	// construct inverse arrangement
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
 	}
 
-	// make adjacency lists, sorted by edge length
+	// Adjacency lists, sorted by edge length:
+	// - adjP is sorted by increasing edge length
+	// - adjN is sorted by decreasing edge length
 	vector<neighbourhood> adjP(n);
 	vector<vector<indexed_edge> > adjN(n);
+
+	// relate each edge to an index
+	map<edge, uint32_t> edge_to_idx;
 
 	for (node u = 0; u < n; ++u) {
 		// 1. fill vectors ...
@@ -86,7 +93,7 @@ inline uint32_t __compute_C_stack_based(
 				adjP[u].push_back(v);
 			}
 			else {
-				// Oriented edge (u,v), "leaves" node u,.
+				// Oriented edge (u,v), "leaves" node u.
 				// Indices are assigned in step 3. It has to be done
 				// in this order since the indices are dependent on
 				// the ordering of the edges w.r.t. their edge length.
@@ -113,31 +120,32 @@ inline uint32_t __compute_C_stack_based(
 		// 2. ... sort contents ...
 
 		// 2.1. sort increasingly
-		auto sort_edge_length1 =
-		[&u,pi](const node& v, const node& w) {
-			return my_abs_diff(pi[u],pi[v]) < my_abs_diff(pi[u],pi[w]);
-			//return std::abs(int(pi[u]) - int(pi[v])) < std::abs(int(pi[u]) - int(pi[w]));
-		};
-		sort(adjP[u].begin(), adjP[u].end(), sort_edge_length1);
+		internal::counting_sort<vector<node>::iterator, node, true>
+		(
+		adjP[u].begin(), adjP[u].end(),
+		n-1, // length of the longest edge
+		[&u,&pi](node v) -> size_t {
+			return my_abs_diff(pi[u],pi[v]);
+		}
+		);
 
 		// 2.2. sort decreasingly
-		auto sort_edge_length2 =
-		[&u,pi](const pair<uint32_t,edge>& ie1, const pair<uint32_t,edge>& ie2) {
-			const edge& e1 = ie1.second;
-			const edge& e2 = ie2.second;
-			const node& v = (e1.first == u ? e1.second : e1.first);
-			const node& w = (e2.first == u ? e2.second : e2.first);
-			return my_abs_diff(pi[u],pi[v]) > my_abs_diff(pi[u],pi[w]);
-			//return std::abs(int(pi[u]) - int(pi[v])) > std::abs(int(pi[u]) - int(pi[w]));
-		};
-		sort(adjN[u].begin(), adjN[u].end(), sort_edge_length2);
+		internal::counting_sort<vector<indexed_edge>::iterator, indexed_edge, false>
+		(
+		adjN[u].begin(), adjN[u].end(),
+		n-1, // length of the longest edge
+		[&pi](const indexed_edge& ie) -> size_t {
+			const edge& e = ie.second;
+			const node _u = e.first;
+			const node _v = e.second;
+			return my_abs_diff(pi[_u],pi[_v]);
+		}
+		);
 	}
 
-	// relation between edges and their insertion index
-	map<edge, uint32_t> edge_to_idx;
-	uint32_t idx = 0;
-
 	// 3. ... assign indices now
+	// Relate each edge with its insertion index
+	uint32_t idx = 0;
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 		for (auto& v : adjN[u]) {
@@ -151,11 +159,10 @@ inline uint32_t __compute_C_stack_based(
 	// stack of the algorithm
 	internal::AVL<pair<uint32_t, edge> > S;
 
+	// calculate the number of crossings
 	uint32_t C = 0;
-
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
-
 		for (node v : adjP[u]) {
 			const edge uv = sorted_edge(u,v);
 			const uint32_t on_top =
@@ -163,12 +170,6 @@ inline uint32_t __compute_C_stack_based(
 					S.remove(make_pair(edge_to_idx[uv], uv))
 				);
 			C += on_top;
-
-			/*
-			size c = S.size_on_top( make_pair(idx, uv) );
-			C += c;
-			S.remove( make_pair(idx, uv) );
-			*/
 		}
 		S.join_sorted_all_greater(adjN[u]);
 	}
@@ -176,7 +177,9 @@ inline uint32_t __compute_C_stack_based(
 	return C;
 }
 
-inline uint32_t __call_C_stack_based(const graph& g, const linear_arrangement& pi) {
+inline uint32_t __call_C_stack_based
+(const graph& g, const linear_arrangement& pi)
+{
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
