@@ -50,7 +50,7 @@ using namespace std;
 #include <lal/numeric/rational.hpp>
 #include <lal/internal/graphs/trees/convert_to_ftree.hpp>
 
-#define get_alpha(m,q) (m_alpha[make_pair(m,q)])
+#define get_alpha(m,q) (m_alpha.find(make_pair(m,q))->second)
 #define alpha_exists(m,q) (m_alpha.find(make_pair(m,q)) != m_alpha.end())
 
 namespace lal {
@@ -59,20 +59,18 @@ using namespace numeric;
 
 namespace generate {
 
-inline
-free_tree make_tree(uint32_t m_n, const vector<uint32_t>& m_tree) {
-	vector<edge> edges(m_n - 1);
-	for (node u = 1; u < m_n; ++u) {
-		edges[u - 1] = edge(u, m_tree[u]);
-	}
-	free_tree T(m_n);
-	T.add_all_edges(edges);
-	return T;
+#define make_tree(T, N, TREE)				\
+	free_tree T(N);							\
+{											\
+	vector<edge> edges(N - 1);				\
+	for (node u = 1; u < N; ++u) {			\
+		edges[u - 1] = edge(u, TREE[u]);	\
+	}										\
+	T.add_all_edges(edges);					\
 }
 
 /* PUBLIC */
 
-//rand_ulab_free_trees::rand_ulab_free_trees() { }
 rand_ulab_free_trees::rand_ulab_free_trees(uint32_t _n, uint32_t seed)
 	: rand_ulab_rooted_trees(_n, seed)
 {
@@ -89,12 +87,12 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
-		t.add_edge(0,1);
+		t.add_all_edges({edge(0,1)});
 		return t;
 	}
 	if (m_n == 3) {
 		free_tree t(3);
-		t.add_edges({edge(0,1),edge(1,2)});
+		t.add_all_edges({edge(0,1),edge(1,2)});
 		return t;
 	}
 
@@ -128,13 +126,9 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
-#if defined DEBUG
-		const free_tree T = make_tree(m_n, m_tree);
+		make_tree(T, m_n, m_tree);
 		assert(T.is_tree());
 		return T;
-#else
-		return make_tree(m_n, m_tree);
-#endif
 	}
 
 	// -----------------------------------
@@ -152,13 +146,9 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	forest(m,q, 1);
 	// -----------------------------------
 
-#if defined DEBUG
-		const free_tree T = make_tree(m_n, m_tree);
-		assert(T.is_tree());
-		return T;
-#else
-		return make_tree(m_n, m_tree);
-#endif
+	make_tree(T, m_n, m_tree);
+	assert(T.is_tree());
+	return T;
 }
 
 void rand_ulab_free_trees::clear() {
@@ -282,11 +272,11 @@ const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32
 
 	// base cases, read the paper
 	if (m == 0) {
-		m_alpha[make_pair(m,q)] = 1;
+		m_alpha.insert(make_pair(make_pair(m,q), 1));
 		return get_alpha(m,q);
 	}
 	if (m <= q) {
-		m_alpha[make_pair(m,q)] = get_rn(m + 1);
+		m_alpha.insert(make_pair(make_pair(m,q), get_rn(m + 1)));
 		return get_alpha(m,q);
 	}
 
@@ -302,7 +292,8 @@ const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32
 			alpha_mq += A1*A2*d;
 		}
 	}
-	m_alpha[make_pair(m,q)] = alpha_mq/m;
+	alpha_mq /= m;
+	m_alpha.insert(make_pair(make_pair(m,q), std::move(alpha_mq)));
 	return get_alpha(m,q);
 }
 
@@ -366,8 +357,9 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 		}
 		f_k -= rational(s,2);
 
-		m_fn.push_back(f_k.to_integer());
-		m_fn[k] = f_k.to_integer();
+		const integer f_k__int = f_k.to_integer();
+		m_fn.push_back(std::move(f_k__int));
+		//m_fn[k] = std::move(f_i__int);
 
 		++k;
 	}

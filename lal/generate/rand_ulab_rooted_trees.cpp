@@ -83,7 +83,10 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 
 rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	if (m_n <= 1) {
-		return rooted_tree(free_tree(m_n), 0);
+		rooted_tree r(m_n, 0);
+		r.set_root(0);
+		r.set_valid_orientation(true);
+		return r;
 	}
 
 	// call with an invalid index for the 'root of the last tree added'
@@ -241,7 +244,7 @@ const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 		return m_rn[n];
 	}
 
-	// using the algorithm in the book (\cite Nijenhuis1978a)
+	// the algorithm in the book (\cite Nijenhuis1978a)
 
 	uint32_t k = static_cast<uint32_t>(m_rn.size()) - 1;
 	while (k <= n + 1) {
@@ -262,15 +265,15 @@ const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 				++j;
 			}
 		}
+		s /= k;
 
-		m_rn.push_back(s/k);
+		m_rn.push_back(std::move(s));
 		++k;
 	}
 	return m_rn[n];
 }
 
-pair<uint32_t, uint32_t>
-rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
+pair<uint32_t, uint32_t> rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair
