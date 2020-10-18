@@ -57,7 +57,10 @@ using namespace graphs;
 namespace io {
 
 template<class G>
-inline bool __read_edge_list(const string& filename, G& g, bool norm) {
+inline bool __read_edge_list(
+	const string& filename, G& g, bool all, bool norm, bool check
+)
+{
 	if (not filesystem::exists(filename)) {
 		return false;
 	}
@@ -66,10 +69,9 @@ inline bool __read_edge_list(const string& filename, G& g, bool norm) {
 	fin.open(filename);
 
 	vector<edge> edge_list;
-
 	node max_vert_idx = 0;
-	node u, v;
 
+	node u, v;
 	while (fin >> u >> v) {
 		edge_list.push_back(edge(u, v));
 		max_vert_idx = std::max(max_vert_idx, u);
@@ -78,16 +80,27 @@ inline bool __read_edge_list(const string& filename, G& g, bool norm) {
 	fin.close();
 
 	g.init(max_vert_idx + 1);
-	g.add_edges(edge_list, norm);
+	if (all) {
+		g.add_all_edges(edge_list, norm, check);
+	}
+	else {
+		g.add_edges(edge_list, norm, check);
+	}
 	return true;
 }
 
-bool read_edge_list(const string& filename, undirected_graph& g, bool norm) {
-	return __read_edge_list(filename, g, norm);
+bool read_edge_list(
+	const string& filename, undirected_graph& g, bool all, bool norm, bool check
+)
+{
+	return __read_edge_list(filename, g, all, norm, check);
 }
 
-bool read_edge_list(const string& filename, directed_graph& g, bool norm) {
-	return __read_edge_list(filename, g, norm);
+bool read_edge_list(
+	const string& filename, directed_graph& g, bool all, bool norm, bool check
+)
+{
+	return __read_edge_list(filename, g, all, norm, check);
 }
 
 } // -- namespace io
