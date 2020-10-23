@@ -90,7 +90,7 @@ std::pair<node, node> retrieve_centroid(
 	typedef std::pair<edge,uint32_t> t2;
 	typedef std::vector<t2>::iterator t2_vec_it;
 	internal::counting_sort<t2_vec_it, t2, false>(
-		sizes_edge.begin(), sizes_edge.end(), n,
+		sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
 		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
 	);
 	}

@@ -76,17 +76,17 @@ void __bit_sort(It begin, It end, const T& m, char *seen) {
 		seen[*it - m] = 1;
 	}
 
-	// pointer to container
-	It range = begin;
 	// pointer to see
 	size_t seenit = 0;
 	// element to assign to container
 	T i = m;
 
-	while (range != end) {
+	// pointer to container
+	It it = begin;
+	while (it != end) {
 		// assign value to container
-		*range = i;
-		range += seen[seenit];
+		*it = i;
+		it += seen[seenit];
 
 		// move pointer in bit array
 		seen[seenit] = 0;
@@ -114,9 +114,8 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type,
 	typename std::enable_if <std::is_integral<T>::value, int>::type = 0
 >
-void bit_sort_mem(It begin, It end, char *seen)
+void bit_sort_mem(It begin, It end, const size_t size, char *seen)
 {
-	size_t size = std::distance(begin, end);
 	if (size <= 1) { return; }
 	if (size <= 14) {
 		insertion_sort(begin, end);
@@ -144,9 +143,8 @@ template<
 	typename T = typename std::iterator_traits<It>::value_type,
 	typename std::enable_if<std::is_integral<T>::value, int>::type = 0
 >
-void bit_sort(It begin, It end)
+void bit_sort(It begin, It end, const size_t size)
 {
-	size_t size = std::distance(begin, end);
 	if (size <= 1) { return; }
 	if (size <= 14) {
 		insertion_sort(begin, end);

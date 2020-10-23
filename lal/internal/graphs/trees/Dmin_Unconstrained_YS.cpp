@@ -214,7 +214,7 @@ void calculate_mla_YS(
 	}
 	internal::counting_sort<ordering::iterator, size_node, false>
 	(
-		ord.begin(), ord.end(), M,
+		ord.begin(), ord.end(), M, ord.size(),
 		[](const size_node& p) { return p.first; }
 	);
 	delete[] s;

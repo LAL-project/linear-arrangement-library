@@ -62,8 +62,10 @@ namespace internal {
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
- * @param M Integer value equal to the largest key that can be obtained with
+ * @param _M Integer value equal to the largest key that can be obtained with
  * function @e key.
+ * @param S The size of the container to be sorted. This is equal to
+ * std::distance(begin,end).
  * @param key Function that returns a single integer value used to compare the
  * elements.
  * @post The elements in the range [begin,end) are sorted increasingly.
@@ -74,7 +76,8 @@ template<
 	bool increasing
 >
 void counting_sort(
-	It begin, It end, const size_t _M, const std::function<size_t (const T&)>& key
+	It begin, It end, const size_t _M, const size_t S,
+	const std::function<size_t (const T&)>& key
 )
 {
 	// nothing to do if there are no elements to sort
@@ -82,9 +85,6 @@ void counting_sort(
 
 	// increase
 	const size_t M = _M + 1;
-
-	// size of the container to be sorted
-	const size_t S = std::distance(begin, end);
 
 	// allocate memory
 	T *output = new T[S];
