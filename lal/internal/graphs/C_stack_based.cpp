@@ -58,7 +58,8 @@ using namespace graphs;
 
 namespace internal {
 
-#define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u) )
+#define edge_sorted_by_vertex(u,v) (u < v ? edge(u,v) : edge(v,u) )
+#define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
 
 inline uint32_t __compute_C_stack_based(
@@ -77,47 +78,54 @@ inline uint32_t __compute_C_stack_based(
 	// - adjP is sorted by increasing edge length
 	// - adjN is sorted by decreasing edge length
 	vector<neighbourhood> adjP(n);
-	vector<vector<indexed_edge> > adjN(n);
+	vector<vector<indexed_edge>> adjN(n);
+
+	{
+		// size_adjN_u[u] := size of adjN[u]
+		size_t *size_adjN_u = new size_t[n]{0};
+
+		// Retrieve all edges of the graph to sort
+		vector<edge> edges = g.edges();
+
+		// sort edges of the graph by increasing edge length
+		internal::counting_sort<vector<edge>::iterator, edge, true>
+		(
+		edges.begin(), edges.end(),
+		n-1, // length of the longest edge
+		edges.size(),
+		[&](const edge& e) -> size_t {
+			const edge se = edge_sorted_by_pos(e.first, e.second);
+			++size_adjN_u[se.first];
+			return my_abs_diff(pi[e.first],pi[e.second]);
+		}
+		);
+
+		// initialise adjN
+		for (node u = 0; u < n; ++u) {
+			// divide by two because the 'key' function in the call to
+			// the sorting function is called twice for every edge
+			size_adjN_u[u] /= 2;
+			adjN[u].resize(size_adjN_u[u]);
+		}
+
+		// fill adjP and adjN at the same time
+		for (const edge& e : edges) {
+			const edge se = edge_sorted_by_pos(e.first, e.second);
+			const node u = se.first;	// pi[u] < pi[v]
+			const node v = se.second;
+			// oriented edge (u,v) "enters" node v
+			adjP[v].push_back(u);
+
+			// Oriented edge (u,v) "leaves" node u
+			--size_adjN_u[u];
+			adjN[u][size_adjN_u[u]] = make_pair(0, edge_sorted_by_vertex(u,v));
+		}
+
+		delete[] size_adjN_u;
+	}
 
 	// relate each edge to an index
 	map<edge, uint32_t> edge_to_idx;
-
-	// Retrieve all edges of the graph to sort
-	vector<edge> edges = g.edges();
-
-	// sort edges of the graph by increasing edge length
-	internal::counting_sort<vector<edge>::iterator, edge, true>
-	(
-	edges.begin(), edges.end(),
-	n-1, // length of the longest edge
-	edges.size(),
-	[&](const edge& e) -> size_t {
-		const node u = e.first;
-		const node v = e.second;
-		return my_abs_diff(pi[u],pi[v]);
-	}
-	);
-
-#define process_edge(U,V)									\
-	if (pi[V] < pi[U]) {									\
-		/* oriented edge (V,U), "enters" node U */			\
-		adjP[U].push_back(V);								\
-	}														\
-	else {													\
-		/* Oriented edge (U,V), "leaves" node U. */			\
-		adjN[U].push_back(make_pair(0, sorted_edge(U,V)));	\
-	}
-
-	// fill adjP and adjN at the same time
-	for (size_t i = 0; i < edges.size(); ++i) {
-		const edge& ei = edges[i];
-		process_edge(ei.first, ei.second)
-		process_edge(ei.second, ei.first)
-	}
-
-	for (node u = 0; u < n; ++u) {
-		std::reverse(adjN[u].begin(), adjN[u].end());
-	}
 
 	uint32_t idx = 0;
 	for (position pu = 0; pu < n; ++pu) {
@@ -138,7 +146,7 @@ inline uint32_t __compute_C_stack_based(
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 		for (node v : adjP[u]) {
-			const edge uv = sorted_edge(u,v);
+			const edge uv = edge_sorted_by_vertex(u,v);
 			const uint32_t on_top =
 				static_cast<uint32_t>(
 					S.remove(make_pair(edge_to_idx[uv], uv))
