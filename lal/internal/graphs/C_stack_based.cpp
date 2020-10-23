@@ -90,6 +90,7 @@ inline uint32_t __compute_C_stack_based(
 	(
 	edges.begin(), edges.end(),
 	n-1, // length of the longest edge
+	edges.size(),
 	[&](const edge& e) -> size_t {
 		const node u = e.first;
 		const node v = e.second;
