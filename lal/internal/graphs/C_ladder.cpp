@@ -42,6 +42,7 @@
 #include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
+#include <cstring>
 #include <cassert>
 using namespace std;
 
@@ -62,11 +63,9 @@ inline uint32_t __compute_C_ladder(
 )
 {
 	const uint32_t n = g.n_nodes();
-	// initialise memory
-	std::fill(&bn[0], &bn[n], 0);
+	// inverse arrangement
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
-		L1[i] = 0;
 	}
 
 	/* compute number of crossings */
@@ -98,6 +97,8 @@ inline uint32_t __compute_C_ladder(
 
 			bn[v] = 0;
 		}
+
+		L1[p] = 0;
 	}
 	return C;
 }
@@ -112,7 +113,7 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 
 	/* allocate memory */
 	const uint32_t n_elems = n + n;
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems]{0};
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -120,7 +121,7 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n];
+	char * __restrict__ bool_neighs = new char[n]{0};
 
 	/* compute number of crossings */
 	const uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
@@ -148,7 +149,7 @@ vector<uint32_t> n_C_ladder_list
 
 	/* allocate memory */
 	const uint32_t n_elems = n + n;
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
+	uint32_t * __restrict__ all_memory = new uint32_t[n_elems]{0};
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -156,7 +157,7 @@ vector<uint32_t> n_C_ladder_list
 	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n];
+	char * __restrict__ bool_neighs = new char[n]{0};
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -166,8 +167,8 @@ vector<uint32_t> n_C_ladder_list
 		// compute C
 		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs, T,L1);
 
-		// contents of 'bool_neighs' is set to 0 inside the function
-		//bool_neighs.assign(n, false);
+		memset(bool_neighs, 0, n);
+		L1[n - 1] = 0;
 	}
 
 	/* free memory */
