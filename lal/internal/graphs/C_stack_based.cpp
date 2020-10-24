@@ -64,7 +64,7 @@ namespace internal {
 
 inline uint32_t __compute_C_stack_based(
 	const graph& g, const linear_arrangement& pi,
-	node * __restrict__ T
+	node * __restrict__ T, size_t * __restrict__ size_adjN_u
 )
 {
 	const uint32_t n = g.n_nodes();
@@ -81,9 +81,6 @@ inline uint32_t __compute_C_stack_based(
 	vector<vector<indexed_edge>> adjN(n);
 
 	{
-		// size_adjN_u[u] := size of adjN[u]
-		size_t *size_adjN_u = new size_t[n]{0};
-
 		// Retrieve all edges of the graph to sort
 		vector<edge> edges = g.edges();
 
@@ -120,8 +117,6 @@ inline uint32_t __compute_C_stack_based(
 			--size_adjN_u[u];
 			adjN[u][size_adjN_u[u]] = make_pair(0, edge_sorted_by_vertex(u,v));
 		}
-
-		delete[] size_adjN_u;
 	}
 
 	// relate each edge to an index
@@ -173,10 +168,17 @@ inline uint32_t __call_C_stack_based
 	// T[p] = u <-> node u is at position p
 	node * __restrict__ T = new node[n];
 
-	const uint32_t C = __compute_C_stack_based(g, pi, T);
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	size_t *size_adjN_u = new size_t[n]{0};
+
+	/* compute number of crossings */
+
+	const uint32_t C = __compute_C_stack_based(g, pi, T, size_adjN_u);
 
 	/* free memory */
 	delete[] T;
+	delete[] size_adjN_u;
 	return C;
 }
 
@@ -201,17 +203,22 @@ vector<uint32_t> n_C_stack_based_list
 	// T[p] = u <-> node u is at position p
 	node * __restrict__ T = new node[n];
 
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	size_t *size_adjN_u = new size_t[n]{0};
+
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
 
 		// compute C
-		cs[i] = __compute_C_stack_based(g, pis[i], T);
+		cs[i] = __compute_C_stack_based(g, pis[i], T, size_adjN_u);
 	}
 
 	/* free memory */
 	delete[] T;
+	delete[] size_adjN_u;
 	return cs;
 }
 
