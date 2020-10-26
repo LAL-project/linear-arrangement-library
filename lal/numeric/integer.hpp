@@ -122,35 +122,56 @@ class integer {
 		/// Equality operator.
 		bool operator== (int64_t i) const;
 		/// Equality operator.
+		inline bool friend operator== (int64_t i, const integer& ii)
+		{ return ii == i; }
+		/// Equality operator.
 		bool operator== (const integer& i) const;
 
-		/// Difference operator.
+		/// Non-equality operator.
 		bool operator!= (int64_t i) const;
-		/// Difference operator.
+		/// Non-equality operator.
+		inline bool friend operator!= (int64_t i, const integer& ii)
+		{ return ii != i; }
+		/// Non-equality operator.
 		bool operator!= (const integer& i) const;
 
 		/// Less than operator.
 		bool operator< (int64_t i) const;
+		/// Less than operator.
+		inline friend bool operator< (int64_t i, const integer& ii)
+		{ return ii > i; }
 		/// Less than operator.
 		bool operator< (const integer& i) const;
 
 		/// Less than or equal to operator.
 		bool operator<= (int64_t i) const;
 		/// Less than or equal to operator.
+		inline friend bool operator<= (int64_t i, const integer& ii)
+		{ return ii >= i; }
+		/// Less than or equal to operator.
 		bool operator<= (const integer& i) const;
 
 		/// Greater than operator.
 		bool operator> (int64_t i) const;
+		/// Greater than operator.
+		inline friend bool operator> (int64_t i, const integer& ii)
+		{ return ii < i; }
 		/// Greater than operator.
 		bool operator> (const integer& i) const;
 
 		/// Greater than or equal to operator.
 		bool operator>= (int64_t i) const;
 		/// Greater than or equal to operator.
+		inline friend bool operator>= (int64_t i, const integer& ii)
+		{ return ii <= i; }
+		/// Greater than or equal to operator.
 		bool operator>= (const integer& i) const;
 
 		/// Addition operator. Returns a new object of type 'integer'.
 		integer operator+ (int64_t i) const;
+		/// Addition operator. Returns a new object of type 'integer'.
+		inline friend integer operator+ (int64_t i, const integer& ii)
+		{ return ii + i; }
 		/// Addition operator. Returns a new object of type 'integer'.
 		integer operator+ (const integer& i) const;
 
@@ -164,6 +185,9 @@ class integer {
 		/// Substraction operator. Returns a new object of type 'integer'.
 		integer operator- (int64_t i) const;
 		/// Substraction operator. Returns a new object of type 'integer'.
+		inline friend integer operator- (int64_t i, const integer& ii)
+		{ return -ii + i; }
+		/// Substraction operator. Returns a new object of type 'integer'.
 		integer operator- (const integer& i) const;
 
 		/// Minus unary operator. Modifies the current instance.
@@ -176,6 +200,9 @@ class integer {
 		/// Product operator. Returns a new object of type 'integer'.
 		integer operator* (int64_t i) const;
 		/// Product operator. Returns a new object of type 'integer'.
+		inline friend integer operator* (int64_t i, const integer& ii)
+		{ return ii*i; }
+		/// Product operator. Returns a new object of type 'integer'.
 		integer operator* (const integer& i) const;
 
 		/// Product operator. Modifies the current instance.
@@ -185,6 +212,9 @@ class integer {
 
 		/// Quotient operator. Returns a new object of type 'integer'.
 		integer operator/ (int64_t i) const;
+		/// Quotient operator. Returns a new object of type 'integer'.
+		inline friend int64_t operator/ (int64_t i, const integer& ii)
+		{ return i/ii.to_int(); }
 		/// Quotient operator. Returns a new object of type 'integer'.
 		integer operator/ (const integer& i) const;
 

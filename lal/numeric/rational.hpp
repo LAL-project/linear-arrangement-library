@@ -146,49 +146,91 @@ class rational {
 		/// Equality operator.
 		bool operator== (int64_t i) const;
 		/// Equality operator.
+		inline friend bool operator== (int64_t i, const rational& r)
+		{ return r == i; }
+		/// Equality operator.
 		bool operator== (const integer& i) const;
+		/// Equality operator.
+		inline friend bool operator== (const integer& i, const rational& r)
+		{ return r == i; }
 		/// Equality operator.
 		bool operator== (const rational& r) const;
 
-		/// Difference operator.
+		/// Non-equatility operator.
 		bool operator!= (int64_t i) const;
-		/// Difference operator.
+		/// Non-equatility operator.
+		inline friend bool operator!= (int64_t i, const rational& r)
+		{ return r != i; }
+		/// Non-equatility operator.
 		bool operator!= (const integer& i) const;
-		/// Difference operator.
+		/// Non-equatility operator.
+		inline friend bool operator!= (const integer& i, const rational& r)
+		{ return r != i; }
+		/// Non-equatility operator.
 		bool operator!= (const rational& r) const;
 
 		/// Less than operator.
 		bool operator< (int64_t i) const;
 		/// Less than operator.
+		inline friend bool operator< (int64_t i, const rational& r)
+		{ return r > i; }
+		/// Less than operator.
 		bool operator< (const integer& i) const;
+		/// Less than operator.
+		inline friend bool operator< (const integer& i, const rational& r)
+		{ return r > i; }
 		/// Less than operator.
 		bool operator< (const rational& r) const;
 
 		/// Less than or equal to operator.
 		bool operator<= (int64_t i) const;
 		/// Less than or equal to operator.
+		inline friend bool operator<= (int64_t i, const rational& r)
+		{ return r >= i; }
+		/// Less than or equal to operator.
 		bool operator<= (const integer& i) const;
+		/// Less than or equal to operator.
+		inline friend bool operator<= (const integer& i, const rational& r)
+		{ return r >= i; }
 		/// Less than or equal to operator.
 		bool operator<= (const rational& r) const;
 
 		/// Greater than operator.
 		bool operator> (int64_t i) const;
 		/// Greater than operator.
+		inline friend bool operator> (int64_t i, const rational& r)
+		{ return r < i; }
+		/// Greater than operator.
 		bool operator> (const integer& i) const;
+		/// Greater than operator.
+		inline friend bool operator> (const integer& i, const rational& r)
+		{ return r < i; }
 		/// Greater than operator.
 		bool operator> (const rational& r) const;
 
 		/// Greater than or equal to operator.
 		bool operator>= (int64_t i) const;
 		/// Greater than or equal to operator.
+		inline friend bool operator>= (int64_t i, const rational& r)
+		{ return r <= i; }
+		/// Greater than or equal to operator.
 		bool operator>= (const integer& i) const;
+		/// Greater than or equal to operator.
+		inline friend bool operator>= (const integer& i, const rational& r)
+		{ return r <= i; }
 		/// Greater than or equal to operator.
 		bool operator>= (const rational& r) const;
 
 		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (int64_t i) const;
 		/// Addition operator. Returns a new object of type 'rational'.
+		inline friend rational operator+ (int64_t i, const rational& r)
+		{ return r + i; }
+		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (const integer& i) const;
+		/// Addition operator. Returns a new object of type 'rational'.
+		inline friend rational operator+ (const integer& i, const rational& r)
+		{ return r + i; }
 		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (const rational& r) const;
 
@@ -204,7 +246,13 @@ class rational {
 		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (int64_t i) const;
 		/// Substraction operator. Returns a new object of type 'rational'.
+		inline friend rational operator- (int64_t i, const rational& r)
+		{ return -r + i; }
+		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (const integer& i) const;
+		/// Substraction operator. Returns a new object of type 'rational'.
+		inline friend rational operator- (const integer& i, const rational& r)
+		{ return -r + i; }
 		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (const rational& r) const;
 
@@ -220,7 +268,13 @@ class rational {
 		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (int64_t i) const;
 		/// Product operator. Returns a new object of type 'rational'.
+		inline friend rational operator* (int64_t i, const rational& r)
+		{ return r*i; }
+		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (const integer& i) const;
+		/// Product operator. Returns a new object of type 'rational'.
+		inline friend rational operator* (const integer& i, const rational& r)
+		{ return r*i; }
 		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (const rational& r) const;
 
