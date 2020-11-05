@@ -128,14 +128,14 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// total sum of length of edges + the length of the edge from 'r'
 	// to its parent (if any)
 	uint32_t D = 0;
-	// total sum of lengths of edges from 'r' to 'vi'
+	// total sum of lengths of edges from 'r' to 'vi' without the anchor
 	uint32_t d = 0;
 
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
-	for (auto it = children.begin(); it != children.end(); ++it) {
-		const node vi = it->first;
-		const uint32_t ni = it->second;
+	for (const auto& p : children) {
+		const node vi = p.first;
+		const uint32_t ni = p.second;
 
 		// recursive call: make the interval of 'vi'
 		D += Dmin_Pr__optimal_interval_of(
@@ -236,10 +236,8 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 
 	// construct the optimal intervals
 	linear_arrangement arr(n);
-	const uint32_t D = Dmin_Pr__optimal_interval_of(
-		M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr
-	);
-
+	const uint32_t D =
+	Dmin_Pr__optimal_interval_of(M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr);
 	return make_pair(D, arr);
 }
 
