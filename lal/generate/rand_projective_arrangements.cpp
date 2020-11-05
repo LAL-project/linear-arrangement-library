@@ -49,7 +49,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/graphs/trees/make_arrangement.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -106,7 +106,7 @@ linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
 	}
 
 	// generate arrangement from data
-	return put_in_arrangement(m_rT, rdata);
+	return make_arrangement_intervals(m_rT, rdata);
 }
 
 } // -- namespace generate

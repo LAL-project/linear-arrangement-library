@@ -54,7 +54,7 @@ using namespace std;
 // lal includes
 #include <lal/linarr/D.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/graphs/trees/make_arrangement.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
 typedef std::pair<lal::edge,uint32_t> edge_size;

@@ -57,6 +57,7 @@ HEADERS += \
 	graphs/free_tree.hpp \
 	graphs/rooted_tree.hpp \
 	graphs/undirected_graph.hpp \
+	internal/graphs/trees/make_arrangement.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/sorting/bit_sort.hpp \
@@ -72,7 +73,6 @@ HEADERS += \
 	internal/graphs/traversal.hpp \
 	internal/graphs/trees/convert_to_ftree.hpp \
 	internal/graphs/trees/convert_to_rtree.hpp \
-	internal/graphs/trees/make_projective_arr.hpp \
 	internal/graphs/trees/is_tree.hpp \
 	internal/graphs/trees/size_subtrees.hpp \
 	internal/graphs/trees/tree_centre.hpp \

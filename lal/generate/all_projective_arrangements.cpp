@@ -47,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/graphs/trees/make_arrangement.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -101,7 +101,7 @@ void all_projective_arrangements::next() {
 
 linear_arrangement all_projective_arrangements::get_arrangement() const {
 	return (m_rT.n_nodes() == 1 ?
-			linear_arrangement(1) : put_in_arrangement(m_rT, m_intervals));
+			linear_arrangement(1) : make_arrangement_intervals(m_rT, m_intervals));
 }
 
 /* PRIVATE */
