@@ -48,7 +48,6 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -59,8 +58,13 @@ namespace generate {
 all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) : m_rT(rT)
 {
 	assert(m_rT.is_rooted_tree());
+	assert(m_rT.is_normalised());
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
+	for (node u = 0; u < m_rT.n_nodes(); ++u) {
+		const uint32_t d = m_rT.out_degree(u);
+		m_intervals[u] = vector<node>(d + 1);
+	}
 
 	initialise_intervals_tree(m_rT.get_root());
 }
@@ -111,28 +115,18 @@ void all_projective_arrangements::initialise_intervals_tree(node r) {
 }
 
 void all_projective_arrangements::initialise_interval_node(node u) {
-	const uint32_t d = m_rT.out_degree(u);
 	const neighbourhood& neighs_r = m_rT.get_out_neighbours(u);
-
 	vector<node>& inter_u = m_intervals[u];
 
-	inter_u = vector<node>(d + 1);
-	if (m_rT.is_normalised()) {
-		size_t i = 0;
-		while (i < neighs_r.size() and neighs_r[i] < u) {
-			inter_u[i] = neighs_r[i];
-			++i;
-		}
-		inter_u[i] = u;
+	size_t i = 0;
+	while (i < neighs_r.size() and neighs_r[i] < u) {
+		inter_u[i] = neighs_r[i];
 		++i;
-		for (; i < neighs_r.size(); ++i) {
-			inter_u[i] = neighs_r[i - 1];
-		}
 	}
-	else {
-		inter_u[0] = u;
-		std::copy(neighs_r.begin(), neighs_r.end(), inter_u.begin() + 1);
-		internal::bit_sort(inter_u.begin(), inter_u.end(), inter_u.size());
+	inter_u[i] = u;
+	++i;
+	for (; i < neighs_r.size(); ++i) {
+		inter_u[i] = neighs_r[i - 1];
 	}
 }
 

@@ -79,6 +79,7 @@ class all_projective_arrangements {
 		 * @param T Rooted tree
 		 * @pre The object @e T is a valid rooted tree (see
 		 * @ref graphs::rooted_tree::is_rooted_tree).
+		 * @pre The tree is normalised (see graphs::graph::is_normalised()).
 		 */
 		all_projective_arrangements(const graphs::rooted_tree& T);
 		/// Default destructor.
