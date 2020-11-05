@@ -181,7 +181,7 @@ directed_graph& directed_graph::add_edge(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 
@@ -215,7 +215,7 @@ directed_graph& directed_graph::add_edges(
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		// no need to check anything
+		m_normalised = false;
 	}
 
 	return *this;
@@ -245,7 +245,7 @@ directed_graph& directed_graph::add_all_edges(
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		// no need to check anything
+		m_normalised = false;
 	}
 	return *this;
 }
@@ -283,7 +283,7 @@ directed_graph& directed_graph::remove_edge(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 	return *this;
@@ -316,7 +316,7 @@ directed_graph& directed_graph::remove_edges(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 	return *this;

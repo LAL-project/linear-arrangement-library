@@ -141,7 +141,7 @@ undirected_graph& undirected_graph::add_edge(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 
@@ -175,7 +175,7 @@ undirected_graph& undirected_graph::add_edges(
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		// no need to check anything
+		m_normalised = false;
 	}
 	return *this;
 }
@@ -204,7 +204,7 @@ undirected_graph& undirected_graph::add_all_edges(
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		// no need to check anything
+		m_normalised = false;
 	}
 	return *this;
 }
@@ -242,7 +242,7 @@ undirected_graph& undirected_graph::remove_edge(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 	return *this;
@@ -275,7 +275,7 @@ undirected_graph& undirected_graph::remove_edges(
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			// no need to check anything
+			m_normalised = false;
 		}
 	}
 	return *this;
