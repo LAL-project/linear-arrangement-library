@@ -72,7 +72,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_proj_arr {
+class all_projective_arrangements {
 	public:
 		/**
 		 * @brief Constructor with constant reference to a rooted tree.
@@ -80,9 +80,9 @@ class all_proj_arr {
 		 * @pre The object @e T is a valid rooted tree (see
 		 * @ref graphs::rooted_tree::is_rooted_tree).
 		 */
-		all_proj_arr(const graphs::rooted_tree& T);
+		all_projective_arrangements(const graphs::rooted_tree& T);
 		/// Default destructor.
-		~all_proj_arr();
+		~all_projective_arrangements();
 
 		/**
 		 * @brief Returns whether there are more arrangements to generate.
@@ -117,16 +117,11 @@ class all_proj_arr {
 		/// Does exist a next arrangement?
 		bool m_has_next = true;
 
-		/// The vertices of the tree ordered in post order.
-		std::vector<node> m_por_vertices;
-
 	private:
-		/// Retrieve the vertices in @ref m_por_vertices, starting at @e r.
-		void post_order_vertex_ordering(node r);
-		/// Make the canonical interval of all vertices of the tree, starting at @e r..
-		void canonical_interval_tree(node r);
-		/// Make the canonical interval of the node @e u.
-		void canonical_interval_single(node u);
+		/// Initialise the interval every node of the tree, starting at @e r.
+		void initialise_intervals_tree(node r);
+		/// Initialise the interval of node @e u.
+		void initialise_interval_node(node u);
 };
 
 } // -- namespace generate

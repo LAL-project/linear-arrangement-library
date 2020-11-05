@@ -48,6 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/trees/make_projective_arr.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -55,89 +56,83 @@ using namespace internal;
 
 namespace generate {
 
-all_proj_arr::all_proj_arr(const rooted_tree& rT) : m_rT(rT)
+all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) : m_rT(rT)
 {
 	assert(m_rT.is_rooted_tree());
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
-	m_por_vertices = vector<node>();
 
-	post_order_vertex_ordering(m_rT.get_root());
-	canonical_interval_tree(m_rT.get_root());
+	initialise_intervals_tree(m_rT.get_root());
 }
 
-all_proj_arr::~all_proj_arr() {}
+all_projective_arrangements::~all_projective_arrangements() {}
 
-bool all_proj_arr::has_next() const {
+bool all_projective_arrangements::has_next() const {
 	return m_has_next;
 }
 
-void all_proj_arr::next() {
+void all_projective_arrangements::next() {
 	if (m_rT.n_nodes() == 1) {
 		m_has_next = false;
 		return;
 	}
 
 	bool has_perm = false;
-	size_t i = 0;
-	while (i < m_por_vertices.size() and not has_perm) {
-		const node u = m_por_vertices[i];
+	node u = 0;
+	while (u < m_rT.n_nodes() and not has_perm) {
 		vector<node>& inter_u = m_intervals[u];
 
 		has_perm = next_permutation(inter_u.begin(), inter_u.end());
 		if (not has_perm) {
-			canonical_interval_single(u);
+			initialise_interval_node(u);
 		}
-		++i;
+		++u;
 	}
 
 	/*if (i == m_por_vertices.size() and not has_perm) {
 		m_has_next = false;
 	}*/
-	m_has_next = i != m_por_vertices.size() or has_perm;
+	m_has_next = u != m_rT.n_nodes() or has_perm;
 }
 
-linear_arrangement all_proj_arr::get_arrangement() const {
+linear_arrangement all_projective_arrangements::get_arrangement() const {
 	return (m_rT.n_nodes() == 1 ?
 			linear_arrangement(1) : put_in_arrangement(m_rT, m_intervals));
 }
 
 /* PRIVATE */
 
-void all_proj_arr::post_order_vertex_ordering(node r) {
-	const uint32_t d_out = m_rT.out_degree(r);
-	const neighbourhood& neighs_r = m_rT.get_out_neighbours(r);
-	// leaf
-	if (d_out == 0) {
-		m_por_vertices.push_back(r);
-		return;
-	}
-	// internal node
-	for (node vi : neighs_r) {
-		post_order_vertex_ordering(vi);
-	}
-	m_por_vertices.push_back(r);
-}
-
-void all_proj_arr::canonical_interval_tree(node r) {
-	canonical_interval_single(r);
+void all_projective_arrangements::initialise_intervals_tree(node r) {
+	initialise_interval_node(r);
 	const neighbourhood& neighs_r = m_rT.get_out_neighbours(r);
 	for (node u : neighs_r) {
-		canonical_interval_tree(u);
+		initialise_intervals_tree(u);
 	}
 }
 
-void all_proj_arr::canonical_interval_single(node u) {
+void all_projective_arrangements::initialise_interval_node(node u) {
 	const uint32_t d = m_rT.out_degree(u);
 	const neighbourhood& neighs_r = m_rT.get_out_neighbours(u);
 
 	vector<node>& inter_u = m_intervals[u];
 
 	inter_u = vector<node>(d + 1);
-	inter_u[0] = u;
-	for (uint32_t i = 0; i < d; ++i) {
-		const node ui = neighs_r[i];
-		inter_u[i + 1] = ui;
+	if (m_rT.is_normalised()) {
+		size_t i = 0;
+		while (i < neighs_r.size() and neighs_r[i] < u) {
+			inter_u[i] = neighs_r[i];
+			++i;
+		}
+		inter_u[i] = u;
+		++i;
+		for (; i < neighs_r.size(); ++i) {
+			inter_u[i] = neighs_r[i - 1];
+		}
+	}
+	else {
+		inter_u[0] = u;
+		std::copy(neighs_r.begin(), neighs_r.end(), inter_u.begin() + 1);
+		internal::bit_sort(inter_u.begin(), inter_u.end(), inter_u.size());
 	}
 }
 
