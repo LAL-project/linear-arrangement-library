@@ -58,8 +58,7 @@ namespace __lal {
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @param seen The bit array used to sort. The pointer points at the first
- * element of the array.
+ * @param seen The bit array used to sort.
  * @pre All values of @e mem must be set to false.
  * @pre All values within [begin, end) must be unique.
  * @post All the values of @e seen are set to false.
@@ -102,8 +101,9 @@ void __bit_sort(It begin, It end, const T& m, char *seen) {
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
- * @param seen The bit array used to sort. The pointer points at the first
- * element of the array.
+ * @param size The value of std::distance(begin, end), i.e., the number of
+ * elements from begin to sort, i.e., the size of the container.
+ * @param seen The bit array used to sort.
  * @pre All values of @e mem must be set to false.
  * @pre All values within [begin, end) must be unique.
  * @post All the values of @e seen are set to false.
@@ -135,6 +135,8 @@ void bit_sort_mem(It begin, It end, const size_t size, char *seen)
  *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
+ * @param size The value of std::distance(begin, end), i.e., the number of
+ * elements from begin to sort, i.e., the size of the container.
  * @pre All values within [begin, end) must be unique.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
