@@ -39,14 +39,15 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/headedness.hpp>
-
 // C++ includes
+#include <vector>
 using namespace std;
 
 // lal includes
-#include <lal/internal/macros.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 using namespace graphs;

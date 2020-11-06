@@ -39,8 +39,6 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/tree_structure_class.hpp>
-
 // C++ includes
 #include <iostream>
 #include <cassert>

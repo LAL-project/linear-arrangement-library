@@ -39,13 +39,12 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/Dmin.hpp>
-
 // C++ includes
 #include <cassert>
 using namespace std;
 
 // lal includes
+#include <lal/linarr/algorithms_Dmin.hpp>
 #include <lal/internal/graphs/trees/Dmin.hpp>
 
 namespace lal {

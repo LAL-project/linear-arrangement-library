@@ -38,8 +38,6 @@
  *
  ********************************************************************/
 
-#include <lal/internal/graphs/trees/Dmin.hpp>
-
 // C++ includes
 #include <cassert>
 #include <vector>

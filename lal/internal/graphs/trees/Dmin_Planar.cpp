@@ -45,8 +45,6 @@
  *
  ********************************************************************/
 
-#include <lal/internal/graphs/trees/Dmin.hpp>
-
 // C++ includes
 #include <cassert>
 using namespace std;
@@ -54,6 +52,8 @@ using namespace std;
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+
+#include <lal/internal/graphs/trees/Dmin.hpp>
 #include <lal/internal/graphs/trees/make_arrangement.hpp>
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 

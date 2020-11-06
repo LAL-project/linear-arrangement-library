@@ -47,7 +47,6 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/graph.hpp>
-#include <lal/numeric/rational.hpp>
 
 namespace lal {
 namespace internal {

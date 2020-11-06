@@ -39,12 +39,13 @@
  *
  ********************************************************************/
 
-#include <lal/properties/mean_hierarchical_distance.hpp>
-
 // C++ includes
+#include <vector>
 using namespace std;
 
 // lal includes
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/numeric/rational.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {

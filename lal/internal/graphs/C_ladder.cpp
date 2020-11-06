@@ -38,12 +38,11 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
-#include <cstring>
+#include <cstring> // for 'memset' below
 #include <cassert>
+#include <vector>
 using namespace std;
 
 // lal includes

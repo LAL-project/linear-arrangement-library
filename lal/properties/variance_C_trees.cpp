@@ -39,6 +39,9 @@
  *
  ********************************************************************/
  
+// lal includes
+#include <lal/numeric/rational.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/properties/C_rla.hpp>
 
 namespace lal {

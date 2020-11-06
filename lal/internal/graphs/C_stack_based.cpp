@@ -38,8 +38,6 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
 #include <cassert>
@@ -47,6 +45,7 @@
 using namespace std;
 
 // lal includes
+#include <lal/graphs/graph.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/avl.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>

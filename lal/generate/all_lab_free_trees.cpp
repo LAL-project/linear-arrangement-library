@@ -38,17 +38,14 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/generate/all_lab_free_trees.hpp>
 
 // C++ includes
 #include <algorithm>
-#include <iterator>
 #include <cassert>
 #include <limits>
 using namespace std;
-
-#define inf numeric_limits<size>::max()
 
 // lal includes
 #include <lal/internal/graphs/trees/convert_to_ftree.hpp>

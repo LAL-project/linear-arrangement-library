@@ -39,13 +39,12 @@
  *
  ********************************************************************/
 
-#include <lal/linarr/C.hpp>
-
 // C++ includes
 #include <cassert>
 using namespace std;
 
 // lal includes
+#include <lal/linarr/algorithms_C.hpp>
 #include <lal/internal/graphs/algorithms_crossings.hpp>
 
 namespace lal {

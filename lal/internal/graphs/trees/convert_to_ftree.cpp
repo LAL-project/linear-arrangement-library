@@ -38,12 +38,13 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
 
 // C++ includes
 #include <cassert>
 using namespace std;
+
+// lal includes
+#include <lal/graphs/free_tree.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
 

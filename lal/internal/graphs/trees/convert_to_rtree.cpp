@@ -39,14 +39,13 @@
  *
  ********************************************************************/
 
-#include <lal/internal/graphs/trees/convert_to_rtree.hpp>
-
 // C++ includes
 #include <cassert>
 using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/trees/convert_to_ftree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 using namespace graphs;

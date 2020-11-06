@@ -38,8 +38,6 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/properties/D_rla.hpp>
 
 // lal includes
 #include <lal/properties/Q.hpp>

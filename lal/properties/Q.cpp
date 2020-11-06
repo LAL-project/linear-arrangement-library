@@ -39,14 +39,14 @@
  *
  ********************************************************************/
  
-#include <lal/properties/Q.hpp>
-
 // C++ includes
 #include <cmath>
 #include <map>
 using namespace std;
 
 // lal includes
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/iterators/E_iterator.hpp>
 

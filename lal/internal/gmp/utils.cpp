@@ -39,7 +39,11 @@
  *
  ********************************************************************/
  
-#include <lal/internal/gmp/utils.hpp>
+// C includes
+#include <gmp.h>
+
+// C++ includes
+#include <cinttypes>
 
 namespace lal {
 namespace internal {

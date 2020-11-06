@@ -38,8 +38,6 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/io/edge_list.hpp>
 
 // C++ includes
 #include <filesystem>

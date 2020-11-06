@@ -39,12 +39,17 @@
  *
  ********************************************************************/
 
-#include <lal/properties/degrees.hpp>
-
 // C++ includes
 #include <functional>
 #include <cassert>
 using namespace std;
+
+// lal includes
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/numeric/integer.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
 using namespace graphs;

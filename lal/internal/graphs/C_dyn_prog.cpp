@@ -38,8 +38,6 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/internal/graphs/algorithms_crossings.hpp>
 
 // C++ includes
 #include <cassert>

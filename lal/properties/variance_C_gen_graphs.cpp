@@ -39,14 +39,16 @@
  *
  ********************************************************************/
  
-#include <lal/properties/C_rla.hpp>
-
 // C++ includes
 #include <algorithm>
 #include <cassert>
-#include <vector>
 #include <map>
 using namespace std;
+
+// lal includes
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 typedef uint64_t bigint;
 

@@ -39,16 +39,15 @@
  *
  ********************************************************************/
  
-#include <lal/linarr/D.hpp>
-
 // C++ includes
 #include <cassert>
 #include <numeric>
 using namespace std;
 
 // lal includes
-#include <lal/internal/macros.hpp>
+#include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 using namespace graphs;
