@@ -39,14 +39,13 @@
  *
  ********************************************************************/
 
-#include <lal/generate/all_projective_arrangements.hpp>
-
 // C++ includes
 #include <algorithm>
 #include <cassert>
 using namespace std;
 
 // lal includes
+#include <lal/generate/all_projective_arrangements.hpp>
 #include <lal/internal/graphs/trees/make_arrangement.hpp>
 
 namespace lal {
@@ -61,12 +60,7 @@ all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) 
 	assert(m_rT.is_normalised());
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
-	for (node u = 0; u < m_rT.n_nodes(); ++u) {
-		const uint32_t d = m_rT.out_degree(u);
-		m_intervals[u] = vector<node>(d + 1);
-	}
-
-	initialise_intervals_tree(m_rT.get_root());
+	initialise_intervals_tree();
 }
 
 all_projective_arrangements::~all_projective_arrangements() {}
@@ -93,40 +87,50 @@ void all_projective_arrangements::next() {
 		++u;
 	}
 
-	/*if (i == m_por_vertices.size() and not has_perm) {
+	if (u == m_rT.n_nodes() and not has_perm) {
 		m_has_next = false;
-	}*/
-	m_has_next = u != m_rT.n_nodes() or has_perm;
+	}
 }
 
 linear_arrangement all_projective_arrangements::get_arrangement() const {
 	return (m_rT.n_nodes() == 1 ?
-			linear_arrangement(1) : make_arrangement_intervals(m_rT, m_intervals));
+		linear_arrangement(1,0) :
+		make_arrangement_intervals(m_rT, m_intervals)
+	);
 }
 
 /* PRIVATE */
 
-void all_projective_arrangements::initialise_intervals_tree(node r) {
-	initialise_interval_node(r);
-	const neighbourhood& neighs_r = m_rT.get_out_neighbours(r);
-	for (node u : neighs_r) {
-		initialise_intervals_tree(u);
+void all_projective_arrangements::initialise_intervals_tree() {
+	for (node u = 0; u < m_rT.n_nodes(); ++u) {
+		const uint32_t d = m_rT.out_degree(u);
+		m_intervals[u] = vector<node>(d + 1);
+		initialise_interval_node(u);
 	}
 }
 
 void all_projective_arrangements::initialise_interval_node(node u) {
-	const neighbourhood& neighs_r = m_rT.get_out_neighbours(u);
+	const neighbourhood& neighs_u = m_rT.get_out_neighbours(u);
 	vector<node>& inter_u = m_intervals[u];
 
-	size_t i = 0;
-	while (i < neighs_r.size() and neighs_r[i] < u) {
-		inter_u[i] = neighs_r[i];
-		++i;
+	size_t neighs_it = 0;
+	size_t inter_it = 0;
+
+	while (
+		neighs_it < neighs_u.size() and inter_it < inter_u.size() and
+		neighs_u[neighs_it] < u
+	)
+	{
+		inter_u[inter_it] = neighs_u[neighs_it];
+		++neighs_it;
+		++inter_it;
 	}
-	inter_u[i] = u;
-	++i;
-	for (; i < neighs_r.size(); ++i) {
-		inter_u[i] = neighs_r[i - 1];
+	inter_u[inter_it] = u;
+	++inter_it;
+	while (neighs_it < neighs_u.size() and inter_it < inter_u.size()) {
+		inter_u[inter_it] = neighs_u[neighs_it];
+		++neighs_it;
+		++inter_it;
 	}
 }
 

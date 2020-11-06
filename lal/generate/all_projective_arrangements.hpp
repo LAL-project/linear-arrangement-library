@@ -120,7 +120,7 @@ class all_projective_arrangements {
 
 	private:
 		/// Initialise the interval every node of the tree, starting at @e r.
-		void initialise_intervals_tree(node r);
+		void initialise_intervals_tree();
 		/// Initialise the interval of node @e u.
 		void initialise_interval_node(node u);
 };
