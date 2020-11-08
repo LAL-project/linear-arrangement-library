@@ -121,57 +121,71 @@ class integer {
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;
+#ifndef SWIG
 		/// Equality operator.
 		inline bool friend operator== (int64_t i, const integer& ii)
 		{ return ii == i; }
+#endif
 		/// Equality operator.
 		bool operator== (const integer& i) const;
 
 		/// Non-equality operator.
 		bool operator!= (int64_t i) const;
+#ifndef SWIG
 		/// Non-equality operator.
 		inline bool friend operator!= (int64_t i, const integer& ii)
 		{ return ii != i; }
+#endif
 		/// Non-equality operator.
 		bool operator!= (const integer& i) const;
 
 		/// Less than operator.
 		bool operator< (int64_t i) const;
+#ifndef SWIG
 		/// Less than operator.
 		inline friend bool operator< (int64_t i, const integer& ii)
 		{ return ii > i; }
+#endif
 		/// Less than operator.
 		bool operator< (const integer& i) const;
 
 		/// Less than or equal to operator.
 		bool operator<= (int64_t i) const;
+#ifndef SWIG
 		/// Less than or equal to operator.
 		inline friend bool operator<= (int64_t i, const integer& ii)
 		{ return ii >= i; }
+#endif
 		/// Less than or equal to operator.
 		bool operator<= (const integer& i) const;
 
 		/// Greater than operator.
 		bool operator> (int64_t i) const;
+#ifndef SWIG
 		/// Greater than operator.
 		inline friend bool operator> (int64_t i, const integer& ii)
 		{ return ii < i; }
+#endif
 		/// Greater than operator.
 		bool operator> (const integer& i) const;
 
 		/// Greater than or equal to operator.
 		bool operator>= (int64_t i) const;
+#ifndef SWIG
 		/// Greater than or equal to operator.
 		inline friend bool operator>= (int64_t i, const integer& ii)
 		{ return ii <= i; }
+#endif
 		/// Greater than or equal to operator.
 		bool operator>= (const integer& i) const;
 
 		/// Addition operator. Returns a new object of type 'integer'.
 		integer operator+ (int64_t i) const;
+#ifndef SWIG
 		/// Addition operator. Returns a new object of type 'integer'.
 		inline friend integer operator+ (int64_t i, const integer& ii)
 		{ return ii + i; }
+#endif
 		/// Addition operator. Returns a new object of type 'integer'.
 		integer operator+ (const integer& i) const;
 
@@ -184,9 +198,11 @@ class integer {
 		integer operator- () const;
 		/// Substraction operator. Returns a new object of type 'integer'.
 		integer operator- (int64_t i) const;
+#ifndef SWIG
 		/// Substraction operator. Returns a new object of type 'integer'.
 		inline friend integer operator- (int64_t i, const integer& ii)
 		{ return -ii + i; }
+#endif
 		/// Substraction operator. Returns a new object of type 'integer'.
 		integer operator- (const integer& i) const;
 
@@ -199,9 +215,11 @@ class integer {
 
 		/// Product operator. Returns a new object of type 'integer'.
 		integer operator* (int64_t i) const;
+#ifndef SWIG
 		/// Product operator. Returns a new object of type 'integer'.
 		inline friend integer operator* (int64_t i, const integer& ii)
 		{ return ii*i; }
+#endif
 		/// Product operator. Returns a new object of type 'integer'.
 		integer operator* (const integer& i) const;
 
@@ -212,9 +230,11 @@ class integer {
 
 		/// Quotient operator. Returns a new object of type 'integer'.
 		integer operator/ (int64_t i) const;
+#ifndef SWIG
 		/// Quotient operator. Returns a new object of type 'integer'.
 		inline friend int64_t operator/ (int64_t i, const integer& ii)
 		{ return i/ii.to_int(); }
+#endif
 		/// Quotient operator. Returns a new object of type 'integer'.
 		integer operator/ (const integer& i) const;
 

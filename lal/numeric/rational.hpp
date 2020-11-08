@@ -145,92 +145,120 @@ class rational {
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;
+#ifndef SWIG
 		/// Equality operator.
 		inline friend bool operator== (int64_t i, const rational& r)
 		{ return r == i; }
+#endif
 		/// Equality operator.
 		bool operator== (const integer& i) const;
+#ifndef SWIG
 		/// Equality operator.
 		inline friend bool operator== (const integer& i, const rational& r)
 		{ return r == i; }
+#endif
 		/// Equality operator.
 		bool operator== (const rational& r) const;
 
 		/// Non-equatility operator.
 		bool operator!= (int64_t i) const;
+#ifndef SWIG
 		/// Non-equatility operator.
 		inline friend bool operator!= (int64_t i, const rational& r)
 		{ return r != i; }
+#endif
 		/// Non-equatility operator.
 		bool operator!= (const integer& i) const;
+#ifndef SWIG
 		/// Non-equatility operator.
 		inline friend bool operator!= (const integer& i, const rational& r)
 		{ return r != i; }
+#endif
 		/// Non-equatility operator.
 		bool operator!= (const rational& r) const;
 
 		/// Less than operator.
 		bool operator< (int64_t i) const;
+#ifndef SWIG
 		/// Less than operator.
 		inline friend bool operator< (int64_t i, const rational& r)
 		{ return r > i; }
+#endif
 		/// Less than operator.
 		bool operator< (const integer& i) const;
+#ifndef SWIG
 		/// Less than operator.
 		inline friend bool operator< (const integer& i, const rational& r)
 		{ return r > i; }
+#endif
 		/// Less than operator.
 		bool operator< (const rational& r) const;
 
 		/// Less than or equal to operator.
 		bool operator<= (int64_t i) const;
+#ifndef SWIG
 		/// Less than or equal to operator.
 		inline friend bool operator<= (int64_t i, const rational& r)
 		{ return r >= i; }
+#endif
 		/// Less than or equal to operator.
 		bool operator<= (const integer& i) const;
+#ifndef SWIG
 		/// Less than or equal to operator.
 		inline friend bool operator<= (const integer& i, const rational& r)
 		{ return r >= i; }
+#endif
 		/// Less than or equal to operator.
 		bool operator<= (const rational& r) const;
 
 		/// Greater than operator.
 		bool operator> (int64_t i) const;
+#ifndef SWIG
 		/// Greater than operator.
 		inline friend bool operator> (int64_t i, const rational& r)
 		{ return r < i; }
+#endif
 		/// Greater than operator.
 		bool operator> (const integer& i) const;
+#ifndef SWIG
 		/// Greater than operator.
 		inline friend bool operator> (const integer& i, const rational& r)
 		{ return r < i; }
+#endif
 		/// Greater than operator.
 		bool operator> (const rational& r) const;
 
 		/// Greater than or equal to operator.
 		bool operator>= (int64_t i) const;
+#ifndef SWIG
 		/// Greater than or equal to operator.
 		inline friend bool operator>= (int64_t i, const rational& r)
 		{ return r <= i; }
+#endif
 		/// Greater than or equal to operator.
 		bool operator>= (const integer& i) const;
+#ifndef SWIG
 		/// Greater than or equal to operator.
 		inline friend bool operator>= (const integer& i, const rational& r)
 		{ return r <= i; }
+#endif
 		/// Greater than or equal to operator.
 		bool operator>= (const rational& r) const;
 
 		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (int64_t i) const;
+#ifndef SWIG
 		/// Addition operator. Returns a new object of type 'rational'.
 		inline friend rational operator+ (int64_t i, const rational& r)
 		{ return r + i; }
+#endif
 		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (const integer& i) const;
+#ifndef SWIG
 		/// Addition operator. Returns a new object of type 'rational'.
 		inline friend rational operator+ (const integer& i, const rational& r)
 		{ return r + i; }
+#endif
 		/// Addition operator. Returns a new object of type 'rational'.
 		rational operator+ (const rational& r) const;
 
@@ -245,14 +273,18 @@ class rational {
 		rational operator- () const;
 		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (int64_t i) const;
+#ifndef SWIG
 		/// Substraction operator. Returns a new object of type 'rational'.
 		inline friend rational operator- (int64_t i, const rational& r)
 		{ return -r + i; }
+#endif
 		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (const integer& i) const;
+#ifndef SWIG
 		/// Substraction operator. Returns a new object of type 'rational'.
 		inline friend rational operator- (const integer& i, const rational& r)
 		{ return -r + i; }
+#endif
 		/// Substraction operator. Returns a new object of type 'rational'.
 		rational operator- (const rational& r) const;
 
@@ -267,14 +299,18 @@ class rational {
 
 		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (int64_t i) const;
+#ifndef SWIG
 		/// Product operator. Returns a new object of type 'rational'.
 		inline friend rational operator* (int64_t i, const rational& r)
 		{ return r*i; }
+#endif
 		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (const integer& i) const;
+#ifndef SWIG
 		/// Product operator. Returns a new object of type 'rational'.
 		inline friend rational operator* (const integer& i, const rational& r)
 		{ return r*i; }
+#endif
 		/// Product operator. Returns a new object of type 'rational'.
 		rational operator* (const rational& r) const;
 
