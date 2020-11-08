@@ -94,7 +94,7 @@ class undirected_graph : virtual public graph {
 		/**
 		 * @brief Adds an edge to the graph.
 		 *
-		 * For developers: method @ref undirected_graph::extra_work_per_edge is
+		 * For developers: method @ref graph::extra_work_per_edge_add is
 		 * called after the edge has been added.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -116,7 +116,7 @@ class undirected_graph : virtual public graph {
 		 * This operation is faster than calling @ref add_edge(node,node,bool,bool)
 		 * since the edges are added in bulk.
 		 *
-		 * For developers: method @ref undirected_graph::extra_work_per_edge is
+		 * For developers: method @ref graph::extra_work_per_edge_add is
 		 * called for every edge added.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
@@ -155,6 +155,9 @@ class undirected_graph : virtual public graph {
 
 		/**
 		 * @brief Remove an edge from this graph.
+		 *
+		 * For developers: method @ref graph::extra_work_per_edge_remove is
+		 * called after the edge has been removed.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Normalise the graph after the deletion.
@@ -175,6 +178,9 @@ class undirected_graph : virtual public graph {
 		 * This operation is faster than removing edges one by one with
 		 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
 		 * bulk.
+		 *
+		 * For developers: method @ref graph::extra_work_per_edge_remove is
+		 * called after each edge has been removed.
 		 * @param edges The edges to be deleted.
 		 * @param norm Normalise the graph after the deletion.
 		 * @param check_norm If @e norm is false then, should we check whether

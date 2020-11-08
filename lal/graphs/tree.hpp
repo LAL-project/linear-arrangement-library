@@ -166,11 +166,7 @@ class tree : virtual public graph {
 	protected:
 		/**
 		 * @brief Initialises only the memory of class @ref tree.
-		 * @param n Number of vertices
-		 * @param init_UF
-		 * - If false, initialises the Union-Find data
-		 * structure to represent the independent set of n vertices.
-		 * - If false, it only allocates its memory.
+		 * @param n Number of vertices.
 		 */
 		void tree_only_init(uint32_t n);
 		/// Clears the memory used by only class @ref tree.

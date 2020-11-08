@@ -93,8 +93,8 @@ class free_tree : public undirected_graph, virtual public tree {
 		 * only in a @e debug compilation of the library. For a more controlled
 		 * addition of the edges, see @ref can_add_edge.
 		 *
-		 * For developers: method @ref free_tree::extra_work_per_edge is called
-		 * after the edge has been added.
+		 * For developers: method @ref graph::extra_work_per_edge_add is
+		 * called after the edge has been added.
 		 * @param s Valid node index: \f$0 \le s < n\f$.
 		 * @param t Valid node index: \f$0 \le t < n\f$.
 		 * @param norm Should the graph be normalised?
@@ -118,8 +118,8 @@ class free_tree : public undirected_graph, virtual public tree {
 		 * faster than calling @ref add_edge since the edges are added in bulk.
 		 * For a more controlled addition of the edges, see @ref can_add_edges.
 		 *
-		 * For developers: method @ref directed_graph::extra_work_per_edge is
-		 * called after the edge has been added.
+		 * For developers: method @ref graph::extra_work_per_edge_add is
+		 * called after each edge has been added.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether
