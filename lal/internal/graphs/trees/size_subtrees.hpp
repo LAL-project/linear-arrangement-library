@@ -187,6 +187,7 @@ void calculate_suvs(
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
+	sizes_edge.reserve(n - 1);
 	for (node y : t.get_out_neighbours(x)) {
 		__lal::calculate_suvs(t,n, x, y, sizes_edge);
 	}
