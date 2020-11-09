@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#if defined DEBUG
+#ifdef DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -95,7 +95,7 @@ inline node only_neighbour(const graphs::rooted_tree& t, node u) {
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centre(const T& t, node x) {
 	const auto n = t.n_nodes();
@@ -123,7 +123,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	std::vector<uint32_t> trimmed_degree(n, 0);
 	// number of nodes in the connected_component
 	uint32_t size_trimmed = t.n_nodes_component(x);
-#if defined DEBUG
+#ifdef DEBUG
 	uint32_t __size_trimmed = 0; // for debugging purposes only
 #endif
 
@@ -140,7 +140,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	// 3. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
 	[&](const auto&, node u) -> void {
-#if defined DEBUG
+#ifdef DEBUG
 		++__size_trimmed;
 #endif
 		trimmed_degree[u] = __lal::tree_deg(t, u);
@@ -153,7 +153,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.start_at(x);
 
-#if defined DEBUG
+#ifdef DEBUG
 	// make sure that the method n_nodes_component returns a correct value
 	assert(__size_trimmed == size_trimmed);
 #endif
@@ -233,7 +233,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	bfs.start_at(tree_leaves);
 
 	if (has_single_center) {
-#if defined DEBUG
+#ifdef DEBUG
 		assert(size_trimmed == 1);
 #endif
 		return std::make_pair(single_center, n);
@@ -241,7 +241,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// in case the 'has_single_center' boolean is false
 	// the variable 'size_trimmed' must equal 2.
-#if defined DEBUG
+#ifdef DEBUG
 	assert(size_trimmed == 2);
 #endif
 

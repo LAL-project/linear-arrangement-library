@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#if defined DEBUG
+#ifdef DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -68,7 +68,7 @@ namespace __lal {
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 void get_size_subtrees(
 	const T& t, node r, char *vis, uint32_t *sizes
@@ -82,7 +82,7 @@ void get_size_subtrees(
 			sizes[r] += sizes[u];
 		}
 	}
-	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
 	for (const node u : t.get_in_neighbours(r)) {
 		if (vis[u] == 0) {
 			get_size_subtrees(t, u, vis, sizes);
@@ -108,7 +108,7 @@ void get_size_subtrees(
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 void get_size_subtrees(
 	const T& t, node r, uint32_t *sizes
@@ -143,7 +143,7 @@ namespace __lal {
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 uint32_t calculate_suvs(
 	const T& t, uint32_t n, node u, node v,
@@ -157,7 +157,7 @@ uint32_t calculate_suvs(
 		}
 	}
 
-	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
 	for (node w : t.get_in_neighbours(v)) {
 		if (w != u) {
 			r += calculate_suvs(t,n, v, w, sizes_edge);
@@ -180,7 +180,7 @@ uint32_t calculate_suvs(
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 void calculate_suvs(
 	const T& t, uint32_t n, node x,
@@ -190,7 +190,7 @@ void calculate_suvs(
 	for (node y : t.get_out_neighbours(x)) {
 		__lal::calculate_suvs(t,n, x, y, sizes_edge);
 	}
-	if constexpr (std::is_same<graphs::rooted_tree, T>::value) {
+	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
 	for (node y : t.get_in_neighbours(x)) {
 		if (y != x) {
 			__lal::calculate_suvs(t,n, x, y, sizes_edge);
@@ -198,7 +198,7 @@ void calculate_suvs(
 	}
 	}
 
-#if defined DEBUG
+#ifdef DEBUG
 	assert(sizes_edge.size() <= 2*(t.n_nodes()) - 1);
 #endif
 }

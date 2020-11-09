@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#if defined DEBUG
+#ifdef DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -63,7 +63,7 @@ namespace __lal {
 // x: start at node x
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
@@ -72,7 +72,7 @@ std::pair<node, node> retrieve_centroid(
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
-#if defined DEBUG
+#ifdef DEBUG
 	assert(n > 0);
 #endif
 
@@ -120,7 +120,7 @@ std::pair<node, node> retrieve_centroid(
 	}
 	c1 = u;
 
-#if defined DEBUG
+#ifdef DEBUG
 	assert(c1 < N);
 #endif
 
@@ -171,7 +171,7 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t, node x,
@@ -201,7 +201,7 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(const T& t, node x) {
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;
@@ -236,7 +236,7 @@ std::pair<node, node> retrieve_centroid(const T& t, node x) {
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
@@ -264,7 +264,7 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	typename std::enable_if<std::is_base_of<graphs::tree, T>::value, int>::type = 0
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(const T& t) {
 	if (t.n_nodes() == 1) {

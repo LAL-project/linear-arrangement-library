@@ -61,7 +61,7 @@ namespace internal {
 template<
 	class G,
 	// this method can ONLY be used by objects of type 'graphs::graph'
-	typename std::enable_if<!std::is_same<graphs::graph, G>::value, int>::type = 0
+	typename std::enable_if_t<!std::is_same_v<graphs::graph, G>, int> = 0
 >
 inline void get_bool_neighbours(
 	const G& g, node u, char *neighs
@@ -70,7 +70,7 @@ inline void get_bool_neighbours(
 	for (const node v : g.get_out_neighbours(u)) {
 		neighs[v] = 1;
 	}
-	if constexpr (std::is_base_of<graphs::directed_graph, G>::value) {
+	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
 	for (const node v : g.get_out_neighbours(u)) {
 		neighs[v] = 1;
 	}

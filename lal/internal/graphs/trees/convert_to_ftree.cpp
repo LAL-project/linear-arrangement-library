@@ -158,7 +158,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 	vector<edge> edges(n - 1);
 	auto eit = edges.begin();
 
-#if defined DEBUG
+#ifdef DEBUG
 	// variable to make sure that the root has been set
 	bool root_set = false;
 #endif
@@ -170,7 +170,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 		if (L[i] == 0) {
 			// root, do nothing
 			r = i;
-#if defined DEBUG
+#ifdef DEBUG
 			root_set = true;
 #endif
 		}
@@ -182,7 +182,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 		}
 	}
 
-#if defined DEBUG
+#ifdef DEBUG
 	// root must have been set.
 	assert(root_set);
 #endif
