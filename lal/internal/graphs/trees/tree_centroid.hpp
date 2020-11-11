@@ -124,7 +124,8 @@ std::pair<node, node> retrieve_centroid(
 	assert(c1 < N);
 #endif
 
-	// find the second centroidal vertex
+	// find the second centroidal vertex among the
+	// neighbours of the first centroidal vertex
 	node c2 = N + 1;
 	for (const auto& p : M[c1]) {
 		const node v = p.first;

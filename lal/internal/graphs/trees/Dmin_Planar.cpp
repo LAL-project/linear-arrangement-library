@@ -68,11 +68,11 @@ inline void make_directed(
 {
 	for (node u = 0; u < rt.n_nodes(); ++u) {
 		for (node v : rt.get_out_neighbours(u)) {
-			// find 'u' in M[v] and remove it
-
+			// find the only instance of 'u' in the
+			// neighbourhood of 'v' and erase it.
 			auto& Mv = M[v];
-			auto it = Mv.begin();
 
+			auto it = Mv.begin();
 			bool found = false;
 			while (not found and it != Mv.end()) {
 				if (it->first == u) {
@@ -83,6 +83,7 @@ inline void make_directed(
 					++it;
 				}
 			}
+
 		}
 	}
 }

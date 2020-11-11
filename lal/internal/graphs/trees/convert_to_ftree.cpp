@@ -64,8 +64,7 @@ free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
 	auto eit = edges.begin();
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
-	// at position j, lev[j], store the last node added
-	// at level j.
+	// at position j, lev[j] contains the last node added at level j.
 	vector<node> lev(n+1, 0);
 	uint32_t stack_it = 0;
 

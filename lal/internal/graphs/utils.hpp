@@ -41,41 +41,14 @@
 
 #pragma once
 
+// C++ includes
+#include <algorithm>
+
 // lal includes
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace internal {
-
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
- * list of 0-1 values.
- *
- * Sets to 1 the positions in @e neighs that correspond to the nodes
- * neighours of @e u.
- * @param g Input graph.
- * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
- * @pre The contents of @e neighs must be all 0 (or false).
- */
-template<
-	class G,
-	// this method can ONLY be used by objects of type 'graphs::graph'
-	typename std::enable_if_t<!std::is_same_v<graphs::graph, G>, int> = 0
->
-inline void get_bool_neighbours(
-	const G& g, node u, char *neighs
-)
-{
-	for (const node v : g.get_out_neighbours(u)) {
-		neighs[v] = 1;
-	}
-	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
-	for (const node v : g.get_out_neighbours(u)) {
-		neighs[v] = 1;
-	}
-	}
-}
 
 /* @brief Retrieves the neighbours of a node in an undirected graph as a
  * list of 0-1 values.
@@ -92,17 +65,14 @@ inline void get_bool_neighbours(
 )
 {
 	if (g.is_directed()) {
-		for (const node v : g.get_in_neighbours(u)) {
-			neighs[v] = 1;
-		}
-		for (const node v : g.get_out_neighbours(u)) {
-			neighs[v] = 1;
-		}
+		const auto& in_u = g.get_in_neighbours(u);
+		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
+		const auto& out_u = g.get_out_neighbours(u);
+		std::for_each(out_u.begin(), out_u.end(), [&](node v) { neighs[v] = 1; });
 	}
 	else {
-		for (const node v : g.get_neighbours(u)) {
-			neighs[v] = 1;
-		}
+		const auto& neighs_u = g.get_neighbours(u);
+		std::for_each(neighs_u.begin(), neighs_u.end(), [&](node v) { neighs[v] = 1; });
 	}
 }
 

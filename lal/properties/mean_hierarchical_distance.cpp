@@ -39,10 +39,6 @@
  *
  ********************************************************************/
 
-// C++ includes
-#include <vector>
-using namespace std;
-
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
@@ -56,17 +52,21 @@ using namespace internal;
 namespace properties {
 
 rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
+	const uint32_t n = tree.n_nodes();
+
 	uint32_t sum_distances = 0;
-	vector<uint32_t> levels(tree.n_nodes(), 0);
+	uint32_t *distances = new uint32_t[n]{0};
 
 	BFS<rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
-		levels[t] = levels[s] + 1;
-		sum_distances += levels[t];
+		distances[t] = distances[s] + 1;
+		sum_distances += distances[t];
 	}
 	);
 	bfs.start_at(tree.get_root());
+
+	delete[] distances;
 
 	return rational(sum_distances, tree.n_edges());
 }

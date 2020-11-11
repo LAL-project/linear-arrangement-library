@@ -41,7 +41,6 @@
  
 // C++ includes
 #include <cassert>
-#include <numeric>
 using namespace std;
 
 // lal includes

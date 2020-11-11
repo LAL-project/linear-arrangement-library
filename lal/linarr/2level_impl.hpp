@@ -45,9 +45,11 @@
 #ifdef DEBUG
 #include <cassert>
 #endif
+#include <vector>
 
 // lal includes
-#include <lal/linarr/2level.hpp>
+#include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
 namespace linarr {
