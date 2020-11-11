@@ -68,17 +68,7 @@ rational::rational(const std::string& s) {
 }
 
 rational::rational(integer&& n) {
-	if (not n.is_initialized()) { clear(); return; }
-
-	if (is_initialized()) {
-		// if this rational was initialised (and quite likely,
-		// given a value) the mpq_t must be freed
-		clear();
-	}
-	// move 'n's contents and initialise denominator to 1
-	internal::move_mpz_to_mpq(n.m_val, m_val);
-	m_initialized = true;
-	n.m_initialized = false;
+	*this = std::move(static_cast<integer&>(n));
 }
 
 rational::rational(integer&& n, integer&& d) {
@@ -92,23 +82,14 @@ rational::rational(integer&& n, integer&& d) {
 
 	// move 'n's contents and initialise denominator to 1
 	internal::move_mpz_to_mpq(n.m_val, d.m_val, m_val);
+	mpq_canonicalize(m_val);
 	m_initialized = true;
 	n.m_initialized = false;
 	d.m_initialized = false;
 }
 
 rational::rational(rational&& r) {
-	if (not r.is_initialized()) { clear(); return; }
-
-	if (is_initialized()) {
-		// if this rational was initialised (and quite likely,
-		// given a value) the mpq_t must be freed
-		clear();
-	}
-	// move 'r's contents
-	internal::move_mpq_to_mpq(r.m_val, m_val);
-	m_initialized = true;
-	r.m_initialized = false; // better be safe than sorry
+	*this = std::move(static_cast<rational&>(r));
 }
 
 rational::rational(const rational& r) {
@@ -223,6 +204,7 @@ rational& rational::operator= (integer&& i) {
 	}
 	// move 'r's contents
 	internal::move_mpz_to_mpq(i.m_val, m_val);
+	mpq_canonicalize(m_val);
 	m_initialized = true;
 	i.m_initialized = false; // i is no longer initialised
 	return *this;
@@ -241,6 +223,7 @@ rational& rational::operator= (rational&& r) {
 	}
 	// move 'r's contents
 	internal::move_mpq_to_mpq(r.m_val, m_val);
+	mpq_canonicalize(m_val);
 	m_initialized = true;
 	r.m_initialized = false; // r is no longer initialised
 	return *this;
