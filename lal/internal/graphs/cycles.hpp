@@ -41,6 +41,7 @@
 
 #pragma once
 
+// lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 
@@ -59,23 +60,23 @@ namespace __lal {
 inline bool __find_cycle
 (
 	const graphs::directed_graph& g, node u,
-	std::vector<bool>& visited, std::vector<bool>& in_stack
+	char *visited, char *in_stack
 )
 {
 	if (visited[u]) { return false; }
-	visited[u] = true;
+	visited[u] = 1;
 
-	in_stack[u] = true;
+	in_stack[u] = 1;
 	for (node v : g.get_neighbours(u)) {
-		if (in_stack[v]) {
+		if (in_stack[v] == 1) {
 			return true;
 		}
-		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
+		if (visited[v] == 0 and __find_cycle(g,v,visited,in_stack)) {
 			return true;
 		}
 	}
 
-	in_stack[u] = false;
+	in_stack[u] = 0;
 	return false;
 }
 } // -- namespace __lal
@@ -86,9 +87,9 @@ inline bool __find_cycle
  * @returns Returns whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
-	const uint64_t n = g.n_nodes();
-	std::vector<bool> vis(n, false);
-	std::vector<bool> in_stack(n, false);
+	const uint32_t n = g.n_nodes();
+	char *vis = new char[n]{0};
+	char *in_stack = new char[n]{0};
 
 	bool has_cycle = false;
 	for (node u = 0; u < n and not has_cycle; ++u) {
@@ -96,6 +97,9 @@ inline bool has_directed_cycles(const graphs::directed_graph& g) {
 			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
 		}
 	}
+
+	delete[] vis;
+	delete[] in_stack;
 	return has_cycle;
 }
 
@@ -128,7 +132,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
 	// Note that read operations "if (parent[s] != t)" always come after
 	// the first write "parent[t] = s".
-	std::vector<node> parent(n);
+	node *parent = new node[n];
 	// a cycle was found
 	bool cycle_found = false;
 
@@ -171,6 +175,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 			bfs.start_at(u);
 		}
 	}
+	delete[] parent;
 	return cycle_found;
 }
 
