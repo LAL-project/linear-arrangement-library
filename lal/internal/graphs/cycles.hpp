@@ -79,7 +79,31 @@ inline bool __find_cycle
 	in_stack[u] = 0;
 	return false;
 }
+
 } // -- namespace __lal
+
+/*
+ * @brief Returns true if, and only if, the graph has DIRECTED cycles.
+ * @param g Input graph.
+ * @param vis Array of size 'n', where 'n' is the number of vertices of 'g'.
+ * @param in_stack Array of size 'n', where 'n' is the number of vertices of 'g'.
+ * @returns Returns whether the graph has cycles or not.
+ */
+inline bool has_directed_cycles(
+    const graphs::directed_graph& g, char *vis, char *in_stack
+)
+{
+	const uint32_t n = g.n_nodes();
+	std::fill(&vis[0], &vis[n], 0);
+	std::fill(&in_stack[0], &in_stack[n], 0);
+	bool has_cycle = false;
+	for (node u = 0; u < n and not has_cycle; ++u) {
+		if (not vis[u]) {
+			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
+		}
+	}
+	return has_cycle;
+}
 
 /*
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
@@ -88,34 +112,15 @@ inline bool __find_cycle
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.n_nodes();
-	char *vis = new char[n]{0};
-	char *in_stack = new char[n]{0};
-
-	bool has_cycle = false;
-	for (node u = 0; u < n and not has_cycle; ++u) {
-		if (not vis[u]) {
-			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
-		}
-	}
-
+	char *vis = new char[n];
+	char *in_stack = new char[n];
+	const bool has_cycle = has_directed_cycles(g, vis, in_stack);
 	delete[] vis;
 	delete[] in_stack;
 	return has_cycle;
 }
 
-/*
- * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
- *
- * In case the input graph is a directed graph, reverse edges are considered.
- * @param g Input graph.
- * @returns Returns whether the graph has cycles or not.
- */
-template<class G>
-inline bool has_undirected_cycles(const G& g) {
-	// BFS traversal object
-	BFS<G> bfs(g);
-	return has_undirected_cycles(g, bfs);
-}
+namespace __lal {
 
 /*
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
@@ -177,6 +182,22 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	}
 	delete[] parent;
 	return cycle_found;
+}
+
+} // -- namespace __lal
+
+/*
+ * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
+ *
+ * In case the input graph is a directed graph, reverse edges are considered.
+ * @param g Input graph.
+ * @returns Returns whether the graph has cycles or not.
+ */
+template<class G>
+inline bool has_undirected_cycles(const G& g) {
+	// BFS traversal object
+	BFS<G> bfs(g);
+	return has_undirected_cycles(g, bfs);
 }
 
 } // -- namespace internal
