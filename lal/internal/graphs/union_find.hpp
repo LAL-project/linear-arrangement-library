@@ -42,7 +42,9 @@
 #pragma once
 
 // C++ includes
+#ifdef DEBUG
 #include <cassert>
+#endif
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -112,7 +114,9 @@ void UnionFind_update_roots_remove(
 )
 {
 	// 'u' and 'v' are connected
+#ifdef DEBUG
 	assert(root_of[u] == root_of[v]);
+#endif
 
 	const uint32_t size_uv = root_size[root_of[u]];
 
