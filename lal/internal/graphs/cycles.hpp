@@ -197,7 +197,7 @@ template<class G>
 inline bool has_undirected_cycles(const G& g) {
 	// BFS traversal object
 	BFS<G> bfs(g);
-	return has_undirected_cycles(g, bfs);
+	return __lal::has_undirected_cycles(g, bfs);
 }
 
 } // -- namespace internal
