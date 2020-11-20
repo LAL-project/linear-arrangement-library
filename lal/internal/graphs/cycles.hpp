@@ -90,7 +90,9 @@ inline bool __find_cycle
  * @returns Returns whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(
-    const graphs::directed_graph& g, char *vis, char *in_stack
+	const graphs::directed_graph& g,
+	char * __restrict__ vis,
+	char * __restrict__ in_stack
 )
 {
 	const uint32_t n = g.n_nodes();
@@ -112,11 +114,9 @@ inline bool has_directed_cycles(
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.n_nodes();
-	char *vis = new char[n];
-	char *in_stack = new char[n];
-	const bool has_cycle = has_directed_cycles(g, vis, in_stack);
-	delete[] vis;
-	delete[] in_stack;
+	char *all_mem = new char[2*n];
+	const bool has_cycle = has_directed_cycles(g, &all_mem[0], &all_mem[n]);
+	delete[] all_mem;
 	return has_cycle;
 }
 
