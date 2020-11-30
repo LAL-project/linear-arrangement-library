@@ -267,8 +267,7 @@ rational rational::operator- (const integer& i) const	{ rational r(*this); r -= 
 rational rational::operator- (const rational& r) const	{ rational k(*this); k -= r; return k; }
 
 rational& rational::operator- ()						{					mpq_neg(m_val, m_val); return *this; }
-rational& rational::operator-= (int64_t i)				{ rational r; r.init_si(i);
-																			mpq_sub(m_val, m_val, r.m_val); return *this; }
+rational& rational::operator-= (int64_t i)				{ rational r(i);	mpq_sub(m_val, m_val, r.m_val); return *this; }
 rational& rational::operator-= (const integer& i)		{ rational r(i);	mpq_sub(m_val, m_val, r.m_val); return *this; }
 rational& rational::operator-= (const rational& r)		{					mpq_sub(m_val, m_val, r.m_val); return *this; }
 
