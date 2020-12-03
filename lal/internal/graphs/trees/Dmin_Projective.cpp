@@ -123,8 +123,8 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	// number of intervals to the right of the root
 	uint32_t n_intervals_right = 0;
 
-	// total sum of length of edges + the length of the edge from 'r'
-	// to its parent (if any)
+	// sum of the optimal D for every subtree +
+	// the length of the edge from 'r' to its parent (if any)
 	uint32_t D = 0;
 	// total sum of lengths of edges from 'r' to 'vi' without the anchor
 	uint32_t d = 0;
