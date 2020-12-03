@@ -45,7 +45,6 @@
 #ifdef DEBUG
 #include <cassert>
 #endif
-#include <vector>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -143,30 +142,31 @@ namespace __lal {
  */
 template<
 	class T,
+	typename It,
 	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 uint32_t calculate_suvs(
-	const T& t, uint32_t n, node u, node v,
-	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	const T& t, const uint32_t n, const node u, const node v,
+	It& it
 )
 {
 	uint32_t r = 1;
 	for (node w : t.get_out_neighbours(v)) {
 		if (w != u) {
-			r += calculate_suvs(t,n, v, w, sizes_edge);
+			r += calculate_suvs(t,n, v, w, it);
 		}
 	}
 
 	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
 	for (node w : t.get_in_neighbours(v)) {
 		if (w != u) {
-			r += calculate_suvs(t,n, v, w, sizes_edge);
+			r += calculate_suvs(t,n, v, w, it);
 		}
 	}
 	}
 
-	sizes_edge.push_back(std::make_pair(edge(u,v), r));
-	sizes_edge.push_back(std::make_pair(edge(v,u), n - r));
+	*it++ = std::make_pair(edge(u,v), r);
+	*it++ = std::make_pair(edge(v,u), n - r);
 	return r;
 }
 
@@ -180,28 +180,24 @@ uint32_t calculate_suvs(
  */
 template<
 	class T,
+	typename It,
 	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 void calculate_suvs(
-	const T& t, uint32_t n, node x,
-	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	const T& t, const uint32_t n, const node x,
+	It& sizes_edge_it
 )
 {
-	sizes_edge.reserve(n - 1);
 	for (node y : t.get_out_neighbours(x)) {
-		__lal::calculate_suvs(t,n, x, y, sizes_edge);
+		__lal::calculate_suvs(t,n, x, y, sizes_edge_it);
 	}
 	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
 	for (node y : t.get_in_neighbours(x)) {
 		if (y != x) {
-			__lal::calculate_suvs(t,n, x, y, sizes_edge);
+			__lal::calculate_suvs(t,n, x, y, sizes_edge_it);
 		}
 	}
 	}
-
-#ifdef DEBUG
-	assert(sizes_edge.size() <= 2*(t.n_nodes()) - 1);
-#endif
 }
 
 } // -- namespace internal

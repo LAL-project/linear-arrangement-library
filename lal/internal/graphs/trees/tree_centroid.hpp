@@ -59,7 +59,7 @@ namespace internal {
 namespace __lal {
 
 // N: actual number of vertices of the tree
-// n: size of the connected component of x
+// n: number of vertices of the connected component of x
 // x: start at node x
 template<
 	class T,
@@ -83,7 +83,11 @@ std::pair<node, node> retrieve_centroid(
 	}
 
 	// calculate s(u,v) with H&S algorithm (lemma 8)
-	internal::calculate_suvs(t,n, x, sizes_edge);
+	{
+	sizes_edge.resize(2*(n - 1));
+	auto it = sizes_edge.begin();
+	internal::calculate_suvs(t,n, x, it);
+	}
 
 	{
 	// sort all tuples in sizes_edge using the sizes
@@ -175,23 +179,21 @@ template<
 	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(
-	const T& t, node x,
+	const T& t, const node x,
 	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
+	// actual number of vertices of the tree
+	const uint32_t N = t.n_nodes();
 	// calculate the size of the connected component
 	const uint32_t n = t.n_nodes_component(x);
+	// easy case
 	if (n == 1) {
-		return std::make_pair(x, t.n_nodes());
+		return std::make_pair(x, N);
 	}
-
-	return
-	__lal::retrieve_centroid(
-		t,
-		t.n_nodes(), n, x,
-		M, sizes_edge
-	);
+	// general case
+	return __lal::retrieve_centroid(t, N, n, x, M, sizes_edge);
 }
 
 /*
@@ -204,7 +206,7 @@ template<
 	class T,
 	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
-std::pair<node, node> retrieve_centroid(const T& t, node x) {
+std::pair<node, node> retrieve_centroid(const T& t, const node x) {
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;
 	std::vector<std::pair<edge, uint32_t>> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
@@ -245,16 +247,14 @@ std::pair<node, node> retrieve_centroid(
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
-	if (t.n_nodes() == 1) {
+	// actual number of vertices of the tree
+	const uint32_t N = t.n_nodes();
+	// easy case
+	if (N == 1) {
 		return std::make_pair(0, 1);
 	}
-
-	return
-	__lal::retrieve_centroid(
-		t,
-		t.n_nodes(), t.n_nodes(), 0,
-		M, sizes_edge
-	);
+	// general case
+	return __lal::retrieve_centroid(t, N, N, 0, M, sizes_edge);
 }
 
 /*
@@ -268,10 +268,6 @@ template<
 	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
 >
 std::pair<node, node> retrieve_centroid(const T& t) {
-	if (t.n_nodes() == 1) {
-		return std::make_pair(0, 1);
-	}
-
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;
 	std::vector<std::pair<edge, uint32_t>> sizes_edge;
 	return retrieve_centroid(t, M, sizes_edge);
