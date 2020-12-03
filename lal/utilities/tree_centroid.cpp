@@ -53,12 +53,12 @@ namespace utilities {
 
 pair<node, node> get_centroid(const graphs::rooted_tree& t) {
 	assert(t.is_tree());
-	return internal::retrieve_centroid(t, 0);
+	return internal::retrieve_centroid(t);
 }
 
 pair<node, node> get_centroid(const graphs::free_tree& t) {
 	assert(t.is_tree());
-	return internal::retrieve_centroid(t, 0);
+	return internal::retrieve_centroid(t);
 }
 
 } // -- namespace utilities
