@@ -118,14 +118,13 @@ void assign_name(const rooted_tree& t, node v, string& name) {
 	sort(names_children.begin(), names_children.end());
 
 	// join the names in a single string
-	string join;
+	name = "1";
 	for (const string& nc : names_children) {
-		join += nc;
+		name += nc;
 	}
-	name = "1" + join + "0";
+	name += "0";
 
 	names_children.clear();
-	join.clear();
 }
 
 // -----------------------------------------------------------------------------
