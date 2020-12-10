@@ -51,16 +51,8 @@ using namespace std;
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))
 
-#define DO_NOT_USE 0
-#define USE_THIS 1
-#define USE_COMPLICATED	DO_NOT_USE
-#define USE_SIMPLE		USE_THIS
-#if USE_COMPLICATED == USE_THIS && USE_SIMPLE == USE_THIS
-#error("Can't use both algorithms!")
-#endif
-#if USE_COMPLICATED == DO_NOT_USE && USE_SIMPLE == DO_NOT_USE
-#error("We need at least one algorithm!")
-#endif
+//#define USE_COMPLICATED
+#undef USE_COMPLICATED
 
 namespace lal {
 using namespace graphs;
@@ -120,7 +112,7 @@ int fast_non_iso(const T& t1, const T& t2) {
 
 // -----------------------------------------------------------------------------
 
-#if USE_COMPLICATED == USE_THIS
+#if defined USE_COMPLICATED
 template<typename T>
 void free_memory(T*& m) {
 	if (m != nullptr) { delete[] m; m = nullptr; }
@@ -275,9 +267,7 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	test_isomorphism ti(t1, t2);
 	return ti.are_trees_isomorphic();
 }
-#endif
-
-#if USE_SIMPLE == USE_THIS
+#else
 void assign_name(const rooted_tree& t, node v, string& name) {
 	if (t.degree(v) == 0) {
 		name = "10";
