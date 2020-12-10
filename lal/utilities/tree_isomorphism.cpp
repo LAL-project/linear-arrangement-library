@@ -271,29 +271,32 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	return ti.are_trees_isomorphic();
 }
 #else
-void assign_name(const rooted_tree& t, node v, string& name) {
+string assign_name(
+	const rooted_tree& t, node v,
+	string *names, size_t idx
+)
+{
 	if (t.degree(v) == 0) {
-		name = "10";
-		return;
+		return "10";
 	}
 
 	// make childrens' names
-	vector<string> names_children(t.degree(v));
-	size_t i = 0;
+	const size_t begin_idx = idx;
 	for (node u : t.get_neighbours(v)) {
-		assign_name(t,u, names_children[i]);
-		++i;
+		names[idx] = assign_name(t,u, names, idx+1);
+		++idx;
 	}
-	sort(names_children.begin(), names_children.end());
+	const size_t end_idx = idx;
+	sort(&names[begin_idx], &names[end_idx]);
 
 	// join the names in a single string
-	name = "1";
-	for (const string& nc : names_children) {
-		name += nc;
+	string name = "1";
+	for (size_t j = begin_idx; j < end_idx; ++j) {
+		name += names[j];
 	}
 	name += "0";
 
-	names_children.clear();
+	return name;
 }
 
 bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
@@ -301,9 +304,12 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	string name_r1, name_r2;
-	assign_name(t1, t1.get_root(), name_r1);
-	assign_name(t2, t2.get_root(), name_r2);
+	const uint32_t n = t1.n_nodes();
+	string *names = new string[n];
+
+	const string name_r1 = assign_name(t1, t1.get_root(), names, 0);
+	const string name_r2 = assign_name(t2, t2.get_root(), names, 0);
+	delete[] names;
 	return name_r1 == name_r2;
 }
 #endif
