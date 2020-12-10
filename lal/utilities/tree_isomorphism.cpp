@@ -74,7 +74,8 @@ int fast_non_iso(const T& t1, const T& t2) {
 	if (t1.n_nodes() != t2.n_nodes()) { return 1; }
 
 	if constexpr (std::is_same_v<T, lal::graphs::rooted_tree>) {
-	if (t1.is_orientation_valid() != t2.is_orientation_valid()) {
+	// rooted trees must have correct orientation of edges
+	if (not t1.is_orientation_valid() or not t2.is_orientation_valid()) {
 		return false;
 	}
 	}
@@ -119,144 +120,146 @@ void free_memory(T*& m) {
 }
 
 class test_isomorphism {
+private:
+string *_pieces_of_node = nullptr;
+string *_pieces_of_level = nullptr;
+uint32_t *_distances = nullptr;
+
+private:
+const rooted_tree& t1, t2;
+const uint32_t n;
+
+vector<vector<node>> nodes_per_level_t1;
+string *name_per_level_t1 = nullptr;
+string *name_per_node_t1 = nullptr;
+
+vector<vector<node>> nodes_per_level_t2;
+string *name_per_level_t2 = nullptr;
+string *name_per_node_t2 = nullptr;
+
 public:
-	test_isomorphism(const rooted_tree& __t1, const rooted_tree& __t2)
-	: t1(__t1), t2(__t2)
-	{
-		const uint32_t n = t1.n_nodes();
-		__pieces_of_node = new string[n];
-		__pieces_of_level = new string[n];
-		__distances = new uint32_t[n];
+test_isomorphism(const rooted_tree& _t1, const rooted_tree& _t2)
+: t1(_t1), t2(_t2), n(_t1.n_nodes())
+{
+	_pieces_of_node = new string[n];
+	_pieces_of_level = new string[n];
+	_distances = new uint32_t[n];
+}
+
+~test_isomorphism() {
+	free_memory(name_per_level_t1);
+	free_memory(name_per_node_t1);
+	free_memory(name_per_level_t2);
+	free_memory(name_per_node_t2);
+	free_memory(_pieces_of_node);
+	free_memory(_pieces_of_level);
+	free_memory(_distances);
+}
+
+bool are_trees_isomorphic() {
+	make_names_per_level<false>
+	(t1, nodes_per_level_t1, name_per_level_t1, name_per_node_t1);
+
+	return
+	make_names_per_level<true>
+	(t2, nodes_per_level_t2, name_per_level_t2, name_per_node_t2);
+}
+
+void retrieve_nodes_per_level(
+	const rooted_tree& t, vector<vector<node>>& nodes_per_level
+)
+{
+	nodes_per_level = vector<vector<node>>(n);
+
+	nodes_per_level[0].push_back(t.get_root());
+
+	internal::BFS<rooted_tree> bfs(t);
+	bfs.set_use_rev_edges(false);
+
+	uint32_t max_level = 0;
+	std::fill(&_distances[0], &_distances[n], 0);
+
+	bfs.set_process_neighbour(
+	[&](const auto&, node u, node v, bool) -> void {
+		_distances[v] = _distances[u] + 1;
+		nodes_per_level[_distances[v]].push_back(v);
+		max_level = std::max(max_level, _distances[v]);
 	}
+	);
+	bfs.start_at(t.get_root());
 
-	~test_isomorphism() {
-		free_memory(name_per_level_t1);
-		free_memory(name_per_node_t1);
-		free_memory(name_per_level_t2);
-		free_memory(name_per_node_t2);
-		free_memory(__pieces_of_node);
-		free_memory(__pieces_of_level);
-		free_memory(__distances);
-	}
-
-	bool are_trees_isomorphic() {
-		make_names_per_level<false>
-		(t1, nodes_per_level_t1, name_per_level_t1, name_per_node_t1);
-
-		return
-		make_names_per_level<true>
-		(t2, nodes_per_level_t2, name_per_level_t2, name_per_node_t2);
-	}
-
-	void retrieve_nodes_per_level(
-		const rooted_tree& t, vector<vector<node>>& nodes_per_level
-	)
-	{
-		const uint32_t n = t.n_nodes();
-		nodes_per_level = vector<vector<node>>(n);
-
-		nodes_per_level[0].push_back(t.get_root());
-
-		internal::BFS<rooted_tree> bfs(t);
-		bfs.set_use_rev_edges(false);
-
-		uint32_t max_level = 0;
-		std::fill(&__distances[0], &__distances[n], 0);
-
-		bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) -> void {
-			__distances[v] = __distances[u] + 1;
-			nodes_per_level[__distances[v]].push_back(v);
-			max_level = std::max(max_level, __distances[v]);
-		}
-		);
-		bfs.start_at(t.get_root());
-
-		nodes_per_level.resize(max_level + 1);
+	nodes_per_level.resize(max_level + 1);
 #if defined DEBUG
-		assert(nodes_per_level.size() == max_level + 1);
+	assert(nodes_per_level.size() == max_level + 1);
 #endif
+}
+
+template<bool compare>
+using Type = typename std::conditional<compare, bool, void>::type;
+template<bool compare> Type<compare>
+make_names_per_level
+(
+	const rooted_tree& t,
+	vector<vector<node>>& nodes_per_level_t,
+	string*& name_per_level_t,
+	string*& name_per_node_t
+)
+{
+	retrieve_nodes_per_level(t, nodes_per_level_t);
+	if constexpr (compare) {
+	if (nodes_per_level_t.size() != nodes_per_level_t1.size()) {
+		return false;
+	}
 	}
 
-	template<bool compare>
-	using Type = typename std::conditional<compare, bool, void>::type;
-	template<bool compare> Type<compare>
-	make_names_per_level
-	(
-		const rooted_tree& t,
-		vector<vector<node>>& nodes_per_level_t,
-		string*& name_per_level_t,
-		string*& name_per_node_t
-	)
-	{
-		const uint32_t n = t.n_nodes();
+	name_per_level_t = new string[nodes_per_level_t.size()];
+	name_per_node_t = new string[n];
 
-		retrieve_nodes_per_level(t, nodes_per_level_t);
-		name_per_level_t = new string[nodes_per_level_t.size()];
-		name_per_node_t = new string[n];
+	for (int l = to_int(nodes_per_level_t.size()) - 1; l >= 0; --l) {
+		const auto& nodes_level_l = nodes_per_level_t[l];
+		const size_t n_nodes_in_level = nodes_level_l.size();
 
-		for (int l = to_int(nodes_per_level_t.size()) - 1; l >= 0; --l) {
-			const auto& nodes_level_l = nodes_per_level_t[l];
-			const size_t n_nodes_in_level = nodes_level_l.size();
+		size_t i = 0;
+		for (node u : nodes_level_l) {
+			// store the neighbours names in a vector for later sorting
 
-			size_t i = 0;
-			for (node u : nodes_level_l) {
-				// store the neighbours names in a vector for later sorting
-
-				size_t j = 0;
-				for (node v : t.get_out_neighbours(u)) {
-					__pieces_of_node[j++] = name_per_node_t[v];
-				}
-				sort(&__pieces_of_node[0], &__pieces_of_node[j]);
-
-				// build the name for this node
-				name_per_node_t[u] = "1";
-				for (size_t k = 0; k < j; ++k) {
-					name_per_node_t[u] += __pieces_of_node[k];
-				}
-				name_per_node_t[u] += "0";
-
-				// collect another piece of this level
-				__pieces_of_level[i] = name_per_node_t[u];
-				++i;
+			size_t j = 0;
+			for (node v : t.get_out_neighbours(u)) {
+				_pieces_of_node[j++] = name_per_node_t[v];
 			}
+			sort(&_pieces_of_node[0], &_pieces_of_node[j]);
 
-			// sort the level's pieces
-			sort(&__pieces_of_level[0], &__pieces_of_level[n_nodes_in_level]);
+			// build the name for this node
+			name_per_node_t[u] = "1";
+			for (size_t k = 0; k < j; ++k) {
+				name_per_node_t[u] += _pieces_of_node[k];
+			}
+			name_per_node_t[u] += "0";
 
-			// build the level's name
-			for (size_t k = 0; k < n_nodes_in_level; ++k) {
-				name_per_level_t[l] += __pieces_of_level[k];
-			}
-
-			if constexpr (compare) {
-			if (name_per_level_t[l] != name_per_level_t1[l]) {
-				return false;
-			}
-			}
+			// collect another piece of this level
+			_pieces_of_level[i] = name_per_node_t[u];
+			++i;
 		}
 
+		// sort the level's pieces
+		sort(&_pieces_of_level[0], &_pieces_of_level[n_nodes_in_level]);
+
+		// build the level's name
+		for (size_t k = 0; k < n_nodes_in_level; ++k) {
+			name_per_level_t[l] += _pieces_of_level[k];
+		}
 
 		if constexpr (compare) {
-			return true;
+		if (name_per_level_t[l] != name_per_level_t1[l]) {
+			return false;
+		}
 		}
 	}
 
-private:
-	string *__pieces_of_node = nullptr;
-	string *__pieces_of_level = nullptr;
-	uint32_t *__distances = nullptr;
-
-private:
-	const rooted_tree& t1, t2;
-
-	vector<vector<node>> nodes_per_level_t1;
-	string *name_per_level_t1 = nullptr;
-	string *name_per_node_t1 = nullptr;
-
-	vector<vector<node>> nodes_per_level_t2;
-	string *name_per_level_t2 = nullptr;
-	string *name_per_node_t2 = nullptr;
+	if constexpr (compare) {
+		return true;
+	}
+}
 };
 
 bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
@@ -298,12 +301,9 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const node r1 = t1.get_root();
-	const node r2 = t2.get_root();
-
 	string name_r1, name_r2;
-	assign_name(t1, r1, name_r1);
-	assign_name(t2, r2, name_r2);
+	assign_name(t1, t1.get_root(), name_r1);
+	assign_name(t2, t2.get_root(), name_r2);
 	return name_r1 == name_r2;
 }
 #endif
@@ -325,24 +325,21 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) {
 	const uint32_t size2 = (c2.second < n ? 2 : 1);
 	if (size1 != size2) { return false; }
 
-	const rooted_tree rt1 = rooted_tree(t1, c1.first);
+	const rooted_tree rt1(t1, c1.first);
 
 	// the centres have only one vertex
 	if (size1 == 1) {
-		const rooted_tree rt2 = rooted_tree(t2, c2.first);
-		return are_trees_isomorphic(rt1, rt2);
+		return are_trees_isomorphic(rt1, rooted_tree(t2, c2.first));
 	}
 
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const rooted_tree rt2_1 = rooted_tree(t2, c2.first);
-	const bool iso1 = are_trees_isomorphic(rt1, rt2_1);
+	const bool iso1 = are_trees_isomorphic(rt1, rooted_tree(t2, c2.first));
 	if (iso1) { return true; }
 
 	// try with the second centre of the second tree
-	const rooted_tree rt2_2 = rooted_tree(t2, c2.second);
-	return are_trees_isomorphic(rt1, rt2_2);
+	return are_trees_isomorphic(rt1, rooted_tree(t2, c2.second));
 }
 
 } // -- namespace utilities
