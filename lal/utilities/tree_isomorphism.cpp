@@ -286,12 +286,11 @@ string assign_name(
 		names[idx] = assign_name(t,u, names, idx+1);
 		++idx;
 	}
-	const size_t end_idx = idx;
-	sort(&names[begin_idx], &names[end_idx]);
+	sort(&names[begin_idx], &names[idx]);
 
 	// join the names in a single string
 	string name = "1";
-	for (size_t j = begin_idx; j < end_idx; ++j) {
+	for (size_t j = begin_idx; j < idx; ++j) {
 		name += names[j];
 	}
 	name += "0";
@@ -306,7 +305,6 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 
 	const uint32_t n = t1.n_nodes();
 	string *names = new string[n];
-
 	const string name_r1 = assign_name(t1, t1.get_root(), names, 0);
 	const string name_r2 = assign_name(t2, t2.get_root(), names, 0);
 	delete[] names;
