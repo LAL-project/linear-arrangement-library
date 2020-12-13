@@ -76,49 +76,48 @@ template<
 	bool increasing
 >
 void counting_sort(
-	It begin, It end, const size_t _M, const size_t S,
-	const std::function<size_t (const T&)>& key
+	It begin, It end, std::size_t M, const std::size_t S,
+	const std::function<std::size_t (const T&)>& key
 )
 {
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
-	// increase
-	const size_t M = _M + 1;
+	++M;
 
 	// allocate memory
 	T *output = new T[S];
-	size_t *count = new size_t[M]{0};
+	std::size_t *count = new std::size_t[M]{0};
 
 	// calculate frequency of each element
-	for (auto it = begin; it != end; ++it) {
-		const size_t elem_key = key(*it);
+	for (auto it = begin; it != end; ) {
+		const std::size_t elem_key = key(*(it++));
 		count[elem_key] += 1;
 	}
 
-	size_t total = 0;
-	for (size_t k = 0; k < M; ++k) {
+	std::size_t total = 0;
+	for (std::size_t k = 0; k < M; ++k) {
 		std::tie(count[k], total)
 			= std::make_pair(total, count[k] + total);
 	}
-	auto it = begin;
-	for (; it != end; ++it) {
-		const size_t elem_key = key(*it);
-		output[count[elem_key]] = *it;
+
+	for (auto it = begin; it != end; ) {
+		const std::size_t elem_key = key(*it);
+		output[count[elem_key]] = std::move(*(it++));
 		count[elem_key] += 1;
 	}
 
 	// calculate output
 	if constexpr (increasing) {
-		it = begin;
-		for (size_t k = 0; k < S; ++k, ++it) { *it = output[k]; }
+		auto it = begin;
+		for (std::size_t k = 0; k < S;) { *(it++) = std::move(output[k++]); }
 	}
 	else {
-		it = begin;
-		for (size_t k = S - 1; k > 0; --k, ++it) {
-			*it = output[k];
+		auto it = begin;
+		for (std::size_t k = S - 1; k > 0;) {
+			*(it++) = std::move(output[k--]);
 		}
-		*it = output[0];
+		*it = std::move(output[0]);
 	}
 
 	// free memory
