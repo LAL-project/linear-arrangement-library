@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -61,7 +64,7 @@ namespace internal {
 inline uint32_t __compute_C_dyn_prog(
 	const graph& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
-	node * __restrict__ T,
+	node * __restrict__ inv_pi,
 	uint32_t * __restrict__ M,
 	uint32_t * __restrict__ K
 )
@@ -72,14 +75,14 @@ inline uint32_t __compute_C_dyn_prog(
 
 	// compute pi
 	for (node i = 0; i < n; ++i) {
-		T[ pi[i] ] = i;
+		inv_pi[ pi[i] ] = i;
 	}
 
 	/* fill matrix M */
 
 	for (position pu = 0; pu < n - 3; ++pu) {
 		// node at position pu + 1
-		const node u = T[pu + 1];
+		const node u = inv_pi[pu + 1];
 
 		internal::get_bool_neighbours(g, u, bn);
 
@@ -88,15 +91,15 @@ inline uint32_t __compute_C_dyn_prog(
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
 		// the arrangement
-		k -= (bn[T[0]] + bn[T[1]]);
-		bn[T[0]] = bn[T[1]] = false;
+		k -= (bn[inv_pi[0]] + bn[inv_pi[1]]);
+		bn[inv_pi[0]] = bn[inv_pi[1]] = 0;
 
 		// this is done because there is no need to
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
 		for (uint32_t i = 3; i < n; ++i) {
-			k -= bn[T[i - 1]];
+			k -= bn[inv_pi[i - 1]];
 
 			// the row corresponding to node 'u' in M is
 			// the same as its position in the sequence.
@@ -107,7 +110,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 			// clear boolean neighbours so that at the next
 			// iteration all its values are valid
-			bn[T[i - 1]] = false;
+			bn[inv_pi[i - 1]] = 0;
 		}
 	}
 
@@ -149,7 +152,7 @@ inline uint32_t __compute_C_dyn_prog(
 	uint32_t C = 0;
 
 	for (position pu = 0; pu < n - 3; ++pu) {
-		const node u = T[pu];
+		const node u = inv_pi[pu];
 
 		const neighbourhood& Nu = g.get_neighbours(u);
 		for (const node& v : Nu) {
@@ -227,7 +230,9 @@ inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) 
 }
 
 uint32_t n_C_dynamic_programming(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
 	return internal::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
 }
 
@@ -258,8 +263,10 @@ vector<uint32_t> n_C_dynamic_programming_list
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
+#endif
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog(g, pis[i], bool_neighs, T,M,K);

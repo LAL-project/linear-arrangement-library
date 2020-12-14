@@ -40,8 +40,10 @@
  ********************************************************************/
 
 // C++ includes
-#include <cstring> // for 'memset' below
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <cstring> // for 'memset' below
 #include <vector>
 using namespace std;
 
@@ -57,14 +59,14 @@ namespace internal {
 inline uint32_t __compute_C_ladder(
 	const graph& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
-	uint32_t * __restrict__ T,
+	uint32_t * __restrict__ inv_pi,
 	uint32_t * __restrict__ L1
 )
 {
 	const uint32_t n = g.n_nodes();
 	// inverse arrangement
 	for (uint32_t i = 0; i < n; ++i) {
-		T[ pi[i] ] = i;
+		inv_pi[ pi[i] ] = i;
 	}
 
 	/* compute number of crossings */
@@ -72,7 +74,7 @@ inline uint32_t __compute_C_ladder(
 
 	// no need to reach the last position of the arrangement
 	for (uint32_t p = 0; p < n - 1; ++p) {
-		const node u = T[p];
+		const node u = inv_pi[p];
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement
@@ -82,7 +84,7 @@ inline uint32_t __compute_C_ladder(
 		internal::get_bool_neighbours(g, u, bn);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
-			const node v = T[q];
+			const node v = inv_pi[q];
 			S += L1[q];
 
 			// --
@@ -132,7 +134,9 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 }
 
 uint32_t n_C_ladder(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
 	return internal::call_with_empty_arrangement(__call_C_ladder, g, pi);
 }
 
@@ -160,8 +164,10 @@ vector<uint32_t> n_C_ladder_list
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
+#endif
 
 		// compute C
 		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs, T,L1);

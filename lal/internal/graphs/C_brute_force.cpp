@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -218,7 +221,9 @@ inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& p
 }
 
 uint32_t n_C_brute_force(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
 	return internal::call_with_empty_arrangement(__call_C_brute_force, g, pi);
 }
 
@@ -240,8 +245,10 @@ vector<uint32_t> n_C_brute_force_list
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
+#endif
 
 		// compute C
 		cs[i] = (
