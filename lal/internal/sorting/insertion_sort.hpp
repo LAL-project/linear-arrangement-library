@@ -56,6 +56,7 @@ namespace internal {
  */
 template<typename It>
 void insertion_sort(It begin, It end) {
+	if (begin == end) { return; }
 	for (It i = begin + 1; i != end; ++i) {
 		It nj = i;
 		It j = i - 1;
