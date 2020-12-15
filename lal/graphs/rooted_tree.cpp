@@ -105,12 +105,12 @@ rooted_tree& rooted_tree::add_edges(
 	return *this;
 }
 
-rooted_tree& rooted_tree::add_all_edges(
+rooted_tree& rooted_tree::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
 	assert(can_add_edges(edges));
-	directed_graph::add_all_edges(edges, to_norm, check_norm);
+	directed_graph::set_edges(edges, to_norm, check_norm);
 	fill_union_find();
 	return *this;
 }
@@ -260,7 +260,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	// set root, add edges, and set valid orientation
 	set_root(r);
 	m_valid_orientation = true;
-	add_all_edges(dir_edges);
+	set_edges(dir_edges);
 	fill_union_find();
 }
 
@@ -398,7 +398,7 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
 	sub.m_valid_orientation = true;
-	sub.add_all_edges(es);
+	sub.set_edges(es);
 	return sub;
 }
 

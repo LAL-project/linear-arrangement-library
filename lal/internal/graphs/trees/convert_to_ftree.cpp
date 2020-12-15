@@ -92,7 +92,7 @@ free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
 	}
 
 	free_tree t(n);
-	t.add_all_edges(edges);
+	t.set_edges(edges);
 	return t;
 }
 
@@ -146,7 +146,7 @@ free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 	*eit++ = edge(u, v);
 
 	free_tree t(n);
-	t.add_all_edges(edges);
+	t.set_edges(edges);
 	return t;
 }
 
@@ -187,7 +187,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 #endif
 
 	free_tree t(n);
-	t.add_all_edges(edges);
+	t.set_edges(edges);
 	return make_pair(t, r);
 }
 

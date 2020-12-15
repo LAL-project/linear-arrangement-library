@@ -68,10 +68,10 @@ inline bool __find_cycle
 
 	in_stack[u] = 1;
 	for (node v : g.get_neighbours(u)) {
-		if (in_stack[v] == 1) {
+		if (in_stack[v]) {
 			return true;
 		}
-		if (visited[v] == 0 and __find_cycle(g,v,visited,in_stack)) {
+		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
 			return true;
 		}
 	}

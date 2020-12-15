@@ -180,7 +180,7 @@ undirected_graph& undirected_graph::add_edges(
 	return *this;
 }
 
-undirected_graph& undirected_graph::add_all_edges(
+undirected_graph& undirected_graph::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {

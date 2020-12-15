@@ -79,10 +79,10 @@ inline bool __read_edge_list(
 
 	g.init(max_vert_idx + 1);
 	if (all) {
-		g.add_all_edges(edge_list, norm, check);
+		g.set_edges(edge_list, norm, check);
 	}
 	else {
-		g.add_edges(edge_list, norm, check);
+		g.set_edges(edge_list, norm, check);
 	}
 	return true;
 }

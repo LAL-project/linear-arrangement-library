@@ -156,7 +156,7 @@ class directed_graph : virtual public graph {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		virtual directed_graph& add_all_edges
+		virtual directed_graph& set_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**

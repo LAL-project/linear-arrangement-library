@@ -155,7 +155,7 @@ class free_tree : public undirected_graph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		free_tree& add_all_edges
+		free_tree& set_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**

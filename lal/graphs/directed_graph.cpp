@@ -221,7 +221,7 @@ directed_graph& directed_graph::add_edges(
 	return *this;
 }
 
-directed_graph& directed_graph::add_all_edges(
+directed_graph& directed_graph::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {

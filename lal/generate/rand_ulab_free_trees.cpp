@@ -66,7 +66,7 @@ namespace generate {
 	for (node u = 1; u < N; ++u) {			\
 		edges[u - 1] = edge(u, TREE[u]);	\
 	}										\
-	T.add_all_edges(edges);					\
+	T.set_edges(edges);						\
 }
 
 /* PUBLIC */
@@ -87,12 +87,12 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
-		t.add_all_edges({edge(0,1)});
+		t.set_edges({edge(0,1)});
 		return t;
 	}
 	if (m_n == 3) {
 		free_tree t(3);
-		t.add_all_edges({edge(0,1),edge(1,2)});
+		t.set_edges({edge(0,1),edge(1,2)});
 		return t;
 	}
 

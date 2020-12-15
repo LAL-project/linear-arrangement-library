@@ -68,7 +68,7 @@ free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) 
 	assert(internal::is_graph_a_tree(t));
 
 	free_tree::tree_only_init(t.n_nodes());
-	add_all_edges(t.edges());
+	set_edges(t.edges());
 }
 free_tree::~free_tree() { }
 
@@ -101,12 +101,12 @@ free_tree& free_tree::add_edges(
 	return *this;
 }
 
-free_tree& free_tree::add_all_edges(
+free_tree& free_tree::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
 	assert(can_add_edges(edges));
-	undirected_graph::add_all_edges(edges, to_norm, check_norm);
+	undirected_graph::set_edges(edges, to_norm, check_norm);
 	fill_union_find();
 	return *this;
 }

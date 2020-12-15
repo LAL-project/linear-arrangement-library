@@ -199,7 +199,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @post If @e norm is true the graph is guaranteed to be normalised
 		 * after the addition of the edge.
 		 */
-		rooted_tree& add_all_edges
+		rooted_tree& set_edges
 		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
 		/**

@@ -102,7 +102,7 @@ rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 
 	rooted_tree rT(m_n);
 	rT.set_root(0);
-	rT.add_all_edges(edges);
+	rT.set_edges(edges);
 	rT.set_valid_orientation(true);
 	return rT;
 }
