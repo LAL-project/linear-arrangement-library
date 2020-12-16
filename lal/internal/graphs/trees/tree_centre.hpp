@@ -42,9 +42,10 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
+#include <type_traits>
 #include <vector>
 
 // lal includes
@@ -55,20 +56,6 @@
 
 namespace lal {
 namespace internal {
-
-namespace __lal {
-
-inline uint32_t tree_deg(const graphs::free_tree& t, node u) { return t.degree(u); }
-inline uint32_t tree_deg(const graphs::rooted_tree& t, node u) { return t.out_degree(u) + t.in_degree(u); }
-inline node only_neighbour(const graphs::free_tree& t, node u) { return t.get_neighbours(u)[0]; }
-inline node only_neighbour(const graphs::rooted_tree& t, node u) {
-	return (
-		t.out_degree(u) == 0 ?
-		t.get_in_neighbours(u)[0] : t.get_out_neighbours(u)[0]
-	);
-}
-
-} // -- namespace __lal
 
 /*
  * @brief Calculate the centre of the connected component that has node @e x.
@@ -95,23 +82,37 @@ inline node only_neighbour(const graphs::rooted_tree& t, node u) {
  */
 template<
 	class T,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	typename std::enable_if_t<
+		std::is_same_v<graphs::free_tree, T> ||
+		std::is_same_v<graphs::rooted_tree, T>,
+	int> = 0
 >
-std::pair<node, node> retrieve_centre(const T& t, node x) {
+std::pair<node, node> retrieve_centre(const T& t, node X) {
+
 	const auto n = t.n_nodes();
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (t.n_nodes_component(x) == 1) {
-		return std::make_pair(x, n);
+	if (t.n_nodes_component(X) == 1) {
+		return std::make_pair(X, n);
 	}
 
 	// Second simple case:
 	// if the connected component has two nodes then
-	if (t.n_nodes_component(x) == 2) {
+	if (t.n_nodes_component(X) == 2) {
 		// case component_size==1 is actually the first simple case
-		const node v1 = x;
-		const node v2 = __lal::only_neighbour(t, x);
+		const node v1 = X;
+
+		// only neighbour of X
+		node v2;
+		if constexpr (std::is_same_v<graphs::free_tree, T>) {
+			v2 = t.get_neighbours(X)[0];
+		}
+		else {
+			v2 = (t.out_degree(X) == 0 ?
+				t.get_in_neighbours(X)[0] : t.get_out_neighbours(X)[0]
+			);
+		}
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
@@ -119,11 +120,13 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
+	tree_leaves.reserve(t.n_nodes_component(X) - 1);
 	// full degree of every node of the connected component
 	std::vector<uint32_t> trimmed_degree(n, 0);
-	// number of nodes in the connected_component
-	uint32_t size_trimmed = t.n_nodes_component(x);
-#ifdef DEBUG
+	// number of nodes in the connected component
+	uint32_t size_trimmed = t.n_nodes_component(X);
+
+#if defined DEBUG
 	uint32_t __size_trimmed = 0; // for debugging purposes only
 #endif
 
@@ -140,20 +143,30 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	// 3. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
 	[&](const auto&, node u) -> void {
-#ifdef DEBUG
+#if defined DEBUG
 		++__size_trimmed;
 #endif
-		trimmed_degree[u] = __lal::tree_deg(t, u);
+
+		if constexpr (std::is_same_v<graphs::free_tree, T>)
+		{ trimmed_degree[u] = t.degree(u); }
+		else
+		{ trimmed_degree[u] = t.out_degree(u) + t.in_degree(u); }
+
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);
 			++l0;
 		}
 	}
 	);
-	bfs.set_use_rev_edges(t.is_directed());
-	bfs.start_at(x);
 
-#ifdef DEBUG
+	if constexpr (std::is_same_v<graphs::free_tree, T>)
+	{ bfs.set_use_rev_edges(false); }
+	else
+	{ bfs.set_use_rev_edges(true); }
+
+	bfs.start_at(X);
+
+#if defined DEBUG
 	// make sure that the method n_nodes_component returns a correct value
 	assert(__size_trimmed == size_trimmed);
 #endif
@@ -233,7 +246,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 	bfs.start_at(tree_leaves);
 
 	if (has_single_center) {
-#ifdef DEBUG
+#if defined DEBUG
 		assert(size_trimmed == 1);
 #endif
 		return std::make_pair(single_center, n);
@@ -241,7 +254,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 
 	// in case the 'has_single_center' boolean is false
 	// the variable 'size_trimmed' must equal 2.
-#ifdef DEBUG
+#if defined DEBUG
 	assert(size_trimmed == 2);
 #endif
 
@@ -267,7 +280,7 @@ std::pair<node, node> retrieve_centre(const T& t, node x) {
 		}
 	}
 	);
-	bfs.start_at(x);
+	bfs.start_at(X);
 
 	// return the nodes in the right order according to index values
 	return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
