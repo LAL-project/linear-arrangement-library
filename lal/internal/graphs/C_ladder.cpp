@@ -56,8 +56,9 @@ using namespace graphs;
 
 namespace internal {
 
+template<class G>
 inline uint32_t __compute_C_ladder(
-	const graph& g, const linear_arrangement& pi,
+	const G& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
 	uint32_t * __restrict__ inv_pi,
 	uint32_t * __restrict__ L1
@@ -81,7 +82,7 @@ inline uint32_t __compute_C_ladder(
 		uint32_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
-		internal::get_bool_neighbours(g, u, bn);
+		internal::get_bool_neighbours<G>(g, u, bn);
 
 		for (uint32_t q = p + 1; q < n; ++q) {
 			const node v = inv_pi[q];
@@ -106,7 +107,8 @@ inline uint32_t __compute_C_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
+template<class G>
+inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -133,15 +135,33 @@ inline uint32_t __call_C_ladder(const graph& g, const linear_arrangement& pi) {
 	return C;
 }
 
-uint32_t n_C_ladder(const graph& g, const linear_arrangement& pi) {
+// ------------------
+// single arrangement
+
+template<class G>
+uint32_t n_C_ladder(const G& g, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
-	return internal::call_with_empty_arrangement(__call_C_ladder, g, pi);
+	return
+	internal::call_with_empty_arrangement<uint32_t,G>
+	(__call_C_ladder, g, pi);
 }
 
+uint32_t n_C_ladder
+(const directed_graph& g, const linear_arrangement& pi)
+{ return n_C_ladder<directed_graph>(g, pi); }
+
+uint32_t n_C_ladder
+(const undirected_graph& g, const linear_arrangement& pi)
+{ return n_C_ladder<undirected_graph>(g, pi); }
+
+// --------------------
+// list of arrangements
+
+template<class G>
 vector<uint32_t> n_C_ladder_list
-(const graph& g, const vector<linear_arrangement>& pis)
+(const G& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 
@@ -181,6 +201,13 @@ vector<uint32_t> n_C_ladder_list
 	delete[] bool_neighs;
 	return cs;
 }
+
+vector<uint32_t> n_C_ladder_list
+(const directed_graph& g, const vector<linear_arrangement>& pis)
+{ return n_C_ladder_list<directed_graph>(g, pis); }
+vector<uint32_t> n_C_ladder_list
+(const undirected_graph& g, const vector<linear_arrangement>& pis)
+{ return n_C_ladder_list<undirected_graph>(g, pis); }
 
 } // -- namespace internal
 } // -- namespace lal

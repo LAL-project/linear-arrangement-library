@@ -47,6 +47,8 @@
 using namespace std;
 
 // lal includes
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
 
@@ -57,12 +59,14 @@ using namespace graphs;
 
 namespace internal {
 
-#define degree_graph(G,v) (G.is_undirected() ? G.degree(v) : G.out_degree(v) + G.in_degree(v))
+#define degree_graph(G,v) \
+	(G.is_undirected() ? G.degree(v) : G.out_degree(v) + G.in_degree(v))
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
+template<class G>
 inline uint32_t __compute_C_dyn_prog(
-	const graph& g, const linear_arrangement& pi,
+	const G& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
 	node * __restrict__ inv_pi,
 	uint32_t * __restrict__ M,
@@ -84,7 +88,7 @@ inline uint32_t __compute_C_dyn_prog(
 		// node at position pu + 1
 		const node u = inv_pi[pu + 1];
 
-		internal::get_bool_neighbours(g, u, bn);
+		internal::get_bool_neighbours<G>(g, u, bn);
 
 		uint32_t k = degree_graph(g,u);
 
@@ -172,7 +176,7 @@ inline uint32_t __compute_C_dyn_prog(
 				C += K[idx(pu,pi[v]-2, n-3)];
 			}
 		}
-		if (g.is_directed()) {
+		if constexpr (std::is_same_v<graphs::directed_graph, G>) {
 			const neighbourhood& Nu_in = g.get_in_neighbours(u);
 			for (const node& v : Nu_in) {
 
@@ -199,7 +203,8 @@ inline uint32_t __compute_C_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) {
+template<class G>
+inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
 		return 0;
@@ -229,15 +234,35 @@ inline uint32_t __call_C_dyn_prog(const graph& g, const linear_arrangement& pi) 
 	return C;
 }
 
-uint32_t n_C_dynamic_programming(const graph& g, const linear_arrangement& pi) {
+// ------------------
+// single arrangement
+
+template<class G>
+uint32_t n_C_dynamic_programming
+(const G& g, const linear_arrangement& pi)
+{
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
-	return internal::call_with_empty_arrangement(__call_C_dyn_prog, g, pi);
+	return
+	internal::call_with_empty_arrangement<uint32_t, G>
+	(__call_C_dyn_prog, g, pi);
 }
 
+uint32_t n_C_dynamic_programming
+(const directed_graph& g, const linear_arrangement& pi)
+{ return n_C_dynamic_programming<directed_graph>(g, pi); }
+
+uint32_t n_C_dynamic_programming
+(const undirected_graph& g, const linear_arrangement& pi)
+{ return n_C_dynamic_programming<undirected_graph>(g, pi); }
+
+// --------------------
+// list of arrangements
+
+template<class G>
 vector<uint32_t> n_C_dynamic_programming_list
-(const graph& g, const vector<linear_arrangement>& pis)
+(const G& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 
@@ -281,6 +306,14 @@ vector<uint32_t> n_C_dynamic_programming_list
 	return cs;
 }
 
+vector<uint32_t> n_C_dynamic_programming_list
+(const directed_graph& g, const vector<linear_arrangement>& pis)
+{ return n_C_dynamic_programming_list<directed_graph>(g, pis); }
+
+vector<uint32_t> n_C_dynamic_programming_list
+(const undirected_graph& g, const vector<linear_arrangement>& pis)
+{ return n_C_dynamic_programming_list<undirected_graph>(g, pis); }
+
 } // -- namespace internal
 } // -- namespace lal
 
@@ -299,7 +332,7 @@ vector<uint32_t> n_C_dynamic_programming_list
 
 
 /*
-// This is a basic, straightforward and easy to understand
+// This is a basic, straightforward and easy-to-understand
 // implementation of the above dynamic programming algorithm.
 
 inline void compute_M

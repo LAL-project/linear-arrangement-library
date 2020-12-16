@@ -53,7 +53,7 @@ using namespace graphs;
 namespace linarr {
 
 uint32_t n_crossings
-(const graph& g, const linear_arrangement& pi, const algorithms_C& A) {
+(const directed_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
 	switch (A) {
 	case algorithms_C::brute_force:
 		return internal::n_C_brute_force(g, pi);
@@ -70,8 +70,47 @@ uint32_t n_crossings
 	return g.n_edges()*g.n_edges();
 }
 
+uint32_t n_crossings
+(const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
+	switch (A) {
+	case algorithms_C::brute_force:
+		return internal::n_C_brute_force(g, pi);
+	case algorithms_C::dynamic_programming:
+		return internal::n_C_dynamic_programming(g, pi);
+	case algorithms_C::ladder:
+		return internal::n_C_ladder(g, pi);
+	case algorithms_C::stack_based:
+		return internal::n_C_stack_based(g, pi);
+	}
+
+	// wrong value of enumeration
+	assert(false);
+	return g.n_edges()*g.n_edges();
+}
+
+// -----------------------------------------------------------------------------
+
 vector<uint32_t> n_crossings_list
-(const graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+(const directed_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+{
+	switch (A) {
+	case algorithms_C::brute_force:
+		return internal::n_C_brute_force_list(g, pis);
+	case algorithms_C::dynamic_programming:
+		return internal::n_C_dynamic_programming_list(g, pis);
+	case algorithms_C::ladder:
+		return internal::n_C_ladder_list(g, pis);
+	case algorithms_C::stack_based:
+		return internal::n_C_stack_based_list(g, pis);
+	}
+
+	// wrong value of enumeration
+	assert(false);
+	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
+}
+
+vector<uint32_t> n_crossings_list
+(const undirected_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
 {
 	switch (A) {
 	case algorithms_C::brute_force:

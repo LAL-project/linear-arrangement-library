@@ -46,7 +46,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/algorithms_C.hpp>
 #include <lal/numeric/rational.hpp>
 
@@ -67,7 +68,24 @@ namespace linarr {
  * See the preconditions of each algorithm in @ref algorithms_C.
  */
 uint32_t n_crossings(
-	const graphs::graph& g, const linear_arrangement& pi = {},
+	const graphs::directed_graph& g, const linear_arrangement& pi = {},
+	const algorithms_C& A = algorithms_C::stack_based
+);
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph and a linear arrangements of its nodes, computes the number
+ * of edge crossings using the algorithm specified by the parameter @e A.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param A Algorithm to use to compute the number of crossings. Default:
+ * @ref algorithms_C::stack_based.
+ * @return Returns \f$C\f$.
+ * @pre The preconditions of this function depend on the choice of algorithm.
+ * See the preconditions of each algorithm in @ref algorithms_C.
+ */
+uint32_t n_crossings(
+	const graphs::undirected_graph& g, const linear_arrangement& pi = {},
 	const algorithms_C& A = algorithms_C::stack_based
 );
 /**
@@ -86,7 +104,10 @@ uint32_t n_crossings(
  * See the preconditions of each algorithm in @ref algorithms_C.
  */
 std::vector<uint32_t> n_crossings_list
-(const graphs::graph& g, const std::vector<linear_arrangement>& pis,
+(const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis,
+ const algorithms_C& A = algorithms_C::stack_based);
+std::vector<uint32_t> n_crossings_list
+(const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis,
  const algorithms_C& A = algorithms_C::stack_based);
 
 /* ---------------------------------------- */

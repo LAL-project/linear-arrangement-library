@@ -47,6 +47,8 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace internal {
@@ -91,7 +93,9 @@ std::vector<uint32_t> n_C_brute_force_list
  * @return Returns \f$C\f$.
  */
 uint32_t n_C_dynamic_programming
-(const graphs::graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+uint32_t n_C_dynamic_programming
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -104,7 +108,9 @@ uint32_t n_C_dynamic_programming
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_dynamic_programming_list
-(const graphs::graph& g, const std::vector<linear_arrangement>& pis);
+(const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis);
+std::vector<uint32_t> n_C_dynamic_programming_list
+(const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis);
 
 // -----------------------------------------------------------------------------
 
@@ -120,7 +126,9 @@ std::vector<uint32_t> n_C_dynamic_programming_list
  * @return Returns \f$C\f$.
  */
 uint32_t n_C_ladder
-(const graphs::graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+uint32_t n_C_ladder
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -133,7 +141,9 @@ uint32_t n_C_ladder
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_ladder_list
-(const graphs::graph& g, const std::vector<linear_arrangement>& pis);
+(const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis);
+std::vector<uint32_t> n_C_ladder_list
+(const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis);
 
 // -----------------------------------------------------------------------------
 
