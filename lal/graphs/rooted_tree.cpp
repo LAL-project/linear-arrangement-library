@@ -65,7 +65,7 @@ rooted_tree::rooted_tree(const rooted_tree& r) : graph(), tree(), directed_graph
 	copy_full_rooted_tree(r);
 }
 rooted_tree::rooted_tree(rooted_tree&& r) {
-	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
+	move_full_rooted_tree(std::move(r));
 }
 rooted_tree::rooted_tree(const free_tree& t, node r) {
 	rooted_tree::_init(t.n_nodes());
@@ -81,7 +81,7 @@ rooted_tree& rooted_tree::operator= (const rooted_tree& r) {
 }
 
 rooted_tree& rooted_tree::operator= (rooted_tree&& r) {
-	move_full_rooted_tree(std::move(static_cast<rooted_tree&>(r)));
+	move_full_rooted_tree(std::move(r));
 	return *this;
 }
 
@@ -437,10 +437,10 @@ void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {
 
 void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
 	// move-assign directed_graph class
-	move_full_directed_graph(std::move(static_cast<directed_graph&>(r)));
+	move_full_directed_graph(std::move(r));
 
 	// move-assign only tree's members
-	tree_only_move(std::move(static_cast<tree&>(r)));
+	tree_only_move(std::move(r));
 
 	// move this class' members
 	m_root = r.m_root;

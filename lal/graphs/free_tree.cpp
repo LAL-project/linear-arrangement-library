@@ -61,7 +61,7 @@ free_tree::free_tree(const free_tree& f) : graph(), tree(), undirected_graph() {
 	copy_full_free_tree(f);
 }
 free_tree::free_tree(free_tree&& f) {
-	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
+	move_full_free_tree(std::move(f));
 }
 free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
 	// check that the input graph is a ftree
@@ -80,7 +80,7 @@ free_tree& free_tree::operator= (const free_tree& f) {
 }
 
 free_tree& free_tree::operator= (free_tree&& f) {
-	move_full_free_tree(std::move(static_cast<free_tree&>(f)));
+	move_full_free_tree(std::move(f));
 	return *this;
 }
 
@@ -160,10 +160,10 @@ void free_tree::copy_full_free_tree(const free_tree& f) {
 
 void free_tree::move_full_free_tree(free_tree&& f) {
 	// move-assign undirected_graph class
-	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(f)));
+	move_full_undirected_graph(std::move(f));
 
 	// move-assign only tree's members
-	tree_only_move(std::move(static_cast<tree&>(f)));
+	tree_only_move(std::move(f));
 
 	// move this class' members
 }

@@ -58,7 +58,7 @@ tree::tree(const tree& t) : graph() {
 	tree_only_copy(t);
 }
 tree::tree(tree&& t) {
-	tree_only_move(std::move(static_cast<tree&>(t)));
+	tree_only_move(std::move(t));
 }
 tree::~tree() { }
 
@@ -70,7 +70,7 @@ tree& tree::operator= (const tree& t) {
 }
 
 tree& tree::operator= (tree&& t) {
-	tree_only_move(std::move(static_cast<tree&>(t)));
+	tree_only_move(std::move(t));
 	return *this;
 }
 

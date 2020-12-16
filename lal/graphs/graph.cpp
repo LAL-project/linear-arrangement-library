@@ -70,7 +70,7 @@ graph::graph(const graph& g) {
 	copy_full_graph(g);
 }
 graph::graph(graph&& g) {
-	move_full_graph(std::move(static_cast<graph&>(g)));
+	move_full_graph(std::move(g));
 }
 graph::~graph() { }
 
@@ -81,7 +81,7 @@ graph& graph::operator= (const graph& g) {
 	return *this;
 }
 graph& graph::operator= (graph&& g) {
-	move_full_graph(std::move(static_cast<graph&>(g)));
+	move_full_graph(std::move(g));
 	return *this;
 }
 

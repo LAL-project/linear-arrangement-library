@@ -212,6 +212,7 @@ void move_mpz_to_mpq(mpz_t& source, mpq_t& target) {
 	mpz_t one;
 	mpz_init_set_ui(one, 1);
 	move_from(one[0], target[0]._mp_den);
+	mpq_canonicalize(target);
 }
 
 void move_mpz_to_mpq(mpz_t& source_n, mpz_t& source_d, mpq_t& target) {

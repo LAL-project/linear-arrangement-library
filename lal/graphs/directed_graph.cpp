@@ -66,7 +66,7 @@ directed_graph::directed_graph(const directed_graph& d) : graph() {
 	copy_full_directed_graph(d);
 }
 directed_graph::directed_graph(directed_graph&& d) {
-	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
+	move_full_directed_graph(std::move(d));
 }
 directed_graph::~directed_graph() { }
 
@@ -78,7 +78,7 @@ directed_graph& directed_graph::operator= (const directed_graph& d) {
 }
 
 directed_graph& directed_graph::operator= (directed_graph&& d) {
-	move_full_directed_graph(std::move(static_cast<directed_graph&>(d)));
+	move_full_directed_graph(std::move(d));
 	return *this;
 }
 
@@ -410,7 +410,7 @@ void directed_graph::copy_full_directed_graph(const directed_graph& d) {
 
 void directed_graph::move_full_directed_graph(directed_graph&& d) {
 	// move-assign parent class
-	move_full_graph(std::move(static_cast<graph&>(d)));
+	move_full_graph(std::move(d));
 
 	// move-assign this class' members
 	m_in_adjacency_list = std::move(d.m_in_adjacency_list);

@@ -68,7 +68,7 @@ rational::rational(const std::string& s) {
 }
 
 rational::rational(integer&& n) {
-	*this = std::move(static_cast<integer&>(n));
+	*this = std::move(n);
 }
 
 rational::rational(integer&& n, integer&& d) {
@@ -89,7 +89,7 @@ rational::rational(integer&& n, integer&& d) {
 }
 
 rational::rational(rational&& r) {
-	*this = std::move(static_cast<rational&>(r));
+	*this = std::move(r);
 }
 
 rational::rational(const rational& r) {
@@ -204,7 +204,6 @@ rational& rational::operator= (integer&& i) {
 	}
 	// move 'r's contents
 	internal::move_mpz_to_mpq(i.m_val, m_val);
-	mpq_canonicalize(m_val);
 	m_initialized = true;
 	i.m_initialized = false; // i is no longer initialised
 	return *this;

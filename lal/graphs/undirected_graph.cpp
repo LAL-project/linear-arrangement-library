@@ -67,7 +67,7 @@ undirected_graph::undirected_graph(const undirected_graph& u) : graph() {
 	copy_full_undirected_graph(u);
 }
 undirected_graph::undirected_graph(undirected_graph&& u) {
-	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
+	move_full_undirected_graph(std::move(u));
 }
 undirected_graph::~undirected_graph() { }
 
@@ -78,7 +78,7 @@ undirected_graph& undirected_graph::operator= (const undirected_graph& u) {
 	return *this;
 }
 undirected_graph& undirected_graph::operator= (undirected_graph&& u) {
-	move_full_undirected_graph(std::move(static_cast<undirected_graph&>(u)));
+	move_full_undirected_graph(std::move(u));
 	return *this;
 }
 
@@ -333,7 +333,7 @@ void undirected_graph::copy_full_undirected_graph(const undirected_graph& u) {
 
 void undirected_graph::move_full_undirected_graph(undirected_graph&& u) {
 	// move-assign parent class
-	move_full_graph(std::move(static_cast<graph&>(u)));
+	move_full_graph(std::move(u));
 
 	// move-assign this class' members
 }
