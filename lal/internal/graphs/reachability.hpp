@@ -54,7 +54,7 @@ namespace internal {
  * @param target The node we want to know whether it is reachable from
  * @e source or not.
  */
-template<class G, typename node = typename lal::node>
+template<class G>
 bool is_node_reachable_from(const G& g, const node source, const node target) {
 	BFS<G> bfs(g);
 	bfs.set_terminate(

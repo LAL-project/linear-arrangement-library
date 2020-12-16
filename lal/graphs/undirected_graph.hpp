@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -227,7 +227,7 @@ class undirected_graph : virtual public graph {
 		 * @return Returns the list of nodes adjacent to node @e u.
 		 */
 		inline const neighbourhood& get_neighbours(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return m_adjacency_list[u];
@@ -260,7 +260,7 @@ class undirected_graph : virtual public graph {
 		 * @return Returns the number of adjacent nodes.
 		 */
 		inline uint32_t degree(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return static_cast<uint32_t>(m_adjacency_list[u].size());

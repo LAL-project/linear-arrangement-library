@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 
@@ -114,7 +114,7 @@ void UnionFind_update_roots_remove(
 )
 {
 	// 'u' and 'v' are connected
-#ifdef DEBUG
+#if defined DEBUG
 	assert(root_of[u] == root_of[v]);
 #endif
 

@@ -43,7 +43,7 @@
 
 // C++ includes
 #include <vector>
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 
@@ -143,7 +143,7 @@ class tree : virtual public graph {
 		 * @return Returns the size of the connected component of @e u.
 		 */
 		inline uint32_t n_nodes_component(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return m_root_size[m_root_of[u]];

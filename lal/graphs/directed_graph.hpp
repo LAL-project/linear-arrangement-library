@@ -43,7 +43,7 @@
 
 // C++ includes
 #include <vector>
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 
@@ -241,7 +241,7 @@ class directed_graph : virtual public graph {
 		 * @return Returns the list of nodes leaving node @e u.
 		 */
 		inline const neighbourhood& get_out_neighbours(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return m_adjacency_list[u];
@@ -252,7 +252,7 @@ class directed_graph : virtual public graph {
 		 * @return Returns the list of nodes entering at node @e u.
 		 */
 		inline const neighbourhood& get_in_neighbours(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return m_in_adjacency_list[u];
@@ -265,14 +265,14 @@ class directed_graph : virtual public graph {
 
 		/// Returns the out-degree of a node.
 		inline uint32_t out_degree(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return static_cast<uint32_t>(m_adjacency_list[u].size());
 		}
 		/// Returns the in-degree of a node.
 		inline uint32_t in_degree(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return static_cast<uint32_t>(m_in_adjacency_list[u].size());

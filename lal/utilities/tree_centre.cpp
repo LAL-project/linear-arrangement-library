@@ -49,16 +49,18 @@ using namespace std;
 #include <lal/internal/graphs/trees/tree_centre.hpp>
 
 namespace lal {
+using namespace graphs;
+
 namespace utilities {
 
-pair<node, node> get_centre(const graphs::rooted_tree& t) {
+pair<node, node> get_centre(const rooted_tree& t) {
 	assert(t.is_tree());
-	return internal::retrieve_centre(t, 0);
+	return internal::retrieve_centre<rooted_tree>(t, 0);
 }
 
-pair<node, node> get_centre(const graphs::free_tree& t) {
+pair<node, node> get_centre(const free_tree& t) {
 	assert(t.is_tree());
-	return internal::retrieve_centre(t, 0);
+	return internal::retrieve_centre<free_tree>(t, 0);
 }
 
 } // -- namespace utilities

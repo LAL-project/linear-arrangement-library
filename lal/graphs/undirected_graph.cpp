@@ -45,7 +45,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 using namespace std;

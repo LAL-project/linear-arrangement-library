@@ -94,7 +94,7 @@ void E_iterator::reset() {
 	auto [f2, _] = find_next_edge();
 	m_exists_next = f2;
 
-#ifdef DEBUG
+#if defined DEBUG
 	if (m_G.n_edges() == 1) {
 		assert(m_exists_next == false);
 	}

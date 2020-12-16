@@ -41,8 +41,14 @@
 
 #include <lal/utilities/tree_isomorphism.hpp>
 
+//#define USE_COMPLICATED
+#undef USE_COMPLICATED
+
 // C++ includes
+#include <string>
+#if defined USE_COMPLICATED
 #include <vector>
+#endif
 using namespace std;
 
 // lal includes
@@ -50,9 +56,6 @@ using namespace std;
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))
-
-//#define USE_COMPLICATED
-#undef USE_COMPLICATED
 
 namespace lal {
 using namespace graphs;
@@ -68,7 +71,13 @@ namespace utilities {
  * - second moment of degree do not coincide
  * Returns 2 if the trees MIGHT BE isomorphic
  */
-template<class T>
+template<
+	class T,
+	typename std::enable_if_t<
+		std::is_same_v<graphs::free_tree, T> ||
+		std::is_same_v<graphs::rooted_tree, T>,
+	int> = 0
+>
 int fast_non_iso(const T& t1, const T& t2) {
 	// check number of nodes
 	if (t1.n_nodes() != t2.n_nodes()) { return 1; }

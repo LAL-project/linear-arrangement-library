@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -58,7 +58,7 @@ template<class G>
 numeric::rational mean_dependency_distance_2level_rational
 (const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis)
 {
-#ifdef DEBUG
+#if defined DEBUG
 	// the number of graphs and number of linear arrangements
 	// must coincide unless no arrangement was given.
 	assert(pis.size() == 0 or Gs.size() == pis.size());

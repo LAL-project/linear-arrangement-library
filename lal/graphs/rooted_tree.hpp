@@ -43,7 +43,7 @@
 
 // C++ includes
 #include <vector>
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 
@@ -383,7 +383,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 
 		/// Return the root of this tree.
 		inline node get_root() const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_root());
 #endif
 			return m_root;
@@ -401,7 +401,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @pre Method @ref size_subtrees_valid returns true.
 		 */
 		inline uint32_t n_nodes_subtree(node u) const {
-#ifdef DEBUG
+#if defined DEBUG
 			assert(has_node(u));
 #endif
 			return m_size_subtrees[u];

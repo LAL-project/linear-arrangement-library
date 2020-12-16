@@ -226,7 +226,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		assert(t.has_edge(u,v));
 	}
 
-#ifdef DEBUG
+#if defined DEBUG
 	for (node u = 0; u < n; ++u) {
 		assert(M[u].size() == t.degree(u));
 	}

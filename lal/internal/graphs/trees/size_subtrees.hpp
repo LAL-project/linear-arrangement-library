@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 

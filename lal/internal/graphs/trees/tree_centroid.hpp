@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef DEBUG
+#if defined DEBUG
 #include <cassert>
 #endif
 #include <vector>
@@ -72,7 +72,7 @@ std::pair<node, node> retrieve_centroid(
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
-#ifdef DEBUG
+#if defined DEBUG
 	assert(n > 0);
 #endif
 
@@ -124,7 +124,7 @@ std::pair<node, node> retrieve_centroid(
 	}
 	c1 = u;
 
-#ifdef DEBUG
+#if defined DEBUG
 	assert(c1 < N);
 #endif
 
