@@ -386,10 +386,14 @@ undirected_graph directed_graph::to_undirected() const {
 		const edge e = it.get_edge();
 		const edge se = e.first < e.second ? e : edge(e.second, e.first);
 
-		if (not std::binary_search(my_edges.begin(), my_edges.end(), se)) {
-			my_edges.push_back(se);
+		auto _it = std::upper_bound(my_edges.begin(), my_edges.end(), se);
+		if (_it == my_edges.end() or *_it != se) {
+			my_edges.insert(_it, se);
 		}
 	}
+#if defined DEBUG
+	assert(std::is_sorted(my_edges.begin(), my_edges.end()));
+#endif
 
 	g.set_edges(my_edges);
 	return g;
@@ -443,9 +447,11 @@ void directed_graph::remove_single_edge(
 		it_u = find(in_v.begin(), in_v.end(), u);
 	}
 
+#if defined DEBUG
 	// check that the iterators point to the correct value
 	assert(*it_v == v);
 	assert(*it_u == u);
+#endif
 
 	// remove edges from the lists
 	out_u.erase(it_v);
