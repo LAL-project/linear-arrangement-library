@@ -135,10 +135,13 @@ class undirected_graph : virtual public graph {
 		/**
 		 * @brief Adds a list of edges to the graph.
 		 *
-		 * This list of tedges is assumed to be all the edges that are going
+		 * This list of edges is assumed to be all the edges that are going
 		 * to be added to this graph. This means that the internal data structures
 		 * are constructed more efficiently than when adding edges one by one
 		 * (see @ref add_edge) or in several chunks (see @ref add_edges).
+		 *
+		 * Moreover, the current structure of the graph is cleared before setting
+		 * the new edges.
 		 * @param edges The edges to be added.
 		 * @param norm Normalise the graph after the insertions.
 		 * @param check_norm If @e norm is false then, should we check whether

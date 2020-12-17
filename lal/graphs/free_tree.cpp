@@ -113,6 +113,11 @@ free_tree& free_tree::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
+	{
+	const uint32_t n = n_nodes();
+	clear(); init(n);
+	}
+
 	assert(can_add_edges(edges));
 	undirected_graph::set_edges(edges, to_norm, check_norm);
 	fill_union_find();

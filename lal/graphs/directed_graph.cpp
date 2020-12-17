@@ -224,6 +224,11 @@ directed_graph& directed_graph::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
+	{
+	const uint32_t n = n_nodes();
+	clear(); init(n);
+	}
+
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
