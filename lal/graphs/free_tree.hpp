@@ -74,6 +74,12 @@ class free_tree : public undirected_graph, virtual public tree {
 		 * @pre Graph @e t is a tree.
 		 */
 		free_tree(const undirected_graph& t);
+		/**
+		 * @brief Move constructor with undirected graph.
+		 * @param t An undirected graph.
+		 * @pre Graph @e t is a tree.
+		 */
+		free_tree(undirected_graph&& t);
 		/// Destructor.
 		virtual ~free_tree();
 

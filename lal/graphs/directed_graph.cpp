@@ -45,7 +45,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <set>
 using namespace std;
 
 // lal includes
@@ -372,19 +371,22 @@ bool directed_graph::has_edge(node u, node v) const {
 undirected_graph directed_graph::to_undirected() const {
 	undirected_graph g(n_nodes());
 
-	set<edge> my_edges;
+	vector<edge> my_edges;
+	my_edges.reserve(n_edges());
 
 	// add edges so that none are repeated
 	iterators::E_iterator it(*this);
 	while (it.has_next()) {
 		it.next();
 		const edge e = it.get_edge();
-		my_edges.insert(
-			e.first < e.second ? e : edge(e.second, e.first)
-		);
+		const edge se = e.first < e.second ? e : edge(e.second, e.first);
+
+		if (not std::binary_search(my_edges.begin(), my_edges.end(), se)) {
+			my_edges.push_back(se);
+		}
 	}
 
-	g.add_edges(vector<edge>(my_edges.begin(), my_edges.end()));
+	g.set_edges(my_edges);
 	return g;
 }
 

@@ -64,11 +64,19 @@ free_tree::free_tree(free_tree&& f) {
 	move_full_free_tree(std::move(f));
 }
 free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
-	// check that the input graph is a ftree
+	// check that the input graph is a tree
 	assert(internal::is_graph_a_tree(t));
 
 	free_tree::tree_only_init(t.n_nodes());
 	set_edges(t.edges());
+}
+free_tree::free_tree(undirected_graph&& t) : undirected_graph(t) {
+	// check that the input graph is a tree
+	assert(internal::is_graph_a_tree(t));
+
+	free_tree::tree_only_init(t.n_nodes());
+	// no need to call set_edges
+	fill_union_find();
 }
 free_tree::~free_tree() { }
 
