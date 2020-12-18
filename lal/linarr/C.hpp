@@ -88,6 +88,7 @@ uint32_t n_crossings(
 	const graphs::undirected_graph& g, const linear_arrangement& pi = {},
 	const algorithms_C& A = algorithms_C::stack_based
 );
+
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -106,6 +107,21 @@ uint32_t n_crossings(
 std::vector<uint32_t> n_crossings_list
 (const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis,
  const algorithms_C& A = algorithms_C::stack_based);
+/**
+ * @brief Computes the number of edge crossings in a linear arrangement.
+ *
+ * Given a graph and a list of linear arrangements of its nodes, computes
+ * the number of edge crossings for each of the linear arrangements in the
+ * list using the algorithm specified by the parameter @e A.
+ * @param g Input graph.
+ * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param A Algorithm to use to compute the number of crossings. Default:
+ * @ref algorithms_C::stack_based.
+ * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @pre None of the arrangements in @e pis can be empty.
+ * @pre The preconditions of this function depend on the choice of algorithm.
+ * See the preconditions of each algorithm in @ref algorithms_C.
+ */
 std::vector<uint32_t> n_crossings_list
 (const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis,
  const algorithms_C& A = algorithms_C::stack_based);
