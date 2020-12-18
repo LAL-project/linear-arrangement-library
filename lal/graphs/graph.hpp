@@ -129,7 +129,30 @@ class graph {
 		 */
 		virtual bool check_normalised();
 
+		/**
+		 * @brief Completes the inner structure of the graph after adding a bulk of edges
+		 *
+		 * This is meant to be used after several calls to
+		 * @ref undirected_graph::add_edge_bulk,
+		 * @ref directed_graph::add_edge_bulk.
+		 * @param norm Normalise the graph
+		 * @param check Check wether the graph is normalised or not.
+		 */
+		virtual void finish_bulk_add(bool norm = true, bool check = true) = 0;
+
 		/* SETTERS */
+
+		/// Sets whether this graph is normalised or not.
+		inline void set_normalised(bool v = true) { m_normalised = v; }
+		/**
+		 * @brief Sets the number of edges of this graph.
+		 *
+		 * The value of @e ne must be exactly the number of edges of the graph
+		 * so that the methods work correctly in future uses of this class.
+		 * It is left up to the user to ensure that the value is correct.
+		 * @param ne The number of edges.
+		 */
+		inline void set_num_edges(uint32_t ne) { m_num_edges = ne; }
 
 		/* GETTERS */
 
@@ -261,10 +284,12 @@ class graph {
 
 		/// Do some extra work after an edge has been added.
 		virtual void extra_work_per_edge_add(node u, node v);
-		/// Do some extra work after the edges of the graph have been set.
-		virtual void extra_work_edges_set();
 		/// Do some extra work after an edge has been removed.
 		virtual void extra_work_per_edge_remove(node u, node v);
+		/// Normalise the graph after one (or more) edges have been added
+		void normalise_after_add(bool norm, bool check);
+		/// Normalise the graph after one (or more) edges have been removed
+		void normalise_after_remove(bool norm, bool check);
 };
 
 } // -- namespace graphs

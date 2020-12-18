@@ -73,7 +73,7 @@ free_tree::free_tree(const undirected_graph& t) : undirected_graph(t) {
 
 	free_tree::tree_only_init(t.n_nodes());
 	// no need to call set_edges
-	extra_work_edges_set();
+	tree_only_extra_work_edges_set();
 }
 free_tree::free_tree(undirected_graph&& t) : undirected_graph(std::move(t)) {
 #if defined DEBUG
@@ -83,7 +83,7 @@ free_tree::free_tree(undirected_graph&& t) : undirected_graph(std::move(t)) {
 
 	free_tree::tree_only_init(n_nodes());
 	// no need to call set_edges
-	extra_work_edges_set();
+	tree_only_extra_work_edges_set();
 }
 free_tree::~free_tree() { }
 
@@ -109,6 +109,22 @@ free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
 	return *this;
 }
 
+free_tree& free_tree::add_edge_bulk(node u, node v) {
+#if defined DEBUG
+	assert(can_add_edge(u,v));
+#endif
+	undirected_graph::add_edge_bulk(u,v);
+	return *this;
+}
+
+void free_tree::finish_bulk_add(bool norm, bool check) {
+#if defined DEBUG
+	assert(is_tree());
+#endif
+	undirected_graph::finish_bulk_add(norm, check);
+	fill_union_find();
+}
+
 free_tree& free_tree::add_edges(
 	const vector<edge>& edges, bool norm, bool check_norm
 )
@@ -124,16 +140,11 @@ free_tree& free_tree::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
-	{
-	const uint32_t n = n_nodes();
-	clear(); init(n);
-	}
-
 #if defined DEBUG
 	assert(can_add_edges(edges));
 #endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
-	extra_work_edges_set();
+	tree_only_extra_work_edges_set();
 	return *this;
 }
 

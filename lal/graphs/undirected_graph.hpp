@@ -111,6 +111,21 @@ class undirected_graph : virtual public graph {
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
+		 * @brief Adds an edge to the graph.
+		 *
+		 * This method only adds an edge, and does no other work: normalisation
+		 * is not checked, and no extra work per edge is done.
+		 * @param s Valid node index: \f$0 \le s < n\f$.
+		 * @param t Valid node index: \f$0 \le t < n\f$.
+		 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
+		 */
+		undirected_graph& add_edge_bulk(node s, node t);
+
+		void finish_bulk_add(bool norm = true, bool check = true);
+
+		/**
 		 * @brief Adds a list of edges to the graph.
 		 *
 		 * This operation is faster than calling @ref add_edge(node,node,bool,bool)

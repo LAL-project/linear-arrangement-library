@@ -117,6 +117,21 @@ class directed_graph : virtual public graph {
 		(node s, node t, bool norm = false, bool check_norm = true);
 
 		/**
+		 * @brief Adds an edge to the graph.
+		 *
+		 * This method only adds an edge, and does no other work: normalisation
+		 * is not checked, and no extra work per edge is done.
+		 * @param s Valid node index: \f$0 \le s < n\f$.
+		 * @param t Valid node index: \f$0 \le t < n\f$.
+		 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+		 * @post If @e norm is true the graph is guaranteed to be normalised
+		 * after the addition of the edge.
+		 */
+		directed_graph& add_edge_bulk(node s, node t);
+
+		void finish_bulk_add(bool norm = true, bool check = true);
+
+		/**
 		 * @brief Adds a list of directed edges to the graph.
 		 *
 		 * This operation is faster than adding edges one by one with
@@ -293,9 +308,12 @@ class directed_graph : virtual public graph {
 		 * connected by a single directed edge, the direction is dropped. If
 		 * two edges are connected by two directed edges (of opposite directions)
 		 * then the two are merged into a single undirected edge.
+		 * @param norm Normalise the graph.
+		 * @param check Chech whether the resulting graph is normalised or not.
 		 * @return Returns this graph in which the edges are undirected.
 		 */
-		undirected_graph to_undirected() const;
+		undirected_graph to_undirected
+		(bool norm = true, bool check = true) const;
 
 	protected:
 		/// In-neighbours for every node.
@@ -313,7 +331,6 @@ class directed_graph : virtual public graph {
 		void move_full_directed_graph(directed_graph&& d);
 
 	private:
-
 		/**
 		 * @brief Removes a single edge.
 		 * @param u First node of edge.

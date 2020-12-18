@@ -163,14 +163,16 @@ void tree::tree_only_move(tree&& t) {
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {
+	graph::extra_work_per_edge_add(u, v);
 	internal::UnionFind_update_roots_add(
 		*this, u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
-void tree::extra_work_edges_set() {
+void tree::tree_only_extra_work_edges_set() {
 	fill_union_find();
 }
 void tree::extra_work_per_edge_remove(node u, node v) {
+	graph::extra_work_per_edge_remove(u, v);
 	internal::UnionFind_update_roots_remove(
 		*this, u, v, &m_root_of[0], &m_root_size[0]
 	);

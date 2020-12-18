@@ -42,7 +42,9 @@
 #include <lal/graphs/rooted_tree.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <vector>
 using namespace std;
 
@@ -91,16 +93,36 @@ rooted_tree& rooted_tree::add_edge(
 	node u, node v, bool norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(can_add_edge(u,v));
+#endif
 	directed_graph::add_edge(u,v, norm, check_norm);
 	return *this;
+}
+
+rooted_tree& rooted_tree::add_edge_bulk(node u, node v) {
+#if defined DEBUG
+	assert(can_add_edge(u,v));
+#endif
+	directed_graph::add_edge_bulk(u,v);
+	return *this;
+}
+
+void rooted_tree::finish_bulk_add(bool norm, bool check) {
+#if defined DEBUG
+	assert(is_tree());
+#endif
+	directed_graph::finish_bulk_add(norm, check);
+	fill_union_find();
 }
 
 rooted_tree& rooted_tree::add_edges(
 	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(can_add_edges(edges));
+#endif
 	directed_graph::add_edges(edges, norm, check_norm);
 	return *this;
 }
@@ -109,12 +131,9 @@ rooted_tree& rooted_tree::set_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
-	{
-	const uint32_t n = n_nodes();
-	clear(); init(n);
-	}
-
+#if defined DEBUG
 	assert(can_add_edges(edges));
+#endif
 	directed_graph::set_edges(edges, to_norm, check_norm);
 	fill_union_find();
 	return *this;
@@ -166,8 +185,10 @@ void rooted_tree::disjoint_union(
 
 	// connect the roots if told to do so
 	if (connect_roots) {
+#if defined DEBUG
 		assert(has_root());
 		assert(t.has_root());
+#endif
 
 		const node this_r = get_root();
 		const node t_r = prev_n + t.get_root();
@@ -192,8 +213,10 @@ void rooted_tree::disjoint_union(
 }
 
 bool rooted_tree::find_edge_orientation() {
+#if defined DEBUG
 	assert(is_tree());
 	assert(has_root());
+#endif
 
 	// assign arborescence type to trees of 1 vertex
 	if (n_nodes() == 1) {
@@ -229,7 +252,9 @@ void rooted_tree::set_valid_orientation(bool v) {
 
 void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	const uint32_t n = _t.n_nodes();
+#if defined DEBUG
 	assert(_t.is_tree());
+#endif
 	m_valid_orientation = true;
 
 	if (n == 0) {
@@ -239,7 +264,9 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 		return;
 	}
 
+#if defined DEBUG
 	assert(_t.has_node(r));
+#endif
 
 	// list of directed edges out of 'g'
 	vector<edge> dir_edges(_t.n_edges());
@@ -270,7 +297,9 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 }
 
 void rooted_tree::calculate_size_subtrees() {
+#if defined DEBUG
 	assert(is_rooted_tree());
+#endif
 	m_need_recalc_size_subtrees = false;
 	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
@@ -282,7 +311,9 @@ void rooted_tree::set_root(node r) {
 	// although it really doesn't
 
 	if (n_nodes() > 0) {
+#if defined DEBUG
 		assert(has_node(r));
+#endif
 		m_root = r;
 	}
 	m_has_root = true;
@@ -296,8 +327,10 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	// if the tree does not have edges, return an empty list.
 	if (n_nodes() <= 1) { return vector<edge>(); }
 
+#if defined DEBUG
 	assert(is_rooted_tree());
 	assert(has_node(u));
+#endif
 
 	const uint32_t n = n_nodes();
 
@@ -391,8 +424,10 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	// if the tree does not have edges, return a copy.
 	if (n_nodes() <= 1) { return *this; }
 
+#if defined DEBUG
 	assert(is_rooted_tree());
 	assert(has_node(u));
+#endif
 
 	// retrieve the list of edges with their nodes relabelled
 	const vector<edge> es = get_edges_subtree(u, true);
@@ -407,8 +442,8 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	return sub;
 }
 
-free_tree rooted_tree::to_undirected() const {
-	return free_tree(directed_graph::to_undirected());
+free_tree rooted_tree::to_undirected(bool norm, bool check) const {
+	return free_tree(directed_graph::to_undirected(norm, check));
 }
 
 /* PROTECTED */

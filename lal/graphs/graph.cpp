@@ -130,12 +130,12 @@ bool graph::check_normalised() {
 
 vector<edge> graph::edges() const {
 	vector<edge> e(n_edges());
+
 	auto it = e.begin();
 	E_iterator e_it(*this);
 	while (e_it.has_next()) {
 		e_it.next();
-		*it = e_it.get_edge();
-		++it;
+		*it++ = e_it.get_edge();
 	}
 	return e;
 }
@@ -194,19 +194,73 @@ void graph::__disjoint_union(const graph& g) {
 
 vector<edge_pair> graph::Q(uint64_t qs) const {
 	vector<edge_pair> q(qs);
+
 	auto vec_it = q.begin();
 	Q_iterator q_it(*this);
 	while (q_it.has_next()) {
 		q_it.next();
-		*vec_it = q_it.get_pair();
-		++vec_it;
+		*vec_it++ = q_it.get_pair();
 	}
 	return q;
 }
 
-void graph::extra_work_per_edge_add(node, node) { }
-void graph::extra_work_edges_set() { }
-void graph::extra_work_per_edge_remove(node, node) { }
+void graph::extra_work_per_edge_add(node, node) {
+	++m_num_edges;
+}
+
+void graph::extra_work_per_edge_remove(node, node) {
+	--m_num_edges;
+}
+
+void graph::normalise_after_add(bool to_norm, bool check_norm) {
+	if (to_norm) {
+		// the graph needs to be normalised from a non-normalised state
+		normalise();
+	}
+	else if (check_norm) {
+		if (not is_normalised()) {
+			// the graph is certainly not normalised --
+			// no need to check anything
+		}
+		else {
+			// the graph structure has been modified
+			// so we have to check whether it is normalised or not
+			check_normalised();
+		}
+	}
+	else {
+		// not 'to_norm' and not 'check_norm' --
+		m_normalised = false;
+	}
+}
+
+void graph::normalise_after_remove(bool to_norm, bool check_norm) {
+	// if (is_normalised()) {
+	//		Removing an edge does not change normalisation
+	// }
+	// if (not is_normalised()) {
+	//		Since the graph was not normalised, we need to do something about it.
+	//      if (norm)     ... NORMALISE THE GRAPH
+	//      if (not norm) ... the result of deleting edges is certainly
+	//                        not normalised since the deletion of edges
+	//                        keeps the normalisation invariant. No need
+	//                        to check.
+	// }
+
+	if (not is_normalised()) {
+		if (to_norm) {
+			normalise();
+		}
+		else if (check_norm) {
+			// we might have been lucky...
+			check_normalised();
+		}
+		else {
+			// not 'to_norm' and not 'check_norm' --
+			m_normalised = false;
+		}
+	}
+}
 
 } // -- namespace graphs
 } // -- namespace lal

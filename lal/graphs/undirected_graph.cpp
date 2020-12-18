@@ -95,9 +95,7 @@ undirected_graph& undirected_graph::add_edge(
 	neighbourhood& nv = m_adjacency_list[v];
 	nu.push_back(v);
 	nv.push_back(u);
-	++m_num_edges;
 
-	// do the extra work!
 	extra_work_per_edge_add(u, v);
 
 	if (is_normalised()) {
@@ -130,23 +128,33 @@ undirected_graph& undirected_graph::add_edge(
 	}
 	else {
 		// the graph was not normalised.
-
-		if (to_norm) {
-			// the graph needs to be normalised,
-			// from a non-normalised state
-			normalise();
-		}
-		else if (check_norm) {
-			// the graph is certainly not normalised --
-			// no need to check anything
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
+		normalise_after_add(to_norm, check_norm);
 	}
 
 	return *this;
+}
+
+undirected_graph& undirected_graph::add_edge_bulk(node u, node v) {
+#if defined DEBUG
+	assert(not has_edge(u,v));
+#endif
+
+	m_adjacency_list[u].push_back(v);
+	m_adjacency_list[v].push_back(u);
+	++m_num_edges;
+	return *this;
+}
+
+void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) {
+	// calculate number of edges (handshaking lemma)
+	m_num_edges = 0;
+	for (node u = 0; u < n_nodes(); ++u) {
+		m_num_edges += degree(u);
+	}
+	m_num_edges /= 2;
+
+	// normalise
+	graph::normalise_after_add(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::add_edges(
@@ -162,24 +170,10 @@ undirected_graph& undirected_graph::add_edges(
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
-		++m_num_edges;
-
-		// do the extra work!
 		extra_work_per_edge_add(u, v);
 	}
 
-	if (to_norm) {
-		// normalise directly, it might save us time
-		normalise();
-	}
-	else if (check_norm) {
-		// only check
-		check_normalised();
-	}
-	else {
-		// not 'to_norm' and not 'check_norm' --
-		m_normalised = false;
-	}
+	normalise_after_add(to_norm, check_norm);
 	return *this;
 }
 
@@ -203,20 +197,8 @@ undirected_graph& undirected_graph::set_edges(
 		m_adjacency_list[v].push_back(u);
 	}
 	m_num_edges = static_cast<uint32_t>(edges.size());
-	extra_work_edges_set();
 
-	if (to_norm) {
-		// normalise directly, it might save us time
-		normalise();
-	}
-	else if (check_norm) {
-		// only check
-		check_normalised();
-	}
-	else {
-		// not 'to_norm' and not 'check_norm' --
-		m_normalised = false;
-	}
+	graph::normalise_after_add(to_norm, check_norm);
 	return *this;
 }
 
@@ -227,37 +209,12 @@ undirected_graph& undirected_graph::remove_edge(
 #if defined DEBUG
 	assert(has_edge(u,v));
 #endif
-	--m_num_edges;
 
 	neighbourhood& nu = m_adjacency_list[u];
 	neighbourhood& nv = m_adjacency_list[v];
 	remove_single_edge(u,v, nu, nv);
 
-	// if (is_normalised()) {
-	//		Removing an edge does not change normalisation
-	// }
-	// if (not is_normalised()) {
-	//		Since the graph was not normalised, we need to do something about it now.
-	//      if (norm)     ... NORMALISE THE GRAPH
-	//      if (not norm) ... the result of deleting edges is certainly
-	//                        not normalised since the deletion of edges
-	//                        keeps the normalisation invariant. No need
-	//                        to check.
-	// }
-
-	if (not is_normalised()) {
-		if (norm) {
-			normalise();
-		}
-		else if (check_norm) {
-			// we might have been lucky...
-			check_normalised();
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
-	}
+	normalise_after_remove(norm, check_norm);
 	return *this;
 }
 
@@ -271,28 +228,13 @@ undirected_graph& undirected_graph::remove_edges(
 #if defined DEBUG
 		assert(has_edge(u,v));
 #endif
-		--m_num_edges;
 
 		neighbourhood& nu = m_adjacency_list[u];
 		neighbourhood& nv = m_adjacency_list[v];
 		remove_single_edge(u,v, nu, nv);
 	}
 
-	// see comments in method ugraph::remove_edge for details
-
-	if (not is_normalised()) {
-		if (norm) {
-			normalise();
-		}
-		else if (check_norm) {
-			// we might have been lucky...
-			check_normalised();
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
-	}
+	normalise_after_remove(norm, check_norm);
 	return *this;
 }
 

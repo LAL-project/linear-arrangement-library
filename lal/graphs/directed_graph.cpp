@@ -44,6 +44,7 @@
 // C++ includes
 #include <algorithm>
 #include <cmath>
+#include <set>
 #if defined DEBUG
 #include <cassert>
 #endif
@@ -135,12 +136,10 @@ directed_graph& directed_graph::add_edge(
 #endif
 
 	neighbourhood& out_u = m_adjacency_list[u];
-	out_u.push_back(v);
 	neighbourhood& in_v = m_in_adjacency_list[v];
+	out_u.push_back(v);
 	in_v.push_back(u);
-	++m_num_edges;
 
-	// do the extra work!
 	extra_work_per_edge_add(u, v);
 
 	if (is_normalised()) {
@@ -172,23 +171,26 @@ directed_graph& directed_graph::add_edge(
 	}
 	else {
 		// the graph was not normalised.
-
-		if (to_norm) {
-			// the graph needs to be normalised,
-			// from a non-normalised state
-			normalise();
-		}
-		else if (check_norm) {
-			// the graph is certainly not normalised --
-			// no need to check anything
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
+		graph::normalise_after_add(to_norm, check_norm);
 	}
 
 	return *this;
+}
+
+directed_graph& directed_graph::add_edge_bulk(node u, node v) {
+#if defined DEBUG
+	assert(not has_edge(u,v));
+#endif
+
+	m_adjacency_list[u].push_back(v);
+	m_in_adjacency_list[v].push_back(u);
+	++m_num_edges;
+	return *this;
+}
+
+void directed_graph::finish_bulk_add(bool to_norm, bool check_norm) {
+	// normalise
+	graph::normalise_after_add(to_norm, check_norm);
 }
 
 directed_graph& directed_graph::add_edges(
@@ -201,28 +203,11 @@ directed_graph& directed_graph::add_edges(
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
-
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
-		++m_num_edges;
-
-		// do the extra work!
 		extra_work_per_edge_add(u, v);
 	}
-
-	if (to_norm) {
-		// normalise directly, it might save us time
-		normalise();
-	}
-	else if (check_norm) {
-		// only check
-		check_normalised();
-	}
-	else {
-		// not 'to_norm' and not 'check_norm' --
-		m_normalised = false;
-	}
-
+	graph::normalise_after_add(to_norm, check_norm);
 	return *this;
 }
 
@@ -241,25 +226,13 @@ directed_graph& directed_graph::set_edges(
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
-
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
 	}
-	m_num_edges = static_cast<uint32_t>(edges.size());
-	extra_work_edges_set();
 
-	if (to_norm) {
-		// normalise directly, it might save us time
-		normalise();
-	}
-	else if (check_norm) {
-		// only check
-		check_normalised();
-	}
-	else {
-		// not 'to_norm' and not 'check_norm' --
-		m_normalised = false;
-	}
+	m_num_edges = static_cast<uint32_t>(edges.size());
+
+	graph::normalise_after_add(to_norm, check_norm);
 	return *this;
 }
 
@@ -270,37 +243,12 @@ directed_graph& directed_graph::remove_edge(
 #if defined DEBUG
 	assert(has_edge(u,v));
 #endif
-	--m_num_edges;
 
 	neighbourhood& out_u = m_adjacency_list[u];
 	neighbourhood& in_v = m_in_adjacency_list[v];
 	remove_single_edge(u,v, out_u, in_v);
 
-	// if (is_normalised()) {
-	//		Removing an edge does not change normalisation
-	// }
-	// if (not is_normalised()) {
-	//		Since the graph was not normalised, we need to do something about it now.
-	//      if (norm)     ... NORMALISE THE GRAPH
-	//      if (not norm) ... the result of deleting edges is certainly
-	//                        not normalised since the deletion of edges
-	//                        keeps the normalisation invariant. No need
-	//                        to check.
-	// }
-
-	if (not is_normalised()) {
-		if (norm) {
-			normalise();
-		}
-		else if (check_norm) {
-			// we might have been lucky...
-			check_normalised();
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
-	}
+	graph::normalise_after_remove(norm, check_norm);
 	return *this;
 }
 
@@ -314,28 +262,13 @@ directed_graph& directed_graph::remove_edges(
 #if defined DEBUG
 		assert(has_edge(u,v));
 #endif
-		--m_num_edges;
 
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
 		remove_single_edge(u,v, out_u, in_v);
 	}
 
-	// see comments in method ugraph::remove_edge for details
-
-	if (not is_normalised()) {
-		if (norm) {
-			normalise();
-		}
-		else if (check_norm) {
-			// we might have been lucky...
-			check_normalised();
-		}
-		else {
-			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
-		}
-	}
+	graph::normalise_after_remove(norm, check_norm);
 	return *this;
 }
 
@@ -388,29 +321,21 @@ bool directed_graph::has_edge(node u, node v) const {
 	);
 }
 
-undirected_graph directed_graph::to_undirected() const {
+undirected_graph directed_graph::to_undirected(bool norm, bool check) const {
 	undirected_graph g(n_nodes());
-
-	vector<edge> my_edges;
-	my_edges.reserve(n_edges());
 
 	// add edges so that none are repeated
 	iterators::E_iterator E_it(*this);
 	while (E_it.has_next()) {
 		E_it.next();
 		const edge e = E_it.get_edge();
-		const edge se = e.first < e.second ? e : edge(e.second, e.first);
 
-		auto it = std::lower_bound(my_edges.begin(), my_edges.end(), se);
-		if (it == my_edges.end() or *it != se) {
-			my_edges.insert(it, se);
+		if (not g.has_edge(e.first, e.second)) {
+			g.add_edge_bulk(e.first, e.second);
 		}
 	}
-#if defined DEBUG
-	assert(std::is_sorted(my_edges.begin(), my_edges.end()));
-#endif
 
-	g.set_edges(my_edges);
+	g.finish_bulk_add(norm, check);
 	return g;
 }
 
