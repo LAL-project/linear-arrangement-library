@@ -43,8 +43,10 @@
 
 // C++ includes
 #include <algorithm>
-#include <cassert>
 #include <cmath>
+#if defined DEBUG
+#include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -128,7 +130,9 @@ directed_graph& directed_graph::add_edge(
 	node u, node v, bool to_norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(not has_edge(u,v));
+#endif
 
 	neighbourhood& out_u = m_adjacency_list[u];
 	out_u.push_back(v);
@@ -194,7 +198,9 @@ directed_graph& directed_graph::add_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(not has_edge(u,v));
+#endif
 
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
@@ -232,12 +238,15 @@ directed_graph& directed_graph::set_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(not has_edge(u,v));
+#endif
 
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
 	}
 	m_num_edges = static_cast<uint32_t>(edges.size());
+	extra_work_edges_set();
 
 	if (to_norm) {
 		// normalise directly, it might save us time
@@ -258,7 +267,9 @@ directed_graph& directed_graph::remove_edge(
 	node u, node v, bool norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(has_edge(u,v));
+#endif
 	--m_num_edges;
 
 	neighbourhood& out_u = m_adjacency_list[u];
@@ -300,7 +311,9 @@ directed_graph& directed_graph::remove_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(has_edge(u,v));
+#endif
 		--m_num_edges;
 
 		neighbourhood& out_u = m_adjacency_list[u];
@@ -354,9 +367,11 @@ vector<edge_pair> directed_graph::Q() const {
 }
 
 bool directed_graph::has_edge(node u, node v) const {
+#if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
+#endif
 
 	const neighbourhood& out_u = m_adjacency_list[u];
 	const neighbourhood& in_v = m_in_adjacency_list[v];
@@ -380,15 +395,15 @@ undirected_graph directed_graph::to_undirected() const {
 	my_edges.reserve(n_edges());
 
 	// add edges so that none are repeated
-	iterators::E_iterator it(*this);
-	while (it.has_next()) {
-		it.next();
-		const edge e = it.get_edge();
+	iterators::E_iterator E_it(*this);
+	while (E_it.has_next()) {
+		E_it.next();
+		const edge e = E_it.get_edge();
 		const edge se = e.first < e.second ? e : edge(e.second, e.first);
 
-		auto _it = std::upper_bound(my_edges.begin(), my_edges.end(), se);
-		if (_it == my_edges.end() or *_it != se) {
-			my_edges.insert(_it, se);
+		auto it = std::lower_bound(my_edges.begin(), my_edges.end(), se);
+		if (it == my_edges.end() or *it != se) {
+			my_edges.insert(it, se);
 		}
 	}
 #if defined DEBUG
