@@ -178,6 +178,7 @@ class tree : virtual public graph {
 		void tree_only_move(tree&& t);
 
 		void extra_work_per_edge_add(node u, node v);
+		void extra_work_edges_set();
 		void extra_work_per_edge_remove(node u, node v);
 
 		/// Fills the Union-Find data structure assuming that the tree is complete.

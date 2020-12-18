@@ -167,6 +167,9 @@ void tree::extra_work_per_edge_add(node u, node v) {
 		*this, u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
+void tree::extra_work_edges_set() {
+	fill_union_find();
+}
 void tree::extra_work_per_edge_remove(node u, node v) {
 	internal::UnionFind_update_roots_remove(
 		*this, u, v, &m_root_of[0], &m_root_size[0]

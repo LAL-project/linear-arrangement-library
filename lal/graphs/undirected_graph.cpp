@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <cassert>
 #include <cmath>
 #if defined DEBUG
 #include <cassert>
@@ -88,7 +87,9 @@ undirected_graph& undirected_graph::add_edge(
 	node u, node v, bool to_norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(not has_edge(u,v));
+#endif
 
 	neighbourhood& nu = m_adjacency_list[u];
 	neighbourhood& nv = m_adjacency_list[v];
@@ -155,7 +156,9 @@ undirected_graph& undirected_graph::add_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(not has_edge(u,v));
+#endif
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
@@ -192,12 +195,15 @@ undirected_graph& undirected_graph::set_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(not has_edge(u,v));
+#endif
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
 	}
 	m_num_edges = static_cast<uint32_t>(edges.size());
+	extra_work_edges_set();
 
 	if (to_norm) {
 		// normalise directly, it might save us time
@@ -218,7 +224,9 @@ undirected_graph& undirected_graph::remove_edge(
 	node u, node v, bool norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(has_edge(u,v));
+#endif
 	--m_num_edges;
 
 	neighbourhood& nu = m_adjacency_list[u];
@@ -260,7 +268,9 @@ undirected_graph& undirected_graph::remove_edges(
 	for (const edge& e : edges) {
 		const node u = e.first;
 		const node v = e.second;
+#if defined DEBUG
 		assert(has_edge(u,v));
+#endif
 		--m_num_edges;
 
 		neighbourhood& nu = m_adjacency_list[u];
@@ -300,9 +310,11 @@ vector<edge_pair> undirected_graph::Q() const {
 }
 
 bool undirected_graph::has_edge(node u, node v) const {
+#if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
 	assert(has_node(v));
+#endif
 
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
@@ -365,9 +377,11 @@ void undirected_graph::remove_single_edge(
 		it_u = find(in_v.begin(), in_v.end(), u);
 	}
 
+#if defined DEBUG
 	// check that the iterators point to the correct value
 	assert(*it_v == v);
 	assert(*it_u == u);
+#endif
 
 	// remove edges from the lists
 	out_u.erase(it_v);

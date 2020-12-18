@@ -259,9 +259,11 @@ class graph {
 		 */
 		std::vector<edge_pair> Q(uint64_t q) const;
 
-		/// Do some extra work after edge {@e u,@e v} has been added.
+		/// Do some extra work after an edge has been added.
 		virtual void extra_work_per_edge_add(node u, node v);
-		/// Do some extra work after edge {@e u,@e v} has been removed.
+		/// Do some extra work after the edges of the graph have been set.
+		virtual void extra_work_edges_set();
+		/// Do some extra work after an edge has been removed.
 		virtual void extra_work_per_edge_remove(node u, node v);
 };
 

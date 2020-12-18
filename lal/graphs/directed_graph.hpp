@@ -42,10 +42,10 @@
 #pragma once
 
 // C++ includes
-#include <vector>
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <vector>
 
 // lal includes
 #include <lal/definitions.hpp>

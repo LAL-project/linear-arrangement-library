@@ -42,7 +42,9 @@
 #include <lal/graphs/free_tree.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -63,20 +65,25 @@ free_tree::free_tree(const free_tree& f) : graph(), tree(), undirected_graph() {
 free_tree::free_tree(free_tree&& f) {
 	move_full_free_tree(std::move(f));
 }
-free_tree::free_tree(const undirected_graph& t) : undirected_graph(t.n_nodes()) {
+free_tree::free_tree(const undirected_graph& t) : undirected_graph(t) {
+#if defined DEBUG
 	// check that the input graph is a tree
 	assert(internal::is_graph_a_tree(t));
-
-	free_tree::tree_only_init(t.n_nodes());
-	set_edges(t.edges());
-}
-free_tree::free_tree(undirected_graph&& t) : undirected_graph(t) {
-	// check that the input graph is a tree
-	assert(internal::is_graph_a_tree(t));
+#endif
 
 	free_tree::tree_only_init(t.n_nodes());
 	// no need to call set_edges
-	fill_union_find();
+	extra_work_edges_set();
+}
+free_tree::free_tree(undirected_graph&& t) : undirected_graph(std::move(t)) {
+#if defined DEBUG
+	// check that the input graph is a tree
+	assert(internal::is_graph_a_tree(*this));
+#endif
+
+	free_tree::tree_only_init(n_nodes());
+	// no need to call set_edges
+	extra_work_edges_set();
 }
 free_tree::~free_tree() { }
 
@@ -95,7 +102,9 @@ free_tree& free_tree::operator= (free_tree&& f) {
 /* MODIFIERS */
 
 free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
+#if defined DEBUG
 	assert(can_add_edge(u,v));
+#endif
 	undirected_graph::add_edge(u,v, norm, check_norm);
 	return *this;
 }
@@ -104,7 +113,9 @@ free_tree& free_tree::add_edges(
 	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
+#if defined DEBUG
 	assert(can_add_edges(edges));
+#endif
 	undirected_graph::add_edges(edges, norm, check_norm);
 	return *this;
 }
@@ -118,9 +129,11 @@ free_tree& free_tree::set_edges(
 	clear(); init(n);
 	}
 
+#if defined DEBUG
 	assert(can_add_edges(edges));
+#endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
-	fill_union_find();
+	extra_work_edges_set();
 	return *this;
 }
 

@@ -205,6 +205,7 @@ vector<edge_pair> graph::Q(uint64_t qs) const {
 }
 
 void graph::extra_work_per_edge_add(node, node) { }
+void graph::extra_work_edges_set() { }
 void graph::extra_work_per_edge_remove(node, node) { }
 
 } // -- namespace graphs
