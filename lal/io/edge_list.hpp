@@ -66,7 +66,6 @@ namespace io {
  * the contents of the file.
  * @param[in] filename Name of the file.
  * @param[out] g Graph read from the file.
- * @param[in] all_edges_added Are all edges going to be added?
  * @param[in] norm Should the graph be normalised?
  * See @ref graphs::graph::is_normalised()
  * @param[in] check_norm If the graph is not to be normalised check whether or
@@ -76,7 +75,6 @@ namespace io {
  */
 bool read_edge_list(
 	const std::string& filename, graphs::undirected_graph& g,
-	bool all_edges_added = true,
 	bool norm = true, bool check_norm = true
 );
 /**
@@ -94,7 +92,6 @@ bool read_edge_list(
  * the contents of the file.
  * @param[in] filename Name of the file.
  * @param[out] g Graph read from the file.
- * @param[in] all_edges_added Are all edges going to be added?
  * @param[in] norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
  * @param[in] check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
@@ -103,7 +100,6 @@ bool read_edge_list(
  */
 bool read_edge_list(
 	const std::string& filename, graphs::directed_graph& g,
-	bool all_edges_added,
 	bool norm = true, bool check_norm = true
 );
 

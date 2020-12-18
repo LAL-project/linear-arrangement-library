@@ -41,9 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
@@ -96,7 +93,7 @@ class all_ulab_rooted_trees {
 		/// Constructor with number of nodes.
 		all_ulab_rooted_trees(uint32_t n);
 		/// Default destructor
-		~all_ulab_rooted_trees() = default;
+		~all_ulab_rooted_trees();
 
 		/**
 		 * @brief Initialises the generator.
@@ -154,11 +151,11 @@ class all_ulab_rooted_trees {
 		/// Pointer as in the paper.
 		uint32_t m_p = 0;
 		/// Sequence SAVE
-		std::vector<node> m_save;
+		node *m_save = nullptr;
 		/// Sequence PREV
-		std::vector<node> m_prev;
+		node *m_prev = nullptr;
 		/// Level sequence of the tree
-		std::vector<node> m_L;
+		node *m_L = nullptr;
 };
 
 } // -- namespace generate

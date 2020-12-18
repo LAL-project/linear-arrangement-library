@@ -41,9 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -95,7 +92,7 @@ class all_lab_free_trees {
 		/// Constructor with number of nodes.
 		all_lab_free_trees(uint32_t n);
 		/// Default destructor.
-		~all_lab_free_trees() = default;
+		~all_lab_free_trees();
 
 		/**
 		 * @brief Initialises the generator.
@@ -152,9 +149,9 @@ class all_lab_free_trees {
 		/// Left-most position with value \f$n-1\f$.
 		uint32_t m_L;
 		/// Prüfer sequence.
-		std::vector<uint32_t> m_seq;
+		uint32_t *m_seq = nullptr;
 		/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
-		std::vector<bool> m_sm;
+		char *m_sm = nullptr;
 };
 
 } // -- namespace generate

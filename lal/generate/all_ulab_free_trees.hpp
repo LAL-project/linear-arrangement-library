@@ -41,9 +41,6 @@
  
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -96,7 +93,7 @@ class all_ulab_free_trees {
 		/// Constructor with number of nodes.
 		all_ulab_free_trees(uint32_t n);
 		/// Default destructor
-		~all_ulab_free_trees() = default;
+		~all_ulab_free_trees();
 
 		/**
 		 * @brief Initialises the generator.
@@ -143,12 +140,12 @@ class all_ulab_free_trees {
 
 	private:
 		/// Canonical level sequence of the tree.
-		std::vector<uint32_t> m_L;
+		uint32_t *m_L = nullptr;
 		/**
 		 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
 		 * corresponding to the parent of the node corresponding to \f$l_i\f$.
 		 */
-		std::vector<uint32_t> m_W;
+		uint32_t *m_W = nullptr;
 
 		/// Largest integer such that \f$l_p \neq 2\f$.
 		uint32_t m_p;

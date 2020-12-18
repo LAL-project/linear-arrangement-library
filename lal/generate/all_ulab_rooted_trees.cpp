@@ -59,7 +59,11 @@ namespace generate {
 all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) {
 	init(_n);
 }
-//all_ulab_rooted_trees::~all_ulab_rooted_trees() { }
+all_ulab_rooted_trees::~all_ulab_rooted_trees() {
+	delete[] m_save;
+	delete[] m_prev;
+	delete[] m_L;
+}
 
 void all_ulab_rooted_trees::init(uint32_t _n) {
 	m_is_first = true;
@@ -73,14 +77,14 @@ void all_ulab_rooted_trees::init(uint32_t _n) {
 
 	m_is_last = false;
 
-	m_save = vector<node>(m_n+1, 0);
-	m_prev = vector<node>(m_n+1, 0);
-	m_L = vector<node>(m_n+1, 0);
+	m_save = new node[m_n + 1]{0};
+	m_prev = new node[m_n + 1]{0};
+	m_L = new node[m_n + 1]{0};
 
 	// -------------------
 	// generate first tree
 
-	std::iota(m_L.begin(), m_L.end(), 0);
+	std::iota(&m_L[0], &m_L[m_n + 1], 0);
 	m_p = m_n;
 	if (m_p > 1) {
 		for (uint32_t i = 1; i <= m_p - 1; ++i) {

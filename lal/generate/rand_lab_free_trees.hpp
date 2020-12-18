@@ -42,7 +42,6 @@
 #pragma once
 
 // C++ includes
-#include <vector>
 #include <random>
 
 // lal includes
@@ -80,7 +79,7 @@ class rand_lab_free_trees {
 		/// Constructor with size of tree and seed for the random number generator.
 		rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
 		/// Default Destructor.
-		virtual ~rand_lab_free_trees() = default;
+		virtual ~rand_lab_free_trees();
 
 		/**
 		 * @brief Sets the size of the labelled trees to generate.
@@ -106,7 +105,7 @@ class rand_lab_free_trees {
 		/// Distribution of the numbers.
 		std::uniform_int_distribution<uint32_t> m_unif;
 		/// Prüfer sequence.
-		std::vector<uint32_t> m_seq;
+		uint32_t *m_seq = nullptr;
 };
 
 } // -- namespace generate

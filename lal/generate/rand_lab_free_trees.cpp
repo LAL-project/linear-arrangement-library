@@ -56,7 +56,9 @@ namespace generate {
 rand_lab_free_trees::rand_lab_free_trees(uint32_t _n, uint32_t seed) {
 	init(_n, seed);
 }
-//rand_lab_free_trees::~rand_lab_free_trees() { }
+rand_lab_free_trees::~rand_lab_free_trees() {
+	delete[] m_seq;
+}
 
 void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
@@ -72,7 +74,7 @@ void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 
 	if (m_n <= 2) { return; }
 
-	m_seq = vector<uint32_t>(m_n - 2);
+	m_seq = new uint32_t[m_n - 2];
 }
 
 free_tree rand_lab_free_trees::make_rand_tree() {

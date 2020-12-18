@@ -146,13 +146,6 @@ undirected_graph& undirected_graph::add_edge_bulk(node u, node v) {
 }
 
 void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) {
-	// calculate number of edges (handshaking lemma)
-	m_num_edges = 0;
-	for (node u = 0; u < n_nodes(); ++u) {
-		m_num_edges += degree(u);
-	}
-	m_num_edges /= 2;
-
 	// normalise
 	graph::normalise_after_add(to_norm, check_norm);
 }

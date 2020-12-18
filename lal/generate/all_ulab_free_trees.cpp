@@ -60,15 +60,18 @@ namespace generate {
 all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) {
 	init(_n);
 }
-//all_ulab_free_trees::~all_ulab_free_trees() { }
+all_ulab_free_trees::~all_ulab_free_trees() {
+	delete[] m_L;
+	delete[] m_W;
+}
 
 void all_ulab_free_trees::init(uint32_t _n) {
 	m_is_last = false;
 	//m_first_it = true;
 	m_n = _n;
 
-	m_L = vector<uint32_t>(m_n+1, 0);
-	m_W = vector<uint32_t>(m_n+1, 0);
+	m_L = new uint32_t[m_n + 1]{0};
+	m_W = new uint32_t[m_n + 1]{0};
 
 	// simplest cases
 	if (m_n == 0) {

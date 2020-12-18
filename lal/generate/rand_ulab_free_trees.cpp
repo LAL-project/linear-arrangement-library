@@ -42,7 +42,9 @@
 #include <lal/generate/rand_ulab_free_trees.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <numeric>
 using namespace std;
 
@@ -59,15 +61,12 @@ using namespace numeric;
 
 namespace generate {
 
-#define make_tree(T, N, TREE)				\
-	free_tree T(N);							\
-{											\
-	vector<edge> edges(N - 1);				\
-	for (node u = 1; u < N; ++u) {			\
-		edges[u - 1] = edge(u, TREE[u]);	\
-	}										\
-	T.set_edges(edges);						\
-}
+#define make_tree(T, N, TREE)			\
+	free_tree T(N);						\
+	for (node u = 1; u < N; ++u) {		\
+		T.add_edge_bulk(u, TREE[u]);	\
+	}									\
+	T.finish_bulk_add();
 
 /* PUBLIC */
 
@@ -96,7 +95,7 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 		return t;
 	}
 
-	std::fill(m_tree.begin(), m_tree.end(), 0);
+	std::fill(&m_tree[0], &m_tree[m_n], 0);
 
 	// calculate the probability of generating a bicentroidal tree
 	rational bicent_prob = 0;
@@ -120,14 +119,18 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 		const integer k_choose_2 = k*(k - 1);
 		bicent_prob = rational(k_choose_2, get_fn(m_n)*2);
 	}
+#if defined DEBUG
 	assert(bicent_prob.to_double() <= 1.0);
+#endif
 
 	// -----------------------------------
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
 		make_tree(T, m_n, m_tree);
+#if defined DEBUG
 		assert(T.is_tree());
+#endif
 		return T;
 	}
 
@@ -147,7 +150,9 @@ free_tree rand_ulab_free_trees::make_rand_tree() {
 	// -----------------------------------
 
 	make_tree(T, m_n, m_tree);
+#if defined DEBUG
 	assert(T.is_tree());
+#endif
 	return T;
 }
 
@@ -178,7 +183,9 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	}
 	if (m == 1) {
 		// forest of 1 node, i.e., a single node
+#if defined DEBUG
 		assert(q >= 1);
+#endif
 
 		// this node should be connected to the root of T
 		m_tree[nt] = 0;
@@ -228,7 +235,10 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 
 void rand_ulab_free_trees::bicenter(uint32_t n) {
 	// make sure that the number of nodes is even
+#if defined DEBUG
 	assert(n%2 == 0);
+#endif
+
 	if (n == 0) { return; }
 	const uint32_t h = n/2;
 
@@ -252,7 +262,9 @@ void rand_ulab_free_trees::bicenter(uint32_t n) {
 	}
 
 	// for the sake of debugging
+#if defined DEBUG
 	assert(nt == m_n);
+#endif
 }
 
 const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
@@ -358,7 +370,7 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 		f_k -= rational(s,2);
 
 		const integer f_k__int = f_k.to_integer();
-		m_fn.push_back(std::move(f_k__int));
+		m_fn.emplace_back(std::move(f_k__int));
 		//m_fn[k] = std::move(f_i__int);
 
 		++k;

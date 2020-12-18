@@ -42,7 +42,6 @@
 #pragma once
 
 // C++ includes
-#include <vector>
 #include <random>
 
 // lal includes
@@ -86,7 +85,7 @@ class rand_ulab_rooted_trees {
 		/// Constructor with size of tree and seed for the random number generator.
 		rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
 		/// Default destructor.
-		virtual ~rand_ulab_rooted_trees() = default;
+		virtual ~rand_ulab_rooted_trees();
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.
@@ -150,7 +149,7 @@ class rand_ulab_rooted_trees {
 		 * This list has @e n+1 values for @ref m_n nodes.
 		 * The first position is the root.
 		 */
-		std::vector<uint32_t> m_tree;
+		uint32_t *m_tree = nullptr;
 
 	protected:
 

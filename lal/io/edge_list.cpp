@@ -56,7 +56,7 @@ namespace io {
 
 template<class G>
 inline bool __read_edge_list(
-	const string& filename, G& g, bool all, bool norm, bool check
+	const string& filename, G& g, bool norm, bool check
 )
 {
 	if (not filesystem::exists(filename)) {
@@ -78,27 +78,22 @@ inline bool __read_edge_list(
 	fin.close();
 
 	g.init(max_vert_idx + 1);
-	if (all) {
-		g.set_edges(edge_list, norm, check);
-	}
-	else {
-		g.set_edges(edge_list, norm, check);
-	}
+	g.set_edges(edge_list, norm, check);
 	return true;
 }
 
 bool read_edge_list(
-	const string& filename, undirected_graph& g, bool all, bool norm, bool check
+	const string& filename, undirected_graph& g, bool norm, bool check
 )
 {
-	return __read_edge_list(filename, g, all, norm, check);
+	return __read_edge_list(filename, g, norm, check);
 }
 
 bool read_edge_list(
-	const string& filename, directed_graph& g, bool all, bool norm, bool check
+	const string& filename, directed_graph& g, bool norm, bool check
 )
 {
-	return __read_edge_list(filename, g, all, norm, check);
+	return __read_edge_list(filename, g, norm, check);
 }
 
 } // -- namespace io

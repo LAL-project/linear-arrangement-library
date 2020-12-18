@@ -61,19 +61,22 @@ namespace generate {
 all_lab_free_trees::all_lab_free_trees(uint32_t _n) {
 	init(_n);
 }
-//all_lab_free_trees::~all_lab_free_trees() { }
+all_lab_free_trees::~all_lab_free_trees() {
+	delete[] m_sm;
+	delete[] m_seq;
+}
 
 void all_lab_free_trees::init(uint32_t _n) {
 	m_n = _n;
 	if (m_n <= 2) {
-		m_sm = vector<bool>(1, false);
+		m_sm = new char[1]{0};
 		// there is only one tree we can make
 		return;
 	}
 
 	m_it = 0;
-	m_sm = vector<bool>(m_n - 2, false);
-	m_seq = vector<uint32_t>(m_n - 2, 0);
+	m_sm = new char[m_n - 2]{0};
+	m_seq = new uint32_t[m_n - 2]{0};
 	// place 'it' at the end of the sequence
 	m_it = m_n - 3;
 	// make sure that the first call to next()
@@ -116,9 +119,9 @@ void all_lab_free_trees::next() {
 
 	++m_it;
 	if (m_it < m_n - 2) {
-		auto _it = m_seq.begin();
+		auto _it = &m_seq[0];
 		advance(_it, m_it);
-		fill(_it, m_seq.end(), 0);
+		fill(_it, &m_seq[m_n - 2], 0);
 	}
 	m_it = m_n - 3;
 }

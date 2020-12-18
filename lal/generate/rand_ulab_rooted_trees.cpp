@@ -62,7 +62,9 @@ rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
 	init_rn();
 	init(_n, seed);
 }
-//rand_ulab_rooted_trees::~rand_ulab_rooted_trees() { }
+rand_ulab_rooted_trees::~rand_ulab_rooted_trees() {
+	delete[] m_tree;
+}
 
 void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
@@ -78,7 +80,7 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_unif = uniform_real_distribution<double>(0, 1);
 
 	init_rn();
-	m_tree = vector<uint32_t>(m_n);
+	m_tree = new uint32_t[m_n];
 }
 
 rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
@@ -93,16 +95,14 @@ rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	vector<edge> edges(m_n - 1);
+	rooted_tree rT(m_n);
 	for (node u = 1; u < m_n; ++u) {
 		// in order to construct an arborescence
 		// orient edges away from the root (node 0).
-		edges[u - 1] = edge(m_tree[u], u);
+		rT.add_edge_bulk(m_tree[u], u);
 	}
-
-	rooted_tree rT(m_n);
+	rT.finish_bulk_add();
 	rT.set_root(0);
-	rT.set_edges(edges);
 	rT.set_valid_orientation(true);
 	return rT;
 }

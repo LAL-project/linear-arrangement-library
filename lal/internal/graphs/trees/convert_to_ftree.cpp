@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -53,15 +56,15 @@ using namespace graphs;
 
 namespace internal {
 
-free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
+free_tree level_sequence_to_ftree(uint32_t const *L, uint32_t n) {
+#if defined DEBUG
 	// a little sanity check
 	assert(L[0] == 0);
 	assert(L[1] == 1);
-    assert(to_uint32(L.size()) == n + 1);
+#endif
 
-	// edges of the tree
-	vector<edge> edges(n - 1);
-	auto eit = edges.begin();
+	// output tree
+	free_tree t(n);
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
@@ -72,7 +75,6 @@ free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
 	lev[0] = 1;
 
 	for (node i = 2; i <= n; ++i) {
-
 		// find in the stack the node which
 		// has to be connected to node 'i'.
 		if (lev[stack_it] + 2 > L[i]) {
@@ -83,20 +85,26 @@ free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
 		const node r = lev[stack_it];
 
 		// add the edge...
-		*eit++ = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		const edge e = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		t.add_edge_bulk(e.first, e.second);
 
 		// the last node added at level L[i] is i.
 		++stack_it;
+#if defined DEBUG
 		assert(stack_it == L[i]);
+#endif
 		lev[stack_it] = i;
 	}
 
-	free_tree t(n);
-	t.set_edges(edges);
+	t.finish_bulk_add();
 	return t;
 }
 
-free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
+free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
+	return level_sequence_to_ftree(&L[0], n);
+}
+
+free_tree Prufer_sequence_to_ftree(uint32_t const *seq, uint32_t n) {
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);
@@ -104,9 +112,8 @@ free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 		degree[ seq[i] ] += 1;
 	}
 
-	// edges of the tree
-	vector<edge> edges(n - 1);
-	auto eit = edges.begin();
+	// the output tree
+	free_tree t(n);
 
 	// for each number in the sequence seq[i], find the first
 	// lowest-numbered node, j, with degree equal to 1, add
@@ -118,7 +125,7 @@ free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 		node w = 0;
 		while (w < n and not node_found) {
 			if (degree[w] == 1) {
-				*eit++ = edge(value, w);
+				t.add_edge_bulk(value, w);
 
 				degree[value] -= 1;
 				degree[w] -= 1;
@@ -143,19 +150,20 @@ free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 	}
 
 	// add edge (u,v) to the tree
-	*eit++ = edge(u, v);
-
-	free_tree t(n);
-	t.set_edges(edges);
+	t.add_edge_bulk(u, v);
+	t.finish_bulk_add();
 	return t;
+}
+
+free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
+	return Prufer_sequence_to_ftree(&seq[0], n);
 }
 
 pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 	const uint32_t n = static_cast<uint32_t>(L.size());
 
-	// edges of the tree
-	vector<edge> edges(n - 1);
-	auto eit = edges.begin();
+	// output tree
+	free_tree t(n);
 
 #if defined DEBUG
 	// variable to make sure that the root has been set
@@ -174,10 +182,10 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 #endif
 		}
 		else {
-			// add the edge
-			// i ranges in [0,n-1]
-			// L[i] ranges in [1,n]
-			*eit++ = edge(i, L[i] - 1);
+			// add the edge:
+			// * i ranges in [0,n-1]
+			// * L[i] ranges in [1,n]
+			t.add_edge_bulk(i, L[i] - 1);
 		}
 	}
 
@@ -186,8 +194,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 	assert(root_set);
 #endif
 
-	free_tree t(n);
-	t.set_edges(edges);
+	t.finish_bulk_add();
 	return make_pair(t, r);
 }
 
