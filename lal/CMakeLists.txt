@@ -250,7 +250,7 @@ target_sources(
 		internal/graphs/trees/convert_to_rtree.hpp
 		internal/graphs/trees/Dmin.hpp
 		internal/graphs/trees/is_tree.hpp
-		internal/graphs/trees/make_projective_arr.hpp
+		internal/graphs/trees/make_arrangement.hpp
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
 		internal/graphs/trees/tree_centroid.hpp
