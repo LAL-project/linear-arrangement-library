@@ -50,6 +50,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 
 namespace lal {
@@ -443,7 +444,17 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 }
 
 free_tree rooted_tree::to_undirected(bool norm, bool check) const {
-	return free_tree(directed_graph::to_undirected(norm, check));
+	free_tree t(n_nodes());
+
+	iterators::E_iterator E_it(*this);
+	while (E_it.has_next()) {
+		E_it.next();
+		const edge e = E_it.get_edge();
+		t.add_edge_bulk(e.first, e.second);
+	}
+
+	t.finish_bulk_add(norm, check);
+	return t;
 }
 
 /* PROTECTED */
