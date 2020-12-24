@@ -85,7 +85,7 @@ dataset_error treebank_dataset::next_language() {
 	filesystem::path M(m_main_list);
 	M.replace_filename(m_tbf);
 
-	dataset_error dserr = m_tree_read.init(M.c_str(), m_lang);
+	dataset_error dserr = m_tree_read.init(M.string(), m_lang);
 	if (dserr != dataset_error::no_error) {
 		return dserr;
 	}

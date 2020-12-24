@@ -31,6 +31,7 @@ endif
 # VARIABLES
 
 ifeq ($(ENVIR), devel)
+	# this assumes that development happens within a Linux environment
 	LAL_INC_DIR = ..
 	ifeq ($(BUILD), debug)
 		LAL_LIB_DIR = ../lal-debug
@@ -75,13 +76,15 @@ ifeq ($(OS),Windows_NT)
 	# ----------------------
 	# FOR WINDOWS USERS ONLY
 
+	# Python's minor version
+	MINOR_VERSION_PYTHON = 8
 	# Python 3 include dir
-	PYTHON_INC_DIR	= C:/programming/Python38/include
+	PYTHON_INC_DIR	= C:/programming/Python/Python3$(MINOR_VERSION_PYTHON)/include
 	# Python3 library directory
-	PYTHON_LIBRARY	= C:/programming/Python38/libs
+	PYTHON_LIBRARY	= C:/programming/Python/Python3$(MINOR_VERSION_PYTHON)/libs
 	# Python3 linkage
 	MAJOR_PY_LINK	= -lpython3
-	MINOR_PY_LINK	= -lpython38
+	MINOR_PY_LINK	= -lpython3$(MINOR_VERSION_PYTHON)
 	# Directory where LAL's interface will be installed to
 	LAL_PY_DEST		= C:/programming/python_lib
 else
@@ -119,6 +122,13 @@ CXX			= g++
 # Flags for compiler
 FLAGS		= -std=c++17 -fPIC -fopenmp
 INCLUDES	= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
+
+# start building linkage libraries
+ifeq ($(OS),Windows_NT)
+ifeq ($(BUILD), debug)
+	LIBS += -lpthread
+endif
+endif
 
 # set lib and flags according to the mode of compilation
 # define LAL's directory and dependencies
