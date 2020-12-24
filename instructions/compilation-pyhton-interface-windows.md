@@ -16,7 +16,7 @@ and then add the path you used to the `PATH` environment variable.
 
 ## Configuring the _Makefile_
 
-In order to compile the interface, you need to configure one of the build files (change a few variables' contents). For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor version the interface has been tested on is `6` (i.e., we have been using Python 3.6), but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, you have to modify some of the variables in the _Makefile_ file within directory
+In order to compile the interface, you need to configure one of the build files (change a few variables' contents). For this, it is required that you know the minor version of Python installed in their system. As stated above, the major version is required to be `3`. The minor versions the interface has been tested on are `6`, `7` and `8`, but should work on any version `3.x`. Moreover, one has to know where LAL has been installed in the system. With this information, modify some of the variables in the file
 	
 	linear-arrangement-library/python-interface/Makefile
 
@@ -27,28 +27,21 @@ First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example,
 	# where are LAL's library files
 	LAL_LIB_DIR = C:/programming/c++/bin
 
-Secondly, specify the version of Python against which the interface is linked. Indicate where Python's header files are located at, and where to find the binaries. To do this, modify the variables `PYTHON_INC_DIR`, `PYTHON_LIBRARY`, `MAJOR_PY_LINK` and `MINOR_PY_LINK`. For example, 
+Secondly, specify the version of Python against which the interface is linked. Indicate where Python's header files are located at, and where to find the binaries. To do this, modify the variable `MINOR_VERSION_PYTHON`. For example, 
 
-	# Python 3 include dir
-	PYTHON_INC_DIR  = C:/programming/Python36/include
-	# Python3 library directory
-	PYTHON_LIBRARY  = C:/programming/Python36/libs
-	# Python3 linkage
-	MAJOR_PY_LINK   = -lpython3
-	MINOR_PY_LINK   = -lpython36
+	# Python's minor version
+	MINOR_VERSION_PYTHON = 8
 
-Recall to replace the `6` in the examples above with the minor version of Python installed in your system.
+Replace the `8` above with the minor version of Python installed in your system.
 
 Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
 
 	# Directory where LAL's interface will be installed to
-	LAL_PY_INSTALL = C:/programming/python_lib
-
-match your minor version (replace `x` for the minor version of your choice).
+	LAL_PY_DEST = C:/programming/python_lib
 
 Last but not least, you must specify the compiler to be used. One requirement is that the compiler used has to support for `C++17`'s standard. In particular, the compiler must support the flags
 
-	FLAGS = -std=c++17 -fPIC -fopenmp
+	-std=c++17 -fPIC -fopenmp
 
 and also,
 
@@ -82,4 +75,8 @@ It only remains one final step. This step depends on the minor version of Python
 
 	liblal.dll liblaldebug.dll
 
-Locate the destination directory of these files you chose when installing LAL from sources. In some minor versions of Python it suffices to add to the `PATH` environment variable of your system the path to these files. Furthermore, you need add to the `PYTHONPATH` environment variable the directory where the interface has been installed. This is the value that you gave to the directory that you gave to the variable `LAL_PY_INSTALL` so that python can find the `.py` files.
+Locate the destination directory of these files that you chose when installing LAL. Now add to the `PYTHONPATH` environment variable the directory to which the interface has been installed. This is the directory given to the variable `LAL_PY_DEST` in the Makefile (as explained above). This way, the python interpreter can find the `.py` files generated. This is sufficient for minor versions `6` and `7`. For minor version `8` copy the `.dll` files into your Python installation directory. For example,
+
+	C:/Users/User/AppData/Python/Python3.8/
+
+Note: this workaround does not look too good, but importing LAL does not work without this step.
