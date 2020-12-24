@@ -32,8 +32,8 @@ We wrote different sets of instructions for compiling and installing LAL from so
 
 We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
 
-- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-windows.md) file.
-- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-interface-linux.md) file.
+- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-windows.md) file.
+- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-linux.md) file.
 
 ## Compile a program that uses LAL
 
@@ -43,9 +43,9 @@ See [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/m
 
 This library is the result of the joint effort of several people (in alphabetical order):
 
-- Alemany-Puig, Lluís (see his Research Gate profile [here](https://www.researchgate.net/profile/Lluis_Alemany-Puig)).
-- Esteban, Juan Luis (see his webpage [here](https://www.cs.upc.edu/~esteban/) and his Research Gate profile [here](https://www.researchgate.net/profile/Juan_Esteban13))
-- Ferrer-i-Cancho, Ramon (see his webpage [here](https://www.cs.upc.edu/~rferrericancho/) and his Research Gate profile [here](https://www.cs.upc.edu/~rferrericancho/)).
+- Alemany-Puig, Lluís (see [his webpage](https://cqllab.upc.edu/people/lalemany/) and [his Research Gate profile](https://www.researchgate.net/profile/Lluis_Alemany-Puig)).
+- Esteban, Juan Luis (see [his webpage](https://www.cs.upc.edu/~esteban/) and [his Research Gate profile](https://www.researchgate.net/profile/Juan_Esteban13))
+- Ferrer-i-Cancho, Ramon (see [his webpage](https://cqllab.upc.edu/people/rferrericancho/) and [his Research Gate profile](https://www.cs.upc.edu/~rferrericancho/)).
 
 ## Citing the library
 
