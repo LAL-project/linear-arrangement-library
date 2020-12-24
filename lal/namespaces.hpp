@@ -227,8 +227,8 @@ namespace graphs {}
  * 
  * This includes reading a graph (or collection of graphs) from
  * a file. The formats supported for reading are:
- * - Edge list. See functions @ref read_edge_list(const std::string&, graphs::undirected_graph&, bool,bool,bool)
- * and @ref read_edge_list(const std::string&, graphs::directed_graph&, bool,bool,bool).
+ * - Edge list. See functions @ref read_edge_list(const std::string&, graphs::undirected_graph&, bool,bool)
+ * and @ref read_edge_list(const std::string&, graphs::directed_graph&, bool,bool).
  * 
  * Other features contained in this namespace are:
  * - Processing of whole corpora of treebanks automatically (see @ref io::treebank_processor)

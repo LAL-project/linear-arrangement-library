@@ -488,9 +488,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 
 		/**
 		 * @brief Converts this rooted tree into a free tree (see @ref tree).
-		 * @param norm Normalise the graph.
+		 * @param norm Normalise the tree.
 		 * @param check Chech whether the resulting graph is normalised or not.
-		 * @param norm Normalise the tree
 		 */
 		free_tree to_undirected
 		(bool norm = true, bool check = true) const;
