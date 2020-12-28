@@ -42,6 +42,7 @@
 #pragma once
 
 // C++ includes
+#include <cinttypes>
 #include <string>
 
 namespace lal {
@@ -107,12 +108,25 @@ enum class tree_structure {
 	none
 };
 
+inline
+std::string tree_structure_to_string(const tree_structure& tt) {
+	switch (tt) {
+		case tree_structure::projective: return "projective";
+		case tree_structure::planar: return "planar";
+		case tree_structure::WG1: return "WG1";
+		case tree_structure::EC1: return "EC1";
+		case tree_structure::MH4: return "MH4";
+		case tree_structure::MH5: return "MH5";
+		default: return "none";
+	}
+}
+
 /// Number of elements within enumeration @ref tree_structure.
-static const size_t __tree_structure_size = 7;
+static const std::size_t __tree_structure_size = 7;
 
 // This assertion ensures that the value of '__tree_structure_size' is correct.
 static_assert(
-	__tree_structure_size == 1 + static_cast<size_t>(tree_structure::none),
+	__tree_structure_size == 1 + static_cast<std::size_t>(tree_structure::none),
 "Constant '__tree_structure_size' does not contain the correct number of \
 elements within enumeration 'tree_structure'."
 );
