@@ -52,6 +52,7 @@ using namespace std;
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
+#include <lal/internal/graphs/trees/tree_classification.hpp>
 
 namespace lal {
 using namespace internal;
@@ -306,7 +307,7 @@ void rooted_tree::calculate_size_subtrees() {
 }
 
 void rooted_tree::calculate_tree_type() {
-
+	internal::classify_tree(*this, m_tree_type);
 }
 
 /* SETTERS */

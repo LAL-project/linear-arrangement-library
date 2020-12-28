@@ -59,6 +59,7 @@ HEADERS += \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
+	internal/graphs/trees/tree_classification.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/sorting/bit_sort.hpp \

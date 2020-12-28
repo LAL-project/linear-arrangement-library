@@ -255,6 +255,7 @@ target_sources(
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
 		internal/graphs/trees/tree_centroid.hpp
+		internal/graphs/trees/tree_classification.hpp
 		internal/graphs/algorithms_crossings.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/union_find.hpp

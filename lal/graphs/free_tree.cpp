@@ -49,6 +49,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/trees/is_tree.hpp>
+#include <lal/internal/graphs/trees/tree_classification.hpp>
 
 namespace lal {
 namespace graphs {
@@ -172,7 +173,7 @@ void free_tree::disjoint_union(const free_tree& t) {
 }
 
 void free_tree::calculate_tree_type() {
-
+	internal::classify_tree(*this, m_tree_type);
 }
 
 /* GETTERS */
