@@ -53,7 +53,9 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-tree::tree() { }
+tree::tree() {
+	std::fill(m_tree_type.begin(), m_tree_type.end(), false);
+}
 tree::tree(const tree& t) : graph() {
 	tree_only_copy(t);
 }
@@ -134,6 +136,17 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 	return true;
 }
 
+vector<string> tree::get_tree_type_list() const {
+	vector<string> l;
+	l.reserve(__tree_type_size);
+	for (size_t i = 0; i < __tree_type_size; ++i) {
+		if (m_tree_type[i]) {
+			l.push_back(tree_type_to_string(static_cast<tree_type>(i)));
+		}
+	}
+	return l;
+}
+
 /* PROTECTED */
 
 void tree::tree_only_init(uint32_t n) {
@@ -154,12 +167,14 @@ void tree::tree_only_copy(const tree& t) {
 	// copy this class' members
 	m_root_of = t.m_root_of;
 	m_root_size = t.m_root_size;
+	m_tree_type = t.m_tree_type;
 }
 
 void tree::tree_only_move(tree&& t) {
 	// move this class' members
 	m_root_of = std::move(t.m_root_of);
 	m_root_size = std::move(t.m_root_size);
+	m_tree_type = std::move(t.m_tree_type);
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {

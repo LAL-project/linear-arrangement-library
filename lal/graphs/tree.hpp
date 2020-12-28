@@ -43,12 +43,14 @@
 
 // C++ includes
 #include <vector>
+#include <array>
 #if defined DEBUG
 #include <cassert>
 #endif
 
 // lal includes
 #include <lal/graphs/graph.hpp>
+#include <lal/graphs/tree_type.hpp>
 
 namespace lal {
 namespace graphs {
@@ -86,6 +88,15 @@ class tree : virtual public graph {
 		tree& operator= (const tree&);
 		/// Move assignment operator.
 		tree& operator= (tree&&);
+
+		/* MODIFIERS */
+
+		/**
+		 * @brief Calculates the type of tree.
+		 *
+		 * See @ref tree_type for the list of different tree types.
+		 */
+		virtual void calculate_tree_type() = 0;
 
 		/* GETTERS */
 
@@ -149,6 +160,13 @@ class tree : virtual public graph {
 			return m_root_size[m_root_of[u]];
 		}
 
+		/// Returns whether this tree is of type @e tt.
+		inline bool is_of_type(const tree_type& tt) const {
+			return m_tree_type[static_cast<std::size_t>(tt)];
+		}
+
+		std::vector<std::string> get_tree_type_list() const;
+
 	protected:
 		/// The root of every vertex in the union-find data structure
 		std::vector<node> m_root_of;
@@ -162,6 +180,9 @@ class tree : virtual public graph {
 		 * In this context, root is within the union-find data structure.
 		 */
 		std::vector<uint32_t> m_root_size;
+
+		/// The type of this tree
+		std::array<bool,__tree_type_size> m_tree_type;
 
 	protected:
 		/**

@@ -201,6 +201,8 @@ class free_tree : public undirected_graph, virtual public tree {
 		 */
 		void disjoint_union(const free_tree& t);
 
+		void calculate_tree_type();
+
 		/* GETTERS */
 
 		inline bool is_rooted() const { return false; }

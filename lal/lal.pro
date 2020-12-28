@@ -56,6 +56,7 @@ HEADERS += \
 	graphs/directed_graph.hpp \
 	graphs/free_tree.hpp \
 	graphs/rooted_tree.hpp \
+	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
 	internal/macros.hpp \

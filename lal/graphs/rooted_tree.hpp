@@ -362,6 +362,8 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 */
 		void calculate_size_subtrees();
 
+		void calculate_tree_type();
+
 		/* SETTERS */
 
 		/**

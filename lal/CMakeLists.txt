@@ -149,6 +149,7 @@ target_sources(
 		graphs/output.hpp
 		graphs/rooted_tree.hpp
 		graphs/tree.hpp
+		graphs/tree_type.hpp
 		graphs/undirected_graph.hpp
 		# -- sources
 		graphs/directed_graph.cpp
@@ -329,6 +330,7 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/output.hpp
 	graphs/rooted_tree.hpp
 	graphs/tree.hpp
+	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
 )
 set(LIBLAL_IO_HEADER

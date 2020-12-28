@@ -171,6 +171,10 @@ void free_tree::disjoint_union(const free_tree& t) {
 	}
 }
 
+void free_tree::calculate_tree_type() {
+
+}
+
 /* GETTERS */
 
 /* PROTECTED */

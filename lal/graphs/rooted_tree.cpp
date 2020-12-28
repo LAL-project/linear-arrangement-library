@@ -305,6 +305,10 @@ void rooted_tree::calculate_size_subtrees() {
 	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
+void rooted_tree::calculate_tree_type() {
+
+}
+
 /* SETTERS */
 
 void rooted_tree::set_root(node r) {
