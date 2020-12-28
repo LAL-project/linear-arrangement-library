@@ -21,6 +21,15 @@ $(TREE_STR_WRAP).cxx: $(TREE_STR_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_STR_MAIN_INT)
 	echo "del cvar" >> $(TREE_STR_PY_FILE)
 
+# type module
+$(TREE_TYPE_SO): $(TREE_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
+$(TREE_TYPE_WRAP).o: $(TREE_TYPE_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(TREE_TYPE_WRAP).cxx: $(TREE_TYPE_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_TYPE_MAIN_INT)
+	echo "del cvar" >> $(TREE_TYPE_PY_FILE)
+
 # algorithms_C module
 $(ALG_C_SO): $(ALG_C_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)

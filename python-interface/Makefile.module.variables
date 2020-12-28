@@ -27,7 +27,7 @@ DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
 _DSE_SO			= _$(DSE_INAME).$(SO_EXT)
 DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
 
-# -- tree_structure_type module
+# -- tree_structure module
 TREE_STR_MAIN_INT	= submodules/enums/$(TREE_STR_INAME).i
 TREE_STR_SUB_INT	= submodules/enums/$(TREE_STR_BNAME)_impl.i
 TREE_STR_MOD_DEPS	= $(TREE_STR_MAIN_INT) $(TREE_STR_SUB_INT) $(TREE_STR_DPHDRS) 	\
@@ -37,6 +37,17 @@ TREE_STR_PY_FILE	= $(ARCH_DIR)/$(_TREE_STR_PF)
 TREE_STR_WRAP		= $(ARCH_DIR)/$(TREE_STR_INAME)_wrap
 _TREE_STR_SO		= _$(TREE_STR_INAME).$(SO_EXT)
 TREE_STR_SO			= $(ARCH_DIR)/$(_TREE_STR_SO)
+
+# -- tree_type module
+TREE_TYPE_MAIN_INT	= submodules/enums/$(TREE_TYPE_INAME).i
+TREE_TYPE_SUB_INT	= submodules/enums/$(TREE_TYPE_BNAME)_impl.i
+TREE_TYPE_MOD_DEPS	= $(TREE_TYPE_MAIN_INT) $(TREE_TYPE_SUB_INT) $(TREE_TYPE_DPHDRS) 	\
+					  submodules/enums/rename_enum_contents.i
+_TREE_TYPE_PF		= $(TREE_TYPE_INAME).py
+TREE_TYPE_PY_FILE	= $(ARCH_DIR)/$(_TREE_TYPE_PF)
+TREE_TYPE_WRAP		= $(ARCH_DIR)/$(TREE_TYPE_INAME)_wrap
+_TREE_TYPE_SO		= _$(TREE_TYPE_INAME).$(SO_EXT)
+TREE_TYPE_SO		= $(ARCH_DIR)/$(_TREE_TYPE_SO)
 
 # -- algorithm_crossings module
 ALG_C_MAIN_INT	= submodules/enums/$(ALG_C_INAME).i

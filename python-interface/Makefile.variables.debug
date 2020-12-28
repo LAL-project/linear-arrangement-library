@@ -28,9 +28,13 @@ endif
 DSE_BNAME	= laldataset_error
 DSE_INAME	= $(DSE_BNAME)debug
 
-# -- tree_structure_type
+# -- tree_structure
 TREE_STR_BNAME	= laltree_structure
 TREE_STR_INAME	= $(TREE_STR_BNAME)debug
+
+# -- tree_type
+TREE_TYPE_BNAME	= laltree_type
+TREE_TYPE_INAME	= $(TREE_TYPE_BNAME)debug
 
 # -- algorithms_C
 ALG_C_BNAME	= lalalgorithms_C
