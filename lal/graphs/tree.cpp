@@ -53,9 +53,7 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-tree::tree() {
-	std::fill(m_tree_type.begin(), m_tree_type.end(), false);
-}
+tree::tree() { }
 tree::tree(const tree& t) : graph() {
 	tree_only_copy(t);
 }
@@ -156,11 +154,13 @@ void tree::tree_only_init(uint32_t n) {
 		m_root_of[u] = u;
 		m_root_size[u] = 1;
 	}
+	std::fill(m_tree_type.begin(), m_tree_type.end(), 0);
 }
 
 void tree::tree_only_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
+	std::fill(m_tree_type.begin(), m_tree_type.end(), 0);
 }
 
 void tree::tree_only_copy(const tree& t) {
