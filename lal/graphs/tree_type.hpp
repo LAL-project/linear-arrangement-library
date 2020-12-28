@@ -70,6 +70,15 @@ enum class tree_type {
 	star,
 
 	/**
+	 * @brief Quasi star trees.
+	 *
+	 * Also quasi star graphs, trees where all vertices but two have degree 1.
+	 * One of these two vertices has degree exactly two, the other has degree
+	 * at least two.
+	 */
+	quasistar,
+
+	/**
 	 * @brief Bi-star trees.
 	 *
 	 * These trees are made of two star trees joined by an edge at their centers.
@@ -88,7 +97,7 @@ enum class tree_type {
 	spider,
 
 	/// Non-caterpillar trees.
-	noncaterpillar,
+	non_caterpillar,
 
 	/// The tree could not be classified
 	none
@@ -99,16 +108,17 @@ std::string tree_type_to_string(const tree_type& tt) {
 	switch (tt) {
 		case tree_type::linear: return "linear";
 		case tree_type::star: return "star";
+		case tree_type::quasistar: return "quasistar";
 		case tree_type::bistar: return "bistar";
 		case tree_type::caterpillar: return "caterpillar";
 		case tree_type::spider: return "spider";
-		case tree_type::noncaterpillar: return "non-caterpillar";
+		case tree_type::non_caterpillar: return "non_caterpillar";
 		default: return "none";
 	}
 }
 
 /// Number of elements within enumeration @ref tree_type.
-static const std::size_t __tree_type_size = 7;
+static const std::size_t __tree_type_size = 8;
 
 // This assertion ensures that the value of '__tree_structure_size' is correct.
 static_assert(
