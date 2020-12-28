@@ -64,8 +64,12 @@ void classify_tree(
 	// -------------------------------------------------------------------------
 	// utilities
 
+	bool is_some = false; // the type is different from 'none'
 	const auto set_type =
-	[&](const graphs::tree_type& tt) { array[static_cast<size_t>(tt)] = 1; };
+	[&](const graphs::tree_type& tt) {
+		array[static_cast<size_t>(tt)] = 1;
+		is_some = true;
+	};
 
 	// degree of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_degree =
@@ -97,10 +101,12 @@ void classify_tree(
 	const uint32_t N = t.n_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::none);
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 1) {
 		set_type(graphs::tree_type::none);
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 2) {
@@ -108,6 +114,7 @@ void classify_tree(
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 3) {
@@ -115,6 +122,7 @@ void classify_tree(
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 
@@ -214,7 +222,10 @@ void classify_tree(
 	if (is_bistar) { set_type(graphs::tree_type::bistar); }
 	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
 	if (is_spider) { set_type(graphs::tree_type::spider); }
-	if (not is_caterpillar) { set_type(graphs::tree_type::non_caterpillar); }
+
+	if (is_some) {
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
+	}
 
 	delete[] deg_internal;
 }

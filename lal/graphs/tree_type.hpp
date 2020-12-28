@@ -96,9 +96,6 @@ enum class tree_type {
 	 */
 	spider,
 
-	/// Non-caterpillar trees.
-	non_caterpillar,
-
 	/// The tree could not be classified
 	none
 };
@@ -112,13 +109,12 @@ std::string tree_type_to_string(const tree_type& tt) {
 		case tree_type::bistar: return "bistar";
 		case tree_type::caterpillar: return "caterpillar";
 		case tree_type::spider: return "spider";
-		case tree_type::non_caterpillar: return "non_caterpillar";
 		default: return "none";
 	}
 }
 
 /// Number of elements within enumeration @ref tree_type.
-static const std::size_t __tree_type_size = 8;
+static const std::size_t __tree_type_size = 7;
 
 // This assertion ensures that the value of '__tree_structure_size' is correct.
 static_assert(
