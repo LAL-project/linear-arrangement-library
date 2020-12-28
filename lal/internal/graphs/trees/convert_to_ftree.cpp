@@ -160,6 +160,8 @@ free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
 }
 
 pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
+	if (L.size() == 0) { return make_pair(free_tree(0), 0); }
+
 	const uint32_t n = static_cast<uint32_t>(L.size());
 
 	// output tree
