@@ -95,15 +95,15 @@ HEADERS += \
 	linarr/Dmin.hpp \
 	linarr/algorithms_C.hpp \
 	linarr/algorithms_Dmin.hpp \
-	linarr/tree_structure.hpp \
-	linarr/tree_structure_class.hpp \
 	linarr/1level.hpp \
 	linarr/1level_impl.hpp \
 	linarr/2level.hpp \
 	linarr/2level_impl.hpp \
+	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/headedness.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
+	linarr/syntactic_dependency_structure_type.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
 	numeric/output.hpp \
@@ -159,8 +159,8 @@ SOURCES += \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
+    linarr/classify_syntactic_dependency_structure.cpp \
 	linarr/headedness.cpp \
-	linarr/tree_structure_class.cpp \
 	linarr/D.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \

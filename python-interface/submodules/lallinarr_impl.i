@@ -12,7 +12,7 @@
 %include "../lal/linarr/D.hpp"
 %include "../lal/linarr/Dmin.hpp"
 %include "../lal/linarr/headedness.hpp"
-%include "../lal/linarr/tree_structure_class.hpp"
+%include "../lal/linarr/syntactic_dependency_structure_type.hpp"
 
 // --------------------------------
 // Extendind the function templates

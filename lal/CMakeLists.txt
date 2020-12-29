@@ -193,15 +193,15 @@ target_sources(
 		linarr/D.hpp
 		linarr/Dmin.hpp
 		linarr/headedness.hpp
-		linarr/tree_structure.hpp
-		linarr/tree_structure_class.hpp
+		linarr/syntactic_dependency_structure_type.hpp
+		linarr/classify_syntactic_dependency_structure.hpp
 		# -- sources
 		linarr/C.cpp
 		linarr/C_approx.cpp
 		linarr/D.cpp
 		linarr/Dmin.cpp
 		linarr/headedness.cpp
-		linarr/tree_structure_class.cpp
+		linarr/classify_syntactic_dependency_structure.cpp
 
 		# numeric namespace
 		# -- headers
@@ -357,8 +357,8 @@ set(LIBLAL_LINARR_HEADER
 	linarr/D.hpp
 	linarr/Dmin.hpp
 	linarr/headedness.hpp
-	linarr/tree_structure.hpp
-	linarr/tree_structure_class.hpp
+	linarr/syntactic_dependency_structure_type.hpp
+	linarr/classify_syntactic_dependency_structure.hpp
 )
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp

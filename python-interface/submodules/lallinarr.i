@@ -1,7 +1,7 @@
 %module lallinarr
 
 %import laldefinitions.i
-%import enums/laltree_structure.i
+%import enums/lalsyntactic_dependency_structure_type.i
 %import enums/lalalgorithms_C.i
 %import enums/lalalgorithms_Dmin.i
 %import lalgraphs.i

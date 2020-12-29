@@ -62,7 +62,7 @@ namespace linarr {
  * - Multi-headed 4 (see @ref tree_structure::MH4),
  * - Multi-headed 5 (see @ref tree_structure::MH5),
  */
-enum class tree_structure {
+enum class syntactic_dependency_structure_type {
 	// Projective structures
 
 	/**
@@ -71,7 +71,7 @@ enum class tree_structure {
 	 * A structure is projective if it is planar and the root is not covered by
 	 * any dependency.
 	 */
-	projective,
+	projective = 0,
 
 	/**
 	 * @brief Planar structures.
@@ -104,32 +104,28 @@ enum class tree_structure {
 	/// MH-5
 	MH5,
 
+
+	// This value must always be the last one.
 	/// The structure could not be classified.
 	none
 };
 
 inline
-std::string tree_structure_to_string(const tree_structure& tt) {
+std::string tree_structure_to_string(const syntactic_dependency_structure_type& tt) {
 	switch (tt) {
-		case tree_structure::projective: return "projective";
-		case tree_structure::planar: return "planar";
-		case tree_structure::WG1: return "WG1";
-		case tree_structure::EC1: return "EC1";
-		case tree_structure::MH4: return "MH4";
-		case tree_structure::MH5: return "MH5";
+		case syntactic_dependency_structure_type::projective: return "projective";
+		case syntactic_dependency_structure_type::planar: return "planar";
+		case syntactic_dependency_structure_type::WG1: return "WG1";
+		case syntactic_dependency_structure_type::EC1: return "EC1";
+		case syntactic_dependency_structure_type::MH4: return "MH4";
+		case syntactic_dependency_structure_type::MH5: return "MH5";
 		default: return "none";
 	}
 }
 
 /// Number of elements within enumeration @ref tree_structure.
-static const std::size_t __tree_structure_size = 7;
-
-// This assertion ensures that the value of '__tree_structure_size' is correct.
-static_assert(
-	__tree_structure_size == 1 + static_cast<std::size_t>(tree_structure::none),
-"Constant '__tree_structure_size' does not contain the correct number of \
-elements within enumeration 'tree_structure'."
-);
+static const std::size_t __tree_structure_size =
+	1 + static_cast<std::size_t>(syntactic_dependency_structure_type::none);
 
 } // -- namespace linarr
 } // -- namespace lal

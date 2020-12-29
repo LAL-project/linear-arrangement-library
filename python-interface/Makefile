@@ -172,7 +172,7 @@ include Makefile.module.variables
 # GOALS
 
 SUBMODULES	= $(DSE_SO) 		\
-			  $(TREE_STR_SO) 	\
+			  $(SYN_DEP_STR_TYPE_SO) 	\
 			  $(TREE_TYPE_SO) 	\
 			  $(ALG_C_SO) 		\
 			  $(ALG_DMIN_SO)	\
@@ -212,8 +212,8 @@ distclean:
 install: $(LAL_SO)
 	cp $(DSE_SO) $(LAL_PY_DEST)/$(_DSE_SO)
 	cp $(DSE_PY_FILE) $(LAL_PY_DEST)/$(_DSE_PF)
-	cp $(TREE_STR_SO) $(LAL_PY_DEST)/$(_TREE_STR_SO)
-	cp $(TREE_STR_PY_FILE) $(LAL_PY_DEST)/$(_TREE_STR_PF)
+	cp $(SYN_DEP_STR_TYPE_SO) $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
+	cp $(SYN_DEP_STR_TYPE_PY_FILE) $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_PF)
 	cp $(TREE_TYPE_SO) $(LAL_PY_DEST)/$(_TREE_TYPE_SO)
 	cp $(TREE_TYPE_PY_FILE) $(LAL_PY_DEST)/$(_TREE_TYPE_PF)
 	cp $(ALG_C_SO) $(LAL_PY_DEST)/$(_ALG_C_SO)
@@ -246,8 +246,8 @@ install: $(LAL_SO)
 uninstall:
 	rm -f $(LAL_PY_DEST)/$(_DSE_SO)
 	rm -f $(LAL_PY_DEST)/$(_DSE_PF)
-	rm -f $(LAL_PY_DEST)/$(_TREE_STR_SO)
-	rm -f $(LAL_PY_DEST)/$(_TREE_STR_PF)
+	rm -f $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
+	rm -f $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_PF)
 	rm -f $(LAL_PY_DEST)/$(_TREE_TYPE_SO)
 	rm -f $(LAL_PY_DEST)/$(_TREE_TYPE_PF)
 	rm -f $(LAL_PY_DEST)/$(_ALG_C_SO)

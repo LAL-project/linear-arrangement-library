@@ -27,16 +27,16 @@ DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
 _DSE_SO			= _$(DSE_INAME).$(SO_EXT)
 DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
 
-# -- tree_structure module
-TREE_STR_MAIN_INT	= submodules/enums/$(TREE_STR_INAME).i
-TREE_STR_SUB_INT	= submodules/enums/$(TREE_STR_BNAME)_impl.i
-TREE_STR_MOD_DEPS	= $(TREE_STR_MAIN_INT) $(TREE_STR_SUB_INT) $(TREE_STR_DPHDRS) 	\
-					  submodules/enums/rename_enum_contents.i
-_TREE_STR_PF		= $(TREE_STR_INAME).py
-TREE_STR_PY_FILE	= $(ARCH_DIR)/$(_TREE_STR_PF)
-TREE_STR_WRAP		= $(ARCH_DIR)/$(TREE_STR_INAME)_wrap
-_TREE_STR_SO		= _$(TREE_STR_INAME).$(SO_EXT)
-TREE_STR_SO			= $(ARCH_DIR)/$(_TREE_STR_SO)
+# -- syntactic dependency structure type module
+SYN_DEP_STR_TYPE_MAIN_INT	= submodules/enums/$(SYN_DEP_STR_TYPE_INAME).i
+SYN_DEP_STR_TYPE_SUB_INT	= submodules/enums/$(SYN_DEP_STR_TYPE_BNAME)_impl.i
+SYN_DEP_STR_TYPE_MOD_DEPS	= $(SYN_DEP_STR_TYPE_MAIN_INT) $(SYN_DEP_STR_TYPE_SUB_INT) $(TREE_STR_DPHDRS) 	\
+								submodules/enums/rename_enum_contents.i
+_SYN_DEP_STR_TYPE_PF		= $(SYN_DEP_STR_TYPE_INAME).py
+SYN_DEP_STR_TYPE_PY_FILE	= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_PF)
+SYN_DEP_STR_TYPE_WRAP		= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_INAME)_wrap
+_SYN_DEP_STR_TYPE_SO		= _$(SYN_DEP_STR_TYPE_INAME).$(SO_EXT)
+SYN_DEP_STR_TYPE_SO			= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_SO)
 
 # -- tree_type module
 TREE_TYPE_MAIN_INT	= submodules/enums/$(TREE_TYPE_INAME).i
@@ -150,7 +150,7 @@ ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
 LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
 LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
 LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DPHDRS)	\
-				  $(TREE_STR_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
+				  $(SYN_DEP_STR_TYPE_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
 _LINARR_PF		= $(LINARR_INAME).py
 LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap

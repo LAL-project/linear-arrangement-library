@@ -47,7 +47,7 @@ using namespace std;
 // lal includes
 #include <lal/graphs/output.hpp>
 #include <lal/linarr/C.hpp>
-#include <lal/linarr/tree_structure.hpp>
+#include <lal/linarr/syntactic_dependency_structure_type.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
@@ -61,19 +61,19 @@ using namespace iterators;
 
 namespace linarr {
 
-inline void __set_type(vector<bool>& cls, const tree_structure& ts) {
+inline void __set_type(vector<bool>& cls, const syntactic_dependency_structure_type& ts) {
 	cls[enum_to_int(ts)] = true;
 
-	if (ts == tree_structure::projective) {
-		cls[enum_to_int(tree_structure::projective)] = true;
-		cls[enum_to_int(tree_structure::planar)] = true;
-		cls[enum_to_int(tree_structure::EC1)] = true;
-		cls[enum_to_int(tree_structure::WG1)] = true;
+	if (ts == syntactic_dependency_structure_type::projective) {
+		cls[enum_to_int(syntactic_dependency_structure_type::projective)] = true;
+		cls[enum_to_int(syntactic_dependency_structure_type::planar)] = true;
+		cls[enum_to_int(syntactic_dependency_structure_type::EC1)] = true;
+		cls[enum_to_int(syntactic_dependency_structure_type::WG1)] = true;
 	}
-	else if (ts == tree_structure::planar) {
-		cls[enum_to_int(tree_structure::planar)] = true;
-		cls[enum_to_int(tree_structure::EC1)] = true;
-		cls[enum_to_int(tree_structure::WG1)] = true;
+	else if (ts == syntactic_dependency_structure_type::planar) {
+		cls[enum_to_int(syntactic_dependency_structure_type::planar)] = true;
+		cls[enum_to_int(syntactic_dependency_structure_type::EC1)] = true;
+		cls[enum_to_int(syntactic_dependency_structure_type::WG1)] = true;
 	}
 }
 
@@ -271,8 +271,8 @@ inline vector<bool> __get_syn_dep_tree_type(
 		// projective or planar?
 		auto t =
 			__is_root_covered(Tree, pi) ?
-			tree_structure::planar :
-			tree_structure::projective;
+			syntactic_dependency_structure_type::planar :
+			syntactic_dependency_structure_type::projective;
 		__set_type(cl, t);
 		return cl;
 	}
@@ -292,19 +292,19 @@ inline vector<bool> __get_syn_dep_tree_type(
 
 	if (disjoint_yields and max_dis > 0) {
 		// this structure is well-nested
-		auto t = max_dis == 1 ? tree_structure::WG1 : tree_structure::none;
+		auto t = max_dis == 1 ? syntactic_dependency_structure_type::WG1 : syntactic_dependency_structure_type::none;
 		__set_type(cl, t);
 		return cl;
 	}
 
 	if (C == 1) {
 		// we need C > 1 for 1-EC structures
-		__set_type(cl, tree_structure::none);
+		__set_type(cl, syntactic_dependency_structure_type::none);
 		return cl;
 	}
 
 	const bool is_1EC = __is_1EC(Tree, pi);
-	auto t = is_1EC ? tree_structure::EC1 : tree_structure::none;
+	auto t = is_1EC ? syntactic_dependency_structure_type::EC1 : syntactic_dependency_structure_type::none;
 	__set_type(cl, t);
 	return cl;
 }
@@ -312,7 +312,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 vector<bool> classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
 	if (rT.n_nodes() <= 2) {
 		vector<bool> cls(__tree_structure_size);
-		__set_type(cls, tree_structure::projective);
+		__set_type(cls, syntactic_dependency_structure_type::projective);
 		return cls;
 	}
 	return internal::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);

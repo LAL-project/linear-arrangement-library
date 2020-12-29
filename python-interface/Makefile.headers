@@ -4,7 +4,7 @@ LAL_DPHDRS			=
 
 DSE_DPHDRS			= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
 
-TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp
+TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure_type.hpp
 
 TREE_TYPE_DPHDRS	= $(LAL_INC_DIR)/lal/graphs/tree_type.hpp
 
@@ -32,10 +32,11 @@ GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/rooted_tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/tree_type.hpp
+					  $(TREE_TYPE_DPHDRS)
 
 IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
+					  $(DSE_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/treebank_dataset.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp
@@ -47,14 +48,14 @@ LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/1level_impl.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level_impl.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/algorithms_C.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp \
+					  $(ALG_C_DPHDRS) \
+					  $(ALG_DMIN_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/Dmin.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/tree_structure.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/tree_structure_class.hpp
+					  $(TREE_STR_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/linarr/classify_syntactic_dependency_structure.hpp
 
 NMRC_DPHDRS			= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
 					  $(LAL_INC_DIR)/lal/numeric/rational.hpp \

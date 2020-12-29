@@ -43,13 +43,13 @@
 
 #include <lal/linarr/algorithms_C.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/linarr/tree_structure.hpp>
+#include <lal/linarr/syntactic_dependency_structure_type.hpp>
 
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/headedness.hpp>
-#include <lal/linarr/tree_structure_class.hpp>
+#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 
 #include <lal/linarr/1level.hpp>
 #include <lal/linarr/2level.hpp>

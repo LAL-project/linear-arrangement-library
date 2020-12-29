@@ -1,7 +1,7 @@
 %module lallinarrdebug
 
 %import laldefinitionsdebug.i
-%import enums/laltree_structuredebug.i
+%import enums/lalsyntactic_dependency_structure_typedebug.i
 %import enums/lalalgorithms_Cdebug.i
 %import enums/lalalgorithms_Dmindebug.i
 %import lalgraphsdebug.i
