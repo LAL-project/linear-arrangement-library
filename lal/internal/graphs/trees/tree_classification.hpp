@@ -101,12 +101,10 @@ void classify_tree(
 	const uint32_t N = t.n_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::none);
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 1) {
 		set_type(graphs::tree_type::none);
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 2) {
