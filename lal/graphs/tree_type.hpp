@@ -96,6 +96,7 @@ enum class tree_type {
 	 */
 	spider,
 
+	// This value must always be the last one.
 	/// The tree could not be classified
 	none
 };
@@ -114,14 +115,8 @@ std::string tree_type_to_string(const tree_type& tt) {
 }
 
 /// Number of elements within enumeration @ref tree_type.
-static const std::size_t __tree_type_size = 7;
-
-// This assertion ensures that the value of '__tree_structure_size' is correct.
-static_assert(
-	__tree_type_size == 1 + static_cast<std::size_t>(tree_type::none),
-"Constant '__tree_type_size' does not contain the correct number of \
-elements within enumeration 'tree_type'."
-);
+static const std::size_t __tree_type_size =
+	1 + static_cast<std::size_t>(tree_type::none);
 
 } // -- namespace graphs
 } // -- namespace lal
