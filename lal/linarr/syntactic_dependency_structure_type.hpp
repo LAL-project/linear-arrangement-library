@@ -98,12 +98,6 @@ enum class syntactic_dependency_structure_type {
 	 */
 	EC1,
 
-	/// MH-4
-	MH4,
-
-	/// MH-5
-	MH5,
-
 
 	// This value must always be the last one.
 	/// The structure could not be classified.
@@ -117,8 +111,6 @@ std::string tree_structure_to_string(const syntactic_dependency_structure_type& 
 		case syntactic_dependency_structure_type::planar: return "planar";
 		case syntactic_dependency_structure_type::WG1: return "WG1";
 		case syntactic_dependency_structure_type::EC1: return "EC1";
-		case syntactic_dependency_structure_type::MH4: return "MH4";
-		case syntactic_dependency_structure_type::MH5: return "MH5";
 		default: return "none";
 	}
 }
