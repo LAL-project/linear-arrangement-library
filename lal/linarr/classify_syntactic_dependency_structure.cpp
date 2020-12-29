@@ -372,7 +372,9 @@ inline vector<bool> __get_syn_dep_tree_type(
 }
 
 vector<bool> classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(rT.is_rooted_tree());
+#endif
 	return internal::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
 }
 
