@@ -114,8 +114,10 @@ class rooted_tree : public directed_graph, virtual public tree {
 		rooted_tree(uint32_t n);
 		/// Copy constructor.
 		rooted_tree(const rooted_tree&);
+#ifndef SWIG
 		/// Move constructor.
 		rooted_tree(rooted_tree&&);
+#endif
 		/// Constructor with tree and root node.
 		rooted_tree(const free_tree& t, node r);
 		/// Destructor
@@ -123,10 +125,12 @@ class rooted_tree : public directed_graph, virtual public tree {
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		rooted_tree& operator= (const rooted_tree&);
 		/// Move assignment operator.
 		rooted_tree& operator= (rooted_tree&&);
+#endif
 
 		/* MODIFIERS */
 

@@ -66,29 +66,35 @@ class free_tree : public undirected_graph, virtual public tree {
 		free_tree(uint32_t n);
 		/// Copy constructor.
 		free_tree(const free_tree&);
+#ifndef SWIG
 		/// Move constructor.
 		free_tree(free_tree&&);
+#endif
 		/**
 		 * @brief Copy constructor with undirected graph.
 		 * @param t An undirected graph.
 		 * @pre Graph @e t is a tree.
 		 */
 		free_tree(const undirected_graph& t);
+#ifndef SWIG
 		/**
 		 * @brief Move constructor with undirected graph.
 		 * @param t An undirected graph.
 		 * @pre Graph @e t is a tree.
 		 */
 		free_tree(undirected_graph&& t);
+#endif
 		/// Destructor.
 		virtual ~free_tree();
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		free_tree& operator= (const free_tree&);
 		/// Move assignment operator.
 		free_tree& operator= (free_tree&&);
+#endif
 
 		/* MODIFIERS */
 

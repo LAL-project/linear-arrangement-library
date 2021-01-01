@@ -79,17 +79,21 @@ class graph {
 		graph(uint32_t n);
 		/// Copy constructor.
 		graph(const graph&);
+#ifndef SWIG
 		/// Move constructor.
 		graph(graph&&);
+#endif
 		/// Destructor.
 		virtual ~graph();
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		graph& operator= (const graph&);
 		/// Move assignment operator.
 		graph& operator= (graph&&);
+#endif
 
 		/* MODIFIERS */
 

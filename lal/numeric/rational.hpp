@@ -84,12 +84,14 @@ class rational {
 		rational(const integer& n, const integer& d = 1);
 		/// Constructor with string.
 		rational(const std::string& s);
+#ifndef SWIG
 		/// Move constructor with one integer.
 		rational(integer&& n);
 		/// Move constructor with two integers.
 		rational(integer&& n, integer&& d);
 		/// Move constructor.
 		rational(rational&& r);
+#endif
 		/// Copy constructor.
 		rational(const rational& r);
 		/// Destructor.
@@ -132,6 +134,7 @@ class rational {
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Assignment operator.
 		rational& operator= (int64_t i);
 		/// Assignment operator.
@@ -142,6 +145,7 @@ class rational {
 		rational& operator= (integer&& i);
 		/// Move assignment operator.
 		rational& operator= (rational&& r);
+#endif
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;

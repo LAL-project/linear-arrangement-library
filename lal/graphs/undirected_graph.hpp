@@ -77,17 +77,21 @@ class undirected_graph : virtual public graph {
 		undirected_graph(uint32_t n);
 		/// Copy constructor.
 		undirected_graph(const undirected_graph&);
+#ifndef SWIG
 		/// Move constructor.
 		undirected_graph(undirected_graph&&);
+#endif
 		/// Destructor.
 		virtual ~undirected_graph();
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		undirected_graph& operator= (const undirected_graph&);
 		/// Move assignment operator.
 		undirected_graph& operator= (undirected_graph&&);
+#endif
 
 		/* MODIFIERS */
 

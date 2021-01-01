@@ -77,17 +77,21 @@ class tree : virtual public graph {
 		tree();
 		/// Copy constructor.
 		tree(const tree&);
+#ifndef SWIG
 		/// Move constructor.
 		tree(tree&&);
+#endif
 		/// Destructor.
 		virtual ~tree();
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		tree& operator= (const tree&);
 		/// Move assignment operator.
 		tree& operator= (tree&&);
+#endif
 
 		/* MODIFIERS */
 

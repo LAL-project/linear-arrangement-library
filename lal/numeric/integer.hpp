@@ -80,8 +80,10 @@ class integer {
 		integer(int64_t i);
 		/// Constructor with string.
 		integer(const std::string& i);
+#ifndef SWIG
 		/// Move constructor.
 		integer(integer&& i);
+#endif
 		/// Copy constructor.
 		integer(const integer& i);
 		/// Destructor.
@@ -112,12 +114,14 @@ class integer {
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Assignment operator.
 		integer& operator= (int64_t i);
 		/// Assignment operator.
 		integer& operator= (const integer& i);
 		/// Move assignment operator.
 		integer& operator= (integer&& i);
+#endif
 
 		/// Equality operator.
 		bool operator== (int64_t i) const;

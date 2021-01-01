@@ -78,17 +78,21 @@ class directed_graph : virtual public graph {
 		directed_graph(uint32_t n);
 		/// Copy constructor.
 		directed_graph(const directed_graph&);
+#ifndef SWIG
 		/// Move constructor.
 		directed_graph(directed_graph&&);
+#endif
 		/// Destructor.
 		virtual ~directed_graph();
 
 		/* OPERATORS */
 
+#ifndef SWIG
 		/// Copy assignment operator.
 		directed_graph& operator= (const directed_graph&);
 		/// Move assignment operator.
 		directed_graph& operator= (directed_graph&&);
+#endif
 
 		/* MODIFIERS */
 
