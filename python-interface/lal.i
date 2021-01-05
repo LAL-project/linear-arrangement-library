@@ -39,7 +39,7 @@ for name in dir(__mod):
 delattr(__mod, "algorithms_C")
 delattr(__mod, "algorithms_Dmin")
 delattr(__mod, "dataset_error")
-delattr(__mod, "tree_structure")
+delattr(__mod, "syntactic_dependency_structure_type")
 
 del start_lal, new_name, name
 del __mod_name, __mod

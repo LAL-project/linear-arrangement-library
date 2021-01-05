@@ -10,8 +10,8 @@
 %include lallinarr_impl.i
 
 %pythoncode %{
-tree_structure = laltree_structure
-del laltree_structure
+syntactic_dependency_structure_type = lalsyntactic_dependency_structure_type
+del lalsyntactic_dependency_structure_type
 
 algorithms_C = lalalgorithms_C
 del lalalgorithms_C
