@@ -37,11 +37,14 @@ for name in dir(__mod):
 		setattr(__mod, new_name, getattr(__mod, name))
 		delattr(__mod, name)
 
-delattr(__mod, "algorithms_C")
-delattr(__mod, "algorithms_Dmin")
-delattr(__mod, "dataset_error")
-delattr(__mod, "syntactic_dependency_structure_type")
+# remove unwanted modules
+del algorithms_C
+del algorithms_Dmin
+del dataset_error
+del syntactic_dependency_structure_type
+del tree_type
 
+# remove variables
 del start_lal, start_debug, new_name, name
 del __mod_name, __mod
 

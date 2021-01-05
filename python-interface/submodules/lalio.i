@@ -15,6 +15,7 @@ del laldefinitions
 
 # remove unnecessary modules
 del lalgraphs
+del laltree_type
 
 # import oneself as io for later renaming
 # of functions in "lalio_rename_enums.i"

@@ -25,4 +25,5 @@ del laldefinitions
 # remove unnecessary modules
 del lalgraphs
 del lalnumeric
+del laltree_type
 %}

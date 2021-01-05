@@ -13,4 +13,5 @@ del laldefinitionsdebug
 # remove unnecessary modules
 del lalgraphsdebug
 del lalnumericdebug
+del laltree_typedebug
 %}

@@ -11,4 +11,5 @@ del laldefinitions
 
 # remove unnecessary modules
 del lalgraphs
+del laltree_type
 %}
