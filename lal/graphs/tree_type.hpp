@@ -43,7 +43,11 @@
 
 // C++ includes
 #include <cinttypes>
+#ifdef SWIG
 #include <string>
+#else
+#include <string_view>
+#endif
 
 namespace lal {
 namespace graphs {
@@ -101,8 +105,17 @@ enum class tree_type {
 	none
 };
 
+// since SWIG does not wrap string_view, we need a
+// different return type for this "to_string" function
 inline
-std::string tree_type_to_string(const tree_type& tt) {
+#ifdef SWIG
+std::string
+#else
+constexpr std::string_view
+#endif
+tree_type_to_string
+(const tree_type& tt)
+{
 	switch (tt) {
 		case tree_type::linear: return "linear";
 		case tree_type::star: return "star";

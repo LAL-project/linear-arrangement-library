@@ -43,7 +43,11 @@
 
 // C++ includes
 #include <cinttypes>
+#ifdef SWIG
 #include <string>
+#else
+#include <string_view>
+#endif
 
 namespace lal {
 namespace linarr {
@@ -55,12 +59,10 @@ namespace linarr {
  * several different classes.
  *
  * We can currently identify the following structures:
- * - Projective structures (see @ref tree_structure::projective),
- * - Planar structures (see @ref tree_structure::planar),
- * - Well nested trees with maximum degree gap 1 (see @ref tree_structure::WG1),
- * - 1-Endpoint Crossing (see @ref tree_structure::EC1),
- * - Multi-headed 4 (see @ref tree_structure::MH4),
- * - Multi-headed 5 (see @ref tree_structure::MH5),
+ * - Projective structures (see @ref syntactic_dependency_structure_type::projective),
+ * - Planar structures (see @ref syntactic_dependency_structure_type::planar),
+ * - Well nested trees with maximum degree gap 1 (see @ref syntactic_dependency_structure_type::WG1),
+ * - 1-Endpoint Crossing (see @ref syntactic_dependency_structure_type::EC1),
  */
 enum class syntactic_dependency_structure_type {
 	// Projective structures
@@ -104,8 +106,17 @@ enum class syntactic_dependency_structure_type {
 	none
 };
 
+// since SWIG does not wrap string_view, we need a
+// different return type for this "to_string" function
 inline
-std::string tree_structure_to_string(const syntactic_dependency_structure_type& tt) {
+#ifdef SWIG
+std::string
+#else
+constexpr std::string_view
+#endif
+tree_structure_to_string
+(const syntactic_dependency_structure_type& tt)
+{
 	switch (tt) {
 		case syntactic_dependency_structure_type::projective: return "projective";
 		case syntactic_dependency_structure_type::planar: return "planar";
@@ -115,7 +126,7 @@ std::string tree_structure_to_string(const syntactic_dependency_structure_type& 
 	}
 }
 
-/// Number of elements within enumeration @ref tree_structure.
+/// Number of elements within enumeration @ref syntactic_dependency_structure_type.
 static const std::size_t __tree_structure_size =
 	1 + static_cast<std::size_t>(syntactic_dependency_structure_type::none);
 
