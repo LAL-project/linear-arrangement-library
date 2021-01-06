@@ -10,8 +10,8 @@
 // C++ interfaces
 
 %include stdint.i
-%include std_string.i
 %include std_vector.i
+%include std_string.i
 %include std_pair.i
 
 // -------------------------
@@ -19,11 +19,12 @@
 
 %include "../lal/definitions.hpp"
 namespace std {
-	%template(edge) pair<lal::node, lal::node>;
-	%template(edge_pair) pair<lal::edge, lal::edge>;
-	
 	%template(uint32_list) vector<uint32_t>;
 	%template(bool_list) vector<bool>;
+	%template(string_list) vector<string>;
+
+	%template(edge) pair<lal::node, lal::node>;
+	%template(edge_pair) pair<lal::edge, lal::edge>;
 	
 	%template(edge_list) vector<lal::edge>;
 	%template(edge_pair_list) vector<lal::edge_pair>;
