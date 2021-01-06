@@ -269,7 +269,7 @@ namespace iterators {}
  * - the Mean Dependency Distance for single trees (see @ref mean_dependency_distance).
  * 
  * It also contains methods for the classification of trees into projective
- * classes (see @ref tree_structure for the supported classes and see function
+ * classes (see @ref syntactic_dependency_structure_type for the supported classes and see function
  * @ref classify_tree_structure to know how to classify the trees).
  */
 namespace linarr {}
