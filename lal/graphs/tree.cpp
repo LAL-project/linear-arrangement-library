@@ -139,7 +139,9 @@ vector<string> tree::get_tree_type_list() const {
 	l.reserve(__tree_type_size);
 	for (size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
-			l.push_back(tree_type_to_string(static_cast<tree_type>(i)));
+			l.push_back(
+				string(tree_type_to_string(static_cast<tree_type>(i)))
+			);
 		}
 	}
 	return l;
