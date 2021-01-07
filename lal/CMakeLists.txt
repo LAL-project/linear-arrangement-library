@@ -371,8 +371,8 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/degrees.hpp
 	properties/mean_hierarchical_distance.hpp
 	properties/Q.hpp
-	utilities/tree_centre.hpp
-	utilities/tree_centroid.hpp
+	properties/tree_centre.hpp
+	properties/tree_centroid.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
 	utilities/tree_isomorphism.hpp
