@@ -46,7 +46,7 @@
 #include <lal/graphs/free_tree.hpp>
 
 namespace lal {
-namespace utilities {
+namespace properties {
 
 /**
  * @brief Calculate the centroid of a rooted tree.
@@ -83,5 +83,5 @@ std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
  */
 std::pair<node, node> get_centroid(const graphs::free_tree& t);
 
-} // -- namespace utilities
+} // -- namespace properties
 } // -- namespace lal

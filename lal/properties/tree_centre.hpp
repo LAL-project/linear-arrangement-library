@@ -46,7 +46,7 @@
 #include <lal/graphs/free_tree.hpp>
 
 namespace lal {
-namespace utilities {
+namespace properties {
 
 /**
  * @brief Calculate the centre of a rooted tree.
@@ -82,5 +82,5 @@ std::pair<node, node> get_centre(const graphs::rooted_tree& t);
  */
 std::pair<node, node> get_centre(const graphs::free_tree& t);
 
-} // -- namespace utilities
+} // -- namespace properties
 } // -- namespace lal

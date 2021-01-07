@@ -50,7 +50,7 @@ using namespace std;
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 
 namespace lal {
-namespace utilities {
+namespace properties {
 
 pair<node, node> get_centroid(const graphs::rooted_tree& t) {
 #if defined DEBUG
@@ -66,5 +66,5 @@ pair<node, node> get_centroid(const graphs::free_tree& t) {
 	return internal::retrieve_centroid(t);
 }
 
-} // -- namespace utilities
+} // -- namespace properties
 } // -- namespace lal

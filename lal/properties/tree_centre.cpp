@@ -52,7 +52,7 @@ using namespace std;
 namespace lal {
 using namespace graphs;
 
-namespace utilities {
+namespace properties {
 
 pair<node, node> get_centre(const rooted_tree& t) {
 #if defined DEBUG
@@ -68,5 +68,5 @@ pair<node, node> get_centre(const free_tree& t) {
 	return internal::retrieve_centre<free_tree>(t, 0);
 }
 
-} // -- namespace utilities
+} // -- namespace properties
 } // -- namespace lal
