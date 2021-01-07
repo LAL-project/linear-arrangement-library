@@ -13,3 +13,4 @@
 %include "../lal/properties/Q.hpp"
 %include "../lal/utilities/tree_centre.hpp"
 %include "../lal/utilities/tree_centroid.hpp"
+%include "../lal/utilities/tree_diameter.hpp"
