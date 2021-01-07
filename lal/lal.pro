@@ -60,6 +60,7 @@ HEADERS += \
 	graphs/undirected_graph.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
 	internal/graphs/trees/tree_classification.hpp \
+	internal/graphs/trees/tree_diameter.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/sorting/bit_sort.hpp \
@@ -116,6 +117,7 @@ HEADERS += \
 	properties/mean_hierarchical_distance.hpp \
 	properties/tree_centre.hpp \
 	properties/tree_centroid.hpp \
+	properties/tree_diameter.hpp \
 	utilities.hpp \
 	utilities/tree_isomorphism.hpp \
 	lal_version.hpp \
@@ -169,6 +171,7 @@ SOURCES += \
     properties/mean_hierarchical_distance.cpp \
     properties/tree_centre.cpp \
     properties/tree_centroid.cpp \
+    properties/tree_diameter.cpp \
 	properties/variance_C_gen_graphs.cpp \
 	properties/variance_C_trees.cpp \
 	properties/variance_C_forests.cpp \

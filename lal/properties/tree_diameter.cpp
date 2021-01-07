@@ -39,13 +39,23 @@
  *
  ********************************************************************/
 
-#pragma once
+// lal includes
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/internal/graphs/trees/tree_diameter.hpp>
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/mean_hierarchical_distance.hpp>
-#include <lal/properties/Q.hpp>
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
+namespace lal {
+using namespace graphs;
+
+namespace properties {
+
+uint32_t get_diameter(const free_tree& t) {
+	return internal::tree_diameter(t);
+}
+
+uint32_t get_diameter(const rooted_tree& t) {
+	return internal::tree_diameter(t);
+}
+
+} // -- namespace properties
+} // -- namespace lal

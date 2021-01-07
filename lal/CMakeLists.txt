@@ -221,6 +221,7 @@ target_sources(
 		properties/Q.hpp
 		properties/tree_centre.hpp
 		properties/tree_centroid.hpp
+		properties/tree_diameter.hpp
 		# -- sources
 		properties/C_rla.cpp
 		properties/D_rla.cpp
@@ -229,6 +230,7 @@ target_sources(
 		properties/Q.cpp
 		properties/tree_centre.cpp
 		properties/tree_centroid.cpp
+		properties/tree_diameter.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_trees.cpp
@@ -373,6 +375,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/Q.hpp
 	properties/tree_centre.hpp
 	properties/tree_centroid.hpp
+	properties/tree_diameter.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
 	utilities/tree_isomorphism.hpp

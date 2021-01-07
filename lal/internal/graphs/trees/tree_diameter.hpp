@@ -41,11 +41,59 @@
 
 #pragma once
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/mean_hierarchical_distance.hpp>
-#include <lal/properties/Q.hpp>
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
+// lal includes
+#include <lal/graphs/tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+
+namespace lal {
+namespace internal {
+
+template<
+	class T,
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+>
+uint32_t tree_diameter(const T& t) {
+	const uint32_t n = t.n_nodes();
+
+	// degree of a vertex of a tree in its underlying UNDIRECTED structure
+	const auto get_degree =
+	[&](lal::node u) -> uint32_t {
+		if constexpr (std::is_same_v<lal::graphs::free_tree, T>) {
+			return t.degree(u);
+		}
+		else {
+			return t.out_degree(u) + (u != t.get_root());
+		}
+	};
+
+	BFS<T> bfs(t);
+
+	if constexpr (std::is_same_v<T, graphs::rooted_tree>) {
+	bfs.set_use_rev_edges(true);
+	}
+	else {
+	bfs.set_use_rev_edges(false);
+	}
+
+	// find a leaf
+	node leaf = 0;
+	while (leaf < n and get_degree(leaf) > 1) { ++leaf; }
+
+	// calculate the maximum distance (in edges)
+	uint32_t diam = 0;
+	uint32_t *distance_from_leaf = new uint32_t[n]{0};
+	bfs.set_process_neighbour(
+	[&](const auto&, node u, node v, bool) {
+		distance_from_leaf[v] = distance_from_leaf[u] + 1;
+		diam = std::max(diam, distance_from_leaf[v]);
+	}
+	);
+	bfs.start_at(leaf);
+
+	delete[] distance_from_leaf;
+	return diam;
+}
+
+} // -- namespace internal
+} // -- namespace lal

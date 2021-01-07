@@ -41,11 +41,33 @@
 
 #pragma once
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/mean_hierarchical_distance.hpp>
-#include <lal/properties/Q.hpp>
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+
+namespace lal {
+namespace properties {
+
+/**
+ * @brief Calculate the diameter of a free tree.
+ *
+ * The diameter is defined as the longest shortest distance between every pair
+ * of vertices. The distance is calculated in number of edges; two adjacent
+ * vertices are at a distance 1 from each other.
+ * @param t Input tree.
+ * @return Returns the diameter of the input tree.
+ */
+uint32_t get_diameter(const graphs::free_tree& t);
+
+/**
+ * @brief Calculate the diameter of a free tree.
+ *
+ * The diameter is defined as the longest shortest distance between every pair
+ * of vertices. The distance is calculated in number of edges; two adjacent
+ * vertices are at a distance 1 from each other.
+ * @param t Input tree.
+ * @return Returns the diameter of the input tree.
+ */
+uint32_t get_diameter(const graphs::rooted_tree& t);
+
+} // -- namespace properties
+} // -- namespace lal
