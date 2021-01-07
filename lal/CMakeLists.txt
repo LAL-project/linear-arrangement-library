@@ -219,24 +219,24 @@ target_sources(
 		properties/degrees.hpp
 		properties/mean_hierarchical_distance.hpp
 		properties/Q.hpp
+		properties/tree_centre.hpp
+		properties/tree_centroid.hpp
 		# -- sources
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/degrees.cpp
 		properties/mean_hierarchical_distance.cpp
 		properties/Q.cpp
+		properties/tree_centre.cpp
+		properties/tree_centroid.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
 		properties/variance_C_trees.cpp
 		
 		# utilities namespace
 		# -- headers
-		utilities/tree_centre.hpp
-		utilities/tree_centroid.hpp
 		utilities/tree_isomorphism.hpp
 		# -- sources
-		utilities/tree_centre.cpp
-		utilities/tree_centroid.cpp
 		utilities/tree_isomorphism.cpp
 
 		# internal namespace -- not to be installed
@@ -371,10 +371,10 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/degrees.hpp
 	properties/mean_hierarchical_distance.hpp
 	properties/Q.hpp
-)
-set(LIBLAL_UTILITIES_HEADER
 	utilities/tree_centre.hpp
 	utilities/tree_centroid.hpp
+)
+set(LIBLAL_UTILITIES_HEADER
 	utilities/tree_isomorphism.hpp
 )
 

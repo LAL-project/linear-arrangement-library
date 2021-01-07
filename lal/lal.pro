@@ -114,9 +114,9 @@ HEADERS += \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
 	properties/mean_hierarchical_distance.hpp \
+	properties/tree_centre.hpp \
+	properties/tree_centroid.hpp \
 	utilities.hpp \
-	utilities/tree_centre.hpp \
-	utilities/tree_centroid.hpp \
 	utilities/tree_isomorphism.hpp \
 	lal_version.hpp \
 	namespaces.hpp \
@@ -167,11 +167,11 @@ SOURCES += \
 	properties/Q.cpp \
 	properties/degrees.cpp \
     properties/mean_hierarchical_distance.cpp \
+    properties/tree_centre.cpp \
+    properties/tree_centroid.cpp \
 	properties/variance_C_gen_graphs.cpp \
 	properties/variance_C_trees.cpp \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
-    utilities/tree_centre.cpp \
-    utilities/tree_centroid.cpp \
 	utilities/tree_isomorphism.cpp
