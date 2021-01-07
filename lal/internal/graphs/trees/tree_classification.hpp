@@ -85,6 +85,7 @@ void classify_tree(
 		}
 	};
 
+	// only neighbour of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_only_neighbour =
 	[&](lal::node u) -> lal::node {
 		if constexpr (std::is_same_v<lal::graphs::free_tree, T>) {
