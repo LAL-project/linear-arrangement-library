@@ -128,7 +128,7 @@ tree_type_to_string
 }
 
 /// Number of elements within enumeration @ref tree_type.
-static const std::size_t __tree_type_size =
+constexpr std::size_t __tree_type_size =
 	1 + static_cast<std::size_t>(tree_type::none);
 
 } // -- namespace graphs
