@@ -39,8 +39,6 @@
  *
  ********************************************************************/
 
-#include <lal/utilities/tree_isomorphism.hpp>
-
 //#define USE_COMPLICATED
 #undef USE_COMPLICATED
 

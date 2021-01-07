@@ -39,10 +39,11 @@
  *
  ********************************************************************/
 
-#include <lal/utilities/tree_centre.hpp>
-
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <bits/stl_pair.h>
 using namespace std;
 
 // lal includes
@@ -52,12 +53,16 @@ namespace lal {
 namespace utilities {
 
 pair<node, node> get_centroid(const graphs::rooted_tree& t) {
+#if defined DEBUG
 	assert(t.is_tree());
+#endif
 	return internal::retrieve_centroid(t);
 }
 
 pair<node, node> get_centroid(const graphs::free_tree& t) {
+#if defined DEBUG
 	assert(t.is_tree());
+#endif
 	return internal::retrieve_centroid(t);
 }
 
