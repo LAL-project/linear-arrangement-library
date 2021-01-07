@@ -42,15 +42,27 @@
 #pragma once
 
 // C++ includes
+#ifdef SWIG
 #include <string>
+#else
+#include <string_view>
+#endif
 
 namespace lal {
 
-/// Major version number of the library's current state.
-static const std::string __lal_major_verno = "2020";
+#ifdef SWIG
+const std::string __lal_major_verno = "2020";
 /// Minor version number of the library's current state.
-static const std::string __lal_minor_verno = "09";
+const std::string __lal_minor_verno = "09";
 /// Patch version number of the library's current state.
-static const std::string __lal_patch_verno = "00";
+const std::string __lal_patch_verno = "00";
+#else
+/// Major version number of the library's current state.
+constexpr std::string_view __lal_major_verno = "2020";
+/// Minor version number of the library's current state.
+constexpr std::string_view __lal_minor_verno = "09";
+/// Patch version number of the library's current state.
+constexpr std::string_view __lal_patch_verno = "00";
+#endif
 
 };
