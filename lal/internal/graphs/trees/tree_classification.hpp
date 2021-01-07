@@ -55,7 +55,10 @@
 namespace lal {
 namespace internal {
 
-template<class T>
+template<
+	class T,
+	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+>
 void classify_tree(
 	const T& t,
 	std::array<char, graphs::__tree_type_size>& array

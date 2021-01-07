@@ -71,10 +71,7 @@ namespace utilities {
  */
 template<
 	class T,
-	typename std::enable_if_t<
-		std::is_same_v<graphs::free_tree, T> ||
-		std::is_same_v<graphs::rooted_tree, T>,
-	int> = 0
+	typename std::enable_if_t<std::is_base_of_v<tree, T>, int> = 0
 >
 int fast_non_iso(const T& t1, const T& t2) {
 	// check number of nodes
