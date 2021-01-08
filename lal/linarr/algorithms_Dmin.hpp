@@ -63,7 +63,9 @@ enum class algorithms_Dmin {
      * A projective linear arrangement is an arrangement in which there are
      * no edge crossings and the root is not covered by any edge.
      *
-	 * This option uses Gildea and Temperley's algorithm published in \cite Gildea2007a.
+	 * This option implements the algorithm outlined by Gildea and
+	 * Temperley published in \cite Gildea2007a. This is closely related to
+	 * the planar case (see @ref algorithms_Dmin::Planar).
      *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
@@ -85,9 +87,9 @@ enum class algorithms_Dmin {
 	 * A planar linear arrangement is an arrangement in which there are
 	 * no edge crossings.
 	 *
-	 * This option uses an algorithm first published by Iordanskii in
-	 * \cite Iordanskii1987a and later by Hochberg and Stallmann's in
-	 * \cite Hochberg2003a.
+	 * This option implements the algorithm published by Hochberg and Stallmann
+	 * in \cite Hochberg2003a. A previous algorithm solving the same problem
+	 * was published by Iordanskii \cite Iordanskii1987a.
 	 *
 	 * This algorithm is allowed only in function
 	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin& a),

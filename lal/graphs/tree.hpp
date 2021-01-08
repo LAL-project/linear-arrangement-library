@@ -115,7 +115,7 @@ class tree : virtual public graph {
 		 * only need to check for the number of edges.
 		 *
 		 * For further characterisations of a tree see \cite Harary1969a
-		 * (chapter 4, page 33).
+		 * (chapter 4, pages 32-33).
 		 */
 		bool is_tree() const;
 
@@ -125,7 +125,8 @@ class tree : virtual public graph {
 		/**
 		 * @brief Can this edge be added?
 		 *
-		 * In a tree, this edge can only be added if it does not produce cycles.
+		 * In a tree, an edge can only be added if it does not produce cycles,
+		 * and it has not been added before.
 		 * @param s First node of the edge.
 		 * @param t Second node of the edge.
 		 * @return Returns whether the addition of this new edge can be added
@@ -136,8 +137,8 @@ class tree : virtual public graph {
 		/**
 		 * @brief Can these edges be added?
 		 *
-		 * In a tree, these edges can only be added if their addition to the
-		 * tree do not produce cycles.
+		 * In a tree, a set of edges can only be added if their addition to the
+		 * tree do not produce cycles and none of them have been added before.
 		 * @param edges List of edges.
 		 * @return Returns whether the addition of these new edges can be added
 		 * to the tree without producing cycles.

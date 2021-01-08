@@ -56,7 +56,7 @@ namespace properties {
  * set of (at most) two vertices that have minimum weight, where the weight is
  * the maximum size of the subtrees rooted at that vertex. In both case, if
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
- * for further details.
+ * (pages 35-36) for further details.
  * @param t Input tree.
  * @returns Returns a tuple of two values: the nodes in the centre. If the
  * tree has a single central node, only the first node is valid and the second
@@ -73,7 +73,7 @@ std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
  * of (at most) two vertices that have minimum eccentricity. The centroid is the
  * set of (at most) two vertices that have minimum weight, where the weight is
  * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
- * for further details.
+ * (pages 35-36) for further details.
  * @param t Input tree.
  * @returns Returns a tuple of two values: the nodes in the centre. If the
  * tree has a single central node, only the first node is valid and the second

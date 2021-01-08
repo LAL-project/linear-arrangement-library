@@ -52,7 +52,8 @@ namespace properties {
  *
  * The diameter is defined as the longest shortest distance between every pair
  * of vertices. The distance is calculated in number of edges; two adjacent
- * vertices are at a distance 1 from each other.
+ * vertices are at a distance 1 from each other. See \cite Harary1969a
+ * (pages 24, 35) for further details.
  * @param t Input tree.
  * @return Returns the diameter of the input tree.
  */
@@ -63,7 +64,8 @@ uint32_t get_diameter(const graphs::free_tree& t);
  *
  * The diameter is defined as the longest shortest distance between every pair
  * of vertices. The distance is calculated in number of edges; two adjacent
- * vertices are at a distance 1 from each other.
+ * vertices are at a distance 1 from each other. See \cite Harary1969a
+ * (pages 24, 35) for further details.
  * @param t Input tree.
  * @return Returns the diameter of the input tree.
  */

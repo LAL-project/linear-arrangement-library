@@ -362,7 +362,7 @@ class rooted_tree : public directed_graph, virtual public tree {
 		 * @brief Calculates the number of nodes at every rooted subtree.
 		 * @pre The object must be a tree (see @ref is_tree()).
 		 * @pre The tree must have a root (see @ref has_root()).
-		 * @post Method @ref size_subtrees_valid returns false.
+		 * @post Method @ref size_subtrees_valid returns true.
 		 */
 		void calculate_size_subtrees();
 
@@ -440,7 +440,10 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/**
 		 * @brief Is a recalculation of the subtree's sizes needed?
 		 *
-		 * If the method returns true, then call @ref calculate_size_subtrees.
+		 * If the method returns @e false then the user should call
+		 * @ref calculate_size_subtrees so that the size of every rooted subtree
+		 * is recalculated. This information must be calculated prior to calling
+		 * many functions of this library.
 		 * @return Returns whether @ref m_size_subtrees should be recalculated
 		 * or not.
 		 */
