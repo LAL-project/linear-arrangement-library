@@ -107,7 +107,7 @@ bool tree::can_add_edge(node u, node v) const {
 bool tree::can_add_edges(const std::vector<edge>& edges) const {
 	const uint32_t n = n_nodes();
 	const uint32_t m = n_edges();
-	const uint64_t more_m = edges.size();
+	const uint32_t more_m = static_cast<uint32_t>(edges.size());
 
 	// in a tree we must have m <= n - 1
 	if (m + more_m > n - 1) {
