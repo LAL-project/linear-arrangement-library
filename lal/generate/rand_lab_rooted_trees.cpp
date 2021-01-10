@@ -49,21 +49,40 @@ using namespace graphs;
 
 namespace generate {
 
-//rand_lab_rooted_trees::rand_lab_rooted_trees() : rand_lab_free_trees() { }
-rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
-	: rand_lab_free_trees(n, seed)
+// -----------------------------------------------------------------------------
+// ACTUAL GENERATOR
+
+__rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t n, uint32_t seed)
+	: __rand_lab_free_trees(n, seed)
 {
 }
-//rand_lab_rooted_trees::~rand_lab_rooted_trees() { }
 
-void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
-	rand_lab_free_trees::init(n, seed);
+void __rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
+	__rand_lab_free_trees::init(n, seed);
 }
 
-rooted_tree rand_lab_rooted_trees::get_tree() {
-	const free_tree t = rand_lab_free_trees::get_tree();
+rooted_tree __rand_lab_rooted_trees::get_tree() {
+	const free_tree t = __rand_lab_free_trees::get_tree();
 	const node r = m_unif(m_gen);
 	return rooted_tree(t, r);
+}
+
+// -----------------------------------------------------------------------------
+// WRAPPER CLASS
+
+rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
+: m_Gen(n, seed)
+{
+}
+
+void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
+	m_Gen.init(n, seed);
+}
+
+/* PROTECTED */
+
+graphs::rooted_tree rand_lab_rooted_trees::__get_tree() {
+	return m_Gen.get_tree();
 }
 
 } // -- namespace generate

@@ -56,7 +56,10 @@ using namespace graphs;
 
 namespace internal {
 
-free_tree level_sequence_to_ftree(uint32_t const *L, uint32_t n) {
+free_tree level_sequence_to_ftree(
+	uint32_t const *L, uint32_t n, bool normalise, bool check
+)
+{
 #if defined DEBUG
 	// a little sanity check
 	assert(L[0] == 0);
@@ -96,15 +99,21 @@ free_tree level_sequence_to_ftree(uint32_t const *L, uint32_t n) {
 		lev[stack_it] = i;
 	}
 
-	t.finish_bulk_add();
+	t.finish_bulk_add(normalise, check);
 	return t;
 }
 
-free_tree level_sequence_to_ftree(const vector<uint32_t>& L, uint32_t n) {
-	return level_sequence_to_ftree(&L[0], n);
+free_tree level_sequence_to_ftree(
+	const vector<uint32_t>& L, uint32_t n, bool normalise, bool check
+)
+{
+	return level_sequence_to_ftree(&L[0], n, normalise, check);
 }
 
-free_tree Prufer_sequence_to_ftree(uint32_t const *seq, uint32_t n) {
+free_tree Prufer_sequence_to_ftree(
+	uint32_t const *seq, uint32_t n, bool normalise, bool check
+)
+{
 	// initialisation
 	const uint32_t L = n - 2;
 	vector<uint32_t> degree(n, 1);
@@ -151,15 +160,21 @@ free_tree Prufer_sequence_to_ftree(uint32_t const *seq, uint32_t n) {
 
 	// add edge (u,v) to the tree
 	t.add_edge_bulk(u, v);
-	t.finish_bulk_add();
+	t.finish_bulk_add(normalise, check);
 	return t;
 }
 
-free_tree Prufer_sequence_to_ftree(const vector<uint32_t>& seq, uint32_t n) {
-	return Prufer_sequence_to_ftree(&seq[0], n);
+free_tree Prufer_sequence_to_ftree(
+	const vector<uint32_t>& seq, uint32_t n, bool normalise, bool check
+)
+{
+	return Prufer_sequence_to_ftree(&seq[0], n, normalise, check);
 }
 
-pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
+pair<free_tree, node> linear_sequence_to_ftree(
+	const vector<uint32_t>& L, bool normalise, bool check
+)
+{
 	if (L.size() == 0) { return make_pair(free_tree(0), 0); }
 
 	const uint32_t n = static_cast<uint32_t>(L.size());
@@ -196,7 +211,7 @@ pair<free_tree, node> linear_sequence_to_ftree(const vector<uint32_t>& L) {
 	assert(root_set);
 #endif
 
-	t.finish_bulk_add();
+	t.finish_bulk_add(normalise, check);
 	return make_pair(t, r);
 }
 

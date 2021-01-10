@@ -42,8 +42,9 @@
 #pragma once
 
 // lal includes
-#include <lal/generate/all_lab_free_trees.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/generate/all_lab_free_trees.hpp>
+#include <lal/generate/tree_gen.hpp>
 
 namespace lal {
 namespace generate {
@@ -64,7 +65,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_lab_rooted_trees {
+class all_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -113,20 +114,21 @@ class all_lab_rooted_trees {
 		 */
 		void next();
 
+	protected:
 		/**
 		 * @brief Constructs the current tree.
 		 * @return Returns the tree generated with method @ref next().
 		 * @pre The generator must have been initialised, and method
 		 * @ref next must have been called at least once.
 		 */
-		graphs::rooted_tree get_tree() const;
+		graphs::rooted_tree __get_tree();
 
 	private:
 		/// Number of nodes of the generated trees.
 		uint32_t m_n;
 
 		/// Labelled free tree generator.
-		all_lab_free_trees m_lab_free_tree_gen;
+		all_lab_free_trees m_gen_lab_free_tree;
 		/// Current labelled free tree.
 		graphs::free_tree m_cur_ftree;
 		/// Current root.

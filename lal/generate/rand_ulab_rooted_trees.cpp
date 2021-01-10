@@ -57,16 +57,18 @@ using namespace graphs;
 
 namespace generate {
 
-//rand_ulab_rooted_trees::rand_ulab_rooted_trees() { }
-rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
+// -----------------------------------------------------------------------------
+// ACTUAL GENERATOR
+
+__rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
 	init_rn();
 	init(_n, seed);
 }
-rand_ulab_rooted_trees::~rand_ulab_rooted_trees() {
+__rand_ulab_rooted_trees::~__rand_ulab_rooted_trees() {
 	delete[] m_tree;
 }
 
-void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
+void __rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
 	if (m_n <= 1) { return; }
 
@@ -83,7 +85,7 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_tree = new uint32_t[m_n];
 }
 
-rooted_tree rand_ulab_rooted_trees::get_tree() {
+rooted_tree __rand_ulab_rooted_trees::get_tree() {
 	if (m_n <= 1) {
 		rooted_tree r(m_n, 0);
 		r.set_root(0);
@@ -101,13 +103,13 @@ rooted_tree rand_ulab_rooted_trees::get_tree() {
 		// orient edges away from the root (node 0).
 		rT.add_edge_bulk(m_tree[u], u);
 	}
-	rT.finish_bulk_add();
+	rT.finish_bulk_add(false, false);
 	rT.set_root(0);
 	rT.set_valid_orientation(true);
 	return rT;
 }
 
-void rand_ulab_rooted_trees::clear() {
+void __rand_ulab_rooted_trees::clear() {
 	m_rn.clear();
 	init_rn();
 }
@@ -115,7 +117,7 @@ void rand_ulab_rooted_trees::clear() {
 /* PROTECTED */
 
 pair<uint32_t,uint32_t>
-rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
+__rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 {
 	if (n == 0) {
 		// The new tree has no nodes.
@@ -202,7 +204,7 @@ rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 	return make_pair(root_Tp, nt);
 }
 
-void rand_ulab_rooted_trees::init_rn() {
+void __rand_ulab_rooted_trees::init_rn() {
 	// from the OEIS: https://oeis.org/A000081
 	m_rn = vector<integer>(31);
 	m_rn[0] = 0;
@@ -238,7 +240,7 @@ void rand_ulab_rooted_trees::init_rn() {
 	m_rn[30] = integer("354426847597");
 }
 
-const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
+const integer& __rand_ulab_rooted_trees::get_rn(uint32_t n) {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -273,7 +275,7 @@ const integer& rand_ulab_rooted_trees::get_rn(uint32_t n) {
 	return m_rn[n];
 }
 
-pair<uint32_t, uint32_t> rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
+pair<uint32_t, uint32_t> __rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair
@@ -308,6 +310,24 @@ pair<uint32_t, uint32_t> rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 	}
 
 	return make_pair(j, d);
+}
+
+// -----------------------------------------------------------------------------
+// WRAPPER CLASS
+
+rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t n, uint32_t seed)
+: m_Gen(n, seed)
+{
+}
+
+void rand_ulab_rooted_trees::init(uint32_t n, uint32_t seed) {
+	m_Gen.init(n, seed);
+}
+
+/* PROTECTED */
+
+graphs::rooted_tree rand_ulab_rooted_trees::__get_tree() {
+	return m_Gen.get_tree();
 }
 
 } // -- namespace generate

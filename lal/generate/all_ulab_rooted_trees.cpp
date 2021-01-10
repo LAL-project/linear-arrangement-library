@@ -129,7 +129,9 @@ void all_ulab_rooted_trees::next() {
 	m_is_last = (m_p <= 1);
 }
 
-rooted_tree all_ulab_rooted_trees::get_tree() const {
+/* PROTECTED */
+
+rooted_tree all_ulab_rooted_trees::__get_tree() {
 	if (m_n == 0) {
 		return rooted_tree(free_tree(0), 0);
 	}
@@ -144,7 +146,7 @@ rooted_tree all_ulab_rooted_trees::get_tree() const {
 		return rT;
 	}
 
-	const free_tree t = internal::level_sequence_to_ftree(m_L, m_n);
+	const free_tree t = internal::level_sequence_to_ftree(m_L, m_n, false, false);
 	return rooted_tree(t, 0);
 }
 

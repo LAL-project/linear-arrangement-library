@@ -45,8 +45,8 @@
 #include <random>
 
 // lal includes
-#include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/generate/tree_gen.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
@@ -67,12 +67,12 @@ namespace generate {
  * @code
  *		rand_ulab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::urtree T = TreeGen.get_tree();
+ *			lal::graphs::rooted_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
  */
-class rand_ulab_rooted_trees {
+class __rand_ulab_rooted_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -80,11 +80,11 @@ class rand_ulab_rooted_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_ulab_rooted_trees() = default;
+		__rand_ulab_rooted_trees() = default;
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
-		/// Default destructor.
-		virtual ~rand_ulab_rooted_trees();
+		__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
+		/// Destructor.
+		virtual ~__rand_ulab_rooted_trees();
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.
@@ -186,6 +186,33 @@ class rand_ulab_rooted_trees {
 		 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 		 */
 		std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n);
+};
+
+/**
+ * @brief Random unlabelled rooted tree generator.
+ *
+ * This is just a wrapper class of @ref __rand_ulab_rooted_trees, therefore the
+ * usage of this class is the same as that of class @ref __rand_ulab_rooted_trees.
+ */
+class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+	public:
+		/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees() for details.
+		rand_ulab_rooted_trees() = default;
+		/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
+		rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
+		/// Default destructor.
+		~rand_ulab_rooted_trees() = default;
+
+		/// See @ref __rand_ulab_rooted_trees::init for details.
+		void init(uint32_t n, uint32_t seed = 0);
+
+	protected:
+		/// See @ref __rand_ulab_rooted_trees::get_tree for details.
+		graphs::rooted_tree __get_tree();
+
+	protected:
+		/// See @ref __rand_lab_rooted_trees for details.
+		__rand_ulab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

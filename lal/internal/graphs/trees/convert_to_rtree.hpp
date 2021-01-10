@@ -53,6 +53,8 @@ namespace internal {
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
  *
+ * The resulting tree is not normalised.
+ *
  * A linear sequence of a tree of @e n nodes is an array of @e n integers
  * where the values in the positions from 0 to @e n-1, both included, describe
  * the tree. The value '0' indicates the root, while a strictly positive value
@@ -61,7 +63,9 @@ namespace internal {
  * @param L The linear sequence.
  * @return Returns the rooted tree built with @e L. The tree is an arborescence.
  */
-graphs::rooted_tree linear_sequence_to_rtree(const std::vector<uint32_t>& L);
+graphs::rooted_tree linear_sequence_to_rtree(
+	const std::vector<uint32_t>& L, bool normalise = true, bool check = true
+);
 
 } // -- namespace internal
 } // -- namespace lal

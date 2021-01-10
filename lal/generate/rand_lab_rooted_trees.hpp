@@ -67,12 +67,12 @@ namespace generate {
  * @code
  *		rand_lab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::urtree T = TreeGen.make_rand_tree();
+ *			lal::graphs::urtree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
  */
-class rand_lab_rooted_trees : public rand_lab_free_trees {
+class __rand_lab_rooted_trees : public __rand_lab_free_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -80,11 +80,11 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_lab_rooted_trees() = default;
+		__rand_lab_rooted_trees() = default;
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+		__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
 		/// Default constructor.
-		~rand_lab_rooted_trees() = default;
+		~__rand_lab_rooted_trees() = default;
 
 		/**
 		 * @brief Sets the size of the labelled trees to generate.
@@ -102,6 +102,33 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 		 * @pre The generator must have been initialised.
 		 */
 		graphs::rooted_tree get_tree();
+};
+
+/**
+ * @brief Random labelled rooted tree generator.
+ *
+ * This is just a wrapper class of @ref __rand_lab_rooted_trees, therefore the
+ * usage of this class is the same as that of class @ref __rand_lab_rooted_trees.
+ */
+class rand_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+	public:
+		/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees() for details.
+		rand_lab_rooted_trees() = default;
+		/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t, uint32_t) for details.
+		rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+		/// Default destructor.
+		~rand_lab_rooted_trees() = default;
+
+		/// See @ref __rand_lab_rooted_trees::init for details.
+		void init(uint32_t n, uint32_t seed = 0);
+
+	protected:
+		/// See @ref __rand_lab_rooted_trees::get_tree for details.
+		graphs::rooted_tree __get_tree();
+
+	protected:
+		/// See @ref __rand_lab_rooted_trees for details.
+		__rand_lab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

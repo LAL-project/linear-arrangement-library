@@ -52,8 +52,11 @@ using namespace graphs;
 
 namespace internal {
 
-rooted_tree linear_sequence_to_rtree(const vector<uint32_t>& L) {
-	const auto [tree, root] = linear_sequence_to_ftree(L);
+rooted_tree linear_sequence_to_rtree(
+	const vector<uint32_t>& L, bool normalise, bool check
+)
+{
+	const auto [tree, root] = linear_sequence_to_ftree(L, normalise, check);
 	return rooted_tree(tree, root);
 }
 

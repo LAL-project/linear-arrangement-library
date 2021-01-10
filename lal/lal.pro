@@ -49,6 +49,7 @@ HEADERS += \
 	generate/rand_ulab_free_trees.hpp \
 	generate/rand_ulab_rooted_trees.hpp \
 	generate/rand_projective_arrangements.hpp \
+	generate/tree_gen.hpp \
 	graphs.hpp \
 	graphs/graph.hpp \
 	graphs/output.hpp \

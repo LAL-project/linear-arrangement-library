@@ -129,6 +129,7 @@ target_sources(
 		generate/rand_projective_arrangements.hpp
 		generate/rand_ulab_free_trees.hpp
 		generate/rand_ulab_rooted_trees.hpp
+		generate/tree_gen.hpp
 		# -- sources
 		generate/all_lab_free_trees.cpp
 		generate/all_lab_rooted_trees.cpp
@@ -325,6 +326,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/rand_projective_arrangements.hpp
 	generate/rand_ulab_free_trees.hpp
 	generate/rand_ulab_rooted_trees.hpp
+	generate/tree_gen.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
 	graphs/directed_graph.hpp

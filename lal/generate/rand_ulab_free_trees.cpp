@@ -66,23 +66,25 @@ namespace generate {
 	for (node u = 1; u < N; ++u) {		\
 		T.add_edge_bulk(u, TREE[u]);	\
 	}									\
-	T.finish_bulk_add();
+	T.finish_bulk_add(false, false);
+
+// -----------------------------------------------------------------------------
+// ACTUAL GENERATOR
 
 /* PUBLIC */
 
-rand_ulab_free_trees::rand_ulab_free_trees(uint32_t _n, uint32_t seed)
-	: rand_ulab_rooted_trees(_n, seed)
+__rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t _n, uint32_t seed)
+	: __rand_ulab_rooted_trees(_n, seed)
 {
 	init_fn();
 }
-//rand_ulab_free_trees::~rand_ulab_free_trees() { }
 
-void rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
-	rand_ulab_rooted_trees::init(_n, seed);
+void __rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
+	__rand_ulab_rooted_trees::init(_n, seed);
 	init_fn();
 }
 
-free_tree rand_ulab_free_trees::get_tree() {
+free_tree __rand_ulab_free_trees::get_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
@@ -156,8 +158,8 @@ free_tree rand_ulab_free_trees::get_tree() {
 	return T;
 }
 
-void rand_ulab_free_trees::clear() {
-	rand_ulab_rooted_trees::clear();
+void __rand_ulab_free_trees::clear() {
+	__rand_ulab_rooted_trees::clear();
 	m_fn.clear();
 	m_alpha.clear();
 	init_fn();
@@ -176,7 +178,7 @@ void rand_ulab_free_trees::clear() {
  *	number of times.
  *
  */
-uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
+uint32_t __rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	if (m == 0) {
 		// Forest of 0 nodes
 		return nt;
@@ -233,7 +235,7 @@ uint32_t rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) {
 	return nt;
 }
 
-void rand_ulab_free_trees::bicenter(uint32_t n) {
+void __rand_ulab_free_trees::bicenter(uint32_t n) {
 	// make sure that the number of nodes is even
 #if defined DEBUG
 	assert(n%2 == 0);
@@ -267,7 +269,7 @@ void rand_ulab_free_trees::bicenter(uint32_t n) {
 #endif
 }
 
-const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
+const integer& __rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) {
 
 	/* This algorithm can be compared to the algorithm in
 	 *		https://github.com/marohnicluka/giac/blob/master/graphe.cc#L7149
@@ -309,7 +311,7 @@ const integer& rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32
 	return get_alpha(m,q);
 }
 
-void rand_ulab_free_trees::init_fn() {
+void __rand_ulab_free_trees::init_fn() {
 	// from the OEIS: https://oeis.org/A000055
 
 	m_fn = vector<integer>(31);
@@ -346,7 +348,7 @@ void rand_ulab_free_trees::init_fn() {
 	m_fn[30] = integer("14830871802");
 }
 
-const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
+const integer& __rand_ulab_free_trees::get_fn(const uint32_t n) {
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
@@ -380,7 +382,7 @@ const integer& rand_ulab_free_trees::get_fn(const uint32_t n) {
 }
 
 pair<uint32_t, uint32_t>
-rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
+__rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
@@ -416,6 +418,24 @@ rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 	}
 
 	return make_pair(j, d);
+}
+
+// -----------------------------------------------------------------------------
+// WRAPPER CLASS
+
+rand_ulab_free_trees::rand_ulab_free_trees(uint32_t n, uint32_t seed)
+: m_Gen(n, seed)
+{
+}
+
+void rand_ulab_free_trees::init(uint32_t n, uint32_t seed) {
+	m_Gen.init(n, seed);
+}
+
+/* PROTECTED */
+
+graphs::free_tree rand_ulab_free_trees::__get_tree() {
+	return m_Gen.get_tree();
 }
 
 } // -- namespace generate

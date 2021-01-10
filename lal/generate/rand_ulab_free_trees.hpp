@@ -46,10 +46,10 @@
 #include <map>
 
 // lal includes
-#include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/numeric/integer.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
+#include <lal/generate/tree_gen.hpp>
+#include <lal/numeric/integer.hpp>
 
 namespace lal {
 namespace generate {
@@ -74,12 +74,12 @@ namespace generate {
  * @code
  *		rand_ulab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::utree T = TreeGen.get_tree();
+ *			lal::graphs::free_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
  */
-class rand_ulab_free_trees : public rand_ulab_rooted_trees {
+class __rand_ulab_free_trees : public __rand_ulab_rooted_trees {
 	public:
 		/**
 		 * @brief Default constructor.
@@ -87,11 +87,11 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * When constructed this way, the class needs to be initialised.
 		 * See @ref init(uint32_t, uint32_t).
 		 */
-		rand_ulab_free_trees() = default;
+		__rand_ulab_free_trees() = default;
 		/// Constructor with size of tree and seed for the random number generator.
-		rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
+		__rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
 		/// Default destructor.
-		~rand_ulab_free_trees() = default;
+		~__rand_ulab_free_trees() = default;
 
 		/**
 		 * @brief Sets the size of the unlabelled trees to generate.
@@ -217,6 +217,33 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 */
 		std::pair<uint32_t,uint32_t>
 		choose_jd_from_alpha(const uint32_t m, const uint32_t q);
+};
+
+/**
+ * @brief Random unlabelled free tree generator.
+ *
+ * This is just a wrapper class of @ref __rand_ulab_free_trees, therefore the
+ * usage of this class is the same as that of class @ref __rand_ulab_free_trees.
+ */
+class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
+	public:
+		/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees().
+		rand_ulab_free_trees() = default;
+		/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t, uint32_t).
+		rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
+		/// Default Destructor.
+		~rand_ulab_free_trees() = default;
+
+		/// See @ref __rand_ulab_free_trees::init.
+		void init(uint32_t n, uint32_t seed = 0);
+
+	protected:
+		/// See @ref __rand_ulab_free_trees::get_tree.
+		graphs::free_tree __get_tree();
+
+	protected:
+		/// See @ref __rand_ulab_free_trees.
+		__rand_ulab_free_trees m_Gen;
 };
 
 } // -- namespace generate

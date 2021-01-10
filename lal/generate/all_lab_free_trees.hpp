@@ -44,6 +44,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/generate/tree_gen.hpp>
 
 namespace lal {
 namespace generate {
@@ -80,7 +81,8 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_lab_free_trees {
+class all_lab_free_trees : public tree_gen<graphs::free_tree>
+{
 	public:
 		/**
 		 * @brief Default constructor.
@@ -129,13 +131,14 @@ class all_lab_free_trees {
 		 */
 		void next();
 
+	protected:
 		/**
 		 * @brief Constructs the current tree.
 		 * @return Returns the tree generated with method @ref next().
 		 * @pre The generator must have been initialised, and method
 		 * @ref next must have been called at least once.
 		 */
-		graphs::free_tree get_tree() const;
+		graphs::free_tree __get_tree();
 
 	private:
 		/**

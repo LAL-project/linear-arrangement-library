@@ -51,36 +51,41 @@ using namespace graphs;
 
 namespace generate {
 
-//all_lab_rooted_trees::all_lab_rooted_trees() { }
 all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) {
 	init(n);
 }
-//all_lab_rooted_trees::~all_lab_rooted_trees() { }
 
 void all_lab_rooted_trees::init(uint32_t n) {
 	m_n = n;
-	m_lab_free_tree_gen.init(m_n);
+	m_gen_lab_free_tree.init(m_n);
 
 	m_cur_root = m_n - 1;
+
+	// deactivate all processing of the free tree
+	m_gen_lab_free_tree.calculate_size_subtrees = false;
+	m_gen_lab_free_tree.calculate_tree_type = false;
+	m_gen_lab_free_tree.normalise_tree = false;
 }
 
 bool all_lab_rooted_trees::has_next() const {
 	return
-	not( m_cur_root + 1 >= m_n and (not m_lab_free_tree_gen.has_next()));
+	not( m_cur_root + 1 >= m_n and (not m_gen_lab_free_tree.has_next()));
 }
 
 void all_lab_rooted_trees::next() {
 	if (m_cur_root == m_n - 1) {
 		m_cur_root = 0;
-		m_lab_free_tree_gen.next();
-		m_cur_ftree = m_lab_free_tree_gen.get_tree();
+		m_gen_lab_free_tree.next();
+		m_cur_ftree = m_gen_lab_free_tree.get_tree();
 	}
 	else {
 		++m_cur_root;
 	}
 }
 
-rooted_tree all_lab_rooted_trees::get_tree() const {
+/* PROTECTED */
+
+rooted_tree all_lab_rooted_trees::__get_tree() {
 	assert(m_cur_root < m_n);
 	return rooted_tree(m_cur_ftree, m_cur_root);
 }

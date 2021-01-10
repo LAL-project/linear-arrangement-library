@@ -53,6 +53,8 @@ namespace internal {
 /*
  * @brief Converts the level sequence of a tree into a graph structure.
  *
+ * The resulting tree is not normalised.
+ *
  * Examples of level sequences:
  * -- linear tree of n nodes:
  *		0 1 2 3 4 ... (n-1) n
@@ -68,14 +70,19 @@ namespace internal {
  * @pre The first value of a sequence must be a zero.
  * @pre The second value of a sequence must be a one.
  */
-graphs::free_tree level_sequence_to_ftree(uint32_t const *L, uint32_t n);
-graphs::free_tree level_sequence_to_ftree(const std::vector<uint32_t>& L, uint32_t n);
+graphs::free_tree level_sequence_to_ftree(
+	uint32_t const *L, uint32_t n, bool normalise = true, bool check = true
+);
+graphs::free_tree level_sequence_to_ftree(
+	const std::vector<uint32_t>& L, uint32_t n, bool normalise = true, bool check = true
+);
 
 // -----------------------------------------------------------------------------
 
 /*
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
  *
+ * The resulting tree is not normalised.
  * For details on Prüfer sequences, see \cite Pruefer1918a.
  *
  * The algorithm used to decode the sequence is the one presented in
@@ -84,11 +91,17 @@ graphs::free_tree level_sequence_to_ftree(const std::vector<uint32_t>& L, uint32
  * @param n Number of nodes of the tree.
  * @return Returns the tree built with @e L.
  */
-graphs::free_tree Prufer_sequence_to_ftree(uint32_t const *seq, uint32_t n);
-graphs::free_tree Prufer_sequence_to_ftree(const std::vector<uint32_t>& S, uint32_t n);
+graphs::free_tree Prufer_sequence_to_ftree(
+	uint32_t const *seq, uint32_t n, bool normalise = true, bool check = true
+);
+graphs::free_tree Prufer_sequence_to_ftree(
+	const std::vector<uint32_t>& S, uint32_t n, bool normalise = true, bool check = true
+);
 
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
+ *
+ * The resulting tree is not normalised.
  *
  * A linear sequence of a tree of @e n nodes is an array of @e n integers
  * where the values in the positions from 0 to @e n-1, both included, describe
@@ -99,7 +112,7 @@ graphs::free_tree Prufer_sequence_to_ftree(const std::vector<uint32_t>& S, uint3
  * by the sequence.
  */
 std::pair<graphs::free_tree, node> linear_sequence_to_ftree
-(const std::vector<uint32_t>& L);
+(const std::vector<uint32_t>& L, bool normalise = true, bool check = true);
 
 } // -- namespace internal
 } // -- namespace lal

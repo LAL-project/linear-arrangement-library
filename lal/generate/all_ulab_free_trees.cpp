@@ -272,14 +272,16 @@ void all_ulab_free_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-free_tree all_ulab_free_trees::get_tree() const {
+/* PROTECTED */
+
+free_tree all_ulab_free_trees::__get_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
 		t.add_edge(0,1);
 		return t;
 	}
-	return internal::level_sequence_to_ftree(m_L, m_n);
+	return internal::level_sequence_to_ftree(m_L, m_n, false, false);
 }
 
 } // -- namespace generate

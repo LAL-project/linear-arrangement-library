@@ -126,15 +126,16 @@ void all_lab_free_trees::next() {
 	m_it = m_n - 3;
 }
 
-free_tree all_lab_free_trees::get_tree() const {
+/* PROTECTED */
+
+free_tree all_lab_free_trees::__get_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
 		t.set_edges(vector<edge>{edge(0,1)});
 		return t;
 	}
-
-	return internal::Prufer_sequence_to_ftree(m_seq, m_n);
+	return internal::Prufer_sequence_to_ftree(m_seq, m_n, false, false);
 }
 
 } // -- namespace generate
