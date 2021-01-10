@@ -67,9 +67,9 @@ PROP_DPHDRS			= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/degrees.hpp \
 					  $(LAL_INC_DIR)/lal/properties/mean_hierarchical_distance.hpp \
 					  $(LAL_INC_DIR)/lal/properties/Q.hpp \
-					  $(LAL_INC_DIR)/lal/utilities/tree_centre.hpp \
-					  $(LAL_INC_DIR)/lal/utilities/tree_centroid.hpp \
-					  $(LAL_INC_DIR)/lal/utilities/tree_diameter.hpp
+					  $(LAL_INC_DIR)/lal/properties/tree_centre.hpp \
+					  $(LAL_INC_DIR)/lal/properties/tree_centroid.hpp \
+					  $(LAL_INC_DIR)/lal/properties/tree_diameter.hpp
 
 UTILS_DPHDRS		= $(LAL_INC_DIR)/lal/utilities/tree_isomorphism.hpp
 
