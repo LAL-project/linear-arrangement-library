@@ -67,7 +67,7 @@ namespace __lal {
 template<
 	typename It,
 	typename T = typename std::iterator_traits<It>::value_type,
-	typename std::enable_if_t<std::is_integral_v<T>, int> = 0
+	std::enable_if_t<std::is_integral_v<T>, bool> = true
 >
 void __bit_sort(It begin, It end, const T& m, char *seen) {
 	// fill bit array
@@ -112,7 +112,7 @@ void __bit_sort(It begin, It end, const T& m, char *seen) {
 template<
 	typename It,
 	typename T = typename std::iterator_traits<It>::value_type,
-	typename std::enable_if_t<std::is_integral_v<T>, int> = 0
+	std::enable_if_t<std::is_integral_v<T>, bool> = true
 >
 void bit_sort_mem(It begin, It end, const size_t size, char *seen)
 {
@@ -143,7 +143,7 @@ void bit_sort_mem(It begin, It end, const size_t size, char *seen)
 template<
 	typename It,
 	typename T = typename std::iterator_traits<It>::value_type,
-	typename std::enable_if_t<std::is_integral<T>::value, int> = 0
+	std::enable_if_t<std::is_integral<T>::value, bool> = true
 >
 void bit_sort(It begin, It end, const size_t size)
 {

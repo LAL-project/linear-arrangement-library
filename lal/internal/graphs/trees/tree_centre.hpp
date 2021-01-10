@@ -82,10 +82,10 @@ namespace internal {
  */
 template<
 	class T,
-	typename std::enable_if_t<
+	std::enable_if_t<
 		std::is_same_v<graphs::free_tree, T> ||
 		std::is_same_v<graphs::rooted_tree, T>,
-	int> = 0
+	bool> = true
 >
 std::pair<node, node> retrieve_centre(const T& t, node X) {
 

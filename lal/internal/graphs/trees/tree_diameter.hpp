@@ -51,7 +51,7 @@ namespace internal {
 
 template<
 	class T,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
 >
 uint32_t tree_diameter(const T& t) {
 	const uint32_t n = t.n_nodes();

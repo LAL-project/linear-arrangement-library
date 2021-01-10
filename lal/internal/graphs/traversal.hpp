@@ -203,10 +203,11 @@ class BFS {
 
 		// process neighbours
 		//     when the graph is an undirected graph
-		template<class GG = G,
-			typename std::enable_if_t<
-				std::is_base_of_v<graphs::undirected_graph, GG>, int
-			> = 0
+		template<
+			class GG = G,
+			std::enable_if_t<
+				std::is_base_of_v<graphs::undirected_graph, GG>, bool
+			> = true
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_neighbours(s)) {
@@ -217,10 +218,11 @@ class BFS {
 			}
 		}
 		//     when the graph is a directed graph
-		template<class GG = G,
-			typename std::enable_if_t<
-				std::is_base_of_v<graphs::directed_graph, GG>, int
-			> = 0
+		template<
+			class GG = G,
+			std::enable_if_t<
+				std::is_base_of_v<graphs::directed_graph, GG>, bool
+			> = true
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_out_neighbours(s)) {
@@ -240,12 +242,13 @@ class BFS {
 			}
 		}
 		//     when the class does not inherit from undirected_graph or directed_graph
-		template<class GG = G,
-			typename std::enable_if_t<
+		template<
+			class GG = G,
+			std::enable_if_t<
 				!std::is_base_of_v<graphs::directed_graph, GG> &&
 				!std::is_base_of_v<graphs::undirected_graph, GG>,
-				int
-			> = 0
+				bool
+			> = true
 		>
 		void process_neighbours(node s) {
 			for (const node& t : m_G.get_out_neighbours(s)) {

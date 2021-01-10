@@ -67,7 +67,7 @@ namespace __lal {
  */
 template<
 	class T,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
 >
 void get_size_subtrees(
 	const T& t, node r, char *vis, uint32_t *sizes
@@ -107,7 +107,7 @@ void get_size_subtrees(
  */
 template<
 	class T,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
 >
 void get_size_subtrees(
 	const T& t, node r, uint32_t *sizes
@@ -143,7 +143,7 @@ namespace __lal {
 template<
 	class T,
 	typename It,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
 >
 uint32_t calculate_suvs(
 	const T& t, const uint32_t n, const node u, const node v,
@@ -181,7 +181,7 @@ uint32_t calculate_suvs(
 template<
 	class T,
 	typename It,
-	typename std::enable_if_t<std::is_base_of_v<graphs::tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
 >
 void calculate_suvs(
 	const T& t, const uint32_t n, const node x,

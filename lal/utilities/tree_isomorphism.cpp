@@ -71,7 +71,7 @@ namespace utilities {
  */
 template<
 	class T,
-	typename std::enable_if_t<std::is_base_of_v<tree, T>, int> = 0
+	std::enable_if_t<std::is_base_of_v<tree, T>, bool> = true
 >
 int fast_non_iso(const T& t1, const T& t2) {
 	// check number of nodes
