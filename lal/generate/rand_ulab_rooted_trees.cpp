@@ -83,7 +83,7 @@ void rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
 	m_tree = new uint32_t[m_n];
 }
 
-rooted_tree rand_ulab_rooted_trees::make_rand_tree() {
+rooted_tree rand_ulab_rooted_trees::get_tree() {
 	if (m_n <= 1) {
 		rooted_tree r(m_n, 0);
 		r.set_root(0);

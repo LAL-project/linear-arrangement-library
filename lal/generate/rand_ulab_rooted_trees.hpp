@@ -57,9 +57,8 @@ namespace generate {
  *
  * Generates uniformly at random rooted unlabelled trees.
  *
- * Every call to @ref make_rand_tree generates rooted unlabelled trees
- * uniformly at random using the @e ranrut procedure (see \cite Nijenhuis1978a,
- * chapter 29).
+ * Every call to @ref get_tree generates rooted unlabelled trees uniformly at
+ * random using the @e ranrut procedure (see \cite Nijenhuis1978a, chapter 29).
  *
  * Users interested in generating trees of large size (of 100 nodes
  * or more) are recommended to take a look at @ref clear method.
@@ -68,7 +67,7 @@ namespace generate {
  * @code
  *		rand_ulab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::urtree T = TreeGen.make_rand_tree();
+ *			lal::graphs::urtree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -106,7 +105,7 @@ class rand_ulab_rooted_trees {
 		 * at vertex 0.
 		 * @pre The generator must have been initialised.
 		 */
-		graphs::rooted_tree make_rand_tree();
+		graphs::rooted_tree get_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

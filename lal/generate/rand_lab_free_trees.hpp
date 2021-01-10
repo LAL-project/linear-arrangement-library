@@ -95,7 +95,7 @@ class rand_lab_free_trees {
 		 * @return Returns a labelled tree.
 		 * @pre The generator must have been initialised.
 		 */
-		graphs::free_tree make_rand_tree();
+		graphs::free_tree get_tree();
 
 	protected:
 		/// Number of nodes of the tree.

@@ -101,7 +101,7 @@ class rand_lab_rooted_trees : public rand_lab_free_trees {
 		 * tree is rooted at vertex 0.
 		 * @pre The generator must have been initialised.
 		 */
-		graphs::rooted_tree make_rand_tree();
+		graphs::rooted_tree get_tree();
 };
 
 } // -- namespace generate

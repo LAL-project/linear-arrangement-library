@@ -60,8 +60,8 @@ void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
 	rand_lab_free_trees::init(n, seed);
 }
 
-rooted_tree rand_lab_rooted_trees::make_rand_tree() {
-	const free_tree t = rand_lab_free_trees::make_rand_tree();
+rooted_tree rand_lab_rooted_trees::get_tree() {
+	const free_tree t = rand_lab_free_trees::get_tree();
 	const node r = m_unif(m_gen);
 	return rooted_tree(t, r);
 }

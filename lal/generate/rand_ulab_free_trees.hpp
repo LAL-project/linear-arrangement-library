@@ -59,11 +59,11 @@ namespace generate {
  *
  * Generates uniformly at random unlabelled free trees.
  *
- * Every call to @ref make_rand_tree generates uniformly at random an unlabelled
+ * Every call to @ref get_tree generates uniformly at random an unlabelled
  * free tree using the algorithm described in \cite Wilf1981a. This is
  * algorithm relies on the @ref ranrut procedure (see \cite Nijenhuis1978a,
  * chapter 29) and runs in about the same time. The implementation of Wilf's
- * paper (see \cite Wilf1981a) in functions @ref make_rand_tree, @ref forest,
+ * paper (see \cite Wilf1981a) in functions @ref get_tree, @ref forest,
  * and @ref bicenter includes the correction pointed out in
  * \cite GiacXcas_Manual (page 38).
  *
@@ -74,7 +74,7 @@ namespace generate {
  * @code
  *		rand_ulab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::utree T = TreeGen.make_rand_tree();
+ *			lal::graphs::utree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -115,7 +115,7 @@ class rand_ulab_free_trees : public rand_ulab_rooted_trees {
 		 * @return Returns an unlabelled free tree.
 		 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
 		 */
-		graphs::free_tree make_rand_tree();
+		graphs::free_tree get_tree();
 
 		/**
 		 * @brief Clears the memory occupied.

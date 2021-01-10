@@ -77,7 +77,7 @@ void rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_seq = new uint32_t[m_n - 2];
 }
 
-free_tree rand_lab_free_trees::make_rand_tree() {
+free_tree rand_lab_free_trees::get_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
