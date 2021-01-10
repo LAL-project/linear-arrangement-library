@@ -108,7 +108,10 @@ void classify_tree(
 		return;
 	}
 	if (N == 1) {
-		set_type(graphs::tree_type::none);
+		set_type(graphs::tree_type::linear);
+		set_type(graphs::tree_type::star);
+		set_type(graphs::tree_type::caterpillar);
+		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 		return;
 	}
 	if (N == 2) {
