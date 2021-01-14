@@ -248,7 +248,7 @@ const integer& __rand_ulab_rooted_trees::get_rn(uint32_t n) {
 
 	// the algorithm in the book (\cite Nijenhuis1978a)
 
-	uint32_t k = static_cast<uint32_t>(m_rn.size()) - 1;
+	uint32_t k = to_uint32(m_rn.size()) - 1;
 	while (k <= n + 1) {
 		integer s = 0;
 		for (uint32_t d = 1; d <= k; ++d) {
