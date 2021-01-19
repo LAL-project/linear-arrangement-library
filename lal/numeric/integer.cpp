@@ -42,7 +42,9 @@
 #include <lal/numeric/integer.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -130,15 +132,21 @@ void integer::clear() {
 /* SET VALUE */
 
 void integer::set_si(int64_t i) {
+#if defined DEBUG
 	assert(is_initialized());
+#endif
 	mpz_set_si(m_val, i);
 }
 void integer::set_ui(uint64_t i) {
+#if defined DEBUG
 	assert(is_initialized());
+#endif
 	mpz_set_ui(m_val, i);
 }
 void integer::set_str(const std::string& s)	{
+#if defined DEBUG
 	assert(is_initialized());
+#endif
 	mpz_set_str(m_val, s.c_str(), 10);
 }
 

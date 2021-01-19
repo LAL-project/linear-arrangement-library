@@ -42,7 +42,6 @@
 #include <lal/generate/all_ulab_free_trees.hpp>
 
 // C++ includes
-#include <cassert>
 #include <limits>
 using namespace std;
 

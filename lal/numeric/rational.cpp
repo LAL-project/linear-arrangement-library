@@ -42,7 +42,9 @@
 #include <lal/numeric/rational.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -125,7 +127,9 @@ void rational::init_str(const std::string& s) {
 }
 
 void rational::init_integer(const integer& n, const integer& d) {
+#if defined DEBUG
 	assert(n.is_initialized() and d.is_initialized());
+#endif
 
 	init();
 	set_integer(n, d);
@@ -153,7 +157,10 @@ void rational::set_str(const std::string& s) {
 	mpq_canonicalize(m_val);
 }
 void rational::set_integer(const integer& n, const integer& d) {
+#if defined DEBUG
 	assert(n.is_initialized() and d.is_initialized());
+#endif
+
 	mpq_set_num(m_val, n.get_raw_value());
 	mpq_set_den(m_val, d.get_raw_value());
 	mpq_canonicalize(m_val);

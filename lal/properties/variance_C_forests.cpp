@@ -40,7 +40,7 @@
  ********************************************************************/
 
 // C++ includes
-#include <cassert>
+#include <vector>
 using namespace std;
 
 // lal includes

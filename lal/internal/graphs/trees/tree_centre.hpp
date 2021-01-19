@@ -45,7 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <type_traits>
 #include <vector>
 
 // lal includes

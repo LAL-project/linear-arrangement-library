@@ -42,7 +42,9 @@
 #include <lal/linarr/C.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -86,7 +88,9 @@ uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
 		}
 	}
 
+#if defined DEBUG
 	assert(f >= 0);
+#endif
 	return to_uint32(f);
 }
 
@@ -137,7 +141,10 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 			f += (d1 - n)*(d1 - n + 1);
 		}
 	}
+
+#if defined DEBUG
 	assert(f >= 0);
+#endif
 	return to_uint32(f/2);
 }
 
@@ -174,7 +181,10 @@ rational __get_approximate_C_2_rational(const graph& g, const linear_arrangement
 }
 
 rational approximate_C_rational(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
 	return internal::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
 }
 

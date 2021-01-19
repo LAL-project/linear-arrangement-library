@@ -42,11 +42,11 @@
 #include <lal/graphs/undirected_graph.hpp>
 
 // C++ includes
-#include <algorithm>
-#include <cmath>
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <algorithm>
+#include <cmath>
 using namespace std;
 
 // lal includes

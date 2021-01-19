@@ -40,8 +40,9 @@
  ********************************************************************/
  
 // C++ includes
+#if defined DEBUG
 #include <cassert>
-using namespace std;
+#endif
 
 // lal includes
 #include <lal/numeric/rational.hpp>
@@ -73,7 +74,10 @@ inline uint32_t __sum_length_edges(const graph& g, const linear_arrangement& pi)
 }
 
 uint32_t sum_length_edges(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
 	return internal::call_with_empty_arrangement(__sum_length_edges, g, pi);
 }
 
@@ -85,7 +89,10 @@ inline rational __MDD_rational(const graph& g, const linear_arrangement& pi) {
 }
 
 rational mean_dependency_distance_rational(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
 	return internal::call_with_empty_arrangement(__MDD_rational, g, pi);
 }
 

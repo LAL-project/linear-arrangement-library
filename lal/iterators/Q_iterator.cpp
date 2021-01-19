@@ -42,7 +42,10 @@
 #include <lal/iterators/Q_iterator.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <tuple>
 using namespace std;
 
 // lal includes
@@ -171,7 +174,9 @@ bool Q_iterator::has_next() const {
 
 void Q_iterator::next() {
 	m_cur_pair = make_current_pair();
+#if defined DEBUG
 	assert(not share_nodes(m_cur_pair));
+#endif
 
 	// find the next edge
 	auto [found, new_cur1, new_cur2] =
@@ -211,7 +216,9 @@ void Q_iterator::reset() {
 		return;
 	}
 
+#if defined DEBUG
 	assert(not share_nodes(m_G, new_cur1, new_cur2));
+#endif
 
 	// since a pair was found, store it in current
 	m_cur1 = new_cur1;

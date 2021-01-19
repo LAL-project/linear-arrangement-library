@@ -40,7 +40,9 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <map>
 using namespace std;
 
@@ -181,7 +183,9 @@ inline uint32_t __call_C_stack_based
 }
 
 uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
@@ -207,8 +211,10 @@ vector<uint32_t> n_C_stack_based_list
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
+#endif
 
 		// compute C
 		cs[i] = __compute_C_stack_based(g, pis[i], T, size_adjN_u);

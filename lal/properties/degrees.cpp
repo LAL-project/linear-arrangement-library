@@ -40,8 +40,10 @@
  ********************************************************************/
 
 // C++ includes
-#include <functional>
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <functional>
 using namespace std;
 
 // lal includes
@@ -144,7 +146,9 @@ rational hubiness_rational(const free_tree& g) {
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
+#if defined DEBUG
 	assert(n > 3);
+#endif
 
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
 	const rational k2_star = rational_from_ui(n - 1);

@@ -42,7 +42,9 @@
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 using namespace std;
 
 // lal includes
@@ -62,7 +64,7 @@ namespace generate {
 
 __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
 	init_rn();
-	init(_n, seed);
+	__rand_ulab_rooted_trees::init(_n, seed);
 }
 __rand_ulab_rooted_trees::~__rand_ulab_rooted_trees() {
 	delete[] m_tree;
@@ -155,10 +157,12 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 
 	const auto [j, d] = choose_jd_from_T(n);
 
+#if defined DEBUG
 	// Both 'j' and 'd' must be strictly positive.
 	// Use two assertions to spot which fails more easily.
 	assert(j > 0);
 	assert(d > 0);
+#endif
 
 	// -------------------------------------------------------------
 	// Generate T' (a random rooted tree of n - j*d nodes)
@@ -200,7 +204,9 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
 	// position at which the root of T' was stored: root_Tp.
 	// The variable 'nt' contains the position where the next
 	// tree must be generated at.
+#if defined DEBUG
 	assert(nt <= m_n);
+#endif
 	return make_pair(root_Tp, nt);
 }
 

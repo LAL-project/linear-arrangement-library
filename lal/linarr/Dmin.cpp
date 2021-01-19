@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <bits/stl_pair.h>
 using namespace std;
 
 // lal includes
@@ -64,7 +67,9 @@ pair<uint32_t, linear_arrangement> Dmin
 	case algorithms_Dmin::Planar:
 	case algorithms_Dmin::Unconstrained_YS:
 	case algorithms_Dmin::Unconstrained_FC:
+#if defined DEBUG
 		assert(false);
+#endif
 		break;  // in release compilations the
 				// function must return nothing.
 	}
@@ -79,7 +84,9 @@ pair<uint32_t, linear_arrangement> Dmin
 
 	// check for invalid choices of algorithm
 	case algorithms_Dmin::Projective:
+#if defined DEBUG
 		assert(false);
+#endif
 		break;  // in release compilations the
 				// function must return nothing.
 

@@ -204,7 +204,9 @@ class AVL {
 			tree_node *P = A->parent;
 			tree_node *B = A->left;
 
+#if defined DEBUG
 			assert(B != nullptr);
+#endif
 
 			// update A's parent
 			//    (notice P might be null, however,
@@ -299,7 +301,9 @@ class AVL {
 		// returns the root of the new balanced tree
 		tree_node *balance(tree_node *n) {
 			if (n == nullptr) { return nullptr; }
+#if defined DEBUG
 			assert(std::abs(n->bf) <= 2);
+#endif
 
 			if (std::abs(n->bf) <= 1) { return n; }
 
@@ -510,7 +514,9 @@ class AVL {
 		// -> height(T1) >= height(T2)
 		// -> L < S
 		tree_node *join_taller(tree_node *T1, tree_node *T2) {
+#if defined DEBUG
 			assert(T1->tree_size > 1 and T2->tree_size > 1);
+#endif
 			// we need a new node anyway
 			tree_node *x = new tree_node();
 			// remove left-most element in T2
@@ -556,7 +562,10 @@ class AVL {
 		// -> height(T1) < height(T2)
 		// -> L < S
 		tree_node *join_shorter(tree_node *T1, tree_node *T2) {
+#if defined DEBUG
 			assert(T1->tree_size > 1 and T2->tree_size > 1);
+#endif
+
 			// we need a new node anyway
 			tree_node *x = new tree_node();
 			// remove right-most element in T1

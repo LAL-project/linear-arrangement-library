@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <bits/stl_pair.h>
 using namespace std;
 
 // lal includes
@@ -65,8 +68,10 @@ uint32_t n_crossings
 		return internal::n_C_stack_based(g, pi);
 	}
 
+#if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
+#endif
 	return g.n_edges()*g.n_edges();
 }
 
@@ -83,8 +88,10 @@ uint32_t n_crossings
 		return internal::n_C_stack_based(g, pi);
 	}
 
+#if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
+#endif
 	return g.n_edges()*g.n_edges();
 }
 
@@ -104,8 +111,10 @@ vector<uint32_t> n_crossings_list
 		return internal::n_C_stack_based_list(g, pis);
 	}
 
+#if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
+#endif
 	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 
@@ -123,8 +132,10 @@ vector<uint32_t> n_crossings_list
 		return internal::n_C_stack_based_list(g, pis);
 	}
 
+#if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
+#endif
 	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
 }
 

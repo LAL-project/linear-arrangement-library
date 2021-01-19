@@ -40,8 +40,10 @@
  ********************************************************************/
 
 // C++ includes
-#include <algorithm>
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <algorithm>
 using namespace std;
 
 // lal includes
@@ -56,8 +58,10 @@ namespace generate {
 
 all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) : m_rT(rT)
 {
+#if defined DEBUG
 	assert(m_rT.is_rooted_tree());
 	assert(m_rT.is_normalised());
+#endif
 
 	m_intervals = vector<vector<node>>(m_rT.n_nodes());
 	initialise_intervals_tree();

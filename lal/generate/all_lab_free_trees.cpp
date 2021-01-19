@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <cassert>
 #include <limits>
 using namespace std;
 

@@ -42,10 +42,10 @@
 #pragma once
 
 // C++ includes
-#include <array>
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <array>
 
 // lal includes
 #include <lal/graphs/tree_type.hpp>

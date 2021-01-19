@@ -42,7 +42,9 @@
 #include <lal/generate/all_lab_rooted_trees.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <vector>
 using namespace std;
 
@@ -86,7 +88,9 @@ void all_lab_rooted_trees::next() {
 /* PROTECTED */
 
 rooted_tree all_lab_rooted_trees::__get_tree() {
+#if defined DEBUG
 	assert(m_cur_root < m_n);
+#endif
 	return rooted_tree(m_cur_ftree, m_cur_root);
 }
 

@@ -42,8 +42,10 @@
 #include <lal/generate/rand_projective_arrangements.hpp>
 
 // C++ includes
-#include <algorithm>
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <algorithm>
 #include <random>
 #include <vector>
 using namespace std;
@@ -60,7 +62,9 @@ namespace generate {
 rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t seed)
 	: m_rT(rT)
 {
+#if defined DEBUG
 	assert(m_rT.is_rooted_tree());
+#endif
 	if (seed == 0) {
 		random_device rd;
 		m_gen = mt19937(rd());

@@ -42,11 +42,11 @@
 #pragma once
 
 // C++ includes
-#include <vector>
-#include <array>
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <vector>
+#include <array>
 
 // lal includes
 #include <lal/graphs/graph.hpp>

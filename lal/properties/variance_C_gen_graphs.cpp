@@ -40,8 +40,10 @@
  ********************************************************************/
  
 // C++ includes
-#include <algorithm>
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <algorithm>
 #include <map>
 using namespace std;
 
@@ -149,7 +151,9 @@ void compute_data_gen_graphs
 	}
 	// note: at this point 'psi' is equal to
 	// 2*sum_{st in E} k_s*k_t
+#if defined DEBUG
 	assert(psi%2 == 0);
+#endif
 	psi /= 2;
 
 	// hash table to reuse computations
@@ -296,11 +300,13 @@ void compute_data_gen_graphs
 		Lambda_2 += (ks + kt)*( (ks - 1)*(kt - 1) - common_st );
 	}
 
+#if defined DEBUG
 	assert(Phi_2%2 == 0);
 	assert(mu1%2 == 0);
 	assert(n_cycles_4%4 == 0);
 	assert(n_paths_5%2 == 0);
 	assert(pair_C3_L2%3 == 0);
+#endif
 
 	Lambda_2 += Lambda_1;
 	Phi_2 /= 2;
@@ -314,7 +320,9 @@ void compute_data_gen_graphs
 }
 
 rational variance_C_rational(const undirected_graph& g, bool reuse) {
+#if defined DEBUG
 	assert(g.is_normalised());
+#endif
 
 	const bigint n = g.n_nodes();
 	const bigint m = g.n_edges();

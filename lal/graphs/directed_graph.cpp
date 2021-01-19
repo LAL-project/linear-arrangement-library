@@ -42,12 +42,12 @@
 #include <lal/graphs/directed_graph.hpp>
 
 // C++ includes
-#include <algorithm>
-#include <cmath>
-#include <set>
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <algorithm>
+#include <cmath>
+#include <set>
 using namespace std;
 
 // lal includes
