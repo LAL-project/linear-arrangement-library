@@ -46,7 +46,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -89,7 +92,9 @@ inline void make_directed(
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
+#if defined DEBUG
 	assert(t.is_tree());
+#endif
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
@@ -110,7 +115,7 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	vector<vector<pair<node,uint32_t>>> M;
 	vector<pair<edge, uint32_t>> sizes_edge;
 
-	// find the centroid of the tree
+	// find a centroidal vertex of the tree
 	const node c = internal::retrieve_centroid(t, M,sizes_edge).first;
 
 	// root the free tree

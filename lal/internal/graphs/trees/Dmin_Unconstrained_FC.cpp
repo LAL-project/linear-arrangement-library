@@ -39,7 +39,9 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <vector>
 using namespace std;
 
@@ -233,13 +235,17 @@ void calculate_mla_chung(
 	}
 	const uint32_t size_tree = t.n_nodes_component(one_node - 1);
 
+#if defined DEBUG
 	assert(size_tree > 0);
 	assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
+#endif
 
 	// Base case
 	if (size_tree == 1) {
+#if defined DEBUG
 		assert(one_node == reachable[0]);
 		assert(start <= t.n_nodes());
+#endif
 		mla[one_node - 1] = start;
 		cost = 0;
 		return;
@@ -343,7 +349,9 @@ void calculate_mla_chung(
 					cost = c_i;
 					mla = arr_aux;
 				}
+#if defined DEBUG
 				assert(u != ord[i].second);
+#endif
 				t.remove_edge(u - 1, ord[i].second - 1, false, false);
 			}
 
@@ -359,7 +367,9 @@ void calculate_mla_chung(
 		if (p == -1) {
 			const uint32_t n_0 = ord[0].first;
 			const node t_0 = ord[0].second;
+#if defined DEBUG
 			assert(one_node != t_0);
+#endif
 
 			t.remove_edge(one_node - 1, t_0 - 1, false, false);
 
@@ -454,7 +464,9 @@ void calculate_mla_chung(
 					cost = c_i;
 					mla = arr_aux;
 				}
+#if defined DEBUG
 				assert(one_node != ord[i].second);
+#endif
 				t.remove_edge(one_node - 1, ord[i].second - 1, false, false);
 			}
 
@@ -485,7 +497,9 @@ void calculate_mla_chung(
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
+#if defined DEBUG
 	assert(t.is_tree());
+#endif
 
 	uint32_t c = 0;
 	linear_arrangement arr(t.n_nodes(),0);

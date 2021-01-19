@@ -42,7 +42,10 @@
 #include <lal/graphs/tree.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -58,7 +61,7 @@ tree::tree(const tree& t) : graph() {
 	tree_only_copy(t);
 }
 tree::tree(tree&& t) {
-	tree_only_move(std::move(t));
+	tree_only_move(move(t));
 }
 tree::~tree() { }
 
@@ -70,7 +73,7 @@ tree& tree::operator= (const tree& t) {
 }
 
 tree& tree::operator= (tree&& t) {
-	tree_only_move(std::move(t));
+	tree_only_move(move(t));
 	return *this;
 }
 
@@ -87,8 +90,10 @@ bool tree::is_tree() const {
 }
 
 bool tree::can_add_edge(node u, node v) const {
+#if defined DEBUG
 	assert(has_node(u));
 	assert(has_node(v));
+#endif
 
 	const uint32_t n = n_nodes();
 	const uint32_t m = n_edges();
@@ -104,7 +109,7 @@ bool tree::can_add_edge(node u, node v) const {
 	return m_root_of[u] != m_root_of[v];
 }
 
-bool tree::can_add_edges(const std::vector<edge>& edges) const {
+bool tree::can_add_edges(const vector<edge>& edges) const {
 	const uint32_t n = n_nodes();
 	const uint32_t m = n_edges();
 	const uint32_t more_m = static_cast<uint32_t>(edges.size());
@@ -117,11 +122,11 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const {
 	vector<uint32_t> _root_of = m_root_of;
 	vector<uint32_t> _root_size = m_root_size;
 
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
+#if defined DEBUG
 		assert(has_node(u));
 		assert(has_node(v));
+#endif
 
 		// if m_labels[s] == m_labels[t] then
 		// either the edge exists or there
@@ -156,14 +161,14 @@ void tree::tree_only_init(uint32_t n) {
 		m_root_of[u] = u;
 		m_root_size[u] = 1;
 	}
-	std::fill(m_tree_type.begin(), m_tree_type.end(), 0);
+	fill(m_tree_type.begin(), m_tree_type.end(), 0);
 	m_tree_type[static_cast<size_t>(tree_type::none)] = 1;
 }
 
 void tree::tree_only_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
-	std::fill(m_tree_type.begin(), m_tree_type.end(), 0);
+	fill(m_tree_type.begin(), m_tree_type.end(), 0);
 	m_tree_type[static_cast<size_t>(tree_type::none)] = 1;
 }
 
@@ -176,9 +181,9 @@ void tree::tree_only_copy(const tree& t) {
 
 void tree::tree_only_move(tree&& t) {
 	// move this class' members
-	m_root_of = std::move(t.m_root_of);
-	m_root_size = std::move(t.m_root_size);
-	m_tree_type = std::move(t.m_tree_type);
+	m_root_of = move(t.m_root_of);
+	m_root_size = move(t.m_root_size);
+	m_tree_type = move(t.m_tree_type);
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {

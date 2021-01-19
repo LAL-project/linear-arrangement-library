@@ -454,8 +454,8 @@ free_tree rooted_tree::to_undirected(bool norm, bool check) const {
 	iterators::E_iterator E_it(*this);
 	while (E_it.has_next()) {
 		E_it.next();
-		const edge e = E_it.get_edge();
-		t.add_edge_bulk(e.first, e.second);
+		const auto [u,v] = E_it.get_edge();
+		t.add_edge_bulk(u, v);
 	}
 
 	t.finish_bulk_add(norm, check);

@@ -154,9 +154,7 @@ undirected_graph& undirected_graph::add_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
@@ -179,9 +177,7 @@ undirected_graph& undirected_graph::set_edges(
 	clear(); init(n);
 	}
 
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
@@ -215,11 +211,9 @@ undirected_graph& undirected_graph::remove_edges(
 	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
-		assert(has_edge(u,v));
+		assert(not has_edge(u,v));
 #endif
 
 		neighbourhood& nu = m_adjacency_list[u];

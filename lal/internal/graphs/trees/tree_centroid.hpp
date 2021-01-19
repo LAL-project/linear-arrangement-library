@@ -103,11 +103,8 @@ std::pair<node, node> retrieve_centroid(
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	M.resize(N);
-	for (const auto& edge_value : sizes_edge) {
-		const edge& e = edge_value.first;
-		const node u = e.first;
-		const node v = e.second;
-		const uint32_t suv = edge_value.second;
+	for (const auto& [uv, suv] : sizes_edge) {
+		const auto [u, v] = uv;
 		M[u].push_back(std::make_pair(v,suv));
 	}
 

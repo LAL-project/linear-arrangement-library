@@ -39,7 +39,9 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
 #include <vector>
 using namespace std;
 
@@ -70,7 +72,9 @@ uint32_t calculate_p_alpha(
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
+#if defined DEBUG
 	assert(anchored == NO_ANCHOR or anchored == ANCHOR);
+#endif
 
 	// number of subtrees
 	const uint32_t k = to_uint32(ord.size() - 1);
@@ -157,7 +161,9 @@ void calculate_mla_YS(
 	linear_arrangement& mla, uint32_t& cost
 )
 {
+#if defined DEBUG
 	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
+#endif
 
 	vector<node> reachable(t.n_nodes_component(root_or_anchor - 1));
 	{
@@ -172,7 +178,10 @@ void calculate_mla_YS(
 
 	// Size of the tree
 	const uint32_t size_tree = t.n_nodes_component(root_or_anchor - 1);
+
+#if defined DEBUG
 	assert(size_tree > 0);
+#endif
 
 	// Base case
 	if (size_tree == 1) {
@@ -331,7 +340,9 @@ void calculate_mla_YS(
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
+#if defined DEBUG
 	assert(t.is_tree());
+#endif
 
 	uint32_t c = 0;
 	linear_arrangement arrangement(t.n_nodes(),0);

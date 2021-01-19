@@ -64,12 +64,10 @@ inline uint32_t __sum_length_edges(const graph& g, const linear_arrangement& pi)
 	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		const edge e = it.get_edge();
-		const node s = e.first;
-		const node t = e.second;
+		const auto [u,v] = it.get_edge();
 
 		// accumulate length of edge
-		l += (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
+		l += (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
 	}
 	return l;
 }

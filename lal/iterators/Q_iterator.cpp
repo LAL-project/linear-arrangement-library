@@ -60,12 +60,8 @@ typedef std::pair<node,std::size_t> sE_pointer;
 
 static inline
 bool share_nodes(const edge_pair& st_uv) {
-	const edge& st = st_uv.first;
-	const edge& uv = st_uv.second;
-	const node s = st.first;
-	const node t = st.second;
-	const node u = uv.first;
-	const node v = uv.second;
+	const auto [s,t] = st_uv.first;
+	const auto [u,v] = st_uv.second;
 	return s == u or s == v or t == u or t == v;
 }
 

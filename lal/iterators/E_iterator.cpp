@@ -42,7 +42,10 @@
 #include <lal/iterators/E_iterator.hpp>
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <tuple>
 using namespace std;
 
 namespace lal {
@@ -63,9 +66,7 @@ void E_iterator::next() {
 	m_cur_edge = make_current_edge();
 
 	// find the next edge
-	auto _p = find_next_edge();
-	m_exists_next = _p.first;
-	m_cur = _p.second;
+	std::tie(m_exists_next, m_cur) = find_next_edge();
 }
 
 edge E_iterator::get_edge() const {

@@ -113,9 +113,7 @@ inline void compute_data_forest
 	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		const edge st = it.get_edge();
-		const node s = st.first;
-		const node t = st.second;
+		const auto [s,t] = it.get_edge();
 
 		const bigint ks = g.degree(s);
 		const bigint kt = g.degree(t);

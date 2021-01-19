@@ -88,8 +88,8 @@ free_tree level_sequence_to_ftree(
 		const node r = lev[stack_it];
 
 		// add the edge...
-		const edge e = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
-		t.add_edge_bulk(e.first, e.second);
+		const auto [u,v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		t.add_edge_bulk(u, v);
 
 		// the last node added at level L[i] is i.
 		++stack_it;

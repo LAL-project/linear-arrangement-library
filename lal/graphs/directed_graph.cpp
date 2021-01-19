@@ -197,9 +197,7 @@ directed_graph& directed_graph::add_edges(
 	const vector<edge>& edges, bool to_norm, bool check_norm
 )
 {
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
@@ -220,9 +218,7 @@ directed_graph& directed_graph::set_edges(
 	clear(); init(n);
 	}
 
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
@@ -256,13 +252,10 @@ directed_graph& directed_graph::remove_edges(
 	const vector<edge>& edges, bool norm, bool check_norm
 )
 {
-	for (const edge& e : edges) {
-		const node u = e.first;
-		const node v = e.second;
+	for (const auto& [u,v] : edges) {
 #if defined DEBUG
-		assert(has_edge(u,v));
+		assert(not has_edge(u,v));
 #endif
-
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
 		remove_single_edge(u,v, out_u, in_v);
@@ -328,10 +321,10 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const {
 	iterators::E_iterator E_it(*this);
 	while (E_it.has_next()) {
 		E_it.next();
-		const edge e = E_it.get_edge();
+		const auto [u,v] = E_it.get_edge();
 
-		if (not g.has_edge(e.first, e.second)) {
-			g.add_edge_bulk(e.first, e.second);
+		if (not g.has_edge(u, v)) {
+			g.add_edge_bulk(u, v);
 		}
 	}
 

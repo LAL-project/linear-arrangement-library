@@ -87,9 +87,7 @@ integer size_Q_integer(const directed_graph& g) {
 	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		const edge e = it.get_edge();
-		const node u = e.first;
-		const node v = e.second;
+		const auto [u,v] = it.get_edge();
 
 		const edge es = sorted_edge(u,v);
 		const auto it_es = collapsed_edges.find(es);

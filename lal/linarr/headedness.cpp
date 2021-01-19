@@ -56,8 +56,8 @@ inline uint32_t __headedness_rational(const directed_graph& g, const linear_arra
 	iterators::E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		const edge e = it.get_edge();
-		edges_to_right += pi[e.first] < pi[e.second];
+		const auto [u,v] = it.get_edge();
+		edges_to_right += pi[u] < pi[v];
 	}
 	return edges_to_right;
 }

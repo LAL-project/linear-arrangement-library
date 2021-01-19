@@ -46,7 +46,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <vector>
 using namespace std;
 
 // lal includes
@@ -103,7 +106,9 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	linear_arrangement& arr
 )
 {
+#if defined DEBUG
 	assert(ini <= fin);
+#endif
 
 	// sizes of the subtrees
 	const auto& children = M[r];
@@ -131,9 +136,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
-	for (const auto& p : children) {
-		const node vi = p.first;
-		const uint32_t ni = p.second;
+	for (const auto& [vi, ni] : children) {
 
 		// recursive call: make the interval of 'vi'
 		D += Dmin_Pr__optimal_interval_of(
@@ -187,8 +190,10 @@ uint32_t Dmin_Pr__optimal_interval_of(
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
+#if defined DEBUG
 	assert(t.is_rooted_tree());
 	assert(t.size_subtrees_valid());
+#endif
 
 	const uint32_t n = t.n_nodes();
 	if (n == 1) {
@@ -219,11 +224,12 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// to the sizes of the subtrees.
 	vector<vector<node_size>> M(n);
 	for (const auto& T : L) {
-		const node u = std::get<0>(T).first;
-		const node v = std::get<0>(T).second;
+		const auto [u, v] = std::get<0>(T);
 		const uint32_t nv = std::get<1>(T);
 		M[u].push_back(make_pair(v,nv));
+#if defined DEBUG
 		assert(t.has_edge(u,v));
+#endif
 	}
 
 #if defined DEBUG

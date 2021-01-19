@@ -169,11 +169,11 @@ void compute_data_gen_graphs
 	E_iterator it(g);
 	while (it.has_next()) {
 		it.next();
-		const edge e = it.get_edge();
-		const node s = e.first;
+		const auto [s,t] = it.get_edge();
+
 		const bigint ks = g.degree(s);
 		const neighbourhood& Ns = g.get_neighbours(s);
-		const node t = e.second;
+
 		const bigint kt = g.degree(t);
 		const neighbourhood& Nt = g.get_neighbours(t);
 

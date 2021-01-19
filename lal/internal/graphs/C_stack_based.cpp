@@ -90,9 +90,9 @@ inline uint32_t __compute_C_stack_based(
 		n-1, // length of the longest edge
 		edges.size(),
 		[&](const edge& e) -> size_t {
-			const edge se = edge_sorted_by_pos(e.first, e.second);
-			++size_adjN_u[se.first];
-			return my_abs_diff(pi[e.first],pi[e.second]);
+			const auto [u,v] = edge_sorted_by_pos(e.first, e.second);
+			++size_adjN_u[u];
+			return my_abs_diff(pi[u], pi[v]);
 		}
 		);
 
@@ -105,10 +105,9 @@ inline uint32_t __compute_C_stack_based(
 		}
 
 		// fill adjP and adjN at the same time
-		for (const edge& e : edges) {
-			const edge se = edge_sorted_by_pos(e.first, e.second);
-			const node u = se.first;	// pi[u] < pi[v]
-			const node v = se.second;
+		for (const auto& [uu, vv] : edges) {
+			// pi[u] < pi[v]
+			const auto [u,v] = edge_sorted_by_pos(uu, vv);
 			// oriented edge (u,v) "enters" node v
 			adjP[v].push_back(u);
 
