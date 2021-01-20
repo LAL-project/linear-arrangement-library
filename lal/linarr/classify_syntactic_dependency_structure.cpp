@@ -1,4 +1,4 @@
-/*********************************************************************
+	/*********************************************************************
  *
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
@@ -40,7 +40,6 @@
  ********************************************************************/
 
 // C++ includes
-#include <iostream>
 #if defined DEBUG
 #include <cassert>
 #endif
@@ -48,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/graphs/output.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/syntactic_dependency_structure_type.hpp>
 #include <lal/iterators/E_iterator.hpp>
@@ -178,32 +177,15 @@ bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi) {
 
 	// compute the yield of each node
 	vector<vector<position>> yields(n);
-
 	__get_yields(rT,pi, rT.get_root(), yields);
 
-	cout << "Yields:" << endl;
-	for (node u = 0; u < n; ++u) {
-	cout << u << ":";
-	for (size_t i = 0; i < yields[u].size(); ++i) {
-	cout << " " << yields[u][i];
-	}
-	cout << endl;
-	}
-
+	// test whether the tree is well nested
 	const bool is_well_nested = __are_yields_wellnested(n, yields);
-	cout << "Is well nested? " << std::boolalpha << is_well_nested << endl;
 
-	// discontinuities in the yields
+	// calculate degree of discontinuities in the yields
 	const uint32_t max_dis = (is_well_nested ? __get_n_discont(n, yields) : 0);
 
-	// this structure is well-nested
-	if (is_well_nested and max_dis > 0) {
-		// of gap degree at most 1?
-		if (max_dis == 1) {
-			return true;
-		}
-	}
-	return false;
+	return (is_well_nested and max_dis > 0 ? max_dis == 1 : false);
 }
 
 // The input tree has an "artificial" vertex pointing to the root of the
@@ -222,15 +204,12 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	bool classified = false;
 	bool _1ec = false;
 
-	E_iterator it1(rT);
-	while (it1.has_next() and not classified) {
-		it1.next();
+	E_iterator it(rT);
+	while (it.has_next() and not classified) {
+		it.next();
 		// check other edges crossing the current edge
-		const node s = it1.get_edge().first;
-		const node t = it1.get_edge().second;
-		cout << "Current edge: " << s << "," << t << endl;
+		const auto [s,t] = it.get_edge();
 		const auto [ps, pt] = sort_by_index(pi[s], pi[t]);
-		cout << "At position:  " << pi[s] << "," << pi[t] << endl;
 
 		// the edges crossing the current edge
 		vector<edge> crossing;
@@ -239,26 +218,17 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 		// of 'dep' in the linear arrangement
 		for (position r = ps + 1; r <= pt - 1; ++r) {
 			const node u = T[r];
-			cout << "    inspecting node " << u << " at " << r << endl;
 
-			// check out-neighbours
-			for (const node v : rT.get_out_neighbours(u)) {
-				cout << "        neighbour " << v << " at " << pi[v] << endl;
-				if (pi[v] < ps or pt < pi[v]) {
-					// the edge (u,v) crosses (s,t)
-					crossing.push_back(sort_by_index(u,v));
-					cout << "    edge " << u << "," << v << " crosses current." << endl;
-					cout << "    at   " << pi[u] << "," << pi[v] << endl;
-				}
+			neighbourhood neighs_u = rT.get_out_neighbours(u);
+			if (u != rT.get_root()) {
+				neighs_u.push_back(rT.get_in_neighbours(u)[0]);
 			}
-			// check in-neighbours
-			for (const node v : rT.get_in_neighbours(u)) {
-				cout << "        neighbour " << v << " at " << pi[v] << endl;
+
+			// check neighbours
+			for (const node v : neighs_u) {
 				if (pi[v] < ps or pt < pi[v]) {
 					// the edge (u,v) crosses (s,t)
 					crossing.push_back(sort_by_index(u,v));
-					cout << "    edge " << u << "," << v << " crosses current." << endl;
-					cout << "    at   " << pi[u] << "," << pi[v] << endl;
 				}
 			}
 		}
@@ -268,36 +238,43 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 			_1ec = true;
 		}
 		else if (crossing.size() >= 2) {
-			cout << "    Edge {" << s << "," << t << "} is crossed by: "
-				 << crossing.size() << " edges:"
-				 << endl;
-			for (const edge& e : crossing) {
-			cout << "        " << "{" << e.first << "," << e.second << "}" << endl;
-			}
 
 			// compute the number of common nodes among
 			// the edges that cross the current edge
 			set<node> common_nodes;
-			for (size_t i = 0; i < crossing.size(); ++i) {
+			for (size_t i = 0; i < crossing.size() and not classified; ++i) {
 				const auto [ss,tt] = crossing[i];
-				for (size_t j = i + 1; j < crossing.size(); ++j) {
+				for (size_t j = i + 1; j < crossing.size() and not classified; ++j) {
 					const auto [uu,vv] = crossing[j];
-					if (ss == uu or ss == vv) { common_nodes.insert(ss); }
-					if (tt == uu or tt == vv) { common_nodes.insert(tt); }
+
+					// if the intersection is empty then the tree is certainly
+					// NOT 1-EC
+					const int size_intersection =
+						ss == uu or ss == vv or tt == uu or tt == vv;
+
+					if (size_intersection == 0) {
+						_1ec = false;
+						classified = true;
+					}
+					else {
+						if (ss == uu or ss == vv) { common_nodes.insert(ss); }
+						if (tt == uu or tt == vv) { common_nodes.insert(tt); }
+					}
 				}
 			}
 
-			// If this tree does not belong to 1-EC,finish.
-			// Continue otherwise.
-			cout << "    common nodes found: " << common_nodes.size() << endl;
-			if (common_nodes.size() == 1) {
-				_1ec = true;
-			}
-			else {
-				// There are 2 or more common nodes.
-				// This class is not defined.
-				_1ec = false;
-				classified = true;
+			if (not classified) {
+				// If this tree does not belong to 1-EC,finish.
+				// Continue otherwise.
+				if (common_nodes.size() == 1) {
+					_1ec = true;
+				}
+				else {
+					// There are 2 or more common nodes.
+					// This class is not defined.
+					_1ec = false;
+					classified = true;
+				}
 			}
 		}
 	}
@@ -311,7 +288,6 @@ inline vector<bool> __get_syn_dep_tree_type(
 )
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
-#define nullify_none nullify(none)
 
 	bool is_some_class = false;
 	vector<bool> cl(__tree_structure_size, false);
@@ -358,7 +334,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 	// classify small trees
 	if (n <= 2) {
 		__set_type(syndepstr_type::projective);
-		nullify_none;
+		nullify(none);
 		return cl;
 	}
 
@@ -369,10 +345,10 @@ inline vector<bool> __get_syn_dep_tree_type(
 	if (n == 3) {
 		const auto t =
 			is_root_covered ?
-			syndepstr_type::projective : syndepstr_type::planar;
+			syndepstr_type::planar : syndepstr_type::projective;
 
 		__set_type(t);
-		nullify_none;
+		nullify(none);
 		return cl;
 	}
 
@@ -382,9 +358,6 @@ inline vector<bool> __get_syn_dep_tree_type(
 	// root of the input tree
 
 	const uint32_t C = n_crossings(rT, pi);
-	const uint32_t _C = n_crossings(_rT, _pi);
-	cout << "C= " << C << endl;
-	cout << "_C= " << _C << endl;
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
@@ -392,10 +365,13 @@ inline vector<bool> __get_syn_dep_tree_type(
 			__is_root_covered(rT, pi) ?
 			syndepstr_type::planar : syndepstr_type::projective
 		);
+
+		const uint32_t _C = n_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
 		}
-		nullify_none;
+
+		nullify(none);
 		return cl;
 	}
 
@@ -412,18 +388,17 @@ inline vector<bool> __get_syn_dep_tree_type(
 	// ---------------------------------------------------
 	// is the structure 1-Endpoint Crossing?
 
-	if (_C > 0 and __is_1EC(_rT, _pi)) {
+	if (__is_1EC(_rT, _pi)) {
 		__set_type(syndepstr_type::EC1);
 	}
 
 	if (is_some_class) {
-		nullify_none;
+		nullify(none);
 	}
 	return cl;
 }
 
 vector<bool> classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
-	cout << "-------------------------" << endl;
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
