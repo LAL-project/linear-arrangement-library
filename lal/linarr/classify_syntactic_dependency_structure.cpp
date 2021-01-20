@@ -72,10 +72,7 @@ inline bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi
 	E_iterator it(T);
 	while (it.has_next()) {
 		it.next();
-		const edge e = it.get_edge();
-		const node s = e.first;
-		const node t = e.second;
-
+		const auto [s,t] = it.get_edge();
 		const bool covered =
 			(pi[s] < pi[R] and pi[R] < pi[t]) or
 			(pi[t] < pi[R] and pi[R] < pi[s]);
@@ -91,7 +88,6 @@ inline bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi
 inline void __get_yields(
 	const rooted_tree& t, const linear_arrangement& pi,
 	node u,
-	vector<bool>& vis,
 	vector<vector<position>>& yields
 )
 {
@@ -99,22 +95,10 @@ inline void __get_yields(
 	auto& yu = yields[u];
 	yu.push_back(pi[u]);
 
-	vis[u] = true;
-	if (t.degree(u) == 1) {
-		// it is either the root or a leaf
-		if (vis[ t.get_neighbours(u)[0] ]) {
-			// its only neighbour has been visited --> leaf
-			// stop recursion
-			return;
-		}
-	}
-
-	for (node v : t.get_neighbours(u)) {
-		if (not vis[v]) {
-			__get_yields(t,pi, v, vis, yields);
-			const auto& yv = yields[v];
-			yu.insert(yu.end(), yv.begin(), yv.end());
-		}
+	for (node v : t.get_out_neighbours(u)) {
+		__get_yields(t,pi, v, yields);
+		const auto& yv = yields[v];
+		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
 	internal::bit_sort(
@@ -123,17 +107,29 @@ inline void __get_yields(
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
-inline bool __disjoint_yields(
+inline bool __are_yields_wellnested(
 	const uint32_t n, const vector<vector<position>>& yields
 )
 {
-	bool disjoint_yields = true;
 	// for every pair of nodes
 	for (node u = 0; u < n; ++u) {
 	for (node v = u + 1; v < n; ++v) {
 		const auto& yu = yields[u];
 		const auto& yv = yields[v];
 
+		// ensure the yields have empty intersection
+		vector<position> inter;
+		std::set_intersection(
+			yu.begin(), yu.end(),
+			yv.begin(), yv.end(),
+			std::back_inserter(inter)
+		);
+		if (inter.size() > 0) {
+			// ignore intersecting yeilds
+			continue;
+		}
+
+		// ensure the yields do not 'cross'
 		for (size_t iu_1 = 0;        iu_1 < yu.size(); ++iu_1) {
 		const position u1 = yu[iu_1];
 		for (size_t iu_2 = iu_1 + 1; iu_2 < yu.size(); ++iu_2) {
@@ -148,34 +144,70 @@ inline bool __disjoint_yields(
 		// sorted values v1,v2
 		const auto [sv1,sv2] = sort_by_index(v1, v2);
 
-			disjoint_yields =
+			const bool edges_cross =
 				(su1 < sv1 and sv1 < su2 and su2 < sv2) or
 				(sv1 < su1 and su1 < sv2 and sv2 < su2);
 
-			if (disjoint_yields) { return true; }
+			if (edges_cross) { return false; }
 
 		}}}}
 	}}
-	return false;
+	return true;
 }
 
 inline
 uint32_t __get_n_discont(const uint32_t n, const vector<vector<node>>& yields)
 {
-	uint32_t max_dis = 0;
+	uint32_t max_g = 0;
 	for (node u = 0; u < n; ++u) {
 		const auto& yu = yields[u];
-		uint32_t dis = 0;
+		uint32_t g = 0;
 		for (size_t i = 1; i < yu.size(); ++i) {
 			if (yu[i] - yu[i - 1] > 1) {
-				++dis;
+				++g;
 			}
 		}
-		max_dis = std::max(max_dis, dis);
+		max_g = std::max(max_g, g);
 	}
-	return max_dis;
+	return max_g;
 }
 
+inline
+bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi) {
+	const uint32_t n = rT.n_nodes();
+
+	// compute the yield of each node
+	vector<vector<position>> yields(n);
+
+	__get_yields(rT,pi, rT.get_root(), yields);
+
+	cout << "Yields:" << endl;
+	for (node u = 0; u < n; ++u) {
+	cout << u << ":";
+	for (size_t i = 0; i < yields[u].size(); ++i) {
+	cout << " " << yields[u][i];
+	}
+	cout << endl;
+	}
+
+	const bool is_well_nested = __are_yields_wellnested(n, yields);
+	cout << "Is well nested? " << std::boolalpha << is_well_nested << endl;
+
+	// discontinuities in the yields
+	const uint32_t max_dis = (is_well_nested ? __get_n_discont(n, yields) : 0);
+
+	// this structure is well-nested
+	if (is_well_nested and max_dis > 0) {
+		// of gap degree at most 1?
+		if (max_dis == 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// The input tree has an "artificial" vertex pointing to the root of the
+// actual (input) tree. This artificial vertex was added to the arrangement.
 inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	// use the paper in
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
@@ -231,7 +263,11 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 			}
 		}
 
-		if (crossing.size() > 1) {
+		if (crossing.size() == 1) {
+			// only one edge
+			_1ec = true;
+		}
+		else if (crossing.size() >= 2) {
 			cout << "    Edge {" << s << "," << t << "} is crossed by: "
 				 << crossing.size() << " edges:"
 				 << endl;
@@ -274,95 +310,110 @@ inline vector<bool> __get_syn_dep_tree_type(
 	const rooted_tree& rT, const linear_arrangement& pi
 )
 {
-#define nullify_none cl[enum_to_sizet(syndepstr_type::none)] = false;
+#define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
+#define nullify_none nullify(none)
 
 	bool is_some_class = false;
-	const auto __set_type =
-	[&](vector<bool>& cls, const syndepstr_type& ts) {
+	vector<bool> cl(__tree_structure_size, false);
+	const auto __set_type = [&](const syndepstr_type& ts) {
 		is_some_class = true;
-		cls[enum_to_sizet(ts)] = true;
+		cl[enum_to_sizet(ts)] = true;
 
 		if (ts == syndepstr_type::projective) {
-			cls[enum_to_sizet(syndepstr_type::planar)] = true;
-			cls[enum_to_sizet(syndepstr_type::EC1)] = true;
-			cls[enum_to_sizet(syndepstr_type::WG1)] = true;
+			cl[enum_to_sizet(syndepstr_type::planar)] = true;
+			cl[enum_to_sizet(syndepstr_type::EC1)] = true;
+			cl[enum_to_sizet(syndepstr_type::WG1)] = true;
 		}
 		else if (ts == syndepstr_type::planar) {
-			cls[enum_to_sizet(syndepstr_type::EC1)] = true;
-			cls[enum_to_sizet(syndepstr_type::WG1)] = true;
+			cl[enum_to_sizet(syndepstr_type::EC1)] = true;
+			cl[enum_to_sizet(syndepstr_type::WG1)] = true;
 		}
 	};
-
-	vector<bool> cl(__tree_structure_size, false);
 	cl[static_cast<size_t>(syndepstr_type::none)] = true;
-	if (rT.n_nodes() <= 2) {
-		__set_type(cl, syndepstr_type::projective);
+
+
+	const uint32_t n = rT.n_nodes();
+
+	// -------------------------------------------------------------------------
+
+	// add an artificial vertex first
+	rooted_tree _rT(1);
+	_rT.set_root(0);
+	_rT.disjoint_union(rT);
+#if defined DEBUG
+	_rT.find_edge_orientation();
+	assert(_rT.is_rooted_tree());
+#endif
+	// update the linear arrangement
+	linear_arrangement _pi(pi.size() + 1);
+	_pi[0] = 0;
+	std::copy(pi.begin(), pi.end(), _pi.begin() + 1);
+	std::transform(
+		_pi.begin() + 1, _pi.end(),
+		_pi.begin() + 1,
+		[](const position p) -> position { return p + 1; }
+	);
+
+	// -------------------------------------------------------------------------
+	// classify small trees
+	if (n <= 2) {
+		__set_type(syndepstr_type::projective);
 		nullify_none;
 		return cl;
 	}
 
-	// for the case of n <= 3, C is trivially 0
 	const bool is_root_covered = __is_root_covered(rT, pi);
-	if (rT.n_nodes() == 3) {
+
+	// the case of n == 3, C is trivially 0, and we only need to test
+	// whether the root is covered or not.
+	if (n == 3) {
 		const auto t =
 			is_root_covered ?
-			syndepstr_type::planar : syndepstr_type::projective;
-		__set_type(cl, t);
+			syndepstr_type::projective : syndepstr_type::planar;
+
+		__set_type(t);
 		nullify_none;
 		return cl;
 	}
 
+	// -------------------------------------------------------------------------
+	// n >= 4
+	// from this point on we need an artificial vertex pointing to the
+	// root of the input tree
+
 	const uint32_t C = n_crossings(rT, pi);
+	const uint32_t _C = n_crossings(_rT, _pi);
 	cout << "C= " << C << endl;
+	cout << "_C= " << _C << endl;
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
-		__set_type(cl,
-		__is_root_covered(rT, pi) ?
-			syndepstr_type::planar :
-			syndepstr_type::projective
+		__set_type(
+			__is_root_covered(rT, pi) ?
+			syndepstr_type::planar : syndepstr_type::projective
 		);
+		if (_C > 0 and not __is_1EC(_rT, _pi)) {
+			nullify(EC1);
+		}
 		nullify_none;
 		return cl;
 	}
 
-	// ++++++++++++++++++++++++
-	// non-projective structure
-
-	// if C=1 then the structure is 1-Endpoint Crossing
-	if (C == 1) {
-		__set_type(cl, syndepstr_type::EC1);
-	}
+	// +++++++++++++++++++++++++
+	// non-projective structures
 
 	// ---------------------------------------------------
 	// is the structure Well-Nest of Gap degree at most 1?
 
-	// compute the yield of each node
-	const uint32_t n = rT.n_nodes();
-	vector<vector<position>> yields(n);
-	vector<bool> vis(n, false);
-
-	__get_yields(rT,pi, rT.get_root(), vis, yields);
-
-	// are the yields non-interleaving?
-	const bool disjoint_yields = __disjoint_yields(n, yields);
-
-	// discontinuities in the yields
-	const uint32_t max_dis = (disjoint_yields ? __get_n_discont(n, yields) : 0);
-
-	// this structure is well-nested
-	if (disjoint_yields and max_dis > 0) {
-		// of gap degree at most 1?
-		if (max_dis == 1) {
-			__set_type(cl, syndepstr_type::WG1);
-		}
+	if (__is_WG1(rT, pi)) {
+		__set_type(syndepstr_type::WG1);
 	}
 
 	// ---------------------------------------------------
 	// is the structure 1-Endpoint Crossing?
 
-	if (__is_1EC(rT, pi)) {
-		__set_type(cl, syndepstr_type::EC1);
+	if (_C > 0 and __is_1EC(_rT, _pi)) {
+		__set_type(syndepstr_type::EC1);
 	}
 
 	if (is_some_class) {
@@ -372,6 +423,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 }
 
 vector<bool> classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
+	cout << "-------------------------" << endl;
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
