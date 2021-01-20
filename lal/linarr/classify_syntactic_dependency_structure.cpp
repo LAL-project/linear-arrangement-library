@@ -366,6 +366,7 @@ inline vector<bool> __get_syn_dep_tree_type(
 			syndepstr_type::planar : syndepstr_type::projective
 		);
 
+		// remove 1-ec from the types when needed
 		const uint32_t _C = n_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
