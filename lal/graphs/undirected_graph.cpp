@@ -213,7 +213,7 @@ undirected_graph& undirected_graph::remove_edges(
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
-		assert(not has_edge(u,v));
+		assert(has_edge(u,v));
 #endif
 
 		neighbourhood& nu = m_adjacency_list[u];

@@ -254,7 +254,7 @@ directed_graph& directed_graph::remove_edges(
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
-		assert(not has_edge(u,v));
+		assert(has_edge(u,v));
 #endif
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
