@@ -61,6 +61,7 @@ class AVL {
 			root = nullptr;
 		}
 
+		[[nodiscard]]
 		size_t remove(const T& x) {
 			size_t top = 0;
 			root = remove(root, x, top);
@@ -142,7 +143,7 @@ class AVL {
 			tree_node() = default;
 			~tree_node() = default;
 
-			void compute_height() {
+			void compute_height() noexcept {
 
 				const int64_t lh =
 				(left != nullptr ? static_cast<int64_t>(left->height) : -1);
@@ -153,12 +154,12 @@ class AVL {
 				height = static_cast<uint64_t>(std::max(lh, rh)) + 1;
 				bf = rh - lh;
 			}
-			void compute_size() {
+			void compute_size() noexcept {
 				const uint64_t ls = (left != nullptr ? left->tree_size : 0);
 				const uint64_t rs = (right != nullptr ? right->tree_size : 0);
 				tree_size = 1 + ls + rs;
 			}
-			void update() {
+			void update() noexcept {
 				compute_size();
 				compute_height();
 			}
@@ -177,10 +178,12 @@ class AVL {
 				n->side = side;
 			}
 
-			uint64_t left_size() const {
+			[[nodiscard]]
+			uint64_t left_size() const noexcept {
 				return (left == nullptr ? 0 : left->tree_size);
 			}
-			uint64_t right_size() const {
+			[[nodiscard]]
+			uint64_t right_size() const noexcept {
 				return (right == nullptr ? 0 : right->tree_size);
 			}
 		};
@@ -210,7 +213,12 @@ class AVL {
 
 		// rotations of nodes
 		//     assume _n has a left subtree
+		[[nodiscard]]
 		tree_node *right_rotation(tree_node *_n) {
+#if defined DEBUG
+			assert(_n != nullptr);
+#endif
+
 			tree_node *A = _n;
 			tree_node *P = A->parent;
 			tree_node *B = A->left;
@@ -256,7 +264,12 @@ class AVL {
 		}
 		// rotations of nodes
 		//     assume _n has a right subtree
+		[[nodiscard]]
 		tree_node *left_rotation(tree_node *_n) {
+#if defined DEBUG
+			assert(_n != nullptr);
+#endif
+
 			tree_node *B = _n;
 			tree_node *A = B->right;
 
@@ -295,21 +308,26 @@ class AVL {
 		// cases of imbalances:
 		//     left_* cases assume that _n has left subtree
 		//     right_* cases assume that _n has right subtree
+		[[nodiscard]]
 		tree_node *left_left_case(tree_node *n) {
 			return right_rotation(n);
 		}
+		[[nodiscard]]
 		tree_node *left_right_case(tree_node *n) {
 			n->left = left_rotation(n->left);
 			return right_rotation(n);
 		}
+		[[nodiscard]]
 		tree_node *right_right_case(tree_node *n) {
 			return left_rotation(n);
 		}
+		[[nodiscard]]
 		tree_node *right_left_case(tree_node *n) {
 			n->right = right_rotation(n->right);
 			return left_rotation(n);
 		}
 		// returns the root of the new balanced tree
+		[[nodiscard]]
 		tree_node *balance(tree_node *n) {
 			if (n == nullptr) { return nullptr; }
 #if defined DEBUG
@@ -356,6 +374,7 @@ class AVL {
 		 *
 		 * Returns the newly created tree node
 		 */
+		[[nodiscard]]
 		tree_node *insert(tree_node *p, tree_node *n, char s, const T& x) {
 			// create a new node
 			if (n == nullptr) {
@@ -397,6 +416,7 @@ class AVL {
 		/* ------------------- */
 		/* REMOVAL OF ELEMENTS */
 
+		[[nodiscard]]
 		tree_node *remove_leftmost(tree_node *n, T *k = nullptr) {
 			if (n->left == nullptr) {
 				// retrieve leftmost key
@@ -414,6 +434,7 @@ class AVL {
 			n->update();
 			return balance(n);
 		}
+		[[nodiscard]]
 		tree_node *remove_rightmost(tree_node *n, T *k = nullptr) {
 			if (n->right == nullptr) {
 				// this is the rightmost
@@ -439,6 +460,7 @@ class AVL {
 		// with exist in the tree then we will always find this element in the
 		// tree, so there will be work to be done after each recursive call to
 		// 'remove'.
+		[[nodiscard]]
 		tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) {
 			if (n == nullptr) {
 				// not found
@@ -525,6 +547,7 @@ class AVL {
 		// pre:
 		// -> height(T1) >= height(T2)
 		// -> L < S
+		[[nodiscard]]
 		tree_node *join_taller(tree_node *T1, tree_node *T2) {
 #if defined DEBUG
 			assert(T1 != nullptr);
@@ -594,6 +617,7 @@ class AVL {
 		// pre:
 		// -> height(T1) < height(T2)
 		// -> L < S
+		[[nodiscard]]
 		tree_node *join_shorter(tree_node *T1, tree_node *T2) {
 #if defined DEBUG
 			assert(T1 != nullptr);
@@ -660,6 +684,7 @@ class AVL {
 		/* ------ */
 		/* OTHERS */
 
+		[[nodiscard]]
 		tree_node *_make_tree(
 			const std::vector<T>& v,
 			int64_t l, int64_t r, tree_node *p, char s
