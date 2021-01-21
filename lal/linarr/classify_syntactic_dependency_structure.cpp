@@ -291,6 +291,8 @@ inline vector<bool> __get_syn_dep_tree_type(
 
 	bool is_some_class = false;
 	vector<bool> cl(__tree_structure_size, false);
+	cl[static_cast<size_t>(syndepstr_type::none)] = true;
+
 	const auto __set_type = [&](const syndepstr_type& ts) {
 		is_some_class = true;
 		cl[enum_to_sizet(ts)] = true;
@@ -305,10 +307,9 @@ inline vector<bool> __get_syn_dep_tree_type(
 			cl[enum_to_sizet(syndepstr_type::WG1)] = true;
 		}
 	};
-	cl[static_cast<size_t>(syndepstr_type::none)] = true;
-
 
 	const uint32_t n = rT.n_nodes();
+	if (n == 0) { return cl; }
 
 	// -------------------------------------------------------------------------
 
@@ -322,7 +323,9 @@ inline vector<bool> __get_syn_dep_tree_type(
 #endif
 	// update the linear arrangement
 	linear_arrangement _pi(pi.size() + 1);
-	_pi[0] = 0;
+	if (_pi.size() > 0) {
+		_pi[0] = 0;
+	}
 	std::copy(pi.begin(), pi.end(), _pi.begin() + 1);
 	std::transform(
 		_pi.begin() + 1, _pi.end(),

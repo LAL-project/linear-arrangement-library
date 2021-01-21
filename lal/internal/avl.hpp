@@ -42,6 +42,9 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <cinttypes>
 #include <vector>
 #include <cmath>
@@ -70,7 +73,10 @@ class AVL {
 			// do nothing if there is no data, duh
 			if (v.size() == 0) { return; }
 			// make the tree with the new info
-			tree_node *n = _make_tree(v, 0, v.size() - 1, nullptr, '0');
+			tree_node *n =
+			_make_tree(
+				v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0'
+			);
 
 			// join the two trees
 
@@ -137,14 +143,19 @@ class AVL {
 			~tree_node() = default;
 
 			void compute_height() {
-				int64_t lh = (left != nullptr ? left->height : -1);
-				int64_t rh = (right != nullptr ? right->height : -1);
-				height = std::max(lh, rh) + 1;
+
+				const int64_t lh =
+				(left != nullptr ? static_cast<int64_t>(left->height) : -1);
+
+				const int64_t rh =
+				(right != nullptr ? static_cast<int64_t>(right->height) : -1);
+
+				height = static_cast<uint64_t>(std::max(lh, rh)) + 1;
 				bf = rh - lh;
 			}
 			void compute_size() {
-				uint64_t ls = (left != nullptr ? left->tree_size : 0);
-				uint64_t rs = (right != nullptr ? right->tree_size : 0);
+				const uint64_t ls = (left != nullptr ? left->tree_size : 0);
+				const uint64_t rs = (right != nullptr ? right->tree_size : 0);
 				tree_size = 1 + ls + rs;
 			}
 			void update() {
@@ -306,11 +317,10 @@ class AVL {
 #endif
 
 			if (std::abs(n->bf) <= 1) { return n; }
-
 			return (
-				n->bf == -2 ?
-					(n->left->bf <= 0 ? left_left_case(n) : left_right_case(n)) :
-					(n->right->bf >= 0 ? right_right_case(n) : right_left_case(n))
+			n->bf == -2 ?
+				(n->left->bf <= 0 ? left_left_case(n) : left_right_case(n)) :
+				(n->right->bf >= 0 ? right_right_case(n) : right_left_case(n))
 			);
 
 			/*
@@ -478,6 +488,8 @@ class AVL {
 				return R;
 			}
 
+			// L != nullptr and R != nullptr
+
 			// find the smallest value in the right subtree,
 			// or the largest in the left subtree,
 			// depending on the height
@@ -515,10 +527,17 @@ class AVL {
 		// -> L < S
 		tree_node *join_taller(tree_node *T1, tree_node *T2) {
 #if defined DEBUG
+			assert(T1 != nullptr);
+			assert(T2 != nullptr);
 			assert(T1->tree_size > 1 and T2->tree_size > 1);
 #endif
+
 			// we need a new node anyway
 			tree_node *x = new tree_node();
+#if defined DEBUG
+			assert(x != nullptr);
+#endif
+
 			// remove left-most element in T2
 			T2 = remove_leftmost(T2, &(x->key));
 			// find right-most node such that its height
@@ -531,7 +550,14 @@ class AVL {
 				hp = (v->bf == -1 ? hp - 2 : hp - 1);
 				v = v->right;
 			}
+
+#if defined DEBUG
+			assert(v != nullptr);
+#endif
+
+			// NOTE: 'u' is allowed to be nullptr!
 			tree_node *u = v->parent;
+
 			x->side = '0';
 			x->parent = u;
 			x->left = v;
@@ -541,9 +567,12 @@ class AVL {
 			T2->side = 'r';
 			T2->parent = x;
 			x->update();
+
+			// this is why 'u' is allowed to be nullptr!
 			if (u == nullptr) {
 				return balance(x);
 			}
+
 			u->right = x;
 			x->side = 'r';
 			x = balance(x);
@@ -553,6 +582,10 @@ class AVL {
 				u = balance(u);
 				u = u->parent;
 			}
+#if defined DEBUG
+			assert(u != nullptr);
+#endif
+
 			u->update();
 			return balance(u);
 		}
@@ -563,11 +596,17 @@ class AVL {
 		// -> L < S
 		tree_node *join_shorter(tree_node *T1, tree_node *T2) {
 #if defined DEBUG
+			assert(T1 != nullptr);
+			assert(T2 != nullptr);
 			assert(T1->tree_size > 1 and T2->tree_size > 1);
 #endif
 
 			// we need a new node anyway
 			tree_node *x = new tree_node();
+#if defined DEBUG
+			assert(x != nullptr);
+#endif
+
 			// remove right-most element in T1
 			T1 = remove_rightmost(T1, &(x->key));
 			// find right-most node such that its height
@@ -580,7 +619,13 @@ class AVL {
 				hp = (v->bf == -1 ? hp - 2 : hp - 1);
 				v = v->left;
 			}
+#if defined DEBUG
+			assert(v != nullptr);
+#endif
+
+			// NOTE: 'u' is allowed to be nullptr!
 			tree_node *u = v->parent;
+
 			x->side = '0';
 			x->parent = u;
 			x->right = v;
@@ -590,6 +635,8 @@ class AVL {
 			T1->side = 'l';
 			T1->parent = x;
 			x->update();
+
+			// this is why 'u' is allowed to be nullptr!
 			if (u == nullptr) {
 				return balance(x);
 			}
@@ -602,6 +649,10 @@ class AVL {
 				u = balance(u);
 				u = u->parent;
 			}
+#if defined DEBUG
+			assert(u != nullptr);
+#endif
+
 			u->update();
 			return balance(u);
 		}
@@ -614,13 +665,15 @@ class AVL {
 			int64_t l, int64_t r, tree_node *p, char s
 		)
 		{
-			if (l > r) {
-				return nullptr;
-			}
-			int64_t m = (l + r)/2;
+			if (l > r) { return nullptr; }
+			const int64_t m = (l + r)/2;
+#if defined DEBUG
+			assert(m >= 0);
+#endif
+
 			// make a node with the element in the middle
 			tree_node *n = new tree_node();
-			n->key = v[m];
+			n->key = v[static_cast<uint64_t>(m)];
 			// make sure pointers are correct
 			n->parent = p;
 			n->side = s;

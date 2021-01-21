@@ -151,7 +151,7 @@ void classify_tree(
 
 	// fill in data
 	for (lal::node u = 0; u < N; ++u) {
-		const uint32_t du = get_degree(u);
+		const int32_t du = static_cast<int32_t>(get_degree(u));
 		deg_internal[u] += (du > 1)*du;
 
 		n_deg_eq_1 += du == 1;

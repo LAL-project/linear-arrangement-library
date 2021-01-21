@@ -20,16 +20,29 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 #QMAKE_LFLAGS += -pg
 
 QMAKE_CXXFLAGS +=			\
-    -Wall					\   # contains -Wpessimizing-move
-	-Wpedantic				\
-	-Wshadow				\
-	-Wextra					\   # contains -Wredundant-move
-	-Wconversion			\
-	-Wold-style-cast		\
-	-Wrestrict				\
-	-Wduplicated-cond		\
-	-Wnon-virtual-dtor		\
-	-Woverloaded-virtual
+    -Wall					\
+	-Wextra					\ # reasonable and standard
+	-Wshadow				\ # warn if a variable declaration shadows one from
+	                        \ # a parent context
+	-Wnon-virtual-dtor		\ # warn if a class with virtual functions has
+	                        \ # non-virtual destructors
+	-Wold-style-cast		\ # warn for c-style casts
+	-Wcast-align			\ # warn for potential performance problem casts
+	-Wunused				\ # warn on anything being unused
+	-Woverloaded-virtual	\ # warn if a virtual is overloaded (not overridden)
+	-Wpedantic				\ # warn if non-standard C++ is used
+	-Wconversion			\ # warn on type conversions that may lose data
+	-Wsign-conversion		\ # warn on sign conversions
+	-Wnull-dereference		\ # warn if a null dereference is detected
+	-Wdouble-promotion		\ # warn if float is implicitly promoted to double
+	-Wformat=2				\ # warn on security issues around functions that
+	                        \ # format output
+	-Wduplicated-cond		\ # warn if if-then-else chan has duplicated conditions
+	-Wduplicated-branches	\ # warn if if-then-else have duplicated code
+	-Wlogical-op			\ # warn about logical operations being used where
+	                        \ # bitwise were probably prefered
+	-Wuseless-cast			\ # warn if you perform a cast to the same type
+	-Wrestrict
 
 QMAKE_CXXFLAGS += -fopenmp
 

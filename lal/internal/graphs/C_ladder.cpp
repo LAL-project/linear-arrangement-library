@@ -51,6 +51,8 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
 
+#define to_uint32(x) static_cast<uint32_t>(x)
+
 namespace lal {
 using namespace graphs;
 
@@ -93,8 +95,8 @@ inline uint32_t __compute_C_ladder(
 				C += S - L1[q];
 				++L1[q];
 			}*/
-			C += bn[v]*(S - L1[q]);
-			L1[q] += bn[v];
+			C += to_uint32(bn[v])*(S - L1[q]);
+			L1[q] += to_uint32(bn[v]);
 			// --
 
 			bn[v] = 0;

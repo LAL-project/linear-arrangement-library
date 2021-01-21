@@ -53,6 +53,7 @@ using namespace std;
 #include <lal/internal/graphs/utils.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
+#define to_uint32(x) static_cast<uint32_t>(x)
 
 namespace lal {
 using namespace graphs;
@@ -95,7 +96,7 @@ inline uint32_t __compute_C_dyn_prog(
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
 		// the arrangement
-		k -= (bn[inv_pi[0]] + bn[inv_pi[1]]);
+		k -= to_uint32(bn[inv_pi[0]] + bn[inv_pi[1]]);
 		bn[inv_pi[0]] = bn[inv_pi[1]] = 0;
 
 		// this is done because there is no need to
@@ -103,7 +104,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 		// Now we start filling M at the third column
 		for (uint32_t i = 3; i < n; ++i) {
-			k -= bn[inv_pi[i - 1]];
+			k -= to_uint32(bn[inv_pi[i - 1]]);
 
 			// the row corresponding to node 'u' in M is
 			// the same as its position in the sequence.

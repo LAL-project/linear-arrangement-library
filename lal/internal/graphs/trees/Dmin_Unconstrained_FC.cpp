@@ -55,6 +55,7 @@ using namespace std;
 #define NO_ANCHOR 0
 
 #define to_uint32(x) static_cast<uint32_t>(x)
+#define to_int32(x) static_cast<int32_t>(x)
 
 typedef pair<uint32_t,lal::node> size_node;
 typedef vector<size_node> ordering;
@@ -64,12 +65,12 @@ using namespace graphs;
 
 namespace internal {
 
-int calculate_q(uint32_t n, const ordering & ord) {
-	const uint32_t k = to_uint32(ord.size() - 1);
+int calculate_q(uint32_t n, const ordering& ord) {
+	const uint32_t k = to_uint32(ord.size()) - 1;
 	const uint32_t t_0 = ord[0].first;
 
 	// Maximum possible p_alpha
-	int q = k/2;
+	int32_t q = to_int32(k)/2;
 	uint32_t sum = 0;
 	for (uint32_t i = 0; i <= 2*to_uint32(q); ++i) {
 		sum += ord[i].first;
@@ -95,8 +96,7 @@ int calculate_q(uint32_t n, const ordering & ord) {
 
 int calculate_p(uint32_t n, const ordering& ord) {
 	if (ord.size() < 2) {
-		uint32_t p = -1;
-		return p;
+		return -1;
 	}
 
 	// number of subtrees (T_0, T_1, ..., T_k)
@@ -126,8 +126,8 @@ int calculate_p(uint32_t n, const ordering& ord) {
 
 }
 
-void get_P(uint32_t p, uint32_t i, vector<uint32_t>& v) {
-	v = vector<uint32_t>(2*p + 1 + 1, -1);
+vector<uint32_t> get_P(uint32_t p, uint32_t i) {
+	vector<uint32_t> v(2*p + 1 + 1);
 	uint32_t pos = to_uint32(v.size() - 1);
 	uint32_t right_pos = pos;
 	uint32_t left_pos = 1;
@@ -150,10 +150,12 @@ void get_P(uint32_t p, uint32_t i, vector<uint32_t>& v) {
 			++j;
 		}
 	}
+
+	return v;
 }
 
-void get_Q(uint32_t q, uint32_t i, vector<uint32_t>& v) {
-	v = vector<uint32_t>(2*q + 1, -1);
+vector<uint32_t> get_Q(uint32_t q, uint32_t i) {
+	vector<uint32_t> v(2*q + 1);
 	uint32_t pos = to_uint32(v.size() - 1);
 	uint32_t right_pos = pos;
 	uint32_t left_pos = 1;
@@ -176,6 +178,7 @@ void get_Q(uint32_t q, uint32_t i, vector<uint32_t>& v) {
 			++j;
 		}
 	}
+	return v;
 }
 
 void get_ordering(const free_tree& t, node u, ordering& ord) {
@@ -293,8 +296,8 @@ void calculate_mla_chung(
 			}
 
 			for (uint32_t i = 0; i <= 2*uq; ++i) {
-				vector<uint32_t> Q_i;
-				get_Q(q, i, Q_i);
+				const vector<uint32_t> Q_i = get_Q(q, i);
+
 				t.add_edge(u - 1, ord[i].second - 1);
 
 				uint32_t c_i = 0;
@@ -402,8 +405,7 @@ void calculate_mla_chung(
 			}
 
 			for (uint32_t i = 0; i <= 2*up + 1; ++i) {
-				vector<uint32_t> P_i;
-				get_P(p, i, P_i);
+				const vector<uint32_t> P_i = get_P(p, i);
 				t.add_edge(one_node - 1, ord[i].second - 1, false, false);
 
 				uint32_t c_i = 0;

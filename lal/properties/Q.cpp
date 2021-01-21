@@ -51,6 +51,8 @@ using namespace std;
 #include <lal/iterators/E_iterator.hpp>
 
 #define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
+#define to_int64(x) static_cast<int64_t>(x)
+
 inline int64_t sum(uint32_t n, uint32_t t) {
 	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
 }
@@ -69,7 +71,7 @@ integer size_Q_integer(const undirected_graph& g) {
 	// substract sum of squared degrees
 	for (node u = 0; u < g.n_nodes(); ++u) {
 		const uint64_t ku = g.degree(u);
-		q2 -= ku*ku;
+		q2 -= to_int64(ku*ku);
 	}
 
 	return q2/2;

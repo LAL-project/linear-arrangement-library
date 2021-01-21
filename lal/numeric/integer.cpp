@@ -55,6 +55,7 @@ using namespace std;
  * converts the result into an actual uint64_t (using static cast).
  */
 #define my_abs(x) static_cast<uint64_t>((x < 0 ? -x : x))
+#define to_uint64(x) static_cast<uint64_t>(x)
 
 namespace lal {
 namespace numeric {
@@ -208,7 +209,7 @@ integer integer::operator+ (int64_t i) const		{ integer a(*this); a += i; return
 integer integer::operator+ (const integer& i) const	{ integer a(*this); a += i;	return a; }
 
 integer& integer::operator+= (int64_t i) {
-	if (i > 0) {	mpz_add_ui(m_val, m_val, i);			}
+	if (i > 0) {	mpz_add_ui(m_val, m_val, to_uint64(i));	}
 	else {			mpz_sub_ui(m_val, m_val, my_abs(i));	}
 	return *this;
 }
@@ -220,7 +221,7 @@ integer integer::operator- (const integer& i) const	{ integer a(*this); a -= i;	
 
 integer& integer::operator- ()						{ mpz_neg(m_val, m_val); return *this; }
 integer& integer::operator-= (int64_t i)			{
-	if (i > 0) {	mpz_sub_ui(m_val, m_val, i);			}
+	if (i > 0) {	mpz_sub_ui(m_val, m_val, to_uint64(i));	}
 	else {			mpz_add_ui(m_val, m_val, my_abs(i));	}
 	return *this;
 }
