@@ -71,28 +71,28 @@ class graph {
 		/* CONSTRUCTORS */
 
 		/// Empty constructor.
-		graph();
+		graph() noexcept;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		graph(uint32_t n);
+		graph(uint32_t n) noexcept;
 		/// Copy constructor.
-		graph(const graph&);
+		graph(const graph&) noexcept;
 #ifndef SWIG
 		/// Move constructor.
-		graph(graph&&);
+		graph(graph&&) noexcept;
 #endif
 		/// Destructor.
-		virtual ~graph();
+		virtual ~graph() noexcept;
 
 		/* OPERATORS */
 
 #ifndef SWIG
 		/// Copy assignment operator.
-		graph& operator= (const graph&);
+		graph& operator= (const graph&) noexcept;
 		/// Move assignment operator.
-		graph& operator= (graph&&);
+		graph& operator= (graph&&) noexcept;
 #endif
 
 		/* MODIFIERS */

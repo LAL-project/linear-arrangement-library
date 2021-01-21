@@ -70,28 +70,28 @@ class directed_graph : virtual public graph {
 		/* CONSTRUCTORS */
 
 		/// Empty constructor.
-		directed_graph();
+		directed_graph() noexcept;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		directed_graph(uint32_t n);
+		directed_graph(uint32_t n) noexcept;
 		/// Copy constructor.
-		directed_graph(const directed_graph&);
+		directed_graph(const directed_graph&) noexcept;
 #ifndef SWIG
 		/// Move constructor.
-		directed_graph(directed_graph&&);
+		directed_graph(directed_graph&&) noexcept;
 #endif
 		/// Destructor.
-		virtual ~directed_graph();
+		virtual ~directed_graph() noexcept;
 
 		/* OPERATORS */
 
 #ifndef SWIG
 		/// Copy assignment operator.
-		directed_graph& operator= (const directed_graph&);
+		directed_graph& operator= (const directed_graph&) noexcept;
 		/// Move assignment operator.
-		directed_graph& operator= (directed_graph&&);
+		directed_graph& operator= (directed_graph&&) noexcept;
 #endif
 
 		/* MODIFIERS */

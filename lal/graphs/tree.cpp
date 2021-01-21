@@ -56,23 +56,23 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-tree::tree() { }
-tree::tree(const tree& t) : graph() {
+tree::tree() noexcept { }
+tree::tree(const tree& t) noexcept : graph() {
 	tree_only_copy(t);
 }
-tree::tree(tree&& t) {
+tree::tree(tree&& t) noexcept {
 	tree_only_move(move(t));
 }
-tree::~tree() { }
+tree::~tree() noexcept { }
 
 /* OPERATORS */
 
-tree& tree::operator= (const tree& t) {
+tree& tree::operator= (const tree& t) noexcept {
 	tree_only_copy(t);
 	return *this;
 }
 
-tree& tree::operator= (tree&& t) {
+tree& tree::operator= (tree&& t) noexcept {
 	tree_only_move(move(t));
 	return *this;
 }

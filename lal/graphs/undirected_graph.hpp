@@ -69,28 +69,28 @@ class undirected_graph : virtual public graph {
 		/* CONSTRUCTORS */
 
 		/// Empty constructor.
-		undirected_graph();
+		undirected_graph() noexcept;
 		/**
 		 * @brief Constructor with number of nodes.
 		 * @param n Number of nodes.
 		 */
-		undirected_graph(uint32_t n);
+		undirected_graph(uint32_t n) noexcept;
 		/// Copy constructor.
-		undirected_graph(const undirected_graph&);
+		undirected_graph(const undirected_graph&) noexcept;
 #ifndef SWIG
 		/// Move constructor.
-		undirected_graph(undirected_graph&&);
+		undirected_graph(undirected_graph&&) noexcept;
 #endif
 		/// Destructor.
-		virtual ~undirected_graph();
+		virtual ~undirected_graph() noexcept;
 
 		/* OPERATORS */
 
 #ifndef SWIG
 		/// Copy assignment operator.
-		undirected_graph& operator= (const undirected_graph&);
+		undirected_graph& operator= (const undirected_graph&) noexcept;
 		/// Move assignment operator.
-		undirected_graph& operator= (undirected_graph&&);
+		undirected_graph& operator= (undirected_graph&&) noexcept;
 #endif
 
 		/* MODIFIERS */

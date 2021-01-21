@@ -109,27 +109,27 @@ class rooted_tree : public directed_graph, virtual public tree {
 		/* CONSTRUCTORS */
 
 		/// Empty constructor.
-		rooted_tree();
+		rooted_tree() noexcept;
 		/// Constructor with number of nodes and root node.
-		rooted_tree(uint32_t n);
+		rooted_tree(uint32_t n) noexcept;
 		/// Copy constructor.
-		rooted_tree(const rooted_tree&);
+		rooted_tree(const rooted_tree&) noexcept;
 #ifndef SWIG
 		/// Move constructor.
-		rooted_tree(rooted_tree&&);
+		rooted_tree(rooted_tree&&) noexcept;
 #endif
 		/// Constructor with tree and root node.
-		rooted_tree(const free_tree& t, node r);
+		rooted_tree(const free_tree& t, node r) noexcept;
 		/// Destructor
-		virtual ~rooted_tree();
+		virtual ~rooted_tree() noexcept;
 
 		/* OPERATORS */
 
 #ifndef SWIG
 		/// Copy assignment operator.
-		rooted_tree& operator= (const rooted_tree&);
+		rooted_tree& operator= (const rooted_tree&) noexcept;
 		/// Move assignment operator.
-		rooted_tree& operator= (rooted_tree&&);
+		rooted_tree& operator= (rooted_tree&&) noexcept;
 #endif
 
 		/* MODIFIERS */

@@ -74,23 +74,23 @@ class tree : virtual public graph {
 		/* CONSTRUCTORS */
 
 		/// Empty constructor.
-		tree();
+		tree() noexcept;
 		/// Copy constructor.
-		tree(const tree&);
+		tree(const tree&) noexcept;
 #ifndef SWIG
 		/// Move constructor.
-		tree(tree&&);
+		tree(tree&&) noexcept;
 #endif
 		/// Destructor.
-		virtual ~tree();
+		virtual ~tree() noexcept;
 
 		/* OPERATORS */
 
 #ifndef SWIG
 		/// Copy assignment operator.
-		tree& operator= (const tree&);
+		tree& operator= (const tree&) noexcept;
 		/// Move assignment operator.
-		tree& operator= (tree&&);
+		tree& operator= (tree&&) noexcept;
 #endif
 
 		/* MODIFIERS */

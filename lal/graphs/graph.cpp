@@ -64,25 +64,25 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-graph::graph() { }
-graph::graph(uint32_t n) {
+graph::graph() noexcept { }
+graph::graph(uint32_t n) noexcept {
 	_init(n);
 }
-graph::graph(const graph& g) {
+graph::graph(const graph& g) noexcept {
 	copy_full_graph(g);
 }
-graph::graph(graph&& g) {
+graph::graph(graph&& g) noexcept {
 	move_full_graph(std::move(g));
 }
-graph::~graph() { }
+graph::~graph() noexcept { }
 
 /* OPERATORS */
 
-graph& graph::operator= (const graph& g) {
+graph& graph::operator= (const graph& g) noexcept {
 	copy_full_graph(g);
 	return *this;
 }
-graph& graph::operator= (graph&& g) {
+graph& graph::operator= (graph&& g) noexcept {
 	move_full_graph(std::move(g));
 	return *this;
 }

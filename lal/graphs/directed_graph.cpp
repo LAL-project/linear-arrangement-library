@@ -60,26 +60,26 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-directed_graph::directed_graph() : graph() { }
-directed_graph::directed_graph(uint32_t n) {
+directed_graph::directed_graph() noexcept : graph() { }
+directed_graph::directed_graph(uint32_t n) noexcept {
 	init(n);
 }
-directed_graph::directed_graph(const directed_graph& d) : graph() {
+directed_graph::directed_graph(const directed_graph& d) noexcept : graph() {
 	copy_full_directed_graph(d);
 }
-directed_graph::directed_graph(directed_graph&& d) {
+directed_graph::directed_graph(directed_graph&& d) noexcept {
 	move_full_directed_graph(std::move(d));
 }
-directed_graph::~directed_graph() { }
+directed_graph::~directed_graph() noexcept { }
 
 /* OPERATORS */
 
-directed_graph& directed_graph::operator= (const directed_graph& d) {
+directed_graph& directed_graph::operator= (const directed_graph& d) noexcept {
 	copy_full_directed_graph(d);
 	return *this;
 }
 
-directed_graph& directed_graph::operator= (directed_graph&& d) {
+directed_graph& directed_graph::operator= (directed_graph&& d) noexcept {
 	move_full_directed_graph(std::move(d));
 	return *this;
 }
