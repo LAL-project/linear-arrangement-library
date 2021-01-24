@@ -48,36 +48,37 @@ namespace linarr {
  * @brief The different algorithms for computing the number of crossings.
  *
  * This enumeration's values can be used to choose the algorithm the functions
- * @ref n_crossings and @ref n_crossings_list use to compute the number of crossings.
+ * @ref n_crossings and @ref n_crossings_list use to compute the number of
+ * edge crossings.
+ *
+ * Two edges \f${s,t},{u,v}\f$ of a graph cross if, and only if, their positions
+ * interleave in the linear arrangement. More formally, given an arrangement
+ * \f$\pi\f$ of a graph \f$G\f$, the edges \f${s,t},{u,v}\f$ cros iff
+ * \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ .
  */
 enum class algorithms_C {
 	/**
 	 * @brief Brute force computation of the number of crossings.
 	 *
-	 * Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$
-	 *
-	 * These are the preconditions of usage of this algorithm.
-	 * @pre The rooted has to have the size of its subtrees calculated
-	 * (see @ref graphs::rooted_tree::calculate_size_subtrees
-	 * and @ref graphs::rooted_tree::size_subtrees_valid).
+	 * Complexity: time \f$O(m^2)\f$, space \f$O(1)\f$.
 	 */
 	brute_force,
 	/**
 	 * @brief Dynamic programming algorithm.
 	 *
-	 * Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$
+	 * Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$.
 	 */
 	dynamic_programming,
 	/**
 	 * @brief Dynamic programming algorithm.
 	 *
-	 * Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$
+	 * Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$.
 	 */
 	ladder,
 	/**
 	 * @brief Algorithm based on sorting.
 	 *
-	 * Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$
+	 * Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$.
 	 */
 	stack_based
 };

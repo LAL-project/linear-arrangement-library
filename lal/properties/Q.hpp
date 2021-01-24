@@ -55,6 +55,10 @@ namespace properties {
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
+ *
+ * The set \f$Q(G)\f$ of a graph \f$G\f$ is the set of pairs of independent edges.
+ * Two edges are said to be independent if they do not share vertices. Therefore,
+ * this function returns the amount of independent edges of this undirected graph.
  * @param g Input graph.
  * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
@@ -70,6 +74,10 @@ uint64_t size_Q(const graphs::undirected_graph& g);
 
 /**
  * @brief Compute the size of \f$Q(G)\f$.
+ *
+ * The set \f$Q(G)\f$ of a graph \f$G\f$ is the set of pairs of independent edges.
+ * Two edges are said to be independent if they do not share vertices. Therefore,
+ * this function returns the amount of independent edges of this directed graph.
  * @param g Input graph.
  * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
