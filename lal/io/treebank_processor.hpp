@@ -42,8 +42,11 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <string>
-#include <vector>
+#include <array>
 
 namespace lal {
 namespace io {
@@ -91,136 +94,251 @@ namespace io {
  * @endcode
  */
 class treebank_processor {
-	public:
-		/// @brief Features that can be computed for each tree.
-		enum class tree_feature {
-			/// Number of nodes of the tree.
-			n,
-			/// Second moment of degree \f$\langle k^2 \rangle\f$.
-			k2,
-			/// Third moment of degree \f$\langle k^3 \rangle\f$.
-			k3,
-			/// Size of the set Q \f$|Q|\f$.
-			size_Q,
-			/// Number of crossings \f$C\f$.
-			C,
-			/// First moment of expectation of C \f$E[C]\f$.
-			C_exp_1,
-			/// Second moment of expectation of C \f$E[C^2]\f$.
-			C_exp_2,
-			/// Variance of C \f$V[C]\f$.
-			C_var,
-			/// z-score of C: \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
-			C_z,
-			/// Sum of length of edges \f$D\f$.
-			D,
-			/// First moment of expectation of D \f$E[D]\f$.
-			D_exp_1,
-			/// Second moment of expectation of D \f$E[D^2]\f$.
-			D_exp_2,
-			/// Variance of D \f$V[D]\f$.
-			D_var,
-			/// z-score of D: \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
-			D_z
-		};
-
+public:
+	/// @brief Features that can be computed for each tree.
+	enum class tree_feature {
+		/// Number of nodes of the tree.
+		n,
 		/**
-		 * @brief Possible errors that can arise while processing a dataset.
+		 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 		 *
-		 * There are several reasons why a dataset could not be processed.
-		 * Because of this, the method @ref process will return a value
-		 * describing what went wrong.
-		 *
-		 * Some of these errors are common to @ref dataset_error.
+		 * See @ref properties::mmt_degree for details.
 		 */
-		enum class processor_error {
-			/// The dataset was processed successfully.
-			none,
-			/// Main file was not given.
-			need_main_file,
-			/// Output directory was not given.
-			need_output_directory,
-			/// Main file could not be found.
-			missing_main_file,
-			/// Output directory could not be found.
-			missing_output_directory,
-			/// One of the treebank files could not be found.
-			missing_treebank_file,
-			/// No features at all were given to the processor.
-			no_features
-		};
-
-	public:
+		k2,
 		/**
-		 * @brief Default constructor
+		 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
 		 *
-		 * If the parameter is true, the list is initialised with all features
-		 * possible.
-		 * @param all_fs Should the feature list contain all possible features?
+		 * See @ref properties::mmt_degree for details.
 		 */
-		treebank_processor(bool all_fs = false);
+		k3,
 		/**
-		 * @brief Constructor with directories.
+		 * @brief Size of the set \f$Q(T)\f$ of this tree \f$T\f$.
 		 *
-		 * If the parameter is true, the list is initialised with all
-		 * features possible.
-		 * @param file Main file's name.
-		 * @param odir Output directory.
-		 * @param all_fs Should the feature list contain all possible features?
+		 * See @ref properties::size_Q for details.
 		 */
-		treebank_processor
-		(const std::string& file, const std::string& odir, bool all_fs = false);
-		/// Destructor.
-		~treebank_processor();
-
+		size_Q,
 		/**
-		 * @brief Initialise the processor with a new dataset.
+		 * @brief Headedness of the tree.
 		 *
-		 * If the parameter @e all_fs is true, the list is initialised with all
-		 * features possible.
-		 * @param file Main file.
-		 * @param odir Output directory.
-		 * @param all_fs Should the feature list contain all possible features?
+		 * See @ref linarr::headedness for details.
 		 */
-		void init
-		(const std::string& file, const std::string& odir, bool all_fs = false);
-
+		headedness,
 		/**
-		 * @brief Adds a feature to the processor.
-		 * @param fs Feature to be added.
-		 */
-		void add_feature(const tree_feature& fs);
-		/**
-		 * @brief Removes a feature from the processor.
-		 * @param fs Feature to be removed.
-		 */
-		void remove_feature(const tree_feature& fs);
-
-		/**
-		 * @brief Process the dataset.
+		 * @brief Mean hierarchical of the tree.
 		 *
-		 * This method outputs the information as explained in this class'
-		 * description.
-		 *
-		 * However, it may fail to do so. In this case it will return a value
-		 * different from @ref processor_error::none.
-		 * @param sep Separator character.
-		 * @param header Should a header be written?
-		 * @param v Output progress on standard output.
-		 * @return Returns a value describing the error (if any) that occurred
-		 * while processing the dataset.
+		 * See @ref properties::mean_hierarchical_distance for details.
 		 */
-		processor_error process
-		(char sep = '\t', bool header = true, bool v = false) const;
+		mean_hierarchical_distance,
+		/**
+		 * @brief Number of edge crossings \f$C\f$.
+		 *
+		 * See @ref linarr::algorithms_C for details.
+		 */
+		C,
+		/**
+		 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
+		 *
+		 * See @ref properties::expectation_C for details.
+		 */
+		C_exp_1,
+		/**
+		 * @brief Second moment of expectation of \f$C\f$, \f$E[C^2]\f$.
+		 *
+		 * This is calculated as \f$E[C^2]=V[C] + E[C]^2\f$. See
+		 * @ref properties::variance_C_tree for details on how the variance
+		 * of \f$C\f$, \f$V[C]\f$, is calculated.
+		 */
+		C_exp_2,
+		/**
+		 * @brief Variance of \f$C\f$, \f$V[C]\f$.
+		 *
+		 * @ref properties::variance_C_tree for details.
+		 */
+		C_var,
+		/**
+		 * @brief z-score of \f$C\f$, \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
+		 *
+		 * See @ref properties::variance_C_tree for details on how the
+		 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
+		 */
+		C_z,
+		/**
+		 * @brief Sum of length of edges \f$D\f$.
+		 *
+		 * See @ref linarr::sum_length_edges for details.
+		 */
+		D,
+		/**
+		 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
+		 *
+		 * See @ref properties::expectation_D for details.
+		 */
+		D_exp_1,
+		/**
+		 * @brief Second moment of expectation of \f$D\f$, \f$E[D^2]\f$.
+		 *
+		 * This is calculated as \f$E[D^2]=V[D] + E[D]^2\f$. See
+		 * @ref properties::variance_D for details on how the variance
+		 * of \f$D\f$, \f$V[D]\f$, is calculated.
+		 */
+		D_exp_2,
+		/**
+		 * @brief Variance of \f$D\f$, \f$V[D]\f$.
+		 *
+		 * @ref properties::variance_D for details.
+		 */
+		D_var,
+		/**
+		 * @brief z-score of \f$D\f$, \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
+		 *
+		 * See @ref properties::variance_D for details on how the
+		 * variance of \f$D\f$, \f$V[D]\f$, is calculated.
+		 */
+		D_z,
+		/**
+		 * @brief Unconstrained minimum sum of length of edges.
+		 *
+		 * See @ref linarr::algorithms_Dmin::Unconstrained_YS, or
+		 * @ref linarr::algorithms_Dmin::Unconstrained_FC for details.
+		 */
+		Dmin_Unconstrained,
+		/**
+		 * @brief Minimum sum of length of edges under the planary constraint.
+		 *
+		 * See @ref linarr::algorithms_Dmin::Planar for details.
+		 */
+		Dmin_Planar,
+		/**
+		 * @brief Minimum sum of length of edges under the planary constraint.
+		 *
+		 * See @ref linarr::algorithms_Dmin::Projective for details.
+		 */
+		Dmin_Projective
+	};
 
-	private:
-		/// Output directory.
-		std::string m_out_dir;
-		/// File containing the list of languages and their treebanks.
-		std::string m_main_list;
+	/**
+	 * @brief Possible errors that can arise while processing a dataset.
+	 *
+	 * There are several reasons why a dataset could not be processed.
+	 * Because of this, the method @ref process will return a value
+	 * describing what went wrong.
+	 *
+	 * Some of these errors are common to @ref dataset_error.
+	 */
+	enum class processor_error {
+		/// The dataset was processed successfully.
+		none,
+		/// Main file was not given.
+		need_main_file,
+		/// Output directory was not given.
+		need_output_directory,
+		/// Main file could not be found.
+		missing_main_file,
+		/// Output directory could not be found.
+		missing_output_directory,
+		/// One of the treebank files could not be found.
+		missing_treebank_file,
+		/// No features at all were given to the processor.
+		no_features
+	};
 
-		/// The list of features to be computed.
-		std::vector<bool> m_what_fs;
+public:
+	/**
+	 * @brief Default constructor
+	 *
+	 * If the parameter is true, the list is initialised with all features
+	 * possible.
+	 * @param all_fs Should the feature list contain all possible features?
+	 */
+	treebank_processor(bool all_fs = false);
+	/**
+	 * @brief Constructor with directories.
+	 *
+	 * If the parameter is true, the list is initialised with all
+	 * features possible.
+	 * @param file Main file's name.
+	 * @param odir Output directory.
+	 * @param all_fs Should the feature list contain all possible features?
+	 */
+	treebank_processor
+	(const std::string& file, const std::string& odir, bool all_fs = false);
+	/// Destructor.
+	~treebank_processor() = default;
+
+	/**
+	 * @brief Initialise the processor with a new dataset.
+	 *
+	 * If the parameter @e all_fs is true, the list is initialised with all
+	 * features possible.
+	 * @param file Main file.
+	 * @param odir Output directory.
+	 * @param all_fs Should the feature list contain all possible features?
+	 */
+	void init
+	(const std::string& file, const std::string& odir, bool all_fs = false);
+
+	/**
+	 * @brief Adds a feature to the processor.
+	 * @param fs Feature to be added.
+	 */
+	void add_feature(const tree_feature& fs);
+	/**
+	 * @brief Removes a feature from the processor.
+	 * @param fs Feature to be removed.
+	 */
+	void remove_feature(const tree_feature& fs);
+
+	/**
+	 * @brief Process the dataset.
+	 *
+	 * This method outputs the information as explained in this class'
+	 * description.
+	 *
+	 * However, it may fail to do so. In this case it will return a value
+	 * different from @ref processor_error::none.
+	 * @param sep Separator character.
+	 * @param header Should a header be written?
+	 * @param v Output progress on standard output.
+	 * @return Returns a value describing the error (if any) that occurred
+	 * while processing the dataset.
+	 */
+	processor_error process
+	(char sep = '\t', bool header = true, bool v = false) const;
+
+private:
+	/// The number of total features available.
+	static constexpr size_t NUM_TREE_FEATURES =
+		static_cast<size_t>(tree_feature::Dmin_Projective) + 1;
+
+private:
+
+	static inline
+	constexpr size_t enum2index(const tree_feature& tf)
+	{
+		return static_cast<size_t>(tf);
+	}
+	
+	static inline
+	constexpr tree_feature index2enum(size_t i) {
+#if defined DEBUG
+		assert(i < NUM_TREE_FEATURES);
+#endif
+		return static_cast<tree_feature>(i);
+	}
+	
+	template<class TREE, class OUT_STREAM>
+	void process_tree(
+		char sep, const TREE& rT, OUT_STREAM& out_lab_file
+	) const;
+
+private:
+	/// Output directory.
+	std::string m_out_dir;
+	/// File containing the list of languages and their treebanks.
+	std::string m_main_list;
+	
+	/// The list of features to be computed.
+	std::array<bool, NUM_TREE_FEATURES> m_what_fs;
 };
 
 } // -- namespace io

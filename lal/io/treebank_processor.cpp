@@ -46,6 +46,10 @@
 #include <sys/stat.h>
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+#include <string_view>
 #include <iostream>
 #include <numeric>
 #include <cmath>
@@ -58,25 +62,31 @@ using namespace std;
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
+#include <lal/linarr/headedness.hpp>
+#include <lal/linarr/Dmin.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
+#include <lal/properties/mean_hierarchical_distance.hpp>
 
-#define NUM_TREE_FEATURES 14
 #define to_double(x) static_cast<double>(x)
+#define square(x) ((x)*(x))
 
 namespace lal {
 using namespace graphs;
 
 namespace io {
 
-inline string tree_feature_string(const treebank_processor::tree_feature& tf) {
+inline
+constexpr string_view tree_feature_string(const treebank_processor::tree_feature& tf) {
 	switch (tf) {
 	case treebank_processor::tree_feature::n: return "n";
 	case treebank_processor::tree_feature::k2: return "k2";
 	case treebank_processor::tree_feature::k3: return "k3";
 	case treebank_processor::tree_feature::size_Q: return "size_Q";
+	case treebank_processor::tree_feature::headedness: return "headedness";
+	case treebank_processor::tree_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
 	case treebank_processor::tree_feature::C: return "C";
 	case treebank_processor::tree_feature::C_exp_1: return "C_exp_1";
 	case treebank_processor::tree_feature::C_exp_2: return "C_exp_2";
@@ -87,12 +97,16 @@ inline string tree_feature_string(const treebank_processor::tree_feature& tf) {
 	case treebank_processor::tree_feature::D_exp_2: return "D_exp_2";
 	case treebank_processor::tree_feature::D_var: return "D_var";
 	case treebank_processor::tree_feature::D_z: return "D_z";
+	case treebank_processor::tree_feature::Dmin_Unconstrained: return "Dmin_Unconstrained";
+	case treebank_processor::tree_feature::Dmin_Planar: return "Dmin_Planar";
+	case treebank_processor::tree_feature::Dmin_Projective: return "Dmin_Projective";
 	}
 	// should never happen
 	return "???";
 }
 
-inline string processor_error_string(const treebank_processor::processor_error& pe) {
+inline
+constexpr string_view processor_error_string(const treebank_processor::processor_error& pe) {
 	switch (pe) {
 	case treebank_processor::processor_error::none: return "No error";
 	case treebank_processor::processor_error::need_main_file: return "Main file not given";
@@ -106,60 +120,12 @@ inline string processor_error_string(const treebank_processor::processor_error& 
 	return "Wrong value for process_error parameter";
 }
 
-inline size_t enum2index(const treebank_processor::tree_feature& tf) {
-	switch (tf) {
-	case treebank_processor::tree_feature::n: return 0;
-	case treebank_processor::tree_feature::k2: return 1;
-	case treebank_processor::tree_feature::k3: return 2;
-	case treebank_processor::tree_feature::size_Q: return 3;
-	case treebank_processor::tree_feature::C: return 4;
-	case treebank_processor::tree_feature::C_exp_1: return 5;
-	case treebank_processor::tree_feature::C_exp_2: return 6;
-	case treebank_processor::tree_feature::C_var: return 7;
-	case treebank_processor::tree_feature::C_z: return 8;
-	case treebank_processor::tree_feature::D: return 9;
-	case treebank_processor::tree_feature::D_exp_1: return 10;
-	case treebank_processor::tree_feature::D_exp_2: return 11;
-	case treebank_processor::tree_feature::D_var: return 12;
-	case treebank_processor::tree_feature::D_z: return 13;
-	}
-	// should never happen
-	return NUM_TREE_FEATURES;
-}
-
-inline treebank_processor::tree_feature index2enum(size_t i) {
-	switch (i) {
-	case 0: return treebank_processor::tree_feature::n;
-	case 1: return treebank_processor::tree_feature::k2;
-	case 2: return treebank_processor::tree_feature::k3;
-	case 3: return treebank_processor::tree_feature::size_Q;
-	case 4: return treebank_processor::tree_feature::C;
-	case 5: return treebank_processor::tree_feature::C_exp_1;
-	case 6: return treebank_processor::tree_feature::C_exp_2;
-	case 7: return treebank_processor::tree_feature::C_var;
-	case 8: return treebank_processor::tree_feature::C_z;
-	case 9: return treebank_processor::tree_feature::D;
-	case 10: return treebank_processor::tree_feature::D_exp_1;
-	case 11: return treebank_processor::tree_feature::D_exp_2;
-	case 12: return treebank_processor::tree_feature::D_var;
-	case 13: return treebank_processor::tree_feature::D_z;
-	}
-	// should never happen
-	cerr << "=========================================================" << endl;
-	cerr << "LAL internal error:" << endl;
-	cerr << "    File: 'treebank_processor.cpp', line: " << __LINE__ << "'" << endl;
-	cerr << "    Function: 'treebank_processor::tree_feature index2enum(size_t i)'" << endl;
-	cerr << "    Value of parameter 'i' is: " << i << endl;
-	cerr << "    This is an invalid value." << endl;
-	cerr << "    The value should be less than " << NUM_TREE_FEATURES << endl;
-	cerr << "=========================================================" << endl;
-	return treebank_processor::tree_feature::D_z;
-}
-
 #define n_idx enum2index(treebank_processor::tree_feature::n)
 #define k2_idx enum2index(treebank_processor::tree_feature::k2)
 #define k3_idx enum2index(treebank_processor::tree_feature::k3)
 #define size_Q_idx enum2index(treebank_processor::tree_feature::size_Q)
+#define headedness_idx enum2index(treebank_processor::tree_feature::headedness)
+#define mean_hierarchical_distance_idx enum2index(treebank_processor::tree_feature::mean_hierarchical_distance)
 #define C_idx enum2index(treebank_processor::tree_feature::C)
 #define C_exp1_idx enum2index(treebank_processor::tree_feature::C_exp_1)
 #define C_exp2_idx enum2index(treebank_processor::tree_feature::C_exp_2)
@@ -170,113 +136,11 @@ inline treebank_processor::tree_feature index2enum(size_t i) {
 #define D_exp2_idx enum2index(treebank_processor::tree_feature::D_exp_2)
 #define D_var_idx enum2index(treebank_processor::tree_feature::D_var)
 #define D_z_idx enum2index(treebank_processor::tree_feature::D_z)
+#define Dmin_Unconstrained_idx enum2index(treebank_processor::tree_feature::Dmin_Unconstrained)
+#define Dmin_Planar_idx enum2index(treebank_processor::tree_feature::Dmin_Planar)
+#define Dmin_Projective_idx enum2index(treebank_processor::tree_feature::Dmin_Projective)
 
 // CLASS METHODS
-
-// PRIVATE
-
-inline void process_tree(
-	const vector<bool>& what_fs, char sep,
-	const rooted_tree& rT, ofstream& out_lang_file
-)
-{
-	const free_tree t = rT.to_undirected();
-
-	// -----------------------------------------------------------
-	// compute features in a way that does not repeat computations
-	double props[NUM_TREE_FEATURES];
-
-	// <k^2>, <k^3>, |Q|
-	if (what_fs[k2_idx]) {
-		props[k2_idx] = properties::mmt_degree(t, 2);
-	}
-	if (what_fs[k3_idx]) {
-		props[k3_idx] = properties::mmt_degree(t, 3);
-	}
-	if (what_fs[size_Q_idx]) {
-		props[size_Q_idx] = static_cast<double>(properties::size_Q(t));
-	}
-
-	// ------------
-	// V[C], E[C^2]
-	if (what_fs[C_var_idx] or what_fs[C_exp2_idx]) {
-		props[C_exp1_idx] = properties::expectation_C(t);
-		props[C_var_idx] = properties::variance_C_tree(t);
-		props[C_exp2_idx] = props[C_var_idx] + props[C_exp1_idx]*props[C_exp1_idx];
-	}
-	else {
-		// none of V[C], E[C^2] were asked, but if...
-		if (what_fs[C_exp1_idx]) {
-			props[C_exp1_idx] = properties::expectation_C(t);
-		}
-	}
-
-	// z-score of C
-	if (what_fs[C_z_idx]) {
-		// we need V[C]
-		if (not what_fs[C_var_idx]) {
-			props[C_var_idx] = properties::variance_C_tree(t);
-		}
-		// we need E[C]
-		if (not what_fs[C_exp1_idx] and not what_fs[C_var_idx]) {
-			props[C_exp1_idx] = properties::expectation_C(t);
-		}
-		// we need to compute C, whether we like it or not
-		props[C_idx] = to_double(linarr::n_crossings(t));
-		props[C_z_idx] = (props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx]);
-	}
-	else {
-		if (what_fs[C_idx]) {
-			props[C_idx] = to_double(linarr::n_crossings(t));
-		}
-	}
-
-	// ------------
-	// V[D], E[D^2]
-	if (what_fs[D_var_idx] or what_fs[D_exp2_idx]) {
-		props[D_exp1_idx] = properties::expectation_D(t);
-		props[D_var_idx] = properties::variance_D(t);
-		props[D_exp2_idx] = props[D_var_idx] + props[D_exp1_idx]*props[D_exp1_idx];
-	}
-	else {
-		// none of V[D], E[D^2] were asked, but if...
-		if (what_fs[D_exp1_idx]) {
-			props[D_exp1_idx] = properties::expectation_D(t);
-		}
-	}
-
-	// z-score of D
-	if (what_fs[D_z_idx]) {
-		// we need V[D]
-		if (not what_fs[D_var_idx]) {
-			props[D_var_idx] = properties::variance_D(t);
-		}
-		// we need E[D]
-		if (not what_fs[D_exp1_idx] and not what_fs[D_var_idx]) {
-			props[D_exp1_idx] = properties::expectation_D(t);
-		}
-		// we need to compute D, whether we like it or not
-		props[D_idx] = to_double(linarr::sum_length_edges(rT));
-		props[D_z_idx] = (props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx]);
-	}
-	else {
-		if (what_fs[D_idx]) {
-			props[D_idx] = to_double(linarr::sum_length_edges(rT));
-		}
-	}
-
-	// ---------------
-	// output features
-	if (what_fs[0]) {
-		out_lang_file << rT.n_nodes();
-	}
-	for (size_t i = 1; i < what_fs.size(); ++i) {
-		if (what_fs[i]) {
-			out_lang_file << sep << props[i];
-		}
-	}
-	out_lang_file << endl;
-}
 
 // PUBLIC
 
@@ -284,7 +148,7 @@ treebank_processor::treebank_processor(bool all_fs) {
 	m_out_dir = "none";
 	m_main_list = "none";
 
-	m_what_fs = vector<bool>(NUM_TREE_FEATURES, all_fs);
+	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 }
 
 treebank_processor::treebank_processor
@@ -293,18 +157,16 @@ treebank_processor::treebank_processor
 	m_main_list = file;
 	m_out_dir = odir;
 
-	m_what_fs = vector<bool>(NUM_TREE_FEATURES, all_fs);
+	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 }
-
-treebank_processor::~treebank_processor() {}
 
 void treebank_processor::init
 (const string& file, const string& odir, bool all_fs)
 {
 	m_main_list = file;
 	m_out_dir = odir;
-
-	m_what_fs = vector<bool>(NUM_TREE_FEATURES, all_fs);
+	
+	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 }
 
 void treebank_processor::add_feature(const tree_feature& fs) {
@@ -390,7 +252,9 @@ treebank_processor::processor_error treebank_processor::process
 			}
 			else {
 				rT = tbread.get_tree();
-				process_tree(m_what_fs, sep, rT, out_lang_file);
+				process_tree<rooted_tree, ofstream>(
+					sep, rT, out_lang_file
+				);
 			}
 		}
 
@@ -401,6 +265,176 @@ treebank_processor::processor_error treebank_processor::process
 	}
 
 	return processor_error::none;
+}
+
+// PRIVATE
+
+template<class TREE, class OUT_STREAM>
+void treebank_processor::process_tree(
+	char sep, const TREE& rT, OUT_STREAM& out_lang_file
+)
+const
+{
+	const free_tree fT = rT.to_undirected();
+
+	// -----------------------------------------------------------
+	// compute features in a way that does not repeat computations
+	double props[NUM_TREE_FEATURES]{0.0};
+	bool prop_set[NUM_TREE_FEATURES]{false};
+
+	const auto set_prop =
+	[&](size_t idx, double val) -> void {
+		props[idx] = val;
+		prop_set[idx] = true;
+	};
+
+	// <k^2>, <k^3>, |Q|, headedness
+	if (m_what_fs[k2_idx]) {
+		set_prop(k2_idx, properties::mmt_degree(fT, 2));
+	}
+	if (m_what_fs[k3_idx]) {
+		set_prop(k3_idx, properties::mmt_degree(fT, 3));
+	}
+	if (m_what_fs[size_Q_idx]) {
+		set_prop(size_Q_idx, static_cast<double>(properties::size_Q(fT)));
+	}
+	if (m_what_fs[headedness_idx]) {
+		set_prop(headedness_idx, linarr::headedness(rT));
+	}
+	if (m_what_fs[mean_hierarchical_distance_idx]) {
+		set_prop(mean_hierarchical_distance_idx, properties::mean_hierarchical_distance(rT));
+	}
+
+	// -----------------------------------------------------------------
+	// C
+	
+	if (m_what_fs[C_idx]) {
+		set_prop(C_idx, linarr::n_crossings(fT));
+	}
+	if (m_what_fs[C_var_idx]) {
+		set_prop(C_var_idx, properties::variance_C_tree(fT));
+	}
+	if (m_what_fs[C_exp1_idx]) {
+		set_prop(C_exp1_idx, properties::expectation_C(fT));
+	}
+
+	if (m_what_fs[C_exp2_idx]) {
+		if (not m_what_fs[C_exp1_idx]) {
+			set_prop(C_exp1_idx, properties::expectation_C(fT));
+		}
+		if (not m_what_fs[C_var_idx]) {
+			set_prop(C_var_idx, properties::variance_C_tree(fT));
+		}
+
+#if defined DEBUG
+		assert(prop_set[C_exp1_idx]);
+		assert(prop_set[C_var_idx]);
+#endif
+		set_prop(C_exp2_idx, props[C_var_idx] + square(props[C_exp1_idx]));
+	}
+
+	// z-score of C
+	if (m_what_fs[C_z_idx]) {
+		// we need C
+		if (not m_what_fs[C_idx]) {
+			set_prop(C_idx, linarr::n_crossings(fT));
+		}
+		// we need V[C]
+		if (not m_what_fs[C_var_idx]) {
+			set_prop(C_var_idx, properties::variance_C_tree(fT));
+		}
+		// we need E[C]
+		if (not m_what_fs[C_exp1_idx]) {
+			set_prop(C_exp1_idx, properties::expectation_C(fT));
+		}
+		
+#if defined DEBUG
+		assert(prop_set[C_idx]);
+		assert(prop_set[C_var_idx]);
+		assert(prop_set[C_exp1_idx]);
+#endif
+		set_prop(C_z_idx,
+			(props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx])
+		);
+	}
+
+	// -----------------------------------------------------------------
+	// D
+	
+	if (m_what_fs[D_idx]) {
+		set_prop(D_idx, linarr::sum_length_edges(fT));
+	}
+	if (m_what_fs[D_var_idx]) {
+		set_prop(D_var_idx, properties::variance_D(fT));
+	}
+	if (m_what_fs[D_exp1_idx]) {
+		set_prop(D_exp1_idx, properties::expectation_D(fT));
+	}
+	
+	if (m_what_fs[D_exp2_idx]) {
+		if (not m_what_fs[D_exp1_idx]) {
+			set_prop(D_exp1_idx, properties::expectation_D(fT));
+		}
+		if (not m_what_fs[D_var_idx]) {
+			set_prop(D_var_idx, properties::variance_D(fT));
+		}
+
+#if defined DEBUG
+		assert(prop_set[D_exp1_idx]);
+		assert(prop_set[D_var_idx]);
+#endif
+		set_prop(D_exp2_idx, props[D_var_idx] + square(props[D_exp1_idx]));
+	}
+
+	// z-score of D
+	if (m_what_fs[D_z_idx]) {
+		// we need D
+		if (not m_what_fs[D_idx]) {
+			set_prop(D_idx, linarr::sum_length_edges(fT));
+		}
+		// we need V[D]
+		if (not m_what_fs[D_var_idx]) {
+			set_prop(D_var_idx, properties::variance_D(fT));
+		}
+		// we need E[D]
+		if (not m_what_fs[D_exp1_idx]) {
+			set_prop(D_exp1_idx, properties::expectation_D(fT));
+		}
+		
+#if defined DEBUG
+		assert(prop_set[D_idx]);
+		assert(prop_set[D_var_idx]);
+		assert(prop_set[D_exp1_idx]);
+#endif
+		set_prop(D_z_idx,
+			(props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx])
+		);
+	}
+
+	// -----------------
+	// Optimisation of D
+	if (m_what_fs[Dmin_Unconstrained_idx]) {
+		set_prop(Dmin_Unconstrained_idx, linarr::Dmin(fT, linarr::algorithms_Dmin::Unconstrained_YS).first);
+	}
+	if (m_what_fs[Dmin_Planar_idx]) {
+		set_prop(Dmin_Planar_idx, linarr::Dmin(fT, linarr::algorithms_Dmin::Planar).first);
+	}
+	if (m_what_fs[Dmin_Projective_idx]) {
+		set_prop(Dmin_Projective_idx, linarr::Dmin(rT, linarr::algorithms_Dmin::Projective).first);
+	}
+
+	// ---------------
+	// output features
+	if (m_what_fs[0]) {
+		out_lang_file << rT.n_nodes();
+	}
+	for (size_t i = 1; i < m_what_fs.size(); ++i) {
+		out_lang_file << sep;
+		if (m_what_fs[i]) {
+			out_lang_file << props[i];
+		}
+	}
+	out_lang_file << "\n";
 }
 
 } // -- namespace io
