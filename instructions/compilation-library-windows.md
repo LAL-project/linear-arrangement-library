@@ -106,7 +106,7 @@ The library can be installed in both `Release` and `Debug` mode. First of all
 
 		$ cd C:/programming/sources/linear-arrangement-library
 
-Now it only remains to compile and install the library
+Now, apply the following steps.
 
 ### Release build
 
