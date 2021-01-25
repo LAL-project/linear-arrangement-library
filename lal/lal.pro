@@ -42,7 +42,9 @@ QMAKE_CXXFLAGS +=			\
 	-Wlogical-op			\ # warn about logical operations being used where
 	                        \ # bitwise were probably prefered
 	-Wuseless-cast			\ # warn if you perform a cast to the same type
-	-Wrestrict
+	-Wrestrict				\
+	-fsanitize=address		  # address sanitizer (a fast memory error detector)
+	                          # Detect out-of-bounds and use-after-free bugs.
 
 QMAKE_CXXFLAGS += -fopenmp
 

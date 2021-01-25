@@ -427,6 +427,7 @@ add_comp_flag(-Wduplicated-branches)
 add_comp_flag(-Wlogical-op)
 add_comp_flag(-Wuseless-cast)
 add_comp_flag(-Wrestrict)
+add_comp_flag(-fsanitize=address)
 
 # OpenMP
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -437,11 +438,10 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	add_debug_flag(-DDEBUG)
 	add_debug_flag(-D_GLIBCXX_DEBUG)
 else()
-	# these two are added by default
-	#add_release_flag(-O3)
-	#add_release_flag(-DNDEBUG)
+	# flags added by default:
+	#   -O3
+	#   -DNDEBUG
 	add_release_flag(-UDEBUG)
-	add_release_flag(-fstrict-aliasing)
 endif()
 
 # include path (required by the compiler to find the headers)
