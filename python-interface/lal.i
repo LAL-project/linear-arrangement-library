@@ -47,6 +47,7 @@ del tree_type
 del start_lal, new_name, name
 del __mod_name, __mod
 
+# hide definitions
 __definitions = definitions
 del definitions
 %}
