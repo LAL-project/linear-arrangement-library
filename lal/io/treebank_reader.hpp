@@ -55,12 +55,12 @@ namespace lal {
 namespace io {
 
 /**
- * @brief Treebank reader class.
+ * @brief A reader for a single treebank language files.
  *
  * This class offers a simple interface for iterating over the trees in a single
- * treebank file, henceforth the treebank. Each tree is represented as a list
- * of whole positive numbers (including zero), each representing a node of the
- * tree. The number 0 denotes the root of the tree, and number at a certain
+ * treebank file, henceforth referred to as the treebank. Each tree is formatted
+ * as a list of whole positive numbers (including zero), each representing a node
+ * of the tree. The number 0 denotes the root of the tree, and number at a certain
  * position indicates its parent node. For example, when number 4 is at
  * position 9 it means that node 9 has parent node 4. Therefore, if number 0
  * is at position 1 it means that node 1 is the root of the tree. A complete
@@ -73,93 +73,101 @@ namespace io {
  *		predecessor:       0 3 4 1 6 3
  *		node of the tree:  1 2 3 4 5 6
  *
- * In order to use it, this class has to be first initialised with the treebank
- * file and, optionally, the language it was made from. Once initialised, the
+ * Note that lines like these are not valid:
+ *
+ *		(1) 0 2 2 2 2 2
+ *		(2) 2 0 0
+ *
+ * Line (1) is not valid due to a self-reference in the second position, and (2)
+ * not being valid due to containing two '0' (i.e., two roots).
+ *
+ * In order to use it, this class has to be first initialized with the treebank
+ * file and, optionally, an identifier string. Once initialised, the
  * user can iterate over the trees within the file by calling @ref next_tree.
  * This function can only be called as long as @ref has_tree returns true.
  * Retrieving the trees is done by calling the function @ref get_tree.
  *
- * If the user did not initialise this class (for example, it was returned by
- * the class @ref treebank_dataset), then method @ref get_treebank_filename
- * and @ref what_language might prove useful for debugging since they return,
- * respectively, the full name (path included) of the treebank and the language
- * it corresponds to.
+ * If an object of this class was returned by the class @ref treebank_dataset_reader,
+ * then methods @ref get_treebank_filename and @ref get_identifier might prove
+ * useful for debugging since they return, respectively, the full name (path
+ * included) of the treebank and the language it corresponds to.
  *
  * The correct usage of this class is given in the following piece of code.
  * @code
- *		treebank_reader tbread = treebank_reader();
+ *		treebank_reader tbread;
  *		// it is advisable to check for errors
  *		tbread.init(main_file);
  *		while (tbread.has_tree()) {
  *			// again, check for errors
  *			tbread.next_tree();
- *			lal::graphs::urtree t = tbread.get_tree();
+ *			const rooted_tree t = tbread.get_tree();
  *			// process tree 't'
  *			// ....
  *		}
  * @endcode
  */
 class treebank_reader {
-	public:
-		/// Default constructor.
-		treebank_reader();
-		/// Destructor
-		~treebank_reader();
+public:
+	/// Default constructor
+	treebank_reader() = default;
 
-		// MODIFIERS
+	// MODIFIERS
 
-		/**
-		 * @brief Initialises the treebank reader
-		 * @param file Treebank file.
-		 * @param lang Language of the treebank.
-		 * @return If any error occurred, returns its type.
-		 * @post The amount of trees processed, @ref m_num_trees, is always
-		 * set to 0.
-		 */
-		dataset_error init(const std::string& file, const std::string& lang = "");
+	/**
+	 * @brief Initialises the treebank reader
+	 * @param file Treebank file.
+	 * @param identifier Identifier string for the treebank.
+	 * @return If any error occurred, returns its type.
+	 * @post The amount of trees processed, @ref m_num_trees, is always
+	 * set to 0.
+	 */
+	dataset_error init(const std::string& file, const std::string& identifier = "");
 
-		/// Returns whether there is another tree to be processed.
-		bool has_tree() const;
+	/// Returns whether there is another tree to be processed.
+	bool has_tree() const;
 
-		/**
-		 * @brief Retrieves the next tree in the file.
-		 * @return In case the function returns @ref dataset_error::empty_line
-		 * method @ref get_tree should not be called.
-		 * @post Increments the amount of trees found.
-		 */
-		dataset_error next_tree();
+	/**
+	 * @brief Retrieves the next tree in the file.
+	 * @return In case the function returns @ref dataset_error::empty_line
+	 * method @ref get_tree should not be called.
+	 * @post Increments the amount of trees found.
+	 */
+	dataset_error next_tree();
 
-		// GETTERS
+	// GETTERS
 
-		/**
-		 * @brief Returns the number of trees processed so far.
-		 *
-		 * When method @ref has_tree returns 'false', this method
-		 * returns the exact amount of trees in the treebank.
-		 */
-		size_t get_num_trees() const;
+	/**
+	 * @brief Returns the number of trees processed so far.
+	 *
+	 * When method @ref has_tree returns 'false', this method
+	 * returns the exact amount of trees in the treebank.
+	 */
+	inline size_t get_num_trees() const
+	{ return m_num_trees; }
 
-		/// Returns the language's name corresponding of the treebank.
-		const std::string& what_language() const;
+	/// Returns the language's name corresponding of the treebank.
+	inline const std::string& get_identifier() const
+	{ return m_treebank_identifier; }
 
-		/// Returns the name of the treebank file.
-		const std::string& get_treebank_filename() const;
+	/// Returns the name of the treebank file.
+	inline const std::string& get_treebank_filename() const
+	{ return m_treebank_file; }
 
-		/// Returns the current tree.
-		graphs::rooted_tree get_tree() const;
+	/// Returns the current tree.
+	graphs::rooted_tree get_tree() const;
 
-	private:
-		/// Language of the treebank
-		std::string m_language;
-		/// Treebank's file name (with the full path)
-		std::string m_treebank_file;
-		/// Handler for main file reading.
-		std::ifstream m_treebank;
+private:
+	/// Identifier for the treebank.
+	std::string m_treebank_identifier = "none";
+	/// Treebank's file name (with the full path).
+	std::string m_treebank_file = "none";
+	/// Handler for main file reading.
+	std::ifstream m_treebank;
 
-		/// Number of trees in the treebank.
-		size_t m_num_trees;
-		/// Current line.
-		std::string m_file_line;
+	/// Number of trees in the treebank.
+	size_t m_num_trees = 0;
+	/// Current line.
+	std::string m_file_line;
 };
 
 } // -- namespace io

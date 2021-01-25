@@ -165,13 +165,13 @@ target_sources(
 		io/basic_output.hpp
 		io/dataset_error.hpp
 		io/edge_list.hpp
-		io/treebank_dataset.hpp
-		io/treebank_processor.hpp
+		io/treebank_dataset_processor.hpp
+		io/treebank_dataset_reader.hpp
 		io/treebank_reader.hpp
 		# -- sources
 		io/edge_list.cpp
-		io/treebank_dataset.cpp
-		io/treebank_processor.cpp
+		io/treebank_dataset_processor.cpp
+		io/treebank_dataset_reader.cpp
 		io/treebank_reader.cpp
 
 		# iterators namespace
@@ -342,8 +342,8 @@ set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/dataset_error.hpp
 	io/edge_list.hpp
-	io/treebank_dataset.hpp
-	io/treebank_processor.hpp
+	io/treebank_dataset_processor.hpp
+	io/treebank_dataset_reader.hpp
 	io/treebank_reader.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
@@ -427,7 +427,6 @@ add_comp_flag(-Wduplicated-branches)
 add_comp_flag(-Wlogical-op)
 add_comp_flag(-Wuseless-cast)
 add_comp_flag(-Wrestrict)
-add_comp_flag(-fsanitize=address)
 
 # OpenMP
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")

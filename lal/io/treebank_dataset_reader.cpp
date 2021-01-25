@@ -39,53 +39,43 @@
  *
  ********************************************************************/
 
-#include <lal/io/treebank_dataset.hpp>
+#include <lal/io/treebank_dataset_reader.hpp>
 
 // C++ includes
 #include <filesystem>
 #include <sstream>
 using namespace std;
 
-// lal includes
-#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
-
 namespace lal {
 namespace io {
 
-treebank_dataset::treebank_dataset() {
-	m_main_list = "none";
-}
-
-treebank_dataset::~treebank_dataset() {}
-
-dataset_error treebank_dataset::init(const string& main_file)
+dataset_error treebank_dataset_reader::init(const string& main_file)
 {
 	// close current dataset (if any)
 	m_list.close();
 
-	m_main_list = main_file;
-	if (not filesystem::exists(m_main_list)) {
-		return dataset_error::missing_main_file;
+	m_main_file = main_file;
+	if (not filesystem::exists(m_main_file)) {
+		return dataset_error::main_file_does_not_exist;
 	}
 
 	// open new dataset and read the first line
-	m_list.open(m_main_list);
+	m_list.open(m_main_file);
 	step_line();
 
 	return dataset_error::no_error;
 }
 
-bool treebank_dataset::has_language() const {
-	return m_lang != "none";
-	//return not list.eof();
+bool treebank_dataset_reader::has_treebank() const {
+	return m_cur_treebank_name != "none";
 }
 
-dataset_error treebank_dataset::next_language() {
+dataset_error treebank_dataset_reader::next_treebank() {
 	// build path to treebank file
-	filesystem::path M(m_main_list);
-	M.replace_filename(m_tbf);
+	filesystem::path M(m_main_file);
+	M.replace_filename(m_cur_treebank_filename);
 
-	dataset_error dserr = m_tree_read.init(M.string(), m_lang);
+	dataset_error dserr = m_treebank_reader.init(M.string(), m_cur_treebank_name);
 	if (dserr != dataset_error::no_error) {
 		return dserr;
 	}
@@ -94,18 +84,18 @@ dataset_error treebank_dataset::next_language() {
 	return dataset_error::no_error;
 }
 
-treebank_reader& treebank_dataset::get_treebank_reader() {
-	return m_tree_read;
+treebank_reader& treebank_dataset_reader::get_treebank_reader() {
+	return m_treebank_reader;
 }
 
 /* PRIVATE */
 
-void treebank_dataset::step_line() {
-	if (m_list >> m_lang >> m_tbf) {
+void treebank_dataset_reader::step_line() {
+	if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
 		// do nothing, there are more trees
 	}
 	else {
-		m_lang = m_tbf = "none";
+		m_cur_treebank_name = m_cur_treebank_filename = "none";
 	}
 }
 

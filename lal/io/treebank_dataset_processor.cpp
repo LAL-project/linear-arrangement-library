@@ -39,27 +39,24 @@
  *
  ********************************************************************/
  
-#include <lal/io/treebank_processor.hpp>
-
-// C includes
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <lal/io/treebank_dataset_processor.hpp>
 
 // C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <algorithm>
 #include <string_view>
+#include <filesystem>
 #include <iostream>
 #include <numeric>
 #include <cmath>
 using namespace std;
 
 // lal includes
-#include <lal/io/treebank_dataset.hpp>
-#include <lal/io/treebank_reader.hpp>
-#include <lal/definitions.hpp>
 #include <lal/graphs/undirected_graph.hpp>
+#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_reader.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/headedness.hpp>
@@ -78,49 +75,37 @@ using namespace graphs;
 
 namespace io {
 
-inline
-constexpr string_view tree_feature_string(const treebank_processor::tree_feature& tf) {
+#define TBPROC_TF treebank_dataset_processor::tree_feature
+#define TBPROC_PE treebank_dataset_processor::processor_error
+
+inline constexpr string_view
+tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 	switch (tf) {
-	case treebank_processor::tree_feature::n: return "n";
-	case treebank_processor::tree_feature::k2: return "k2";
-	case treebank_processor::tree_feature::k3: return "k3";
-	case treebank_processor::tree_feature::size_Q: return "size_Q";
-	case treebank_processor::tree_feature::headedness: return "headedness";
-	case treebank_processor::tree_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
-	case treebank_processor::tree_feature::C: return "C";
-	case treebank_processor::tree_feature::C_exp_1: return "C_exp_1";
-	case treebank_processor::tree_feature::C_exp_2: return "C_exp_2";
-	case treebank_processor::tree_feature::C_var: return "C_var";
-	case treebank_processor::tree_feature::C_z: return "C_z";
-	case treebank_processor::tree_feature::D: return "D";
-	case treebank_processor::tree_feature::D_exp_1: return "D_exp_1";
-	case treebank_processor::tree_feature::D_exp_2: return "D_exp_2";
-	case treebank_processor::tree_feature::D_var: return "D_var";
-	case treebank_processor::tree_feature::D_z: return "D_z";
-	case treebank_processor::tree_feature::Dmin_Unconstrained: return "Dmin_Unconstrained";
-	case treebank_processor::tree_feature::Dmin_Planar: return "Dmin_Planar";
-	case treebank_processor::tree_feature::Dmin_Projective: return "Dmin_Projective";
+	case TBPROC_TF::n: return "n";
+	case TBPROC_TF::k2: return "k2";
+	case TBPROC_TF::k3: return "k3";
+	case TBPROC_TF::size_Q: return "size_Q";
+	case TBPROC_TF::headedness: return "headedness";
+	case TBPROC_TF::mean_hierarchical_distance: return "mean_hierarchical_distance";
+	case TBPROC_TF::C: return "C";
+	case TBPROC_TF::C_exp_1: return "C_exp_1";
+	case TBPROC_TF::C_exp_2: return "C_exp_2";
+	case TBPROC_TF::C_var: return "C_var";
+	case TBPROC_TF::C_z: return "C_z";
+	case TBPROC_TF::D: return "D";
+	case TBPROC_TF::D_exp_1: return "D_exp_1";
+	case TBPROC_TF::D_exp_2: return "D_exp_2";
+	case TBPROC_TF::D_var: return "D_var";
+	case TBPROC_TF::D_z: return "D_z";
+	case TBPROC_TF::Dmin_Unconstrained: return "Dmin_Unconstrained";
+	case TBPROC_TF::Dmin_Planar: return "Dmin_Planar";
+	case TBPROC_TF::Dmin_Projective: return "Dmin_Projective";
 	}
 	// should never happen
 	return "???";
 }
 
-inline
-constexpr string_view processor_error_string(const treebank_processor::processor_error& pe) {
-	switch (pe) {
-	case treebank_processor::processor_error::none: return "No error";
-	case treebank_processor::processor_error::need_main_file: return "Main file not given";
-	case treebank_processor::processor_error::need_output_directory: return "Output directory not given";
-	case treebank_processor::processor_error::missing_main_file: return "Main file not found";
-	case treebank_processor::processor_error::missing_output_directory: return "Output directory not found";
-	case treebank_processor::processor_error::missing_treebank_file: return "Some tree bank file could not be found";
-	case treebank_processor::processor_error::no_features: return "No features to be output";
-	}
-	// should never happen
-	return "Wrong value for process_error parameter";
-}
-
-#define index_of(_X_) enum2index(treebank_processor::tree_feature::_X_)
+#define index_of(_X_) static_cast<size_t>(TBPROC_TF::_X_)
 #define n_idx index_of(n)
 #define k2_idx index_of(k2)
 #define k3_idx index_of(k3)
@@ -143,80 +128,53 @@ constexpr string_view processor_error_string(const treebank_processor::processor
 
 // CLASS METHODS
 
-// PUBLIC
-
-treebank_processor::treebank_processor(bool all_fs) {
-	m_out_dir = "none";
-	m_main_list = "none";
-
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
-}
-
-treebank_processor::treebank_processor
+treebank_dataset_processor::processor_error treebank_dataset_processor::init
 (const string& file, const string& odir, bool all_fs)
 {
 	m_main_list = file;
 	m_out_dir = odir;
-
 	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
-}
 
-void treebank_processor::init
-(const string& file, const string& odir, bool all_fs)
-{
-	m_main_list = file;
-	m_out_dir = odir;
-	
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
-}
+	// check that the input file and the output directory exist
+	dataset_error dserr = m_treebank_dataset_reader.init(m_main_list);
 
-void treebank_processor::add_feature(const tree_feature& fs) {
-	m_what_fs[ enum2index(fs) ] = true;
-}
-void treebank_processor::remove_feature(const tree_feature& fs) {
-	m_what_fs[ enum2index(fs) ] = false;
-}
-
-treebank_processor::processor_error treebank_processor::process
-(char sep, bool header, bool v) const
-{
-	// first, check that there is something to be computed
-	if (m_what_fs.size() == 0) {
-		return processor_error::no_features;
-	}
-
-	// second, check that the reader was initialised
-	if (m_main_list == "none") {
-		return processor_error::need_main_file;
-	}
-	if (m_out_dir == "none") {
-		return processor_error::need_output_directory;
-	}
-
-	treebank_dataset tbds;
-	dataset_error dserr = tbds.init(m_main_list);
-
-	if (dserr == dataset_error::missing_main_file) {
-		return processor_error::missing_main_file;
-	}
+	if (dserr == dataset_error::main_file_does_not_exist)
+	{ return processor_error::main_file_does_not_exist; }
 
 	// make sure output directory exists
-	struct stat info;
-	if (m_out_dir != "." and stat(m_out_dir.c_str(), &info) != 0) {
-		return processor_error::missing_output_directory;
-	}
+	if (m_out_dir != "." and not filesystem::exists(m_out_dir))
+	{ return processor_error::output_directory_does_not_exist; }
+
+	return processor_error::none;
+}
+
+void treebank_dataset_processor::add_feature(const tree_feature& fs) {
+	m_what_fs[ static_cast<size_t>(fs) ] = true;
+}
+void treebank_dataset_processor::remove_feature(const tree_feature& fs) {
+	m_what_fs[ static_cast<size_t>(fs) ] = false;
+}
+
+treebank_dataset_processor::processor_error treebank_dataset_processor::process
+(char sep, bool header, bool v)
+{
+	// -- this function assumes that init did not return any error -- //
+
+	// check that there is something to be computed
+	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
+	{ return processor_error::no_features; }
 
 	// process dataset using treebank_dataset class
-	while (tbds.has_language()) {
-		dserr = tbds.next_language();
-		if (dserr == dataset_error::missing_treebank_file) {
-			return processor_error::missing_treebank_file;
-		}
+	while (m_treebank_dataset_reader.has_treebank()) {
+		const dataset_error dserr = m_treebank_dataset_reader.next_treebank();
+
+		if (dserr == dataset_error::treebank_could_not_be_opened)
+		{ return processor_error::treebank_file_could_not_be_opened; }
 
 		// iterate to next language
-		treebank_reader& tbread = tbds.get_treebank_reader();
+		treebank_reader& tbread = m_treebank_dataset_reader.get_treebank_reader();
 
-		const string lang = tbread.what_language();
+		const string lang = tbread.get_identifier();
 		if (v) {
 			cout << "Processing language: " << lang
 				 << " (file: '" << tbread.get_treebank_filename()
@@ -231,21 +189,21 @@ treebank_processor::processor_error treebank_processor::process
 		// since the output directory exists there is no
 		// need to check for is_open()
 
-		// output header
+		// output header to the file
 		if (header) {
 			if (m_what_fs[0]) {
-				out_lang_file << tree_feature_string(index2enum(0));
+				out_lang_file << tree_feature_string(static_cast<tree_feature>(0));
 			}
 			for (size_t i = 1; i < m_what_fs.size(); ++i) {
 				if (m_what_fs[i]) {
-					out_lang_file << sep << tree_feature_string(index2enum(i));
+					out_lang_file << sep << tree_feature_string(static_cast<tree_feature>(i));
 				}
 			}
 			out_lang_file << endl;
 		}
 
-		rooted_tree rT;
 		// process the current treebank
+		rooted_tree rT;
 		while (tbread.has_tree()) {
 			dataset_error err = tbread.next_tree();
 			if (err == dataset_error::empty_line) {
@@ -271,7 +229,7 @@ treebank_processor::processor_error treebank_processor::process
 // PRIVATE
 
 template<class TREE, class OUT_STREAM>
-void treebank_processor::process_tree(
+void treebank_dataset_processor::process_tree(
 	char sep, const TREE& rT, OUT_STREAM& out_lang_file
 )
 const
@@ -303,12 +261,13 @@ const
 		set_prop(headedness_idx, linarr::headedness(rT));
 	}
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
-		set_prop(mean_hierarchical_distance_idx, properties::mean_hierarchical_distance(rT));
+		set_prop(mean_hierarchical_distance_idx,
+				 properties::mean_hierarchical_distance(rT));
 	}
 
 	// -----------------------------------------------------------------
 	// C
-	
+
 	if (m_what_fs[C_idx]) {
 		set_prop(C_idx, linarr::n_crossings(fT));
 	}
@@ -348,7 +307,7 @@ const
 		if (not m_what_fs[C_exp1_idx]) {
 			set_prop(C_exp1_idx, properties::expectation_C(fT));
 		}
-		
+
 #if defined DEBUG
 		assert(prop_set[C_idx]);
 		assert(prop_set[C_var_idx]);
@@ -361,7 +320,7 @@ const
 
 	// -----------------------------------------------------------------
 	// D
-	
+
 	if (m_what_fs[D_idx]) {
 		set_prop(D_idx, linarr::sum_length_edges(fT));
 	}
@@ -371,7 +330,7 @@ const
 	if (m_what_fs[D_exp1_idx]) {
 		set_prop(D_exp1_idx, properties::expectation_D(fT));
 	}
-	
+
 	if (m_what_fs[D_exp2_idx]) {
 		if (not m_what_fs[D_exp1_idx]) {
 			set_prop(D_exp1_idx, properties::expectation_D(fT));
@@ -401,7 +360,7 @@ const
 		if (not m_what_fs[D_exp1_idx]) {
 			set_prop(D_exp1_idx, properties::expectation_D(fT));
 		}
-		
+
 #if defined DEBUG
 		assert(prop_set[D_idx]);
 		assert(prop_set[D_var_idx]);
@@ -415,13 +374,16 @@ const
 	// -----------------
 	// Optimisation of D
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		set_prop(Dmin_Unconstrained_idx, linarr::Dmin(fT, linarr::algorithms_Dmin::Unconstrained_YS).first);
+		set_prop(Dmin_Unconstrained_idx,
+				 linarr::Dmin(fT, linarr::algorithms_Dmin::Unconstrained_YS).first);
 	}
 	if (m_what_fs[Dmin_Planar_idx]) {
-		set_prop(Dmin_Planar_idx, linarr::Dmin(fT, linarr::algorithms_Dmin::Planar).first);
+		set_prop(Dmin_Planar_idx,
+				 linarr::Dmin(fT, linarr::algorithms_Dmin::Planar).first);
 	}
 	if (m_what_fs[Dmin_Projective_idx]) {
-		set_prop(Dmin_Projective_idx, linarr::Dmin(rT, linarr::algorithms_Dmin::Projective).first);
+		set_prop(Dmin_Projective_idx,
+				 linarr::Dmin(rT, linarr::algorithms_Dmin::Projective).first);
 	}
 
 	// ---------------

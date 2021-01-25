@@ -42,9 +42,7 @@ QMAKE_CXXFLAGS +=			\
 	-Wlogical-op			\ # warn about logical operations being used where
 	                        \ # bitwise were probably prefered
 	-Wuseless-cast			\ # warn if you perform a cast to the same type
-	-Wrestrict				\
-	-fsanitize=address		  # address sanitizer (a fast memory error detector)
-	                          # Detect out-of-bounds and use-after-free bugs.
+	-Wrestrict
 
 QMAKE_CXXFLAGS += -fopenmp
 
@@ -100,8 +98,8 @@ HEADERS += \
 	io.hpp \
 	io/basic_output.hpp \
 	io/dataset_error.hpp \
-	io/treebank_dataset.hpp \
-	io/treebank_processor.hpp \
+	io/treebank_dataset_processor.hpp \
+	io/treebank_dataset_reader.hpp \
 	io/treebank_reader.hpp \
 	iterators.hpp \
 	iterators/E_iterator.hpp \
@@ -168,9 +166,9 @@ SOURCES += \
 	internal/graphs/trees/Dmin_Projective.cpp \
 	internal/graphs/trees/Dmin_Unconstrained_FC.cpp \
 	internal/graphs/trees/Dmin_Unconstrained_YS.cpp \
-	io/treebank_dataset.cpp \
 	io/edge_list.cpp \
-	io/treebank_processor.cpp \
+    io/treebank_dataset_processor.cpp \
+    io/treebank_dataset_reader.cpp \
 	io/treebank_reader.cpp \
 	iterators/E_iterator.cpp \
 	iterators/Q_iterator.cpp \

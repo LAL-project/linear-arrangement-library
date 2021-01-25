@@ -57,10 +57,10 @@ namespace io {
 enum class dataset_error {
 	/// No error.
 	no_error,
-	/// Main file could not be found in disk.
-	missing_main_file,
-	/// One of the treebank files could not be found in disk.
-	missing_treebank_file,
+	/// Main file does not exist.
+	main_file_does_not_exist,
+	/// A treebank file could not be opened.
+	treebank_could_not_be_opened,
 	/// The reader found an empty line.
 	empty_line
 };

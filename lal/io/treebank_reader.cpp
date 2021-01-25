@@ -41,10 +41,6 @@
  
 #include <lal/io/treebank_reader.hpp>
 
-// C includes
-#include <sys/types.h>
-#include <sys/stat.h>
-
 // C++ includes
 #include <sstream>
 using namespace std;
@@ -57,23 +53,16 @@ using namespace graphs;
 
 namespace io {
 
-// TREEBANK_READER
-
-treebank_reader::treebank_reader() {}
-treebank_reader::~treebank_reader() {}
-
 // MODIFIERS
 
 dataset_error treebank_reader::init(const string& file, const string& lang) {
 	m_treebank.close();
-	m_language = lang;
-	m_num_trees = 0;
-
+	m_treebank_identifier = lang;
 	m_treebank_file = file;
-	m_treebank.open(m_treebank_file.c_str());
 
+	m_treebank.open(m_treebank_file.c_str());
 	if (not m_treebank.is_open()) {
-		return dataset_error::missing_treebank_file;
+		return dataset_error::treebank_could_not_be_opened;
 	}
 	return dataset_error::no_error;
 }
@@ -102,18 +91,6 @@ dataset_error treebank_reader::next_tree() {
 }
 
 // GETTERS
-
-size_t treebank_reader::get_num_trees() const {
-	return m_num_trees;
-}
-
-const string& treebank_reader::what_language() const {
-	return m_language;
-}
-
-const string& treebank_reader::get_treebank_filename() const {
-	return m_treebank_file;
-}
 
 rooted_tree treebank_reader::get_tree() const {
 	// parse tree in line

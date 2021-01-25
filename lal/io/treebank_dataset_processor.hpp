@@ -48,6 +48,9 @@
 #include <string>
 #include <array>
 
+// lal includes
+#include <lal/io/treebank_dataset_reader.hpp>
+
 namespace lal {
 namespace io {
 
@@ -56,12 +59,12 @@ namespace io {
  *
  * This class, the objects of which will be referred to as the "processor", is
  * an interface for processing a whole treebank dataset and produce data for
- * a fixed set of features. It is meant to ease processing treebanks if the
- * features to be calculated are considered in this class. See the enumeration
- * @ref tree_feature for details on the features available. Each feature
- * can be set to be calculated via method @ref add_feature. However, the processor
- * can be initialised with all features set (see @ref init), and then have some
- * of them removed via method @ref remove_feature.
+ * a fixed set of features. It is meant to ease the processing of treebanks if
+ * the features to be calculated are to be only those available in the library.
+ * See the enumeration @ref tree_feature for details on the features available.
+ * Each feature can be set to be calculated via method @ref add_feature. However,
+ * the processor can be initialised with all features set (see @ref init), and
+ * then have some of them removed via method @ref remove_feature.
  *
  * A treebank dataset is made up of a set of files, each containing several
  * syntactic dependency trees of sentences of the corresponding language.
@@ -81,19 +84,19 @@ namespace io {
  * has to be initialised with such file via method @ref init. Then, the treebank
  * is processed via method @ref process.
  *
- * The usage of this class is a lot simpler than that of class @ref treebank_dataset.
- * See code for details.
+ * The usage of this class is a lot simpler than that of class
+ * @ref treebank_dataset_reader. See code for details.
  * @code
- *		treebank_processor tbproc = treebank_processor();
- *		// initialise the processor without features
+ *		treebank_processor tbproc;
+ *		// initialise the processor without features (check for errors)
  *		tbproc.init(main_file, output_dir, false);
  *		tbproc.add_feature(treebank_processor::tree_feature::C);
  *		tbproc.add_feature(treebank_processor::tree_feature::D_var);
- *		// it is advisable to check for errors
  *		tbproc.process();
+ *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_processor {
+class treebank_dataset_processor {
 public:
 	/// @brief Features that can be computed for each tree.
 	enum class tree_feature {
@@ -228,43 +231,17 @@ public:
 	enum class processor_error {
 		/// The dataset was processed successfully.
 		none,
-		/// Main file was not given.
-		need_main_file,
-		/// Output directory was not given.
-		need_output_directory,
 		/// Main file could not be found.
-		missing_main_file,
+		main_file_does_not_exist,
 		/// Output directory could not be found.
-		missing_output_directory,
-		/// One of the treebank files could not be found.
-		missing_treebank_file,
+		output_directory_does_not_exist,
+		/// A treebank file could not be opened.
+		treebank_file_could_not_be_opened,
 		/// No features at all were given to the processor.
 		no_features
 	};
 
 public:
-	/**
-	 * @brief Default constructor
-	 *
-	 * If the parameter is true, the list is initialised with all features
-	 * possible.
-	 * @param all_fs Should the feature list contain all possible features?
-	 */
-	treebank_processor(bool all_fs = false);
-	/**
-	 * @brief Constructor with directories.
-	 *
-	 * If the parameter is true, the list is initialised with all
-	 * features possible.
-	 * @param file Main file's name.
-	 * @param odir Output directory.
-	 * @param all_fs Should the feature list contain all possible features?
-	 */
-	treebank_processor
-	(const std::string& file, const std::string& odir, bool all_fs = false);
-	/// Destructor.
-	~treebank_processor() = default;
-
 	/**
 	 * @brief Initialise the processor with a new dataset.
 	 *
@@ -274,8 +251,8 @@ public:
 	 * @param odir Output directory.
 	 * @param all_fs Should the feature list contain all possible features?
 	 */
-	void init
-	(const std::string& file, const std::string& odir, bool all_fs = false);
+	treebank_dataset_processor::processor_error init
+	(const std::string& file, const std::string& odir, bool all_fs);
 
 	/**
 	 * @brief Adds a feature to the processor.
@@ -298,12 +275,12 @@ public:
 	 * different from @ref processor_error::none.
 	 * @param sep Separator character.
 	 * @param header Should a header be written?
-	 * @param v Output progress on standard output.
+	 * @param verbose Output progress on standard output.
 	 * @return Returns a value describing the error (if any) that occurred
 	 * while processing the dataset.
 	 */
 	processor_error process
-	(char sep = '\t', bool header = true, bool v = false) const;
+	(char sep = '\t', bool header = true, bool verbose = false);
 
 private:
 	/// The number of total features available.
@@ -312,20 +289,7 @@ private:
 
 private:
 
-	static inline
-	constexpr size_t enum2index(const tree_feature& tf)
-	{
-		return static_cast<size_t>(tf);
-	}
-	
-	static inline
-	constexpr tree_feature index2enum(size_t i) {
-#if defined DEBUG
-		assert(i < NUM_TREE_FEATURES);
-#endif
-		return static_cast<tree_feature>(i);
-	}
-	
+	/// Process a single tree in the treebank.
 	template<class TREE, class OUT_STREAM>
 	void process_tree(
 		char sep, const TREE& rT, OUT_STREAM& out_lab_file
@@ -333,12 +297,15 @@ private:
 
 private:
 	/// Output directory.
-	std::string m_out_dir;
+	std::string m_out_dir = "none";
 	/// File containing the list of languages and their treebanks.
-	std::string m_main_list;
+	std::string m_main_list = "none";
 	
 	/// The list of features to be computed.
 	std::array<bool, NUM_TREE_FEATURES> m_what_fs;
+
+	/// The dataset reader used to process the trees.
+	treebank_dataset_reader m_treebank_dataset_reader;
 };
 
 } // -- namespace io
