@@ -269,7 +269,23 @@ const
 	// C
 
 	if (m_what_fs[C_idx]) {
-		set_prop(C_idx, linarr::n_crossings(fT));
+
+		// choose a suitable algorithm depending on the value of 'n'
+		const auto algo_C =
+		[](uint32_t N) -> linarr::algorithms_C {
+			if (N <= 8) {
+				return linarr::algorithms_C::ladder;
+			}
+			if (N == 9) {
+				return linarr::algorithms_C::dynamic_programming;
+			}
+			if (N <= 100) {
+				return linarr::algorithms_C::ladder;
+			}
+			return linarr::algorithms_C::stack_based;
+		}(rT.n_nodes());
+
+		set_prop(C_idx, linarr::n_crossings(fT, {}, algo_C));
 	}
 	if (m_what_fs[C_var_idx]) {
 		set_prop(C_var_idx, properties::variance_C_tree(fT));
