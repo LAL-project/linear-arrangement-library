@@ -64,8 +64,8 @@ namespace internal {
 template<
 	class G,
 	std::enable_if_t<
-		std::is_same_v<graphs::directed_graph, G> ||
-		std::is_same_v<graphs::undirected_graph, G>,
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
 	bool> = true
 >
 inline void get_bool_neighbours(

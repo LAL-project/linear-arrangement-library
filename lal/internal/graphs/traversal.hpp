@@ -108,14 +108,14 @@ class BFS {
 
 		void start_at(node source) {
 			m_X.push(source);
-			m_vis[source] = true;
+			m_vis[source] = 1;
 			do_traversal();
 		}
 
 		void start_at(const std::vector<node>& sources) {
 			for (const node& u : sources) {
 				m_X.push(u);
-				m_vis[u] = true;
+				m_vis[u] = 1;
 			}
 			do_traversal();
 		}
@@ -175,7 +175,7 @@ class BFS {
 		bool all_visited() const {
 			const auto begin = &m_vis[0];
 			const auto end = &m_vis[m_G.n_nodes()];
-			return find(begin, end, 0) == end;
+			return std::find(begin, end, 0) == end;
 		}
 
 		// returns the graph
@@ -245,6 +245,13 @@ class BFS {
 		template<
 			class GG = G,
 			std::enable_if_t<
+				// This function should not be available to any class that
+				// inherits from
+				//       graphs::directed_graph
+				//       graphs::undirected_graph
+				// thus making this function only available to
+				//       graphs::graph
+				//       graphs::tree
 				!std::is_base_of_v<graphs::directed_graph, GG> &&
 				!std::is_base_of_v<graphs::undirected_graph, GG>,
 				bool
