@@ -186,7 +186,10 @@ size_t mpz_bytes(const mpz_t& v) {
 }
 
 // Move contents of 'source' and give them to 'target'
-inline void move_from(__mpz_struct& source, __mpz_struct& target) {
+inline void move_from_source_to_target(
+	__mpz_struct& source, __mpz_struct& target
+)
+{
 	target._mp_alloc = source._mp_alloc;
 	target._mp_size = source._mp_size;
 	target._mp_d = source._mp_d;
@@ -199,25 +202,25 @@ inline void move_from(__mpz_struct& source, __mpz_struct& target) {
 }
 
 void move_mpz_to_mpz(mpz_t& source, mpz_t& target) {
-	move_from(source[0], target[0]);
+	move_from_source_to_target(source[0], target[0]);
 }
 
 void move_mpq_to_mpq(mpq_t& source, mpq_t& target) {
-	move_from(source[0]._mp_num, target[0]._mp_num);
-	move_from(source[0]._mp_den, target[0]._mp_den);
+	move_from_source_to_target(source[0]._mp_num, target[0]._mp_num);
+	move_from_source_to_target(source[0]._mp_den, target[0]._mp_den);
 }
 
 void move_mpz_to_mpq(mpz_t& source, mpq_t& target) {
-	move_from(source[0], target[0]._mp_num);
-	mpz_t one;
-	mpz_init_set_ui(one, 1);
-	move_from(one[0], target[0]._mp_den);
+	// move numerator
+	move_from_source_to_target(source[0], target[0]._mp_num);
+	// set the denominator to 1
+	mpz_init_set_ui(&target[0]._mp_den, 1);
 	mpq_canonicalize(target);
 }
 
 void move_mpz_to_mpq(mpz_t& source_n, mpz_t& source_d, mpq_t& target) {
-	move_from(source_n[0], target[0]._mp_num);
-	move_from(source_d[0], target[0]._mp_den);
+	move_from_source_to_target(source_n[0], target[0]._mp_num);
+	move_from_source_to_target(source_d[0], target[0]._mp_den);
 }
 
 } // -- namespace internal
