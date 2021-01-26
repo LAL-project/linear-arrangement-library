@@ -82,102 +82,102 @@ namespace generate {
  * @endcode
  */
 class all_ulab_free_trees : public tree_gen<graphs::free_tree> {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t).
-		 */
-		all_ulab_free_trees() = default;
-		/// Constructor with number of nodes.
-		all_ulab_free_trees(uint32_t n);
-		/// Default destructor
-		~all_ulab_free_trees();
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t).
+	 */
+	all_ulab_free_trees() = default;
+	/// Constructor with number of nodes.
+	all_ulab_free_trees(uint32_t n);
+	/// Default destructor
+	~all_ulab_free_trees();
 
-		/**
-		 * @brief Initialises the generator.
-		 *
-		 * Initialises the internal state of this generator
-		 * so that method @ref next can be called safely.
-		 *
-		 * Initialising this class already allows the user
-		 * to retrieve the first tree via method @ref get_tree.
-		 *
-		 * It is allowed to call this method two or more times,
-		 * and with different values for parameter @e n.
-		 * @param n The number of nodes of the trees to be
-		 * generated.
-		 */
-		void init(uint32_t n);
+	/**
+	 * @brief Initialises the generator.
+	 *
+	 * Initialises the internal state of this generator
+	 * so that method @ref next can be called safely.
+	 *
+	 * Initialising this class already allows the user
+	 * to retrieve the first tree via method @ref get_tree.
+	 *
+	 * It is allowed to call this method two or more times,
+	 * and with different values for parameter @e n.
+	 * @param n The number of nodes of the trees to be
+	 * generated.
+	 */
+	void init(uint32_t n);
 
-		/**
-		 * @brief Returns whether there are more trees to generate.
-		 * @return Returns true if there are still more trees
-		 * to generate. Returns false if all trees have been
-		 * generated (there are no more unique trees of this
-		 * size that were not generated before).
-		 * @pre The generator must have been initialised.
-		 */
-		bool has_next() const;
+	/**
+	 * @brief Returns whether there are more trees to generate.
+	 * @return Returns true if there are still more trees
+	 * to generate. Returns false if all trees have been
+	 * generated (there are no more unique trees of this
+	 * size that were not generated before).
+	 * @pre The generator must have been initialised.
+	 */
+	bool has_next() const;
 
-		/**
-		 * @brief Generates next tree.
-		 *
-		 * Modifies the internal state so that the next tree
-		 * can be retrieved using method @ref get_tree.
-		 * @pre The generator must have been initialised.
-		 */
-		void next();
+	/**
+	 * @brief Generates next tree.
+	 *
+	 * Modifies the internal state so that the next tree
+	 * can be retrieved using method @ref get_tree.
+	 * @pre The generator must have been initialised.
+	 */
+	void next();
 
-	protected:
-		/**
-		 * @brief Constructs the current tree.
-		 * @return Returns the tree generated with method @ref next().
-		 * @pre The generator must have been initialised, and method
-		 * @ref next must have been called at least once.
-		 */
-		graphs::free_tree __get_tree();
+protected:
+	/**
+	 * @brief Constructs the current tree.
+	 * @return Returns the tree generated with method @ref next().
+	 * @pre The generator must have been initialised, and method
+	 * @ref next must have been called at least once.
+	 */
+	graphs::free_tree __get_tree();
 
-	private:
-		/// Canonical level sequence of the tree.
-		uint32_t *m_L = nullptr;
-		/**
-		 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
-		 * corresponding to the parent of the node corresponding to \f$l_i\f$.
-		 */
-		uint32_t *m_W = nullptr;
+private:
+	/// Canonical level sequence of the tree.
+	uint32_t *m_L = nullptr;
+	/**
+	 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
+	 * corresponding to the parent of the node corresponding to \f$l_i\f$.
+	 */
+	uint32_t *m_W = nullptr;
 
-		/// Largest integer such that \f$l_p \neq 2\f$.
-		uint32_t m_p;
-		/// Largest integer such that \f$q < p, \; l_q = l_p - 1\f$.
-		uint32_t m_q;
+	/// Largest integer such that \f$l_p \neq 2\f$.
+	uint32_t m_p;
+	/// Largest integer such that \f$q < p, \; l_q = l_p - 1\f$.
+	uint32_t m_q;
 
-		/// Maximum level number in the first principal subsequence.
-		uint32_t m_h1;
-		/// Maximum level number in the second principal subsequence.
-		uint32_t m_h2;
+	/// Maximum level number in the first principal subsequence.
+	uint32_t m_h1;
+	/// Maximum level number in the second principal subsequence.
+	uint32_t m_h2;
 
-		/**
-		 * @brief An index to the first element of \f$L_2\f$.
-		 *
-		 * \f$L_2\f$ is the second principal subsequence of \f$L\f$.
-		 */
-		uint32_t m_c;
-		/**
-		 * @brief Exactly \f$m - 1\f$.
-		 *
-		 * Read the paper: page 542, first paragraph.
-		 */
-		uint32_t m_r;
+	/**
+	 * @brief An index to the first element of \f$L_2\f$.
+	 *
+	 * \f$L_2\f$ is the second principal subsequence of \f$L\f$.
+	 */
+	uint32_t m_c;
+	/**
+	 * @brief Exactly \f$m - 1\f$.
+	 *
+	 * Read the paper: page 542, first paragraph.
+	 */
+	uint32_t m_r;
 
-		/// Number of nodes of the trees.
-		uint32_t m_n;
+	/// Number of nodes of the trees.
+	uint32_t m_n;
 
-		/// Was the last tree generated?
-		bool m_is_last = false;
-		/// First time calling @ref next().
-		bool m_first_it = true;
+	/// Was the last tree generated?
+	bool m_is_last = false;
+	/// First time calling @ref next().
+	bool m_first_it = true;
 
 };
 

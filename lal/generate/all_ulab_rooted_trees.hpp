@@ -82,81 +82,81 @@ namespace generate {
  * @endcode
  */
 class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t).
-		 */
-		all_ulab_rooted_trees() = default;
-		/// Constructor with number of nodes.
-		all_ulab_rooted_trees(uint32_t n);
-		/// Default destructor
-		~all_ulab_rooted_trees();
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t).
+	 */
+	all_ulab_rooted_trees() = default;
+	/// Constructor with number of nodes.
+	all_ulab_rooted_trees(uint32_t n);
+	/// Default destructor
+	~all_ulab_rooted_trees();
 
-		/**
-		 * @brief Initialises the generator.
-		 *
-		 * Initialises the internal state of this generator
-		 * so that method @ref next can be called safely.
-		 *
-		 * Initialising this class already allows the user
-		 * to retrieve the first tree via method @ref get_tree.
-		 *
-		 * It is allowed to call this method two or more times,
-		 * and with different values for parameter @e n.
-		 * @param n The number of nodes of the trees to be
-		 * generated.
-		 */
-		void init(uint32_t n);
+	/**
+	 * @brief Initialises the generator.
+	 *
+	 * Initialises the internal state of this generator
+	 * so that method @ref next can be called safely.
+	 *
+	 * Initialising this class already allows the user
+	 * to retrieve the first tree via method @ref get_tree.
+	 *
+	 * It is allowed to call this method two or more times,
+	 * and with different values for parameter @e n.
+	 * @param n The number of nodes of the trees to be
+	 * generated.
+	 */
+	void init(uint32_t n);
 
-		/**
-		 * @brief Returns whether there are more trees to generate.
-		 * @return Returns true if there are still more trees
-		 * to generate. Returns false if all trees have been
-		 * generated (there are no more unique trees of this
-		 * size that were not generated before).
-		 * @pre The generator must have been initialised.
-		 */
-		bool has_next() const;
+	/**
+	 * @brief Returns whether there are more trees to generate.
+	 * @return Returns true if there are still more trees
+	 * to generate. Returns false if all trees have been
+	 * generated (there are no more unique trees of this
+	 * size that were not generated before).
+	 * @pre The generator must have been initialised.
+	 */
+	bool has_next() const;
 
-		/**
-		 * @brief Generates the next tree.
-		 *
-		 * Modifies the internal state so that the next tree
-		 * can be retrieved using method @ref get_tree.
-		 * @pre The generator must have been initialised.
-		 */
-		void next();
+	/**
+	 * @brief Generates the next tree.
+	 *
+	 * Modifies the internal state so that the next tree
+	 * can be retrieved using method @ref get_tree.
+	 * @pre The generator must have been initialised.
+	 */
+	void next();
 
-	protected:
-		/**
-		 * @brief Constructs the current tree.
-		 * @return Returns the tree generated with method @ref next(). The tree
-		 * is rooted at vertex 0.
-		 * @pre The generator must have been initialised, and method
-		 * @ref next must have been called at least once.
-		 */
-		graphs::rooted_tree __get_tree();
+protected:
+	/**
+	 * @brief Constructs the current tree.
+	 * @return Returns the tree generated with method @ref next(). The tree
+	 * is rooted at vertex 0.
+	 * @pre The generator must have been initialised, and method
+	 * @ref next must have been called at least once.
+	 */
+	graphs::rooted_tree __get_tree();
 
-	private:
-		/// Number of nodes of the tree
-		uint32_t m_n;
+private:
+	/// Number of nodes of the tree
+	uint32_t m_n;
 
-		/// Is the current tree the last tree to be generated?
-		bool m_is_last = false;
-		/// Is the current tree the first tree to be generated?
-		bool m_is_first = false;
+	/// Is the current tree the last tree to be generated?
+	bool m_is_last = false;
+	/// Is the current tree the first tree to be generated?
+	bool m_is_first = false;
 
-		/// Pointer as in the paper.
-		uint32_t m_p = 0;
-		/// Sequence SAVE
-		node *m_save = nullptr;
-		/// Sequence PREV
-		node *m_prev = nullptr;
-		/// Level sequence of the tree
-		node *m_L = nullptr;
+	/// Pointer as in the paper.
+	uint32_t m_p = 0;
+	/// Sequence SAVE
+	node *m_save = nullptr;
+	/// Sequence PREV
+	node *m_prev = nullptr;
+	/// Level sequence of the tree
+	node *m_L = nullptr;
 };
 
 } // -- namespace generate

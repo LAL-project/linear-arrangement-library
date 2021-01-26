@@ -58,39 +58,39 @@ namespace generate {
  * crossings.
  */
 class rand_projective_arrgmnt {
-	public:
-		/**
-		 * @brief Constructor with tree
-		 * @param rT Rooted tree
-		 * @param seed Boolean value that indicates whether the random number
-		 * generator should be seeded or not.
-		 * @pre The object @e t must be a rooted tree (see
-		 * @ref graphs::rooted_tree::is_rooted_tree).
-		 */
-		rand_projective_arrgmnt(const graphs::rooted_tree& rT, uint32_t seed = 0);
-		~rand_projective_arrgmnt();
+public:
+	/**
+	 * @brief Constructor with tree
+	 * @param rT Rooted tree
+	 * @param seed Boolean value that indicates whether the random number
+	 * generator should be seeded or not.
+	 * @pre The object @e t must be a rooted tree (see
+	 * @ref graphs::rooted_tree::is_rooted_tree).
+	 */
+	rand_projective_arrgmnt(const graphs::rooted_tree& rT, uint32_t seed = 0);
+	~rand_projective_arrgmnt();
 
-		/**
-		 * @brief Make a random projective arrangement of a rooted tree.
-		 * @return Returns a projective arrangement chosen uniformly at random
-		 * chosen amongst all projective arrangements of @e t.
-		 */
-		linear_arrangement make_rand_arrgmnt();
+	/**
+	 * @brief Make a random projective arrangement of a rooted tree.
+	 * @return Returns a projective arrangement chosen uniformly at random
+	 * chosen amongst all projective arrangements of @e t.
+	 */
+	linear_arrangement make_rand_arrgmnt();
 
-	private:
-		/// The rooted tree of we are making projective arrangements uniformly at random.
-		const graphs::rooted_tree& m_rT;
+private:
+	/// The rooted tree of we are making projective arrangements uniformly at random.
+	const graphs::rooted_tree& m_rT;
 
-		/**
-		 * @brief The random data for all vertices
-		 *
-		 * This is a member of the class to avoid its initialisation at
-		 * every call to @ref make_rand_arrgmnt.
-		 */
-		std::vector<std::vector<node>> rdata;
+	/**
+	 * @brief The random data for all vertices
+	 *
+	 * This is a member of the class to avoid its initialisation at
+	 * every call to @ref make_rand_arrgmnt.
+	 */
+	std::vector<std::vector<node>> rdata;
 
-		/// Random number generator
-		std::mt19937 m_gen;
+	/// Random number generator
+	std::mt19937 m_gen;
 };
 
 } // -- namespace generate

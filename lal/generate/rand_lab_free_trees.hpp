@@ -69,44 +69,44 @@ namespace generate {
  * @endcode
  */
 class __rand_lab_free_trees {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t, uint32_t).
-		 */
-		__rand_lab_free_trees() = default;
-		/// Constructor with size of tree and seed for the random number generator.
-		__rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
-		/// Default Destructor.
-		virtual ~__rand_lab_free_trees();
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t, uint32_t).
+	 */
+	__rand_lab_free_trees() = default;
+	/// Constructor with size of tree and seed for the random number generator.
+	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
+	/// Default Destructor.
+	virtual ~__rand_lab_free_trees();
 
-		/**
-		 * @brief Sets the size of the labelled trees to generate.
-		 *
-		 * Initialises the random number generator.
-		 * @param n Number of nodes of the tree.
-		 * @param seed Integer value used to seed the random number generator.
-		 */
-		void init(uint32_t n, uint32_t seed = 0);
+	/**
+	 * @brief Sets the size of the labelled trees to generate.
+	 *
+	 * Initialises the random number generator.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	void init(uint32_t n, uint32_t seed = 0);
 
-		/**
-		 * @brief Generates uniformly at random a free labelled tree.
-		 * @return Returns a labelled tree.
-		 * @pre The generator must have been initialised.
-		 */
-		graphs::free_tree get_tree();
+	/**
+	 * @brief Generates uniformly at random a free labelled tree.
+	 * @return Returns a labelled tree.
+	 * @pre The generator must have been initialised.
+	 */
+	graphs::free_tree get_tree();
 
-	protected:
-		/// Number of nodes of the tree.
-		uint32_t m_n;
-		/// Random number generator.
-		std::mt19937 m_gen;
-		/// Distribution of the numbers.
-		std::uniform_int_distribution<uint32_t> m_unif;
-		/// Prüfer sequence.
-		uint32_t *m_seq = nullptr;
+protected:
+	/// Number of nodes of the tree.
+	uint32_t m_n;
+	/// Random number generator.
+	std::mt19937 m_gen;
+	/// Distribution of the numbers.
+	std::uniform_int_distribution<uint32_t> m_unif;
+	/// Prüfer sequence.
+	uint32_t *m_seq = nullptr;
 };
 
 /**
@@ -116,24 +116,24 @@ class __rand_lab_free_trees {
  * usage of this class is the same as that of class @ref __rand_lab_free_trees.
  */
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
-	public:
-		/// See @ref __rand_lab_free_trees::__rand_lab_free_trees().
-		rand_lab_free_trees() = default;
-		/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
-		rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
-		/// Default Destructor.
-		~rand_lab_free_trees() = default;
+public:
+	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees().
+	rand_lab_free_trees() = default;
+	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
+	rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
+	/// Default Destructor.
+	~rand_lab_free_trees() = default;
 
-		/// See @ref __rand_lab_free_trees::init.
-		void init(uint32_t n, uint32_t seed = 0);
+	/// See @ref __rand_lab_free_trees::init.
+	void init(uint32_t n, uint32_t seed = 0);
 
-	protected:
-		/// See @ref __rand_lab_free_trees::get_tree.
-		graphs::free_tree __get_tree();
+protected:
+	/// See @ref __rand_lab_free_trees::get_tree.
+	graphs::free_tree __get_tree();
 
-	protected:
-		/// See @ref __rand_lab_free_trees.
-		__rand_lab_free_trees m_Gen;
+protected:
+	/// See @ref __rand_lab_free_trees.
+	__rand_lab_free_trees m_Gen;
 };
 
 } // -- namespace generate

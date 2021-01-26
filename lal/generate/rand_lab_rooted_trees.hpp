@@ -73,35 +73,35 @@ namespace generate {
  * @endcode
  */
 class __rand_lab_rooted_trees : public __rand_lab_free_trees {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t, uint32_t).
-		 */
-		__rand_lab_rooted_trees() = default;
-		/// Constructor with size of tree and seed for the random number generator.
-		__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
-		/// Default constructor.
-		~__rand_lab_rooted_trees() = default;
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t, uint32_t).
+	 */
+	__rand_lab_rooted_trees() = default;
+	/// Constructor with size of tree and seed for the random number generator.
+	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	/// Default constructor.
+	~__rand_lab_rooted_trees() = default;
 
-		/**
-		 * @brief Sets the size of the labelled trees to generate.
-		 *
-		 * Initialises the random number generator.
-		 * @param n Number of nodes of the tree.
-		 * @param seed Integer value used to seed the random number generator.
-		 */
-		void init(uint32_t n, uint32_t seed = 0);
+	/**
+	 * @brief Sets the size of the labelled trees to generate.
+	 *
+	 * Initialises the random number generator.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	void init(uint32_t n, uint32_t seed = 0);
 
-		/**
-		 * @brief Generates uniformly at random a free labelled tree.
-		 * @return Returns a labelled tree generated uniformly at random. The
-		 * tree is rooted at vertex 0.
-		 * @pre The generator must have been initialised.
-		 */
-		graphs::rooted_tree get_tree();
+	/**
+	 * @brief Generates uniformly at random a free labelled tree.
+	 * @return Returns a labelled tree generated uniformly at random. The
+	 * tree is rooted at vertex 0.
+	 * @pre The generator must have been initialised.
+	 */
+	graphs::rooted_tree get_tree();
 };
 
 /**
@@ -111,24 +111,24 @@ class __rand_lab_rooted_trees : public __rand_lab_free_trees {
  * usage of this class is the same as that of class @ref __rand_lab_rooted_trees.
  */
 class rand_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
-	public:
-		/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees() for details.
-		rand_lab_rooted_trees() = default;
-		/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t, uint32_t) for details.
-		rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
-		/// Default destructor.
-		~rand_lab_rooted_trees() = default;
+public:
+	/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees() for details.
+	rand_lab_rooted_trees() = default;
+	/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t, uint32_t) for details.
+	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	/// Default destructor.
+	~rand_lab_rooted_trees() = default;
 
-		/// See @ref __rand_lab_rooted_trees::init for details.
-		void init(uint32_t n, uint32_t seed = 0);
+	/// See @ref __rand_lab_rooted_trees::init for details.
+	void init(uint32_t n, uint32_t seed = 0);
 
-	protected:
-		/// See @ref __rand_lab_rooted_trees::get_tree for details.
-		graphs::rooted_tree __get_tree();
+protected:
+	/// See @ref __rand_lab_rooted_trees::get_tree for details.
+	graphs::rooted_tree __get_tree();
 
-	protected:
-		/// See @ref __rand_lab_rooted_trees for details.
-		__rand_lab_rooted_trees m_Gen;
+protected:
+	/// See @ref __rand_lab_rooted_trees for details.
+	__rand_lab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

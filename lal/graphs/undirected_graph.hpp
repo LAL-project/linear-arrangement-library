@@ -65,261 +65,261 @@ namespace graphs {
  * @ref add_edges(const std::vector<edge>&, bool, bool) ).
  */
 class undirected_graph : virtual public graph {
-	public:
-		/* CONSTRUCTORS */
+public:
+	/* CONSTRUCTORS */
 
-		/// Empty constructor.
-		undirected_graph() noexcept;
-		/**
-		 * @brief Constructor with number of nodes.
-		 * @param n Number of nodes.
-		 */
-		undirected_graph(uint32_t n) noexcept;
-		/// Copy constructor.
-		undirected_graph(const undirected_graph&) noexcept;
+	/// Empty constructor.
+	undirected_graph() noexcept;
+	/**
+	 * @brief Constructor with number of nodes.
+	 * @param n Number of nodes.
+	 */
+	undirected_graph(uint32_t n) noexcept;
+	/// Copy constructor.
+	undirected_graph(const undirected_graph&) noexcept;
 #ifndef SWIG
-		/// Move constructor.
-		undirected_graph(undirected_graph&&) noexcept;
+	/// Move constructor.
+	undirected_graph(undirected_graph&&) noexcept;
 #endif
-		/// Destructor.
-		virtual ~undirected_graph() noexcept;
+	/// Destructor.
+	virtual ~undirected_graph() noexcept;
 
-		/* OPERATORS */
+	/* OPERATORS */
 
 #ifndef SWIG
-		/// Copy assignment operator.
-		undirected_graph& operator= (const undirected_graph&) noexcept;
-		/// Move assignment operator.
-		undirected_graph& operator= (undirected_graph&&) noexcept;
+	/// Copy assignment operator.
+	undirected_graph& operator= (const undirected_graph&) noexcept;
+	/// Move assignment operator.
+	undirected_graph& operator= (undirected_graph&&) noexcept;
 #endif
 
-		/* MODIFIERS */
+	/* MODIFIERS */
 
-		/**
-		 * @brief Adds an edge to the graph.
-		 *
-		 * For developers: method @ref graph::extra_work_per_edge_add is
-		 * called after the edge has been added.
-		 * @param s Valid node index: \f$0 \le s < n\f$.
-		 * @param t Valid node index: \f$0 \le t < n\f$.
-		 * @param norm Should the graph be normalised?
-		 * @param check_norm If @e norm is false then, should we check whether
-		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised. If @e norm is true then @e check_norm
-		 * is ignored.
-		 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual undirected_graph& add_edge
-		(node s, node t, bool norm = false, bool check_norm = true);
+	/**
+	 * @brief Adds an edge to the graph.
+	 *
+	 * For developers: method @ref graph::extra_work_per_edge_add is
+	 * called after the edge has been added.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @param norm Should the graph be normalised?
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual undirected_graph& add_edge
+	(node s, node t, bool norm = false, bool check_norm = true);
 
-		/**
-		 * @brief Adds an edge to the graph.
-		 *
-		 * This method only adds an edge, and does no other work: normalisation
-		 * is not checked, and no extra work per edge is done.
-		 * @param s Valid node index: \f$0 \le s < n\f$.
-		 * @param t Valid node index: \f$0 \le t < n\f$.
-		 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		undirected_graph& add_edge_bulk(node s, node t);
+	/**
+	 * @brief Adds an edge to the graph.
+	 *
+	 * This method only adds an edge, and does no other work: normalisation
+	 * is not checked, and no extra work per edge is done.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	undirected_graph& add_edge_bulk(node s, node t);
 
-		void finish_bulk_add(bool norm = true, bool check = true);
+	void finish_bulk_add(bool norm = true, bool check = true);
 
-		/**
-		 * @brief Adds a list of edges to the graph.
-		 *
-		 * This operation is faster than calling @ref add_edge(node,node,bool,bool)
-		 * since the edges are added in bulk.
-		 *
-		 * For developers: method @ref graph::extra_work_per_edge_add is
-		 * called for every edge added.
-		 * @param edges The edges to be added.
-		 * @param norm Normalise the graph after the insertions.
-		 * @param check_norm If @e norm is false then, should we check whether
-		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised. If @e norm is true then @e check_norm
-		 * is ignored.
-		 * @pre All the edges in @e edges must meet the precondition of method
-		 * @ref add_edge(node,node,bool,bool).
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual undirected_graph& add_edges
-		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	/**
+	 * @brief Adds a list of edges to the graph.
+	 *
+	 * This operation is faster than calling @ref add_edge(node,node,bool,bool)
+	 * since the edges are added in bulk.
+	 *
+	 * For developers: method @ref graph::extra_work_per_edge_add is
+	 * called for every edge added.
+	 * @param edges The edges to be added.
+	 * @param norm Normalise the graph after the insertions.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre All the edges in @e edges must meet the precondition of method
+	 * @ref add_edge(node,node,bool,bool).
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual undirected_graph& add_edges
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
-		/**
-		 * @brief Adds a list of edges to the graph.
-		 *
-		 * This list of edges is assumed to be all the edges that are going
-		 * to be added to this graph. This means that the internal data structures
-		 * are constructed more efficiently than when adding edges one by one
-		 * (see @ref add_edge) or in several chunks (see @ref add_edges).
-		 *
-		 * Moreover, the current structure of the graph is cleared before setting
-		 * the new edges.
-		 * @param edges The edges to be added.
-		 * @param norm Normalise the graph after the insertions.
-		 * @param check_norm If @e norm is false then, should we check whether
-		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised. If @e norm is true then @e check_norm
-		 * is ignored.
-		 * @pre There are no repeated edges in the list.
-		 * @pre The graph is empty prior to the addition.
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual undirected_graph& set_edges
-		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	/**
+	 * @brief Adds a list of edges to the graph.
+	 *
+	 * This list of edges is assumed to be all the edges that are going
+	 * to be added to this graph. This means that the internal data structures
+	 * are constructed more efficiently than when adding edges one by one
+	 * (see @ref add_edge) or in several chunks (see @ref add_edges).
+	 *
+	 * Moreover, the current structure of the graph is cleared before setting
+	 * the new edges.
+	 * @param edges The edges to be added.
+	 * @param norm Normalise the graph after the insertions.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre There are no repeated edges in the list.
+	 * @pre The graph is empty prior to the addition.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual undirected_graph& set_edges
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
-		/**
-		 * @brief Remove an edge from this graph.
-		 *
-		 * For developers: method @ref graph::extra_work_per_edge_remove is
-		 * called after the edge has been removed.
-		 * @param s Valid node index: \f$0 \le s < n\f$.
-		 * @param t Valid node index: \f$0 \le t < n\f$.
-		 * @param norm Normalise the graph after the deletion.
-		 * @param check_norm If @e norm is false then, should we check whether
-		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised. If @e norm is true then @e check_norm
-		 * is ignored.
-		 * @pre The edge must exist.
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual undirected_graph& remove_edge
-		(node s, node t, bool norm = false, bool check_norm = true);
+	/**
+	 * @brief Remove an edge from this graph.
+	 *
+	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * called after the edge has been removed.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre The edge must exist.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual undirected_graph& remove_edge
+	(node s, node t, bool norm = false, bool check_norm = true);
 
-		/**
-		 * @brief Remove an edge from this graph.
-		 *
-		 * This operation is faster than removing edges one by one with
-		 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
-		 * bulk.
-		 *
-		 * For developers: method @ref graph::extra_work_per_edge_remove is
-		 * called after each edge has been removed.
-		 * @param edges The edges to be deleted.
-		 * @param norm Normalise the graph after the deletion.
-		 * @param check_norm If @e norm is false then, should we check whether
-		 * the result is normalised or not? This might be useful in case the
-		 * resulting graph is normalised. If @e norm is true then @e check_norm
-		 * is ignored.
-		 * @pre All the edges in @e edges must meet the precondition of method
-		 * @ref add_edge(node,node,bool,bool).
-		 * @post If @e norm is true the graph is guaranteed to be normalised
-		 * after the addition of the edge.
-		 */
-		virtual undirected_graph& remove_edges
-		(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	/**
+	 * @brief Remove an edge from this graph.
+	 *
+	 * This operation is faster than removing edges one by one with
+	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
+	 * bulk.
+	 *
+	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * called after each edge has been removed.
+	 * @param edges The edges to be deleted.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre All the edges in @e edges must meet the precondition of method
+	 * @ref add_edge(node,node,bool,bool).
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual undirected_graph& remove_edges
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
 
-		/**
-		 * @brief Disjoint union of graphs.
-		 *
-		 * Given a graph, append it to the current graph.
-		 *
-		 * All the nodes in @e g are relabelled starting at @e n,
-		 * the number of nodes of the current graph.
-		 * @param g Input graph.
-		 * @post The graph is normalised only if it was normalised before
-		 * the call and @e g is also normalised.
-		 */
-		void disjoint_union(const undirected_graph& g);
+	/**
+	 * @brief Disjoint union of graphs.
+	 *
+	 * Given a graph, append it to the current graph.
+	 *
+	 * All the nodes in @e g are relabelled starting at @e n,
+	 * the number of nodes of the current graph.
+	 * @param g Input graph.
+	 * @post The graph is normalised only if it was normalised before
+	 * the call and @e g is also normalised.
+	 */
+	void disjoint_union(const undirected_graph& g);
 
-		/* SETTERS */
+	/* SETTERS */
 
-		/* GETTERS */
+	/* GETTERS */
 
-		/**
-		 * @brief Returns all independent pairs of edges of this graph.
-		 *
-		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-		 * no nodes.
-		 */
-		std::vector<edge_pair> Q() const;
+	/**
+	 * @brief Returns all independent pairs of edges of this graph.
+	 *
+	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+	 * no nodes.
+	 */
+	std::vector<edge_pair> Q() const;
 
-		/**
-		 * @brief Returns the neighbourhood of node @e u.
-		 * @param u Node.
-		 * @return Returns the list of nodes adjacent to node @e u.
-		 */
-		inline const neighbourhood& get_neighbours(node u) const {
+	/**
+	 * @brief Returns the neighbourhood of node @e u.
+	 * @param u Node.
+	 * @return Returns the list of nodes adjacent to node @e u.
+	 */
+	inline const neighbourhood& get_neighbours(node u) const {
 #if defined DEBUG
-			assert(has_node(u));
+		assert(has_node(u));
 #endif
-			return m_adjacency_list[u];
-		}
+		return m_adjacency_list[u];
+	}
 
-		/**
-		 * @brief Returns the out-neighbours of node @e u.
-		 *
-		 * This is the same as @ref get_neighbours.
-		 * @param u Node
-		 * @return Returns the list of nodes leaving node @e u.
-		 */
-		inline const neighbourhood& get_out_neighbours(node u) const {
-			return get_neighbours(u);
-		}
-		/**
-		 * @brief Returns the in-neighbours of node @e u.
-		 *
-		 * This is the same as @ref get_neighbours.
-		 * @param u Node
-		 * @return Returns the list of nodes entering at node @e u.
-		 */
-		inline const neighbourhood& get_in_neighbours(node u) const {
-			return get_neighbours(u);
-		}
+	/**
+	 * @brief Returns the out-neighbours of node @e u.
+	 *
+	 * This is the same as @ref get_neighbours.
+	 * @param u Node
+	 * @return Returns the list of nodes leaving node @e u.
+	 */
+	inline const neighbourhood& get_out_neighbours(node u) const {
+		return get_neighbours(u);
+	}
+	/**
+	 * @brief Returns the in-neighbours of node @e u.
+	 *
+	 * This is the same as @ref get_neighbours.
+	 * @param u Node
+	 * @return Returns the list of nodes entering at node @e u.
+	 */
+	inline const neighbourhood& get_in_neighbours(node u) const {
+		return get_neighbours(u);
+	}
 
-		/**
-		 * @brief Returns the number of neighbours of @e u.
-		 * @param u Node to be queried.
-		 * @return Returns the number of adjacent nodes.
-		 */
-		inline uint32_t degree(node u) const {
+	/**
+	 * @brief Returns the number of neighbours of @e u.
+	 * @param u Node to be queried.
+	 * @return Returns the number of adjacent nodes.
+	 */
+	inline uint32_t degree(node u) const {
 #if defined DEBUG
-			assert(has_node(u));
+		assert(has_node(u));
 #endif
-			return static_cast<uint32_t>(m_adjacency_list[u].size());
-		}
+		return static_cast<uint32_t>(m_adjacency_list[u].size());
+	}
 
-		/// Same as @ref degree
-		inline uint32_t out_degree(node u) const { return degree(u); }
-		/// Same as @ref degree
-		inline uint32_t in_degree(node u) const { return degree(u); }
+	/// Same as @ref degree
+	inline uint32_t out_degree(node u) const { return degree(u); }
+	/// Same as @ref degree
+	inline uint32_t in_degree(node u) const { return degree(u); }
 
-		/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
-		bool has_edge(node u, node v) const;
+	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
+	bool has_edge(node u, node v) const;
 
-		inline bool is_directed() const { return false; }
-		inline bool is_undirected() const { return true; }
+	inline bool is_directed() const { return false; }
+	inline bool is_undirected() const { return true; }
 
-	protected:
-		/// Initialises memory of @ref undirected_graph and @ref graph classes.
-		virtual void _init(uint32_t n);
-		/// Clears the memory of @ref undirected_graph and @ref graph classes.
-		virtual void _clear();
+protected:
+	/// Initialises memory of @ref undirected_graph and @ref graph classes.
+	virtual void _init(uint32_t n);
+	/// Clears the memory of @ref undirected_graph and @ref graph classes.
+	virtual void _clear();
 
-		/// Copies all members of this class and the parent class.
-		void copy_full_undirected_graph(const undirected_graph& u);
-		/// Moves all members of this class and the parent class.
-		void move_full_undirected_graph(undirected_graph&& u);
+	/// Copies all members of this class and the parent class.
+	void copy_full_undirected_graph(const undirected_graph& u);
+	/// Moves all members of this class and the parent class.
+	void move_full_undirected_graph(undirected_graph&& u);
 
-	private:
-		/**
-		 * @brief Removes a single edge.
-		 * @param u First node of edge.
-		 * @param v Second node of edge.
-		 * @param out_u Out-neighbourhood of node @e u.
-		 * @param in_v In-neighbourhood of node @e v.
-		 */
-		void remove_single_edge
-		(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
+private:
+	/**
+	 * @brief Removes a single edge.
+	 * @param u First node of edge.
+	 * @param v Second node of edge.
+	 * @param out_u Out-neighbourhood of node @e u.
+	 * @param in_v In-neighbourhood of node @e v.
+	 */
+	void remove_single_edge
+	(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
 };
 
 } // -- namespace graphs

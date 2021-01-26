@@ -70,149 +70,149 @@ namespace graphs {
  * @ref can_add_edge or @ref can_add_edges prior to adding one or several edges.
  */
 class tree : virtual public graph {
-	public:
-		/* CONSTRUCTORS */
+public:
+	/* CONSTRUCTORS */
 
-		/// Empty constructor.
-		tree() noexcept;
-		/// Copy constructor.
-		tree(const tree&) noexcept;
+	/// Empty constructor.
+	tree() noexcept;
+	/// Copy constructor.
+	tree(const tree&) noexcept;
 #ifndef SWIG
-		/// Move constructor.
-		tree(tree&&) noexcept;
+	/// Move constructor.
+	tree(tree&&) noexcept;
 #endif
-		/// Destructor.
-		virtual ~tree() noexcept;
+	/// Destructor.
+	virtual ~tree() noexcept;
 
-		/* OPERATORS */
+	/* OPERATORS */
 
 #ifndef SWIG
-		/// Copy assignment operator.
-		tree& operator= (const tree&) noexcept;
-		/// Move assignment operator.
-		tree& operator= (tree&&) noexcept;
+	/// Copy assignment operator.
+	tree& operator= (const tree&) noexcept;
+	/// Move assignment operator.
+	tree& operator= (tree&&) noexcept;
 #endif
 
-		/* MODIFIERS */
+	/* MODIFIERS */
 
-		/**
-		 * @brief Calculates the type of tree.
-		 *
-		 * See @ref tree_type for the list of different tree types.
-		 */
-		virtual void calculate_tree_type() = 0;
+	/**
+	 * @brief Calculates the type of tree.
+	 *
+	 * See @ref tree_type for the list of different tree types.
+	 */
+	virtual void calculate_tree_type() = 0;
 
-		/* GETTERS */
+	/* GETTERS */
 
-		/**
-		 * @brief Returns whether this graph is an actual tree or not.
-		 *
-		 * Returns true if the number of edges is one less than the
-		 * number of nodes. Note that this would not really be true if the
-		 * addition of edges was not constrained. Since it is constrained in a
-		 * way that no cycles can be produced (for example, see
-		 * @ref free_tree::add_edge, or @ref free_tree::add_edges), then we
-		 * only need to check for the number of edges.
-		 *
-		 * For further characterisations of a tree see \cite Harary1969a
-		 * (chapter 4, pages 32-33).
-		 */
-		bool is_tree() const;
+	/**
+	 * @brief Returns whether this graph is an actual tree or not.
+	 *
+	 * Returns true if the number of edges is one less than the
+	 * number of nodes. Note that this would not really be true if the
+	 * addition of edges was not constrained. Since it is constrained in a
+	 * way that no cycles can be produced (for example, see
+	 * @ref free_tree::add_edge, or @ref free_tree::add_edges), then we
+	 * only need to check for the number of edges.
+	 *
+	 * For further characterisations of a tree see \cite Harary1969a
+	 * (chapter 4, pages 32-33).
+	 */
+	bool is_tree() const;
 
-		/// Returns whether this tree is a rooted tree.
-		virtual bool is_rooted() const = 0;
+	/// Returns whether this tree is a rooted tree.
+	virtual bool is_rooted() const = 0;
 
-		/**
-		 * @brief Can this edge be added?
-		 *
-		 * In a tree, an edge can only be added if it does not produce cycles,
-		 * and it has not been added before.
-		 * @param s First node of the edge.
-		 * @param t Second node of the edge.
-		 * @return Returns whether the addition of this new edge can be added
-		 * to the tree without producing cycles.
-		 */
-		bool can_add_edge(node s, node t) const;
+	/**
+	 * @brief Can this edge be added?
+	 *
+	 * In a tree, an edge can only be added if it does not produce cycles,
+	 * and it has not been added before.
+	 * @param s First node of the edge.
+	 * @param t Second node of the edge.
+	 * @return Returns whether the addition of this new edge can be added
+	 * to the tree without producing cycles.
+	 */
+	bool can_add_edge(node s, node t) const;
 
-		/**
-		 * @brief Can these edges be added?
-		 *
-		 * In a tree, a set of edges can only be added if their addition to the
-		 * tree do not produce cycles and none of them have been added before.
-		 * @param edges List of edges.
-		 * @return Returns whether the addition of these new edges can be added
-		 * to the tree without producing cycles.
-		 */
-		bool can_add_edges(const std::vector<edge>& edges) const;
+	/**
+	 * @brief Can these edges be added?
+	 *
+	 * In a tree, a set of edges can only be added if their addition to the
+	 * tree do not produce cycles and none of them have been added before.
+	 * @param edges List of edges.
+	 * @return Returns whether the addition of these new edges can be added
+	 * to the tree without producing cycles.
+	 */
+	bool can_add_edges(const std::vector<edge>& edges) const;
 
-		/**
-		 * @brief Amount of nodes in a connected component of the tree.
-		 *
-		 * When tree has had an edge removed, or when it is not completely
-		 * built, i.e., it lack some edges, the resulting graph is clearly
-		 * a forest. This function returns the size of the forest node @e u
-		 * belongs to.
-		 *
-		 * In directed trees one has to see this amount as the number of nodes
-		 * of the component in the undirected version of the forest.
-		 * @param u Input node.
-		 * @return Returns the size of the connected component of @e u.
-		 */
-		inline uint32_t n_nodes_component(node u) const {
+	/**
+	 * @brief Amount of nodes in a connected component of the tree.
+	 *
+	 * When tree has had an edge removed, or when it is not completely
+	 * built, i.e., it lack some edges, the resulting graph is clearly
+	 * a forest. This function returns the size of the forest node @e u
+	 * belongs to.
+	 *
+	 * In directed trees one has to see this amount as the number of nodes
+	 * of the component in the undirected version of the forest.
+	 * @param u Input node.
+	 * @return Returns the size of the connected component of @e u.
+	 */
+	inline uint32_t n_nodes_component(node u) const {
 #if defined DEBUG
-			assert(has_node(u));
+		assert(has_node(u));
 #endif
-			return m_root_size[m_root_of[u]];
-		}
+		return m_root_size[m_root_of[u]];
+	}
 
-		/// Returns whether this tree is of type @e tt.
-		inline bool is_of_type(const tree_type& tt) const {
-			return m_tree_type[static_cast<std::size_t>(tt)] == 1;
-		}
+	/// Returns whether this tree is of type @e tt.
+	inline bool is_of_type(const tree_type& tt) const {
+		return m_tree_type[static_cast<std::size_t>(tt)] == 1;
+	}
 
-		std::vector<std::string> get_tree_type_list() const;
+	std::vector<std::string> get_tree_type_list() const;
 
-	protected:
-		/// The root of every vertex in the union-find data structure
-		std::vector<node> m_root_of;
-		/**
-		 * @brief The size of the connected component that a @e root belongs to.
-		 *
-		 * Formally, @e m_size_of[v] is the size of the connected component of
-		 * a @e root vertex @e v. A vertex @e u is a root vertex if there
-		 * exists a vertex @e w such that @ref m_root_of[w] = u.
-		 *
-		 * In this context, root is within the union-find data structure.
-		 */
-		std::vector<uint32_t> m_root_size;
+protected:
+	/// The root of every vertex in the union-find data structure
+	std::vector<node> m_root_of;
+	/**
+	 * @brief The size of the connected component that a @e root belongs to.
+	 *
+	 * Formally, @e m_size_of[v] is the size of the connected component of
+	 * a @e root vertex @e v. A vertex @e u is a root vertex if there
+	 * exists a vertex @e w such that @ref m_root_of[w] = u.
+	 *
+	 * In this context, root is within the union-find data structure.
+	 */
+	std::vector<uint32_t> m_root_size;
 
-		/// The type of this tree
-		std::array<char,__tree_type_size> m_tree_type;
+	/// The type of this tree
+	std::array<char,__tree_type_size> m_tree_type;
 
-	protected:
-		/**
-		 * @brief Initialises only the memory of class @ref tree.
-		 * @param n Number of vertices.
-		 */
-		void tree_only_init(uint32_t n);
-		/// Clears the memory used by only class @ref tree.
-		void tree_only_clear();
+protected:
+	/**
+	 * @brief Initialises only the memory of class @ref tree.
+	 * @param n Number of vertices.
+	 */
+	void tree_only_init(uint32_t n);
+	/// Clears the memory used by only class @ref tree.
+	void tree_only_clear();
 
-		/// Copies only members of class @ref tree.
-		void tree_only_copy(const tree& t);
-		/// Moves only members of class @ref tree.
-		void tree_only_move(tree&& t);
+	/// Copies only members of class @ref tree.
+	void tree_only_copy(const tree& t);
+	/// Moves only members of class @ref tree.
+	void tree_only_move(tree&& t);
 
-		void extra_work_per_edge_add(node u, node v);
-		void extra_work_per_edge_remove(node u, node v);
+	void extra_work_per_edge_add(node u, node v);
+	void extra_work_per_edge_remove(node u, node v);
 
-		/// Updates the data structures of a tree after the graph structure
-		/// has had its set of edges set.
-		void tree_only_extra_work_edges_set();
+	/// Updates the data structures of a tree after the graph structure
+	/// has had its set of edges set.
+	void tree_only_extra_work_edges_set();
 
-		/// Fills the Union-Find data structure assuming that the graph
-		/// structure has all of its edges.
-		void fill_union_find();
+	/// Fills the Union-Find data structure assuming that the graph
+	/// structure has all of its edges.
+	void fill_union_find();
 };
 
 } // -- namespace graphs

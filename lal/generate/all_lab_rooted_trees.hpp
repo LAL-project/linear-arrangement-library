@@ -66,73 +66,73 @@ namespace generate {
  * @endcode
  */
 class all_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t).
-		 */
-		all_lab_rooted_trees() = default;
-		/// Constructor with number of nodes.
-		all_lab_rooted_trees(uint32_t n);
-		/// Default destructor.
-		~all_lab_rooted_trees() = default;
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t).
+	 */
+	all_lab_rooted_trees() = default;
+	/// Constructor with number of nodes.
+	all_lab_rooted_trees(uint32_t n);
+	/// Default destructor.
+	~all_lab_rooted_trees() = default;
 
-		/**
-		 * @brief Initialises the generator.
-		 *
-		 * Initialises the internal state of this generator
-		 * so that method @ref next can be called safely.
-		 *
-		 * Initialising this class already allows the user
-		 * to retrieve the first tree via method @ref get_tree.
-		 *
-		 * It is allowed to call this method two or more times,
-		 * and with different values for parameter @e n.
-		 * @param n The number of nodes of the trees to be
-		 * generated.
-		 */
-		void init(uint32_t n);
+	/**
+	 * @brief Initialises the generator.
+	 *
+	 * Initialises the internal state of this generator
+	 * so that method @ref next can be called safely.
+	 *
+	 * Initialising this class already allows the user
+	 * to retrieve the first tree via method @ref get_tree.
+	 *
+	 * It is allowed to call this method two or more times,
+	 * and with different values for parameter @e n.
+	 * @param n The number of nodes of the trees to be
+	 * generated.
+	 */
+	void init(uint32_t n);
 
-		/**
-		 * @brief Returns whether there are more trees to generate.
-		 * @return Returns true if there are still more trees
-		 * to generate. Returns false if all trees have been
-		 * generated (there are no more unique trees of this
-		 * size that were not generated before).
-		 * @pre The generator must have been initialised.
-		 */
-		bool has_next() const;
+	/**
+	 * @brief Returns whether there are more trees to generate.
+	 * @return Returns true if there are still more trees
+	 * to generate. Returns false if all trees have been
+	 * generated (there are no more unique trees of this
+	 * size that were not generated before).
+	 * @pre The generator must have been initialised.
+	 */
+	bool has_next() const;
 
-		/**
-		 * @brief Generates next tree.
-		 *
-		 * Modifies the internal state so that the next tree
-		 * can be retrieved using method @ref get_tree().
-		 * @pre The generator must have been initialised.
-		 */
-		void next();
+	/**
+	 * @brief Generates next tree.
+	 *
+	 * Modifies the internal state so that the next tree
+	 * can be retrieved using method @ref get_tree().
+	 * @pre The generator must have been initialised.
+	 */
+	void next();
 
-	protected:
-		/**
-		 * @brief Constructs the current tree.
-		 * @return Returns the tree generated with method @ref next().
-		 * @pre The generator must have been initialised, and method
-		 * @ref next must have been called at least once.
-		 */
-		graphs::rooted_tree __get_tree();
+protected:
+	/**
+	 * @brief Constructs the current tree.
+	 * @return Returns the tree generated with method @ref next().
+	 * @pre The generator must have been initialised, and method
+	 * @ref next must have been called at least once.
+	 */
+	graphs::rooted_tree __get_tree();
 
-	private:
-		/// Number of nodes of the generated trees.
-		uint32_t m_n;
+private:
+	/// Number of nodes of the generated trees.
+	uint32_t m_n;
 
-		/// Labelled free tree generator.
-		all_lab_free_trees m_gen_lab_free_tree;
-		/// Current labelled free tree.
-		graphs::free_tree m_cur_ftree;
-		/// Current root.
-		node m_cur_root;
+	/// Labelled free tree generator.
+	all_lab_free_trees m_gen_lab_free_tree;
+	/// Current labelled free tree.
+	graphs::free_tree m_cur_ftree;
+	/// Current root.
+	node m_cur_root;
 };
 
 } // -- namespace generate

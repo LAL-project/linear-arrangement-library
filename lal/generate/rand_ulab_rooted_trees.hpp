@@ -73,119 +73,119 @@ namespace generate {
  * @endcode
  */
 class __rand_ulab_rooted_trees {
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t, uint32_t).
-		 */
-		__rand_ulab_rooted_trees() = default;
-		/// Constructor with size of tree and seed for the random number generator.
-		__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
-		/// Destructor.
-		virtual ~__rand_ulab_rooted_trees();
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t, uint32_t).
+	 */
+	__rand_ulab_rooted_trees() = default;
+	/// Constructor with size of tree and seed for the random number generator.
+	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	/// Destructor.
+	virtual ~__rand_ulab_rooted_trees();
 
-		/**
-		 * @brief Sets the size of the unlabelled trees to generate.
-		 *
-		 * Initialises @ref m_rn with 31 values are extracted from
-		 * \cite OEIS_A000081.
-		 *
-		 * Initialises the random number generator with @e seed. When @e seed
-		 * is 0, a random seed is used.
-		 * @param n Number of nodes of the tree.
-		 * @param seed Integer value used to seed the random number generator.
-		 */
-		virtual void init(uint32_t n, uint32_t seed = 0);
+	/**
+	 * @brief Sets the size of the unlabelled trees to generate.
+	 *
+	 * Initialises @ref m_rn with 31 values are extracted from
+	 * \cite OEIS_A000081.
+	 *
+	 * Initialises the random number generator with @e seed. When @e seed
+	 * is 0, a random seed is used.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	virtual void init(uint32_t n, uint32_t seed = 0);
 
-		/**
-		 * @brief Generates uniformly at random a free unlabelled tree.
-		 * @return Returns an unlabelled rooted tree. The tree is rooted
-		 * at vertex 0.
-		 * @pre The generator must have been initialised.
-		 */
-		graphs::rooted_tree get_tree();
+	/**
+	 * @brief Generates uniformly at random a free unlabelled tree.
+	 * @return Returns an unlabelled rooted tree. The tree is rooted
+	 * at vertex 0.
+	 * @pre The generator must have been initialised.
+	 */
+	graphs::rooted_tree get_tree();
 
-		/**
-		 * @brief Clears the memory occupied.
-		 *
-		 * In order to save computation time, this class has been designed
-		 * to reuse memory when generating trees. For example, since it needs
-		 * the values of well-known integer sequences (see attribute @ref m_rn)
-		 * that are costly to compute every time they are needed, they are
-		 * stored in memory and reused over time.
-		 *
-		 * So, if the user wants to generate trees of 1000 nodes there will
-		 * be too much memory occupied (and unused) if then this class is used
-		 * to generate trees of 10 nodes. In cases like this it is
-		 * recommended to clear the memory occupied.
-		 *
-		 * @post After calling this method, the contents of the attributes
-		 * @ref m_rn are cleared. Attribute @ref m_rn is then assigned the same
-		 * 31 values that it is assigned when creating an object of this class.
-		 */
-		void clear();
+	/**
+	 * @brief Clears the memory occupied.
+	 *
+	 * In order to save computation time, this class has been designed
+	 * to reuse memory when generating trees. For example, since it needs
+	 * the values of well-known integer sequences (see attribute @ref m_rn)
+	 * that are costly to compute every time they are needed, they are
+	 * stored in memory and reused over time.
+	 *
+	 * So, if the user wants to generate trees of 1000 nodes there will
+	 * be too much memory occupied (and unused) if then this class is used
+	 * to generate trees of 10 nodes. In cases like this it is
+	 * recommended to clear the memory occupied.
+	 *
+	 * @post After calling this method, the contents of the attributes
+	 * @ref m_rn are cleared. Attribute @ref m_rn is then assigned the same
+	 * 31 values that it is assigned when creating an object of this class.
+	 */
+	void clear();
 
-	protected:
-		/// Number of nodes of the tree.
-		uint32_t m_n = 0;
-		/// Random number generator.
-		std::mt19937 m_gen;
-		/// Distribution of the numbers.
-		std::uniform_real_distribution<double> m_unif;
+protected:
+	/// Number of nodes of the tree.
+	uint32_t m_n = 0;
+	/// Random number generator.
+	std::mt19937 m_gen;
+	/// Distribution of the numbers.
+	std::uniform_real_distribution<double> m_unif;
 
-		/**
-		 * @brief The number of rooted unlabelled trees.
-		 *
-		 * Contains \f$r_n\f$ for \f$n\ge 0\f$.
-		 */
-		std::vector<numeric::integer> m_rn;
+	/**
+	 * @brief The number of rooted unlabelled trees.
+	 *
+	 * Contains \f$r_n\f$ for \f$n\ge 0\f$.
+	 */
+	std::vector<numeric::integer> m_rn;
 
-		/**
-		 * @brief List that encodes the tree.
-		 *
-		 * This list has @e n+1 values for @ref m_n nodes.
-		 * The first position is the root.
-		 */
-		uint32_t *m_tree = nullptr;
+	/**
+	 * @brief List that encodes the tree.
+	 *
+	 * This list has @e n+1 values for @ref m_n nodes.
+	 * The first position is the root.
+	 */
+	uint32_t *m_tree = nullptr;
 
-	protected:
+protected:
 
-		/**
-		 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
-		 *
-		 * The first call to this method should have @e lr = @ref m_n + 1.
-		 * @param n Number of nodes of the rooted tree to generate.
-		 * @param lr Pointer to the root of the last tree added.
-		 *     @ref m_tree[@e lr] is the node that the root points to.
-		 * @param nt Index to @ref m_tree where we have to place the new tree.
-		 * @return Returns two indices: the index of the root of the last
-		 * tree generated and where to store the next tree in @ref m_tree.
-		 */
-		std::pair<uint32_t,uint32_t> ranrut(uint32_t n, uint32_t lr, uint32_t nt);
+	/**
+	 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
+	 *
+	 * The first call to this method should have @e lr = @ref m_n + 1.
+	 * @param n Number of nodes of the rooted tree to generate.
+	 * @param lr Pointer to the root of the last tree added.
+	 *     @ref m_tree[@e lr] is the node that the root points to.
+	 * @param nt Index to @ref m_tree where we have to place the new tree.
+	 * @return Returns two indices: the index of the root of the last
+	 * tree generated and where to store the next tree in @ref m_tree.
+	 */
+	std::pair<uint32_t,uint32_t> ranrut(uint32_t n, uint32_t lr, uint32_t nt);
 
-		/// Initialiases @ref m_rn with 31 values from the OEIS (see \cite OEIS_A000081).
-		void init_rn();
-		/**
-		 * @brief Computes all the values \f$t_i\f$ for \f$i \in [1,n]\f$.
-		 *
-		 * Here \f$n\f$ is @ref m_n. In case these values have already been
-		 * calculated, this method does nothing.
-		 */
-		const numeric::integer& get_rn(uint32_t n);
+	/// Initialiases @ref m_rn with 31 values from the OEIS (see \cite OEIS_A000081).
+	void init_rn();
+	/**
+	 * @brief Computes all the values \f$t_i\f$ for \f$i \in [1,n]\f$.
+	 *
+	 * Here \f$n\f$ is @ref m_n. In case these values have already been
+	 * calculated, this method does nothing.
+	 */
+	const numeric::integer& get_rn(uint32_t n);
 
-		/**
-		 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
-		 * to some probability.
-		 *
-		 * Probability of choosing \f$(j,d)\f$ is:
-		 * \f$\frac{d \cdot t_{k - jd} \cdot t_d}{(k - 1)t_k}\f$.
-		 * @param n Number of nodes.
-		 * @returns Returns a pair of integers \f$(j,d)\f$ such that
-		 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
-		 */
-		std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n);
+	/**
+	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
+	 * to some probability.
+	 *
+	 * Probability of choosing \f$(j,d)\f$ is:
+	 * \f$\frac{d \cdot t_{k - jd} \cdot t_d}{(k - 1)t_k}\f$.
+	 * @param n Number of nodes.
+	 * @returns Returns a pair of integers \f$(j,d)\f$ such that
+	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
+	 */
+	std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n);
 };
 
 /**
@@ -195,24 +195,24 @@ class __rand_ulab_rooted_trees {
  * usage of this class is the same as that of class @ref __rand_ulab_rooted_trees.
  */
 class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
-	public:
-		/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees() for details.
-		rand_ulab_rooted_trees() = default;
-		/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
-		rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
-		/// Default destructor.
-		~rand_ulab_rooted_trees() = default;
+public:
+	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees() for details.
+	rand_ulab_rooted_trees() = default;
+	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
+	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	/// Default destructor.
+	~rand_ulab_rooted_trees() = default;
 
-		/// See @ref __rand_ulab_rooted_trees::init for details.
-		void init(uint32_t n, uint32_t seed = 0);
+	/// See @ref __rand_ulab_rooted_trees::init for details.
+	void init(uint32_t n, uint32_t seed = 0);
 
-	protected:
-		/// See @ref __rand_ulab_rooted_trees::get_tree for details.
-		graphs::rooted_tree __get_tree();
+protected:
+	/// See @ref __rand_ulab_rooted_trees::get_tree for details.
+	graphs::rooted_tree __get_tree();
 
-	protected:
-		/// See @ref __rand_lab_rooted_trees for details.
-		__rand_ulab_rooted_trees m_Gen;
+protected:
+	/// See @ref __rand_lab_rooted_trees for details.
+	__rand_ulab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

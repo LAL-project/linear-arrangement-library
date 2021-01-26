@@ -67,233 +67,233 @@ namespace graphs {
  * task appropriately.
  */
 class graph {
-	public:
-		/* CONSTRUCTORS */
+public:
+	/* CONSTRUCTORS */
 
-		/// Empty constructor.
-		graph() noexcept;
-		/**
-		 * @brief Constructor with number of nodes.
-		 * @param n Number of nodes.
-		 */
-		graph(uint32_t n) noexcept;
-		/// Copy constructor.
-		graph(const graph&) noexcept;
+	/// Empty constructor.
+	graph() noexcept;
+	/**
+	 * @brief Constructor with number of nodes.
+	 * @param n Number of nodes.
+	 */
+	graph(uint32_t n) noexcept;
+	/// Copy constructor.
+	graph(const graph&) noexcept;
 #ifndef SWIG
-		/// Move constructor.
-		graph(graph&&) noexcept;
+	/// Move constructor.
+	graph(graph&&) noexcept;
 #endif
-		/// Destructor.
-		virtual ~graph() noexcept;
+	/// Destructor.
+	virtual ~graph() noexcept;
 
-		/* OPERATORS */
+	/* OPERATORS */
 
 #ifndef SWIG
-		/// Copy assignment operator.
-		graph& operator= (const graph&) noexcept;
-		/// Move assignment operator.
-		graph& operator= (graph&&) noexcept;
+	/// Copy assignment operator.
+	graph& operator= (const graph&) noexcept;
+	/// Move assignment operator.
+	graph& operator= (graph&&) noexcept;
 #endif
 
-		/* MODIFIERS */
+	/* MODIFIERS */
 
-		/**
-		 * @brief Allocates the necessary memory for this class.
-		 *
-		 * See @ref _init for details.
-		 * @param n Number of nodes.
-		 */
-		virtual void init(uint32_t n);
-		/**
-		 * @brief Frees the memory occupied by this graph.
-		 *
-		 * See @ref _clear for details.
-		 * @post The graph is normalised. The number of edges is 0.
-		 */
-		virtual void clear();
+	/**
+	 * @brief Allocates the necessary memory for this class.
+	 *
+	 * See @ref _init for details.
+	 * @param n Number of nodes.
+	 */
+	virtual void init(uint32_t n);
+	/**
+	 * @brief Frees the memory occupied by this graph.
+	 *
+	 * See @ref _clear for details.
+	 * @post The graph is normalised. The number of edges is 0.
+	 */
+	virtual void clear();
 
-		/**
-		 * @brief Normalises the graph.
-		 *
-		 * Sorts this graph's adjacency list structure in increasing order.
-		 *
-		 * Besides expensive, this method may be unnecessary. Method
-		 * @ref check_normalised() checks whether the graph is normalised or
-		 * not; in case it is, using this method is completely unnecessary.
-		 * @post Method @ref is_normalised evaluates to true.
-		 */
-		virtual void normalise();
+	/**
+	 * @brief Normalises the graph.
+	 *
+	 * Sorts this graph's adjacency list structure in increasing order.
+	 *
+	 * Besides expensive, this method may be unnecessary. Method
+	 * @ref check_normalised() checks whether the graph is normalised or
+	 * not; in case it is, using this method is completely unnecessary.
+	 * @post Method @ref is_normalised evaluates to true.
+	 */
+	virtual void normalise();
 
-		/**
-		 * @brief Checks if the graph is normalised.
-		 *
-		 * Checks, whether the graph's adjacency structure is normalised or not.
-		 * In case it is, attribute @ref m_normalised is set to true, so method
-		 * @ref is_normalised evaluates to true.
-		 */
-		virtual bool check_normalised();
+	/**
+	 * @brief Checks if the graph is normalised.
+	 *
+	 * Checks, whether the graph's adjacency structure is normalised or not.
+	 * In case it is, attribute @ref m_normalised is set to true, so method
+	 * @ref is_normalised evaluates to true.
+	 */
+	virtual bool check_normalised();
 
-		/**
-		 * @brief Completes the inner structure of the graph after adding a bulk of edges
-		 *
-		 * This is meant to be used after several calls to
-		 * @ref undirected_graph::add_edge_bulk,
-		 * @ref directed_graph::add_edge_bulk.
-		 * @param norm Normalise the graph
-		 * @param check Check wether the graph is normalised or not.
-		 */
-		virtual void finish_bulk_add(bool norm = true, bool check = true) = 0;
+	/**
+	 * @brief Completes the inner structure of the graph after adding a bulk of edges
+	 *
+	 * This is meant to be used after several calls to
+	 * @ref undirected_graph::add_edge_bulk,
+	 * @ref directed_graph::add_edge_bulk.
+	 * @param norm Normalise the graph
+	 * @param check Check wether the graph is normalised or not.
+	 */
+	virtual void finish_bulk_add(bool norm = true, bool check = true) = 0;
 
-		/* SETTERS */
+	/* SETTERS */
 
-		/// Sets whether this graph is normalised or not.
-		inline void set_normalised(bool v = true) { m_normalised = v; }
-		/**
-		 * @brief Sets the number of edges of this graph.
-		 *
-		 * The value of @e ne must be exactly the number of edges of the graph
-		 * so that the methods work correctly in future uses of this class.
-		 * It is left up to the user to ensure that the value is correct.
-		 * @param ne The number of edges.
-		 */
-		inline void set_num_edges(uint32_t ne) { m_num_edges = ne; }
+	/// Sets whether this graph is normalised or not.
+	inline void set_normalised(bool v = true) { m_normalised = v; }
+	/**
+	 * @brief Sets the number of edges of this graph.
+	 *
+	 * The value of @e ne must be exactly the number of edges of the graph
+	 * so that the methods work correctly in future uses of this class.
+	 * It is left up to the user to ensure that the value is correct.
+	 * @param ne The number of edges.
+	 */
+	inline void set_num_edges(uint32_t ne) { m_num_edges = ne; }
 
-		/* GETTERS */
+	/* GETTERS */
 
-		/**
-		 * @brief Returns the neighbourhood of node @e u.
-		 * @param u Node.
-		 * @return In undirected graphs, returns the list of nodes adjacent to
-		 * node @e u. In a directed graph, returns the outgoing nodes.
-		 */
-		virtual const neighbourhood& get_neighbours(node u) const = 0;
+	/**
+	 * @brief Returns the neighbourhood of node @e u.
+	 * @param u Node.
+	 * @return In undirected graphs, returns the list of nodes adjacent to
+	 * node @e u. In a directed graph, returns the outgoing nodes.
+	 */
+	virtual const neighbourhood& get_neighbours(node u) const = 0;
 
-		/**
-		 * @brief Returns the out-neighbours of node @e u.
-		 * @param u Node
-		 * @return Returns the list of nodes leaving node @e u.
-		 */
-		virtual const neighbourhood& get_out_neighbours(node u) const = 0;
-		/**
-		 * @brief Returns the in-neighbours of node @e u.
-		 * @param u Node
-		 * @return Returns the list of nodes entering at node @e u.
-		 */
-		virtual const neighbourhood& get_in_neighbours(node u) const = 0;
+	/**
+	 * @brief Returns the out-neighbours of node @e u.
+	 * @param u Node
+	 * @return Returns the list of nodes leaving node @e u.
+	 */
+	virtual const neighbourhood& get_out_neighbours(node u) const = 0;
+	/**
+	 * @brief Returns the in-neighbours of node @e u.
+	 * @param u Node
+	 * @return Returns the list of nodes entering at node @e u.
+	 */
+	virtual const neighbourhood& get_in_neighbours(node u) const = 0;
 
-		/**
-		 * @brief Returns the number of neighbours of @e u.
-		 * @param u Node to be queried.
-		 * @return In undirected graphs, returns the number of neighbours. In
-		 * a directed graph, returns the number of outgoing edges.
-		 */
-		virtual uint32_t degree(node u) const = 0;
+	/**
+	 * @brief Returns the number of neighbours of @e u.
+	 * @param u Node to be queried.
+	 * @return In undirected graphs, returns the number of neighbours. In
+	 * a directed graph, returns the number of outgoing edges.
+	 */
+	virtual uint32_t degree(node u) const = 0;
 
-		/// Returns the out-degree of a node.
-		virtual uint32_t out_degree(node u) const = 0;
-		/// Returns the in-degree of a node.
-		virtual uint32_t in_degree(node u) const = 0;
+	/// Returns the out-degree of a node.
+	virtual uint32_t out_degree(node u) const = 0;
+	/// Returns the in-degree of a node.
+	virtual uint32_t in_degree(node u) const = 0;
 
-		/// Returns true if node @e u is in this graph.
-		inline bool has_node(node u) const {
-			return u < n_nodes();
-		}
+	/// Returns true if node @e u is in this graph.
+	inline bool has_node(node u) const {
+		return u < n_nodes();
+	}
 
-		/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
-		virtual bool has_edge(node u, node v) const = 0;
+	/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
+	virtual bool has_edge(node u, node v) const = 0;
 
-		/// Returns the number of ndoes.
-		inline uint32_t n_nodes() const {
-			return static_cast<uint32_t>(m_adjacency_list.size());
-		}
+	/// Returns the number of ndoes.
+	inline uint32_t n_nodes() const {
+		return static_cast<uint32_t>(m_adjacency_list.size());
+	}
 
-		/// Returns the number of edges.
-		inline uint32_t n_edges() const {
-			return m_num_edges;
-		}
+	/// Returns the number of edges.
+	inline uint32_t n_edges() const {
+		return m_num_edges;
+	}
 
-		/// Returns all edges of this graph.
-		std::vector<edge> edges() const;
+	/// Returns all edges of this graph.
+	std::vector<edge> edges() const;
 
-		/**
-		 * @brief Returns whether this graph is normalised or not.
-		 *
-		 * A graph is normalised if every node's adjacency list is sorted
-		 * increasingly. For this, use method @ref normalise().
-		 * @return Returns the value of @ref m_normalised.
-		 */
-		inline bool is_normalised() const {
-			return m_normalised;
-		}
+	/**
+	 * @brief Returns whether this graph is normalised or not.
+	 *
+	 * A graph is normalised if every node's adjacency list is sorted
+	 * increasingly. For this, use method @ref normalise().
+	 * @return Returns the value of @ref m_normalised.
+	 */
+	inline bool is_normalised() const {
+		return m_normalised;
+	}
 
-		/// Returns whether this graph is directed or not.
-		virtual bool is_directed() const = 0;
-		/// Returns whether this graph is undirected or not.
-		virtual bool is_undirected() const = 0;
+	/// Returns whether this graph is directed or not.
+	virtual bool is_directed() const = 0;
+	/// Returns whether this graph is undirected or not.
+	virtual bool is_undirected() const = 0;
 
-	protected:
-		/// Data structure that implements the graph.
-		std::vector<neighbourhood> m_adjacency_list;
-		/// Amount of edges of this graph.
-		uint32_t m_num_edges = 0;
-		/**
-		 * @brief Is this graph normalised?
-		 *
-		 * An undirected graph is normalised iff every node's adjacency list is
-		 * sorted in increasing order.
-		 *
-		 * In directed graphs, however, it is necessary that the adjacency lists
-		 * of the out-neighbours and in-neighbours of nodes be sorted.
-		 *
-		 * This attribute is set to 'true' in all graph's initialisation
-		 * and destruction (when @ref clear() method is called).
-		 */
-		bool m_normalised = true;
+protected:
+	/// Data structure that implements the graph.
+	std::vector<neighbourhood> m_adjacency_list;
+	/// Amount of edges of this graph.
+	uint32_t m_num_edges = 0;
+	/**
+	 * @brief Is this graph normalised?
+	 *
+	 * An undirected graph is normalised iff every node's adjacency list is
+	 * sorted in increasing order.
+	 *
+	 * In directed graphs, however, it is necessary that the adjacency lists
+	 * of the out-neighbours and in-neighbours of nodes be sorted.
+	 *
+	 * This attribute is set to 'true' in all graph's initialisation
+	 * and destruction (when @ref clear() method is called).
+	 */
+	bool m_normalised = true;
 
-	protected:
-		/// Initialises memory of @ref graph class.
-		virtual void _init(uint32_t n);
-		/// Clears memory for the @ref graph class.
-		virtual void _clear();
+protected:
+	/// Initialises memory of @ref graph class.
+	virtual void _init(uint32_t n);
+	/// Clears memory for the @ref graph class.
+	virtual void _clear();
 
-		/// Copies all members of this class.
-		void copy_full_graph(const graph& g);
-		/// Moves all members of this class.
-		void move_full_graph(graph&& g);
+	/// Copies all members of this class.
+	void copy_full_graph(const graph& g);
+	/// Moves all members of this class.
+	void move_full_graph(graph&& g);
 
-		/**
-		 * @brief Disjoint union of graphs.
-		 *
-		 * Given a graph, append it to the current graph.
-		 *
-		 * All the nodes in @e g are relabelled starting at @e n,
-		 * the number of nodes of the current graph.
-		 * @param g Input graph.
-		 * @pre This graph and @e g must be of the same type (both must
-		 * be either undirected, or both directed).
-		 * @post The graph is normalised only if it was normalised before
-		 * the call and @e g is also normalised.
-		 */
-		void __disjoint_union(const graph& g);
+	/**
+	 * @brief Disjoint union of graphs.
+	 *
+	 * Given a graph, append it to the current graph.
+	 *
+	 * All the nodes in @e g are relabelled starting at @e n,
+	 * the number of nodes of the current graph.
+	 * @param g Input graph.
+	 * @pre This graph and @e g must be of the same type (both must
+	 * be either undirected, or both directed).
+	 * @post The graph is normalised only if it was normalised before
+	 * the call and @e g is also normalised.
+	 */
+	void __disjoint_union(const graph& g);
 
-		/**
-		 * @brief Returns all independent pairs of edges of this graph.
-		 *
-		 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-		 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-		 * no nodes.
-		 * @param q The size of \f$Q\f$.
-		 */
-		std::vector<edge_pair> Q(uint64_t q) const;
+	/**
+	 * @brief Returns all independent pairs of edges of this graph.
+	 *
+	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+	 * no nodes.
+	 * @param q The size of \f$Q\f$.
+	 */
+	std::vector<edge_pair> Q(uint64_t q) const;
 
-		/// Do some extra work after an edge has been added.
-		virtual void extra_work_per_edge_add(node u, node v);
-		/// Do some extra work after an edge has been removed.
-		virtual void extra_work_per_edge_remove(node u, node v);
-		/// Normalise the graph after one (or more) edges have been added
-		void normalise_after_add(bool norm, bool check);
-		/// Normalise the graph after one (or more) edges have been removed
-		void normalise_after_remove(bool norm, bool check);
+	/// Do some extra work after an edge has been added.
+	virtual void extra_work_per_edge_add(node u, node v);
+	/// Do some extra work after an edge has been removed.
+	virtual void extra_work_per_edge_remove(node u, node v);
+	/// Normalise the graph after one (or more) edges have been added
+	void normalise_after_add(bool norm, bool check);
+	/// Normalise the graph after one (or more) edges have been removed
+	void normalise_after_remove(bool norm, bool check);
 };
 
 } // -- namespace graphs

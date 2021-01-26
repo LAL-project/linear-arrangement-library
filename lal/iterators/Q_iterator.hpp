@@ -75,51 +75,51 @@ namespace iterators {
  * @endcode
  */
 class Q_iterator {
-	public:
-		/**
-		 * @brief Constructor
-		 * @param g Constant reference to the graph over which we iterate.
-		 */
-		Q_iterator(const graphs::graph& g);
-		/// Destructor.
-		~Q_iterator();
+public:
+	/**
+	 * @brief Constructor
+	 * @param g Constant reference to the graph over which we iterate.
+	 */
+	Q_iterator(const graphs::graph& g);
+	/// Destructor.
+	~Q_iterator();
 
-		/// Returns true if there are pairs of independent edges left to be iterated over.
-		bool has_next() const;
+	/// Returns true if there are pairs of independent edges left to be iterated over.
+	bool has_next() const;
 
-		/// Moves the iterator to the next pair, if there is any.
-		void next();
+	/// Moves the iterator to the next pair, if there is any.
+	void next();
 
-		/// Returns the current edge pair.
-		edge_pair get_pair() const;
+	/// Returns the current edge pair.
+	edge_pair get_pair() const;
 
-		/**
-		 * @brief Sets the iterator at the beginning of the set of edges.
-		 * @post The next call to method @ref next() returns the first edge
-		 * of the graph.
-		 */
-		void reset();
+	/**
+	 * @brief Sets the iterator at the beginning of the set of edges.
+	 * @post The next call to method @ref next() returns the first edge
+	 * of the graph.
+	 */
+	void reset();
 
-	private:
-		typedef std::pair<node,std::size_t> E_pointer;
+private:
+	typedef std::pair<node,std::size_t> E_pointer;
 
-	private:
-		/// Graph we are iterating on
-		const graphs::graph& m_G;
+private:
+	/// Graph we are iterating on
+	const graphs::graph& m_G;
 
-		/// Current pointers to the first edge.
-		E_pointer m_cur1 = E_pointer(0,0);
-		/// Current pointers to the second edge.
-		E_pointer m_cur2 = E_pointer(0,0);
+	/// Current pointers to the first edge.
+	E_pointer m_cur1 = E_pointer(0,0);
+	/// Current pointers to the second edge.
+	E_pointer m_cur2 = E_pointer(0,0);
 
-		/// Is there a next pair of independent edges?
-		bool m_exists_next = true;
-		/// Current pair of independent edges.
-		edge_pair m_cur_pair = edge_pair(edge(0,0),edge(0,0));
+	/// Is there a next pair of independent edges?
+	bool m_exists_next = true;
+	/// Current pair of independent edges.
+	edge_pair m_cur_pair = edge_pair(edge(0,0),edge(0,0));
 
-	private:
-		/// Returns the pair of independent edges pointed by @ref m_cur1 and @ref m_cur2.
-		edge_pair make_current_pair() const;
+private:
+	/// Returns the pair of independent edges pointed by @ref m_cur1 and @ref m_cur2.
+	edge_pair make_current_pair() const;
 
 };
 

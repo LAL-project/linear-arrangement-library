@@ -73,56 +73,56 @@ namespace generate {
  * @endcode
  */
 class all_projective_arrangements {
-	public:
-		/**
-		 * @brief Constructor with constant reference to a rooted tree.
-		 * @param T Rooted tree
-		 * @pre The object @e T is a valid rooted tree (see
-		 * @ref graphs::rooted_tree::is_rooted_tree).
-		 * @pre The tree is normalised (see graphs::graph::is_normalised()).
-		 */
-		all_projective_arrangements(const graphs::rooted_tree& T);
-		/// Default destructor.
-		~all_projective_arrangements();
+public:
+	/**
+	 * @brief Constructor with constant reference to a rooted tree.
+	 * @param T Rooted tree
+	 * @pre The object @e T is a valid rooted tree (see
+	 * @ref graphs::rooted_tree::is_rooted_tree).
+	 * @pre The tree is normalised (see graphs::graph::is_normalised()).
+	 */
+	all_projective_arrangements(const graphs::rooted_tree& T);
+	/// Default destructor.
+	~all_projective_arrangements();
 
-		/**
-		 * @brief Returns whether there are more arrangements to generate.
-		 * @return Returns true if there are still more arrangements
-		 * to generate. Returns false if all arrangements have been
-		 * generated.
-		 */
-		bool has_next() const;
+	/**
+	 * @brief Returns whether there are more arrangements to generate.
+	 * @return Returns true if there are still more arrangements
+	 * to generate. Returns false if all arrangements have been
+	 * generated.
+	 */
+	bool has_next() const;
 
-		/**
-		 * @brief Generates the next arrangement.
-		 *
-		 * Modifies the internal state so that the next arrangement
-		 * can be retrieved using method @ref get_arrangement.
-		 */
-		void next();
+	/**
+	 * @brief Generates the next arrangement.
+	 *
+	 * Modifies the internal state so that the next arrangement
+	 * can be retrieved using method @ref get_arrangement.
+	 */
+	void next();
 
-		/**
-		 * @brief Constructs the current arrangement.
-		 * @return Returns the arrangement generated with method @ref next().
-		 * @pre Method @ref next must have been called at least once.
-		 */
-		linear_arrangement get_arrangement() const;
+	/**
+	 * @brief Constructs the current arrangement.
+	 * @return Returns the arrangement generated with method @ref next().
+	 * @pre Method @ref next must have been called at least once.
+	 */
+	linear_arrangement get_arrangement() const;
 
-	private:
-		/// Constant reference to rooted tree.
-		const graphs::rooted_tree& m_rT;
+private:
+	/// Constant reference to rooted tree.
+	const graphs::rooted_tree& m_rT;
 
-		/// The interval of every node of the tree
-		std::vector<std::vector<node>> m_intervals;
+	/// The interval of every node of the tree
+	std::vector<std::vector<node>> m_intervals;
 
-		/// Does exist a next arrangement?
-		bool m_has_next = true;
+	/// Does exist a next arrangement?
+	bool m_has_next = true;
 
-	private:
-		/// Initialise the interval every node of the tree, starting at @e r.
-		void initialise_intervals_tree();
-		/// Initialise the interval of node @e u.
-		void initialise_interval_node(node u);
+private:
+	/// Initialise the interval every node of the tree, starting at @e r.
+	void initialise_intervals_tree();
+	/// Initialise the interval of node @e u.
+	void initialise_interval_node(node u);
 };
 
 } // -- namespace generate

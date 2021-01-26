@@ -81,80 +81,79 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_lab_free_trees : public tree_gen<graphs::free_tree>
-{
-	public:
-		/**
-		 * @brief Default constructor.
-		 *
-		 * When constructed this way, the class needs to be initialised.
-		 * See @ref init(uint32_t).
-		 */
-		all_lab_free_trees() = default;
-		/// Constructor with number of nodes.
-		all_lab_free_trees(uint32_t n);
-		/// Default destructor.
-		~all_lab_free_trees();
+class all_lab_free_trees : public tree_gen<graphs::free_tree> {
+public:
+	/**
+	 * @brief Default constructor.
+	 *
+	 * When constructed this way, the class needs to be initialised.
+	 * See @ref init(uint32_t).
+	 */
+	all_lab_free_trees() = default;
+	/// Constructor with number of nodes.
+	all_lab_free_trees(uint32_t n);
+	/// Default destructor.
+	~all_lab_free_trees();
 
-		/**
-		 * @brief Initialises the generator.
-		 *
-		 * Initialises the internal state of this generator
-		 * so that method @ref next can be called safely.
-		 *
-		 * Initialising this class already allows the user
-		 * to retrieve the first tree via method @ref get_tree.
-		 *
-		 * It is allowed to call this method two or more times,
-		 * and with different values for parameter @e n.
-		 * @param n The number of nodes of the trees to be
-		 * generated.
-		 */
-		void init(uint32_t n);
+	/**
+	 * @brief Initialises the generator.
+	 *
+	 * Initialises the internal state of this generator
+	 * so that method @ref next can be called safely.
+	 *
+	 * Initialising this class already allows the user
+	 * to retrieve the first tree via method @ref get_tree.
+	 *
+	 * It is allowed to call this method two or more times,
+	 * and with different values for parameter @e n.
+	 * @param n The number of nodes of the trees to be
+	 * generated.
+	 */
+	void init(uint32_t n);
 
-		/**
-		 * @brief Returns whether there are more trees to generate.
-		 * @return Returns true if there are still more trees
-		 * to generate. Returns false if all trees have been
-		 * generated (there are no more unique trees of this
-		 * size that were not generated before).
-		 * @pre The generator must have been initialised.
-		 */
-		bool has_next() const;
+	/**
+	 * @brief Returns whether there are more trees to generate.
+	 * @return Returns true if there are still more trees
+	 * to generate. Returns false if all trees have been
+	 * generated (there are no more unique trees of this
+	 * size that were not generated before).
+	 * @pre The generator must have been initialised.
+	 */
+	bool has_next() const;
 
-		/**
-		 * @brief Generates next tree.
-		 *
-		 * Modifies the internal state so that the next tree
-		 * can be retrieved using method @ref get_tree().
-		 * @pre The generator must have been initialised.
-		 */
-		void next();
+	/**
+	 * @brief Generates next tree.
+	 *
+	 * Modifies the internal state so that the next tree
+	 * can be retrieved using method @ref get_tree().
+	 * @pre The generator must have been initialised.
+	 */
+	void next();
 
-	protected:
-		/**
-		 * @brief Constructs the current tree.
-		 * @return Returns the tree generated with method @ref next().
-		 * @pre The generator must have been initialised, and method
-		 * @ref next must have been called at least once.
-		 */
-		graphs::free_tree __get_tree();
+protected:
+	/**
+	 * @brief Constructs the current tree.
+	 * @return Returns the tree generated with method @ref next().
+	 * @pre The generator must have been initialised, and method
+	 * @ref next must have been called at least once.
+	 */
+	graphs::free_tree __get_tree();
 
-	private:
-		/**
-		 * @brief Number of nodes of the tree.
-		 *
-		 * Size of the sequence: \f$n - 2\f$.
-		 */
-		uint32_t m_n;
-		/// Iterator on the sequence.
-		uint32_t m_it;
-		/// Left-most position with value \f$n-1\f$.
-		uint32_t m_L;
-		/// Prüfer sequence.
-		uint32_t *m_seq = nullptr;
-		/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
-		char *m_sm = nullptr;
+private:
+	/**
+	 * @brief Number of nodes of the tree.
+	 *
+	 * Size of the sequence: \f$n - 2\f$.
+	 */
+	uint32_t m_n;
+	/// Iterator on the sequence.
+	uint32_t m_it;
+	/// Left-most position with value \f$n-1\f$.
+	uint32_t m_L;
+	/// Prüfer sequence.
+	uint32_t *m_seq = nullptr;
+	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
+	char *m_sm = nullptr;
 };
 
 } // -- namespace generate

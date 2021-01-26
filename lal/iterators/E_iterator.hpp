@@ -74,68 +74,68 @@ namespace iterators {
  * @endcode
  */
 class E_iterator {
-	public:
-		/**
-		 * @brief Constructor
-		 * @param g Constant reference to the graph over which we iterate.
-		 */
-		E_iterator(const graphs::graph& g);
-		/// Destructor.
-		~E_iterator();
+public:
+	/**
+	 * @brief Constructor
+	 * @param g Constant reference to the graph over which we iterate.
+	 */
+	E_iterator(const graphs::graph& g);
+	/// Destructor.
+	~E_iterator();
 
-		/// Returns true if there are edges left to be iterated over.
-		bool has_next() const;
+	/// Returns true if there are edges left to be iterated over.
+	bool has_next() const;
 
-		/// Moves the iterator to the next edge.
-		void next();
+	/// Moves the iterator to the next edge.
+	void next();
 
-		/// Returns the current edge.
-		edge get_edge() const;
+	/// Returns the current edge.
+	edge get_edge() const;
 
-		/**
-		 * @brief Sets the iterator at the beginning of the set of edges.
-		 * @post The next call to method @ref next() returns the first edge
-		 * of the graph.
-		 */
-		void reset();
+	/**
+	 * @brief Sets the iterator at the beginning of the set of edges.
+	 * @post The next call to method @ref next() returns the first edge
+	 * of the graph.
+	 */
+	void reset();
 
-	private:
-		typedef std::pair<node,std::size_t> E_pointer;
+private:
+	typedef std::pair<node,std::size_t> E_pointer;
 
-	private:
-		/// The graph whose edges have to be iterated on.
-		const graphs::graph& m_G;
-		/// Pointer to the next edge.
-		E_pointer m_cur;
-		/// Is there a next edge to iterate over?
-		bool m_exists_next = true;
-		/// Copy of the current edge.
-		edge m_cur_edge;
+private:
+	/// The graph whose edges have to be iterated on.
+	const graphs::graph& m_G;
+	/// Pointer to the next edge.
+	E_pointer m_cur;
+	/// Is there a next edge to iterate over?
+	bool m_exists_next = true;
+	/// Copy of the current edge.
+	edge m_cur_edge;
 
-	private:
-		/// Returns the edge pointed by @ref m_cur.
-		edge make_current_edge() const;
+private:
+	/// Returns the edge pointed by @ref m_cur.
+	edge make_current_edge() const;
 
-		/**
-		 * @brief Finds the next edge.
-		 *
-		 * Calls @ref find_next_edge_directed() or @ref find_next_edge_undirected().
-		 */
-		std::pair<bool, E_pointer> find_next_edge() const;
-		/**
-		 * @brief Finds the next edge on a directed graph.
-		 * @return Returns a pair of a Boolean indicating if the next edge is
-		 * valid, and pointers to the next edge.
-		 * @pre Starts at the values in @ref m_cur.
-		 */
-		std::pair<bool, E_pointer> find_next_edge_directed() const;
-		/**
-		 * @brief Finds the next edge on an undirected graph.
-		 * @return Returns a pair of a Boolean indicating if the next edge is
-		 * valid, and pointers to the next edge.
-		 * @pre Starts at the values in @ref m_cur.
-		 */
-		std::pair<bool, E_pointer> find_next_edge_undirected() const;
+	/**
+	 * @brief Finds the next edge.
+	 *
+	 * Calls @ref find_next_edge_directed() or @ref find_next_edge_undirected().
+	 */
+	std::pair<bool, E_pointer> find_next_edge() const;
+	/**
+	 * @brief Finds the next edge on a directed graph.
+	 * @return Returns a pair of a Boolean indicating if the next edge is
+	 * valid, and pointers to the next edge.
+	 * @pre Starts at the values in @ref m_cur.
+	 */
+	std::pair<bool, E_pointer> find_next_edge_directed() const;
+	/**
+	 * @brief Finds the next edge on an undirected graph.
+	 * @return Returns a pair of a Boolean indicating if the next edge is
+	 * valid, and pointers to the next edge.
+	 * @pre Starts at the values in @ref m_cur.
+	 */
+	std::pair<bool, E_pointer> find_next_edge_undirected() const;
 };
 
 } // -- namespace iterators
