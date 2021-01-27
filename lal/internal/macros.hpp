@@ -41,9 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <numeric>
-
 // lal includes
 #include <lal/definitions.hpp>
 
@@ -74,7 +71,11 @@ T call_with_empty_arrangement(
 		return F(g,pi);
 	}
 	linear_arrangement __pi(g.n_nodes());
-	std::iota(__pi.begin(), __pi.end(), 0);
+	{
+	position p = 0;
+	auto it = __pi.begin();
+	while (it != __pi.end()) { *(it++) = p++; }
+	}
 	return F(g,__pi);
 }
 
