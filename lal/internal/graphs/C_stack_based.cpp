@@ -63,6 +63,60 @@ namespace internal {
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
 
+inline void fill_adjP_adjN(
+	const graph& g, const linear_arrangement& pi,
+	vector<neighbourhood>& adjP,
+	vector<vector<indexed_edge>>& adjN,
+	size_t * __restrict__ size_adjN_u
+)
+{
+	const uint32_t n = g.n_nodes();
+
+	// Retrieve all edges of the graph to sort
+	vector<edge> edges = g.edges();
+
+	// sort edges of the graph by increasing edge length
+	internal::counting_sort<vector<edge>::iterator, edge, true>
+	(
+	edges.begin(), edges.end(),
+	n-1, // length of the longest edge
+	edges.size(),
+	[&](const edge& e) -> size_t {
+		const auto [u,v] = edge_sorted_by_pos(e.first, e.second);
+		++size_adjN_u[u];
+		return my_abs_diff(pi[u], pi[v]);
+	}
+	);
+
+	// initialise adjN
+	for (node u = 0; u < n; ++u) {
+		// divide by two because the 'key' function in the call to
+		// the sorting function is called twice for every edge
+#if defined DEBUG
+		assert( (size_adjN_u[u]%2) == 0 );
+#endif
+		size_adjN_u[u] /= 2;
+		adjN[u].resize(size_adjN_u[u]);
+	}
+
+	// fill adjP and adjN at the same time
+	for (const auto& [uu, vv] : edges) {
+		// pi[u] < pi[v]
+		const auto [u,v] = edge_sorted_by_pos(uu, vv);
+		// oriented edge (u,v) "enters" node v
+		adjP[v].push_back(u);
+
+		// Oriented edge (u,v) "leaves" node u
+		--size_adjN_u[u];
+		adjN[u][size_adjN_u[u]] = make_pair(0, edge_sorted_by_vertex(u,v));
+	}
+#if defined DEBUG
+	for (node u = 0; u < n; ++u) {
+		assert(size_adjN_u[u] == 0);
+	}
+#endif
+}
+
 inline uint32_t __compute_C_stack_based(
 	const graph& g, const linear_arrangement& pi,
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u
@@ -81,43 +135,7 @@ inline uint32_t __compute_C_stack_based(
 	vector<neighbourhood> adjP(n);
 	vector<vector<indexed_edge>> adjN(n);
 
-	{
-		// Retrieve all edges of the graph to sort
-		vector<edge> edges = g.edges();
-
-		// sort edges of the graph by increasing edge length
-		internal::counting_sort<vector<edge>::iterator, edge, true>
-		(
-		edges.begin(), edges.end(),
-		n-1, // length of the longest edge
-		edges.size(),
-		[&](const edge& e) -> size_t {
-			const auto [u,v] = edge_sorted_by_pos(e.first, e.second);
-			++size_adjN_u[u];
-			return my_abs_diff(pi[u], pi[v]);
-		}
-		);
-
-		// initialise adjN
-		for (node u = 0; u < n; ++u) {
-			// divide by two because the 'key' function in the call to
-			// the sorting function is called twice for every edge
-			size_adjN_u[u] /= 2;
-			adjN[u].resize(size_adjN_u[u]);
-		}
-
-		// fill adjP and adjN at the same time
-		for (const auto& [uu, vv] : edges) {
-			// pi[u] < pi[v]
-			const auto [u,v] = edge_sorted_by_pos(uu, vv);
-			// oriented edge (u,v) "enters" node v
-			adjP[v].push_back(u);
-
-			// Oriented edge (u,v) "leaves" node u
-			--size_adjN_u[u];
-			adjN[u][size_adjN_u[u]] = make_pair(0, edge_sorted_by_vertex(u,v));
-		}
-	}
+	fill_adjP_adjN(g, pi, adjP, adjN, size_adjN_u);
 
 	// relate each edge to an index
 	map<edge, uint32_t> edge_to_idx;
@@ -158,15 +176,13 @@ inline uint32_t __call_C_stack_based
 (const graph& g, const linear_arrangement& pi)
 {
 	const uint32_t n = g.n_nodes();
-	if (n < 4) {
-		return 0;
-	}
+	if (n < 4) { return 0; }
 
 	/* allocate memory */
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n];
+	node * __restrict__ T = new node[n]{0};
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
@@ -195,15 +211,13 @@ vector<uint32_t> n_C_stack_based_list
 	const uint32_t n = g.n_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	/* allocate memory */
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n];
+	node * __restrict__ T = new node[n]{0};
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
