@@ -65,8 +65,6 @@ namespace linarr {
  * - 1-Endpoint Crossing (see @ref syntactic_dependency_structure_type::EC1),
  */
 enum class syntactic_dependency_structure_type {
-	// Projective structures
-
 	/**
 	 * @brief Projective structures.
 	 *
@@ -74,7 +72,6 @@ enum class syntactic_dependency_structure_type {
 	 * any dependency.
 	 */
 	projective = 0,
-
 	/**
 	 * @brief Planar structures.
 	 *
@@ -85,22 +82,20 @@ enum class syntactic_dependency_structure_type {
 	 * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
 	 */
 	planar,
-
-	// Mildly non-projective
-
-	/// Well nested trees with maximum gap-degree 1.
+	/**
+	 * @brief Well nested trees with maximum gap-degree 1.
+	 *
+	 * For further details and a thorough discussion, see \cite Gomez2011a.
+	 */
 	WG1,
-
 	/**
 	 * @brief 1-Endpoint Crossing.
 	 *
 	 * A structure has the property of being 1-endpoint crossing if, given any
 	 * dependency, all other dependencies crossing it are incident to a common
-	 * node.
+	 * node. See \cite Pitler2013a for further details.
 	 */
 	EC1,
-
-
 	// This value must always be the last one.
 	/// The structure could not be classified.
 	none
