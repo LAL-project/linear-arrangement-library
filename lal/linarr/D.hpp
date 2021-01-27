@@ -57,9 +57,11 @@ namespace linarr {
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
- * Given a graph and a linear arrangement of its nodes, computes the sum of
- * the length of the graph's edges in the arrangement. If the arrangement is
- * not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangement of its nodes \f$\pi\f$, computes
+ * the sum of the length of the graph's edges in the arrangement. Formally,
+ * this function computes the value \f$D_{\pi}(G)=\sum_{uv\in E(G)} |\pi(u) - \pi(v)|\f$.
+ *
+ * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns \f$D\f$.
@@ -72,11 +74,10 @@ uint32_t sum_length_edges
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as an exact rational value.
  *
- * Given a graph and a linear arrangement of its nodes, computes the average
- * edge length, or the mean dependency distance (see \cite Jing2015a).
- *
- * It simply computes the sum of the length of the edges of the graph given the
- * arrangement \f$\pi\f$ and divides the sum by the number of edges.
+ * Given a graph \f$G\f$ and a linear arrangement of its nodes \f$\pi\f$, computes
+ * the average edge length, or the mean dependency distance (see \cite Jing2015a).
+ * Formally, it computes \f$\frac{D_{\pi}(G)}{|E(G)|}\f$. See function @ref
+ * sum_length_edges for further details on \f$D_{\pi}(G)\f$.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Returns Jing's and Liu's \f$MDD\f$.
