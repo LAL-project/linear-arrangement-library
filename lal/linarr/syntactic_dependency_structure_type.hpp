@@ -103,13 +103,14 @@ enum class syntactic_dependency_structure_type {
 
 // since SWIG does not wrap string_view, we need a
 // different return type for this "to_string" function
+/// Converts to a string a value of the enumeration @ref syntactic_dependency_structure_type.
 inline
 #ifdef SWIG
 std::string
 #else
 constexpr std::string_view
 #endif
-tree_structure_to_string
+syntactic_dependency_structure_type_to_string
 (const syntactic_dependency_structure_type& tt)
 {
 	switch (tt) {

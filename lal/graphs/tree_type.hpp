@@ -107,6 +107,7 @@ enum class tree_type {
 
 // since SWIG does not wrap string_view, we need a
 // different return type for this "to_string" function
+/// Converts to a string a value of the enumeration @ref tree_type.
 inline
 #ifdef SWIG
 std::string
