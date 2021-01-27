@@ -68,8 +68,8 @@ enum class syntactic_dependency_structure_type {
 	/**
 	 * @brief Projective structures.
 	 *
-	 * A structure is projective if it is planar and the root is not covered by
-	 * any dependency.
+	 * A structure is projective if it is @ref syntactic_dependency_structure_type::planar
+	 * and the root is not covered by any dependency.
 	 */
 	projective = 0,
 	/**
