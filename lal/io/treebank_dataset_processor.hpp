@@ -101,7 +101,7 @@ public:
 	/// @brief Features that can be computed for each tree.
 	enum class tree_feature {
 		/// Number of nodes of the tree.
-		n,
+		n = 0,
 		/**
 		 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 		 *
@@ -127,11 +127,17 @@ public:
 		 */
 		headedness,
 		/**
-		 * @brief Mean hierarchical of the tree.
+		 * @brief Mean hierarchical distance of the tree.
 		 *
 		 * See @ref properties::mean_hierarchical_distance for details.
 		 */
 		mean_hierarchical_distance,
+		/**
+		 * @brief Mean dependency distance of the tree.
+		 *
+		 * See @ref linarr::mean_dependency_distance for details.
+		 */
+		mean_dependency_distance,
 		/**
 		 * @brief Number of edge crossings \f$C\f$.
 		 *

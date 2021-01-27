@@ -87,6 +87,7 @@ tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 	case TBPROC_TF::size_Q: return "size_Q";
 	case TBPROC_TF::headedness: return "headedness";
 	case TBPROC_TF::mean_hierarchical_distance: return "mean_hierarchical_distance";
+	case TBPROC_TF::mean_dependency_distance: return "mean_dependency_distance";
 	case TBPROC_TF::C: return "C";
 	case TBPROC_TF::C_exp_1: return "C_exp_1";
 	case TBPROC_TF::C_exp_2: return "C_exp_2";
@@ -112,6 +113,7 @@ tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 #define size_Q_idx index_of(size_Q)
 #define headedness_idx index_of(headedness)
 #define mean_hierarchical_distance_idx index_of(mean_hierarchical_distance)
+#define mean_dependency_distance_idx index_of(mean_dependency_distance)
 #define C_idx index_of(C)
 #define C_exp1_idx index_of(C_exp_1)
 #define C_exp2_idx index_of(C_exp_2)
@@ -263,6 +265,10 @@ const
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
 		set_prop(mean_hierarchical_distance_idx,
 				 properties::mean_hierarchical_distance(rT));
+	}
+	if (m_what_fs[mean_dependency_distance_idx]) {
+		set_prop(mean_dependency_distance_idx,
+				 linarr::mean_dependency_distance(rT));
 	}
 
 	// -----------------------------------------------------------------
