@@ -108,7 +108,7 @@ inline void fill_adjP_adjN(
 
 		// Oriented edge (u,v) "leaves" node u
 		--size_adjN_u[u];
-		adjN[u][size_adjN_u[u]] = make_pair(0, edge_sorted_by_vertex(u,v));
+		adjN[u][size_adjN_u[u]] = indexed_edge(0, edge_sorted_by_vertex(u,v));
 	}
 #if defined DEBUG
 	for (node u = 0; u < n; ++u) {
@@ -152,7 +152,7 @@ inline uint32_t __compute_C_stack_based(
 	}
 
 	// stack of the algorithm
-	internal::AVL<pair<uint32_t, edge> > S;
+	internal::AVL<indexed_edge> S;
 
 	// calculate the number of crossings
 	uint32_t C = 0;
@@ -162,7 +162,7 @@ inline uint32_t __compute_C_stack_based(
 			const edge uv = edge_sorted_by_vertex(u,v);
 			const uint32_t on_top =
 				static_cast<uint32_t>(
-					S.remove(make_pair(edge_to_idx[uv], uv))
+					S.remove(indexed_edge(edge_to_idx[uv], uv))
 				);
 			C += on_top;
 		}
