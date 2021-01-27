@@ -53,7 +53,6 @@
 using namespace std;
 
 // lal includes
-#include <lal/linarr/D.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/graphs/trees/make_arrangement.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
