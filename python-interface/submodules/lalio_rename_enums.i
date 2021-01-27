@@ -72,7 +72,6 @@ for enval_name in tf_enum_vals:
 # clean up dummy attributes of the subclasses
 delattr(processor_error, "_processor_error__dummy_attr")
 delattr(tree_feature, "_tree_feature__dummy_attr")
-delattr(tree_feature, "mro")
 
 # -----------------------------------------
 # make "processor_error" and "tree_feature"
