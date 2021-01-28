@@ -51,5 +51,7 @@
 #include <lal/linarr/headedness.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 
+#include <lal/linarr/dependency_flux.hpp>
+
 #include <lal/linarr/1level.hpp>
 #include <lal/linarr/2level.hpp>
