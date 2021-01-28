@@ -54,6 +54,7 @@ LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 					  $(ALG_DMIN_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/dependency_flux.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/Dmin.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
 					  $(TREE_STR_DPHDRS) \
