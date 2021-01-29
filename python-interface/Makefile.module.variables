@@ -15,7 +15,8 @@
 # _name_SO			# without-directory shared (.so / .pyd) file
 # name_SO			# with-directory shared (.so / .pyd) file
 
-# ENUMERATIONS and CLASSIFICATIONS
+# ------------
+# ENUMERATIONS
 
 # -- dataset_error module
 DSE_MAIN_INT	= submodules/enums/$(DSE_INAME).i
@@ -71,8 +72,8 @@ ALG_DMIN_WRAP		= $(ARCH_DIR)/$(ALG_DMIN_INAME)_wrap
 _ALG_DMIN_SO		= _$(ALG_DMIN_INAME).$(SO_EXT)
 ALG_DMIN_SO			= $(ARCH_DIR)/$(_ALG_DMIN_SO)
 
-
-# CLASSES AND METHODS
+# -----------
+# DEFINITIONS
 
 # -- definitions module
 DEFS_MAIN_INT	= submodules/$(DEFS_INAME).i
@@ -84,35 +85,8 @@ DEFS_WRAP		= $(ARCH_DIR)/$(DEFS_INAME)_wrap
 _DEFS_SO		= _$(DEFS_INAME).$(SO_EXT)
 DEFS_SO			= $(ARCH_DIR)/$(_DEFS_SO)
 
-# -- version module
-VERSION_MAIN_INT	= submodules/$(VERSION_INAME).i
-VERSION_SUB_INT		= submodules/$(VERSION_BNAME)_impl.i
-VERSION_MOD_DEPS	= $(VERSION_MAIN_INT) $(VERSION_SUB_INT) $(VERSION_DPHDRS)
-_VERSION_PF			= $(VERSION_INAME).py
-VERSION_PY_FILE		= $(ARCH_DIR)/$(_VERSION_PF)
-VERSION_WRAP		= $(ARCH_DIR)/$(VERSION_INAME)_wrap
-_VERSION_SO			= _$(VERSION_INAME).$(SO_EXT)
-VERSION_SO			= $(ARCH_DIR)/$(_VERSION_SO)
-
-# -- numeric module
-NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
-NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
-NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DPHDRS)
-_NMRC_PF		= $(NMRC_INAME).py
-NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
-NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
-_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
-NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
-
-# -- graphs module
-GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
-GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
-GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS)
-_GRAPHS_PF		= $(GRAPHS_INAME).py
-GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
-GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
-_GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
-GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
+# ----------
+# NAMESPACES
 
 # -- generate module
 GEN_MAIN_INT	= submodules/$(GEN_INAME).i
@@ -123,6 +97,16 @@ GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
 GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
 _GEN_SO			= _$(GEN_INAME).$(SO_EXT)
 GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
+
+# -- graphs module
+GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
+GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
+GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS)
+_GRAPHS_PF		= $(GRAPHS_INAME).py
+GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
+GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
+_GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
+GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
 
 # -- io module
 IO_MAIN_INT		= submodules/$(IO_INAME).i
@@ -150,12 +134,23 @@ ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
 LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
 LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
 LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DPHDRS)	\
-				  $(SYN_DEP_STR_TYPE_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
+				  $(SYN_DEP_STR_TYPE_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS) \
+				  $(DEPFLUX_MOD_DEPS)
 _LINARR_PF		= $(LINARR_INAME).py
 LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
 _LINARR_SO		= _$(LINARR_INAME).$(SO_EXT)
 LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
+
+# -- numeric module
+NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
+NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
+NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DPHDRS)
+_NMRC_PF		= $(NMRC_INAME).py
+NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
+NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
+_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
+NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
 
 # -- properties module
 PROP_MAIN_INT	= submodules/$(PROP_INAME).i
@@ -189,3 +184,16 @@ LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
 LAL_WRAP		= $(ARCH_DIR)/$(LAL_INAME)_wrap
 _LAL_SO			= _$(LAL_INAME).$(SO_EXT)
 LAL_SO			= $(ARCH_DIR)/$(_LAL_SO)
+
+# -------
+# VERSION
+
+# -- version module
+VERSION_MAIN_INT	= submodules/$(VERSION_INAME).i
+VERSION_SUB_INT		= submodules/$(VERSION_BNAME)_impl.i
+VERSION_MOD_DEPS	= $(VERSION_MAIN_INT) $(VERSION_SUB_INT) $(VERSION_DPHDRS)
+_VERSION_PF			= $(VERSION_INAME).py
+VERSION_PY_FILE		= $(ARCH_DIR)/$(_VERSION_PF)
+VERSION_WRAP		= $(ARCH_DIR)/$(VERSION_INAME)_wrap
+_VERSION_SO			= _$(VERSION_INAME).$(SO_EXT)
+VERSION_SO			= $(ARCH_DIR)/$(_VERSION_SO)

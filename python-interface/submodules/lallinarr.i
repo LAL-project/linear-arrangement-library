@@ -1,9 +1,10 @@
 %module lallinarr
 
-%import laldefinitions.i
+%import laldefinitions.i // this is necessary for the wrapper
 %import enums/lalsyntactic_dependency_structure_type.i
 %import enums/lalalgorithms_C.i
 %import enums/lalalgorithms_Dmin.i
+// these are necessary for the wrapper
 %import lalgraphs.i
 %import lalnumeric.i
 
@@ -22,8 +23,15 @@ del lalalgorithms_Dmin
 __definitions = laldefinitions
 del laldefinitions
 
-# remove unnecessary modules
+# remove unnecessary modules (not required for python)
 del lalgraphs
 del lalnumeric
-del laltree_type
+del laltree_type # this comes from lalgraphs
+
+
+stolen = getattr(__definitions, "dependency_flux")
+delattr(__definitions, "dependency_flux")
+
+setattr(__import__("lallinarr"), "dependency_flux", stolen)
+del stolen
 %}

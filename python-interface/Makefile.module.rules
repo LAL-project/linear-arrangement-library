@@ -1,7 +1,9 @@
 
-# --------------
+# ==============
 # BUILDING RULES
+# ==============
 
+# ------------
 # ENUMERATIONS
 
 # dataset_error module
@@ -46,8 +48,8 @@ $(ALG_DMIN_WRAP).o: $(ALG_DMIN_WRAP).cxx
 $(ALG_DMIN_WRAP).cxx: $(ALG_DMIN_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_DMIN_MAIN_INT)
 
-
-# CLASSES AND METHODS
+# -----------
+# DEFINITIONS
 
 # definitions module
 $(DEFS_SO): $(DEFS_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -57,14 +59,8 @@ $(DEFS_WRAP).o: $(DEFS_WRAP).cxx
 $(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
 
-# version module
-$(VERSION_SO): $(VERSION_WRAP).o $(LIBRARY_SHARED_DEP)
-	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(VERSION_WRAP).o: $(VERSION_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(VERSION_WRAP).cxx: $(VERSION_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(VERSION_MAIN_INT)
-	echo "del cvar" >> $(VERSION_PY_FILE)
+# ----------
+# NAMESPACES
 
 # generate
 $(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -137,3 +133,15 @@ $(LAL_WRAP).o: $(LAL_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
+
+# -------
+# VERSION
+
+# version module
+$(VERSION_SO): $(VERSION_WRAP).o $(LIBRARY_SHARED_DEP)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
+$(VERSION_WRAP).o: $(VERSION_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(VERSION_WRAP).cxx: $(VERSION_MOD_DEPS)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(VERSION_MAIN_INT)
+	echo "del cvar" >> $(VERSION_PY_FILE)

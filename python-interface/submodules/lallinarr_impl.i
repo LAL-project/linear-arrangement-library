@@ -1,19 +1,17 @@
 
 %{
-
 #include <lal/graphs.hpp>
 #include <lal/linarr.hpp>
-
 %}
 
 %include "../lal/linarr/1level.hpp"
 %include "../lal/linarr/2level.hpp"
 %include "../lal/linarr/C.hpp"
 %include "../lal/linarr/D.hpp"
-%include "../lal/linarr/dependency_flux.hpp"
 %include "../lal/linarr/Dmin.hpp"
 %include "../lal/linarr/headedness.hpp"
-%include "../lal/linarr/syntactic_dependency_structure_type.hpp"
+%include "../lal/linarr/flux.hpp"
+%include "../lal/linarr/classify_syntactic_dependency_structure.hpp"
 
 // --------------------------------
 // Extendind the function templates
@@ -37,7 +35,6 @@
 %template(__MDD_2level_directed_graph)				lal::linarr::mean_dependency_distance_2level<lal::graphs::directed_graph>;
 %template(__MDD_2level_free_tree)					lal::linarr::mean_dependency_distance_2level<lal::graphs::free_tree>;
 %template(__MDD_2level_rooted_tree)					lal::linarr::mean_dependency_distance_2level<lal::graphs::rooted_tree>;
-
 
 %pythoncode %{
 def mean_dependency_distance_1level_rational(g, l):

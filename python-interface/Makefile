@@ -171,21 +171,26 @@ include Makefile.module.variables
 ########################################################################
 # GOALS
 
-SUBMODULES	= $(DSE_SO) 		\
+ENUMERATIONS= $(DSE_SO) 				\
 			  $(SYN_DEP_STR_TYPE_SO) 	\
-			  $(TREE_TYPE_SO) 	\
-			  $(ALG_C_SO) 		\
-			  $(ALG_DMIN_SO)	\
-			  $(DEFS_SO) 		\
-			  $(GEN_SO) 		\
+			  $(TREE_TYPE_SO) 			\
+			  $(ALG_C_SO) 				\
+			  $(ALG_DMIN_SO)
+
+DEFINITIONS = $(DEFS_SO)
+
+NAMESPACES  = $(GEN_SO) 		\
 			  $(GRAPHS_SO) 		\
 			  $(IO_SO)			\
 			  $(ITER_SO)		\
 			  $(LINARR_SO)		\
 			  $(NMRC_SO)		\
 			  $(PROP_SO)		\
-			  $(UTILS_SO)		\
-			  $(VERSION_SO)
+			  $(UTILS_SO)
+
+VERSION = 	  $(VERSION_SO)
+			  
+SUBMODULES	= $(ENUMERATIONS) $(DEFINITIONS) $(NAMESPACES) $(VERSION)
 ALL_SO		= $(SUBMODULES) $(LAL_SO)
 
 all: directories $(ALL_SO)
@@ -210,6 +215,7 @@ distclean:
 	rm -rf $(ARCH_DIR)
 
 install: $(LAL_SO)
+	# ENUMERATIONS
 	cp $(DSE_SO) $(LAL_PY_DEST)/$(_DSE_SO)
 	cp $(DSE_PY_FILE) $(LAL_PY_DEST)/$(_DSE_PF)
 	cp $(SYN_DEP_STR_TYPE_SO) $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
@@ -220,8 +226,10 @@ install: $(LAL_SO)
 	cp $(ALG_C_PY_FILE) $(LAL_PY_DEST)/$(_ALG_C_PF)
 	cp $(ALG_DMIN_SO) $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
 	cp $(ALG_DMIN_PY_FILE) $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
+	# DEFINITIONS
 	cp $(DEFS_SO) $(LAL_PY_DEST)/$(_DEFS_SO)
 	cp $(DEFS_PY_FILE) $(LAL_PY_DEST)/$(_DEFS_PF)
+	# NAMESPACES
 	cp $(GEN_SO) $(LAL_PY_DEST)/$(_GEN_SO)
 	cp $(GEN_PY_FILE) $(LAL_PY_DEST)/$(_GEN_PF)
 	cp $(GRAPHS_SO) $(LAL_PY_DEST)/$(_GRAPHS_SO)
@@ -238,12 +246,14 @@ install: $(LAL_SO)
 	cp $(PROP_PY_FILE) $(LAL_PY_DEST)/$(_PROP_PF)
 	cp $(UTILS_SO) $(LAL_PY_DEST)/$(_UTILS_SO)
 	cp $(UTILS_PY_FILE) $(LAL_PY_DEST)/$(_UTILS_PF)
-	cp $(VERSION_SO) $(LAL_PY_DEST)/$(_VERSION_SO)
-	cp $(VERSION_PY_FILE) $(LAL_PY_DEST)/$(_VERSION_PF)
 	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
 	cp $(LAL_PY_FILE) $(LAL_PY_DEST)/$(_LAL_PF)
+	# VERSION
+	cp $(VERSION_SO) $(LAL_PY_DEST)/$(_VERSION_SO)
+	cp $(VERSION_PY_FILE) $(LAL_PY_DEST)/$(_VERSION_PF)
 
 uninstall:
+	# ENUMERATIONS
 	rm -f $(LAL_PY_DEST)/$(_DSE_SO)
 	rm -f $(LAL_PY_DEST)/$(_DSE_PF)
 	rm -f $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
@@ -254,8 +264,10 @@ uninstall:
 	rm -f $(LAL_PY_DEST)/$(_ALG_C_PF)
 	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
 	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
+	# DEFINITIONS
 	rm -f $(LAL_PY_DEST)/$(_DEFS_SO)
 	rm -f $(LAL_PY_DEST)/$(_DEFS_PF)
+	# NAMESPACES
 	rm -f $(LAL_PY_DEST)/$(_GEN_SO)
 	rm -f $(LAL_PY_DEST)/$(_GEN_PF)
 	rm -f $(LAL_PY_DEST)/$(_GRAPHS_SO)
@@ -272,7 +284,8 @@ uninstall:
 	rm -f $(LAL_PY_DEST)/$(_PROP_PF)
 	rm -f $(LAL_PY_DEST)/$(_UTILS_SO)
 	rm -f $(LAL_PY_DEST)/$(_UTILS_PF)
-	rm -f $(LAL_PY_DEST)/$(_VERSION_SO)
-	rm -f $(LAL_PY_DEST)/$(_VERSION_PF)
 	rm -f $(LAL_PY_DEST)/$(_LAL_SO)
 	rm -f $(LAL_PY_DEST)/$(_LAL_PF)
+	# VERSION
+	rm -f $(LAL_PY_DEST)/$(_VERSION_SO)
+	rm -f $(LAL_PY_DEST)/$(_VERSION_PF)

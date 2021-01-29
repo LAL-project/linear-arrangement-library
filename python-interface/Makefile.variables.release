@@ -24,6 +24,9 @@ endif
 # name_BNAME		# module's base name
 # name_INAME		# module's interface file (.i) name without extension
 
+# ------------
+# ENUMERATIONS
+
 # -- dataset_error
 DSE_BNAME	= laldataset_error
 DSE_INAME	= $(DSE_BNAME)
@@ -44,13 +47,15 @@ ALG_C_INAME	= $(ALG_C_BNAME)
 ALG_DMIN_BNAME	= lalalgorithms_Dmin
 ALG_DMIN_INAME	= $(ALG_DMIN_BNAME)
 
+# -----------
+# DEFINITIONS
+
 # -- definitions
 DEFS_BNAME	= laldefinitions
 DEFS_INAME	= $(DEFS_BNAME)
 
-# -- version
-VERSION_BNAME	= lalversion
-VERSION_INAME	= $(VERSION_BNAME)
+# ----------
+# NAMESPACES
 
 # -- generate
 GEN_BNAME	= lalgenerate
@@ -87,3 +92,10 @@ UTILS_INAME	= $(UTILS_BNAME)
 # -- lal (library's main module)
 LAL_BNAME	= lal
 LAL_INAME	= $(LAL_BNAME)
+
+# -------
+# VERSION
+
+# -- version
+VERSION_BNAME	= lalversion
+VERSION_INAME	= $(VERSION_BNAME)
