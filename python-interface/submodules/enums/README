@@ -1,0 +1,27 @@
+THIS FOLDER
+===========
+
+These folder contains the enumerations of the library wrapped so that they can be imported as classes.
+
+In other words, we want to prevent the values in the enumerations from becoming integer variables inside a module, like this:
+
+	lal.graphs.tree_type_caterpillar
+
+or
+
+	lal.graphs.caterpillar
+
+What we want is:
+
+	lal.graphs.tree_type.caterpillar
+
+RENAMING ENUMERATIONS
+=====================
+
+Wrapping the enumerations into their own modules is not enough, since what we get are things like this:
+
+	lal.graphs.tree_type.tree_type_caterpillar
+	
+In this folder there is a "script" that renames the enumeration's values in such a way that we get what we want
+
+	lal.graphs.tree_type.caterpillar
