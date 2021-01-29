@@ -86,7 +86,7 @@ std::pair<node, node> retrieve_centroid(
 	{
 	sizes_edge.resize(2*(n - 1));
 	auto it = sizes_edge.begin();
-	internal::calculate_suvs(t,n, x, it);
+	internal::calculate_bidirectional_sizes(t,n, x, it);
 	}
 
 	{

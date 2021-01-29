@@ -48,6 +48,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace internal {
@@ -58,36 +59,50 @@ namespace __lal {
  * @brief Calculate the size of every subtree of the tree @e t.
  *
  * @param t Input tree.
- * @param r The first call to this method, node @e r is interpreted as its
- * hypothetical root.
- * @param vis Mark nodes as visited as the algorithm goes on.
+ * @param u Parent node (the first call should be an invalid value (e.g., n+1)).
+ * @param v Next node in the exploration of the tree.
  * @param sizes The size of the subtree rooted at every reachable node
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::rooted_tree, T> ||
+		std::is_base_of_v<graphs::free_tree, T>,
+	bool> = true
 >
 void get_size_subtrees(
-	const T& t, node r, char *vis, uint32_t *sizes
+	const T& t, const node u, const node v, uint32_t *sizes
 )
 {
-	sizes[r] = 1;
-	vis[r] = 1;
-	for (const node u : t.get_neighbours(r)) {
-		if (vis[u] == 0) {
-			get_size_subtrees(t, u, vis, sizes);
-			sizes[r] += sizes[u];
+	sizes[v] = 1;
+
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
+		for (const node w : t.get_out_neighbours(v)) {
+			if (w != u) {
+				get_size_subtrees(t, v, w, sizes);
+				sizes[v] += sizes[w];
+			}
+		}
+
+		if (t.in_degree(v) > 0) {
+			// we do not what direction of the edges we are following,
+			// so we also have to test the in vertices.
+			const node w = t.get_in_neighbours(v)[0];
+			if (w != u) {
+				get_size_subtrees(t, v, w, sizes);
+				sizes[v] += sizes[w];
+			}
 		}
 	}
-	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
-	for (const node u : t.get_in_neighbours(r)) {
-		if (vis[u] == 0) {
-			get_size_subtrees(t, u, vis, sizes);
-			sizes[r] += sizes[u];
+	else {
+		for (const node w : t.get_neighbours(v)) {
+			if (w != u) {
+				get_size_subtrees(t, v, w, sizes);
+				sizes[v] += sizes[w];
+			}
 		}
-	}
 	}
 }
 
@@ -107,16 +122,19 @@ void get_size_subtrees(
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::rooted_tree, T> ||
+		std::is_base_of_v<graphs::free_tree, T>,
+	bool> = true
 >
 void get_size_subtrees(
 	const T& t, node r, uint32_t *sizes
 )
 {
-	// visited vertices
-	char *vis = new char[t.n_nodes()]{0};
-	__lal::get_size_subtrees(t, r, vis, sizes);
-	delete[] vis;
+#if defined DEBUG
+	assert(sizes != nullptr);
+#endif
+	__lal::get_size_subtrees(t, t.n_nodes(), r, sizes);
 }
 
 namespace __lal {
@@ -143,26 +161,33 @@ namespace __lal {
 template<
 	class T,
 	typename It,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::rooted_tree, T> ||
+		std::is_base_of_v<graphs::free_tree, T>,
+	bool> = true
 >
-uint32_t calculate_suvs(
+uint32_t calculate_bidirectional_sizes(
 	const T& t, const uint32_t n, const node u, const node v,
 	It& it
 )
 {
 	uint32_t r = 1;
-	for (node w : t.get_out_neighbours(v)) {
-		if (w != u) {
-			r += calculate_suvs(t,n, v, w, it);
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
+		for (const node w : t.get_out_neighbours(v)) {
+			if (w != u) { r += calculate_bidirectional_sizes(t,n, v, w, it); }
 		}
-	}
 
-	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
-	for (node w : t.get_in_neighbours(v)) {
-		if (w != u) {
-			r += calculate_suvs(t,n, v, w, it);
+		if (t.in_degree(v) > 0) {
+			// we do not what direction of the edges we are following,
+			// so we also have to test the in vertices.
+			const node w = t.get_in_neighbours(v)[0];
+			if (w != u) { r += calculate_bidirectional_sizes(t,n, v, w, it); }
 		}
 	}
+	else {
+		for (const node w : t.get_neighbours(v)) {
+			if (w != u) { r += calculate_bidirectional_sizes(t,n, v, w, it); }
+		}
 	}
 
 	*it++ = std::make_pair(edge(u,v), r);
@@ -176,27 +201,33 @@ uint32_t calculate_suvs(
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * See @ref __lal::calculate_suvs for details.
+ * See @ref __lal::calculate_bidirectional_sizes for details.
  */
 template<
 	class T,
 	typename It,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::rooted_tree, T> ||
+		std::is_base_of_v<graphs::free_tree, T>,
+	bool> = true
 >
-void calculate_suvs(
+void calculate_bidirectional_sizes(
 	const T& t, const uint32_t n, const node x,
 	It& sizes_edge_it
 )
 {
-	for (node y : t.get_out_neighbours(x)) {
-		__lal::calculate_suvs(t,n, x, y, sizes_edge_it);
-	}
-	if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
-	for (node y : t.get_in_neighbours(x)) {
-		if (y != x) {
-			__lal::calculate_suvs(t,n, x, y, sizes_edge_it);
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
+		for (node y : t.get_out_neighbours(x)) {
+			__lal::calculate_bidirectional_sizes(t,n, x, y, sizes_edge_it);
+		}
+		for (node y : t.get_in_neighbours(x)) {
+			__lal::calculate_bidirectional_sizes(t,n, x, y, sizes_edge_it);
 		}
 	}
+	else {
+		for (node y : t.get_out_neighbours(x)) {
+			__lal::calculate_bidirectional_sizes(t,n, x, y, sizes_edge_it);
+		}
 	}
 }
 
