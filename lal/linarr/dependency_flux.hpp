@@ -43,7 +43,6 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace linarr {
@@ -53,26 +52,90 @@ namespace linarr {
  *
  * The dependency flux of a dependency tree, as defined in \cite Kahane2017a.
  */
-struct dependency_flux {
+class dependency_flux {
+public:
+
+	// GETTERS
+
+	/// Returns left span.
+	inline uint32_t get_left_span() const { return m_left_span;; }
+	/// Returns right span.
+	inline uint32_t get_right_span() const { return m_right_span; }
+	/// Returns size.
+	inline uint32_t get_size() const { return m_size; }
+	/// Returns weight.
+	inline uint32_t get_weight() const { return m_weight; }
+	/// Returns whether this flux is a left-branching bouquet or not.
+	inline bool is_left_bouquet() const { return m_is_left_bouquet; }
+	/// Returns whether this flux is a right-branching bouquet or not.
+	inline bool is_right_bouquet() const { return m_is_right_bouquet; }
+
+#ifndef SWIG
+	/// Returns left span.
+	inline uint32_t& get_left_span() { return m_left_span;; }
+	/// Returns right span.
+	inline uint32_t& get_right_span() { return m_right_span; }
+	/// Returns size.
+	inline uint32_t& get_size() { return m_size; }
+	/// Returns weight.
+	inline uint32_t& get_weight() { return m_weight; }
+	/// Returns whether this flux is a left-branching bouquet or not.
+	inline bool& is_left_bouquet() { return m_is_left_bouquet; }
+	/// Returns whether this flux is a right-branching bouquet or not.
+	inline bool& is_right_bouquet() { return m_is_right_bouquet; }
+
+	/// Returns the set of dependencies.
+	std::vector<edge>& get_dependencies() { return m_dependencies; }
+#endif
+
+	/// Returns the set of dependencies.
+	const std::vector<edge>& get_dependencies() const { return m_dependencies; }
+
+	// SETTERS
+
+	/// Sets the left span.
+	inline void set_left_span(uint32_t ls) { m_left_span = ls; }
+	/// Sets the right span.
+	inline void set_right_span(uint32_t rs) { m_right_span = rs; }
+	/// Sets the size.
+	inline void set_size(uint32_t s) { m_size = s; }
+	/// Sets the weight.
+	inline void set_weight(uint32_t w) { m_weight = w; }
+	/// Sets whether this flux is a left-branching bouquet or not.
+	inline void set_left_bouquet(bool lb) { m_is_left_bouquet = lb; }
+	/// Sets whether this flux is a right-branching bouquet or not.
+	inline void set_right_bouquet(bool rb) { m_is_right_bouquet = rb; }
+
+	/// Sets the set of dependencies.
+	inline void set_dependencies(const std::vector<edge>& deps)
+	{ m_dependencies = deps; }
+
+#ifndef SWIG
+	/// Sets the set of dependencies.
+	inline void set_dependencies(std::vector<edge>&& deps)
+	{ m_dependencies = std::move(deps); }
+#endif
+
+private:
 	/// Number of words to the left of this position.
-	uint32_t left_span = 0;
+	uint32_t m_left_span = 0;
 	/// Number of words to the right of this position.
-	uint32_t right_span = 0;
+	uint32_t m_right_span = 0;
 	/**
 	 * @brief Dependencies in this flux.
 	 *
 	 * The set of concomitant dependencies.
 	 */
-	std::vector<edge> dependencies;
+	std::vector<edge> m_dependencies;
 	/// Size of this flux. Equal to the size of @ref dependency_flux::dependencies.
-	uint32_t size = 0;
+	uint32_t m_size = 0;
 	/**
 	 * @brief Weight of this flux.
 	 *
 	 * This is the size of the largest subset of disjoint dependencies in
 	 * @ref dependency_flux::dependencies.
 	 */
-	uint32_t weight = 0;
+	uint32_t m_weight = 0;
 
 	/**
 	 * @brief Is this flux a left-branching bouquet?
@@ -80,24 +143,15 @@ struct dependency_flux {
 	 * A bouquet is a set of dependencies sharing the same vertex. It is
 	 * left-branching if the common vertex is on the right.
 	 */
-	bool is_left_bouquet = false;
+	bool m_is_left_bouquet = false;
 	/**
 	 * @brief Is this flux a right-branching bouquet?
 	 *
 	 * A bouquet is a set of dependencies sharing the same vertex. It is
 	 * right-branching if the common vertex is on the left.
 	 */
-	bool is_right_bouquet = false;
+	bool m_is_right_bouquet = false;
 };
-
-/**
- * @brief Computes the flux of a dependency tree.
- *
- * @param t Input rooted tree (or dependency tree).
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- */
-std::vector<dependency_flux>
-compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

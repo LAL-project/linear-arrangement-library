@@ -41,18 +41,22 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_C.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/linarr/syntactic_dependency_structure_type.hpp>
-
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
-#include <lal/linarr/Dmin.hpp>
-#include <lal/linarr/headedness.hpp>
-#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
-
+// lal includes
+#include <lal/definitions.hpp>
 #include <lal/linarr/dependency_flux.hpp>
-#include <lal/linarr/flux.hpp>
+#include <lal/graphs/free_tree.hpp>
 
-#include <lal/linarr/1level.hpp>
-#include <lal/linarr/2level.hpp>
+namespace lal {
+namespace linarr {
+
+/**
+ * @brief Computes the flux of a dependency tree.
+ *
+ * @param t Input rooted tree (or dependency tree).
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ */
+std::vector<dependency_flux>
+compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {});
+
+} // -- namespace linarr
+} // -- namespace lal

@@ -117,6 +117,7 @@ HEADERS += \
 	linarr/2level_impl.hpp \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
+	linarr/flux.hpp \
 	linarr/headedness.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
@@ -178,7 +179,7 @@ SOURCES += \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
     linarr/classify_syntactic_dependency_structure.cpp \
-	linarr/dependency_flux.cpp \
+    linarr/flux.cpp \
 	linarr/headedness.cpp \
 	linarr/D.cpp \
 	numeric/integer.cpp \

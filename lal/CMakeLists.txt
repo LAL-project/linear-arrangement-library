@@ -194,6 +194,7 @@ target_sources(
 		linarr/D.hpp
 		linarr/Dmin.hpp
 		linarr/dependency_flux.hpp
+		linarr/flux.hpp
 		linarr/headedness.hpp
 		linarr/syntactic_dependency_structure_type.hpp
 		linarr/classify_syntactic_dependency_structure.hpp
@@ -202,6 +203,7 @@ target_sources(
 		linarr/C_approx.cpp
 		linarr/D.cpp
 		linarr/dependency_flux.cpp
+		linarr/flux.cpp
 		linarr/Dmin.cpp
 		linarr/headedness.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
@@ -362,6 +364,7 @@ set(LIBLAL_LINARR_HEADER
 	linarr/C.hpp
 	linarr/D.hpp
 	linarr/dependency_flux.hpp
+	linarr/flux.hpp
 	linarr/Dmin.hpp
 	linarr/headedness.hpp
 	linarr/syntactic_dependency_structure_type.hpp
