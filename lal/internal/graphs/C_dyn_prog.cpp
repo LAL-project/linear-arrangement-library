@@ -65,7 +65,13 @@ namespace internal {
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 inline uint32_t __compute_C_dyn_prog(
 	const G& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
@@ -91,7 +97,13 @@ inline uint32_t __compute_C_dyn_prog(
 
 		internal::get_bool_neighbours<G>(g, u, bn);
 
-		uint32_t k = degree_graph(g,u);
+		uint32_t k = 0;
+		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+			k = g.out_degree(u) + g.in_degree(u);
+		}
+		else {
+			k = g.degree(u);
+		}
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -177,7 +189,7 @@ inline uint32_t __compute_C_dyn_prog(
 				C += K[idx(pu,pi[v]-2, n-3)];
 			}
 		}
-		if constexpr (std::is_same_v<graphs::directed_graph, G>) {
+		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
 			const neighbourhood& Nu_in = g.get_in_neighbours(u);
 			for (const node& v : Nu_in) {
 
@@ -204,7 +216,13 @@ inline uint32_t __compute_C_dyn_prog(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
@@ -238,7 +256,13 @@ inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
 // ------------------
 // single arrangement
 
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 uint32_t n_C_dynamic_programming
 (const G& g, const linear_arrangement& pi)
 {
@@ -261,7 +285,13 @@ uint32_t n_C_dynamic_programming
 // --------------------
 // list of arrangements
 
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 vector<uint32_t> n_C_dynamic_programming_list
 (const G& g, const vector<linear_arrangement>& pis)
 {

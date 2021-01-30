@@ -63,7 +63,10 @@ namespace __lal {
 // x: start at node x
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
@@ -173,7 +176,10 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t, const node x,
@@ -201,7 +207,10 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 std::pair<node, node> retrieve_centroid(const T& t, const node x) {
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;
@@ -236,7 +245,10 @@ std::pair<node, node> retrieve_centroid(const T& t, const node x) {
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
@@ -262,7 +274,10 @@ std::pair<node, node> retrieve_centroid(
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 std::pair<node, node> retrieve_centroid(const T& t) {
 	std::vector<std::vector<std::pair<node,uint32_t>>> M;

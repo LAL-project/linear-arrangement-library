@@ -58,7 +58,13 @@ using namespace graphs;
 
 namespace internal {
 
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 inline uint32_t __compute_C_ladder(
 	const G& g, const linear_arrangement& pi,
 	char * __restrict__ bn,
@@ -109,7 +115,13 @@ inline uint32_t __compute_C_ladder(
 
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
 	if (n < 4) {
@@ -140,7 +152,13 @@ inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
 // ------------------
 // single arrangement
 
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 uint32_t n_C_ladder(const G& g, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
@@ -161,7 +179,13 @@ uint32_t n_C_ladder
 // --------------------
 // list of arrangements
 
-template<class G>
+template<
+	class G,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>,
+	bool> = true
+>
 vector<uint32_t> n_C_ladder_list
 (const G& g, const vector<linear_arrangement>& pis)
 {

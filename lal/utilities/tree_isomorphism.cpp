@@ -71,13 +71,16 @@ namespace utilities {
  */
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 int fast_non_iso(const T& t1, const T& t2) {
 	// check number of nodes
 	if (t1.n_nodes() != t2.n_nodes()) { return 1; }
 
-	if constexpr (std::is_same_v<T, lal::graphs::rooted_tree>) {
+	if constexpr (std::is_base_of_v<T, lal::graphs::rooted_tree>) {
 	// rooted trees must have correct orientation of edges
 	if (not t1.is_orientation_valid() or not t2.is_orientation_valid()) {
 		return false;

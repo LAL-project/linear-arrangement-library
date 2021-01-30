@@ -82,8 +82,8 @@ namespace internal {
 template<
 	class T,
 	std::enable_if_t<
-		std::is_same_v<graphs::free_tree, T> ||
-		std::is_same_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
 std::pair<node, node> retrieve_centre(const T& t, node X) {
@@ -104,7 +104,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 
 		// only neighbour of X
 		node v2;
-		if constexpr (std::is_same_v<graphs::free_tree, T>) {
+		if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
 			v2 = t.get_neighbours(X)[0];
 		}
 		else {
@@ -146,7 +146,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 		++__size_trimmed;
 #endif
 
-		if constexpr (std::is_same_v<graphs::free_tree, T>)
+		if constexpr (std::is_base_of_v<graphs::free_tree, T>)
 		{ trimmed_degree[u] = t.degree(u); }
 		else
 		{ trimmed_degree[u] = t.out_degree(u) + t.in_degree(u); }
@@ -158,7 +158,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 	}
 	);
 
-	if constexpr (std::is_same_v<graphs::free_tree, T>)
+	if constexpr (std::is_base_of_v<graphs::free_tree, T>)
 	{ bfs.set_use_rev_edges(false); }
 	else
 	{ bfs.set_use_rev_edges(true); }

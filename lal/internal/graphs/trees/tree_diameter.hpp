@@ -51,7 +51,10 @@ namespace internal {
 
 template<
 	class T,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, T>, bool> = true
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
 >
 uint32_t tree_diameter(const T& t) {
 	const uint32_t n = t.n_nodes();
@@ -59,7 +62,7 @@ uint32_t tree_diameter(const T& t) {
 	// degree of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_degree =
 	[&](lal::node u) -> uint32_t {
-		if constexpr (std::is_same_v<lal::graphs::free_tree, T>) {
+		if constexpr (std::is_base_of_v<lal::graphs::free_tree, T>) {
 			return t.degree(u);
 		}
 		else {
@@ -69,7 +72,7 @@ uint32_t tree_diameter(const T& t) {
 
 	BFS<T> bfs(t);
 
-	if constexpr (std::is_same_v<T, graphs::rooted_tree>) {
+	if constexpr (std::is_base_of_v<T, graphs::rooted_tree>) {
 	bfs.set_use_rev_edges(true);
 	}
 	else {
