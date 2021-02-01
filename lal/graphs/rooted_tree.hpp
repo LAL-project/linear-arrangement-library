@@ -223,7 +223,6 @@ public:
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre There are no repeated edges in the list.
-	 * @pre The graph is empty prior to the addition.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
@@ -448,7 +447,7 @@ public:
 	 * or not.
 	 */
 	inline bool size_subtrees_valid() const {
-		return not m_need_recalc_size_subtrees;
+		return m_are_size_subtrees_valid;
 	}
 
 	/**
@@ -520,7 +519,7 @@ protected:
 	 */
 	std::vector<uint32_t> m_size_subtrees;
 	/// Are the contents of @ref m_size_subtrees valid?
-	bool m_need_recalc_size_subtrees = true;
+	bool m_are_size_subtrees_valid = false;
 
 protected:
 	/// Initialises memory of @ref rooted_tree, @ref undirected_graph and

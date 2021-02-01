@@ -168,7 +168,6 @@ public:
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre There are no repeated edges in the list.
-	 * @pre The graph is empty prior to the addition.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
