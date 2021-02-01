@@ -73,6 +73,7 @@ HEADERS += \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
+	internal/graphs/trees/retrieve_subtree.hpp \
 	internal/graphs/trees/tree_classification.hpp \
 	internal/graphs/trees/tree_diameter.hpp \
 	internal/macros.hpp \

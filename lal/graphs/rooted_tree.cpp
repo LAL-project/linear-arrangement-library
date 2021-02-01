@@ -45,12 +45,14 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <algorithm>
 #include <vector>
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/traversal.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/graphs/trees/retrieve_subtree.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/graphs/trees/tree_classification.hpp>
 
@@ -147,7 +149,7 @@ rooted_tree& rooted_tree::remove_edge(
 {
 	directed_graph::remove_edge(u,v, norm, check_norm);
 	m_valid_orientation = false;
-	m_need_recalc_size_subtrees = true;
+	m_are_size_subtrees_valid = false;
 	return *this;
 }
 
@@ -157,7 +159,7 @@ rooted_tree& rooted_tree::remove_edges(
 {
 	directed_graph::remove_edges(edges, norm, check_norm);
 	m_valid_orientation = false;
-	m_need_recalc_size_subtrees = true;
+	m_are_size_subtrees_valid = false;
 	return *this;
 }
 
@@ -197,10 +199,10 @@ void rooted_tree::disjoint_union(
 		if (size_subtrees_valid() and t.size_subtrees_valid()) {
 			// update the size under the root
 			m_size_subtrees[this_r] += m_size_subtrees[t_r];
-			m_need_recalc_size_subtrees = false;
+			m_are_size_subtrees_valid = true;
 		}
 		else {
-			m_need_recalc_size_subtrees = true;
+			m_are_size_subtrees_valid = false;
 		}
 
 		// this operation also updates the
@@ -210,7 +212,7 @@ void rooted_tree::disjoint_union(
 	else {
 		// if roots are not connected then
 		// the sizes need to be recalculated
-		m_need_recalc_size_subtrees = true;
+		m_are_size_subtrees_valid = false;
 	}
 }
 
@@ -294,7 +296,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	// set root, add edges, and set valid orientation
 	set_root(r);
 	m_valid_orientation = true;
-	set_edges(dir_edges);
+	rooted_tree::set_edges(dir_edges);
 	fill_union_find();
 }
 
@@ -302,7 +304,7 @@ void rooted_tree::calculate_size_subtrees() {
 #if defined DEBUG
 	assert(is_rooted_tree());
 #endif
-	m_need_recalc_size_subtrees = false;
+	m_are_size_subtrees_valid = true;
 	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
@@ -323,107 +325,19 @@ void rooted_tree::set_root(node r) {
 		m_root = r;
 	}
 	m_has_root = true;
-	m_need_recalc_size_subtrees = true;
+	m_are_size_subtrees_valid = false;
 	m_valid_orientation = false;
 }
 
 /* GETTERS */
 
 vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
-	// if the tree does not have edges, return an empty list.
-	if (n_nodes() <= 1) { return vector<edge>(); }
-
+	const auto subtree_info = internal::get_edges_subtree(*this, u, relab, false);
 #if defined DEBUG
-	assert(is_rooted_tree());
-	assert(has_node(u));
+	assert(subtree_info.second == nullptr);
 #endif
-
-	const uint32_t n = n_nodes();
-
-	// parent of node 'u'
-	bool u_parent_set = false;
-	node u_parent = n;
-
-	BFS<rooted_tree> bfs(*this);
-
-	// -----------------------
-	// find parent of node u
-
-	if (u != get_root()) {
-		bfs.set_use_rev_edges(false);
-		bfs.set_terminate( [&](const auto&, node) { return u_parent_set; } );
-		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool) -> void {
-			if (t == u) {
-				u_parent = s;
-				u_parent_set = true;
-			}
-		}
-		);
-		bfs.start_at(get_root());
-	}
-
-	// -----------------------------
-	// retrieve edges of the subtree
-
-	// reset the bfs
-	bfs.reset();
-	bfs.set_use_rev_edges(false);
-
-	// stop the bfs from going further than 'r''s parent
-	// in case such parent exists
-	if (u_parent_set) {
-		bfs.set_visited(u_parent);
-	}
-
-	// data structures for node relabelling
-	vector<node> labels(n_nodes(), n);
-	// we need node 'r' to be relabelled to 0.
-	labels[u] = 0;
-	node next_label = 1;
-
-	// retrieve edges and relabel them at the same time
-	vector<edge> es;
-	// relabel nodes
-	if (relab) {
-		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool left_to_right) -> void {
-			// change the orientation of the edge whenever appropriate
-			// left_to_right: true  ---> "s->t"
-			// left_to_right: false ---> "t->s"
-			if (not left_to_right) { std::swap(s,t); }
-
-			edge e;
-			// relabel first node
-			if (labels[s] == n) {
-				labels[s] = next_label;
-				++next_label;
-			}
-			e.first = labels[s];
-			// relabel second node
-			if (labels[t] == n) {
-				labels[t] = next_label;
-				++next_label;
-			}
-			e.second = labels[t];
-			es.push_back(e);
-		}
-		);
-	}
-	else {
-		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool dir) -> void {
-			// change the orientation of the edge whenever appropriate
-			// dir: true  ---> "s->t"
-			// dir: false ---> "t->s"
-			if (not dir) { std::swap(s,t); }
-			es.push_back(edge(s,t));
-		}
-		);
-	}
-	// start the bfs again, this time at 'u'
-	bfs.start_at(u);
-	return es;
+	// move, please
+	return subtree_info.first;
 }
 
 rooted_tree rooted_tree::get_subtree(node u) const {
@@ -436,8 +350,12 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 #endif
 
 	// retrieve the list of edges with their nodes relabelled
-	const vector<edge> es = get_edges_subtree(u, true);
-	// number of nodes of subtree
+	const auto [es, subsizes] = internal::get_edges_subtree(*this, u, true, true);
+#if defined DEBUG
+	assert(size_subtrees_valid() ? (subsizes != nullptr) : (subsizes == nullptr));
+#endif
+
+	// number of nodes of the subtree
 	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
 
 	// make subtree
@@ -445,6 +363,19 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	sub.set_root(0);
 	sub.m_valid_orientation = true;
 	sub.set_edges(es);
+
+	// if the subtree sizes are valid then copy them
+	if (size_subtrees_valid()) {
+		sub.m_size_subtrees = vector<uint32_t>(n_verts, 0);
+		std::copy(
+			&subsizes[0], &subsizes[n_verts],
+			sub.m_size_subtrees.begin()
+		);
+		sub.m_are_size_subtrees_valid = true;
+
+		delete[] subsizes;
+	}
+
 	return sub;
 }
 
@@ -488,7 +419,7 @@ void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {
 	m_has_root = r.m_has_root;
 	m_valid_orientation = r.m_valid_orientation;
 	m_size_subtrees = r.m_size_subtrees;
-	m_need_recalc_size_subtrees = r.m_need_recalc_size_subtrees;
+	m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 }
 
 void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
@@ -503,12 +434,12 @@ void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
 	m_has_root = r.m_has_root;
 	m_valid_orientation = r.m_valid_orientation;
 	m_size_subtrees = std::move(r.m_size_subtrees);
-	m_need_recalc_size_subtrees = r.m_need_recalc_size_subtrees;
+	m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 
 	r.m_root = 0;
 	r.m_has_root = false;
 	r.m_valid_orientation = false;
-	r.m_need_recalc_size_subtrees = true;
+	r.m_are_size_subtrees_valid = false;
 }
 
 } // -- namespace graphs
