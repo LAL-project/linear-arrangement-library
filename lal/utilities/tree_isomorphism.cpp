@@ -284,7 +284,7 @@ string assign_name(
 )
 {
 	if (t.degree(v) == 0) {
-		return "10";
+		return string("10");
 	}
 
 	// make childrens' names

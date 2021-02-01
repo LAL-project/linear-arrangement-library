@@ -43,8 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <functional>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -62,11 +60,11 @@ namespace properties {
 // g: input graph
 // p: moment of the *-degree
 // D: function that returns the *-degree
-template<class G>
+template<class G, class Callable>
 inline rational __mmt_x_degree_rational
 (
 	const G& g, uint32_t p,
-	const function<uint32_t(const G&, node)>& D
+	const Callable& D
 )
 {
 	const integer M = integer_from_ui(g.n_nodes());
