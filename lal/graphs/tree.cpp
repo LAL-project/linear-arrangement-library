@@ -61,7 +61,7 @@ tree::tree(const tree& t) noexcept : graph() {
 	tree_only_copy(t);
 }
 tree::tree(tree&& t) noexcept {
-	tree_only_move(move(t));
+	tree_only_move(std::move(t));
 }
 tree::~tree() noexcept { }
 
@@ -73,7 +73,7 @@ tree& tree::operator= (const tree& t) noexcept {
 }
 
 tree& tree::operator= (tree&& t) noexcept {
-	tree_only_move(move(t));
+	tree_only_move(std::move(t));
 	return *this;
 }
 
@@ -181,9 +181,9 @@ void tree::tree_only_copy(const tree& t) {
 
 void tree::tree_only_move(tree&& t) {
 	// move this class' members
-	m_root_of = move(t.m_root_of);
-	m_root_size = move(t.m_root_size);
-	m_tree_type = move(t.m_tree_type);
+	m_root_of = std::move(t.m_root_of);
+	m_root_size = std::move(t.m_root_size);
+	m_tree_type = std::move(t.m_tree_type);
 }
 
 void tree::extra_work_per_edge_add(node u, node v) {
