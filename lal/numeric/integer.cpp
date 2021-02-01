@@ -318,7 +318,7 @@ void integer::as_string(string& s) const {
 
 /* OTHERS */
 
-void integer::swap(integer& i) {
+void integer::swap(integer& i) noexcept {
 	const bool this_ini = is_initialized();
 	const bool i_ini = i.is_initialized();
 
@@ -326,16 +326,17 @@ void integer::swap(integer& i) {
 		// do nothing
 		return;
 	}
-	else if (not this_ini and i_ini) {
+	if (not this_ini and i_ini) {
 		*this = std::move(i);
+		return;
 	}
-	else if (this_ini and not i_ini) {
+	if (this_ini and not i_ini) {
 		i = std::move(*this);
+		return;
 	}
-	else {
-		// simply swap the values
-		mpz_swap(m_val, i.m_val);
-	}
+
+	// swap the values
+	mpz_swap(m_val, i.m_val);
 }
 
 // PRIVATE

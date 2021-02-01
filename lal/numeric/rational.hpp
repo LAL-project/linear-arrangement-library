@@ -395,7 +395,18 @@ public:
 	 * rationals is left uninitiliased.
 	 * - If both rationals are initialised, swaps the values they contain.
 	 */
-	void swap(rational& r);
+	void swap(rational& r) noexcept;
+
+#ifndef SWIG
+	/**
+	 * @brief Swaps two rationals.
+	 * @param r1 Input rational.
+	 * @param r2 Input rational.
+	 */
+	friend void swap(rational& r1, rational& r2) noexcept {
+		r1.swap(r2);
+	}
+#endif
 
 private:
 	/// Initialises this rational with the value in @e mpq.

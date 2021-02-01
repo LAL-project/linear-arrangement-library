@@ -299,7 +299,18 @@ public:
 	 * integers is left uninitiliased.
 	 * - If both integers are initialised, swaps the values they contain.
 	 */
-	void swap(integer& i);
+	void swap(integer& i) noexcept;
+
+#ifndef SWIG
+	/**
+	 * @brief Swaps two integers.
+	 * @param i Input integer.
+	 * @param j Input integer.
+	 */
+	friend void swap(integer& i, integer& j) noexcept {
+		i.swap(j);
+	}
+#endif
 
 private:
 	/// Initialises this integer with the value in @e mpz.

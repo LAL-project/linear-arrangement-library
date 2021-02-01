@@ -402,7 +402,7 @@ void rational::as_string(string& s) const {
 	free(buf);
 }
 
-void rational::swap(rational& r) {
+void rational::swap(rational& r) noexcept {
 	const bool this_ini = is_initialized();
 	const bool i_ini = r.is_initialized();
 
@@ -410,16 +410,15 @@ void rational::swap(rational& r) {
 		// do nothing
 		return;
 	}
-	else if (not this_ini and i_ini) {
+	if (not this_ini and i_ini) {
 		*this = std::move(r);
+		return;
 	}
-	else if (this_ini and not i_ini) {
+	if (this_ini and not i_ini) {
 		r = std::move(*this);
+		return;
 	}
-	else {
-		// simply swap the values
-		mpq_swap(m_val, r.m_val);
-	}
+	mpq_swap(m_val, r.m_val);
 }
 
 // PRIVATE
