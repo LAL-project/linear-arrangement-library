@@ -202,7 +202,7 @@ target_sources(
 		linarr/C.cpp
 		linarr/C_approx.cpp
 		linarr/D.cpp
-		linarr/dependency_flux.cpp
+		linarr/flux.cpp
 		linarr/flux.cpp
 		linarr/Dmin.cpp
 		linarr/headedness.cpp
