@@ -240,6 +240,9 @@ __compute_flux(const free_tree& t, const linear_arrangement& pi) {
 	// the graph (of n vertices) used to calculate the weight
 	undirected_graph ug(n);
 
+	// the reusable memory for the sorting algorithm
+	internal::memory_counting_sort<edge> mem(n, n);
+
 	// initialise 'result' with 'n-1' positions
 	vector<dependency_flux> flux(n - 1);
 
@@ -271,11 +274,16 @@ __compute_flux(const free_tree& t, const linear_arrangement& pi) {
 		// can be erased more efficiently in the next iteration
 		internal::counting_sort<vector<edge>::iterator, edge, true>
 		(
-		cur_deps.begin(), cur_deps.end(),
-		n-1, // largest ending position
-		cur_deps.size(),
-		[&](const edge& e) -> size_t { return max_pos(e.first, e.second); }
+			// iterators to the container to be sorted
+			cur_deps.begin(), cur_deps.end(),
+			// largest key possible + 1
+			n,
+			// key
+			[&](const edge& e) -> size_t { return max_pos(e.first, e.second); },
+			// reusable memory
+			mem
 		);
+		mem.reset_count();
 
 #if defined DEBUG
 		if (0 < cur_pos and cur_pos < n - 2) {
