@@ -251,7 +251,9 @@ target_sources(
 		# internal namespace -- not to be installed
 		# -- headers
 		internal/avl.hpp
+		internal/data_array.hpp
 		internal/macros.hpp
+		internal/sorted_vector.hpp
 		internal/gmp/utils.hpp
 		internal/sorting/bit_sort.hpp
 		internal/sorting/counting_sort.hpp
