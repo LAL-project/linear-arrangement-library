@@ -41,6 +41,20 @@
 
 #pragma once
 
+// C++ includes
+#include <ostream>
+
 // lal includes
-#include <lal/numeric/integer_output.hpp>
-#include <lal/numeric/rational_output.hpp>
+#include <lal/numeric/integer.hpp>
+
+namespace lal {
+namespace numeric {
+
+/// Standard output operator for the @ref integer class.
+inline std::ostream& operator<< (std::ostream& os, const integer& i) {
+	os << i.to_string();
+	return os;
+}
+
+} // -- namespace graphs
+} // -- namespace lal

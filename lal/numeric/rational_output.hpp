@@ -41,6 +41,20 @@
 
 #pragma once
 
+// C++ includes
+#include <ostream>
+
 // lal includes
-#include <lal/numeric/integer_output.hpp>
-#include <lal/numeric/rational_output.hpp>
+#include <lal/numeric/rational.hpp>
+
+namespace lal {
+namespace numeric {
+
+/// Standard output operator for the @ref rational class.
+inline std::ostream& operator<< (std::ostream& os, const rational& r) {
+	os << r.to_string();
+	return os;
+}
+
+} // -- namespace graphs
+} // -- namespace lal

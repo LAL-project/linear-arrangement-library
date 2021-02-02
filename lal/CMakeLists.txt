@@ -211,8 +211,10 @@ target_sources(
 		# numeric namespace
 		# -- headers
 		numeric/integer.hpp
+		numeric/integer_rational.hpp
 		numeric/output.hpp
 		numeric/rational.hpp
+		numeric/rational_output.hpp
 		# -- sources
 		numeric/integer.cpp
 		numeric/rational.cpp
@@ -372,8 +374,10 @@ set(LIBLAL_LINARR_HEADER
 )
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp
+	numeric/integer_rational.hpp
 	numeric/output.hpp
 	numeric/rational.hpp
+	numeric/rational_output.hpp
 )
 set(LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp

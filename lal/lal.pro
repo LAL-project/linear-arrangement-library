@@ -125,8 +125,10 @@ HEADERS += \
 	linarr/syntactic_dependency_structure_type.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
+	numeric/integer_output.hpp \
 	numeric/output.hpp \
 	numeric/rational.hpp \
+	numeric/rational_output.hpp \
 	properties.hpp \
 	properties/degrees.hpp \
 	properties/Q.hpp \
