@@ -74,43 +74,31 @@ class integer {
 public:
 	friend class rational;
 public:
-	/// Default constructor.
-	integer() = default;
+	/// Empty constructor.
+	integer() noexcept;
 	/// Constructor with unsigned integer value.
-	integer(int64_t i);
+	integer(int64_t i) noexcept;
 	/// Constructor with string.
-	integer(const std::string& i);
+	integer(const std::string& i) noexcept;
 #ifndef SWIG
 	/// Move constructor.
-	integer(integer&& i);
+	integer(integer&& i) noexcept;
 #endif
 	/// Copy constructor.
-	integer(const integer& i);
+	integer(const integer& i) noexcept;
 	/// Destructor.
-	~integer();
-
-	/* ALLOC AND DEALLOC */
-
-	/// Initialises internal memory.
-	void init();
-	/// Initialises this integer with the value @e i.
-	void init_si(int64_t i);
-	/// Initialises this integer with the value @e i.
-	void init_ui(uint64_t i);
-	/// Initialises this integer with the value in string @e s.
-	void init_str(const std::string& s);
-
-	/// Clear the memory of this integer.
-	void clear();
+	~integer() noexcept;
 
 	/* SET VALUE */
 
 	/// Overwrites the value of this integer with @e i.
-	void set_si(int64_t i);
+	void set_si(int64_t i) noexcept;
 	/// Overwrites the value of this integer with @e i.
-	void set_ui(uint64_t i);
+	void set_ui(uint64_t i) noexcept;
+	/// Overwrites the value of this integer with @e i.
+	void set_integer(const integer& i) noexcept;
 	/// Overwrites the value of this integer with the contents in @e s.
-	void set_str(const std::string& s);
+	void set_str(const std::string& s) noexcept;
 
 	/* OPERATORS */
 
@@ -320,13 +308,13 @@ private:
 	/// Structure from GMP storing the integer's value.
 	mpz_t m_val;
 	/// Is this integer initialised?
-	bool m_initialized = false;
+	bool m_initialized = true;
 };
 
 /// Make an integer from a 64-bit unsigned integer value.
 inline integer integer_from_ui(uint64_t n) {
 	integer i;
-	i.init_ui(n);
+	i.set_ui(n);
 	return i;
 }
 

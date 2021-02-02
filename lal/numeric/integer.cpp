@@ -63,128 +63,71 @@ namespace numeric {
 
 // PUBLIC
 
-//integer::integer() { }
-
-integer::integer(int64_t i) {
-	init_si(i);
-}
-
-integer::integer(const std::string& s) {
-	init_str(s);
-}
-
-integer::integer(integer&& i) {
-	if (not i.is_initialized()) {
-		clear();
-		return;
-	}
-
-	if (is_initialized()) {
-		// if this integer was initialised (and quite likely,
-		// given a value) the mpz_t must be freed
-		mpz_clear(m_val);
-	}
-	// move 'i's contents
-	internal::move_mpz_to_mpz(i.m_val, m_val);
-	m_initialized = true;
-	i.m_initialized = false; // better be safe than sorry
-}
-
-integer::integer(const integer& i) {
-	*this = i;
-}
-
-integer::~integer() {
-	clear();
-}
-
-/* ALLOC AND DEALLOC */
-
-void integer::init() {
-	if (is_initialized()) {
-		return;
-	}
+integer::integer() noexcept {
 	mpz_init(m_val);
-	m_initialized = true;
 }
 
-void integer::init_si(int64_t i) {
-	init();
-	set_si(i);
+integer::integer(int64_t i) noexcept {
+	mpz_init_set_si(m_val, i);
 }
 
-void integer::init_ui(uint64_t i) {
-	init();
-	set_ui(i);
+integer::integer(const std::string& s) noexcept {
+	mpz_init_set_str(m_val, s.c_str(), 10);
 }
 
-void integer::init_str(const std::string& s) {
-	init();
-	set_str(s);
+integer::integer(integer&& i) noexcept {
+	// move i's contents
+	internal::move_mpz_to_mpz(i.m_val, m_val);
+	i.m_initialized = false;
 }
 
-void integer::clear() {
-	if (not is_initialized()) {
-		return;
-	}
+integer::integer(const integer& i) noexcept {
+	mpz_init_set(m_val, i.m_val);
+}
+
+integer::~integer() noexcept {
 	mpz_clear(m_val);
-	m_initialized = false;
 }
 
 /* SET VALUE */
 
-void integer::set_si(int64_t i) {
-#if defined DEBUG
-	assert(is_initialized());
-#endif
+void integer::set_si(int64_t i) noexcept {
 	mpz_set_si(m_val, i);
+	m_initialized = true;
 }
-void integer::set_ui(uint64_t i) {
-#if defined DEBUG
-	assert(is_initialized());
-#endif
+void integer::set_ui(uint64_t i) noexcept {
 	mpz_set_ui(m_val, i);
+	m_initialized = true;
 }
-void integer::set_str(const std::string& s)	{
-#if defined DEBUG
-	assert(is_initialized());
-#endif
+void integer::set_integer(const integer &i) noexcept {
+	mpz_set(m_val, i.m_val);
+	m_initialized = true;
+}
+void integer::set_str(const std::string& s) noexcept {
 	mpz_set_str(m_val, s.c_str(), 10);
+	m_initialized = true;
 }
 
 /* OPERATORS */
 
 integer& integer::operator= (int64_t i) {
-	init_si(i);
+	set_si(i);
 	return *this;
 }
 
 integer& integer::operator= (const integer& i) {
-	if (not i.is_initialized()) {
-		clear();
-		return *this;
-	}
-
-	init();
-	mpz_set(m_val, i.m_val);
+	set_integer(i);
 	return *this;
 }
 
 integer& integer::operator= (integer&& i) {
-	if (not i.is_initialized()) {
-		clear();
-		return *this;
-	}
+	mpz_clear(m_val);
 
-	if (is_initialized()) {
-		// if this integer was initialised (and quite likely,
-		// given a value) the mpz_t must be freed
-		mpz_clear(m_val);
-	}
-	// move 'i's contents
+	// move i's contents
 	internal::move_mpz_to_mpz(i.m_val, m_val);
 	m_initialized = true;
-	i.m_initialized = false; // better be safe than sorry
+
+	i.m_initialized = false;
 	return *this;
 }
 
@@ -260,13 +203,12 @@ integer& integer::operator^= (const integer& i) {
 uint64_t integer::operator% (uint64_t i) const {
 	mpz_t r;
 	mpz_init(r);
-	uint64_t m = mpz_mod_ui(r, m_val, i);
+	const uint64_t m = mpz_mod_ui(r, m_val, i);
 	mpz_clear(r);
 	return m;
 }
 integer integer::operator% (const integer& i) const {
 	integer r;
-	r.init();
 	mpz_mod(r.m_val, m_val, i.m_val);
 	return r;
 }
@@ -278,7 +220,7 @@ int32_t integer::get_sign() const {
 }
 
 size_t integer::bytes() const {
-	return (is_initialized() ? internal::mpz_bytes(m_val) : 0);
+	return (internal::mpz_bytes(m_val));
 }
 
 const mpz_t& integer::get_raw_value() const {
@@ -306,11 +248,6 @@ string integer::to_string() const {
 }
 
 void integer::as_string(string& s) const {
-	if (!is_initialized()) {
-		s = "integer uninitialized";
-		return;
-	}
-
 	char *buf = nullptr;
 	buf = mpz_get_str(buf, 10, m_val);
 	s = std::string(buf);
@@ -320,22 +257,6 @@ void integer::as_string(string& s) const {
 /* OTHERS */
 
 void integer::swap(integer& i) noexcept {
-	const bool this_ini = is_initialized();
-	const bool i_ini = i.is_initialized();
-
-	if (not this_ini and not i_ini) {
-		// do nothing
-		return;
-	}
-	if (not this_ini and i_ini) {
-		*this = std::move(i);
-		return;
-	}
-	if (this_ini and not i_ini) {
-		i = std::move(*this);
-		return;
-	}
-
 	// swap the values
 	mpz_swap(m_val, i.m_val);
 }
@@ -343,7 +264,6 @@ void integer::swap(integer& i) noexcept {
 // PRIVATE
 
 void integer::init_mpz(const mpz_t& mpz) {
-	init();
 	mpz_set(m_val, mpz);
 }
 

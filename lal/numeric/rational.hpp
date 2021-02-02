@@ -76,53 +76,37 @@ namespace numeric {
  */
 class rational {
 public:
-	/// Default constructor.
-	rational() = default;
+	/// Empty constructor.
+	rational() noexcept;
 	/// Constructor with numerator and denominator.
-	rational(int64_t n, uint64_t d = 1);
+	rational(int64_t n, uint64_t d = 1) noexcept;
 	/// Constructor with integer.
-	rational(const integer& n, const integer& d = 1);
+	rational(const integer& n, const integer& d = 1) noexcept;
 	/// Constructor with string.
-	rational(const std::string& s);
+	rational(const std::string& s) noexcept;
+	/// Copy constructor.
+	rational(const rational& r) noexcept;
 #ifndef SWIG
 	/// Move constructor with one integer.
-	rational(integer&& n);
+	rational(integer&& n) noexcept;
 	/// Move constructor with two integers.
-	rational(integer&& n, integer&& d);
+	rational(integer&& n, integer&& d) noexcept;
 	/// Move constructor.
-	rational(rational&& r);
+	rational(rational&& r) noexcept;
 #endif
-	/// Copy constructor.
-	rational(const rational& r);
 	/// Destructor.
-	~rational();
-
-	/* ALLOC AND DEALLOC */
-
-	/// Initialises internal memory.
-	void init();
-	/// Initialises this rational as \f$n/d\f$.
-	void init_si(int64_t n, uint64_t d = 1);
-	/// Initialises this rational as \f$n/d\f$.
-	void init_ui(uint64_t n, uint64_t d = 1);
-	/// Initialises this rational with the contents in string @e s, in base 10.
-	void init_str(const std::string& s);
-	/// Initialises this rational as \f$n/d\f$.
-	void init_integer(const integer& n, const integer& d = 1);
-
-	/// Clear the memory of this rational.
-	void clear();
+	~rational() noexcept;
 
 	/* SET VALUE */
 
 	/// Overwrites the value of this rational with \f$n/d\f$.
-	void set_si(int64_t n, uint64_t d = 1);
+	void set_si(int64_t n, uint64_t d = 1) noexcept;
 	/// Overwrites the value of this rational with \f$n/d\f$.
-	void set_ui(uint64_t n, uint64_t d = 1);
+	void set_ui(uint64_t n, uint64_t d = 1) noexcept;
 	/// Overwrites the value in the string @e s.
-	void set_str(const std::string& s);
+	void set_str(const std::string& s) noexcept;
 	/// Overwrites the value of this rational with the value \f$n/d\f$.
-	void set_integer(const integer& n, const integer& d = 1);
+	void set_integer(const integer& n, const integer& d = 1) noexcept;
 
 	/**
 	 * @brief Changes numerator and denominator.
@@ -409,20 +393,18 @@ public:
 #endif
 
 private:
-	/// Initialises this rational with the value in @e mpq.
-	void init_mpq(const mpq_t& mpq);
 
 private:
 	/// Structure from GMP storing the rational's value.
 	mpq_t m_val;
 	/// Is this rational initialised?
-	bool m_initialized = false;
+	bool m_initialized = true;
 };
 
 /// Make a rational value from two 64-bit unsigned integers
 inline rational rational_from_ui(uint64_t n, uint64_t d = 1) {
 	rational R;
-	R.init_ui(n, d);
+	R.set_ui(n, d);
 	return R;
 }
 

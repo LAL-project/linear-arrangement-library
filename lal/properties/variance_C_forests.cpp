@@ -176,14 +176,14 @@ rational variance_C_forest_rational(const undirected_graph& g) {
 
 	// V[C]
 	rational V(0);
-	J.init_ui((m + 2)*Qs);			V += rational(2,45)*J;
-	J.init_ui((2*m + 7)*n_paths_4);	V -= rational(1,180)*J;
-	J.init_ui(n_paths_5);			V -= rational(1,180)*J;
-	J.init_ui(KG);					V += rational(1,90)*J;
-	J.init_ui(Lambda_1);			V -= rational(1,60)*J;
-	J.init_ui(Lambda_2);			V += rational(1,180)*J;
-	J.init_ui(Phi_2);				V += rational(1,180)*J;
-	J.init_ui(Phi_1);				V -= rational(1,90)*J;
+	J.set_ui((m + 2)*Qs);			V += rational(2,45)*J;
+	J.set_ui((2*m + 7)*n_paths_4);	V -= rational(1,180)*J;
+	J.set_ui(n_paths_5);			V -= rational(1,180)*J;
+	J.set_ui(KG);					V += rational(1,90)*J;
+	J.set_ui(Lambda_1);				V -= rational(1,60)*J;
+	J.set_ui(Lambda_2);				V += rational(1,180)*J;
+	J.set_ui(Phi_2);				V += rational(1,180)*J;
+	J.set_ui(Phi_1);				V -= rational(1,90)*J;
 	return V;
 }
 
