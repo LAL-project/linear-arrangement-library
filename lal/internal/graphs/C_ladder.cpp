@@ -50,6 +50,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
 
@@ -128,25 +129,19 @@ inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
 		return 0;
 	}
 
-	/* allocate memory */
+	// boolean neighbourhood of nodes
+	data_array<char> bool_neighs(n, 0);
+
 	const uint32_t n_elems = n + n;
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems]{0};
+	data_array<uint32_t> all_memory(n_elems, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
-	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n]{0};
 
-	/* compute number of crossings */
-	const uint32_t C = __compute_C_ladder(g, pi, bool_neighs, T,L1);
-
-	/* free memory */
-	delete[] all_memory;
-	delete[] bool_neighs;
-	return C;
+	return __compute_C_ladder(g, pi, bool_neighs.data, T,L1);
 }
 
 // ------------------
@@ -196,17 +191,17 @@ vector<uint32_t> n_C_ladder_list
 		return cs;
 	}
 
-	/* allocate memory */
+	// boolean neighbourhood of nodes
+	data_array<char> bool_neighs(n, 0);
+
 	const uint32_t n_elems = n + n;
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems]{0};
+	data_array<uint32_t> all_memory(n_elems, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	uint32_t * __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
-	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n]{0};
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -216,15 +211,12 @@ vector<uint32_t> n_C_ladder_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs, T,L1);
+		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs.data, T,L1);
 
-		memset(bool_neighs, 0, n);
+		bool_neighs.fill(0);
 		L1[n - 1] = 0;
 	}
 
-	/* free memory */
-	delete[] all_memory;
-	delete[] bool_neighs;
 	return cs;
 }
 

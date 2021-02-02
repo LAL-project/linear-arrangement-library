@@ -44,6 +44,7 @@
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace internal {
@@ -60,7 +61,8 @@ namespace __lal {
 inline bool __find_cycle
 (
 	const graphs::directed_graph& g, node u,
-	char *visited, char *in_stack
+	char * __restrict__ visited,
+	char * __restrict__ in_stack
 )
 {
 	if (visited[u]) { return false; }
@@ -79,8 +81,6 @@ inline bool __find_cycle
 	in_stack[u] = 0;
 	return false;
 }
-
-} // -- namespace __lal
 
 /*
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
@@ -107,6 +107,8 @@ inline bool has_directed_cycles(
 	return has_cycle;
 }
 
+} // -- namespace __lal
+
 /*
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
  * @param g Input graph.
@@ -114,9 +116,8 @@ inline bool has_directed_cycles(
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.n_nodes();
-	char *all_mem = new char[2*n];
-	const bool has_cycle = has_directed_cycles(g, &all_mem[0], &all_mem[n]);
-	delete[] all_mem;
+	data_array<char> all_mem(2*n);
+	const bool has_cycle = __lal::has_directed_cycles(g, &all_mem[0], &all_mem[n]);
 	return has_cycle;
 }
 
@@ -137,7 +138,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
 	// Note that read operations "if (parent[s] != t)" always come after
 	// the first write "parent[t] = s".
-	node *parent = new node[n];
+	data_array<node> parent(n);
 	// a cycle was found
 	bool cycle_found = false;
 
@@ -180,7 +181,6 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 			bfs.start_at(u);
 		}
 	}
-	delete[] parent;
 	return cycle_found;
 }
 

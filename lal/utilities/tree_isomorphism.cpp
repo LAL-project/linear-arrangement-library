@@ -51,6 +51,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/trees/tree_centre.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))
@@ -311,10 +312,9 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	if (discard == 1) { return false; }
 
 	const uint32_t n = t1.n_nodes();
-	string *names = new string[n];
-	const string name_r1 = assign_name(t1, t1.get_root(), names, 0);
-	const string name_r2 = assign_name(t2, t2.get_root(), names, 0);
-	delete[] names;
+	internal::data_array<string> names(n);
+	const string name_r1 = assign_name(t1, t1.get_root(), names.data, 0);
+	const string name_r2 = assign_name(t2, t2.get_root(), names.data, 0);
 	return name_r1 == name_r2;
 }
 #endif

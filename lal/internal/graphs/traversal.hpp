@@ -49,6 +49,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace internal {
@@ -81,16 +82,11 @@ class BFS {
 
 	public:
 		// Constructor
-		BFS(const G& g) : m_G(g) {
-			//m_vis = std::vector<bool>(g.n_nodes());
-			m_vis = new char[m_G.n_nodes()]{0};
-
+		BFS(const G& g) : m_G(g), m_vis(g.n_nodes()) {
 			reset();
 		}
 		// Destructor
-		virtual ~BFS() {
-			if (m_vis != nullptr) { delete[] m_vis; }
-		}
+		~BFS() { }
 
 		// Set the graph_traversal to its default state.
 		void reset() {
@@ -157,14 +153,12 @@ class BFS {
 		void set_process_visited_neighbours(bool v) { m_proc_vis_neighs = v; }
 
 		// Sets all nodes to not visited.
-		void reset_visited() {
-			std::fill(&m_vis[0], &m_vis[m_G.n_nodes()], 0);
-		}
+		void reset_visited() { m_vis.fill(0); }
 
 		void clear_structure() { std::queue<node> q; m_X.swap(q); }
 
 		// Set node @e u as visited.
-		void set_visited(node u, char vis = 1) { m_vis[u] = vis; }
+		void set_visited(node u, char vis) { m_vis[u] = vis; }
 
 		/* GETTERS */
 
@@ -182,7 +176,7 @@ class BFS {
 		const G& get_graph() const { return m_G; }
 
 		// Return visited nodes information
-		const char *get_visited() const { return m_vis; }
+		const data_array<char>& get_visited() const { return m_vis; }
 
 	protected:
 		// ltr: is the 'natural' orientation of the vertices "s -> t"?
@@ -343,7 +337,7 @@ class BFS {
 		// The structure of the traversal (either a queue or a stack).
 		std::queue<node> m_X;
 		// The set of visited nodes.
-		char *m_vis = nullptr;
+		data_array<char> m_vis;
 		// Should we process already visitied neighbours?
 		bool m_proc_vis_neighs = false;
 		// Use back edges in directed graphs.

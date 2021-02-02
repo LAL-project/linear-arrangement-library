@@ -49,6 +49,7 @@ using namespace std;
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define LEFT_ANCHOR -1
 #define RIGHT_ANCHOR 1
@@ -58,7 +59,7 @@ using namespace std;
 #define to_uint32(x) static_cast<uint32_t>(x)
 
 typedef pair<uint32_t,lal::node> size_node;
-typedef vector<size_node> ordering;
+typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
 using namespace graphs;
@@ -204,8 +205,8 @@ void calculate_mla_YS(
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	uint32_t *s = new uint32_t[t.n_nodes()];
-	internal::get_size_subtrees(t, v_star - 1, s);
+	data_array<uint32_t> s(t.n_nodes());
+	internal::get_size_subtrees(t, v_star - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
@@ -219,12 +220,11 @@ void calculate_mla_YS(
 		M = std::max(M, s_ui);
 		ord[i].second = ui + 1;
 	}
-	internal::counting_sort<ordering::iterator, size_node, false>
+	internal::counting_sort<size_node, size_node*, false>
 	(
 		ord.begin(), ord.end(), M, ord.size(),
 		[](const size_node& p) { return p.first; }
 	);
-	delete[] s;
 	}
 
 	const node v_0 = ord[0].second;		// Root of biggest subtree

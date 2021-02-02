@@ -51,6 +51,7 @@ using namespace std;
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/internal/data_array.hpp>
 
 typedef uint64_t bigint;
 
@@ -126,7 +127,7 @@ void compute_data_gen_graphs
 	// local variables (some store precomputed data)
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	bigint *xi = new bigint[n];
+	internal::data_array<bigint> xi(n);
 	// sum of degrees squared
 	bigint nk2 = 0;
 	// sum of degrees cubed
@@ -314,9 +315,6 @@ void compute_data_gen_graphs
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
-
-	// deallocate memory
-	delete[] xi;
 }
 
 rational variance_C_rational(const undirected_graph& g, bool reuse) {

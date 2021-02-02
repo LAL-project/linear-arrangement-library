@@ -53,6 +53,7 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 #include <lal/internal/sorted_vector.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define max_pos(u,v) (std::max(pi[u], pi[v]))
 #define to_uint32(x) static_cast<uint32_t>(x)
@@ -65,9 +66,8 @@ namespace linarr {
 
 namespace flux {
 
-inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at(
-	const free_tree& t, const linear_arrangement& pi
-)
+inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
+(const free_tree& t, const linear_arrangement& pi)
 {
 	vector<pair<edge,uint32_t>> edge_ending_at(t.n_nodes(), make_pair(edge(), 0));
 
@@ -82,11 +82,11 @@ inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at(
 	return edge_ending_at;
 }
 
-inline
-pair<uint32_t, uint32_t>
-calculate_dependencies_span(
+inline pair<uint32_t, uint32_t> calculate_dependencies_span
+(
 	const free_tree& t,
-	const linear_arrangement& pi, const node * __restrict__ inv_pi,
+	const linear_arrangement& pi,
+	const internal::data_array<node>& inv_pi,
 	const vector<pair<edge,uint32_t>>& edge_with_max_pos_at,
 	position cur_pos,
 	vector<dependency_flux>& flux,
@@ -140,10 +140,8 @@ calculate_dependencies_span(
 	return make_pair(size_after_del, size_after_add);
 }
 
-inline uint32_t calculate_weight(
-	const vector<edge>& dependencies,
-	undirected_graph& ug
-)
+inline uint32_t calculate_weight
+(const vector<edge>& dependencies, undirected_graph& ug)
 {
 	if (dependencies.size() <= 1) {
 		return to_uint32(dependencies.size());
@@ -184,7 +182,8 @@ inline uint32_t calculate_weight(
 	return weight;
 }
 
-inline void calculate_bouquet_type(
+inline void calculate_bouquet_type
+(
 	uint32_t n,
 	uint32_t size_after_del, uint32_t size_after_add,
 	position cur_pos,
@@ -223,13 +222,13 @@ inline void calculate_bouquet_type(
 
 } // -- namespace flux
 
-inline vector<dependency_flux>
-__compute_flux(const free_tree& t, const linear_arrangement& pi) {
+inline vector<dependency_flux> __compute_flux
+(const free_tree& t, const linear_arrangement& pi) {
 	const uint32_t n = t.n_nodes();
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ inv_pi = new node[n]{0};
+	internal::data_array<node> inv_pi(n, 0);
 	for (node u = 0; u < n; ++u) {
 		inv_pi[ pi[u] ] = u;
 	}
@@ -243,7 +242,7 @@ __compute_flux(const free_tree& t, const linear_arrangement& pi) {
 	// the reusable memory for the sorting algorithm
 	internal::memory_counting_sort<edge> mem(n, n);
 
-	// initialise 'result' with 'n-1' positions
+	// declare the result to be returned
 	vector<dependency_flux> flux(n - 1);
 
 	for (position cur_pos = 0; cur_pos < n - 1; ++cur_pos) {
@@ -272,7 +271,7 @@ __compute_flux(const free_tree& t, const linear_arrangement& pi) {
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		internal::counting_sort<vector<edge>::iterator, edge, true>
+		internal::counting_sort<edge, vector<edge>::iterator, true>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),
@@ -298,12 +297,12 @@ __compute_flux(const free_tree& t, const linear_arrangement& pi) {
 #endif
 	}
 
-	delete[] inv_pi;
 	return flux;
 }
 
 vector<dependency_flux>
-compute_flux(const free_tree& t, const linear_arrangement& pi) {
+compute_flux(const free_tree& t, const linear_arrangement& pi)
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

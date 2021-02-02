@@ -51,6 +51,7 @@
 using namespace std;
 
 // lal includes
+#include <lal/internal/data_array.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
@@ -87,19 +88,23 @@ directed_graph& directed_graph::operator= (directed_graph&& d) noexcept {
 /* MODIFIERS */
 
 void directed_graph::normalise() {
-	char *mem = new char[n_nodes()]{0};
+	internal::data_array<char> mem(n_nodes(), 0);
+
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
-			internal::bit_sort_mem(out_nu.begin(), out_nu.end(), out_nu.size(), mem);
+			internal::bit_sort_mem(
+				out_nu.begin(), out_nu.end(), out_nu.size(), mem.data
+			);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
-			internal::bit_sort_mem(in_nu.begin(), in_nu.end(), in_nu.size(), mem);
+			internal::bit_sort_mem(
+				in_nu.begin(), in_nu.end(), in_nu.size(), mem.data
+			);
 		}
 	}
 	m_normalised = true;
-	delete[] mem;
 }
 
 bool directed_graph::check_normalised() {

@@ -75,8 +75,8 @@ struct memory_counting_sort {
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
- * @param It Iterator type
  * @param T Iterated type
+ * @param It Iterator type
  * @param increasing: when true, the result is sorted increasingly. When false,
  * the result is sorted decreasingly.
  *
@@ -90,8 +90,7 @@ struct memory_counting_sort {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type,
+	typename T, typename It,
 	bool increasing
 >
 void counting_sort(
@@ -148,8 +147,8 @@ void counting_sort(
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
- * @param It Iterator type
  * @param T Iterated type
+ * @param It Iterator type
  * @param increasing: when true, the result is sorted increasingly. When false,
  * the result is sorted decreasingly.
  *
@@ -166,8 +165,7 @@ void counting_sort(
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type,
+	typename T, typename It,
 	bool increasing
 >
 void counting_sort(
@@ -182,7 +180,7 @@ void counting_sort(
 
 	memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<It, T, increasing>
+	counting_sort<T, It, increasing>
 	(begin, end, largest_key+1, key, mem);
 
 	// memory is freed automatically (see destructor)

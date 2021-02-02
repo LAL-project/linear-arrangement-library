@@ -51,6 +51,7 @@
 #include <lal/graphs/tree_type.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace internal {
@@ -150,7 +151,7 @@ void classify_tree(
 	uint32_t n_deg_ge_3 = 0; // of degree >= 3
 
 	// degree of the internal vertices
-	int32_t *deg_internal = new int32_t[N]{0};
+	data_array<int32_t> deg_internal(N, 0);
 
 	// fill in data
 	for (lal::node u = 0; u < N; ++u) {
@@ -234,8 +235,6 @@ void classify_tree(
 	if (is_some) {
 		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
 	}
-
-	delete[] deg_internal;
 }
 
 } // -- namespace internal

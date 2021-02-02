@@ -51,6 +51,7 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/avl.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
+#include <lal/internal/data_array.hpp>
 
 typedef pair<uint32_t,lal::edge> indexed_edge;
 
@@ -76,7 +77,7 @@ inline void fill_adjP_adjN(
 	vector<edge> edges = g.edges();
 
 	// sort edges of the graph by increasing edge length
-	internal::counting_sort<vector<edge>::iterator, edge, true>
+	internal::counting_sort<edge, vector<edge>::iterator, true>
 	(
 	edges.begin(), edges.end(),
 	n-1, // length of the longest edge
@@ -178,24 +179,15 @@ inline uint32_t __call_C_stack_based
 	const uint32_t n = g.n_nodes();
 	if (n < 4) { return 0; }
 
-	/* allocate memory */
-
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n]{0};
+	data_array<node> T(n, 0);
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	size_t *size_adjN_u = new size_t[n]{0};
+	data_array<size_t> size_adjN_u(n, 0);
 
-	/* compute number of crossings */
-
-	const uint32_t C = __compute_C_stack_based(g, pi, T, size_adjN_u);
-
-	/* free memory */
-	delete[] T;
-	delete[] size_adjN_u;
-	return C;
+	return __compute_C_stack_based(g, pi, T.data, size_adjN_u.data);
 }
 
 uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
@@ -213,15 +205,13 @@ vector<uint32_t> n_C_stack_based_list
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	/* allocate memory */
-
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n]{0};
+	data_array<node> T(n,0);
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	size_t *size_adjN_u = new size_t[n]{0};
+	data_array<size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -231,12 +221,9 @@ vector<uint32_t> n_C_stack_based_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based(g, pis[i], T, size_adjN_u);
+		cs[i] = __compute_C_stack_based(g, pis[i], T.data, size_adjN_u.data);
 	}
 
-	/* free memory */
-	delete[] T;
-	delete[] size_adjN_u;
 	return cs;
 }
 

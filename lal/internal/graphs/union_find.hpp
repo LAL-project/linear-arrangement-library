@@ -102,7 +102,7 @@ void UnionFind_update_roots_add(
 	bfs.set_process_current(
 	[&](const auto&, node w) -> void { root_of[w] = new_root; }
 	);
-	bfs.set_visited(parent); // avoid going backwards
+	bfs.set_visited(parent, 1); // avoid going backwards
 	bfs.start_at(child);
 }
 

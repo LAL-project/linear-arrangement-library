@@ -49,6 +49,7 @@ using namespace std;
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/internal/macros.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -198,26 +199,20 @@ inline uint32_t __compute_C_brute_force_dir(
 // T[p] = u <-> at position p we find node u
 inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& pi) {
 	const uint32_t n = g.n_nodes();
-	if (n < 4) {
-		return 0;
-	}
+	if (n < 4) { return 0; }
 
 	/* allocate memory */
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n];
+	data_array<node> T(n);
 
 	// compute the number of crossings
-	const uint32_t C = (
+	return (
 		g.is_undirected() ?
-			__compute_C_brute_force_undir(g, pi, T) :
-			__compute_C_brute_force_dir(g, pi, T)
+			__compute_C_brute_force_undir(g, pi, T.data) :
+			__compute_C_brute_force_dir(g, pi, T.data)
 	);
-
-	/* free memory */
-	delete[] T;
-	return C;
 }
 
 uint32_t n_C_brute_force(const graph& g, const linear_arrangement& pi) {
@@ -233,15 +228,11 @@ vector<uint32_t> n_C_brute_force_list
 	const uint32_t n = g.n_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
-
-	/* allocate memory */
+	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	node * __restrict__ T = new node[n];
+	data_array<node> T(n);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -253,13 +244,11 @@ vector<uint32_t> n_C_brute_force_list
 		// compute C
 		cs[i] = (
 			g.is_undirected() ?
-				__compute_C_brute_force_undir(g, pis[i], T) :
-				__compute_C_brute_force_dir(g, pis[i], T)
+				__compute_C_brute_force_undir(g, pis[i], T.data) :
+				__compute_C_brute_force_dir(g, pis[i], T.data)
 		);
 	}
 
-	/* free memory */
-	delete[] T;
 	return cs;
 }
 

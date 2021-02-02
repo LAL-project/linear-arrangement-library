@@ -43,6 +43,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -55,7 +56,7 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	const uint32_t n = tree.n_nodes();
 
 	uint32_t sum_distances = 0;
-	uint32_t *distances = new uint32_t[n]{0};
+	internal::data_array<uint32_t> distances(n, 0);
 
 	BFS<rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
@@ -65,8 +66,6 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	}
 	);
 	bfs.start_at(tree.get_root());
-
-	delete[] distances;
 
 	return rational(sum_distances, tree.n_edges());
 }

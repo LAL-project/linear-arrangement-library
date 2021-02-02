@@ -51,6 +51,7 @@ using namespace std;
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define to_uint32(x) static_cast<uint32_t>(x)
@@ -229,9 +230,11 @@ inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
 		return 0;
 	}
 
-	/* allocate memory */
+	// boolean neighbourhood of nodes
+	data_array<char> bool_neighs(n);
+
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
+	data_array<uint32_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -241,15 +244,10 @@ inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
-	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n];
-
 	/* compute number of crossings */
-	const uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs, T,M,K);
+	const uint32_t C = __compute_C_dyn_prog(g, pi, bool_neighs.data, T,M,K);
 
 	/* free memory */
-	delete[] all_memory;
-	delete[] bool_neighs;
 	return C;
 }
 
@@ -304,7 +302,7 @@ vector<uint32_t> n_C_dynamic_programming_list
 
 	/* allocate memory */
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	uint32_t * __restrict__ all_memory = new uint32_t[n_elems];
+	data_array<uint32_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -315,7 +313,7 @@ vector<uint32_t> n_C_dynamic_programming_list
 	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	char * __restrict__ bool_neighs = new char[n];
+	data_array<char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -325,15 +323,14 @@ vector<uint32_t> n_C_dynamic_programming_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_dyn_prog(g, pis[i], bool_neighs, T,M,K);
+		cs[i] =
+		__compute_C_dyn_prog(g, pis[i], bool_neighs.data, T,M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
 	}
 
 	/* free memory */
-	delete[] all_memory;
-	delete[] bool_neighs;
 	return cs;
 }
 

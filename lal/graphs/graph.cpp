@@ -55,6 +55,7 @@ using namespace std;
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 using namespace numeric;
@@ -99,15 +100,17 @@ void graph::clear() {
 }
 
 void graph::normalise() {
-	char *mem = new char[n_nodes()]{0};
+	internal::data_array<char> mem(n_nodes(), 0);
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
+
 		if (not is_sorted(nu.begin(), nu.end())) {
-			internal::bit_sort_mem(nu.begin(), nu.end(), nu.size(), mem);
+			internal::bit_sort_mem(
+				nu.begin(), nu.end(), nu.size(), mem.data
+			);
 		}
 	}
 	m_normalised = true;
-	delete[] mem;
 }
 
 bool graph::check_normalised() {

@@ -46,6 +46,7 @@
 #include <iterator>
 
 // lal includes
+#include <lal/internal/data_array.hpp>
 #include <lal/internal/sorting/insertion_sort.hpp>
 
 namespace lal {
@@ -163,12 +164,10 @@ void bit_sort(It begin, It end, const size_t size)
 	const auto M = *M_it;
 
 	// bit array
-	char *seen = new char[M - m + 1]{0};
+	data_array<char> seen(M - m + 1, 0);
 
 	// sort
-	__lal::__bit_sort(begin,end, m, seen);
-
-	delete[] seen;
+	__lal::__bit_sort(begin,end, m, seen.data);
 }
 
 } // -- namspace utils

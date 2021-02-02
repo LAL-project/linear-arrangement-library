@@ -58,21 +58,24 @@ namespace internal {
 template<typename T>
 struct data_array {
 	T *data = nullptr;
-	const std::size_t size;
+	const std::size_t _size;
 
-	data_array(const std::size_t n) noexcept : size(n) {
+	data_array(const std::size_t n) noexcept : _size(n) {
 		data = new T[n];
 	}
-	data_array(const std::size_t n, const T& v) noexcept : size(n) {
+	data_array(const std::size_t n, const T& v) noexcept : _size(n) {
 		data = new T[n];
 		fill(v);
 	}
 	~data_array() { delete[] data; }
 
 	[[nodiscard]]
+	inline std::size_t size() const noexcept { return _size; }
+
+	[[nodiscard]]
 	inline T& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
-		assert(i < size);
+		assert(i < size());
 #endif
 		return data[i];
 	}
@@ -80,14 +83,19 @@ struct data_array {
 	[[nodiscard]]
 	inline const T& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
-		assert(i < size);
+		assert(i < size());
 #endif
 		return data[i];
 	}
 
 	inline void fill(const T& v) noexcept {
-		std::fill(&data[0], &data[size], v);
+		std::fill(&data[0], &data[_size], v);
 	}
+
+	[[nodiscard]] inline T *begin() noexcept { return &data[0]; }
+	[[nodiscard]] inline const T *begin() const noexcept { return &data[0]; }
+	[[nodiscard]] inline T *end() noexcept { return &data[_size]; }
+	[[nodiscard]] inline const T *end() const noexcept { return &data[_size]; }
 };
 
 } // -- namespace internal

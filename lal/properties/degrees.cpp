@@ -62,10 +62,7 @@ namespace properties {
 // D: function that returns the *-degree
 template<class G, class Callable>
 inline rational __mmt_x_degree_rational
-(
-	const G& g, uint32_t p,
-	const Callable& D
-)
+(const G& g, uint32_t p, const Callable& D)
 {
 	const integer M = integer_from_ui(g.n_nodes());
 

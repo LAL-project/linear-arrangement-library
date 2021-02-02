@@ -53,7 +53,7 @@ using namespace std;
 #define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
 #define to_int64(x) static_cast<int64_t>(x)
 
-inline int64_t sum(uint32_t n, uint32_t t) {
+inline constexpr int64_t sum(uint32_t n, uint32_t t) {
 	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
 }
 

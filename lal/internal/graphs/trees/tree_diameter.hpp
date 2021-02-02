@@ -45,6 +45,7 @@
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace internal {
@@ -83,19 +84,19 @@ uint32_t tree_diameter(const T& t) {
 	node leaf = 0;
 	while (leaf < n and get_degree(leaf) > 1) { ++leaf; }
 
+	uint32_t diameter = 0;
+	data_array<uint32_t> distance_from_leaf(n, 0);
+
 	// calculate the maximum distance (in edges)
-	uint32_t diam = 0;
-	uint32_t *distance_from_leaf = new uint32_t[n]{0};
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) {
 		distance_from_leaf[v] = distance_from_leaf[u] + 1;
-		diam = std::max(diam, distance_from_leaf[v]);
+		diameter = std::max(diameter, distance_from_leaf[v]);
 	}
 	);
 	bfs.start_at(leaf);
 
-	delete[] distance_from_leaf;
-	return diam;
+	return diameter;
 }
 
 } // -- namespace internal

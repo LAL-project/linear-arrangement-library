@@ -49,6 +49,7 @@ using namespace std;
 #include <lal/internal/graphs/trees/tree_centroid.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define LEFT_ANCHOR -1
 #define RIGHT_ANCHOR 1
@@ -58,7 +59,7 @@ using namespace std;
 #define to_int32(x) static_cast<int32_t>(x)
 
 typedef pair<uint32_t,lal::node> size_node;
-typedef vector<size_node> ordering;
+typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
 using namespace graphs;
@@ -184,13 +185,15 @@ vector<uint32_t> get_Q(uint32_t q, uint32_t i) {
 void get_ordering(const free_tree& t, node u, ordering& ord) {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
-	ord = ordering(t.degree(u - 1));
+#if defined DEBUG
+	assert(ord.size() == t.degree(u - 1));
+#endif
 
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	uint32_t *s = new uint32_t[t.n_nodes()];
-	internal::get_size_subtrees(t, u - 1, s);
+	data_array<uint32_t> s(t.n_nodes());
+	internal::get_size_subtrees(t, u - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbours(u - 1);
@@ -205,12 +208,11 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 
 		M = std::max(M, s_ui);
 	}
-	internal::counting_sort<ordering::iterator, size_node, false>
+	internal::counting_sort<size_node, size_node*, false>
 	(
 		ord.begin(), ord.end(), M, ord.size(),
 		[](const size_node& p) { return p.first; }
 	);
-	delete[] s;
 }
 
 // t: input forest a single connected component of which has to be arranged.
@@ -232,7 +234,7 @@ void calculate_mla_chung(
 	internal::BFS<free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
-		[&](const auto&, node u) { *it = u + 1; ++it; }
+		[&](const auto&, node u) { *it++ = u + 1; }
 	);
 	bfs.start_at(one_node - 1);
 	}
@@ -257,7 +259,7 @@ void calculate_mla_chung(
 	if (root == NO_ANCHOR) {
 		const node u = internal::retrieve_centroid(t, one_node - 1).first + 1;
 
-		ordering ord;
+		ordering ord(t.degree(u - 1));
 		get_ordering(t, u, ord);
 
 		const int q = calculate_q(size_tree, ord);
@@ -363,7 +365,7 @@ void calculate_mla_chung(
 		}
 	}
 	else {
-		ordering ord;
+		ordering ord(t.degree(one_node - 1));
 		get_ordering(t, one_node, ord);
 
 		const int p = calculate_p(size_tree, ord);

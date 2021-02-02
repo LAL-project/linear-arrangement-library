@@ -48,6 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/free_tree.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
 
@@ -56,9 +57,8 @@ using namespace graphs;
 
 namespace internal {
 
-free_tree level_sequence_to_ftree(
-	uint32_t const *L, uint32_t n, bool normalise, bool check
-)
+free_tree level_sequence_to_ftree
+(uint32_t const *L, uint32_t n, bool normalise, bool check)
 {
 #if defined DEBUG
 	// a little sanity check
@@ -71,7 +71,7 @@ free_tree level_sequence_to_ftree(
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
-	vector<node> lev(n+1, 0);
+	data_array<node> lev(n+1, 0);
 	uint32_t stack_it = 0;
 
 	// evidently,
@@ -103,20 +103,16 @@ free_tree level_sequence_to_ftree(
 	return t;
 }
 
-free_tree level_sequence_to_ftree(
-	const vector<uint32_t>& L, uint32_t n, bool normalise, bool check
-)
-{
-	return level_sequence_to_ftree(&L[0], n, normalise, check);
-}
+free_tree level_sequence_to_ftree
+(const vector<uint32_t>& L, uint32_t n, bool normalise, bool check)
+{ return level_sequence_to_ftree(&L[0], n, normalise, check); }
 
-free_tree Prufer_sequence_to_ftree(
-	uint32_t const *seq, uint32_t n, bool normalise, bool check
-)
+free_tree Prufer_sequence_to_ftree
+(uint32_t const *seq, uint32_t n, bool normalise, bool check)
 {
 	// initialisation
 	const uint32_t L = n - 2;
-	vector<uint32_t> degree(n, 1);
+	data_array<uint32_t> degree(n, 1);
 	for (uint32_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}
@@ -164,16 +160,12 @@ free_tree Prufer_sequence_to_ftree(
 	return t;
 }
 
-free_tree Prufer_sequence_to_ftree(
-	const vector<uint32_t>& seq, uint32_t n, bool normalise, bool check
-)
-{
-	return Prufer_sequence_to_ftree(&seq[0], n, normalise, check);
-}
+free_tree Prufer_sequence_to_ftree
+(const vector<uint32_t>& seq, uint32_t n, bool normalise, bool check)
+{ return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
-pair<free_tree, node> linear_sequence_to_ftree(
-	const vector<uint32_t>& L, bool normalise, bool check
-)
+pair<free_tree, node> linear_sequence_to_ftree
+(const vector<uint32_t>& L, bool normalise, bool check)
 {
 	if (L.size() == 0) { return make_pair(free_tree(0), 0); }
 

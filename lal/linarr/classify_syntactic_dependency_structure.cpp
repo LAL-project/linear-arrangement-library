@@ -53,6 +53,7 @@ using namespace std;
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/internal/data_array.hpp>
 
 #define sort_by_index(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define sort_by_pos(a,b, P) (P[a] < P[b] ? make_pair(a,b) : make_pair(b,a))
@@ -196,7 +197,7 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	// as a reference for the definition of 1ec
 
 	const uint32_t n = rT.n_nodes();
-	node *T = new node[n];
+	internal::data_array<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
 	}
@@ -279,7 +280,6 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 		}
 	}
 
-	delete[] T;
 	return _1ec;
 }
 

@@ -202,19 +202,20 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// for every edge (u,v), store the tuple
 	//    (n_v, (u,v))
 	// at L[u]
-	vector<edge_size> L;
+	data_array<edge_size> L(n - 1);
 	{
+	auto it = L.begin();
 	E_iterator Eit(t);
 	while (Eit.has_next()) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		L.push_back(make_pair(e,t.n_nodes_subtree(v)));
+		*it++ = make_pair(e,t.n_nodes_subtree(v));
 	}
 	}
 
 	// sort all tuples in L using the size of the subtree
-	internal::counting_sort<edge_size_t, edge_size, false>(
+	internal::counting_sort<edge_size, edge_size*, false>(
 		L.begin(), L.end(), n, L.size(),
 		[](const edge_size& T) -> size_t { return std::get<1>(T); }
 	);
