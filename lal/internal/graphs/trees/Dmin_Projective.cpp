@@ -166,6 +166,9 @@ uint32_t Dmin_Pr__optimal_interval_of(
 		// change side
 		side = other_side(side);
 	}
+#if defined DEBUG
+	assert(ini == fin);
+#endif
 	arr[r] = ini;
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
