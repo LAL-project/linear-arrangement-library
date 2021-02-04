@@ -53,20 +53,8 @@ using namespace graphs;
 
 namespace generate {
 
-all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) {
+all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) : m_gen_lab_free_tree(n) {
 	init(n);
-}
-
-void all_lab_rooted_trees::init(uint32_t n) {
-	m_n = n;
-	m_gen_lab_free_tree.init(m_n);
-
-	m_cur_root = m_n - 1;
-
-	// deactivate all processing of the free tree
-	m_gen_lab_free_tree.calculate_size_subtrees = false;
-	m_gen_lab_free_tree.calculate_tree_type = false;
-	m_gen_lab_free_tree.normalise_tree = false;
 }
 
 bool all_lab_rooted_trees::has_next() const {
@@ -85,6 +73,11 @@ void all_lab_rooted_trees::next() {
 	}
 }
 
+void all_lab_rooted_trees::reset() {
+	m_cur_root = m_n - 1;
+	m_gen_lab_free_tree.reset();
+}
+
 /* PROTECTED */
 
 rooted_tree all_lab_rooted_trees::__get_tree() {
@@ -92,6 +85,17 @@ rooted_tree all_lab_rooted_trees::__get_tree() {
 	assert(m_cur_root < m_n);
 #endif
 	return rooted_tree(m_cur_ftree, m_cur_root);
+}
+
+void all_lab_rooted_trees::init(uint32_t n) {
+	m_n = n;
+
+	reset();
+
+	// deactivate all processing of the free tree
+	m_gen_lab_free_tree.calculate_size_subtrees = false;
+	m_gen_lab_free_tree.calculate_tree_type = false;
+	m_gen_lab_free_tree.normalise_tree = false;
 }
 
 } // -- namespace generate

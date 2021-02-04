@@ -80,7 +80,6 @@ rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t
 		rdata[u] = vector<node>(deg + 1);
 	}
 }
-rand_projective_arrgmnt::~rand_projective_arrgmnt() { }
 
 linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
 	if (m_rT.n_nodes() == 1) {

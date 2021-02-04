@@ -79,11 +79,6 @@ __rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t _n, uint32_t seed)
 	init_fn();
 }
 
-void __rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
-	__rand_ulab_rooted_trees::init(_n, seed);
-	init_fn();
-}
-
 free_tree __rand_ulab_free_trees::get_tree() {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
@@ -162,6 +157,13 @@ void __rand_ulab_free_trees::clear() {
 	__rand_ulab_rooted_trees::clear();
 	m_fn.clear();
 	m_alpha.clear();
+	init_fn();
+}
+
+/* PROTECTED */
+
+void __rand_ulab_free_trees::init(uint32_t _n, uint32_t seed) {
+	__rand_ulab_rooted_trees::init(_n, seed);
 	init_fn();
 }
 
@@ -426,10 +428,6 @@ __rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 rand_ulab_free_trees::rand_ulab_free_trees(uint32_t n, uint32_t seed)
 : m_Gen(n, seed)
 {
-}
-
-void rand_ulab_free_trees::init(uint32_t n, uint32_t seed) {
-	m_Gen.init(n, seed);
 }
 
 /* PROTECTED */

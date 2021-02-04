@@ -68,7 +68,6 @@ public:
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
 	rand_projective_arrgmnt(const graphs::rooted_tree& rT, uint32_t seed = 0);
-	~rand_projective_arrgmnt();
 
 	/**
 	 * @brief Make a random projective arrangement of a rooted tree.

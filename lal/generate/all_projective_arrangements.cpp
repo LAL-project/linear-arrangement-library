@@ -67,8 +67,6 @@ all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) 
 	initialise_intervals_tree();
 }
 
-all_projective_arrangements::~all_projective_arrangements() {}
-
 bool all_projective_arrangements::has_next() const {
 	return m_has_next;
 }

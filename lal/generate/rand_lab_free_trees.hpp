@@ -70,26 +70,21 @@ namespace generate {
  */
 class __rand_lab_free_trees {
 public:
-	/**
-	 * @brief Default constructor.
-	 *
-	 * When constructed this way, the class needs to be initialised.
-	 * See @ref init(uint32_t, uint32_t).
-	 */
-	__rand_lab_free_trees() = default;
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
 	/// Default Destructor.
 	virtual ~__rand_lab_free_trees();
 
-	/**
-	 * @brief Sets the size of the labelled trees to generate.
-	 *
-	 * Initialises the random number generator.
-	 * @param n Number of nodes of the tree.
-	 * @param seed Integer value used to seed the random number generator.
-	 */
-	void init(uint32_t n, uint32_t seed = 0);
+#ifndef SWIG
+	/// Disallow copies.
+	__rand_lab_free_trees(const __rand_lab_free_trees&) = delete;
+	/// Disallow copies.
+	__rand_lab_free_trees& operator= (const __rand_lab_free_trees&) = delete;
+	/// Disallow moves.
+	__rand_lab_free_trees(__rand_lab_free_trees&&) = delete;
+	/// Disallow moves.
+	__rand_lab_free_trees& operator= (__rand_lab_free_trees&&) = delete;
+#endif
 
 	/**
 	 * @brief Generates uniformly at random a free labelled tree.
@@ -99,6 +94,17 @@ public:
 	graphs::free_tree get_tree();
 
 protected:
+	/**
+	 * @brief Sets the size of the labelled trees to generate.
+	 *
+	 * Initialises the random number generator.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	void init(uint32_t n, uint32_t seed = 0);
+
+protected:
+
 	/// Number of nodes of the tree.
 	uint32_t m_n;
 	/// Random number generator.
@@ -117,15 +123,8 @@ protected:
  */
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
-	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees().
-	rand_lab_free_trees() = default;
 	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
-	/// Default Destructor.
-	~rand_lab_free_trees() = default;
-
-	/// See @ref __rand_lab_free_trees::init.
-	void init(uint32_t n, uint32_t seed = 0);
 
 protected:
 	/// See @ref __rand_lab_free_trees::get_tree.

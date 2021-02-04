@@ -55,55 +55,12 @@ using namespace graphs;
 
 namespace generate {
 
-//all_ulab_free_trees::all_ulab_free_trees() { }
 all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) {
 	init(_n);
 }
 all_ulab_free_trees::~all_ulab_free_trees() {
 	delete[] m_L;
 	delete[] m_W;
-}
-
-void all_ulab_free_trees::init(uint32_t _n) {
-	m_is_last = false;
-	//m_first_it = true;
-	m_n = _n;
-
-	m_L = new uint32_t[m_n + 1]{0};
-	m_W = new uint32_t[m_n + 1]{0};
-
-	// simplest cases
-	if (m_n == 0) {
-		m_is_last = true;
-		return;
-	}
-	if (m_n <= 2) {
-		m_is_last = false;
-		return;
-	}
-
-	uint32_t k = m_n/2 + 1;
-	m_p = (m_n == 4 ? 3 : m_n);
-	m_q = m_n - 1;
-	m_h1 = k;
-	m_h2 = m_n;
-	m_r = k;
-	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
-
-	// initialise L and W
-	for (uint32_t i = 1; i <= k; ++i) {
-		m_W[i] = i - 1;
-		m_L[i] = i;
-	}
-	m_W[k+1] = 1;
-	m_L[k+1] = 2;
-	for (uint32_t i = k + 2; i <= m_n; ++i) {
-		m_W[i] = i - 1;
-		m_L[i] = i - k + 1;
-	}
-
-	//if (m_n <= 3) { m_first_it = false; }
-	m_first_it = m_n > 3;
 }
 
 bool all_ulab_free_trees::has_next() const {
@@ -271,6 +228,46 @@ void all_ulab_free_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
+void all_ulab_free_trees::reset() {
+	m_is_last = false;
+
+	std::fill(&m_L[0], &m_L[m_n + 1], 0);
+	std::fill(&m_W[0], &m_W[m_n + 1], 0);
+
+	// simplest cases
+	if (m_n == 0) {
+		m_is_last = true;
+		return;
+	}
+	if (m_n <= 2) {
+		m_is_last = false;
+		return;
+	}
+
+	uint32_t k = m_n/2 + 1;
+	m_p = (m_n == 4 ? 3 : m_n);
+	m_q = m_n - 1;
+	m_h1 = k;
+	m_h2 = m_n;
+	m_r = k;
+	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
+
+	// initialise L and W
+	for (uint32_t i = 1; i <= k; ++i) {
+		m_W[i] = i - 1;
+		m_L[i] = i;
+	}
+	m_W[k+1] = 1;
+	m_L[k+1] = 2;
+	for (uint32_t i = k + 2; i <= m_n; ++i) {
+		m_W[i] = i - 1;
+		m_L[i] = i - k + 1;
+	}
+
+	//if (m_n <= 3) { m_first_it = false; }
+	m_first_it = m_n > 3;
+}
+
 /* PROTECTED */
 
 free_tree all_ulab_free_trees::__get_tree() {
@@ -281,6 +278,14 @@ free_tree all_ulab_free_trees::__get_tree() {
 		return t;
 	}
 	return internal::level_sequence_to_ftree(m_L, m_n, false, false);
+}
+
+void all_ulab_free_trees::init(uint32_t _n) {
+	m_n = _n;
+	m_L = new uint32_t[m_n + 1];
+	m_W = new uint32_t[m_n + 1];
+
+	reset();
 }
 
 } // -- namespace generate

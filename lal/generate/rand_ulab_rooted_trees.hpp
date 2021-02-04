@@ -1,4 +1,4 @@
-/*********************************************************************
+﻿/*********************************************************************
  *
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
@@ -74,30 +74,10 @@ namespace generate {
  */
 class __rand_ulab_rooted_trees {
 public:
-	/**
-	 * @brief Default constructor.
-	 *
-	 * When constructed this way, the class needs to be initialised.
-	 * See @ref init(uint32_t, uint32_t).
-	 */
-	__rand_ulab_rooted_trees() = default;
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
 	/// Destructor.
 	virtual ~__rand_ulab_rooted_trees();
-
-	/**
-	 * @brief Sets the size of the unlabelled trees to generate.
-	 *
-	 * Initialises @ref m_rn with 31 values are extracted from
-	 * \cite OEIS_A000081.
-	 *
-	 * Initialises the random number generator with @e seed. When @e seed
-	 * is 0, a random seed is used.
-	 * @param n Number of nodes of the tree.
-	 * @param seed Integer value used to seed the random number generator.
-	 */
-	virtual void init(uint32_t n, uint32_t seed = 0);
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
@@ -153,6 +133,19 @@ protected:
 protected:
 
 	/**
+	 * @brief Sets the size of the unlabelled trees to generate.
+	 *
+	 * Initialises @ref m_rn with 31 values are extracted from
+	 * \cite OEIS_A000081.
+	 *
+	 * Initialises the random number generator with @e seed. When @e seed
+	 * is 0, a random seed is used.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	virtual void init(uint32_t n, uint32_t seed = 0);
+
+	/**
 	 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
 	 *
 	 * The first call to this method should have @e lr = @ref m_n + 1.
@@ -196,15 +189,8 @@ protected:
  */
 class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
-	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees() for details.
-	rand_ulab_rooted_trees() = default;
 	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
 	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0);
-	/// Default destructor.
-	~rand_ulab_rooted_trees() = default;
-
-	/// See @ref __rand_ulab_rooted_trees::init for details.
-	void init(uint32_t n, uint32_t seed = 0);
 
 protected:
 	/// See @ref __rand_ulab_rooted_trees::get_tree for details.

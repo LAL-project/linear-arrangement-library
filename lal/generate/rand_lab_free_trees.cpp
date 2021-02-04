@@ -55,12 +55,30 @@ namespace generate {
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
+/* PUBLIC */
+
 __rand_lab_free_trees::__rand_lab_free_trees(uint32_t _n, uint32_t seed) {
 	init(_n, seed);
 }
 __rand_lab_free_trees::~__rand_lab_free_trees() {
 	delete[] m_seq;
 }
+
+free_tree __rand_lab_free_trees::get_tree() {
+	if (m_n <= 1) { return free_tree(m_n); }
+	if (m_n == 2) {
+		free_tree t(2);
+		t.add_edge(0,1);
+		return t;
+	}
+
+	for (uint32_t i = 0; i < m_n - 2; ++i) {
+		m_seq[i] = m_unif(m_gen);
+	}
+	return internal::Prufer_sequence_to_ftree(m_seq, m_n, false, false);
+}
+
+/* PROTECTED */
 
 void __rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_n = _n;
@@ -79,30 +97,14 @@ void __rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 	m_seq = new uint32_t[m_n - 2];
 }
 
-free_tree __rand_lab_free_trees::get_tree() {
-	if (m_n <= 1) { return free_tree(m_n); }
-	if (m_n == 2) {
-		free_tree t(2);
-		t.add_edge(0,1);
-		return t;
-	}
-
-	for (uint32_t i = 0; i < m_n - 2; ++i) {
-		m_seq[i] = m_unif(m_gen);
-	}
-	return internal::Prufer_sequence_to_ftree(m_seq, m_n, false, false);
-}
-
 // -----------------------------------------------------------------------------
 // WRAPPER CLASS
+
+/* PUBLIC */
 
 rand_lab_free_trees::rand_lab_free_trees(uint32_t n, uint32_t seed)
 : m_Gen(n, seed)
 {
-}
-
-void rand_lab_free_trees::init(uint32_t n, uint32_t seed) {
-	m_Gen.init(n, seed);
 }
 
 /* PROTECTED */

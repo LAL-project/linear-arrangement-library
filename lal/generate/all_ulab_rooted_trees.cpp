@@ -55,43 +55,14 @@ using namespace graphs;
 
 namespace generate {
 
-//all_ulab_rooted_trees::all_ulab_rooted_trees() { }
 all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) {
 	init(_n);
 }
+
 all_ulab_rooted_trees::~all_ulab_rooted_trees() {
 	delete[] m_save;
 	delete[] m_prev;
 	delete[] m_L;
-}
-
-void all_ulab_rooted_trees::init(uint32_t _n) {
-	m_is_first = true;
-	m_n = _n;
-
-	// simplest cases
-	if (m_n == 0) {
-		m_is_last = true;
-		return;
-	}
-
-	m_is_last = false;
-
-	m_save = new node[m_n + 1]{0};
-	m_prev = new node[m_n + 1]{0};
-	m_L = new node[m_n + 1]{0};
-
-	// -------------------
-	// generate first tree
-
-	std::iota(&m_L[0], &m_L[m_n + 1], 0);
-	m_p = m_n;
-	if (m_p > 1) {
-		for (uint32_t i = 1; i <= m_p - 1; ++i) {
-			m_prev[i] = i;
-			m_save[i] = 0;
-		}
-	}
 }
 
 bool all_ulab_rooted_trees::has_next() const {
@@ -129,6 +100,34 @@ void all_ulab_rooted_trees::next() {
 	m_is_last = (m_p <= 1);
 }
 
+void all_ulab_rooted_trees::reset() {
+	m_is_first = true;
+
+	// simplest cases
+	if (m_n == 0) {
+		m_is_last = true;
+		return;
+	}
+
+	m_is_last = false;
+
+	std::fill(&m_save[0], &m_save[m_n + 1], 0);
+	std::fill(&m_prev[0], &m_prev[m_n + 1], 0);
+	std::fill(&m_L[0], &m_L[m_n + 1], 0);
+
+	// -------------------
+	// generate first tree
+
+	std::iota(&m_L[0], &m_L[m_n + 1], 0);
+	m_p = m_n;
+	if (m_p > 1) {
+		for (uint32_t i = 1; i <= m_p - 1; ++i) {
+			m_prev[i] = i;
+			m_save[i] = 0;
+		}
+	}
+}
+
 /* PROTECTED */
 
 rooted_tree all_ulab_rooted_trees::__get_tree() {
@@ -149,6 +148,17 @@ rooted_tree all_ulab_rooted_trees::__get_tree() {
 	const free_tree t = internal::level_sequence_to_ftree(m_L, m_n, false, false);
 	return rooted_tree(t, 0);
 }
+
+void all_ulab_rooted_trees::init(uint32_t _n) {	
+	m_n = _n;
+
+	m_save = new node[m_n + 1];
+	m_prev = new node[m_n + 1];
+	m_L = new node[m_n + 1];
+
+	reset();
+}
+
 
 } // -- namespace generate
 } // -- namespace lal

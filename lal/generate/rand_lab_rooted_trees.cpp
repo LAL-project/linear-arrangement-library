@@ -52,13 +52,11 @@ namespace generate {
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
+/* PUBLIC */
+
 __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t n, uint32_t seed)
 	: __rand_lab_free_trees(n, seed)
 {
-}
-
-void __rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
-	__rand_lab_free_trees::init(n, seed);
 }
 
 rooted_tree __rand_lab_rooted_trees::get_tree() {
@@ -67,16 +65,20 @@ rooted_tree __rand_lab_rooted_trees::get_tree() {
 	return rooted_tree(t, r);
 }
 
+/* PROTECTED */
+
+void __rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
+	__rand_lab_free_trees::init(n, seed);
+}
+
 // -----------------------------------------------------------------------------
 // WRAPPER CLASS
+
+/* PUBLIC */
 
 rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
 : m_Gen(n, seed)
 {
-}
-
-void rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
-	m_Gen.init(n, seed);
 }
 
 /* PROTECTED */

@@ -70,23 +70,6 @@ __rand_ulab_rooted_trees::~__rand_ulab_rooted_trees() {
 	delete[] m_tree;
 }
 
-void __rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
-	m_n = _n;
-	if (m_n <= 1) { return; }
-
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
-	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_real_distribution<double>(0, 1);
-
-	init_rn();
-	m_tree = new uint32_t[m_n];
-}
-
 rooted_tree __rand_ulab_rooted_trees::get_tree() {
 	if (m_n <= 1) {
 		rooted_tree r(m_n, 0);
@@ -117,6 +100,23 @@ void __rand_ulab_rooted_trees::clear() {
 }
 
 /* PROTECTED */
+
+void __rand_ulab_rooted_trees::init(uint32_t _n, uint32_t seed) {
+	m_n = _n;
+	if (m_n <= 1) { return; }
+
+	if (seed == 0) {
+		random_device rd;
+		m_gen = mt19937(rd());
+	}
+	else {
+		m_gen = mt19937(seed);
+	}
+	m_unif = uniform_real_distribution<double>(0, 1);
+
+	init_rn();
+	m_tree = new uint32_t[m_n];
+}
 
 pair<uint32_t,uint32_t>
 __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt)
@@ -324,10 +324,6 @@ pair<uint32_t, uint32_t> __rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t n, uint32_t seed)
 : m_Gen(n, seed)
 {
-}
-
-void rand_ulab_rooted_trees::init(uint32_t n, uint32_t seed) {
-	m_Gen.init(n, seed);
 }
 
 /* PROTECTED */

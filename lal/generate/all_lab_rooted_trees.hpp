@@ -60,40 +60,26 @@ namespace generate {
  *		all_lab_rooted_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
- *			lal::graphs::rtree T = TreeGen.get_tree();
+ *			lal::graphs::rooted_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
  */
 class all_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
-	/**
-	 * @brief Default constructor.
-	 *
-	 * When constructed this way, the class needs to be initialised.
-	 * See @ref init(uint32_t).
-	 */
-	all_lab_rooted_trees() = default;
 	/// Constructor with number of nodes.
 	all_lab_rooted_trees(uint32_t n);
-	/// Default destructor.
-	~all_lab_rooted_trees() = default;
 
-	/**
-	 * @brief Initialises the generator.
-	 *
-	 * Initialises the internal state of this generator
-	 * so that method @ref next can be called safely.
-	 *
-	 * Initialising this class already allows the user
-	 * to retrieve the first tree via method @ref get_tree.
-	 *
-	 * It is allowed to call this method two or more times,
-	 * and with different values for parameter @e n.
-	 * @param n The number of nodes of the trees to be
-	 * generated.
-	 */
-	void init(uint32_t n);
+#ifndef SWIG
+	/// Disallow copies.
+	all_lab_rooted_trees(const all_lab_rooted_trees&) = delete;
+	/// Disallow copies.
+	all_lab_rooted_trees& operator= (const all_lab_rooted_trees&) = delete;
+	/// Disallow moves.
+	all_lab_rooted_trees(all_lab_free_trees&&) = delete;
+	/// Disallow moves.
+	all_lab_rooted_trees& operator= (all_lab_rooted_trees&&) = delete;
+#endif
 
 	/**
 	 * @brief Returns whether there are more trees to generate.
@@ -114,6 +100,13 @@ public:
 	 */
 	void next();
 
+	/**
+	 * @brief Sets the generator to its initial state.
+	 *
+	 * This method can be called anytime.
+	 */
+	void reset();
+
 protected:
 	/**
 	 * @brief Constructs the current tree.
@@ -122,6 +115,22 @@ protected:
 	 * @ref next must have been called at least once.
 	 */
 	graphs::rooted_tree __get_tree();
+
+	/**
+	 * @brief Initialises the generator.
+	 *
+	 * Initialises the internal state of this generator
+	 * so that method @ref next can be called safely.
+	 *
+	 * Initialising this class already allows the user
+	 * to retrieve the first tree via method @ref get_tree.
+	 *
+	 * It is allowed to call this method two or more times,
+	 * and with different values for parameter @e n.
+	 * @param n The number of nodes of the trees to be
+	 * generated.
+	 */
+	void init(uint32_t n);
 
 private:
 	/// Number of nodes of the generated trees.

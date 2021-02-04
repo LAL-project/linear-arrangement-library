@@ -82,8 +82,6 @@ public:
 	 * @pre The tree is normalised (see graphs::graph::is_normalised()).
 	 */
 	all_projective_arrangements(const graphs::rooted_tree& T);
-	/// Default destructor.
-	~all_projective_arrangements();
 
 	/**
 	 * @brief Returns whether there are more arrangements to generate.

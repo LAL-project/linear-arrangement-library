@@ -81,31 +81,8 @@ namespace generate {
  */
 class __rand_ulab_free_trees : public __rand_ulab_rooted_trees {
 public:
-	/**
-	 * @brief Default constructor.
-	 *
-	 * When constructed this way, the class needs to be initialised.
-	 * See @ref init(uint32_t, uint32_t).
-	 */
-	__rand_ulab_free_trees() = default;
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
-	/// Default destructor.
-	~__rand_ulab_free_trees() = default;
-
-	/**
-	 * @brief Sets the size of the unlabelled trees to generate.
-	 *
-	 * Initialises @ref m_rn with 31 values extracted from
-	 * \cite OEIS_A000081. It also initialises @ref m_fn with 31 values
-	 * extracted from \cite OEIS_A000055.
-	 *
-	 * Initialises the random number generator with @e seed. When @e seed
-	 * is 0, a random seed is used.
-	 * @param n Number of nodes of the tree.
-	 * @param seed Integer value used to seed the random number generator.
-	 */
-	void init(uint32_t n, uint32_t seed = 0);
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
@@ -137,6 +114,22 @@ public:
 	 * are assigned when creating an object of this class.
 	 */
 	void clear();
+
+protected:
+
+	/**
+	 * @brief Sets the size of the unlabelled trees to generate.
+	 *
+	 * Initialises @ref m_rn with 31 values extracted from
+	 * \cite OEIS_A000081. It also initialises @ref m_fn with 31 values
+	 * extracted from \cite OEIS_A000055.
+	 *
+	 * Initialises the random number generator with @e seed. When @e seed
+	 * is 0, a random seed is used.
+	 * @param n Number of nodes of the tree.
+	 * @param seed Integer value used to seed the random number generator.
+	 */
+	void init(uint32_t n, uint32_t seed = 0);
 
 private:
 	/**
@@ -227,15 +220,8 @@ private:
  */
 class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
-	/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees().
-	rand_ulab_free_trees() = default;
 	/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t, uint32_t).
 	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0);
-	/// Default Destructor.
-	~rand_ulab_free_trees() = default;
-
-	/// See @ref __rand_ulab_free_trees::init.
-	void init(uint32_t n, uint32_t seed = 0);
 
 protected:
 	/// See @ref __rand_ulab_free_trees::get_tree.
