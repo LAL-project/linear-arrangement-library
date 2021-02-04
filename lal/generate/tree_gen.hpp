@@ -25,7 +25,7 @@ template<
 >
 class tree_gen {
 public:
-	virtual ~tree_gen() { }
+	virtual ~tree_gen() noexcept { }
 
 	/// Normalise the generate tree.
 	bool normalise_tree = true;

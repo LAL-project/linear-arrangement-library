@@ -62,11 +62,12 @@ namespace generate {
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
-__rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t _n, uint32_t seed) {
+__rand_ulab_rooted_trees::__rand_ulab_rooted_trees
+(uint32_t _n, uint32_t seed) noexcept {
 	init_rn();
 	__rand_ulab_rooted_trees::init(_n, seed);
 }
-__rand_ulab_rooted_trees::~__rand_ulab_rooted_trees() {
+__rand_ulab_rooted_trees::~__rand_ulab_rooted_trees() noexcept {
 	delete[] m_tree;
 }
 
@@ -321,7 +322,8 @@ pair<uint32_t, uint32_t> __rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n)
 // -----------------------------------------------------------------------------
 // WRAPPER CLASS
 
-rand_ulab_rooted_trees::rand_ulab_rooted_trees(uint32_t n, uint32_t seed)
+rand_ulab_rooted_trees::rand_ulab_rooted_trees
+(uint32_t n, uint32_t seed) noexcept
 : m_Gen(n, seed)
 {
 }

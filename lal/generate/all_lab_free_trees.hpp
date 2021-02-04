@@ -84,9 +84,9 @@ namespace generate {
 class all_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// Constructor with number of nodes.
-	all_lab_free_trees(uint32_t n);
+	all_lab_free_trees(uint32_t n) noexcept;
 	/// Destructor.
-	~all_lab_free_trees();
+	~all_lab_free_trees() noexcept;
 
 #ifndef SWIG
 	/// Disallow copies.

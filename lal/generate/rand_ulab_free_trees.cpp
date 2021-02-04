@@ -73,7 +73,8 @@ namespace generate {
 
 /* PUBLIC */
 
-__rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t _n, uint32_t seed)
+__rand_ulab_free_trees::__rand_ulab_free_trees
+(uint32_t _n, uint32_t seed) noexcept
 	: __rand_ulab_rooted_trees(_n, seed)
 {
 	init_fn();
@@ -425,7 +426,8 @@ __rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q)
 // -----------------------------------------------------------------------------
 // WRAPPER CLASS
 
-rand_ulab_free_trees::rand_ulab_free_trees(uint32_t n, uint32_t seed)
+rand_ulab_free_trees::rand_ulab_free_trees
+(uint32_t n, uint32_t seed) noexcept
 : m_Gen(n, seed)
 {
 }

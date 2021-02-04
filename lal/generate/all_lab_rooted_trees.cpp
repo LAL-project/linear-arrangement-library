@@ -53,7 +53,7 @@ using namespace graphs;
 
 namespace generate {
 
-all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) : m_gen_lab_free_tree(n) {
+all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept : m_gen_lab_free_tree(n) {
 	init(n);
 }
 

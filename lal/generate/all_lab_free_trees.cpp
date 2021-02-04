@@ -56,10 +56,10 @@ namespace generate {
 
 // PUBLIC
 
-all_lab_free_trees::all_lab_free_trees(uint32_t _n) {
+all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept {
 	init(_n);
 }
-all_lab_free_trees::~all_lab_free_trees() {
+all_lab_free_trees::~all_lab_free_trees() noexcept {
 	delete[] m_sm;
 	delete[] m_seq;
 }

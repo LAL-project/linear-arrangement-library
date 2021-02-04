@@ -71,9 +71,9 @@ namespace generate {
 class __rand_lab_free_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
-	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
+	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/// Default Destructor.
-	virtual ~__rand_lab_free_trees();
+	virtual ~__rand_lab_free_trees() noexcept;
 
 #ifndef SWIG
 	/// Disallow copies.
@@ -124,7 +124,7 @@ protected:
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
-	rand_lab_free_trees(uint32_t n, uint32_t seed = 0);
+	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
 
 protected:
 	/// See @ref __rand_lab_free_trees::get_tree.

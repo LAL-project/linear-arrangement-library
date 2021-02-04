@@ -84,9 +84,9 @@ namespace generate {
 class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// Constructor with number of nodes.
-	all_ulab_rooted_trees(uint32_t n);
+	all_ulab_rooted_trees(uint32_t n) noexcept;
 	/// Destructor
-	~all_ulab_rooted_trees();
+	~all_ulab_rooted_trees() noexcept;
 
 #ifndef SWIG
 	/// Disallow copies.

@@ -54,7 +54,7 @@ namespace generate {
 
 /* PUBLIC */
 
-__rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t n, uint32_t seed)
+__rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t n, uint32_t seed) noexcept
 	: __rand_lab_free_trees(n, seed)
 {
 }
@@ -76,7 +76,7 @@ void __rand_lab_rooted_trees::init(uint32_t n, uint32_t seed) {
 
 /* PUBLIC */
 
-rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed)
+rand_lab_rooted_trees::rand_lab_rooted_trees(uint32_t n, uint32_t seed) noexcept
 : m_Gen(n, seed)
 {
 }

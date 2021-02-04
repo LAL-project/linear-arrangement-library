@@ -56,7 +56,8 @@ using namespace internal;
 
 namespace generate {
 
-all_projective_arrangements::all_projective_arrangements(const rooted_tree& rT) : m_rT(rT)
+all_projective_arrangements::all_projective_arrangements
+(const rooted_tree& rT) noexcept : m_rT(rT)
 {
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());

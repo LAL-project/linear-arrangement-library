@@ -55,10 +55,10 @@ using namespace graphs;
 
 namespace generate {
 
-all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) {
+all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept {
 	init(_n);
 }
-all_ulab_free_trees::~all_ulab_free_trees() {
+all_ulab_free_trees::~all_ulab_free_trees() noexcept {
 	delete[] m_L;
 	delete[] m_W;
 }

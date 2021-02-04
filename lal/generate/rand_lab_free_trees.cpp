@@ -57,10 +57,12 @@ namespace generate {
 
 /* PUBLIC */
 
-__rand_lab_free_trees::__rand_lab_free_trees(uint32_t _n, uint32_t seed) {
+__rand_lab_free_trees::__rand_lab_free_trees
+(uint32_t _n, uint32_t seed) noexcept
+{
 	init(_n, seed);
 }
-__rand_lab_free_trees::~__rand_lab_free_trees() {
+__rand_lab_free_trees::~__rand_lab_free_trees() noexcept {
 	delete[] m_seq;
 }
 
@@ -102,7 +104,8 @@ void __rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 
 /* PUBLIC */
 
-rand_lab_free_trees::rand_lab_free_trees(uint32_t n, uint32_t seed)
+rand_lab_free_trees::rand_lab_free_trees
+(uint32_t n, uint32_t seed) noexcept
 : m_Gen(n, seed)
 {
 }

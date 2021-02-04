@@ -81,7 +81,7 @@ public:
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 * @pre The tree is normalised (see graphs::graph::is_normalised()).
 	 */
-	all_projective_arrangements(const graphs::rooted_tree& T);
+	all_projective_arrangements(const graphs::rooted_tree& T) noexcept;
 
 	/**
 	 * @brief Returns whether there are more arrangements to generate.

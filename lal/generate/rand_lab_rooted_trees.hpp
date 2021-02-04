@@ -75,7 +75,7 @@ namespace generate {
 class __rand_lab_rooted_trees : public __rand_lab_free_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
-	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 
 	/**
 	 * @brief Generates uniformly at random a free labelled tree.
@@ -105,7 +105,7 @@ protected:
 class rand_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t, uint32_t) for details.
-	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0);
+	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 
 protected:
 	/// See @ref __rand_lab_rooted_trees::get_tree for details.

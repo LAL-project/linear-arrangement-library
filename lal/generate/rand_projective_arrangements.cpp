@@ -59,7 +59,8 @@ using namespace internal;
 
 namespace generate {
 
-rand_projective_arrgmnt::rand_projective_arrgmnt(const rooted_tree& rT, uint32_t seed)
+rand_projective_arrgmnt::rand_projective_arrgmnt
+(const rooted_tree& rT, uint32_t seed) noexcept
 	: m_rT(rT)
 {
 #if defined DEBUG
