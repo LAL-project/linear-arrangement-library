@@ -191,8 +191,7 @@ vector<uint32_t> n_C_ladder_list
 		return cs;
 	}
 
-	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n, 0);
+	data_array<char> boolean_neighborhood(n, 0);
 
 	const uint32_t n_elems = n + n;
 	data_array<uint32_t> all_memory(n_elems, 0);
@@ -211,9 +210,9 @@ vector<uint32_t> n_C_ladder_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder(g, pis[i], bool_neighs.data, T,L1);
+		cs[i] = __compute_C_ladder(g, pis[i], boolean_neighborhood.data, T,L1);
 
-		bool_neighs.fill(0);
+		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
 	}
 

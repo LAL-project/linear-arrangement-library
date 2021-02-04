@@ -55,7 +55,6 @@ namespace internal {
 template<class T>
 class AVL {
 public:
-	AVL() = default;
 	~AVL() {
 		free_node(root);
 		root = nullptr;
@@ -139,9 +138,6 @@ private:
 		// left and right subtrees
 		tree_node *left = nullptr;
 		tree_node *right = nullptr;
-
-		tree_node() = default;
-		~tree_node() = default;
 
 		void compute_height() noexcept {
 

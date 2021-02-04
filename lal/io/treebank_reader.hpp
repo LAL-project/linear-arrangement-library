@@ -108,9 +108,6 @@ namespace io {
  */
 class treebank_reader {
 public:
-	/// Default constructor
-	treebank_reader() = default;
-
 	// MODIFIERS
 
 	/**

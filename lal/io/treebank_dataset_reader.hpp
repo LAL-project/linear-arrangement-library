@@ -107,8 +107,6 @@ namespace io {
  */
 class treebank_dataset_reader {
 public:
-	/// Default constructor.
-	treebank_dataset_reader() = default;
 
 	/**
 	 * @brief Initialise the reader with a new dataset.
