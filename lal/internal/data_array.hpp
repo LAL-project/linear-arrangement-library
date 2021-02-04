@@ -54,10 +54,14 @@ namespace internal {
  * @brief Wrapper of an array for autmatic deallocation of memory.
  *
  * Automatically manage deallocation of memory via destructors.
+ * Objects of this class are not to be moved nor copied.
  */
 template<typename T>
 struct data_array {
+	// the data of this array
 	T *data = nullptr;
+	// the size of this array -- making this const forces
+	// users to use the non-empty constructor
 	const std::size_t _size;
 
 	data_array(const std::size_t n) noexcept : _size(n) {
@@ -67,19 +71,28 @@ struct data_array {
 		data = new T[n];
 		fill(v);
 	}
-	~data_array() { delete[] data; }
+	~data_array() {
+		delete[] data;
+	}
 
-	[[nodiscard]]
-	inline std::size_t size() const noexcept { return _size; }
+	// do not allow copies
+	data_array(const data_array& d) = delete;
+	data_array& operator= (const data_array& d) = delete;
+	// nor moves
+	data_array(data_array&& d) noexcept = delete;
+	data_array& operator= (data_array&& d) = delete;
 
+	// imitate the vector::size() method
 	[[nodiscard]]
-	inline T& operator[] (const std::size_t i) noexcept {
+	inline constexpr std::size_t size() const noexcept { return _size; }
+
+	// operator[]
+	[[nodiscard]] inline T& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
 		return data[i];
 	}
-
 	[[nodiscard]]
 	inline const T& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
@@ -88,14 +101,18 @@ struct data_array {
 		return data[i];
 	}
 
+	// assign the same value to every element in the data
 	inline void fill(const T& v) noexcept {
 		std::fill(&data[0], &data[_size], v);
 	}
 
-	[[nodiscard]] inline T *begin() noexcept { return &data[0]; }
-	[[nodiscard]] inline const T *begin() const noexcept { return &data[0]; }
-	[[nodiscard]] inline T *end() noexcept { return &data[_size]; }
-	[[nodiscard]] inline const T *end() const noexcept { return &data[_size]; }
+	// non-constant pointer to first element and last+1 element
+	[[nodiscard]] inline T *begin() { return &data[0]; }
+	[[nodiscard]] inline T *end() { return &data[_size]; }
+
+	// constant pointer to first element and last+1 element
+	[[nodiscard]] inline const T *begin() const { return &data[0]; }
+	[[nodiscard]] inline const T *end() const { return &data[_size]; }
 };
 
 } // -- namespace internal
