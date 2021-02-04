@@ -105,9 +105,8 @@ void graph::normalise() {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not is_sorted(nu.begin(), nu.end())) {
-			internal::bit_sort_mem(
-				nu.begin(), nu.end(), nu.size(), mem.data
-			);
+			internal::bit_sort_mem<node>
+			(nu.begin(), nu.end(), nu.size(), mem.data);
 		}
 	}
 	m_normalised = true;

@@ -102,8 +102,8 @@ undirected_graph& undirected_graph::add_edge(
 		// the graph was normalised
 		if (to_norm) {
 			// Keep it normalised. The attribute m_normalised need not be updated.
-			internal::bit_sort(nu.begin(), nu.end(), nu.size());
-			internal::bit_sort(nv.begin(), nv.end(), nv.size());
+			internal::bit_sort<node>(nu.begin(), nu.end(), nu.size());
+			internal::bit_sort<node>(nv.begin(), nv.end(), nv.size());
 		}
 		else if (check_norm) {
 			// Even though we are not asked to normalise the graph, it may be

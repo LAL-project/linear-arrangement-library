@@ -93,15 +93,13 @@ void directed_graph::normalise() {
 	for (node u = 0; u < n_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
-			internal::bit_sort_mem(
-				out_nu.begin(), out_nu.end(), out_nu.size(), mem.data
-			);
+			internal::bit_sort_mem<node>
+			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.data);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
-			internal::bit_sort_mem(
-				in_nu.begin(), in_nu.end(), in_nu.size(), mem.data
-			);
+			internal::bit_sort_mem<node>
+			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.data);
 		}
 	}
 	m_normalised = true;
@@ -151,8 +149,11 @@ directed_graph& directed_graph::add_edge(
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
-			internal::bit_sort(out_u.begin(), out_u.end(), out_u.size());
-			internal::bit_sort(in_v.begin(), in_v.end(), in_v.size());
+			internal::bit_sort<node>
+			(out_u.begin(), out_u.end(), out_u.size());
+
+			internal::bit_sort<node>
+			(in_v.begin(), in_v.end(), in_v.size());
 		}
 		else if (check_norm) {
 			// Even though we have not been asked to normalise the

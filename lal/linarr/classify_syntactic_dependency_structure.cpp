@@ -101,9 +101,8 @@ inline void __get_yields(
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
-	internal::bit_sort(
-		yields[u].begin(), yields[u].end(), yields[u].size()
-	);
+	internal::bit_sort<node, vector<node>::iterator>
+	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))

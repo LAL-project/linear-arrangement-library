@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <optional>
 #include <vector>
 using namespace std;
 
