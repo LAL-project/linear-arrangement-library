@@ -42,11 +42,12 @@
 #pragma once
 
 // C++ includes
-#include <algorithm>
-#include <type_traits>
+#include <bits/std_function.h>
+#include <tuple>
 
 // lal includes
 #include <lal/internal/data_array.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 namespace internal {
@@ -91,7 +92,11 @@ struct memory_counting_sort {
  */
 template<
 	typename T, typename It,
-	bool increasing
+	bool increasing,
+	std::enable_if_t<
+		is_pointer_iterator_v<T, It>,
+		bool
+	> = true
 >
 void counting_sort(
 	It begin, It end,
@@ -166,7 +171,11 @@ void counting_sort(
  */
 template<
 	typename T, typename It,
-	bool increasing
+	bool increasing,
+	std::enable_if_t<
+		is_pointer_iterator_v<T, It>,
+		bool
+	> = true
 >
 void counting_sort(
 	It begin, It end,

@@ -47,6 +47,17 @@
 namespace lal {
 namespace internal {
 
+// It type 'It' a pointer to type or an iterator whose value type is T?
+template<typename T, typename It>
+struct is_pointer_iterator {
+	static constexpr bool value =
+	std::is_same_v<typename std::iterator_traits<It>::value_type, T> ||
+	std::is_same_v<It, T*>;
+};
+// value of 'is_pointer_iterator'
+template<typename T, typename It>
+inline constexpr bool is_pointer_iterator_v = is_pointer_iterator<T, It>::value;
+
 // Function used to tell the compiler what is not used.
 template<class T>
 inline void UNUSED(const T& x) { (void)x; }

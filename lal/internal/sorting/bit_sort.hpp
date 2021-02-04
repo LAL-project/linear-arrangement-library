@@ -43,11 +43,11 @@
 
 // C++ includes
 #include <algorithm>
-#include <iterator>
 
 // lal includes
 #include <lal/internal/data_array.hpp>
 #include <lal/internal/sorting/insertion_sort.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 namespace internal {
@@ -66,9 +66,11 @@ namespace __lal {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type,
-	std::enable_if_t<std::is_integral_v<T>, bool> = true
+	typename T, typename It,
+	std::enable_if_t<
+		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		bool
+	> = true
 >
 void __bit_sort(It begin, It end, const T& m, char *seen) {
 	// fill bit array
@@ -111,9 +113,11 @@ void __bit_sort(It begin, It end, const T& m, char *seen) {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type,
-	std::enable_if_t<std::is_integral_v<T>, bool> = true
+	typename T, typename It,
+	std::enable_if_t<
+		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		bool
+	> = true
 >
 void bit_sort_mem(It begin, It end, const size_t size, char *seen)
 {
@@ -142,9 +146,11 @@ void bit_sort_mem(It begin, It end, const size_t size, char *seen)
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename It,
-	typename T = typename std::iterator_traits<It>::value_type,
-	std::enable_if_t<std::is_integral<T>::value, bool> = true
+	typename T, typename It,
+	std::enable_if_t<
+		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		bool
+	> = true
 >
 void bit_sort(It begin, It end, const size_t size)
 {
