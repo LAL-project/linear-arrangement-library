@@ -257,8 +257,6 @@ inline vector<dependency_flux> __compute_flux
 			t, pi, inv_pi, edge_with_max_pos_at, cur_pos, flux, cur_deps
 		);
 
-		flux[cur_pos].set_size(size_after_add);
-
 		// -------------------------------------------------
 		// calculate the weight of the flux at this position
 		// (read the paper for an "algorithm")

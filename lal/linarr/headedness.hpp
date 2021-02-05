@@ -54,8 +54,9 @@ namespace linarr {
 /**
  * @brief Computes the headedness of a directed graph as an exact rational number.
  *
- * Given a graph and a permutation of its nodes, computes the ratio of
- * right-branching edges over the total amount of edges. More precisely, computes
+ * Given a graph and a permutation of its nodes, the headedness \f$h\f$
+ * is the ratio of right-branching edges over the total amount of edges. More
+ * precisely, it is
  *
  * \f$h = \frac{r}{m}\f$
  *

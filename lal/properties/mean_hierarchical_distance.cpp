@@ -48,7 +48,6 @@
 namespace lal {
 using namespace graphs;
 using namespace numeric;
-using namespace internal;
 
 namespace properties {
 
@@ -58,7 +57,7 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	uint32_t sum_distances = 0;
 	internal::data_array<uint32_t> distances(n, 0);
 
-	BFS<rooted_tree> bfs(tree);
+	internal::BFS<rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		distances[t] = distances[s] + 1;

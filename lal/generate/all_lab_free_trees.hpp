@@ -144,8 +144,8 @@ protected:
 	 * tree via method @ref get_tree.
 	 *
 	 * It is allowed to call this method two or more times, and with different
-	 * values for parameter @e n.
-	 * @param n The number of nodes of the trees to be generated.
+	 * values for parameter @e _n.
+	 * @param _n The number of nodes of the trees to be generated.
 	 */
 	void init(uint32_t _n);
 

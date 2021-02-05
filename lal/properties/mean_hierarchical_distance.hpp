@@ -51,8 +51,14 @@ namespace properties {
 /**
  * @brief Mean Hierarchical Distance.
  *
- * The value is computed as an exact rational value.
- * For details, see \cite Jing2015a.
+ * The mean hierarchical distance is calculated as a mean of the different
+ * hierarchical distances between each vertex and the root of the tree. The
+ * hierarchical distance \f$HD_u\f$ of vertex \f$u\f$ is calculated as the
+ * number of edges between the tree's root and \f$u\f$. The result of this
+ * function is the mean of these distances:
+ * \f$MHD = \frac{1}{n} \sum_{u\in V} HD_u\f$.
+ *
+ * For furhter details see \cite Jing2015a.
  * @param t Input rooted tree.
  * @return Returns the Mean Hierarchical Distance of a rooted tree.
  */

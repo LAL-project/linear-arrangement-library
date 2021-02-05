@@ -57,22 +57,8 @@ namespace numeric {
 /**
  * @brief Exact rational number.
  *
- * This class wraps the @e mpq_t data structure from GMP
- * with operators for an easy usage.
- *
- * In order to be used, it must first be initialised, with
- * one of the following methods:
- * - @ref init
- * - @ref init_si
- * - @ref init_ui
- * - @ref init_str
- * - @ref init_integer
- *
- * or via the class constructors. The empty constructor, however,
- * does not initialise the internal memory.
- *
- * Although the internal memory is deallocated automatically
- * the user can do so manually by calling method @ref clear.
+ * This class wraps the @e mpq_t data structure from GMP with operators for an
+ * easy usage.
  */
 class rational {
 public:

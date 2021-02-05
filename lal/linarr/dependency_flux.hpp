@@ -57,13 +57,14 @@ public:
 
 	// GETTERS
 
-	/// Returns left span.
+	/// Returns left span of this flux.
 	inline uint32_t get_left_span() const { return m_left_span;; }
-	/// Returns right span.
+	/// Returns right span of this flux.
 	inline uint32_t get_right_span() const { return m_right_span; }
-	/// Returns size.
-	inline uint32_t get_size() const { return m_size; }
-	/// Returns weight.
+	/// Returns the size of this flux.
+	inline uint32_t get_size() const
+	{ return static_cast<uint32_t>(m_dependencies.size()); }
+	/// Returns weight of this flux.
 	inline uint32_t get_weight() const { return m_weight; }
 	/// Returns whether this flux is a left-branching bouquet or not.
 	inline bool is_left_bouquet() const { return m_is_left_bouquet; }
@@ -71,20 +72,18 @@ public:
 	inline bool is_right_bouquet() const { return m_is_right_bouquet; }
 
 #ifndef SWIG
-	/// Returns left span.
+	/// Returns a reference to the left span of this flux.
 	inline uint32_t& get_left_span() { return m_left_span;; }
-	/// Returns right span.
+	/// Returns a reference to the right span of this flux.
 	inline uint32_t& get_right_span() { return m_right_span; }
-	/// Returns size.
-	inline uint32_t& get_size() { return m_size; }
-	/// Returns weight.
+	/// Returns a reference to the weight of this flux.
 	inline uint32_t& get_weight() { return m_weight; }
-	/// Returns whether this flux is a left-branching bouquet or not.
+	/// Returns a reference to whether this flux is a left-branching bouquet or not.
 	inline bool& is_left_bouquet() { return m_is_left_bouquet; }
-	/// Returns whether this flux is a right-branching bouquet or not.
+	/// Returns a reference to whether this flux is a right-branching bouquet or not.
 	inline bool& is_right_bouquet() { return m_is_right_bouquet; }
 
-	/// Returns the set of dependencies.
+	/// Returns a reference to the set of dependencies.
 	std::vector<edge>& get_dependencies() { return m_dependencies; }
 #endif
 
@@ -97,8 +96,6 @@ public:
 	inline void set_left_span(uint32_t ls) { m_left_span = ls; }
 	/// Sets the right span.
 	inline void set_right_span(uint32_t rs) { m_right_span = rs; }
-	/// Sets the size.
-	inline void set_size(uint32_t s) { m_size = s; }
 	/// Sets the weight.
 	inline void set_weight(uint32_t w) { m_weight = w; }
 	/// Sets whether this flux is a left-branching bouquet or not.
@@ -127,13 +124,11 @@ private:
 	 * The set of concomitant dependencies.
 	 */
 	std::vector<edge> m_dependencies;
-	/// Size of this flux. Equal to the size of @ref dependency_flux::dependencies.
-	uint32_t m_size = 0;
 	/**
 	 * @brief Weight of this flux.
 	 *
 	 * This is the size of the largest subset of disjoint dependencies in
-	 * @ref dependency_flux::dependencies.
+	 * @ref m_dependencies.
 	 */
 	uint32_t m_weight = 0;
 
