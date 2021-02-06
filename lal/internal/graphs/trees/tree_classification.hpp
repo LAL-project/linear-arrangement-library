@@ -65,7 +65,7 @@ template<
 >
 void classify_tree(
 	const T& t,
-	std::array<char, graphs::__tree_type_size>& array
+	std::array<bool, graphs::__tree_type_size>& array
 )
 {
 	// -------------------------------------------------------------------------
@@ -74,7 +74,7 @@ void classify_tree(
 	bool is_some = false; // the type is different from 'none'
 	const auto set_type =
 	[&](const graphs::tree_type& tt) {
-		array[static_cast<size_t>(tt)] = 1;
+		array[static_cast<size_t>(tt)] = true;
 		is_some = true;
 	};
 
@@ -233,7 +233,7 @@ void classify_tree(
 	if (is_spider) { set_type(graphs::tree_type::spider); }
 
 	if (is_some) {
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
+		array[static_cast<size_t>(graphs::tree_type::none)] = false;
 	}
 }
 

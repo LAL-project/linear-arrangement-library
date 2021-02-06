@@ -167,9 +167,13 @@ public:
 
 	/// Returns whether this tree is of type @e tt.
 	inline bool is_of_type(const tree_type& tt) const {
-		return m_tree_type[static_cast<std::size_t>(tt)] == 1;
+		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
+	/**
+	 * @brief Returns the list of types as a list of strings.
+	 * @return Returns the list of types as a list of strings.
+	 */
 	std::vector<std::string> get_tree_type_list() const;
 
 protected:
@@ -187,7 +191,7 @@ protected:
 	std::vector<uint32_t> m_root_size;
 
 	/// The type of this tree
-	std::array<char,__tree_type_size> m_tree_type;
+	std::array<bool,__tree_type_size> m_tree_type;
 
 protected:
 	/**

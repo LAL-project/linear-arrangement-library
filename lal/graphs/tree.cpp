@@ -161,15 +161,15 @@ void tree::tree_only_init(uint32_t n) {
 		m_root_of[u] = u;
 		m_root_size[u] = 1;
 	}
-	fill(m_tree_type.begin(), m_tree_type.end(), 0);
-	m_tree_type[static_cast<size_t>(tree_type::none)] = 1;
+	fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
+	m_tree_type[static_cast<size_t>(tree_type::none)] = true;
 }
 
 void tree::tree_only_clear() {
 	m_root_of.clear();
 	m_root_size.clear();
-	fill(m_tree_type.begin(), m_tree_type.end(), 0);
-	m_tree_type[static_cast<size_t>(tree_type::none)] = 1;
+	fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
+	m_tree_type[static_cast<size_t>(tree_type::none)] = true;
 }
 
 void tree::tree_only_copy(const tree& t) {
