@@ -253,6 +253,7 @@ target_sources(
 		internal/avl.hpp
 		internal/data_array.hpp
 		internal/macros.hpp
+		internal/make_array_with_value.hpp
 		internal/sorted_vector.hpp
 		internal/gmp/utils.hpp
 		internal/sorting/bit_sort.hpp
