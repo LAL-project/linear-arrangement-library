@@ -79,6 +79,7 @@ HEADERS += \
 	internal/graphs/trees/tree_diameter.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
+	internal/make_array_with_value.hpp \
 	internal/sorted_vector.hpp \
 	internal/sorting/bit_sort.hpp \
 	internal/sorting/counting_sort.hpp \
