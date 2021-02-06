@@ -1,6 +1,6 @@
 TEMPLATE = lib
 
-CONFIG += c++17 static
+CONFIG += c++17
 CONFIG -= app_bundle
 QT     -= core gui
 
