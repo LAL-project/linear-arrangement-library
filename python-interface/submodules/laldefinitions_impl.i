@@ -2,12 +2,17 @@
 %{
 #include <lal/definitions.hpp>
 #include <lal/linarr/dependency_flux.hpp>
+
+// this header is need for the definition of the variable
+// __tree_structure_type_size
+#include <lal/linarr/syntactic_dependency_structure_type.hpp>
 %}
 
 // --------------
 // C++ interfaces
 
 %include stdint.i
+%include std_array.i
 %include std_vector.i
 %include std_string.i
 %include std_pair.i
@@ -31,6 +36,8 @@ namespace std {
 	%template(list_list_node) vector<vector<lal::node>>;
 	
 	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
+	
+	%template(array_of_bools_tree_structure_type) array<bool, __tree_structure_type_size>;
 }
 
 // this has to be 'included' after 'list_edge' is created!

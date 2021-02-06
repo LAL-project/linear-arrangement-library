@@ -14,7 +14,9 @@ ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
 
 # DEFINITIONS
 
-DEFS_DPHDRS			= $(LAL_INC_DIR)/lal/definitions.hpp
+DEFS_DPHDRS			= $(LAL_INC_DIR)/lal/definitions.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/dependency_flux.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure_type.hpp
 
 # NAMESPACES
 
