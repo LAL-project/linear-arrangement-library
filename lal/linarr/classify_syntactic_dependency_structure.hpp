@@ -42,16 +42,17 @@
 #pragma once
 
 // C++ includes
-#include <vector>
+#include <array>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/linarr/syntactic_dependency_structure_type.hpp>
 
 namespace lal {
 namespace linarr {
 
 /**
- * @brief Computes the type of syntactic dependency tree
+ * @brief Computes the type of syntactic dependency tree.
  *
  * Given an undirected rooted tree and a linear arrangement of its nodes,
  * computes the class of projective structure the tree belongs to.
@@ -62,7 +63,7 @@ namespace linarr {
  * @return Returns the class of projective structure. If the class could not
  * be determined the method returns @ref syntactic_dependency_structure_type::none
  */
-std::vector<bool> classify_tree_structure
+std::array<bool, __tree_structure_type_size> classify_tree_structure
 (const graphs::rooted_tree& t, const linear_arrangement& pi = {});
 
 } // -- namespace linarr

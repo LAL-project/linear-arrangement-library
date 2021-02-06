@@ -1,4 +1,4 @@
-	/*********************************************************************
+/*********************************************************************
  *
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <array>
 #include <set>
 using namespace std;
 
@@ -54,6 +55,7 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/data_array.hpp>
+#include <lal/internal/make_array_with_value.hpp>
 
 #define sort_by_index(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define sort_by_pos(a,b, P) (P[a] < P[b] ? make_pair(a,b) : make_pair(b,a))
@@ -282,14 +284,17 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	return _1ec;
 }
 
-inline vector<bool> __get_syn_dep_tree_type(
-	const rooted_tree& rT, const linear_arrangement& pi
-)
+inline array<bool, __tree_structure_type_size>
+__get_syn_dep_tree_type
+(const rooted_tree& rT, const linear_arrangement& pi)
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
 
 	bool is_some_class = false;
-	vector<bool> cl(__tree_structure_size, false);
+	array<bool, __tree_structure_type_size> cl =
+		internal::make_array_with_value
+		<bool, __tree_structure_type_size, false>();
+
 	cl[static_cast<size_t>(syndepstr_type::none)] = true;
 
 	const auto __set_type = [&](const syndepstr_type& ts) {
@@ -401,7 +406,8 @@ inline vector<bool> __get_syn_dep_tree_type(
 	return cl;
 }
 
-vector<bool> classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
+array<bool, __tree_structure_type_size>
+classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
