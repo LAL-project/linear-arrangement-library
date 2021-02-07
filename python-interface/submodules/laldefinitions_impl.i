@@ -37,7 +37,7 @@ namespace std {
 	
 	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
 	
-	%template(array_of_bools_tree_structure_type) array<bool, __tree_structure_type_size>;
+	%template(array_of_bools_tree_structure_type) array<bool, lal::linarr::__tree_structure_type_size>;
 }
 
 // this has to be 'included' after 'list_edge' is created!

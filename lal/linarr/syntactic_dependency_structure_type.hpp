@@ -124,7 +124,7 @@ syntactic_dependency_structure_type_to_string
 
 /// Number of elements within enumeration @ref syntactic_dependency_structure_type.
 constexpr std::size_t __tree_structure_type_size =
-	1 + static_cast<std::size_t>(syntactic_dependency_structure_type::none);
+	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure_type::none);
 
 } // -- namespace linarr
 } // -- namespace lal
