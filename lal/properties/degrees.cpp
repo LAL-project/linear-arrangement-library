@@ -97,7 +97,7 @@ rational mmt_degree_rational(const directed_graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.out_degree(_u) + _g.in_degree(_u); }
+		{ return _g.degree(_u); }
 	);
 }
 
