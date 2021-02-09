@@ -179,8 +179,7 @@ target_sources(
 		iterators/E_iterator.hpp
 		iterators/Q_iterator.hpp
 		# -- sources
-		iterators/E_iterator.cpp
-		iterators/Q_iterator.cpp
+				# no sources
 
 		# linarr namespace
 		# --headers
@@ -269,10 +268,11 @@ target_sources(
 		internal/graphs/trees/tree_centroid.hpp
 		internal/graphs/trees/tree_classification.hpp
 		internal/graphs/algorithms_crossings.hpp
+		internal/graphs/cycles.hpp
+		internal/graphs/enumerate_sets.hpp
+		internal/graphs/reachability.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/union_find.hpp
-		internal/graphs/cycles.hpp
-		internal/graphs/reachability.hpp
 		internal/graphs/utils.hpp
 		# -- sources
 		internal/gmp/utils.cpp
