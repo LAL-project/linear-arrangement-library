@@ -531,23 +531,23 @@ protected:
 
 	void call_union_find_add(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of,
+		uint32_t *root_size
 	) noexcept;
 	void call_union_find_add(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of,
+		uint32_t *root_size
 	) const noexcept;
 	void call_union_find_remove(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of,
+		uint32_t *root_size
 	) noexcept;
 	void call_union_find_remove(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of,
+		uint32_t *root_size
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.

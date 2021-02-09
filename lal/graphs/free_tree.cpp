@@ -193,16 +193,16 @@ void free_tree::_clear() {
 
 void free_tree::call_union_find_add(
 	node u, node v,
-	uint32_t * __restrict__ root_of,
-	uint32_t * __restrict__ root_size
+	uint32_t *root_of,
+	uint32_t *root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_add(
 	node u, node v,
-	uint32_t * __restrict__ root_of,
-	uint32_t * __restrict__ root_size
+	uint32_t *root_of,
+	uint32_t *root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
@@ -210,16 +210,16 @@ void free_tree::call_union_find_add(
 
 void free_tree::call_union_find_remove(
 	node u, node v,
-	uint32_t * __restrict__ root_of,
-	uint32_t * __restrict__ root_size
+	uint32_t *root_of,
+	uint32_t *root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_remove(
 	node u, node v,
-	uint32_t * __restrict__ root_of,
-	uint32_t * __restrict__ root_size
+	uint32_t *root_of,
+	uint32_t *root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);

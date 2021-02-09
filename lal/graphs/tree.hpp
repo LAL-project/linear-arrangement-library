@@ -158,7 +158,7 @@ public:
 	 * @param u Input node.
 	 * @return Returns the size of the connected component of @e u.
 	 */
-	inline uint32_t n_nodes_component(node u) const {
+	inline uint32_t n_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -166,7 +166,7 @@ public:
 	}
 
 	/// Returns whether this tree is of type @e tt.
-	inline bool is_of_type(const tree_type& tt) const {
+	inline bool is_of_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
@@ -233,8 +233,7 @@ protected:
 	 */
 	virtual void call_union_find_add(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of, uint32_t *root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -251,8 +250,7 @@ protected:
 	 */
 	virtual void call_union_find_add(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of, uint32_t *root_size
 	) const noexcept = 0;
 	/**
 	 * @brief A call to the union find method.
@@ -269,8 +267,7 @@ protected:
 	 */
 	virtual void call_union_find_remove(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of, uint32_t *root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -287,8 +284,7 @@ protected:
 	 */
 	virtual void call_union_find_remove(
 		node u, node v,
-		uint32_t * __restrict__ root_of,
-		uint32_t * __restrict__ root_size
+		uint32_t *root_of, uint32_t *root_size
 	) const noexcept = 0;
 };
 
