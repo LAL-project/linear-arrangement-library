@@ -61,9 +61,6 @@ using namespace graphs;
 
 namespace internal {
 
-#define degree_graph(G,v) \
-	(G.is_undirected() ? G.degree(v) : G.out_degree(v) + G.in_degree(v))
-
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<
