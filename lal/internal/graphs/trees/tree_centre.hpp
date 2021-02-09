@@ -146,11 +146,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 		++__size_trimmed;
 #endif
 
-		if constexpr (std::is_base_of_v<graphs::free_tree, T>)
-		{ trimmed_degree[u] = t.degree(u); }
-		else
-		{ trimmed_degree[u] = t.out_degree(u) + t.in_degree(u); }
-
+		trimmed_degree[u] = t.degree(u);
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);
 			++l0;
