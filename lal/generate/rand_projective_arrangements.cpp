@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <algorithm>
-#include <random>
 #include <vector>
 using namespace std;
 
@@ -67,11 +66,11 @@ rand_projective_arrgmnt::rand_projective_arrgmnt
 	assert(m_rT.is_rooted_tree());
 #endif
 	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
+		std::random_device rd;
+		m_gen = std::mt19937(rd());
 	}
 	else {
-		m_gen = mt19937(seed);
+		m_gen = std::mt19937(seed);
 	}
 
 	// initialise the random data of all vertices
@@ -106,7 +105,7 @@ linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
 		}
 
 		// shuffle the positions
-		shuffle(interval.begin(), interval.end(), m_gen);
+		std::shuffle(interval.begin(), interval.end(), m_gen);
 	}
 
 	// generate arrangement from data

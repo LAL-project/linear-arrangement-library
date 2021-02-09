@@ -42,7 +42,6 @@
 #include <lal/generate/all_lab_free_trees.hpp>
 
 // C++ includes
-#include <algorithm>
 #include <limits>
 using namespace std;
 

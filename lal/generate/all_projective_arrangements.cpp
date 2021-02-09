@@ -83,7 +83,7 @@ void all_projective_arrangements::next() {
 	while (u < m_rT.n_nodes() and not has_perm) {
 		vector<node>& inter_u = m_intervals[u];
 
-		has_perm = next_permutation(inter_u.begin(), inter_u.end());
+		has_perm = std::next_permutation(inter_u.begin(), inter_u.end());
 		if (not has_perm) {
 			initialise_interval_node(u);
 		}

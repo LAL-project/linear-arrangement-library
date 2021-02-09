@@ -43,7 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <algorithm>
 #include <map>
 using namespace std;
 
