@@ -284,13 +284,13 @@ string assign_name(
 	string *names, size_t idx
 )
 {
-	if (t.degree(v) == 0) {
+	if (t.out_degree(v) == 0) {
 		return string("10");
 	}
 
 	// make childrens' names
 	const size_t begin_idx = idx;
-	for (node u : t.get_neighbours(v)) {
+	for (node u : t.get_out_neighbours(v)) {
 		names[idx] = assign_name(t,u, names, idx+1);
 		++idx;
 	}

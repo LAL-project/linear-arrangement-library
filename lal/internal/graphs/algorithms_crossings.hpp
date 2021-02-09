@@ -64,7 +64,9 @@ namespace internal {
  * @return Returns \f$C\f$.
  */
 uint32_t n_C_brute_force
-(const graphs::graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+uint32_t n_C_brute_force
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -77,7 +79,9 @@ uint32_t n_C_brute_force
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_brute_force_list
-(const graphs::graph& g, const std::vector<linear_arrangement>& pis);
+(const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis);
+std::vector<uint32_t> n_C_brute_force_list
+(const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis);
 
 // -----------------------------------------------------------------------------
 

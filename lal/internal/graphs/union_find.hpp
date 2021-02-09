@@ -53,7 +53,7 @@
 namespace lal {
 namespace internal {
 
-template<class T>
+template<typename T>
 void UnionFind_update_roots_add(
 	const T& t, node u, node v,
 	node *root_of,
@@ -106,7 +106,7 @@ void UnionFind_update_roots_add(
 	bfs.start_at(child);
 }
 
-template<class T>
+template<typename T>
 void UnionFind_update_roots_remove(
 	const T& t, node u, node v,
 	node *root_of,

@@ -147,7 +147,7 @@ public:
 	/* SETTERS */
 
 	/// Sets whether this graph is normalised or not.
-	inline void set_normalised(bool v = true) { m_normalised = v; }
+	inline void set_normalised(bool v = true) noexcept { m_normalised = v; }
 	/**
 	 * @brief Sets the number of edges of this graph.
 	 *
@@ -156,46 +156,21 @@ public:
 	 * It is left up to the user to ensure that the value is correct.
 	 * @param ne The number of edges.
 	 */
-	inline void set_num_edges(uint32_t ne) { m_num_edges = ne; }
+	inline void set_num_edges(uint32_t ne) noexcept { m_num_edges = ne; }
 
 	/* GETTERS */
 
 	/**
-	 * @brief Returns the neighbourhood of node @e u.
-	 * @param u Node.
-	 * @return In undirected graphs, returns the list of nodes adjacent to
-	 * node @e u. In a directed graph, returns the outgoing nodes.
+	 * @brief Returns all independent pairs of edges of this graph.
+	 *
+	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
+	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
+	 * no nodes.
 	 */
-	virtual const neighbourhood& get_neighbours(node u) const = 0;
-
-	/**
-	 * @brief Returns the out-neighbours of node @e u.
-	 * @param u Node
-	 * @return Returns the list of nodes leaving node @e u.
-	 */
-	virtual const neighbourhood& get_out_neighbours(node u) const = 0;
-	/**
-	 * @brief Returns the in-neighbours of node @e u.
-	 * @param u Node
-	 * @return Returns the list of nodes entering at node @e u.
-	 */
-	virtual const neighbourhood& get_in_neighbours(node u) const = 0;
-
-	/**
-	 * @brief Returns the number of neighbours of @e u.
-	 * @param u Node to be queried.
-	 * @return In undirected graphs, returns the number of neighbours. In
-	 * a directed graph, returns the number of outgoing edges.
-	 */
-	virtual uint32_t degree(node u) const = 0;
-
-	/// Returns the out-degree of a node.
-	virtual uint32_t out_degree(node u) const = 0;
-	/// Returns the in-degree of a node.
-	virtual uint32_t in_degree(node u) const = 0;
+	virtual std::vector<edge_pair> Q() const noexcept = 0;
 
 	/// Returns true if node @e u is in this graph.
-	inline bool has_node(node u) const {
+	inline bool has_node(node u) const noexcept {
 		return u < n_nodes();
 	}
 
@@ -203,17 +178,17 @@ public:
 	virtual bool has_edge(node u, node v) const = 0;
 
 	/// Returns the number of ndoes.
-	inline uint32_t n_nodes() const {
+	inline uint32_t n_nodes() const noexcept {
 		return static_cast<uint32_t>(m_adjacency_list.size());
 	}
 
 	/// Returns the number of edges.
-	inline uint32_t n_edges() const {
+	inline uint32_t n_edges() const noexcept {
 		return m_num_edges;
 	}
 
 	/// Returns all edges of this graph.
-	std::vector<edge> edges() const;
+	virtual std::vector<edge> edges() const noexcept = 0;
 
 	/**
 	 * @brief Returns whether this graph is normalised or not.
@@ -227,9 +202,9 @@ public:
 	}
 
 	/// Returns whether this graph is directed or not.
-	virtual bool is_directed() const = 0;
+	virtual bool is_directed() const noexcept = 0;
 	/// Returns whether this graph is undirected or not.
-	virtual bool is_undirected() const = 0;
+	virtual bool is_undirected() const noexcept = 0;
 
 protected:
 	/// Data structure that implements the graph.
@@ -275,16 +250,6 @@ protected:
 	 * the call and @e g is also normalised.
 	 */
 	void __disjoint_union(const graph& g);
-
-	/**
-	 * @brief Returns all independent pairs of edges of this graph.
-	 *
-	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-	 * no nodes.
-	 * @param q The size of \f$Q\f$.
-	 */
-	std::vector<edge_pair> Q(uint64_t q) const;
 
 	/// Do some extra work after an edge has been added.
 	virtual void extra_work_per_edge_add(node u, node v);

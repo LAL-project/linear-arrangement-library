@@ -98,13 +98,7 @@ inline uint32_t __compute_C_dyn_prog(
 
 		internal::get_bool_neighbours<G>(g, u, bn);
 
-		uint32_t k = 0;
-		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
-			k = g.out_degree(u) + g.in_degree(u);
-		}
-		else {
-			k = g.degree(u);
-		}
+		uint32_t k = g.degree(u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -169,45 +163,41 @@ inline uint32_t __compute_C_dyn_prog(
 
 	uint32_t C = 0;
 
+	const auto process_neighbours =
+	[&](position pu, node v) -> void {
+		// 'u' and 'v' is an edge of the graph.
+		// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
+		// then 'u' is "in front of" 'v' in the linear arrangement.
+		// This explains the first condition 'pu < pi[v]'.
+		// The second condition '2 <= pi[v] and pi[v] < n -1' is used
+		// to avoid making illegal memory accesses.
+		// --
+		/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+			C += K[idx(pu,pi[v]-2, n-3)];
+		}*/
+		// --
+		if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
+			C += K[idx(pu,pi[v]-2, n-3)];
+		}
+	};
+
 	for (position pu = 0; pu < n - 3; ++pu) {
 		const node u = inv_pi[pu];
 
-		const neighbourhood& Nu = g.get_neighbours(u);
-		for (const node& v : Nu) {
-
-			// 'u' and 'v' is an edge of the graph.
-			// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
-			// then 'u' is "in front of" 'v' in the linear arrangement.
-			// This explains the first condition 'pu < pi[v]'.
-			// The second condition '2 <= pi[v] and pi[v] < n -1' is used
-			// to avoid making illegal memory accesses.
-			// --
-			/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-				C += K[idx(pu,pi[v]-2, n-3)];
-			}*/
-			// --
-			if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-				C += K[idx(pu,pi[v]-2, n-3)];
-			}
-		}
 		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+			const neighbourhood& Nu = g.get_out_neighbours(u);
+			for (const node& v : Nu) {
+				process_neighbours(pu, v);
+			}
 			const neighbourhood& Nu_in = g.get_in_neighbours(u);
 			for (const node& v : Nu_in) {
-
-				// 'u' and 'v' is an edge of the graph.
-				// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
-				// then 'u' is "in front of" 'v' in the linear arrangement.
-				// This explains the first condition 'pu < pi[v]'.
-				// The second condition '2 <= pi[v] and pi[v] < n -1' is used
-				// to avoid making illegal memory accesses.
-				// --
-				/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-					C += K[idx(pu,pi[v]-2, n-3)];
-				}*/
-				// --
-				if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-					C += K[idx(pu,pi[v]-2, n-3)];
-				}
+				process_neighbours(pu, v);
+			}
+		}
+		else {
+			const neighbourhood& Nu = g.get_neighbours(u);
+			for (const node& v : Nu) {
+				process_neighbours(pu, v);
 			}
 		}
 	}

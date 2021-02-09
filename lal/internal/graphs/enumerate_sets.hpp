@@ -42,66 +42,39 @@
 #pragma once
 
 // C++ includes
-#include <algorithm>
+#include <vector>
 
 // lal includes
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/undirected_graph.hpp>
+#include <lal/iterators/Q_iterator.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
 namespace internal {
 
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
- * list of 0-1 values.
- *
- * Sets to 1 the positions in @e neighs that correspond to the nodes
- * neighours of @e u.
- * @param g Input graph.
- * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
- * @pre The contents of @e neighs must be all 0 (or false).
- */
-template<
-	class G,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
-	bool> = true
->
-inline void get_bool_neighbours(
-	const G& g, node u, char *neighs
-)
-{
-	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
-		const auto& in_u = g.get_in_neighbours(u);
-		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
-		const auto& out_u = g.get_out_neighbours(u);
-		std::for_each(out_u.begin(), out_u.end(), [&](node v) { neighs[v] = 1; });
+template<typename G>
+std::vector<edge_pair> Q(const G& g, uint64_t qs) {
+	std::vector<edge_pair> q(qs);
+
+	auto vec_it = q.begin();
+	iterators::Q_iterator<G> q_it(g);
+	while (q_it.has_next()) {
+		q_it.next();
+		*vec_it++ = q_it.get_pair();
 	}
-	else {
-		const auto& neighs_u = g.get_neighbours(u);
-		std::for_each(neighs_u.begin(), neighs_u.end(), [&](node v) { neighs[v] = 1; });
-	}
+	return q;
 }
 
-/*
- * Append adjacency list 'source' to list 'target'
- */
-inline void append_adjacency_lists(
-	std::vector<neighbourhood>& target,
-	const std::vector<neighbourhood>& source
-)
-{
-	const uint32_t n_target = static_cast<uint32_t>(target.size());
+template<typename G>
+std::vector<edge> E(const G& g) {
+	std::vector<edge> e(g.n_edges());
 
-	for (size_t u = 0; u < source.size(); ++u) {
-		// add new edges by appending all the neighbours of 'u' in 'g'
-		target.push_back( source[u] );
-		// relabel the nodes
-		for (node& v : target.back()) {
-			v += n_target;
-		}
+	auto vec_it = e.begin();
+	iterators::E_iterator<G> e_it(g);
+	while (e_it.has_next()) {
+		e_it.next();
+		*vec_it++ = e_it.get_edge();
 	}
+	return e;
 }
 
 } // -- namespace internal

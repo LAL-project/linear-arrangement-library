@@ -50,6 +50,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/trees/is_tree.hpp>
 #include <lal/internal/graphs/trees/tree_classification.hpp>
+#include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {
 namespace graphs {
@@ -188,6 +189,40 @@ void free_tree::_init(uint32_t n) {
 void free_tree::_clear() {
 	undirected_graph::_clear();
 	tree::tree_only_clear();
+}
+
+void free_tree::call_union_find_add(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) noexcept
+{
+	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+}
+void free_tree::call_union_find_add(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) const noexcept
+{
+	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+}
+
+void free_tree::call_union_find_remove(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) noexcept
+{
+	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
+}
+void free_tree::call_union_find_remove(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) const noexcept
+{
+	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
 }
 
 void free_tree::copy_full_free_tree(const free_tree& f) {

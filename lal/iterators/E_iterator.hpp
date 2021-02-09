@@ -42,10 +42,12 @@
 #pragma once
 
 // C++ includes
-#include <utility>
+#include <bits/stl_pair.h>
+#include <tuple>
 
 // lal includes
-#include <lal/graphs/graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 
 namespace lal {
 namespace iterators {
@@ -68,43 +70,91 @@ namespace iterators {
  *		E_iterator it(g); // g is a graph
  *		while (it.has_next()) {
  *			it.next();
- *			edge e = it.get_edge();
+ *			const edge e = it.get_edge();
  *			// ...
  *		}
  * @endcode
  */
+template<
+	typename GRAPH,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, GRAPH>,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, GRAPH> ||
+		std::is_base_of_v<graphs::undirected_graph, GRAPH>
+		, bool
+	> = true
+>
 class E_iterator {
 public:
 	/**
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	E_iterator(const graphs::graph& g);
-	/// Destructor.
-	~E_iterator();
+	E_iterator(const GRAPH& g) noexcept : m_G(g) {
+		reset();
+	}
+	/// Default destructor.
+	~E_iterator() = default;
 
 	/// Returns true if there are edges left to be iterated over.
-	bool has_next() const;
+	inline bool has_next() const noexcept { return m_exists_next; }
 
 	/// Moves the iterator to the next edge.
-	void next();
+	void next() noexcept {
+		m_cur_edge = make_current_edge();
+
+		// find the next edge
+		std::tie(m_exists_next, m_cur) = find_next_edge();
+	}
 
 	/// Returns the current edge.
-	edge get_edge() const;
+	inline edge get_edge() const noexcept { return m_cur_edge; }
 
 	/**
 	 * @brief Sets the iterator at the beginning of the set of edges.
 	 * @post The next call to method @ref next() returns the first edge
 	 * of the graph.
 	 */
-	void reset();
+	void reset() {
+		m_exists_next = true;
+
+		m_cur.first = 0;
+		m_cur.second = static_cast<size_t>(-1);
+
+		auto [found, new_pointer] = find_next_edge();
+		if (not found) {
+			// if we can't find the next edge, then there is no next...
+			m_exists_next = false;
+			return;
+		}
+
+		// since an edge was found, store it in current
+		m_cur = new_pointer;
+		m_cur_edge = make_current_edge();
+
+		// how do we know there is a next edge?
+		// well, find it!
+		auto [f2, _] = find_next_edge();
+		m_exists_next = f2;
+
+#if defined DEBUG
+		if (m_G.n_edges() == 1) {
+			assert(m_exists_next == false);
+		}
+#endif
+
+		// this is the case of the graph having only one edge
+		if (not m_exists_next) {
+			m_exists_next = true;
+		}
+	}
 
 private:
 	typedef std::pair<node,std::size_t> E_pointer;
 
 private:
 	/// The graph whose edges have to be iterated on.
-	const graphs::graph& m_G;
+	const GRAPH& m_G;
 	/// Pointer to the next edge.
 	E_pointer m_cur;
 	/// Is there a next edge to iterate over?
@@ -114,28 +164,71 @@ private:
 
 private:
 	/// Returns the edge pointed by @ref m_cur.
-	edge make_current_edge() const;
+	edge make_current_edge() const noexcept {
+		node s, t;
+		if constexpr (is_directed) {
+			s = m_cur.first;
+			t = m_G.get_out_neighbours(s)[m_cur.second];
+		}
+		else {
+			s = m_cur.first;
+			t = m_G.get_neighbours(s)[m_cur.second];
+		}
+		return edge(s,t);
+	}
 
-	/**
-	 * @brief Finds the next edge.
-	 *
-	 * Calls @ref find_next_edge_directed() or @ref find_next_edge_undirected().
-	 */
-	std::pair<bool, E_pointer> find_next_edge() const;
 	/**
 	 * @brief Finds the next edge on a directed graph.
 	 * @return Returns a pair of a Boolean indicating if the next edge is
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
-	std::pair<bool, E_pointer> find_next_edge_directed() const;
+	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
+	std::pair<bool, E_pointer> find_next_edge() const {
+		const uint32_t n = m_G.n_nodes();
+
+		node s = m_cur.first;
+		std::size_t pt = m_cur.second;
+		bool found = false;
+
+		++pt;
+		if (s < n and pt < m_G.out_degree(s)) {
+			found = true;
+		}
+		else {
+			pt = 0;
+			++s;
+			while (s < n and m_G.out_degree(s) == 0) { ++s; }
+			found = s < n;
+		}
+		return make_pair(found, E_pointer(s, pt));
+	}
 	/**
 	 * @brief Finds the next edge on an undirected graph.
 	 * @return Returns a pair of a Boolean indicating if the next edge is
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
-	std::pair<bool, E_pointer> find_next_edge_undirected() const;
+	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
+	std::pair<bool, E_pointer> find_next_edge() const {
+		const uint32_t n = m_G.n_nodes();
+
+		node s = m_cur.first;
+		std::size_t pt = m_cur.second + 1;
+		bool found = false;
+
+		while (s < n and not found) {
+			const auto& Ns = m_G.get_neighbours(s);
+			while (pt < Ns.size() and s > Ns[pt]) { ++pt; }
+
+			found = pt < Ns.size();
+			if (not found) {
+				++s;
+				pt = 0;
+			}
+		}
+		return make_pair(found, E_pointer(s, pt));
+	}
 };
 
 } // -- namespace iterators

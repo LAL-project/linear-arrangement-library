@@ -217,7 +217,7 @@ void calculate_bidirectional_sizes(
 		}
 	}
 	else {
-		for (node y : t.get_out_neighbours(x)) {
+		for (node y : t.get_neighbours(x)) {
 			__lal::calculate_bidirectional_sizes(t,n, x, y, sizes_edge_it);
 		}
 	}

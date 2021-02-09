@@ -208,7 +208,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	data_array<edge_size> L(n - 1);
 	{
 	auto it = L.begin();
-	E_iterator Eit(t);
+	E_iterator<rooted_tree> Eit(t);
 	while (Eit.has_next()) {
 		Eit.next();
 		const edge e = Eit.get_edge();

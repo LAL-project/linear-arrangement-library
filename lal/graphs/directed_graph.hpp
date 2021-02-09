@@ -239,29 +239,19 @@ public:
 
 	/* GETTERS */
 
-	/**
-	 * @brief Returns all independent pairs of edges of this graph.
-	 *
-	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-	 * no nodes.
-	 */
-	std::vector<edge_pair> Q() const;
+	std::vector<edge_pair> Q() const noexcept;
+
+	std::vector<edge> edges() const noexcept;
 
 	/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
 	bool has_edge(node u, node v) const;
-
-	/// Same as @ref get_out_neighbours.
-	inline const neighbourhood& get_neighbours(node u) const {
-		return get_out_neighbours(u);
-	}
 
 	/**
 	 * @brief Returns the out-neighbours of node @e u
 	 * @param u Node
 	 * @return Returns the list of nodes leaving node @e u.
 	 */
-	inline const neighbourhood& get_out_neighbours(node u) const {
+	inline const neighbourhood& get_out_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -272,35 +262,35 @@ public:
 	 * @param u Node
 	 * @return Returns the list of nodes entering at node @e u.
 	 */
-	inline const neighbourhood& get_in_neighbours(node u) const {
+	inline const neighbourhood& get_in_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_in_adjacency_list[u];
 	}
 
-	/// Same as @ref out_degree.
-	inline uint32_t degree(node u) const {
-		return out_degree(u);
+	/// Same as @ref out_degree + @ref in_degree.
+	inline uint32_t degree(node u) const noexcept {
+		return out_degree(u) + in_degree(u);
 	}
 
 	/// Returns the out-degree of a node.
-	inline uint32_t out_degree(node u) const {
+	inline uint32_t out_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return static_cast<uint32_t>(m_adjacency_list[u].size());
 	}
 	/// Returns the in-degree of a node.
-	inline uint32_t in_degree(node u) const {
+	inline uint32_t in_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return static_cast<uint32_t>(m_in_adjacency_list[u].size());
 	}
 
-	inline bool is_directed() const { return true; }
-	inline bool is_undirected() const { return false; }
+	inline bool is_directed() const noexcept { return true; }
+	inline bool is_undirected() const noexcept { return false; }
 
 	/**
 	 * @brief Converts this directed graph into an undirected graph.

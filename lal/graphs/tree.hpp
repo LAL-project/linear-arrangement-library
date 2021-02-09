@@ -217,6 +217,79 @@ protected:
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
 	void fill_union_find();
+
+	/**
+	 * @brief A call to the union find method.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::internal namespace which updates the union find data structure
+	 * under addition of an edge.
+	 * @param u Node that is connected to @e v.
+	 * @param v Node that is connected to @e u.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void call_union_find_add(
+		node u, node v,
+		uint32_t * __restrict__ root_of,
+		uint32_t * __restrict__ root_size
+	) noexcept = 0;
+	/**
+	 * @brief A const call to the union find method.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::internal namespace which updates the union find data structure
+	 * under addition of an edge.
+	 * @param u Node that is connected to @e v.
+	 * @param v Node that is connected to @e u.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void call_union_find_add(
+		node u, node v,
+		uint32_t * __restrict__ root_of,
+		uint32_t * __restrict__ root_size
+	) const noexcept = 0;
+	/**
+	 * @brief A call to the union find method.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::internal namespace which updates the union find data structure
+	 * under removal of an edge.
+	 * @param u Node that is connected to @e v.
+	 * @param v Node that is connected to @e u.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void call_union_find_remove(
+		node u, node v,
+		uint32_t * __restrict__ root_of,
+		uint32_t * __restrict__ root_size
+	) noexcept = 0;
+	/**
+	 * @brief A const call to the union find method.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::internal namespace which updates the union find data structure
+	 * under removal of an edge.
+	 * @param u Node that is connected to @e v.
+	 * @param v Node that is connected to @e u.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void call_union_find_remove(
+		node u, node v,
+		uint32_t * __restrict__ root_of,
+		uint32_t * __restrict__ root_size
+	) const noexcept = 0;
 };
 
 } // -- namespace graphs

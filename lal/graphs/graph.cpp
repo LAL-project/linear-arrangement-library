@@ -51,15 +51,12 @@
 using namespace std;
 
 // lal includes
-#include <lal/iterators/E_iterator.hpp>
-#include <lal/iterators/Q_iterator.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
 using namespace numeric;
-using namespace iterators;
 
 namespace graphs {
 
@@ -132,18 +129,6 @@ bool graph::check_normalised() {
 
 /* GETTERS */
 
-vector<edge> graph::edges() const {
-	vector<edge> e(n_edges());
-
-	auto it = e.begin();
-	E_iterator e_it(*this);
-	while (e_it.has_next()) {
-		e_it.next();
-		*it++ = e_it.get_edge();
-	}
-	return e;
-}
-
 /* PROTECTED */
 
 void graph::_init(uint32_t n) {
@@ -180,34 +165,13 @@ void graph::__disjoint_union(const graph& g) {
 	assert(is_directed() ? g.is_directed() : g.is_undirected());
 #endif
 
-	const uint32_t n = n_nodes();
+	// update number of edges
 	m_num_edges += g.m_num_edges;
-
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		// add new edges by appending all the neighbours of 'u' in 'g'
-		m_adjacency_list.push_back( g.get_neighbours(u) );
-		// relabel the nodes
-		for (node& v : m_adjacency_list.back()) {
-			v += n;
-		}
-	}
 
 	// If one or none of the two graphs involved are normalised,
 	// the result is not normalised.
 	// If both graphs are normalised, the result is normalised.
 	m_normalised = m_normalised and g.is_normalised();
-}
-
-vector<edge_pair> graph::Q(uint64_t qs) const {
-	vector<edge_pair> q(qs);
-
-	auto vec_it = q.begin();
-	Q_iterator q_it(*this);
-	while (q_it.has_next()) {
-		q_it.next();
-		*vec_it++ = q_it.get_pair();
-	}
-	return q;
 }
 
 void graph::extra_work_per_edge_add(node, node) {

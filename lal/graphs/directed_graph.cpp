@@ -45,14 +45,15 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <algorithm>
+#include <bits/stl_algobase.h>
 #include <cmath>
-#include <set>
 using namespace std;
 
 // lal includes
 #include <lal/internal/data_array.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/internal/graphs/enumerate_sets.hpp>
+#include <lal/internal/graphs/utils.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
 
@@ -272,30 +273,26 @@ directed_graph& directed_graph::remove_edges(
 }
 
 void directed_graph::disjoint_union(const directed_graph& g) {
-	// number of vertices before adding the out-neighbours
-	const uint32_t n = n_nodes();
-
 	// this call updates the out-neighbours adjacency list,
 	// as well as the number of edges and the graph's normalisation
 	graph::__disjoint_union(g);
 
-	// update the in-neighbours adjacency list
-	for (node u = 0; u < g.n_nodes(); ++u) {
-		// add new edges by appending all the neighbours of 'u' in 'g'
-		m_in_adjacency_list.push_back( g.get_in_neighbours(u) );
-		// relabel the nodes
-		for (node& v : m_in_adjacency_list.back()) {
-			v += n;
-		}
-	}
+	// update the neighbours adjacency list
+	internal::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
+	internal::append_adjacency_lists(m_in_adjacency_list, g.m_in_adjacency_list);
 }
 
 /* SETTERS */
 
 /* GETTERS */
 
-vector<edge_pair> directed_graph::Q() const {
-	return graph::Q(properties::size_Q(*this));
+vector<edge_pair> directed_graph::Q() const noexcept {
+	const auto qs = properties::size_Q(*this);
+	return internal::Q(*this, qs);
+}
+
+vector<edge> directed_graph::edges() const noexcept {
+	return internal::E(*this);
 }
 
 bool directed_graph::has_edge(node u, node v) const {

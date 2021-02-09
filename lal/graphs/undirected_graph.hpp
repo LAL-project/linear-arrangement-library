@@ -233,21 +233,16 @@ public:
 
 	/* GETTERS */
 
-	/**
-	 * @brief Returns all independent pairs of edges of this graph.
-	 *
-	 * The set \f$Q(G)\f$ is defined as the pairs of edges of \f$G\f$,
-	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
-	 * no nodes.
-	 */
-	std::vector<edge_pair> Q() const;
+	std::vector<edge_pair> Q() const noexcept;
+
+	std::vector<edge> edges() const noexcept;
 
 	/**
 	 * @brief Returns the neighbourhood of node @e u.
 	 * @param u Node.
 	 * @return Returns the list of nodes adjacent to node @e u.
 	 */
-	inline const neighbourhood& get_neighbours(node u) const {
+	inline const neighbourhood& get_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -255,48 +250,22 @@ public:
 	}
 
 	/**
-	 * @brief Returns the out-neighbours of node @e u.
-	 *
-	 * This is the same as @ref get_neighbours.
-	 * @param u Node
-	 * @return Returns the list of nodes leaving node @e u.
-	 */
-	inline const neighbourhood& get_out_neighbours(node u) const {
-		return get_neighbours(u);
-	}
-	/**
-	 * @brief Returns the in-neighbours of node @e u.
-	 *
-	 * This is the same as @ref get_neighbours.
-	 * @param u Node
-	 * @return Returns the list of nodes entering at node @e u.
-	 */
-	inline const neighbourhood& get_in_neighbours(node u) const {
-		return get_neighbours(u);
-	}
-
-	/**
 	 * @brief Returns the number of neighbours of @e u.
 	 * @param u Node to be queried.
 	 * @return Returns the number of adjacent nodes.
 	 */
-	inline uint32_t degree(node u) const {
+	inline uint32_t degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return static_cast<uint32_t>(m_adjacency_list[u].size());
 	}
 
-	/// Same as @ref degree
-	inline uint32_t out_degree(node u) const { return degree(u); }
-	/// Same as @ref degree
-	inline uint32_t in_degree(node u) const { return degree(u); }
-
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 	bool has_edge(node u, node v) const;
 
-	inline bool is_directed() const { return false; }
-	inline bool is_undirected() const { return true; }
+	inline bool is_directed() const noexcept { return false; }
+	inline bool is_undirected() const noexcept { return true; }
 
 protected:
 	/// Initialises memory of @ref undirected_graph and @ref graph classes.

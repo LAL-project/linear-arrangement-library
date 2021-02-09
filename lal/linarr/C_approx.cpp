@@ -148,12 +148,12 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 	return to_uint32(f/2);
 }
 
-inline
-rational __get_approximate_C_2_rational(const graph& g, const linear_arrangement& pi) {
+template<typename GRAPH>
+rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement& pi) {
 	rational Ec2(0);
 	const uint32_t n = g.n_nodes();
 
-	iterators::Q_iterator q(g);
+	iterators::Q_iterator<GRAPH> q(g);
 	while (q.has_next()) {
 		q.next();
 		const auto [st, uv] = q.get_pair();
@@ -180,15 +180,32 @@ rational __get_approximate_C_2_rational(const graph& g, const linear_arrangement
 	return Ec2;
 }
 
-rational approximate_C_rational(const graph& g, const linear_arrangement& pi) {
+rational approximate_C_rational
+(const undirected_graph& g, const linear_arrangement& pi)
+{
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement(__get_approximate_C_2_rational, g, pi);
+	return internal::call_with_empty_arrangement
+			(__get_approximate_C_2_rational<undirected_graph>, g, pi);
 }
 
-double approximate_C(const graph& g, const linear_arrangement& pi) {
+rational approximate_C_rational
+(const directed_graph& g, const linear_arrangement& pi)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
+	return internal::call_with_empty_arrangement
+			(__get_approximate_C_2_rational<directed_graph>, g, pi);
+}
+
+double approximate_C(const undirected_graph& g, const linear_arrangement& pi) {
+	return approximate_C_rational(g, pi).to_double();
+}
+double approximate_C(const directed_graph& g, const linear_arrangement& pi) {
 	return approximate_C_rational(g, pi).to_double();
 }
 

@@ -141,7 +141,21 @@ std::vector<uint32_t> n_crossings_list
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational approximate_C_rational
-(const graphs::graph& g, const linear_arrangement& pi = {});
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
+
+/**
+ * @brief Approximates the number of crossings.
+ *
+ * Given a linear arrangement, which determines the length of the edges, predict
+ * the number of crossings conditioned by the length of the edges in the
+ * linear arrangement. Implementation of \cite Ferrer2014a. If the arrangement
+ * is not specified, the identity arrangement is used.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
+ */
+numeric::rational approximate_C_rational
+(const graphs::directed_graph& g, const linear_arrangement& pi = {});
 
 /**
  * @brief Approximates the number of crossings.
@@ -151,7 +165,19 @@ numeric::rational approximate_C_rational
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return The return value is a floating point value.
  */
-double approximate_C(const graphs::graph& g, const linear_arrangement& pi = {});
+double approximate_C
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
+
+/**
+ * @brief Approximates the number of crossings.
+ *
+ * See @ref approximate_C_rational for details.
+ * @param g Input graph.
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @return The return value is a floating point value.
+ */
+double approximate_C
+(const graphs::directed_graph& g, const linear_arrangement& pi = {});
 
 } // -- namespace linarr
 } // -- namespace lal

@@ -56,13 +56,15 @@ using namespace iterators;
 
 namespace linarr {
 
+// -----------------------------------------------------------------------------
 /* D */
 
-inline uint32_t __sum_length_edges(const graph& g, const linear_arrangement& pi) {
+template<typename G>
+uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi) {
 	// sum of lengths
 	uint32_t l = 0;
 
-	E_iterator it(g);
+	E_iterator<G> it(g);
 	while (it.has_next()) {
 		it.next();
 		const auto [u,v] = it.get_edge();
@@ -73,30 +75,55 @@ inline uint32_t __sum_length_edges(const graph& g, const linear_arrangement& pi)
 	return l;
 }
 
-uint32_t sum_length_edges(const graph& g, const linear_arrangement& pi) {
+uint32_t sum_length_edges(const directed_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement(__sum_length_edges, g, pi);
+	return internal::call_with_empty_arrangement
+			(__sum_length_edges<directed_graph>, g, pi);
+}
+uint32_t sum_length_edges(const undirected_graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
+	return internal::call_with_empty_arrangement
+			(__sum_length_edges<undirected_graph>, g, pi);
 }
 
+// -----------------------------------------------------------------------------
 /* MDD */
 
-inline rational __MDD_rational(const graph& g, const linear_arrangement& pi) {
+template<typename G>
+inline rational __MDD_rational(const G& g, const linear_arrangement& pi) {
 	const uint32_t D = sum_length_edges(g, pi);
 	return rational_from_ui(D, g.n_edges());
 }
 
-rational mean_dependency_distance_rational(const graph& g, const linear_arrangement& pi) {
+rational mean_dependency_distance_rational(const directed_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement(__MDD_rational, g, pi);
+	return internal::call_with_empty_arrangement
+			(__MDD_rational<directed_graph>, g, pi);
+}
+rational mean_dependency_distance_rational(const undirected_graph& g, const linear_arrangement& pi) {
+#if defined DEBUG
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+
+	return internal::call_with_empty_arrangement
+			(__MDD_rational<undirected_graph>, g, pi);
 }
 
-double mean_dependency_distance(const graph& g, const linear_arrangement& pi) {
+// -----------------------------------------------------------------------------
+
+double mean_dependency_distance(const directed_graph& g, const linear_arrangement& pi) {
+	return mean_dependency_distance_rational(g, pi).to_double();
+}
+double mean_dependency_distance(const undirected_graph& g, const linear_arrangement& pi) {
 	return mean_dependency_distance_rational(g, pi).to_double();
 }
 

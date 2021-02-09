@@ -73,6 +73,7 @@ HEADERS += \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/data_array.hpp \
+	internal/graphs/enumerate_sets.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
 	internal/graphs/trees/retrieve_subtree.hpp \
 	internal/graphs/trees/tree_classification.hpp \
@@ -178,8 +179,6 @@ SOURCES += \
     io/treebank_dataset_processor.cpp \
     io/treebank_dataset_reader.cpp \
 	io/treebank_reader.cpp \
-	iterators/E_iterator.cpp \
-	iterators/Q_iterator.cpp \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \

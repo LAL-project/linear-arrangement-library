@@ -69,7 +69,7 @@ inline bool __find_cycle
 	visited[u] = 1;
 
 	in_stack[u] = 1;
-	for (node v : g.get_neighbours(u)) {
+	for (node v : g.get_out_neighbours(u)) {
 		if (in_stack[v]) {
 			return true;
 		}

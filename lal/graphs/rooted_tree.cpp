@@ -55,6 +55,7 @@ using namespace std;
 #include <lal/internal/graphs/trees/retrieve_subtree.hpp>
 #include <lal/internal/graphs/trees/size_subtrees.hpp>
 #include <lal/internal/graphs/trees/tree_classification.hpp>
+#include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {
 using namespace internal;
@@ -196,6 +197,7 @@ void rooted_tree::disjoint_union(
 
 		const node this_r = get_root();
 		const node t_r = prev_n + t.get_root();
+
 		if (size_subtrees_valid() and t.size_subtrees_valid()) {
 			// update the size under the root
 			m_size_subtrees[this_r] += m_size_subtrees[t_r];
@@ -405,6 +407,40 @@ void rooted_tree::_clear() {
 	tree::tree_only_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
+}
+
+void rooted_tree::call_union_find_add(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) noexcept
+{
+	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+}
+void rooted_tree::call_union_find_add(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) const noexcept
+{
+	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+}
+
+void rooted_tree::call_union_find_remove(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) noexcept
+{
+	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
+}
+void rooted_tree::call_union_find_remove(
+	node u, node v,
+	uint32_t * __restrict__ root_of,
+	uint32_t * __restrict__ root_size
+) const noexcept
+{
+	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
 }
 
 void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {

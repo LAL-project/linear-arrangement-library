@@ -45,12 +45,16 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <algorithm>
+#include <bits/stl_algobase.h>
 #include <cmath>
 using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>
+#include <lal/iterators/E_iterator.hpp>
+#include <lal/iterators/Q_iterator.hpp>
+#include <lal/internal/graphs/enumerate_sets.hpp>
+#include <lal/internal/graphs/utils.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
 
 namespace lal {
@@ -226,16 +230,24 @@ undirected_graph& undirected_graph::remove_edges(
 }
 
 void undirected_graph::disjoint_union(const undirected_graph& g) {
+	// updates the number of edges and other base-class related attributes
 	graph::__disjoint_union(g);
-	// nothing else to do
+
+	// update the adjacency list
+	internal::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
 }
 
 /* SETTERS */
 
 /* GETTERS */
 
-vector<edge_pair> undirected_graph::Q() const {
-	return graph::Q(properties::size_Q(*this));
+vector<edge_pair> undirected_graph::Q() const noexcept {
+	const auto qs = properties::size_Q(*this);
+	return internal::Q(*this, qs);
+}
+
+vector<edge> undirected_graph::edges() const noexcept {
+	return internal::E(*this);
 }
 
 bool undirected_graph::has_edge(node u, node v) const {

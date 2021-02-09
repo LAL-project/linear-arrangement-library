@@ -60,7 +60,7 @@ using namespace iterators;
 namespace internal {
 
 inline uint32_t __compute_C_brute_force_undir(
-	const graph& g, const linear_arrangement& pi,
+	const undirected_graph& g, const linear_arrangement& pi,
 	node * __restrict__ T
 )
 {
@@ -112,7 +112,7 @@ inline uint32_t __compute_C_brute_force_undir(
 }
 
 inline void __inner_computation_dir(
-	const graph& g, node u, node v,
+	const directed_graph& g, node u, node v,
 	const linear_arrangement& pi, const node * __restrict__ T,
 	uint32_t& C
 )
@@ -154,7 +154,7 @@ inline void __inner_computation_dir(
 	}
 }
 inline uint32_t __compute_C_brute_force_dir(
-	const graph& g, const linear_arrangement& pi,
+	const directed_graph& g, const linear_arrangement& pi,
 	node * __restrict__ T
 )
 {
@@ -195,9 +195,13 @@ inline uint32_t __compute_C_brute_force_dir(
 	return C;
 }
 
+// -----------------------------------------------------------------------------
+
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
-inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& pi) {
+template<typename GRAPH>
+inline uint32_t __call_C_brute_force
+(const GRAPH& g, const linear_arrangement& pi){
 	const uint32_t n = g.n_nodes();
 	if (n < 4) { return 0; }
 
@@ -208,22 +212,37 @@ inline uint32_t __call_C_brute_force(const graph& g, const linear_arrangement& p
 	data_array<node> T(n);
 
 	// compute the number of crossings
-	return (
-		g.is_undirected() ?
-			__compute_C_brute_force_undir(g, pi, T.data) :
-			__compute_C_brute_force_dir(g, pi, T.data)
-	);
+	if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+		return __compute_C_brute_force_undir(g, pi, T.data);
+	}
+	else {
+		return __compute_C_brute_force_dir(g, pi, T.data);
+	}
 }
 
-uint32_t n_C_brute_force(const graph& g, const linear_arrangement& pi) {
+uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi)
+{
 #if defined DEBUG
 	assert(pi.size() == 0 or g.n_nodes() == pi.size());
 #endif
-	return internal::call_with_empty_arrangement(__call_C_brute_force, g, pi);
+	return internal::call_with_empty_arrangement
+			(__call_C_brute_force<undirected_graph>, g, pi);
 }
 
+uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+#endif
+	return internal::call_with_empty_arrangement
+			(__call_C_brute_force<directed_graph>, g, pi);
+}
+
+// -----------------------------------------------------------------------------
+
+template<typename GRAPH>
 vector<uint32_t> n_C_brute_force_list
-(const graph& g, const vector<linear_arrangement>& pis)
+(const GRAPH& g, const vector<linear_arrangement>& pis)
 {
 	const uint32_t n = g.n_nodes();
 
@@ -242,14 +261,24 @@ vector<uint32_t> n_C_brute_force_list
 #endif
 
 		// compute C
-		cs[i] = (
-			g.is_undirected() ?
-				__compute_C_brute_force_undir(g, pis[i], T.data) :
-				__compute_C_brute_force_dir(g, pis[i], T.data)
-		);
+		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+			cs[i] = __compute_C_brute_force_undir(g, pis[i], T.data);
+		}
+		else {
+			cs[i] = __compute_C_brute_force_dir(g, pis[i], T.data);
+		}
 	}
 
 	return cs;
+}
+
+vector<uint32_t> n_C_brute_force_list
+(const directed_graph& g, const vector<linear_arrangement>& pis) {
+	return n_C_brute_force_list<directed_graph>(g, pis);
+}
+vector<uint32_t> n_C_brute_force_list
+(const undirected_graph& g, const vector<linear_arrangement>& pis) {
+	return n_C_brute_force_list<undirected_graph>(g, pis);
 }
 
 } // -- namespace internal

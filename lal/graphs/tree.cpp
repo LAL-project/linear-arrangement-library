@@ -95,16 +95,13 @@ bool tree::can_add_edge(node u, node v) const {
 	assert(has_node(v));
 #endif
 
-	const uint32_t n = n_nodes();
-	const uint32_t m = n_edges();
-
 	// in a tree we must have m <= n - 1
-	if (m + 1 > n - 1) {
+	if (n_edges() + 1 > n_nodes() - 1) {
 		return false;
 	}
 
-	// if m_labels[s] == m_labels[t] then
-	// either the edge exists or there
+	// if m_root_of[s] == m_root_of[t] then
+	// either the edge already exists or there
 	// exists a path from 's' to 't'
 	return m_root_of[u] != m_root_of[v];
 }
@@ -132,8 +129,9 @@ bool tree::can_add_edges(const vector<edge>& edges) const {
 		// either the edge exists or there
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
-		internal::UnionFind_update_roots_add(
-			*this, u, v, &_root_of[0], &_root_size[0]
+
+		call_union_find_add(
+			u, v, &_root_of[0], &_root_size[0]
 		);
 	}
 	return true;
@@ -188,8 +186,8 @@ void tree::tree_only_move(tree&& t) {
 
 void tree::extra_work_per_edge_add(node u, node v) {
 	graph::extra_work_per_edge_add(u, v);
-	internal::UnionFind_update_roots_add(
-		*this, u, v, &m_root_of[0], &m_root_size[0]
+	call_union_find_add(
+		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
 void tree::tree_only_extra_work_edges_set() {
@@ -197,8 +195,8 @@ void tree::tree_only_extra_work_edges_set() {
 }
 void tree::extra_work_per_edge_remove(node u, node v) {
 	graph::extra_work_per_edge_remove(u, v);
-	internal::UnionFind_update_roots_remove(
-		*this, u, v, &m_root_of[0], &m_root_size[0]
+	call_union_find_remove(
+		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
 

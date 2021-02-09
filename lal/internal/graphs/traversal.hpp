@@ -72,7 +72,15 @@ namespace internal {
  * that points to u, namely, the directed edge is of the form (v,u), for another
  * node v of the graph. This can be set via the @ref set_use_back_edges method.
  */
-template<class G>
+template<
+	typename G,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, G>,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>
+		, bool
+	> = true
+>
 class BFS {
 	public:
 		typedef std::function<void (const BFS<G>&, node)> BFS_process_one;
@@ -82,7 +90,7 @@ class BFS {
 
 	public:
 		// Constructor
-		BFS(const G& g) : m_G(g), m_vis(g.n_nodes()) {
+		BFS(const G& g) : m_G(g), m_vis(m_G.n_nodes()) {
 			reset();
 		}
 		// Destructor
@@ -167,9 +175,7 @@ class BFS {
 
 		// have all nodes been visited?
 		bool all_visited() const {
-			const auto begin = &m_vis[0];
-			const auto end = &m_vis[m_G.n_nodes()];
-			return std::find(begin, end, 0) == end;
+			return std::find(m_vis.begin(), m_vis.end(), 0) == m_vis.end();
 		}
 
 		// returns the graph
@@ -211,6 +217,7 @@ class BFS {
 				deal_with_neighbour(s, t, true);
 			}
 		}
+
 		//     when the graph is a directed graph
 		template<
 			class GG = G,
@@ -227,39 +234,6 @@ class BFS {
 			}
 			// process in-neighbours whenever appropriate
 			if (m_use_rev_edges) {
-				for (const node& t : m_G.get_in_neighbours(s)) {
-					// Edges are processed in the direction "s -> t".
-					// However, the 'natural' orientation of the edge
-					// is "t -> s", hence the 'false'.
-					deal_with_neighbour(s, t, false);
-				}
-			}
-		}
-		//     when the class does not inherit from undirected_graph or directed_graph
-		template<
-			class GG = G,
-			std::enable_if_t<
-				// This function should not be available to any class that
-				// inherits from
-				//       graphs::directed_graph
-				//       graphs::undirected_graph
-				// thus making this function only available to
-				//       graphs::graph
-				//       graphs::tree
-				!std::is_base_of_v<graphs::directed_graph, GG> &&
-				!std::is_base_of_v<graphs::undirected_graph, GG>,
-				bool
-			> = true
-		>
-		void process_neighbours(node s) {
-			for (const node& t : m_G.get_out_neighbours(s)) {
-				// Edges are processed in the direction "s -> t".
-				// This is also the 'natural' orientation of the edge,
-				// hence the 'true'.
-				deal_with_neighbour(s, t, true);
-			}
-			// process in-neighbours whenever appropriate
-			if (m_G.is_directed() and m_use_rev_edges) {
 				for (const node& t : m_G.get_in_neighbours(s)) {
 					// Edges are processed in the direction "s -> t".
 					// However, the 'natural' orientation of the edge
