@@ -78,17 +78,6 @@ void classify_tree(
 		is_some = true;
 	};
 
-	// degree of a vertex of a tree in its underlying UNDIRECTED structure
-	const auto get_degree =
-	[&](lal::node u) -> uint32_t {
-		if constexpr (std::is_base_of_v<lal::graphs::free_tree, T>) {
-			return t.degree(u);
-		}
-		else {
-			return t.out_degree(u) + (u != t.get_root());
-		}
-	};
-
 	// only neighbour of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_only_neighbour =
 	[&](lal::node u) -> lal::node {
@@ -155,7 +144,8 @@ void classify_tree(
 
 	// fill in data
 	for (lal::node u = 0; u < N; ++u) {
-		const int32_t du = static_cast<int32_t>(get_degree(u));
+		// 'du' is the degree of the vertex in the underlying undirected graph
+		const int32_t du = static_cast<int32_t>(t.degree(u));
 		deg_internal[u] += (du > 1)*du;
 
 		n_deg_eq_1 += du == 1;

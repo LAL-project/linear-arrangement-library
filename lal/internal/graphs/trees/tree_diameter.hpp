@@ -41,6 +41,11 @@
 
 #pragma once
 
+// C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
@@ -60,17 +65,6 @@ template<
 uint32_t tree_diameter(const T& t) {
 	const uint32_t n = t.n_nodes();
 
-	// degree of a vertex of a tree in its underlying UNDIRECTED structure
-	const auto get_degree =
-	[&](lal::node u) -> uint32_t {
-		if constexpr (std::is_base_of_v<lal::graphs::free_tree, T>) {
-			return t.degree(u);
-		}
-		else {
-			return t.out_degree(u) + (u != t.get_root());
-		}
-	};
-
 	BFS<T> bfs(t);
 
 	if constexpr (std::is_base_of_v<T, graphs::rooted_tree>) {
@@ -82,7 +76,11 @@ uint32_t tree_diameter(const T& t) {
 
 	// find a leaf
 	node leaf = 0;
-	while (leaf < n and get_degree(leaf) > 1) { ++leaf; }
+	while (leaf < n and t.degree(leaf) > 1) { ++leaf; }
+#if defined DEBUG
+	// a leaf must exist in 't'
+	assert(leaf < n);
+#endif
 
 	uint32_t diameter = 0;
 	data_array<uint32_t> distance_from_leaf(n, 0);

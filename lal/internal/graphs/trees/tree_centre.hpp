@@ -146,7 +146,10 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 		++__size_trimmed;
 #endif
 
+		// 'trimmed_degree' must be the degree of the vertex
+		// in the underlying undirected graph!
 		trimmed_degree[u] = t.degree(u);
+
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);
 			++l0;
