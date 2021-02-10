@@ -100,234 +100,250 @@ public:
 	 * If this rational value was \f$n/d\f$ then after calling this
 	 * method it will be \f$d/n\f$.
 	 */
-	void invert();
+	void invert() noexcept;
 
 	/* OPERATORS */
 
 #ifndef SWIG
 	/// Assignment operator.
-	rational& operator= (int64_t i);
+	rational& operator= (int64_t i) noexcept;
 	/// Assignment operator.
-	rational& operator= (const integer& i);
+	rational& operator= (const std::string& i) noexcept;
 	/// Assignment operator.
-	rational& operator= (const rational& i);
+	rational& operator= (const integer& i) noexcept;
+	/// Assignment operator.
+	rational& operator= (const rational& i) noexcept;
 	/// Move assignment operator.
-	rational& operator= (integer&& i);
+	rational& operator= (integer&& i) noexcept;
 	/// Move assignment operator.
-	rational& operator= (rational&& r);
+	rational& operator= (rational&& r) noexcept;
 #endif
 
 	/// Equality operator.
-	bool operator== (int64_t i) const;
+	bool operator== (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Equality operator.
-	inline friend bool operator== (int64_t i, const rational& r)
+	inline friend bool operator== (int64_t i, const rational& r) noexcept
 	{ return r == i; }
 #endif
 	/// Equality operator.
-	bool operator== (const integer& i) const;
+	bool operator== (const std::string& s) const noexcept;
 #ifndef SWIG
 	/// Equality operator.
-	inline friend bool operator== (const integer& i, const rational& r)
+	inline friend bool operator== (const std::string& s, const rational& r) noexcept
+	{ return r == s; }
+#endif
+	/// Equality operator.
+	bool operator== (const integer& i) const noexcept;
+#ifndef SWIG
+	/// Equality operator.
+	inline friend bool operator== (const integer& i, const rational& r) noexcept
 	{ return r == i; }
 #endif
 	/// Equality operator.
-	bool operator== (const rational& r) const;
+	bool operator== (const rational& r) const noexcept;
 
 	/// Non-equatility operator.
-	bool operator!= (int64_t i) const;
+	bool operator!= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Non-equatility operator.
-	inline friend bool operator!= (int64_t i, const rational& r)
+	inline friend bool operator!= (int64_t i, const rational& r) noexcept
 	{ return r != i; }
 #endif
 	/// Non-equatility operator.
-	bool operator!= (const integer& i) const;
+	bool operator!= (const std::string& s) const noexcept;
 #ifndef SWIG
 	/// Non-equatility operator.
-	inline friend bool operator!= (const integer& i, const rational& r)
+	inline friend bool operator!= (const std::string& s, const rational& r) noexcept
+	{ return r != s; }
+#endif
+	/// Non-equatility operator.
+	bool operator!= (const integer& i) const noexcept;
+#ifndef SWIG
+	/// Non-equatility operator.
+	inline friend bool operator!= (const integer& i, const rational& r) noexcept
 	{ return r != i; }
 #endif
 	/// Non-equatility operator.
-	bool operator!= (const rational& r) const;
+	bool operator!= (const rational& r) const noexcept;
 
 	/// Less than operator.
-	bool operator< (int64_t i) const;
+	bool operator< (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Less than operator.
-	inline friend bool operator< (int64_t i, const rational& r)
+	inline friend bool operator< (int64_t i, const rational& r) noexcept
 	{ return r > i; }
 #endif
 	/// Less than operator.
-	bool operator< (const integer& i) const;
+	bool operator< (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Less than operator.
-	inline friend bool operator< (const integer& i, const rational& r)
+	inline friend bool operator< (const integer& i, const rational& r) noexcept
 	{ return r > i; }
 #endif
 	/// Less than operator.
-	bool operator< (const rational& r) const;
+	bool operator< (const rational& r) const noexcept;
 
 	/// Less than or equal to operator.
-	bool operator<= (int64_t i) const;
+	bool operator<= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Less than or equal to operator.
-	inline friend bool operator<= (int64_t i, const rational& r)
+	inline friend bool operator<= (int64_t i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
 	/// Less than or equal to operator.
-	bool operator<= (const integer& i) const;
+	bool operator<= (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Less than or equal to operator.
-	inline friend bool operator<= (const integer& i, const rational& r)
+	inline friend bool operator<= (const integer& i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
 	/// Less than or equal to operator.
-	bool operator<= (const rational& r) const;
+	bool operator<= (const rational& r) const noexcept;
 
 	/// Greater than operator.
-	bool operator> (int64_t i) const;
+	bool operator> (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Greater than operator.
-	inline friend bool operator> (int64_t i, const rational& r)
+	inline friend bool operator> (int64_t i, const rational& r) noexcept
 	{ return r < i; }
 #endif
 	/// Greater than operator.
-	bool operator> (const integer& i) const;
+	bool operator> (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Greater than operator.
-	inline friend bool operator> (const integer& i, const rational& r)
+	inline friend bool operator> (const integer& i, const rational& r) noexcept
 	{ return r < i; }
 #endif
 	/// Greater than operator.
-	bool operator> (const rational& r) const;
+	bool operator> (const rational& r) const noexcept;
 
 	/// Greater than or equal to operator.
-	bool operator>= (int64_t i) const;
+	bool operator>= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Greater than or equal to operator.
-	inline friend bool operator>= (int64_t i, const rational& r)
+	inline friend bool operator>= (int64_t i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
 	/// Greater than or equal to operator.
-	bool operator>= (const integer& i) const;
+	bool operator>= (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Greater than or equal to operator.
-	inline friend bool operator>= (const integer& i, const rational& r)
+	inline friend bool operator>= (const integer& i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
 	/// Greater than or equal to operator.
-	bool operator>= (const rational& r) const;
+	bool operator>= (const rational& r) const noexcept;
 
 	/// Addition operator. Returns a new object of type 'rational'.
-	rational operator+ (int64_t i) const;
+	rational operator+ (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Addition operator. Returns a new object of type 'rational'.
-	inline friend rational operator+ (int64_t i, const rational& r)
+	inline friend rational operator+ (int64_t i, const rational& r) noexcept
 	{ return r + i; }
 #endif
 	/// Addition operator. Returns a new object of type 'rational'.
-	rational operator+ (const integer& i) const;
+	rational operator+ (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Addition operator. Returns a new object of type 'rational'.
-	inline friend rational operator+ (const integer& i, const rational& r)
+	inline friend rational operator+ (const integer& i, const rational& r) noexcept
 	{ return r + i; }
 #endif
 	/// Addition operator. Returns a new object of type 'rational'.
-	rational operator+ (const rational& r) const;
+	rational operator+ (const rational& r) const noexcept;
 
 	/// Addition operator. Modifies the current instance.
-	rational& operator+= (int64_t i);
+	rational& operator+= (int64_t i) noexcept;
 	/// Addition operator. Modifies the current instance.
-	rational& operator+= (const integer& i);
+	rational& operator+= (const integer& i) noexcept;
 	/// Addition operator. Modifies the current instance.
-	rational& operator+= (const rational& r);
+	rational& operator+= (const rational& r) noexcept;
 
 	/// Substraction unary operator. Returns a new object of type 'rational'.
-	rational operator- () const;
+	rational operator- () const noexcept;
 	/// Substraction operator. Returns a new object of type 'rational'.
-	rational operator- (int64_t i) const;
+	rational operator- (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Substraction operator. Returns a new object of type 'rational'.
-	inline friend rational operator- (int64_t i, const rational& r)
+	inline friend rational operator- (int64_t i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
 	/// Substraction operator. Returns a new object of type 'rational'.
-	rational operator- (const integer& i) const;
+	rational operator- (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Substraction operator. Returns a new object of type 'rational'.
-	inline friend rational operator- (const integer& i, const rational& r)
+	inline friend rational operator- (const integer& i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
 	/// Substraction operator. Returns a new object of type 'rational'.
-	rational operator- (const rational& r) const;
+	rational operator- (const rational& r) const noexcept;
 
 	/// Substraction unary operator. Modifies the current instance.
-	rational& operator- ();
+	rational& operator- () noexcept;
 	/// Substraction operator. Modifies the current instance.
-	rational& operator-= (int64_t i);
+	rational& operator-= (int64_t i) noexcept;
 	/// Substraction operator. Modifies the current instance.
-	rational& operator-= (const integer& i);
+	rational& operator-= (const integer& i) noexcept;
 	/// Substraction operator. Modifies the current instance.
-	rational& operator-= (const rational& r);
+	rational& operator-= (const rational& r) noexcept;
 
 	/// Product operator. Returns a new object of type 'rational'.
-	rational operator* (int64_t i) const;
+	rational operator* (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Product operator. Returns a new object of type 'rational'.
-	inline friend rational operator* (int64_t i, const rational& r)
+	inline friend rational operator* (int64_t i, const rational& r) noexcept
 	{ return r*i; }
 #endif
 	/// Product operator. Returns a new object of type 'rational'.
-	rational operator* (const integer& i) const;
+	rational operator* (const integer& i) const noexcept;
 #ifndef SWIG
 	/// Product operator. Returns a new object of type 'rational'.
-	inline friend rational operator* (const integer& i, const rational& r)
+	inline friend rational operator* (const integer& i, const rational& r) noexcept
 	{ return r*i; }
 #endif
 	/// Product operator. Returns a new object of type 'rational'.
-	rational operator* (const rational& r) const;
+	rational operator* (const rational& r) const noexcept;
 
 	/// Product operator. Modifies the current instance.
-	rational& operator*= (int64_t i);
+	rational& operator*= (int64_t i) noexcept;
 	/// Product operator. Modifies the current instance.
-	rational& operator*= (const integer& i);
+	rational& operator*= (const integer& i) noexcept;
 	/// Product operator. Modifies the current instance.
-	rational& operator*= (const rational& r);
+	rational& operator*= (const rational& r) noexcept;
 
 	/// Quotient operator. Returns a new object of type 'rational'.
-	rational operator/ (int64_t i) const;
+	rational operator/ (int64_t i) const noexcept;
 	/// Quotient operator. Returns a new object of type 'rational'.
-	rational operator/ (const integer& i) const;
+	rational operator/ (const integer& i) const noexcept;
 	/// Quotient operator. Returns a new object of type 'rational'.
-	rational operator/ (const rational& r) const;
+	rational operator/ (const rational& r) const noexcept;
 
 	/// Quotient operator. Modifies the current instance.
-	rational& operator/= (int64_t i);
+	rational& operator/= (int64_t i) noexcept;
 	/// Quotient operator. Modifies the current instance.
-	rational& operator/= (const integer& i);
+	rational& operator/= (const integer& i) noexcept;
 	/// Quotient operator. Modifies the current instance.
-	rational& operator/= (const rational& r);
+	rational& operator/= (const rational& r) noexcept;
 
 	/// Power operator. Returns a new object of type 'rational'.
-	rational operator^ (uint64_t i) const;
+	rational operator^ (uint64_t i) const noexcept;
 	/// Power operator. Returns a new object of type 'rational'.
-	rational operator^ (const integer& r) const;
+	rational operator^ (const integer& r) const noexcept;
 
 	/// Power operator. Modifies the current instance.
-	rational& operator^= (uint64_t i);
+	rational& operator^= (uint64_t i) noexcept;
 	/// Power operator. Modifies the current instance.
-	rational& operator^= (const integer& r);
+	rational& operator^= (const integer& r) noexcept;
 
 	/* GETTERS */
 
 	/// Returns whether this object is initialised or not.
-	constexpr bool is_initialized() const { return m_initialized; }
+	constexpr bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this rational.
-	int32_t get_sign() const;
+	int32_t get_sign() const noexcept;
 
 	/// Returns the amount of bytes this integer occupies.
-	size_t bytes() const;
+	size_t bytes() const noexcept;
 
 	/* CONVERTERS */
 
@@ -336,23 +352,23 @@ public:
 	 * @return Returns \f$ \left\lfloor n/d \right\rfloor \f$ where
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
 	 */
-	integer to_integer() const;
+	integer to_integer() const noexcept;
 	/**
 	 * @brief Converts this rational to an integer value.
 	 * @return Returns \f$ \left\lfloor n/d \right\rfloor \f$ where
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
 	 */
-	void as_integer(integer& i) const;
+	void as_integer(integer& i) const noexcept;
 
 	/// Converts this rational to a double-precision floating-point value.
-	double to_double() const;
+	double to_double() const noexcept;
 	/// Converts this rational to a double-precision floating-point value.
-	void as_double(double& d) const;
+	void as_double(double& d) const noexcept;
 
 	/// Converts this integer to a string.
-	std::string to_string() const;
+	std::string to_string() const noexcept;
 	/// Converts this integer to a string.
-	void as_string(std::string& s) const;
+	void as_string(std::string& s) const noexcept;
 
 	/* OTHERS */
 
@@ -388,7 +404,7 @@ private:
 };
 
 /// Make a rational value from two 64-bit unsigned integers
-inline rational rational_from_ui(uint64_t n, uint64_t d = 1) {
+inline rational rational_from_ui(uint64_t n, uint64_t d = 1) noexcept {
 	rational R;
 	R.set_ui(n, d);
 	return R;

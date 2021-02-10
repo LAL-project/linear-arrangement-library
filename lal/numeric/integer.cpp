@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -92,35 +93,39 @@ integer::~integer() noexcept {
 /* SET VALUE */
 
 void integer::set_si(int64_t i) noexcept {
+	if (not is_initialized()) { mpz_init(m_val); }
 	mpz_set_si(m_val, i);
 	m_initialized = true;
 }
 void integer::set_ui(uint64_t i) noexcept {
+	if (not is_initialized()) { mpz_init(m_val); }
 	mpz_set_ui(m_val, i);
 	m_initialized = true;
 }
 void integer::set_integer(const integer &i) noexcept {
+	if (not is_initialized()) { mpz_init(m_val); }
 	mpz_set(m_val, i.m_val);
 	m_initialized = true;
 }
 void integer::set_str(const std::string& s) noexcept {
+	if (not is_initialized()) { mpz_init(m_val); }
 	mpz_set_str(m_val, s.c_str(), 10);
 	m_initialized = true;
 }
 
 /* OPERATORS */
 
-integer& integer::operator= (int64_t i) {
+integer& integer::operator= (int64_t i) noexcept {
 	set_si(i);
 	return *this;
 }
 
-integer& integer::operator= (const integer& i) {
+integer& integer::operator= (const integer& i) noexcept {
 	set_integer(i);
 	return *this;
 }
 
-integer& integer::operator= (integer&& i) {
+integer& integer::operator= (integer&& i) noexcept {
 	mpz_clear(m_val);
 
 	// move i's contents
@@ -131,83 +136,85 @@ integer& integer::operator= (integer&& i) {
 	return *this;
 }
 
-bool integer::operator== (int64_t i) const			{ return mpz_cmp_si(m_val, i) == 0; }
-bool integer::operator== (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) == 0; }
+bool integer::operator== (int64_t i) const noexcept			{ return mpz_cmp_si(m_val, i) == 0; }
+bool integer::operator== (const string& s) const noexcept	{ return *this == integer(s); }
+bool integer::operator== (const integer& i) const noexcept	{ return mpz_cmp(m_val, i.m_val) == 0; }
 
-bool integer::operator!= (int64_t i) const			{ return not (*this == i); }
-bool integer::operator!= (const integer& i) const	{ return not (*this == i); }
+bool integer::operator!= (int64_t i) const noexcept			{ return not (*this == i); }
+bool integer::operator!= (const string& s) const noexcept	{ return not (*this == s); }
+bool integer::operator!= (const integer& i) const noexcept	{ return not (*this == i); }
 
-bool integer::operator< (int64_t i) const			{ return mpz_cmp_si(m_val, i)  < 0; }
-bool integer::operator< (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) < 0; }
+bool integer::operator< (int64_t i) const noexcept			{ return mpz_cmp_si(m_val, i)  < 0; }
+bool integer::operator< (const integer& i) const noexcept	{ return mpz_cmp(m_val, i.m_val) < 0; }
 
-bool integer::operator<= (int64_t i) const			{ return mpz_cmp_si(m_val, i)  <= 0; }
-bool integer::operator<= (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) <= 0; }
+bool integer::operator<= (int64_t i) const noexcept			{ return mpz_cmp_si(m_val, i)  <= 0; }
+bool integer::operator<= (const integer& i) const noexcept	{ return mpz_cmp(m_val, i.m_val) <= 0; }
 
-bool integer::operator> (int64_t i) const			{ return mpz_cmp_si(m_val, i)  > 0; }
-bool integer::operator> (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) > 0; }
+bool integer::operator> (int64_t i) const noexcept			{ return mpz_cmp_si(m_val, i)  > 0; }
+bool integer::operator> (const integer& i) const noexcept	{ return mpz_cmp(m_val, i.m_val) > 0; }
 
-bool integer::operator>= (int64_t i) const			{ return mpz_cmp_si(m_val, i)  >= 0; }
-bool integer::operator>= (const integer& i) const	{ return mpz_cmp(m_val, i.m_val) >= 0; }
+bool integer::operator>= (int64_t i) const noexcept			{ return mpz_cmp_si(m_val, i)  >= 0; }
+bool integer::operator>= (const integer& i) const noexcept	{ return mpz_cmp(m_val, i.m_val) >= 0; }
 
-integer integer::operator+ (int64_t i) const		{ integer a(*this); a += i; return a; }
-integer integer::operator+ (const integer& i) const	{ integer a(*this); a += i;	return a; }
+integer integer::operator+ (int64_t i) const noexcept		{ integer a(*this); a += i; return a; }
+integer integer::operator+ (const integer& i) const noexcept{ integer a(*this); a += i;	return a; }
 
-integer& integer::operator+= (int64_t i) {
+integer& integer::operator+= (int64_t i) noexcept {
 	if (i > 0) {	mpz_add_ui(m_val, m_val, to_uint64(i));	}
 	else {			mpz_sub_ui(m_val, m_val, my_abs(i));	}
 	return *this;
 }
-integer& integer::operator+= (const integer& i)		{ mpz_add(m_val, m_val, i.m_val); return *this; }
+integer& integer::operator+= (const integer& i) noexcept		{ mpz_add(m_val, m_val, i.m_val); return *this; }
 
-integer integer::operator- () const					{ integer a(*this);	mpz_neg(a.m_val, a.m_val); return a; }
-integer integer::operator- (int64_t i) const		{ integer a(*this); a -= i;	return a; }
-integer integer::operator- (const integer& i) const	{ integer a(*this); a -= i;	return a; }
+integer integer::operator- () const noexcept					{ integer a(*this);	mpz_neg(a.m_val, a.m_val); return a; }
+integer integer::operator- (int64_t i) const noexcept			{ integer a(*this); a -= i;	return a; }
+integer integer::operator- (const integer& i) const noexcept	{ integer a(*this); a -= i;	return a; }
 
-integer& integer::operator- ()						{ mpz_neg(m_val, m_val); return *this; }
-integer& integer::operator-= (int64_t i)			{
+integer& integer::operator- () noexcept							{ mpz_neg(m_val, m_val); return *this; }
+integer& integer::operator-= (int64_t i) noexcept {
 	if (i > 0) {	mpz_sub_ui(m_val, m_val, to_uint64(i));	}
 	else {			mpz_add_ui(m_val, m_val, my_abs(i));	}
 	return *this;
 }
-integer& integer::operator-= (const integer& i)		{ mpz_sub(m_val, m_val, i.m_val); return *this; }
+integer& integer::operator-= (const integer& i) noexcept		{ mpz_sub(m_val, m_val, i.m_val); return *this; }
 
-integer integer::operator* (int64_t i) const		{ integer a(*this); a *= i;	return a; }
-integer integer::operator* (const integer& i) const	{ integer a(*this); a *= i;	return a; }
+integer integer::operator* (int64_t i) const noexcept			{ integer a(*this); a *= i;	return a; }
+integer integer::operator* (const integer& i) const noexcept	{ integer a(*this); a *= i;	return a; }
 
-integer& integer::operator*= (int64_t i)			{ mpz_mul_si(m_val, m_val, i);		return *this; }
-integer& integer::operator*= (const integer& i)		{ mpz_mul(m_val, m_val, i.m_val);	return *this; }
+integer& integer::operator*= (int64_t i) noexcept				{ mpz_mul_si(m_val, m_val, i);		return *this; }
+integer& integer::operator*= (const integer& i) noexcept		{ mpz_mul(m_val, m_val, i.m_val);	return *this; }
 
-integer integer::operator/ (int64_t i) const		{ integer a(*this); a /= i;	return a; }
-integer integer::operator/ (const integer& i) const	{ integer a(*this); a /= i;	return a; }
+integer integer::operator/ (int64_t i) const noexcept 			{ integer a(*this); a /= i;	return a; }
+integer integer::operator/ (const integer& i) const noexcept	{ integer a(*this); a /= i;	return a; }
 
-integer& integer::operator/= (int64_t i) {
+integer& integer::operator/= (int64_t i) noexcept {
 	mpz_div_ui(m_val, m_val, my_abs(i));
 	mpz_mul_si(m_val, m_val, (i<0 ? -1 : 1));
 	return *this;
 }
-integer& integer::operator/= (const integer& i)		{ mpz_div(m_val, m_val, i.m_val);	return *this; }
+integer& integer::operator/= (const integer& i) noexcept		{ mpz_div(m_val, m_val, i.m_val);	return *this; }
 
-integer integer::operator^ (uint64_t i)	 const		{ integer r(*this); r ^= i;	return r; }
-integer integer::operator^ (const integer& i) const	{ integer r(*this); r ^= i;	return r; }
+integer integer::operator^ (uint64_t i)	 const noexcept			{ integer r(*this); r ^= i;	return r; }
+integer integer::operator^ (const integer& i) const noexcept	{ integer r(*this); r ^= i;	return r; }
 
-integer& integer::operator^= (uint64_t i) {
+integer& integer::operator^= (uint64_t i) noexcept {
 	mpz_pow_ui(m_val, m_val, i);
 	return *this;
 }
 
-integer& integer::operator^= (const integer& i) {
+integer& integer::operator^= (const integer& i) noexcept {
 	internal::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
 
-uint64_t integer::operator% (uint64_t i) const {
+uint64_t integer::operator% (uint64_t i) const noexcept {
 	mpz_t r;
 	mpz_init(r);
 	const uint64_t m = mpz_mod_ui(r, m_val, i);
 	mpz_clear(r);
 	return m;
 }
-integer integer::operator% (const integer& i) const {
+integer integer::operator% (const integer& i) const noexcept {
 	integer r;
 	mpz_mod(r.m_val, m_val, i.m_val);
 	return r;
@@ -215,39 +222,39 @@ integer integer::operator% (const integer& i) const {
 
 /* GETTERS */
 
-int32_t integer::get_sign() const {
+int32_t integer::get_sign() const noexcept {
 	return mpz_sgn(m_val);
 }
 
-size_t integer::bytes() const {
+size_t integer::bytes() const noexcept {
 	return (internal::mpz_bytes(m_val));
 }
 
-const mpz_t& integer::get_raw_value() const {
+const mpz_t& integer::get_raw_value() const noexcept {
 	return m_val;
 }
 
 /* CONVERTERS */
 
-int64_t integer::to_int() const {
+int64_t integer::to_int() const noexcept {
 	return mpz_get_si(m_val);
 }
 
-uint64_t integer::to_uint() const {
+uint64_t integer::to_uint() const noexcept {
 	return mpz_get_ui(m_val);
 }
 
-double integer::to_double() const {
+double integer::to_double() const noexcept {
 	return mpz_get_d(m_val);
 }
 
-string integer::to_string() const {
+string integer::to_string() const noexcept {
 	std::string k;
 	as_string(k);
 	return k;
 }
 
-void integer::as_string(string& s) const {
+void integer::as_string(string& s) const noexcept {
 	char *buf = nullptr;
 	buf = mpz_get_str(buf, 10, m_val);
 	s = std::string(buf);
@@ -259,12 +266,6 @@ void integer::as_string(string& s) const {
 void integer::swap(integer& i) noexcept {
 	// swap the values
 	mpz_swap(m_val, i.m_val);
-}
-
-// PRIVATE
-
-void integer::init_mpz(const mpz_t& mpz) {
-	mpz_set(m_val, mpz);
 }
 
 } // -- namespace numeric

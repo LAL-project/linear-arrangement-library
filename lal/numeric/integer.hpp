@@ -91,177 +91,191 @@ public:
 
 #ifndef SWIG
 	/// Assignment operator.
-	integer& operator= (int64_t i);
+	integer& operator= (int64_t i) noexcept;
 	/// Assignment operator.
-	integer& operator= (const integer& i);
+	integer& operator= (const integer& i) noexcept;
 	/// Move assignment operator.
-	integer& operator= (integer&& i);
+	integer& operator= (integer&& i) noexcept;
 #endif
 
 	/// Equality operator.
-	bool operator== (int64_t i) const;
+	bool operator== (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Equality operator.
-	inline bool friend operator== (int64_t i, const integer& ii)
+	inline bool friend operator== (int64_t i, const integer& ii) noexcept
 	{ return ii == i; }
 #endif
 	/// Equality operator.
-	bool operator== (const integer& i) const;
+	bool operator== (const std::string& i) const noexcept;
+#ifndef SWIG
+	/// Equality operator.
+	inline bool friend operator== (const std::string& i, const integer& ii) noexcept
+	{ return ii == i; }
+#endif
+	/// Equality operator.
+	bool operator== (const integer& i) const noexcept;
 
 	/// Non-equality operator.
-	bool operator!= (int64_t i) const;
+	bool operator!= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Non-equality operator.
-	inline bool friend operator!= (int64_t i, const integer& ii)
+	inline bool friend operator!= (int64_t i, const integer& ii) noexcept
 	{ return ii != i; }
 #endif
 	/// Non-equality operator.
-	bool operator!= (const integer& i) const;
+	bool operator!= (const std::string& i) const noexcept;
+#ifndef SWIG
+	/// Non-equality operator.
+	inline bool friend operator!= (const std::string& i, const integer& ii) noexcept
+	{ return ii != i; }
+#endif
+	/// Non-equality operator.
+	bool operator!= (const integer& i) const noexcept;
 
 	/// Less than operator.
-	bool operator< (int64_t i) const;
+	bool operator< (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Less than operator.
-	inline friend bool operator< (int64_t i, const integer& ii)
+	inline friend bool operator< (int64_t i, const integer& ii) noexcept
 	{ return ii > i; }
 #endif
 	/// Less than operator.
-	bool operator< (const integer& i) const;
+	bool operator< (const integer& i) const noexcept;
 
 	/// Less than or equal to operator.
-	bool operator<= (int64_t i) const;
+	bool operator<= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Less than or equal to operator.
-	inline friend bool operator<= (int64_t i, const integer& ii)
+	inline friend bool operator<= (int64_t i, const integer& ii) noexcept
 	{ return ii >= i; }
 #endif
 	/// Less than or equal to operator.
-	bool operator<= (const integer& i) const;
+	bool operator<= (const integer& i) const noexcept;
 
 	/// Greater than operator.
-	bool operator> (int64_t i) const;
+	bool operator> (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Greater than operator.
-	inline friend bool operator> (int64_t i, const integer& ii)
+	inline friend bool operator> (int64_t i, const integer& ii) noexcept
 	{ return ii < i; }
 #endif
 	/// Greater than operator.
-	bool operator> (const integer& i) const;
+	bool operator> (const integer& i) const noexcept;
 
 	/// Greater than or equal to operator.
-	bool operator>= (int64_t i) const;
+	bool operator>= (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Greater than or equal to operator.
-	inline friend bool operator>= (int64_t i, const integer& ii)
+	inline friend bool operator>= (int64_t i, const integer& ii) noexcept
 	{ return ii <= i; }
 #endif
 	/// Greater than or equal to operator.
-	bool operator>= (const integer& i) const;
+	bool operator>= (const integer& i) const noexcept;
 
 	/// Addition operator. Returns a new object of type 'integer'.
-	integer operator+ (int64_t i) const;
+	integer operator+ (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Addition operator. Returns a new object of type 'integer'.
-	inline friend integer operator+ (int64_t i, const integer& ii)
+	inline friend integer operator+ (int64_t i, const integer& ii) noexcept
 	{ return ii + i; }
 #endif
 	/// Addition operator. Returns a new object of type 'integer'.
-	integer operator+ (const integer& i) const;
+	integer operator+ (const integer& i) const noexcept;
 
 	/// Addition operator. Modifies the current instance.
-	integer& operator+= (int64_t i);
+	integer& operator+= (int64_t i) noexcept;
 	/// Addition operator. Modifies the current instance.
-	integer& operator+= (const integer& i);
+	integer& operator+= (const integer& i) noexcept;
 
 	/// Minus unary operator. Returns a new object of type 'integer'.
-	integer operator- () const;
+	integer operator- () const noexcept;
 	/// Substraction operator. Returns a new object of type 'integer'.
-	integer operator- (int64_t i) const;
+	integer operator- (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Substraction operator. Returns a new object of type 'integer'.
-	inline friend integer operator- (int64_t i, const integer& ii)
+	inline friend integer operator- (int64_t i, const integer& ii) noexcept
 	{ return -ii + i; }
 #endif
 	/// Substraction operator. Returns a new object of type 'integer'.
-	integer operator- (const integer& i) const;
+	integer operator- (const integer& i) const noexcept;
 
 	/// Minus unary operator. Modifies the current instance.
-	integer& operator- ();
+	integer& operator- () noexcept;
 	/// Substraction operator. Modifies the current instance.
-	integer& operator-= (int64_t i);
+	integer& operator-= (int64_t i) noexcept;
 	/// Substraction operator. Modifies the current instance.
-	integer& operator-= (const integer& i);
+	integer& operator-= (const integer& i) noexcept;
 
 	/// Product operator. Returns a new object of type 'integer'.
-	integer operator* (int64_t i) const;
+	integer operator* (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Product operator. Returns a new object of type 'integer'.
-	inline friend integer operator* (int64_t i, const integer& ii)
+	inline friend integer operator* (int64_t i, const integer& ii) noexcept
 	{ return ii*i; }
 #endif
 	/// Product operator. Returns a new object of type 'integer'.
-	integer operator* (const integer& i) const;
+	integer operator* (const integer& i) const noexcept;
 
 	/// Product operator. Modifies the current instance.
-	integer& operator*= (int64_t i);
+	integer& operator*= (int64_t i) noexcept;
 	/// Product operator. Modifies the current instance.
-	integer& operator*= (const integer& i);
+	integer& operator*= (const integer& i) noexcept;
 
 	/// Quotient operator. Returns a new object of type 'integer'.
-	integer operator/ (int64_t i) const;
+	integer operator/ (int64_t i) const noexcept;
 #ifndef SWIG
 	/// Quotient operator. Returns a new object of type 'integer'.
-	inline friend int64_t operator/ (int64_t i, const integer& ii)
+	inline friend int64_t operator/ (int64_t i, const integer& ii) noexcept
 	{ return i/ii.to_int(); }
 #endif
 	/// Quotient operator. Returns a new object of type 'integer'.
-	integer operator/ (const integer& i) const;
+	integer operator/ (const integer& i) const noexcept;
 
 	/// Quotient operator. Modifies the current instance.
-	integer& operator/= (int64_t i);
+	integer& operator/= (int64_t i) noexcept;
 	/// Quotient operator. Modifies the current instance.
-	integer& operator/= (const integer& i);
+	integer& operator/= (const integer& i) noexcept;
 
 	/// Power operator. Returns a new object of type 'integer'.
-	integer operator^ (uint64_t i) const;
+	integer operator^ (uint64_t i) const noexcept;
 	/// Power operator. Returns a new object of type 'integer'.
-	integer operator^ (const integer& i) const;
+	integer operator^ (const integer& i) const noexcept;
 
 	/// Power operator. Modifies the current instance.
-	integer& operator^= (uint64_t i);
+	integer& operator^= (uint64_t i) noexcept;
 	/// Power operator. Modifies the current instance.
-	integer& operator^= (const integer& i);
+	integer& operator^= (const integer& i) noexcept;
 
 	/// Modulus operator.
-	uint64_t operator% (uint64_t i) const;
+	uint64_t operator% (uint64_t i) const noexcept;
 	/// Modulus operator.
-	integer operator% (const integer& i) const;
+	integer operator% (const integer& i) const noexcept;
 
 	/* GETTERS */
 
 	/// Returns whether this object is initialised or not.
-	constexpr bool is_initialized() const { return m_initialized; }
+	constexpr bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this integer.
-	int32_t get_sign() const;
+	int32_t get_sign() const noexcept;
 
 	/// Returns the amount of bytes this integer occupies.
-	size_t bytes() const;
+	size_t bytes() const noexcept;
 	/// Returns the underlying gmp data structure.
-	const mpz_t& get_raw_value() const;
+	const mpz_t& get_raw_value() const noexcept;
 
 	/* CONVERTERS */
 
 	/// Converts this integer to a signed 64-bit integer.
-	int64_t to_int() const;
+	int64_t to_int() const noexcept;
 	/// Converts this integer to an unsigned 64-bit integer.
-	uint64_t to_uint() const;
+	uint64_t to_uint() const noexcept;
 	/// Converts this integer to a double-precision floating-point value.
-	double to_double() const;
+	double to_double() const noexcept;
 
 	/// Converts this integer to a string.
-	std::string to_string() const;
+	std::string to_string() const noexcept;
 	/// Converts this integer to a string.
-	void as_string(std::string& s) const;
+	void as_string(std::string& s) const noexcept;
 
 	/* OTHERS */
 
@@ -288,10 +302,6 @@ public:
 #endif
 
 private:
-	/// Initialises this integer with the value in @e mpz.
-	void init_mpz(const mpz_t& mpz);
-
-private:
 	/// Structure from GMP storing the integer's value.
 	mpz_t m_val;
 	/// Is this integer initialised?
@@ -299,7 +309,7 @@ private:
 };
 
 /// Make an integer from a 64-bit unsigned integer value.
-inline integer integer_from_ui(uint64_t n) {
+inline integer integer_from_ui(uint64_t n) noexcept {
 	integer i;
 	i.set_ui(n);
 	return i;
