@@ -59,6 +59,7 @@ namespace internal {
 
 free_tree level_sequence_to_ftree
 (uint32_t const *L, uint32_t n, bool normalise, bool check)
+noexcept
 {
 #if defined DEBUG
 	// a little sanity check
@@ -105,10 +106,12 @@ free_tree level_sequence_to_ftree
 
 free_tree level_sequence_to_ftree
 (const vector<uint32_t>& L, uint32_t n, bool normalise, bool check)
+noexcept
 { return level_sequence_to_ftree(&L[0], n, normalise, check); }
 
 free_tree Prufer_sequence_to_ftree
 (uint32_t const *seq, uint32_t n, bool normalise, bool check)
+noexcept
 {
 	// initialisation
 	const uint32_t L = n - 2;
@@ -162,10 +165,12 @@ free_tree Prufer_sequence_to_ftree
 
 free_tree Prufer_sequence_to_ftree
 (const vector<uint32_t>& seq, uint32_t n, bool normalise, bool check)
+noexcept
 { return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
 pair<free_tree, node> linear_sequence_to_ftree
 (const vector<uint32_t>& L, bool normalise, bool check)
+noexcept
 {
 	if (L.size() == 0) { return make_pair(free_tree(0), 0); }
 

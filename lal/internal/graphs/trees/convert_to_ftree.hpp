@@ -72,10 +72,10 @@ namespace internal {
  */
 graphs::free_tree level_sequence_to_ftree(
 	uint32_t const *L, uint32_t n, bool normalise = true, bool check = true
-);
+) noexcept;
 graphs::free_tree level_sequence_to_ftree(
 	const std::vector<uint32_t>& L, uint32_t n, bool normalise = true, bool check = true
-);
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -93,10 +93,10 @@ graphs::free_tree level_sequence_to_ftree(
  */
 graphs::free_tree Prufer_sequence_to_ftree(
 	uint32_t const *seq, uint32_t n, bool normalise = true, bool check = true
-);
+) noexcept;
 graphs::free_tree Prufer_sequence_to_ftree(
 	const std::vector<uint32_t>& S, uint32_t n, bool normalise = true, bool check = true
-);
+) noexcept;
 
 /*
  * @brief Converts a linear sequence of a tree to a graph structure.
@@ -112,7 +112,8 @@ graphs::free_tree Prufer_sequence_to_ftree(
  * by the sequence.
  */
 std::pair<graphs::free_tree, node> linear_sequence_to_ftree
-(const std::vector<uint32_t>& L, bool normalise = true, bool check = true);
+(const std::vector<uint32_t>& L, bool normalise = true, bool check = true)
+noexcept;
 
 } // -- namespace internal
 } // -- namespace lal

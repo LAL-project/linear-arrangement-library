@@ -63,9 +63,9 @@ namespace internal {
  * @param L The linear sequence.
  * @return Returns the rooted tree built with @e L. The tree is an arborescence.
  */
-graphs::rooted_tree linear_sequence_to_rtree(
-	const std::vector<uint32_t>& L, bool normalise = true, bool check = true
-);
+graphs::rooted_tree linear_sequence_to_rtree
+(const std::vector<uint32_t>& L, bool normalise = true, bool check = true)
+noexcept;
 
 } // -- namespace internal
 } // -- namespace lal
