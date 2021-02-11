@@ -67,7 +67,7 @@ namespace generate {
  * @code
  *		rand_lab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::free_tree T = TreeGen.get_tree();
+ *			lal::graphs::rooted_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -75,25 +75,32 @@ namespace generate {
 class __rand_lab_rooted_trees : public __rand_lab_free_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
-	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: __rand_lab_free_trees(n, seed) { }
+	/// Default destructor.
+	~__rand_lab_rooted_trees() = default;
 
 	/**
 	 * @brief Generates uniformly at random a free labelled tree.
 	 * @return Returns a labelled tree generated uniformly at random. The
 	 * tree is rooted at vertex 0.
-	 * @pre The generator must have been initialised.
 	 */
-	graphs::rooted_tree get_tree();
+	inline graphs::rooted_tree get_tree() noexcept {
+		const graphs::free_tree t = __rand_lab_free_trees::get_tree();
+		const node r = m_unif(m_gen);
+		return graphs::rooted_tree(t, r);
+	}
 
 protected:
 	/**
 	 * @brief Sets the size of the labelled trees to generate.
 	 *
 	 * Initialises the random number generator.
-	 * @param n Number of nodes of the tree.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(uint32_t n, uint32_t seed = 0);
+	inline void init(uint32_t seed = 0) noexcept {
+		__rand_lab_free_trees::init(seed);
+	}
 };
 
 /**
@@ -105,11 +112,12 @@ protected:
 class rand_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// See @ref __rand_lab_rooted_trees::__rand_lab_rooted_trees(uint32_t, uint32_t) for details.
-	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: m_Gen(n, seed) { }
 
 protected:
 	/// See @ref __rand_lab_rooted_trees::get_tree for details.
-	graphs::rooted_tree __get_tree();
+	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_lab_rooted_trees for details.

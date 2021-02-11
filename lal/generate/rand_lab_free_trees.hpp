@@ -48,6 +48,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_gen.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -72,8 +73,8 @@ class __rand_lab_free_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
-	/// Default Destructor.
-	virtual ~__rand_lab_free_trees() noexcept;
+	/// Default destructor.
+	virtual ~__rand_lab_free_trees() noexcept = default;
 
 #ifndef SWIG
 	/// Disallow copies.
@@ -89,30 +90,28 @@ public:
 	/**
 	 * @brief Generates uniformly at random a free labelled tree.
 	 * @return Returns a labelled tree.
-	 * @pre The generator must have been initialised.
 	 */
-	graphs::free_tree get_tree();
+	graphs::free_tree get_tree() noexcept;
 
 protected:
 	/**
 	 * @brief Sets the size of the labelled trees to generate.
 	 *
 	 * Initialises the random number generator.
-	 * @param n Number of nodes of the tree.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(uint32_t n, uint32_t seed = 0);
+	void init(uint32_t seed = 0) noexcept;
 
 protected:
-
 	/// Number of nodes of the tree.
-	uint32_t m_n;
+	const uint32_t m_n;
+
 	/// Random number generator.
 	std::mt19937 m_gen;
 	/// Distribution of the numbers.
 	std::uniform_int_distribution<uint32_t> m_unif;
 	/// Prüfer sequence.
-	uint32_t *m_seq = nullptr;
+	internal::data_array<uint32_t> m_seq;
 };
 
 /**
@@ -124,11 +123,12 @@ protected:
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
-	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: m_Gen(n, seed) { }
 
 protected:
 	/// See @ref __rand_lab_free_trees::get_tree.
-	graphs::free_tree __get_tree();
+	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_lab_free_trees.

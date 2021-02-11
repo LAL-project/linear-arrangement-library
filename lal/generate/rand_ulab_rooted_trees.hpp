@@ -48,6 +48,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_gen.hpp>
 #include <lal/numeric/integer.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -77,15 +78,14 @@ public:
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/// Destructor.
-	virtual ~__rand_ulab_rooted_trees() noexcept;
+	virtual ~__rand_ulab_rooted_trees() noexcept = default;
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
 	 * @return Returns an unlabelled rooted tree. The tree is rooted
 	 * at vertex 0.
-	 * @pre The generator must have been initialised.
 	 */
-	graphs::rooted_tree get_tree();
+	graphs::rooted_tree get_tree() noexcept;
 
 	/**
 	 * @brief Clears the memory occupied.
@@ -105,11 +105,12 @@ public:
 	 * @ref m_rn are cleared. Attribute @ref m_rn is then assigned the same
 	 * 31 values that it is assigned when creating an object of this class.
 	 */
-	void clear();
+	void clear() noexcept;
 
 protected:
 	/// Number of nodes of the tree.
-	uint32_t m_n = 0;
+	const uint32_t m_n;
+
 	/// Random number generator.
 	std::mt19937 m_gen;
 	/// Distribution of the numbers.
@@ -128,22 +129,20 @@ protected:
 	 * This list has @e n+1 values for @ref m_n nodes.
 	 * The first position is the root.
 	 */
-	uint32_t *m_tree = nullptr;
+	internal::data_array<uint32_t> m_tree;
 
 protected:
 
 	/**
 	 * @brief Sets the size of the unlabelled trees to generate.
 	 *
-	 * Initialises @ref m_rn with 31 values are extracted from
-	 * \cite OEIS_A000081.
+	 * Initialises @ref m_rn with 31 values are extracted from \cite OEIS_A000081.
 	 *
 	 * Initialises the random number generator with @e seed. When @e seed
 	 * is 0, a random seed is used.
-	 * @param n Number of nodes of the tree.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	virtual void init(uint32_t n, uint32_t seed = 0);
+	virtual void init(uint32_t seed = 0) noexcept;
 
 	/**
 	 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
@@ -156,17 +155,18 @@ protected:
 	 * @return Returns two indices: the index of the root of the last
 	 * tree generated and where to store the next tree in @ref m_tree.
 	 */
-	std::pair<uint32_t,uint32_t> ranrut(uint32_t n, uint32_t lr, uint32_t nt);
+	std::pair<uint32_t,uint32_t>
+	ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept;
 
 	/// Initialiases @ref m_rn with 31 values from the OEIS (see \cite OEIS_A000081).
-	void init_rn();
+	void init_rn() noexcept;
 	/**
 	 * @brief Computes all the values \f$t_i\f$ for \f$i \in [1,n]\f$.
 	 *
 	 * Here \f$n\f$ is @ref m_n. In case these values have already been
 	 * calculated, this method does nothing.
 	 */
-	const numeric::integer& get_rn(uint32_t n);
+	const numeric::integer& get_rn(uint32_t n) noexcept;
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -178,7 +178,7 @@ protected:
 	 * @returns Returns a pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
-	std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n);
+	std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n) noexcept;
 };
 
 /**
@@ -190,11 +190,12 @@ protected:
 class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
-	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: m_Gen(n, seed) { }
 
 protected:
 	/// See @ref __rand_ulab_rooted_trees::get_tree for details.
-	graphs::rooted_tree __get_tree();
+	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_lab_rooted_trees for details.

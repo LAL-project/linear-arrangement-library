@@ -59,14 +59,13 @@ namespace generate {
 
 __rand_lab_free_trees::__rand_lab_free_trees
 (uint32_t _n, uint32_t seed) noexcept
+	: m_n(_n),
+	  m_seq(m_n <= 2 ? 2 : m_n - 2)
 {
-	init(_n, seed);
-}
-__rand_lab_free_trees::~__rand_lab_free_trees() noexcept {
-	delete[] m_seq;
+	init(seed);
 }
 
-free_tree __rand_lab_free_trees::get_tree() {
+free_tree __rand_lab_free_trees::get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
@@ -77,14 +76,12 @@ free_tree __rand_lab_free_trees::get_tree() {
 	for (uint32_t i = 0; i < m_n - 2; ++i) {
 		m_seq[i] = m_unif(m_gen);
 	}
-	return internal::Prufer_sequence_to_ftree(m_seq, m_n, false, false);
+	return internal::Prufer_sequence_to_ftree(m_seq.begin(), m_n, false, false);
 }
 
 /* PROTECTED */
 
-void __rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
-	m_n = _n;
-
+void __rand_lab_free_trees::init(uint32_t seed) noexcept {
 	if (seed == 0) {
 		random_device rd;
 		m_gen = mt19937(rd());
@@ -93,27 +90,6 @@ void __rand_lab_free_trees::init(uint32_t _n, uint32_t seed) {
 		m_gen = mt19937(seed);
 	}
 	m_unif = uniform_int_distribution<uint32_t>(0, m_n - 1);
-
-	if (m_n <= 2) { return; }
-
-	m_seq = new uint32_t[m_n - 2];
-}
-
-// -----------------------------------------------------------------------------
-// WRAPPER CLASS
-
-/* PUBLIC */
-
-rand_lab_free_trees::rand_lab_free_trees
-(uint32_t n, uint32_t seed) noexcept
-: m_Gen(n, seed)
-{
-}
-
-/* PROTECTED */
-
-graphs::free_tree rand_lab_free_trees::__get_tree() {
-	return m_Gen.get_tree();
 }
 
 } // -- namespace generate

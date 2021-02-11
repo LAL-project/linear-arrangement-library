@@ -91,14 +91,14 @@ void all_lab_free_trees::next() noexcept {
 
 void all_lab_free_trees::reset() noexcept {
 	if (m_n <= 2) {
-		m_sm[0] = 0;
+		m_sm[0] = false;
 		// there is only one tree we can make
 		return;
 	}
 
 	m_it = 0;
-	std::fill(m_sm.begin(), m_sm.end(), 0);
-	std::fill(m_seq.begin(), m_seq.end(), 0);
+	m_sm.fill(false);
+	m_seq.fill(0);
 	// place 'it' at the end of the sequence
 	m_it = m_n - 3;
 	// make sure that the first call to next()

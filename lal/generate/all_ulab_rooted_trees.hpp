@@ -44,6 +44,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_gen.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -85,8 +86,8 @@ class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_ulab_rooted_trees(uint32_t n) noexcept;
-	/// Destructor
-	~all_ulab_rooted_trees() noexcept;
+	/// Default destructor.
+	~all_ulab_rooted_trees() noexcept = default;
 
 #ifndef SWIG
 	/// Disallow copies.
@@ -105,9 +106,8 @@ public:
 	 * to generate. Returns false if all trees have been
 	 * generated (there are no more unique trees of this
 	 * size that were not generated before).
-	 * @pre The generator must have been initialised.
 	 */
-	bool has_next() const;
+	inline bool has_next() const noexcept { return not m_is_last; }
 
 	/**
 	 * @brief Generates the next tree.
@@ -116,14 +116,14 @@ public:
 	 * can be retrieved using method @ref get_tree.
 	 * @pre The generator must have been initialised.
 	 */
-	void next();
+	void next() noexcept;
 
 	/**
 	 * @brief Sets the generator to its initial state.
 	 *
 	 * This method can be called anytime.
 	 */
-	void reset();
+	void reset() noexcept;
 
 protected:
 	/**
@@ -133,27 +133,20 @@ protected:
 	 * @pre The generator must have been initialised, and method
 	 * @ref next must have been called at least once.
 	 */
-	graphs::rooted_tree __get_tree();
+	graphs::rooted_tree __get_tree() noexcept;
 
 	/**
-	 * @brief Initialises the generator.
+	 * @brief Class initialiser method.
 	 *
-	 * Initialises the internal state of this generator
-	 * so that method @ref next can be called safely.
-	 *
-	 * Initialising this class already allows the user
-	 * to retrieve the first tree via method @ref get_tree.
-	 *
-	 * It is allowed to call this method two or more times,
-	 * and with different values for parameter @e n.
-	 * @param n The number of nodes of the trees to be
-	 * generated.
+	 * Initialises the internal state of this generator so that method
+	 * @ref next can be called safely. The number of vertices @ref m_n
+	 * is initialised during construction.
 	 */
-	void init(uint32_t n);
+	void init() noexcept;
 
 private:
 	/// Number of nodes of the tree
-	uint32_t m_n;
+	const uint32_t m_n;
 
 	/// Is the current tree the last tree to be generated?
 	bool m_is_last = false;
@@ -163,11 +156,11 @@ private:
 	/// Pointer as in the paper.
 	uint32_t m_p = 0;
 	/// Sequence SAVE
-	node *m_save = nullptr;
+	internal::data_array<node> m_save;
 	/// Sequence PREV
-	node *m_prev = nullptr;
+	internal::data_array<node> m_prev;
 	/// Level sequence of the tree
-	node *m_L = nullptr;
+	internal::data_array<node> m_L;
 };
 
 } // -- namespace generate

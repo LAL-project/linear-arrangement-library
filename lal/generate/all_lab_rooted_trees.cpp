@@ -53,16 +53,14 @@ using namespace graphs;
 
 namespace generate {
 
-all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept : m_gen_lab_free_tree(n) {
-	init(n);
+all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept
+	: m_n(n),
+	  m_gen_lab_free_tree(m_n)
+{
+	init();
 }
 
-bool all_lab_rooted_trees::has_next() const {
-	return
-	not( m_cur_root + 1 >= m_n and (not m_gen_lab_free_tree.has_next()));
-}
-
-void all_lab_rooted_trees::next() {
+void all_lab_rooted_trees::next() noexcept {
 	if (m_cur_root == m_n - 1) {
 		m_cur_root = 0;
 		m_gen_lab_free_tree.next();
@@ -73,23 +71,21 @@ void all_lab_rooted_trees::next() {
 	}
 }
 
-void all_lab_rooted_trees::reset() {
+void all_lab_rooted_trees::reset() noexcept {
 	m_cur_root = m_n - 1;
 	m_gen_lab_free_tree.reset();
 }
 
 /* PROTECTED */
 
-rooted_tree all_lab_rooted_trees::__get_tree() {
+rooted_tree all_lab_rooted_trees::__get_tree() noexcept {
 #if defined DEBUG
 	assert(m_cur_root < m_n);
 #endif
 	return rooted_tree(m_cur_ftree, m_cur_root);
 }
 
-void all_lab_rooted_trees::init(uint32_t n) {
-	m_n = n;
-
+void all_lab_rooted_trees::init() noexcept {
 	reset();
 
 	// deactivate all processing of the free tree

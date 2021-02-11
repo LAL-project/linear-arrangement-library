@@ -55,21 +55,16 @@ using namespace graphs;
 
 namespace generate {
 
-all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept {
-	init(_n);
+all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept
+	: m_n(_n),
+	  m_save(m_n + 1),
+	  m_prev(m_n + 1),
+	  m_L(m_n + 1)
+{
+	init();
 }
 
-all_ulab_rooted_trees::~all_ulab_rooted_trees() noexcept {
-	delete[] m_save;
-	delete[] m_prev;
-	delete[] m_L;
-}
-
-bool all_ulab_rooted_trees::has_next() const {
-	return not m_is_last;
-}
-
-void all_ulab_rooted_trees::next() {
+void all_ulab_rooted_trees::next() noexcept {
 	if (m_n <= 2) {
 		m_is_last = true;
 		return;
@@ -100,7 +95,7 @@ void all_ulab_rooted_trees::next() {
 	m_is_last = (m_p <= 1);
 }
 
-void all_ulab_rooted_trees::reset() {
+void all_ulab_rooted_trees::reset() noexcept {
 	m_is_first = true;
 
 	// simplest cases
@@ -111,14 +106,14 @@ void all_ulab_rooted_trees::reset() {
 
 	m_is_last = false;
 
-	std::fill(&m_save[0], &m_save[m_n + 1], 0);
-	std::fill(&m_prev[0], &m_prev[m_n + 1], 0);
-	std::fill(&m_L[0], &m_L[m_n + 1], 0);
+	m_save.fill(0);
+	m_prev.fill(0);
+	m_L.fill(0);
 
 	// -------------------
 	// generate first tree
 
-	std::iota(&m_L[0], &m_L[m_n + 1], 0);
+	std::iota(m_L.begin(), m_L.end(), 0);
 	m_p = m_n;
 	if (m_p > 1) {
 		for (uint32_t i = 1; i <= m_p - 1; ++i) {
@@ -130,7 +125,7 @@ void all_ulab_rooted_trees::reset() {
 
 /* PROTECTED */
 
-rooted_tree all_ulab_rooted_trees::__get_tree() {
+rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 	if (m_n == 0) {
 		return rooted_tree(free_tree(0), 0);
 	}
@@ -145,16 +140,15 @@ rooted_tree all_ulab_rooted_trees::__get_tree() {
 		return rT;
 	}
 
-	const free_tree t = internal::level_sequence_to_ftree(m_L, m_n, false, false);
+	const free_tree t =
+		internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 	return rooted_tree(t, 0);
 }
 
-void all_ulab_rooted_trees::init(uint32_t _n) {	
-	m_n = _n;
-
-	m_save = new node[m_n + 1];
-	m_prev = new node[m_n + 1];
-	m_L = new node[m_n + 1];
+void all_ulab_rooted_trees::init() noexcept {
+	//m_save = new node[m_n + 1];
+	//m_prev = new node[m_n + 1];
+	//m_L = new node[m_n + 1];
 
 	reset();
 }

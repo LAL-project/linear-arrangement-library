@@ -154,7 +154,6 @@ SOURCES += \
 	generate/all_ulab_free_trees.cpp \
 	generate/all_ulab_rooted_trees.cpp \
 	generate/rand_lab_free_trees.cpp \
-	generate/rand_lab_rooted_trees.cpp \
 	generate/rand_projective_arrangements.cpp \
 	generate/rand_ulab_free_trees.cpp \
 	generate/rand_ulab_rooted_trees.cpp \

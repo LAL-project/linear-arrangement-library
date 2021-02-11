@@ -55,19 +55,15 @@ using namespace graphs;
 
 namespace generate {
 
-all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept {
-	init(_n);
-}
-all_ulab_free_trees::~all_ulab_free_trees() noexcept {
-	delete[] m_L;
-	delete[] m_W;
-}
-
-bool all_ulab_free_trees::has_next() const {
-	return not m_is_last;
+all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept
+	: m_n(_n),
+	  m_L(m_n + 1),
+	  m_W(m_n + 1)
+{
+	init();
 }
 
-void all_ulab_free_trees::next() {
+void all_ulab_free_trees::next() noexcept {
 	if (m_n <= 2) {
 		m_is_last = true;
 		return;
@@ -228,11 +224,11 @@ void all_ulab_free_trees::next() {
 	m_is_last = (m_q == 0);
 }
 
-void all_ulab_free_trees::reset() {
+void all_ulab_free_trees::reset() noexcept {
 	m_is_last = false;
 
-	std::fill(&m_L[0], &m_L[m_n + 1], 0);
-	std::fill(&m_W[0], &m_W[m_n + 1], 0);
+	m_L.fill(0);
+	m_W.fill(0);
 
 	// simplest cases
 	if (m_n == 0) {
@@ -270,20 +266,19 @@ void all_ulab_free_trees::reset() {
 
 /* PROTECTED */
 
-free_tree all_ulab_free_trees::__get_tree() {
+free_tree all_ulab_free_trees::__get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
 		t.add_edge(0,1);
 		return t;
 	}
-	return internal::level_sequence_to_ftree(m_L, m_n, false, false);
+	return internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 }
 
-void all_ulab_free_trees::init(uint32_t _n) {
-	m_n = _n;
-	m_L = new uint32_t[m_n + 1];
-	m_W = new uint32_t[m_n + 1];
+void all_ulab_free_trees::init() noexcept {
+	//m_L = new uint32_t[m_n + 1];
+	//m_W = new uint32_t[m_n + 1];
 
 	reset();
 }

@@ -25,7 +25,7 @@ template<
 >
 class tree_gen {
 public:
-	virtual ~tree_gen() noexcept { }
+	virtual ~tree_gen() noexcept = default;
 
 	/// Normalise the generate tree.
 	bool normalise_tree = true;
@@ -44,7 +44,7 @@ public:
 	 * - @ref calculate_tree_type
 	 */
 	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
-	get_tree()
+	get_tree() noexcept
 	{
 		auto t = __get_tree();
 
@@ -80,7 +80,8 @@ protected:
 	 */
 	virtual
 	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
-	__get_tree() = 0;
+	__get_tree()
+	noexcept = 0;
 };
 
 } // -- namespace generate

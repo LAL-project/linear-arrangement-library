@@ -86,7 +86,7 @@ class all_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_lab_free_trees(uint32_t n) noexcept;
-	/// Destructor.
+	/// Default destructor.
 	~all_lab_free_trees() noexcept = default;
 
 #ifndef SWIG
@@ -102,14 +102,12 @@ public:
 
 	/**
 	 * @brief Returns whether there are more trees to generate.
-	 * @return Returns true if there are still more trees
-	 * to generate. Returns false if all trees have been
-	 * generated (there are no more unique trees of this
-	 * size that were not generated before).
-	 * @pre The generator must have been initialised.
+	 * @return Returns true if there are still more trees to generate. Returns
+	 * false if all trees have been generated (there are no more unique trees
+	 * of this size that were not generated before).
 	 */
 	inline bool has_next() const noexcept {
-		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] != 1;
+		return not m_sm[(m_n <= 2 ? 0 : m_n - 3)];
 	}
 
 	/**

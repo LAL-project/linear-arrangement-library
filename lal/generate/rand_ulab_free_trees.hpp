@@ -90,9 +90,8 @@ public:
 	 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
 	 * pointed out in \cite GiacXcas_Manual.
 	 * @return Returns an unlabelled free tree.
-	 * @pre This class must have been initialised. See @ref init(uint32_t,uint32_t).
 	 */
-	graphs::free_tree get_tree();
+	graphs::free_tree get_tree() noexcept;
 
 	/**
 	 * @brief Clears the memory occupied.
@@ -113,7 +112,7 @@ public:
 	 * @ref m_rn and @ref m_fn are then assigned the same 31 values that they
 	 * are assigned when creating an object of this class.
 	 */
-	void clear();
+	void clear() noexcept;
 
 protected:
 
@@ -126,10 +125,9 @@ protected:
 	 *
 	 * Initialises the random number generator with @e seed. When @e seed
 	 * is 0, a random seed is used.
-	 * @param n Number of nodes of the tree.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(uint32_t n, uint32_t seed = 0);
+	void init(uint32_t seed = 0) noexcept;
 
 private:
 	/**
@@ -165,10 +163,10 @@ private:
 	 * @return Returns the position where to store the following
 	 * trees/forests in @ref m_tree.
 	 */
-	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt);
+	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt) noexcept;
 
 	/// Generates a tree of @e n nodes with two centroids.
-	void bicenter(uint32_t n);
+	void bicenter(uint32_t n) noexcept;
 
 	/**
 	 * @brief Computes and return the value \f$\alpha(m,q)\f$.
@@ -181,10 +179,11 @@ private:
 	 * the forest.
 	 * @return Returns \f$\alpha(m,q)\f$
 	 */
-	const numeric::integer& get_alpha_mq(const uint32_t m, const uint32_t q);
+	const numeric::integer&
+	get_alpha_mq(const uint32_t m, const uint32_t q) noexcept;
 
 	/// Initialiases @ref m_fn with 31 values from the OEIS (see \cite OEIS_A000055).
-	void init_fn();
+	void init_fn() noexcept;
 
 	/**
 	 * @brief Computes and returns the value \f$f_n\f$.
@@ -194,7 +193,7 @@ private:
 	 * @param n Number of nodes of the tree.
 	 * @return Returns \f$f_n\f$.
 	 */
-	const numeric::integer& get_fn(const uint32_t n);
+	const numeric::integer& get_fn(const uint32_t n) noexcept;
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -209,7 +208,7 @@ private:
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
 	std::pair<uint32_t,uint32_t>
-	choose_jd_from_alpha(const uint32_t m, const uint32_t q);
+	choose_jd_from_alpha(const uint32_t m, const uint32_t q) noexcept;
 };
 
 /**
@@ -221,11 +220,12 @@ private:
 class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t, uint32_t).
-	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: m_Gen(n, seed) { }
 
 protected:
 	/// See @ref __rand_ulab_free_trees::get_tree.
-	graphs::free_tree __get_tree();
+	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_ulab_free_trees.
