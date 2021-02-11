@@ -137,7 +137,6 @@ target_sources(
 		generate/all_ulab_free_trees.cpp
 		generate/all_ulab_rooted_trees.cpp
 		generate/rand_lab_free_trees.cpp
-		generate/rand_lab_rooted_trees.cpp
 		generate/rand_projective_arrangements.cpp
 		generate/rand_ulab_free_trees.cpp
 		generate/rand_ulab_rooted_trees.cpp
@@ -347,6 +346,9 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
 )
+set(LIBLAL_INTERNAL_HEADER
+	internal/data_array.hpp
+)
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/dataset_error.hpp
@@ -409,6 +411,7 @@ install(
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
 install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generate)
 install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
+install(FILES ${LIBLAL_INTERNAL_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/internal)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
 install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
