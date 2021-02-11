@@ -302,7 +302,7 @@ void rational::as_integer(integer& i) const noexcept {
 	mpz_div(numerator, numerator, denominator);
 
 	// free the contents of integer 'i' if needed
-	//if (i.is_initialized()) { mpz_clear(i.m_val); }
+	if (i.is_initialized()) { mpz_clear(i.m_val); }
 	// MOVE 'numerator' into 'i'
 	internal::move_mpz_to_mpz(numerator, i.m_val);
 
