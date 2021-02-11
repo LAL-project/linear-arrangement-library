@@ -55,22 +55,15 @@ namespace generate {
 
 // PUBLIC
 
-all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept {
-	init(_n);
-}
-all_lab_free_trees::~all_lab_free_trees() noexcept {
-	delete[] m_sm;
-	delete[] m_seq;
-}
-
-bool all_lab_free_trees::has_next() const {
-	if (m_n <= 2) {
-		return m_sm[0] != 1;
-	}
-	return m_sm[m_n - 3] != 1;
+all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
+	: m_n(_n),
+	  m_seq(m_n <= 2 ? 1 : m_n - 2, 0),
+	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
+{
+	init();
 }
 
-void all_lab_free_trees::next() {
+void all_lab_free_trees::next() noexcept {
 	if (m_n <= 2) {
 		// there is only one tree we can make
 		m_sm[0] = true;
@@ -82,12 +75,6 @@ void all_lab_free_trees::next() {
 	}
 	++m_seq[m_it];
 
-	/*
-	if (m_seq[m_it] == m_n - 1) {
-		m_sm[m_it] =
-		(m_it == 0) or (m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1);
-	}
-	*/
 	m_sm[m_it] =
 	(m_seq[m_it] == m_n - 1 ?
 		(m_it == 0) or (m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1)
@@ -96,15 +83,13 @@ void all_lab_free_trees::next() {
 	);
 
 	++m_it;
-	if (m_it < m_n - 2) {
-		auto _it = &m_seq[0];
-		advance(_it, m_it);
-		fill(_it, &m_seq[m_n - 2], 0);
+	if (m_it < m_seq.size()) {
+		std::fill(m_seq.begin() + m_it, m_seq.end(), 0);
 	}
 	m_it = m_n - 3;
 }
 
-void all_lab_free_trees::reset() {
+void all_lab_free_trees::reset() noexcept {
 	if (m_n <= 2) {
 		m_sm[0] = 0;
 		// there is only one tree we can make
@@ -112,8 +97,8 @@ void all_lab_free_trees::reset() {
 	}
 
 	m_it = 0;
-	std::fill(&m_sm[0], &m_sm[m_n - 2], 0);
-	std::fill(&m_seq[0], &m_seq[m_n - 2], 0);
+	std::fill(m_sm.begin(), m_sm.end(), 0);
+	std::fill(m_seq.begin(), m_seq.end(), 0);
 	// place 'it' at the end of the sequence
 	m_it = m_n - 3;
 	// make sure that the first call to next()
@@ -124,26 +109,21 @@ void all_lab_free_trees::reset() {
 
 /* PROTECTED */
 
-free_tree all_lab_free_trees::__get_tree() {
+free_tree all_lab_free_trees::__get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
 		t.set_edges(vector<edge>{edge(0,1)});
 		return t;
 	}
-	return internal::Prufer_sequence_to_ftree(m_seq, m_n, false, false);
+	return internal::Prufer_sequence_to_ftree(m_seq.begin(), m_n, false, false);
 }
 
-void all_lab_free_trees::init(uint32_t _n) {
-	m_n = _n;
+void all_lab_free_trees::init() noexcept {
 	if (m_n <= 2) {
-		m_sm = new char[1]{0};
 		// there is only one tree we can make
 		return;
 	}
-
-	m_sm = new char[m_n - 2]{0};
-	m_seq = new uint32_t[m_n - 2]{0};
 	reset();
 }
 

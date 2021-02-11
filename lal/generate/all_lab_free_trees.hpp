@@ -45,6 +45,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_gen.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -86,7 +87,7 @@ public:
 	/// Constructor with number of nodes.
 	all_lab_free_trees(uint32_t n) noexcept;
 	/// Destructor.
-	~all_lab_free_trees() noexcept;
+	~all_lab_free_trees() noexcept = default;
 
 #ifndef SWIG
 	/// Disallow copies.
@@ -107,7 +108,9 @@ public:
 	 * size that were not generated before).
 	 * @pre The generator must have been initialised.
 	 */
-	bool has_next() const;
+	inline bool has_next() const noexcept {
+		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] != 1;
+	}
 
 	/**
 	 * @brief Generates next tree.
@@ -116,14 +119,14 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialised.
 	 */
-	void next();
+	void next() noexcept;
 
 	/**
 	 * @brief Sets the generator to its initial state.
 	 *
 	 * This method can be called anytime.
 	 */
-	void reset();
+	void reset() noexcept;
 
 protected:
 	/**
@@ -132,22 +135,16 @@ protected:
 	 * @pre The generator must have been initialised, and method
 	 * @ref next must have been called at least once.
 	 */
-	graphs::free_tree __get_tree();
+	graphs::free_tree __get_tree() noexcept;
 
 	/**
 	 * @brief Class initialiser method.
 	 *
 	 * Initialises the internal state of this generator so that method
-	 * @ref next can be called safely.
-	 *
-	 * Initialising this class already allows the user to retrieve the first
-	 * tree via method @ref get_tree.
-	 *
-	 * It is allowed to call this method two or more times, and with different
-	 * values for parameter @e _n.
-	 * @param _n The number of nodes of the trees to be generated.
+	 * @ref next can be called safely. The number of vertices @ref m_n
+	 * is initialised during construction.
 	 */
-	void init(uint32_t _n);
+	void init() noexcept;
 
 private:
 
@@ -156,15 +153,15 @@ private:
 	 *
 	 * Size of the sequence: \f$n - 2\f$.
 	 */
-	uint32_t m_n;
+	const uint32_t m_n;
 	/// Iterator on the sequence.
 	uint32_t m_it;
 	/// Left-most position with value \f$n-1\f$.
 	uint32_t m_L;
 	/// Prüfer sequence.
-	uint32_t *m_seq = nullptr;
+	internal::data_array<uint32_t> m_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
-	char *m_sm = nullptr;
+	internal::data_array<bool> m_sm;
 };
 
 } // -- namespace generate
