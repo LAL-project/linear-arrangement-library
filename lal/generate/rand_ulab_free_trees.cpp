@@ -375,8 +375,7 @@ const integer& __rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 		}
 		f_k -= rational(s,2);
 
-		integer f_k__int = f_k.to_integer();
-		m_fn.emplace_back(std::move(f_k__int));
+		m_fn.emplace_back(f_k.to_integer());
 		//m_fn[k] = std::move(f_i__int);
 
 		++k;
