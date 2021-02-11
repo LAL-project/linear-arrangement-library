@@ -285,22 +285,31 @@ size_t rational::bytes() const noexcept {
 /* CONVERTERS */
 
 integer rational::to_integer() const noexcept {
-	integer i(0);
+	integer i;
 	as_integer(i);
 	return i;
 }
 
 void rational::as_integer(integer& i) const noexcept {
-	mpz_t num, den;
-	mpz_inits(num, den, NULL);
+	mpz_t numerator, denominator;
+	mpz_inits(numerator, denominator, NULL);
 
-	mpq_get_num(num, m_val);
-	mpq_get_den(den, m_val);
+	// COPY the contents of this rational into 'num' and 'den'
+	mpq_get_num(numerator, m_val);
+	mpq_get_den(denominator, m_val);
 
-	mpz_div(num, num, den);
-	mpz_init_set(i.m_val, num);
+	// integer division (numerator/denominator)
+	mpz_div(numerator, numerator, denominator);
 
-	mpz_clears(num, den, NULL);
+	// free the contents of integer 'i' if needed
+	//if (i.is_initialized()) { mpz_clear(i.m_val); }
+	// MOVE 'numerator' into 'i'
+	internal::move_mpz_to_mpz(numerator, i.m_val);
+
+	// there is no need to clear 'numerator' since the function
+	// 'move_mpz_to_mpz' does it for us (it really doesn't -- it just
+	// moves the contens!).
+	mpz_clear(denominator);
 }
 
 double rational::to_double() const noexcept {
