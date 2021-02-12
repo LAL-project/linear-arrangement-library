@@ -45,10 +45,12 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <bits/stl_pair.h>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/internal/graphs/traversal.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace internal {
@@ -66,18 +68,17 @@ namespace internal {
  * @pre The tree has vertex 'u'
  * @post The function has NO ownership of the raw pointer returned in the pair.
  * @post The pointer returned is not nullptr only when T.size_subtrees_valid()
- * and the boolean parameter sizes are both true.
+ * AND the boolean parameter sizes are BOTH true.
  */
+template<bool get_subsizes>
 std::pair<std::vector<edge>, uint32_t *>
-get_edges_subtree(
-	const graphs::rooted_tree& T, node u,
-	bool relabel, bool subsizes
-)
+get_edges_subtree
+(const graphs::rooted_tree& T, node u, bool relabel)
 {
 #if defined DEBUG
 	assert(T.is_rooted_tree());
 	assert(T.has_node(u));
-	if (subsizes) {
+	if constexpr (get_subsizes) {
 		assert(relabel);
 	}
 #endif
@@ -93,7 +94,7 @@ get_edges_subtree(
 	bool update_sizes = false;
 	if (T.size_subtrees_valid()) {
 		es.reserve(T.n_nodes_subtree(u));
-		if (subsizes) {
+		if constexpr (get_subsizes) {
 			// The caller wants this function to retrieve the sizes of
 			// the subtrees. This can be done because the sizes are valid.
 
@@ -108,8 +109,8 @@ get_edges_subtree(
 	}
 
 	// data structures for node relabelling
-	node *relabelling = new node[n];
-	std::fill(&relabelling[0], &relabelling[n], n+1);
+	data_array<node> relabelling(n);
+	relabelling.fill(n + 1);
 
 	// relabel 'u' to '0' and make it the root
 	relabelling[u] = 0;
@@ -171,8 +172,6 @@ get_edges_subtree(
 	}
 	bfs.start_at(u);
 
-	// free local memory
-	delete[] relabelling;
 	return {es, sizes};
 }
 
