@@ -45,24 +45,11 @@
 #include <vector>
 
 // lal includes
-#include <lal/iterators/Q_iterator.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/iterators/Q_iterator.hpp>
 
 namespace lal {
 namespace internal {
-
-template<typename G>
-std::vector<edge_pair> Q(const G& g, uint64_t qs) {
-	std::vector<edge_pair> q(qs);
-
-	auto vec_it = q.begin();
-	iterators::Q_iterator<G> q_it(g);
-	while (q_it.has_next()) {
-		q_it.next();
-		*vec_it++ = q_it.get_pair();
-	}
-	return q;
-}
 
 template<typename G>
 std::vector<edge> E(const G& g) {
@@ -75,6 +62,19 @@ std::vector<edge> E(const G& g) {
 		*vec_it++ = e_it.get_edge();
 	}
 	return e;
+}
+
+template<typename G>
+std::vector<edge_pair> Q(const G& g, uint64_t qs) {
+	std::vector<edge_pair> q(qs);
+
+	auto vec_it = q.begin();
+	iterators::Q_iterator<G> q_it(g);
+	while (q_it.has_next()) {
+		q_it.next();
+		*vec_it++ = q_it.get_pair();
+	}
+	return q;
 }
 
 } // -- namespace internal
