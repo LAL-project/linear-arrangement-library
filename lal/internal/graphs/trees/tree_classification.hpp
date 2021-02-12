@@ -63,10 +63,8 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-void classify_tree(
-	const T& t,
-	std::array<bool, graphs::__tree_type_size>& array
-)
+void classify_tree
+(const T& t, std::array<bool, graphs::__tree_type_size>& array)
 {
 	// -------------------------------------------------------------------------
 	// utilities
@@ -104,7 +102,7 @@ void classify_tree(
 		set_type(graphs::tree_type::linear);
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
+		array[static_cast<size_t>(graphs::tree_type::none)] = false;
 		return;
 	}
 	if (N == 2) {
@@ -112,7 +110,7 @@ void classify_tree(
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
+		array[static_cast<size_t>(graphs::tree_type::none)] = false;
 		return;
 	}
 	if (N == 3) {
@@ -120,7 +118,7 @@ void classify_tree(
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = 0;
+		array[static_cast<size_t>(graphs::tree_type::none)] = false;
 		return;
 	}
 
