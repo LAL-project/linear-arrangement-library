@@ -333,12 +333,15 @@ void rooted_tree::set_root(node r) {
 /* GETTERS */
 
 vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
-	const auto subtree_info = internal::get_edges_subtree(*this, u, relab, false);
+	const auto subtree_info =
+		internal::get_edges_subtree<false>(*this, u, relab);
+
 #if defined DEBUG
 	assert(subtree_info.second == nullptr);
 #endif
+
 	// move, please
-	return subtree_info.first;
+	return std::move(subtree_info.first);
 }
 
 rooted_tree rooted_tree::get_subtree(node u) const {
@@ -351,7 +354,9 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 #endif
 
 	// retrieve the list of edges with their nodes relabelled
-	const auto [es, subsizes] = internal::get_edges_subtree(*this, u, true, true);
+	const auto [es, subsizes] =
+		internal::get_edges_subtree<true>(*this, u, true);
+
 #if defined DEBUG
 	assert(size_subtrees_valid() ? (subsizes != nullptr) : (subsizes == nullptr));
 #endif
@@ -367,7 +372,6 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 
 	// if the subtree sizes are valid then copy them
 	if (size_subtrees_valid()) {
-		sub.m_size_subtrees = vector<uint32_t>(n_verts, 0);
 		std::copy(
 			&subsizes[0], &subsizes[n_verts],
 			sub.m_size_subtrees.begin()
