@@ -10,7 +10,16 @@
 %include "../lal/linarr/D.hpp"
 %include "../lal/linarr/Dmin.hpp"
 %include "../lal/linarr/headedness.hpp"
+
+%include "../lal/linarr/dependency_flux.hpp"
+namespace std {
+	%template(list_dependency_flux) vector<lal::linarr::dependency_flux>;
+}
 %include "../lal/linarr/flux.hpp"
+
+namespace std {
+	%template(array_of_bools_tree_structure_type) array<bool, lal::linarr::__tree_structure_type_size>;
+}
 %include "../lal/linarr/classify_syntactic_dependency_structure.hpp"
 
 // --------------------------------
@@ -38,14 +47,18 @@
 
 %pythoncode %{
 def mean_dependency_distance_1level_rational(g, l):
-	return __dict__[ "__mean_dependency_distance_1level_rational_" + str(type(g))[7:] ](g, l)
+	__type_graph = str(type(g[0]))[len("<class 'lalgraphs."):-2]
+	return globals()[ "__MDD_1level_rational_" + __type_graph ](g, l)
 
 def mean_dependency_distance_1level(g, l):
-	return __dict__[ "__mean_dependency_distance_1level_" + str(type(g))[7:] ](g, l)
+	__type_graph = str(type(g[0]))[len("<class 'lalgraphs."):-2]
+	return globals()[ "__MDD_1level_" + __type_graph ](g, l)
 
 def mean_dependency_distance_2level_rational(g, l):
-	return __dict__[ "__mean_dependency_distance_2level_rational_" + str(type(g))[7:] ](g, l)
+	__type_graph = str(type(g[0]))[len("<class 'lalgraphs."):-2]
+	return globals()[ "__MDD_2level_rational_" + __type_graph ](g, l)
 
 def mean_dependency_distance_2level(g, l):
-	return __dict__[ "__mean_dependency_distance_2level_" + str(type(g))[7:] ](g, l)
+	__type_graph = str(type(g[0]))[len("<class 'lalgraphs."):-2]
+	return globals()[ "__MDD_2level_" + __type_graph ](g, l)
 %}

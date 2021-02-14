@@ -1,5 +1,7 @@
 %module lalgraphsdebug
 
+%include std_vector.i
+
 %import laldefinitionsdebug.i
 %import enums/laltree_typedebug.i
 

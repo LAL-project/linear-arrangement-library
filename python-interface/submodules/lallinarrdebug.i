@@ -1,5 +1,8 @@
 %module lallinarrdebug
 
+%include std_vector.i
+%include std_array.i
+
 %import laldefinitionsdebug.i // this is necessary for the wrapper
 %import enums/lalsyntactic_dependency_structure_typedebug.i
 %import enums/lalalgorithms_Cdebug.i
@@ -27,11 +30,4 @@ del laldefinitionsdebug
 del lalgraphsdebug
 del lalnumericdebug
 del laltree_typedebug # this comes from lalgraphs
-
-
-stolen = getattr(__definitions, "dependency_flux")
-delattr(__definitions, "dependency_flux")
-
-setattr(__import__("lallinarrdebug"), "dependency_flux", stolen)
-del stolen
 %}

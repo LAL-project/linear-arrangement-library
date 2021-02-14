@@ -1,5 +1,7 @@
 %module lalgraphs
 
+%include std_vector.i
+
 %import laldefinitions.i
 %import enums/laltree_type.i
 

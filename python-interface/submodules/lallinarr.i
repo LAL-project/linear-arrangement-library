@@ -1,5 +1,8 @@
 %module lallinarr
 
+%include std_vector.i
+%include std_array.i
+
 %import laldefinitions.i // this is necessary for the wrapper
 %import enums/lalsyntactic_dependency_structure_type.i
 %import enums/lalalgorithms_C.i
@@ -27,11 +30,4 @@ del laldefinitions
 del lalgraphs
 del lalnumeric
 del laltree_type # this comes from lalgraphs
-
-
-stolen = getattr(__definitions, "dependency_flux")
-delattr(__definitions, "dependency_flux")
-
-setattr(__import__("lallinarr"), "dependency_flux", stolen)
-del stolen
 %}

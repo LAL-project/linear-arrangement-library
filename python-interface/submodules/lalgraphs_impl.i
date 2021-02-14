@@ -83,3 +83,10 @@
 	}
 }
 
+// making lists of graphs...
+namespace std {
+	%template(list_undirected_graph) vector<lal::graphs::undirected_graph>;
+	%template(list_directed_graph) vector<lal::graphs::directed_graph>;
+	%template(list_free_tree) vector<lal::graphs::free_tree>;
+	%template(list_rooted_tree) vector<lal::graphs::rooted_tree>;
+}
