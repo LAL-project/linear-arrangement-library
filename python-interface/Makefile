@@ -171,29 +171,7 @@ include Makefile.module.variables
 ########################################################################
 # GOALS
 
-ENUMERATIONS= $(DSE_SO) 				\
-			  $(SYN_DEP_STR_TYPE_SO) 	\
-			  $(TREE_TYPE_SO) 			\
-			  $(ALG_C_SO) 				\
-			  $(ALG_DMIN_SO)
-
-DEFINITIONS = $(DEFS_SO)
-
-NAMESPACES  = $(GEN_SO) 		\
-			  $(GRAPHS_SO) 		\
-			  $(IO_SO)			\
-			  $(ITER_SO)		\
-			  $(LINARR_SO)		\
-			  $(NMRC_SO)		\
-			  $(PROP_SO)		\
-			  $(UTILS_SO)
-
-VERSION = 	  $(VERSION_SO)
-			  
-SUBMODULES	= $(ENUMERATIONS) $(DEFINITIONS) $(NAMESPACES) $(VERSION)
-ALL_SO		= $(SUBMODULES) $(LAL_SO)
-
-all: directories $(ALL_SO)
+all: directories $(ALL_SO_FILES)
 directories: $(ARCH_DIR)
 $(ARCH_DIR):
 	mkdir -p $(ARCH_DIR)
@@ -208,7 +186,9 @@ include Makefile.module.rules
 
 clean:
 	rm -rf $(ARCH_DIR)/__pycache__/
-	rm -f $(ALL_SO)
+	rm -f $(ALL_SO_FILES)
+	rm -f $(ALL_PY_FILES)
+	rm -f $(ALL_WRAP_FILES)
 	rm -f $(ARCH_DIR)/*.o
 
 distclean:

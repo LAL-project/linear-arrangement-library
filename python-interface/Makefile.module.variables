@@ -197,3 +197,114 @@ VERSION_PY_FILE		= $(ARCH_DIR)/$(_VERSION_PF)
 VERSION_WRAP		= $(ARCH_DIR)/$(VERSION_INAME)_wrap
 _VERSION_SO			= _$(VERSION_INAME).$(SO_EXT)
 VERSION_SO			= $(ARCH_DIR)/$(_VERSION_SO)
+
+########################################################################
+# LISTS
+
+##############
+# ALL SO FILES
+
+ENUMERATIONS_SO_FILES	= 	\
+	$(DSE_SO) 				\
+	$(SYN_DEP_STR_TYPE_SO) 	\
+	$(TREE_TYPE_SO) 		\
+	$(ALG_C_SO) 			\
+	$(ALG_DMIN_SO)
+
+DEFINITIONS_SO_FILES	=	\
+	$(DEFS_SO)
+
+NAMESPACES_SO_FILES	=	\
+	$(GEN_SO) 			\
+	$(GRAPHS_SO) 		\
+	$(IO_SO)			\
+	$(ITER_SO)			\
+	$(LINARR_SO)		\
+	$(NMRC_SO)			\
+	$(PROP_SO)			\
+	$(UTILS_SO)
+
+VERSION_SO_FILES = 		\
+	$(VERSION_SO)
+
+SUBMODULES_SO_FILES =			\
+	$(ENUMERATIONS_SO_FILES) 	\
+	$(DEFINITIONS_SO_FILES)		\
+	$(NAMESPACES_SO_FILES)		\
+	$(VERSION_SO_FILES)
+
+ALL_SO_FILES =					\
+	$(SUBMODULES_SO_FILES)		\
+	$(LAL_SO)
+
+##################
+# ALL PYTHON FILES
+
+ENUMERATIONS_PY_FILES	= 		\
+	$(DSE_PY_FILE) 				\
+	$(SYN_DEP_STR_TYPE_PY_FILE) \
+	$(TREE_TYPE_PY_FILE) 		\
+	$(ALG_C_PY_FILE) 			\
+	$(ALG_DMIN_PY_FILE)
+
+DEFINITIONS_PY_FILES	=	\
+	$(DEFS_PY)
+
+NAMESPACES_PY_FILES	=		\
+	$(GEN_PY_FILE) 			\
+	$(GRAPHS_PY_FILE) 		\
+	$(IO_PY_FILE)			\
+	$(ITER_PY_FILE)			\
+	$(LINARR_PY_FILE)		\
+	$(NMRC_PY_FILE)			\
+	$(PROP_PY_FILE)			\
+	$(UTILS_PY_FILE)
+
+VERSION_PY_FILES = 			\
+	$(VERSION_PY_FILE)
+
+SUBMODULES_PY_FILES =			\
+	$(ENUMERATIONS_PY_FILES) 	\
+	$(DEFINITIONS_PY_FILES)		\
+	$(NAMESPACES_PY_FILES)		\
+	$(VERSION_PY_FILES)
+
+ALL_PY_FILES =					\
+	$(SUBMODULES_PY_FILES)		\
+	$(LAL_PY)
+
+################
+# ALL WRAP FILES
+
+ENUMERATIONS_WRAP_FILES	= 			\
+	$(DSE_WRAP).cxx 				\
+	$(SYN_DEP_STR_TYPE_WRAP).cxx	\
+	$(TREE_TYPE_WRAP).cxx 			\
+	$(ALG_C_WRAP).cxx 				\
+	$(ALG_DMIN_WRAP).cxx
+
+DEFINITIONS_WRAP_FILES	=	\
+	$(DEFS_WRAP).cxx
+
+NAMESPACES_WRAP_FILES	=	\
+	$(GEN_WRAP).cxx 		\
+	$(GRAPHS_WRAP).cxx 		\
+	$(IO_WRAP).cxx			\
+	$(ITER_WRAP).cxx		\
+	$(LINARR_WRAP).cxx		\
+	$(NMRC_WRAP).cxx		\
+	$(PROP_WRAP).cxx		\
+	$(UTILS_WRAP).cxx
+
+VERSION_WRAP_FILES = 			\
+	$(VERSION_WRAP).cxx
+
+SUBMODULES_WRAP_FILES =			\
+	$(ENUMERATIONS_WRAP_FILES) 	\
+	$(DEFINITIONS_WRAP_FILES)	\
+	$(NAMESPACES_WRAP_FILES)	\
+	$(VERSION_WRAP_FILES)
+
+ALL_WRAP_FILES =				\
+	$(SUBMODULES_WRAP_FILES)	\
+	$(LAL_WRAP)
