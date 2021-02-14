@@ -83,7 +83,7 @@ inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
 	return edge_ending_at;
 }
 
-inline pair<uint32_t, uint32_t> calculate_dependencies_span
+inline void calculate_dependencies_span
 (
 	const free_tree& t,
 	const linear_arrangement& pi,
@@ -117,8 +117,6 @@ inline pair<uint32_t, uint32_t> calculate_dependencies_span
 		}
 	}
 
-	const uint32_t size_after_del = to_uint32(cur_deps.size());
-
 	// add the new dependencies
 	for (const node v : t.get_neighbours(u)) {
 		if (pi[v] > cur_pos) {
@@ -135,10 +133,6 @@ inline pair<uint32_t, uint32_t> calculate_dependencies_span
 		flux[cur_pos].get_left_span() += (pi[v] <= cur_pos);
 		flux[cur_pos].get_right_span() += (pi[v] > cur_pos);
 	}
-
-	const uint32_t size_after_add = to_uint32(cur_deps.size());
-
-	return make_pair(size_after_del, size_after_add);
 }
 
 inline uint32_t calculate_weight
@@ -183,44 +177,6 @@ inline uint32_t calculate_weight
 	return weight;
 }
 
-inline void calculate_bouquet_type
-(
-	uint32_t n,
-	uint32_t size_after_del, uint32_t size_after_add,
-	position cur_pos,
-	vector<dependency_flux>& flux
-)
-{
-	const bool can_be_bouquet = flux[cur_pos].get_size() > 1 and
-								flux[cur_pos].get_weight() == 1;
-
-	if (not can_be_bouquet) { return; }
-
-	if (cur_pos == 0) {
-		// the leftmost position is always a right-branching bouquet
-		flux[cur_pos].set_right_bouquet(true);
-	}
-	else if (cur_pos == n - 2) {
-		// the rightmost position is always a left-branching bouquet
-		flux[cur_pos].set_left_bouquet(true);
-	}
-	else if (cur_pos > 0) {
-		const size_t new_deps_added = size_after_add - size_after_del;
-
-		// this flux is a right-branching bouquet if new
-		// dependencies have been added
-		const bool is_right_bouquet = new_deps_added > 1;
-		flux[cur_pos].set_right_bouquet(is_right_bouquet);
-
-		// this flux is a left-branching bouquet if no new
-		// dependencies have been added
-		const bool is_left_bouquet =
-			size_after_del > 0 and flux[cur_pos].get_size() > 1;
-
-		flux[cur_pos].set_left_bouquet(is_left_bouquet);
-	}
-}
-
 } // -- namespace flux
 
 inline vector<dependency_flux> __compute_flux
@@ -252,21 +208,13 @@ inline vector<dependency_flux> __compute_flux
 
 		// ----------------------
 		// calculate dependencies
-		const auto [size_after_del, size_after_add] =
-		flux::calculate_dependencies_span(
-			t, pi, inv_pi, edge_with_max_pos_at, cur_pos, flux, cur_deps
-		);
+		flux::calculate_dependencies_span
+		(t, pi, inv_pi, edge_with_max_pos_at, cur_pos, flux, cur_deps);
 
 		// -------------------------------------------------
 		// calculate the weight of the flux at this position
 		// (read the paper for an "algorithm")
 		flux[cur_pos].set_weight(flux::calculate_weight(cur_deps, ug));
-
-		// -------------------------
-		// calculate type of bouquet
-		flux::calculate_bouquet_type(
-			n, size_after_del, size_after_add, cur_pos, flux
-		);
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
@@ -282,18 +230,6 @@ inline vector<dependency_flux> __compute_flux
 			mem
 		);
 		mem.reset_count();
-
-#if defined DEBUG
-		if (0 < cur_pos and cur_pos < n - 2) {
-			assert(
-				flux[cur_pos].is_left_bouquet() +
-				flux[cur_pos].is_right_bouquet() < 2
-			);
-		}
-		if (flux[cur_pos].is_left_bouquet() or flux[cur_pos].is_right_bouquet()) {
-			assert(flux[cur_pos].get_weight() == 1);
-		}
-#endif
 	}
 
 	return flux;

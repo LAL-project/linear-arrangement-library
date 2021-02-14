@@ -66,10 +66,6 @@ public:
 	{ return static_cast<uint32_t>(m_dependencies.size()); }
 	/// Returns weight of this flux.
 	inline uint32_t get_weight() const { return m_weight; }
-	/// Returns whether this flux is a left-branching bouquet or not.
-	inline bool is_left_bouquet() const { return m_is_left_bouquet; }
-	/// Returns whether this flux is a right-branching bouquet or not.
-	inline bool is_right_bouquet() const { return m_is_right_bouquet; }
 
 #ifndef SWIG
 	/// Returns a reference to the left span of this flux.
@@ -78,10 +74,6 @@ public:
 	inline uint32_t& get_right_span() { return m_right_span; }
 	/// Returns a reference to the weight of this flux.
 	inline uint32_t& get_weight() { return m_weight; }
-	/// Returns a reference to whether this flux is a left-branching bouquet or not.
-	inline bool& is_left_bouquet() { return m_is_left_bouquet; }
-	/// Returns a reference to whether this flux is a right-branching bouquet or not.
-	inline bool& is_right_bouquet() { return m_is_right_bouquet; }
 
 	/// Returns a reference to the set of dependencies.
 	std::vector<edge>& get_dependencies() { return m_dependencies; }
@@ -98,10 +90,6 @@ public:
 	inline void set_right_span(uint32_t rs) { m_right_span = rs; }
 	/// Sets the weight.
 	inline void set_weight(uint32_t w) { m_weight = w; }
-	/// Sets whether this flux is a left-branching bouquet or not.
-	inline void set_left_bouquet(bool lb) { m_is_left_bouquet = lb; }
-	/// Sets whether this flux is a right-branching bouquet or not.
-	inline void set_right_bouquet(bool rb) { m_is_right_bouquet = rb; }
 
 	/// Sets the set of dependencies.
 	inline void set_dependencies(const std::vector<edge>& deps)
@@ -132,20 +120,6 @@ private:
 	 */
 	uint32_t m_weight = 0;
 
-	/**
-	 * @brief Is this flux a left-branching bouquet?
-	 *
-	 * A bouquet is a set of dependencies sharing the same vertex. It is
-	 * left-branching if the common vertex is on the right.
-	 */
-	bool m_is_left_bouquet = false;
-	/**
-	 * @brief Is this flux a right-branching bouquet?
-	 *
-	 * A bouquet is a set of dependencies sharing the same vertex. It is
-	 * right-branching if the common vertex is on the left.
-	 */
-	bool m_is_right_bouquet = false;
 };
 
 } // -- namespace linarr
