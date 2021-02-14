@@ -189,7 +189,7 @@ clean:
 	rm -f $(ALL_SO_FILES)
 	rm -f $(ALL_PY_FILES)
 	rm -f $(ALL_WRAP_FILES)
-	rm -f $(ARCH_DIR)/*.o
+	rm -f $(ALL_WRAP_O_FILES)
 
 distclean:
 	rm -rf $(ARCH_DIR)
