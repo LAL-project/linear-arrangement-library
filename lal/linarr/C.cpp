@@ -43,7 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <bits/stl_pair.h>
+#include <vector>
 using namespace std;
 
 // lal includes

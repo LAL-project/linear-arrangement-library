@@ -38,8 +38,6 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/linarr/C.hpp>
 
 // C++ includes
 #if defined DEBUG
@@ -48,6 +46,9 @@
 using namespace std;
 
 // lal includes
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/internal/macros.hpp>
 
