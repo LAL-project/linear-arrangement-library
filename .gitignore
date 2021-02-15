@@ -1,5 +1,6 @@
-cppdocs/
-pydocs/
+
+cppdocshtml/
+pythondocshtml/
 
 lal/lal.pro.user
 lal/CMakeLists.txt.user
