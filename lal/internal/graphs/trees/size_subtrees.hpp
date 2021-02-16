@@ -134,7 +134,7 @@ namespace __lal {
 
 /*
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
- * from \$(u,v)\f$.
+ * from \f$(u,v)\f$.
  *
  * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
  * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
