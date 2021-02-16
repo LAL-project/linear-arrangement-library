@@ -143,6 +143,9 @@ public:
 		 *
 		 * See @ref linarr::algorithms_C for details.
 		 */
+
+		// C
+
 		C,
 		/**
 		 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
@@ -176,6 +179,9 @@ public:
 		 *
 		 * See @ref linarr::sum_length_edges for details.
 		 */
+
+		// D
+
 		D,
 		/**
 		 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
@@ -222,7 +228,143 @@ public:
 		 *
 		 * See @ref linarr::algorithms_Dmin::Projective for details.
 		 */
-		Dmin_Projective
+		Dmin_Projective,
+
+		// FLUXES
+
+		/**
+		 * @brief Maximum flux weight.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_flux_weight,
+		/**
+		 * @brief Mean flux weight.
+		 *
+		 * This is the sum of weights averaged by the number of fluxes (the number
+		 * of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of weight.
+		 */
+		mean_flux_weight,
+		/**
+		 * @brief Minimum flux weight.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_flux_weight,
+
+		/**
+		 * @brief Maximum left span.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_left_span,
+		/**
+		 * @brief Mean left span.
+		 *
+		 * This is the sum of left spans averaged by the number of fluxes (the
+		 * number of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of left span.
+		 */
+		mean_left_span,
+		/**
+		 * @brief Minimum left span.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_left_span,
+
+		/**
+		 * @brief Maximum right span.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_right_span,
+		/**
+		 * @brief Mean right span.
+		 *
+		 * This is the sum of right spans averaged by the number of fluxes (the
+		 * number of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of right span.
+		 */
+		mean_right_span,
+		/**
+		 * @brief Minimum right span.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_right_span,
+
+		/**
+		 * @brief Maximum flux size.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_size,
+		/**
+		 * @brief Mean flux size.
+		 *
+		 * This is the sum of flux sizes averaged by the number of fluxes (the
+		 * number of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of flux size.
+		 */
+		mean_size,
+		/**
+		 * @brief Minimum flux size.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_size,
+
+		/**
+		 * @brief Maximum R/L ratio.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_RL_ratio,
+		/**
+		 * @brief Mean R/L ratio.
+		 *
+		 * This is the sum of R/L ratios averaged by the number of fluxes (the
+		 * number of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of R/L ratio.
+		 */
+		mean_RL_ratio,
+		/**
+		 * @brief Minimum R/L ratio.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_RL_ratio,
+
+		/**
+		 * @brief Maximum W/S ratio.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		max_WS_ratio,
+		/**
+		 * @brief Mean W/S ratio.
+		 *
+		 * This is the sum of W/S ratios averaged by the number of fluxes (the
+		 * number of vertices of the tree minus 1). See @ref linarr::dependency_flux
+		 * for details on the definition of W/S ratio.
+		 */
+		mean_WS_ratio,
+		/**
+		 * @brief Minimum W/S ratio.
+		 *
+		 * See @ref linarr::dependency_flux for details.
+		 */
+		min_WS_ratio,
+
+
+		/**
+		 * @brief The last value of the enumeration.
+		 *
+		 * This is used for internal purposes only.
+		 */
+		__last_value
 	};
 
 	/**
@@ -286,12 +428,12 @@ public:
 	 * while processing the dataset.
 	 */
 	processor_error process
-	(char sep = '\t', bool header = true, bool verbose = false);
+	(char sep = '\t', bool header = true, bool verbose = true);
 
 private:
 	/// The number of total features available.
 	static constexpr size_t NUM_TREE_FEATURES =
-		static_cast<size_t>(tree_feature::Dmin_Projective) + 1;
+		static_cast<size_t>(tree_feature::__last_value);
 
 private:
 
