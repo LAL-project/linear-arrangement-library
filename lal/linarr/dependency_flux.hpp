@@ -43,6 +43,7 @@
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
 namespace linarr {
@@ -82,6 +83,44 @@ public:
 	/// Returns the set of dependencies.
 	const std::vector<edge>& get_dependencies() const { return m_dependencies; }
 
+	/**
+	 * @brief Returns the R/L ratio.
+	 *
+	 * This is the @ref m_right_span divided by the @ref m_left_span.
+	 * @return Returns the R/L ratio of this flux.
+	 */
+	inline numeric::rational get_RL_ratio_rational() const noexcept {
+		return numeric::rational(m_right_span, m_left_span);
+	}
+	/**
+	 * @brief Returns the R/L ratio.
+	 *
+	 * This is the @ref m_right_span divided by the @ref m_left_span.
+	 * @return Returns the R/L ratio of this flux.
+	 */
+	inline double get_RL_ratio() const noexcept
+	{ return get_RL_ratio_rational().to_double(); }
+
+	/**
+	 * @brief Returns the W/S ratio.
+	 *
+	 * Also known as @e density, this is the @ref m_weight divided by the size
+	 * of @ref m_dependencies.
+	 * @return Returns the W/S ratio of this flux.
+	 */
+	inline numeric::rational get_WS_ratio_rational() const noexcept {
+		return numeric::rational(m_weight, m_dependencies.size());
+	}
+	/**
+	 * @brief Returns the W/S ratio.
+	 *
+	 * Also known as @e density, this is the @ref m_weight divided by the size
+	 * of @ref m_dependencies.
+	 * @return Returns the W/S ratio of this flux.
+	 */
+	inline double get_WS_ratio() const noexcept
+	{ return get_WS_ratio_rational().to_double(); }
+
 	// SETTERS
 
 	/// Sets the left span.
@@ -102,9 +141,11 @@ public:
 #endif
 
 private:
-	/// Number of words to the left of this position.
+	/// Number of words to the left of this flux which are vertices of a
+	/// dependency in the flux.
 	uint32_t m_left_span = 0;
-	/// Number of words to the right of this position.
+	/// Number of words to the right of this flux which are vertices of a
+	/// dependency in the flux.
 	uint32_t m_right_span = 0;
 	/**
 	 * @brief Dependencies in this flux.
