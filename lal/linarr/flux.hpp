@@ -52,6 +52,7 @@ namespace linarr {
 /**
  * @brief Computes the flux of a dependency tree.
  *
+ * This function is implemented based on the explanations given in \cite Kahane2017a.
  * @param t Input rooted tree (or dependency tree).
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  */

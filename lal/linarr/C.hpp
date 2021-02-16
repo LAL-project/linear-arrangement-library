@@ -63,7 +63,7 @@ namespace linarr {
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_C::stack_based.
- * @return Returns \f$C\f$.
+ * @returns Returns \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref algorithms_C.
  */
