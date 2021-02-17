@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <optional>
 #include <vector>
 using namespace std;
 
@@ -179,21 +180,14 @@ noexcept
 	// output tree
 	free_tree t(n);
 
-#if defined DEBUG
-	// variable to make sure that the root has been set
-	bool root_set = false;
-#endif
 	// root node of the tree (initiliased
 	// so compiler does not cry)
-	node r = 0;
+	std::optional<node> r;
 
 	for (uint32_t i = 0; i < n; ++i) {
 		if (L[i] == 0) {
 			// root, do nothing
 			r = i;
-#if defined DEBUG
-			root_set = true;
-#endif
 		}
 		else {
 			// add the edge:
@@ -205,11 +199,11 @@ noexcept
 
 #if defined DEBUG
 	// root must have been set.
-	assert(root_set);
+	assert(r);
 #endif
 
 	t.finish_bulk_add(normalise, check);
-	return make_pair(t, r);
+	return make_pair(t, *r);
 }
 
 } // -- namespace internal
