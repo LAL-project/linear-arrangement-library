@@ -76,6 +76,7 @@ HEADERS += \
 	internal/graphs/enumerate_sets.hpp \
 	internal/graphs/trees/make_arrangement.hpp \
 	internal/graphs/trees/retrieve_subtree.hpp \
+	internal/graphs/trees/rooted_tree_isomorphism.hpp \
 	internal/graphs/trees/tree_classification.hpp \
 	internal/graphs/trees/tree_diameter.hpp \
 	internal/macros.hpp \

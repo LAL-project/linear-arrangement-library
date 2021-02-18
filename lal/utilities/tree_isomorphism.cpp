@@ -52,6 +52,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/trees/tree_centre.hpp>
 #include <lal/internal/data_array.hpp>
+#include <lal/internal/graphs/trees/rooted_tree_isomorphism.hpp>
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))
@@ -60,66 +61,6 @@ namespace lal {
 using namespace graphs;
 
 namespace utilities {
-
-/* Returns whether the input trees are, might be, or are not isomorphic.
- *
- * Returns 0 if the trees ARE isomorphic
- * Returns 1 if the trees ARE NOT isomorphic:
- * - number of vertices do not coincide
- * - number of leaves do not coincide
- * - second moment of degree do not coincide
- * Returns 2 if the trees MIGHT BE isomorphic
- */
-template<
-	class T,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
-	bool> = true
->
-int fast_non_iso(const T& t1, const T& t2) {
-	// check number of nodes
-	if (t1.n_nodes() != t2.n_nodes()) { return 1; }
-
-	if constexpr (std::is_base_of_v<T, lal::graphs::rooted_tree>) {
-	// rooted trees must have correct orientation of edges
-	if (not t1.is_orientation_valid() or not t2.is_orientation_valid()) {
-		return false;
-	}
-	}
-
-	const uint32_t n = t1.n_nodes();
-	if (n <= 2) { return 0; }
-
-	uint32_t nL_t1 = 0; // number of leaves of t1
-	uint32_t nL_t2 = 0; // number of leaves of t2
-	uint64_t k2_t1 = 0; // sum of squared degrees of t1
-	uint64_t k2_t2 = 0; // sum of squared degrees of t2
-	uint64_t maxdeg_t1 = 0; // max degree of t1
-	uint64_t maxdeg_t2 = 0; // max degree of t2
-	for (node u = 0; u < n; ++u) {
-		const uint64_t ku1 = to_uint64(t1.degree(u));
-		const uint64_t ku2 = to_uint64(t2.degree(u));
-
-		nL_t1 += t1.degree(u) == 1;
-		nL_t2 += t2.degree(u) == 1;
-		k2_t1 += ku1*ku1;
-		k2_t2 += ku2*ku2;
-		maxdeg_t1 = (maxdeg_t1 < ku1 ? ku1 : maxdeg_t1);
-		maxdeg_t2 = (maxdeg_t2 < ku2 ? ku2 : maxdeg_t2);
-	}
-
-	// check number of leaves
-	if (nL_t1 != nL_t2) { return 1; }
-	// check maximum degree
-	if (maxdeg_t1 != maxdeg_t2) { return 1; }
-	// check sum of squared degrees
-	if (k2_t1 != k2_t2) { return 1; }
-
-	return 2;
-}
-
-// -----------------------------------------------------------------------------
 
 #if defined USE_COMPLICATED
 template<typename T>
@@ -278,49 +219,18 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 	test_isomorphism ti(t1, t2);
 	return ti.are_trees_isomorphic();
 }
-#else
-string assign_name(
-	const rooted_tree& t, node v,
-	string *names, size_t idx
-)
-{
-	if (t.out_degree(v) == 0) {
-		return string("10");
-	}
-
-	// make childrens' names
-	const size_t begin_idx = idx;
-	for (node u : t.get_out_neighbours(v)) {
-		names[idx] = assign_name(t,u, names, idx+1);
-		++idx;
-	}
-	sort(&names[begin_idx], &names[idx]);
-
-	// join the names in a single string
-	string name = "1";
-	for (size_t j = begin_idx; j < idx; ++j) {
-		name += names[j];
-	}
-	name += "0";
-
-	return name;
-}
-
-bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
-	const int discard = fast_non_iso(t1,t2);
-	if (discard == 0) { return true; }
-	if (discard == 1) { return false; }
-
-	const uint32_t n = t1.n_nodes();
-	internal::data_array<string> names(n);
-	const string name_r1 = assign_name(t1, t1.get_root(), names.data, 0);
-	const string name_r2 = assign_name(t2, t2.get_root(), names.data, 0);
-	return name_r1 == name_r2;
-}
 #endif
 
-bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) {
-	const int discard = fast_non_iso(t1,t2);
+bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) noexcept {
+#if defined DEBUG
+	assert(t1.has_root());
+	assert(t2.has_root());
+#endif
+	return internal::are_full_trees_isomorphic(t1, t2);
+}
+
+bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
+	const auto discard = internal::fast_non_iso(t1,t2);
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 

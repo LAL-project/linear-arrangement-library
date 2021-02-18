@@ -71,7 +71,8 @@ namespace utilities {
  * @ref graphs::rooted_tree::is_orientation_valid) the trees are considered to
  * be non-isomorphic.
  */
-bool are_trees_isomorphic(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2);
+bool are_trees_isomorphic
+(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2) noexcept;
 
 /**
  * @brief Isomorphism test for free trees.
@@ -89,7 +90,8 @@ bool are_trees_isomorphic(const graphs::rooted_tree& t1, const graphs::rooted_tr
  * @param t2 Input free tree.
  * @return Returns whether the input trees are isomorphic or not.
  */
-bool are_trees_isomorphic(const graphs::free_tree& t1, const graphs::free_tree& t2);
+bool are_trees_isomorphic
+(const graphs::free_tree& t1, const graphs::free_tree& t2) noexcept;
 
 } // -- namespace utilities
 } // -- namespace lal
