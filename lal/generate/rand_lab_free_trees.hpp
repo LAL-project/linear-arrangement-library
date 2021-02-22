@@ -73,6 +73,8 @@ class __rand_lab_free_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	/// Move constructor.
+	__rand_lab_free_trees(__rand_lab_free_trees&&) noexcept = default;
 	/// Default destructor.
 	virtual ~__rand_lab_free_trees() noexcept = default;
 
@@ -81,8 +83,6 @@ public:
 	__rand_lab_free_trees(const __rand_lab_free_trees&) = delete;
 	/// Disallow copies.
 	__rand_lab_free_trees& operator= (const __rand_lab_free_trees&) = delete;
-	/// Disallow moves.
-	__rand_lab_free_trees(__rand_lab_free_trees&&) = delete;
 	/// Disallow moves.
 	__rand_lab_free_trees& operator= (__rand_lab_free_trees&&) = delete;
 #endif
@@ -124,11 +124,16 @@ class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: m_Gen(n, seed) { }
+		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
+	/// Move constructor.
+	rand_lab_free_trees(rand_lab_free_trees&&) noexcept = default;
+	/// Default destructor.
+	~rand_lab_free_trees() noexcept = default;
 
 protected:
 	/// See @ref __rand_lab_free_trees::get_tree.
-	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	inline graphs::free_tree __get_tree() noexcept
+	{ return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_lab_free_trees.

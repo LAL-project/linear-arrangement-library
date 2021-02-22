@@ -54,7 +54,7 @@ using namespace graphs;
 namespace generate {
 
 all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept
-	: m_n(n),
+	: tree_gen<rooted_tree>(n),
 	  m_gen_lab_free_tree(m_n)
 {
 	init();

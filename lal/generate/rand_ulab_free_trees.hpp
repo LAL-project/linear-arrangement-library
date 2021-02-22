@@ -83,6 +83,19 @@ class __rand_ulab_free_trees : public __rand_ulab_rooted_trees {
 public:
 	/// Constructor with size of tree and seed for the random number generator.
 	__rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	/// Move constructor.
+	__rand_ulab_free_trees(__rand_ulab_free_trees&&) noexcept = default;
+	/// Default destructor.
+	~__rand_ulab_free_trees() = default;
+
+#ifndef SWIG
+	/// Disallow copies.
+	__rand_ulab_free_trees(const __rand_ulab_free_trees&) = delete;
+	/// Disallow copies.
+	__rand_ulab_free_trees& operator= (const __rand_ulab_free_trees&) = delete;
+	/// Disallow moves.
+	__rand_ulab_free_trees& operator= (__rand_ulab_free_trees&&) = delete;
+#endif
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
@@ -221,7 +234,11 @@ class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// See @ref __rand_ulab_free_trees::__rand_ulab_free_trees(uint32_t, uint32_t).
 	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: m_Gen(n, seed) { }
+		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
+	/// Move constructor.
+	rand_ulab_free_trees(rand_ulab_free_trees&&) noexcept = default;
+	/// Default destructor.
+	~rand_ulab_free_trees() noexcept = default;
 
 protected:
 	/// See @ref __rand_ulab_free_trees::get_tree.

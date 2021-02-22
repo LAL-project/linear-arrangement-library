@@ -86,6 +86,8 @@ class all_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_lab_free_trees(uint32_t n) noexcept;
+	/// Move constructor.
+	all_lab_free_trees(all_lab_free_trees&&) noexcept = default;
 	/// Default destructor.
 	~all_lab_free_trees() noexcept = default;
 
@@ -95,9 +97,7 @@ public:
 	/// Disallow copies.
 	all_lab_free_trees& operator= (const all_lab_free_trees&) = delete;
 	/// Disallow moves.
-	all_lab_free_trees(all_lab_free_trees&&) = delete;
-	/// Disallow moves.
-	all_lab_free_trees& operator= (all_lab_free_trees&&) = delete;
+	all_lab_free_trees& operator= (all_lab_free_trees&&) noexcept;
 #endif
 
 	/**
@@ -146,12 +146,6 @@ protected:
 
 private:
 
-	/**
-	 * @brief Number of nodes of the tree.
-	 *
-	 * Size of the sequence: \f$n - 2\f$.
-	 */
-	const uint32_t m_n;
 	/// Iterator on the sequence.
 	uint32_t m_it;
 	/// Left-most position with value \f$n-1\f$.

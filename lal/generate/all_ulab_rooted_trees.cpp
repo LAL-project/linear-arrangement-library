@@ -56,7 +56,7 @@ using namespace graphs;
 namespace generate {
 
 all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept
-	: m_n(_n),
+	: tree_gen<rooted_tree>(_n),
 	  m_save(m_n + 1),
 	  m_prev(m_n + 1),
 	  m_L(m_n + 1)

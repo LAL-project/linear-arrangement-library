@@ -86,6 +86,8 @@ class all_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_ulab_free_trees(uint32_t n) noexcept;
+	/// Move constructor.
+	all_ulab_free_trees(all_ulab_free_trees&&) noexcept = default;
 	/// Default destructor.
 	~all_ulab_free_trees() noexcept = default;
 
@@ -94,8 +96,6 @@ public:
 	all_ulab_free_trees(const all_ulab_free_trees&) = delete;
 	/// Disallow copies.
 	all_ulab_free_trees& operator= (const all_ulab_free_trees&) = delete;
-	/// Disallow moves.
-	all_ulab_free_trees(all_ulab_free_trees&&) = delete;
 	/// Disallow moves.
 	all_ulab_free_trees& operator= (all_ulab_free_trees&&) = delete;
 #endif
@@ -144,9 +144,6 @@ protected:
 	void init() noexcept;
 
 private:
-	/// Number of nodes of the trees.
-	const uint32_t m_n;
-
 	/// Canonical level sequence of the tree.
 	internal::data_array<uint32_t> m_L;
 	/**

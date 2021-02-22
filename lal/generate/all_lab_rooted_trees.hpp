@@ -69,6 +69,8 @@ class all_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_lab_rooted_trees(uint32_t n) noexcept;
+	/// Move constructor.
+	all_lab_rooted_trees(all_lab_rooted_trees&&) noexcept = default;
 	/// Default destructor.
 	~all_lab_rooted_trees() noexcept = default;
 
@@ -77,8 +79,6 @@ public:
 	all_lab_rooted_trees(const all_lab_rooted_trees&) = delete;
 	/// Disallow copies.
 	all_lab_rooted_trees& operator= (const all_lab_rooted_trees&) = delete;
-	/// Disallow moves.
-	all_lab_rooted_trees(all_lab_free_trees&&) = delete;
 	/// Disallow moves.
 	all_lab_rooted_trees& operator= (all_lab_rooted_trees&&) = delete;
 #endif
@@ -130,9 +130,6 @@ protected:
 	void init() noexcept;
 
 private:
-	/// Number of nodes of the generated trees.
-	const uint32_t m_n;
-
 	/// Labelled free tree generator.
 	all_lab_free_trees m_gen_lab_free_tree;
 	/// Current labelled free tree.

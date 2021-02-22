@@ -86,6 +86,8 @@ class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
 	/// Constructor with number of nodes.
 	all_ulab_rooted_trees(uint32_t n) noexcept;
+	/// Move constructor.
+	all_ulab_rooted_trees(all_ulab_rooted_trees&&) noexcept = delete;
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;
 
@@ -94,8 +96,6 @@ public:
 	all_ulab_rooted_trees(const all_ulab_rooted_trees&) = delete;
 	/// Disallow copies.
 	all_ulab_rooted_trees& operator= (const all_ulab_rooted_trees&) = delete;
-	/// Disallow moves.
-	all_ulab_rooted_trees(all_ulab_rooted_trees&&) = delete;
 	/// Disallow moves.
 	all_ulab_rooted_trees& operator= (all_ulab_rooted_trees&&) = delete;
 #endif
@@ -145,9 +145,6 @@ protected:
 	void init() noexcept;
 
 private:
-	/// Number of nodes of the tree
-	const uint32_t m_n;
-
 	/// Is the current tree the last tree to be generated?
 	bool m_is_last = false;
 	/// Is the current tree the first tree to be generated?

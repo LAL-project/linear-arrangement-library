@@ -25,6 +25,7 @@ template<
 >
 class tree_gen {
 public:
+	tree_gen(uint32_t _n) noexcept : m_n(_n) { }
 	virtual ~tree_gen() noexcept = default;
 
 	/// Normalise the generate tree.
@@ -82,6 +83,9 @@ protected:
 	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
 	__get_tree()
 	noexcept = 0;
+
+	/// Number of vertices
+	const uint32_t m_n;
 };
 
 } // -- namespace generate
