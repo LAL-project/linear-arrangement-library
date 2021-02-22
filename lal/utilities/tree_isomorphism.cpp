@@ -88,7 +88,7 @@ string *name_per_node_t2 = nullptr;
 
 public:
 test_isomorphism(const rooted_tree& _t1, const rooted_tree& _t2)
-: t1(_t1), t2(_t2), n(_t1.n_nodes())
+: t1(_t1), t2(_t2), n(_t1.num_nodes())
 {
 	_pieces_of_node = new string[n];
 	_pieces_of_level = new string[n];
@@ -234,7 +234,7 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint32_t n = t1.n_nodes();
+	const uint32_t n = t1.num_nodes();
 	if (n == 3) { return true; }
 
 	// find centres of the trees

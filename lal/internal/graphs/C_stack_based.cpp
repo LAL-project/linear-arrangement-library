@@ -71,7 +71,7 @@ inline void fill_adjP_adjN(
 	size_t * __restrict__ size_adjN_u
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	// Retrieve all edges of the graph to sort
 	vector<edge> edges = g.edges();
@@ -123,7 +123,7 @@ inline uint32_t __compute_C_stack_based(
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	// construct inverse arrangement
 	for (node u = 0; u < n; ++u) {
@@ -176,7 +176,7 @@ inline uint32_t __compute_C_stack_based(
 inline uint32_t __call_C_stack_based
 (const graph& g, const linear_arrangement& pi)
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	if (n < 4) { return 0; }
 
 	// inverse function of the linear arrangement:
@@ -192,7 +192,7 @@ inline uint32_t __call_C_stack_based
 
 uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
@@ -200,7 +200,7 @@ uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
 vector<uint32_t> n_C_stack_based_list
 (const graph& g, const vector<linear_arrangement>& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }

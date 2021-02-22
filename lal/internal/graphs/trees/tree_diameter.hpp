@@ -63,7 +63,7 @@ template<
 	bool> = true
 >
 uint32_t tree_diameter(const T& t) {
-	const uint32_t n = t.n_nodes();
+	const uint32_t n = t.num_nodes();
 
 	BFS<T> bfs(t);
 

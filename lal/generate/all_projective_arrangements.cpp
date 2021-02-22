@@ -64,7 +64,7 @@ all_projective_arrangements::all_projective_arrangements
 	assert(m_rT.is_normalised());
 #endif
 
-	m_intervals = vector<vector<node>>(m_rT.n_nodes());
+	m_intervals = vector<vector<node>>(m_rT.num_nodes());
 	initialise_intervals_tree();
 }
 
@@ -73,14 +73,14 @@ bool all_projective_arrangements::has_next() const {
 }
 
 void all_projective_arrangements::next() {
-	if (m_rT.n_nodes() == 1) {
+	if (m_rT.num_nodes() == 1) {
 		m_has_next = false;
 		return;
 	}
 
 	bool has_perm = false;
 	node u = 0;
-	while (u < m_rT.n_nodes() and not has_perm) {
+	while (u < m_rT.num_nodes() and not has_perm) {
 		vector<node>& inter_u = m_intervals[u];
 
 		has_perm = std::next_permutation(inter_u.begin(), inter_u.end());
@@ -90,13 +90,13 @@ void all_projective_arrangements::next() {
 		++u;
 	}
 
-	if (u == m_rT.n_nodes() and not has_perm) {
+	if (u == m_rT.num_nodes() and not has_perm) {
 		m_has_next = false;
 	}
 }
 
 linear_arrangement all_projective_arrangements::get_arrangement() const {
-	return (m_rT.n_nodes() == 1 ?
+	return (m_rT.num_nodes() == 1 ?
 		linear_arrangement(1,0) :
 		make_arrangement_intervals(m_rT, m_intervals)
 	);
@@ -105,7 +105,7 @@ linear_arrangement all_projective_arrangements::get_arrangement() const {
 /* PRIVATE */
 
 void all_projective_arrangements::initialise_intervals_tree() {
-	for (node u = 0; u < m_rT.n_nodes(); ++u) {
+	for (node u = 0; u < m_rT.num_nodes(); ++u) {
 		const uint32_t d = m_rT.out_degree(u);
 		m_intervals[u] = vector<node>(d + 1);
 		initialise_interval_node(u);

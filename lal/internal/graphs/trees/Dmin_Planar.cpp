@@ -69,7 +69,7 @@ inline void make_directed(
 	const rooted_tree& rt, vector<vector<pair<node,uint32_t>>>& M
 )
 {
-	for (node u = 0; u < rt.n_nodes(); ++u) {
+	for (node u = 0; u < rt.num_nodes(); ++u) {
 		for (node v : rt.get_out_neighbours(u)) {
 			// find the only instance of 'u' in the
 			// neighbourhood of 'v' and erase it.
@@ -96,7 +96,7 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	assert(t.is_tree());
 #endif
 
-	const uint32_t n = t.n_nodes();
+	const uint32_t n = t.num_nodes();
 	if (n == 1) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
@@ -126,7 +126,7 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 
 	// construct the optimal intervals using Gildea and Temperley's
 	// algorithm to calculate an optimal projective arrangement.
-	linear_arrangement arr(t.n_nodes());
+	linear_arrangement arr(t.num_nodes());
 	const uint32_t D =
 	Dmin_Pr__optimal_interval_of(rt, M, rt.get_root(), arr);
 

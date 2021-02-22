@@ -64,11 +64,11 @@ template<class G, class Callable>
 inline rational __mmt_x_degree_rational
 (const G& g, uint32_t p, const Callable& D)
 {
-	const integer M = integer_from_ui(g.n_nodes());
+	const integer M = integer_from_ui(g.num_nodes());
 
 	integer S(0);
 	integer du(0);
-	for (node u = 0; u < g.n_nodes(); ++u) {
+	for (node u = 0; u < g.num_nodes(); ++u) {
 		//du.set_ui(g.degree(u));
 		du.set_ui(D(g, u));
 		du ^= p;
@@ -136,7 +136,7 @@ double mmt_out_degree(const directed_graph& g, uint32_t p) {
 // hubiness
 
 rational hubiness_rational(const free_tree& g) {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:

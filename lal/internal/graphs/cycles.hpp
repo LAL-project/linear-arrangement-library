@@ -95,7 +95,7 @@ inline bool has_directed_cycles(
 	char * __restrict__ in_stack
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	std::fill(&vis[0], &vis[n], 0);
 	std::fill(&in_stack[0], &in_stack[n], 0);
 	bool has_cycle = false;
@@ -115,7 +115,7 @@ inline bool has_directed_cycles(
  * @returns Returns whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	data_array<char> all_mem(2*n);
 	const bool has_cycle = __lal::has_directed_cycles(g, &all_mem[0], &all_mem[n]);
 	return has_cycle;
@@ -132,7 +132,7 @@ namespace __lal {
  */
 template<class G>
 inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
-	const auto n = g.n_nodes();
+	const auto n = g.num_nodes();
 
 	// parent[s] = t <->
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).

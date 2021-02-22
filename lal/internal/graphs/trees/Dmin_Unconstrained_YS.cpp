@@ -166,7 +166,7 @@ void calculate_mla_YS(
 	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 #endif
 
-	vector<node> reachable(t.n_nodes_component(root_or_anchor - 1));
+	vector<node> reachable(t.num_nodes_component(root_or_anchor - 1));
 	{
 	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
@@ -178,7 +178,7 @@ void calculate_mla_YS(
 	}
 
 	// Size of the tree
-	const uint32_t size_tree = t.n_nodes_component(root_or_anchor - 1);
+	const uint32_t size_tree = t.num_nodes_component(root_or_anchor - 1);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -205,7 +205,7 @@ void calculate_mla_YS(
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.n_nodes());
+	data_array<uint32_t> s(t.num_nodes());
 	internal::get_size_subtrees(t, v_star - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -345,7 +345,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 #endif
 
 	uint32_t c = 0;
-	linear_arrangement arrangement(t.n_nodes(),0);
+	linear_arrangement arrangement(t.num_nodes(),0);
 
 	free_tree T = t;
 	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);

@@ -93,7 +93,7 @@ void classify_tree
 	// -------------------------------------------------------------------------
 
 	// number of vertices
-	const uint32_t N = t.n_nodes();
+	const uint32_t N = t.num_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::none);
 		return;

@@ -78,7 +78,7 @@ inline uint32_t __compute_C_dyn_prog(
 	uint32_t * __restrict__ K
 )
 {	
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	std::fill(&bn[0], &bn[n], 0);
 	std::fill(&K[0], &K[(n - 3)*(n - 3)], 0);
 
@@ -212,7 +212,7 @@ template<
 	bool> = true
 >
 inline uint32_t __call_C_dyn_prog(const G& g, const linear_arrangement& pi) {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -252,7 +252,7 @@ uint32_t n_C_dynamic_programming
 (const G& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return
 	internal::call_with_empty_arrangement<uint32_t, G>
@@ -280,7 +280,7 @@ template<
 vector<uint32_t> n_C_dynamic_programming_list
 (const G& g, const vector<linear_arrangement>& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -400,7 +400,7 @@ size_t crossings_sequence_n2_n2(const graph& G, const vector<size_t>& seq) {
 
 	// translation table
 	// T[u] = p <-> node u is at position p
-	vector<size_t> T(G.n_nodes(), L + 1);
+	vector<size_t> T(G.num_nodes(), L + 1);
 	for (size_t i = 0; i < L; ++i) {
 		T[ seq[i] ] = i;
 	}

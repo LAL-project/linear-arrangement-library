@@ -192,7 +192,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.n_nodes());
+	data_array<uint32_t> s(t.num_nodes());
 	internal::get_size_subtrees(t, u - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -228,7 +228,7 @@ void calculate_mla_chung(
 	linear_arrangement& mla, uint32_t& cost
 )
 {
-	vector<node> reachable(t.n_nodes_component(one_node - 1));
+	vector<node> reachable(t.num_nodes_component(one_node - 1));
 	{
 	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
@@ -238,7 +238,7 @@ void calculate_mla_chung(
 	);
 	bfs.start_at(one_node - 1);
 	}
-	const uint32_t size_tree = t.n_nodes_component(one_node - 1);
+	const uint32_t size_tree = t.num_nodes_component(one_node - 1);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -249,7 +249,7 @@ void calculate_mla_chung(
 	if (size_tree == 1) {
 #if defined DEBUG
 		assert(one_node == reachable[0]);
-		assert(start <= t.n_nodes());
+		assert(start <= t.num_nodes());
 #endif
 		mla[one_node - 1] = start;
 		cost = 0;
@@ -506,7 +506,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 #endif
 
 	uint32_t c = 0;
-	linear_arrangement arr(t.n_nodes(),0);
+	linear_arrangement arr(t.num_nodes(),0);
 
 	free_tree T = t;
 	calculate_mla_chung(T, NO_ANCHOR, 1, 0, arr, c);

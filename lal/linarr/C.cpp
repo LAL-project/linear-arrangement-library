@@ -72,7 +72,7 @@ uint32_t n_crossings
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return g.n_edges()*g.n_edges();
+	return g.num_edges()*g.num_edges();
 }
 
 uint32_t n_crossings
@@ -92,7 +92,7 @@ uint32_t n_crossings
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return g.n_edges()*g.n_edges();
+	return g.num_edges()*g.num_edges();
 }
 
 // -----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ vector<uint32_t> n_crossings_list
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
+	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
 vector<uint32_t> n_crossings_list
@@ -136,7 +136,7 @@ vector<uint32_t> n_crossings_list
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.n_edges()*g.n_edges());
+	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
 } // -- namespace linarr

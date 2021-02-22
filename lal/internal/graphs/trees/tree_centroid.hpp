@@ -188,9 +188,9 @@ std::pair<node, node> retrieve_centroid(
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t N = t.n_nodes();
+	const uint32_t N = t.num_nodes();
 	// calculate the size of the connected component
-	const uint32_t n = t.n_nodes_component(x);
+	const uint32_t n = t.num_nodes_component(x);
 	// easy case
 	if (n == 1) {
 		return std::make_pair(x, N);
@@ -257,7 +257,7 @@ std::pair<node, node> retrieve_centroid(
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t N = t.n_nodes();
+	const uint32_t N = t.num_nodes();
 	// easy case
 	if (N == 1) {
 		return std::make_pair(0, 1);

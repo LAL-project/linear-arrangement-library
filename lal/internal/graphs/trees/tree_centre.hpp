@@ -88,17 +88,17 @@ template<
 >
 std::pair<node, node> retrieve_centre(const T& t, node X) {
 
-	const auto n = t.n_nodes();
+	const auto n = t.num_nodes();
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (t.n_nodes_component(X) == 1) {
+	if (t.num_nodes_component(X) == 1) {
 		return std::make_pair(X, n);
 	}
 
 	// Second simple case:
 	// if the connected component has two nodes then
-	if (t.n_nodes_component(X) == 2) {
+	if (t.num_nodes_component(X) == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = X;
 
@@ -119,11 +119,11 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
-	tree_leaves.reserve(t.n_nodes_component(X) - 1);
+	tree_leaves.reserve(t.num_nodes_component(X) - 1);
 	// full degree of every node of the connected component
 	std::vector<uint32_t> trimmed_degree(n, 0);
 	// number of nodes in the connected component
-	uint32_t size_trimmed = t.n_nodes_component(X);
+	uint32_t size_trimmed = t.num_nodes_component(X);
 
 #if defined DEBUG
 	uint32_t __size_trimmed = 0; // for debugging purposes only

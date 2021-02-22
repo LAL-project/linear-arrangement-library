@@ -344,7 +344,7 @@ void treebank_dataset_processor::process_tree(
 const
 {
 	const free_tree fT = rT.to_undirected();
-	const uint32_t n = fT.n_nodes();
+	const uint32_t n = fT.num_nodes();
 
 	// -----------------------------------------------------------
 	// compute features in a way that does not repeat computations
@@ -401,7 +401,7 @@ const
 				return linarr::algorithms_C::ladder;
 			}
 			return linarr::algorithms_C::stack_based;
-		}(rT.n_nodes());
+		}(rT.num_nodes());
 
 		set_prop(C_idx, linarr::n_crossings(fT, {}, algo_C));
 	}
@@ -564,7 +564,7 @@ const
 	// output features
 
 	if (m_what_fs[0]) {
-		out_lang_file << rT.n_nodes();
+		out_lang_file << rT.num_nodes();
 	}
 	for (size_t i = 1; i < m_what_fs.size(); ++i) {
 		out_lang_file << sep;

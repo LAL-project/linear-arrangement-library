@@ -73,7 +73,7 @@ inline uint32_t __compute_C_ladder(
 	uint32_t * __restrict__ L1
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	// inverse arrangement
 	for (uint32_t i = 0; i < n; ++i) {
 		inv_pi[ pi[i] ] = i;
@@ -124,7 +124,7 @@ template<
 	bool> = true
 >
 inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -156,7 +156,7 @@ template<
 >
 uint32_t n_C_ladder(const G& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return
 	internal::call_with_empty_arrangement<uint32_t,G>
@@ -184,7 +184,7 @@ template<
 vector<uint32_t> n_C_ladder_list
 (const G& g, const vector<linear_arrangement>& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {

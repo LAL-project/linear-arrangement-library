@@ -69,7 +69,7 @@ rational headedness_rational
 {
 	const uint32_t etr = internal::call_with_empty_arrangement(__headedness_rational, g, pi);
 	// avoid warning conversion
-	return rational_from_ui(etr, g.n_edges());
+	return rational_from_ui(etr, g.num_edges());
 }
 
 double headedness(const directed_graph& g, const linear_arrangement& arr) {

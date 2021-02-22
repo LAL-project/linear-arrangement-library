@@ -81,7 +81,7 @@ result_t call_with_empty_arrangement(
 	if (pi.size() != 0) {
 		return F(g,pi);
 	}
-	linear_arrangement __pi(g.n_nodes());
+	linear_arrangement __pi(g.num_nodes());
 	{
 	position p = 0;
 	auto it = __pi.begin();

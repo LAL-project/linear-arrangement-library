@@ -134,7 +134,7 @@ public:
 	 */
 	void reset() noexcept {
 		// there are not enough edges to have |Q| > 0
-		if (m_G.n_edges() <= 1) {
+		if (m_G.num_edges() <= 1) {
 			m_exists_next = false;
 			return;
 		}
@@ -250,7 +250,7 @@ private:
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
-		const uint32_t n = m_G.n_nodes();
+		const uint32_t n = m_G.num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {
@@ -285,7 +285,7 @@ private:
 	noexcept
 	{
 		// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-		const uint32_t n = m_G.n_nodes();
+		const uint32_t n = m_G.num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {

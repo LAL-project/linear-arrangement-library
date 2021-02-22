@@ -65,11 +65,11 @@ using namespace iterators;
 namespace properties {
 
 integer size_Q_integer(const undirected_graph& g) {
-	const uint64_t m = g.n_edges();
+	const uint64_t m = g.num_edges();
 	integer q2 = integer_from_ui(m*(m + 1));
 
 	// substract sum of squared degrees
-	for (node u = 0; u < g.n_nodes(); ++u) {
+	for (node u = 0; u < g.num_nodes(); ++u) {
 		const uint64_t ku = g.degree(u);
 		q2 -= to_int64(ku*ku);
 	}
@@ -82,7 +82,7 @@ uint64_t size_Q(const undirected_graph& g) {
 }
 
 integer size_Q_integer(const directed_graph& g) {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	map<edge, uint64_t> collapsed_edges;
 
 	// count the amount of edges that collapse into a single one

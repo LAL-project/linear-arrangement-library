@@ -35,7 +35,7 @@ template<
 inline
 char fast_non_iso(const T& t1, const T& t2) noexcept {
 	// check number of nodes
-	if (t1.n_nodes() != t2.n_nodes()) { return 1; }
+	if (t1.num_nodes() != t2.num_nodes()) { return 1; }
 
 	if constexpr (std::is_base_of_v<T, lal::graphs::rooted_tree>) {
 	// rooted trees must have correct orientation of edges
@@ -44,7 +44,7 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
 	}
 	}
 
-	const uint32_t n = t1.n_nodes();
+	const uint32_t n = t1.num_nodes();
 
 	// trees ARE isomorphic
 	if (n <= 2) { return 0; }
@@ -181,7 +181,7 @@ noexcept
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint32_t n = t1.n_nodes();
+	const uint32_t n = t1.num_nodes();
 	data_array<std::string> names(n);
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names.data, 0);
 	const std::string name_r2 = assign_name(t2, t2.get_root(), names.data, 0);

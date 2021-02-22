@@ -109,7 +109,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data
 )
 {
-	linear_arrangement arr(T.n_nodes());
+	linear_arrangement arr(T.num_nodes());
 	position pos = 0;
 	__lal::__make_arrangement_intervals(T, T.get_root(), data, pos, arr);
 	return arr;
@@ -120,7 +120,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data
 )
 {
-	linear_arrangement arr(T.n_nodes());
+	linear_arrangement arr(T.num_nodes());
 	position pos = 0;
 	__lal::__make_arrangement_intervals(T, root, root, data, pos, arr);
 	return arr;

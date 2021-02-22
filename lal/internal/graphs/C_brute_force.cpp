@@ -64,7 +64,7 @@ inline uint32_t __compute_C_brute_force_undir(
 	node * __restrict__ T
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
@@ -73,7 +73,7 @@ inline uint32_t __compute_C_brute_force_undir(
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node u = 0; u < g.n_nodes(); ++u) {
+	for (node u = 0; u < g.num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
 		const neighbourhood& Nu = g.get_neighbours(u);
@@ -158,7 +158,7 @@ inline uint32_t __compute_C_brute_force_dir(
 	node * __restrict__ T
 )
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	for (uint32_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
@@ -167,7 +167,7 @@ inline uint32_t __compute_C_brute_force_dir(
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node u = 0; u < g.n_nodes(); ++u) {
+	for (node u = 0; u < g.num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
 		const neighbourhood& Nu_out = g.get_out_neighbours(u);
@@ -202,7 +202,7 @@ inline uint32_t __compute_C_brute_force_dir(
 template<typename GRAPH>
 inline uint32_t __call_C_brute_force
 (const GRAPH& g, const linear_arrangement& pi){
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 	if (n < 4) { return 0; }
 
 	/* allocate memory */
@@ -223,7 +223,7 @@ inline uint32_t __call_C_brute_force
 uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_brute_force<undirected_graph>, g, pi);
@@ -232,7 +232,7 @@ uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi
 uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.n_nodes() == pi.size());
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_brute_force<directed_graph>, g, pi);
@@ -244,7 +244,7 @@ template<typename GRAPH>
 vector<uint32_t> n_C_brute_force_list
 (const GRAPH& g, const vector<linear_arrangement>& pis)
 {
-	const uint32_t n = g.n_nodes();
+	const uint32_t n = g.num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }

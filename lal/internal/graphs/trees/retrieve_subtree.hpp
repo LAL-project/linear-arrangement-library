@@ -86,7 +86,7 @@ get_edges_subtree
 	std::vector<edge> es;
 	uint32_t *sizes = nullptr;
 
-	const uint32_t n = T.n_nodes();
+	const uint32_t n = T.num_nodes();
 	if (n <= 1) { return {es, sizes}; }
 
 	// reserve some space for the vector edges

@@ -321,8 +321,8 @@ rational variance_C_rational(const undirected_graph& g, bool reuse) {
 	assert(g.is_normalised());
 #endif
 
-	const bigint n = g.n_nodes();
-	const bigint m = g.n_edges();
+	const bigint n = g.num_nodes();
+	const bigint m = g.num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q

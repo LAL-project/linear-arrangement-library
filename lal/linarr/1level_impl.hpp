@@ -70,13 +70,13 @@ numeric::rational mean_dependency_distance_1level_rational
 		const linear_arrangement empty_arr;
 		for (size_t i = 0; i < Gs.size(); ++i) {
 			sumD += sum_length_edges(Gs[i], empty_arr);
-			sumM += Gs[i].n_edges();
+			sumM += Gs[i].num_edges();
 		}
 	}
 	else {
 		for (size_t i = 0; i < Gs.size(); ++i) {
 			sumD += sum_length_edges(Gs[i], pis[i]);
-			sumM += Gs[i].n_edges();
+			sumM += Gs[i].num_edges();
 		}
 	}
 	return numeric::rational_from_ui(sumD, sumM);

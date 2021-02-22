@@ -136,8 +136,8 @@ inline void compute_data_forest
 }
 
 rational variance_C_forest_rational(const undirected_graph& g) {
-	const bigint n = g.n_nodes();
-	const bigint m = g.n_edges();
+	const bigint n = g.num_nodes();
+	const bigint m = g.num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
