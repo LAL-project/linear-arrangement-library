@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019-2020
+ *  Copyright (C) 2019 - 2021
  *
  *  This file is part of Linear Arrangement Library. To see the full code
  *  visit the webpage:
@@ -52,7 +52,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/trees/tree_centre.hpp>
 #include <lal/internal/data_array.hpp>
-#include <lal/internal/graphs/trees/rooted_tree_isomorphism.hpp>
+#include <lal/internal/graphs/trees/tree_isomorphism.hpp>
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))

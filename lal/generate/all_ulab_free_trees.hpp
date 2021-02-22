@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019-2020
+ *  Copyright (C) 2019 - 2021
  *
  *  This file is part of Linear Arrangement Library. To see the full code
  *  visit the webpage:

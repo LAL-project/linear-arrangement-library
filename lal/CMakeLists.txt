@@ -262,11 +262,11 @@ target_sources(
 		internal/graphs/trees/Dmin.hpp
 		internal/graphs/trees/is_tree.hpp
 		internal/graphs/trees/make_arrangement.hpp
-		internal/graphs/trees/rooted_tree_isomorphism.hpp
 		internal/graphs/trees/size_subtrees.hpp
 		internal/graphs/trees/tree_centre.hpp
 		internal/graphs/trees/tree_centroid.hpp
 		internal/graphs/trees/tree_classification.hpp
+		internal/graphs/trees/tree_isomorphism.hpp
 		internal/graphs/algorithms_crossings.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/enumerate_sets.hpp
