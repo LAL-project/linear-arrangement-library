@@ -58,16 +58,20 @@ namespace internal {
  */
 template<typename T>
 struct data_array {
+public:
 	// the data of this array
 	T *data = nullptr;
+
+private:
 	// the size of this array -- making this const forces
 	// users to use the non-empty constructor
-	const std::size_t _size;
+	std::size_t m_size;
 
-	data_array(const std::size_t n) noexcept : _size(n) {
+public:
+	data_array(const std::size_t n) noexcept : m_size(n) {
 		data = new T[n];
 	}
-	data_array(const std::size_t n, const T& v) noexcept : _size(n) {
+	data_array(const std::size_t n, const T& v) noexcept : m_size(n) {
 		data = new T[n];
 		fill(v);
 	}
@@ -79,12 +83,27 @@ struct data_array {
 	data_array(const data_array& d) = delete;
 	data_array& operator= (const data_array& d) = delete;
 	// nor moves
-	data_array(data_array&& d) noexcept = delete;
-	data_array& operator= (data_array&& d) = delete;
+	data_array(data_array&& d) noexcept : m_size(d.m_size) {
+		// steal data
+		data = d.data;
+		// invalidate data
+		d.data = nullptr;
+		d.m_size = 0;
+	}
+	data_array& operator= (data_array&& d) {
+		// free yourself
+		delete[] data;
+		// steal from others
+		data = d.data;
+		m_size = d.m_size;
+		// invalidate data
+		d.data = nullptr;
+		d.m_size = 0;
+	}
 
 	// imitate the vector::size() method
 	[[nodiscard]]
-	inline constexpr std::size_t size() const noexcept { return _size; }
+	inline constexpr std::size_t size() const noexcept { return m_size; }
 
 	// operator[]
 	[[nodiscard]] inline T& operator[] (const std::size_t i) noexcept {
@@ -103,16 +122,16 @@ struct data_array {
 
 	// assign the same value to every element in the data
 	inline void fill(const T& v) noexcept {
-		std::fill(&data[0], &data[_size], v);
+		std::fill(&data[0], &data[m_size], v);
 	}
 
 	// non-constant pointer to first element and last+1 element
 	[[nodiscard]] inline T *begin() { return &data[0]; }
-	[[nodiscard]] inline T *end() { return &data[_size]; }
+	[[nodiscard]] inline T *end() { return &data[m_size]; }
 
 	// constant pointer to first element and last+1 element
 	[[nodiscard]] inline const T *begin() const { return &data[0]; }
-	[[nodiscard]] inline const T *end() const { return &data[_size]; }
+	[[nodiscard]] inline const T *end() const { return &data[m_size]; }
 };
 
 } // -- namespace internal
