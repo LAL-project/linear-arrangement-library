@@ -96,9 +96,9 @@ public:
 
 	/* MODIFIERS */
 
-	void normalise();
+	void normalise() noexcept;
 
-	bool check_normalised();
+	bool check_normalised() noexcept;
 
 	/**
 	 * @brief Adds a directed edge to the graph.
@@ -118,7 +118,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& add_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -131,9 +131,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
-	directed_graph& add_edge_bulk(node s, node t);
+	directed_graph& add_edge_bulk(node s, node t) noexcept;
 
-	void finish_bulk_add(bool norm = true, bool check = true);
+	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of directed edges to the graph.
@@ -155,7 +155,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Sets the list of edges to the graph.
@@ -178,7 +179,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -197,7 +199,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -220,7 +222,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Disjoint union of graphs.
@@ -233,7 +236,7 @@ public:
 	 * @post The graph is normalised only if it was normalised before
 	 * the call and @e g is also normalised.
 	 */
-	void disjoint_union(const directed_graph& g);
+	void disjoint_union(const directed_graph& g) noexcept;
 
 	/* SETTERS */
 
@@ -244,7 +247,7 @@ public:
 	std::vector<edge> edges() const noexcept;
 
 	/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
-	bool has_edge(node u, node v) const;
+	bool has_edge(node u, node v) const noexcept;
 
 	/**
 	 * @brief Returns the out-neighbours of node @e u
@@ -269,10 +272,16 @@ public:
 		return m_in_adjacency_list[u];
 	}
 
-	/// Same as @ref out_degree + @ref in_degree.
-	inline uint32_t degree(node u) const noexcept {
-		return out_degree(u) + in_degree(u);
-	}
+	/**
+	 * @brief Returns the in-degree plus the out-degree of this vertex.
+	 *
+	 * Returns the degree of this vertex in its underlying undirected structure.
+	 * Same as @ref in_degree + @ref out_degree.
+	 * @param u Vertex
+	 * @return Returns the (in + out) degree of this vertex.
+	 */
+	inline uint32_t degree(node u) const noexcept
+	{ return out_degree(u) + in_degree(u); }
 
 	/// Returns the out-degree of a node.
 	inline uint32_t out_degree(node u) const noexcept {
@@ -306,7 +315,7 @@ public:
 	 * @return Returns this graph in which the edges are undirected.
 	 */
 	undirected_graph to_undirected
-	(bool norm = true, bool check = true) const;
+	(bool norm = true, bool check = true) const noexcept;
 
 protected:
 	/// In-neighbours for every node.
@@ -314,14 +323,14 @@ protected:
 
 protected:
 	/// Initialises memory of @ref directed_graph and @ref graph classes.
-	virtual void _init(uint32_t n);
+	virtual void _init(uint32_t n) noexcept;
 	/// Clears the memory of @ref directed_graph and @ref graph classes.
-	virtual void _clear();
+	virtual void _clear() noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_directed_graph(const directed_graph& d);
+	void copy_full_directed_graph(const directed_graph& d) noexcept;
 	/// Moves all members of this class and the parent class.
-	void move_full_directed_graph(directed_graph&& d);
+	void move_full_directed_graph(directed_graph&& d) noexcept;
 
 private:
 	/**
@@ -332,7 +341,7 @@ private:
 	 * @param in_v In-neighbourhood of node @e v.
 	 */
 	void remove_single_edge
-	(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
+	(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept;
 };
 
 } // -- namespace graphs

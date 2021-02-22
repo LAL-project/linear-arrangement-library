@@ -112,7 +112,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& add_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -125,9 +125,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
-	undirected_graph& add_edge_bulk(node s, node t);
+	undirected_graph& add_edge_bulk(node s, node t) noexcept;
 
-	void finish_bulk_add(bool norm = true, bool check = true);
+	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -149,7 +149,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -172,7 +173,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -191,7 +193,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -214,7 +216,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Disjoint union of graphs.
@@ -227,7 +230,7 @@ public:
 	 * @post The graph is normalised only if it was normalised before
 	 * the call and @e g is also normalised.
 	 */
-	void disjoint_union(const undirected_graph& g);
+	void disjoint_union(const undirected_graph& g) noexcept;
 
 	/* SETTERS */
 
@@ -262,21 +265,21 @@ public:
 	}
 
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
-	bool has_edge(node u, node v) const;
+	bool has_edge(node u, node v) const noexcept;
 
 	inline bool is_directed() const noexcept { return false; }
 	inline bool is_undirected() const noexcept { return true; }
 
 protected:
 	/// Initialises memory of @ref undirected_graph and @ref graph classes.
-	virtual void _init(uint32_t n);
+	virtual void _init(uint32_t n) noexcept;
 	/// Clears the memory of @ref undirected_graph and @ref graph classes.
-	virtual void _clear();
+	virtual void _clear() noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_undirected_graph(const undirected_graph& u);
+	void copy_full_undirected_graph(const undirected_graph& u) noexcept;
 	/// Moves all members of this class and the parent class.
-	void move_full_undirected_graph(undirected_graph&& u);
+	void move_full_undirected_graph(undirected_graph&& u) noexcept;
 
 private:
 	/**
@@ -287,7 +290,7 @@ private:
 	 * @param in_v In-neighbourhood of node @e v.
 	 */
 	void remove_single_edge
-	(node u, node v, neighbourhood& out_u, neighbourhood& in_v);
+	(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept;
 };
 
 } // -- namespace graphs

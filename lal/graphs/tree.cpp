@@ -79,24 +79,24 @@ tree& tree::operator= (tree&& t) noexcept {
 
 /* GETTERS */
 
-bool tree::is_tree() const {
+bool tree::is_tree() const noexcept {
 	// NOTE: this would not really be true if the addition of edges
 	// was not constrained. Since it is, in a way that no cycles can
 	// be produced, then we only need to check for the number of edges.
-	return (n_nodes() == 0 ? true : n_edges() == n_nodes() - 1);
+	return (num_nodes() == 0 ? true : num_edges() == num_nodes() - 1);
 
 	// NOTE 2: this is only true in a debug compilation of the library
 	// since a release compilation does not actually constrain the addition
 }
 
-bool tree::can_add_edge(node u, node v) const {
+bool tree::can_add_edge(node u, node v) const noexcept {
 #if defined DEBUG
 	assert(has_node(u));
 	assert(has_node(v));
 #endif
 
 	// in a tree we must have m <= n - 1
-	if (n_edges() + 1 > n_nodes() - 1) {
+	if (num_edges() + 1 > num_nodes() - 1) {
 		return false;
 	}
 
@@ -106,9 +106,9 @@ bool tree::can_add_edge(node u, node v) const {
 	return m_root_of[u] != m_root_of[v];
 }
 
-bool tree::can_add_edges(const vector<edge>& edges) const {
-	const uint32_t n = n_nodes();
-	const uint32_t m = n_edges();
+bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
+	const uint32_t n = num_nodes();
+	const uint32_t m = num_edges();
 	const uint32_t more_m = static_cast<uint32_t>(edges.size());
 
 	// in a tree we must have m <= n - 1
@@ -137,7 +137,7 @@ bool tree::can_add_edges(const vector<edge>& edges) const {
 	return true;
 }
 
-vector<string> tree::get_tree_type_list() const {
+vector<string> tree::get_tree_type_list() const noexcept {
 	vector<string> l;
 	l.reserve(__tree_type_size);
 	for (size_t i = 0; i < __tree_type_size; ++i) {
@@ -152,7 +152,7 @@ vector<string> tree::get_tree_type_list() const {
 
 /* PROTECTED */
 
-void tree::tree_only_init(uint32_t n) {
+void tree::tree_only_init(uint32_t n) noexcept {
 	m_root_of = vector<uint32_t>(n);
 	m_root_size = vector<uint32_t>(n);
 	for (node u = 0; u < n; ++u) {
@@ -163,50 +163,50 @@ void tree::tree_only_init(uint32_t n) {
 	m_tree_type[static_cast<size_t>(tree_type::none)] = true;
 }
 
-void tree::tree_only_clear() {
+void tree::tree_only_clear() noexcept {
 	m_root_of.clear();
 	m_root_size.clear();
 	fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 	m_tree_type[static_cast<size_t>(tree_type::none)] = true;
 }
 
-void tree::tree_only_copy(const tree& t) {
+void tree::tree_only_copy(const tree& t) noexcept {
 	// copy this class' members
 	m_root_of = t.m_root_of;
 	m_root_size = t.m_root_size;
 	m_tree_type = t.m_tree_type;
 }
 
-void tree::tree_only_move(tree&& t) {
+void tree::tree_only_move(tree&& t) noexcept {
 	// move this class' members
 	m_root_of = std::move(t.m_root_of);
 	m_root_size = std::move(t.m_root_size);
 	m_tree_type = std::move(t.m_tree_type);
 }
 
-void tree::extra_work_per_edge_add(node u, node v) {
+void tree::extra_work_per_edge_add(node u, node v) noexcept {
 	graph::extra_work_per_edge_add(u, v);
 	call_union_find_add(
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
-void tree::tree_only_extra_work_edges_set() {
+void tree::tree_only_extra_work_edges_set() noexcept {
 	fill_union_find();
 }
-void tree::extra_work_per_edge_remove(node u, node v) {
+void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 	graph::extra_work_per_edge_remove(u, v);
 	call_union_find_remove(
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
 
-void tree::fill_union_find() {
-	for (node u = 0; u < n_nodes(); ++u) {
+void tree::fill_union_find() noexcept {
+	for (node u = 0; u < num_nodes(); ++u) {
 		// all vertices point to root zero
 		m_root_of[u] = 0;
 	}
 	// the size of the connected component of the root 0 is n
-	m_root_size[0] = n_nodes();
+	m_root_size[0] = num_nodes();
 }
 
 } // -- namespace graphs

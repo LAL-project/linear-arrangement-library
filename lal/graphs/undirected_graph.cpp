@@ -87,9 +87,8 @@ undirected_graph& undirected_graph::operator= (undirected_graph&& u) noexcept {
 
 /* MODIFIERS */
 
-undirected_graph& undirected_graph::add_edge(
-	node u, node v, bool to_norm, bool check_norm
-)
+undirected_graph& undirected_graph::add_edge
+(node u, node v, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(not has_edge(u,v));
@@ -138,7 +137,7 @@ undirected_graph& undirected_graph::add_edge(
 	return *this;
 }
 
-undirected_graph& undirected_graph::add_edge_bulk(node u, node v) {
+undirected_graph& undirected_graph::add_edge_bulk(node u, node v) noexcept {
 #if defined DEBUG
 	assert(not has_edge(u,v));
 #endif
@@ -149,14 +148,13 @@ undirected_graph& undirected_graph::add_edge_bulk(node u, node v) {
 	return *this;
 }
 
-void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) {
+void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
 	// normalise
 	graph::normalise_after_add(to_norm, check_norm);
 }
 
-undirected_graph& undirected_graph::add_edges(
-	const vector<edge>& edges, bool to_norm, bool check_norm
-)
+undirected_graph& undirected_graph::add_edges
+(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -172,12 +170,11 @@ undirected_graph& undirected_graph::add_edges(
 	return *this;
 }
 
-undirected_graph& undirected_graph::set_edges(
-	const vector<edge>& edges, bool to_norm, bool check_norm
-)
+undirected_graph& undirected_graph::set_edges
+(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	{
-	const uint32_t n = n_nodes();
+	const uint32_t n = num_nodes();
 	clear(); init(n);
 	}
 
@@ -195,9 +192,8 @@ undirected_graph& undirected_graph::set_edges(
 	return *this;
 }
 
-undirected_graph& undirected_graph::remove_edge(
-	node u, node v, bool norm, bool check_norm
-)
+undirected_graph& undirected_graph::remove_edge
+(node u, node v, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(has_edge(u,v));
@@ -211,9 +207,8 @@ undirected_graph& undirected_graph::remove_edge(
 	return *this;
 }
 
-undirected_graph& undirected_graph::remove_edges(
-	const vector<edge>& edges, bool norm, bool check_norm
-)
+undirected_graph& undirected_graph::remove_edges
+(const vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -229,7 +224,7 @@ undirected_graph& undirected_graph::remove_edges(
 	return *this;
 }
 
-void undirected_graph::disjoint_union(const undirected_graph& g) {
+void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 	// updates the number of edges and other base-class related attributes
 	graph::__disjoint_union(g);
 
@@ -250,7 +245,7 @@ vector<edge> undirected_graph::edges() const noexcept {
 	return internal::E(*this);
 }
 
-bool undirected_graph::has_edge(node u, node v) const {
+bool undirected_graph::has_edge(node u, node v) const noexcept {
 #if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
@@ -274,22 +269,22 @@ bool undirected_graph::has_edge(node u, node v) const {
 
 /* PROTECTED */
 
-void undirected_graph::_init(uint32_t n) {
+void undirected_graph::_init(uint32_t n) noexcept {
 	graph::_init(n);
 }
 
-void undirected_graph::_clear() {
+void undirected_graph::_clear() noexcept {
 	graph::_clear();
 }
 
-void undirected_graph::copy_full_undirected_graph(const undirected_graph& u) {
+void undirected_graph::copy_full_undirected_graph(const undirected_graph& u) noexcept {
 	// copy parent class
 	copy_full_graph(u);
 
 	// copy this class' members
 }
 
-void undirected_graph::move_full_undirected_graph(undirected_graph&& u) {
+void undirected_graph::move_full_undirected_graph(undirected_graph&& u) noexcept {
 	// move-assign parent class
 	move_full_graph(std::move(u));
 
@@ -298,9 +293,8 @@ void undirected_graph::move_full_undirected_graph(undirected_graph&& u) {
 
 /* PRIVATE */
 
-void undirected_graph::remove_single_edge(
-	node u, node v, neighbourhood& out_u, neighbourhood& in_v
-)
+void undirected_graph::remove_single_edge
+(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept
 {
 	// it_v: pointer to node v in out_u
 	// it_u: pointer to node u in in_v

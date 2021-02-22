@@ -156,7 +156,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& add_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -169,7 +169,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
-	rooted_tree& add_edge_bulk(node s, node t);
+	rooted_tree& add_edge_bulk(node s, node t) noexcept;
 
 	/**
 	 * @brief Finishes adding edges in bulk.
@@ -177,7 +177,7 @@ public:
 	 * @param check Check whether the tree is normalised or not.
 	 * @pre All edges have been added.
 	 */
-	void finish_bulk_add(bool norm = true, bool check = true);
+	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -203,7 +203,8 @@ public:
 	 * after the addition of the edges.
 	 */
 	rooted_tree& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -227,7 +228,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -249,7 +251,7 @@ public:
 	 * @ref size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -275,7 +277,8 @@ public:
 	 * @ref size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Disjoint union of trees.
@@ -302,7 +305,8 @@ public:
 	 * @post The graph resulting from the union is normalised only if the
 	 * two graphs were normalised prior to the union.
 	 */
-	void disjoint_union(const rooted_tree& t, bool connect_roots = true);
+	void disjoint_union(const rooted_tree& t, bool connect_roots = true)
+	noexcept;
 
 	/**
 	 * @brief Finds the orientation of the edges.
@@ -324,7 +328,7 @@ public:
 	 * @post Method @ref is_orientation_valid evaluates to true if the tree is
 	 * an arborescence, or to false if it not an arborescence.
 	 */
-	bool find_edge_orientation();
+	bool find_edge_orientation() noexcept;
 
 	/**
 	 * @brief Sets wether the type of the rooted tree is valid or not.
@@ -339,7 +343,7 @@ public:
 	 * @post Method @ref is_orientation_valid returns the value set by this
 	 * function.
 	 */
-	void set_valid_orientation(bool valid);
+	void set_valid_orientation(bool valid) noexcept;
 
 	/**
 	 * @brief Initialiser with tree and root node.
@@ -355,7 +359,7 @@ public:
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
-	void init_rooted(const free_tree& t, node r);
+	void init_rooted(const free_tree& t, node r) noexcept;
 
 	/**
 	 * @brief Calculates the number of nodes at every rooted subtree.
@@ -363,9 +367,9 @@ public:
 	 * @pre The tree must have a root (see @ref has_root()).
 	 * @post Method @ref size_subtrees_valid returns true.
 	 */
-	void calculate_size_subtrees();
+	void calculate_size_subtrees() noexcept;
 
-	void calculate_tree_type();
+	void calculate_tree_type() noexcept;
 
 	/* SETTERS */
 
@@ -379,11 +383,11 @@ public:
 	 * @post The type of rooted tree and the size of the subtrees are
 	 * invalidated.
 	 */
-	void set_root(node r);
+	void set_root(node r) noexcept;
 
 	/* GETTERS */
 
-	inline bool is_rooted() const { return true; }
+	inline bool is_rooted() const noexcept { return true; }
 
 	/**
 	 * @brief Is this tree a valid rooted tree?
@@ -395,9 +399,8 @@ public:
 	 * - the orientation of the edges is valid (see @ref is_orientation_valid).
 	 * @return Returns whether this tree is a valid rooted tree or not.
 	 */
-	inline bool is_rooted_tree() const {
-		return is_tree() and has_root() and is_orientation_valid();
-	}
+	inline bool is_rooted_tree() const noexcept
+	{ return is_tree() and has_root() and is_orientation_valid(); }
 
 	/**
 	 * @brief Is the orientation of the edges valid?
@@ -406,12 +409,10 @@ public:
 	 * leaves (away from the root).
 	 * @return Returns @ref m_valid_orientation.
 	 */
-	inline bool is_orientation_valid() const {
-		return m_valid_orientation;
-	}
+	inline bool is_orientation_valid() const noexcept { return m_valid_orientation; }
 
 	/// Return the root of this tree.
-	inline node get_root() const {
+	inline node get_root() const noexcept {
 #if defined DEBUG
 		assert(has_root());
 #endif
@@ -419,9 +420,7 @@ public:
 	}
 	/// Returns whether this rooted tree's root has been set or not
 	/// (see @ref set_root).
-	inline bool has_root() const {
-		return m_has_root;
-	}
+	inline bool has_root() const noexcept { return m_has_root; }
 
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
@@ -429,7 +428,7 @@ public:
 	 * @return Returns the number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref size_subtrees_valid returns true.
 	 */
-	inline uint32_t n_nodes_subtree(node u) const {
+	inline uint32_t n_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -446,9 +445,8 @@ public:
 	 * @return Returns whether @ref m_size_subtrees should be recalculated
 	 * or not.
 	 */
-	inline bool size_subtrees_valid() const {
-		return m_are_size_subtrees_valid;
-	}
+	inline bool size_subtrees_valid() const noexcept
+	{ return m_are_size_subtrees_valid; }
 
 	/**
 	 * @brief Retrieve the edges of the subtree rooted at @e u.
@@ -481,7 +479,7 @@ public:
 	 * @post Whenever @e relab is true, the label of the first node of
 	 * the first edge is guaranteed to be node '0'.
 	 */
-	std::vector<edge> get_edges_subtree(node u, bool relab = false) const;
+	std::vector<edge> get_edges_subtree(node u, bool relab = false) const noexcept;
 
 	/**
 	 * @brief Retrieve the subtree rooted at node @e u.
@@ -492,7 +490,7 @@ public:
 	 * @post The subtree keeps the orientation of the edges in the original
 	 * tree.
 	 */
-	rooted_tree get_subtree(node u) const;
+	rooted_tree get_subtree(node u) const noexcept;
 
 	/**
 	 * @brief Converts this rooted tree into a free tree (see @ref tree).
@@ -500,7 +498,7 @@ public:
 	 * @param check Chech whether the resulting graph is normalised or not.
 	 */
 	free_tree to_undirected
-	(bool norm = true, bool check = true) const;
+	(bool norm = true, bool check = true) const noexcept;
 
 protected:
 	/// Root of the tree.
@@ -524,10 +522,10 @@ protected:
 protected:
 	/// Initialises memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _init(uint32_t n);
+	virtual void _init(uint32_t n) noexcept;
 	/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _clear();
+	virtual void _clear() noexcept;
 
 	void call_union_find_add(
 		node u, node v,
@@ -551,9 +549,9 @@ protected:
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_rooted_tree(const rooted_tree& r);
+	void copy_full_rooted_tree(const rooted_tree& r) noexcept;
 	/// Moves all members of this class and the parent class.
-	void move_full_rooted_tree(rooted_tree&& r);
+	void move_full_rooted_tree(rooted_tree&& r) noexcept;
 
 private:
 	using directed_graph::disjoint_union;

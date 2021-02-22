@@ -100,7 +100,7 @@ public:
 	 *
 	 * See @ref tree_type for the list of different tree types.
 	 */
-	virtual void calculate_tree_type() = 0;
+	virtual void calculate_tree_type() noexcept = 0;
 
 	/* GETTERS */
 
@@ -117,10 +117,10 @@ public:
 	 * For further characterisations of a tree see \cite Harary1969a
 	 * (chapter 4, pages 32-33).
 	 */
-	bool is_tree() const;
+	bool is_tree() const noexcept;
 
 	/// Returns whether this tree is a rooted tree.
-	virtual bool is_rooted() const = 0;
+	virtual bool is_rooted() const noexcept = 0;
 
 	/**
 	 * @brief Can this edge be added?
@@ -132,7 +132,7 @@ public:
 	 * @return Returns whether the addition of this new edge can be added
 	 * to the tree without producing cycles.
 	 */
-	bool can_add_edge(node s, node t) const;
+	bool can_add_edge(node s, node t) const noexcept;
 
 	/**
 	 * @brief Can these edges be added?
@@ -143,7 +143,7 @@ public:
 	 * @return Returns whether the addition of these new edges can be added
 	 * to the tree without producing cycles.
 	 */
-	bool can_add_edges(const std::vector<edge>& edges) const;
+	bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
 	/**
 	 * @brief Amount of nodes in a connected component of the tree.
@@ -158,7 +158,7 @@ public:
 	 * @param u Input node.
 	 * @return Returns the size of the connected component of @e u.
 	 */
-	inline uint32_t n_nodes_component(node u) const noexcept {
+	inline uint32_t num_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -174,7 +174,7 @@ public:
 	 * @brief Returns the list of types as a list of strings.
 	 * @return Returns the list of types as a list of strings.
 	 */
-	std::vector<std::string> get_tree_type_list() const;
+	std::vector<std::string> get_tree_type_list() const noexcept;
 
 protected:
 	/// The root of every vertex in the union-find data structure
@@ -198,25 +198,25 @@ protected:
 	 * @brief Initialises only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
-	void tree_only_init(uint32_t n);
+	void tree_only_init(uint32_t n) noexcept;
 	/// Clears the memory used by only class @ref tree.
-	void tree_only_clear();
+	void tree_only_clear() noexcept;
 
 	/// Copies only members of class @ref tree.
-	void tree_only_copy(const tree& t);
+	void tree_only_copy(const tree& t) noexcept;
 	/// Moves only members of class @ref tree.
-	void tree_only_move(tree&& t);
+	void tree_only_move(tree&& t) noexcept;
 
-	void extra_work_per_edge_add(node u, node v);
-	void extra_work_per_edge_remove(node u, node v);
+	void extra_work_per_edge_add(node u, node v) noexcept;
+	void extra_work_per_edge_remove(node u, node v) noexcept;
 
 	/// Updates the data structures of a tree after the graph structure
 	/// has had its set of edges set.
-	void tree_only_extra_work_edges_set();
+	void tree_only_extra_work_edges_set() noexcept;
 
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
-	void fill_union_find();
+	void fill_union_find() noexcept;
 
 	/**
 	 * @brief A call to the union find method.

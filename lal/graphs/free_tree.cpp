@@ -73,7 +73,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 	assert(internal::is_graph_a_tree(t));
 #endif
 
-	free_tree::tree_only_init(t.n_nodes());
+	free_tree::tree_only_init(t.num_nodes());
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
 }
@@ -83,7 +83,7 @@ free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move
 	assert(internal::is_graph_a_tree(*this));
 #endif
 
-	free_tree::tree_only_init(n_nodes());
+	free_tree::tree_only_init(num_nodes());
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
 }
@@ -103,7 +103,7 @@ free_tree& free_tree::operator= (free_tree&& f) noexcept {
 
 /* MODIFIERS */
 
-free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
+free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
@@ -111,7 +111,7 @@ free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) {
 	return *this;
 }
 
-free_tree& free_tree::add_edge_bulk(node u, node v) {
+free_tree& free_tree::add_edge_bulk(node u, node v) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
@@ -119,7 +119,7 @@ free_tree& free_tree::add_edge_bulk(node u, node v) {
 	return *this;
 }
 
-void free_tree::finish_bulk_add(bool norm, bool check) {
+void free_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
@@ -127,9 +127,8 @@ void free_tree::finish_bulk_add(bool norm, bool check) {
 	fill_union_find();
 }
 
-free_tree& free_tree::add_edges(
-	const vector<edge>& edges, bool norm, bool check_norm
-)
+free_tree& free_tree::add_edges
+(const vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -138,20 +137,20 @@ free_tree& free_tree::add_edges(
 	return *this;
 }
 
-free_tree& free_tree::set_edges(
-	const vector<edge>& edges, bool to_norm, bool check_norm
-)
+free_tree& free_tree::set_edges
+(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
+	assert(edges.size() == num_nodes() - 1);
 #endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
 	tree_only_extra_work_edges_set();
 	return *this;
 }
 
-void free_tree::disjoint_union(const free_tree& t) {
-	const node prev_n = n_nodes();
+void free_tree::disjoint_union(const free_tree& t) noexcept {
+	const node prev_n = num_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
@@ -168,12 +167,12 @@ void free_tree::disjoint_union(const free_tree& t) {
 	vec_join(m_root_size, t.m_root_size);
 
 	// update the labels of the vertices' root of the union find
-	for (node u = prev_n; u < n_nodes(); ++u) {
+	for (node u = prev_n; u < num_nodes(); ++u) {
 		m_root_of[u] += prev_n;
 	}
 }
 
-void free_tree::calculate_tree_type() {
+void free_tree::calculate_tree_type() noexcept {
 	internal::classify_tree(*this, m_tree_type);
 }
 
@@ -181,12 +180,12 @@ void free_tree::calculate_tree_type() {
 
 /* PROTECTED */
 
-void free_tree::_init(uint32_t n) {
+void free_tree::_init(uint32_t n) noexcept {
 	undirected_graph::_init(n);
 	tree::tree_only_init(n);
 }
 
-void free_tree::_clear() {
+void free_tree::_clear() noexcept {
 	undirected_graph::_clear();
 	tree::tree_only_clear();
 }
@@ -225,7 +224,7 @@ void free_tree::call_union_find_remove(
 	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
 }
 
-void free_tree::copy_full_free_tree(const free_tree& f) {
+void free_tree::copy_full_free_tree(const free_tree& f) noexcept {
 	// copy undirected_graph class
 	copy_full_undirected_graph(f);
 
@@ -235,7 +234,7 @@ void free_tree::copy_full_free_tree(const free_tree& f) {
 	// copy this class' members
 }
 
-void free_tree::move_full_free_tree(free_tree&& f) {
+void free_tree::move_full_free_tree(free_tree&& f) noexcept {
 	// move-assign undirected_graph class
 	move_full_undirected_graph(std::move(f));
 

@@ -103,14 +103,14 @@ public:
 	 * See @ref _init for details.
 	 * @param n Number of nodes.
 	 */
-	virtual void init(uint32_t n);
+	virtual void init(uint32_t n) noexcept;
 	/**
 	 * @brief Frees the memory occupied by this graph.
 	 *
 	 * See @ref _clear for details.
 	 * @post The graph is normalised. The number of edges is 0.
 	 */
-	virtual void clear();
+	virtual void clear() noexcept;
 
 	/**
 	 * @brief Normalises the graph.
@@ -122,7 +122,7 @@ public:
 	 * not; in case it is, using this method is completely unnecessary.
 	 * @post Method @ref is_normalised evaluates to true.
 	 */
-	virtual void normalise();
+	virtual void normalise() noexcept;
 
 	/**
 	 * @brief Checks if the graph is normalised.
@@ -131,7 +131,7 @@ public:
 	 * In case it is, attribute @ref m_normalised is set to true, so method
 	 * @ref is_normalised evaluates to true.
 	 */
-	virtual bool check_normalised();
+	virtual bool check_normalised() noexcept;
 
 	/**
 	 * @brief Completes the inner structure of the graph after adding a bulk of edges
@@ -142,21 +142,12 @@ public:
 	 * @param norm Normalise the graph
 	 * @param check Check wether the graph is normalised or not.
 	 */
-	virtual void finish_bulk_add(bool norm = true, bool check = true) = 0;
+	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 
 	/* SETTERS */
 
 	/// Sets whether this graph is normalised or not.
 	inline void set_normalised(bool v = true) noexcept { m_normalised = v; }
-	/**
-	 * @brief Sets the number of edges of this graph.
-	 *
-	 * The value of @e ne must be exactly the number of edges of the graph
-	 * so that the methods work correctly in future uses of this class.
-	 * It is left up to the user to ensure that the value is correct.
-	 * @param ne The number of edges.
-	 */
-	inline void set_num_edges(uint32_t ne) noexcept { m_num_edges = ne; }
 
 	/* GETTERS */
 
@@ -170,22 +161,17 @@ public:
 	virtual std::vector<edge_pair> Q() const noexcept = 0;
 
 	/// Returns true if node @e u is in this graph.
-	inline bool has_node(node u) const noexcept {
-		return u < n_nodes();
-	}
+	inline bool has_node(node u) const noexcept { return u < num_nodes(); }
 
 	/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
 	virtual bool has_edge(node u, node v) const = 0;
 
 	/// Returns the number of ndoes.
-	inline uint32_t n_nodes() const noexcept {
-		return static_cast<uint32_t>(m_adjacency_list.size());
-	}
+	inline uint32_t num_nodes() const noexcept
+	{ return static_cast<uint32_t>(m_adjacency_list.size()); }
 
 	/// Returns the number of edges.
-	inline uint32_t n_edges() const noexcept {
-		return m_num_edges;
-	}
+	inline uint32_t num_edges() const noexcept { return m_num_edges; }
 
 	/// Returns all edges of this graph.
 	virtual std::vector<edge> edges() const noexcept = 0;
@@ -197,9 +183,7 @@ public:
 	 * increasingly. For this, use method @ref normalise().
 	 * @return Returns the value of @ref m_normalised.
 	 */
-	inline bool is_normalised() const {
-		return m_normalised;
-	}
+	inline bool is_normalised() const noexcept { return m_normalised; }
 
 	/// Returns whether this graph is directed or not.
 	virtual bool is_directed() const noexcept = 0;
@@ -227,14 +211,14 @@ protected:
 
 protected:
 	/// Initialises memory of @ref graph class.
-	virtual void _init(uint32_t n);
+	virtual void _init(uint32_t n) noexcept;
 	/// Clears memory for the @ref graph class.
-	virtual void _clear();
+	virtual void _clear() noexcept;
 
 	/// Copies all members of this class.
-	void copy_full_graph(const graph& g);
+	void copy_full_graph(const graph& g) noexcept;
 	/// Moves all members of this class.
-	void move_full_graph(graph&& g);
+	void move_full_graph(graph&& g) noexcept;
 
 	/**
 	 * @brief Disjoint union of graphs.
@@ -249,16 +233,16 @@ protected:
 	 * @post The graph is normalised only if it was normalised before
 	 * the call and @e g is also normalised.
 	 */
-	void __disjoint_union(const graph& g);
+	void __disjoint_union(const graph& g) noexcept;
 
 	/// Do some extra work after an edge has been added.
-	virtual void extra_work_per_edge_add(node u, node v);
+	virtual void extra_work_per_edge_add(node u, node v) noexcept;
 	/// Do some extra work after an edge has been removed.
-	virtual void extra_work_per_edge_remove(node u, node v);
+	virtual void extra_work_per_edge_remove(node u, node v) noexcept;
 	/// Normalise the graph after one (or more) edges have been added
-	void normalise_after_add(bool norm, bool check);
+	void normalise_after_add(bool norm, bool check) noexcept;
 	/// Normalise the graph after one (or more) edges have been removed
-	void normalise_after_remove(bool norm, bool check);
+	void normalise_after_remove(bool norm, bool check) noexcept;
 };
 
 } // -- namespace graphs

@@ -120,7 +120,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	free_tree& add_edge
-	(node s, node t, bool norm = false, bool check_norm = true);
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -133,7 +133,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
-	free_tree& add_edge_bulk(node s, node t);
+	free_tree& add_edge_bulk(node s, node t) noexcept;
 
 	/**
 	 * @brief Finishes adding edges in bulk.
@@ -141,7 +141,7 @@ public:
 	 * @param check Check whether the tree is normalised or not.
 	 * @pre All edges have been added.
 	 */
-	void finish_bulk_add(bool norm = true, bool check = true);
+	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -167,7 +167,8 @@ public:
 	 * after the addition of the edges.
 	 */
 	free_tree& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -192,7 +193,8 @@ public:
 	 * after the addition of the edge.
 	 */
 	free_tree& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true);
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
 
 	/**
 	 * @brief Disjoint union of trees.
@@ -205,21 +207,21 @@ public:
 	 * @post The current tree is not an actual tree, i.e., method
 	 * @ref is_tree() returns false since the resulting tree lacks an edge.
 	 */
-	void disjoint_union(const free_tree& t);
+	void disjoint_union(const free_tree& t) noexcept;
 
-	void calculate_tree_type();
+	void calculate_tree_type() noexcept;
 
 	/* GETTERS */
 
-	inline bool is_rooted() const { return false; }
+	inline bool is_rooted() const noexcept { return false; }
 
 protected:
 	/// Initialises memory of @ref free_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _init(uint32_t n);
+	virtual void _init(uint32_t n) noexcept;
 	/// Clears the memory of @ref free_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _clear();
+	virtual void _clear() noexcept;
 
 	void call_union_find_add(
 		node u, node v,
@@ -243,9 +245,9 @@ protected:
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_free_tree(const free_tree& f);
+	void copy_full_free_tree(const free_tree& f) noexcept;
 	/// Moves all members of this class and the parent class.
-	void move_full_free_tree(free_tree&& f);
+	void move_full_free_tree(free_tree&& f) noexcept;
 
 private:
 	using undirected_graph::disjoint_union;

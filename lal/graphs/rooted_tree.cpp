@@ -74,7 +74,7 @@ rooted_tree::rooted_tree(rooted_tree&& r) noexcept {
 	move_full_rooted_tree(std::move(r));
 }
 rooted_tree::rooted_tree(const free_tree& t, node r) noexcept {
-	rooted_tree::_init(t.n_nodes());
+	rooted_tree::_init(t.num_nodes());
 	init_rooted(t, r);
 }
 rooted_tree::~rooted_tree() noexcept { }
@@ -93,9 +93,8 @@ rooted_tree& rooted_tree::operator= (rooted_tree&& r) noexcept {
 
 /* MODIFIERS */
 
-rooted_tree& rooted_tree::add_edge(
-	node u, node v, bool norm, bool check_norm
-)
+rooted_tree& rooted_tree::add_edge
+(node u, node v, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
@@ -104,7 +103,7 @@ rooted_tree& rooted_tree::add_edge(
 	return *this;
 }
 
-rooted_tree& rooted_tree::add_edge_bulk(node u, node v) {
+rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
@@ -112,7 +111,7 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) {
 	return *this;
 }
 
-void rooted_tree::finish_bulk_add(bool norm, bool check) {
+void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
@@ -120,9 +119,8 @@ void rooted_tree::finish_bulk_add(bool norm, bool check) {
 	fill_union_find();
 }
 
-rooted_tree& rooted_tree::add_edges(
-	const vector<edge>& edges, bool norm, bool check_norm
-)
+rooted_tree& rooted_tree::add_edges
+(const vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -131,9 +129,8 @@ rooted_tree& rooted_tree::add_edges(
 	return *this;
 }
 
-rooted_tree& rooted_tree::set_edges(
-	const vector<edge>& edges, bool to_norm, bool check_norm
-)
+rooted_tree& rooted_tree::set_edges
+(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -143,9 +140,8 @@ rooted_tree& rooted_tree::set_edges(
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edge(
-	node u, node v, bool norm, bool check_norm
-)
+rooted_tree& rooted_tree::remove_edge
+(node u, node v, bool norm, bool check_norm) noexcept
 {
 	directed_graph::remove_edge(u,v, norm, check_norm);
 	m_valid_orientation = false;
@@ -153,9 +149,8 @@ rooted_tree& rooted_tree::remove_edge(
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edges(
-	const std::vector<edge>& edges, bool norm, bool check_norm
-)
+rooted_tree& rooted_tree::remove_edges
+(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 	directed_graph::remove_edges(edges, norm, check_norm);
 	m_valid_orientation = false;
@@ -163,11 +158,10 @@ rooted_tree& rooted_tree::remove_edges(
 	return *this;
 }
 
-void rooted_tree::disjoint_union(
-	const rooted_tree& t, bool connect_roots
-)
+void rooted_tree::disjoint_union
+(const rooted_tree& t, bool connect_roots) noexcept
 {
-	const uint32_t prev_n = n_nodes();
+	const uint32_t prev_n = num_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
@@ -183,7 +177,7 @@ void rooted_tree::disjoint_union(
 	append(m_root_of, t.m_root_of);
 	append(m_root_size, t.m_root_size);
 	// update the labels of the vertices' root of the union find (2/3)
-	for (node u = prev_n; u < n_nodes(); ++u) {
+	for (node u = prev_n; u < num_nodes(); ++u) {
 		m_root_of[u] += prev_n;
 	}
 
@@ -217,14 +211,14 @@ void rooted_tree::disjoint_union(
 	}
 }
 
-bool rooted_tree::find_edge_orientation() {
+bool rooted_tree::find_edge_orientation() noexcept {
 #if defined DEBUG
 	assert(is_tree());
 	assert(has_root());
 #endif
 
 	// assign arborescence type to trees of 1 vertex
-	if (n_nodes() == 1) {
+	if (num_nodes() == 1) {
 		// the out-degree of the root is equal to and so it
 		// would be assumed that it is not an arborescence
 		m_valid_orientation = true;
@@ -251,12 +245,12 @@ bool rooted_tree::find_edge_orientation() {
 	return m_valid_orientation;
 }
 
-void rooted_tree::set_valid_orientation(bool v) {
+void rooted_tree::set_valid_orientation(bool v) noexcept {
 	m_valid_orientation = v;
 }
 
-void rooted_tree::init_rooted(const free_tree& _t, node r) {
-	const uint32_t n = _t.n_nodes();
+void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
+	const uint32_t n = _t.num_nodes();
 #if defined DEBUG
 	assert(_t.is_tree());
 #endif
@@ -274,7 +268,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 #endif
 
 	// list of directed edges out of 'g'
-	vector<edge> dir_edges(_t.n_edges());
+	vector<edge> dir_edges(_t.num_edges());
 	auto it_dir_edges = dir_edges.begin();
 
 	// Build list of directed edges using a breadth-first search.
@@ -301,7 +295,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) {
 	fill_union_find();
 }
 
-void rooted_tree::calculate_size_subtrees() {
+void rooted_tree::calculate_size_subtrees() noexcept {
 #if defined DEBUG
 	assert(is_rooted_tree());
 #endif
@@ -309,17 +303,17 @@ void rooted_tree::calculate_size_subtrees() {
 	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
-void rooted_tree::calculate_tree_type() {
+void rooted_tree::calculate_tree_type() noexcept {
 	internal::classify_tree(*this, m_tree_type);
 }
 
 /* SETTERS */
 
-void rooted_tree::set_root(node r) {
+void rooted_tree::set_root(node r) noexcept {
 	// if the tree is empty simply consider it has a root...
 	// although it really doesn't
 
-	if (n_nodes() > 0) {
+	if (num_nodes() > 0) {
 #if defined DEBUG
 		assert(has_node(r));
 #endif
@@ -332,7 +326,7 @@ void rooted_tree::set_root(node r) {
 
 /* GETTERS */
 
-vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
+vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
 	const auto subtree_info =
 		internal::get_edges_subtree<false>(*this, u, relab);
 
@@ -344,9 +338,9 @@ vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const {
 	return std::move(subtree_info.first);
 }
 
-rooted_tree rooted_tree::get_subtree(node u) const {
+rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 	// if the tree does not have edges, return a copy.
-	if (n_nodes() <= 1) { return *this; }
+	if (num_nodes() <= 1) { return *this; }
 
 #if defined DEBUG
 	assert(is_rooted_tree());
@@ -384,8 +378,8 @@ rooted_tree rooted_tree::get_subtree(node u) const {
 	return sub;
 }
 
-free_tree rooted_tree::to_undirected(bool norm, bool check) const {
-	free_tree t(n_nodes());
+free_tree rooted_tree::to_undirected(bool norm, bool check) const noexcept {
+	free_tree t(num_nodes());
 
 	iterators::E_iterator E_it(*this);
 	while (E_it.has_next()) {
@@ -400,13 +394,13 @@ free_tree rooted_tree::to_undirected(bool norm, bool check) const {
 
 /* PROTECTED */
 
-void rooted_tree::_init(uint32_t n) {
+void rooted_tree::_init(uint32_t n) noexcept {
 	tree::tree_only_init(n);
 	directed_graph::_init(n);
 	m_size_subtrees = vector<uint32_t>(n);
 }
 
-void rooted_tree::_clear() {
+void rooted_tree::_clear() noexcept {
 	tree::tree_only_clear();
 	directed_graph::_clear();
 	m_size_subtrees.clear();
@@ -446,7 +440,7 @@ void rooted_tree::call_union_find_remove(
 	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {
+void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) noexcept {
 	// copy directed_graph class
 	copy_full_directed_graph(r);
 
@@ -461,7 +455,7 @@ void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) {
 	m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 }
 
-void rooted_tree::move_full_rooted_tree(rooted_tree&& r) {
+void rooted_tree::move_full_rooted_tree(rooted_tree&& r) noexcept {
 	// move-assign directed_graph class
 	move_full_directed_graph(std::move(r));
 

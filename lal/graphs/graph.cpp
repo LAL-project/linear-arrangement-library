@@ -86,18 +86,18 @@ graph& graph::operator= (graph&& g) noexcept {
 
 /* MODIFIERS */
 
-void graph::init(uint32_t n) {
+void graph::init(uint32_t n) noexcept {
 	_clear();
 	_init(n);
 }
 
-void graph::clear() {
+void graph::clear() noexcept {
 	_clear();
 }
 
-void graph::normalise() {
-	internal::data_array<char> mem(n_nodes(), 0);
-	for (node u = 0; u < n_nodes(); ++u) {
+void graph::normalise() noexcept {
+	internal::data_array<char> mem(num_nodes(), 0);
+	for (node u = 0; u < num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not is_sorted(nu.begin(), nu.end())) {
@@ -108,9 +108,9 @@ void graph::normalise() {
 	m_normalised = true;
 }
 
-bool graph::check_normalised() {
+bool graph::check_normalised() noexcept {
 	// check that every adjacency list is sorted
-	for (node u = 0; u < n_nodes(); ++u) {
+	for (node u = 0; u < num_nodes(); ++u) {
 		const neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
 			// if some is not then the graph is not normalised
@@ -130,25 +130,25 @@ bool graph::check_normalised() {
 
 /* PROTECTED */
 
-void graph::_init(uint32_t n) {
+void graph::_init(uint32_t n) noexcept {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);
 }
 
-void graph::_clear() {
+void graph::_clear() noexcept {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list.clear();
 }
 
-void graph::copy_full_graph(const graph& g) {
+void graph::copy_full_graph(const graph& g) noexcept {
 	m_adjacency_list = g.m_adjacency_list;
 	m_num_edges = g.m_num_edges;
 	m_normalised = g.m_normalised;
 }
 
-void graph::move_full_graph(graph&& g) {
+void graph::move_full_graph(graph&& g) noexcept {
 	m_adjacency_list = std::move(g.m_adjacency_list);
 	m_num_edges = std::move(g.m_num_edges);
 	m_normalised = std::move(g.m_normalised);
@@ -157,7 +157,7 @@ void graph::move_full_graph(graph&& g) {
 	g.m_normalised = false;
 }
 
-void graph::__disjoint_union(const graph& g) {
+void graph::__disjoint_union(const graph& g) noexcept {
 #if defined DEBUG
 	// If I'm directed, g must be directed.
 	// If I'm undirected, g must be undirected.
@@ -173,15 +173,15 @@ void graph::__disjoint_union(const graph& g) {
 	m_normalised = m_normalised and g.is_normalised();
 }
 
-void graph::extra_work_per_edge_add(node, node) {
+void graph::extra_work_per_edge_add(node, node) noexcept {
 	++m_num_edges;
 }
 
-void graph::extra_work_per_edge_remove(node, node) {
+void graph::extra_work_per_edge_remove(node, node) noexcept {
 	--m_num_edges;
 }
 
-void graph::normalise_after_add(bool to_norm, bool check_norm) {
+void graph::normalise_after_add(bool to_norm, bool check_norm) noexcept {
 	if (to_norm) {
 		// the graph needs to be normalised from a non-normalised state
 		normalise();
@@ -203,7 +203,7 @@ void graph::normalise_after_add(bool to_norm, bool check_norm) {
 	}
 }
 
-void graph::normalise_after_remove(bool to_norm, bool check_norm) {
+void graph::normalise_after_remove(bool to_norm, bool check_norm) noexcept {
 	// if (is_normalised()) {
 	//		Removing an edge does not change normalisation
 	// }
