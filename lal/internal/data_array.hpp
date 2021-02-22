@@ -71,7 +71,7 @@ struct data_array {
 		data = new T[n];
 		fill(v);
 	}
-	~data_array() {
+	~data_array() noexcept {
 		delete[] data;
 	}
 
