@@ -314,9 +314,7 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process(
 			}
 			else {
 				rT = tbread.get_tree();
-				process_tree<rooted_tree, ofstream>(
-					m_sep, rT, out_lang_file
-				);
+				process_tree<rooted_tree, ofstream>(rT, out_lang_file);
 			}
 		}
 
@@ -332,9 +330,8 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process(
 // PRIVATE
 
 template<class TREE, class OUT_STREAM>
-void treebank_dataset_processor::process_tree(
-	char sep, const TREE& rT, OUT_STREAM& out_lang_file
-)
+void treebank_dataset_processor::process_tree
+(const TREE& rT, OUT_STREAM& out_lang_file)
 const
 {
 	const free_tree fT = rT.to_undirected();
@@ -561,7 +558,7 @@ const
 		out_lang_file << rT.num_nodes();
 	}
 	for (size_t i = 1; i < m_what_fs.size(); ++i) {
-		out_lang_file << sep;
+		out_lang_file << m_sep;
 		if (m_what_fs[i]) {
 			out_lang_file << props[i];
 		}

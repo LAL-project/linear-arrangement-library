@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <filesystem>
-#include <sstream>
 using namespace std;
 
 namespace lal {

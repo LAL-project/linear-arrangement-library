@@ -453,11 +453,7 @@ private:
 
 	/// Process a single tree in the treebank.
 	template<class TREE, class OUT_STREAM>
-	void process_tree(
-		char sep, const TREE& rT, OUT_STREAM& out_lab_file
-	) const;
-
-	void process_a_treebank() noexcept;
+	void process_tree(const TREE& rT, OUT_STREAM& out_lab_file) const;
 
 private:
 	/// Output directory.
