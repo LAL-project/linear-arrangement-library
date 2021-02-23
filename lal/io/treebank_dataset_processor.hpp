@@ -400,18 +400,20 @@ public:
 	 * @param all_fs Should the feature list contain all possible features?
 	 */
 	treebank_dataset_processor::processor_error init
-	(const std::string& file, const std::string& odir, bool all_fs);
+	(const std::string& file, const std::string& odir, bool all_fs) noexcept;
 
 	/**
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
 	 */
-	void add_feature(const tree_feature& fs);
+	void add_feature(const tree_feature& fs) noexcept
+	{ m_what_fs[ static_cast<size_t>(fs) ] = true; }
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
-	void remove_feature(const tree_feature& fs);
+	void remove_feature(const tree_feature& fs) noexcept
+	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
 
 	/**
 	 * @brief Process the dataset.
@@ -421,14 +423,26 @@ public:
 	 *
 	 * However, it may fail to do so. In this case it will return a value
 	 * different from @ref processor_error::none.
-	 * @param sep Separator character.
-	 * @param header Should a header be written?
-	 * @param verbose Output progress on standard output.
+	 *
+	 * This function uses attributes @ref m_sep, @ref m_output_header to format
+	 * the output data. It also outputs the current progress if @ref m_be_verbose
+	 * is set to true.
 	 * @return Returns a value describing the error (if any) that occurred
 	 * while processing the dataset.
 	 */
-	processor_error process
-	(char sep = '\t', bool header = true, bool verbose = true);
+	processor_error process() noexcept;
+
+public:
+	/// Character used as separator
+	char m_sep = '\t';
+	/// Output a header for each file
+	bool m_output_header = true;
+	/**
+	 * @brief The verbosity of the processor.
+	 *
+	 * When set to true, method @ref process will output progress messages.
+	 */
+	bool m_be_verbose = false;
 
 private:
 	/// The number of total features available.
@@ -442,6 +456,8 @@ private:
 	void process_tree(
 		char sep, const TREE& rT, OUT_STREAM& out_lab_file
 	) const;
+
+	void process_a_treebank() noexcept;
 
 private:
 	/// Output directory.

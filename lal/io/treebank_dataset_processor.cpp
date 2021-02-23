@@ -238,7 +238,7 @@ tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 // CLASS METHODS
 
 treebank_dataset_processor::processor_error treebank_dataset_processor::init
-(const string& file, const string& odir, bool all_fs)
+(const string& file, const string& odir, bool all_fs) noexcept
 {
 	m_main_list = file;
 	m_out_dir = odir;
@@ -257,15 +257,7 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::init
 	return processor_error::none;
 }
 
-void treebank_dataset_processor::add_feature(const tree_feature& fs) {
-	m_what_fs[ static_cast<size_t>(fs) ] = true;
-}
-void treebank_dataset_processor::remove_feature(const tree_feature& fs) {
-	m_what_fs[ static_cast<size_t>(fs) ] = false;
-}
-
-treebank_dataset_processor::processor_error treebank_dataset_processor::process
-(char sep, bool header, bool v)
+treebank_dataset_processor::processor_error treebank_dataset_processor::process() noexcept
 {
 	// -- this function assumes that init did not return any error -- //
 
@@ -284,7 +276,7 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process
 		treebank_reader& tbread = m_treebank_dataset_reader.get_treebank_reader();
 
 		const string lang = tbread.get_identifier();
-		if (v) {
+		if (m_be_verbose) {
 			cout << "Processing language: " << lang
 				 << " (file: '" << tbread.get_treebank_filename()
 				 << "')" << endl;
@@ -299,13 +291,15 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process
 		// need to check for is_open()
 
 		// output header to the file
-		if (header) {
+		if (m_output_header) {
 			if (m_what_fs[0]) {
 				out_lang_file << tree_feature_string(static_cast<tree_feature>(0));
 			}
 			for (size_t i = 1; i < m_what_fs.size(); ++i) {
 				if (m_what_fs[i]) {
-					out_lang_file << sep << tree_feature_string(static_cast<tree_feature>(i));
+					out_lang_file
+						<< m_sep
+						<< tree_feature_string(static_cast<tree_feature>(i));
 				}
 			}
 			out_lang_file << endl;
@@ -321,12 +315,12 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process
 			else {
 				rT = tbread.get_tree();
 				process_tree<rooted_tree, ofstream>(
-					sep, rT, out_lang_file
+					m_sep, rT, out_lang_file
 				);
 			}
 		}
 
-		if (v) {
+		if (m_be_verbose) {
 			cout << "    processed "
 				 << tbread.get_num_trees() << " trees" << endl;
 		}

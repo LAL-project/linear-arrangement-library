@@ -113,20 +113,20 @@ public:
 	 * @param main_file Main file of the dataset.
 	 * @return If any occurred then returns its type.
 	 */
-	dataset_error init(const std::string& main_file);
+	dataset_error init(const std::string& main_file) noexcept;
 
 	/// Returns whether there is a next treebank to be read.
-	bool has_treebank() const;
+	bool has_treebank() const noexcept { return m_cur_treebank_name != "none"; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
 	 * @return In case of error, returns a value different from
 	 * dataset_error::none.
 	 */
-	dataset_error next_treebank();
+	dataset_error next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
-	treebank_reader& get_treebank_reader();
+	treebank_reader& get_treebank_reader() noexcept { return m_treebank_reader; }
 
 private:
 	/**
@@ -150,7 +150,14 @@ private:
 
 private:
 	/// Consumes one line of the main file @ref m_main_file.
-	void step_line();
+	void step_line() noexcept {
+		if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
+			// do nothing, there are more trees
+		}
+		else {
+			m_cur_treebank_name = m_cur_treebank_filename = "none";
+		}
+	}
 };
 
 } // -- namespace io

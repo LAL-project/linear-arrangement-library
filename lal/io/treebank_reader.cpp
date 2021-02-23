@@ -55,7 +55,8 @@ namespace io {
 
 // MODIFIERS
 
-dataset_error treebank_reader::init(const string& file, const string& lang) {
+dataset_error treebank_reader::init
+(const string& file, const string& lang) noexcept {
 	m_treebank.close();
 	m_treebank_identifier = lang;
 	m_treebank_file = file;
@@ -67,11 +68,7 @@ dataset_error treebank_reader::init(const string& file, const string& lang) {
 	return dataset_error::no_error;
 }
 
-bool treebank_reader::has_tree() const {
-	return not m_treebank.eof();
-}
-
-dataset_error treebank_reader::next_tree() {
+dataset_error treebank_reader::next_tree() noexcept {
 	getline(m_treebank, m_file_line);
 	if (m_file_line.length() == 1) {
 		// line is probably empty...
@@ -92,7 +89,7 @@ dataset_error treebank_reader::next_tree() {
 
 // GETTERS
 
-rooted_tree treebank_reader::get_tree() const {
+rooted_tree treebank_reader::get_tree() const noexcept {
 	// parse tree in line
 	stringstream ss(m_file_line);
 

@@ -49,7 +49,7 @@ using namespace std;
 namespace lal {
 namespace io {
 
-dataset_error treebank_dataset_reader::init(const string& main_file)
+dataset_error treebank_dataset_reader::init(const string& main_file) noexcept
 {
 	// close current dataset (if any)
 	m_list.close();
@@ -66,11 +66,7 @@ dataset_error treebank_dataset_reader::init(const string& main_file)
 	return dataset_error::no_error;
 }
 
-bool treebank_dataset_reader::has_treebank() const {
-	return m_cur_treebank_name != "none";
-}
-
-dataset_error treebank_dataset_reader::next_treebank() {
+dataset_error treebank_dataset_reader::next_treebank() noexcept {
 	// build path to treebank file
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
@@ -82,21 +78,6 @@ dataset_error treebank_dataset_reader::next_treebank() {
 
 	step_line();
 	return dataset_error::no_error;
-}
-
-treebank_reader& treebank_dataset_reader::get_treebank_reader() {
-	return m_treebank_reader;
-}
-
-/* PRIVATE */
-
-void treebank_dataset_reader::step_line() {
-	if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
-		// do nothing, there are more trees
-	}
-	else {
-		m_cur_treebank_name = m_cur_treebank_filename = "none";
-	}
 }
 
 } // -- namespace io

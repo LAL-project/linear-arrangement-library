@@ -118,10 +118,11 @@ public:
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
-	dataset_error init(const std::string& file, const std::string& identifier = "");
+	dataset_error init
+	(const std::string& file, const std::string& identifier = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
-	bool has_tree() const;
+	bool has_tree() const noexcept { return not m_treebank.eof(); }
 
 	/**
 	 * @brief Retrieves the next tree in the file.
@@ -129,7 +130,7 @@ public:
 	 * method @ref get_tree should not be called.
 	 * @post Increments the amount of trees found.
 	 */
-	dataset_error next_tree();
+	dataset_error next_tree() noexcept;
 
 	// GETTERS
 
@@ -139,19 +140,19 @@ public:
 	 * When method @ref has_tree returns 'false', this method
 	 * returns the exact amount of trees in the treebank.
 	 */
-	inline size_t get_num_trees() const
+	inline size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
 
 	/// Returns the language's name corresponding of the treebank.
-	inline const std::string& get_identifier() const
+	inline const std::string& get_identifier() const noexcept
 	{ return m_treebank_identifier; }
 
 	/// Returns the name of the treebank file.
-	inline const std::string& get_treebank_filename() const
+	inline const std::string& get_treebank_filename() const noexcept
 	{ return m_treebank_file; }
 
 	/// Returns the current tree.
-	graphs::rooted_tree get_tree() const;
+	graphs::rooted_tree get_tree() const noexcept;
 
 private:
 	/// Identifier for the treebank.
