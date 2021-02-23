@@ -68,9 +68,8 @@ template<
 		std::is_base_of_v<graphs::undirected_graph, G>,
 	bool> = true
 >
-inline void get_bool_neighbours(
-	const G& g, node u, char *neighs
-)
+inline void get_bool_neighbours
+(const G& g, node u, char *neighs)
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
 		const auto& in_u = g.get_in_neighbours(u);
