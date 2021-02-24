@@ -45,11 +45,13 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <vector>
 #include <string>
+#include <tuple>
 #include <array>
 
 // lal includes
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/dataset_error.hpp>
 
 namespace lal {
 namespace io {
@@ -57,39 +59,50 @@ namespace io {
 /**
  * @brief Treebank dataset processor.
  *
- * This class, the objects of which will be referred to as the "processor", is
- * an interface for processing a whole treebank dataset and produce data for
- * a fixed set of features. It is meant to ease the processing of treebanks if
- * the features to be calculated are to be only those available in the library.
- * See the enumeration @ref tree_feature for details on the features available.
- * Each feature can be set to be calculated via method @ref add_feature. However,
- * the processor can be initialised with all features set (see @ref init), and
- * then have some of them removed via method @ref remove_feature.
+ * This class, the objects of which will be referred to as the "processors", has
+ * the goal to ease the processing a whole treebank dataset and produce data for
+ * a fixed set of features. This is most useful when the features to be calculated
+ * are only those available in the library. See the enumeration @ref tree_feature
+ * for details on the features available. Since not all features available have
+ * to be computed, this class offers the possibility to compute only a subset of
+ * them. Each feature can be set to be calculated via method @ref add_feature.
  *
  * A treebank dataset is made up of a set of files, each containing several
- * syntactic dependency trees of sentences of the corresponding language.
- * Each file is referenced within a "main file list", henceforth called the
- * main file. The main file indicates, for each language, a file with the
- * syntactic dependency trees. For example, a main file \a stanford.txt
- * could contain:
+ * syntactic dependency trees of sentences. Each file is referred to as a treebank
+ * file. Each of these files is referenced within a "main file list", henceforth
+ * called the "main file". The main file is a two-column formatted file, the first
+ * of which contains a self-descriptive name of the treebank that is indicated in
+ * the next column.
+ *
+ * For example, the main file of a treebank dataset of languages could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
  *		ben path/to/file/bn-all.heads2
  *		...
  *
- * where the first column contains a string referencing the language (e.g., an
- * ISO code, or simply the name of the language), and the second column contains
- * the full path to the file with the syntactic dependency trees. The processor
- * has to be initialised with such file via method @ref init. Then, the treebank
- * is processed via method @ref process.
+ * where the first column contains a string referencing the treebank of a language
+ * (in this case, by giving an ISO code of a language), and the second column
+ * contains the full path to the file with the syntactic dependency trees.
+ *
+ * Every processor must be initialised prior to processing the files. This is done
+ * via method @ref init, which requires the path to the main file and the output
+ * directory where the results are going to be stored. Besides these, it also
+ * requires a Boolean value indicating whether all (or none) of the features should
+ * be used. Moreover, it also admits an optional parameter indicating the number
+ * of threads to be used to parallelise the processing of the files. Finally,
+ * the treebank dataset is processed via method @ref process which returns a
+ * value of the enumeration @ref processor_error. Further errors can be checked
+ * via methods @ref get_num_processor_errors, @ref get_error_type,
+ * @ref get_error_treebank_filename, @ref get_error_treebank_name.
  *
  * The usage of this class is a lot simpler than that of class
  * @ref treebank_dataset_reader. See code for details.
  * @code
  *		treebank_processor tbproc;
- *		// initialise the processor without features (check for errors)
- *		tbproc.init(main_file, output_dir, false);
+ *		// initialise the processor without features (remmeber to check for errors)
+ *      // and 4 threads for faster processing.
+ *		tbproc.init(main_file, output_dir, false, 4);
  *		tbproc.add_feature(treebank_processor::tree_feature::C);
  *		tbproc.add_feature(treebank_processor::tree_feature::D_var);
  *		tbproc.process();
@@ -98,7 +111,7 @@ namespace io {
  */
 class treebank_dataset_processor {
 public:
-	/// @brief Features that can be computed for each tree.
+	/// Features that can be computed for each tree.
 	enum class tree_feature {
 		/// Number of nodes of the tree.
 		n = 0,
@@ -378,7 +391,7 @@ public:
 	 */
 	enum class processor_error {
 		/// The dataset was processed successfully.
-		none,
+		no_error,
 		/// Main file could not be found.
 		main_file_does_not_exist,
 		/// Output directory could not be found.
@@ -386,10 +399,14 @@ public:
 		/// A treebank file could not be opened.
 		treebank_file_could_not_be_opened,
 		/// No features at all were given to the processor.
-		no_features
+		no_features,
+		/// Processing one or more of the treebanks failed.
+		some_treebank_file_failed
 	};
 
 public:
+	// MODIFIERS
+
 	/**
 	 * @brief Initialise the processor with a new dataset.
 	 *
@@ -398,9 +415,15 @@ public:
 	 * @param file Main file.
 	 * @param odir Output directory.
 	 * @param all_fs Should the feature list contain all possible features?
+	 * @param n_threads Number of threads to use in a parallel application.
 	 */
-	treebank_dataset_processor::processor_error init
-	(const std::string& file, const std::string& odir, bool all_fs) noexcept;
+	processor_error init(
+		const std::string& file,
+		const std::string& odir,
+		bool all_fs,
+		size_t n_threads = 1
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds a feature to the processor.
@@ -415,26 +438,75 @@ public:
 	void remove_feature(const tree_feature& fs) noexcept
 	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
 
+	// SETTERS
+
+	/**
+	 * @brief Sets the separator character.
+	 *
+	 * Default is '\\t'.
+	 * @param c The separator character.
+	 */
+	void set_separator(char c) noexcept { m_separator = c; }
+	/**
+	 * @brief Sets the level of verbosity of the @ref process method.
+	 *
+	 * Default is 0 (i.e., no verbosity at all).
+	 * Verbosity is organised by levels:
+	 * - Level 1: outputs progress messages.
+	 * - Level 2: outputs error messages.
+	 * @param k Verbosity level.
+	 */
+	void set_verbosity(int k) noexcept { m_be_verbose = k; }
+	/**
+	 * @brief Output a hedaer for each processed treebank file.
+	 *
+	 * Default is true.
+	 * @param h Output header or not.
+	 */
+	void set_output_header(bool h) noexcept { m_output_header = h; }
+
+	// GETTERS
+
+	/// Returns the number of errors that arised during processing.
+	size_t get_num_processor_errors() const noexcept
+	{ return m_errors_from_processing.size(); }
+
+	/// Get the @e ith error. This is a value of the enumeration @ref processor_error.
+	processor_error get_error_type(size_t i) const noexcept
+	{ return std::get<0>(m_errors_from_processing[i]); }
+
+	/// Get the treebank's file name for which the @e ith error happened.
+	const std::string& get_error_treebank_filename(size_t i) const noexcept
+	{ return std::get<1>(m_errors_from_processing[i]); }
+
+	/// Get the treebank's name for which the @e ith error happened.
+	const std::string& get_error_treebank_name(size_t i) const noexcept
+	{ return std::get<2>(m_errors_from_processing[i]); }
+
+	// PROCESS THE TREEBANK DATASET
+
 	/**
 	 * @brief Process the dataset.
 	 *
-	 * This method outputs the information as explained in this class'
-	 * description.
+	 * This method produces the information as explained in this class'
+	 * description. However, it may fail to do so. In this case it will return
+	 * a value different from @ref processor_error::no_error.
 	 *
-	 * However, it may fail to do so. In this case it will return a value
-	 * different from @ref processor_error::none.
-	 *
-	 * This function uses attributes @ref m_sep, @ref m_output_header to format
+	 * This function uses attributes @ref m_separator, @ref m_output_header to format
 	 * the output data. It also outputs the current progress if @ref m_be_verbose
 	 * is set to true.
+	 *
+	 * Moreover, it gathers the errors thay may have occurred during processing.
+	 * If so, see methods @ref get_num_processor_errors, @ref get_error_type,
+	 * @ref get_error_treebank_name.
 	 * @return Returns a value describing the error (if any) that occurred
-	 * while processing the dataset.
+	 * while processing the dataset. If any error ocurred, see methods
 	 */
 	processor_error process() noexcept;
 
-public:
+private:
 	/// Character used as separator
-	char m_sep = '\t';
+	char m_separator = '\t';
 	/// Output a header for each file
 	bool m_output_header = true;
 	/**
@@ -442,30 +514,36 @@ public:
 	 *
 	 * When set to true, method @ref process will output progress messages.
 	 */
-	bool m_be_verbose = false;
+	int m_be_verbose = 0;
 
-private:
+	/// Number of threads to use.
+	size_t m_num_threads = 1;
+
+	/// Set of errors resulting from processing the treebank dataset.
+	std::vector<std::tuple<processor_error, std::string, std::string>>
+	m_errors_from_processing;
+
 	/// The number of total features available.
 	static constexpr size_t NUM_TREE_FEATURES =
 		static_cast<size_t>(tree_feature::__last_value);
 
 private:
-
 	/// Process a single tree in the treebank.
 	template<class TREE, class OUT_STREAM>
 	void process_tree(const TREE& rT, OUT_STREAM& out_lab_file) const;
+
+	dataset_error process_treebank
+	(const std::string& treebank_filename, const std::string& treebank_name)
+	noexcept;
 
 private:
 	/// Output directory.
 	std::string m_out_dir = "none";
 	/// File containing the list of languages and their treebanks.
-	std::string m_main_list = "none";
+	std::string m_main_file = "none";
 	
 	/// The list of features to be computed.
 	std::array<bool, NUM_TREE_FEATURES> m_what_fs;
-
-	/// The dataset reader used to process the trees.
-	treebank_dataset_reader m_treebank_dataset_reader;
 };
 
 } // -- namespace io

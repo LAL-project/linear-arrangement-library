@@ -41,13 +41,15 @@
  
 #include <lal/io/treebank_dataset_processor.hpp>
 
+// C includes
+#include <omp.h>
+
 // C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <algorithm>
-#include <string_view>
 #include <filesystem>
+#include <algorithm>
 #include <iostream>
 #include <numeric>
 #include <cmath>
@@ -238,26 +240,28 @@ tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 // CLASS METHODS
 
 treebank_dataset_processor::processor_error treebank_dataset_processor::init
-(const string& file, const string& odir, bool all_fs) noexcept
+(const string& file, const string& odir, bool all_fs, size_t nt) noexcept
 {
-	m_main_list = file;
+	m_num_threads = nt;
+	m_errors_from_processing.clear();
+
+	m_main_file = file;
 	m_out_dir = odir;
 	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 
-	// check that the input file and the output directory exist
-	dataset_error dserr = m_treebank_dataset_reader.init(m_main_list);
-
-	if (dserr == dataset_error::main_file_does_not_exist)
-	{ return processor_error::main_file_does_not_exist; }
+	if (not filesystem::exists(m_main_file)) {
+		return processor_error::main_file_does_not_exist;
+	}
 
 	// make sure output directory exists
 	if (m_out_dir != "." and not filesystem::exists(m_out_dir))
 	{ return processor_error::output_directory_does_not_exist; }
 
-	return processor_error::none;
+	return processor_error::no_error;
 }
 
-treebank_dataset_processor::processor_error treebank_dataset_processor::process() noexcept
+treebank_dataset_processor::processor_error
+treebank_dataset_processor::process() noexcept
 {
 	// -- this function assumes that init did not return any error -- //
 
@@ -265,66 +269,131 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::process(
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
 	{ return processor_error::no_features; }
 
+	// Stream object to read the main file.
+	ifstream main_file_reader(m_main_file);
+
 	// process dataset using treebank_dataset class
-	while (m_treebank_dataset_reader.has_treebank()) {
-		const dataset_error dserr = m_treebank_dataset_reader.next_treebank();
+	#pragma omp parallel num_threads(m_num_threads)
+	{
+	const int tid = omp_get_thread_num();
 
-		if (dserr == dataset_error::treebank_could_not_be_opened)
-		{ return processor_error::treebank_file_could_not_be_opened; }
+	if (tid == 0) {
+		string treebank_filename, treebank_name;
 
-		// iterate to next language
-		treebank_reader& tbread = m_treebank_dataset_reader.get_treebank_reader();
+		// this is executed only by the main thread
+		while (main_file_reader >> treebank_name >> treebank_filename) {
 
-		const string lang = tbread.get_identifier();
-		if (m_be_verbose) {
-			cout << "Processing language: " << lang
-				 << " (file: '" << tbread.get_treebank_filename()
-				 << "')" << endl;
-		}
+			filesystem::path full_path(m_main_file);
+			full_path.replace_filename(treebank_filename);
 
-		const string full_out_file = m_out_dir + "/" + lang + ".txt";
+			// Launch a task consisting of processing a treebank, catching an
+			// error, and storing it into 'm_errors_from_processing'.
+			#pragma omp task
+			{
+				const auto err = process_treebank(full_path.string(), treebank_name);
 
-		// output file stream
-		ofstream out_lang_file;
-		out_lang_file.open(full_out_file);
-		// since the output directory exists there is no
-		// need to check for is_open()
-
-		// output header to the file
-		if (m_output_header) {
-			if (m_what_fs[0]) {
-				out_lang_file << tree_feature_string(static_cast<tree_feature>(0));
-			}
-			for (size_t i = 1; i < m_what_fs.size(); ++i) {
-				if (m_what_fs[i]) {
-					out_lang_file
-						<< m_sep
-						<< tree_feature_string(static_cast<tree_feature>(i));
+				if (err != dataset_error::no_error) {
+					#pragma omp critical
+					{
+					m_errors_from_processing.push_back(
+						make_tuple(
+							processor_error::treebank_file_could_not_be_opened,
+							full_path.string(),
+							treebank_name
+						)
+					);
+					}
 				}
 			}
-			out_lang_file << endl;
-		}
-
-		// process the current treebank
-		rooted_tree rT;
-		while (tbread.has_tree()) {
-			dataset_error err = tbread.next_tree();
-			if (err == dataset_error::empty_line) {
-				// empty line, skip...
-			}
-			else {
-				rT = tbread.get_tree();
-				process_tree<rooted_tree, ofstream>(rT, out_lang_file);
-			}
-		}
-
-		if (m_be_verbose) {
-			cout << "    processed "
-				 << tbread.get_num_trees() << " trees" << endl;
 		}
 	}
 
-	return processor_error::none;
+	}
+
+	return
+	(m_errors_from_processing.size() > 0 ?
+		processor_error::some_treebank_file_failed :
+		processor_error::no_error
+	);
+}
+
+dataset_error treebank_dataset_processor::process_treebank
+(const string& treebank_filename, const string& treebank_name)
+noexcept
+{
+	if (m_be_verbose >= 1 and m_num_threads == 1) {
+		// I don't think that unmatched 'start' and 'end' progress messages
+		// are too useful, which is going to happen in parallel applications.
+		// When using more than one thread, do not output the first message.
+		#pragma omp critical
+		{
+		cout << "Start processing treebank: " << treebank_name
+			 << " (file: '" << treebank_filename << "')" << endl;
+		}
+	}
+
+	// iterate to next language
+	treebank_reader tbread;
+	{
+	const auto err = tbread.init(treebank_filename, treebank_name);
+	if (err != dataset_error::no_error) {
+		if (m_be_verbose >= 2) {
+			#pragma omp critical
+			{
+			cout << "Processing treebank: " << treebank_name
+				 << " failed (file: '" << treebank_filename << "')" << endl;
+			}
+		}
+		return err;
+	}
+	}
+
+	const string full_out_file = m_out_dir + "/" + treebank_name + ".txt";
+
+	// output file stream:
+	// since the output directory exists there is no need to check for is_open()
+	ofstream out_lang_file;
+	out_lang_file.open(full_out_file);
+
+	// output header to the file
+	if (m_output_header) {
+		if (m_what_fs[0]) {
+			out_lang_file << tree_feature_string(static_cast<tree_feature>(0));
+		}
+		for (size_t i = 1; i < m_what_fs.size(); ++i) {
+			if (m_what_fs[i]) {
+				out_lang_file
+					<< m_separator
+					<< tree_feature_string(static_cast<tree_feature>(i));
+			}
+		}
+		out_lang_file << endl;
+	}
+
+	// process the current treebank
+	rooted_tree rT;
+	while (tbread.has_tree()) {
+		dataset_error err = tbread.next_tree();
+		if (err == dataset_error::empty_line) {
+			// empty line, skip...
+		}
+		else {
+			rT = tbread.get_tree();
+			process_tree<rooted_tree, ofstream>(rT, out_lang_file);
+		}
+	}
+
+	if (m_be_verbose >= 1) {
+		#pragma omp critical
+		{
+		cout << "    processed "
+			 << tbread.get_num_trees() << " trees in treebank "
+			 << treebank_name
+			 << endl;
+		}
+	}
+
+	return dataset_error::no_error;
 }
 
 // PRIVATE
@@ -558,7 +627,7 @@ const
 		out_lang_file << rT.num_nodes();
 	}
 	for (size_t i = 1; i < m_what_fs.size(); ++i) {
-		out_lang_file << m_sep;
+		out_lang_file << m_separator;
 		if (m_what_fs[i]) {
 			out_lang_file << props[i];
 		}

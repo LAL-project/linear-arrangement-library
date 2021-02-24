@@ -45,9 +45,11 @@
  * other files grouping the i/o functions.
  */
 
-#include <lal/io/treebank_dataset_processor.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
-#include <lal/io/treebank_reader.hpp>
 #include <lal/io/dataset_error.hpp>
+
 #include <lal/io/edge_list.hpp>
 #include <lal/io/basic_output.hpp>
+
+#include <lal/io/treebank_reader.hpp>
+#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_dataset_processor.hpp>
