@@ -59,8 +59,8 @@ namespace io {
  *
  * This class offers a simple interface for iterating over the trees in a single
  * treebank file, henceforth referred to as the treebank. Each tree is formatted
- * as a list of whole positive numbers (including zero), each representing a node
- * of the tree. The number 0 denotes the root of the tree, and number at a certain
+ * as a list of whole, positive numbers (including zero), each representing a node
+ * of the tree. The number 0 denotes the root of the tree, and a number at a certain
  * position indicates its parent node. For example, when number 4 is at
  * position 9 it means that node 9 has parent node 4. Therefore, if number 0
  * is at position 1 it means that node 1 is the root of the tree. A complete
@@ -82,10 +82,11 @@ namespace io {
  * not being valid due to containing two '0' (i.e., two roots).
  *
  * In order to use it, this class has to be first initialized with the treebank
- * file and, optionally, an identifier string. Once initialised, the
- * user can iterate over the trees within the file by calling @ref next_tree.
- * This function can only be called as long as @ref has_tree returns true.
- * Retrieving the trees is done by calling the function @ref get_tree.
+ * file and, optionally, a self-descriptive string, i.e., something that identifies
+ * the treebank (e.g., an ISO code of a language). Once initialised, the user
+ * can iterate over the trees within the file by calling @ref next_tree. This
+ * function can only be called as long as @ref has_tree returns true. Retrieving
+ * the trees is done by calling the function @ref get_tree.
  *
  * If an object of this class was returned by the class @ref treebank_dataset_reader,
  * then methods @ref get_treebank_filename and @ref get_identifier might prove
@@ -98,8 +99,7 @@ namespace io {
  *		// it is advisable to check for errors
  *		tbread.init(main_file);
  *		while (tbread.has_tree()) {
- *			// again, check for errors
- *			tbread.next_tree();
+ *			tbread.next_tree(); // again, check for errors
  *			const rooted_tree t = tbread.get_tree();
  *			// process tree 't'
  *			// ....

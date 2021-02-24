@@ -62,35 +62,36 @@ namespace io {
  * library.
  *
  * A treebank dataset is made up of a set of files. Each file contains several
- * syntactic dependency trees (of, e.g., sentences of its corresponding language).
+ * syntactic dependency trees (of, e.g., sentences of a certain language).
  * These files are referenced within a "main file list", henceforth called the
- * main file. The main file's lines contain only two strings. The first is an
- * identifier (e.g., the ISO code of a language), and the second is the relative
- * path to the file containing the syntactic dependency trees (e.g., the syntactic
- * dependency trees of Arabic in the Stanford dataset). For example, the main
- * file could be called \a stanford.txt and could contain:
+ * main file. The main file's lines contain only two strings describing a treebank.
+ * The first string is a self-descriptive name of the treebank (e.g., the ISO
+ * code of a language), and the second is the relative path to the file containing
+ * the syntactic dependency trees (e.g., the syntactic dependency trees of Arabic
+ * in the Stanford dataset). The path is relative to the directory that contains
+ * the main file.
+ *
+ * For example, the main file could be called \a stanford.txt and could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
  *		ben path/to/file/bn-all.heads2
  *		...
  *
- * where, again, the first column contains a string referencing the language
- * (e.g., an ISO code, or simply the name of the language), and the second column
- * contains the relative path to the file with the syntactic dependency trees.
+ * where the first column contains a string referencing the language (in this case,
+ * an ISO code), and the second column contains the relative path to the file
+ * with the syntactic dependency trees.
  *
- * This reader works as follows: the user has to initialise it with the
- * main file (the main file list). For example, to read the Stanford dataset the
- * reader has to be initialised with the main file \a stanford.txt which could
- * contain the contents examplified above.
- *
- * This class only processes the main file: it iterates through the list
- * of files within the main file using the method @ref next_treebank(). This
- * method can be called as long as method @ref has_treebank() returns true.
- * Each call to @ref next_treebank() builds an internal object of type
+ * The user has to initialise a reader with the main file (the main file list).
+ * For example, to read the Stanford dataset the reader has to be initialised
+ * with the main file \a stanford.txt which could contain the contents examplified
+ * above. A reader only processes the main file: it iterates through the list
+ * of files within the main file using the method @ref next_treebank. This
+ * method can be called as long as method @ref has_treebank returns true.
+ * Each call to @ref next_treebank builds an internal object of type
  * @ref treebank_reader which allows the user to iterate through the trees
  * within the corresponding file. This object can be retrieved by calling
- * method @ref get_treebank_reader().
+ * method @ref get_treebank_reader.
  *
  * The correct usage of this class is given in the following piece of code.
  * @code
