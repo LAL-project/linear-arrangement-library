@@ -1,4 +1,4 @@
-# Doxyfile 1.8.16
+# Doxyfile 1.9.2 (updated manually)
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -217,6 +217,14 @@ QT_AUTOBRIEF           = NO
 
 MULTILINE_CPP_IS_BRIEF = NO
 
+# By default Python docstrings are displayed as preformatted text and doxygen's
+# special commands cannot be used. By setting PYTHON_DOCSTRING to NO the
+# doxygen's special commands can be used and the contents of the docstring
+# documentation blocks is shown as doxygen documentation.
+# The default value is: YES.
+
+PYTHON_DOCSTRING       = YES
+
 # If the INHERIT_DOCS tag is set to YES then an undocumented member inherits the
 # documentation from any documented member that it re-implements.
 # The default value is: YES.
@@ -240,24 +248,18 @@ TAB_SIZE               = 4
 # the documentation. An alias has the form:
 # name=value
 # For example adding
-# "sideeffect=@par Side Effects:\n"
+# "sideeffect=@par Side Effects:^^"
 # will allow you to put the command \sideeffect (or @sideeffect) in the
 # documentation, which will result in a user-defined paragraph with heading
-# "Side Effects:". You can put \n's in the value part of an alias to insert
-# newlines (in the resulting output). You can put ^^ in the value part of an
-# alias to insert a newline as if a physical newline was in the original file.
-# When you need a literal { or } or , in the value part of an alias you have to
-# escape them by means of a backslash (\), this can lead to conflicts with the
-# commands \{ and \} for these it is advised to use the version @{ and @} or use
-# a double escape (\\{ and \\})
+# "Side Effects:". Note that you cannot put \n's in the value part of an alias
+# to insert newlines (in the resulting output). You can put ^^ in the value part
+# of an alias to insert a newline as if a physical newline was in the original
+# file. When you need a literal { or } or , in the value part of an alias you
+# have to escape them by means of a backslash (\), this can lead to conflicts
+# with the commands \{ and \} for these it is advised to use the version @{ and
+# @} or use a double escape (\\{ and \\})
 
 ALIASES                =
-
-# This tag can be used to specify a number of word-keyword mappings (TCL only).
-# A mapping has the form "name=value". For example adding "class=itcl::class"
-# will allow you to use the command class in the itcl::class meaning.
-
-TCL_SUBST              =
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C sources
 # only. Doxygen will then generate output that is more tailored for C. For
@@ -311,7 +313,10 @@ OPTIMIZE_OUTPUT_SLICE  = NO
 # Note: For files without extension you can use no_extension as a placeholder.
 #
 # Note that for custom extensions you also need to set FILE_PATTERNS otherwise
-# the files are not read by doxygen.
+# the files are not read by doxygen. When specifying no_extension you should add
+# * to the FILE_PATTERNS.
+#
+# Note see also the list of default file extension mappings.
 
 EXTENSION_MAPPING      =
 
@@ -445,6 +450,19 @@ TYPEDEF_HIDES_STRUCT   = NO
 
 LOOKUP_CACHE_SIZE      = 0
 
+# The NUM_PROC_THREADS specifies the number threads doxygen is allowed to use
+# during processing. When set to 0 doxygen will based this on the number of
+# cores available in the system. You can set it explicitly to a value larger
+# than 0 to get more control over the balance between CPU load and processing
+# speed. At this moment only the input processing can be done using multiple
+# threads. Since this is still an experimental feature the default is set to 1,
+# which efficively disables parallel processing. Please report any issues you
+# encounter. Generating dot graphs in parallel is controlled by the
+# DOT_NUM_THREADS setting.
+# Minimum value: 0, maximum value: 32, default value: 1.
+
+NUM_PROC_THREADS       = 1
+
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
@@ -508,6 +526,13 @@ EXTRACT_LOCAL_METHODS  = NO
 
 EXTRACT_ANON_NSPACES   = NO
 
+# If this flag is set to YES, the name of an unnamed parameter in a declaration
+# will be determined by the corresponding definition. By default unnamed
+# parameters remain unnamed in the output.
+# The default value is: YES.
+
+RESOLVE_UNNAMED_PARAMS = YES
+
 # If the HIDE_UNDOC_MEMBERS tag is set to YES, doxygen will hide all
 # undocumented members inside documented classes or files. If set to NO these
 # members will be included in the various overviews, but no documentation
@@ -545,11 +570,18 @@ HIDE_IN_BODY_DOCS      = NO
 
 INTERNAL_DOCS          = NO
 
-# If the CASE_SENSE_NAMES tag is set to NO then doxygen will only generate file
-# names in lower-case letters. If set to YES, upper-case letters are also
-# allowed. This is useful if you have classes or files whose names only differ
-# in case and if your file system supports case sensitive file names. Windows
-# (including Cygwin) ands Mac users are advised to set this option to NO.
+# With the correct setting of option CASE_SENSE_NAMES doxygen will better be
+# able to match the capabilities of the underlying filesystem. In case the
+# filesystem is case sensitive (i.e. it supports files in the same directory
+# whose names only differ in casing), the option must be set to YES to properly
+# deal with such files in case they appear in the input. For filesystems that
+# are not case sensitive the option should be be set to NO to properly deal with
+# output files written for symbols that only differ in casing, such as for two
+# classes, one named CLASS and the other named Class, and to also support
+# references to files without having to specify the exact matching casing. On
+# Windows (including Cygwin) and MacOS, users should typically set this option
+# to NO, whereas on Linux or other Unix flavors it should typically be set to
+# YES.
 # The default value is: system dependent.
 
 CASE_SENSE_NAMES       = YES
@@ -788,7 +820,10 @@ WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = NO
 
 # If the WARN_AS_ERROR tag is set to YES then doxygen will immediately stop when
-# a warning is encountered.
+# a warning is encountered. If the WARN_AS_ERROR tag is set to FAIL_ON_WARNINGS
+# then doxygen will continue running as if WARN_AS_ERROR tag is set to NO, but
+# at the end of the doxygen process doxygen will return with a non-zero status.
+# Possible values are: NO, YES and FAIL_ON_WARNINGS.
 # The default value is: NO.
 
 WARN_AS_ERROR          = NO
@@ -824,8 +859,8 @@ INPUT                  = lal/
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
 # libiconv (or the iconv built into libc) for the transcoding. See the libiconv
-# documentation (see: https://www.gnu.org/software/libiconv/) for the list of
-# possible encodings.
+# documentation (see:
+# https://www.gnu.org/software/libiconv/) for the list of possible encodings.
 # The default value is: UTF-8.
 
 INPUT_ENCODING         = UTF-8
@@ -1066,13 +1101,6 @@ VERBATIM_HEADERS       = YES
 # The default value is: YES.
 
 ALPHABETICAL_INDEX     = YES
-
-# The COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns in
-# which the alphabetical index list will be split.
-# Minimum value: 1, maximum value: 20, default value: 5.
-# This tag requires that the tag ALPHABETICAL_INDEX is set to YES.
-
-COLS_IN_ALPHA_INDEX    = 5
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1373,8 +1401,8 @@ QHP_NAMESPACE          = org.doxygen.Project
 
 # The QHP_VIRTUAL_FOLDER tag specifies the namespace to use when generating Qt
 # Help Project output. For more information please see Qt Help Project / Virtual
-# Folders (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#virtual-
-# folders).
+# Folders (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#virtual-folders).
 # The default value is: doc.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
@@ -1382,16 +1410,16 @@ QHP_VIRTUAL_FOLDER     = doc
 
 # If the QHP_CUST_FILTER_NAME tag is set, it specifies the name of a custom
 # filter to add. For more information please see Qt Help Project / Custom
-# Filters (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-
-# filters).
+# Filters (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-filters).
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
 QHP_CUST_FILTER_NAME   =
 
 # The QHP_CUST_FILTER_ATTRS tag specifies the list of the attributes of the
 # custom filter to add. For more information please see Qt Help Project / Custom
-# Filters (see: https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-
-# filters).
+# Filters (see:
+# https://doc.qt.io/archives/qt-4.8/qthelpproject.html#custom-filters).
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
 QHP_CUST_FILTER_ATTRS  =
@@ -1482,6 +1510,17 @@ TREEVIEW_WIDTH         = 250
 
 EXT_LINKS_IN_WINDOW    = NO
 
+# If the HTML_FORMULA_FORMAT option is set to svg, doxygen will use the pdf2svg
+# tool (see https://github.com/dawbarton/pdf2svg) or inkscape (see
+# https://inkscape.org) to generate formulas as SVG images instead of PNGs for
+# the HTML output. These images will generally look nicer at scaled resolutions.
+# Possible values are: png (the default) and svg (looks nicer but requires the
+# pdf2svg or inkscape tool).
+# The default value is: png.
+# This tag requires that the tag GENERATE_HTML is set to YES.
+
+HTML_FORMULA_FORMAT    = png
+
 # Use this tag to change the font size of LaTeX formulas included as images in
 # the HTML documentation. When you change the font size after a successful
 # doxygen run you need to manually remove any form_*.png images from the HTML
@@ -1501,6 +1540,12 @@ FORMULA_FONTSIZE       = 10
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 FORMULA_TRANSPARENT    = YES
+
+# The FORMULA_MACROFILE can contain LaTeX \newcommand and \renewcommand commands
+# to create new LaTeX commands to be used in formulas as building blocks. See
+# the section "Including formulas" for details.
+
+FORMULA_MACROFILE      =
 
 # Enable the USE_MATHJAX option to render LaTeX formulas using MathJax (see
 # https://www.mathjax.org) which uses client side Javascript for the rendering
@@ -1531,10 +1576,10 @@ MATHJAX_FORMAT         = HTML-CSS
 # Content Delivery Network so you can quickly see the result without installing
 # MathJax. However, it is strongly recommended to install a local copy of
 # MathJax from https://www.mathjax.org before deployment.
-# The default value is: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/.
+# The default value is: https://cdn.jsdelivr.net/npm/mathjax@2.
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
-MATHJAX_RELPATH        = https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/
+MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@2
 
 # The MATHJAX_EXTENSIONS tag can be used to specify one or more MathJax
 # extension names that should be enabled during MathJax rendering. For example
@@ -1545,7 +1590,8 @@ MATHJAX_EXTENSIONS     =
 
 # The MATHJAX_CODEFILE tag can be used to specify a file with javascript pieces
 # of code that will be used on startup of the MathJax code. See the MathJax site
-# (see: http://docs.mathjax.org/en/latest/output.html) for more details. For an
+# (see:
+# http://docs.mathjax.org/en/v2.7-latest/output.html) for more details. For an
 # example see the documentation.
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
@@ -1605,8 +1651,9 @@ EXTERNAL_SEARCH        = NO
 #
 # Doxygen ships with an example indexer (doxyindexer) and search engine
 # (doxysearch.cgi) which are based on the open source search engine library
-# Xapian (see: https://xapian.org/). See the section "External Indexing and
-# Searching" for details.
+# Xapian (see:
+# https://xapian.org/). See the section "External Indexing and Searching" for
+# details.
 # This tag requires that the tag SEARCHENGINE is set to YES.
 
 SEARCHENGINE_URL       =
@@ -1715,29 +1762,31 @@ PAPER_TYPE             = a4
 
 EXTRA_PACKAGES         =
 
-# The LATEX_HEADER tag can be used to specify a personal LaTeX header for the
-# generated LaTeX document. The header should contain everything until the first
-# chapter. If it is left blank doxygen will generate a standard header. See
-# section "Doxygen usage" for information on how to let doxygen write the
-# default header to a separate file.
+# The LATEX_HEADER tag can be used to specify a user-defined LaTeX header for
+# the generated LaTeX document. The header should contain everything until the
+# first chapter. If it is left blank doxygen will generate a standard header. It
+# is highly recommended to start with a default header using
+# doxygen -w latex new_header.tex new_footer.tex new_stylesheet.sty
+# and then modify the file new_header.tex. See also section "Doxygen usage" for
+# information on how to generate the default header that doxygen normally uses.
 #
-# Note: Only use a user-defined header if you know what you are doing! The
-# following commands have a special meaning inside the header: $title,
-# $datetime, $date, $doxygenversion, $projectname, $projectnumber,
-# $projectbrief, $projectlogo. Doxygen will replace $title with the empty
-# string, for the replacement values of the other commands the user is referred
-# to HTML_HEADER.
+# Note: Only use a user-defined header if you know what you are doing!
+# Note: The header is subject to change so you typically have to regenerate the
+# default header when upgrading to a newer version of doxygen. The following
+# commands have a special meaning inside the header (and footer): For a
+# description of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
 LATEX_HEADER           =
 
-# The LATEX_FOOTER tag can be used to specify a personal LaTeX footer for the
-# generated LaTeX document. The footer should contain everything after the last
-# chapter. If it is left blank doxygen will generate a standard footer. See
+# The LATEX_FOOTER tag can be used to specify a user-defined LaTeX footer for
+# the generated LaTeX document. The footer should contain everything after the
+# last chapter. If it is left blank doxygen will generate a standard footer. See
 # LATEX_HEADER for more information on how to generate a default footer and what
-# special commands can be used inside the footer.
-#
-# Note: Only use a user-defined footer if you know what you are doing!
+# special commands can be used inside the footer. See also section "Doxygen
+# usage" for information on how to generate the default footer that doxygen
+# normally uses. Note: Only use a user-defined footer if you know what you are
+# doing!
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
 LATEX_FOOTER           =
@@ -2283,9 +2332,31 @@ UML_LOOK               = NO
 # but if the number exceeds 15, the total amount of fields shown is limited to
 # 10.
 # Minimum value: 0, maximum value: 100, default value: 10.
-# This tag requires that the tag HAVE_DOT is set to YES.
+# This tag requires that the tag UML_LOOK is set to YES.
 
 UML_LIMIT_NUM_FIELDS   = 10
+
+# If the DOT_UML_DETAILS tag is set to NO, doxygen will show attributes and
+# methods without types and arguments in the UML graphs. If the DOT_UML_DETAILS
+# tag is set to YES, doxygen will add type and arguments for attributes and
+# methods in the UML graphs. If the DOT_UML_DETAILS tag is set to NONE, doxygen
+# will not generate fields with class member information in the UML graphs. The
+# class diagrams will look similar to the default class diagrams but using UML
+# notation for the relationships.
+# Possible values are: NO, YES and NONE.
+# The default value is: NO.
+# This tag requires that the tag UML_LOOK is set to YES.
+
+DOT_UML_DETAILS        = NO
+
+# The DOT_WRAP_THRESHOLD tag can be used to set the maximum number of characters
+# to display on a single line. If the actual line length exceeds this threshold
+# significantly it will wrapped across multiple lines. Some heuristics are apply
+# to avoid ugly line breaks.
+# Minimum value: 0, maximum value: 1000, default value: 17.
+# This tag requires that the tag HAVE_DOT is set to YES.
+
+DOT_WRAP_THRESHOLD     = 17
 
 # If the TEMPLATE_RELATIONS tag is set to YES then the inheritance and
 # collaboration graphs will show the relations between templates and their
@@ -2476,9 +2547,11 @@ DOT_MULTI_TARGETS      = NO
 
 GENERATE_LEGEND        = YES
 
-# If the DOT_CLEANUP tag is set to YES, doxygen will remove the intermediate dot
+# If the DOT_CLEANUP tag is set to YES, doxygen will remove the intermediate
 # files that are used to generate the various graphs.
+#
+# Note: This setting is not only used for dot files but also for msc and
+# plantuml temporary files.
 # The default value is: YES.
-# This tag requires that the tag HAVE_DOT is set to YES.
 
 DOT_CLEANUP            = YES
