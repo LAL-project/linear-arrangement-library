@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#include <bits/std_function.h>
+#include <functional>
 #include <tuple>
 
 // lal includes

@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#include <bits/stl_pair.h>
+#include <utility>
 #include <tuple>
 
 // lal includes

@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#include <bits/move.h> // std::swap
+#include <utility>
 
 namespace lal {
 namespace internal {

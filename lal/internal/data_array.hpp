@@ -45,7 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <bits/stl_algobase.h>
+#include <algorithm>
 
 namespace lal {
 namespace internal {

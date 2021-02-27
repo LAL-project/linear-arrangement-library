@@ -45,7 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <bits/stl_pair.h>
+#include <utility>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>

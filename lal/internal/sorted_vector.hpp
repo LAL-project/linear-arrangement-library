@@ -45,7 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <bits/stl_algo.h>
+#include <algorithm>
 #include <vector>
 
 namespace lal {
