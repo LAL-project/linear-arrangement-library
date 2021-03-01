@@ -106,16 +106,16 @@ The library can be installed in both `Release` and `Debug` mode. First of all
 
 		$ cd C:/programming/sources/linear-arrangement-library
 
-Now, apply the following steps.
+Now, apply the following steps. In both cases the `-DGMP_LIB=C:/programming/c++` is only necessary when `GMP` is already installed in a directory different from `C:/programming/c++`.
 
 ### Release build
 
 	$ mkdir lal-release ; cd lal-release
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ ../lal
+	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DGMP_LIB=C:/programming/c++ -DCMAKE_BUILD_TYPE=Release ../lal
 	$ make -j4 && make install
 
 ### Debug build
 
 	$ mkdir lal-debug ; cd lal-debug
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
+	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DGMP_LIB=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
 	$ make -j4 && make install
