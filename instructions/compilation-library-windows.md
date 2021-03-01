@@ -111,11 +111,11 @@ Now, apply the following steps.
 ### Release build
 
 	$ mkdir lal-release ; cd lal-release
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ ../lal
+	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ ../lal
 	$ make -j4 && make install
 
 ### Debug build
 
 	$ mkdir lal-debug ; cd lal-debug
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX:PATH=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
+	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
 	$ make -j4 && make install
