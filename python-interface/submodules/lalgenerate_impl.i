@@ -27,3 +27,45 @@
 
 %include "../lal/generate/all_projective_arrangements.hpp"
 %include "../lal/generate/rand_projective_arrangements.hpp"
+
+%extend lal::generate::rand_ulab_rooted_trees {
+	lal::graphs::rooted_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::rand_lab_rooted_trees {
+	lal::graphs::rooted_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::rand_ulab_free_trees {
+	lal::graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::rand_lab_free_trees {
+	lal::graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+
+%extend lal::generate::all_ulab_rooted_trees {
+	lal::graphs::rooted_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::all_lab_rooted_trees {
+	lal::graphs::rooted_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::all_ulab_free_trees {
+	lal::graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
+%extend lal::generate::all_lab_free_trees {
+	lal::graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+}
