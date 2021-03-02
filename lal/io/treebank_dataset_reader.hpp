@@ -52,26 +52,53 @@ namespace lal {
 namespace io {
 
 /**
- * @brief A reader for a set of treebank language files.
+ * @brief A reader for a dataset of treebank files.
  *
- * This class, the objects of which will be referred to as the "readers", is
- * an interface for processing a set of treebanks. It offers the possibility
- * of processing each tree in every treebank file individually, as opposed to
- * class @ref treebank_dataset_processor, which also processes a whole dataset
- * but the information produced is limited to the features available in this
- * library.
+ * This class, the objects of which will be referred to as the "dataset readers",
+ * is an interface to help you do a custom processing of a set of treebanks. A
+ * treebank dataset is a set of files, each of which is a treebank. A treebank
+ * is a file containing one or more lines, each describing a syntactic dependency
+ * tree. If you want to output any of the features already calculated by
+ * the library, use class @ref treebank_dataset_processor instead; said class
+ * is much easier to use and can process treebanks in parallel.
  *
- * A treebank dataset is made up of a set of files. Each file contains several
- * syntactic dependency trees (of, e.g., sentences of a certain language).
- * These files are referenced within a "main file list", henceforth called the
- * main file. The main file's lines contain only two strings describing a treebank.
- * The first string is a self-descriptive name of the treebank (e.g., the ISO
- * code of a language), and the second is the relative path to the file containing
- * the syntactic dependency trees (e.g., the syntactic dependency trees of Arabic
- * in the Stanford dataset). The path is relative to the directory that contains
+ * Each tree in a treebank file is formatted as a list of whole positive numbers
+ * (including zero), each representing a node of the tree. The number 0 denotes
+ * the root of the tree, and a number at a certain position indicates its parent
+ * node. For example, when number 4 is at position 9 it means that node 9 has
+ * parent node 4. Therefore, if number 0 is at position 1 it means that node 1
+ * is the root of the tree. A complete example of such a tree's representation
+ * is the following
+ *
+ *       0 3 4 1 6 3
+ *
+ * which should be interpreted as
+ *
+ *		predecessor:       0 3 4 1 6 3
+ *		node of the tree:  1 2 3 4 5 6
+ *
+ * Note that lines like these are not valid:
+ *
+ *		(1) 0 2 2 2 2 2
+ *		(2) 2 0 0
+ *
+ * Line (1) is not valid due to a self-reference in the second position, and (2)
+ * not being valid due to containing two '0' (i.e., two roots).
+ *
+ * A treebank dataset reader helps you navigate through a treebank dataset. It
+ * does the job of initialising the @ref treebank_reader class, which is what
+ * you need to do a custom process of a treebank file.
+ *
+ * Now, the treebank files are referenced within a "main file list", henceforth
+ * called the main file. The main file's lines contain only two strings describing
+ * a treebank. The first string is a self-descriptive name of the treebank (e.g.,
+ * the ISO code of a language), and the second is the relative path to the file
+ * containing the syntactic dependency trees (e.g., the syntactic dependency trees
+ * of a language in a dataset). The path is relative to the directory that contains
  * the main file.
  *
- * For example, the main file could be called \a stanford.txt and could contain:
+ * For example, the main file could be called \a stanford.txt, representing the
+ * Stanford dataset, and could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
@@ -82,16 +109,16 @@ namespace io {
  * an ISO code), and the second column contains the relative path to the file
  * with the syntactic dependency trees.
  *
- * The user has to initialise a reader with the main file (the main file list).
- * For example, to read the Stanford dataset the reader has to be initialised
- * with the main file \a stanford.txt which could contain the contents examplified
- * above. A reader only processes the main file: it iterates through the list
- * of files within the main file using the method @ref next_treebank. This
- * method can be called as long as method @ref has_treebank returns true.
- * Each call to @ref next_treebank builds an internal object of type
- * @ref treebank_reader which allows the user to iterate through the trees
- * within the corresponding file. This object can be retrieved by calling
- * method @ref get_treebank_reader.
+ * The user has to initialise a dataset reader with the main file (the main file
+ * list). For example, to read the Stanford dataset the reader has to be initialised
+ * with the main file \a stanford.txt which could contain the contents given
+ * above. Bear in mind that a dataset reader only processes the main file: it
+ * iterates through the list of files within the main file using the method
+ * @ref next_treebank. This method can be called as long as method
+ * @ref has_treebank returns true. Each call to @ref next_treebank builds an
+ * object of class @ref treebank_reader which allows the user to iterate
+ * through the trees within the corresponding file. This object can be retrieved
+ * by calling method @ref get_treebank_reader.
  *
  * The correct usage of this class is given in the following piece of code.
  * @code

@@ -55,16 +55,17 @@ namespace lal {
 namespace io {
 
 /**
- * @brief A reader for a single treebank language files.
+ * @brief A reader for a single treebank file.
  *
- * This class offers a simple interface for iterating over the trees in a single
- * treebank file, henceforth referred to as the treebank. Each tree is formatted
- * as a list of whole, positive numbers (including zero), each representing a node
- * of the tree. The number 0 denotes the root of the tree, and a number at a certain
- * position indicates its parent node. For example, when number 4 is at
- * position 9 it means that node 9 has parent node 4. Therefore, if number 0
- * is at position 1 it means that node 1 is the root of the tree. A complete
- * example of such a tree's representation is the following
+ * This class, the objects of which will be referred to as the "readers", offers
+ * a simple interface for iterating over the trees in a single treebank file,
+ * henceforth referred to as the treebank. Each tree is formatted as a list of whole,
+ * positive numbers (including zero), each representing a node of the tree. The
+ * number 0 denotes the root of the tree, and a number at a certain position
+ * indicates its parent node. For example, when number 4 is at position 9 it means
+ * that node 9 has parent node 4. Therefore, if number 0 is at position 1 it means
+ * that node 1 is the root of the tree. A complete example of such a tree's
+ * representation is the following
  *
  *       0 3 4 1 6 3
  *
