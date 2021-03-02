@@ -70,7 +70,9 @@ dataset_error treebank_dataset_reader::next_treebank() noexcept {
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
-	dataset_error dserr = m_treebank_reader.init(M.string(), m_cur_treebank_name);
+	const dataset_error dserr =
+		m_treebank_reader.init(M.string(), m_cur_treebank_name);
+
 	if (dserr != dataset_error::no_error) {
 		return dserr;
 	}
