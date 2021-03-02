@@ -77,8 +77,8 @@ endif()
 # **********************************************************************
 
 # project's version
-set(LAL_MAJOR 2020)
-set(LAL_MINOR 09)
+set(LAL_MAJOR 21)
+set(LAL_MINOR 03)
 set(LAL_PATCH 00)
 
 # project declaration

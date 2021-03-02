@@ -38,7 +38,7 @@ PROJECT_NAME           = "LAL: Linear Arrangement Library"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 2020.09.00
+PROJECT_NUMBER         = 21.03.00
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
