@@ -56,8 +56,8 @@ namespace internal {
 template<typename T>
 void UnionFind_update_roots_add(
 	const T& t, node u, node v,
-	node *root_of,
-	uint32_t *root_size
+	node * const root_of,
+	uint32_t * const root_size
 )
 {
 	// 'u' and 'v' are not connected, so they belong to
@@ -109,8 +109,8 @@ void UnionFind_update_roots_add(
 template<typename T>
 void UnionFind_update_roots_remove(
 	const T& t, node u, node v,
-	node *root_of,
-	uint32_t *root_size
+	node * const root_of,
+	uint32_t * const root_size
 )
 {
 	// 'u' and 'v' are connected

@@ -82,293 +82,293 @@ template<
 	> = true
 >
 class BFS {
-	public:
-		typedef std::function<void (const BFS<G>&, node)> BFS_process_one;
-		typedef std::function<void (const BFS<G>&, node, node, bool)> BFS_process_two;
-		typedef std::function<bool (const BFS<G>&, node)> BFS_bool_one;
-		typedef std::function<bool (const BFS<G>&, node, node)> BFS_bool_two;
+public:
+	typedef std::function<void (const BFS<G>&, node)> BFS_process_one;
+	typedef std::function<void (const BFS<G>&, node, node, bool)> BFS_process_two;
+	typedef std::function<bool (const BFS<G>&, node)> BFS_bool_one;
+	typedef std::function<bool (const BFS<G>&, node, node)> BFS_bool_two;
 
-	public:
-		// Constructor
-		BFS(const G& g) : m_G(g), m_vis(m_G.num_nodes()) {
-			reset();
+public:
+	// Constructor
+	BFS(const G& g) : m_G(g), m_vis(m_G.num_nodes()) {
+		reset();
+	}
+	// Destructor
+	~BFS() { }
+
+	// Set the graph_traversal to its default state.
+	void reset() {
+		reset_visited();
+		clear_structure();
+
+		set_use_rev_edges(false);
+		set_process_visited_neighbours(false);
+
+		set_terminate_default();
+		set_process_current_default();
+		set_process_neighbour_default();
+		set_node_add_default();
+	}
+
+	void start_at(node source) {
+		m_X.push(source);
+		m_vis[source] = 1;
+		do_traversal();
+	}
+
+	void start_at(const std::vector<node>& sources) {
+		for (const node& u : sources) {
+			m_X.push(u);
+			m_vis[u] = 1;
 		}
-		// Destructor
-		~BFS() { }
+		do_traversal();
+	}
 
-		// Set the graph_traversal to its default state.
-		void reset() {
-			reset_visited();
-			clear_structure();
+	/* SETTERS */
 
-			set_use_rev_edges(false);
-			set_process_visited_neighbours(false);
+	// set whether the traversal can use reversed edges
+	void set_use_rev_edges(bool use) { m_use_rev_edges = use; }
 
-			set_terminate_default();
-			set_process_current_default();
-			set_process_neighbour_default();
-			set_node_add_default();
-		}
+	// see @ref m_term
+	void set_terminate_default()
+	{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
+	void set_terminate(const BFS_bool_one& f)
+	{ m_term = f; }
 
-		void start_at(node source) {
-			m_X.push(source);
-			m_vis[source] = 1;
-			do_traversal();
-		}
+	// see @ref m_proc_cur
+	void set_process_current_default()
+	{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
+	void set_process_current(const BFS_process_one& f)
+	{ m_proc_cur = f; }
 
-		void start_at(const std::vector<node>& sources) {
-			for (const node& u : sources) {
-				m_X.push(u);
-				m_vis[u] = 1;
-			}
-			do_traversal();
-		}
+	// see @ref m_proc_neigh
+	void set_process_neighbour_default()
+	{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
+	void set_process_neighbour(const BFS_process_two& f)
+	{ m_proc_neigh = f; }
 
-		/* SETTERS */
+	// see @ref m_add_node
+	void set_node_add_default()
+	{ m_add_node = [](const BFS<G>&, const node, const node) -> bool { return true; }; }
+	void set_node_add(const BFS_bool_two& f)
+	{ m_add_node = f; }
 
-		// set whether the traversal can use reversed edges
-		void set_use_rev_edges(bool use) { m_use_rev_edges = use; }
+	/*
+	 * @brief Should the algorithm call the neighbour processing function
+	 * for already visited neighbours?
+	 * @param v Either true or false.
+	 */
+	void set_process_visited_neighbours(bool v) { m_proc_vis_neighs = v; }
 
-		// see @ref m_term
-		void set_terminate_default()
-		{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
-		void set_terminate(const BFS_bool_one& f)
-		{ m_term = f; }
+	// Sets all nodes to not visited.
+	void reset_visited() { m_vis.fill(0); }
 
-		// see @ref m_proc_cur
-		void set_process_current_default()
-		{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
-		void set_process_current(const BFS_process_one& f)
-		{ m_proc_cur = f; }
+	void clear_structure() { std::queue<node> q; m_X.swap(q); }
 
-		// see @ref m_proc_neigh
-		void set_process_neighbour_default()
-		{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
-		void set_process_neighbour(const BFS_process_two& f)
-		{ m_proc_neigh = f; }
+	// Set node @e u as visited.
+	void set_visited(node u, char vis) { m_vis[u] = vis; }
 
-		// see @ref m_add_node
-		void set_node_add_default()
-		{ m_add_node = [](const BFS<G>&, const node, const node) -> bool { return true; }; }
-		void set_node_add(const BFS_bool_two& f)
-		{ m_add_node = f; }
+	/* GETTERS */
 
-		/*
-		 * @brief Should the algorithm call the neighbour processing function
-		 * for already visited neighbours?
-		 * @param v Either true or false.
-		 */
-		void set_process_visited_neighbours(bool v) { m_proc_vis_neighs = v; }
+	// Returns the set of visited nodes.
+	bool node_was_visited(node u) const { return m_vis[u]; }
 
-		// Sets all nodes to not visited.
-		void reset_visited() { m_vis.fill(0); }
+	// have all nodes been visited?
+	bool all_visited() const {
+		return std::find(m_vis.begin(), m_vis.end(), 0) == m_vis.end();
+	}
 
-		void clear_structure() { std::queue<node> q; m_X.swap(q); }
+	// returns the graph
+	const G& get_graph() const { return m_G; }
 
-		// Set node @e u as visited.
-		void set_visited(node u, char vis) { m_vis[u] = vis; }
+	// Return visited nodes information
+	const data_array<char>& get_visited() const { return m_vis; }
 
-		/* GETTERS */
-
-		// Returns the set of visited nodes.
-		bool node_was_visited(node u) const { return m_vis[u]; }
-
-		// have all nodes been visited?
-		bool all_visited() const {
-			return std::find(m_vis.begin(), m_vis.end(), 0) == m_vis.end();
-		}
-
-		// returns the graph
-		const G& get_graph() const { return m_G; }
-
-		// Return visited nodes information
-		const data_array<char>& get_visited() const { return m_vis; }
-
-	protected:
-		// ltr: is the 'natural' orientation of the vertices "s -> t"?
-		//      If true, then the edge in the graph is (s,t)
-		//      If false, the edge in the graph is (t,s)
-		void deal_with_neighbour(node s, node t, bool ltr) {
-			// Process the neighbour 't' of 's'.
-			if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
-				m_proc_neigh(*this, s, t, ltr);
-			}
-
-			if (not m_vis[t] and m_add_node(*this, s, t)) {
-				m_X.push(t);
-				// set node as visited
-				m_vis[t] = true;
-			}
+protected:
+	// ltr: is the 'natural' orientation of the vertices "s -> t"?
+	//      If true, then the edge in the graph is (s,t)
+	//      If false, the edge in the graph is (t,s)
+	void deal_with_neighbour(node s, node t, bool ltr) {
+		// Process the neighbour 't' of 's'.
+		if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
+			m_proc_neigh(*this, s, t, ltr);
 		}
 
-		// process neighbours
-		//     when the graph is an undirected graph
-		template<
-			class GG = G,
-			std::enable_if_t<
-				std::is_base_of_v<graphs::undirected_graph, GG>, bool
-			> = true
-		>
-		void process_neighbours(node s) {
-			for (const node& t : m_G.get_neighbours(s)) {
+		if (not m_vis[t] and m_add_node(*this, s, t)) {
+			m_X.push(t);
+			// set node as visited
+			m_vis[t] = true;
+		}
+	}
+
+	// process neighbours
+	//     when the graph is an undirected graph
+	template<
+		class GG = G,
+		std::enable_if_t<
+			std::is_base_of_v<graphs::undirected_graph, GG>, bool
+		> = true
+	>
+	void process_neighbours(node s) {
+		for (const node& t : m_G.get_neighbours(s)) {
+			// Edges are processed in the direction "s -> t".
+			// This is also the 'natural' orientation of the edge,
+			// so this explains the 'true'.
+			deal_with_neighbour(s, t, true);
+		}
+	}
+
+	//     when the graph is a directed graph
+	template<
+		class GG = G,
+		std::enable_if_t<
+			std::is_base_of_v<graphs::directed_graph, GG>, bool
+		> = true
+	>
+	void process_neighbours(node s) {
+		for (const node& t : m_G.get_out_neighbours(s)) {
+			// Edges are processed in the direction "s -> t".
+			// This is also the 'natural' orientation of the edge,
+			// hence the 'true'.
+			deal_with_neighbour(s, t, true);
+		}
+		// process in-neighbours whenever appropriate
+		if (m_use_rev_edges) {
+			for (const node& t : m_G.get_in_neighbours(s)) {
 				// Edges are processed in the direction "s -> t".
-				// This is also the 'natural' orientation of the edge,
-				// so this explains the 'true'.
-				deal_with_neighbour(s, t, true);
+				// However, the 'natural' orientation of the edge
+				// is "t -> s", hence the 'false'.
+				deal_with_neighbour(s, t, false);
 			}
 		}
+	}
 
-		//     when the graph is a directed graph
-		template<
-			class GG = G,
-			std::enable_if_t<
-				std::is_base_of_v<graphs::directed_graph, GG>, bool
-			> = true
-		>
-		void process_neighbours(node s) {
-			for (const node& t : m_G.get_out_neighbours(s)) {
-				// Edges are processed in the direction "s -> t".
-				// This is also the 'natural' orientation of the edge,
-				// hence the 'true'.
-				deal_with_neighbour(s, t, true);
-			}
-			// process in-neighbours whenever appropriate
-			if (m_use_rev_edges) {
-				for (const node& t : m_G.get_in_neighbours(s)) {
-					// Edges are processed in the direction "s -> t".
-					// However, the 'natural' orientation of the edge
-					// is "t -> s", hence the 'false'.
-					deal_with_neighbour(s, t, false);
-				}
-			}
+	node next_node() const { return m_X.front(); }
+
+	/* The graph_traversal traversal is implemented as follows:
+	 *
+	 * <pre>
+	 * ProcessNeighbourhood(graph, u, Nv):
+	 *	 1. for each w in Nv do
+	 *   2.		if w has not been visited before, or it has been but
+	 *	 3.			already-visited nodes have to be processed
+	 *	 4.		then
+	 *	 5.			proc_neigh(u,w)
+	 *	 6.		endif
+	 *	 7.
+	 *	 8.		if w not visited before and node_add(w) then
+	 *	 9.			push w into X
+	 *	10.			mark w as visited in vis
+	 *	11.		endif
+	 *	12.	endfor
+	 * </pre>
+	 *
+	 * <pre>
+	 * graph_traversal(graph, source):
+	 *	 1.	vis = {false}	// set of |V(graph)| bits set to false
+	 *	 2.	X = {source}	// structure of the traversal,
+	 *	   					// initialised with the source,
+	 *						// either a stack or a queue.
+	 *	 3.	while X is not empty do
+	 *	 4.		v = X.front or X.top
+	 *	 5.		remove X's top
+	 *	 6.		proc_curr(v)
+	 *	 7.		if terminate(v) then Finish traversal
+	 *	 8.		else
+	 *	 9.			Nv = out-neighbourhood of v
+	 *	10.			ProcessNeighbourhood(graph, v, Nv)
+	 *	11.			If graph is directed and process reverse edges then
+	 *	12.				Nv = in-neighbourhood of v
+	 *	13.				ProcessNeighbourhood(graph, v, Nv)
+	 *	14.			endif
+	 *	15.		endif
+	 *	16.	endwhile
+	 * </pre>
+	 *
+	 * Note that lines (...) extend the neighbourhood of a node "Nv"
+	 * depending of the type of graph. If the graph is directed and
+	 * the user wants to process "reversed edges", then the neighbourhood
+	 * is not limited to "out-neighbours", but also to "in-neighbours".
+	 */
+	void do_traversal() {
+		while (not m_X.empty()) {
+			const node s = next_node();
+			m_X.pop();
+
+			// process current node
+			m_proc_cur(*this, s);
+
+			// check user-defined early termination condition
+			if (m_term(*this, s)) { break; }
+
+			process_neighbours(s);
 		}
+	}
 
-		node next_node() const { return m_X.front(); }
+protected:
+	// Constant reference to the graph.
+	const G& m_G;
+	// The structure of the traversal (either a queue or a stack).
+	std::queue<node> m_X;
+	// The set of visited nodes.
+	data_array<char> m_vis;
+	// Should we process already visitied neighbours?
+	bool m_proc_vis_neighs = false;
+	// Use back edges in directed graphs.
+	bool m_use_rev_edges = false;
 
-		/* The graph_traversal traversal is implemented as follows:
-		 *
-		 * <pre>
-		 * ProcessNeighbourhood(graph, u, Nv):
-		 *	 1. for each w in Nv do
-		 *   2.		if w has not been visited before, or it has been but
-		 *	 3.			already-visited nodes have to be processed
-		 *	 4.		then
-		 *	 5.			proc_neigh(u,w)
-		 *	 6.		endif
-		 *	 7.
-		 *	 8.		if w not visited before and node_add(w) then
-		 *	 9.			push w into X
-		 *	10.			mark w as visited in vis
-		 *	11.		endif
-		 *	12.	endfor
-		 * </pre>
-		 *
-		 * <pre>
-		 * graph_traversal(graph, source):
-		 *	 1.	vis = {false}	// set of |V(graph)| bits set to false
-		 *	 2.	X = {source}	// structure of the traversal,
-		 *	   					// initialised with the source,
-		 *						// either a stack or a queue.
-		 *	 3.	while X is not empty do
-		 *	 4.		v = X.front or X.top
-		 *	 5.		remove X's top
-		 *	 6.		proc_curr(v)
-		 *	 7.		if terminate(v) then Finish traversal
-		 *	 8.		else
-		 *	 9.			Nv = out-neighbourhood of v
-		 *	10.			ProcessNeighbourhood(graph, v, Nv)
-		 *	11.			If graph is directed and process reverse edges then
-		 *	12.				Nv = in-neighbourhood of v
-		 *	13.				ProcessNeighbourhood(graph, v, Nv)
-		 *	14.			endif
-		 *	15.		endif
-		 *	16.	endwhile
-		 * </pre>
-		 *
-		 * Note that lines (...) extend the neighbourhood of a node "Nv"
-		 * depending of the type of graph. If the graph is directed and
-		 * the user wants to process "reversed edges", then the neighbourhood
-		 * is not limited to "out-neighbours", but also to "in-neighbours".
-		 */
-		void do_traversal() {
-			while (not m_X.empty()) {
-				const node s = next_node();
-				m_X.pop();
+protected:
+	/*
+	 * @brief graph_traversal early terminating function.
+	 *
+	 * Returns true if the @ref graph_traversal algorithm should terminate.
+	 *
+	 * For more details on when this function is called see @ref do_traversal.
+	 * @param graph_traversal The object containing the traversal. This also contains
+	 * several attributes that might be useful to guide the traversal.
+	 * @param s The node at the front of the queue of the algorithm.
+	 */
+	BFS_bool_one m_term;
 
-				// process current node
-				m_proc_cur(*this, s);
+	/*
+	 * @brief graph_traversal node processing function.
+	 *
+	 * Processes the current node visited.
+	 *
+	 * For more details on when this function is called see @ref do_traversal.
+	 * @param graph_traversal The object containing the traversal. This also contains
+	 * several attributes that might be useful to guide the traversal.
+	 * @param s The node at the front of the queue of the algorithm.
+	 */
+	BFS_process_one m_proc_cur;
 
-				// check user-defined early termination condition
-				if (m_term(*this, s)) { break; }
+	/*
+	 * @brief graph_traversal neighbour node processing function.
+	 *
+	 * Processes the next visited node. The direction of the nodes
+	 * visited passed as parameters is given by the boolean parameter. If
+	 * it is true then the edge is s -> t. If it is false then the edge is
+	 * t -> s.
+	 *
+	 * For more details on when this function is called see @ref do_traversal.
+	 * @param graph_traversal The object containing the traversal. This also contains
+	 * several attributes that might be useful to guide the traversal.
+	 * @param s The node at the front of the queue of the algorithm.
+	 * @param t The node neighbour of @e u visited by the algorithm.
+	 */
+	BFS_process_two m_proc_neigh;
 
-				process_neighbours(s);
-			}
-		}
-
-	protected:
-		// Constant reference to the graph.
-		const G& m_G;
-		// The structure of the traversal (either a queue or a stack).
-		std::queue<node> m_X;
-		// The set of visited nodes.
-		data_array<char> m_vis;
-		// Should we process already visitied neighbours?
-		bool m_proc_vis_neighs = false;
-		// Use back edges in directed graphs.
-		bool m_use_rev_edges = false;
-
-	protected:
-		/*
-		 * @brief graph_traversal early terminating function.
-		 *
-		 * Returns true if the @ref graph_traversal algorithm should terminate.
-		 *
-		 * For more details on when this function is called see @ref do_traversal.
-		 * @param graph_traversal The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 */
-		BFS_bool_one m_term;
-
-		/*
-		 * @brief graph_traversal node processing function.
-		 *
-		 * Processes the current node visited.
-		 *
-		 * For more details on when this function is called see @ref do_traversal.
-		 * @param graph_traversal The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 */
-		BFS_process_one m_proc_cur;
-
-		/*
-		 * @brief graph_traversal neighbour node processing function.
-		 *
-		 * Processes the next visited node. The direction of the nodes
-		 * visited passed as parameters is given by the boolean parameter. If
-		 * it is true then the edge is s -> t. If it is false then the edge is
-		 * t -> s.
-		 *
-		 * For more details on when this function is called see @ref do_traversal.
-		 * @param graph_traversal The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node at the front of the queue of the algorithm.
-		 * @param t The node neighbour of @e u visited by the algorithm.
-		 */
-		BFS_process_two m_proc_neigh;
-
-		/*
-		 * @brief graph_traversal node addition function.
-		 *
-		 * Determines whether a node @e s should be added to the queue or not.
-		 *
-		 * For more details on when this function is called see @ref do_traversal.
-		 * @param graph_traversal The object containing the traversal. This also contains
-		 * several attributes that might be useful to guide the traversal.
-		 * @param s The node candidate for addition.
-		 */
-		BFS_bool_two m_add_node;
+	/*
+	 * @brief graph_traversal node addition function.
+	 *
+	 * Determines whether a node @e s should be added to the queue or not.
+	 *
+	 * For more details on when this function is called see @ref do_traversal.
+	 * @param graph_traversal The object containing the traversal. This also contains
+	 * several attributes that might be useful to guide the traversal.
+	 * @param s The node candidate for addition.
+	 */
+	BFS_bool_two m_add_node;
 };
 
 } // -- namespace internal

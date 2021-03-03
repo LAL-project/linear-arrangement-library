@@ -68,9 +68,9 @@ template<
 >
 inline uint32_t __compute_C_ladder(
 	const G& g, const linear_arrangement& pi,
-	char * __restrict__ bn,
-	uint32_t * __restrict__ inv_pi,
-	uint32_t * __restrict__ L1
+	char * const __restrict__ bn,
+	uint32_t * const __restrict__ inv_pi,
+	uint32_t * const __restrict__ L1
 )
 {
 	const uint32_t n = g.num_nodes();

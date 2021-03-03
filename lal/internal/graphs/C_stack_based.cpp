@@ -68,7 +68,7 @@ inline void fill_adjP_adjN(
 	const graph& g, const linear_arrangement& pi,
 	vector<neighbourhood>& adjP,
 	vector<vector<indexed_edge>>& adjN,
-	size_t * __restrict__ size_adjN_u
+	size_t * const __restrict__ size_adjN_u
 )
 {
 	const uint32_t n = g.num_nodes();

@@ -55,9 +55,8 @@ using namespace graphs;
 namespace io {
 
 template<class G>
-inline bool __read_edge_list(
-	const string& filename, G& g, bool norm, bool check
-)
+inline bool __read_edge_list
+(const string& filename, G& g, bool norm, bool check)
 {
 	if (not filesystem::exists(filename)) {
 		return false;
@@ -82,16 +81,14 @@ inline bool __read_edge_list(
 	return true;
 }
 
-bool read_edge_list(
-	const string& filename, undirected_graph& g, bool norm, bool check
-)
+bool read_edge_list
+(const string& filename, undirected_graph& g, bool norm, bool check)
 {
 	return __read_edge_list(filename, g, norm, check);
 }
 
-bool read_edge_list(
-	const string& filename, directed_graph& g, bool norm, bool check
-)
+bool read_edge_list
+(const string& filename, directed_graph& g, bool norm, bool check)
 {
 	return __read_edge_list(filename, g, norm, check);
 }

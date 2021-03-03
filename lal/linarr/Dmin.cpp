@@ -59,7 +59,7 @@ pair<uint32_t, linear_arrangement> Dmin
 (const rooted_tree& t, const algorithms_Dmin& a)
 {
 	switch (a) {
-	// call Gildea and Temperly's algorithm
+	// call our implementation of Gildea and Temperly's "algorithm"
 	case algorithms_Dmin::Projective:
 		return internal::Dmin_Projective(t);
 

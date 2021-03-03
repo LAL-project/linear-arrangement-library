@@ -72,10 +72,10 @@ template<
 >
 inline uint32_t __compute_C_dyn_prog(
 	const G& g, const linear_arrangement& pi,
-	char * __restrict__ bn,
-	node * __restrict__ inv_pi,
-	uint32_t * __restrict__ M,
-	uint32_t * __restrict__ K
+	char * const __restrict__ bn,
+	node * const __restrict__ inv_pi,
+	uint32_t * const __restrict__ M,
+	uint32_t * const __restrict__ K
 )
 {	
 	const uint32_t n = g.num_nodes();

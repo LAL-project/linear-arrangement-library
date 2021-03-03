@@ -99,8 +99,8 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
 inline
 void assign_name_and_keep(
 	const graphs::rooted_tree& t, node u,
-	std::string *aux_memory_for_names, size_t idx,
-	std::string *keep_name_of
+	std::string * const aux_memory_for_names, size_t idx,
+	std::string * const keep_name_of
 )
 noexcept
 {
@@ -146,7 +146,7 @@ noexcept
  */
 inline
 std::string assign_name
-(const graphs::rooted_tree& t, node u, std::string *names, size_t idx)
+(const graphs::rooted_tree& t, node u, std::string * const names, size_t idx)
 noexcept
 {
 	if (t.out_degree(u) == 0) {

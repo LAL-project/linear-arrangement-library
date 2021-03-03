@@ -72,9 +72,8 @@ template<
 		std::is_base_of_v<graphs::free_tree, T>,
 	bool> = true
 >
-void get_size_subtrees(
-	const T& t, const node u, const node v, uint32_t *sizes
-)
+void get_size_subtrees
+(const T& t, const node u, const node v, uint32_t * const sizes)
 {
 	sizes[v] = 1;
 
@@ -120,9 +119,8 @@ template<
 		std::is_base_of_v<graphs::free_tree, T>,
 	bool> = true
 >
-void get_size_subtrees(
-	const T& t, node r, uint32_t *sizes
-)
+void get_size_subtrees
+(const T& t, node r, uint32_t * const sizes)
 {
 #if defined DEBUG
 	assert(sizes != nullptr);
@@ -159,10 +157,8 @@ template<
 		std::is_base_of_v<graphs::free_tree, T>,
 	bool> = true
 >
-uint32_t calculate_bidirectional_sizes(
-	const T& t, const uint32_t n, const node u, const node v,
-	It& it
-)
+uint32_t calculate_bidirectional_sizes
+(const T& t, const uint32_t n, const node u, const node v, It& it)
 {
 	uint32_t r = 1;
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
@@ -203,10 +199,8 @@ template<
 		std::is_base_of_v<graphs::free_tree, T>,
 	bool> = true
 >
-void calculate_bidirectional_sizes(
-	const T& t, const uint32_t n, const node x,
-	It& sizes_edge_it
-)
+void calculate_bidirectional_sizes
+(const T& t, const uint32_t n, const node x, It& sizes_edge_it)
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
 		for (node y : t.get_out_neighbours(x)) {

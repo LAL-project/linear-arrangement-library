@@ -61,7 +61,7 @@ namespace internal {
 
 inline uint32_t __compute_C_brute_force_undir(
 	const undirected_graph& g, const linear_arrangement& pi,
-	node * __restrict__ T
+	node * const __restrict__ T
 )
 {
 	const uint32_t n = g.num_nodes();
@@ -113,7 +113,7 @@ inline uint32_t __compute_C_brute_force_undir(
 
 inline void __inner_computation_dir(
 	const directed_graph& g, node u, node v,
-	const linear_arrangement& pi, const node * __restrict__ T,
+	const linear_arrangement& pi, const node * const __restrict__ T,
 	uint32_t& C
 )
 {
@@ -155,7 +155,7 @@ inline void __inner_computation_dir(
 }
 inline uint32_t __compute_C_brute_force_dir(
 	const directed_graph& g, const linear_arrangement& pi,
-	node * __restrict__ T
+	node * const __restrict__ T
 )
 {
 	const uint32_t n = g.num_nodes();
