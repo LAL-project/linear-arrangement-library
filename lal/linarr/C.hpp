@@ -69,7 +69,7 @@ namespace linarr {
  */
 uint32_t n_crossings(
 	const graphs::directed_graph& g, const linear_arrangement& pi = {},
-	const algorithms_C& A = algorithms_C::stack_based
+	const algorithms_C& A = algorithms_C::ladder
 );
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -86,7 +86,7 @@ uint32_t n_crossings(
  */
 uint32_t n_crossings(
 	const graphs::undirected_graph& g, const linear_arrangement& pi = {},
-	const algorithms_C& A = algorithms_C::stack_based
+	const algorithms_C& A = algorithms_C::ladder
 );
 
 /**
@@ -106,7 +106,7 @@ uint32_t n_crossings(
  */
 std::vector<uint32_t> n_crossings_list
 (const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis,
- const algorithms_C& A = algorithms_C::stack_based);
+ const algorithms_C& A = algorithms_C::ladder);
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -124,7 +124,7 @@ std::vector<uint32_t> n_crossings_list
  */
 std::vector<uint32_t> n_crossings_list
 (const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis,
- const algorithms_C& A = algorithms_C::stack_based);
+ const algorithms_C& A = algorithms_C::ladder);
 
 /* ---------------------------------------- */
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */
