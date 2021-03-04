@@ -56,22 +56,24 @@ namespace generate {
 /**
  * @brief Random labelled free tree generator.
  *
- * Generates uniformly at random labelled free trees. The algorithm uses
- * uniformly random Prüfer sequences (see \cite Pruefer1918a). The construction
- * of the free labelled tree uses the algorithm in \cite Alonso1995a.
+ * <b>Users should refrain from using this class.</b> The generation of random
+ * labelled trees should be done using the wrapper class @ref rand_lab_free_trees.
+ * This class, however, contains the actual code to generate labelled free trees
+ * uniformly at random.
  *
- * The correct usage of this class is
- * @code
- *		rand_lab_free_trees TreeGen(n);
- *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::free_tree T = TreeGen.make_rand_tree();
- *			// ...
- *		}
- * @endcode
+ * This class implements an algorithm that uses uniformly random Prüfer sequences
+ * (see \cite Pruefer1918a). The construction of the free labelled tree uses the
+ * algorithm in \cite Alonso1995a.
  */
 class __rand_lab_free_trees {
 public:
-	/// Constructor with size of tree and seed for the random number generator.
+	/**
+	 * @brief Constructor with size of tree and seed for the random number generator.
+	 *
+	 * In case the seed given is '0', a random seed will be generated.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator.
+	 */
 	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/// Move constructor.
 	__rand_lab_free_trees(__rand_lab_free_trees&&) noexcept = default;
@@ -87,10 +89,7 @@ public:
 	__rand_lab_free_trees& operator= (__rand_lab_free_trees&&) = delete;
 #endif
 
-	/**
-	 * @brief Generates uniformly at random a free labelled tree.
-	 * @return Returns a labelled tree.
-	 */
+	/// Returns a labelled free tree chosen uniformly at random.
 	graphs::free_tree get_tree() noexcept;
 
 protected:
@@ -117,12 +116,28 @@ protected:
 /**
  * @brief Random labelled free tree generator.
  *
- * This is just a wrapper class of @ref __rand_lab_free_trees, therefore the
- * usage of this class is the same as that of class @ref __rand_lab_free_trees.
+ * This is a wrapper class of @ref __rand_lab_free_trees. Users should refrain
+ * from using said class. However, you will find the implementation details
+ * (as for algorithms and citations) in the documentation of said class.
+ *
+ * The correct usage of this class is
+ * @code
+ *		rand_lab_free_trees TreeGen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const lal::graphs::free_tree T = TreeGen.make_rand_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
-	/// See @ref __rand_lab_free_trees::__rand_lab_free_trees(uint32_t, uint32_t).
+	/**
+	 * @brief Constructor with size of tree and seed for the random number generator.
+	 *
+	 * In case the seed given is '0', a random seed will be generated.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator.
+	 */
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/// Move constructor.
@@ -131,9 +146,13 @@ public:
 	~rand_lab_free_trees() noexcept = default;
 
 protected:
-	/// See @ref __rand_lab_free_trees::get_tree.
-	inline graphs::free_tree __get_tree() noexcept
-	{ return m_Gen.get_tree(); }
+	/**
+	 * @brief Returns a labelled free tree chosen uniformly at random.
+	 *
+	 * See @ref __rand_lab_free_trees::get_tree for details.
+	 * @return Returns a labelled free tree chosen uniformly at random.
+	 */
+	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref __rand_lab_free_trees.

@@ -10,7 +10,18 @@ namespace generate {
 /**
  * @brief Base class for tree generators
  *
- * This class is simply a helper for postprocessing a generated tree.
+ * This class is simply a helper for preprocessing a generated tree. The preprocessing
+ * applied to the tree depends on whether said tree is a rooted tree or a free
+ * tree.
+ *
+ * In the following list you will find all the attributes that govern the preprocessing.
+ * Those marked with an 'r', are only for rooted trees; those marked with an 'f'
+ * are only for free trees. When marked with both, the preprocessing is applied
+ * to both types trees. The list of said attributes is:
+ * - @ref normalise_tree (rf)
+ * - @ref calculate_size_subtrees (r)
+ * - @ref calculate_tree_type (rf)
+ *
  * @param T Type of tree.
  * @param is_free This tells whether the type corresponds to a free tree or not.
  */

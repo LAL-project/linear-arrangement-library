@@ -56,8 +56,17 @@ namespace generate {
  * A projective arrangement of a directed rooted tree is one in which the
  * root is not covered by any of the tree's edges and there are no edge
  * crossings.
+ *
+ * @code
+ *		// given a tree T (of the appropriate type)
+ *		lal::generate::rand_projective_arrgements ArrGen(T);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const lal::linear_arrangement arr = ArrGen.make_rand_arrgmnt();
+ *			// ...
+ *		}
+ * @endcode
  */
-class rand_projective_arrgmnt {
+class rand_projective_arrangements {
 public:
 	/**
 	 * @brief Constructor with tree
@@ -67,7 +76,7 @@ public:
 	 * @pre The object @e t must be a rooted tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
-	rand_projective_arrgmnt(const graphs::rooted_tree& rT, uint32_t seed = 0) noexcept;
+	rand_projective_arrangements(const graphs::rooted_tree& rT, uint32_t seed = 0) noexcept;
 
 	/**
 	 * @brief Make a random projective arrangement of a rooted tree.

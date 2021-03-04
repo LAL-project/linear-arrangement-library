@@ -56,26 +56,23 @@ namespace generate {
 /**
  * @brief Random unlabelled rooted tree generator.
  *
- * Generates uniformly at random rooted unlabelled trees.
+ * <b>Users should refrain from using this class.</b> The generation of random
+ * labelled trees should be done using the wrapper class @ref rand_ulab_rooted_trees.
+ * This class, however, contains the actual code to generate labelled rooted trees
+ * uniformly at random.
  *
  * Every call to @ref get_tree generates rooted unlabelled trees uniformly at
  * random using the @e ranrut procedure (see \cite Nijenhuis1978a, chapter 29).
- *
- * Users interested in generating trees of large size (of 100 nodes
- * or more) are recommended to take a look at @ref clear method.
- *
- * The correct usage of this class is
- * @code
- *		rand_ulab_rooted_trees TreeGen(n);
- *		for (int i = 0; i < 100; ++i) {
- *			lal::graphs::rooted_tree T = TreeGen.get_tree();
- *			// ...
- *		}
- * @endcode
  */
 class __rand_ulab_rooted_trees {
 public:
-	/// Constructor with size of tree and seed for the random number generator.
+	/**
+	 * @brief Constructor with size of tree and seed for the random number generator.
+	 *
+	 * In case the seed given is '0', a random seed will be generated.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator.
+	 */
 	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/// Move constructor.
 	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&&) noexcept = default;
@@ -195,12 +192,28 @@ protected:
 /**
  * @brief Random unlabelled rooted tree generator.
  *
- * This is just a wrapper class of @ref __rand_ulab_rooted_trees, therefore the
- * usage of this class is the same as that of class @ref __rand_ulab_rooted_trees.
+ * This is a wrapper class of @ref __rand_ulab_rooted_trees. Users should refrain
+ * from using said class. However, you will find the implementation details
+ * (as for algorithms and citations) in the documentation of said class.
+ *
+ * The correct usage of this class is
+ * @code
+ *		rand_ulab_rooted_trees TreeGen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const lal::graphs::rooted_tree T = TreeGen.get_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
-	/// See @ref __rand_ulab_rooted_trees::__rand_ulab_rooted_trees(uint32_t, uint32_t) for details.
+	/**
+	 * @brief Constructor with size of tree and seed for the random number generator.
+	 *
+	 * In case the seed given is '0', a random seed will be generated.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator.
+	 */
 	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/// Move constructor.
@@ -209,7 +222,12 @@ public:
 	~rand_ulab_rooted_trees() noexcept = default;
 
 protected:
-	/// See @ref __rand_ulab_rooted_trees::get_tree for details.
+	/**
+	 * @brief Returns a labelled rooted tree chosen uniformly at random.
+	 *
+	 * See @ref __rand_ulab_rooted_trees::get_tree for details.
+	 * @return Returns a labelled rooted tree chosen uniformly at random.
+	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:

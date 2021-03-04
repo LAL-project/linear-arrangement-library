@@ -64,10 +64,11 @@ namespace generate {
  *
  * The correct usage of this class is
  * @code
- *		all_proj_arr ArrGen(n);
+ *		// given a projective tree T
+ *		all_projective_arr ArrGen(T);
  *		while (ArrGen.has_next()) {
  *			ArrGen.next();
- *			lal::linearrgmnt arr = ArrGen.get_tree();
+ *			lal::linearrgmnt arr = ArrGen.get_arrangement();
  *			// ...
  *		}
  * @endcode

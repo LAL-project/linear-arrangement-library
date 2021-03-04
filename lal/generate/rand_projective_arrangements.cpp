@@ -58,7 +58,7 @@ using namespace internal;
 
 namespace generate {
 
-rand_projective_arrgmnt::rand_projective_arrgmnt
+rand_projective_arrangements::rand_projective_arrangements
 (const rooted_tree& rT, uint32_t seed) noexcept
 	: m_rT(rT)
 {
@@ -81,7 +81,7 @@ rand_projective_arrgmnt::rand_projective_arrgmnt
 	}
 }
 
-linear_arrangement rand_projective_arrgmnt::make_rand_arrgmnt() {
+linear_arrangement rand_projective_arrangements::make_rand_arrgmnt() {
 	if (m_rT.num_nodes() == 1) {
 		return linear_arrangement(1, 0);
 	}
