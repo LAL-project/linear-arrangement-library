@@ -52,15 +52,15 @@ namespace generate {
 /**
  * @brief Exhaustive labelled rooted tree generator.
  *
- * This class is based on the labelled free trees generator (see
- * @ref all_lab_free_trees).
+ * This class enumerates all labelled rooted trees of a given number of vertices.
+ * It is based on the labelled free trees generator (see @ref all_lab_free_trees).
  *
  * The correct usage of this class is
  * @code
  *		all_lab_rooted_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
- *			lal::graphs::rooted_tree T = TreeGen.get_tree();
+ *			const lal::graphs::rooted_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode
