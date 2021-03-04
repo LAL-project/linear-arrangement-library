@@ -65,7 +65,9 @@ namespace lal {
 using namespace graphs;
 
 namespace internal {
+namespace dmin_Chung {
 
+/*
 int calculate_q(uint32_t n, const ordering& ord) {
 	const uint32_t k = to_uint32(ord.size()) - 1;
 	const uint32_t t_0 = ord[0].first;
@@ -94,7 +96,42 @@ int calculate_q(uint32_t n, const ordering& ord) {
 	}
 	return q;
 }
+*/
 
+inline int calculate_q(uint32_t n, const ordering& ord) {
+#if defined DEBUG
+	assert(ord.size() > 0);
+#endif
+
+	const uint32_t k = to_uint32(ord.size()) - 1;
+	const uint32_t t_0 = ord[0].first;
+
+	// Maximum possible p_alpha
+	uint32_t q = k/2;
+	uint32_t sum = 0;
+	for (uint32_t i = 0; i <= 2*q; ++i) {
+		sum += ord[i].first;
+	}
+
+	uint32_t z = n - sum;
+	uint32_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
+	// t_0 >= t_1 >= ... >= t_k
+	uint32_t t_2q = ord[2*q].first;
+
+	while (t_2q <= tricky_formula) {
+		z += ord[2*q].first;
+
+		if (q > 0) { z += ord[2*q - 1].first; }
+		tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
+
+		if (q == 0) { return -1; }
+		--q;
+		t_2q = ord[2*q].first;
+	}
+	return to_int32(q);
+}
+
+/*
 int calculate_p(uint32_t n, const ordering& ord) {
 	if (ord.size() < 2) {
 		return -1;
@@ -124,7 +161,36 @@ int calculate_p(uint32_t n, const ordering& ord) {
 		}
 	}
 	return p;
+}
+*/
 
+inline int calculate_p(uint32_t n, const ordering& ord) {
+	if (ord.size() < 2) { return -1; }
+
+	// number of subtrees (T_0, T_1, ..., T_k)
+	const uint32_t k = to_uint32(ord.size()) - 1;
+	const uint32_t t_0 = ord[0].first;
+
+	uint32_t p = (k - 1)/2;
+
+	uint32_t sum = 0;
+	for (uint32_t i = 0; i <= 2*p + 1; ++i) {
+		sum += ord[i].first;
+	}
+
+	uint32_t y = n - sum;
+	uint32_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
+	uint32_t t_2p_plus_1 = ord[2*p + 1].first;
+
+	while (t_2p_plus_1 <= tricky_formula) {
+		y = y + ord[2*p + 1].first + ord[2*p].first;
+		tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
+
+		if (p == 0) { return -1; }
+		--p;
+		t_2p_plus_1 = ord[2*p + 1].first;
+	}
+	return to_int32(p);
 }
 
 vector<uint32_t> get_P(uint32_t p, uint32_t i) {
@@ -222,7 +288,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 // start: position where to start placing the vertices (the leftmost position
 //     in the mla for the subtree). We could also have an anologous finish
 //     (rightmost position) but it is not needed.
-void calculate_mla_chung(
+void calculate_mla(
 	free_tree& t,
 	char root, node one_node, position start,
 	linear_arrangement& mla, uint32_t& cost
@@ -271,8 +337,8 @@ void calculate_mla_chung(
 
 			uint32_t c1 = 0;
 			uint32_t c2 = 0;
-			calculate_mla_chung(t, RIGHT_ANCHOR, t_0, start, mla, c1);
-			calculate_mla_chung(t, LEFT_ANCHOR, u, start + n_0, mla, c2);
+			calculate_mla(t, RIGHT_ANCHOR, t_0, start, mla, c1);
+			calculate_mla(t, LEFT_ANCHOR, u, start + n_0, mla, c2);
 			cost = c1 + c2 + 1;
 
 			t.add_edge(u - 1, t_0 - 1, false, false);
@@ -293,12 +359,12 @@ void calculate_mla_chung(
 
 			// Central tree size
 			uint32_t size_rest_of_trees = 0;
-			for (uint32_t i = 2*q + 1; i < ord.size(); ++i) {
+			for (uint32_t i = 2*uq + 1; i < ord.size(); ++i) {
 				size_rest_of_trees += ord[i].first;
 			}
 
 			for (uint32_t i = 0; i <= 2*uq; ++i) {
-				const vector<uint32_t> Q_i = get_Q(q, i);
+				const vector<uint32_t> Q_i = get_Q(uq, i);
 
 				t.add_edge(u - 1, ord[i].second - 1);
 
@@ -311,7 +377,7 @@ void calculate_mla_chung(
 					const position pos_in_ord = Q_i[j];
 
 					uint32_t c_i_j = 0;
-					calculate_mla_chung(
+					calculate_mla(
 						t,
 						RIGHT_ANCHOR, ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j
@@ -322,16 +388,16 @@ void calculate_mla_chung(
 
 				// Central part of the arrangement
 				uint32_t c_i_j = 0;
-				calculate_mla_chung(t, NO_ANCHOR, u, start_aux, arr_aux, c_i_j);
+				calculate_mla(t, NO_ANCHOR, u, start_aux, arr_aux, c_i_j);
 				c_i += c_i_j;
 
 				// Right part of the arrangement
 				start_aux += ord[i].first + 1 + size_rest_of_trees;
-				for (uint32_t j = q + 1; j <= 2*uq; ++j) {
+				for (uint32_t j = uq + 1; j <= 2*uq; ++j) {
 					const position pos_in_ord = Q_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla_chung(
+					calculate_mla(
 						t,
 						LEFT_ANCHOR, ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
@@ -341,14 +407,14 @@ void calculate_mla_chung(
 				}
 
 				// Adding parts of the anchors over trees nearer to the central tree
-				c_i += size_tree*q;
+				c_i += size_tree*uq;
 
 				uint32_t subs = 0;
 				for (uint32_t j = 1; j <= uq; ++j) {
-					subs += (q - j + 1)*(ord[Q_i[j]].first + ord[Q_i[2*q - j + 1]].first);
+					subs += (uq - j + 1)*(ord[Q_i[j]].first + ord[Q_i[2*uq - j + 1]].first);
 				}
 				c_i -= subs;
-				c_i += q; // NOT IN CHUNG'S PAPER
+				c_i += uq; // NOT IN CHUNG'S PAPER
 
 				if (c_i < cost) {
 					cost = c_i;
@@ -380,8 +446,8 @@ void calculate_mla_chung(
 
 			uint32_t c1 = 0;
 			uint32_t c2 = 0;
-			calculate_mla_chung(t, RIGHT_ANCHOR, t_0, start, mla, c1);
-			calculate_mla_chung(t, NO_ANCHOR, one_node, start + n_0, mla, c2);
+			calculate_mla(t, RIGHT_ANCHOR, t_0, start, mla, c1);
+			calculate_mla(t, NO_ANCHOR, one_node, start + n_0, mla, c2);
 			cost = c1 + c2 + size_tree - ord[0].first;
 
 			t.add_edge(one_node - 1, t_0 - 1, false, false);
@@ -402,12 +468,12 @@ void calculate_mla_chung(
 
 			// Central tree size
 			uint32_t size_rest_of_trees= 0;
-			for (uint32_t i = 2*p + 2; i < ord.size() ;++i) {
+			for (uint32_t i = 2*up + 2; i < ord.size() ;++i) {
 				size_rest_of_trees += ord[i].first;
 			}
 
 			for (uint32_t i = 0; i <= 2*up + 1; ++i) {
-				const vector<uint32_t> P_i = get_P(p, i);
+				const vector<uint32_t> P_i = get_P(up, i);
 				t.add_edge(one_node - 1, ord[i].second - 1, false, false);
 
 				uint32_t c_i = 0;
@@ -419,7 +485,7 @@ void calculate_mla_chung(
 					const position pos_in_ord = P_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla_chung(
+					calculate_mla(
 						t,
 						RIGHT_ANCHOR, ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
@@ -430,7 +496,7 @@ void calculate_mla_chung(
 
 				// Central part of the arrangement
 				uint32_t c_i_j = 0;
-				calculate_mla_chung(
+				calculate_mla(
 					t,
 					NO_ANCHOR, one_node, start_aux,
 					arr_aux, c_i_j
@@ -440,11 +506,11 @@ void calculate_mla_chung(
 				c_i += c_i_j;
 
 				// Right part of the arrangement
-				for (uint32_t j = p + 1; j <= 2*up + 1; ++j) {
+				for (uint32_t j = up + 1; j <= 2*up + 1; ++j) {
 					const position pos_in_ord = P_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla_chung(
+					calculate_mla(
 						t,
 						LEFT_ANCHOR, ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
@@ -454,15 +520,15 @@ void calculate_mla_chung(
 				}
 
 				// Adding parts of the anchors over trees nearer to the central tree
-				c_i += size_tree*(p + 1);
-				c_i -= (p + 1)*ord[P_i[P_i.size()-1]].first;
+				c_i += size_tree*(up + 1);
+				c_i -= (up + 1)*ord[P_i[P_i.size()-1]].first;
 
 				uint32_t subs = 0;
 				for (uint32_t j = 1; j <= up; ++j) {
-					subs += (p - j + 1)*(ord[P_i[j]].first + ord[P_i[2*p - j + 1]].first);
+					subs += (up - j + 1)*(ord[P_i[j]].first + ord[P_i[2*up - j + 1]].first);
 				}
 				c_i -= subs;
-				c_i += p; // NOT IN CHUNG'S PAPER
+				c_i += up; // NOT IN CHUNG'S PAPER
 
 				if (c_i < cost) {
 					cost = c_i;
@@ -500,6 +566,8 @@ void calculate_mla_chung(
 	}
 }
 
+} // -- namespaec dmin_chung
+
 pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -509,7 +577,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 	linear_arrangement arr(t.num_nodes(),0);
 
 	free_tree T = t;
-	calculate_mla_chung(T, NO_ANCHOR, 1, 0, arr, c);
+	dmin_Chung::calculate_mla(T, NO_ANCHOR, 1, 0, arr, c);
 
 	return make_pair(c, arr);
 }

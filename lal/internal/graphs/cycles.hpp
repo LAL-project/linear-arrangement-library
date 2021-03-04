@@ -61,8 +61,8 @@ namespace __lal {
 inline bool __find_cycle
 (
 	const graphs::directed_graph& g, node u,
-	char * __restrict__ visited,
-	char * __restrict__ in_stack
+	char * const __restrict__ visited,
+	char * const __restrict__ in_stack
 )
 {
 	if (visited[u]) { return false; }
@@ -91,8 +91,8 @@ inline bool __find_cycle
  */
 inline bool has_directed_cycles(
 	const graphs::directed_graph& g,
-	char * __restrict__ vis,
-	char * __restrict__ in_stack
+	char * const __restrict__ vis,
+	char * const __restrict__ in_stack
 )
 {
 	const uint32_t n = g.num_nodes();

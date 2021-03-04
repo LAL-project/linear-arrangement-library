@@ -65,9 +65,10 @@ namespace lal {
 using namespace graphs;
 
 namespace internal {
+namespace dmin_Shiloach {
 
 uint32_t calculate_p_alpha(
-	const uint32_t n, const char anchored, const ordering& ord,
+	const uint32_t n, const unsigned char anchored, const ordering& ord,
 	uint32_t& s_0, uint32_t& s_1
 )
 {
@@ -156,7 +157,7 @@ uint32_t calculate_p_alpha(
 // start: position where to start placing the vertices (the leftmost position
 //     in the mla for the subtree). We could also have an anologous finish
 //     (rightmost position) but it is not needed.
-void calculate_mla_YS(
+void calculate_mla(
 	free_tree& t,
 	char alpha, node root_or_anchor, position start,
 	linear_arrangement& mla, uint32_t& cost
@@ -234,10 +235,17 @@ void calculate_mla_YS(
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
 
 	uint32_t c1 = 0;
-	calculate_mla_YS(t, RIGHT_ANCHOR, v_0, start, mla, c1);
+	calculate_mla(t, RIGHT_ANCHOR, v_0, start, mla, c1);
 
 	uint32_t c2 = 0;
-	calculate_mla_YS(t, (alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR), v_star, start + n_0, mla, c2);
+	calculate_mla(
+		t,
+		(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR),
+		v_star,
+		start + n_0,
+		mla,
+		c2
+	);
 
 	// Cost for recursion A
 	cost = (alpha == NO_ANCHOR ? c1 + c2 + 1 : c1 + c2 + size_tree - n_0);
@@ -247,8 +255,9 @@ void calculate_mla_YS(
 
 	// Recursion B
 
-	// left or right anchored is not important for the cost
-	const char anchored =
+	// Left or right anchored is not important for the cost.
+	// Note that the result returned is either 0 or 1.
+	const unsigned char anchored =
 		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
 
 	uint32_t s_0 = 0;
@@ -258,7 +267,7 @@ void calculate_mla_YS(
 	uint32_t cost_B = 0;
 	linear_arrangement mla_B(mla);
 
-	if (p_alpha != 0) {
+	if (p_alpha > 0) {
 		vector<edge> edges(2*p_alpha - anchored);
 
 		// number of nodes not in the central tree
@@ -276,24 +285,24 @@ void calculate_mla_YS(
 		for (uint32_t i = 1; i <= 2*p_alpha - anchored; i = i + 2) {
 			uint32_t c_aux = 0;
 			const node r = ord[i].second;
-			calculate_mla_YS(t, RIGHT_ANCHOR, r, start_aux, mla_B, c_aux);
+			calculate_mla(t, RIGHT_ANCHOR, r, start_aux, mla_B, c_aux);
 			cost_B += c_aux;
 			start_aux += ord[i].first;
 		}
 
 		// T-(T_1, T_2, ...)
 		uint32_t c = 0;
-		calculate_mla_YS(t, NO_ANCHOR, v_star, start_aux, mla_B, c);
+		calculate_mla(t, NO_ANCHOR, v_star, start_aux, mla_B, c);
 		// number of nodes in the central tree
 		const uint32_t n_central_tree = size_tree - n_not_central_tree;
 		cost_B += c;
 		start_aux += n_central_tree;
 
 		// ..., T_4, T_2
-		for (uint32_t i = 2*p_alpha - 2*anchored; i >= 2; i = i - 2) {
+		for (uint32_t i = 2*(p_alpha - anchored); i >= 2; i = i - 2) {
 			uint32_t c_aux = 0;
 			const node r = ord[i].second;
-			calculate_mla_YS(t, LEFT_ANCHOR, r, start_aux, mla_B, c_aux);
+			calculate_mla(t, LEFT_ANCHOR, r, start_aux, mla_B, c_aux);
 			cost_B += c_aux;
 			start_aux += ord[i].first;
 		}
@@ -339,6 +348,8 @@ void calculate_mla_YS(
 	}
 }
 
+} // -- namespace dmin_shiloach
+
 pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -348,7 +359,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 	linear_arrangement arrangement(t.num_nodes(),0);
 
 	free_tree T = t;
-	calculate_mla_YS(T, NO_ANCHOR, 1, 0, arrangement, c);
+	dmin_Shiloach::calculate_mla(T, NO_ANCHOR, 1, 0, arrangement, c);
 
 	return make_pair(c, arrangement);
 }

@@ -59,7 +59,7 @@ using namespace graphs;
 namespace internal {
 
 free_tree level_sequence_to_ftree
-(uint32_t const *L, uint32_t n, bool normalise, bool check)
+(const uint32_t * const L, uint32_t n, bool normalise, bool check)
 noexcept
 {
 #if defined DEBUG
@@ -111,7 +111,7 @@ noexcept
 { return level_sequence_to_ftree(&L[0], n, normalise, check); }
 
 free_tree Prufer_sequence_to_ftree
-(uint32_t const *seq, uint32_t n, bool normalise, bool check)
+(const uint32_t * const seq, uint32_t n, bool normalise, bool check)
 noexcept
 {
 	// initialisation
