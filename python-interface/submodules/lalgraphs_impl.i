@@ -1,4 +1,6 @@
 
+%include documentation.i
+
 %{
 
 // C++ includes

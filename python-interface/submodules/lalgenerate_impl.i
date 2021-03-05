@@ -1,3 +1,6 @@
+
+%include documentation.i
+
 %{
 
 // lal includes

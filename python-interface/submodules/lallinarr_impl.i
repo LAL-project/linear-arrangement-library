@@ -1,4 +1,6 @@
 
+%include documentation.i
+
 %{
 #include <lal/graphs.hpp>
 #include <lal/linarr.hpp>

@@ -1,4 +1,6 @@
 
+%include documentation.i
+
 %{
 #include <lal/lal_version.hpp>
 %}
