@@ -53,12 +53,18 @@ using namespace graphs;
 
 namespace generate {
 
+/* PUBLIC */
+
+/* CONSTRUCTORS */
+
 all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept
 	: tree_gen<rooted_tree>(n),
 	  m_gen_lab_free_tree(m_n)
 {
 	init();
 }
+
+/* MODIFIERS */
 
 void all_lab_rooted_trees::next() noexcept {
 	if (m_cur_root == m_n - 1) {

@@ -53,7 +53,9 @@ using namespace graphs;
 
 namespace generate {
 
-// PUBLIC
+/* PUBLIC */
+
+/* CONSTRUCTORS */
 
 all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
 	: tree_gen<free_tree>(_n),
@@ -62,6 +64,8 @@ all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
 {
 	init();
 }
+
+/* MODIFIERS */
 
 void all_lab_free_trees::next() noexcept {
 	if (m_n <= 2) {

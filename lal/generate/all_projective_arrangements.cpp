@@ -56,6 +56,10 @@ using namespace internal;
 
 namespace generate {
 
+/* PUBLIC */
+
+/* CONSTRUCTORS */
+
 all_projective_arrangements::all_projective_arrangements
 (const rooted_tree& rT) noexcept : m_rT(rT)
 {
@@ -67,6 +71,17 @@ all_projective_arrangements::all_projective_arrangements
 	m_intervals = vector<vector<node>>(m_rT.num_nodes());
 	initialise_intervals_tree();
 }
+
+/* GETTERS */
+
+linear_arrangement all_projective_arrangements::get_arrangement() const {
+	return (m_rT.num_nodes() == 1 ?
+		linear_arrangement(1,0) :
+		make_arrangement_intervals(m_rT, m_intervals)
+	);
+}
+
+/* MODIFIERS */
 
 bool all_projective_arrangements::has_next() const {
 	return m_has_next;
@@ -93,13 +108,6 @@ void all_projective_arrangements::next() {
 	if (u == m_rT.num_nodes() and not has_perm) {
 		m_has_next = false;
 	}
-}
-
-linear_arrangement all_projective_arrangements::get_arrangement() const {
-	return (m_rT.num_nodes() == 1 ?
-		linear_arrangement(1,0) :
-		make_arrangement_intervals(m_rT, m_intervals)
-	);
 }
 
 /* PRIVATE */
