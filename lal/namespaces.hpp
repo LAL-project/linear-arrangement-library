@@ -219,7 +219,7 @@ namespace lal {
  *
  * - 3: rooted/free -- Generate rooted or free trees.
  *
- * - 2: lab/ulab .. Generate labelled or unlabelled free/rooted trees.
+ * - 2: lab/ulab -- Generate labelled or unlabelled free/rooted trees.
  *
  * - 1: rand/all -- Indicates whether the generation is to be random (rand) or
  * exhaustive (all). An exhaustive generation will enumerate all lab/ulab rooted/free
@@ -267,7 +267,7 @@ namespace lal {
  *
  * Again, the names for these classes are also self-explanatory:
  * @verbatim
-1_2_arrgmnt
+1_2_arrangement
    @endverbatim
  *
  * The numbers are placeholders for the following:
@@ -285,7 +285,7 @@ namespace lal {
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
- *		// given a tree T (of the appropriate type)
+ *		// given a tree T (of the appropriate type -- indicated with the '2')
  *		lal::generate::rand_2_arrangement ArrGen(T);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::linear_arrangement arr = ArrGen.make_rand_arrgmnt();
@@ -294,8 +294,8 @@ namespace lal {
  * @endcode
  * To enumerate all arrangements:
  * @code
- *		// given a tree T (of the appropriate type)
- *		all_2_arrangement ArrGen(T);
+ *		// given a tree T (of the appropriate type -- indicated with the '2')
+ *		lal::generate::all_2_arrangement ArrGen(T);
  *		while (ArrGen.has_next()) {
  *			ArrGen.next();
  *			const lal::linearrgmnt arr = ArrGen.get_arrangement();
