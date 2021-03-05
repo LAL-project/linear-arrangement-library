@@ -81,13 +81,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	__rand_lab_rooted_trees(const __rand_lab_rooted_trees& Gen) noexcept = default;
+	__rand_lab_rooted_trees(const __rand_lab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	__rand_lab_rooted_trees(__rand_lab_rooted_trees&& Gen) noexcept = default;
+	__rand_lab_rooted_trees(__rand_lab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
 	~__rand_lab_rooted_trees() = default;
@@ -142,7 +142,8 @@ public:
 	 *
 	 * In case the seed given is '0', a random seed will be generated.
 	 * @param n Number of nodes.
-	 * @param seed The seed used for the random generator.
+	 * @param seed The seed used for the random generator. If the seed is 0 then
+	 * a random seed is generated and used.
 	 */
 	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::rooted_tree>(n), m_Gen(n, seed) { }
@@ -150,16 +151,16 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	rand_lab_rooted_trees(const rand_lab_rooted_trees& Gen) noexcept = default;
+	rand_lab_rooted_trees(const rand_lab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	rand_lab_rooted_trees(rand_lab_rooted_trees&& Gen) noexcept = default;
+	rand_lab_rooted_trees(rand_lab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	~rand_lab_rooted_trees() noexcept = default;
+	~rand_lab_rooted_trees() = default;
 
 protected:
 	/**

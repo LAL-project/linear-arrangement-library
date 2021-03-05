@@ -93,13 +93,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled free tree generator..
 	 */
-	all_ulab_free_trees(const all_ulab_free_trees& Gen) noexcept = default;
+	all_ulab_free_trees(const all_ulab_free_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive unlabelled free tree generator..
 	 */
-	all_ulab_free_trees(all_ulab_free_trees&& Gen) noexcept = default;
+	all_ulab_free_trees(all_ulab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
 	~all_ulab_free_trees() noexcept = default;

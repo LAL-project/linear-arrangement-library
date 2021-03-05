@@ -51,36 +51,35 @@ public:
 	 * @param n Number of nodes
 	 */
 	tree_gen(uint32_t n) noexcept : m_n(n) { }
-
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen(const tree_gen& Gen) noexcept = default;
-
+	tree_gen(const tree_gen& Gen) = default;
+#ifndef SWIG
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen(tree_gen&& Gen) noexcept = default;
-
+	tree_gen(tree_gen&& Gen) = default;
+#endif
 	/// Default destructor.
-	virtual ~tree_gen() noexcept = default;
+	virtual ~tree_gen() = default;
 
 	/* OPERATORS */
 
+#ifndef SWIG
 	/**
 	 * @brief Default copy assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen& operator= (const tree_gen& Gen) noexcept = default;
-
+	tree_gen& operator= (const tree_gen& Gen) = default;
 	/**
 	 * @brief Default move assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen& operator= (tree_gen&& Gen) noexcept = default;
-
+	tree_gen& operator= (tree_gen&& Gen) = default;
+#endif
 	/* GETTERS */
 
 	/**

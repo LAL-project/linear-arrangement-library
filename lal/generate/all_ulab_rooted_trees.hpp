@@ -95,13 +95,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator..
 	 */
-	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) noexcept = default;
+	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator..
 	 */
-	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) noexcept = delete;
+	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) = delete;
 #endif
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;

@@ -81,16 +81,16 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	__rand_lab_free_trees(const __rand_lab_free_trees& Gen) noexcept = default;
+	__rand_lab_free_trees(const __rand_lab_free_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	__rand_lab_free_trees(__rand_lab_free_trees&& Gen) noexcept = default;
+	__rand_lab_free_trees(__rand_lab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	virtual ~__rand_lab_free_trees() noexcept = default;
+	virtual ~__rand_lab_free_trees() = default;
 
 	/* GETTERS */
 
@@ -143,7 +143,8 @@ public:
 	 *
 	 * In case the seed given is '0', a random seed will be generated.
 	 * @param n Number of nodes.
-	 * @param seed The seed used for the random generator.
+	 * @param seed The seed used for the random generator. If the seed is 0 then
+	 * a random seed is generated and used.
 	 */
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
@@ -151,16 +152,16 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	rand_lab_free_trees(const rand_lab_free_trees& Gen) noexcept = default;
+	rand_lab_free_trees(const rand_lab_free_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	rand_lab_free_trees(rand_lab_free_trees&& Gen) noexcept = default;
+	rand_lab_free_trees(rand_lab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	~rand_lab_free_trees() noexcept = default;
+	~rand_lab_free_trees() = default;
 
 protected:
 	/**

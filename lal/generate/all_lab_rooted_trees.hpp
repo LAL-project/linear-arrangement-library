@@ -78,16 +78,16 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive labelled rooted tree generator..
 	 */
-	all_lab_rooted_trees(const all_lab_rooted_trees& Gen) noexcept = default;
+	all_lab_rooted_trees(const all_lab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	all_lab_rooted_trees(all_lab_rooted_trees&& Gen) noexcept = default;
+	all_lab_rooted_trees(all_lab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	~all_lab_rooted_trees() noexcept = default;
+	~all_lab_rooted_trees() = default;
 
 	/* GETTERS */
 

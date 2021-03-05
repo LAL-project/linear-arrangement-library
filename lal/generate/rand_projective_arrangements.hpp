@@ -73,8 +73,8 @@ public:
 	/**
 	 * @brief Constructor with tree
 	 * @param rT Rooted tree
-	 * @param seed Boolean value that indicates whether the random number
-	 * generator should be seeded or not.
+	 * @param seed The seed used for the random generator. If the seed is 0 then
+	 * a random seed is generated and used.
 	 * @pre The object @e t must be a rooted tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
@@ -83,14 +83,16 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(const rand_projective_arrangements& Gen) noexcept = default;
+	rand_projective_arrangements(const rand_projective_arrangements& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(rand_projective_arrangements&& Gen) noexcept = default;
+	rand_projective_arrangements(rand_projective_arrangements&& Gen) = default;
 #endif
+	/// Default destructor.
+	~rand_projective_arrangements() = default;
 
 	/* GETTERS */
 

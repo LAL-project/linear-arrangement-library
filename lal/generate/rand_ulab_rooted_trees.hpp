@@ -73,23 +73,24 @@ public:
 	 *
 	 * In case the seed given is '0', a random seed will be generated.
 	 * @param n Number of nodes.
-	 * @param seed The seed used for the random generator.
+	 * @param seed The seed used for the random generator. If the seed is 0 then
+	 * a random seed is generated and used.
 	 */
 	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	__rand_ulab_rooted_trees(const __rand_ulab_rooted_trees& Gen) noexcept = default;
+	__rand_ulab_rooted_trees(const __rand_ulab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&& Gen) noexcept = default;
+	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&& Gen) = default;
 #endif
 	/// Destructor.
-	virtual ~__rand_ulab_rooted_trees() noexcept = default;
+	virtual ~__rand_ulab_rooted_trees() = default;
 
 	/* GETTERS */
 
@@ -226,13 +227,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen) noexcept = default;
+	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	rand_ulab_rooted_trees(rand_ulab_rooted_trees&& Gen) noexcept = default;
+	rand_ulab_rooted_trees(rand_ulab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
 	~rand_ulab_rooted_trees() noexcept = default;

@@ -89,13 +89,13 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive projective arrangement generator..
 	 */
-	all_projective_arrangements(const all_projective_arrangements& Gen) noexcept = default;
+	all_projective_arrangements(const all_projective_arrangements& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive projective arrangement generator..
 	 */
-	all_projective_arrangements(all_projective_arrangements&& Gen) noexcept = default;
+	all_projective_arrangements(all_projective_arrangements&& Gen) = default;
 #endif
 
 	~all_projective_arrangements() noexcept = default;
