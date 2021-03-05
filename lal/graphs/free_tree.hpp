@@ -129,7 +129,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	free_tree& add_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
