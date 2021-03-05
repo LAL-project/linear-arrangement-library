@@ -16,6 +16,7 @@ DOCUMENTATION_FILE = submodules/documentation.i
 # name_WRAP			# with-directory wrapper (.cxx) file
 # _name_SO			# without-directory shared (.so / .pyd) file
 # name_SO			# with-directory shared (.so / .pyd) file
+# name_MOD_DOCS		# file with this module's documentation
 
 # ------------
 # ENUMERATIONS
@@ -29,6 +30,7 @@ DSE_PY_FILE		= $(ARCH_DIR)/$(_DSE_PF)
 DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
 _DSE_SO			= _$(DSE_INAME).$(SO_EXT)
 DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
+DSE_MOD_DOCS	= 
 
 # -- syntactic dependency structure type module
 SYN_DEP_STR_TYPE_MAIN_INT	= submodules/enums/$(SYN_DEP_STR_TYPE_INAME).i
@@ -40,6 +42,7 @@ SYN_DEP_STR_TYPE_PY_FILE	= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_PF)
 SYN_DEP_STR_TYPE_WRAP		= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_INAME)_wrap
 _SYN_DEP_STR_TYPE_SO		= _$(SYN_DEP_STR_TYPE_INAME).$(SO_EXT)
 SYN_DEP_STR_TYPE_SO			= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_SO)
+SYN_DEP_STR_TYPE_MOD_DOCS	=
 
 # -- tree_type module
 TREE_TYPE_MAIN_INT	= submodules/enums/$(TREE_TYPE_INAME).i
@@ -51,6 +54,7 @@ TREE_TYPE_PY_FILE	= $(ARCH_DIR)/$(_TREE_TYPE_PF)
 TREE_TYPE_WRAP		= $(ARCH_DIR)/$(TREE_TYPE_INAME)_wrap
 _TREE_TYPE_SO		= _$(TREE_TYPE_INAME).$(SO_EXT)
 TREE_TYPE_SO		= $(ARCH_DIR)/$(_TREE_TYPE_SO)
+TREE_TYPE_MOD_DOCS	=
 
 # -- algorithm_crossings module
 ALG_C_MAIN_INT	= submodules/enums/$(ALG_C_INAME).i
@@ -62,6 +66,7 @@ ALG_C_PY_FILE	= $(ARCH_DIR)/$(_ALG_C_PF)
 ALG_C_WRAP		= $(ARCH_DIR)/$(ALG_C_INAME)_wrap
 _ALG_C_SO		= _$(ALG_C_INAME).$(SO_EXT)
 ALG_C_SO		= $(ARCH_DIR)/$(_ALG_C_SO)
+ALG_C_MOD_DOCS	=
 
 # -- algorithm_Dmin module
 ALG_DMIN_MAIN_INT	= submodules/enums/$(ALG_DMIN_INAME).i
@@ -73,6 +78,7 @@ ALG_DMIN_PY_FILE	= $(ARCH_DIR)/$(_ALG_DMIN_PF)
 ALG_DMIN_WRAP		= $(ARCH_DIR)/$(ALG_DMIN_INAME)_wrap
 _ALG_DMIN_SO		= _$(ALG_DMIN_INAME).$(SO_EXT)
 ALG_DMIN_SO			= $(ARCH_DIR)/$(_ALG_DMIN_SO)
+ALG_DMIN_MOD_DOCS	=
 
 # -----------
 # DEFINITIONS
@@ -86,6 +92,7 @@ DEFS_PY_FILE	= $(ARCH_DIR)/$(_DEFS_PF)
 DEFS_WRAP		= $(ARCH_DIR)/$(DEFS_INAME)_wrap
 _DEFS_SO		= _$(DEFS_INAME).$(SO_EXT)
 DEFS_SO			= $(ARCH_DIR)/$(_DEFS_SO)
+DEFS_MOD_DOCS	=
 
 # ----------
 # NAMESPACES
@@ -99,6 +106,7 @@ GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
 GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
 _GEN_SO			= _$(GEN_INAME).$(SO_EXT)
 GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
+GEN_MOD_DOCS	= namespaces/generate.py
 
 # -- graphs module
 GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
@@ -109,6 +117,7 @@ GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
 GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
 _GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
 GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
+GRAPHS_MOD_DOCS	= namespaces/graphs.py
 
 # -- io module
 IO_MAIN_INT		= submodules/$(IO_INAME).i
@@ -121,6 +130,7 @@ IO_PY_FILE		= $(ARCH_DIR)/$(_IO_PF)
 IO_WRAP			= $(ARCH_DIR)/$(IO_INAME)_wrap
 _IO_SO			= _$(IO_INAME).$(SO_EXT)
 IO_SO			= $(ARCH_DIR)/$(_IO_SO)
+IO_MOD_DOCS		= namespaces/io.py
 
 # -- iterators module
 ITER_MAIN_INT	= submodules/$(ITER_INAME).i
@@ -131,6 +141,7 @@ ITER_PY_FILE	= $(ARCH_DIR)/$(_ITER_PF)
 ITER_WRAP		= $(ARCH_DIR)/$(ITER_INAME)_wrap
 _ITER_SO		= _$(ITER_INAME).$(SO_EXT)
 ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
+ITER_MOD_DOCS	= namespaces/iterators.py
 
 # -- linarr module
 LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
@@ -143,6 +154,7 @@ LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
 LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
 _LINARR_SO		= _$(LINARR_INAME).$(SO_EXT)
 LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
+LINARR_MOD_DOCS	= namespaces/linarr.py
 
 # -- numeric module
 NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
@@ -153,6 +165,7 @@ NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
 NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
 _NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
 NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
+NMRC_MOD_DOCS	= namespaces/numeric.py
 
 # -- properties module
 PROP_MAIN_INT	= submodules/$(PROP_INAME).i
@@ -163,6 +176,7 @@ PROP_PY_FILE	= $(ARCH_DIR)/$(_PROP_PF)
 PROP_WRAP		= $(ARCH_DIR)/$(PROP_INAME)_wrap
 _PROP_SO		= _$(PROP_INAME).$(SO_EXT)
 PROP_SO			= $(ARCH_DIR)/$(_PROP_SO)
+PROP_MOD_DOCS	= namespaces/properties.py
 
 # -- utilities module
 UTILS_MAIN_INT	= submodules/$(UTILS_INAME).i
@@ -173,6 +187,7 @@ UTILS_PY_FILE	= $(ARCH_DIR)/$(_UTILS_PF)
 UTILS_WRAP		= $(ARCH_DIR)/$(UTILS_INAME)_wrap
 _UTILS_SO		= _$(UTILS_INAME).$(SO_EXT)
 UTILS_SO		= $(ARCH_DIR)/$(_UTILS_SO)
+UTILS_MOD_DOCS	= namespaces/utilities.py
 
 # -- lal module (library's main module)
 LAL_MAIN_INT	= $(LAL_INAME).i
@@ -186,6 +201,7 @@ LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
 LAL_WRAP		= $(ARCH_DIR)/$(LAL_INAME)_wrap
 _LAL_SO			= _$(LAL_INAME).$(SO_EXT)
 LAL_SO			= $(ARCH_DIR)/$(_LAL_SO)
+LAL_MOD_DOCS	= namespaces/lal.py
 
 # -------
 # VERSION
@@ -199,6 +215,7 @@ VERSION_PY_FILE		= $(ARCH_DIR)/$(_VERSION_PF)
 VERSION_WRAP		= $(ARCH_DIR)/$(VERSION_INAME)_wrap
 _VERSION_SO			= _$(VERSION_INAME).$(SO_EXT)
 VERSION_SO			= $(ARCH_DIR)/$(_VERSION_SO)
+VERSION_MOD_DOCS	= namespaces/version.py
 
 ########################################################################
 # LISTS
