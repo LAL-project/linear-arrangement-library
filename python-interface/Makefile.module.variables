@@ -1,3 +1,5 @@
+DOCUMENTATION_FILE = submodules/documentation.i
+
 # ----------------
 # MODULE variables
 
@@ -271,7 +273,7 @@ SUBMODULES_PY_FILES =			\
 
 ALL_PY_FILES =					\
 	$(SUBMODULES_PY_FILES)		\
-	$(LAL_PY)
+	$(LAL_PY_FILE)
 
 ################
 # ALL WRAP FILES

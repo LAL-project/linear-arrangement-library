@@ -13,6 +13,12 @@ $(DSE_WRAP).o: $(DSE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MAIN_INT)
+$(DSE_PY_FILE): $(DSE_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(DSE_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DSE_WRAP).cxx $(DSE_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(DSE_MAIN_INT)
+endif
 
 # syntactic dependency structure type module
 $(SYN_DEP_STR_TYPE_SO): $(SYN_DEP_STR_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -22,6 +28,12 @@ $(SYN_DEP_STR_TYPE_WRAP).o: $(SYN_DEP_STR_TYPE_WRAP).cxx
 $(SYN_DEP_STR_TYPE_WRAP).cxx: $(SYN_DEP_STR_TYPE_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(SYN_DEP_STR_TYPE_MAIN_INT)
 	echo "del cvar" >> $(SYN_DEP_STR_TYPE_PY_FILE)
+$(SYN_DEP_STR_TYPE_PY_FILE): $(SYN_DEP_STR_TYPE_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(SYN_DEP_STR_TYPE_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_TYPE_WRAP).cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+endif
 
 # type module
 $(TREE_TYPE_SO): $(TREE_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -31,6 +43,12 @@ $(TREE_TYPE_WRAP).o: $(TREE_TYPE_WRAP).cxx
 $(TREE_TYPE_WRAP).cxx: $(TREE_TYPE_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_TYPE_MAIN_INT)
 	echo "del cvar" >> $(TREE_TYPE_PY_FILE)
+$(TREE_TYPE_PY_FILE): $(TREE_TYPE_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(TREE_TYPE_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREE_TYPE_WRAP).cxx $(TREE_TYPE_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(TREE_TYPE_MAIN_INT)
+endif
 
 # algorithms_C module
 $(ALG_C_SO): $(ALG_C_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -39,6 +57,12 @@ $(ALG_C_WRAP).o: $(ALG_C_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ALG_C_WRAP).cxx: $(ALG_C_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_C_MAIN_INT)
+$(ALG_C_PY_FILE): $(ALG_C_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(ALG_C_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_C_WRAP).cxx $(ALG_C_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ALG_C_MAIN_INT)
+endif
 
 # algorithms_Dmin module
 $(ALG_DMIN_SO): $(ALG_DMIN_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -47,6 +71,12 @@ $(ALG_DMIN_WRAP).o: $(ALG_DMIN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ALG_DMIN_WRAP).cxx: $(ALG_DMIN_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_DMIN_MAIN_INT)
+$(ALG_DMIN_PY_FILE): $(ALG_DMIN_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(ALG_DMIN_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_DMIN_WRAP).cxx $(ALG_DMIN_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ALG_DMIN_MAIN_INT)
+endif
 
 # -----------
 # DEFINITIONS
@@ -58,6 +88,12 @@ $(DEFS_WRAP).o: $(DEFS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
+$(DEFS_PY_FILE): $(DEFS_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(DEFS_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFS_WRAP).cxx $(DEFS_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(DEFS_MAIN_INT)
+endif
 
 # ----------
 # NAMESPACES
@@ -69,6 +105,12 @@ $(GEN_WRAP).o: $(GEN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GEN_WRAP).cxx: $(GEN_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GEN_MAIN_INT)
+$(GEN_PY_FILE): $(GEN_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(GEN_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GEN_WRAP).cxx $(GEN_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(GEN_MAIN_INT)
+endif
 
 # graphs module
 $(GRAPHS_SO): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -77,6 +119,12 @@ $(GRAPHS_WRAP).o: $(GRAPHS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GRAPHS_MAIN_INT)
+$(GRAPHS_PY_FILE): $(GRAPHS_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(GRAPHS_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GRAPHS_WRAP).cxx $(GRAPHS_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(GRAPHS_MAIN_INT)
+endif
 
 # io module
 $(IO_SO): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -85,6 +133,12 @@ $(IO_WRAP).o: $(IO_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(IO_WRAP).cxx: $(IO_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(IO_MAIN_INT)
+$(IO_PY_FILE): $(IO_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(IO_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(IO_WRAP).cxx $(IO_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(IO_MAIN_INT)
+endif
 
 # iterators module
 $(ITER_SO): $(ITER_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -93,6 +147,12 @@ $(ITER_WRAP).o: $(ITER_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(ITER_WRAP).cxx: $(ITER_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ITER_MAIN_INT)
+$(ITER_PY_FILE): $(ITER_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(ITER_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ITER_WRAP).cxx $(ITER_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ITER_MAIN_INT)
+endif
 
 # linarr module
 $(LINARR_SO): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -101,6 +161,12 @@ $(LINARR_WRAP).o: $(LINARR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LINARR_MAIN_INT)
+$(LINARR_PY_FILE): $(LINARR_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(LINARR_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(LINARR_WRAP).cxx $(LINARR_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(LINARR_MAIN_INT)
+endif
 
 # numeric  module
 $(NMRC_SO): $(NMRC_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -109,6 +175,12 @@ $(NMRC_WRAP).o: $(NMRC_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(NMRC_WRAP).cxx: $(NMRC_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(NMRC_MAIN_INT)
+$(NMRC_PY_FILE): $(NMRC_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(NMRC_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(NMRC_WRAP).cxx $(NMRC_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(NMRC_MAIN_INT)
+endif
 
 # properties  module
 $(PROP_SO): $(PROP_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -117,6 +189,12 @@ $(PROP_WRAP).o: $(PROP_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(PROP_MAIN_INT)
+$(PROP_PY_FILE): $(PROP_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(PROP_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(PROP_WRAP).cxx $(PROP_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(PROP_MAIN_INT)
+endif
 
 # utilities  module
 $(UTILS_SO): $(UTILS_WRAP).o $(LIBRARY_SHARED_DEP)
@@ -125,6 +203,12 @@ $(UTILS_WRAP).o: $(UTILS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(UTILS_WRAP).cxx: $(UTILS_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(UTILS_MAIN_INT)
+$(UTILS_PY_FILE): $(UTILS_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(UTILS_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(UTILS_WRAP).cxx $(UTILS_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(UTILS_MAIN_INT)
+endif
 
 # lal module (library's main module)
 $(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
@@ -133,6 +217,12 @@ $(LAL_WRAP).o: $(LAL_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
 $(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
+$(LAL_PY_FILE): $(LAL_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(LAL_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(LAL_WRAP).cxx $(LAL_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(LAL_MAIN_INT)
+endif
 
 # -------
 # VERSION
@@ -145,3 +235,9 @@ $(VERSION_WRAP).o: $(VERSION_WRAP).cxx
 $(VERSION_WRAP).cxx: $(VERSION_MOD_DEPS)
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(VERSION_MAIN_INT)
 	echo "del cvar" >> $(VERSION_PY_FILE)
+$(VERSION_PY_FILE): $(VERSION_MOD_DEPS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(VERSION_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(VERSION_WRAP).cxx $(VERSION_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(VERSION_MAIN_INT)
+endif

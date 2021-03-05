@@ -171,7 +171,12 @@ include Makefile.module.variables
 ########################################################################
 # GOALS
 
-all: directories $(ALL_SO_FILES)
+all: directories $(ALL_SO_FILES) $(ALL_PY_FILES)
+	rm -f $(ARCH_DIR)/temp.cxx 	# clean up after yourself
+	./clean_up_interfaces.sh $(ALL_PY_FILES) | sed "s/^/    /g"
+python_interfaces: directories $(ALL_PY_FILES)
+	rm -f $(ARCH_DIR)/temp.cxx	# clean up after yourself
+	./clean_up_interfaces.sh $(ALL_PY_FILES) | sed "s/^/    /g"
 directories: $(ARCH_DIR)
 $(ARCH_DIR):
 	mkdir -p $(ARCH_DIR)
