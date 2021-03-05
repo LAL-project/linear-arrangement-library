@@ -6,7 +6,7 @@
 
 %feature("docstring") lal::generate::__rand_lab_free_trees "
 `__rand_lab_free_trees(n, seed=0)`  
-`__rand_lab_free_trees(arg1)`  
+`__rand_lab_free_trees(Gen)`  
 
 Random labelled free tree generator.  
 
@@ -34,9 +34,14 @@ Constructors
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_lab_free_trees(arg1)`  
+* `__rand_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled free tree generator.  
 
 C++ includes: rand_lab_free_trees.hpp
 ";
@@ -58,9 +63,14 @@ Overloaded function
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_lab_free_trees(arg1)`  
+* `__rand_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled free tree generator.  
 ";
 
 %feature("docstring") lal::generate::__rand_lab_free_trees::~__rand_lab_free_trees "
@@ -78,7 +88,7 @@ Returns a labelled free tree chosen uniformly at random.
 
 %feature("docstring") lal::generate::__rand_lab_rooted_trees "
 `__rand_lab_rooted_trees(n, seed=0)`  
-`__rand_lab_rooted_trees(arg1)`  
+`__rand_lab_rooted_trees(Gen)`  
 
 Random labelled directed rooted trees generator.  
 
@@ -107,9 +117,14 @@ Constructors
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_lab_rooted_trees(arg1)`  
+* `__rand_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled rooted tree generator.  
 
 C++ includes: rand_lab_rooted_trees.hpp
 ";
@@ -131,9 +146,14 @@ Overloaded function
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_lab_rooted_trees(arg1)`  
+* `__rand_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled rooted tree generator.  
 ";
 
 %feature("docstring") lal::generate::__rand_lab_rooted_trees::~__rand_lab_rooted_trees "
@@ -147,8 +167,7 @@ Generates uniformly at random a labelled rooted tree.
 
 Returns
 -------
-Returns a labelled tree generated uniformly at random. The tree is rooted at
-vertex 0.  
+A labelled tree generated uniformly at random. The tree is rooted at vertex 0.  
 ";
 
 // File: classlal_1_1generate_1_1____rand__ulab__free__trees.xml
@@ -156,7 +175,7 @@ vertex 0.
 
 %feature("docstring") lal::generate::__rand_ulab_free_trees "
 `__rand_ulab_free_trees(n, seed=0)`  
-`__rand_ulab_free_trees(arg1)`  
+`__rand_ulab_free_trees(Gen)`  
 
 Random unlabelled free tree generator.  
 
@@ -186,9 +205,14 @@ Constructors
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_ulab_free_trees(arg1)`  
+* `__rand_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled free tree generator.  
 
 C++ includes: rand_ulab_free_trees.hpp
 ";
@@ -210,9 +234,14 @@ Overloaded function
     * `seed` :  
         The seed used for the random generator.  
 
-* `__rand_ulab_free_trees(arg1)`  
+* `__rand_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled free tree generator.  
 ";
 
 %feature("docstring") lal::generate::__rand_ulab_free_trees::~__rand_ulab_free_trees "
@@ -228,7 +257,7 @@ Includes the correction in Wilf's paper (see [27]), as pointed out in [19].
 
 Returns
 -------
-Returns an unlabelled free tree.  
+An unlabelled free tree.  
 ";
 
 // File: classlal_1_1generate_1_1____rand__ulab__rooted__trees.xml
@@ -236,7 +265,7 @@ Returns an unlabelled free tree.
 
 %feature("docstring") lal::generate::__rand_ulab_rooted_trees "
 `__rand_ulab_rooted_trees(n, seed=0)`  
-`__rand_ulab_rooted_trees(arg1)`  
+`__rand_ulab_rooted_trees(Gen)`  
 
 Random unlabelled rooted tree generator.  
 
@@ -261,11 +290,17 @@ Constructors
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `__rand_ulab_rooted_trees(arg1)`  
+* `__rand_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled rooted tree generator.  
 
 C++ includes: rand_ulab_rooted_trees.hpp
 ";
@@ -285,11 +320,17 @@ Overloaded function
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `__rand_ulab_rooted_trees(arg1)`  
+* `__rand_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled rooted tree generator.  
 ";
 
 %feature("docstring") lal::generate::__rand_ulab_rooted_trees::~__rand_ulab_rooted_trees "
@@ -303,7 +344,7 @@ Generates uniformly at random a free unlabelled tree.
 
 Returns
 -------
-Returns an unlabelled rooted tree. The tree is rooted at vertex 0.  
+An unlabelled rooted tree. The tree is rooted at vertex 0.  
 ";
 
 %feature("docstring") lal::generate::__rand_ulab_rooted_trees::clear "
@@ -329,7 +370,7 @@ post: After calling this method, the contents of the attributes m_rn are
 
 %feature("docstring") lal::generate::all_lab_free_trees "
 `all_lab_free_trees(n)`  
-`all_lab_free_trees(arg1)`  
+`all_lab_free_trees(Gen)`  
 
 Exhaustive labelled free tree generator.  
 
@@ -360,9 +401,19 @@ Constructors
     
     Constructor with number of nodes.  
 
-* `all_lab_free_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive labelled free tree generator..  
 
 Attributes
 ----------
@@ -386,9 +437,19 @@ Overloaded function
     
     Constructor with number of nodes.  
 
-* `all_lab_free_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive labelled free tree generator..  
 ";
 
 %feature("docstring") lal::generate::all_lab_free_trees::~all_lab_free_trees "
@@ -402,9 +463,9 @@ Returns whether there are more trees to generate.
 
 Returns
 -------
-Returns true if there are still more trees to generate. Returns false if all
-trees have been generated (there are no more unique trees of this size that were
-not generated before).  
+True if there are still more trees to generate. Returns false if all trees have
+been generated (there are no more unique trees of this size that were not
+generated before).  
 ";
 
 %feature("docstring") lal::generate::all_lab_free_trees::next "
@@ -441,7 +502,7 @@ according to the values:
 
 %feature("docstring") lal::generate::all_lab_rooted_trees "
 `all_lab_rooted_trees(n)`  
-`all_lab_rooted_trees(arg1)`  
+`all_lab_rooted_trees(Gen)`  
 
 Exhaustive labelled rooted tree generator.  
 
@@ -456,9 +517,19 @@ Constructors
     
     Constructor with number of nodes.  
 
-* `all_lab_rooted_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive labelled rooted tree generator..  
 
 Attributes
 ----------
@@ -482,9 +553,19 @@ Overloaded function
     
     Constructor with number of nodes.  
 
-* `all_lab_rooted_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive labelled rooted tree generator..  
 ";
 
 %feature("docstring") lal::generate::all_lab_rooted_trees::~all_lab_rooted_trees "
@@ -498,9 +579,9 @@ Returns whether there are more trees to generate.
 
 Returns
 -------
-Returns true if there are still more trees to generate. Returns false if all
-trees have been generated (there are no more unique trees of this size that were
-not generated before).  
+True if there are still more trees to generate. Returns false if all trees have
+been generated (there are no more unique trees of this size that were not
+generated before).  
 ";
 
 %feature("docstring") lal::generate::all_lab_rooted_trees::next "
@@ -537,6 +618,7 @@ according to the values:
 
 %feature("docstring") lal::generate::all_projective_arrangements "
 `all_projective_arrangements(T)`  
+`all_projective_arrangements(Gen)`  
 
 Exhaustive projective arrangement generator.  
 
@@ -565,22 +647,47 @@ Constructors
 
     pre: The tree is normalised (see graphs::graph::is_normalised()).  
 
+* `all_projective_arrangements(Gen)`  
+    
+    Default copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive projective arrangement generator..  
+
 C++ includes: all_projective_arrangements.hpp
 ";
 
 %feature("docstring") lal::generate::all_projective_arrangements::all_projective_arrangements "
 
-Constructor with constant reference to a rooted tree.  
+Overloaded function
+-------------------
+* `all_projective_arrangements(T)`  
+    
+    Constructor with constant reference to a rooted tree.  
 
-Parameters
-----------
-* `T` :  
-    Rooted tree  
+    Parameters:
+  
+    * `T` :  
+        Rooted tree  
 
-pre: The object *T* is a valid rooted tree (see
-    graphs::rooted_tree::is_rooted_tree).  
+    pre: The object *T* is a valid rooted tree (see
+        graphs::rooted_tree::is_rooted_tree).  
 
-pre: The tree is normalised (see graphs::graph::is_normalised()).  
+    pre: The tree is normalised (see graphs::graph::is_normalised()).  
+
+* `all_projective_arrangements(Gen)`  
+    
+    Default copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive projective arrangement generator..  
+";
+
+%feature("docstring") lal::generate::all_projective_arrangements::~all_projective_arrangements "
 ";
 
 %feature("docstring") lal::generate::all_projective_arrangements::has_next "
@@ -589,8 +696,19 @@ Returns whether there are more arrangements to generate.
 
 Returns
 -------
-Returns true if there are still more arrangements to generate. Returns false if
-all arrangements have been generated.  
+True if there are still more arrangements to generate. Returns false if all
+arrangements have been generated.  
+";
+
+%feature("docstring") lal::generate::all_projective_arrangements::get_arrangement "
+
+Constructs the current arrangement.  
+
+Returns
+-------
+The arrangement generated with method next().  
+
+pre: Method next must have been called at least once.  
 ";
 
 %feature("docstring") lal::generate::all_projective_arrangements::next "
@@ -601,23 +719,12 @@ Modifies the internal state so that the next arrangement can be retrieved using
 method get_arrangement.  
 ";
 
-%feature("docstring") lal::generate::all_projective_arrangements::get_arrangement "
-
-Constructs the current arrangement.  
-
-Returns
--------
-Returns the arrangement generated with method next().  
-
-pre: Method next must have been called at least once.  
-";
-
 // File: classlal_1_1generate_1_1all__ulab__free__trees.xml
 
 
 %feature("docstring") lal::generate::all_ulab_free_trees "
 `all_ulab_free_trees(n)`  
-`all_ulab_free_trees(arg1)`  
+`all_ulab_free_trees(Gen)`  
 
 Exhaustive unlabelled free tree generator.  
 
@@ -648,9 +755,19 @@ Constructors
     
     Constructor with number of nodes.  
 
-* `all_ulab_free_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive unlabelled free tree generator..  
 
 Attributes
 ----------
@@ -674,9 +791,19 @@ Overloaded function
     
     Constructor with number of nodes.  
 
-* `all_ulab_free_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive unlabelled free tree generator..  
 ";
 
 %feature("docstring") lal::generate::all_ulab_free_trees::~all_ulab_free_trees "
@@ -690,9 +817,9 @@ Returns whether there are more trees to generate.
 
 Returns
 -------
-Returns true if there are still more trees to generate. Returns false if all
-trees have been generated (there are no more unique trees of this size that were
-not generated before).  
+True if there are still more trees to generate. Returns false if all trees have
+been generated (there are no more unique trees of this size that were not
+generated before).  
 ";
 
 %feature("docstring") lal::generate::all_ulab_free_trees::next "
@@ -729,7 +856,7 @@ according to the values:
 
 %feature("docstring") lal::generate::all_ulab_rooted_trees "
 `all_ulab_rooted_trees(n)`  
-`all_ulab_rooted_trees(arg1)`  
+`all_ulab_rooted_trees(Gen)`  
 
 Exhaustive unlabelled rooted tree generator.  
 
@@ -760,9 +887,19 @@ Constructors
     
     Constructor with number of nodes.  
 
-* `all_ulab_rooted_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive unlabelled rooted tree generator..  
 
 Attributes
 ----------
@@ -786,9 +923,19 @@ Overloaded function
     
     Constructor with number of nodes.  
 
-* `all_ulab_rooted_trees(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of nodes.  
+
+* `all_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Exhaustive unlabelled rooted tree generator..  
 ";
 
 %feature("docstring") lal::generate::all_ulab_rooted_trees::~all_ulab_rooted_trees "
@@ -802,9 +949,9 @@ Returns whether there are more trees to generate.
 
 Returns
 -------
-Returns true if there are still more trees to generate. Returns false if all
-trees have been generated (there are no more unique trees of this size that were
-not generated before).  
+True if there are still more trees to generate. Returns false if all trees have
+been generated (there are no more unique trees of this size that were not
+generated before).  
 ";
 
 %feature("docstring") lal::generate::all_ulab_rooted_trees::next "
@@ -1021,7 +1168,7 @@ This is the m_right_span divided by the m_left_span.
 
 Returns
 -------
-Returns the R/L ratio of this flux.  
+The R/L ratio of this flux.  
 ";
 
 %feature("docstring") lal::linarr::dependency_flux::get_RL_ratio "
@@ -1032,7 +1179,7 @@ This is the m_right_span divided by the m_left_span.
 
 Returns
 -------
-Returns the R/L ratio of this flux.  
+The R/L ratio of this flux.  
 ";
 
 %feature("docstring") lal::linarr::dependency_flux::get_WS_ratio_rational "
@@ -1044,7 +1191,7 @@ m_dependencies.
 
 Returns
 -------
-Returns the W/S ratio of this flux.  
+The W/S ratio of this flux.  
 ";
 
 %feature("docstring") lal::linarr::dependency_flux::get_WS_ratio "
@@ -1056,7 +1203,7 @@ m_dependencies.
 
 Returns
 -------
-Returns the W/S ratio of this flux.  
+The W/S ratio of this flux.  
 ";
 
 %feature("docstring") lal::linarr::dependency_flux::set_left_span "
@@ -1085,7 +1232,7 @@ Sets the set of dependencies.
 %feature("docstring") lal::graphs::directed_graph "
 `directed_graph()`  
 `directed_graph(n)`  
-`directed_graph(arg1)`  
+`directed_graph(g)`  
 
 Directed graph class.  
 
@@ -1111,9 +1258,14 @@ Constructors
     * `n` :  
         Number of nodes.  
 
-* `directed_graph(arg1)`  
+* `directed_graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Directed graph.  
 
 C++ includes: directed_graph.hpp
 ";
@@ -1135,9 +1287,14 @@ Overloaded function
     * `n` :  
         Number of nodes.  
 
-* `directed_graph(arg1)`  
+* `directed_graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Directed graph.  
 ";
 
 %feature("docstring") lal::graphs::directed_graph::~directed_graph "
@@ -1207,7 +1364,9 @@ Parameters
 * `t` :  
     Valid node index: $0 \\le t < n$.  
 
-pre: $u \\neq v$. The edge $\\{s,t\\}$ is not part of the graph.  
+pre: $u \\neq v$.  
+
+pre: The edge $\\{s,t\\}$ is not part of the graph.  
 
 post: If *norm* is true the graph is guaranteed to be normalised after the
     addition of the edge.  
@@ -1386,7 +1545,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes leaving node *u*.  
+The list of nodes leaving node *u*.  
 ";
 
 %feature("docstring") lal::graphs::directed_graph::get_in_neighbours "
@@ -1400,7 +1559,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes entering at node *u*.  
+The list of nodes entering at node *u*.  
 ";
 
 %feature("docstring") lal::graphs::directed_graph::degree "
@@ -1417,7 +1576,7 @@ Parameters
 
 Returns
 -------
-Returns the (in + out) degree of this vertex.  
+The (in + out) degree of this vertex.  
 ";
 
 %feature("docstring") lal::graphs::directed_graph::out_degree "
@@ -1459,7 +1618,7 @@ Parameters
 
 Returns
 -------
-Returns this graph in which the edges are undirected.  
+This graph in which the edges are undirected.  
 ";
 
 %feature("docstring") lal::graphs::directed_graph::init "
@@ -1512,7 +1671,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 // File: classlal_1_1iterators_1_1E__iterator.xml
@@ -1557,14 +1716,14 @@ Default destructor.
 Returns true if there are edges left to be iterated over.  
 ";
 
-%feature("docstring") lal::iterators::E_iterator::next "
-
-Moves the iterator to the next edge.  
-";
-
 %feature("docstring") lal::iterators::E_iterator::get_edge "
 
 Returns the current edge.  
+";
+
+%feature("docstring") lal::iterators::E_iterator::next "
+
+Moves the iterator to the next edge.  
 ";
 
 %feature("docstring") lal::iterators::E_iterator::reset "
@@ -1580,7 +1739,7 @@ post: The next call to method next() returns the first edge of the graph.
 %feature("docstring") lal::graphs::free_tree "
 `free_tree()`  
 `free_tree(n)`  
-`free_tree(arg1)`  
+`free_tree(t)`  
 `free_tree(t)`  
 
 Free tree graph class.  
@@ -1600,9 +1759,19 @@ Constructors
     
     Constructor with number of vertices.  
 
-* `free_tree(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of vertices  
+
+* `free_tree(t)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `t` :  
+        Free tree.  
 
 * `free_tree(t)`  
     
@@ -1630,9 +1799,19 @@ Overloaded function
     
     Constructor with number of vertices.  
 
-* `free_tree(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of vertices  
+
+* `free_tree(t)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `t` :  
+        Free tree.  
 
 * `free_tree(t)`  
     
@@ -1697,7 +1876,9 @@ Parameters
 * `t` :  
     Valid node index: $0 \\le t < n$.  
 
-pre: $u \\neq v$. The edge $\\{s,t\\}$ is not part of the graph.  
+pre: $u \\neq v$.  
+
+pre: The edge $\\{s,t\\}$ is not part of the graph.  
 
 post: If *norm* is true the graph is guaranteed to be normalised after the
     addition of the edge.  
@@ -1909,7 +2090,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes adjacent to node *u*.  
+The list of nodes adjacent to node *u*.  
 ";
 
 %feature("docstring") lal::graphs::free_tree::degree "
@@ -1923,7 +2104,7 @@ Parameters
 
 Returns
 -------
-Returns the number of adjacent nodes.  
+The number of adjacent nodes.  
 ";
 
 %feature("docstring") lal::graphs::free_tree::has_edge "
@@ -2013,7 +2194,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 %feature("docstring") lal::graphs::free_tree::is_tree "
@@ -2045,8 +2226,8 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of this new edge can be added to the tree without
-producing cycles.  
+Whether the addition of this new edge can be added to the tree without producing
+cycles.  
 ";
 
 %feature("docstring") lal::graphs::free_tree::can_add_edges "
@@ -2063,7 +2244,7 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of these new edges can be added to the tree without
+Whether the addition of these new edges can be added to the tree without
 producing cycles.  
 ";
 
@@ -2085,7 +2266,7 @@ Parameters
 
 Returns
 -------
-Returns the size of the connected component of *u*.  
+The size of the connected component of *u*.  
 ";
 
 %feature("docstring") lal::graphs::free_tree::is_of_type "
@@ -2099,7 +2280,7 @@ Returns the list of types as a list of strings.
 
 Returns
 -------
-Returns the list of types as a list of strings.  
+The list of types as a list of strings.  
 ";
 
 // File: classlal_1_1graphs_1_1graph.xml
@@ -2108,7 +2289,7 @@ Returns the list of types as a list of strings.
 %feature("docstring") lal::graphs::graph "
 `graph()`  
 `graph(n)`  
-`graph(arg1)`  
+`graph(g)`  
 
 Abstract class for graphs.  
 
@@ -2138,9 +2319,14 @@ Constructors
     * `n` :  
         Number of nodes.  
 
-* `graph(arg1)`  
+* `graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Graph.  
 
 C++ includes: graph.hpp
 ";
@@ -2162,9 +2348,14 @@ Overloaded function
     * `n` :  
         Number of nodes.  
 
-* `graph(arg1)`  
+* `graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Graph.  
 ";
 
 %feature("docstring") lal::graphs::graph::~graph "
@@ -2277,7 +2468,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 %feature("docstring") lal::graphs::graph::is_directed "
@@ -2296,7 +2487,7 @@ Returns whether this graph is undirected or not.
 %feature("docstring") lal::numeric::integer "
 `integer()`  
 `integer(i)`  
-`integer(i)`  
+`integer(s)`  
 `integer(i)`  
 
 Arbitrary precision integer.  
@@ -2314,13 +2505,28 @@ Constructors
     
     Constructor with unsigned integer value.  
 
-* `integer(i)`  
+    Parameters:
+  
+    * `i` :  
+        Signed integer (basic type) number.  
+
+* `integer(s)`  
     
     Constructor with string.  
+
+    Parameters:
+  
+    * `s` :  
+        A string.  
 
 * `integer(i)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `i` :  
+        A lal::numeric::integer.  
 
 C++ includes: integer.hpp
 ";
@@ -2340,13 +2546,28 @@ Overloaded function
     
     Constructor with unsigned integer value.  
 
-* `integer(i)`  
+    Parameters:
+  
+    * `i` :  
+        Signed integer (basic type) number.  
+
+* `integer(s)`  
     
     Constructor with string.  
+
+    Parameters:
+  
+    * `s` :  
+        A string.  
 
 * `integer(i)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `i` :  
+        A lal::numeric::integer.  
 ";
 
 %feature("docstring") lal::numeric::integer::~integer "
@@ -2357,21 +2578,41 @@ Destructor.
 %feature("docstring") lal::numeric::integer::set_si "
 
 Overwrites the value of this integer with *i*.  
+
+Parameters
+----------
+* `i` :  
+    Signed integer (basic type) number.  
 ";
 
 %feature("docstring") lal::numeric::integer::set_ui "
 
 Overwrites the value of this integer with *i*.  
+
+Parameters
+----------
+* `i` :  
+    Unsigned integer (basic type) number.  
 ";
 
 %feature("docstring") lal::numeric::integer::set_integer "
 
 Overwrites the value of this integer with *i*.  
+
+Parameters
+----------
+* `i` :  
+    A lal::numeric::integer.  
 ";
 
 %feature("docstring") lal::numeric::integer::set_str "
 
-Overwrites the value of this integer with the contents in *s*.  
+Overwrites the value of this integer with *s*.  
+
+Parameters
+----------
+* `s` :  
+    A string.  
 ";
 
 %feature("docstring") lal::numeric::integer::is_initialized "
@@ -2417,6 +2658,11 @@ Converts this integer to a string.
 %feature("docstring") lal::numeric::integer::as_string "
 
 Converts this integer to a string.  
+
+Parameters
+----------
+* `s` :  
+    A reference to a string.  
 ";
 
 %feature("docstring") lal::numeric::integer::swap "
@@ -2428,6 +2674,11 @@ Swaps the value of this integer with integer *i's* value.
     initialised integer to the other. At the end, one of the two integers is
     left uninitiliased.  
 *   If both integers are initialised, swaps the values they contain.  
+
+Parameters
+----------
+* `i` :  
+    A lal::numeric::integer  
 ";
 
 // File: structlal_1_1internal_1_1is__pointer__iterator.xml
@@ -2504,14 +2755,14 @@ Default destructor.
 Returns true if there are pairs of independent edges left to be iterated over.  
 ";
 
-%feature("docstring") lal::iterators::Q_iterator::next "
-
-Moves the iterator to the next pair, if there is any.  
-";
-
 %feature("docstring") lal::iterators::Q_iterator::get_pair "
 
 Returns the current edge pair.  
+";
+
+%feature("docstring") lal::iterators::Q_iterator::next "
+
+Moves the iterator to the next pair, if there is any.  
 ";
 
 %feature("docstring") lal::iterators::Q_iterator::reset "
@@ -2526,7 +2777,7 @@ post: The next call to method next() returns the first edge of the graph.
 
 %feature("docstring") lal::generate::rand_lab_free_trees "
 `rand_lab_free_trees(n, seed=0)`  
-`rand_lab_free_trees(arg1)`  
+`rand_lab_free_trees(Gen)`  
 
 Random labelled free tree generator.  
 
@@ -2549,11 +2800,17 @@ Constructors
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_lab_free_trees(arg1)`  
+* `rand_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled free tree generator.  
 
 Attributes
 ----------
@@ -2584,11 +2841,17 @@ Overloaded function
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_lab_free_trees(arg1)`  
+* `rand_lab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled free tree generator.  
 ";
 
 %feature("docstring") lal::generate::rand_lab_free_trees::~rand_lab_free_trees "
@@ -2613,7 +2876,7 @@ according to the values:
 
 %feature("docstring") lal::generate::rand_lab_rooted_trees "
 `rand_lab_rooted_trees(n, seed=0)`  
-`rand_lab_rooted_trees(arg1)`  
+`rand_lab_rooted_trees(Gen)`  
 
 Random labelled rooted tree generator.  
 
@@ -2636,11 +2899,17 @@ Constructors
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_lab_rooted_trees(arg1)`  
+* `rand_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled rooted tree generator.  
 
 Attributes
 ----------
@@ -2671,11 +2940,17 @@ Overloaded function
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_lab_rooted_trees(arg1)`  
+* `rand_lab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random labelled rooted tree generator.  
 ";
 
 %feature("docstring") lal::generate::rand_lab_rooted_trees::~rand_lab_rooted_trees "
@@ -2700,6 +2975,7 @@ according to the values:
 
 %feature("docstring") lal::generate::rand_projective_arrangements "
 `rand_projective_arrangements(rT, seed=0)`  
+`rand_projective_arrangements(Gen)`  
 
 Class to generate uniformly random projective arrangements of a rooted tree.  
 
@@ -2719,29 +2995,56 @@ Constructors
     * `rT` :  
         Rooted tree  
     * `seed` :  
-        Boolean value that indicates whether the random number generator should
-        be seeded or not.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
     pre: The object *t* must be a rooted tree (see
         graphs::rooted_tree::is_rooted_tree).  
+
+* `rand_projective_arrangements(Gen)`  
+    
+    Default copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random projective arrangement generator.  
 
 C++ includes: rand_projective_arrangements.hpp
 ";
 
 %feature("docstring") lal::generate::rand_projective_arrangements::rand_projective_arrangements "
 
-Constructor with tree.  
+Overloaded function
+-------------------
+* `rand_projective_arrangements(rT, seed=0)`  
+    
+    Constructor with tree.  
 
-Parameters
-----------
-* `rT` :  
-    Rooted tree  
-* `seed` :  
-    Boolean value that indicates whether the random number generator should be
-    seeded or not.  
+    Parameters:
+  
+    * `rT` :  
+        Rooted tree  
+    * `seed` :  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-pre: The object *t* must be a rooted tree (see
-    graphs::rooted_tree::is_rooted_tree).  
+    pre: The object *t* must be a rooted tree (see
+        graphs::rooted_tree::is_rooted_tree).  
+
+* `rand_projective_arrangements(Gen)`  
+    
+    Default copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random projective arrangement generator.  
+";
+
+%feature("docstring") lal::generate::rand_projective_arrangements::~rand_projective_arrangements "
+
+Default destructor.  
 ";
 
 %feature("docstring") lal::generate::rand_projective_arrangements::make_rand_arrgmnt "
@@ -2750,7 +3053,7 @@ Make a random projective arrangement of a rooted tree.
 
 Returns
 -------
-Returns a projective arrangement chosen uniformly at random chosen amongst all
+A projective arrangement chosen uniformly at random chosen amongst all
 projective arrangements of *t*.  
 ";
 
@@ -2759,7 +3062,7 @@ projective arrangements of *t*.
 
 %feature("docstring") lal::generate::rand_ulab_free_trees "
 `rand_ulab_free_trees(n, seed=0)`  
-`rand_ulab_free_trees(arg1)`  
+`rand_ulab_free_trees(Gen)`  
 
 Random unlabelled free tree generator.  
 
@@ -2782,11 +3085,17 @@ Constructors
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_ulab_free_trees(arg1)`  
+* `rand_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled free tree generator.  
 
 Attributes
 ----------
@@ -2817,11 +3126,17 @@ Overloaded function
     * `n` :  
         Number of nodes.  
     * `seed` :  
-        The seed used for the random generator.  
+        The seed used for the random generator. If the seed is 0 then a random
+        seed is generated and used.  
 
-* `rand_ulab_free_trees(arg1)`  
+* `rand_ulab_free_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled free tree generator.  
 ";
 
 %feature("docstring") lal::generate::rand_ulab_free_trees::~rand_ulab_free_trees "
@@ -2846,7 +3161,7 @@ according to the values:
 
 %feature("docstring") lal::generate::rand_ulab_rooted_trees "
 `rand_ulab_rooted_trees(n, seed=0)`  
-`rand_ulab_rooted_trees(arg1)`  
+`rand_ulab_rooted_trees(Gen)`  
 
 Random unlabelled rooted tree generator.  
 
@@ -2871,9 +3186,14 @@ Constructors
     * `seed` :  
         The seed used for the random generator.  
 
-* `rand_ulab_rooted_trees(arg1)`  
+* `rand_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled rooted tree generator.  
 
 Attributes
 ----------
@@ -2906,9 +3226,14 @@ Overloaded function
     * `seed` :  
         The seed used for the random generator.  
 
-* `rand_ulab_rooted_trees(arg1)`  
+* `rand_ulab_rooted_trees(Gen)`  
     
-    Move constructor.  
+    Copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Random unlabelled rooted tree generator.  
 ";
 
 %feature("docstring") lal::generate::rand_ulab_rooted_trees::~rand_ulab_rooted_trees "
@@ -3045,20 +3370,24 @@ Returns the amount of bytes this integer occupies.
 
 Converts this rational to an integer value.  
 
+This function returns $ \\left\\lfloor n/d \\right\\rfloor $ where $n,d$ are,
+respectively, the numerator and denominator.  
+
 Returns
 -------
-Returns $ \\left\\lfloor n/d \\right\\rfloor $ where $n,d$ are, respectively,
-the numerator and denominator.  
+The floor of this rational.  
 ";
 
 %feature("docstring") lal::numeric::rational::as_integer "
 
 Converts this rational to an integer value.  
 
+This function returns $ \\left\\lfloor n/d \\right\\rfloor $ where $n,d$ are,
+respectively, the numerator and denominator.  
+
 Returns
 -------
-Returns $ \\left\\lfloor n/d \\right\\rfloor $ where $n,d$ are, respectively,
-the numerator and denominator.  
+The floor of this rational.  
 ";
 
 %feature("docstring") lal::numeric::rational::to_double "
@@ -3098,7 +3427,7 @@ Swaps the value of this rational with rational *r's* value.
 %feature("docstring") lal::graphs::rooted_tree "
 `rooted_tree()`  
 `rooted_tree(n)`  
-`rooted_tree(arg1)`  
+`rooted_tree(r)`  
 `rooted_tree(t, r)`  
 
 Rooted tree graph class.  
@@ -3158,9 +3487,19 @@ Constructors
     
     Constructor with number of nodes and root node.  
 
-* `rooted_tree(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of vertices.  
+
+* `rooted_tree(r)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `r` :  
+        Rooted tree.  
 
 * `rooted_tree(t, r)`  
     
@@ -3181,9 +3520,19 @@ Overloaded function
     
     Constructor with number of nodes and root node.  
 
-* `rooted_tree(arg1)`  
+    Parameters:
+  
+    * `n` :  
+        Number of vertices.  
+
+* `rooted_tree(r)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `r` :  
+        Rooted tree.  
 
 * `rooted_tree(t, r)`  
     
@@ -3241,7 +3590,9 @@ Parameters
 * `t` :  
     Valid node index: $0 \\le t < n$.  
 
-pre: $u \\neq v$. The edge $\\{s,t\\}$ is not part of the graph.  
+pre: $u \\neq v$.  
+
+pre: The edge $\\{s,t\\}$ is not part of the graph.  
 
 post: If *norm* is true the graph is guaranteed to be normalised after the
     addition of the edge.  
@@ -3456,7 +3807,7 @@ towards the leaves (away from the root).
 
 Returns
 -------
-Returns true if the tree is an arborescence. Returns false otherwise.  
+True if the tree is an arborescence. Returns false otherwise.  
 
 pre: This object is a tree (see is_tree).  
 
@@ -3559,7 +3910,7 @@ A tree is a valid rooted tree when:
 *   the orientation of the edges is valid (see is_orientation_valid).  
 
     Returns:
-    Returns whether this tree is a valid rooted tree or not.  
+    Whether this tree is a valid rooted tree or not.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::is_orientation_valid "
@@ -3569,9 +3920,11 @@ Is the orientation of the edges valid?
 The edges' orientation is valid if they are all oriented towards the leaves
 (away from the root).  
 
+This function returns the value of private attribute m_valid_orientation.  
+
 Returns
 -------
-Returns m_valid_orientation.  
+The whether the orientation is valid or not.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::get_root "
@@ -3595,7 +3948,7 @@ Parameters
 
 Returns
 -------
-Returns the number of nodes of the subtree rooted at *u*.  
+The number of nodes of the subtree rooted at *u*.  
 
 pre: Method size_subtrees_valid returns true.  
 ";
@@ -3610,7 +3963,7 @@ be calculated prior to calling many functions of this library.
 
 Returns
 -------
-Returns whether m_size_subtrees should be recalculated or not.  
+Whether m_size_subtrees should be recalculated or not.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::get_edges_subtree "
@@ -3645,7 +3998,7 @@ Parameters
 
 Returns
 -------
-Returns a list of edges.  
+A list of edges.  
 
 pre: The object must be a valid rooted tree (see is_rooted_tree).  
 
@@ -3664,7 +4017,7 @@ Parameters
 
 Returns
 -------
-Returns a tree containing the nodes of the subtree rooted at node *u*.  
+A tree containing the nodes of the subtree rooted at node *u*.  
 
 pre: The object must be a valid rooted tree (see is_rooted_tree).  
 
@@ -3734,7 +4087,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes leaving node *u*.  
+The list of nodes leaving node *u*.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::get_in_neighbours "
@@ -3748,7 +4101,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes entering at node *u*.  
+The list of nodes entering at node *u*.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::degree "
@@ -3765,7 +4118,7 @@ Parameters
 
 Returns
 -------
-Returns the (in + out) degree of this vertex.  
+The (in + out) degree of this vertex.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::out_degree "
@@ -3838,7 +4191,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::is_tree "
@@ -3870,8 +4223,8 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of this new edge can be added to the tree without
-producing cycles.  
+Whether the addition of this new edge can be added to the tree without producing
+cycles.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::can_add_edges "
@@ -3888,7 +4241,7 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of these new edges can be added to the tree without
+Whether the addition of these new edges can be added to the tree without
 producing cycles.  
 ";
 
@@ -3910,7 +4263,7 @@ Parameters
 
 Returns
 -------
-Returns the size of the connected component of *u*.  
+The size of the connected component of *u*.  
 ";
 
 %feature("docstring") lal::graphs::rooted_tree::is_of_type "
@@ -3924,7 +4277,7 @@ Returns the list of types as a list of strings.
 
 Returns
 -------
-Returns the list of types as a list of strings.  
+The list of types as a list of strings.  
 ";
 
 // File: classlal_1_1sorted__vector.xml
@@ -3983,7 +4336,7 @@ Overloaded function
 
 %feature("docstring") lal::graphs::tree "
 `tree()`  
-`tree(arg1)`  
+`tree(t)`  
 
 Tree graph class.  
 
@@ -4004,9 +4357,14 @@ Constructors
     
     Empty constructor.  
 
-* `tree(arg1)`  
+* `tree(t)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `t` :  
+        Tree.  
 
 C++ includes: tree.hpp
 ";
@@ -4019,9 +4377,14 @@ Overloaded function
     
     Empty constructor.  
 
-* `tree(arg1)`  
+* `tree(t)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `t` :  
+        Tree.  
 ";
 
 %feature("docstring") lal::graphs::tree::~tree "
@@ -4070,8 +4433,8 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of this new edge can be added to the tree without
-producing cycles.  
+Whether the addition of this new edge can be added to the tree without producing
+cycles.  
 ";
 
 %feature("docstring") lal::graphs::tree::can_add_edges "
@@ -4088,7 +4451,7 @@ Parameters
 
 Returns
 -------
-Returns whether the addition of these new edges can be added to the tree without
+Whether the addition of these new edges can be added to the tree without
 producing cycles.  
 ";
 
@@ -4110,7 +4473,7 @@ Parameters
 
 Returns
 -------
-Returns the size of the connected component of *u*.  
+The size of the connected component of *u*.  
 ";
 
 %feature("docstring") lal::graphs::tree::is_of_type "
@@ -4124,7 +4487,7 @@ Returns the list of types as a list of strings.
 
 Returns
 -------
-Returns the list of types as a list of strings.  
+The list of types as a list of strings.  
 ";
 
 %feature("docstring") lal::graphs::tree::init "
@@ -4232,7 +4595,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 %feature("docstring") lal::graphs::tree::is_directed "
@@ -4287,9 +4650,31 @@ C++ includes: tree_gen.hpp
 ";
 
 %feature("docstring") lal::generate::tree_gen::tree_gen "
+
+Overloaded function
+-------------------
+* `tree_gen(n)`  
+    
+    Constructor with number of nodes.  
+
+    Parameters:
+  
+    * `n` :  
+        Number of nodes  
+
+* `tree_gen(Gen)`  
+    
+    Default copy constructor.  
+
+    Parameters:
+  
+    * `Gen` :  
+        Generator of the same type.  
 ";
 
 %feature("docstring") lal::generate::tree_gen::~tree_gen "
+
+Default destructor.  
 ";
 
 %feature("docstring") lal::generate::tree_gen::get_tree "
@@ -4469,7 +4854,7 @@ see methods get_num_processor_errors, get_error_type, get_error_treebank_name.
 
 Returns
 -------
-Returns a value describing the error (if any) that occurred while processing the
+A value describing the error (if any) that occurred while processing the
 dataset. If any error ocurred, see methods  
 ";
 
@@ -4688,7 +5073,7 @@ Returns the current tree.
 %feature("docstring") lal::graphs::undirected_graph "
 `undirected_graph()`  
 `undirected_graph(n)`  
-`undirected_graph(arg1)`  
+`undirected_graph(g)`  
 
 Undirected graph class.  
 
@@ -4714,9 +5099,14 @@ Constructors
     * `n` :  
         Number of nodes.  
 
-* `undirected_graph(arg1)`  
+* `undirected_graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Undirected graph.  
 
 C++ includes: undirected_graph.hpp
 ";
@@ -4738,9 +5128,14 @@ Overloaded function
     * `n` :  
         Number of nodes.  
 
-* `undirected_graph(arg1)`  
+* `undirected_graph(g)`  
     
     Copy constructor.  
+
+    Parameters:
+  
+    * `g` :  
+        Undirected graph.  
 ";
 
 %feature("docstring") lal::graphs::undirected_graph::~undirected_graph "
@@ -4788,7 +5183,9 @@ Parameters
 * `t` :  
     Valid node index: $0 \\le t < n$.  
 
-pre: $u \\neq v$. The edge $\\{s,t\\}$ is not part of the graph.  
+pre: $u \\neq v$.  
+
+pre: The edge $\\{s,t\\}$ is not part of the graph.  
 
 post: If *norm* is true the graph is guaranteed to be normalised after the
     addition of the edge.  
@@ -4962,7 +5359,7 @@ Parameters
 
 Returns
 -------
-Returns the list of nodes adjacent to node *u*.  
+The list of nodes adjacent to node *u*.  
 ";
 
 %feature("docstring") lal::graphs::undirected_graph::degree "
@@ -4976,7 +5373,7 @@ Parameters
 
 Returns
 -------
-Returns the number of adjacent nodes.  
+The number of adjacent nodes.  
 ";
 
 %feature("docstring") lal::graphs::undirected_graph::has_edge "
@@ -5066,7 +5463,7 @@ this, use method normalise().
 
 Returns
 -------
-Returns the value of m_normalised.  
+The value of m_normalised.  
 ";
 
 // File: namespacelal.xml
@@ -5398,8 +5795,8 @@ Overloaded function
         is normalised.  
 
     Returns:
-    Returns 'false' if the file could not be opened. Returns 'true' if the graph
-    was read successfully.  
+    False if the file could not be opened. True if the graph was read
+    successfully.  
 
 * `read_edge_list(filename, g, norm=true, check_norm=true) -> bool`  
     
@@ -5428,8 +5825,8 @@ Overloaded function
         is normalised.  
 
     Returns:
-    Returns 'false' if the file could not be opened. Returns 'true' if the graph
-    was read successfully.  
+    False if the file could not be opened. True if the graph was read
+    successfully.  
 ";
 
 // File: namespacelal_1_1iterators.xml
@@ -5464,7 +5861,7 @@ $ is the sum of the number of edges of every
         When omitted, $\\pi_I$ is used for all graphs.  
 
     Returns:
-    Returns Jing's and Liu's 1-level $MDD$ for an ensemble of graphs.  
+    Jing's and Liu's 1-level $MDD$ for an ensemble of graphs.  
 ";
 
 %feature("docstring") lal::linarr::mean_dependency_distance_1level "
@@ -5510,7 +5907,7 @@ Parameters
 
 Returns
 -------
-Returns Jing's and Liu's 2-level $MDD$ for an ensemble of graphs.  
+Jing's and Liu's 2-level $MDD$ for an ensemble of graphs as a rational value.  
 ";
 
 %feature("docstring") lal::linarr::mean_dependency_distance_2level "
@@ -5529,7 +5926,8 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+Jing's and Liu's 2-level $MDD$ for an ensemble of graphs as a floating point
+value.  
 ";
 
 %feature("docstring") lal::linarr::n_crossings "
@@ -5554,7 +5952,7 @@ Overloaded function
         algorithms_C::stack_based.  
 
     Returns:
-    Returns $C$.  
+    The number of crossings $C$.  
 
     pre: The preconditions of this function depend on the choice of algorithm.
         See the preconditions of each algorithm in algorithms_C.  
@@ -5577,7 +5975,7 @@ Overloaded function
         algorithms_C::stack_based.  
 
     Returns:
-    Returns $C$.  
+    The number of crossings $C$.  
 
     pre: The preconditions of this function depend on the choice of algorithm.
         See the preconditions of each algorithm in algorithms_C.  
@@ -5607,7 +6005,7 @@ Overloaded function
         algorithms_C::stack_based.  
 
     Returns:
-    Returns a list $L$ where $L_i = C_{\\pi_i}(g)$.  
+    A list $L$ where $L_i = C_{\\pi_i}(g)$.  
 
     pre: None of the arrangements in *pis* can be empty.  
 
@@ -5634,7 +6032,7 @@ Overloaded function
         algorithms_C::stack_based.  
 
     Returns:
-    Returns a list $L$ where $L_i = C_{\\pi_i}(g)$.  
+    A list $L$ where $L_i = C_{\\pi_i}(g)$.  
 
     pre: None of the arrangements in *pis* can be empty.  
 
@@ -5741,8 +6139,8 @@ Parameters
 
 Returns
 -------
-Returns the class of projective structure. If the class could not be determined
-the method returns syntactic_dependency_structure_type::none  
+The class of projective structure. If the class could not be determined the
+method returns syntactic_dependency_structure_type::none  
 ";
 
 %feature("docstring") lal::linarr::sum_length_edges "
@@ -5770,7 +6168,7 @@ $.
         Linear arrangement of the nodes. When omitted, $\\pi_I$ is used.  
 
     Returns:
-    Returns $D$.  
+    The sum of edge lengths $D$.  
 
 * `sum_length_edges(g, pi={}) -> uint32_t`  
     
@@ -5793,7 +6191,7 @@ $.
         Linear arrangement of the nodes. When omitted, $\\pi_I$ is used.  
 
     Returns:
-    Returns $D$.  
+    The sum of edge lengths $D$.  
 ";
 
 %feature("docstring") lal::linarr::mean_dependency_distance_rational "
@@ -5819,7 +6217,7 @@ E(G)
         Linear arrangement of the nodes. When omitted, $\\pi_I$ is used.  
 
     Returns:
-    Returns Jing's and Liu's $MDD$.  
+    Jing's and Liu's $MDD$.  
 
 * `mean_dependency_distance_rational(g, pi={}) -> numeric::rational`  
     
@@ -5840,7 +6238,7 @@ E(G)
         Linear arrangement of the nodes. When omitted, $\\pi_I$ is used.  
 
     Returns:
-    Returns Jing's and Liu's $MDD$.  
+    Jing's and Liu's $MDD$.  
 ";
 
 %feature("docstring") lal::linarr::mean_dependency_distance "
@@ -5900,7 +6298,7 @@ Overloaded function
         The algorithm to be chosen.  
 
     Returns:
-    Returns the minimum value of $D$ and an optimum arrangement.  
+    The minimum value of $D$ and an optimum arrangement.  
 
     pre: Input tree *t* must be a valid tree (see graphs::tree::is_tree()).  
 
@@ -5923,7 +6321,7 @@ Overloaded function
         The algorithm to be chosen.  
 
     Returns:
-    Returns the minimum value of $D$ and an optimum arrangement.  
+    The minimum value of $D$ and an optimum arrangement.  
 
     pre: Input tree *t* must be a valid tree (see graphs::tree::is_tree()).  
 
@@ -5969,7 +6367,7 @@ Parameters
 
 Returns
 -------
-Returns the headedness ratio as an exact rational number.  
+The headedness ratio as an exact rational number.  
 ";
 
 %feature("docstring") lal::linarr::headedness "
@@ -6001,6 +6399,11 @@ syntactic_dependency_structure_type.
 %feature("docstring") lal::numeric::integer_from_ui "
 
 Make an integer from a 64-bit unsigned integer value.  
+
+Parameters
+----------
+* `n` :  
+    Unsigned integer (basic type) number.  
 ";
 
 %feature("docstring") lal::numeric::rational_from_ui "
@@ -6014,6 +6417,8 @@ Make a rational value from two 64-bit unsigned integers.
 
 Computes the the expectation of the first moment of C.  
 
+Returns $E[C]$ as a rational value.  
+
 Parameters
 ----------
 * `g` :  
@@ -6021,7 +6426,7 @@ Parameters
 
 Returns
 -------
-Returns $E[C]$ as a rational value.  
+The expected value of the number of crossings as a rational value.  
 ";
 
 %feature("docstring") lal::properties::expectation_C "
@@ -6037,7 +6442,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The expected value of the number of crossings as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::variance_C_rational "
@@ -6061,7 +6466,7 @@ Parameters
 
 Returns
 -------
-Returns the exact value of $V_{rla}[C]$ as a rational value.  
+The exact value of $V_{rla}[C]$ as a rational value.  
 
 pre: Method graphs::graph::is_normalised() must evaluate to true.  
 ";
@@ -6082,7 +6487,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The exact value of $V_{rla}[C]$ as a rationafloating point value.  
 ";
 
 %feature("docstring") lal::properties::variance_C_forest_rational "
@@ -6101,7 +6506,7 @@ Parameters
 
 Returns
 -------
-Returns the exact value of $V_{rla}[C]$ as a rational value.  
+The exact value of $V_{rla}[C]$ as a rational value.  
 
 pre: The input graph *g* is a forest.  
 ";
@@ -6119,7 +6524,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The exact value of $V_{rla}[C]$ as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::variance_C_tree_rational "
@@ -6137,7 +6542,7 @@ Parameters
 
 Returns
 -------
-Returns the exact value of $V_{rla}[C]$ as a rational value.  
+The exact value of $V_{rla}[C]$ as a rational value.  
 ";
 
 %feature("docstring") lal::properties::variance_C_tree "
@@ -6162,6 +6567,8 @@ Computes the the expectation of the first moment of D.
 
 This function uses the formulae derived in [15].  
 
+Returns the value $E[D]$ as a rational value.  
+
 Parameters
 ----------
 * `g` :  
@@ -6169,7 +6576,7 @@ Parameters
 
 Returns
 -------
-Returns $E[D]$ as a rational value.  
+The expected value of the sum of edge lengths as a rational value.  
 ";
 
 %feature("docstring") lal::properties::expectation_D "
@@ -6185,7 +6592,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The expected value of the sum of edge lengths as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::variance_D_rational "
@@ -6203,7 +6610,7 @@ Parameters
 
 Returns
 -------
-Returns the exact value of $V[D]$ as a rational value.  
+The exact value of $V[D]$ as a rational value.  
 ";
 
 %feature("docstring") lal::properties::variance_D "
@@ -6219,7 +6626,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The exact value of $V[D]$ as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::mmt_degree_rational "
@@ -6247,8 +6654,7 @@ Overloaded function
         Moment of degree.  
 
     Returns:
-    When $p=2$ returns the second moment, when $p=3$ returns the third moment,
-    ...  
+    The $p$-th moment of the in-degree about 0 as a rational value.  
 
 * `mmt_degree_rational(g, p) -> numeric::rational`  
     
@@ -6271,8 +6677,7 @@ Overloaded function
         Moment of degree.  
 
     Returns:
-    When $p=2$ returns the second moment, when $p=3$ returns the third moment,
-    ...  
+    The $p$-th moment of the in-degree about 0 as a rational value.  
 ";
 
 %feature("docstring") lal::properties::mmt_degree "
@@ -6294,7 +6699,7 @@ Overloaded function
         Moment of degree.  
 
     Returns:
-    The return value is a floating point value.  
+    The $p$-th moment of the degree about 0 as a floating point value.  
 
 * `mmt_degree(g, p) -> double`  
     
@@ -6311,7 +6716,7 @@ Overloaded function
         Moment of degree.  
 
     Returns:
-    The return value is a floating point value.  
+    The $p$-th moment of the degree about 0 as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::mmt_in_degree_rational "
@@ -6335,7 +6740,7 @@ Parameters
 
 Returns
 -------
-When $p=2$ returns the second moment, when $p=3$ returns the third moment, ...  
+The $p$-th moment of the in-degree about 0 as a rational value.  
 ";
 
 %feature("docstring") lal::properties::mmt_in_degree "
@@ -6354,7 +6759,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The $p$-th moment of the in-degree about 0 as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::mmt_out_degree_rational "
@@ -6378,7 +6783,7 @@ Parameters
 
 Returns
 -------
-When $p=2$ returns the second moment, when $p=3$ returns the third moment, ...  
+The $p$-th moment of the out-degree about 0 as a rational value.  
 ";
 
 %feature("docstring") lal::properties::mmt_out_degree "
@@ -6397,7 +6802,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The $p$-th moment of the out-degree about 0 as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::hubiness_rational "
@@ -6422,7 +6827,7 @@ Parameters
 
 Returns
 -------
-Returns the hubiness coefficient.  
+The hubiness coefficient as a rational value.  
 
 pre: $n > 3$.  
 ";
@@ -6440,7 +6845,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The hubiness coefficient as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::mean_hierarchical_distance_rational "
@@ -6462,7 +6867,7 @@ Parameters
 
 Returns
 -------
-Returns the Mean Hierarchical Distance of a rooted tree.  
+The Mean Hierarchical Distance of a rooted tree as a rational value.  
 ";
 
 %feature("docstring") lal::properties::mean_hierarchical_distance "
@@ -6478,7 +6883,7 @@ Parameters
 
 Returns
 -------
-The return value is a floating point value.  
+The Mean Hierarchical Distance of a rooted tree as a floating point value.  
 ";
 
 %feature("docstring") lal::properties::size_Q_integer "
@@ -6500,7 +6905,7 @@ Overloaded function
         Input graph.  
 
     Returns:
-    Returns the size of $Q(G)$ as an integer of arbitrary precision.  
+    The size of $Q(G)$ as an integer of arbitrary precision.  
 
 * `size_Q_integer(g) -> numeric::integer`  
     
@@ -6517,7 +6922,7 @@ Overloaded function
         Input graph.  
 
     Returns:
-    Returns the size of $Q(G)$ as an integer of arbitrary precision.  
+    The size of $Q(G)$ as an integer of arbitrary precision.  
 ";
 
 %feature("docstring") lal::properties::size_Q "
@@ -6536,7 +6941,7 @@ Overloaded function
         Input graph.  
 
     Returns:
-    The return value is a simple 64-bit unsigned integer.  
+    The size of $Q(G)$ as a 64-bit integer.  
 
 * `size_Q(g) -> uint64_t`  
     
@@ -6550,7 +6955,7 @@ Overloaded function
         Input graph.  
 
     Returns:
-    The return value is a simple 64-bit unsigned integer.  
+    The size of $Q(G)$ as a 64-bit integer.  
 ";
 
 %feature("docstring") lal::properties::get_centre "
@@ -6573,9 +6978,9 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns a tuple of two values: the nodes in the centre. If the tree has a
-    single central node, only the first node is valid and the second is assigned
-    an invalid vertex index. It is guaranteed that the first vertex has smaller
+    A tuple of two values: the nodes in the centre. If the tree has a single
+    central node, only the first node is valid and the second is assigned an
+    invalid vertex index. It is guaranteed that the first vertex has smaller
     index value than the second.  
 
     pre: Method graphs::rooted_tree::is_tree returns true.  
@@ -6596,9 +7001,9 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns a tuple of two values: the nodes in the centre. If the tree has a
-    single central node, only the first node is valid and the second is assigned
-    an invalid vertex index. It is guaranteed that the first vertex has smaller
+    A tuple of two values: the nodes in the centre. If the tree has a single
+    central node, only the first node is valid and the second is assigned an
+    invalid vertex index. It is guaranteed that the first vertex has smaller
     index value than the second.  
 
     pre: Method graphs::rooted_tree::is_tree returns true.  
@@ -6625,9 +7030,9 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns a tuple of two values: the nodes in the centre. If the tree has a
-    single central node, only the first node is valid and the second is assigned
-    an invalid vertex index. It is guaranteed that the first vertex has smaller
+    A tuple of two values: the nodes in the centre. If the tree has a single
+    central node, only the first node is valid and the second is assigned an
+    invalid vertex index. It is guaranteed that the first vertex has smaller
     index value than the second.  
 
     pre: Method graphs::rooted_tree::is_tree returns true.  
@@ -6648,9 +7053,9 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns a tuple of two values: the nodes in the centre. If the tree has a
-    single central node, only the first node is valid and the second is assigned
-    an invalid vertex index. It is guaranteed that the first vertex has smaller
+    A tuple of two values: the nodes in the centre. If the tree has a single
+    central node, only the first node is valid and the second is assigned an
+    invalid vertex index. It is guaranteed that the first vertex has smaller
     index value than the second.  
 
     pre: Method graphs::rooted_tree::is_tree returns true.  
@@ -6675,7 +7080,7 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns the diameter of the input tree.  
+    The diameter of the input tree.  
 
 * `get_diameter(t) -> uint32_t`  
     
@@ -6692,7 +7097,7 @@ Overloaded function
         Input tree.  
 
     Returns:
-    Returns the diameter of the input tree.  
+    The diameter of the input tree.  
 ";
 
 // File: namespacelal_1_1utilities.xml
@@ -6725,8 +7130,8 @@ Overloaded function
         Input rooted tree.  
 
     Returns:
-    Returns whether the input trees are isomorphic or not. If the rooted trees
-    do not have both a valid edge orientation (see
+    Whether or not the input trees are isomorphic or not. If the rooted trees do
+    not have both a valid edge orientation (see
     graphs::rooted_tree::is_orientation_valid) the trees are considered to be
     non-isomorphic.  
 
@@ -6751,7 +7156,7 @@ Overloaded function
         Input free tree.  
 
     Returns:
-    Returns whether the input trees are isomorphic or not.  
+    Whether or not the input trees are isomorphic.  
 ";
 
 // File: namespacestd.xml
