@@ -1,4 +1,5 @@
 r"""
+
 The different classes of graphs
 ----------------------------------------
 

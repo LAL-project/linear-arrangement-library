@@ -1,4 +1,5 @@
 r"""
+
 LAL, the Linear Arrangement Library
 ---------------------------------------
 
