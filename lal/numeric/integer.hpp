@@ -61,194 +61,437 @@ class integer {
 public:
 	friend class rational;
 public:
+	/* CONSTRUCTORS */
+
 	/// Empty constructor.
-	integer() noexcept;
-	/// Constructor with unsigned integer value.
-	integer(int64_t i) noexcept;
-	/// Constructor with string.
-	integer(const std::string& i) noexcept;
+	integer() noexcept { mpz_init(m_val); }
+	/**
+	 * @brief Constructor with unsigned integer value.
+	 * @param i Signed integer (basic type) number.
+	 */
+	integer(int64_t i) noexcept { mpz_init_set_si(m_val, i); }
+	/**
+	 * @brief Constructor with string.
+	 * @param s A string.
+	 */
+	integer(const std::string& s) noexcept { mpz_init_set_str(m_val, s.c_str(), 10); }
 #ifndef SWIG
-	/// Move constructor.
+	/**
+	 * @brief Move constructor.
+	 * @param i A lal::numeric::integer
+	 */
 	integer(integer&& i) noexcept;
 #endif
-	/// Copy constructor.
-	integer(const integer& i) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer(const integer& i) noexcept { mpz_init_set(m_val, i.m_val); }
 	/// Destructor.
-	~integer() noexcept;
+	~integer() noexcept { mpz_clear(m_val); }
 
-	/* SET VALUE */
+	/* SETTERS */
 
-	/// Overwrites the value of this integer with @e i.
-	void set_si(int64_t i) noexcept;
-	/// Overwrites the value of this integer with @e i.
-	void set_ui(uint64_t i) noexcept;
-	/// Overwrites the value of this integer with @e i.
-	void set_integer(const integer& i) noexcept;
-	/// Overwrites the value of this integer with the contents in @e s.
-	void set_str(const std::string& s) noexcept;
+	/**
+	 * @brief Overwrites the value of this integer with @e i.
+	 * @param i Signed integer (basic type) number.
+	 */
+	void set_si(int64_t i) noexcept {
+		if (not is_initialized()) { mpz_init(m_val); }
+		mpz_set_si(m_val, i);
+		m_initialized = true;
+	}
+	/**
+	 * @brief Overwrites the value of this integer with @e i.
+	 * @param i Unsigned integer (basic type) number.
+	 */
+	void set_ui(uint64_t i) noexcept {
+		if (not is_initialized()) { mpz_init(m_val); }
+		mpz_set_ui(m_val, i);
+		m_initialized = true;
+	}
+	/**
+	 * @brief Overwrites the value of this integer with @e i.
+	 * @param i A lal::numeric::integer.
+	 */
+	void set_integer(const integer& i) noexcept {
+		if (not is_initialized()) { mpz_init(m_val); }
+		mpz_set(m_val, i.m_val);
+		m_initialized = true;
+	}
+	/**
+	 * @brief Overwrites the value of this integer with @e s.
+	 * @param s A string.
+	 */
+	void set_str(const std::string& s) noexcept {
+		if (not is_initialized()) { mpz_init(m_val); }
+		mpz_set_str(m_val, s.c_str(), 10);
+		m_initialized = true;
+	}
 
 	/* OPERATORS */
 
+	// -- ASSIGNMENT
+
 #ifndef SWIG
-	/// Assignment operator.
-	integer& operator= (int64_t i) noexcept;
-	/// Assignment operator.
-	integer& operator= (const integer& i) noexcept;
-	/// Move assignment operator.
+	/**
+	 * @brief Assignment operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	integer& operator= (int64_t i) noexcept {
+		set_si(i);
+		return *this;
+	}
+	/**
+	 * @brief Copy assignment operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer& operator= (const integer& i) noexcept {
+		set_integer(i);
+		return *this;
+	}
+	/**
+	 * @brief Move assignment operator.
+	 * @param i A lal::numeric::integer.
+	 */
 	integer& operator= (integer&& i) noexcept;
 #endif
 
-	/// Equality operator.
-	bool operator== (int64_t i) const noexcept;
+	// -- EQUALITY
+
+	/**
+	 * @brief Equality operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator== (int64_t i) const noexcept
+	{ return mpz_cmp_si(m_val, i) == 0; }
 #ifndef SWIG
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline bool friend operator== (int64_t i, const integer& ii) noexcept
 	{ return ii == i; }
 #endif
-	/// Equality operator.
-	bool operator== (const std::string& i) const noexcept;
-#ifndef SWIG
-	/// Equality operator.
-	inline bool friend operator== (const std::string& i, const integer& ii) noexcept
-	{ return ii == i; }
-#endif
-	/// Equality operator.
-	bool operator== (const integer& i) const noexcept;
+	/**
+	 * @brief Equality operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator== (const integer& i) const noexcept
+	{ return mpz_cmp(m_val, i.m_val) == 0; }
 
-	/// Non-equality operator.
-	bool operator!= (int64_t i) const noexcept;
+	// -- NON-EQUALITY
+
+	/**
+	 * @brief Non-equality operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator!= (int64_t i) const noexcept
+	{ return not (*this == i); }
 #ifndef SWIG
-	/// Non-equality operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline bool friend operator!= (int64_t i, const integer& ii) noexcept
 	{ return ii != i; }
 #endif
-	/// Non-equality operator.
-	bool operator!= (const std::string& i) const noexcept;
-#ifndef SWIG
-	/// Non-equality operator.
-	inline bool friend operator!= (const std::string& i, const integer& ii) noexcept
-	{ return ii != i; }
-#endif
-	/// Non-equality operator.
-	bool operator!= (const integer& i) const noexcept;
+	/**
+	 * @brief Non-equality operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator!= (const integer& i) const noexcept
+	{ return not (*this == i); }
 
-	/// Less than operator.
-	bool operator< (int64_t i) const noexcept;
+	// -- LESS THAN
+
+	/**
+	 * @brief Less than operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator< (int64_t i) const noexcept
+	{ return mpz_cmp_si(m_val, i)  < 0; }
 #ifndef SWIG
-	/// Less than operator.
+	/**
+	 * @brief Less operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend bool operator< (int64_t i, const integer& ii) noexcept
 	{ return ii > i; }
 #endif
-	/// Less than operator.
-	bool operator< (const integer& i) const noexcept;
+	/**
+	 * @brief Less than operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator< (const integer& i) const noexcept
+	{ return mpz_cmp(m_val, i.m_val) < 0; }
 
-	/// Less than or equal to operator.
-	bool operator<= (int64_t i) const noexcept;
+	// -- LESS THAN OR EQUAL TO
+
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator<= (int64_t i) const noexcept
+	{ return mpz_cmp_si(m_val, i)  <= 0; }
 #ifndef SWIG
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend bool operator<= (int64_t i, const integer& ii) noexcept
 	{ return ii >= i; }
 #endif
-	/// Less than or equal to operator.
-	bool operator<= (const integer& i) const noexcept;
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator<= (const integer& i) const noexcept
+	{ return mpz_cmp(m_val, i.m_val) <= 0; }
 
-	/// Greater than operator.
-	bool operator> (int64_t i) const noexcept;
+	// -- GREATER THAN
+
+	/**
+	 * @brief Greater than operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator> (int64_t i) const noexcept
+	{ return mpz_cmp_si(m_val, i)  > 0; }
 #ifndef SWIG
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend bool operator> (int64_t i, const integer& ii) noexcept
 	{ return ii < i; }
 #endif
-	/// Greater than operator.
-	bool operator> (const integer& i) const noexcept;
+	/**
+	 * @brief Greater than operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator> (const integer& i) const noexcept
+	{ return mpz_cmp(m_val, i.m_val) > 0; }
 
-	/// Greater than or equal to operator.
-	bool operator>= (int64_t i) const noexcept;
+	// -- GREATER THAN OR EQUAL TO
+
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	bool operator>= (int64_t i) const noexcept
+	{ return mpz_cmp_si(m_val, i) >= 0; }
 #ifndef SWIG
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend bool operator>= (int64_t i, const integer& ii) noexcept
 	{ return ii <= i; }
 #endif
-	/// Greater than or equal to operator.
-	bool operator>= (const integer& i) const noexcept;
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	bool operator>= (const integer& i) const noexcept
+	{ return mpz_cmp(m_val, i.m_val) >= 0; }
 
-	/// Addition operator. Returns a new object of type 'integer'.
-	integer operator+ (int64_t i) const noexcept;
+	/* ARITHMETIC OPERATORS */
+
+	// -- ADDITION
+
+	/**
+	 * @brief Addition operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	integer operator+ (int64_t i) const noexcept
+	{ integer a(*this); a += i; return a; }
 #ifndef SWIG
-	/// Addition operator. Returns a new object of type 'integer'.
+	/**
+	 * @brief Addition operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend integer operator+ (int64_t i, const integer& ii) noexcept
 	{ return ii + i; }
 #endif
-	/// Addition operator. Returns a new object of type 'integer'.
-	integer operator+ (const integer& i) const noexcept;
-
-	/// Addition operator. Modifies the current instance.
+	/**
+	 * @brief Addition operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator+ (const integer& i) const noexcept
+	{ integer a(*this); a += i;	return a; }
+	/**
+	 * @brief Addition operator.
+	 * @param i Signed integer (basic type) number.
+	 */
 	integer& operator+= (int64_t i) noexcept;
-	/// Addition operator. Modifies the current instance.
-	integer& operator+= (const integer& i) noexcept;
+	/**
+	 * @brief Addition operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer& operator+= (const integer& i) noexcept
+	{ mpz_add(m_val, m_val, i.m_val); return *this; }
+
+	// -- SUBSTRACTION
 
 	/// Minus unary operator. Returns a new object of type 'integer'.
-	integer operator- () const noexcept;
-	/// Substraction operator. Returns a new object of type 'integer'.
-	integer operator- (int64_t i) const noexcept;
+	integer operator- () const noexcept
+	{ integer a(*this);	mpz_neg(a.m_val, a.m_val); return a; }
+	/**
+	 * @brief Substraction operator.
+	 * @param i Signed integer (basic type) number.
+	 */
+	integer operator- (int64_t i) const noexcept
+	{ integer a(*this); a -= i; return a; }
 #ifndef SWIG
-	/// Substraction operator. Returns a new object of type 'integer'.
+	/**
+	 * @brief Substraction operator.
+	 * @param i Signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend integer operator- (int64_t i, const integer& ii) noexcept
 	{ return -ii + i; }
 #endif
-	/// Substraction operator. Returns a new object of type 'integer'.
-	integer operator- (const integer& i) const noexcept;
-
-	/// Minus unary operator. Modifies the current instance.
-	integer& operator- () noexcept;
-	/// Substraction operator. Modifies the current instance.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator- (const integer& i) const noexcept
+	{ integer a(*this); a -= i;	return a; }
+	/// Minus unary operator. Modifies this object.
+	integer& operator- () noexcept
+	{ mpz_neg(m_val, m_val); return *this; }
+	/**
+	 * @brief Substraction operator.
+	 * @param i Signed integer (basic type) number.
+	 */
 	integer& operator-= (int64_t i) noexcept;
-	/// Substraction operator. Modifies the current instance.
-	integer& operator-= (const integer& i) noexcept;
+	/**
+	 * @brief Substraction operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer& operator-= (const integer& i) noexcept
+	{ mpz_sub(m_val, m_val, i.m_val); return *this; }
 
-	/// Product operator. Returns a new object of type 'integer'.
-	integer operator* (int64_t i) const noexcept;
+	// -- MULTIPLICATION
+
+	/**
+	 * @brief Product operator.
+	 * @param i A signed integer (basic type) number.
+	 */
+	integer operator* (int64_t i) const noexcept
+	{ integer a(*this); a *= i;	return a; }
 #ifndef SWIG
-	/// Product operator. Returns a new object of type 'integer'.
+	/**
+	 * @brief Product operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend integer operator* (int64_t i, const integer& ii) noexcept
 	{ return ii*i; }
 #endif
-	/// Product operator. Returns a new object of type 'integer'.
-	integer operator* (const integer& i) const noexcept;
+	/**
+	 * @brief Product operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator* (const integer& i) const noexcept
+	{ integer a(*this); a *= i;	return a; }
+	/**
+	 * @brief Product operator.
+	 * @param i A signed integer (basic type) number.
+	 */
+	integer& operator*= (int64_t i) noexcept
+	{ mpz_mul_si(m_val, m_val, i);		return *this; }
+	/**
+	 * @brief Product operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer& operator*= (const integer& i) noexcept
+	{ mpz_mul(m_val, m_val, i.m_val);	return *this; }
 
-	/// Product operator. Modifies the current instance.
-	integer& operator*= (int64_t i) noexcept;
-	/// Product operator. Modifies the current instance.
-	integer& operator*= (const integer& i) noexcept;
+	// -- DIVISION
 
-	/// Quotient operator. Returns a new object of type 'integer'.
-	integer operator/ (int64_t i) const noexcept;
+	/**
+	 * @brief Division operator.
+	 * @param i A signed integer (basic type) number.
+	 */
+	integer operator/ (int64_t i) const noexcept
+	{ integer a(*this); a /= i;	return a; }
 #ifndef SWIG
-	/// Quotient operator. Returns a new object of type 'integer'.
+	/**
+	 * @brief Division operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param ii A lal::numeric::integer.
+	 */
 	inline friend int64_t operator/ (int64_t i, const integer& ii) noexcept
 	{ return i/ii.to_int(); }
 #endif
-	/// Quotient operator. Returns a new object of type 'integer'.
-	integer operator/ (const integer& i) const noexcept;
-
-	/// Quotient operator. Modifies the current instance.
+	/**
+	 * @brief Product operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator/ (const integer& i) const noexcept
+	{ integer a(*this); a /= i;	return a; }
+	/**
+	 * @brief Division operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	integer& operator/= (int64_t i) noexcept;
-	/// Quotient operator. Modifies the current instance.
-	integer& operator/= (const integer& i) noexcept;
+	/**
+	 * @brief Division operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer& operator/= (const integer& i) noexcept
+	{ mpz_div(m_val, m_val, i.m_val);	return *this; }
 
-	/// Power operator. Returns a new object of type 'integer'.
-	integer operator^ (uint64_t i) const noexcept;
-	/// Power operator. Returns a new object of type 'integer'.
-	integer operator^ (const integer& i) const noexcept;
+	// -- EXPONENTIATION
 
-	/// Power operator. Modifies the current instance.
-	integer& operator^= (uint64_t i) noexcept;
-	/// Power operator. Modifies the current instance.
+	/**
+	 * @brief Power operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator^ (uint64_t i) const noexcept
+	{ integer r(*this); r ^= i;	return r; }
+	/**
+	 * @brief Power operator.
+	 * @param i A lal::numeric::integer.
+	 */
+	integer operator^ (const integer& i) const noexcept
+	{ integer r(*this); r ^= i;	return r; }
+
+	/**
+	 * @brief Power operator.
+	 *
+	 * Modifies the current object.
+	 * @param i Unsigned integer (basic type) number.
+	 */
+	integer& operator^= (uint64_t i) noexcept
+	{ mpz_pow_ui(m_val, m_val, i); return *this; }
+	/**
+	 * @brief Power operator.
+	 *
+	 * Modifies the current object.
+	 * @param i A lal::numeric::integer.
+	 */
 	integer& operator^= (const integer& i) noexcept;
 
-	/// Modulus operator.
+	// -- MODULUS
+
+	/**
+	 * @brief Modulus operator.
+	 * @param i Unsigned integer (basic type) number.
+	 */
 	uint64_t operator% (uint64_t i) const noexcept;
-	/// Modulus operator.
+	/**
+	 * @brief Modulus operator.
+	 * @param i A lal::numeric::integer
+	 */
 	integer operator% (const integer& i) const noexcept;
 
 	/* GETTERS */
@@ -274,7 +517,10 @@ public:
 
 	/// Converts this integer to a string.
 	std::string to_string() const noexcept;
-	/// Converts this integer to a string.
+	/**
+	 * @brief Converts this integer to a string.
+	 * @param s A reference to a string.
+	 */
 	void as_string(std::string& s) const noexcept;
 
 	/* OTHERS */
@@ -287,14 +533,16 @@ public:
 	 * of the initialised integer to the other. At the end, one of the two
 	 * integers is left uninitiliased.
 	 * - If both integers are initialised, swaps the values they contain.
+	 *
+	 * @param i A lal::numeric::integer
 	 */
 	void swap(integer& i) noexcept;
 
 #ifndef SWIG
 	/**
 	 * @brief Swaps two integers.
-	 * @param i Input integer.
-	 * @param j Input integer.
+	 * @param i Input lal::numeric::integer.
+	 * @param j Input lal::numeric::integer.
 	 */
 	friend void swap(integer& i, integer& j) noexcept {
 		i.swap(j);
@@ -308,7 +556,10 @@ private:
 	bool m_initialized = true;
 };
 
-/// Make an integer from a 64-bit unsigned integer value.
+/**
+ * @brief Make an integer from a 64-bit unsigned integer value.
+ * @param n Unsigned integer (basic type) number.
+ */
 inline integer integer_from_ui(uint64_t n) noexcept {
 	integer i;
 	i.set_ui(n);

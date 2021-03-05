@@ -55,29 +55,6 @@ namespace numeric {
 
 // PUBLIC
 
-rational::rational() noexcept {
-	mpq_init(m_val);
-}
-rational::rational(int64_t n, uint64_t d) noexcept {
-	mpq_init(m_val);
-	set_si(n, d);
-}
-
-rational::rational(const integer& n, const integer& d) noexcept {
-	mpq_init(m_val);
-	set_integer(n, d);
-}
-
-rational::rational(const std::string& s) noexcept {
-	mpq_init(m_val);
-	set_str(s);
-}
-
-rational::rational(const rational& r) noexcept {
-	mpq_init(m_val);
-	mpq_set(m_val, r.m_val);
-}
-
 rational::rational(integer&& i) noexcept {
 	internal::move_mpz_to_mpq(i.m_val, m_val);
 	i.m_initialized = false;
@@ -97,63 +74,7 @@ rational::rational(rational&& r) noexcept {
 	r.m_initialized = false;
 }
 
-rational::~rational() noexcept {
-	mpq_clear(m_val);
-}
-
-/* SET VALUE */
-
-void rational::set_si(int64_t n, uint64_t d) noexcept {
-	if (not is_initialized()) { mpq_init(m_val); }
-	mpq_set_si(m_val, n, d);
-	mpq_canonicalize(m_val);
-	m_initialized = true;
-}
-void rational::set_ui(uint64_t n, uint64_t d) noexcept {
-	if (not is_initialized()) { mpq_init(m_val); }
-	mpq_set_ui(m_val, n, d);
-	mpq_canonicalize(m_val);
-	m_initialized = true;
-}
-void rational::set_str(const std::string& s) noexcept {
-	if (not is_initialized()) { mpq_init(m_val); }
-	mpq_set_str(m_val, s.c_str(), 10);
-	mpq_canonicalize(m_val);
-	m_initialized = true;
-}
-void rational::set_integer(const integer& n, const integer& d) noexcept {
-	if (not is_initialized()) { mpq_init(m_val); }
-	mpq_set_num(m_val, n.get_raw_value());
-	mpq_set_den(m_val, d.get_raw_value());
-	mpq_canonicalize(m_val);
-	m_initialized = true;
-}
-
-void rational::invert() noexcept {
-	mpq_inv(m_val, m_val);
-}
-
 /* OPERATORS */
-
-rational& rational::operator= (int64_t i) noexcept {
-	set_si(i);
-	return *this;
-}
-
-rational& rational::operator= (const string& s) noexcept {
-	set_str(s);
-	return *this;
-}
-
-rational& rational::operator= (const integer& i) noexcept {
-	set_integer(i);
-	return *this;
-}
-
-rational& rational::operator= (const rational& r) noexcept {
-	mpq_set(m_val, r.m_val);
-	return *this;
-}
 
 rational& rational::operator= (integer&& i) noexcept {
 	mpq_clear(m_val);
@@ -176,61 +97,7 @@ rational& rational::operator= (rational&& r) noexcept {
 	return *this;
 }
 
-bool rational::operator== (int64_t i) const noexcept			{ rational r(i); 	return mpq_equal(m_val, r.m_val) != 0; }
-bool rational::operator== (const string& s) const noexcept		{ return *this == rational(s); }
-bool rational::operator== (const integer& i) const noexcept		{ rational r(i); 	return mpq_equal(m_val, r.m_val) != 0; }
-bool rational::operator== (const rational& r) const noexcept	{					return mpq_equal(m_val, r.m_val) != 0; }
-
-bool rational::operator!= (int64_t i) const noexcept			{ return not (*this == i); }
-bool rational::operator!= (const string& s) const noexcept		{ return not (*this == s); }
-bool rational::operator!= (const integer& i) const noexcept		{ return not (*this == i); }
-bool rational::operator!= (const rational& r) const noexcept	{ return not (*this == r); }
-
-bool rational::operator< (int64_t i) const noexcept				{ rational r(i); 	return mpq_cmp(m_val, r.m_val) < 0; }
-bool rational::operator< (const integer& i) const noexcept		{ rational r(i); 	return mpq_cmp(m_val, r.m_val) < 0; }
-bool rational::operator< (const rational& r) const noexcept		{					return mpq_cmp(m_val, r.m_val) < 0; }
-
-bool rational::operator<= (int64_t i) const noexcept			{ rational r(i); 	return mpq_cmp(m_val, r.m_val) <= 0; }
-bool rational::operator<= (const integer& i) const noexcept		{ rational r(i); 	return mpq_cmp(m_val, r.m_val) <= 0; }
-bool rational::operator<= (const rational& r) const noexcept	{ 					return mpq_cmp(m_val, r.m_val) <= 0; }
-
-bool rational::operator> (int64_t i) const noexcept				{ rational r(i); 	return mpq_cmp(m_val, r.m_val) > 0; }
-bool rational::operator> (const integer& i) const noexcept		{ rational r(i); 	return mpq_cmp(m_val, r.m_val) > 0; }
-bool rational::operator> (const rational& r) const noexcept		{ 					return mpq_cmp(m_val, r.m_val) > 0; }
-
-bool rational::operator>= (int64_t i) const noexcept			{ rational r(i); 	return mpq_cmp(m_val, r.m_val) >= 0; }
-bool rational::operator>= (const integer& i) const noexcept		{ rational r(i); 	return mpq_cmp(m_val, r.m_val) >= 0; }
-bool rational::operator>= (const rational& r) const noexcept	{					return mpq_cmp(m_val, r.m_val) >= 0; }
-
-rational rational::operator+ (int64_t i) const noexcept			{ rational r(*this); r += i; return r; }
-rational rational::operator+ (const integer& i) const noexcept	{ rational r(*this); r += i; return r; }
-rational rational::operator+ (const rational& r) const noexcept	{ rational k(*this); k += r; return k; }
-
-rational& rational::operator+= (int64_t i) noexcept				{ rational r(i); 	mpq_add(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator+= (const integer& i) noexcept		{ rational r(i); 	mpq_add(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator+= (const rational& r) noexcept		{					mpq_add(m_val, m_val, r.m_val); return *this; }
-
-rational rational::operator- () const noexcept					{ rational r(*this); mpq_neg(r.m_val, r.m_val); return r; }
-rational rational::operator- (int64_t i) const noexcept			{ rational r(*this); r -= i; return r; }
-rational rational::operator- (const integer& i) const noexcept	{ rational r(*this); r -= i; return r; }
-rational rational::operator- (const rational& r) const noexcept	{ rational k(*this); k -= r; return k; }
-
-rational& rational::operator- () noexcept						{					mpq_neg(m_val, m_val); return *this; }
-rational& rational::operator-= (int64_t i) noexcept				{ rational r(i);	mpq_sub(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator-= (const integer& i) noexcept		{ rational r(i);	mpq_sub(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator-= (const rational& r) noexcept		{					mpq_sub(m_val, m_val, r.m_val); return *this; }
-
-rational rational::operator* (int64_t i) const noexcept			{ rational r(*this); r *= i; return r; }
-rational rational::operator* (const integer& i) const noexcept	{ rational r(*this); r *= i; return r; }
-rational rational::operator* (const rational& r) const noexcept	{ rational k(*this); k *= r; return k; }
-
-rational& rational::operator*= (int64_t i) noexcept				{ rational r(i);	mpq_mul(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator*= (const integer& i) noexcept		{ rational r(i);	mpq_mul(m_val, m_val, r.m_val); return *this; }
-rational& rational::operator*= (const rational& r) noexcept		{					mpq_mul(m_val, m_val, r.m_val); return *this; }
-
-rational rational::operator/ (int64_t i) const noexcept			{ rational r(*this); r /= i; return r; }
-rational rational::operator/ (const integer& i) const noexcept	{ rational r(*this); r /= i; return r; }
-rational rational::operator/ (const rational& r) const noexcept	{ rational k(*this); k /= r; return k; }
+// -- DIVISION
 
 rational& rational::operator/= (int64_t I) noexcept {
 	integer i(I);
@@ -246,6 +113,8 @@ rational& rational::operator/= (const rational& r) noexcept {
 	internal::mpq_divide_mpq(m_val, r.m_val);
 	return *this;
 }
+
+// -- EXPONENTIATION
 
 rational rational::operator^ (uint64_t p) const noexcept {
 	rational r(*this);
@@ -270,10 +139,6 @@ rational& rational::operator^= (const integer& p) noexcept {
 }
 
 /* GETTERS */
-
-int rational::get_sign() const noexcept {
-	return mpq_sgn(m_val);
-}
 
 size_t rational::bytes() const noexcept {
 	const size_t bs =
@@ -310,31 +175,6 @@ void rational::as_integer(integer& i) const noexcept {
 	// 'move_mpz_to_mpz' does it for us (it really doesn't -- it just
 	// moves the contens!).
 	mpz_clear(denominator);
-}
-
-double rational::to_double() const noexcept {
-	return mpq_get_d(m_val);
-}
-
-void rational::as_double(double& d) const noexcept {
-	d = mpq_get_d(m_val);
-}
-
-string rational::to_string() const noexcept {
-	string k;
-	as_string(k);
-	return k;
-}
-
-void rational::as_string(string& s) const noexcept {
-	char *buf = nullptr;
-	buf = mpq_get_str(buf, 10, m_val);
-	s = string(buf);
-	free(buf);
-}
-
-void rational::swap(rational& r) noexcept {
-	mpq_swap(m_val, r.m_val);
 }
 
 } // -- namespace numeric
