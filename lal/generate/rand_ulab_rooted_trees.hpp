@@ -66,6 +66,8 @@ namespace generate {
  */
 class __rand_ulab_rooted_trees {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -74,23 +76,26 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
-	/// Move constructor.
-	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random unlabelled rooted tree generator.
+	 */
+	__rand_ulab_rooted_trees(const __rand_ulab_rooted_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random unlabelled rooted tree generator.
+	 */
+	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&& Gen) noexcept = default;
+#endif
 	/// Destructor.
 	virtual ~__rand_ulab_rooted_trees() noexcept = default;
 
-#ifndef SWIG
-	/// Disallow copies.
-	__rand_ulab_rooted_trees(const __rand_ulab_rooted_trees&) = delete;
-	/// Disallow copies.
-	__rand_ulab_rooted_trees& operator= (const __rand_ulab_rooted_trees&) = delete;
-	/// Disallow moves.
-	__rand_ulab_rooted_trees& operator= (__rand_ulab_rooted_trees&&) = delete;
-#endif
+	/* GETTERS */
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
-	 * @return Returns an unlabelled rooted tree. The tree is rooted
+	 * @returns An unlabelled rooted tree. The tree is rooted
 	 * at vertex 0.
 	 */
 	graphs::rooted_tree get_tree() noexcept;
@@ -140,7 +145,6 @@ protected:
 	internal::data_array<uint32_t> m_tree;
 
 protected:
-
 	/**
 	 * @brief Sets the size of the unlabelled trees to generate.
 	 *
@@ -160,7 +164,7 @@ protected:
 	 * @param lr Pointer to the root of the last tree added.
 	 *     @ref m_tree[@e lr] is the node that the root points to.
 	 * @param nt Index to @ref m_tree where we have to place the new tree.
-	 * @return Returns two indices: the index of the root of the last
+	 * @returns Two indices: the index of the root of the last
 	 * tree generated and where to store the next tree in @ref m_tree.
 	 */
 	std::pair<uint32_t,uint32_t>
@@ -183,7 +187,7 @@ protected:
 	 * Probability of choosing \f$(j,d)\f$ is:
 	 * \f$\frac{d \cdot t_{k - jd} \cdot t_d}{(k - 1)t_k}\f$.
 	 * @param n Number of nodes.
-	 * @returns Returns a pair of integers \f$(j,d)\f$ such that
+	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
 	std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n) noexcept;
@@ -198,7 +202,7 @@ protected:
  *
  * The correct usage of this class is
  * @code
- *		rand_ulab_rooted_trees TreeGen(n);
+ *		lal::generate::rand_ulab_rooted_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::graphs::rooted_tree T = TreeGen.get_tree();
  *			// ...
@@ -207,6 +211,8 @@ protected:
  */
 class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -216,8 +222,18 @@ public:
 	 */
 	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::rooted_tree>(n), m_Gen(n, seed) { }
-	/// Move constructor.
-	rand_ulab_rooted_trees(rand_ulab_rooted_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random unlabelled rooted tree generator.
+	 */
+	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random unlabelled rooted tree generator.
+	 */
+	rand_ulab_rooted_trees(rand_ulab_rooted_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	~rand_ulab_rooted_trees() noexcept = default;
 
@@ -226,7 +242,7 @@ protected:
 	 * @brief Returns a labelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_rooted_trees::get_tree for details.
-	 * @return Returns a labelled rooted tree chosen uniformly at random.
+	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

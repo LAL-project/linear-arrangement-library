@@ -499,7 +499,7 @@ public:
 	 * Moreover, it gathers the errors thay may have occurred during processing.
 	 * If so, see methods @ref get_num_processor_errors, @ref get_error_type,
 	 * @ref get_error_treebank_name.
-	 * @return Returns a value describing the error (if any) that occurred
+	 * @returns A value describing the error (if any) that occurred
 	 * while processing the dataset. If any error ocurred, see methods
 	 */
 	processor_error process() noexcept;

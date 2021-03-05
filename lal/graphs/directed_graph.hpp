@@ -76,11 +76,17 @@ public:
 	 * @param n Number of nodes.
 	 */
 	directed_graph(uint32_t n) noexcept;
-	/// Copy constructor.
-	directed_graph(const directed_graph&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param g Directed graph.
+	 */
+	directed_graph(const directed_graph& g) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	directed_graph(directed_graph&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param g Directed graph.
+	 */
+	directed_graph(directed_graph&& g) noexcept;
 #endif
 	/// Destructor.
 	virtual ~directed_graph() noexcept;
@@ -88,10 +94,16 @@ public:
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	directed_graph& operator= (const directed_graph&) noexcept;
-	/// Move assignment operator.
-	directed_graph& operator= (directed_graph&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param g Directed graph.
+	 */
+	directed_graph& operator= (const directed_graph& g) noexcept;
+	/**
+	 * @brief Move assignment operator.
+	 * @param g Directed graph.
+	 */
+	directed_graph& operator= (directed_graph&& g) noexcept;
 #endif
 
 	/* MODIFIERS */
@@ -127,7 +139,8 @@ public:
 	 * is not checked, and no extra work per edge is done.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
@@ -252,7 +265,7 @@ public:
 	/**
 	 * @brief Returns the out-neighbours of node @e u
 	 * @param u Node
-	 * @return Returns the list of nodes leaving node @e u.
+	 * @returns The list of nodes leaving node @e u.
 	 */
 	inline const neighbourhood& get_out_neighbours(node u) const noexcept {
 #if defined DEBUG
@@ -263,7 +276,7 @@ public:
 	/**
 	 * @brief Returns the in-neighbours of node @e u
 	 * @param u Node
-	 * @return Returns the list of nodes entering at node @e u.
+	 * @returns The list of nodes entering at node @e u.
 	 */
 	inline const neighbourhood& get_in_neighbours(node u) const noexcept {
 #if defined DEBUG
@@ -278,7 +291,7 @@ public:
 	 * Returns the degree of this vertex in its underlying undirected structure.
 	 * Same as @ref in_degree + @ref out_degree.
 	 * @param u Vertex
-	 * @return Returns the (in + out) degree of this vertex.
+	 * @returns The (in + out) degree of this vertex.
 	 */
 	inline uint32_t degree(node u) const noexcept
 	{ return out_degree(u) + in_degree(u); }
@@ -312,7 +325,7 @@ public:
 	 * then the two are merged into a single undirected edge.
 	 * @param norm Normalise the graph.
 	 * @param check Chech whether the resulting graph is normalised or not.
-	 * @return Returns this graph in which the edges are undirected.
+	 * @returns This graph in which the edges are undirected.
 	 */
 	undirected_graph to_undirected
 	(bool norm = true, bool check = true) const noexcept;

@@ -58,7 +58,7 @@ namespace graphs {
  * Usable by @ref undirected_graph, @ref free_tree.
  * @param os ostream C++ object.
  * @param g Input graph.
- * @returns Returns the output stream.
+ * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
 {
@@ -79,7 +79,7 @@ inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
  * Usable only by @ref directed_graph.
  * @param os ostream C++ object.
  * @param g Input graph.
- * @returns Returns the output stream.
+ * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
 {
@@ -109,7 +109,7 @@ inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
  * Usable by @ref rooted_tree.
  * @param os ostream C++ object.
  * @param g Input graph.
- * @returns Returns the output stream.
+ * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g) {
 	const auto N = g.num_nodes();

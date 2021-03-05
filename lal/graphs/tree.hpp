@@ -75,11 +75,17 @@ public:
 
 	/// Empty constructor.
 	tree() noexcept;
-	/// Copy constructor.
-	tree(const tree&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param t Tree.
+	 */
+	tree(const tree& t) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	tree(tree&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param t Tree.
+	 */
+	tree(tree&& t) noexcept;
 #endif
 	/// Destructor.
 	virtual ~tree() noexcept;
@@ -87,10 +93,16 @@ public:
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	tree& operator= (const tree&) noexcept;
-	/// Move assignment operator.
-	tree& operator= (tree&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param t Tree.
+	 */
+	tree& operator= (const tree& t) noexcept;
+	/**
+	 * @brief Move assignment operator.
+	 * @param t Tree.
+	 */
+	tree& operator= (tree&& t) noexcept;
 #endif
 
 	/* MODIFIERS */
@@ -129,7 +141,7 @@ public:
 	 * and it has not been added before.
 	 * @param s First node of the edge.
 	 * @param t Second node of the edge.
-	 * @return Returns whether the addition of this new edge can be added
+	 * @returns Whether the addition of this new edge can be added
 	 * to the tree without producing cycles.
 	 */
 	bool can_add_edge(node s, node t) const noexcept;
@@ -140,7 +152,7 @@ public:
 	 * In a tree, a set of edges can only be added if their addition to the
 	 * tree do not produce cycles and none of them have been added before.
 	 * @param edges List of edges.
-	 * @return Returns whether the addition of these new edges can be added
+	 * @returns Whether the addition of these new edges can be added
 	 * to the tree without producing cycles.
 	 */
 	bool can_add_edges(const std::vector<edge>& edges) const noexcept;
@@ -156,7 +168,7 @@ public:
 	 * In directed trees one has to see this amount as the number of nodes
 	 * of the component in the undirected version of the forest.
 	 * @param u Input node.
-	 * @return Returns the size of the connected component of @e u.
+	 * @returns The size of the connected component of @e u.
 	 */
 	inline uint32_t num_nodes_component(node u) const noexcept {
 #if defined DEBUG
@@ -172,7 +184,7 @@ public:
 
 	/**
 	 * @brief Returns the list of types as a list of strings.
-	 * @return Returns the list of types as a list of strings.
+	 * @returns The list of types as a list of strings.
 	 */
 	std::vector<std::string> get_tree_type_list() const noexcept;
 

@@ -110,13 +110,22 @@ public:
 
 	/// Empty constructor.
 	rooted_tree() noexcept;
-	/// Constructor with number of nodes and root node.
+	/**
+	 * @brief Constructor with number of nodes and root node.
+	 * @param n Number of vertices.
+	 */
 	rooted_tree(uint32_t n) noexcept;
-	/// Copy constructor.
-	rooted_tree(const rooted_tree&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param r Rooted tree.
+	 */
+	rooted_tree(const rooted_tree& r) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	rooted_tree(rooted_tree&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param r Rooted tree.
+	 */
+	rooted_tree(rooted_tree&& r) noexcept;
 #endif
 	/// Constructor with tree and root node.
 	rooted_tree(const free_tree& t, node r) noexcept;
@@ -126,10 +135,16 @@ public:
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	rooted_tree& operator= (const rooted_tree&) noexcept;
-	/// Move assignment operator.
-	rooted_tree& operator= (rooted_tree&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param r Rooted tree.
+	 */
+	rooted_tree& operator= (const rooted_tree& r) noexcept;
+	/**
+	 * @brief Move assignment operator.
+	 * @param r Rooted tree.
+	 */
+	rooted_tree& operator= (rooted_tree&& r) noexcept;
 #endif
 
 	/* MODIFIERS */
@@ -165,7 +180,8 @@ public:
 	 * is not checked, and no extra work per edge is done.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
@@ -321,7 +337,7 @@ public:
 	 * This method examines the orientation of the tree's edges with respect
 	 * to the root and to the leaves, i.e., it determines whether all edges
 	 * are oriented towards the leaves (away from the root).
-	 * @return Returns true if the tree is an arborescence. Returns false
+	 * @returns True if the tree is an arborescence. Returns false
 	 * otherwise.
 	 * @pre This object is a tree (see @ref is_tree).
 	 * @pre This tree has a root (see @ref has_root).
@@ -397,7 +413,7 @@ public:
 	 * cycles (see @ref is_tree()),
 	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root),
 	 * - the orientation of the edges is valid (see @ref is_orientation_valid).
-	 * @return Returns whether this tree is a valid rooted tree or not.
+	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
 	inline bool is_rooted_tree() const noexcept
 	{ return is_tree() and has_root() and is_orientation_valid(); }
@@ -407,7 +423,9 @@ public:
 	 *
 	 * The edges' orientation is valid if they are all oriented towards the
 	 * leaves (away from the root).
-	 * @return Returns @ref m_valid_orientation.
+	 *
+	 * This function returns the value of private attribute @ref m_valid_orientation.
+	 * @returns The whether the orientation is valid or not.
 	 */
 	inline bool is_orientation_valid() const noexcept { return m_valid_orientation; }
 
@@ -425,7 +443,7 @@ public:
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
 	 * @param u Vertex of the tree.
-	 * @return Returns the number of nodes of the subtree rooted at @e u.
+	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref size_subtrees_valid returns true.
 	 */
 	inline uint32_t n_nodes_subtree(node u) const noexcept {
@@ -442,7 +460,7 @@ public:
 	 * @ref calculate_size_subtrees so that the size of every rooted subtree
 	 * is recalculated. This information must be calculated prior to calling
 	 * many functions of this library.
-	 * @return Returns whether @ref m_size_subtrees should be recalculated
+	 * @returns Whether @ref m_size_subtrees should be recalculated
 	 * or not.
 	 */
 	inline bool size_subtrees_valid() const noexcept
@@ -474,7 +492,7 @@ public:
 	 * the root of the tree and @e relab is true.
 	 * @param u Root node of the subtree.
 	 * @param relab Should the nodes be relabelled?
-	 * @return Returns a list of edges.
+	 * @returns A list of edges.
 	 * @pre The object must be a valid rooted tree (see @ref is_rooted_tree).
 	 * @post Whenever @e relab is true, the label of the first node of
 	 * the first edge is guaranteed to be node '0'.
@@ -484,7 +502,7 @@ public:
 	/**
 	 * @brief Retrieve the subtree rooted at node @e u.
 	 * @param u Root of the subtree.
-	 * @return Returns a tree containing the nodes of the subtree
+	 * @returns A tree containing the nodes of the subtree
 	 * rooted at node @e u.
 	 * @pre The object must be a valid rooted tree (see @ref is_rooted_tree).
 	 * @post The subtree keeps the orientation of the edges in the original

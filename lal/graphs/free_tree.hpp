@@ -62,13 +62,22 @@ public:
 
 	/// Empty constructor.
 	free_tree() noexcept;
-	/// Constructor with number of vertices.
+	/**
+	 * @brief Constructor with number of vertices.
+	 * @param n Number of vertices
+	 */
 	free_tree(uint32_t n) noexcept;
-	/// Copy constructor.
-	free_tree(const free_tree&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param t Free tree.
+	 */
+	free_tree(const free_tree& t) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	free_tree(free_tree&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param t Free tree.
+	 */
+	free_tree(free_tree&& t) noexcept;
 #endif
 	/**
 	 * @brief Copy constructor with undirected graph.
@@ -129,7 +138,8 @@ public:
 	 * is not checked, and no extra work per edge is done.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */

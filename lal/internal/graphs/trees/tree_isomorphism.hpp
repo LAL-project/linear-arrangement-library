@@ -94,7 +94,7 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
  * @param idx A pointer to the position within @e names that will contain the
  * name of the first child of 'u'. The position @names[idx+1] will contain the
  * name of the second child of 'u'.
- * @return Returns the code for the subtree rooted at 'u'.
+ * @returns The code for the subtree rooted at 'u'.
  */
 inline
 void assign_name_and_keep(
@@ -142,7 +142,7 @@ noexcept
  * @param idx A pointer to the position within @e names that will contain the
  * name of the first child of 'u'. The position @names[idx+1] will contain the
  * name of the second child of 'u'.
- * @return Returns the code for the subtree rooted at 'u'.
+ * @returns The code for the subtree rooted at 'u'.
  */
 inline
 std::string assign_name

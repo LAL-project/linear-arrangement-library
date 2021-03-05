@@ -86,6 +86,8 @@ template<
 >
 class E_iterator {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
@@ -96,8 +98,15 @@ public:
 	/// Default destructor.
 	~E_iterator() = default;
 
+	/* GETTERS */
+
 	/// Returns true if there are edges left to be iterated over.
 	inline bool has_next() const noexcept { return m_exists_next; }
+
+	/// Returns the current edge.
+	inline edge get_edge() const noexcept { return m_cur_edge; }
+
+	/* MODIFIERS */
 
 	/// Moves the iterator to the next edge.
 	void next() noexcept {
@@ -106,9 +115,6 @@ public:
 		// find the next edge
 		std::tie(m_exists_next, m_cur) = find_next_edge();
 	}
-
-	/// Returns the current edge.
-	inline edge get_edge() const noexcept { return m_cur_edge; }
 
 	/**
 	 * @brief Sets the iterator at the beginning of the set of edges.
@@ -179,7 +185,7 @@ private:
 
 	/**
 	 * @brief Finds the next edge on a directed graph.
-	 * @return Returns a pair of a Boolean indicating if the next edge is
+	 * @returns A pair of a Boolean indicating if the next edge is
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
@@ -205,7 +211,7 @@ private:
 	}
 	/**
 	 * @brief Finds the next edge on an undirected graph.
-	 * @return Returns a pair of a Boolean indicating if the next edge is
+	 * @returns A pair of a Boolean indicating if the next edge is
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */

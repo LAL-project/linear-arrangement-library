@@ -65,7 +65,7 @@ namespace generate {
  * The correct usage of this class is
  * @code
  *		// given a projective tree T
- *		all_projective_arr ArrGen(T);
+ *		lal::generate::all_projective_arr ArrGen(T);
  *		while (ArrGen.has_next()) {
  *			ArrGen.next();
  *			lal::linearrgmnt arr = ArrGen.get_arrangement();
@@ -75,6 +75,8 @@ namespace generate {
  */
 class all_projective_arrangements {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with constant reference to a rooted tree.
 	 * @param T Rooted tree
@@ -83,14 +85,39 @@ public:
 	 * @pre The tree is normalised (see graphs::graph::is_normalised()).
 	 */
 	all_projective_arrangements(const graphs::rooted_tree& T) noexcept;
+	/**
+	 * @brief Default copy constructor.
+	 * @param Gen Exhaustive projective arrangement generator..
+	 */
+	all_projective_arrangements(const all_projective_arrangements& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Default move constructor.
+	 * @param Gen Exhaustive projective arrangement generator..
+	 */
+	all_projective_arrangements(all_projective_arrangements&& Gen) noexcept = default;
+#endif
+
+	~all_projective_arrangements() noexcept = default;
+
+	/* GETTERS */
 
 	/**
 	 * @brief Returns whether there are more arrangements to generate.
-	 * @return Returns true if there are still more arrangements
+	 * @returns True if there are still more arrangements
 	 * to generate. Returns false if all arrangements have been
 	 * generated.
 	 */
 	bool has_next() const;
+
+	/**
+	 * @brief Constructs the current arrangement.
+	 * @returns The arrangement generated with method @ref next().
+	 * @pre Method @ref next must have been called at least once.
+	 */
+	linear_arrangement get_arrangement() const;
+
+	/* MODIFIERS */
 
 	/**
 	 * @brief Generates the next arrangement.
@@ -99,13 +126,6 @@ public:
 	 * can be retrieved using method @ref get_arrangement.
 	 */
 	void next();
-
-	/**
-	 * @brief Constructs the current arrangement.
-	 * @return Returns the arrangement generated with method @ref next().
-	 * @pre Method @ref next must have been called at least once.
-	 */
-	linear_arrangement get_arrangement() const;
 
 private:
 	/// Constant reference to rooted tree.

@@ -74,7 +74,7 @@ namespace generate {
  *
  * The correct usage of this class is
  * @code
- *		all_ulab_free_trees TreeGen(n);
+ *		lal::generate::all_ulab_free_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
  *			lal::graphs::free_tree T = TreeGen.get_tree();
@@ -84,25 +84,29 @@ namespace generate {
  */
 class all_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
-	/// Constructor with number of nodes.
+	/**
+	 * @brief Constructor with number of nodes.
+	 * @param n Number of nodes.
+	 */
 	all_ulab_free_trees(uint32_t n) noexcept;
-	/// Move constructor.
-	all_ulab_free_trees(all_ulab_free_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Exhaustive unlabelled free tree generator..
+	 */
+	all_ulab_free_trees(const all_ulab_free_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Exhaustive unlabelled free tree generator..
+	 */
+	all_ulab_free_trees(all_ulab_free_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	~all_ulab_free_trees() noexcept = default;
 
-#ifndef SWIG
-	/// Disallow copies.
-	all_ulab_free_trees(const all_ulab_free_trees&) = delete;
-	/// Disallow copies.
-	all_ulab_free_trees& operator= (const all_ulab_free_trees&) = delete;
-	/// Disallow moves.
-	all_ulab_free_trees& operator= (all_ulab_free_trees&&) = delete;
-#endif
-
 	/**
 	 * @brief Returns whether there are more trees to generate.
-	 * @return Returns true if there are still more trees
+	 * @returns True if there are still more trees
 	 * to generate. Returns false if all trees have been
 	 * generated (there are no more unique trees of this
 	 * size that were not generated before).
@@ -128,7 +132,7 @@ public:
 protected:
 	/**
 	 * @brief Constructs the current tree.
-	 * @return Returns the tree generated with method @ref next().
+	 * @returns The tree generated with method @ref next().
 	 * @pre The generator must have been initialised, and method
 	 * @ref next must have been called at least once.
 	 */
@@ -179,7 +183,6 @@ private:
 	bool m_is_last = false;
 	/// First time calling @ref next().
 	bool m_first_it = true;
-
 };
 
 } // -- namespace generate

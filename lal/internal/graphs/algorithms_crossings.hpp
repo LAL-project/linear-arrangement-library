@@ -61,7 +61,7 @@ namespace internal {
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  */
 uint32_t n_C_brute_force
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -75,7 +75,7 @@ uint32_t n_C_brute_force
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_brute_force_list
@@ -94,7 +94,7 @@ std::vector<uint32_t> n_C_brute_force_list
  * is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  */
 uint32_t n_C_dynamic_programming
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -108,7 +108,7 @@ uint32_t n_C_dynamic_programming
  * arrangement.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_dynamic_programming_list
@@ -127,7 +127,7 @@ std::vector<uint32_t> n_C_dynamic_programming_list
  * is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  */
 uint32_t n_C_ladder
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -141,7 +141,7 @@ uint32_t n_C_ladder
  * arrangement.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_ladder_list
@@ -160,7 +160,7 @@ std::vector<uint32_t> n_C_ladder_list
  * identity arrangement is used.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  */
 uint32_t n_C_stack_based
 (const graphs::graph& g, const linear_arrangement& pi = {});
@@ -173,7 +173,7 @@ uint32_t n_C_stack_based
  * identity arrangement is used.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements can be empty.
  */
 std::vector<uint32_t> n_C_stack_based_list

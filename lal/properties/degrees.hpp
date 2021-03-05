@@ -65,7 +65,7 @@ namespace properties {
  * degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 numeric::rational mmt_degree_rational(const graphs::undirected_graph& g, uint32_t p);
 /**
@@ -75,7 +75,7 @@ numeric::rational mmt_degree_rational(const graphs::undirected_graph& g, uint32_
  * See @ref mmt_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return The return value is a floating point value.
+ * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 double mmt_degree(const graphs::undirected_graph& g, uint32_t p);
 
@@ -92,7 +92,7 @@ double mmt_degree(const graphs::undirected_graph& g, uint32_t p);
  * in-degree plus the out-degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 numeric::rational mmt_degree_rational(const graphs::directed_graph& g, uint32_t p);
 /**
@@ -102,7 +102,7 @@ numeric::rational mmt_degree_rational(const graphs::directed_graph& g, uint32_t 
  * See @ref mmt_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return The return value is a floating point value.
+ * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 double mmt_degree(const graphs::directed_graph& g, uint32_t p);
 
@@ -118,7 +118,7 @@ double mmt_degree(const graphs::directed_graph& g, uint32_t p);
  * where \f$n\f$ denotes the number of nodes of the graph.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 numeric::rational mmt_in_degree_rational(const graphs::directed_graph& g, uint32_t p);
 /**
@@ -128,7 +128,7 @@ numeric::rational mmt_in_degree_rational(const graphs::directed_graph& g, uint32
  * See @ref mmt_in_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return The return value is a floating point value.
+ * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
 double mmt_in_degree(const graphs::directed_graph& g, uint32_t p);
 
@@ -144,7 +144,7 @@ double mmt_in_degree(const graphs::directed_graph& g, uint32_t p);
  * where \f$n\f$ denotes the number of nodes of the graph.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return When \f$p=2\f$ returns the second moment, when \f$p=3\f$ returns the third moment, ...
+ * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
 numeric::rational mmt_out_degree_rational(const graphs::directed_graph& g, uint32_t p);
 /**
@@ -154,7 +154,7 @@ numeric::rational mmt_out_degree_rational(const graphs::directed_graph& g, uint3
  * See @ref mmt_out_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
- * @return The return value is a floating point value.
+ * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point value.
  */
 double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
 
@@ -173,7 +173,7 @@ double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
  *
  * See \cite Ferrer2018a for details.
  * @param g Input graph.
- * @return Returns the hubiness coefficient.
+ * @returns The hubiness coefficient as a rational value.
  * @pre \f$n > 3\f$.
  */
 numeric::rational hubiness_rational(const graphs::free_tree& g);
@@ -183,7 +183,7 @@ numeric::rational hubiness_rational(const graphs::free_tree& g);
  *
  * See @ref hubiness_rational for details.
  * @param g Input graph.
- * @return The return value is a floating point value.
+ * @returns The hubiness coefficient as a floating point value.
  */
 double hubiness(const graphs::free_tree& g);
 

@@ -56,8 +56,10 @@ namespace properties {
 
 /**
  * @brief Computes the the expectation of the first moment of C.
+ *
+ * Returns \f$E[C]\f$ as a rational value.
  * @param g The input graph.
- * @return Returns \f$E[C]\f$ as a rational value.
+ * @returns The expected value of the number of crossings as a rational value.
  */
 numeric::rational expectation_C_rational(const graphs::undirected_graph& g);
 /**
@@ -65,7 +67,7 @@ numeric::rational expectation_C_rational(const graphs::undirected_graph& g);
  *
  * See @ref expectation_C_rational for details.
  * @param g The input graph.
- * @return The return value is a floating point value.
+ * @returns The expected value of the number of crossings as a floating point value.
  */
 double expectation_C(const graphs::undirected_graph& g);
 
@@ -88,7 +90,7 @@ double expectation_C(const graphs::undirected_graph& g);
  * @param g Input graph.
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
- * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre Method @ref graphs::graph::is_normalised() must evaluate to true.
  */
 numeric::rational variance_C_rational(const graphs::undirected_graph& g, bool reuse = true);
@@ -99,7 +101,7 @@ numeric::rational variance_C_rational(const graphs::undirected_graph& g, bool re
  * @param g Input graph.
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
- * @return The return value is a floating point value.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a rationafloating point value.
  */
 double variance_C(const graphs::undirected_graph& g, bool reuse = true);
 
@@ -115,7 +117,7 @@ double variance_C(const graphs::undirected_graph& g, bool reuse = true);
  *
  * Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
  * @param g Input forest.
- * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre The input graph @e g is a forest.
  */
 numeric::rational variance_C_forest_rational(const graphs::undirected_graph& g);
@@ -124,7 +126,7 @@ numeric::rational variance_C_forest_rational(const graphs::undirected_graph& g);
  *
  * See @ref variance_C_forest_rational for details.
  * @param g Input forest.
- * @return The return value is a floating point value.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a floating point value.
  */
 double variance_C_forest(const graphs::undirected_graph& g);
 
@@ -138,7 +140,7 @@ double variance_C_forest(const graphs::undirected_graph& g);
  * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
  * trees. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
  * @param g Input tree.
- * @return Returns the exact value of \f$V_{rla}[C]\f$ as a rational value.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
 numeric::rational variance_C_tree_rational(const graphs::free_tree& g);
 /**
@@ -146,7 +148,7 @@ numeric::rational variance_C_tree_rational(const graphs::free_tree& g);
  *
  * See @ref variance_C_tree_rational for details.
  * @param g Input tree.
- * @return The return value is a floating point value.
+ * @returns The return value is a floating point value.
  */
 double variance_C_tree(const graphs::free_tree& g);
 

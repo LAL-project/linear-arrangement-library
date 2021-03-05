@@ -64,7 +64,7 @@ namespace internal {
  *
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
- * @return Returns the tree built with the sequence level @e L.
+ * @returns The tree built with the sequence level @e L.
  * @pre n >= 2.
  * @pre The size of L is exactly @e n + 1.
  * @pre The first value of a sequence must be a zero.
@@ -89,7 +89,7 @@ noexcept;
  * \cite Alonso1995a.
  * @param S The Prufer sequence sequence.
  * @param n Number of nodes of the tree.
- * @return Returns the tree built with @e L.
+ * @returns The tree built with @e L.
  */
 graphs::free_tree Prufer_sequence_to_ftree
 (const uint32_t * const seq, uint32_t n, bool normalise = true, bool check = true)
@@ -108,7 +108,7 @@ noexcept;
  * the tree. The value '0' indicates the root, while a strictly positive value
  * indicates the parent node.
  * @param L The linear sequence.
- * @return Returns the free tree built with @e L along with the root indicated
+ * @returns The free tree built with @e L along with the root indicated
  * by the sequence.
  */
 std::pair<graphs::free_tree, node> linear_sequence_to_ftree

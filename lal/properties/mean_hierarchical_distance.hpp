@@ -60,7 +60,7 @@ namespace properties {
  *
  * For furhter details see \cite Jing2015a.
  * @param t Input rooted tree.
- * @return Returns the Mean Hierarchical Distance of a rooted tree.
+ * @returns The Mean Hierarchical Distance of a rooted tree as a rational value.
  */
 numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree& t);
 
@@ -69,7 +69,7 @@ numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree&
  *
  * See @ref mean_hierarchical_distance_rational for details.
  * @param t Input rooted tree.
- * @return The return value is a floating point value.
+ * @returns The Mean Hierarchical Distance of a rooted tree as a floating point value.
  */
 double mean_hierarchical_distance(const graphs::rooted_tree& t);
 

@@ -74,7 +74,7 @@ namespace internal {
  *
  * @param t Input tree.
  * @param x Input node.
- * @returns Returns a tuple of two values: the nodes in the centre. If the
+ * @returns A tuple of two values: the nodes in the centre. If the
  * tree has a single central node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.

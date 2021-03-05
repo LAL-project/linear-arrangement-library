@@ -74,7 +74,7 @@ namespace generate {
  *
  * The correct usage of this class is
  * @code
- *		all_ulab_rooted_trees TreeGen(n);
+ *		lal::generate::all_ulab_rooted_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
  *			lal::graphs::rooted_tree T = TreeGen.get_tree();
@@ -84,30 +84,40 @@ namespace generate {
  */
 class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
 public:
-	/// Constructor with number of nodes.
+	/* CONSTRUCTORS */
+
+	/**
+	 * @brief Constructor with number of nodes.
+	 * @param n Number of nodes.
+	 */
 	all_ulab_rooted_trees(uint32_t n) noexcept;
-	/// Move constructor.
-	all_ulab_rooted_trees(all_ulab_rooted_trees&&) noexcept = delete;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Exhaustive unlabelled rooted tree generator..
+	 */
+	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Exhaustive unlabelled rooted tree generator..
+	 */
+	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) noexcept = delete;
+#endif
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;
 
-#ifndef SWIG
-	/// Disallow copies.
-	all_ulab_rooted_trees(const all_ulab_rooted_trees&) = delete;
-	/// Disallow copies.
-	all_ulab_rooted_trees& operator= (const all_ulab_rooted_trees&) = delete;
-	/// Disallow moves.
-	all_ulab_rooted_trees& operator= (all_ulab_rooted_trees&&) = delete;
-#endif
+	/* GETTERS */
 
 	/**
 	 * @brief Returns whether there are more trees to generate.
-	 * @return Returns true if there are still more trees
+	 * @returns True if there are still more trees
 	 * to generate. Returns false if all trees have been
 	 * generated (there are no more unique trees of this
 	 * size that were not generated before).
 	 */
 	inline bool has_next() const noexcept { return not m_is_last; }
+
+	/* MODIFIERS */
 
 	/**
 	 * @brief Generates the next tree.
@@ -128,7 +138,7 @@ public:
 protected:
 	/**
 	 * @brief Constructs the current tree.
-	 * @return Returns the tree generated with method @ref next(). The tree
+	 * @returns The tree generated with method @ref next(). The tree
 	 * is rooted at vertex 0.
 	 * @pre The generator must have been initialised, and method
 	 * @ref next must have been called at least once.

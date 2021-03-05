@@ -72,6 +72,8 @@ namespace generate {
  */
 class __rand_ulab_free_trees : public __rand_ulab_rooted_trees {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -80,31 +82,33 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	__rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
-	/// Move constructor.
-	__rand_ulab_free_trees(__rand_ulab_free_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random unlabelled free tree generator.
+	 */
+	__rand_ulab_free_trees(const __rand_ulab_free_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random unlabelled free tree generator.
+	 */
+	__rand_ulab_free_trees(__rand_ulab_free_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	~__rand_ulab_free_trees() = default;
 
-#ifndef SWIG
-	/// Disallow copies.
-	__rand_ulab_free_trees(const __rand_ulab_free_trees&) = delete;
-	/// Disallow copies.
-	__rand_ulab_free_trees& operator= (const __rand_ulab_free_trees&) = delete;
-	/// Disallow moves.
-	__rand_ulab_free_trees& operator= (__rand_ulab_free_trees&&) = delete;
-#endif
+	/* GETTERS */
 
 	/**
 	 * @brief Generates uniformly at random a free unlabelled tree.
 	 *
 	 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
 	 * pointed out in \cite GiacXcas_Manual.
-	 * @return Returns an unlabelled free tree.
+	 * @returns An unlabelled free tree.
 	 */
 	graphs::free_tree get_tree() noexcept;
 
 protected:
-
 	/**
 	 * @brief Sets the size of the unlabelled trees to generate.
 	 *
@@ -161,7 +165,6 @@ private:
 	std::vector<numeric::integer> m_fn;
 
 private:
-
 	/**
 	 * @brief Generates uniformly at random a forest of @e m nodes.
 	 *
@@ -170,7 +173,7 @@ private:
 	 * @param m Integer \f$m \ge 0\f$.
 	 * @param q Integer \f$0 \le q \le m\f$.
 	 * @param nt Index to @ref m_tree indicating where to store the next tree.
-	 * @return Returns the position where to store the following
+	 * @returns The position where to store the following
 	 * trees/forests in @ref m_tree.
 	 */
 	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt) noexcept;
@@ -187,7 +190,7 @@ private:
 	 * @param m Number of nodes of the forest.
 	 * @param q Maximum number of nodes of each connected component of
 	 * the forest.
-	 * @return Returns \f$\alpha(m,q)\f$
+	 * @returns \f$\alpha(m,q)\f$
 	 */
 	const numeric::integer&
 	get_alpha_mq(const uint32_t m, const uint32_t q) noexcept;
@@ -201,7 +204,7 @@ private:
 	 * The value \f$f_n\f$ is the number of unlabelled free trees on \f$n\f$
 	 * nodes. The method implements Otter's formula (see \cite Otter1948a).
 	 * @param n Number of nodes of the tree.
-	 * @return Returns \f$f_n\f$.
+	 * @returns \f$f_n\f$.
 	 */
 	const numeric::integer& get_fn(const uint32_t n) noexcept;
 
@@ -214,7 +217,7 @@ private:
 	 * Here, @e q is fixed to \f$(n - 1)/2\f$ where @e n is @ref m_n.
 	 * @param m Amount of nodes.
 	 * @param q Maximum amount of nodes per connected component.
-	 * @returns Returns a pair of integers \f$(j,d)\f$ such that
+	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
 	std::pair<uint32_t,uint32_t>
@@ -230,7 +233,7 @@ private:
  *
  * The correct usage of this class is
  * @code
- *		rand_ulab_free_trees TreeGen(n);
+ *		lal::generate::rand_ulab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::graphs::free_tree T = TreeGen.get_tree();
  *			// ...
@@ -239,6 +242,8 @@ private:
  */
 class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -248,8 +253,18 @@ public:
 	 */
 	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
-	/// Move constructor.
-	rand_ulab_free_trees(rand_ulab_free_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random unlabelled free tree generator.
+	 */
+	rand_ulab_free_trees(const rand_ulab_free_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random unlabelled free tree generator.
+	 */
+	rand_ulab_free_trees(rand_ulab_free_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	~rand_ulab_free_trees() noexcept = default;
 
@@ -258,7 +273,7 @@ protected:
 	 * @brief Returns a labelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_free_trees::get_tree for details.
-	 * @return Returns a labelled rooted tree chosen uniformly at random.
+	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

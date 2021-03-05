@@ -60,7 +60,7 @@ namespace linarr {
  * @param t Input tree.
  * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
- * @return Returns the class of projective structure. If the class could not
+ * @returns The class of projective structure. If the class could not
  * be determined the method returns @ref syntactic_dependency_structure_type::none
  */
 std::array<bool, __tree_structure_type_size> classify_tree_structure

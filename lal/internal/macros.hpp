@@ -70,7 +70,7 @@ inline void UNUSED(const T& x) { (void)x; }
  * @param F Function to call.
  * @param g Input graph.
  * @param pi Arrangement.
- * @return Returns the value function @e F returns.
+ * @returns The value function @e F returns.
  */
 template<typename result_t, typename graph_t>
 result_t call_with_empty_arrangement(

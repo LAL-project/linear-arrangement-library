@@ -60,7 +60,7 @@ namespace properties {
  * Two edges are said to be independent if they do not share vertices. Therefore,
  * this function returns the amount of independent edges of this undirected graph.
  * @param g Input graph.
- * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
+ * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
 numeric::integer size_Q_integer(const graphs::undirected_graph& g);
 /**
@@ -68,7 +68,7 @@ numeric::integer size_Q_integer(const graphs::undirected_graph& g);
  *
  * See @ref size_Q_integer for details.
  * @param g Input graph.
- * @return The return value is a simple 64-bit unsigned integer.
+ * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
 uint64_t size_Q(const graphs::undirected_graph& g);
 
@@ -79,7 +79,7 @@ uint64_t size_Q(const graphs::undirected_graph& g);
  * Two edges are said to be independent if they do not share vertices. Therefore,
  * this function returns the amount of independent edges of this directed graph.
  * @param g Input graph.
- * @return Returns the size of \f$Q(G)\f$ as an integer of arbitrary precision.
+ * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
 numeric::integer size_Q_integer(const graphs::directed_graph& g);
 /**
@@ -87,7 +87,7 @@ numeric::integer size_Q_integer(const graphs::directed_graph& g);
  *
  * See @ref size_Q_integer for details.
  * @param g Input graph.
- * @return The return value is a simple 64-bit unsigned integer.
+ * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
 uint64_t size_Q(const graphs::directed_graph& g);
 

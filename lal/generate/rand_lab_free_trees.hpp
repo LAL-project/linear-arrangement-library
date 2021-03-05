@@ -67,6 +67,8 @@ namespace generate {
  */
 class __rand_lab_free_trees {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -75,19 +77,22 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
-	/// Move constructor.
-	__rand_lab_free_trees(__rand_lab_free_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random labelled free tree generator.
+	 */
+	__rand_lab_free_trees(const __rand_lab_free_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random labelled free tree generator.
+	 */
+	__rand_lab_free_trees(__rand_lab_free_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	virtual ~__rand_lab_free_trees() noexcept = default;
 
-#ifndef SWIG
-	/// Disallow copies.
-	__rand_lab_free_trees(const __rand_lab_free_trees&) = delete;
-	/// Disallow copies.
-	__rand_lab_free_trees& operator= (const __rand_lab_free_trees&) = delete;
-	/// Disallow moves.
-	__rand_lab_free_trees& operator= (__rand_lab_free_trees&&) = delete;
-#endif
+	/* GETTERS */
 
 	/// Returns a labelled free tree chosen uniformly at random.
 	graphs::free_tree get_tree() noexcept;
@@ -122,7 +127,7 @@ protected:
  *
  * The correct usage of this class is
  * @code
- *		rand_lab_free_trees TreeGen(n);
+ *		lal::generate::rand_lab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::graphs::free_tree T = TreeGen.make_rand_tree();
  *			// ...
@@ -131,6 +136,8 @@ protected:
  */
 class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -140,8 +147,18 @@ public:
 	 */
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
 		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
-	/// Move constructor.
-	rand_lab_free_trees(rand_lab_free_trees&&) noexcept = default;
+	/**
+	 * @brief Copy constructor.
+	 * @param Gen Random labelled free tree generator.
+	 */
+	rand_lab_free_trees(const rand_lab_free_trees& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Move constructor.
+	 * @param Gen Random labelled free tree generator.
+	 */
+	rand_lab_free_trees(rand_lab_free_trees&& Gen) noexcept = default;
+#endif
 	/// Default destructor.
 	~rand_lab_free_trees() noexcept = default;
 
@@ -150,7 +167,7 @@ protected:
 	 * @brief Returns a labelled free tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_lab_free_trees::get_tree for details.
-	 * @return Returns a labelled free tree chosen uniformly at random.
+	 * @returns A labelled free tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

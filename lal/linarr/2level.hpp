@@ -69,7 +69,7 @@ namespace linarr {
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @return Returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs.
+ * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a rational value.
  */
 template<class G>
 numeric::rational mean_dependency_distance_2level_rational
@@ -82,7 +82,7 @@ numeric::rational mean_dependency_distance_2level_rational
  * @param Gs List of input graphs.
  * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @return The return value is a floating point value.
+ * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a floating point value.
  */
 template<class G>
 double mean_dependency_distance_2level

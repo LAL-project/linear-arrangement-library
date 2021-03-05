@@ -90,6 +90,8 @@ template<
 >
 class Q_iterator {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
@@ -101,10 +103,15 @@ public:
 	/// Default destructor.
 	~Q_iterator() = default;
 
+	/* GETTERS */
+
 	/// Returns true if there are pairs of independent edges left to be iterated over.
-	inline bool has_next() const noexcept {
-		return m_exists_next;
-	}
+	inline bool has_next() const noexcept { return m_exists_next; }
+
+	/// Returns the current edge pair.
+	inline edge_pair get_pair() const noexcept { return m_cur_pair; }
+
+	/* MODIFIERS */
 
 	/// Moves the iterator to the next pair, if there is any.
 	void next() noexcept {
@@ -123,9 +130,6 @@ public:
 		m_cur1 = new_cur1;
 		m_cur2 = new_cur2;
 	}
-
-	/// Returns the current edge pair.
-	inline edge_pair get_pair() const noexcept { return m_cur_pair; }
 
 	/**
 	 * @brief Sets the iterator at the beginning of the set of edges.

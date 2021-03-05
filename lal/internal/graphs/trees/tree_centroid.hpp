@@ -169,7 +169,7 @@ std::pair<node, node> retrieve_centroid(
  * pairs \f$(v,sv)\f$ where @e v is a neighbour of @e u and @e sv is the size of
  * the subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
  * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
- * @returns Returns a tuple of two values: the nodes in the centroid. If the
+ * @returns A tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
@@ -237,7 +237,7 @@ std::pair<node, node> retrieve_centroid(const T& t, const node x) {
  * pairs (v,sv) where @e v is a neighbour of @e u and @e sv is the size of the
  * subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
  * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
- * @returns Returns a tuple of two values: the nodes in the centroid. If the
+ * @returns A tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.

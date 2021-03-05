@@ -77,11 +77,17 @@ public:
 	 * @param n Number of nodes.
 	 */
 	graph(uint32_t n) noexcept;
-	/// Copy constructor.
-	graph(const graph&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param g Graph.
+	 */
+	graph(const graph& g) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	graph(graph&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param g Graph.
+	 */
+	graph(graph&& g) noexcept;
 #endif
 	/// Destructor.
 	virtual ~graph() noexcept;
@@ -89,10 +95,16 @@ public:
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	graph& operator= (const graph&) noexcept;
-	/// Move assignment operator.
-	graph& operator= (graph&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param g Graph.
+	 */
+	graph& operator= (const graph& g) noexcept;
+	/**
+	 * @brief Move assignment operator.
+	 * @param g Graph.
+	 */
+	graph& operator= (graph&& g) noexcept;
 #endif
 
 	/* MODIFIERS */
@@ -181,7 +193,7 @@ public:
 	 *
 	 * A graph is normalised if every node's adjacency list is sorted
 	 * increasingly. For this, use method @ref normalise().
-	 * @return Returns the value of @ref m_normalised.
+	 * @returns The value of @ref m_normalised.
 	 */
 	inline bool is_normalised() const noexcept { return m_normalised; }
 

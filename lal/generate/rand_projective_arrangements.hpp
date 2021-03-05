@@ -68,6 +68,8 @@ namespace generate {
  */
 class rand_projective_arrangements {
 public:
+	/* CONSTRUCTORS */
+
 	/**
 	 * @brief Constructor with tree
 	 * @param rT Rooted tree
@@ -77,10 +79,24 @@ public:
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
 	rand_projective_arrangements(const graphs::rooted_tree& rT, uint32_t seed = 0) noexcept;
+	/**
+	 * @brief Default copy constructor.
+	 * @param Gen Random projective arrangement generator.
+	 */
+	rand_projective_arrangements(const rand_projective_arrangements& Gen) noexcept = default;
+#ifndef SWIG
+	/**
+	 * @brief Default move constructor.
+	 * @param Gen Random projective arrangement generator.
+	 */
+	rand_projective_arrangements(rand_projective_arrangements&& Gen) noexcept = default;
+#endif
+
+	/* GETTERS */
 
 	/**
 	 * @brief Make a random projective arrangement of a rooted tree.
-	 * @return Returns a projective arrangement chosen uniformly at random
+	 * @returns A projective arrangement chosen uniformly at random
 	 * chosen amongst all projective arrangements of @e t.
 	 */
 	linear_arrangement make_rand_arrgmnt();

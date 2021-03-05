@@ -63,7 +63,7 @@ namespace linarr {
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_C::stack_based.
- * @returns Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref algorithms_C.
  */
@@ -80,7 +80,7 @@ uint32_t n_crossings(
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_C::stack_based.
- * @return Returns \f$C\f$.
+ * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref algorithms_C.
  */
@@ -99,7 +99,7 @@ uint32_t n_crossings(
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_C::stack_based.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements in @e pis can be empty.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref algorithms_C.
@@ -117,7 +117,7 @@ std::vector<uint32_t> n_crossings_list
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @param A Algorithm to use to compute the number of crossings. Default:
  * @ref algorithms_C::stack_based.
- * @return Returns a list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
+ * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements in @e pis can be empty.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref algorithms_C.
@@ -163,7 +163,7 @@ numeric::rational approximate_C_rational
  * See @ref approximate_C_rational for details.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return The return value is a floating point value.
+ * @returns The return value is a floating point value.
  */
 double approximate_C
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
@@ -174,7 +174,7 @@ double approximate_C
  * See @ref approximate_C_rational for details.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return The return value is a floating point value.
+ * @returns The return value is a floating point value.
  */
 double approximate_C
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});

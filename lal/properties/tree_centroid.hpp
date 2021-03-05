@@ -58,10 +58,10 @@ namespace properties {
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * (pages 35-36) for further details.
  * @param t Input tree.
- * @returns Returns a tuple of two values: the nodes in the centre. If the
- * tree has a single central node, only the first node is valid and the second
- * is assigned an invalid vertex index. It is guaranteed that the first vertex
- * has smaller index value than the second.
+ * @returns A tuple of two values: the nodes in the centre. If the tree has a
+ * single central node, only the first node is valid and the second is assigned
+ * an invalid vertex index. It is guaranteed that the first vertex has smaller
+ * index value than the second.
  * @pre Method graphs::rooted_tree::is_tree returns true.
  */
 std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
@@ -75,10 +75,10 @@ std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
  * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
  * (pages 35-36) for further details.
  * @param t Input tree.
- * @returns Returns a tuple of two values: the nodes in the centre. If the
- * tree has a single central node, only the first node is valid and the second
- * is assigned an invalid vertex index. It is guaranteed that the first vertex
- * has smaller index value than the second.
+ * @returns A tuple of two values: the nodes in the centre. If the tree has a
+ * single central node, only the first node is valid and the second is assigned
+ * an invalid vertex index. It is guaranteed that the first vertex has smaller
+ * index value than the second.
  * @pre Method graphs::rooted_tree::is_tree returns true.
  */
 std::pair<node, node> get_centroid(const graphs::free_tree& t);

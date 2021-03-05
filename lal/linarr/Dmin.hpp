@@ -57,7 +57,7 @@ namespace linarr {
  * of algorithm for its calculation.
  * @param t Input tree.
  * @param a The algorithm to be chosen.
- * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
@@ -73,7 +73,7 @@ std::pair<uint32_t, linear_arrangement> Dmin
  * of algorithm for its calculation.
  * @param t Input tree.
  * @param a The algorithm to be chosen.
- * @return Returns the minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.

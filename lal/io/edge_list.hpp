@@ -70,8 +70,7 @@ namespace io {
  * See @ref graphs::graph::is_normalised()
  * @param[in] check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
- * @return Returns 'false' if the file could not be opened. Returns 'true'
- * if the graph was read successfully.
+ * @returns False if the file could not be opened. True if the graph was read successfully.
  */
 bool read_edge_list(
 	const std::string& filename, graphs::undirected_graph& g,
@@ -95,8 +94,7 @@ bool read_edge_list(
  * @param[in] norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
  * @param[in] check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
- * @return Returns 'false' if the file could not be opened. Returns 'true'
- * if the graph was read successfully.
+ * @returns False if the file could not be opened. True if the graph was read successfully.
  */
 bool read_edge_list(
 	const std::string& filename, graphs::directed_graph& g,

@@ -55,7 +55,7 @@ namespace properties {
  * vertices are at a distance 1 from each other. See \cite Harary1969a
  * (pages 24, 35) for further details.
  * @param t Input tree.
- * @return Returns the diameter of the input tree.
+ * @returns The diameter of the input tree.
  */
 uint32_t get_diameter(const graphs::free_tree& t);
 
@@ -67,7 +67,7 @@ uint32_t get_diameter(const graphs::free_tree& t);
  * vertices are at a distance 1 from each other. See \cite Harary1969a
  * (pages 24, 35) for further details.
  * @param t Input tree.
- * @return Returns the diameter of the input tree.
+ * @returns The diameter of the input tree.
  */
 uint32_t get_diameter(const graphs::rooted_tree& t);
 

@@ -36,15 +36,52 @@ template<
 >
 class tree_gen {
 public:
-	tree_gen(uint32_t _n) noexcept : m_n(_n) { }
-	virtual ~tree_gen() noexcept = default;
-
 	/// Normalise the generate tree.
 	bool normalise_tree = true;
 	/// Calculate the size of the subtrees of the generated rooted tree.
 	bool calculate_size_subtrees = true;
 	/// Calculate the type of tree of the generated tree.
 	bool calculate_tree_type = true;
+
+public:
+	/* CONSTRUCTORS */
+
+	/**
+	 * @brief Constructor with number of nodes.
+	 * @param n Number of nodes
+	 */
+	tree_gen(uint32_t n) noexcept : m_n(n) { }
+
+	/**
+	 * @brief Default copy constructor.
+	 * @param Gen Generator of the same type.
+	 */
+	tree_gen(const tree_gen& Gen) noexcept = default;
+
+	/**
+	 * @brief Default move constructor.
+	 * @param Gen Generator of the same type.
+	 */
+	tree_gen(tree_gen&& Gen) noexcept = default;
+
+	/// Default destructor.
+	virtual ~tree_gen() noexcept = default;
+
+	/* OPERATORS */
+
+	/**
+	 * @brief Default copy assignment operator.
+	 * @param Gen Generator of the same type.
+	 */
+	tree_gen& operator= (const tree_gen& Gen) noexcept = default;
+
+	/**
+	 * @brief Default move assignment operator.
+	 * @param Gen Generator of the same type.
+	 */
+	tree_gen& operator= (tree_gen&& Gen) noexcept = default;
+
+	/* GETTERS */
 
 	/**
 	 * @brief Retrieve the generated tree.
@@ -83,7 +120,6 @@ public:
 	}
 
 protected:
-
 	/**
 	 * @brief Retrieve the generated tree.
 	 *

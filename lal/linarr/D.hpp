@@ -65,7 +65,7 @@ namespace linarr {
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$D\f$.
+ * @returns The sum of edge lengths \f$D\f$.
  */
 uint32_t sum_length_edges
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -79,7 +79,7 @@ uint32_t sum_length_edges
  * If the arrangement is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns \f$D\f$.
+ * @returns The sum of edge lengths \f$D\f$.
  */
 uint32_t sum_length_edges
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
@@ -95,7 +95,7 @@ uint32_t sum_length_edges
  * sum_length_edges for further details on \f$D_{\pi}(G)\f$.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns Jing's and Liu's \f$MDD\f$.
+ * @returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational mean_dependency_distance_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -108,7 +108,7 @@ numeric::rational mean_dependency_distance_rational
  * sum_length_edges for further details on \f$D_{\pi}(G)\f$.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Returns Jing's and Liu's \f$MDD\f$.
+ * @returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational mean_dependency_distance_rational
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
@@ -119,7 +119,7 @@ numeric::rational mean_dependency_distance_rational
  * See @ref mean_dependency_distance_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return The return value is a floating point value.
+ * @returns The return value is a floating point value.
  */
 double mean_dependency_distance
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
@@ -129,7 +129,7 @@ double mean_dependency_distance
  * See @ref mean_dependency_distance_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return The return value is a floating point value.
+ * @returns The return value is a floating point value.
  */
 double mean_dependency_distance
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});

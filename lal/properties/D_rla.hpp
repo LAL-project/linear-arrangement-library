@@ -57,8 +57,10 @@ namespace properties {
  * @brief Computes the the expectation of the first moment of D.
  *
  * This function uses the formulae derived in \cite Ferrer2019a.
+ *
+ * Returns the value \f$E[D]\f$ as a rational value.
  * @param g The input graph.
- * @return Returns \f$E[D]\f$ as a rational value.
+ * @returns The expected value of the sum of edge lengths as a rational value.
  */
 numeric::rational expectation_D_rational(const graphs::undirected_graph& g);
 /**
@@ -66,7 +68,7 @@ numeric::rational expectation_D_rational(const graphs::undirected_graph& g);
  *
  * See @ref expectation_D_rational for details.
  * @param g The input graph.
- * @return The return value is a floating point value.
+ * @returns The expected value of the sum of edge lengths as a floating point value.
  */
 double expectation_D(const graphs::undirected_graph& g);
 
@@ -80,7 +82,7 @@ double expectation_D(const graphs::undirected_graph& g);
  *
  * This function uses the formula derived in \cite Ferrer2019a.
  * @param g Input graph.
- * @return Returns the exact value of \f$V[D]\f$ as a rational value.
+ * @returns The exact value of \f$V[D]\f$ as a rational value.
  */
 numeric::rational variance_D_rational(const graphs::undirected_graph& g);
 /**
@@ -88,7 +90,7 @@ numeric::rational variance_D_rational(const graphs::undirected_graph& g);
  *
  * See @ref variance_D_rational for details.
  * @param g The input graph.
- * @return The return value is a floating point value.
+ * @returns The exact value of \f$V[D]\f$ as a floating point value.
  */
 double variance_D(const graphs::undirected_graph& g);
 

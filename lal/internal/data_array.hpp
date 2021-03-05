@@ -68,21 +68,34 @@ private:
 	std::size_t m_size;
 
 public:
+	// Constructor with size
 	data_array(const std::size_t n) noexcept : m_size(n) {
-		data = new T[n];
+		data = new T[m_size];
 	}
+	// Constructor with size and initial value
 	data_array(const std::size_t n, const T& v) noexcept : m_size(n) {
-		data = new T[n];
+		data = new T[m_size];
 		fill(v);
 	}
-	~data_array() noexcept {
-		delete[] data;
+	// Destructor
+	~data_array() noexcept { delete[] data; }
+
+	// Copy constructor
+	data_array(const data_array& d) : m_size(d.m_size) {
+		data = new T[m_size];
+		std::copy(d.begin(), d.end(), begin());
+	}
+	// Copy assignment operator
+	data_array& operator= (const data_array& d) {
+		if (m_size != d.m_size) {
+			delete[] data;
+			m_size = d.m_size;
+			data = new T[m_size];
+		}
+		std::copy(d.begin(), d.end(), begin());
 	}
 
-	// do not allow copies
-	data_array(const data_array& d) = delete;
-	data_array& operator= (const data_array& d) = delete;
-	// nor moves
+	// Move constructor
 	data_array(data_array&& d) noexcept : m_size(d.m_size) {
 		// steal data
 		data = d.data;
@@ -90,6 +103,7 @@ public:
 		d.data = nullptr;
 		d.m_size = 0;
 	}
+	// Move assignment operator
 	data_array& operator= (data_array&& d) {
 		// free yourself
 		delete[] data;

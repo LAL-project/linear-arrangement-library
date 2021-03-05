@@ -66,7 +66,7 @@ namespace utilities {
  * The algorithm implemented can be found in \cite Aho1974a.
  * @param t1 Input rooted tree.
  * @param t2 Input rooted tree.
- * @return Returns whether the input trees are isomorphic or not. If the rooted
+ * @returns Whether or not the input trees are isomorphic or not. If the rooted
  * trees do not have both a valid edge orientation (see
  * @ref graphs::rooted_tree::is_orientation_valid) the trees are considered to
  * be non-isomorphic.
@@ -88,7 +88,7 @@ bool are_trees_isomorphic
  * The algorithm implemented can be found in \cite Aho1974a.
  * @param t1 Input free tree.
  * @param t2 Input free tree.
- * @return Returns whether the input trees are isomorphic or not.
+ * @returns Whether or not the input trees are isomorphic.
  */
 bool are_trees_isomorphic
 (const graphs::free_tree& t1, const graphs::free_tree& t2) noexcept;

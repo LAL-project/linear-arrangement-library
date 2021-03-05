@@ -87,7 +87,7 @@ inline bool __find_cycle
  * @param g Input graph.
  * @param vis Array of size 'n', where 'n' is the number of vertices of 'g'.
  * @param in_stack Array of size 'n', where 'n' is the number of vertices of 'g'.
- * @returns Returns whether the graph has cycles or not.
+ * @returns Whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(
 	const graphs::directed_graph& g,
@@ -112,7 +112,7 @@ inline bool has_directed_cycles(
 /*
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
  * @param g Input graph.
- * @returns Returns whether the graph has cycles or not.
+ * @returns Whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.num_nodes();
@@ -128,7 +128,7 @@ namespace __lal {
  *
  * In case the input graph is a directed graph, reverse edges are considered.
  * @param g Input graph.
- * @returns Returns whether the graph has cycles or not.
+ * @returns Whether the graph has cycles or not.
  */
 template<class G>
 inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
@@ -191,7 +191,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
  *
  * In case the input graph is a directed graph, reverse edges are considered.
  * @param g Input graph.
- * @returns Returns whether the graph has cycles or not.
+ * @returns Whether the graph has cycles or not.
  */
 template<class G>
 inline bool has_undirected_cycles(const G& g) {

@@ -75,11 +75,17 @@ public:
 	 * @param n Number of nodes.
 	 */
 	undirected_graph(uint32_t n) noexcept;
-	/// Copy constructor.
-	undirected_graph(const undirected_graph&) noexcept;
+	/**
+	 * @brief Copy constructor.
+	 * @param g Undirected graph.
+	 */
+	undirected_graph(const undirected_graph& g) noexcept;
 #ifndef SWIG
-	/// Move constructor.
-	undirected_graph(undirected_graph&&) noexcept;
+	/**
+	 * @brief Move constructor.
+	 * @param g Undirected graph.
+	 */
+	undirected_graph(undirected_graph&& g) noexcept;
 #endif
 	/// Destructor.
 	virtual ~undirected_graph() noexcept;
@@ -87,10 +93,16 @@ public:
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	undirected_graph& operator= (const undirected_graph&) noexcept;
-	/// Move assignment operator.
-	undirected_graph& operator= (undirected_graph&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param g Undirected graph.
+	 */
+	undirected_graph& operator= (const undirected_graph& g) noexcept;
+	/**
+	 * @brief Move assignment operator.
+	 * @param g Undirected graph.
+	 */
+	undirected_graph& operator= (undirected_graph&& g) noexcept;
 #endif
 
 	/* MODIFIERS */
@@ -121,7 +133,8 @@ public:
 	 * is not checked, and no extra work per edge is done.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
@@ -243,7 +256,7 @@ public:
 	/**
 	 * @brief Returns the neighbourhood of node @e u.
 	 * @param u Node.
-	 * @return Returns the list of nodes adjacent to node @e u.
+	 * @returns The list of nodes adjacent to node @e u.
 	 */
 	inline const neighbourhood& get_neighbours(node u) const noexcept {
 #if defined DEBUG
@@ -255,7 +268,7 @@ public:
 	/**
 	 * @brief Returns the number of neighbours of @e u.
 	 * @param u Node to be queried.
-	 * @return Returns the number of adjacent nodes.
+	 * @returns The number of adjacent nodes.
 	 */
 	inline uint32_t degree(node u) const noexcept {
 #if defined DEBUG
