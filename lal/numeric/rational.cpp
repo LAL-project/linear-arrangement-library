@@ -149,12 +149,6 @@ size_t rational::bytes() const noexcept {
 
 /* CONVERTERS */
 
-integer rational::to_integer() const noexcept {
-	integer i;
-	as_integer(i);
-	return i;
-}
-
 void rational::as_integer(integer& i) const noexcept {
 	mpz_t numerator, denominator;
 	mpz_inits(numerator, denominator, NULL);

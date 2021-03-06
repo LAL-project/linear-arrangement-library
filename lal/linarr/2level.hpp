@@ -42,6 +42,9 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <vector>
 
 // lal includes
@@ -53,42 +56,74 @@ namespace linarr {
 
 /* 2-LEVEL METRICS */
 
+// **DEVELOPER NOTE**
+// This function's documentation has to be updated manually in the python
+// interface file '.i' 'python-interface/submodules/linarr.i'
 /**
- * @brief Computes the 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
+ * @brief 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
- * Given a list of graphs and a linear arrangement of the nodes for each of
- * them, computes the 2-level Mean Dependency Distance, i.e., it computes the
- * average Mean Dependency Distance of the graphs in the list.
+ * Given a list of graphs \f$L\f$ and a list of linear arrangements of the nodes
+ * for each of them, \f$P\f$, computes the 2-level Mean Dependency Distance, i.e.,
+ * it computes the average Mean Dependency Distance of the graphs in the list.
  *
- * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
- * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$(1/k)S_{<d>}\f$,
- * where \f$S_{<d>} = \sum_{i=1}^k MDD(G_i, \pi_i)\f$ is the sum of the mean
+ * Formally, given a list of graphs \f$L = \{L_i\}_{i=1}^k\f$ and a list of linear
+ * arrangements \f$P = \{\pi_i\}_{i=1}^k\f$, computes \f$(1/k)S_{<d>}\f$,
+ * where \f$S_{<d>} = \sum_{i=1}^k MDD(L_i, \pi_i)\f$ is the sum of the mean
  * dependency distances of every graph (see @ref mean_dependency_distance_rational
  * for details on the definition of the Mean Dependency Distance).
  *
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a rational value.
+ * @param L List of input graphs.
+ * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
+ * When omitted, \f$\pi_I\f$ is used for every graph.
+ * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as an
+ * exact rational value.
  */
-template<class G>
+template<class graph>
 numeric::rational mean_dependency_distance_2level_rational
-(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
+(const std::vector<graph>& L, const std::vector<linear_arrangement>& P = {})
+noexcept
+{
+#if defined DEBUG
+	// the number of graphs and number of linear arrangements
+	// must coincide unless no arrangement was given.
+	assert(P.size() == 0 or G.size() == P.size());
+#endif
 
+	numeric::rational sum_MDD(0);
+	if (P.size() == 0) {
+		const linear_arrangement empty_arr;
+		for (size_t i = 0; i < L.size(); ++i) {
+			sum_MDD += mean_dependency_distance_rational(L[i], empty_arr);
+		}
+	}
+	else {
+		for (size_t i = 0; i < L.size(); ++i) {
+			sum_MDD += mean_dependency_distance_rational(L[i], P[i]);
+		}
+	}
+	return sum_MDD/static_cast<int64_t>(L.size());
+}
+
+// **DEVELOPER NOTE**
+// This function's documentation has to be updated manually in the python
+// interface file '.i' 'python-interface/submodules/linarr.i'
 /**
- * @brief Computes the 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
+ * @brief 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
  * See @ref mean_dependency_distance_2level_rational for details.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a floating point value.
+ * @param L List of input graphs.
+ * @param P List of linear arrangements of the nodes \f$L = \{\pi_i\}_{i=1}^k\f$.
+ * When omitted, \f$\pi_I\f$ is used for every graph.
+ * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a
+ * floating point value.
  */
-template<class G>
+template<class graph>
 double mean_dependency_distance_2level
-(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
+(const std::vector<graph>& L, const std::vector<linear_arrangement>& P = {})
+noexcept
+{
+	return mean_dependency_distance_2level_rational(L, P).to_double();
+}
 
 } // -- namespace linarr
 } // -- namespace lal
-
-#include <lal/linarr/2level_impl.hpp>

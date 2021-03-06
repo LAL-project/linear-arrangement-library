@@ -163,9 +163,8 @@ double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
  *
  * The hubiness coefficient is defined as.
  *
- * \f$ h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
- *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }
- * \f$,
+ * \f$h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
+ *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }\f$,
  *
  * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
  * are the second moment of degree about 0 (see @ref mmt_degree_rational)

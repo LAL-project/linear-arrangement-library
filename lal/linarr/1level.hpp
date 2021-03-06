@@ -42,6 +42,9 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <vector>
 
 // lal includes
@@ -53,44 +56,80 @@ namespace linarr {
 
 /* 1-LEVEL METRICS */
 
+// **DEVELOPER NOTE**
+// This function's documentation has to be updated manually in the python
+// interface file '.i' 'python-interface/submodules/linarr.i'
 /**
- * @brief Computes the 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
+ * @brief 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble
+ * of graphs.
  *
- * Given a list of graphs \f$L_i\f$ and a linear arrangement of the nodes for
- * each of them, computes the 1-level Mean Dependency Distance as the quotient
- * of \f$D\f$, the sum of all the \f$D_i\f$, where \f$D_i\f$ is the sum of the
- * edge lengths of the \f$i\f$-th graph, and of \f$M\f$ the sum of the number
- * of edges of all the graphs.
+ * Given a list of graphs \f$L\f$ and a list of linear arrangements for each of
+ * them, \f$P\f$, computes the 1-level Mean Dependency Distance as the quotient
+ * of \f$D\f$, the sum of all the edge lengths of each graph, and of \f$M\f$ the
+ * sum of the number of edges of all the graphs.
  *
- * Formally, given a list of linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$
- * and a list of graphs \f$G = \{G_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
- * - \f$D = \sum_{i=1}^k D(G_i, \pi_i)\f$ is the sum of edge lengths of every
- * graph.
- * - \f$M = \sum_{i=1}^k |E(G_i)|\f$ is the sum of the number of edges of every
- * graph.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs.
+ * Formally, given a list of graphs \f$L = \{L_i\}_{i=1}^k\f$ and a list of
+ * linear arrangements \f$\P = \{\pi_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
+ * - \f$D = \sum_{i=1}^k D(L_i, \pi_i)\f$ is the sum of edge lengths of all
+ * graphs.
+ * - \f$M = \sum_{i=1}^k |E(L_i)|\f$ is the sum of the number of edges of all
+ * graphs.
+ *
+ * @param L List of input graphs.
+ * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
+ * When omitted, \f$\pi_I\f$ is used for every graph.
+ * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as an
+ * exact rational value.
  */
-template<class G>
+template<class graph>
 numeric::rational mean_dependency_distance_1level_rational
-(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
+(const std::vector<graph>& L, const std::vector<linear_arrangement>& P = {})
+noexcept
+{
+#if defined DEBUG
+	// the number of graphs and number of linear arrangements
+	// must coincide unless no arrangement was given.
+	assert(P.size() == 0 or L.size() == P.size());
+#endif
 
+	uint64_t sumD = 0;
+	uint64_t sumM = 0;
+	if (P.size() == 0) {
+		const linear_arrangement empty_arr;
+		for (size_t i = 0; i < L.size(); ++i) {
+			sumD += sum_length_edges(L[i], empty_arr);
+			sumM += L[i].num_edges();
+		}
+	}
+	else {
+		for (size_t i = 0; i < L.size(); ++i) {
+			sumD += sum_length_edges(L[i], P[i]);
+			sumM += L[i].num_edges();
+		}
+	}
+	return numeric::rational_from_ui(sumD, sumM);
+}
+
+// **DEVELOPER NOTE**
+// This function's documentation has to be updated manually in the python
+// interface file '.i' 'python-interface/submodules/linarr.i'
 /**
- * @brief Computes the 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
+ * @brief 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
  * See @ref mean_dependency_distance_1level_rational for details.
- * @param Gs List of input graphs.
- * @param pis List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * When omitted, \f$\pi_I\f$ is used for all graphs.
- * @returns The return value is a floating point value.
+ * @param L List of input graphs.
+ * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
+ * When omitted, \f$\pi_I\f$ is used for every graph.
+ * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as a
+ * floating point value.
  */
-template<class G>
+template<class graph>
 double mean_dependency_distance_1level
-(const std::vector<G>& Gs, const std::vector<linear_arrangement>& pis = {});
+(const std::vector<graph>& L, const std::vector<linear_arrangement>& P = {})
+noexcept
+{
+	return mean_dependency_distance_1level_rational(L, P).to_double();
+}
 
 } // -- namespace linarr
 } // -- namespace lal
-
-#include <lal/linarr/1level_impl.hpp>

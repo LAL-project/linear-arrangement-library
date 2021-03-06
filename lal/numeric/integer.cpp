@@ -100,8 +100,6 @@ integer& integer::operator-= (int64_t i) noexcept {
 	return *this;
 }
 
-// -- MULTIPLICATION
-
 // -- DIVISION
 
 integer& integer::operator/= (int64_t i) noexcept {
@@ -117,68 +115,10 @@ integer& integer::operator^= (const integer& i) noexcept {
 	return *this;
 }
 
-// -- MODULUS
-
-uint64_t integer::operator% (uint64_t i) const noexcept {
-	mpz_t r;
-	mpz_init(r);
-	const uint64_t m = mpz_mod_ui(r, m_val, i);
-	mpz_clear(r);
-	return m;
-}
-integer integer::operator% (const integer& i) const noexcept {
-	integer r;
-	mpz_mod(r.m_val, m_val, i.m_val);
-	return r;
-}
-
 /* GETTERS */
 
-int32_t integer::get_sign() const noexcept {
-	return mpz_sgn(m_val);
-}
-
-size_t integer::bytes() const noexcept {
-	return (internal::mpz_bytes(m_val));
-}
-
-const mpz_t& integer::get_raw_value() const noexcept {
-	return m_val;
-}
-
-/* CONVERTERS */
-
-int64_t integer::to_int() const noexcept {
-	return mpz_get_si(m_val);
-}
-
-uint64_t integer::to_uint() const noexcept {
-	return mpz_get_ui(m_val);
-}
-
-double integer::to_double() const noexcept {
-	return mpz_get_d(m_val);
-}
-
-string integer::to_string() const noexcept {
-	std::string k;
-	as_string(k);
-	return k;
-}
-
-void integer::as_string(string& s) const noexcept {
-	char *buf = nullptr;
-	buf = mpz_get_str(buf, 10, m_val);
-	s = std::string(buf);
-	free(buf);
-}
-
-/* OTHERS */
-
-void integer::swap(integer& i) noexcept {
-	// swap the values
-	mpz_swap(m_val, i.m_val);
-}
+size_t integer::bytes() const noexcept
+{ return internal::mpz_bytes(m_val); }
 
 } // -- namespace numeric
 } // -- namespace lal

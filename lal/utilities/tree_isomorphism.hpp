@@ -55,9 +55,7 @@ namespace utilities {
  * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
  * mapping \f$\phi \;:\; V(t_1) \longrightarrow V(t_2)\f$ such that
  *
- * \f$
- * \forall u,v\in V(t_1) \; (u,v)\in E(t_1) \longleftrightarrow (\phi(u),\phi(v))\in E(t_2)
- * \f$
+ * \f$\forall u,v\in V(t_1) \; (u,v)\in E(t_1) \longleftrightarrow (\phi(u),\phi(v))\in E(t_2)\f$
  *
  * and \f$\phi(r_1)=r_2\f$ where \f$r_1\f$ and \f$r_2\f$ are, respectively,
  * the roots of \f$t_1\f$ and \f$t_2\f$. Note that \f$(u,v)\f$ denotes a directed
@@ -81,9 +79,7 @@ bool are_trees_isomorphic
  * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
  * mapping \f$\phi \;:\; V(t_1) \longrightarrow V(t_2)\f$ such that
  *
- * \f$
- * \forall u,v\in V(t_1) \; uv\in E(t_1) \longleftrightarrow \phi(u)\phi(v)\in E(t_2)
- * \f$
+ * \f$\forall u,v\in V(t_1) \; uv\in E(t_1) \longleftrightarrow \phi(u)\phi(v)\in E(t_2)\f$
  *
  * The algorithm implemented can be found in \cite Aho1974a.
  * @param t1 Input free tree.

@@ -183,9 +183,7 @@ target_sources(
 		# linarr namespace
 		# --headers
 		linarr/1level.hpp
-		linarr/1level_impl.hpp
 		linarr/2level.hpp
-		linarr/2level_impl.hpp
 		linarr/algorithms_C.hpp
 		linarr/algorithms_Dmin.hpp
 		linarr/C.hpp
@@ -364,9 +362,7 @@ set(LIBLAL_ITERATORS_HEADER
 )
 set(LIBLAL_LINARR_HEADER
 	linarr/1level.hpp
-	linarr/1level_impl.hpp
 	linarr/2level.hpp
-	linarr/2level_impl.hpp
 	linarr/algorithms_C.hpp
 	linarr/algorithms_Dmin.hpp
 	linarr/C.hpp

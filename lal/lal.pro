@@ -122,9 +122,7 @@ HEADERS += \
 	linarr/algorithms_C.hpp \
 	linarr/algorithms_Dmin.hpp \
 	linarr/1level.hpp \
-	linarr/1level_impl.hpp \
 	linarr/2level.hpp \
-	linarr/2level_impl.hpp \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/flux.hpp \

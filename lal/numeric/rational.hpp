@@ -66,24 +66,48 @@ public:
 
 	/// Empty constructor.
 	rational() noexcept { mpq_init(m_val); }
-	/// Constructor with numerator and denominator.
+	/**
+	 * @brief Constructor with numerator and denominator.
+	 * @param n Numerator, signed integer (basic type).
+	 * @param d Denominator, unsigned integer (basic type).
+	 */
 	rational(int64_t n, uint64_t d = 1) noexcept
 	{ mpq_init(m_val); set_si(n, d); }
-	/// Constructor with integer.
+	/**
+	 * @brief Constructor with numerator and denominator.
+	 * @param n Numerator, a @ref lal::numeric::integer.
+	 * @param d Denominator, a @ref lal::numeric::integer.
+	 */
 	rational(const integer& n, const integer& d = 1) noexcept
 	{ mpq_init(m_val); set_integer(n, d); }
-	/// Constructor with string.
+	/**
+	 * @brief Constructor with string.
+	 * @param s A string.
+	 */
 	rational(const std::string& s) noexcept
 	{ mpq_init(m_val); set_str(s); }
-	/// Copy constructor.
+	/**
+	 * @brief Copy constructor.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational(const rational& r) noexcept
 	{ mpq_init(m_val); mpq_set(m_val, r.m_val); }
 #ifndef SWIG
-	/// Move constructor with one integer.
-	rational(integer&& n) noexcept;
-	/// Move constructor with two integers.
+	/**
+	 * @brief Move constructor.
+	 * @param v A @ref lal::numeric::integer
+	 */
+	rational(integer&& v) noexcept;
+	/**
+	 * @brief Move constructor with numerator and denominator.
+	 * @param n Numerator, a @ref lal::numeric::integer.
+	 * @param d Denominator, a @ref lal::numeric::integer.
+	 */
 	rational(integer&& n, integer&& d) noexcept;
-	/// Move constructor.
+	/**
+	 * @brief Move constructor.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational(rational&& r) noexcept;
 #endif
 	/// Destructor.
@@ -91,34 +115,57 @@ public:
 
 	/* SETTERS */
 
-	/// Overwrites the value of this rational with \f$n/d\f$.
+	/**
+	 * @brief Overwrites the value of this rational with \f$n/d\f$.
+	 * @param n Numerator, signed integer (basic type).
+	 * @param d Denominator, unsigned integer (basic type).
+	 */
 	void set_si(int64_t n, uint64_t d = 1) noexcept {
 		if (not is_initialized()) { mpq_init(m_val); }
 		mpq_set_si(m_val, n, d);
 		mpq_canonicalize(m_val);
 		m_initialized = true;
 	}
-	/// Overwrites the value of this rational with \f$n/d\f$.
+	/**
+	 * @brief Overwrites the value of this rational with \f$n/d\f$.
+	 * @param n Numerator, unsigned integer (basic type).
+	 * @param d Denominator, unsigned integer (basic type).
+	 */
 	void set_ui(uint64_t n, uint64_t d = 1) noexcept {
 		if (not is_initialized()) { mpq_init(m_val); }
 		mpq_set_ui(m_val, n, d);
 		mpq_canonicalize(m_val);
 		m_initialized = true;
 	}
-	/// Overwrites the value in the string @e s.
+	/**
+	 * @brief Overwrites the value in the string @e s.
+	 * @param s A string.
+	 */
 	void set_str(const std::string& s) noexcept {
 		if (not is_initialized()) { mpq_init(m_val); }
 		mpq_set_str(m_val, s.c_str(), 10);
 		mpq_canonicalize(m_val);
 		m_initialized = true;
 	}
-	/// Overwrites the value of this rational with the value \f$n/d\f$.
-	void set_integer(const integer& n, const integer& d = 1) noexcept {
+	/**
+	 * @brief Overwrites the value of this rational with the value \f$n/d\f$.
+	 * @param n Numerator, a @ref lal::numeric::integer.
+	 * @param d Denominator, a @ref lal::numeric::integer.
+	 */
+	void set_integer(const integer& n, const integer& d) noexcept {
 		if (not is_initialized()) { mpq_init(m_val); }
 		mpq_set_num(m_val, n.get_raw_value());
 		mpq_set_den(m_val, d.get_raw_value());
 		mpq_canonicalize(m_val);
 		m_initialized = true;
+	}
+	/**
+	 * @brief Overwrites the value of this rational with the value \f$n/d\f$.
+	 * @param r A lal::numeric::rational.
+	 */
+	void set_rational(const rational& r) noexcept {
+		if (not is_initialized()) { mpq_init(m_val); }
+		mpq_set(m_val, r.m_val);
 	}
 
 	/**
@@ -133,297 +180,521 @@ public:
 
 	// -- ASSIGNMENT
 
-	/// Assignment operator.
+	/**
+	 * @brief Assignment operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational& operator= (int64_t i) noexcept
 	{ set_si(i); return *this; }
-	/// Assignment operator.
+	/**
+	 * @brief Assignment operator.
+	 * @param s A string.
+	 */
 	rational& operator= (const std::string& s) noexcept
 	{ set_str(s); return *this; }
-	/// Assignment operator.
+	/**
+	 * @brief Assignment operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator= (const integer& i) noexcept
-	{ set_integer(i); return *this; }
-	/// Assignment operator.
+	{ set_integer(i, 1); return *this; }
+	/**
+	 * @brief Assignment operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator= (const rational& r) noexcept
-	{ mpq_set(m_val, r.m_val); return *this; }
+	{ set_rational(r); return *this; }
 #ifndef SWIG
-	/// Move assignment operator.
+	/**
+	 * @brief Move assignment operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator= (integer&& i) noexcept;
-	/// Move assignment operator.
+	/**
+	 * @brief Move assignment operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator= (rational&& r) noexcept;
 #endif
 
 	// -- EQUALITY
 
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator== (int64_t i) const noexcept
 	{ rational r(i); return mpq_equal(m_val, r.m_val) != 0; }
 #ifndef SWIG
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator== (int64_t i, const rational& r) noexcept
 	{ return r == i; }
 #endif
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator== (const integer& i) const noexcept
 	{ rational r(i); return mpq_equal(m_val, r.m_val) != 0; }
 #ifndef SWIG
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator== (const integer& i, const rational& r) noexcept
 	{ return r == i; }
 #endif
-	/// Equality operator.
+	/**
+	 * @brief Equality operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator== (const rational& r) const noexcept
 	{ return mpq_equal(m_val, r.m_val) != 0; }
 
 	// -- NON-EQUALITY
 
-	/// Non-equatility operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator!= (int64_t i) const noexcept
 	{ return not (*this == i); }
 #ifndef SWIG
-	/// Non-equatility operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator!= (int64_t i, const rational& r) noexcept
 	{ return r != i; }
 #endif
-	/// Non-equatility operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator!= (const integer& i) const noexcept
 	{ return not (*this == i); }
 #ifndef SWIG
-	/// Non-equatility operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator!= (const integer& i, const rational& r) noexcept
 	{ return r != i; }
 #endif
-	/// Non-equatility operator.
+	/**
+	 * @brief Non-equality operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator!= (const rational& r) const noexcept
 	{ return not (*this == r); }
 
 	// -- LESS THAN
 
-	/// Less than operator.
+	/**
+	 * @brief Less than operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator< (int64_t i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) < 0; }
 #ifndef SWIG
-	/// Less than operator.
+	/**
+	 * @brief Less than operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator< (int64_t i, const rational& r) noexcept
 	{ return r > i; }
 #endif
-	/// Less than operator.
+	/**
+	 * @brief Less than operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator< (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) < 0; }
 #ifndef SWIG
-	/// Less than operator.
+	/**
+	 * @brief Less than operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator< (const integer& i, const rational& r) noexcept
 	{ return r > i; }
 #endif
-	/// Less than operator.
+	/**
+	 * @brief Less than operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator< (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) < 0; }
 
 	// -- LESS THAN OR EQUAL TO
 
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator<= (int64_t i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) <= 0; }
 #ifndef SWIG
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator<= (int64_t i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator<= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) <= 0; }
 #ifndef SWIG
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator<= (const integer& i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
-	/// Less than or equal to operator.
+	/**
+	 * @brief Less than or equal to operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator<= (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) <= 0; }
 
 	// -- GREATER THAN
 
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator> (int64_t i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) > 0; }
 #ifndef SWIG
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator> (int64_t i, const rational& r) noexcept
 	{ return r < i; }
 #endif
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator> (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) > 0; }
 #ifndef SWIG
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator> (const integer& i, const rational& r) noexcept
 	{ return r < i; }
 #endif
-	/// Greater than operator.
+	/**
+	 * @brief Greater than operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator> (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) > 0; }
 
 	// -- GREATER THAN OR EQUAL TO
 
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	bool operator>= (int64_t i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) >= 0; }
 #ifndef SWIG
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator>= (int64_t i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	bool operator>= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) >= 0; }
 #ifndef SWIG
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend bool operator>= (const integer& i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
-	/// Greater than or equal to operator.
+	/**
+	 * @brief Greater than or equal to operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	bool operator>= (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) >= 0; }
 
 	// -- ADDITION
 
-	/// Addition operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Addition operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational operator+ (int64_t i) const noexcept
 	{ rational r(*this); r += i; return r; }
 #ifndef SWIG
-	/// Addition operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Addition operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator+ (int64_t i, const rational& r) noexcept
 	{ return r + i; }
 #endif
-	/// Addition operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Addition operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational operator+ (const integer& i) const noexcept
 	{ rational r(*this); r += i; return r; }
 #ifndef SWIG
-	/// Addition operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Addition operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator+ (const integer& i, const rational& r) noexcept
 	{ return r + i; }
 #endif
-	/// Addition operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Addition operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational operator+ (const rational& r) const noexcept
 	{ rational k(*this); k += r; return k; }
 
-	/// Addition operator. Modifies the current instance.
+	/**
+	 * @brief Addition operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational& operator+= (int64_t i) noexcept
 	{ rational r(i); mpq_add(m_val, m_val, r.m_val); return *this; }
-	/// Addition operator. Modifies the current instance.
+	/**
+	 * @brief Addition operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator+= (const integer& i) noexcept
 	{ rational r(i); mpq_add(m_val, m_val, r.m_val); return *this; }
-	/// Addition operator. Modifies the current instance.
+	/**
+	 * @brief Addition operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator+= (const rational& r) noexcept
 	{ mpq_add(m_val, m_val, r.m_val); return *this; }
 
 	// -- SUBSTRACTION
 
-	/// Substraction unary operator. Returns a new object of type 'rational'.
+	/// Substraction unary operator.
 	rational operator- () const noexcept
 	{ rational r(*this); mpq_neg(r.m_val, r.m_val); return r; }
-	/// Substraction operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational operator- (int64_t i) const noexcept
 	{ rational r(*this); r -= i; return r; }
 #ifndef SWIG
-	/// Substraction operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator- (int64_t i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
-	/// Substraction operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational operator- (const integer& i) const noexcept
 	{ rational r(*this); r -= i; return r; }
 #ifndef SWIG
-	/// Substraction operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator- (const integer& i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
-	/// Substraction operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Substraction operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational operator- (const rational& r) const noexcept
 	{ rational k(*this); k -= r; return k; }
 
-	/// Substraction unary operator. Modifies the current instance.
-	rational& operator- () noexcept
-	{ mpq_neg(m_val, m_val); return *this; }
-	/// Substraction operator. Modifies the current instance.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational& operator-= (int64_t i) noexcept
 	{ rational r(i); mpq_sub(m_val, m_val, r.m_val); return *this; }
-	/// Substraction operator. Modifies the current instance.
+	/**
+	 * @brief Substraction operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator-= (const integer& i) noexcept
 	{ rational r(i); mpq_sub(m_val, m_val, r.m_val); return *this; }
-	/// Substraction operator. Modifies the current instance.
+	/**
+	 * @brief Substraction operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator-= (const rational& r) noexcept
 	{ mpq_sub(m_val, m_val, r.m_val); return *this; }
 
 	// -- MULTIPLICATION
 
-	/// Product operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational operator* (int64_t i) const noexcept
 	{ rational r(*this); r *= i; return r; }
 #ifndef SWIG
-	/// Product operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A signed integer (basic type) number.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator* (int64_t i, const rational& r) noexcept
 	{ return r*i; }
 #endif
-	/// Product operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational operator* (const integer& i) const noexcept
 	{ rational r(*this); r *= i; return r; }
 #ifndef SWIG
-	/// Product operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A @ref lal::numeric::integer.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	inline friend rational operator* (const integer& i, const rational& r) noexcept
 	{ return r*i; }
 #endif
-	/// Product operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Multiplication operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational operator* (const rational& r) const noexcept
 	{ rational k(*this); k *= r; return k; }
 
-	/// Product operator. Modifies the current instance.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational& operator*= (int64_t i) noexcept
 	{ rational r(i); mpq_mul(m_val, m_val, r.m_val); return *this; }
-	/// Product operator. Modifies the current instance.
+	/**
+	 * @brief Multiplication operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator*= (const integer& i) noexcept
 	{ rational r(i); mpq_mul(m_val, m_val, r.m_val); return *this; }
-	/// Product operator. Modifies the current instance.
+	/**
+	 * @brief Multiplication operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator*= (const rational& r) noexcept
 	{ mpq_mul(m_val, m_val, r.m_val); return *this; }
 
 	// -- DIVISION
 
-	/// Quotient operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Division operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational operator/ (int64_t i) const noexcept
 	{ rational r(*this); r /= i; return r; }
-	/// Quotient operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Division operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational operator/ (const integer& i) const noexcept
 	{ rational r(*this); r /= i; return r; }
-	/// Quotient operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Division operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational operator/ (const rational& r) const noexcept
 	{ rational k(*this); k /= r; return k; }
 
-	/// Quotient operator. Modifies the current instance.
+	/**
+	 * @brief Division operator.
+	 * @param i A signed integer (basic type) number.
+	 */
 	rational& operator/= (int64_t i) noexcept;
-	/// Quotient operator. Modifies the current instance.
+	/**
+	 * @brief Division operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
 	rational& operator/= (const integer& i) noexcept;
-	/// Quotient operator. Modifies the current instance.
+	/**
+	 * @brief Division operator.
+	 * @param r A @ref lal::numeric::rational.
+	 */
 	rational& operator/= (const rational& r) noexcept;
 
 	// -- EXPONENTIATION
 
-	/// Power operator. Returns a new object of type 'rational'.
+	/**
+	 * @brief Exponentiation operator.
+	 * @param i An unsigned integer (basic type).
+	 */
 	rational operator^ (uint64_t i) const noexcept;
-	/// Power operator. Returns a new object of type 'rational'.
-	rational operator^ (const integer& r) const noexcept;
+	/**
+	 * @brief Exponentiation operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
+	rational operator^ (const integer& i) const noexcept;
 
-	/// Power operator. Modifies the current instance.
+	/**
+	 * @brief Exponentiation operator.
+	 * @param i An unsigned integer (basic type).
+	 */
 	rational& operator^= (uint64_t i) noexcept;
-	/// Power operator. Modifies the current instance.
-	rational& operator^= (const integer& r) noexcept;
+	/**
+	 * @brief Exponentiation operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
+	rational& operator^= (const integer& i) noexcept;
 
 	/* GETTERS */
 
 	/// Returns whether this object is initialised or not.
 	constexpr bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this rational.
-	int32_t get_sign() const noexcept
-	{ return mpq_sgn(m_val); }
+	int32_t get_sign() const noexcept { return mpq_sgn(m_val); }
 
 	/// Returns the amount of bytes this integer occupies.
 	size_t bytes() const noexcept;
@@ -433,15 +704,19 @@ public:
 	/**
 	 * @brief Converts this rational to an integer value.
 	 *
-	 * This function returns \f$ \left\lfloor n/d \right\rfloor \f$ where
+	 * This function returns \f$\left\lfloor n/d \right\rfloor\f$ where
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
 	 * @returns The floor of this rational.
 	 */
-	integer to_integer() const noexcept;
+	integer to_integer() const noexcept {
+		integer i;
+		as_integer(i);
+		return i;
+	}
 	/**
 	 * @brief Converts this rational to an integer value.
 	 *
-	 * This function returns \f$ \left\lfloor n/d \right\rfloor \f$ where
+	 * This function returns \f$\left\lfloor n/d \right\rfloor\f$ where
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
 	 * @returns The floor of this rational.
 	 */
@@ -487,8 +762,6 @@ public:
 	 */
 	friend void swap(rational& r1, rational& r2) noexcept { r1.swap(r2); }
 #endif
-
-private:
 
 private:
 	/// Structure from GMP storing the rational's value.
