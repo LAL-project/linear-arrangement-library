@@ -23,37 +23,29 @@ if [ "$1" == "c++" ]; then
 	echo "Generating Doxygen (html) documentation of the C++ code..."
 	doxygen doxyconfig/doxyfile.c++ | sed "s/^/    /g"
 else
-	echo "Generating Doxygen (html) documentation of the C++ code..."
+	echo -e "\e[1;1;32mGenerating Doxygen (html) documentation of the C++ code...\e[0m"
 	doxygen doxyconfig/doxyfile.python | sed "s/^/    /g"
-
-	########################################################################
-
-	echo "Parsing XML files with 'doxy2swig.py' to generate some Python documentation"
+	
+	####################################################################
+	
+	echo -e "\e[1;1;32mParsing XML files with 'doxy2swig.py' to generate some Python documentation\e[0m"
 	python3 doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/submodules/documentation.i | sed "s/^/    /g"
-
-	########################################################################
-
+	
+	####################################################################
+	
 	cd python-interface
-
-	########################################################################
-
-	function apply_doc_sed() {
-		F=$1	# file to which sed has to be applied
-		echo "        Format 'Parameters' title appropriately"
-		sed -E 's/Parameters:/Parameters:|/g' $F | tr '|' '\n' > /tmp/asdf
-		mv /tmp/asdf $F
-	}
-
-	echo "Apply 'sed' to 'documentation.i' to remove unwanted strings"
-	echo "    documentation.i..."
-	apply_doc_sed submodules/documentation.i
-
-	########################################################################
-
-	echo "Generating the Python interfaces only..."
-	echo "    Release"
-	make BUILD=release python_interfaces -j4 | sed "s/^/    /g"
-	echo "    Debug"
-	make BUILD=debug python_interfaces -j4 | sed "s/^/    /g"
+	
+	####################################################################
+	
+	echo -e "\e[1;1;32mClean up documentation.i\e[0m"
+	scripts/clean_up_documentationi.sh | sed "s/^/    /g"
+	
+	####################################################################
+	
+	echo -e "\e[1;1;32mGenerating the Python interfaces only...\e[0m"
+	echo -e "\e[1;1;32m    Release\e[0m"
+	make BUILD=release python_interfaces | sed "s/^/        /g"
+	echo -e "\e[1;1;32m    Debug\e[0m"
+	make BUILD=debug python_interfaces | sed "s/^/        /g"
 fi
 
