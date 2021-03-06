@@ -57,9 +57,7 @@ ITER_DPHDRS			= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
 					  $(LAL_INC_DIR)/lal/iterators.hpp
 
 LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/1level_impl.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/2level_impl.hpp \
 					  $(ALG_C_DPHDRS) \
 					  $(ALG_DMIN_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
