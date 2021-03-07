@@ -70,6 +70,17 @@ using namespace std;
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
 
+std::string make_treebank_result_file_name(const std::string& treebank_name) noexcept
+{
+	return treebank_name + ".csv";
+}
+
+std::string name_of_file_without_path_extension(const std::string& file_name) {
+	filesystem::path p(file_name);
+	p.replace_extension("");
+	return p.filename();
+}
+
 template<typename T>
 double to_double(const T& x) {
 	if constexpr (std::is_same_v<T, double>) { return x; }
@@ -261,7 +272,9 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::init
 }
 
 treebank_dataset_processor::processor_error
-treebank_dataset_processor::process() noexcept
+treebank_dataset_processor::process
+(const string& res, bool Remove)
+noexcept
 {
 	// -- this function assumes that init did not return any error -- //
 
@@ -283,14 +296,20 @@ treebank_dataset_processor::process() noexcept
 		// this is executed only by the main thread
 		while (main_file_reader >> treebank_name >> treebank_filename) {
 
+			// full path to the main file
 			filesystem::path full_path(m_main_file);
+			// full path to the treebank file
 			full_path.replace_filename(treebank_filename);
+
+			// store the name of the treebank
+			m_all_individual_treebank_names.push_back(treebank_name);
 
 			// Launch a task consisting of processing a treebank, catching an
 			// error, and storing it into 'm_errors_from_processing'.
 			#pragma omp task
 			{
-				const auto err = process_treebank(full_path.string(), treebank_name);
+				const auto err =
+				process_treebank(full_path.string(), treebank_name);
 
 				if (err != dataset_error::no_error) {
 					#pragma omp critical
@@ -310,11 +329,91 @@ treebank_dataset_processor::process() noexcept
 
 	}
 
+	if (m_join_files) {
+		join_all_files(res, Remove);
+	}
+
 	return
 	(m_errors_from_processing.size() > 0 ?
 		processor_error::some_treebank_file_failed :
 		processor_error::no_error
 	);
+}
+
+void treebank_dataset_processor::join_all_files
+(const string& resname, bool remove_files)
+const noexcept
+{
+	// use the filesystem namespace to create the path properly
+	filesystem::path p(m_out_dir);
+	if (resname == "") {
+		p /= name_of_file_without_path_extension(m_main_file) + "_full.csv";
+	}
+	else {
+		p /= resname;
+	}
+
+	if (m_be_verbose) {
+		cout << "Gather all results in file: " << p.string() << endl;
+	}
+
+	// the file where the contents of all the individual files are dumped to
+	ofstream output_together(p.string());
+
+	// output header
+	if (m_output_header) {
+		output_together << "treebank_name";
+
+		for (size_t i = 0; i < m_what_fs.size(); ++i) {
+			if (m_what_fs[i]) {
+				output_together
+					<< m_separator
+					<< tree_feature_string(static_cast<tree_feature>(i));
+			}
+		}
+		output_together << endl;
+	}
+
+	// read all files and dump their contents into
+	for (size_t i = 0; i < m_all_individual_treebank_names.size(); ++i) {
+		const string& name_of_treebank = m_all_individual_treebank_names[i];
+
+		filesystem::path path_to_treebank_result(m_out_dir);
+		path_to_treebank_result /=
+			make_treebank_result_file_name(name_of_treebank);
+
+		if (m_be_verbose > 0) {
+			cout << "    "
+				 << path_to_treebank_result.string()
+				 << endl;
+		}
+
+		ifstream fin(path_to_treebank_result);
+		if (not fin.is_open()) { continue; }
+
+		string line;
+		bool first_line = true;
+
+		while (getline(fin, line)) {
+			// ignore the first line
+			if (first_line) {
+				first_line = false;
+				continue;
+			}
+
+			output_together
+				<< name_of_treebank << m_separator << line
+				<< endl;
+		}
+
+		fin.close();
+
+		if (remove_files) {
+			filesystem::remove(path_to_treebank_result);
+		}
+	}
+
+	output_together.close();
 }
 
 dataset_error treebank_dataset_processor::process_treebank
@@ -340,27 +439,32 @@ noexcept
 		if (m_be_verbose >= 2) {
 			#pragma omp critical
 			{
-			cout << "Processing treebank: " << treebank_name
-				 << " failed (file: '" << treebank_filename << "')" << endl;
+			cout << "Processing treebank '" << treebank_name
+				 << "' failed (file: '" << treebank_filename << "')" << endl;
 			}
 		}
 		return err;
 	}
 	}
 
-	const string full_out_file = m_out_dir + "/" + treebank_name + ".txt";
+	// proper path to the individual file
+	filesystem::path p(m_out_dir);
+	p /= make_treebank_result_file_name(treebank_name);
 
 	// output file stream:
 	// since the output directory exists there is no need to check for is_open()
 	ofstream out_lang_file;
-	out_lang_file.open(full_out_file);
+	out_lang_file.open(p.string());
 
 	// output header to the file
 	if (m_output_header) {
-		if (m_what_fs[0]) {
-			out_lang_file << tree_feature_string(static_cast<tree_feature>(0));
-		}
-		for (size_t i = 1; i < m_what_fs.size(); ++i) {
+		size_t i = 0;
+
+		// find the first feature
+		while (not m_what_fs[i]) { ++i; }
+
+		out_lang_file << tree_feature_string(static_cast<tree_feature>(i));
+		for (; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
 				out_lang_file
 					<< m_separator
