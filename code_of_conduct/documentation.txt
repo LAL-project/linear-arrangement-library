@@ -1,0 +1,94 @@
+DOCUMENTATION FORMAT GUIDELINES
+===============================
+
+* The format of a doxygen string: ( the string '//!' denotes a comment explaining something about the format and must NOT be included in the actual documentation)
+
+	/**
+	 * @brief A brief description.
+	 * //! we DO need a blank space here
+	 * A more detailed description.
+	 * //! There is no need for a blank space here
+	 * @param parameter_1 Description of parameter 1
+	 * @param parameter_2 Description of parameter 2
+	 * @param parameter_3 Description of parameter 3
+	 * ...
+	 * @returns A value...
+	 * @pre Precondition 1
+	 * @pre Precondition 2
+	 * @pre Precondition 3
+	 * ...
+	 * @post Postcondition 1
+	 * @post Postcondition 2
+	 * @post Postcondition 3
+	 * ...
+	 */
+
+* LaTeX-ed mathematical expressions must not contain spaces right after the first '\f$' and right before the last '\f$'. For example, these
+
+		\f$  \forall u,v\f$
+		\f$  \forall u,v  \f$
+		\f$\forall u,v  \f$
+		
+	are malformed mathematical expressions. The correct way of writing them is by removing the spaces around the '\f$', like this:
+	
+		\f$\forall u,v\f$
+		
+	NOTE: we need this to ensure that math symbols will be displayed correctly in Spyder
+
+* When referencing methods, classes or enumerations (or whatever) of the library outside the scope of the current documentation block, do so with the full paths. Like this
+
+		see @ref lal::graphs::free_tree
+		see @ref lal::linarr::Dmin
+	
+	and never like this
+	
+		see @ref graphs::free_tree
+		see @ref free_tree
+		see @ref linarr::Dmin
+		see @ref Dmin
+	
+	The scope of the documentation block refers to the class/method or class member the documentation block documents. For example:
+	
+		/**
+		 * @brief This is a documentation block whose scope is that of a class.
+		 *
+		 * See method @ref method().
+		 */
+		class free_tree {
+		public:
+			/**
+			 * @brief This is a documentation block whose scope is that of the 'method' member of class 'free_tree'.
+			 */
+			void method() { .. }
+			...
+		}
+	
+	When referencing members of a class, say 'free_tree', within a documentation block whose scope is that of the class it documents, full paths are not necessary. It should be understood, by context, what method that "see @ref ..." refers to.
+	
+	When referencing members of a class, say 'free_tree', within a documentation block of a different member of said class should be referenced with full paths.
+	
+		/**
+		 * @brief This is a documentation block whose scope is that of a class.
+		 *
+		 * See methods @ref method1() and @ref method2().
+		 */
+		class free_tree {
+		public:
+			/**
+			 * @brief This is a documentation block whose scope is that of the 'method' member of class 'my_class'.
+			 *
+			 * See @ref lal::graphs::free_tree::method2.
+			 */
+			void method1() { .. }
+			
+			/**
+			 * @brief This is a documentation block whose scope is that of the 'method' member of class 'my_class'.
+			 *
+			 * See @ref lal::graphs::free_tree::method1.
+			 *
+			 * DON'T! See @ref method1. // <- python users need not know that method1 is a member of 'free_tree'.
+			 */
+			void method2() { .. }
+		}
+	
+	
