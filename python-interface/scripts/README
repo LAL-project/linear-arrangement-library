@@ -5,7 +5,7 @@ LAL_DIR=/home/lluis/Documents/projects/linear-arrangement-library
 LAL_DIR_PYINT=$LAL_DIR/python-interface
 
 clean_up_documentationi.sh:
-	Performs a clean-up of the file $LAL_DIR_PYINT/submodules/documentation.i.
+	Performs a clean-up of the file $LAL_DIR_PYINT/modules/documentation.i.
 	- Detects whether there are expressions with superfluous spaces in mathematical expressions. If there are any, issues an error message for each expresions and exits with code 1.
 	- Format title 'Parameters' in the docstrings of overloaded functions so that it looks like a section heading as much as possible.
 	- Replaces matching math delimiters '$$' with ':math:` and '`'.
@@ -14,8 +14,8 @@ clean_up_documentationi.sh:
 	Called by:
 		'$LAL_DIR/make_docs.sh python'
 	Calls:
-		python3 scripts/detect_superfluous_spaces_math.py submodules/documentation.i
-		python3 scripts/correct_math_delimiters.py submodules/documentation.i
+		python3 scripts/detect_superfluous_spaces_math.py modules/documentation.i
+		python3 scripts/correct_math_delimiters.py modules/documentation.i
 
 clean_up_interfaces.sh:
 	- Removes return types from function definitions

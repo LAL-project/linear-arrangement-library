@@ -7,79 +7,87 @@
 # ENUMERATIONS
 
 # dataset_error module
-$(DSE_SO): $(DSE_WRAP).o $(LIBRARY_SHARED_DEP)
+$(DSE_INSTALL_SO_FILE): $(DSE_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(DSE_WRAP).o: $(DSE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(DSE_WRAP).cxx: $(DSE_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DSE_MAIN_INT)
-$(DSE_PY_FILE): $(DSE_MOD_DEPS) $(DSE_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(DSE_WRAP).cxx: $(DSE_MOD_DEPS) $(DSE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DSE_WRAP).cxx $(DSE_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(DSE_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(DSE_INSTALL_PY_FILE): $(DSE_MOD_DEPS) $(DSE_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(DSE_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DSE_WRAP).cxx $(DSE_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(DSE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(DSE_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # syntactic dependency structure type module
-$(SYN_DEP_STR_TYPE_SO): $(SYN_DEP_STR_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
+$(SYN_DEP_STR_TYPE_INSTALL_SO_FILE): $(SYN_DEP_STR_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(SYN_DEP_STR_TYPE_WRAP).o: $(SYN_DEP_STR_TYPE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(SYN_DEP_STR_TYPE_WRAP).cxx: $(SYN_DEP_STR_TYPE_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(SYN_DEP_STR_TYPE_MAIN_INT)
-	echo "del cvar" >> $(SYN_DEP_STR_TYPE_PY_FILE)
-$(SYN_DEP_STR_TYPE_PY_FILE): $(SYN_DEP_STR_TYPE_MOD_DEPS) $(SYN_DEP_STR_TYPE_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(SYN_DEP_STR_TYPE_WRAP).cxx: $(SYN_DEP_STR_TYPE_MOD_DEPS) $(SYN_DEP_STR_TYPE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_TYPE_WRAP).cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(SYN_DEP_STR_TYPE_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(SYN_DEP_STR_TYPE_INSTALL_PY_FILE): $(SYN_DEP_STR_TYPE_MOD_DEPS) $(SYN_DEP_STR_TYPE_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(SYN_DEP_STR_TYPE_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_TYPE_WRAP).cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # type module
-$(TREE_TYPE_SO): $(TREE_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
+$(TREE_TYPE_INSTALL_SO_FILE): $(TREE_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(TREE_TYPE_WRAP).o: $(TREE_TYPE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(TREE_TYPE_WRAP).cxx: $(TREE_TYPE_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(TREE_TYPE_MAIN_INT)
-	echo "del cvar" >> $(TREE_TYPE_PY_FILE)
-$(TREE_TYPE_PY_FILE): $(TREE_TYPE_MOD_DEPS) $(TREE_TYPE_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(TREE_TYPE_WRAP).cxx: $(TREE_TYPE_MOD_DEPS) $(TREE_TYPE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREE_TYPE_WRAP).cxx $(TREE_TYPE_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(TREE_TYPE_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(TREE_TYPE_INSTALL_PY_FILE): $(TREE_TYPE_MOD_DEPS) $(TREE_TYPE_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(TREE_TYPE_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREE_TYPE_WRAP).cxx $(TREE_TYPE_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(TREE_TYPE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(TREE_TYPE_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # algorithms_C module
-$(ALG_C_SO): $(ALG_C_WRAP).o $(LIBRARY_SHARED_DEP)
+$(ALG_C_INSTALL_SO_FILE): $(ALG_C_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(ALG_C_WRAP).o: $(ALG_C_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALG_C_WRAP).cxx: $(ALG_C_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_C_MAIN_INT)
-$(ALG_C_PY_FILE): $(ALG_C_MOD_DEPS) $(ALG_C_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(ALG_C_WRAP).cxx: $(ALG_C_MOD_DEPS) $(ALG_C_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_C_WRAP).cxx $(ALG_C_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(ALG_C_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(ALG_C_INSTALL_PY_FILE): $(ALG_C_MOD_DEPS) $(ALG_C_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(ALG_C_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_C_WRAP).cxx $(ALG_C_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ALG_C_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(ALG_C_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # algorithms_Dmin module
-$(ALG_DMIN_SO): $(ALG_DMIN_WRAP).o $(LIBRARY_SHARED_DEP)
+$(ALG_DMIN_INSTALL_SO_FILE): $(ALG_DMIN_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(ALG_DMIN_WRAP).o: $(ALG_DMIN_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ALG_DMIN_WRAP).cxx: $(ALG_DMIN_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ALG_DMIN_MAIN_INT)
-$(ALG_DMIN_PY_FILE): $(ALG_DMIN_MOD_DEPS) $(ALG_DMIN_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(ALG_DMIN_WRAP).cxx: $(ALG_DMIN_MOD_DEPS) $(ALG_DMIN_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_DMIN_WRAP).cxx $(ALG_DMIN_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(ALG_DMIN_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(ALG_DMIN_INSTALL_PY_FILE): $(ALG_DMIN_MOD_DEPS) $(ALG_DMIN_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(ALG_DMIN_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ALG_DMIN_WRAP).cxx $(ALG_DMIN_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ALG_DMIN_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(ALG_DMIN_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
@@ -87,17 +95,19 @@ endif
 # DEFINITIONS
 
 # definitions module
-$(DEFS_SO): $(DEFS_WRAP).o $(LIBRARY_SHARED_DEP)
+$(DEFINITIONS_INSTALL_SO_FILE): $(DEFINITIONS_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(DEFS_WRAP).o: $(DEFS_WRAP).cxx
+$(DEFINITIONS_WRAP).o: $(DEFINITIONS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(DEFS_WRAP).cxx: $(DEFS_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(DEFS_MAIN_INT)
-$(DEFS_PY_FILE): $(DEFS_MOD_DEPS) $(DEFS_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(DEFS_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFS_WRAP).cxx $(DEFS_MAIN_INT)
+$(DEFINITIONS_WRAP).cxx: $(DEFINITIONS_MOD_DEPS) $(DEFINITIONS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFINITIONS_WRAP).cxx $(DEFINITIONS_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(DEFINITIONS_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(DEFINITIONS_INSTALL_PY_FILE): $(DEFINITIONS_MOD_DEPS) $(DEFINITIONS_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(DEFINITIONS_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFINITIONS_WRAP).cxx $(DEFINITIONS_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(DEFS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(DEFINITIONS_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
@@ -105,155 +115,157 @@ endif
 # NAMESPACES
 
 # generate
-$(GEN_SO): $(GEN_WRAP).o $(LIBRARY_SHARED_DEP)
+$(GENERATE_INSTALL_SO_FILE): $(GENERATE_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(GEN_WRAP).o: $(GEN_WRAP).cxx
+$(GENERATE_WRAP).o: $(GENERATE_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(GEN_WRAP).cxx: $(GEN_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GEN_MAIN_INT)
-$(GEN_PY_FILE): $(GEN_MOD_DEPS) $(GEN_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(GEN_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GEN_WRAP).cxx $(GEN_MAIN_INT)
+$(GENERATE_WRAP).cxx: $(GENERATE_MOD_DEPS) $(GENERATE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GENERATE_WRAP).cxx $(GENERATE_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(GENERATE_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(GENERATE_INSTALL_PY_FILE): $(GENERATE_MOD_DEPS) $(GENERATE_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(GENERATE_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GENERATE_WRAP).cxx $(GENERATE_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(GEN_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(GENERATE_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # graphs module
-$(GRAPHS_SO): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
+$(GRAPHS_INSTALL_SO_FILE): $(GRAPHS_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(GRAPHS_WRAP).o: $(GRAPHS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(GRAPHS_MAIN_INT)
-$(GRAPHS_PY_FILE): $(GRAPHS_MOD_DEPS) $(GRAPHS_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(GRAPHS_WRAP).cxx: $(GRAPHS_MOD_DEPS) $(GRAPHS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GRAPHS_WRAP).cxx $(GRAPHS_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(GRAPHS_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(GRAPHS_INSTALL_PY_FILE): $(GRAPHS_MOD_DEPS) $(GRAPHS_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(GRAPHS_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(GRAPHS_WRAP).cxx $(GRAPHS_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(GRAPHS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(GRAPHS_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # io module
-$(IO_SO): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
+$(IO_INSTALL_SO_FILE): $(IO_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(IO_WRAP).o: $(IO_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(IO_WRAP).cxx: $(IO_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(IO_MAIN_INT)
-$(IO_PY_FILE): $(IO_MOD_DEPS) $(IO_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(IO_WRAP).cxx: $(IO_MOD_DEPS) $(IO_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(IO_WRAP).cxx $(IO_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(IO_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(IO_INSTALL_PY_FILE): $(IO_MOD_DEPS) $(IO_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(IO_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(IO_WRAP).cxx $(IO_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(IO_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(IO_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # iterators module
-$(ITER_SO): $(ITER_WRAP).o $(LIBRARY_SHARED_DEP)
+$(ITERATORS_INSTALL_SO_FILE): $(ITERATORS_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(ITER_WRAP).o: $(ITER_WRAP).cxx
+$(ITERATORS_WRAP).o: $(ITERATORS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(ITER_WRAP).cxx: $(ITER_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(ITER_MAIN_INT)
-$(ITER_PY_FILE): $(ITER_MOD_DEPS) $(ITER_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(ITER_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ITER_WRAP).cxx $(ITER_MAIN_INT)
+$(ITERATORS_WRAP).cxx: $(ITERATORS_MOD_DEPS) $(ITERATORS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ITERATORS_WRAP).cxx $(ITERATORS_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(ITERATORS_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(ITERATORS_INSTALL_PY_FILE): $(ITERATORS_MOD_DEPS) $(ITERATORS_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(ITERATORS_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ITERATORS_WRAP).cxx $(ITERATORS_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(ITER_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(ITERATORS_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # linarr module
-$(LINARR_SO): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
+$(LINARR_INSTALL_SO_FILE): $(LINARR_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(LINARR_WRAP).o: $(LINARR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LINARR_MAIN_INT)
-$(LINARR_PY_FILE): $(LINARR_MOD_DEPS) $(LINARR_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(LINARR_WRAP).cxx: $(LINARR_MOD_DEPS) $(LINARR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(LINARR_WRAP).cxx $(LINARR_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(LINARR_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(LINARR_INSTALL_PY_FILE): $(LINARR_MOD_DEPS) $(LINARR_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(LINARR_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(LINARR_WRAP).cxx $(LINARR_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(LINARR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(LINARR_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
-# numeric  module
-$(NMRC_SO): $(NMRC_WRAP).o $(LIBRARY_SHARED_DEP)
+# numeric module
+$(NUMERIC_INSTALL_SO_FILE): $(NUMERIC_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(NMRC_WRAP).o: $(NMRC_WRAP).cxx
+$(NUMERIC_WRAP).o: $(NUMERIC_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(NMRC_WRAP).cxx: $(NMRC_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(NMRC_MAIN_INT)
-$(NMRC_PY_FILE): $(NMRC_MOD_DEPS) $(NMRC_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(NMRC_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(NMRC_WRAP).cxx $(NMRC_MAIN_INT)
+$(NUMERIC_WRAP).cxx: $(NUMERIC_MOD_DEPS) $(NUMERIC_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(NUMERIC_WRAP).cxx $(NUMERIC_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(NUMERIC_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(NUMERIC_INSTALL_PY_FILE): $(NUMERIC_MOD_DEPS) $(NUMERIC_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(NUMERIC_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(NUMERIC_WRAP).cxx $(NUMERIC_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(NMRC_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(NUMERIC_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
-# properties  module
-$(PROP_SO): $(PROP_WRAP).o $(LIBRARY_SHARED_DEP)
+# properties module
+$(PROPERTIES_INSTALL_SO_FILE): $(PROPERTIES_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(PROP_WRAP).o: $(PROP_WRAP).cxx
+$(PROPERTIES_WRAP).o: $(PROPERTIES_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(PROP_WRAP).cxx: $(PROP_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(PROP_MAIN_INT)
-$(PROP_PY_FILE): $(PROP_MOD_DEPS) $(PROP_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(PROP_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(PROP_WRAP).cxx $(PROP_MAIN_INT)
+$(PROPERTIES_WRAP).cxx: $(PROPERTIES_MOD_DEPS) $(PROPERTIES_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(PROPERTIES_WRAP).cxx $(PROPERTIES_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(PROPERTIES_INSTALL_PY_FILE) | sed "s/^/    /g"
+$(PROPERTIES_INSTALL_PY_FILE): $(PROPERTIES_MOD_DEPS) $(PROPERTIES_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(PROPERTIES_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(PROPERTIES_WRAP).cxx $(PROPERTIES_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(PROP_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(PROPERTIES_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
-# utilities  module
-$(UTILS_SO): $(UTILS_WRAP).o $(LIBRARY_SHARED_DEP)
+# utilities module
+$(UTILS_INSTALL_SO_FILE): $(UTILS_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(UTILS_WRAP).o: $(UTILS_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(UTILS_WRAP).cxx: $(UTILS_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(UTILS_MAIN_INT)
-$(UTILS_PY_FILE): $(UTILS_MOD_DEPS) $(UTILS_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(UTILS_WRAP).cxx: $(UTILS_MOD_DEPS) $(UTILS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(UTILS_WRAP).cxx $(UTILS_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(UTILS_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(UTILS_INSTALL_PY_FILE): $(UTILS_MOD_DEPS) $(UTILS_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(UTILS_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(UTILS_WRAP).cxx $(UTILS_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(UTILS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(UTILS_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
-
-# lal module (library's main module)
-$(LAL_SO): $(LAL_WRAP).o $(LIBRARY_SHARED_DEP) $(SUBMODULES)
-	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(LAL_WRAP).o: $(LAL_WRAP).cxx
-	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(LAL_WRAP).cxx: $(LAL_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(LAL_MAIN_INT)
-$(LAL_PY_FILE): $(LAL_MOD_DEPS) $(LAL_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(LAL_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(LAL_WRAP).cxx $(LAL_MAIN_INT)
-else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(LAL_MAIN_INT)
-endif
-	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
-
-# -------
-# VERSION
 
 # version module
-$(VERSION_SO): $(VERSION_WRAP).o $(LIBRARY_SHARED_DEP)
+$(VERSION_INSTALL_SO_FILE): $(VERSION_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
 $(VERSION_WRAP).o: $(VERSION_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(VERSION_WRAP).cxx: $(VERSION_MOD_DEPS)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $@ $(VERSION_MAIN_INT)
-	echo "del cvar" >> $(VERSION_PY_FILE)
-$(VERSION_PY_FILE): $(VERSION_MOD_DEPS) $(VERSION_MOD_DOCS) $(DOCUMENTATION_FILE)
+$(VERSION_WRAP).cxx: $(VERSION_MOD_DEPS) $(VERSION_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(VERSION_WRAP).cxx $(VERSION_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(VERSION_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(VERSION_INSTALL_PY_FILE): $(VERSION_MOD_DEPS) $(VERSION_MOD_DOCS) $(DOCUMENTATION_FILE)
 ifeq (,$(wildcard $(VERSION_WRAP).cxx))
 	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(VERSION_WRAP).cxx $(VERSION_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/temp.cxx $(VERSION_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(VERSION_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
+
+# __init__.py file
+$(ARCH_DIR)/$(INTERFACE_DIRECTORY)/__init__.py:
+	cat modules_pydocs/lal.py modules/$(INTERFACE_DIRECTORY).py > $@

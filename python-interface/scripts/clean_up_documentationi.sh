@@ -1,10 +1,10 @@
 #!/bin/bash
 
-D=submodules/documentation.i
+D=modules/documentation.i
 
 ####################################################################
 
-echo "Looking for malformed mathematical expressions..."
+echo -e "\e[1;1;33mLooking for malformed mathematical expressions...\e[0m"
 python3 scripts/detect_superfluous_spaces_math.py $D | sed "s/^/    /g"
 if [ $? -eq 1 ]; then
 	echo -e "\e[1;4;31mError:\e[0m Found malformed mathematical expressions"
@@ -12,15 +12,15 @@ if [ $? -eq 1 ]; then
 	exit
 fi
 
-echo "Format 'Parameters' title appropriately"
+echo -e "\e[1;1;33mFormat 'Parameters' title appropriately\e[0m"
 sed -E 's/Parameters:/Parameters:|/g' $D | tr '|' '\n' > /tmp/asdf
 mv /tmp/asdf $D
 
-echo "Correcting math delimiters"
+echo -e "\e[1;1;33mCorrecting math delimiters\e[0m"
 python3 scripts/correct_math_delimiters.py $D | sed "s/^/    /g"
 
 # Clean up strings produced by 'documentation.i'
 # These are found in the documentation of overloaded functions.
 
-echo "Remove return types from functions"
+echo -e "\e[1;1;33mRemove return types from functions\e[0m"
 sed -i 's/) -> .*`/)`/g' $D

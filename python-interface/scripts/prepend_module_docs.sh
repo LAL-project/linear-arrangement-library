@@ -1,53 +1,53 @@
 #!/bin/bash
 
-function process_file() {
-	f=$1
-	filename=${f##*/}
-	echo "    filename:" $filename
+function prepend() {
+	doc=$1
+	file=$2
 	
-	mv $f $f.tmp
-	
-	if [[ $filename == *"generate"* ]]; then
-		cat namespaces/generate.py $f.tmp > $f
-		
-	elif [[ $filename == *"graphs"* ]]; then
-		cat namespaces/graphs.py $f.tmp > $f
-	
-	elif [[ $filename == *"version"* ]]; then
-		cat namespaces/version.py $f.tmp > $f
-	
-	elif [[ $filename == *"io"* ]]; then
-		cat namespaces/io.py $f.tmp > $f
-	
-	elif [[ $filename == *"iterators"* ]]; then
-		cat namespaces/iterators.py $f.tmp > $f
-	
-	elif [[ $filename == *"linarr"* ]]; then
-		cat namespaces/linarr.py $f.tmp > $f
-	
-	elif [[ $filename == *"numeric"* ]]; then
-		cat namespaces/numeric.py $f.tmp > $f
-	
-	elif [[ $filename == *"properties"* ]]; then
-		cat namespaces/properties.py $f.tmp > $f
-	
-	elif [[ $filename == *"utilities"* ]]; then
-		cat namespaces/utilities.py $f.tmp > $f
-	
-	elif [ "$filename" == "lal.py" ] || [ "$filename" == "laldebug.py" ]; then
-		cat namespaces/lal.py $f.tmp > $f
-	fi
-	
-	rm $f.tmp
+	mv $file $file.tmp
+	cat $doc $file.tmp > $file
+	rm -f $file.tmp
 }
 
-for f in $@; do
-	echo $f
+f=$1
+
+if [ ! -f "$f" ]; then
+	echo -e "\e[1;1;31m! File\e[0m '$f' \e[1;1;31mdoes not exist\e[0m"
+	exit
+fi
+
+line=$(head -n 1 $f)
+if [ "$line" != "r\"\"\"" ]; then
 	
-	line=$(head -n 1 $f)
-	
-	if [ "$line" != "r\"\"\"" ]; then
-		process_file $f
+	if [[ $f == *"generate"* ]]; then
+		prepend modules_pydocs/generate.py $f
+		
+	elif [[ $f == *"graphs"* ]]; then
+		prepend modules_pydocs/graphs.py $f
+
+	elif [[ $f == *"version"* ]]; then
+		prepend modules_pydocs/version.py $f
+
+	elif [[ $f == *"io"* ]]; then
+		prepend modules_pydocs/io.py $f
+
+	elif [[ $f == *"iterators"* ]]; then
+		prepend modules_pydocs/iterators.py $f
+
+	elif [[ $f == *"linarr"* ]]; then
+		prepend modules_pydocs/linarr.py $f
+
+	elif [[ $f == *"numeric"* ]]; then
+		prepend modules_pydocs/numeric.py $f
+
+	elif [[ $f == *"properties"* ]]; then
+		prepend modules_pydocs/properties.py $f
+
+	elif [[ $f == *"utilities"* ]]; then
+		prepend modules_pydocs/utilities.py $f
+
+	elif [ "$f" == "lal.py" ] || [ "$f" == "laldebug.py" ]; then
+		prepend modules_pydocs/lal.py $f
+		
 	fi
-	
-done
+fi

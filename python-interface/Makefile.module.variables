@@ -1,221 +1,324 @@
-DOCUMENTATION_FILE = submodules/documentation.i
+DOCUMENTATION_FILE = modules/documentation.i
 
-# ----------------
-# MODULE variables
+# ######################################################################
+# MODULE NAME variables
+
+# ------------
+# ENUMERATIONS
+
+DSE_INTERFACE_NAME				= dataset_error
+SYN_DEP_STR_TYPE_INTERFACE_NAME	= syntactic_dependency_structure_type
+TREE_TYPE_INTERFACE_NAME		= tree_type
+ALG_C_INTERFACE_NAME			= algorithms_C
+ALG_DMIN_INTERFACE_NAME			= algorithms_Dmin
+
+# -----------
+# DEFINITIONS
+
+DEFINITIONS_INTERFACE_NAME	= definitions
+
+# ----------
+# NAMESPACES
+
+GENERATE_INTERFACE_NAME		= generate
+GRAPHS_INTERFACE_NAME		= graphs
+IO_INTERFACE_NAME			= io
+ITERATORS_INTERFACE_NAME	= iterators
+LINARR_INTERFACE_NAME		= linarr
+NUMERIC_INTERFACE_NAME		= numeric
+PROPERTIES_INTERFACE_NAME	= properties
+UTILS_INTERFACE_NAME		= utilities
+VERSION_INTERFACE_NAME		= version
+
+# ######################################################################
+# MODULE FILE variables
 
 # *******************
 # ** documentation **
 # *******************
 
-# "name" represents the name of the module: name=DSE, or name=TST, ...
-# name_MAIN_INT		# module main interface (.i) file (e.g. name.i)
-# name_SUB_INT		# module secondary interface (.i) file (e.g. _name_impl.i)
-# name_MOD_DEPS		# dependencies of the module
-# _name_PF			# without-directory python file
-# name_PY_FILE		# with-directory python file
-# name_WRAP			# with-directory wrapper (.cxx) file
-# _name_SO			# without-directory shared (.so / .pyd) file
-# name_SO			# with-directory shared (.so / .pyd) file
-# name_MOD_DOCS		# file with this module's documentation
+
+# "name" is a placeholder (or variable) for the name of the module:
+#		
+#		name: dataset_error,
+#		name: generate,
+#		...
+#
+# name_MAIN_INT
+#
+#	module's interface file (SWIG file '*.i', e.g. name.i)
+#
+# name_MOD_DEPS
+#
+#	dependencies of the module
+#
+# name_PREFIX
+#
+#	prefix of the files to be generated with relative to the build
+#		FORMULA:
+#			$(INTERFACE_DIRECTORY)/$(name_INTERFACE_NAME)
+#
+#		INSTANTIATIONS:
+#			lal/dataset_error
+#			laldebug/dataset_error
+#
+# name_RAW_PY_FILE
+#
+#	name of the module python file within the build
+#		FORMULA:
+#			$(name_PREFIX).py
+#
+#		INSTANTIATIONS:
+#			lal/dataset_error.py
+#			laldebug/dataset_error.py
+#
+# name_INSTALL_PY_FILE
+#
+#	module python file in the build directory
+#		FORMULA:
+#			$(ARCH_DIR)/$(name_RAW_PY_FILE)
+#
+#		INSTANTIATIONS:
+#			linux/64/lal/dataset_error.py
+#			linux/64/laldebug/dataset_error.py
+#			win/64/lal/dataset_error.py
+#			win/64/laldebug/dataset_error.py
+#
+# name_WRAP	
+#
+#	prefix of the wrapper files within the build directory
+#		FORMULA:
+#			$(ARCH_DIR)/$(name_PREFIX)_wrap
+#
+#		INSTANTIATIONS:
+#			linux/64/lal/dataset_error_wrap
+#			linux/64/laldebug/dataset_error_wrap
+#			win/64/lal/dataset_error_wrap
+#			win/64/laldebug/dataset_error_wrap
+#
+# name_RAW_SO_FILE
+#
+#	Name of the .so within the build directory
+#		FORMULA:
+#			$(INTERFACE_DIRECTORY)/_$(name_INTERFACE_NAME).$(SO_EXT)
+#
+#		INSTANTIATIONS:
+#			lal/_dataset_error.so
+#			laldebug/_dataset_error.so
+#			lal/_dataset_error.pyd
+#			laldebug/_dataset_error.pyd
+#
+# name_INSTALL_SO_FILE
+#
+#	Name of the .so within the build directory
+#		FORMULA:
+#			$(ARCH_DIR)/$(name_RAW_SO_FILE)
+#
+#		INSTANTIATIONS:
+#			linux/64/lal/_dataset_error.so
+#			linux/64/laldebug/_dataset_error.so
+#			win/64/lal/_dataset_error.pyd
+#			win/64/laldebug/_dataset_error.pyd
+#
+# name_MOD_DOCS
+#
+#	python file with this module's documentation
 
 # ------------
 # ENUMERATIONS
 
 # -- dataset_error module
-DSE_MAIN_INT	= submodules/enums/$(DSE_INAME).i
-DSE_SUB_INT		= submodules/enums/$(DSE_BNAME)_impl.i
-DSE_MOD_DEPS	= $(DSE_MAIN_INT) $(DSE_SUB_INT) $(DSE_DPHDRS)
-_DSE_PF			= $(DSE_INAME).py
-DSE_PY_FILE		= $(ARCH_DIR)/$(_DSE_PF)
-DSE_WRAP		= $(ARCH_DIR)/$(DSE_INAME)_wrap
-_DSE_SO			= _$(DSE_INAME).$(SO_EXT)
-DSE_SO			= $(ARCH_DIR)/$(_DSE_SO)
-DSE_MOD_DOCS	= 
+DSE_MAIN_INT					= modules/enums/$(DSE_INTERFACE_NAME).i
+DSE_MOD_DEPS					= $(DSE_MAIN_INT) $(DSE_DPHDRS)
+DSE_PREFIX						= $(INTERFACE_DIRECTORY)/$(DSE_INTERFACE_NAME)
+DSE_RAW_PY_FILE					= $(DSE_PREFIX).py
+DSE_INSTALL_PY_FILE				= $(ARCH_DIR)/$(DSE_RAW_PY_FILE)
+DSE_WRAP						= $(ARCH_DIR)/$(DSE_PREFIX)_wrap
+DSE_RAW_SO_FILE					= $(INTERFACE_DIRECTORY)/_$(DSE_INTERFACE_NAME).$(SO_EXT)
+DSE_INSTALL_SO_FILE				= $(ARCH_DIR)/$(DSE_RAW_SO_FILE)
+DSE_MOD_DOCS					= 
 
 # -- syntactic dependency structure type module
-SYN_DEP_STR_TYPE_MAIN_INT	= submodules/enums/$(SYN_DEP_STR_TYPE_INAME).i
-SYN_DEP_STR_TYPE_SUB_INT	= submodules/enums/$(SYN_DEP_STR_TYPE_BNAME)_impl.i
-SYN_DEP_STR_TYPE_MOD_DEPS	= $(SYN_DEP_STR_TYPE_MAIN_INT) $(SYN_DEP_STR_TYPE_SUB_INT) $(TREE_STR_DPHDRS) 	\
-								submodules/enums/rename_enum_contents.i
-_SYN_DEP_STR_TYPE_PF		= $(SYN_DEP_STR_TYPE_INAME).py
-SYN_DEP_STR_TYPE_PY_FILE	= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_PF)
-SYN_DEP_STR_TYPE_WRAP		= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_INAME)_wrap
-_SYN_DEP_STR_TYPE_SO		= _$(SYN_DEP_STR_TYPE_INAME).$(SO_EXT)
-SYN_DEP_STR_TYPE_SO			= $(ARCH_DIR)/$(_SYN_DEP_STR_TYPE_SO)
-SYN_DEP_STR_TYPE_MOD_DOCS	=
+SYN_DEP_STR_TYPE_MAIN_INT		= modules/enums/$(SYN_DEP_STR_TYPE_INTERFACE_NAME).i
+SYN_DEP_STR_TYPE_MOD_DEPS		= $(SYN_DEP_STR_TYPE_MAIN_INT) $(SYN_DEP_STR_TYPE_DPHDRS) 	\
+									modules/enums/rename_enum_contents.i
+SYN_DEP_STR_TYPE_PREFIX			= $(INTERFACE_DIRECTORY)/$(SYN_DEP_STR_TYPE_INTERFACE_NAME)
+SYN_DEP_STR_TYPE_RAW_PY_FILE	= $(SYN_DEP_STR_TYPE_PREFIX).py
+SYN_DEP_STR_TYPE_INSTALL_PY_FILE= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_RAW_PY_FILE)
+SYN_DEP_STR_TYPE_WRAP			= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_PREFIX)_wrap
+SYN_DEP_STR_TYPE_RAW_SO_FILE	= $(INTERFACE_DIRECTORY)/_$(SYN_DEP_STR_TYPE_INTERFACE_NAME).$(SO_EXT)
+SYN_DEP_STR_TYPE_INSTALL_SO_FILE= $(ARCH_DIR)/$(SYN_DEP_STR_TYPE_RAW_SO_FILE)
+SYN_DEP_STR_TYPE_MOD_DOCS		= 
 
 # -- tree_type module
-TREE_TYPE_MAIN_INT	= submodules/enums/$(TREE_TYPE_INAME).i
-TREE_TYPE_SUB_INT	= submodules/enums/$(TREE_TYPE_BNAME)_impl.i
-TREE_TYPE_MOD_DEPS	= $(TREE_TYPE_MAIN_INT) $(TREE_TYPE_SUB_INT) $(TREE_TYPE_DPHDRS) 	\
-					  submodules/enums/rename_enum_contents.i
-_TREE_TYPE_PF		= $(TREE_TYPE_INAME).py
-TREE_TYPE_PY_FILE	= $(ARCH_DIR)/$(_TREE_TYPE_PF)
-TREE_TYPE_WRAP		= $(ARCH_DIR)/$(TREE_TYPE_INAME)_wrap
-_TREE_TYPE_SO		= _$(TREE_TYPE_INAME).$(SO_EXT)
-TREE_TYPE_SO		= $(ARCH_DIR)/$(_TREE_TYPE_SO)
-TREE_TYPE_MOD_DOCS	=
+TREE_TYPE_MAIN_INT				= modules/enums/$(TREE_TYPE_INTERFACE_NAME).i
+TREE_TYPE_MOD_DEPS				= $(TREE_TYPE_MAIN_INT) $(TREE_TYPE_DPHDRS) 	\
+									modules/enums/rename_enum_contents.i
+TREE_TYPE_PREFIX				= $(INTERFACE_DIRECTORY)/$(TREE_TYPE_INTERFACE_NAME)
+TREE_TYPE_RAW_PY_FILE			= $(TREE_TYPE_PREFIX).py
+TREE_TYPE_INSTALL_PY_FILE		= $(ARCH_DIR)/$(TREE_TYPE_RAW_PY_FILE)
+TREE_TYPE_WRAP					= $(ARCH_DIR)/$(TREE_TYPE_PREFIX)_wrap
+TREE_TYPE_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(TREE_TYPE_INTERFACE_NAME).$(SO_EXT)
+TREE_TYPE_INSTALL_SO_FILE		= $(ARCH_DIR)/$(TREE_TYPE_RAW_SO_FILE)
+TREE_TYPE_MOD_DOCS				= 
 
 # -- algorithm_crossings module
-ALG_C_MAIN_INT	= submodules/enums/$(ALG_C_INAME).i
-ALG_C_SUB_INT	= submodules/enums/$(ALG_C_BNAME)_impl.i
-ALG_C_MOD_DEPS	= $(ALG_C_MAIN_INT) $(ALG_C_SUB_INT) $(ALG_C_DPHDRS) 	\
-				  submodules/enums/rename_enum_contents.i
-_ALG_C_PF		= $(ALG_C_INAME).py
-ALG_C_PY_FILE	= $(ARCH_DIR)/$(_ALG_C_PF)
-ALG_C_WRAP		= $(ARCH_DIR)/$(ALG_C_INAME)_wrap
-_ALG_C_SO		= _$(ALG_C_INAME).$(SO_EXT)
-ALG_C_SO		= $(ARCH_DIR)/$(_ALG_C_SO)
-ALG_C_MOD_DOCS	=
+ALG_C_MAIN_INT					= modules/enums/$(ALG_C_INTERFACE_NAME).i
+ALG_C_MOD_DEPS					= $(ALG_C_MAIN_INT) $(ALG_C_DPHDRS) 	\
+									modules/enums/rename_enum_contents.i
+ALG_C_PREFIX					= $(INTERFACE_DIRECTORY)/$(ALG_C_INTERFACE_NAME)
+ALG_C_RAW_PY_FILE				= $(ALG_C_PREFIX).py
+ALG_C_INSTALL_PY_FILE			= $(ARCH_DIR)/$(ALG_C_RAW_PY_FILE)
+ALG_C_WRAP						= $(ARCH_DIR)/$(ALG_C_PREFIX)_wrap
+ALG_C_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(ALG_C_INTERFACE_NAME).$(SO_EXT)
+ALG_C_INSTALL_SO_FILE			= $(ARCH_DIR)/$(ALG_C_RAW_SO_FILE)
+ALG_C_MOD_DOCS					=
 
 # -- algorithm_Dmin module
-ALG_DMIN_MAIN_INT	= submodules/enums/$(ALG_DMIN_INAME).i
-ALG_DMIN_SUB_INT	= submodules/enums/$(ALG_DMIN_BNAME)_impl.i
-ALG_DMIN_MOD_DEPS	= $(ALG_DMIN_MAIN_INT) $(ALG_DMIN_SUB_INT) $(ALG_DMIN_DPHDRS) 	\
-					  submodules/enums/rename_enum_contents.i
-_ALG_DMIN_PF		= $(ALG_DMIN_INAME).py
-ALG_DMIN_PY_FILE	= $(ARCH_DIR)/$(_ALG_DMIN_PF)
-ALG_DMIN_WRAP		= $(ARCH_DIR)/$(ALG_DMIN_INAME)_wrap
-_ALG_DMIN_SO		= _$(ALG_DMIN_INAME).$(SO_EXT)
-ALG_DMIN_SO			= $(ARCH_DIR)/$(_ALG_DMIN_SO)
-ALG_DMIN_MOD_DOCS	=
+ALG_DMIN_MAIN_INT				= modules/enums/$(ALG_DMIN_INTERFACE_NAME).i
+ALG_DMIN_MOD_DEPS				= $(ALG_DMIN_MAIN_INT) $(ALG_DMIN_DPHDRS) 	\
+									modules/enums/rename_enum_contents.i
+ALG_DMIN_PREFIX					= $(INTERFACE_DIRECTORY)/$(ALG_DMIN_INTERFACE_NAME)
+ALG_DMIN_RAW_PY_FILE			= $(ALG_DMIN_PREFIX).py
+ALG_DMIN_INSTALL_PY_FILE		= $(ARCH_DIR)/$(ALG_DMIN_RAW_PY_FILE)
+ALG_DMIN_WRAP					= $(ARCH_DIR)/$(ALG_DMIN_PREFIX)_wrap
+ALG_DMIN_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(ALG_DMIN_INTERFACE_NAME).$(SO_EXT)
+ALG_DMIN_INSTALL_SO_FILE		= $(ARCH_DIR)/$(ALG_DMIN_RAW_SO_FILE)
+ALG_DMIN_MOD_DOCS				=
 
 # -----------
 # DEFINITIONS
 
 # -- definitions module
-DEFS_MAIN_INT	= submodules/$(DEFS_INAME).i
-DEFS_SUB_INT	= submodules/$(DEFS_BNAME)_impl.i
-DEFS_MOD_DEPS	= $(DEFS_MAIN_INT) $(DEFS_SUB_INT) $(DEFS_DPHDRS)
-_DEFS_PF		= $(DEFS_INAME).py
-DEFS_PY_FILE	= $(ARCH_DIR)/$(_DEFS_PF)
-DEFS_WRAP		= $(ARCH_DIR)/$(DEFS_INAME)_wrap
-_DEFS_SO		= _$(DEFS_INAME).$(SO_EXT)
-DEFS_SO			= $(ARCH_DIR)/$(_DEFS_SO)
-DEFS_MOD_DOCS	=
+DEFINITIONS_MAIN_INT			= modules/$(DEFINITIONS_INTERFACE_NAME).i
+DEFINITIONS_MOD_DEPS			= $(DEFINITIONS_MAIN_INT) $(DEFINITIONS_DPHDRS)
+DEFINITIONS_PREFIX				= $(INTERFACE_DIRECTORY)/$(DEFINITIONS_INTERFACE_NAME)
+DEFINITIONS_RAW_PY_FILE			= $(DEFINITIONS_PREFIX).py
+DEFINITIONS_INSTALL_PY_FILE		= $(ARCH_DIR)/$(DEFINITIONS_RAW_PY_FILE)
+DEFINITIONS_WRAP				= $(ARCH_DIR)/$(DEFINITIONS_PREFIX)_wrap
+DEFINITIONS_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(DEFINITIONS_INTERFACE_NAME).$(SO_EXT)
+DEFINITIONS_INSTALL_SO_FILE		= $(ARCH_DIR)/$(DEFINITIONS_RAW_SO_FILE)
+DEFINITIONS_MOD_DOCS			=
 
 # ----------
 # NAMESPACES
 
 # -- generate module
-GEN_MAIN_INT	= submodules/$(GEN_INAME).i
-GEN_SUB_INT		= submodules/$(GEN_BNAME)_impl.i
-GEN_MOD_DEPS	= $(GEN_MAIN_INT) $(GEN_SUB_INT) $(GEN_DPHDRS)
-_GEN_PF			= $(GEN_INAME).py
-GEN_PY_FILE		= $(ARCH_DIR)/$(_GEN_PF)
-GEN_WRAP		= $(ARCH_DIR)/$(GEN_INAME)_wrap
-_GEN_SO			= _$(GEN_INAME).$(SO_EXT)
-GEN_SO			= $(ARCH_DIR)/$(_GEN_SO)
-GEN_MOD_DOCS	= namespaces/generate.py
+GENERATE_MAIN_INT				= modules/$(GENERATE_INTERFACE_NAME).i
+GENERATE_MOD_DEPS				= $(GENERATE_MAIN_INT) $(GENERATE_DPHDRS)
+GENERATE_PREFIX					= $(INTERFACE_DIRECTORY)/$(GENERATE_INTERFACE_NAME)
+GENERATE_RAW_PY_FILE			= $(GENERATE_PREFIX).py
+GENERATE_INSTALL_PY_FILE		= $(ARCH_DIR)/$(GENERATE_RAW_PY_FILE)
+GENERATE_WRAP					= $(ARCH_DIR)/$(GENERATE_PREFIX)_wrap
+GENERATE_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(GENERATE_INTERFACE_NAME).$(SO_EXT)
+GENERATE_INSTALL_SO_FILE		= $(ARCH_DIR)/$(GENERATE_RAW_SO_FILE)
+GENERATE_MOD_DOCS				= modules_pydocs/generate.py
 
 # -- graphs module
-GRAPHS_MAIN_INT	= submodules/$(GRAPHS_INAME).i
-GRAPHS_SUB_INT	= submodules/$(GRAPHS_BNAME)_impl.i
-GRAPHS_MOD_DEPS	= $(GRAPHS_MAIN_INT) $(GRAPHS_SUB_INT) $(GRAPHS_DPHDRS)
-_GRAPHS_PF		= $(GRAPHS_INAME).py
-GRAPHS_PY_FILE	= $(ARCH_DIR)/$(_GRAPHS_PF)
-GRAPHS_WRAP		= $(ARCH_DIR)/$(GRAPHS_INAME)_wrap
-_GRAPHS_SO		= _$(GRAPHS_INAME).$(SO_EXT)
-GRAPHS_SO		= $(ARCH_DIR)/$(_GRAPHS_SO)
-GRAPHS_MOD_DOCS	= namespaces/graphs.py
+GRAPHS_MAIN_INT					= modules/$(GRAPHS_INTERFACE_NAME).i
+GRAPHS_MOD_DEPS					= $(GRAPHS_MAIN_INT) $(GRAPHS_DPHDRS)
+GRAPHS_PREFIX					= $(INTERFACE_DIRECTORY)/$(GRAPHS_INTERFACE_NAME)
+GRAPHS_RAW_PY_FILE				= $(GRAPHS_PREFIX).py
+GRAPHS_INSTALL_PY_FILE			= $(ARCH_DIR)/$(GRAPHS_RAW_PY_FILE)
+GRAPHS_WRAP						= $(ARCH_DIR)/$(GRAPHS_PREFIX)_wrap
+GRAPHS_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(GRAPHS_INTERFACE_NAME).$(SO_EXT)
+GRAPHS_INSTALL_SO_FILE			= $(ARCH_DIR)/$(GRAPHS_RAW_SO_FILE)
+GRAPHS_MOD_DOCS					= modules_pydocs/graphs.py
 
 # -- io module
-IO_MAIN_INT		= submodules/$(IO_INAME).i
-IO_SUB_INT		= submodules/$(IO_BNAME)_impl.i
-IO_MOD_DEPS		= $(IO_MAIN_INT) $(IO_SUB_INT) $(IO_DPHDRS) 		\
-				  submodules/lalio_rename_enums.i					\
-				  $(DSE_MOD_DEPS)
-_IO_PF			= $(IO_INAME).py
-IO_PY_FILE		= $(ARCH_DIR)/$(_IO_PF)
-IO_WRAP			= $(ARCH_DIR)/$(IO_INAME)_wrap
-_IO_SO			= _$(IO_INAME).$(SO_EXT)
-IO_SO			= $(ARCH_DIR)/$(_IO_SO)
-IO_MOD_DOCS		= namespaces/io.py
+IO_MAIN_INT						= modules/$(IO_INTERFACE_NAME).i
+IO_MOD_DEPS						= $(IO_MAIN_INT) $(IO_DPHDRS)
+IO_PREFIX						= $(INTERFACE_DIRECTORY)/$(IO_INTERFACE_NAME)
+IO_RAW_PY_FILE					= $(IO_PREFIX).py
+IO_INSTALL_PY_FILE				= $(ARCH_DIR)/$(IO_RAW_PY_FILE)
+IO_WRAP							= $(ARCH_DIR)/$(IO_PREFIX)_wrap
+IO_RAW_SO_FILE					= $(INTERFACE_DIRECTORY)/_$(IO_INTERFACE_NAME).$(SO_EXT)
+IO_INSTALL_SO_FILE				= $(ARCH_DIR)/$(IO_RAW_SO_FILE)
+IO_MOD_DOCS						= modules_pydocs/io.py
 
 # -- iterators module
-ITER_MAIN_INT	= submodules/$(ITER_INAME).i
-ITER_SUB_INT	= submodules/$(ITER_BNAME)_impl.i
-ITER_MOD_DEPS	= $(ITER_MAIN_INT) $(ITER_SUB_INT) $(ITER_DPHDRS)
-_ITER_PF		= $(ITER_INAME).py
-ITER_PY_FILE	= $(ARCH_DIR)/$(_ITER_PF)
-ITER_WRAP		= $(ARCH_DIR)/$(ITER_INAME)_wrap
-_ITER_SO		= _$(ITER_INAME).$(SO_EXT)
-ITER_SO			= $(ARCH_DIR)/$(_ITER_SO)
-ITER_MOD_DOCS	= namespaces/iterators.py
+ITERATORS_MAIN_INT				= modules/$(ITERATORS_INTERFACE_NAME).i
+ITERATORS_MOD_DEPS				= $(ITERATORS_MAIN_INT) $(ITERATORS_DPHDRS)
+ITERATORS_PREFIX				= $(INTERFACE_DIRECTORY)/$(ITERATORS_INTERFACE_NAME)
+ITERATORS_RAW_PY_FILE			= $(ITERATORS_PREFIX).py
+ITERATORS_INSTALL_PY_FILE		= $(ARCH_DIR)/$(ITERATORS_RAW_PY_FILE)
+ITERATORS_WRAP					= $(ARCH_DIR)/$(ITERATORS_PREFIX)_wrap
+ITERATORS_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(ITERATORS_INTERFACE_NAME).$(SO_EXT)
+ITERATORS_INSTALL_SO_FILE		= $(ARCH_DIR)/$(ITERATORS_RAW_SO_FILE)
+ITERATORS_MOD_DOCS				= modules_pydocs/iterators.py
 
 # -- linarr module
-LINARR_MAIN_INT	= submodules/$(LINARR_INAME).i
-LINARR_SUB_INT	= submodules/$(LINARR_BNAME)_impl.i
-LINARR_MOD_DEPS	= $(LINARR_MAIN_INT) $(LINARR_SUB_INT) $(LINARR_DPHDRS)	\
-				  $(SYN_DEP_STR_TYPE_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS) \
-				  $(DEPFLUX_MOD_DEPS)
-_LINARR_PF		= $(LINARR_INAME).py
-LINARR_PY_FILE	= $(ARCH_DIR)/$(_LINARR_PF)
-LINARR_WRAP		= $(ARCH_DIR)/$(LINARR_INAME)_wrap
-_LINARR_SO		= _$(LINARR_INAME).$(SO_EXT)
-LINARR_SO		= $(ARCH_DIR)/$(_LINARR_SO)
-LINARR_MOD_DOCS	= namespaces/linarr.py
+LINARR_MAIN_INT					= modules/$(LINARR_INTERFACE_NAME).i
+LINARR_MOD_DEPS					= $(LINARR_MAIN_INT) $(LINARR_DPHDRS)	\
+									$(SYN_DEP_STR_TYPE_MOD_DEPS) $(ALG_C_MOD_DEPS) $(ALG_DMIN_MOD_DEPS)
+LINARR_PREFIX					= $(INTERFACE_DIRECTORY)/$(LINARR_INTERFACE_NAME)
+LINARR_RAW_PY_FILE				= $(LINARR_PREFIX).py
+LINARR_INSTALL_PY_FILE			= $(ARCH_DIR)/$(LINARR_RAW_PY_FILE)
+LINARR_WRAP						= $(ARCH_DIR)/$(LINARR_PREFIX)_wrap
+LINARR_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(LINARR_INTERFACE_NAME).$(SO_EXT)
+LINARR_INSTALL_SO_FILE			= $(ARCH_DIR)/$(LINARR_RAW_SO_FILE)
+LINARR_MOD_DOCS					= modules_pydocs/linarr.py
 
 # -- numeric module
-NMRC_MAIN_INT	= submodules/$(NMRC_INAME).i
-NMRC_SUB_INT	= submodules/$(NMRC_BNAME)_impl.i
-NMRC_MOD_DEPS	= $(NMRC_MAIN_INT) $(NMRC_SUB_INT) $(NMRC_DPHDRS)
-_NMRC_PF		= $(NMRC_INAME).py
-NMRC_PY_FILE	= $(ARCH_DIR)/$(_NMRC_PF)
-NMRC_WRAP		= $(ARCH_DIR)/$(NMRC_INAME)_wrap
-_NMRC_SO		= _$(NMRC_INAME).$(SO_EXT)
-NMRC_SO			= $(ARCH_DIR)/$(_NMRC_SO)
-NMRC_MOD_DOCS	= namespaces/numeric.py
+NUMERIC_MAIN_INT				= modules/$(NUMERIC_INTERFACE_NAME).i
+NUMERIC_MOD_DEPS				= $(NUMERIC_MAIN_INT) $(NUMERIC_DPHDRS)
+NUMERIC_PREFIX					= $(INTERFACE_DIRECTORY)/$(NUMERIC_INTERFACE_NAME)
+NUMERIC_RAW_PY_FILE				= $(NUMERIC_PREFIX).py
+NUMERIC_INSTALL_PY_FILE			= $(ARCH_DIR)/$(NUMERIC_RAW_PY_FILE)
+NUMERIC_WRAP					= $(ARCH_DIR)/$(NUMERIC_PREFIX)_wrap
+NUMERIC_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(NUMERIC_INTERFACE_NAME).$(SO_EXT)
+NUMERIC_INSTALL_SO_FILE			= $(ARCH_DIR)/$(NUMERIC_RAW_SO_FILE)
+NUMERIC_MOD_DOCS				= modules_pydocs/numeric.py
 
 # -- properties module
-PROP_MAIN_INT	= submodules/$(PROP_INAME).i
-PROP_SUB_INT	= submodules/$(PROP_BNAME)_impl.i
-PROP_MOD_DEPS	= $(PROP_MAIN_INT) $(PROP_SUB_INT) $(PROP_DPHDRS)
-_PROP_PF		= $(PROP_INAME).py
-PROP_PY_FILE	= $(ARCH_DIR)/$(_PROP_PF)
-PROP_WRAP		= $(ARCH_DIR)/$(PROP_INAME)_wrap
-_PROP_SO		= _$(PROP_INAME).$(SO_EXT)
-PROP_SO			= $(ARCH_DIR)/$(_PROP_SO)
-PROP_MOD_DOCS	= namespaces/properties.py
+PROPERTIES_MAIN_INT				= modules/$(PROPERTIES_INTERFACE_NAME).i
+PROPERTIES_MOD_DEPS				= $(PROPERTIES_MAIN_INT) $(PROPERTIES_DPHDRS)
+PROPERTIES_PREFIX				= $(INTERFACE_DIRECTORY)/$(PROPERTIES_INTERFACE_NAME)
+PROPERTIES_RAW_PY_FILE			= $(PROPERTIES_PREFIX).py
+PROPERTIES_INSTALL_PY_FILE		= $(ARCH_DIR)/$(PROPERTIES_RAW_PY_FILE)
+PROPERTIES_WRAP					= $(ARCH_DIR)/$(PROPERTIES_PREFIX)_wrap
+PROPERTIES_RAW_SO_FILE			= $(INTERFACE_DIRECTORY)/_$(PROPERTIES_INTERFACE_NAME).$(SO_EXT)
+PROPERTIES_INSTALL_SO_FILE		= $(ARCH_DIR)/$(PROPERTIES_RAW_SO_FILE)
+PROPERTIES_MOD_DOCS				= modules_pydocs/properties.py
 
 # -- utilities module
-UTILS_MAIN_INT	= submodules/$(UTILS_INAME).i
-UTILS_SUB_INT	= submodules/$(UTILS_BNAME)_impl.i
-UTILS_MOD_DEPS	= $(UTILS_MAIN_INT) $(UTILS_SUB_INT) $(UTILS_DPHDRS)
-_UTILS_PF		= $(UTILS_INAME).py
-UTILS_PY_FILE	= $(ARCH_DIR)/$(_UTILS_PF)
-UTILS_WRAP		= $(ARCH_DIR)/$(UTILS_INAME)_wrap
-_UTILS_SO		= _$(UTILS_INAME).$(SO_EXT)
-UTILS_SO		= $(ARCH_DIR)/$(_UTILS_SO)
-UTILS_MOD_DOCS	= namespaces/utilities.py
-
-# -- lal module (library's main module)
-LAL_MAIN_INT	= $(LAL_INAME).i
-LAL_SUB_INT		= 
-LAL_MOD_DEPS	= $(LAL_MAIN_INT) $(LAL_SUB_INT) $(LAL_DPHDRS)			\
-				  $(DEFS_MOD_DEPS) $(NMRC_MOD_DEPS) $(GRAPHS_MOD_DEPS)	\
-				  $(GEN_MOD_DEPS) $(IO_MOD_DEPS) $(ITER_MOD_DEPS)		\
-				  $(ITER_MOD_DEPS) $(LINARR_MOD_DEPS) $(PROP_MOD_DEPS)
-_LAL_PF			= $(LAL_INAME).py
-LAL_PY_FILE		= $(ARCH_DIR)/$(_LAL_PF)
-LAL_WRAP		= $(ARCH_DIR)/$(LAL_INAME)_wrap
-_LAL_SO			= _$(LAL_INAME).$(SO_EXT)
-LAL_SO			= $(ARCH_DIR)/$(_LAL_SO)
-LAL_MOD_DOCS	= namespaces/lal.py
+UTILS_MAIN_INT					= modules/$(UTILS_INTERFACE_NAME).i
+UTILS_MOD_DEPS					= $(UTILS_MAIN_INT) $(UTILS_DPHDRS)
+UTILS_PREFIX					= $(INTERFACE_DIRECTORY)/$(UTILS_INTERFACE_NAME)
+UTILS_RAW_PY_FILE				= $(UTILS_PREFIX).py
+UTILS_INSTALL_PY_FILE			= $(ARCH_DIR)/$(UTILS_RAW_PY_FILE)
+UTILS_WRAP						= $(ARCH_DIR)/$(UTILS_PREFIX)_wrap
+UTILS_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(UTILS_INTERFACE_NAME).$(SO_EXT)
+UTILS_INSTALL_SO_FILE			= $(ARCH_DIR)/$(UTILS_RAW_SO_FILE)
+UTILS_MOD_DOCS					= modules_pydocs/utilities.py
 
 # -------
 # VERSION
 
 # -- version module
-VERSION_MAIN_INT	= submodules/$(VERSION_INAME).i
-VERSION_SUB_INT		= submodules/$(VERSION_BNAME)_impl.i
-VERSION_MOD_DEPS	= $(VERSION_MAIN_INT) $(VERSION_SUB_INT) $(VERSION_DPHDRS)
-_VERSION_PF			= $(VERSION_INAME).py
-VERSION_PY_FILE		= $(ARCH_DIR)/$(_VERSION_PF)
-VERSION_WRAP		= $(ARCH_DIR)/$(VERSION_INAME)_wrap
-_VERSION_SO			= _$(VERSION_INAME).$(SO_EXT)
-VERSION_SO			= $(ARCH_DIR)/$(_VERSION_SO)
-VERSION_MOD_DOCS	= namespaces/version.py
+VERSION_MAIN_INT				= modules/$(VERSION_INTERFACE_NAME).i
+VERSION_MOD_DEPS				= $(VERSION_MAIN_INT) $(VERSION_DPHDRS)
+VERSION_PREFIX					= $(INTERFACE_DIRECTORY)/$(VERSION_INTERFACE_NAME)
+VERSION_RAW_PY_FILE				= $(VERSION_PREFIX).py
+VERSION_INSTALL_PY_FILE			= $(ARCH_DIR)/$(VERSION_RAW_PY_FILE)
+VERSION_WRAP					= $(ARCH_DIR)/$(VERSION_PREFIX)_wrap
+VERSION_RAW_SO_FILE				= $(INTERFACE_DIRECTORY)/_$(VERSION_INTERFACE_NAME).$(SO_EXT)
+VERSION_INSTALL_SO_FILE			= $(ARCH_DIR)/$(VERSION_RAW_SO_FILE)
+VERSION_MOD_DOCS				= modules_pydocs/version.py
+
+# ---------------
+# LAL init module
+
+# -- version module
+LAL_MAIN_INT					= modules/$(LAL_INTERFACE_NAME).i
+LAL_MOD_DEPS					= $(LAL_MAIN_INT) $(LAL_DPHDRS)
+LAL_PREFIX						= $(INTERFACE_DIRECTORY)/$(LAL_INTERFACE_NAME)
+LAL_RAW_PY_FILE					= $(LAL_PREFIX).py
+LAL_INSTALL_PY_FILE				= $(ARCH_DIR)/$(LAL_RAW_PY_FILE)
+LAL_WRAP						= $(ARCH_DIR)/$(LAL_PREFIX)_wrap
+LAL_RAW_SO_FILE					= $(INTERFACE_DIRECTORY)/_$(LAL_INTERFACE_NAME).$(SO_EXT)
+LAL_INSTALL_SO_FILE				= $(ARCH_DIR)/$(LAL_RAW_SO_FILE)
+LAL_MOD_DOCS					= modules_pydocs/lal.py
 
 ########################################################################
 # LISTS
@@ -223,143 +326,80 @@ VERSION_MOD_DOCS	= namespaces/version.py
 ##############
 # ALL SO FILES
 
-ENUMERATIONS_SO_FILES	= 	\
-	$(DSE_SO) 				\
-	$(SYN_DEP_STR_TYPE_SO) 	\
-	$(TREE_TYPE_SO) 		\
-	$(ALG_C_SO) 			\
-	$(ALG_DMIN_SO)
-
-DEFINITIONS_SO_FILES	=	\
-	$(DEFS_SO)
-
-NAMESPACES_SO_FILES	=	\
-	$(GEN_SO) 			\
-	$(GRAPHS_SO) 		\
-	$(IO_SO)			\
-	$(ITER_SO)			\
-	$(LINARR_SO)		\
-	$(NMRC_SO)			\
-	$(PROP_SO)			\
-	$(UTILS_SO)
-
-VERSION_SO_FILES = 		\
-	$(VERSION_SO)
-
-SUBMODULES_SO_FILES =			\
-	$(ENUMERATIONS_SO_FILES) 	\
-	$(DEFINITIONS_SO_FILES)		\
-	$(NAMESPACES_SO_FILES)		\
-	$(VERSION_SO_FILES)
-
-ALL_SO_FILES =					\
-	$(SUBMODULES_SO_FILES)		\
-	$(LAL_SO)
+ALL_INSTALL_SO_FILES =					\
+	$(DSE_INSTALL_SO_FILE) 				\
+	$(SYN_DEP_STR_TYPE_INSTALL_SO_FILE) \
+	$(TREE_TYPE_INSTALL_SO_FILE) 		\
+	$(ALG_C_INSTALL_SO_FILE) 			\
+	$(ALG_DMIN_INSTALL_SO_FILE)			\
+	$(DEFINITIONS_INSTALL_SO_FILE)		\
+	$(GENERATE_INSTALL_SO_FILE) 		\
+	$(GRAPHS_INSTALL_SO_FILE) 			\
+	$(IO_INSTALL_SO_FILE)				\
+	$(ITERATORS_INSTALL_SO_FILE)		\
+	$(LINARR_INSTALL_SO_FILE)			\
+	$(NUMERIC_INSTALL_SO_FILE)			\
+	$(PROPERTIES_INSTALL_SO_FILE)		\
+	$(UTILS_INSTALL_SO_FILE)			\
+	$(VERSION_INSTALL_SO_FILE)
 
 ##################
 # ALL PYTHON FILES
 
-ENUMERATIONS_PY_FILES	= 		\
-	$(DSE_PY_FILE) 				\
-	$(SYN_DEP_STR_TYPE_PY_FILE) \
-	$(TREE_TYPE_PY_FILE) 		\
-	$(ALG_C_PY_FILE) 			\
-	$(ALG_DMIN_PY_FILE)
-
-DEFINITIONS_PY_FILES	=	\
-	$(DEFS_PY)
-
-NAMESPACES_PY_FILES	=		\
-	$(GEN_PY_FILE) 			\
-	$(GRAPHS_PY_FILE) 		\
-	$(IO_PY_FILE)			\
-	$(ITER_PY_FILE)			\
-	$(LINARR_PY_FILE)		\
-	$(NMRC_PY_FILE)			\
-	$(PROP_PY_FILE)			\
-	$(UTILS_PY_FILE)
-
-VERSION_PY_FILES = 			\
-	$(VERSION_PY_FILE)
-
-SUBMODULES_PY_FILES =			\
-	$(ENUMERATIONS_PY_FILES) 	\
-	$(DEFINITIONS_PY_FILES)		\
-	$(NAMESPACES_PY_FILES)		\
-	$(VERSION_PY_FILES)
-
-ALL_PY_FILES =					\
-	$(SUBMODULES_PY_FILES)		\
-	$(LAL_PY_FILE)
+ALL_INSTALL_PY_FILES =					\
+	$(DSE_INSTALL_PY_FILE) 				\
+	$(SYN_DEP_STR_TYPE_INSTALL_PY_FILE) \
+	$(TREE_TYPE_INSTALL_PY_FILE) 		\
+	$(ALG_C_INSTALL_PY_FILE) 			\
+	$(ALG_DMIN_INSTALL_PY_FILE)			\
+	$(DEFINITIONS_INSTALL_PY_FILE)		\
+	$(GENERATE_INSTALL_PY_FILE) 		\
+	$(GRAPHS_INSTALL_PY_FILE) 			\
+	$(IO_INSTALL_PY_FILE)				\
+	$(ITERATORS_INSTALL_PY_FILE)		\
+	$(LINARR_INSTALL_PY_FILE)			\
+	$(NUMERIC_INSTALL_PY_FILE)			\
+	$(PROPERTIES_INSTALL_PY_FILE)		\
+	$(UTILS_INSTALL_PY_FILE)			\
+	$(VERSION_INSTALL_PY_FILE)			\
+	$(ARCH_DIR)/$(INTERFACE_DIRECTORY)/__init__.py
 
 ################
 # ALL WRAP FILES
 
-ENUMERATIONS_WRAP_FILES	= 			\
+ALL_WRAP_FILES =					\
 	$(DSE_WRAP).cxx 				\
-	$(SYN_DEP_STR_TYPE_WRAP).cxx	\
+	$(SYN_DEP_STR_TYPE_WRAP).cxx 	\
 	$(TREE_TYPE_WRAP).cxx 			\
 	$(ALG_C_WRAP).cxx 				\
-	$(ALG_DMIN_WRAP).cxx
-
-DEFINITIONS_WRAP_FILES	=	\
-	$(DEFS_WRAP).cxx
-
-NAMESPACES_WRAP_FILES	=	\
-	$(GEN_WRAP).cxx 		\
-	$(GRAPHS_WRAP).cxx 		\
-	$(IO_WRAP).cxx			\
-	$(ITER_WRAP).cxx		\
-	$(LINARR_WRAP).cxx		\
-	$(NMRC_WRAP).cxx		\
-	$(PROP_WRAP).cxx		\
-	$(UTILS_WRAP).cxx
-
-VERSION_WRAP_FILES = 			\
+	$(ALG_DMIN_WRAP).cxx			\
+	$(DEFINITIONS_WRAP).cxx			\
+	$(GENERATE_WRAP).cxx 			\
+	$(GRAPHS_WRAP).cxx 				\
+	$(IO_WRAP).cxx					\
+	$(ITERATORS_WRAP).cxx			\
+	$(LINARR_WRAP).cxx				\
+	$(NUMERIC_WRAP).cxx				\
+	$(PROPERTIES_WRAP).cxx			\
+	$(UTILS_WRAP).cxx				\
 	$(VERSION_WRAP).cxx
-
-SUBMODULES_WRAP_FILES =			\
-	$(ENUMERATIONS_WRAP_FILES) 	\
-	$(DEFINITIONS_WRAP_FILES)	\
-	$(NAMESPACES_WRAP_FILES)	\
-	$(VERSION_WRAP_FILES)
-
-ALL_WRAP_FILES =				\
-	$(SUBMODULES_WRAP_FILES)	\
-	$(LAL_WRAP).cxx
 
 ############################
 # ALL WRAP OBJECT (.o) FILES
 
-ENUMERATIONS_WRAP_O_FILES	= 	\
-	$(DSE_WRAP).o 				\
-	$(SYN_DEP_STR_TYPE_WRAP).o	\
-	$(TREE_TYPE_WRAP).o 		\
-	$(ALG_C_WRAP).o 			\
-	$(ALG_DMIN_WRAP).o
-
-DEFINITIONS_WRAP_O_FILES	=	\
-	$(DEFS_WRAP).o
-
-NAMESPACES_WRAP_O_FILES	=	\
-	$(GEN_WRAP).o 			\
-	$(GRAPHS_WRAP).o 		\
-	$(IO_WRAP).o			\
-	$(ITER_WRAP).o			\
-	$(LINARR_WRAP).o		\
-	$(NMRC_WRAP).o			\
-	$(PROP_WRAP).o			\
-	$(UTILS_WRAP).o
-
-VERSION_WRAP_O_FILES = 		\
+ALL_WRAP_O_FILES =					\
+	$(DSE_WRAP).o 					\
+	$(SYN_DEP_STR_TYPE_WRAP).o 		\
+	$(TREE_TYPE_WRAP).o 			\
+	$(ALG_C_WRAP).o 				\
+	$(ALG_DMIN_WRAP).o				\
+	$(DEFINITIONS_WRAP).o			\
+	$(GENERATE_WRAP).o 				\
+	$(GRAPHS_WRAP).o 				\
+	$(IO_WRAP).o					\
+	$(ITERATORS_WRAP).o				\
+	$(LINARR_WRAP).o				\
+	$(NUMERIC_WRAP).o				\
+	$(PROPERTIES_WRAP).o			\
+	$(UTILS_WRAP).o					\
 	$(VERSION_WRAP).o
-
-SUBMODULES_WRAP_O_FILES =			\
-	$(ENUMERATIONS_WRAP_O_FILES) 	\
-	$(DEFINITIONS_WRAP_O_FILES)		\
-	$(NAMESPACES_WRAP_O_FILES)		\
-	$(VERSION_WRAP_O_FILES)
-
-ALL_WRAP_O_FILES =				\
-	$(SUBMODULES_WRAP_O_FILES)	\
-	$(LAL_WRAP).o

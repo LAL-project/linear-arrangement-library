@@ -99,7 +99,7 @@ else
 	MAJOR_PY_LINK	=
 	MINOR_PY_LINK	= -lpython3.8
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= /usr/lib/python3.8
+	LAL_PY_DEST		= /usr/local/lib/python3.8/dist-packages
 endif
 
 # Architecture of the system
@@ -171,12 +171,14 @@ include Makefile.module.variables
 ########################################################################
 # GOALS
 
-all: directories $(ALL_SO_FILES) $(ALL_PY_FILES)
-python_interfaces: directories $(ALL_PY_FILES)
+all: directories $(ALL_INSTALL_SO_FILES) $(ALL_INSTALL_PY_FILES)
+python_interfaces: directories $(ALL_INSTALL_PY_FILES)
 	rm -f $(ARCH_DIR)/temp.cxx	# clean up after yourself
-directories: $(ARCH_DIR)
-$(ARCH_DIR):
-	mkdir -p $(ARCH_DIR)
+directories: $(ARCH_DIR)/lal $(ARCH_DIR)/laldebug
+$(ARCH_DIR)/lal:
+	mkdir -p $(ARCH_DIR)/lal
+$(ARCH_DIR)/laldebug:
+	mkdir -p $(ARCH_DIR)/laldebug
 
 ########################################################################
 # BUILDING RULES
@@ -186,88 +188,24 @@ include Makefile.module.rules
 ########################################################################
 # CLEANING RULES
 
+cleanwrap:
+	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*.cxx
+	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*.o
+
+cleanso:
+	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*.$(SO_EXT)
+
 clean:
-	rm -rf $(ARCH_DIR)/__pycache__/
-	rm -f $(ALL_SO_FILES)
-	rm -f $(ALL_PY_FILES)
-	rm -f $(ALL_WRAP_FILES)
-	rm -f $(ALL_WRAP_O_FILES)
+	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*
 
 distclean:
 	rm -rf $(ARCH_DIR)
 
 install: $(LAL_SO)
-	# ENUMERATIONS
-	cp $(DSE_SO) $(LAL_PY_DEST)/$(_DSE_SO)
-	cp $(DSE_PY_FILE) $(LAL_PY_DEST)/$(_DSE_PF)
-	cp $(SYN_DEP_STR_TYPE_SO) $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
-	cp $(SYN_DEP_STR_TYPE_PY_FILE) $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_PF)
-	cp $(TREE_TYPE_SO) $(LAL_PY_DEST)/$(_TREE_TYPE_SO)
-	cp $(TREE_TYPE_PY_FILE) $(LAL_PY_DEST)/$(_TREE_TYPE_PF)
-	cp $(ALG_C_SO) $(LAL_PY_DEST)/$(_ALG_C_SO)
-	cp $(ALG_C_PY_FILE) $(LAL_PY_DEST)/$(_ALG_C_PF)
-	cp $(ALG_DMIN_SO) $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
-	cp $(ALG_DMIN_PY_FILE) $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
-	# DEFINITIONS
-	cp $(DEFS_SO) $(LAL_PY_DEST)/$(_DEFS_SO)
-	cp $(DEFS_PY_FILE) $(LAL_PY_DEST)/$(_DEFS_PF)
-	# NAMESPACES
-	cp $(GEN_SO) $(LAL_PY_DEST)/$(_GEN_SO)
-	cp $(GEN_PY_FILE) $(LAL_PY_DEST)/$(_GEN_PF)
-	cp $(GRAPHS_SO) $(LAL_PY_DEST)/$(_GRAPHS_SO)
-	cp $(GRAPHS_PY_FILE) $(LAL_PY_DEST)/$(_GRAPHS_PF)
-	cp $(IO_SO) $(LAL_PY_DEST)/$(_IO_SO)
-	cp $(IO_PY_FILE) $(LAL_PY_DEST)/$(_IO_PF)
-	cp $(ITER_SO) $(LAL_PY_DEST)/$(_ITER_SO)
-	cp $(ITER_PY_FILE) $(LAL_PY_DEST)/$(_ITER_PF)
-	cp $(LINARR_SO) $(LAL_PY_DEST)/$(_LINARR_SO)
-	cp $(LINARR_PY_FILE) $(LAL_PY_DEST)/$(_LINARR_PF)
-	cp $(NMRC_SO) $(LAL_PY_DEST)/$(_NMRC_SO)
-	cp $(NMRC_PY_FILE) $(LAL_PY_DEST)/$(_NMRC_PF)
-	cp $(PROP_SO) $(LAL_PY_DEST)/$(_PROP_SO)
-	cp $(PROP_PY_FILE) $(LAL_PY_DEST)/$(_PROP_PF)
-	cp $(UTILS_SO) $(LAL_PY_DEST)/$(_UTILS_SO)
-	cp $(UTILS_PY_FILE) $(LAL_PY_DEST)/$(_UTILS_PF)
-	cp $(LAL_SO) $(LAL_PY_DEST)/$(_LAL_SO)
-	cp $(LAL_PY_FILE) $(LAL_PY_DEST)/$(_LAL_PF)
-	# VERSION
-	cp $(VERSION_SO) $(LAL_PY_DEST)/$(_VERSION_SO)
-	cp $(VERSION_PY_FILE) $(LAL_PY_DEST)/$(_VERSION_PF)
+	mkdir -p $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)
+	cp $(ALL_INSTALL_SO_FILES) $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
+	cp $(ALL_INSTALL_PY_FILES) $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
 
 uninstall:
-	# ENUMERATIONS
-	rm -f $(LAL_PY_DEST)/$(_DSE_SO)
-	rm -f $(LAL_PY_DEST)/$(_DSE_PF)
-	rm -f $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_SO)
-	rm -f $(LAL_PY_DEST)/$(_SYN_DEP_STR_TYPE_PF)
-	rm -f $(LAL_PY_DEST)/$(_TREE_TYPE_SO)
-	rm -f $(LAL_PY_DEST)/$(_TREE_TYPE_PF)
-	rm -f $(LAL_PY_DEST)/$(_ALG_C_SO)
-	rm -f $(LAL_PY_DEST)/$(_ALG_C_PF)
-	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_SO)
-	rm -f $(LAL_PY_DEST)/$(_ALG_DMIN_PF)
-	# DEFINITIONS
-	rm -f $(LAL_PY_DEST)/$(_DEFS_SO)
-	rm -f $(LAL_PY_DEST)/$(_DEFS_PF)
-	# NAMESPACES
-	rm -f $(LAL_PY_DEST)/$(_GEN_SO)
-	rm -f $(LAL_PY_DEST)/$(_GEN_PF)
-	rm -f $(LAL_PY_DEST)/$(_GRAPHS_SO)
-	rm -f $(LAL_PY_DEST)/$(_GRAPHS_PF)
-	rm -f $(LAL_PY_DEST)/$(_IO_SO)
-	rm -f $(LAL_PY_DEST)/$(_IO_PF)
-	rm -f $(LAL_PY_DEST)/$(_ITER_SO)
-	rm -f $(LAL_PY_DEST)/$(_ITER_PF)
-	rm -f $(LAL_PY_DEST)/$(_LINARR_SO)
-	rm -f $(LAL_PY_DEST)/$(_LINARR_PF)
-	rm -f $(LAL_PY_DEST)/$(_NMRC_SO)
-	rm -f $(LAL_PY_DEST)/$(_NMRC_PF)
-	rm -f $(LAL_PY_DEST)/$(_PROP_SO)
-	rm -f $(LAL_PY_DEST)/$(_PROP_PF)
-	rm -f $(LAL_PY_DEST)/$(_UTILS_SO)
-	rm -f $(LAL_PY_DEST)/$(_UTILS_PF)
-	rm -f $(LAL_PY_DEST)/$(_LAL_SO)
-	rm -f $(LAL_PY_DEST)/$(_LAL_PF)
-	# VERSION
-	rm -f $(LAL_PY_DEST)/$(_VERSION_SO)
-	rm -f $(LAL_PY_DEST)/$(_VERSION_PF)
+	rm -f $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
+	rm -f $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
