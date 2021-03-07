@@ -20,25 +20,38 @@ sed -i 's/: \"free_tree\"//g' $f
 sed -i 's/: \"rooted_tree\"//g' $f
 sed -i 's/: \"undirected_graph\"//g' $f
 sed -i 's/: \"directed_graph\"//g' $f
-sed -i 's/: \"std::vector< .* > const &\"//g' $f
 
-sed -i 's/: \"std::vector< .* >::size_type const\"//g' $f
+sed -i 's/: \"std::size_t const &\"//g' $f
+sed -i 's/: \"std::size_t const\"//g' $f
+sed -i 's/: \"std::size_t\"//g' $f
+sed -i 's/: \"size_t const &\"//g' $f
+sed -i 's/: \"size_t const\"//g' $f
+sed -i 's/: \"size_t\"//g' $f
+
+sed -i 's/: \"std::string const &\"//g' $f
+sed -i 's/: \"std::string const\"//g' $f
+
+sed -i 's/: \"std::vector< .* > const &\"//g' $f
+sed -i 's/: \"std::vector< .* > const\"//g' $f
+sed -i 's/: \"std::vector< .* > &\"//g' $f
+
 sed -i 's/: \"std::vector< .* >::size_type const &\"//g' $f
+sed -i 's/: \"std::vector< .* >::size_type const\"//g' $f
 sed -i 's/: \"std::vector< .* >::size_type &\"//g' $f
 sed -i 's/: \"std::vector< .* >::size_type\"//g' $f
 
-sed -i 's/: \"std::vector< .* >::value_type const\"//g' $f
 sed -i 's/: \"std::vector< .* >::value_type const &\"//g' $f
+sed -i 's/: \"std::vector< .* >::value_type const\"//g' $f
 sed -i 's/: \"std::vector< .* >::value_type &\"//g' $f
 sed -i 's/: \"std::vector< .* >::value_type\"//g' $f
 
-sed -i 's/: \"std::vector< .* >::iterator const\"//g' $f
 sed -i 's/: \"std::vector< .* >::iterator const &\"//g' $f
+sed -i 's/: \"std::vector< .* >::iterator const\"//g' $f
 sed -i 's/: \"std::vector< .* >::iterator &\"//g' $f
 sed -i 's/: \"std::vector< .* >::iterator\"//g' $f
 
-sed -i 's/: \"std::vector< .* >::difference_type const\"//g' $f
 sed -i 's/: \"std::vector< .* >::difference_type const &\"//g' $f
+sed -i 's/: \"std::vector< .* >::difference_type const\"//g' $f
 sed -i 's/: \"std::vector< .* >::difference_type &\"//g' $f
 sed -i 's/: \"std::vector< .* >::difference_type\"//g' $f
 
