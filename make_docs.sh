@@ -29,7 +29,7 @@ else
 	####################################################################
 	
 	echo -e "\e[1;1;32mParsing XML files with 'doxy2swig.py' to generate some Python documentation\e[0m"
-	python3 doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/submodules/documentation.i | sed "s/^/    /g"
+	python3 doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/modules/documentation.i | sed "s/^/    /g"
 	
 	####################################################################
 	
@@ -43,9 +43,9 @@ else
 	####################################################################
 	
 	echo -e "\e[1;1;32mGenerating the Python interfaces only...\e[0m"
-	echo -e "\e[1;1;32m    Release\e[0m"
+	echo -e "\e[1;1;33m    Release\e[0m"
 	make BUILD=release python_interfaces | sed "s/^/        /g"
-	echo -e "\e[1;1;32m    Debug\e[0m"
+	echo -e "\e[1;1;33m    Debug\e[0m"
 	make BUILD=debug python_interfaces | sed "s/^/        /g"
 fi
 
