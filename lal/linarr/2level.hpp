@@ -86,7 +86,7 @@ noexcept
 #if defined DEBUG
 	// the number of graphs and number of linear arrangements
 	// must coincide unless no arrangement was given.
-	assert(P.size() == 0 or G.size() == P.size());
+	assert(P.size() == 0 or L.size() == P.size());
 #endif
 
 	numeric::rational sum_MDD(0);
