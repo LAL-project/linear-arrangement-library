@@ -191,14 +191,14 @@
  * 
  * On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
  * @code
- * lal::graphs::free_tree t;
- * lal::io::read_edge_list(t);
+ * const string filename = ".."; // a valid name of a file
+ * const lal::graphs::free_tree t = *lal::io::read_edge_list<free_tree>(filename);
  * double var_C = lal::properties::variance_C(t);
  * @endcode
  * but if not
  * @code
- * lal::graphs::free_tree t;
- * lal::io::read_edge_list(t, false);
+ * const string filename = ".."; // a valid name of a file
+ * const lal::graphs::free_tree t = *lal::io::read_edge_list<free_tree>(filename, false);
  * // ...
  * @endcode
  */
@@ -313,7 +313,8 @@ namespace graphs {}
  * This namespace contains the functions for input/output operations.
  * 
  * This includes reading a graph (or collection of graphs) from a file. The formats supported for reading are:
- * - Edge list. See functions @ref read_edge_list(const std::string&, graphs::undirected_graph&, bool,bool) and @ref read_edge_list(const std::string&, graphs::directed_graph&, bool,bool).
+ * - Edge list. See @ref read_edge_list function.
+ * - Head vector. See @ref read_head_vector function.
  * 
  * Other features contained in this namespace are:
  * - Automatic processing of a treebank dataset (see @ref io::treebank_dataset_processor)
