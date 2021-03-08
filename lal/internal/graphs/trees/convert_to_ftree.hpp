@@ -111,7 +111,7 @@ noexcept;
  * @returns The free tree built with @e L along with the root indicated
  * by the sequence.
  */
-std::pair<graphs::free_tree, node> linear_sequence_to_ftree
+std::pair<graphs::free_tree, node> head_vector_to_ftree
 (const std::vector<uint32_t>& L, bool normalise = true, bool check = true)
 noexcept;
 

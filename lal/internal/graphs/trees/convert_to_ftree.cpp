@@ -169,7 +169,7 @@ free_tree Prufer_sequence_to_ftree
 noexcept
 { return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
-pair<free_tree, node> linear_sequence_to_ftree
+pair<free_tree, node> head_vector_to_ftree
 (const vector<uint32_t>& L, bool normalise, bool check)
 noexcept
 {
