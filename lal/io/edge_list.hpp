@@ -38,68 +38,152 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
+#include <optional>
 #include <string>
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace io {
 
+// **DEVELOPER NOTE**
+// These functions were not implemented as a templated function in this header
+// file so as to avoid including <filesystem> and <ifstream> in this header.
+
+// **DEVELOPER NOTE**
+// These function's documentation has to be updated manually in the io.i
+// interface file.
+
+/**
+ * @brief Reads a undirected graph in edge list format.
+ *
+ * This format consists of a list of all the graph's edges. Each edge is described
+ * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
+ * with indices starting at 0. The resulting number of nodes of the graph will be
+ * the maximum index in the file plus 1.
+ *
+ * @param filename Name of the file.
+ * @param norm Should the graph be normalised?
+ * See @ref lal::graphs::graph::is_normalised()
+ * @param check_norm If the graph is not to be normalised check whether or
+ * not the graph read is normalised.
+ * @returns Nothing in case the file does not exist. A free graph if otherwise.
+ */
+std::optional<graphs::undirected_graph>
+read_edge_list_undirected_graph
+(const std::string& filename, bool norm = true, bool check_norm = true)
+noexcept;
+
+/**
+ * @brief Reads a directed graph in edge list format.
+ *
+ * This format consists of a list of all the graph's edges. Each edge is described
+ * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
+ * with indices starting at 0. The resulting number of nodes of the graph will be
+ * the maximum index in the file plus 1.
+ *
+ * @param filename Name of the file.
+ * @param norm Should the graph be normalised?
+ * See @ref lal::graphs::graph::is_normalised()
+ * @param check_norm If the graph is not to be normalised check whether or
+ * not the graph read is normalised.
+ * @returns Nothing in case the file does not exist. A free graph if otherwise.
+ */
+std::optional<graphs::directed_graph>
+read_edge_list_directed_graph
+(const std::string& filename, bool norm = true, bool check_norm = true)
+noexcept;
+
+/**
+ * @brief Reads a free tree in edge list format.
+ *
+ * This format consists of a list of all the graph's edges. Each edge is described
+ * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
+ * with indices starting at 0. The resulting number of nodes of the graph will be
+ * the maximum index in the file plus 1.
+ *
+ * @param filename Name of the file.
+ * @param norm Should the graph be normalised?
+ * See @ref lal::graphs::graph::is_normalised()
+ * @param check_norm If the graph is not to be normalised check whether or
+ * not the graph read is normalised.
+ * @returns Nothing in case the file does not exist. A free graph if otherwise.
+ */
+std::optional<graphs::free_tree>
+read_edge_list_free_tree
+(const std::string& filename, bool norm = true, bool check_norm = true)
+noexcept;
+
+/**
+ * @brief Reads a rooted tree in edge list format.
+ *
+ * This format consists of a list of all the graph's edges. Each edge is described
+ * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
+ * with indices starting at 0. The resulting number of nodes of the graph will be
+ * the maximum index in the file plus 1.
+ *
+ * @param filename Name of the file.
+ * @param norm Should the graph be normalised?
+ * See @ref lal::graphs::graph::is_normalised()
+ * @param check_norm If the graph is not to be normalised check whether or
+ * not the graph read is normalised.
+ * @returns Nothing in case the file does not exist. A free graph if otherwise.
+ */
+std::optional<graphs::rooted_tree>
+read_edge_list_rooted_tree
+(const std::string& filename, bool norm = true, bool check_norm = true)
+noexcept;
+
 /**
  * @brief Reads a graph in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge
- * is described as a pair of indices of the nodes at each end of the
- * edge.
+ * This format consists of a list of all the graph's edges. Each edge is described
+ * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
+ * with indices starting at 0. The resulting number of nodes of the graph will be
+ * the maximum index in the file plus 1.
  *
- * Nodes are usually labelled with indices starting at 0, so this value
- * is accepted. The resulting number of nodes of the graph will be the
- * maximum index in the file plus 1.
- *
- * The current contents of the graph will be cleared and replaced by
- * the contents of the file.
- * @param[in] filename Name of the file.
- * @param[out] g Graph read from the file.
- * @param[in] norm Should the graph be normalised?
- * See @ref graphs::graph::is_normalised()
- * @param[in] check_norm If the graph is not to be normalised check whether or
+ * This function calls @ref read_edge_list_undirected_graph,
+ * @ref read_edge_list_directed_graph, @ref read_edge_list_free_tree or
+ * @ref read_edge_list_rooted_tree depending on the type of the template
+ * parameter @e G.
+ * @param filename Name of the file.
+ * @param norm Should the graph be normalised?
+ * See @ref lal::graphs::graph::is_normalised()
+ * @param check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
- * @returns False if the file could not be opened. True if the graph was read successfully.
+ * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
+ * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-bool read_edge_list(
-	const std::string& filename, graphs::undirected_graph& g,
-	bool norm = true, bool check_norm = true
-);
-/**
- * @brief Reads a graph in edge list format.
- *
- * This format consists of a list of all the graph's edges. Each edge
- * is described as a pair of indices of the nodes at each end of the
- * edge.
- *
- * Nodes are usually labelled with indices starting at 0, so this value
- * is accepted. The resulting number of nodes of the graph will be the
- * maximum index in the file plus 1.
- *
- * The current contents of the graph will be cleared and replaced by
- * the contents of the file.
- * @param[in] filename Name of the file.
- * @param[out] g Graph read from the file.
- * @param[in] norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
- * @param[in] check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
- * @returns False if the file could not be opened. True if the graph was read successfully.
- */
-bool read_edge_list(
-	const std::string& filename, graphs::directed_graph& g,
-	bool norm = true, bool check_norm = true
-);
+template<
+	class G,
+	std::enable_if_t<std::is_base_of_v<graphs::graph, G>, bool> = true
+>
+std::optional<G>
+read_edge_list
+(const std::string& filename, bool norm = true, bool check_norm = true)
+noexcept
+{
+	if constexpr (std::is_base_of_v<graphs::free_tree, G>) {
+		return read_edge_list_free_tree(filename, norm, check_norm);
+	}
+	else if constexpr (std::is_base_of_v<graphs::rooted_tree, G>) {
+		return read_edge_list_rooted_tree(filename, norm, check_norm);
+	}
+	else if constexpr (std::is_base_of_v<graphs::undirected_graph, G>) {
+		return read_edge_list_undirected_graph(filename, norm, check_norm);
+	}
+	else if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+		return read_edge_list_directed_graph(filename, norm, check_norm);
+	}
+}
 
 } // -- namespace io
 } // -- namespace lal
