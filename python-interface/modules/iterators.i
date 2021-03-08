@@ -27,14 +27,6 @@
 %template(Q_iterator_free_tree) lal::iterators::Q_iterator<lal::graphs::free_tree>;
 
 %pythoncode %{
-def __type_of_graph(g):
-	r"""
-	This method returns the type of the input graph `g`.
-	
-	This function is for internal usage only. Do not use.
-	"""
-	return str(type(g))[len("<class 'lalgraphs."):-2]
-
 def E_iterator(g):
 	r"""
 	Returns an iterator-like object that iterates over the list of edges
@@ -45,8 +37,8 @@ def E_iterator(g):
 	* `g` :
 		Input graph.
 	"""
-	__type_graph = __type_of_graph(g)
-	return globals()[ "__E_iterator_" + __type_graph ](g)
+	__type_graph = str(type(g))[len("<class 'lal.graphs."):-2]
+	return globals()[ "E_iterator_" + __type_graph ](g)
 
 def Q_iterator(g):
 	r"""
@@ -58,8 +50,8 @@ def Q_iterator(g):
 	* `g` :
 		Input graph.
 	"""
-	__type_graph = __type_of_graph(g)
-	return globals()[ "__Q_iterator_" + __type_graph ](g)
+	__type_graph = str(type(g))[len("<class 'lal.graphs."):-2]
+	return globals()[ "Q_iterator_" + __type_graph ](g)
 %}
 
 %pythoncode %{
