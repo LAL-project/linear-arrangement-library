@@ -164,11 +164,13 @@ target_sources(
 		io/basic_output.hpp
 		io/dataset_error.hpp
 		io/edge_list.hpp
+		io/head_vector.hpp
 		io/treebank_dataset_processor.hpp
 		io/treebank_dataset_reader.hpp
 		io/treebank_reader.hpp
 		# -- sources
 		io/edge_list.cpp
+		io/head_vector.cpp
 		io/treebank_dataset_processor.cpp
 		io/treebank_dataset_reader.cpp
 		io/treebank_reader.cpp
@@ -352,6 +354,7 @@ set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/dataset_error.hpp
 	io/edge_list.hpp
+	io/head_vector.hpp
 	io/treebank_dataset_processor.hpp
 	io/treebank_dataset_reader.hpp
 	io/treebank_reader.hpp
