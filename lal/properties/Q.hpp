@@ -66,7 +66,7 @@ numeric::integer size_Q_integer(const graphs::undirected_graph& g);
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
- * See @ref size_Q_integer for details.
+ * See @ref lal::properties::size_Q_integer for details.
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
@@ -85,7 +85,7 @@ numeric::integer size_Q_integer(const graphs::directed_graph& g);
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
- * See @ref size_Q_integer for details.
+ * See @ref lal::properties::size_Q_integer for details.
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */

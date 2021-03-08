@@ -69,15 +69,18 @@ namespace io {
  *
  *       0 3 4 1 6 3
  *
+ *
  * which should be interpreted as
  *
- *		predecessor:       0 3 4 1 6 3
- *		node of the tree:  1 2 3 4 5 6
+ *		(a) predecessor:       0 3 4 1 6 3
+ *		(b) node of the tree:  1 2 3 4 5 6
+ *
  *
  * Note that lines like these are not valid:
  *
  *		(1) 0 2 2 2 2 2
  *		(2) 2 0 0
+ *
  *
  * Line (1) is not valid due to a self-reference in the second position, and (2)
  * not being valid due to containing two '0' (i.e., two roots).
@@ -94,7 +97,7 @@ namespace io {
  * useful for debugging since they return, respectively, the full name (path
  * included) of the treebank and the language it corresponds to.
  *
- * The correct usage of this class is given in the following piece of code.
+ * An example of usage of this class is given in the following piece of code.
  * @code
  *		treebank_reader tbread;
  *		// it is advisable to check for errors

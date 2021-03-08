@@ -48,10 +48,9 @@ namespace linarr {
  * @brief The different algorithms for computing the minimum sum of the
  * length of the edges \f$D\f$.
  *
- * This enumeration's values are used to choose the algorithm the functions
- * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin&) and
- * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&)
- * use to compute the minimum value of the sum of the length the edges \f$D\f$.
+ * This enumeration's values are used to choose the algorithm which the functions
+ * @ref lal::linarr::Dmin use to compute the minimum value of the sum of the
+ * length the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
 	/* ALGORITHMS FOR ROOTED TREES */
@@ -63,18 +62,16 @@ enum class algorithms_Dmin {
      * A projective linear arrangement is an arrangement in which there are
      * no edge crossings and the root is not covered by any edge.
      *
-	 * This option implements the algorithm outlined by Gildea and
-	 * Temperley published in \cite Gildea2007a. This is closely related to
-	 * the planar case (see @ref algorithms_Dmin::Planar).
+	 * This option implements the algorithm in \cite Alemany2021a. A non-linear
+	 * time algorithm to solve this problem was oulined in \cite Gildea2007a.
      *
-	 * This algorithm is allowed only in function
-	 * @ref Dmin(const graphs::rooted_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts rooted trees.
+	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for rooted trees
+	 * (see @ref lal::linarr::Dmin(const lal::graphs::rooted_tree&, const algorithms_Dmin&)).
 	 *
 	 * These are the preconditions of usage of this algorithm.
 	 * @pre The input rooted tree has to have the size of its subtrees calculated
-	 * (see @ref graphs::rooted_tree::calculate_size_subtrees and
-	 * @ref graphs::rooted_tree::size_subtrees_valid).
+	 * (see @ref lal::graphs::rooted_tree::calculate_size_subtrees and
+	 * @ref lal::graphs::rooted_tree::size_subtrees_valid).
      */
     Projective,
 
@@ -89,11 +86,11 @@ enum class algorithms_Dmin {
 	 *
 	 * This option implements the algorithm published by Hochberg and Stallmann
 	 * in \cite Hochberg2003a. A previous algorithm solving the same problem
-	 * was published by Iordanskii \cite Iordanskii1987a.
+	 * was published by Iordanskii \cite Iordanskii1987a. See \cite Alemany2021a
+	 * for a review.
 	 *
-	 * This algorithm is allowed only in function
-	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin& a),
-	 * i.e., in the function that accepts free trees.
+	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
+	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
 	 */
 	Planar,
 
@@ -103,13 +100,12 @@ enum class algorithms_Dmin {
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
      *
-     * This option uses Yossi Shiloach's algorithm published in \cite Shiloach1979a.
-     * The implementation of this algorithm uses the corrections published
+	 * This option implements Yossi Shiloach's algorithm published in \cite Shiloach1979a.
+	 * The implementation of this algorithm applies the corrections published
      * in \cite Esteban2017a.
 	 *
-	 * This algorithm is allowed only in function
-	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees.
+	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
+	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
      */
     Unconstrained_YS,
     /**
@@ -118,11 +114,11 @@ enum class algorithms_Dmin {
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
      *
-     * This option uses Fan Chung's algorithm published in \cite Chung1984a.
+	 * This option implements Fan Chung's quadratic algorithm published in
+	 * \cite Chung1984a.
 	 *
-	 * This algorithm is allowed only in function
-	 * @ref Dmin(const graphs::free_tree&, const algorithms_Dmin&),
-	 * i.e., in the function that accepts free trees.
+	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
+	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
      */
     Unconstrained_FC
 };

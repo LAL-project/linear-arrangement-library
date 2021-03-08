@@ -232,9 +232,9 @@ namespace lal {
  *
  * - 1: rand/all -- Indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all lab/ulab rooted/free trees whereas random generation generate trees unformly at random.
  *
- * Therefore, the class @ref rand_lab_rooted_trees generates random labelled rooted trees uniformly at random, and the class @ref all_ulab_free_trees should be used to enumerate all unlabelled free trees.
+ * Therefore, the class @ref lal::generate::rand_lab_rooted_trees generates random labelled rooted trees uniformly at random, and the class @ref lal::generate::all_ulab_free_trees should be used to enumerate all unlabelled free trees.
  *
- * All classes for tree generation return trees that are preprocessed. This preprocessing varies depending on whether the tree is rooted or free. The full preprocessing details can be checked in class @ref tree_gen, from which all these classes inherit.
+ * All classes for tree generation return trees that are preprocessed. This preprocessing varies depending on whether the tree is rooted or free. The full preprocessing details can be checked in class @ref lal::generate::tree_gen, from which all these classes inherit.
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
@@ -273,7 +273,7 @@ namespace lal {
  *
  * - 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
  *
- * Therefore, the class @ref rand_projective_arrangements generates random projective arrangements of a tree, and the class @ref all_projective_arrangements should be used to enumerate all projective arrangements of a tree.
+ * Therefore, the class @ref lal::generate::rand_projective_arrangements generates random projective arrangements of a tree, and the class @ref lal::generate::all_projective_arrangements should be used to enumerate all projective arrangements of a tree.
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
@@ -296,7 +296,7 @@ namespace lal {
  * @endcode
  * (remember to replace the numbers in the actual code!).
  *
- * \remark In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for an \f$n\f$-vertex star tree, the class @ref all_projective_arrangements will enumerate \f$n!\f$ arrangements.
+ * \remark In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for an \f$n\f$-vertex star tree, the class @ref lal::generate::all_projective_arrangements will enumerate \f$n!\f$ arrangements.
  */
 namespace generate {}
 
@@ -313,13 +313,13 @@ namespace graphs {}
  * This namespace contains the functions for input/output operations.
  * 
  * This includes reading a graph (or collection of graphs) from a file. The formats supported for reading are:
- * - Edge list. See @ref read_edge_list function.
- * - Head vector. See @ref read_head_vector function.
+ * - Edge list. See @ref lal::io::read_edge_list function.
+ * - Head vector. See @ref lal::io::read_head_vector function.
  * 
  * Other features contained in this namespace are:
- * - Automatic processing of a treebank dataset (see @ref io::treebank_dataset_processor)
- * - Custom processing of a treebank dataset (see @ref io::treebank_dataset_reader)
- * - Custom processing of single treebank file (see @ref io::treebank_reader)
+ * - Automatic processing of a treebank dataset (see @ref lal::io::treebank_dataset_processor)
+ * - Custom processing of a treebank dataset (see @ref lal::io::treebank_dataset_reader)
+ * - Custom processing of single treebank file (see @ref lal::io::treebank_reader)
  */
 namespace io {}
 
@@ -327,19 +327,19 @@ namespace io {}
  * @brief Iterators namespace.
  * 
  * This namespace contains classes useful for iterating through the graph. These classes iterate
- * - over the set of edges (see @ref E_iterator).
- * - over the set of pairs of independent edges \f$Q\f$ (see @ref Q_iterator).
+ * - over the set of edges (see @ref lal::iterators::E_iterator).
+ * - over the set of pairs of independent edges \f$Q\f$ (see @ref lal::iterators::Q_iterator).
  */
 namespace iterators {}
 
 /**
  * @brief Linear arrangements namespace.
  * 
- * This namespace contains functions to calculate properties of graphs that depend on a linear arrangement. Said arrangement van be given explicitly, i.e., by constructing a @ref linear_arrangement object, or by omitting it in the functions to let these use the labelling of the graph. For example, given a graph
+ * This namespace contains functions to calculate properties of graphs that depend on a linear arrangement. Said arrangement van be given explicitly, i.e., by constructing a @ref lal::linear_arrangement object, or by omitting it in the functions to let these use the labelling of the graph. For example, given a graph
  * @code
  *		lal::graphs::undirected_graph g;
  * @endcode
- * we can calculate the sum of length of the edges using function @ref sum_length_edges in two different ways. The first is by omitting the arrangement:
+ * we can calculate the sum of length of the edges using function @ref lal::linarr::sum_length_edges in two different ways. The first is by omitting the arrangement:
  * @code
  *		lal::linarr::sum_length_edges(g);
  * @endcode
@@ -350,7 +350,7 @@ namespace iterators {}
  *
  * A linear arrangement object is a vector whose size is equal to the number of nodes of its corresponding graph. Note, however, that a linear arrangement has no associated graph; it is just a vector. Throughout this namespace we use the symbol for the number pi, \f$\pi\f$ to denote a linear arrangement, as is usually done in the scientific literature.
  *
- * The contents of a @ref linear_arrangement object are as follows: if \f$\pi\f$ is a linear arrangement then the @e u-th position of \f$\pi\f$ contains the position of that node in the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, node @e u is at position @e p in the linear arrangement.
+ * The contents of a @ref lal::linear_arrangement object are as follows: if \f$\pi\f$ is a linear arrangement then the @e u-th position of \f$\pi\f$ contains the position of that node in the arrangement. Formally, \f$\pi[u] = p\f$ if, and only if, node @e u is at position @e p in the linear arrangement.
  *
  * The identity arrangement \f$\pi_I\f$ is a special case of linear arrangement used in many functions. Such an arrangement is one that maps each node into the position corresponding to their label, i.e., \f$ \pi_I(u) = u\f$. When omitting the arrangement in the functions of this namespace, the user should consider that the arrangement used is the identity arrangement.
  */
@@ -359,14 +359,14 @@ namespace linarr {}
 /**
  * @brief Numeric namespace.
  *
- * This namespace contains the data structures that wrap the basic structures of the GMP library for integers of arbitrary precision (see @ref integer) and exact rational numbers (see @ref rational).
+ * This namespace contains the data structures that wrap the basic structures of the GMP library for integers of arbitrary precision (see @ref lal::numeric::integer) and exact rational numbers (see @ref lal::numeric::rational).
  */
 namespace numeric {}
 
 /**
  * @brief Properties of graphs.
  * 
- * This namespace contains functions to calculate properties of graphs that do not depend, whether implicitly or explicitly, on a linear arrangement. Most, if not all, properties can be calculated as exact rational numbers (see @ref lal::numeric::rational), but also as floating point values of double precision. For the former, add the suffix '_rational' at the end of the function name. For example, the function @ref variance_C returns the variance of the number of crossings 'C' as a floating point value. By adding the suffix, i.e., @ref variance_C_rational, we obtain said variance as an exact rational value.
+ * This namespace contains functions to calculate properties of graphs that do not depend, whether implicitly or explicitly, on a linear arrangement. Most, if not all, properties can be calculated as exact rational numbers (see @ref lal::numeric::rational), but also as floating point values of double precision. For the former, add the suffix '_rational' at the end of the function name. For example, the function @ref lal::properties::variance_C returns the variance of the number of crossings 'C' as a floating point value. By adding the suffix, i.e., @ref lal::properties::variance_C_rational, we obtain said variance as an exact rational value.
  *
  * To see what a rational value is in the context of this library, see the documentation of the namespace @ref lal::numeric.
  */
@@ -376,7 +376,7 @@ namespace properties {}
  * @brief Set of utilities.
  *
  * This namespace contains several utilities for the library, useful for experimentation. This includes the following functions:
- * - Isomorphism tests. For free trees (see @ref are_trees_isomorphic(const lal::graphs::free_tree&,const lal::graphs::free_tree&)) and for rooted trees (see @ref are_trees_isomorphic(const lal::graphs::rooted_tree&,const graphs::rooted_tree&)).
+ * - Isomorphism tests. For free trees (see @ref lal::utilities::are_trees_isomorphic(const lal::graphs::free_tree&,const lal::graphs::free_tree&)) and for rooted trees (see @ref lal::utilities::are_trees_isomorphic(const lal::graphs::rooted_tree&,const graphs::rooted_tree&)).
  */
 namespace utilities {}
 

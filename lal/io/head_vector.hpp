@@ -92,7 +92,7 @@ noexcept;
  * The current contents of the graph will be cleared and replaced by
  * the contents of the file.
  * @param filename Name of the file.
- * @param norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
+ * @param norm Should the graph be normalised? See @ref lal::graphs::graph::is_normalised()
  * @param check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
@@ -137,7 +137,7 @@ noexcept;
  * The current contents of the graph will be cleared and replaced by
  * the contents of the file.
  * @param filename Name of the file.
- * @param norm Should the graph be normalised? See @ref graphs::graph::is_normalised()
+ * @param norm Should the graph be normalised? See @ref lal::graphs::graph::is_normalised()
  * @param check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.

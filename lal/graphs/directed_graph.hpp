@@ -115,8 +115,9 @@ public:
 	/**
 	 * @brief Adds a directed edge to the graph.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_add is
-	 * called after the edge has been added.
+	 * For developers: method
+	 * @ref lal::graphs::graph::extra_work_per_edge_add is called after the
+	 * edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Normalise the graph after the insertion.
@@ -152,9 +153,9 @@ public:
 	 * @brief Adds a list of directed edges to the graph.
 	 *
 	 * This operation is faster than adding edges one by one with
-	 * @ref add_edge(node,node,bool,bool) since the edges are added in bulk.
+	 * @ref add_edge since the edges are added in bulk.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_add is
+	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_add is
 	 * called after each edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
@@ -198,7 +199,7 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_remove is
 	 * called after the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -221,7 +222,7 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_remove is
 	 * called after each edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.

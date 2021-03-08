@@ -48,8 +48,8 @@ namespace linarr {
  * @brief The different algorithms for computing the number of crossings.
  *
  * This enumeration's values can be used to choose the algorithm the functions
- * @ref n_crossings and @ref n_crossings_list use to compute the number of
- * edge crossings.
+ * @ref lal::linarr::n_crossings and @ref lal::linarr::n_crossings_list use to
+ * compute the number of edge crossings.
  *
  * Two edges \f${s,t},{u,v}\f$ of a graph cross if, and only if, their positions
  * interleave in the linear arrangement. More formally, given an arrangement

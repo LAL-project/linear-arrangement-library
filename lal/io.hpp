@@ -48,6 +48,7 @@
 #include <lal/io/dataset_error.hpp>
 
 #include <lal/io/edge_list.hpp>
+#include <lal/io/head_vector.hpp>
 #include <lal/io/basic_output.hpp>
 
 #include <lal/io/treebank_reader.hpp>

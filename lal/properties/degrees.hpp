@@ -72,7 +72,7 @@ numeric::rational mmt_degree_rational(const graphs::undirected_graph& g, uint32_
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref mmt_degree_rational for details.
+ * See @ref lal::properties::mmt_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
@@ -99,7 +99,7 @@ numeric::rational mmt_degree_rational(const graphs::directed_graph& g, uint32_t 
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref mmt_degree_rational for details.
+ * See @ref lal::properties::mmt_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
@@ -125,7 +125,7 @@ numeric::rational mmt_in_degree_rational(const graphs::directed_graph& g, uint32
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref mmt_in_degree_rational for details.
+ * See @ref lal::properties::mmt_in_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
@@ -151,7 +151,7 @@ numeric::rational mmt_out_degree_rational(const graphs::directed_graph& g, uint3
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref mmt_out_degree_rational for details.
+ * See @ref lal::properties::mmt_out_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point value.
@@ -167,8 +167,8 @@ double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
  *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }\f$,
  *
  * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
- * are the second moment of degree about 0 (see @ref mmt_degree_rational)
- * of a star and linear tree respectively.
+ * are the second moment of degree about 0 (see
+ * @ref lal::properties::mmt_degree_rational) of a star and linear tree respectively.
  *
  * See \cite Ferrer2018a for details.
  * @param g Input graph.
@@ -180,7 +180,7 @@ numeric::rational hubiness_rational(const graphs::free_tree& g);
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
  *
- * See @ref hubiness_rational for details.
+ * See @ref lal::properties::hubiness_rational for details.
  * @param g Input graph.
  * @returns The hubiness coefficient as a floating point value.
  */

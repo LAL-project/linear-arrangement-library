@@ -65,7 +65,7 @@ numeric::rational expectation_C_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the the expectation of the first moment of C.
  *
- * See @ref expectation_C_rational for details.
+ * See @ref lal::properties::expectation_C_rational for details.
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a floating point value.
  */
@@ -91,13 +91,13 @@ double expectation_C(const graphs::undirected_graph& g);
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
- * @pre Method @ref graphs::graph::is_normalised() must evaluate to true.
+ * @pre Method @ref lal::graphs::graph::is_normalised() must evaluate to true.
  */
 numeric::rational variance_C_rational(const graphs::undirected_graph& g, bool reuse = true);
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
- * See @ref variance_C_rational for details.
+ * See @ref lal::properties::variance_C_rational for details.
  * @param g Input graph.
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
@@ -124,7 +124,7 @@ numeric::rational variance_C_forest_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the variance of the number of crossings of a forest.
  *
- * See @ref variance_C_forest_rational for details.
+ * See @ref lal::properties::variance_C_forest_rational for details.
  * @param g Input forest.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a floating point value.
  */
@@ -146,7 +146,7 @@ numeric::rational variance_C_tree_rational(const graphs::free_tree& g);
 /**
  * @brief Computes the variance of the number of crossings of a tree.
  *
- * See @ref variance_C_tree_rational for details.
+ * See @ref lal::properties::variance_C_tree_rational for details.
  * @param g Input tree.
  * @returns The return value is a floating point value.
  */

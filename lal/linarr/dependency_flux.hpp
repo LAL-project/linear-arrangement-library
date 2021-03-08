@@ -87,7 +87,8 @@ public:
 	/**
 	 * @brief Returns the R/L ratio.
 	 *
-	 * This is the @ref m_right_span divided by the @ref m_left_span.
+	 * This is the right span (see attribute @ref m_right_span) divided by the
+	 * left span (see attribute @ref m_left_span).
 	 * @returns The R/L ratio of this flux.
 	 */
 	inline numeric::rational get_RL_ratio_rational() const noexcept
@@ -95,7 +96,8 @@ public:
 	/**
 	 * @brief Returns the R/L ratio.
 	 *
-	 * This is the @ref m_right_span divided by the @ref m_left_span.
+	 * This is the right span (see attribute @ref m_right_span) divided by the
+	 * left span (see attribute @ref m_left_span).
 	 * @returns The R/L ratio of this flux.
 	 */
 	inline double get_RL_ratio() const noexcept
@@ -104,8 +106,8 @@ public:
 	/**
 	 * @brief Returns the W/S ratio.
 	 *
-	 * Also known as @e density, this is the @ref m_weight divided by the size
-	 * of @ref m_dependencies.
+	 * Also known as @e density, this is the weight (see attribtue @ref m_weight)
+	 * divided by the number of dependencies (see attribute @ref m_dependencies).
 	 * @returns The W/S ratio of this flux.
 	 */
 	inline numeric::rational get_WS_ratio_rational() const noexcept
@@ -113,8 +115,8 @@ public:
 	/**
 	 * @brief Returns the W/S ratio.
 	 *
-	 * Also known as @e density, this is the @ref m_weight divided by the size
-	 * of @ref m_dependencies.
+	 * Also known as @e density, this is the weight (see attribtue @ref m_weight)
+	 * divided by the number of dependencies (see attribute @ref m_dependencies).
 	 * @returns The W/S ratio of this flux.
 	 */
 	inline double get_WS_ratio() const noexcept

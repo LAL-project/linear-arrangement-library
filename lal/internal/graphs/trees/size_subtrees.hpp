@@ -189,7 +189,7 @@ uint32_t calculate_bidirectional_sizes
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * See @ref __lal::calculate_bidirectional_sizes for details.
+ * See @ref lal::internal::__lal::calculate_bidirectional_sizes for details.
  */
 template<
 	class T,

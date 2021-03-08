@@ -55,7 +55,7 @@ namespace graphs {
 /**
  * @brief Standard output operator for undirected graphs.
  *
- * Usable by @ref undirected_graph, @ref free_tree.
+ * Usable by @ref lal::graphs::undirected_graph, @ref lal::graphs::free_tree.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.
@@ -76,7 +76,7 @@ inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
 /**
  * @brief Standard output operator for directed graphs.
  *
- * Usable only by @ref directed_graph.
+ * Usable only by @ref lal::graphs::directed_graph.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.
@@ -106,7 +106,7 @@ inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
 /**
  * @brief Standard output operator for directed rooted trees.
  *
- * Usable by @ref rooted_tree.
+ * Usable by @ref lal::graphs::rooted_tree.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.

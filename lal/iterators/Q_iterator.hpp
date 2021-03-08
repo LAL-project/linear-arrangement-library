@@ -69,12 +69,12 @@ namespace iterators {
  * Bear in mind, however, that this class does not modify in any way the
  * graph it is initialised with.
  *
- * The correct usage of this class is
+ * An example of usage of this class is the following:
  * @code
  *		Q_iterator it(g); // g is a graph
  *		while (it.has_next()) {
  *			it.next();
- *			edge_pair q = it.get_pair();
+ *			const lal::edge_pair q = it.get_pair();
  *			// ...
  *		}
  * @endcode
@@ -202,7 +202,12 @@ private:
 	edge_pair m_cur_pair = edge_pair(edge(0,0),edge(0,0));
 
 private:
-	/// Returns the pair of independent edges pointed by @ref m_cur1 and @ref m_cur2.
+	/**
+	 * @brief Returns the current pair of independent edges.
+	 *
+	 * These are the edges pointed by attribute @ref m_cur1 and by attribute
+	 * @ref m_cur2.
+	 */
 	edge_pair make_current_pair() const noexcept {
 		node s,t,u,v;
 		if constexpr (is_directed) {

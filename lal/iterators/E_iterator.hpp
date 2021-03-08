@@ -65,7 +65,7 @@ namespace iterators {
  * Bear in mind, however, that this class does not modify in any way the
  * graph it is initialised with.
  *
- * The correct usage of this class is
+ * An example of usage of this class is the following:
  * @code
  *		E_iterator it(g); // g is a graph
  *		while (it.has_next()) {

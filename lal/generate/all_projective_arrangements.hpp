@@ -62,13 +62,13 @@ namespace generate {
  * arrangements. Therefore, this class will generate \f$n!\f$ arrangements
  * for all star trees of \f$n\f$ vertices.
  *
- * The correct usage of this class is
+ * An example of usage of this class is
  * @code
  *		// given a projective tree T
  *		lal::generate::all_projective_arr ArrGen(T);
  *		while (ArrGen.has_next()) {
  *			ArrGen.next();
- *			lal::linearrgmnt arr = ArrGen.get_arrangement();
+ *			const lal::linearrgmnt arr = ArrGen.get_arrangement();
  *			// ...
  *		}
  * @endcode

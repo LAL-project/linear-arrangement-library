@@ -150,9 +150,12 @@ noexcept;
  * with indices starting at 0. The resulting number of nodes of the graph will be
  * the maximum index in the file plus 1.
  *
- * This function calls @ref read_edge_list_undirected_graph,
- * @ref read_edge_list_directed_graph, @ref read_edge_list_free_tree or
- * @ref read_edge_list_rooted_tree depending on the type of the template
+ * This function calls
+ * @ref lal::io::read_edge_list_undirected_graph,
+ * @ref lal::io::read_edge_list_directed_graph,
+ * @ref lal::io::read_edge_list_free_tree or
+ * @ref lal::io::read_edge_list_rooted_tree
+ * depending on the type of the template
  * parameter @e G.
  * @param filename Name of the file.
  * @param norm Should the graph be normalised?

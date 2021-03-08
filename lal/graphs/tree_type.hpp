@@ -107,7 +107,7 @@ enum class tree_type {
 
 // since SWIG does not wrap string_view, we need a
 // different return type for this "to_string" function
-/// Converts to a string a value of the enumeration @ref tree_type.
+/// Converts to a string a value of the enumeration @ref lal::graphs::tree_type.
 inline
 #ifdef SWIG
 std::string
@@ -128,7 +128,7 @@ tree_type_to_string
 	}
 }
 
-/// Number of elements within enumeration @ref tree_type.
+/// Number of elements within enumeration @ref lal::graphs::tree_type.
 constexpr std::size_t __tree_type_size =
 	1 + static_cast<std::size_t>(tree_type::none);
 

@@ -67,7 +67,7 @@ numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree&
 /**
  * @brief Mean Hierarchical Distance.
  *
- * See @ref mean_hierarchical_distance_rational for details.
+ * See @ref lal::properties::mean_hierarchical_distance_rational for details.
  * @param t Input rooted tree.
  * @returns The Mean Hierarchical Distance of a rooted tree as a floating point value.
  */

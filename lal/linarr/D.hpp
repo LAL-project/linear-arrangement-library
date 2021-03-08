@@ -116,7 +116,7 @@ numeric::rational mean_dependency_distance_rational
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
  *
- * See @ref mean_dependency_distance_rational for details.
+ * See @ref lal::linarr::mean_dependency_distance_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
@@ -126,7 +126,7 @@ double mean_dependency_distance
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
  *
- * See @ref mean_dependency_distance_rational for details.
+ * See @ref lal::linarr::mean_dependency_distance_rational for details.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.

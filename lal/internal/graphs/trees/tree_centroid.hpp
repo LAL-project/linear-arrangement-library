@@ -156,12 +156,12 @@ std::pair<node, node> retrieve_centroid(
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * A graph of type @ref graphs::tree may lack some edges tree so it can have
+ * A graph of type @ref lal::graphs::tree may lack some edges tree so it can have
  * several connected components. Vertex @e x belongs to one of these connected
  * components. So, this method finds the centroidal nodes of the connected
  * component node @e x belongs to.
  *
- * This function uses @ref internal::calculate_suvs, an algorithm described
+ * This function uses @ref lal::internal::calculate_suvs, an algorithm described
  * in \cite Hochberg2003a (see function's documentation for details).
  * @param t Input tree.
  * @param x Input node.
@@ -230,7 +230,7 @@ std::pair<node, node> retrieve_centroid(const T& t, const node x) {
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * This function uses @ref internal::calculate_suvs, an algorithm described
+ * This function uses @ref lal::internal::calculate_suvs, an algorithm described
  * in \cite Hochberg2003a (see function's documentation for details).
  * @param t Input tree.
  * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of

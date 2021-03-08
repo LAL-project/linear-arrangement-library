@@ -50,7 +50,7 @@
 namespace lal {
 namespace numeric {
 
-/// Standard output operator for the @ref rational class.
+/// Standard output operator for the @ref lal::numeric::rational class.
 inline std::ostream& operator<< (std::ostream& os, const rational& r) {
 	os << r.to_string();
 	return os;

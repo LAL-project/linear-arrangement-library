@@ -75,7 +75,7 @@ numeric::rational headedness_rational
 /**
  * @brief Computes the headedness of a linearly arranged directed graph.
  *
- * See @ref headedness_rational for details.
+ * See @ref lal::linarr::headedness_rational for details.
  * @param g Input graph.
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.

@@ -120,7 +120,8 @@ noexcept
 /**
  * @brief 1-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
- * See @ref mean_dependency_distance_1level_rational for details.
+ * See @ref lal::linarr::mean_dependency_distance_1level_rational for further
+ * details.
  * @param L List of input graphs.
  * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.

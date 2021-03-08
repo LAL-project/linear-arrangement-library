@@ -65,7 +65,7 @@ namespace internal {
  * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
  * for further details.
  *
- * A graph of type @ref graphs::tree may lack some edges tree so it has
+ * A graph of type @ref lal::graphs::tree may lack some edges tree so it has
  * several connected components. Vertex @e x belongs to one of these connected
  * components.
  *

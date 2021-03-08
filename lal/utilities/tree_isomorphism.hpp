@@ -66,7 +66,7 @@ namespace utilities {
  * @param t2 Input rooted tree.
  * @returns Whether or not the input trees are isomorphic or not. If the rooted
  * trees do not have both a valid edge orientation (see
- * @ref graphs::rooted_tree::is_orientation_valid) the trees are considered to
+ * @ref lal::graphs::rooted_tree::is_orientation_valid) the trees are considered to
  * be non-isomorphic.
  */
 bool are_trees_isomorphic

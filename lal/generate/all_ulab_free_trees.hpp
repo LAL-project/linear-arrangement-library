@@ -72,12 +72,12 @@ namespace generate {
  * again. It is allowed, at any time, to call @ref init with the same size of
  * the trees, or with a different one.
  *
- * The correct usage of this class is
+ * An example of usage of this class is
  * @code
  *		lal::generate::all_ulab_free_trees TreeGen(n);
  *		while (TreeGen.has_next()) {
  *			TreeGen.next();
- *			lal::graphs::free_tree T = TreeGen.get_tree();
+ *			const lal::graphs::free_tree T = TreeGen.get_tree();
  *			// ...
  *		}
  * @endcode

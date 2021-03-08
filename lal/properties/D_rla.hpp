@@ -66,7 +66,7 @@ numeric::rational expectation_D_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the the expectation of the first moment of D.
  *
- * See @ref expectation_D_rational for details.
+ * See @ref lal::properties::expectation_D_rational for details.
  * @param g The input graph.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
@@ -88,7 +88,7 @@ numeric::rational variance_D_rational(const graphs::undirected_graph& g);
 /**
  * @brief Computes the variance of the sum of the length of edges.
  *
- * See @ref variance_D_rational for details.
+ * See @ref lal::properties::variance_D_rational for details.
  * @param g The input graph.
  * @returns The exact value of \f$V[D]\f$ as a floating point value.
  */

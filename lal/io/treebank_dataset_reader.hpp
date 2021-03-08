@@ -120,7 +120,7 @@ namespace io {
  * through the trees within the corresponding file. This object can be retrieved
  * by calling method @ref get_treebank_reader.
  *
- * The correct usage of this class is given in the following piece of code.
+ * An example of usage of this class is given in the following piece of code.
  * @code
  *		treebank_dataset tbds;
  *		// it is advisable to check for errors

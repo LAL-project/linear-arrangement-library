@@ -70,8 +70,9 @@ namespace linarr {
  * Formally, given a list of graphs \f$L = \{L_i\}_{i=1}^k\f$ and a list of linear
  * arrangements \f$P = \{\pi_i\}_{i=1}^k\f$, computes \f$(1/k)S_{<d>}\f$,
  * where \f$S_{<d>} = \sum_{i=1}^k MDD(L_i, \pi_i)\f$ is the sum of the mean
- * dependency distances of every graph (see @ref mean_dependency_distance_rational
- * for details on the definition of the Mean Dependency Distance).
+ * dependency distances of every graph (see
+ * @ref lal::linarr::mean_dependency_distance_rational for details on the
+ * definition of the Mean Dependency Distance).
  *
  * @param L List of input graphs.
  * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
@@ -114,7 +115,7 @@ noexcept
 /**
  * @brief 2-level Mean Dependency Distance \f$MDD\f$ over an ensemble of graphs.
  *
- * See @ref mean_dependency_distance_2level_rational for details.
+ * See @ref lal::linarr::mean_dependency_distance_2level_rational for details.
  * @param L List of input graphs.
  * @param P List of linear arrangements of the nodes \f$L = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.

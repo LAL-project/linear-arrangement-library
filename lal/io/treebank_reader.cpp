@@ -99,7 +99,7 @@ rooted_tree treebank_reader::get_tree() const noexcept {
 	node k;
 	while (ss >> k) { L.push_back(k); }
 
-	rooted_tree t = internal::linear_sequence_to_rtree(L);
+	rooted_tree t = internal::head_vector_to_rtree(L);
 	t.calculate_size_subtrees();
 	t.calculate_tree_type();
 	return t;

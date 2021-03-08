@@ -81,9 +81,9 @@ uint32_t Dmin_Pr__optimal_interval_of(
  * This function implements Gildea and Temperley's algorithm published in \cite Gildea2007a.
  *
  * @param t Input rooted tree.
- * @pre The object @e t must be a valid rooted tree (see @ref graphs::rooted_tree::is_rooted_tree).
+ * @pre The object @e t must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  * @pre The tree must have the size of its subtrees calculated (see
- * @ref graphs::rooted_tree::size_subtrees_valid).
+ * @ref lal::graphs::rooted_tree::size_subtrees_valid).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Projective
 (const graphs::rooted_tree& t);
@@ -99,7 +99,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Projective
  * \cite Iordanskii1987a and later by Hochberg and Stallmann's in \cite Hochberg2003a.
  *
  * @param t Input tree.
- * @pre The object @e t must be a tree (see @ref graphs::free_tree::is_tree).
+ * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Planar
 (const graphs::free_tree& t);
@@ -114,7 +114,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Planar
  * The implementation of this algorithm uses the corrections published
  * in \cite Esteban2017a.
  *
- * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
+ * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
 (const graphs::free_tree& t);
@@ -127,7 +127,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
  *
  * This function implements Fan Chung's algorithm published in \cite Chung1984a.
  *
- * @pre The object must be a tree (see @ref graphs::rooted_tree::is_tree).
+ * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
 (const graphs::free_tree& t);

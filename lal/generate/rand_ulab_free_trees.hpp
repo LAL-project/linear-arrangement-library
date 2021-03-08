@@ -231,7 +231,7 @@ private:
  * from using said class. However, you will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
- * The correct usage of this class is
+ * An example of usage of this class is
  * @code
  *		lal::generate::rand_ulab_free_trees TreeGen(n);
  *		for (int i = 0; i < 100; ++i) {
