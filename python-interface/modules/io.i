@@ -1,5 +1,7 @@
 %module io
 
+%include std_string.i
+
 %import definitions.i
 %import graphs.i
 %import enums/dataset_error.i
@@ -175,9 +177,6 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 	return None
 %}
 
-
-
-%include std_string.i
 
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset_reader.hpp"
