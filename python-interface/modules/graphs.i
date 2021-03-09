@@ -1,9 +1,8 @@
 %module graphs
 
-%include documentation.i
-
 %include std_vector.i
 
+%include documentation.i
 %import definitions.i
 %import enums/tree_type.i
 
@@ -98,6 +97,8 @@ namespace std {
 	%template(__list_free_tree) vector<lal::graphs::free_tree>;
 	%template(__list_rooted_tree) vector<lal::graphs::rooted_tree>;
 }
+
+%include "../lal/graphs/conversions.hpp"
 
 %pythoncode %{
 __definitions = definitions
