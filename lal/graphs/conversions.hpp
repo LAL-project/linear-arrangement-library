@@ -86,6 +86,7 @@ namespace graphs {
  * Methods @ref lal::io::read_head_vector read
  * @param t A lal::graphs::rooted_tree.
  * @returns The head vector representation of this tree.
+ * @pre Rooted tree @e t must be a rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 std::vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept;
 
