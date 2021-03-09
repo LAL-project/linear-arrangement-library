@@ -69,6 +69,7 @@ HEADERS += \
 	generate/rand_projective_arrangements.hpp \
 	generate/tree_gen.hpp \
 	graphs.hpp \
+	graphs/conversions.hpp \
 	graphs/graph.hpp \
 	graphs/output.hpp \
 	graphs/tree.hpp \
@@ -162,6 +163,7 @@ SOURCES += \
 	generate/rand_projective_arrangements.cpp \
 	generate/rand_ulab_free_trees.cpp \
 	generate/rand_ulab_rooted_trees.cpp \
+    graphs/conversions.cpp \
     graphs/directed_graph.cpp \
     graphs/free_tree.cpp \
 	graphs/graph.cpp \

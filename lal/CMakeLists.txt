@@ -143,6 +143,7 @@ target_sources(
 		
 		# graphs namespace
 		# --headers
+		graphs/conversions.hpp
 		graphs/directed_graph.hpp
 		graphs/free_tree.hpp
 		graphs/graph.hpp
@@ -152,6 +153,7 @@ target_sources(
 		graphs/tree_type.hpp
 		graphs/undirected_graph.hpp
 		# -- sources
+		graphs/conversions.cpp
 		graphs/directed_graph.cpp
 		graphs/free_tree.cpp
 		graphs/graph.cpp

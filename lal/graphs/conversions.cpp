@@ -39,16 +39,43 @@
  *
  ********************************************************************/
 
-#pragma once
+// C++ includes
+#include <cassert>
+#include <vector>
+using namespace std;
 
-#include <lal/graphs/graph.hpp>
-#include <lal/graphs/undirected_graph.hpp>
-#include <lal/graphs/directed_graph.hpp>
-
-#include <lal/graphs/tree.hpp>
+// lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
-#include <lal/graphs/conversions.hpp>
+namespace lal {
+namespace graphs {
 
-#include <lal/graphs/output.hpp>
+vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+
+	const uint32_t n = t.num_nodes();
+
+	vector<uint32_t> head_vector(n);
+
+	for (node u = 0; u < n; ++u) {
+		if (u == t.get_root()) {
+			head_vector[u] = 0;
+		}
+		else {
+			// this is guaranteed to be a legal access (within bounds).
+			head_vector[u] = t.get_in_neighbours(u)[0] + 1;
+		}
+	}
+
+	return head_vector;
+}
+
+vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r) noexcept {
+	return from_tree_to_head_vector(rooted_tree(t,r));
+}
+
+} // -- namespace graphs
+} // -- namespace lal
