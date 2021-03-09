@@ -60,31 +60,6 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* CONSTRUCTORS */
-
-undirected_graph::undirected_graph() noexcept : graph() { }
-undirected_graph::undirected_graph(uint32_t n) noexcept {
-	init(n);
-}
-undirected_graph::undirected_graph(const undirected_graph& u) noexcept : graph() {
-	copy_full_undirected_graph(u);
-}
-undirected_graph::undirected_graph(undirected_graph&& u) noexcept {
-	move_full_undirected_graph(std::move(u));
-}
-undirected_graph::~undirected_graph() noexcept { }
-
-/* OPERATORS */
-
-undirected_graph& undirected_graph::operator= (const undirected_graph& u) noexcept {
-	copy_full_undirected_graph(u);
-	return *this;
-}
-undirected_graph& undirected_graph::operator= (undirected_graph&& u) noexcept {
-	move_full_undirected_graph(std::move(u));
-	return *this;
-}
-
 /* MODIFIERS */
 
 undirected_graph& undirected_graph::add_edge
@@ -241,7 +216,7 @@ vector<edge_pair> undirected_graph::Q() const noexcept {
 	return internal::Q(*this, qs);
 }
 
-vector<edge> undirected_graph::edges() const noexcept {
+vector<edge> undirected_graph::get_edges() const noexcept {
 	return internal::E(*this);
 }
 

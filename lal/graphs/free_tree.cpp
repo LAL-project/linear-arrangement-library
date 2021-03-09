@@ -57,16 +57,6 @@ namespace graphs {
 
 /* CONSTRUCTORS */
 
-free_tree::free_tree() noexcept : tree(), undirected_graph() { }
-free_tree::free_tree(uint32_t n) noexcept : undirected_graph(n) {
-	free_tree::tree_only_init(n);
-}
-free_tree::free_tree(const free_tree& f) noexcept : graph(), tree(), undirected_graph() {
-	copy_full_free_tree(f);
-}
-free_tree::free_tree(free_tree&& f) noexcept {
-	move_full_free_tree(std::move(f));
-}
 free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 #if defined DEBUG
 	// check that the input graph is a tree
@@ -77,6 +67,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
 }
+
 free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move(t)) {
 #if defined DEBUG
 	// check that the input graph is a tree
@@ -86,19 +77,6 @@ free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move
 	free_tree::tree_only_init(num_nodes());
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
-}
-free_tree::~free_tree() noexcept { }
-
-/* OPERATORS */
-
-free_tree& free_tree::operator= (const free_tree& f) noexcept {
-	copy_full_free_tree(f);
-	return *this;
-}
-
-free_tree& free_tree::operator= (free_tree&& f) noexcept {
-	move_full_free_tree(std::move(f));
-	return *this;
 }
 
 /* MODIFIERS */

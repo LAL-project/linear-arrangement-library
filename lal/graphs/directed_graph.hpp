@@ -70,26 +70,32 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	directed_graph() noexcept;
+	directed_graph() noexcept : graph() { }
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	directed_graph(uint32_t n) noexcept;
+	directed_graph(uint32_t n) noexcept {
+		init(n);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param g Directed graph.
 	 */
-	directed_graph(const directed_graph& g) noexcept;
+	directed_graph(const directed_graph& g) noexcept : graph() {
+		copy_full_directed_graph(g);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param g Directed graph.
 	 */
-	directed_graph(directed_graph&& g) noexcept;
+	directed_graph(directed_graph&& g) noexcept {
+		move_full_directed_graph(std::move(g));
+	}
 #endif
 	/// Destructor.
-	virtual ~directed_graph() noexcept;
+	virtual ~directed_graph() noexcept { }
 
 	/* OPERATORS */
 
@@ -98,12 +104,18 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param g Directed graph.
 	 */
-	directed_graph& operator= (const directed_graph& g) noexcept;
+	directed_graph& operator= (const directed_graph& g) noexcept {
+		copy_full_directed_graph(g);
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param g Directed graph.
 	 */
-	directed_graph& operator= (directed_graph&& g) noexcept;
+	directed_graph& operator= (directed_graph&& g) noexcept {
+		move_full_directed_graph(std::move(g));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */
@@ -258,7 +270,7 @@ public:
 
 	std::vector<edge_pair> Q() const noexcept;
 
-	std::vector<edge> edges() const noexcept;
+	std::vector<edge> get_edges() const noexcept;
 
 	/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
 	bool has_edge(node u, node v) const noexcept;

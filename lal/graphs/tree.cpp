@@ -54,40 +54,7 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* CONSTRUCTORS */
-
-tree::tree() noexcept { }
-tree::tree(const tree& t) noexcept : graph() {
-	tree_only_copy(t);
-}
-tree::tree(tree&& t) noexcept {
-	tree_only_move(std::move(t));
-}
-tree::~tree() noexcept { }
-
-/* OPERATORS */
-
-tree& tree::operator= (const tree& t) noexcept {
-	tree_only_copy(t);
-	return *this;
-}
-
-tree& tree::operator= (tree&& t) noexcept {
-	tree_only_move(std::move(t));
-	return *this;
-}
-
 /* GETTERS */
-
-bool tree::is_tree() const noexcept {
-	// NOTE: this would not really be true if the addition of edges
-	// was not constrained. Since it is, in a way that no cycles can
-	// be produced, then we only need to check for the number of edges.
-	return (num_nodes() == 0 ? true : num_edges() == num_nodes() - 1);
-
-	// NOTE 2: this is only true in a debug compilation of the library
-	// since a release compilation does not actually constrain the addition
-}
 
 bool tree::can_add_edge(node u, node v) const noexcept {
 #if defined DEBUG
@@ -190,9 +157,11 @@ void tree::extra_work_per_edge_add(node u, node v) noexcept {
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
+
 void tree::tree_only_extra_work_edges_set() noexcept {
 	fill_union_find();
 }
+
 void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 	graph::extra_work_per_edge_remove(u, v);
 	call_union_find_remove(

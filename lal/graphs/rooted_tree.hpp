@@ -109,28 +109,37 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	rooted_tree() noexcept;
+	rooted_tree() noexcept : tree(), directed_graph() { }
 	/**
 	 * @brief Constructor with number of nodes and root node.
 	 * @param n Number of vertices.
 	 */
-	rooted_tree(uint32_t n) noexcept;
+	rooted_tree(uint32_t n) noexcept {
+		rooted_tree::_init(n);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree(const rooted_tree& r) noexcept;
+	rooted_tree(const rooted_tree& r) noexcept : graph(), tree(), directed_graph() {
+		copy_full_rooted_tree(r);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree(rooted_tree&& r) noexcept;
+	rooted_tree(rooted_tree&& r) noexcept {
+		move_full_rooted_tree(std::move(r));
+	}
 #endif
 	/// Constructor with tree and root node.
-	rooted_tree(const free_tree& t, node r) noexcept;
+	rooted_tree(const free_tree& t, node r) noexcept {
+		rooted_tree::_init(t.num_nodes());
+		init_rooted(t, r);
+	}
 	/// Destructor
-	virtual ~rooted_tree() noexcept;
+	virtual ~rooted_tree() noexcept { }
 
 	/* OPERATORS */
 
@@ -139,12 +148,18 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree& operator= (const rooted_tree& r) noexcept;
+	rooted_tree& operator= (const rooted_tree& r) noexcept {
+		copy_full_rooted_tree(r);
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree& operator= (rooted_tree&& r) noexcept;
+	rooted_tree& operator= (rooted_tree&& r) noexcept {
+		move_full_rooted_tree(std::move(r));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */
@@ -446,7 +461,7 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref size_subtrees_valid returns true.
 	 */
-	inline uint32_t n_nodes_subtree(node u) const noexcept {
+	inline uint32_t num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif

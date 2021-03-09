@@ -60,32 +60,6 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-/* CONSTRUCTORS */
-
-directed_graph::directed_graph() noexcept : graph() { }
-directed_graph::directed_graph(uint32_t n) noexcept {
-	init(n);
-}
-directed_graph::directed_graph(const directed_graph& d) noexcept : graph() {
-	copy_full_directed_graph(d);
-}
-directed_graph::directed_graph(directed_graph&& d) noexcept {
-	move_full_directed_graph(std::move(d));
-}
-directed_graph::~directed_graph() noexcept { }
-
-/* OPERATORS */
-
-directed_graph& directed_graph::operator= (const directed_graph& d) noexcept {
-	copy_full_directed_graph(d);
-	return *this;
-}
-
-directed_graph& directed_graph::operator= (directed_graph&& d) noexcept {
-	move_full_directed_graph(std::move(d));
-	return *this;
-}
-
 /* MODIFIERS */
 
 void directed_graph::normalise() noexcept {
@@ -286,7 +260,7 @@ vector<edge_pair> directed_graph::Q() const noexcept {
 	return internal::Q(*this, qs);
 }
 
-vector<edge> directed_graph::edges() const noexcept {
+vector<edge> directed_graph::get_edges() const noexcept {
 	return internal::E(*this);
 }
 

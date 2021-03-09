@@ -61,23 +61,29 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	free_tree() noexcept;
+	free_tree() noexcept : tree(), undirected_graph() { }
 	/**
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices
 	 */
-	free_tree(uint32_t n) noexcept;
+	free_tree(uint32_t n) noexcept : undirected_graph(n) {
+		free_tree::tree_only_init(n);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param t Free tree.
 	 */
-	free_tree(const free_tree& t) noexcept;
+	free_tree(const free_tree& t) noexcept : graph(), tree(), undirected_graph() {
+		copy_full_free_tree(t);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param t Free tree.
 	 */
-	free_tree(free_tree&& t) noexcept;
+	free_tree(free_tree&& t) noexcept {
+		move_full_free_tree(std::move(t));
+	}
 #endif
 	/**
 	 * @brief Copy constructor with undirected graph.
@@ -92,17 +98,30 @@ public:
 	 * @pre Graph @e t is a tree.
 	 */
 	free_tree(undirected_graph&& t) noexcept;
+
 #endif
 	/// Destructor.
-	virtual ~free_tree() noexcept;
+	virtual ~free_tree() noexcept { }
 
 	/* OPERATORS */
 
 #ifndef SWIG
-	/// Copy assignment operator.
-	free_tree& operator= (const free_tree&) noexcept;
-	/// Move assignment operator.
-	free_tree& operator= (free_tree&&) noexcept;
+	/**
+	 * @brief Copy assignment operator.
+	 * @param f A lal::graphs::free_tree.
+	 */
+	free_tree& operator= (const free_tree& f) noexcept {
+		copy_full_free_tree(f);
+		return *this;
+	}
+	/**
+	 * @brief Copy assignment operator.
+	 * @param f A lal::graphs::free_tree.
+	 */
+	free_tree& operator= (free_tree&& f) noexcept {
+		move_full_free_tree(std::move(f));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */

@@ -61,36 +61,6 @@ using namespace internal;
 
 namespace graphs {
 
-/* CONSTRUCTORS */
-
-rooted_tree::rooted_tree() noexcept : tree(), directed_graph() { }
-rooted_tree::rooted_tree(uint32_t n) noexcept {
-	rooted_tree::_init(n);
-}
-rooted_tree::rooted_tree(const rooted_tree& r) noexcept : graph(), tree(), directed_graph() {
-	copy_full_rooted_tree(r);
-}
-rooted_tree::rooted_tree(rooted_tree&& r) noexcept {
-	move_full_rooted_tree(std::move(r));
-}
-rooted_tree::rooted_tree(const free_tree& t, node r) noexcept {
-	rooted_tree::_init(t.num_nodes());
-	init_rooted(t, r);
-}
-rooted_tree::~rooted_tree() noexcept { }
-
-/* OPERATORS */
-
-rooted_tree& rooted_tree::operator= (const rooted_tree& r) noexcept {
-	copy_full_rooted_tree(r);
-	return *this;
-}
-
-rooted_tree& rooted_tree::operator= (rooted_tree&& r) noexcept {
-	move_full_rooted_tree(std::move(r));
-	return *this;
-}
-
 /* MODIFIERS */
 
 rooted_tree& rooted_tree::add_edge

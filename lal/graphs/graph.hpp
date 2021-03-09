@@ -71,26 +71,32 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	graph() noexcept;
+	graph() noexcept { }
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	graph(uint32_t n) noexcept;
+	graph(uint32_t n) noexcept {
+		_init(n);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param g Graph.
 	 */
-	graph(const graph& g) noexcept;
+	graph(const graph& g) noexcept {
+		copy_full_graph(g);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param g Graph.
 	 */
-	graph(graph&& g) noexcept;
+	graph(graph&& g) noexcept {
+		move_full_graph(std::move(g));
+	}
 #endif
 	/// Destructor.
-	virtual ~graph() noexcept;
+	virtual ~graph() noexcept { }
 
 	/* OPERATORS */
 
@@ -99,12 +105,18 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param g Graph.
 	 */
-	graph& operator= (const graph& g) noexcept;
+	graph& operator= (const graph& g) noexcept {
+		copy_full_graph(g);
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param g Graph.
 	 */
-	graph& operator= (graph&& g) noexcept;
+	graph& operator= (graph&& g) noexcept {
+		move_full_graph(std::move(g));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */
@@ -186,7 +198,7 @@ public:
 	inline uint32_t num_edges() const noexcept { return m_num_edges; }
 
 	/// Returns all edges of this graph.
-	virtual std::vector<edge> edges() const noexcept = 0;
+	virtual std::vector<edge> get_edges() const noexcept = 0;
 
 	/**
 	 * @brief Returns whether this graph is normalised or not.

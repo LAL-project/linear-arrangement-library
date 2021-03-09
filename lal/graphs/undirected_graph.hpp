@@ -69,26 +69,32 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	undirected_graph() noexcept;
+	undirected_graph() noexcept { }
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	undirected_graph(uint32_t n) noexcept;
+	undirected_graph(uint32_t n) noexcept {
+		init(n);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param g Undirected graph.
 	 */
-	undirected_graph(const undirected_graph& g) noexcept;
+	undirected_graph(const undirected_graph& g) noexcept : graph() {
+		copy_full_undirected_graph(g);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param g Undirected graph.
 	 */
-	undirected_graph(undirected_graph&& g) noexcept;
+	undirected_graph(undirected_graph&& g) noexcept {
+		move_full_undirected_graph(std::move(g));
+	}
 #endif
 	/// Destructor.
-	virtual ~undirected_graph() noexcept;
+	virtual ~undirected_graph() noexcept { }
 
 	/* OPERATORS */
 
@@ -97,12 +103,18 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param g Undirected graph.
 	 */
-	undirected_graph& operator= (const undirected_graph& g) noexcept;
+	undirected_graph& operator= (const undirected_graph& g) noexcept {
+		copy_full_undirected_graph(g);
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param g Undirected graph.
 	 */
-	undirected_graph& operator= (undirected_graph&& g) noexcept;
+	undirected_graph& operator= (undirected_graph&& g) noexcept {
+		move_full_undirected_graph(std::move(g));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */
@@ -251,7 +263,7 @@ public:
 
 	std::vector<edge_pair> Q() const noexcept;
 
-	std::vector<edge> edges() const noexcept;
+	std::vector<edge> get_edges() const noexcept;
 
 	/**
 	 * @brief Returns the neighbourhood of node @e u.

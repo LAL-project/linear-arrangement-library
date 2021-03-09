@@ -74,21 +74,25 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	tree() noexcept;
+	tree() noexcept { }
 	/**
 	 * @brief Copy constructor.
 	 * @param t Tree.
 	 */
-	tree(const tree& t) noexcept;
+	tree(const tree& t) noexcept : graph() {
+		tree_only_copy(t);
+	}
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param t Tree.
 	 */
-	tree(tree&& t) noexcept;
+	tree(tree&& t) noexcept {
+		tree_only_move(std::move(t));
+	}
 #endif
 	/// Destructor.
-	virtual ~tree() noexcept;
+	virtual ~tree() noexcept { }
 
 	/* OPERATORS */
 
@@ -97,12 +101,18 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param t Tree.
 	 */
-	tree& operator= (const tree& t) noexcept;
+	tree& operator= (const tree& t) noexcept {
+		tree_only_copy(t);
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param t Tree.
 	 */
-	tree& operator= (tree&& t) noexcept;
+	tree& operator= (tree&& t) noexcept {
+		tree_only_move(std::move(t));
+		return *this;
+	}
 #endif
 
 	/* MODIFIERS */
@@ -129,7 +139,16 @@ public:
 	 * For further characterisations of a tree see \cite Harary1969a
 	 * (chapter 4, pages 32-33).
 	 */
-	bool is_tree() const noexcept;
+	bool is_tree() const noexcept {
+		// NOTE: this would not really be true if the addition of edges
+		// was not constrained. Since it is, in a way that no cycles can
+		// be produced, then we only need to check for the number of edges.
+		return (num_nodes() == 0 ? true : num_edges() == num_nodes() - 1);
+
+		// NOTE 2: this is only true in a debug compilation of the library
+		// since a release compilation does not actually constrain the addition
+		// of edges
+	}
 
 	/// Returns whether this tree is a rooted tree.
 	virtual bool is_rooted() const noexcept = 0;
@@ -177,7 +196,11 @@ public:
 		return m_root_size[m_root_of[u]];
 	}
 
-	/// Returns whether this tree is of type @e tt.
+	/**
+	 * @brief Returns whether this tree is of type @e tt.
+	 * @param tt Type of tree (see @ref lal::graphs::tree_type).
+	 * @returns True if this tree is of type @e tt.
+	 */
 	inline bool is_of_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
