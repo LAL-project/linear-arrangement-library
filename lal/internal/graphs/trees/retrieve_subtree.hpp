@@ -93,13 +93,13 @@ get_edges_subtree
 	// initialise the array of sizes if needed
 	bool update_sizes = false;
 	if (T.size_subtrees_valid()) {
-		es.reserve(T.n_nodes_subtree(u));
+		es.reserve(T.num_nodes_subtree(u));
 		if constexpr (get_subsizes) {
 			// The caller wants this function to retrieve the sizes of
 			// the subtrees. This can be done because the sizes are valid.
 
 			// Use only the space that is strictly necessary.
-			sizes = new uint32_t[T.n_nodes_subtree(u)]{0};
+			sizes = new uint32_t[T.num_nodes_subtree(u)]{0};
 			update_sizes = true;
 		}
 	}
@@ -116,7 +116,7 @@ get_edges_subtree
 	relabelling[u] = 0;
 	node next_label = 1;
 	if (update_sizes) {
-		sizes[relabelling[u]] = T.n_nodes_subtree(u);
+		sizes[relabelling[u]] = T.num_nodes_subtree(u);
 	}
 
 	BFS<graphs::rooted_tree> bfs(T);
@@ -136,7 +136,7 @@ get_edges_subtree
 				relabelling[s] = next_label;
 				++next_label;
 				if (update_sizes) {
-					sizes[relabelling[s]] = T.n_nodes_subtree(s);
+					sizes[relabelling[s]] = T.num_nodes_subtree(s);
 				}
 			}
 			e.first = relabelling[s];
@@ -146,7 +146,7 @@ get_edges_subtree
 				relabelling[t] = next_label;
 				++next_label;
 				if (update_sizes) {
-					sizes[relabelling[t]] = T.n_nodes_subtree(t);
+					sizes[relabelling[t]] = T.num_nodes_subtree(t);
 				}
 			}
 			e.second = relabelling[t];
@@ -163,8 +163,8 @@ get_edges_subtree
 			// dir: false ---> "t->s"
 			if (not left_to_right) { std::swap(s,t); }
 			if (update_sizes) {
-				sizes[s] = T.n_nodes_subtree(s);
-				sizes[t] = T.n_nodes_subtree(t);
+				sizes[s] = T.num_nodes_subtree(s);
+				sizes[t] = T.num_nodes_subtree(t);
 			}
 			es.push_back(edge(s,t));
 		}

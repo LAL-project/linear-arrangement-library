@@ -74,7 +74,7 @@ inline void fill_adjP_adjN(
 	const uint32_t n = g.num_nodes();
 
 	// Retrieve all edges of the graph to sort
-	vector<edge> edges = g.edges();
+	vector<edge> edges = g.get_edges();
 
 	// sort edges of the graph by increasing edge length
 	internal::counting_sort<edge, vector<edge>::iterator, true>

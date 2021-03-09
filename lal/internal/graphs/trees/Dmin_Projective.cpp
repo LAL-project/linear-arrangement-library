@@ -213,7 +213,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		*it++ = make_pair(e,t.n_nodes_subtree(v));
+		*it++ = make_pair(e,t.num_nodes_subtree(v));
 	}
 	}
 
