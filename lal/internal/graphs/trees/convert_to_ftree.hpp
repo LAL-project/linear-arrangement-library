@@ -53,8 +53,6 @@ namespace internal {
 /*
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * The resulting tree is not normalised.
- *
  * Examples of level sequences:
  * -- linear tree of n nodes:
  *		0 1 2 3 4 ... (n-1) n
@@ -82,7 +80,6 @@ noexcept;
 /*
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
  *
- * The resulting tree is not normalised.
  * For details on Prüfer sequences, see \cite Pruefer1918a.
  *
  * The algorithm used to decode the sequence is the one presented in
@@ -96,23 +93,6 @@ graphs::free_tree Prufer_sequence_to_ftree
 noexcept;
 graphs::free_tree Prufer_sequence_to_ftree
 (const std::vector<uint32_t>& S, uint32_t n, bool normalise = true, bool check = true)
-noexcept;
-
-/*
- * @brief Converts a linear sequence of a tree to a graph structure.
- *
- * The resulting tree is not normalised.
- *
- * A linear sequence of a tree of @e n nodes is an array of @e n integers
- * where the values in the positions from 0 to @e n-1, both included, describe
- * the tree. The value '0' indicates the root, while a strictly positive value
- * indicates the parent node.
- * @param L The linear sequence.
- * @returns The free tree built with @e L along with the root indicated
- * by the sequence.
- */
-std::pair<graphs::free_tree, node> head_vector_to_ftree
-(const std::vector<uint32_t>& L, bool normalise = true, bool check = true)
 noexcept;
 
 } // -- namespace internal

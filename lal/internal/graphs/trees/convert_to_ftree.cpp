@@ -169,42 +169,5 @@ free_tree Prufer_sequence_to_ftree
 noexcept
 { return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
-pair<free_tree, node> head_vector_to_ftree
-(const vector<uint32_t>& L, bool normalise, bool check)
-noexcept
-{
-	if (L.size() == 0) { return make_pair(free_tree(0), 0); }
-
-	const uint32_t n = static_cast<uint32_t>(L.size());
-
-	// output tree
-	free_tree t(n);
-
-	// root node of the tree (initiliased
-	// so compiler does not cry)
-	std::optional<node> r;
-
-	for (uint32_t i = 0; i < n; ++i) {
-		if (L[i] == 0) {
-			// root, do nothing
-			r = i;
-		}
-		else {
-			// add the edge:
-			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, L[i] - 1);
-		}
-	}
-
-#if defined DEBUG
-	// root must have been set.
-	assert(r);
-#endif
-
-	t.finish_bulk_add(normalise, check);
-	return make_pair(t, *r);
-}
-
 } // -- namespace internal
 } // -- namespace lal

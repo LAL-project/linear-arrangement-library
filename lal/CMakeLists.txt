@@ -250,17 +250,9 @@ target_sources(
 
 		# internal namespace -- not to be installed
 		# -- headers
-		internal/avl.hpp
-		internal/data_array.hpp
-		internal/macros.hpp
-		internal/make_array_with_value.hpp
-		internal/sorted_vector.hpp
 		internal/gmp/utils.hpp
-		internal/sorting/bit_sort.hpp
-		internal/sorting/counting_sort.hpp
-		internal/sorting/insertion_sort.hpp
+		
 		internal/graphs/trees/convert_to_ftree.hpp
-		internal/graphs/trees/convert_to_rtree.hpp
 		internal/graphs/trees/Dmin.hpp
 		internal/graphs/trees/is_tree.hpp
 		internal/graphs/trees/make_arrangement.hpp
@@ -269,6 +261,7 @@ target_sources(
 		internal/graphs/trees/tree_centroid.hpp
 		internal/graphs/trees/tree_classification.hpp
 		internal/graphs/trees/tree_isomorphism.hpp
+		
 		internal/graphs/algorithms_crossings.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/enumerate_sets.hpp
@@ -276,14 +269,25 @@ target_sources(
 		internal/graphs/traversal.hpp
 		internal/graphs/union_find.hpp
 		internal/graphs/utils.hpp
+		
+		internal/sorting/bit_sort.hpp
+		internal/sorting/counting_sort.hpp
+		internal/sorting/insertion_sort.hpp
+		
+		internal/avl.hpp
+		internal/data_array.hpp
+		internal/macros.hpp
+		internal/make_array_with_value.hpp
+		internal/sorted_vector.hpp
+		
 		# -- sources
 		internal/gmp/utils.cpp
+		
 		internal/graphs/C_brute_force.cpp
 		internal/graphs/C_dyn_prog.cpp
 		internal/graphs/C_ladder.cpp
 		internal/graphs/C_stack_based.cpp
 		internal/graphs/trees/convert_to_ftree.cpp
-		internal/graphs/trees/convert_to_rtree.cpp
 		internal/graphs/trees/Dmin_Planar.cpp
 		internal/graphs/trees/Dmin_Projective.cpp
 		internal/graphs/trees/Dmin_Unconstrained_FC.cpp
@@ -340,6 +344,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/tree_gen.hpp
 )
 set(LIBLAL_GRAPHS_HEADER
+	graphs/conversions.hpp
 	graphs/directed_graph.hpp
 	graphs/free_tree.hpp
 	graphs/graph.hpp

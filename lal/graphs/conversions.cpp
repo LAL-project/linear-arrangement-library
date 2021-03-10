@@ -40,7 +40,10 @@
  ********************************************************************/
 
 // C++ includes
+#if defined DEBUG
 #include <cassert>
+#endif
+#include <optional>
 #include <vector>
 using namespace std;
 
@@ -76,6 +79,53 @@ vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept {
 vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r) noexcept {
 	return from_tree_to_head_vector(rooted_tree(t,r));
 }
+
+pair<free_tree,node> from_head_vector_to_free_tree
+(const std::vector<uint32_t>& head_vector, bool normalise, bool check)
+noexcept
+{
+	if (head_vector.size() == 0) { return make_pair(free_tree(0), 0); }
+
+	const uint32_t n = static_cast<uint32_t>(head_vector.size());
+
+	// output tree
+	free_tree t(n);
+
+	// root node of the tree (initiliased
+	// so compiler does not cry)
+	std::optional<node> r;
+
+	for (uint32_t i = 0; i < n; ++i) {
+		if (head_vector[i] == 0) {
+			// root, do nothing
+			r = i;
+		}
+		else {
+			// add the edge:
+			// * i ranges in [0,n-1]
+			// * L[i] ranges in [1,n]
+			t.add_edge_bulk(i, head_vector[i] - 1);
+		}
+	}
+
+#if defined DEBUG
+	// root must have been set.
+	assert(r);
+#endif
+
+	t.finish_bulk_add(normalise, check);
+	return make_pair(t, *r);
+}
+
+rooted_tree from_head_vector_to_rooted_tree
+(const vector<uint32_t>& head_vector, bool normalise, bool check)
+noexcept
+{
+	const auto [tree, root] =
+		from_head_vector_to_free_tree(head_vector, normalise, check);
+	return rooted_tree(tree, root);
+}
+
 
 } // -- namespace graphs
 } // -- namespace lal

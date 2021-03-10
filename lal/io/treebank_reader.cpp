@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/convert_to_rtree.hpp>
+#include <lal/graphs/conversions.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -99,7 +99,7 @@ rooted_tree treebank_reader::get_tree() const noexcept {
 	node k;
 	while (ss >> k) { L.push_back(k); }
 
-	rooted_tree t = internal::head_vector_to_rtree(L);
+	rooted_tree t = from_head_vector_to_rooted_tree(L);
 	t.calculate_size_subtrees();
 	t.calculate_tree_type();
 	return t;

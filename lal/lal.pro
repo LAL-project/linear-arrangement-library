@@ -101,7 +101,6 @@ HEADERS += \
 	internal/graphs/reachability.hpp \
 	internal/graphs/traversal.hpp \
 	internal/graphs/trees/convert_to_ftree.hpp \
-	internal/graphs/trees/convert_to_rtree.hpp \
 	internal/graphs/trees/is_tree.hpp \
 	internal/graphs/trees/size_subtrees.hpp \
 	internal/graphs/trees/tree_centre.hpp \
@@ -176,7 +175,6 @@ SOURCES += \
 	internal/graphs/C_ladder.cpp \
 	internal/graphs/C_stack_based.cpp \
 	internal/graphs/trees/convert_to_ftree.cpp \
-	internal/graphs/trees/convert_to_rtree.cpp \
 	internal/graphs/trees/Dmin_Planar.cpp \
 	internal/graphs/trees/Dmin_Projective.cpp \
 	internal/graphs/trees/Dmin_Unconstrained_FC.cpp \
