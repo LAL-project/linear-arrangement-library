@@ -57,8 +57,6 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
-#include <lal/io/treebank_reader.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/headedness.hpp>
@@ -69,6 +67,9 @@ using namespace std;
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
+
+#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_reader.hpp>
 
 std::string make_treebank_result_file_name(const std::string& treebank_name) noexcept
 {
@@ -158,61 +159,59 @@ void set_minimum_of(
 
 namespace io {
 
-#define TBPROC_TF treebank_dataset_processor::tree_feature
-#define TBPROC_PE treebank_dataset_processor::processor_error
-
-inline constexpr string_view
-tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
+inline
+constexpr std::string_view
+treebank_feature_to_string(const treebank_feature& tf) {
 	switch (tf) {
-	case TBPROC_TF::n: return "n";
-	case TBPROC_TF::k2: return "k2";
-	case TBPROC_TF::k3: return "k3";
-	case TBPROC_TF::size_Q: return "size_Q";
-	case TBPROC_TF::headedness: return "headedness";
-	case TBPROC_TF::mean_hierarchical_distance: return "mean_hierarchical_distance";
-	case TBPROC_TF::mean_dependency_distance: return "mean_dependency_distance";
-	case TBPROC_TF::C: return "C";
-	case TBPROC_TF::C_exp_1: return "C_exp_1";
-	case TBPROC_TF::C_exp_2: return "C_exp_2";
-	case TBPROC_TF::C_var: return "C_var";
-	case TBPROC_TF::C_z: return "C_z";
-	case TBPROC_TF::D: return "D";
-	case TBPROC_TF::D_exp_1: return "D_exp_1";
-	case TBPROC_TF::D_exp_2: return "D_exp_2";
-	case TBPROC_TF::D_var: return "D_var";
-	case TBPROC_TF::D_z: return "D_z";
-	case TBPROC_TF::Dmin_Unconstrained: return "Dmin_Unconstrained";
-	case TBPROC_TF::Dmin_Planar: return "Dmin_Planar";
-	case TBPROC_TF::Dmin_Projective: return "Dmin_Projective";
-	case TBPROC_TF::max_flux_weight: return "max_flux_weight";
-	case TBPROC_TF::mean_flux_weight: return "mean_flux_weight";
-	case TBPROC_TF::min_flux_weight: return "min_flux_weight";
-	case TBPROC_TF::max_left_span: return "max_left_span";
-	case TBPROC_TF::mean_left_span: return "mean_left_span";
-	case TBPROC_TF::min_left_span: return "min_left_span";
-	case TBPROC_TF::max_right_span: return "max_right_span";
-	case TBPROC_TF::mean_right_span: return "mean_right_span";
-	case TBPROC_TF::min_right_span: return "min_right_span";
-	case TBPROC_TF::max_RL_ratio: return "max_RL_ratio";
-	case TBPROC_TF::mean_RL_ratio: return "mean_RL_ratio";
-	case TBPROC_TF::min_RL_ratio: return "min_RL_ratio";
-	case TBPROC_TF::max_WS_ratio: return "max_WS_ratio";
-	case TBPROC_TF::mean_WS_ratio: return "mean_WS_ratio";
-	case TBPROC_TF::min_WS_ratio: return "min_WS_ratio";
-	case TBPROC_TF::max_size: return "max_size";
-	case TBPROC_TF::mean_size: return "mean_size";
-	case TBPROC_TF::min_size: return "min_size";
-	case TBPROC_TF::__last_value: return "__last_value";
+	case treebank_feature::num_nodes: return "n";
+	case treebank_feature::k2: return "k2";
+	case treebank_feature::k3: return "k3";
+	case treebank_feature::num_pairs_independent_edges: return "size_Q";
+	case treebank_feature::headedness: return "headedness";
+	case treebank_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
+	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
+	case treebank_feature::C: return "C";
+	case treebank_feature::C_exp_1: return "C_exp_1";
+	case treebank_feature::C_exp_2: return "C_exp_2";
+	case treebank_feature::C_var: return "C_var";
+	case treebank_feature::C_z: return "C_z";
+	case treebank_feature::D: return "D";
+	case treebank_feature::D_exp_1: return "D_exp_1";
+	case treebank_feature::D_exp_2: return "D_exp_2";
+	case treebank_feature::D_var: return "D_var";
+	case treebank_feature::D_z: return "D_z";
+	case treebank_feature::Dmin_Unconstrained: return "Dmin_Unconstrained";
+	case treebank_feature::Dmin_Planar: return "Dmin_Planar";
+	case treebank_feature::Dmin_Projective: return "Dmin_Projective";
+	case treebank_feature::max_flux_weight: return "max_flux_weight";
+	case treebank_feature::mean_flux_weight: return "mean_flux_weight";
+	case treebank_feature::min_flux_weight: return "min_flux_weight";
+	case treebank_feature::max_left_span: return "max_left_span";
+	case treebank_feature::mean_left_span: return "mean_left_span";
+	case treebank_feature::min_left_span: return "min_left_span";
+	case treebank_feature::max_right_span: return "max_right_span";
+	case treebank_feature::mean_right_span: return "mean_right_span";
+	case treebank_feature::min_right_span: return "min_right_span";
+	case treebank_feature::max_RL_ratio: return "max_RL_ratio";
+	case treebank_feature::mean_RL_ratio: return "mean_RL_ratio";
+	case treebank_feature::min_RL_ratio: return "min_RL_ratio";
+	case treebank_feature::max_WS_ratio: return "max_WS_ratio";
+	case treebank_feature::mean_WS_ratio: return "mean_WS_ratio";
+	case treebank_feature::min_WS_ratio: return "min_WS_ratio";
+	case treebank_feature::max_size: return "max_size";
+	case treebank_feature::mean_size: return "mean_size";
+	case treebank_feature::min_size: return "min_size";
+	case treebank_feature::__last_value: return "__last_value";
 	}
 	// should never happen
 	return "???";
 }
 
-#define index_of(_X_) static_cast<size_t>(TBPROC_TF::_X_)
-#define n_idx index_of(n)
+#define index_of(_X_) static_cast<size_t>(treebank_feature::_X_)
+#define n_idx index_of(num_nodes)
 #define k2_idx index_of(k2)
 #define k3_idx index_of(k3)
-#define size_Q_idx index_of(size_Q)
+#define size_Q_idx index_of(num_pairs_independent_edges)
 #define headedness_idx index_of(headedness)
 #define mean_hierarchical_distance_idx index_of(mean_hierarchical_distance)
 #define mean_dependency_distance_idx index_of(mean_dependency_distance)
@@ -250,7 +249,7 @@ tree_feature_string(const treebank_dataset_processor::tree_feature& tf) {
 
 // CLASS METHODS
 
-treebank_dataset_processor::processor_error treebank_dataset_processor::init
+treebank_error treebank_dataset_processor::init
 (const string& file, const string& odir, bool all_fs, size_t nt) noexcept
 {
 	m_num_threads = nt;
@@ -261,17 +260,17 @@ treebank_dataset_processor::processor_error treebank_dataset_processor::init
 	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 
 	if (not filesystem::exists(m_main_file)) {
-		return processor_error::main_file_does_not_exist;
+		return treebank_error::main_file_does_not_exist;
 	}
 
 	// make sure output directory exists
 	if (m_out_dir != "." and not filesystem::exists(m_out_dir))
-	{ return processor_error::output_directory_does_not_exist; }
+	{ return treebank_error::output_directory_does_not_exist; }
 
-	return processor_error::no_error;
+	return treebank_error::no_error;
 }
 
-treebank_dataset_processor::processor_error
+treebank_error
 treebank_dataset_processor::process
 (const string& res, bool Remove)
 noexcept
@@ -280,7 +279,7 @@ noexcept
 
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
-	{ return processor_error::no_features; }
+	{ return treebank_error::no_features; }
 
 	// Stream object to read the main file.
 	ifstream main_file_reader(m_main_file);
@@ -311,12 +310,12 @@ noexcept
 				const auto err =
 				process_treebank(full_path.string(), treebank_name);
 
-				if (err != dataset_error::no_error) {
+				if (err != treebank_error::no_error) {
 					#pragma omp critical
 					{
 					m_errors_from_processing.push_back(
 						make_tuple(
-							processor_error::treebank_file_could_not_be_opened,
+							treebank_error::treebank_file_could_not_be_opened,
 							full_path.string(),
 							treebank_name
 						)
@@ -335,8 +334,8 @@ noexcept
 
 	return
 	(m_errors_from_processing.size() > 0 ?
-		processor_error::some_treebank_file_failed :
-		processor_error::no_error
+		treebank_error::some_treebank_file_failed :
+		treebank_error::no_error
 	);
 }
 
@@ -368,7 +367,7 @@ const noexcept
 			if (m_what_fs[i]) {
 				output_together
 					<< m_separator
-					<< tree_feature_string(static_cast<tree_feature>(i));
+					<< treebank_feature_to_string(static_cast<treebank_feature>(i));
 			}
 		}
 		output_together << endl;
@@ -416,7 +415,7 @@ const noexcept
 	output_together.close();
 }
 
-dataset_error treebank_dataset_processor::process_treebank
+treebank_error treebank_dataset_processor::process_treebank
 (const string& treebank_filename, const string& treebank_name)
 noexcept
 {
@@ -435,7 +434,7 @@ noexcept
 	treebank_reader tbread;
 	{
 	const auto err = tbread.init(treebank_filename, treebank_name);
-	if (err != dataset_error::no_error) {
+	if (err != treebank_error::no_error) {
 		if (m_be_verbose >= 2) {
 			#pragma omp critical
 			{
@@ -463,12 +462,12 @@ noexcept
 		// find the first feature
 		while (not m_what_fs[i]) { ++i; }
 
-		out_lang_file << tree_feature_string(static_cast<tree_feature>(i));
+		out_lang_file << treebank_feature_to_string(static_cast<treebank_feature>(i));
 		for (; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
 				out_lang_file
 					<< m_separator
-					<< tree_feature_string(static_cast<tree_feature>(i));
+					<< treebank_feature_to_string(static_cast<treebank_feature>(i));
 			}
 		}
 		out_lang_file << endl;
@@ -477,8 +476,8 @@ noexcept
 	// process the current treebank
 	rooted_tree rT;
 	while (tbread.has_tree()) {
-		dataset_error err = tbread.next_tree();
-		if (err == dataset_error::empty_line) {
+		treebank_error err = tbread.next_tree();
+		if (err == treebank_error::empty_line) {
 			// empty line, skip...
 		}
 		else {
@@ -497,7 +496,7 @@ noexcept
 		}
 	}
 
-	return dataset_error::no_error;
+	return treebank_error::no_error;
 }
 
 // PRIVATE
@@ -512,8 +511,8 @@ const
 
 	// -----------------------------------------------------------
 	// compute features in a way that does not repeat computations
-	double props[NUM_TREE_FEATURES]{0.0};
-	bool prop_set[NUM_TREE_FEATURES]{false};
+	double props[__treebank_feature_size]{0.0};
+	bool prop_set[__treebank_feature_size]{false};
 
 	const auto set_prop =
 	[&](size_t idx, double val) -> void {

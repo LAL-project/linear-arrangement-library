@@ -55,7 +55,7 @@ namespace io {
 
 // MODIFIERS
 
-dataset_error treebank_reader::init
+treebank_error treebank_reader::init
 (const string& file, const string& lang) noexcept {
 	m_treebank.close();
 	m_treebank_identifier = lang;
@@ -63,18 +63,18 @@ dataset_error treebank_reader::init
 
 	m_treebank.open(m_treebank_file.c_str());
 	if (not m_treebank.is_open()) {
-		return dataset_error::treebank_could_not_be_opened;
+		return treebank_error::treebank_file_could_not_be_opened;
 	}
-	return dataset_error::no_error;
+	return treebank_error::no_error;
 }
 
-dataset_error treebank_reader::next_tree() noexcept {
+treebank_error treebank_reader::next_tree() noexcept {
 	getline(m_treebank, m_file_line);
 	if (m_file_line.length() == 1) {
 		// line is probably empty...
 		if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
 			// line is certainly empty
-			return dataset_error::empty_line;
+			return treebank_error::empty_line;
 		}
 	}
 
@@ -84,7 +84,7 @@ dataset_error treebank_reader::next_tree() noexcept {
 	// returns true when it has to.
 	m_treebank.peek();
 
-	return dataset_error::no_error;
+	return treebank_error::no_error;
 }
 
 // GETTERS

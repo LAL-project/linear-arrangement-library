@@ -48,8 +48,8 @@
 
 // lal includes
 #include <lal/definitions.hpp>
-#include <lal/io/dataset_error.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/io/treebank_error.hpp>
 
 namespace lal {
 namespace io {
@@ -118,11 +118,11 @@ public:
 	 * @brief Initialises the treebank reader
 	 * @param file Treebank file.
 	 * @param identifier Identifier string for the treebank.
-	 * @return If any error occurred, returns its type.
+	 * @returns The type of the error, if any.
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
-	dataset_error init
+	treebank_error init
 	(const std::string& file, const std::string& identifier = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
@@ -130,11 +130,13 @@ public:
 
 	/**
 	 * @brief Retrieves the next tree in the file.
-	 * @return In case the function returns @ref dataset_error::empty_line
+	 *
+	 * In case the function returns @ref lal::io::treebank_error::empty_line
 	 * method @ref get_tree should not be called.
+	 * @returns A value of lal::io::treebank_error.
 	 * @post Increments the amount of trees found.
 	 */
-	dataset_error next_tree() noexcept;
+	treebank_error next_tree() noexcept;
 
 	// GETTERS
 

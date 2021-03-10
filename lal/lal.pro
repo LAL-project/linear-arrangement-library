@@ -108,11 +108,12 @@ HEADERS += \
 	io/edge_list.hpp \
 	io.hpp \
 	io/basic_output.hpp \
-	io/dataset_error.hpp \
 	io/head_vector.hpp \
+	io/treebank_reader.hpp \
 	io/treebank_dataset_processor.hpp \
 	io/treebank_dataset_reader.hpp \
-	io/treebank_reader.hpp \
+	io/treebank_error.hpp \
+	io/treebank_feature.hpp \
 	iterators.hpp \
 	iterators/E_iterator.hpp \
 	iterators/Q_iterator.hpp \
@@ -181,8 +182,8 @@ SOURCES += \
 	internal/graphs/trees/Dmin_Unconstrained_YS.cpp \
 	io/edge_list.cpp \
     io/head_vector.cpp \
-    io/treebank_dataset_processor.cpp \
-    io/treebank_dataset_reader.cpp \
+	io/treebank_dataset_processor.cpp \
+	io/treebank_dataset_reader.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \

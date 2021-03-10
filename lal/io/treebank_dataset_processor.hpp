@@ -38,7 +38,7 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
@@ -51,7 +51,8 @@
 #include <array>
 
 // lal includes
-#include <lal/io/dataset_error.hpp>
+#include <lal/io/treebank_error.hpp>
+#include <lal/io/treebank_feature.hpp>
 
 namespace lal {
 namespace io {
@@ -107,7 +108,7 @@ namespace io {
  * Also, users can indicate via an optional Boolean parameter whether the individual
  * files are to be removed or not.
  *
- * Method @ref process returns a value of the enumeration @ref processor_error.
+ * Method @ref process returns a value of the enumeration @ref treebank_error.
  * Further errors can be checked via methods @ref get_num_processor_errors,
  * @ref get_error_type, @ref get_error_treebank_filename, @ref get_error_treebank_name.
  *
@@ -126,313 +127,19 @@ namespace io {
  */
 class treebank_dataset_processor {
 public:
-	/// Features that can be computed for each tree.
-	enum class tree_feature {
-		/// Number of nodes of the tree.
-		n = 0,
-		/**
-		 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
-		 *
-		 * See @ref lal::properties::mmt_degree for details.
-		 */
-		k2,
-		/**
-		 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
-		 *
-		 * See @ref lal::properties::mmt_degree for details.
-		 */
-		k3,
-		/**
-		 * @brief Size of the set \f$Q(T)\f$ of this tree \f$T\f$.
-		 *
-		 * See @ref lal::properties::size_Q for details.
-		 */
-		size_Q,
-		/**
-		 * @brief Headedness of the tree.
-		 *
-		 * See @ref lal::linarr::headedness for details.
-		 */
-		headedness,
-		/**
-		 * @brief Mean hierarchical distance of the tree.
-		 *
-		 * See @ref lal::properties::mean_hierarchical_distance for details.
-		 */
-		mean_hierarchical_distance,
-		/**
-		 * @brief Mean dependency distance of the tree.
-		 *
-		 * See @ref lal::linarr::mean_dependency_distance for details.
-		 */
-		mean_dependency_distance,
-		/**
-		 * @brief Number of edge crossings \f$C\f$.
-		 *
-		 * See @ref lal::linarr::algorithms_C for details.
-		 */
-
-		// C
-
-		C,
-		/**
-		 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
-		 *
-		 * See @ref lal::properties::expectation_C for details.
-		 */
-		C_exp_1,
-		/**
-		 * @brief Second moment of expectation of \f$C\f$, \f$E[C^2]\f$.
-		 *
-		 * This is calculated as \f$E[C^2]=V[C] + E[C]^2\f$. See
-		 * @ref lal::properties::variance_C_tree for details on how the variance
-		 * of \f$C\f$, \f$V[C]\f$, is calculated.
-		 */
-		C_exp_2,
-		/**
-		 * @brief Variance of \f$C\f$, \f$V[C]\f$.
-		 *
-		 * @ref lal::properties::variance_C_tree for details.
-		 */
-		C_var,
-		/**
-		 * @brief z-score of \f$C\f$, \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
-		 *
-		 * See @ref lal::properties::variance_C_tree for details on how the
-		 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
-		 */
-		C_z,
-		/**
-		 * @brief Sum of length of edges \f$D\f$.
-		 *
-		 * See @ref lal::linarr::sum_length_edges for details.
-		 */
-
-		// D
-
-		D,
-		/**
-		 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
-		 *
-		 * See @ref lal::properties::expectation_D for details.
-		 */
-		D_exp_1,
-		/**
-		 * @brief Second moment of expectation of \f$D\f$, \f$E[D^2]\f$.
-		 *
-		 * This is calculated as \f$E[D^2]=V[D] + E[D]^2\f$. See
-		 * @ref lal::properties::variance_D for details on how the variance
-		 * of \f$D\f$, \f$V[D]\f$, is calculated.
-		 */
-		D_exp_2,
-		/**
-		 * @brief Variance of \f$D\f$, \f$V[D]\f$.
-		 *
-		 * @ref lal::properties::variance_D for details.
-		 */
-		D_var,
-		/**
-		 * @brief z-score of \f$D\f$, \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
-		 *
-		 * See @ref lal::properties::variance_D for details on how the
-		 * variance of \f$D\f$, \f$V[D]\f$, is calculated.
-		 */
-		D_z,
-		/**
-		 * @brief Unconstrained minimum sum of length of edges.
-		 *
-		 * See @ref lal::linarr::algorithms_Dmin::Unconstrained_YS, or
-		 * @ref lal::linarr::algorithms_Dmin::Unconstrained_FC for details.
-		 */
-		Dmin_Unconstrained,
-		/**
-		 * @brief Minimum sum of length of edges under the planary constraint.
-		 *
-		 * See @ref lal::linarr::algorithms_Dmin::Planar for details.
-		 */
-		Dmin_Planar,
-		/**
-		 * @brief Minimum sum of length of edges under the planary constraint.
-		 *
-		 * See @ref lal::linarr::algorithms_Dmin::Projective for details.
-		 */
-		Dmin_Projective,
-
-		// FLUXES
-
-		/**
-		 * @brief Maximum flux weight.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_flux_weight,
-		/**
-		 * @brief Mean flux weight.
-		 *
-		 * This is the sum of weights averaged by the number of fluxes (the number
-		 * of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of weight.
-		 */
-		mean_flux_weight,
-		/**
-		 * @brief Minimum flux weight.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		min_flux_weight,
-
-		/**
-		 * @brief Maximum left span.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_left_span,
-		/**
-		 * @brief Mean left span.
-		 *
-		 * This is the sum of left spans averaged by the number of fluxes (the
-		 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of left span.
-		 */
-		mean_left_span,
-		/**
-		 * @brief Minimum left span.
-		 *
-		 * See @ref linarr::dependency_flux for details.
-		 */
-		min_left_span,
-
-		/**
-		 * @brief Maximum right span.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_right_span,
-		/**
-		 * @brief Mean right span.
-		 *
-		 * This is the sum of right spans averaged by the number of fluxes (the
-		 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of right span.
-		 */
-		mean_right_span,
-		/**
-		 * @brief Minimum right span.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		min_right_span,
-
-		/**
-		 * @brief Maximum flux size.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_size,
-		/**
-		 * @brief Mean flux size.
-		 *
-		 * This is the sum of flux sizes averaged by the number of fluxes (the
-		 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of flux size.
-		 */
-		mean_size,
-		/**
-		 * @brief Minimum flux size.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		min_size,
-
-		/**
-		 * @brief Maximum R/L ratio.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_RL_ratio,
-		/**
-		 * @brief Mean R/L ratio.
-		 *
-		 * This is the sum of R/L ratios averaged by the number of fluxes (the
-		 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of R/L ratio.
-		 */
-		mean_RL_ratio,
-		/**
-		 * @brief Minimum R/L ratio.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		min_RL_ratio,
-
-		/**
-		 * @brief Maximum W/S ratio.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		max_WS_ratio,
-		/**
-		 * @brief Mean W/S ratio.
-		 *
-		 * This is the sum of W/S ratios averaged by the number of fluxes (the
-		 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-		 * for details on the definition of W/S ratio.
-		 */
-		mean_WS_ratio,
-		/**
-		 * @brief Minimum W/S ratio.
-		 *
-		 * See @ref lal::linarr::dependency_flux for details.
-		 */
-		min_WS_ratio,
-
-
-		/**
-		 * @brief The last value of the enumeration.
-		 *
-		 * This is used for internal purposes only.
-		 */
-		__last_value
-	};
-
-	/**
-	 * @brief Possible errors that can arise while processing a dataset.
-	 *
-	 * There are several reasons why a dataset could not be processed.
-	 * Because of this, the method @ref process will return a value
-	 * describing what went wrong.
-	 *
-	 * Some of these errors are common to @ref dataset_error.
-	 */
-	enum class processor_error {
-		/// The dataset was processed successfully.
-		no_error,
-		/// Main file could not be found.
-		main_file_does_not_exist,
-		/// Output directory could not be found.
-		output_directory_does_not_exist,
-		/// A treebank file could not be opened.
-		treebank_file_could_not_be_opened,
-		/// No features at all were given to the processor.
-		no_features,
-		/// Processing one or more of the treebanks failed.
-		some_treebank_file_failed
-	};
-
-public:
 	// MODIFIERS
 
 	/**
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
 	 */
-	void add_feature(const tree_feature& fs) noexcept
+	void add_feature(const treebank_feature& fs) noexcept
 	{ m_what_fs[ static_cast<size_t>(fs) ] = true; }
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
-	void remove_feature(const tree_feature& fs) noexcept
+	void remove_feature(const treebank_feature& fs) noexcept
 	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
 
 	// SETTERS
@@ -475,22 +182,27 @@ public:
 	{ return m_errors_from_processing.size(); }
 
 	/**
-	 * @brief Get the @e ith error. This is a value of the enumeration @ref processor_error.
+	 * @brief Get the @e ith error.
 	 * @param i The index of the error, an unsigned integer.
+	 * @returns A value of the enumeration @ref lal::io::treebank_error.
 	 */
-	processor_error get_error_type(size_t i) const noexcept
+	treebank_error get_error_type(size_t i) const noexcept
 	{ return std::get<0>(m_errors_from_processing[i]); }
 
 	/**
-	 * @brief Get the treebank's file name for which the @e ith error happened.
+	 * @brief Get the treebank's file name where the @e ith error happened.
 	 * @param i The index of the error, an unsigned integer.
+	 * @returns The name of the treebank file where the @e i-th error happened
+	 * as a string.
 	 */
 	const std::string& get_error_treebank_filename(size_t i) const noexcept
 	{ return std::get<1>(m_errors_from_processing[i]); }
 
 	/**
-	 * @brief Get the treebank's name for which the @e ith error happened.
+	 * @brief Get the treebank's name for where  the @e ith error happened.
 	 * @param i The index of the error, an unsigned integer.
+	 * @returns The name of the treebank where the @e i-th error happened
+	 * as a string.
 	 */
 	const std::string& get_error_treebank_name(size_t i) const noexcept
 	{ return std::get<2>(m_errors_from_processing[i]); }
@@ -507,7 +219,7 @@ public:
 	 * @param all_fs Should the feature list contain all possible features?
 	 * @param n_threads Number of threads to use in a parallel application.
 	 */
-	processor_error init(
+	treebank_error init(
 		const std::string& file,
 		const std::string& odir,
 		bool all_fs,
@@ -520,7 +232,7 @@ public:
 	 *
 	 * This method produces the information as explained in this class'
 	 * description. However, it may fail to do so. In this case it will return
-	 * a value different from @ref processor_error::no_error.
+	 * a value different from @ref lal::io::treebank_error::no_error.
 	 *
 	 * This function uses attributes @ref m_separator, @ref m_output_header to
 	 * format the output data. It also outputs the current progress if
@@ -534,7 +246,7 @@ public:
 	 * @returns A value describing the error (if any) that may have occurred
 	 * while processing the dataset. If any error ocurred, see methods
 	 */
-	processor_error process(
+	treebank_error process(
 		const std::string& res = "",
 		bool remove = true
 	) noexcept;
@@ -561,12 +273,8 @@ private:
 	size_t m_num_threads = 1;
 
 	/// Set of errors resulting from processing the treebank dataset.
-	std::vector<std::tuple<processor_error, std::string, std::string>>
+	std::vector<std::tuple<treebank_error, std::string, std::string>>
 	m_errors_from_processing;
-
-	/// The total number of features available.
-	static constexpr size_t NUM_TREE_FEATURES =
-		static_cast<size_t>(tree_feature::__last_value);
 
 private:
 	/**
@@ -584,7 +292,7 @@ private:
 	void process_tree(const TREE& rT, OUT_STREAM& out_lab_file) const;
 
 	/// Processes a single treebank.
-	dataset_error process_treebank
+	treebank_error process_treebank
 	(const std::string& treebank_filename, const std::string& treebank_name)
 	noexcept;
 
@@ -595,7 +303,7 @@ private:
 	std::string m_main_file = "none";
 	
 	/// The list of features to be computed.
-	std::array<bool, NUM_TREE_FEATURES> m_what_fs;
+	std::array<bool, __treebank_feature_size> m_what_fs;
 };
 
 } // -- namespace io

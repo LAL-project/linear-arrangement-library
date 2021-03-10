@@ -54,15 +54,23 @@ namespace io {
  * Because of this, certain methods return one of these values instead
  * of a plain 'false' value.
  */
-enum class dataset_error {
+enum class treebank_error {
 	/// No error.
 	no_error,
+
 	/// Main file does not exist.
 	main_file_does_not_exist,
 	/// A treebank file could not be opened.
-	treebank_could_not_be_opened,
+	treebank_file_could_not_be_opened,
 	/// The reader found an empty line.
-	empty_line
+	empty_line,
+
+	/// No features at all were given to the processor.
+	no_features,
+	/// Processing one or more of the treebanks failed.
+	some_treebank_file_failed,
+	/// Output directory could not be found.
+	output_directory_does_not_exist,
 };
 
 } // -- namespace io

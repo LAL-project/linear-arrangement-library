@@ -45,7 +45,7 @@
 #include <string>
 
 // lal includes
-#include <lal/io/dataset_error.hpp>
+#include <lal/io/treebank_error.hpp>
 #include <lal/io/treebank_reader.hpp>
 
 namespace lal {
@@ -141,17 +141,17 @@ public:
 	 * @param main_file Main file of the dataset.
 	 * @return If any occurred then returns its type.
 	 */
-	dataset_error init(const std::string& main_file) noexcept;
+	treebank_error init(const std::string& main_file) noexcept;
 
 	/// Returns whether there is a next treebank to be read.
-	bool has_treebank() const noexcept { return m_cur_treebank_name != "none"; }
+	bool has_treebank() const noexcept { return not m_reached_end; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
 	 * @return In case of error, returns a value different from
-	 * dataset_error::none.
+	 * lal::io::treebank_error::none.
 	 */
-	dataset_error next_treebank() noexcept;
+	treebank_error next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
 	treebank_reader& get_treebank_reader() noexcept { return m_treebank_reader; }
@@ -176,6 +176,9 @@ private:
 	/// Object to process a language's treebank.
 	treebank_reader m_treebank_reader;
 
+	/// Has this treebank dataset reader reached the end?
+	bool m_reached_end = false;
+
 private:
 	/// Consumes one line of the main file @ref m_main_file.
 	void step_line() noexcept {
@@ -183,6 +186,7 @@ private:
 			// do nothing, there are more trees
 		}
 		else {
+			m_reached_end = true;
 			m_cur_treebank_name = m_cur_treebank_filename = "none";
 		}
 	}

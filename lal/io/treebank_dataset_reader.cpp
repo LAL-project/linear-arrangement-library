@@ -48,37 +48,38 @@ using namespace std;
 namespace lal {
 namespace io {
 
-dataset_error treebank_dataset_reader::init(const string& main_file) noexcept
+treebank_error treebank_dataset_reader::init(const string& main_file) noexcept
 {
 	// close current dataset (if any)
 	m_list.close();
+	m_reached_end = false;
 
 	m_main_file = main_file;
 	if (not filesystem::exists(m_main_file)) {
-		return dataset_error::main_file_does_not_exist;
+		return treebank_error::main_file_does_not_exist;
 	}
 
 	// open new dataset and read the first line
 	m_list.open(m_main_file);
 	step_line();
 
-	return dataset_error::no_error;
+	return treebank_error::no_error;
 }
 
-dataset_error treebank_dataset_reader::next_treebank() noexcept {
+treebank_error treebank_dataset_reader::next_treebank() noexcept {
 	// build path to treebank file
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
-	const dataset_error dserr =
+	const treebank_error dserr =
 		m_treebank_reader.init(M.string(), m_cur_treebank_name);
 
-	if (dserr != dataset_error::no_error) {
+	if (dserr != treebank_error::no_error) {
 		return dserr;
 	}
 
 	step_line();
-	return dataset_error::no_error;
+	return treebank_error::no_error;
 }
 
 } // -- namespace io
