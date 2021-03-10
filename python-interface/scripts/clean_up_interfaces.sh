@@ -21,6 +21,8 @@ sed -i 's/: \"rooted_tree\"//g' $f
 sed -i 's/: \"undirected_graph\"//g' $f
 sed -i 's/: \"directed_graph\"//g' $f
 
+sed -i 's/: \"lal.io.treebank_feature const &\"//g' $f
+
 sed -i 's/: \"std::size_t const &\"//g' $f
 sed -i 's/: \"std::size_t const\"//g' $f
 sed -i 's/: \"std::size_t\"//g' $f

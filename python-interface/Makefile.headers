@@ -2,7 +2,9 @@ ifeq ($(ENVIR),devel)
 
 # ENUMERATIONS
 
-DSE_DPHDRS			= $(LAL_INC_DIR)/lal/io/dataset_error.hpp
+TREEBANK_ERR_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_error.hpp
+
+TREEBANK_FEATURE_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_feature.hpp
 
 TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure_type.hpp
 
@@ -45,7 +47,7 @@ GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
 
 IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
-					  $(DSE_DPHDRS) \
+					  $(TREEBANK_ERR_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/treebank_dataset_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_dataset_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
@@ -95,8 +97,8 @@ VERSION_DPHDRS		= $(LAL_INC_DIR)/lal/lal_version.hpp
 
 else
 
-LAL_DPHDRS			=
-DSE_DPHDRS			=
+TREEBANK_ERR_DPHDRS	=
+TREEBANK_FEATURE_DPHDRS	=
 TREE_STR_DPHDRS		=
 ALG_C_DPHDRS		=
 ALG_DMIN_DPHDRS		=

@@ -6,20 +6,37 @@
 # ------------
 # ENUMERATIONS
 
-# dataset_error module
-$(DSE_INSTALL_SO_FILE): $(DSE_WRAP).o $(LIBRARY_SHARED_DEP)
+# treebank_error module
+$(TREEBANK_ERR_INSTALL_SO_FILE): $(TREEBANK_ERR_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(DSE_WRAP).o: $(DSE_WRAP).cxx
+$(TREEBANK_ERR_WRAP).o: $(TREEBANK_ERR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(DSE_WRAP).cxx: $(DSE_MOD_DEPS) $(DSE_MAIN_INT)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DSE_WRAP).cxx $(DSE_MAIN_INT)
-	scripts/postprocess_interface_file.sh $(DSE_INSTALL_PY_FILE) | sed "s/^/    /g"
+$(TREEBANK_ERR_WRAP).cxx: $(TREEBANK_ERR_MOD_DEPS) $(TREEBANK_ERR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREEBANK_ERR_WRAP).cxx $(TREEBANK_ERR_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(TREEBANK_ERR_INSTALL_PY_FILE) | sed "s/^/    /g"
 
-$(DSE_INSTALL_PY_FILE): $(DSE_MOD_DEPS) $(DSE_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(DSE_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DSE_WRAP).cxx $(DSE_MAIN_INT)
+$(TREEBANK_ERR_INSTALL_PY_FILE): $(TREEBANK_ERR_MOD_DEPS) $(TREEBANK_ERR_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(TREEBANK_ERR_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREEBANK_ERR_WRAP).cxx $(TREEBANK_ERR_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(DSE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(TREEBANK_ERR_MAIN_INT)
+endif
+	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
+
+# treebank_feature module
+$(TREEBANK_FEATURE_INSTALL_SO_FILE): $(TREEBANK_FEATURE_WRAP).o $(LIBRARY_SHARED_DEP)
+	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
+$(TREEBANK_FEATURE_WRAP).o: $(TREEBANK_FEATURE_WRAP).cxx
+	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
+$(TREEBANK_FEATURE_WRAP).cxx: $(TREEBANK_FEATURE_MOD_DEPS) $(TREEBANK_FEATURE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREEBANK_FEATURE_WRAP).cxx $(TREEBANK_FEATURE_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(TREEBANK_FEATURE_INSTALL_PY_FILE) | sed "s/^/    /g"
+
+$(TREEBANK_FEATURE_INSTALL_PY_FILE): $(TREEBANK_FEATURE_MOD_DEPS) $(TREEBANK_FEATURE_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(TREEBANK_FEATURE_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TREEBANK_FEATURE_WRAP).cxx $(TREEBANK_FEATURE_MAIN_INT)
+else
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(TREEBANK_FEATURE_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 

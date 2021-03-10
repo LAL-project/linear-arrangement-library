@@ -4,12 +4,14 @@
 
 %import definitions.i
 %import graphs.i
-%import enums/dataset_error.i
+%import enums/treebank_error.i
+%import enums/treebank_feature.i
 
 %include documentation.i
 
 %{
 
+// C++ includes
 #include <optional>
 
 // lal includes
@@ -17,47 +19,47 @@
 #include <lal/io.hpp>
 
 template<class T>
-struct LAL__optional {
+struct _optional {
 	std::optional<T> m_opt;
 	inline bool has_contents() const noexcept { return (m_opt ? true : false); }
 	inline T contents() const noexcept { return *m_opt; }
 };
 
-template<class T> LAL__optional<T> read_edge_list
+template<class T> _optional<T> read_edge_list
 (const std::string& filename, bool norm = true, bool check = true) {
-	LAL__optional<T> r;
+	_optional<T> r;
 	r.m_opt = lal::io::read_edge_list<T>(filename, norm, check);
 	return r;
 }
 
-template<class T> LAL__optional<T> read_head_vector
+template<class T> _optional<T> read_head_vector
 (const std::string& filename, bool norm = true, bool check = true) {
-	LAL__optional<T> r;
+	_optional<T> r;
 	r.m_opt = lal::io::read_head_vector<T>(filename, norm, check);
 	return r;
 }
 
 %}
 
-/* ---------- WRAP LAL__optional ------------- */
+/* ---------- WRAP _optional ------------- */
 
 template<class T>
-struct LAL__optional {
+struct _optional {
 	std::optional<T> m_opt;
 	bool has_contents() const noexcept { return (m_opt ? true : false); }
 	T contents() const noexcept { return *m_opt; }
 };
 
-// ---------- INSTANTIATE LAL__optional
+// ---------- INSTANTIATE _optional
 
-%template(LAL__optional_directed_graph) LAL__optional<lal::graphs::directed_graph>;
-%template(LAL__optional_undirected_graph) LAL__optional<lal::graphs::undirected_graph>;
-%template(LAL__optional_free_tree) LAL__optional<lal::graphs::free_tree>;
-%template(LAL__optional_rooted_tree) LAL__optional<lal::graphs::rooted_tree>;
+%template(_optional_directed_graph) _optional<lal::graphs::directed_graph>;
+%template(_optional_undirected_graph) _optional<lal::graphs::undirected_graph>;
+%template(_optional_free_tree) _optional<lal::graphs::free_tree>;
+%template(_optional_rooted_tree) _optional<lal::graphs::rooted_tree>;
 
 /* ---------- WRAP read_edge_list ------------- */
 
-template<class T> LAL__optional<T> read_edge_list
+template<class T> _optional<T> read_edge_list
 (const std::string& filename, bool norm = true, bool check = true);
 
 // ---------- INSTANTIATE read_edge_list
@@ -113,7 +115,7 @@ def read_edge_list(gtype, filename, norm = True, check = True):
 
 /* ---------- WRAP read_head_vector ------------- */
 
-template<class T> LAL__optional<T> read_head_vector
+template<class T> _optional<T> read_head_vector
 (const std::string& filename, bool norm = true, bool check = true);
 
 // ---------- INSTANTIATE read_head_vector
@@ -183,10 +185,6 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 %include "../lal/io/treebank_dataset_processor.hpp"
 
 
-
-
-
-
 %pythoncode %{
 
 __definitions = definitions
@@ -196,95 +194,4 @@ del definitions
 del graphs
 del tree_type
 
-# In this piece of code we modify class "treebank_dataset_processor".
-# Remember: "treebank_dataset_processor" is the automatic processing
-# of a dataset.
-#
-# In this piece of code we create two subclasses for this class,
-# one for each enumeration it has: "tree_feature" and "processor_error".
-# As created by SWIG, class "treebank_dataset_processor" has attributes of the
-# form:
-# 		treebank_dataset_processor.processor_error_none
-# 		treebank_dataset_processor.processor_error_missing_parent
-# 		treebank_dataset_processor.processor_error_missing_main
-# 		....
-# and also
-# 		treebank_dataset_processor.tree_feature_n
-# 		treebank_dataset_processor.tree_feature_k2
-# 		treebank_dataset_processor.tree_feature_k3
-# 		....
-# Our aim in this piece of code is to make two subclasses so that the
-# values of the enumerations "tree_feature" and "processor_error"
-# are members of classes, namely, we want class "treebank_dataset_processor"
-# to be usable in this way:
-# 		treebank_dataset_processor.processor_error.none
-# 		treebank_dataset_processor.processor_error.missing_parent
-# 		treebank_dataset_processor.processor_error.missing_main
-# 		....
-# and also
-# 		treebank_dataset_processor.tree_feature.n
-# 		treebank_dataset_processor.tree_feature.k2
-# 		treebank_dataset_processor.tree_feature.k3
-# 		....
-
-
-# -------------------
-# Make the subclasses
-#     Note: since 'processor_error' and 'tree_feature' have effectively
-#     been turned into actual python classes, they will have a mro() method.
-
-class processor_error:
-	__dummy_attr = 0
-
-class tree_feature:
-	__dummy_attr = 0
-
-# --------------------------------------------
-# add the enumaration values to the subclasses
-tbpr = treebank_dataset_processor
-
-# processor_error
-prerr_enum_vals = list(filter(lambda k: k.find("processor_error_") == 0, tbpr.__dict__.keys()))
-for enval_name in prerr_enum_vals:
-	# make new enumeration value name
-	new_enval_name = enval_name[len("processor_error_"):]
-	# set attribute to class "processor_error"
-	setattr(processor_error, new_enval_name, getattr(tbpr, enval_name))
-	# delete enumeration value from "treebank_dataset_processor"
-	delattr(tbpr, enval_name)
-
-# tree_features
-tf_enum_vals = list(filter(lambda k: k.find("tree_feature_") == 0, tbpr.__dict__.keys()))
-for enval_name in tf_enum_vals:
-	# make new enumeration value name
-	new_enval_name = enval_name[len("tree_feature_"):]
-	# set attribute to class "tree_feature"
-	setattr(tree_feature, new_enval_name, getattr(tbpr, enval_name))
-	# delete enumeration value from "treebank_dataset_processor"
-	delattr(tbpr, enval_name)
-
-# -------------------------------------------
-# clean up dummy attributes of the subclasses
-delattr(processor_error, "_processor_error__dummy_attr")
-delattr(tree_feature, "_tree_feature__dummy_attr")
-
-# -----------------------------------------
-# make "processor_error" and "tree_feature"
-# attributes of class "treebank_dataset_processor"
-
-# set the subclasses
-setattr(tbpr, "processor_error", processor_error)
-setattr(tbpr, "tree_feature", tree_feature)
-
-# ------------------------
-# clean up local variables
-
-del tbpr
-del prerr_enum_vals, tf_enum_vals
-del enval_name
-del new_enval_name
-
-# even the classes!
-del processor_error
-del tree_feature
 %}
