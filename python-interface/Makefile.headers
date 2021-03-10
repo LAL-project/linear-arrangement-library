@@ -14,8 +14,7 @@ ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
 
 # DEFINITIONS
 
-DEFINITIONS_DPHDRS	= $(LAL_INC_DIR)/lal/definitions.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure_type.hpp
+DEFINITIONS_DPHDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
 
 # NAMESPACES
 
@@ -32,16 +31,16 @@ GENERATE_DPHDRS		= $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/tree_gen.hpp \
 					  $(LAL_INC_DIR)/lal/generate.hpp
 
-GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
+GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/free_tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/output.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/rooted_tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
 					  $(LAL_INC_DIR)/lal/graphs/tree_type.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
 					  $(TREE_TYPE_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp \
 					  $(LAL_INC_DIR)/lal/graphs.hpp
 
 IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \

@@ -40,12 +40,11 @@ else
 	echo -e "\e[1;1;32mClean up documentation.i\e[0m"
 	scripts/clean_up_documentationi.sh | sed "s/^/    /g"
 	
-	####################################################################
-	
-	echo -e "\e[1;1;32mGenerating the Python interfaces only...\e[0m"
-	echo -e "\e[1;1;33m    Release\e[0m"
-	make BUILD=release python_interfaces | sed "s/^/        /g"
-	echo -e "\e[1;1;33m    Debug\e[0m"
-	make BUILD=debug python_interfaces | sed "s/^/        /g"
+	if [ ! -z $2 ] && [ "$2" == "interface" ]; then
+		echo -e "\e[1;1;33m    Release\e[0m"
+		make BUILD=release python_interfaces | sed "s/^/        /g"
+		echo -e "\e[1;1;33m    Debug\e[0m"
+		make BUILD=debug python_interfaces | sed "s/^/        /g"
+	fi
 fi
 

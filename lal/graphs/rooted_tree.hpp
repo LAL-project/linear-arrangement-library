@@ -91,7 +91,7 @@ namespace graphs {
  *
  * The root allows defining further properties on these graphs. For example,
  * the user can query information regarding subtrees of a particular rooted tree
- * (see methods @ref n_nodes_subtree, @ref calculate_size_subtrees,
+ * (see methods @ref num_nodes_subtree, @ref calculate_size_subtrees,
  * @ref get_edges_subtree, and @ref get_subtree).
  *
  * This class allows flexibility of use of rooted trees regarding the root's
@@ -99,7 +99,7 @@ namespace graphs {
  * multiple times and at any time. However, any information dependent
  * on the root becomes invalid upon any change of the root. This information
  * includes, and may not be limited to, the type of rooted tree and the size
- * of the subtrees (see @ref n_nodes_subtree). For this reason, is is strongly
+ * of the subtrees (see @ref num_nodes_subtree). For this reason, is is strongly
  * recommended to build a free tree first and use the constructor
  * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted,
  * in order to build rooted trees.

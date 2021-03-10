@@ -63,8 +63,7 @@ public:
 	T *data = nullptr;
 
 private:
-	// the size of this array -- making this const forces
-	// users to use the non-empty constructor
+	// the size of this array in number of elements
 	std::size_t m_size;
 
 public:
@@ -139,11 +138,11 @@ public:
 		std::fill(&data[0], &data[m_size], v);
 	}
 
-	// non-constant pointer to first element and last+1 element
+	// pointer to non-constant first element and last+1 element
 	[[nodiscard]] inline T *begin() { return &data[0]; }
 	[[nodiscard]] inline T *end() { return &data[m_size]; }
 
-	// constant pointer to first element and last+1 element
+	// pointer to constant first element and last+1 element
 	[[nodiscard]] inline const T *begin() const { return &data[0]; }
 	[[nodiscard]] inline const T *end() const { return &data[m_size]; }
 };
