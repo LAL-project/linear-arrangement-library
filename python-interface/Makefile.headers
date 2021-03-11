@@ -48,9 +48,10 @@ GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
 IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
 					  $(TREEBANK_ERR_DPHDRS) \
-					  $(LAL_INC_DIR)/lal/io/treebank_dataset_processor.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_dataset_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_dataset_reader.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_dataset_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io.hpp
 
 ITERATORS_DPHDRS	= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \

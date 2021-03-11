@@ -182,6 +182,8 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset_reader.hpp"
+
+%include "../lal/io/treebank_processor.hpp"
 %include "../lal/io/treebank_dataset_processor.hpp"
 
 
