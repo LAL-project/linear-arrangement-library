@@ -50,27 +50,98 @@ namespace io {
 /**
  * @brief Possible errors that can arise while processing a dataset.
  *
- * There are several reasons why a dataset could not be processed.
- * Because of this, certain methods return one of these values instead
- * of a plain 'false' value.
+ * There are several reasons why a treebank dataset or a single treebank file
+ * could not be processed. Because of this, certain methods return one of these
+ * values instead of a plain 'false' value.
  */
 enum class treebank_error {
 	/// No error.
 	no_error,
 
-	/// Main file does not exist.
-	main_file_does_not_exist,
-	/// A treebank file could not be opened.
-	treebank_file_could_not_be_opened,
-	/// The reader found an empty line.
-	empty_line,
-
-	/// No features at all were given to the processor.
+	/**
+	 * @brief No features at all were given to the processor.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
 	no_features,
-	/// Processing one or more of the treebanks failed.
-	some_treebank_file_failed,
-	/// Output directory could not be found.
+
+	/**
+	 * @brief A treebank was not found in disk.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
+	treebank_file_does_not_exist,
+	/**
+	 * @brief A treebank file could not be opened.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_reader
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
+	treebank_file_could_not_be_opened,
+	/**
+	 * @brief An empty line in the file being processed.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_reader
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
+	empty_line_found,
+	/**
+	 * @brief Output file could not be opened.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
+	output_file_could_not_be_opened,
+
+	/**
+	 * @brief Main file does not exist.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_processor
+	 * - @ref lal::io::treebank_dataset_reader
+	 */
+	main_file_does_not_exist,
+	/**
+	 * @brief Main file could not be opened.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_reader
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
+	main_file_could_not_be_opened,
+	/**
+	 * @brief Output directory could not be found.
+	 *
+	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 */
 	output_directory_does_not_exist,
+	/**
+	 * @brief The file containing the result of processing a treebank dataset could not be opened.
+	 *
+	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 */
+	output_join_file_could_not_be_opened,
+	/**
+	 * @brief The resulting file of processing a treebank could not be opened
+	 *
+	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 */
+	treebank_result_file_could_not_be_opened,
+	/**
+	 * @brief Processing one or more of the treebanks failed.
+	 *
+	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 */
+	some_treebank_file_failed,
 };
 
 } // -- namespace io

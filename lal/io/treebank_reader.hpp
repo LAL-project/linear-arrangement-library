@@ -131,7 +131,7 @@ public:
 	/**
 	 * @brief Retrieves the next tree in the file.
 	 *
-	 * In case the function returns @ref lal::io::treebank_error::empty_line
+	 * In case the function returns @ref lal::io::treebank_error::empty_line_found
 	 * method @ref get_tree should not be called.
 	 * @returns A value of lal::io::treebank_error.
 	 * @post Increments the amount of trees found.

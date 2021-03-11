@@ -61,6 +61,10 @@ treebank_error treebank_dataset_reader::init(const string& main_file) noexcept
 
 	// open new dataset and read the first line
 	m_list.open(m_main_file);
+	if (not m_list.is_open()) {
+		return treebank_error::main_file_could_not_be_opened;
+	}
+
 	step_line();
 
 	return treebank_error::no_error;
@@ -73,7 +77,6 @@ treebank_error treebank_dataset_reader::next_treebank() noexcept {
 
 	const treebank_error dserr =
 		m_treebank_reader.init(M.string(), m_cur_treebank_name);
-
 	if (dserr != treebank_error::no_error) {
 		return dserr;
 	}

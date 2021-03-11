@@ -74,7 +74,7 @@ treebank_error treebank_reader::next_tree() noexcept {
 		// line is probably empty...
 		if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
 			// line is certainly empty
-			return treebank_error::empty_line;
+			return treebank_error::empty_line_found;
 		}
 	}
 

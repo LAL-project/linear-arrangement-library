@@ -109,6 +109,7 @@ HEADERS += \
 	io.hpp \
 	io/basic_output.hpp \
 	io/head_vector.hpp \
+	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
 	io/treebank_dataset_processor.hpp \
 	io/treebank_dataset_reader.hpp \
@@ -184,6 +185,7 @@ SOURCES += \
     io/head_vector.cpp \
 	io/treebank_dataset_processor.cpp \
 	io/treebank_dataset_reader.cpp \
+    io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \
 	linarr/C_approx.cpp \

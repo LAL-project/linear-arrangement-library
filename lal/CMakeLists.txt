@@ -166,17 +166,19 @@ target_sources(
 		io/basic_output.hpp
 		io/edge_list.hpp
 		io/head_vector.hpp
-		io/treebank_dataset_processor.hpp
-		io/treebank_dataset_reader.hpp
 		io/treebank_error.hpp
 		io/treebank_feature.hpp
 		io/treebank_reader.hpp
+		io/treebank_dataset_reader.hpp
+		io/treebank_processor.hpp
+		io/treebank_dataset_processor.hpp
 		# -- sources
 		io/edge_list.cpp
 		io/head_vector.cpp
-		io/treebank_dataset_processor.cpp
-		io/treebank_dataset_reader.cpp
 		io/treebank_reader.cpp
+		io/treebank_dataset_reader.cpp
+		io/treebank_processor.cpp
+		io/treebank_dataset_processor.cpp
 
 		# iterators namespace
 		# -- headers
@@ -361,12 +363,12 @@ set(LIBLAL_INTERNAL_HEADER
 set(LIBLAL_IO_HEADER
 	io/edge_list.hpp
 	io/head_vector.hpp
-	
-	io/treebank_dataset_processor.hpp
-	io/treebank_dataset_reader.hpp
 	io/treebank_error.hpp
 	io/treebank_feature.hpp
 	io/treebank_reader.hpp
+	io/treebank_dataset_reader.hpp
+	io/treebank_processor.hpp
+	io/treebank_dataset_processor.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/E_iterator.hpp

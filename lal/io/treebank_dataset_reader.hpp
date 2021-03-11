@@ -129,7 +129,8 @@ namespace io {
  *			// errors are not likely, but it is advisable to check for errors
  *			tbds.next_language();
  *			treebank_reader& tbread = tbds.get_treebank_reader();
- *			// ....
+ *			// here goes your custom processing of the treebank
+ *			// ...
  *		}
  * @endcode
  */
@@ -139,17 +140,19 @@ public:
 	/**
 	 * @brief Initialise the reader with a new dataset.
 	 * @param main_file Main file of the dataset.
-	 * @return If any occurred then returns its type.
+	 * @returns The type of error in case any occurred. This is a value
+	 * of lal::io::treebank_error.
 	 */
 	treebank_error init(const std::string& main_file) noexcept;
 
-	/// Returns whether there is a next treebank to be read.
+	/// Returns true or false depending on whether there is a next treebank
+	/// to be read.
 	bool has_treebank() const noexcept { return not m_reached_end; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
-	 * @return In case of error, returns a value different from
-	 * lal::io::treebank_error::none.
+	 * @returns The type of error in case any occurred. This is a value
+	 * of lal::io::treebank_error.
 	 */
 	treebank_error next_treebank() noexcept;
 
@@ -187,7 +190,7 @@ private:
 		}
 		else {
 			m_reached_end = true;
-			m_cur_treebank_name = m_cur_treebank_filename = "none";
+			m_cur_treebank_name = m_cur_treebank_filename = "!";
 		}
 	}
 };
