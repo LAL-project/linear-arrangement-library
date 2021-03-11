@@ -102,7 +102,7 @@ enum class tree_type {
 
 	// This value must always be the last one.
 	/// The tree could not be classified
-	none
+	unknown
 };
 
 // since SWIG does not wrap string_view, we need a
@@ -124,13 +124,13 @@ tree_type_to_string
 		case tree_type::bistar: return "bistar";
 		case tree_type::caterpillar: return "caterpillar";
 		case tree_type::spider: return "spider";
-		default: return "none";
+		default: return "unknown";
 	}
 }
 
 /// Number of elements within enumeration @ref lal::graphs::tree_type.
 constexpr std::size_t __tree_type_size =
-	1 + static_cast<std::size_t>(tree_type::none);
+	1 + static_cast<std::size_t>(tree_type::unknown);
 
 } // -- namespace graphs
 } // -- namespace lal

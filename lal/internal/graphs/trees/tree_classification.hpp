@@ -95,14 +95,14 @@ void classify_tree
 	// number of vertices
 	const uint32_t N = t.num_nodes();
 	if (N == 0) {
-		set_type(graphs::tree_type::none);
+		set_type(graphs::tree_type::unknown);
 		return;
 	}
 	if (N == 1) {
 		set_type(graphs::tree_type::linear);
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = false;
+		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 2) {
@@ -110,7 +110,7 @@ void classify_tree
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = false;
+		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 3) {
@@ -118,7 +118,7 @@ void classify_tree
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::none)] = false;
+		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 
@@ -221,7 +221,7 @@ void classify_tree
 	if (is_spider) { set_type(graphs::tree_type::spider); }
 
 	if (is_some) {
-		array[static_cast<size_t>(graphs::tree_type::none)] = false;
+		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 	}
 }
 
