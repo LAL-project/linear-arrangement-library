@@ -95,6 +95,10 @@ noexcept
 	// so compiler does not cry)
 	std::optional<node> r;
 
+#if defined DEBUG
+	uint32_t num_edges_added = 0;
+#endif
+
 	for (uint32_t i = 0; i < n; ++i) {
 		if (head_vector[i] == 0) {
 			// root, do nothing
@@ -105,12 +109,17 @@ noexcept
 			// * i ranges in [0,n-1]
 			// * L[i] ranges in [1,n]
 			t.add_edge_bulk(i, head_vector[i] - 1);
+#if defined DEBUG
+			++num_edges_added;
+#endif
 		}
 	}
 
 #if defined DEBUG
 	// root must have been set.
 	assert(r);
+	// amount of edges added must be 'n-1'
+	assert(num_edges_added == n - 1);
 #endif
 
 	t.finish_bulk_add(normalise, check);
@@ -123,9 +132,11 @@ noexcept
 {
 	const auto [tree, root] =
 		from_head_vector_to_free_tree(head_vector, normalise, check);
+#if defined DEBUG
+	assert(tree.is_tree());
+#endif
 	return rooted_tree(tree, root);
 }
-
 
 } // -- namespace graphs
 } // -- namespace lal
