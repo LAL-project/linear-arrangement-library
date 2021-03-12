@@ -77,7 +77,11 @@ public:
 		fill(v);
 	}
 	// Destructor
-	~data_array() noexcept { delete[] data; }
+	~data_array() noexcept {
+		delete[] data;
+		// this is for those who like calling the destructor...
+		data = nullptr;
+	}
 
 	// Copy constructor
 	data_array(const data_array& d) : m_size(d.m_size) {
