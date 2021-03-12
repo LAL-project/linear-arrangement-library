@@ -55,8 +55,9 @@ using namespace graphs;
 
 namespace linarr {
 
+template<class G>
 uint32_t number_of_crossings
-(const directed_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
+(const G& g, const linear_arrangement& pi, const algorithms_C& A) {
 	switch (A) {
 	case algorithms_C::brute_force:
 		return internal::n_C_brute_force(g, pi);
@@ -76,29 +77,22 @@ uint32_t number_of_crossings
 }
 
 uint32_t number_of_crossings
-(const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return internal::n_C_brute_force(g, pi);
-	case algorithms_C::dynamic_programming:
-		return internal::n_C_dynamic_programming(g, pi);
-	case algorithms_C::ladder:
-		return internal::n_C_ladder(g, pi);
-	case algorithms_C::stack_based:
-		return internal::n_C_stack_based(g, pi);
-	}
+(const directed_graph& g, const linear_arrangement& pi, const algorithms_C& A)
+{
+	return number_of_crossings<directed_graph>(g, pi, A);
+}
 
-#if defined DEBUG
-	// wrong value of enumeration
-	assert(false);
-#endif
-	return g.num_edges()*g.num_edges();
+uint32_t number_of_crossings
+(const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A)
+{
+	return number_of_crossings<undirected_graph>(g, pi, A);
 }
 
 // -----------------------------------------------------------------------------
 
-vector<uint32_t> n_crossings_list
-(const directed_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+template<class G>
+vector<uint32_t> number_of_crossings_list
+(const G& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -118,25 +112,16 @@ vector<uint32_t> n_crossings_list
 	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
-vector<uint32_t> n_crossings_list
+vector<uint32_t> number_of_crossings_list
+(const directed_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+{
+	return number_of_crossings_list<directed_graph>(g, pis, A);
+}
+
+vector<uint32_t> number_of_crossings_list
 (const undirected_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
 {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return internal::n_C_brute_force_list(g, pis);
-	case algorithms_C::dynamic_programming:
-		return internal::n_C_dynamic_programming_list(g, pis);
-	case algorithms_C::ladder:
-		return internal::n_C_ladder_list(g, pis);
-	case algorithms_C::stack_based:
-		return internal::n_C_stack_based_list(g, pis);
-	}
-
-#if defined DEBUG
-	// wrong value of enumeration
-	assert(false);
-#endif
-	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+	return number_of_crossings_list<undirected_graph>(g, pis, A);
 }
 
 } // -- namespace linarr

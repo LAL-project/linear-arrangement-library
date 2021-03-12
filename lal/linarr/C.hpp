@@ -104,7 +104,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> n_crossings_list
+std::vector<uint32_t> number_of_crossings_list
 (const graphs::directed_graph& g, const std::vector<linear_arrangement>& pis,
  const algorithms_C& A = algorithms_C::ladder);
 /**
@@ -122,7 +122,7 @@ std::vector<uint32_t> n_crossings_list
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> n_crossings_list
+std::vector<uint32_t> number_of_crossings_list
 (const graphs::undirected_graph& g, const std::vector<linear_arrangement>& pis,
  const algorithms_C& A = algorithms_C::ladder);
 
