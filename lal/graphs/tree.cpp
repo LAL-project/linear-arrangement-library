@@ -67,9 +67,9 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 		return false;
 	}
 
-	// if m_root_of[s] == m_root_of[t] then
-	// either the edge already exists or there
-	// exists a path from 's' to 't'
+	// * if m_root_of[s] == m_root_of[t] then either
+	//		- the edge already exists, or
+	//		- there exists a path from 's' to 't'
 	return m_root_of[u] != m_root_of[v];
 }
 
@@ -90,6 +90,7 @@ bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 		assert(has_node(v));
+		assert(not has_edge(u,v));
 #endif
 
 		// if m_labels[s] == m_labels[t] then

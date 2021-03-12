@@ -55,7 +55,7 @@ using namespace graphs;
 
 namespace linarr {
 
-uint32_t n_crossings
+uint32_t number_of_crossings
 (const directed_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -75,7 +75,7 @@ uint32_t n_crossings
 	return g.num_edges()*g.num_edges();
 }
 
-uint32_t n_crossings
+uint32_t number_of_crossings
 (const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A) {
 	switch (A) {
 	case algorithms_C::brute_force:

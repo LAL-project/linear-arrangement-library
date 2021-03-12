@@ -364,7 +364,7 @@ __get_syn_dep_tree_type
 	// from this point on we need an artificial vertex pointing to the
 	// root of the input tree
 
-	const uint32_t C = n_crossings(rT, pi);
+	const uint32_t C = number_of_crossings(rT, pi);
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
@@ -374,7 +374,7 @@ __get_syn_dep_tree_type
 		);
 
 		// remove 1-ec from the types when needed
-		const uint32_t _C = n_crossings(_rT, _pi);
+		const uint32_t _C = number_of_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
 		}

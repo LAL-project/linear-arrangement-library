@@ -67,7 +67,7 @@ namespace linarr {
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t n_crossings(
+uint32_t number_of_crossings(
 	const graphs::directed_graph& g, const linear_arrangement& pi = {},
 	const algorithms_C& A = algorithms_C::ladder
 );
@@ -84,7 +84,7 @@ uint32_t n_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t n_crossings(
+uint32_t number_of_crossings(
 	const graphs::undirected_graph& g, const linear_arrangement& pi = {},
 	const algorithms_C& A = algorithms_C::ladder
 );
