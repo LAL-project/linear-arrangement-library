@@ -72,14 +72,14 @@ inline void UNUSED(const T& x) { (void)x; }
  * @param pi Arrangement.
  * @returns The value function @e F returns.
  */
-template<typename result_t, typename graph_t>
+template<typename result_t, typename graph_t, typename ... Params>
 result_t call_with_empty_arrangement(
-	result_t (*F)(const graph_t&, const linear_arrangement&),
-	const graph_t& g, const linear_arrangement& pi
+	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
+	const graph_t& g, const linear_arrangement& pi, Params... P
 )
 {
 	if (pi.size() != 0) {
-		return F(g,pi);
+		return F(g,pi,P...);
 	}
 	linear_arrangement __pi(g.num_nodes());
 	{
@@ -87,7 +87,7 @@ result_t call_with_empty_arrangement(
 	auto it = __pi.begin();
 	while (it != __pi.end()) { *(it++) = p++; }
 	}
-	return F(g,__pi);
+	return F(g, __pi, P...);
 }
 
 } // -- namespace internal
