@@ -47,14 +47,10 @@ namespace linarr {
 /**
  * @brief The different algorithms for computing the number of crossings.
  *
- * This enumeration's values can be used to choose the algorithm the functions
- * @ref lal::linarr::n_crossings and @ref lal::linarr::n_crossings_list use to
- * compute the number of edge crossings.
- *
- * Two edges \f${s,t},{u,v}\f$ of a graph cross if, and only if, their positions
- * interleave in the linear arrangement. More formally, given an arrangement
- * \f$\pi\f$ of a graph \f$G\f$, the edges \f${s,t},{u,v}\f$ cros iff
- * \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ .
+ * Two edges \f${s,t},{u,v}\f$ of a graph \f$G\f$ cross in a linear arrangement
+ * \f$\pi\f$ of its nodes if, and only if, their positions interleave in the
+ * linear arrangement. More formally, given an arrangement \f$\pi\f$ of a graph
+ * \f$G\f$, the edges \f${s,t},{u,v}\f$ cros iff \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ .
  */
 enum class algorithms_C {
 	/**

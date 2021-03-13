@@ -11,7 +11,7 @@ All the features of syntactic dependency trees that can be calculated with the a
 
 - the sum of edge lengths :math:`D` (see ``lal.linarr.sum_length_edges``), and the expectation and variance of the sum of edge lengths (see ``lal.properties.expectation_D`` and ``lal.properties.variance_D``),
 - calculation of optimal arrangements of free and rooted trees (see lal.linarr.Dmin); the enumeration ``lal.linarr.algorithms_Dmin`` lists all algorithms available,
-- the number of crossings (see ``lal.linarr.n_crossings``), and the expectation and variance of the number of crossings (see ``lal.properties.expectation_C`` and ``lal.properties.variance_C``),
+- the number of crossings (see ``lal.linarr.number_of_crossings``), and the expectation and variance of the number of crossings (see ``lal.properties.expectation_C`` and ``lal.properties.variance_C``),
 - any moment of the degree of the vertices of a graph (see ``lal.properties.mmt_degree``),
 - the mean dependency distance (see ``lal.linarr.mean_dependency_distance``),
 - the mean dependency distance over ensembles of graphs (see  ``lal.linarr.mean_dependency_distance_1level`` and ``lal.linarr.mean_dependency_distance_2level``),

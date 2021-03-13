@@ -66,7 +66,7 @@
  * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
  * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
  * - calculation of optimal arrangements of free and rooted trees (see @ref lal::linarr::Dmin(const graphs::rooted_tree&, const algorithms_Dmin&) and @ref lal::linarr::Dmin(const graphs::free_tree&, const algorithms_Dmin&)); the enumeration @ref lal::linarr::algorithms_Dmin lists all algorithms available,
- * - the number of crossings (see @ref lal::linarr::n_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
+ * - the number of crossings (see @ref lal::linarr::number_of_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
  * - any moment of the degree of the vertices of a graph (see @ref lal::properties::mmt_degree),
  * - the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
  * - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
