@@ -349,7 +349,7 @@ const
 			return linarr::algorithms_C::stack_based;
 		}(rT.num_nodes());
 
-		set_prop(C_idx, linarr::number_of_crossings(fT, {}, algo_C));
+		set_prop(C_idx, linarr::number_of_crossings(fT, algo_C));
 	}
 	if (m_what_fs[C_var_idx]) {
 		set_prop(C_var_idx, properties::variance_C_tree(fT));

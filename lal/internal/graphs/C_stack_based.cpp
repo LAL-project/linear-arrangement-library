@@ -63,6 +63,8 @@ namespace internal {
 #define edge_sorted_by_vertex(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
+#define DECIDED_C_GT (g.num_edges()*g.num_edges())
+#define DECIDED_C_LE C
 
 inline void fill_adjP_adjN(
 	const graph& g, const linear_arrangement& pi,
@@ -118,11 +120,17 @@ inline void fill_adjP_adjN(
 #endif
 }
 
+template<bool decide_upper_bound>
 inline uint32_t __compute_C_stack_based(
 	const graph& g, const linear_arrangement& pi,
-	node * __restrict__ T, size_t * __restrict__ size_adjN_u
+	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
+	uint32_t upper_bound = 0
 )
 {
+	if constexpr (not decide_upper_bound) {
+		UNUSED(upper_bound);
+	}
+
 	const uint32_t n = g.num_nodes();
 
 	// construct inverse arrangement
@@ -166,15 +174,29 @@ inline uint32_t __compute_C_stack_based(
 					S.remove(indexed_edge(edge_to_idx[uv], uv))
 				);
 			C += on_top;
+			if constexpr (decide_upper_bound) {
+				if (C > upper_bound) { return DECIDED_C_GT; }
+			}
 		}
 		S.join_sorted_all_greater(adjN[u]);
 	}
 
-	return C;
+	if constexpr (decide_upper_bound) {
+		return DECIDED_C_LE;
+	}
+	else {
+		return C;
+	}
 }
 
-inline uint32_t __call_C_stack_based
-(const graph& g, const linear_arrangement& pi)
+// =============================================================================
+// CALCULATION
+// =============================================================================
+
+inline uint32_t __call_C_stack_based(
+	const graph& g,
+	const linear_arrangement& pi
+)
 {
 	const uint32_t n = g.num_nodes();
 	if (n < 4) { return 0; }
@@ -187,18 +209,30 @@ inline uint32_t __call_C_stack_based
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based(g, pi, T.data, size_adjN_u.data);
+	return __compute_C_stack_based<false>(g, pi, T.data, size_adjN_u.data);
 }
 
-uint32_t n_C_stack_based(const graph& g, const linear_arrangement& pi) {
+// ------------------
+// single arrangement
+
+uint32_t n_C_stack_based(
+	const graph& g,
+	const linear_arrangement& pi
+)
+{
 #if defined DEBUG
 	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
 
-vector<uint32_t> n_C_stack_based_list
-(const graph& g, const vector<linear_arrangement>& pis)
+// --------------------
+// list of arrangements
+
+vector<uint32_t> n_C_stack_based(
+	const graph& g,
+	const vector<linear_arrangement>& pis
+)
 {
 	const uint32_t n = g.num_nodes();
 
@@ -221,7 +255,123 @@ vector<uint32_t> n_C_stack_based_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based(g, pis[i], T.data, size_adjN_u.data);
+		cs[i] = __compute_C_stack_based<false>(g, pis[i], T.data, size_adjN_u.data);
+	}
+
+	return cs;
+}
+
+// =============================================================================
+// DECISION
+// =============================================================================
+
+inline uint32_t __call_C_stack_based_lesseq_than(
+	const graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound
+)
+{
+	const uint32_t n = g.num_nodes();
+	if (n < 4) { return 0; }
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	data_array<node> T(n, 0);
+
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	data_array<size_t> size_adjN_u(n, 0);
+
+	return __compute_C_stack_based<true>(g, pi, T.data, size_adjN_u.data, upper_bound);
+}
+
+// ------------------
+// single arrangement
+
+uint32_t is_n_C_stack_based_lesseq_than(
+	const graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound
+)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+#endif
+	return internal::call_with_empty_arrangement
+			(__call_C_stack_based_lesseq_than, g, pi, upper_bound);
+}
+
+// --------------------
+// list of arrangements
+
+vector<uint32_t> is_n_C_stack_based_lesseq_than(
+	const graph& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound
+)
+{
+	const uint32_t n = g.num_nodes();
+
+	vector<uint32_t> cs(pis.size(), 0);
+	if (n < 4) { return cs; }
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	data_array<node> T(n,0);
+
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	data_array<size_t> size_adjN_u(n, 0);
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == n);
+#endif
+
+		// compute C
+		cs[i] = __compute_C_stack_based<true>
+				(g, pis[i], T.data, size_adjN_u.data, upper_bound);
+	}
+
+	return cs;
+}
+
+vector<uint32_t> is_n_C_stack_based_lesseq_than(
+	const graph& g,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds
+)
+{
+	#if defined DEBUG
+		// ensure that there are as many linear arrangements as upper bounds
+		assert(pis.size() == upper_bounds.size());
+	#endif
+
+	const uint32_t n = g.num_nodes();
+
+	vector<uint32_t> cs(pis.size(), 0);
+	if (n < 4) { return cs; }
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p
+	data_array<node> T(n,0);
+
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	data_array<size_t> size_adjN_u(n, 0);
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == n);
+#endif
+
+		// compute C
+		cs[i] = __compute_C_stack_based<true>
+				(g, pis[i], T.data, size_adjN_u.data, upper_bounds[i]);
 	}
 
 	return cs;

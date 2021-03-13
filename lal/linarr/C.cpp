@@ -56,8 +56,12 @@ using namespace graphs;
 namespace linarr {
 
 template<class G>
-uint32_t number_of_crossings
-(const G& g, const linear_arrangement& pi, const algorithms_C& A) {
+inline uint32_t number_of_crossings(
+	const G& g,
+	const linear_arrangement& pi,
+	const algorithms_C& A
+)
+{
 	switch (A) {
 	case algorithms_C::brute_force:
 		return internal::n_C_brute_force(g, pi);
@@ -76,14 +80,36 @@ uint32_t number_of_crossings
 	return g.num_edges()*g.num_edges();
 }
 
-uint32_t number_of_crossings
-(const directed_graph& g, const linear_arrangement& pi, const algorithms_C& A)
+uint32_t number_of_crossings(
+	const directed_graph& g,
+	const algorithms_C& A
+)
+{
+	return number_of_crossings<directed_graph>(g, {}, A);
+}
+
+uint32_t number_of_crossings(
+	const undirected_graph& g,
+	const algorithms_C& A
+)
+{
+	return number_of_crossings<undirected_graph>(g, {}, A);
+}
+
+uint32_t number_of_crossings(
+	const directed_graph& g,
+	const linear_arrangement& pi,
+	const algorithms_C& A
+)
 {
 	return number_of_crossings<directed_graph>(g, pi, A);
 }
 
-uint32_t number_of_crossings
-(const undirected_graph& g, const linear_arrangement& pi, const algorithms_C& A)
+uint32_t number_of_crossings(
+	const undirected_graph& g,
+	const linear_arrangement& pi,
+	const algorithms_C& A
+)
 {
 	return number_of_crossings<undirected_graph>(g, pi, A);
 }
@@ -91,18 +117,21 @@ uint32_t number_of_crossings
 // -----------------------------------------------------------------------------
 
 template<class G>
-vector<uint32_t> number_of_crossings_list
-(const G& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+inline vector<uint32_t> number_of_crossings(
+	const G& g,
+	const vector<linear_arrangement>& pis,
+	const algorithms_C& A
+)
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::n_C_brute_force_list(g, pis);
+		return internal::n_C_brute_force(g, pis);
 	case algorithms_C::dynamic_programming:
-		return internal::n_C_dynamic_programming_list(g, pis);
+		return internal::n_C_dynamic_programming(g, pis);
 	case algorithms_C::ladder:
-		return internal::n_C_ladder_list(g, pis);
+		return internal::n_C_ladder(g, pis);
 	case algorithms_C::stack_based:
-		return internal::n_C_stack_based_list(g, pis);
+		return internal::n_C_stack_based(g, pis);
 	}
 
 #if defined DEBUG
@@ -112,16 +141,171 @@ vector<uint32_t> number_of_crossings_list
 	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
-vector<uint32_t> number_of_crossings_list
-(const directed_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+vector<uint32_t> number_of_crossings(
+	const directed_graph& g,
+	const vector<linear_arrangement>& pis,
+	const algorithms_C& A
+)
 {
-	return number_of_crossings_list<directed_graph>(g, pis, A);
+	return number_of_crossings<directed_graph>(g, pis, A);
 }
 
-vector<uint32_t> number_of_crossings_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis, const algorithms_C& A)
+vector<uint32_t> number_of_crossings(
+	const undirected_graph& g,
+	const vector<linear_arrangement>& pis,
+	const algorithms_C& A
+)
 {
-	return number_of_crossings_list<undirected_graph>(g, pis, A);
+	return number_of_crossings<undirected_graph>(g, pis, A);
+}
+
+// -----------------------------------------------------------------------------
+
+template<class G>
+uint32_t is_number_of_crossings_lesseq_than(
+	const G& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	switch (A) {
+	case algorithms_C::brute_force:
+		return internal::is_n_C_brute_force_lesseq_than(g, pi, upper_bound);
+	case algorithms_C::dynamic_programming:
+		return internal::is_n_C_dynamic_programming_lesseq_than(g, pi, upper_bound);
+	case algorithms_C::ladder:
+		return internal::is_n_C_ladder_lesseq_than(g, pi, upper_bound);
+	case algorithms_C::stack_based:
+		return internal::is_n_C_stack_based_lesseq_than(g, pi, upper_bound);
+	}
+
+#if defined DEBUG
+	// wrong value of enumeration
+	assert(false);
+#endif
+	return false;
+}
+
+uint32_t is_number_of_crossings_lesseq_than(
+	const directed_graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<directed_graph>(g, pi, upper_bound, A);
+}
+
+uint32_t is_number_of_crossings_lesseq_than(
+	const undirected_graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<undirected_graph>(g, pi, upper_bound, A);
+}
+
+// -----------------------------------------------------------------------------
+
+template<class G>
+inline vector<uint32_t> is_number_of_crossings_lesseq_than(
+	const G& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	switch (A) {
+	case algorithms_C::brute_force:
+		return internal::is_n_C_brute_force_lesseq_than(g, pis, upper_bound);
+	case algorithms_C::dynamic_programming:
+		return internal::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bound);
+	case algorithms_C::ladder:
+		return internal::is_n_C_ladder_lesseq_than(g, pis, upper_bound);
+	case algorithms_C::stack_based:
+		return internal::is_n_C_stack_based_lesseq_than(g, pis, upper_bound);
+	}
+
+#if defined DEBUG
+	// wrong value of enumeration
+	assert(false);
+#endif
+	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+}
+
+vector<uint32_t> is_number_of_crossings_lesseq_than(
+	const directed_graph& g,
+	const vector<linear_arrangement>& pis,
+	 uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<directed_graph>
+			(g, pis, upper_bound, A);
+}
+
+vector<uint32_t> is_number_of_crossings_lesseq_than(
+	const undirected_graph& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<undirected_graph>
+			(g, pis, upper_bound, A);
+}
+
+// -----------------------------------------------------------------------------
+
+template<class G>
+vector<uint32_t> is_number_of_crossings_lesseq_than
+(
+	const G& g,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds,
+	const algorithms_C& A
+)
+{
+	switch (A) {
+	case algorithms_C::brute_force:
+		return internal::is_n_C_brute_force_lesseq_than(g, pis, upper_bounds);
+	case algorithms_C::dynamic_programming:
+		return internal::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bounds);
+	case algorithms_C::ladder:
+		return internal::is_n_C_ladder_lesseq_than(g, pis, upper_bounds);
+	case algorithms_C::stack_based:
+		return internal::is_n_C_stack_based_lesseq_than(g, pis, upper_bounds);
+	}
+
+#if defined DEBUG
+	// wrong value of enumeration
+	assert(false);
+#endif
+	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+}
+
+vector<uint32_t> is_number_of_crossings_lesseq_than(
+	const directed_graph& G,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<directed_graph>
+			(G, pis, upper_bounds, A);
+}
+
+vector<uint32_t> is_number_of_crossings_lesseq_than(
+	const undirected_graph& G,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<undirected_graph>
+			(G, pis, upper_bounds, A);
 }
 
 } // -- namespace linarr

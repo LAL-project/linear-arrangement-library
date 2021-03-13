@@ -53,26 +53,27 @@ using namespace std;
 #include <lal/internal/data_array.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
+#define DECIDED_C_GT (g.num_edges()*g.num_edges())
+#define DECIDED_C_LE C
 
 namespace lal {
 using namespace graphs;
 
 namespace internal {
 
-template<
-	class G,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
-	bool> = true
->
+template<class G, bool decide_upper_bound>
 inline uint32_t __compute_C_ladder(
 	const G& g, const linear_arrangement& pi,
 	char * const __restrict__ bn,
 	uint32_t * const __restrict__ inv_pi,
-	uint32_t * const __restrict__ L1
+	uint32_t * const __restrict__ L1,
+	uint32_t upper_bound = 0
 )
 {
+	if constexpr (not decide_upper_bound) {
+		UNUSED(upper_bound);
+	}
+
 	const uint32_t n = g.num_nodes();
 	// inverse arrangement
 	for (uint32_t i = 0; i < n; ++i) {
@@ -103,6 +104,10 @@ inline uint32_t __compute_C_ladder(
 				++L1[q];
 			}*/
 			C += to_uint32(bn[v])*(S - L1[q]);
+			if constexpr (decide_upper_bound) {
+				if (C > upper_bound) { return DECIDED_C_GT; }
+			}
+
 			L1[q] += to_uint32(bn[v]);
 			// --
 
@@ -111,19 +116,27 @@ inline uint32_t __compute_C_ladder(
 
 		L1[p] = 0;
 	}
-	return C;
+	if constexpr (decide_upper_bound) {
+		return DECIDED_C_LE;
+	}
+	else {
+		return C;
+	}
 }
 
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
-template<
-	class G,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
-	bool> = true
->
-inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
+// =============================================================================
+// CALCULATION
+// =============================================================================
+
+// ------------------
+// single arrangement
+
+template<class G>
+inline uint32_t __call_C_ladder(
+	const G& g,
+	const linear_arrangement& pi
+)
+{
 	const uint32_t n = g.num_nodes();
 	if (n < 4) {
 		return 0;
@@ -141,48 +154,41 @@ inline uint32_t __call_C_ladder(const G& g, const linear_arrangement& pi) {
 	// array L1 (same as in the pseudocode) ( size n )
 	uint32_t * __restrict__ L1 = &all_memory[n];
 
-	return __compute_C_ladder(g, pi, bool_neighs.data, T,L1);
+	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data, T,L1);
 }
 
-// ------------------
-// single arrangement
-
-template<
-	class G,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
-	bool> = true
->
-uint32_t n_C_ladder(const G& g, const linear_arrangement& pi) {
+uint32_t n_C_ladder(
+	const directed_graph& g,
+	const linear_arrangement& pi
+)
+{
 #if defined DEBUG
 	assert(pi.size() == 0 or g.num_nodes() == pi.size());
 #endif
-	return
-	internal::call_with_empty_arrangement<uint32_t,G>
-	(__call_C_ladder, g, pi);
+	return internal::call_with_empty_arrangement
+			(__call_C_ladder<directed_graph>, g, pi);
 }
 
-uint32_t n_C_ladder
-(const directed_graph& g, const linear_arrangement& pi)
-{ return n_C_ladder<directed_graph>(g, pi); }
-
-uint32_t n_C_ladder
-(const undirected_graph& g, const linear_arrangement& pi)
-{ return n_C_ladder<undirected_graph>(g, pi); }
+uint32_t n_C_ladder(
+	const undirected_graph& g,
+	const linear_arrangement& pi
+)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+#endif
+	return internal::call_with_empty_arrangement
+			(__call_C_ladder<undirected_graph>, g, pi);
+}
 
 // --------------------
 // list of arrangements
 
-template<
-	class G,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
-	bool> = true
->
-vector<uint32_t> n_C_ladder_list
-(const G& g, const vector<linear_arrangement>& pis)
+template<class G>
+vector<uint32_t> n_C_ladder(
+	const G& g,
+	const vector<linear_arrangement>& pis
+)
 {
 	const uint32_t n = g.num_nodes();
 
@@ -210,7 +216,8 @@ vector<uint32_t> n_C_ladder_list
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder(g, pis[i], boolean_neighborhood.data, T,L1);
+		cs[i] = __compute_C_ladder<G,false>
+				(g, pis[i], boolean_neighborhood.data, T,L1);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -219,12 +226,213 @@ vector<uint32_t> n_C_ladder_list
 	return cs;
 }
 
-vector<uint32_t> n_C_ladder_list
-(const directed_graph& g, const vector<linear_arrangement>& pis)
-{ return n_C_ladder_list<directed_graph>(g, pis); }
-vector<uint32_t> n_C_ladder_list
-(const undirected_graph& g, const vector<linear_arrangement>& pis)
-{ return n_C_ladder_list<undirected_graph>(g, pis); }
+vector<uint32_t> n_C_ladder(
+	const directed_graph& g,
+	const vector<linear_arrangement>& pis
+)
+{
+	return n_C_ladder<directed_graph>(g, pis);
+}
+vector<uint32_t> n_C_ladder(
+	const undirected_graph& g,
+	const vector<linear_arrangement>& pis
+)
+{
+	return n_C_ladder<undirected_graph>(g, pis);
+}
+
+// =============================================================================
+// DECISION
+// =============================================================================
+
+// ------------------
+// single arrangement
+
+template<class G>
+inline uint32_t __call_C_ladder_is_lesseq_than(
+	const G& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound
+)
+{
+	const uint32_t n = g.num_nodes();
+	if (n < 4) {
+		return 0;
+	}
+
+	// boolean neighbourhood of nodes
+	data_array<char> bool_neighs(n, 0);
+
+	const uint32_t n_elems = n + n;
+	data_array<uint32_t> all_memory(n_elems, 0);
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p ( size n )
+	uint32_t * __restrict__ T = &all_memory[0];
+	// array L1 (same as in the pseudocode) ( size n )
+	uint32_t * __restrict__ L1 = &all_memory[n];
+
+	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data, T,L1, upper_bound);
+}
+
+uint32_t is_n_C_ladder_lesseq_than(
+	const directed_graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound
+)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+#endif
+	return internal::call_with_empty_arrangement
+			(__call_C_ladder_is_lesseq_than<directed_graph>, g, pi, upper_bound);
+}
+
+uint32_t is_n_C_ladder_lesseq_than(
+	const undirected_graph& g,
+	const linear_arrangement& pi,
+	uint32_t upper_bound
+)
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+#endif
+	return internal::call_with_empty_arrangement
+			(__call_C_ladder_is_lesseq_than<undirected_graph>, g, pi, upper_bound);
+}
+
+// --------------------
+// list of arrangements
+
+template<class G>
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const G& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound
+)
+{
+	const uint32_t n = g.num_nodes();
+
+	vector<uint32_t> cs(pis.size(), 0);
+	if (n < 4) {
+		return cs;
+	}
+
+	data_array<char> boolean_neighborhood(n, 0);
+
+	const uint32_t n_elems = n + n;
+	data_array<uint32_t> all_memory(n_elems, 0);
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p ( size n )
+	uint32_t * __restrict__ T = &all_memory[0];
+	// array L1 (same as in the pseudocode) ( size n )
+	uint32_t * __restrict__ L1 = &all_memory[n];
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == n);
+#endif
+
+		// compute C
+		cs[i] = __compute_C_ladder<G,true>
+				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bound);
+
+		boolean_neighborhood.fill(0);
+		L1[n - 1] = 0;
+	}
+
+	return cs;
+}
+
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const directed_graph& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound
+)
+{
+	return is_n_C_ladder_lesseq_than<directed_graph>
+			(g, pis, upper_bound);
+}
+
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const undirected_graph& g,
+	const vector<linear_arrangement>& pis,
+	uint32_t upper_bound
+)
+{
+	return is_n_C_ladder_lesseq_than<undirected_graph>
+			(g, pis, upper_bound);
+}
+
+template<typename G>
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const G& g,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds
+)
+{
+#if defined DEBUG
+	// ensure that there are as many linear arrangements as upper bounds
+	assert(pis.size() == upper_bounds.size());
+#endif
+
+	const uint32_t n = g.num_nodes();
+
+	vector<uint32_t> cs(pis.size(), 0);
+	if (n < 4) {
+		return cs;
+	}
+
+	data_array<char> boolean_neighborhood(n, 0);
+
+	const uint32_t n_elems = n + n;
+	data_array<uint32_t> all_memory(n_elems, 0);
+
+	// inverse function of the linear arrangement:
+	// T[p] = u <-> node u is at position p ( size n )
+	uint32_t * __restrict__ T = &all_memory[0];
+	// array L1 (same as in the pseudocode) ( size n )
+	uint32_t * __restrict__ L1 = &all_memory[n];
+
+	/* compute C for every linear arrangement */
+	for (size_t i = 0; i < pis.size(); ++i) {
+#if defined DEBUG
+		// ensure that no linear arrangement is empty
+		assert(pis[i].size() == n);
+#endif
+
+		// compute C
+		cs[i] = __compute_C_ladder<G,true>
+				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bounds[i]);
+
+		boolean_neighborhood.fill(0);
+		L1[n - 1] = 0;
+	}
+
+	return cs;
+}
+
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const directed_graph& g,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds
+)
+{
+	return is_n_C_ladder_lesseq_than<directed_graph>
+			(g, pis, upper_bounds);
+}
+vector<uint32_t> is_n_C_ladder_lesseq_than(
+	const undirected_graph& g,
+	const vector<linear_arrangement>& pis,
+	const vector<uint32_t>& upper_bounds
+)
+{
+	return is_n_C_ladder_lesseq_than<undirected_graph>
+			(g, pis, upper_bounds);
+}
 
 } // -- namespace internal
 } // -- namespace lal
