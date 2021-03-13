@@ -189,6 +189,24 @@ uint32_t is_number_of_crossings_lesseq_than(
 
 uint32_t is_number_of_crossings_lesseq_than(
 	const directed_graph& g,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<directed_graph>(g, {}, upper_bound, A);
+}
+
+uint32_t is_number_of_crossings_lesseq_than(
+	const undirected_graph& g,
+	uint32_t upper_bound,
+	const algorithms_C& A
+)
+{
+	return is_number_of_crossings_lesseq_than<undirected_graph>(g, {}, upper_bound, A);
+}
+
+uint32_t is_number_of_crossings_lesseq_than(
+	const directed_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound,
 	const algorithms_C& A
