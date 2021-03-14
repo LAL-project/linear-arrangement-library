@@ -94,10 +94,10 @@ rooted_tree all_lab_rooted_trees::__get_tree() noexcept {
 void all_lab_rooted_trees::init() noexcept {
 	reset();
 
-	// deactivate all processing of the free tree
-	m_gen_lab_free_tree.calculate_size_subtrees = false;
-	m_gen_lab_free_tree.calculate_tree_type = false;
-	m_gen_lab_free_tree.normalise_tree = false;
+	// deactivate all postprocessing of the free tree
+	m_gen_lab_free_tree.set_calculate_size_subtrees(false);
+	m_gen_lab_free_tree.set_calculate_tree_type(false);
+	m_gen_lab_free_tree.set_normalise_tree(false);
 }
 
 } // -- namespace generate
