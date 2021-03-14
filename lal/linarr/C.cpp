@@ -117,7 +117,7 @@ uint32_t number_of_crossings(
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint32_t> number_of_crossings(
+inline vector<uint32_t> number_of_crossings_list(
 	const G& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
@@ -141,22 +141,22 @@ inline vector<uint32_t> number_of_crossings(
 	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
-vector<uint32_t> number_of_crossings(
+vector<uint32_t> number_of_crossings_list(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 {
-	return number_of_crossings<directed_graph>(g, pis, A);
+	return number_of_crossings_list<directed_graph>(g, pis, A);
 }
 
-vector<uint32_t> number_of_crossings(
+vector<uint32_t> number_of_crossings_list(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 {
-	return number_of_crossings<undirected_graph>(g, pis, A);
+	return number_of_crossings_list<undirected_graph>(g, pis, A);
 }
 
 // -----------------------------------------------------------------------------
@@ -228,7 +228,7 @@ uint32_t is_number_of_crossings_lesseq_than(
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint32_t> is_number_of_crossings_lesseq_than(
+inline vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const G& g,
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
@@ -253,32 +253,32 @@ inline vector<uint32_t> is_number_of_crossings_lesseq_than(
 	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
-vector<uint32_t> is_number_of_crossings_lesseq_than(
+vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
 	 uint32_t upper_bound,
 	const algorithms_C& A
 )
 {
-	return is_number_of_crossings_lesseq_than<directed_graph>
+	return is_number_of_crossings_lesseq_than_list<directed_graph>
 			(g, pis, upper_bound, A);
 }
 
-vector<uint32_t> is_number_of_crossings_lesseq_than(
+vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
 {
-	return is_number_of_crossings_lesseq_than<undirected_graph>
+	return is_number_of_crossings_lesseq_than_list<undirected_graph>
 			(g, pis, upper_bound, A);
 }
 
 // -----------------------------------------------------------------------------
 
 template<class G>
-vector<uint32_t> is_number_of_crossings_lesseq_than
+vector<uint32_t> is_number_of_crossings_lesseq_than_list
 (
 	const G& g,
 	const vector<linear_arrangement>& pis,
@@ -304,25 +304,25 @@ vector<uint32_t> is_number_of_crossings_lesseq_than
 	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
 }
 
-vector<uint32_t> is_number_of_crossings_lesseq_than(
+vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const directed_graph& G,
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds,
 	const algorithms_C& A
 )
 {
-	return is_number_of_crossings_lesseq_than<directed_graph>
+	return is_number_of_crossings_lesseq_than_list<directed_graph>
 			(G, pis, upper_bounds, A);
 }
 
-vector<uint32_t> is_number_of_crossings_lesseq_than(
+vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const undirected_graph& G,
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds,
 	const algorithms_C& A
 )
 {
-	return is_number_of_crossings_lesseq_than<undirected_graph>
+	return is_number_of_crossings_lesseq_than_list<undirected_graph>
 			(G, pis, upper_bounds, A);
 }
 

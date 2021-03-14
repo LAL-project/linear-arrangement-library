@@ -144,7 +144,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> number_of_crossings(
+std::vector<uint32_t> number_of_crossings_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -165,7 +165,7 @@ std::vector<uint32_t> number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> number_of_crossings(
+std::vector<uint32_t> number_of_crossings_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -289,7 +289,7 @@ uint32_t is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than(
+std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
@@ -315,7 +315,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than(
+std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
@@ -345,7 +345,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than(
+std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint32_t>& upper_bounds,
@@ -374,7 +374,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than(
+std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint32_t>& upper_bounds,
