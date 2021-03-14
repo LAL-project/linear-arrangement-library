@@ -77,5 +77,40 @@ typedef std::pair<node, node> edge;
 typedef std::pair<edge,edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
+/**
+ * @brief A head vector representation of a (usually rooted) tree.
+ *
+ * A head vector of an @e n-vertex tree is a list of non-negative integer
+ * numbers. The number at position @e i denotes the parent node of the vertex
+ * at said position. Value '0' denotes the root. In this case, the vertex
+ * corresponding to the value '0' is not labelled as a root.
+ *
+ * Each tree is formatted as a list of whole, positive numbers (including
+ * zero), each representing a node of the tree. The number 0 denotes the root
+ * of the tree, and a number at a certain position indicates its parent node.
+ * For example, when number 4 is at position 9 it means that node 9 has parent
+ * node 4. Therefore, if number 0 is at position 1 it means that node 1 is
+ * the root of the tree. A complete example of such a tree's representation
+ * is the following
+ *
+ *       0 3 4 1 6 3
+ *
+ *
+ * which should be interpreted as
+ *
+ *		(a) predecessor:       0 3 4 1 6 3
+ *		(b) node of the tree:  1 2 3 4 5 6
+ *
+ *
+ * Note that lines like these are not valid:
+ *
+ *		(1) 0 2 2 2 2 2
+ *		(2) 2 0 0
+ *
+ *
+ * Line (1) is not valid due to a self-reference in the second position,
+ * and (2) not being valid due to containing two '0' (i.e., two roots).
+ */
+typedef std::vector<uint32_t> head_vector;
 
 } // -- namespace lal

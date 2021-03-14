@@ -54,7 +54,10 @@ using namespace std;
 namespace lal {
 namespace graphs {
 
-vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept {
+// -----------------------------------------------------------------------------
+// tree -> head vector
+
+head_vector from_tree_to_head_vector(const rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -80,19 +83,21 @@ vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r) noexcept {
 	return from_tree_to_head_vector(rooted_tree(t,r));
 }
 
+// -----------------------------------------------------------------------------
+// head vector -> graph
+
 pair<free_tree,node> from_head_vector_to_free_tree
-(const std::vector<uint32_t>& head_vector, bool normalise, bool check)
+(const head_vector& hv, bool normalise, bool check)
 noexcept
 {
-	if (head_vector.size() == 0) { return make_pair(free_tree(0), 0); }
+	if (hv.size() == 0) { return make_pair(free_tree(0), 0); }
 
-	const uint32_t n = static_cast<uint32_t>(head_vector.size());
+	const uint32_t n = static_cast<uint32_t>(hv.size());
 
 	// output tree
 	free_tree t(n);
 
-	// root node of the tree (initiliased
-	// so compiler does not cry)
+	// root node of the tree
 	std::optional<node> r;
 
 #if defined DEBUG
@@ -100,7 +105,7 @@ noexcept
 #endif
 
 	for (uint32_t i = 0; i < n; ++i) {
-		if (head_vector[i] == 0) {
+		if (hv[i] == 0) {
 			// root, do nothing
 			r = i;
 		}
@@ -108,7 +113,7 @@ noexcept
 			// add the edge:
 			// * i ranges in [0,n-1]
 			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, head_vector[i] - 1);
+			t.add_edge_bulk(i, hv[i] - 1);
 #if defined DEBUG
 			++num_edges_added;
 #endif
@@ -127,11 +132,11 @@ noexcept
 }
 
 rooted_tree from_head_vector_to_rooted_tree
-(const vector<uint32_t>& head_vector, bool normalise, bool check)
+(const head_vector& hv, bool normalise, bool check)
 noexcept
 {
 	const auto [tree, root] =
-		from_head_vector_to_free_tree(head_vector, normalise, check);
+		from_head_vector_to_free_tree(hv, normalise, check);
 #if defined DEBUG
 	assert(tree.is_tree());
 #endif

@@ -49,6 +49,9 @@
 namespace lal {
 namespace graphs {
 
+// -----------------------------------------------------------------------------
+// tree -> head vector
+
 /**
  * @brief Converts a rooted tree into a head vector.
  *
@@ -89,7 +92,7 @@ namespace graphs {
  * @returns The head vector representation of this tree.
  * @pre Rooted tree @e t must be a rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-std::vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept;
+head_vector from_tree_to_head_vector(const rooted_tree& t) noexcept;
 
 /**
  * @brief Converts a rooted tree to a head vector.
@@ -130,7 +133,10 @@ std::vector<uint32_t> from_tree_to_head_vector(const rooted_tree& t) noexcept;
  * @param r A fictional root to be used to calculate the head vector.
  * @returns The head vector representation of this tree.
  */
-std::vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r = 0) noexcept;
+head_vector from_tree_to_head_vector(const free_tree& t, node r = 0) noexcept;
+
+// -----------------------------------------------------------------------------
+// head vector -> graph
 
 /**
  * @brief Converts a head vector into a rooted tree.
@@ -167,14 +173,14 @@ std::vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r = 0) n
  * and (2) not being valid due to containing two '0' (i.e., two roots).
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
- * @param head_vector A head vector as specified above.
+ * @param hv A head vector as specified above.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  */
 std::pair<free_tree,node> from_head_vector_to_free_tree
-(const std::vector<uint32_t>& head_vector, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalise = true, bool check = true)
 noexcept;
 
 /**
@@ -201,25 +207,15 @@ noexcept;
  *		(a) predecessor:       0 3 4 1 6 3
  *		(b) node of the tree:  1 2 3 4 5 6
  *
- *
- * Note that lines like these are not valid:
- *
- *		(1) 0 2 2 2 2 2
- *		(2) 2 0 0
- *
- *
- * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
- *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
- * @param head_vector A head vector as specified above.
+ * @param hv A head vector as specified above.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  */
 rooted_tree from_head_vector_to_rooted_tree
-(const std::vector<uint32_t>& head_vector, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalise = true, bool check = true)
 noexcept;
 
 } // -- namespace graphs
