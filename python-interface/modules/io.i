@@ -1,6 +1,7 @@
 %module io
 
 %include std_string.i
+%include std_vector.i
 
 %import definitions.i
 %import graphs.i
@@ -13,6 +14,7 @@
 
 // C++ includes
 #include <optional>
+#include <sstream>
 
 // lal includes
 #include <lal/graphs.hpp>
@@ -179,6 +181,38 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 	return None
 %}
 
+/* ------- WRAP the correctness functions that return error messages -------- */
+
+%include "../lal/io/report_correctness.hpp"
+
+%extend lal::io::report_treebank_file {
+	std::string __str__() const {
+		std::ostringstream out;
+		out << "(" << $self->get_line_number() << ", " << $self->get_error_message() << ")";
+		return out.str();
+	}
+}
+
+%extend lal::io::report_treebank_dataset {
+	std::string __str__() const noexcept {
+		std::ostringstream out;
+		out << "(" << $self->get_treebank_file_name() << ", "
+			<< $self->get_line_within_main_file() << ", "
+			<< $self->get_treebank_file_line() << ", "
+			<< $self->get_error_message()
+			<< ")";
+		return out.str();
+	}
+}
+
+namespace std {
+	%template(_list_report_treebank_file) vector<lal::io::report_treebank_file>;
+	%template(_list_report_treebank_dataset) vector<lal::io::report_treebank_dataset>;
+}
+
+/* -------------------------------------------------------------------------- */
+
+%include "../lal/io/check_correctness.hpp"
 
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset_reader.hpp"
@@ -186,14 +220,13 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 %include "../lal/io/treebank_processor.hpp"
 %include "../lal/io/treebank_dataset_processor.hpp"
 
+/* -------------------------------------------------------------------------- */
 
 %pythoncode %{
-
 __definitions = definitions
 del definitions
 
 # remove unnecessary modules
 del graphs
 del tree_type
-
 %}
