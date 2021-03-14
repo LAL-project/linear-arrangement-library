@@ -207,6 +207,16 @@ noexcept;
  *		(a) predecessor:       0 3 4 1 6 3
  *		(b) node of the tree:  1 2 3 4 5 6
  *
+ *
+ * Note that lines like these are not valid:
+ *
+ *		(1) 0 2 2 2 2 2
+ *		(2) 2 0 0
+ *
+ *
+ * Line (1) is not valid due to a self-reference in the second position,
+ * and (2) not being valid due to containing two '0' (i.e., two roots).
+ *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
  * @param normalise Should the graph be normalised?
