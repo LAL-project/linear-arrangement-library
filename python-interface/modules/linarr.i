@@ -2,6 +2,7 @@
 
 %include std_vector.i
 %include std_array.i
+%include std_pair.i
 
 %import definitions.i // this is necessary for the wrapper
 %import enums/syntactic_dependency_structure_type.i
@@ -17,6 +18,10 @@
 #include <lal/graphs.hpp>
 #include <lal/linarr.hpp>
 %}
+
+namespace std {
+	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
+}
 
 %include "../lal/linarr/1level.hpp"
 %include "../lal/linarr/2level.hpp"
