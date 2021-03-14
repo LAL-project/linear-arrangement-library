@@ -166,6 +166,8 @@ target_sources(
 		io/basic_output.hpp
 		io/edge_list.hpp
 		io/head_vector.hpp
+		io/report_correctness.hpp
+		io/check_correctness.hpp
 		io/treebank_error.hpp
 		io/treebank_feature.hpp
 		io/treebank_reader.hpp
@@ -175,6 +177,7 @@ target_sources(
 		# -- sources
 		io/edge_list.cpp
 		io/head_vector.cpp
+		io/check_correctness.cpp
 		io/treebank_reader.cpp
 		io/treebank_dataset_reader.cpp
 		io/treebank_processor.cpp
@@ -363,6 +366,8 @@ set(LIBLAL_INTERNAL_HEADER
 set(LIBLAL_IO_HEADER
 	io/edge_list.hpp
 	io/head_vector.hpp
+	io/report_correctness.hpp
+	io/check_correctness.hpp
 	io/treebank_error.hpp
 	io/treebank_feature.hpp
 	io/treebank_reader.hpp

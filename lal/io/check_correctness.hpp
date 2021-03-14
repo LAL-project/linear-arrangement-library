@@ -41,26 +41,35 @@
 
 #pragma once
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
+// C++ includes
+#include <string>
+#include <vector>
 
-#include <lal/io/basic_output.hpp>
-
-// read formatted files
-#include <lal/io/edge_list.hpp>
-#include <lal/io/head_vector.hpp>
-
-// process treebanks
-#include <lal/io/treebank_error.hpp>
-#include <lal/io/treebank_feature.hpp>
-
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
-
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_dataset_processor.hpp>
-
-// check correctness of treebanks
+// lal includes
 #include <lal/io/report_correctness.hpp>
-#include <lal/io/check_correctness.hpp>
+
+namespace lal {
+namespace io {
+
+// line, what
+/**
+ * @brief Checks the correctness of a treebank dataset.
+ * @param treebank_filename Name of the treebank file.
+ * @returns A list of errors.
+ */
+std::vector<report_treebank_file>
+check_correctness_treebank(const std::string& treebank_filename)
+noexcept;
+
+// file, line, what
+/**
+ * @brief Checks the correctness of a treebank dataset.
+ * @param main_file_name Name of the main file.
+ * @returns A list of errors.
+ */
+std::vector<report_treebank_dataset>
+check_correctness_treebank_dataset(const std::string& main_file_name)
+noexcept;
+
+} // -- namespace io
+} // -- namespace lal

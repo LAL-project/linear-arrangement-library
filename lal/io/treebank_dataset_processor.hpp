@@ -58,7 +58,7 @@ namespace lal {
 namespace io {
 
 /**
- * @brief Treebank dataset processor.
+ * @brief Automatic processing of treebank datasets.
  *
  * This class, the objects of which will be referred to as the "processors",
  * has the goal to ease the processing a whole treebank dataset and produce

@@ -138,7 +138,7 @@ public:
 	 */
 	treebank_error next_tree() noexcept;
 
-	// GETTERS
+	/* GETTERS */
 
 	/**
 	 * @brief Returns the number of trees processed so far.
@@ -160,6 +160,35 @@ public:
 	/// Returns the current tree.
 	graphs::rooted_tree get_tree() const noexcept;
 
+	/// Returns the current head vector.
+	head_vector get_head_vector() const noexcept
+	{ return m_current_head_vector; }
+
+	/* SETTERS */
+
+	/**
+	 * @brief Should trees be normalised?
+	 * @param v Boolean value.
+	 */
+	void set_normalise(bool v) noexcept
+	{ m_normalise_tree = v; }
+
+	/**
+	 * @brief Should the size of the subtrees be calculated?
+	 * @param v Boolean value.
+	 */
+	void set_calculate_size_subtrees(bool v) noexcept
+	{ m_calculate_size_subtrees = v; }
+
+	/**
+	 * @brief Should the tree be classified into types?
+	 *
+	 * See @ref lal::graphs::tree_type for details on the classification.
+	 * @param v Boolean value.
+	 */
+	void set_calculate_tree_type(bool v) noexcept
+	{ m_calculate_tree_type = v; }
+
 private:
 	/// Identifier for the treebank.
 	std::string m_treebank_identifier = "none";
@@ -172,6 +201,15 @@ private:
 	size_t m_num_trees = 0;
 	/// Current line.
 	std::string m_file_line;
+	/// Current head vector
+	head_vector m_current_head_vector;
+
+	/// Normalise the current tree.
+	bool m_normalise_tree = true;
+	/// Calculate the size of the subtrees of the generated rooted tree.
+	bool m_calculate_size_subtrees = true;
+	/// Calculate the type of tree of the generated tree.
+	bool m_calculate_tree_type = true;
 };
 
 } // -- namespace io

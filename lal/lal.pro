@@ -105,10 +105,12 @@ HEADERS += \
 	internal/graphs/trees/size_subtrees.hpp \
 	internal/graphs/trees/tree_centre.hpp \
 	internal/graphs/trees/tree_centroid.hpp \
+	io/check_correctness.hpp \
 	io/edge_list.hpp \
 	io.hpp \
 	io/basic_output.hpp \
 	io/head_vector.hpp \
+	io/report_correctness.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
 	io/treebank_dataset_processor.hpp \
@@ -181,6 +183,7 @@ SOURCES += \
 	internal/graphs/trees/Dmin_Projective.cpp \
 	internal/graphs/trees/Dmin_Unconstrained_FC.cpp \
 	internal/graphs/trees/Dmin_Unconstrained_YS.cpp \
+    io/check_correctness.cpp \
 	io/edge_list.cpp \
     io/head_vector.cpp \
 	io/treebank_dataset_processor.cpp \

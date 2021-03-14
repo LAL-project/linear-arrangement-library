@@ -52,7 +52,7 @@ namespace lal {
 namespace io {
 
 /**
- * @brief A reader for a dataset of treebank files.
+ * @brief A reader for a dataset of treebanks.
  *
  * This class, the objects of which will be referred to as the "dataset readers",
  * is an interface to help you do a custom processing of a set of treebanks. A
@@ -98,7 +98,7 @@ namespace io {
  * the main file.
  *
  * For example, the main file could be called \a stanford.txt, representing the
- * Stanford dataset, and could contain:
+ * Stanford treebank dataset, and could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
@@ -139,6 +139,9 @@ public:
 
 	/**
 	 * @brief Initialise the reader with a new dataset.
+	 *
+	 * Objects of this class can't be used to read a treebank until this method
+	 * returns no error.
 	 * @param main_file Main file of the dataset.
 	 * @returns The type of error in case any occurred. This is a value
 	 * of lal::io::treebank_error.
@@ -151,8 +154,13 @@ public:
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
+	 *
+	 * This method can be called even after it has returned an error.
 	 * @returns The type of error in case any occurred. This is a value
 	 * of lal::io::treebank_error.
+	 * @post In case it returns an error, then method
+	 * @ref get_treebank_reader will return an instance of
+	 * @ref lal::io::treebank_reader that can't be used.
 	 */
 	treebank_error next_treebank() noexcept;
 

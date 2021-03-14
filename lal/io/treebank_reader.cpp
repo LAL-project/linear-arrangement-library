@@ -69,6 +69,8 @@ treebank_error treebank_reader::init
 }
 
 treebank_error treebank_reader::next_tree() noexcept {
+	m_current_head_vector.clear();
+
 	getline(m_treebank, m_file_line);
 	if (m_file_line.length() == 1) {
 		// line is probably empty...
@@ -78,6 +80,14 @@ treebank_error treebank_reader::next_tree() noexcept {
 		}
 	}
 
+	// construct the current head vector
+	{
+	stringstream ss(m_file_line);
+	node k;
+	while (ss >> k) { m_current_head_vector.push_back(k); }
+	}
+
+	// for statistics
 	++m_num_trees;
 
 	// this peek is needed so that treebank.eof()
@@ -90,18 +100,15 @@ treebank_error treebank_reader::next_tree() noexcept {
 // GETTERS
 
 rooted_tree treebank_reader::get_tree() const noexcept {
-	// parse tree in line
-	stringstream ss(m_file_line);
+	rooted_tree t =
+		from_head_vector_to_rooted_tree(
+			m_current_head_vector,
+			m_normalise_tree,
+			true
+		);
 
-	// parent of each node
-	vector<node> L;
-	// read parents
-	node k;
-	while (ss >> k) { L.push_back(k); }
-
-	rooted_tree t = from_head_vector_to_rooted_tree(L);
-	t.calculate_size_subtrees();
-	t.calculate_tree_type();
+	if (m_calculate_size_subtrees) { t.calculate_size_subtrees(); }
+	if (m_calculate_tree_type) { t.calculate_tree_type(); }
 	return t;
 }
 
