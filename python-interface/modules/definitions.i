@@ -20,17 +20,15 @@
 %include "../lal/definitions.hpp"
 
 namespace std {
-	%template(list_uint32) vector<uint32_t>;
-	%template(list_bool) vector<bool>;
-	%template(list_string) vector<string>;
+	%template(_list_uint32) vector<uint32_t>;
+	%template(_list_bool) vector<bool>;
+	%template(_list_string) vector<string>;
 	
-	%template(edge) pair<lal::node, lal::node>;
-	%template(edge_pair) pair<lal::edge, lal::edge>;
+	%template(_edge) pair<lal::node, lal::node>;
+	%template(_edge_pair) pair<lal::edge, lal::edge>;
 	
-	%template(list_edge) vector<lal::edge>;
-	%template(list_edge_pair) vector<lal::edge_pair>;
+	%template(_list_edge) vector<lal::edge>;
+	%template(_list_edge_pair) vector<lal::edge_pair>;
 	
-	%template(list_list_node) vector<vector<lal::node>>;
-	
-	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
+	%template(_list_list_node) vector<vector<lal::node>>;
 }
