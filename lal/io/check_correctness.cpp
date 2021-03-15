@@ -75,22 +75,36 @@ inline directed_graph head_vector_to_directed_graph(const head_vector& hv) noexc
 }
 
 #define file_does_not_exist(F) \
-"Treebank '" + F + "' does not exist."
+"Error: Treebank '" + F + "' does not exist."
 
 #define file_could_not_be_opened(F) \
-"Treebank '" + F + "' could not be opened."
+"Error: Treebank '" + F + "' could not be opened."
 
 #define invalid_integer(i, chunk) \
-"Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') is not a valid integer number."
+"Error: Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') is not a valid integer number."
 
 #define number_out_of_bounds(i) \
-"Number at position '" + std::to_string(i) + "' (value: " + std::to_string(hv[i]) + ") is out of bounds."
+"Error: Number at position '" + std::to_string(i) + "' (value: " + std::to_string(hv[i]) + ") is out of bounds."
 
 #define wrong_num_roots(r) \
-"Wrong number of roots: " + std::to_string(n_roots) + "."
+"Error: Wrong number of roots: " + std::to_string(n_roots) + "."
+
+#define wrong_num_edges(n, m) \
+"Error: Wrong number of edges. Number of vertices is '" + std::to_string(n) + \
+	"'. Number of edges is '" + std::to_string(m) + "'; " + \
+	"should be '" + std::to_string(n-1) + "'."
 
 #define graph_has_cycles \
-"The graph described is not a tree, i.e., it has cycles."
+"Error: The graph described is not a tree, i.e., it has cycles."
+
+#define isolated_vertex(u) \
+"Error: Vertex '" + std::to_string(u) + "' is isolated."
+
+#define self_loop(pos) \
+"Error: found a self-loop at position '" + std::to_string(pos) + "'."
+
+#define empty_line \
+"Warning: Empty line found"
 
 // line, what
 vector<report_treebank_file>
@@ -111,58 +125,85 @@ noexcept
 
 	size_t line = 1;
 	while (getline(fin, current_line)) {
-		bool non_numeric_characters = false;
-		head_vector hv;
-
-		// ensure there are only numeric characters
-		{
-		size_t i = 1;
-		stringstream ss(current_line);
-		string chunk;
-		while (ss >> chunk) {
-
-			uint32_t value;
-			const auto result = std::from_chars
-			(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
-
-			if (result.ec == std::errc::invalid_argument) {
-				treebank_err_list.emplace_back(line, invalid_integer(i, chunk));
-				non_numeric_characters = true;
-			}
-			else {
-				hv.push_back(value);
-			}
-
-			++i;
+		if (current_line == "") {
+			treebank_err_list.emplace_back(line, empty_line);
 		}
-		}
+		else {
+			bool non_numeric_characters = false;
+			head_vector hv;
 
-		if (not non_numeric_characters) {
-			uint32_t n_roots = 0;
-			bool can_make_graph = true;
+			// ensure there are only numeric characters
+			{
+			size_t i = 1;
+			stringstream ss(current_line);
+			string chunk;
+			while (ss >> chunk) {
 
-			// inspect the head vector
-			for (size_t i = 0; i < hv.size(); ++i) {
-				if (hv[i] == 0) { ++n_roots; }
+				uint32_t value;
+				const auto result = std::from_chars
+				(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
+
+				if (result.ec == std::errc::invalid_argument) {
+					treebank_err_list.emplace_back
+					(line, invalid_integer(i, chunk));
+					non_numeric_characters = true;
+				}
 				else {
-					// ensure that the number is within bounds
-					if (hv[i] > hv.size()) {
-						treebank_err_list.emplace_back(line, number_out_of_bounds(i));
-						can_make_graph = false;
+					hv.push_back(value);
+				}
+
+				++i;
+			}
+			}
+
+			if (not non_numeric_characters) {
+				uint32_t n_roots = 0;
+				bool can_make_graph = true;
+
+				// inspect the head vector
+				for (size_t i = 0; i < hv.size(); ++i) {
+					if (hv[i] == 0) { ++n_roots; }
+					else {
+						// ensure that the number is within bounds
+						if (hv[i] > hv.size()) {
+							treebank_err_list.emplace_back
+							(line, number_out_of_bounds(i));
+							can_make_graph = false;
+						}
+						else if (hv[i] == i + 1) {
+							treebank_err_list.emplace_back
+							(line, self_loop(i + 1));
+							can_make_graph = false;
+						}
 					}
 				}
-			}
 
-			// check there is exactly one root
-			if (n_roots != 1) {
-				treebank_err_list.emplace_back(line, wrong_num_roots(n_roots));
-			}
+				// check there is exactly one root
+				if (n_roots != 1) {
+					treebank_err_list.emplace_back
+					(line, wrong_num_roots(n_roots));
+				}
 
-			if (can_make_graph) {
-				// make a directed graph with the values
-				const auto dgraph = head_vector_to_directed_graph(hv);
-				if (internal::has_undirected_cycles(dgraph)) {
-					treebank_err_list.emplace_back(line, graph_has_cycles);
+				if (can_make_graph) {
+					// make a directed graph with the values
+					const auto dgraph = head_vector_to_directed_graph(hv);
+					if (internal::has_undirected_cycles(dgraph)) {
+						treebank_err_list.emplace_back
+						(line, graph_has_cycles);
+					}
+
+					// find isolated vertices
+					for (node u = 0; u < dgraph.num_nodes(); ++u) {
+						if (dgraph.degree(u) == 0) {
+							treebank_err_list.emplace_back
+							(line, isolated_vertex(u));
+						}
+					}
+
+					if (dgraph.num_edges() != dgraph.num_nodes() - 1) {
+						treebank_err_list.emplace_back
+						(line, wrong_num_edges(dgraph.num_nodes(), dgraph.num_edges()));
+					}
 				}
 			}
 		}
