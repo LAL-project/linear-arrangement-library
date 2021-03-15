@@ -152,6 +152,9 @@ public:
 	 * @param output_file File where the results are to be stored.
 	 * @param all_features Should the feature list contain all possible features?
 	 * @param treebank_id A nickname for this treebank (for example, an ISO code).
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::treebank_file_does_not_exist
 	 */
 	treebank_error init(
 		const std::string& treebank_input_file,
@@ -171,8 +174,13 @@ public:
 	 * This function uses attributes @ref m_separator, @ref m_output_header to
 	 * format the output data. It also outputs the current progress if
 	 * @ref m_be_verbose is set to true.
-	 * @returns A value describing the error (if any) that may have occurred
-	 * while processing the treebank file. If any error ocurred, see methods
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::no_features
+	 * - @ref lal::io::treebank_error::output_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error::empty_line_found
+	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
+	 * output_file_could_not_be_opened
 	 * @pre Initialisation did not return any errors.
 	 */
 	treebank_error process() noexcept;

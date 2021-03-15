@@ -215,6 +215,10 @@ public:
 	 * @param output_directory Directory where the result files are to be stored.
 	 * @param all_features Should the feature list contain all possible features?
 	 * @param n_threads Number of threads to use in a parallel application.
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::main_file_does_not_exist
+	 * - @ref lal::io::treebank_error::output_directory_does_not_exist
 	 */
 	treebank_error init(
 		const std::string& main_file,
@@ -240,8 +244,13 @@ public:
 	 * @ref get_error_treebank_name.
 	 * @param res Name of the file where all values are going to be stored.
 	 * @param remove Removes all individual files. The default value is true.
-	 * @returns A value describing the error (if any) that may have occurred
-	 * while processing the dataset. If any error ocurred, see methods
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::no_features
+	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error::some_treebank_file_failed
+	 * - @ref lal::io::treebank_error::output_join_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error::treebank_result_file_could_not_be_opened
 	 * @ref get_num_errors, @ref get_error_treebank_filename,
 	 * @ref get_error_treebank_name.
 	 * @pre Initialisation did not return any errors.

@@ -118,7 +118,9 @@ public:
 	 * @brief Initialises the treebank reader
 	 * @param file Treebank file.
 	 * @param identifier Identifier string for the treebank.
-	 * @returns The type of the error, if any.
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
@@ -133,7 +135,9 @@ public:
 	 *
 	 * In case the function returns @ref lal::io::treebank_error::empty_line_found
 	 * method @ref get_tree should not be called.
-	 * @returns A value of lal::io::treebank_error.
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::empty_line_found
 	 * @post Increments the amount of trees found.
 	 */
 	treebank_error next_tree() noexcept;

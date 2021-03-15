@@ -81,6 +81,7 @@ enum class treebank_error {
 	 * Returned by:
 	 * - @ref lal::io::treebank_reader
 	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_reader
 	 * - @ref lal::io::treebank_dataset_processor
 	 */
 	treebank_file_could_not_be_opened,
@@ -106,8 +107,8 @@ enum class treebank_error {
 	 * @brief Main file does not exist.
 	 *
 	 * Returned by:
-	 * - @ref lal::io::treebank_dataset_processor
 	 * - @ref lal::io::treebank_dataset_reader
+	 * - @ref lal::io::treebank_dataset_processor
 	 */
 	main_file_does_not_exist,
 	/**

@@ -143,8 +143,10 @@ public:
 	 * Objects of this class can't be used to read a treebank until this method
 	 * returns no error.
 	 * @param main_file Main file of the dataset.
-	 * @returns The type of error in case any occurred. This is a value
-	 * of lal::io::treebank_error.
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::main_file_does_not_exist
+	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
 	 */
 	treebank_error init(const std::string& main_file) noexcept;
 
@@ -156,8 +158,10 @@ public:
 	 * @brief Opens the file of the next treebank in the main file.
 	 *
 	 * This method can be called even after it has returned an error.
-	 * @returns The type of error in case any occurred. This is a value
-	 * of lal::io::treebank_error.
+	 * @returns The type of the error, if any. The list of errors that this
+	 * method can return is:
+	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
+	 * @pre Method @ref init did not return any errors.
 	 * @post In case it returns an error, then method
 	 * @ref get_treebank_reader will return an instance of
 	 * @ref lal::io::treebank_reader that can't be used.
