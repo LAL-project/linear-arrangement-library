@@ -209,7 +209,6 @@ target_sources(
 		linarr/C_approx.cpp
 		linarr/D.cpp
 		linarr/flux.cpp
-		linarr/flux.cpp
 		linarr/Dmin.cpp
 		linarr/headedness.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
