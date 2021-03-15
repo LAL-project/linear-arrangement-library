@@ -233,7 +233,6 @@ noexcept
 	string id, treebankname;
 	while (fin_main_file >> id >> treebankname) {
 		// build path to the treebank file
-
 		filesystem::path treebank_full_path(main_file_name);
 		treebank_full_path.replace_filename(treebankname);
 
