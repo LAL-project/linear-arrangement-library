@@ -60,6 +60,7 @@ treebank_error treebank_reader::init
 	m_treebank.close();
 	m_treebank_identifier = lang;
 	m_treebank_file = file;
+	m_num_trees = 0;
 
 	m_treebank.open(m_treebank_file.c_str());
 	if (not m_treebank.is_open()) {
