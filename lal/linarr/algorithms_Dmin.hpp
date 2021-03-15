@@ -114,8 +114,8 @@ enum class algorithms_Dmin {
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
      *
-	 * This option implements Fan Chung's quadratic algorithm published in
-	 * \cite Chung1984a.
+	 * This option implements Fan Chung's quadratic algorithm (Section 3)
+	 * published in \cite Chung1984a.
 	 *
 	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
 	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
