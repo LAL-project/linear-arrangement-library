@@ -363,6 +363,7 @@ set(LIBLAL_INTERNAL_HEADER
 	internal/data_array.hpp
 )
 set(LIBLAL_IO_HEADER
+	io/basic_output.hpp
 	io/edge_list.hpp
 	io/head_vector.hpp
 	io/report_correctness.hpp
@@ -385,9 +386,9 @@ set(LIBLAL_LINARR_HEADER
 	linarr/algorithms_Dmin.hpp
 	linarr/C.hpp
 	linarr/D.hpp
+	linarr/Dmin.hpp
 	linarr/dependency_flux.hpp
 	linarr/flux.hpp
-	linarr/Dmin.hpp
 	linarr/headedness.hpp
 	linarr/syntactic_dependency_structure_type.hpp
 	linarr/classify_syntactic_dependency_structure.hpp
