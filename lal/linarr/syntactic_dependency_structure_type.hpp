@@ -55,8 +55,8 @@ namespace linarr {
 /**
  * @brief The different types of syntactic dependency tree structures.
  *
- * Any tree can be classified when its nodes are linearly arranged into
- * several different classes.
+ * Any tree with its nodes linearly arranged can be classified into several
+ * different classes.
  *
  * We can currently identify the following structures:
  * - Projective structures (see @ref syntactic_dependency_structure_type::projective),
@@ -91,14 +91,14 @@ enum class syntactic_dependency_structure_type {
 	/**
 	 * @brief 1-Endpoint Crossing.
 	 *
-	 * A structure has the property of being 1-endpoint crossing if, given any
-	 * dependency, all other dependencies crossing it are incident to a common
-	 * node. See \cite Pitler2013a for further details.
+	 * A structure is 1-endpoint crossing if, given any dependency, all other
+	 * dependencies crossing it are incident to a common node. See
+	 * \cite Pitler2013a for further details.
 	 */
 	EC1,
 	// This value must always be the last one.
 	/// The structure could not be classified.
-	none
+	unknown
 };
 
 // since SWIG does not wrap string_view, we need a
@@ -118,13 +118,13 @@ syntactic_dependency_structure_type_to_string
 		case syntactic_dependency_structure_type::planar: return "planar";
 		case syntactic_dependency_structure_type::WG1: return "WG1";
 		case syntactic_dependency_structure_type::EC1: return "EC1";
-		default: return "none";
+		default: return "unknown";
 	}
 }
 
 /// Number of elements within enumeration @ref syntactic_dependency_structure_type.
 constexpr std::size_t __tree_structure_type_size =
-	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure_type::none);
+	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure_type::unknown);
 
 } // -- namespace linarr
 } // -- namespace lal

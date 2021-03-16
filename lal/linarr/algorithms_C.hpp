@@ -44,13 +44,17 @@
 namespace lal {
 namespace linarr {
 
+// **DEVELOPER NOTE**
+// This enumeration's documentation has to be updated manually in the
+// algorithms_C.py python file.
+
 /**
  * @brief The different algorithms for computing the number of crossings.
  *
- * Two edges \f${s,t},{u,v}\f$ of a graph \f$G\f$ cross in a linear arrangement
+ * Two edges \f$\{s,t\},\{u,v\}\f$ of a graph \f$G\f$ cross in a linear arrangement
  * \f$\pi\f$ of its nodes if, and only if, their positions interleave in the
  * linear arrangement. More formally, given an arrangement \f$\pi\f$ of a graph
- * \f$G\f$, the edges \f${s,t},{u,v}\f$ cros iff \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ .
+ * \f$G\f$, the edges \f$\{s,t\},\{u,v\}\f$ cros iff \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ .
  */
 enum class algorithms_C {
 	/**

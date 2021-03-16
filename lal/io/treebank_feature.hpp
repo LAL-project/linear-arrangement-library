@@ -101,14 +101,14 @@ enum class treebank_feature {
 	 * See @ref lal::linarr::mean_dependency_distance for details.
 	 */
 	mean_dependency_distance,
+
+	// C
+
 	/**
 	 * @brief Number of edge crossings \f$C\f$.
 	 *
 	 * See @ref lal::linarr::algorithms_C for details.
 	 */
-
-	// C
-
 	C,
 	/**
 	 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
@@ -127,7 +127,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Variance of \f$C\f$, \f$V[C]\f$.
 	 *
-	 * @ref lal::properties::variance_C_tree for details.
+	 * See @ref lal::properties::variance_C_tree for details.
 	 */
 	C_var,
 	/**
@@ -137,14 +137,14 @@ enum class treebank_feature {
 	 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
 	 */
 	C_z,
+
+	// D
+
 	/**
 	 * @brief Sum of length of edges \f$D\f$.
 	 *
 	 * See @ref lal::linarr::sum_length_edges for details.
 	 */
-
-	// D
-
 	D,
 	/**
 	 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
@@ -163,7 +163,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *
-	 * @ref lal::properties::variance_D for details.
+	 * See @ref lal::properties::variance_D for details.
 	 */
 	D_var,
 	/**

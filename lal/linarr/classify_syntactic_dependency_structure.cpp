@@ -295,7 +295,7 @@ __get_syn_dep_tree_type
 		internal::make_array_with_value
 		<bool, __tree_structure_type_size, false>();
 
-	cl[static_cast<size_t>(syndepstr_type::none)] = true;
+	cl[static_cast<size_t>(syndepstr_type::unknown)] = true;
 
 	const auto __set_type = [&](const syndepstr_type& ts) {
 		is_some_class = true;
@@ -341,7 +341,7 @@ __get_syn_dep_tree_type
 	// classify small trees
 	if (n <= 2) {
 		__set_type(syndepstr_type::projective);
-		nullify(none);
+		nullify(unknown);
 		return cl;
 	}
 
@@ -355,7 +355,7 @@ __get_syn_dep_tree_type
 			syndepstr_type::planar : syndepstr_type::projective;
 
 		__set_type(t);
-		nullify(none);
+		nullify(unknown);
 		return cl;
 	}
 
@@ -379,7 +379,7 @@ __get_syn_dep_tree_type
 			nullify(EC1);
 		}
 
-		nullify(none);
+		nullify(unknown);
 		return cl;
 	}
 
@@ -401,7 +401,7 @@ __get_syn_dep_tree_type
 	}
 
 	if (is_some_class) {
-		nullify(none);
+		nullify(unknown);
 	}
 	return cl;
 }

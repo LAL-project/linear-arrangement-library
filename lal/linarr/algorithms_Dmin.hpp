@@ -44,6 +44,9 @@
 namespace lal {
 namespace linarr {
 
+// **DEVELOPER NOTE**
+// This enumeration's documentation has to be updated manually in the
+// algorithms_C.py python file.
 /**
  * @brief The different algorithms for computing the minimum sum of the
  * length of the edges \f$D\f$.
@@ -62,11 +65,10 @@ enum class algorithms_Dmin {
      * A projective linear arrangement is an arrangement in which there are
      * no edge crossings and the root is not covered by any edge.
      *
-	 * This option implements the algorithm in \cite Alemany2021a. A non-linear
+	 * This implements the algorithm in \cite Alemany2021a. A non-linear
 	 * time algorithm to solve this problem was oulined in \cite Gildea2007a.
      *
-	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for rooted trees
-	 * (see @ref lal::linarr::Dmin(const lal::graphs::rooted_tree&, const algorithms_Dmin&)).
+	 * This algorithm is only allowed on @ref lal::linarr::Dmin for rooted trees.
 	 *
 	 * These are the preconditions of usage of this algorithm.
 	 * @pre The input rooted tree has to have the size of its subtrees calculated
@@ -84,13 +86,12 @@ enum class algorithms_Dmin {
 	 * A planar linear arrangement is an arrangement in which there are
 	 * no edge crossings.
 	 *
-	 * This option implements the algorithm published by Hochberg and Stallmann
-	 * in \cite Hochberg2003a. A previous algorithm solving the same problem
+	 * This implements the algorithm published by Hochberg and Stallmann
+	 * \cite Hochberg2003a. A previous algorithm solving the same problem
 	 * was published by Iordanskii \cite Iordanskii1987a. See \cite Alemany2021a
 	 * for a review.
 	 *
-	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
-	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
+	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
 	 */
 	Planar,
 
@@ -100,12 +101,11 @@ enum class algorithms_Dmin {
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
      *
-	 * This option implements Yossi Shiloach's algorithm published in \cite Shiloach1979a.
+	 * This implements Yossi Shiloach's algorithm published in \cite Shiloach1979a.
 	 * The implementation of this algorithm applies the corrections published
      * in \cite Esteban2017a.
 	 *
-	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
-	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
+	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
      */
     Unconstrained_YS,
     /**
@@ -114,11 +114,10 @@ enum class algorithms_Dmin {
      * Computes an unconstrained optimal linear arrangement of a free tree and
      * the value of its cost, i.e., the sum of the lengths of the edges.
      *
-	 * This option implements Fan Chung's quadratic algorithm (Section 3)
+	 * This implements Fan Chung's quadratic algorithm (Section 3)
 	 * published in \cite Chung1984a.
 	 *
-	 * NOTE: This algorithm is only allowed on @ref lal::linarr::Dmin for free trees
-	 * (see @ref lal::linarr::Dmin(const lal::graphs::free_tree&, const algorithms_Dmin&)).
+	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
      */
     Unconstrained_FC
 };

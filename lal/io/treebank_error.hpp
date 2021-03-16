@@ -55,7 +55,15 @@ namespace io {
  * values instead of a plain 'false' value.
  */
 enum class treebank_error {
-	/// No error.
+	/**
+	 * @brief No error occurred.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_reader
+	 * - @ref lal::io::treebank_processor
+	 * - @ref lal::io::treebank_dataset_reader
+	 * - @ref lal::io::treebank_dataset_processor
+	 */
 	no_error,
 
 	/**
@@ -122,25 +130,29 @@ enum class treebank_error {
 	/**
 	 * @brief Output directory could not be found.
 	 *
-	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_processor.
 	 */
 	output_directory_does_not_exist,
 	/**
 	 * @brief The file containing the result of processing a treebank dataset could not be opened.
 	 *
-	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_processor.
 	 */
 	output_join_file_could_not_be_opened,
 	/**
 	 * @brief The resulting file of processing a treebank could not be opened
 	 *
-	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_processor.
 	 */
 	treebank_result_file_could_not_be_opened,
 	/**
 	 * @brief Processing one or more of the treebanks failed.
 	 *
-	 * Returned by @ref lal::io::treebank_dataset_processor.
+	 * Returned by:
+	 * - @ref lal::io::treebank_dataset_processor.
 	 */
 	some_treebank_file_failed,
 };

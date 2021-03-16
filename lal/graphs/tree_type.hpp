@@ -89,17 +89,23 @@ enum class tree_type {
 	 */
 	bistar,
 
-	/// Caterpillar trees.
+	/**
+	 * @brief Caterpillar trees.
+	 *
+	 * These are the trees such that a linear tree is produced when its leaves
+	 * are removed \cite Harary1973a.
+	 */
 	caterpillar,
 
 	/**
 	 * @brief Spider trees.
 	 *
 	 * A spider tree has a unique vertex of degree greater than or equal to 3.
-	 * The other vertices have degree 2 or 1 (the leaves).
+	 * The other vertices have degree 2 or 1 \cite English2019a.
 	 */
 	spider,
 
+	// *DEVELOPER NOTE*
 	// This value must always be the last one.
 	/// The tree could not be classified
 	unknown
