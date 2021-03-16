@@ -278,7 +278,7 @@ namespace lal {
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
  *		// given a tree T (of the appropriate type -- indicated with the '2')
- *		lal::generate::rand_2_arrangement ArrGen(T);
+ *		lal::generate::rand_2_arrangements ArrGen(T);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::linear_arrangement arr = ArrGen.make_rand_arrgmnt();
  *			// ...
@@ -287,7 +287,7 @@ namespace lal {
  * To enumerate all arrangements:
  * @code
  *		// given a tree T (of the appropriate type -- indicated with the '2')
- *		lal::generate::all_2_arrangement ArrGen(T);
+ *		lal::generate::all_2_arrangements ArrGen(T);
  *		while (ArrGen.has_next()) {
  *			ArrGen.next();
  *			const lal::linearrgmnt arr = ArrGen.get_arrangement();
@@ -296,7 +296,7 @@ namespace lal {
  * @endcode
  * (remember to replace the numbers in the actual code!).
  *
- * \remark In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for an \f$n\f$-vertex star tree, the class @ref lal::generate::all_projective_arrangements will enumerate \f$n!\f$ arrangements.
+ * \remark In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for any \f$n\f$-vertex star tree, the class @ref lal::generate::all_projective_arrangements will enumerate \f$n!\f$ arrangements.
  */
 namespace generate {}
 

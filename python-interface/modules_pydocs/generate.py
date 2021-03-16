@@ -50,18 +50,17 @@ Again, the names for these classes are also self-explanatory:
 
 >>> 1_2_arrangement
 
-
 The numbers are placeholders for the following:
 
 - 2: projective -- Indicates whether the generated arrangements should be projective.
 - 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
 
-Therefore, the class @ref rand_projective_arrangements generates random projective arrangements of a tree, and the class @ref all_projective_arrangements should be used to enumerate all projective arrangements of a tree.
+Therefore, the class ``rand_projective_arrangements`` generates random projective arrangements of a tree, and the class ``all_projective_arrangements`` should be used to enumerate all projective arrangements of a tree.
 
 Using these classes is straightforward. To generate trees uniformly at random:
 
 >>> # given a tree T (of the appropriate type -- indicated with the '2')
->>> ArrGen = lal.generate.rand_2_arrangement(T)
+>>> ArrGen = lal.generate.rand_2_arrangements(T)
 >>> for  i in range(0,100):
 >>>     arr = ArrGen.make_rand_arrgmnt()
 >>>     # ...
@@ -69,13 +68,13 @@ Using these classes is straightforward. To generate trees uniformly at random:
 To enumerate all arrangements:
 
 >>> # given a tree T (of the appropriate type -- indicated with the '2')
->>> ArrGen = lal.generate.all_2_arrangement(T)
+>>> ArrGen = lal.generate.all_2_arrangements(T)
 >>> while ArrGen.has_next():
 >>>     ArrGen.next()
 >>>     arr = ArrGen.get_arrangement()
 
 (remember to replace the numbers in the actual code!).
 
-    *Remark:* In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for an \f$n\f$-vertex star tree, the class @ref all_projective_arrangements will enumerate \f$n!\f$ arrangements.
+    *Remark:* In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for any :math:`n`-vertex star tree, the class ``all_projective_arrangements`` will enumerate :math:`n!` arrangements.
 
 """
