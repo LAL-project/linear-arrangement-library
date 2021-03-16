@@ -196,7 +196,7 @@ cleanso:
 	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*.$(SO_EXT)
 
 clean:
-	rm -f $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*
+	rm -rf $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/*
 
 distclean:
 	rm -rf $(ARCH_DIR)

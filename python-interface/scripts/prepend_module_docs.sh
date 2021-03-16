@@ -16,6 +16,8 @@ if [ ! -f "$f" ]; then
 	exit
 fi
 
+echo $f
+
 line=$(head -n 1 $f)
 if [ "$line" != "r\"\"\"" ]; then
 	
@@ -48,6 +50,20 @@ if [ "$line" != "r\"\"\"" ]; then
 
 	elif [ "$f" == "lal.py" ] || [ "$f" == "laldebug.py" ]; then
 		prepend modules_pydocs/lal.py $f
-		
+	
+	elif [[ "$f" == *"algorithms_C"* ]]; then
+		prepend modules_pydocs/algorithms_C.py $f
+	
+	elif [[ "$f" == *"algorithms_Dmin"* ]]; then
+		prepend modules_pydocs/algorithms_Dmin.py $f
+	
+	elif [[ "$f" == *"tree_type"* ]]; then
+		prepend modules_pydocs/tree_type.py $f
+	
+	elif [[ "$f" == *"treebank_feature"* ]]; then
+		prepend modules_pydocs/treebank_feature.py $f
+	
+	elif [[ "$f" == *"treebank_error"* ]]; then
+		prepend modules_pydocs/treebank_error.py $f
 	fi
 fi
