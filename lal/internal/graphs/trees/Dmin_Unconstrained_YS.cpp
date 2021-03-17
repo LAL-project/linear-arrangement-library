@@ -235,23 +235,9 @@ void calculate_mla(
 
 	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
-
-	/*uint32_t c1 = 0;
-	calculate_mla(t, RIGHT_ANCHOR, v_0, start, end, mla, c1);
-
-	uint32_t c2 = 0;
-	calculate_mla(
-		t,
-		(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR),
-		v_star,
-		start + n_0,
-		end,
-		mla,
-		c2
-	);*/
 	
 	uint32_t c1, c2;
-	c1 = c2 = 0; // Cal inicialitzar?
+	c1 = c2 = 0;
 	
 	// t -t0 : t0  if t has a LEFT_ANCHOR
 	if (alpha == LEFT_ANCHOR){
@@ -261,8 +247,15 @@ void calculate_mla(
 	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
 	else {
 		calculate_mla(t, RIGHT_ANCHOR, v_0, start, start + n_0 - 1, mla, c1);
-		if (alpha == NO_ANCHOR) calculate_mla(t, LEFT_ANCHOR, v_star, start + n_0, end, mla, c2);
-		else calculate_mla(t, NO_ANCHOR, v_star, start + n_0, end, mla, c2);
+		calculate_mla(
+			t,
+			(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR),
+			v_star,
+			start + n_0,
+			end,
+			mla,
+			c2
+		);
 	}
 	
 	// Cost for recursion A
@@ -289,10 +282,8 @@ void calculate_mla(
 		vector<edge> edges(2*p_alpha - anchored);
 
 		// number of nodes not in the central tree
-		//uint32_t n_not_central_tree = 0;
 		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			const node r = ord[i].second;
-			//n_not_central_tree += ord[i].first;
 			edges[i - 1].first = v_star - 1;
 			edges[i - 1].second = r - 1;
 		}
@@ -301,9 +292,10 @@ void calculate_mla(
 		// t1 : t3 : ... : t* : ... : t4 : t2 if t has NO_ANCHOR or RIGHT_ANCHOR
 		// t2 : t4 : ... : t* : ... : t3 : t1 ig t has LEFT_ANCHOR
 		for(uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
-			uint32_t c_aux = 0; // Cal inicialitzar?
+			uint32_t c_aux = 0;
+			
 			const node r = ord[i].second;
-			uint32_t n_i = ord[i].first;
+			const uint32_t n_i = ord[i].first;
 			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
 				calculate_mla(t, RIGHT_ANCHOR, r, start, start + n_i - 1, mla_B, c_aux);
 				cost_B += c_aux;
@@ -317,45 +309,11 @@ void calculate_mla(
 		}
 		
 		// t*
-		uint32_t c_aux = 0; // Cal inicialitzar?
+		uint32_t c_aux = 0;
 		calculate_mla(t, NO_ANCHOR, v_star, start, end, mla_B, c_aux);
 		cost_B += c_aux;
-		
-		
-		//// T_1, T_3, ...
-		//uint32_t start_aux = start;
-		//for (uint32_t i = 1; i <= 2*p_alpha - anchored; i = i + 2) {
-			//uint32_t c_aux = 0;
-			//const node r = ord[i].second;
-			//calculate_mla(t, RIGHT_ANCHOR, r, start_aux, end, mla_B, c_aux);
-			//cost_B += c_aux;
-			//start_aux += ord[i].first;
-		//}
-
-		//// T-(T_1, T_2, ...)
-		//uint32_t c = 0;
-		//calculate_mla(t, NO_ANCHOR, v_star, start_aux, end, mla_B, c);
-		//// number of nodes in the central tree
-		//const uint32_t n_central_tree = size_tree - n_not_central_tree;
-		//cost_B += c;
-		//start_aux += n_central_tree;
-
-		//// ..., T_4, T_2
-		//for (uint32_t i = 2*(p_alpha - anchored); i >= 2; i = i - 2) {
-			//uint32_t c_aux = 0;
-			//const node r = ord[i].second;
-			//calculate_mla(t, LEFT_ANCHOR, r, start_aux, end, mla_B, c_aux);
-			//cost_B += c_aux;
-			//start_aux += ord[i].first;
-		//}
-		
 
 		// reconstruct t
-		/*for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
-			const node r = ord[i].second;
-			edges[i - 1].first = v_star - 1;
-			edges[i - 1].second = r - 1;
-		}*/
 		t.add_edges(edges, false, false);
 
 		// We add the anchors part not previously added
@@ -369,26 +327,6 @@ void calculate_mla(
 			cost = cost_B;
 		}
 	}
-
-	//// flipping arrangement if needed
-	//if (alpha == RIGHT_ANCHOR) {
-		//// the tree is right-anchored and the root is too much to the left
-		//if (2*(mla[v_star - 1] - start + 1) <= size_tree) {
-			//for(uint32_t i = 0; i < size_tree; ++i) {
-				//const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
-				//mla[reachable[i] - 1] = aux;
-			//}
-		//}
-	//}
-	//else if (alpha == LEFT_ANCHOR) {
-		//// the tree is left-anchored and the root is too much to the right
-		//if (2*(start + size_tree - 1 - mla[v_star - 1] + 1) <= size_tree) {
-			//for (uint32_t i = 0; i < size_tree; ++i) {
-				//const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
-				//mla[reachable[i] - 1] = aux;
-			//}
-		//}
-	//}
 }
 
 } // -- namespace dmin_shiloach
