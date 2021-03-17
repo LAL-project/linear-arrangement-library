@@ -5,7 +5,6 @@ VERSION_MINOR = 03
 VERSION_BUILD = 00
 VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}.$${VERSION_BUILD}
 
-CONFIG += c++17
 CONFIG -= app_bundle
 QT     -= core gui
 
@@ -19,6 +18,22 @@ TARGET = laldebug
 QMAKE_CXXFLAGS_DEBUG += -O3 -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
+
+isEmpty(ENVIR) {
+    ENVIR = "HOME"
+	CONFIG += c++17
+}
+
+# configure home
+equals(ENVIR, "CLUSTER") {
+}
+
+# configure cluster
+equals(ENVIR, "CLUSTER") {
+    QMAKE_CXX = /home/soft/gcc-9.2.0/bin/g++
+    QMAKE_LINK = /home/soft/gcc-9.2.0/bin/g++
+    QMAKE_CXXFLAGS += -std=c++17
+}
 
 # uncomment when doing actual profiling
 #QMAKE_CXXFLAGS_RELEASE += -pg
