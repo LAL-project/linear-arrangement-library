@@ -155,11 +155,13 @@ uint32_t calculate_p_alpha(
 // root_or_anchor: node used as a reference to the said connected component.
 //     Its value is within [1,n]
 // start: position where to start placing the vertices (the leftmost position
-//     in the mla for the subtree). We could also have an anologous finish
-//     (rightmost position) but it is not needed.
+//     in the mla for the subtree). 
+// end: position where to end placing the vertices (the rightmost position 
+//     int the mla for the subtree).
+
 void calculate_mla(
 	free_tree& t,
-	char alpha, node root_or_anchor, position start,
+	char alpha, node root_or_anchor, position start, position end,
 	linear_arrangement& mla, uint32_t& cost
 )
 {
@@ -234,8 +236,8 @@ void calculate_mla(
 	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
 
-	uint32_t c1 = 0;
-	calculate_mla(t, RIGHT_ANCHOR, v_0, start, mla, c1);
+	/*uint32_t c1 = 0;
+	calculate_mla(t, RIGHT_ANCHOR, v_0, start, end, mla, c1);
 
 	uint32_t c2 = 0;
 	calculate_mla(
@@ -243,10 +245,26 @@ void calculate_mla(
 		(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR),
 		v_star,
 		start + n_0,
+		end,
 		mla,
 		c2
-	);
-
+	);*/
+	
+	uint32_t c1, c2;
+	c1 = c2 = 0; // Cal inicialitzar?
+	
+	// t -t0 : t0  if t has a LEFT_ANCHOR
+	if (alpha == LEFT_ANCHOR){
+		calculate_mla(t, NO_ANCHOR, v_star, start, end - n_0, mla, c2);
+		calculate_mla(t, LEFT_ANCHOR, v_0, end - n_0 + 1, end, mla, c1);
+	}
+	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
+	else {
+		calculate_mla(t, RIGHT_ANCHOR, v_0, start, start + n_0 - 1, mla, c1);
+		if (alpha == NO_ANCHOR) calculate_mla(t, LEFT_ANCHOR, v_star, start + n_0, end, mla, c2);
+		else calculate_mla(t, NO_ANCHOR, v_star, start + n_0, end, mla, c2);
+	}
+	
 	// Cost for recursion A
 	cost = (alpha == NO_ANCHOR ? c1 + c2 + 1 : c1 + c2 + size_tree - n_0);
 
@@ -271,41 +289,66 @@ void calculate_mla(
 		vector<edge> edges(2*p_alpha - anchored);
 
 		// number of nodes not in the central tree
-		uint32_t n_not_central_tree = 0;
+		//uint32_t n_not_central_tree = 0;
 		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			const node r = ord[i].second;
-			n_not_central_tree += ord[i].first;
+			//n_not_central_tree += ord[i].first;
 			edges[i - 1].first = v_star - 1;
 			edges[i - 1].second = r - 1;
 		}
 		t.remove_edges(edges, false, false);
 
-		// T_1, T_3, ...
-		uint32_t start_aux = start;
-		for (uint32_t i = 1; i <= 2*p_alpha - anchored; i = i + 2) {
-			uint32_t c_aux = 0;
+		// t1 : t3 : ... : t* : ... : t4 : t2 if t has NO_ANCHOR or RIGHT_ANCHOR
+		// t2 : t4 : ... : t* : ... : t3 : t1 ig t has LEFT_ANCHOR
+		for(uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+			uint32_t c_aux = 0; // Cal inicialitzar?
 			const node r = ord[i].second;
-			calculate_mla(t, RIGHT_ANCHOR, r, start_aux, mla_B, c_aux);
-			cost_B += c_aux;
-			start_aux += ord[i].first;
+			uint32_t n_i = ord[i].first;
+			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
+				calculate_mla(t, RIGHT_ANCHOR, r, start, start + n_i - 1, mla_B, c_aux);
+				cost_B += c_aux;
+				start += n_i;
+			}
+			else {
+				calculate_mla(t, LEFT_ANCHOR, r, end - n_i + 1, end, mla_B, c_aux);
+				cost_B += c_aux;
+				end -= n_i;
+			}
 		}
+		
+		// t*
+		uint32_t c_aux = 0; // Cal inicialitzar?
+		calculate_mla(t, NO_ANCHOR, v_star, start, end, mla_B, c_aux);
+		cost_B += c_aux;
+		
+		
+		//// T_1, T_3, ...
+		//uint32_t start_aux = start;
+		//for (uint32_t i = 1; i <= 2*p_alpha - anchored; i = i + 2) {
+			//uint32_t c_aux = 0;
+			//const node r = ord[i].second;
+			//calculate_mla(t, RIGHT_ANCHOR, r, start_aux, end, mla_B, c_aux);
+			//cost_B += c_aux;
+			//start_aux += ord[i].first;
+		//}
 
-		// T-(T_1, T_2, ...)
-		uint32_t c = 0;
-		calculate_mla(t, NO_ANCHOR, v_star, start_aux, mla_B, c);
-		// number of nodes in the central tree
-		const uint32_t n_central_tree = size_tree - n_not_central_tree;
-		cost_B += c;
-		start_aux += n_central_tree;
+		//// T-(T_1, T_2, ...)
+		//uint32_t c = 0;
+		//calculate_mla(t, NO_ANCHOR, v_star, start_aux, end, mla_B, c);
+		//// number of nodes in the central tree
+		//const uint32_t n_central_tree = size_tree - n_not_central_tree;
+		//cost_B += c;
+		//start_aux += n_central_tree;
 
-		// ..., T_4, T_2
-		for (uint32_t i = 2*(p_alpha - anchored); i >= 2; i = i - 2) {
-			uint32_t c_aux = 0;
-			const node r = ord[i].second;
-			calculate_mla(t, LEFT_ANCHOR, r, start_aux, mla_B, c_aux);
-			cost_B += c_aux;
-			start_aux += ord[i].first;
-		}
+		//// ..., T_4, T_2
+		//for (uint32_t i = 2*(p_alpha - anchored); i >= 2; i = i - 2) {
+			//uint32_t c_aux = 0;
+			//const node r = ord[i].second;
+			//calculate_mla(t, LEFT_ANCHOR, r, start_aux, end, mla_B, c_aux);
+			//cost_B += c_aux;
+			//start_aux += ord[i].first;
+		//}
+		
 
 		// reconstruct t
 		/*for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
@@ -327,25 +370,25 @@ void calculate_mla(
 		}
 	}
 
-	// flipping arrangement if needed
-	if (alpha == RIGHT_ANCHOR) {
-		// the tree is right-anchored and the root is too much to the left
-		if (2*(mla[v_star - 1] - start + 1) <= size_tree) {
-			for(uint32_t i = 0; i < size_tree; ++i) {
-				const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
-				mla[reachable[i] - 1] = aux;
-			}
-		}
-	}
-	else if (alpha == LEFT_ANCHOR) {
-		// the tree is left-anchored and the root is too much to the right
-		if (2*(start + size_tree - 1 - mla[v_star - 1] + 1) <= size_tree) {
-			for (uint32_t i = 0; i < size_tree; ++i) {
-				const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
-				mla[reachable[i] - 1] = aux;
-			}
-		}
-	}
+	//// flipping arrangement if needed
+	//if (alpha == RIGHT_ANCHOR) {
+		//// the tree is right-anchored and the root is too much to the left
+		//if (2*(mla[v_star - 1] - start + 1) <= size_tree) {
+			//for(uint32_t i = 0; i < size_tree; ++i) {
+				//const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
+				//mla[reachable[i] - 1] = aux;
+			//}
+		//}
+	//}
+	//else if (alpha == LEFT_ANCHOR) {
+		//// the tree is left-anchored and the root is too much to the right
+		//if (2*(start + size_tree - 1 - mla[v_star - 1] + 1) <= size_tree) {
+			//for (uint32_t i = 0; i < size_tree; ++i) {
+				//const uint32_t aux = 2*start + size_tree - 1 - mla[reachable[i] - 1];
+				//mla[reachable[i] - 1] = aux;
+			//}
+		//}
+	//}
 }
 
 } // -- namespace dmin_shiloach
@@ -359,9 +402,10 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 	linear_arrangement arrangement(t.num_nodes(),0);
 
 	free_tree T = t;
-	dmin_Shiloach::calculate_mla(T, NO_ANCHOR, 1, 0, arrangement, c);
+	// Positions 0, 1, ..., t.num_nodes() - 1
+	dmin_Shiloach::calculate_mla(T, NO_ANCHOR, 1, 0, t.num_nodes() -1, arrangement, c);
 
-	return make_pair(c, arrangement);
+	return make_pair(c, arrangement); 
 }
 
 } // -- namespace internal
