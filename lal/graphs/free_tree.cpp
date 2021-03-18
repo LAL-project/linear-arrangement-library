@@ -48,8 +48,8 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/is_tree.hpp>
-#include <lal/internal/graphs/trees/tree_classification.hpp>
+#include <lal/internal/graphs/is_tree.hpp>
+#include <lal/internal/graphs/tree_classification.hpp>
 #include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {

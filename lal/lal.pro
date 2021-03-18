@@ -94,32 +94,32 @@ HEADERS += \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/data_array.hpp \
+	internal/graphs/convert_to_ftree.hpp \
 	internal/graphs/enumerate_sets.hpp \
-	internal/graphs/trees/make_arrangement.hpp \
-	internal/graphs/trees/retrieve_subtree.hpp \
-	internal/graphs/trees/tree_classification.hpp \
-	internal/graphs/trees/tree_diameter.hpp \
-	internal/graphs/trees/tree_isomorphism.hpp \
+	internal/graphs/is_tree.hpp \
+	internal/graphs/make_arrangement.hpp \
+	internal/graphs/retrieve_subtrees.hpp \
+	internal/graphs/size_subtrees.hpp \
+	internal/graphs/tree_classification.hpp \
+	internal/linarr/Dmin.hpp \
+	internal/linarr/algorithms_crossings.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/make_array_with_value.hpp \
+	internal/numeric/utils.hpp \
+	internal/properties/tree_centre.hpp \
+	internal/properties/tree_centroid.hpp \
+	internal/properties/tree_diameter.hpp \
 	internal/sorted_vector.hpp \
 	internal/sorting/bit_sort.hpp \
 	internal/sorting/counting_sort.hpp \
 	internal/sorting/insertion_sort.hpp \
-	internal/gmp/utils.hpp \
-	internal/graphs/algorithms_crossings.hpp \
-	internal/graphs/trees/Dmin.hpp \
 	internal/graphs/union_find.hpp \
 	internal/graphs/utils.hpp \
 	internal/graphs/cycles.hpp \
 	internal/graphs/reachability.hpp \
 	internal/graphs/traversal.hpp \
-	internal/graphs/trees/convert_to_ftree.hpp \
-	internal/graphs/trees/is_tree.hpp \
-	internal/graphs/trees/size_subtrees.hpp \
-	internal/graphs/trees/tree_centre.hpp \
-	internal/graphs/trees/tree_centroid.hpp \
+	internal/utilities/tree_isomorphism.hpp \
 	io/check_correctness.hpp \
 	io/edge_list.hpp \
 	io.hpp \
@@ -188,16 +188,16 @@ SOURCES += \
     graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
 	graphs/undirected_graph.cpp \
-	internal/gmp/utils.cpp \
-	internal/graphs/C_brute_force.cpp \
-	internal/graphs/C_dyn_prog.cpp \
-	internal/graphs/C_ladder.cpp \
-	internal/graphs/C_stack_based.cpp \
-	internal/graphs/trees/convert_to_ftree.cpp \
-	internal/graphs/trees/Dmin_Planar.cpp \
-	internal/graphs/trees/Dmin_Projective.cpp \
-	internal/graphs/trees/Dmin_Unconstrained_FC.cpp \
-	internal/graphs/trees/Dmin_Unconstrained_YS.cpp \
+    internal/graphs/convert_to_ftree.cpp \
+    internal/linarr/C_brute_force.cpp \
+    internal/linarr/C_dyn_prog.cpp \
+    internal/linarr/C_ladder.cpp \
+    internal/linarr/C_stack_based.cpp \
+    internal/linarr/Dmin_Planar.cpp \
+    internal/linarr/Dmin_Projective.cpp \
+    internal/linarr/Dmin_Unconstrained_FC.cpp \
+    internal/linarr/Dmin_Unconstrained_YS.cpp \
+    internal/numeric/utils.cpp \
     io/check_correctness.cpp \
 	io/edge_list.cpp \
     io/head_vector.cpp \

@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/internal/graphs/trees/make_arrangement.hpp>
+#include <lal/internal/graphs/make_arrangement.hpp>
 
 namespace lal {
 using namespace graphs;

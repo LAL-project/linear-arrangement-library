@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/internal/graphs/trees/Dmin.hpp>
+#include <lal/internal/linarr/Dmin.hpp>
 
 namespace lal {
 using namespace graphs;

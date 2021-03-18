@@ -46,8 +46,8 @@
 using namespace std;
 
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/size_subtrees.hpp>
-#include <lal/internal/graphs/trees/tree_centroid.hpp>
+#include <lal/internal/graphs/size_subtrees.hpp>
+#include <lal/internal/properties/tree_centroid.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 #include <lal/internal/data_array.hpp>
 

@@ -47,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/tree_centre.hpp>
+#include <lal/internal/properties/tree_centre.hpp>
 
 namespace lal {
 using namespace graphs;

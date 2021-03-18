@@ -48,7 +48,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/gmp/utils.hpp>
+#include <lal/internal/numeric/utils.hpp>
 
 namespace lal {
 namespace numeric {

@@ -49,7 +49,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/gmp/utils.hpp>
+#include <lal/internal/numeric/utils.hpp>
 
 /* This macro takes a signed integer and converts it into an unsigned
  * integer. First, drops the negative sign (if appropriate) and then

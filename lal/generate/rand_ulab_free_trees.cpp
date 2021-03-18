@@ -50,7 +50,7 @@ using namespace std;
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
+#include <lal/internal/graphs/convert_to_ftree.hpp>
 
 #define get_alpha(m,q) (m_alpha.find(make_pair(m,q))->second)
 #define alpha_exists(m,q) (m_alpha.find(make_pair(m,q)) != m_alpha.end())

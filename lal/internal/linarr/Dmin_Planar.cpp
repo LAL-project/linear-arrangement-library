@@ -56,9 +56,9 @@ using namespace std;
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
-#include <lal/internal/graphs/trees/Dmin.hpp>
-#include <lal/internal/graphs/trees/make_arrangement.hpp>
-#include <lal/internal/graphs/trees/tree_centroid.hpp>
+#include <lal/internal/linarr/Dmin.hpp>
+#include <lal/internal/graphs/make_arrangement.hpp>
+#include <lal/internal/properties/tree_centroid.hpp>
 
 namespace lal {
 using namespace graphs;

@@ -50,7 +50,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/graphs/trees/size_subtrees.hpp>
+#include <lal/internal/graphs/size_subtrees.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
 namespace lal {

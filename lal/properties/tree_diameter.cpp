@@ -42,7 +42,7 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/graphs/trees/tree_diameter.hpp>
+#include <lal/internal/properties/tree_diameter.hpp>
 
 namespace lal {
 using namespace graphs;

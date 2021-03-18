@@ -48,7 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_C.hpp>
-#include <lal/internal/graphs/algorithms_crossings.hpp>
+#include <lal/internal/linarr/algorithms_crossings.hpp>
 
 namespace lal {
 using namespace graphs;

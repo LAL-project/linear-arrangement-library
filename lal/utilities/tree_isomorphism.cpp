@@ -50,9 +50,9 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/tree_centre.hpp>
+#include <lal/internal/properties/tree_centre.hpp>
 #include <lal/internal/data_array.hpp>
-#include <lal/internal/graphs/trees/tree_isomorphism.hpp>
+#include <lal/internal/utilities/tree_isomorphism.hpp>
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))

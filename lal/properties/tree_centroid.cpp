@@ -47,7 +47,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/tree_centroid.hpp>
+#include <lal/internal/properties/tree_centroid.hpp>
 
 namespace lal {
 namespace properties {

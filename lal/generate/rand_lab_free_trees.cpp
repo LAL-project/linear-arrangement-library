@@ -45,7 +45,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/trees/convert_to_ftree.hpp>
+#include <lal/internal/graphs/convert_to_ftree.hpp>
 
 namespace lal {
 using namespace graphs;

@@ -51,9 +51,9 @@ using namespace std;
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/trees/retrieve_subtree.hpp>
-#include <lal/internal/graphs/trees/size_subtrees.hpp>
-#include <lal/internal/graphs/trees/tree_classification.hpp>
+#include <lal/internal/graphs/retrieve_subtrees.hpp>
+#include <lal/internal/graphs/size_subtrees.hpp>
+#include <lal/internal/graphs/tree_classification.hpp>
 #include <lal/internal/graphs/union_find.hpp>
 
 namespace lal {
