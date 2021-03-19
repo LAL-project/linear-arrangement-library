@@ -81,7 +81,7 @@ inline directed_graph head_vector_to_directed_graph(const head_vector& hv) noexc
 "Error: Treebank '" + F + "' could not be opened."
 
 #define invalid_integer(i, chunk) \
-"Error: Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') is not a valid integer number."
+"Error: Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') is not a valid non-negative integer number."
 
 #define number_out_of_bounds(i) \
 "Error: Number at position '" + std::to_string(i) + "' (value: " + std::to_string(hv[i]) + ") is out of bounds."
