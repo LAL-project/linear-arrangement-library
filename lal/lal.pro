@@ -127,6 +127,7 @@ HEADERS += \
 	io.hpp \
 	io/basic_output.hpp \
 	io/head_vector.hpp \
+	io/process_treebank_base.hpp \
 	io/report_correctness.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \

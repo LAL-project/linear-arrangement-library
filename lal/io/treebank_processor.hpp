@@ -47,11 +47,10 @@
 #endif
 #include <vector>
 #include <string>
-#include <array>
 
 // lal includes
 #include <lal/io/treebank_error.hpp>
-#include <lal/io/treebank_feature.hpp>
+#include <lal/io/process_treebank_base.hpp>
 
 namespace lal {
 namespace io {
@@ -100,50 +99,8 @@ namespace io {
  *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_processor {
+class treebank_processor : public process_treebank_base {
 public:
-	// MODIFIERS
-
-	/**
-	 * @brief Adds a feature to the processor.
-	 * @param fs Feature to be added.
-	 */
-	void add_feature(const treebank_feature& fs) noexcept
-	{ m_what_fs[ static_cast<size_t>(fs) ] = true; }
-	/**
-	 * @brief Removes a feature from the processor.
-	 * @param fs Feature to be removed.
-	 */
-	void remove_feature(const treebank_feature& fs) noexcept
-	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
-
-	// SETTERS
-
-	/**
-	 * @brief Sets the separator character.
-	 *
-	 * The default seprator is a tabulator character '\\t'.
-	 * @param c The separator character.
-	 */
-	void set_separator(char c) noexcept { m_separator = c; }
-	/**
-	 * @brief Sets the level of verbosity of the @ref process method.
-	 *
-	 * Default is 0 (i.e., no verbosity at all).
-	 * Verbosity is classified by levels:
-	 * - Level 1: outputs progress messages.
-	 * - Level 2: outputs error messages.
-	 * @param k Verbosity level.
-	 */
-	void set_verbosity(int k) noexcept { m_be_verbose = k; }
-	/**
-	 * @brief Output a hedaer for the treebank result file.
-	 *
-	 * Default is true.
-	 * @param h Output header or not.
-	 */
-	void set_output_header(bool h) noexcept { m_output_header = h; }
-
 	// PROCESS THE TREEBANK DATASET
 
 	/**
@@ -186,19 +143,6 @@ public:
 	treebank_error process() noexcept;
 
 private:
-	/// Character used as separator
-	char m_separator = '\t';
-	/// Output a header for each file
-	bool m_output_header = true;
-	/**
-	 * @brief The verbosity of the processor.
-	 *
-	 * When set to a value greater than or equal to 1, method @ref process
-	 * will output progress messages.
-	 */
-	int m_be_verbose = 0;
-
-private:
 	/**
 	 * @brief Process a single tree in a treebank.
 	 *
@@ -213,9 +157,6 @@ private:
 	std::string m_output_file = "none";
 	/// Treebank identifier.
 	std::string m_treebank_id = "";
-
-	/// The list of features to be computed.
-	std::array<bool, __treebank_feature_size> m_what_fs;
 };
 
 } // -- namespace io
