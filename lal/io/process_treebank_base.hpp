@@ -121,7 +121,7 @@ protected:
 	/**
 	 * @brief The verbosity of the processor.
 	 *
-	 * When set to a value greater than or equal to 1, method @ref process
+	 * When set to a value greater than or equal to 1, method process
 	 * will output progress messages.
 	 */
 	int m_be_verbose = 0;

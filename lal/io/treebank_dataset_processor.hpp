@@ -99,8 +99,8 @@ namespace io {
  *
  * Processing a treebank dataset with this class will produce a file for every
  * treebank in the dataset. These files can be merged together by indicating so
- * via method @ref join_files. A new file will be created, regardless of the number
- * of treebanks in the dataset.
+ * via method @ref set_join_files. A new file will be created, regardless of the
+ * number of treebanks in the dataset.
  *
  * Finally, the treebank dataset is processed via method @ref process. If all the
  * files produced (one for each treebank) are to be joined in a single file, users
