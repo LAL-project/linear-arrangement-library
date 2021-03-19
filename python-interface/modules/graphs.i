@@ -32,7 +32,7 @@
 // Extendind the C++ classes
 
 %extend lal::graphs::undirected_graph {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
@@ -42,7 +42,7 @@
 	}
 }
 %extend lal::graphs::directed_graph {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
@@ -52,7 +52,7 @@
 	}
 }
 %extend lal::graphs::rooted_tree {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
@@ -62,7 +62,7 @@
 	}
 }
 %extend lal::graphs::free_tree {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();

@@ -186,7 +186,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 %include "../lal/io/report_correctness.hpp"
 
 %extend lal::io::report_treebank_file {
-	std::string __str__() const {
+	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		out << "(" << $self->get_line_number() << ", " << $self->get_error_message() << ")";
 		return out.str();
@@ -194,7 +194,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 }
 
 %extend lal::io::report_treebank_dataset {
-	std::string __str__() const noexcept {
+	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		out << "(" << $self->get_treebank_file_name() << ", "
 			<< $self->get_line_within_main_file() << ", "
