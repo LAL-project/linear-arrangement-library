@@ -215,6 +215,8 @@ namespace std {
 
 /* -------------------------------------------------------------------------- */
 
+%include "../lal/io/process_treebank_base.hpp"
+
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset_reader.hpp"
 
