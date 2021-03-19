@@ -83,7 +83,7 @@ public:
 	 */
 	inline void set_separator(char c) noexcept { m_separator = c; }
 	/**
-	 * @brief Sets the level of verbosity of the @ref process method.
+	 * @brief Sets the level of verbosity of the process methods.
 	 *
 	 * Default is 0 (i.e., no verbosity at all).
 	 * Verbosity is classified by levels:
