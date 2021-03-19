@@ -87,6 +87,7 @@ def read_edge_list(gtype, filename, norm = True, check = True):
 	----------
 	* `gtype` :
 		A string that encoding the type of graph. Must be one of:
+		
 		- free_tree
 		- rooted_tree
 		- undirected_graph
@@ -210,9 +211,9 @@ namespace std {
 	%template(_list_report_treebank_dataset) vector<lal::io::report_treebank_dataset>;
 }
 
-/* -------------------------------------------------------------------------- */
-
 %include "../lal/io/check_correctness.hpp"
+
+/* -------------------------------------------------------------------------- */
 
 %include "../lal/io/treebank_reader.hpp"
 %include "../lal/io/treebank_dataset_reader.hpp"
