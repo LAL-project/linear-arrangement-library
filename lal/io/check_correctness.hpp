@@ -55,7 +55,7 @@ namespace io {
 /**
  * @brief Checks the correctness of a treebank dataset.
  * @param treebank_filename Name of the treebank file.
- * @returns A list of errors.
+ * @returns A list of errors, objects of the class @ref lal::io::report_treebank_file.
  */
 std::vector<report_treebank_file>
 check_correctness_treebank(const std::string& treebank_filename)
@@ -65,7 +65,7 @@ noexcept;
 /**
  * @brief Checks the correctness of a treebank dataset.
  * @param main_file_name Name of the main file.
- * @returns A list of errors.
+ * @returns A list of errors, objects of the class @ref lal::io::report_treebank_dataset.
  */
 std::vector<report_treebank_dataset>
 check_correctness_treebank_dataset(const std::string& main_file_name)
