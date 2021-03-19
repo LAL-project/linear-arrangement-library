@@ -65,9 +65,9 @@ using namespace std;
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
-
 #include <lal/io/treebank_dataset_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
+#include <lal/internal/io/treebank_feature_string.hpp>
 
 template<typename T>
 double to_double(const T& x) {
@@ -239,14 +239,18 @@ treebank_error treebank_processor::process() noexcept {
 		// find the first feature
 		while (not m_what_fs[i]) { ++i; }
 
-		out_lang_file << treebank_feature_to_string(static_cast<treebank_feature>(i));
+		out_lang_file << internal::treebank_feature_string(
+							 static_cast<treebank_feature>(i)
+						 );
 		++i;
 
 		for (; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
 				out_lang_file
 					<< m_separator
-					<< treebank_feature_to_string(static_cast<treebank_feature>(i));
+					<< internal::treebank_feature_string(
+						   static_cast<treebank_feature>(i)
+					   );
 			}
 		}
 		out_lang_file << endl;

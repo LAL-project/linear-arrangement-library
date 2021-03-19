@@ -161,13 +161,87 @@ target_sources(
 		graphs/tree.cpp
 		graphs/undirected_graph.cpp
 
+		# internal namespace -- not to be installed
+		# -- headers
+		#      generate
+		#          nothing
+		#      graphs
+		internal/graphs/convert_to_ftree.hpp
+		internal/graphs/cycles.hpp
+		internal/graphs/enumerate_sets.hpp
+		internal/graphs/is_tree.hpp
+		internal/graphs/make_arrangement.hpp
+		internal/graphs/reachability.hpp
+		internal/graphs/retrieve_subtrees.hpp
+		internal/graphs/size_subtrees.hpp
+		internal/graphs/traversal.hpp
+		internal/graphs/tree_classification.hpp
+		internal/graphs/tree_type_string.hpp
+		internal/graphs/union_find.hpp
+		internal/graphs/utils.hpp
+		#      io
+		internal/io/treebank_feature_string.hpp
+		#      iterators
+		#          nothing
+		#      linarr
+		internal/linarr/algorithms_crossings.hpp
+		internal/linarr/Dmin.hpp
+		#      numeric
+		internal/numeric/utils.hpp
+		#      properties
+		internal/properties/tree_centre.hpp
+		internal/properties/tree_centroid.hpp
+		internal/properties/tree_diameter.hpp
+		#      sorting
+		internal/sorting/bit_sort.hpp
+		internal/sorting/counting_sort.hpp
+		internal/sorting/insertion_sort.hpp
+		#      utilities
+		internal/utilities/tree_isomorphism.hpp
+		#      others
+		internal/avl.hpp
+		internal/data_array.hpp
+		internal/macros.hpp
+		internal/make_array_with_value.hpp
+		internal/sorted_vector.hpp
+		
+		# -- sources
+		#      generate
+		#          nothing
+		#      graphs
+		internal/graphs/convert_to_ftree.cpp
+		#      io
+		#          nothing
+		#      iterators
+		#          nothing
+		#      linarr
+		internal/linarr/C_brute_force.cpp
+		internal/linarr/C_dyn_prog.cpp
+		internal/linarr/C_ladder.cpp
+		internal/linarr/C_stack_based.cpp
+		internal/linarr/Dmin_Planar.cpp
+		internal/linarr/Dmin_Projective.cpp
+		internal/linarr/Dmin_Unconstrained_FC.cpp
+		internal/linarr/Dmin_Unconstrained_YS.cpp
+		#      numeric
+		internal/numeric/utils.cpp
+		#      properties
+		#          nothing
+		#      sorting
+		#          nothing
+		#      utilities
+		#          nothing
+		#      others
+		#          nothing
+
 		# io namespace
 		# -- header
 		io/basic_output.hpp
+		io/check_correctness.hpp
 		io/edge_list.hpp
 		io/head_vector.hpp
+		io/process_treebank_base.hpp
 		io/report_correctness.hpp
-		io/check_correctness.hpp
 		io/treebank_error.hpp
 		io/treebank_feature.hpp
 		io/treebank_reader.hpp
@@ -175,13 +249,13 @@ target_sources(
 		io/treebank_processor.hpp
 		io/treebank_dataset_processor.hpp
 		# -- sources
+		io/check_correctness.cpp
 		io/edge_list.cpp
 		io/head_vector.cpp
-		io/check_correctness.cpp
-		io/treebank_reader.cpp
+		io/treebank_dataset_processor.cpp
 		io/treebank_dataset_reader.cpp
 		io/treebank_processor.cpp
-		io/treebank_dataset_processor.cpp
+		io/treebank_reader.cpp
 
 		# iterators namespace
 		# -- headers
@@ -253,78 +327,6 @@ target_sources(
 		# -- sources
 		utilities/tree_isomorphism.cpp
 
-		# internal namespace -- not to be installed
-		# -- headers
-		#      generate
-		#          nothing
-		#      graphs
-		internal/graphs/convert_to_ftree.hpp
-		internal/graphs/cycles.hpp
-		internal/graphs/enumerate_sets.hpp
-		internal/graphs/is_tree.hpp
-		internal/graphs/make_arrangement.hpp
-		internal/graphs/reachability.hpp
-		internal/graphs/retrieve_subtrees.hpp
-		internal/graphs/size_subtrees.hpp
-		internal/graphs/traversal.hpp
-		internal/graphs/tree_classification.hpp
-		internal/graphs/union_find.hpp
-		internal/graphs/utils.hpp
-		#      io
-		#          nothing
-		#      iterators
-		#          nothing
-		#      linarr
-		internal/linarr/algorithms_crossings.hpp
-		internal/linarr/Dmin.hpp
-		#      numeric
-		internal/numeric/utils.hpp
-		#      properties
-		internal/properties/tree_centre.hpp
-		internal/properties/tree_centroid.hpp
-		internal/properties/tree_diameter.hpp
-		#      sorting
-		internal/sorting/bit_sort.hpp
-		internal/sorting/counting_sort.hpp
-		internal/sorting/insertion_sort.hpp
-		#      utilities
-		internal/utilities/tree_isomorphism.hpp
-		#      others
-		internal/avl.hpp
-		internal/data_array.hpp
-		internal/macros.hpp
-		internal/make_array_with_value.hpp
-		internal/sorted_vector.hpp
-		
-		# -- sources
-		#      generate
-		#          nothing
-		#      graphs
-		internal/graphs/convert_to_ftree.cpp
-		#      io
-		#          nothing
-		#      iterators
-		#          nothing
-		#      linarr
-		internal/linarr/C_brute_force.cpp
-		internal/linarr/C_dyn_prog.cpp
-		internal/linarr/C_ladder.cpp
-		internal/linarr/C_stack_based.cpp
-		internal/linarr/Dmin_Planar.cpp
-		internal/linarr/Dmin_Projective.cpp
-		internal/linarr/Dmin_Unconstrained_FC.cpp
-		internal/linarr/Dmin_Unconstrained_YS.cpp
-		#      numeric
-		internal/numeric/utils.cpp
-		#      properties
-		#          nothing
-		#      sorting
-		#          nothing
-		#      utilities
-		#          nothing
-		#      others
-		#          nothing
-
 		# lal namespace
 		# -- heaers
 		C.hpp
@@ -391,10 +393,11 @@ set(LIBLAL_INTERNAL_HEADER
 )
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
+	io/check_correctness.hpp
 	io/edge_list.hpp
 	io/head_vector.hpp
+	io/process_treebank_base.hpp
 	io/report_correctness.hpp
-	io/check_correctness.hpp
 	io/treebank_error.hpp
 	io/treebank_feature.hpp
 	io/treebank_reader.hpp

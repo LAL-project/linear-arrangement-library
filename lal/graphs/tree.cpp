@@ -50,6 +50,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/union_find.hpp>
+#include <lal/internal/graphs/tree_type_string.hpp>
 
 namespace lal {
 namespace graphs {
@@ -110,9 +111,9 @@ vector<string> tree::get_tree_type_list() const noexcept {
 	l.reserve(__tree_type_size);
 	for (size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
-			l.push_back(
-				string(tree_type_to_string(static_cast<tree_type>(i)))
-			);
+			l.push_back(string(
+				internal::tree_type_string(static_cast<tree_type>(i))
+			));
 		}
 	}
 	return l;

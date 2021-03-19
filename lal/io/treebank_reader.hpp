@@ -38,7 +38,7 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes

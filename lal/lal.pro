@@ -101,6 +101,8 @@ HEADERS += \
 	internal/graphs/retrieve_subtrees.hpp \
 	internal/graphs/size_subtrees.hpp \
 	internal/graphs/tree_classification.hpp \
+	internal/graphs/tree_type_string.hpp \
+	internal/io/treebank_feature_string.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \
 	internal/macros.hpp \
@@ -125,6 +127,7 @@ HEADERS += \
 	io.hpp \
 	io/basic_output.hpp \
 	io/head_vector.hpp \
+	io/process_treebank_base.hpp \
 	io/report_correctness.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
