@@ -138,7 +138,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
 	// Note that read operations "if (parent[s] != t)" always come after
 	// the first write "parent[t] = s".
-	data_array<node> parent(n);
+	data_array<node> parent(n, n+1);
 	// a cycle was found
 	bool cycle_found = false;
 
@@ -148,7 +148,7 @@ inline bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&cycle_found](const auto&, const node) -> bool { return cycle_found; }
+	[&](const auto&, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
 	[&](const auto& _bfs, node s, node t, bool) -> void {
