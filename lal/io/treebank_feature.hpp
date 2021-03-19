@@ -43,11 +43,6 @@
 
 // C++ includes
 #include <cstdint>
-#ifdef SWIG
-#include <string>
-#else
-#include <string_view>
-#endif
 
 namespace lal {
 namespace io {
@@ -339,63 +334,6 @@ enum class treebank_feature {
  */
 static constexpr std::size_t __treebank_feature_size =
 	static_cast<std::size_t>(treebank_feature::__last_value);
-
-/**
- * @brief Converts a @ref lal::io::treebank_feature value into a string.
- * @param tf A treebank feature.
- * @returns A string used to format output files.
- */
-inline
-#ifdef SWIG
-std::string
-#else
-constexpr std::string_view
-#endif
-treebank_feature_to_string(const treebank_feature& tf) {
-	switch (tf) {
-	case treebank_feature::num_nodes: return "n";
-	case treebank_feature::k2: return "k2";
-	case treebank_feature::k3: return "k3";
-	case treebank_feature::num_pairs_independent_edges: return "size_Q";
-	case treebank_feature::headedness: return "headedness";
-	case treebank_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
-	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
-	case treebank_feature::C: return "C";
-	case treebank_feature::C_exp_1: return "C_exp_1";
-	case treebank_feature::C_exp_2: return "C_exp_2";
-	case treebank_feature::C_var: return "C_var";
-	case treebank_feature::C_z: return "C_z";
-	case treebank_feature::D: return "D";
-	case treebank_feature::D_exp_1: return "D_exp_1";
-	case treebank_feature::D_exp_2: return "D_exp_2";
-	case treebank_feature::D_var: return "D_var";
-	case treebank_feature::D_z: return "D_z";
-	case treebank_feature::Dmin_Unconstrained: return "Dmin_Unconstrained";
-	case treebank_feature::Dmin_Planar: return "Dmin_Planar";
-	case treebank_feature::Dmin_Projective: return "Dmin_Projective";
-	case treebank_feature::max_flux_weight: return "max_flux_weight";
-	case treebank_feature::mean_flux_weight: return "mean_flux_weight";
-	case treebank_feature::min_flux_weight: return "min_flux_weight";
-	case treebank_feature::max_left_span: return "max_left_span";
-	case treebank_feature::mean_left_span: return "mean_left_span";
-	case treebank_feature::min_left_span: return "min_left_span";
-	case treebank_feature::max_right_span: return "max_right_span";
-	case treebank_feature::mean_right_span: return "mean_right_span";
-	case treebank_feature::min_right_span: return "min_right_span";
-	case treebank_feature::max_RL_ratio: return "max_RL_ratio";
-	case treebank_feature::mean_RL_ratio: return "mean_RL_ratio";
-	case treebank_feature::min_RL_ratio: return "min_RL_ratio";
-	case treebank_feature::max_WS_ratio: return "max_WS_ratio";
-	case treebank_feature::mean_WS_ratio: return "mean_WS_ratio";
-	case treebank_feature::min_WS_ratio: return "min_WS_ratio";
-	case treebank_feature::max_size: return "max_size";
-	case treebank_feature::mean_size: return "mean_size";
-	case treebank_feature::min_size: return "min_size";
-	case treebank_feature::__last_value: return "__last_value";
-	}
-	// should never happen
-	return "???";
-}
 
 } // -- namespace io
 } // -- namespace lal

@@ -39,76 +39,30 @@
  *
  ********************************************************************/
 
-#pragma once
-
 // C++ includes
-#include <cinttypes>
+#include <string_view>
+
+// lal includes
+#include <lal/graphs/tree_type.hpp>
 
 namespace lal {
-namespace graphs {
+namespace internal {
 
-/**
- * @brief Enumeration of several types of trees.
- *
- * Classifies a tree into not necessarily disjoint classes of trees.
- */
-enum class tree_type {
-	/**
-	 * @brief Linear trees.
-	 *
-	 * A linear tree has only two leaves, and the rest of the vertices have degree
-	 * exactly two. This is, precisely, a path graph.
-	 */
-	linear,
+// Converts to a string a value of the enumeration @ref lal::graphs::tree_type.
+inline constexpr std::string_view
+tree_type_string(const graphs::tree_type& tt) noexcept {
+	using tree_type = graphs::tree_type;
 
-	/**
-	 * @brief Star trees.
-	 *
-	 * Also star graphs, trees where all vertices but one have degree 1.
-	 */
-	star,
+	switch (tt) {
+		case tree_type::linear: return "linear";
+		case tree_type::star: return "star";
+		case tree_type::quasistar: return "quasistar";
+		case tree_type::bistar: return "bistar";
+		case tree_type::caterpillar: return "caterpillar";
+		case tree_type::spider: return "spider";
+		default: return "unknown";
+	}
+}
 
-	/**
-	 * @brief Quasi star trees.
-	 *
-	 * Also quasi star graphs, trees where all vertices but two have degree 1.
-	 * One of these two vertices has degree exactly two, the other has degree
-	 * at least two.
-	 */
-	quasistar,
-
-	/**
-	 * @brief Bi-star trees.
-	 *
-	 * These trees are made of two star trees joined by an edge at their centers.
-	 */
-	bistar,
-
-	/**
-	 * @brief Caterpillar trees.
-	 *
-	 * These are the trees such that a linear tree is produced when its leaves
-	 * are removed \cite Harary1973a.
-	 */
-	caterpillar,
-
-	/**
-	 * @brief Spider trees.
-	 *
-	 * A spider tree has a unique vertex of degree greater than or equal to 3.
-	 * The other vertices have degree 2 or 1 \cite English2019a.
-	 */
-	spider,
-
-	// *DEVELOPER NOTE*
-	// This value must always be the last one.
-	/// The tree could not be classified
-	unknown
-};
-
-/// Number of elements within enumeration @ref lal::graphs::tree_type.
-constexpr std::size_t __tree_type_size =
-	1 + static_cast<std::size_t>(tree_type::unknown);
-
-} // -- namespace graphs
+} // -- namespace internal
 } // -- namespace lal

@@ -59,6 +59,7 @@ using namespace std;
 #include <lal/io/treebank_dataset_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
+#include <lal/internal/io/treebank_feature_string.hpp>
 
 inline
 std::string make_result_file_name(const std::string& treebank_name) noexcept {
@@ -232,7 +233,9 @@ const noexcept
 			if (m_what_fs[i]) {
 				output_together
 					<< m_separator
-					<< treebank_feature_to_string(static_cast<treebank_feature>(i));
+					<< internal::treebank_feature_string(
+						   static_cast<treebank_feature>(i)
+					   );
 			}
 		}
 		output_together << endl;
