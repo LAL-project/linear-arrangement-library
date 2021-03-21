@@ -1,6 +1,7 @@
 %module graphs
 
 %include std_vector.i
+%include std_pair.i
 
 %include documentation.i
 %import definitions.i
@@ -74,10 +75,15 @@
 
 // making lists of graphs...
 namespace std {
-	%template(__list_undirected_graph) vector<lal::graphs::undirected_graph>;
-	%template(__list_directed_graph) vector<lal::graphs::directed_graph>;
-	%template(__list_free_tree) vector<lal::graphs::free_tree>;
-	%template(__list_rooted_tree) vector<lal::graphs::rooted_tree>;
+	%template(_list_undirected_graph) vector<lal::graphs::undirected_graph>;
+	%template(_list_directed_graph) vector<lal::graphs::directed_graph>;
+	%template(_list_free_tree) vector<lal::graphs::free_tree>;
+	%template(_list_rooted_tree) vector<lal::graphs::rooted_tree>;
+}
+
+// making pairs of graphs and node...
+namespace std {
+	%template(_pair_free_tree_node) pair<lal::graphs::free_tree, lal::node>;
 }
 
 %include "../lal/graphs/conversions.hpp"
