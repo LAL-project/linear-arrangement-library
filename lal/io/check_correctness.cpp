@@ -192,6 +192,9 @@ noexcept
 						(line, graph_has_cycles);
 					}
 
+					// ignore singleton graphs
+					if (dgraph.num_nodes() == 1) { continue; }
+
 					// find isolated vertices
 					for (node u = 0; u < dgraph.num_nodes(); ++u) {
 						if (dgraph.degree(u) == 0) {
