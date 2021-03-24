@@ -39,6 +39,9 @@
  *
  ********************************************************************/
 
+// C includes
+#include <omp.h>
+
 // C++ includes
 #include <filesystem>
 #include <algorithm>
@@ -219,7 +222,7 @@ noexcept
 
 // file, line, what
 vector<report_treebank_dataset>
-check_correctness_treebank_dataset(const string& main_file_name)
+check_correctness_treebank_dataset(const string& main_file_name, size_t n_threads)
 noexcept
 {
 	if (not filesystem::exists(main_file_name)) {
@@ -232,19 +235,29 @@ noexcept
 
 	vector<report_treebank_dataset> dataset_err_list;
 
+	#pragma omp parallel num_threads(n_threads)
+	{
+
+	const int tid = omp_get_thread_num();
+	if (tid == 0) {
+
 	size_t main_file_line = 1;
 	string id, treebankname;
 	while (fin_main_file >> id >> treebankname) {
-		// build path to the treebank file
+		// make full path to the treebank
 		filesystem::path treebank_full_path(main_file_name);
 		treebank_full_path.replace_filename(treebankname);
 
-		// make full path to the treebank
+		#pragma omp task
+		{
+		// check correctess of treebank
 		const auto treebank_err_list =
 			check_correctness_treebank(treebank_full_path);
 
 		// append errors found in the treebank to
 		// the list of errors of this dataset
+		#pragma omp critical
+		{
 		for (const auto& report_treebank : treebank_err_list) {
 			if (report_treebank.get_line_number() > 0) {
 				dataset_err_list.emplace_back(
@@ -272,8 +285,13 @@ noexcept
 				);
 			}
 		}
+		}
 
+		}
 		++main_file_line;
+	}
+
+	}
 	}
 
 	return dataset_err_list;
