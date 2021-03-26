@@ -307,9 +307,10 @@ void calculate_mla(
 	}
 	const uint32_t size_tree = t.num_nodes_component(one_node - 1);
 
+	static_assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
+
 #if defined DEBUG
 	assert(size_tree > 0);
-	assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
 #endif
 
 	// Base case
