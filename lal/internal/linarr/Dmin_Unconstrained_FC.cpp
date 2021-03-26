@@ -288,9 +288,10 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 // start: position where to start placing the vertices (the leftmost position
 //     in the mla for the subtree). We could also have an anologous finish
 //     (rightmost position) but it is not needed.
+template<char root>
 void calculate_mla(
 	free_tree& t,
-	char root, node one_node, position start,
+	node one_node, position start,
 	linear_arrangement& mla, uint32_t& cost
 )
 {
@@ -322,7 +323,7 @@ void calculate_mla(
 		return;
 	}
 
-	if (root == NO_ANCHOR) {
+	if constexpr (root == NO_ANCHOR) {
 		const node u = internal::retrieve_centroid(t, one_node - 1).first + 1;
 
 		ordering ord(t.degree(u - 1));
@@ -337,8 +338,8 @@ void calculate_mla(
 
 			uint32_t c1 = 0;
 			uint32_t c2 = 0;
-			calculate_mla(t, RIGHT_ANCHOR, t_0, start, mla, c1);
-			calculate_mla(t, LEFT_ANCHOR, u, start + n_0, mla, c2);
+			calculate_mla<RIGHT_ANCHOR>(t, t_0, start, mla, c1);
+			calculate_mla<LEFT_ANCHOR>(t, u, start + n_0, mla, c2);
 			cost = c1 + c2 + 1;
 
 			t.add_edge(u - 1, t_0 - 1, false, false);
@@ -377,9 +378,9 @@ void calculate_mla(
 					const position pos_in_ord = Q_i[j];
 
 					uint32_t c_i_j = 0;
-					calculate_mla(
+					calculate_mla<RIGHT_ANCHOR>(
 						t,
-						RIGHT_ANCHOR, ord[pos_in_ord].second, start_aux,
+						ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j
 					);
 					start_aux += ord[pos_in_ord].first;
@@ -388,7 +389,7 @@ void calculate_mla(
 
 				// Central part of the arrangement
 				uint32_t c_i_j = 0;
-				calculate_mla(t, NO_ANCHOR, u, start_aux, arr_aux, c_i_j);
+				calculate_mla<NO_ANCHOR>(t, u, start_aux, arr_aux, c_i_j);
 				c_i += c_i_j;
 
 				// Right part of the arrangement
@@ -397,9 +398,9 @@ void calculate_mla(
 					const position pos_in_ord = Q_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla(
+					calculate_mla<LEFT_ANCHOR>(
 						t,
-						LEFT_ANCHOR, ord[pos_in_ord].second, start_aux,
+						ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
 					);
 					start_aux += ord[pos_in_ord].first;
@@ -446,8 +447,8 @@ void calculate_mla(
 
 			uint32_t c1 = 0;
 			uint32_t c2 = 0;
-			calculate_mla(t, RIGHT_ANCHOR, t_0, start, mla, c1);
-			calculate_mla(t, NO_ANCHOR, one_node, start + n_0, mla, c2);
+			calculate_mla<RIGHT_ANCHOR>(t, t_0, start, mla, c1);
+			calculate_mla<NO_ANCHOR>(t, one_node, start + n_0, mla, c2);
 			cost = c1 + c2 + size_tree - ord[0].first;
 
 			t.add_edge(one_node - 1, t_0 - 1, false, false);
@@ -485,9 +486,9 @@ void calculate_mla(
 					const position pos_in_ord = P_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla(
+					calculate_mla<RIGHT_ANCHOR>(
 						t,
-						RIGHT_ANCHOR, ord[pos_in_ord].second, start_aux,
+						ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
 					);
 					start_aux += ord[pos_in_ord].first;
@@ -496,11 +497,7 @@ void calculate_mla(
 
 				// Central part of the arrangement
 				uint32_t c_i_j = 0;
-				calculate_mla(
-					t,
-					NO_ANCHOR, one_node, start_aux,
-					arr_aux, c_i_j
-				);
+				calculate_mla<NO_ANCHOR>(t, one_node, start_aux, arr_aux, c_i_j);
 
 				start_aux += ord[i].first + 1 + size_rest_of_trees;
 				c_i += c_i_j;
@@ -510,9 +507,9 @@ void calculate_mla(
 					const position pos_in_ord = P_i[j];
 
 					uint32_t c_i_j_in = 0;
-					calculate_mla(
+					calculate_mla<LEFT_ANCHOR>(
 						t,
-						LEFT_ANCHOR, ord[pos_in_ord].second, start_aux,
+						ord[pos_in_ord].second, start_aux,
 						arr_aux, c_i_j_in
 					);
 					start_aux += ord[pos_in_ord].first;
@@ -546,7 +543,7 @@ void calculate_mla(
 	}
 
 	// Flipping arrangement if needed
-	if (root == RIGHT_ANCHOR) {
+	if constexpr (root == RIGHT_ANCHOR) {
 		if (2*mla[one_node - 1] - 2*start < size_tree - 1) {
 			// Right anchor and the root is too much to the left
 			for (uint32_t i = 0; i < size_tree; ++i) {
@@ -555,7 +552,7 @@ void calculate_mla(
 			}
 		}
 	}
-	else if (root == LEFT_ANCHOR) {
+	else if constexpr (root == LEFT_ANCHOR) {
 		if (2*mla[one_node - 1] - 2*start > size_tree - 1) {
 			// Left anchor and the root is too much to the right
 			for (uint32_t i = 0; i < size_tree; ++i) {
@@ -577,7 +574,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 	linear_arrangement arr(t.num_nodes(),0);
 
 	free_tree T = t;
-	dmin_Chung::calculate_mla(T, NO_ANCHOR, 1, 0, arr, c);
+	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, arr, c);
 
 	return make_pair(c, arr);
 }

@@ -67,8 +67,9 @@ using namespace graphs;
 namespace internal {
 namespace dmin_Shiloach {
 
+template<char anchored>
 uint32_t calculate_p_alpha(
-	const uint32_t n, const unsigned char anchored, const ordering& ord,
+	const uint32_t n, const ordering& ord,
 	uint32_t& s_0, uint32_t& s_1
 )
 {
@@ -84,7 +85,7 @@ uint32_t calculate_p_alpha(
 	uint32_t n_0 = ord[0].first;
 	uint32_t max_p = 0;
 
-	if (anchored == NO_ANCHOR) {
+	if constexpr (anchored == NO_ANCHOR) {
 		// -- not anchored
 
 		// Maximum possible p_alpha
@@ -155,19 +156,17 @@ uint32_t calculate_p_alpha(
 // root_or_anchor: node used as a reference to the said connected component.
 //     Its value is within [1,n]
 // start: position where to start placing the vertices (the leftmost position
-//     in the mla for the subtree). 
-// end: position where to end placing the vertices (the rightmost position 
+//     in the mla for the subtree).
+// end: position where to end placing the vertices (the rightmost position
 //     int the mla for the subtree).
-
+template<char alpha>
 void calculate_mla(
 	free_tree& t,
-	char alpha, node root_or_anchor, position start, position end,
+	node root_or_anchor, position start, position end,
 	linear_arrangement& mla, uint32_t& cost
 )
 {
-#if defined DEBUG
-	assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
-#endif
+	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
 	vector<node> reachable(t.num_nodes_component(root_or_anchor - 1));
 	{
@@ -235,31 +234,30 @@ void calculate_mla(
 
 	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
-	
+
 	uint32_t c1, c2;
 	c1 = c2 = 0;
-	
+
 	// t -t0 : t0  if t has a LEFT_ANCHOR
-	if (alpha == LEFT_ANCHOR){
-		calculate_mla(t, NO_ANCHOR, v_star, start, end - n_0, mla, c2);
-		calculate_mla(t, LEFT_ANCHOR, v_0, end - n_0 + 1, end, mla, c1);
+	if constexpr (alpha == LEFT_ANCHOR) {
+		calculate_mla<NO_ANCHOR>
+			(t, v_star, start, end - n_0, mla, c2);
+
+		calculate_mla<LEFT_ANCHOR>
+			(t, v_0, end - n_0 + 1, end, mla, c1);
 	}
 	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
 	else {
-		calculate_mla(t, RIGHT_ANCHOR, v_0, start, start + n_0 - 1, mla, c1);
-		calculate_mla(
-			t,
-			(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR),
-			v_star,
-			start + n_0,
-			end,
-			mla,
-			c2
-		);
+		calculate_mla<RIGHT_ANCHOR>
+			(t, v_0, start, start + n_0 - 1, mla, c1);
+
+		calculate_mla<(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR)>
+			(t, v_star, start + n_0, end, mla, c2);
 	}
-	
+
 	// Cost for recursion A
-	cost = (alpha == NO_ANCHOR ? c1 + c2 + 1 : c1 + c2 + size_tree - n_0);
+	if constexpr (alpha == NO_ANCHOR) { cost = c1 + c2 + 1; }
+	else							  { cost = c1 + c2 + size_tree - n_0; }
 
 	// reconstruct t
 	t.add_edge(v_star - 1, v_0 - 1, false, false);
@@ -268,12 +266,12 @@ void calculate_mla(
 
 	// Left or right anchored is not important for the cost.
 	// Note that the result returned is either 0 or 1.
-	const unsigned char anchored =
+	constexpr unsigned char anchored =
 		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
 
 	uint32_t s_0 = 0;
 	uint32_t s_1 = 0;
-	const uint32_t p_alpha = calculate_p_alpha(size_tree, anchored, ord, s_0, s_1);
+	const uint32_t p_alpha = calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
 
 	uint32_t cost_B = 0;
 	linear_arrangement mla_B(mla);
@@ -293,31 +291,37 @@ void calculate_mla(
 		// t2 : t4 : ... : t* : ... : t3 : t1 ig t has LEFT_ANCHOR
 		for(uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			uint32_t c_aux = 0;
-			
+
 			const node r = ord[i].second;
 			const uint32_t n_i = ord[i].first;
 			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
-				calculate_mla(t, RIGHT_ANCHOR, r, start, start + n_i - 1, mla_B, c_aux);
+				calculate_mla<RIGHT_ANCHOR>(t, r, start, start + n_i - 1, mla_B, c_aux);
 				cost_B += c_aux;
 				start += n_i;
 			}
 			else {
-				calculate_mla(t, LEFT_ANCHOR, r, end - n_i + 1, end, mla_B, c_aux);
+				calculate_mla<LEFT_ANCHOR>(t, r, end - n_i + 1, end, mla_B, c_aux);
 				cost_B += c_aux;
 				end -= n_i;
 			}
 		}
-		
+
 		// t*
 		uint32_t c_aux = 0;
-		calculate_mla(t, NO_ANCHOR, v_star, start, end, mla_B, c_aux);
+		calculate_mla<NO_ANCHOR>(t, v_star, start, end, mla_B, c_aux);
 		cost_B += c_aux;
 
 		// reconstruct t
 		t.add_edges(edges, false, false);
 
 		// We add the anchors part not previously added
-		cost_B += (alpha == NO_ANCHOR ? s_0 : s_1);
+		if constexpr (alpha == NO_ANCHOR) {
+			cost_B += s_0;
+		}
+		else {
+			cost_B += s_1;
+		}
+
 	}
 
 	// We choose B-recursion only if it is better
@@ -341,9 +345,9 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 
 	free_tree T = t;
 	// Positions 0, 1, ..., t.num_nodes() - 1
-	dmin_Shiloach::calculate_mla(T, NO_ANCHOR, 1, 0, t.num_nodes() -1, arrangement, c);
+	dmin_Shiloach::calculate_mla<NO_ANCHOR>(T, 1, 0, t.num_nodes() -1, arrangement, c);
 
-	return make_pair(c, arrangement); 
+	return make_pair(c, arrangement);
 }
 
 } // -- namespace internal
