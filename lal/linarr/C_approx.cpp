@@ -43,7 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-using namespace std;
 
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
@@ -166,11 +165,11 @@ rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
-			make_pair(
+			std::make_pair(
 				alpha(to_int32(n), to_int32(len_st), to_int32(len_uv)),
 				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))
 			) :
-			make_pair(
+			std::make_pair(
 				alpha(to_int32(n), to_int32(len_uv), to_int32(len_st)),
 				beta(to_int32(n), to_int32(len_uv), to_int32(len_st))
 			)
