@@ -198,12 +198,34 @@ public:
 
 	/**
 	 * @brief Returns whether this tree is of type @e tt.
+	 *
+	 * See method @ref calculate_tree_type to know how to calculate a tree's type.
 	 * @param tt Type of tree (see @ref lal::graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
 	inline bool is_of_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
+
+	/**
+	 * @brief Is the type of this tree valid?
+	 *
+	 * This function enables users determine when this tree's type should be
+	 * calculated.
+	 *
+	 * In case this function returns false, users should call function
+	 * @ref calculate_tree_type in order to obtain a valid tree type. Note,
+	 * however, that prior to calling the function the type of this tree might
+	 * be @ref lal::graphs::tree_type::unknown and that the tree type may remain
+	 * @ref lal::graphs::tree_type::unknown even after the type has been calculated.
+	 * Nevertheless, users should be suspicious of a tree being of
+	 * @ref lal::graphs::tree_type::unknown (in fact, of any) type if this method
+	 * returns false, yet they should be sure of it if the type was calculated
+	 * via method @ref calculate_tree_type.
+	 * @returns True or false depending on whether the tree type was calculated
+	 * or not.
+	 */
+	inline bool is_type_valid() const noexcept { return m_is_type_valid; }
 
 	/**
 	 * @brief Returns the list of types as a list of strings.
@@ -227,6 +249,14 @@ protected:
 
 	/// The type of this tree
 	std::array<bool,__tree_type_size> m_tree_type;
+	/**
+	 * @brief Is the type of this tree valid?
+	 *
+	 * This attribute keeps track of whether or not the function
+	 * @ref calculate_tree_type should be called before querying the type of
+	 * this tree via function @ref is_of_type.
+	 */
+	bool m_is_type_valid = false;
 
 protected:
 	/**

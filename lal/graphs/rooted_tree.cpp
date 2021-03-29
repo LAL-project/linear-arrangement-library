@@ -274,6 +274,7 @@ void rooted_tree::calculate_size_subtrees() noexcept {
 }
 
 void rooted_tree::calculate_tree_type() noexcept {
+	m_is_type_valid = true;
 	internal::classify_tree(*this, m_tree_type);
 }
 

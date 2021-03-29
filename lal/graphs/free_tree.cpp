@@ -151,6 +151,7 @@ void free_tree::disjoint_union(const free_tree& t) noexcept {
 }
 
 void free_tree::calculate_tree_type() noexcept {
+	m_is_type_valid = true;
 	internal::classify_tree(*this, m_tree_type);
 }
 
