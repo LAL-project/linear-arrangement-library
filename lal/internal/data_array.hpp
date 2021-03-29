@@ -144,11 +144,11 @@ public:
 
 	// pointer to non-constant first element and last+1 element
 	[[nodiscard]] inline T *begin() { return &data[0]; }
-	[[nodiscard]] inline T *end() { return &data[m_size]; }
+	[[nodiscard]] inline T *end() { return &data[m_size - 1] + 1; }
 
 	// pointer to constant first element and last+1 element
 	[[nodiscard]] inline const T *begin() const { return &data[0]; }
-	[[nodiscard]] inline const T *end() const { return &data[m_size]; }
+	[[nodiscard]] inline const T *end() const { return &data[m_size - 1] + 1; }
 };
 
 } // -- namespace internal
