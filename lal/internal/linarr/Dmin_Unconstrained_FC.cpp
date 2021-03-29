@@ -42,6 +42,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <optional>
 #include <vector>
 using namespace std;
 
@@ -98,7 +99,8 @@ int calculate_q(uint32_t n, const ordering& ord) {
 }
 */
 
-inline int calculate_q(uint32_t n, const ordering& ord) {
+inline
+std::optional<uint32_t> calculate_q(uint32_t n, const ordering& ord) {
 #if defined DEBUG
 	assert(ord.size() > 0);
 #endif
@@ -124,11 +126,11 @@ inline int calculate_q(uint32_t n, const ordering& ord) {
 		if (q > 0) { z += ord[2*q - 1].first; }
 		tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
 
-		if (q == 0) { return -1; }
+		if (q == 0) { return {}; }
 		--q;
 		t_2q = ord[2*q].first;
 	}
-	return to_int32(q);
+	return q;
 }
 
 /*
@@ -164,8 +166,9 @@ int calculate_p(uint32_t n, const ordering& ord) {
 }
 */
 
-inline int calculate_p(uint32_t n, const ordering& ord) {
-	if (ord.size() < 2) { return -1; }
+inline
+std::optional<uint32_t> calculate_p(uint32_t n, const ordering& ord) {
+	if (ord.size() < 2) { return {}; }
 
 	// number of subtrees (T_0, T_1, ..., T_k)
 	const uint32_t k = to_uint32(ord.size()) - 1;
@@ -186,11 +189,11 @@ inline int calculate_p(uint32_t n, const ordering& ord) {
 		y = y + ord[2*p + 1].first + ord[2*p].first;
 		tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
 
-		if (p == 0) { return -1; }
+		if (p == 0) { return {}; }
 		--p;
 		t_2p_plus_1 = ord[2*p + 1].first;
 	}
-	return to_int32(p);
+	return p;
 }
 
 vector<uint32_t> get_P(uint32_t p, uint32_t i) {
@@ -330,8 +333,8 @@ void calculate_mla(
 		ordering ord(t.degree(u - 1));
 		get_ordering(t, u, ord);
 
-		const int q = calculate_q(size_tree, ord);
-		if (q == -1) {
+		const auto q = calculate_q(size_tree, ord);
+		if (not q) {
 			const uint32_t n_0 = ord[0].first;
 			const node t_0 = ord[0].second;
 
@@ -347,7 +350,7 @@ void calculate_mla(
 		}
 		else {
 			// uq: unsigned 'q'
-			const uint32_t uq = to_uint32(q);
+			const uint32_t uq = *q;
 			cost = numeric_limits<uint32_t>::max();
 
 			vector<edge> edges(2*uq + 1);
@@ -436,8 +439,8 @@ void calculate_mla(
 		ordering ord(t.degree(one_node - 1));
 		get_ordering(t, one_node, ord);
 
-		const int p = calculate_p(size_tree, ord);
-		if (p == -1) {
+		const auto p = calculate_p(size_tree, ord);
+		if (not p) {
 			const uint32_t n_0 = ord[0].first;
 			const node t_0 = ord[0].second;
 #if defined DEBUG
@@ -456,7 +459,7 @@ void calculate_mla(
 		}
 		else {
 			// up: unsigned 'p'
-			const uint32_t up = to_uint32(p);
+			const uint32_t up = *p;
 			cost = numeric_limits<uint32_t>::max();
 
 			vector<edge> edges(2*up + 2);
