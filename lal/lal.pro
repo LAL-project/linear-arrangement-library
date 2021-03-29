@@ -21,11 +21,11 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 
 isEmpty(ENVIR) {
     ENVIR = "HOME"
-	CONFIG += c++17
 }
 
 # configure home
-equals(ENVIR, "CLUSTER") {
+equals(ENVIR, "HOME") {
+    CONFIG += c++17
 }
 
 # configure cluster
