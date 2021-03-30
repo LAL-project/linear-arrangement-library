@@ -20,7 +20,25 @@ DEFINITIONS_DPHDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
 
 # NAMESPACES
 
-GENERATE_DPHDRS		= $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
+GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/free_tree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/rooted_tree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
+					  $(LAL_INC_DIR)/lal/graphs/tree_type.hpp \
+					  $(TREE_TYPE_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp \
+					  $(LAL_INC_DIR)/lal/graphs.hpp
+
+NUMERIC_DPHDRS		= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
+					  $(LAL_INC_DIR)/lal/numeric/rational.hpp \
+					  $(LAL_INC_DIR)/lal/numeric/output.hpp \
+					  $(LAL_INC_DIR)/lal/numeric.hpp
+
+GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
+					  $(NUMERIC_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_lab_rooted_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_projective_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_ulab_free_trees.hpp \
@@ -33,18 +51,8 @@ GENERATE_DPHDRS		= $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/tree_gen.hpp \
 					  $(LAL_INC_DIR)/lal/generate.hpp
 
-GRAPHS_DPHDRS		= $(LAL_INC_DIR)/lal/graphs/conversions.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/directed_graph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/free_tree.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/graph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/rooted_tree.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/tree.hpp \
-					  $(LAL_INC_DIR)/lal/graphs/tree_type.hpp \
-					  $(TREE_TYPE_DPHDRS) \
-					  $(LAL_INC_DIR)/lal/graphs/undirected_graph.hpp \
-					  $(LAL_INC_DIR)/lal/graphs.hpp
-
-IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
+IO_DPHDRS			= $(GRAPHS_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
 					  $(TREEBANK_ERR_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/process_treebank_base.hpp \
@@ -56,11 +64,14 @@ IO_DPHDRS			= $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/check_correctness.hpp \
 					  $(LAL_INC_DIR)/lal/io.hpp
 
-ITERATORS_DPHDRS	= $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
+ITERATORS_DPHDRS	= $(GRAPHS_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/iterators/E_iterator.hpp \
 					  $(LAL_INC_DIR)/lal/iterators/Q_iterator.hpp \
 					  $(LAL_INC_DIR)/lal/iterators.hpp
 
-LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
+LINARR_DPHDRS		= $(GRAPHS_DPHDRS) \
+					  $(NUMERIC_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
 					  $(ALG_C_DPHDRS) \
 					  $(ALG_DMIN_DPHDRS) \
@@ -74,12 +85,9 @@ LINARR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/1level.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/classify_syntactic_dependency_structure.hpp \
 					  $(LAL_INC_DIR)/lal/linarr.hpp
 
-NUMERIC_DPHDRS		= $(LAL_INC_DIR)/lal/numeric/integer.hpp \
-					  $(LAL_INC_DIR)/lal/numeric/rational.hpp \
-					  $(LAL_INC_DIR)/lal/numeric/output.hpp \
-					  $(LAL_INC_DIR)/lal/numeric.hpp
-
-PROPERTIES_DPHDRS	= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
+PROPERTIES_DPHDRS	= $(GRAPHS_DPHDRS) \
+					  $(NUMERIC_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/D_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/degrees.hpp \
 					  $(LAL_INC_DIR)/lal/properties/mean_hierarchical_distance.hpp \
@@ -89,7 +97,8 @@ PROPERTIES_DPHDRS	= $(LAL_INC_DIR)/lal/properties/C_rla.hpp \
 					  $(LAL_INC_DIR)/lal/properties/tree_diameter.hpp \
 					  $(LAL_INC_DIR)/lal/properties.hpp
 
-UTILS_DPHDRS		= $(LAL_INC_DIR)/lal/utilities/tree_isomorphism.hpp \
+UTILS_DPHDRS		= $(GRAPHS_DPHDRS) \
+					  $(LAL_INC_DIR)/lal/utilities/tree_isomorphism.hpp \
 					  $(LAL_INC_DIR)/lal/utilities.hpp
 
 LAL_DPHDRS			=
