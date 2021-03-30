@@ -168,7 +168,7 @@ void calculate_mla(
 {
 	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
-	vector<node> reachable(t.num_nodes_component(root_or_anchor - 1));
+	vector<node> reachable(t.get_num_nodes_component(root_or_anchor - 1));
 	{
 	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
@@ -180,7 +180,7 @@ void calculate_mla(
 	}
 
 	// Size of the tree
-	const uint32_t size_tree = t.num_nodes_component(root_or_anchor - 1);
+	const uint32_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -202,12 +202,12 @@ void calculate_mla(
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
-	ordering ord(t.degree(v_star - 1));
+	ordering ord(t.get_degree(v_star - 1));
 	{
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.num_nodes());
+	data_array<uint32_t> s(t.get_num_nodes());
 	internal::get_size_subtrees(t, v_star - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -341,11 +341,11 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 #endif
 
 	uint32_t c = 0;
-	linear_arrangement arrangement(t.num_nodes(),0);
+	linear_arrangement arrangement(t.get_num_nodes(),0);
 
 	free_tree T = t;
-	// Positions 0, 1, ..., t.num_nodes() - 1
-	dmin_Shiloach::calculate_mla<NO_ANCHOR>(T, 1, 0, t.num_nodes() -1, arrangement, c);
+	// Positions 0, 1, ..., t.get_num_nodes() - 1
+	dmin_Shiloach::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
 
 	return make_pair(c, arrangement);
 }

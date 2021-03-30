@@ -182,20 +182,20 @@ public:
 	 * \f$E(G) \times E(G)\f$, that are independent, that is, that share
 	 * no nodes.
 	 */
-	virtual std::vector<edge_pair> Q() const noexcept = 0;
+	virtual std::vector<edge_pair> get_Q() const noexcept = 0;
 
 	/// Returns true if node @e u is in this graph.
-	inline bool has_node(node u) const noexcept { return u < num_nodes(); }
+	inline bool has_node(node u) const noexcept { return u < get_num_nodes(); }
 
 	/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
 	virtual bool has_edge(node u, node v) const = 0;
 
 	/// Returns the number of ndoes.
-	inline uint32_t num_nodes() const noexcept
+	inline uint32_t get_num_nodes() const noexcept
 	{ return static_cast<uint32_t>(m_adjacency_list.size()); }
 
 	/// Returns the number of edges.
-	inline uint32_t num_edges() const noexcept { return m_num_edges; }
+	inline uint32_t get_num_edges() const noexcept { return m_num_edges; }
 
 	/// Returns all edges of this graph.
 	virtual std::vector<edge> get_edges() const noexcept = 0;

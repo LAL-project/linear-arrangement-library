@@ -53,7 +53,7 @@ namespace properties {
 /* EXPECTATION OF D: E_rla[D] */
 
 rational expectation_D_rational(const undirected_graph& g) {
-	return rational((g.num_nodes() + 1)*g.num_edges(), 3);
+	return rational((g.get_num_nodes() + 1)*g.get_num_edges(), 3);
 }
 
 double expectation_D(const undirected_graph& g) {
@@ -67,8 +67,8 @@ rational variance_D_rational(const undirected_graph& g) {
 	// E_rla[D]
 	const rational Ed = expectation_D_rational(g);
 	// E_rla[D^2]
-	const integer n = g.num_nodes();
-	const integer m = g.num_edges();
+	const integer n = g.get_num_nodes();
+	const integer m = g.get_num_edges();
 
 	// calculate expectations of types
 	const rational E0((n + 1)*(n*5 + 4), 45);

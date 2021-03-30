@@ -55,7 +55,7 @@ using namespace std;
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define to_uint32(x) static_cast<uint32_t>(x)
-#define DECIDED_C_GT (g.num_edges()*g.num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
 #define DECIDED_C_LE C
 
 namespace lal {
@@ -80,7 +80,7 @@ inline uint32_t __compute_C_dyn_prog
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	std::fill(&bn[0], &bn[n], 0);
 	std::fill(&K[0], &K[(n - 3)*(n - 3)], 0);
 
@@ -97,7 +97,7 @@ inline uint32_t __compute_C_dyn_prog
 
 		internal::get_bool_neighbours<G>(g, u, bn);
 
-		uint32_t k = g.degree(u);
+		uint32_t k = g.get_degree(u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
@@ -233,7 +233,7 @@ inline uint32_t __call_C_dyn_prog(
 	const linear_arrangement& pi
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -262,7 +262,7 @@ uint32_t n_C_dynamic_programming(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_dyn_prog<directed_graph>, g, pi);
@@ -274,7 +274,7 @@ uint32_t n_C_dynamic_programming(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_dyn_prog<undirected_graph>, g, pi);
@@ -289,7 +289,7 @@ vector<uint32_t> n_C_dynamic_programming(
 	const vector<linear_arrangement>& pis
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -359,7 +359,7 @@ inline uint32_t __call_C_dyn_prog_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -389,7 +389,7 @@ uint32_t is_n_C_dynamic_programming_lesseq_than(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return
 	internal::call_with_empty_arrangement
@@ -403,7 +403,7 @@ uint32_t is_n_C_dynamic_programming_lesseq_than(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return
 	internal::call_with_empty_arrangement
@@ -420,7 +420,7 @@ vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -493,7 +493,7 @@ vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	assert(pis.size() == upper_bounds.size());
 #endif
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -587,7 +587,7 @@ inline void compute_M
 		// the row corresponding to node 'u' in M is
 		// the same as its position in the sequence
 
-		size_t k = G.degree(u);
+		size_t k = G.get_degree(u);
 		M[pu][0] = k;
 		for (size_t i = 1; i < L and k > 0; ++i) {
 			if (G.has_edge(u, seq[i - 1])) --k;
@@ -624,7 +624,7 @@ size_t crossings_sequence_n2_n2(const graph& G, const vector<size_t>& seq) {
 
 	// translation table
 	// T[u] = p <-> node u is at position p
-	vector<size_t> T(G.num_nodes(), L + 1);
+	vector<size_t> T(G.get_num_nodes(), L + 1);
 	for (size_t i = 0; i < L; ++i) {
 		T[ seq[i] ] = i;
 	}

@@ -185,7 +185,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	node r, linear_arrangement& arr
 )
 {
-	const uint32_t n = t.num_nodes();
+	const uint32_t n = t.get_num_nodes();
 	return Dmin_Pr__optimal_interval_of(
 		M, r, PLACE_NONE_OF, 0,n-1, arr
 	);
@@ -194,10 +194,10 @@ uint32_t Dmin_Pr__optimal_interval_of(
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
-	assert(t.size_subtrees_valid());
+	assert(t.are_size_subtrees_valid());
 #endif
 
-	const uint32_t n = t.num_nodes();
+	const uint32_t n = t.get_num_nodes();
 	if (n == 1) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
@@ -213,7 +213,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		*it++ = make_pair(e,t.num_nodes_subtree(v));
+		*it++ = make_pair(e,t.get_num_nodes_subtree(v));
 	}
 	}
 
@@ -237,7 +237,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 
 #if defined DEBUG
 	for (node u = 0; u < n; ++u) {
-		assert(M[u].size() == t.out_degree(u));
+		assert(M[u].size() == t.get_out_degree(u));
 	}
 #endif
 

@@ -109,7 +109,7 @@ typedef std::vector<node> neighbourhood;
  *
  *
  * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
+ * and (2) is not valid since it contains two '0' (i.e., two roots).
  */
 typedef std::vector<uint32_t> head_vector;
 

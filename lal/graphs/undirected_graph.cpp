@@ -149,7 +149,7 @@ undirected_graph& undirected_graph::set_edges
 (const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	{
-	const uint32_t n = num_nodes();
+	const uint32_t n = get_num_nodes();
 	clear(); init(n);
 	}
 
@@ -211,7 +211,7 @@ void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 
 /* GETTERS */
 
-vector<edge_pair> undirected_graph::Q() const noexcept {
+vector<edge_pair> undirected_graph::get_Q() const noexcept {
 	const auto qs = properties::size_Q(*this);
 	return internal::Q(*this, qs);
 }

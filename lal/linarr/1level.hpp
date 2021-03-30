@@ -102,13 +102,13 @@ noexcept
 		const linear_arrangement empty_arr;
 		for (size_t i = 0; i < L.size(); ++i) {
 			sumD += sum_length_edges(L[i], empty_arr);
-			sumM += L[i].num_edges();
+			sumM += L[i].get_num_edges();
 		}
 	}
 	else {
 		for (size_t i = 0; i < L.size(); ++i) {
 			sumD += sum_length_edges(L[i], P[i]);
-			sumM += L[i].num_edges();
+			sumM += L[i].get_num_edges();
 		}
 	}
 	return numeric::rational_from_ui(sumD, sumM);

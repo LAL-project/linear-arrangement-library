@@ -63,9 +63,9 @@ namespace graphs {
 /* MODIFIERS */
 
 void directed_graph::normalise() noexcept {
-	internal::data_array<char> mem(num_nodes(), 0);
+	internal::data_array<char> mem(get_num_nodes(), 0);
 
-	for (node u = 0; u < num_nodes(); ++u) {
+	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			internal::bit_sort_mem<node>
@@ -84,7 +84,7 @@ bool directed_graph::check_normalised() noexcept {
 	if (not graph::check_normalised()) { return false; }
 
 	// check that every adjacency list is sorted
-	for (node u = 0; u < num_nodes(); ++u) {
+	for (node u = 0; u < get_num_nodes(); ++u) {
 		const neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			// if some is not then the graph is not normalised
@@ -192,7 +192,7 @@ directed_graph& directed_graph::set_edges
 (const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	{
-	const uint32_t n = num_nodes();
+	const uint32_t n = get_num_nodes();
 	clear(); init(n);
 	}
 
@@ -255,7 +255,7 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 
 /* GETTERS */
 
-vector<edge_pair> directed_graph::Q() const noexcept {
+vector<edge_pair> directed_graph::get_Q() const noexcept {
 	const auto qs = properties::size_Q(*this);
 	return internal::Q(*this, qs);
 }
@@ -287,7 +287,7 @@ bool directed_graph::has_edge(node u, node v) const noexcept {
 }
 
 undirected_graph directed_graph::to_undirected(bool norm, bool check) const noexcept {
-	undirected_graph g(num_nodes());
+	undirected_graph g(get_num_nodes());
 
 	// add edges so that none are repeated
 	iterators::E_iterator E_it(*this);

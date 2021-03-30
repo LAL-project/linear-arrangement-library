@@ -135,7 +135,7 @@
  * 
  * Such normalisation is required by some of the algorithms in this library. Without proper normalisation, the algorithms are not likely to compute correct values. The parameter that governs the graphs' normalisation is called the normalisation parameter.
  * 
- * The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see @ref lal::graphs::directed_graph::in_degree) and in-neighbours (see @ref lal::graphs::directed_graph::get_in_neighbours).
+ * The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see @ref lal::graphs::directed_graph::get_in_degree) and in-neighbours (see @ref lal::graphs::directed_graph::get_in_neighbours).
  * 
  * \section s2 Basic terminology and notation
  * 

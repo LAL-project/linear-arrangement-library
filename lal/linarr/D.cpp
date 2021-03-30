@@ -77,7 +77,7 @@ uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi) {
 
 uint32_t sum_length_edges(const directed_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
@@ -85,7 +85,7 @@ uint32_t sum_length_edges(const directed_graph& g, const linear_arrangement& pi)
 }
 uint32_t sum_length_edges(const undirected_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
@@ -98,12 +98,12 @@ uint32_t sum_length_edges(const undirected_graph& g, const linear_arrangement& p
 template<typename G>
 inline rational __MDD_rational(const G& g, const linear_arrangement& pi) {
 	const uint32_t D = sum_length_edges(g, pi);
-	return rational_from_ui(D, g.num_edges());
+	return rational_from_ui(D, g.get_num_edges());
 }
 
 rational mean_dependency_distance_rational(const directed_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
@@ -111,7 +111,7 @@ rational mean_dependency_distance_rational(const directed_graph& g, const linear
 }
 rational mean_dependency_distance_rational(const undirected_graph& g, const linear_arrangement& pi) {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement

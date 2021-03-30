@@ -71,8 +71,8 @@ void graph::clear() noexcept {
 }
 
 void graph::normalise() noexcept {
-	internal::data_array<char> mem(num_nodes(), 0);
-	for (node u = 0; u < num_nodes(); ++u) {
+	internal::data_array<char> mem(get_num_nodes(), 0);
+	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not is_sorted(nu.begin(), nu.end())) {
@@ -85,7 +85,7 @@ void graph::normalise() noexcept {
 
 bool graph::check_normalised() noexcept {
 	// check that every adjacency list is sorted
-	for (node u = 0; u < num_nodes(); ++u) {
+	for (node u = 0; u < get_num_nodes(); ++u) {
 		const neighbourhood& nu = m_adjacency_list[u];
 		if (not is_sorted(nu.begin(), nu.end())) {
 			// if some is not then the graph is not normalised

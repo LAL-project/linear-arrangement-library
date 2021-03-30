@@ -58,7 +58,7 @@ inline void __make_arrangement_intervals(
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.out_degree(r);
+	const uint32_t d_out = T.get_out_degree(r);
 
 	// vertex 'r' is a leaf
 	if (d_out == 0) {
@@ -84,7 +84,7 @@ inline void __make_arrangement_intervals(
 )
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.degree(r) - (r == parent ? 0 : 1);
+	const uint32_t d_out = T.get_degree(r) - (r == parent ? 0 : 1);
 
 	// vertex 'r' is a leaf
 	if (d_out == 0) {
@@ -109,7 +109,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data
 )
 {
-	linear_arrangement arr(T.num_nodes());
+	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
 	__lal::__make_arrangement_intervals(T, T.get_root(), data, pos, arr);
 	return arr;
@@ -120,7 +120,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data
 )
 {
-	linear_arrangement arr(T.num_nodes());
+	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
 	__lal::__make_arrangement_intervals(T, root, root, data, pos, arr);
 	return arr;

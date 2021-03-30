@@ -64,7 +64,7 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 #endif
 
 	// in a tree we must have m <= n - 1
-	if (num_edges() + 1 > num_nodes() - 1) {
+	if (get_num_edges() + 1 > get_num_nodes() - 1) {
 		return false;
 	}
 
@@ -75,8 +75,8 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 }
 
 bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
-	const uint32_t n = num_nodes();
-	const uint32_t m = num_edges();
+	const uint32_t n = get_num_nodes();
+	const uint32_t m = get_num_edges();
 	const uint32_t more_m = static_cast<uint32_t>(edges.size());
 
 	// in a tree we must have m <= n - 1
@@ -155,6 +155,8 @@ void tree::tree_only_move(tree&& t) noexcept {
 	m_root_size = std::move(t.m_root_size);
 	m_is_type_valid = t.m_is_type_valid;
 	m_tree_type = std::move(t.m_tree_type);
+
+	t.m_is_type_valid = false;
 }
 
 void tree::extra_work_per_edge_add(node u, node v) noexcept {
@@ -179,12 +181,12 @@ void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 }
 
 void tree::fill_union_find() noexcept {
-	for (node u = 0; u < num_nodes(); ++u) {
+	for (node u = 0; u < get_num_nodes(); ++u) {
 		// all vertices point to root zero
 		m_root_of[u] = 0;
 	}
 	// the size of the connected component of the root 0 is n
-	m_root_size[0] = num_nodes();
+	m_root_size[0] = get_num_nodes();
 }
 
 } // -- namespace graphs

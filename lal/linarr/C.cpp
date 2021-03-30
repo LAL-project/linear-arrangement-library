@@ -77,7 +77,7 @@ inline uint32_t number_of_crossings(
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return g.num_edges()*g.num_edges();
+	return g.get_num_edges()*g.get_num_edges();
 }
 
 uint32_t number_of_crossings(
@@ -138,7 +138,7 @@ inline vector<uint32_t> number_of_crossings_list(
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
 vector<uint32_t> number_of_crossings_list(
@@ -250,7 +250,7 @@ inline vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
 vector<uint32_t> is_number_of_crossings_lesseq_than_list(
@@ -301,7 +301,7 @@ vector<uint32_t> is_number_of_crossings_lesseq_than_list
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.num_edges()*g.num_edges());
+	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
 vector<uint32_t> is_number_of_crossings_lesseq_than_list(

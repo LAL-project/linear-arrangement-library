@@ -151,7 +151,7 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 template<typename GRAPH>
 rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement& pi) {
 	rational Ec2(0);
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	iterators::Q_iterator<GRAPH> q(g);
 	while (q.has_next()) {
@@ -184,7 +184,7 @@ rational approximate_C_rational
 (const undirected_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
@@ -195,7 +195,7 @@ rational approximate_C_rational
 (const directed_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement

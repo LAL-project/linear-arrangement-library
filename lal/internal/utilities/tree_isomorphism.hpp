@@ -35,7 +35,7 @@ template<
 inline
 char fast_non_iso(const T& t1, const T& t2) noexcept {
 	// check number of nodes
-	if (t1.num_nodes() != t2.num_nodes()) { return 1; }
+	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
 
 	if constexpr (std::is_base_of_v<T, lal::graphs::rooted_tree>) {
 	// rooted trees must have correct orientation of edges
@@ -44,7 +44,7 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
 	}
 	}
 
-	const uint32_t n = t1.num_nodes();
+	const uint32_t n = t1.get_num_nodes();
 
 	// trees ARE isomorphic
 	if (n <= 2) { return 0; }
@@ -56,11 +56,11 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
 	uint64_t maxdeg_t1 = 0; // max degree of t1
 	uint64_t maxdeg_t2 = 0; // max degree of t2
 	for (node u = 0; u < n; ++u) {
-		const uint64_t ku1 = static_cast<uint64_t>(t1.degree(u));
-		const uint64_t ku2 = static_cast<uint64_t>(t2.degree(u));
+		const uint64_t ku1 = static_cast<uint64_t>(t1.get_degree(u));
+		const uint64_t ku2 = static_cast<uint64_t>(t2.get_degree(u));
 
-		nL_t1 += t1.degree(u) == 1;
-		nL_t2 += t2.degree(u) == 1;
+		nL_t1 += t1.get_degree(u) == 1;
+		nL_t2 += t2.get_degree(u) == 1;
 		k2_t1 += ku1*ku1;
 		k2_t2 += ku2*ku2;
 		maxdeg_t1 = (maxdeg_t1 < ku1 ? ku1 : maxdeg_t1);
@@ -104,7 +104,7 @@ void assign_name_and_keep(
 )
 noexcept
 {
-	if (t.out_degree(u) == 0) {
+	if (t.get_out_degree(u) == 0) {
 		keep_name_of[u] = "10";
 		return;
 	}
@@ -149,7 +149,7 @@ std::string assign_name
 (const graphs::rooted_tree& t, node u, std::string * const names, size_t idx)
 noexcept
 {
-	if (t.out_degree(u) == 0) {
+	if (t.get_out_degree(u) == 0) {
 		return std::string("10");
 	}
 
@@ -181,7 +181,7 @@ noexcept
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint32_t n = t1.num_nodes();
+	const uint32_t n = t1.get_num_nodes();
 	data_array<std::string> names(n);
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names.data, 0);
 	const std::string name_r2 = assign_name(t2, t2.get_root(), names.data, 0);

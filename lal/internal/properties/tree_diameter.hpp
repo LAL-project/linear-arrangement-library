@@ -63,7 +63,7 @@ template<
 	bool> = true
 >
 uint32_t tree_diameter(const T& t) {
-	const uint32_t n = t.num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	BFS<T> bfs(t);
 
@@ -76,7 +76,7 @@ uint32_t tree_diameter(const T& t) {
 
 	// find a leaf
 	node leaf = 0;
-	while (leaf < n and t.degree(leaf) > 1) { ++leaf; }
+	while (leaf < n and t.get_degree(leaf) > 1) { ++leaf; }
 #if defined DEBUG
 	// a leaf must exist in 't'
 	assert(leaf < n);

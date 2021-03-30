@@ -86,14 +86,14 @@ inline void compute_data_forest
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.degree(s);
+		const bigint ks = g.get_degree(s);
 		// calculate n*<k^2>, n*<k^3>
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const bigint kt = g.degree(t);
+			const bigint kt = g.get_degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
 			psi += ks*kt;
@@ -116,8 +116,8 @@ inline void compute_data_forest
 		it.next();
 		const auto [s,t] = it.get_edge();
 
-		const bigint ks = g.degree(s);
-		const bigint kt = g.degree(t);
+		const bigint ks = g.get_degree(s);
+		const bigint kt = g.get_degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
@@ -136,8 +136,8 @@ inline void compute_data_forest
 }
 
 rational variance_C_forest_rational(const undirected_graph& g) {
-	const bigint n = g.num_nodes();
-	const bigint m = g.num_edges();
+	const bigint n = g.get_num_nodes();
+	const bigint m = g.get_num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q

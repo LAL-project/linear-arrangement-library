@@ -127,7 +127,7 @@ public:
 	/* GETTERS */
 
 	/**
-	 * @brief Returns whether this graph is an actual tree or not.
+	 * @brief Is this graph is an actual tree?
 	 *
 	 * Returns true if the number of edges is one less than the
 	 * number of nodes. Note that this would not really be true if the
@@ -138,12 +138,14 @@ public:
 	 *
 	 * For further characterisations of a tree see \cite Harary1969a
 	 * (chapter 4, pages 32-33).
+	 * @returns True or false depending on whether this graph fits the defintion
+	 * of tree.
 	 */
 	bool is_tree() const noexcept {
 		// NOTE: this would not really be true if the addition of edges
 		// was not constrained. Since it is, in a way that no cycles can
 		// be produced, then we only need to check for the number of edges.
-		return (num_nodes() == 0 ? true : num_edges() == num_nodes() - 1);
+		return (get_num_nodes() == 0 ? true : get_num_edges() == get_num_nodes() - 1);
 
 		// NOTE 2: this is only true in a debug compilation of the library
 		// since a release compilation does not actually constrain the addition
@@ -189,7 +191,7 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	inline uint32_t num_nodes_component(node u) const noexcept {
+	inline uint32_t get_num_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif

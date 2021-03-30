@@ -53,7 +53,7 @@ namespace internal {
 
 template<typename G>
 std::vector<edge> E(const G& g) {
-	std::vector<edge> e(g.num_edges());
+	std::vector<edge> e(g.get_num_edges());
 
 	auto vec_it = e.begin();
 	iterators::E_iterator<G> e_it(g);

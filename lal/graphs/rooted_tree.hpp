@@ -91,7 +91,7 @@ namespace graphs {
  *
  * The root allows defining further properties on these graphs. For example,
  * the user can query information regarding subtrees of a particular rooted tree
- * (see methods @ref num_nodes_subtree, @ref calculate_size_subtrees,
+ * (see methods @ref get_num_nodes_subtree, @ref calculate_size_subtrees,
  * @ref get_edges_subtree, and @ref get_subtree).
  *
  * This class allows flexibility of use of rooted trees regarding the root's
@@ -99,7 +99,7 @@ namespace graphs {
  * multiple times and at any time. However, any information dependent
  * on the root becomes invalid upon any change of the root. This information
  * includes, and may not be limited to, the type of rooted tree and the size
- * of the subtrees (see @ref num_nodes_subtree). For this reason, is is strongly
+ * of the subtrees (see @ref get_num_nodes_subtree). For this reason, is is strongly
  * recommended to build a free tree first and use the constructor
  * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted,
  * in order to build rooted trees.
@@ -135,7 +135,7 @@ public:
 #endif
 	/// Constructor with tree and root node.
 	rooted_tree(const free_tree& t, node r) noexcept {
-		rooted_tree::_init(t.num_nodes());
+		rooted_tree::_init(t.get_num_nodes());
 		init_rooted(t, r);
 	}
 	/// Destructor
@@ -328,11 +328,11 @@ public:
 	 * @post Copying the edges of @e t into this tree retains their original
 	 * orientation.
 	 * @post The size of the subtrees might need recalculating:
-	 * - If method @ref size_subtrees_valid() returns true for both trees then
+	 * - If method @ref are_size_subtrees_valid() returns true for both trees then
 	 * the subtree sizes are updated and do not need to be recalculated and
-	 * method @ref size_subtrees_valid() still returns true.
-	 * - If for one of the tw graphs method @ref size_subtrees_valid() returns
-	 * false then it will still return false after this operation.
+	 * method @ref are_size_subtrees_valid() still returns true.
+	 * - If for one of the two graphs the method @ref are_size_subtrees_valid()
+	 * returns false then it will still return false after this operation.
 	 * @post The graph resulting from the union is normalised only if the
 	 * two graphs were normalised prior to the union.
 	 */
@@ -396,7 +396,7 @@ public:
 	 * @brief Calculates the number of nodes at every rooted subtree.
 	 * @pre The object must be a tree (see @ref is_tree()).
 	 * @pre The tree must have a root (see @ref has_root()).
-	 * @post Method @ref size_subtrees_valid returns true.
+	 * @post Method @ref are_size_subtrees_valid returns true.
 	 */
 	void calculate_size_subtrees() noexcept;
 
@@ -459,9 +459,9 @@ public:
 	 * @brief Get the size of a subtree rooted at a given node.
 	 * @param u Vertex of the tree.
 	 * @returns The number of nodes of the subtree rooted at @e u.
-	 * @pre Method @ref size_subtrees_valid returns true.
+	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	inline uint32_t num_nodes_subtree(node u) const noexcept {
+	inline uint32_t get_num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -478,7 +478,7 @@ public:
 	 * @returns Whether @ref m_size_subtrees should be recalculated
 	 * or not.
 	 */
-	inline bool size_subtrees_valid() const noexcept
+	inline bool are_size_subtrees_valid() const noexcept
 	{ return m_are_size_subtrees_valid; }
 
 	/**

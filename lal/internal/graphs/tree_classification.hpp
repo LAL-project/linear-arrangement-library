@@ -83,7 +83,7 @@ void classify_tree
 			return t.get_neighbours(u)[0];
 		}
 		else {
-			return (t.out_degree(u) == 0 ?
+			return (t.get_out_degree(u) == 0 ?
 				t.get_in_neighbours(u)[0] :
 				t.get_out_neighbours(u)[0]
 			);
@@ -93,7 +93,7 @@ void classify_tree
 	// -------------------------------------------------------------------------
 
 	// number of vertices
-	const uint32_t N = t.num_nodes();
+	const uint32_t N = t.get_num_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::unknown);
 		return;
@@ -143,7 +143,7 @@ void classify_tree
 	// fill in data
 	for (lal::node u = 0; u < N; ++u) {
 		// 'du' is the degree of the vertex in the underlying undirected graph
-		const int32_t du = static_cast<int32_t>(t.degree(u));
+		const int32_t du = static_cast<int32_t>(t.get_degree(u));
 		deg_internal[u] += (du > 1)*du;
 
 		n_deg_eq_1 += du == 1;

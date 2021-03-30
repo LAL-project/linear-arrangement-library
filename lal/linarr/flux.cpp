@@ -70,7 +70,7 @@ namespace flux {
 inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
 (const free_tree& t, const linear_arrangement& pi)
 {
-	vector<pair<edge,uint32_t>> edge_ending_at(t.num_nodes(), make_pair(edge(), 0));
+	vector<pair<edge,uint32_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
 
 	E_iterator it(t);
 	while (it.has_next()) {
@@ -152,8 +152,8 @@ inline uint32_t calculate_weight
 
 	const auto find_leaf =
 	[](const undirected_graph& g) -> std::optional<node> {
-		for (node u = 0; u < g.num_nodes(); ++u) {
-			if (g.degree(u) == 1) { return u; }
+		for (node u = 0; u < g.get_num_nodes(); ++u) {
+			if (g.get_degree(u) == 1) { return u; }
 		}
 		return {};
 	};
@@ -166,7 +166,7 @@ inline uint32_t calculate_weight
 		// step 2
 		++weight;
 		// step 3
-		vector<edge> edges_to_be_removed(ug.degree(v));
+		vector<edge> edges_to_be_removed(ug.get_degree(v));
 		auto it = edges_to_be_removed.begin();
 		for (const node w : ug.get_neighbours(v)) {
 			*it++ = edge(v,w);
@@ -181,7 +181,7 @@ inline uint32_t calculate_weight
 
 inline vector<dependency_flux> __compute_flux
 (const free_tree& t, const linear_arrangement& pi) {
-	const uint32_t n = t.num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p

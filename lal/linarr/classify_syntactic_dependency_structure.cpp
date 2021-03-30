@@ -175,7 +175,7 @@ uint32_t __get_n_discont(const uint32_t n, const vector<vector<node>>& yields)
 
 inline
 bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi) {
-	const uint32_t n = rT.num_nodes();
+	const uint32_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
 	vector<vector<position>> yields(n);
@@ -197,7 +197,7 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
 	// as a reference for the definition of 1ec
 
-	const uint32_t n = rT.num_nodes();
+	const uint32_t n = rT.get_num_nodes();
 	internal::data_array<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
@@ -312,7 +312,7 @@ __get_syn_dep_tree_type
 		}
 	};
 
-	const uint32_t n = rT.num_nodes();
+	const uint32_t n = rT.get_num_nodes();
 	if (n == 0) { return cl; }
 
 	// -------------------------------------------------------------------------

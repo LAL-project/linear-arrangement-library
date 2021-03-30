@@ -138,7 +138,7 @@ public:
 	 */
 	void reset() noexcept {
 		// there are not enough edges to have |Q| > 0
-		if (m_G.num_edges() <= 1) {
+		if (m_G.get_num_edges() <= 1) {
 			m_exists_next = false;
 			return;
 		}
@@ -259,14 +259,14 @@ private:
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
-		const uint32_t n = m_G.num_nodes();
+		const uint32_t n = m_G.get_num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {
 			return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
 		}
 		// base case 2: consumed neighbours of 's'
-		if (pt >= m_G.out_degree(s)) {
+		if (pt >= m_G.get_out_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
 		// base case 3: consumed second pointer
@@ -275,7 +275,7 @@ private:
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
 		// base case 4: consumed neighbours of 'u'
-		if (pv >= m_G.out_degree(u)) {
+		if (pv >= m_G.get_out_degree(u)) {
 			// advance second pointer
 			return find_next_pair(s, pt, u + 1, 0);
 		}
@@ -294,14 +294,14 @@ private:
 	noexcept
 	{
 		// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-		const uint32_t n = m_G.num_nodes();
+		const uint32_t n = m_G.get_num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {
 			return std::make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
 		}
 		// base case 2: consumed neighbours of 's'
-		if (pt >= m_G.degree(s)) {
+		if (pt >= m_G.get_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
 		// base case 3: consumed second pointer
@@ -310,7 +310,7 @@ private:
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
 		// base case 4: consumed neighbours of 'u'
-		if (pv >= m_G.degree(u)) {
+		if (pv >= m_G.get_degree(u)) {
 			// advance second pointer
 			return find_next_pair(s, pt, u + 1, 0);
 		}

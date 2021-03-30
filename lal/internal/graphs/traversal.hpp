@@ -90,7 +90,7 @@ public:
 
 public:
 	// Constructor
-	BFS(const G& g) : m_G(g), m_vis(m_G.num_nodes()) {
+	BFS(const G& g) : m_G(g), m_vis(m_G.get_num_nodes()) {
 		reset();
 	}
 	// Destructor

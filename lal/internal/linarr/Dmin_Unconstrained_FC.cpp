@@ -255,13 +255,13 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 #if defined DEBUG
-	assert(ord.size() == t.degree(u - 1));
+	assert(ord.size() == t.get_degree(u - 1));
 #endif
 
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.num_nodes());
+	data_array<uint32_t> s(t.get_num_nodes());
 	internal::get_size_subtrees(t, u - 1, s.data);
 
 	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
@@ -298,7 +298,7 @@ void calculate_mla(
 	linear_arrangement& mla, uint32_t& cost
 )
 {
-	vector<node> reachable(t.num_nodes_component(one_node - 1));
+	vector<node> reachable(t.get_num_nodes_component(one_node - 1));
 	{
 	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
@@ -308,7 +308,7 @@ void calculate_mla(
 	);
 	bfs.start_at(one_node - 1);
 	}
-	const uint32_t size_tree = t.num_nodes_component(one_node - 1);
+	const uint32_t size_tree = t.get_num_nodes_component(one_node - 1);
 
 	static_assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
 
@@ -320,7 +320,7 @@ void calculate_mla(
 	if (size_tree == 1) {
 #if defined DEBUG
 		assert(one_node == reachable[0]);
-		assert(start <= t.num_nodes());
+		assert(start <= t.get_num_nodes());
 #endif
 		mla[one_node - 1] = start;
 		cost = 0;
@@ -330,7 +330,7 @@ void calculate_mla(
 	if constexpr (root == NO_ANCHOR) {
 		const node u = internal::retrieve_centroid(t, one_node - 1).first + 1;
 
-		ordering ord(t.degree(u - 1));
+		ordering ord(t.get_degree(u - 1));
 		get_ordering(t, u, ord);
 
 		const auto q = calculate_q(size_tree, ord);
@@ -436,7 +436,7 @@ void calculate_mla(
 		}
 	}
 	else {
-		ordering ord(t.degree(one_node - 1));
+		ordering ord(t.get_degree(one_node - 1));
 		get_ordering(t, one_node, ord);
 
 		const auto p = calculate_p(size_tree, ord);
@@ -575,7 +575,7 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
 #endif
 
 	uint32_t c = 0;
-	linear_arrangement arr(t.num_nodes(),0);
+	linear_arrangement arr(t.get_num_nodes(),0);
 
 	free_tree T = t;
 	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, arr, c);

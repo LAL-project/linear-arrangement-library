@@ -63,7 +63,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 	assert(internal::is_graph_a_tree(t));
 #endif
 
-	free_tree::tree_only_init(t.num_nodes());
+	free_tree::tree_only_init(t.get_num_nodes());
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
 }
@@ -74,7 +74,7 @@ free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move
 	assert(internal::is_graph_a_tree(*this));
 #endif
 
-	free_tree::tree_only_init(num_nodes());
+	free_tree::tree_only_init(get_num_nodes());
 	// no need to call set_edges
 	tree_only_extra_work_edges_set();
 }
@@ -120,7 +120,7 @@ free_tree& free_tree::set_edges
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
-	assert(edges.size() == num_nodes() - 1);
+	assert(edges.size() == get_num_nodes() - 1);
 #endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
 	tree_only_extra_work_edges_set();
@@ -128,7 +128,7 @@ free_tree& free_tree::set_edges
 }
 
 void free_tree::disjoint_union(const free_tree& t) noexcept {
-	const node prev_n = num_nodes();
+	const node prev_n = get_num_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
@@ -145,7 +145,7 @@ void free_tree::disjoint_union(const free_tree& t) noexcept {
 	vec_join(m_root_size, t.m_root_size);
 
 	// update the labels of the vertices' root of the union find
-	for (node u = prev_n; u < num_nodes(); ++u) {
+	for (node u = prev_n; u < get_num_nodes(); ++u) {
 		m_root_of[u] += prev_n;
 	}
 }

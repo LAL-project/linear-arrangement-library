@@ -62,7 +62,7 @@ head_vector from_tree_to_head_vector(const rooted_tree& t) noexcept {
 	assert(t.is_rooted_tree());
 #endif
 
-	const uint32_t n = t.num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	vector<uint32_t> head_vector(n);
 	for (node u = 0; u < n; ++u) {

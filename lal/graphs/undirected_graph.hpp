@@ -261,7 +261,7 @@ public:
 
 	/* GETTERS */
 
-	std::vector<edge_pair> Q() const noexcept;
+	std::vector<edge_pair> get_Q() const noexcept;
 
 	std::vector<edge> get_edges() const noexcept;
 
@@ -282,7 +282,7 @@ public:
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */
-	inline uint32_t degree(node u) const noexcept {
+	inline uint32_t get_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif

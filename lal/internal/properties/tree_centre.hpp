@@ -88,17 +88,17 @@ template<
 >
 std::pair<node, node> retrieve_centre(const T& t, node X) {
 
-	const auto n = t.num_nodes();
+	const auto n = t.get_num_nodes();
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (t.num_nodes_component(X) == 1) {
+	if (t.get_num_nodes_component(X) == 1) {
 		return std::make_pair(X, n);
 	}
 
 	// Second simple case:
 	// if the connected component has two nodes then
-	if (t.num_nodes_component(X) == 2) {
+	if (t.get_num_nodes_component(X) == 2) {
 		// case component_size==1 is actually the first simple case
 		const node v1 = X;
 
@@ -108,7 +108,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 			v2 = t.get_neighbours(X)[0];
 		}
 		else {
-			v2 = (t.out_degree(X) == 0 ?
+			v2 = (t.get_out_degree(X) == 0 ?
 				t.get_in_neighbours(X)[0] : t.get_out_neighbours(X)[0]
 			);
 		}
@@ -119,11 +119,11 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
-	tree_leaves.reserve(t.num_nodes_component(X) - 1);
+	tree_leaves.reserve(t.get_num_nodes_component(X) - 1);
 	// full degree of every node of the connected component
 	std::vector<uint32_t> trimmed_degree(n, 0);
 	// number of nodes in the connected component
-	uint32_t size_trimmed = t.num_nodes_component(X);
+	uint32_t size_trimmed = t.get_num_nodes_component(X);
 
 #if defined DEBUG
 	uint32_t __size_trimmed = 0; // for debugging purposes only
@@ -148,7 +148,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 
 		// 'trimmed_degree' must be the degree of the vertex
 		// in the underlying undirected graph!
-		trimmed_degree[u] = t.degree(u);
+		trimmed_degree[u] = t.get_degree(u);
 
 		if (trimmed_degree[u] == 1) {
 			tree_leaves.push_back(u);

@@ -52,7 +52,7 @@ using namespace numeric;
 namespace properties {
 
 rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
-	const uint32_t n = tree.num_nodes();
+	const uint32_t n = tree.get_num_nodes();
 
 	uint32_t sum_distances = 0;
 	internal::data_array<uint32_t> distances(n, 0);
@@ -66,7 +66,7 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	);
 	bfs.start_at(tree.get_root());
 
-	return rational(sum_distances, tree.num_edges());
+	return rational(sum_distances, tree.get_num_edges());
 }
 
 double mean_hierarchical_distance(const rooted_tree& t) {

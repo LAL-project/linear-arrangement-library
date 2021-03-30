@@ -192,15 +192,15 @@ inline void find_errors
 			treebank_err_list.emplace_back(line, graph_has_cycles);
 		}
 		// find isolated vertices
-		for (node u = 0; u < dgraph.num_nodes(); ++u) {
-			if (dgraph.degree(u) == 0) {
+		for (node u = 0; u < dgraph.get_num_nodes(); ++u) {
+			if (dgraph.get_degree(u) == 0) {
 				treebank_err_list.emplace_back(line, isolated_vertex(u));
 			}
 		}
 		// check the number of edges is correct
-		if (dgraph.num_edges() != dgraph.num_nodes() - 1) {
+		if (dgraph.get_num_edges() != dgraph.get_num_nodes() - 1) {
 			treebank_err_list.emplace_back
-			(line, wrong_num_edges(dgraph.num_nodes(), dgraph.num_edges()));
+			(line, wrong_num_edges(dgraph.get_num_nodes(), dgraph.get_num_edges()));
 		}
 	}
 }

@@ -57,15 +57,15 @@ namespace internal {
  */
 template<class G>
 bool is_graph_a_tree(const G& g) {
-	const auto n = g.num_nodes();
+	const auto n = g.get_num_nodes();
 
 	// simple cases
 	if (n <= 1) { return true; }
-	if (n == 2) { return g.num_edges() == 1; }
-	if (n == 3) { return g.num_edges() == 2; }
+	if (n == 2) { return g.get_num_edges() == 1; }
+	if (n == 3) { return g.get_num_edges() == 2; }
 
 	// check exact amount of edges
-	if (g.num_edges() != g.num_nodes() - 1) { return false; }
+	if (g.get_num_edges() != g.get_num_nodes() - 1) { return false; }
 
 	// visit all vertices, if all vertices
 	// were visited then the graph is a tree

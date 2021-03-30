@@ -268,7 +268,7 @@ public:
 
 	/* GETTERS */
 
-	std::vector<edge_pair> Q() const noexcept;
+	std::vector<edge_pair> get_Q() const noexcept;
 
 	std::vector<edge> get_edges() const noexcept;
 
@@ -302,22 +302,22 @@ public:
 	 * @brief Returns the in-degree plus the out-degree of this vertex.
 	 *
 	 * Returns the degree of this vertex in its underlying undirected structure.
-	 * Same as @ref in_degree + @ref out_degree.
+	 * Same as @ref get_in_degree + @ref get_out_degree.
 	 * @param u Vertex
 	 * @returns The (in + out) degree of this vertex.
 	 */
-	inline uint32_t degree(node u) const noexcept
-	{ return out_degree(u) + in_degree(u); }
+	inline uint32_t get_degree(node u) const noexcept
+	{ return get_out_degree(u) + get_in_degree(u); }
 
 	/// Returns the out-degree of a node.
-	inline uint32_t out_degree(node u) const noexcept {
+	inline uint32_t get_out_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return static_cast<uint32_t>(m_adjacency_list[u].size());
 	}
 	/// Returns the in-degree of a node.
-	inline uint32_t in_degree(node u) const noexcept {
+	inline uint32_t get_in_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif

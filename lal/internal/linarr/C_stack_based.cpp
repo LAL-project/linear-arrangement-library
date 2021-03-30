@@ -63,7 +63,7 @@ namespace internal {
 #define edge_sorted_by_vertex(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
-#define DECIDED_C_GT (g.num_edges()*g.num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
 #define DECIDED_C_LE C
 
 inline void fill_adjP_adjN(
@@ -73,7 +73,7 @@ inline void fill_adjP_adjN(
 	size_t * const __restrict__ size_adjN_u
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	// Retrieve all edges of the graph to sort
 	vector<edge> edges = g.get_edges();
@@ -131,7 +131,7 @@ inline uint32_t __compute_C_stack_based(
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	// construct inverse arrangement
 	for (node u = 0; u < n; ++u) {
@@ -198,7 +198,7 @@ inline uint32_t __call_C_stack_based(
 	const linear_arrangement& pi
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// inverse function of the linear arrangement:
@@ -221,7 +221,7 @@ uint32_t n_C_stack_based(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement(__call_C_stack_based, g, pi);
 }
@@ -234,7 +234,7 @@ vector<uint32_t> n_C_stack_based(
 	const vector<linear_arrangement>& pis
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
@@ -271,7 +271,7 @@ inline uint32_t __call_C_stack_based_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// inverse function of the linear arrangement:
@@ -295,7 +295,7 @@ uint32_t is_n_C_stack_based_lesseq_than(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_stack_based_lesseq_than, g, pi, upper_bound);
@@ -310,7 +310,7 @@ vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
@@ -349,7 +349,7 @@ vector<uint32_t> is_n_C_stack_based_lesseq_than(
 		assert(pis.size() == upper_bounds.size());
 	#endif
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }

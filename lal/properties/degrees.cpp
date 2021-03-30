@@ -64,12 +64,12 @@ template<class G, class Callable>
 inline rational __mmt_x_degree_rational
 (const G& g, uint32_t p, const Callable& D)
 {
-	const integer M = integer_from_ui(g.num_nodes());
+	const integer M = integer_from_ui(g.get_num_nodes());
 
 	integer S(0);
 	integer du(0);
-	for (node u = 0; u < g.num_nodes(); ++u) {
-		//du.set_ui(g.degree(u));
+	for (node u = 0; u < g.get_num_nodes(); ++u) {
+		//du.set_ui(g.get_degree(u));
 		du.set_ui(D(g, u));
 		du ^= p;
 		S += du;
@@ -85,7 +85,7 @@ rational mmt_degree_rational(const undirected_graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<undirected_graph>(
 		g, p,
 		[](const undirected_graph& _g, node _u) -> uint32_t
-		{ return _g.degree(_u); }
+		{ return _g.get_degree(_u); }
 	);
 }
 
@@ -97,7 +97,7 @@ rational mmt_degree_rational(const directed_graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.degree(_u); }
+		{ return _g.get_degree(_u); }
 	);
 }
 
@@ -111,7 +111,7 @@ rational mmt_in_degree_rational(const directed_graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.in_degree(_u); }
+		{ return _g.get_in_degree(_u); }
 	);
 }
 
@@ -125,7 +125,7 @@ rational mmt_out_degree_rational(const directed_graph& g, uint32_t p) {
 	return __mmt_x_degree_rational<directed_graph>(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.degree(_u); }
+		{ return _g.get_degree(_u); }
 	);
 }
 
@@ -136,7 +136,7 @@ double mmt_out_degree(const directed_graph& g, uint32_t p) {
 // hubiness
 
 rational hubiness_rational(const free_tree& g) {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:

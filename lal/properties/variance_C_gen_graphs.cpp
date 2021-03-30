@@ -138,13 +138,13 @@ void compute_data_gen_graphs
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.degree(s);
+		const bigint ks = g.get_degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const bigint kt = g.degree(t);
+			const bigint kt = g.get_degree(t);
 			psi += ks*kt;
 			xi[s] += kt;
 		}
@@ -175,10 +175,10 @@ void compute_data_gen_graphs
 		it.next();
 		const auto [s,t] = it.get_edge();
 
-		const bigint ks = g.degree(s);
+		const bigint ks = g.get_degree(s);
 		const neighbourhood& Ns = g.get_neighbours(s);
 
-		const bigint kt = g.degree(t);
+		const bigint kt = g.get_degree(t);
 		const neighbourhood& Nt = g.get_neighbours(t);
 
 		// for each neighbour of 's' different from 't'
@@ -186,7 +186,7 @@ void compute_data_gen_graphs
 			if (u == t) { continue; }
 
 			const neighbourhood& Nu = g.get_neighbours(u);
-			const bigint ku = g.degree(u);
+			const bigint ku = g.get_degree(u);
 
 			bigint common_ut = 0;
 			if constexpr (reuse) {
@@ -198,7 +198,7 @@ void compute_data_gen_graphs
 					bigint deg_sum = 0;
 					iterate(Nt, Nu,
 						++common_ut;
-						deg_sum += g.degree(Nu[__j]);
+						deg_sum += g.get_degree(Nu[__j]);
 					)
 					saving_comps.insert(
 						make_pair(
@@ -221,7 +221,7 @@ void compute_data_gen_graphs
 			if (u == s) { continue; }
 
 			const neighbourhood& Nu = g.get_neighbours(u);
-			const bigint ku = g.degree(u);
+			const bigint ku = g.get_degree(u);
 
 			bigint common_us = 0;
 			if constexpr (reuse) {
@@ -233,7 +233,7 @@ void compute_data_gen_graphs
 					bigint deg_sum = 0;
 					iterate(Ns, Nu,
 						++common_us;
-						deg_sum += g.degree(Nu[__j]);
+						deg_sum += g.get_degree(Nu[__j]);
 					)
 					saving_comps.insert(
 						make_pair(
@@ -269,7 +269,7 @@ void compute_data_gen_graphs
 				// compute values and store them
 				iterate(Ns, Nt,
 					++common_st;
-					deg_sum_st += g.degree(Nt[__j]);
+					deg_sum_st += g.get_degree(Nt[__j]);
 				)
 				saving_comps.insert(
 					make_pair(
@@ -281,7 +281,7 @@ void compute_data_gen_graphs
 		else {
 			iterate(Ns, Nt,
 				++common_st;
-				deg_sum_st += g.degree(Ns[__i]);
+				deg_sum_st += g.get_degree(Ns[__i]);
 			)
 		}
 
@@ -321,8 +321,8 @@ rational variance_C_rational(const undirected_graph& g, bool reuse) {
 	assert(g.is_normalised());
 #endif
 
-	const bigint n = g.num_nodes();
-	const bigint m = g.num_edges();
+	const bigint n = g.get_num_nodes();
+	const bigint m = g.get_num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q

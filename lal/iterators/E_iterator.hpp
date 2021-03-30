@@ -144,7 +144,7 @@ public:
 		m_exists_next = f2;
 
 #if defined DEBUG
-		if (m_G.num_edges() == 1) {
+		if (m_G.get_num_edges() == 1) {
 			assert(m_exists_next == false);
 		}
 #endif
@@ -191,20 +191,20 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const {
-		const uint32_t n = m_G.num_nodes();
+		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
 		bool found = false;
 
 		++pt;
-		if (s < n and pt < m_G.out_degree(s)) {
+		if (s < n and pt < m_G.get_out_degree(s)) {
 			found = true;
 		}
 		else {
 			pt = 0;
 			++s;
-			while (s < n and m_G.out_degree(s) == 0) { ++s; }
+			while (s < n and m_G.get_out_degree(s) == 0) { ++s; }
 			found = s < n;
 		}
 		return make_pair(found, E_pointer(s, pt));
@@ -217,7 +217,7 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const {
-		const uint32_t n = m_G.num_nodes();
+		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;

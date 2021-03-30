@@ -74,19 +74,19 @@ rand_projective_arrangements::rand_projective_arrangements
 	}
 
 	// initialise the random data of all vertices
-	rdata = vector<vector<node>>(m_rT.num_nodes());
-	for (node u = 0; u < m_rT.num_nodes(); ++u) {
-		const uint32_t deg = m_rT.out_degree(u);
+	rdata = vector<vector<node>>(m_rT.get_num_nodes());
+	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
+		const uint32_t deg = m_rT.get_out_degree(u);
 		rdata[u] = vector<node>(deg + 1);
 	}
 }
 
 linear_arrangement rand_projective_arrangements::make_rand_arrgmnt() {
-	if (m_rT.num_nodes() == 1) {
+	if (m_rT.get_num_nodes() == 1) {
 		return linear_arrangement(1, 0);
 	}
 
-	for (node u = 0; u < m_rT.num_nodes(); ++u) {
+	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		// -- generate random data for a single vertex
 
 		// number of children of 'r' with respect to the tree's root

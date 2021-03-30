@@ -53,7 +53,7 @@ using namespace std;
 #include <lal/internal/data_array.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
-#define DECIDED_C_GT (g.num_edges()*g.num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
 #define DECIDED_C_LE C
 
 namespace lal {
@@ -74,7 +74,7 @@ inline uint32_t __compute_C_ladder(
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	// inverse arrangement
 	for (uint32_t i = 0; i < n; ++i) {
 		inv_pi[ pi[i] ] = i;
@@ -137,7 +137,7 @@ inline uint32_t __call_C_ladder(
 	const linear_arrangement& pi
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -163,7 +163,7 @@ uint32_t n_C_ladder(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_ladder<directed_graph>, g, pi);
@@ -175,7 +175,7 @@ uint32_t n_C_ladder(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_ladder<undirected_graph>, g, pi);
@@ -190,7 +190,7 @@ vector<uint32_t> n_C_ladder(
 	const vector<linear_arrangement>& pis
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -255,7 +255,7 @@ inline uint32_t __call_C_ladder_is_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -282,7 +282,7 @@ uint32_t is_n_C_ladder_lesseq_than(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_ladder_is_lesseq_than<directed_graph>, g, pi, upper_bound);
@@ -295,7 +295,7 @@ uint32_t is_n_C_ladder_lesseq_than(
 )
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.num_nodes() == pi.size());
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
 			(__call_C_ladder_is_lesseq_than<undirected_graph>, g, pi, upper_bound);
@@ -311,7 +311,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	uint32_t upper_bound
 )
 {
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {
@@ -379,7 +379,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	assert(pis.size() == upper_bounds.size());
 #endif
 
-	const uint32_t n = g.num_nodes();
+	const uint32_t n = g.get_num_nodes();
 
 	vector<uint32_t> cs(pis.size(), 0);
 	if (n < 4) {

@@ -62,7 +62,7 @@ namespace graphs {
  */
 inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
 {
-	const auto N = g.num_nodes();
+	const auto N = g.get_num_nodes();
 	for (node u = 0; u < N; ++u) {
 		os << u << ":";
 		for (auto v : g.get_neighbours(u)) {
@@ -83,7 +83,7 @@ inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
  */
 inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
 {
-	const auto N = g.num_nodes();
+	const auto N = g.get_num_nodes();
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << u << ":";
@@ -112,7 +112,7 @@ inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
  * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g) {
-	const auto N = g.num_nodes();
+	const auto N = g.get_num_nodes();
 	const std::string pad = (g.has_root() ? " " : "");
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {

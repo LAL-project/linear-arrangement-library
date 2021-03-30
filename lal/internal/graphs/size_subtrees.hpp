@@ -125,7 +125,7 @@ void get_size_subtrees
 #if defined DEBUG
 	assert(sizes != nullptr);
 #endif
-	__lal::get_size_subtrees(t, t.num_nodes(), r, sizes);
+	__lal::get_size_subtrees(t, t.get_num_nodes(), r, sizes);
 }
 
 namespace __lal {

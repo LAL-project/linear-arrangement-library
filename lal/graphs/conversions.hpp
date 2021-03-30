@@ -86,7 +86,7 @@ namespace graphs {
  *
  *
  * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
+ * and (2) is not valid since it contains two '0' (i.e., two roots).
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in
  * disk.
@@ -128,7 +128,7 @@ head_vector from_tree_to_head_vector(const rooted_tree& t) noexcept;
  *
  *
  * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
+ * and (2) is not valid since it contains two '0' (i.e., two roots).
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param t A lal::graphs::free_tree.
@@ -172,7 +172,7 @@ head_vector from_tree_to_head_vector(const free_tree& t, node r = 0) noexcept;
  *
  *
  * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
+ * and (2) is not valid since it contains two '0' (i.e., two roots).
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
@@ -217,7 +217,7 @@ noexcept;
  *
  *
  * Line (1) is not valid due to a self-reference in the second position,
- * and (2) not being valid due to containing two '0' (i.e., two roots).
+ * and (2) is not valid since it contains two '0' (i.e., two roots).
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
