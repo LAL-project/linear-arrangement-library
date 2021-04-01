@@ -383,7 +383,7 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 	// if the subtree sizes are valid then copy them
 	if (are_size_subtrees_valid()) {
 		std::copy(
-			&subsizes[0], &subsizes[n_verts - 1] + 1,
+			&subsizes[0], &subsizes[n_verts],
 			sub.m_size_subtrees.begin()
 		);
 		sub.m_are_size_subtrees_valid = true;

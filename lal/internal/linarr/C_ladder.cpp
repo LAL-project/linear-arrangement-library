@@ -150,9 +150,9 @@ inline uint32_t __call_C_ladder(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	uint32_t * __restrict__ T = &all_memory[0];
+	uint32_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint32_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * const __restrict__ L1 = &all_memory[n];
 
 	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data, T,L1);
 }
@@ -204,9 +204,9 @@ vector<uint32_t> n_C_ladder(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	uint32_t * __restrict__ T = &all_memory[0];
+	uint32_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint32_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * const __restrict__ L1 = &all_memory[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -268,9 +268,9 @@ inline uint32_t __call_C_ladder_is_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	uint32_t * __restrict__ T = &all_memory[0];
+	uint32_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint32_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * const __restrict__ L1 = &all_memory[n];
 
 	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data, T,L1, upper_bound);
 }
@@ -325,9 +325,9 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	uint32_t * __restrict__ T = &all_memory[0];
+	uint32_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint32_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * const __restrict__ L1 = &all_memory[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -393,9 +393,9 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	uint32_t * __restrict__ T = &all_memory[0];
+	uint32_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint32_t * __restrict__ L1 = &all_memory[n];
+	uint32_t * const __restrict__ L1 = &all_memory[n];
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {

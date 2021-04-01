@@ -117,7 +117,7 @@ inline bool has_directed_cycles(
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.get_num_nodes();
 	data_array<char> all_mem(2*n);
-	const bool has_cycle = __lal::has_directed_cycles(g, &all_mem[0], &all_mem[n]);
+	const bool has_cycle = __lal::has_directed_cycles(g, all_mem.begin(), all_mem.end());
 	return has_cycle;
 }
 

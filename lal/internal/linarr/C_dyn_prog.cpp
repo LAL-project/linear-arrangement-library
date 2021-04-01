@@ -246,11 +246,11 @@ inline uint32_t __call_C_dyn_prog(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	position * __restrict__ T = &all_memory[0];
+	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ M = &all_memory[n];
+	uint32_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
 	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.data, T,M,K);
@@ -302,11 +302,11 @@ vector<uint32_t> n_C_dynamic_programming(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	position * __restrict__ T = &all_memory[0];
+	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ M = &all_memory[n];
+	uint32_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);
@@ -372,11 +372,11 @@ inline uint32_t __call_C_dyn_prog_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	position * __restrict__ T = &all_memory[0];
+	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ M = &all_memory[n];
+	uint32_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	/* decide */
 	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data, T,M,K, upper_bound);
@@ -433,11 +433,11 @@ vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	position * __restrict__ T = &all_memory[0];
+	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ M = &all_memory[n];
+	uint32_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);
@@ -506,11 +506,11 @@ vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
-	position * __restrict__ T = &all_memory[0];
+	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ M = &all_memory[n];
+	uint32_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);

@@ -109,8 +109,7 @@ get_edges_subtree
 	}
 
 	// data structures for node relabelling
-	data_array<node> relabelling(n);
-	relabelling.fill(n + 1);
+	data_array<node> relabelling(n, n + 1);
 
 	// relabel 'u' to '0' and make it the root
 	relabelling[u] = 0;
