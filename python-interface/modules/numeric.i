@@ -28,14 +28,14 @@
 %rename(__mod__) operator% (const integer&) const;
 
 %extend lal::numeric::integer {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
 	}
 }
 %extend lal::numeric::rational {
-	std::string __str__() const {
+	std::string __repr__() const {
 		std::ostringstream out;
 		out << *$self;
 		return out.str();
