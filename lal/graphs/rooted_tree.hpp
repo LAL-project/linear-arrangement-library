@@ -279,7 +279,7 @@ public:
 	 * after the addition of the edge.
 	 * @post The validity of rooted tree and the size of the subtrees are
 	 * invalidated, i.e., methods @ref is_orientation_valid and
-	 * @ref size_subtrees_valid return false.
+	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edge
 	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
@@ -305,7 +305,7 @@ public:
 	 * after the addition of the edge.
 	 * @post The validity of the rooted tree and the size of the subtrees
 	 * are invalidated, i.e., methods @ref is_orientation_valid and
-	 * @ref size_subtrees_valid return false.
+	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
