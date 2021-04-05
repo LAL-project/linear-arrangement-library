@@ -62,12 +62,16 @@ endif
 ifeq ($(OS),Windows_NT)
 	# OS directory
 	OS_DIR	= win
+	# LAL library's extension
+	LIBRARY_EXTENSION = dll
 	# Python module's extension
 	SO_EXT	= pyd
 else
 	# OS directory
 	# (this is not technically correct, but does the job for now)
 	OS_DIR	= linux
+	# LAL library's extension
+	LIBRARY_EXTENSION = so
 	# Python module's extension
 	SO_EXT	= so
 endif

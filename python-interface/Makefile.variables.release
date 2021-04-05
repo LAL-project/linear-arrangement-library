@@ -10,7 +10,7 @@ SWIG_FLAGS	+= -DNDEBUG
 
 # LAL compilation object
 ifeq ($(ENVIR),devel)
-	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblal.so
+	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblal.$(LIBRARY_EXTENSION)
 else
 	# this is not needed
 	LIBRARY_SHARED_DEP	=

@@ -10,7 +10,7 @@ SWIG_FLAGS	+= -DDEBUG -D_GLIBCXX_DEBUG
 
 # LAL compilation object
 ifeq ($(ENVIR),devel)
-	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblaldebug.so
+	LIBRARY_SHARED_DEP	= $(LAL_LIB_DIR)/liblaldebug.$(LIBRARY_EXTENSION)
 else
 	# this is not needed
 	LIBRARY_SHARED_DEP	=
