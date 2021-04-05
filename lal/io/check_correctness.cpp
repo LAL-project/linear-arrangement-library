@@ -264,12 +264,13 @@ noexcept
 		// make full path to the treebank
 		filesystem::path treebank_full_path(main_file_name);
 		treebank_full_path.replace_filename(treebankname);
+		const string full_path_as_string = treebank_full_path.string();
 
 		#pragma omp task
 		{
 		// check correctess of treebank
 		const auto treebank_err_list =
-			check_correctness_treebank(treebank_full_path);
+			check_correctness_treebank(full_path_as_string);
 
 		// append errors found in the treebank to
 		// the list of errors of this dataset
@@ -278,7 +279,7 @@ noexcept
 		for (const auto& report_treebank : treebank_err_list) {
 			if (report_treebank.get_line_number() > 0) {
 				dataset_err_list.emplace_back(
-					treebank_full_path,
+					full_path_as_string,
 					main_file_line,
 					report_treebank.get_line_number(),
 					report_treebank.get_error_message()
@@ -295,7 +296,7 @@ noexcept
 				}
 
 				dataset_err_list.emplace_back(
-					treebank_full_path,
+					full_path_as_string,
 					main_file_line,
 					report_treebank.get_line_number(),
 					new_err_msg

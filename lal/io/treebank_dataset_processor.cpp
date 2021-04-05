@@ -70,7 +70,7 @@ inline
 std::string name_of_file_without_path_extension(const std::string& file_name) {
 	filesystem::path p(file_name);
 	p.replace_extension("");
-	return p.filename();
+	return p.filename().string();
 }
 
 namespace lal {
