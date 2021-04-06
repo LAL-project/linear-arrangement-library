@@ -41,9 +41,6 @@
  
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/numeric/rational.hpp>
