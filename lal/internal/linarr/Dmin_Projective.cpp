@@ -220,15 +220,15 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// sort all tuples in L using the size of the subtree
 	internal::counting_sort<edge_size, edge_size*, false>(
 		L.begin(), L.end(), n, L.size(),
-		[](const edge_size& T) -> size_t { return std::get<1>(T); }
+		[](const edge_size& T) -> size_t { return T.second; }
 	);
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	vector<vector<node_size>> M(n);
 	for (const auto& T : L) {
-		const auto [u, v] = std::get<0>(T);
-		const uint32_t nv = std::get<1>(T);
+		const auto [u, v] = T.first;
+		const uint32_t nv = T.second;
 		M[u].push_back(make_pair(v,nv));
 #if defined DEBUG
 		assert(t.has_edge(u,v));

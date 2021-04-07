@@ -79,12 +79,6 @@ std::pair<node, node> retrieve_centroid(
 	assert(n > 0);
 #endif
 
-	// empty the vector
-	{
-	std::vector<std::pair<edge, uint32_t>> empty;
-	sizes_edge.swap(empty);
-	}
-
 	// calculate s(u,v) with H&S algorithm (lemma 8)
 	{
 	sizes_edge.resize(2*(n - 1));
