@@ -144,12 +144,33 @@ rooted_tree& rooted_tree::set_edges
 	fill_union_find();
 
 	// There is no need to invalidate
-	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
 	// since these attributes start at false and cannot be calculated if the
 	// graph is not an actual tree. These can be calculated when the graph is
 	// full. After that, this method can only be called after calling any
 	// of the "remove edge" family.
+
+	// find the tree's root
+	optional<node> R;
+	for (node u = 0; u < get_num_nodes(); ++u) {
+		if (get_in_degree(u) == 0) {
+			// there can only be one root vertex
+#if defined DEBUG
+			assert(not R);
+#endif
+			R = u;
+		}
+	}
+	set_root(*R);
+
+	// assert the validity of the edge orientations
+#if defined DEBUG
+	const bool is_edge_orientation_correct =
+#endif
+	 find_edge_orientation();
+#if defined DEBUG
+	assert(is_edge_orientation_correct);
+#endif
 
 	return *this;
 }

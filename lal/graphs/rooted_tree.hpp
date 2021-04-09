@@ -255,8 +255,15 @@ public:
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre There are no repeated edges in the list.
+	 * @pre The list of edges must form a valid rooted tree, i.e., there must
+	 * be a unique vertex with no in-going edges, and there must be no cycles.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
+	 * @post The tree has a valid root which is, potentially, different from
+	 * the previous root it had. Therefore, method @ref has_root returns true.
+	 * @post The tree has a valid edge orientation, i.e., method @ref is_orientation_valid
+	 * returns true.
+	 * @post Method @ref is_rooted_tree returns true.
 	 */
 	rooted_tree& set_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
