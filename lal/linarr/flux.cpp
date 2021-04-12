@@ -165,13 +165,8 @@ inline uint32_t calculate_weight
 		const node v = ug.get_neighbours(u)[0];
 		// step 2
 		++weight;
-		// step 3
-		vector<edge> edges_to_be_removed(ug.get_degree(v));
-		auto it = edges_to_be_removed.begin();
-		for (const node w : ug.get_neighbours(v)) {
-			*it++ = edge(v,w);
-		}
-		ug.remove_edges(edges_to_be_removed);
+		// step 3 -- remove edges incident to the only neighbour of the leaf
+		ug.remove_edges_incident_to(v);
 	}
 
 	return weight;
