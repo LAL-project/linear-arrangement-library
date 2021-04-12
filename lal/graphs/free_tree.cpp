@@ -119,8 +119,8 @@ free_tree& free_tree::set_edges
 (const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
-	assert(can_add_edges(edges));
 	assert(edges.size() == get_num_nodes() - 1);
+	assert(can_add_edges(edges));
 #endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
 	tree_only_extra_work_edges_set();

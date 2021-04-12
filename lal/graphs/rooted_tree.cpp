@@ -138,6 +138,7 @@ rooted_tree& rooted_tree::set_edges
 (const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
+	assert(edges.size() == get_num_nodes() - 1);
 	assert(can_add_edges(edges));
 #endif
 	directed_graph::set_edges(edges, to_norm, check_norm);
