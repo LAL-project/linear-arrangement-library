@@ -178,7 +178,10 @@ public:
 	noexcept;
 
 	/**
-	 * @brief Adds a list of edges to the graph.
+	 * @brief Sets the edges to the graph.
+	 *
+	 * Sets the edges of this graph assuming that the nodes indexed in the
+	 * list are, at most, the number of nodes of this graph.
 	 *
 	 * This list of edges is assumed to be all the edges that are going
 	 * to be added to this graph. This means that the internal data structures
@@ -193,6 +196,8 @@ public:
 	 * the result is normalised or not? This might be useful in case the
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
+	 * @pre The graph has been initialized with as many nodes as vertices in the
+	 * list of edges.
 	 * @pre There are no repeated edges in the list.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
