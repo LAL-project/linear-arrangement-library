@@ -13,7 +13,7 @@ if [ $? -eq 1 ]; then
 fi
 
 echo -e "\e[1;1;33mFormat 'Parameters' title appropriately\e[0m"
-sed -E 's/Parameters:/Parameters:|/g' $D | tr '|' '\n' > /tmp/asdf
+sed -E 's/Parameters:/Parameters:ª/g' $D | tr 'ª' '\n' > /tmp/asdf
 mv /tmp/asdf $D
 
 echo -e "\e[1;1;33mCorrecting math delimiters\e[0m"

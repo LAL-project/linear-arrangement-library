@@ -298,9 +298,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_add(
+	virtual void call_union_find_after_add(
 		node u, node v,
-		uint32_t *root_of, uint32_t *root_size
+		uint32_t * const root_of, uint32_t * const root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -315,9 +315,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_add(
+	virtual void call_union_find_after_add(
 		node u, node v,
-		uint32_t *root_of, uint32_t *root_size
+		uint32_t * const root_of, uint32_t * const root_size
 	) const noexcept = 0;
 	/**
 	 * @brief A call to the union find method.
@@ -332,9 +332,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_remove(
+	virtual void call_union_find_after_remove(
 		node u, node v,
-		uint32_t *root_of, uint32_t *root_size
+		uint32_t * const root_of, uint32_t * const root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -349,9 +349,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_remove(
+	virtual void call_union_find_after_remove(
 		node u, node v,
-		uint32_t *root_of, uint32_t *root_size
+		uint32_t * const root_of, uint32_t * const root_size
 	) const noexcept = 0;
 };
 

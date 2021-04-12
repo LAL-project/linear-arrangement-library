@@ -241,6 +241,77 @@ directed_graph& directed_graph::remove_edges
 	return *this;
 }
 
+directed_graph& directed_graph::remove_edges_incident_to
+(node u, bool norm, bool check_norm) noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	auto& in_neighs_u = m_in_adjacency_list[u];
+	auto& out_neighs_u = m_adjacency_list[u];
+
+	// the graph is NORMALISED
+	if (is_normalised()) {
+		// find the vertices that point to 'u'
+		for (node v : in_neighs_u) {
+			auto& out_v = m_adjacency_list[v];
+
+			auto it_u = lower_bound(out_v.begin(), out_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			out_v.erase(it_u);
+		}
+
+		// find the vertices pointed by 'u'
+		for (node v : out_neighs_u) {
+			auto& in_v = m_in_adjacency_list[v];
+
+			auto it_u = lower_bound(in_v.begin(), in_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			in_v.erase(it_u);
+		}
+	}
+	// the graph is NOT NORMALISED
+	else {
+		// find the vertices that point to 'u'
+		for (node v : in_neighs_u) {
+			auto& out_v = m_adjacency_list[v];
+
+			auto it_u = find(out_v.begin(), out_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			out_v.erase(it_u);
+		}
+
+		// find the vertices pointed by 'u'
+		for (node v : out_neighs_u) {
+			auto& in_v = m_in_adjacency_list[v];
+
+			auto it_u = find(in_v.begin(), in_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			in_v.erase(it_u);
+		}
+	}
+
+	m_num_edges -= get_out_degree(u) + get_in_degree(u);
+	out_neighs_u.clear();
+	in_neighs_u.clear();
+
+	graph::normalise_after_remove(norm, check_norm);
+	return *this;
+}
+
 void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 	// this call updates the out-neighbours adjacency list,
 	// as well as the number of edges and the graph's normalisation
@@ -357,7 +428,7 @@ void directed_graph::remove_single_edge
 	assert(*it_u == u);
 #endif
 
-	// remove edges from the lists
+	// remove edge from the lists
 	out_u.erase(it_v);
 	in_v.erase(it_u);
 

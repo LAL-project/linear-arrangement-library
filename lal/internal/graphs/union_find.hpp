@@ -48,13 +48,19 @@
 
 // lal includes
 #include <lal/definitions.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 
 namespace lal {
 namespace internal {
 
+/* This function updates the union-find data structure of a tree after the
+ * addition of the edge between the edges 'u' and 'v'.
+ */
 template<typename T>
-void UnionFind_update_roots_add(
+void UnionFind_update_roots_after_add
+(
 	const T& t, node u, node v,
 	node * const root_of,
 	uint32_t * const root_size
@@ -106,8 +112,12 @@ void UnionFind_update_roots_add(
 	bfs.start_at(child);
 }
 
+/* This function updates the union-find data structure of a tree after the
+ * removal of the edge between the edges 'u' and 'v'.
+ */
 template<typename T>
-void UnionFind_update_roots_remove(
+void UnionFind_update_roots_after_remove
+(
 	const T& t, node u, node v,
 	node * const root_of,
 	uint32_t * const root_size
@@ -145,6 +155,85 @@ void UnionFind_update_roots_remove(
 	bfs.start_at(v);
 	root_of[v] = v;
 	root_size[v] = size_uv - size_u;
+}
+
+// -----------------------------------------------------------------------------
+
+namespace __lal {
+
+/* This function updates the union-find data structure of a tree prior to the
+ * removal of the edge (u,v).
+ *
+ * This function is called by the function
+ *		lal::internal::UnionFind_update_roots_before_remove_all_incident_to
+ *
+ * In particular, it updates the information associated to the vertices found
+ * in the direction (u,v).
+ */
+template<typename T>
+void UnionFind_update_roots_before_remove_all_incident_to
+(
+	const T& t, node u, node v,
+	node * const root_of,
+	uint32_t * const root_size
+)
+{
+	internal::BFS<T> bfs(t);
+	bfs.set_use_rev_edges(t.is_directed());
+	// avoid going 'backwards', we need to go 'onwards'
+	bfs.set_visited(u, 1);
+
+	uint32_t size_cc_v = 0;
+	bfs.set_process_current(
+	[&](const auto&, node w) -> void { root_of[w] = v; ++size_cc_v; }
+	);
+	bfs.start_at(v);
+
+	root_of[v] = v;
+	root_size[v] = size_cc_v;
+}
+
+} // -- namespace __lal
+
+/* This function updates the union-find data structure of a tree prior to the
+ * removal of the edges incidents to vertex 'u'.
+ */
+template<typename T>
+void UnionFind_update_roots_before_remove_all_incident_to
+(
+	const T& t, node u,
+	node * const root_of,
+	uint32_t * const root_size
+)
+{
+	if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
+		for (node v : t.get_neighbours(u)) {
+			// update size and root of the edges from v onwards
+			// (onwards means "in the direction u -> v"
+			__lal::UnionFind_update_roots_before_remove_all_incident_to(
+				t, u, v, root_of, root_size
+			);
+		}
+	}
+	else {
+		for (node v : t.get_in_neighbours(u)) {
+			// update size and root of the edges from v onwards
+			// (onwards means "in the direction u -> v"
+			__lal::UnionFind_update_roots_before_remove_all_incident_to(
+				t, u, v, root_of, root_size
+			);
+		}
+		for (node v : t.get_out_neighbours(u)) {
+			// update size and root of the edges from v onwards
+			// (onwards means "in the direction u -> v"
+			__lal::UnionFind_update_roots_before_remove_all_incident_to(
+				t, u, v, root_of, root_size
+			);
+		}
+	}
+
+	root_of[u] = u;
+	root_size[u] = 1;
 }
 
 } // -- namespace internal

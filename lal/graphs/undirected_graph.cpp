@@ -199,6 +199,52 @@ undirected_graph& undirected_graph::remove_edges
 	return *this;
 }
 
+undirected_graph& undirected_graph::remove_edges_incident_to
+(node u, bool norm, bool check_norm) noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	auto& neighs_u = m_adjacency_list[u];
+
+	// the graph is NORMALISED
+	if (is_normalised()) {
+		// find the vertices that point to 'u'
+		for (node v : neighs_u) {
+			auto& out_v = m_adjacency_list[v];
+
+			auto it_u = lower_bound(out_v.begin(), out_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			out_v.erase(it_u);
+		}
+
+	}
+	// the graph is NOT NORMALISED
+	else {
+		// find the vertices that point to 'u'
+		for (node v : neighs_u) {
+			auto& out_v = m_adjacency_list[v];
+
+			auto it_u = find(out_v.begin(), out_v.end(), u);
+#if defined DEBUG
+			// check that the iterator points to the correct value
+			assert(*it_u == u);
+#endif
+			out_v.erase(it_u);
+		}
+	}
+
+	m_num_edges -= get_degree(u);
+	neighs_u.clear();
+
+	graph::normalise_after_remove(norm, check_norm);
+	return *this;
+}
+
 void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 	// updates the number of edges and other base-class related attributes
 	graph::__disjoint_union(g);

@@ -127,7 +127,7 @@ public:
 	/**
 	 * @brief Adds a directed edge to the graph.
 	 *
-	 * For developers: method
+	 * <b>For developers:</b> method
 	 * @ref lal::graphs::graph::extra_work_per_edge_add is called after the
 	 * edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
@@ -167,8 +167,9 @@ public:
 	 * This operation is faster than adding edges one by one with
 	 * @ref add_edge since the edges are added in bulk.
 	 *
-	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_add is
-	 * called after each edge has been added.
+	 * <b>For developers:</b> method
+	 * @ref lal::graphs::graph::extra_work_per_edge_add is called after each
+	 * edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -187,6 +188,9 @@ public:
 	/**
 	 * @brief Sets the list of edges to the graph.
 	 *
+	 * Sets the edges of this graph assuming that the nodes indexed in the
+	 * list are, at most, the number of nodes of this graph.
+	 *
 	 * This list of edges is assumed to be all the edges that are going
 	 * to be added to this graph. This means that the internal data structures
 	 * are constructed more efficiently than when adding edges one by one
@@ -200,6 +204,8 @@ public:
 	 * the result is normalised or not? This might be useful in case the
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
+	 * @pre The graph has been initialized with as many nodes as vertices in the
+	 * list of edges.
 	 * @pre There are no repeated edges in the list.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
@@ -211,8 +217,9 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_remove is
-	 * called after the edge has been removed.
+	 * <b>For developers:</b> method
+	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after the
+	 * edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Normalise the graph after the deletion.
@@ -234,8 +241,9 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 *
-	 * For developers: method @ref lal::graphs::graph::extra_work_per_edge_remove is
-	 * called after each edge has been removed.
+	 * <b>For developers:</b> method
+	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -249,6 +257,29 @@ public:
 	 */
 	virtual directed_graph& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
+
+	/**
+	 * @brief Remove all edges incident to a given vertex.
+	 *
+	 * This operation is faster than removing edges one by one with
+	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
+	 * in bulk.
+	 *
+	 * <b>For developers:</b> method
+	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * edge has been removed.
+	 * @param u The node whose incident vertices are to be removed.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual directed_graph& remove_edges_incident_to
+	(node u, bool norm = true, bool check_norm = true)
 	noexcept;
 
 	/**

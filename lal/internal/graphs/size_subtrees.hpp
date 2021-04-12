@@ -131,8 +131,8 @@ void get_size_subtrees
 namespace __lal {
 
 /*
- * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
- * from \f$(u,v)\f$.
+ * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(s,t)\f$ reachable
+ * from \f$v\f$ in the subtree \f$T^u_v\f$.
  *
  * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
  * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
@@ -189,7 +189,28 @@ uint32_t calculate_bidirectional_sizes
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * See @ref lal::internal::__lal::calculate_bidirectional_sizes for details.
+ * Calculates the values \f$s(u,v)\f$ for all edges \f$(u,v)\f$ in linear time.
+ * This is an implementation of the algorithm described in \cite Hochberg2003a
+ * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
+ *
+ * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
+ * The value \f$s(u,v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
+ * i.e., \f$|V(T^u_v)|\f$.
+ *
+ * Example of usage (mind the vector! its initial size is \f$2*m\f$).
+ *
+ @code
+ const free_tree t = ... ;
+ vector<pair<edge,uint32_t>> sizes_edges(2*t.get_num_edges());
+ auto it = sizes_edges.begin();
+ internal::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
+ @endcode
+ *
+ * @param t Input tree
+ * @param n Number of nodes in the connected component of vertex @e x
+ * @param x Node of the connected component for which we want to calculate the
+ * bidirectional sizes
+ * @param sizes_edge_it Iterator (an l-value!) to an array of type pair<edge,uint32_t>
  */
 template<
 	class T,
