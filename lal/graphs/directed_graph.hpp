@@ -260,6 +260,29 @@ public:
 	noexcept;
 
 	/**
+	 * @brief Remove all edges incident to a given vertex.
+	 *
+	 * This operation is faster than removing edges one by one with
+	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
+	 * in bulk.
+	 *
+	 * <b>For developers:</b> method
+	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * edge has been removed.
+	 * @param u The node whose incident vertices are to be removed.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual directed_graph& remove_edges_incident_to
+	(node u, bool norm = true, bool check_norm = true)
+	noexcept;
+
+	/**
 	 * @brief Disjoint union of graphs.
 	 *
 	 * Given a graph, append it to the current graph.

@@ -99,7 +99,7 @@ bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
 
-		call_union_find_add(
+		call_union_find_after_add(
 			u, v, &_root_of[0], &_root_size[0]
 		);
 	}
@@ -162,7 +162,7 @@ void tree::tree_only_move(tree&& t) noexcept {
 void tree::extra_work_per_edge_add(node u, node v) noexcept {
 	m_is_type_valid = false;
 	graph::extra_work_per_edge_add(u, v);
-	call_union_find_add(
+	call_union_find_after_add(
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }
@@ -175,7 +175,7 @@ void tree::tree_only_extra_work_edges_set() noexcept {
 void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 	m_is_type_valid = false;
 	graph::extra_work_per_edge_remove(u, v);
-	call_union_find_remove(
+	call_union_find_after_remove(
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
 }

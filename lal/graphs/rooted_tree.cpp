@@ -142,7 +142,6 @@ rooted_tree& rooted_tree::set_edges
 	assert(can_add_edges(edges));
 #endif
 	directed_graph::set_edges(edges, to_norm, check_norm);
-	fill_union_find();
 
 	// There is no need to invalidate
 	//    m_are_size_subtrees_valid = false;
@@ -173,6 +172,8 @@ rooted_tree& rooted_tree::set_edges
 	assert(is_edge_orientation_correct);
 #endif
 
+	tree_only_extra_work_edges_set();
+
 	return *this;
 }
 
@@ -191,6 +192,22 @@ rooted_tree& rooted_tree::remove_edges
 	directed_graph::remove_edges(edges, norm, check_norm);
 	m_valid_orientation = false;
 	m_are_size_subtrees_valid = false;
+	return *this;
+}
+
+rooted_tree& rooted_tree::remove_edges_incident_to
+(node u, bool norm, bool check_norm)
+noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	internal::UnionFind_update_roots_before_remove_all_incident_to(
+		*this, u, &m_root_of[0], &m_root_size[0]
+	);
+
+	directed_graph::remove_edges_incident_to(u, norm, check_norm);
 	return *this;
 }
 
@@ -444,38 +461,38 @@ void rooted_tree::_clear() noexcept {
 	m_size_subtrees.clear();
 }
 
-void rooted_tree::call_union_find_add(
+void rooted_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t *root_of,
-	uint32_t *root_size
+	uint32_t * const root_of,
+	uint32_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
-void rooted_tree::call_union_find_add(
+void rooted_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t *root_of,
-	uint32_t *root_size
+	uint32_t * const root_of,
+	uint32_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_add(*this, u, v, root_of, root_size);
+	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::call_union_find_remove(
+void rooted_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t *root_of,
-	uint32_t *root_size
+	uint32_t * const root_of,
+	uint32_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
+	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
-void rooted_tree::call_union_find_remove(
+void rooted_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t *root_of,
-	uint32_t *root_size
+	uint32_t * const root_of,
+	uint32_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_remove(*this, u, v, root_of, root_size);
+	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 
 void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) noexcept {
