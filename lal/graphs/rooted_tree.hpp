@@ -171,7 +171,7 @@ public:
 	 * only in a @e debug compilation of the library. For a more controlled
 	 * addition of the edges, see @ref can_add_edge.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_add is
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_add is
 	 * called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -218,7 +218,7 @@ public:
 	 * faster than calling @ref add_edge since the edges are added in bulk.
 	 * For a more controlled addition of the edges, see @ref can_add_edges.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_add is
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_add is
 	 * called after each edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
@@ -277,7 +277,7 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
 	 * called after the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -303,7 +303,7 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 *
-	 * For developers: method @ref graph::extra_work_per_edge_remove is
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
 	 * called after each edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
