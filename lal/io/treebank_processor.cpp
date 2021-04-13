@@ -459,16 +459,13 @@ const
 	// Optimisation of D
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		set_prop(Dmin_Unconstrained_idx,
-				 linarr::Dmin(fT, linarr::algorithms_Dmin::Unconstrained_YS).first);
+		set_prop(Dmin_Unconstrained_idx, linarr::Dmin(fT).first);
 	}
 	if (m_what_fs[Dmin_Planar_idx]) {
-		set_prop(Dmin_Planar_idx,
-				 linarr::Dmin(fT, linarr::algorithms_Dmin::Planar).first);
+		set_prop(Dmin_Planar_idx, linarr::Dmin_Planar(fT).first);
 	}
 	if (m_what_fs[Dmin_Projective_idx]) {
-		set_prop(Dmin_Projective_idx,
-				 linarr::Dmin(rT, linarr::algorithms_Dmin::Projective).first);
+		set_prop(Dmin_Projective_idx, linarr::Dmin_Projective(rT).first);
 	}
 
 	// -----------------

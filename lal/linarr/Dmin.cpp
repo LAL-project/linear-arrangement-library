@@ -55,53 +55,24 @@ using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, linear_arrangement> Dmin
-(const rooted_tree& t, const algorithms_Dmin& a)
+pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) noexcept
 {
-	switch (a) {
-	// call our implementation of Gildea and Temperly's "algorithm"
-	case algorithms_Dmin::Projective:
-		return internal::Dmin_Projective(t);
-
-	// check for invalid choices of algorithm
-	case algorithms_Dmin::Planar:
-	case algorithms_Dmin::Unconstrained_YS:
-	case algorithms_Dmin::Unconstrained_FC:
-#if defined DEBUG
-		assert(false);
-#endif
-		break;  // in release compilations the
-				// function must return nothing.
-	}
-
-	return make_pair(0, linear_arrangement());
+	return internal::Dmin_Projective(t);
 }
 
-pair<uint32_t, linear_arrangement> Dmin
-(const free_tree& t, const algorithms_Dmin& a)
+pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept
 {
-	switch (a) {
+	return internal::Dmin_Planar(t);
+}
 
-	// check for invalid choices of algorithm
-	case algorithms_Dmin::Projective:
-#if defined DEBUG
-		assert(false);
-#endif
-		break;  // in release compilations the
-				// function must return nothing.
-
-	// call Hochberg and Stallman's algorithm
-	case algorithms_Dmin::Planar:
-		return internal::Dmin_Planar(t);
-	// call Yossi Shiloach's algorithm
-	case algorithms_Dmin::Unconstrained_YS:
+pair<uint32_t, linear_arrangement> Dmin(const free_tree& t, const algorithms_Dmin& a)
+noexcept
+{
+	if (a == algorithms_Dmin::Unconstrained_YS) {
 		return internal::Dmin_Unconstrained_YS(t);
-	// call Fan Chung's algorithm
-	case algorithms_Dmin::Unconstrained_FC:
-		return internal::Dmin_Unconstrained_FC(t);
 	}
 
-	return make_pair(0, linear_arrangement());
+	return internal::Dmin_Unconstrained_FC(t);
 }
 
 } // -- namespace linarr

@@ -56,68 +56,23 @@ namespace linarr {
  * length the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
-	/* ALGORITHMS FOR ROOTED TREES */
-
     /**
-     * @brief Algorithm to calculate optimal projective arrangements of rooted trees.
-     *
-     * Computes an optimal projective linear arrangement for rooted trees.
-     * A projective linear arrangement is an arrangement in which there are
-     * no edge crossings and the root is not covered by any edge.
-     *
-	 * This implements the algorithm in \cite Alemany2021a. A non-linear
-	 * time algorithm to solve this problem was oulined in \cite Gildea2007a.
-     *
-	 * This algorithm is only allowed on @ref lal::linarr::Dmin for rooted trees.
+	 * @brief Yossi Shiloach's algorithm to calculate unconstrained optimal
+	 * linearization of free trees.
 	 *
-	 * These are the preconditions of usage of this algorithm.
-	 * @pre The input rooted tree has to have the size of its subtrees calculated
-	 * (see @ref lal::graphs::rooted_tree::calculate_size_subtrees and
-	 * @ref lal::graphs::rooted_tree::are_size_subtrees_valid).
-     */
-    Projective,
-
-	/* ALGORITHMS FOR FREE TREES */
-
-	/**
-	 * @brief Algorithm to calculate optimal planar arrangements of free trees.
-	 *
-	 * Computes an optimal planar linear arrangement for free trees.
-	 * A planar linear arrangement is an arrangement in which there are
-	 * no edge crossings.
-	 *
-	 * This implements the algorithm published by Hochberg and Stallmann
-	 * \cite Hochberg2003a. A previous algorithm solving the same problem
-	 * was published by Iordanskii \cite Iordanskii1987a. See \cite Alemany2021a
-	 * for a review.
-	 *
-	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
-	 */
-	Planar,
-
-    /**
-     * @brief Algorithm to calculate unconstrained an optimal linearization of free trees.
-     *
-     * Computes an unconstrained optimal linear arrangement of a free tree and
-     * the value of its cost, i.e., the sum of the lengths of the edges.
-     *
-	 * This implements Yossi Shiloach's algorithm published in \cite Shiloach1979a.
+	 * This value makes the @ref lal::linarr::Dmin function choose the implementation
+	 * of Yossi Shiloach's algorithm. This algorithm was published in \cite Shiloach1979a.
 	 * The implementation of this algorithm applies the corrections published
-     * in \cite Esteban2017a.
-	 *
-	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
+	 * in \cite Esteban2017a.
      */
     Unconstrained_YS,
     /**
-     * @brief Algorithm to calculate unconstrained an optimal linearization of free trees.
+	 * @brief Fan Chung's algorithm to calculate unconstrained optimal
+	 * linearization of free trees.
      *
-     * Computes an unconstrained optimal linear arrangement of a free tree and
-     * the value of its cost, i.e., the sum of the lengths of the edges.
-     *
-	 * This implements Fan Chung's quadratic algorithm (Section 3)
-	 * published in \cite Chung1984a.
-	 *
-	 * This algorithm is only allowed on @ref lal::linarr::Dmin for free trees.
+	 * This value makes the @ref lal::linarr::Dmin function choose the implementation
+	 * of Fan Chung's algorithm. This algorithm was published in \cite Chung1984a.
+	 * In particular, this implements Fan Chung's quadratic algorithm (Section 3).
      */
     Unconstrained_FC
 };

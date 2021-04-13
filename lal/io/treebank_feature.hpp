@@ -178,13 +178,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::algorithms_Dmin::Planar for details.
+	 * See @ref lal::linarr::Dmin_Planar for details.
 	 */
 	Dmin_Planar,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::algorithms_Dmin::Projective for details.
+	 * See @ref lal::linarr::Dmin_Projective for details.
 	 */
 	Dmin_Projective,
 
