@@ -65,7 +65,7 @@
  * 
  * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
  * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
- * - calculation of optimal arrangements of free and rooted trees (see @ref lal::linarr::Dmin(const graphs::rooted_tree&, const algorithms_Dmin&) and @ref lal::linarr::Dmin(const graphs::free_tree&, const algorithms_Dmin&)); the enumeration @ref lal::linarr::algorithms_Dmin lists all algorithms available,
+ * - calculation of optimal arrangements of free trees (see @ref lal::linarr::Dmin_Planar and @ref lal::linarr::Dmin) and of rooted trees (see @ref lal::linarr::Dmin_Projective); the enumeration @ref lal::linarr::algorithms_Dmin lists all algorithms available for the calculation of the unconstrained minimum value of \f$D\f$,
  * - the number of crossings (see @ref lal::linarr::number_of_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
  * - any moment of the degree of the vertices of a graph (see @ref lal::properties::mmt_degree),
  * - the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
@@ -185,11 +185,11 @@
  * for (int i = 0; i < 9; ++i) {
  * 		cin >> e[i].first >> e[i].second;
  * }
- * t.add_edges(e);
+ * t.set_edges(e);
  * @endcode
  * A similar reasoning should be applied to the deletion of edges.
  * 
- * On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
+ * Furthermore, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
  * @code
  * const string filename = ".."; // a valid name of a file
  * const lal::graphs::free_tree t = *lal::io::read_edge_list<free_tree>(filename);
