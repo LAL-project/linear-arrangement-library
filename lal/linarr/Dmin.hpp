@@ -60,7 +60,7 @@ namespace linarr {
  * This function implements the algorithm in \cite Alemany2021a. A non-linear
  * time algorithm to solve this problem was oulined in \cite Gildea2007a.
  *
- * @param t Input tree.
+ * @param t Input rooted tree.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre The input rooted tree has to have the size of its subtrees calculated
@@ -80,7 +80,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Projective
  * arrangement is an arrangement in which there are no edge crossings. This problem
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
  * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
- * @param t Input tree.
+ * @param t Input free tree.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -96,7 +96,10 @@ std::pair<uint32_t, linear_arrangement> Dmin_Planar
  * arrangement is an arrangement in which there are no edge crossings. This problem
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
  * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
- * @param t Input tree.
+ *
+ * This function converts the input rooted into a free tree (see @ref
+ * lal::graphs::rooted_tree::to_undirected())
+ * @param t Input rooted tree.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -110,7 +113,7 @@ inline std::pair<uint32_t, linear_arrangement> Dmin_Planar
  * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
  * yielding this value. Such optimal value of \f$D\f$ depends on the choice
  * of algorithm for its calculation.
- * @param t Input tree.
+ * @param t Input free tree.
  * @param a The algorithm to be chosen.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
@@ -127,7 +130,10 @@ std::pair<uint32_t, linear_arrangement> Dmin(
  * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
  * yielding this value. Such optimal value of \f$D\f$ depends on the choice
  * of algorithm for its calculation.
- * @param t Input tree.
+ *
+ * This function converts the input rooted into a free tree (see @ref
+ * lal::graphs::rooted_tree::to_undirected())
+ * @param t Input rooted tree.
  * @param a The algorithm to be chosen.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
