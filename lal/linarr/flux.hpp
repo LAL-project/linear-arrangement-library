@@ -45,9 +45,20 @@
 #include <lal/definitions.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace linarr {
+
+/**
+ * @brief Computes the flux of a dependency tree.
+ *
+ * This function is implemented based on the explanations given in \cite Kahane2017a.
+ * @param t Input free tree (or dependency tree).
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ */
+std::vector<dependency_flux>
+compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noexcept;
 
 /**
  * @brief Computes the flux of a dependency tree.
@@ -57,7 +68,8 @@ namespace linarr {
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  */
 std::vector<dependency_flux>
-compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {});
+compute_flux(const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
+{ return compute_flux(t.to_undirected(), pi); }
 
 } // -- namespace linarr
 } // -- namespace lal
