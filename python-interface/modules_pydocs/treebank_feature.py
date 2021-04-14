@@ -35,8 +35,8 @@ Minimum Linear arrangement
 ------
 
 - ``Dmin_Unconstrained`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
-- ``Dmin_Planar`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.algorithms_Dmin.Planar`` for details.
-- ``Dmin_Projective`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.algorithms_Dmin.Projective`` for details.
+- ``Dmin_Planar`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.Dmin_Planar`` for details.
+- ``Dmin_Projective`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.Dmin_Projective`` for details.
 
 Dependency Flux
 ----------
