@@ -174,7 +174,7 @@ enum class treebank_feature {
 	 * See @ref lal::linarr::algorithms_Dmin::Unconstrained_YS, or
 	 * @ref lal::linarr::algorithms_Dmin::Unconstrained_FC for details.
 	 */
-	Dmin_Unconstrained,
+	Dmin,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
@@ -195,7 +195,7 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_flux_weight,
+	flux_max_weight,
 	/**
 	 * @brief Mean flux weight.
 	 *
@@ -203,20 +203,20 @@ enum class treebank_feature {
 	 * of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of weight.
 	 */
-	mean_flux_weight,
+	flux_mean_weight,
 	/**
 	 * @brief Minimum flux weight.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_flux_weight,
+	flux_min_weight,
 
 	/**
 	 * @brief Maximum left span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_left_span,
+	flux_max_left_span,
 	/**
 	 * @brief Mean left span.
 	 *
@@ -224,20 +224,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of left span.
 	 */
-	mean_left_span,
+	flux_mean_left_span,
 	/**
 	 * @brief Minimum left span.
 	 *
 	 * See @ref linarr::dependency_flux for details.
 	 */
-	min_left_span,
+	flux_min_left_span,
 
 	/**
 	 * @brief Maximum right span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_right_span,
+	flux_max_right_span,
 	/**
 	 * @brief Mean right span.
 	 *
@@ -245,20 +245,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of right span.
 	 */
-	mean_right_span,
+	flux_mean_right_span,
 	/**
 	 * @brief Minimum right span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_right_span,
+	flux_min_right_span,
 
 	/**
 	 * @brief Maximum flux size.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_size,
+	flux_max_size,
 	/**
 	 * @brief Mean flux size.
 	 *
@@ -266,20 +266,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of flux size.
 	 */
-	mean_size,
+	flux_mean_size,
 	/**
 	 * @brief Minimum flux size.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_size,
+	flux_min_size,
 
 	/**
 	 * @brief Maximum R/L ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_RL_ratio,
+	flux_max_RL_ratio,
 	/**
 	 * @brief Mean R/L ratio.
 	 *
@@ -287,20 +287,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of R/L ratio.
 	 */
-	mean_RL_ratio,
+	flux_mean_RL_ratio,
 	/**
 	 * @brief Minimum R/L ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_RL_ratio,
+	flux_min_RL_ratio,
 
 	/**
 	 * @brief Maximum W/S ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_WS_ratio,
+	flux_max_WS_ratio,
 	/**
 	 * @brief Mean W/S ratio.
 	 *
@@ -308,14 +308,13 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of W/S ratio.
 	 */
-	mean_WS_ratio,
+	flux_mean_WS_ratio,
 	/**
 	 * @brief Minimum W/S ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_WS_ratio,
-
+	flux_min_WS_ratio,
 
 	/**
 	 * @brief The last value of the enumeration.
