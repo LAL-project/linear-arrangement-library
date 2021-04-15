@@ -109,9 +109,6 @@ inline directed_graph head_vector_to_directed_graph(const head_vector& hv) noexc
 #define self_loop(pos) \
 "Error: found a self-loop at position '" + std::to_string(pos) + "'."
 
-#define empty_line \
-"Warning: Empty line found"
-
 inline void find_errors
 (
 	const string& current_line,
@@ -191,6 +188,7 @@ inline void find_errors
 		if (has_cycles) {
 			treebank_err_list.emplace_back(line, graph_has_cycles);
 		}
+
 		// find isolated vertices
 		for (node u = 0; u < dgraph.get_num_nodes(); ++u) {
 			if (dgraph.get_degree(u) == 0) {
@@ -225,7 +223,7 @@ noexcept
 	size_t line = 1;
 	while (getline(fin, current_line)) {
 		if (current_line == "") {
-			treebank_err_list.emplace_back(line, empty_line);
+			// do nothing
 		}
 		else {
 			find_errors(current_line, line, treebank_err_list);
