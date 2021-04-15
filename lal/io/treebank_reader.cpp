@@ -75,16 +75,7 @@ void treebank_reader::next_tree() noexcept {
 	bool line_has_head_vector = false;
 	while (not line_has_head_vector) {
 		getline(m_treebank, m_file_line);
-		if (m_file_line.length() == 1) {
-			// line is probably empty...
-			if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
-				// line is certainly empty
-			}
-			else {
-				line_has_head_vector = true;
-			}
-		}
-		else {
+		if (m_file_line.length() > 0) {
 			line_has_head_vector = true;
 		}
 	}
