@@ -135,7 +135,6 @@ public:
 #endif
 	/// Constructor with tree and root node.
 	rooted_tree(const free_tree& t, node r) noexcept {
-		rooted_tree::_init(t.get_num_nodes());
 		init_rooted(t, r);
 	}
 	/// Destructor
