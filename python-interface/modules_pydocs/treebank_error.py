@@ -33,14 +33,6 @@ There are several reasons why a treebank dataset or a single treebank file could
 	- ``lal.io.treebank_dataset_reader``
 	- ``lal.io.treebank_dataset_processor``
 
-- ``empty_line_found`` : An empty line in the file being processed.
-	
-	Returned by:
-	
-	- ``lal.io.treebank_reader``
-	- ``lal.io.treebank_processor``
-	- ``lal.io.treebank_dataset_processor``
-
 - ``output_file_could_not_be_opened`` : Output file could not be opened.
 	
 	Returned by:

@@ -34,7 +34,7 @@ D
 Minimum Linear arrangement
 ------
 
-- ``Dmin_Unconstrained`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
+- ``Dmin`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
 - ``Dmin_Planar`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.Dmin_Planar`` for details.
 - ``Dmin_Projective`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.Dmin_Projective`` for details.
 
@@ -43,23 +43,23 @@ Dependency Flux
 
 All the following features are defined in class ``lal.linarr.dependency_flux``; read its documentation for further details.
 
-- ``max_flux_weight`` : Maximum flux weight.
-- ``mean_flux_weight`` : Mean flux weight. This is the sum of weights averaged by the number of fluxes (the number of vertices of the tree minus 1).
-- ``min_flux_weight`` : Minimum flux weight.
-- ``max_left_span`` : Maximum left span.
-- ``mean_left_span`` : Mean left span. This is the sum of left spans averaged by the number of fluxes (the number of vertices of the tree minus 1). See ``lal.linarr.dependency_flux`` for details on the definition of left span.
-- ``min_left_span`` : Minimum left span.
-- ``max_right_span`` : Maximum right span.
-- ``mean_right_span`` : Mean right span. This is the sum of right spans averaged by the number of fluxes (the number of vertices of the tree minus 1).
-- ``min_right_span`` : Minimum right span.
-- ``max_size`` : Maximum flux size.
-- ``mean_size`` : Mean flux size. This is the sum of flux sizes averaged by the number of fluxes (the number of vertices of the tree minus 1).
-- ``min_size`` : Minimum flux size.
-- ``max_RL_ratio`` : Maximum R/L ratio.
-- ``mean_RL_ratio`` : Mean R/L ratio. This is the sum of R/L ratios averaged by the number of fluxes (the number of vertices of the tree minus 1).
-- ``min_RL_ratio`` : Minimum R/L ratio.
-- ``max_WS_ratio`` : Maximum W/S ratio.
-- ``mean_WS_ratio`` : Mean W/S ratio. This is the sum of W/S ratios averaged by the number of fluxes (the number of vertices of the tree minus 1).
-- ``min_WS_ratio`` : Minimum W/S ratio.
+- ``flux_max_weight`` : Maximum flux weight.
+- ``flux_mean_weight`` : Mean flux weight. This is the sum of weights averaged by the number of fluxes (the number of vertices of the tree minus 1).
+- ``flux_min_weight`` : Minimum flux weight.
+- ``flux_max_left_span`` : Maximum left span.
+- ``flux_mean_left_span`` : Mean left span. This is the sum of left spans averaged by the number of fluxes (the number of vertices of the tree minus 1). See ``lal.linarr.dependency_flux`` for details on the definition of left span.
+- ``flux_min_left_span`` : Minimum left span.
+- ``flux_max_right_span`` : Maximum right span.
+- ``flux_mean_right_span`` : Mean right span. This is the sum of right spans averaged by the number of fluxes (the number of vertices of the tree minus 1).
+- ``flux_min_right_span`` : Minimum right span.
+- ``flux_max_size`` : Maximum flux size.
+- ``flux_mean_size`` : Mean flux size. This is the sum of flux sizes averaged by the number of fluxes (the number of vertices of the tree minus 1).
+- ``flux_min_size`` : Minimum flux size.
+- ``flux_max_RL_ratio`` : Maximum R/L ratio.
+- ``flux_mean_RL_ratio`` : Mean R/L ratio. This is the sum of R/L ratios averaged by the number of fluxes (the number of vertices of the tree minus 1).
+- ``flux_min_RL_ratio`` : Minimum R/L ratio.
+- ``flux_max_WS_ratio`` : Maximum W/S ratio.
+- ``flux_mean_WS_ratio`` : Mean W/S ratio. This is the sum of W/S ratios averaged by the number of fluxes (the number of vertices of the tree minus 1).
+- ``flux_min_WS_ratio`` : Minimum W/S ratio.
 
 """
