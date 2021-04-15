@@ -211,8 +211,9 @@ public:
 	 * - @ref lal::io::treebank_error::some_treebank_file_failed
 	 * - @ref lal::io::treebank_error::output_join_file_could_not_be_opened
 	 * - @ref lal::io::treebank_error::treebank_result_file_could_not_be_opened
-	 * @ref get_num_errors, @ref get_error_treebank_filename,
-	 * @ref get_error_treebank_name.
+	 *
+	 * See methods @ref get_num_errors, @ref get_error_treebank_filename,
+	 * @ref get_error_treebank_name to know how to retrieve these errors.
 	 * @pre Initialisation did not return any errors.
 	 */
 	treebank_error process(

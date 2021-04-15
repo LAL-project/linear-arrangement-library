@@ -69,15 +69,23 @@ treebank_error treebank_reader::init
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_reader::next_tree() noexcept {
+void treebank_reader::next_tree() noexcept {
 	m_current_head_vector.clear();
 
-	getline(m_treebank, m_file_line);
-	if (m_file_line.length() == 1) {
-		// line is probably empty...
-		if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
-			// line is certainly empty
-			return treebank_error::empty_line_found;
+	bool line_has_head_vector = false;
+	while (not line_has_head_vector) {
+		getline(m_treebank, m_file_line);
+		if (m_file_line.length() == 1) {
+			// line is probably empty...
+			if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
+				// line is certainly empty
+			}
+			else {
+				line_has_head_vector = true;
+			}
+		}
+		else {
+			line_has_head_vector = true;
 		}
 	}
 
@@ -94,8 +102,6 @@ treebank_error treebank_reader::next_tree() noexcept {
 	// this peek is needed so that treebank.eof()
 	// returns true when it has to.
 	m_treebank.peek();
-
-	return treebank_error::no_error;
 }
 
 // GETTERS

@@ -94,15 +94,6 @@ enum class treebank_error {
 	 */
 	treebank_file_could_not_be_opened,
 	/**
-	 * @brief An empty line in the file being processed.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_reader
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_dataset_processor
-	 */
-	empty_line_found,
-	/**
 	 * @brief Output file could not be opened.
 	 *
 	 * Returned by:

@@ -135,7 +135,6 @@ public:
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::no_features
 	 * - @ref lal::io::treebank_error::output_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::empty_line_found
 	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
 	 * output_file_could_not_be_opened
 	 * @pre Initialisation did not return any errors.

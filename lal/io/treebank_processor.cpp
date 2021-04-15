@@ -164,27 +164,27 @@ namespace io {
 #define D_exp2_idx index_of(D_exp_2)
 #define D_var_idx index_of(D_var)
 #define D_z_idx index_of(D_z)
-#define Dmin_Unconstrained_idx index_of(Dmin_Unconstrained)
+#define Dmin_Unconstrained_idx index_of(Dmin)
 #define Dmin_Planar_idx index_of(Dmin_Planar)
 #define Dmin_Projective_idx index_of(Dmin_Projective)
-#define max_flux_weight_idx index_of(max_flux_weight)
-#define mean_flux_weight_idx index_of(mean_flux_weight)
-#define min_flux_weight_idx index_of(min_flux_weight)
-#define max_left_span_idx index_of(max_left_span)
-#define mean_left_span_idx index_of(mean_left_span)
-#define min_left_span_idx index_of(min_left_span)
-#define max_right_span_idx index_of(max_right_span)
-#define mean_right_span_idx index_of(mean_right_span)
-#define min_right_span_idx index_of(min_right_span)
-#define max_RL_ratio_idx index_of(max_RL_ratio)
-#define mean_RL_ratio_idx index_of(mean_RL_ratio)
-#define min_RL_ratio_idx index_of(min_RL_ratio)
-#define max_WS_ratio_idx index_of(max_WS_ratio)
-#define mean_WS_ratio_idx index_of(mean_WS_ratio)
-#define min_WS_ratio_idx index_of(min_WS_ratio)
-#define max_size_idx index_of(max_size)
-#define mean_size_idx index_of(mean_size)
-#define min_size_idx index_of(min_size)
+#define flux_max_weight_idx index_of(flux_max_weight)
+#define flux_mean_weight_idx index_of(flux_mean_weight)
+#define flux_min_weight_idx index_of(flux_min_weight)
+#define max_left_span_idx index_of(flux_max_left_span)
+#define mean_left_span_idx index_of(flux_mean_left_span)
+#define min_left_span_idx index_of(flux_min_left_span)
+#define max_right_span_idx index_of(flux_max_right_span)
+#define mean_right_span_idx index_of(flux_mean_right_span)
+#define min_right_span_idx index_of(flux_min_right_span)
+#define max_RL_ratio_idx index_of(flux_max_RL_ratio)
+#define mean_RL_ratio_idx index_of(flux_mean_RL_ratio)
+#define min_RL_ratio_idx index_of(flux_min_RL_ratio)
+#define max_WS_ratio_idx index_of(flux_max_WS_ratio)
+#define mean_WS_ratio_idx index_of(flux_mean_WS_ratio)
+#define min_WS_ratio_idx index_of(flux_min_WS_ratio)
+#define max_size_idx index_of(flux_max_size)
+#define mean_size_idx index_of(flux_mean_size)
+#define min_size_idx index_of(flux_min_size)
 
 // CLASS METHODS
 
@@ -261,14 +261,9 @@ treebank_error treebank_processor::process() noexcept {
 	// process the current treebank
 	rooted_tree rT;
 	while (tbread.has_tree()) {
-		const treebank_error err = tbread.next_tree();
-		if (err == treebank_error::empty_line_found) {
-			// empty line, skip...
-		}
-		else {
-			rT = tbread.get_tree();
-			process_tree<rooted_tree, ofstream>(rT, out_lang_file);
-		}
+		tbread.next_tree();
+		rT = tbread.get_tree();
+		process_tree<rooted_tree, ofstream>(rT, out_lang_file);
 	}
 
 	const auto end = std::chrono::system_clock::now();
@@ -471,7 +466,7 @@ const
 	// -----------------
 	// flux computation
 	const bool compute_any_of_flux = std::any_of(
-		m_what_fs.begin() + max_flux_weight_idx - 1,
+		m_what_fs.begin() + flux_max_weight_idx - 1,
 		m_what_fs.begin() + min_size_idx + 1,
 		[](const bool& b) -> bool { return b; }
 	);
@@ -482,7 +477,7 @@ const
 
 #define DFMEM &linarr::dependency_flux
 		// compute the means
-		set_average_of(F, mean_flux_weight_idx, DFMEM::get_weight, props);
+		set_average_of(F, flux_mean_weight_idx, DFMEM::get_weight, props);
 		set_average_of(F, mean_left_span_idx, DFMEM::get_left_span, props);
 		set_average_of(F, mean_right_span_idx, DFMEM::get_right_span, props);
 		set_average_of(F, mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
@@ -490,7 +485,7 @@ const
 		set_average_of(F, mean_size_idx, DFMEM::get_size, props);
 
 		// compute the maxs
-		set_maximum_of(F, max_flux_weight_idx, DFMEM::get_weight, props);
+		set_maximum_of(F, flux_max_weight_idx, DFMEM::get_weight, props);
 		set_maximum_of(F, max_left_span_idx, DFMEM::get_left_span, props);
 		set_maximum_of(F, max_right_span_idx, DFMEM::get_right_span, props);
 		set_maximum_of(F, max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
@@ -498,7 +493,7 @@ const
 		set_maximum_of(F, max_size_idx, DFMEM::get_size, props);
 
 		// compute the mins
-		set_minimum_of(F, min_flux_weight_idx, DFMEM::get_weight, props);
+		set_minimum_of(F, flux_min_weight_idx, DFMEM::get_weight, props);
 		set_minimum_of(F, min_left_span_idx, DFMEM::get_left_span, props);
 		set_minimum_of(F, min_right_span_idx, DFMEM::get_right_span, props);
 		set_minimum_of(F, min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
@@ -514,8 +509,8 @@ const
 		out_lang_file << rT.get_num_nodes();
 	}
 	for (size_t i = 1; i < m_what_fs.size(); ++i) {
-		out_lang_file << m_separator;
 		if (m_what_fs[i]) {
+			out_lang_file << m_separator;
 			out_lang_file << props[i];
 		}
 	}
