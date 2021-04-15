@@ -6,7 +6,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <iostream>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
