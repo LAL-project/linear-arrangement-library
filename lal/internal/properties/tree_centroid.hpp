@@ -62,14 +62,14 @@ namespace __lal {
 // n: number of vertices of the connected component of x
 // x: start at node x
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
 std::pair<node, node> retrieve_centroid(
-	const T& t,
+	const tree_type& t,
 	const uint32_t N, const uint32_t n, const node x,
 	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
@@ -79,20 +79,24 @@ std::pair<node, node> retrieve_centroid(
 	assert(n > 0);
 #endif
 
+	typedef std::pair<edge,uint32_t> edge_size;
+	typedef std::vector<edge_size>::iterator Iterator_Type;
+
 	// calculate s(u,v) with H&S algorithm (lemma 8)
 	{
 	sizes_edge.resize(2*(n - 1));
 	auto it = sizes_edge.begin();
-	internal::calculate_bidirectional_sizes(t,n, x, it);
+
+	internal::calculate_bidirectional_sizes
+	<tree_type, Iterator_Type>(t, n, x, it);
 	}
 
 	{
 	// sort all tuples in sizes_edge using the sizes
-	typedef std::pair<edge,uint32_t> t2;
-	typedef std::vector<t2>::iterator t2_vec_it;
-	internal::counting_sort<t2, t2_vec_it, false>(
+	internal::counting_sort<edge_size, Iterator_Type, countingsort::decreasing_t>
+	(
 		sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
-		[](const t2& edge_pair) -> size_t { return edge_pair.second; }
+		[](const edge_size& edge_pair) -> size_t { return edge_pair.second; }
 	);
 	}
 
