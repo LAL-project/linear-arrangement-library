@@ -81,19 +81,16 @@ namespace io {
 // CLASS METHODS
 
 treebank_error treebank_dataset_processor::init
-(const string& file, const string& odir, bool all_fs, size_t nt) noexcept
+(const string& file, const string& odir) noexcept
 {
 	// initialise data
-	m_num_threads = nt;
 	m_all_individual_treebank_names.clear();
 	m_errors_from_processing.clear();
-
-	// keep data
 	m_main_file = file;
 	m_out_dir = odir;
 
 	// initalise features vector
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
+	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
 	// make sure main file exists
 	if (not filesystem::exists(m_main_file)) {

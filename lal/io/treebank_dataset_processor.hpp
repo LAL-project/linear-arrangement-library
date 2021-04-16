@@ -135,6 +135,11 @@ public:
 	 */
 	void set_join_files(bool v) noexcept { m_join_files = v; }
 
+	/// Set the number of threads
+	inline void set_number_threads(size_t n_threads) noexcept {
+		m_num_threads = n_threads;
+	}
+
 	// GETTERS
 
 	/// Returns the number of errors that arised during processing.
@@ -182,9 +187,7 @@ public:
 	 */
 	treebank_error init(
 		const std::string& main_file,
-		const std::string& output_directory,
-		bool all_features,
-		size_t n_threads = 1
+		const std::string& output_directory
 	)
 	noexcept;
 
@@ -226,7 +229,7 @@ private:
 	std::vector<std::string> m_all_individual_treebank_names;
 
 	/// Join the files into a single file.
-	bool m_join_files = false;
+	bool m_join_files = true;
 
 	/// Number of threads to use.
 	size_t m_num_threads = 1;
@@ -242,7 +245,8 @@ private:
 	 * @param remove Are the individual files to be removed?
 	 * @returns An error, if any.
 	 */
-	treebank_error join_all_files(const std::string& resname, bool remove) const noexcept;
+	treebank_error join_all_files(const std::string& resname, bool remove) const
+	noexcept;
 
 private:
 	/// Output directory.

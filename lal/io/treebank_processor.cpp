@@ -189,7 +189,7 @@ namespace io {
 // CLASS METHODS
 
 treebank_error treebank_processor::init(
-	const string& treebank_file, const string& output_file, bool all_fs,
+	const string& treebank_file, const string& output_file,
 	const string& treebank_id
 ) noexcept
 {
@@ -197,9 +197,6 @@ treebank_error treebank_processor::init(
 	m_treebank_filename = treebank_file;
 	m_output_file = output_file;
 	m_treebank_id = treebank_id;
-
-	// initalise features vector
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
 
 	// make sure that the treebank file exists
 	if (not filesystem::exists(m_treebank_filename)) {

@@ -60,6 +60,11 @@ class process_treebank_base {
 public:
 	// MODIFIERS
 
+	/// Clear the features in the processor.
+	inline void clear_features() noexcept {
+		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
+	}
+
 	/**
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
