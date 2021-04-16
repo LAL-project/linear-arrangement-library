@@ -65,7 +65,7 @@ namespace internal {
  * See implementation for all details of this method.
  */
 uint32_t Dmin_Pr__optimal_interval_of(
-	const graphs::rooted_tree& t,
+	uint32_t n,
 	const std::vector<std::vector<std::pair<lal::node,uint32_t>>>& M,
 	node r,
 	linear_arrangement& arr

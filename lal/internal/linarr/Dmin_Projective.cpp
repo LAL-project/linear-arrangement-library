@@ -98,7 +98,7 @@ namespace internal {
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-uint32_t Dmin_Pr__optimal_interval_of(
+uint32_t __Dmin_Pr__optimal_interval_of(
 	const vector<vector<node_size>>& M, const node r,
 	const place r_place,
 	position ini, position fin,
@@ -138,7 +138,8 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	for (const auto& [vi, ni] : children) {
 
 		// recursive call: make the interval of 'vi'
-		D += Dmin_Pr__optimal_interval_of(
+		D +=
+		__Dmin_Pr__optimal_interval_of(
 			M, vi,
 			(side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
 			(side == LEFT_SIDE ? ini : fin - ni + 1),
@@ -180,15 +181,13 @@ uint32_t Dmin_Pr__optimal_interval_of(
 }
 
 uint32_t Dmin_Pr__optimal_interval_of(
-	const rooted_tree& t,
+	uint32_t n,
 	const vector<vector<pair<node,uint32_t>>>& M,
 	node r, linear_arrangement& arr
 )
 {
-	const uint32_t n = t.get_num_nodes();
-	return Dmin_Pr__optimal_interval_of(
-		M, r, PLACE_NONE_OF, 0,n-1, arr
-	);
+	return
+	__Dmin_Pr__optimal_interval_of(M, r, PLACE_NONE_OF, 0, n - 1, arr);
 }
 
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
@@ -248,7 +247,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	// construct the optimal intervals
 	linear_arrangement arr(n);
 	const uint32_t D =
-	Dmin_Pr__optimal_interval_of(M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr);
+	__Dmin_Pr__optimal_interval_of(M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr);
 	return make_pair(D, arr);
 }
 

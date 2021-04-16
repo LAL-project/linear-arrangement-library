@@ -54,10 +54,8 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/free_tree.hpp>
-#include <lal/graphs/rooted_tree.hpp>
 
 #include <lal/internal/linarr/Dmin.hpp>
-#include <lal/internal/graphs/make_arrangement.hpp>
 #include <lal/internal/properties/tree_centroid.hpp>
 
 namespace lal {
@@ -66,27 +64,35 @@ using namespace graphs;
 namespace internal {
 
 inline void make_directed(
-	const rooted_tree& rt, vector<vector<pair<node,uint32_t>>>& M
+	const free_tree& t, node pu, node u, vector<vector<pair<node,uint32_t>>>& M
 )
 {
-	for (node u = 0; u < rt.get_num_nodes(); ++u) {
-		for (node v : rt.get_out_neighbours(u)) {
-			// find the only instance of 'u' in the
-			// neighbourhood of 'v' and erase it.
-			auto& Mv = M[v];
+	if (pu == u) {
+		for (node v : t.get_neighbours(u)) {
+			make_directed(t, u, v, M);
+		}
+		return;
+	}
 
-			auto it = Mv.begin();
-			bool found = false;
-			while (not found and it != Mv.end()) {
-				if (it->first == u) {
-					Mv.erase(it);
-					found = true;
-				}
-				else {
-					++it;
-				}
-			}
+	// find the only instance of 'pu' in the
+	// neighbourhood of 'u' and erase it.
+	auto& Mu = M[u];
 
+	auto it = Mu.begin();
+	bool found = false;
+	while (not found and it != Mu.end()) {
+		if (it->first == pu) {
+			Mu.erase(it);
+			found = true;
+		}
+		else {
+			++it;
+		}
+	}
+
+	for (node v : t.get_neighbours(u)) {
+		if (v != pu) {
+			make_directed(t, u, v, M);
 		}
 	}
 }
@@ -116,19 +122,16 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	vector<pair<edge, uint32_t>> sizes_edge;
 
 	// find a centroidal vertex of the tree
-	const node c = internal::retrieve_centroid(t, M,sizes_edge).first;
-
-	// root the free tree
-	const rooted_tree rt(t, c);
+	const node c = internal::retrieve_centroid(t, M, sizes_edge).first;
 
 	// convert M into a directed adjacency matrix
-	make_directed(rt, M);
+	make_directed(t, c, c, M);
 
 	// construct the optimal intervals using Gildea and Temperley's
 	// algorithm to calculate an optimal projective arrangement.
 	linear_arrangement arr(t.get_num_nodes());
 	const uint32_t D =
-	Dmin_Pr__optimal_interval_of(rt, M, rt.get_root(), arr);
+	Dmin_Pr__optimal_interval_of(n, M, c, arr);
 
 	return make_pair(D, arr);
 }
