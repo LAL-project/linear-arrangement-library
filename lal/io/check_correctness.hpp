@@ -68,8 +68,8 @@ noexcept;
  * @param n_threads Number of threads to use.
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_dataset.
  */
-std::vector<report_treebank_dataset>
-check_correctness_treebank_dataset(const std::string& main_file_name, size_t n_threads = 1)
+std::vector<report_treebank_collection>
+check_correctness_treebank_collection(const std::string& main_file_name, size_t n_threads = 1)
 noexcept;
 
 } // -- namespace io

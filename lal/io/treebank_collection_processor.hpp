@@ -58,14 +58,14 @@ namespace lal {
 namespace io {
 
 /**
- * @brief Automatic processing of treebank datasets.
+ * @brief Automatic processing of treebank collections.
  *
  * This class, the objects of which will be referred to as the "processors",
- * has the goal to ease the processing a whole treebank dataset and produce
+ * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
  * @ref lal::io::treebank_feature for details on the features available.
  *
- * This class is meant to process a treebank dataset only. A treebank dataset is
+ * This class is meant to process a treebank collection only. A treebank collection is
  * a set of treebank files, each containing several syntactic dependency trees
  * of sentences. Each file is referred to as a treebank file. Each of these
  * files is referenced within a "main file list", henceforth called the "main
@@ -73,7 +73,7 @@ namespace io {
  * contains a self-descriptive name of the treebank that is indicated in the next
  * column.
  *
- * For example, the main file of a treebank dataset of languages could contain:
+ * For example, the main file of a treebank collection of languages could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
@@ -84,7 +84,7 @@ namespace io {
  * (in this case, by giving an ISO code of a language), and the second column
  * contains the full path to the file with the syntactic dependency trees.
  *
- * Every processor must be initialised prior to processing the dataset. This is done
+ * Every processor must be initialised prior to processing the collection. This is done
  * via method @ref init, which requires the path to the main file and the output
  * directory where the results are going to be stored. It also requires a Boolean
  * value indicating whether all (or none) of the features should be used. Moreover,
@@ -97,12 +97,12 @@ namespace io {
  * features is high, but not all features are needed, a processer can be initialised
  * with all features, and then be removed some of them via method @ref remove_feature.
  *
- * Processing a treebank dataset with this class will produce a file for every
- * treebank in the dataset. These files can be merged together by indicating so
+ * Processing a treebank collection with this class will produce a file for every
+ * treebank in the collection. These files can be merged together by indicating so
  * via method @ref set_join_files. A new file will be created, regardless of the
- * number of treebanks in the dataset.
+ * number of treebanks in the collection.
  *
- * Finally, the treebank dataset is processed via method @ref process. If all the
+ * Finally, the treebank collection is processed via method @ref process. If all the
  * files produced (one for each treebank) are to be joined in a single file, users
  * can give this new file a name by passing it to method @ref process as a string.
  * Also, users can indicate via an optional Boolean parameter whether the individual
@@ -113,9 +113,9 @@ namespace io {
  * @ref get_error_type, @ref get_error_treebank_filename, @ref get_error_treebank_name.
  *
  * The usage of this class is a lot simpler than that of class
- * @ref treebank_dataset_reader. For example:
+ * @ref treebank_collection_reader. For example:
  * @code
- *		treebank_dataset_processor tbproc;
+ *		treebank_collection_processor tbproc;
  *		// initialise the processor without features (remmeber to check for errors)
  *      // and 4 threads for faster processing.
  *		tbproc.init(main_file, output_dir, false, 4);
@@ -125,7 +125,7 @@ namespace io {
  *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_dataset_processor : public process_treebank_base {
+class treebank_collection_processor : public process_treebank_base {
 public:
 	// SETTERS
 
@@ -172,10 +172,10 @@ public:
 	const std::string& get_error_treebank_name(size_t i) const noexcept
 	{ return std::get<2>(m_errors_from_processing[i]); }
 
-	// PROCESS THE TREEBANK DATASET
+	// PROCESS THE TREEBANK COLLECTION
 
 	/**
-	 * @brief Initialise the processor with a new dataset.
+	 * @brief Initialise the processor with a new collection.
 	 * @param main_file File listing all the treebanks.
 	 * @param output_directory Directory where the result files are to be stored.
 	 * @param all_features Should the feature list contain all possible features?
@@ -192,7 +192,7 @@ public:
 	noexcept;
 
 	/**
-	 * @brief Process the treebank dataset.
+	 * @brief Process the treebank collection.
 	 *
 	 * This method produces the information as explained in this class'
 	 * description. However, it may fail to do so. In this case it will return
@@ -234,7 +234,7 @@ private:
 	/// Number of threads to use.
 	size_t m_num_threads = 1;
 
-	/// Set of errors resulting from processing the treebank dataset.
+	/// Set of errors resulting from processing the treebank collection.
 	std::vector<std::tuple<treebank_error, std::string, std::string>>
 	m_errors_from_processing;
 

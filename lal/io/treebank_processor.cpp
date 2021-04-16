@@ -65,7 +65,7 @@ using namespace std;
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
 

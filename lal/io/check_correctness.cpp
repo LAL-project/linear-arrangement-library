@@ -236,8 +236,8 @@ noexcept
 }
 
 // file, line, what
-vector<report_treebank_dataset>
-check_correctness_treebank_dataset(const string& main_file_name, size_t n_threads)
+vector<report_treebank_collection>
+check_correctness_treebank_collection(const string& main_file_name, size_t n_threads)
 noexcept
 {
 	if (not filesystem::exists(main_file_name)) {
@@ -248,7 +248,7 @@ noexcept
 		return {{"-", 0, 0, file_could_not_be_opened(main_file_name)}};
 	}
 
-	vector<report_treebank_dataset> dataset_err_list;
+	vector<report_treebank_collection> dataset_err_list;
 
 	#pragma omp parallel num_threads(n_threads)
 	{

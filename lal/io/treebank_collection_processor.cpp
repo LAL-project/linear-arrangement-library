@@ -39,7 +39,7 @@
  *
  ********************************************************************/
  
-#include <lal/io/treebank_dataset_processor.hpp>
+#include <lal/io/treebank_collection_processor.hpp>
 
 // C includes
 #include <omp.h>
@@ -56,7 +56,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
@@ -80,7 +80,7 @@ namespace io {
 
 // CLASS METHODS
 
-treebank_error treebank_dataset_processor::init
+treebank_error treebank_collection_processor::init
 (const string& file, const string& odir) noexcept
 {
 	// initialise data
@@ -103,7 +103,7 @@ treebank_error treebank_dataset_processor::init
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_dataset_processor::process(const string& res, bool Remove)
+treebank_error treebank_collection_processor::process(const string& res, bool Remove)
 noexcept
 {
 	// -- this function assumes that init did not return any error -- //
@@ -150,9 +150,9 @@ noexcept
 				tbproc.init(
 					treebank_file_full_path.string(),
 					output_file_full_path.string(),
-					false,
 					treebank_name
 				);
+				tbproc.clear_features();
 				tbproc.set_output_header(m_output_header);
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
@@ -199,7 +199,7 @@ noexcept
 	);
 }
 
-treebank_error treebank_dataset_processor::join_all_files
+treebank_error treebank_collection_processor::join_all_files
 (const string& resname, bool remove_files)
 const noexcept
 {

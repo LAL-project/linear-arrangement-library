@@ -130,10 +130,10 @@ HEADERS += \
 	io/head_vector.hpp \
 	io/process_treebank_base.hpp \
 	io/report_correctness.hpp \
+	io/treebank_collection_processor.hpp \
+	io/treebank_collection_reader.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
-	io/treebank_dataset_processor.hpp \
-	io/treebank_dataset_reader.hpp \
 	io/treebank_error.hpp \
 	io/treebank_feature.hpp \
 	iterators.hpp \
@@ -205,8 +205,8 @@ SOURCES += \
     io/check_correctness.cpp \
 	io/edge_list.cpp \
     io/head_vector.cpp \
-	io/treebank_dataset_processor.cpp \
-	io/treebank_dataset_reader.cpp \
+    io/treebank_collection_processor.cpp \
+    io/treebank_collection_reader.cpp \
     io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \

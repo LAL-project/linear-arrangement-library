@@ -39,7 +39,7 @@
  *
  ********************************************************************/
 
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 
 // C++ includes
 #include <filesystem>
@@ -48,7 +48,7 @@ using namespace std;
 namespace lal {
 namespace io {
 
-treebank_error treebank_dataset_reader::init(const string& main_file) noexcept
+treebank_error treebank_collection_reader::init(const string& main_file) noexcept
 {
 	// close current dataset (if any)
 	m_list.close();
@@ -69,7 +69,7 @@ treebank_error treebank_dataset_reader::init(const string& main_file) noexcept
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_dataset_reader::next_treebank() noexcept {
+treebank_error treebank_collection_reader::next_treebank() noexcept {
 	// build path to treebank file
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);

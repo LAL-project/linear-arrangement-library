@@ -56,10 +56,10 @@
 #include <lal/io/treebank_feature.hpp>
 
 #include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 
 #include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_dataset_processor.hpp>
+#include <lal/io/treebank_collection_processor.hpp>
 
 // check correctness of treebanks
 #include <lal/io/report_correctness.hpp>

@@ -245,15 +245,15 @@ target_sources(
 		io/treebank_error.hpp
 		io/treebank_feature.hpp
 		io/treebank_reader.hpp
-		io/treebank_dataset_reader.hpp
+		io/treebank_collection_reader.hpp
 		io/treebank_processor.hpp
-		io/treebank_dataset_processor.hpp
+		io/treebank_collection_processor.hpp
 		# -- sources
 		io/check_correctness.cpp
 		io/edge_list.cpp
 		io/head_vector.cpp
-		io/treebank_dataset_processor.cpp
-		io/treebank_dataset_reader.cpp
+		io/treebank_collection_processor.cpp
+		io/treebank_collection_reader.cpp
 		io/treebank_processor.cpp
 		io/treebank_reader.cpp
 
@@ -401,9 +401,9 @@ set(LIBLAL_IO_HEADER
 	io/treebank_error.hpp
 	io/treebank_feature.hpp
 	io/treebank_reader.hpp
-	io/treebank_dataset_reader.hpp
+	io/treebank_collection_reader.hpp
 	io/treebank_processor.hpp
-	io/treebank_dataset_processor.hpp
+	io/treebank_collection_processor.hpp
 )
 set(LIBLAL_ITERATORS_HEADER
 	iterators/E_iterator.hpp
