@@ -124,10 +124,10 @@ inline void calculate_dependencies_span
 		}
 	}
 
-	sorted_vector<node> set_endpoints;
+	sorted_vector<node,true> set_endpoints;
 	for (const auto& [v,w] : cur_deps) {
-		set_endpoints.insert_sorted_unique(v);
-		set_endpoints.insert_sorted_unique(w);
+		set_endpoints.insert_sorted(v);
+		set_endpoints.insert_sorted(w);
 	}
 	for (node v : set_endpoints) {
 		flux[cur_pos].get_left_span() += (pi[v] <= cur_pos);
