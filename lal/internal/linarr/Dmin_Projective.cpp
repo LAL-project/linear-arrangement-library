@@ -218,7 +218,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	}
 
 	// sort all tuples in L using the size of the subtree
-	internal::counting_sort<edge_size, edge_size*, false>(
+	internal::counting_sort<edge_size, edge_size*, countingsort::decreasing_t>(
 		L.begin(), L.end(), n, L.size(),
 		[](const edge_size& T) -> size_t { return T.second; }
 	);

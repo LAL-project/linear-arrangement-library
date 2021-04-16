@@ -52,6 +52,13 @@
 namespace lal {
 namespace internal {
 
+namespace countingsort {
+
+// Non-decreasing type of sort.
+struct increasing_t { };
+// Non-increasing type of sort.
+struct decreasing_t { };
+
 template<typename T>
 struct memory_counting_sort {
 	data_array<std::size_t> count;
@@ -69,6 +76,8 @@ struct memory_counting_sort {
 	void reset_count() { count.fill(0); }
 };
 
+} // -- namespace countingsort
+
 /*
  * @brief Counting sort algorithm with reusable memory.
  *
@@ -76,10 +85,9 @@ struct memory_counting_sort {
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
- * @param T Iterated type
- * @param It Iterator type
- * @param increasing: when true, the result is sorted increasingly. When false,
- * the result is sorted decreasingly.
+ * @tparam T Iterated type
+ * @tparam It Iterator type
+ * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -88,13 +96,18 @@ struct memory_counting_sort {
  * be obtained with function @e key.
  * @param key Function that returns a single integer value used to compare the
  * elements.
+ * @param mem Reusable memory for the counting sort algorithm.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
 	typename T, typename It,
-	bool increasing,
+	typename sort_type,
 	std::enable_if_t<
-		is_pointer_iterator_v<T, It>,
+		is_pointer_iterator_v<T, It> &&
+		(
+		std::is_same_v<sort_type, countingsort::increasing_t> ||
+		std::is_same_v<sort_type, countingsort::decreasing_t>
+		),
 		bool
 	> = true
 >
@@ -102,9 +115,12 @@ void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key_plus_1,
 	const std::function<std::size_t (const T&)>& key,
-	memory_counting_sort<T>& mem
+	countingsort::memory_counting_sort<T>& mem
 )
 {
+	constexpr bool is_increasing =
+		std::is_same_v<sort_type, countingsort::increasing_t>;
+
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
@@ -130,7 +146,7 @@ void counting_sort(
 	}
 
 	// calculate output
-	if constexpr (increasing) {
+	if constexpr (is_increasing) {
 		auto it = begin;
 		for (std::size_t k = 0; k < size_container;) {
 			*(it++) = std::move(mem.output[k++]);
@@ -152,10 +168,9 @@ void counting_sort(
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
- * @param T Iterated type
- * @param It Iterator type
- * @param increasing: when true, the result is sorted increasingly. When false,
- * the result is sorted decreasingly.
+ * @tparam T Iterated type
+ * @tparam It Iterator type
+ * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -171,9 +186,13 @@ void counting_sort(
  */
 template<
 	typename T, typename It,
-	bool increasing,
+	typename sort_type,
 	std::enable_if_t<
-		is_pointer_iterator_v<T, It>,
+		is_pointer_iterator_v<T, It>&&
+		(
+		std::is_same_v<sort_type, countingsort::increasing_t> ||
+		std::is_same_v<sort_type, countingsort::decreasing_t>
+		),
 		bool
 	> = true
 >
@@ -187,9 +206,9 @@ void counting_sort(
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
-	memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
+	countingsort::memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<T, It, increasing>
+	counting_sort<T, It, sort_type>
 	(begin, end, largest_key+1, key, mem);
 
 	// memory is freed automatically (see destructor)

@@ -79,7 +79,7 @@ inline void fill_adjP_adjN(
 	vector<edge> edges = g.get_edges();
 
 	// sort edges of the graph by increasing edge length
-	internal::counting_sort<edge, vector<edge>::iterator, true>
+	internal::counting_sort<edge, vector<edge>::iterator, countingsort::increasing_t>
 	(
 	edges.begin(), edges.end(),
 	n-1, // length of the longest edge

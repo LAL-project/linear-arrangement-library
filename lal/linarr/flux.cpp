@@ -192,7 +192,7 @@ inline vector<dependency_flux> __compute_flux
 	undirected_graph ug(n);
 
 	// the reusable memory for the sorting algorithm
-	internal::memory_counting_sort<edge> mem(n, n);
+	internal::countingsort::memory_counting_sort<edge> mem(n, n);
 
 	// declare the result to be returned
 	vector<dependency_flux> flux(n - 1);
@@ -213,7 +213,8 @@ inline vector<dependency_flux> __compute_flux
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		internal::counting_sort<edge, vector<edge>::iterator, true>
+		internal::counting_sort
+		<edge, vector<edge>::iterator, internal::countingsort::increasing_t>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),

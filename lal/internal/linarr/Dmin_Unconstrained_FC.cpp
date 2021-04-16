@@ -277,7 +277,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) {
 
 		M = std::max(M, s_ui);
 	}
-	internal::counting_sort<size_node, size_node*, false>
+	internal::counting_sort<size_node, size_node*, countingsort::decreasing_t>
 	(
 		ord.begin(), ord.end(), M, ord.size(),
 		[](const size_node& p) { return p.first; }
