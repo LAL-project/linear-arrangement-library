@@ -369,8 +369,8 @@ const
 
 #if defined DEBUG
 		assert(prop_set[C_idx]);
-		assert(prop_set[C_var_idx]);
-		assert(prop_set[C_exp1_idx]);
+		assert(prop_set[C_variance_idx]);
+		assert(prop_set[C_expected_idx]);
 #endif
 		set_prop(C_z_score_idx,
 			(props[C_idx] - props[C_expected_idx])/std::sqrt(props[C_variance_idx])
@@ -407,8 +407,8 @@ const
 
 #if defined DEBUG
 		assert(prop_set[D_idx]);
-		assert(prop_set[D_var_idx]);
-		assert(prop_set[D_exp1_idx]);
+		assert(prop_set[D_variance_idx]);
+		assert(prop_set[D_expected_idx]);
 #endif
 		set_prop(D_z_score_idx,
 			(props[D_idx] - props[D_expected_idx])/std::sqrt(props[D_variance_idx])
