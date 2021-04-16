@@ -168,21 +168,21 @@ namespace io {
 #define flux_max_weight_idx index_of(flux_max_weight)
 #define flux_mean_weight_idx index_of(flux_mean_weight)
 #define flux_min_weight_idx index_of(flux_min_weight)
-#define max_left_span_idx index_of(flux_max_left_span)
-#define mean_left_span_idx index_of(flux_mean_left_span)
-#define min_left_span_idx index_of(flux_min_left_span)
-#define max_right_span_idx index_of(flux_max_right_span)
-#define mean_right_span_idx index_of(flux_mean_right_span)
-#define min_right_span_idx index_of(flux_min_right_span)
-#define max_RL_ratio_idx index_of(flux_max_RL_ratio)
-#define mean_RL_ratio_idx index_of(flux_mean_RL_ratio)
-#define min_RL_ratio_idx index_of(flux_min_RL_ratio)
-#define max_WS_ratio_idx index_of(flux_max_WS_ratio)
-#define mean_WS_ratio_idx index_of(flux_mean_WS_ratio)
-#define min_WS_ratio_idx index_of(flux_min_WS_ratio)
-#define max_size_idx index_of(flux_max_size)
-#define mean_size_idx index_of(flux_mean_size)
-#define min_size_idx index_of(flux_min_size)
+#define flux_max_left_span_idx index_of(flux_max_left_span)
+#define flux_mean_left_span_idx index_of(flux_mean_left_span)
+#define flux_min_left_span_idx index_of(flux_min_left_span)
+#define flux_max_right_span_idx index_of(flux_max_right_span)
+#define flux_mean_right_span_idx index_of(flux_mean_right_span)
+#define flux_min_right_span_idx index_of(flux_min_right_span)
+#define flux_max_RL_ratio_idx index_of(flux_max_RL_ratio)
+#define flux_mean_RL_ratio_idx index_of(flux_mean_RL_ratio)
+#define flux_min_RL_ratio_idx index_of(flux_min_RL_ratio)
+#define flux_max_WS_ratio_idx index_of(flux_max_WS_ratio)
+#define flux_mean_WS_ratio_idx index_of(flux_mean_WS_ratio)
+#define flux_min_WS_ratio_idx index_of(flux_min_WS_ratio)
+#define flux_max_size_idx index_of(flux_max_size)
+#define flux_mean_size_idx index_of(flux_mean_size)
+#define flux_min_size_idx index_of(flux_min_size)
 
 // CLASS METHODS
 
@@ -358,13 +358,13 @@ const
 		if (not m_what_fs[C_idx]) {
 			set_prop(C_idx, linarr::number_of_crossings(fT));
 		}
-		// we need V[C]
-		if (not m_what_fs[C_variance_idx]) {
-			set_prop(C_variance_idx, properties::variance_C_tree(fT));
-		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
 			set_prop(C_expected_idx, properties::expectation_C(fT));
+		}
+		// we need V[C]
+		if (not m_what_fs[C_variance_idx]) {
+			set_prop(C_variance_idx, properties::variance_C_tree(fT));
 		}
 
 #if defined DEBUG
@@ -396,13 +396,13 @@ const
 		if (not m_what_fs[D_idx]) {
 			set_prop(D_idx, linarr::sum_length_edges(fT));
 		}
-		// we need V[D]
-		if (not m_what_fs[D_variance_idx]) {
-			set_prop(D_variance_idx, properties::variance_D(fT));
-		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
 			set_prop(D_expected_idx, properties::expectation_D(fT));
+		}
+		// we need V[D]
+		if (not m_what_fs[D_variance_idx]) {
+			set_prop(D_variance_idx, properties::variance_D(fT));
 		}
 
 #if defined DEBUG
@@ -432,7 +432,7 @@ const
 	// flux computation
 	const bool compute_any_of_flux = std::any_of(
 		m_what_fs.begin() + flux_max_weight_idx - 1,
-		m_what_fs.begin() + min_size_idx + 1,
+		m_what_fs.begin() + flux_min_size_idx + 1,
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
@@ -443,27 +443,27 @@ const
 #define DFMEM &linarr::dependency_flux
 		// compute the means
 		set_average_of(F, flux_mean_weight_idx, DFMEM::get_weight, props);
-		set_average_of(F, mean_left_span_idx, DFMEM::get_left_span, props);
-		set_average_of(F, mean_right_span_idx, DFMEM::get_right_span, props);
-		set_average_of(F, mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_average_of(F, mean_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_average_of(F, mean_size_idx, DFMEM::get_size, props);
+		set_average_of(F, flux_mean_left_span_idx, DFMEM::get_left_span, props);
+		set_average_of(F, flux_mean_right_span_idx, DFMEM::get_right_span, props);
+		set_average_of(F, flux_mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_average_of(F, flux_mean_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_average_of(F, flux_mean_size_idx, DFMEM::get_size, props);
 
 		// compute the maxs
 		set_maximum_of(F, flux_max_weight_idx, DFMEM::get_weight, props);
-		set_maximum_of(F, max_left_span_idx, DFMEM::get_left_span, props);
-		set_maximum_of(F, max_right_span_idx, DFMEM::get_right_span, props);
-		set_maximum_of(F, max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_maximum_of(F, max_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_maximum_of(F, max_size_idx, DFMEM::get_size, props);
+		set_maximum_of(F, flux_max_left_span_idx, DFMEM::get_left_span, props);
+		set_maximum_of(F, flux_max_right_span_idx, DFMEM::get_right_span, props);
+		set_maximum_of(F, flux_max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_maximum_of(F, flux_max_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_maximum_of(F, flux_max_size_idx, DFMEM::get_size, props);
 
 		// compute the mins
 		set_minimum_of(F, flux_min_weight_idx, DFMEM::get_weight, props);
-		set_minimum_of(F, min_left_span_idx, DFMEM::get_left_span, props);
-		set_minimum_of(F, min_right_span_idx, DFMEM::get_right_span, props);
-		set_minimum_of(F, min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_minimum_of(F, min_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_minimum_of(F, min_size_idx, DFMEM::get_size, props);
+		set_minimum_of(F, flux_min_left_span_idx, DFMEM::get_left_span, props);
+		set_minimum_of(F, flux_min_right_span_idx, DFMEM::get_right_span, props);
+		set_minimum_of(F, flux_min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_minimum_of(F, flux_min_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_minimum_of(F, flux_min_size_idx, DFMEM::get_size, props);
 #undef DFMEM
 	}
 
