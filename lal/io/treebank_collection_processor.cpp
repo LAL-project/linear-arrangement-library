@@ -103,7 +103,7 @@ treebank_error treebank_collection_processor::init
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_collection_processor::process(const string& res, bool Remove)
+treebank_error treebank_collection_processor::process(const string& join_to_file)
 noexcept
 {
 	// -- this function assumes that init did not return any error -- //
@@ -182,7 +182,7 @@ noexcept
 	}
 
 	if (m_join_files) {
-		const auto err = join_all_files(res, Remove);
+		const auto err = join_all_files(join_to_file);
 		if (err != treebank_error::no_error) {
 			m_errors_from_processing.push_back(make_tuple(
 				err,
@@ -200,7 +200,7 @@ noexcept
 }
 
 treebank_error treebank_collection_processor::join_all_files
-(const string& resname, bool remove_files)
+(const string& resname)
 const noexcept
 {
 	// use the filesystem namespace to create the path properly
@@ -224,7 +224,7 @@ const noexcept
 
 	// output header
 	if (m_output_header) {
-		output_together << "treebank_name";
+		output_together << "treebank";
 
 		for (size_t i = 0; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
@@ -273,11 +273,9 @@ const noexcept
 
 		fin.close();
 
-		if (remove_files) {
-			const bool success = filesystem::remove(path_to_treebank_result);
-			if (not success and m_be_verbose >= 2) {
-				cerr << "Treebank result file '" << path_to_treebank_result << "' could not be removed." << endl;
-			}
+		const bool success = filesystem::remove(path_to_treebank_result);
+		if (not success and m_be_verbose >= 2) {
+			cerr << "Treebank result file '" << path_to_treebank_result << "' could not be removed." << endl;
 		}
 	}
 

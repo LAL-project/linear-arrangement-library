@@ -137,6 +137,9 @@ public:
 
 	/// Set the number of threads
 	inline void set_number_threads(size_t n_threads) noexcept {
+#if defined DEBUG
+		assert(n_threads != 0);
+#endif
 		m_num_threads = n_threads;
 	}
 
@@ -205,8 +208,8 @@ public:
 	 * Moreover, it gathers the errors thay may have occurred during processing.
 	 * If so, see methods @ref get_num_errors, @ref get_error_type,
 	 * @ref get_error_treebank_name.
-	 * @param res Name of the file where all values are going to be stored.
-	 * @param remove Removes all individual files. The default value is true.
+	 * @param result_filename Name of the file where all values are going to be
+	 * stored.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::no_features
@@ -219,10 +222,7 @@ public:
 	 * @ref get_error_treebank_name to know how to retrieve these errors.
 	 * @pre Initialisation did not return any errors.
 	 */
-	treebank_error process(
-		const std::string& res = "",
-		bool remove = true
-	) noexcept;
+	treebank_error process(const std::string& result_filename = "") noexcept;
 
 private:
 	/// The list of names of the treebanks.
@@ -242,10 +242,9 @@ private:
 	/**
 	 * @brief Joins all resulting files into a single file
 	 * @param resname Name of the result file.
-	 * @param remove Are the individual files to be removed?
 	 * @returns An error, if any.
 	 */
-	treebank_error join_all_files(const std::string& resname, bool remove) const
+	treebank_error join_all_files(const std::string& resname) const
 	noexcept;
 
 private:
