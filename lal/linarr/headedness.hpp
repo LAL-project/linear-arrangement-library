@@ -64,7 +64,7 @@ namespace linarr {
  * of edges of the graph.
  *
  * A value of 0 indicates perfect left branching, and a value of 1 indicates
- * perfect right-branching.
+ * perfect right-branching. See \cite Liu2010a for further detals.
  * @param g Input graph.
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The headedness ratio as an exact rational number.
