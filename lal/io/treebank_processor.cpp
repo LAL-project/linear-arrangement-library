@@ -155,15 +155,13 @@ namespace io {
 #define mean_hierarchical_distance_idx index_of(mean_hierarchical_distance)
 #define mean_dependency_distance_idx index_of(mean_dependency_distance)
 #define C_idx index_of(C)
-#define C_exp1_idx index_of(C_exp_1)
-#define C_exp2_idx index_of(C_exp_2)
-#define C_var_idx index_of(C_var)
-#define C_z_idx index_of(C_z)
+#define C_expected_idx index_of(C_expected)
+#define C_variance_idx index_of(C_variance)
+#define C_z_score_idx index_of(C_z_score)
 #define D_idx index_of(D)
-#define D_exp1_idx index_of(D_exp_1)
-#define D_exp2_idx index_of(D_exp_2)
-#define D_var_idx index_of(D_var)
-#define D_z_idx index_of(D_z)
+#define D_expected_idx index_of(D_expected)
+#define D_variance_idx index_of(D_variance)
+#define D_z_score_idx index_of(D_z_score)
 #define Dmin_Unconstrained_idx index_of(Dmin)
 #define Dmin_Planar_idx index_of(Dmin_Planar)
 #define Dmin_Projective_idx index_of(Dmin_Projective)
@@ -347,41 +345,26 @@ const
 
 		set_prop(C_idx, linarr::number_of_crossings(fT, algo_C));
 	}
-	if (m_what_fs[C_var_idx]) {
-		set_prop(C_var_idx, properties::variance_C_tree(fT));
+	if (m_what_fs[C_variance_idx]) {
+		set_prop(C_variance_idx, properties::variance_C_tree(fT));
 	}
-	if (m_what_fs[C_exp1_idx]) {
-		set_prop(C_exp1_idx, properties::expectation_C(fT));
-	}
-
-	if (m_what_fs[C_exp2_idx]) {
-		if (not m_what_fs[C_exp1_idx]) {
-			set_prop(C_exp1_idx, properties::expectation_C(fT));
-		}
-		if (not m_what_fs[C_var_idx]) {
-			set_prop(C_var_idx, properties::variance_C_tree(fT));
-		}
-
-#if defined DEBUG
-		assert(prop_set[C_exp1_idx]);
-		assert(prop_set[C_var_idx]);
-#endif
-		set_prop(C_exp2_idx, props[C_var_idx] + square(props[C_exp1_idx]));
+	if (m_what_fs[C_expected_idx]) {
+		set_prop(C_expected_idx, properties::expectation_C(fT));
 	}
 
 	// z-score of C
-	if (m_what_fs[C_z_idx]) {
+	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
 			set_prop(C_idx, linarr::number_of_crossings(fT));
 		}
 		// we need V[C]
-		if (not m_what_fs[C_var_idx]) {
-			set_prop(C_var_idx, properties::variance_C_tree(fT));
+		if (not m_what_fs[C_variance_idx]) {
+			set_prop(C_variance_idx, properties::variance_C_tree(fT));
 		}
 		// we need E[C]
-		if (not m_what_fs[C_exp1_idx]) {
-			set_prop(C_exp1_idx, properties::expectation_C(fT));
+		if (not m_what_fs[C_expected_idx]) {
+			set_prop(C_expected_idx, properties::expectation_C(fT));
 		}
 
 #if defined DEBUG
@@ -389,8 +372,8 @@ const
 		assert(prop_set[C_var_idx]);
 		assert(prop_set[C_exp1_idx]);
 #endif
-		set_prop(C_z_idx,
-			(props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx])
+		set_prop(C_z_score_idx,
+			(props[C_idx] - props[C_expected_idx])/std::sqrt(props[C_variance_idx])
 		);
 	}
 
@@ -400,41 +383,26 @@ const
 	if (m_what_fs[D_idx]) {
 		set_prop(D_idx, linarr::sum_length_edges(fT));
 	}
-	if (m_what_fs[D_var_idx]) {
-		set_prop(D_var_idx, properties::variance_D(fT));
+	if (m_what_fs[D_variance_idx]) {
+		set_prop(D_variance_idx, properties::variance_D(fT));
 	}
-	if (m_what_fs[D_exp1_idx]) {
-		set_prop(D_exp1_idx, properties::expectation_D(fT));
-	}
-
-	if (m_what_fs[D_exp2_idx]) {
-		if (not m_what_fs[D_exp1_idx]) {
-			set_prop(D_exp1_idx, properties::expectation_D(fT));
-		}
-		if (not m_what_fs[D_var_idx]) {
-			set_prop(D_var_idx, properties::variance_D(fT));
-		}
-
-#if defined DEBUG
-		assert(prop_set[D_exp1_idx]);
-		assert(prop_set[D_var_idx]);
-#endif
-		set_prop(D_exp2_idx, props[D_var_idx] + square(props[D_exp1_idx]));
+	if (m_what_fs[D_expected_idx]) {
+		set_prop(D_expected_idx, properties::expectation_D(fT));
 	}
 
 	// z-score of D
-	if (m_what_fs[D_z_idx]) {
+	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
 			set_prop(D_idx, linarr::sum_length_edges(fT));
 		}
 		// we need V[D]
-		if (not m_what_fs[D_var_idx]) {
-			set_prop(D_var_idx, properties::variance_D(fT));
+		if (not m_what_fs[D_variance_idx]) {
+			set_prop(D_variance_idx, properties::variance_D(fT));
 		}
 		// we need E[D]
-		if (not m_what_fs[D_exp1_idx]) {
-			set_prop(D_exp1_idx, properties::expectation_D(fT));
+		if (not m_what_fs[D_expected_idx]) {
+			set_prop(D_expected_idx, properties::expectation_D(fT));
 		}
 
 #if defined DEBUG
@@ -442,8 +410,8 @@ const
 		assert(prop_set[D_var_idx]);
 		assert(prop_set[D_exp1_idx]);
 #endif
-		set_prop(D_z_idx,
-			(props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx])
+		set_prop(D_z_score_idx,
+			(props[D_idx] - props[D_expected_idx])/std::sqrt(props[D_variance_idx])
 		);
 	}
 

@@ -110,28 +110,20 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::properties::expectation_C for details.
 	 */
-	C_exp_1,
-	/**
-	 * @brief Second moment of expectation of \f$C\f$, \f$E[C^2]\f$.
-	 *
-	 * This is calculated as \f$E[C^2]=V[C] + E[C]^2\f$. See
-	 * @ref lal::properties::variance_C_tree for details on how the variance
-	 * of \f$C\f$, \f$V[C]\f$, is calculated.
-	 */
-	C_exp_2,
+	C_expected,
 	/**
 	 * @brief Variance of \f$C\f$, \f$V[C]\f$.
 	 *
 	 * See @ref lal::properties::variance_C_tree for details.
 	 */
-	C_var,
+	C_variance,
 	/**
 	 * @brief z-score of \f$C\f$, \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
 	 *
 	 * See @ref lal::properties::variance_C_tree for details on how the
 	 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
 	 */
-	C_z,
+	C_z_score,
 
 	// D
 
@@ -146,28 +138,20 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::properties::expectation_D for details.
 	 */
-	D_exp_1,
-	/**
-	 * @brief Second moment of expectation of \f$D\f$, \f$E[D^2]\f$.
-	 *
-	 * This is calculated as \f$E[D^2]=V[D] + E[D]^2\f$. See
-	 * @ref lal::properties::variance_D for details on how the variance
-	 * of \f$D\f$, \f$V[D]\f$, is calculated.
-	 */
-	D_exp_2,
+	D_expected,
 	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *
 	 * See @ref lal::properties::variance_D for details.
 	 */
-	D_var,
+	D_variance,
 	/**
 	 * @brief z-score of \f$D\f$, \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
 	 *
 	 * See @ref lal::properties::variance_D for details on how the
 	 * variance of \f$D\f$, \f$V[D]\f$, is calculated.
 	 */
-	D_z,
+	D_z_score,
 	/**
 	 * @brief Unconstrained minimum sum of length of edges.
 	 *
