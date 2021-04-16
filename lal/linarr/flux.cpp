@@ -214,7 +214,7 @@ inline vector<dependency_flux> __compute_flux
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
 		internal::counting_sort
-		<edge, vector<edge>::iterator, internal::countingsort::increasing_t>
+		<edge, vector<edge>::iterator, internal::countingsort::increasing_t, false>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),

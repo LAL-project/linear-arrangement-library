@@ -88,6 +88,8 @@ struct memory_counting_sort {
  * @tparam T Iterated type
  * @tparam It Iterator type
  * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
+ * @tparam memory_has_frequencies The memory passed as parameter already conatins
+ * the frequencies for the counting sort algorithm. See code for more details.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -102,6 +104,7 @@ struct memory_counting_sort {
 template<
 	typename T, typename It,
 	typename sort_type,
+	bool memory_has_frequencies,
 	std::enable_if_t<
 		is_pointer_iterator_v<T, It> &&
 		(
@@ -124,10 +127,12 @@ void counting_sort(
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
-	// calculate frequency of each element
-	for (auto it = begin; it != end; ) {
-		const std::size_t elem_key = key(*(it++));
-		mem.count[elem_key] += 1;
+	if constexpr (not memory_has_frequencies) {
+		// calculate frequency of each element
+		for (auto it = begin; it != end; ) {
+			const std::size_t elem_key = key(*(it++));
+			++mem.count[elem_key];
+		}
 	}
 
 	std::size_t total = 0;
@@ -208,7 +213,7 @@ void counting_sort(
 
 	countingsort::memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<T, It, sort_type>
+	counting_sort<T, It, sort_type, false>
 	(begin, end, largest_key+1, key, mem);
 
 	// memory is freed automatically (see destructor)
