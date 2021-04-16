@@ -82,7 +82,8 @@ HEADERS += \
 	generate/rand_ulab_free_trees.hpp \
 	generate/rand_ulab_rooted_trees.hpp \
 	generate/rand_projective_arrangements.hpp \
-	generate/tree_gen.hpp \
+	generate/tree_generator.hpp \
+	generate/tree_generator_type.hpp \
 	graphs.hpp \
 	graphs/conversions.hpp \
 	graphs/graph.hpp \

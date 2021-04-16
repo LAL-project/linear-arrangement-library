@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
@@ -240,7 +240,7 @@ private:
  *		}
  * @endcode
  */
-class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
+class rand_ulab_free_trees : public tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -253,7 +253,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
+		: tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.

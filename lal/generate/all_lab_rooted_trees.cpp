@@ -58,7 +58,7 @@ namespace generate {
 /* CONSTRUCTORS */
 
 all_lab_rooted_trees::all_lab_rooted_trees(uint32_t n) noexcept
-	: tree_gen<rooted_tree>(n),
+	: tree_generator<rooted_tree>(n),
 	  m_gen_lab_free_tree(m_n)
 {
 	init();

@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
@@ -82,7 +82,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+class all_ulab_rooted_trees : public tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 

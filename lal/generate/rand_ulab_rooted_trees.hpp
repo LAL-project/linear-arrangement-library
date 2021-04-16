@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/internal/data_array.hpp>
 
@@ -210,7 +210,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+class rand_ulab_rooted_trees : public tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -222,7 +222,7 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_gen<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+		: tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.

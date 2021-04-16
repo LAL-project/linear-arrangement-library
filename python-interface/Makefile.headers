@@ -48,7 +48,7 @@ GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/generate/rand_projective_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_rooted_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generate/tree_gen.hpp \
+					  $(LAL_INC_DIR)/lal/generate/tree_generator.hpp \
 					  $(LAL_INC_DIR)/lal/generate.hpp
 
 IO_DPHDRS			= $(GRAPHS_DPHDRS) \

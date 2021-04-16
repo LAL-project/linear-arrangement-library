@@ -58,7 +58,7 @@ namespace generate {
 /* CONSTRUCTORS */
 
 all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
-	: tree_gen<free_tree>(_n),
+	: tree_generator<free_tree>(_n),
 	  m_seq(m_n <= 2 ? 1 : m_n - 2, 0),
 	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
 {
