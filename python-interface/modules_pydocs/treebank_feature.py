@@ -17,19 +17,17 @@ C
 -----
 
 - ``C`` : Number of edge crossings :math:`C`. See ``lal.linarr.algorithms_C`` for details.
-- ``C_exp_1`` : First moment of expectation of :math:`C`, :math:`E[C]`. See ``lal.properties.expectation_C`` for details.
-- ``C_exp_2`` : Second moment of expectation of :math:`C`, :math:`E[C^2]`. This is calculated as :math:`E[C^2]=V[C] + E[C]^2`. See ``lal.properties.variance_C_tree`` for details on how the variance of :math:`C`, :math:`V[C]`, is calculated.
-- ``C_var`` : Variance of :math:`C`, :math:`V[C]`. See ``lal.properties.variance_C_tree`` for details.
-- ``C_z`` : z-score of :math:`C`, :math:`\frac{C - E[C]}{\sqrt{V[C]}}`. See ``lal.properties.variance_C_tree`` for details on how the variance of :math:`C`, :math:`V[C]`, is calculated.
+- ``C_expected`` : First moment of expectation of :math:`C`, :math:`E[C]`. See ``lal.properties.expectation_C`` for details.
+- ``C_variance`` : Variance of :math:`C`, :math:`V[C]`. See ``lal.properties.variance_C_tree`` for details.
+- ``C_z_score`` : z-score of :math:`C`, :math:`\frac{C - E[C]}{\sqrt{V[C]}}`. See ``lal.properties.variance_C_tree`` for details on how the variance of :math:`C`, :math:`V[C]`, is calculated.
 
 D
 -----
 
 - ``D`` : Sum of length of edges :math:`D`. See ``lal.linarr.sum_length_edges`` for details.
-- ``D_exp_1`` : First moment of expectation of :math:`D`, :math:`E[D]`. See ``lal.properties.expectation_D`` for details.
-- ``D_exp_2`` : Second moment of expectation of :math:`D`, :math:`E[D^2]`. This is calculated as :math:`E[D^2]=V[D] + E[D]^2`. See ``lal.properties.variance_D`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
-- ``D_var`` : Variance of :math:`D`, :math:`V[D]`. See ``lal.properties.variance_D`` for details.
-- ``D_z`` : z-score of :math:`D` , :math:`\frac{D - E[D]}{\sqrt{V[D]}}`. See ``lal.properties.variance_D`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
+- ``D_expected`` : First moment of expectation of :math:`D`, :math:`E[D]`. See ``lal.properties.expectation_D`` for details.
+- ``D_variance`` : Variance of :math:`D`, :math:`V[D]`. See ``lal.properties.variance_D`` for details.
+- ``D_z_score`` : z-score of :math:`D` , :math:`\frac{D - E[D]}{\sqrt{V[D]}}`. See ``lal.properties.variance_D`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
 
 Minimum Linear arrangement
 ------
