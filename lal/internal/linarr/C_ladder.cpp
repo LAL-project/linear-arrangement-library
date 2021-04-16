@@ -110,7 +110,6 @@ inline uint32_t __compute_C_ladder(
 
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) {
-					// terminate normally!
 					return DECIDED_C_GT;
 				}
 			}
@@ -334,10 +333,10 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 		cs[i] = __compute_C_ladder<G,true>
 				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bound);
 
-		if (cs[i] > upper_bound) {
-			std::fill(&L1[0], &L1[n], 0);
+		for (uint32_t z = 0; z < n; ++z) {
+			L1[z] = 0;
+			boolean_neighborhood[z] = 0;
 		}
-		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
 	}
 
@@ -405,10 +404,10 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 		cs[i] = __compute_C_ladder<G,true>
 				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bounds[i]);
 
-		if (cs[i] > upper_bounds[i]) {
-			std::fill(&L1[0], &L1[n], 0);
+		for (uint32_t z = 0; z < n; ++z) {
+			L1[z] = 0;
+			boolean_neighborhood[z] = 0;
 		}
-		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
 	}
 
