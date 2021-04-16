@@ -206,6 +206,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	//    (n_v, (u,v))
 	// at L[u]
 	data_array<edge_size> L(n - 1);
+
 	{
 	auto it = L.begin();
 	E_iterator<rooted_tree> Eit(t);
@@ -213,15 +214,18 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		Eit.next();
 		const edge e = Eit.get_edge();
 		const node v = e.second;
-		*it++ = make_pair(e,t.get_num_nodes_subtree(v));
-	}
+		const uint32_t suv = t.get_num_nodes_subtree(v);
+		*it++ = make_pair(e, suv);
 	}
 
 	// sort all tuples in L using the size of the subtree
-	internal::counting_sort<edge_size, edge_size*, countingsort::decreasing_t>(
+	internal::counting_sort
+	<edge_size, edge_size*, countingsort::decreasing_t>
+	(
 		L.begin(), L.end(), n, L.size(),
 		[](const edge_size& T) -> size_t { return T.second; }
 	);
+	}
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.

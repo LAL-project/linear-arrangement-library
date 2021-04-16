@@ -71,7 +71,7 @@ template<
 std::pair<node, node> retrieve_centroid(
 	const tree_type& t,
 	const uint32_t N, const uint32_t n, const node x,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
@@ -86,12 +86,9 @@ std::pair<node, node> retrieve_centroid(
 	{
 	sizes_edge.resize(2*(n - 1));
 	auto it = sizes_edge.begin();
-
 	internal::calculate_bidirectional_sizes
 	<tree_type, Iterator_Type>(t, n, x, it);
-	}
 
-	{
 	// sort all tuples in sizes_edge using the sizes
 	internal::counting_sort<edge_size, Iterator_Type, countingsort::decreasing_t>
 	(
@@ -103,10 +100,10 @@ std::pair<node, node> retrieve_centroid(
 	// put the s(u,v) into an adjacency list
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
-	M.resize(N);
+	L.resize(N);
 	for (const auto& [uv, suv] : sizes_edge) {
 		const auto [u, v] = uv;
-		M[u].push_back(std::make_pair(v,suv));
+		L[u].push_back(std::make_pair(v,suv));
 	}
 
 	// find the first centroidal vertex
@@ -114,7 +111,7 @@ std::pair<node, node> retrieve_centroid(
 	bool found = false;
 	node u = x;
 	while (not found) {
-		const auto& p = M[u][0];
+		const auto& p = L[u][0];
 		const node v = p.first;
 		const uint32_t suv = p.second;
 		u = (suv > n/2 ? v : u);
@@ -129,9 +126,9 @@ std::pair<node, node> retrieve_centroid(
 	// find the second centroidal vertex among the
 	// neighbours of the first centroidal vertex
 	node c2 = N + 1;
-	for (const auto& p : M[c1]) {
+	for (const auto& p : L[c1]) {
 		const node v = p.first;
-		if (M[v][0].second <= n/2) {
+		if (L[v][0].second <= n/2) {
 			c2 = v;
 			break;
 		}
@@ -163,7 +160,7 @@ std::pair<node, node> retrieve_centroid(
  * in \cite Hochberg2003a (see function's documentation for details).
  * @param t Input tree.
  * @param x Input node.
- * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of
+ * @param[out] L A sorted and enriched adjacency list where @e M[u] is a list of
  * pairs \f$(v,sv)\f$ where @e v is a neighbour of @e u and @e sv is the size of
  * the subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
  * @param[out] sizes_edge See documentation of method internal::calculate_suvs.
@@ -181,20 +178,20 @@ template<
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t, const node x,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t N = t.get_num_nodes();
+	const uint32_t component_size = t.get_num_nodes();
 	// calculate the size of the connected component
 	const uint32_t n = t.get_num_nodes_component(x);
 	// easy case
 	if (n == 1) {
-		return std::make_pair(x, N);
+		return std::make_pair(x, component_size);
 	}
 	// general case
-	return __lal::retrieve_centroid(t, N, n, x, M, sizes_edge);
+	return __lal::retrieve_centroid(t, component_size, n, x, L, sizes_edge);
 }
 
 /*
@@ -250,22 +247,22 @@ template<
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& M,
+	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
 	std::vector<std::pair<edge, uint32_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t N = t.get_num_nodes();
+	const uint32_t n = t.get_num_nodes();
 	// easy case
-	if (N == 1) {
+	if (n == 1) {
 		return std::make_pair(0, 1);
 	}
 	// general case
-	return __lal::retrieve_centroid(t, N, N, 0, M, sizes_edge);
+	return __lal::retrieve_centroid(t, n, n, 0, L, sizes_edge);
 }
 
 /*
- * @brief Calculate the centroid of the free tree @e t.
+ * @brief Calculate the centroid of the tree @e t.
  *
  * For details on the parameters and return value see documentation of the
  * function above.
@@ -278,9 +275,9 @@ template<
 	bool> = true
 >
 std::pair<node, node> retrieve_centroid(const T& t) {
-	std::vector<std::vector<std::pair<node,uint32_t>>> M;
+	std::vector<std::vector<std::pair<node,uint32_t>>> L;
 	std::vector<std::pair<edge, uint32_t>> sizes_edge;
-	return retrieve_centroid(t, M, sizes_edge);
+	return retrieve_centroid(t, L, sizes_edge);
 }
 
 } // -- namespace internal
