@@ -207,6 +207,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	data_array<edge_size> L(n - 1);
 
 	{
+	countingsort::memory_counting_sort<edge_size> memcs(n, n);
 	auto it = L.begin();
 	E_iterator<rooted_tree> Eit(t);
 	while (Eit.has_next()) {
@@ -215,14 +216,16 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		const node v = e.second;
 		const uint32_t suv = t.get_num_nodes_subtree(v);
 		*it++ = make_pair(e, suv);
+		++memcs.count[suv];
 	}
 
 	// sort all tuples in L using the size of the subtree
 	internal::counting_sort
-	<edge_size, edge_size*, countingsort::decreasing_t>
+	<edge_size, edge_size*, countingsort::decreasing_t, true>
 	(
-		L.begin(), L.end(), n, L.size(),
-		[](const edge_size& T) -> size_t { return T.second; }
+		L.begin(), L.end(), n,
+		[](const edge_size& T) -> size_t { return T.second; },
+		memcs
 	);
 	}
 

@@ -60,7 +60,7 @@ using namespace graphs;
 
 namespace internal {
 
-#define edge_sorted_by_vertex(u,v) (u < v ? edge(u,v) : edge(v,u) )
+#define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
@@ -111,7 +111,7 @@ inline void fill_adjP_adjN(
 
 		// Oriented edge (u,v) "leaves" node u
 		--size_adjN_u[u];
-		adjN[u][size_adjN_u[u]] = indexed_edge(0, edge_sorted_by_vertex(u,v));
+		adjN[u][size_adjN_u[u]] = indexed_edge(0, edge_sorted_by_vertex_index(u,v));
 	}
 #if defined DEBUG
 	for (node u = 0; u < n; ++u) {
@@ -168,12 +168,10 @@ inline uint32_t __compute_C_stack_based(
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 		for (node v : adjP[u]) {
-			const edge uv = edge_sorted_by_vertex(u,v);
-			const uint32_t on_top =
-				static_cast<uint32_t>(
-					S.remove(indexed_edge(edge_to_idx[uv], uv))
-				);
-			C += on_top;
+			const edge uv = edge_sorted_by_vertex_index(u,v);
+			const auto on_top = S.remove(indexed_edge(edge_to_idx[uv], uv));
+
+			C += static_cast<uint32_t>(on_top);
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
@@ -181,12 +179,9 @@ inline uint32_t __compute_C_stack_based(
 		S.join_sorted_all_greater(adjN[u]);
 	}
 
-	if constexpr (decide_upper_bound) {
-		return DECIDED_C_LE;
-	}
-	else {
-		return C;
-	}
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
+	return C;
 }
 
 // =============================================================================

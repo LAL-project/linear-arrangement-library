@@ -120,6 +120,8 @@ inline uint32_t __compute_C_ladder(
 		L1[p] = 0;
 	}
 
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
 	return C;
 }
 
