@@ -54,7 +54,6 @@ GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
 IO_DPHDRS			= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/basic_output.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
-					  $(TREEBANK_ERR_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/process_treebank_base.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_collection_reader.hpp \
