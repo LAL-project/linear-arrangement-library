@@ -40,6 +40,13 @@ There are several reasons why a treebank collection or a single treebank file co
 	- ``lal.io.treebank_processor``
 	- ``lal.io.treebank_collection_processor``
 
+- ``malformed_treebank``: The treebank file contains errors that should be fixed.
+	
+	In this case, method @ref lal::io::check_correctness_treebank should be run in order to obtain a report on the errors.
+	
+	Returned by:
+	- ``lal.io.treebank_processor``.
+
 - ``main_file_does_not_exist`` : Main file does not exist.
 	
 	Returned by:
@@ -77,5 +84,13 @@ There are several reasons why a treebank collection or a single treebank file co
 	Returned by:
 	
 	- ``lal.io.treebank_collection_processor``.
+
+- ``malformed_treebank_collection``: The treebank collection contains errors that should be fixed.
+	
+	In this case, method @ref lal::io::check_correctness_treebank_collection should be run in order to obtain a report on the errors.
+	
+	Returned by:
+	- ``lal.io.treebank_collection_processor``.
+
 };
 """
