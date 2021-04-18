@@ -181,6 +181,7 @@ target_sources(
 		internal/graphs/union_find.hpp
 		internal/graphs/utils.hpp
 		#      io
+		internal/io/check_correctness.hpp
 		internal/io/treebank_feature_string.hpp
 		#      iterators
 		#          nothing

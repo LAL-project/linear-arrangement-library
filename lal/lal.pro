@@ -103,6 +103,7 @@ HEADERS += \
 	internal/graphs/size_subtrees.hpp \
 	internal/graphs/tree_classification.hpp \
 	internal/graphs/tree_type_string.hpp \
+	internal/io/check_correctness.hpp \
 	internal/io/treebank_feature_string.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \

@@ -75,6 +75,8 @@ enum class treebank_error {
 	 */
 	no_features,
 
+	// TREEBANK FILE
+
 	/**
 	 * @brief A treebank was not found in disk.
 	 *
@@ -103,6 +105,19 @@ enum class treebank_error {
 	output_file_could_not_be_opened,
 
 	/**
+	 * @brief The treebank file contains errors that should be fixed.
+	 *
+	 * In this case, method @ref lal::io::check_correctness_treebank should be
+	 * run in order to obtain a report on the errors.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_processor
+	 */
+	malformed_treebank_file,
+
+	// TREEBANK COLLECTION
+
+	/**
 	 * @brief Main file does not exist.
 	 *
 	 * Returned by:
@@ -126,7 +141,8 @@ enum class treebank_error {
 	 */
 	output_directory_does_not_exist,
 	/**
-	 * @brief The file containing the result of processing a treebank collection could not be opened.
+	 * @brief The file containing the result of processing a treebank collection
+	 * could not be opened.
 	 *
 	 * Returned by:
 	 * - @ref lal::io::treebank_collection_processor.
@@ -146,6 +162,16 @@ enum class treebank_error {
 	 * - @ref lal::io::treebank_collection_processor.
 	 */
 	some_treebank_file_failed,
+	/**
+	 * @brief The treebank collection contains errors that should be fixed.
+	 *
+	 * In this case, method @ref lal::io::check_correctness_treebank_collection
+	 * should be run in order to obtain a report on the errors.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_collection_processor
+	 */
+	malformed_treebank_collection,
 };
 
 } // -- namespace io

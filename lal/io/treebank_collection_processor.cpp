@@ -38,7 +38,7 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/io/treebank_collection_processor.hpp>
 
 // C includes
@@ -60,6 +60,7 @@ using namespace std;
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
+#include <lal/internal/io/check_correctness.hpp>
 
 inline
 std::string make_result_file_name(const std::string& treebank_name) noexcept {
@@ -106,6 +107,16 @@ treebank_error treebank_collection_processor::init
 treebank_error treebank_collection_processor::process(const string& join_to_file)
 noexcept
 {
+	if (m_check_before_process) {
+		const bool err =
+		internal::check_correctness_treebank_collection<true>
+		(m_main_file, m_num_threads);
+
+		if (err) {
+			return treebank_error::malformed_treebank_collection;
+		}
+	}
+
 	// -- this function assumes that init did not return any error -- //
 
 	// check that there is something to be computed

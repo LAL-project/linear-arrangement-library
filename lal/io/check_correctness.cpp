@@ -39,200 +39,29 @@
  *
  ********************************************************************/
 
-// C includes
-#include <omp.h>
-
 // C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <filesystem>
-#include <algorithm>
-#include <charconv>
-#include <fstream>
-#include <string>
 #include <vector>
 using namespace std;
 
 // lal includes
-#include <lal/graphs/directed_graph.hpp>
 #include <lal/io/report_correctness.hpp>
-#include <lal/internal/graphs/cycles.hpp>
+#include <lal/internal/io/check_correctness.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace io {
 
-inline directed_graph head_vector_to_directed_graph(const head_vector& hv) noexcept
-{
-	const uint32_t n = static_cast<uint32_t>(hv.size());
-	directed_graph t(n);
-	for (uint32_t i = 0; i < n; ++i) {
-		if (hv[i] != 0) {
-			// add the edge:
-			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, hv[i] - 1);
-		}
-	}
-	t.finish_bulk_add(true);
-	return t;
-}
-
-#define file_does_not_exist(F) \
-"Error: Treebank '" + F + "' does not exist."
-
-#define file_could_not_be_opened(F) \
-"Error: Treebank '" + F + "' could not be opened."
-
-#define invalid_integer(i, chunk) \
-"Error: Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') is not a valid non-negative integer number."
-
-#define number_out_of_bounds(i) \
-"Error: Number at position '" + std::to_string(i) + "' (value: " + std::to_string(hv[i]) + ") is out of bounds."
-
-#define wrong_num_roots(r) \
-"Error: Wrong number of roots: " + std::to_string(n_roots) + "."
-
-#define wrong_num_edges(n, m) \
-"Error: Wrong number of edges. Number of vertices is '" + std::to_string(n) + \
-	"'. Number of edges is '" + std::to_string(m) + "'; " + \
-	"should be '" + std::to_string(n-1) + "'."
-
-#define graph_has_cycles \
-"Error: The graph described is not a tree, i.e., it has cycles."
-
-#define isolated_vertex(u) \
-"Error: Vertex '" + std::to_string(u) + "' is isolated."
-
-#define self_loop(pos) \
-"Error: found a self-loop at position '" + std::to_string(pos) + "'."
-
-inline void find_errors
-(
-	const string& current_line,
-	const size_t line,
-	vector<report_treebank_file>& treebank_err_list
-)
-{
-	bool non_numeric_characters = false;
-	head_vector hv;
-
-	// ensure there are only numeric characters
-	{
-	size_t i = 1;
-	stringstream ss(current_line);
-	string chunk;
-	while (ss >> chunk) {
-
-		uint32_t value;
-		const auto result = std::from_chars
-		(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
-
-		if (result.ec == std::errc::invalid_argument) {
-			treebank_err_list.emplace_back
-			(line, invalid_integer(i, chunk));
-			non_numeric_characters = true;
-		}
-		else {
-			hv.push_back(value);
-		}
-
-		++i;
-	}
-	}
-
-	// if the current line contains non-numeric characters then the
-	// appropriate error messages have been stored, and so we can skip
-	// to the next line
-	if (non_numeric_characters) { return; }
-
-	// number of nodes of the graph
-	const uint32_t n = static_cast<uint32_t>(hv.size());
-
-	uint32_t n_roots = 0;
-	bool can_make_graph = true;
-
-	// inspect the head vector
-	for (size_t i = 0; i < hv.size(); ++i) {
-		if (hv[i] == 0) {
-			++n_roots;
-			continue;
-		}
-
-		// ensure that the number is within bounds
-		if (hv[i] > hv.size()) {
-			treebank_err_list.emplace_back(line, number_out_of_bounds(i));
-			can_make_graph = false;
-		}
-		// self loop
-		else if (hv[i] == i + 1) {
-			treebank_err_list.emplace_back(line, self_loop(i + 1));
-			can_make_graph = false;
-		}
-	}
-
-	// check there is exactly one root
-	if (n_roots != 1) {
-		treebank_err_list.emplace_back(line, wrong_num_roots(n_roots));
-	}
-
-	if (can_make_graph) {
-		// ignore singleton graphs
-		if (n == 1) { return; }
-
-		// make a directed graph with the values
-		const auto dgraph = head_vector_to_directed_graph(hv);
-		const bool has_cycles = internal::has_undirected_cycles(dgraph);
-		if (has_cycles) {
-			treebank_err_list.emplace_back(line, graph_has_cycles);
-		}
-
-		// find isolated vertices
-		for (node u = 0; u < dgraph.get_num_nodes(); ++u) {
-			if (dgraph.get_degree(u) == 0) {
-				treebank_err_list.emplace_back(line, isolated_vertex(u));
-			}
-		}
-		// check the number of edges is correct
-		if (dgraph.get_num_edges() != dgraph.get_num_nodes() - 1) {
-			treebank_err_list.emplace_back
-			(line, wrong_num_edges(dgraph.get_num_nodes(), dgraph.get_num_edges()));
-		}
-	}
-}
-
 // line, what
 vector<report_treebank_file>
 check_correctness_treebank(const string& treebank_filename)
 noexcept
 {
-	if (not filesystem::exists(treebank_filename)) {
-		return {{0, file_does_not_exist(treebank_filename)}};
-	}
-
-	ifstream fin(treebank_filename);
-	if (not fin.is_open()) {
-		return {{0, file_could_not_be_opened(treebank_filename)}};
-	}
-
-	vector<report_treebank_file> treebank_err_list;
-	string current_line;
-
-	size_t line = 1;
-	while (getline(fin, current_line)) {
-		if (current_line == "") {
-			// do nothing
-		}
-		else {
-			find_errors(current_line, line, treebank_err_list);
-		}
-
-		++line;
-	}
-
-	return treebank_err_list;
+	return internal::check_correctness_treebank<false>
+			(treebank_filename);
 }
 
 // file, line, what
@@ -240,77 +69,8 @@ vector<report_treebank_collection>
 check_correctness_treebank_collection(const string& main_file_name, size_t n_threads)
 noexcept
 {
-	if (not filesystem::exists(main_file_name)) {
-		return {{"-", 0, 0, file_does_not_exist(main_file_name)}};
-	}
-	ifstream fin_main_file(main_file_name);
-	if (not fin_main_file.is_open()) {
-		return {{"-", 0, 0, file_could_not_be_opened(main_file_name)}};
-	}
-
-	vector<report_treebank_collection> dataset_err_list;
-
-	#pragma omp parallel num_threads(n_threads)
-	{
-
-	const int tid = omp_get_thread_num();
-	if (tid == 0) {
-
-	size_t main_file_line = 1;
-	string id, treebankname;
-	while (fin_main_file >> id >> treebankname) {
-		// make full path to the treebank
-		filesystem::path treebank_full_path(main_file_name);
-		treebank_full_path.replace_filename(treebankname);
-		const string full_path_as_string = treebank_full_path.string();
-
-		#pragma omp task
-		{
-		// check correctess of treebank
-		const auto treebank_err_list =
-			check_correctness_treebank(full_path_as_string);
-
-		// append errors found in the treebank to
-		// the list of errors of this dataset
-		#pragma omp critical
-		{
-		for (const auto& report_treebank : treebank_err_list) {
-			if (report_treebank.get_line_number() > 0) {
-				dataset_err_list.emplace_back(
-					full_path_as_string,
-					main_file_line,
-					report_treebank.get_line_number(),
-					report_treebank.get_error_message()
-				);
-			}
-			else {
-				const auto& err_msg = report_treebank.get_error_message();
-				string new_err_msg;
-				if (err_msg.find("exist") != std::string::npos) {
-					new_err_msg = "Treebank file does not exist";
-				}
-				else if (err_msg.find("opened") != std::string::npos) {
-					new_err_msg = "Treebank file could not be opened";
-				}
-
-				dataset_err_list.emplace_back(
-					full_path_as_string,
-					main_file_line,
-					report_treebank.get_line_number(),
-					new_err_msg
-				);
-			}
-		}
-		}
-
-		}
-		++main_file_line;
-	}
-
-	}
-	}
-
-	return dataset_err_list;
+	return internal::check_correctness_treebank_collection<false>
+			(main_file_name, n_threads);
 }
 
 } // -- namespace io

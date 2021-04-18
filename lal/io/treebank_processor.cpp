@@ -68,6 +68,7 @@ using namespace std;
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
+#include <lal/internal/io/check_correctness.hpp>
 
 template<typename T>
 double to_double(const T& x) {
@@ -204,6 +205,13 @@ treebank_error treebank_processor::init(
 }
 
 treebank_error treebank_processor::process() noexcept {
+	if (m_check_before_process) {
+		const bool err = internal::check_correctness_treebank<true>(m_treebank_filename);
+		if (err) {
+			return treebank_error::malformed_treebank_file;
+		}
+	}
+
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
 	{ return treebank_error::no_features; }

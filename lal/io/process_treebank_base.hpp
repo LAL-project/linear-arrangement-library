@@ -60,11 +60,6 @@ class process_treebank_base {
 public:
 	// MODIFIERS
 
-	/// Clear the features in the processor.
-	inline void clear_features() noexcept {
-		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
-	}
-
 	/**
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
@@ -79,6 +74,17 @@ public:
 	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
 
 	// SETTERS
+
+	/// Should the treebank file or collection be checked for errors prior to
+	/// processing?
+	inline void set_check_before_process(bool v) noexcept {
+		m_check_before_process = v;
+	}
+
+	/// Clear the features in the processor.
+	inline void clear_features() noexcept {
+		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
+	}
 
 	/**
 	 * @brief Sets the separator character.
@@ -119,6 +125,8 @@ protected:
 	/// The list of features to be computed.
 	std::array<bool, __treebank_feature_size> m_what_fs;
 
+	/// Process the treebank file or collection prior to processing.
+	bool m_check_before_process = true;
 	/// Character used as separator
 	char m_separator = '\t';
 	/// Output a header for each file
