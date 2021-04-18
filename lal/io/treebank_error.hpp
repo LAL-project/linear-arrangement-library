@@ -105,6 +105,14 @@ enum class treebank_error {
 	output_file_could_not_be_opened,
 
 	/**
+	 * @brief An empty line was found in the file being processed.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_reader
+	 */
+	empty_line_found,
+
+	/**
 	 * @brief The treebank file contains errors that should be fixed.
 	 *
 	 * In this case, method @ref lal::io::check_correctness_treebank should be

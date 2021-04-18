@@ -49,6 +49,8 @@
 #include <sstream>
 #include <string>
 
+#include <iostream>
+
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/io/report_correctness.hpp>
@@ -259,6 +261,12 @@ noexcept
 
 	size_t line = 1;
 	while (getline(fin, current_line)) {
+		std::cout
+			<< "line (" << line << "): '"
+			<< current_line << "' "
+			<< "length: " << current_line.length()
+			<< std::endl;
+
 		if (current_line == "") {
 			// do nothing
 		}

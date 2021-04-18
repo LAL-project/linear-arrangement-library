@@ -62,6 +62,8 @@ using namespace std;
 #include <lal/internal/io/treebank_feature_string.hpp>
 #include <lal/internal/io/check_correctness.hpp>
 
+#define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
+
 inline
 std::string make_result_file_name(const std::string& treebank_name) noexcept {
 	return treebank_name + ".csv";
@@ -158,6 +160,7 @@ noexcept
 			{
 				// declare and initialise treebank processor
 				treebank_processor tbproc;
+				tbproc.set_check_before_process(false);
 				tbproc.init(
 					treebank_file_full_path.string(),
 					output_file_full_path.string(),
@@ -168,7 +171,7 @@ noexcept
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
 
-				// add all features
+				// add features in this treebank collection processor
 				for (size_t i = 0; i < __treebank_feature_size; ++i) {
 					if (m_what_fs[i]) {
 						tbproc.add_feature(static_cast<treebank_feature>(i));
@@ -198,7 +201,7 @@ noexcept
 			m_errors_from_processing.push_back(make_tuple(
 				err,
 				m_main_file,
-				"treebank dataset main file"
+				"treebank collection main file"
 			));
 		}
 	}
@@ -239,11 +242,7 @@ const noexcept
 
 		for (size_t i = 0; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
-				output_together
-					<< m_separator
-					<< internal::treebank_feature_string(
-						   static_cast<treebank_feature>(i)
-					   );
+				output_together << m_separator << feature_to_str(i);
 			}
 		}
 		output_together << endl;
@@ -286,7 +285,10 @@ const noexcept
 
 		const bool success = filesystem::remove(path_to_treebank_result);
 		if (not success and m_be_verbose >= 2) {
-			cerr << "Treebank result file '" << path_to_treebank_result << "' could not be removed." << endl;
+			cerr << "Treebank result file '"
+				 << path_to_treebank_result
+				 << "' could not be removed."
+				 << endl;
 		}
 	}
 

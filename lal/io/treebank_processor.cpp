@@ -185,6 +185,8 @@ namespace io {
 #define flux_mean_size_idx index_of(flux_mean_size)
 #define flux_min_size_idx index_of(flux_min_size)
 
+#define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
+
 // CLASS METHODS
 
 treebank_error treebank_processor::init(
@@ -242,18 +244,12 @@ treebank_error treebank_processor::process() noexcept {
 		// find the first feature
 		while (not m_what_fs[i]) { ++i; }
 
-		out_lang_file << internal::treebank_feature_string(
-							 static_cast<treebank_feature>(i)
-						 );
+		out_lang_file << feature_to_str(i);
 		++i;
 
 		for (; i < m_what_fs.size(); ++i) {
 			if (m_what_fs[i]) {
-				out_lang_file
-					<< m_separator
-					<< internal::treebank_feature_string(
-						   static_cast<treebank_feature>(i)
-					   );
+				out_lang_file << m_separator << feature_to_str(i);
 			}
 		}
 		out_lang_file << endl;
@@ -264,9 +260,11 @@ treebank_error treebank_processor::process() noexcept {
 	// process the current treebank
 	rooted_tree rT;
 	while (tbread.has_tree()) {
-		tbread.next_tree();
-		rT = tbread.get_tree();
-		process_tree<rooted_tree, ofstream>(rT, out_lang_file);
+		const auto err = tbread.next_tree();
+		if (err == treebank_error::no_error) {
+			rT = tbread.get_tree();
+			process_tree<rooted_tree, ofstream>(rT, out_lang_file);
+		}
 	}
 
 	const auto end = std::chrono::system_clock::now();
