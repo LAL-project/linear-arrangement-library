@@ -40,6 +40,12 @@ There are several reasons why a treebank collection or a single treebank file co
 	- ``lal.io.treebank_processor``
 	- ``lal.io.treebank_collection_processor``
 
+- ``empty_line_found``: An empty line was found in the file being processed.
+	
+	Returned by:
+	
+	- ``lal.io.treebank_reader``
+	
 - ``malformed_treebank``: The treebank file contains errors that should be fixed.
 	
 	In this case, method @ref lal::io::check_correctness_treebank should be run in order to obtain a report on the errors.
