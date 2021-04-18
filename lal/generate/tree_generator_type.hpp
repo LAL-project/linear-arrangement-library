@@ -82,7 +82,7 @@ struct exhaustive_random_type {
 		std::conditional_t<is_exhaustive, exhaustive_t, random_t>
 		type;
 };
-/// Shorthand of @ref random_exhaustive_type.
+/// Shorthand of @ref exhaustive_random_type.
 template<bool is_exhaustive>
 using exhaustive_random_type_t =
 	typename exhaustive_random_type<is_exhaustive>::type;

@@ -50,7 +50,7 @@ namespace io {
 /**
  * @brief The features that can be computed in automatic processing of treebanks.
  *
- * Classes @ref lal::io::treebank_dataset_processor and
+ * Classes @ref lal::io::treebank_collection_processor and
  * @ref lal::io::treebank_processor
  * are designed to process treebanks in an automatic fashion, meaning that they
  * process the trees and calculate a fixed set of features, the results of which

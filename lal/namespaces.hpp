@@ -61,7 +61,7 @@
  * 
  * This library offers a variety of algorithms related to linear arrangements of graphs so as to provide to researchers in the field of Quantitative Linguistics a toolset with which they can perform statistical analyses on different corpora of languages efficiently and effectively. Therefore, this library implements several state-of-the-art algorithms and offers a variety of functionalities. While most of the functions have been generalised to be applicable to graphs, we also provide specialised functions for trees, which are more efficient than their more general counterparts.
  * 
- * The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank dataset processing. We offer a class that automatically processes a dataset and computes several metrics based on the capabilities of the library. See class @ref lal::io::treebank_dataset_processor for details. We also provide classes for custom processing of treebanks (see @ref lal::io::treebank_dataset_reader and @ref lal::io::treebank_reader).
+ * The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank collection processing. We offer a class that automatically processes a collection and computes several metrics based on the capabilities of the library. See class @ref lal::io::treebank_collection_processor for details. We also provide classes for custom processing of treebanks (see @ref lal::io::treebank_collection_reader and @ref lal::io::treebank_reader).
  * 
  * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
  * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
@@ -316,10 +316,9 @@ namespace graphs {}
  * - Edge list. See @ref lal::io::read_edge_list function.
  * - Head vector. See @ref lal::io::read_head_vector function.
  * 
- * Other features contained in this namespace are:
- * - Automatic processing of a treebank dataset (see @ref lal::io::treebank_dataset_processor)
- * - Custom processing of a treebank dataset (see @ref lal::io::treebank_dataset_reader)
- * - Custom processing of single treebank file (see @ref lal::io::treebank_reader)
+ * Users can also process collection of trees (called treebank files), and collections of treebank files (obviously, a treebank collection). One can process automatically a treebank file (see @ref lal::io::treebank_processor) or a treebank collection (see @ref lal::io::treebank_collection_processor), and iterate through the trees of a treebank file (see @ref lal::io::treebank_reader) and through the treebank files within a treebank collection (see @ref lal::io::treebank_collection_reader).
+ * 
+ * Furthermore, since treebanks may contain errors (from the standpoint of this library), users are also provided with function to check the correctess of such files (see @ref lal::io::check_correctness_treebank and @ref lal::io::check_correctness_treebank_collection).
  */
 namespace io {}
 

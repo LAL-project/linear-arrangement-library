@@ -59,7 +59,7 @@ namespace io {
  * @brief Automatic processing of treebank files.
  *
  * This class, the objects of which will be referred to as the "processors",
- * has the goal to ease the processing a whole treebank dataset and produce
+ * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
  * @ref lal::io::treebank_feature for details on the features available.
  *
@@ -88,7 +88,7 @@ namespace io {
  * returns a value of the enumeration @ref treebank_error.
  *
  * The usage of this class is a lot simpler than that of class
- * @ref treebank_dataset_reader. For example:
+ * @ref treebank_collection_reader. For example:
  * @code
  *		treebank_processor tbproc;
  *		// initialise the processor without features (remmeber to check for errors)
@@ -101,13 +101,12 @@ namespace io {
  */
 class treebank_processor : public process_treebank_base {
 public:
-	// PROCESS THE TREEBANK DATASET
+	// PROCESS THE TREEBANK collection
 
 	/**
-	 * @brief Initialise the processor with a new dataset.
+	 * @brief Initialise the processor with a new collection.
 	 * @param treebank_input_file File listing all the treebanks.
 	 * @param output_file File where the results are to be stored.
-	 * @param all_features Should the feature list contain all possible features?
 	 * @param treebank_id A nickname for this treebank (for example, an ISO code).
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:

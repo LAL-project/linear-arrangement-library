@@ -181,8 +181,6 @@ public:
 	 * @brief Initialise the processor with a new collection.
 	 * @param main_file File listing all the treebanks.
 	 * @param output_directory Directory where the result files are to be stored.
-	 * @param all_features Should the feature list contain all possible features?
-	 * @param n_threads Number of threads to use in a parallel application.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::main_file_does_not_exist

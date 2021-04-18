@@ -1,7 +1,7 @@
 r"""
 The features that can be computed in automatic processing of treebanks.
 
-Classes ``lal.io.treebank_dataset_processor`` and ``lal.io.treebank_processor`` are designed to process treebanks in an automatic fashion, meaning that they process the trees and calculate a fixed set of features, the results of which are stored in files. In this enumeration users will find a complete list of all the features that can be calculated using those two classes.
+Classes ``lal.io.treebank_collection_processor`` and ``lal.io.treebank_processor`` are designed to process treebanks in an automatic fashion, meaning that they process the trees and calculate a fixed set of features, the results of which are stored in files. In this enumeration users will find a complete list of all the features that can be calculated using those two classes.
 
 Users will find the feature values after every bullet marker.
 
