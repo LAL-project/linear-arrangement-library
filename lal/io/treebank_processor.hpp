@@ -139,10 +139,7 @@ public:
 	treebank_error process() noexcept;
 
 private:
-	/**
-	 * @brief Process a single tree in a treebank.
-	 *
-	 */
+	/// Process a single tree in a treebank.
 	template<class TREE, class OUT_STREAM>
 	void process_tree(const TREE& rT, OUT_STREAM& out_lab_file) const;
 

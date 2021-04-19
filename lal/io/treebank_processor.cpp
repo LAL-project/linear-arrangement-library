@@ -193,6 +193,130 @@ namespace io {
 
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
 
+inline void output_tree_type_header(
+	const char& m_separator,
+	bool is_first,
+	ofstream& out_treebank_file
+)
+noexcept
+{
+	size_t j = 0;
+	if (is_first) {
+		out_treebank_file
+			<< internal::tree_type_string(internal::array_of_tree_types[j]);
+		j = 1;
+	}
+
+	for (; j < graphs::__tree_type_size; ++j) {
+		out_treebank_file
+			<< m_separator
+			<< internal::tree_type_string(internal::array_of_tree_types[j]);
+	}
+}
+
+inline void output_tree_type_values(
+	const char& m_separator,
+	bool is_first,
+	free_tree& fT,
+	ofstream& out_treebank_file
+)
+noexcept
+{
+	// output the tree type
+
+	if (not fT.is_tree_type_valid()) {
+		fT.calculate_tree_type();
+	}
+#if defined DEBUG
+		assert(fT.is_tree_type_valid());
+#endif
+
+	size_t j = 0;
+	if (is_first) {
+		const auto tt = internal::array_of_tree_types[j];
+		if (fT.is_of_tree_type(tt)) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+		j = 1;
+	}
+
+	for (; j < graphs::__tree_type_size; ++j) {
+		const auto tt = internal::array_of_tree_types[j];
+		out_treebank_file << m_separator;
+
+		if (fT.is_of_tree_type(tt)) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+	}
+}
+
+inline void output_syndepstruct_type_header(
+	const char& m_separator,
+	bool is_first,
+	ofstream& out_treebank_file
+)
+noexcept
+{
+	size_t j = 0;
+	if (is_first) {
+		out_treebank_file
+			<< internal::syntactic_dependency_structure_type_to_string(
+				   internal::array_of_syntactic_dependency_structure_types[j]
+			   );
+		j = 1;
+	}
+
+	for (; j < linarr::__tree_structure_type_size; ++j) {
+		out_treebank_file
+			<< m_separator
+			<< internal::syntactic_dependency_structure_type_to_string(
+				   internal::array_of_syntactic_dependency_structure_types[j]
+			   );
+	}
+}
+
+inline void output_syndepstruct_type_values(
+	const char& m_separator,
+	bool is_first,
+	const rooted_tree& rT,
+	ofstream& out_treebank_file
+)
+noexcept
+{
+	const auto v = linarr::classify_syntactic_dependency_structure(rT);
+
+	size_t j = 0;
+	if (is_first) {
+		const auto tt = internal::array_of_syntactic_dependency_structure_types[j];
+		const size_t idx_tt = static_cast<size_t>(tt);
+		if (v[idx_tt]) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+		j = 1;
+	}
+
+	for (; j < linarr::__tree_structure_type_size; ++j) {
+		const auto tt = internal::array_of_syntactic_dependency_structure_types[j];
+		const size_t idx_tt = static_cast<size_t>(tt);
+		out_treebank_file << m_separator;
+		if (v[idx_tt]) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+	}
+}
+
 // CLASS METHODS
 
 treebank_error treebank_processor::init(
@@ -256,34 +380,40 @@ treebank_error treebank_processor::process() noexcept {
 		// find the first feature
 		while (not m_what_fs[i]) { ++i; }
 
-		out_treebank_file << feature_to_str(i);
-		++i;
+		if (i == tree_type_idx) {
+			output_tree_type_header
+			(m_separator, true, out_treebank_file);
 
-		for (; i < m_what_fs.size(); ++i) {
-			if (i == tree_type_idx) { continue; }
-			if (i == sdst_idx) { continue; }
-			if (m_what_fs[i]) {
-				out_treebank_file << m_separator << feature_to_str(i);
+			if (m_what_fs[sdst_idx]) {
+				output_syndepstruct_type_header
+				(m_separator, false, out_treebank_file);
 			}
 		}
-
-		// output tree type header
-		if (m_what_fs[tree_type_idx]) {
-			for (size_t j = 0; j < graphs::__tree_type_size; ++j) {
-				out_treebank_file
-					<< m_separator
-					<< internal::tree_type_string(internal::array_of_tree_types[j]);
-			}
+		else if (i == sdst_idx) {
+			output_syndepstruct_type_header
+			(m_separator, true, out_treebank_file);
 		}
+		else {
+			out_treebank_file << feature_to_str(i);
+			++i;
+			for (; i < tree_type_idx; ++i) {
+				if (i == tree_type_idx) { continue; }
+				if (i == sdst_idx) { continue; }
+				if (m_what_fs[i]) {
+					out_treebank_file << m_separator << feature_to_str(i);
+				}
+			}
 
-		// output syntactic dependency structure type header
-		if (m_what_fs[sdst_idx]) {
-			for (size_t j = 0; j < linarr::__tree_structure_type_size; ++j) {
-				out_treebank_file
-					<< m_separator
-					<< internal::syntactic_dependency_structure_type_to_string(
-						   internal::array_of_syntactic_dependency_structure_types[j]
-					   );
+			// output tree type header
+			if (m_what_fs[tree_type_idx]) {
+				output_tree_type_header
+				(m_separator, false, out_treebank_file);
+			}
+
+			// output syntactic dependency structure type header
+			if (m_what_fs[sdst_idx]) {
+				output_syndepstruct_type_header
+				(m_separator, false, out_treebank_file);
 			}
 		}
 
@@ -516,53 +646,34 @@ const
 	// find the first feature
 	while (not m_what_fs[i]) { ++i; }
 
-	out_treebank_file << props[i];
-	++i;
+	if (i == tree_type_idx) {
+		output_tree_type_values
+		(m_separator, true, fT, out_treebank_file);
 
-	for (; i < m_what_fs.size(); ++i) {
-		if (i == tree_type_idx) { continue; }
-		if (i == sdst_idx) { continue; }
-		if (m_what_fs[i]) {
-			out_treebank_file << m_separator << props[i];
+		if (m_what_fs[sdst_idx]) {
+			output_syndepstruct_type_values
+			(m_separator, false, rT, out_treebank_file);
 		}
 	}
+	else if (i == sdst_idx) {
+		output_syndepstruct_type_values
+		(m_separator, true, rT, out_treebank_file);
+	}
+	else {
+		out_treebank_file << props[i];
+		++i;
 
-	if (m_what_fs[tree_type_idx]) {
-		// output the tree type
-		fT.calculate_tree_type();
-#if defined DEBUG
-		assert(fT.is_tree_type_valid());
-#endif
-		for (size_t j = 0; j < graphs::__tree_type_size; ++j) {
-			const auto tt = internal::array_of_tree_types[j];
-			out_treebank_file << m_separator;
-
-			if (fT.is_of_tree_type(tt)) {
-				out_treebank_file << "1";
-			}
-			else {
-				out_treebank_file << "0";
+		for (; i < tree_type_idx; ++i) {
+			if (m_what_fs[i]) {
+				out_treebank_file << m_separator << props[i];
 			}
 		}
-	}
-	if (m_what_fs[sdst_idx]) {
-		// output the syntactic dependency structure type
 
-		const auto v = linarr::classify_syntactic_dependency_structure(rT);
-
-		for (size_t j = 0; j < linarr::__tree_structure_type_size; ++j) {
-			const auto tt =
-				internal::array_of_syntactic_dependency_structure_types[j];
-
-			const size_t idx_tt = static_cast<size_t>(tt);
-
-			out_treebank_file << m_separator;
-			if (v[idx_tt]) {
-				out_treebank_file << "1";
-			}
-			else {
-				out_treebank_file << "0";
-			}
+		if (m_what_fs[tree_type_idx]) {
+			output_tree_type_values(m_separator, false, fT, out_treebank_file);
+		}
+		if (m_what_fs[sdst_idx]) {
+			output_syndepstruct_type_values(m_separator, false, rT, out_treebank_file);
 		}
 	}
 

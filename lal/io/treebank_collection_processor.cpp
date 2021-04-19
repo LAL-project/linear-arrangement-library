@@ -236,17 +236,7 @@ const noexcept
 		return treebank_error::output_join_file_could_not_be_opened;
 	}
 
-	// output header
-	if (m_output_header) {
-		output_together << "treebank";
-
-		for (size_t i = 0; i < m_what_fs.size(); ++i) {
-			if (m_what_fs[i]) {
-				output_together << m_separator << feature_to_str(i);
-			}
-		}
-		output_together << endl;
-	}
+	bool first_time_encounter_header = true;
 
 	// read all files and dump their contents into
 	for (size_t i = 0; i < m_all_individual_treebank_names.size(); ++i) {
@@ -273,6 +263,17 @@ const noexcept
 			// ignore the first line
 			if (first_line) {
 				first_line = false;
+
+				if (first_time_encounter_header) {
+					if (m_output_header) {
+						output_together
+							<< "treebank" << m_separator
+							<< line
+							<< endl;
+					}
+					first_time_encounter_header = false;
+				}
+
 				continue;
 			}
 
