@@ -66,7 +66,7 @@ noexcept
 		case tree_type::quasistar: return "quasistar";
 		case tree_type::spider: return "spider";
 		case tree_type::star: return "star";
-		default: return "unknown";
+		default: return "unknown_tree_type";
 	}
 }
 
