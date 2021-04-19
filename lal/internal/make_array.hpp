@@ -74,5 +74,23 @@ make_array_with_value() {
 	(std::make_integer_sequence<size_t, array_size>{});
 }
 
+namespace __lal {
+
+template<typename T, T A, T... ARGS>
+constexpr std::size_t size_arguments = 1 + size_arguments<T, ARGS...>;
+template<typename T, T A>
+constexpr std::size_t size_arguments<T,A> = 1;
+
+} // -- namespace __lal
+
+template<typename T, T... ARGS>
+constexpr std::array<T, __lal::size_arguments<T, ARGS...>>
+make_array()
+noexcept
+{
+	return std::array<T, __lal::size_arguments<T, ARGS...>>
+			{ARGS...};
+}
+
 } // -- namespace internal
 } // -- namespace lal

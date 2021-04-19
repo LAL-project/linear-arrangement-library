@@ -204,7 +204,7 @@ target_sources(
 		internal/avl.hpp
 		internal/data_array.hpp
 		internal/macros.hpp
-		internal/make_array_with_value.hpp
+		internal/make_array.hpp
 		internal/sorted_vector.hpp
 		
 		# -- sources

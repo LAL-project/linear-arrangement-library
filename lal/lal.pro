@@ -109,7 +109,7 @@ HEADERS += \
 	internal/linarr/algorithms_crossings.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
-	internal/make_array_with_value.hpp \
+	internal/make_array.hpp \
 	internal/numeric/utils.hpp \
 	internal/properties/tree_centre.hpp \
 	internal/properties/tree_centroid.hpp \
