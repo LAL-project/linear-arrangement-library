@@ -310,6 +310,14 @@ enum class treebank_feature {
 	tree_type,
 
 	/**
+	 * @brief The type of syntactic dependency structure.
+	 *
+	 * See @ref lal::linarr::syntactic_dependency_structure_type for a complete
+	 * list of types.
+	 */
+	syntactic_dependency_structure_type,
+
+	/**
 	 * @brief The last value of the enumeration.
 	 *
 	 * <b>This is used for internal purposes only.</b> Do not use this feature.
