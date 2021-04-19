@@ -60,4 +60,10 @@ All the following features are defined in class ``lal.linarr.dependency_flux``; 
 - ``flux_mean_WS_ratio`` : Mean W/S ratio. This is the sum of W/S ratios averaged by the number of fluxes (the number of vertices of the tree minus 1).
 - ``flux_min_WS_ratio`` : Minimum W/S ratio.
 
+Types of structures
+-----------
+
+- ``tree_type` The type of tree. See ``lal.graphs.tree_type`` for a complete list of tree types.
+- ``syntactic_dependency_structure_type` The type of syntactic dependency structure. See ``lal.linarr.syntactic_dependency_structure_type`` for a complete list of types.
+
 """
