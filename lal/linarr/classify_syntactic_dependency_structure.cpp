@@ -55,7 +55,7 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/data_array.hpp>
-#include <lal/internal/make_array_with_value.hpp>
+#include <lal/internal/make_array.hpp>
 
 #define sort_by_index(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 #define sort_by_pos(a,b, P) (P[a] < P[b] ? make_pair(a,b) : make_pair(b,a))
