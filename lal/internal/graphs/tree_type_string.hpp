@@ -43,28 +43,45 @@
 
 // C++ includes
 #include <string_view>
+#include <array>
 
 // lal includes
 #include <lal/graphs/tree_type.hpp>
+#include <lal/internal/make_array.hpp>
 
 namespace lal {
 namespace internal {
 
 // Converts to a string a value of the enumeration @ref lal::graphs::tree_type.
 inline constexpr std::string_view
-tree_type_string(const graphs::tree_type& tt) noexcept {
+tree_type_string(const graphs::tree_type& tt)
+noexcept
+{
 	using tree_type = graphs::tree_type;
 
 	switch (tt) {
-		case tree_type::linear: return "linear";
-		case tree_type::star: return "star";
-		case tree_type::quasistar: return "quasistar";
 		case tree_type::bistar: return "bistar";
 		case tree_type::caterpillar: return "caterpillar";
+		case tree_type::linear: return "linear";
+		case tree_type::quasistar: return "quasistar";
 		case tree_type::spider: return "spider";
+		case tree_type::star: return "star";
 		default: return "unknown";
 	}
 }
+
+static constexpr std::array<graphs::tree_type, graphs::__tree_type_size>
+array_of_tree_types =
+make_array<
+	graphs::tree_type,
+	graphs::tree_type::bistar,
+	graphs::tree_type::caterpillar,
+	graphs::tree_type::linear,
+	graphs::tree_type::quasistar,
+	graphs::tree_type::spider,
+	graphs::tree_type::star,
+	graphs::tree_type::unknown
+>();
 
 } // -- namespace internal
 } // -- namespace lal
