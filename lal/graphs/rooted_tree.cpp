@@ -346,7 +346,7 @@ void rooted_tree::calculate_size_subtrees() noexcept {
 }
 
 void rooted_tree::calculate_tree_type() noexcept {
-	m_is_type_valid = true;
+	m_is_tree_type_valid = true;
 	internal::classify_tree(*this, m_tree_type);
 }
 
@@ -365,7 +365,7 @@ void rooted_tree::set_root(node r) noexcept {
 	m_has_root = true;
 	m_are_size_subtrees_valid = false;
 	m_valid_orientation = false;
-	m_is_type_valid = false;
+	m_is_tree_type_valid = false;
 }
 
 /* GETTERS */

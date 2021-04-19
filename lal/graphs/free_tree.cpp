@@ -167,7 +167,7 @@ noexcept
 }
 
 void free_tree::calculate_tree_type() noexcept {
-	m_is_type_valid = true;
+	m_is_tree_type_valid = true;
 	internal::classify_tree(*this, m_tree_type);
 }
 
