@@ -188,6 +188,7 @@ target_sources(
 		#      linarr
 		internal/linarr/algorithms_crossings.hpp
 		internal/linarr/Dmin.hpp
+		internal/linarr/syntactic_dependency_structure_type.hpp
 		#      numeric
 		internal/numeric/utils.hpp
 		#      properties

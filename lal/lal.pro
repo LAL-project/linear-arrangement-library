@@ -107,6 +107,7 @@ HEADERS += \
 	internal/io/treebank_feature_string.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \
+	internal/linarr/syntactic_dependency_structure_type.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/make_array.hpp \

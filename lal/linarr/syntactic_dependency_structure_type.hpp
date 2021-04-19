@@ -43,11 +43,6 @@
 
 // C++ includes
 #include <cinttypes>
-#ifdef SWIG
-#include <string>
-#else
-#include <string_view>
-#endif
 
 namespace lal {
 namespace linarr {
@@ -66,12 +61,13 @@ namespace linarr {
  */
 enum class syntactic_dependency_structure_type {
 	/**
-	 * @brief Projective structures.
+	 * @brief 1-Endpoint Crossing.
 	 *
-	 * A structure is projective if it is @ref syntactic_dependency_structure_type::planar
-	 * and the root is not covered by any dependency.
+	 * A structure is 1-endpoint crossing if, given any dependency, all other
+	 * dependencies crossing it are incident to a common node. See
+	 * \cite Pitler2013a for further details.
 	 */
-	projective = 0,
+	EC1,
 	/**
 	 * @brief Planar structures.
 	 *
@@ -83,45 +79,25 @@ enum class syntactic_dependency_structure_type {
 	 */
 	planar,
 	/**
+	 * @brief Projective structures.
+	 *
+	 * A structure is projective if it is @ref syntactic_dependency_structure_type::planar
+	 * and the root is not covered by any dependency.
+	 */
+	projective,
+	/**
 	 * @brief Well nested trees with maximum gap-degree 1.
 	 *
 	 * For further details and a thorough discussion, see \cite Gomez2011a.
 	 */
 	WG1,
-	/**
-	 * @brief 1-Endpoint Crossing.
-	 *
-	 * A structure is 1-endpoint crossing if, given any dependency, all other
-	 * dependencies crossing it are incident to a common node. See
-	 * \cite Pitler2013a for further details.
-	 */
-	EC1,
 	// This value must always be the last one.
 	/// The structure could not be classified.
 	unknown
 };
 
-// since SWIG does not wrap string_view, we need a
-// different return type for this "to_string" function
-/// Converts to a string a value of the enumeration @ref syntactic_dependency_structure_type.
-inline
-#ifdef SWIG
-std::string
-#else
-constexpr std::string_view
-#endif
-syntactic_dependency_structure_type_to_string
-(const syntactic_dependency_structure_type& tt)
-{
-	switch (tt) {
-		case syntactic_dependency_structure_type::projective: return "projective";
-		case syntactic_dependency_structure_type::planar: return "planar";
-		case syntactic_dependency_structure_type::WG1: return "WG1";
-		case syntactic_dependency_structure_type::EC1: return "EC1";
-		default: return "unknown";
-	}
-}
-
+// *DEVELOPER NOTE*
+// Swig does not like multilines for this declaration! Use only one line!
 /// Number of elements within enumeration @ref syntactic_dependency_structure_type.
 constexpr std::size_t __tree_structure_type_size =
 	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure_type::unknown);
