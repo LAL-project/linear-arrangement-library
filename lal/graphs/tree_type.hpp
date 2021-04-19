@@ -54,30 +54,6 @@ namespace graphs {
  */
 enum class tree_type {
 	/**
-	 * @brief Linear trees.
-	 *
-	 * A linear tree has only two leaves, and the rest of the vertices have degree
-	 * exactly two. This is, precisely, a path graph.
-	 */
-	linear,
-
-	/**
-	 * @brief Star trees.
-	 *
-	 * Also star graphs, trees where all vertices but one have degree 1.
-	 */
-	star,
-
-	/**
-	 * @brief Quasi star trees.
-	 *
-	 * Also quasi star graphs, trees where all vertices but two have degree 1.
-	 * One of these two vertices has degree exactly two, the other has degree
-	 * at least two.
-	 */
-	quasistar,
-
-	/**
 	 * @brief Bi-star trees.
 	 *
 	 * These trees are made of two star trees joined by an edge at their centers.
@@ -93,12 +69,36 @@ enum class tree_type {
 	caterpillar,
 
 	/**
+	 * @brief Linear trees.
+	 *
+	 * A linear tree has only two leaves, and the rest of the vertices have degree
+	 * exactly two. This is, precisely, a path graph.
+	 */
+	linear,
+
+	/**
+	 * @brief Quasi star trees.
+	 *
+	 * Also quasi star graphs, trees where all vertices but two have degree 1.
+	 * One of these two vertices has degree exactly two, the other has degree
+	 * at least two.
+	 */
+	quasistar,
+
+	/**
 	 * @brief Spider trees.
 	 *
 	 * A spider tree has a unique vertex of degree greater than or equal to 3.
 	 * The other vertices have degree 2 or 1 \cite English2019a.
 	 */
 	spider,
+
+	/**
+	 * @brief Star trees.
+	 *
+	 * Also star graphs, trees where all vertices but one have degree 1.
+	 */
+	star,
 
 	// *DEVELOPER NOTE*
 	// This value must always be the last one.
