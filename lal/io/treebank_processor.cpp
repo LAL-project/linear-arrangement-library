@@ -60,6 +60,7 @@ using namespace std;
 #include <lal/linarr/headedness.hpp>
 #include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/flux.hpp>
+#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
@@ -71,6 +72,7 @@ using namespace std;
 #include <lal/internal/graphs/tree_type_string.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
 #include <lal/internal/io/check_correctness.hpp>
+#include <lal/internal/linarr/syntactic_dependency_structure_type.hpp>
 
 template<typename T>
 double to_double(const T& x) {
@@ -187,6 +189,7 @@ namespace io {
 #define flux_mean_size_idx index_of(flux_mean_size)
 #define flux_min_size_idx index_of(flux_min_size)
 #define tree_type_idx index_of(tree_type)
+#define sdst_idx index_of(syntactic_dependency_structure_type)
 
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
 
@@ -501,7 +504,7 @@ const
 	// find the first feature
 	while (not m_what_fs[i]) { ++i; }
 
-	out_treebank_file << feature_to_str(i);
+	out_treebank_file << props[i];
 	++i;
 
 	for (; i < m_what_fs.size(); ++i) {
@@ -520,6 +523,7 @@ const
 		for (size_t j = 0; j < graphs::__tree_type_size; ++j) {
 			const auto tt = internal::array_of_tree_types[j];
 			out_treebank_file << m_separator;
+
 			if (fT.is_of_tree_type(tt)) {
 				out_treebank_file << "1";
 			}
