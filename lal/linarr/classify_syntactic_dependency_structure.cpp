@@ -407,7 +407,7 @@ __get_syn_dep_tree_type
 }
 
 array<bool, __tree_structure_type_size>
-classify_tree_structure(const rooted_tree& rT, const linear_arrangement& pi) {
+classify_syntactic_dependency_structure(const rooted_tree& rT, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
