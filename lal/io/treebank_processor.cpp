@@ -67,6 +67,8 @@ using namespace std;
 #include <lal/properties/mean_hierarchical_distance.hpp>
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
+
+#include <lal/internal/graphs/tree_type_string.hpp>
 #include <lal/internal/io/treebank_feature_string.hpp>
 #include <lal/internal/io/check_correctness.hpp>
 
@@ -184,6 +186,7 @@ namespace io {
 #define flux_max_size_idx index_of(flux_max_size)
 #define flux_mean_size_idx index_of(flux_mean_size)
 #define flux_min_size_idx index_of(flux_min_size)
+#define tree_type_idx index_of(tree_type)
 
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
 
@@ -199,6 +202,9 @@ treebank_error treebank_processor::init(
 	m_output_file = output_file;
 	m_treebank_id = treebank_id;
 
+	// initalise features vector
+	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
+
 	// make sure that the treebank file exists
 	if (not filesystem::exists(m_treebank_filename)) {
 		return treebank_error::treebank_file_does_not_exist;
@@ -208,7 +214,9 @@ treebank_error treebank_processor::init(
 
 treebank_error treebank_processor::process() noexcept {
 	if (m_check_before_process) {
-		const bool err = internal::check_correctness_treebank<true>(m_treebank_filename);
+		const bool err =
+		internal::check_correctness_treebank<true>(m_treebank_filename);
+
 		if (err) {
 			return treebank_error::malformed_treebank_file;
 		}
@@ -224,7 +232,8 @@ treebank_error treebank_processor::process() noexcept {
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
 	if (err != treebank_error::no_error) {
 		if (m_be_verbose >= 2) {
-			cerr << "Processing treebank '" << m_treebank_filename << "' failed" << endl;
+			cerr << "Processing treebank '" << m_treebank_filename << "' failed"
+				 << endl;
 		}
 		return err;
 	}
@@ -232,8 +241,8 @@ treebank_error treebank_processor::process() noexcept {
 
 	// output file stream:
 	// since the output directory exists there is no need to check for is_open()
-	ofstream out_lang_file(m_output_file);
-	if (not out_lang_file.is_open()) {
+	ofstream out_treebank_file(m_output_file);
+	if (not out_treebank_file.is_open()) {
 		return treebank_error::output_file_could_not_be_opened;
 	}
 
@@ -244,15 +253,26 @@ treebank_error treebank_processor::process() noexcept {
 		// find the first feature
 		while (not m_what_fs[i]) { ++i; }
 
-		out_lang_file << feature_to_str(i);
+		out_treebank_file << feature_to_str(i);
 		++i;
 
 		for (; i < m_what_fs.size(); ++i) {
+			if (i == tree_type_idx) { continue; }
 			if (m_what_fs[i]) {
-				out_lang_file << m_separator << feature_to_str(i);
+				out_treebank_file << m_separator << feature_to_str(i);
 			}
 		}
-		out_lang_file << endl;
+
+		// output tree type header
+		if (m_what_fs[tree_type_idx]) {
+			for (size_t j = 0; j < graphs::__tree_type_size; ++j) {
+				out_treebank_file
+					<< m_separator
+					<< internal::tree_type_string(internal::array_of_tree_types[j]);
+			}
+		}
+
+		out_treebank_file << endl;
 	}
 
 	const auto start = std::chrono::system_clock::now();
@@ -263,7 +283,7 @@ treebank_error treebank_processor::process() noexcept {
 		const auto err = tbread.next_tree();
 		if (err == treebank_error::no_error) {
 			rT = tbread.get_tree();
-			process_tree<rooted_tree, ofstream>(rT, out_lang_file);
+			process_tree<rooted_tree, ofstream>(rT, out_treebank_file);
 		}
 	}
 
@@ -286,14 +306,14 @@ treebank_error treebank_processor::process() noexcept {
 
 template<class TREE, class OUT_STREAM>
 void treebank_processor::process_tree
-(const TREE& rT, OUT_STREAM& out_lang_file)
+(const TREE& rT, OUT_STREAM& out_treebank_file)
 const
 {
-	const free_tree fT = rT.to_undirected();
+	free_tree fT = rT.to_undirected();
 	const uint32_t n = fT.get_num_nodes();
 
-	// -----------------------------------------------------------
-	// compute features in a way that does not repeat computations
+	// -------------------------------------------------------------------
+	// compute numeric features in a way that does not repeat computations
 	double props[__treebank_feature_size]{0.0};
 	bool prop_set[__treebank_feature_size]{false};
 
@@ -476,16 +496,40 @@ const
 	// ---------------
 	// output features
 
-	if (m_what_fs[0]) {
-		out_lang_file << rT.get_num_nodes();
-	}
-	for (size_t i = 1; i < m_what_fs.size(); ++i) {
+	size_t i = 0;
+
+	// find the first feature
+	while (not m_what_fs[i]) { ++i; }
+
+	out_treebank_file << feature_to_str(i);
+	++i;
+
+	for (; i < m_what_fs.size(); ++i) {
+		if (i == tree_type_idx) { continue; }
 		if (m_what_fs[i]) {
-			out_lang_file << m_separator;
-			out_lang_file << props[i];
+			out_treebank_file << m_separator << props[i];
 		}
 	}
-	out_lang_file << "\n";
+
+	if (m_what_fs[tree_type_idx]) {
+		// output the tree type
+		fT.calculate_tree_type();
+#if defined DEBUG
+		assert(fT.is_tree_type_valid());
+#endif
+		for (size_t j = 0; j < graphs::__tree_type_size; ++j) {
+			const auto tt = internal::array_of_tree_types[j];
+			out_treebank_file << m_separator;
+			if (fT.is_of_tree_type(tt)) {
+				out_treebank_file << "1";
+			}
+			else {
+				out_treebank_file << "0";
+			}
+		}
+	}
+
+	out_treebank_file << "\n";
 }
 
 } // -- namespace io
