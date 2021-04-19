@@ -300,6 +300,15 @@ enum class treebank_feature {
 	 */
 	flux_min_WS_ratio,
 
+	// TYPES OF TREES
+
+	/**
+	 * @brief The type of tree.
+	 *
+	 * See @ref lal::graphs::tree_type for a complete list of tree types.
+	 */
+	tree_type,
+
 	/**
 	 * @brief The last value of the enumeration.
 	 *

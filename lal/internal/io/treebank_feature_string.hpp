@@ -96,6 +96,7 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	case treebank_feature::flux_max_size: return "max_size";
 	case treebank_feature::flux_mean_size: return "mean_size";
 	case treebank_feature::flux_min_size: return "min_size";
+	case treebank_feature::tree_type: return "tree_type";
 	case treebank_feature::__last_value: return "__last_value";
 	}
 	// should never happen
