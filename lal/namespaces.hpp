@@ -72,7 +72,7 @@
  * - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
  * - the mean hierarchical distance (see @ref lal::properties::mean_hierarchical_distance),
  * - the headedness of a tree (see @ref lal::linarr::headedness),
- * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::classify_tree_structure).
+ * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::classify_syntactic_dependency_structure).
  * 
  * Other algorithms, also gathered in the same namespaces, offer the computation of optimal arrangements. For example, it is offered
  * - the computation of the minimal arrangements with respect to the sum of edge lengths (see @ref lal::linarr::Dmin), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin).
