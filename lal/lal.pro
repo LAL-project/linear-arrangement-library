@@ -102,9 +102,9 @@ HEADERS += \
 	internal/graphs/retrieve_subtrees.hpp \
 	internal/graphs/size_subtrees.hpp \
 	internal/graphs/tree_classification.hpp \
-	internal/graphs/tree_type_string.hpp \
+	internal/graphs/tree_type.hpp \
 	internal/io/check_correctness.hpp \
-	internal/io/treebank_feature_string.hpp \
+	internal/io/treebank_feature.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \
 	internal/linarr/syntactic_dependency_structure_type.hpp \

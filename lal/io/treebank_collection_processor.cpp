@@ -59,7 +59,7 @@ using namespace std;
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
-#include <lal/internal/io/treebank_feature_string.hpp>
+#include <lal/internal/io/treebank_feature.hpp>
 #include <lal/internal/io/check_correctness.hpp>
 
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))

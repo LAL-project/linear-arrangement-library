@@ -105,5 +105,17 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	return "???";
 }
 
+// return the index of the treebank feature
+inline constexpr
+std::size_t treebank_feature_to_index(const io::treebank_feature& tf) noexcept {
+	return static_cast<std::size_t>(tf);
+}
+
+// return the treebank feature corresponding to the index
+inline constexpr
+io::treebank_feature index_to_treebank_feature(std::size_t idx) noexcept {
+	return static_cast<io::treebank_feature>(idx);
+}
+
 } // -- namespace internal
 } // -- namespace lal

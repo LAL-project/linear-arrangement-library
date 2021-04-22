@@ -177,12 +177,12 @@ target_sources(
 		internal/graphs/size_subtrees.hpp
 		internal/graphs/traversal.hpp
 		internal/graphs/tree_classification.hpp
-		internal/graphs/tree_type_string.hpp
+		internal/graphs/tree_type.hpp
 		internal/graphs/union_find.hpp
 		internal/graphs/utils.hpp
 		#      io
 		internal/io/check_correctness.hpp
-		internal/io/treebank_feature_string.hpp
+		internal/io/treebank_feature.hpp
 		#      iterators
 		#          nothing
 		#      linarr

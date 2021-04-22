@@ -50,7 +50,7 @@ using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/union_find.hpp>
-#include <lal/internal/graphs/tree_type_string.hpp>
+#include <lal/internal/graphs/tree_type.hpp>
 
 namespace lal {
 namespace graphs {
