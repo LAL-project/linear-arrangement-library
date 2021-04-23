@@ -85,6 +85,12 @@ enum class treebank_feature {
 	 */
 	headedness,
 	/**
+	 * @brief Hubiness of the tree.
+	 *
+	 * See @ref lal::properties::hubiness for details.
+	 */
+	hubiness,
+	/**
 	 * @brief Mean hierarchical distance of the tree.
 	 *
 	 * See @ref lal::properties::mean_hierarchical_distance for details.

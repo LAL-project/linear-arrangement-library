@@ -159,6 +159,7 @@ namespace io {
 #define k3_idx treebank_feature_to_index(k3)
 #define size_Q_idx treebank_feature_to_index(num_pairs_independent_edges)
 #define headedness_idx treebank_feature_to_index(headedness)
+#define hubiness_idx treebank_feature_to_index(hubiness)
 #define mean_hierarchical_distance_idx treebank_feature_to_index(mean_hierarchical_distance)
 #define mean_dependency_distance_idx treebank_feature_to_index(mean_dependency_distance)
 #define C_idx treebank_feature_to_index(C)
@@ -270,6 +271,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::k3:
 				case treebank_feature::num_pairs_independent_edges:
 				case treebank_feature::headedness:
+				case treebank_feature::hubiness:
 				case treebank_feature::mean_hierarchical_distance:
 				case treebank_feature::mean_dependency_distance:
 				case treebank_feature::C:
@@ -463,16 +465,19 @@ const noexcept
 	}
 	// <k^2>, <k^3>, |Q|, headedness
 	if (m_what_fs[k2_idx]) {
-		set_prop(k2_idx, properties::mmt_degree(fT, 2));
+		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
 	if (m_what_fs[k3_idx]) {
-		set_prop(k3_idx, properties::mmt_degree(fT, 3));
+		set_prop(k3_idx, properties::moment_degree(fT, 3));
 	}
 	if (m_what_fs[size_Q_idx]) {
 		set_prop(size_Q_idx, static_cast<double>(properties::size_Q(fT)));
 	}
 	if (m_what_fs[headedness_idx]) {
 		set_prop(headedness_idx, linarr::headedness(rT));
+	}
+	if (m_what_fs[hubiness_idx]) {
+		set_prop(hubiness_idx, properties::hubiness(fT));
 	}
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
 		set_prop(mean_hierarchical_distance_idx,
@@ -647,6 +652,7 @@ const noexcept
 			case treebank_feature::k3:
 			case treebank_feature::num_pairs_independent_edges:
 			case treebank_feature::headedness:
+			case treebank_feature::hubiness:
 			case treebank_feature::mean_hierarchical_distance:
 			case treebank_feature::mean_dependency_distance:
 			case treebank_feature::C:

@@ -65,6 +65,7 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	case treebank_feature::k3: return "k3";
 	case treebank_feature::num_pairs_independent_edges: return "size_Q";
 	case treebank_feature::headedness: return "headedness";
+	case treebank_feature::hubiness: return "hubiness";
 	case treebank_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
 	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
 	case treebank_feature::C: return "C";
