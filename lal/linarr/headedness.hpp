@@ -70,7 +70,7 @@ namespace linarr {
  * @returns The headedness ratio as an exact rational number.
  */
 numeric::rational headedness_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
 
 /**
  * @brief Computes the headedness of a linearly arranged directed graph.
@@ -80,8 +80,10 @@ numeric::rational headedness_rational
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
-double headedness
-(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+inline double headedness
+(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept {
+	return headedness_rational(g, pi).to_double();
+}
 
 } // -- namespace linarr
 } // -- namespace lal

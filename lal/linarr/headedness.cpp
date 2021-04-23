@@ -52,7 +52,7 @@ using namespace numeric;
 namespace linarr {
 
 inline uint32_t __headedness_rational
-(const directed_graph& g, const linear_arrangement& pi)
+(const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 	uint32_t edges_to_right = 0;
 	iterators::E_iterator it(g);
@@ -65,17 +65,13 @@ inline uint32_t __headedness_rational
 }
 
 rational headedness_rational
-(const directed_graph& g, const linear_arrangement& pi)
+(const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 	const uint32_t etr =
 		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
 
 	// avoid warning conversion
 	return rational_from_ui(etr, g.get_num_edges());
-}
-
-double headedness(const directed_graph& g, const linear_arrangement& arr) {
-	return headedness_rational(g, arr).to_double();
 }
 
 } // -- namespace linarr

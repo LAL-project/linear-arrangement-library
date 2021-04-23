@@ -67,7 +67,7 @@
  * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
  * - calculation of optimal arrangements of free trees (see @ref lal::linarr::Dmin_Planar and @ref lal::linarr::Dmin) and of rooted trees (see @ref lal::linarr::Dmin_Projective); the enumeration @ref lal::linarr::algorithms_Dmin lists all algorithms available for the calculation of the unconstrained minimum value of \f$D\f$,
  * - the number of crossings (see @ref lal::linarr::number_of_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
- * - any moment of the degree of the vertices of a graph (see @ref lal::properties::mmt_degree),
+ * - any moment of the degree of the vertices of a graph (see @ref lal::properties::moment_degree and its variants),
  * - the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
  * - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
  * - the mean hierarchical distance (see @ref lal::properties::mean_hierarchical_distance),

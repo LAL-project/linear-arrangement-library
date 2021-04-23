@@ -63,13 +63,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::mmt_degree for details.
+	 * See @ref lal::properties::moment_degree for details.
 	 */
 	k2,
 	/**
 	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::mmt_degree for details.
+	 * See @ref lal::properties::moment_degree for details.
 	 */
 	k3,
 	/**
