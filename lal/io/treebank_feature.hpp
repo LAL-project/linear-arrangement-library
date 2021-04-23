@@ -323,7 +323,7 @@ enum class treebank_feature {
 	 */
 	syntactic_dependency_structure_type,
 
-	/**
+	/*
 	 * @brief The last value of the enumeration.
 	 *
 	 * <b>This is used for internal purposes only.</b> Do not use this feature.
