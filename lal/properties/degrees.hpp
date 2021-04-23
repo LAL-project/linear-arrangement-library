@@ -124,17 +124,17 @@ double moment_degree(const graphs::directed_graph& g, uint32_t p) noexcept;
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 numeric::rational
-moment_in_degree_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
+moment_degree_in_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::moment_in_degree_rational for details.
+ * See @ref lal::properties::moment_degree_in_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
-double moment_in_degree(const graphs::directed_graph& g, uint32_t p) noexcept;
+double moment_degree_in(const graphs::directed_graph& g, uint32_t p) noexcept;
 
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
@@ -151,17 +151,17 @@ double moment_in_degree(const graphs::directed_graph& g, uint32_t p) noexcept;
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
 numeric::rational
-moment_out_degree_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
+moment_degree_out_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::moment_out_degree_rational for details.
+ * See @ref lal::properties::moment_degree_out_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point value.
  */
-double moment_out_degree(const graphs::directed_graph& g, uint32_t p)noexcept;
+double moment_degree_out(const graphs::directed_graph& g, uint32_t p)noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.

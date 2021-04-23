@@ -42,6 +42,7 @@
 // lal includes
 #include <lal/properties/Q.hpp>
 #include <lal/properties/C_rla.hpp>
+#include <lal/properties/D_rla.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -49,23 +50,12 @@ using namespace numeric;
 
 namespace properties {
 
-/* -------------------------- */
-/* EXPECTATION OF D: E_rla[D] */
-
-rational expectation_D_rational(const undirected_graph& g) {
-	return rational((g.get_num_nodes() + 1)*g.get_num_edges(), 3);
-}
-
-double expectation_D(const undirected_graph& g) {
-	return expectation_D_rational(g).to_double();
-}
-
 /* ----------------------- */
 /* VARIANCE OF D: V_rla[D] */
 
-rational variance_D_rational(const undirected_graph& g) {
+rational var_sum_edge_lengths_rational(const undirected_graph& g) noexcept {
 	// E_rla[D]
-	const rational Ed = expectation_D_rational(g);
+	const rational Ed = exp_sum_edge_lengths_rational(g);
 	// E_rla[D^2]
 	const integer n = g.get_num_nodes();
 	const integer m = g.get_num_edges();
@@ -76,7 +66,7 @@ rational variance_D_rational(const undirected_graph& g) {
 	const rational E2(n*(n + 1), 6);
 
 	// calculate frequencies
-	const integer f0 = size_Q_integer(g)*2;
+	const integer f0 = num_pairs_independent_edges_integer(g)*2;
 	const integer f2(m);
 	const integer f1(m*(m - 1) - f0);
 
@@ -88,10 +78,6 @@ rational variance_D_rational(const undirected_graph& g) {
 
 	// return variance
 	return Ed2 - Ed*Ed;
-}
-
-double variance_D(const undirected_graph& g) {
-	return variance_D_rational(g).to_double();
 }
 
 } // -- namespace properties

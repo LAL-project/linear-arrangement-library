@@ -64,7 +64,7 @@ using namespace iterators;
 
 namespace properties {
 
-integer size_Q_integer(const undirected_graph& g) noexcept {
+integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept {
 	const uint64_t m = g.get_num_edges();
 	integer q2 = integer_from_ui(m*(m + 1));
 
@@ -77,7 +77,7 @@ integer size_Q_integer(const undirected_graph& g) noexcept {
 	return q2/2;
 }
 
-integer size_Q_integer(const directed_graph& g) noexcept {
+integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	const uint32_t n = g.get_num_nodes();
 	map<edge, uint64_t> collapsed_edges;
 

@@ -46,42 +46,40 @@
 #include <array>
 
 // lal includes
-#include <lal/linarr/syntactic_dependency_structure_type.hpp>
+#include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/internal/make_array.hpp>
 
 namespace lal {
 namespace internal {
 
-// Converts to a string a value of the enumeration @ref syntactic_dependency_structure_type.
+// Converts to a string a value of the enumeration @ref syntactic_dependency_structure.
 constexpr std::string_view
-syntactic_dependency_structure_type_to_string
-(const linarr::syntactic_dependency_structure_type& tt)
+syntactic_dependency_structure_to_string
+(const linarr::syntactic_dependency_structure& tt)
 noexcept
 {
-	using sytype = linarr::syntactic_dependency_structure_type;
-
 	switch (tt) {
-		case sytype::EC1: return "EC1";
-		case sytype::planar: return "planar";
-		case sytype::projective: return "projective";
-		case sytype::WG1: return "WG1";
-		default: return "unknown_syntactic_dependency_structure_type";
+		case linarr::syntactic_dependency_structure::EC1: return "EC1";
+		case linarr::syntactic_dependency_structure::planar: return "planar";
+		case linarr::syntactic_dependency_structure::projective: return "projective";
+		case linarr::syntactic_dependency_structure::WG1: return "WG1";
+		default: return "unknown_syntactic_dependency_structure";
 	}
 }
 
 static constexpr
 std::array<
-	linarr::syntactic_dependency_structure_type,
-	linarr::__tree_structure_type_size
+	linarr::syntactic_dependency_structure,
+	linarr::__syntactic_dependency_structure_size
 >
-array_of_syntactic_dependency_structure_types =
+array_of_syntactic_dependency_structures =
 make_array<
-	linarr::syntactic_dependency_structure_type,
-	linarr::syntactic_dependency_structure_type::EC1,
-	linarr::syntactic_dependency_structure_type::planar,
-	linarr::syntactic_dependency_structure_type::projective,
-	linarr::syntactic_dependency_structure_type::WG1,
-	linarr::syntactic_dependency_structure_type::unknown
+	linarr::syntactic_dependency_structure,
+	linarr::syntactic_dependency_structure::EC1,
+	linarr::syntactic_dependency_structure::planar,
+	linarr::syntactic_dependency_structure::projective,
+	linarr::syntactic_dependency_structure::WG1,
+	linarr::syntactic_dependency_structure::unknown
 >();
 
 } // -- namespace internal

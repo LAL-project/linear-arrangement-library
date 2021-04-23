@@ -67,7 +67,7 @@ namespace linarr {
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t number_of_crossings(
+uint32_t num_crossings(
 	const graphs::directed_graph& G,
 	const algorithms_C& A = algorithms_C::ladder
 );
@@ -84,7 +84,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t number_of_crossings(
+uint32_t num_crossings(
 	const graphs::undirected_graph& G,
 	const algorithms_C& A = algorithms_C::ladder
 );
@@ -103,7 +103,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t number_of_crossings(
+uint32_t num_crossings(
 	const graphs::directed_graph& G,
 	const linear_arrangement& pi,
 	const algorithms_C& A = algorithms_C::ladder
@@ -122,7 +122,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t number_of_crossings(
+uint32_t num_crossings(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& pi,
 	const algorithms_C& A = algorithms_C::ladder
@@ -144,7 +144,7 @@ uint32_t number_of_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> number_of_crossings_list(
+std::vector<uint32_t> num_crossings_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -165,7 +165,7 @@ std::vector<uint32_t> number_of_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> number_of_crossings_list(
+std::vector<uint32_t> num_crossings_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -189,7 +189,7 @@ std::vector<uint32_t> number_of_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_number_of_crossings_lesseq_than(
+uint32_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& G,
 	uint32_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
@@ -212,7 +212,7 @@ uint32_t is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_number_of_crossings_lesseq_than(
+uint32_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& G,
 	uint32_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
@@ -237,7 +237,7 @@ uint32_t is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_number_of_crossings_lesseq_than(
+uint32_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& G,
 	const linear_arrangement& pi,
 	uint32_t upper_bound,
@@ -262,7 +262,7 @@ uint32_t is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_number_of_crossings_lesseq_than(
+uint32_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& pi,
 	uint32_t upper_bound,
@@ -289,7 +289,7 @@ uint32_t is_number_of_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
+std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
@@ -315,7 +315,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
+std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	uint32_t upper_bound,
@@ -345,7 +345,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
+std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint32_t>& upper_bounds,
@@ -374,7 +374,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
+std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint32_t>& upper_bounds,
@@ -385,7 +385,7 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */
 
 /**
- * @brief Approximates the number of crossings.
+ * @brief Predicts the number of crossings.
  *
  * Given a linear arrangement, which determines the length of the edges, predict
  * the number of crossings conditioned by the length of the edges in the
@@ -395,11 +395,11 @@ std::vector<uint32_t> is_number_of_crossings_lesseq_than_list(
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
-numeric::rational approximate_C_rational
+numeric::rational predicted_num_crossings_rational
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 
 /**
- * @brief Approximates the number of crossings.
+ * @brief Predicts the number of crossings.
  *
  * Given a linear arrangement, which determines the length of the edges, predict
  * the number of crossings conditioned by the length of the edges in the
@@ -409,29 +409,29 @@ numeric::rational approximate_C_rational
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
-numeric::rational approximate_C_rational
+numeric::rational predicted_num_crossings_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
 
 /**
  * @brief Approximates the number of crossings.
  *
- * See @ref lal::linarr::approximate_C_rational for details.
+ * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
-double approximate_C
+double predicted_num_crossings
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 
 /**
  * @brief Approximates the number of crossings.
  *
- * See @ref lal::linarr::approximate_C_rational for details.
+ * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
-double approximate_C
+double predicted_num_crossings
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
 
 } // -- namespace linarr

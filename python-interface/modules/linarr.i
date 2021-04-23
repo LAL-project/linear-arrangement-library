@@ -28,7 +28,7 @@ namespace std {
 %include "../lal/linarr/C.hpp"
 %include "../lal/linarr/D.hpp"
 %include "../lal/linarr/Dmin.hpp"
-%include "../lal/linarr/headedness.hpp"
+%include "../lal/linarr/head_initial.hpp"
 
 %include "../lal/linarr/dependency_flux.hpp"
 namespace std {

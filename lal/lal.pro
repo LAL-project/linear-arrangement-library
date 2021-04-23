@@ -107,7 +107,7 @@ HEADERS += \
 	internal/io/treebank_feature.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \
-	internal/linarr/syntactic_dependency_structure_type.hpp \
+	internal/linarr/syntactic_dependency_structure.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
 	internal/make_array.hpp \
@@ -152,10 +152,10 @@ HEADERS += \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/flux.hpp \
-	linarr/headedness.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
-	linarr/syntactic_dependency_structure_type.hpp \
+	linarr/head_initial.hpp \
+	linarr/syntactic_dependency_structure.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
 	numeric/integer_output.hpp \
@@ -212,12 +212,12 @@ SOURCES += \
     io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \
-	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
     linarr/classify_syntactic_dependency_structure.cpp \
     linarr/flux.cpp \
-	linarr/headedness.cpp \
 	linarr/D.cpp \
+    linarr/head_initial.cpp \
+    linarr/predicted_C.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \
@@ -227,7 +227,6 @@ SOURCES += \
     properties/tree_centroid.cpp \
     properties/tree_diameter.cpp \
 	properties/variance_C_gen_graphs.cpp \
-	properties/variance_C_trees.cpp \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \

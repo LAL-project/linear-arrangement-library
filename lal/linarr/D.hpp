@@ -64,7 +64,7 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint32_t sum_length_edges
+uint32_t sum_edge_lengths
 (const graphs::directed_graph& g, const linear_arrangement& pi = {});
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
@@ -78,7 +78,7 @@ uint32_t sum_length_edges
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint32_t sum_length_edges
+uint32_t sum_edge_lengths
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {});
 
 /* MDD */
@@ -89,7 +89,7 @@ uint32_t sum_length_edges
  * Given a graph \f$G\f$ and a linear arrangement of its nodes \f$\pi\f$, computes
  * the average edge length, or the mean dependency distance (see \cite Jing2015a).
  * Formally, it computes \f$\frac{D_{\pi}(G)}{|E(G)|}\f$. See function @ref
- * sum_length_edges for further details on \f$D_{\pi}(G)\f$.
+ * sum_edge_lengths for further details on \f$D_{\pi}(G)\f$.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Jing's and Liu's \f$MDD\f$.
@@ -102,7 +102,7 @@ numeric::rational mean_dependency_distance_rational
  * Given a graph \f$G\f$ and a linear arrangement of its nodes \f$\pi\f$, computes
  * the average edge length, or the mean dependency distance (see \cite Jing2015a).
  * Formally, it computes \f$\frac{D_{\pi}(G)}{|E(G)|}\f$. See function @ref
- * sum_length_edges for further details on \f$D_{\pi}(G)\f$.
+ * sum_edge_lengths for further details on \f$D_{\pi}(G)\f$.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Jing's and Liu's \f$MDD\f$.

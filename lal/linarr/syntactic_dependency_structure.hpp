@@ -42,48 +42,65 @@
 #pragma once
 
 // C++ includes
-#include <vector>
-
-// lal includes
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/numeric/rational.hpp>
+#include <cinttypes>
 
 namespace lal {
 namespace linarr {
 
 /**
- * @brief Computes the headedness of a directed graph as an exact rational number.
+ * @brief The different types of syntactic dependency tree structures.
  *
- * Given a graph and a permutation of its nodes, the headedness \f$h\f$
- * is the ratio of right-branching edges over the total amount of edges. More
- * precisely, it is
+ * Any tree with its nodes linearly arranged can be classified into several
+ * different classes.
  *
- * \f$h = \frac{r}{m}\f$
- *
- * where \f$r\f$ is the number of right-branching edges and \f$m\f$ is the number
- * of edges of the graph.
- *
- * A value of 0 indicates perfect left branching, and a value of 1 indicates
- * perfect right-branching. See \cite Liu2010a for further detals.
- * @param g Input graph.
- * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @returns The headedness ratio as an exact rational number.
+ * We can currently identify the following structures:
+ * - Projective structures (see @ref syntactic_dependency_structure::projective),
+ * - Planar structures (see @ref syntactic_dependency_structure::planar),
+ * - Well nested trees with maximum degree gap 1 (see @ref syntactic_dependency_structure::WG1),
+ * - 1-Endpoint Crossing (see @ref syntactic_dependency_structure::EC1),
  */
-numeric::rational headedness_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
+enum class syntactic_dependency_structure {
+	/**
+	 * @brief 1-Endpoint Crossing.
+	 *
+	 * A structure is 1-endpoint crossing if, given any dependency, all other
+	 * dependencies crossing it are incident to a common node. See
+	 * \cite Pitler2013a for further details.
+	 */
+	EC1,
+	/**
+	 * @brief Planar structures.
+	 *
+	 * A structure is
+	 * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
+	 * cross if, and only if, their positions in the arrangement are interleaved,
+	 * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
+	 * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
+	 */
+	planar,
+	/**
+	 * @brief Projective structures.
+	 *
+	 * A structure is projective if it is @ref syntactic_dependency_structure::planar
+	 * and the root is not covered by any dependency.
+	 */
+	projective,
+	/**
+	 * @brief Well nested trees with maximum gap-degree 1.
+	 *
+	 * For further details and a thorough discussion, see \cite Gomez2011a.
+	 */
+	WG1,
+	// This value must always be the last one.
+	/// The structure could not be classified.
+	unknown
+};
 
-/**
- * @brief Computes the headedness of a linearly arranged directed graph.
- *
- * See @ref lal::linarr::headedness_rational for details.
- * @param g Input graph.
- * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @returns The return value is a floating point value.
- */
-inline double headedness
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept {
-	return headedness_rational(g, pi).to_double();
-}
+// *DEVELOPER NOTE*
+// Swig does not like multilines for this declaration! Use only one line!
+/// Number of elements within enumeration @ref syntactic_dependency_structure.
+constexpr std::size_t __syntactic_dependency_structure_size =
+	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure::unknown);
 
 } // -- namespace linarr
 } // -- namespace lal

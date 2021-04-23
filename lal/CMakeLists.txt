@@ -188,7 +188,7 @@ target_sources(
 		#      linarr
 		internal/linarr/algorithms_crossings.hpp
 		internal/linarr/Dmin.hpp
-		internal/linarr/syntactic_dependency_structure_type.hpp
+		internal/linarr/syntactic_dependency_structure.hpp
 		#      numeric
 		internal/numeric/utils.hpp
 		#      properties
@@ -278,16 +278,16 @@ target_sources(
 		linarr/Dmin.hpp
 		linarr/dependency_flux.hpp
 		linarr/flux.hpp
-		linarr/headedness.hpp
-		linarr/syntactic_dependency_structure_type.hpp
+		linarr/head_initial.hpp
+		linarr/syntactic_dependency_structure.hpp
 		linarr/classify_syntactic_dependency_structure.hpp
 		# -- sources
 		linarr/C.cpp
-		linarr/C_approx.cpp
+		linarr/predicted_C.cpp
 		linarr/D.cpp
 		linarr/flux.cpp
 		linarr/Dmin.cpp
-		linarr/headedness.cpp
+		linarr/head_initial.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
 
 		# numeric namespace
@@ -322,7 +322,6 @@ target_sources(
 		properties/tree_diameter.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
-		properties/variance_C_trees.cpp
 		
 		# utilities namespace
 		# -- headers
@@ -423,8 +422,8 @@ set(LIBLAL_LINARR_HEADER
 	linarr/Dmin.hpp
 	linarr/dependency_flux.hpp
 	linarr/flux.hpp
-	linarr/headedness.hpp
-	linarr/syntactic_dependency_structure_type.hpp
+	linarr/head_initial.hpp
+	linarr/syntactic_dependency_structure.hpp
 	linarr/classify_syntactic_dependency_structure.hpp
 )
 set(LIBLAL_NUMERIC_HEADER

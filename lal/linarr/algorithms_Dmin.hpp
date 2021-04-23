@@ -52,27 +52,28 @@ namespace linarr {
  * length of the edges \f$D\f$.
  *
  * This enumeration's values are used to choose the algorithm which the functions
- * @ref lal::linarr::Dmin use to compute the minimum value of the sum of the
- * length the edges \f$D\f$.
+ * @ref lal::linarr::min_sum_edge_lengths use to compute the minimum value of
+ * the sum of the length of the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
     /**
 	 * @brief Yossi Shiloach's algorithm to calculate unconstrained optimal
 	 * linearization of free trees.
 	 *
-	 * This value makes the @ref lal::linarr::Dmin function choose the implementation
-	 * of Yossi Shiloach's algorithm. This algorithm was published in \cite Shiloach1979a.
-	 * The implementation of this algorithm applies the corrections published
-	 * in \cite Esteban2017a.
+	 * This value makes the @ref lal::linarr::min_sum_edge_lengths function choose
+	 * the implementation of Yossi Shiloach's algorithm. This algorithm was
+	 * published in \cite Shiloach1979a. The implementation of this algorithm
+	 * applies the corrections published in \cite Esteban2017a.
      */
     Unconstrained_YS,
     /**
 	 * @brief Fan Chung's algorithm to calculate unconstrained optimal
 	 * linearization of free trees.
      *
-	 * This value makes the @ref lal::linarr::Dmin function choose the implementation
-	 * of Fan Chung's algorithm. This algorithm was published in \cite Chung1984a.
-	 * In particular, this implements Fan Chung's quadratic algorithm (Section 3).
+	 * This value makes the @ref lal::linarr::min_sum_edge_lengths function choose
+	 * the implementation of Fan Chung's algorithm. This algorithm was published
+	 * in \cite Chung1984a. In particular, this implements Fan Chung's quadratic
+	 * algorithm (Section 3).
      */
     Unconstrained_FC
 };

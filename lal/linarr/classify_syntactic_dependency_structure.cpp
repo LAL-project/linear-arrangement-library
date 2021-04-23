@@ -50,7 +50,7 @@ using namespace std;
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/C.hpp>
-#include <lal/linarr/syntactic_dependency_structure_type.hpp>
+#include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/macros.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
@@ -67,7 +67,7 @@ using namespace iterators;
 
 namespace linarr {
 
-typedef syntactic_dependency_structure_type syndepstr_type;
+typedef syntactic_dependency_structure syndepstr_type;
 
 inline bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi) {
 	const node R = T.get_root();
@@ -284,16 +284,16 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	return _1ec;
 }
 
-inline array<bool, __tree_structure_type_size>
+inline array<bool, __syntactic_dependency_structure_size>
 __get_syn_dep_tree_type
 (const rooted_tree& rT, const linear_arrangement& pi)
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
 
 	bool is_some_class = false;
-	array<bool, __tree_structure_type_size> cl =
+	array<bool, __syntactic_dependency_structure_size> cl =
 		internal::make_array_with_value
-		<bool, __tree_structure_type_size, false>();
+		<bool, __syntactic_dependency_structure_size, false>();
 
 	cl[static_cast<size_t>(syndepstr_type::unknown)] = true;
 
@@ -364,7 +364,7 @@ __get_syn_dep_tree_type
 	// from this point on we need an artificial vertex pointing to the
 	// root of the input tree
 
-	const uint32_t C = number_of_crossings(rT, pi);
+	const uint32_t C = num_crossings(rT, pi);
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
@@ -374,7 +374,7 @@ __get_syn_dep_tree_type
 		);
 
 		// remove 1-ec from the types when needed
-		const uint32_t _C = number_of_crossings(_rT, _pi);
+		const uint32_t _C = num_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
 		}
@@ -406,8 +406,8 @@ __get_syn_dep_tree_type
 	return cl;
 }
 
-array<bool, __tree_structure_type_size>
-classify_syntactic_dependency_structure(const rooted_tree& rT, const linear_arrangement& pi) {
+array<bool, __syntactic_dependency_structure_size>
+syntactic_dependency_structure_class(const rooted_tree& rT, const linear_arrangement& pi) {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif

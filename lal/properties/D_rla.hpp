@@ -62,15 +62,23 @@ namespace properties {
  * @param g The input graph.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
-numeric::rational expectation_D_rational(const graphs::undirected_graph& g);
+inline
+numeric::rational exp_sum_edge_lengths_rational(const graphs::undirected_graph& g)
+noexcept {
+	return numeric::rational((g.get_num_nodes() + 1)*g.get_num_edges(), 3);
+}
+
 /**
  * @brief Computes the the expectation of the first moment of D.
  *
- * See @ref lal::properties::expectation_D_rational for details.
+ * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
  * @param g The input graph.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
-double expectation_D(const graphs::undirected_graph& g);
+inline
+double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
+	return exp_sum_edge_lengths_rational(g).to_double();
+}
 
 /* ----------------------- */
 /* VARIANCE OF D: V_rla[D] */
@@ -84,15 +92,19 @@ double expectation_D(const graphs::undirected_graph& g);
  * @param g Input graph.
  * @returns The exact value of \f$V[D]\f$ as a rational value.
  */
-numeric::rational variance_D_rational(const graphs::undirected_graph& g);
+numeric::rational var_sum_edge_lengths_rational(const graphs::undirected_graph& g)
+noexcept;
 /**
  * @brief Computes the variance of the sum of the length of edges.
  *
- * See @ref lal::properties::variance_D_rational for details.
+ * See @ref lal::properties::var_sum_edge_lengths_rational for details.
  * @param g The input graph.
  * @returns The exact value of \f$V[D]\f$ as a floating point value.
  */
-double variance_D(const graphs::undirected_graph& g);
+inline
+double var_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
+	return var_sum_edge_lengths_rational(g).to_double();
+}
 
 } // -- namespace properties
 } // -- namespace lal

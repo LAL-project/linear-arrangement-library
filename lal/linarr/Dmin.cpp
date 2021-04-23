@@ -55,17 +55,17 @@ using namespace graphs;
 
 namespace linarr {
 
-pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) noexcept
+pair<uint32_t, linear_arrangement> min_sum_edge_lengths_projective(const rooted_tree& t) noexcept
 {
 	return internal::Dmin_Projective(t);
 }
 
-pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept
+pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar(const free_tree& t) noexcept
 {
 	return internal::Dmin_Planar(t);
 }
 
-pair<uint32_t, linear_arrangement> Dmin(const free_tree& t, const algorithms_Dmin& a)
+pair<uint32_t, linear_arrangement> min_sum_edge_lengths(const free_tree& t, const algorithms_Dmin& a)
 noexcept
 {
 	if (a == algorithms_Dmin::Unconstrained_YS) {

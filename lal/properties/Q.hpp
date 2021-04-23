@@ -62,16 +62,16 @@ namespace properties {
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-numeric::integer size_Q_integer(const graphs::undirected_graph& g) noexcept;
+numeric::integer num_pairs_independent_edges_integer(const graphs::undirected_graph& g) noexcept;
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
- * See @ref lal::properties::size_Q_integer for details.
+ * See @ref lal::properties::num_pairs_independent_edges_integer for details.
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
-inline uint64_t size_Q(const graphs::undirected_graph& g) noexcept {
-	return size_Q_integer(g).to_uint();
+inline uint64_t num_pairs_independent_edges(const graphs::undirected_graph& g) noexcept {
+	return num_pairs_independent_edges_integer(g).to_uint();
 }
 
 /**
@@ -83,16 +83,16 @@ inline uint64_t size_Q(const graphs::undirected_graph& g) noexcept {
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-numeric::integer size_Q_integer(const graphs::directed_graph& g) noexcept;
+numeric::integer num_pairs_independent_edges_integer(const graphs::directed_graph& g) noexcept;
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
- * See @ref lal::properties::size_Q_integer for details.
+ * See @ref lal::properties::num_pairs_independent_edges_integer for details.
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
-inline uint64_t size_Q(const graphs::directed_graph& g) noexcept {
-	return size_Q_integer(g).to_uint();
+inline uint64_t num_pairs_independent_edges(const graphs::directed_graph& g) noexcept {
+	return num_pairs_independent_edges_integer(g).to_uint();
 }
 
 } // -- namespace properties

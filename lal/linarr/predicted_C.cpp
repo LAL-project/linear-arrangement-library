@@ -180,7 +180,7 @@ rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement
 	return Ec2;
 }
 
-rational approximate_C_rational
+rational predicted_num_crossings_rational
 (const undirected_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
@@ -191,7 +191,7 @@ rational approximate_C_rational
 			(__get_approximate_C_2_rational<undirected_graph>, g, pi);
 }
 
-rational approximate_C_rational
+rational predicted_num_crossings_rational
 (const directed_graph& g, const linear_arrangement& pi)
 {
 #if defined DEBUG
@@ -202,11 +202,11 @@ rational approximate_C_rational
 			(__get_approximate_C_2_rational<directed_graph>, g, pi);
 }
 
-double approximate_C(const undirected_graph& g, const linear_arrangement& pi) {
-	return approximate_C_rational(g, pi).to_double();
+double predicted_num_crossings(const undirected_graph& g, const linear_arrangement& pi) {
+	return predicted_num_crossings_rational(g, pi).to_double();
 }
-double approximate_C(const directed_graph& g, const linear_arrangement& pi) {
-	return approximate_C_rational(g, pi).to_double();
+double predicted_num_crossings(const directed_graph& g, const linear_arrangement& pi) {
+	return predicted_num_crossings_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

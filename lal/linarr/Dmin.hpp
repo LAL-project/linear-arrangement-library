@@ -50,64 +50,6 @@ namespace lal {
 namespace linarr {
 
 /**
- * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
- * constraint.
- *
- * Computes an optimal projective linear arrangement for rooted trees. A
- * projective linear arrangement is an arrangement in which there are no edge
- * crossings and the root is not covered by any edge.
- *
- * This function implements the algorithm in \cite Alemany2021a. A non-linear
- * time algorithm to solve this problem was oulined in \cite Gildea2007a.
- *
- * @param t Input rooted tree.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
- * @pre The input rooted tree has to have the size of its subtrees calculated
- * (see @ref lal::graphs::rooted_tree::calculate_size_subtrees and
- * @ref lal::graphs::rooted_tree::are_size_subtrees_valid).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Projective
-(const graphs::rooted_tree& t) noexcept;
-
-/**
- * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
- * constraint.
- *
- * This function implements the algorithm published in \cite Alemany2021a.
- *
- * Computes an optimal planar linear arrangement for free trees. A planar linear
- * arrangement is an arrangement in which there are no edge crossings. This problem
- * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
- * @param t Input free tree.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
- */
-std::pair<uint32_t, linear_arrangement> Dmin_Planar
-(const graphs::free_tree& t) noexcept;
-/**
- * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
- * constraint.
- *
- * This function implements the algorithm published in \cite Alemany2021a.
- *
- * Computes an optimal planar linear arrangement for free trees. A planar linear
- * arrangement is an arrangement in which there are no edge crossings. This problem
- * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
- *
- * This function converts the input rooted into a free tree (see @ref
- * lal::graphs::rooted_tree::to_undirected())
- * @param t Input rooted tree.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
- */
-inline std::pair<uint32_t, linear_arrangement> Dmin_Planar
-(const graphs::rooted_tree& t) noexcept
-{ return Dmin_Planar(t.to_undirected()); }
-
-/**
  * @brief Computes the minimum value of \f$D\f$ in free trees.
  *
  * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
@@ -120,7 +62,7 @@ inline std::pair<uint32_t, linear_arrangement> Dmin_Planar
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
  */
-std::pair<uint32_t, linear_arrangement> Dmin(
+std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths(
 	const graphs::free_tree& t,
 	const algorithms_Dmin& a = algorithms_Dmin::Unconstrained_YS
 ) noexcept;
@@ -140,13 +82,71 @@ std::pair<uint32_t, linear_arrangement> Dmin(
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
  */
-inline std::pair<uint32_t, linear_arrangement> Dmin(
+inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths(
 	const graphs::rooted_tree& t,
 	const algorithms_Dmin& a = algorithms_Dmin::Unconstrained_YS
 ) noexcept
 {
-	return Dmin(t.to_undirected(), a);
+	return min_sum_edge_lengths(t.to_undirected(), a);
 }
+
+/**
+ * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
+ * constraint.
+ *
+ * Computes an optimal projective linear arrangement for rooted trees. A
+ * projective linear arrangement is an arrangement in which there are no edge
+ * crossings and the root is not covered by any edge.
+ *
+ * This function implements the algorithm in \cite Alemany2021a. A non-linear
+ * time algorithm to solve this problem was oulined in \cite Gildea2007a.
+ *
+ * @param t Input rooted tree.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre The input rooted tree has to have the size of its subtrees calculated
+ * (see @ref lal::graphs::rooted_tree::calculate_size_subtrees and
+ * @ref lal::graphs::rooted_tree::are_size_subtrees_valid).
+ */
+std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_projective
+(const graphs::rooted_tree& t) noexcept;
+
+/**
+ * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
+ * constraint.
+ *
+ * This function implements the algorithm published in \cite Alemany2021a.
+ *
+ * Computes an optimal planar linear arrangement for free trees. A planar linear
+ * arrangement is an arrangement in which there are no edge crossings. This problem
+ * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
+ * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
+ * @param t Input free tree.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
+(const graphs::free_tree& t) noexcept;
+/**
+ * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
+ * constraint.
+ *
+ * This function implements the algorithm published in \cite Alemany2021a.
+ *
+ * Computes an optimal planar linear arrangement for free trees. A planar linear
+ * arrangement is an arrangement in which there are no edge crossings. This problem
+ * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
+ * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
+ *
+ * This function converts the input rooted into a free tree (see @ref
+ * lal::graphs::rooted_tree::to_undirected())
+ * @param t Input rooted tree.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
+(const graphs::rooted_tree& t) noexcept
+{ return min_sum_edge_lengths_planar(t.to_undirected()); }
 
 } // -- namespace linarr
 } // -- namespace lal

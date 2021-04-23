@@ -38,28 +38,41 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 // lal includes
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/graphs/free_tree.hpp>
-#include <lal/properties/C_rla.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
 using namespace graphs;
 using namespace numeric;
 
-namespace properties {
+namespace linarr {
 
-// ------------------------------
-// TREES
-
-rational variance_C_tree_rational(const free_tree& g) {
-	return variance_C_forest_rational(g);
+inline uint32_t __headedness_rational
+(const directed_graph& g, const linear_arrangement& pi) noexcept
+{
+	uint32_t edges_to_right = 0;
+	iterators::E_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const auto [u,v] = it.get_edge();
+		edges_to_right += pi[u] < pi[v];
+	}
+	return edges_to_right;
 }
 
-double variance_C_tree(const free_tree& g) {
-	return variance_C_tree_rational(g).to_double();
+rational head_initial_rational
+(const directed_graph& g, const linear_arrangement& pi) noexcept
+{
+	const uint32_t etr =
+		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
+
+	// avoid warning conversion
+	return rational_from_ui(etr, g.get_num_edges());
 }
 
-} // -- namespace properties
+} // -- namespace linarr
 } // -- namespace lal

@@ -64,18 +64,16 @@
  * The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank collection processing. We offer a class that automatically processes a collection and computes several metrics based on the capabilities of the library. See class @ref lal::io::treebank_collection_processor for details. We also provide classes for custom processing of treebanks (see @ref lal::io::treebank_collection_reader and @ref lal::io::treebank_reader).
  * 
  * All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
- * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_length_edges), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::expectation_D and lal::properties::variance_D),
- * - calculation of optimal arrangements of free trees (see @ref lal::linarr::Dmin_Planar and @ref lal::linarr::Dmin) and of rooted trees (see @ref lal::linarr::Dmin_Projective); the enumeration @ref lal::linarr::algorithms_Dmin lists all algorithms available for the calculation of the unconstrained minimum value of \f$D\f$,
- * - the number of crossings (see @ref lal::linarr::number_of_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::expectation_C and lal::properties::variance_C),
+ * - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_edge_lengths), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::exp_sum_edge_lengths and lal::properties::var_sum_edge_lengths),
+ * - the number of crossings (see @ref lal::linarr::num_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::exp_num_crossings and lal::properties::var_num_crossings),
  * - any moment of the degree of the vertices of a graph (see @ref lal::properties::moment_degree and its variants),
  * - the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
  * - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
  * - the mean hierarchical distance (see @ref lal::properties::mean_hierarchical_distance),
- * - the headedness of a tree (see @ref lal::linarr::headedness),
- * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::classify_syntactic_dependency_structure).
+ * - the headedness of a tree (see @ref lal::linarr::head_initial),
+ * - the type of syntactic dependency trees according the their projectivity (see @ref lal::linarr::syntactic_dependency_structure_class).
  * 
- * Other algorithms, also gathered in the same namespaces, offer the computation of optimal arrangements. For example, it is offered
- * - the computation of the minimal arrangements with respect to the sum of edge lengths (see @ref lal::linarr::Dmin), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin).
+ * Other algorithms, also gathered in the same namespaces, offer the computation of optimal arrangements. For example, it is offered the computation of the (unconstrained) minimum arrangements with respect to the sum of edge lengths (see @ref lal::linarr::min_sum_edge_lengths), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin). The library also implements the computation of minimum planar arrangements (see @ref lal::linarr::min_sum_edge_lengths_planar) and of minimum projective arrangements (see @ref lal::linarr::min_sum_edge_lengths_projective).
  * 
  * As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the @ref lal::generate namespace. We have implemented existing techniques (cited accordingly) or made or own to enumerate
  * - all labelled/unlabelled free trees,
@@ -147,8 +145,8 @@
  * @code
  * lal::graphs::free_tree t(4);
  * t.add_edges({edge(0,1), edge(1,2), edge(2,3)});
- * uint32_t D1 = lal::linarr::sum_length_edges(t);
- * uint32_t D2 = lal::linarr::sum_length_edges(t, {0,1,2,3});
+ * uint32_t D1 = lal::linarr::sum_edge_lengths(t);
+ * uint32_t D2 = lal::linarr::sum_edge_lengths(t, {0,1,2,3});
  * @endcode
  * The possibility of expliciting a linear arrangement increases the flexibility of the library. For example, for the purposes of illustration, one can calculate the expected sum of the length of the edges as follows
  * @code
@@ -157,7 +155,7 @@
  * lal::numeric::rational Dt = 0;
  * lal::linearrgmnt arr = {0,1,2,3};
  * do {
- * 		Dt += linarr::sum_length_edges(t, arr);
+ * 		Dt += linarr::sum_edge_lengths(t, arr);
  * }
  * while (std::next_permutation(arr.begin(), arr.end());
  * Dt /= 24;
@@ -189,11 +187,11 @@
  * @endcode
  * A similar reasoning should be applied to the deletion of edges.
  * 
- * Furthermore, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::variance_C), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
+ * Furthermore, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::var_num_crossings), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
  * @code
  * const string filename = ".."; // a valid name of a file
  * const lal::graphs::free_tree t = *lal::io::read_edge_list<free_tree>(filename);
- * double var_C = lal::properties::variance_C(t);
+ * double var_C = lal::properties::var_num_crossings(t);
  * @endcode
  * but if not
  * @code
@@ -338,13 +336,13 @@ namespace iterators {}
  * @code
  *		lal::graphs::undirected_graph g;
  * @endcode
- * we can calculate the sum of length of the edges using function @ref lal::linarr::sum_length_edges in two different ways. The first is by omitting the arrangement:
+ * we can calculate the sum of length of the edges using function @ref lal::linarr::sum_edge_lengths in two different ways. The first is by omitting the arrangement:
  * @code
- *		lal::linarr::sum_length_edges(g);
+ *		lal::linarr::sum_edge_lengths(g);
  * @endcode
  * or by giving one explicitly
  * @code
- *		lal::linarr::sum_length_edges(g, {...});
+ *		lal::linarr::sum_edge_lengths(g, {...});
  * @endcode
  *
  * A linear arrangement object is a vector whose size is equal to the number of nodes of its corresponding graph. Note, however, that a linear arrangement has no associated graph; it is just a vector. Throughout this namespace we use the symbol for the number pi, \f$\pi\f$ to denote a linear arrangement, as is usually done in the scientific literature.
@@ -365,7 +363,7 @@ namespace numeric {}
 /**
  * @brief Properties of graphs.
  * 
- * This namespace contains functions to calculate properties of graphs that do not depend, whether implicitly or explicitly, on a linear arrangement. Most, if not all, properties can be calculated as exact rational numbers (see @ref lal::numeric::rational), but also as floating point values of double precision. For the former, add the suffix '_rational' at the end of the function name. For example, the function @ref lal::properties::variance_C returns the variance of the number of crossings 'C' as a floating point value. By adding the suffix, i.e., @ref lal::properties::variance_C_rational, we obtain said variance as an exact rational value.
+ * This namespace contains functions to calculate properties of graphs that do not depend, whether implicitly or explicitly, on a linear arrangement. Most, if not all, properties can be calculated as exact rational numbers (see @ref lal::numeric::rational), but also as floating point values of double precision. For the former, add the suffix '_rational' at the end of the function name. For example, the function @ref lal::properties::var_num_crossings returns the variance of the number of crossings 'C' as a floating point value. By adding the suffix, i.e., @ref lal::properties::var_num_crossings_rational, we obtain said variance as an exact rational value.
  *
  * To see what a rational value is in the context of this library, see the documentation of the namespace @ref lal::numeric.
  */

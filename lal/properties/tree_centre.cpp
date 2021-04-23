@@ -54,14 +54,14 @@ using namespace graphs;
 
 namespace properties {
 
-pair<node, node> get_centre(const rooted_tree& t) {
+pair<node, node> tree_centre(const rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 	return internal::retrieve_centre<rooted_tree>(t, 0);
 }
 
-pair<node, node> get_centre(const free_tree& t) {
+pair<node, node> tree_centre(const free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

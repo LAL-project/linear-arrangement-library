@@ -65,25 +65,49 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::properties::moment_degree for details.
 	 */
-	k2,
+	second_moment_degree,
+	/**
+	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	second_moment_degree_in,
+	/**
+	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	second_moment_degree_out,
 	/**
 	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
 	 *
 	 * See @ref lal::properties::moment_degree for details.
 	 */
-	k3,
+	third_moment_degree,
+	/**
+	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	third_moment_degree_in,
+	/**
+	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	third_moment_degree_out,
 	/**
 	 * @brief Size of the set \f$Q(T)\f$ of this tree \f$T\f$.
 	 *
-	 * See @ref lal::properties::size_Q for details.
+	 * See @ref lal::properties::num_pairs_independent_edges for details.
 	 */
 	num_pairs_independent_edges,
 	/**
 	 * @brief Headedness of the tree.
 	 *
-	 * See @ref lal::linarr::headedness for details.
+	 * See @ref lal::linarr::head_initial for details.
 	 */
-	headedness,
+	head_initial,
 	/**
 	 * @brief Hubiness of the tree.
 	 *
@@ -110,73 +134,73 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::linarr::algorithms_C for details.
 	 */
-	C,
+	num_crossings,
 	/**
 	 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
 	 *
-	 * See @ref lal::properties::expectation_C for details.
+	 * See @ref lal::properties::exp_num_crossings for details.
 	 */
-	C_expected,
+	exp_num_crossings,
 	/**
 	 * @brief Variance of \f$C\f$, \f$V[C]\f$.
 	 *
-	 * See @ref lal::properties::variance_C_tree for details.
+	 * See @ref lal::properties::var_num_crossings for details.
 	 */
-	C_variance,
+	var_num_crossings,
 	/**
 	 * @brief z-score of \f$C\f$, \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
 	 *
-	 * See @ref lal::properties::variance_C_tree for details on how the
+	 * See @ref lal::properties::var_num_crossings_tree for details on how the
 	 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
 	 */
-	C_z_score,
+	z_score_num_crossings,
 
 	// D
 
 	/**
 	 * @brief Sum of length of edges \f$D\f$.
 	 *
-	 * See @ref lal::linarr::sum_length_edges for details.
+	 * See @ref lal::linarr::sum_edge_lengths for details.
 	 */
-	D,
+	sum_edge_lengths,
 	/**
 	 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
 	 *
-	 * See @ref lal::properties::expectation_D for details.
+	 * See @ref lal::properties::exp_sum_edge_lengths for details.
 	 */
-	D_expected,
+	exp_sum_edge_lengths,
 	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *
-	 * See @ref lal::properties::variance_D for details.
+	 * See @ref lal::properties::var_sum_edge_lengths for details.
 	 */
-	D_variance,
+	var_sum_edge_lengths,
 	/**
 	 * @brief z-score of \f$D\f$, \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
 	 *
-	 * See @ref lal::properties::variance_D for details on how the
+	 * See @ref lal::properties::var_sum_edge_lengths for details on how the
 	 * variance of \f$D\f$, \f$V[D]\f$, is calculated.
 	 */
-	D_z_score,
+	z_score_sum_edge_lengths,
 	/**
 	 * @brief Unconstrained minimum sum of length of edges.
 	 *
 	 * See @ref lal::linarr::algorithms_Dmin::Unconstrained_YS, or
 	 * @ref lal::linarr::algorithms_Dmin::Unconstrained_FC for details.
 	 */
-	Dmin,
+	min_sum_edge_lengths,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::Dmin_Planar for details.
+	 * See @ref lal::linarr::min_sum_edge_lengths for details.
 	 */
-	Dmin_Planar,
+	min_sum_edge_lengths_planar,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::Dmin_Projective for details.
+	 * See @ref lal::linarr::min_sum_edge_lengths_projective for details.
 	 */
-	Dmin_Projective,
+	min_sum_edge_lengths_projective,
 
 	// FLUXES
 
@@ -318,10 +342,10 @@ enum class treebank_feature {
 	/**
 	 * @brief The type of syntactic dependency structure.
 	 *
-	 * See @ref lal::linarr::syntactic_dependency_structure_type for a complete
+	 * See @ref lal::linarr::syntactic_dependency_structure for a complete
 	 * list of types.
 	 */
-	syntactic_dependency_structure_type,
+	syntactic_dependency_structure_class,
 
 	/*
 	 * @brief The last value of the enumeration.

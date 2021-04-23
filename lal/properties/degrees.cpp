@@ -164,7 +164,7 @@ double moment_degree(const directed_graph& g, uint32_t p) noexcept
 
 // moment of in-degree
 
-rational moment_in_degree_rational(const directed_graph& g, uint32_t p) noexcept
+rational moment_degree_in_rational(const directed_graph& g, uint32_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, rational>
@@ -175,7 +175,7 @@ rational moment_in_degree_rational(const directed_graph& g, uint32_t p) noexcept
 	);
 }
 
-double moment_in_degree(const directed_graph& g, uint32_t p) {
+double moment_degree_in(const directed_graph& g, uint32_t p) {
 	return
 	__mmt_x_degree_rational<directed_graph, double>
 	(
@@ -187,7 +187,7 @@ double moment_in_degree(const directed_graph& g, uint32_t p) {
 
 // moment of out-degree
 
-rational moment_out_degree_rational(const directed_graph& g, uint32_t p) noexcept
+rational moment_degree_out_rational(const directed_graph& g, uint32_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, rational>
@@ -198,7 +198,7 @@ rational moment_out_degree_rational(const directed_graph& g, uint32_t p) noexcep
 	);
 }
 
-double moment_out_degree(const directed_graph& g, uint32_t p) noexcept
+double moment_degree_out(const directed_graph& g, uint32_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, double>

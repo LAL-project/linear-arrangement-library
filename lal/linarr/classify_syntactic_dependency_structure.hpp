@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/linarr/syntactic_dependency_structure_type.hpp>
+#include <lal/linarr/syntactic_dependency_structure.hpp>
 
 namespace lal {
 namespace linarr {
@@ -61,10 +61,10 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @returns The class of projective structure. If the class could not
- * be determined the method returns @ref lal::linarr::syntactic_dependency_structure_type::unknown.
+ * be determined the method returns @ref lal::linarr::syntactic_dependency_structure::unknown.
  */
-std::array<bool, __tree_structure_type_size>
-classify_syntactic_dependency_structure
+std::array<bool, __syntactic_dependency_structure_size>
+syntactic_dependency_structure_class
 (const graphs::rooted_tree& t, const linear_arrangement& pi = {})
 noexcept;
 

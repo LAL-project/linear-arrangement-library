@@ -327,7 +327,7 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 /* GETTERS */
 
 vector<edge_pair> directed_graph::get_Q() const noexcept {
-	const auto qs = properties::size_Q(*this);
+	const auto qs = properties::num_pairs_independent_edges(*this);
 	return internal::Q(*this, qs);
 }
 
