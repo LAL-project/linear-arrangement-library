@@ -62,11 +62,24 @@ namespace properties {
 // g: input graph
 // p: moment of the *-degree
 // D: function that returns the *-degree
-template<class G, class numtype, class restype, class Callable>
+template<
+	class G, class restype, class Callable,
+
+	class numtype = std::conditional_t<
+		std::is_same_v<restype, rational>,
+		integer,
+		uint32_t
+	>
+>
 inline
 restype __mmt_x_degree_rational
 (const G& g, uint32_t p, const Callable& D)
 {
+	static_assert(
+		std::is_same_v<restype, double> ||
+		std::is_same_v<restype, numeric::rational>
+	);
+
 	const numtype M = [&]() {
 		if constexpr (std::is_same_v<numtype, numeric::integer>) {
 			 return integer_from_ui(g.get_num_nodes());
@@ -79,13 +92,13 @@ restype __mmt_x_degree_rational
 	numtype S(0);
 	numtype du(0);
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
-		//du.set_ui(g.get_degree(u));
+		const uint32_t deg = D(g, u);
 		if constexpr (std::is_same_v<numtype, numeric::integer>) {
-			du.set_ui(D(g, u));
+			du.set_ui(deg);
 			du ^= p;
 		}
 		else {
-			du = D(g,u);
+			du = deg;
 			for (uint32_t i = 0; i < p; ++i) {
 				du *= du;
 			}
@@ -108,7 +121,7 @@ restype __mmt_x_degree_rational
 rational moment_degree_rational(const undirected_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<undirected_graph, integer, rational>
+	__mmt_x_degree_rational<undirected_graph, rational>
 	(
 		g, p,
 		[](const undirected_graph& _g, node _u) -> uint32_t
@@ -119,7 +132,7 @@ rational moment_degree_rational(const undirected_graph& g, uint32_t p) noexcept
 double moment_degree(const undirected_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<undirected_graph, uint32_t, double>
+	__mmt_x_degree_rational<undirected_graph, double>
 	(
 		g, p,
 		[](const undirected_graph& _g, node _u) -> uint32_t
@@ -130,7 +143,7 @@ double moment_degree(const undirected_graph& g, uint32_t p) noexcept
 rational moment_degree_rational(const directed_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, rational>
+	__mmt_x_degree_rational<directed_graph, rational>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
@@ -141,7 +154,7 @@ rational moment_degree_rational(const directed_graph& g, uint32_t p) noexcept
 double moment_degree(const directed_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, double>
+	__mmt_x_degree_rational<directed_graph, double>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
@@ -154,7 +167,7 @@ double moment_degree(const directed_graph& g, uint32_t p) noexcept
 rational moment_in_degree_rational(const directed_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, rational>
+	__mmt_x_degree_rational<directed_graph, rational>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
@@ -164,7 +177,7 @@ rational moment_in_degree_rational(const directed_graph& g, uint32_t p) noexcept
 
 double moment_in_degree(const directed_graph& g, uint32_t p) {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, double>
+	__mmt_x_degree_rational<directed_graph, double>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
@@ -177,22 +190,22 @@ double moment_in_degree(const directed_graph& g, uint32_t p) {
 rational moment_out_degree_rational(const directed_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, rational>
+	__mmt_x_degree_rational<directed_graph, rational>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.get_degree(_u); }
+		{ return _g.get_out_degree(_u); }
 	);
 }
 
 double moment_out_degree(const directed_graph& g, uint32_t p) noexcept
 {
 	return
-	__mmt_x_degree_rational<directed_graph, uint32_t, double>
+	__mmt_x_degree_rational<directed_graph, double>
 	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.get_degree(_u); }
+		{ return _g.get_out_degree(_u); }
 	);
 }
 
