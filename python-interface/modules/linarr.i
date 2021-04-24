@@ -5,7 +5,7 @@
 %include std_pair.i
 
 %import definitions.i // this is necessary for the wrapper
-%import enums/syntactic_dependency_structure_type.i
+%import enums/syntactic_dependency_structure.i
 %import enums/algorithms_C.i
 %import enums/algorithms_Dmin.i
 // these are necessary for the wrapper
@@ -37,7 +37,7 @@ namespace std {
 %include "../lal/linarr/flux.hpp"
 
 namespace std {
-	%template(array_of_bools_tree_structure_type) array<bool, lal::linarr::__tree_structure_type_size>;
+	%template(array_of_bools_tree_structure_type) array<bool, lal::linarr::__syntactic_dependency_structure_size>;
 }
 %include "../lal/linarr/classify_syntactic_dependency_structure.hpp"
 
