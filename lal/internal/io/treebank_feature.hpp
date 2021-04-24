@@ -71,8 +71,11 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	case treebank_feature::head_initial: return "head_initial";
 	case treebank_feature::hubiness: return "hubiness";
 	case treebank_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
-	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
+	case treebank_feature::tree_centre: return "tree_centre";
+	case treebank_feature::tree_centroid: return "tree_centroid";
+	case treebank_feature::tree_diameter: return "tree_diameter";
 	case treebank_feature::num_crossings: return "num_crossings";
+	case treebank_feature::predicted_num_crossings: return "predicted_num_crossings";
 	case treebank_feature::exp_num_crossings: return "exp_num_crossings";
 	case treebank_feature::var_num_crossings: return "var_num_crossings";
 	case treebank_feature::z_score_num_crossings: return "z_score_num_crossings";
@@ -83,6 +86,7 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	case treebank_feature::min_sum_edge_lengths: return "min_sum_edge_lengths";
 	case treebank_feature::min_sum_edge_lengths_planar: return "min_sum_edge_lengths_planar";
 	case treebank_feature::min_sum_edge_lengths_projective: return "min_sum_edge_lengths_projective";
+	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
 	case treebank_feature::flux_max_weight: return "flux_max_weight";
 	case treebank_feature::flux_mean_weight: return "flux_mean_weight";
 	case treebank_feature::flux_min_weight: return "flux_min_weight";

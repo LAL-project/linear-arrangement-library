@@ -66,6 +66,9 @@ using namespace std;
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
+#include <lal/properties/tree_centre.hpp>
+#include <lal/properties/tree_centroid.hpp>
+#include <lal/properties/tree_diameter.hpp>
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
@@ -234,8 +237,9 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::head_initial:
 				case treebank_feature::hubiness:
 				case treebank_feature::mean_hierarchical_distance:
-				case treebank_feature::mean_dependency_distance:
+				case treebank_feature::tree_diameter:
 				case treebank_feature::num_crossings:
+				case treebank_feature::predicted_num_crossings:
 				case treebank_feature::exp_num_crossings:
 				case treebank_feature::var_num_crossings:
 				case treebank_feature::z_score_num_crossings:
@@ -246,6 +250,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::min_sum_edge_lengths:
 				case treebank_feature::min_sum_edge_lengths_planar:
 				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::mean_dependency_distance:
 				case treebank_feature::flux_max_weight:
 				case treebank_feature::flux_mean_weight:
 				case treebank_feature::flux_min_weight:
@@ -265,6 +270,13 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::flux_mean_size:
 				case treebank_feature::flux_min_size:
 					out_treebank_file << internal::treebank_feature_string(tf);
+					break;
+
+				case treebank_feature::tree_centre:
+				case treebank_feature::tree_centroid:
+					out_treebank_file << internal::treebank_feature_string(tf) << "1";
+					out_treebank_file << m_separator;
+					out_treebank_file << internal::treebank_feature_string(tf) << "2";
 					break;
 
 				case treebank_feature::tree_type:
@@ -418,8 +430,9 @@ const noexcept
 	static constexpr size_t head_initial_idx = internal::treebank_feature_to_index(treebank_feature::head_initial);
 	static constexpr size_t hubiness_idx = internal::treebank_feature_to_index(treebank_feature::hubiness);
 	static constexpr size_t mean_hierarchical_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
-	static constexpr size_t mean_dependency_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_dependency_distance);
+	static constexpr size_t tree_diameter_idx = internal::treebank_feature_to_index(treebank_feature::tree_diameter);
 	static constexpr size_t C_idx = internal::treebank_feature_to_index(treebank_feature::num_crossings);
+	static constexpr size_t C_predicted_idx = internal::treebank_feature_to_index(treebank_feature::predicted_num_crossings);
 	static constexpr size_t C_expected_idx = internal::treebank_feature_to_index(treebank_feature::exp_num_crossings);
 	static constexpr size_t C_variance_idx = internal::treebank_feature_to_index(treebank_feature::var_num_crossings);
 	static constexpr size_t C_z_score_idx = internal::treebank_feature_to_index(treebank_feature::z_score_num_crossings);
@@ -430,6 +443,7 @@ const noexcept
 	static constexpr size_t Dmin_Unconstrained_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
 	static constexpr size_t Dmin_Planar_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
 	static constexpr size_t Dmin_Projective_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
+	static constexpr size_t mean_dependency_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_dependency_distance);
 	static constexpr size_t flux_max_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_weight);
 	static constexpr size_t flux_mean_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_weight);
 	static constexpr size_t flux_min_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_weight);
@@ -448,18 +462,16 @@ const noexcept
 	static constexpr size_t flux_max_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_size);
 	static constexpr size_t flux_mean_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_size);
 	static constexpr size_t flux_min_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_size);
-	static constexpr size_t tree_type_idx = internal::treebank_feature_to_index(treebank_feature::tree_type);
-	static constexpr size_t sdst_idx = internal::treebank_feature_to_index(treebank_feature::syntactic_dependency_structure_class);
 
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
 	double props[__treebank_feature_size]{0.0};
-	bool prop_set[__treebank_feature_size]{false};
+	char prop_set[__treebank_feature_size]{0};
 
 	const auto set_prop =
 	[&](size_t idx, double val) -> void {
 		props[idx] = val;
-		prop_set[idx] = true;
+		prop_set[idx] = 1;
 	};
 
 	// number of nodes
@@ -490,6 +502,10 @@ const noexcept
 		set_prop(mean_dependency_distance_idx,
 				 linarr::mean_dependency_distance(rT));
 	}
+	if (m_what_fs[tree_diameter_idx]) {
+		set_prop(tree_diameter_idx,
+				 properties::tree_diameter(rT));
+	}
 
 	// -----------------------------------------------------------------
 	// C
@@ -513,11 +529,14 @@ const noexcept
 
 		set_prop(C_idx, linarr::num_crossings(fT, algo_C));
 	}
-	if (m_what_fs[C_variance_idx]) {
-		set_prop(C_variance_idx, properties::var_num_crossings_tree(fT));
+	if (m_what_fs[C_predicted_idx]) {
+		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT));
 	}
 	if (m_what_fs[C_expected_idx]) {
 		set_prop(C_expected_idx, properties::exp_num_crossings(fT));
+	}
+	if (m_what_fs[C_variance_idx]) {
+		set_prop(C_variance_idx, properties::var_num_crossings_tree(fT));
 	}
 
 	// z-score of C
@@ -551,11 +570,11 @@ const noexcept
 	if (m_what_fs[D_idx]) {
 		set_prop(D_idx, linarr::sum_edge_lengths(fT));
 	}
-	if (m_what_fs[D_variance_idx]) {
-		set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
-	}
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
+	}
+	if (m_what_fs[D_variance_idx]) {
+		set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
 	}
 
 	// z-score of D
@@ -635,6 +654,9 @@ const noexcept
 #undef DFMEM
 	}
 
+	const pair<node,node> centre_of_tree = properties::tree_centre(fT);
+	const pair<node,node> centroid_of_tree = properties::tree_centroid(fT);
+
 	// ---------------
 	// output features
 
@@ -661,8 +683,9 @@ const noexcept
 			case treebank_feature::head_initial:
 			case treebank_feature::hubiness:
 			case treebank_feature::mean_hierarchical_distance:
-			case treebank_feature::mean_dependency_distance:
+			case treebank_feature::tree_diameter:
 			case treebank_feature::num_crossings:
+			case treebank_feature::predicted_num_crossings:
 			case treebank_feature::exp_num_crossings:
 			case treebank_feature::var_num_crossings:
 			case treebank_feature::z_score_num_crossings:
@@ -673,6 +696,7 @@ const noexcept
 			case treebank_feature::min_sum_edge_lengths:
 			case treebank_feature::min_sum_edge_lengths_planar:
 			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::mean_dependency_distance:
 			case treebank_feature::flux_max_weight:
 			case treebank_feature::flux_mean_weight:
 			case treebank_feature::flux_min_weight:
@@ -692,6 +716,18 @@ const noexcept
 			case treebank_feature::flux_mean_size:
 			case treebank_feature::flux_min_size:
 				out_treebank_file << props[i];
+				break;
+
+			case treebank_feature::tree_centre:
+				out_treebank_file
+					<< centre_of_tree.first << m_separator
+					<< centre_of_tree.second;
+				break;
+
+			case treebank_feature::tree_centroid:
+				out_treebank_file
+					<< centroid_of_tree.first << m_separator
+					<< centroid_of_tree.second;
 				break;
 
 			case treebank_feature::tree_type:

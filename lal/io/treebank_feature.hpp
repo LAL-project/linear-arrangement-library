@@ -58,8 +58,10 @@ namespace io {
  * all the features that can be calculated using those two classes.
  */
 enum class treebank_feature {
+	// STRUCTURAL PROPERTIES
+
 	/// Number of nodes of the tree.
-	num_nodes = 0,
+	num_nodes,
 	/**
 	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 	 *
@@ -121,20 +123,50 @@ enum class treebank_feature {
 	 */
 	mean_hierarchical_distance,
 	/**
-	 * @brief Mean dependency distance of the tree.
+	 * @brief Centre of the tree.
 	 *
-	 * See @ref lal::linarr::mean_dependency_distance for details.
+	 * This feature spans two columns, one for each possible central vertex.
+	 * Each column contains an index: the first is always strictly less than the
+	 * number of vertices, and the second is only valid when its value is strictly
+	 * less than the number of vertices.
+	 *
+	 * See @ref lal::properties::tree_centre for details on the definition of
+	 * centre of a tree.
 	 */
-	mean_dependency_distance,
+	tree_centre,
+	/**
+	 * @brief Centroid of the tree.
+	 *
+	 * This feature spans two columns, one for each possible centroidal vertex.
+	 * Each column contains an index: the first is always strictly less than the
+	 * number of vertices, and the second is only valid when its value is strictly
+	 * less than the number of vertices.
+	 *
+	 * See @ref lal::properties::tree_centroid for details on the definition of
+	 * centroid of a tree.
+	 */
+	tree_centroid,
+	/**
+	 * @brief Diameter of the tree.
+	 *
+	 * See @ref lal::properties::tree_diameter for details.
+	 */
+	tree_diameter,
 
 	// C
 
 	/**
 	 * @brief Number of edge crossings \f$C\f$.
 	 *
-	 * See @ref lal::linarr::algorithms_C for details.
+	 * See @ref lal::linarr::num_crossings for details.
 	 */
 	num_crossings,
+	/**
+	 * @brief Prediction of the number of crossings \f$C\f$.
+	 *
+	 * See @ref lal::linarr::predicted_num_crossings for details.
+	 */
+	predicted_num_crossings,
 	/**
 	 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
 	 *
@@ -201,6 +233,12 @@ enum class treebank_feature {
 	 * See @ref lal::linarr::min_sum_edge_lengths_projective for details.
 	 */
 	min_sum_edge_lengths_projective,
+	/**
+	 * @brief Mean dependency distance of the tree.
+	 *
+	 * See @ref lal::linarr::mean_dependency_distance for details.
+	 */
+	mean_dependency_distance,
 
 	// FLUXES
 
@@ -335,12 +373,21 @@ enum class treebank_feature {
 	/**
 	 * @brief The type of tree.
 	 *
+	 * This feature spans as many columns as types of trees are available in this
+	 * library. Each column will contain either a 0 or a 1 depending on whether
+	 * or not the tree can be classified into that type of tree.
+	 *
 	 * See @ref lal::graphs::tree_type for a complete list of tree types.
 	 */
 	tree_type,
 
 	/**
 	 * @brief The type of syntactic dependency structure.
+	 *
+	 * This feature spans as many columns as types of syntactic dependency
+	 * structure are available in this library. Each column will contain either
+	 * a 0 or a 1 depending on whether or not the tree can be classified into
+	 * that syntactic dependency structure.
 	 *
 	 * See @ref lal::linarr::syntactic_dependency_structure for a complete
 	 * list of types.
