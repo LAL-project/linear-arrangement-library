@@ -5,6 +5,9 @@ Classes ``lal.io.treebank_collection_processor`` and ``lal.io.treebank_processor
 
 Users will find the feature values after every bullet marker.
 
+Structural properties
+----------
+
 - ``num_nodes`` : Number of nodes.
 - ``second_moment_degree`` : Second moment of degree :math:`<k^2>`. See ``lal.properties.moment_degree`` for details.
 - ``second_moment_degree_in`` : Second moment of degree :math:`<k_{in}^2>`. See ``lal.properties.moment_degree_in`` for details.
@@ -14,13 +17,16 @@ Users will find the feature values after every bullet marker.
 - ``third_moment_degree_out`` : Third moment of degree :math:`<k_{out}^3>`. See ``lal.properties.moment_degree_out`` for details.
 - ``num_pairs_independent_edges`` : Size of the set :math:`Q(T)` of this tree :math:`T`. See ``lal.properties.num_pairs_independent_edges`` for details.
 - ``mean_hierarchical_distance`` : Mean hierarchical distance of the tree. See ``lal.properties.mean_hierarchical_distance`` for details.
-- ``mean_dependency_distance`` : Mean dependency distance of the tree. See ``lal.linarr.mean_dependency_distance`` for details.
 - ``head_initial`` : Headedness of the tree. See ``lal.linarr.head_initial`` for details.
+- ``tree_centre`` : Centre of the tree. This feature spans two columns, one for each possible central vertex. Each column contains an index: the first is always strictly less than the number of vertices, and the second is only valid when its value is strictly less than the number of vertices. See ``lal.properties.tree_centre`` for details on the definition of centre of a tree.
+- ``tree_centroid`` : Centroid of the tree. This feature spans two columns, one for each possible centroidal vertex. Each column contains an index: the first is always strictly less than the number of vertices, and the second is only valid when its value is strictly less than the number of vertices. See ``lal.properties.tree_centroid`` for details on the definition of centroid of a tree.
+- ``tree_diameter`` : Diameter of the tree. See ``lal.properties.tree_diameter`` for details.
 
 C
 -----
 
 - ``num_crossings`` : Number of edge crossings :math:`C`. See ``lal.linarr.algorithms_C`` for details.
+- ``predicted_num_crossings`` : Prediction of the number of crossings :math:`C`. See ``lal.linarr.predicted_num_crossings`` for details.
 - ``exp_num_crossings`` : First moment of expectation of :math:`C`, :math:`E[C]`. See ``lal.properties.exp_num_crossings`` for details.
 - ``var_num_crossings`` : Variance of :math:`C`, :math:`V[C]`. See ``lal.properties.var_num_crossings`` for details.
 - ``z_score_num_crossings`` : z-score of :math:`C`, :math:`\frac{C - E[C]}{\sqrt{V[C]}}`. See ``lal.properties.var_num_crossings_tree`` for details on how the variance of :math:`C`, :math:`V[C]`, is calculated.
@@ -32,13 +38,10 @@ D
 - ``exp_sum_edge_lengths`` : First moment of expectation of :math:`D`, :math:`E[D]`. See ``lal.properties.exp_sum_edge_lengths`` for details.
 - ``var_sum_edge_lengths`` : Variance of :math:`D`, :math:`V[D]`. See ``lal.properties.var_sum_edge_lengths`` for details.
 - ``z_score_sum_edge_lengths`` : z-score of :math:`D` , :math:`\frac{D - E[D]}{\sqrt{V[D]}}`. See ``lal.properties.var_sum_edge_lengths`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
-
-Minimum Linear arrangement
-------
-
 - ``min_sum_edge_lengths`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
 - ``min_sum_edge_lengths_planar`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.min_sum_edge_lengths_planar`` for details.
 - ``min_sum_edge_lengths_projective`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.min_sum_edge_lengths_projective`` for details.
+- ``mean_dependency_distance`` : Mean dependency distance of the tree. See ``lal.linarr.mean_dependency_distance`` for details.
 
 Dependency Flux
 ----------
@@ -67,7 +70,7 @@ All the following features are defined in class ``lal.linarr.dependency_flux``; 
 Types of structures
 -----------
 
-- ``tree_type` The type of tree. See ``lal.graphs.tree_type`` for a complete list of tree types.
-- ``syntactic_dependency_structure_class` The type of syntactic dependency structure. See ``lal.linarr.syntactic_dependency_structure_class`` for a complete list of types.
+- ``tree_type` The type of tree. This feature spans as many columns as types of trees are available in this library. Each column will contain either a 0 or a 1 depending on whether or not the tree can be classified into that type of tree. See ``lal.graphs.tree_type`` for a complete list of tree types.
+- ``syntactic_dependency_structure_class` The type of syntactic dependency structure. This feature spans as many columns as types of syntactic dependency structure are available in this library. Each column will contain either a 0 or a 1 depending on whether or not the tree can be classified into that syntactic dependency structure. See ``lal.linarr.syntactic_dependency_structure_class`` for a complete list of types.
 
 """
