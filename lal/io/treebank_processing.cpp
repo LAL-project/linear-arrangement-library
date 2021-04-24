@@ -39,31 +39,46 @@
  *
  ********************************************************************/
 
-#pragma once
+// C++ includes
+#include <string>
+using namespace std;
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
-
-#include <lal/io/basic_output.hpp>
-
-// read formatted files
-#include <lal/io/edge_list.hpp>
-#include <lal/io/head_vector.hpp>
-
-// check correctness of treebanks
-#include <lal/io/report_correctness.hpp>
-#include <lal/io/check_correctness.hpp>
-
-// process treebanks
-#include <lal/io/treebank_error.hpp>
-#include <lal/io/treebank_feature.hpp>
-
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_collection_reader.hpp>
-
-#include <lal/io/treebank_processor.hpp>
+// lal includes
 #include <lal/io/treebank_collection_processor.hpp>
+#include <lal/io/treebank_processor.hpp>
 
-//    automatic processing
-#include <lal/io/treebank_processing.hpp>
+namespace lal {
+namespace io {
+
+treebank_error process_treebank
+(const string& treebank_file, const string& output_file) noexcept
+{
+	treebank_processor tbproc;
+	auto err = tbproc.init(treebank_file, output_file);
+	if (err != treebank_error::no_error) {
+		return err;
+	}
+	err = tbproc.process();
+	return err;
+}
+
+
+treebank_error process_treebank_collection(
+	const string& treebank_collection_main_file,
+	const string& output_directory,
+	size_t num_threads
+)
+noexcept
+{
+	treebank_collection_processor tbcolproc;
+	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
+	tbcolproc.set_number_threads(num_threads);
+	if (err != treebank_error::no_error) {
+		return err;
+	}
+	err = tbcolproc.process();
+	return err;
+}
+
+} // -- namespace io
+} // -- namespace lal

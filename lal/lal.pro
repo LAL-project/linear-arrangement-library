@@ -134,6 +134,7 @@ HEADERS += \
 	io/report_correctness.hpp \
 	io/treebank_collection_processor.hpp \
 	io/treebank_collection_reader.hpp \
+	io/treebank_processing.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
 	io/treebank_error.hpp \
@@ -209,6 +210,7 @@ SOURCES += \
     io/head_vector.cpp \
     io/treebank_collection_processor.cpp \
     io/treebank_collection_reader.cpp \
+    io/treebank_processing.cpp \
     io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \

@@ -41,29 +41,51 @@
 
 #pragma once
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
-
-#include <lal/io/basic_output.hpp>
-
-// read formatted files
-#include <lal/io/edge_list.hpp>
-#include <lal/io/head_vector.hpp>
-
-// check correctness of treebanks
-#include <lal/io/report_correctness.hpp>
-#include <lal/io/check_correctness.hpp>
-
-// process treebanks
-#include <lal/io/treebank_error.hpp>
-#include <lal/io/treebank_feature.hpp>
-
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_collection_reader.hpp>
-
-#include <lal/io/treebank_processor.hpp>
+// lal includes
 #include <lal/io/treebank_collection_processor.hpp>
+#include <lal/io/treebank_processor.hpp>
 
-//    automatic processing
-#include <lal/io/treebank_processing.hpp>
+namespace lal {
+namespace io {
+
+/**
+ * @brief Automatically process a treebank.
+ *
+ * This function is an utility to process easily a single treebank file.
+ * This function uses the class @ref lal::io::treebank_processor in order to
+ * process such a file. The default values of the processor are used, i.e.,
+ * all features available in @ref lal::io::treebank_feature are computed.
+ * @param treebank_file The treebank file name.
+ * @param output_file The output file name.
+ * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ */
+treebank_error process_treebank(
+	const std::string& treebank_file,
+	const std::string& output_file
+)
+noexcept;
+
+/**
+ * @brief Automatically process a treebank collection.
+ *
+ * This function is an utility to process easily a collection of treebank files.
+ * This function uses the class @ref lal::io::treebank_collection_processor in
+ * order to process such a collection, with all its options set to their default
+ * value. The default options are:
+ * - All features in @ref lal::io::treebank_feature are computed,
+ * - All files produced are joined into a single file,
+ * - The individual files are deleted.
+ * @param treebank_collection_main_file The main file of the treebank collection.
+ * @param output_directory The output .
+ * @param num_threads The number of threads.
+ * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ */
+treebank_error process_treebank_collection(
+	const std::string& treebank_collection_main_file,
+	const std::string& output_directory,
+	std::size_t num_threads = 1
+)
+noexcept;
+
+} // -- namespace io
+} // -- namespace lal
