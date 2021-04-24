@@ -79,7 +79,7 @@ namespace io {
  *		eus path/to/file/eu-all.heads2
  *		ben path/to/file/bn-all.heads2
  *		...
- *
+ * 
  * where the first column contains a string referencing the treebank of a language
  * (in this case, by giving an ISO code of a language), and the second column
  * contains the full path to the file with the syntactic dependency trees.
@@ -116,11 +116,11 @@ namespace io {
  * @ref treebank_collection_reader. For example:
  * @code
  *		treebank_collection_processor tbproc;
- *		// initialise the processor without features (remmeber to check for errors)
+ *		// initialise the processor without features (remember to check for errors)
  *      // and 4 threads for faster processing.
- *		tbproc.init(main_file, output_dir, false, 4);
- *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::C);
- *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::D_var);
+ *		tbproc.init(main_file, output_dir, 4);
+ *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode

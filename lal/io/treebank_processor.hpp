@@ -92,9 +92,9 @@ namespace io {
  * @code
  *		treebank_processor tbproc;
  *		// initialise the processor without features (remmeber to check for errors)
- *		tbproc.init(treebank_input_file, result_filename, false, "Book_1");
- *		tbproc.add_feature(treebank_processor::tree_feature::C);
- *		tbproc.add_feature(treebank_processor::tree_feature::D_var);
+ *		tbproc.init(treebank_input_file, result_filename, "Book_1");
+ *		tbproc.add_feature(treebank_processor::tree_feature::num_crossings);
+ *		tbproc.add_feature(treebank_processor::tree_feature::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
