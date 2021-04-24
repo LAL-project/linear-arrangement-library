@@ -98,9 +98,9 @@ restype __mmt_x_degree_rational
 			du ^= p;
 		}
 		else {
-			du = deg;
+			du = 1;
 			for (uint32_t i = 0; i < p; ++i) {
-				du *= du;
+				du *= deg;
 			}
 		}
 
