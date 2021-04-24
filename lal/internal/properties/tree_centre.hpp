@@ -93,7 +93,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 	// First simple case:
 	// in case the component of x has only one node (node x)...
 	if (t.get_num_nodes_component(X) == 1) {
-		return std::make_pair(X, n);
+		return std::make_pair(X, n+1);
 	}
 
 	// Second simple case:
@@ -247,7 +247,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 #if defined DEBUG
 		assert(size_trimmed == 1);
 #endif
-		return std::make_pair(single_center, n);
+		return std::make_pair(single_center, n+1);
 	}
 
 	// in case the 'has_single_center' boolean is false

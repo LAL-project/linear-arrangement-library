@@ -188,7 +188,7 @@ std::pair<node, node> retrieve_centroid(
 	const uint32_t n = t.get_num_nodes_component(x);
 	// easy case
 	if (n == 1) {
-		return std::make_pair(x, component_size);
+		return std::make_pair(x, component_size+1);
 	}
 	// general case
 	return __lal::retrieve_centroid(t, component_size, n, x, L, sizes_edge);
@@ -255,7 +255,7 @@ std::pair<node, node> retrieve_centroid(
 	const uint32_t n = t.get_num_nodes();
 	// easy case
 	if (n == 1) {
-		return std::make_pair(0, 1);
+		return std::make_pair(0, n+1);
 	}
 	// general case
 	return __lal::retrieve_centroid(t, n, n, 0, L, sizes_edge);
