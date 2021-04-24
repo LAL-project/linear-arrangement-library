@@ -223,6 +223,8 @@ namespace std {
 %include "../lal/io/treebank_processor.hpp"
 %include "../lal/io/treebank_collection_processor.hpp"
 
+%include "../lal/io/treebank_processing.hpp"
+
 /* -------------------------------------------------------------------------- */
 
 %pythoncode %{

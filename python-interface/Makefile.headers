@@ -53,14 +53,15 @@ GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
 
 IO_DPHDRS			= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/basic_output.hpp \
+					  $(LAL_INC_DIR)/lal/io/check_correctness.hpp \
 					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
 					  $(LAL_INC_DIR)/lal/io/process_treebank_base.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_collection_reader.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_collection_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io/report_correctness.hpp \
-					  $(LAL_INC_DIR)/lal/io/check_correctness.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_collection_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_collection_reader.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_processing.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io.hpp
 
 ITERATORS_DPHDRS	= $(GRAPHS_DPHDRS) \

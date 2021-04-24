@@ -41,19 +41,19 @@ endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
 # syntactic dependency structure type module
-$(SYN_DEP_STR_TYPE_INSTALL_SO_FILE): $(SYN_DEP_STR_TYPE_WRAP).o $(LIBRARY_SHARED_DEP)
+$(SYN_DEP_STR_INSTALL_SO_FILE): $(SYN_DEP_STR_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(SYN_DEP_STR_TYPE_WRAP).o: $(SYN_DEP_STR_TYPE_WRAP).cxx
+$(SYN_DEP_STR_WRAP).o: $(SYN_DEP_STR_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(SYN_DEP_STR_TYPE_WRAP).cxx: $(SYN_DEP_STR_TYPE_MOD_DEPS) $(SYN_DEP_STR_TYPE_MAIN_INT)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_TYPE_WRAP).cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
-	scripts/postprocess_interface_file.sh $(SYN_DEP_STR_TYPE_INSTALL_PY_FILE) | sed "s/^/    /g"
+$(SYN_DEP_STR_WRAP).cxx: $(SYN_DEP_STR_MOD_DEPS) $(SYN_DEP_STR_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_WRAP).cxx $(SYN_DEP_STR_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(SYN_DEP_STR_INSTALL_PY_FILE) | sed "s/^/    /g"
 
-$(SYN_DEP_STR_TYPE_INSTALL_PY_FILE): $(SYN_DEP_STR_TYPE_MOD_DEPS) $(SYN_DEP_STR_TYPE_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(SYN_DEP_STR_TYPE_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_TYPE_WRAP).cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+$(SYN_DEP_STR_INSTALL_PY_FILE): $(SYN_DEP_STR_MOD_DEPS) $(SYN_DEP_STR_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(SYN_DEP_STR_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(SYN_DEP_STR_WRAP).cxx $(SYN_DEP_STR_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(SYN_DEP_STR_TYPE_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(SYN_DEP_STR_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
