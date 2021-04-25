@@ -56,7 +56,7 @@ namespace io {
  * This class acts as a base class for all processor classes, namely, the
  * @ref lal::io::treebank_processor and the @ref lal::io::treebank_collection_processor.
  */
-class process_treebank_base {
+class __process_treebank_base {
 public:
 	// MODIFIERS
 
