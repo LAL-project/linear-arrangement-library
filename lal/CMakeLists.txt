@@ -249,7 +249,6 @@ target_sources(
 		io/treebank_collection_reader.hpp
 		io/treebank_error.hpp
 		io/treebank_feature.hpp
-		io/treebank_processing.hpp
 		io/treebank_processor.hpp
 		io/treebank_reader.hpp
 		# -- sources
@@ -258,7 +257,6 @@ target_sources(
 		io/head_vector.cpp
 		io/treebank_collection_processor.cpp
 		io/treebank_collection_reader.cpp
-		io/treebank_processing.cpp
 		io/treebank_processor.cpp
 		io/treebank_reader.cpp
 
@@ -407,7 +405,6 @@ set(LIBLAL_IO_HEADER
 	io/treebank_collection_reader.hpp
 	io/treebank_error.hpp
 	io/treebank_feature.hpp
-	io/treebank_processing.hpp
 	io/treebank_processor.hpp
 	io/treebank_reader.hpp
 )

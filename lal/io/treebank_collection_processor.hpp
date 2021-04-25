@@ -252,5 +252,37 @@ private:
 	std::string m_main_file = "none";
 };
 
+/**
+ * @brief Automatically process a treebank collection.
+ *
+ * This function is an utility to process easily a collection of treebank files.
+ * This function uses the class @ref lal::io::treebank_collection_processor in
+ * order to process such a collection, with all its options set to their default
+ * value. The default options are:
+ * - All features in @ref lal::io::treebank_feature are computed,
+ * - All files produced are joined into a single file,
+ * - The individual files are deleted.
+ * @param treebank_collection_main_file The main file of the treebank collection.
+ * @param output_directory The output .
+ * @param num_threads The number of threads.
+ * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ */
+inline
+treebank_error process_treebank_collection(
+	const std::string& treebank_collection_main_file,
+	const std::string& output_directory,
+	std::size_t num_threads = 1
+)
+noexcept
+{
+	treebank_collection_processor tbcolproc;
+	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
+	tbcolproc.set_number_threads(num_threads);
+	if (err != treebank_error::no_error) {
+		return err;
+	}
+	return tbcolproc.process();
+}
+
 } // -- namespace io
 } // -- namespace lal

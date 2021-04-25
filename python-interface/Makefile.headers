@@ -59,7 +59,6 @@ IO_DPHDRS			= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/report_correctness.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_collection_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_collection_reader.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_processing.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
 					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io.hpp

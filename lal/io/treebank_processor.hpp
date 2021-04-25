@@ -182,5 +182,31 @@ private:
 	std::string m_treebank_id = "";
 };
 
+/**
+ * @brief Automatically process a treebank.
+ *
+ * This function is an utility to process easily a single treebank file.
+ * This function uses the class @ref lal::io::treebank_processor in order to
+ * process such a file. The default values of the processor are used, i.e.,
+ * all features available in @ref lal::io::treebank_feature are computed.
+ * @param treebank_file The treebank file name.
+ * @param output_file The output file name.
+ * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ */
+inline
+treebank_error process_treebank(
+	const std::string& treebank_file,
+	const std::string& output_file
+)
+noexcept
+{
+	treebank_processor tbproc;
+	auto err = tbproc.init(treebank_file, output_file);
+	if (err != treebank_error::no_error) {
+		return err;
+	}
+	return tbproc.process();
+}
+
 } // -- namespace io
 } // -- namespace lal
