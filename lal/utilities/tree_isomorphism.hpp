@@ -49,7 +49,7 @@ namespace lal {
 namespace utilities {
 
 /**
- * @brief Isomorphism test for rooted trees.
+ * @brief Isomorphism test for unlabelled rooted trees.
  *
  * Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$
  * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
@@ -64,16 +64,15 @@ namespace utilities {
  * The algorithm implemented can be found in \cite Aho1974a.
  * @param t1 Input rooted tree.
  * @param t2 Input rooted tree.
- * @returns Whether or not the input trees are isomorphic or not. If the rooted
- * trees do not have both a valid edge orientation (see
- * @ref lal::graphs::rooted_tree::is_orientation_valid) the trees are considered to
- * be non-isomorphic.
+ * @returns Whether or not the input trees are isomorphic or not.
+ * @pre Both input trees are valid rooted trees (see
+ * @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 bool are_trees_isomorphic
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2) noexcept;
 
 /**
- * @brief Isomorphism test for free trees.
+ * @brief Isomorphism test for unlabelled free trees.
  *
  * Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$
  * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
@@ -81,10 +80,13 @@ bool are_trees_isomorphic
  *
  * \f$\forall u,v\in V(t_1) \; uv\in E(t_1) \longleftrightarrow \phi(u)\phi(v)\in E(t_2)\f$
  *
- * The algorithm implemented can be found in \cite Aho1974a.
+ * The algorithm implemented can be found in \cite Aho1974a. Note that this
+ * algorithm
  * @param t1 Input free tree.
  * @param t2 Input free tree.
  * @returns Whether or not the input trees are isomorphic.
+ * @pre Both input trees are valid free trees (see
+ * @ref lal::graphs::rooted_tree::is_tree).
  */
 bool are_trees_isomorphic
 (const graphs::free_tree& t1, const graphs::free_tree& t2) noexcept;

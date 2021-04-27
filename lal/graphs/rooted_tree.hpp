@@ -462,6 +462,7 @@ public:
 	 * cycles (see @ref is_tree()),
 	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root),
 	 * - the orientation of the edges is valid (see @ref is_orientation_valid).
+	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
 	inline bool is_rooted_tree() const noexcept
