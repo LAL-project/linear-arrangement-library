@@ -27,7 +27,7 @@ namespace generate {
  */
 template<
 	class T,
-	bool is_free = std::is_base_of_v<T, graphs::free_tree>,
+	bool is_free = std::is_base_of_v<graphs::free_tree, T>,
 	std::enable_if_t<
 		std::is_base_of_v<graphs::free_tree, T> ||
 		std::is_base_of_v<graphs::rooted_tree, T>,

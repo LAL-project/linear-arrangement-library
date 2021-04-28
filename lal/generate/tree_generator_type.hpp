@@ -153,13 +153,13 @@ struct tree_generator_type {
 				std::is_same_v<labelled_unlabelled, labelled_t>,
 				// labelled types
 				std::conditional_t<
-					std::is_base_of_v<tree_type, graphs::free_tree>,
+					std::is_base_of_v<graphs::free_tree, tree_type>,
 					all_lab_free_trees,
 					all_lab_rooted_trees
 				>,
 				// unlabelled types
 				std::conditional_t<
-					std::is_base_of_v<tree_type, graphs::free_tree>,
+					std::is_base_of_v<graphs::free_tree, tree_type>,
 					all_ulab_free_trees,
 					all_ulab_rooted_trees
 				>
@@ -169,13 +169,13 @@ struct tree_generator_type {
 				std::is_same_v<labelled_unlabelled, labelled_t>,
 				// labelled types
 				std::conditional_t<
-					std::is_base_of_v<tree_type, graphs::free_tree>,
+					std::is_base_of_v<graphs::free_tree, tree_type>,
 					rand_lab_free_trees,
 					rand_lab_rooted_trees
 				>,
 				// unlabelled types
 				std::conditional_t<
-					std::is_base_of_v<tree_type, graphs::free_tree>,
+					std::is_base_of_v<graphs::free_tree, tree_type>,
 					rand_ulab_free_trees,
 					rand_ulab_rooted_trees
 				>
