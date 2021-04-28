@@ -408,7 +408,9 @@ public:
 	 * @post Method @ref is_orientation_valid returns the value set by this
 	 * function.
 	 */
-	void set_valid_orientation(bool valid) noexcept;
+	inline void set_valid_orientation(bool valid) noexcept {
+		m_valid_orientation = valid;
+	}
 
 	/**
 	 * @brief Initialiser with tree and root node.

@@ -293,10 +293,6 @@ bool rooted_tree::find_edge_orientation() noexcept {
 	return m_valid_orientation;
 }
 
-void rooted_tree::set_valid_orientation(bool v) noexcept {
-	m_valid_orientation = v;
-}
-
 void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	const uint32_t n = _t.get_num_nodes();
 #if defined DEBUG
