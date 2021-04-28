@@ -131,7 +131,7 @@ protected:
 	std::uniform_real_distribution<double> m_unif;
 
 	/**
-	 * @brief The number of rooted unlabelled trees.
+	 * @brief The number of unlabelled rooted trees.
 	 *
 	 * Contains \f$r_n\f$ for \f$n\ge 0\f$.
 	 */
@@ -140,8 +140,8 @@ protected:
 	/**
 	 * @brief List that encodes the tree.
 	 *
-	 * This list has @e n+1 values for @ref m_n nodes.
-	 * The first position is the root.
+	 * This list has @e n values for @ref m_n nodes. The first position contains
+	 * the root vertex.
 	 */
 	internal::data_array<uint32_t> m_tree;
 

@@ -45,10 +45,10 @@
 #include <limits>
 using namespace std;
 
-#define inf numeric_limits<uint32_t>::max()
-
-// custom includes
+// lal includes
 #include <lal/internal/graphs/convert_to_ftree.hpp>
+
+#define inf numeric_limits<uint32_t>::max()
 
 namespace lal {
 using namespace graphs;
