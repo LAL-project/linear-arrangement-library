@@ -59,7 +59,7 @@ namespace generate {
 
 all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
 	: tree_generator<free_tree>(_n),
-	  m_seq(m_n <= 2 ? 1 : m_n - 2, 0),
+	  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
 	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
 {
 	init();
@@ -74,21 +74,21 @@ void all_lab_free_trees::next() noexcept {
 		return;
 	}
 
-	while (m_it > 0 and m_seq[m_it] == m_n - 1) {
+	while (m_it > 0 and m_Prufer_seq[m_it] == m_n - 1) {
 		--m_it;
 	}
-	++m_seq[m_it];
+	++m_Prufer_seq[m_it];
 
 	m_sm[m_it] =
-	(m_seq[m_it] == m_n - 1 ?
-		(m_it == 0) or (m_sm[m_it - 1] and m_seq[m_it - 1] == m_n - 1)
+	(m_Prufer_seq[m_it] == m_n - 1 ?
+		(m_it == 0) or (m_sm[m_it - 1] and m_Prufer_seq[m_it - 1] == m_n - 1)
 		:
 		m_sm[m_it]
 	);
 
 	++m_it;
-	if (m_it < m_seq.size()) {
-		std::fill(m_seq.begin() + m_it, m_seq.end(), 0);
+	if (m_it < m_Prufer_seq.size()) {
+		std::fill(m_Prufer_seq.begin() + m_it, m_Prufer_seq.end(), 0);
 	}
 	m_it = m_n - 3;
 }
@@ -102,12 +102,12 @@ void all_lab_free_trees::reset() noexcept {
 
 	m_it = 0;
 	m_sm.fill(false);
-	m_seq.fill(0);
+	m_Prufer_seq.fill(0);
 	// place 'it' at the end of the sequence
 	m_it = m_n - 3;
 	// make sure that the first call to next()
 	// produces the sequence 0 0 ... 0
-	m_seq[m_it] = numeric_limits<uint32_t>::max();
+	m_Prufer_seq[m_it] = numeric_limits<uint32_t>::max();
 	m_L = m_n - 2;
 }
 
@@ -120,7 +120,7 @@ free_tree all_lab_free_trees::__get_tree() noexcept {
 		t.set_edges(vector<edge>{edge(0,1)});
 		return t;
 	}
-	return internal::Prufer_sequence_to_ftree(m_seq.begin(), m_n, false, false);
+	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
 }
 
 void all_lab_free_trees::init() noexcept {

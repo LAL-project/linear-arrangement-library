@@ -115,14 +115,14 @@ protected:
 	/// Distribution of the numbers.
 	std::uniform_int_distribution<uint32_t> m_unif;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_seq;
+	internal::data_array<uint32_t> m_Prufer_seq;
 };
 
 /**
  * @brief Uniformly random generation of labelled free trees.
  *
  * This is a wrapper class of @ref __rand_lab_free_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is

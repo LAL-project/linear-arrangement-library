@@ -168,13 +168,14 @@ private:
 	/**
 	 * @brief Generates uniformly at random a forest of @e m nodes.
 	 *
-	 * Makes a random forest of @e m nodes and stores it in @ref m_tree.
+	 * Makes a random forest of @e m nodes and stores it in @ref m_head_vector.
 	 * Each tree in the forest has at most @e q nodes.
 	 * @param m Integer \f$m \ge 0\f$.
 	 * @param q Integer \f$0 \le q \le m\f$.
-	 * @param nt Index to @ref m_tree indicating where to store the next tree.
+	 * @param nt Index to @ref m_head_vector indicating where to store the next
+	 * tree.
 	 * @returns The position where to store the following
-	 * trees/forests in @ref m_tree.
+	 * trees/forests in @ref m_head_vector.
 	 */
 	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt) noexcept;
 
@@ -228,7 +229,7 @@ private:
  * @brief Uniformly random generation of unlabelled free trees.
  *
  * This is a wrapper class of @ref __rand_ulab_free_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is
@@ -274,7 +275,7 @@ protected:
 	 * @brief Returns an unlabelled free tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_free_trees::get_tree for details.
-	 * @returns A labelled rooted tree chosen uniformly at random.
+	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

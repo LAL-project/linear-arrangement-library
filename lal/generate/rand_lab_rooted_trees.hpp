@@ -121,7 +121,7 @@ protected:
  * @brief Uniformly random generation of labelled rooted trees.
  *
  * This is a wrapper class of @ref __rand_lab_rooted_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is

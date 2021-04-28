@@ -93,7 +93,7 @@ free_tree __rand_ulab_free_trees::get_tree() noexcept {
 		return t;
 	}
 
-	m_tree.fill(0);
+	m_head_vector.fill(0);
 
 	// calculate the probability of generating a bicentroidal tree
 	rational bicent_prob = 0;
@@ -125,7 +125,7 @@ free_tree __rand_ulab_free_trees::get_tree() noexcept {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
-		make_tree(T, m_n, m_tree);
+		make_tree(T, m_n, m_head_vector);
 #if defined DEBUG
 		assert(T.is_tree());
 #endif
@@ -147,7 +147,7 @@ free_tree __rand_ulab_free_trees::get_tree() noexcept {
 	forest(m,q, 1);
 	// -----------------------------------
 
-	make_tree(T, m_n, m_tree);
+	make_tree(T, m_n, m_head_vector);
 #if defined DEBUG
 	assert(T.is_tree());
 #endif
@@ -193,7 +193,7 @@ uint32_t __rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noe
 #endif
 
 		// this node should be connected to the root of T
-		m_tree[nt] = 0;
+		m_head_vector[nt] = 0;
 
 		// No need to modify m_tree since we are adding a root, and the
 		// positions corresponding to roots in m_tree are modified at the
@@ -223,13 +223,13 @@ uint32_t __rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noe
 		// do not connect them to the forest's root. Instead,
 		// leave them orphan until the end of the procedure connects
 		// them to the parent node.
-		m_tree[nt] = 0;
+		m_head_vector[nt] = 0;
 
 		// Copy the tree structure.
 		for (uint32_t v = nt + 1; v < nt + d; ++v) {
 			// for details on why this assignment
 			// see end of method ranrut()
-			m_tree[v] = nt + m_tree[v - c*d] - root_Tp;
+			m_head_vector[v] = nt + m_head_vector[v - c*d] - root_Tp;
 		}
 		nt += d;
 
@@ -254,9 +254,9 @@ void __rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
 	if (m_unif(m_gen) <= prob.to_double()) {
 		// step B1: ... and make a SINGLE copy
 
-		m_tree[nt] = lr;
+		m_head_vector[nt] = lr;
 		for (uint32_t v = nt + 1; v < nt + h; ++v) {
-			m_tree[v] = nt + m_tree[v - h] - lr;
+			m_head_vector[v] = nt + m_head_vector[v - h] - lr;
 		}
 		lr = nt;
 		nt += h;

@@ -160,7 +160,7 @@ private:
 	/// Left-most position with value \f$n-1\f$.
 	uint32_t m_L;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_seq;
+	internal::data_array<uint32_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
 	internal::data_array<bool> m_sm;
 };

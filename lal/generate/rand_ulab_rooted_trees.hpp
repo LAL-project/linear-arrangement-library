@@ -138,12 +138,15 @@ protected:
 	std::vector<numeric::integer> m_rn;
 
 	/**
-	 * @brief List that encodes the tree.
+	 * @brief The head vector of the tree under construction.
 	 *
 	 * This list has @e n values for @ref m_n nodes. The first position contains
 	 * the root vertex.
+	 *
+	 * Do not use its actual type (@ref lal::head_vector) in an attempt to make
+	 * memory usage a bit more efficient.
 	 */
-	internal::data_array<uint32_t> m_tree;
+	internal::data_array<uint32_t> m_head_vector;
 
 protected:
 	/**
@@ -163,10 +166,10 @@ protected:
 	 * The first call to this method should have @e lr = @ref m_n + 1.
 	 * @param n Number of nodes of the rooted tree to generate.
 	 * @param lr Pointer to the root of the last tree added.
-	 *     @ref m_tree[@e lr] is the node that the root points to.
-	 * @param nt Index to @ref m_tree where we have to place the new tree.
+	 *     @ref m_head_vector[@e lr] is the node that the root points to.
+	 * @param nt Index to @ref m_head_vector where we have to place the new tree.
 	 * @returns Two indices: the index of the root of the last
-	 * tree generated and where to store the next tree in @ref m_tree.
+	 * tree generated and where to store the next tree in @ref m_head_vector.
 	 */
 	std::pair<uint32_t,uint32_t>
 	ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept;
@@ -198,7 +201,7 @@ protected:
  * @brief Uniformly random generation of unlabelled rooted trees.
  *
  * This is a wrapper class of @ref __rand_ulab_rooted_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is
@@ -243,7 +246,7 @@ protected:
 	 * @brief Returns an unlabelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_rooted_trees::get_tree for details.
-	 * @returns A labelled rooted tree chosen uniformly at random.
+	 * @returns A unlabelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
