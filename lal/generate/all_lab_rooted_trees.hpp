@@ -50,7 +50,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive labelled rooted tree generator.
+ * @brief Exhaustive enumeration of labelled rooted trees.
  *
  * This class enumerates all labelled rooted trees of a given number of vertices.
  * It is based on the labelled free trees generator (see @ref all_lab_free_trees).

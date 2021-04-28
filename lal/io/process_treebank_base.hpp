@@ -53,6 +53,7 @@ namespace io {
 /**
  * @brief The @e processor base class.
  *
+ * <b>Users should refrain from using this class.</b>
  * This class acts as a base class for all processor classes, namely, the
  * @ref lal::io::treebank_processor and the @ref lal::io::treebank_collection_processor.
  */

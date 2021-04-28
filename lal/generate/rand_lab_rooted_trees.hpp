@@ -52,7 +52,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Random labelled directed rooted trees generator.
+ * @brief Uniformly random generation of labelled rooted trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_lab_rooted_trees.
@@ -118,7 +118,7 @@ protected:
 };
 
 /**
- * @brief Random labelled rooted tree generator.
+ * @brief Uniformly random generation of labelled rooted trees.
  *
  * This is a wrapper class of @ref __rand_lab_rooted_trees. Users should refrain
  * from using said class. However, you will find the implementation details

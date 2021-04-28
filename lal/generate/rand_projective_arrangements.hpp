@@ -51,7 +51,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Class to generate uniformly random projective arrangements of a rooted tree.
+ * @brief Uniformly random generation of projective arrangements of a rooted tree.
  *
  * A projective arrangement of a directed rooted tree is one in which the
  * root is not covered by any of the tree's edges and there are no edge
@@ -61,7 +61,7 @@ namespace generate {
  *		// given a tree T (of the appropriate type)
  *		lal::generate::rand_projective_arrgements ArrGen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::linear_arrangement arr = ArrGen.make_rand_arrgmnt();
+ *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -101,7 +101,7 @@ public:
 	 * @returns A projective arrangement chosen uniformly at random
 	 * chosen amongst all projective arrangements of @e t.
 	 */
-	linear_arrangement make_rand_arrgmnt();
+	linear_arrangement get_arrangement();
 
 private:
 	/// The rooted tree of we are making projective arrangements uniformly at random.
@@ -111,7 +111,7 @@ private:
 	 * @brief The random data for all vertices
 	 *
 	 * This is a member of the class to avoid its initialisation at
-	 * every call to @ref make_rand_arrgmnt.
+	 * every call to @ref get_arrangement.
 	 */
 	std::vector<std::vector<node>> rdata;
 

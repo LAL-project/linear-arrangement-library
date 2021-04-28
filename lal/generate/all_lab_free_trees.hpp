@@ -51,7 +51,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive labelled free tree generator.
+ * @brief Exhaustive enumeration of labelled free trees.
  *
  * Generates all the labelled free trees of a given number of nodes. The
  * algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a) and

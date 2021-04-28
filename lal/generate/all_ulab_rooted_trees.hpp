@@ -50,7 +50,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive unlabelled rooted tree generator.
+ * @brief Exhaustive enumeration of unlabelled rooted trees.
  *
  * Generates all the unlabelled rooted trees of a given number of nodes. The
  * algorithm implemented can be found in \cite Beyer1980a. The definition of

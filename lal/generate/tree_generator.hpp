@@ -83,6 +83,7 @@ public:
 	 * - @ref set_calculate_size_subtrees
 	 * - @ref set_calculate_tree_type
 	 */
+	inline
 	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
 	get_tree() noexcept
 	{
@@ -116,14 +117,14 @@ public:
 	 * @brief Should trees be normalised?
 	 * @param v Boolean value.
 	 */
-	void set_normalise_tree(bool v) noexcept
+	inline void set_normalise_tree(bool v) noexcept
 	{ m_normalise_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(bool v) noexcept
+	inline void set_calculate_size_subtrees(bool v) noexcept
 	{ m_calculate_size_subtrees = v; }
 
 	/**
@@ -132,7 +133,7 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(bool v) noexcept
+	inline void set_calculate_tree_type(bool v) noexcept
 	{ m_calculate_tree_type = v; }
 
 protected:

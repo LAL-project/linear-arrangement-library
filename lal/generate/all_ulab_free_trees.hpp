@@ -50,7 +50,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive unlabelled free tree generator.
+ * @brief Exhaustive enumeration of unlabelled free trees.
  *
  * Generates all the unlabelled free trees of a given number of nodes. The
  * algorithm implemented can be found in \cite Wright1986a. The definition of

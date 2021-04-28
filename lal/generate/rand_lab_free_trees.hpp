@@ -54,7 +54,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Random labelled free tree generator.
+ * @brief Uniformly random generation of labelled free trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_lab_free_trees.
@@ -119,7 +119,7 @@ protected:
 };
 
 /**
- * @brief Random labelled free tree generator.
+ * @brief Uniformly random generation of labelled free trees.
  *
  * This is a wrapper class of @ref __rand_lab_free_trees. Users should refrain
  * from using said class. However, you will find the implementation details

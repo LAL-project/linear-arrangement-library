@@ -61,14 +61,14 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhasutive enumeration of trees type.
+ * @brief Type for exhasutive enumeration of trees.
  *
  * This is used to get one of the <b>all\_</b> generator types in
  * @ref tree_generator_type.
  */
 struct exhaustive_t { };
 /**
- * @brief Random generation of trees type.
+ * @brief Type for random generation of trees.
  *
  * This is used to get one of the <b>rand\_</b> generator types in
  * @ref tree_generator_type.
@@ -91,7 +91,7 @@ static_assert(std::is_same_v<exhaustive_random_type_t<true>, exhaustive_t>);
 static_assert(std::is_same_v<exhaustive_random_type_t<false>, random_t>);
 
 /**
- * @brief Labelled tree type generator.
+ * @brief Type for labelled tree generation.
  *
  * This is used to get one of the <b>\_lab\_</b> generator types in
  * @ref tree_generator_type.
@@ -99,7 +99,7 @@ static_assert(std::is_same_v<exhaustive_random_type_t<false>, random_t>);
 struct labelled_t { };
 
 /**
- * @brief Unlabelled tree type generator.
+ * @brief Type for unlabelled tree generation.
  *
  * This is used to get one of the <b>\_ulab\_</b> generator types in
  * @ref tree_generator_type.
