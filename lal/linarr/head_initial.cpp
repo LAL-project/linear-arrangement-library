@@ -39,40 +39,40 @@
  *
  ********************************************************************/
 
-#pragma once
-
-// C++ includes
-#include <array>
+// lal includes
+#include <lal/graphs/directed_graph.hpp>
+#include <lal/iterators/E_iterator.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/internal/macros.hpp>
 
 namespace lal {
-namespace internal {
+using namespace graphs;
+using namespace numeric;
 
-namespace __lal {
+namespace linarr {
 
-template<typename T, size_t size, T v, std::size_t... I>
-std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
-	std::array<T, size> a;
-	((a[I] = v), ...);
-	return a;
+inline uint32_t __headedness_rational
+(const directed_graph& g, const linear_arrangement& pi) noexcept
+{
+	uint32_t edges_to_right = 0;
+	iterators::E_iterator it(g);
+	while (it.has_next()) {
+		it.next();
+		const auto [u,v] = it.get_edge();
+		edges_to_right += pi[u] < pi[v];
+	}
+	return edges_to_right;
 }
 
-} // -- namespace __lal
+rational head_initial_rational
+(const directed_graph& g, const linear_arrangement& pi) noexcept
+{
+	const uint32_t etr =
+		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
 
-/*
- * @brief Returns an array initialised at a given value.
- *
- * @param T Type of the array's elements.
- * @param array_size Size of the array.
- * @param value_to_fill_with The value to fill the array with.
- */
-template<typename T, size_t array_size, T value_to_fill_with>
-std::array<T, array_size>
-make_array_with_value() {
-	return
-	__lal::make_array_with_value_impl
-	<T, array_size, value_to_fill_with>
-	(std::make_integer_sequence<size_t, array_size>{});
+	// avoid warning conversion
+	return rational_from_ui(etr, g.get_num_edges());
 }
 
-} // -- namespace internal
+} // -- namespace linarr
 } // -- namespace lal

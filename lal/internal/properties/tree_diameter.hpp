@@ -67,7 +67,7 @@ uint32_t tree_diameter(const T& t) {
 
 	BFS<T> bfs(t);
 
-	if constexpr (std::is_base_of_v<T, graphs::rooted_tree>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
 	bfs.set_use_rev_edges(true);
 	}
 	else {

@@ -73,7 +73,7 @@ inline bool __find_cycle
 		if (in_stack[v]) {
 			return true;
 		}
-		if (not visited[v] and __find_cycle(g,v,visited,in_stack)) {
+		if (visited[v] == 0 and __find_cycle(g,v,visited,in_stack)) {
 			return true;
 		}
 	}
@@ -100,7 +100,7 @@ inline bool has_directed_cycles(
 	std::fill(&in_stack[0], &in_stack[n], 0);
 	bool has_cycle = false;
 	for (node u = 0; u < n and not has_cycle; ++u) {
-		if (not vis[u]) {
+		if (vis[u] == 0) {
 			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
 		}
 	}
@@ -117,7 +117,9 @@ inline bool has_directed_cycles(
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint32_t n = g.get_num_nodes();
 	data_array<char> all_mem(2*n);
-	const bool has_cycle = __lal::has_directed_cycles(g, all_mem.begin(), all_mem.end());
+	char * const __restrict__ vis = &all_mem.data[0];
+	char * const __restrict__ in_stack = &all_mem.data[n];
+	const bool has_cycle = __lal::has_directed_cycles(g, vis, in_stack);
 	return has_cycle;
 }
 

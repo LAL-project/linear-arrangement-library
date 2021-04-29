@@ -163,17 +163,12 @@ rooted_tree& rooted_tree::set_edges
 	}
 	set_root(*R);
 
-	// assert the validity of the edge orientations
+	find_edge_orientation();
 #if defined DEBUG
-	const bool is_edge_orientation_correct =
-#endif
-	 find_edge_orientation();
-#if defined DEBUG
-	assert(is_edge_orientation_correct);
+	assert(is_orientation_valid());
 #endif
 
 	tree_only_extra_work_edges_set();
-
 	return *this;
 }
 
@@ -298,16 +293,11 @@ bool rooted_tree::find_edge_orientation() noexcept {
 	return m_valid_orientation;
 }
 
-void rooted_tree::set_valid_orientation(bool v) noexcept {
-	m_valid_orientation = v;
-}
-
 void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	const uint32_t n = _t.get_num_nodes();
 #if defined DEBUG
 	assert(_t.is_tree());
 #endif
-	m_valid_orientation = true;
 
 	if (n == 0) {
 		rooted_tree::_init(0);
@@ -332,20 +322,15 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	[&](const auto&, const node s, const node t, bool) -> void {
 		// the tree is an arborescence, i.e., the
 		// edges point away from the root
-		*it_dir_edges = edge(s,t);
-		++it_dir_edges;
+		*it_dir_edges++ = edge(s,t);
 	}
 	);
 	bfs.start_at(r);
 
 	// allocate rooted tree
 	rooted_tree::_init(n);
-
-	// set root, add edges, and set valid orientation
-	set_root(r);
-	m_valid_orientation = true;
+	// fill rooted tree
 	rooted_tree::set_edges(dir_edges);
-	fill_union_find();
 }
 
 void rooted_tree::calculate_size_subtrees() noexcept {
@@ -357,7 +342,7 @@ void rooted_tree::calculate_size_subtrees() noexcept {
 }
 
 void rooted_tree::calculate_tree_type() noexcept {
-	m_is_type_valid = true;
+	m_is_tree_type_valid = true;
 	internal::classify_tree(*this, m_tree_type);
 }
 
@@ -376,7 +361,7 @@ void rooted_tree::set_root(node r) noexcept {
 	m_has_root = true;
 	m_are_size_subtrees_valid = false;
 	m_valid_orientation = false;
-	m_is_type_valid = false;
+	m_is_tree_type_valid = false;
 }
 
 /* GETTERS */

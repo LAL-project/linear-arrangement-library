@@ -135,7 +135,6 @@ public:
 #endif
 	/// Constructor with tree and root node.
 	rooted_tree(const free_tree& t, node r) noexcept {
-		rooted_tree::_init(t.get_num_nodes());
 		init_rooted(t, r);
 	}
 	/// Destructor
@@ -409,7 +408,9 @@ public:
 	 * @post Method @ref is_orientation_valid returns the value set by this
 	 * function.
 	 */
-	void set_valid_orientation(bool valid) noexcept;
+	inline void set_valid_orientation(bool valid) noexcept {
+		m_valid_orientation = valid;
+	}
 
 	/**
 	 * @brief Initialiser with tree and root node.
@@ -463,6 +464,7 @@ public:
 	 * cycles (see @ref is_tree()),
 	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root),
 	 * - the orientation of the edges is valid (see @ref is_orientation_valid).
+	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
 	inline bool is_rooted_tree() const noexcept

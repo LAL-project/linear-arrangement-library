@@ -52,14 +52,14 @@ namespace lal {
 namespace io {
 
 /**
- * @brief A reader for a dataset of treebanks.
+ * @brief A reader for a collection of treebanks.
  *
- * This class, the objects of which will be referred to as the "dataset readers",
+ * This class, the objects of which will be referred to as the "collection readers",
  * is an interface to help you do a custom processing of a set of treebanks. A
- * treebank dataset is a set of files, each of which is a treebank. A treebank
+ * treebank collection is a set of files, each of which is a treebank. A treebank
  * is a file containing one or more lines, each describing a syntactic dependency
  * tree. If you want to output any of the features already calculated by
- * the library, use class @ref treebank_dataset_processor instead; said class
+ * the library, use class @ref treebank_collection_processor instead; said class
  * is much easier to use and can process treebanks in parallel.
  *
  * Each tree in a treebank file is formatted as a list of whole positive numbers
@@ -85,7 +85,7 @@ namespace io {
  * Line (1) is not valid due to a self-reference in the second position, and (2)
  * not being valid due to containing two '0' (i.e., two roots).
  *
- * A treebank dataset reader helps you navigate through a treebank dataset. It
+ * A treebank collection reader helps you navigate through a treebank collection. It
  * does the job of initialising the @ref treebank_reader class, which is what
  * you need to do a custom process of a treebank file.
  *
@@ -94,11 +94,11 @@ namespace io {
  * a treebank. The first string is a self-descriptive name of the treebank (e.g.,
  * the ISO code of a language), and the second is the relative path to the file
  * containing the syntactic dependency trees (e.g., the syntactic dependency trees
- * of a language in a dataset). The path is relative to the directory that contains
+ * of a language in a collection). The path is relative to the directory that contains
  * the main file.
  *
  * For example, the main file could be called \a stanford.txt, representing the
- * Stanford treebank dataset, and could contain:
+ * Stanford treebank collection, and could contain:
  *
  *		arb path/to/file/ar-all.heads2
  *		eus path/to/file/eu-all.heads2
@@ -109,10 +109,10 @@ namespace io {
  * an ISO code), and the second column contains the relative path to the file
  * with the syntactic dependency trees.
  *
- * The user has to initialise a dataset reader with the main file (the main file
- * list). For example, to read the Stanford dataset the reader has to be initialised
+ * The user has to initialise a collection reader with the main file (the main file
+ * list). For example, to read the Stanford collection the reader has to be initialised
  * with the main file \a stanford.txt which could contain the contents given
- * above. Bear in mind that a dataset reader only processes the main file: it
+ * above. Bear in mind that a collection reader only processes the main file: it
  * iterates through the list of files within the main file using the method
  * @ref next_treebank. This method can be called as long as method
  * @ref has_treebank returns true. Each call to @ref next_treebank builds an
@@ -122,7 +122,7 @@ namespace io {
  *
  * An example of usage of this class is given in the following piece of code.
  * @code
- *		treebank_dataset tbds;
+ *		treebank_collection tbds;
  *		// it is advisable to check for errors
  *		tbds.init(mainf)
  *		while (tbds.has_language()) {
@@ -134,15 +134,15 @@ namespace io {
  *		}
  * @endcode
  */
-class treebank_dataset_reader {
+class treebank_collection_reader {
 public:
 
 	/**
-	 * @brief Initialise the reader with a new dataset.
+	 * @brief Initialise the reader with a new collection.
 	 *
 	 * Objects of this class can't be used to read a treebank until this method
 	 * returns no error.
-	 * @param main_file Main file of the dataset.
+	 * @param main_file Main file of the collection.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::main_file_does_not_exist
@@ -191,7 +191,7 @@ private:
 	/// Object to process a language's treebank.
 	treebank_reader m_treebank_reader;
 
-	/// Has this treebank dataset reader reached the end?
+	/// Has this treebank collection reader reached the end?
 	bool m_reached_end = false;
 
 private:

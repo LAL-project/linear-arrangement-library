@@ -50,7 +50,7 @@ namespace io {
 /**
  * @brief The features that can be computed in automatic processing of treebanks.
  *
- * Classes @ref lal::io::treebank_dataset_processor and
+ * Classes @ref lal::io::treebank_collection_processor and
  * @ref lal::io::treebank_processor
  * are designed to process treebanks in an automatic fashion, meaning that they
  * process the trees and calculate a fixed set of features, the results of which
@@ -58,32 +58,64 @@ namespace io {
  * all the features that can be calculated using those two classes.
  */
 enum class treebank_feature {
+	// STRUCTURAL PROPERTIES
+
 	/// Number of nodes of the tree.
-	num_nodes = 0,
+	num_nodes,
 	/**
 	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::mmt_degree for details.
+	 * See @ref lal::properties::moment_degree for details.
 	 */
-	k2,
+	second_moment_degree,
+	/**
+	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	second_moment_degree_in,
+	/**
+	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	second_moment_degree_out,
 	/**
 	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::mmt_degree for details.
+	 * See @ref lal::properties::moment_degree for details.
 	 */
-	k3,
+	third_moment_degree,
+	/**
+	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	third_moment_degree_in,
+	/**
+	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	third_moment_degree_out,
 	/**
 	 * @brief Size of the set \f$Q(T)\f$ of this tree \f$T\f$.
 	 *
-	 * See @ref lal::properties::size_Q for details.
+	 * See @ref lal::properties::num_pairs_independent_edges for details.
 	 */
 	num_pairs_independent_edges,
 	/**
 	 * @brief Headedness of the tree.
 	 *
-	 * See @ref lal::linarr::headedness for details.
+	 * See @ref lal::linarr::head_initial for details.
 	 */
-	headedness,
+	head_initial,
+	/**
+	 * @brief Hubiness of the tree.
+	 *
+	 * See @ref lal::properties::hubiness for details.
+	 */
+	hubiness,
 	/**
 	 * @brief Mean hierarchical distance of the tree.
 	 *
@@ -91,102 +123,122 @@ enum class treebank_feature {
 	 */
 	mean_hierarchical_distance,
 	/**
-	 * @brief Mean dependency distance of the tree.
+	 * @brief Centre of the tree.
 	 *
-	 * See @ref lal::linarr::mean_dependency_distance for details.
+	 * This feature spans two columns, one for each possible central vertex.
+	 * Each column contains an index: the first is always strictly less than the
+	 * number of vertices, and the second is only valid when its value is strictly
+	 * less than the number of vertices.
+	 *
+	 * See @ref lal::properties::tree_centre for details on the definition of
+	 * centre of a tree.
 	 */
-	mean_dependency_distance,
+	tree_centre,
+	/**
+	 * @brief Centroid of the tree.
+	 *
+	 * This feature spans two columns, one for each possible centroidal vertex.
+	 * Each column contains an index: the first is always strictly less than the
+	 * number of vertices, and the second is only valid when its value is strictly
+	 * less than the number of vertices.
+	 *
+	 * See @ref lal::properties::tree_centroid for details on the definition of
+	 * centroid of a tree.
+	 */
+	tree_centroid,
+	/**
+	 * @brief Diameter of the tree.
+	 *
+	 * See @ref lal::properties::tree_diameter for details.
+	 */
+	tree_diameter,
 
 	// C
 
 	/**
 	 * @brief Number of edge crossings \f$C\f$.
 	 *
-	 * See @ref lal::linarr::algorithms_C for details.
+	 * See @ref lal::linarr::num_crossings for details.
 	 */
-	C,
+	num_crossings,
+	/**
+	 * @brief Prediction of the number of crossings \f$C\f$.
+	 *
+	 * See @ref lal::linarr::predicted_num_crossings for details.
+	 */
+	predicted_num_crossings,
 	/**
 	 * @brief First moment of expectation of \f$C\f$, \f$E[C]\f$.
 	 *
-	 * See @ref lal::properties::expectation_C for details.
+	 * See @ref lal::properties::exp_num_crossings for details.
 	 */
-	C_exp_1,
-	/**
-	 * @brief Second moment of expectation of \f$C\f$, \f$E[C^2]\f$.
-	 *
-	 * This is calculated as \f$E[C^2]=V[C] + E[C]^2\f$. See
-	 * @ref lal::properties::variance_C_tree for details on how the variance
-	 * of \f$C\f$, \f$V[C]\f$, is calculated.
-	 */
-	C_exp_2,
+	exp_num_crossings,
 	/**
 	 * @brief Variance of \f$C\f$, \f$V[C]\f$.
 	 *
-	 * See @ref lal::properties::variance_C_tree for details.
+	 * See @ref lal::properties::var_num_crossings for details.
 	 */
-	C_var,
+	var_num_crossings,
 	/**
 	 * @brief z-score of \f$C\f$, \f$\frac{C - E[C]}{\sqrt{V[C]}}\f$.
 	 *
-	 * See @ref lal::properties::variance_C_tree for details on how the
+	 * See @ref lal::properties::var_num_crossings_tree for details on how the
 	 * variance of \f$C\f$, \f$V[C]\f$, is calculated.
 	 */
-	C_z,
+	z_score_num_crossings,
 
 	// D
 
 	/**
 	 * @brief Sum of length of edges \f$D\f$.
 	 *
-	 * See @ref lal::linarr::sum_length_edges for details.
+	 * See @ref lal::linarr::sum_edge_lengths for details.
 	 */
-	D,
+	sum_edge_lengths,
 	/**
 	 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
 	 *
-	 * See @ref lal::properties::expectation_D for details.
+	 * See @ref lal::properties::exp_sum_edge_lengths for details.
 	 */
-	D_exp_1,
-	/**
-	 * @brief Second moment of expectation of \f$D\f$, \f$E[D^2]\f$.
-	 *
-	 * This is calculated as \f$E[D^2]=V[D] + E[D]^2\f$. See
-	 * @ref lal::properties::variance_D for details on how the variance
-	 * of \f$D\f$, \f$V[D]\f$, is calculated.
-	 */
-	D_exp_2,
+	exp_sum_edge_lengths,
 	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *
-	 * See @ref lal::properties::variance_D for details.
+	 * See @ref lal::properties::var_sum_edge_lengths for details.
 	 */
-	D_var,
+	var_sum_edge_lengths,
 	/**
 	 * @brief z-score of \f$D\f$, \f$\frac{D - E[D]}{\sqrt{V[D]}}\f$.
 	 *
-	 * See @ref lal::properties::variance_D for details on how the
+	 * See @ref lal::properties::var_sum_edge_lengths for details on how the
 	 * variance of \f$D\f$, \f$V[D]\f$, is calculated.
 	 */
-	D_z,
+	z_score_sum_edge_lengths,
 	/**
 	 * @brief Unconstrained minimum sum of length of edges.
 	 *
 	 * See @ref lal::linarr::algorithms_Dmin::Unconstrained_YS, or
 	 * @ref lal::linarr::algorithms_Dmin::Unconstrained_FC for details.
 	 */
-	Dmin_Unconstrained,
+	min_sum_edge_lengths,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::algorithms_Dmin::Planar for details.
+	 * See @ref lal::linarr::min_sum_edge_lengths for details.
 	 */
-	Dmin_Planar,
+	min_sum_edge_lengths_planar,
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::algorithms_Dmin::Projective for details.
+	 * See @ref lal::linarr::min_sum_edge_lengths_projective for details.
 	 */
-	Dmin_Projective,
+	min_sum_edge_lengths_projective,
+	/**
+	 * @brief Mean dependency distance of the tree.
+	 *
+	 * See @ref lal::linarr::mean_dependency_distance for details.
+	 */
+	mean_dependency_distance,
 
 	// FLUXES
 
@@ -195,7 +247,7 @@ enum class treebank_feature {
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_flux_weight,
+	flux_max_weight,
 	/**
 	 * @brief Mean flux weight.
 	 *
@@ -203,20 +255,20 @@ enum class treebank_feature {
 	 * of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of weight.
 	 */
-	mean_flux_weight,
+	flux_mean_weight,
 	/**
 	 * @brief Minimum flux weight.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_flux_weight,
+	flux_min_weight,
 
 	/**
 	 * @brief Maximum left span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_left_span,
+	flux_max_left_span,
 	/**
 	 * @brief Mean left span.
 	 *
@@ -224,20 +276,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of left span.
 	 */
-	mean_left_span,
+	flux_mean_left_span,
 	/**
 	 * @brief Minimum left span.
 	 *
 	 * See @ref linarr::dependency_flux for details.
 	 */
-	min_left_span,
+	flux_min_left_span,
 
 	/**
 	 * @brief Maximum right span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_right_span,
+	flux_max_right_span,
 	/**
 	 * @brief Mean right span.
 	 *
@@ -245,20 +297,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of right span.
 	 */
-	mean_right_span,
+	flux_mean_right_span,
 	/**
 	 * @brief Minimum right span.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_right_span,
+	flux_min_right_span,
 
 	/**
 	 * @brief Maximum flux size.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_size,
+	flux_max_size,
 	/**
 	 * @brief Mean flux size.
 	 *
@@ -266,20 +318,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of flux size.
 	 */
-	mean_size,
+	flux_mean_size,
 	/**
 	 * @brief Minimum flux size.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_size,
+	flux_min_size,
 
 	/**
 	 * @brief Maximum R/L ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_RL_ratio,
+	flux_max_RL_ratio,
 	/**
 	 * @brief Mean R/L ratio.
 	 *
@@ -287,20 +339,20 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of R/L ratio.
 	 */
-	mean_RL_ratio,
+	flux_mean_RL_ratio,
 	/**
 	 * @brief Minimum R/L ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_RL_ratio,
+	flux_min_RL_ratio,
 
 	/**
 	 * @brief Maximum W/S ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	max_WS_ratio,
+	flux_max_WS_ratio,
 	/**
 	 * @brief Mean W/S ratio.
 	 *
@@ -308,16 +360,41 @@ enum class treebank_feature {
 	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
 	 * for details on the definition of W/S ratio.
 	 */
-	mean_WS_ratio,
+	flux_mean_WS_ratio,
 	/**
 	 * @brief Minimum W/S ratio.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
-	min_WS_ratio,
+	flux_min_WS_ratio,
 
+	// TYPES OF TREES
 
 	/**
+	 * @brief The type of tree.
+	 *
+	 * This feature spans as many columns as types of trees are available in this
+	 * library. Each column will contain either a 0 or a 1 depending on whether
+	 * or not the tree can be classified into that type of tree.
+	 *
+	 * See @ref lal::graphs::tree_type for a complete list of tree types.
+	 */
+	tree_type,
+
+	/**
+	 * @brief The type of syntactic dependency structure.
+	 *
+	 * This feature spans as many columns as types of syntactic dependency
+	 * structure are available in this library. Each column will contain either
+	 * a 0 or a 1 depending on whether or not the tree can be classified into
+	 * that syntactic dependency structure.
+	 *
+	 * See @ref lal::linarr::syntactic_dependency_structure for a complete
+	 * list of types.
+	 */
+	syntactic_dependency_structure_class,
+
+	/*
 	 * @brief The last value of the enumeration.
 	 *
 	 * <b>This is used for internal purposes only.</b> Do not use this feature.

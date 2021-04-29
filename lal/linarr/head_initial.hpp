@@ -39,43 +39,50 @@
  *
  ********************************************************************/
 
+#pragma once
+
+// C++ includes
+#include <vector>
+
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
-#include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/internal/macros.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace linarr {
 
-inline uint32_t __headedness_rational
-(const directed_graph& g, const linear_arrangement& pi)
-{
-	uint32_t edges_to_right = 0;
-	iterators::E_iterator it(g);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
-		edges_to_right += pi[u] < pi[v];
-	}
-	return edges_to_right;
-}
+/**
+ * @brief Computes the headedness of a directed graph as an exact rational number.
+ *
+ * Given a graph and a permutation of its nodes, the headedness \f$h\f$
+ * is the ratio of right-branching edges over the total amount of edges. More
+ * precisely, it is
+ *
+ * \f$h = \frac{r}{m}\f$
+ *
+ * where \f$r\f$ is the number of right-branching edges and \f$m\f$ is the number
+ * of edges of the graph.
+ *
+ * A value of 0 indicates perfect left branching, and a value of 1 indicates
+ * perfect right-branching. See \cite Liu2010a for further detals.
+ * @param g Input graph.
+ * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @returns The headedness ratio as an exact rational number.
+ */
+numeric::rational head_initial_rational
+(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
 
-rational headedness_rational
-(const directed_graph& g, const linear_arrangement& pi)
-{
-	const uint32_t etr =
-		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
-
-	// avoid warning conversion
-	return rational_from_ui(etr, g.get_num_edges());
-}
-
-double headedness(const directed_graph& g, const linear_arrangement& arr) {
-	return headedness_rational(g, arr).to_double();
+/**
+ * @brief Computes the headedness of a linearly arranged directed graph.
+ *
+ * See @ref lal::linarr::head_initial_rational for details.
+ * @param g Input graph.
+ * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @returns The return value is a floating point value.
+ */
+inline double head_initial
+(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept {
+	return head_initial_rational(g, pi).to_double();
 }
 
 } // -- namespace linarr

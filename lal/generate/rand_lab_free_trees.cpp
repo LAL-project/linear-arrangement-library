@@ -60,7 +60,7 @@ namespace generate {
 __rand_lab_free_trees::__rand_lab_free_trees
 (uint32_t _n, uint32_t seed) noexcept
 	: m_n(_n),
-	  m_seq(m_n <= 2 ? 2 : m_n - 2)
+	  m_Prufer_seq(m_n <= 2 ? 2 : m_n - 2)
 {
 	init(seed);
 }
@@ -74,9 +74,9 @@ free_tree __rand_lab_free_trees::get_tree() noexcept {
 	}
 
 	for (uint32_t i = 0; i < m_n - 2; ++i) {
-		m_seq[i] = m_unif(m_gen);
+		m_Prufer_seq[i] = m_unif(m_gen);
 	}
-	return internal::Prufer_sequence_to_ftree(m_seq.begin(), m_n, false, false);
+	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
 }
 
 /* PROTECTED */

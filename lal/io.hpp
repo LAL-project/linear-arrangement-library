@@ -51,16 +51,16 @@
 #include <lal/io/edge_list.hpp>
 #include <lal/io/head_vector.hpp>
 
+// check correctness of treebanks
+#include <lal/io/report_correctness.hpp>
+#include <lal/io/check_correctness.hpp>
+
 // process treebanks
 #include <lal/io/treebank_error.hpp>
 #include <lal/io/treebank_feature.hpp>
 
 #include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 
 #include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_dataset_processor.hpp>
-
-// check correctness of treebanks
-#include <lal/io/report_correctness.hpp>
-#include <lal/io/check_correctness.hpp>
+#include <lal/io/treebank_collection_processor.hpp>

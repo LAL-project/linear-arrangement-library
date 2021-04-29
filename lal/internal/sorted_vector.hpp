@@ -50,15 +50,15 @@
 
 namespace lal {
 
-template<class T>
+template<class T, bool unique>
 class sorted_vector : public std::vector<T> {
 public:
 	sorted_vector() : std::vector<T>() { }
 	sorted_vector(std::size_t n) : std::vector<T>(n) { }
 	sorted_vector(std::size_t n, const T& x) : std::vector<T>(n, x) { }
 
-	sorted_vector(const sorted_vector<T>& v) : std::vector<T>(v) { }
-	sorted_vector(sorted_vector<T>&& v) : std::vector<T>(std::move(v)) { }
+	sorted_vector(const sorted_vector& v) : std::vector<T>(v) { }
+	sorted_vector(sorted_vector&& v) : std::vector<T>(std::move(v)) { }
 
 	sorted_vector& operator= (const sorted_vector& v) { *this = v; }
 	sorted_vector& operator= (sorted_vector&& v) { *this = std::move(v); }
@@ -68,43 +68,44 @@ public:
 	// insert sorted, with copies
 	inline typename std::vector<T>::iterator
 	insert_sorted(const T& x) {
-		const auto it = std::upper_bound(this->begin(), this->end(), x);
-		return this->insert(it, x);
-	}
-	inline typename std::vector<T>::iterator
-	insert_sorted(T&& x) {
-		const auto it = std::upper_bound(this->begin(), this->end(), x);
-		return this->insert(it, std::move(x));
-	}
-
-	// insert sorted, no copies (if the element already exists, do not insert)
-	inline typename std::vector<T>::iterator
-	insert_sorted_unique(const T& x) {
-		if (this->size() == 0) {
-			this->push_back(x);
-			return this->begin();
-		}
-
-		const auto it = upper_bound(this->begin(), this->end(), x);
-		const auto pre_it = it == this->begin() ? it : it - 1;
-		if (*pre_it != x) {
+		if constexpr (not unique) {
+			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, x);
 		}
-		return it;
-	}
-	inline typename std::vector<T>::iterator
-	insert_sorted_unique(T&& x) {
-		if (this->size() == 0) {
-			this->push_back(std::move(x));
-			return this->begin();
-		}
+		else {
+			if (this->size() == 0) {
+				this->push_back(x);
+				return this->begin();
+			}
 
-		const auto it = std::upper_bound(this->begin(), this->end(), x);
-		const auto pre_it = it == this->begin() ? it : it - 1;
-		if (*pre_it != x) {
+			const auto it = upper_bound(this->begin(), this->end(), x);
+			const auto pre_it = it == this->begin() ? it : it - 1;
+			if (*pre_it != x) {
+				return this->insert(it, x);
+			}
+			return it;
+		}
+	}
+
+	inline typename std::vector<T>::iterator
+	insert_sorted(T&& x) {
+		if constexpr (not unique) {
+			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, std::move(x));
 		}
-		return it;
+		else {
+			if (this->size() == 0) {
+				this->push_back(std::move(x));
+				return this->begin();
+			}
+
+			const auto it = std::upper_bound(this->begin(), this->end(), x);
+			const auto pre_it = it == this->begin() ? it : it - 1;
+			if (*pre_it != x) {
+				return this->insert(it, std::move(x));
+			}
+			return it;
+		}
 	}
 
 	// remove an element, assuming that the element is sorted

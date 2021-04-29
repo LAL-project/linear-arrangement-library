@@ -52,7 +52,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Random labelled directed rooted trees generator.
+ * @brief Uniformly random generation of labelled rooted trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_lab_rooted_trees.
@@ -118,10 +118,10 @@ protected:
 };
 
 /**
- * @brief Random labelled rooted tree generator.
+ * @brief Uniformly random generation of labelled rooted trees.
  *
  * This is a wrapper class of @ref __rand_lab_rooted_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is
@@ -133,7 +133,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+class rand_lab_rooted_trees : public tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -146,7 +146,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_gen<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+		: tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.

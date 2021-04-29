@@ -47,14 +47,14 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Random labelled free tree generator.
+ * @brief Uniformly random generation of labelled free trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_lab_free_trees.
@@ -115,14 +115,14 @@ protected:
 	/// Distribution of the numbers.
 	std::uniform_int_distribution<uint32_t> m_unif;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_seq;
+	internal::data_array<uint32_t> m_Prufer_seq;
 };
 
 /**
- * @brief Random labelled free tree generator.
+ * @brief Uniformly random generation of labelled free trees.
  *
  * This is a wrapper class of @ref __rand_lab_free_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is
@@ -134,7 +134,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_lab_free_trees : public tree_gen<graphs::free_tree> {
+class rand_lab_free_trees : public tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -147,7 +147,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
+		: tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.

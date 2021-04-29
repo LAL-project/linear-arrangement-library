@@ -121,14 +121,9 @@ inline uint32_t __compute_C_brute_force_undir(
 		}
 	}
 
-	if constexpr (decide_upper_bound) {
-		// none of the conditions above were true, so we must have
-		// C <= upper_bound
-		return DECIDED_C_LE;
-	}
-	else {
-		return C;
-	}
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
+	return C;
 }
 
 // When decide_upper_bound is false:
@@ -267,14 +262,9 @@ inline uint32_t __compute_C_brute_force_dir(
 		}
 	}
 
-	if constexpr (decide_upper_bound) {
-		// none of the conditions above were true, so we must have
-		// C <= upper_bound
-		return DECIDED_C_LE;
-	}
-	else {
-		return C;
-	}
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
+	return C;
 }
 
 // =============================================================================

@@ -120,6 +120,7 @@ void compute_data_gen_graphs
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
 )
+noexcept
 {
 
 	// ------------------------------------------------
@@ -316,7 +317,7 @@ void compute_data_gen_graphs
 	pair_C3_L2 /= 3;
 }
 
-rational variance_C_rational(const undirected_graph& g, bool reuse) {
+rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexcept {
 #if defined DEBUG
 	assert(g.is_normalised());
 #endif
@@ -395,10 +396,6 @@ rational variance_C_rational(const undirected_graph& g, bool reuse) {
 	J.set_ui(paw);					V += rational(1,30)*J;
 	J.set_ui(pair_C3_L2);			V += rational(1,30)*J;
 	return V;
-}
-
-double variance_C(const undirected_graph& g, bool reuse) {
-	return variance_C_rational(g, reuse).to_double();
 }
 
 } // -- namespace properties

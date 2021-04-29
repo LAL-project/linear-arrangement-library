@@ -82,7 +82,8 @@ HEADERS += \
 	generate/rand_ulab_free_trees.hpp \
 	generate/rand_ulab_rooted_trees.hpp \
 	generate/rand_projective_arrangements.hpp \
-	generate/tree_gen.hpp \
+	generate/tree_generator.hpp \
+	generate/tree_generator_type.hpp \
 	graphs.hpp \
 	graphs/conversions.hpp \
 	graphs/graph.hpp \
@@ -101,13 +102,15 @@ HEADERS += \
 	internal/graphs/retrieve_subtrees.hpp \
 	internal/graphs/size_subtrees.hpp \
 	internal/graphs/tree_classification.hpp \
-	internal/graphs/tree_type_string.hpp \
-	internal/io/treebank_feature_string.hpp \
+	internal/graphs/tree_type.hpp \
+	internal/io/check_correctness.hpp \
+	internal/io/treebank_feature.hpp \
 	internal/linarr/Dmin.hpp \
 	internal/linarr/algorithms_crossings.hpp \
+	internal/linarr/syntactic_dependency_structure.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
-	internal/make_array_with_value.hpp \
+	internal/make_array.hpp \
 	internal/numeric/utils.hpp \
 	internal/properties/tree_centre.hpp \
 	internal/properties/tree_centroid.hpp \
@@ -129,10 +132,10 @@ HEADERS += \
 	io/head_vector.hpp \
 	io/process_treebank_base.hpp \
 	io/report_correctness.hpp \
+	io/treebank_collection_processor.hpp \
+	io/treebank_collection_reader.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
-	io/treebank_dataset_processor.hpp \
-	io/treebank_dataset_reader.hpp \
 	io/treebank_error.hpp \
 	io/treebank_feature.hpp \
 	iterators.hpp \
@@ -149,10 +152,10 @@ HEADERS += \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/flux.hpp \
-	linarr/headedness.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
-	linarr/syntactic_dependency_structure_type.hpp \
+	linarr/head_initial.hpp \
+	linarr/syntactic_dependency_structure.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
 	numeric/integer_output.hpp \
@@ -204,17 +207,17 @@ SOURCES += \
     io/check_correctness.cpp \
 	io/edge_list.cpp \
     io/head_vector.cpp \
-	io/treebank_dataset_processor.cpp \
-	io/treebank_dataset_reader.cpp \
+    io/treebank_collection_processor.cpp \
+    io/treebank_collection_reader.cpp \
     io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \
-	linarr/C_approx.cpp \
 	linarr/Dmin.cpp \
     linarr/classify_syntactic_dependency_structure.cpp \
     linarr/flux.cpp \
-	linarr/headedness.cpp \
 	linarr/D.cpp \
+    linarr/head_initial.cpp \
+    linarr/predicted_C.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \
@@ -224,7 +227,6 @@ SOURCES += \
     properties/tree_centroid.cpp \
     properties/tree_diameter.cpp \
 	properties/variance_C_gen_graphs.cpp \
-	properties/variance_C_trees.cpp \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \

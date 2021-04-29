@@ -64,7 +64,7 @@ namespace properties {
  * index value than the second.
  * @pre Method graphs::rooted_tree::is_tree returns true.
  */
-std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
+std::pair<node, node> tree_centroid(const graphs::rooted_tree& t) noexcept;
 
 /**
  * @brief Calculate the centroid of a free tree.
@@ -81,7 +81,7 @@ std::pair<node, node> get_centroid(const graphs::rooted_tree& t);
  * index value than the second.
  * @pre Method graphs::rooted_tree::is_tree returns true.
  */
-std::pair<node, node> get_centroid(const graphs::free_tree& t);
+std::pair<node, node> tree_centroid(const graphs::free_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

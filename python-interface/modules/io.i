@@ -194,7 +194,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 	}
 }
 
-%extend lal::io::report_treebank_dataset {
+%extend lal::io::report_treebank_collection {
 	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		out << "(" << $self->get_treebank_file_name() << ", "
@@ -208,7 +208,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 
 namespace std {
 	%template(_list_report_treebank_file) vector<lal::io::report_treebank_file>;
-	%template(_list_report_treebank_dataset) vector<lal::io::report_treebank_dataset>;
+	%template(_list_report_treebank_collection) vector<lal::io::report_treebank_collection>;
 }
 
 %include "../lal/io/check_correctness.hpp"
@@ -218,10 +218,10 @@ namespace std {
 %include "../lal/io/process_treebank_base.hpp"
 
 %include "../lal/io/treebank_reader.hpp"
-%include "../lal/io/treebank_dataset_reader.hpp"
+%include "../lal/io/treebank_collection_reader.hpp"
 
 %include "../lal/io/treebank_processor.hpp"
-%include "../lal/io/treebank_dataset_processor.hpp"
+%include "../lal/io/treebank_collection_processor.hpp"
 
 /* -------------------------------------------------------------------------- */
 

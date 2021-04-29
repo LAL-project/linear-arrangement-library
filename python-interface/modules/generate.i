@@ -16,9 +16,9 @@
 
 // This is a base class of all tree generators. It must be put before
 // all other classes.
-%include "../lal/generate/tree_gen.hpp"
-%template(free_tree_gen) lal::generate::tree_gen<lal::graphs::free_tree>;
-%template(rooted_tree_gen) lal::generate::tree_gen<lal::graphs::rooted_tree>;
+%include "../lal/generate/tree_generator.hpp"
+%template(free_tree_gen) lal::generate::tree_generator<lal::graphs::free_tree>;
+%template(rooted_tree_gen) lal::generate::tree_generator<lal::graphs::rooted_tree>;
 
 %include "../lal/generate/all_lab_free_trees.hpp"
 %include "../lal/generate/all_lab_rooted_trees.hpp"

@@ -38,8 +38,8 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-#include <lal/io/treebank_dataset_processor.hpp>
+
+#include <lal/io/treebank_collection_processor.hpp>
 
 // C includes
 #include <omp.h>
@@ -56,10 +56,13 @@
 using namespace std;
 
 // lal includes
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
-#include <lal/internal/io/treebank_feature_string.hpp>
+#include <lal/internal/io/treebank_feature.hpp>
+#include <lal/internal/io/check_correctness.hpp>
+
+#define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
 
 inline
 std::string make_result_file_name(const std::string& treebank_name) noexcept {
@@ -80,20 +83,17 @@ namespace io {
 
 // CLASS METHODS
 
-treebank_error treebank_dataset_processor::init
-(const string& file, const string& odir, bool all_fs, size_t nt) noexcept
+treebank_error treebank_collection_processor::init
+(const string& file, const string& odir) noexcept
 {
 	// initialise data
-	m_num_threads = nt;
 	m_all_individual_treebank_names.clear();
 	m_errors_from_processing.clear();
-
-	// keep data
 	m_main_file = file;
 	m_out_dir = odir;
 
 	// initalise features vector
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
+	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
 	// make sure main file exists
 	if (not filesystem::exists(m_main_file)) {
@@ -106,9 +106,19 @@ treebank_error treebank_dataset_processor::init
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_dataset_processor::process(const string& res, bool Remove)
+treebank_error treebank_collection_processor::process(const string& join_to_file)
 noexcept
 {
+	if (m_check_before_process) {
+		const bool err =
+		internal::check_correctness_treebank_collection<true>
+		(m_main_file, m_num_threads);
+
+		if (err) {
+			return treebank_error::malformed_treebank_collection;
+		}
+	}
+
 	// -- this function assumes that init did not return any error -- //
 
 	// check that there is something to be computed
@@ -150,17 +160,18 @@ noexcept
 			{
 				// declare and initialise treebank processor
 				treebank_processor tbproc;
+				tbproc.set_check_before_process(false);
 				tbproc.init(
 					treebank_file_full_path.string(),
 					output_file_full_path.string(),
-					false,
 					treebank_name
 				);
+				tbproc.clear_features();
 				tbproc.set_output_header(m_output_header);
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
 
-				// add all features
+				// add features in this treebank collection processor
 				for (size_t i = 0; i < __treebank_feature_size; ++i) {
 					if (m_what_fs[i]) {
 						tbproc.add_feature(static_cast<treebank_feature>(i));
@@ -185,12 +196,12 @@ noexcept
 	}
 
 	if (m_join_files) {
-		const auto err = join_all_files(res, Remove);
+		const auto err = join_all_files(join_to_file);
 		if (err != treebank_error::no_error) {
 			m_errors_from_processing.push_back(make_tuple(
 				err,
 				m_main_file,
-				"treebank dataset main file"
+				"treebank collection main file"
 			));
 		}
 	}
@@ -202,8 +213,8 @@ noexcept
 	);
 }
 
-treebank_error treebank_dataset_processor::join_all_files
-(const string& resname, bool remove_files)
+treebank_error treebank_collection_processor::join_all_files
+(const string& resname)
 const noexcept
 {
 	// use the filesystem namespace to create the path properly
@@ -225,21 +236,7 @@ const noexcept
 		return treebank_error::output_join_file_could_not_be_opened;
 	}
 
-	// output header
-	if (m_output_header) {
-		output_together << "treebank_name";
-
-		for (size_t i = 0; i < m_what_fs.size(); ++i) {
-			if (m_what_fs[i]) {
-				output_together
-					<< m_separator
-					<< internal::treebank_feature_string(
-						   static_cast<treebank_feature>(i)
-					   );
-			}
-		}
-		output_together << endl;
-	}
+	bool first_time_encounter_header = true;
 
 	// read all files and dump their contents into
 	for (size_t i = 0; i < m_all_individual_treebank_names.size(); ++i) {
@@ -266,6 +263,17 @@ const noexcept
 			// ignore the first line
 			if (first_line) {
 				first_line = false;
+
+				if (first_time_encounter_header) {
+					if (m_output_header) {
+						output_together
+							<< "treebank" << m_separator
+							<< line
+							<< endl;
+					}
+					first_time_encounter_header = false;
+				}
+
 				continue;
 			}
 
@@ -276,11 +284,12 @@ const noexcept
 
 		fin.close();
 
-		if (remove_files) {
-			const bool success = filesystem::remove(path_to_treebank_result);
-			if (not success and m_be_verbose >= 2) {
-				cerr << "Treebank result file '" << path_to_treebank_result << "' could not be removed." << endl;
-			}
+		const bool success = filesystem::remove(path_to_treebank_result);
+		if (not success and m_be_verbose >= 2) {
+			cerr << "Treebank result file '"
+				 << path_to_treebank_result
+				 << "' could not be removed."
+				 << endl;
 		}
 	}
 

@@ -44,14 +44,14 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive labelled free tree generator.
+ * @brief Exhaustive enumeration of labelled free trees.
  *
  * Generates all the labelled free trees of a given number of nodes. The
  * algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a) and
@@ -82,7 +82,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_lab_free_trees : public tree_gen<graphs::free_tree> {
+class all_lab_free_trees : public tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -160,7 +160,7 @@ private:
 	/// Left-most position with value \f$n-1\f$.
 	uint32_t m_L;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_seq;
+	internal::data_array<uint32_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
 	internal::data_array<bool> m_sm;
 };

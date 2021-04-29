@@ -1,45 +1,31 @@
 r"""
 The different types of trees.
 
-- Linear trees
-
-	Value: ``linear``
-
-	A linear tree has only two leaves, and the rest of the vertices have degree exactly two. This is, precisely, a path graph.
-
-- Star trees:
-
-	Value: ``star``
-
-	Also star graphs, trees where all vertices but one have degree 1.
-
-- Quasi star trees
-
-	Value: ``quasistar``
-
-	Also quasi star graphs, trees where all vertices but two have degree 1. One of these two vertices has degree exactly two, the other has degree at least two.
-
-- Bi-star trees:
-
-	Value: ``bistar``
+- ``bistar`` Bi-star trees
 
 	These trees are made of two star trees joined by an edge at their centers.
 
-- Caterpillar trees:
-
-	Value: ``caterpillar``
+- ``caterpillar`` Caterpillar trees
 
 	These are the trees such that a linear tree is produced when its leaves are removed [2].
 
-- Spider trees:
+- ``linear`` Linear trees
 
-	Value: ``spider``
+	A linear tree has only two leaves, and the rest of the vertices have degree exactly two. This is, precisely, a path graph.
+
+- ``quasistar`` Quasi star trees
+
+	Also quasi star graphs, trees where all vertices but two have degree 1. One of these two vertices has degree exactly two, the other has degree at least two.
+
+- ``spider`` Spider trees
 
 	A spider tree has a unique vertex of degree greater than or equal to 3. The other vertices have degree 2 or 1 [1].
 
-- Unknown:
+- ``star`` Star trees
 
-	Value: ``unknown``
+	Also star graphs, trees where all vertices but one have degree 1.
+
+- ``unknown``
 
 	The tree could not be classified
 

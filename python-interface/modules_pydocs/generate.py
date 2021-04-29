@@ -1,6 +1,6 @@
 r"""
 
-Generating different classes of objects.
+Generation different classes of objects.
 ----------------------------------------
 
 This module contains algorithms for the generation of trees and of arrangements.

@@ -48,14 +48,14 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Random unlabelled free tree generator.
+ * @brief Uniformly random generation of unlabelled free trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_ulab_free_trees.
@@ -168,13 +168,14 @@ private:
 	/**
 	 * @brief Generates uniformly at random a forest of @e m nodes.
 	 *
-	 * Makes a random forest of @e m nodes and stores it in @ref m_tree.
+	 * Makes a random forest of @e m nodes and stores it in @ref m_head_vector.
 	 * Each tree in the forest has at most @e q nodes.
 	 * @param m Integer \f$m \ge 0\f$.
 	 * @param q Integer \f$0 \le q \le m\f$.
-	 * @param nt Index to @ref m_tree indicating where to store the next tree.
+	 * @param nt Index to @ref m_head_vector indicating where to store the next
+	 * tree.
 	 * @returns The position where to store the following
-	 * trees/forests in @ref m_tree.
+	 * trees/forests in @ref m_head_vector.
 	 */
 	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt) noexcept;
 
@@ -225,10 +226,10 @@ private:
 };
 
 /**
- * @brief Random unlabelled free tree generator.
+ * @brief Uniformly random generation of unlabelled free trees.
  *
  * This is a wrapper class of @ref __rand_ulab_free_trees. Users should refrain
- * from using said class. However, you will find the implementation details
+ * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
  * An example of usage of this class is
@@ -240,7 +241,7 @@ private:
  *		}
  * @endcode
  */
-class rand_ulab_free_trees : public tree_gen<graphs::free_tree> {
+class rand_ulab_free_trees : public tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -253,7 +254,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_gen<graphs::free_tree>(n), m_Gen(n, seed) { }
+		: tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.
@@ -271,10 +272,10 @@ public:
 
 protected:
 	/**
-	 * @brief Returns a labelled rooted tree chosen uniformly at random.
+	 * @brief Returns an unlabelled free tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_free_trees::get_tree for details.
-	 * @returns A labelled rooted tree chosen uniformly at random.
+	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

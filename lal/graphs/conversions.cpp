@@ -85,16 +85,44 @@ vector<uint32_t> from_tree_to_head_vector(const free_tree& t, node r) noexcept {
 // -----------------------------------------------------------------------------
 // head vector -> graph
 
-pair<free_tree,node> from_head_vector_to_free_tree
+template<
+	class tree_type,
+	bool is_rooted = std::is_base_of_v<rooted_tree, tree_type>
+>
+std::conditional_t<
+	is_rooted,
+	rooted_tree,
+	pair<free_tree,node>
+>
+from_head_vector_to_tree
 (const head_vector& hv, bool normalise, bool check)
 noexcept
 {
-	if (hv.size() == 0) { return make_pair(free_tree(0), 0); }
+	if (hv.size() == 0) {
+		if constexpr (is_rooted) {
+			return rooted_tree(0);
+		}
+		else {
+			return make_pair(free_tree(0), 0);
+		}
+	}
+	if (hv.size() == 1) {
+#if defined DEBUG
+		// the only vertex can only be the root
+		assert(hv[0] == 0);
+#endif
+		if constexpr (is_rooted) {
+			return rooted_tree(1);
+		}
+		else {
+			return make_pair(free_tree(1), 0);
+		}
+	}
 
 	const uint32_t n = static_cast<uint32_t>(hv.size());
 
 	// output tree
-	free_tree t(n);
+	tree_type t(n);
 
 	// root node of the tree
 	std::optional<node> r;
@@ -109,10 +137,16 @@ noexcept
 			r = i;
 		}
 		else {
-			// add the edge:
+			// note:
 			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, hv[i] - 1);
+			// * L[i] ranges in [1,n] (hence the '-1')
+
+			// In the head vector the edge (i, hv[i] - 1) is an edge of an
+			// anti-arborescence. Since for our rooted trees we need the edge
+			// of an arborescence, then we add the edge as (hv[i] - 1, i).
+			// For free trees the order of vertices does not matter.
+			t.add_edge_bulk(hv[i] - 1, i);
+
 #if defined DEBUG
 			++num_edges_added;
 #endif
@@ -120,26 +154,44 @@ noexcept
 	}
 
 #if defined DEBUG
-	// root must have been set.
+	// root must have been set
 	assert(r);
 	// amount of edges added must be 'n-1'
 	assert(num_edges_added == n - 1);
 #endif
 
 	t.finish_bulk_add(normalise, check);
-	return make_pair(t, *r);
+
+	if constexpr (is_rooted) {
+		t.set_root(*r);
+		t.set_valid_orientation(true);
+#if defined DEBUG
+		assert(t.is_rooted_tree());
+#endif
+
+		return t;
+	}
+	else {
+#if defined DEBUG
+		assert(t.is_tree());
+#endif
+
+		return make_pair(t, *r);
+	}
+}
+
+pair<free_tree,node> from_head_vector_to_free_tree
+(const head_vector& hv, bool normalise, bool check)
+noexcept
+{
+	return from_head_vector_to_tree<free_tree>(hv, normalise, check);
 }
 
 rooted_tree from_head_vector_to_rooted_tree
 (const head_vector& hv, bool normalise, bool check)
 noexcept
 {
-	const auto [tree, root] =
-		from_head_vector_to_free_tree(hv, normalise, check);
-#if defined DEBUG
-	assert(tree.is_tree());
-#endif
-	return rooted_tree(tree, root);
+	return from_head_vector_to_tree<rooted_tree>(hv, normalise, check);
 }
 
 } // -- namespace graphs

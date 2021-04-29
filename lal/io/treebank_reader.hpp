@@ -92,7 +92,7 @@ namespace io {
  * function can only be called as long as @ref has_tree returns true. Retrieving
  * the trees is done by calling the function @ref get_tree.
  *
- * If an object of this class was returned by the class @ref treebank_dataset_reader,
+ * If an object of this class was returned by the class @ref treebank_collection_reader,
  * then methods @ref get_treebank_filename and @ref get_identifier might prove
  * useful for debugging since they return, respectively, the full name (path
  * included) of the treebank and the language it corresponds to.

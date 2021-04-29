@@ -51,6 +51,8 @@
 #include <lal/numeric/integer.hpp>
 #include <lal/numeric/rational.hpp>
 
+#define to_double(x) static_cast<double>(x)
+
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -60,82 +62,157 @@ namespace properties {
 // g: input graph
 // p: moment of the *-degree
 // D: function that returns the *-degree
-template<class G, class Callable>
-inline rational __mmt_x_degree_rational
+template<
+	class G, class restype, class Callable,
+
+	class numtype = std::conditional_t<
+		std::is_same_v<restype, rational>,
+		integer,
+		uint32_t
+	>
+>
+inline
+restype __mmt_x_degree_rational
 (const G& g, uint32_t p, const Callable& D)
 {
-	const integer M = integer_from_ui(g.get_num_nodes());
+	static_assert(
+		std::is_same_v<restype, double> ||
+		std::is_same_v<restype, numeric::rational>
+	);
 
-	integer S(0);
-	integer du(0);
+	const numtype M = [&]() {
+		if constexpr (std::is_same_v<numtype, numeric::integer>) {
+			 return integer_from_ui(g.get_num_nodes());
+		}
+		else {
+			 return g.get_num_nodes();
+		}
+	}();
+
+	numtype S(0);
+	numtype du(0);
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
-		//du.set_ui(g.get_degree(u));
-		du.set_ui(D(g, u));
-		du ^= p;
+		const uint32_t deg = D(g, u);
+		if constexpr (std::is_same_v<numtype, numeric::integer>) {
+			du.set_ui(deg);
+			du ^= p;
+		}
+		else {
+			du = 1;
+			for (uint32_t i = 0; i < p; ++i) {
+				du *= deg;
+			}
+		}
+
 		S += du;
 	}
-	return rational(S, M);
+	if constexpr (std::is_same_v<restype, numeric::rational>) {
+		return rational(S, M);
+	}
+	else {
+		return to_double(S)/to_double(M);
+	}
 }
 
 // -----------------------------------------------------------------------------
 
 // moment of degree
 
-rational mmt_degree_rational(const undirected_graph& g, uint32_t p) {
-	return __mmt_x_degree_rational<undirected_graph>(
+rational moment_degree_rational(const undirected_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<undirected_graph, rational>
+	(
 		g, p,
 		[](const undirected_graph& _g, node _u) -> uint32_t
 		{ return _g.get_degree(_u); }
 	);
 }
 
-double mmt_degree(const undirected_graph& g, uint32_t p) {
-	return mmt_degree_rational(g,p).to_double();
+double moment_degree(const undirected_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<undirected_graph, double>
+	(
+		g, p,
+		[](const undirected_graph& _g, node _u) -> uint32_t
+		{ return _g.get_degree(_u); }
+	);
 }
 
-rational mmt_degree_rational(const directed_graph& g, uint32_t p) {
-	return __mmt_x_degree_rational<directed_graph>(
+rational moment_degree_rational(const directed_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<directed_graph, rational>
+	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
 		{ return _g.get_degree(_u); }
 	);
 }
 
-double mmt_degree(const directed_graph& g, uint32_t p) {
-	return mmt_degree_rational(g,p).to_double();
+double moment_degree(const directed_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<directed_graph, double>
+	(
+		g, p,
+		[](const directed_graph& _g, node _u) -> uint32_t
+		{ return _g.get_degree(_u); }
+	);
 }
 
 // moment of in-degree
 
-rational mmt_in_degree_rational(const directed_graph& g, uint32_t p) {
-	return __mmt_x_degree_rational<directed_graph>(
+rational moment_degree_in_rational(const directed_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<directed_graph, rational>
+	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
 		{ return _g.get_in_degree(_u); }
 	);
 }
 
-double mmt_in_degree(const directed_graph& g, uint32_t p) {
-	return mmt_in_degree_rational(g,p).to_double();
+double moment_degree_in(const directed_graph& g, uint32_t p) {
+	return
+	__mmt_x_degree_rational<directed_graph, double>
+	(
+		g, p,
+		[](const directed_graph& _g, node _u) -> uint32_t
+		{ return _g.get_in_degree(_u); }
+	);
 }
 
 // moment of out-degree
 
-rational mmt_out_degree_rational(const directed_graph& g, uint32_t p) {
-	return __mmt_x_degree_rational<directed_graph>(
+rational moment_degree_out_rational(const directed_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<directed_graph, rational>
+	(
 		g, p,
 		[](const directed_graph& _g, node _u) -> uint32_t
-		{ return _g.get_degree(_u); }
+		{ return _g.get_out_degree(_u); }
 	);
 }
 
-double mmt_out_degree(const directed_graph& g, uint32_t p) {
-	return mmt_out_degree_rational(g,p).to_double();
+double moment_degree_out(const directed_graph& g, uint32_t p) noexcept
+{
+	return
+	__mmt_x_degree_rational<directed_graph, double>
+	(
+		g, p,
+		[](const directed_graph& _g, node _u) -> uint32_t
+		{ return _g.get_out_degree(_u); }
+	);
 }
 
 // hubiness
 
-rational hubiness_rational(const free_tree& g) {
+rational hubiness_rational(const free_tree& g) noexcept
+{
 	const uint32_t n = g.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -147,12 +224,25 @@ rational hubiness_rational(const free_tree& g) {
 
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
 	const rational k2_star = rational_from_ui(n - 1);
-	const rational k2_graph = mmt_degree_rational(g, 2);
+	const rational k2_graph = moment_degree_rational(g, 2);
 	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const free_tree& g) {
-	return hubiness_rational(g).to_double();
+double hubiness(const free_tree& g) noexcept
+{
+	const uint32_t n = g.get_num_nodes();
+
+	// for n <= 3, <k^2>_star = <k^2>_linear
+	// which means that hubiness is not defined:
+	// division by 0.
+#if defined DEBUG
+	assert(n > 3);
+#endif
+
+	const double k2_linear = to_double(4*n - 6)/to_double(n);
+	const double k2_star = to_double(n - 1);
+	const double k2_graph = moment_degree(g, 2);
+	return (k2_graph - k2_linear)/(k2_star - k2_linear);
 }
 
 } // -- namespace properties

@@ -3,25 +3,23 @@ r"""
 LAL, the Linear Arrangement Library
 ---------------------------------------
 
-This library offers a variety of algorithms related to linear arrangements of graphs so as to provide to researchers in the field of Quantitative Linguistics a toolset with which they can perform statistical analyses on different corpora of languages efficiently and effectively. Therefore, this library implements several state-of-the-art algorithms and offers a variety of functionalities. While most of the functions have been generalised to be applicable to graphs, we also provide specialised functions for trees, which are more efficient than their more general counterparts.
+This library offers a variety of algorithms related to linear arrangements of graphs so as to provide researchers in the field of Quantitative Linguistics with a toolset with which they can perform statistical analyses on different corpora of treebanks efficiently and effectively. Therefore, this library implements several state-of-the-art algorithms and offers a variety of functionalities. While most of the functions have been generalised to be applicable to general graphs, we also provide specialised functions for trees, which are more efficient than their more general counterparts.
 
-The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank dataset processing. We offer a class that automatically processes a dataset and computes several metrics based on the capabilities of the library. See class ``lal.io.treebank_dataset_processor`` for details. We also provide classes for custom processing of treebanks (see ``lal.io.treebank_dataset_reader`` and ``lal.io.treebank_reader``).
+The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank collection processing. This library offers a class that automatically processes a collection and computes several metrics based on the capabilities of the library. See class ``lal.io.treebank_collection_processor`` and ``lal.io.treebank_processor`` for details. We also provide classes for custom processing of treebanks (see ``lal.io.treebank_collection_reader`` and ``lal.io.treebank_reader``).
 
 All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the modules lal.linarr and in lal.properties. These features include, but are not limited to,
 
-- the sum of edge lengths :math:`D` (see ``lal.linarr.sum_length_edges``), and the expectation and variance of the sum of edge lengths (see ``lal.properties.expectation_D`` and ``lal.properties.variance_D``),
-- calculation of optimal arrangements of free and rooted trees (see lal.linarr.Dmin); the enumeration ``lal.linarr.algorithms_Dmin`` lists all algorithms available,
-- the number of crossings (see ``lal.linarr.number_of_crossings``), and the expectation and variance of the number of crossings (see ``lal.properties.expectation_C`` and ``lal.properties.variance_C``),
-- any moment of the degree of the vertices of a graph (see ``lal.properties.mmt_degree``),
+- the sum of edge lengths :math:`D` (see ``lal.linarr.sum_edge_lengths``), and the expectation and variance of the sum of edge lengths (see ``lal.properties.exp_sum_edge_lengths`` and ``lal.properties.var_sum_edge_lengths``),
+- the computation of optimal arrangements: unconstrained minimum arrangements with respect to the sum of edge lengths (see ``lal.linarr.min_sum_edge_lengths``), with free choice on the algorithm to be used (see ``lal.linarr.algorithms_Dmin``), and the computation of minimum planar arrangements (see ``lal.linarr.min_sum_edge_lengths_planar``) and of minimum projective arrangements (see ``lal.linarr.min_sum_edge_lengths_projective``).
+- the number of crossings (see ``lal.linarr.num_crossings``), and the expectation and variance of the number of crossings (see ``lal.properties.exp_num_crossings`` and ``lal.properties.var_num_crossings``),
+- any moment of the degree of the vertices of a graph (see ``lal.properties.moment_degree`` and its variants),
 - the mean dependency distance (see ``lal.linarr.mean_dependency_distance``),
 - the mean dependency distance over ensembles of graphs (see  ``lal.linarr.mean_dependency_distance_1level`` and ``lal.linarr.mean_dependency_distance_2level``),
 - the mean hierarchical distance (see ``lal.properties.mean_hierarchical_distance``),
 - the headedness of a tree (see ``lal.linarr.headedness``),
-- the type of syntactic dependency trees according the their projectivity (see  ``lal.linarr.classify_tree_structure``).
+- the type of syntactic dependency trees according to their projectivity (see  ``lal.linarr.syntactic_dependency_structure_class``).
+- calculation of the centre of a tree (see ``lal.properties.tree_centre``), the centroid of a tree (see ``lal.properties.tree_centroid``), a tree's diameter (see ``lal.properties.tree_diameter``).
 
-Other algorithms, also gathered in the same modules, offer the computation of optimal arrangements. For example, it is offered
-- the computation of the minimal arrangements with respect to the sum of edge lengths (see  ``lal.linarr.Dmin``), with free choice on the algorithm to be used (see ``lal.linarr.algorithms_Dmin``).
- 
 As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the  lal.generate module. We have implemented existing techniques (cited accordingly) or made or own to enumerate
 
 - all labelled/unlabelled free trees,
@@ -33,8 +31,12 @@ and to generate uniformly at random
 - labelled/unlabelled free/rooted trees,
 - projective arrangements of rooted trees.
  
-The documentation of each class include usage examples.
- 
+The documentation of each class includes usage examples.
+
+This library implements several types of graphs that can be found in the ``lal.graphs`` module.
+
+With LAL, most metrics can be calculated as exact rational numbers (see ``lal.numeric.rational``), but also as floating point values of double precision. For the former, add the suffix '_rational' at the end of the function name. For example, the function @ref lal::properties::var_num_crossings returns the variance of the number of crossings 'C' as a floating point value. By adding the suffix, i.e., ``lal.properties.var_num_crossings_rational``, we obtain said variance as an exact rational value. To see what a rational value is in the context of this library, see the documentation of the module ``lal.numeric``.
+
 The basic data structures in this library
 -----------------------------------------
 
@@ -53,7 +55,7 @@ In order to be able to use the library comfortably, its users must take good not
 	
 	Although all graphs should be regarded as unlabelled, each node carries an implicit labelling. Such labelling has a most trivial nature since each node is labelled with a number between 0 and the total number of vertices minus one.
 	 
-	Due to most graphs being sparse, the data structure of choice are adjacency lists where each vertex has a list of neighbouring nodes, or simply neighbours, associated to it. The user can affect the order of appearance of neighbours in multiple ways. One of them is, evidently, the order in which edges are added. Another way is via the lal.graphs.graph.normalise function, which sorts every list of neighbours increasingly. By default, the addition of edges is normalising, namely the following code
+	Due to most graphs being sparse, the data structure of choice are adjacency lists where each vertex has a list of neighbouring nodes, or simply neighbours, associated to it. The user can affect the order of appearance of neighbours in multiple ways. One of them is, evidently, the order in which edges are added. Another way is via the lal.graphs.graph.normalise function, which sorts every list of neighbours increasingly by index. By default, the addition of edges is normalising, namely the following code
 	
 	>>> t = lal.graphs.free_tree(4)
 	>>> t.add_edge(0,1,false,false).add_edge(0,3,false,false)
@@ -75,7 +77,7 @@ In order to be able to use the library comfortably, its users must take good not
 	2: 0
 	3: 0
 	
-	The output is easy to interpret: the first line indicates the nodes are incident to vertex 0, the second line indicates the nodes incident to vertex 1, and so on. Without normalisation, the output is
+	The output is easy to interpret: the first line indicates the nodes are incident to vertex 0, the second line indicates the nodes incident to vertex 1, and so on. Without normalisation (neither the call to ``lal.graphs.free_tree.normalise``, and using 'False' in the optional parameters), the output is
 	
 	>>> print(t)
 	0: 1 3 2
@@ -87,12 +89,12 @@ In order to be able to use the library comfortably, its users must take good not
 	
 	Such normalisation is required by some of the algorithms in this library. Without proper normalisation, the algorithms are not likely to compute correct values. The parameter that governs the graphs' normalisation is called the normalisation parameter.
 	
-	The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see ``lal.graphs.directed_graph.in_degree``) and in-neighbours (see ``lal.graphs.directed_graph.get_in_neighbours``).
+	The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see ``lal.graphs.directed_graph.get_in_degree``) and in-neighbours (see ``lal.graphs.directed_graph.get_in_neighbours``).
 
 Basic terminology and notation
 ------------------------------
 
-Users will note, after browsing through the capabilities of the library, that several concepts are quite ubiquitous. The ``lal.node`` type is simply an unsigned integer type, and the ``lal.edge`` type is simply a pair of nodes.
+Users will note, after browsing through the library's documentation, that several concepts are quite ubiquitous. The ``lal.node`` type is simply an unsigned integer type, and the ``lal.edge`` type is simply a pair of nodes. Moreover, users need to have a deep understanding of what a head vector is (see ``lal.head_vector`` in the documentation of ``lal.io`` module), which is what allows users to easily read trees from files and process a file containing a large collection of trees (see ``lal.io`` module).
 
 A more advanced concept is that of linear arrangement (see ``lal.linear_arrangement``). In this library, a linear arrangement is viewed as a function that relates each node to a position in a linear sequence. Due to the properties of such functions, a linear arrangement is implemented with a list. Note that the concept of linear arrangement has been detached from that of trees, and the pair of a linear arrangement and a tree forms, in the context of the library, a syntactic dependency tree (this is why this class is not implemented). The symbol of choice for representing a linear arrangement in the library is the greek letter for the number pi :math:`\pi`.
 
@@ -100,8 +102,8 @@ Now, many functions (see those fuctions within the ``lal.linarr`` module) admit 
 
 >>> t = lal.graphs.free_tree(4);
 >>> t.add_edges([(0,1), (1,2), (2,3)])
->>> D1 = linarr.sum_length_edges(t)
->>> D2 = linarr.sum_length_edges(t, [0,1,2,3])
+>>> D1 = linarr.sum_edge_lengths(t)
+>>> D2 = linarr.sum_edge_lengths(t, [0,1,2,3])
 
 The possibility of expliciting a linear arrangement increases the flexibility of the library. For example, for the purposes of illustration, one can calculate the expected sum of the length of the edges as follows
 
@@ -111,16 +113,16 @@ The possibility of expliciting a linear arrangement increases the flexibility of
 >>> Dt = lal.numeric.rational(0)
 >>> perms = permutations([0,1,2,3])
 >>> for p in list(perms):
->>> 		Dt += lal.linarr.sum_length_edges(t, p)
+>>> 		Dt += lal.linarr.sum_edge_lengths(t, p)
 >>> Dt /= 24
 
 However, we can calculate such expected value using the ``properties`` module:
 
->>> print(lal.properties.expectation_D_rational(t))
+>>> print(lal.properties.exp_sum_edge_lengths_rational(t))
 
 or, more simply,
 
->>> print(lal.properties.expectation_D(t))
+>>> print(lal.properties.exp_sum_edge_lengths(t))
 
 Throughout the library we refer to the sum of length of edges with a capital D, :math:`D`, and we refer to the number of crossings with a capital C, :math:`C`.
 
@@ -129,7 +131,7 @@ Using the library effectively
 
 As a rule of the thumb, the user is encouraged not to change the default value of the parameters whenever they are given. However, certain operations can be less efficient than others, and sometimes it is even desirable to use values different from the default ones.
 
-One the one hand, the wrong choice of operation can affect the library's performance gravely. For example, the addition/deletion of edges to/from graphs is slower when it is done edge by edge than when it is done in bulk. Users are highly encouraged to add/delete them in bulk using the appropriate functions (see, for example, ``lal.graphs.undirected_graph.add_edges`` and ``lal.graphs.undirected_graph.remove_edges``). The following code is discouraged
+One the one hand, the wrong choice of operation can affect the library's performance gravely. For example, the addition/deletion of edges to/from graphs is slower when it is done edge by edge than when it is done in bulk. Users are highly encouraged to add/delete them in bulk using the appropriate functions (see, for example, ``lal.graphs.undirected_graph.add_edges`` and ``lal.graphs.undirected_graph.remove_edges``). Although correct, the following code is discouraged
 
 >>> t = lal.graphs.free_tree(10)
 >>> for i in range(0,9):
@@ -144,20 +146,20 @@ while the next piece of code is strongly encouraged whenever possible
 >>> for i in range(0,9):
 >>>     u = input()
 >>>     v = input()
->>> t.add_edges(e)
+>>> t.set_edges(e)
 
 A similar reasoning should be applied to the deletion of edges.
 
-On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of :math:`C` (see ``lal.properties.variance_C``), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of :math:`C` is to be calculated,
+On the other hand, graphs are seldom required to be normalised. For example, when calculating the variance of :math:`C` (see ``lal.properties.var_num_crossings``), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of :math:`C` is to be calculated,
 
->>> t = lal.graphs.free_tree()
->>> lal.io.read_edge_list(t)
->>> var_C = lal.properties.variance_C(t)
+>>> filename = "..." # a valid name of a file
+>>> t = lal.io.read_edge_list("free_tree", filename)
+>>> var_C = lal.properties.var_num_crossings(t)
 
 but if not
 
->>> t = lal.graphs.free_tree()
->>> lal.io.read_edge_list(t, false)
+>>> filename = "..." # a valid name of a file
+>>> t = lal.io.read_edge_list("free_tree", filename, false)
 >>> ...
 
 

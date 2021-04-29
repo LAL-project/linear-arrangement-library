@@ -57,17 +57,25 @@ using namespace std;
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
-#include <lal/linarr/headedness.hpp>
+#include <lal/linarr/head_initial.hpp>
 #include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/flux.hpp>
+#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/mean_hierarchical_distance.hpp>
-#include <lal/io/treebank_dataset_reader.hpp>
+#include <lal/properties/tree_centre.hpp>
+#include <lal/properties/tree_centroid.hpp>
+#include <lal/properties/tree_diameter.hpp>
+#include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
-#include <lal/internal/io/treebank_feature_string.hpp>
+
+#include <lal/internal/graphs/tree_type.hpp>
+#include <lal/internal/io/treebank_feature.hpp>
+#include <lal/internal/io/check_correctness.hpp>
+#include <lal/internal/linarr/syntactic_dependency_structure.hpp>
 
 template<typename T>
 double to_double(const T& x) {
@@ -146,50 +154,11 @@ void set_minimum_of(
 
 namespace io {
 
-#define index_of(_X_) static_cast<size_t>(treebank_feature::_X_)
-#define n_idx index_of(num_nodes)
-#define k2_idx index_of(k2)
-#define k3_idx index_of(k3)
-#define size_Q_idx index_of(num_pairs_independent_edges)
-#define headedness_idx index_of(headedness)
-#define mean_hierarchical_distance_idx index_of(mean_hierarchical_distance)
-#define mean_dependency_distance_idx index_of(mean_dependency_distance)
-#define C_idx index_of(C)
-#define C_exp1_idx index_of(C_exp_1)
-#define C_exp2_idx index_of(C_exp_2)
-#define C_var_idx index_of(C_var)
-#define C_z_idx index_of(C_z)
-#define D_idx index_of(D)
-#define D_exp1_idx index_of(D_exp_1)
-#define D_exp2_idx index_of(D_exp_2)
-#define D_var_idx index_of(D_var)
-#define D_z_idx index_of(D_z)
-#define Dmin_Unconstrained_idx index_of(Dmin_Unconstrained)
-#define Dmin_Planar_idx index_of(Dmin_Planar)
-#define Dmin_Projective_idx index_of(Dmin_Projective)
-#define max_flux_weight_idx index_of(max_flux_weight)
-#define mean_flux_weight_idx index_of(mean_flux_weight)
-#define min_flux_weight_idx index_of(min_flux_weight)
-#define max_left_span_idx index_of(max_left_span)
-#define mean_left_span_idx index_of(mean_left_span)
-#define min_left_span_idx index_of(min_left_span)
-#define max_right_span_idx index_of(max_right_span)
-#define mean_right_span_idx index_of(mean_right_span)
-#define min_right_span_idx index_of(min_right_span)
-#define max_RL_ratio_idx index_of(max_RL_ratio)
-#define mean_RL_ratio_idx index_of(mean_RL_ratio)
-#define min_RL_ratio_idx index_of(min_RL_ratio)
-#define max_WS_ratio_idx index_of(max_WS_ratio)
-#define mean_WS_ratio_idx index_of(mean_WS_ratio)
-#define min_WS_ratio_idx index_of(min_WS_ratio)
-#define max_size_idx index_of(max_size)
-#define mean_size_idx index_of(mean_size)
-#define min_size_idx index_of(min_size)
-
+// -----------------------------------------------------------------------------
 // CLASS METHODS
 
 treebank_error treebank_processor::init(
-	const string& treebank_file, const string& output_file, bool all_fs,
+	const string& treebank_file, const string& output_file,
 	const string& treebank_id
 ) noexcept
 {
@@ -199,7 +168,7 @@ treebank_error treebank_processor::init(
 	m_treebank_id = treebank_id;
 
 	// initalise features vector
-	std::fill(m_what_fs.begin(), m_what_fs.end(), all_fs);
+	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
 	// make sure that the treebank file exists
 	if (not filesystem::exists(m_treebank_filename)) {
@@ -209,6 +178,15 @@ treebank_error treebank_processor::init(
 }
 
 treebank_error treebank_processor::process() noexcept {
+	if (m_check_before_process) {
+		const bool err =
+		internal::check_correctness_treebank<true>(m_treebank_filename);
+
+		if (err) {
+			return treebank_error::malformed_treebank_file;
+		}
+	}
+
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
 	{ return treebank_error::no_features; }
@@ -219,7 +197,8 @@ treebank_error treebank_processor::process() noexcept {
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
 	if (err != treebank_error::no_error) {
 		if (m_be_verbose >= 2) {
-			cerr << "Processing treebank '" << m_treebank_filename << "' failed" << endl;
+			cerr << "Processing treebank '" << m_treebank_filename << "' failed"
+				 << endl;
 		}
 		return err;
 	}
@@ -227,33 +206,94 @@ treebank_error treebank_processor::process() noexcept {
 
 	// output file stream:
 	// since the output directory exists there is no need to check for is_open()
-	ofstream out_lang_file(m_output_file);
-	if (not out_lang_file.is_open()) {
+	ofstream out_treebank_file(m_output_file);
+	if (not out_treebank_file.is_open()) {
 		return treebank_error::output_file_could_not_be_opened;
 	}
 
 	// output header to the file
 	if (m_output_header) {
-		size_t i = 0;
+		bool first = true;
 
-		// find the first feature
-		while (not m_what_fs[i]) { ++i; }
-
-		out_lang_file << internal::treebank_feature_string(
-							 static_cast<treebank_feature>(i)
-						 );
-		++i;
-
-		for (; i < m_what_fs.size(); ++i) {
+		for (size_t i = 0; i < __treebank_feature_size; ++i) {
 			if (m_what_fs[i]) {
-				out_lang_file
-					<< m_separator
-					<< internal::treebank_feature_string(
-						   static_cast<treebank_feature>(i)
-					   );
+				if (first) {
+					first = false;
+				}
+				else {
+					out_treebank_file << m_separator;
+				}
+
+				const auto tf = internal::index_to_treebank_feature(i);
+				switch (tf) {
+				case treebank_feature::num_nodes:
+				case treebank_feature::second_moment_degree:
+				case treebank_feature::second_moment_degree_in:
+				case treebank_feature::second_moment_degree_out:
+				case treebank_feature::third_moment_degree:
+				case treebank_feature::third_moment_degree_in:
+				case treebank_feature::third_moment_degree_out:
+				case treebank_feature::num_pairs_independent_edges:
+				case treebank_feature::head_initial:
+				case treebank_feature::hubiness:
+				case treebank_feature::mean_hierarchical_distance:
+				case treebank_feature::tree_diameter:
+				case treebank_feature::num_crossings:
+				case treebank_feature::predicted_num_crossings:
+				case treebank_feature::exp_num_crossings:
+				case treebank_feature::var_num_crossings:
+				case treebank_feature::z_score_num_crossings:
+				case treebank_feature::sum_edge_lengths:
+				case treebank_feature::exp_sum_edge_lengths:
+				case treebank_feature::var_sum_edge_lengths:
+				case treebank_feature::z_score_sum_edge_lengths:
+				case treebank_feature::min_sum_edge_lengths:
+				case treebank_feature::min_sum_edge_lengths_planar:
+				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::mean_dependency_distance:
+				case treebank_feature::flux_max_weight:
+				case treebank_feature::flux_mean_weight:
+				case treebank_feature::flux_min_weight:
+				case treebank_feature::flux_max_left_span:
+				case treebank_feature::flux_mean_left_span:
+				case treebank_feature::flux_min_left_span:
+				case treebank_feature::flux_max_right_span:
+				case treebank_feature::flux_mean_right_span:
+				case treebank_feature::flux_min_right_span:
+				case treebank_feature::flux_max_RL_ratio:
+				case treebank_feature::flux_mean_RL_ratio:
+				case treebank_feature::flux_min_RL_ratio:
+				case treebank_feature::flux_max_WS_ratio:
+				case treebank_feature::flux_mean_WS_ratio:
+				case treebank_feature::flux_min_WS_ratio:
+				case treebank_feature::flux_max_size:
+				case treebank_feature::flux_mean_size:
+				case treebank_feature::flux_min_size:
+					out_treebank_file << internal::treebank_feature_string(tf);
+					break;
+
+				case treebank_feature::tree_centre:
+				case treebank_feature::tree_centroid:
+					out_treebank_file << internal::treebank_feature_string(tf) << "1";
+					out_treebank_file << m_separator;
+					out_treebank_file << internal::treebank_feature_string(tf) << "2";
+					break;
+
+				case treebank_feature::tree_type:
+					output_tree_type_header(out_treebank_file);
+					break;
+
+				case treebank_feature::syntactic_dependency_structure_class:
+					output_syndepstruct_type_header(out_treebank_file);
+					break;
+
+				case treebank_feature::__last_value:
+					break;
+				}
 			}
 		}
-		out_lang_file << endl;
+
+		out_treebank_file << "\n";
 	}
 
 	const auto start = std::chrono::system_clock::now();
@@ -261,13 +301,10 @@ treebank_error treebank_processor::process() noexcept {
 	// process the current treebank
 	rooted_tree rT;
 	while (tbread.has_tree()) {
-		const treebank_error err = tbread.next_tree();
-		if (err == treebank_error::empty_line_found) {
-			// empty line, skip...
-		}
-		else {
+		const auto err = tbread.next_tree();
+		if (err == treebank_error::no_error) {
 			rT = tbread.get_tree();
-			process_tree<rooted_tree, ofstream>(rT, out_lang_file);
+			process_tree<rooted_tree, ofstream>(rT, out_treebank_file);
 		}
 	}
 
@@ -288,23 +325,153 @@ treebank_error treebank_processor::process() noexcept {
 
 // PRIVATE
 
+template<class OUT_STREAM>
+void treebank_processor::output_tree_type_header(OUT_STREAM& out_treebank_file)
+const noexcept
+{
+	out_treebank_file
+	<< internal::tree_type_string(internal::array_of_tree_types[0]);
+
+	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
+		out_treebank_file
+			<< m_separator
+			<< internal::tree_type_string(internal::array_of_tree_types[j]);
+	}
+}
+
+template<class OUT_STREAM>
+void treebank_processor::output_syndepstruct_type_header(OUT_STREAM& out_treebank_file)
+const noexcept
+{
+	out_treebank_file
+	<< internal::syntactic_dependency_structure_to_string(
+		   internal::array_of_syntactic_dependency_structures[0]
+	   );
+
+	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+		out_treebank_file
+			<< m_separator
+			<< internal::syntactic_dependency_structure_to_string(
+				   internal::array_of_syntactic_dependency_structures[j]
+			   );
+	}
+}
+
+// output the tree type
+template<class TREE_TYPE, class OUT_STREAM>
+void treebank_processor::output_tree_type_values(
+	TREE_TYPE& fT,
+	OUT_STREAM& out_treebank_file
+)
+const noexcept
+{
+	const auto output_tt =
+	[&](const graphs::tree_type& tt) {
+		if (fT.is_of_tree_type(tt)) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+	};
+
+	if (not fT.is_tree_type_valid()) {
+		fT.calculate_tree_type();
+	}
+
+	output_tt(internal::array_of_tree_types[0]);
+	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
+		out_treebank_file << m_separator;
+		output_tt(internal::array_of_tree_types[j]);
+	}
+}
+
+template<class TREE_TYPE, class OUT_STREAM>
+void treebank_processor::output_syndepstruct_type_values(
+	const TREE_TYPE& rT,
+	OUT_STREAM& out_treebank_file
+)
+const noexcept
+{
+	const auto v = linarr::syntactic_dependency_structure_class(rT);
+
+	const auto output_sdst =
+	[&](const linarr::syntactic_dependency_structure& sdst) {
+		const size_t idx_tt = static_cast<size_t>(sdst);
+		if (v[idx_tt]) {
+			out_treebank_file << "1";
+		}
+		else {
+			out_treebank_file << "0";
+		}
+	};
+
+	output_sdst(internal::array_of_syntactic_dependency_structures[0]);
+	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+		out_treebank_file << m_separator;
+		output_sdst(internal::array_of_syntactic_dependency_structures[j]);
+	}
+}
+
 template<class TREE, class OUT_STREAM>
 void treebank_processor::process_tree
-(const TREE& rT, OUT_STREAM& out_lang_file)
-const
+(const TREE& rT, OUT_STREAM& out_treebank_file)
+const noexcept
 {
-	const free_tree fT = rT.to_undirected();
+	free_tree fT = rT.to_undirected();
 	const uint32_t n = fT.get_num_nodes();
 
-	// -----------------------------------------------------------
-	// compute features in a way that does not repeat computations
+	// -------------------------------------------------------------------
+	// indices of treebank features
+	static constexpr size_t n_idx = internal::treebank_feature_to_index(treebank_feature::num_nodes);
+	static constexpr size_t k2_idx = internal::treebank_feature_to_index(treebank_feature::second_moment_degree);
+	static constexpr size_t k3_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree);
+	static constexpr size_t num_pairs_independent_edges_idx = internal::treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
+	static constexpr size_t head_initial_idx = internal::treebank_feature_to_index(treebank_feature::head_initial);
+	static constexpr size_t hubiness_idx = internal::treebank_feature_to_index(treebank_feature::hubiness);
+	static constexpr size_t mean_hierarchical_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
+	static constexpr size_t tree_diameter_idx = internal::treebank_feature_to_index(treebank_feature::tree_diameter);
+	static constexpr size_t C_idx = internal::treebank_feature_to_index(treebank_feature::num_crossings);
+	static constexpr size_t C_predicted_idx = internal::treebank_feature_to_index(treebank_feature::predicted_num_crossings);
+	static constexpr size_t C_expected_idx = internal::treebank_feature_to_index(treebank_feature::exp_num_crossings);
+	static constexpr size_t C_variance_idx = internal::treebank_feature_to_index(treebank_feature::var_num_crossings);
+	static constexpr size_t C_z_score_idx = internal::treebank_feature_to_index(treebank_feature::z_score_num_crossings);
+	static constexpr size_t D_idx = internal::treebank_feature_to_index(treebank_feature::sum_edge_lengths);
+	static constexpr size_t D_expected_idx = internal::treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths);
+	static constexpr size_t D_variance_idx = internal::treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);
+	static constexpr size_t D_z_score_idx = internal::treebank_feature_to_index(treebank_feature::z_score_sum_edge_lengths);
+	static constexpr size_t Dmin_Unconstrained_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
+	static constexpr size_t Dmin_Planar_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
+	static constexpr size_t Dmin_Projective_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
+	static constexpr size_t mean_dependency_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_dependency_distance);
+	static constexpr size_t flux_max_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_weight);
+	static constexpr size_t flux_mean_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_weight);
+	static constexpr size_t flux_min_weight_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_weight);
+	static constexpr size_t flux_max_left_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_left_span);
+	static constexpr size_t flux_mean_left_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_left_span);
+	static constexpr size_t flux_min_left_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_left_span);
+	static constexpr size_t flux_max_right_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_right_span);
+	static constexpr size_t flux_mean_right_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_right_span);
+	static constexpr size_t flux_min_right_span_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_right_span);
+	static constexpr size_t flux_max_RL_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_RL_ratio);
+	static constexpr size_t flux_mean_RL_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_RL_ratio);
+	static constexpr size_t flux_min_RL_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_RL_ratio);
+	static constexpr size_t flux_max_WS_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_WS_ratio);
+	static constexpr size_t flux_mean_WS_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_WS_ratio);
+	static constexpr size_t flux_min_WS_ratio_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_WS_ratio);
+	static constexpr size_t flux_max_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_max_size);
+	static constexpr size_t flux_mean_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_mean_size);
+	static constexpr size_t flux_min_size_idx = internal::treebank_feature_to_index(treebank_feature::flux_min_size);
+
+	// -------------------------------------------------------------------
+	// compute numeric features in a way that does not repeat computations
 	double props[__treebank_feature_size]{0.0};
-	bool prop_set[__treebank_feature_size]{false};
+	char prop_set[__treebank_feature_size]{0};
 
 	const auto set_prop =
 	[&](size_t idx, double val) -> void {
 		props[idx] = val;
-		prop_set[idx] = true;
+		prop_set[idx] = 1;
 	};
 
 	// number of nodes
@@ -313,16 +480,19 @@ const
 	}
 	// <k^2>, <k^3>, |Q|, headedness
 	if (m_what_fs[k2_idx]) {
-		set_prop(k2_idx, properties::mmt_degree(fT, 2));
+		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
 	if (m_what_fs[k3_idx]) {
-		set_prop(k3_idx, properties::mmt_degree(fT, 3));
+		set_prop(k3_idx, properties::moment_degree(fT, 3));
 	}
-	if (m_what_fs[size_Q_idx]) {
-		set_prop(size_Q_idx, static_cast<double>(properties::size_Q(fT)));
+	if (m_what_fs[num_pairs_independent_edges_idx]) {
+		set_prop(num_pairs_independent_edges_idx, static_cast<double>(properties::num_pairs_independent_edges(fT)));
 	}
-	if (m_what_fs[headedness_idx]) {
-		set_prop(headedness_idx, linarr::headedness(rT));
+	if (m_what_fs[head_initial_idx]) {
+		set_prop(head_initial_idx, linarr::head_initial(rT));
+	}
+	if (m_what_fs[hubiness_idx]) {
+		set_prop(hubiness_idx, properties::hubiness(fT));
 	}
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
 		set_prop(mean_hierarchical_distance_idx,
@@ -331,6 +501,10 @@ const
 	if (m_what_fs[mean_dependency_distance_idx]) {
 		set_prop(mean_dependency_distance_idx,
 				 linarr::mean_dependency_distance(rT));
+	}
+	if (m_what_fs[tree_diameter_idx]) {
+		set_prop(tree_diameter_idx,
+				 properties::tree_diameter(rT));
 	}
 
 	// -----------------------------------------------------------------
@@ -353,52 +527,40 @@ const
 			return linarr::algorithms_C::stack_based;
 		}(rT.get_num_nodes());
 
-		set_prop(C_idx, linarr::number_of_crossings(fT, algo_C));
+		set_prop(C_idx, linarr::num_crossings(fT, algo_C));
 	}
-	if (m_what_fs[C_var_idx]) {
-		set_prop(C_var_idx, properties::variance_C_tree(fT));
+	if (m_what_fs[C_predicted_idx]) {
+		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT));
 	}
-	if (m_what_fs[C_exp1_idx]) {
-		set_prop(C_exp1_idx, properties::expectation_C(fT));
+	if (m_what_fs[C_expected_idx]) {
+		set_prop(C_expected_idx, properties::exp_num_crossings(fT));
 	}
-
-	if (m_what_fs[C_exp2_idx]) {
-		if (not m_what_fs[C_exp1_idx]) {
-			set_prop(C_exp1_idx, properties::expectation_C(fT));
-		}
-		if (not m_what_fs[C_var_idx]) {
-			set_prop(C_var_idx, properties::variance_C_tree(fT));
-		}
-
-#if defined DEBUG
-		assert(prop_set[C_exp1_idx]);
-		assert(prop_set[C_var_idx]);
-#endif
-		set_prop(C_exp2_idx, props[C_var_idx] + square(props[C_exp1_idx]));
+	if (m_what_fs[C_variance_idx]) {
+		set_prop(C_variance_idx, properties::var_num_crossings_tree(fT));
 	}
 
 	// z-score of C
-	if (m_what_fs[C_z_idx]) {
+	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, linarr::number_of_crossings(fT));
-		}
-		// we need V[C]
-		if (not m_what_fs[C_var_idx]) {
-			set_prop(C_var_idx, properties::variance_C_tree(fT));
+			set_prop(C_idx, linarr::num_crossings(fT));
 		}
 		// we need E[C]
-		if (not m_what_fs[C_exp1_idx]) {
-			set_prop(C_exp1_idx, properties::expectation_C(fT));
+		if (not m_what_fs[C_expected_idx]) {
+			set_prop(C_expected_idx, properties::exp_num_crossings(fT));
+		}
+		// we need V[C]
+		if (not m_what_fs[C_variance_idx]) {
+			set_prop(C_variance_idx, properties::var_num_crossings_tree(fT));
 		}
 
 #if defined DEBUG
 		assert(prop_set[C_idx]);
-		assert(prop_set[C_var_idx]);
-		assert(prop_set[C_exp1_idx]);
+		assert(prop_set[C_variance_idx]);
+		assert(prop_set[C_expected_idx]);
 #endif
-		set_prop(C_z_idx,
-			(props[C_idx] - props[C_exp1_idx])/std::sqrt(props[C_var_idx])
+		set_prop(C_z_score_idx,
+			(props[C_idx] - props[C_expected_idx])/std::sqrt(props[C_variance_idx])
 		);
 	}
 
@@ -406,52 +568,37 @@ const
 	// D
 
 	if (m_what_fs[D_idx]) {
-		set_prop(D_idx, linarr::sum_length_edges(fT));
+		set_prop(D_idx, linarr::sum_edge_lengths(fT));
 	}
-	if (m_what_fs[D_var_idx]) {
-		set_prop(D_var_idx, properties::variance_D(fT));
+	if (m_what_fs[D_expected_idx]) {
+		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
 	}
-	if (m_what_fs[D_exp1_idx]) {
-		set_prop(D_exp1_idx, properties::expectation_D(fT));
-	}
-
-	if (m_what_fs[D_exp2_idx]) {
-		if (not m_what_fs[D_exp1_idx]) {
-			set_prop(D_exp1_idx, properties::expectation_D(fT));
-		}
-		if (not m_what_fs[D_var_idx]) {
-			set_prop(D_var_idx, properties::variance_D(fT));
-		}
-
-#if defined DEBUG
-		assert(prop_set[D_exp1_idx]);
-		assert(prop_set[D_var_idx]);
-#endif
-		set_prop(D_exp2_idx, props[D_var_idx] + square(props[D_exp1_idx]));
+	if (m_what_fs[D_variance_idx]) {
+		set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
 	}
 
 	// z-score of D
-	if (m_what_fs[D_z_idx]) {
+	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, linarr::sum_length_edges(fT));
-		}
-		// we need V[D]
-		if (not m_what_fs[D_var_idx]) {
-			set_prop(D_var_idx, properties::variance_D(fT));
+			set_prop(D_idx, linarr::sum_edge_lengths(fT));
 		}
 		// we need E[D]
-		if (not m_what_fs[D_exp1_idx]) {
-			set_prop(D_exp1_idx, properties::expectation_D(fT));
+		if (not m_what_fs[D_expected_idx]) {
+			set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
+		}
+		// we need V[D]
+		if (not m_what_fs[D_variance_idx]) {
+			set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
 		}
 
 #if defined DEBUG
 		assert(prop_set[D_idx]);
-		assert(prop_set[D_var_idx]);
-		assert(prop_set[D_exp1_idx]);
+		assert(prop_set[D_variance_idx]);
+		assert(prop_set[D_expected_idx]);
 #endif
-		set_prop(D_z_idx,
-			(props[D_idx] - props[D_exp1_idx])/std::sqrt(props[D_var_idx])
+		set_prop(D_z_score_idx,
+			(props[D_idx] - props[D_expected_idx])/std::sqrt(props[D_variance_idx])
 		);
 	}
 
@@ -459,23 +606,20 @@ const
 	// Optimisation of D
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		set_prop(Dmin_Unconstrained_idx,
-				 linarr::Dmin(fT, linarr::algorithms_Dmin::Unconstrained_YS).first);
+		set_prop(Dmin_Unconstrained_idx, linarr::min_sum_edge_lengths(fT).first);
 	}
 	if (m_what_fs[Dmin_Planar_idx]) {
-		set_prop(Dmin_Planar_idx,
-				 linarr::Dmin(fT, linarr::algorithms_Dmin::Planar).first);
+		set_prop(Dmin_Planar_idx, linarr::min_sum_edge_lengths_planar(fT).first);
 	}
 	if (m_what_fs[Dmin_Projective_idx]) {
-		set_prop(Dmin_Projective_idx,
-				 linarr::Dmin(rT, linarr::algorithms_Dmin::Projective).first);
+		set_prop(Dmin_Projective_idx, linarr::min_sum_edge_lengths_projective(rT).first);
 	}
 
 	// -----------------
 	// flux computation
 	const bool compute_any_of_flux = std::any_of(
-		m_what_fs.begin() + max_flux_weight_idx - 1,
-		m_what_fs.begin() + min_size_idx + 1,
+		m_what_fs.begin() + flux_max_weight_idx - 1,
+		m_what_fs.begin() + flux_min_size_idx + 1,
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
@@ -485,44 +629,122 @@ const
 
 #define DFMEM &linarr::dependency_flux
 		// compute the means
-		set_average_of(F, mean_flux_weight_idx, DFMEM::get_weight, props);
-		set_average_of(F, mean_left_span_idx, DFMEM::get_left_span, props);
-		set_average_of(F, mean_right_span_idx, DFMEM::get_right_span, props);
-		set_average_of(F, mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_average_of(F, mean_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_average_of(F, mean_size_idx, DFMEM::get_size, props);
+		set_average_of(F, flux_mean_weight_idx, DFMEM::get_weight, props);
+		set_average_of(F, flux_mean_left_span_idx, DFMEM::get_left_span, props);
+		set_average_of(F, flux_mean_right_span_idx, DFMEM::get_right_span, props);
+		set_average_of(F, flux_mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_average_of(F, flux_mean_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_average_of(F, flux_mean_size_idx, DFMEM::get_size, props);
 
 		// compute the maxs
-		set_maximum_of(F, max_flux_weight_idx, DFMEM::get_weight, props);
-		set_maximum_of(F, max_left_span_idx, DFMEM::get_left_span, props);
-		set_maximum_of(F, max_right_span_idx, DFMEM::get_right_span, props);
-		set_maximum_of(F, max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_maximum_of(F, max_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_maximum_of(F, max_size_idx, DFMEM::get_size, props);
+		set_maximum_of(F, flux_max_weight_idx, DFMEM::get_weight, props);
+		set_maximum_of(F, flux_max_left_span_idx, DFMEM::get_left_span, props);
+		set_maximum_of(F, flux_max_right_span_idx, DFMEM::get_right_span, props);
+		set_maximum_of(F, flux_max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_maximum_of(F, flux_max_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_maximum_of(F, flux_max_size_idx, DFMEM::get_size, props);
 
 		// compute the mins
-		set_minimum_of(F, min_flux_weight_idx, DFMEM::get_weight, props);
-		set_minimum_of(F, min_left_span_idx, DFMEM::get_left_span, props);
-		set_minimum_of(F, min_right_span_idx, DFMEM::get_right_span, props);
-		set_minimum_of(F, min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
-		set_minimum_of(F, min_WS_ratio_idx, DFMEM::get_WS_ratio, props);
-		set_minimum_of(F, min_size_idx, DFMEM::get_size, props);
+		set_minimum_of(F, flux_min_weight_idx, DFMEM::get_weight, props);
+		set_minimum_of(F, flux_min_left_span_idx, DFMEM::get_left_span, props);
+		set_minimum_of(F, flux_min_right_span_idx, DFMEM::get_right_span, props);
+		set_minimum_of(F, flux_min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
+		set_minimum_of(F, flux_min_WS_ratio_idx, DFMEM::get_WS_ratio, props);
+		set_minimum_of(F, flux_min_size_idx, DFMEM::get_size, props);
 #undef DFMEM
 	}
+
+	const pair<node,node> centre_of_tree = properties::tree_centre(fT);
+	const pair<node,node> centroid_of_tree = properties::tree_centroid(fT);
 
 	// ---------------
 	// output features
 
-	if (m_what_fs[0]) {
-		out_lang_file << rT.get_num_nodes();
-	}
-	for (size_t i = 1; i < m_what_fs.size(); ++i) {
-		out_lang_file << m_separator;
+	bool first = true;
+	for (size_t i = 0; i < __treebank_feature_size; ++i) {
 		if (m_what_fs[i]) {
-			out_lang_file << props[i];
+			if (first) {
+				first = false;
+			}
+			else {
+				out_treebank_file << m_separator;
+			}
+
+			const auto tf = internal::index_to_treebank_feature(i);
+			switch (tf) {
+			case treebank_feature::num_nodes:
+			case treebank_feature::second_moment_degree:
+			case treebank_feature::second_moment_degree_in:
+			case treebank_feature::second_moment_degree_out:
+			case treebank_feature::third_moment_degree:
+			case treebank_feature::third_moment_degree_in:
+			case treebank_feature::third_moment_degree_out:
+			case treebank_feature::num_pairs_independent_edges:
+			case treebank_feature::head_initial:
+			case treebank_feature::hubiness:
+			case treebank_feature::mean_hierarchical_distance:
+			case treebank_feature::tree_diameter:
+			case treebank_feature::num_crossings:
+			case treebank_feature::predicted_num_crossings:
+			case treebank_feature::exp_num_crossings:
+			case treebank_feature::var_num_crossings:
+			case treebank_feature::z_score_num_crossings:
+			case treebank_feature::sum_edge_lengths:
+			case treebank_feature::exp_sum_edge_lengths:
+			case treebank_feature::var_sum_edge_lengths:
+			case treebank_feature::z_score_sum_edge_lengths:
+			case treebank_feature::min_sum_edge_lengths:
+			case treebank_feature::min_sum_edge_lengths_planar:
+			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::mean_dependency_distance:
+			case treebank_feature::flux_max_weight:
+			case treebank_feature::flux_mean_weight:
+			case treebank_feature::flux_min_weight:
+			case treebank_feature::flux_max_left_span:
+			case treebank_feature::flux_mean_left_span:
+			case treebank_feature::flux_min_left_span:
+			case treebank_feature::flux_max_right_span:
+			case treebank_feature::flux_mean_right_span:
+			case treebank_feature::flux_min_right_span:
+			case treebank_feature::flux_max_RL_ratio:
+			case treebank_feature::flux_mean_RL_ratio:
+			case treebank_feature::flux_min_RL_ratio:
+			case treebank_feature::flux_max_WS_ratio:
+			case treebank_feature::flux_mean_WS_ratio:
+			case treebank_feature::flux_min_WS_ratio:
+			case treebank_feature::flux_max_size:
+			case treebank_feature::flux_mean_size:
+			case treebank_feature::flux_min_size:
+				out_treebank_file << props[i];
+				break;
+
+			case treebank_feature::tree_centre:
+				out_treebank_file
+					<< centre_of_tree.first << m_separator
+					<< centre_of_tree.second;
+				break;
+
+			case treebank_feature::tree_centroid:
+				out_treebank_file
+					<< centroid_of_tree.first << m_separator
+					<< centroid_of_tree.second;
+				break;
+
+			case treebank_feature::tree_type:
+				output_tree_type_values(fT, out_treebank_file);
+				break;
+
+			case treebank_feature::syntactic_dependency_structure_class:
+				output_syndepstruct_type_values(rT, out_treebank_file);
+				break;
+
+			case treebank_feature::__last_value:
+				break;
+			}
 		}
 	}
-	out_lang_file << "\n";
+
+	out_treebank_file << "\n";
 }
 
 } // -- namespace io

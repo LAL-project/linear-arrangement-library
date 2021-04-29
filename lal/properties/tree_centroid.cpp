@@ -52,14 +52,14 @@ using namespace std;
 namespace lal {
 namespace properties {
 
-pair<node, node> get_centroid(const graphs::rooted_tree& t) {
+pair<node, node> tree_centroid(const graphs::rooted_tree& t) {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 	return internal::retrieve_centroid(t);
 }
 
-pair<node, node> get_centroid(const graphs::free_tree& t) {
+pair<node, node> tree_centroid(const graphs::free_tree& t) {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

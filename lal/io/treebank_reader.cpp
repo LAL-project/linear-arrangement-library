@@ -42,6 +42,7 @@
 #include <lal/io/treebank_reader.hpp>
 
 // C++ includes
+#include <iostream>
 #include <sstream>
 using namespace std;
 
@@ -75,17 +76,32 @@ treebank_error treebank_reader::next_tree() noexcept {
 	getline(m_treebank, m_file_line);
 	if (m_file_line.length() == 1) {
 		// line is probably empty...
-		if (not ('0' <= m_file_line[0] and m_file_line[0] <= '9')) {
-			// line is certainly empty
+		const bool is_digit = '0' <= m_file_line[0] and m_file_line[0] <= '9';
+		const bool is_eol = m_file_line[0] == '\n';
+		if (not is_digit or is_eol) {
+			// we consider the line to be empty (either with an endline or
+			// any other non-numeric character)
 			return treebank_error::empty_line_found;
 		}
+	}
+	else if (m_file_line.length() == 0) {
+		// this is an actual empty line!
+		return treebank_error::empty_line_found;
 	}
 
 	// construct the current head vector
 	{
 	stringstream ss(m_file_line);
+	size_t count = 0;
 	node k;
-	while (ss >> k) { m_current_head_vector.push_back(k); }
+	while (ss >> k) {
+		m_current_head_vector.push_back(k);
+		++count;
+	}
+	if (count == 0) {
+		// another actual empty line...
+		return treebank_error::empty_line_found;
+	}
 	}
 
 	// for statistics

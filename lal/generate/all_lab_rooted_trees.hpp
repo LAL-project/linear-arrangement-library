@@ -44,13 +44,13 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive labelled rooted tree generator.
+ * @brief Exhaustive enumeration of labelled rooted trees.
  *
  * This class enumerates all labelled rooted trees of a given number of vertices.
  * It is based on the labelled free trees generator (see @ref all_lab_free_trees).
@@ -65,7 +65,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_lab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+class all_lab_rooted_trees : public tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 

@@ -27,14 +27,14 @@ namespace generate {
  */
 template<
 	class T,
-	bool is_free = std::is_base_of_v<T, graphs::free_tree>,
+	bool is_free = std::is_base_of_v<graphs::free_tree, T>,
 	std::enable_if_t<
 		std::is_base_of_v<graphs::free_tree, T> ||
 		std::is_base_of_v<graphs::rooted_tree, T>,
 		bool
 	> = true
 >
-class tree_gen {
+class tree_generator {
 public:
 	/* CONSTRUCTORS */
 
@@ -42,21 +42,21 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes
 	 */
-	tree_gen(uint32_t n) noexcept : m_n(n) { }
+	tree_generator(uint32_t n) noexcept : m_n(n) { }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen(const tree_gen& Gen) = default;
+	tree_generator(const tree_generator& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen(tree_gen&& Gen) = default;
+	tree_generator(tree_generator&& Gen) = default;
 #endif
 	/// Default destructor.
-	virtual ~tree_gen() = default;
+	virtual ~tree_generator() = default;
 
 	/* OPERATORS */
 
@@ -65,12 +65,12 @@ public:
 	 * @brief Default copy assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen& operator= (const tree_gen& Gen) = default;
+	tree_generator& operator= (const tree_generator& Gen) = default;
 	/**
 	 * @brief Default move assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_gen& operator= (tree_gen&& Gen) = default;
+	tree_generator& operator= (tree_generator&& Gen) = default;
 #endif
 	/* GETTERS */
 
@@ -83,6 +83,7 @@ public:
 	 * - @ref set_calculate_size_subtrees
 	 * - @ref set_calculate_tree_type
 	 */
+	inline
 	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
 	get_tree() noexcept
 	{
@@ -116,14 +117,14 @@ public:
 	 * @brief Should trees be normalised?
 	 * @param v Boolean value.
 	 */
-	void set_normalise_tree(bool v) noexcept
+	inline void set_normalise_tree(bool v) noexcept
 	{ m_normalise_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(bool v) noexcept
+	inline void set_calculate_size_subtrees(bool v) noexcept
 	{ m_calculate_size_subtrees = v; }
 
 	/**
@@ -132,7 +133,7 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(bool v) noexcept
+	inline void set_calculate_tree_type(bool v) noexcept
 	{ m_calculate_tree_type = v; }
 
 protected:

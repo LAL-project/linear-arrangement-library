@@ -59,7 +59,7 @@ namespace io {
  * @brief Automatic processing of treebank files.
  *
  * This class, the objects of which will be referred to as the "processors",
- * has the goal to ease the processing a whole treebank dataset and produce
+ * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
  * @ref lal::io::treebank_feature for details on the features available.
  *
@@ -88,26 +88,25 @@ namespace io {
  * returns a value of the enumeration @ref treebank_error.
  *
  * The usage of this class is a lot simpler than that of class
- * @ref treebank_dataset_reader. For example:
+ * @ref treebank_collection_reader. For example:
  * @code
  *		treebank_processor tbproc;
  *		// initialise the processor without features (remmeber to check for errors)
- *		tbproc.init(treebank_input_file, result_filename, false, "Book_1");
- *		tbproc.add_feature(treebank_processor::tree_feature::C);
- *		tbproc.add_feature(treebank_processor::tree_feature::D_var);
+ *		tbproc.init(treebank_input_file, result_filename, "Book_1");
+ *		tbproc.add_feature(treebank_processor::tree_feature::num_crossings);
+ *		tbproc.add_feature(treebank_processor::tree_feature::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_processor : public process_treebank_base {
+class treebank_processor : public __process_treebank_base {
 public:
-	// PROCESS THE TREEBANK DATASET
+	// PROCESS THE TREEBANK collection
 
 	/**
-	 * @brief Initialise the processor with a new dataset.
+	 * @brief Initialise the processor with a new collection.
 	 * @param treebank_input_file File listing all the treebanks.
 	 * @param output_file File where the results are to be stored.
-	 * @param all_features Should the feature list contain all possible features?
 	 * @param treebank_id A nickname for this treebank (for example, an ISO code).
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
@@ -116,7 +115,6 @@ public:
 	treebank_error init(
 		const std::string& treebank_input_file,
 		const std::string& output_file,
-		bool all_features,
 		const std::string& treebank_id = ""
 	)
 	noexcept;
@@ -135,20 +133,45 @@ public:
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::no_features
 	 * - @ref lal::io::treebank_error::output_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::empty_line_found
 	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
-	 * output_file_could_not_be_opened
 	 * @pre Initialisation did not return any errors.
 	 */
 	treebank_error process() noexcept;
 
 private:
-	/**
-	 * @brief Process a single tree in a treebank.
-	 *
-	 */
+	/// Process a single tree in a treebank.
 	template<class TREE, class OUT_STREAM>
-	void process_tree(const TREE& rT, OUT_STREAM& out_lab_file) const;
+	void process_tree
+	(const TREE& rT, OUT_STREAM& out_lab_file)
+	const noexcept;
+
+	// HEADER
+
+	/// Output the header for the tree types
+	template<class OUT_STREAM>
+	void output_tree_type_header
+	(OUT_STREAM& out_lab_file)
+	const noexcept;
+
+	/// Output the header for the tree types
+	template<class OUT_STREAM>
+	void output_syndepstruct_type_header
+	(OUT_STREAM& out_lab_file)
+	const noexcept;
+
+	// VALUES
+
+	/// Output the values for the tree types
+	template<class TREE_TYPE, class OUT_STREAM>
+	void output_tree_type_values
+	(TREE_TYPE& t, OUT_STREAM& out_lab_file)
+	const noexcept;
+
+	/// Output the values for the syntactic dependency tree types
+	template<class TREE_TYPE, class OUT_STREAM>
+	void output_syndepstruct_type_values
+	(const TREE_TYPE& t, OUT_STREAM& out_lab_file)
+	const noexcept;
 
 private:
 	/// File containing the list of languages and their treebanks.
@@ -158,6 +181,32 @@ private:
 	/// Treebank identifier.
 	std::string m_treebank_id = "";
 };
+
+/**
+ * @brief Automatically process a treebank.
+ *
+ * This function is an utility to process easily a single treebank file.
+ * This function uses the class @ref lal::io::treebank_processor in order to
+ * process such a file. The default values of the processor are used, i.e.,
+ * all features available in @ref lal::io::treebank_feature are computed.
+ * @param treebank_file The treebank file name.
+ * @param output_file The output file name.
+ * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ */
+inline
+treebank_error process_treebank(
+	const std::string& treebank_file,
+	const std::string& output_file
+)
+noexcept
+{
+	treebank_processor tbproc;
+	auto err = tbproc.init(treebank_file, output_file);
+	if (err != treebank_error::no_error) {
+		return err;
+	}
+	return tbproc.process();
+}
 
 } // -- namespace io
 } // -- namespace lal

@@ -78,7 +78,7 @@ typedef std::pair<edge,edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
 /**
- * @brief A head vector representation of a (usually rooted) tree.
+ * @brief A head vector representation of a (usually) rooted tree.
  *
  * A head vector of an @e n-vertex tree is a list of non-negative integer
  * numbers. The number at position @e i denotes the parent node of the vertex

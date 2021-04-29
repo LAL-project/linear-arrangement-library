@@ -38,28 +38,59 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
-// lal includes
-#include <lal/numeric/rational.hpp>
-#include <lal/graphs/free_tree.hpp>
-#include <lal/properties/C_rla.hpp>
+
+#pragma once
+
+// C++ includes
+#include <array>
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
+namespace internal {
 
-namespace properties {
+namespace __lal {
 
-// ------------------------------
-// TREES
-
-rational variance_C_tree_rational(const free_tree& g) {
-	return variance_C_forest_rational(g);
+template<typename T, size_t size, T v, std::size_t... I>
+std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
+	std::array<T, size> a;
+	((a[I] = v), ...);
+	return a;
 }
 
-double variance_C_tree(const free_tree& g) {
-	return variance_C_tree_rational(g).to_double();
+} // -- namespace __lal
+
+/*
+ * @brief Returns an array initialised at a given value.
+ *
+ * @param T Type of the array's elements.
+ * @param array_size Size of the array.
+ * @param value_to_fill_with The value to fill the array with.
+ */
+template<typename T, size_t array_size, T value_to_fill_with>
+std::array<T, array_size>
+make_array_with_value() {
+	return
+	__lal::make_array_with_value_impl
+	<T, array_size, value_to_fill_with>
+	(std::make_integer_sequence<size_t, array_size>{});
 }
 
-} // -- namespace properties
+namespace __lal {
+
+template<typename T, T A, T... ARGS>
+constexpr std::size_t size_arguments = 1 + size_arguments<T, ARGS...>;
+template<typename T, T A>
+constexpr std::size_t size_arguments<T,A> = 1;
+
+} // -- namespace __lal
+
+template<typename T, T... ARGS>
+constexpr std::array<T, __lal::size_arguments<T, ARGS...>>
+make_array()
+noexcept
+{
+	return std::array<T, __lal::size_arguments<T, ARGS...>>
+			{ARGS...};
+}
+
+} // -- namespace internal
 } // -- namespace lal

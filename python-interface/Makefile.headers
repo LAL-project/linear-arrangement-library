@@ -6,7 +6,7 @@ TREEBANK_ERR_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_error.hpp
 
 TREEBANK_FEATURE_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_feature.hpp
 
-TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure_type.hpp
+TREE_STR_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/syntactic_dependency_structure.hpp
 
 TREE_TYPE_DPHDRS	= $(LAL_INC_DIR)/lal/graphs/tree_type.hpp
 
@@ -48,20 +48,19 @@ GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/generate/rand_projective_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_rooted_trees.hpp \
-					  $(LAL_INC_DIR)/lal/generate/tree_gen.hpp \
+					  $(LAL_INC_DIR)/lal/generate/tree_generator.hpp \
 					  $(LAL_INC_DIR)/lal/generate.hpp
 
 IO_DPHDRS			= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/io/basic_output.hpp \
-					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
-					  $(TREEBANK_ERR_DPHDRS) \
-					  $(LAL_INC_DIR)/lal/io/process_treebank_base.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_dataset_reader.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
-					  $(LAL_INC_DIR)/lal/io/treebank_dataset_processor.hpp \
-					  $(LAL_INC_DIR)/lal/io/report_correctness.hpp \
 					  $(LAL_INC_DIR)/lal/io/check_correctness.hpp \
+					  $(LAL_INC_DIR)/lal/io/edge_list.hpp \
+					  $(LAL_INC_DIR)/lal/io/process_treebank_base.hpp \
+					  $(LAL_INC_DIR)/lal/io/report_correctness.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_collection_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_collection_reader.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_processor.hpp \
+					  $(LAL_INC_DIR)/lal/io/treebank_reader.hpp \
 					  $(LAL_INC_DIR)/lal/io.hpp
 
 ITERATORS_DPHDRS	= $(GRAPHS_DPHDRS) \
@@ -80,7 +79,7 @@ LINARR_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/dependency_flux.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/flux.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/Dmin.hpp \
-					  $(LAL_INC_DIR)/lal/linarr/headedness.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/head_initial.hpp \
 					  $(TREE_STR_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/classify_syntactic_dependency_structure.hpp \
 					  $(LAL_INC_DIR)/lal/linarr.hpp

@@ -48,6 +48,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace properties {
@@ -67,17 +68,18 @@ namespace properties {
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-numeric::rational mmt_degree_rational(const graphs::undirected_graph& g, uint32_t p);
+numeric::rational
+moment_degree_rational(const graphs::undirected_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::mmt_degree_rational for details.
+ * See @ref lal::properties::moment_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
-double mmt_degree(const graphs::undirected_graph& g, uint32_t p);
+double moment_degree(const graphs::undirected_graph& g, uint32_t p) noexcept;
 
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
@@ -94,17 +96,18 @@ double mmt_degree(const graphs::undirected_graph& g, uint32_t p);
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-numeric::rational mmt_degree_rational(const graphs::directed_graph& g, uint32_t p);
+numeric::rational
+moment_degree_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::mmt_degree_rational for details.
+ * See @ref lal::properties::moment_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
-double mmt_degree(const graphs::directed_graph& g, uint32_t p);
+double moment_degree(const graphs::directed_graph& g, uint32_t p) noexcept;
 
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
@@ -120,17 +123,18 @@ double mmt_degree(const graphs::directed_graph& g, uint32_t p);
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-numeric::rational mmt_in_degree_rational(const graphs::directed_graph& g, uint32_t p);
+numeric::rational
+moment_degree_in_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::mmt_in_degree_rational for details.
+ * See @ref lal::properties::moment_degree_in_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
-double mmt_in_degree(const graphs::directed_graph& g, uint32_t p);
+double moment_degree_in(const graphs::directed_graph& g, uint32_t p) noexcept;
 
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
@@ -146,17 +150,18 @@ double mmt_in_degree(const graphs::directed_graph& g, uint32_t p);
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
-numeric::rational mmt_out_degree_rational(const graphs::directed_graph& g, uint32_t p);
+numeric::rational
+moment_degree_out_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as an exact rational value.
  *
- * See @ref lal::properties::mmt_out_degree_rational for details.
+ * See @ref lal::properties::moment_degree_out_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point value.
  */
-double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
+double moment_degree_out(const graphs::directed_graph& g, uint32_t p)noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -168,23 +173,57 @@ double mmt_out_degree(const graphs::directed_graph& g, uint32_t p);
  *
  * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
  * are the second moment of degree about 0 (see
- * @ref lal::properties::mmt_degree_rational) of a star and linear tree respectively.
+ * @ref lal::properties::moment_degree_rational) of a star and linear tree respectively.
  *
  * See \cite Ferrer2018a for details.
- * @param g Input graph.
+ * @param t Input free tree.
  * @returns The hubiness coefficient as a rational value.
  * @pre \f$n > 3\f$.
  */
-numeric::rational hubiness_rational(const graphs::free_tree& g);
+numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept;
+
+/**
+ * @brief Computes the hubiness coefficient as an exact rational number.
+ *
+ * The hubiness coefficient is defined as.
+ *
+ * \f$h = \frac{ \langle k^2 \rangle - \langle k^2 \rangle_{linear} }
+ *				{ \langle k^2 \rangle_{star} - \langle k^2 \rangle_{linear} }\f$,
+ *
+ * where \f$\langle k^2 \rangle_{star}\f$ and \f$\langle k^2 \rangle_{linear}\f$
+ * are the second moment of degree about 0 (see
+ * @ref lal::properties::moment_degree_rational) of a star and linear tree respectively.
+ *
+ * See \cite Ferrer2018a for details.
+ * @param t Input rooted tree.
+ * @returns The hubiness coefficient as a rational value.
+ * @pre \f$n > 3\f$.
+ */
+inline
+numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept {
+	return hubiness_rational(t.to_undirected());
+}
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
  *
  * See @ref lal::properties::hubiness_rational for details.
- * @param g Input graph.
+ * @param t Input free tree.
  * @returns The hubiness coefficient as a floating point value.
  */
-double hubiness(const graphs::free_tree& g);
+double hubiness(const graphs::free_tree& t) noexcept;
+
+/**
+ * @brief Computes the hubiness coefficient as an exact rational number.
+ *
+ * See @ref lal::properties::hubiness_rational for details.
+ * @param t Input rooted tree.
+ * @returns The hubiness coefficient as a floating point value.
+ */
+inline
+double hubiness(const graphs::rooted_tree& t) noexcept {
+	return hubiness(t.to_undirected());
+}
 
 } // -- namespace properties
 } // -- namespace lal

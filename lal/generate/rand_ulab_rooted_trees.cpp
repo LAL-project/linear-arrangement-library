@@ -65,7 +65,7 @@ namespace generate {
 __rand_ulab_rooted_trees::__rand_ulab_rooted_trees
 (uint32_t _n, uint32_t seed) noexcept
 	: m_n(_n),
-	  m_tree(m_n)
+	  m_head_vector(m_n)
 {
 	init_rn();
 	// use '__rand_ulab_rooted_trees::' because another class
@@ -89,7 +89,7 @@ rooted_tree __rand_ulab_rooted_trees::get_tree() noexcept {
 	for (node u = 1; u < m_n; ++u) {
 		// in order to construct an arborescence
 		// orient edges away from the root (node 0).
-		rT.add_edge_bulk(m_tree[u], u);
+		rT.add_edge_bulk(m_head_vector[u], u);
 	}
 	rT.finish_bulk_add(false, false);
 	rT.set_root(0);
@@ -133,7 +133,7 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 	if (n == 1) {
 		// The new tree has a single node, to be stored in 'nt'.
 		// This node has to point to root of the last tree that was generated.
-		m_tree[nt] = lr;
+		m_head_vector[nt] = lr;
 
 		// The returned indices are:
 		//    nt: the root of the last tree generated is placed at 'nt'
@@ -144,11 +144,11 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 	if (n == 2) {
 		// The new tree has two nodes.
 		// The root, placed at 'nt', points to root of the last tree generated.
-		m_tree[nt] = lr;
+		m_head_vector[nt] = lr;
 
 		// The second node, placed at 'nt+1', points to this tree's root,
 		// placed at 'nt'.
-		m_tree[nt + 1] = nt;
+		m_head_vector[nt + 1] = nt;
 		// The returned indices are:
 		//    nt: the root of the last tree generated is placed at 'nt'
 		//    nt+1: the place where to store the next tree that will be generated
@@ -187,7 +187,7 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 		// Each copy of T'' is a child of T'.
 		// Therefore, the root of each copy of T''
 		// must be connected to the root of T'.
-		m_tree[nt] = root_Tp;
+		m_head_vector[nt] = root_Tp;
 		// make a copy of T''
 		for (uint32_t v = nt + 1; v < nt + d; ++v) {
 			// 'v - c*d' is the position of 'v' relative to
@@ -196,7 +196,7 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 			// 'TREE[v - c*d] - root_Tpp' is the increment with
 			// respect to the new root ('nt') so that the
 			// node in 'v' eventually connects with 'nt'.
-			m_tree[v] = nt + m_tree[v - c*d] - root_Tpp;
+			m_head_vector[v] = nt + m_head_vector[v - c*d] - root_Tpp;
 		}
 		nt += d;
 	}

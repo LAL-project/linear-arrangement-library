@@ -43,14 +43,14 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/generate/tree_gen.hpp>
+#include <lal/generate/tree_generator.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive unlabelled rooted tree generator.
+ * @brief Exhaustive enumeration of unlabelled rooted trees.
  *
  * Generates all the unlabelled rooted trees of a given number of nodes. The
  * algorithm implemented can be found in \cite Beyer1980a. The definition of
@@ -82,7 +82,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_ulab_rooted_trees : public tree_gen<graphs::rooted_tree> {
+class all_ulab_rooted_trees : public tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 

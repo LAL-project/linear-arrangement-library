@@ -51,6 +51,7 @@ using namespace std;
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
 #include <lal/internal/data_array.hpp>
+#include <lal/graphs/output.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
@@ -104,24 +105,24 @@ inline uint32_t __compute_C_ladder(
 				++L1[q];
 			}*/
 			C += to_uint32(bn[v])*(S - L1[q]);
-			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
-			}
-
 			L1[q] += to_uint32(bn[v]);
 			// --
+
+			if constexpr (decide_upper_bound) {
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
+			}
 
 			bn[v] = 0;
 		}
 
 		L1[p] = 0;
 	}
-	if constexpr (decide_upper_bound) {
-		return DECIDED_C_LE;
-	}
-	else {
-		return C;
-	}
+
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
+	return C;
 }
 
 // =============================================================================
@@ -198,9 +199,7 @@ vector<uint32_t> n_C_ladder(
 	}
 
 	data_array<char> boolean_neighborhood(n, 0);
-
-	const uint32_t n_elems = n + n;
-	data_array<uint32_t> all_memory(n_elems, 0);
+	data_array<uint32_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -262,9 +261,7 @@ inline uint32_t __call_C_ladder_is_lesseq_than(
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n, 0);
-
-	const uint32_t n_elems = n + n;
-	data_array<uint32_t> all_memory(n_elems, 0);
+	data_array<uint32_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -319,9 +316,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	}
 
 	data_array<char> boolean_neighborhood(n, 0);
-
-	const uint32_t n_elems = n + n;
-	data_array<uint32_t> all_memory(n_elems, 0);
+	data_array<uint32_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -340,7 +335,10 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 		cs[i] = __compute_C_ladder<G,true>
 				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bound);
 
-		boolean_neighborhood.fill(0);
+		for (uint32_t z = 0; z < n; ++z) {
+			L1[z] = 0;
+			boolean_neighborhood[z] = 0;
+		}
 		L1[n - 1] = 0;
 	}
 
@@ -387,9 +385,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	}
 
 	data_array<char> boolean_neighborhood(n, 0);
-
-	const uint32_t n_elems = n + n;
-	data_array<uint32_t> all_memory(n_elems, 0);
+	data_array<uint32_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
@@ -405,10 +401,15 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 #endif
 
 		// compute C
+		boolean_neighborhood.fill(0);
+
 		cs[i] = __compute_C_ladder<G,true>
 				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bounds[i]);
 
-		boolean_neighborhood.fill(0);
+		for (uint32_t z = 0; z < n; ++z) {
+			L1[z] = 0;
+			boolean_neighborhood[z] = 0;
+		}
 		L1[n - 1] = 0;
 	}
 

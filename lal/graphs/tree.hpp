@@ -205,7 +205,7 @@ public:
 	 * @param tt Type of tree (see @ref lal::graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
-	inline bool is_of_type(const tree_type& tt) const noexcept {
+	inline bool is_of_tree_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
@@ -227,7 +227,7 @@ public:
 	 * @returns True or false depending on whether the tree type was calculated
 	 * or not.
 	 */
-	inline bool is_type_valid() const noexcept { return m_is_type_valid; }
+	inline bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
 
 	/**
 	 * @brief Returns the list of types as a list of strings.
@@ -256,9 +256,9 @@ protected:
 	 *
 	 * This attribute keeps track of whether or not the function
 	 * @ref calculate_tree_type should be called before querying the type of
-	 * this tree via function @ref is_of_type.
+	 * this tree via function @ref is_of_tree_type.
 	 */
-	bool m_is_type_valid = false;
+	bool m_is_tree_type_valid = false;
 
 protected:
 	/**

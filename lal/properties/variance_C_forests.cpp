@@ -68,6 +68,7 @@ inline void compute_data_forest
 	bigint& Phi_1, bigint& Phi_2,
 	bigint& Lambda_1, bigint& Lambda_2
 )
+noexcept
 {
 	// -----------------------------------------
 	// auxiliary memory and additional variables
@@ -135,7 +136,7 @@ inline void compute_data_forest
 	Phi_2 /= 2;
 }
 
-rational variance_C_forest_rational(const undirected_graph& g) {
+rational var_num_crossings_forest_rational(const undirected_graph& g) noexcept {
 	const bigint n = g.get_num_nodes();
 	const bigint m = g.get_num_edges();
 
@@ -184,10 +185,6 @@ rational variance_C_forest_rational(const undirected_graph& g) {
 	J.set_ui(Phi_2);				V += rational(1,180)*J;
 	J.set_ui(Phi_1);				V -= rational(1,90)*J;
 	return V;
-}
-
-double variance_C_forest(const undirected_graph& g) {
-	return variance_C_forest_rational(g).to_double();
 }
 
 } // -- namespace properties

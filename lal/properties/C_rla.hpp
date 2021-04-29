@@ -61,15 +61,20 @@ namespace properties {
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a rational value.
  */
-numeric::rational expectation_C_rational(const graphs::undirected_graph& g);
+numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g)
+noexcept;
 /**
  * @brief Computes the the expectation of the first moment of C.
  *
- * See @ref lal::properties::expectation_C_rational for details.
+ * See @ref lal::properties::exp_num_crossings_rational for details.
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a floating point value.
  */
-double expectation_C(const graphs::undirected_graph& g);
+inline
+double exp_num_crossings(const graphs::undirected_graph& g) noexcept
+{
+	return exp_num_crossings_rational(g).to_double();
+}
 
 /* ----------------------- */
 /* VARIANCE OF C: V_rla[C] */
@@ -93,17 +98,22 @@ double expectation_C(const graphs::undirected_graph& g);
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre Method @ref lal::graphs::graph::is_normalised() must evaluate to true.
  */
-numeric::rational variance_C_rational(const graphs::undirected_graph& g, bool reuse = true);
+numeric::rational var_num_crossings_rational
+(const graphs::undirected_graph& g, bool reuse = true) noexcept;
 /**
  * @brief Computes the variance of the number of crossings of a graph.
  *
- * See @ref lal::properties::variance_C_rational for details.
+ * See @ref lal::properties::var_num_crossings_rational for details.
  * @param g Input graph.
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rationafloating point value.
  */
-double variance_C(const graphs::undirected_graph& g, bool reuse = true);
+inline
+double var_num_crossings(const graphs::undirected_graph& g, bool reuse = true) noexcept
+{
+	return var_num_crossings_rational(g, reuse).to_double();
+}
 
 // --------------------
 // VARIANCE FOR FORESTS
@@ -120,15 +130,20 @@ double variance_C(const graphs::undirected_graph& g, bool reuse = true);
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre The input graph @e g is a forest.
  */
-numeric::rational variance_C_forest_rational(const graphs::undirected_graph& g);
+numeric::rational var_num_crossings_forest_rational(const graphs::undirected_graph& g)
+noexcept;
 /**
  * @brief Computes the variance of the number of crossings of a forest.
  *
- * See @ref lal::properties::variance_C_forest_rational for details.
+ * See @ref lal::properties::var_num_crossings_forest_rational for details.
  * @param g Input forest.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a floating point value.
  */
-double variance_C_forest(const graphs::undirected_graph& g);
+inline
+double var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
+{
+	return var_num_crossings_forest_rational(g).to_double();
+}
 
 // ------------------
 // VARIANCE FOR TREES
@@ -142,15 +157,24 @@ double variance_C_forest(const graphs::undirected_graph& g);
  * @param g Input tree.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-numeric::rational variance_C_tree_rational(const graphs::free_tree& g);
+inline
+numeric::rational var_num_crossings_tree_rational(const graphs::free_tree& g)
+noexcept
+{
+	return var_num_crossings_forest_rational(g);
+}
 /**
  * @brief Computes the variance of the number of crossings of a tree.
  *
- * See @ref lal::properties::variance_C_tree_rational for details.
+ * See @ref lal::properties::var_num_crossings_tree_rational for details.
  * @param g Input tree.
  * @returns The return value is a floating point value.
  */
-double variance_C_tree(const graphs::free_tree& g);
+inline
+double var_num_crossings_tree(const graphs::free_tree& g) noexcept
+{
+	return var_num_crossings_forest_rational(g).to_double();
+}
 
 } // -- namespace properties
 } // -- namespace lal

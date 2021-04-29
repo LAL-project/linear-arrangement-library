@@ -101,25 +101,25 @@ private:
 };
 
 /**
- * @brief Report on a treebank dataset.
+ * @brief Report on a treebank collection.
  *
  * Stores a simple error message and the line within the file where it is found
  * (see @ref lal::io::report_treebank_file), and the name of the treebank
  * where the error is found and the line within the main file where the treebank
  * was read at.
  */
-class report_treebank_dataset {
+class report_treebank_collection {
 public:
 	/// Default constructor.
-	report_treebank_dataset() = default;
+	report_treebank_collection() = default;
 	/// Default copy constructor.
-	report_treebank_dataset(const report_treebank_dataset&) = default;
+	report_treebank_collection(const report_treebank_collection&) = default;
 #ifndef SWIG
 	/// Default move constructor.
-	report_treebank_dataset(report_treebank_dataset&&) = default;
+	report_treebank_collection(report_treebank_collection&&) = default;
 #endif
 	/// Default destructor
-	~report_treebank_dataset() = default;
+	~report_treebank_collection() = default;
 
 	/**
 	 * @brief Constructor with data
@@ -128,7 +128,7 @@ public:
 	 * @param treebank_line_number Line within the treebank file.
 	 * @param error_message Error message.
 	 */
-	report_treebank_dataset(
+	report_treebank_collection(
 		const std::string& treebank_file_path,
 		uint32_t main_file_line,
 		uint32_t treebank_line_number,
@@ -142,9 +142,9 @@ public:
 
 #ifndef SWIG
 	/// Default copy assignment.
-	report_treebank_dataset& operator= (const report_treebank_dataset&) = default;
+	report_treebank_collection& operator= (const report_treebank_collection&) = default;
 	/// Default move assignment.
-	report_treebank_dataset& operator= (report_treebank_dataset&&) = default;
+	report_treebank_collection& operator= (report_treebank_collection&&) = default;
 #endif
 
 	/// Returns the line number within the treebank file where the error is found.
