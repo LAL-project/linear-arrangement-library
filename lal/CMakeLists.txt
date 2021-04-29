@@ -77,19 +77,18 @@ endif()
 # **********************************************************************
 
 # project's version
-set(LAL_MAJOR 21)
-set(LAL_MINOR 03)
+set(LAL_MAJOR 21.04)
 set(LAL_PATCH 00)
 
 # project declaration
-project(LAL VERSION "${LAL_MAJOR}.${LAL_MINOR}.${LAL_PATCH}")
+project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
 project(LAL DESCRIPTION "Linear Arrangement Library")
 
 # declare library
 add_library(${TargetStringLibrary} SHARED "")
 
 # define library's properties
-set_target_properties(${TargetStringLibrary} PROPERTIES VERSION "${LAL_MAJOR}.${LAL_MINOR}.${LAL_PATCH}")
+set_target_properties(${TargetStringLibrary} PROPERTIES VERSION "${LAL_MAJOR}.${LAL_PATCH}")
 set_target_properties(${TargetStringLibrary} PROPERTIES SOVERSION 1)
 set_target_properties(${TargetStringLibrary} PROPERTIES LINKER_LANGUAGE CXX)
 
