@@ -41,5 +41,7 @@
 
 #pragma once
 
+// iterator on the set of edges
 #include <lal/iterators/E_iterator.hpp>
+// iterator on the set of pairs of independent edges
 #include <lal/iterators/Q_iterator.hpp>

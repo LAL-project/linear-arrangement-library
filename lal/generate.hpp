@@ -53,3 +53,5 @@
 
 #include <lal/generate/all_projective_arrangements.hpp>
 #include <lal/generate/rand_projective_arrangements.hpp>
+
+#include <lal/generate/tree_generator_type.hpp>

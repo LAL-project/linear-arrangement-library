@@ -274,21 +274,21 @@ target_sources(
 		linarr/algorithms_C.hpp
 		linarr/algorithms_Dmin.hpp
 		linarr/C.hpp
+		linarr/classify_syntactic_dependency_structure.hpp
 		linarr/D.hpp
-		linarr/Dmin.hpp
 		linarr/dependency_flux.hpp
+		linarr/Dmin.hpp
 		linarr/flux.hpp
 		linarr/head_initial.hpp
 		linarr/syntactic_dependency_structure.hpp
-		linarr/classify_syntactic_dependency_structure.hpp
 		# -- sources
 		linarr/C.cpp
-		linarr/predicted_C.cpp
-		linarr/D.cpp
-		linarr/flux.cpp
-		linarr/Dmin.cpp
-		linarr/head_initial.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
+		linarr/D.cpp
+		linarr/Dmin.cpp
+		linarr/flux.cpp
+		linarr/head_initial.cpp
+		linarr/predicted_C.cpp
 
 		# numeric namespace
 		# -- headers
@@ -418,13 +418,13 @@ set(LIBLAL_LINARR_HEADER
 	linarr/algorithms_C.hpp
 	linarr/algorithms_Dmin.hpp
 	linarr/C.hpp
+	linarr/classify_syntactic_dependency_structure.hpp
 	linarr/D.hpp
-	linarr/Dmin.hpp
 	linarr/dependency_flux.hpp
+	linarr/Dmin.hpp
 	linarr/flux.hpp
 	linarr/head_initial.hpp
 	linarr/syntactic_dependency_structure.hpp
-	linarr/classify_syntactic_dependency_structure.hpp
 )
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp
