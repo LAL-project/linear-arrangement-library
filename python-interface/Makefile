@@ -90,7 +90,7 @@ ifeq ($(OS),Windows_NT)
 	MAJOR_PY_LINK	= -lpython3
 	MINOR_PY_LINK	= -lpython3$(MINOR_VERSION_PYTHON)
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= C:/programming/python_lib
+	LAL_PY_DEST		= C:/programming/python_lib_3.$(MINOR_VERSION_PYTHON)
 else
 	# --------------------
 	# FOR LINUX USERS ONLY
