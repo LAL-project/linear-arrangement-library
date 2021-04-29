@@ -29,7 +29,7 @@ else
 	####################################################################
 	
 	echo -e "\e[1;1;32mParsing XML files with 'doxy2swig.py' to generate some Python documentation\e[0m"
-	python3 doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/modules/documentation.i | sed "s/^/    /g"
+	python doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/modules/documentation.i | sed "s/^/    /g"
 	
 	####################################################################
 	
