@@ -53,19 +53,17 @@ namespace lal {
 namespace iterators {
 
 /**
- * @brief Iterator over the set of edges.
+ * @brief Iterator over the set of edges of a graph.
  *
- * This class is used to easily iterate over the edges of a graph.
+ * This class is used to easily iterate over the edges of a graph \f$E\f$.
+ * For undirected graphs, the edge returned is an edge \f$(u,v)\f$ so that the
+ * inequality \f$u < v\f$ always holds. For directed graphs, the edge returned
+ * always has left-to-right orientation, therefore said inequality need not
+ * always hold.
  *
- * This class iterates over the edges of a graph. For undirected graphs, the
- * edge returned is an edge \f$(u,v)\f$ so that the inequality \f$u < v\f$
- * always holds. For directed graphs, this is not always true since the edge
- * returned always has left-to-right orientation.
+ * This class has to be initialised with a constant reference to a graph.
  *
- * Bear in mind, however, that this class does not modify in any way the
- * graph it is initialised with.
- *
- * An example of usage of this class is the following:
+ * The usage of this class is the following:
  * @code
  *		E_iterator it(g); // g is a graph
  *		while (it.has_next()) {

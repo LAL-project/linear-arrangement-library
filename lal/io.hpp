@@ -45,6 +45,7 @@
  * other files grouping the i/o functions.
  */
 
+// output of graphs to some std::ostream
 #include <lal/io/basic_output.hpp>
 
 // read formatted files

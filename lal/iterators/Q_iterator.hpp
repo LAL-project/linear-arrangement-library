@@ -56,7 +56,7 @@ namespace lal {
 namespace iterators {
 
 /**
- * @brief Iterator over the set \f$Q\f$ of a graph.
+ * @brief Iterator over the set of pairs of independent edges of a graph.
  *
  * This class is used to easily iterate over the elements of the set \f$Q\f$
  * of a graph.
@@ -66,10 +66,9 @@ namespace iterators {
  * so that the inequality \f$u < v\f$ always holds. For directed graphs, this
  * is not always true, since the edges returned always has left-to-right direction.
  *
- * Bear in mind, however, that this class does not modify in any way the
- * graph it is initialised with.
+ * This class has to be initialised with a constant reference to a graph.
  *
- * An example of usage of this class is the following:
+ * The usage of this class is the following:
  * @code
  *		Q_iterator it(g); // g is a graph
  *		while (it.has_next()) {
