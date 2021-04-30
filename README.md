@@ -55,4 +55,4 @@ For now we do not have any formal publication of this library, so we do not have
 
 The C++ documentation can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
 
-	$ doxygen doxyconfig/doxyfile
+	$ ./make_docs.sh c++
