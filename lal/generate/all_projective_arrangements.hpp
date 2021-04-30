@@ -52,7 +52,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive enumeration of projective arrangements of a rooted tree.
+ * @brief Exhaustive enumeration of projective arrangements of a labeled rooted tree.
  *
  * Generates all projective arrangements of a given rooted tree.
  *

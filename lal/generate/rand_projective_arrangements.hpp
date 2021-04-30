@@ -51,7 +51,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Uniformly random generation of projective arrangements of a rooted tree.
+ * @brief Uniformly random generation of projective arrangements of a labeled rooted tree.
  *
  * A projective arrangement of a directed rooted tree is one in which the
  * root is not covered by any of the tree's edges and there are no edge
