@@ -10,20 +10,20 @@ namespace generate {
 /**
  * @brief Base class for tree generators
  *
- * This class is simply a helper for preprocessing a generated tree. The preprocessing
- * applied to the tree depends on whether said tree is a rooted tree or a free
- * tree.
+ * This class is simply a helper for postprocessing a generated tree. The
+ * postprocessing actions applied to the tree depends on whether said tree is a
+ * rooted tree or a free tree.
  *
- * In the following list you will find all the attributes that govern the preprocessing.
- * Those marked with an 'r', are only for rooted trees; those marked with an 'f'
- * are only for free trees. When marked with both, the preprocessing is applied
- * to both types trees. The list of said attributes is:
+ * The list of methods that govern postprocessing actions are:
  * - @ref set_normalise_tree (rooted and free trees)
  * - @ref set_calculate_size_subtrees (rooted trees)
  * - @ref set_calculate_tree_type (rooted and free trees)
  *
- * @param T Type of tree.
- * @param is_free This tells whether the type corresponds to a free tree or not.
+ * Users can deactivate all postprocessing actions with
+ * @ref deactivate_all_postprocessing_actions and activate all of them with
+ * @ref activate_all_postprocessing_actions.
+ *
+ * @tparam T Type of tree.
  */
 template<
 	class T,
@@ -109,6 +109,32 @@ public:
 			}
 		}
 		return t;
+	}
+
+	/* MODIFIERS */
+
+	/**
+	 * @brief Activates all postprocessing actions.
+	 *
+	 * The full list of postprocessing actions can be found in the documentation
+	 * of this class.
+	 */
+	inline void activate_all_postprocessing_actions() noexcept {
+		set_normalise_tree(true);
+		set_calculate_size_subtrees(true);
+		set_calculate_tree_type(true);
+	}
+
+	/**
+	 * @brief Deactivates all postprocessing actions.
+	 *
+	 * The full list of postprocessing actions can be found in the documentation
+	 * of this class.
+	 */
+	inline void deactivate_all_postprocessing_actions() noexcept {
+		set_normalise_tree(false);
+		set_calculate_size_subtrees(false);
+		set_calculate_tree_type(false);
 	}
 
 	/* SETTERS */
