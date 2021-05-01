@@ -55,6 +55,9 @@ namespace linarr {
  * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
  * yielding this value. Such optimal value of \f$D\f$ depends on the choice
  * of algorithm for its calculation.
+ *
+ * See the description of the values in @ref lal::linarr::algorithms_Dmin for
+ * details on the algorithm implemented and to see references to the papers.
  * @param t Input free tree.
  * @param a The algorithm to be chosen.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.

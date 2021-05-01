@@ -127,8 +127,8 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
 	// convert M into a directed adjacency matrix
 	make_directed(t, c, c, M);
 
-	// construct the optimal intervals using Gildea and Temperley's
-	// algorithm to calculate an optimal projective arrangement.
+	// construct the optimal interval by calculating the optimal
+	// projective arrangement
 	linear_arrangement arr(n);
 	const uint32_t D =
 	Dmin_Pr__optimal_interval_of(n, M, c, arr);
