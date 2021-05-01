@@ -91,27 +91,6 @@ inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths(
 }
 
 /**
- * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
- * constraint.
- *
- * Computes an optimal projective linear arrangement for rooted trees. A
- * projective linear arrangement is an arrangement in which there are no edge
- * crossings and the root is not covered by any edge.
- *
- * This function implements the algorithm in \cite Alemany2021a. A non-linear
- * time algorithm to solve this problem was oulined in \cite Gildea2007a.
- *
- * @param t Input rooted tree.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
- * @pre The input rooted tree has to have the size of its subtrees calculated
- * (see @ref lal::graphs::rooted_tree::calculate_size_subtrees and
- * @ref lal::graphs::rooted_tree::are_size_subtrees_valid).
- */
-std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_projective
-(const graphs::rooted_tree& t) noexcept;
-
-/**
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
  *
@@ -147,6 +126,24 @@ std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
 inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
 (const graphs::rooted_tree& t) noexcept
 { return min_sum_edge_lengths_planar(t.to_undirected()); }
+
+/**
+ * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
+ * constraint.
+ *
+ * Computes an optimal projective linear arrangement for rooted trees. A
+ * projective linear arrangement is an arrangement in which there are no edge
+ * crossings and the root is not covered by any edge.
+ *
+ * This function implements the algorithm in \cite Alemany2021a. A non-linear
+ * time algorithm to solve this problem was oulined in \cite Gildea2007a.
+ *
+ * @param t Input rooted tree.
+ * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_projective
+(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal
