@@ -66,6 +66,7 @@ namespace internal {
 inline void make_directed(
 	const free_tree& t, node pu, node u, vector<vector<pair<node,uint32_t>>>& M
 )
+noexcept
 {
 	if (pu == u) {
 		for (node v : t.get_neighbours(u)) {
@@ -97,7 +98,7 @@ inline void make_directed(
 	}
 }
 
-pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) {
+pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

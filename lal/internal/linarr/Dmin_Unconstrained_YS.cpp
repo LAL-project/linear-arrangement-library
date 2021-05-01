@@ -72,6 +72,7 @@ uint32_t calculate_p_alpha(
 	const uint32_t n, const ordering& ord,
 	uint32_t& s_0, uint32_t& s_1
 )
+noexcept
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
@@ -165,6 +166,7 @@ void calculate_mla(
 	node root_or_anchor, position start, position end,
 	linear_arrangement& mla, uint32_t& cost
 )
+noexcept
 {
 	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
@@ -335,7 +337,9 @@ void calculate_mla(
 
 } // -- namespace dmin_shiloach
 
-pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
+pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
+noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
@@ -345,7 +349,8 @@ pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t) {
 
 	free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
-	dmin_Shiloach::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
+	dmin_Shiloach::calculate_mla<NO_ANCHOR>
+		(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
 
 	return make_pair(c, arrangement);
 }

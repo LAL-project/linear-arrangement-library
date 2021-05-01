@@ -60,7 +60,7 @@ namespace internal {
  * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
-(const graphs::free_tree& t);
+(const graphs::free_tree& t) noexcept;
 
 /*
  * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
@@ -73,7 +73,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
  * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
-(const graphs::free_tree& t);
+(const graphs::free_tree& t) noexcept;
 
 /*
  * @brief Algorithm to calculate optimal planar arrangements of free trees.
@@ -93,7 +93,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
  * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Planar
-(const graphs::free_tree& t);
+(const graphs::free_tree& t) noexcept;
 
 /*
  * @brief Algorithm to calculate optimal projective arrangements of rooted trees.
@@ -110,7 +110,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Planar
  * @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Projective
-(const graphs::rooted_tree& t);
+(const graphs::rooted_tree& t) noexcept;
 
 /*
  * t: the rooted tree.
@@ -134,7 +134,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	const std::vector<std::vector<std::pair<lal::node,uint32_t>>>& M,
 	node r,
 	linear_arrangement& arr
-);
+) noexcept;
 
 } // -- namespace internal
 } // -- namespace lal

@@ -105,6 +105,7 @@ uint32_t __Dmin_Pr__optimal_interval_of(
 	position ini, position fin,
 	linear_arrangement& arr
 )
+noexcept
 {
 #if defined DEBUG
 	assert(ini <= fin);
@@ -186,6 +187,7 @@ uint32_t Dmin_Pr__optimal_interval_of(
 	const vector<vector<pair<node,uint32_t>>>& M,
 	node r, linear_arrangement& arr
 )
+noexcept
 {
 	return
 	__Dmin_Pr__optimal_interval_of(M, r, PLACE_NONE_OF, 0, n - 1, arr);

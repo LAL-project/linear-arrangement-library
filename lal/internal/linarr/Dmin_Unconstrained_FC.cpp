@@ -100,7 +100,7 @@ int calculate_q(uint32_t n, const ordering& ord) {
 */
 
 inline
-std::optional<uint32_t> calculate_q(uint32_t n, const ordering& ord) {
+std::optional<uint32_t> calculate_q(uint32_t n, const ordering& ord) noexcept {
 #if defined DEBUG
 	assert(ord.size() > 0);
 #endif
@@ -167,7 +167,7 @@ int calculate_p(uint32_t n, const ordering& ord) {
 */
 
 inline
-std::optional<uint32_t> calculate_p(uint32_t n, const ordering& ord) {
+std::optional<uint32_t> calculate_p(uint32_t n, const ordering& ord) noexcept {
 	if (ord.size() < 2) { return {}; }
 
 	// number of subtrees (T_0, T_1, ..., T_k)
@@ -224,7 +224,7 @@ vector<uint32_t> get_P(uint32_t p, uint32_t i) {
 	return v;
 }
 
-vector<uint32_t> get_Q(uint32_t q, uint32_t i) {
+inline vector<uint32_t> get_Q(uint32_t q, uint32_t i) noexcept {
 	vector<uint32_t> v(2*q + 1);
 	uint32_t pos = to_uint32(v.size() - 1);
 	uint32_t right_pos = pos;
@@ -251,7 +251,7 @@ vector<uint32_t> get_Q(uint32_t q, uint32_t i) {
 	return v;
 }
 
-void get_ordering(const free_tree& t, node u, ordering& ord) {
+inline void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 #if defined DEBUG
@@ -297,6 +297,7 @@ void calculate_mla(
 	node one_node, position start,
 	linear_arrangement& mla, uint32_t& cost
 )
+noexcept
 {
 	vector<node> reachable(t.get_num_nodes_component(one_node - 1));
 	{
@@ -569,7 +570,9 @@ void calculate_mla(
 
 } // -- namespaec dmin_chung
 
-pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t) {
+pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
+noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
