@@ -82,7 +82,6 @@ public:
 	 * @param T Rooted tree
 	 * @pre The object @e T is a valid rooted tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
-	 * @pre The tree is normalised (see graphs::graph::is_normalised()).
 	 */
 	all_projective_arrangements(const graphs::rooted_tree& T) noexcept;
 	/**
@@ -139,9 +138,9 @@ private:
 
 private:
 	/// Initialise the interval every node of the tree, starting at @e r.
-	void initialise_intervals_tree();
+	void initialise_intervals_tree() noexcept;
 	/// Initialise the interval of node @e u.
-	void initialise_interval_node(node u);
+	void initialise_interval_node(node u) noexcept;
 };
 
 } // -- namespace generate

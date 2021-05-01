@@ -48,6 +48,7 @@ using namespace std;
 
 // lal includes
 #include <lal/generate/all_projective_arrangements.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/graphs/make_arrangement.hpp>
 
 namespace lal {
@@ -65,7 +66,6 @@ all_projective_arrangements::all_projective_arrangements
 {
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());
-	assert(m_rT.is_normalised());
 #endif
 
 	m_intervals = vector<vector<node>>(m_rT.get_num_nodes());
@@ -112,7 +112,7 @@ void all_projective_arrangements::next() {
 
 /* PRIVATE */
 
-void all_projective_arrangements::initialise_intervals_tree() {
+void all_projective_arrangements::initialise_intervals_tree() noexcept {
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		const uint32_t d = m_rT.get_out_degree(u);
 		m_intervals[u] = vector<node>(d + 1);
@@ -120,28 +120,41 @@ void all_projective_arrangements::initialise_intervals_tree() {
 	}
 }
 
-void all_projective_arrangements::initialise_interval_node(node u) {
+void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 	const neighbourhood& neighs_u = m_rT.get_out_neighbours(u);
-	vector<node>& inter_u = m_intervals[u];
+	vector<node>& interval_u = m_intervals[u];
 
-	size_t neighs_it = 0;
-	size_t inter_it = 0;
+	if (m_rT.is_normalised()) {
+		size_t neighs_it = 0;
+		size_t interval_it = 0;
 
-	while (
-		neighs_it < neighs_u.size() and inter_it < inter_u.size() and
-		neighs_u[neighs_it] < u
-	)
-	{
-		inter_u[inter_it] = neighs_u[neighs_it];
-		++neighs_it;
-		++inter_it;
+		while (
+			neighs_it < neighs_u.size() and interval_it < interval_u.size() and
+			neighs_u[neighs_it] < u
+		)
+		{
+			interval_u[interval_it] = neighs_u[neighs_it];
+			++neighs_it;
+			++interval_it;
+		}
+		interval_u[interval_it] = u;
+		++interval_it;
+		while (neighs_it < neighs_u.size() and interval_it < interval_u.size()) {
+			interval_u[interval_it] = neighs_u[neighs_it];
+			++neighs_it;
+			++interval_it;
+		}
 	}
-	inter_u[inter_it] = u;
-	++inter_it;
-	while (neighs_it < neighs_u.size() and inter_it < inter_u.size()) {
-		inter_u[inter_it] = neighs_u[neighs_it];
-		++neighs_it;
-		++inter_it;
+	else {
+		// fill the interval and then sort it
+		for (size_t i = 0; i < neighs_u.size(); ++i) {
+			interval_u[i] = neighs_u[i];
+		}
+		interval_u.back() = u;
+		// sort using bitsort
+		internal::bit_sort<node>(
+			interval_u.begin(), interval_u.end(), interval_u.size()
+		);
 	}
 }
 
