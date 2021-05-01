@@ -96,7 +96,6 @@ double exp_num_crossings(const graphs::undirected_graph& g) noexcept
  * @param reuse The algorithm will reuse computations in order to compute
  * the variance faster. Note: this might be too memory-consuming.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
- * @pre Method @ref lal::graphs::graph::is_normalised() must evaluate to true.
  */
 numeric::rational var_num_crossings_rational
 (const graphs::undirected_graph& g, bool reuse = true) noexcept;

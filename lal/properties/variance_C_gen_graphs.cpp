@@ -50,6 +50,7 @@ using namespace std;
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/data_array.hpp>
 
 typedef uint64_t bigint;
@@ -110,7 +111,7 @@ namespace properties {
  * so that we don't have to change the rational numbers used to
  * compute the variance.
  */
-template<bool reuse>
+template<bool reuse, bool is_normalised>
 void compute_data_gen_graphs
 (
 	const undirected_graph& g, const bigint& n, const bigint& m,
@@ -122,6 +123,29 @@ void compute_data_gen_graphs
 )
 noexcept
 {
+	// ----------------------------------------------------------
+	// DATA USED TO DEAL WITH THE NON-NORMALISED CASE
+
+	// this vector is used to store the sorted adjacency lists of
+	// a non-normalised graph
+	vector<neighbourhood> sorted_neighbourhoods;
+
+	// if the graph is not normalised, dump all the vector here and normalise it
+	if constexpr (not is_normalised) {
+		internal::data_array<char> mem(n, 0);
+
+		sorted_neighbourhoods.resize(n);
+		for (node u = 0; u < n; ++u) {
+			sorted_neighbourhoods[u] = g.get_neighbours(u);
+
+			internal::bit_sort_mem<node>(
+				sorted_neighbourhoods[u].begin(),
+				sorted_neighbourhoods[u].end(),
+				sorted_neighbourhoods[u].size(),
+				mem.data
+			);
+		}
+	}
 
 	// ------------------------------------------------
 	// local variables (some store precomputed data)
@@ -177,17 +201,20 @@ noexcept
 		const auto [s,t] = it.get_edge();
 
 		const bigint ks = g.get_degree(s);
-		const neighbourhood& Ns = g.get_neighbours(s);
+		const neighbourhood& Ns =
+			(is_normalised ? g.get_neighbours(s) : sorted_neighbourhoods[s]);
 
 		const bigint kt = g.get_degree(t);
-		const neighbourhood& Nt = g.get_neighbours(t);
+		const neighbourhood& Nt =
+			(is_normalised ? g.get_neighbours(t) : sorted_neighbourhoods[t]);
 
 		// for each neighbour of 's' different from 't'
 		for (node u : Ns) {
 			if (u == t) { continue; }
 
-			const neighbourhood& Nu = g.get_neighbours(u);
 			const bigint ku = g.get_degree(u);
+			const neighbourhood& Nu =
+				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
 
 			bigint common_ut = 0;
 			if constexpr (reuse) {
@@ -221,8 +248,9 @@ noexcept
 		for (node u : Nt) {
 			if (u == s) { continue; }
 
-			const neighbourhood& Nu = g.get_neighbours(u);
 			const bigint ku = g.get_degree(u);
+			const neighbourhood& Nu =
+				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
 
 			bigint common_us = 0;
 			if constexpr (reuse) {
@@ -318,10 +346,6 @@ noexcept
 }
 
 rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexcept {
-#if defined DEBUG
-	assert(g.is_normalised());
-#endif
-
 	const bigint n = g.get_num_nodes();
 	const bigint m = g.get_num_edges();
 
@@ -357,27 +381,35 @@ rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexc
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
 	bigint Lambda_2 = 0;
 
+#define parameters_of_compute_data	\
+	(								\
+		g, n, m,					\
+		Qs, Kg,						\
+		n_paths_4, n_cycles_4, paw,	\
+		n_paths_5, pair_C3_L2,		\
+		Phi_1, Phi_2,				\
+		Lambda_1, Lambda_2			\
+	)
+
 	if (reuse) {
-		compute_data_gen_graphs<true>
-		(
-			g, n, m,
-			Qs, Kg,
-			n_paths_4, n_cycles_4, paw,
-			n_paths_5, pair_C3_L2,
-			Phi_1, Phi_2,
-			Lambda_1, Lambda_2
-		);
+		if (g.is_normalised()) {
+			compute_data_gen_graphs<true, true>
+			parameters_of_compute_data;
+		}
+		else {
+			compute_data_gen_graphs<true, false>
+			parameters_of_compute_data;
+		}
 	}
 	else {
-		compute_data_gen_graphs<false>
-		(
-			g, n, m,
-			Qs, Kg,
-			n_paths_4, n_cycles_4, paw,
-			n_paths_5, pair_C3_L2,
-			Phi_1, Phi_2,
-			Lambda_1, Lambda_2
-		);
+		if (g.is_normalised()) {
+			compute_data_gen_graphs<false, true>
+			parameters_of_compute_data;
+		}
+		else {
+			compute_data_gen_graphs<false, false>
+			parameters_of_compute_data;
+		}
 	}
 
 	integer J(0);
