@@ -95,9 +95,7 @@ void all_lab_rooted_trees::init() noexcept {
 	reset();
 
 	// deactivate all postprocessing of the free tree
-	m_gen_lab_free_tree.set_calculate_size_subtrees(false);
-	m_gen_lab_free_tree.set_calculate_tree_type(false);
-	m_gen_lab_free_tree.set_normalise_tree(false);
+	m_gen_lab_free_tree.deactivate_all_postprocessing_actions();
 }
 
 } // -- namespace generate
