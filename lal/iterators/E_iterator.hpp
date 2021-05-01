@@ -119,7 +119,7 @@ public:
 	 * @post The next call to method @ref next() returns the first edge
 	 * of the graph.
 	 */
-	void reset() {
+	void reset() noexcept {
 		m_exists_next = true;
 
 		m_cur.first = 0;
@@ -188,7 +188,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const {
+	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
@@ -214,7 +214,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const {
+	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;

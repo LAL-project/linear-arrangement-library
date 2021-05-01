@@ -225,7 +225,7 @@ private:
 	}
 
 	/// Returns whether the edges share vertices or not.
-	static inline bool share_nodes(const edge_pair& st_uv) {
+	static inline bool share_nodes(const edge_pair& st_uv) noexcept {
 		const auto [s,t] = st_uv.first;
 		const auto [u,v] = st_uv.second;
 		return s == u or s == v or t == u or t == v;

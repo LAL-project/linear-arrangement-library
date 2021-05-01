@@ -107,9 +107,9 @@ void __bit_sort(It begin, It end, const T& m, char * const seen) {
  * @param size The value of std::distance(begin, end), i.e., the number of
  * elements from begin to sort, i.e., the size of the container.
  * @param seen The bit array used to sort.
- * @pre All values of @e mem must be set to false.
+ * @pre All values of @e mem must be set to 0.
  * @pre All values within [begin, end) must be unique.
- * @post All the values of @e seen are set to false.
+ * @post All the values of @e seen are set to 0.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
