@@ -81,9 +81,8 @@ uint32_t Dmin_Pr__optimal_interval_of(
  * This function implements Gildea and Temperley's algorithm published in \cite Gildea2007a.
  *
  * @param t Input rooted tree.
- * @pre The object @e t must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
- * @pre The tree must have the size of its subtrees calculated (see
- * @ref lal::graphs::rooted_tree::size_subtrees_valid).
+ * @pre The object @e t must be a valid rooted tree (see
+ * @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Projective
 (const graphs::rooted_tree& t);

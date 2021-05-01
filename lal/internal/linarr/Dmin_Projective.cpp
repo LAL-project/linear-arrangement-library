@@ -54,6 +54,7 @@ using namespace std;
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/internal/graphs/size_subtrees.hpp>
 #include <lal/internal/graphs/make_arrangement.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
@@ -193,7 +194,6 @@ uint32_t Dmin_Pr__optimal_interval_of(
 pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
-	assert(t.are_size_subtrees_valid());
 #endif
 
 	const uint32_t n = t.get_num_nodes();
@@ -207,16 +207,34 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	data_array<edge_size> L(n - 1);
 
 	{
+	const size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
+	data_array<uint32_t> size_subtrees(k, 0);
+
 	countingsort::memory_counting_sort<edge_size> memcs(n, n);
 	auto it = L.begin();
 	E_iterator<rooted_tree> Eit(t);
-	while (Eit.has_next()) {
-		Eit.next();
-		const edge e = Eit.get_edge();
-		const node v = e.second;
-		const uint32_t suv = t.get_num_nodes_subtree(v);
-		*it++ = make_pair(e, suv);
-		++memcs.count[suv];
+
+	if (t.are_size_subtrees_valid()) {
+		while (Eit.has_next()) {
+			Eit.next();
+			const edge e = Eit.get_edge();
+			const node v = e.second;
+			const uint32_t suv = t.get_num_nodes_subtree(v);
+			*it++ = make_pair(e, suv);
+			++memcs.count[suv];
+		}
+	}
+	else {
+		// fill in the size of the subtrees
+		internal::get_size_subtrees(t, t.get_root(), size_subtrees.begin());
+		while (Eit.has_next()) {
+			Eit.next();
+			const edge e = Eit.get_edge();
+			const node v = e.second;
+			const uint32_t suv = size_subtrees[v];
+			*it++ = make_pair(e, suv);
+			++memcs.count[suv];
+		}
 	}
 
 	// sort all tuples in L using the size of the subtree
