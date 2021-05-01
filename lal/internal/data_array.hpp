@@ -69,11 +69,11 @@ private:
 public:
 	// Constructor with size
 	data_array(const std::size_t n) noexcept : m_size(n) {
-		data = new T[m_size];
+		data = m_size == 0 ? nullptr : new T[m_size];
 	}
 	// Constructor with size and initial value
 	data_array(const std::size_t n, const T& v) noexcept : m_size(n) {
-		data = new T[m_size];
+		data = m_size == 0 ? nullptr : new T[m_size];
 		fill(v);
 	}
 	// Destructor
@@ -85,7 +85,7 @@ public:
 
 	// Copy constructor
 	data_array(const data_array& d) : m_size(d.m_size) {
-		data = new T[m_size];
+		data = m_size == 0 ? nullptr : new T[m_size];
 		std::copy(d.begin(), d.end(), begin());
 	}
 	// Copy assignment operator
@@ -96,6 +96,7 @@ public:
 			data = new T[m_size];
 		}
 		std::copy(d.begin(), d.end(), begin());
+		return *this;
 	}
 
 	// Move constructor
@@ -116,6 +117,7 @@ public:
 		// invalidate data
 		d.data = nullptr;
 		d.m_size = 0;
+		return *this;
 	}
 
 	// imitate the vector::size() method
