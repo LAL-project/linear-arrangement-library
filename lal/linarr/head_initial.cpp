@@ -55,10 +55,8 @@ inline uint32_t __headedness_rational
 (const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 	uint32_t edges_to_right = 0;
-	iterators::E_iterator it(g);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
+	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge();
 		edges_to_right += pi[u] < pi[v];
 	}
 	return edges_to_right;

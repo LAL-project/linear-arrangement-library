@@ -56,9 +56,7 @@ std::vector<edge> E(const G& g) {
 	std::vector<edge> e(g.get_num_edges());
 
 	auto vec_it = e.begin();
-	iterators::E_iterator<G> e_it(g);
-	while (e_it.has_next()) {
-		e_it.next();
+	for (iterators::E_iterator<G> e_it(g); not e_it.end(); e_it.next()) {
 		*vec_it++ = e_it.get_edge();
 	}
 	return e;
@@ -69,10 +67,8 @@ std::vector<edge_pair> Q(const G& g, uint64_t qs) {
 	std::vector<edge_pair> q(qs);
 
 	auto vec_it = q.begin();
-	iterators::Q_iterator<G> q_it(g);
-	while (q_it.has_next()) {
-		q_it.next();
-		*vec_it++ = q_it.get_pair();
+	for (iterators::Q_iterator<G> q_it(g); not q_it.end(); q_it.next()) {
+		*vec_it++ = q_it.get_edge_pair();
 	}
 	return q;
 }

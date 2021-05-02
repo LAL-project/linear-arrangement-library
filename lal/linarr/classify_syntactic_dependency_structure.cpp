@@ -71,10 +71,8 @@ typedef syntactic_dependency_structure syndepstr_type;
 
 inline bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi) {
 	const node R = T.get_root();
-	E_iterator it(T);
-	while (it.has_next()) {
-		it.next();
-		const auto [s,t] = it.get_edge();
+	for (E_iterator e_it(T); not e_it.end(); e_it.next()) {
+		const auto [s,t] = e_it.get_edge();
 		const bool covered =
 			(pi[s] < pi[R] and pi[R] < pi[t]) or
 			(pi[t] < pi[R] and pi[R] < pi[s]);
@@ -206,11 +204,12 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 	bool classified = false;
 	bool _1ec = false;
 
-	E_iterator it(rT);
-	while (it.has_next() and not classified) {
-		it.next();
+	E_iterator e_it(rT);
+	while (not e_it.end() and not classified) {
 		// check other edges crossing the current edge
-		const auto [s,t] = it.get_edge();
+		const auto [s,t] = e_it.get_edge();
+		e_it.next();
+
 		const auto [ps, pt] = sort_by_index(pi[s], pi[t]);
 
 		// the edges crossing the current edge

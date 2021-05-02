@@ -361,11 +361,8 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const noex
 	undirected_graph g(get_num_nodes());
 
 	// add edges so that none are repeated
-	iterators::E_iterator E_it(*this);
-	while (E_it.has_next()) {
-		E_it.next();
-		const auto [u,v] = E_it.get_edge();
-
+	for (iterators::E_iterator e_it(*this); not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge();
 		if (not g.has_edge(u, v)) {
 			g.add_edge_bulk(u, v);
 		}

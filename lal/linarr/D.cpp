@@ -64,10 +64,8 @@ uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi) {
 	// sum of lengths
 	uint32_t l = 0;
 
-	E_iterator<G> it(g);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
+	for (E_iterator<G> e_it(g); not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge();
 
 		// accumulate length of edge
 		l += (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);

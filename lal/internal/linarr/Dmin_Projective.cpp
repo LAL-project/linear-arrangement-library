@@ -214,28 +214,30 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 
 	countingsort::memory_counting_sort<edge_size> memcs(n, n);
 	auto it = L.begin();
-	E_iterator<rooted_tree> Eit(t);
+	E_iterator<rooted_tree> e_it(t);
 
 	if (t.are_size_subtrees_valid()) {
-		while (Eit.has_next()) {
-			Eit.next();
-			const edge e = Eit.get_edge();
+		while (not e_it.end()) {
+			const edge e = e_it.get_edge();
 			const node v = e.second;
 			const uint32_t suv = t.get_num_nodes_subtree(v);
 			*it++ = make_pair(e, suv);
 			++memcs.count[suv];
+
+			e_it.next();
 		}
 	}
 	else {
 		// fill in the size of the subtrees
 		internal::get_size_subtrees(t, t.get_root(), size_subtrees.begin());
-		while (Eit.has_next()) {
-			Eit.next();
-			const edge e = Eit.get_edge();
+		while (not e_it.end()) {
+			const edge e = e_it.get_edge();
 			const node v = e.second;
 			const uint32_t suv = size_subtrees[v];
 			*it++ = make_pair(e, suv);
 			++memcs.count[suv];
+
+			e_it.next();
 		}
 	}
 

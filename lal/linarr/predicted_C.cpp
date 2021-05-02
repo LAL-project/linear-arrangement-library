@@ -153,10 +153,8 @@ rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement
 	rational Ec2(0);
 	const uint32_t n = g.get_num_nodes();
 
-	iterators::Q_iterator<GRAPH> q(g);
-	while (q.has_next()) {
-		q.next();
-		const auto [st, uv] = q.get_pair();
+	for (iterators::Q_iterator<GRAPH> q(g); not q.end(); q.next()) {
+		const auto [st, uv] = q.get_edge_pair();
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 

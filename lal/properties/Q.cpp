@@ -82,10 +82,8 @@ integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	map<edge, uint64_t> collapsed_edges;
 
 	// count the amount of edges that collapse into a single one
-	E_iterator it(g);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
+	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge();
 
 		const edge es = sorted_edge(u,v);
 		const auto it_es = collapsed_edges.find(es);

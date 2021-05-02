@@ -72,10 +72,8 @@ inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
 {
 	vector<pair<edge,uint32_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
 
-	E_iterator it(t);
-	while (it.has_next()) {
-		it.next();
-		const auto [u,v] = it.get_edge();
+	for (E_iterator e_it(t); not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge();
 		const position max = max_pos(u, v);
 		edge_ending_at[max].first = edge(u,v);
 		++edge_ending_at[max].second;

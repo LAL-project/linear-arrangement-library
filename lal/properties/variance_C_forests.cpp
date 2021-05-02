@@ -112,10 +112,8 @@ noexcept
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
-	E_iterator it(g);
-	while (it.has_next()) {
-		it.next();
-		const auto [s,t] = it.get_edge();
+	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {
+		const auto [s,t] = e_it.get_edge();
 
 		const bigint ks = g.get_degree(s);
 		const bigint kt = g.get_degree(t);
