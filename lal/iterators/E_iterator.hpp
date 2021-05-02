@@ -63,12 +63,19 @@ namespace iterators {
  *
  * This class has to be initialised with a constant reference to a graph.
  *
- * The usage of this class is the following:
+ * A possible usage of this class is the following:
  * @code
  *		E_iterator it(g); // g is a graph
- *		while (it.has_next()) {
+ *		while (not it.end()) {
+ *			const auto [u,v] = it.get_edge();
+ *			// ...
  *			it.next();
- *			const edge e = it.get_edge();
+ *		}
+ * @endcode
+ * Alternatively, the @ref E_iterator object can be used in a for loop:
+ * @code
+ *		for (E_iterator it(g); not it.end(); it.next()) {
+ *			const auto [u,v] = it.get_edge();
  *			// ...
  *		}
  * @endcode
@@ -98,8 +105,8 @@ public:
 
 	/* GETTERS */
 
-	/// Returns true if there are edges left to be iterated over.
-	inline bool has_next() const noexcept { return m_exists_next; }
+	/// Returns true if the end of the iteration was reached.
+	inline bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge.
 	inline edge get_edge() const noexcept { return m_cur_edge; }
@@ -107,20 +114,44 @@ public:
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next edge.
-	void next() noexcept {
+	inline void next() noexcept {
+		if (not m_exists_next) {
+			m_reached_end = true;
+			return;
+		}
+
 		m_cur_edge = make_current_edge();
 
 		// find the next edge
 		std::tie(m_exists_next, m_cur) = find_next_edge();
 	}
 
-	/**
-	 * @brief Sets the iterator at the beginning of the set of edges.
-	 * @post The next call to method @ref next() returns the first edge
-	 * of the graph.
-	 */
-	void reset() noexcept {
+	/// Sets the iterator at the beginning of the set of edges.
+	inline void reset() noexcept {
+		__reset();
+		next();
+	}
+
+private:
+	typedef std::pair<node,std::size_t> E_pointer;
+
+private:
+	/// The graph whose edges have to be iterated on.
+	const GRAPH& m_G;
+	/// Pointer to the next edge.
+	E_pointer m_cur;
+	/// Is there a next edge to iterate over?
+	bool m_exists_next = true;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
+	/// Copy of the current edge.
+	edge m_cur_edge;
+
+private:
+	/// Sets the iterator at the beginning of the set of edges.
+	inline void __reset() noexcept {
 		m_exists_next = true;
+		m_reached_end = false;
 
 		m_cur.first = 0;
 		m_cur.second = static_cast<size_t>(-1);
@@ -129,6 +160,7 @@ public:
 		if (not found) {
 			// if we can't find the next edge, then there is no next...
 			m_exists_next = false;
+			m_reached_end = true;
 			return;
 		}
 
@@ -144,6 +176,7 @@ public:
 #if defined DEBUG
 		if (m_G.get_num_edges() == 1) {
 			assert(m_exists_next == false);
+			assert(m_reached_end == false);
 		}
 #endif
 
@@ -153,22 +186,8 @@ public:
 		}
 	}
 
-private:
-	typedef std::pair<node,std::size_t> E_pointer;
-
-private:
-	/// The graph whose edges have to be iterated on.
-	const GRAPH& m_G;
-	/// Pointer to the next edge.
-	E_pointer m_cur;
-	/// Is there a next edge to iterate over?
-	bool m_exists_next = true;
-	/// Copy of the current edge.
-	edge m_cur_edge;
-
-private:
 	/// Returns the edge pointed by @ref m_cur.
-	edge make_current_edge() const noexcept {
+	inline edge make_current_edge() const noexcept {
 		node s, t;
 		if constexpr (is_directed) {
 			s = m_cur.first;
@@ -188,7 +207,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
@@ -214,7 +233,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint32_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;

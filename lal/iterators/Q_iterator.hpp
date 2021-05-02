@@ -68,12 +68,19 @@ namespace iterators {
  *
  * This class has to be initialised with a constant reference to a graph.
  *
- * The usage of this class is the following:
+ * A possible usage of this class is the following:
  * @code
  *		Q_iterator it(g); // g is a graph
- *		while (it.has_next()) {
- *			it.next();
- *			const lal::edge_pair q = it.get_pair();
+ *		while (not it.end()) {
+ *			const auto [e1,e2] = it.get_edge_pair();
+ *			// ...
+ * 			it.next();
+ *		}
+ * @endcode
+ * Alternatively, the @ref E_iterator object can be used in a for loop:
+ * @code
+ *		for (Q_iterator it(g); not it.end(); it.next()) {
+ *			const auto [e1,e2] = it.get_edge_pair();
  *			// ...
  *		}
  * @endcode
@@ -104,16 +111,21 @@ public:
 
 	/* GETTERS */
 
-	/// Returns true if there are pairs of independent edges left to be iterated over.
-	inline bool has_next() const noexcept { return m_exists_next; }
+	/// Returns true if the end of the iteration was reached.
+	inline bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge pair.
-	inline edge_pair get_pair() const noexcept { return m_cur_pair; }
+	inline edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
 
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next pair, if there is any.
-	void next() noexcept {
+	inline void next() noexcept {
+		if (not m_exists_next) {
+			m_reached_end = true;
+			return;
+		}
+
 		m_cur_pair = make_current_pair();
 #if defined DEBUG
 		assert(not share_nodes(m_cur_pair));
@@ -130,15 +142,39 @@ public:
 		m_cur2 = new_cur2;
 	}
 
-	/**
-	 * @brief Sets the iterator at the beginning of the set of edges.
-	 * @post The next call to method @ref next() returns the first edge
-	 * of the graph.
-	 */
-	void reset() noexcept {
+	/// Sets the iterator at the beginning of the set of edges.
+	inline void reset() noexcept {
+		__reset();
+		next();
+	}
+
+private:
+	typedef std::pair<node,std::size_t> E_pointer;
+
+private:
+
+	/// Graph we are iterating on
+	const GRAPH& m_G;
+
+	/// Current pointers to the first edge.
+	E_pointer m_cur1 = E_pointer(0,0);
+	/// Current pointers to the second edge.
+	E_pointer m_cur2 = E_pointer(0,0);
+
+	/// Is there a next pair of independent edges?
+	bool m_exists_next = true;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
+	/// Current pair of independent edges.
+	edge_pair m_cur_pair = { {0,0}, {0,0} };
+
+private:
+	/// Sets the iterator at the beginning of the set of edges.
+	inline void __reset() noexcept {
 		// there are not enough edges to have |Q| > 0
 		if (m_G.get_num_edges() <= 1) {
 			m_exists_next = false;
+			m_reached_end = true;
 			return;
 		}
 
@@ -153,6 +189,7 @@ public:
 		if (not found) {
 			// if we can't find the next pair, then there is no next...
 			m_exists_next = false;
+			m_reached_end = true;
 			return;
 		}
 
@@ -179,35 +216,17 @@ public:
 		// having only one independent pair of edges
 		if (not m_exists_next) {
 			m_exists_next = true;
+			m_reached_end = false;
 		}
 	}
 
-private:
-	typedef std::pair<node,std::size_t> E_pointer;
-
-private:
-
-	/// Graph we are iterating on
-	const GRAPH& m_G;
-
-	/// Current pointers to the first edge.
-	E_pointer m_cur1 = E_pointer(0,0);
-	/// Current pointers to the second edge.
-	E_pointer m_cur2 = E_pointer(0,0);
-
-	/// Is there a next pair of independent edges?
-	bool m_exists_next = true;
-	/// Current pair of independent edges.
-	edge_pair m_cur_pair = edge_pair(edge(0,0),edge(0,0));
-
-private:
 	/**
 	 * @brief Returns the current pair of independent edges.
 	 *
 	 * These are the edges pointed by attribute @ref m_cur1 and by attribute
 	 * @ref m_cur2.
 	 */
-	edge_pair make_current_pair() const noexcept {
+	inline edge_pair make_current_pair() const noexcept {
 		node s,t,u,v;
 		if constexpr (is_directed) {
 			s = m_cur1.first;
@@ -254,7 +273,7 @@ private:
 
 	/// Find the next pair in a directed graph.
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	std::tuple<bool, E_pointer, E_pointer>
+	inline std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
@@ -288,7 +307,7 @@ private:
 
 	/// Find the next pair in an undirected graph.
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	std::tuple<bool, E_pointer, E_pointer>
+	inline std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
