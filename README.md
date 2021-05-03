@@ -2,17 +2,14 @@
 
 This library implements several algorithms to solve problems related to linear arrangements. For example, it implements algorithms for
 
-- calculation of the expectation and variance of the number of crossings,
-- calculation of the expectation and variance of the sum of the length of the edges,
-- efficient algorithms to compute the number of crossings,
-- calculation of optimal arrangements with respect to the sum of the length of the edges,
+- solving the Minimum Linear Arrangement Problem on trees under different constraints of projectivity,
+- the calculation of the expectation and variance of the number of edge crossings and of the sum of the length of the edges,
+- computing the number of edge crossings given a linear arrangement of a graph,
 - and many others.
 
-Some of the algorithms listed above are optimised for trees. The library also provides functions for generation of
+Some of the algorithms listed above are implemented for both general graphs and trees (the latter being more efficient). The library also provides functions for the generation of random/exhasutive labelled/unlabelled free/rooted trees. Besides, there's algorithms for the generation of arrangements under different constraints of projectivity. Users will also find utilities to process treebanks, and collection of treebanks.
 
-- random generation of labelled and unlabelled free trees,
-- exhaustive generation of labelled and unlabelled free trees,
-- random generation of labelled rooted trees.
+For more information, visit [LAL's webpage](https://cqllab.upc.edu/lal/).
 
 ## Installation of the library
 
@@ -49,10 +46,12 @@ This library is the result of the joint effort of several people (in alphabetica
 
 ## Citing the library
 
+In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of a great effort put directly by the developers, and indirectly by other researchers. Besides citing the library in an academic paper, users *must* also acknowledge the effort made by other researchers by citing their papers in which they present the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation.
+
 For now we do not have any formal publication of this library, so we do not have a preferred way of citing it. Please, contact any of the authors for further information about this matter.
 
 ## Documentation
 
-The C++ documentation can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
+The C++ documentation can be found online in the [library's webpage](https://cqllab.upc.edu/lal/). Alternatively, it can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
 
 	$ ./make_docs.sh c++
