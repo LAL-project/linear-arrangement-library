@@ -77,7 +77,8 @@ namespace iterators {
  * 			it.next();
  *		}
  * @endcode
- * Alternatively, the @ref E_iterator object can be used in a for loop:
+ * Alternatively, the @ref lal::iterators::Q_iterator object can be used in a
+ * for loop:
  * @code
  *		for (Q_iterator it(g); not it.end(); it.next()) {
  *			const auto [e1,e2] = it.get_edge_pair();
