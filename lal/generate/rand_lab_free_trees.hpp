@@ -127,9 +127,9 @@ protected:
  *
  * An example of usage of this class is
  * @code
- *		lal::generate::rand_lab_free_trees TreeGen(n);
+ *		lal::generate::rand_lab_free_trees Gen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::graphs::free_tree T = TreeGen.make_rand_tree();
+ *			const lal::graphs::free_tree T = Gen.make_rand_tree();
  *			// ...
  *		}
  * @endcode

@@ -57,11 +57,12 @@ namespace generate {
  * root is not covered by any of the tree's edges and there are no edge
  * crossings.
  *
+ * An example of usage of this class is
  * @code
  *		// given a tree T (of the appropriate type)
- *		lal::generate::rand_projective_arrgements ArrGen(T);
+ *		lal::generate::rand_projective_arrgements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
+ *			const lal::linear_arrangement arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode

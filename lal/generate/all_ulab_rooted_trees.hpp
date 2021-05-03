@@ -153,7 +153,7 @@ private:
 	bool m_is_last = false;
 	/// Is the current tree the first tree to be generated?
 	bool m_is_first = false;
-	/// Has the end of the iteration been reached?
+	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 
 	/// Pointer as in the paper.

@@ -152,11 +152,7 @@ public:
 		}
 	}
 
-	/**
-	 * @brief Sets the generator to its initial state.
-	 *
-	 * This method can be called anytime.
-	 */
+	/// Sets the generator to its initial state.
 	inline void reset() noexcept {
 		activate_all_postprocessing_actions();
 		__reset();
@@ -200,7 +196,7 @@ private:
 	graphs::free_tree m_cur_ftree;
 	/// Current root.
 	node m_cur_root;
-	/// Has the end of the iteration been reached?
+	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 };
 

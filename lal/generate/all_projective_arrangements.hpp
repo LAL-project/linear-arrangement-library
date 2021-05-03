@@ -155,7 +155,7 @@ public:
 	 */
 	void next() noexcept;
 
-	/// Sets the iterator at the beginning of the set of edges.
+	/// Sets the generator to its initial state.
 	inline void reset() noexcept {
 		__reset();
 		next();
@@ -168,7 +168,7 @@ private:
 	std::vector<std::vector<node>> m_intervals;
 	/// Is there a next projective arrangement to iterate over?
 	bool m_exists_next = true;
-	/// Has the end of the iteration been reached?
+	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 
 private:

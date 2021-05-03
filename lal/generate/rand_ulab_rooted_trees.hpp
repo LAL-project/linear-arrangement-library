@@ -206,9 +206,9 @@ protected:
  *
  * An example of usage of this class is
  * @code
- *		lal::generate::rand_ulab_rooted_trees TreeGen(n);
+ *		lal::generate::rand_ulab_rooted_trees Gen(n);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::graphs::rooted_tree T = TreeGen.get_tree();
+ *			const lal::graphs::rooted_tree T = Gen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -246,7 +246,7 @@ protected:
 	 * @brief Returns an unlabelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref __rand_ulab_rooted_trees::get_tree for details.
-	 * @returns A unlabelled rooted tree chosen uniformly at random.
+	 * @returns An unlabelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 

@@ -181,7 +181,7 @@ private:
 	bool m_is_last = false;
 	/// First time calling @ref next().
 	bool m_first_it = true;
-	/// Has the end of the iteration been reached?
+	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 };
 
