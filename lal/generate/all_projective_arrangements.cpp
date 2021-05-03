@@ -69,12 +69,12 @@ all_projective_arrangements::all_projective_arrangements
 #endif
 
 	m_intervals = vector<vector<node>>(m_rT.get_num_nodes());
-	initialise_intervals_tree();
+	reset();
 }
 
 /* GETTERS */
 
-linear_arrangement all_projective_arrangements::get_arrangement() const {
+linear_arrangement all_projective_arrangements::get_arrangement() const noexcept {
 	return (m_rT.get_num_nodes() == 1 ?
 		linear_arrangement(1,0) :
 		make_arrangement_intervals(m_rT, m_intervals)
@@ -83,13 +83,14 @@ linear_arrangement all_projective_arrangements::get_arrangement() const {
 
 /* MODIFIERS */
 
-bool all_projective_arrangements::has_next() const {
-	return m_has_next;
-}
+void all_projective_arrangements::next() noexcept {
+	if (not m_exists_next) {
+		m_reached_end = true;
+		return;
+	}
 
-void all_projective_arrangements::next() {
 	if (m_rT.get_num_nodes() == 1) {
-		m_has_next = false;
+		m_exists_next = false;
 		return;
 	}
 
@@ -106,11 +107,17 @@ void all_projective_arrangements::next() {
 	}
 
 	if (u == m_rT.get_num_nodes() and not has_perm) {
-		m_has_next = false;
+		m_exists_next = false;
 	}
 }
 
 /* PRIVATE */
+
+void all_projective_arrangements::__reset() noexcept {
+	m_exists_next = true;
+	m_reached_end = false;
+	initialise_intervals_tree();
+}
 
 void all_projective_arrangements::initialise_intervals_tree() noexcept {
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {

@@ -62,12 +62,17 @@ all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
 	  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
 	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
 {
-	init();
+	reset();
 }
 
 /* MODIFIERS */
 
 void all_lab_free_trees::next() noexcept {
+	if (not has_next() or m_reached_end) {
+		m_reached_end = true;
+		return;
+	}
+
 	if (m_n <= 2) {
 		// there is only one tree we can make
 		m_sm[0] = true;
@@ -93,7 +98,21 @@ void all_lab_free_trees::next() noexcept {
 	m_it = m_n - 3;
 }
 
-void all_lab_free_trees::reset() noexcept {
+/* PROTECTED */
+
+free_tree all_lab_free_trees::__get_tree() noexcept {
+	if (m_n <= 1) { return free_tree(m_n); }
+	if (m_n == 2) {
+		free_tree t(2);
+		t.set_edges(vector<edge>{edge(0,1)});
+		return t;
+	}
+	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
+}
+
+void all_lab_free_trees::__reset() noexcept {
+	m_reached_end = false;
+
 	if (m_n <= 2) {
 		m_sm[0] = false;
 		// there is only one tree we can make
@@ -109,26 +128,6 @@ void all_lab_free_trees::reset() noexcept {
 	// produces the sequence 0 0 ... 0
 	m_Prufer_seq[m_it] = numeric_limits<uint32_t>::max();
 	m_L = m_n - 2;
-}
-
-/* PROTECTED */
-
-free_tree all_lab_free_trees::__get_tree() noexcept {
-	if (m_n <= 1) { return free_tree(m_n); }
-	if (m_n == 2) {
-		free_tree t(2);
-		t.set_edges(vector<edge>{edge(0,1)});
-		return t;
-	}
-	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
-}
-
-void all_lab_free_trees::init() noexcept {
-	if (m_n <= 2) {
-		// there is only one tree we can make
-		return;
-	}
-	reset();
 }
 
 } // -- namespace generate

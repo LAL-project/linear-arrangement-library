@@ -132,7 +132,6 @@ target_sources(
 		generate/tree_generator_type.hpp
 		# -- sources
 		generate/all_lab_free_trees.cpp
-		generate/all_lab_rooted_trees.cpp
 		generate/all_projective_arrangements.cpp
 		generate/all_ulab_free_trees.cpp
 		generate/all_ulab_rooted_trees.cpp

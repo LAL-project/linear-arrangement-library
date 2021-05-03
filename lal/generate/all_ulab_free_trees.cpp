@@ -64,12 +64,17 @@ all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept
 	  m_L(m_n + 1),
 	  m_W(m_n + 1)
 {
-	init();
+	reset();
 }
 
 /* MODIFIERS */
 
 void all_ulab_free_trees::next() noexcept {
+	if (m_is_last or m_reached_end) {
+		m_reached_end = true;
+		return;
+	}
+
 	if (m_n <= 2) {
 		m_is_last = true;
 		return;
@@ -230,8 +235,9 @@ void all_ulab_free_trees::next() noexcept {
 	m_is_last = (m_q == 0);
 }
 
-void all_ulab_free_trees::reset() noexcept {
+void all_ulab_free_trees::__reset() noexcept {
 	m_is_last = false;
+	m_reached_end = false;
 
 	m_L.fill(0);
 	m_W.fill(0);
@@ -280,13 +286,6 @@ free_tree all_ulab_free_trees::__get_tree() noexcept {
 		return t;
 	}
 	return internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
-}
-
-void all_ulab_free_trees::init() noexcept {
-	//m_L = new uint32_t[m_n + 1];
-	//m_W = new uint32_t[m_n + 1];
-
-	reset();
 }
 
 } // -- namespace generate

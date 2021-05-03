@@ -47,6 +47,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
 namespace lal {
 namespace generate {
@@ -58,17 +59,35 @@ namespace generate {
  *
  * The arrangements generated do not take into account the symmetrical
  * arrangements produced by swapping leaves of the tree connected to the
- * same parent. That is, the arrangements produced can be seen as labelled
- * arrangements. Therefore, this class will generate \f$n!\f$ arrangements
- * for all star trees of \f$n\f$ vertices.
+ * same parent. That is, the arrangements produced can be seen as arrangements
+ * of labelled trees. Therefore, this class will generate \f$n!\f$ arrangements
+ * for a star tree of \f$n\f$ vertices.
  *
- * An example of usage of this class is
+ * In order to use this class, you must first provide the tree object in the
+ * constructor. Arrangements are generated internally, i.e.,
+ * arragements are encoded in the internal state of the generator. Said state is
+ * updated using method @ref next(), which updates it to encode the next arrangement
+ * in the generation. In order to retrieve an arrangement, use method
+ * @ref get_arrangement(). Upon initialisation, the generator encodes the first
+ * arrangement, which has to be retrieved using method @ref get_arrangement().
+ *
+ * This class implements the algorithm outlined in \cite Gildea2007a and
+ * \cite Futrell2015a.
+ *
+ * A possible usage of this class is the following:
  * @code
- *		// given a projective tree T
- *		lal::generate::all_projective_arr ArrGen(T);
- *		while (ArrGen.has_next()) {
- *			ArrGen.next();
- *			const lal::linearrgmnt arr = ArrGen.get_arrangement();
+ *		all_projective_arrangements Gen(t); // t is a rooted tree
+ *		while (not Gen.end()) {
+ *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			// ...
+ *			Gen.next();
+ *		}
+ * @endcode
+ * Alternatively, the @ref all_projective_arrangements class can be used in a
+ * for loop:
+ * @code
+ *		for (all_projective_arrangements Gen(t); not Gen.end(); Gen.next()) {
+ *			const lal::linear_arrangement arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -78,12 +97,22 @@ public:
 	/* CONSTRUCTORS */
 
 	/**
-	 * @brief Constructor with constant reference to a rooted tree.
+	 * @brief Constructor with rooted tree.
 	 * @param T Rooted tree
 	 * @pre The object @e T is a valid rooted tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
 	all_projective_arrangements(const graphs::rooted_tree& T) noexcept;
+	/**
+	 * @brief Constructor with free tree and a root vertex.
+	 * @param T Free tree
+	 * @param root Root vertex
+	 * @pre The object @e T is a valid tree (see
+	 * @ref graphs::rooted_tree::is_tree).
+	 */
+	all_projective_arrangements(const graphs::free_tree& T, node root) noexcept
+		: all_projective_arrangements(graphs::rooted_tree(T, root))
+	{ }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive projective arrangement generator..
@@ -107,14 +136,14 @@ public:
 	 * to generate. Returns false if all arrangements have been
 	 * generated.
 	 */
-	bool has_next() const;
+	inline bool end() const noexcept { return m_reached_end; };
 
 	/**
 	 * @brief Constructs the current arrangement.
 	 * @returns The arrangement generated with method @ref next().
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	linear_arrangement get_arrangement() const;
+	linear_arrangement get_arrangement() const noexcept;
 
 	/* MODIFIERS */
 
@@ -124,19 +153,27 @@ public:
 	 * Modifies the internal state so that the next arrangement
 	 * can be retrieved using method @ref get_arrangement.
 	 */
-	void next();
+	void next() noexcept;
+
+	/// Sets the iterator at the beginning of the set of edges.
+	inline void reset() noexcept {
+		__reset();
+		next();
+	}
 
 private:
 	/// Constant reference to rooted tree.
 	const graphs::rooted_tree& m_rT;
-
 	/// The interval of every node of the tree
 	std::vector<std::vector<node>> m_intervals;
-
-	/// Does exist a next arrangement?
-	bool m_has_next = true;
+	/// Is there a next projective arrangement to iterate over?
+	bool m_exists_next = true;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
 
 private:
+	/// Resets the iterator to its initial state.
+	void __reset() noexcept;
 	/// Initialise the interval every node of the tree, starting at @e r.
 	void initialise_intervals_tree() noexcept;
 	/// Initialise the interval of node @e u.

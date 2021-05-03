@@ -41,6 +41,11 @@
 
 #pragma once
 
+// C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/all_lab_free_trees.hpp>
@@ -55,12 +60,34 @@ namespace generate {
  * This class enumerates all labelled rooted trees of a given number of vertices.
  * It is based on the labelled free trees generator (see @ref all_lab_free_trees).
  *
- * An example of usage of this class is
+ * In order to use this class, users must provide the size \f$n\f$ of the tree
+ * (number of nodes) in the constructor. Trees are generated internally, i.e.,
+ * trees are encoded in the internal state of the generator. Said state is
+ * updated using method @ref next(), which updates it to encode the next tree in
+ * the generation. In order to retrieve the tree, use method @ref get_tree().
+ * Upon initialisation, the generator encodes the first tree, which has to be
+ * retrieved using method @ref get_tree().
+ *
+ * All the labelled rooted trees will have been generated when method @ref end()
+ * returns true. At this point, method @ref get_tree() will always construct the
+ * last tree in the enumeration, whichever tree it is. In order to restart the
+ * generation of these trees, call method @ref reset(). It is allowed to call
+ * this method at any time.
+ *
+ * A possible usage of this class is the following:
  * @code
- *		lal::generate::all_lab_rooted_trees TreeGen(n);
- *		while (TreeGen.has_next()) {
- *			TreeGen.next();
- *			const lal::graphs::rooted_tree T = TreeGen.get_tree();
+ *		all_lab_rooted_trees Gen(n);
+ *		while (not Gen.end()) {
+ *			const auto t = Gen.get_tree();
+ *			// ...
+ *			Gen.next();
+ *		}
+ * @endcode
+ * Alternatively, the @ref lal::generate::all_lab_rooted_trees class can be used
+ * in a for loop:
+ * @code
+ *		for (all_lab_rooted_trees Gen(n); not Gen.end(); Gen.next()) {
+ *			const auto t = Gen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -73,7 +100,12 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_rooted_trees(uint32_t n) noexcept;
+	all_lab_rooted_trees(uint32_t n) noexcept
+		: tree_generator<graphs::rooted_tree>(n),
+		m_gen_lab_free_tree(m_n)
+	{
+		reset();
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive labelled rooted tree generator..
@@ -91,17 +123,8 @@ public:
 
 	/* GETTERS */
 
-	/**
-	 * @brief Returns whether there are more trees to generate.
-	 * @returns True if there are still more trees
-	 * to generate. Returns false if all trees have been
-	 * generated (there are no more unique trees of this
-	 * size that were not generated before).
-	 */
-	inline bool has_next() const noexcept {
-		return
-		not( m_cur_root + 1 >= m_n and (not m_gen_lab_free_tree.has_next()));
-	}
+	/// Returns true if the end of the iteration was reached.
+	inline bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -112,14 +135,38 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialised.
 	 */
-	void next() noexcept;
+	inline void next() noexcept {
+		if (not has_next() or m_reached_end) {
+			m_reached_end = true;
+			return;
+		}
+
+		// m_n > 1
+		if (m_cur_root < m_n - 1) {
+			++m_cur_root;
+		}
+		else {
+			m_cur_root = 0;
+			m_cur_ftree = m_gen_lab_free_tree.get_tree();
+			m_gen_lab_free_tree.next();
+		}
+	}
 
 	/**
 	 * @brief Sets the generator to its initial state.
 	 *
 	 * This method can be called anytime.
 	 */
-	void reset() noexcept;
+	inline void reset() noexcept {
+		activate_all_postprocessing_actions();
+		__reset();
+		next();
+	}
+
+	/// Returns whether there are more trees to generate.
+	inline bool has_next() const noexcept {
+		return m_cur_root + 1 < m_n or not m_gen_lab_free_tree.end();
+	}
 
 protected:
 	/**
@@ -128,16 +175,23 @@ protected:
 	 * @pre The generator must have been initialised, and method
 	 * @ref next must have been called at least once.
 	 */
-	graphs::rooted_tree __get_tree() noexcept;
+	inline graphs::rooted_tree __get_tree() noexcept {
+#if defined DEBUG
+		assert(m_cur_root < m_n);
+#endif
+		return graphs::rooted_tree(m_cur_ftree, m_cur_root);
+	}
 
-	/**
-	 * @brief Initialises the generator.
-	 *
-	 * Initialises the internal state of this generator so that method
-	 * @ref next can be called safely. The number of vertices @ref m_n
-	 * is initialised during construction.
-	 */
-	void init() noexcept;
+	/// Sets the iterator to its initial state.
+	inline void __reset() noexcept {
+		m_reached_end = false;
+		// so that in the next call the root is set to 0
+		m_cur_root = m_n - 1;
+		// the labeled free tree generator now points to the first tree
+		m_gen_lab_free_tree.reset();
+		// deactivate all postprocessing of the free tree
+		m_gen_lab_free_tree.deactivate_all_postprocessing_actions();
+	}
 
 private:
 	/// Labelled free tree generator.
@@ -146,6 +200,8 @@ private:
 	graphs::free_tree m_cur_ftree;
 	/// Current root.
 	node m_cur_root;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
 };
 
 } // -- namespace generate

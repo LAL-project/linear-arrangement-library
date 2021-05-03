@@ -63,12 +63,17 @@ all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept
 	  m_prev(m_n + 1),
 	  m_L(m_n + 1)
 {
-	init();
+	reset();
 }
 
 /* MODIFIERS */
 
 void all_ulab_rooted_trees::next() noexcept {
+	if (m_is_last or m_reached_end) {
+		m_reached_end = true;
+		return;
+	}
+
 	if (m_n <= 2) {
 		m_is_last = true;
 		return;
@@ -99,8 +104,31 @@ void all_ulab_rooted_trees::next() noexcept {
 	m_is_last = (m_p <= 1);
 }
 
-void all_ulab_rooted_trees::reset() noexcept {
+/* PROTECTED */
+
+rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
+	if (m_n == 0) {
+		return rooted_tree(free_tree(0), 0);
+	}
+	if (m_n == 1) {
+		return rooted_tree(free_tree(1), 0);
+	}
+	if (m_n == 2) {
+		rooted_tree rT(2);
+		rT.add_edge(0,1);
+		rT.set_root(0);
+		rT.set_valid_orientation(true);
+		return rT;
+	}
+
+	const free_tree t =
+		internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
+	return rooted_tree(t, 0);
+}
+
+void all_ulab_rooted_trees::__reset() noexcept {
 	m_is_first = true;
+	m_reached_end = false;
 
 	// simplest cases
 	if (m_n == 0) {
@@ -126,37 +154,6 @@ void all_ulab_rooted_trees::reset() noexcept {
 		}
 	}
 }
-
-/* PROTECTED */
-
-rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
-	if (m_n == 0) {
-		return rooted_tree(free_tree(0), 0);
-	}
-	if (m_n == 1) {
-		return rooted_tree(free_tree(1), 0);
-	}
-	if (m_n == 2) {
-		rooted_tree rT(2);
-		rT.add_edge(0,1);
-		rT.set_root(0);
-		rT.set_valid_orientation(true);
-		return rT;
-	}
-
-	const free_tree t =
-		internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
-	return rooted_tree(t, 0);
-}
-
-void all_ulab_rooted_trees::init() noexcept {
-	//m_save = new node[m_n + 1];
-	//m_prev = new node[m_n + 1];
-	//m_L = new node[m_n + 1];
-
-	reset();
-}
-
 
 } // -- namespace generate
 } // -- namespace lal

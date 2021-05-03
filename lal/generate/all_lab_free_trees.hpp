@@ -57,27 +57,34 @@ namespace generate {
  * algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a) and
  * decodes them using the algorithm in \cite Alonso1995a.
  *
- * In order to use this class, you must first provide the size \f$n\f$ of the
- * tree (number of nodes) in the constructor or in the @ref init method of
- * the trees to be generated.
+ * In order to use this class, users must provide the size \f$n\f$ of the tree
+ * (number of nodes) in the constructor. Trees are generated internally, i.e.,
+ * trees are encoded in the internal state of the generator. Said state is
+ * updated using method @ref next(), which updates it to encode the next tree in
+ * the generation. In order to retrieve the tree, use method @ref get_tree().
+ * Upon initialisation, the generator encodes the first tree, which has to be
+ * retrieved using method @ref get_tree().
  *
- * Then, call method @ref next to modify the internal state that will allow the
- * user to construct the tree by calling method @ref get_tree.
+ * All the labelled free trees will have been generated when method @ref end()
+ * returns true. At this point, method @ref get_tree() will always construct the
+ * last tree in the enumeration, whichever tree it is. In order to restart the
+ * generation of these trees, call method @ref reset(). It is allowed to call
+ * this method at any time.
  *
- * All the free labelled trees have been generated when method @ref has_next
- * returns false. At this point, method @ref get_tree will always construct a
- * star tree of \f$n\f$ nodes.
- *
- * In order to restart the generation of these trees, call method @ref init
- * again. It is allowed, at any time, to call @ref init with the same size of
- * the trees, or with a different one.
- *
- * An example of usage of this class is
+ * A possible usage of this class is the following:
  * @code
- *		lal::generate::all_lab_free_trees TreeGen(n);
- *		while (TreeGen.has_next()) {
- *			TreeGen.next();
- *			const lal::graphs::free_tree T = TreeGen.get_tree();
+ *		all_lab_free_trees Gen(n);
+ *		while (not Gen.end()) {
+ *			const auto t = Gen.get_tree();
+ *			// ...
+ *			Gen.next();
+ *		}
+ * @endcode
+ * Alternatively, the @ref lal::generate::all_lab_free_trees class can be used
+ * in a for loop:
+ * @code
+ *		for (all_lab_free_trees Gen(n); not Gen.end(); Gen.next()) {
+ *			const auto t = Gen.get_tree();
  *			// ...
  *		}
  * @endcode
@@ -108,15 +115,8 @@ public:
 
 	/* GETTERS */
 
-	/**
-	 * @brief Returns whether there are more trees to generate.
-	 * @returns True if there are still more trees to generate. Returns
-	 * false if all trees have been generated (there are no more unique trees
-	 * of this size that were not generated before).
-	 */
-	inline bool has_next() const noexcept {
-		return not m_sm[(m_n <= 2 ? 0 : m_n - 3)];
-	}
+	/// Returns true if the end of the iteration was reached.
+	inline bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -134,7 +134,11 @@ public:
 	 *
 	 * This method can be called anytime.
 	 */
-	void reset() noexcept;
+	inline void reset() noexcept {
+		activate_all_postprocessing_actions();
+		__reset();
+		next();
+	}
 
 protected:
 	/**
@@ -145,14 +149,13 @@ protected:
 	 */
 	graphs::free_tree __get_tree() noexcept;
 
-	/**
-	 * @brief Class initialiser method.
-	 *
-	 * Initialises the internal state of this generator so that method
-	 * @ref next can be called safely. The number of vertices @ref m_n
-	 * is initialised during construction.
-	 */
-	void init() noexcept;
+	/// Sets the generator to its initial state.
+	void __reset() noexcept;
+
+	/// Returns whether there are more trees to generate.
+	inline bool has_next() const noexcept {
+		return not m_sm[(m_n <= 2 ? 0 : m_n - 3)];
+	}
 
 private:
 	/// Iterator on the sequence.
@@ -163,6 +166,8 @@ private:
 	internal::data_array<uint32_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
 	internal::data_array<bool> m_sm;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
 };
 
 } // -- namespace generate
