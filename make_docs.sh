@@ -1,5 +1,13 @@
 #!/bin/bash
 
+PYTHON=""
+if ! command -v python &> /dev/null
+then
+	PYTHON=python3
+else
+	PYTHON=python
+fi
+
 # Remember that 
 #
 #      | sed "s/^/    /g"
@@ -29,7 +37,7 @@ else
 	####################################################################
 	
 	echo -e "\e[1;1;32mParsing XML files with 'doxy2swig.py' to generate some Python documentation\e[0m"
-	python doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/modules/documentation.i | sed "s/^/    /g"
+	$PYTHON doxyconfig/doxy2swig.py -c -o -a pythondocshtml/xml/index.xml python-interface/modules/documentation.i | sed "s/^/    /g"
 	
 	####################################################################
 	
