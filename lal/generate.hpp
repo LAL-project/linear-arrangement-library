@@ -51,7 +51,9 @@
 #include <lal/generate/rand_ulab_free_trees.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
 
-#include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/generate/rand_projective_arrangements.hpp>
-
 #include <lal/generate/tree_generator_type.hpp>
+
+#include <lal/generate/all_arrangements.hpp>
+#include <lal/generate/all_projective_arrangements.hpp>
+#include <lal/generate/rand_arrangements.hpp>
+#include <lal/generate/rand_projective_arrangements.hpp>

@@ -118,11 +118,13 @@ target_sources(
 	PRIVATE
 		# generate namespace
 		# -- headers
+		generate/all_arrangements.hpp
 		generate/all_lab_free_trees.hpp
 		generate/all_lab_rooted_trees.hpp
 		generate/all_projective_arrangements.hpp
 		generate/all_ulab_free_trees.hpp
 		generate/all_ulab_rooted_trees.hpp
+		generate/rand_arrangements.hpp
 		generate/rand_lab_free_trees.hpp
 		generate/rand_lab_rooted_trees.hpp
 		generate/rand_projective_arrangements.hpp
@@ -365,11 +367,13 @@ set(LIBLAL_MAIN_HEADER
 	utilities.hpp
 )
 set(LIBLAL_GENERATION_HEADER
+	generate/all_arrangements.hpp
 	generate/all_lab_free_trees.hpp
 	generate/all_lab_rooted_trees.hpp
 	generate/all_projective_arrangements.hpp
 	generate/all_ulab_free_trees.hpp
 	generate/all_ulab_rooted_trees.hpp
+	generate/rand_arrangements.hpp
 	generate/rand_lab_free_trees.hpp
 	generate/rand_lab_rooted_trees.hpp
 	generate/rand_projective_arrangements.hpp

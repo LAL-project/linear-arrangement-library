@@ -1,0 +1,150 @@
+/*********************************************************************
+ *
+ *  Linear Arrangement Library - A library that implements a collection
+ *  algorithms for linear arrangments of graphs.
+ *
+ *  Copyright (C) 2019 - 2021
+ *
+ *  This file is part of Linear Arrangement Library. To see the full code
+ *  visit the webpage:
+ *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
+ *
+ *  Linear Arrangement Library is free software: you can redistribute it
+ *  and/or modify it under the terms of the GNU Affero General Public License
+ *  as published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  Linear Arrangement Library is distributed in the hope that it will be
+ *  useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with Linear Arrangement Library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Contact:
+ *
+ *      Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://cqllab.upc.edu/people/lalemany/
+ *
+ *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Office S124, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
+ *
+ ********************************************************************/
+
+#pragma once
+
+// C++ includes
+#include <algorithm>
+#include <numeric>
+
+// lal includes
+#include <lal/graphs/graph.hpp>
+
+namespace lal {
+namespace generate {
+
+/**
+ * @brief Exhaustive enumeration of arrangements of any graph.
+ *
+ * This class generates all \f$n!\f$ arrangements of an \f$n\f$-vertex tree.
+ * Unlike other generators (e.g. @ref lal::generate::all_projective_arrangements),
+ * this class is not instantiated with a tree but, rather, with a number of
+ * vertices due to the simple fact that the tree structure does not matter for
+ * the generation of these arrangements.
+ *
+ * In order to use this class, you must first provide the number of vertices.
+ * Arrangements are generated internally, i.e., arragements are encoded in the
+ * internal state of the generator. Said state is updated using method @ref next(),
+ * which updates it to encode the next arrangement in the generation. In order
+ * to retrieve an arrangement, use method @ref get_arrangement(). Upon initialisation,
+ * the generator encodes the first arrangement, which has to be retrieved using
+ * method @ref get_arrangement().
+ *
+ * This class can also be instantiated with a graph. Neverthless, only its number
+ * of vertices is actually needed.
+ *
+ * This class is a wrapper over the C++'s std::next_permutation algorithm.
+ *
+ * A possible usage of this class is the following:
+ * @code
+ *		all_arrangements Gen(t); // t is a rooted tree
+ *		while (not Gen.end()) {
+ *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			// ...
+ *			Gen.next();
+ *		}
+ * @endcode
+ * Alternatively, the @ref all_arrangements class can be used in a for loop:
+ * @code
+ *		for (all_arrangements Gen(t); not Gen.end(); Gen.next()) {
+ *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			// ...
+ *		}
+ * @endcode
+ */
+class all_arrangements {
+public:
+	/**
+	 * @brief Constructor with graph.
+	 * @param g Input graph. Only its number of vertices is used.
+	 */
+	all_arrangements(const lal::graphs::graph& g) noexcept
+		: all_arrangements(g.get_num_nodes())
+	{ }
+
+	/**
+	 * @brief Constructor with number of vertices.
+	 * @param n Number of vertices of the arrangements.
+	 */
+	all_arrangements(uint32_t n) noexcept
+		: m_n(n),
+		  m_arr(lal::linear_arrangement(m_n))
+	{
+		reset();
+	}
+
+	/// Returns the current linear arrangemnt.
+	const lal::linear_arrangement& get_arrangement() noexcept { return m_arr; }
+
+	/// Returns true if the end of the iteration was reached.
+	inline bool end() const noexcept { return m_reached_end; }
+
+	/**
+	 * @brief Generates the next arrangement.
+	 *
+	 * Modifies the internal state so that the next arrangement
+	 * can be retrieved using method @ref get_arrangement.
+	 */
+	inline void next() noexcept {
+		m_reached_end = not std::next_permutation(m_arr.begin(), m_arr.end());
+	}
+
+	/// Sets the generator to its initial state.
+	inline void reset() noexcept {
+		m_reached_end = false;
+		std::iota(m_arr.begin(), m_arr.end(), 0);
+	}
+
+private:
+	/// Number of vertices
+	const uint32_t m_n;
+	/**
+	 * @brief The arrangement generated by this class
+	 *
+	 * Actually, generated by the std::next_permutation algorithm.
+	 */
+	lal::linear_arrangement m_arr;
+	/// Has the end of the iteration been reached?
+	bool m_reached_end = false;
+};
+
+} // -- namespace generate
+} // -- namespace lal
