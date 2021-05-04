@@ -201,7 +201,7 @@ numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept;
  */
 inline
 numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept {
-	return hubiness_rational(t.to_undirected());
+	return hubiness_rational(t.to_free_tree());
 }
 
 /**
@@ -222,7 +222,7 @@ double hubiness(const graphs::free_tree& t) noexcept;
  */
 inline
 double hubiness(const graphs::rooted_tree& t) noexcept {
-	return hubiness(t.to_undirected());
+	return hubiness(t.to_free_tree());
 }
 
 } // -- namespace properties

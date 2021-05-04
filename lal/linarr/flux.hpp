@@ -69,7 +69,7 @@ compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noex
  */
 std::vector<dependency_flux>
 compute_flux(const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
-{ return compute_flux(t.to_undirected(), pi); }
+{ return compute_flux(t.to_free_tree(), pi); }
 
 } // -- namespace linarr
 } // -- namespace lal

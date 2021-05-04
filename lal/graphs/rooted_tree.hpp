@@ -563,11 +563,11 @@ public:
 	rooted_tree get_subtree(node u) const noexcept;
 
 	/**
-	 * @brief Converts this rooted tree into a free tree (see @ref tree).
+	 * @brief Converts this rooted tree into a free tree (see @ref free_tree).
 	 * @param norm Normalise the tree.
 	 * @param check Chech whether the resulting graph is normalised or not.
 	 */
-	free_tree to_undirected
+	free_tree to_free_tree
 	(bool norm = true, bool check = true) const noexcept;
 
 protected:

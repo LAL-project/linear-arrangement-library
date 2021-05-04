@@ -90,7 +90,7 @@ inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths(
 	const algorithms_Dmin& a = algorithms_Dmin::Unconstrained_YS
 ) noexcept
 {
-	return min_sum_edge_lengths(t.to_undirected(), a);
+	return min_sum_edge_lengths(t.to_free_tree(), a);
 }
 
 /**
@@ -128,7 +128,7 @@ std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
  */
 inline std::pair<uint32_t, linear_arrangement> min_sum_edge_lengths_planar
 (const graphs::rooted_tree& t) noexcept
-{ return min_sum_edge_lengths_planar(t.to_undirected()); }
+{ return min_sum_edge_lengths_planar(t.to_free_tree()); }
 
 /**
  * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
