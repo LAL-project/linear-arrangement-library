@@ -248,9 +248,9 @@ namespace lal {
  * To enumerate all trees:
  * @code
  *		lal::generate::all_2_3_trees TreeGen(n);
- *		while (TreeGen.has_next()) {
- *			TreeGen.next();
+ *		while (not TreeGen.end()) {
  *			const lal::graphs::3_tree T = TreeGen.get_tree();
+ * 			TreeGen.next();
  *			// ...
  *		}
  * @endcode
@@ -260,28 +260,31 @@ namespace lal {
  *
  * \section gen_arrangements Generating arrangements
  *
- * This namespace contains classes for the generation of arrangements <b>of a given tree</b>. Depending on the type of arrangements, the given tree should be free or rooted accordingly.
- *
- * Again, the names for these classes are also self-explanatory:
+ * This namespace contains classes for the generation of arrangements <b>of a given tree</b>. Depending on the type of arrangements, the given tree should be free or rooted accordingly. Again, the names for these classes are also self-explanatory:
  * @verbatim
 1_2_arrangement
    @endverbatim
  *
  * The numbers are placeholders for the following:
  *
- * - 2: projective -- Indicates whether the generated arrangements should be
- * projective.
+ * - 2: NULL/projective -- Indicates whether the generated arrangements should be unconstrained (NULL) or projective. By NULL we mean that the keyword should be omitted (see examples).
  *
  * - 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
  *
- * Therefore, the class @ref lal::generate::rand_projective_arrangements generates random projective arrangements of a tree, and the class @ref lal::generate::all_projective_arrangements should be used to enumerate all projective arrangements of a tree.
+ * Therefore,
+ * - the class @ref lal::generate::rand_projective_arrangements generates random projective arrangements of a tree, and
+ * - the class @ref lal::generate::all_projective_arrangements is used to enumerate all projective arrangements of a tree.
+ * 
+ * Similary,
+ * - the class @ref lal::generate::rand_arrangements generates unconstrained random arrangements, and
+ * - the class @ref lal::generate::all_arrangements is used to enumerate all unconstrained arrangements of a tree (i.e., all the \f$n!\f$ arrangements).
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
  *		// given a tree T (of the appropriate type -- indicated with the '2')
  *		lal::generate::rand_2_arrangements ArrGen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::linear_arrangement arr = ArrGen.make_rand_arrgmnt();
+ *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -289,9 +292,9 @@ namespace lal {
  * @code
  *		// given a tree T (of the appropriate type -- indicated with the '2')
  *		lal::generate::all_2_arrangements ArrGen(T);
- *		while (ArrGen.has_next()) {
- *			ArrGen.next();
- *			const lal::linearrgmnt arr = ArrGen.get_arrangement();
+ *		while (not ArrGen.end()) {
+ *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
+ * 			ArrGen.next();
  *			// ...
  *		}
  * @endcode

@@ -32,9 +32,9 @@ Using these classes is straightforward. To generate trees uniformly at random:
 To enumerate all trees:
 
 >>> lal.generate.all_2_3_trees TreeGen(n)
->>> while TreeGen.has_next():
->>>     TreeGen.next()
+>>> while not TreeGen.end():
 >>>     T = TreeGen.get_tree()
+>>>     TreeGen.next()
 >>>     # ...
 
 (remember to replace the numbers in the actual code!).
@@ -44,34 +44,38 @@ To enumerate all trees:
 Generating arrangements
 -----------------------
 
-This module contains classes for the generation of arrangements `of a given tree`. Depending on the type of arrangements, the given tree should be free or rooted accordingly.
-
-Again, the names for these classes are also self-explanatory:
+This module contains classes for the generation of arrangements `of a given tree`. Depending on the type of arrangements, the given tree should be free or rooted accordingly. Again, the names for these classes are also self-explanatory:
 
 >>> 1_2_arrangement
 
 The numbers are placeholders for the following:
 
-- 2: projective -- Indicates whether the generated arrangements should be projective.
+- 2: NULL/projective -- Indicates whether the generated arrangements should be unconstrained (NULL) or projective. By NULL we mean that the keyword should be omitted (see examples).
 - 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
 
-Therefore, the class ``rand_projective_arrangements`` generates random projective arrangements of a tree, and the class ``all_projective_arrangements`` should be used to enumerate all projective arrangements of a tree.
+Therefore,
+- the class ``lal.generate.rand_projective_arrangements`` generates random projective arrangements of a tree,
+- the class ``lal.generate.all_projective_arrangements`` should be used to enumerate all projective arrangements of a tree.
+
+Similary,
+- the class ``lal.generate.rand_arrangements`` generates unconstrained random arrangements, and
+- the class ``lal.generate.all_arrangements`` gis used to enumerate all unconstrained arrangements of a tree (i.e., all the :math:`n!` arrangements).
 
 Using these classes is straightforward. To generate trees uniformly at random:
 
 >>> # given a tree T (of the appropriate type -- indicated with the '2')
 >>> ArrGen = lal.generate.rand_2_arrangements(T)
 >>> for  i in range(0,100):
->>>     arr = ArrGen.make_rand_arrgmnt()
+>>>     arr = ArrGen.get_arrangement()
 >>>     # ...
 
 To enumerate all arrangements:
 
 >>> # given a tree T (of the appropriate type -- indicated with the '2')
 >>> ArrGen = lal.generate.all_2_arrangements(T)
->>> while ArrGen.has_next():
->>>     ArrGen.next()
+>>> while not ArrGen.end():
 >>>     arr = ArrGen.get_arrangement()
+>>>     ArrGen.next()
 
 (remember to replace the numbers in the actual code!).
 
