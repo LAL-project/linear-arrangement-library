@@ -70,7 +70,7 @@ namespace generate {
  * and @ref bicenter includes the correction pointed out in
  * \cite GiacXcas_Manual (page 38).
  */
-class __rand_ulab_free_trees : public __rand_ulab_rooted_trees {
+class _rand_ulab_free_trees : public _rand_ulab_rooted_trees {
 public:
 	/* CONSTRUCTORS */
 
@@ -81,21 +81,21 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	__rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.
 	 */
-	__rand_ulab_free_trees(const __rand_ulab_free_trees& Gen) = default;
+	_rand_ulab_free_trees(const _rand_ulab_free_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled free tree generator.
 	 */
-	__rand_ulab_free_trees(__rand_ulab_free_trees&& Gen) = default;
+	_rand_ulab_free_trees(_rand_ulab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	~__rand_ulab_free_trees() = default;
+	~_rand_ulab_free_trees() = default;
 
 	/* GETTERS */
 
@@ -228,7 +228,7 @@ private:
 /**
  * @brief Uniformly random generation of unlabelled free trees.
  *
- * This is a wrapper class of @ref __rand_ulab_free_trees. Users should refrain
+ * This is a wrapper class of @ref _rand_ulab_free_trees. Users should refrain
  * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
@@ -274,14 +274,14 @@ protected:
 	/**
 	 * @brief Returns an unlabelled free tree chosen uniformly at random.
 	 *
-	 * See @ref __rand_ulab_free_trees::get_tree for details.
+	 * See @ref _rand_ulab_free_trees::get_tree for details.
 	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
-	/// See @ref __rand_ulab_free_trees.
-	__rand_ulab_free_trees m_Gen;
+	/// See @ref _rand_ulab_free_trees.
+	_rand_ulab_free_trees m_Gen;
 };
 
 } // -- namespace generate

@@ -62,7 +62,7 @@ namespace generate {
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
-__rand_ulab_rooted_trees::__rand_ulab_rooted_trees
+_rand_ulab_rooted_trees::_rand_ulab_rooted_trees
 (uint32_t _n, uint32_t seed) noexcept
 	: m_n(_n),
 	  m_head_vector(m_n)
@@ -70,10 +70,10 @@ __rand_ulab_rooted_trees::__rand_ulab_rooted_trees
 	init_rn();
 	// use '__rand_ulab_rooted_trees::' because another class
 	// will inherit from this one
-	__rand_ulab_rooted_trees::init(seed);
+	_rand_ulab_rooted_trees::init(seed);
 }
 
-rooted_tree __rand_ulab_rooted_trees::get_tree() noexcept {
+rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept {
 	if (m_n <= 1) {
 		rooted_tree r(m_n, 0);
 		r.set_root(0);
@@ -97,14 +97,14 @@ rooted_tree __rand_ulab_rooted_trees::get_tree() noexcept {
 	return rT;
 }
 
-void __rand_ulab_rooted_trees::clear() noexcept {
+void _rand_ulab_rooted_trees::clear() noexcept {
 	m_rn.clear();
 	init_rn();
 }
 
 /* PROTECTED */
 
-void __rand_ulab_rooted_trees::init(uint32_t seed) noexcept {
+void _rand_ulab_rooted_trees::init(uint32_t seed) noexcept {
 	if (m_n <= 1) { return; }
 
 	if (seed == 0) {
@@ -120,7 +120,7 @@ void __rand_ulab_rooted_trees::init(uint32_t seed) noexcept {
 }
 
 pair<uint32_t,uint32_t>
-__rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
+_rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 {
 	if (n == 0) {
 		// The new tree has no nodes.
@@ -211,7 +211,7 @@ __rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 	return make_pair(root_Tp, nt);
 }
 
-void __rand_ulab_rooted_trees::init_rn() noexcept {
+void _rand_ulab_rooted_trees::init_rn() noexcept {
 	// from the OEIS: https://oeis.org/A000081
 	m_rn = vector<integer>(31);
 	m_rn[0] = 0;
@@ -247,7 +247,7 @@ void __rand_ulab_rooted_trees::init_rn() noexcept {
 	m_rn[30] = integer("354426847597");
 }
 
-const integer& __rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
+const integer& _rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -283,7 +283,7 @@ const integer& __rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
 }
 
 pair<uint32_t, uint32_t>
-__rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n) noexcept
+_rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n) noexcept
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair

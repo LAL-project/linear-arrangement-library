@@ -73,14 +73,14 @@ namespace generate {
 
 /* PUBLIC */
 
-__rand_ulab_free_trees::__rand_ulab_free_trees
+_rand_ulab_free_trees::_rand_ulab_free_trees
 (uint32_t _n, uint32_t seed) noexcept
-	: __rand_ulab_rooted_trees(_n, seed)
+	: _rand_ulab_rooted_trees(_n, seed)
 {
 	init_fn();
 }
 
-free_tree __rand_ulab_free_trees::get_tree() noexcept {
+free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
@@ -154,8 +154,8 @@ free_tree __rand_ulab_free_trees::get_tree() noexcept {
 	return T;
 }
 
-void __rand_ulab_free_trees::clear() noexcept {
-	__rand_ulab_rooted_trees::clear();
+void _rand_ulab_free_trees::clear() noexcept {
+	_rand_ulab_rooted_trees::clear();
 	m_fn.clear();
 	m_alpha.clear();
 	init_fn();
@@ -163,8 +163,8 @@ void __rand_ulab_free_trees::clear() noexcept {
 
 /* PROTECTED */
 
-void __rand_ulab_free_trees::init(uint32_t seed) noexcept {
-	__rand_ulab_rooted_trees::init(seed);
+void _rand_ulab_free_trees::init(uint32_t seed) noexcept {
+	_rand_ulab_rooted_trees::init(seed);
 	init_fn();
 }
 
@@ -181,7 +181,7 @@ void __rand_ulab_free_trees::init(uint32_t seed) noexcept {
  *	number of times.
  *
  */
-uint32_t __rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noexcept {
+uint32_t _rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noexcept {
 	if (m == 0) {
 		// Forest of 0 nodes
 		return nt;
@@ -238,7 +238,7 @@ uint32_t __rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noe
 	return nt;
 }
 
-void __rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
+void _rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
 	// make sure that the number of nodes is even
 #if defined DEBUG
 	assert(n%2 == 0);
@@ -273,7 +273,7 @@ void __rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
 }
 
 const integer&
-__rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) noexcept {
+_rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) noexcept {
 
 	/* This algorithm can be compared to the algorithm in
 	 *		https://github.com/marohnicluka/giac/blob/master/graphe.cc#L7149
@@ -315,7 +315,7 @@ __rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) noexcep
 	return get_alpha(m,q);
 }
 
-void __rand_ulab_free_trees::init_fn() noexcept {
+void _rand_ulab_free_trees::init_fn() noexcept {
 	// from the OEIS: https://oeis.org/A000055
 
 	m_fn = vector<integer>(31);
@@ -352,7 +352,7 @@ void __rand_ulab_free_trees::init_fn() noexcept {
 	m_fn[30] = integer("14830871802");
 }
 
-const integer& __rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
+const integer& _rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
@@ -385,7 +385,7 @@ const integer& __rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 }
 
 pair<uint32_t, uint32_t>
-__rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q) noexcept
+_rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q) noexcept
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we

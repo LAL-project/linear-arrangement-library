@@ -65,7 +65,7 @@ namespace generate {
  * (see \cite Pruefer1918a). The construction of the free labelled tree uses the
  * algorithm in \cite Alonso1995a.
  */
-class __rand_lab_free_trees {
+class _rand_lab_free_trees {
 public:
 	/* CONSTRUCTORS */
 
@@ -76,21 +76,21 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	__rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	__rand_lab_free_trees(const __rand_lab_free_trees& Gen) = default;
+	_rand_lab_free_trees(const _rand_lab_free_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	__rand_lab_free_trees(__rand_lab_free_trees&& Gen) = default;
+	_rand_lab_free_trees(_rand_lab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	virtual ~__rand_lab_free_trees() = default;
+	virtual ~_rand_lab_free_trees() = default;
 
 	/* GETTERS */
 
@@ -121,7 +121,7 @@ protected:
 /**
  * @brief Uniformly random generation of labelled free trees.
  *
- * This is a wrapper class of @ref __rand_lab_free_trees. Users should refrain
+ * This is a wrapper class of @ref _rand_lab_free_trees. Users should refrain
  * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
@@ -167,14 +167,14 @@ protected:
 	/**
 	 * @brief Returns a labelled free tree chosen uniformly at random.
 	 *
-	 * See @ref __rand_lab_free_trees::get_tree for details.
+	 * See @ref _rand_lab_free_trees::get_tree for details.
 	 * @returns A labelled free tree chosen uniformly at random.
 	 */
 	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
-	/// See @ref __rand_lab_free_trees.
-	__rand_lab_free_trees m_Gen;
+	/// See @ref _rand_lab_free_trees.
+	_rand_lab_free_trees m_Gen;
 };
 
 } // -- namespace generate

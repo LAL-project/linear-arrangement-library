@@ -256,7 +256,7 @@ namespace lal {
  * @endcode
  * (remember to replace the numbers in the actual code!).
  *
- * \remark In this documentation you will find 8 classes for random generation of trees. Users should refrain from using those starting with '__' as the trees returned by these classes are not preprocessed. However, if one wishes to know the implementation details (as for algorithms implemented, and the papers cited), please, read the documentation of said classes.
+ * \remark In this documentation you will find 8 classes for random generation of trees. Users should refrain from using those starting with '_' as the trees returned by these classes are not preprocessed. However, if one wishes to know the implementation details (as for algorithms implemented, and the papers cited), please, read the documentation of said classes.
  *
  * \section gen_arrangements Generating arrangements
  *

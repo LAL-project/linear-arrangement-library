@@ -57,7 +57,7 @@ namespace io {
  * This class acts as a base class for all processor classes, namely, the
  * @ref lal::io::treebank_processor and the @ref lal::io::treebank_collection_processor.
  */
-class __process_treebank_base {
+class _process_treebank_base {
 public:
 	// MODIFIERS
 
@@ -76,8 +76,7 @@ public:
 
 	// SETTERS
 
-	/// Should the treebank file or collection be checked for errors prior to
-	/// processing?
+	/// Should the treebank file or collection be checked for errors prior to processing?
 	inline void set_check_before_process(bool v) noexcept {
 		m_check_before_process = v;
 	}

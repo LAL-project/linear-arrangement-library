@@ -64,7 +64,7 @@ namespace generate {
  * This node plays the role of the root of the rooted labelled tree. The edges
  * are oriented away from the root.
  */
-class __rand_lab_rooted_trees : public __rand_lab_free_trees {
+class _rand_lab_rooted_trees : public _rand_lab_free_trees {
 public:
 	/* CONSTRUCTORS */
 
@@ -75,22 +75,22 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	__rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: __rand_lab_free_trees(n, seed) { }
+	_rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+		: _rand_lab_free_trees(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	__rand_lab_rooted_trees(const __rand_lab_rooted_trees& Gen) = default;
+	_rand_lab_rooted_trees(const _rand_lab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	__rand_lab_rooted_trees(__rand_lab_rooted_trees&& Gen) = default;
+	_rand_lab_rooted_trees(_rand_lab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	~__rand_lab_rooted_trees() = default;
+	~_rand_lab_rooted_trees() = default;
 
 	/* GETTERS */
 
@@ -100,7 +100,7 @@ public:
 	 * tree is rooted at vertex 0.
 	 */
 	inline graphs::rooted_tree get_tree() noexcept {
-		const graphs::free_tree t = __rand_lab_free_trees::get_tree();
+		const graphs::free_tree t = _rand_lab_free_trees::get_tree();
 		const node r = m_unif(m_gen);
 		return graphs::rooted_tree(t, r);
 	}
@@ -113,14 +113,14 @@ protected:
 	 * @param seed Integer value used to seed the random number generator.
 	 */
 	inline void init(uint32_t seed = 0) noexcept {
-		__rand_lab_free_trees::init(seed);
+		_rand_lab_free_trees::init(seed);
 	}
 };
 
 /**
  * @brief Uniformly random generation of labelled rooted trees.
  *
- * This is a wrapper class of @ref __rand_lab_rooted_trees. Users should refrain
+ * This is a wrapper class of @ref _rand_lab_rooted_trees. Users should refrain
  * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
@@ -166,14 +166,14 @@ protected:
 	/**
 	 * @brief Returns a labelled rooted tree chosen uniformly at random.
 	 *
-	 * See @ref __rand_lab_rooted_trees::get_tree for details.
+	 * See @ref _rand_lab_rooted_trees::get_tree for details.
 	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
-	/// See @ref __rand_lab_rooted_trees for details.
-	__rand_lab_rooted_trees m_Gen;
+	/// See @ref _rand_lab_rooted_trees for details.
+	_rand_lab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

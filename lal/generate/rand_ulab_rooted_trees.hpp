@@ -64,7 +64,7 @@ namespace generate {
  * Every call to @ref get_tree generates rooted unlabelled trees uniformly at
  * random using the @e ranrut procedure (see \cite Nijenhuis1978a, chapter 29).
  */
-class __rand_ulab_rooted_trees {
+class _rand_ulab_rooted_trees {
 public:
 	/* CONSTRUCTORS */
 
@@ -76,21 +76,21 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	__rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	__rand_ulab_rooted_trees(const __rand_ulab_rooted_trees& Gen) = default;
+	_rand_ulab_rooted_trees(const _rand_ulab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	__rand_ulab_rooted_trees(__rand_ulab_rooted_trees&& Gen) = default;
+	_rand_ulab_rooted_trees(_rand_ulab_rooted_trees&& Gen) = default;
 #endif
 	/// Destructor.
-	virtual ~__rand_ulab_rooted_trees() = default;
+	virtual ~_rand_ulab_rooted_trees() = default;
 
 	/* GETTERS */
 
@@ -200,7 +200,7 @@ protected:
 /**
  * @brief Uniformly random generation of unlabelled rooted trees.
  *
- * This is a wrapper class of @ref __rand_ulab_rooted_trees. Users should refrain
+ * This is a wrapper class of @ref _rand_ulab_rooted_trees. Users should refrain
  * from using said class. However, users will find the implementation details
  * (as for algorithms and citations) in the documentation of said class.
  *
@@ -245,14 +245,14 @@ protected:
 	/**
 	 * @brief Returns an unlabelled rooted tree chosen uniformly at random.
 	 *
-	 * See @ref __rand_ulab_rooted_trees::get_tree for details.
+	 * See @ref _rand_ulab_rooted_trees::get_tree for details.
 	 * @returns An unlabelled rooted tree chosen uniformly at random.
 	 */
 	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
-	/// See @ref __rand_lab_rooted_trees for details.
-	__rand_ulab_rooted_trees m_Gen;
+	/// See @ref _rand_ulab_rooted_trees for details.
+	_rand_ulab_rooted_trees m_Gen;
 };
 
 } // -- namespace generate

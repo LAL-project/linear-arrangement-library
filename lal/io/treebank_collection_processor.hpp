@@ -125,7 +125,7 @@ namespace io {
  *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_collection_processor : public __process_treebank_base {
+class treebank_collection_processor : public _process_treebank_base {
 public:
 	// SETTERS
 

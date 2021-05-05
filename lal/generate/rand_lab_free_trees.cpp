@@ -57,7 +57,7 @@ namespace generate {
 
 /* PUBLIC */
 
-__rand_lab_free_trees::__rand_lab_free_trees
+_rand_lab_free_trees::_rand_lab_free_trees
 (uint32_t _n, uint32_t seed) noexcept
 	: m_n(_n),
 	  m_Prufer_seq(m_n <= 2 ? 2 : m_n - 2)
@@ -65,7 +65,7 @@ __rand_lab_free_trees::__rand_lab_free_trees
 	init(seed);
 }
 
-free_tree __rand_lab_free_trees::get_tree() noexcept {
+free_tree _rand_lab_free_trees::get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
@@ -81,7 +81,7 @@ free_tree __rand_lab_free_trees::get_tree() noexcept {
 
 /* PROTECTED */
 
-void __rand_lab_free_trees::init(uint32_t seed) noexcept {
+void _rand_lab_free_trees::init(uint32_t seed) noexcept {
 	if (seed == 0) {
 		random_device rd;
 		m_gen = mt19937(rd());
