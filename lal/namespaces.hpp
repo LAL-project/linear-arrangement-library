@@ -254,6 +254,21 @@ namespace lal {
  *			// ...
  *		}
  * @endcode
+ * Alternatively,
+ * @code
+ *		for (lal::generate::all_2_3_trees TreeGen(n); not TreeGen.end(); TreeGen.next()) {
+ *			const lal::graphs::3_tree T = TreeGen.get_tree();
+ *			// ...
+ *		}
+ * @endcode
+ * And even,
+ * @code
+ *		lal::generate::all_2_3_trees TreeGen(n);
+ *		while (not TreeGen.end()) {
+ *			const lal::graphs::3_tree T = TreeGen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  * (remember to replace the numbers in the actual code!).
  *
  * \remark In this documentation you will find 8 classes for random generation of trees. Users should refrain from using those starting with '_' as the trees returned by these classes are not preprocessed. However, if one wishes to know the implementation details (as for algorithms implemented, and the papers cited), please, read the documentation of said classes.
@@ -281,7 +296,7 @@ namespace lal {
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code
- *		// given a tree T (of the appropriate type -- indicated with the '2')
+ *		// given a tree T (of the appropriate type)
  *		lal::generate::rand_2_arrangements ArrGen(T);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
@@ -295,6 +310,22 @@ namespace lal {
  *		while (not ArrGen.end()) {
  *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
  * 			ArrGen.next();
+ *			// ...
+ *		}
+ * @endcode
+ * Alternatively,
+ * @code
+ *		for (lal::generate::all_2_arrangements ArrGen(n); not ArrGen.end(); ArrGen.next()) {
+ *			const lal::linear_arrangement arr = ArrGen.get_arrangement();
+ *			// ...
+ *		}
+ * @endcode
+ * And even,
+ * @code
+ *		// given a tree T (of the appropriate type)
+ *		lal::generate::all_2_arrangements ArrGen(T);
+ *		while (not ArrGen.end()) {
+ *			const lal::linear_arrangement arr = ArrGen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

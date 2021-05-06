@@ -90,6 +90,15 @@ namespace generate {
  *			// ...
  *		}
  * @endcode
+ * This class also has method @ref yield_arrangement() which is aimed at simplifying
+ * this class' usage:
+ * @code
+ *		all_projective_arrangements Gen(t); // t is a rooted tree
+ *		while (not Gen.end()) {
+ *			const lal::linear_arrangement arr = Gen.yield_arrangement();
+ *			// ...
+ *		}
+ * @endcode
  */
 class all_projective_arrangements {
 public:
@@ -158,6 +167,20 @@ public:
 	inline void reset() noexcept {
 		__reset();
 		next();
+	}
+
+	/**
+	 * @brief Returns the current arrangement and advances the generator.
+	 *
+	 * This method calls @ref next() after retrieving a copy of the current
+	 * arrangement.
+	 * @returns The current arrangement.
+	 */
+	inline linear_arrangement yield_arrangement() noexcept {
+		// yes, a copy...
+		const linear_arrangement arr = get_arrangement();
+		next();
+		return arr;
 	}
 
 private:

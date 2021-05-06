@@ -90,6 +90,14 @@ namespace generate {
  *			// ...
  *		}
  * @endcode
+ * Equivalently,
+ * @code
+ *		all_lab_rooted_trees Gen(n);
+ *		while (not Gen.end()) {
+ *			const auto t = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class all_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
@@ -161,6 +169,12 @@ public:
 	/// Returns whether there are more trees to generate.
 	inline bool has_next() const noexcept {
 		return m_cur_root + 1 < m_n or not m_gen_lab_free_tree.end();
+	}
+
+	inline graphs::rooted_tree yield_tree() noexcept {
+		const auto t = get_tree();
+		next();
+		return t;
 	}
 
 protected:

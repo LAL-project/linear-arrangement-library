@@ -37,6 +37,13 @@ To enumerate all trees:
 >>>     TreeGen.next()
 >>>     # ...
 
+Alternatively, for a simpler usage,
+
+>>> lal.generate.all_2_3_trees TreeGen(n)
+>>> while not TreeGen.end():
+>>>     T = TreeGen.yield_tree()
+>>>     # ...
+
 (remember to replace the numbers in the actual code!).
 
     *Remark:* In this documentation you will find 8 classes for random generation of trees. Users should refrain from using those starting with '_' as the trees returned by these classes are not preprocessed. However, if one wishes to know the implementation details (as for algorithms implemented, and the papers cited), please, read the documentation of said classes.
@@ -71,11 +78,19 @@ Using these classes is straightforward. To generate trees uniformly at random:
 
 To enumerate all arrangements:
 
->>> # given a tree T (of the appropriate type -- indicated with the '2')
+>>> # given a tree T (of the appropriate type)
 >>> ArrGen = lal.generate.all_2_arrangements(T)
 >>> while not ArrGen.end():
 >>>     arr = ArrGen.get_arrangement()
 >>>     ArrGen.next()
+
+Alternatively, for a simpler usage,
+
+>>> # given a tree T (of the appropriate type)
+>>> ArrGen = lal.generate.all_2_arrangements(T)
+>>> while not ArrGen.end():
+>>>     arr = ArrGen.yield_arrangement()
+
 
 (remember to replace the numbers in the actual code!).
 

@@ -87,6 +87,14 @@ namespace generate {
  *			// ...
  *		}
  * @endcode
+ * Equivalently,
+ * @code
+ *		all_lab_free_trees Gen(n);
+ *		while (not Gen.end()) {
+ *			const auto t = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class all_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
@@ -133,6 +141,12 @@ public:
 		activate_all_postprocessing_actions();
 		__reset();
 		next();
+	}
+
+	inline graphs::free_tree yield_tree() noexcept {
+		const auto t = get_tree();
+		next();
+		return t;
 	}
 
 protected:

@@ -132,6 +132,14 @@ protected:
  *			// ...
  *		}
  * @endcode
+ * Equivalently,
+ * @code
+ *		lal::generate::rand_lab_rooted_trees Gen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const lal::graphs::rooted_tree T = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
@@ -161,6 +169,10 @@ public:
 #endif
 	/// Default destructor.
 	~rand_lab_rooted_trees() = default;
+
+	inline graphs::rooted_tree yield_tree() noexcept {
+		return get_tree();
+	}
 
 protected:
 	/**

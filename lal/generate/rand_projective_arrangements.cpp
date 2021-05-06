@@ -81,7 +81,7 @@ rand_projective_arrangements::rand_projective_arrangements
 	}
 }
 
-linear_arrangement rand_projective_arrangements::get_arrangement() {
+linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	if (m_rT.get_num_nodes() == 1) {
 		return linear_arrangement(1, 0);
 	}

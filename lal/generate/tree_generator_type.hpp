@@ -197,83 +197,52 @@ using tree_generator_type_t =
 		tree_type
 	>::type;
 
+// some sanity checks
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		exhaustive_t,
-		labelled_t,
-		graphs::free_tree
-	>,
+	tree_generator_type_t<exhaustive_t, labelled_t, graphs::free_tree>,
 	all_lab_free_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		exhaustive_t,
-		labelled_t,
-		graphs::rooted_tree
-	>,
+	tree_generator_type_t<exhaustive_t, labelled_t, graphs::rooted_tree>,
 	all_lab_rooted_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		exhaustive_t,
-		unlabelled_t,
-		graphs::free_tree
-	>,
+	tree_generator_type_t<exhaustive_t, unlabelled_t, graphs::free_tree>,
 	all_ulab_free_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		exhaustive_t,
-		unlabelled_t,
-		graphs::rooted_tree
-	>,
+	tree_generator_type_t< exhaustive_t, unlabelled_t, graphs::rooted_tree>,
 	all_ulab_rooted_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		random_t,
-		labelled_t,
-		graphs::free_tree
-	>,
+	tree_generator_type_t<random_t, labelled_t, graphs::free_tree>,
 	rand_lab_free_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		random_t,
-		labelled_t,
-		graphs::rooted_tree
-	>,
+	tree_generator_type_t<random_t, labelled_t, graphs::rooted_tree>,
 	rand_lab_rooted_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		random_t,
-		unlabelled_t,
-		graphs::free_tree
-	>,
+	tree_generator_type_t<random_t, unlabelled_t, graphs::free_tree>,
 	rand_ulab_free_trees
 >
 );
 static_assert(
 std::is_same_v<
-	tree_generator_type_t<
-		random_t,
-		unlabelled_t,
-		graphs::rooted_tree
-	>,
+	tree_generator_type_t<random_t, unlabelled_t, graphs::rooted_tree>,
 	rand_ulab_rooted_trees
 >
 );

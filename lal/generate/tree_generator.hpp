@@ -23,18 +23,73 @@ namespace generate {
  * @ref deactivate_all_postprocessing_actions and activate all of them with
  * @ref activate_all_postprocessing_actions.
  *
+ * There are two types of classes inheriting from this base class. The
+ * @e exhaustive classes, and the @e random classes. The former provide an
+ * exhaustive enumeration of a given type of trees
+ * (\f$\{\text{labeled}/\text{unlabeled}\} \times \{\text{rooted}/\text{free}\}\f$);
+ * the latter generate a given type of tree (the aforementioned four combinations),
+ * uniformly at random.
+ *
+ * The names of the classes inheriting from this follow one very simple pattern.
+ * This is explained in the documentation of the @ref lal::generate namespace
+ * (or, if you are a Python user, @e lal.generate module).
+ *
+ * The exhaustive classes have three different usages:
+ * @code
+ *		lal::generate::all_2_3_trees Gen(10);
+ *		while (not Gen.end()) {
+ *			const auto T = Gen.get_tree();
+ *			// ...
+ *			Gen.next();
+ *		}
+ * @endcode
+ * @code
+ *		for (lal::generate::all_2_3_trees Gen(10); not Gen.end(); Gen.next()) {
+ *			const auto T = Gen.get_tree();
+ *			// ...
+ *		}
+ * @endcode
+ * @code
+ *		lal::generate::all_2_3_trees Gen(10);
+ *		while (not Gen.end()) {
+ *			const auto T = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
+ *
+ * Random classes are a bit simpler to use, with, basically, two different usages:
+ * @code
+ *		lal::generate::rand_2_3_trees Gen(10);
+ *		for (int i = 0; i < N; ++i) {
+ *			const auto T = Gen.get_tree();
+ *			// ...
+ *		}
+ * @endcode
+ * @code
+ *		lal::generate::rand_2_3_trees Gen(10);
+ *		for (int i = 0; i < N; ++i) {
+ *			const auto T = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
+ *
  * @tparam T Type of tree.
  */
 template<
-	class T,
-	bool is_free = std::is_base_of_v<graphs::free_tree, T>,
+	class tree_type,
+	bool is_free = std::is_base_of_v<graphs::free_tree, tree_type>,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 		bool
 	> = true
 >
 class _tree_generator {
+public:
+	/// Shorthand for the type of tree this class returns.
+	typedef std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
+	tree_type_t;
+
 public:
 	/* CONSTRUCTORS */
 
@@ -72,6 +127,7 @@ public:
 	 */
 	_tree_generator& operator= (_tree_generator&& Gen) = default;
 #endif
+
 	/* GETTERS */
 
 	/**
@@ -82,10 +138,12 @@ public:
 	 * - @ref set_normalise_tree
 	 * - @ref set_calculate_size_subtrees
 	 * - @ref set_calculate_tree_type
+	 *
+	 * @returns A free/rooted tree depending on the type of the class inheriting
+	 * from this. The type of generation of tree differs from one type of class
+	 * to another.
 	 */
-	inline
-	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
-	get_tree() noexcept
+	inline tree_type_t get_tree() noexcept
 	{
 		auto t = __get_tree();
 
@@ -112,6 +170,18 @@ public:
 	}
 
 	/* MODIFIERS */
+
+	/**
+	 * @brief Yields a tree, advancing the generator if necessary.
+	 *
+	 * In case the class that inherits from this one is @e exhaustive then this
+	 * function also moves the generator forward with its appropriate method. If
+	 * the class is @e random, then it just calls @ref get_tree().
+	 * @returns A free/rooted tree depending on the type of the class inheriting
+	 * from this. The type of generation of tree differs from one type of class
+	 * to another.
+	 */
+	virtual tree_type_t yield_tree() noexcept = 0;
 
 	/**
 	 * @brief Activates all postprocessing actions.
@@ -169,10 +239,7 @@ protected:
 	 * See the documentation of each child class to see the correct usage
 	 * of this method.
 	 */
-	virtual
-	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
-	__get_tree()
-	noexcept = 0;
+	virtual tree_type_t __get_tree() noexcept = 0;
 
 	/// Number of vertices
 	const uint32_t m_n;

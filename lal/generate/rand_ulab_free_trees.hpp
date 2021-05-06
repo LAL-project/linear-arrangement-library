@@ -240,6 +240,14 @@ private:
  *			// ...
  *		}
  * @endcode
+ * Equivalently,
+ * @code
+ *		lal::generate::rand_ulab_free_trees Gen(n);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const lal::graphs::free_tree T = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class rand_ulab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
@@ -269,6 +277,10 @@ public:
 #endif
 	/// Default destructor.
 	~rand_ulab_free_trees() = default;
+
+	inline graphs::free_tree yield_tree() noexcept {
+		return get_tree();
+	}
 
 protected:
 	/**

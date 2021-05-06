@@ -59,10 +59,19 @@ namespace generate {
  *
  * An example of usage of this class is
  * @code
- *		// given a tree T (of the appropriate type)
+ *		// given a rooted tree T
  *		lal::generate::rand_projective_arrgements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
  *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			// ...
+ *		}
+ * @endcode
+ * Equivalently,
+ * @code
+ *		// given a rooted tree T
+ *		lal::generate::rand_projective_arrangements Gen(T);
+ *		for (int i = 0; i < 100; ++i) {
+ *			const linear_arrangement arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -102,7 +111,12 @@ public:
 	 * @returns A projective arrangement chosen uniformly at random
 	 * chosen amongst all projective arrangements of @e t.
 	 */
-	linear_arrangement get_arrangement();
+	linear_arrangement get_arrangement() noexcept;
+
+	/// Returns a random projective arrangement.
+	inline linear_arrangement yield_arrangement() noexcept {
+		return get_arrangement();
+	}
 
 private:
 	/// The rooted tree of we are making projective arrangements uniformly at random.

@@ -87,6 +87,14 @@ namespace generate {
  *			// ...
  *		}
  * @endcode
+ * Equivalently,
+ * @code
+ *		all_ulab_rooted_trees Gen(n);
+ *		while (not Gen.end()) {
+ *			const auto t = Gen.yield_tree();
+ *			// ...
+ *		}
+ * @endcode
  */
 class all_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
@@ -132,6 +140,12 @@ public:
 	inline void reset() noexcept {
 		__reset();
 		next();
+	}
+
+	inline graphs::rooted_tree yield_tree() noexcept {
+		const auto t = get_tree();
+		next();
+		return t;
 	}
 
 protected:
