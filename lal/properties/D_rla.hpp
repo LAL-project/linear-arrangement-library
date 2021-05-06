@@ -95,7 +95,7 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
  * Returns the value \f$E_{\mathrm{pr}}[D]\f$ as a rational value.
  * @param rt The input rooted tree.
  * @returns The expected value of the sum of edge lengths constrained to projective
- * arrangements as a floating point value.
+ * arrangements as an exact rational value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 numeric::rational exp_sum_edge_lengths_projective_rational
@@ -114,6 +114,69 @@ inline
 double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
 	return exp_sum_edge_lengths_projective_rational(rt).to_double();
 }
+
+/* ------------------------- */
+/* EXPECTATION OF D: E_pl[D] */
+/*   (planar arrangements)   */
+
+/**
+ * @brief Expected sum of edge lengths constrained to planar arrangments.
+ *
+ * This function uses the formulae derived in \cite Alemany2021c.
+ *
+ * Returns the value \f$E_{\mathrm{pl}}[D]\f$ as a rational value.
+ * @param t The input free tree.
+ * @returns The expected value of the sum of edge lengths constrained to planar
+ * arrangements as an exact rational value.
+ * @pre @e rt must be a valid free tree (see @ref lal::graphs::free_tree::is_tree).
+ */
+numeric::rational exp_sum_edge_lengths_planar_rational
+(const graphs::free_tree& t) noexcept;
+/**
+ * @brief Expected sum of edge lengths constrained to planar arrangments.
+ *
+ * This function uses the formulae derived in \cite Alemany2021c.
+ *
+ * Returns the value \f$E_{\mathrm{pl}}[D]\f$ as a rational value.
+ * @param rt The input rooted tree.
+ * @returns The expected value of the sum of edge lengths constrained to planar
+ * arrangements as an exact rational value.
+ * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
+ */
+inline
+numeric::rational exp_sum_edge_lengths_planar_rational
+(const graphs::rooted_tree& rt) noexcept
+{ return exp_sum_edge_lengths_planar_rational(rt.to_undirected()); }
+
+/**
+ * @brief Expected sum of edge lengths constrained to planar arrangments.
+ *
+ * This function uses the formulae derived in \cite Alemany2021c.
+ *
+ * Returns the value \f$E_{\mathrm{pl}}[D]\f$ as a rational value.
+ * @param t The input free tree.
+ * @returns The expected value of the sum of edge lengths constrained to planar
+ * arrangements as a floating point value.
+ * @pre @e rt must be a valid free tree (see @ref lal::graphs::free_tree::is_tree).
+ */
+inline double exp_sum_edge_lengths_planar
+(const graphs::free_tree& t) noexcept
+{ return exp_sum_edge_lengths_planar_rational(t).to_double(); }
+/**
+ * @brief Expected sum of edge lengths constrained to planar arrangments.
+ *
+ * This function uses the formulae derived in \cite Alemany2021c.
+ *
+ * Returns the value \f$E_{\mathrm{pl}}[D]\f$ as a rational value.
+ * @param rt The input rooted tree.
+ * @returns The expected value of the sum of edge lengths constrained to planar
+ * arrangements as a floating point value.
+ * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
+ */
+inline double exp_sum_edge_lengths_planar
+(const graphs::rooted_tree& rt) noexcept
+{ return exp_sum_edge_lengths_planar_rational(rt).to_double(); }
+
 
 /* ---------------------------- */
 /*    VARIANCE OF D: V_rla[D]   */

@@ -208,6 +208,12 @@ enum class treebank_feature {
 	 */
 	exp_sum_edge_lengths_projective,
 	/**
+	 * @brief Expectation of \f$D\f$ constrained to planar arrangements, \f$E_{\mathrm{pl}}[D]\f$.
+	 *
+	 * See @ref lal::properties::exp_sum_edge_lengths_planar for details.
+	 */
+	exp_sum_edge_lengths_planar,
+	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *
 	 * See @ref lal::properties::var_sum_edge_lengths for details.

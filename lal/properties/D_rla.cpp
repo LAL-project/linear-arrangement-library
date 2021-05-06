@@ -63,8 +63,7 @@ namespace properties {
 namespace E_pr_D {
 
 template<bool size_subtrees_valid>
-rational exp_sum_edge_lengths
-(const rooted_tree& t) noexcept
+inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 {
 	const uint32_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
 	internal::data_array<uint32_t> size_subtrees(size_array, 0);
@@ -103,6 +102,51 @@ rational exp_sum_edge_lengths_projective_rational
 		return E_pr_D::exp_sum_edge_lengths<true>(t);
 	}
 	return E_pr_D::exp_sum_edge_lengths<false>(t);
+}
+
+/* ------------------------- */
+/* EXPECTATION OF D: E_pl[D] */
+/*   (planar arrangements)   */
+
+namespace E_pr_D {
+
+inline uint32_t sum_values(const free_tree& T) noexcept {
+	const uint32_t n = T.get_num_nodes();
+
+	vector<pair<edge, uint32_t>> edge_size(2*(n - 1));
+	{
+	auto it = edge_size.begin();
+	internal::calculate_bidirectional_sizes<free_tree, pair<edge, uint32_t>>(
+		T, n, 0,
+		[](std::pair<edge,uint32_t>& p, const edge& e, uint32_t s) -> void
+		{ p.first = e; p.second = s; },
+		it
+	);
+	}
+
+	internal::data_array<uint32_t> L(n, 0);
+	for (const auto& p : edge_size) {
+		const edge& e = p.first;
+		const uint32_t s = p.second;
+		L[e.first] += s*s;
+	}
+
+	uint32_t S = 0;
+	for (node v = 0; v < n; ++v) {
+		S += L[v]*(2*T.get_degree(v) - 1);
+	}
+
+	return n*(n - 1)*(3*n + 1) - S;
+}
+
+} // -- namespace E_pr_D
+
+rational exp_sum_edge_lengths_planar_rational(const free_tree& t) noexcept {
+	const uint32_t n = t.get_num_nodes();
+	rational sum_Er = 0;
+	sum_Er += E_pr_D::sum_values(t);
+	sum_Er /= 6*n;
+	return rational( (n-1)*(n-2), 6*n ) + sum_Er;
 }
 
 /* ---------------------------- */
