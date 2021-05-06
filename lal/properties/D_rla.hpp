@@ -57,7 +57,8 @@ namespace properties {
 /* (unconstrained arrangements) */
 
 /**
- * @brief Expected sum of edge lengths in uncosntrained arrangments.
+ * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * \f$\mathbb{E}[D]\f$.
  *
  * This function uses the formulae derived in \cite Ferrer2019a.
  *
@@ -72,7 +73,8 @@ noexcept {
 }
 
 /**
- * @brief Expected sum of edge lengths in uncosntrained arrangments.
+ * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * \f$\mathbb{E}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
  * @param g The input graph.
@@ -88,7 +90,8 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
 /* (projective arrangements) */
 
 /**
- * @brief Expected sum of edge lengths constrained to projective arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to projective arrangments,
+ * \f$\mathbb{E}_{\mathrm{pr}}[D]\f$.
  *
  * This function uses the formulae derived in \cite Alemany2021b.
  *
@@ -102,7 +105,8 @@ numeric::rational exp_sum_edge_lengths_projective_rational
 (const graphs::rooted_tree& rt) noexcept;
 
 /**
- * @brief Expected sum of edge lengths constrained to projective arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to projective arrangments,
+ * \f$\mathbb{E}_{\mathrm{pr}}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_projective_rational for details.
  * @param rt The input rooted tree.
@@ -120,7 +124,8 @@ double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
 /*   (planar arrangements)   */
 
 /**
- * @brief Expected sum of edge lengths constrained to planar arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
+ * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
  *
  * This function uses the formulae derived in \cite Alemany2021c.
  *
@@ -133,7 +138,8 @@ double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
 numeric::rational exp_sum_edge_lengths_planar_rational
 (const graphs::free_tree& t) noexcept;
 /**
- * @brief Expected sum of edge lengths constrained to planar arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
+ * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
  *
  * This function uses the formulae derived in \cite Alemany2021c.
  *
@@ -149,7 +155,8 @@ numeric::rational exp_sum_edge_lengths_planar_rational
 { return exp_sum_edge_lengths_planar_rational(rt.to_undirected()); }
 
 /**
- * @brief Expected sum of edge lengths constrained to planar arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
+ * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
  *
  * This function uses the formulae derived in \cite Alemany2021c.
  *
@@ -163,7 +170,8 @@ inline double exp_sum_edge_lengths_planar
 (const graphs::free_tree& t) noexcept
 { return exp_sum_edge_lengths_planar_rational(t).to_double(); }
 /**
- * @brief Expected sum of edge lengths constrained to planar arrangments.
+ * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
+ * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
  *
  * This function uses the formulae derived in \cite Alemany2021c.
  *
@@ -183,9 +191,10 @@ inline double exp_sum_edge_lengths_planar
 /* (unconstrained arrangements) */
 
 /**
- * @brief Computes the variance of the sum of the length of edges.
+ * @brief Computes the variance of the sum of the length of edges of a graph,
+ * \f$\mathbb{V}[D]\f$.
  *
- * Computes \f$V[D]\f$.
+ * Computes the variance of the sum of edge lengths over all \f$n!\f$ arrangements.
  *
  * This function uses the formula derived in \cite Ferrer2019a.
  * @param g Input graph.
@@ -194,16 +203,16 @@ inline double exp_sum_edge_lengths_planar
 numeric::rational var_sum_edge_lengths_rational(const graphs::undirected_graph& g)
 noexcept;
 /**
- * @brief Computes the variance of the sum of the length of edges.
+ * @brief Computes the variance of the sum of the length of edges of a graph,
+ * \f$\mathbb{V}[D]\f$.
  *
  * See @ref lal::properties::var_sum_edge_lengths_rational for details.
  * @param g The input graph.
  * @returns The exact value of \f$V[D]\f$ as a floating point value.
  */
 inline
-double var_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
-	return var_sum_edge_lengths_rational(g).to_double();
-}
+double var_sum_edge_lengths(const graphs::undirected_graph& g) noexcept
+{ return var_sum_edge_lengths_rational(g).to_double(); }
 
 } // -- namespace properties
 } // -- namespace lal

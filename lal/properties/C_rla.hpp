@@ -55,26 +55,25 @@ namespace properties {
 /* EXPECTATION OF C: E_rla[C] */
 
 /**
- * @brief Computes the the expectation of the first moment of C.
+ * @brief Computes the the expected number of crossings in unconstrained arrangements,
+ * \f$\mathbb{E}[C]\f$.
  *
- * Returns \f$E[C]\f$ as a rational value.
+ * Returns \f$\mathbb{E}[C]\f$ as a rational value.
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a rational value.
  */
 numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g)
 noexcept;
 /**
- * @brief Computes the the expectation of the first moment of C.
+ * @brief Computes the the expected number of crossings in unconstrained arrangements,
+ * \f$\mathbb{E}[C]\f$.
  *
  * See @ref lal::properties::exp_num_crossings_rational for details.
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a floating point value.
  */
-inline
-double exp_num_crossings(const graphs::undirected_graph& g) noexcept
-{
-	return exp_num_crossings_rational(g).to_double();
-}
+inline double exp_num_crossings(const graphs::undirected_graph& g) noexcept
+{ return exp_num_crossings_rational(g).to_double(); }
 
 /* ----------------------- */
 /* VARIANCE OF C: V_rla[C] */
@@ -83,9 +82,10 @@ double exp_num_crossings(const graphs::undirected_graph& g) noexcept
 // VARIANCE FOR GENERAL GRAPHS
 
 /**
- * @brief Computes the variance of the number of crossings of a graph.
+ * @brief Computes the variance of the number of crossings of a graph in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
- * Computes \f$V_{rla}[C]\f$ on the given graph. This function implements the
+ * Computes \f$\mathbb{V}[C]\f$ on the given graph. This function implements the
  * algorithm in \cite Alemany2020b for general graphs, which stems from the
  * study in \cite Alemany2020a.
  *
@@ -100,7 +100,8 @@ double exp_num_crossings(const graphs::undirected_graph& g) noexcept
 numeric::rational var_num_crossings_rational
 (const graphs::undirected_graph& g, bool reuse = true) noexcept;
 /**
- * @brief Computes the variance of the number of crossings of a graph.
+ * @brief Computes the variance of the number of crossings of a graph in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
  * See @ref lal::properties::var_num_crossings_rational for details.
  * @param g Input graph.
@@ -109,18 +110,18 @@ numeric::rational var_num_crossings_rational
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rationafloating point value.
  */
 inline
-double var_num_crossings(const graphs::undirected_graph& g, bool reuse = true) noexcept
-{
-	return var_num_crossings_rational(g, reuse).to_double();
-}
+double var_num_crossings(const graphs::undirected_graph& g, bool reuse = true)
+noexcept
+{ return var_num_crossings_rational(g, reuse).to_double(); }
 
 // --------------------
 // VARIANCE FOR FORESTS
 
 /**
- * @brief Computes the variance of the number of crossings of a forest.
+ * @brief Computes the variance of the number of crossings of a forest in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
- * Computes \f$V_{rla}[C]\f$ on the given forest. This function implements the
+ * Computes \f$\mathbb{V}[C]\f$ on the given forest. This function implements the
  * algorithm in \cite Alemany2020b for forests, which stems from the study in
  * \cite Alemany2020a.
  *
@@ -132,7 +133,8 @@ double var_num_crossings(const graphs::undirected_graph& g, bool reuse = true) n
 numeric::rational var_num_crossings_forest_rational(const graphs::undirected_graph& g)
 noexcept;
 /**
- * @brief Computes the variance of the number of crossings of a forest.
+ * @brief Computes the variance of the number of crossings of a forest in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
  * See @ref lal::properties::var_num_crossings_forest_rational for details.
  * @param g Input forest.
@@ -140,17 +142,16 @@ noexcept;
  */
 inline
 double var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
-{
-	return var_num_crossings_forest_rational(g).to_double();
-}
+{ return var_num_crossings_forest_rational(g).to_double(); }
 
 // ------------------
 // VARIANCE FOR TREES
 
 /**
- * @brief Computes the variance of the number of crossings of a tree.
+ * @brief Computes the variance of the number of crossings of a tree in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
- * Computes \f$V_{rla}[C]\f$ on the given tree. This function computes the
+ * Computes \f$\mathbb{V}[C]\f$ on the given tree. This function computes the
  * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
  * trees. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
  * @param g Input tree.
@@ -159,11 +160,10 @@ double var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
 inline
 numeric::rational var_num_crossings_tree_rational(const graphs::free_tree& g)
 noexcept
-{
-	return var_num_crossings_forest_rational(g);
-}
+{ return var_num_crossings_forest_rational(g); }
 /**
- * @brief Computes the variance of the number of crossings of a tree.
+ * @brief Computes the variance of the number of crossings of a tree in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
  *
  * See @ref lal::properties::var_num_crossings_tree_rational for details.
  * @param g Input tree.
@@ -171,9 +171,7 @@ noexcept
  */
 inline
 double var_num_crossings_tree(const graphs::free_tree& g) noexcept
-{
-	return var_num_crossings_forest_rational(g).to_double();
-}
+{ return var_num_crossings_forest_rational(g).to_double(); }
 
 } // -- namespace properties
 } // -- namespace lal
