@@ -436,6 +436,11 @@ void rooted_tree::_init(uint32_t n) noexcept {
 	tree::tree_only_init(n);
 	directed_graph::_init(n);
 	m_size_subtrees = vector<uint32_t>(n);
+
+	if (n <= 1) {
+		set_root(0);
+		set_valid_orientation(true);
+	}
 }
 
 void rooted_tree::_clear() noexcept {
