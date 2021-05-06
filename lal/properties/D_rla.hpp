@@ -44,17 +44,20 @@
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace properties {
 
 // D: sum of length of edges
 
-/* -------------------------- */
-/* EXPECTATION OF D: E_rla[D] */
+/* ---------------------------- */
+/*  EXPECTATION OF D: E_rla[D]  */
+/* (unconstrained arrangements) */
 
 /**
- * @brief Computes the the expectation of the first moment of D.
+ * @brief Expected sum of edge lengths in uncosntrained arrangments.
  *
  * This function uses the formulae derived in \cite Ferrer2019a.
  *
@@ -69,7 +72,7 @@ noexcept {
 }
 
 /**
- * @brief Computes the the expectation of the first moment of D.
+ * @brief Expected sum of edge lengths in uncosntrained arrangments.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
  * @param g The input graph.
@@ -80,8 +83,41 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
 	return exp_sum_edge_lengths_rational(g).to_double();
 }
 
-/* ----------------------- */
-/* VARIANCE OF D: V_rla[D] */
+/* ------------------------- */
+/* EXPECTATION OF D: E_pr[D] */
+/* (projective arrangements) */
+
+/**
+ * @brief Expected sum of edge lengths constrained to projective arrangments.
+ *
+ * This function uses the formulae derived in \cite Alemany2021b.
+ *
+ * Returns the value \f$E_{\mathrm{pr}}[D]\f$ as a rational value.
+ * @param rt The input rooted tree.
+ * @returns The expected value of the sum of edge lengths constrained to projective
+ * arrangements as a floating point value.
+ * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
+ */
+numeric::rational exp_sum_edge_lengths_projective_rational
+(const graphs::rooted_tree& rt) noexcept;
+
+/**
+ * @brief Expected sum of edge lengths constrained to projective arrangments.
+ *
+ * See @ref lal::properties::exp_sum_edge_lengths_projective_rational for details.
+ * @param rt The input rooted tree.
+ * @returns The expected value of the sum of edge lengths constrained to projective
+ * arrangements as a floating point value.
+ * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
+ */
+inline
+double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
+	return exp_sum_edge_lengths_projective_rational(rt).to_double();
+}
+
+/* ---------------------------- */
+/*    VARIANCE OF D: V_rla[D]   */
+/* (unconstrained arrangements) */
 
 /**
  * @brief Computes the variance of the sum of the length of edges.

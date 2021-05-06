@@ -245,6 +245,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::z_score_num_crossings:
 				case treebank_feature::sum_edge_lengths:
 				case treebank_feature::exp_sum_edge_lengths:
+				case treebank_feature::exp_sum_edge_lengths_projective:
 				case treebank_feature::var_sum_edge_lengths:
 				case treebank_feature::z_score_sum_edge_lengths:
 				case treebank_feature::min_sum_edge_lengths:
@@ -438,6 +439,7 @@ const noexcept
 	static constexpr size_t C_z_score_idx = internal::treebank_feature_to_index(treebank_feature::z_score_num_crossings);
 	static constexpr size_t D_idx = internal::treebank_feature_to_index(treebank_feature::sum_edge_lengths);
 	static constexpr size_t D_expected_idx = internal::treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths);
+	static constexpr size_t D_expected_projective_idx = internal::treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_projective);
 	static constexpr size_t D_variance_idx = internal::treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);
 	static constexpr size_t D_z_score_idx = internal::treebank_feature_to_index(treebank_feature::z_score_sum_edge_lengths);
 	static constexpr size_t Dmin_Unconstrained_idx = internal::treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
@@ -573,6 +575,9 @@ const noexcept
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
 	}
+	if (m_what_fs[D_expected_projective_idx]) {
+		set_prop(D_expected_projective_idx, properties::exp_sum_edge_lengths_projective(rT));
+	}
 	if (m_what_fs[D_variance_idx]) {
 		set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
 	}
@@ -691,6 +696,7 @@ const noexcept
 			case treebank_feature::z_score_num_crossings:
 			case treebank_feature::sum_edge_lengths:
 			case treebank_feature::exp_sum_edge_lengths:
+			case treebank_feature::exp_sum_edge_lengths_projective:
 			case treebank_feature::var_sum_edge_lengths:
 			case treebank_feature::z_score_sum_edge_lengths:
 			case treebank_feature::min_sum_edge_lengths:

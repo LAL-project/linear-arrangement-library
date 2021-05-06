@@ -39,10 +39,16 @@
  *
  ********************************************************************/
 
+#include <iostream>
+using namespace std;
+
 // lal includes
 #include <lal/properties/Q.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/D_rla.hpp>
+#include <lal/internal/data_array.hpp>
+#include <lal/internal/graphs/size_subtrees.hpp>
+#include <lal/numeric/rational_output.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -50,8 +56,58 @@ using namespace numeric;
 
 namespace properties {
 
-/* ----------------------- */
-/* VARIANCE OF D: V_rla[D] */
+/* ---------------------------- */
+/*  EXPECTATION OF D: E_rla[D]  */
+/* (unconstrained arrangements) */
+
+namespace E_pr_D {
+
+template<bool size_subtrees_valid>
+rational exp_sum_edge_lengths
+(const rooted_tree& t) noexcept
+{
+	const uint32_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
+	internal::data_array<uint32_t> size_subtrees(size_array, 0);
+	if constexpr (not size_subtrees_valid) {
+		internal::get_size_subtrees(t, t.get_root(), size_subtrees.data);
+	}
+
+	rational E_pr_D = 0;
+	E_pr_D += -1;
+
+	for (node u = 0; u < t.get_num_nodes(); ++u) {
+		const uint32_t nu = (
+			size_subtrees_valid ?
+				t.get_num_nodes_subtree(u) :
+				size_subtrees[u]
+		);
+
+		const uint32_t du = t.get_out_degree(u);
+		E_pr_D += nu*(2*du + 1);
+	}
+	E_pr_D /= 6;
+
+	return E_pr_D;
+}
+
+} // -- namespace E_pr_D
+
+rational exp_sum_edge_lengths_projective_rational
+(const rooted_tree& t) noexcept
+{
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+
+	if (t.are_size_subtrees_valid()) {
+		return E_pr_D::exp_sum_edge_lengths<true>(t);
+	}
+	return E_pr_D::exp_sum_edge_lengths<false>(t);
+}
+
+/* ---------------------------- */
+/*    VARIANCE OF D: V_rla[D]   */
+/* (unconstrained arrangements) */
 
 rational var_sum_edge_lengths_rational(const undirected_graph& g) noexcept {
 	// E_rla[D]

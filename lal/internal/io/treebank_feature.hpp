@@ -81,6 +81,7 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	case treebank_feature::z_score_num_crossings: return "z_score_num_crossings";
 	case treebank_feature::sum_edge_lengths: return "sum_edge_lengths";
 	case treebank_feature::exp_sum_edge_lengths: return "exp_sum_edge_lengths";
+	case treebank_feature::exp_sum_edge_lengths_projective: return "exp_sum_edge_lengths_projective";
 	case treebank_feature::var_sum_edge_lengths: return "var_sum_edge_lengths";
 	case treebank_feature::z_score_sum_edge_lengths: return "z_score_sum_edge_lengths";
 	case treebank_feature::min_sum_edge_lengths: return "min_sum_edge_lengths";

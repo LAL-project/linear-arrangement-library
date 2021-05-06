@@ -196,11 +196,17 @@ enum class treebank_feature {
 	 */
 	sum_edge_lengths,
 	/**
-	 * @brief First moment of expectation of \f$D\f$, \f$E[D]\f$.
+	 * @brief Expectation of \f$D\f$, \f$E[D]\f$.
 	 *
 	 * See @ref lal::properties::exp_sum_edge_lengths for details.
 	 */
 	exp_sum_edge_lengths,
+	/**
+	 * @brief Expectation of \f$D\f$ constrained to projective arrangements, \f$E_{\mathrm{pr}}[D]\f$.
+	 *
+	 * See @ref lal::properties::exp_sum_edge_lengths_projective for details.
+	 */
+	exp_sum_edge_lengths_projective,
 	/**
 	 * @brief Variance of \f$D\f$, \f$V[D]\f$.
 	 *

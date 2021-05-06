@@ -35,7 +35,8 @@ D
 -----
 
 - ``sum_edge_lengths`` : Sum of length of edges :math:`D`. See ``lal.linarr.sum_length_edges`` for details.
-- ``exp_sum_edge_lengths`` : First moment of expectation of :math:`D`, :math:`E[D]`. See ``lal.properties.exp_sum_edge_lengths`` for details.
+- ``exp_sum_edge_lengths`` : Expectation of :math:`D`, :math:`E[D]`. See ``lal.properties.exp_sum_edge_lengths`` for details.
+- ``exp_sum_edge_lengths_projective`` : Expectation of :math:`D` constrained to projective arrangements, :math:`E_{pr}[D]`. See ``lal.properties.exp_sum_edge_lengths_projective`` for details.
 - ``var_sum_edge_lengths`` : Variance of :math:`D`, :math:`V[D]`. See ``lal.properties.var_sum_edge_lengths`` for details.
 - ``z_score_sum_edge_lengths`` : z-score of :math:`D` , :math:`\frac{D - E[D]}{\sqrt{V[D]}}`. See ``lal.properties.var_sum_edge_lengths`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
 - ``min_sum_edge_lengths`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
