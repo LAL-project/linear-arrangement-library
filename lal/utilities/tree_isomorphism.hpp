@@ -86,7 +86,7 @@ bool are_trees_isomorphic
  * @param t2 Input free tree.
  * @returns Whether or not the input trees are isomorphic.
  * @pre Both input trees are valid free trees (see
- * @ref lal::graphs::rooted_tree::is_tree).
+ * @ref lal::graphs::free_tree::is_tree).
  */
 bool are_trees_isomorphic
 (const graphs::free_tree& t1, const graphs::free_tree& t2) noexcept;

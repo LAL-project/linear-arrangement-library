@@ -60,7 +60,7 @@ namespace generate {
 /* CONSTRUCTORS */
 
 all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept
-	: tree_generator<free_tree>(_n),
+	: _tree_generator<free_tree>(_n),
 	  m_L(m_n + 1),
 	  m_W(m_n + 1)
 {

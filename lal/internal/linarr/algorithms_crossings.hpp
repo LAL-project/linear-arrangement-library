@@ -80,7 +80,7 @@ uint32_t n_C_brute_force(
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
- * @pre None of the arrangements can be empty.
+ * @pre None of the arrangements is empty.
  */
 std::vector<uint32_t> n_C_brute_force(
 	const graphs::directed_graph& g,
@@ -190,7 +190,7 @@ uint32_t n_C_dynamic_programming(
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
- * @pre None of the arrangements can be empty.
+ * @pre None of the arrangements is empty.
  */
 std::vector<uint32_t> n_C_dynamic_programming(
 	const graphs::directed_graph& g,
@@ -300,7 +300,7 @@ uint32_t n_C_ladder(
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
- * @pre None of the arrangements can be empty.
+ * @pre None of the arrangements is empty.
  */
 std::vector<uint32_t> n_C_ladder(
 	const graphs::directed_graph& g,
@@ -407,7 +407,7 @@ uint32_t n_C_stack_based(
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
- * @pre None of the arrangements can be empty.
+ * @pre None of the arrangements is empty.
  */
 std::vector<uint32_t> n_C_stack_based(
 	const graphs::graph& g,

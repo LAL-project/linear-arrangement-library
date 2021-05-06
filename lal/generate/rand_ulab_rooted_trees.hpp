@@ -213,7 +213,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_ulab_rooted_trees : public tree_generator<graphs::rooted_tree> {
+class rand_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -225,7 +225,7 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.

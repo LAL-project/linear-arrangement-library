@@ -80,8 +80,7 @@ namespace generate {
  *			Gen.next();
  *		}
  * @endcode
- * Alternatively, the @ref lal::generate::all_ulab_rooted_trees class can be
- * used in a for loop:
+ * Alternatively, this class can be used in a for loop:
  * @code
  *		for (all_ulab_rooted_trees Gen(n); not Gen.end(); Gen.next()) {
  *			const auto t = Gen.get_tree();
@@ -89,7 +88,7 @@ namespace generate {
  *		}
  * @endcode
  */
-class all_ulab_rooted_trees : public tree_generator<graphs::rooted_tree> {
+class all_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -140,8 +139,8 @@ protected:
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next(). The tree
 	 * is rooted at vertex 0.
-	 * @pre The generator must have been initialised, and method
-	 * @ref next must have been called at least once.
+	 * @pre The generator must have been initialised.
+	 * @pre Method @ref next must have been called at least once.
 	 */
 	graphs::rooted_tree __get_tree() noexcept;
 

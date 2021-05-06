@@ -56,9 +56,10 @@ namespace generate {
  *
  * This class generates all \f$n!\f$ arrangements of an \f$n\f$-vertex tree.
  * Unlike other generators (e.g. @ref lal::generate::all_projective_arrangements),
- * this class is not instantiated with a tree but, rather, with a number of
+ * this class need not be instantiated with a tree but, rather, with a number of
  * vertices due to the simple fact that the tree structure does not matter for
- * the generation of these arrangements.
+ * the generation of these arrangements. However, constructing this class with
+ * a tree (or any graph), is allowed for the sake of consistency.
  *
  * In order to use this class, you must first provide the number of vertices.
  * Arrangements are generated internally, i.e., arragements are encoded in the
@@ -75,16 +76,19 @@ namespace generate {
  *
  * A possible usage of this class is the following:
  * @code
- *		all_arrangements Gen(t); // t is a rooted tree
+ *		all_arrangements Gen(g); // t is any graph (tree included)
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *			Gen.next();
  *		}
  * @endcode
- * Alternatively, the @ref all_arrangements class can be used in a for loop:
+ * When using @ref get_arrangement() in combination with @ref next(), it is important
+ * to bear in mind that, if the arrangement is declared as a constant reference,
+ * users should <b>not</b> call @ref next() before using the retrieved arrangement.
+ * To alleviate this source of bugs, this class can also be used in a for loop:
  * @code
- *		for (all_arrangements Gen(t); not Gen.end(); Gen.next()) {
+ *		for (all_arrangements Gen(9); not Gen.end(); Gen.next()) {
  *			const lal::linear_arrangement arr = Gen.get_arrangement();
  *			// ...
  *		}
@@ -111,7 +115,14 @@ public:
 		reset();
 	}
 
-	/// Returns the current linear arrangemnt.
+	/**
+	 * @brief Returns the current linear arrangemnt.
+	 *
+	 * Recall that method @ref next() should <b>not</b> be called until the
+	 * arrangement has been processed if such an arrangement was declared as a
+	 * constant reference.
+	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
+	 */
 	const lal::linear_arrangement& get_arrangement() noexcept { return m_arr; }
 
 	/// Returns true if the end of the iteration was reached.

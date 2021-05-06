@@ -235,7 +235,7 @@ namespace lal {
  *
  * Therefore, the class @ref lal::generate::rand_lab_rooted_trees generates random labelled rooted trees uniformly at random, and the class @ref lal::generate::all_ulab_free_trees should be used to enumerate all unlabelled free trees.
  *
- * All classes for tree generation return trees that are preprocessed. This preprocessing varies depending on whether the tree is rooted or free. The full preprocessing details can be checked in class @ref lal::generate::tree_generator, from which all these classes inherit.
+ * All classes for tree generation return trees that are preprocessed. This preprocessing varies depending on whether the tree is rooted or free. The full preprocessing details can be checked in class @ref lal::generate::_tree_generator, from which all these classes inherit.
  *
  * Using these classes is straightforward. To generate trees uniformly at random:
  * @code

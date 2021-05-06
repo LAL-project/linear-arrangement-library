@@ -134,7 +134,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_lab_free_trees : public tree_generator<graphs::free_tree> {
+class rand_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -147,7 +147,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
+		: _tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.

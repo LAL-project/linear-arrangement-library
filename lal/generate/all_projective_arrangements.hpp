@@ -83,8 +83,7 @@ namespace generate {
  *			Gen.next();
  *		}
  * @endcode
- * Alternatively, the @ref all_projective_arrangements class can be used in a
- * for loop:
+ * Alternatively, this class can be used in a for loop:
  * @code
  *		for (all_projective_arrangements Gen(t); not Gen.end(); Gen.next()) {
  *			const lal::linear_arrangement arr = Gen.get_arrangement();

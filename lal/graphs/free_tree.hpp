@@ -222,7 +222,6 @@ public:
 	 * @pre The graph has been initialized with as many nodes as vertices in the
 	 * list of edges.
 	 * @pre There are no repeated edges in the list.
-	 * @pre The graph is empty prior to the addition.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */

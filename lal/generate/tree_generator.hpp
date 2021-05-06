@@ -34,7 +34,7 @@ template<
 		bool
 	> = true
 >
-class tree_generator {
+class _tree_generator {
 public:
 	/* CONSTRUCTORS */
 
@@ -42,21 +42,21 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes
 	 */
-	tree_generator(uint32_t n) noexcept : m_n(n) { }
+	_tree_generator(uint32_t n) noexcept : m_n(n) { }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_generator(const tree_generator& Gen) = default;
+	_tree_generator(const _tree_generator& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_generator(tree_generator&& Gen) = default;
+	_tree_generator(_tree_generator&& Gen) = default;
 #endif
 	/// Default destructor.
-	virtual ~tree_generator() = default;
+	virtual ~_tree_generator() = default;
 
 	/* OPERATORS */
 
@@ -65,12 +65,12 @@ public:
 	 * @brief Default copy assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_generator& operator= (const tree_generator& Gen) = default;
+	_tree_generator& operator= (const _tree_generator& Gen) = default;
 	/**
 	 * @brief Default move assignment operator.
 	 * @param Gen Generator of the same type.
 	 */
-	tree_generator& operator= (tree_generator&& Gen) = default;
+	_tree_generator& operator= (_tree_generator&& Gen) = default;
 #endif
 	/* GETTERS */
 

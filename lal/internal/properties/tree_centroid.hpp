@@ -236,7 +236,7 @@ std::pair<node, node> retrieve_centroid(const T& t, const node x) {
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
- * @pre The tree @e t is a full tree.
+ * @pre The tree @e t is a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template<
 	class T,

@@ -58,7 +58,7 @@ namespace generate {
 /* PUBLIC */
 
 all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept
-	: tree_generator<rooted_tree>(_n),
+	: _tree_generator<rooted_tree>(_n),
 	  m_save(m_n + 1),
 	  m_prev(m_n + 1),
 	  m_L(m_n + 1)

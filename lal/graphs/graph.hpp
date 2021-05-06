@@ -249,13 +249,13 @@ protected:
 	 *
 	 * Given a graph, append it to the current graph.
 	 *
-	 * All the nodes in @e g are relabelled starting at @e n,
-	 * the number of nodes of the current graph.
+	 * All the nodes in @e g are relabelled starting at @e n, the number of
+	 * nodes of the current graph.
 	 * @param g Input graph.
-	 * @pre This graph and @e g must be of the same type (both must
-	 * be either undirected, or both directed).
-	 * @post The graph is normalised only if it was normalised before
-	 * the call and @e g is also normalised.
+	 * @pre This graph and @e g must be of the same type (both must be either
+	 * undirected, or both directed).
+	 * @post The graph is normalised only if it was normalised before the call
+	 * and @e g is also normalised.
 	 */
 	void __disjoint_union(const graph& g) noexcept;
 

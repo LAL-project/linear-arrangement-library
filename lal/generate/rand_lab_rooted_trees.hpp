@@ -133,7 +133,7 @@ protected:
  *		}
  * @endcode
  */
-class rand_lab_rooted_trees : public tree_generator<graphs::rooted_tree> {
+class rand_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
@@ -146,7 +146,7 @@ public:
 	 * a random seed is generated and used.
 	 */
 	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
-		: tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
