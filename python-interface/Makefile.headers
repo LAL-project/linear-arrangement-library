@@ -41,12 +41,14 @@ GENERATE_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/generate/all_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_lab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/all_planar_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_projective_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_ulab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/all_ulab_rooted_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_lab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_lab_rooted_trees.hpp \
+					  $(LAL_INC_DIR)/lal/generate/rand_planar_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_projective_arrangements.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_free_trees.hpp \
 					  $(LAL_INC_DIR)/lal/generate/rand_ulab_rooted_trees.hpp \
