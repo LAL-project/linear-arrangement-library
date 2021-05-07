@@ -104,7 +104,7 @@ public:
 	/**
 	 * @brief Constructor with constant reference to a rooted tree.
 	 * @param T Input free tree
-	 * @pre The object @e T is a valid tree (see @ref graphs::rootefree_tree::is_tree).
+	 * @pre The object @e T is a valid tree (see @ref graphs::free_tree::is_tree).
 	 */
 	all_planar_arrangements(const graphs::free_tree& T) noexcept;
 	/**
