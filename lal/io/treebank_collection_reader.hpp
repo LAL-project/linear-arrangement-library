@@ -115,7 +115,7 @@ namespace io {
  * above. Bear in mind that a collection reader only processes the main file: it
  * iterates through the list of files within the main file using the method
  * @ref next_treebank. This method can be called as long as method
- * @ref has_treebank returns true. Each call to @ref next_treebank builds an
+ * @ref end returns false. Each call to @ref next_treebank builds an
  * object of class @ref treebank_reader which allows the user to iterate
  * through the trees within the corresponding file. This object can be retrieved
  * by calling method @ref get_treebank_reader.

@@ -132,9 +132,6 @@ public:
 
 	/**
 	 * @brief Retrieves the next tree in the file.
-	 *
-	 * In case the function returns @ref lal::io::treebank_error::empty_line_found
-	 * method @ref get_tree should not be called.
 	 * @post Increments the amount of trees found.
 	 */
 	void next_tree() noexcept;
@@ -144,8 +141,8 @@ public:
 	/**
 	 * @brief Returns the number of trees processed so far.
 	 *
-	 * When method @ref has_tree returns 'false', this method
-	 * returns the exact amount of trees in the treebank.
+	 * When method @ref end returns 'true', this method returns the exact
+	 * amount of trees in the treebank.
 	 */
 	inline size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
