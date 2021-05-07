@@ -42,7 +42,6 @@
 #include <lal/io/treebank_reader.hpp>
 
 // C++ includes
-#include <iostream>
 #include <sstream>
 using namespace std;
 
@@ -62,56 +61,75 @@ treebank_error treebank_reader::init
 	m_treebank_identifier = lang;
 	m_treebank_file = file;
 	m_num_trees = 0;
+	m_no_more_trees = false;
 
 	m_treebank.open(m_treebank_file.c_str());
 	if (not m_treebank.is_open()) {
 		return treebank_error::treebank_file_could_not_be_opened;
 	}
+
+	next_tree();
 	return treebank_error::no_error;
 }
 
-treebank_error treebank_reader::next_tree() noexcept {
-	m_current_head_vector.clear();
-
-	getline(m_treebank, m_file_line);
-	if (m_file_line.length() == 1) {
-		// line is probably empty...
-		const bool is_digit = '0' <= m_file_line[0] and m_file_line[0] <= '9';
-		const bool is_eol = m_file_line[0] == '\n';
-		if (not is_digit or is_eol) {
-			// we consider the line to be empty (either with an endline or
-			// any other non-numeric character)
-			return treebank_error::empty_line_found;
-		}
-	}
-	else if (m_file_line.length() == 0) {
-		// this is an actual empty line!
-		return treebank_error::empty_line_found;
+void treebank_reader::next_tree() noexcept {
+	if (m_treebank.eof()) {
+		m_no_more_trees = true;
+		return;
 	}
 
-	// construct the current head vector
-	{
-	stringstream ss(m_file_line);
+	stringstream ss;
+	bool correct_line;
+
 	size_t count = 0;
 	node k;
-	while (ss >> k) {
-		m_current_head_vector.push_back(k);
-		++count;
+
+	do {
+		m_current_head_vector.clear();
+		correct_line = true;
+
+		getline(m_treebank, m_file_line);
+
+		if (m_file_line.length() == 1) {
+			// line is probably empty...
+			const bool is_digit = '0' <= m_file_line[0] and m_file_line[0] <= '9';
+			const bool is_eol = m_file_line[0] == '\n';
+			if (not is_digit or is_eol) {
+				// if the only character is not a number or is an empty line
+				// then we say that the line is not correct.
+				correct_line = false;
+			}
+		}
+		else if (m_file_line.length() == 0) {
+			// incorrect line (no characters)
+			correct_line = false;
+		}
+
+		if (correct_line) {
+			ss.str(m_file_line);
+			while (ss >> k) {
+				m_current_head_vector.push_back(k);
+				++count;
+			}
+			if (count == 0) {
+				// incorrect line (full of spaces)
+				correct_line = false;
+			}
+		}
 	}
-	if (count == 0) {
-		// another actual empty line...
-		return treebank_error::empty_line_found;
-	}
+	while (not correct_line and not m_treebank.eof());
+
+	if (m_treebank.eof()) {
+		m_no_more_trees = true;
+		return;
 	}
 
 	// for statistics
 	++m_num_trees;
 
-	// this peek is needed so that treebank.eof()
+	// this peek() is needed so that treebank.eof()
 	// returns true when it has to.
 	m_treebank.peek();
-
-	return treebank_error::no_error;
 }
 
 // GETTERS

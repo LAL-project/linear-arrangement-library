@@ -191,7 +191,15 @@ treebank_error treebank_processor::process() noexcept {
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
 	{ return treebank_error::no_features; }
 
-	// iterate to next language
+	// output file stream:
+	// since the output directory exists there is no need to check for is_open()
+	ofstream out_treebank_file(m_output_file);
+	if (not out_treebank_file.is_open()) {
+		return treebank_error::output_file_could_not_be_opened;
+	}
+
+	// Construct treebank reader. Do this here so as to check for errors as
+	// early as we can.
 	treebank_reader tbread;
 	{
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
@@ -202,13 +210,6 @@ treebank_error treebank_processor::process() noexcept {
 		}
 		return err;
 	}
-	}
-
-	// output file stream:
-	// since the output directory exists there is no need to check for is_open()
-	ofstream out_treebank_file(m_output_file);
-	if (not out_treebank_file.is_open()) {
-		return treebank_error::output_file_could_not_be_opened;
 	}
 
 	// output header to the file
@@ -305,16 +306,15 @@ treebank_error treebank_processor::process() noexcept {
 
 	// process the current treebank
 	rooted_tree rT;
-	while (tbread.has_tree()) {
-		const auto err = tbread.next_tree();
-		if (err == treebank_error::no_error) {
-			rT = tbread.get_tree();
-			process_tree<rooted_tree, ofstream>
-			(rT, props.data, prop_set.data, out_treebank_file);
+	while (not tbread.end()) {
+		rT = tbread.get_tree();
+		process_tree<rooted_tree, ofstream>
+		(rT, props.data, prop_set.data, out_treebank_file);
 
-			props.fill(0.0);
-			prop_set.fill(0);
-		}
+		props.fill(0.0);
+		prop_set.fill(0);
+
+		tbread.next_tree();
 	}
 
 	const auto end = std::chrono::system_clock::now();

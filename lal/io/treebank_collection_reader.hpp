@@ -124,13 +124,15 @@ namespace io {
  * @code
  *		treebank_collection tbds;
  *		// it is advisable to check for errors
- *		tbds.init(mainf)
- *		while (tbds.has_language()) {
- *			// errors are not likely, but it is advisable to check for errors
- *			tbds.next_language();
- *			treebank_reader& tbread = tbds.get_treebank_reader();
- *			// here goes your custom processing of the treebank
- *			// ...
+ *		auto err = tbds.init(mainf)
+ *		while (not tbds.end()) {
+ *			if (err == lal::io::treebank_error::no_error) {
+ *				treebank_reader& tbread = tbds.get_treebank_reader();
+ *				// here goes your custom processing of the treebank
+ *				// ...
+ *			}
+ *			// errors are not likely, but it is advisable to check
+ *			err = tbds.next_treebank();
  *		}
  * @endcode
  */
@@ -147,12 +149,13 @@ public:
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::main_file_does_not_exist
 	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
 	 */
 	treebank_error init(const std::string& main_file) noexcept;
 
 	/// Returns true or false depending on whether there is a next treebank
 	/// to be read.
-	bool has_treebank() const noexcept { return not m_reached_end; }
+	inline bool end() const noexcept { return m_reached_end; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
@@ -161,7 +164,7 @@ public:
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
-	 * @pre Method @ref init did not return any errors.
+	 * @pre Method @ref init did not return any main file-related errors.
 	 * @post In case it returns an error, then method
 	 * @ref get_treebank_reader will return an instance of
 	 * @ref lal::io::treebank_reader that can't be used.
@@ -169,7 +172,8 @@ public:
 	treebank_error next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
-	treebank_reader& get_treebank_reader() noexcept { return m_treebank_reader; }
+	inline treebank_reader& get_treebank_reader() noexcept
+	{ return m_treebank_reader; }
 
 private:
 	/**
@@ -191,17 +195,19 @@ private:
 	/// Object to process a language's treebank.
 	treebank_reader m_treebank_reader;
 
-	/// Has this treebank collection reader reached the end?
+	/// Did we reach the end of the file?
 	bool m_reached_end = false;
+	/// Have all trees in the file been consumed?
+	bool m_no_more_treebanks = false;
 
 private:
 	/// Consumes one line of the main file @ref m_main_file.
-	void step_line() noexcept {
+	inline void step_line() noexcept {
 		if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
 			// do nothing, there are more trees
 		}
 		else {
-			m_reached_end = true;
+			m_no_more_treebanks = true;
 			m_cur_treebank_name = m_cur_treebank_filename = "!";
 		}
 	}

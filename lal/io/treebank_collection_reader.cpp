@@ -53,6 +53,7 @@ treebank_error treebank_collection_reader::init(const string& main_file) noexcep
 	// close current dataset (if any)
 	m_list.close();
 	m_reached_end = false;
+	m_no_more_treebanks = false;
 
 	m_main_file = main_file;
 	if (not filesystem::exists(m_main_file)) {
@@ -66,10 +67,15 @@ treebank_error treebank_collection_reader::init(const string& main_file) noexcep
 	}
 
 	step_line();
-	return treebank_error::no_error;
+	return next_treebank();
 }
 
 treebank_error treebank_collection_reader::next_treebank() noexcept {
+	if (m_no_more_treebanks) {
+		m_reached_end = true;
+		return treebank_error::no_error;
+	}
+
 	// build path to treebank file
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);

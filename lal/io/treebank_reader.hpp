@@ -87,10 +87,10 @@ namespace io {
  *
  * In order to use it, this class has to be first initialized with the treebank
  * file and, optionally, a self-descriptive string, i.e., something that identifies
- * the treebank (e.g., an ISO code of a language). Once initialised, the user
- * can iterate over the trees within the file by calling @ref next_tree. This
- * function can only be called as long as @ref has_tree returns true. Retrieving
- * the trees is done by calling the function @ref get_tree.
+ * the treebank (e.g., an ISO code of a language). Once initialised, the first
+ * tree can be retrievend with @ref get_tree. The other trees can be iterated over
+ * by calling @ref next_tree. This function can only be called as long as @ref end
+ * returns false.
  *
  * If an object of this class was returned by the class @ref treebank_collection_reader,
  * then methods @ref get_treebank_filename and @ref get_identifier might prove
@@ -101,12 +101,12 @@ namespace io {
  * @code
  *		treebank_reader tbread;
  *		// it is advisable to check for errors
- *		tbread.init(main_file);
- *		while (tbread.has_tree()) {
- *			tbread.next_tree(); // again, check for errors
+ *		const auto err = tbread.init(main_file);
+ *		while (not tbread.end()) {
  *			const rooted_tree t = tbread.get_tree();
  *			// process tree 't'
  *			// ....
+ *			tbread.next_tree();
  *		}
  * @endcode
  */
@@ -128,19 +128,16 @@ public:
 	(const std::string& file, const std::string& identifier = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
-	bool has_tree() const noexcept { return not m_treebank.eof(); }
+	inline bool end() const noexcept { return m_no_more_trees; }
 
 	/**
 	 * @brief Retrieves the next tree in the file.
 	 *
 	 * In case the function returns @ref lal::io::treebank_error::empty_line_found
 	 * method @ref get_tree should not be called.
-	 * @returns The type of the error, if any. The list of errors that this
-	 * method can return is:
-	 * - @ref lal::io::treebank_error::empty_line_found
 	 * @post Increments the amount of trees found.
 	 */
-	treebank_error next_tree() noexcept;
+	void next_tree() noexcept;
 
 	/* GETTERS */
 
@@ -165,8 +162,17 @@ public:
 	graphs::rooted_tree get_tree() const noexcept;
 
 	/// Returns the current head vector.
-	head_vector get_head_vector() const noexcept
+	inline head_vector get_head_vector() const noexcept
 	{ return m_current_head_vector; }
+
+	/**
+	 * @brief Can the treebank be read?
+	 *
+	 * If the @ref init method returned an error different from
+	 * @ref lal::io::treebank_error::no_error then this returns false.
+	 * @return Whether the treebank is readable or not.
+	 */
+	inline bool is_open() const noexcept { return m_treebank.is_open(); }
 
 	/* SETTERS */
 
@@ -214,6 +220,8 @@ private:
 	bool m_calculate_size_subtrees = true;
 	/// Calculate the type of tree of the generated tree.
 	bool m_calculate_tree_type = true;
+	/// Have all trees in the file been consumed?
+	bool m_no_more_trees = false;
 };
 
 } // -- namespace io
