@@ -111,9 +111,7 @@ std::pair<node, node> retrieve_centroid(
 	bool found = false;
 	node u = x;
 	while (not found) {
-		const auto& p = L[u][0];
-		const node v = p.first;
-		const uint32_t suv = p.second;
+		const auto& [v, suv] = L[u][0];
 		u = (suv > n/2 ? v : u);
 		found = suv <= n/2;
 	}

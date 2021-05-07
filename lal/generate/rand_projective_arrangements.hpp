@@ -82,11 +82,11 @@ public:
 
 	/**
 	 * @brief Constructor with tree
-	 * @param rT Rooted tree
+	 * @param rT Input rooted tree
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a rooted tree (see
-	 * @ref graphs::rooted_tree::is_rooted_tree).
+	 * @ref lal::graphs::rooted_tree::is_rooted_tree).
 	 */
 	rand_projective_arrangements(const graphs::rooted_tree& rT, uint32_t seed = 0) noexcept;
 	/**
@@ -119,7 +119,7 @@ public:
 	}
 
 private:
-	/// The rooted tree of we are making projective arrangements uniformly at random.
+	/// The rooted tree of which we are making projective arrangements uniformly at random.
 	const graphs::rooted_tree& m_rT;
 
 	/**
@@ -128,7 +128,7 @@ private:
 	 * This is a member of the class to avoid its initialisation at
 	 * every call to @ref get_arrangement.
 	 */
-	std::vector<std::vector<node>> rdata;
+	std::vector<std::vector<node>> m_rdata;
 
 	/// Random number generator
 	std::mt19937 m_gen;

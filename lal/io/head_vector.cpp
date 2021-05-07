@@ -56,11 +56,10 @@ using namespace graphs;
 
 namespace io {
 
-std::optional<vector<uint32_t>> read_head_vector(const string& filename) noexcept {
-	if (not filesystem::exists(filename)) {
-		return {};
-	}
-	vector<uint32_t> heads;
+optional<head_vector> read_head_vector(const string& filename) noexcept {
+	if (not filesystem::exists(filename)) { return {}; }
+
+	head_vector heads;
 
 	ifstream fin;
 	fin.open(filename);
@@ -68,19 +67,21 @@ std::optional<vector<uint32_t>> read_head_vector(const string& filename) noexcep
 	while (fin >> head) { heads.push_back(head); }
 	fin.close();
 
+	// this moves!
 	return heads;
 }
 
-std::optional<graphs::free_tree> read_head_vector_free_tree
+std::optional<free_tree> read_head_vector_free_tree
 (const string& filename, bool norm, bool check_norm)
 noexcept
 {
 	const auto heads = read_head_vector(filename);
 	if (not heads) { return {}; }
-	return from_head_vector_to_free_tree(*heads, norm, check_norm).first;
+	// move, please
+	return std::move(from_head_vector_to_free_tree(*heads, norm, check_norm).first);
 }
 
-std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
+std::optional<rooted_tree> read_head_vector_rooted_tree
 (const string& filename, bool norm, bool check_norm)
 noexcept
 {

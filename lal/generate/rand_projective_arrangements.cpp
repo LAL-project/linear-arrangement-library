@@ -74,10 +74,10 @@ rand_projective_arrangements::rand_projective_arrangements
 	}
 
 	// initialise the random data of all vertices
-	rdata = vector<vector<node>>(m_rT.get_num_nodes());
+	m_rdata = vector<vector<node>>(m_rT.get_num_nodes());
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		const uint32_t deg = m_rT.get_out_degree(u);
-		rdata[u] = vector<node>(deg + 1);
+		m_rdata[u] = vector<node>(deg + 1);
 	}
 }
 
@@ -98,7 +98,7 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 		// possibilities.
 
 		// fill interval with the root vertex and its children
-		vector<node>& interval = rdata[u];
+		vector<node>& interval = m_rdata[u];
 		interval[0] = u;
 		for (size_t i = 0; i < neighs.size(); ++i) {
 			interval[i+1] = neighs[i];
@@ -109,7 +109,7 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	}
 
 	// generate arrangement from data
-	return make_arrangement_intervals(m_rT, rdata);
+	return make_arrangement_intervals(m_rT, m_rdata);
 }
 
 } // -- namespace generate

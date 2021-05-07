@@ -64,12 +64,12 @@ namespace generate {
  * for a star tree of \f$n\f$ vertices.
  *
  * In order to use this class, you must first provide the tree object in the
- * constructor. Arrangements are generated internally, i.e.,
- * arragements are encoded in the internal state of the generator. Said state is
- * updated using method @ref next(), which updates it to encode the next arrangement
- * in the generation. In order to retrieve an arrangement, use method
- * @ref get_arrangement(). Upon initialisation, the generator encodes the first
- * arrangement, which has to be retrieved using method @ref get_arrangement().
+ * constructor. Arrangements are generated internally, i.e., they are encoded in
+ * the internal state of the generator. Said state is updated using method
+ * @ref next(), which updates it to encode the next arrangement in the generation.
+ * In order to retrieve an arrangement, use method @ref get_arrangement(). Upon
+ * initialisation, the generator encodes the first arrangement, which has to be
+ * retrieved using method @ref get_arrangement().
  *
  * This class implements the algorithm outlined in \cite Gildea2007a and
  * \cite Futrell2015a.
@@ -123,13 +123,13 @@ public:
 	{ }
 	/**
 	 * @brief Default copy constructor.
-	 * @param Gen Exhaustive projective arrangement generator..
+	 * @param Gen Exhaustive projective arrangement generator.
 	 */
 	all_projective_arrangements(const all_projective_arrangements& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Default move constructor.
-	 * @param Gen Exhaustive projective arrangement generator..
+	 * @param Gen Exhaustive projective arrangement generator.
 	 */
 	all_projective_arrangements(all_projective_arrangements&& Gen) = default;
 #endif
@@ -140,9 +140,8 @@ public:
 
 	/**
 	 * @brief Returns whether there are more arrangements to generate.
-	 * @returns True if there are still more arrangements
-	 * to generate. Returns false if all arrangements have been
-	 * generated.
+	 * @returns True if there are still more arrangements to generate.
+	 * Returns false if all arrangements have been generated.
 	 */
 	inline bool end() const noexcept { return m_reached_end; };
 

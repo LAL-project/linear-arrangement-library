@@ -56,6 +56,7 @@ inline void __make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data,
 	position& pos, linear_arrangement& arr
 )
+noexcept
 {
 	// number of children of 'r' with respect to the tree's root
 	const uint32_t d_out = T.get_out_degree(r);
@@ -82,6 +83,7 @@ inline void __make_arrangement_intervals(
 	const std::vector<std::vector<lal::node>>& data,
 	position& pos, linear_arrangement& arr
 )
+noexcept
 {
 	// number of children of 'r' with respect to the tree's root
 	const uint32_t d_out = T.get_degree(r) - (r == parent ? 0 : 1);
@@ -108,6 +110,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const graphs::rooted_tree& T,
 	const std::vector<std::vector<lal::node>>& data
 )
+noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
@@ -119,6 +122,7 @@ inline linear_arrangement make_arrangement_intervals(
 	const graphs::free_tree& T, node root,
 	const std::vector<std::vector<lal::node>>& data
 )
+noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
