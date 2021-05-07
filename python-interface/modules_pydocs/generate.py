@@ -57,12 +57,14 @@ This module contains classes for the generation of arrangements `of a given tree
 
 The numbers are placeholders for the following:
 
-- 2: NULL/projective -- Indicates whether the generated arrangements should be unconstrained (NULL) or projective. By NULL we mean that the keyword should be omitted (see examples).
+- 2: NULL/projective/planar -- Indicates whether the generated arrangements should be unconstrained (NULL), projective or planar. By NULL we mean that the keyword should be omitted (see examples).
 - 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
 
 Therefore,
 - the class ``lal.generate.rand_projective_arrangements`` generates random projective arrangements of a tree,
-- the class ``lal.generate.all_projective_arrangements`` should be used to enumerate all projective arrangements of a tree.
+- the class ``lal.generate.all_projective_arrangements`` should be used to enumerate all projective arrangements of a tree,
+- the class ``lal.generate.rand_planar_arrangements`` generates random planar arrangements of a tree, and
+- the class ``lal.generate.all_planar_arrangements`` should be used to enumerate all planar arrangements of a tree.
 
 Similary,
 - the class ``lal.generate.rand_arrangements`` generates unconstrained random arrangements, and
