@@ -300,13 +300,20 @@ treebank_error treebank_processor::process() noexcept {
 
 	const auto start = std::chrono::system_clock::now();
 
+	internal::data_array<double> props(__treebank_feature_size, 0.0);
+	internal::data_array<char> prop_set(__treebank_feature_size, 0);
+
 	// process the current treebank
 	rooted_tree rT;
 	while (tbread.has_tree()) {
 		const auto err = tbread.next_tree();
 		if (err == treebank_error::no_error) {
 			rT = tbread.get_tree();
-			process_tree<rooted_tree, ofstream>(rT, out_treebank_file);
+			process_tree<rooted_tree, ofstream>
+			(rT, props.data, prop_set.data, out_treebank_file);
+
+			props.fill(0.0);
+			prop_set.fill(0);
 		}
 	}
 
@@ -417,7 +424,7 @@ const noexcept
 
 template<class TREE, class OUT_STREAM>
 void treebank_processor::process_tree
-(const TREE& rT, OUT_STREAM& out_treebank_file)
+(const TREE& rT, double *props, char *prop_set, OUT_STREAM& out_treebank_file)
 const noexcept
 {
 	free_tree fT = rT.to_undirected();
@@ -427,7 +434,11 @@ const noexcept
 	// indices of treebank features
 	static constexpr size_t n_idx = internal::treebank_feature_to_index(treebank_feature::num_nodes);
 	static constexpr size_t k2_idx = internal::treebank_feature_to_index(treebank_feature::second_moment_degree);
+	static constexpr size_t k2_in_idx = internal::treebank_feature_to_index(treebank_feature::second_moment_degree_in);
+	static constexpr size_t k2_out_idx = internal::treebank_feature_to_index(treebank_feature::second_moment_degree_out);
 	static constexpr size_t k3_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree);
+	static constexpr size_t k3_in_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree_in);
+	static constexpr size_t k3_out_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree_out);
 	static constexpr size_t num_pairs_independent_edges_idx = internal::treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
 	static constexpr size_t head_initial_idx = internal::treebank_feature_to_index(treebank_feature::head_initial);
 	static constexpr size_t hubiness_idx = internal::treebank_feature_to_index(treebank_feature::hubiness);
@@ -469,8 +480,6 @@ const noexcept
 
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
-	double props[__treebank_feature_size]{0.0};
-	char prop_set[__treebank_feature_size]{0};
 
 	const auto set_prop =
 	[&](size_t idx, double val) -> void {
@@ -486,8 +495,20 @@ const noexcept
 	if (m_what_fs[k2_idx]) {
 		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
+	if (m_what_fs[k2_in_idx]) {
+		set_prop(k2_in_idx, properties::moment_degree_in(rT, 2));
+	}
+	if (m_what_fs[k2_out_idx]) {
+		set_prop(k2_out_idx, properties::moment_degree_out(rT, 2));
+	}
 	if (m_what_fs[k3_idx]) {
 		set_prop(k3_idx, properties::moment_degree(fT, 3));
+	}
+	if (m_what_fs[k3_in_idx]) {
+		set_prop(k3_in_idx, properties::moment_degree_in(rT, 3));
+	}
+	if (m_what_fs[k3_out_idx]) {
+		set_prop(k3_out_idx, properties::moment_degree_out(rT, 3));
 	}
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
 		set_prop(num_pairs_independent_edges_idx, static_cast<double>(properties::num_pairs_independent_edges(fT)));
