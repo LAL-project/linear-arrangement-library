@@ -79,28 +79,28 @@ noexcept
 }
 
 inline void __make_arrangement_intervals(
-	const graphs::free_tree& T, node parent, node r,
+	const graphs::free_tree& T, node parent, node u,
 	const std::vector<std::vector<lal::node>>& data,
 	position& pos, linear_arrangement& arr
 )
 noexcept
 {
-	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.get_degree(r) - (r == parent ? 0 : 1);
+	// number of children of 'u' with respect to the tree's root
+	const uint32_t d_out = T.get_degree(u) - (u == parent ? 0 : 1);
 
-	// vertex 'r' is a leaf
+	// vertex 'u' is a leaf
 	if (d_out == 0) {
-		arr[r] = pos++;
+		arr[u] = pos++;
 		return;
 	}
-	const std::vector<lal::node>& interval = data[r];
+	const std::vector<lal::node>& interval = data[u];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
-		if (vi == r) {
+		if (vi == u) {
 			arr[vi] = pos++;
 		}
 		else {
-			__make_arrangement_intervals(T, r, vi, data, pos, arr);
+			__make_arrangement_intervals(T, u, vi, data, pos, arr);
 		}
 	}
 }

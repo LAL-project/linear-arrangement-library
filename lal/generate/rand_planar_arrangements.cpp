@@ -126,7 +126,7 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 
 	// number of children of 'r' with respect to the tree's root
 	const uint32_t d_out = m_T.get_degree(root) + 1;
-	const neighbourhood& neighs_u = m_T.get_neighbours(root);
+	const neighbourhood& neighs_root = m_T.get_neighbours(root);
 
 	// Choose random positions for the intervals corresponding to the
 	// vertex 'r' and to the trees rooted at 'r's children. These choices
@@ -138,14 +138,14 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	// fill interval with the root vertex and its children
 	auto& inter = m_rdata[root];
 	inter[0] = root;
-	copy(neighs_u.begin(), neighs_u.end(), inter.begin() + 1);
+	copy(neighs_root.begin(), neighs_root.end(), inter.begin() + 1);
 
 	// shuffle the positions
 	shuffle(inter.begin() + 1, inter.end(), m_gen);
 
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them inductively.
-	for (const node& v : neighs_u) {
+	for (const node& v : neighs_root) {
 		make_random_projective(m_T, root, v, m_rdata, m_gen);
 	}
 
