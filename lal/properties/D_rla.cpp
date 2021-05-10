@@ -136,17 +136,15 @@ inline uint32_t sum_values(const free_tree& T) noexcept {
 		S += L[v]*(2*T.get_degree(v) - 1);
 	}
 
-	return n*(n - 1)*(3*n + 1) - S;
+	return S;
 }
 
 } // -- namespace E_pr_D
 
 rational exp_sum_edge_lengths_planar_rational(const free_tree& t) noexcept {
 	const uint32_t n = t.get_num_nodes();
-	rational sum_Er = 0;
-	sum_Er += E_pr_D::sum_values(t);
-	sum_Er /= 6*n;
-	return rational( (n-1)*(n-2), 6*n ) + sum_Er;
+	const uint32_t V = E_pr_D::sum_values(t);
+	return rational( (n - 1)*(3*n*n + 2*n - 2) - V, 6*n);
 }
 
 /* ---------------------------- */
