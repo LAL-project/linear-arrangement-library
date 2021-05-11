@@ -108,9 +108,7 @@ rational exp_sum_edge_lengths_projective_rational
 /* EXPECTATION OF D: E_pl[D] */
 /*   (planar arrangements)   */
 
-namespace E_pr_D {
-
-inline uint32_t sum_values(const free_tree& T) noexcept {
+rational exp_sum_edge_lengths_planar_rational(const free_tree& T) noexcept {
 	const uint32_t n = T.get_num_nodes();
 
 	vector<pair<edge, uint32_t>> edge_size(2*(n - 1));
@@ -124,27 +122,21 @@ inline uint32_t sum_values(const free_tree& T) noexcept {
 	);
 	}
 
+	uint32_t V = 0;
+
+	{
 	internal::data_array<uint32_t> L(n, 0);
 	for (const auto& p : edge_size) {
 		const edge& e = p.first;
 		const uint32_t s = p.second;
 		L[e.first] += s*s;
 	}
-
-	uint32_t S = 0;
 	for (node v = 0; v < n; ++v) {
-		S += L[v]*(2*T.get_degree(v) - 1);
+		V += L[v]*(2*T.get_degree(v) - 1);
+	}
 	}
 
-	return S;
-}
-
-} // -- namespace E_pr_D
-
-rational exp_sum_edge_lengths_planar_rational(const free_tree& t) noexcept {
-	const uint32_t n = t.get_num_nodes();
-	const uint32_t V = E_pr_D::sum_values(t);
-	return rational( (n - 1)*(3*n*n + 2*n - 2) - V, 6*n);
+	return rational((n - 1)*(3*n*n + 2*n - 2) - V, 6*n);
 }
 
 /* ---------------------------- */
