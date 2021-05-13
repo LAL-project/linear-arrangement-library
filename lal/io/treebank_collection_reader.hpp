@@ -122,17 +122,16 @@ namespace io {
  *
  * An example of usage of this class is given in the following piece of code.
  * @code
- *		treebank_collection tbds;
+ *		lal::io::treebank_collection tbcolreader;
  *		// it is advisable to check for errors
- *		auto err = tbds.init(mainf)
- *		while (not tbds.end()) {
- *			if (err == lal::io::treebank_error::no_error) {
- *				treebank_reader& tbread = tbds.get_treebank_reader();
- *				// here goes your custom processing of the treebank
- *				// ...
- *			}
- *			// errors are not likely, but it is advisable to check
- *			err = tbds.next_treebank();
+ *		auto err = tbcolreader.init(mainf)
+ *		while (not tbcolreader.end()) {
+ *			lal::io::treebank_reader& tbreader = tbcolreader.get_treebank_reader();
+ *			if (not tbreader.is_open()) { continue; }
+ *			// here goes your custom processing of the treebank
+ *			// ...
+ *
+ *			tbcolreader.next_treebank();
  *		}
  * @endcode
  */
@@ -149,7 +148,6 @@ public:
 	 * method can return is:
 	 * - @ref lal::io::treebank_error::main_file_does_not_exist
 	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
 	 */
 	treebank_error init(const std::string& main_file) noexcept;
 
@@ -161,15 +159,8 @@ public:
 	 * @brief Opens the file of the next treebank in the main file.
 	 *
 	 * This method can be called even after it has returned an error.
-	 * @returns The type of the error, if any. The list of errors that this
-	 * method can return is:
-	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
-	 * @pre Method @ref init did not return any main file-related errors.
-	 * @post In case it returns an error, then method
-	 * @ref get_treebank_reader will return an instance of
-	 * @ref lal::io::treebank_reader that can't be used.
 	 */
-	treebank_error next_treebank() noexcept;
+	void next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
 	inline treebank_reader& get_treebank_reader() noexcept

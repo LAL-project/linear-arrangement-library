@@ -67,24 +67,28 @@ treebank_error treebank_collection_reader::init(const string& main_file) noexcep
 	}
 
 	step_line();
-	return next_treebank();
+	next_treebank();
+
+	return treebank_error::no_error;
 }
 
-treebank_error treebank_collection_reader::next_treebank() noexcept {
+void treebank_collection_reader::next_treebank() noexcept {
 	if (m_no_more_treebanks) {
 		m_reached_end = true;
-		return treebank_error::no_error;
+		return;
 	}
 
 	// build path to treebank file
 	filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
-	const treebank_error dserr =
-		m_treebank_reader.init(M.string(), m_cur_treebank_name);
+	// this call
+	m_treebank_reader.init(M.string(), m_cur_treebank_name);
+	// can only return
+	//     lal::io::treebank_error::treebank_file_could_not_be_opened
+	// which can be checked with 'is_open'
 
 	step_line();
-	return dserr;
 }
 
 } // -- namespace io
