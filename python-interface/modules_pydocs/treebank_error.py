@@ -30,7 +30,6 @@ There are several reasons why a treebank collection or a single treebank file co
 	
 	- ``lal.io.treebank_reader``
 	- ``lal.io.treebank_processor``
-	- ``lal.io.treebank_collection_reader``
 	- ``lal.io.treebank_collection_processor``
 
 - ``output_file_could_not_be_opened`` : Output file could not be opened.

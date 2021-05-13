@@ -91,7 +91,6 @@ enum class treebank_error {
 	 * Returned by:
 	 * - @ref lal::io::treebank_reader
 	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_reader
 	 * - @ref lal::io::treebank_collection_processor
 	 */
 	treebank_file_could_not_be_opened,

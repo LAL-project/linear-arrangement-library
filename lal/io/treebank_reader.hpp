@@ -95,15 +95,15 @@ namespace io {
  * If an object of this class was returned by the class @ref treebank_collection_reader,
  * then methods @ref get_treebank_filename and @ref get_identifier might prove
  * useful for debugging since they return, respectively, the full name (path
- * included) of the treebank and the language it corresponds to.
+ * included) of the treebank and an identifier string.
  *
  * An example of usage of this class is given in the following piece of code.
  * @code
- *		treebank_reader tbread;
+ *		lal::io::treebank_reader tbread;
  *		// it is advisable to check for errors
  *		const auto err = tbread.init(main_file);
  *		while (not tbread.end()) {
- *			const rooted_tree t = tbread.get_tree();
+ *			const lal::graphs::rooted_tree t = tbread.get_tree();
  *			// process tree 't'
  *			// ....
  *			tbread.next_tree();
@@ -147,7 +147,7 @@ public:
 	inline size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
 
-	/// Returns the language's name corresponding of the treebank.
+	/// Returns the identifier corresponding of the treebank.
 	inline const std::string& get_identifier() const noexcept
 	{ return m_treebank_identifier; }
 
@@ -177,14 +177,14 @@ public:
 	 * @brief Should trees be normalised?
 	 * @param v Boolean value.
 	 */
-	void set_normalise(bool v) noexcept
+	inline void set_normalise(bool v) noexcept
 	{ m_normalise_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(bool v) noexcept
+	inline void set_calculate_size_subtrees(bool v) noexcept
 	{ m_calculate_size_subtrees = v; }
 
 	/**
@@ -193,8 +193,19 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(bool v) noexcept
+	inline void set_calculate_tree_type(bool v) noexcept
 	{ m_calculate_tree_type = v; }
+
+	/**
+	 * @brief Set this treebank's identifier string.
+	 *
+	 * This method overrides the contents of @ref m_treebank_identifier.
+	 * This method is most useful when, <b>after initialising</b> a treebank
+	 * reader, the identifier string is to be changed in some way.
+	 * @param id Identifier string.
+	 */
+	inline void set_identifier(const std::string& id) noexcept
+	{ m_treebank_identifier = id; }
 
 private:
 	/// Identifier for the treebank.
