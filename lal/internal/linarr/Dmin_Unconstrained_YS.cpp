@@ -170,17 +170,6 @@ noexcept
 {
 	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
-	vector<node> reachable(t.get_num_nodes_component(root_or_anchor - 1));
-	{
-	auto it = reachable.begin();
-	internal::BFS<free_tree> bfs(t);
-	bfs.set_process_current(
-		// add '1' to vertices so that they range in [1,n]
-		[&](const auto&, node u) { *it = u + 1; ++it; }
-	);
-	bfs.start_at(root_or_anchor - 1);
-	}
-
 	// Size of the tree
 	const uint32_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
 
