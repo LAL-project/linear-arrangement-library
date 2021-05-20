@@ -72,6 +72,7 @@ inline void fill_adjP_adjN(
 	vector<vector<indexed_edge>>& adjN,
 	size_t * const __restrict__ size_adjN_u
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -126,6 +127,7 @@ inline uint32_t __compute_C_stack_based(
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
 	uint32_t upper_bound = 0
 )
+noexcept
 {
 	if constexpr (not decide_upper_bound) {
 		UNUSED(upper_bound);
@@ -192,6 +194,7 @@ inline uint32_t __call_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
@@ -214,6 +217,7 @@ uint32_t n_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -228,6 +232,7 @@ vector<uint32_t> n_C_stack_based(
 	const graph& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -265,6 +270,7 @@ inline uint32_t __call_C_stack_based_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
@@ -288,6 +294,7 @@ uint32_t is_n_C_stack_based_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -304,6 +311,7 @@ vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -338,6 +346,7 @@ vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 	#if defined DEBUG
 		// ensure that there are as many linear arrangements as upper bounds

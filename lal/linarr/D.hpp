@@ -65,7 +65,8 @@ namespace linarr {
  * @returns The sum of edge lengths \f$D\f$.
  */
 uint32_t sum_edge_lengths
-(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {})
+noexcept;
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
@@ -79,7 +80,8 @@ uint32_t sum_edge_lengths
  * @returns The sum of edge lengths \f$D\f$.
  */
 uint32_t sum_edge_lengths
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
+noexcept;
 
 /* MDD */
 
@@ -95,7 +97,8 @@ uint32_t sum_edge_lengths
  * @returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational mean_dependency_distance_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {})
+noexcept;
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as an exact rational value.
  *
@@ -108,7 +111,8 @@ numeric::rational mean_dependency_distance_rational
  * @returns Jing's and Liu's \f$MDD\f$.
  */
 numeric::rational mean_dependency_distance_rational
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
+noexcept;
 
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
@@ -119,7 +123,8 @@ numeric::rational mean_dependency_distance_rational
  * @returns The return value is a floating point value.
  */
 double mean_dependency_distance
-(const graphs::directed_graph& g, const linear_arrangement& pi = {});
+(const graphs::directed_graph& g, const linear_arrangement& pi = {})
+noexcept;
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
  *
@@ -129,7 +134,8 @@ double mean_dependency_distance
  * @returns The return value is a floating point value.
  */
 double mean_dependency_distance
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {});
+(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
+noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal

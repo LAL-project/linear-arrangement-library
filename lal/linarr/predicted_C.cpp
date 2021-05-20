@@ -53,6 +53,7 @@
 
 #define to_int32(x) static_cast<int32_t>(x)
 #define to_uint32(x) static_cast<uint32_t>(x)
+#define to_double(x) static_cast<double>(x)
 
 namespace lal {
 using namespace graphs;
@@ -61,7 +62,7 @@ using namespace numeric;
 namespace linarr {
 
 inline constexpr
-uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
+uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
 	int32_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -95,7 +96,7 @@ uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) {
 }
 
 inline constexpr
-uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
+uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
 	int32_t f = 0;
 
 	// positions s1 < s2
@@ -144,16 +145,19 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) {
 
 #if defined DEBUG
 	assert(f >= 0);
+	assert(f%2 == 0);
 #endif
 	return to_uint32(f/2);
 }
 
-template<typename GRAPH>
-rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement& pi) {
-	rational Ec2(0);
+template<class G, typename result>
+result __get_approximate_C_2_rational
+(const G& g, const linear_arrangement& pi) noexcept
+{
+	result Ec2(0);
 	const uint32_t n = g.get_num_nodes();
 
-	for (iterators::Q_iterator<GRAPH> q(g); not q.end(); q.next()) {
+	for (iterators::Q_iterator<G> q(g); not q.end(); q.next()) {
 		const auto [st, uv] = q.get_edge_pair();
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
@@ -172,7 +176,13 @@ rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement
 				beta(to_int32(n), to_int32(len_uv), to_int32(len_st))
 			)
 		);
-		Ec2 += rational(to_int32(al), be);
+
+		if constexpr (std::is_same_v<result, rational>) {
+			Ec2 += rational(to_int32(al), be);
+		}
+		else {
+			Ec2 += to_double(al)/to_double(be);
+		}
 	}
 
 	return Ec2;
@@ -180,31 +190,49 @@ rational __get_approximate_C_2_rational(const GRAPH& g, const linear_arrangement
 
 rational predicted_num_crossings_rational
 (const undirected_graph& g, const linear_arrangement& pi)
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<undirected_graph>, g, pi);
+			(__get_approximate_C_2_rational<undirected_graph, rational>, g, pi);
 }
 
 rational predicted_num_crossings_rational
 (const directed_graph& g, const linear_arrangement& pi)
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<directed_graph>, g, pi);
+			(__get_approximate_C_2_rational<directed_graph, rational>, g, pi);
 }
 
-double predicted_num_crossings(const undirected_graph& g, const linear_arrangement& pi) {
-	return predicted_num_crossings_rational(g, pi).to_double();
+double predicted_num_crossings
+(const undirected_graph& g, const linear_arrangement& pi)
+noexcept
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+#endif
+
+	return internal::call_with_empty_arrangement
+			(__get_approximate_C_2_rational<undirected_graph, double>, g, pi);
 }
-double predicted_num_crossings(const directed_graph& g, const linear_arrangement& pi) {
-	return predicted_num_crossings_rational(g, pi).to_double();
+double predicted_num_crossings
+(const directed_graph& g, const linear_arrangement& pi)
+noexcept
+{
+#if defined DEBUG
+	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+#endif
+
+	return internal::call_with_empty_arrangement
+			(__get_approximate_C_2_rational<directed_graph, double>, g, pi);
 }
 
 } // -- namespace linarr

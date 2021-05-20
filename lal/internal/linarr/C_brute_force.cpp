@@ -72,6 +72,7 @@ inline uint32_t __compute_C_brute_force_undir(
 	node * const __restrict__ T,
 	uint32_t upper_bound = 0
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	for (uint32_t i = 0; i < n; ++i) {
@@ -140,6 +141,7 @@ __inner_computation_dir(
 	uint32_t& C,
 	uint32_t upper_bound = 0
 )
+noexcept
 {
 	// 'u' and 'v' is a pair of connected nodes such that 'u'
 	// is "to the left of" 'v' in the linear arrangement 'seq'
@@ -203,6 +205,7 @@ inline uint32_t __compute_C_brute_force_dir(
 	node * const __restrict__ T,
 	uint32_t upper_bound = 0
 )
+noexcept
 {
 	if constexpr (not decide_upper_bound) {
 		UNUSED(upper_bound);
@@ -281,6 +284,7 @@ inline uint32_t __call_C_brute_force(
 	const GRAPH& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
@@ -300,7 +304,7 @@ inline uint32_t __call_C_brute_force(
 	}
 }
 
-uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi)
+uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -309,7 +313,7 @@ uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi
 			(__call_C_brute_force<undirected_graph>, g, pi);
 }
 
-uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi)
+uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -326,6 +330,7 @@ vector<uint32_t> n_C_brute_force(
 	const GRAPH& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -359,6 +364,7 @@ vector<uint32_t> n_C_brute_force(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	return n_C_brute_force<directed_graph>(g, pis);
 }
@@ -366,6 +372,7 @@ vector<uint32_t> n_C_brute_force(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	return n_C_brute_force<undirected_graph>(g, pis);
 }
@@ -385,6 +392,7 @@ inline uint32_t __call_brute_force_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
@@ -411,6 +419,7 @@ uint32_t is_n_C_brute_force_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t c
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -424,6 +433,7 @@ uint32_t is_n_C_brute_force_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t c
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -441,6 +451,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -477,6 +488,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t c
 )
+noexcept
 {
 	return is_n_C_brute_force_lesseq_than<directed_graph>(g, pis, c);
 }
@@ -485,6 +497,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t c
 )
+noexcept
 {
 	return is_n_C_brute_force_lesseq_than<undirected_graph>(g, pis, c);
 }
@@ -495,6 +508,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
@@ -536,6 +550,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 	return is_n_C_brute_force_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
@@ -545,6 +560,7 @@ vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 	return is_n_C_brute_force_lesseq_than<undirected_graph>
 			(g, pis, upper_bounds);

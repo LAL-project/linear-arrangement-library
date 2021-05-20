@@ -69,7 +69,10 @@ namespace linarr {
 
 typedef syntactic_dependency_structure syndepstr_type;
 
-inline bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi) {
+inline
+bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi)
+noexcept
+{
 	const node R = T.get_root();
 	for (E_iterator e_it(T); not e_it.end(); e_it.next()) {
 		const auto [s,t] = e_it.get_edge();
@@ -90,6 +93,7 @@ inline void __get_yields(
 	node u,
 	vector<vector<position>>& yields
 )
+noexcept
 {
 	// add this node to its own yield
 	auto& yu = yields[u];
@@ -109,6 +113,7 @@ inline void __get_yields(
 inline bool __are_yields_wellnested(
 	const uint32_t n, const vector<vector<position>>& yields
 )
+noexcept
 {
 	// for every pair of nodes
 	for (node u = 0; u < n; ++u) {
@@ -156,6 +161,7 @@ inline bool __are_yields_wellnested(
 
 inline
 uint32_t __get_n_discont(const uint32_t n, const vector<vector<node>>& yields)
+noexcept
 {
 	uint32_t max_g = 0;
 	for (node u = 0; u < n; ++u) {
@@ -172,7 +178,9 @@ uint32_t __get_n_discont(const uint32_t n, const vector<vector<node>>& yields)
 }
 
 inline
-bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi) {
+bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi)
+noexcept
+{
 	const uint32_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
@@ -190,7 +198,10 @@ bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi) {
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
-inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
+inline
+uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi)
+noexcept
+{
 	// use the paper in
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
 	// as a reference for the definition of 1ec
@@ -286,6 +297,7 @@ inline uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi) {
 inline array<bool, __syntactic_dependency_structure_size>
 __get_syn_dep_tree_type
 (const rooted_tree& rT, const linear_arrangement& pi)
+noexcept
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
 
@@ -406,7 +418,10 @@ __get_syn_dep_tree_type
 }
 
 array<bool, __syntactic_dependency_structure_size>
-syntactic_dependency_structure_class(const rooted_tree& rT, const linear_arrangement& pi) {
+syntactic_dependency_structure_class
+(const rooted_tree& rT, const linear_arrangement& pi)
+noexcept
+{
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif

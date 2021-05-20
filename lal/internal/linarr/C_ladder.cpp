@@ -70,6 +70,7 @@ inline uint32_t __compute_C_ladder(
 	uint32_t * const __restrict__ L1,
 	uint32_t upper_bound = 0
 )
+noexcept
 {
 	if constexpr (not decide_upper_bound) {
 		UNUSED(upper_bound);
@@ -137,6 +138,7 @@ inline uint32_t __call_C_ladder(
 	const G& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
@@ -162,6 +164,7 @@ uint32_t n_C_ladder(
 	const directed_graph& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -174,6 +177,7 @@ uint32_t n_C_ladder(
 	const undirected_graph& g,
 	const linear_arrangement& pi
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -190,6 +194,7 @@ vector<uint32_t> n_C_ladder(
 	const G& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -229,6 +234,7 @@ vector<uint32_t> n_C_ladder(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	return n_C_ladder<directed_graph>(g, pis);
 }
@@ -236,6 +242,7 @@ vector<uint32_t> n_C_ladder(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis
 )
+noexcept
 {
 	return n_C_ladder<undirected_graph>(g, pis);
 }
@@ -253,6 +260,7 @@ inline uint32_t __call_C_ladder_is_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 	if (n < 4) {
@@ -277,6 +285,7 @@ uint32_t is_n_C_ladder_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -290,6 +299,7 @@ uint32_t is_n_C_ladder_lesseq_than(
 	const linear_arrangement& pi,
 	uint32_t upper_bound
 )
+noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -307,6 +317,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound
 )
+noexcept
 {
 	const uint32_t n = g.get_num_nodes();
 
@@ -350,6 +361,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound
 )
+noexcept
 {
 	return is_n_C_ladder_lesseq_than<directed_graph>
 			(g, pis, upper_bound);
@@ -360,6 +372,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	uint32_t upper_bound
 )
+noexcept
 {
 	return is_n_C_ladder_lesseq_than<undirected_graph>
 			(g, pis, upper_bound);
@@ -371,6 +384,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 #if defined DEBUG
 	// ensure that there are as many linear arrangements as upper bounds
@@ -421,6 +435,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 	return is_n_C_ladder_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
@@ -430,6 +445,7 @@ vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const vector<linear_arrangement>& pis,
 	const vector<uint32_t>& upper_bounds
 )
+noexcept
 {
 	return is_n_C_ladder_lesseq_than<undirected_graph>
 			(g, pis, upper_bounds);

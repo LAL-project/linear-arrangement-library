@@ -61,6 +61,7 @@ inline uint32_t num_crossings(
 	const linear_arrangement& pi,
 	const algorithms_C& A
 )
+noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -84,6 +85,7 @@ uint32_t num_crossings(
 	const directed_graph& g,
 	const algorithms_C& A
 )
+noexcept
 {
 	return num_crossings<directed_graph>(g, {}, A);
 }
@@ -92,6 +94,7 @@ uint32_t num_crossings(
 	const undirected_graph& g,
 	const algorithms_C& A
 )
+noexcept
 {
 	return num_crossings<undirected_graph>(g, {}, A);
 }
@@ -101,6 +104,7 @@ uint32_t num_crossings(
 	const linear_arrangement& pi,
 	const algorithms_C& A
 )
+noexcept
 {
 	return num_crossings<directed_graph>(g, pi, A);
 }
@@ -122,6 +126,7 @@ inline vector<uint32_t> num_crossings_list(
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
+noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -146,6 +151,7 @@ vector<uint32_t> num_crossings_list(
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
+noexcept
 {
 	return num_crossings_list<directed_graph>(g, pis, A);
 }
@@ -155,6 +161,7 @@ vector<uint32_t> num_crossings_list(
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
+noexcept
 {
 	return num_crossings_list<undirected_graph>(g, pis, A);
 }
@@ -168,6 +175,7 @@ uint32_t is_num_crossings_lesseq_than(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -192,6 +200,7 @@ uint32_t is_num_crossings_lesseq_than(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than<directed_graph>(g, {}, upper_bound, A);
 }
@@ -201,6 +210,7 @@ uint32_t is_num_crossings_lesseq_than(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than<undirected_graph>(g, {}, upper_bound, A);
 }
@@ -211,6 +221,7 @@ uint32_t is_num_crossings_lesseq_than(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than<directed_graph>(g, pi, upper_bound, A);
 }
@@ -221,6 +232,7 @@ uint32_t is_num_crossings_lesseq_than(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than<undirected_graph>(g, pi, upper_bound, A);
 }
@@ -234,6 +246,7 @@ inline vector<uint32_t> is_num_crossings_lesseq_than_list(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -259,6 +272,7 @@ vector<uint32_t> is_num_crossings_lesseq_than_list(
 	 uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than_list<directed_graph>
 			(g, pis, upper_bound, A);
@@ -270,6 +284,7 @@ vector<uint32_t> is_num_crossings_lesseq_than_list(
 	uint32_t upper_bound,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than_list<undirected_graph>
 			(g, pis, upper_bound, A);
@@ -285,6 +300,7 @@ vector<uint32_t> is_num_crossings_lesseq_than_list
 	const vector<uint32_t>& upper_bounds,
 	const algorithms_C& A
 )
+noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
@@ -310,6 +326,7 @@ vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const vector<uint32_t>& upper_bounds,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than_list<directed_graph>
 			(G, pis, upper_bounds, A);
@@ -321,6 +338,7 @@ vector<uint32_t> is_num_crossings_lesseq_than_list(
 	const vector<uint32_t>& upper_bounds,
 	const algorithms_C& A
 )
+noexcept
 {
 	return is_num_crossings_lesseq_than_list<undirected_graph>
 			(G, pis, upper_bounds, A);

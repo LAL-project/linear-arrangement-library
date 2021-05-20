@@ -66,11 +66,11 @@ namespace internal {
 uint32_t n_C_brute_force(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 uint32_t n_C_brute_force(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -85,11 +85,11 @@ uint32_t n_C_brute_force(
 std::vector<uint32_t> n_C_brute_force(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 std::vector<uint32_t> n_C_brute_force(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -107,12 +107,12 @@ uint32_t is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 uint32_t is_n_C_brute_force_lesseq_than(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -130,12 +130,12 @@ std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -153,12 +153,12 @@ std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -176,11 +176,11 @@ std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 uint32_t n_C_dynamic_programming(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 uint32_t n_C_dynamic_programming(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -195,11 +195,11 @@ uint32_t n_C_dynamic_programming(
 std::vector<uint32_t> n_C_dynamic_programming(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 std::vector<uint32_t> n_C_dynamic_programming(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -217,12 +217,12 @@ uint32_t is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 uint32_t is_n_C_dynamic_programming_lesseq_than(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -240,12 +240,12 @@ std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -263,12 +263,12 @@ std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -286,11 +286,11 @@ std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 uint32_t n_C_ladder(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 uint32_t n_C_ladder(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -305,11 +305,11 @@ uint32_t n_C_ladder(
 std::vector<uint32_t> n_C_ladder(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 std::vector<uint32_t> n_C_ladder(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -327,12 +327,12 @@ uint32_t is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 uint32_t is_n_C_ladder_lesseq_than(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -350,12 +350,12 @@ std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -373,12 +373,12 @@ std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -396,7 +396,7 @@ std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 uint32_t n_C_stack_based(
 	const graphs::graph& g,
 	const linear_arrangement& pi
-);
+) noexcept;
 /*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -412,7 +412,7 @@ uint32_t n_C_stack_based(
 std::vector<uint32_t> n_C_stack_based(
 	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pis
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -430,7 +430,7 @@ uint32_t is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,
 	const linear_arrangement& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -448,7 +448,7 @@ std::vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pi,
 	uint32_t upper_bound
-);
+) noexcept;
 
 /*
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -466,7 +466,7 @@ std::vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint32_t>& upper_bounds
-);
+) noexcept;
 
 } // -- namespace internal
 } // -- namespace lal
