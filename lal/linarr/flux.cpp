@@ -69,6 +69,7 @@ namespace flux {
 
 inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
 (const free_tree& t, const linear_arrangement& pi)
+noexcept
 {
 	vector<pair<edge,uint32_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
 
@@ -91,6 +92,7 @@ inline void calculate_dependencies_span
 	vector<dependency_flux>& flux,
 	vector<edge>& cur_deps
 )
+noexcept
 {
 	const node u = inv_pi[cur_pos];
 	if (cur_pos > 0) {
@@ -135,6 +137,7 @@ inline void calculate_dependencies_span
 
 inline uint32_t calculate_weight
 (const vector<edge>& dependencies, undirected_graph& ug)
+noexcept
 {
 	if (dependencies.size() <= 1) {
 		return to_uint32(dependencies.size());
@@ -173,7 +176,9 @@ inline uint32_t calculate_weight
 } // -- namespace flux
 
 inline vector<dependency_flux> __compute_flux
-(const free_tree& t, const linear_arrangement& pi) {
+(const free_tree& t, const linear_arrangement& pi)
+noexcept
+{
 	const uint32_t n = t.get_num_nodes();
 
 	// inverse function of the linear arrangement:
@@ -231,6 +236,7 @@ inline vector<dependency_flux> __compute_flux
 
 vector<dependency_flux>
 compute_flux(const free_tree& t, const linear_arrangement& pi)
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());

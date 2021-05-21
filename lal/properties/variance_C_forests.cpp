@@ -102,6 +102,9 @@ noexcept
 			xi[s] += kt;
 		}
 	}
+#if defined DEBUG
+	assert(psi%2 == 0);
+#endif
 	psi /= 2;
 
 	// ------------------------
@@ -130,6 +133,12 @@ noexcept
 	}
 
 	Lambda_2 += Lambda_1;
+
+#if defined DEBUG
+	assert(n_paths_5%2 == 0);
+	assert(Phi_2%2 == 0);
+#endif
+
 	n_paths_5 /= 2;
 	Phi_2 /= 2;
 }

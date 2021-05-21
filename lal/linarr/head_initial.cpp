@@ -68,8 +68,14 @@ rational head_initial_rational
 	const uint32_t etr =
 		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
 
-	// avoid warning conversion
 	return rational_from_ui(etr, g.get_num_edges());
+}
+
+double head_initial
+(const directed_graph& g, const linear_arrangement& pi) noexcept {
+	const uint32_t etr =
+		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
+	return static_cast<double>(etr)/g.get_num_edges();
 }
 
 } // -- namespace linarr

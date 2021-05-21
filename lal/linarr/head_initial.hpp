@@ -80,10 +80,8 @@ numeric::rational head_initial_rational
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
-inline double head_initial
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept {
-	return head_initial_rational(g, pi).to_double();
-}
+double head_initial
+(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal

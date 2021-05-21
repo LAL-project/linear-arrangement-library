@@ -41,7 +41,7 @@
 
 // lal includes
 #include <lal/properties/Q.hpp>
-#include <lal/properties/C_rla.hpp>
+#include <lal/numeric/rational.hpp>
 
 namespace lal {
 using namespace graphs;
