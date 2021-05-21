@@ -63,7 +63,7 @@ namespace internal {
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
 inline void fill_adjP_adjN(

@@ -61,8 +61,7 @@ namespace linarr {
  * identity arrangement \f$\pi_I\f$, i.e., computes \f$C_{\pi_I}(G)\f$ using
  * the algorithm specified by the parameter @e A.
  * @param G Input graph.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
@@ -78,8 +77,7 @@ uint32_t num_crossings(
  * identity arrangement \f$\pi_I\f$, i.e., computes \f$C_{\pi_I}(G)\f$ using
  * the algorithm specified by the parameter @e A.
  * @param G Input graph.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
@@ -97,8 +95,7 @@ uint32_t num_crossings(
  * specified by the parameter @e A.
  * @param G Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
@@ -116,8 +113,7 @@ uint32_t num_crossings(
  * specified by the parameter @e A.
  * @param G Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
@@ -131,14 +127,13 @@ uint32_t num_crossings(
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
- * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes, computes the number of edge crossings for each of the linear
  * arrangements \f$\pi_i\f$, i.e., computes \f$\{C_{\pi_i}(G)\}_{i=1}^k\f$,
  * using the algorithm specified by the parameter @e A.
  * @param G Input graph.
  * @param pis A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(G)\f$.
  * @pre None of the arrangements in @e pis can be empty.
  * @pre The preconditions of this function depend on the choice of algorithm.
@@ -152,14 +147,13 @@ std::vector<uint32_t> num_crossings_list(
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
- * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes, computes the number of edge crossings for each of the linear
  * arrangements \f$\pi_i\f$, i.e., computes \f$\{C_{\pi_i}(G)\}_{i=1}^k\f$,
  * using the algorithm specified by the parameter @e A.
  * @param G Input graph.
  * @param pis A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::ladder.
+ * @param A Algorithm to use to compute the number of crossings.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(G)\f$.
  * @pre None of the arrangements in @e pis can be empty.
  * @pre The preconditions of this function depend on the choice of algorithm.
@@ -182,10 +176,10 @@ std::vector<uint32_t> num_crossings_list(
  * @e A.
  * @param G Input graph.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -205,10 +199,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @e A.
  * @param G Input graph.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -230,10 +224,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @param G Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -255,10 +249,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @param G Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -272,20 +266,20 @@ uint32_t is_num_crossings_lesseq_than(
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes, computes the number of edge crossings for each of the linear
  * arrangements \f$\pi_i\f$ if that amount is less than or equal to the given
- * upper bound \f$u\f$, i.e., computes \f$\{ f_i \}_{i=1}^k\f$, where
- * \f$f_i=C_{\pi_i}(G)\f$ if \f$C_{\pi_i}(G)\le u\f$, or \f$f_i=m^2\f$ if
+ * upper bound \f$u\f$, i.e., computes \f$\{f_i\}_{i=1}^k\f$, where
+ * \f$f_i=C_{\pi_i}(G)\f$ if \f$C_{\pi_i}(G)\le u\f$, or \f$f_i>m^2\f$ if
  * \f$C_{\pi_i}(G)>u\f$. This function uses a modified version of the algorithm
  * specified by the parameter @e A.
  * @param G Input graph.
  * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -298,20 +292,20 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$ and a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes, computes the number of edge crossings for each of the linear
  * arrangements \f$\pi_i\f$ if that amount is less than or equal to the given
- * upper bound \f$u\f$, i.e., computes \f$\{ f_i \}_{i=1}^k\f$, where
- * \f$f_i=C_{\pi_i}(G)\f$ if \f$C_{\pi_i}(G)\le u\f$, or \f$f_i=m^2\f$ if
+ * upper bound \f$u\f$, i.e., computes \f$\{f_i\}_{i=1}^k\f$, where
+ * \f$f_i=C_{\pi_i}(G)\f$ if \f$C_{\pi_i}(G)\le u\f$, or \f$f_i>m^2\f$ if
  * \f$C_{\pi_i}(G)>u\f$. This function uses a modified version of the algorithm
  * specified by the parameter @e A.
  * @param G Input graph.
  * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
@@ -325,22 +319,22 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph \f$G\f$, a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$, a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes and a list of upper bounds \f$\{u_i\}_{i=1}^k\f$, computes the
  * number of edge crossings for each of the linear arrangements \f$\pi_i\f$ if
  * that amount is less than or equal to the given upper bound \f$u_i\f$, i.e.,
  * computes \f$\{ f_i \}_{i=1}^k\f$, where \f$f_i=C_{\pi_i}(G)\f$ if
- * \f$C_{\pi_i}(G)\le u_i\f$, or \f$f_i=m^2\f$ if \f$C_{\pi_i}(G)>u_i\f$. This
+ * \f$C_{\pi_i}(G)\le u_i\f$, or \f$f_i>m^2\f$ if \f$C_{\pi_i}(G)>u_i\f$. This
  * function uses a modified version of the algorithm specified by the parameter
  * @e A.
  * @param G Input graph.
  * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bounds A list of upper bounds on the number of crossings for
  * each linear arrangement.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre There must be as many linear arrangements as upper bounds.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
@@ -354,22 +348,22 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph \f$G\f$, a list of linear arrangements \f$L=\{\pi\}_{i=1}^k\f$
+ * Given a graph \f$G\f$, a list of linear arrangements \f$L=\{\pi_i\}_{i=1}^k\f$
  * of its nodes and a list of upper bounds \f$\{u_i\}_{i=1}^k\f$, computes the
  * number of edge crossings for each of the linear arrangements \f$\pi_i\f$ if
  * that amount is less than or equal to the given upper bound \f$u_i\f$, i.e.,
  * computes \f$\{ f_i \}_{i=1}^k\f$, where \f$f_i=C_{\pi_i}(G)\f$ if
- * \f$C_{\pi_i}(G)\le u_i\f$, or \f$f_i=m^2\f$ if \f$C_{\pi_i}(G)>u_i\f$. This
+ * \f$C_{\pi_i}(G)\le u_i\f$, or \f$f_i>m^2\f$ if \f$C_{\pi_i}(G)>u_i\f$. This
  * function uses a modified version of the algorithm specified by the parameter
  * @e A.
  * @param G Input graph.
  * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bounds A list of upper bounds on the number of crossings for
  * each linear arrangement.
- * @param A Algorithm to use to compute the number of crossings. Default:
- * @ref lal::linarr::algorithms_C::stack_based.
- * @returns True or false depending on whether the number of crossings is less than
- * the given constant or not.
+ * @param A Algorithm to use to compute the number of crossings.
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns a value strictly larger than \f$m^2\f$
+ * if otherwise.
  * @pre There must be as many linear arrangements as upper bounds.
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.

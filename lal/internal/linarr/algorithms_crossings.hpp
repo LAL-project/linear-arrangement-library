@@ -101,7 +101,8 @@ std::vector<uint32_t> n_C_brute_force(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 uint32_t is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
@@ -124,7 +125,8 @@ uint32_t is_n_C_brute_force_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
@@ -147,7 +149,8 @@ std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_brute_force_lesseq_than(
 	const graphs::directed_graph& g,
@@ -211,7 +214,8 @@ std::vector<uint32_t> n_C_dynamic_programming(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 uint32_t is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
@@ -234,7 +238,8 @@ uint32_t is_n_C_dynamic_programming_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
@@ -257,7 +262,8 @@ std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
 	const graphs::directed_graph& g,
@@ -321,7 +327,8 @@ std::vector<uint32_t> n_C_ladder(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 uint32_t is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
@@ -344,7 +351,8 @@ uint32_t is_n_C_ladder_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
@@ -367,7 +375,8 @@ std::vector<uint32_t> is_n_C_ladder_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_ladder_lesseq_than(
 	const graphs::directed_graph& g,
@@ -424,7 +433,8 @@ std::vector<uint32_t> n_C_stack_based(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 uint32_t is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,
@@ -442,7 +452,8 @@ uint32_t is_n_C_stack_based_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,
@@ -460,7 +471,8 @@ std::vector<uint32_t> is_n_C_stack_based_lesseq_than(
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
- * @returns C <= c?
+ * @returns The number of crossings \f$C\f$ if said number is less than or equal
+ * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
  */
 std::vector<uint32_t> is_n_C_stack_based_lesseq_than(
 	const graphs::graph& g,

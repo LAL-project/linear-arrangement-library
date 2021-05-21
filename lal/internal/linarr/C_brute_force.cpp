@@ -56,7 +56,7 @@ using namespace graphs;
 using namespace iterators;
 
 #define idx(i,j, C) ((i)*(C) + (j))
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
 namespace internal {

@@ -54,7 +54,7 @@ using namespace std;
 #include <lal/graphs/output.hpp>
 
 #define to_uint32(x) static_cast<uint32_t>(x)
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges())
+#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
 namespace lal {
