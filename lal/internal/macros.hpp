@@ -77,7 +77,7 @@ inline void UNUSED(const T& x) { (void)x; }
  * @returns The value function @e F returns.
  */
 template<typename result_t, typename graph_t, typename ... Params>
-result_t call_with_empty_arrangement(
+inline result_t call_with_empty_arrangement(
 	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
 	const graph_t& g, const linear_arrangement& pi, Params... P
 )
