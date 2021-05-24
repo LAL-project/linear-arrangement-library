@@ -113,11 +113,17 @@ enum class treebank_feature {
 	/**
 	 * @brief Hubiness of the tree.
 	 *
+	 * In case a tree has 3 or less vertices the value that is output is a '-1',
+	 * as the hubiness coefficient is not defined for such trees.
+	 *
 	 * See @ref lal::properties::hubiness for details.
 	 */
 	hubiness,
 	/**
 	 * @brief Mean hierarchical distance of the tree.
+	 *
+	 * In case a tree has 1 or less vertices the value that is output is a '-1',
+	 * as the mean hierarchical distance is not defined for such trees.
 	 *
 	 * See @ref lal::properties::mean_hierarchical_distance for details.
 	 */
@@ -247,6 +253,9 @@ enum class treebank_feature {
 	min_sum_edge_lengths_projective,
 	/**
 	 * @brief Mean dependency distance of the tree.
+	 *
+	 * In case a tree has 1 or less vertices the value that is output is a '-1',
+	 * as the hubiness coefficient is not defined for such trees.
 	 *
 	 * See @ref lal::linarr::mean_dependency_distance for details.
 	 */

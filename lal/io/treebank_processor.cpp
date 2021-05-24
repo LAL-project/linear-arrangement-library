@@ -511,21 +511,37 @@ const noexcept
 		set_prop(k3_out_idx, properties::moment_degree_out(rT, 3));
 	}
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
-		set_prop(num_pairs_independent_edges_idx, static_cast<double>(properties::num_pairs_independent_edges(fT)));
+		set_prop(num_pairs_independent_edges_idx,
+				 to_double(properties::num_pairs_independent_edges(fT)));
 	}
 	if (m_what_fs[head_initial_idx]) {
 		set_prop(head_initial_idx, linarr::head_initial(rT));
 	}
 	if (m_what_fs[hubiness_idx]) {
-		set_prop(hubiness_idx, properties::hubiness(fT));
+		if (fT.get_num_nodes() <= 3) {
+			set_prop(hubiness_idx, -1);
+		}
+		else {
+			set_prop(hubiness_idx, properties::hubiness(fT));
+		}
 	}
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
-		set_prop(mean_hierarchical_distance_idx,
-				 properties::mean_hierarchical_distance(rT));
+		if (fT.get_num_nodes() <= 1) {
+			set_prop(mean_hierarchical_distance_idx, -1);
+		}
+		else {
+			set_prop(mean_hierarchical_distance_idx,
+					 properties::mean_hierarchical_distance(rT));
+		}
 	}
 	if (m_what_fs[mean_dependency_distance_idx]) {
-		set_prop(mean_dependency_distance_idx,
-				 linarr::mean_dependency_distance(rT));
+		if (fT.get_num_nodes() <= 1) {
+			set_prop(mean_dependency_distance_idx, -1);
+		}
+		else {
+			set_prop(mean_dependency_distance_idx,
+					 linarr::mean_dependency_distance(rT));
+		}
 	}
 	if (m_what_fs[tree_diameter_idx]) {
 		set_prop(tree_diameter_idx,
