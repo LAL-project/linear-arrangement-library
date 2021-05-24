@@ -58,20 +58,23 @@ namespace properties {
  * function is the mean of these distances:
  * \f$MHD = \frac{1}{n} \sum_{u\in V} HD_u\f$.
  *
+ * In case the tree has one vertex or less (\f$n \le 1\f$) the function returns -1.
+ *
  * For furhter details see \cite Jing2015a.
  * @param t Input rooted tree.
  * @returns The Mean Hierarchical Distance of a rooted tree as a rational value.
  */
-numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree& t);
+numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree& t) noexcept;
 
 /**
  * @brief Mean Hierarchical Distance.
  *
  * See @ref lal::properties::mean_hierarchical_distance_rational for details.
  * @param t Input rooted tree.
- * @returns The Mean Hierarchical Distance of a rooted tree as a floating point value.
+ * @returns The Mean Hierarchical Distance of a rooted tree as a floating point
+ * value.
  */
-double mean_hierarchical_distance(const graphs::rooted_tree& t);
+double mean_hierarchical_distance(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

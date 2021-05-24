@@ -92,9 +92,12 @@ noexcept;
  * the average edge length, or the mean dependency distance (see \cite Jing2015a).
  * Formally, it computes \f$\frac{D_{\pi}(G)}{|E(G)|}\f$. See function @ref
  * sum_edge_lengths for further details on \f$D_{\pi}(G)\f$.
+ *
+ * In case the graph has one vertex or less (\f$n \le 1\f$) the function returns -1.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Jing's and Liu's \f$MDD\f$.
+ * @pre \f$n > 1\f$.
  */
 numeric::rational mean_dependency_distance_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi = {})
@@ -106,6 +109,8 @@ noexcept;
  * the average edge length, or the mean dependency distance (see \cite Jing2015a).
  * Formally, it computes \f$\frac{D_{\pi}(G)}{|E(G)|}\f$. See function @ref
  * sum_edge_lengths for further details on \f$D_{\pi}(G)\f$.
+ *
+ * In case the graph has one vertex or less (\f$n \le 1\f$) the function returns -1.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Jing's and Liu's \f$MDD\f$.

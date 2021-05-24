@@ -60,7 +60,9 @@ namespace linarr {
 /* D */
 
 template<class G>
-uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi) noexcept {
+inline uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi)
+noexcept
+{
 	// sum of lengths
 	uint32_t l = 0;
 
@@ -100,7 +102,10 @@ noexcept
 /* MDD */
 
 template<class G, typename result>
-inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept {
+inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept
+{
+	if (g.get_num_nodes() <= 1) { return -1; }
+
 	const uint32_t D = sum_edge_lengths(g, pi);
 	if constexpr (std::is_same_v<result, numeric::rational>) {
 		return rational_from_ui(D, g.get_num_edges());

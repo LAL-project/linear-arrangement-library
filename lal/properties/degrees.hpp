@@ -175,10 +175,11 @@ double moment_degree_out(const graphs::directed_graph& g, uint32_t p)noexcept;
  * are the second moment of degree about 0 (see
  * @ref lal::properties::moment_degree_rational) of a star and linear tree respectively.
  *
- * See \cite Ferrer2018a for details.
+ * In case the tree has three vertices or less (\f$n \le 3\f$) the function returns -1.
+ *
+ * See \cite Ferrer2018a for further details.
  * @param t Input free tree.
  * @returns The hubiness coefficient as a rational value.
- * @pre \f$n > 3\f$.
  */
 numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept;
 
@@ -194,15 +195,13 @@ numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept;
  * are the second moment of degree about 0 (see
  * @ref lal::properties::moment_degree_rational) of a star and linear tree respectively.
  *
- * See \cite Ferrer2018a for details.
+ * In case the tree has three vertices or less (\f$n \le 3\f$) the function returns -1.
+ *
+ * See \cite Ferrer2018a for further details.
  * @param t Input rooted tree.
  * @returns The hubiness coefficient as a rational value.
- * @pre \f$n > 3\f$.
  */
-inline
-numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept {
-	return hubiness_rational(t.to_free_tree());
-}
+numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -220,10 +219,7 @@ double hubiness(const graphs::free_tree& t) noexcept;
  * @param t Input rooted tree.
  * @returns The hubiness coefficient as a floating point value.
  */
-inline
-double hubiness(const graphs::rooted_tree& t) noexcept {
-	return hubiness(t.to_free_tree());
-}
+double hubiness(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

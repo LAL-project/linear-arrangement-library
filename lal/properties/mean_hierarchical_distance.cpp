@@ -39,6 +39,11 @@
  *
  ********************************************************************/
 
+// C++ includ
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
@@ -51,8 +56,10 @@ using namespace numeric;
 
 namespace properties {
 
-rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
+rational mean_hierarchical_distance_rational(const rooted_tree& tree) noexcept {
 	const uint32_t n = tree.get_num_nodes();
+
+	if (tree.get_num_nodes() <= 1) { return rational(-1); }
 
 	uint32_t sum_distances = 0;
 	internal::data_array<uint32_t> distances(n, 0);
@@ -69,7 +76,7 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) {
 	return rational(sum_distances, tree.get_num_edges());
 }
 
-double mean_hierarchical_distance(const rooted_tree& t) {
+double mean_hierarchical_distance(const rooted_tree& t) noexcept {
 	return mean_hierarchical_distance_rational(t).to_double();
 }
 
