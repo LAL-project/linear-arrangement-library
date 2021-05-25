@@ -116,7 +116,7 @@ public:
 	 * @param T Free tree
 	 * @param root Root vertex
 	 * @pre The object @e T is a valid tree (see
-	 * @ref graphs::rooted_tree::is_tree).
+	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
 	all_projective_arrangements(const graphs::free_tree& T, node root) noexcept
 		: all_projective_arrangements(graphs::rooted_tree(T, root))

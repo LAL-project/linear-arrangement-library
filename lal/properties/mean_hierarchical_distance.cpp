@@ -56,10 +56,13 @@ using namespace numeric;
 
 namespace properties {
 
-rational mean_hierarchical_distance_rational(const rooted_tree& tree) noexcept {
+template<typename result>
+inline result MHD(const rooted_tree& tree) noexcept {
 	const uint32_t n = tree.get_num_nodes();
 
-	if (tree.get_num_nodes() <= 1) { return rational(-1); }
+#if defined DEBUG
+	assert(tree.get_num_nodes() > 1);
+#endif
 
 	uint32_t sum_distances = 0;
 	internal::data_array<uint32_t> distances(n, 0);
@@ -73,11 +76,20 @@ rational mean_hierarchical_distance_rational(const rooted_tree& tree) noexcept {
 	);
 	bfs.start_at(tree.get_root());
 
-	return rational(sum_distances, tree.get_num_edges());
+	if constexpr (std::is_same_v<rational, result>) {
+		return rational(sum_distances, tree.get_num_edges());
+	}
+	else {
+		return static_cast<double>(sum_distances)/tree.get_num_edges();
+	}
 }
 
-double mean_hierarchical_distance(const rooted_tree& t) noexcept {
-	return mean_hierarchical_distance_rational(t).to_double();
+rational mean_hierarchical_distance_rational(const rooted_tree& tree) noexcept {
+	return MHD<rational>(tree);
+}
+
+double mean_hierarchical_distance(const rooted_tree& tree) noexcept {
+	return MHD<double>(tree);
 }
 
 } // -- namespace properties

@@ -95,6 +95,11 @@ void set_average_of(
 	double *props
 )
 {
+	if (F.size() == 0) {
+		props[idx] = nan("");
+		return;
+	}
+
 	const double cumul =
 	[&]() -> double {
 		double v =
@@ -108,7 +113,6 @@ void set_average_of(
 	}();
 	props[idx] = cumul/to_double(F.size());
 }
-
 template<typename T>
 void set_maximum_of(
 	const vector<linarr::dependency_flux>& F,
@@ -117,6 +121,11 @@ void set_maximum_of(
 	double *props
 )
 {
+	if (F.size() == 0) {
+		props[idx] = nan("");
+		return;
+	}
+
 	const double value =
 	[&]() -> double {
 		double v = 0.0;
@@ -138,6 +147,11 @@ void set_minimum_of(
 	double *props
 )
 {
+	if (F.size() == 0) {
+		props[idx] = nan("");
+		return;
+	}
+
 	const double value =
 	[&]() -> double {
 		double v = 9999999.9;
@@ -443,6 +457,8 @@ const noexcept
 	static constexpr size_t head_initial_idx = internal::treebank_feature_to_index(treebank_feature::head_initial);
 	static constexpr size_t hubiness_idx = internal::treebank_feature_to_index(treebank_feature::hubiness);
 	static constexpr size_t mean_hierarchical_distance_idx = internal::treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
+	static constexpr size_t tree_centre_idx = internal::treebank_feature_to_index(treebank_feature::tree_centre);
+	static constexpr size_t tree_centroid_idx = internal::treebank_feature_to_index(treebank_feature::tree_centroid);
 	static constexpr size_t tree_diameter_idx = internal::treebank_feature_to_index(treebank_feature::tree_diameter);
 	static constexpr size_t C_idx = internal::treebank_feature_to_index(treebank_feature::num_crossings);
 	static constexpr size_t C_predicted_idx = internal::treebank_feature_to_index(treebank_feature::predicted_num_crossings);
@@ -491,7 +507,7 @@ const noexcept
 	if (m_what_fs[n_idx]) {
 		set_prop(n_idx, n);
 	}
-	// <k^2>, <k^3>, |Q|, headedness
+	// <k^2>
 	if (m_what_fs[k2_idx]) {
 		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
@@ -501,6 +517,7 @@ const noexcept
 	if (m_what_fs[k2_out_idx]) {
 		set_prop(k2_out_idx, properties::moment_degree_out(rT, 2));
 	}
+	// <k^3>
 	if (m_what_fs[k3_idx]) {
 		set_prop(k3_idx, properties::moment_degree(fT, 3));
 	}
@@ -510,39 +527,50 @@ const noexcept
 	if (m_what_fs[k3_out_idx]) {
 		set_prop(k3_out_idx, properties::moment_degree_out(rT, 3));
 	}
+	// |Q|
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
 		set_prop(num_pairs_independent_edges_idx,
 				 to_double(properties::num_pairs_independent_edges(fT)));
 	}
+	// head initial
 	if (m_what_fs[head_initial_idx]) {
-		set_prop(head_initial_idx, linarr::head_initial(rT));
-	}
-	if (m_what_fs[hubiness_idx]) {
-		if (fT.get_num_nodes() <= 3) {
-			set_prop(hubiness_idx, -1);
+		if (fT.get_num_nodes() > 1) {
+			set_prop(head_initial_idx, linarr::head_initial(rT));
 		}
 		else {
+			set_prop(head_initial_idx, nan(""));
+		}
+	}
+	// hubiness
+	if (m_what_fs[hubiness_idx]) {
+		if (fT.get_num_nodes() > 3) {
 			set_prop(hubiness_idx, properties::hubiness(fT));
 		}
-	}
-	if (m_what_fs[mean_hierarchical_distance_idx]) {
-		if (fT.get_num_nodes() <= 1) {
-			set_prop(mean_hierarchical_distance_idx, -1);
-		}
 		else {
+			set_prop(hubiness_idx, nan(""));
+		}
+	}
+	// MHD
+	if (m_what_fs[mean_hierarchical_distance_idx]) {
+		if (fT.get_num_nodes() > 1) {
 			set_prop(mean_hierarchical_distance_idx,
 					 properties::mean_hierarchical_distance(rT));
 		}
-	}
-	if (m_what_fs[mean_dependency_distance_idx]) {
-		if (fT.get_num_nodes() <= 1) {
-			set_prop(mean_dependency_distance_idx, -1);
-		}
 		else {
+			set_prop(mean_hierarchical_distance_idx, nan(""));
+		}
+	}
+	// MDD
+	if (m_what_fs[mean_dependency_distance_idx]) {
+		if (fT.get_num_nodes() > 1) {
 			set_prop(mean_dependency_distance_idx,
 					 linarr::mean_dependency_distance(rT));
 		}
+		else {
+			set_prop(mean_dependency_distance_idx, nan(""));
+		}
 	}
+	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
 		set_prop(tree_diameter_idx,
 				 properties::tree_diameter(rT));
@@ -701,8 +729,11 @@ const noexcept
 #undef DFMEM
 	}
 
-	const pair<node,node> centre_of_tree = properties::tree_centre(fT);
-	const pair<node,node> centroid_of_tree = properties::tree_centroid(fT);
+	const pair<node,node> centre_of_tree =
+		(m_what_fs[tree_centre_idx] ? properties::tree_centre(fT) : make_pair(n+1,n+1));
+
+	const pair<node,node> centroid_of_tree =
+		(m_what_fs[tree_centroid_idx] ? properties::tree_centroid(fT) : make_pair(n+1,n+1));
 
 	// ---------------
 	// output features

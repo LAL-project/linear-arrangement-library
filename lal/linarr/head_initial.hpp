@@ -68,6 +68,7 @@ namespace linarr {
  * @param g Input graph.
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The headedness ratio as an exact rational number.
+ * @pre \f$m > 0\f$.
  */
 numeric::rational head_initial_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
@@ -79,6 +80,7 @@ numeric::rational head_initial_rational
  * @param g Input graph.
  * @param pi Permutation of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
+ * @pre \f$m > 0\f$.
  */
 double head_initial
 (const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;

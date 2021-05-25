@@ -182,7 +182,9 @@ rational hubiness_rational(const free_tree& g) noexcept
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
-	if (n <= 3) { return -1; }
+#if defined DEBUG
+	assert(n > 3);
+#endif
 
 	const rational k2_tree = moment_degree_rational(g, 2);
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
@@ -197,7 +199,9 @@ rational hubiness_rational(const rooted_tree& g) noexcept
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
-	if (n <= 3) { return -1; }
+#if defined DEBUG
+	assert(n > 3);
+#endif
 
 	const rational k2_tree = moment_degree_rational(g, 2);
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
@@ -212,7 +216,9 @@ double hubiness(const free_tree& g) noexcept
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
-	if (n <= 3) { return -1; }
+#if defined DEBUG
+	assert(n > 3);
+#endif
 
 	const double k2_tree = moment_degree(g, 2);
 	const double k2_linear = to_double(4*n - 6)/to_double(n);
@@ -227,7 +233,9 @@ double hubiness(const rooted_tree& g) noexcept
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
-	if (n <= 3) { return -1; }
+#if defined DEBUG
+	assert(n > 3);
+#endif
 
 	const double k2_tree = moment_degree(g, 2);
 	const double k2_linear = to_double(4*n - 6)/to_double(n);

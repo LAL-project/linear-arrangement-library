@@ -104,17 +104,18 @@ noexcept
 template<class G, typename result>
 inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept
 {
-	if (g.get_num_nodes() <= 1) { return -1; }
+#if defined DEBUG
+	assert(g.get_num_edges() > 0);
+#endif
 
 	const uint32_t D = sum_edge_lengths(g, pi);
 	if constexpr (std::is_same_v<result, numeric::rational>) {
 		return rational_from_ui(D, g.get_num_edges());
 	}
 	else {
-		return D/g.get_num_edges();
+		return static_cast<double>(D)/g.get_num_edges();
 	}
 }
-
 
 rational mean_dependency_distance_rational
 (const directed_graph& g, const linear_arrangement& pi)

@@ -57,7 +57,7 @@ namespace internal {
  * The implementation of this algorithm uses the corrections published
  * in \cite Esteban2017a.
  *
- * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
+ * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
 (const graphs::free_tree& t) noexcept;
@@ -70,7 +70,7 @@ std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS
  *
  * This function implements Fan Chung's algorithm published in \cite Chung1984a.
  *
- * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_tree).
+ * @pre The object must be a tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 std::pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC
 (const graphs::free_tree& t) noexcept;

@@ -107,14 +107,15 @@ enum class treebank_feature {
 	/**
 	 * @brief Headedness of the tree.
 	 *
+	 * In case the tree has only one vertex, outputs a NaN value.
+	 *
 	 * See @ref lal::linarr::head_initial for details.
 	 */
 	head_initial,
 	/**
 	 * @brief Hubiness of the tree.
 	 *
-	 * In case a tree has 3 or less vertices the value that is output is a '-1',
-	 * as the hubiness coefficient is not defined for such trees.
+	 * In case a tree has 3 or less vertices the output is a 'NaN' value.
 	 *
 	 * See @ref lal::properties::hubiness for details.
 	 */
@@ -122,8 +123,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Mean hierarchical distance of the tree.
 	 *
-	 * In case a tree has 1 or less vertices the value that is output is a '-1',
-	 * as the mean hierarchical distance is not defined for such trees.
+	 * In case a tree has 1 vertex the output is a 'NaN' value.
 	 *
 	 * See @ref lal::properties::mean_hierarchical_distance for details.
 	 */
@@ -254,8 +254,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Mean dependency distance of the tree.
 	 *
-	 * In case a tree has 1 or less vertices the value that is output is a '-1',
-	 * as the hubiness coefficient is not defined for such trees.
+	 * In case a tree has 1 vertex the output is a 'NaN' value.
 	 *
 	 * See @ref lal::linarr::mean_dependency_distance for details.
 	 */
@@ -266,6 +265,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum flux weight.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_weight,
@@ -273,12 +274,17 @@ enum class treebank_feature {
 	 * @brief Mean flux weight.
 	 *
 	 * This is the sum of weights averaged by the number of fluxes (the number
-	 * of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of weight.
+	 * of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of weight.
 	 */
 	flux_mean_weight,
 	/**
 	 * @brief Minimum flux weight.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
@@ -287,6 +293,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum left span.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_left_span,
@@ -294,12 +302,17 @@ enum class treebank_feature {
 	 * @brief Mean left span.
 	 *
 	 * This is the sum of left spans averaged by the number of fluxes (the
-	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of left span.
+	 * number of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of left span.
 	 */
 	flux_mean_left_span,
 	/**
 	 * @brief Minimum left span.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref linarr::dependency_flux for details.
 	 */
@@ -308,6 +321,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum right span.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_right_span,
@@ -315,12 +330,17 @@ enum class treebank_feature {
 	 * @brief Mean right span.
 	 *
 	 * This is the sum of right spans averaged by the number of fluxes (the
-	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of right span.
+	 * number of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of right span.
 	 */
 	flux_mean_right_span,
 	/**
 	 * @brief Minimum right span.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
@@ -329,6 +349,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum flux size.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_size,
@@ -336,12 +358,17 @@ enum class treebank_feature {
 	 * @brief Mean flux size.
 	 *
 	 * This is the sum of flux sizes averaged by the number of fluxes (the
-	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of flux size.
+	 * number of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of flux size.
 	 */
 	flux_mean_size,
 	/**
 	 * @brief Minimum flux size.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
@@ -350,6 +377,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum R/L ratio.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_RL_ratio,
@@ -357,12 +386,17 @@ enum class treebank_feature {
 	 * @brief Mean R/L ratio.
 	 *
 	 * This is the sum of R/L ratios averaged by the number of fluxes (the
-	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of R/L ratio.
+	 * number of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of R/L ratio.
 	 */
 	flux_mean_RL_ratio,
 	/**
 	 * @brief Minimum R/L ratio.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
@@ -371,6 +405,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum W/S ratio.
 	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */
 	flux_max_WS_ratio,
@@ -378,12 +414,17 @@ enum class treebank_feature {
 	 * @brief Mean W/S ratio.
 	 *
 	 * This is the sum of W/S ratios averaged by the number of fluxes (the
-	 * number of vertices of the tree minus 1). See @ref lal::linarr::dependency_flux
-	 * for details on the definition of W/S ratio.
+	 * number of vertices of the tree minus 1).
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
+	 *
+	 * See @ref lal::linarr::dependency_flux for details on the definition of W/S ratio.
 	 */
 	flux_mean_WS_ratio,
 	/**
 	 * @brief Minimum W/S ratio.
+	 *
+	 * In case the tree has 1 vertex, the output is a 'nan' value.
 	 *
 	 * See @ref lal::linarr::dependency_flux for details.
 	 */

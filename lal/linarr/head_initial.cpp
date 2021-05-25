@@ -39,6 +39,10 @@
  *
  ********************************************************************/
 
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/iterators/E_iterator.hpp>
@@ -51,7 +55,7 @@ using namespace numeric;
 
 namespace linarr {
 
-inline uint32_t __headedness_rational
+inline uint32_t __left_branching_edges
 (const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 	uint32_t edges_to_right = 0;
@@ -65,16 +69,24 @@ inline uint32_t __headedness_rational
 rational head_initial_rational
 (const directed_graph& g, const linear_arrangement& pi) noexcept
 {
-	const uint32_t etr =
-		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
+#if defined DEBUG
+	assert(g.get_num_edges() > 0);
+#endif
 
+	const uint32_t etr =
+		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
 	return rational_from_ui(etr, g.get_num_edges());
 }
 
 double head_initial
-(const directed_graph& g, const linear_arrangement& pi) noexcept {
+(const directed_graph& g, const linear_arrangement& pi) noexcept
+{
+#if defined DEBUG
+	assert(g.get_num_edges() > 0);
+#endif
+
 	const uint32_t etr =
-		internal::call_with_empty_arrangement(__headedness_rational, g, pi);
+		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
 	return static_cast<double>(etr)/g.get_num_edges();
 }
 
