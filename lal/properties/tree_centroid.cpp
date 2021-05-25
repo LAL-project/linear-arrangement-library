@@ -54,7 +54,7 @@ namespace properties {
 
 pair<node, node> tree_centroid(const graphs::rooted_tree& t) {
 #if defined DEBUG
-	assert(t.is_tree());
+	assert(t.is_rooted_tree());
 #endif
 	return internal::retrieve_centroid(t);
 }

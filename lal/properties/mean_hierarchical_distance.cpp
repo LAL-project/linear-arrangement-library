@@ -61,6 +61,7 @@ inline result MHD(const rooted_tree& tree) noexcept {
 	const uint32_t n = tree.get_num_nodes();
 
 #if defined DEBUG
+	assert(tree.is_rooted_tree());
 	assert(tree.get_num_nodes() > 1);
 #endif
 

@@ -175,69 +175,73 @@ double moment_degree_out(const directed_graph& g, uint32_t p) noexcept
 
 // hubiness
 
-rational hubiness_rational(const free_tree& g) noexcept
+rational hubiness_rational(const free_tree& t) noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 #if defined DEBUG
+	assert(t.is_tree());
 	assert(n > 3);
 #endif
 
-	const rational k2_tree = moment_degree_rational(g, 2);
+	const rational k2_tree = moment_degree_rational(t, 2);
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
 	const rational k2_star = rational_from_ui(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
 }
 
-rational hubiness_rational(const rooted_tree& g) noexcept
+rational hubiness_rational(const rooted_tree& t) noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 #if defined DEBUG
+	assert(t.is_rooted_tree());
 	assert(n > 3);
 #endif
 
-	const rational k2_tree = moment_degree_rational(g, 2);
+	const rational k2_tree = moment_degree_rational(t, 2);
 	const rational k2_linear = rational_from_ui(4*n - 6, n);
 	const rational k2_star = rational_from_ui(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const free_tree& g) noexcept
+double hubiness(const free_tree& t) noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 #if defined DEBUG
+	assert(t.is_tree());
 	assert(n > 3);
 #endif
 
-	const double k2_tree = moment_degree(g, 2);
+	const double k2_tree = moment_degree(t, 2);
 	const double k2_linear = to_double(4*n - 6)/to_double(n);
 	const double k2_star = to_double(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
 }
 
-double hubiness(const rooted_tree& g) noexcept
+double hubiness(const rooted_tree& t) noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint32_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
 	// division by 0.
 #if defined DEBUG
+	assert(t.is_rooted_tree());
 	assert(n > 3);
 #endif
 
-	const double k2_tree = moment_degree(g, 2);
+	const double k2_tree = moment_degree(t, 2);
 	const double k2_linear = to_double(4*n - 6)/to_double(n);
 	const double k2_star = to_double(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);

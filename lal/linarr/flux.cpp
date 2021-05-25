@@ -180,6 +180,7 @@ inline vector<dependency_flux> __compute_flux
 noexcept
 {
 	const uint32_t n = t.get_num_nodes();
+	if (n == 1) { return  {}; }
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
@@ -241,6 +242,7 @@ noexcept
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
+
 	return
 	internal::call_with_empty_arrangement<vector<dependency_flux>,free_tree>
 	(__compute_flux, t, pi);
