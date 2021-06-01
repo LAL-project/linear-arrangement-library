@@ -88,6 +88,49 @@ namespace std {
 
 %include "../lal/graphs/conversions.hpp"
 
+/* ---------- CALL from_edge_list_to_graph ------------- */
+
+%pythoncode %{
+
+def from_edge_list_to_graph(gtype, edge_list, norm = True, check = True):
+	r"""
+	Converts an edge list into a graph. This list consists of all the graph's
+	edges. Each edge is described as a pair of indices of the nodes at each end
+	of the edge. Nodes are labelled with indices starting at 0. The resulting
+	number of nodes of the graph will be the maximum index in the file plus 1.
+	
+	Parameters
+	----------
+	* `gtype` :
+		A string that encodes the type of graph. Must be one of:
+		
+		- free_tree
+		- rooted_tree
+		- undirected_graph
+		- directed_graph
+	
+	* `edge_list` :
+		The list of edges of the graph.
+	
+	* `norm` :
+		Is the graph to be normalised?
+	
+	* `check` :
+		If the graph is not to be normalised check whether or not the graph read is normalised.
+	
+	Returns
+	-------
+	A graph object of the same type as the string `gtype`
+	"""
+	
+	if gtype not in ["undirected_graph", "directed_graph", "free_tree", "rooted_tree"]:
+		print("Error: graph type '%s' is not valid" % gtype)
+		return None
+	
+	return globals()[ "from_edge_list_to_" + gtype ](edge_list, norm, check)
+%}
+
+
 %pythoncode %{
 __definitions = definitions
 del definitions

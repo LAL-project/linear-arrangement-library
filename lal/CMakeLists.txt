@@ -171,7 +171,7 @@ target_sources(
 		#      generate
 		#          nothing
 		#      graphs
-		internal/graphs/convert_to_ftree.hpp
+		internal/graphs/conversions.hpp
 		internal/graphs/cycles.hpp
 		internal/graphs/enumerate_sets.hpp
 		internal/graphs/is_tree.hpp
@@ -216,7 +216,7 @@ target_sources(
 		#      generate
 		#          nothing
 		#      graphs
-		internal/graphs/convert_to_ftree.cpp
+		#          nothing
 		#      io
 		#          nothing
 		#      iterators

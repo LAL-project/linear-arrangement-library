@@ -570,6 +570,47 @@ public:
 	free_tree to_free_tree
 	(bool norm = true, bool check = true) const noexcept;
 
+	/**
+	 * @brief Converts a rooted tree into a head vector.
+	 *
+	 * A head vector of an @e n-vertex tree is a list of non-negative integer
+	 * numbers. The number at position @e i denotes the parent node of the vertex
+	 * at said position. Value '0' denotes the root. In this case, the vertex
+	 * corresponding to the value '0' is not labelled as a root.
+	 *
+	 * Each tree is formatted as a list of whole, positive numbers (including
+	 * zero), each representing a node of the tree. The number 0 denotes the root
+	 * of the tree, and a number at a certain position indicates its parent node.
+	 * For example, when number 4 is at position 9 it means that node 9 has parent
+	 * node 4. Therefore, if number 0 is at position 1 it means that node 1 is
+	 * the root of the tree. A complete example of such a tree's representation
+	 * is the following
+	 *
+	 *       0 3 4 1 6 3
+	 *
+	 *
+	 * which should be interpreted as
+	 *
+	 *		(a) predecessor:       0 3 4 1 6 3
+	 *		(b) node of the tree:  1 2 3 4 5 6
+	 *
+	 *
+	 * Note that lines like these are not valid:
+	 *
+	 *		(1) 0 2 2 2 2 2
+	 *		(2) 2 0 0
+	 *
+	 *
+	 * Line (1) is not valid due to a self-reference in the second position,
+	 * and (2) is not valid since it contains two '0' (i.e., two roots).
+	 *
+	 * Methods @ref lal::io::read_head_vector read a head vector from a file in
+	 * disk.
+	 * @returns The head vector representation of this tree.
+	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
+	 */
+	head_vector get_head_vector() const noexcept;
+
 protected:
 	/// Root of the tree.
 	node m_root = 0;

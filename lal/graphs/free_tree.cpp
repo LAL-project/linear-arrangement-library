@@ -51,6 +51,7 @@ using namespace std;
 #include <lal/internal/graphs/is_tree.hpp>
 #include <lal/internal/graphs/tree_classification.hpp>
 #include <lal/internal/graphs/union_find.hpp>
+#include <lal/internal/graphs/conversions.hpp>
 
 namespace lal {
 namespace graphs {
@@ -172,6 +173,13 @@ void free_tree::calculate_tree_type() noexcept {
 }
 
 /* GETTERS */
+
+head_vector free_tree::get_head_vector(node r) const noexcept {
+#if defined DEBUG
+	assert(has_node(r));
+#endif
+	return internal::from_tree_to_head_vector(*this, r);
+}
 
 /* PROTECTED */
 

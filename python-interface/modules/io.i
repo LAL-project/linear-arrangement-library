@@ -86,7 +86,7 @@ def read_edge_list(gtype, filename, norm = True, check = True):
 	Parameters
 	----------
 	* `gtype` :
-		A string that encoding the type of graph. Must be one of:
+		A string that encodes the type of graph. Must be one of:
 		
 		- free_tree
 		- rooted_tree
@@ -108,7 +108,7 @@ def read_edge_list(gtype, filename, norm = True, check = True):
 	"""
 	
 	if gtype not in ["undirected_graph", "directed_graph", "free_tree", "rooted_tree"]:
-		print("Error: type '%s' is not valid" % gtype)
+		print("Error: graph type '%s' is not valid" % gtype)
 		return None
 	
 	opt = globals()[ "read_edge_list_" + gtype ](filename, norm, check)
@@ -153,7 +153,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 	Parameters
 	----------
 	* `gtype` :
-		A string that encoding the type of graph. Must be one of:
+		A string that encodes the type of graph. Must be one of:
 		- free_tree
 		- rooted_tree
 		- undirected_graph
@@ -174,7 +174,7 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 	"""
 	
 	if gtype not in ["undirected_graph", "directed_graph", "free_tree", "rooted_tree"]:
-		print("Error: type '%s' is not valid" % gtype)
+		print("Error: graph type '%s' is not valid" % gtype)
 		return None
 	
 	opt = globals()[ "read_head_vector_" + gtype ](filename, norm, check)

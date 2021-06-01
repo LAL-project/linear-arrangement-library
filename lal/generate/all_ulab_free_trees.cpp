@@ -46,7 +46,7 @@
 using namespace std;
 
 // lal includes
-#include <lal/internal/graphs/convert_to_ftree.hpp>
+#include <lal/internal/graphs/conversions.hpp>
 
 #define inf numeric_limits<uint32_t>::max()
 

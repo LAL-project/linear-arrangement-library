@@ -98,7 +98,7 @@ HEADERS += \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	internal/data_array.hpp \
-	internal/graphs/convert_to_ftree.hpp \
+	internal/graphs/conversions.hpp \
 	internal/graphs/enumerate_sets.hpp \
 	internal/graphs/is_tree.hpp \
 	internal/graphs/make_arrangement.hpp \
@@ -198,7 +198,6 @@ SOURCES += \
     graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
 	graphs/undirected_graph.cpp \
-    internal/graphs/convert_to_ftree.cpp \
     internal/linarr/C_brute_force.cpp \
     internal/linarr/C_dyn_prog.cpp \
     internal/linarr/C_ladder.cpp \

@@ -55,10 +55,9 @@ using namespace std;
 #include <lal/internal/graphs/size_subtrees.hpp>
 #include <lal/internal/graphs/tree_classification.hpp>
 #include <lal/internal/graphs/union_find.hpp>
+#include <lal/internal/graphs/conversions.hpp>
 
 namespace lal {
-using namespace internal;
-
 namespace graphs {
 
 /* MODIFIERS */
@@ -277,7 +276,7 @@ bool rooted_tree::find_edge_orientation() noexcept {
 	// Do a BFS from the root. Make sure that all leaves
 	// can be reached. If so, the tree is an arborescence.
 	if (get_out_degree(get_root()) > 0) {
-		BFS<rooted_tree> bfs(*this);
+		internal::BFS<rooted_tree> bfs(*this);
 		bfs.start_at(get_root());
 
 		// if some node was not visited then the tree
@@ -317,7 +316,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	// Build list of directed edges using a breadth-first search.
 	// This is needed to make the edges point in the direction
 	// indicated by the rooted tree type.
-	BFS<free_tree> bfs(_t);
+	internal::BFS<free_tree> bfs(_t);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		// the tree is an arborescence, i.e., the
@@ -428,6 +427,10 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 
 	t.finish_bulk_add(norm, check);
 	return t;
+}
+
+head_vector rooted_tree::get_head_vector() const noexcept {
+	return internal::from_tree_to_head_vector(*this);
 }
 
 /* PROTECTED */

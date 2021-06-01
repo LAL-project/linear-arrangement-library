@@ -42,9 +42,12 @@
 #pragma once
 
 // C++ includes
+#include <algorithm>
 #include <vector>
 
 // lal includes
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
@@ -52,93 +55,7 @@ namespace lal {
 namespace graphs {
 
 // -----------------------------------------------------------------------------
-// tree -> head vector
-
-/**
- * @brief Converts a rooted tree into a head vector.
- *
- * A head vector of an @e n-vertex tree is a list of non-negative integer
- * numbers. The number at position @e i denotes the parent node of the vertex
- * at said position. Value '0' denotes the root. In this case, the vertex
- * corresponding to the value '0' is not labelled as a root.
- *
- * Each tree is formatted as a list of whole, positive numbers (including
- * zero), each representing a node of the tree. The number 0 denotes the root
- * of the tree, and a number at a certain position indicates its parent node.
- * For example, when number 4 is at position 9 it means that node 9 has parent
- * node 4. Therefore, if number 0 is at position 1 it means that node 1 is
- * the root of the tree. A complete example of such a tree's representation
- * is the following
- *
- *       0 3 4 1 6 3
- *
- *
- * which should be interpreted as
- *
- *		(a) predecessor:       0 3 4 1 6 3
- *		(b) node of the tree:  1 2 3 4 5 6
- *
- *
- * Note that lines like these are not valid:
- *
- *		(1) 0 2 2 2 2 2
- *		(2) 2 0 0
- *
- *
- * Line (1) is not valid due to a self-reference in the second position,
- * and (2) is not valid since it contains two '0' (i.e., two roots).
- *
- * Methods @ref lal::io::read_head_vector read a head vector from a file in
- * disk.
- * @param t A lal::graphs::rooted_tree.
- * @returns The head vector representation of this tree.
- * @pre Rooted tree @e t must be a rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
- */
-head_vector from_tree_to_head_vector(const rooted_tree& t) noexcept;
-
-/**
- * @brief Converts a rooted tree to a head vector.
- *
- * A head vector of an @e n-vertex tree is a list of non-negative integer
- * numbers. The number at position @e i denotes the parent node of the vertex
- * at said position. Value '0' denotes the root. In this case, the vertex
- * corresponding to the value '0' is not labelled as a root.
- *
- * Each tree is formatted as a list of whole, positive numbers (including
- * zero), each representing a node of the tree. The number 0 denotes the root
- * of the tree, and a number at a certain position indicates its parent node.
- * For example, when number 4 is at position 9 it means that node 9 has parent
- * node 4. Therefore, if number 0 is at position 1 it means that node 1 is
- * the root of the tree. A complete example of such a tree's representation
- * is the following
- *
- *       0 3 4 1 6 3
- *
- *
- * which should be interpreted as
- *
- *		(a) predecessor:       0 3 4 1 6 3
- *		(b) node of the tree:  1 2 3 4 5 6
- *
- *
- * Note that lines like these are not valid:
- *
- *		(1) 0 2 2 2 2 2
- *		(2) 2 0 0
- *
- *
- * Line (1) is not valid due to a self-reference in the second position,
- * and (2) is not valid since it contains two '0' (i.e., two roots).
- *
- * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
- * @param t A lal::graphs::free_tree.
- * @param r A fictional root to be used to calculate the head vector.
- * @returns The head vector representation of this tree.
- */
-head_vector from_tree_to_head_vector(const free_tree& t, node r = 0) noexcept;
-
-// -----------------------------------------------------------------------------
-// head vector -> graph
+// head vector -> tree
 
 /**
  * @brief Converts a head vector into a rooted tree.
@@ -229,6 +146,130 @@ noexcept;
 rooted_tree from_head_vector_to_rooted_tree
 (const head_vector& hv, bool normalise = true, bool check = true)
 noexcept;
+
+// -----------------------------------------------------------------------------
+// edge list -> graph
+
+/**
+ * @brief Converts an edge list into a graph.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ */
+template<class G>
+G from_edge_list_to_graph
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	uint32_t max_vertex_index = 0;
+	for (const edge& e : edge_list) {
+		max_vertex_index = std::max(max_vertex_index, e.first);
+		max_vertex_index = std::max(max_vertex_index, e.second);
+	}
+	const uint32_t num_nodes = 1 + max_vertex_index;
+	G g(num_nodes);
+	g.set_edges(edge_list, normalise, check);
+	return g;
+}
+
+/**
+ * @brief Converts an edge list into a rooted tree.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ * @pre The maximum index in the list must be equal to the number of edges in the list.
+ */
+inline rooted_tree from_edge_list_to_rooted_tree
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	return from_edge_list_to_graph<rooted_tree>(edge_list, normalise, check);
+}
+
+/**
+ * @brief Converts an edge list into a rooted tree.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ * @pre The maximum index in the list must be equal to the number of edges in the list.
+ */
+inline free_tree from_edge_list_to_free_tree
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	return from_edge_list_to_graph<free_tree>(edge_list, normalise, check);
+}
+
+/**
+ * @brief Converts an edge list into a directed graph.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ */
+inline directed_graph from_edge_list_to_directed_graph
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	return from_edge_list_to_graph<directed_graph>(edge_list, normalise, check);
+}
+
+/**
+ * @brief Converts an edge list into an undirected graph.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ */
+inline undirected_graph from_edge_list_to_undirected_graph
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	return from_edge_list_to_graph<undirected_graph>(edge_list, normalise, check);
+}
 
 } // -- namespace graphs
 } // -- namespace lal

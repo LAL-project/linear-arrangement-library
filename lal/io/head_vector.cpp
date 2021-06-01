@@ -49,14 +49,14 @@ using namespace std;
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/graphs/conversions.hpp>
+#include <lal/internal/graphs/conversions.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace io {
 
-optional<head_vector> read_head_vector(const string& filename) noexcept {
+static inline optional<head_vector> read_head_vector(const string& filename) noexcept {
 	if (not filesystem::exists(filename)) { return {}; }
 
 	head_vector heads;
@@ -78,7 +78,9 @@ noexcept
 	const auto heads = read_head_vector(filename);
 	if (not heads) { return {}; }
 	// move, please
-	return std::move(from_head_vector_to_free_tree(*heads, norm, check_norm).first);
+	return std::move(
+		internal::from_head_vector_to_tree<free_tree>(*heads, norm, check_norm).first
+	);
 }
 
 std::optional<rooted_tree> read_head_vector_rooted_tree
@@ -87,7 +89,7 @@ noexcept
 {
 	const auto heads = read_head_vector(filename);
 	if (not heads) { return {}; }
-	return from_head_vector_to_rooted_tree(*heads, norm, check_norm);
+	return internal::from_head_vector_to_tree<rooted_tree>(*heads, norm, check_norm);
 }
 
 } // -- namespace io
