@@ -197,10 +197,10 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 %extend lal::io::report_treebank_collection {
 	std::string __repr__() const noexcept {
 		std::ostringstream out;
-		out << "(" << $self->get_treebank_file_name() << ", "
-			<< $self->get_line_within_main_file() << ", "
-			<< $self->get_treebank_file_line() << ", "
-			<< $self->get_error_message()
+		out << "(Treebank: "                   << $self->get_treebank_file_name()
+			<< ", Line within main file: "     << $self->get_line_within_main_file()
+			<< ", Line within treebank file: " << $self->get_treebank_file_line()
+			<< ", "                            << $self->get_error_message()
 			<< ")";
 		return out.str();
 	}
