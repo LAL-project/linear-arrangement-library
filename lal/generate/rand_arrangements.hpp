@@ -108,6 +108,7 @@ public:
 		else {
 			m_gen = std::mt19937(seed);
 		}
+		std::iota(m_arr.begin(), m_arr.end(), 0);
 	}
 
 	/// Returns a linear arrangement constructed uniformly at random.
