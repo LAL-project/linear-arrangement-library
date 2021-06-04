@@ -72,7 +72,7 @@ numeric::rational
 moment_degree_rational(const graphs::undirected_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
- * graph as an exact rational value.
+ * graph as a floating point value.
  *
  * See @ref lal::properties::moment_degree_rational for details.
  * @param g Input graph.
@@ -100,7 +100,7 @@ numeric::rational
 moment_degree_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a directed
- * graph as an exact rational value.
+ * graph as a floating point value.
  *
  * See @ref lal::properties::moment_degree_rational for details.
  * @param g Input graph.
@@ -127,7 +127,7 @@ numeric::rational
 moment_degree_in_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
- * graph as an exact rational value.
+ * graph as a floating point value.
  *
  * See @ref lal::properties::moment_degree_in_rational for details.
  * @param g Input graph.
@@ -154,7 +154,7 @@ numeric::rational
 moment_degree_out_rational(const graphs::directed_graph& g, uint32_t p) noexcept;
 /**
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
- * graph as an exact rational value.
+ * graph as a floating point value.
  *
  * See @ref lal::properties::moment_degree_out_rational for details.
  * @param g Input graph.
@@ -207,7 +207,7 @@ numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept;
 numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept;
 
 /**
- * @brief Computes the hubiness coefficient as an exact rational number.
+ * @brief Computes the hubiness coefficient as a floating point value.
  *
  * See @ref lal::properties::hubiness_rational for details.
  * @param t Input free tree.
@@ -218,7 +218,7 @@ numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept;
 double hubiness(const graphs::free_tree& t) noexcept;
 
 /**
- * @brief Computes the hubiness coefficient as an exact rational number.
+ * @brief Computes the hubiness coefficient as a floating point value.
  *
  * See @ref lal::properties::hubiness_rational for details.
  * @param t Input rooted tree.
