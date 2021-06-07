@@ -58,6 +58,7 @@
 
 // process treebanks
 #include <lal/io/treebank_error_type.hpp>
+#include <lal/io/treebank_error.hpp>
 #include <lal/io/treebank_feature.hpp>
 
 #include <lal/io/treebank_reader.hpp>
