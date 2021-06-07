@@ -57,19 +57,25 @@ treebank_error treebank_collection_reader::init(const string& main_file) noexcep
 
 	m_main_file = main_file;
 	if (not filesystem::exists(m_main_file)) {
-		return treebank_error::main_file_does_not_exist;
+		return treebank_error(
+			"Treebank collection main file '" + m_main_file + "' does not exist.",
+			treebank_error_type::main_file_does_not_exist
+		);
 	}
 
 	// open new dataset and read the first line
 	m_list.open(m_main_file);
 	if (not m_list.is_open()) {
-		return treebank_error::main_file_could_not_be_opened;
+		return treebank_error(
+			"Treebank collection main file '" + m_main_file + "' could not be opened.",
+			treebank_error_type::main_file_could_not_be_opened
+		);
 	}
 
 	step_line();
 	next_treebank();
 
-	return treebank_error::no_error;
+	return treebank_error("", treebank_error_type::no_error);
 }
 
 void treebank_collection_reader::next_treebank() noexcept {

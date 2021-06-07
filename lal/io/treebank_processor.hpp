@@ -93,8 +93,8 @@ namespace io {
  *		treebank_processor tbproc;
  *		// initialise the processor without features (remmeber to check for errors)
  *		tbproc.init(treebank_input_file, result_filename, "Book_1");
- *		tbproc.add_feature(treebank_processor::tree_feature::num_crossings);
- *		tbproc.add_feature(treebank_processor::tree_feature::var_num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
@@ -110,7 +110,7 @@ public:
 	 * @param treebank_id A nickname for this treebank (for example, an ISO code).
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error::treebank_file_does_not_exist
+	 * - @ref lal::io::treebank_error_type::treebank_file_does_not_exist
 	 */
 	treebank_error init(
 		const std::string& treebank_input_file,
@@ -124,16 +124,16 @@ public:
 	 *
 	 * This method produces the information as explained in this class'
 	 * description. However, it may fail to do so. In this case it will return
-	 * a value different from @ref lal::io::treebank_error::no_error.
+	 * a value different from @ref lal::io::treebank_error_type::no_error.
 	 *
 	 * This function uses attributes @ref m_separator, @ref m_output_header to
 	 * format the output data. It also outputs the current progress if
 	 * @ref m_be_verbose is set to true.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error::no_features
-	 * - @ref lal::io::treebank_error::output_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::treebank_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::no_features
+	 * - @ref lal::io::treebank_error_type::output_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::treebank_file_could_not_be_opened
 	 * @pre Initialisation did not return any errors.
 	 */
 	treebank_error process() noexcept;
@@ -202,7 +202,7 @@ noexcept
 {
 	treebank_processor tbproc;
 	auto err = tbproc.init(treebank_file, output_file);
-	if (err != treebank_error::no_error) {
+	if (err.get_error_type() != treebank_error_type::no_error) {
 		return err;
 	}
 	return tbproc.process();

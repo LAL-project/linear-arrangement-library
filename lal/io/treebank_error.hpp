@@ -44,133 +44,66 @@
 // C++ includes
 #include <string>
 
+// lal includes
+#include <lal/io/treebank_error_type.hpp>
+
 namespace lal {
 namespace io {
 
 /**
- * @brief Possible errors that can arise while processing a collection.
+ * @brief Treebank error report class.
  *
- * There are several reasons why a treebank collection or a single treebank file
- * could not be processed. Because of this, certain methods return one of these
- * values instead of a plain 'false' value.
+ * This class is used only to be able to display errors arising in treebank
+ * processing more clearly.
+ *
+ * Use method @ref get_error_message to retrieve an error message.
+ *
+ * Method @ref get_error_type returns a value from the enumeration
+ * @ref lal::io::treebank_error_type.
  */
-enum class treebank_error {
-	/**
-	 * @brief No error occurred.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_reader
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_reader
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	no_error,
+class treebank_error {
+public:
+	/// Constructor with error message and error type.
+	treebank_error(const std::string& msg, const treebank_error_type& tet) noexcept
+		: m_error_msg(msg), m_error_type(tet)
+	{ }
 
-	/**
-	 * @brief No features at all were given to the processor.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	no_features,
+	/// 
+	~treebank_error() = default;
 
-	// TREEBANK FILE
+	/// Copy constructor.
+	treebank_error(const treebank_error& te) noexcept = default;
 
-	/**
-	 * @brief A treebank was not found in disk.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	treebank_file_does_not_exist,
-	/**
-	 * @brief A treebank file could not be opened.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_reader
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	treebank_file_could_not_be_opened,
-	/**
-	 * @brief Output file could not be opened.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_processor
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	output_file_could_not_be_opened,
+#ifndef SWIG
+	/// Move constructor.
+	treebank_error(treebank_error&& te) noexcept = default;
+#endif
 
-	/**
-	 * @brief The treebank file contains errors that should be fixed.
-	 *
-	 * In this case, method @ref lal::io::check_correctness_treebank should be
-	 * run in order to obtain a report on the errors.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_processor
-	 */
-	malformed_treebank_file,
+	/// Copy assignment operator.
+	treebank_error& operator= (const treebank_error& te) noexcept = default;
 
-	// TREEBANK COLLECTION
+#ifndef SWIG
+	/// Move assignment operator.
+	treebank_error& operator= (treebank_error&& te) noexcept = default;
+#endif
 
-	/**
-	 * @brief Main file does not exist.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_reader
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	main_file_does_not_exist,
-	/**
-	 * @brief Main file could not be opened.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_reader
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	main_file_could_not_be_opened,
-	/**
-	 * @brief Output directory could not be found.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_processor.
-	 */
-	output_directory_does_not_exist,
-	/**
-	 * @brief The file containing the result of processing a treebank collection
-	 * could not be opened.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_processor.
-	 */
-	output_join_file_could_not_be_opened,
-	/**
-	 * @brief The resulting file of processing a treebank could not be opened
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_processor.
-	 */
-	treebank_result_file_could_not_be_opened,
-	/**
-	 * @brief Processing one or more of the treebanks failed.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_processor.
-	 */
-	some_treebank_file_failed,
-	/**
-	 * @brief The treebank collection contains errors that should be fixed.
-	 *
-	 * In this case, method @ref lal::io::check_correctness_treebank_collection
-	 * should be run in order to obtain a report on the errors.
-	 *
-	 * Returned by:
-	 * - @ref lal::io::treebank_collection_processor
-	 */
-	malformed_treebank_collection,
+	/// Compares a treebank error with a treebank error type.
+	inline bool operator== (const treebank_error_type& tet) const noexcept
+	{ return m_error_type == tet; }
+
+	/// Retrieve the error message.
+	inline const std::string& get_error_message() const noexcept
+	{ return m_error_msg; }
+
+	/// Retrieve the error type.
+	inline treebank_error_type get_error_type() const noexcept
+	{ return m_error_type; }
+
+private:
+	/// Error message
+	std::string m_error_msg;
+	/// Error type.
+	treebank_error_type m_error_type;
 };
 
 } // -- namespace io

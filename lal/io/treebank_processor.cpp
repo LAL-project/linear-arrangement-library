@@ -186,9 +186,12 @@ treebank_error treebank_processor::init(
 
 	// make sure that the treebank file exists
 	if (not filesystem::exists(m_treebank_filename)) {
-		return treebank_error::treebank_file_does_not_exist;
+		return treebank_error(
+			"Treebank file '" + m_treebank_filename + "' does not exist.",
+			treebank_error_type::treebank_file_does_not_exist
+		);
 	}
-	return treebank_error::no_error;
+	return treebank_error("", treebank_error_type::no_error);
 }
 
 treebank_error treebank_processor::process() noexcept {
@@ -197,19 +200,30 @@ treebank_error treebank_processor::process() noexcept {
 		internal::check_correctness_treebank<true>(m_treebank_filename);
 
 		if (err) {
-			return treebank_error::malformed_treebank_file;
+			return treebank_error(
+				"The treebank '" + m_treebank_filename + "' contains errors.",
+				treebank_error_type::malformed_treebank_file
+			);
 		}
 	}
 
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
-	{ return treebank_error::no_features; }
+	{
+		return treebank_error(
+			"No features to be computed. Nothing to do.",
+			treebank_error_type::no_features
+		);
+	}
 
 	// output file stream:
 	// since the output directory exists there is no need to check for is_open()
 	ofstream out_treebank_file(m_output_file);
 	if (not out_treebank_file.is_open()) {
-		return treebank_error::output_file_could_not_be_opened;
+		return treebank_error(
+			"Output file '" + m_output_file + "' could not be opened.",
+			treebank_error_type::output_file_could_not_be_opened
+		);
 	}
 
 	// Construct treebank reader. Do this here so as to check for errors as
@@ -217,7 +231,7 @@ treebank_error treebank_processor::process() noexcept {
 	treebank_reader tbread;
 	{
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
-	if (err != treebank_error::no_error) {
+	if (err.get_error_type() != treebank_error_type::no_error) {
 		if (m_be_verbose >= 2) {
 			cerr << "Processing treebank '" << m_treebank_filename << "' failed"
 				 << endl;
@@ -343,7 +357,7 @@ treebank_error treebank_processor::process() noexcept {
 			 << endl;
 	}
 
-	return treebank_error::no_error;
+	return treebank_error("", treebank_error_type::no_error);
 }
 
 // PRIVATE

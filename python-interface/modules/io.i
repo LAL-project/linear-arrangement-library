@@ -5,7 +5,7 @@
 
 %import definitions.i
 %import graphs.i
-%import enums/treebank_error.i
+%import enums/treebank_error_type.i
 %import enums/treebank_feature.i
 
 %include documentation.i
@@ -214,6 +214,19 @@ namespace std {
 %include "../lal/io/check_correctness.hpp"
 
 /* -------------------------------------------------------------------------- */
+
+%include "../lal/io/treebank_error.hpp"
+
+%extend lal::io::treebank_error {
+	std::string __repr__() const noexcept {
+		std::ostringstream out;
+		if ($self->get_error_type() != lal::io::treebank_error_type::no_error) {
+			out << "Error " << static_cast<size_t>($self->get_error_type())
+				<< ": " << $self->get_error_message();
+		}
+		return out.str();
+	}
+}
 
 %include "../lal/io/process_treebank_base.hpp"
 

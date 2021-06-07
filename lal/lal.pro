@@ -137,9 +137,10 @@ HEADERS += \
 	io/report_correctness.hpp \
 	io/treebank_collection_processor.hpp \
 	io/treebank_collection_reader.hpp \
+	io/treebank_error.hpp \
+	io/treebank_error_type.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_reader.hpp \
-	io/treebank_error.hpp \
 	io/treebank_feature.hpp \
 	iterators.hpp \
 	iterators/E_iterator.hpp \

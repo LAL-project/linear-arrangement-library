@@ -119,8 +119,8 @@ namespace io {
  *		// initialise the processor without features (remember to check for errors)
  *      // and 4 threads for faster processing.
  *		tbproc.init(main_file, output_dir, 4);
- *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::num_crossings);
- *		tbproc.add_feature(lal::io::treebank_feature::tree_feature::var_num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
@@ -183,8 +183,8 @@ public:
 	 * @param output_directory Directory where the result files are to be stored.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error::main_file_does_not_exist
-	 * - @ref lal::io::treebank_error::output_directory_does_not_exist
+	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
+	 * - @ref lal::io::treebank_error_type::output_directory_does_not_exist
 	 */
 	treebank_error init(
 		const std::string& main_file,
@@ -197,7 +197,7 @@ public:
 	 *
 	 * This method produces the information as explained in this class'
 	 * description. However, it may fail to do so. In this case it will return
-	 * a value different from @ref lal::io::treebank_error::no_error.
+	 * a value different from @ref lal::io::treebank_error_type::no_error.
 	 *
 	 * This function uses attributes @ref m_separator, @ref m_output_header to
 	 * format the output data. It also outputs the current progress if
@@ -210,11 +210,11 @@ public:
 	 * stored.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error::no_features
-	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::some_treebank_file_failed
-	 * - @ref lal::io::treebank_error::output_join_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error::treebank_result_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::no_features
+	 * - @ref lal::io::treebank_error_type::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::some_treebank_file_failed
+	 * - @ref lal::io::treebank_error_type::output_join_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::treebank_result_file_could_not_be_opened
 	 *
 	 * See methods @ref get_num_errors, @ref get_error_treebank_filename,
 	 * @ref get_error_treebank_name to know how to retrieve these errors.
@@ -278,7 +278,7 @@ noexcept
 	treebank_collection_processor tbcolproc;
 	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
 	tbcolproc.set_number_threads(num_threads);
-	if (err != treebank_error::no_error) {
+	if (err.get_error_type() != treebank_error_type::no_error) {
 		return err;
 	}
 	return tbcolproc.process();

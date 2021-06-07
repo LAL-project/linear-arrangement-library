@@ -146,8 +146,8 @@ public:
 	 * @param main_file Main file of the collection.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error::main_file_does_not_exist
-	 * - @ref lal::io::treebank_error::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
+	 * - @ref lal::io::treebank_error_type::main_file_could_not_be_opened
 	 */
 	treebank_error init(const std::string& main_file) noexcept;
 

@@ -97,13 +97,19 @@ treebank_error treebank_collection_processor::init
 
 	// make sure main file exists
 	if (not filesystem::exists(m_main_file)) {
-		return treebank_error::main_file_does_not_exist;
+		return treebank_error(
+			"Treebank collection main file '" + m_main_file + "' does not exist.",
+			treebank_error_type::main_file_does_not_exist
+		);
 	}
 	// make sure output directory exists
 	if (m_out_dir != "." and not filesystem::exists(m_out_dir)) {
-		return treebank_error::output_directory_does_not_exist;
+		return treebank_error(
+			"Output directory '" + m_out_dir + "' does not exist.",
+			treebank_error_type::output_directory_does_not_exist
+		);
 	}
-	return treebank_error::no_error;
+	return treebank_error("", treebank_error_type::no_error);
 }
 
 treebank_error treebank_collection_processor::process(const string& join_to_file)
@@ -115,7 +121,10 @@ noexcept
 		(m_main_file, m_num_threads);
 
 		if (err) {
-			return treebank_error::malformed_treebank_collection;
+			return treebank_error(
+				"The treebank collection '" + m_main_file + "' contains errors.",
+				treebank_error_type::malformed_treebank_collection
+			);
 		}
 	}
 
@@ -123,13 +132,19 @@ noexcept
 
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;})) {
-		return treebank_error::no_features;
+		return treebank_error(
+			"No features to be computed. Nothing to do.",
+			treebank_error_type::no_features
+		);
 	}
 
 	// Stream object to read the main file.
 	ifstream main_file_reader(m_main_file);
 	if (not main_file_reader.is_open()) {
-		return treebank_error::main_file_could_not_be_opened;
+		return treebank_error(
+			"Main file '" + m_main_file + "' could not be opened.",
+			treebank_error_type::main_file_could_not_be_opened
+		);
 	}
 
 	// process dataset using treebank_dataset class
@@ -180,7 +195,7 @@ noexcept
 
 				// process the treebank file
 				const auto err = tbproc.process();
-				if (err != treebank_error::no_error) {
+				if (err.get_error_type() != treebank_error_type::no_error) {
 					#pragma omp critical
 					{
 					m_errors_from_processing.push_back(make_tuple(
@@ -197,7 +212,7 @@ noexcept
 
 	if (m_join_files) {
 		const auto err = join_all_files(join_to_file);
-		if (err != treebank_error::no_error) {
+		if (err.get_error_type() != treebank_error_type::no_error) {
 			m_errors_from_processing.push_back(make_tuple(
 				err,
 				m_main_file,
@@ -208,8 +223,12 @@ noexcept
 
 	return
 	(m_errors_from_processing.size() > 0 ?
-		treebank_error::some_treebank_file_failed :
-		treebank_error::no_error
+		treebank_error(
+			"There were errors in processing the treebank collection '" + m_main_file + "'.",
+			treebank_error_type::some_treebank_file_failed
+		)
+		:
+		treebank_error("", treebank_error_type::no_error)
 	);
 }
 
@@ -233,7 +252,10 @@ const noexcept
 	// the file where the contents of all the individual files are dumped to
 	ofstream output_together(p.string());
 	if (not output_together.is_open()) {
-		return treebank_error::output_join_file_could_not_be_opened;
+		return treebank_error(
+			"Output join file '" + p.string() + "' could not be opened.",
+			treebank_error_type::output_join_file_could_not_be_opened
+		);
 	}
 
 	bool first_time_encounter_header = true;
@@ -253,7 +275,10 @@ const noexcept
 
 		ifstream fin(path_to_treebank_result);
 		if (not fin.is_open()) {
-			return treebank_error::treebank_result_file_could_not_be_opened;
+			return treebank_error(
+				"Treebank result file '" + path_to_treebank_result.string() + "' could not be opened.",
+				treebank_error_type::treebank_result_file_could_not_be_opened
+			);
 		}
 
 		string line;
@@ -295,7 +320,7 @@ const noexcept
 
 	output_together.close();
 
-	return treebank_error::no_error;
+	return treebank_error("", treebank_error_type::no_error);
 }
 
 } // -- namespace io
