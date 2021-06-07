@@ -81,13 +81,23 @@ public:
 	/* CONSTRUCTORS */
 
 	/**
-	 * @brief Constructor with tree
+	 * @brief Constructor with a constant reference to a free tree.
 	 * @param T Input free tree
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
 	rand_planar_arrangements(const graphs::free_tree& T, uint32_t seed = 0) noexcept;
+
+	/**
+	 * @brief Constructor with a constant reference to a rooted tree.
+	 * @param T Input rooted tree.
+	 * @param seed The seed used for the random generator. If the seed is 0 then
+	 * a random seed is generated and used.
+	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
+	 */
+	rand_planar_arrangements(const graphs::rooted_tree& T, uint32_t seed = 0) noexcept;
+
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Random planar arrangement generator.
@@ -118,6 +128,12 @@ public:
 	}
 
 private:
+	/**
+	 * @brief A copy of a free tree.
+	 *
+	 * Used only when this class is constructed with a rooted tree.
+	 */
+	graphs::free_tree m_T_copy;
 	/// The free tree of which we are making planar arrangements uniformly at random.
 	const graphs::free_tree& m_T;
 

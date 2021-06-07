@@ -77,6 +77,25 @@ rand_planar_arrangements::rand_planar_arrangements
 	m_rdata = vector<vector<node>>(m_T.get_num_nodes());
 }
 
+rand_planar_arrangements::rand_planar_arrangements
+(const rooted_tree& T, uint32_t seed) noexcept
+	: m_T_copy(T.to_free_tree()), m_T(m_T_copy)
+{
+#if defined DEBUG
+	assert(m_T.is_tree());
+#endif
+	if (seed == 0) {
+		random_device rd;
+		m_gen = mt19937(rd());
+	}
+	else {
+		m_gen = mt19937(seed);
+	}
+
+	// initialise the random data of all vertices
+	m_rdata = vector<vector<node>>(m_T.get_num_nodes());
+}
+
 template<class GEN>
 void make_random_projective(
 	const graphs::free_tree& T,
