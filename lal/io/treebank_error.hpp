@@ -72,19 +72,32 @@ public:
 	~treebank_error() = default;
 
 	/// Copy constructor.
-	treebank_error(const treebank_error& te) noexcept = default;
+	treebank_error(const treebank_error& te) noexcept
+		: m_error_msg(te.m_error_msg), m_error_type(te.m_error_type)
+	{ }
 
 #ifndef SWIG
 	/// Move constructor.
-	treebank_error(treebank_error&& te) noexcept = default;
+	treebank_error(treebank_error&& te) noexcept
+		: m_error_msg(std::forward<std::string>(te.m_error_msg)),
+		  m_error_type(te.m_error_type)
+	{ }
 #endif
 
 	/// Copy assignment operator.
-	treebank_error& operator= (const treebank_error& te) noexcept = default;
+	treebank_error& operator= (const treebank_error& te) noexcept {
+		m_error_msg = te.m_error_msg;
+		m_error_type = te.m_error_type;
+		return *this;
+	}
 
 #ifndef SWIG
 	/// Move assignment operator.
-	treebank_error& operator= (treebank_error&& te) noexcept = default;
+	treebank_error& operator= (treebank_error&& te) noexcept {
+		m_error_msg = std::move(te.m_error_msg);
+		m_error_type = te.m_error_type;
+		return *this;
+	}
 #endif
 
 	/// Compares a treebank error with a treebank error type.
