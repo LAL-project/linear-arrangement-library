@@ -47,6 +47,7 @@
 // lal includes
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
@@ -102,11 +103,17 @@ namespace generate {
 class all_planar_arrangements {
 public:
 	/**
-	 * @brief Constructor with constant reference to a rooted tree.
+	 * @brief Constructor with constant reference to a free tree.
 	 * @param T Input free tree
 	 * @pre The object @e T is a valid tree (see @ref graphs::free_tree::is_tree).
 	 */
 	all_planar_arrangements(const graphs::free_tree& T) noexcept;
+	/**
+	 * @brief Constructor with a copy of a free tree.
+	 * @param T Input rooted tree
+	 * @pre The object @e T is a valid tree (see @ref graphs::rooted_tree::is_tree).
+	 */
+	all_planar_arrangements(const graphs::rooted_tree& T) noexcept;
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
@@ -149,10 +156,7 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
-		__reset();
-		next();
-	}
+	inline void reset() noexcept { __reset(); }
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -166,8 +170,15 @@ public:
 	}
 
 private:
-	/// Constant reference to rooted tree.
+	/**
+	 * @brief A copy of a free tree.
+	 *
+	 * Used only when this class is constructed with a rooted tree.
+	 */
+	graphs::free_tree m_T_copy;
+	/// Constant reference to free tree.
 	const graphs::free_tree& m_T;
+
 	/// Vertex at which we root the tree.
 	node m_root;
 	/// The interval of every node of the tree
@@ -180,12 +191,13 @@ private:
 	 */
 	internal::data_array<node> m_parent;
 
+	/// Array for the bit sort algorithm
+	internal::data_array<char> m_memory_bit_sort;
+
 	/// Is there a next projective arrangement to iterate over?
 	bool m_exists_next = true;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
-	/// Should we use the next vertex as root?
-	bool m_use_next_root = false;
 
 private:
 	/// Sets the iterator to its initial state.

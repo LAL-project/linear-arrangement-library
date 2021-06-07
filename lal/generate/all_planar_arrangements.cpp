@@ -59,7 +59,9 @@ namespace lal {
 namespace generate {
 
 all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
-	: m_T(T), m_parent(m_T.get_num_nodes())
+	: m_T(T),
+	  m_parent(m_T.get_num_nodes()),
+	  m_memory_bit_sort(T.get_num_nodes(), 0)
 {
 #if defined DEBUG
 	assert(m_T.is_tree());
@@ -67,7 +69,20 @@ all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 
 	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
 	__reset();
-	next();
+}
+
+all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
+	: m_T_copy(T.to_free_tree()),
+	  m_T(m_T_copy),
+	  m_parent(m_T.get_num_nodes()),
+	  m_memory_bit_sort(T.get_num_nodes())
+{
+#if defined DEBUG
+	assert(m_T.is_tree());
+#endif
+
+	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
+	__reset();
 }
 
 void all_planar_arrangements::next() noexcept {
@@ -77,48 +92,42 @@ void all_planar_arrangements::next() noexcept {
 	}
 
 	if (m_T.get_num_nodes() == 1) {
-		m_exists_next = false;
+		m_reached_end = true;
 		return;
 	}
 
-	if (m_use_next_root) {
-		m_use_next_root = false;
-		++m_root;
-		initialise_intervals_tree();
-	}
-
+	// permute every level
 	bool has_perm = false;
 	node u = 0;
 	while (u < m_T.get_num_nodes() and not has_perm) {
 		vector<node>& inter_u = m_intervals[u];
 
 		if (u == m_root) {
+			// the root's level should be permuted carefully:
+			// the root must stay at the leftmost position
 			has_perm = next_permutation(inter_u.begin()+1, inter_u.end());
 		}
 		else {
+			// permute all the vertices in the interval of the
+			// non-root vertices
 			has_perm = next_permutation(inter_u.begin(), inter_u.end());
 		}
 
-		if (not has_perm) {
-			initialise_interval_node(u);
-		}
 		++u;
 	}
 
-	// if we have run out of permutations at all levels (this happens when
-	// 'u' equals m_T.get_num_nodes()) then we must change roots.
-	m_use_next_root = (u == m_T.get_num_nodes());
+	// if all intervals have been permuted past their last permutation,
+	// in other words, if we went back at beginning, then
+	const bool all_past_last = (u == m_T.get_num_nodes() and not has_perm);
 
-	// if we need to use the next root in the next call to 'next()'
-	// but the root "pointer" is already at its maximum level then
-	// there are no more roots to use.
-	const bool no_more_roots =
-		(m_use_next_root and m_root == m_T.get_num_nodes() - 1);
-
-	// if there are no more roots to use, and no more permutations at
-	// the last interval, then there is no next arrangement.
-	if (no_more_roots and u == m_T.get_num_nodes() and not has_perm) {
-		m_exists_next = false;
+	if (all_past_last) {
+		if (m_root == m_T.get_num_nodes() - 1) {
+			m_reached_end = true;
+		}
+		else {
+			++m_root;
+			initialise_intervals_tree();
+		}
 	}
 }
 
@@ -135,7 +144,6 @@ void all_planar_arrangements::__reset() noexcept {
 	m_root = 0;
 	m_exists_next = true;
 	m_reached_end = false;
-	m_use_next_root = false;
 	initialise_intervals_tree();
 }
 
@@ -144,6 +152,8 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 	m_intervals[m_root].resize(m_T.get_degree(m_root) + 1);
 	initialise_interval_node(m_root);
 
+	// we use a BFS to be able to keep track of the parent of
+	// every vertex with respect to the root.
 	internal::BFS<free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
@@ -157,26 +167,36 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 
 void all_planar_arrangements::initialise_interval_node(node u) noexcept {
 	const node parent = m_parent[u];
-	const neighbourhood& neighs_v = m_T.get_neighbours(u);
+	const neighbourhood& neighs_u = m_T.get_neighbours(u);
 
+	// the interval of this vertex
 	vector<node>& inter_u = m_intervals[u];
 
 	if (u == m_root) {
+		// the root must be placed at the left most position
 		inter_u[0] = u;
-		std::copy(neighs_v.begin(), neighs_v.end(), inter_u.begin() + 1);
+
+		std::copy(neighs_u.begin(), neighs_u.end(), inter_u.begin() + 1);
+
+		// if the neighbours of node u are not normalised
 		if (not m_T.is_normalised()) {
 			internal::bit_sort<node>
 			(inter_u.begin() + 1, inter_u.end(), inter_u.size());
 		}
 	}
 	else {
+		// this vertex is placed at the left most position
 		inter_u[0] = u;
+
 		std::copy_if(
-			neighs_v.begin(), neighs_v.end(), inter_u.begin() + 1,
+			neighs_u.begin(), neighs_u.end(), inter_u.begin() + 1,
 			[parent](const node v) -> bool { return v != parent; }
 		);
-		internal::bit_sort<node>
-		(inter_u.begin(), inter_u.end(), inter_u.size());
+
+		// in order to obtain a lexicographically sorted permutation,
+		// we must sort it (vertex 'u' might not be placed properly).
+		internal::bit_sort_mem<node>
+		(inter_u.begin(), inter_u.end(), inter_u.size(), m_memory_bit_sort.data);
 	}
 }
 
