@@ -154,7 +154,7 @@ public:
 	 * @param i The index of the error, an unsigned integer.
 	 * @returns A value of the enumeration @ref lal::io::treebank_error.
 	 */
-	treebank_error get_error_type(size_t i) const noexcept
+	const treebank_error& get_error_type(size_t i) const noexcept
 	{ return std::get<0>(m_errors_from_processing[i]); }
 
 	/**
