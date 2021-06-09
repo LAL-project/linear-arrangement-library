@@ -41,6 +41,11 @@
  
 #pragma once
 
+// C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
@@ -57,7 +62,7 @@ namespace properties {
 /* (unconstrained arrangements) */
 
 /**
- * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * @brief Expected sum of edge lengths of an undirected graph in unconstrained arrangments,
  * \f$\mathbb{E}[D]\f$.
  *
  * This function uses the formulae derived in \cite Ferrer2019a.
@@ -73,7 +78,7 @@ noexcept {
 }
 
 /**
- * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * @brief Expected sum of edge lengths of an undirected graph in unconstrained arrangments,
  * \f$\mathbb{E}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
@@ -86,7 +91,7 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
 }
 
 /**
- * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * @brief Expected sum of edge lengths of a free tree in unconstrained arrangments,
  * \f$\mathbb{E}[D]\f$.
  *
  * This function uses the formulae derived in \cite Ferrer2019a.
@@ -96,13 +101,17 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
 inline
-numeric::rational exp_sum_edge_lengths_rational(const graphs::directed_graph& g)
+numeric::rational exp_sum_edge_lengths_rational(const graphs::free_tree& t)
 noexcept {
-	return exp_sum_edge_lengths_rational(g.to_undirected(false,false));
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	const uint32_t n = t.get_num_nodes();
+	return numeric::rational(n*n - 1, 3);
 }
 
 /**
- * @brief Expected sum of edge lengths of a tree in unconstrained arrangments,
+ * @brief Expected sum of edge lengths of a free tree in unconstrained arrangments,
  * \f$\mathbb{E}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
@@ -110,8 +119,47 @@ noexcept {
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
 inline
-double exp_sum_edge_lengths(const graphs::directed_graph& g) noexcept {
-	return exp_sum_edge_lengths(g.to_undirected(false,false));
+double exp_sum_edge_lengths(const graphs::free_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	return exp_sum_edge_lengths_rational(t).to_double();
+}
+
+/**
+ * @brief Expected sum of edge lengths of a rooted tree in unconstrained arrangments,
+ * \f$\mathbb{E}[D]\f$.
+ *
+ * This function uses the formulae derived in \cite Ferrer2019a.
+ *
+ * Returns the value \f$E[D]\f$ as a rational value.
+ * @param g The input graph.
+ * @returns The expected value of the sum of edge lengths as a rational value.
+ */
+inline
+numeric::rational exp_sum_edge_lengths_rational(const graphs::rooted_tree& t)
+noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	const uint32_t n = t.get_num_nodes();
+	return numeric::rational(n*n - 1, 3);
+}
+
+/**
+ * @brief Expected sum of edge lengths of a rooted tree in unconstrained arrangments,
+ * \f$\mathbb{E}[D]\f$.
+ *
+ * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
+ * @param g The input graph.
+ * @returns The expected value of the sum of edge lengths as a floating point value.
+ */
+inline
+double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	return exp_sum_edge_lengths_rational(t).to_double();
 }
 
 
@@ -148,6 +196,7 @@ inline
 double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
 	return exp_sum_edge_lengths_projective_rational(rt).to_double();
 }
+
 
 /* ------------------------- */
 /* EXPECTATION OF D: E_pl[D] */
