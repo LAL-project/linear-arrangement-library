@@ -91,7 +91,7 @@ noexcept
 
 		if constexpr (std::is_same_v<numtype, numeric::integer>) {
 			du.set_ui(deg);
-			du ^= p;
+			du.powt(p);
 		}
 		else {
 			du = 1;

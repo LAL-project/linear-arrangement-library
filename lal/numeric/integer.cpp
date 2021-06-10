@@ -38,7 +38,7 @@
  *          Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/numeric/integer.hpp>
 
 // C++ includes
@@ -62,6 +62,11 @@ namespace lal {
 namespace numeric {
 
 // PUBLIC
+
+integer::integer(mpz_t&& raw) {
+	internal::move_mpz_to_mpz(raw, m_val);
+	m_initialized = true;
+}
 
 integer::integer(integer&& i) noexcept {
 	// move i's contents
@@ -110,7 +115,7 @@ integer& integer::operator/= (int64_t i) noexcept {
 
 // -- EXPONENTIATION
 
-integer& integer::operator^= (const integer& i) noexcept {
+integer& integer::powt(const integer& i) noexcept {
 	internal::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
