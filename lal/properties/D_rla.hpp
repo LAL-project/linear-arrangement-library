@@ -97,7 +97,7 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
  * This function uses the formulae derived in \cite Ferrer2019a.
  *
  * Returns the value \f$E[D]\f$ as a rational value.
- * @param g The input graph.
+ * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
 inline
@@ -115,7 +115,7 @@ noexcept {
  * \f$\mathbb{E}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
- * @param g The input graph.
+ * @param t The input free tree.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
 inline
@@ -133,7 +133,7 @@ double exp_sum_edge_lengths(const graphs::free_tree& t) noexcept {
  * This function uses the formulae derived in \cite Ferrer2019a.
  *
  * Returns the value \f$E[D]\f$ as a rational value.
- * @param g The input graph.
+ * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
 inline
@@ -151,7 +151,7 @@ noexcept {
  * \f$\mathbb{E}[D]\f$.
  *
  * See @ref lal::properties::exp_sum_edge_lengths_rational for details.
- * @param g The input graph.
+ * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
 inline

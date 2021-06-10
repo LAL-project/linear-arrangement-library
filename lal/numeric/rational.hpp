@@ -640,6 +640,7 @@ public:
 	/**
 	 * @brief Division operator.
 	 * @param i A signed integer (basic type) number.
+	 * @param r Rational value.
 	 */
 	inline friend rational operator/ (int64_t i, const rational& r) noexcept
 	{ rational inv(r); inv.invert(); return inv*i; }
