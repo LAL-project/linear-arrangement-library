@@ -27,20 +27,15 @@
 
 %include "../lal/numeric/integer.hpp"
 %include "../lal/numeric/rational.hpp"
-%include "../lal/numeric/output.hpp"
 
 %extend lal::numeric::integer {
 	std::string __repr__() const {
-		std::ostringstream out;
-		out << *$self;
-		return out.str();
+		return $self->to_string();
 	}
 }
 %extend lal::numeric::rational {
 	std::string __repr__() const {
-		std::ostringstream out;
-		out << *$self;
-		return out.str();
+		return $self->to_string();
 	}
 }
 
@@ -89,5 +84,11 @@ setattr(rational, __rsub__.__name__, __rsub__)
 setattr(rational, __rmul__.__name__, __rmul__)
 setattr(rational, __rtruediv__.__name__, __rtruediv__)
 setattr(rational, __rpow__.__name__, __rpow__)
+
+del __radd__
+del __rsub__
+del __rmul__
+del __rtruediv__
+del __rpow__
 
 %}
