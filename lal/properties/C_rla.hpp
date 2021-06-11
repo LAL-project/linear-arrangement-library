@@ -45,6 +45,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace properties {
@@ -158,9 +159,13 @@ double var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
 inline
-numeric::rational var_num_crossings_tree_rational(const graphs::free_tree& g)
-noexcept
-{ return var_num_crossings_forest_rational(g); }
+numeric::rational var_num_crossings_tree_rational(const graphs::free_tree& t)
+noexcept {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	return var_num_crossings_forest_rational(t);
+}
 /**
  * @brief Computes the variance of the number of crossings of a tree in unconstrained
  * arrangements, \f$\mathbb{V}[C]\f$.
@@ -170,8 +175,50 @@ noexcept
  * @returns The return value is a floating point value.
  */
 inline
-double var_num_crossings_tree(const graphs::free_tree& g) noexcept
-{ return var_num_crossings_forest_rational(g).to_double(); }
+double var_num_crossings_tree(const graphs::free_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	return var_num_crossings_forest_rational(t).to_double();
+}
+
+/**
+ * @brief Computes the variance of the number of crossings of a tree in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
+ *
+ * This function converts the input rooted tree into a free tree.
+ *
+ * Computes \f$\mathbb{V}[C]\f$ on the given tree. This function computes the
+ * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
+ * trees. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
+ * @param g Input tree.
+ * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
+ */
+inline
+numeric::rational var_num_crossings_tree_rational(const graphs::rooted_tree& t)
+noexcept {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	return var_num_crossings_forest_rational(t.to_free_tree());
+}
+/**
+ * @brief Computes the variance of the number of crossings of a tree in unconstrained
+ * arrangements, \f$\mathbb{V}[C]\f$.
+ *
+ * This function converts the input rooted tree into a free tree.
+ *
+ * See @ref lal::properties::var_num_crossings_tree_rational for details.
+ * @param t Input rooted tree.
+ * @returns The return value is a floating point value.
+ */
+inline
+double var_num_crossings_tree(const graphs::rooted_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+	return var_num_crossings_forest_rational(t.to_free_tree()).to_double();
+}
 
 } // -- namespace properties
 } // -- namespace lal
