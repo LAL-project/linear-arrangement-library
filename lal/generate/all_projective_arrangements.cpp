@@ -107,13 +107,13 @@ void all_projective_arrangements::next() noexcept {
 	}
 
 	if (u == m_rT.get_num_nodes() and not has_perm) {
-		m_exists_next = false;
+		m_reached_end = true;
 	}
 }
 
 /* PRIVATE */
 
-void all_projective_arrangements::__reset() noexcept {
+void all_projective_arrangements::reset() noexcept {
 	m_exists_next = true;
 	m_reached_end = false;
 	initialise_intervals_tree();

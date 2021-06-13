@@ -163,10 +163,7 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
-		__reset();
-		next();
-	}
+	void reset() noexcept;
 
 	/**
 	 * @brief Returns the current arrangement and advances the generator.
@@ -193,8 +190,6 @@ private:
 	bool m_reached_end = false;
 
 private:
-	/// Resets the iterator to its initial state.
-	void __reset() noexcept;
 	/// Initialise the interval every node of the tree, starting at @e r.
 	void initialise_intervals_tree() noexcept;
 	/// Initialise the interval of node @e u.
