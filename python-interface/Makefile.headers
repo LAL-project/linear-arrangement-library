@@ -83,6 +83,7 @@ LINARR_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/dependency_flux.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/flux.hpp \
+					  $(LAL_INC_DIR)/lal/linarr/formal_constraints.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/Dmin.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/head_initial.hpp \
 					  $(TREE_STR_DPHDRS) \

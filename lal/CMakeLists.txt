@@ -284,6 +284,7 @@ target_sources(
 		linarr/dependency_flux.hpp
 		linarr/Dmin.hpp
 		linarr/flux.hpp
+		linarr/formal_constraints.hpp
 		linarr/head_initial.hpp
 		linarr/syntactic_dependency_structure.hpp
 		# -- sources

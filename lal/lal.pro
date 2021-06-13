@@ -158,6 +158,7 @@ HEADERS += \
 	linarr/flux.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
+	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
 	linarr/syntactic_dependency_structure.hpp \
 	numeric.hpp \

@@ -70,14 +70,14 @@ namespace linarr {
  * sum of the number of edges of all the graphs.
  *
  * Formally, given a list of graphs \f$L = \{L_i\}_{i=1}^k\f$ and a list of
- * linear arrangements \f$\P = \{\pi_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
+ * linear arrangements \f$\Pi = \{\pi_i\}_{i=1}^k\f$, computes \f$D/M\f$, where
  * - \f$D = \sum_{i=1}^k D(L_i, \pi_i)\f$ is the sum of edge lengths of all
  * graphs.
  * - \f$M = \sum_{i=1}^k |E(L_i)|\f$ is the sum of the number of edges of all
  * graphs.
  *
  * @param L List of input graphs.
- * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
+ * @param P List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.
  * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as an
@@ -123,7 +123,7 @@ noexcept
  * See @ref lal::linarr::mean_dependency_distance_1level_rational for further
  * details.
  * @param L List of input graphs.
- * @param P List of linear arrangements of the nodes \f$P = \{\pi_i\}_{i=1}^k\f$.
+ * @param P List of linear arrangements of the nodes \f$Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.
  * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as a

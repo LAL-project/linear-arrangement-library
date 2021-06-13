@@ -54,5 +54,7 @@
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/linarr/flux.hpp>
 
+#include <lal/linarr/formal_constraints.hpp>
+
 #include <lal/linarr/1level.hpp>
 #include <lal/linarr/2level.hpp>
