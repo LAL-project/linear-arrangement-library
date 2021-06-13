@@ -64,6 +64,6 @@ if [ "$line" != "r\"\"\"" ]; then
 		prepend modules_pydocs/treebank_feature.py $f
 	
 	elif [[ "$f" == *"treebank_error"* ]]; then
-		prepend modules_pydocs/treebank_error.py $f
+		prepend modules_pydocs/treebank_error_type.py $f
 	fi
 fi
