@@ -77,8 +77,8 @@ endif()
 # **********************************************************************
 
 # project's version
-set(LAL_MAJOR 21.06)
-set(LAL_PATCH 00)
+set(LAL_MAJOR xx.yy)
+set(LAL_PATCH pp)
 
 # project declaration
 project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
@@ -414,6 +414,7 @@ set(LIBLAL_IO_HEADER
 	io/treebank_collection_processor.hpp
 	io/treebank_collection_reader.hpp
 	io/treebank_error.hpp
+	io/treebank_error_type.hpp
 	io/treebank_feature.hpp
 	io/treebank_processor.hpp
 	io/treebank_reader.hpp
@@ -433,6 +434,7 @@ set(LIBLAL_LINARR_HEADER
 	linarr/dependency_flux.hpp
 	linarr/Dmin.hpp
 	linarr/flux.hpp
+	linarr/formal_constraints.hpp
 	linarr/head_initial.hpp
 	linarr/syntactic_dependency_structure.hpp
 )
