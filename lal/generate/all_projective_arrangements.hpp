@@ -184,8 +184,6 @@ private:
 	const graphs::rooted_tree& m_rT;
 	/// The interval of every node of the tree
 	std::vector<std::vector<node>> m_intervals;
-	/// Is there a next projective arrangement to iterate over?
-	bool m_exists_next = true;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 

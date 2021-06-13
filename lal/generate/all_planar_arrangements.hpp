@@ -194,8 +194,6 @@ private:
 	/// Array for the bit sort algorithm
 	internal::data_array<char> m_memory_bit_sort;
 
-	/// Is there a next projective arrangement to iterate over?
-	bool m_exists_next = true;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 
