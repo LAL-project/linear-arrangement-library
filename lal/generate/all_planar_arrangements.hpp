@@ -156,7 +156,7 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept { __reset(); }
+	void reset() noexcept;
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -194,14 +194,10 @@ private:
 	/// Array for the bit sort algorithm
 	internal::data_array<char> m_memory_bit_sort;
 
-	/// Is there a next projective arrangement to iterate over?
-	bool m_exists_next = true;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 
 private:
-	/// Sets the iterator to its initial state.
-	void __reset() noexcept;
 	/// Initiales the interval of every node of the tree.
 	void initialise_intervals_tree() noexcept;
 	/// Initialise the interval of node @e v.

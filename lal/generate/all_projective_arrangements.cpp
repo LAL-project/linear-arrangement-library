@@ -84,13 +84,8 @@ linear_arrangement all_projective_arrangements::get_arrangement() const noexcept
 /* MODIFIERS */
 
 void all_projective_arrangements::next() noexcept {
-	if (not m_exists_next) {
-		m_reached_end = true;
-		return;
-	}
-
 	if (m_rT.get_num_nodes() == 1) {
-		m_exists_next = false;
+		m_reached_end = true;
 		return;
 	}
 
@@ -107,14 +102,13 @@ void all_projective_arrangements::next() noexcept {
 	}
 
 	if (u == m_rT.get_num_nodes() and not has_perm) {
-		m_exists_next = false;
+		m_reached_end = true;
 	}
 }
 
 /* PRIVATE */
 
-void all_projective_arrangements::__reset() noexcept {
-	m_exists_next = true;
+void all_projective_arrangements::reset() noexcept {
 	m_reached_end = false;
 	initialise_intervals_tree();
 }

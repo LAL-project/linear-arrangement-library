@@ -68,7 +68,7 @@ all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 #endif
 
 	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
-	__reset();
+	reset();
 }
 
 all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
@@ -82,15 +82,10 @@ all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
 #endif
 
 	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
-	__reset();
+	reset();
 }
 
 void all_planar_arrangements::next() noexcept {
-	if (not m_exists_next) {
-		m_reached_end = true;
-		return;
-	}
-
 	if (m_T.get_num_nodes() == 1) {
 		m_reached_end = true;
 		return;
@@ -140,9 +135,8 @@ linear_arrangement all_planar_arrangements::get_arrangement() const noexcept {
 
 /* PRIVATE */
 
-void all_planar_arrangements::__reset() noexcept {
+void all_planar_arrangements::reset() noexcept {
 	m_root = 0;
-	m_exists_next = true;
 	m_reached_end = false;
 	initialise_intervals_tree();
 }
