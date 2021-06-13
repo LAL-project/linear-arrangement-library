@@ -52,9 +52,9 @@ else
 	# FOR LINUX USERS ONLY
 	
 	# location of LAL's header files
-	LAL_INC_DIR = /usr/local/include
+	LAL_INC_DIR = /home/lluis/Documents/projects/LAL-DISTRIBUTION/21.07/linux-c++-libs/include
 	# location of LAL's library files
-	LAL_LIB_DIR = /usr/local/lib
+	LAL_LIB_DIR = /home/lluis/Documents/projects/LAL-DISTRIBUTION/21.07/linux-c++-libs/lib
 endif
 endif
 
@@ -90,7 +90,7 @@ ifeq ($(OS),Windows_NT)
 	MAJOR_PY_LINK	= -lpython3
 	MINOR_PY_LINK	= -lpython3$(MINOR_VERSION_PYTHON)
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= C:/programming/python_lib_3.$(MINOR_VERSION_PYTHON)
+	LAL_PY_DEST		= C:/programming/python_lib
 else
 	# --------------------
 	# FOR LINUX USERS ONLY
@@ -103,7 +103,7 @@ else
 	MAJOR_PY_LINK	=
 	MINOR_PY_LINK	= -lpython3.8
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= /usr/local/lib/python3.8/dist-packages
+	LAL_PY_DEST		= /home/lluis/Documents/projects/LAL-DISTRIBUTION/21.07/linux-python-libs/lib/python3.8
 endif
 
 # Architecture of the system
