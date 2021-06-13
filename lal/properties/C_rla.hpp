@@ -155,7 +155,7 @@ double var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
  * Computes \f$\mathbb{V}[C]\f$ on the given tree. This function computes the
  * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
  * trees. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
- * @param g Input tree.
+ * @param t Input free tree.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
 inline
@@ -171,7 +171,7 @@ noexcept {
  * arrangements, \f$\mathbb{V}[C]\f$.
  *
  * See @ref lal::properties::var_num_crossings_tree_rational for details.
- * @param g Input tree.
+ * @param t Input free tree.
  * @returns The return value is a floating point value.
  */
 inline
@@ -191,7 +191,7 @@ double var_num_crossings_tree(const graphs::free_tree& t) noexcept {
  * Computes \f$\mathbb{V}[C]\f$ on the given tree. This function computes the
  * simplified formula of \f$V_{rla}[C]\f$ on general graphs for the case of
  * trees. Complexity: time \f$O(n)\f$, space \f$O(n)\f$.
- * @param g Input tree.
+ * @param t Input rooted tree.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
 inline
