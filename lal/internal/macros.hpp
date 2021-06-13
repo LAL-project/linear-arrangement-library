@@ -41,6 +41,9 @@
 
 #pragma once
 
+// C++ includes
+#include <numeric>
+
 // lal includes
 #include <lal/definitions.hpp>
 
@@ -79,19 +82,15 @@ inline void UNUSED(const T& x) { (void)x; }
 template<typename result_t, typename graph_t, typename ... Params>
 inline result_t call_with_empty_arrangement(
 	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
-	const graph_t& g, const linear_arrangement& pi, Params... P
+	const graph_t& g, const linear_arrangement& arr, Params... P
 )
 {
-	if (pi.size() != 0) {
-		return F(g,pi,P...);
+	if (arr.size() != 0) {
+		return F(g,arr,P...);
 	}
-	linear_arrangement __pi(g.get_num_nodes());
-	{
-	position p = 0;
-	auto it = __pi.begin();
-	while (it != __pi.end()) { *(it++) = p++; }
-	}
-	return F(g, __pi, P...);
+	linear_arrangement __arr(g.get_num_nodes());
+	std::iota(__arr.begin(), __arr.end(), 0);
+	return F(g, __arr, P...);
 }
 
 } // -- namespace internal
