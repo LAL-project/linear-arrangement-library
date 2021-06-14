@@ -77,8 +77,8 @@ endif()
 # **********************************************************************
 
 # project's version
-set(LAL_MAJOR xx.yy)
-set(LAL_PATCH pp)
+set(LAL_MAJOR 99.99)
+set(LAL_PATCH 99)
 
 # project declaration
 project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
