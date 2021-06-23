@@ -49,16 +49,18 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/internal/macros.hpp>
 
+#define to_double(x) static_cast<double>(x)
+
 namespace lal {
 using namespace graphs;
 using namespace numeric;
 
 namespace linarr {
 
-inline uint32_t __left_branching_edges
+inline uint64_t __left_branching_edges
 (const directed_graph& g, const linear_arrangement& pi) noexcept
 {
-	uint32_t edges_to_right = 0;
+	uint64_t edges_to_right = 0;
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
 		edges_to_right += pi[u] < pi[v];
@@ -73,9 +75,9 @@ rational head_initial_rational
 	assert(g.get_num_edges() > 0);
 #endif
 
-	const uint32_t etr =
+	const uint64_t etr =
 		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
-	return rational_from_ui(etr, g.get_num_edges());
+	return rational(etr, g.get_num_edges());
 }
 
 double head_initial
@@ -85,9 +87,9 @@ double head_initial
 	assert(g.get_num_edges() > 0);
 #endif
 
-	const uint32_t etr =
+	const uint64_t etr =
 		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
-	return static_cast<double>(etr)/g.get_num_edges();
+	return to_double(etr)/to_double(g.get_num_edges());
 }
 
 } // -- namespace linarr

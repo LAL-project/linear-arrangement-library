@@ -57,7 +57,7 @@ namespace generate {
 
 /* CONSTRUCTORS */
 
-all_lab_free_trees::all_lab_free_trees(uint32_t _n) noexcept
+all_lab_free_trees::all_lab_free_trees(uint64_t _n) noexcept
 	: _tree_generator<free_tree>(_n),
 	  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
 	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
@@ -126,7 +126,7 @@ void all_lab_free_trees::__reset() noexcept {
 	m_it = m_n - 3;
 	// make sure that the first call to next()
 	// produces the sequence 0 0 ... 0
-	m_Prufer_seq[m_it] = numeric_limits<uint32_t>::max();
+	m_Prufer_seq[m_it] = numeric_limits<uint64_t>::max();
 	m_L = m_n - 2;
 }
 

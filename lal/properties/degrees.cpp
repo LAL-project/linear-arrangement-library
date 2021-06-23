@@ -69,12 +69,12 @@ template<
 	class numtype = std::conditional_t<
 		std::is_same_v<restype, rational>,
 		integer,
-		uint32_t
+		uint64_t
 	>
 >
 inline
 restype __mmt_x_degree_rational
-(const G& g, uint32_t p, uint32_t (G::*degree_function)(node) const)
+(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const)
 noexcept
 {
 	static_assert(
@@ -87,15 +87,15 @@ noexcept
 	numtype S(0);
 	numtype du(0);
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
-		const uint32_t deg = (g.*degree_function)(u);
+		const uint64_t deg = (g.*degree_function)(u);
 
 		if constexpr (std::is_same_v<numtype, numeric::integer>) {
-			du.set_ui(deg);
+			du.set_number(deg);
 			du.powt(p);
 		}
 		else {
 			du = 1;
-			for (uint32_t i = 0; i < p; ++i) {
+			for (uint64_t i = 0; i < p; ++i) {
 				du *= deg;
 			}
 		}
@@ -114,28 +114,28 @@ noexcept
 
 // moment of degree
 
-rational moment_degree_rational(const undirected_graph& g, uint32_t p) noexcept
+rational moment_degree_rational(const undirected_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<undirected_graph, rational>
 	(g, p, &undirected_graph::get_degree);
 }
 
-double moment_degree(const undirected_graph& g, uint32_t p) noexcept
+double moment_degree(const undirected_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<undirected_graph, double>
 	(g, p, &undirected_graph::get_degree);
 }
 
-rational moment_degree_rational(const directed_graph& g, uint32_t p) noexcept
+rational moment_degree_rational(const directed_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, rational>
 	(g, p, &directed_graph::get_degree);
 }
 
-double moment_degree(const directed_graph& g, uint32_t p) noexcept
+double moment_degree(const directed_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, double>
@@ -144,14 +144,14 @@ double moment_degree(const directed_graph& g, uint32_t p) noexcept
 
 // moment of in-degree
 
-rational moment_degree_in_rational(const directed_graph& g, uint32_t p) noexcept
+rational moment_degree_in_rational(const directed_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, rational>
 	(g, p, &directed_graph::get_in_degree);
 }
 
-double moment_degree_in(const directed_graph& g, uint32_t p) {
+double moment_degree_in(const directed_graph& g, uint64_t p) {
 	return
 	__mmt_x_degree_rational<directed_graph, double>
 	(g, p, &directed_graph::get_in_degree);
@@ -159,14 +159,14 @@ double moment_degree_in(const directed_graph& g, uint32_t p) {
 
 // moment of out-degree
 
-rational moment_degree_out_rational(const directed_graph& g, uint32_t p) noexcept
+rational moment_degree_out_rational(const directed_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, rational>
 	(g, p, &directed_graph::get_out_degree);
 }
 
-double moment_degree_out(const directed_graph& g, uint32_t p) noexcept
+double moment_degree_out(const directed_graph& g, uint64_t p) noexcept
 {
 	return
 	__mmt_x_degree_rational<directed_graph, double>
@@ -177,7 +177,7 @@ double moment_degree_out(const directed_graph& g, uint32_t p) noexcept
 
 rational hubiness_rational(const free_tree& t) noexcept
 {
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
@@ -188,14 +188,14 @@ rational hubiness_rational(const free_tree& t) noexcept
 #endif
 
 	const rational k2_tree = moment_degree_rational(t, 2);
-	const rational k2_linear = rational_from_ui(4*n - 6, n);
-	const rational k2_star = rational_from_ui(n - 1);
+	const rational k2_linear = rational(4*n - 6, n);
+	const rational k2_star = rational(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
 }
 
 rational hubiness_rational(const rooted_tree& t) noexcept
 {
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
@@ -206,14 +206,14 @@ rational hubiness_rational(const rooted_tree& t) noexcept
 #endif
 
 	const rational k2_tree = moment_degree_rational(t, 2);
-	const rational k2_linear = rational_from_ui(4*n - 6, n);
-	const rational k2_star = rational_from_ui(n - 1);
+	const rational k2_linear = rational(4*n - 6, n);
+	const rational k2_star = rational(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
 }
 
 double hubiness(const free_tree& t) noexcept
 {
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:
@@ -231,7 +231,7 @@ double hubiness(const free_tree& t) noexcept
 
 double hubiness(const rooted_tree& t) noexcept
 {
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
 	// which means that hubiness is not defined:

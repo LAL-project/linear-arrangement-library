@@ -66,7 +66,7 @@ namespace linarr {
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const graphs::directed_graph& G,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -82,7 +82,7 @@ uint32_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const graphs::undirected_graph& G,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -100,7 +100,7 @@ uint32_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const graphs::directed_graph& G,
 	const linear_arrangement& pi,
 	const algorithms_C& A = algorithms_C::ladder
@@ -118,7 +118,7 @@ uint32_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& pi,
 	const algorithms_C& A = algorithms_C::ladder
@@ -139,7 +139,7 @@ uint32_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> num_crossings_list(
+std::vector<uint64_t> num_crossings_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -159,7 +159,7 @@ std::vector<uint32_t> num_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> num_crossings_list(
+std::vector<uint64_t> num_crossings_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A = algorithms_C::ladder
@@ -183,9 +183,9 @@ std::vector<uint32_t> num_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& G,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -206,9 +206,9 @@ uint32_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& G,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 
@@ -231,10 +231,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& G,
 	const linear_arrangement& pi,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -256,10 +256,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& pi,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 
@@ -283,10 +283,10 @@ uint32_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -309,10 +309,10 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 
@@ -339,10 +339,10 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint32_t>& upper_bounds,
+	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -368,10 +368,10 @@ std::vector<uint32_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint32_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint32_t>& upper_bounds,
+	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 

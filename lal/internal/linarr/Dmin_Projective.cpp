@@ -58,9 +58,9 @@ using namespace std;
 #include <lal/internal/graphs/make_arrangement.hpp>
 #include <lal/internal/sorting/counting_sort.hpp>
 
-typedef std::pair<lal::edge,uint32_t> edge_size;
+typedef std::pair<lal::edge,uint64_t> edge_size;
 typedef std::vector<edge_size>::iterator edge_size_t;
-typedef std::pair<lal::node,uint32_t> node_size;
+typedef std::pair<lal::node,uint64_t> node_size;
 typedef char place;
 
 namespace lal {
@@ -99,7 +99,7 @@ namespace internal {
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-uint32_t __Dmin_Pr__optimal_interval_of(
+uint64_t __Dmin_Pr__optimal_interval_of(
 	const vector<vector<node_size>>& M, const node r,
 	const place r_place,
 	position ini, position fin,
@@ -117,23 +117,23 @@ noexcept
 	// -- place the children --
 
 	// work out the starting side of the first-largest subtree
-	uint32_t side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
+	uint64_t side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
 
 	// size of the intervals from the root to the left end
-	uint32_t acc_size_left = 0;
+	uint64_t acc_size_left = 0;
 	// size of the intervals from the root to the right end
-	uint32_t acc_size_right = 0;
+	uint64_t acc_size_right = 0;
 
 	// number of intervals to the left of the root
-	uint32_t n_intervals_left = 0;
+	uint64_t n_intervals_left = 0;
 	// number of intervals to the right of the root
-	uint32_t n_intervals_right = 0;
+	uint64_t n_intervals_right = 0;
 
 	// sum of the optimal D for every subtree +
 	// the length of the edge from 'r' to its parent (if any)
-	uint32_t D = 0;
+	uint64_t D = 0;
 	// total sum of lengths of edges from 'r' to 'vi' without the anchor
-	uint32_t d = 0;
+	uint64_t d = 0;
 
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
@@ -182,9 +182,9 @@ noexcept
 	return D + d;
 }
 
-uint32_t Dmin_Pr__optimal_interval_of(
-	uint32_t n,
-	const vector<vector<pair<node,uint32_t>>>& M,
+uint64_t Dmin_Pr__optimal_interval_of(
+	uint64_t n,
+	const vector<vector<pair<node,uint64_t>>>& M,
 	node r, linear_arrangement& arr
 )
 noexcept
@@ -193,12 +193,12 @@ noexcept
 	__Dmin_Pr__optimal_interval_of(M, r, PLACE_NONE_OF, 0, n - 1, arr);
 }
 
-pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
+pair<uint64_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
 
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
@@ -210,7 +210,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 
 	{
 	const size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
-	data_array<uint32_t> size_subtrees(k, 0);
+	data_array<uint64_t> size_subtrees(k, 0);
 
 	countingsort::memory_counting_sort<edge_size> memcs(n, n);
 	auto it = L.begin();
@@ -220,7 +220,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		while (not e_it.end()) {
 			const edge e = e_it.get_edge();
 			const node v = e.second;
-			const uint32_t suv = t.get_num_nodes_subtree(v);
+			const uint64_t suv = t.get_num_nodes_subtree(v);
 			*it++ = make_pair(e, suv);
 			++memcs.count[suv];
 
@@ -233,7 +233,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 		while (not e_it.end()) {
 			const edge e = e_it.get_edge();
 			const node v = e.second;
-			const uint32_t suv = size_subtrees[v];
+			const uint64_t suv = size_subtrees[v];
 			*it++ = make_pair(e, suv);
 			++memcs.count[suv];
 
@@ -256,7 +256,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 	vector<vector<node_size>> M(n);
 	for (const auto& T : L) {
 		const auto [u, v] = T.first;
-		const uint32_t nv = T.second;
+		const uint64_t nv = T.second;
 		M[u].push_back(make_pair(v,nv));
 #if defined DEBUG
 		assert(t.has_edge(u,v));
@@ -271,7 +271,7 @@ pair<uint32_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
 
 	// construct the optimal intervals
 	linear_arrangement arr(n);
-	const uint32_t D =
+	const uint64_t D =
 	__Dmin_Pr__optimal_interval_of(M, t.get_root(), PLACE_NONE_OF, 0,n-1, arr);
 	return make_pair(D, arr);
 }

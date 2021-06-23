@@ -104,7 +104,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_rooted_trees(uint32_t n) noexcept;
+	all_ulab_rooted_trees(uint64_t n) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator..
@@ -170,7 +170,7 @@ private:
 	bool m_reached_end = false;
 
 	/// Pointer as in the paper.
-	uint32_t m_p = 0;
+	uint64_t m_p = 0;
 	/// Sequence SAVE
 	internal::data_array<node> m_save;
 	/// Sequence PREV

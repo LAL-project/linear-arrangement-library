@@ -60,7 +60,7 @@ namespace graphs {
  * Class implementing an undirected graph, using the adjacency list data structure.
  *
  * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint32_t) method. Edges can then be added one by one
+ * or with the @ref init(uint64_t) method. Edges can then be added one by one
  * (see @ref add_edge(node,node,bool,bool) ) or all at the same time (see
  * @ref add_edges(const std::vector<edge>&, bool, bool) ).
  */
@@ -74,7 +74,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	undirected_graph(uint32_t n) noexcept {
+	undirected_graph(uint64_t n) noexcept {
 		init(n);
 	}
 	/**
@@ -310,11 +310,11 @@ public:
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */
-	inline uint32_t get_degree(node u) const noexcept {
+	inline uint64_t get_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
-		return static_cast<uint32_t>(m_adjacency_list[u].size());
+		return m_adjacency_list[u].size();
 	}
 
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
@@ -325,7 +325,7 @@ public:
 
 protected:
 	/// Initialises memory of @ref undirected_graph and @ref graph classes.
-	virtual void _init(uint32_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept;
 	/// Clears the memory of @ref undirected_graph and @ref graph classes.
 	virtual void _clear() noexcept;
 

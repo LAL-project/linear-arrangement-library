@@ -124,7 +124,7 @@ inline bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
 	assert(is_arrangement(g, arr));
 #endif
 
-	const uint32_t invalid = g.get_num_edges()*g.get_num_edges() + 1;
+	const uint64_t invalid = g.get_num_edges()*g.get_num_edges() + 1;
 	return is_num_crossings_lesseq_than(g, arr, 0) < invalid;
 }
 

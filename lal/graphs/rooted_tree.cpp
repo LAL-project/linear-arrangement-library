@@ -208,7 +208,7 @@ noexcept
 void rooted_tree::disjoint_union
 (const rooted_tree& t, bool connect_roots) noexcept
 {
-	const uint32_t prev_n = get_num_nodes();
+	const uint64_t prev_n = get_num_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
@@ -293,7 +293,7 @@ bool rooted_tree::find_edge_orientation() noexcept {
 }
 
 void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
-	const uint32_t n = _t.get_num_nodes();
+	const uint64_t n = _t.get_num_nodes();
 #if defined DEBUG
 	assert(_t.is_tree());
 #endif
@@ -395,7 +395,7 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 #endif
 
 	// number of nodes of the subtree
-	const uint32_t n_verts = static_cast<uint32_t>(es.size()) + 1;
+	const uint64_t n_verts = es.size() + 1;
 
 	// make subtree
 	rooted_tree sub(n_verts);
@@ -435,10 +435,10 @@ head_vector rooted_tree::get_head_vector() const noexcept {
 
 /* PROTECTED */
 
-void rooted_tree::_init(uint32_t n) noexcept {
+void rooted_tree::_init(uint64_t n) noexcept {
 	tree::tree_only_init(n);
 	directed_graph::_init(n);
-	m_size_subtrees = vector<uint32_t>(n);
+	m_size_subtrees = vector<uint64_t>(n);
 
 	if (n <= 1) {
 		set_root(0);
@@ -454,16 +454,16 @@ void rooted_tree::_clear() noexcept {
 
 void rooted_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 void rooted_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
@@ -471,16 +471,16 @@ void rooted_tree::call_union_find_after_add(
 
 void rooted_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 void rooted_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);

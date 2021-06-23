@@ -97,7 +97,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes
 	 */
-	_tree_generator(uint32_t n) noexcept : m_n(n) { }
+	_tree_generator(uint64_t n) noexcept : m_n(n) { }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
@@ -242,7 +242,7 @@ protected:
 	virtual tree_type_t __get_tree() noexcept = 0;
 
 	/// Number of vertices
-	const uint32_t m_n;
+	const uint64_t m_n;
 
 	/// Normalise the generated tree.
 	bool m_normalise_tree = true;

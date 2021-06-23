@@ -74,7 +74,7 @@ namespace generate {
 /* PUBLIC */
 
 _rand_ulab_free_trees::_rand_ulab_free_trees
-(uint32_t _n, uint32_t seed) noexcept
+(uint64_t _n, uint64_t seed) noexcept
 	: _rand_ulab_rooted_trees(_n, seed)
 {
 	init_fn();
@@ -137,8 +137,8 @@ free_tree _rand_ulab_free_trees::get_tree() noexcept {
 
 	// -----------------------------------
 	// make a forest on (n - 1) nodes
-	const uint32_t m = m_n - 1;
-	const uint32_t q = (m_n - 1)/2;
+	const uint64_t m = m_n - 1;
+	const uint64_t q = (m_n - 1)/2;
 
 	// parameters:
 	//     m: make a forest of m nodes
@@ -163,7 +163,7 @@ void _rand_ulab_free_trees::clear() noexcept {
 
 /* PROTECTED */
 
-void _rand_ulab_free_trees::init(uint32_t seed) noexcept {
+void _rand_ulab_free_trees::init(uint64_t seed) noexcept {
 	_rand_ulab_rooted_trees::init(seed);
 	init_fn();
 }
@@ -181,7 +181,7 @@ void _rand_ulab_free_trees::init(uint32_t seed) noexcept {
  *	number of times.
  *
  */
-uint32_t _rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noexcept {
+uint64_t _rand_ulab_free_trees::forest(uint64_t m, uint64_t q, uint64_t nt) noexcept {
 	if (m == 0) {
 		// Forest of 0 nodes
 		return nt;
@@ -214,10 +214,10 @@ uint32_t _rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noex
 
 	// Generate a random rooted tree T' in m_tree starting at position nt.
 	// Join this tree to T's root (node 0)
-	uint32_t root_Tp;
+	uint64_t root_Tp;
 	std::tie(root_Tp, nt) = ranrut(d, 0, nt);
 
-	for (uint32_t c = 1; c < j; ++c) {
+	for (uint64_t c = 1; c < j; ++c) {
 
 		// Each of the copies of T' has to be adjoined to F', i.e.,
 		// do not connect them to the forest's root. Instead,
@@ -226,7 +226,7 @@ uint32_t _rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noex
 		m_head_vector[nt] = 0;
 
 		// Copy the tree structure.
-		for (uint32_t v = nt + 1; v < nt + d; ++v) {
+		for (uint64_t v = nt + 1; v < nt + d; ++v) {
 			// for details on why this assignment
 			// see end of method ranrut()
 			m_head_vector[v] = nt + m_head_vector[v - c*d] - root_Tp;
@@ -238,14 +238,14 @@ uint32_t _rand_ulab_free_trees::forest(uint32_t m, uint32_t q, uint32_t nt) noex
 	return nt;
 }
 
-void _rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
+void _rand_ulab_free_trees::bicenter(uint64_t n) noexcept {
 	// make sure that the number of nodes is even
 #if defined DEBUG
 	assert(n%2 == 0);
 #endif
 
 	if (n == 0) { return; }
-	const uint32_t h = n/2;
+	const uint64_t h = n/2;
 
 	// for both steps, make one tree ...
 	auto [lr, nt] = ranrut(h, 0, 0);
@@ -255,7 +255,7 @@ void _rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
 		// step B1: ... and make a SINGLE copy
 
 		m_head_vector[nt] = lr;
-		for (uint32_t v = nt + 1; v < nt + h; ++v) {
+		for (uint64_t v = nt + 1; v < nt + h; ++v) {
 			m_head_vector[v] = nt + m_head_vector[v - h] - lr;
 		}
 		lr = nt;
@@ -273,7 +273,7 @@ void _rand_ulab_free_trees::bicenter(uint32_t n) noexcept {
 }
 
 const integer&
-_rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) noexcept {
+_rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept {
 
 	/* This algorithm can be compared to the algorithm in
 	 *		https://github.com/marohnicluka/giac/blob/master/graphe.cc#L7149
@@ -299,12 +299,12 @@ _rand_ulab_free_trees::get_alpha_mq(const uint32_t m, const uint32_t q) noexcept
 	}
 
 	integer alpha_mq(0);
-	for (uint32_t j = 1; j <= m; ++j) {
+	for (uint64_t j = 1; j <= m; ++j) {
 		// The variable 'sup' is used to avoid obtaining
 		// negative values in the operation 'm - j*d'.
-		const uint32_t sup = std::min( m/j, q );
+		const uint64_t sup = std::min( m/j, q );
 
-		for (uint32_t d = 1; d <= sup; ++d) {
+		for (uint64_t d = 1; d <= sup; ++d) {
 			const integer& A1 = get_alpha_mq(m - j*d, q);
 			const integer& A2 = get_alpha_mq(d - 1, q);
 			alpha_mq += A1*A2*d;
@@ -352,7 +352,7 @@ void _rand_ulab_free_trees::init_fn() noexcept {
 	m_fn[30] = integer("14830871802");
 }
 
-const integer& _rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
+const integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
@@ -361,7 +361,7 @@ const integer& _rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 	// Compute f_k using Otter's formula (see reference in documentation)
 	rational f_k(0);
 	integer s(0);
-	uint32_t k = static_cast<uint32_t>(m_fn.size());
+	uint64_t k = m_fn.size();
 	while (k <= n) {
 
 		// for k=0, f_k=1.
@@ -370,7 +370,7 @@ const integer& _rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 		f_k += (k%2 == 0 ? rational(get_rn(k/2), 2) : rational(0));
 
 		s = 0;
-		for (uint32_t j = 0; j <= k; ++j) {
+		for (uint64_t j = 0; j <= k; ++j) {
 			s += get_rn(j)*get_rn(k - j);
 		}
 		f_k -= rational(s,2);
@@ -384,8 +384,8 @@ const integer& _rand_ulab_free_trees::get_fn(const uint32_t n) noexcept {
 	return m_fn[n];
 }
 
-pair<uint32_t, uint32_t>
-_rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q) noexcept
+pair<uint64_t, uint64_t>
+_rand_ulab_free_trees::choose_jd_from_alpha(const uint64_t m, const uint64_t q) noexcept
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
@@ -397,8 +397,8 @@ _rand_ulab_free_trees::choose_jd_from_alpha(const uint32_t m, const uint32_t q) 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
 	// reaches 0 or less, we found a pair with its probability.
-	uint32_t j = 1;
-	uint32_t d = 1;
+	uint64_t j = 1;
+	uint64_t d = 1;
 	while (z > 0) {
 		if (m < j*d) {
 			// we need to "start a next pair"

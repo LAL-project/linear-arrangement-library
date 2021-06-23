@@ -76,7 +76,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	graph(uint32_t n) noexcept {
+	graph(uint64_t n) noexcept {
 		_init(n);
 	}
 	/**
@@ -127,7 +127,7 @@ public:
 	 * See @ref _init for details.
 	 * @param n Number of nodes.
 	 */
-	virtual void init(uint32_t n) noexcept;
+	virtual void init(uint64_t n) noexcept;
 	/**
 	 * @brief Frees the memory occupied by this graph.
 	 *
@@ -191,11 +191,11 @@ public:
 	virtual bool has_edge(node u, node v) const = 0;
 
 	/// Returns the number of ndoes.
-	inline uint32_t get_num_nodes() const noexcept
-	{ return static_cast<uint32_t>(m_adjacency_list.size()); }
+	inline uint64_t get_num_nodes() const noexcept
+	{ return m_adjacency_list.size(); }
 
 	/// Returns the number of edges.
-	inline uint32_t get_num_edges() const noexcept { return m_num_edges; }
+	inline uint64_t get_num_edges() const noexcept { return m_num_edges; }
 
 	/// Returns all edges of this graph.
 	virtual std::vector<edge> get_edges() const noexcept = 0;
@@ -218,7 +218,7 @@ protected:
 	/// Data structure that implements the graph.
 	std::vector<neighbourhood> m_adjacency_list;
 	/// Amount of edges of this graph.
-	uint32_t m_num_edges = 0;
+	uint64_t m_num_edges = 0;
 	/**
 	 * @brief Is this graph normalised?
 	 *
@@ -235,7 +235,7 @@ protected:
 
 protected:
 	/// Initialises memory of @ref graph class.
-	virtual void _init(uint32_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept;
 	/// Clears memory for the @ref graph class.
 	virtual void _clear() noexcept;
 

@@ -95,7 +95,7 @@ inline bool has_directed_cycles(
 	char * const __restrict__ in_stack
 )
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	std::fill(&vis[0], &vis[n], 0);
 	std::fill(&in_stack[0], &in_stack[n], 0);
 	bool has_cycle = false;
@@ -115,7 +115,7 @@ inline bool has_directed_cycles(
  * @returns Whether the graph has cycles or not.
  */
 inline bool has_directed_cycles(const graphs::directed_graph& g) {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	data_array<char> all_mem(2*n);
 	char * const __restrict__ vis = &all_mem.data[0];
 	char * const __restrict__ in_stack = &all_mem.data[n];

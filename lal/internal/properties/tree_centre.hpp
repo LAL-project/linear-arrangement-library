@@ -121,19 +121,19 @@ std::pair<node, node> retrieve_centre(const T& t, node X) {
 	std::vector<node> tree_leaves;
 	tree_leaves.reserve(t.get_num_nodes_component(X) - 1);
 	// full degree of every node of the connected component
-	std::vector<uint32_t> trimmed_degree(n, 0);
+	std::vector<uint64_t> trimmed_degree(n, 0);
 	// number of nodes in the connected component
-	uint32_t size_trimmed = t.get_num_nodes_component(X);
+	uint64_t size_trimmed = t.get_num_nodes_component(X);
 
 #if defined DEBUG
-	uint32_t __size_trimmed = 0; // for debugging purposes only
+	uint64_t __size_trimmed = 0; // for debugging purposes only
 #endif
 
 	// leaves left to process
 	//   l0: leaves in the current tree
-	uint32_t l0 = 0;
+	uint64_t l0 = 0;
 	//   l1: leaves produced after having trimmed all the l0 leaves
-	uint32_t l1 = 0;
+	uint64_t l1 = 0;
 
 	// ---------------------------------------------------
 	// Initialise data:

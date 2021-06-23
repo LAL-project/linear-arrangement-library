@@ -65,9 +65,9 @@ inline
 graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
 noexcept
 {
-	const uint32_t n = static_cast<uint32_t>(hv.size());
+	const uint64_t n = hv.size();
 	graphs::directed_graph t(n);
-	for (uint32_t i = 0; i < n; ++i) {
+	for (uint64_t i = 0; i < n; ++i) {
 		if (hv[i] != 0) {
 			// add the edge:
 			// * i ranges in [0,n-1]
@@ -133,7 +133,7 @@ noexcept
 	std::string chunk;
 	while (ss >> chunk) {
 
-		uint32_t value;
+		uint64_t value;
 		const auto result = std::from_chars
 		(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
 
@@ -161,9 +161,9 @@ noexcept
 	}
 
 	// number of nodes of the graph
-	const uint32_t n = static_cast<uint32_t>(hv.size());
+	const uint64_t n = hv.size();
 
-	uint32_t n_roots = 0;
+	uint64_t n_roots = 0;
 	bool can_make_graph = true;
 
 	// inspect the head vector

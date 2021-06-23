@@ -66,7 +66,7 @@ noexcept
 	assert(t.is_rooted_tree());
 #endif
 
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	head_vector hv(n);
 	for (node u = 0; u < n; ++u) {
 		if (u == t.get_root()) {
@@ -127,7 +127,7 @@ noexcept
 		}
 	}
 
-	const uint32_t n = static_cast<uint32_t>(hv.size());
+	const uint64_t n = hv.size();
 
 	// output tree
 	tree_type t(n);
@@ -136,10 +136,10 @@ noexcept
 	std::optional<node> r;
 
 #if defined DEBUG
-	uint32_t num_edges_added = 0;
+	uint64_t num_edges_added = 0;
 #endif
 
-	for (uint32_t i = 0; i < n; ++i) {
+	for (uint64_t i = 0; i < n; ++i) {
 		if (hv[i] == 0) {
 			// root, do nothing
 			r = i;
@@ -210,7 +210,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 inline graphs::free_tree level_sequence_to_ftree
-(const uint32_t * const L, uint32_t n, bool normalise = true, bool check = true)
+(const uint64_t * const L, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 {
 #if defined DEBUG
@@ -225,7 +225,7 @@ noexcept
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
 	data_array<node> lev(n+1, 0);
-	uint32_t stack_it = 0;
+	uint64_t stack_it = 0;
 
 	// evidently,
 	lev[0] = 1;
@@ -257,7 +257,7 @@ noexcept
 }
 
 inline graphs::free_tree level_sequence_to_ftree
-(const std::vector<uint32_t>& L, uint32_t n, bool normalise = true, bool check = true)
+(const std::vector<uint64_t>& L, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 { return level_sequence_to_ftree(&L[0], n, normalise, check); }
 
@@ -276,13 +276,13 @@ noexcept
  * @returns The tree built with @e L.
  */
 inline graphs::free_tree Prufer_sequence_to_ftree
-(const uint32_t * const seq, uint32_t n, bool normalise = true, bool check = true)
+(const uint64_t * const seq, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 {
 	// initialisation
-	const uint32_t L = n - 2;
-	data_array<uint32_t> degree(n, 1);
-	for (uint32_t i = 0; i < L; ++i) {
+	const uint64_t L = n - 2;
+	data_array<uint64_t> degree(n, 1);
+	for (uint64_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}
 
@@ -293,7 +293,7 @@ noexcept
 	// lowest-numbered node, j, with degree equal to 1, add
 	// the edge (j, seq[i]) to the tree, and decrement the degrees
 	// of j and seq[i].
-	for (uint32_t v = 0; v < L; ++v) {
+	for (uint64_t v = 0; v < L; ++v) {
 		const auto value = seq[v];
 		bool node_found = false;
 		node w = 0;
@@ -330,7 +330,7 @@ noexcept
 }
 
 inline graphs::free_tree Prufer_sequence_to_ftree
-(const std::vector<uint32_t>& S, uint32_t n, bool normalise = true, bool check = true)
+(const std::vector<uint64_t>& S, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 { return Prufer_sequence_to_ftree(&S[0], n, normalise, check); }
 

@@ -48,7 +48,7 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
 
-#define inf numeric_limits<uint32_t>::max()
+#define inf numeric_limits<uint64_t>::max()
 
 namespace lal {
 using namespace graphs;
@@ -59,7 +59,7 @@ namespace generate {
 
 /* CONSTRUCTORS */
 
-all_ulab_free_trees::all_ulab_free_trees(uint32_t _n) noexcept
+all_ulab_free_trees::all_ulab_free_trees(uint64_t _n) noexcept
 	: _tree_generator<free_tree>(_n),
 	  m_L(m_n + 1),
 	  m_W(m_n + 1)
@@ -139,13 +139,13 @@ void all_ulab_free_trees::next() noexcept {
 		m_c = inf;
 	}
 
-	const uint32_t oldp = m_p;
-	const uint32_t delta = m_q - m_p;
-	const uint32_t oldLq = m_L[m_q];
-	const uint32_t oldWq = m_W[m_q];
+	const uint64_t oldp = m_p;
+	const uint64_t delta = m_q - m_p;
+	const uint64_t oldLq = m_L[m_q];
+	const uint64_t oldWq = m_W[m_q];
 	m_p = inf;
 
-	for (uint32_t i = oldp; i <= m_n; ++i) {
+	for (uint64_t i = oldp; i <= m_n; ++i) {
 		m_L[i] = m_L[i + delta];
 		if (m_L[i] == 2) {
 			m_W[i] = 1;
@@ -200,7 +200,7 @@ void all_ulab_free_trees::next() noexcept {
 	}
 	if (fixit) {
 		m_r = m_n - m_h1 + 1;
-		for (uint32_t i = m_r + 1; i <= m_n; ++i) {
+		for (uint64_t i = m_r + 1; i <= m_n; ++i) {
 			m_L[i] = i - m_r + 1;
 			m_W[i] = i - 1;
 		}
@@ -252,7 +252,7 @@ void all_ulab_free_trees::__reset() noexcept {
 		return;
 	}
 
-	uint32_t k = m_n/2 + 1;
+	uint64_t k = m_n/2 + 1;
 	m_p = (m_n == 4 ? 3 : m_n);
 	m_q = m_n - 1;
 	m_h1 = k;
@@ -261,13 +261,13 @@ void all_ulab_free_trees::__reset() noexcept {
 	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
 
 	// initialise L and W
-	for (uint32_t i = 1; i <= k; ++i) {
+	for (uint64_t i = 1; i <= k; ++i) {
 		m_W[i] = i - 1;
 		m_L[i] = i;
 	}
 	m_W[k+1] = 1;
 	m_L[k+1] = 2;
-	for (uint32_t i = k + 2; i <= m_n; ++i) {
+	for (uint64_t i = k + 2; i <= m_n; ++i) {
 		m_W[i] = i - 1;
 		m_L[i] = i - k + 1;
 	}

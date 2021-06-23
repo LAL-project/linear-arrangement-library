@@ -70,16 +70,16 @@ template<
 >
 std::pair<node, node> retrieve_centroid(
 	const tree_type& t,
-	const uint32_t N, const uint32_t n, const node x,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
-	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	const uint64_t N, const uint64_t n, const node x,
+	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
+	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
 {
 #if defined DEBUG
 	assert(n > 0);
 #endif
 
-	typedef std::pair<edge,uint32_t> edge_size;
+	typedef std::pair<edge,uint64_t> edge_size;
 	typedef std::vector<edge_size>::iterator Iterator_Type;
 
 	// calculate s(u,v) with H&S algorithm (lemma 8)
@@ -176,14 +176,14 @@ template<
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t, const node x,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
-	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
+	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t component_size = t.get_num_nodes();
+	const uint64_t component_size = t.get_num_nodes();
 	// calculate the size of the connected component
-	const uint32_t n = t.get_num_nodes_component(x);
+	const uint64_t n = t.get_num_nodes_component(x);
 	// easy case
 	if (n == 1) {
 		return std::make_pair(x, component_size+1);
@@ -206,8 +206,8 @@ template<
 	bool> = true
 >
 std::pair<node, node> retrieve_centroid(const T& t, const node x) {
-	std::vector<std::vector<std::pair<node,uint32_t>>> M;
-	std::vector<std::pair<edge, uint32_t>> sizes_edge;
+	std::vector<std::vector<std::pair<node,uint64_t>>> M;
+	std::vector<std::pair<edge, uint64_t>> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
 }
 
@@ -245,12 +245,12 @@ template<
 >
 std::pair<node, node> retrieve_centroid(
 	const T& t,
-	std::vector<std::vector<std::pair<node,uint32_t>>>& L,
-	std::vector<std::pair<edge, uint32_t>>& sizes_edge
+	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
+	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
 {
 	// actual number of vertices of the tree
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	// easy case
 	if (n == 1) {
 		return std::make_pair(0, n+1);
@@ -273,8 +273,8 @@ template<
 	bool> = true
 >
 std::pair<node, node> retrieve_centroid(const T& t) {
-	std::vector<std::vector<std::pair<node,uint32_t>>> L;
-	std::vector<std::pair<edge, uint32_t>> sizes_edge;
+	std::vector<std::vector<std::pair<node,uint64_t>>> L;
+	std::vector<std::pair<edge, uint64_t>> sizes_edge;
 	return retrieve_centroid(t, L, sizes_edge);
 }
 

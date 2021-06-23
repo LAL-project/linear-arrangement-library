@@ -71,7 +71,7 @@ namespace internal {
  * AND the boolean parameter sizes are BOTH true.
  */
 template<bool get_subsizes>
-std::pair<std::vector<edge>, uint32_t *>
+std::pair<std::vector<edge>, uint64_t *>
 get_edges_subtree
 (const graphs::rooted_tree& T, node u, bool relabel)
 {
@@ -84,9 +84,9 @@ get_edges_subtree
 #endif
 
 	std::vector<edge> es;
-	uint32_t *sizes = nullptr;
+	uint64_t *sizes = nullptr;
 
-	const uint32_t n = T.get_num_nodes();
+	const uint64_t n = T.get_num_nodes();
 	if (n <= 1) { return {es, sizes}; }
 
 	// reserve some space for the vector edges
@@ -99,7 +99,7 @@ get_edges_subtree
 			// the subtrees. This can be done because the sizes are valid.
 
 			// Use only the space that is strictly necessary.
-			sizes = new uint32_t[T.get_num_nodes_subtree(u)]{0};
+			sizes = new uint64_t[T.get_num_nodes_subtree(u)]{0};
 			update_sizes = true;
 		}
 	}

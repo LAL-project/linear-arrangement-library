@@ -62,8 +62,8 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-uint32_t tree_diameter(const T& t) {
-	const uint32_t n = t.get_num_nodes();
+uint64_t tree_diameter(const T& t) {
+	const uint64_t n = t.get_num_nodes();
 
 	BFS<T> bfs(t);
 
@@ -82,8 +82,8 @@ uint32_t tree_diameter(const T& t) {
 	assert(leaf < n);
 #endif
 
-	uint32_t diameter = 0;
-	data_array<uint32_t> distance_from_leaf(n, 0);
+	uint64_t diameter = 0;
+	data_array<uint64_t> distance_from_leaf(n, 0);
 
 	// calculate the maximum distance (in edges)
 	bfs.set_process_neighbour(

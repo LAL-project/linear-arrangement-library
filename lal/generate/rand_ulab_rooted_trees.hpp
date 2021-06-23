@@ -76,7 +76,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	_rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
@@ -123,7 +123,7 @@ public:
 
 protected:
 	/// Number of nodes of the tree.
-	const uint32_t m_n;
+	const uint64_t m_n;
 
 	/// Random number generator.
 	std::mt19937 m_gen;
@@ -146,7 +146,7 @@ protected:
 	 * Do not use its actual type (@ref lal::head_vector) in an attempt to make
 	 * memory usage a bit more efficient.
 	 */
-	internal::data_array<uint32_t> m_head_vector;
+	internal::data_array<uint64_t> m_head_vector;
 
 protected:
 	/**
@@ -158,7 +158,7 @@ protected:
 	 * is 0, a random seed is used.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	virtual void init(uint32_t seed = 0) noexcept;
+	virtual void init(uint64_t seed = 0) noexcept;
 
 	/**
 	 * @brief Generates uniformly at random a rooted unlabelled tree of @e n nodes.
@@ -171,8 +171,8 @@ protected:
 	 * @returns Two indices: the index of the root of the last
 	 * tree generated and where to store the next tree in @ref m_head_vector.
 	 */
-	std::pair<uint32_t,uint32_t>
-	ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept;
+	std::pair<uint64_t,uint64_t>
+	ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept;
 
 	/// Initialiases @ref m_rn with 31 values from the OEIS (see \cite OEIS_A000081).
 	void init_rn() noexcept;
@@ -182,7 +182,7 @@ protected:
 	 * Here \f$n\f$ is @ref m_n. In case these values have already been
 	 * calculated, this method does nothing.
 	 */
-	const numeric::integer& get_rn(uint32_t n) noexcept;
+	const numeric::integer& get_rn(uint64_t n) noexcept;
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -194,7 +194,7 @@ protected:
 	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
-	std::pair<uint32_t,uint32_t> choose_jd_from_T(uint32_t n) noexcept;
+	std::pair<uint64_t,uint64_t> choose_jd_from_T(uint64_t n) noexcept;
 };
 
 /**
@@ -232,7 +232,7 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	rand_ulab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+	rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.

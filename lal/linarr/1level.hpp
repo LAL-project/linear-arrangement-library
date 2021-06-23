@@ -111,7 +111,7 @@ noexcept
 			sumM += L[i].get_num_edges();
 		}
 	}
-	return numeric::rational_from_ui(sumD, sumM);
+	return numeric::rational(sumD, sumM);
 }
 
 // **DEVELOPER NOTE**

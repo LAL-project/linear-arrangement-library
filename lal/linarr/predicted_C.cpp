@@ -51,8 +51,8 @@
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/internal/macros.hpp>
 
-#define to_int32(x) static_cast<int32_t>(x)
-#define to_uint32(x) static_cast<uint32_t>(x)
+#define to_int64(x) static_cast<int64_t>(x)
+#define to_uint64(x) static_cast<uint64_t>(x)
 #define to_double(x) static_cast<double>(x)
 
 namespace lal {
@@ -62,8 +62,8 @@ using namespace numeric;
 namespace linarr {
 
 inline constexpr
-uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
-	int32_t f = 0;
+uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
+	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
 		// sum(d1 - 1, i, 1, n - d2 - d1)
@@ -92,12 +92,12 @@ uint32_t alpha(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
 #if defined DEBUG
 	assert(f >= 0);
 #endif
-	return to_uint32(f);
+	return to_uint64(f);
 }
 
 inline constexpr
-uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
-	int32_t f = 0;
+uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
+	int64_t f = 0;
 
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
@@ -147,7 +147,7 @@ uint32_t beta(const int32_t n, const int32_t d1, const int32_t d2) noexcept {
 	assert(f >= 0);
 	assert(f%2 == 0);
 #endif
-	return to_uint32(f/2);
+	return to_uint64(f/2);
 }
 
 template<class G, typename result>
@@ -155,30 +155,30 @@ result __get_approximate_C_2_rational
 (const G& g, const linear_arrangement& pi) noexcept
 {
 	result Ec2(0);
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
 	for (iterators::Q_iterator<G> q(g); not q.end(); q.next()) {
 		const auto [st, uv] = q.get_edge_pair();
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 
-		const uint32_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
-		const uint32_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
+		const uint64_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
+		const uint64_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
 			std::make_pair(
-				alpha(to_int32(n), to_int32(len_st), to_int32(len_uv)),
-				beta(to_int32(n), to_int32(len_st), to_int32(len_uv))
+				alpha(to_int64(n), to_int64(len_st), to_int64(len_uv)),
+				beta(to_int64(n), to_int64(len_st), to_int64(len_uv))
 			) :
 			std::make_pair(
-				alpha(to_int32(n), to_int32(len_uv), to_int32(len_st)),
-				beta(to_int32(n), to_int32(len_uv), to_int32(len_st))
+				alpha(to_int64(n), to_int64(len_uv), to_int64(len_st)),
+				beta(to_int64(n), to_int64(len_uv), to_int64(len_st))
 			)
 		);
 
 		if constexpr (std::is_same_v<result, rational>) {
-			Ec2 += rational(to_int32(al), be);
+			Ec2 += rational(to_int64(al), be);
 		}
 		else {
 			Ec2 += to_double(al)/to_double(be);

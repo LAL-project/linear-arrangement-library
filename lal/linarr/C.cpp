@@ -56,7 +56,7 @@ using namespace graphs;
 namespace linarr {
 
 template<class G>
-inline uint32_t num_crossings(
+inline uint64_t num_crossings(
 	const G& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
@@ -81,7 +81,7 @@ noexcept
 	return g.get_num_edges()*g.get_num_edges();
 }
 
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const directed_graph& g,
 	const algorithms_C& A
 )
@@ -90,7 +90,7 @@ noexcept
 	return num_crossings<directed_graph>(g, {}, A);
 }
 
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const undirected_graph& g,
 	const algorithms_C& A
 )
@@ -99,7 +99,7 @@ noexcept
 	return num_crossings<undirected_graph>(g, {}, A);
 }
 
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const directed_graph& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
@@ -109,7 +109,7 @@ noexcept
 	return num_crossings<directed_graph>(g, pi, A);
 }
 
-uint32_t num_crossings(
+uint64_t num_crossings(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
@@ -121,7 +121,7 @@ uint32_t num_crossings(
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint32_t> num_crossings_list(
+inline vector<uint64_t> num_crossings_list(
 	const G& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
@@ -143,10 +143,10 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint32_t> num_crossings_list(
+vector<uint64_t> num_crossings_list(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
@@ -156,7 +156,7 @@ noexcept
 	return num_crossings_list<directed_graph>(g, pis, A);
 }
 
-vector<uint32_t> num_crossings_list(
+vector<uint64_t> num_crossings_list(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
 	const algorithms_C& A
@@ -169,10 +169,10 @@ noexcept
 // -----------------------------------------------------------------------------
 
 template<class G>
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -195,9 +195,9 @@ noexcept
 	return false;
 }
 
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const directed_graph& g,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -205,9 +205,9 @@ noexcept
 	return is_num_crossings_lesseq_than<directed_graph>(g, {}, upper_bound, A);
 }
 
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const undirected_graph& g,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -215,10 +215,10 @@ noexcept
 	return is_num_crossings_lesseq_than<undirected_graph>(g, {}, upper_bound, A);
 }
 
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const directed_graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -226,10 +226,10 @@ noexcept
 	return is_num_crossings_lesseq_than<directed_graph>(g, pi, upper_bound, A);
 }
 
-uint32_t is_num_crossings_lesseq_than(
+uint64_t is_num_crossings_lesseq_than(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -240,10 +240,10 @@ noexcept
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint32_t> is_num_crossings_lesseq_than_list(
+inline vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const G& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -263,13 +263,13 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint32_t> is_num_crossings_lesseq_than_list(
+vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
-	 uint32_t upper_bound,
+	 uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -278,10 +278,10 @@ noexcept
 			(g, pis, upper_bound, A);
 }
 
-vector<uint32_t> is_num_crossings_lesseq_than_list(
+vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound,
+	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -293,11 +293,11 @@ noexcept
 // -----------------------------------------------------------------------------
 
 template<class G>
-vector<uint32_t> is_num_crossings_lesseq_than_list
+vector<uint64_t> is_num_crossings_lesseq_than_list
 (
 	const G& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds,
+	const vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
@@ -317,13 +317,13 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint32_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint32_t> is_num_crossings_lesseq_than_list(
+vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const directed_graph& G,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds,
+	const vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
@@ -332,10 +332,10 @@ noexcept
 			(G, pis, upper_bounds, A);
 }
 
-vector<uint32_t> is_num_crossings_lesseq_than_list(
+vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const undirected_graph& G,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds,
+	const vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept

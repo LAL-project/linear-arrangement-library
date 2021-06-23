@@ -72,11 +72,11 @@ class test_isomorphism {
 private:
 string *_pieces_of_node = nullptr;
 string *_pieces_of_level = nullptr;
-uint32_t *_distances = nullptr;
+uint64_t *_distances = nullptr;
 
 private:
 const rooted_tree& t1, t2;
-const uint32_t n;
+const uint64_t n;
 
 vector<vector<node>> nodes_per_level_t1;
 string *name_per_level_t1 = nullptr;
@@ -92,7 +92,7 @@ test_isomorphism(const rooted_tree& _t1, const rooted_tree& _t2)
 {
 	_pieces_of_node = new string[n];
 	_pieces_of_level = new string[n];
-	_distances = new uint32_t[n];
+	_distances = new uint64_t[n];
 }
 
 ~test_isomorphism() {
@@ -125,7 +125,7 @@ void retrieve_nodes_per_level(
 	internal::BFS<rooted_tree> bfs(t);
 	bfs.set_use_rev_edges(false);
 
-	uint32_t max_level = 0;
+	uint64_t max_level = 0;
 	std::fill(&_distances[0], &_distances[n], 0);
 
 	bfs.set_process_neighbour(
@@ -234,7 +234,7 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint32_t n = t1.get_num_nodes();
+	const uint64_t n = t1.get_num_nodes();
 	if (n == 3) { return true; }
 
 	// find centres of the trees
@@ -242,8 +242,8 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
 	const auto c2 = internal::retrieve_centre(t2, 0);
 
 	// check centre sizes
-	const uint32_t size1 = (c1.second < n ? 2 : 1);
-	const uint32_t size2 = (c2.second < n ? 2 : 1);
+	const uint64_t size1 = (c1.second < n ? 2 : 1);
+	const uint64_t size2 = (c2.second < n ? 2 : 1);
 	if (size1 != size2) { return false; }
 
 	const rooted_tree rt1(t1, c1.first);

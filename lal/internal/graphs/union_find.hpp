@@ -63,7 +63,7 @@ void UnionFind_update_roots_after_add
 (
 	const T& t, node u, node v,
 	node * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_size
 )
 {
 	// 'u' and 'v' are not connected, so they belong to
@@ -76,9 +76,9 @@ void UnionFind_update_roots_after_add
 	const node root_u = root_of[u];
 	const node root_v = root_of[v];
 
-	const uint32_t size_u = root_size[root_u];
-	const uint32_t size_v = root_size[root_v];
-	const uint32_t new_size = size_u + size_v;
+	const uint64_t size_u = root_size[root_u];
+	const uint64_t size_v = root_size[root_v];
+	const uint64_t new_size = size_u + size_v;
 
 	if (size_u < size_v) {
 		root_of[root_u] = root_v;
@@ -120,7 +120,7 @@ void UnionFind_update_roots_after_remove
 (
 	const T& t, node u, node v,
 	node * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_size
 )
 {
 	// 'u' and 'v' are connected
@@ -128,7 +128,7 @@ void UnionFind_update_roots_after_remove
 	assert(root_of[u] == root_of[v]);
 #endif
 
-	const uint32_t size_uv = root_size[root_of[u]];
+	const uint64_t size_uv = root_size[root_of[u]];
 
 	internal::BFS<T> bfs(t);
 
@@ -136,7 +136,7 @@ void UnionFind_update_roots_after_remove
 
 	// Update the root of the vertices reachable from 'u'.
 	//   (also calculate the size of u's component)
-	uint32_t size_u = 0;
+	uint64_t size_u = 0;
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.set_process_current(
 	[&](const auto&, node w) -> void { root_of[w] = u; ++size_u; }
@@ -175,7 +175,7 @@ void UnionFind_update_roots_before_remove_all_incident_to
 (
 	const T& t, node u, node v,
 	node * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_size
 )
 {
 	internal::BFS<T> bfs(t);
@@ -183,7 +183,7 @@ void UnionFind_update_roots_before_remove_all_incident_to
 	// avoid going 'backwards', we need to go 'onwards'
 	bfs.set_visited(u, 1);
 
-	uint32_t size_cc_v = 0;
+	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
 	[&](const auto&, node w) -> void { root_of[w] = v; ++size_cc_v; }
 	);
@@ -203,7 +203,7 @@ void UnionFind_update_roots_before_remove_all_incident_to
 (
 	const T& t, node u,
 	node * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_size
 )
 {
 	if constexpr (std::is_base_of_v<graphs::free_tree, T>) {

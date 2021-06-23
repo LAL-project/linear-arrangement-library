@@ -75,17 +75,17 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 }
 
 bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
-	const uint32_t n = get_num_nodes();
-	const uint32_t m = get_num_edges();
-	const uint32_t more_m = static_cast<uint32_t>(edges.size());
+	const uint64_t n = get_num_nodes();
+	const uint64_t m = get_num_edges();
+	const uint64_t more_m = edges.size();
 
 	// in a tree we must have m <= n - 1
 	if (m + more_m > n - 1) {
 		return false;
 	}
 
-	vector<uint32_t> _root_of = m_root_of;
-	vector<uint32_t> _root_size = m_root_size;
+	vector<uint64_t> _root_of = m_root_of;
+	vector<uint64_t> _root_size = m_root_size;
 
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -121,9 +121,9 @@ vector<string> tree::get_tree_type_list() const noexcept {
 
 /* PROTECTED */
 
-void tree::tree_only_init(uint32_t n) noexcept {
-	m_root_of = vector<uint32_t>(n);
-	m_root_size = vector<uint32_t>(n);
+void tree::tree_only_init(uint64_t n) noexcept {
+	m_root_of = vector<uint64_t>(n);
+	m_root_size = vector<uint64_t>(n);
 	for (node u = 0; u < n; ++u) {
 		m_root_of[u] = u;
 		m_root_size[u] = 1;

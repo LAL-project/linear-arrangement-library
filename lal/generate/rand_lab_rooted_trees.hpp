@@ -75,7 +75,7 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+	_rand_lab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _rand_lab_free_trees(n, seed) { }
 	/**
 	 * @brief Copy constructor.
@@ -112,7 +112,7 @@ protected:
 	 * Initialises the random number generator.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	inline void init(uint32_t seed = 0) noexcept {
+	inline void init(uint64_t seed = 0) noexcept {
 		_rand_lab_free_trees::init(seed);
 	}
 };
@@ -153,7 +153,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_rooted_trees(uint32_t n, uint32_t seed = 0) noexcept
+	rand_lab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.

@@ -88,7 +88,7 @@ public:
 	 * @pre The object @e t must be a rooted tree (see
 	 * @ref lal::graphs::rooted_tree::is_rooted_tree).
 	 */
-	rand_projective_arrangements(const graphs::rooted_tree& rT, uint32_t seed = 0) noexcept;
+	rand_projective_arrangements(const graphs::rooted_tree& rT, uint64_t seed = 0) noexcept;
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Random projective arrangement generator.

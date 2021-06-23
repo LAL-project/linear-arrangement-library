@@ -57,7 +57,7 @@ namespace generate {
 
 /* PUBLIC */
 
-all_ulab_rooted_trees::all_ulab_rooted_trees(uint32_t _n) noexcept
+all_ulab_rooted_trees::all_ulab_rooted_trees(uint64_t _n) noexcept
 	: _tree_generator<rooted_tree>(_n),
 	  m_save(m_n + 1),
 	  m_prev(m_n + 1),
@@ -88,7 +88,7 @@ void all_ulab_rooted_trees::next() noexcept {
 	--m_L[m_p];
 
 	if (m_p < m_n and (m_L[m_p] != 2 or m_L[m_p - 1] != 2)) {
-		const uint32_t diff = m_p - m_prev[m_L[m_p]];
+		const uint64_t diff = m_p - m_prev[m_L[m_p]];
 		while (m_p < m_n) {
 			m_save[m_p] = m_prev[m_L[m_p]];
 			m_prev[m_L[m_p]] = m_p;
@@ -148,7 +148,7 @@ void all_ulab_rooted_trees::__reset() noexcept {
 	std::iota(m_L.begin(), m_L.end(), 0);
 	m_p = m_n;
 	if (m_p > 1) {
-		for (uint32_t i = 1; i <= m_p - 1; ++i) {
+		for (uint64_t i = 1; i <= m_p - 1; ++i) {
 			m_prev[i] = i;
 			m_save[i] = 0;
 		}

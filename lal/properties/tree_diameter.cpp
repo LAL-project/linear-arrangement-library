@@ -49,11 +49,11 @@ using namespace graphs;
 
 namespace properties {
 
-uint32_t tree_diameter(const free_tree& t) noexcept {
+uint64_t tree_diameter(const free_tree& t) noexcept {
 	return internal::tree_diameter(t);
 }
 
-uint32_t tree_diameter(const rooted_tree& t) noexcept {
+uint64_t tree_diameter(const rooted_tree& t) noexcept {
 	return internal::tree_diameter(t);
 }
 

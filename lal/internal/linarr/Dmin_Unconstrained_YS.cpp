@@ -56,9 +56,9 @@ using namespace std;
 #define NO_ANCHOR 0
 #define ANCHOR 1
 
-#define to_uint32(x) static_cast<uint32_t>(x)
+#define to_uint64(x) static_cast<uint64_t>(x)
 
-typedef pair<uint32_t,lal::node> size_node;
+typedef pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
@@ -68,9 +68,9 @@ namespace internal {
 namespace dmin_Shiloach {
 
 template<char anchored>
-uint32_t calculate_p_alpha(
-	const uint32_t n, const ordering& ord,
-	uint32_t& s_0, uint32_t& s_1
+uint64_t calculate_p_alpha(
+	const uint64_t n, const ordering& ord,
+	uint64_t& s_0, uint64_t& s_1
 )
 noexcept
 {
@@ -81,10 +81,10 @@ noexcept
 #endif
 
 	// number of subtrees
-	const uint32_t k = to_uint32(ord.size() - 1);
+	const uint64_t k = ord.size() - 1;
 
-	uint32_t n_0 = ord[0].first;
-	uint32_t max_p = 0;
+	uint64_t n_0 = ord[0].first;
+	uint64_t max_p = 0;
 
 	if constexpr (anchored == NO_ANCHOR) {
 		// -- not anchored
@@ -93,14 +93,14 @@ noexcept
 		max_p = k/2;
 		if (max_p == 0) { return 0; }
 
-		uint32_t sum = 0;
-		for (uint32_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].first; }
+		uint64_t sum = 0;
+		for (uint64_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].first; }
 
-		uint32_t n_star = n - sum;
-		uint32_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+		uint64_t n_star = n - sum;
+		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
 
 		// n_0 >= n_1 >= ... >= n_k
-		uint32_t n_p = ord[2*max_p].first;
+		uint64_t n_p = ord[2*max_p].first;
 		while (max_p > 0 and n_p <= tricky_formula) {
 			sum -= ord[2*max_p].first + ord[2*max_p - 1].first;
 
@@ -115,7 +115,7 @@ noexcept
 		}
 		s_0 = max_p*(n_star + 1 + n_0);
 		s_1 = 0;
-		for (uint32_t i = 1; i < max_p; ++i) {
+		for (uint64_t i = 1; i < max_p; ++i) {
 			s_0 += i*(ord[2*i + 1].first + ord[2*i + 2].first);
 		}
 	}
@@ -126,11 +126,11 @@ noexcept
 		max_p = (k + 1)/2;
 		if (max_p == 0) { return 0; }
 
-		uint32_t sum = 0;
-		for (uint32_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].first; }
-		uint32_t n_star = n - sum;
-		uint32_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
-		uint32_t n_p = ord[2*max_p - 1].first;
+		uint64_t sum = 0;
+		for (uint64_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].first; }
+		uint64_t n_star = n - sum;
+		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+		uint64_t n_p = ord[2*max_p - 1].first;
 		while (max_p > 0 and n_p <= tricky_formula) {
 			sum -= ord[2*max_p - 1].first;
 			sum -= ord[2*max_p - 2].first;
@@ -145,7 +145,7 @@ noexcept
 		}
 		s_0 = 0;
 		s_1 = max_p*(n_star + 1 + n_0) - 1;
-		for (uint32_t i = 1; i < max_p; ++i) {
+		for (uint64_t i = 1; i < max_p; ++i) {
 			s_1 += i*(ord[2*i].first + ord[2*i + 1].first);
 		}
 	}
@@ -164,14 +164,14 @@ template<char alpha>
 void calculate_mla(
 	free_tree& t,
 	node root_or_anchor, position start, position end,
-	linear_arrangement& mla, uint32_t& cost
+	linear_arrangement& mla, uint64_t& cost
 )
 noexcept
 {
 	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
 	// Size of the tree
-	const uint32_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
+	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -198,16 +198,16 @@ noexcept
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.get_num_nodes());
+	data_array<uint64_t> s(t.get_num_nodes());
 	internal::get_size_subtrees(t, v_star - 1, s.data);
 
-	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
+	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
 	for (size_t i = 0; i < v_star_neighs.size(); ++i) {
 		// i-th child of v_star
 		const node ui = v_star_neighs[i];
 		// size of subtree rooted at 'ui'
-		const uint32_t s_ui = s[ui];
+		const uint64_t s_ui = s[ui];
 
 		ord[i].first = s_ui;
 		M = std::max(M, s_ui);
@@ -221,12 +221,12 @@ noexcept
 	}
 
 	const node v_0 = ord[0].second;		// Root of biggest subtree
-	const uint32_t n_0 = ord[0].first;	// Size of biggest subtree
+	const uint64_t n_0 = ord[0].first;	// Size of biggest subtree
 
 	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star - 1, v_0 - 1, false, false);
 
-	uint32_t c1, c2;
+	uint64_t c1, c2;
 	c1 = c2 = 0;
 
 	// t -t0 : t0  if t has a LEFT_ANCHOR
@@ -260,18 +260,18 @@ noexcept
 	constexpr unsigned char anchored =
 		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
 
-	uint32_t s_0 = 0;
-	uint32_t s_1 = 0;
-	const uint32_t p_alpha = calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
+	uint64_t s_0 = 0;
+	uint64_t s_1 = 0;
+	const uint64_t p_alpha = calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
 
-	uint32_t cost_B = 0;
+	uint64_t cost_B = 0;
 	linear_arrangement mla_B(mla);
 
 	if (p_alpha > 0) {
 		vector<edge> edges(2*p_alpha - anchored);
 
 		// number of nodes not in the central tree
-		for (uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			const node r = ord[i].second;
 			edges[i - 1].first = v_star - 1;
 			edges[i - 1].second = r - 1;
@@ -280,11 +280,11 @@ noexcept
 
 		// t1 : t3 : ... : t* : ... : t4 : t2 if t has NO_ANCHOR or RIGHT_ANCHOR
 		// t2 : t4 : ... : t* : ... : t3 : t1 ig t has LEFT_ANCHOR
-		for(uint32_t i = 1; i <= 2*p_alpha - anchored; ++i) {
-			uint32_t c_aux = 0;
+		for(uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+			uint64_t c_aux = 0;
 
 			const node r = ord[i].second;
-			const uint32_t n_i = ord[i].first;
+			const uint64_t n_i = ord[i].first;
 			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
 				calculate_mla<RIGHT_ANCHOR>(t, r, start, start + n_i - 1, mla_B, c_aux);
 				cost_B += c_aux;
@@ -298,7 +298,7 @@ noexcept
 		}
 
 		// t*
-		uint32_t c_aux = 0;
+		uint64_t c_aux = 0;
 		calculate_mla<NO_ANCHOR>(t, v_star, start, end, mla_B, c_aux);
 		cost_B += c_aux;
 
@@ -326,14 +326,14 @@ noexcept
 
 } // -- namespace dmin_shiloach
 
-pair<uint32_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
+pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
 noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	uint32_t c = 0;
+	uint64_t c = 0;
 	linear_arrangement arrangement(t.get_num_nodes(),0);
 
 	free_tree T = t;

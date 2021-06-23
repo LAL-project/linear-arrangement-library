@@ -53,7 +53,7 @@ using namespace std;
 #include <lal/internal/sorting/counting_sort.hpp>
 #include <lal/internal/data_array.hpp>
 
-typedef pair<uint32_t,lal::edge> indexed_edge;
+typedef pair<uint64_t,lal::edge> indexed_edge;
 
 namespace lal {
 using namespace graphs;
@@ -74,7 +74,7 @@ inline void fill_adjP_adjN(
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
 	// Retrieve all edges of the graph to sort
 	vector<edge> edges = g.get_edges();
@@ -122,10 +122,10 @@ noexcept
 }
 
 template<bool decide_upper_bound>
-inline uint32_t __compute_C_stack_based(
+inline uint64_t __compute_C_stack_based(
 	const graph& g, const linear_arrangement& pi,
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
-	uint32_t upper_bound = 0
+	uint64_t upper_bound = 0
 )
 noexcept
 {
@@ -133,7 +133,7 @@ noexcept
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
 	// construct inverse arrangement
 	for (node u = 0; u < n; ++u) {
@@ -149,9 +149,9 @@ noexcept
 	fill_adjP_adjN(g, pi, adjP, adjN, size_adjN_u);
 
 	// relate each edge to an index
-	map<edge, uint32_t> edge_to_idx;
+	map<edge, uint64_t> edge_to_idx;
 
-	uint32_t idx = 0;
+	uint64_t idx = 0;
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 		for (auto& v : adjN[u]) {
@@ -166,14 +166,14 @@ noexcept
 	internal::AVL<indexed_edge> S;
 
 	// calculate the number of crossings
-	uint32_t C = 0;
+	uint64_t C = 0;
 	for (position pu = 0; pu < n; ++pu) {
 		const node u = T[pu];
 		for (node v : adjP[u]) {
 			const edge uv = edge_sorted_by_vertex_index(u,v);
 			const auto on_top = S.remove(indexed_edge(edge_to_idx[uv], uv));
 
-			C += static_cast<uint32_t>(on_top);
+			C += static_cast<uint64_t>(on_top);
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
@@ -190,13 +190,13 @@ noexcept
 // CALCULATION
 // =============================================================================
 
-inline uint32_t __call_C_stack_based(
+inline uint64_t __call_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// inverse function of the linear arrangement:
@@ -213,7 +213,7 @@ noexcept
 // ------------------
 // single arrangement
 
-uint32_t n_C_stack_based(
+uint64_t n_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
 )
@@ -228,15 +228,15 @@ noexcept
 // --------------------
 // list of arrangements
 
-vector<uint32_t> n_C_stack_based(
+vector<uint64_t> n_C_stack_based(
 	const graph& g,
 	const vector<linear_arrangement>& pis
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -265,14 +265,14 @@ noexcept
 // DECISION
 // =============================================================================
 
-inline uint32_t __call_C_stack_based_lesseq_than(
+inline uint64_t __call_C_stack_based_lesseq_than(
 	const graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// inverse function of the linear arrangement:
@@ -289,10 +289,10 @@ noexcept
 // ------------------
 // single arrangement
 
-uint32_t is_n_C_stack_based_lesseq_than(
+uint64_t is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -306,16 +306,16 @@ noexcept
 // --------------------
 // list of arrangements
 
-vector<uint32_t> is_n_C_stack_based_lesseq_than(
+vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -341,10 +341,10 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> is_n_C_stack_based_lesseq_than(
+vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -353,9 +353,9 @@ noexcept
 		assert(pis.size() == upper_bounds.size());
 	#endif
 
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:

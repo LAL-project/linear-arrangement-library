@@ -61,7 +61,7 @@ namespace graphs {
 
 /* MODIFIERS */
 
-void graph::init(uint32_t n) noexcept {
+void graph::init(uint64_t n) noexcept {
 	_clear();
 	_init(n);
 }
@@ -105,7 +105,7 @@ bool graph::check_normalised() noexcept {
 
 /* PROTECTED */
 
-void graph::_init(uint32_t n) noexcept {
+void graph::_init(uint64_t n) noexcept {
 	m_num_edges = 0;
 	m_normalised = true;
 	m_adjacency_list = vector<neighbourhood>(n);

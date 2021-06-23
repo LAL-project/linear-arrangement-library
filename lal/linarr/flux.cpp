@@ -57,7 +57,6 @@ using namespace std;
 #include <lal/internal/data_array.hpp>
 
 #define max_pos(u,v) (std::max(pi[u], pi[v]))
-#define to_uint32(x) static_cast<uint32_t>(x)
 
 namespace lal {
 using namespace graphs;
@@ -67,11 +66,11 @@ namespace linarr {
 
 namespace flux {
 
-inline vector<pair<edge,uint32_t>> get_edges_with_max_pos_at
+inline vector<pair<edge,uint64_t>> get_edges_with_max_pos_at
 (const free_tree& t, const linear_arrangement& pi)
 noexcept
 {
-	vector<pair<edge,uint32_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
+	vector<pair<edge,uint64_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
 
 	for (E_iterator e_it(t); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
@@ -87,7 +86,7 @@ inline void calculate_dependencies_span
 	const free_tree& t,
 	const linear_arrangement& pi,
 	const internal::data_array<node>& inv_pi,
-	const vector<pair<edge,uint32_t>>& edge_with_max_pos_at,
+	const vector<pair<edge,uint64_t>>& edge_with_max_pos_at,
 	position cur_pos,
 	vector<dependency_flux>& flux,
 	vector<edge>& cur_deps
@@ -135,13 +134,12 @@ noexcept
 	}
 }
 
-inline uint32_t calculate_weight
+inline uint64_t calculate_weight
 (const vector<edge>& dependencies, undirected_graph& ug)
 noexcept
 {
-	if (dependencies.size() <= 1) {
-		return to_uint32(dependencies.size());
-	}
+	if (dependencies.size() <= 1) { return dependencies.size(); }
+
 	// build graph
 	ug.set_edges(dependencies);
 
@@ -159,7 +157,7 @@ noexcept
 		return {};
 	};
 
-	uint32_t weight = 0;
+	uint64_t weight = 0;
 	// step 1
 	while (const auto leaf = find_leaf(ug)) {
 		const node u = *leaf;
@@ -179,7 +177,7 @@ inline vector<dependency_flux> __compute_flux
 (const free_tree& t, const linear_arrangement& pi)
 noexcept
 {
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	if (n == 1) { return  {}; }
 
 	// inverse function of the linear arrangement:

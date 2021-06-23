@@ -54,7 +54,7 @@ using namespace std;
 #include <lal/internal/data_array.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
-#define to_uint32(x) static_cast<uint32_t>(x)
+#define to_uint64(x) static_cast<uint64_t>(x)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 
 namespace lal {
@@ -65,14 +65,14 @@ namespace internal {
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<class G, bool decide_upper_bound>
-inline uint32_t __compute_C_dyn_prog
+inline uint64_t __compute_C_dyn_prog
 (
 	const G& g, const linear_arrangement& pi,
 	char * const __restrict__ bn,
 	node * const __restrict__ inv_pi,
-	uint32_t * const __restrict__ M,
-	uint32_t * const __restrict__ K,
-	uint32_t upper_bound = 0
+	uint64_t * const __restrict__ M,
+	uint64_t * const __restrict__ K,
+	uint64_t upper_bound = 0
 )
 noexcept
 {
@@ -80,7 +80,7 @@ noexcept
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	std::fill(&bn[0], &bn[n], 0);
 	std::fill(&K[0], &K[(n - 3)*(n - 3)], 0);
 
@@ -97,20 +97,20 @@ noexcept
 
 		internal::get_bool_neighbours<G>(g, u, bn);
 
-		uint32_t k = g.get_degree(u);
+		uint64_t k = g.get_degree(u);
 
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
 		// the arrangement
-		k -= to_uint32(bn[inv_pi[0]] + bn[inv_pi[1]]);
+		k -= to_uint64(bn[inv_pi[0]] + bn[inv_pi[1]]);
 		bn[inv_pi[0]] = bn[inv_pi[1]] = 0;
 
 		// this is done because there is no need to
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
-		for (uint32_t i = 3; i < n; ++i) {
-			k -= to_uint32(bn[inv_pi[i - 1]]);
+		for (uint64_t i = 3; i < n; ++i) {
+			k -= to_uint64(bn[inv_pi[i - 1]]);
 
 			// the row corresponding to node 'u' in M is
 			// the same as its position in the sequence.
@@ -131,14 +131,14 @@ noexcept
 	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
 
 	// pointer for next row in K
-	uint32_t * __restrict__ next_k_it;
+	uint64_t * __restrict__ next_k_it;
 	// pointer for M
-	uint32_t * __restrict__ m_it;
+	uint64_t * __restrict__ m_it;
 	// pointer for K
-	uint32_t * __restrict__ k_it;
+	uint64_t * __restrict__ k_it;
 
-	for (uint32_t ii = 1; ii < n - 3; ++ii) {
-		const uint32_t i = n - 3 - ii - 1;
+	for (uint64_t ii = 1; ii < n - 3; ++ii) {
+		const uint64_t i = n - 3 - ii - 1;
 
 		//m_it = &M[i][i];
 		m_it = &M[ idx(i,i, n-3) ];
@@ -151,7 +151,7 @@ noexcept
 		// place next_k_it at the same column as k_it but at the next row
 		next_k_it = k_it + n - 3;
 
-		for (uint32_t j = i; j < n - 3; ++j) {
+		for (uint64_t j = i; j < n - 3; ++j) {
 			//K[i][j] = M[i][j] + K[i + 1][j];
 
 			*k_it++ = *m_it++ + *next_k_it++;
@@ -160,7 +160,7 @@ noexcept
 
 	/* compute number of crossings */
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	const auto process_neighbours =
 	[&](position pu, node v) -> void {
@@ -223,13 +223,13 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint32_t __call_C_dyn_prog(
+inline uint64_t __call_C_dyn_prog(
 	const G& g,
 	const linear_arrangement& pi
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -238,21 +238,21 @@ noexcept
 	data_array<char> bool_neighs(n);
 
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	data_array<uint32_t> all_memory(n_elems);
+	data_array<uint64_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
 	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.data, T,M,K);
 }
 
-uint32_t n_C_dynamic_programming(
+uint64_t n_C_dynamic_programming(
 	const directed_graph& g,
 	const linear_arrangement& pi
 )
@@ -265,7 +265,7 @@ noexcept
 			(__call_C_dyn_prog<directed_graph>, g, pi);
 }
 
-uint32_t n_C_dynamic_programming(
+uint64_t n_C_dynamic_programming(
 	const undirected_graph& g,
 	const linear_arrangement& pi
 )
@@ -282,30 +282,30 @@ noexcept
 // list of arrangements
 
 template<class G>
-vector<uint32_t> n_C_dynamic_programming(
+vector<uint64_t> n_C_dynamic_programming(
 	const G& g,
 	const vector<linear_arrangement>& pis
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
 
 	/* allocate memory */
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	data_array<uint32_t> all_memory(n_elems);
+	data_array<uint64_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);
@@ -328,7 +328,7 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> n_C_dynamic_programming(
+vector<uint64_t> n_C_dynamic_programming(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
 )
@@ -337,7 +337,7 @@ noexcept
 	return n_C_dynamic_programming<directed_graph>(g, pis);
 }
 
-vector<uint32_t> n_C_dynamic_programming(
+vector<uint64_t> n_C_dynamic_programming(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis
 )
@@ -354,14 +354,14 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint32_t __call_C_dyn_prog_lesseq_than(
+inline uint64_t __call_C_dyn_prog_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) {
 		return 0;
 	}
@@ -370,24 +370,24 @@ noexcept
 	data_array<char> bool_neighs(n);
 
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	data_array<uint32_t> all_memory(n_elems);
+	data_array<uint64_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	/* decide */
 	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data, T,M,K, upper_bound);
 }
 
-uint32_t is_n_C_dynamic_programming_lesseq_than(
+uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -399,10 +399,10 @@ noexcept
 	(__call_C_dyn_prog_lesseq_than<directed_graph>, g, pi, upper_bound);
 }
 
-uint32_t is_n_C_dynamic_programming_lesseq_than(
+uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -418,31 +418,31 @@ noexcept
 // list of arrangements
 
 template<class G>
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
 
 	/* allocate memory */
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	data_array<uint32_t> all_memory(n_elems);
+	data_array<uint64_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);
@@ -466,10 +466,10 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -477,10 +477,10 @@ noexcept
 			(g, pis, upper_bound);
 }
 
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -489,10 +489,10 @@ noexcept
 }
 
 template<typename G>
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -501,24 +501,24 @@ noexcept
 	assert(pis.size() == upper_bounds.size());
 #endif
 
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
 
 	/* allocate memory */
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
-	data_array<uint32_t> all_memory(n_elems);
+	data_array<uint64_t> all_memory(n_elems);
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p ( size n )
 	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[n];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint32_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<char> bool_neighs(n);
@@ -542,20 +542,20 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 	return is_n_C_dynamic_programming_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
 }
-vector<uint32_t> is_n_C_dynamic_programming_lesseq_than(
+vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {

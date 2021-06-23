@@ -59,7 +59,7 @@ inline void __make_arrangement_intervals(
 noexcept
 {
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = T.get_out_degree(r);
+	const uint64_t d_out = T.get_out_degree(r);
 
 	// vertex 'r' is a leaf
 	if (d_out == 0) {
@@ -86,7 +86,7 @@ inline void __make_arrangement_intervals(
 noexcept
 {
 	// number of children of 'u' with respect to the tree's root
-	const uint32_t d_out = T.get_degree(u) - (u == parent ? 0 : 1);
+	const uint64_t d_out = T.get_degree(u) - (u == parent ? 0 : 1);
 
 	// vertex 'u' is a leaf
 	if (d_out == 0) {

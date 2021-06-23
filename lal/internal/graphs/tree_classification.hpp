@@ -93,7 +93,7 @@ void classify_tree
 	// -------------------------------------------------------------------------
 
 	// number of vertices
-	const uint32_t N = t.get_num_nodes();
+	const uint64_t N = t.get_num_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::unknown);
 		return;
@@ -132,18 +132,18 @@ void classify_tree
 	bool is_spider = false;
 
 	// number of vertices
-	uint32_t n_deg_eq_1 = 0; // of degree = 1
-	uint32_t n_deg_eq_2 = 0; // of degree = 2
-	uint32_t n_deg_ge_2 = 0; // of degree >= 2
-	uint32_t n_deg_ge_3 = 0; // of degree >= 3
+	uint64_t n_deg_eq_1 = 0; // of degree = 1
+	uint64_t n_deg_eq_2 = 0; // of degree = 2
+	uint64_t n_deg_ge_2 = 0; // of degree >= 2
+	uint64_t n_deg_ge_3 = 0; // of degree >= 3
 
 	// degree of the internal vertices
-	data_array<int32_t> deg_internal(N, 0);
+	data_array<int64_t> deg_internal(N, 0);
 
 	// fill in data
 	for (lal::node u = 0; u < N; ++u) {
 		// 'du' is the degree of the vertex in the underlying undirected graph
-		const int32_t du = static_cast<int32_t>(t.get_degree(u));
+		const int64_t du = static_cast<int64_t>(t.get_degree(u));
 		deg_internal[u] += (du > 1)*du;
 
 		n_deg_eq_1 += du == 1;
@@ -205,7 +205,7 @@ void classify_tree
 		// part of a linear tree. Needless to say that these
 		// two vertices of degree 1 are the endpoints of the
 		// linear tree.
-		uint32_t n1 = 0;
+		uint64_t n1 = 0;
 		for (lal::node u = 0; u < N; ++u) {
 			n1 += deg_internal[u] == 1;
 		}

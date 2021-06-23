@@ -89,7 +89,7 @@ inline void get_bool_neighbours
 inline void append_adjacency_lists
 (std::vector<neighbourhood>& target, const std::vector<neighbourhood>& source)
 {
-	const uint32_t n_target = static_cast<uint32_t>(target.size());
+	const uint64_t n_target = target.size();
 
 	for (size_t u = 0; u < source.size(); ++u) {
 		// add new edges by appending all the neighbours of 'u' in 'g'

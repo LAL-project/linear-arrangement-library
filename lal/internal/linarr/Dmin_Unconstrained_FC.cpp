@@ -56,10 +56,9 @@ using namespace std;
 #define RIGHT_ANCHOR 1
 #define NO_ANCHOR 0
 
-#define to_uint32(x) static_cast<uint32_t>(x)
-#define to_int32(x) static_cast<int32_t>(x)
+#define to_int64(x) static_cast<int64_t>(x)
 
-typedef pair<uint32_t,lal::node> size_node;
+typedef pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
@@ -69,21 +68,21 @@ namespace internal {
 namespace dmin_Chung {
 
 /*
-int calculate_q(uint32_t n, const ordering& ord) {
-	const uint32_t k = to_uint32(ord.size()) - 1;
-	const uint32_t t_0 = ord[0].first;
+int calculate_q(uint64_t n, const ordering& ord) {
+	const uint64_t k = to_uint64(ord.size()) - 1;
+	const uint64_t t_0 = ord[0].first;
 
 	// Maximum possible p_alpha
-	int32_t q = to_int32(k)/2;
-	uint32_t sum = 0;
-	for (uint32_t i = 0; i <= 2*to_uint32(q); ++i) {
+	int64_t q = to_int64(k)/2;
+	uint64_t sum = 0;
+	for (uint64_t i = 0; i <= 2*to_uint64(q); ++i) {
 		sum += ord[i].first;
 	}
 
-	uint32_t z = n - sum;
-	uint32_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
+	uint64_t z = n - sum;
+	uint64_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
 	// t_0 >= t_1 >= ... >= t_k
-	uint32_t t_2q = ord[2*q].first;
+	uint64_t t_2q = ord[2*q].first;
 	while (q >= 0 and t_2q <= tricky_formula) {
 		z += ord[2*q].first;
 		if (q > 0) {
@@ -100,25 +99,25 @@ int calculate_q(uint32_t n, const ordering& ord) {
 */
 
 inline
-std::optional<uint32_t> calculate_q(uint32_t n, const ordering& ord) noexcept {
+std::optional<uint64_t> calculate_q(uint64_t n, const ordering& ord) noexcept {
 #if defined DEBUG
 	assert(ord.size() > 0);
 #endif
 
-	const uint32_t k = to_uint32(ord.size()) - 1;
-	const uint32_t t_0 = ord[0].first;
+	const uint64_t k = ord.size() - 1;
+	const uint64_t t_0 = ord[0].first;
 
 	// Maximum possible p_alpha
-	uint32_t q = k/2;
-	uint32_t sum = 0;
-	for (uint32_t i = 0; i <= 2*q; ++i) {
+	uint64_t q = k/2;
+	uint64_t sum = 0;
+	for (uint64_t i = 0; i <= 2*q; ++i) {
 		sum += ord[i].first;
 	}
 
-	uint32_t z = n - sum;
-	uint32_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
+	uint64_t z = n - sum;
+	uint64_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
 	// t_0 >= t_1 >= ... >= t_k
-	uint32_t t_2q = ord[2*q].first;
+	uint64_t t_2q = ord[2*q].first;
 
 	while (t_2q <= tricky_formula) {
 		z += ord[2*q].first;
@@ -134,25 +133,25 @@ std::optional<uint32_t> calculate_q(uint32_t n, const ordering& ord) noexcept {
 }
 
 /*
-int calculate_p(uint32_t n, const ordering& ord) {
+int calculate_p(uint64_t n, const ordering& ord) {
 	if (ord.size() < 2) {
 		return -1;
 	}
 
 	// number of subtrees (T_0, T_1, ..., T_k)
-	const uint32_t k = to_uint32(ord.size() - 1);
-	const uint32_t t_0 = ord[0].first;
+	const uint64_t k = to_uint64(ord.size() - 1);
+	const uint64_t t_0 = ord[0].first;
 
 	int p = (k - 1)/2;
 
-	uint32_t sum = 0;
-	for (uint32_t i = 0; i <= 2*to_uint32(p) + 1; ++i) {
+	uint64_t sum = 0;
+	for (uint64_t i = 0; i <= 2*to_uint64(p) + 1; ++i) {
 		sum += ord[i].first;
 	}
 
-	uint32_t y = n - sum;
-	uint32_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
-	uint32_t t_2p_plus_1 = ord[2*p + 1].first;
+	uint64_t y = n - sum;
+	uint64_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
+	uint64_t t_2p_plus_1 = ord[2*p + 1].first;
 
 	while (p >= 0 and t_2p_plus_1 <= tricky_formula) {
 		y = y + ord[2*p + 1].first + ord[2*p].first;
@@ -167,23 +166,23 @@ int calculate_p(uint32_t n, const ordering& ord) {
 */
 
 inline
-std::optional<uint32_t> calculate_p(uint32_t n, const ordering& ord) noexcept {
+std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
 	if (ord.size() < 2) { return {}; }
 
 	// number of subtrees (T_0, T_1, ..., T_k)
-	const uint32_t k = to_uint32(ord.size()) - 1;
-	const uint32_t t_0 = ord[0].first;
+	const uint64_t k = ord.size() - 1;
+	const uint64_t t_0 = ord[0].first;
 
-	uint32_t p = (k - 1)/2;
+	uint64_t p = (k - 1)/2;
 
-	uint32_t sum = 0;
-	for (uint32_t i = 0; i <= 2*p + 1; ++i) {
+	uint64_t sum = 0;
+	for (uint64_t i = 0; i <= 2*p + 1; ++i) {
 		sum += ord[i].first;
 	}
 
-	uint32_t y = n - sum;
-	uint32_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
-	uint32_t t_2p_plus_1 = ord[2*p + 1].first;
+	uint64_t y = n - sum;
+	uint64_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
+	uint64_t t_2p_plus_1 = ord[2*p + 1].first;
 
 	while (t_2p_plus_1 <= tricky_formula) {
 		y = y + ord[2*p + 1].first + ord[2*p].first;
@@ -196,13 +195,13 @@ std::optional<uint32_t> calculate_p(uint32_t n, const ordering& ord) noexcept {
 	return p;
 }
 
-vector<uint32_t> get_P(uint32_t p, uint32_t i) {
-	vector<uint32_t> v(2*p + 1 + 1);
-	uint32_t pos = to_uint32(v.size() - 1);
-	uint32_t right_pos = pos;
-	uint32_t left_pos = 1;
+vector<uint64_t> get_P(uint64_t p, uint64_t i) {
+	vector<uint64_t> v(2*p + 1 + 1);
+	uint64_t pos = v.size() - 1;
+	uint64_t right_pos = pos;
+	uint64_t left_pos = 1;
 
-	uint32_t j = 0;
+	uint64_t j = 0;
 	while (j <= 2*p + 1) {
 		if (j == i) {
 			++j;
@@ -224,13 +223,13 @@ vector<uint32_t> get_P(uint32_t p, uint32_t i) {
 	return v;
 }
 
-inline vector<uint32_t> get_Q(uint32_t q, uint32_t i) noexcept {
-	vector<uint32_t> v(2*q + 1);
-	uint32_t pos = to_uint32(v.size() - 1);
-	uint32_t right_pos = pos;
-	uint32_t left_pos = 1;
+inline vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+	vector<uint64_t> v(2*q + 1);
+	uint64_t pos = v.size() - 1;
+	uint64_t right_pos = pos;
+	uint64_t left_pos = 1;
 
-	uint32_t j = 0;
+	uint64_t j = 0;
 	while (j <= 2*q) {
 		if (j == i) {
 			++j;
@@ -261,16 +260,16 @@ inline void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint32_t> s(t.get_num_nodes());
+	data_array<uint64_t> s(t.get_num_nodes());
 	internal::get_size_subtrees(t, u - 1, s.data);
 
-	uint32_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
+	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbours(u - 1);
 	for (size_t i = 0; i < u_neighs.size(); ++i) {
 		// i-th child of v_star
 		const node ui = u_neighs[i];
 		// size of subtree rooted at 'ui'
-		const uint32_t s_ui = s[ui];
+		const uint64_t s_ui = s[ui];
 
 		ord[i].first = s_ui;
 		ord[i].second = ui + 1;
@@ -298,7 +297,7 @@ void calculate_mla(
 	position start,
 	position end,
 	linear_arrangement& mla, 
-	uint32_t& cost
+	uint64_t& cost
 )
 noexcept
 {
@@ -312,7 +311,7 @@ noexcept
 	);
 	bfs.start_at(one_node - 1);
 	}
-	const uint32_t size_tree = t.get_num_nodes_component(one_node - 1);
+	const uint64_t size_tree = t.get_num_nodes_component(one_node - 1);
 
 	static_assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
 
@@ -339,13 +338,13 @@ noexcept
 
 		const auto q = calculate_q(size_tree, ord);
 		if (not q) {
-			const uint32_t n_0 = ord[0].first;
+			const uint64_t n_0 = ord[0].first;
 			const node t_0 = ord[0].second;
 
 			t.remove_edge(u - 1, t_0 - 1, false, false);
 
-			uint32_t c1 = 0;
-			uint32_t c2 = 0;
+			uint64_t c1 = 0;
+			uint64_t c2 = 0;
 			calculate_mla<RIGHT_ANCHOR>(t, t_0, start, start + n_0 - 1, mla, c1);
 			calculate_mla<LEFT_ANCHOR>(t, u, start + n_0, end, mla, c2);
 			cost = c1 + c2 + 1;
@@ -354,11 +353,11 @@ noexcept
 		}
 		else {
 			// uq: unsigned 'q'
-			const uint32_t uq = *q;
-			cost = numeric_limits<uint32_t>::max();
+			const uint64_t uq = *q;
+			cost = numeric_limits<uint64_t>::max();
 
 			vector<edge> edges(2*uq + 1);
-			for (uint32_t i = 0; i <= 2*uq; ++i) {
+			for (uint64_t i = 0; i <= 2*uq; ++i) {
 				edges[i].first = u - 1;
 				edges[i].second = ord[i].second - 1;
 			}
@@ -367,27 +366,27 @@ noexcept
 			t.remove_edges(edges, false, false);
 
 			// Central tree size
-			uint32_t size_rest_of_trees = 0;
-			for (uint32_t i = 2*uq + 1; i < ord.size(); ++i) {
+			uint64_t size_rest_of_trees = 0;
+			for (uint64_t i = 2*uq + 1; i < ord.size(); ++i) {
 				size_rest_of_trees += ord[i].first;
 			}
 
-			for (uint32_t i = 0; i <= 2*uq; ++i) {
-				const vector<uint32_t> Q_i = get_Q(uq, i);
+			for (uint64_t i = 0; i <= 2*uq; ++i) {
+				const vector<uint64_t> Q_i = get_Q(uq, i);
 
 				t.add_edge(u - 1, ord[i].second - 1);
 
-				uint32_t c_i = 0;
+				uint64_t c_i = 0;
 				linear_arrangement arr_aux = mla;
-				uint32_t start_aux = start;
-				//uint32_t end_aux = end;
+				uint64_t start_aux = start;
+				//uint64_t end_aux = end;
 				
 				// Left part of the arrangement
-				for (uint32_t j = 1; j <= uq; ++j) {
+				for (uint64_t j = 1; j <= uq; ++j) {
 					const position pos_in_ord = Q_i[j];
-					uint32_t n_i = ord[pos_in_ord].first;
+					uint64_t n_i = ord[pos_in_ord].first;
 					
-					uint32_t c_i_j = 0;
+					uint64_t c_i_j = 0;
 					calculate_mla<RIGHT_ANCHOR>(
 						t,
 						ord[pos_in_ord].second, start_aux,
@@ -399,18 +398,18 @@ noexcept
 				}
 
 				// Central part of the arrangement
-				uint32_t c_i_j = 0;
-				uint32_t end_for_here = start_aux+ord[i].first+size_rest_of_trees;
+				uint64_t c_i_j = 0;
+				uint64_t end_for_here = start_aux+ord[i].first+size_rest_of_trees;
 				calculate_mla<NO_ANCHOR>(t, u, start_aux, end_for_here, arr_aux, c_i_j);
 				c_i += c_i_j;
 
 				// Right part of the arrangement
 				//start_aux += ord[i].first + 1 + size_rest_of_trees;
 				start_aux=end_for_here+1;
-				for (uint32_t j = uq + 1; j <= 2*uq; ++j) {
+				for (uint64_t j = uq + 1; j <= 2*uq; ++j) {
 					const position pos_in_ord = Q_i[j];
-					uint32_t n_i = ord[pos_in_ord].first;
-					uint32_t c_i_j_in = 0;
+					uint64_t n_i = ord[pos_in_ord].first;
+					uint64_t c_i_j_in = 0;
 					calculate_mla<LEFT_ANCHOR>(
 						t,
 						ord[pos_in_ord].second, start_aux,
@@ -424,8 +423,8 @@ noexcept
 				// Adding parts of the anchors over trees nearer to the central tree
 				c_i += size_tree*uq;
 
-				uint32_t subs = 0;
-				for (uint32_t j = 1; j <= uq; ++j) {
+				uint64_t subs = 0;
+				for (uint64_t j = 1; j <= uq; ++j) {
 					subs += (uq - j + 1)*(ord[Q_i[j]].first + ord[Q_i[2*uq - j + 1]].first);
 				}
 				c_i -= subs;
@@ -451,7 +450,7 @@ noexcept
 
 		const auto p = calculate_p(size_tree, ord);
 		if (not p) {
-			const uint32_t n_0 = ord[0].first;
+			const uint64_t n_0 = ord[0].first;
 			const node t_0 = ord[0].second;
 #if defined DEBUG
 			assert(one_node != t_0);
@@ -459,8 +458,8 @@ noexcept
 
 			t.remove_edge(one_node - 1, t_0 - 1, false, false);
 
-			uint32_t c1 = 0;
-			uint32_t c2 = 0;
+			uint64_t c1 = 0;
+			uint64_t c2 = 0;
 			
 			
 			if constexpr (root == LEFT_ANCHOR) {
@@ -478,11 +477,11 @@ noexcept
 		}
 		else {
 			// up: unsigned 'p'
-			const uint32_t up = *p;
-			cost = numeric_limits<uint32_t>::max();
+			const uint64_t up = *p;
+			cost = numeric_limits<uint64_t>::max();
 
 			vector<edge> edges(2*up + 2);
-			for (uint32_t i = 0; i <= 2*up + 1; ++i) {
+			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
 				edges[i].first = one_node - 1;
 				edges[i].second = ord[i].second - 1;
 			}
@@ -491,29 +490,29 @@ noexcept
 			t.remove_edges(edges, false, false);
 
 			// Central tree size
-			uint32_t size_rest_of_trees= 0;
-			for (uint32_t i = 2*up + 2; i < ord.size() ;++i) {
+			uint64_t size_rest_of_trees= 0;
+			for (uint64_t i = 2*up + 2; i < ord.size() ;++i) {
 				size_rest_of_trees += ord[i].first;
 			}
 
-			for (uint32_t i = 0; i <= 2*up + 1; ++i) {
-				const vector<uint32_t> P_i = get_P(up, i);
+			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
+				const vector<uint64_t> P_i = get_P(up, i);
 				t.add_edge(one_node - 1, ord[i].second - 1, false, false);
 
-				uint32_t c_i = 0;
+				uint64_t c_i = 0;
 				linear_arrangement arr_aux = mla;
-				uint32_t start_aux = start;
-				uint32_t end_aux=end;
+				uint64_t start_aux = start;
+				uint64_t end_aux=end;
 				
 				if constexpr (root == LEFT_ANCHOR) {
 
 					// Left part of the arrangement
-					for (uint32_t j = 1; j <= up; ++j) {
+					for (uint64_t j = 1; j <= up; ++j) {
 						const position pos_in_ord = P_i[j];
-						uint32_t r = ord[pos_in_ord].second;
-						uint32_t n_i = ord[pos_in_ord].first;
+						uint64_t r = ord[pos_in_ord].second;
+						uint64_t n_i = ord[pos_in_ord].first;
 	
-						uint32_t c_i_j_in = 0;
+						uint64_t c_i_j_in = 0;
 						calculate_mla<RIGHT_ANCHOR>(
 							t, r,
 							//ord[pos_in_ord].second, 
@@ -526,7 +525,7 @@ noexcept
 					}
 	
 					// Central part of the arrangement
-					uint32_t c_i_j = 0;
+					uint64_t c_i_j = 0;
 					calculate_mla<NO_ANCHOR>(t, one_node, start_aux, 
 						start_aux + ord[i].first + 1 + size_rest_of_trees - 1, 
 						arr_aux, c_i_j);
@@ -535,11 +534,11 @@ noexcept
 					c_i += c_i_j;
 	
 					// Right part of the arrangement
-					for (uint32_t j = up + 1; j <= 2*up + 1; ++j) {
+					for (uint64_t j = up + 1; j <= 2*up + 1; ++j) {
 						const position pos_in_ord = P_i[j];
-						uint32_t r = ord[pos_in_ord].second;
-						uint32_t n_i = ord[pos_in_ord].first;
-						uint32_t c_i_j_in = 0;
+						uint64_t r = ord[pos_in_ord].second;
+						uint64_t n_i = ord[pos_in_ord].first;
+						uint64_t c_i_j_in = 0;
 						calculate_mla<LEFT_ANCHOR>(
 							t, r,
 							//ord[pos_in_ord].second, 
@@ -553,12 +552,12 @@ noexcept
 				}
 				else{ // RIGHT ANCHOR
 					// Right part of the arrangement
-					for (uint32_t j = 1; j <= up; ++j) {
+					for (uint64_t j = 1; j <= up; ++j) {
 						const position pos_in_ord = P_i[j];
-						uint32_t r = ord[pos_in_ord].second;
-						uint32_t n_i = ord[pos_in_ord].first;
+						uint64_t r = ord[pos_in_ord].second;
+						uint64_t n_i = ord[pos_in_ord].first;
 	
-						uint32_t c_i_j_in = 0;
+						uint64_t c_i_j_in = 0;
 						calculate_mla<LEFT_ANCHOR>(
 							t, r,
 							//ord[pos_in_ord].second,
@@ -573,7 +572,7 @@ noexcept
 					}
 	
 					// Central part of the arrangement
-					uint32_t c_i_j = 0;
+					uint64_t c_i_j = 0;
 					calculate_mla<NO_ANCHOR>(t, one_node, 
 						end_aux-ord[i].first-1-size_rest_of_trees+1, end_aux,
 						//start_aux, 
@@ -584,11 +583,11 @@ noexcept
 					c_i += c_i_j;
 	
 					// Right part of the arrangement
-					for (uint32_t j = up + 1; j <= 2*up + 1; ++j) {
+					for (uint64_t j = up + 1; j <= 2*up + 1; ++j) {
 						const position pos_in_ord = P_i[j];
-						uint32_t r = ord[pos_in_ord].second;
-						uint32_t n_i = ord[pos_in_ord].first;
-						uint32_t c_i_j_in = 0;
+						uint64_t r = ord[pos_in_ord].second;
+						uint64_t n_i = ord[pos_in_ord].first;
+						uint64_t c_i_j_in = 0;
 						calculate_mla<RIGHT_ANCHOR>(
 							t, r,
 							//ord[pos_in_ord].second,
@@ -607,8 +606,8 @@ noexcept
 				c_i += size_tree*(up + 1);
 				c_i -= (up + 1)*ord[P_i[P_i.size()-1]].first;
 
-				uint32_t subs = 0;
-				for (uint32_t j = 1; j <= up; ++j) {
+				uint64_t subs = 0;
+				for (uint64_t j = 1; j <= up; ++j) {
 					subs += (up - j + 1)*(ord[P_i[j]].first + ord[P_i[2*up - j + 1]].first);
 				}
 				c_i -= subs;
@@ -633,8 +632,8 @@ noexcept
 	/*if constexpr (root == RIGHT_ANCHOR) {
 		if (2*mla[one_node - 1] - 2*start < size_tree - 1) {
 			// Right anchor and the root is too much to the left
-			for (uint32_t i = 0; i < size_tree; ++i) {
-				const uint32_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
+			for (uint64_t i = 0; i < size_tree; ++i) {
+				const uint64_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
 				mla[reachable[i] - 1] = aux;
 			}
 		}
@@ -642,8 +641,8 @@ noexcept
 	else if constexpr (root == LEFT_ANCHOR) {
 		if (2*mla[one_node - 1] - 2*start > size_tree - 1) {
 			// Left anchor and the root is too much to the right
-			for (uint32_t i = 0; i < size_tree; ++i) {
-				const uint32_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
+			for (uint64_t i = 0; i < size_tree; ++i) {
+				const uint64_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
 				mla[reachable[i] - 1] = aux;
 			}
 		}
@@ -652,14 +651,14 @@ noexcept
 
 } // -- namespaec dmin_chung
 
-pair<uint32_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
+pair<uint64_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
 noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	uint32_t c = 0;
+	uint64_t c = 0;
 	linear_arrangement arr(t.get_num_nodes(),0);
 
 	free_tree T = t;

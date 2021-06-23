@@ -149,8 +149,8 @@
  * @code
  * lal::graphs::free_tree t(4);
  * t.add_edges({lal::edge(0,1), lal::edge(1,2), lal::edge(2,3)});
- * uint32_t D1 = lal::linarr::sum_edge_lengths(t);
- * uint32_t D2 = lal::linarr::sum_edge_lengths(t, {0,1,2,3});
+ * uint64_t D1 = lal::linarr::sum_edge_lengths(t);
+ * uint64_t D2 = lal::linarr::sum_edge_lengths(t, {0,1,2,3});
  * @endcode
  * The possibility of expliciting a linear arrangement increases the flexibility of the library. For example, for the purposes of illustration, one can calculate the expected sum of the length of the edges as follows
  * @code

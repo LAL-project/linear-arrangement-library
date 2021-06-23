@@ -106,7 +106,7 @@ noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	return numeric::rational(n*n - 1, 3);
 }
 
@@ -142,7 +142,7 @@ noexcept {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	return numeric::rational(n*n - 1, 3);
 }
 

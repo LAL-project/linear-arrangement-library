@@ -65,8 +65,8 @@ namespace E_pr_D {
 template<bool size_subtrees_valid>
 inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 {
-	const uint32_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
-	internal::data_array<uint32_t> size_subtrees(size_array, 0);
+	const uint64_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
+	internal::data_array<uint64_t> size_subtrees(size_array, 0);
 	if constexpr (not size_subtrees_valid) {
 		internal::get_size_subtrees(t, t.get_root(), size_subtrees.data);
 	}
@@ -75,13 +75,13 @@ inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 	E_pr_D += -1;
 
 	for (node u = 0; u < t.get_num_nodes(); ++u) {
-		const uint32_t nu = (
+		const uint64_t nu = (
 			size_subtrees_valid ?
 				t.get_num_nodes_subtree(u) :
 				size_subtrees[u]
 		);
 
-		const uint32_t du = t.get_out_degree(u);
+		const uint64_t du = t.get_out_degree(u);
 		E_pr_D += nu*(2*du + 1);
 	}
 	E_pr_D /= 6;
@@ -109,26 +109,26 @@ rational exp_sum_edge_lengths_projective_rational
 /*   (planar arrangements)   */
 
 rational exp_sum_edge_lengths_planar_rational(const free_tree& T) noexcept {
-	const uint32_t n = T.get_num_nodes();
+	const uint64_t n = T.get_num_nodes();
 
-	vector<pair<edge, uint32_t>> edge_size(2*(n - 1));
+	vector<pair<edge, uint64_t>> edge_size(2*(n - 1));
 	{
 	auto it = edge_size.begin();
-	internal::calculate_bidirectional_sizes<free_tree, pair<edge, uint32_t>>(
+	internal::calculate_bidirectional_sizes<free_tree, pair<edge, uint64_t>>(
 		T, n, 0,
-		[](std::pair<edge,uint32_t>& p, const edge& e, uint32_t s) -> void
+		[](std::pair<edge,uint64_t>& p, const edge& e, uint64_t s) -> void
 		{ p.first = e; p.second = s; },
 		it
 	);
 	}
 
-	uint32_t V = 0;
+	uint64_t V = 0;
 
 	{
-	internal::data_array<uint32_t> L(n, 0);
+	internal::data_array<uint64_t> L(n, 0);
 	for (const auto& p : edge_size) {
 		const edge& e = p.first;
-		const uint32_t s = p.second;
+		const uint64_t s = p.second;
 		L[e.first] += s*s;
 	}
 	for (node v = 0; v < n; ++v) {

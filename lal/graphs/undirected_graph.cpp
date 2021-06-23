@@ -149,7 +149,7 @@ undirected_graph& undirected_graph::set_edges
 (const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	{
-	const uint32_t n = get_num_nodes();
+	const uint64_t n = get_num_nodes();
 	clear(); init(n);
 	}
 
@@ -161,7 +161,7 @@ undirected_graph& undirected_graph::set_edges
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
 	}
-	m_num_edges = static_cast<uint32_t>(edges.size());
+	m_num_edges = edges.size();
 
 	graph::normalise_after_add(to_norm, check_norm);
 	return *this;
@@ -290,7 +290,7 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 
 /* PROTECTED */
 
-void undirected_graph::_init(uint32_t n) noexcept {
+void undirected_graph::_init(uint64_t n) noexcept {
 	graph::_init(n);
 }
 

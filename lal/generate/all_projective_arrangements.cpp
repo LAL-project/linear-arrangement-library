@@ -115,7 +115,7 @@ void all_projective_arrangements::reset() noexcept {
 
 void all_projective_arrangements::initialise_intervals_tree() noexcept {
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		const uint32_t d = m_rT.get_out_degree(u);
+		const uint64_t d = m_rT.get_out_degree(u);
 		m_intervals[u] = vector<node>(d + 1);
 		initialise_interval_node(u);
 	}

@@ -71,7 +71,7 @@ public:
 	 * @param error_message Error message.
 	 */
 	report_treebank_file(
-		uint32_t line_number,
+		uint64_t line_number,
 		const std::string& error_message
 	)
 		: m_treebank_file_line_number(line_number),
@@ -88,14 +88,14 @@ public:
 	/* GETTERS */
 
 	/// Returns the line number within the treebank file where the error is found.
-	uint32_t get_line_number() const noexcept { return m_treebank_file_line_number; }
+	uint64_t get_line_number() const noexcept { return m_treebank_file_line_number; }
 
 	/// Returns the error message.
 	const std::string& get_error_message() const noexcept { return m_error_message; }
 
 private:
 	/// The line number within the treebank file
-	uint32_t m_treebank_file_line_number;
+	uint64_t m_treebank_file_line_number;
 	/// Error message
 	std::string m_error_message;
 };
@@ -130,8 +130,8 @@ public:
 	 */
 	report_treebank_collection(
 		const std::string& treebank_file_path,
-		uint32_t main_file_line,
-		uint32_t treebank_line_number,
+		uint64_t main_file_line,
+		uint64_t treebank_line_number,
 		const std::string& error_message
 	) noexcept
 		: m_treebank_file_path(treebank_file_path),
@@ -152,11 +152,11 @@ public:
 	{ return m_treebank_file_path; }
 
 	/// Returns the error message.
-	uint32_t get_line_within_main_file() const noexcept
+	uint64_t get_line_within_main_file() const noexcept
 	{ return m_main_file_line; }
 
 	/// Returns the line number within the treebank file where the error is found.
-	uint32_t get_treebank_file_line() const noexcept
+	uint64_t get_treebank_file_line() const noexcept
 	{ return m_treebank_file_line_number; }
 
 	/// Returns the error message.
@@ -167,9 +167,9 @@ private:
 	/// Filename to the treebank file.
 	std::string m_treebank_file_path;
 	/// Line within the main file where the treebank file is found.
-	uint32_t m_main_file_line;
+	uint64_t m_main_file_line;
 	/// The line number within the treebank file.
-	uint32_t m_treebank_file_line_number;
+	uint64_t m_treebank_file_line_number;
 	/// Error message.
 	std::string m_error_message;
 };

@@ -278,7 +278,7 @@ private:
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
-		const uint32_t n = m_G.get_num_nodes();
+		const uint64_t n = m_G.get_num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {
@@ -313,7 +313,7 @@ private:
 	noexcept
 	{
 		// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-		const uint32_t n = m_G.get_num_nodes();
+		const uint64_t n = m_G.get_num_nodes();
 
 		// base case 1: consumed all pairs
 		if (s == n) {

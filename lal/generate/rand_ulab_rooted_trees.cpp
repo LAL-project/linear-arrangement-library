@@ -50,8 +50,8 @@ using namespace std;
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
 
-#define to_int32(x) static_cast<int32_t>(x)
-#define to_uint32(x) static_cast<uint32_t>(x)
+#define to_int64(x) static_cast<int64_t>(x)
+#define to_uint64(x) static_cast<uint64_t>(x)
 
 namespace lal {
 using namespace numeric;
@@ -63,7 +63,7 @@ namespace generate {
 // ACTUAL GENERATOR
 
 _rand_ulab_rooted_trees::_rand_ulab_rooted_trees
-(uint32_t _n, uint32_t seed) noexcept
+(uint64_t _n, uint64_t seed) noexcept
 	: m_n(_n),
 	  m_head_vector(m_n)
 {
@@ -104,7 +104,7 @@ void _rand_ulab_rooted_trees::clear() noexcept {
 
 /* PROTECTED */
 
-void _rand_ulab_rooted_trees::init(uint32_t seed) noexcept {
+void _rand_ulab_rooted_trees::init(uint64_t seed) noexcept {
 	if (m_n <= 1) { return; }
 
 	if (seed == 0) {
@@ -119,8 +119,8 @@ void _rand_ulab_rooted_trees::init(uint32_t seed) noexcept {
 	init_rn();
 }
 
-pair<uint32_t,uint32_t>
-_rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
+pair<uint64_t,uint64_t>
+_rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 {
 	if (n == 0) {
 		// The new tree has no nodes.
@@ -183,13 +183,13 @@ _rand_ulab_rooted_trees::ranrut(uint32_t n, uint32_t lr, uint32_t nt) noexcept
 	// The nodes of T'' are placed in TREE[root_Tpp:(root_Tpp + d - 1)]
 
 	nt = nt2;
-	for (uint32_t c = 1; c < j; ++c) {
+	for (uint64_t c = 1; c < j; ++c) {
 		// Each copy of T'' is a child of T'.
 		// Therefore, the root of each copy of T''
 		// must be connected to the root of T'.
 		m_head_vector[nt] = root_Tp;
 		// make a copy of T''
-		for (uint32_t v = nt + 1; v < nt + d; ++v) {
+		for (uint64_t v = nt + 1; v < nt + d; ++v) {
 			// 'v - c*d' is the position of 'v' relative to
 			// the root of the first copy (the first T'').
 
@@ -247,7 +247,7 @@ void _rand_ulab_rooted_trees::init_rn() noexcept {
 	m_rn[30] = integer("354426847597");
 }
 
-const integer& _rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
+const integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -255,20 +255,20 @@ const integer& _rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
 
 	// the algorithm in the book (\cite Nijenhuis1978a)
 
-	uint32_t k = to_uint32(m_rn.size()) - 1;
+	uint64_t k = m_rn.size() - 1;
 	while (k <= n + 1) {
 		integer s = 0;
-		for (uint32_t d = 1; d <= k; ++d) {
+		for (uint64_t d = 1; d <= k; ++d) {
 			const integer td = m_rn[d]*d;
 
-			int32_t i = to_int32(k) + 1;
-			int32_t j = 1;
-			while (j <= to_int32(k) and i > 0) {
-				i -= to_int32(d);
+			int64_t i = to_int64(k) + 1;
+			int64_t j = 1;
+			while (j <= to_int64(k) and i > 0) {
+				i -= to_int64(d);
 
 				// --
-				//if (i > 0) { s += m_rn[utils::to_uint32(i)]*td; }
-				s += (i > 0 ? m_rn[to_uint32(i)]*td : 0);
+				//if (i > 0) { s += m_rn[utils::to_uint64(i)]*td; }
+				s += (i > 0 ? m_rn[to_uint64(i)]*td : 0);
 				// --
 
 				++j;
@@ -282,8 +282,8 @@ const integer& _rand_ulab_rooted_trees::get_rn(uint32_t n) noexcept {
 	return m_rn[n];
 }
 
-pair<uint32_t, uint32_t>
-_rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n) noexcept
+pair<uint64_t, uint64_t>
+_rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair
@@ -295,8 +295,8 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint32_t n) noexcept
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
 	// reaches 0 or less, we found a pair with its probability.
-	uint32_t j = 1;
-	uint32_t d = 1;
+	uint64_t j = 1;
+	uint64_t d = 1;
 
 	while (weight > 0) {
 

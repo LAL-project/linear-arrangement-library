@@ -183,7 +183,7 @@ head_vector free_tree::get_head_vector(node r) const noexcept {
 
 /* PROTECTED */
 
-void free_tree::_init(uint32_t n) noexcept {
+void free_tree::_init(uint64_t n) noexcept {
 	undirected_graph::_init(n);
 	tree::tree_only_init(n);
 }
@@ -195,16 +195,16 @@ void free_tree::_clear() noexcept {
 
 void free_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_after_add(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
@@ -212,16 +212,16 @@ void free_tree::call_union_find_after_add(
 
 void free_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_after_remove(
 	node u, node v,
-	uint32_t * const root_of,
-	uint32_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);

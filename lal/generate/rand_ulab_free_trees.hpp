@@ -81,7 +81,7 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.
@@ -120,7 +120,7 @@ protected:
 	 * is 0, a random seed is used.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(uint32_t seed = 0) noexcept;
+	void init(uint64_t seed = 0) noexcept;
 
 	/**
 	 * @brief Clears the memory occupied.
@@ -155,7 +155,7 @@ private:
 	 * and \f$q=(n - 1)/2\f$ there is only one value of \f$q\f$ for each
 	 * \f$n\f$, so we do not need a matrix.
 	 */
-	std::map<std::pair<uint32_t, uint32_t>, numeric::integer> m_alpha;
+	std::map<std::pair<uint64_t, uint64_t>, numeric::integer> m_alpha;
 
 	/**
 	 * @brief The number of free unlabelled trees.
@@ -177,10 +177,10 @@ private:
 	 * @returns The position where to store the following
 	 * trees/forests in @ref m_head_vector.
 	 */
-	uint32_t forest(uint32_t m, uint32_t q, uint32_t nt) noexcept;
+	uint64_t forest(uint64_t m, uint64_t q, uint64_t nt) noexcept;
 
 	/// Generates a tree of @e n nodes with two centroids.
-	void bicenter(uint32_t n) noexcept;
+	void bicenter(uint64_t n) noexcept;
 
 	/**
 	 * @brief Computes and return the value \f$\alpha(m,q)\f$.
@@ -194,7 +194,7 @@ private:
 	 * @returns \f$\alpha(m,q)\f$
 	 */
 	const numeric::integer&
-	get_alpha_mq(const uint32_t m, const uint32_t q) noexcept;
+	get_alpha_mq(const uint64_t m, const uint64_t q) noexcept;
 
 	/// Initialiases @ref m_fn with 31 values from the OEIS (see \cite OEIS_A000055).
 	void init_fn() noexcept;
@@ -207,7 +207,7 @@ private:
 	 * @param n Number of nodes of the tree.
 	 * @returns \f$f_n\f$.
 	 */
-	const numeric::integer& get_fn(const uint32_t n) noexcept;
+	const numeric::integer& get_fn(const uint64_t n) noexcept;
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -221,8 +221,8 @@ private:
 	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
-	std::pair<uint32_t,uint32_t>
-	choose_jd_from_alpha(const uint32_t m, const uint32_t q) noexcept;
+	std::pair<uint64_t,uint64_t>
+	choose_jd_from_alpha(const uint64_t m, const uint64_t q) noexcept;
 };
 
 /**
@@ -261,7 +261,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_ulab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
+	rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.

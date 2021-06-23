@@ -49,6 +49,8 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/macros.hpp>
 
+#define to_double(x) static_cast<double>(x)
+
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -60,11 +62,11 @@ namespace linarr {
 /* D */
 
 template<class G>
-inline uint32_t __sum_length_edges(const G& g, const linear_arrangement& pi)
+inline uint64_t __sum_length_edges(const G& g, const linear_arrangement& pi)
 noexcept
 {
 	// sum of lengths
-	uint32_t l = 0;
+	uint64_t l = 0;
 
 	for (E_iterator<G> e_it(g); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
@@ -75,7 +77,7 @@ noexcept
 	return l;
 }
 
-uint32_t sum_edge_lengths
+uint64_t sum_edge_lengths
 (const directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
@@ -86,7 +88,7 @@ noexcept
 	return internal::call_with_empty_arrangement
 			(__sum_length_edges<directed_graph>, g, pi);
 }
-uint32_t sum_edge_lengths
+uint64_t sum_edge_lengths
 (const undirected_graph& g, const linear_arrangement& pi)
 noexcept
 {
@@ -108,12 +110,12 @@ inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept
 	assert(g.get_num_edges() > 0);
 #endif
 
-	const uint32_t D = sum_edge_lengths(g, pi);
+	const uint64_t D = sum_edge_lengths(g, pi);
 	if constexpr (std::is_same_v<result, numeric::rational>) {
-		return rational_from_ui(D, g.get_num_edges());
+		return rational(D, g.get_num_edges());
 	}
 	else {
-		return static_cast<double>(D)/g.get_num_edges();
+		return to_double(D)/to_double(g.get_num_edges());
 	}
 }
 

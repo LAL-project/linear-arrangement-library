@@ -76,7 +76,7 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept;
+	_rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
@@ -104,18 +104,18 @@ protected:
 	 * Initialises the random number generator.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(uint32_t seed = 0) noexcept;
+	void init(uint64_t seed = 0) noexcept;
 
 protected:
 	/// Number of nodes of the tree.
-	const uint32_t m_n;
+	const uint64_t m_n;
 
 	/// Random number generator.
 	std::mt19937 m_gen;
 	/// Distribution of the numbers.
-	std::uniform_int_distribution<uint32_t> m_unif;
+	std::uniform_int_distribution<uint64_t> m_unif;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_Prufer_seq;
+	internal::data_array<uint64_t> m_Prufer_seq;
 };
 
 /**
@@ -154,7 +154,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_free_trees(uint32_t n, uint32_t seed = 0) noexcept
+	rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.

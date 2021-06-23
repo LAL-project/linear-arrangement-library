@@ -111,7 +111,7 @@ noexcept
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 inline bool __are_yields_wellnested(
-	const uint32_t n, const vector<vector<position>>& yields
+	const uint64_t n, const vector<vector<position>>& yields
 )
 noexcept
 {
@@ -160,13 +160,13 @@ noexcept
 }
 
 inline
-uint32_t __get_n_discont(const uint32_t n, const vector<vector<node>>& yields)
+uint64_t __get_n_discont(const uint64_t n, const vector<vector<node>>& yields)
 noexcept
 {
-	uint32_t max_g = 0;
+	uint64_t max_g = 0;
 	for (node u = 0; u < n; ++u) {
 		const auto& yu = yields[u];
-		uint32_t g = 0;
+		uint64_t g = 0;
 		for (size_t i = 1; i < yu.size(); ++i) {
 			if (yu[i] - yu[i - 1] > 1) {
 				++g;
@@ -181,7 +181,7 @@ inline
 bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
-	const uint32_t n = rT.get_num_nodes();
+	const uint64_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
 	vector<vector<position>> yields(n);
@@ -191,7 +191,7 @@ noexcept
 	const bool is_well_nested = __are_yields_wellnested(n, yields);
 
 	// calculate degree of discontinuities in the yields
-	const uint32_t max_dis = (is_well_nested ? __get_n_discont(n, yields) : 0);
+	const uint64_t max_dis = (is_well_nested ? __get_n_discont(n, yields) : 0);
 
 	return (is_well_nested and max_dis > 0 ? max_dis == 1 : false);
 }
@@ -199,14 +199,14 @@ noexcept
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
 inline
-uint32_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi)
+uint64_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 	// use the paper in
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
 	// as a reference for the definition of 1ec
 
-	const uint32_t n = rT.get_num_nodes();
+	const uint64_t n = rT.get_num_nodes();
 	internal::data_array<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
@@ -323,7 +323,7 @@ noexcept
 		}
 	};
 
-	const uint32_t n = rT.get_num_nodes();
+	const uint64_t n = rT.get_num_nodes();
 	if (n == 0) { return cl; }
 
 	// -------------------------------------------------------------------------
@@ -375,7 +375,7 @@ noexcept
 	// from this point on we need an artificial vertex pointing to the
 	// root of the input tree
 
-	const uint32_t C = num_crossings(rT, pi);
+	const uint64_t C = num_crossings(rT, pi);
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
@@ -385,7 +385,7 @@ noexcept
 		);
 
 		// remove 1-ec from the types when needed
-		const uint32_t _C = num_crossings(_rT, _pi);
+		const uint64_t _C = num_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
 		}

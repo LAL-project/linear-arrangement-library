@@ -67,19 +67,19 @@ namespace internal {
 //		returns 1 if the number of crossings than the upper_bound
 //		returns 0 if the number of crossings than the upper_bound
 template<bool decide_upper_bound>
-inline uint32_t __compute_C_brute_force_undir(
+inline uint64_t __compute_C_brute_force_undir(
 	const undirected_graph& g, const linear_arrangement& pi,
 	node * const __restrict__ T,
-	uint32_t upper_bound = 0
+	uint64_t upper_bound = 0
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
-	for (uint32_t i = 0; i < n; ++i) {
+	const uint64_t n = g.get_num_nodes();
+	for (uint64_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
@@ -134,12 +134,12 @@ noexcept
 //
 template<bool decide_upper_bound = false>
 inline
-std::conditional_t<decide_upper_bound, uint32_t, void>
+std::conditional_t<decide_upper_bound, uint64_t, void>
 __inner_computation_dir(
 	const directed_graph& g, node u, node v,
 	const linear_arrangement& pi, const node * const __restrict__ T,
-	uint32_t& C,
-	uint32_t upper_bound = 0
+	uint64_t& C,
+	uint64_t upper_bound = 0
 )
 noexcept
 {
@@ -200,10 +200,10 @@ noexcept
 //		returns 1 if the number of crossings than the upper_bound
 //		returns 0 if the number of crossings than the upper_bound
 template<bool decide_upper_bound = false>
-inline uint32_t __compute_C_brute_force_dir(
+inline uint64_t __compute_C_brute_force_dir(
 	const directed_graph& g, const linear_arrangement& pi,
 	node * const __restrict__ T,
-	uint32_t upper_bound = 0
+	uint64_t upper_bound = 0
 )
 noexcept
 {
@@ -211,12 +211,12 @@ noexcept
 		UNUSED(upper_bound);
 	}
 
-	const uint32_t n = g.get_num_nodes();
-	for (uint32_t i = 0; i < n; ++i) {
+	const uint64_t n = g.get_num_nodes();
+	for (uint64_t i = 0; i < n; ++i) {
 		T[ pi[i] ] = i;
 	}
 
-	uint32_t C = 0;
+	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
@@ -232,7 +232,7 @@ noexcept
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
 			if constexpr (decide_upper_bound) {
-				const uint32_t res =
+				const uint64_t res =
 					__inner_computation_dir<true>(g, u,v, pi, T, C, upper_bound);
 
 				// if decided that C > upper_bound, return
@@ -252,7 +252,7 @@ noexcept
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
 			if constexpr (decide_upper_bound) {
-				const uint32_t res =
+				const uint64_t res =
 					__inner_computation_dir<true>(g, u,v, pi, T, C, upper_bound);
 
 				// if decided that C > upper_bound, return
@@ -280,13 +280,13 @@ noexcept
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<typename GRAPH>
-inline uint32_t __call_C_brute_force(
+inline uint64_t __call_C_brute_force(
 	const GRAPH& g,
 	const linear_arrangement& pi
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	/* allocate memory */
@@ -304,7 +304,7 @@ noexcept
 	}
 }
 
-uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi) noexcept
+uint64_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -313,7 +313,7 @@ uint32_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi
 			(__call_C_brute_force<undirected_graph>, g, pi);
 }
 
-uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi) noexcept
+uint64_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
@@ -326,15 +326,15 @@ uint32_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi) 
 // list of arrangements
 
 template<typename GRAPH>
-vector<uint32_t> n_C_brute_force(
+vector<uint64_t> n_C_brute_force(
 	const GRAPH& g,
 	const vector<linear_arrangement>& pis
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -360,7 +360,7 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> n_C_brute_force(
+vector<uint64_t> n_C_brute_force(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
 )
@@ -368,7 +368,7 @@ noexcept
 {
 	return n_C_brute_force<directed_graph>(g, pis);
 }
-vector<uint32_t> n_C_brute_force(
+vector<uint64_t> n_C_brute_force(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis
 )
@@ -387,14 +387,14 @@ noexcept
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<typename GRAPH>
-inline uint32_t __call_brute_force_lesseq_than(
+inline uint64_t __call_brute_force_lesseq_than(
 	const GRAPH& g,
 	const linear_arrangement& pi,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	/* allocate memory */
@@ -414,10 +414,10 @@ noexcept
 	}
 }
 
-uint32_t is_n_C_brute_force_lesseq_than(
+uint64_t is_n_C_brute_force_lesseq_than(
 	const directed_graph& g,
 	const linear_arrangement& pi,
-	uint32_t c
+	uint64_t c
 )
 noexcept
 {
@@ -428,10 +428,10 @@ noexcept
 			(__call_brute_force_lesseq_than<directed_graph>, g, pi, c);
 }
 
-uint32_t is_n_C_brute_force_lesseq_than(
+uint64_t is_n_C_brute_force_lesseq_than(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
-	uint32_t c
+	uint64_t c
 )
 noexcept
 {
@@ -446,16 +446,16 @@ noexcept
 // list of arrangements
 
 template<typename GRAPH>
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t upper_bound
+	uint64_t upper_bound
 )
 noexcept
 {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -483,19 +483,19 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t c
+	uint64_t c
 )
 noexcept
 {
 	return is_n_C_brute_force_lesseq_than<directed_graph>(g, pis, c);
 }
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
-	uint32_t c
+	uint64_t c
 )
 noexcept
 {
@@ -503,10 +503,10 @@ noexcept
 }
 
 template<typename GRAPH>
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -515,9 +515,9 @@ noexcept
 		assert(pis.size() == upper_bounds.size());
 #endif
 
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 
-	vector<uint32_t> cs(pis.size(), 0);
+	vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -545,20 +545,20 @@ noexcept
 	return cs;
 }
 
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 	return is_n_C_brute_force_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
 }
-vector<uint32_t> is_n_C_brute_force_lesseq_than(
+vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
-	const vector<uint32_t>& upper_bounds
+	const vector<uint64_t>& upper_bounds
 )
 noexcept
 {

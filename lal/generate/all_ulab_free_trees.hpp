@@ -102,7 +102,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_trees(uint32_t n) noexcept;
+	all_ulab_free_trees(uint64_t n) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled free tree generator..
@@ -160,35 +160,35 @@ protected:
 
 private:
 	/// Canonical level sequence of the tree.
-	internal::data_array<uint32_t> m_L;
+	internal::data_array<uint64_t> m_L;
 	/**
 	 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
 	 * corresponding to the parent of the node corresponding to \f$l_i\f$.
 	 */
-	internal::data_array<uint32_t> m_W;
+	internal::data_array<uint64_t> m_W;
 
 	/// Largest integer such that \f$l_p \neq 2\f$.
-	uint32_t m_p;
+	uint64_t m_p;
 	/// Largest integer such that \f$q < p, \; l_q = l_p - 1\f$.
-	uint32_t m_q;
+	uint64_t m_q;
 
 	/// Maximum level number in the first principal subsequence.
-	uint32_t m_h1;
+	uint64_t m_h1;
 	/// Maximum level number in the second principal subsequence.
-	uint32_t m_h2;
+	uint64_t m_h2;
 
 	/**
 	 * @brief An index to the first element of \f$L_2\f$.
 	 *
 	 * \f$L_2\f$ is the second principal subsequence of \f$L\f$.
 	 */
-	uint32_t m_c;
+	uint64_t m_c;
 	/**
 	 * @brief Exactly \f$m - 1\f$.
 	 *
 	 * Read the paper: page 542, first paragraph.
 	 */
-	uint32_t m_r;
+	uint64_t m_r;
 
 	/// Was the last tree generated?
 	bool m_is_last = false;

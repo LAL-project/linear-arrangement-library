@@ -104,7 +104,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_free_trees(uint32_t n) noexcept;
+	all_lab_free_trees(uint64_t n) noexcept;
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive labelled free tree generator..
@@ -168,11 +168,11 @@ protected:
 
 private:
 	/// Iterator on the sequence.
-	uint32_t m_it;
+	uint64_t m_it;
 	/// Left-most position with value \f$n-1\f$.
-	uint32_t m_L;
+	uint64_t m_L;
 	/// Prüfer sequence.
-	internal::data_array<uint32_t> m_Prufer_seq;
+	internal::data_array<uint64_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
 	internal::data_array<bool> m_sm;
 	/// Has the end of the generation been reached?

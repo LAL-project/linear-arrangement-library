@@ -75,7 +75,7 @@ template<
 	bool> = true
 >
 void get_size_subtrees
-(const T& t, const node u, const node v, uint32_t * const sizes)
+(const T& t, const node u, const node v, uint64_t * const sizes)
 {
 	sizes[v] = 1;
 
@@ -122,7 +122,7 @@ template<
 	bool> = true
 >
 void get_size_subtrees
-(const T& t, node r, uint32_t * const sizes)
+(const T& t, node r, uint64_t * const sizes)
 {
 #if defined DEBUG
 	assert(sizes != nullptr);
@@ -165,15 +165,15 @@ template<
 			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
 			std::is_base_of_v<graphs::free_tree, tree_type>
 		)
-		&& is_pointer_iterator_v<std::pair<edge,uint32_t>, Iterator_Type>
+		&& is_pointer_iterator_v<std::pair<edge,uint64_t>, Iterator_Type>
 		,
 		bool
 	> = true
 >
-uint32_t calculate_bidirectional_sizes
-(const tree_type& t, const uint32_t n, const node u, const node v, Iterator_Type& it)
+uint64_t calculate_bidirectional_sizes
+(const tree_type& t, const uint64_t n, const node u, const node v, Iterator_Type& it)
 {
-	uint32_t s = 1;
+	uint64_t s = 1;
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
@@ -238,15 +238,15 @@ template<
 		bool
 	> = true
 >
-uint32_t calculate_bidirectional_sizes(
+uint64_t calculate_bidirectional_sizes(
 	const tree_type& t,
-	const uint32_t n,
+	const uint64_t n,
 	const node u, const node v,
-	const std::function<void (Iterated_Type&, const edge&, uint32_t)> F,
+	const std::function<void (Iterated_Type&, const edge&, uint64_t)> F,
 	Iterator_Type& it
 )
 {
-	uint32_t s = 1;
+	uint64_t s = 1;
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
@@ -289,7 +289,7 @@ uint32_t calculate_bidirectional_sizes(
  *
  @code
  const free_tree t = ... ;
- vector<pair<edge,uint32_t>> sizes_edges(2*t.get_num_edges());
+ vector<pair<edge,uint64_t>> sizes_edges(2*t.get_num_edges());
  auto it = sizes_edges.begin();
  internal::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
  @endcode
@@ -314,13 +314,13 @@ template<
 			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
 			std::is_base_of_v<graphs::free_tree, tree_type>
 		)
-		&& is_pointer_iterator_v<std::pair<edge,uint32_t>, Iterator_Type>
+		&& is_pointer_iterator_v<std::pair<edge,uint64_t>, Iterator_Type>
 		,
 		bool
 	> = true
 >
 void calculate_bidirectional_sizes
-(const tree_type& t, const uint32_t n, const node x, Iterator_Type& it)
+(const tree_type& t, const uint64_t n, const node x, Iterator_Type& it)
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
 		for (node y : t.get_out_neighbours(x)) {
@@ -356,7 +356,7 @@ void calculate_bidirectional_sizes
  *
  @code
  const free_tree t = ... ;
- vector<pair<edge,uint32_t>> sizes_edges(2*t.get_num_edges());
+ vector<pair<edge,uint64_t>> sizes_edges(2*t.get_num_edges());
  auto it = sizes_edges.begin();
  internal::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
  @endcode
@@ -391,8 +391,8 @@ template<
 >
 void calculate_bidirectional_sizes(
 	const tree_type& t,
-	const uint32_t n, const node x,
-	const std::function<void (Iterated_Type&, const edge&, uint32_t)> F,
+	const uint64_t n, const node x,
+	const std::function<void (Iterated_Type&, const edge&, uint64_t)> F,
 	Iterator_Type& it
 )
 {

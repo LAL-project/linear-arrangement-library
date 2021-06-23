@@ -59,7 +59,7 @@ using namespace internal;
 namespace generate {
 
 rand_planar_arrangements::rand_planar_arrangements
-(const free_tree& T, uint32_t seed) noexcept
+(const free_tree& T, uint64_t seed) noexcept
 	: m_T(T)
 {
 #if defined DEBUG
@@ -78,7 +78,7 @@ rand_planar_arrangements::rand_planar_arrangements
 }
 
 rand_planar_arrangements::rand_planar_arrangements
-(const rooted_tree& T, uint32_t seed) noexcept
+(const rooted_tree& T, uint64_t seed) noexcept
 	: m_T_copy(T.to_free_tree()), m_T(m_T_copy)
 {
 #if defined DEBUG
@@ -109,7 +109,7 @@ void make_random_projective(
 	// number of neighbours
 	//  +1  : because we add 'u' to the interval
 	//  -1  : because we remove the parent of u
-	const uint32_t d_out = T.get_degree(u) + 1 - 1;
+	const uint64_t d_out = T.get_degree(u) + 1 - 1;
 	const neighbourhood& neighs_u = T.get_neighbours(u);
 
 	// Choose random positions for the intervals corresponding to the
@@ -144,7 +144,7 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	const node root = U(m_gen);
 
 	// number of children of 'r' with respect to the tree's root
-	const uint32_t d_out = m_T.get_degree(root) + 1;
+	const uint64_t d_out = m_T.get_degree(root) + 1;
 	const neighbourhood& neighs_root = m_T.get_neighbours(root);
 
 	// Choose random positions for the intervals corresponding to the

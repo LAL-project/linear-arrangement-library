@@ -43,13 +43,13 @@ char fast_non_iso(const T& t1, const T& t2) noexcept {
 	}
 	}
 
-	const uint32_t n = t1.get_num_nodes();
+	const uint64_t n = t1.get_num_nodes();
 
 	// trees ARE isomorphic
 	if (n <= 2) { return 0; }
 
-	uint32_t nL_t1 = 0; // number of leaves of t1
-	uint32_t nL_t2 = 0; // number of leaves of t2
+	uint64_t nL_t1 = 0; // number of leaves of t1
+	uint64_t nL_t2 = 0; // number of leaves of t2
 	uint64_t k2_t1 = 0; // sum of squared degrees of t1
 	uint64_t k2_t2 = 0; // sum of squared degrees of t2
 	uint64_t maxdeg_t1 = 0; // max degree of t1
@@ -180,7 +180,7 @@ noexcept
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint32_t n = t1.get_num_nodes();
+	const uint64_t n = t1.get_num_nodes();
 	data_array<std::string> names(n);
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names.data, 0);
 	const std::string name_r2 = assign_name(t2, t2.get_root(), names.data, 0);

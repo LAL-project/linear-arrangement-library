@@ -87,7 +87,7 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(const lal::graphs::graph& g, uint32_t seed = 0) noexcept
+	rand_arrangements(const lal::graphs::graph& g, uint64_t seed = 0) noexcept
 		: rand_arrangements(g.get_num_nodes(), seed)
 	{ }
 
@@ -97,7 +97,7 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(uint32_t n, uint32_t seed = 0) noexcept
+	rand_arrangements(uint64_t n, uint64_t seed = 0) noexcept
 		: m_n(n),
 		  m_arr(linear_arrangement(m_n))
 	{
@@ -124,7 +124,7 @@ public:
 
 private:
 	/// Number of vertices
-	const uint32_t m_n;
+	const uint64_t m_n;
 	/// Random number generator
 	std::mt19937 m_gen;
 	/**

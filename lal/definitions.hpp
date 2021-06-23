@@ -48,9 +48,9 @@
 namespace lal {
 
 /// Node type.
-typedef uint32_t node;
+typedef uint64_t node;
 /// Node's position type.
-typedef uint32_t position;
+typedef uint64_t position;
 
 /**
  * @brief A linear arrangement of the nodes of a graph.
@@ -111,6 +111,6 @@ typedef std::vector<node> neighbourhood;
  * Line (1) is not valid due to a self-reference in the second position,
  * and (2) is not valid since it contains two '0' (i.e., two roots).
  */
-typedef std::vector<uint32_t> head_vector;
+typedef std::vector<uint64_t> head_vector;
 
 } // -- namespace lal

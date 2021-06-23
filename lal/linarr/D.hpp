@@ -64,7 +64,7 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint32_t sum_edge_lengths
+uint64_t sum_edge_lengths
 (const graphs::directed_graph& g, const linear_arrangement& pi = {})
 noexcept;
 /**
@@ -79,7 +79,7 @@ noexcept;
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint32_t sum_edge_lengths
+uint64_t sum_edge_lengths
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {})
 noexcept;
 

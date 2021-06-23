@@ -53,7 +53,7 @@ using namespace std;
 #define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
 #define to_int64(x) static_cast<int64_t>(x)
 
-inline constexpr int64_t sum(uint32_t n, uint32_t t) {
+inline constexpr uint64_t sum(uint64_t n, uint64_t t) noexcept {
 	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
 }
 
@@ -66,7 +66,7 @@ namespace properties {
 
 integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept {
 	const uint64_t m = g.get_num_edges();
-	integer q2 = integer_from_ui(m*(m + 1));
+	integer q2 = m*(m + 1);
 
 	// substract sum of squared degrees
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
@@ -78,7 +78,7 @@ integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept 
 }
 
 integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
-	const uint32_t n = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	map<edge, uint64_t> collapsed_edges;
 
 	// count the amount of edges that collapse into a single one
@@ -101,8 +101,8 @@ integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	// for each vertex, count how many pairs of
 	// non-independent we can make
 	for (node u = 0; u < n; ++u) {
-		uint32_t no_u = 0;
-		uint32_t t_u = 0;
+		uint64_t no_u = 0;
+		uint64_t t_u = 0;
 		for (node v : g.get_out_neighbours(u)) {
 			// u -> v
 			const bool edge_vu = g.has_edge(v,u);
@@ -118,8 +118,8 @@ integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	}
 
 	// count how many total pairs of edges we can make
-	uint32_t no = 0;
-	uint32_t t = 0;
+	uint64_t no = 0;
+	uint64_t t = 0;
 	for (const auto& p : collapsed_edges) {
 		no += (p.second == 1);
 		t += (p.second == 2);

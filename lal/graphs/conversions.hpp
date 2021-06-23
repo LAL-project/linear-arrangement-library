@@ -170,12 +170,12 @@ G from_edge_list_to_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {
-	uint32_t max_vertex_index = 0;
+	uint64_t max_vertex_index = 0;
 	for (const edge& e : edge_list) {
 		max_vertex_index = std::max(max_vertex_index, e.first);
 		max_vertex_index = std::max(max_vertex_index, e.second);
 	}
-	const uint32_t num_nodes = 1 + max_vertex_index;
+	const uint64_t num_nodes = 1 + max_vertex_index;
 	G g(num_nodes);
 	g.set_edges(edge_list, normalise, check);
 	return g;

@@ -77,11 +77,7 @@ using namespace std;
 #include <lal/internal/io/check_correctness.hpp>
 #include <lal/internal/linarr/syntactic_dependency_structure.hpp>
 
-template<typename T>
-double to_double(const T& x) {
-	if constexpr (std::is_same_v<T, double>) { return x; }
-	else { return static_cast<double>(x); }
-}
+#define to_double(x) static_cast<double>(x)
 #define square(x) ((x)*(x))
 
 namespace lal {
@@ -456,7 +452,7 @@ void treebank_processor::process_tree
 const noexcept
 {
 	free_tree fT = rT.to_undirected();
-	const uint32_t n = fT.get_num_nodes();
+	const uint64_t n = fT.get_num_nodes();
 
 	// -------------------------------------------------------------------
 	// indices of treebank features
@@ -519,7 +515,7 @@ const noexcept
 
 	// number of nodes
 	if (m_what_fs[n_idx]) {
-		set_prop(n_idx, n);
+		set_prop(n_idx, to_double(n));
 	}
 	// <k^2>
 	if (m_what_fs[k2_idx]) {
@@ -586,8 +582,7 @@ const noexcept
 	}
 	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
-		set_prop(tree_diameter_idx,
-				 properties::tree_diameter(rT));
+		set_prop(tree_diameter_idx, to_double(properties::tree_diameter(rT)));
 	}
 
 	// -----------------------------------------------------------------
@@ -597,7 +592,7 @@ const noexcept
 
 		// choose a suitable algorithm depending on the value of 'n'
 		const auto algo_C =
-		[](uint32_t N) -> linarr::algorithms_C {
+		[](uint64_t N) -> linarr::algorithms_C {
 			if (N <= 8) {
 				return linarr::algorithms_C::ladder;
 			}
@@ -610,7 +605,7 @@ const noexcept
 			return linarr::algorithms_C::stack_based;
 		}(rT.get_num_nodes());
 
-		set_prop(C_idx, linarr::num_crossings(fT, algo_C));
+		set_prop(C_idx, to_double(linarr::num_crossings(fT, algo_C)));
 	}
 	if (m_what_fs[C_predicted_idx]) {
 		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT));
@@ -626,7 +621,7 @@ const noexcept
 	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, linarr::num_crossings(fT));
+			set_prop(C_idx, to_double(linarr::num_crossings(fT)));
 		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
@@ -651,7 +646,7 @@ const noexcept
 	// D
 
 	if (m_what_fs[D_idx]) {
-		set_prop(D_idx, linarr::sum_edge_lengths(fT));
+		set_prop(D_idx, to_double(linarr::sum_edge_lengths(fT)));
 	}
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
@@ -670,7 +665,7 @@ const noexcept
 	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, linarr::sum_edge_lengths(fT));
+			set_prop(D_idx, to_double(linarr::sum_edge_lengths(fT)));
 		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
@@ -695,13 +690,13 @@ const noexcept
 	// Optimisation of D
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		set_prop(Dmin_Unconstrained_idx, linarr::min_sum_edge_lengths(fT).first);
+		set_prop(Dmin_Unconstrained_idx, to_double(linarr::min_sum_edge_lengths(fT).first));
 	}
 	if (m_what_fs[Dmin_Planar_idx]) {
-		set_prop(Dmin_Planar_idx, linarr::min_sum_edge_lengths_planar(fT).first);
+		set_prop(Dmin_Planar_idx, to_double(linarr::min_sum_edge_lengths_planar(fT).first));
 	}
 	if (m_what_fs[Dmin_Projective_idx]) {
-		set_prop(Dmin_Projective_idx, linarr::min_sum_edge_lengths_projective(rT).first);
+		set_prop(Dmin_Projective_idx, to_double(linarr::min_sum_edge_lengths_projective(rT).first));
 	}
 
 	// -----------------

@@ -209,7 +209,7 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
-		const uint32_t n = m_G.get_num_nodes();
+		const uint64_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
@@ -235,7 +235,7 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
-		const uint32_t n = m_G.get_num_nodes();
+		const uint64_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;

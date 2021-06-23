@@ -50,6 +50,8 @@
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/data_array.hpp>
 
+#define to_double(x) static_cast<double>(x)
+
 namespace lal {
 using namespace graphs;
 using namespace numeric;
@@ -58,15 +60,15 @@ namespace properties {
 
 template<typename result>
 inline result MHD(const rooted_tree& tree) noexcept {
-	const uint32_t n = tree.get_num_nodes();
+	const uint64_t n = tree.get_num_nodes();
 
 #if defined DEBUG
 	assert(tree.is_rooted_tree());
 	assert(tree.get_num_nodes() > 1);
 #endif
 
-	uint32_t sum_distances = 0;
-	internal::data_array<uint32_t> distances(n, 0);
+	uint64_t sum_distances = 0;
+	internal::data_array<uint64_t> distances(n, 0);
 
 	internal::BFS<rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
@@ -81,7 +83,7 @@ inline result MHD(const rooted_tree& tree) noexcept {
 		return rational(sum_distances, tree.get_num_edges());
 	}
 	else {
-		return static_cast<double>(sum_distances)/tree.get_num_edges();
+		return to_double(sum_distances)/to_double(tree.get_num_edges());
 	}
 }
 

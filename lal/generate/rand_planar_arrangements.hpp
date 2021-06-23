@@ -87,7 +87,7 @@ public:
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
-	rand_planar_arrangements(const graphs::free_tree& T, uint32_t seed = 0) noexcept;
+	rand_planar_arrangements(const graphs::free_tree& T, uint64_t seed = 0) noexcept;
 
 	/**
 	 * @brief Constructor with a constant reference to a rooted tree.
@@ -96,7 +96,7 @@ public:
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
-	rand_planar_arrangements(const graphs::rooted_tree& T, uint32_t seed = 0) noexcept;
+	rand_planar_arrangements(const graphs::rooted_tree& T, uint64_t seed = 0) noexcept;
 
 	/**
 	 * @brief Default copy constructor.

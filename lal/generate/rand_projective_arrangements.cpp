@@ -59,7 +59,7 @@ using namespace internal;
 namespace generate {
 
 rand_projective_arrangements::rand_projective_arrangements
-(const rooted_tree& rT, uint32_t seed) noexcept
+(const rooted_tree& rT, uint64_t seed) noexcept
 	: m_rT(rT)
 {
 #if defined DEBUG
@@ -76,7 +76,7 @@ rand_projective_arrangements::rand_projective_arrangements
 	// initialise the random data of all vertices
 	m_rdata = vector<vector<node>>(m_rT.get_num_nodes());
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		const uint32_t deg = m_rT.get_out_degree(u);
+		const uint64_t deg = m_rT.get_out_degree(u);
 		m_rdata[u] = vector<node>(deg + 1);
 	}
 }

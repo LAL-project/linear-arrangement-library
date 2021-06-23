@@ -114,7 +114,7 @@ public:
 	 * @brief Constructor with number of nodes and root node.
 	 * @param n Number of vertices.
 	 */
-	rooted_tree(uint32_t n) noexcept {
+	rooted_tree(uint64_t n) noexcept {
 		rooted_tree::_init(n);
 	}
 	/**
@@ -498,7 +498,7 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	inline uint32_t get_num_nodes_subtree(node u) const noexcept {
+	inline uint64_t get_num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -626,37 +626,37 @@ protected:
 	 * Given a node @e u, @ref m_size_subtrees[u] gives the number
 	 * of nodes of the subtree rooted at @e u.
 	 */
-	std::vector<uint32_t> m_size_subtrees;
+	std::vector<uint64_t> m_size_subtrees;
 	/// Are the contents of @ref m_size_subtrees valid?
 	bool m_are_size_subtrees_valid = false;
 
 protected:
 	/// Initialises memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _init(uint32_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept;
 	/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
 	virtual void _clear() noexcept;
 
 	void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) noexcept;
 	void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) const noexcept;
 	void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) noexcept;
 	void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.

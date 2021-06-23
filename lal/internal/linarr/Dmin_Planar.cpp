@@ -64,7 +64,7 @@ using namespace graphs;
 namespace internal {
 
 inline void make_directed(
-	const free_tree& t, node pu, node u, vector<vector<pair<node,uint32_t>>>& M
+	const free_tree& t, node pu, node u, vector<vector<pair<node,uint64_t>>>& M
 )
 noexcept
 {
@@ -98,12 +98,12 @@ noexcept
 	}
 }
 
-pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
+pair<uint64_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	const uint32_t n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
 		return make_pair(0, linear_arrangement(0,0));
 	}
@@ -119,8 +119,8 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 	// of T. For this reason, any optimal projective arrangement of T_c
 	// is an optimal planar arrangement of T.
 
-	vector<vector<pair<node,uint32_t>>> M;
-	vector<pair<edge, uint32_t>> sizes_edge;
+	vector<vector<pair<node,uint64_t>>> M;
+	vector<pair<edge, uint64_t>> sizes_edge;
 
 	// find a centroidal vertex of the tree
 	const node c = internal::retrieve_centroid(t, M, sizes_edge).first;
@@ -131,7 +131,7 @@ pair<uint32_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 	// construct the optimal interval by calculating the optimal
 	// projective arrangement
 	linear_arrangement arr(n);
-	const uint32_t D =
+	const uint64_t D =
 	Dmin_Pr__optimal_interval_of(n, M, c, arr);
 
 	return make_pair(D, arr);

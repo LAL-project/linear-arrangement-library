@@ -191,7 +191,7 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	inline uint32_t get_num_nodes_component(node u) const noexcept {
+	inline uint64_t get_num_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -247,7 +247,7 @@ protected:
 	 *
 	 * In this context, root is within the union-find data structure.
 	 */
-	std::vector<uint32_t> m_root_size;
+	std::vector<uint64_t> m_root_size;
 
 	/// The type of this tree
 	std::array<bool,__tree_type_size> m_tree_type;
@@ -265,7 +265,7 @@ protected:
 	 * @brief Initialises only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
-	void tree_only_init(uint32_t n) noexcept;
+	void tree_only_init(uint64_t n) noexcept;
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept;
 
@@ -300,7 +300,7 @@ protected:
 	 */
 	virtual void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of, uint32_t * const root_size
+		uint64_t * const root_of, uint64_t * const root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -317,7 +317,7 @@ protected:
 	 */
 	virtual void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of, uint32_t * const root_size
+		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
 	/**
 	 * @brief A call to the union find method.
@@ -334,7 +334,7 @@ protected:
 	 */
 	virtual void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of, uint32_t * const root_size
+		uint64_t * const root_of, uint64_t * const root_size
 	) noexcept = 0;
 	/**
 	 * @brief A const call to the union find method.
@@ -351,7 +351,7 @@ protected:
 	 */
 	virtual void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of, uint32_t * const root_size
+		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
 };
 

@@ -59,22 +59,22 @@ public:
 	// GETTERS
 
 	/// Returns left span of this flux.
-	inline uint32_t get_left_span() const noexcept { return m_left_span;; }
+	inline uint64_t get_left_span() const noexcept { return m_left_span;; }
 	/// Returns right span of this flux.
-	inline uint32_t get_right_span() const noexcept { return m_right_span; }
+	inline uint64_t get_right_span() const noexcept { return m_right_span; }
 	/// Returns the size of this flux.
-	inline uint32_t get_size() const noexcept
-	{ return static_cast<uint32_t>(m_dependencies.size()); }
+	inline uint64_t get_size() const noexcept
+	{ return m_dependencies.size(); }
 	/// Returns weight of this flux.
-	inline uint32_t get_weight() const noexcept { return m_weight; }
+	inline uint64_t get_weight() const noexcept { return m_weight; }
 
 #ifndef SWIG
 	/// Returns a reference to the left span of this flux.
-	inline uint32_t& get_left_span() noexcept { return m_left_span;; }
+	inline uint64_t& get_left_span() noexcept { return m_left_span;; }
 	/// Returns a reference to the right span of this flux.
-	inline uint32_t& get_right_span() noexcept { return m_right_span; }
+	inline uint64_t& get_right_span() noexcept { return m_right_span; }
 	/// Returns a reference to the weight of this flux.
-	inline uint32_t& get_weight() noexcept { return m_weight; }
+	inline uint64_t& get_weight() noexcept { return m_weight; }
 
 	/// Returns a reference to the set of dependencies.
 	std::vector<edge>& get_dependencies() { return m_dependencies; }
@@ -125,11 +125,11 @@ public:
 	// SETTERS
 
 	/// Sets the left span.
-	inline void set_left_span(uint32_t ls) noexcept { m_left_span = ls; }
+	inline void set_left_span(uint64_t ls) noexcept { m_left_span = ls; }
 	/// Sets the right span.
-	inline void set_right_span(uint32_t rs) noexcept { m_right_span = rs; }
+	inline void set_right_span(uint64_t rs) noexcept { m_right_span = rs; }
 	/// Sets the weight.
-	inline void set_weight(uint32_t w) noexcept { m_weight = w; }
+	inline void set_weight(uint64_t w) noexcept { m_weight = w; }
 
 	/// Sets the set of dependencies.
 	inline void set_dependencies(const std::vector<edge>& deps) noexcept
@@ -144,10 +144,10 @@ public:
 private:
 	/// Number of words to the left of this flux which are vertices of a
 	/// dependency in the flux.
-	uint32_t m_left_span = 0;
+	uint64_t m_left_span = 0;
 	/// Number of words to the right of this flux which are vertices of a
 	/// dependency in the flux.
-	uint32_t m_right_span = 0;
+	uint64_t m_right_span = 0;
 	/**
 	 * @brief Dependencies in this flux.
 	 *
@@ -160,7 +160,7 @@ private:
 	 * This is the size of the largest subset of disjoint dependencies in
 	 * @ref m_dependencies.
 	 */
-	uint32_t m_weight = 0;
+	uint64_t m_weight = 0;
 
 };
 

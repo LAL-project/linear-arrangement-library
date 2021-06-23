@@ -66,7 +66,7 @@ public:
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices
 	 */
-	free_tree(uint32_t n) noexcept : undirected_graph(n) {
+	free_tree(uint64_t n) noexcept : undirected_graph(n) {
 		free_tree::tree_only_init(n);
 	}
 	/**
@@ -315,30 +315,30 @@ public:
 protected:
 	/// Initialises memory of @ref free_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _init(uint32_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept;
 	/// Clears the memory of @ref free_tree, @ref undirected_graph and
 	/// @ref graph classes.
 	virtual void _clear() noexcept;
 
 	void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) noexcept;
 	void call_union_find_after_add(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) const noexcept;
 	void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) noexcept;
 	void call_union_find_after_remove(
 		node u, node v,
-		uint32_t * const root_of,
-		uint32_t * const root_size
+		uint64_t * const root_of,
+		uint64_t * const root_size
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
