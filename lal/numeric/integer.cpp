@@ -89,30 +89,6 @@ integer& integer::operator= (integer&& i) noexcept {
 
 /* ARITHMETIC OPERATORS */
 
-// -- ADDITION
-
-integer& integer::operator+= (int64_t i) noexcept {
-	if (i > 0) {	mpz_add_ui(m_val, m_val, to_uint64(i));	}
-	else {			mpz_sub_ui(m_val, m_val, my_abs(i));	}
-	return *this;
-}
-
-// -- SUBSTRACTION
-
-integer& integer::operator-= (int64_t i) noexcept {
-	if (i > 0) {	mpz_sub_ui(m_val, m_val, to_uint64(i));	}
-	else {			mpz_add_ui(m_val, m_val, my_abs(i));	}
-	return *this;
-}
-
-// -- DIVISION
-
-integer& integer::operator/= (int64_t i) noexcept {
-	mpz_div_ui(m_val, m_val, my_abs(i));
-	mpz_mul_si(m_val, m_val, (i<0 ? -1 : 1));
-	return *this;
-}
-
 // -- EXPONENTIATION
 
 integer& integer::powt(const integer& i) noexcept {
