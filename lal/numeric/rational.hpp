@@ -218,12 +218,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator== (T i) const noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			return mpq_cmp_si(m_val, i, 1) == 0;
-		}
-		else {
-			return mpq_cmp_ui(m_val, i, 1) == 0;
-		}
+		return
+		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) == 0;
 	}
 #ifndef SWIG
 	/**
@@ -307,12 +303,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator< (T i) const noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			return mpq_cmp_si(m_val, i, 1) < 0;
-		}
-		else {
-			return mpq_cmp_ui(m_val, i, 1) < 0;
-		}
+		return
+		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) < 0;
 	}
 #ifndef SWIG
 	/**
@@ -354,12 +346,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator<= (T i) const noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			return mpq_cmp_si(m_val, i, 1) <= 0;
-		}
-		else {
-			return mpq_cmp_ui(m_val, i, 1) <= 0;
-		}
+		return
+		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) <= 0;
 	}
 #ifndef SWIG
 	/**
@@ -401,12 +389,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator> (T i) const noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			return mpq_cmp_si(m_val, i, 1) > 0;
-		}
-		else {
-			return mpq_cmp_ui(m_val, i, 1) > 0;
-		}
+		return
+		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) > 0;
 	}
 #ifndef SWIG
 	/**
@@ -448,12 +432,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator>= (T i) const noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			return mpq_cmp_si(m_val, i, 1) >= 0;
-		}
-		else {
-			return mpq_cmp_ui(m_val, i, 1) >= 0;
-		}
+		return
+		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) >= 0;
 	}
 #ifndef SWIG
 	/**

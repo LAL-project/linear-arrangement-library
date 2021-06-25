@@ -167,7 +167,7 @@ public:
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator== (T i) const noexcept {
 		return
-		std::is_signed_v<T> ? mpz_cmp_si(m_val,i)==0 : mpz_cmp_ui(m_val,i)==0;
+		(std::is_signed_v<T> ? mpz_cmp_si(m_val,i) : mpz_cmp_ui(m_val,i)) == 0;
 	}
 #ifndef SWIG
 	/**
@@ -221,7 +221,7 @@ public:
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator< (T i) const noexcept {
 		return
-		std::is_signed_v<T> ? mpz_cmp_si(m_val, i)<0 : mpz_cmp_ui(m_val, i)<0;
+		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) < 0;
 	}
 #ifndef SWIG
 	/**
@@ -249,7 +249,7 @@ public:
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator<= (T i) const noexcept {
 		return
-		std::is_signed_v<T> ? mpz_cmp_si(m_val, i)<=0 : mpz_cmp_ui(m_val, i)<=0;
+		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) <= 0;
 	}
 #ifndef SWIG
 	/**
@@ -277,7 +277,7 @@ public:
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator> (T i) const noexcept {
 		return
-		std::is_signed_v<T> ? mpz_cmp_si(m_val, i)>0 : mpz_cmp_ui(m_val, i)>0;
+		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) > 0;
 	}
 #ifndef SWIG
 	/**
@@ -305,7 +305,7 @@ public:
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline bool operator>= (T i) const noexcept {
 		return
-		std::is_signed_v<T> ? mpz_cmp_si(m_val, i)>=0 : mpz_cmp_ui(m_val, i)>=0;
+		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) >= 0;
 	}
 #ifndef SWIG
 	/**
@@ -357,9 +357,7 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline integer& operator+= (T i) noexcept {
-		if constexpr (not std::is_signed_v<T>) {
-			mpz_add_ui(m_val, m_val, i);
-		}
+		if constexpr (not std::is_signed_v<T>) { mpz_add_ui(m_val, m_val, i); }
 		else {
 			if (i > 0) {mpz_add_ui(m_val, m_val, static_cast<uint64_t>(i));	}
 			else {		mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(-i));}
@@ -453,12 +451,8 @@ public:
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	inline integer& operator*= (T i) noexcept {
-		if constexpr (std::is_signed_v<T>) {
-			mpz_mul_si(m_val, m_val, i);
-		}
-		else {
-			mpz_mul_ui(m_val, m_val, i);
-		}
+		if constexpr (std::is_signed_v<T>) { mpz_mul_si(m_val, m_val, i); }
+		else {								 mpz_mul_ui(m_val, m_val, i); }
 		return *this;
 	}
 	/**
