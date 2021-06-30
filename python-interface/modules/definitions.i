@@ -21,6 +21,7 @@
 
 namespace std {
 	%template(_list_uint32) vector<uint32_t>;
+	%template(_list_uint64) vector<uint64_t>;
 	%template(_list_bool) vector<bool>;
 	%template(_list_string) vector<string>;
 	
