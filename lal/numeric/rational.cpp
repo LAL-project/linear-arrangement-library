@@ -99,12 +99,6 @@ rational& rational::operator= (rational&& r) noexcept {
 
 // -- DIVISION
 
-rational& rational::operator/= (int64_t I) noexcept {
-	integer i(I);
-	internal::mpz_divide_mpq(m_val, i.get_raw_value());
-	return *this;
-}
-
 rational& rational::operator/= (const integer& i) noexcept {
 	internal::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;

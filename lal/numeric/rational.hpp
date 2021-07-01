@@ -690,7 +690,10 @@ public:
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
-	rational& operator/= (int64_t i) noexcept;
+	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	inline rational& operator/= (T i) noexcept {
+		integer I(i); *this /= I; return *this;
+	}
 	/**
 	 * @brief Division operator.
 	 * @param i A @ref lal::numeric::integer.
