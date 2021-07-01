@@ -37,7 +37,9 @@ def E_iterator(g):
 	* `g` :
 		Input graph.
 	"""
-	__type_graph = str(type(g))[len("<class 'lal.graphs."):-2]
+	__full_type = str(type(g))
+	__pos_graph = __full_type.find(".graphs.")
+	__type_graph = __full_type[__pos_graph + len(".graphs."):-2]
 	return globals()[ "E_iterator_" + __type_graph ](g)
 
 def Q_iterator(g):
@@ -50,7 +52,9 @@ def Q_iterator(g):
 	* `g` :
 		Input graph.
 	"""
-	__type_graph = str(type(g))[len("<class 'lal.graphs."):-2]
+	__full_type = str(type(g))
+	__pos_graph = __full_type.find(".graphs.")
+	__type_graph = __full_type[__pos_graph + len(".graphs."):-2]
 	return globals()[ "Q_iterator_" + __type_graph ](g)
 %}
 
