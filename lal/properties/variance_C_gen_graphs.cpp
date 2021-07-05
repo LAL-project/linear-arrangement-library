@@ -410,21 +410,19 @@ rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexc
 		}
 	}
 
-	integer J(0);
-
 	// V[C]
 	rational V(0);
-	J.set_number((m + 2)*Qs);			V += rational(2,45)*J;
-	J.set_number((2*m + 7)*n_paths_4);	V -= rational(1,180)*J;
-	J.set_number(n_paths_5);			V -= rational(1,180)*J;
-	J.set_number(Kg);					V += rational(1,90)*J;
-	J.set_number(n_cycles_4);			V -= rational(3,45)*J;
-	J.set_number(Lambda_1);				V -= rational(1,60)*J;
-	J.set_number(Lambda_2);				V += rational(1,180)*J;
-	J.set_number(Phi_2);				V += rational(1,180)*J;
-	J.set_number(Phi_1);				V -= rational(1,90)*J;
-	J.set_number(paw);					V += rational(1,30)*J;
-	J.set_number(pair_C3_L2);			V += rational(1,30)*J;
+	V += rational(2,45)*(m + 2)*Qs;
+	V -= rational(1,180)*(2*m + 7)*n_paths_4;
+	V -= rational(1,180)*n_paths_5;
+	V += rational(1,90)*Kg;
+	V -= rational(3,45)*n_cycles_4;
+	V -= rational(1,60)*Lambda_1;
+	V += rational(1,180)*Lambda_2;
+	V += rational(1,180)*Phi_2;
+	V -= rational(1,90)*Phi_1;
+	V += rational(1,30)*paw;
+	V += rational(1,30)*pair_C3_L2;
 	return V;
 }
 

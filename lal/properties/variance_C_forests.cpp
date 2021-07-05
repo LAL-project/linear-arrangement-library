@@ -179,18 +179,16 @@ rational var_num_crossings_forest_rational(const undirected_graph& g) noexcept {
 		Lambda_1, Lambda_2
 	);
 
-	integer J(0);
-
 	// V[C]
 	rational V(0);
-	J.set_number((m + 2)*Qs);			V += rational(2,45)*J;
-	J.set_number((2*m + 7)*n_paths_4);	V -= rational(1,180)*J;
-	J.set_number(n_paths_5);			V -= rational(1,180)*J;
-	J.set_number(KG);					V += rational(1,90)*J;
-	J.set_number(Lambda_1);				V -= rational(1,60)*J;
-	J.set_number(Lambda_2);				V += rational(1,180)*J;
-	J.set_number(Phi_2);				V += rational(1,180)*J;
-	J.set_number(Phi_1);				V -= rational(1,90)*J;
+	V += rational(2,45)*(m + 2)*Qs;
+	V -= rational(1,180)*(2*m + 7)*n_paths_4;
+	V -= rational(1,180)*n_paths_5;
+	V += rational(1,90)*KG;
+	V -= rational(1,60)*Lambda_1;
+	V += rational(1,180)*Lambda_2;
+	V += rational(1,180)*Phi_2;
+	V -= rational(1,90)*Phi_1;
 	return V;
 }
 
