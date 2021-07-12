@@ -20,7 +20,7 @@
 %}
 
 namespace std {
-	%template(value_arrangement) pair<uint32_t, lal::linear_arrangement>;
+	%template(value_arrangement) pair<uint64_t, lal::linear_arrangement>;
 }
 
 %include "../lal/linarr/1level.hpp"
