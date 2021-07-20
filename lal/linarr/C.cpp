@@ -48,7 +48,10 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_C.hpp>
-#include <lal/internal/linarr/algorithms_crossings.hpp>
+#include <lal/internal/linarr/C_brute_force.hpp>
+#include <lal/internal/linarr/C_dyn_prog.hpp>
+#include <lal/internal/linarr/C_ladder.hpp>
+#include <lal/internal/linarr/C_stack_based.hpp>
 
 namespace lal {
 using namespace graphs;

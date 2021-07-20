@@ -54,6 +54,11 @@ namespace lal {
 namespace internal {
 
 /*
+ * This file is a summary of the functions that implement the different
+ * algorithms to calculate the number of edge crossings.
+ */
+
+/*
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
  * Given a graph, and a linear arrangement of its nodes, computes by

@@ -108,8 +108,16 @@ HEADERS += \
 	internal/graphs/tree_type.hpp \
 	internal/io/check_correctness.hpp \
 	internal/io/treebank_feature.hpp \
-	internal/linarr/Dmin.hpp \
+	internal/linarr/C_brute_force.hpp \
+	internal/linarr/C_dyn_prog.hpp \
+	internal/linarr/C_ladder.hpp \
 	internal/linarr/algorithms_crossings.hpp \
+	internal/linarr/C_stack_based.hpp \
+	internal/linarr/Dmin.hpp \
+	internal/linarr/Dmin_Planar.hpp \
+	internal/linarr/Dmin_Projective.hpp \
+	internal/linarr/Dmin_Unconstrained_FC.hpp \
+	internal/linarr/Dmin_Unconstrained_YS.hpp \
 	internal/linarr/syntactic_dependency_structure.hpp \
 	internal/macros.hpp \
 	internal/avl.hpp \
@@ -200,14 +208,6 @@ SOURCES += \
     graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
 	graphs/undirected_graph.cpp \
-    internal/linarr/C_brute_force.cpp \
-    internal/linarr/C_dyn_prog.cpp \
-    internal/linarr/C_ladder.cpp \
-    internal/linarr/C_stack_based.cpp \
-    internal/linarr/Dmin_Planar.cpp \
-    internal/linarr/Dmin_Projective.cpp \
-    internal/linarr/Dmin_Unconstrained_FC.cpp \
-    internal/linarr/Dmin_Unconstrained_YS.cpp \
     internal/numeric/utils.cpp \
     io/check_correctness.cpp \
 	io/edge_list.cpp \

@@ -48,7 +48,10 @@ using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/internal/linarr/Dmin.hpp>
+#include <lal/internal/linarr/Dmin_Planar.hpp>
+#include <lal/internal/linarr/Dmin_Projective.hpp>
+#include <lal/internal/linarr/Dmin_Unconstrained_FC.hpp>
+#include <lal/internal/linarr/Dmin_Unconstrained_YS.hpp>
 
 namespace lal {
 using namespace graphs;

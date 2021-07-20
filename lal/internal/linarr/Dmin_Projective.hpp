@@ -193,7 +193,8 @@ noexcept
 	__Dmin_Pr__optimal_interval_of(M, r, PLACE_NONE_OF, 0, n - 1, arr);
 }
 
-pair<uint64_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) {
+pair<uint64_t, linear_arrangement> Dmin_Projective(const rooted_tree& t) noexcept
+{
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif

@@ -48,6 +48,11 @@ namespace lal {
 namespace internal {
 
 /*
+ * This file is a summary of the functions that implement the different
+ * optimization algorithms for the variants of the MLA constraints.
+ */
+
+/*
  * @brief Algorithm to calculate unconstrained optimal linearization of free trees.
  *
  * Computes an unconstrained optimal linear arrangement of a free tree and

@@ -191,7 +191,15 @@ target_sources(
 		#          nothing
 		#      linarr
 		internal/linarr/algorithms_crossings.hpp
+		internal/linarr/C_brute_force.hpp
+		internal/linarr/C_dyn_prog.hpp
+		internal/linarr/C_ladder.hpp
+		internal/linarr/C_stack_based.hpp
 		internal/linarr/Dmin.hpp
+		internal/linarr/Dmin_Planar.hpp
+		internal/linarr/Dmin_Projective.hpp
+		internal/linarr/Dmin_Unconstrained_FC.hpp
+		internal/linarr/Dmin_Unconstrained_YS.hpp
 		internal/linarr/syntactic_dependency_structure.hpp
 		#      numeric
 		internal/numeric/utils.hpp
@@ -222,14 +230,6 @@ target_sources(
 		#      iterators
 		#          nothing
 		#      linarr
-		internal/linarr/C_brute_force.cpp
-		internal/linarr/C_dyn_prog.cpp
-		internal/linarr/C_ladder.cpp
-		internal/linarr/C_stack_based.cpp
-		internal/linarr/Dmin_Planar.cpp
-		internal/linarr/Dmin_Projective.cpp
-		internal/linarr/Dmin_Unconstrained_FC.cpp
-		internal/linarr/Dmin_Unconstrained_YS.cpp
 		#      numeric
 		internal/numeric/utils.cpp
 		#      properties
