@@ -111,6 +111,7 @@ HEADERS += \
 	internal/linarr/C_brute_force.hpp \
 	internal/linarr/C_dyn_prog.hpp \
 	internal/linarr/C_ladder.hpp \
+	internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp \
 	internal/linarr/algorithms_crossings.hpp \
 	internal/linarr/C_stack_based.hpp \
 	internal/linarr/Dmin.hpp \

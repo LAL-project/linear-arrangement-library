@@ -134,7 +134,7 @@ std::pair<uint64_t, linear_arrangement> Dmin_Projective
  *
  * See implementation for all details of this method.
  */
-uint64_t Dmin_Pr__optimal_interval_of(
+uint64_t Dmin_Projective_rooted_adjacency_list(
 	uint64_t n,
 	const std::vector<std::vector<std::pair<lal::node,uint64_t>>>& M,
 	node r,

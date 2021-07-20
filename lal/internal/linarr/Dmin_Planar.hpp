@@ -54,9 +54,8 @@ using namespace std;
 
 // lal includes
 #include <lal/graphs/free_tree.hpp>
-
-#include <lal/internal/linarr/Dmin.hpp>
 #include <lal/internal/properties/tree_centroid.hpp>
+#include <lal/internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp>
 
 namespace lal {
 using namespace graphs;
@@ -113,28 +112,29 @@ pair<uint64_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 	// arranging it so that the root is not covered and the arrangement
 	// yields minimum D.
 
-	// Therefore, they proved that any optimal projective arrangement of a
-	// free tree (T) rooted at one of its centroidal vertices (T_c) yields
+	// Therefore, they proved (kind of) that any optimal projective arrangement
+	// of a free tree (T) rooted at one of its centroidal vertices (T^c) yields
 	// the same value of D as any of the optimal planar arrangements
-	// of T. For this reason, any optimal projective arrangement of T_c
+	// of T. For this reason, any optimal projective arrangement of T^c
 	// is an optimal planar arrangement of T.
 
 	vector<vector<pair<node,uint64_t>>> M;
 	vector<pair<edge, uint64_t>> sizes_edge;
 
-	// find a centroidal vertex of the tree
+	// Find a centroidal vertex of the tree.
+	// With this method we can retrieve the sorted adjacency matrix;
+	// such matrix is used to retrieve the centroid and arrange the tree.
 	const node c = internal::retrieve_centroid(t, M, sizes_edge).first;
 
-	// convert M into a directed adjacency matrix
+	// convert M into a rooted (also, directed) adjacency matrix
 	make_directed(t, c, c, M);
 
 	// construct the optimal interval by calculating the optimal
 	// projective arrangement
 	linear_arrangement arr(n);
-	const uint64_t D =
-	Dmin_Pr__optimal_interval_of(n, M, c, arr);
+	const uint64_t D = Dmin_Projective_rooted_adjacency_list(n, M, c, arr);
 
-	return make_pair(D, arr);
+	return make_pair(D, std::move(arr));
 }
 
 } // -- namespace internal

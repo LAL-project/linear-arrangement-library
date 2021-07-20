@@ -198,6 +198,7 @@ target_sources(
 		internal/linarr/Dmin.hpp
 		internal/linarr/Dmin_Planar.hpp
 		internal/linarr/Dmin_Projective.hpp
+		internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp
 		internal/linarr/Dmin_Unconstrained_FC.hpp
 		internal/linarr/Dmin_Unconstrained_YS.hpp
 		internal/linarr/syntactic_dependency_structure.hpp
