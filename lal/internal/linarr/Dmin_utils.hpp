@@ -267,7 +267,11 @@ noexcept
 	// iterate from the smallest to the largest subtree
 	for (auto it = Cv.rbegin(); it != Cv.rend(); ++it, --i) {
 		const auto [vi, ni] = *it;
+#if defined DEBUG
+		assert(i <= Cv.size());
+#endif
 
+		/*
 		// i is even
 		if (i%2 == 0) {
 			cost_branch += embed_branch(L, vi, base - dir*to_int64(before), -dir, rel_pos);
@@ -282,6 +286,18 @@ noexcept
 			cost_branch += after;
 			after += ni;
 		}
+		*/
+
+		cost_branch += embed_branch(
+			L, vi,
+			( (i&0x1) == 0 ? base - dir*to_int64(before) : base + dir*to_int64(after) ),
+			( (i&0x1) == 0 ? -dir : dir ),
+			rel_pos
+		);
+		cost_branch += ( (i&0x1) == 0 ? before : after );
+
+		before += ((i&0x1) == 0 ? ni : 0);
+		after += ((i&0x1) == 0 ? 0 : ni);
 
 		cost_branch += 1;
 	}
@@ -317,7 +333,11 @@ noexcept
 	uint64_t i = L[r].size();
 	for (auto it = L[r].rbegin(); it != L[r].rend(); ++it, --i) {
 		const auto [vi, ni] = *it;
+#if defined DEBUG
+		assert(i <= L[r].size());
+#endif
 
+		/*
 		// if is even
 		if (i%2 == 0) {
 			D += embed_branch(L, vi, to_int64(right_sum), 1, rel_pos);
@@ -332,6 +352,19 @@ noexcept
 
 			left_sum += ni;
 		}
+		*/
+
+		D += embed_branch(
+			L, vi,
+			( (i&0x1) == 0 ? to_int64(right_sum) : -to_int64(left_sum) ),
+			( (i&0x1) == 0 ? to_int64(1) : to_int64(-1) ),
+			rel_pos
+		);
+		D += ( (i&0x1) == 0 ? right_sum : left_sum );
+
+		right_sum += ((i&0x1) == 0 ? ni : 0);
+		left_sum += ((i&0x1) == 0 ? 0 : ni);
+
 		D += 1;
 	}
 
@@ -485,13 +518,13 @@ noexcept
 
 	// find the only instance of 'pu' in the
 	// neighbourhood of 'u' and erase it.
-	auto& Mu = L[u];
+	auto& Lu = L[u];
 
-	auto it = Mu.begin();
+	auto it = Lu.begin();
 	bool found = false;
-	while (not found and it != Mu.end()) {
+	while (not found and it != Lu.end()) {
 		if (it->first == pu) {
-			Mu.erase(it);
+			Lu.erase(it);
 			found = true;
 		}
 		else {
