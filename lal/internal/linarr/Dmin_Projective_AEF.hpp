@@ -84,12 +84,12 @@ noexcept
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	// This is used to find the optimal projective arrangement of the tree.
-	std::vector<std::vector<node_size>> M(n);
-	rooted::make_sorted_rooted_adjacency_list(t, M);
+	std::vector<std::vector<node_size>> L(n);
+	rooted::make_sorted_rooted_adjacency_list(t, L);
 
 	// construct the optimal planar arrangement
 	linear_arrangement arr(n);
-	const uint64_t D = intervals::arrange(n, M, t.get_root(), arr);
+	const uint64_t D = intervals::arrange(n, L, t.get_root(), arr);
 
 	return make_pair(D, std::move(arr));
 }
