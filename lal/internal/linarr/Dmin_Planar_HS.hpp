@@ -61,13 +61,14 @@ using namespace graphs;
 namespace internal {
 
 /* Minimum planar arrangement of a free tree following the description in
+ * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
+ * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
  * \cite Alemany2021a.
  *
- * This algorithm uses an interval-based algorithm to calculate the minimum
- * planar arrangement. First, it constructs the sorted adjacency matrix rooted
+ * This algorithm first constructs the sorted adjacency matrix rooted
  * at one of the tree's centroidal vertices. Then, it arranges the tree so that
  * there are no edge crossings and the centroidal vertex is not covered. Such
- * arrangement is done using an interval-based algorithm.
+ * arrangement is done using an displacement-based algorithm.
  */
 std::pair<uint64_t, linear_arrangement>
 Dmin_Planar_HS(const free_tree& t)

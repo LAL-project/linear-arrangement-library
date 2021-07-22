@@ -61,6 +61,16 @@ using namespace graphs;
 
 namespace internal {
 
+/* Minimum projective arrangement of a free tree following the description in
+ * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
+ * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
+ * \cite Alemany2021a.
+ *
+ * This algorithm first constructs the sorted adjacency matrix rooted
+ * at the tree's root. Then, it arranges the tree so that there are no edge
+ * crossings and the root vertex is not covered. Such arrangement is done using
+ * a displacement-based algorithm.
+ */
 std::pair<uint64_t, linear_arrangement>
 Dmin_Projective_HS(const rooted_tree& t)
 noexcept

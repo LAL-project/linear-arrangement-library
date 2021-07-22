@@ -63,8 +63,7 @@ namespace internal {
 /* Minimum planar arrangement of a free tree following the description in
  * \cite Alemany2021a.
  *
- * This algorithm uses an interval-based algorithm to calculate the minimum
- * planar arrangement. First, it constructs the sorted adjacency matrix rooted
+ * This algorithm first constructs the sorted adjacency matrix rooted
  * at one of the tree's centroidal vertices. Then, it arranges the tree so that
  * there are no edge crossings and the centroidal vertex is not covered. Such
  * arrangement is done using an interval-based algorithm.
