@@ -35,7 +35,7 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://www.cs.upc.edu/~esteban/
  *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
- * 
+ *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
@@ -49,92 +49,42 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <vector>
-using namespace std;
 
 // lal includes
-#include <lal/graphs/free_tree.hpp>
-#include <lal/internal/properties/tree_centroid.hpp>
-#include <lal/internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/internal/linarr/Dmin_utils.hpp>
 
 namespace lal {
 using namespace graphs;
 
 namespace internal {
 
-inline void make_directed(
-	const free_tree& t, node pu, node u, vector<vector<pair<node,uint64_t>>>& M
-)
+std::pair<uint64_t, linear_arrangement>
+Dmin_Projective_HS(const rooted_tree& t)
 noexcept
 {
-	if (pu == u) {
-		for (node v : t.get_neighbours(u)) {
-			make_directed(t, u, v, M);
-		}
-		return;
-	}
-
-	// find the only instance of 'pu' in the
-	// neighbourhood of 'u' and erase it.
-	auto& Mu = M[u];
-
-	auto it = Mu.begin();
-	bool found = false;
-	while (not found and it != Mu.end()) {
-		if (it->first == pu) {
-			Mu.erase(it);
-			found = true;
-		}
-		else {
-			++it;
-		}
-	}
-
-	for (node v : t.get_neighbours(u)) {
-		if (v != pu) {
-			make_directed(t, u, v, M);
-		}
-	}
-}
-
-pair<uint64_t, linear_arrangement> Dmin_Planar(const free_tree& t) noexcept {
 #if defined DEBUG
-	assert(t.is_tree());
+	assert(t.is_rooted_tree());
 #endif
 
 	const uint64_t n = t.get_num_nodes();
+	const node r = t.get_root();
 	if (n == 1) {
-		return make_pair(0, linear_arrangement(0,0));
+		return std::make_pair(0, linear_arrangement(0,0));
 	}
 
-	// In short, Hochberg and Stallmann described their algorithm
-	// as rooting a free tree at one of its centroidal vertices and
-	// arranging it so that the root is not covered and the arrangement
-	// yields minimum D.
+	// M[u] : adjacency list of vertex u sorted decreasingly according
+	// to the sizes of the subtrees.
+	// This is used to find the optimal projective arrangement of the tree.
+	std::vector<std::vector<node_size>> L(n);
+	rooted::make_sorted_rooted_adjacency_list(t, L);
 
-	// Therefore, they proved (kind of) that any optimal projective arrangement
-	// of a free tree (T) rooted at one of its centroidal vertices (T^c) yields
-	// the same value of D as any of the optimal planar arrangements
-	// of T. For this reason, any optimal projective arrangement of T^c
-	// is an optimal planar arrangement of T.
-
-	vector<vector<pair<node,uint64_t>>> M;
-	vector<pair<edge, uint64_t>> sizes_edge;
-
-	// Find a centroidal vertex of the tree.
-	// With this method we can retrieve the sorted adjacency matrix;
-	// such matrix is used to retrieve the centroid and arrange the tree.
-	const node c = internal::retrieve_centroid(t, M, sizes_edge).first;
-
-	// convert M into a rooted (also, directed) adjacency matrix
-	make_directed(t, c, c, M);
-
-	// construct the optimal interval by calculating the optimal
-	// projective arrangement
 	linear_arrangement arr(n);
-	const uint64_t D = Dmin_Projective_rooted_adjacency_list(n, M, c, arr);
+	const uint64_t D = displacement::embed(L, r, arr);
 
-	return make_pair(D, std::move(arr));
+	return std::make_pair(D, std::move(arr));
 }
 
 } // -- namespace internal

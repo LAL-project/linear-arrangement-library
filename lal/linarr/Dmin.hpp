@@ -44,6 +44,8 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/linarr/algorithms_Dmin_projective.hpp>
+#include <lal/linarr/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 
 namespace lal {
@@ -59,7 +61,7 @@ namespace linarr {
  * See the description of the values in @ref lal::linarr::algorithms_Dmin for
  * details on the algorithm implemented and to see references to the papers.
  * @param t Input free tree.
- * @param a The algorithm to be chosen.
+ * @param a The algorithm to run.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
@@ -67,7 +69,7 @@ namespace linarr {
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
 	const graphs::free_tree& t,
-	const algorithms_Dmin& a = algorithms_Dmin::Unconstrained_YS
+	const algorithms_Dmin& a = algorithms_Dmin::Shiloach
 ) noexcept;
 /**
  * @brief Computes the minimum value of \f$D\f$ in trees.
@@ -79,7 +81,7 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_undirected())
  * @param t Input rooted tree.
- * @param a The algorithm to be chosen.
+ * @param a The algorithm to run.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
@@ -87,7 +89,7 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  */
 inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
 	const graphs::rooted_tree& t,
-	const algorithms_Dmin& a = algorithms_Dmin::Unconstrained_YS
+	const algorithms_Dmin& a = algorithms_Dmin::Shiloach
 ) noexcept
 {
 	return min_sum_edge_lengths(t.to_free_tree(), a);
@@ -104,11 +106,15 @@ inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
  * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
  * @param t Input free tree.
+ * @param a The algorithm to run.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
-(const graphs::free_tree& t) noexcept;
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
+	const graphs::free_tree& t,
+	const algorithms_Dmin_planar& a = algorithms_Dmin_planar::AlemanyEstebanFerrer
+)
+noexcept;
 /**
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
@@ -123,12 +129,18 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_undirected())
  * @param t Input rooted tree.
+ * @param a The algorithm to run.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
-inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
-(const graphs::rooted_tree& t) noexcept
-{ return min_sum_edge_lengths_planar(t.to_free_tree()); }
+inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
+	const graphs::rooted_tree& t,
+	const algorithms_Dmin_planar& a = algorithms_Dmin_planar::AlemanyEstebanFerrer
+)
+noexcept
+{
+	return min_sum_edge_lengths_planar(t.to_free_tree(), a);
+}
 
 /**
  * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
@@ -145,8 +157,11 @@ inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
-(const graphs::rooted_tree& t) noexcept;
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective(
+	const graphs::rooted_tree& t,
+	const algorithms_Dmin_projective& a = algorithms_Dmin_projective::AlemanyEstebanFerrer
+)
+noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal

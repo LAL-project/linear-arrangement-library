@@ -43,7 +43,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/graphs/size_subtrees.hpp>
@@ -58,7 +57,7 @@ using namespace std;
 
 #define to_uint64(x) static_cast<uint64_t>(x)
 
-typedef pair<uint64_t,lal::node> size_node;
+typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
@@ -268,7 +267,7 @@ noexcept
 	linear_arrangement mla_B(mla);
 
 	if (p_alpha > 0) {
-		vector<edge> edges(2*p_alpha - anchored);
+		std::vector<edge> edges(2*p_alpha - anchored);
 
 		// number of nodes not in the central tree
 		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
@@ -326,7 +325,7 @@ noexcept
 
 } // -- namespace dmin_shiloach
 
-pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -341,7 +340,7 @@ noexcept
 	dmin_Shiloach::calculate_mla<NO_ANCHOR>
 		(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
 
-	return make_pair(c, arrangement);
+	return std::make_pair(c, arrangement);
 }
 
 } // -- namespace internal

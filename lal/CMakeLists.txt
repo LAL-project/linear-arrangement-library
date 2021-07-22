@@ -195,12 +195,14 @@ target_sources(
 		internal/linarr/C_dyn_prog.hpp
 		internal/linarr/C_ladder.hpp
 		internal/linarr/C_stack_based.hpp
-		internal/linarr/Dmin.hpp
-		internal/linarr/Dmin_Planar.hpp
-		internal/linarr/Dmin_Projective.hpp
-		internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp
+		internal/linarr/Dmin_Planar_AEF.hpp
+		internal/linarr/Dmin_Planar_HS.hpp
+		internal/linarr/Dmin_Projective_AEF.hpp
+		internal/linarr/Dmin_Projective_HS.hpp
 		internal/linarr/Dmin_Unconstrained_FC.hpp
 		internal/linarr/Dmin_Unconstrained_YS.hpp
+		internal/linarr/Dmin_utils_definitions.hpp
+		internal/linarr/Dmin_utils_functions.hpp
 		internal/linarr/syntactic_dependency_structure.hpp
 		#      numeric
 		internal/numeric/utils.hpp
@@ -279,6 +281,8 @@ target_sources(
 		linarr/2level.hpp
 		linarr/algorithms_C.hpp
 		linarr/algorithms_Dmin.hpp
+		linarr/algorithms_Dmin_planar.hpp
+		linarr/algorithms_Dmin_projective.hpp
 		linarr/C.hpp
 		linarr/classify_syntactic_dependency_structure.hpp
 		linarr/D.hpp

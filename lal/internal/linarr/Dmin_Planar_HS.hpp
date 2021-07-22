@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019
+ *  Copyright (C) 2019 - 2021
  *
  *  This file is part of Linear Arrangement Library. To see the full code
  *  visit the webpage:
@@ -30,6 +30,12 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
+ *      Juan Luis Esteban (esteban@cs.upc.edu)
+ *          Office 110, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpage: https://www.cs.upc.edu/~esteban/
+ *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
+ *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
@@ -43,60 +49,49 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <utility>
-using namespace std;
+#include <vector>
 
 // lal includes
-#include <lal/linarr/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
-
-#include <lal/internal/linarr/Dmin_Projective_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Projective_HS.hpp>
-
-#include <lal/internal/linarr/Dmin_Planar_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Planar_HS.hpp>
-
-#include <lal/internal/linarr/Dmin_Unconstrained_FC.hpp>
-#include <lal/internal/linarr/Dmin_Unconstrained_YS.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/internal/linarr/Dmin_utils.hpp>
 
 namespace lal {
 using namespace graphs;
 
-namespace linarr {
+namespace internal {
 
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths(const free_tree& t, const algorithms_Dmin& a)
+/* Minimum planar arrangement of a free tree following the description in
+ * \cite Alemany2021a.
+ *
+ * This algorithm uses an interval-based algorithm to calculate the minimum
+ * planar arrangement. First, it constructs the sorted adjacency matrix rooted
+ * at one of the tree's centroidal vertices. Then, it arranges the tree so that
+ * there are no edge crossings and the centroidal vertex is not covered. Such
+ * arrangement is done using an interval-based algorithm.
+ */
+std::pair<uint64_t, linear_arrangement>
+Dmin_Planar_HS(const free_tree& t)
 noexcept
 {
-	if (a == algorithms_Dmin::Shiloach) {
-		return internal::Dmin_Unconstrained_YS(t);
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
+	const uint64_t n = t.get_num_nodes();
+	if (n == 1) {
+		return make_pair(0, linear_arrangement(0,0));
 	}
 
-	return internal::Dmin_Unconstrained_FC(t);
+	std::vector<std::vector<node_size>> L;
+	const node c = free::make_sorted_rooted_adjacency_list_centroid(t, L);
+
+	// construct the optimal interval by calculating the optimal
+	// projective arrangement
+	linear_arrangement arr(n);
+	const uint64_t D = displacement::embed(L, c, arr);
+
+	return make_pair(D, std::move(arr));
 }
 
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_planar(const free_tree& t, const algorithms_Dmin_planar& a)
-noexcept
-{
-	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
-		return internal::Dmin_Planar_AEF(t);
-	}
-
-	return internal::Dmin_Planar_HS(t);
-}
-
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_projective(const rooted_tree& t, const algorithms_Dmin_projective& a)
-noexcept
-{
-	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
-		return internal::Dmin_Projective_AEF(t);
-	}
-
-	return internal::Dmin_Projective_HS(t);
-}
-
-} // -- namespace linarr
+} // -- namespace internal
 } // -- namespace lal

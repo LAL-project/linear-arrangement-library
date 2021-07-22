@@ -44,7 +44,6 @@
 #endif
 #include <optional>
 #include <vector>
-using namespace std;
 
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/properties/tree_centroid.hpp>
@@ -58,7 +57,7 @@ using namespace std;
 
 #define to_int64(x) static_cast<int64_t>(x)
 
-typedef pair<uint64_t,lal::node> size_node;
+typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
@@ -195,8 +194,8 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
 	return p;
 }
 
-vector<uint64_t> get_P(uint64_t p, uint64_t i) {
-	vector<uint64_t> v(2*p + 1 + 1);
+std::vector<uint64_t> get_P(uint64_t p, uint64_t i) {
+	std::vector<uint64_t> v(2*p + 1 + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -223,8 +222,8 @@ vector<uint64_t> get_P(uint64_t p, uint64_t i) {
 	return v;
 }
 
-inline vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
-	vector<uint64_t> v(2*q + 1);
+inline std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+	std::vector<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -301,7 +300,7 @@ void calculate_mla(
 )
 noexcept
 {
-	vector<node> reachable(t.get_num_nodes_component(one_node - 1));
+	std::vector<node> reachable(t.get_num_nodes_component(one_node - 1));
 	{
 	auto it = reachable.begin();
 	internal::BFS<free_tree> bfs(t);
@@ -354,9 +353,9 @@ noexcept
 		else {
 			// uq: unsigned 'q'
 			const uint64_t uq = *q;
-			cost = numeric_limits<uint64_t>::max();
+			cost = std::numeric_limits<uint64_t>::max();
 
-			vector<edge> edges(2*uq + 1);
+			std::vector<edge> edges(2*uq + 1);
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
 				edges[i].first = u - 1;
 				edges[i].second = ord[i].second - 1;
@@ -372,7 +371,7 @@ noexcept
 			}
 
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
-				const vector<uint64_t> Q_i = get_Q(uq, i);
+				const std::vector<uint64_t> Q_i = get_Q(uq, i);
 
 				t.add_edge(u - 1, ord[i].second - 1);
 
@@ -478,9 +477,9 @@ noexcept
 		else {
 			// up: unsigned 'p'
 			const uint64_t up = *p;
-			cost = numeric_limits<uint64_t>::max();
+			cost = std::numeric_limits<uint64_t>::max();
 
-			vector<edge> edges(2*up + 2);
+			std::vector<edge> edges(2*up + 2);
 			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
 				edges[i].first = one_node - 1;
 				edges[i].second = ord[i].second - 1;
@@ -496,7 +495,7 @@ noexcept
 			}
 
 			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
-				const vector<uint64_t> P_i = get_P(up, i);
+				const std::vector<uint64_t> P_i = get_P(up, i);
 				t.add_edge(one_node - 1, ord[i].second - 1, false, false);
 
 				uint64_t c_i = 0;
@@ -651,7 +650,7 @@ noexcept
 
 } // -- namespaec dmin_chung
 
-pair<uint64_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -664,7 +663,7 @@ noexcept
 	free_tree T = t;
 	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() - 1, arr, c);
 
-	return make_pair(c, arr);
+	return std::make_pair(c, arr);
 }
 
 } // -- namespace internal

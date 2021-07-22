@@ -46,7 +46,7 @@ namespace linarr {
 
 // **DEVELOPER NOTE**
 // This enumeration's documentation has to be updated manually in the
-// algorithms_C.py python file.
+// algorithms_Dmin.py python file.
 /**
  * @brief The different algorithms for computing the minimum sum of the
  * length of the edges \f$D\f$.
@@ -57,25 +57,21 @@ namespace linarr {
  */
 enum class algorithms_Dmin {
     /**
-	 * @brief Yossi Shiloach's algorithm to calculate unconstrained optimal
-	 * linearization of free trees.
+	 * @brief Yossi Shiloach's algorithm.
 	 *
 	 * This value makes the @ref lal::linarr::min_sum_edge_lengths function choose
 	 * the implementation of Yossi Shiloach's algorithm. This algorithm was
 	 * published in \cite Shiloach1979a. The implementation of this algorithm
 	 * applies the corrections published in \cite Esteban2017a.
-     */
-    Unconstrained_YS,
+	 */
+	Shiloach,
     /**
-	 * @brief Fan Chung's algorithm to calculate unconstrained optimal
-	 * linearization of free trees.
+	 * @brief Fan Chung's quadratic algorithm.
      *
-	 * This value makes the @ref lal::linarr::min_sum_edge_lengths function choose
-	 * the implementation of Fan Chung's algorithm. This algorithm was published
-	 * in \cite Chung1984a. In particular, this implements Fan Chung's quadratic
-	 * algorithm (Section 3).
-     */
-    Unconstrained_FC
+	 * This algorithm was published in \cite Chung1984a. In particular, this
+	 * implements Fan Chung's quadratic algorithm (Section 3).
+	 */
+	Chung_2
 };
 
 } // -- namespace linarr

@@ -3,7 +3,7 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019
+ *  Copyright (C) 2019 - 2021
  *
  *  This file is part of Linear Arrangement Library. To see the full code
  *  visit the webpage:
@@ -39,64 +39,48 @@
  *
  ********************************************************************/
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-#include <utility>
-using namespace std;
-
-// lal includes
-#include <lal/linarr/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
-
-#include <lal/internal/linarr/Dmin_Projective_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Projective_HS.hpp>
-
-#include <lal/internal/linarr/Dmin_Planar_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Planar_HS.hpp>
-
-#include <lal/internal/linarr/Dmin_Unconstrained_FC.hpp>
-#include <lal/internal/linarr/Dmin_Unconstrained_YS.hpp>
+#pragma once
 
 namespace lal {
-using namespace graphs;
-
 namespace linarr {
 
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths(const free_tree& t, const algorithms_Dmin& a)
-noexcept
-{
-	if (a == algorithms_Dmin::Shiloach) {
-		return internal::Dmin_Unconstrained_YS(t);
-	}
+// **DEVELOPER NOTE**
+// This enumeration's documentation has to be updated manually in the
+// algorithms_Dmin_projective.py python file.
 
-	return internal::Dmin_Unconstrained_FC(t);
-}
+/**
+ * @brief The different algorithms for computing the minimum sum of the
+ * length of the edges \f$D\f$ in projective arrangements of rooted trees.
+ *
+ * Recall that a projective arrangement is one in which there are no edge
+ * crossings and the root is not covered by any edge.
+ *
+ * This enumeration's values are used to choose the algorithm which the functions
+ * @ref lal::linarr::min_sum_edge_lengths_projective use to compute the minimum
+ * value of the sum of the length of the edges \f$D\f$.
+ */
+enum class algorithms_Dmin_projective {
+	/**
+	 * @brief Alemany-Esteban-Ferrer's algorithm.
+	 *
+	 * Interval-based approach to the calculation of minimum projective arrangements.
+	 * Algorithm published in \cite Alemany2021a.
+	 *
+	 * This algorithm's complexity is \f$O(n)\f$.
+	 */
+	AlemanyEstebanFerrer,
 
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_planar(const free_tree& t, const algorithms_Dmin_planar& a)
-noexcept
-{
-	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
-		return internal::Dmin_Planar_AEF(t);
-	}
-
-	return internal::Dmin_Planar_HS(t);
-}
-
-pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_projective(const rooted_tree& t, const algorithms_Dmin_projective& a)
-noexcept
-{
-	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
-		return internal::Dmin_Projective_AEF(t);
-	}
-
-	return internal::Dmin_Projective_HS(t);
-}
+	/**
+	 * @brief Hochberg-Stallmann's algorithm.
+	 *
+	 * Displacement-based approach to the calculation of minimum projective
+	 * arrangements. The algorithm was originally published in \cite Hochberg2003a,
+	 * however, the implementation uses the correction in \cite Alemany2021a.
+	 *
+	 * This algorithm's complexity is \f$O(n)\f$.
+	 */
+	HochbergStallmann,
+};
 
 } // -- namespace linarr
 } // -- namespace lal

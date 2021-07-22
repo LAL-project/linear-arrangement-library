@@ -111,12 +111,13 @@ HEADERS += \
 	internal/linarr/C_brute_force.hpp \
 	internal/linarr/C_dyn_prog.hpp \
 	internal/linarr/C_ladder.hpp \
-	internal/linarr/Dmin_Projective_rooted_adjacency_list.hpp \
+	internal/linarr/Dmin_Planar_AEF.hpp \
+	internal/linarr/Dmin_Planar_HS.hpp \
+	internal/linarr/Dmin_Projective_AEF.hpp \
+	internal/linarr/Dmin_Projective_HS.hpp \
+	internal/linarr/Dmin_utils.hpp \
 	internal/linarr/algorithms_crossings.hpp \
 	internal/linarr/C_stack_based.hpp \
-	internal/linarr/Dmin.hpp \
-	internal/linarr/Dmin_Planar.hpp \
-	internal/linarr/Dmin_Projective.hpp \
 	internal/linarr/Dmin_Unconstrained_FC.hpp \
 	internal/linarr/Dmin_Unconstrained_YS.hpp \
 	internal/linarr/syntactic_dependency_structure.hpp \
@@ -162,6 +163,8 @@ HEADERS += \
 	linarr/algorithms_Dmin.hpp \
 	linarr/1level.hpp \
 	linarr/2level.hpp \
+	linarr/algorithms_Dmin_planar.hpp \
+	linarr/algorithms_Dmin_projective.hpp \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/flux.hpp \
