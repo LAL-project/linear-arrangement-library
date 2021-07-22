@@ -201,8 +201,7 @@ target_sources(
 		internal/linarr/Dmin_Projective_HS.hpp
 		internal/linarr/Dmin_Unconstrained_FC.hpp
 		internal/linarr/Dmin_Unconstrained_YS.hpp
-		internal/linarr/Dmin_utils_definitions.hpp
-		internal/linarr/Dmin_utils_functions.hpp
+		internal/linarr/Dmin_utils.hpp
 		internal/linarr/syntactic_dependency_structure.hpp
 		#      numeric
 		internal/numeric/utils.hpp
