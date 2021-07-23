@@ -127,7 +127,7 @@ public:
 	inline edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
 
 	/// Returns the current edge pair and advances the iterator
-	inline edge yield_edge_pair() noexcept {
+	inline edge_pair yield_edge_pair() noexcept {
 		const auto e = get_edge_pair();
 		next();
 		return e;
