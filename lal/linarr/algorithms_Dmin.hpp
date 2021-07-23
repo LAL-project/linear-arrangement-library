@@ -59,17 +59,17 @@ enum class algorithms_Dmin {
     /**
 	 * @brief Yossi Shiloach's algorithm.
 	 *
-	 * This value makes the @ref lal::linarr::min_sum_edge_lengths function choose
-	 * the implementation of Yossi Shiloach's algorithm. This algorithm was
-	 * published in \cite Shiloach1979a. The implementation of this algorithm
-	 * applies the corrections published in \cite Esteban2017a.
+	 * Shiloach's quadratic algorithm \f$O(n^{2.2})\f$. Said algorithm was
+	 * published in \cite Shiloach1979a, but the implementation applies the
+	 * correction published in \cite Esteban2017a.
 	 */
 	Shiloach,
     /**
 	 * @brief Fan Chung's quadratic algorithm.
      *
-	 * This algorithm was published in \cite Chung1984a. In particular, this
-	 * implements Fan Chung's quadratic algorithm (Section 3).
+	 * Fan Chung's quadratic algorithm \f$O(n^2)\f$. Said algorithm was published
+	 * in \cite Chung1984a. In particular, this implements Fan Chung's quadratic
+	 * algorithm (Section 3).
 	 */
 	Chung_2
 };
