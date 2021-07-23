@@ -235,8 +235,8 @@ enum class treebank_feature {
 	/**
 	 * @brief Unconstrained minimum sum of length of edges.
 	 *
-	 * See @ref lal::linarr::algorithms_Dmin::Unconstrained_YS, or
-	 * @ref lal::linarr::algorithms_Dmin::Unconstrained_FC for details.
+	 * See @ref lal::linarr::algorithms_Dmin for details. The algorithm used
+	 * is @ref lal::linarr::algorithms_Dmin::Shiloach.
 	 */
 	min_sum_edge_lengths,
 	/**

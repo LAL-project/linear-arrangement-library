@@ -61,7 +61,7 @@ namespace linarr {
  * See the description of the values in @ref lal::linarr::algorithms_Dmin for
  * details on the algorithm implemented and to see references to the papers.
  * @param t Input free tree.
- * @param a The algorithm to run.
+ * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
@@ -81,7 +81,7 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_undirected())
  * @param t Input rooted tree.
- * @param a The algorithm to run.
+ * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
@@ -106,7 +106,7 @@ inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
  * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
  * @param t Input free tree.
- * @param a The algorithm to run.
+ * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -129,7 +129,7 @@ noexcept;
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_undirected())
  * @param t Input rooted tree.
- * @param a The algorithm to run.
+ * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -154,6 +154,7 @@ noexcept
  * time algorithm to solve this problem was oulined in \cite Gildea2007a.
  *
  * @param t Input rooted tree.
+ * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
