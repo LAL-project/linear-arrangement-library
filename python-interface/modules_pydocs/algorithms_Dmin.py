@@ -1,27 +1,22 @@
 r"""
 The different algorithms for computing the minimum sum of the length of the edges :math:`D` 
 
-This enumeration's values are used to choose the algorithm which the functions ``lal.linarr.Dmin`` use to compute the minimum value of the sum of the length the edges :math:`D` 
+This enumeration's values are used to choose the algorithm which the functions ``lal.linarr.min_sum_edge_lengths`` use to compute the minimum value of the sum of the length the edges :math:`D` 
 
 Algorithms for free trees
 -------------------------
 
-- Yossi Shiloach's algorithm to calculate unconstrained optimal linearization of free trees.
+- Yossi Shiloach's algorithm.
 
-	Value: ``Unconstrained_YS``
+	Value: ``Shiloach``
 	
-	This value makes the ``lal.linarr.Dmin`` function choose the implementation
-	of Yossi Shiloach's algorithm. This algorithm was published in [1].
-	The implementation of this algorithm applies the corrections published
-	in [2].
+	Shiloach's quadratic algorithm :math:`O(n^{2.2})`. Said algorithm was published in [1], but the implementation applies the correction published in [2].
 
-- Fan Chung's algorithm to calculate unconstrained optimal linearization of free trees.
+- Fan Chung's quadratic algorithm.
 
-	Value: ``Unconstrained_FC``
+	Value: ``Chung_2``
 
-	This value makes the ``lal.linarr.Dmin`` function choose the implementation
-	of Fan Chung's algorithm. This algorithm was published in \cite [3].
-	In particular, this implements Fan Chung's quadratic algorithm (Section 3).
+	Fan Chung's quadratic algorithm :math:`O(n^2)`. Said algorithm was published in [3]. In particular, this implements Fan Chung's quadratic algorithm (Section 3).
 
 References:
 -----------

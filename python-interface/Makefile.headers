@@ -13,6 +13,8 @@ TREE_TYPE_DPHDRS	= $(LAL_INC_DIR)/lal/graphs/tree_type.hpp
 ALG_C_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_C.hpp
 
 ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
+ALG_DMIN_PL_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin_planar.hpp
+ALG_DMIN_PR_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin_projective.hpp
 
 # DEFINITIONS
 
@@ -79,6 +81,8 @@ LINARR_DPHDRS		= $(GRAPHS_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/2level.hpp \
 					  $(ALG_C_DPHDRS) \
 					  $(ALG_DMIN_DPHDRS) \
+					  $(ALG_DMIN_PL_DPHDRS) \
+					  $(ALG_DMIN_PR_DPHDRS) \
 					  $(LAL_INC_DIR)/lal/linarr/C.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/D.hpp \
 					  $(LAL_INC_DIR)/lal/linarr/dependency_flux.hpp \

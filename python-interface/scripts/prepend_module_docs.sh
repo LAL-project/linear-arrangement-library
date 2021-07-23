@@ -54,6 +54,12 @@ if [ "$line" != "r\"\"\"" ]; then
 	elif [[ "$f" == *"algorithms_C"* ]]; then
 		prepend modules_pydocs/algorithms_C.py $f
 	
+	elif [[ "$f" == *"algorithms_Dmin_projective"* ]]; then
+		prepend modules_pydocs/algorithms_Dmin_projective.py $f
+	
+	elif [[ "$f" == *"algorithms_Dmin_planar"* ]]; then
+		prepend modules_pydocs/algorithms_Dmin_planar.py $f
+	
 	elif [[ "$f" == *"algorithms_Dmin"* ]]; then
 		prepend modules_pydocs/algorithms_Dmin.py $f
 	

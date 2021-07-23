@@ -8,6 +8,8 @@
 %import enums/syntactic_dependency_structure.i
 %import enums/algorithms_C.i
 %import enums/algorithms_Dmin.i
+%import enums/algorithms_Dmin_planar.i
+%import enums/algorithms_Dmin_projective.i
 // these are necessary for the wrapper
 %import graphs.i
 %import numeric.i

@@ -40,7 +40,7 @@ D
 - ``exp_sum_edge_lengths_planar`` : Expectation of :math:`D` constrained to planar arrangements, :math:`E_{pl}[D]`. See ``lal.properties.exp_sum_edge_lengths_planar`` for details.
 - ``var_sum_edge_lengths`` : Variance of :math:`D`, :math:`V[D]`. See ``lal.properties.var_sum_edge_lengths`` for details.
 - ``z_score_sum_edge_lengths`` : z-score of :math:`D` , :math:`\frac{D - E[D]}{\sqrt{V[D]}}`. See ``lal.properties.var_sum_edge_lengths`` for details on how the variance of :math:`D`, :math:`V[D]`, is calculated.
-- ``min_sum_edge_lengths`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin.Unconstrained_YS``, or ``lal.linarr.algorithms_Dmin.Unconstrained_FC`` for details.
+- ``min_sum_edge_lengths`` : Unconstrained minimum sum of length of edges. See ``lal.linarr.algorithms_Dmin`` for details. The default algorithm used is ``lal.linarr.algorithms_Dmin.Shiloach``.
 - ``min_sum_edge_lengths_planar`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.min_sum_edge_lengths_planar`` for details.
 - ``min_sum_edge_lengths_projective`` : Minimum sum of length of edges under the planary constraint. See ``lal.linarr.min_sum_edge_lengths_projective`` for details.
 - ``mean_dependency_distance`` : Mean dependency distance of the tree. See ``lal.linarr.mean_dependency_distance`` for details.
