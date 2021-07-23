@@ -77,6 +77,14 @@ namespace iterators {
  * 			it.next();
  *		}
  * @endcode
+ * or, in a more compact way:
+ * @code
+ *		Q_iterator it(g); // g is a graph
+ *		while (not it.end()) {
+ *			const auto [e1,e2] = it.yield_edge_pair();
+ *			// ...
+ *		}
+ * @endcode
  * Alternatively, the @ref lal::iterators::Q_iterator object can be used in a
  * for loop:
  * @code
@@ -117,6 +125,13 @@ public:
 
 	/// Returns the current edge pair.
 	inline edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
+
+	/// Returns the current edge pair and advances the iterator
+	inline edge yield_edge_pair() noexcept {
+		const auto e = get_edge_pair();
+		next();
+		return e;
+	}
 
 	/* MODIFIERS */
 

@@ -72,11 +72,19 @@ namespace iterators {
  *			it.next();
  *		}
  * @endcode
+ * or, in a more compact way
+ * @code
+ *		E_iterator it(g); // g is a graph
+ *		while (not it.end()) {
+ *			const auto [u,v] = it.get_edge();
+ *			// ...
+ *		}
+ * @endcode
  * Alternatively, the @ref lal::iterators::E_iterator object can be used in a
  * for loop:
  * @code
  *		for (E_iterator it(g); not it.end(); it.next()) {
- *			const auto [u,v] = it.get_edge();
+ *			const auto [u,v] = it.yield_edge();
  *			// ...
  *		}
  * @endcode
@@ -111,6 +119,13 @@ public:
 
 	/// Returns the current edge.
 	inline edge get_edge() const noexcept { return m_cur_edge; }
+
+	/// Returns the current edge and advances the iterator
+	inline edge yield_edge() noexcept {
+		const auto e = get_edge();
+		next();
+		return e;
+	}
 
 	/* MODIFIERS */
 
