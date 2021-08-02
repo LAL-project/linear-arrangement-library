@@ -63,30 +63,6 @@ namespace numeric {
 
 // PUBLIC
 
-integer::integer(mpz_t&& raw) {
-	internal::move_mpz_to_mpz(raw, m_val);
-	m_initialized = true;
-}
-
-integer::integer(integer&& i) noexcept {
-	// move i's contents
-	internal::move_mpz_to_mpz(i.m_val, m_val);
-	i.m_initialized = false;
-}
-
-/* OPERATORS */
-
-integer& integer::operator= (integer&& i) noexcept {
-	mpz_clear(m_val);
-
-	// move i's contents
-	internal::move_mpz_to_mpz(i.m_val, m_val);
-	m_initialized = true;
-
-	i.m_initialized = false;
-	return *this;
-}
-
 /* ARITHMETIC OPERATORS */
 
 // -- EXPONENTIATION

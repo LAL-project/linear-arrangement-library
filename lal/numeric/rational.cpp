@@ -55,47 +55,7 @@ namespace numeric {
 
 // PUBLIC
 
-rational::rational(integer&& i) noexcept {
-	internal::move_mpz_to_mpq(i.m_val, m_val);
-	i.m_initialized = false;
-}
-
-rational::rational(integer&& n, integer&& d) noexcept {
-	// move n's and d's contents
-	internal::move_mpz_to_mpq(n.m_val, d.m_val, m_val);
-	mpq_canonicalize(m_val);
-
-	n.m_initialized = false;
-	d.m_initialized = false;
-}
-
-rational::rational(rational&& r) noexcept {
-	internal::move_mpq_to_mpq(r.m_val, m_val);
-	r.m_initialized = false;
-}
-
-/* OPERATORS */
-
-rational& rational::operator= (integer&& i) noexcept {
-	mpq_clear(m_val);
-
-	internal::move_mpz_to_mpq(i.m_val, m_val);
-	m_initialized = true;
-
-	i.m_initialized = false;
-	return *this;
-}
-
-rational& rational::operator= (rational&& r) noexcept {
-	mpq_clear(m_val);
-
-	// move r's contents
-	internal::move_mpq_to_mpq(r.m_val, m_val);
-	m_initialized = true;
-
-	r.m_initialized = false;
-	return *this;
-}
+/* ARITHMETIC OPERATORS */
 
 // -- DIVISION
 
@@ -152,17 +112,9 @@ void rational::as_integer(integer& i) const noexcept {
 	mpq_get_den(denominator, m_val);
 
 	// integer division (numerator/denominator)
-	mpz_div(numerator, numerator, denominator);
+	mpz_div(i.m_val, numerator, denominator);
 
-	// free the contents of integer 'i' if needed
-	if (i.is_initialized()) { mpz_clear(i.m_val); }
-	// MOVE 'numerator' into 'i'
-	internal::move_mpz_to_mpz(numerator, i.m_val);
-
-	// there is no need to clear 'numerator' since the function
-	// 'move_mpz_to_mpz' does it for us (it really doesn't -- it just
-	// moves the contens!).
-	mpz_clear(denominator);
+	mpz_clears(numerator, denominator);
 }
 
 } // -- namespace numeric

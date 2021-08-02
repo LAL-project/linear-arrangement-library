@@ -65,8 +65,22 @@ public:
 
 	/// Empty constructor.
 	integer() noexcept { mpz_init(m_val); }
-	/// Constructor with mpz_t.
-	integer(mpz_t&& raw);
+#ifndef SWIG
+	/**
+	 * @brief Constructor with mpz_t.
+	 * @post Object @e raw will have to be initialized by the callee.
+	 */
+	integer(mpz_t&& raw) noexcept {
+		// move raw's contents
+		*m_val = *raw;
+		m_initialized = true;
+		
+		// invalidate raw's contents
+		raw->_mp_alloc = 0;
+		raw->_mp_size = 0;
+		raw->_mp_d = nullptr;
+	}
+#endif
 	/**
 	 * @brief Constructor with unsigned integer value.
 	 * @param i An integer (basic type) number.
@@ -85,8 +99,18 @@ public:
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer.
+	 * @post Object @e i is not initialized.
 	 */
-	integer(integer&& i) noexcept;
+	integer(integer&& i) noexcept {
+		// move i's contents
+		*m_val = *i.m_val;
+		
+		// invalidate i's contents
+		i.m_val->_mp_alloc = 0;
+		i.m_val->_mp_size = 0;
+		i.m_val->_mp_d = nullptr;
+		i.m_initialized = false;
+	}
 #endif
 	/**
 	 * @brief Copy constructor.
@@ -154,8 +178,23 @@ public:
 	/**
 	 * @brief Move assignment operator.
 	 * @param i A @ref lal::numeric::integer.
+	 * @post Object @e i is not initialized.
 	 */
-	integer& operator= (integer&& i) noexcept;
+	integer& operator= (integer&& i) noexcept {
+		mpz_clear(m_val);
+
+		// move i's contents
+		*m_val = *i.m_val;
+		m_initialized = true;
+		
+		// invalidate i's contents
+		i.m_val->_mp_alloc = 0;
+		i.m_val->_mp_size = 0;
+		i.m_val->_mp_d = nullptr;
+		i.m_initialized = false;
+
+		return *this;
+	}
 #endif
 
 	// -- EQUALITY

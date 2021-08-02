@@ -1,4 +1,4 @@
-/*********************************************************************
+﻿/*********************************************************************
  *
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
@@ -108,101 +108,6 @@ inline
 size_t mpz_bytes(const mpz_t& v) noexcept {
 	const size_t alloc = static_cast<size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;
-}
-
-/* Moving gmp types */
-
-namespace __lal {
-
-// Move contents of 'source' and give them to 'target'
-inline void move_from_source_to_target
-(__mpz_struct& source, __mpz_struct& target)
-noexcept
-{
-	target._mp_alloc = source._mp_alloc;
-	target._mp_size = source._mp_size;
-	target._mp_d = source._mp_d;
-
-	// We need to make sure 'source' is not going to be
-	// cleared, otherwise we'll loose the contents in *this.
-	source._mp_alloc = 0;
-	source._mp_size = 0;
-	source._mp_d = nullptr;
-}
-
-} // -- namespace __lal
-
-/*
- * @brief Move the contents from 'source' to 'target'.
- *
- * The contents are moved in a way that 'source' no longer has them.
- * @param[in] source The mpz_t whose contents we want.
- * @param[out] target The mpz_t with the contents of 'source'.
- * @pre @e source must be initialised.
- * @pre Optionally, target can be initialised, but should not have been
- * assigned any value (otherwise its contents are never going to be freed,
- * thus causing memory leaks).
- * @post @e source does not hold any value.
- */
-inline
-void move_mpz_to_mpz(mpz_t& source, mpz_t& target) noexcept {
-	__lal::move_from_source_to_target(source[0], target[0]);
-}
-
-/*
- * @brief Move the contents from 'source' to 'target'.
- *
- * The contents are moved in a way that 'source' no longer has them.
- * @param[in] source The mpq_t whose contents we want.
- * @param[out] target The mpq_t with the contents of 'source'.
- * @pre @e source must be initialised.
- * @pre @e target should not be initialised (otherwise its contents
- * are never going to be freed, thus causing memory leaks).
- * @post @e source does not hold any value.
- */
-inline
-void move_mpq_to_mpq(mpq_t& source, mpq_t& target) noexcept {
-	__lal::move_from_source_to_target(source[0]._mp_num, target[0]._mp_num);
-	__lal::move_from_source_to_target(source[0]._mp_den, target[0]._mp_den);
-}
-
-/*
- * @brief Move the contents from 'source' to 'target'.
- *
- * The contents are moved in a way that 'source' no longer has them.
- * @param[in] source The mpz_t whose contents we want (numerator).
- * @param[out] target The mpq_t with the contents of 'source'.
- * @pre @e source must be initialised.
- * @pre @e target should not be initialised (otherwise its contents
- * are never going to be freed, thus causing memory leaks).
- * @post @e source does not hold any value.
- * @post The denominator of @e target is initialised to 1
- */
-inline
-void move_mpz_to_mpq(mpz_t& source, mpq_t& target) noexcept {
-	// move numerator
-	__lal::move_from_source_to_target(source[0], target[0]._mp_num);
-	// set the denominator to 1
-	mpz_init_set_ui(&target[0]._mp_den, 1);
-	mpq_canonicalize(target);
-}
-
-/*
- * @brief Move the contents from 'source' to 'target'.
- *
- * The contents are moved in a way that 'source' no longer has them.
- * @param[in] source_n The mpz_t whose contents we want (numerator).
- * @param[in] source_d The mpz_t whose contents we want (denominator).
- * @param[out] target The mpq_t with the contents of 'source'.
- * @pre @e source must be initialised.
- * @pre @e target should not be initialised (otherwise its contents
- * are never going to be freed, thus causing memory leaks).
- * @post @e source does not hold any value.
- */
-inline
-void move_mpz_to_mpq(mpz_t& source_n, mpz_t& source_d, mpq_t& target) noexcept {
-	__lal::move_from_source_to_target(source_n[0], target[0]._mp_num);
-	__lal::move_from_source_to_target(source_d[0], target[0]._mp_den);
 }
 
 } // -- namespace internal

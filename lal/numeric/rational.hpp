@@ -96,20 +96,65 @@ public:
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
-	 * @param v A @ref lal::numeric::integer
+	 * @param i A @ref lal::numeric::integer
 	 */
-	rational(integer&& v) noexcept;
+	rational(integer&& i) noexcept {
+		// move i's contents into numerator
+		m_val[0]._mp_num = *i.m_val;
+		// set the denominator to 1
+		mpz_init_set_ui(&m_val[0]._mp_den, 1);
+		// we must canonicalize
+		mpq_canonicalize(m_val);
+		
+		// invalidate i's contents
+		i.m_val->_mp_alloc = 0;
+		i.m_val->_mp_size = 0;
+		i.m_val->_mp_d = nullptr;
+		i.m_initialized = false;
+	}
 	/**
 	 * @brief Move constructor with numerator and denominator.
 	 * @param n Numerator, a @ref lal::numeric::integer.
 	 * @param d Denominator, a @ref lal::numeric::integer.
+	 * @post Objects @e n and @e d are not initialized.
 	 */
-	rational(integer&& n, integer&& d) noexcept;
+	rational(integer&& n, integer&& d) noexcept {
+		// move n's contents into numerator
+		m_val[0]._mp_num = *n.m_val;
+		// move d's contents into denominator
+		m_val[0]._mp_den = *d.m_val;
+		// we must canonicalize
+		mpq_canonicalize(m_val);
+
+		// invalidate n's contents
+		n.m_val->_mp_alloc = 0;
+		n.m_val->_mp_size = 0;
+		n.m_val->_mp_d = nullptr;
+		n.m_initialized = false;
+
+		// invalidate d's contents
+		d.m_val->_mp_alloc = 0;
+		d.m_val->_mp_size = 0;
+		d.m_val->_mp_d = nullptr;
+		d.m_initialized = false;
+	}
 	/**
 	 * @brief Move constructor.
 	 * @param r A @ref lal::numeric::rational.
+	 * @post Object @e r is not initialized.
 	 */
-	rational(rational&& r) noexcept;
+	rational(rational&& r) noexcept {
+		*m_val = *r.m_val;
+
+		// invalidate r's contents
+		r.m_val->_mp_num._mp_alloc = 0;
+		r.m_val->_mp_num._mp_size = 0;
+		r.m_val->_mp_num._mp_d = nullptr;
+		r.m_val->_mp_den._mp_alloc = 0;
+		r.m_val->_mp_den._mp_size = 0;
+		r.m_val->_mp_den._mp_d = nullptr;
+		r.m_initialized = false;
+	}
 #endif
 	/// Destructor.
 	~rational() noexcept { mpq_clear(m_val); }
@@ -201,13 +246,52 @@ public:
 	/**
 	 * @brief Move assignment operator.
 	 * @param i A @ref lal::numeric::integer.
+	 * @post Object @e i is not initialized.
 	 */
-	rational& operator= (integer&& i) noexcept;
+	rational& operator= (integer&& i) noexcept {
+		// clear this's contents
+		mpq_clear(m_val);
+		m_initialized = true;
+
+		// move i's contents into numerator
+		m_val[0]._mp_num = *i.m_val;
+		// set the denominator to 1
+		mpz_init_set_ui(&m_val[0]._mp_den, 1);
+		// we must canonicalize
+		mpq_canonicalize(m_val);
+
+		// invalidate i's contents
+		i.m_val->_mp_alloc = 0;
+		i.m_val->_mp_size = 0;
+		i.m_val->_mp_d = nullptr;
+		i.m_initialized = false;
+
+		return *this;
+	}
 	/**
 	 * @brief Move assignment operator.
 	 * @param r A @ref lal::numeric::rational.
+	 * @post Object @e i is not initialized.
 	 */
-	rational& operator= (rational&& r) noexcept;
+	rational& operator= (rational&& r) noexcept {
+		// clear this's contents
+		mpq_clear(m_val);
+		m_initialized = true;
+
+		// move r's contents into this's
+		*m_val = *r.m_val;
+
+		// invalidate r's contents
+		r.m_val->_mp_num._mp_alloc = 0;
+		r.m_val->_mp_num._mp_size = 0;
+		r.m_val->_mp_num._mp_d = nullptr;
+		r.m_val->_mp_den._mp_alloc = 0;
+		r.m_val->_mp_den._mp_size = 0;
+		r.m_val->_mp_den._mp_d = nullptr;
+		r.m_initialized = false;
+
+		return *this;
+	}
 #endif
 
 	// -- EQUALITY
