@@ -19,7 +19,7 @@ env:
   UB_DEB_DIR: ${{github.workspace}}/ubuntu-build-debug
   
   # the directory of the library's source code (and which contains the CMakeLists.txt)
-  WI_LAL_DIR: D:\a\linear-arrangement-library\linear-arrangement-library
+  WI_LAL_DIR: D:\a\linear-arrangement-library\linear-arrangement-library/lal
   # directories of the different builds
   WI_REL_DIR: ${{github.workspace}}/windows-build-release
   WI_DEB_DIR: ${{github.workspace}}/windows-build-debug
