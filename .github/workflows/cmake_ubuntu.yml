@@ -7,8 +7,6 @@ on:
     branches: [ master ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
   # the directory of the library's source code (and which contains the CMakeLists.txt)
   LAL_DIR: /home/runner/work/linear-arrangement-library/linear-arrangement-library/lal
   # directories of the different builds
@@ -34,6 +32,6 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{env.RELEASE_DIR}} --config Release ;
-           cmake --build ${{env.DEBUG_DIR}} --config Debug
+      run: cmake --build ${{env.RELEASE_DIR}} --config Release -j4 ;
+           cmake --build ${{env.DEBUG_DIR}} --config Debug -j4
       
