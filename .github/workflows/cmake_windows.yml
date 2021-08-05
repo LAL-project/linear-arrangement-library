@@ -1,0 +1,34 @@
+name: CMake
+
+on:
+  push:
+    branches: [ master ]
+  
+  pull_request:
+    branches: [ master ]
+  
+  #schedule:
+  #  # execute the workflow every day at 02:00
+  #  - cron:  '0 2 * * *'
+
+env:  
+  # the directory of the library's source code (and which contains the CMakeLists.txt)
+  LAL_DIR: D:\a\linear-arrangement-library\linear-arrangement-library/lal
+  # directories of the different builds
+  REL_DIR: ${{github.workspace}}/windows-build-release
+  DEB_DIR: ${{github.workspace}}/windows-build-debug
+
+jobs:
+  windows_build:
+    runs-on: windows-2019
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure CMake on Windows
+      run: cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${{env.LAL_DIR}} -B ${{env.REL_DIR}} -DCMAKE_BUILD_TYPE=Release ;
+           cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${{env.LAL_DIR}} -B ${{env.DEB_DIR}} -DCMAKE_BUILD_TYPE=Debug
+    
+    - name: Build on Windows
+      run: cmake --build ${{env.REL_DIR}} --config Release -j4 ;
+           cmake --build ${{env.DEB_DIR}} --config Debug -j4
