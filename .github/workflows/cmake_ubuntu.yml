@@ -1,29 +1,17 @@
 name: CMake
 
 on:
-  push:
-    branches: [ master ]
-  
-  pull_request:
-    branches: [ master ]
-  
-  #schedule:
-  #  # execute the workflow every day at 02:00
-  #  - cron:  '0 2 * * *'
+  schedule:
+    # execute the workflow every day at 02:00
+    - cron:  '0 2 * * *'
 
 env:
   # the directory of the library's source code (and which contains the CMakeLists.txt)
-  UB_LAL_DIR: /home/runner/work/linear-arrangement-library/linear-arrangement-library/lal
+  LAL_DIR: /home/runner/work/linear-arrangement-library/linear-arrangement-library/lal
   # directories of the different builds
-  UB_REL_DIR: ${{github.workspace}}/ubuntu-build-release
-  UB_DEB_DIR: ${{github.workspace}}/ubuntu-build-debug
+  REL_DIR: ${{github.workspace}}/ubuntu-build-release
+  DEB_DIR: ${{github.workspace}}/ubuntu-build-debug
   
-  # the directory of the library's source code (and which contains the CMakeLists.txt)
-  WI_LAL_DIR: D:\a\linear-arrangement-library\linear-arrangement-library/lal
-  # directories of the different builds
-  WI_REL_DIR: ${{github.workspace}}/windows-build-release
-  WI_DEB_DIR: ${{github.workspace}}/windows-build-debug
-
 jobs:
   ubuntu_build:
     runs-on: ubuntu-20.04
@@ -32,25 +20,9 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Configure CMake on Ubuntu
-      run: cmake ${{env.UB_LAL_DIR}} -B ${{env.UB_REL_DIR}} -DCMAKE_BUILD_TYPE=Release ;
-           cmake ${{env.UB_LAL_DIR}} -B ${{env.UB_DEB_DIR}} -DCMAKE_BUILD_TYPE=Debug
+      run: cmake ${{env.LAL_DIR}} -B ${{env.REL_DIR}} -DCMAKE_BUILD_TYPE=Release ;
+           cmake ${{env.LAL_DIR}} -B ${{env.DEB_DIR}} -DCMAKE_BUILD_TYPE=Debug
 
     - name: Build on Ubuntu
-      run: cmake --build ${{env.UB_REL_DIR}} --config Release -j4 ;
-           cmake --build ${{env.UB_DEB_DIR}} --config Debug -j4
-
-  windows_build:
-    runs-on: windows-2019
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Configure CMake on Windows
-      run: cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${{env.WI_LAL_DIR}} -B ${{env.WI_REL_DIR}} -DCMAKE_BUILD_TYPE=Release ;
-           cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ${{env.WI_LAL_DIR}} -B ${{env.WI_DEB_DIR}} -DCMAKE_BUILD_TYPE=Debug
-    
-    - name: Build on Windows
-      run: cmake --build ${{env.WI_REL_DIR}} --config Release -j4 ;
-           cmake --build ${{env.WI_DEB_DIR}} --config Debug -j4
-    
-  
+      run: cmake --build ${{env.REL_DIR}} --config Release -j4 ;
+           cmake --build ${{env.DEB_DIR}} --config Debug -j4
