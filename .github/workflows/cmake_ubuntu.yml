@@ -9,6 +9,11 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  # the directory of the library's source code (and which contains the CMakeLists.txt)
+  LAL_DIR: /home/runner/work/linear-arrangement-library/linear-arrangement-library/lal
+  # directories of the different builds
+  RELEASE_DIR: ${{github.workspace}}/build-release
+  DEBUG_DIR: ${{github.workspace}}/build-debug
 
 jobs:
   build:
@@ -24,11 +29,11 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build-release -DCMAKE_BUILD_TYPE=Release
-           cmake -B ${{github.workspace}}/build-debug -DCMAKE_BUILD_TYPE=Debug
+      run: cmake ${{env.LAL_DIR}} -B ${{env.RELEASE_DIR}} -DCMAKE_BUILD_TYPE=Release ;
+           cmake ${{env.LAL_DIR}} -B ${{env.DEBUG_DIR}} -DCMAKE_BUILD_TYPE=Debug
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build-release --config Release
-           cmake --build ${{github.workspace}}/build-debug --config Debug
+      run: cmake --build ${{env.RELEASE_DIR}} --config Release ;
+           cmake --build ${{env.DEBUG_DIR}} --config Debug
       
