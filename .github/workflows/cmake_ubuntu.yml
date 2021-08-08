@@ -1,9 +1,9 @@
-name: CMake
+name: CMake for Ubuntu
 
 on:
   schedule:
-    # execute the workflow every day at 02:00
-    - cron:  '0 2 * * *'
+    # execute the workflow on the 1st of every month at 02:00
+    - cron:  '0 2 1 * *'
 
 env:
   # the directory of the library's source code (and which contains the CMakeLists.txt)
