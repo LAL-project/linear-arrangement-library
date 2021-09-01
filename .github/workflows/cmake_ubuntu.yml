@@ -32,5 +32,8 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: compiled
-        path: ${{env.REL_DIR}}/liblal.so*
+        name: compilation-for-ubuntu
+        path: |
+          ${{env.REL_DIR}}/liblal.so*
+          ${{env.DEB_DIR}}/liblaldebug.so*
+
