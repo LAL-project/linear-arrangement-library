@@ -51,11 +51,8 @@ namespace properties {
 /**
  * @brief Calculate the centre of a rooted tree.
  *
- * Here, "centre" should not be confused with "centroid". The center is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
- * (pages 35-36) for further details.
+ * See @ref LAL_concepts__centre_centroid for details on the centre and centroid
+ * of a tree.
  * @param t Input tree.
  * @returns A tuple of two values: the nodes in the centre. If the tree has a
  * single central node, only the first node is valid and the second is assigned
@@ -69,11 +66,8 @@ std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept;
 /**
  * @brief Calculate the centre of a free tree.
  *
- * Here, "centre" should not be confused with "centroid". The center is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
- * (pages 35-36) for further details.
+ * See @ref LAL_concepts__centre_centroid for details on the centre and centroid
+ * of a tree.
  * @param t Input tree.
  * @returns A tuple of two values: the nodes in the centre. If the tree has a
  * single central node, only the first node is valid and the second is assigned

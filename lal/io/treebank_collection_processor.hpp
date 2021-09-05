@@ -63,26 +63,9 @@ namespace io {
  * This class, the objects of which will be referred to as the "processors",
  * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
- * @ref lal::io::treebank_feature for details on the features available.
- *
- * This class is meant to process a treebank collection only. A treebank collection is
- * a set of treebank files, each containing several syntactic dependency trees
- * of sentences. Each file is referred to as a treebank file. Each of these
- * files is referenced within a "main file list", henceforth called the "main
- * file". The main file is a two-column formatted file, the first of which
- * contains a self-descriptive name of the treebank that is indicated in the next
- * column.
- *
- * For example, the main file of a treebank collection of languages could contain:
- *
- *		arb path/to/file/ar-all.heads2
- *		eus path/to/file/eu-all.heads2
- *		ben path/to/file/bn-all.heads2
- *		...
- * 
- * where the first column contains a string referencing the treebank of a language
- * (in this case, by giving an ISO code of a language), and the second column
- * contains the full path to the file with the syntactic dependency trees.
+ * @ref lal::io::treebank_feature for details on the features available, and
+ * see @ref LAL_concepts__treebank_collection and @ref LAL_concepts__treebank for
+ * further details on treebank collections and treebanks.
  *
  * Every processor must be initialised prior to processing the collection. This is done
  * via method @ref init, which requires the path to the main file and the output

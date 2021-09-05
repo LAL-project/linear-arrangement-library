@@ -93,7 +93,6 @@ Alternatively, for a simpler usage,
 >>> while not ArrGen.end():
 >>>     arr = ArrGen.yield_arrangement()
 
-
 (remember to replace the numbers in the actual code!).
 
     *Remark:* In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for any :math:`n`-vertex star tree, the class ``all_projective_arrangements`` will enumerate :math:`n!` arrangements.

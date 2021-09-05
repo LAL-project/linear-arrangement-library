@@ -55,59 +55,9 @@ namespace io {
  * @brief A reader for a collection of treebanks.
  *
  * This class, the objects of which will be referred to as the "collection readers",
- * is an interface to help you do a custom processing of a set of treebanks. A
- * treebank collection is a set of files, each of which is a treebank. A treebank
- * is a file containing one or more lines, each describing a syntactic dependency
- * tree. If you want to output any of the features already calculated by
- * the library, use class @ref treebank_collection_processor instead; said class
- * is much easier to use and can process treebanks in parallel.
- *
- * Each tree in a treebank file is formatted as a list of whole positive numbers
- * (including zero), each representing a node of the tree. The number 0 denotes
- * the root of the tree, and a number at a certain position indicates its parent
- * node. For example, when number 4 is at position 9 it means that node 9 has
- * parent node 4. Therefore, if number 0 is at position 1 it means that node 1
- * is the root of the tree. A complete example of such a tree's representation
- * is the following
- *
- *       0 3 4 1 6 3
- *
- * which should be interpreted as
- *
- *		predecessor:       0 3 4 1 6 3
- *		node of the tree:  1 2 3 4 5 6
- *
- * Note that lines like these are not valid:
- *
- *		(1) 0 2 2 2 2 2
- *		(2) 2 0 0
- *
- * Line (1) is not valid due to a self-reference in the second position, and (2)
- * not being valid due to containing two '0' (i.e., two roots).
- *
- * A treebank collection reader helps you navigate through a treebank collection. It
- * does the job of initialising the @ref treebank_reader class, which is what
- * you need to do a custom process of a treebank file.
- *
- * Now, the treebank files are referenced within a "main file list", henceforth
- * called the main file. The main file's lines contain only two strings describing
- * a treebank. The first string is a self-descriptive name of the treebank (e.g.,
- * the ISO code of a language), and the second is the relative path to the file
- * containing the syntactic dependency trees (e.g., the syntactic dependency trees
- * of a language in a collection). The path is relative to the directory that contains
- * the main file.
- *
- * For example, the main file could be called \a stanford.txt, representing the
- * Stanford treebank collection, and could contain:
- *
- *		arb path/to/file/ar-all.heads2
- *		eus path/to/file/eu-all.heads2
- *		ben path/to/file/bn-all.heads2
- *		...
- *
- * where the first column contains a string referencing the language (in this case,
- * an ISO code), and the second column contains the relative path to the file
- * with the syntactic dependency trees.
+ * is an interface to help you do a custom processing of a set of treebanks (see
+ * @ref LAL_concepts__treebank_collection and @ref LAL_concepts__treebank for
+ * further details on treebanks and treebank collections).
  *
  * The user has to initialise a collection reader with the main file (the main file
  * list). For example, to read the Stanford collection the reader has to be initialised

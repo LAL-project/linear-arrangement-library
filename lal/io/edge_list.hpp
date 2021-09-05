@@ -65,10 +65,7 @@ namespace io {
 /**
  * @brief Reads a undirected graph in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge is described
- * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
- * with indices starting at 0. The resulting number of nodes of the graph will be
- * the maximum index in the file plus 1.
+ * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
  * @param norm Should the graph be normalised?
@@ -85,10 +82,7 @@ noexcept;
 /**
  * @brief Reads a directed graph in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge is described
- * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
- * with indices starting at 0. The resulting number of nodes of the graph will be
- * the maximum index in the file plus 1.
+ * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
  * @param norm Should the graph be normalised?
@@ -105,10 +99,7 @@ noexcept;
 /**
  * @brief Reads a free tree in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge is described
- * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
- * with indices starting at 0. The resulting number of nodes of the graph will be
- * the maximum index in the file plus 1.
+ * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
  * @param norm Should the graph be normalised?
@@ -125,10 +116,7 @@ noexcept;
 /**
  * @brief Reads a rooted tree in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge is described
- * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
- * with indices starting at 0. The resulting number of nodes of the graph will be
- * the maximum index in the file plus 1.
+ * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
  * @param norm Should the graph be normalised?
@@ -145,10 +133,7 @@ noexcept;
 /**
  * @brief Reads a graph in edge list format.
  *
- * This format consists of a list of all the graph's edges. Each edge is described
- * as a pair of indices of the nodes at each end of the edge. Nodes are labelled
- * with indices starting at 0. The resulting number of nodes of the graph will be
- * the maximum index in the file plus 1.
+ * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * This function calls
  * @ref lal::io::read_edge_list_undirected_graph,

@@ -7,8 +7,8 @@ This module contains the functions for input/output operations.
 
 The most basic operations read a graph from a file. The formats supported for reading are:
 
-- Edge list. See ``read_edge_list`` functions.
-- Head vector (see ``lal.head_vector`` for details). See ``read_head_vector`` functions.
+- Edge list (see "Edge list" page for details -- available only on html documentation). See ``read_edge_list`` functions.
+- Head vector (see "Head vector" page for details -- available only on html documentation). See ``read_head_vector`` functions.
 
 Users can also process collection of trees (called treebank files), and collections of treebank files (obviously, a treebank collection). One can process automatically a treebank file (see ``lal.io.treebank_processor``) or a treebank collection (see ``lal.io.treebank_collection_processor``), and iterate through the trees of a treebank file (see ``lal.io.treebank_reader``) and through the treebank files within a treebank collection (see ``lal.io.treebank_collection_reader``).
 

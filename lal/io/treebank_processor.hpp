@@ -63,8 +63,8 @@ namespace io {
  * data for a fixed set of features available in the library. See the enumeration
  * @ref lal::io::treebank_feature for details on the features available.
  *
- * This class is meant to process a single treebank only. A treebank file is
- * a plain text file that contains several syntactic dependency trees of sentences.
+ * This class is meant to process a single treebank file only (see
+ * @ref LAL_concepts__treebank for further details on treebank files).
  *
  * Every processor must be initialised prior to processing the treebank file.
  * This is done via method @ref init, which requires the path to the treebank file

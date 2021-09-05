@@ -51,17 +51,10 @@ namespace utilities {
 /**
  * @brief Isomorphism test for unlabelled rooted trees.
  *
- * Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$
- * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
- * mapping \f$\phi \;:\; V(t_1) \longrightarrow V(t_2)\f$ such that
+ * See @ref LAL_concepts__tree_isomorphism for a short definition of what tree
+ * isomorphism is.
  *
- * \f$\forall u,v\in V(t_1) \; (u,v)\in E(t_1) \longleftrightarrow (\phi(u),\phi(v))\in E(t_2)\f$
- *
- * and \f$\phi(r_1)=r_2\f$ where \f$r_1\f$ and \f$r_2\f$ are, respectively,
- * the roots of \f$t_1\f$ and \f$t_2\f$. Note that \f$(u,v)\f$ denotes a directed
- * edge.
- *
- * The algorithm implemented can be found in \cite Aho1974a.
+ * The algorithm implemented in this function can be found in \cite Aho1974a.
  * @param t1 Input rooted tree.
  * @param t2 Input rooted tree.
  * @returns Whether or not the input trees are isomorphic or not.
@@ -74,14 +67,10 @@ bool are_trees_isomorphic
 /**
  * @brief Isomorphism test for unlabelled free trees.
  *
- * Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$
- * and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a
- * mapping \f$\phi \;:\; V(t_1) \longrightarrow V(t_2)\f$ such that
+ * See @ref LAL_concepts__tree_isomorphism for a short definition of what tree
+ * isomorphism is.
  *
- * \f$\forall u,v\in V(t_1) \; uv\in E(t_1) \longleftrightarrow \phi(u)\phi(v)\in E(t_2)\f$
- *
- * The algorithm implemented can be found in \cite Aho1974a. Note that this
- * algorithm
+ * The algorithm implemented in this function can be found in \cite Aho1974a.
  * @param t1 Input free tree.
  * @param t2 Input free tree.
  * @returns Whether or not the input trees are isomorphic.

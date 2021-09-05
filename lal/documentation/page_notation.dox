@@ -1,0 +1,23 @@
+/** \page LAL_notation Notation in the library's documentation
+
+Throughout the library's documentation readers will find the following symbols:
+
+- \f$n\f$ to denote the number of vertices in a graph,
+- \f$s,t,u,v\f$ to typically denote vertices of a graph; we may use other letters,
+- \f$m\f$ to denote the number of edges in a graph,
+- \f$\pi\f$ to denote a linear arrangement, and \f$\pi_I\f$ to denote the identity arrangement,
+- \f$T\f$, \f$G\f$ to denote (usually) a tree or a more general graph,
+- \f$Q(G)\f$ to denote the set of pairs of independent edges of a graph \f$G\f$,
+- \f$D(G)\f$ or \f$D_\pi(G)\f$ to denote the sum of length of edges of a graph \f$G\f$ arranged with \f$\pi\f$.
+- \f$C(G)\f$ or \f$C_\pi(G)\f$ to denote the number of edge crossings of a graph \f$G\f$ arranged with \f$\pi\f$.
+- \f$\langle k^x \rangle\f$ to denote the sum of degrees of the vertices of a graph raised to the power \f$x\f$ averaged by \f$n\f$.
+
+For statistical properties of random variables, we usually use
+- \f$\mathbb{E}\f$ to denote expected value, and
+- \f$\mathbb{V}\f$ to denote variance.
+
+For conditioned expected values and variances we use subindices, such as
+- \f$\mathrm{pr}\f$ to denote that the probability space is conditioned to the space of <b>pr</b>ojective linear arrangements; \f$\mathbb{E}_{\mathrm{pr}}\f$
+- \f$\mathrm{pl}\f$ to denote that the probability space is conditioned to the space of <b>pl</b>anar linear arrangements; \f$\mathbb{E}_{\mathrm{pl}}\f$.
+
+*/

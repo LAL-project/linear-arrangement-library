@@ -1,0 +1,180 @@
+/*********************************************************************
+ *
+ *  Linear Arrangement Library - A library that implements a collection
+ *  algorithms for linear arrangments of graphs.
+ *
+ *  Copyright (C) 2019 - 2021
+ *
+ *  This file is part of Linear Arrangement Library. To see the full code
+ *  visit the webpage:
+ *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
+ *
+ *  Linear Arrangement Library is free software: you can redistribute it
+ *  and/or modify it under the terms of the GNU Affero General Public License
+ *  as published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  Linear Arrangement Library is distributed in the hope that it will be
+ *  useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with Linear Arrangement Library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Contact:
+ *
+ *      Lluís Alemany-Puig (lalemany@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpages:
+ *              https://cqllab.upc.edu/people/lalemany/
+ *              https://www.researchgate.net/profile/Lluis_Alemany-Puig
+ *
+ *     Juan Luis Esteban (esteban@cs.upc.edu)
+ *          Office 110, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpages:
+ *              https://www.cs.upc.edu/~esteban/
+ *              https://www.researchgate.net/profile/Juan_Esteban13
+ * 
+ *      Ramon Ferrer-i-Cancho (rferrericancho@cs.upc.edu)
+ *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *          CQL (Complexity and Quantitative Linguistics Lab)
+ *          Office S124, Omega building
+ *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *          Webpages:
+ *              https://cqllab.upc.edu/people/rferrericancho/
+ *              https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
+ *
+ ********************************************************************/
+
+namespace lal {
+
+/**
+@brief Generation of different classes of objects.
+
+This namespace contains algorithms for the generation of trees and of arrangements.
+
+\section gen_trees Generating trees
+
+The classes that generate trees have a self-explanatory format:
+
+@verbatim
+1_2_3_trees
+@endverbatim
+
+The numbers are placeholders for the following:
+
+- 3: rooted/free -- Generate rooted or free trees.
+
+- 2: lab/ulab -- Generate labelled or unlabelled free/rooted trees.
+
+- 1: rand/all -- Indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all lab/ulab rooted/free trees whereas random generation generate trees unformly at random.
+
+Therefore, the class @ref lal::generate::rand_lab_rooted_trees generates random labelled rooted trees uniformly at random, and the class @ref lal::generate::all_ulab_free_trees should be used to enumerate all unlabelled free trees.
+
+All classes for tree generation return trees that are preprocessed. This preprocessing varies depending on whether the tree is rooted or free. The full preprocessing details can be checked in class @ref lal::generate::_tree_generator, from which all these classes inherit.
+
+Using these classes is straightforward. To generate trees uniformly at random:
+@code
+lal::generate::rand_2_3_trees TreeGen(n);
+for (int i = 0; i < 100; ++i) {
+	const lal::graphs::3_tree T = TreeGen.get_tree();
+	// ...
+}
+@endcode
+To enumerate all trees:
+@code
+lal::generate::all_2_3_trees TreeGen(n);
+while (not TreeGen.end()) {
+	const lal::graphs::3_tree T = TreeGen.get_tree();
+	TreeGen.next();
+	// ...
+}
+@endcode
+Alternatively,
+@code
+for (lal::generate::all_2_3_trees TreeGen(n); not TreeGen.end(); TreeGen.next()) {
+	const lal::graphs::3_tree T = TreeGen.get_tree();
+	// ...
+}
+@endcode
+And even,
+@code
+lal::generate::all_2_3_trees TreeGen(n);
+while (not TreeGen.end()) {
+	const lal::graphs::3_tree T = TreeGen.yield_tree();
+	// ...
+}
+@endcode
+(remember to replace the numbers in the actual code!).
+
+\remark In this documentation you will find 8 classes for random generation of trees. Users should refrain from using those starting with '_' as the trees returned by these classes are not preprocessed. However, if one wishes to know the implementation details (as for algorithms implemented, and the papers cited), please, read the documentation of said classes.
+
+\section gen_arrangements Generating arrangements
+
+This namespace contains classes for the generation of arrangements <b>of a given tree</b>. Depending on the type of arrangements, the given tree should be free or rooted accordingly. Again, the names for these classes are also self-explanatory:
+@verbatim
+1_2_arrangement
+@endverbatim
+
+The numbers are placeholders for the following:
+
+- 2: NULL/projective/planar -- Indicates whether the generated arrangements should be unconstrained (NULL), projective, or planar. By NULL we mean that the keyword should be omitted (see examples).
+
+- 1: rand/all -- As before, this indicates whether the generation is to be random (rand) or exhaustive (all). An exhaustive generation will enumerate all arrangements
+
+Therefore,
+- the class @ref lal::generate::rand_projective_arrangements generates random projective arrangements of a tree,
+- the class @ref lal::generate::all_projective_arrangements is used to enumerate all projective arrangements of a tree,
+- the class @ref lal::generate::rand_planar_arrangements generates random planar arrangements of a tree, and
+- the class @ref lal::generate::all_planar_arrangements is used to enumerate all planar arrangements of a tree.
+
+Similary,
+- the class @ref lal::generate::rand_arrangements generates unconstrained random arrangements, and
+- the class @ref lal::generate::all_arrangements is used to enumerate all unconstrained arrangements of a tree (i.e., all the \f$n!\f$ arrangements).
+
+Using these classes is straightforward. To generate trees uniformly at random:
+@code
+// given a tree T (of the appropriate type)
+lal::generate::rand_2_arrangements ArrGen(T);
+for (int i = 0; i < 100; ++i) {
+	const lal::linear_arrangement arr = ArrGen.get_arrangement();
+	// ...
+}
+@endcode
+To enumerate all arrangements:
+@code
+// given a tree T (of the appropriate type -- indicated with the '2')
+lal::generate::all_2_arrangements ArrGen(T);
+while (not ArrGen.end()) {
+	const lal::linear_arrangement arr = ArrGen.get_arrangement();
+	ArrGen.next();
+	// ...
+}
+@endcode
+Alternatively,
+@code
+for (lal::generate::all_2_arrangements ArrGen(n); not ArrGen.end(); ArrGen.next()) {
+		const lal::linear_arrangement arr = ArrGen.get_arrangement();
+	// ...
+}
+@endcode
+And even,
+@code
+// given a tree T (of the appropriate type)
+lal::generate::all_2_arrangements ArrGen(T);
+while (not ArrGen.end()) {
+	const lal::linear_arrangement arr = ArrGen.yield_arrangement();
+	// ...
+}
+@endcode
+(remember to replace the numbers in the actual code!).
+
+\remark In all cases, the arrangements generated are considered to be labelled, i.e., there are no symmetries taken into account when it comes to enumerating or generating uniformly at random said arrangements. For example, for any \f$n\f$-vertex star tree, the class @ref lal::generate::all_projective_arrangements will enumerate \f$n!\f$ arrangements.
+*/
+namespace generate {}
+
+} // -- namespace lal

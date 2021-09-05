@@ -1,0 +1,121 @@
+/** \page LAL_concepts Important concepts in LAL
+
+Page @ref LAL_notation summarises some of the notation used here and throughout the entire library.
+
+\section LAL_conectps_graph_theory Graph Theory
+
+\subsection LAL_concepts__node Node / Vertex
+
+A node of a graph is represented throughout the entire library with the type @ref lal::node. Such type is just an integer, an index of a node. Such index ranges in \f$[0,n-1]\f$. Moreover, those functions that return a node, will always return a value greater than or equal to \f$n\f$ in case that such node could not be found.
+
+We typically use letters \f$s,t,u,v\f$ to denote nodes. Letter \f$r\f$ is also used but is often reserved for the root of a rooted tree.
+
+Readers might find the noun <em>vertex</em> used instead of <em>node</em>. These two words then are synonyms.
+
+\subsection LAL_concepts__edge Edge
+
+An edge of a graph is simply a pair of index vertices. An edge is represented with the type @ref lal::edge.
+
+\subsection LAL_concepts__edge_independent_edges Pair of independent/disjoint edges
+
+A pair of independent/disjoint edges \f$e_1,e_2\f$ are two edges that do not share vertices. In other words, if \f$e_1=\{s,t\}\f$ and \f$e_2=\{u,v\}\f$ are independent then the vertices \f$s,t,u,v\f$ are pairwise distinct. An pair of edges (not necessarily independent/disjoint) is represented with the type @ref lal::edge_pair.
+
+\subsection LAL_concepts__linear_arrangement Linear Arrangement
+
+A linear arrangement object is a vector whose size is equal to the number of nodes of its corresponding graph. Note, however, that a linear arrangement has no associated graph; it is just a vector. Throughout this namespace we use the symbol for the number pi, :math:`\pi`, to denote a linear arrangement, as is usually done in the scientific literature.
+
+If @e pi is a linear arrangement of @e n nodes:
+
+@code
+lal::linear_arrangement pi(n);
+@endcode
+
+then the @e u-th position gives the position of node @e u in the arrangement:
+
+@code
+position pu = pi[u];
+@endcode
+
+For the sake of simplicity in documenting this library, we define the identity arrangement \f$\pi_I\f$ as \f$\pi_I[u_i]=i\f$, where \f$u_i\f$ denotes the \f$i\f$-th vertex in the graph. This is a special case of linear arrangement used in many functions. Such an arrangement is one that maps each node into the position corresponding to their label. When omitting the arrangement in the functions of this namespace, the user should consider that the arrangement used is the identity arrangement.
+
+\subsection LAL_concepts__edge_list Edge list
+
+An edge list is simply a collection of edges (see @ref LAL_concepts__edge).
+
+\subsubsection LAL_concepts__edge_list_file File with edge list format
+
+A file containing an edge list is a plain text file where each line contains an edge of the graph. Such edge is represented as a pair of non-negative integer values separated by at least one space character. The file may contain blank lines.
+
+These files may be a bit uglier by allowing several edges to be in the same line (the indices must always be separated by at least one space) and even allow new-line characters inbetween the indices of the same edge.
+
+It must be noted that the edges in such a file are the edges of a single graph.
+
+\subsection LAL_concepts__head_vector Head vector
+
+Head vectors are a very useful and very well-known representation of rooted trees in which the tree is reduced to a series of \f$n\f$ non-negative integer values. A head vector of an \f$n\f$-vertex tree is, then, a list of non-negative integer numbers. The number at position \f$i\f$ denotes the parent node of the vertex at said position; value '0' denotes the root. In this case, the vertex corresponding to the value '0' is labelled as the root.
+
+Each tree is formatted as a list of whole, positive numbers (including zero), each representing a node of the tree. The number 0 denotes the root of the tree, and a number at a certain position indicates its parent node. For example, when number 4 is at position 9 it means that node 9 has parent node 4. Therefore, if number 0 is at position 1 it means that node 1 is the root of the tree. A complete example of such a tree's representation is the following
+
+	0 3 4 1 6 3
+
+which should be interpreted as
+
+	(a) predecessor:       0 3 4 1 6 3
+	(b) node of the tree:  1 2 3 4 5 6
+
+Note that lines like these are not valid:
+
+	(1) 0 2 2 2 2 2
+	(2) 2 0 0
+
+Line (1) is not valid due to a self-reference in the second position, and (2) is not valid since it contains two '0' (i.e., two roots).
+
+Note that sentences can be, very naturally, represented using head vectors.
+
+\subsection LAL_concepts__centre_centroid Centre and centroid of a tree
+
+"centre" should never be confused with "centroid". The center is the set of (at most) two vertices that have minimum eccentricity. The centroid is the set of (at most) two vertices that have minimum weight, where the weight is the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a (pages 35-36) for further details.
+
+\subsection LAL_concepts__tree_isomorphism Isomorphism of trees
+
+Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$ and \f$t_2\f$ (or graphs in general) are isomorphic if there exists a mapping \f$\phi \;:\; V(t_1) \longrightarrow V(t_2)\f$ such that
+
+\f$\forall u,v\in V(t_1) \; (u,v)\in E(t_1) \longleftrightarrow (\phi(u),\phi(v))\in E(t_2)\f$
+
+and \f$\phi(r_1)=r_2\f$ where \f$r_1\f$ and \f$r_2\f$ are, respectively, the roots of \f$t_1\f$ and \f$t_2\f$. Note that \f$(u,v)\f$ denotes a directed edge.
+
+
+
+
+
+
+
+
+\section LAL_conecepts_linguistics Linguistics
+
+\subsection LAL_concepts__treebank Treebank
+
+A treebank file is simply a plain text file containing one or more trees represented using their @ref LAL_concepts__head_vector representation. Each head vector must be written in a single line and each line must contain at most one such vector.
+
+\subsection LAL_concepts__treebank_collection Treebank Collection
+
+A treebank collection is simply a collection (or group) of treebanks (see @ref LAL_concepts__treebank) that are related to one another in some way. A really good example is that of the Universal Dependencies treebank: several treebanks of the same language make up a treebank collection that corresponds to some version of UD. Another example would be the collection of treebanks of books of some author. In this setting, each treebank file will contain all the sentences of a single book.
+
+In order to use treebanks with LAL, see classes @ref lal::io::treebank_reader, @ref lal::io::treebank_processor).
+
+\subsubsection LAL_concepts__treebank_collection_main_file Main file of a treebank collection
+
+In order to use treebank collections with LAL (see classes @ref lal::io::treebank_collection_reader, @ref lal::io::treebank_collection_processor), users must make the <em>main file</em> of the collection before.
+
+The main file references all the treebanks in the collection. Its lines contain only two strings, each line describing a treebank. The first string is a self-descriptive name of the treebank (e.g., the ISO code of a language), and the second is the relative path to the file containing the syntactic dependency trees (e.g., the syntactic dependency trees of a language in a collection). The path is relative to the directory that contains the main file.
+
+For example, the main file could be called \a stanford.txt, representing the Stanford treebank collection, and could contain:
+
+	arb path/to/file/ar-all.heads2
+	eus path/to/file/eu-all.heads2
+	ben path/to/file/bn-all.heads2
+	...
+
+where the first column contains a string referencing the language (in this case, an ISO code), and the second column contains the relative path to the file with the syntactic dependency trees.
+
+*/
