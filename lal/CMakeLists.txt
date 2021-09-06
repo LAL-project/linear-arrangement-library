@@ -324,7 +324,6 @@ target_sources(
 		# -- sources
 		properties/C_rla.cpp
 		properties/D_rla.cpp
-		properties/degrees.cpp
 		properties/mean_hierarchical_distance.cpp
 		properties/Q.cpp
 		properties/tree_centre.cpp

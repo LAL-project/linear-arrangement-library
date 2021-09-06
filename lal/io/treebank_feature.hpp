@@ -98,6 +98,45 @@ enum class treebank_feature {
 	 * See @ref lal::properties::moment_degree_out for details.
 	 */
 	third_moment_degree_out,
+
+
+	/**
+	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree for details.
+	 */
+	sum_squared_degrees,
+	/**
+	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	sum_squared_in_degrees,
+	/**
+	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	sum_squared_out_degrees,
+	/**
+	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree for details.
+	 */
+	sum_cubed_degrees,
+	/**
+	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_in for details.
+	 */
+	sum_cubed_in_degrees,
+	/**
+	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
+	 *
+	 * See @ref lal::properties::moment_degree_out for details.
+	 */
+	sum_cubed_out_degrees,
+
 	/**
 	 * @brief Size of the set \f$Q(T)\f$ of this tree \f$T\f$.
 	 *

@@ -258,6 +258,12 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::third_moment_degree:
 				case treebank_feature::third_moment_degree_in:
 				case treebank_feature::third_moment_degree_out:
+				case treebank_feature::sum_squared_degrees:
+				case treebank_feature::sum_squared_in_degrees:
+				case treebank_feature::sum_squared_out_degrees:
+				case treebank_feature::sum_cubed_degrees:
+				case treebank_feature::sum_cubed_in_degrees:
+				case treebank_feature::sum_cubed_out_degrees:
 				case treebank_feature::num_pairs_independent_edges:
 				case treebank_feature::head_initial:
 				case treebank_feature::hubiness:
@@ -463,6 +469,12 @@ const noexcept
 	static constexpr size_t k3_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree);
 	static constexpr size_t k3_in_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree_in);
 	static constexpr size_t k3_out_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree_out);
+	static constexpr size_t SK2_idx = internal::treebank_feature_to_index(treebank_feature::sum_squared_degrees);
+	static constexpr size_t SK2_in_idx = internal::treebank_feature_to_index(treebank_feature::sum_squared_in_degrees);
+	static constexpr size_t SK2_out_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
+	static constexpr size_t SK3_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_degrees);
+	static constexpr size_t SK3_in_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_in_degrees);
+	static constexpr size_t SK3_out_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
 	static constexpr size_t num_pairs_independent_edges_idx = internal::treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
 	static constexpr size_t head_initial_idx = internal::treebank_feature_to_index(treebank_feature::head_initial);
 	static constexpr size_t hubiness_idx = internal::treebank_feature_to_index(treebank_feature::hubiness);
@@ -517,9 +529,10 @@ const noexcept
 	if (m_what_fs[n_idx]) {
 		set_prop(n_idx, to_double(n));
 	}
+
 	// <k^2>
 	if (m_what_fs[k2_idx]) {
-		set_prop(k2_idx, properties::moment_degree(fT, 2));
+		set_prop(k2_idx, properties::moment_degree_about_0(fT, 2));
 	}
 	if (m_what_fs[k2_in_idx]) {
 		set_prop(k2_in_idx, properties::moment_degree_in(rT, 2));
@@ -529,7 +542,7 @@ const noexcept
 	}
 	// <k^3>
 	if (m_what_fs[k3_idx]) {
-		set_prop(k3_idx, properties::moment_degree(fT, 3));
+		set_prop(k3_idx, properties::moment_degree_about_0(fT, 3));
 	}
 	if (m_what_fs[k3_in_idx]) {
 		set_prop(k3_in_idx, properties::moment_degree_in(rT, 3));
@@ -537,6 +550,29 @@ const noexcept
 	if (m_what_fs[k3_out_idx]) {
 		set_prop(k3_out_idx, properties::moment_degree_out(rT, 3));
 	}
+
+	// K^2
+	if (m_what_fs[SK2_idx]) {
+		set_prop(SK2_idx, to_double(properties::sum_powers_degrees(fT, 2)));
+	}
+	if (m_what_fs[SK2_in_idx]) {
+		set_prop(SK2_in_idx, to_double(properties::sum_powers_in_degrees(rT, 2)));
+	}
+	if (m_what_fs[SK2_out_idx]) {
+		set_prop(SK2_out_idx, to_double(properties::sum_powers_out_degrees(rT, 2)));
+	}
+	// K^3
+	if (m_what_fs[SK3_idx]) {
+		set_prop(SK3_idx, to_double(properties::sum_powers_degrees(fT, 3)));
+	}
+	if (m_what_fs[SK3_in_idx]) {
+		set_prop(SK3_in_idx, to_double(properties::sum_powers_in_degrees(rT, 3)));
+	}
+	if (m_what_fs[SK3_out_idx]) {
+		set_prop(SK3_out_idx, to_double(properties::sum_powers_out_degrees(rT, 3)));
+	}
+
+
 	// |Q|
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
 		set_prop(num_pairs_independent_edges_idx,
@@ -766,6 +802,12 @@ const noexcept
 			case treebank_feature::third_moment_degree:
 			case treebank_feature::third_moment_degree_in:
 			case treebank_feature::third_moment_degree_out:
+			case treebank_feature::sum_squared_degrees:
+			case treebank_feature::sum_squared_in_degrees:
+			case treebank_feature::sum_squared_out_degrees:
+			case treebank_feature::sum_cubed_degrees:
+			case treebank_feature::sum_cubed_in_degrees:
+			case treebank_feature::sum_cubed_out_degrees:
 			case treebank_feature::num_pairs_independent_edges:
 			case treebank_feature::head_initial:
 			case treebank_feature::hubiness:
