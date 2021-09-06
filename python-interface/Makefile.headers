@@ -2,7 +2,7 @@ ifeq ($(ENVIR),devel)
 
 # ENUMERATIONS
 
-TREEBANK_ERR_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_error.hpp
+TREEBANK_ERR_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_error_type.hpp
 
 TREEBANK_FEATURE_DPHDRS	= $(LAL_INC_DIR)/lal/io/treebank_feature.hpp
 
