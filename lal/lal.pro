@@ -191,7 +191,6 @@ HEADERS += \
 	utilities.hpp \
 	utilities/tree_isomorphism.hpp \
 	lal_version.hpp \
-	namespaces.hpp \
 	definitions.hpp
 
 SOURCES += \

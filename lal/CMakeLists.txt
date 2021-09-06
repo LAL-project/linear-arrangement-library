@@ -350,7 +350,6 @@ target_sources(
 		iterators.hpp
 		lal_version.hpp
 		linarr.hpp
-		namespaces.hpp
 		numeric.hpp
 		properties.hpp
 		utilities.hpp
