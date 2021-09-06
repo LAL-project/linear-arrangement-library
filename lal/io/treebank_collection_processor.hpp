@@ -167,7 +167,7 @@ public:
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
-	 * - @ref lal::io::treebank_error_type::output_directory_does_not_exist
+	 * - @ref lal::io::treebank_error_type::output_directory_could_not_be_created
 	 */
 	treebank_error init(
 		const std::string& main_file,

@@ -102,12 +102,16 @@ treebank_error treebank_collection_processor::init
 			treebank_error_type::main_file_does_not_exist
 		);
 	}
-	// make sure output directory exists
+	// check whether output directory exists or not
 	if (m_out_dir != "." and not filesystem::exists(m_out_dir)) {
-		return treebank_error(
-			"Output directory '" + m_out_dir + "' does not exist.",
-			treebank_error_type::output_directory_does_not_exist
-		);
+		// if it does not exist, create it (...?)
+		const auto r = filesystem::create_directory(m_out_dir);
+		if (not r) {
+			return treebank_error(
+				"Output directory '" + m_out_dir + "' could not be created.",
+				treebank_error_type::output_directory_could_not_be_created
+			);
+		}
 	}
 	return treebank_error("", treebank_error_type::no_error);
 }

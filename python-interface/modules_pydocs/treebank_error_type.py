@@ -60,7 +60,10 @@ There are several reasons why a treebank collection or a single treebank file co
 	- ``lal.io.treebank_collection_reader``
 	- ``lal.io.treebank_collection_processor``
 
-- ``output_directory_does_not_exist`` : Output directory could not be found.
+- ``output_directory_could_not_be_created`` : Output directory could not be created.
+	
+	If a directory output does not exist, the library will attempt to create
+	it. If this fails then this error is returned.
 	
 	Returned by:
 	

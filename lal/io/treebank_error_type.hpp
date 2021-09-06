@@ -133,12 +133,15 @@ enum class treebank_error_type {
 	 */
 	main_file_could_not_be_opened,
 	/**
-	 * @brief Output directory could not be found.
+	 * @brief Output directory could not be created.
+	 *
+	 * If a directory output does not exist, the library will attempt to create
+	 * it. If this fails then this error is returned.
 	 *
 	 * Returned by:
 	 * - @ref lal::io::treebank_collection_processor.
 	 */
-	output_directory_does_not_exist,
+	output_directory_could_not_be_created,
 	/**
 	 * @brief The file containing the result of processing a treebank collection
 	 * could not be opened.
