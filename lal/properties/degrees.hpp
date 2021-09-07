@@ -64,7 +64,7 @@ namespace properties {
  * Each degree is raised to a certain power according to the parameter.
  *
  * @tparam G Type of graph.
- * @tparam return_type Type of result (uint64_t, @ref lal::numeric::integer)
+ * @tparam return_type Type of function's result (uint64_t, @ref lal::numeric::integer)
  * @param g Input graph
  * @param p Power to which degrees must be raised
  * @param degree_function The type of degree that is to be used (in, out, in+out)
@@ -263,9 +263,21 @@ sum_powers_out_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
 
 /* -------------------------------------------------------------------------- */
 
-
+/**
+ * @brief Generic template function for the moment of degree about 0.
+ *
+ * Calculates the \f$p\f$-th moment of degree about 0, where the degree is given
+ * by some function.
+ *
+ * @tparam G Type of graph
+ * @tparam return_type Type of function's result (double, @ref lal::numeric::rational)
+ * @param g Input graph
+ * @param p Power to which degrees must be raised
+ * @param degree_function The type of degree that is to be used (in, out, in+out)
+ * @return The \f$p\f$-th moment of degree about 0.
+ */
 template<class G, class return_type>
-inline return_type moment_degree_about_0
+inline return_type moment_degree
 (const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const)
 noexcept
 {
@@ -305,7 +317,7 @@ noexcept
 inline numeric::rational
 moment_degree_rational(const graphs::undirected_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::undirected_graph, numeric::rational>
+	moment_degree<graphs::undirected_graph, numeric::rational>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 /**
@@ -318,9 +330,9 @@ moment_degree_rational(const graphs::undirected_graph& g, uint64_t p) noexcept {
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 inline double
-moment_degree_about_0(const graphs::undirected_graph& g, uint64_t p) noexcept {
+moment_degree(const graphs::undirected_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::undirected_graph, double>
+	moment_degree<graphs::undirected_graph, double>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 
@@ -342,7 +354,7 @@ moment_degree_about_0(const graphs::undirected_graph& g, uint64_t p) noexcept {
 inline numeric::rational
 moment_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, numeric::rational>
+	moment_degree<graphs::directed_graph, numeric::rational>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 /**
@@ -355,9 +367,9 @@ moment_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 inline double
-moment_degree_about_0(const graphs::directed_graph& g, uint64_t p) noexcept {
+moment_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, double>
+	moment_degree<graphs::directed_graph, double>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 
@@ -378,7 +390,7 @@ moment_degree_about_0(const graphs::directed_graph& g, uint64_t p) noexcept {
 inline numeric::rational
 moment_degree_in_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, numeric::rational>
+	moment_degree<graphs::directed_graph, numeric::rational>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 /**
@@ -393,7 +405,7 @@ moment_degree_in_rational(const graphs::directed_graph& g, uint64_t p) noexcept 
 inline double
 moment_degree_in(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, double>
+	moment_degree<graphs::directed_graph, double>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 
@@ -414,7 +426,7 @@ moment_degree_in(const graphs::directed_graph& g, uint64_t p) noexcept {
 inline numeric::rational
 moment_degree_out_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, numeric::rational>
+	moment_degree<graphs::directed_graph, numeric::rational>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 /**
@@ -430,7 +442,7 @@ moment_degree_out_rational(const graphs::directed_graph& g, uint64_t p) noexcept
 inline double
 moment_degree_out(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
-	moment_degree_about_0<graphs::directed_graph, double>
+	moment_degree<graphs::directed_graph, double>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 
@@ -530,7 +542,7 @@ inline double hubiness(const graphs::free_tree& t) noexcept {
 	assert(n > 3);
 #endif
 
-	const double k2_tree = moment_degree_about_0(t, 2);
+	const double k2_tree = moment_degree(t, 2);
 	const double k2_linear = static_cast<double>(4*n - 6)/static_cast<double>(n);
 	const double k2_star = static_cast<double>(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);
@@ -557,7 +569,7 @@ inline double hubiness(const graphs::rooted_tree& t) noexcept {
 	assert(n > 3);
 #endif
 
-	const double k2_tree = moment_degree_about_0(t, 2);
+	const double k2_tree = moment_degree(t, 2);
 	const double k2_linear = static_cast<double>(4*n - 6)/static_cast<double>(n);
 	const double k2_star = static_cast<double>(n - 1);
 	return (k2_tree - k2_linear)/(k2_star - k2_linear);

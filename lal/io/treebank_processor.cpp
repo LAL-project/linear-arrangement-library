@@ -532,7 +532,7 @@ const noexcept
 
 	// <k^2>
 	if (m_what_fs[k2_idx]) {
-		set_prop(k2_idx, properties::moment_degree_about_0(fT, 2));
+		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
 	if (m_what_fs[k2_in_idx]) {
 		set_prop(k2_in_idx, properties::moment_degree_in(rT, 2));
@@ -542,7 +542,7 @@ const noexcept
 	}
 	// <k^3>
 	if (m_what_fs[k3_idx]) {
-		set_prop(k3_idx, properties::moment_degree_about_0(fT, 3));
+		set_prop(k3_idx, properties::moment_degree(fT, 3));
 	}
 	if (m_what_fs[k3_in_idx]) {
 		set_prop(k3_in_idx, properties::moment_degree_in(rT, 3));
