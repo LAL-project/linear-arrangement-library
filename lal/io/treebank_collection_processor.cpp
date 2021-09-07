@@ -116,8 +116,7 @@ treebank_error treebank_collection_processor::init
 	return treebank_error("", treebank_error_type::no_error);
 }
 
-treebank_error treebank_collection_processor::process(const string& join_to_file)
-noexcept
+treebank_error treebank_collection_processor::process() noexcept
 {
 	if (m_check_before_process) {
 		const bool err =
@@ -189,6 +188,7 @@ noexcept
 				tbproc.set_output_header(m_output_header);
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
+				tbproc.set_custom_header(m_custom_header);
 
 				// add features in this treebank collection processor
 				for (size_t i = 0; i < __treebank_feature_size; ++i) {
@@ -215,7 +215,7 @@ noexcept
 	}
 
 	if (m_join_files) {
-		const auto err = join_all_files(join_to_file);
+		const auto err = join_all_files();
 		if (err.get_error_type() != treebank_error_type::no_error) {
 			m_errors_from_processing.push_back(make_tuple(
 				err,
@@ -236,20 +236,19 @@ noexcept
 	);
 }
 
-treebank_error treebank_collection_processor::join_all_files
-(const string& resname)
-const noexcept
+treebank_error treebank_collection_processor::join_all_files() const noexcept
 {
 	// use the filesystem namespace to create the path properly
-	filesystem::path p(m_out_dir);
-	if (resname == "") {
+	filesystem::path p;
+	if (m_join_to_file == "") {
+		p = filesystem::path(m_out_dir);
 		p /= name_of_file_without_path_extension(m_main_file) + "_full.csv";
 	}
 	else {
-		p /= resname;
+		p = filesystem::path(m_join_to_file);
 	}
 
-	if (m_be_verbose) {
+	if (m_be_verbose >= 1) {
 		cout << "Gather all results into file: " << p.string() << endl;
 	}
 
@@ -271,7 +270,7 @@ const noexcept
 		filesystem::path path_to_treebank_result(m_out_dir);
 		path_to_treebank_result /= make_result_file_name(name_of_treebank);
 
-		if (m_be_verbose > 0) {
+		if (m_be_verbose >= 1) {
 			cout << "    "
 				 << path_to_treebank_result.string()
 				 << endl;
@@ -296,7 +295,7 @@ const noexcept
 				if (first_time_encounter_header) {
 					if (m_output_header) {
 						output_together
-							<< "treebank" << m_separator
+							<< m_treebank_column_name << m_separator
 							<< line
 							<< endl;
 					}

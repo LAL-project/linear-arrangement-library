@@ -83,17 +83,16 @@ namespace io {
  * Processing a treebank collection with this class will produce a file for every
  * treebank in the collection. These files can be merged together by indicating so
  * via method @ref set_join_files. A new file will be created, regardless of the
- * number of treebanks in the collection.
+ * number of treebanks in the collection. See method @ref set_join_to_file_name
+ * to set the name of the file that merges the result. Said file will contain
+ * an extra column (besides the columns corresponding to the features computed)
+ * indicating the treebank each line pertains. The name of this column can be
+ * changed using method @ref set_treebank_column_name.
  *
- * Finally, the treebank collection is processed via method @ref process. If all the
- * files produced (one for each treebank) are to be joined in a single file, users
- * can give this new file a name by passing it to method @ref process as a string.
- * Also, users can indicate via an optional Boolean parameter whether the individual
- * files are to be removed or not.
- *
- * Method @ref process returns a value of the enumeration @ref treebank_error.
- * Further errors can be checked via methods @ref get_num_errors,
- * @ref get_error_type, @ref get_error_treebank_filename, @ref get_error_treebank_name.
+ * Finally, the treebank collection is processed via method @ref process. Said
+ * method returns a value of the enumeration @ref treebank_error. Further errors
+ * can be checked via methods @ref get_num_errors, @ref get_error_type,
+ * @ref get_error_treebank_filename, @ref get_error_treebank_name.
  *
  * The usage of this class is a lot simpler than that of class
  * @ref treebank_collection_reader. For example:
@@ -158,6 +157,24 @@ public:
 	const std::string& get_error_treebank_name(size_t i) const noexcept
 	{ return std::get<2>(m_errors_from_processing[i]); }
 
+	/**
+	 * @brief Sets the name of the file where all values are going to be stored.
+	 *
+	 * If this name is not given set, the class will construct one using the name
+	 * of the main file and appending the string "_full" to it. If, on the contrary,
+	 * some path is given and is not a full path then the path is considered to
+	 * be relative to the working directory path.
+	 * @param join_to String
+	 */
+	inline void set_join_to_file_name(const std::string& join_to) noexcept {
+		m_join_to_file = join_to;
+	}
+
+	/// Sets the name of the column used to group lines according to the treebank.
+	inline void set_treebank_column_name(const std::string& name) noexcept {
+		m_treebank_column_name = name;
+	}
+
 	// PROCESS THE TREEBANK COLLECTION
 
 	/**
@@ -189,8 +206,6 @@ public:
 	 * Moreover, it gathers the errors thay may have occurred during processing.
 	 * If so, see methods @ref get_num_errors, @ref get_error_type,
 	 * @ref get_error_treebank_name.
-	 * @param result_filename Name of the file where all values are going to be
-	 * stored.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error_type::no_features
@@ -203,32 +218,33 @@ public:
 	 * @ref get_error_treebank_name to know how to retrieve these errors.
 	 * @pre Initialisation did not return any errors.
 	 */
-	treebank_error process(const std::string& result_filename = "") noexcept;
+	treebank_error process() noexcept;
+
+private:
+	/**
+	 * @brief Joins all resulting files into a single file
+	 * @returns An error code, if any.
+	 */
+	treebank_error join_all_files() const noexcept;
 
 private:
 	/// The list of names of the treebanks.
 	std::vector<std::string> m_all_individual_treebank_names;
-
+	/// The name of the file that joins all result files.
+	std::string m_join_to_file = "";
 	/// Join the files into a single file.
 	bool m_join_files = true;
-
+	/// Name of the column that identifies each treebank.
+	std::string m_treebank_column_name = "treebank";
 	/// Number of threads to use.
 	size_t m_num_threads = 1;
+	/// The name of the column in the join file
+	std::string m_column_join_name = "";
 
 	/// Set of errors resulting from processing the treebank collection.
 	std::vector<std::tuple<treebank_error, std::string, std::string>>
 	m_errors_from_processing;
 
-private:
-	/**
-	 * @brief Joins all resulting files into a single file
-	 * @param resname Name of the result file.
-	 * @returns An error, if any.
-	 */
-	treebank_error join_all_files(const std::string& resname) const
-	noexcept;
-
-private:
 	/// Output directory.
 	std::string m_out_dir = "none";
 	/// File containing the list of languages and their treebanks.

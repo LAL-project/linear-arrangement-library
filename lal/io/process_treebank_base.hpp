@@ -111,6 +111,15 @@ public:
 	 */
 	inline void set_output_header(bool h) noexcept { m_output_header = h; }
 
+	/**
+	 * @brief Sets the custom header.
+	 * @param h Custom header.
+	 */
+	inline void set_custom_header(const std::string& h = "") noexcept {
+		m_custom_header = h;
+		m_use_custom_header = true;
+	}
+
 	// GETTERS
 
 	/**
@@ -131,6 +140,10 @@ protected:
 	char m_separator = '\t';
 	/// Output a header for each file
 	bool m_output_header = true;
+	/// Header to be used in place of the LAL-generated header
+	std::string m_custom_header = "";
+	/// Use the custom header @ref m_custom_header or not.
+	bool m_use_custom_header = false;
 	/**
 	 * @brief The verbosity of the processor.
 	 *
