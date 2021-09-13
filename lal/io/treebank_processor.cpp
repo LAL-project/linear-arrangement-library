@@ -543,20 +543,20 @@ const noexcept
 		set_prop(k2_idx, properties::moment_degree(fT, 2));
 	}
 	if (m_what_fs[k2_in_idx]) {
-		set_prop(k2_in_idx, properties::moment_degree_in(rT, 2));
+		set_prop(k2_in_idx, properties::moment_in_degree(rT, 2));
 	}
 	if (m_what_fs[k2_out_idx]) {
-		set_prop(k2_out_idx, properties::moment_degree_out(rT, 2));
+		set_prop(k2_out_idx, properties::moment_out_degree(rT, 2));
 	}
 	// <k^3>
 	if (m_what_fs[k3_idx]) {
 		set_prop(k3_idx, properties::moment_degree(fT, 3));
 	}
 	if (m_what_fs[k3_in_idx]) {
-		set_prop(k3_in_idx, properties::moment_degree_in(rT, 3));
+		set_prop(k3_in_idx, properties::moment_in_degree(rT, 3));
 	}
 	if (m_what_fs[k3_out_idx]) {
-		set_prop(k3_out_idx, properties::moment_degree_out(rT, 3));
+		set_prop(k3_out_idx, properties::moment_out_degree(rT, 3));
 	}
 
 	// K^2

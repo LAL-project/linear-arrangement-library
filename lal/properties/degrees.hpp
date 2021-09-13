@@ -67,18 +67,27 @@ namespace properties {
  * @tparam return_type Type of function's result (uint64_t, @ref lal::numeric::integer)
  * @param g Input graph
  * @param p Power to which degrees must be raised
- * @param degree_function The type of degree that is to be used (in, out, in+out)
+ * @param degree_function The function that returns the specific degree
+ * (in+out, out, in, or other).
  * @return The sum of degrees raised to the input power @e p.
  */
 template<class G, class return_type>
 inline return_type sum_powers_degrees
-(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const)
+(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const noexcept)
 noexcept
 {
 	static_assert(
 		std::is_same_v<return_type, uint64_t> ||
 		std::is_same_v<return_type, numeric::integer>
 	);
+
+	if constexpr (std::is_same_v<G, graphs::rooted_tree>) {
+		// the sum of powers of the in-degree of the vertices in a rooted
+		// tree is always equal to the number of edges!
+		if (degree_function == &graphs::rooted_tree::get_in_degree) {
+			return g.get_num_edges();
+		}
+	}
 
 	// sum of powers
 	return_type S(0);
@@ -187,7 +196,7 @@ sum_powers_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
  *
  * Computes the sum of in-degrees raised to the \f$p\f$-th power using
  *
- * \f$K^p = \sum_{i=1}^n k_{in, i}\f$.
+ * \f$K^p = \sum_{i=1}^n k_{in, i}^p\f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
  * the in-degree of vertex \f$i\f$.
@@ -206,7 +215,7 @@ sum_powers_in_degrees_integer(const graphs::directed_graph& g, uint64_t p) noexc
  *
  * Computes the sum of in-degrees raised to the \f$p\f$-th power using
  *
- * \f$K^p = \sum_{i=1}^n k_{in, i}\f$.
+ * \f$K^p = \sum_{i=1}^n k_{in, i}^p\f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
  * the in-degree of vertex \f$i\f$.
@@ -222,11 +231,50 @@ sum_powers_in_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
 }
 
 /**
+ * @brief Computes the sum of in-degrees raised to the \f$p\f$-th power.
+ *
+ * Computes the sum of in-degrees raised to the \f$p\f$-th power using
+ *
+ * \f$K^p = \sum_{i=1}^n k_{in, i}^p\f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
+ * the in-degree of vertex \f$i\f$.
+ * @param g Input graph.
+ * @param p Power of degree.
+ * @return The sum of in-degrees raised to the \f$p\f$-th power.
+ */
+inline numeric::integer
+sum_powers_in_degrees_integer(const graphs::rooted_tree& g, uint64_t p) noexcept {
+	return
+	sum_powers_degrees<graphs::rooted_tree, numeric::integer>
+	(g, p, &graphs::rooted_tree::get_in_degree);
+}
+/**
+ * @brief Computes the sum of in-degrees raised to the \f$p\f$-th power.
+ *
+ * Computes the sum of in-degrees raised to the \f$p\f$-th power using
+ *
+ * \f$K^p = \sum_{i=1}^n k_{in, i}^p\f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
+ * the in-degree of vertex \f$i\f$.
+ * @param g Input graph.
+ * @param p Power of degree.
+ * @return The sum of in-degrees raised to the \f$p\f$-th power.
+ */
+inline uint64_t
+sum_powers_in_degrees(const graphs::rooted_tree& g, uint64_t p) noexcept {
+	return
+	sum_powers_degrees<graphs::rooted_tree, uint64_t>
+	(g, p, &graphs::rooted_tree::get_in_degree);
+}
+
+/**
  * @brief Computes the sum of out-degrees raised to the \f$p\f$-th power.
  *
  * Computes the sum of out-degrees raised to the \f$p\f$-th power using
  *
- * \f$K^p = \sum_{i=1}^n k_{out, i}\f$.
+ * \f$K^p = \sum_{i=1}^n k_{out, i}^p\f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
  * the out-degree of vertex \f$i\f$.
@@ -245,7 +293,7 @@ sum_powers_out_degrees_integer(const graphs::directed_graph& g, uint64_t p) noex
  *
  * Computes the sum of out-degrees raised to the \f$p\f$-th power using
  *
- * \f$K^p = \sum_{i=1}^n k_{out, i}\f$.
+ * \f$K^p = \sum_{i=1}^n k_{out, i}^p\f$.
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{out, i}\f$ is
  * the out-degree of vertex \f$i\f$.
@@ -273,12 +321,13 @@ sum_powers_out_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
  * @tparam return_type Type of function's result (double, @ref lal::numeric::rational)
  * @param g Input graph
  * @param p Power to which degrees must be raised
- * @param degree_function The type of degree that is to be used (in, out, in+out)
+ * @param degree_function The function that returns the specific degree (full,
+ * out, in, or other).
  * @return The \f$p\f$-th moment of degree about 0.
  */
 template<class G, class return_type>
 inline return_type moment_degree
-(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const)
+(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const noexcept)
 noexcept
 {
 	static_assert(
@@ -388,7 +437,7 @@ moment_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 inline numeric::rational
-moment_degree_in_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
+moment_in_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
 	moment_degree<graphs::directed_graph, numeric::rational>
 	(g, p, &graphs::directed_graph::get_in_degree);
@@ -403,10 +452,46 @@ moment_degree_in_rational(const graphs::directed_graph& g, uint64_t p) noexcept 
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
 inline double
-moment_degree_in(const graphs::directed_graph& g, uint64_t p) noexcept {
+moment_in_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
 	moment_degree<graphs::directed_graph, double>
 	(g, p, &graphs::directed_graph::get_in_degree);
+}
+
+/**
+ * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
+ * graph as an exact rational value.
+ *
+ * Computes the \f$p\f$-th moment of in-degree about zero,
+ * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
+ *
+ * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
+ *
+ * where \f$n\f$ denotes the number of nodes of the graph.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
+ */
+inline numeric::rational
+moment_in_degree_rational(const graphs::rooted_tree& g, uint64_t p) noexcept {
+	return
+	moment_degree<graphs::rooted_tree, numeric::rational>
+	(g, p, &graphs::rooted_tree::get_in_degree);
+}
+/**
+ * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
+ * graph as a floating point value.
+ *
+ * See @ref lal::properties::moment_degree_in_rational for details.
+ * @param g Input graph.
+ * @param p Moment of degree.
+ * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
+ */
+inline double
+moment_in_degree(const graphs::rooted_tree& g, uint64_t p) noexcept {
+	return
+	moment_degree<graphs::rooted_tree, double>
+	(g, p, &graphs::rooted_tree::get_in_degree);
 }
 
 /**
@@ -424,7 +509,7 @@ moment_degree_in(const graphs::directed_graph& g, uint64_t p) noexcept {
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
 inline numeric::rational
-moment_degree_out_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
+moment_out_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
 	moment_degree<graphs::directed_graph, numeric::rational>
 	(g, p, &graphs::directed_graph::get_out_degree);
@@ -440,7 +525,7 @@ moment_degree_out_rational(const graphs::directed_graph& g, uint64_t p) noexcept
  * value.
  */
 inline double
-moment_degree_out(const graphs::directed_graph& g, uint64_t p) noexcept {
+moment_out_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
 	return
 	moment_degree<graphs::directed_graph, double>
 	(g, p, &graphs::directed_graph::get_out_degree);
