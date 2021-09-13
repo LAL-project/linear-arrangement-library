@@ -97,7 +97,7 @@ public:
 	~BFS() { }
 
 	// Set the graph_traversal to its default state.
-	void reset() {
+	void reset() noexcept {
 		reset_visited();
 		clear_structure();
 
@@ -110,13 +110,13 @@ public:
 		set_node_add_default();
 	}
 
-	void start_at(node source) {
+	void start_at(node source) noexcept {
 		m_X.push(source);
 		m_vis[source] = 1;
 		do_traversal();
 	}
 
-	void start_at(const std::vector<node>& sources) {
+	void start_at(const std::vector<node>& sources) noexcept {
 		for (const node& u : sources) {
 			m_X.push(u);
 			m_vis[u] = 1;
@@ -127,30 +127,30 @@ public:
 	/* SETTERS */
 
 	// set whether the traversal can use reversed edges
-	void set_use_rev_edges(bool use) { m_use_rev_edges = use; }
+	void set_use_rev_edges(bool use) noexcept { m_use_rev_edges = use; }
 
 	// see @ref m_term
-	void set_terminate_default()
+	void set_terminate_default() noexcept
 	{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
-	void set_terminate(const BFS_bool_one& f)
+	void set_terminate(const BFS_bool_one& f) noexcept
 	{ m_term = f; }
 
 	// see @ref m_proc_cur
-	void set_process_current_default()
+	void set_process_current_default() noexcept
 	{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
-	void set_process_current(const BFS_process_one& f)
+	void set_process_current(const BFS_process_one& f) noexcept
 	{ m_proc_cur = f; }
 
 	// see @ref m_proc_neigh
-	void set_process_neighbour_default()
+	void set_process_neighbour_default() noexcept
 	{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
-	void set_process_neighbour(const BFS_process_two& f)
+	void set_process_neighbour(const BFS_process_two& f) noexcept
 	{ m_proc_neigh = f; }
 
 	// see @ref m_add_node
-	void set_node_add_default()
+	void set_node_add_default() noexcept
 	{ m_add_node = [](const BFS<G>&, const node, const node) -> bool { return true; }; }
-	void set_node_add(const BFS_bool_two& f)
+	void set_node_add(const BFS_bool_two& f) noexcept
 	{ m_add_node = f; }
 
 	/*
@@ -158,37 +158,37 @@ public:
 	 * for already visited neighbours?
 	 * @param v Either true or false.
 	 */
-	void set_process_visited_neighbours(bool v) { m_proc_vis_neighs = v; }
+	void set_process_visited_neighbours(bool v) noexcept { m_proc_vis_neighs = v; }
 
 	// Sets all nodes to not visited.
-	void reset_visited() { m_vis.fill(0); }
+	void reset_visited() noexcept { m_vis.fill(0); }
 
-	void clear_structure() { std::queue<node> q; m_X.swap(q); }
+	void clear_structure() noexcept { std::queue<node> q; m_X.swap(q); }
 
 	// Set node @e u as visited.
-	void set_visited(node u, char vis) { m_vis[u] = vis; }
+	void set_visited(node u, char vis) noexcept { m_vis[u] = vis; }
 
 	/* GETTERS */
 
 	// Returns the set of visited nodes.
-	bool node_was_visited(node u) const { return m_vis[u]; }
+	bool node_was_visited(node u) const noexcept { return m_vis[u]; }
 
 	// have all nodes been visited?
-	bool all_visited() const {
-		return std::find(m_vis.begin(), m_vis.end(), 0) == m_vis.end();
+	bool all_visited() const noexcept {
+		return std::all_of(m_vis.begin(), m_vis.end(), [](auto x){return x == 1;});
 	}
 
 	// returns the graph
-	const G& get_graph() const { return m_G; }
+	const G& get_graph() const noexcept { return m_G; }
 
 	// Return visited nodes information
-	const data_array<char>& get_visited() const { return m_vis; }
+	const data_array<char>& get_visited() const noexcept { return m_vis; }
 
 protected:
 	// ltr: is the 'natural' orientation of the vertices "s -> t"?
 	//      If true, then the edge in the graph is (s,t)
 	//      If false, the edge in the graph is (t,s)
-	void deal_with_neighbour(node s, node t, bool ltr) {
+	void deal_with_neighbour(node s, node t, bool ltr) noexcept {
 		// Process the neighbour 't' of 's'.
 		if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
 			m_proc_neigh(*this, s, t, ltr);
@@ -209,7 +209,7 @@ protected:
 			std::is_base_of_v<graphs::undirected_graph, GG>, bool
 		> = true
 	>
-	void process_neighbours(node s) {
+	void process_neighbours(node s) noexcept {
 		for (const node& t : m_G.get_neighbours(s)) {
 			// Edges are processed in the direction "s -> t".
 			// This is also the 'natural' orientation of the edge,
@@ -225,7 +225,7 @@ protected:
 			std::is_base_of_v<graphs::directed_graph, GG>, bool
 		> = true
 	>
-	void process_neighbours(node s) {
+	void process_neighbours(node s) noexcept {
 		for (const node& t : m_G.get_out_neighbours(s)) {
 			// Edges are processed in the direction "s -> t".
 			// This is also the 'natural' orientation of the edge,
@@ -243,7 +243,7 @@ protected:
 		}
 	}
 
-	node next_node() const { return m_X.front(); }
+	node next_node() const noexcept { return m_X.front(); }
 
 	/* The graph_traversal traversal is implemented as follows:
 	 *
@@ -290,7 +290,7 @@ protected:
 	 * the user wants to process "reversed edges", then the neighbourhood
 	 * is not limited to "out-neighbours", but also to "in-neighbours".
 	 */
-	void do_traversal() {
+	void do_traversal() noexcept {
 		while (not m_X.empty()) {
 			const node s = next_node();
 			m_X.pop();
