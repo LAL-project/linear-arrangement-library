@@ -71,13 +71,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_in for details.
+	 * See @ref lal::properties::moment_in_degree for details.
 	 */
 	second_moment_degree_in,
 	/**
 	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_out for details.
+	 * See @ref lal::properties::moment_out_degree for details.
 	 */
 	second_moment_degree_out,
 	/**
@@ -89,13 +89,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_in for details.
+	 * See @ref lal::properties::moment_in_degree for details.
 	 */
 	third_moment_degree_in,
 	/**
 	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_out for details.
+	 * See @ref lal::properties::moment_out_degree for details.
 	 */
 	third_moment_degree_out,
 
@@ -109,13 +109,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_in for details.
+	 * See @ref lal::properties::moment_in_degree for details.
 	 */
 	sum_squared_in_degrees,
 	/**
 	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_out for details.
+	 * See @ref lal::properties::moment_out_degree for details.
 	 */
 	sum_squared_out_degrees,
 	/**
@@ -127,13 +127,13 @@ enum class treebank_feature {
 	/**
 	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_in for details.
+	 * See @ref lal::properties::moment_in_degree for details.
 	 */
 	sum_cubed_in_degrees,
 	/**
 	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree_out for details.
+	 * See @ref lal::properties::moment_out_degree for details.
 	 */
 	sum_cubed_out_degrees,
 

@@ -446,7 +446,7 @@ moment_in_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept 
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as a floating point value.
  *
- * See @ref lal::properties::moment_degree_in_rational for details.
+ * See @ref lal::properties::moment_in_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
@@ -482,7 +482,7 @@ moment_in_degree_rational(const graphs::rooted_tree& g, uint64_t p) noexcept {
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as a floating point value.
  *
- * See @ref lal::properties::moment_degree_in_rational for details.
+ * See @ref lal::properties::moment_in_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
@@ -518,7 +518,7 @@ moment_out_degree_rational(const graphs::directed_graph& g, uint64_t p) noexcept
  * @brief Computes the \f$p\f$-th moment of out-degree about zero of a directed
  * graph as a floating point value.
  *
- * See @ref lal::properties::moment_degree_out_rational for details.
+ * See @ref lal::properties::moment_out_degree_rational for details.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point
