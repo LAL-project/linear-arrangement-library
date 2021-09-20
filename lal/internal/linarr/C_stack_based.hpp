@@ -66,6 +66,10 @@ namespace internal {
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
+// =============================================================================
+// ACTUAL ALGORITHM
+// =============================================================================
+
 inline void fill_adjP_adjN(
 	const graph& g, const linear_arrangement& pi,
 	vector<neighbourhood>& adjP,
@@ -187,7 +191,7 @@ noexcept
 }
 
 // =============================================================================
-// CALCULATION
+// CALLS TO ALGORITHM
 // =============================================================================
 
 inline uint64_t __call_C_stack_based(
@@ -261,9 +265,8 @@ noexcept
 	return cs;
 }
 
-// =============================================================================
+// -----------------------------------------------------------------------------
 // DECISION
-// =============================================================================
 
 inline uint64_t __call_C_stack_based_lesseq_than(
 	const graph& g,
