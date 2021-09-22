@@ -58,6 +58,8 @@ namespace properties {
 
 /* -------------------------------------------------------------------------- */
 
+#ifndef SWIG
+
 /**
  * @brief Generic template function for the sum of degrees.
  *
@@ -112,6 +114,8 @@ noexcept
 	}
 	return S;
 }
+
+#endif
 
 /**
  * @brief Computes the sum of degrees raised to the \f$p\f$-th power.
@@ -308,8 +312,9 @@ sum_powers_out_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 
-
 /* -------------------------------------------------------------------------- */
+
+#ifndef SWIG
 
 /**
  * @brief Generic template function for the moment of degree about 0.
@@ -347,6 +352,7 @@ noexcept
 	}
 }
 
+#endif
 
 /**
  * @brief Computes the \f$p\f$-th moment of degree about zero of a graph as
