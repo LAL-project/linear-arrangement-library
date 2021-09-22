@@ -54,6 +54,19 @@ namespace graphs {
  */
 enum class tree_type {
 	/**
+	 * @brief Empty tree.
+	 *
+	 * A tree with no vertices at all.
+	 */
+	empty,
+	/**
+	 * @brief Singleton tree.
+	 *
+	 * A tree of a single vertex.
+	 */
+	singleton,
+
+	/**
 	 * @brief Bi-star trees.
 	 *
 	 * These trees are made of two star trees joined by an edge at their centers.
@@ -71,8 +84,8 @@ enum class tree_type {
 	/**
 	 * @brief Linear trees.
 	 *
-	 * A linear tree has only two leaves, and the rest of the vertices have degree
-	 * exactly two. This is, precisely, a path graph.
+	 * A linear tree has only two leaves, and the rest of the vertices (if any)
+	 * have degree exactly two. This is, precisely, a path graph.
 	 */
 	linear,
 

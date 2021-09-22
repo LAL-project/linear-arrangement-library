@@ -60,13 +60,15 @@ noexcept
 	using tree_type = graphs::tree_type;
 
 	switch (tt) {
+		case tree_type::empty: return "empty";
+		case tree_type::singleton: return "singleton";
 		case tree_type::bistar: return "bistar";
 		case tree_type::caterpillar: return "caterpillar";
 		case tree_type::linear: return "linear";
 		case tree_type::quasistar: return "quasistar";
 		case tree_type::spider: return "spider";
 		case tree_type::star: return "star";
-		default: return "unknown_tree_type";
+		default: return "unknown";
 	}
 }
 
@@ -74,6 +76,8 @@ static constexpr std::array<graphs::tree_type, graphs::__tree_type_size>
 array_of_tree_types =
 make_array<
 	graphs::tree_type,
+	graphs::tree_type::empty,
+	graphs::tree_type::singleton,
 	graphs::tree_type::bistar,
 	graphs::tree_type::caterpillar,
 	graphs::tree_type::linear,

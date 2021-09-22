@@ -65,6 +65,7 @@ template<
 >
 void classify_tree
 (const T& t, std::array<bool, graphs::__tree_type_size>& array)
+noexcept
 {
 	// -------------------------------------------------------------------------
 	// utilities
@@ -95,13 +96,12 @@ void classify_tree
 	// number of vertices
 	const uint64_t N = t.get_num_nodes();
 	if (N == 0) {
-		set_type(graphs::tree_type::unknown);
+		set_type(graphs::tree_type::empty);
+		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 1) {
-		set_type(graphs::tree_type::linear);
-		set_type(graphs::tree_type::star);
-		set_type(graphs::tree_type::caterpillar);
+		set_type(graphs::tree_type::singleton);
 		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
