@@ -188,7 +188,9 @@ treebank_error treebank_collection_processor::process() noexcept
 				tbproc.set_output_header(m_output_header);
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
-				tbproc.set_custom_header(m_custom_header);
+				if (m_use_custom_header) {
+					tbproc.set_custom_header(m_custom_header);
+				}
 
 				// add features in this treebank collection processor
 				for (size_t i = 0; i < __treebank_feature_size; ++i) {
