@@ -62,8 +62,8 @@ namespace generate {
  * uniformly at random.
  *
  * This class implements an algorithm that uses uniformly random Prüfer sequences
- * (see \cite Pruefer1918a). The construction of the free labelled tree uses the
- * algorithm in \cite Alonso1995a.
+ * (see \cite Pruefer1918a). The construction of the free labelled tree is done
+ * in \f$O(n)\f$.
  */
 class _rand_lab_free_trees {
 public:

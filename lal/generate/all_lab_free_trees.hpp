@@ -55,7 +55,7 @@ namespace generate {
  *
  * Generates all the labelled free trees of a given number of nodes. The
  * algorithm implemented uses Prüfer sequences (see \cite Pruefer1918a) and
- * decodes them using the algorithm in \cite Alonso1995a.
+ * decodes them in \f$O(n)\f$.
  *
  * In order to use this class, users must provide the size \f$n\f$ of the tree
  * (number of nodes) in the constructor. Trees are generated internally, i.e.,
