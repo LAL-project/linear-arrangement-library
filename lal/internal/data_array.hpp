@@ -54,7 +54,6 @@ namespace internal {
  * @brief Wrapper of an array for autmatic deallocation of memory.
  *
  * Automatically manage deallocation of memory via destructors.
- * Objects of this class are not to be moved nor copied.
  */
 template<typename T>
 struct data_array {
@@ -84,12 +83,12 @@ public:
 	}
 
 	// Copy constructor
-	data_array(const data_array& d) : m_size(d.m_size) {
+	data_array(const data_array& d) noexcept : m_size(d.m_size) {
 		data = m_size == 0 ? nullptr : new T[m_size];
 		std::copy(d.begin(), d.end(), begin());
 	}
 	// Copy assignment operator
-	data_array& operator= (const data_array& d) {
+	data_array& operator= (const data_array& d) noexcept {
 		if (m_size != d.m_size) {
 			delete[] data;
 			m_size = d.m_size;
@@ -108,7 +107,7 @@ public:
 		d.m_size = 0;
 	}
 	// Move assignment operator
-	data_array& operator= (data_array&& d) {
+	data_array& operator= (data_array&& d) noexcept {
 		// free yourself
 		delete[] data;
 		// steal from others
@@ -118,6 +117,15 @@ public:
 		d.data = nullptr;
 		d.m_size = 0;
 		return *this;
+	}
+
+	// resize the array
+	inline void resize(std::size_t new_size) noexcept {
+		if (new_size != m_size) {
+			m_size = new_size;
+			delete[] data;
+			data = new T[m_size];
+		}
 	}
 
 	// imitate the vector::size() method
