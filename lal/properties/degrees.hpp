@@ -83,14 +83,6 @@ noexcept
 		std::is_same_v<return_type, numeric::integer>
 	);
 
-	if constexpr (std::is_same_v<G, graphs::rooted_tree>) {
-		// the sum of powers of the in-degree of the vertices in a rooted
-		// tree is always equal to the number of edges!
-		if (degree_function == &graphs::rooted_tree::get_in_degree) {
-			return g.get_num_edges();
-		}
-	}
-
 	// sum of powers
 	return_type S(0);
 	// variable used to calculate powers
@@ -246,12 +238,14 @@ sum_powers_in_degrees(const graphs::directed_graph& g, uint64_t p) noexcept {
  * @param g Input graph.
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
+ * @pre Tree @e t is a valid rooted tree.
  */
 inline numeric::integer
-sum_powers_in_degrees_integer(const graphs::rooted_tree& g, uint64_t p) noexcept {
-	return
-	sum_powers_degrees<graphs::rooted_tree, numeric::integer>
-	(g, p, &graphs::rooted_tree::get_in_degree);
+sum_powers_in_degrees_integer(const graphs::rooted_tree& t, uint64_t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	return t.get_num_edges();
 }
 /**
  * @brief Computes the sum of in-degrees raised to the \f$p\f$-th power.
@@ -265,12 +259,14 @@ sum_powers_in_degrees_integer(const graphs::rooted_tree& g, uint64_t p) noexcept
  * @param g Input graph.
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
+ * @pre Tree @e t is a valid rooted tree.
  */
 inline uint64_t
-sum_powers_in_degrees(const graphs::rooted_tree& g, uint64_t p) noexcept {
-	return
-	sum_powers_degrees<graphs::rooted_tree, uint64_t>
-	(g, p, &graphs::rooted_tree::get_in_degree);
+sum_powers_in_degrees(const graphs::rooted_tree& t, uint64_t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	return t.get_num_edges();
 }
 
 /**
@@ -280,7 +276,7 @@ sum_powers_in_degrees(const graphs::rooted_tree& g, uint64_t p) noexcept {
  *
  * \f$K^p = \sum_{i=1}^n k_{out, i}^p\f$.
  *
- * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{out, i}\f$ is
  * the out-degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Power of degree.
@@ -336,14 +332,14 @@ inline return_type moment_degree
 noexcept
 {
 	static_assert(
-		std::is_same_v<return_type, double> ||
+		std::is_floating_point_v<return_type> ||
 		std::is_same_v<return_type, numeric::rational>
 	);
 
-	if constexpr (std::is_same_v<return_type, double>) {
+	if constexpr (std::is_floating_point_v<return_type>) {
 		const uint64_t S =
 			sum_powers_degrees<G,uint64_t>(g,p,degree_function);
-		return static_cast<double>(S)/static_cast<double>(g.get_num_nodes());
+		return static_cast<return_type>(S)/static_cast<return_type>(g.get_num_nodes());
 	}
 	else {
 		const numeric::integer S =
@@ -437,7 +433,8 @@ moment_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
  *
  * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
  *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
+ * the in-degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
@@ -465,39 +462,48 @@ moment_in_degree(const graphs::directed_graph& g, uint64_t p) noexcept {
 }
 
 /**
- * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
- * graph as an exact rational value.
+ * @brief Computes the \f$p\f$-th moment of in-degree about zero of a rooted
+ * tree as an exact rational value.
  *
  * Computes the \f$p\f$-th moment of in-degree about zero,
- * \f$\langle k_{in}^p \rangle\f$, of a directed graph using:
+ * \f$\langle k_{in}^p \rangle\f$, of a rooted tree using:
  *
  * \f$\langle k_{in}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{in, i}^p \f$.
  *
- * where \f$n\f$ denotes the number of nodes of the graph.
- * @param g Input graph.
+ * where \f$n\f$ denotes the number of nodes of the tree. In this case, this
+ * value is trivially independent of the moment \f$p\f$,
+ *
+ * \f$\langle k_{in}^p \rangle = \frac{n - 1}{n}\f$.
+ * @param t Input rooted tree.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
+ * @pre Tree @e t is a valid rooted tree.
  */
 inline numeric::rational
-moment_in_degree_rational(const graphs::rooted_tree& g, uint64_t p) noexcept {
-	return
-	moment_degree<graphs::rooted_tree, numeric::rational>
-	(g, p, &graphs::rooted_tree::get_in_degree);
+moment_in_degree_rational(const graphs::rooted_tree& t, uint64_t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	const auto n = t.get_num_nodes();
+	return numeric::rational(n - 1, n);
 }
 /**
  * @brief Computes the \f$p\f$-th moment of in-degree about zero of a directed
  * graph as a floating point value.
  *
  * See @ref lal::properties::moment_in_degree_rational for details.
- * @param g Input graph.
+ * @param t Input rooted tree.
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
+ * @pre Tree @e t is a valid rooted tree.
  */
 inline double
-moment_in_degree(const graphs::rooted_tree& g, uint64_t p) noexcept {
-	return
-	moment_degree<graphs::rooted_tree, double>
-	(g, p, &graphs::rooted_tree::get_in_degree);
+moment_in_degree(const graphs::rooted_tree& t, uint64_t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	const auto n = t.get_num_nodes();
+	return static_cast<double>(n - 1)/static_cast<double>(n);
 }
 
 /**
@@ -509,7 +515,8 @@ moment_in_degree(const graphs::rooted_tree& g, uint64_t p) noexcept {
  *
  * \f$\langle k_{out}^p \rangle = \frac{1}{n} \sum_{i=1}^n k_{out, i}^p \f$.
  *
- * where \f$n\f$ denotes the number of nodes of the graph.
+ * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{out, i}\f$ is
+ * the out-degree of vertex \f$i\f$.
  * @param g Input graph.
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
