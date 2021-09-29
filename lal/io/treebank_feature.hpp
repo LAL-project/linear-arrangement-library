@@ -69,12 +69,6 @@ enum class treebank_feature {
 	 */
 	second_moment_degree,
 	/**
-	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
-	 *
-	 * See @ref lal::properties::moment_in_degree for details.
-	 */
-	second_moment_degree_in,
-	/**
 	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
 	 *
 	 * See @ref lal::properties::moment_out_degree for details.
@@ -87,53 +81,34 @@ enum class treebank_feature {
 	 */
 	third_moment_degree,
 	/**
-	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
-	 *
-	 * See @ref lal::properties::moment_in_degree for details.
-	 */
-	third_moment_degree_in,
-	/**
 	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
 	 *
 	 * See @ref lal::properties::moment_out_degree for details.
 	 */
 	third_moment_degree_out,
 
-
 	/**
 	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree for details.
+	 * See @ref lal::properties::sum_powers_degrees for details.
 	 */
 	sum_squared_degrees,
 	/**
-	 * @brief Second moment of in-degree \f$\langle k_{in}^2 \rangle\f$.
-	 *
-	 * See @ref lal::properties::moment_in_degree for details.
-	 */
-	sum_squared_in_degrees,
-	/**
 	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_out_degree for details.
+	 * See @ref lal::properties::sum_powers_out_degrees for details.
 	 */
 	sum_squared_out_degrees,
 	/**
 	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_degree for details.
+	 * See @ref lal::properties::sum_powers_degrees for details.
 	 */
 	sum_cubed_degrees,
 	/**
-	 * @brief Third moment of in-degree \f$\langle k_{in}^3 \rangle\f$.
-	 *
-	 * See @ref lal::properties::moment_in_degree for details.
-	 */
-	sum_cubed_in_degrees,
-	/**
 	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
 	 *
-	 * See @ref lal::properties::moment_out_degree for details.
+	 * See @ref lal::properties::sum_powers_out_degrees for details.
 	 */
 	sum_cubed_out_degrees,
 

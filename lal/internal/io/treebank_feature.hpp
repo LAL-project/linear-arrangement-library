@@ -62,16 +62,12 @@ treebank_feature_string(const io::treebank_feature& tf) noexcept {
 	switch (tf) {
 	case treebank_feature::num_nodes: return "n";
 	case treebank_feature::second_moment_degree: return "second_moment_degree";
-	case treebank_feature::second_moment_degree_in: return "second_moment_degree_in";
 	case treebank_feature::second_moment_degree_out: return "second_moment_degree_out";
 	case treebank_feature::third_moment_degree: return "third_moment_degree";
-	case treebank_feature::third_moment_degree_in: return "third_moment_degree_in";
 	case treebank_feature::third_moment_degree_out: return "third_moment_degree_out";
 	case treebank_feature::sum_squared_degrees: return "sum_squared_degrees";
-	case treebank_feature::sum_squared_in_degrees: return "sum_squared_in_degrees";
 	case treebank_feature::sum_squared_out_degrees: return "sum_squared_out_degrees";
 	case treebank_feature::sum_cubed_degrees: return "sum_cubed_degrees";
-	case treebank_feature::sum_cubed_in_degrees: return "sum_cubed_in_degrees";
 	case treebank_feature::sum_cubed_out_degrees: return "sum_cubed_out_degrees";
 	case treebank_feature::num_pairs_independent_edges: return "num_pairs_independent_edges";
 	case treebank_feature::head_initial: return "head_initial";
