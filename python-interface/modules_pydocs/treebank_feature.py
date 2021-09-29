@@ -10,11 +10,13 @@ Structural properties
 
 - ``num_nodes`` : Number of nodes.
 - ``second_moment_degree`` : Second moment of degree :math:`<k^2>`. See ``lal.properties.moment_degree`` for details.
-- ``second_moment_degree_in`` : Second moment of degree :math:`<k_{in}^2>`. See ``lal.properties.moment_degree_in`` for details.
 - ``second_moment_degree_out`` : Second moment of degree :math:`<k_{out}^2>`. See ``lal.properties.moment_degree_out`` for details.
 - ``third_moment_degree`` : Third moment of degree :math:`<k^3>`. See ``lal.properties.moment_degree`` for details.
-- ``third_moment_degree_in`` : Third moment of degree :math:`<k_{in}^3>`. See ``lal.properties.moment_degree_in`` for details.
 - ``third_moment_degree_out`` : Third moment of degree :math:`<k_{out}^3>`. See ``lal.properties.moment_degree_out`` for details.
+- ``sum_squared_degrees`` : sum of squared degrees. See ``lal.properties.sum_powers_degrees`` for details.
+- ``sum_squared_out_degrees`` : sum of squared out-degrees. See ``lal.properties.sum_powers_out_degrees`` for details.
+- ``sum_cubed_degrees`` : sum of cubed degrees. See ``lal.properties.sum_powers_degrees`` for details.
+- ``sum_cubed_out_degrees`` : sum of cubed out-degrees. See ``lal.properties.sum_powers_out_degrees`` for details.
 - ``num_pairs_independent_edges`` : Size of the set :math:`Q(T)` of this tree :math:`T`. See ``lal.properties.num_pairs_independent_edges`` for details.
 - ``mean_hierarchical_distance`` : Mean hierarchical distance of the tree. See ``lal.properties.mean_hierarchical_distance`` for details.
 - ``head_initial`` : Headedness of the tree. See ``lal.linarr.head_initial`` for details.
