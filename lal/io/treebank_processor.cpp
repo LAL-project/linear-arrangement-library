@@ -479,7 +479,7 @@ const noexcept
 	static constexpr size_t k3_out_idx = internal::treebank_feature_to_index(treebank_feature::third_moment_degree_out);
 	static constexpr size_t SK2_idx = internal::treebank_feature_to_index(treebank_feature::sum_squared_degrees);
 	static constexpr size_t SK2_in_idx = internal::treebank_feature_to_index(treebank_feature::sum_squared_in_degrees);
-	static constexpr size_t SK2_out_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
+	static constexpr size_t SK2_out_idx = internal::treebank_feature_to_index(treebank_feature::sum_squared_out_degrees);
 	static constexpr size_t SK3_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_degrees);
 	static constexpr size_t SK3_in_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_in_degrees);
 	static constexpr size_t SK3_out_idx = internal::treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
