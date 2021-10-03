@@ -15,26 +15,26 @@ For more information, visit [LAL's webpage](https://cqllab.upc.edu/lal/).
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-library-windows.md) file.
-- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/installation-library-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-windows.md) file.
+- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-linux.md) file.
 
 ## Compilation and installation of the library from sources
 
 We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file.
-- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file.
+- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-library-linux.md) file.
 
 ## Compilation and installation of the Python interface
 
 We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
 
-- Windows in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-windows.md) file.
-- Linux in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-windows.md) file.
+- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-linux.md) file.
 
 ## Compile a program that uses LAL
 
-See [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.
+See [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.
 
 ## Author information
 
