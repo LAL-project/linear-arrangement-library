@@ -60,7 +60,9 @@ namespace generate {
 
 rand_planar_arrangements::rand_planar_arrangements
 (const free_tree& T, uint64_t seed) noexcept
-	: m_T(T)
+	: m_T(T),
+	  m_rdata(vector<vector<node>>(m_T.get_num_nodes())),
+	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined DEBUG
 	assert(m_T.is_tree());
@@ -73,13 +75,18 @@ rand_planar_arrangements::rand_planar_arrangements
 		m_gen = mt19937(seed);
 	}
 
-	// initialise the random data of all vertices
-	m_rdata = vector<vector<node>>(m_T.get_num_nodes());
+	// initialise m_rdata with the degrees of the tree
+	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
+		m_rdata[u] = vector<node>(m_T.get_degree(u));
+	}
 }
 
 rand_planar_arrangements::rand_planar_arrangements
 (const rooted_tree& T, uint64_t seed) noexcept
-	: m_T_copy(T.to_free_tree()), m_T(m_T_copy)
+	: m_T_copy(T.to_free_tree()),
+	  m_T(m_T_copy),
+	  m_rdata(vector<vector<node>>(m_T.get_num_nodes())),
+	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined DEBUG
 	assert(m_T.is_tree());
@@ -92,11 +99,13 @@ rand_planar_arrangements::rand_planar_arrangements
 		m_gen = mt19937(seed);
 	}
 
-	// initialise the random data of all vertices
-	m_rdata = vector<vector<node>>(m_T.get_num_nodes());
+	// initialise m_rdata with the degrees of the tree
+	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
+		m_rdata[u] = vector<node>(m_T.get_degree(u));
+	}
 }
 
-template<class GEN>
+template<bool assign_vertices, class GEN>
 void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,
@@ -106,10 +115,6 @@ void make_random_projective(
 	GEN& gen
 )
 {
-	// number of neighbours
-	//  +1  : because we add 'u' to the interval
-	//  -1  : because we remove the parent of u
-	const uint64_t d_out = T.get_degree(u) + 1 - 1;
 	const neighbourhood& neighs_u = T.get_neighbours(u);
 
 	// Choose random positions for the intervals corresponding to the
@@ -117,15 +122,16 @@ void make_random_projective(
 	// have to be made with respect to 'r'. Remember: there are n_children+1
 	// possibilities.
 
-	data[u] = vector<node>(d_out);
-
 	// fill interval with the root vertex and its children
 	auto& inter = data[u];
-	inter[0] = u;
-	copy_if(
-		neighs_u.begin(), neighs_u.end(), inter.begin() + 1,
-		[&](node v) -> bool { return v != parent_u; }
-	);
+
+	if constexpr (assign_vertices) {
+		inter[0] = u;
+		copy_if(
+			neighs_u.begin(), neighs_u.end(), inter.begin() + 1,
+			[&](node v) -> bool { return v != parent_u; }
+		);
+	}
 
 	// shuffle the positions
 	shuffle(inter.begin(), inter.end(), gen);
@@ -134,7 +140,8 @@ void make_random_projective(
 	// other vertices. Compute them inductively.
 	for (const node& v : neighs_u) {
 		if (v != parent_u) {
-			make_random_projective(T, u, v, data, gen);
+			make_random_projective<assign_vertices>
+				(T, u, v, data, gen);
 		}
 	}
 }
@@ -143,8 +150,21 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	uniform_int_distribution<node> U(0, m_T.get_num_nodes() - 1);
 	const node root = U(m_gen);
 
+	// resize m_rdata only when the random root is different
+	// from the one chosen (u.a.r.) before
+	if (root != m_previous_root) {
+		// first call
+		if (m_previous_root >= m_T.get_num_nodes()) {
+			m_rdata[root].push_back(0);
+		}
+		// not the first call
+		else {
+			m_rdata[m_previous_root].pop_back();
+			m_rdata[root].push_back(0);
+		}
+	}
+
 	// number of children of 'r' with respect to the tree's root
-	const uint64_t d_out = m_T.get_degree(root) + 1;
 	const neighbourhood& neighs_root = m_T.get_neighbours(root);
 
 	// Choose random positions for the intervals corresponding to the
@@ -152,21 +172,35 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	// have to be made with respect to 'r'. Remember: there are n_children+1
 	// possibilities.
 
-	m_rdata[root] = vector<node>(d_out);
-
 	// fill interval with the root vertex and its children
-	auto& inter = m_rdata[root];
-	inter[0] = root;
-	copy(neighs_root.begin(), neighs_root.end(), inter.begin() + 1);
+	auto& root_interval = m_rdata[root];
+
+	if (root != m_previous_root) {
+		root_interval[0] = root;
+		copy(neighs_root.begin(), neighs_root.end(), root_interval.begin() + 1);
+	}
 
 	// shuffle the positions
-	shuffle(inter.begin() + 1, inter.end(), m_gen);
+	shuffle(root_interval.begin() + 1, root_interval.end(), m_gen);
 
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them inductively.
-	for (const node& v : neighs_root) {
-		make_random_projective(m_T, root, v, m_rdata, m_gen);
+	if (m_previous_root == root) {
+		for (const node& v : neighs_root) {
+			// do not assign vertices, only shuffle
+			make_random_projective<false>
+				(m_T, root, v, m_rdata, m_gen);
+		}
 	}
+	else {
+		for (const node& v : neighs_root) {
+			// assign vertices and shuffle
+			make_random_projective<true>
+				(m_T, root, v, m_rdata, m_gen);
+		}
+	}
+
+	m_previous_root = root;
 
 	// construct arrangement
 	return internal::make_arrangement_intervals(m_T, root, m_rdata);

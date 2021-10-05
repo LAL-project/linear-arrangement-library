@@ -90,7 +90,9 @@ public:
 	rand_planar_arrangements(const graphs::free_tree& T, uint64_t seed = 0) noexcept;
 
 	/**
-	 * @brief Constructor with a constant reference to a rooted tree.
+	 * @brief Constructor with rooted tree.
+	 *
+	 * This constructor transforms the input rooted tree into a free tree.
 	 * @param T Input rooted tree.
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
@@ -134,7 +136,8 @@ private:
 	 * Used only when this class is constructed with a rooted tree.
 	 */
 	graphs::free_tree m_T_copy;
-	/// The free tree of which we are making planar arrangements uniformly at random.
+	/// The free tree of which we are making planar arrangements uniformly
+	/// at random.
 	const graphs::free_tree& m_T;
 
 	/**
@@ -144,6 +147,10 @@ private:
 	 * every call to @ref get_arrangement.
 	 */
 	std::vector<std::vector<node>> m_rdata;
+
+	/// The root chosen in the previous call to @ref get_arrangement or
+	/// @ref yield_arrangement.
+	node m_previous_root;
 
 	/// Random number generator
 	std::mt19937 m_gen;
