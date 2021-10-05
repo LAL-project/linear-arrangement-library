@@ -109,7 +109,9 @@ public:
 	 */
 	all_planar_arrangements(const graphs::free_tree& T) noexcept;
 	/**
-	 * @brief Constructor with a copy of a free tree.
+	 * @brief Constructor with rooted tree.
+	 *
+	 * This constructor transforms the input rooted tree into a free tree.
 	 * @param T Input rooted tree
 	 * @pre The object @e T is a valid tree (see @ref graphs::rooted_tree::is_tree).
 	 */
@@ -184,13 +186,6 @@ private:
 	/// The interval of every node of the tree
 	std::vector<std::vector<node>> m_intervals;
 
-	/**
-	 * @brief Parent of every node with respect to the root @ref m_root.
-	 *
-	 * This is needed since @ref m_T is a free tree.
-	 */
-	internal::data_array<node> m_parent;
-
 	/// Array for the bit sort algorithm
 	internal::data_array<char> m_memory_bit_sort;
 
@@ -200,8 +195,8 @@ private:
 private:
 	/// Initiales the interval of every node of the tree.
 	void initialise_intervals_tree() noexcept;
-	/// Initialise the interval of node @e v.
-	void initialise_interval_node(node v) noexcept;
+	/// Initialise the interval of node @e v, whose parent vertex is @e parent.
+	void initialise_interval_node(node v, node parent) noexcept;
 };
 
 } // -- namespace generate

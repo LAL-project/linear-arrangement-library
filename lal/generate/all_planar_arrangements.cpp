@@ -60,7 +60,6 @@ namespace generate {
 
 all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 	: m_T(T),
-	  m_parent(m_T.get_num_nodes()),
 	  m_memory_bit_sort(T.get_num_nodes(), 0)
 {
 #if defined DEBUG
@@ -74,7 +73,6 @@ all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
-	  m_parent(m_T.get_num_nodes()),
 	  m_memory_bit_sort(T.get_num_nodes())
 {
 #if defined DEBUG
@@ -142,9 +140,8 @@ void all_planar_arrangements::reset() noexcept {
 }
 
 void all_planar_arrangements::initialise_intervals_tree() noexcept {
-	m_parent[m_root] = m_root;
 	m_intervals[m_root].resize(m_T.get_degree(m_root) + 1);
-	initialise_interval_node(m_root);
+	initialise_interval_node(m_root, m_root);
 
 	// we use a BFS to be able to keep track of the parent of
 	// every vertex with respect to the root.
@@ -152,15 +149,14 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
 		m_intervals[v] = vector<node>(m_T.get_degree(v));
-		m_parent[v] = u;
-		initialise_interval_node(v);
+		initialise_interval_node(v, u);
 	}
 	);
 	bfs.start_at(m_root);
 }
 
-void all_planar_arrangements::initialise_interval_node(node u) noexcept {
-	const node parent = m_parent[u];
+void all_planar_arrangements::initialise_interval_node(node u, node parent) noexcept
+{
 	const neighbourhood& neighs_u = m_T.get_neighbours(u);
 
 	// the interval of this vertex
