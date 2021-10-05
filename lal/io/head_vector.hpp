@@ -115,6 +115,7 @@ template<
 		bool
 	> = true
 >
+inline
 std::optional<T> read_head_vector
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept

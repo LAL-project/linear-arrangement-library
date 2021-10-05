@@ -67,7 +67,8 @@ namespace internal {
 // =============================================================================
 
 template<class G, bool decide_upper_bound>
-inline uint64_t __compute_C_ladder(
+inline
+uint64_t __compute_C_ladder(
 	const G& g, const linear_arrangement& pi,
 	char * const __restrict__ bn,
 	uint64_t * const __restrict__ inv_pi,
@@ -138,7 +139,8 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint64_t __call_C_ladder(
+inline
+uint64_t __call_C_ladder(
 	const G& g,
 	const linear_arrangement& pi
 )
@@ -164,6 +166,7 @@ noexcept
 	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data(), T,L1);
 }
 
+inline
 uint64_t n_C_ladder(
 	const directed_graph& g,
 	const linear_arrangement& pi
@@ -177,6 +180,7 @@ noexcept
 			(__call_C_ladder<directed_graph>, g, pi);
 }
 
+inline
 uint64_t n_C_ladder(
 	const undirected_graph& g,
 	const linear_arrangement& pi
@@ -194,6 +198,7 @@ noexcept
 // list of arrangements
 
 template<class G>
+inline
 vector<uint64_t> n_C_ladder(
 	const G& g,
 	const vector<linear_arrangement>& pis
@@ -234,6 +239,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> n_C_ladder(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
@@ -258,7 +264,8 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint64_t __call_C_ladder_is_lesseq_than(
+inline
+uint64_t __call_C_ladder_is_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
@@ -283,6 +290,7 @@ noexcept
 	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data(), T,L1, upper_bound);
 }
 
+inline
 uint64_t is_n_C_ladder_lesseq_than(
 	const directed_graph& g,
 	const linear_arrangement& pi,
@@ -297,6 +305,7 @@ noexcept
 			(__call_C_ladder_is_lesseq_than<directed_graph>, g, pi, upper_bound);
 }
 
+inline
 uint64_t is_n_C_ladder_lesseq_than(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
@@ -315,6 +324,7 @@ noexcept
 // list of arrangements
 
 template<class G>
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
@@ -359,6 +369,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -370,6 +381,7 @@ noexcept
 			(g, pis, upper_bound);
 }
 
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -382,6 +394,7 @@ noexcept
 }
 
 template<typename G>
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
@@ -433,6 +446,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -443,6 +457,8 @@ noexcept
 	return is_n_C_ladder_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
 }
+
+inline
 vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,

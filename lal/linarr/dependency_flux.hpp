@@ -59,22 +59,22 @@ public:
 	// GETTERS
 
 	/// Returns left span of this flux.
-	inline uint64_t get_left_span() const noexcept { return m_left_span;; }
+	uint64_t get_left_span() const noexcept { return m_left_span;; }
 	/// Returns right span of this flux.
-	inline uint64_t get_right_span() const noexcept { return m_right_span; }
+	uint64_t get_right_span() const noexcept { return m_right_span; }
 	/// Returns the size of this flux.
-	inline uint64_t get_size() const noexcept
+	uint64_t get_size() const noexcept
 	{ return m_dependencies.size(); }
 	/// Returns weight of this flux.
-	inline uint64_t get_weight() const noexcept { return m_weight; }
+	uint64_t get_weight() const noexcept { return m_weight; }
 
 #ifndef SWIG
 	/// Returns a reference to the left span of this flux.
-	inline uint64_t& get_left_span() noexcept { return m_left_span;; }
+	uint64_t& get_left_span() noexcept { return m_left_span;; }
 	/// Returns a reference to the right span of this flux.
-	inline uint64_t& get_right_span() noexcept { return m_right_span; }
+	uint64_t& get_right_span() noexcept { return m_right_span; }
 	/// Returns a reference to the weight of this flux.
-	inline uint64_t& get_weight() noexcept { return m_weight; }
+	uint64_t& get_weight() noexcept { return m_weight; }
 
 	/// Returns a reference to the set of dependencies.
 	std::vector<edge>& get_dependencies() { return m_dependencies; }
@@ -91,7 +91,7 @@ public:
 	 * left span (see attribute @ref m_left_span).
 	 * @returns The R/L ratio of this flux.
 	 */
-	inline numeric::rational get_RL_ratio_rational() const noexcept
+	numeric::rational get_RL_ratio_rational() const noexcept
 	{ return numeric::rational(m_right_span, m_left_span); }
 	/**
 	 * @brief Returns the R/L ratio.
@@ -100,7 +100,7 @@ public:
 	 * left span (see attribute @ref m_left_span).
 	 * @returns The R/L ratio of this flux.
 	 */
-	inline double get_RL_ratio() const noexcept
+	double get_RL_ratio() const noexcept
 	{ return get_RL_ratio_rational().to_double(); }
 
 	/**
@@ -110,7 +110,7 @@ public:
 	 * divided by the number of dependencies (see attribute @ref m_dependencies).
 	 * @returns The W/S ratio of this flux.
 	 */
-	inline numeric::rational get_WS_ratio_rational() const noexcept
+	numeric::rational get_WS_ratio_rational() const noexcept
 	{ return numeric::rational(m_weight, m_dependencies.size()); }
 	/**
 	 * @brief Returns the W/S ratio.
@@ -119,25 +119,25 @@ public:
 	 * divided by the number of dependencies (see attribute @ref m_dependencies).
 	 * @returns The W/S ratio of this flux.
 	 */
-	inline double get_WS_ratio() const noexcept
+	double get_WS_ratio() const noexcept
 	{ return get_WS_ratio_rational().to_double(); }
 
 	// SETTERS
 
 	/// Sets the left span.
-	inline void set_left_span(uint64_t ls) noexcept { m_left_span = ls; }
+	void set_left_span(uint64_t ls) noexcept { m_left_span = ls; }
 	/// Sets the right span.
-	inline void set_right_span(uint64_t rs) noexcept { m_right_span = rs; }
+	void set_right_span(uint64_t rs) noexcept { m_right_span = rs; }
 	/// Sets the weight.
-	inline void set_weight(uint64_t w) noexcept { m_weight = w; }
+	void set_weight(uint64_t w) noexcept { m_weight = w; }
 
 	/// Sets the set of dependencies.
-	inline void set_dependencies(const std::vector<edge>& deps) noexcept
+	void set_dependencies(const std::vector<edge>& deps) noexcept
 	{ m_dependencies = deps; }
 
 #ifndef SWIG
 	/// Sets the set of dependencies.
-	inline void set_dependencies(std::vector<edge>&& deps) noexcept
+	void set_dependencies(std::vector<edge>&& deps) noexcept
 	{ m_dependencies = std::move(deps); }
 #endif
 

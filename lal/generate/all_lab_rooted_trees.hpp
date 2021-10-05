@@ -131,7 +131,7 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -142,7 +142,7 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialised.
 	 */
-	inline void next() noexcept {
+	void next() noexcept {
 		if (not has_next() or m_reached_end) {
 			m_reached_end = true;
 			return;
@@ -160,18 +160,18 @@ public:
 	}
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		activate_all_postprocessing_actions();
 		__reset();
 		next();
 	}
 
 	/// Returns whether there are more trees to generate.
-	inline bool has_next() const noexcept {
+	bool has_next() const noexcept {
 		return m_cur_root + 1 < m_n or not m_gen_lab_free_tree.end();
 	}
 
-	inline graphs::rooted_tree yield_tree() noexcept {
+	graphs::rooted_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;
@@ -184,7 +184,7 @@ protected:
 	 * @pre The generator must have been initialised.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	inline graphs::rooted_tree __get_tree() noexcept {
+	graphs::rooted_tree __get_tree() noexcept {
 #if defined DEBUG
 		assert(m_cur_root < m_n);
 #endif
@@ -192,7 +192,7 @@ protected:
 	}
 
 	/// Sets the iterator to its initial state.
-	inline void __reset() noexcept {
+	void __reset() noexcept {
 		m_reached_end = false;
 		// so that in the next call the root is set to 0
 		m_cur_root = m_n - 1;

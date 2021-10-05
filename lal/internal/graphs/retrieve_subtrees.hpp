@@ -71,8 +71,8 @@ namespace internal {
  * AND the boolean parameter sizes are BOTH true.
  */
 template<bool get_subsizes>
-std::pair<std::vector<edge>, uint64_t *>
-get_edges_subtree
+inline
+std::pair<std::vector<edge>, uint64_t *> get_edges_subtree
 (const graphs::rooted_tree& T, node u, bool relabel)
 {
 #if defined DEBUG

@@ -249,7 +249,7 @@ public:
 	/// Default destructor.
 	~rand_ulab_rooted_trees() noexcept = default;
 
-	inline graphs::rooted_tree yield_tree() noexcept {
+	graphs::rooted_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -260,7 +260,7 @@ protected:
 	 * See @ref _rand_ulab_rooted_trees::get_tree for details.
 	 * @returns An unlabelled rooted tree chosen uniformly at random.
 	 */
-	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_ulab_rooted_trees for details.

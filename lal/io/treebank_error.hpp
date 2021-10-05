@@ -101,15 +101,15 @@ public:
 #endif
 
 	/// Compares a treebank error with a treebank error type.
-	inline bool operator== (const treebank_error_type& tet) const noexcept
+	bool operator== (const treebank_error_type& tet) const noexcept
 	{ return m_error_type == tet; }
 
 	/// Retrieve the error message.
-	inline const std::string& get_error_message() const noexcept
+	const std::string& get_error_message() const noexcept
 	{ return m_error_msg; }
 
 	/// Retrieve the error type.
-	inline treebank_error_type get_error_type() const noexcept
+	treebank_error_type get_error_type() const noexcept
 	{ return m_error_type; }
 
 private:

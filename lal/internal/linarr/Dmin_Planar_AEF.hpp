@@ -68,8 +68,9 @@ namespace internal {
  * there are no edge crossings and the centroidal vertex is not covered. Such
  * arrangement is done using an interval-based algorithm.
  */
-std::pair<uint64_t, linear_arrangement>
-Dmin_Planar_AEF(const free_tree& t) noexcept
+inline
+std::pair<uint64_t, linear_arrangement> Dmin_Planar_AEF
+(const free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());

@@ -171,7 +171,7 @@ public:
 	/* SETTERS */
 
 	/// Sets whether this graph is normalised or not.
-	inline void set_normalised(bool v = true) noexcept { m_normalised = v; }
+	void set_normalised(bool v = true) noexcept { m_normalised = v; }
 
 	/* GETTERS */
 
@@ -185,17 +185,17 @@ public:
 	virtual std::vector<edge_pair> get_Q() const noexcept = 0;
 
 	/// Returns true if node @e u is in this graph.
-	inline bool has_node(node u) const noexcept { return u < get_num_nodes(); }
+	bool has_node(node u) const noexcept { return u < get_num_nodes(); }
 
 	/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
 	virtual bool has_edge(node u, node v) const = 0;
 
 	/// Returns the number of ndoes.
-	inline uint64_t get_num_nodes() const noexcept
+	uint64_t get_num_nodes() const noexcept
 	{ return m_adjacency_list.size(); }
 
 	/// Returns the number of edges.
-	inline uint64_t get_num_edges() const noexcept { return m_num_edges; }
+	uint64_t get_num_edges() const noexcept { return m_num_edges; }
 
 	/// Returns all edges of this graph.
 	virtual std::vector<edge> get_edges() const noexcept = 0;
@@ -207,7 +207,7 @@ public:
 	 * increasingly. For this, use method @ref normalise().
 	 * @returns The value of @ref m_normalised.
 	 */
-	inline bool is_normalised() const noexcept { return m_normalised; }
+	bool is_normalised() const noexcept { return m_normalised; }
 
 	/// Returns whether this graph is directed or not.
 	virtual bool is_directed() const noexcept = 0;

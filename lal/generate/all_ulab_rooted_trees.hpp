@@ -123,7 +123,7 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -137,12 +137,12 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		__reset();
 		next();
 	}
 
-	inline graphs::rooted_tree yield_tree() noexcept {
+	graphs::rooted_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;

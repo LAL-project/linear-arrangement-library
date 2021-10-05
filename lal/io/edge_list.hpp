@@ -154,8 +154,8 @@ template<
 	class G,
 	std::enable_if_t<std::is_base_of_v<graphs::graph, G>, bool> = true
 >
-std::optional<G>
-read_edge_list
+inline
+std::optional<G> read_edge_list
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept
 {

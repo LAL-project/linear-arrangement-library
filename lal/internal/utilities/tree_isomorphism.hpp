@@ -32,7 +32,8 @@ template<
 	bool> = true
 >
 inline
-char fast_non_iso(const T& t1, const T& t2) noexcept {
+char fast_non_iso(const T& t1, const T& t2) noexcept
+{
 	// check number of nodes
 	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
 

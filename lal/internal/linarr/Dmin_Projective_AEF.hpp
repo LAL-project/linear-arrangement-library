@@ -68,6 +68,7 @@ namespace internal {
  * crossings and the root vertex is not covered. Such arrangement is done using
  * a interval-based algorithm.
  */
+inline
 std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF
 (const rooted_tree& t)
 noexcept

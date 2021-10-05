@@ -143,7 +143,7 @@ public:
 	 * @returns True if there are still more arrangements to generate.
 	 * Returns false if all arrangements have been generated.
 	 */
-	inline bool end() const noexcept { return m_reached_end; };
+	bool end() const noexcept { return m_reached_end; };
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -172,7 +172,7 @@ public:
 	 * arrangement.
 	 * @returns The current arrangement.
 	 */
-	inline linear_arrangement yield_arrangement() noexcept {
+	linear_arrangement yield_arrangement() noexcept {
 		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();

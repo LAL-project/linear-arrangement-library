@@ -86,7 +86,9 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-std::pair<node, node> retrieve_centre(const T& t, node X) {
+inline
+std::pair<node, node> retrieve_centre(const T& t, node X) noexcept
+{
 
 	const auto n = t.get_num_nodes();
 

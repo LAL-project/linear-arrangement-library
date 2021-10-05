@@ -87,7 +87,8 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
  */
-inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
+inline
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
 	const graphs::rooted_tree& t,
 	const algorithms_Dmin& a = algorithms_Dmin::Shiloach
 ) noexcept
@@ -133,7 +134,8 @@ noexcept;
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
-inline std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
+inline
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
 	const graphs::rooted_tree& t,
 	const algorithms_Dmin_planar& a = algorithms_Dmin_planar::AlemanyEstebanFerrer
 )

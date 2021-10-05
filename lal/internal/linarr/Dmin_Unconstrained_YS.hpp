@@ -67,6 +67,7 @@ namespace internal {
 namespace dmin_Shiloach {
 
 template<char anchored>
+inline
 uint64_t calculate_p_alpha(
 	const uint64_t n, const ordering& ord,
 	uint64_t& s_0, uint64_t& s_1
@@ -160,6 +161,7 @@ noexcept
 // end: position where to end placing the vertices (the rightmost position
 //     int the mla for the subtree).
 template<char alpha>
+inline
 void calculate_mla(
 	free_tree& t,
 	node root_or_anchor, position start, position end,

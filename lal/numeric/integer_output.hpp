@@ -51,7 +51,8 @@ namespace lal {
 namespace numeric {
 
 /// Standard output operator for the @ref lal::numeric::integer class.
-inline std::ostream& operator<< (std::ostream& os, const integer& i) {
+inline
+std::ostream& operator<< (std::ostream& os, const integer& i) {
 	os << i.to_string();
 	return os;
 }

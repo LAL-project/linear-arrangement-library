@@ -311,7 +311,7 @@ public:
 	 * @param u Node
 	 * @returns The list of nodes leaving node @e u.
 	 */
-	inline const neighbourhood& get_out_neighbours(node u) const noexcept {
+	const neighbourhood& get_out_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -322,7 +322,7 @@ public:
 	 * @param u Node
 	 * @returns The list of nodes entering at node @e u.
 	 */
-	inline const neighbourhood& get_in_neighbours(node u) const noexcept {
+	const neighbourhood& get_in_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -337,26 +337,26 @@ public:
 	 * @param u Vertex
 	 * @returns The (in + out) degree of this vertex.
 	 */
-	inline uint64_t get_degree(node u) const noexcept
+	uint64_t get_degree(node u) const noexcept
 	{ return get_out_degree(u) + get_in_degree(u); }
 
 	/// Returns the out-degree of a node.
-	inline uint64_t get_out_degree(node u) const noexcept {
+	uint64_t get_out_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_adjacency_list[u].size();
 	}
 	/// Returns the in-degree of a node.
-	inline uint64_t get_in_degree(node u) const noexcept {
+	uint64_t get_in_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_in_adjacency_list[u].size();
 	}
 
-	inline bool is_directed() const noexcept { return true; }
-	inline bool is_undirected() const noexcept { return false; }
+	bool is_directed() const noexcept { return true; }
+	bool is_undirected() const noexcept { return false; }
 
 	/**
 	 * @brief Converts this directed graph into an undirected graph.

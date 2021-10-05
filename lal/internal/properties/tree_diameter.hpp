@@ -62,7 +62,10 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-uint64_t tree_diameter(const T& t) {
+inline
+uint64_t tree_diameter(const T& t)
+noexcept
+{
 	const uint64_t n = t.get_num_nodes();
 
 	BFS<T> bfs(t);

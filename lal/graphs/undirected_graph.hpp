@@ -298,7 +298,7 @@ public:
 	 * @param u Node.
 	 * @returns The list of nodes adjacent to node @e u.
 	 */
-	inline const neighbourhood& get_neighbours(node u) const noexcept {
+	const neighbourhood& get_neighbours(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -310,7 +310,7 @@ public:
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */
-	inline uint64_t get_degree(node u) const noexcept {
+	uint64_t get_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -320,8 +320,8 @@ public:
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
 	bool has_edge(node u, node v) const noexcept;
 
-	inline bool is_directed() const noexcept { return false; }
-	inline bool is_undirected() const noexcept { return true; }
+	bool is_directed() const noexcept { return false; }
+	bool is_undirected() const noexcept { return true; }
 
 protected:
 	/// Initialises memory of @ref undirected_graph and @ref graph classes.

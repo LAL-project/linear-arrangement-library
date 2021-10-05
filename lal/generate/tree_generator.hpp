@@ -143,7 +143,7 @@ public:
 	 * from this. The type of generation of tree differs from one type of class
 	 * to another.
 	 */
-	inline tree_type_t get_tree() noexcept
+	tree_type_t get_tree() noexcept
 	{
 		auto t = __get_tree();
 
@@ -189,7 +189,7 @@ public:
 	 * The full list of postprocessing actions can be found in the documentation
 	 * of this class.
 	 */
-	inline void activate_all_postprocessing_actions() noexcept {
+	void activate_all_postprocessing_actions() noexcept {
 		set_normalise_tree(true);
 		set_calculate_size_subtrees(true);
 		set_calculate_tree_type(true);
@@ -201,7 +201,7 @@ public:
 	 * The full list of postprocessing actions can be found in the documentation
 	 * of this class.
 	 */
-	inline void deactivate_all_postprocessing_actions() noexcept {
+	void deactivate_all_postprocessing_actions() noexcept {
 		set_normalise_tree(false);
 		set_calculate_size_subtrees(false);
 		set_calculate_tree_type(false);
@@ -213,14 +213,14 @@ public:
 	 * @brief Should trees be normalised?
 	 * @param v Boolean value.
 	 */
-	inline void set_normalise_tree(bool v) noexcept
+	void set_normalise_tree(bool v) noexcept
 	{ m_normalise_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	inline void set_calculate_size_subtrees(bool v) noexcept
+	void set_calculate_size_subtrees(bool v) noexcept
 	{ m_calculate_size_subtrees = v; }
 
 	/**
@@ -229,7 +229,7 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	inline void set_calculate_tree_type(bool v) noexcept
+	void set_calculate_tree_type(bool v) noexcept
 	{ m_calculate_tree_type = v; }
 
 protected:

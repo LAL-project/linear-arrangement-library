@@ -103,7 +103,7 @@ public:
 
 	/// Returns true or false depending on whether there is a next treebank
 	/// to be read.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
@@ -113,7 +113,7 @@ public:
 	void next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
-	inline treebank_reader& get_treebank_reader() noexcept
+	treebank_reader& get_treebank_reader() noexcept
 	{ return m_treebank_reader; }
 
 private:
@@ -143,7 +143,7 @@ private:
 
 private:
 	/// Consumes one line of the main file @ref m_main_file.
-	inline void step_line() noexcept {
+	void step_line() noexcept {
 		if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
 			// do nothing, there are more trees
 		}

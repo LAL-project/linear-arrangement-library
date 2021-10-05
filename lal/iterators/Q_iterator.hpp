@@ -121,13 +121,13 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge pair.
-	inline edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
+	edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
 
 	/// Returns the current edge pair and advances the iterator
-	inline edge_pair yield_edge_pair() noexcept {
+	edge_pair yield_edge_pair() noexcept {
 		const auto e = get_edge_pair();
 		next();
 		return e;
@@ -136,7 +136,7 @@ public:
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next pair, if there is any.
-	inline void next() noexcept {
+	void next() noexcept {
 		if (not m_exists_next) {
 			m_reached_end = true;
 			return;
@@ -159,7 +159,7 @@ public:
 	}
 
 	/// Sets the iterator at the beginning of the set of edges.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		__reset();
 		next();
 	}
@@ -186,7 +186,7 @@ private:
 
 private:
 	/// Sets the iterator at the beginning of the set of edges.
-	inline void __reset() noexcept {
+	void __reset() noexcept {
 		// there are not enough edges to have |Q| > 0
 		if (m_G.get_num_edges() <= 1) {
 			m_exists_next = false;
@@ -242,7 +242,7 @@ private:
 	 * These are the edges pointed by attribute @ref m_cur1 and by attribute
 	 * @ref m_cur2.
 	 */
-	inline edge_pair make_current_pair() const noexcept {
+	edge_pair make_current_pair() const noexcept {
 		node s,t,u,v;
 		if constexpr (is_directed) {
 			s = m_cur1.first;
@@ -260,7 +260,7 @@ private:
 	}
 
 	/// Returns whether the edges share vertices or not.
-	static inline bool share_nodes(const edge_pair& st_uv) noexcept {
+	static bool share_nodes(const edge_pair& st_uv) noexcept {
 		const auto [s,t] = st_uv.first;
 		const auto [u,v] = st_uv.second;
 		return s == u or s == v or t == u or t == v;
@@ -289,7 +289,7 @@ private:
 
 	/// Find the next pair in a directed graph.
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	inline std::tuple<bool, E_pointer, E_pointer>
+	std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
@@ -323,7 +323,7 @@ private:
 
 	/// Find the next pair in an undirected graph.
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	inline std::tuple<bool, E_pointer, E_pointer>
+	std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{

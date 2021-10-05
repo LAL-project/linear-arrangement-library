@@ -55,8 +55,10 @@ namespace internal {
  * @param tf A treebank feature.
  * @returns A string used to format output files.
  */
-inline constexpr std::string_view
-treebank_feature_string(const io::treebank_feature& tf) noexcept {
+inline
+constexpr std::string_view
+treebank_feature_string(const io::treebank_feature& tf) noexcept
+{
 	using treebank_feature = io::treebank_feature;
 
 	switch (tf) {

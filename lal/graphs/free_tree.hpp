@@ -269,7 +269,7 @@ public:
 
 	/* GETTERS */
 
-	inline bool is_rooted() const noexcept { return false; }
+	bool is_rooted() const noexcept { return false; }
 
 	/**
 	 * @brief Converts a free tree into a head vector.

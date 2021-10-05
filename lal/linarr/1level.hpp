@@ -84,6 +84,7 @@ namespace linarr {
  * exact rational value.
  */
 template<class G>
+inline
 numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<G>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
@@ -130,6 +131,7 @@ noexcept
  * floating point value.
  */
 template<class G>
+inline
 double mean_dependency_distance_1level
 (const std::vector<G>& L, const std::vector<linear_arrangement>& P = {})
 noexcept

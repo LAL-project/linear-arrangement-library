@@ -65,7 +65,8 @@ namespace properties {
  * returns true.
  * @pre \f$n > 1\f$ (which is the same as \f$m > 0\f$.
  */
-numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree& t) noexcept;
+numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree& t)
+noexcept;
 
 /**
  * @brief Mean Hierarchical Distance.

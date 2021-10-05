@@ -55,7 +55,10 @@ namespace internal {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<typename It>
-void insertion_sort(It begin, It end) {
+inline
+void insertion_sort(It begin, It end)
+noexcept
+{
 	if (begin == end) { return; }
 	for (It i = begin + 1; i != end; ++i) {
 		It nj = i;

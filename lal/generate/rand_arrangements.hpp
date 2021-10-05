@@ -118,7 +118,7 @@ public:
 	}
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	inline const linear_arrangement& yield_arrangement() noexcept {
+	const linear_arrangement& yield_arrangement() noexcept {
 		return get_arrangement();
 	}
 

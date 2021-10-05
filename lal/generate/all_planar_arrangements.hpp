@@ -138,7 +138,7 @@ public:
 	 * @returns True if there are still more arrangements to generate.
 	 * Returns false if all arrangements have been generated.
 	 */
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -165,7 +165,7 @@ public:
 	 * @return Returns the arrangement generated with method @ref next().
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	inline linear_arrangement yield_arrangement() noexcept {
+	linear_arrangement yield_arrangement() noexcept {
 		const auto arr = get_arrangement();
 		next();
 		return arr;

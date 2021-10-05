@@ -123,7 +123,7 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -137,13 +137,13 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		activate_all_postprocessing_actions();
 		__reset();
 		next();
 	}
 
-	inline graphs::free_tree yield_tree() noexcept {
+	graphs::free_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;
@@ -162,7 +162,7 @@ protected:
 	void __reset() noexcept;
 
 	/// Returns whether there are more trees to generate.
-	inline bool has_next() const noexcept {
+	bool has_next() const noexcept {
 		return not m_sm[(m_n <= 2 ? 0 : m_n - 3)];
 	}
 

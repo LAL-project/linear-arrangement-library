@@ -134,11 +134,11 @@ public:
 	 * constant reference.
 	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
 	 */
-	inline const linear_arrangement& get_arrangement() const noexcept
+	const linear_arrangement& get_arrangement() const noexcept
 	{ return m_arr; }
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/**
 	 * @brief Generates the next arrangement.
@@ -146,12 +146,12 @@ public:
 	 * Modifies the internal state so that the next arrangement
 	 * can be retrieved using method @ref get_arrangement.
 	 */
-	inline void next() noexcept {
+	void next() noexcept {
 		m_reached_end = not std::next_permutation(m_arr.begin(), m_arr.end());
 	}
 
 	/// Sets the generator to its initial state.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		m_reached_end = false;
 		std::iota(m_arr.begin(), m_arr.end(), 0);
 	}
@@ -163,7 +163,7 @@ public:
 	 * arrangement.
 	 * @returns The current arrangement.
 	 */
-	inline linear_arrangement yield_arrangement() noexcept {
+	linear_arrangement yield_arrangement() noexcept {
 		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();

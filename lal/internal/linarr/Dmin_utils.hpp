@@ -115,7 +115,8 @@ typedef char place;
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-inline uint64_t Dmin_Pr_rooted_adjacency_list(
+inline
+uint64_t Dmin_Pr_rooted_adjacency_list(
 	const std::vector<std::vector<node_size>>& L, const node r,
 	const place r_place,
 	position ini, position fin,
@@ -200,7 +201,8 @@ noexcept
 
 /* A method that wraps the first call to the recursive method above.
  */
-inline uint64_t arrange(
+inline
+uint64_t arrange(
 	uint64_t n,
 	const std::vector<std::vector<node_size>>& M,
 	node r, linear_arrangement& arr
@@ -240,7 +242,8 @@ namespace displacement {
  * @param dir Whether or not @e v is to the left or to the right of its parent
  * @param[out] rel_pos the displacement from the root of all nodes of the subtree
  */
-inline uint64_t embed_branch(
+inline
+uint64_t embed_branch(
 	const std::vector<std::vector<node_size>>& L,
 	node v,
 	int64_t base,
@@ -316,7 +319,8 @@ noexcept
  *
  * @param[out] arr The optimal arrangement.
  */
-inline uint64_t embed(
+inline
+uint64_t embed(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	linear_arrangement& arr
@@ -409,7 +413,8 @@ namespace rooted {
  * the tree.
  */
 template<typename sort_type = countingsort::decreasing_t>
-inline void make_sorted_rooted_adjacency_list(
+inline
+void make_sorted_rooted_adjacency_list(
 	const graphs::rooted_tree& t,
 	std::vector<std::vector<node_size>>& L
 )
@@ -503,7 +508,8 @@ noexcept
 
 namespace free {
 
-inline void make_adjacency_list_rooted(
+inline
+void make_adjacency_list_rooted(
 	const graphs::free_tree& t, node pu, node u,
 	std::vector<std::vector<node_size>>& L
 )
@@ -552,7 +558,8 @@ noexcept
  * the tree.
  */
 template<typename sort_type = countingsort::decreasing_t>
-inline node make_sorted_rooted_adjacency_list_centroid(
+inline
+node make_sorted_rooted_adjacency_list_centroid(
 	const graphs::free_tree& t,
 	std::vector<std::vector<node_size>>& L
 )

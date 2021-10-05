@@ -115,13 +115,13 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	inline bool end() const noexcept { return m_reached_end; }
+	bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge.
-	inline edge get_edge() const noexcept { return m_cur_edge; }
+	edge get_edge() const noexcept { return m_cur_edge; }
 
 	/// Returns the current edge and advances the iterator
-	inline edge yield_edge() noexcept {
+	edge yield_edge() noexcept {
 		const auto e = get_edge();
 		next();
 		return e;
@@ -130,7 +130,7 @@ public:
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next edge.
-	inline void next() noexcept {
+	void next() noexcept {
 		if (not m_exists_next) {
 			m_reached_end = true;
 			return;
@@ -143,7 +143,7 @@ public:
 	}
 
 	/// Sets the iterator at the beginning of the set of edges.
-	inline void reset() noexcept {
+	void reset() noexcept {
 		__reset();
 		next();
 	}
@@ -165,7 +165,7 @@ private:
 
 private:
 	/// Sets the iterator at the beginning of the set of edges.
-	inline void __reset() noexcept {
+	void __reset() noexcept {
 		m_exists_next = true;
 		m_reached_end = false;
 
@@ -203,7 +203,7 @@ private:
 	}
 
 	/// Returns the edge pointed by @ref m_cur.
-	inline edge make_current_edge() const noexcept {
+	edge make_current_edge() const noexcept {
 		node s, t;
 		if constexpr (is_directed) {
 			s = m_cur.first;
@@ -223,7 +223,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint64_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;
@@ -249,7 +249,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	inline std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		const uint64_t n = m_G.get_num_nodes();
 
 		node s = m_cur.first;

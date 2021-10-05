@@ -72,7 +72,10 @@ template<
 		bool
 	> = true
 >
-void __bit_sort(It begin, It end, const T& m, char * const seen) {
+inline
+void __bit_sort(It begin, It end, const T& m, char * const seen)
+noexcept
+{
 	// fill bit array
 	for (auto it = begin; it != end; ++it) {
 		seen[*it - m] = 1;
@@ -119,7 +122,9 @@ template<
 		bool
 	> = true
 >
+inline
 void bit_sort_mem(It begin, It end, const size_t size, char * const seen)
+noexcept
 {
 	if (size <= 1) { return; }
 	if (size <= 14) {
@@ -152,7 +157,9 @@ template<
 		bool
 	> = true
 >
+inline
 void bit_sort(It begin, It end, const size_t size)
+noexcept
 {
 	if (size <= 1) { return; }
 	if (size <= 14) {

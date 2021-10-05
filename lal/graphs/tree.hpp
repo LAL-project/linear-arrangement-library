@@ -191,7 +191,7 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	inline uint64_t get_num_nodes_component(node u) const noexcept {
+	uint64_t get_num_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -205,7 +205,7 @@ public:
 	 * @param tt Type of tree (see @ref lal::graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
-	inline bool is_of_tree_type(const tree_type& tt) const noexcept {
+	bool is_of_tree_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
@@ -227,7 +227,7 @@ public:
 	 * @returns True or false depending on whether the tree type was calculated
 	 * or not.
 	 */
-	inline bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
+	bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
 
 	/**
 	 * @brief Returns the list of types as a list of strings.

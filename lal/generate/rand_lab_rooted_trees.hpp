@@ -99,7 +99,7 @@ public:
 	 * @returns A labelled tree generated uniformly at random. The
 	 * tree is rooted at vertex 0.
 	 */
-	inline graphs::rooted_tree get_tree() noexcept {
+	graphs::rooted_tree get_tree() noexcept {
 		const graphs::free_tree t = _rand_lab_free_trees::get_tree();
 		const node r = m_unif(m_gen);
 		return graphs::rooted_tree(t, r);
@@ -112,7 +112,7 @@ protected:
 	 * Initialises the random number generator.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	inline void init(uint64_t seed = 0) noexcept {
+	void init(uint64_t seed = 0) noexcept {
 		_rand_lab_free_trees::init(seed);
 	}
 };
@@ -170,7 +170,7 @@ public:
 	/// Default destructor.
 	~rand_lab_rooted_trees() = default;
 
-	inline graphs::rooted_tree yield_tree() noexcept {
+	graphs::rooted_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -181,7 +181,7 @@ protected:
 	 * See @ref _rand_lab_rooted_trees::get_tree for details.
 	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
-	inline graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_lab_rooted_trees for details.

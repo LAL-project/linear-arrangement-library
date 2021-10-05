@@ -105,7 +105,8 @@ void operate_power(mpq_t& r, const mpz_t& p);
 
 // Return the amount of bytes of a gmp's integer value.
 inline
-size_t mpz_bytes(const mpz_t& v) noexcept {
+size_t mpz_bytes(const mpz_t& v) noexcept
+{
 	const size_t alloc = static_cast<size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;
 }

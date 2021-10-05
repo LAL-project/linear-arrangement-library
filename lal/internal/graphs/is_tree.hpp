@@ -56,7 +56,7 @@ namespace internal {
  * @param g Input graph.
  */
 template<class G>
-bool is_graph_a_tree(const G& g) {
+inline bool is_graph_a_tree(const G& g) noexcept {
 	const auto n = g.get_num_nodes();
 
 	// simplest case

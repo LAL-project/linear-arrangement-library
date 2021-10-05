@@ -59,8 +59,8 @@ namespace internal {
 
 /* Constructs the head vector representation of a tree.
  */
-inline head_vector from_tree_to_head_vector(const graphs::rooted_tree& t)
-noexcept
+inline
+head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -82,8 +82,8 @@ noexcept
 
 /* Constructs the head vector representation of a tree.
  */
-inline head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r)
-noexcept
+inline
+head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -97,13 +97,13 @@ template<
 	class tree_type,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_type>
 >
+inline
 std::conditional_t<
 	is_rooted,
 	graphs::rooted_tree,
 	std::pair<graphs::free_tree,node>
 >
-from_head_vector_to_tree
-(const head_vector& hv, bool normalise, bool check)
+from_head_vector_to_tree(const head_vector& hv, bool normalise, bool check)
 noexcept
 {
 	if (hv.size() == 0) {
@@ -209,7 +209,8 @@ noexcept
  * @pre The first value of a sequence must be a zero.
  * @pre The second value of a sequence must be a one.
  */
-inline graphs::free_tree level_sequence_to_ftree
+inline
+graphs::free_tree level_sequence_to_ftree
 (const uint64_t * const L, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 {
@@ -256,7 +257,8 @@ noexcept
 	return t;
 }
 
-inline graphs::free_tree level_sequence_to_ftree
+inline
+graphs::free_tree level_sequence_to_ftree
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 { return level_sequence_to_ftree(&L[0], n, normalise, check); }
@@ -275,7 +277,8 @@ noexcept
  * @param n Number of nodes of the tree.
  * @returns The tree built with @e L.
  */
-inline graphs::free_tree Prufer_sequence_to_ftree
+inline
+graphs::free_tree Prufer_sequence_to_ftree
 (const uint64_t * const seq, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 {
@@ -329,7 +332,8 @@ noexcept
 	return t;
 }
 
-inline graphs::free_tree Prufer_sequence_to_ftree
+inline
+graphs::free_tree Prufer_sequence_to_ftree
 (const std::vector<uint64_t>& S, uint64_t n, bool normalise = true, bool check = true)
 noexcept
 { return Prufer_sequence_to_ftree(&S[0], n, normalise, check); }

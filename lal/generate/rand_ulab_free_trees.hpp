@@ -278,7 +278,7 @@ public:
 	/// Default destructor.
 	~rand_ulab_free_trees() = default;
 
-	inline graphs::free_tree yield_tree() noexcept {
+	graphs::free_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -289,7 +289,7 @@ protected:
 	 * See @ref _rand_ulab_free_trees::get_tree for details.
 	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
-	inline graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_ulab_free_trees.

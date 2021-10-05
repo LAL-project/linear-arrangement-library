@@ -68,8 +68,9 @@ template<
 		std::is_base_of_v<graphs::undirected_graph, G>,
 	bool> = true
 >
-inline void get_bool_neighbours
-(const G& g, node u, char * const neighs)
+inline
+void get_bool_neighbours(const G& g, node u, char * const neighs)
+noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
 		const auto& in_u = g.get_in_neighbours(u);
@@ -86,8 +87,10 @@ inline void get_bool_neighbours
 /*
  * Append adjacency list 'source' to list 'target'
  */
-inline void append_adjacency_lists
+inline
+void append_adjacency_lists
 (std::vector<neighbourhood>& target, const std::vector<neighbourhood>& source)
+noexcept
 {
 	const uint64_t n_target = target.size();
 

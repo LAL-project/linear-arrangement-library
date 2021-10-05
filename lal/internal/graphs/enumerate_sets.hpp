@@ -52,7 +52,7 @@ namespace lal {
 namespace internal {
 
 template<typename G>
-std::vector<edge> E(const G& g) {
+inline std::vector<edge> E(const G& g) noexcept {
 	std::vector<edge> e(g.get_num_edges());
 
 	auto vec_it = e.begin();
@@ -63,7 +63,7 @@ std::vector<edge> E(const G& g) {
 }
 
 template<typename G>
-std::vector<edge_pair> Q(const G& g, uint64_t qs) {
+inline std::vector<edge_pair> Q(const G& g, uint64_t qs) noexcept {
 	std::vector<edge_pair> q(qs);
 
 	auto vec_it = q.begin();

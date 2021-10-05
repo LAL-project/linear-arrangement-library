@@ -73,7 +73,8 @@ noexcept;
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a floating point value.
  */
-inline double exp_num_crossings(const graphs::undirected_graph& g) noexcept
+inline
+double exp_num_crossings(const graphs::undirected_graph& g) noexcept
 { return exp_num_crossings_rational(g).to_double(); }
 
 /* ----------------------- */

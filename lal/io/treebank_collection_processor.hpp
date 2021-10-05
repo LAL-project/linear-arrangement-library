@@ -118,7 +118,7 @@ public:
 	void set_join_files(bool v) noexcept { m_join_files = v; }
 
 	/// Set the number of threads
-	inline void set_number_threads(size_t n_threads) noexcept {
+	void set_number_threads(size_t n_threads) noexcept {
 #if defined DEBUG
 		assert(n_threads != 0);
 #endif
@@ -166,12 +166,12 @@ public:
 	 * be relative to the working directory path.
 	 * @param join_to String
 	 */
-	inline void set_join_to_file_name(const std::string& join_to) noexcept {
+	void set_join_to_file_name(const std::string& join_to) noexcept {
 		m_join_to_file = join_to;
 	}
 
 	/// Sets the name of the column used to group lines according to the treebank.
-	inline void set_treebank_column_name(const std::string& name) noexcept {
+	void set_treebank_column_name(const std::string& name) noexcept {
 		m_treebank_column_name = name;
 	}
 

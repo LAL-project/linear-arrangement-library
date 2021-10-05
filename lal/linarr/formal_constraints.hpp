@@ -65,7 +65,8 @@ namespace linarr {
  * @param arr Input linear arrangement
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-inline bool is_permutation(const linear_arrangement& arr = {}) noexcept {
+inline
+bool is_permutation(const linear_arrangement& arr = {}) noexcept {
 	if (arr.size() == 0) { return true; }
 	// ensure that no position has been used twice
 	internal::data_array<position> d(arr.size(), 0);
@@ -88,7 +89,8 @@ inline bool is_permutation(const linear_arrangement& arr = {}) noexcept {
  * @returns Whether or not the input arrangement is a valid permutation.
  */
 template<class G>
-inline bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
+inline
+bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
 {
 	if constexpr (std::is_base_of_v<G, graphs::tree>) {
 #if defined DEBUG
@@ -119,7 +121,8 @@ inline bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
  * is planar.
  */
 template<class G>
-inline bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
+inline
+bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
 #endif
@@ -148,7 +151,8 @@ inline bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline bool is_projective
+inline
+bool is_projective
 (const graphs::rooted_tree& rt, const linear_arrangement& arr = {})
 noexcept
 {

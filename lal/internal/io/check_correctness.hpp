@@ -111,9 +111,9 @@ is not a valid non-negative integer number."
 "Error: found a self-loop at position '" + std::to_string(pos) + "'."
 
 template<bool decide>
+inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
-find_errors
-(const std::string& current_line, const size_t line)
+find_errors(const std::string& current_line, const size_t line)
 noexcept
 {
 	std::vector<io::report_treebank_file> treebank_err_list;
@@ -241,6 +241,7 @@ noexcept
 }
 
 template<bool decide>
+inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
@@ -287,6 +288,7 @@ noexcept
 
 // file, line, what
 template<bool decide>
+inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_collection>>
 check_correctness_treebank_collection
 (const std::string& main_file_name, size_t n_threads)

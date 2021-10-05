@@ -65,24 +65,24 @@ public:
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
 	 */
-	inline void add_feature(const treebank_feature& fs) noexcept
+	void add_feature(const treebank_feature& fs) noexcept
 	{ m_what_fs[ static_cast<size_t>(fs) ] = true; }
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
-	inline void remove_feature(const treebank_feature& fs) noexcept
+	void remove_feature(const treebank_feature& fs) noexcept
 	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
 
 	// SETTERS
 
 	/// Should the treebank file or collection be checked for errors prior to processing?
-	inline void set_check_before_process(bool v) noexcept {
+	void set_check_before_process(bool v) noexcept {
 		m_check_before_process = v;
 	}
 
 	/// Clear the features in the processor.
-	inline void clear_features() noexcept {
+	void clear_features() noexcept {
 		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
 	}
 
@@ -92,7 +92,7 @@ public:
 	 * The default seprator is a tabulator character '\\t'.
 	 * @param c The separator character.
 	 */
-	inline void set_separator(char c) noexcept { m_separator = c; }
+	void set_separator(char c) noexcept { m_separator = c; }
 	/**
 	 * @brief Sets the level of verbosity of the process methods.
 	 *
@@ -102,20 +102,20 @@ public:
 	 * - Level 2: outputs error messages.
 	 * @param k Verbosity level.
 	 */
-	inline void set_verbosity(int k) noexcept { m_be_verbose = k; }
+	void set_verbosity(int k) noexcept { m_be_verbose = k; }
 	/**
 	 * @brief Output a hedaer for the treebank result file.
 	 *
 	 * Default is true.
 	 * @param h Output header or not.
 	 */
-	inline void set_output_header(bool h) noexcept { m_output_header = h; }
+	void set_output_header(bool h) noexcept { m_output_header = h; }
 
 	/**
 	 * @brief Sets the custom header.
 	 * @param h Custom header.
 	 */
-	inline void set_custom_header(const std::string& h = "") noexcept {
+	void set_custom_header(const std::string& h = "") noexcept {
 		m_custom_header = h;
 		m_use_custom_header = true;
 	}
@@ -127,7 +127,7 @@ public:
 	 * @param fs The feature being queried.
 	 * @returns True or False depending on whether the feature was added or removed.
 	 */
-	inline bool has_feature(const treebank_feature& fs) const noexcept
+	bool has_feature(const treebank_feature& fs) const noexcept
 	{ return m_what_fs[ static_cast<size_t>(fs) ]; }
 
 protected:

@@ -51,7 +51,8 @@ namespace lal {
 namespace internal {
 
 namespace __lal {
-inline void __make_arrangement_intervals(
+inline
+void __make_arrangement_intervals(
 	const graphs::rooted_tree& T, node r,
 	const std::vector<std::vector<lal::node>>& data,
 	position& pos, linear_arrangement& arr
@@ -78,7 +79,8 @@ noexcept
 	}
 }
 
-inline void __make_arrangement_intervals(
+inline
+void __make_arrangement_intervals(
 	const graphs::free_tree& T, node parent, node u,
 	const std::vector<std::vector<lal::node>>& data,
 	position& pos, linear_arrangement& arr
@@ -106,7 +108,8 @@ noexcept
 }
 } // -- namespace __lal
 
-inline linear_arrangement make_arrangement_intervals(
+inline
+linear_arrangement make_arrangement_intervals(
 	const graphs::rooted_tree& T,
 	const std::vector<std::vector<lal::node>>& data
 )
@@ -118,7 +121,8 @@ noexcept
 	return arr;
 }
 
-inline linear_arrangement make_arrangement_intervals(
+inline
+linear_arrangement make_arrangement_intervals(
 	const graphs::free_tree& T, node root,
 	const std::vector<std::vector<lal::node>>& data
 )

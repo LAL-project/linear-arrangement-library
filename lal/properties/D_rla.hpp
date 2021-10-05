@@ -245,7 +245,8 @@ numeric::rational exp_sum_edge_lengths_planar_rational
  * arrangements as a floating point value.
  * @pre @e rt must be a valid free tree (see @ref lal::graphs::free_tree::is_tree).
  */
-inline double exp_sum_edge_lengths_planar
+inline
+double exp_sum_edge_lengths_planar
 (const graphs::free_tree& t) noexcept
 { return exp_sum_edge_lengths_planar_rational(t).to_double(); }
 /**
@@ -260,7 +261,8 @@ inline double exp_sum_edge_lengths_planar
  * arrangements as a floating point value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline double exp_sum_edge_lengths_planar
+inline
+double exp_sum_edge_lengths_planar
 (const graphs::rooted_tree& rt) noexcept
 { return exp_sum_edge_lengths_planar_rational(rt).to_double(); }
 

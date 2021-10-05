@@ -105,7 +105,7 @@ public:
 	(const std::string& file, const std::string& identifier = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
-	inline bool end() const noexcept { return m_no_more_trees; }
+	bool end() const noexcept { return m_no_more_trees; }
 
 	/**
 	 * @brief Retrieves the next tree in the file.
@@ -121,22 +121,22 @@ public:
 	 * When method @ref end returns 'true', this method returns the exact
 	 * amount of trees in the treebank.
 	 */
-	inline size_t get_num_trees() const noexcept
+	size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
 
 	/// Returns the identifier corresponding of the treebank.
-	inline const std::string& get_identifier() const noexcept
+	const std::string& get_identifier() const noexcept
 	{ return m_treebank_identifier; }
 
 	/// Returns the name of the treebank file.
-	inline const std::string& get_treebank_filename() const noexcept
+	const std::string& get_treebank_filename() const noexcept
 	{ return m_treebank_file; }
 
 	/// Returns the current tree.
 	graphs::rooted_tree get_tree() const noexcept;
 
 	/// Returns the current head vector.
-	inline head_vector get_head_vector() const noexcept
+	head_vector get_head_vector() const noexcept
 	{ return m_current_head_vector; }
 
 	/**
@@ -146,7 +146,7 @@ public:
 	 * @ref lal::io::treebank_error_type::no_error then this returns false.
 	 * @return Whether the treebank is readable or not.
 	 */
-	inline bool is_open() const noexcept { return m_treebank.is_open(); }
+	bool is_open() const noexcept { return m_treebank.is_open(); }
 
 	/* SETTERS */
 
@@ -154,14 +154,14 @@ public:
 	 * @brief Should trees be normalised?
 	 * @param v Boolean value.
 	 */
-	inline void set_normalise(bool v) noexcept
+	void set_normalise(bool v) noexcept
 	{ m_normalise_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	inline void set_calculate_size_subtrees(bool v) noexcept
+	void set_calculate_size_subtrees(bool v) noexcept
 	{ m_calculate_size_subtrees = v; }
 
 	/**
@@ -170,7 +170,7 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	inline void set_calculate_tree_type(bool v) noexcept
+	void set_calculate_tree_type(bool v) noexcept
 	{ m_calculate_tree_type = v; }
 
 	/**
@@ -181,7 +181,7 @@ public:
 	 * reader, the identifier string is to be changed in some way.
 	 * @param id Identifier string.
 	 */
-	inline void set_identifier(const std::string& id) noexcept
+	void set_identifier(const std::string& id) noexcept
 	{ m_treebank_identifier = id; }
 
 private:

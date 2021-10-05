@@ -69,7 +69,8 @@ namespace internal {
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<class G, bool decide_upper_bound>
-inline uint64_t __compute_C_dyn_prog
+inline
+uint64_t __compute_C_dyn_prog
 (
 	const G& g, const linear_arrangement& pi,
 	char * const __restrict__ bn,
@@ -227,7 +228,8 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint64_t __call_C_dyn_prog(
+inline
+uint64_t __call_C_dyn_prog(
 	const G& g,
 	const linear_arrangement& pi
 )
@@ -269,6 +271,7 @@ noexcept
 			(__call_C_dyn_prog<directed_graph>, g, pi);
 }
 
+inline
 uint64_t n_C_dynamic_programming(
 	const undirected_graph& g,
 	const linear_arrangement& pi
@@ -286,6 +289,7 @@ noexcept
 // list of arrangements
 
 template<class G>
+inline
 vector<uint64_t> n_C_dynamic_programming(
 	const G& g,
 	const vector<linear_arrangement>& pis
@@ -332,6 +336,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> n_C_dynamic_programming(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis
@@ -341,6 +346,7 @@ noexcept
 	return n_C_dynamic_programming<directed_graph>(g, pis);
 }
 
+inline
 vector<uint64_t> n_C_dynamic_programming(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis
@@ -357,7 +363,8 @@ noexcept
 // single arrangement
 
 template<class G>
-inline uint64_t __call_C_dyn_prog_lesseq_than(
+inline
+uint64_t __call_C_dyn_prog_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
@@ -387,6 +394,7 @@ noexcept
 	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data(), T,M,K, upper_bound);
 }
 
+inline
 uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const linear_arrangement& pi,
@@ -402,6 +410,7 @@ noexcept
 	(__call_C_dyn_prog_lesseq_than<directed_graph>, g, pi, upper_bound);
 }
 
+inline
 uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const linear_arrangement& pi,
@@ -421,6 +430,7 @@ noexcept
 // list of arrangements
 
 template<class G>
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
@@ -469,6 +479,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -480,6 +491,7 @@ noexcept
 			(g, pis, upper_bound);
 }
 
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -492,6 +504,7 @@ noexcept
 }
 
 template<typename G>
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const vector<linear_arrangement>& pis,
@@ -545,6 +558,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
 	const vector<linear_arrangement>& pis,
@@ -555,6 +569,8 @@ noexcept
 	return is_n_C_dynamic_programming_lesseq_than<directed_graph>
 			(g, pis, upper_bounds);
 }
+
+inline
 vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
 	const vector<linear_arrangement>& pis,

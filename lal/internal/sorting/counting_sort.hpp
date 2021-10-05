@@ -114,12 +114,14 @@ template<
 		bool
 	> = true
 >
+inline
 void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key_plus_1,
 	const std::function<std::size_t (const T&)>& key,
 	countingsort::memory_counting_sort<T>& mem
 )
+noexcept
 {
 	constexpr bool is_increasing =
 		std::is_same_v<sort_type, countingsort::increasing_t>;
@@ -201,12 +203,14 @@ template<
 		bool
 	> = true
 >
+inline
 void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
 	const std::function<std::size_t (const T&)>& key
 )
+noexcept
 {
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }

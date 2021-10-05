@@ -55,7 +55,10 @@ namespace internal {
  * @e source or not.
  */
 template<class G>
-bool is_node_reachable_from(const G& g, const node source, const node target) {
+inline
+bool is_node_reachable_from(const G& g, const node source, const node target)
+noexcept
+{
 	BFS<G> bfs(g);
 	bfs.set_terminate(
 		[target](const auto&, const node s) -> bool { return (s == target); }

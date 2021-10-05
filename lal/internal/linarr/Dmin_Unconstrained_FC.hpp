@@ -222,7 +222,8 @@ std::vector<uint64_t> get_P(uint64_t p, uint64_t i) {
 	return v;
 }
 
-inline std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+inline
+std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 	std::vector<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
@@ -249,7 +250,8 @@ inline std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 	return v;
 }
 
-inline void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
+inline
+void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 #if defined DEBUG
@@ -290,6 +292,7 @@ inline void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 //     in the mla for the subtree). We could also have an anologous finish
 //     (rightmost position) but it is not needed.
 template<char root>
+inline
 void calculate_mla(
 	free_tree& t,
 	node one_node, 

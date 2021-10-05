@@ -166,6 +166,7 @@ noexcept;
  * @pre No edge in the list is repeated.
  */
 template<class G>
+inline
 G from_edge_list_to_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
@@ -197,7 +198,8 @@ noexcept
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-inline rooted_tree from_edge_list_to_rooted_tree
+inline
+rooted_tree from_edge_list_to_rooted_tree
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {
@@ -220,7 +222,8 @@ noexcept
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-inline free_tree from_edge_list_to_free_tree
+inline
+free_tree from_edge_list_to_free_tree
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {
@@ -242,7 +245,8 @@ noexcept
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-inline directed_graph from_edge_list_to_directed_graph
+inline
+directed_graph from_edge_list_to_directed_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {
@@ -264,7 +268,8 @@ noexcept
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-inline undirected_graph from_edge_list_to_undirected_graph
+inline
+undirected_graph from_edge_list_to_undirected_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {

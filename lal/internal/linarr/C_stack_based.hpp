@@ -70,7 +70,8 @@ namespace internal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
-inline void fill_adjP_adjN(
+inline
+void fill_adjP_adjN(
 	const graph& g, const linear_arrangement& pi,
 	vector<neighbourhood>& adjP,
 	vector<vector<indexed_edge>>& adjN,
@@ -126,7 +127,8 @@ noexcept
 }
 
 template<bool decide_upper_bound>
-inline uint64_t __compute_C_stack_based(
+inline
+uint64_t __compute_C_stack_based(
 	const graph& g, const linear_arrangement& pi,
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
 	uint64_t upper_bound = 0
@@ -194,7 +196,8 @@ noexcept
 // CALLS TO ALGORITHM
 // =============================================================================
 
-inline uint64_t __call_C_stack_based(
+inline
+uint64_t __call_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
 )
@@ -217,6 +220,7 @@ noexcept
 // ------------------
 // single arrangement
 
+inline
 uint64_t n_C_stack_based(
 	const graph& g,
 	const linear_arrangement& pi
@@ -232,6 +236,7 @@ noexcept
 // --------------------
 // list of arrangements
 
+inline
 vector<uint64_t> n_C_stack_based(
 	const graph& g,
 	const vector<linear_arrangement>& pis
@@ -269,7 +274,8 @@ noexcept
 // -----------------------------------------------------------------------------
 // DECISION
 
-inline uint64_t __call_C_stack_based_lesseq_than(
+inline
+uint64_t __call_C_stack_based_lesseq_than(
 	const graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
@@ -294,6 +300,7 @@ noexcept
 // ------------------
 // single arrangement
 
+inline
 uint64_t is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const linear_arrangement& pi,
@@ -311,6 +318,7 @@ noexcept
 // --------------------
 // list of arrangements
 
+inline
 vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const vector<linear_arrangement>& pis,
@@ -346,6 +354,7 @@ noexcept
 	return cs;
 }
 
+inline
 vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
 	const vector<linear_arrangement>& pis,

@@ -63,8 +63,8 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-void classify_tree
-(const T& t, std::array<bool, graphs::__tree_type_size>& array)
+inline
+void classify_tree(const T& t, std::array<bool, graphs::__tree_type_size>& array)
 noexcept
 {
 	// -------------------------------------------------------------------------

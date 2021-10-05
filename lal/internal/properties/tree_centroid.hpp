@@ -68,12 +68,14 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
+inline
 std::pair<node, node> retrieve_centroid(
 	const tree_type& t,
 	const uint64_t N, const uint64_t n, const node x,
 	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
 	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
+noexcept
 {
 #if defined DEBUG
 	assert(n > 0);
@@ -174,11 +176,13 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
+inline
 std::pair<node, node> retrieve_centroid(
 	const T& t, const node x,
 	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
 	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
+noexcept
 {
 	// actual number of vertices of the tree
 	const uint64_t component_size = t.get_num_nodes();
@@ -205,7 +209,10 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-std::pair<node, node> retrieve_centroid(const T& t, const node x) {
+inline
+std::pair<node, node> retrieve_centroid(const T& t, const node x)
+noexcept
+{
 	std::vector<std::vector<std::pair<node,uint64_t>>> M;
 	std::vector<std::pair<edge, uint64_t>> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
@@ -243,11 +250,13 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
+inline
 std::pair<node, node> retrieve_centroid(
 	const T& t,
 	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
 	std::vector<std::pair<edge, uint64_t>>& sizes_edge
 )
+noexcept
 {
 	// actual number of vertices of the tree
 	const uint64_t n = t.get_num_nodes();
@@ -272,7 +281,10 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-std::pair<node, node> retrieve_centroid(const T& t) {
+inline
+std::pair<node, node> retrieve_centroid(const T& t)
+noexcept
+{
 	std::vector<std::vector<std::pair<node,uint64_t>>> L;
 	std::vector<std::pair<edge, uint64_t>> sizes_edge;
 	return retrieve_centroid(t, L, sizes_edge);

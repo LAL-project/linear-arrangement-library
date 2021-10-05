@@ -125,7 +125,7 @@ public:
 	linear_arrangement get_arrangement() noexcept;
 
 	/// Returns a random planar arrangement.
-	inline linear_arrangement yield_arrangement() noexcept {
+	linear_arrangement yield_arrangement() noexcept {
 		return get_arrangement();
 	}
 

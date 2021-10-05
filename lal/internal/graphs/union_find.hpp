@@ -59,12 +59,14 @@ namespace internal {
  * addition of the edge between the edges 'u' and 'v'.
  */
 template<typename T>
+inline
 void UnionFind_update_roots_after_add
 (
 	const T& t, node u, node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
+noexcept
 {
 	// 'u' and 'v' are not connected, so they belong to
 	// (different) connected components of the tree.
@@ -116,12 +118,14 @@ void UnionFind_update_roots_after_add
  * removal of the edge between the edges 'u' and 'v'.
  */
 template<typename T>
+inline
 void UnionFind_update_roots_after_remove
 (
 	const T& t, node u, node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
+noexcept
 {
 	// 'u' and 'v' are connected
 #if defined DEBUG
@@ -171,12 +175,14 @@ namespace __lal {
  * in the direction (u,v).
  */
 template<typename T>
+inline
 void UnionFind_update_roots_before_remove_all_incident_to
 (
 	const T& t, node u, node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
+noexcept
 {
 	internal::BFS<T> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
@@ -199,12 +205,14 @@ void UnionFind_update_roots_before_remove_all_incident_to
  * removal of the edges incidents to vertex 'u'.
  */
 template<typename T>
+inline
 void UnionFind_update_roots_before_remove_all_incident_to
 (
 	const T& t, node u,
 	node * const root_of,
 	uint64_t * const root_size
 )
+noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
 		for (node v : t.get_neighbours(u)) {

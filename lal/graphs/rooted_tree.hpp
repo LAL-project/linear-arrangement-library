@@ -408,7 +408,7 @@ public:
 	 * @post Method @ref is_orientation_valid returns the value set by this
 	 * function.
 	 */
-	inline void set_valid_orientation(bool valid) noexcept {
+	void set_valid_orientation(bool valid) noexcept {
 		m_valid_orientation = valid;
 	}
 
@@ -454,7 +454,7 @@ public:
 
 	/* GETTERS */
 
-	inline bool is_rooted() const noexcept { return true; }
+	bool is_rooted() const noexcept { return true; }
 
 	/**
 	 * @brief Is this tree a valid rooted tree?
@@ -467,7 +467,7 @@ public:
 	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
-	inline bool is_rooted_tree() const noexcept
+	bool is_rooted_tree() const noexcept
 	{ return is_tree() and has_root() and is_orientation_valid(); }
 
 	/**
@@ -479,10 +479,10 @@ public:
 	 * This function returns the value of private attribute @ref m_valid_orientation.
 	 * @returns The whether the orientation is valid or not.
 	 */
-	inline bool is_orientation_valid() const noexcept { return m_valid_orientation; }
+	bool is_orientation_valid() const noexcept { return m_valid_orientation; }
 
 	/// Return the root of this tree.
-	inline node get_root() const noexcept {
+	node get_root() const noexcept {
 #if defined DEBUG
 		assert(has_root());
 #endif
@@ -490,7 +490,7 @@ public:
 	}
 	/// Returns whether this rooted tree's root has been set or not
 	/// (see @ref set_root).
-	inline bool has_root() const noexcept { return m_has_root; }
+	bool has_root() const noexcept { return m_has_root; }
 
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
@@ -498,7 +498,7 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	inline uint64_t get_num_nodes_subtree(node u) const noexcept {
+	uint64_t get_num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -515,7 +515,7 @@ public:
 	 * @returns Whether @ref m_size_subtrees should be recalculated
 	 * or not.
 	 */
-	inline bool are_size_subtrees_valid() const noexcept
+	bool are_size_subtrees_valid() const noexcept
 	{ return m_are_size_subtrees_valid; }
 
 	/**

@@ -71,9 +71,9 @@ namespace internal {
  * crossings and the root vertex is not covered. Such arrangement is done using
  * a displacement-based algorithm.
  */
-std::pair<uint64_t, linear_arrangement>
-Dmin_Projective_HS(const rooted_tree& t)
-noexcept
+inline
+std::pair<uint64_t, linear_arrangement> Dmin_Projective_HS
+(const rooted_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
