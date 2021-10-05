@@ -58,107 +58,130 @@ namespace internal {
 template<typename T>
 struct data_array {
 public:
-	// the data of this array
-	T *data = nullptr;
-
-private:
-	// the size of this array in number of elements
-	std::size_t m_size;
-
-public:
 	// Constructor with size
 	data_array(const std::size_t n) noexcept : m_size(n) {
-		data = m_size == 0 ? nullptr : new T[m_size];
+		m_data = m_size == 0 ? nullptr : new T[m_size];
 	}
 	// Constructor with size and initial value
-	data_array(const std::size_t n, const T& v) noexcept : m_size(n) {
-		data = m_size == 0 ? nullptr : new T[m_size];
+	data_array(const std::size_t n, const T& v) noexcept : data_array(n) {
 		fill(v);
-	}
-	// Destructor
-	~data_array() noexcept {
-		delete[] data;
-		// this is for those who like calling the destructor...
-		data = nullptr;
 	}
 
 	// Copy constructor
-	data_array(const data_array& d) noexcept : m_size(d.m_size) {
-		data = m_size == 0 ? nullptr : new T[m_size];
+	data_array(const data_array& d) noexcept : data_array(d.m_size) {
 		std::copy(d.begin(), d.end(), begin());
 	}
 	// Copy assignment operator
 	data_array& operator= (const data_array& d) noexcept {
 		if (m_size != d.m_size) {
-			delete[] data;
+			delete[] m_data;
 			m_size = d.m_size;
-			data = new T[m_size];
+			m_data = new T[m_size];
 		}
 		std::copy(d.begin(), d.end(), begin());
 		return *this;
 	}
 
 	// Move constructor
-	data_array(data_array&& d) noexcept : m_size(d.m_size) {
+	data_array(data_array&& d) noexcept {
 		// steal data
-		data = d.data;
+		m_data = d.m_data;
+		m_size = d.m_size;
 		// invalidate data
-		d.data = nullptr;
+		d.m_data = nullptr;
 		d.m_size = 0;
 	}
 	// Move assignment operator
 	data_array& operator= (data_array&& d) noexcept {
 		// free yourself
-		delete[] data;
+		delete[] m_data;
 		// steal from others
-		data = d.data;
+		m_data = d.m_data;
 		m_size = d.m_size;
 		// invalidate data
-		d.data = nullptr;
+		d.m_data = nullptr;
 		d.m_size = 0;
 		return *this;
 	}
 
+	// COPY constructor from generic container
+	template<template<typename... Args> class container, typename... Types>
+	data_array(const container<Types...>& v) noexcept : data_array(v.size()) {
+		// assert first type in Types... is 'T'
+		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);
+
+		std::copy(v.begin(), v.end(), begin());
+	}
+
+	// COPY assignment from generic container
+	template<template<typename... Args> class container, typename... Types>
+	data_array& operator= (const container<Types...>& v) noexcept {
+		// assert first type in Types... is 'T'
+		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);
+
+		resize(v.size());
+		std::copy(v.begin(), v.end(), begin());
+		return *this;
+	}
+
+	// Destructor
+	~data_array() noexcept {
+		delete[] m_data;
+		// this is for those who like calling the destructor...
+		m_data = nullptr;
+	}
+
 	// resize the array
-	inline void resize(std::size_t new_size) noexcept {
+	void resize(std::size_t new_size) noexcept {
 		if (new_size != m_size) {
 			m_size = new_size;
-			delete[] data;
-			data = new T[m_size];
+			delete[] m_data;
+			m_data = new T[m_size];
 		}
 	}
 
 	// imitate the vector::size() method
 	[[nodiscard]]
-	inline constexpr std::size_t size() const noexcept { return m_size; }
+	std::size_t size() const noexcept { return m_size; }
 
 	// operator[]
-	[[nodiscard]] inline T& operator[] (const std::size_t i) noexcept {
+	[[nodiscard]]
+	T& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
-		return data[i];
+		return m_data[i];
 	}
 	[[nodiscard]]
-	inline const T& operator[] (const std::size_t i) const noexcept {
+	const T& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
-		return data[i];
+		return m_data[i];
 	}
 
 	// assign the same value to every element in the data
-	inline void fill(const T& v) noexcept {
-		std::fill(&data[0], &data[m_size], v);
+	void fill(const T& v) noexcept {
+		std::fill(&m_data[0], &m_data[m_size], v);
 	}
 
+	// pointer to data (same as begin)
+	[[nodiscard]] T *data() noexcept { return m_data; }
+	[[nodiscard]] T *data() const noexcept { return m_data; }
+
 	// pointer to non-constant first element and last+1 element
-	[[nodiscard]] inline T *begin() { return &data[0]; }
-	[[nodiscard]] inline T *end() { return &data[m_size]; }
+	[[nodiscard]] T *begin() noexcept { return m_data; }
+	[[nodiscard]] T *end() noexcept { return &m_data[m_size]; }
 
 	// pointer to constant first element and last+1 element
-	[[nodiscard]] inline const T *begin() const { return &data[0]; }
-	[[nodiscard]] inline const T *end() const { return &data[m_size]; }
+	[[nodiscard]] const T *begin() const noexcept { return m_data; }
+	[[nodiscard]] const T *end() const noexcept { return &m_data[m_size]; }
+
+private:
+	// the data of this array
+	T *m_data = nullptr;
+	// the size of this array in number of elements
+	std::size_t m_size;
 };
 
 } // -- namespace internal
