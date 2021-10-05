@@ -47,7 +47,6 @@
 #endif
 #include <algorithm>
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/make_arrangement.hpp>
@@ -74,10 +73,21 @@ rand_projective_arrangements::rand_projective_arrangements
 	}
 
 	// initialise the random data of all vertices
-	m_rdata = vector<vector<node>>(m_rT.get_num_nodes());
+	m_rdata = std::vector<std::vector<node>>(m_rT.get_num_nodes());
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		const uint64_t deg = m_rT.get_out_degree(u);
-		m_rdata[u] = vector<node>(deg + 1);
+		m_rdata[u] = std::vector<node>(m_rT.get_out_degree(u) + 1);
+
+		// the children of vertex 'u'
+		const neighbourhood& neighs = m_rT.get_out_neighbours(u);
+
+		// fill interval with the root vertex and its children
+		auto& interval = m_rdata[u];
+		interval[0] = u;
+		std::copy(
+			neighs.begin(),
+			neighs.end(),
+			interval.begin() + 1
+		);
 	}
 }
 
@@ -86,25 +96,10 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 		return linear_arrangement(1, 0);
 	}
 
+	// generate random intervals
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		// -- generate random data for a single vertex
-
-		// number of children of 'r' with respect to the tree's root
-		const neighbourhood& neighs = m_rT.get_out_neighbours(u);
-
-		// Choose random positions for the intervals corresponding to the
-		// vertex 'r' and to the trees rooted at 'r's children. These choices
-		// have to be made with respect to 'r'. Remember: there are d_out+1
-		// possibilities.
-
-		// fill interval with the root vertex and its children
-		vector<node>& interval = m_rdata[u];
-		interval[0] = u;
-		for (size_t i = 0; i < neighs.size(); ++i) {
-			interval[i+1] = neighs[i];
-		}
-
-		// shuffle the positions
+		auto& interval = m_rdata[u];
+		// Choose random positions for the interval
 		std::shuffle(interval.begin(), interval.end(), m_gen);
 	}
 

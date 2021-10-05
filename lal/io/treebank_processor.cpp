@@ -343,7 +343,7 @@ treebank_error treebank_processor::process() noexcept {
 	while (not tbread.end()) {
 		rT = tbread.get_tree();
 		process_tree<rooted_tree, ofstream>
-		(rT, props.data, prop_set.data, out_treebank_file);
+		(rT, props.data(), prop_set.data(), out_treebank_file);
 
 		props.fill(0.0);
 		prop_set.fill(0);

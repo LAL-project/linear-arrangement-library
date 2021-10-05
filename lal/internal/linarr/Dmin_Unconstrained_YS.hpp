@@ -198,7 +198,7 @@ noexcept
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
 	data_array<uint64_t> s(t.get_num_nodes());
-	internal::get_size_subtrees(t, v_star - 1, s.data);
+	internal::get_size_subtrees(t, v_star - 1, s.data());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);

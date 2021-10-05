@@ -173,7 +173,7 @@ void bit_sort(It begin, It end, const size_t size)
 	data_array<char> seen(M - m + 1, 0);
 
 	// sort
-	__lal::__bit_sort(begin,end, m, seen.data);
+	__lal::__bit_sort(begin,end, m, seen.data());
 }
 
 } // -- namspace utils

@@ -44,7 +44,7 @@
 #include <cassert>
 #endif
 #include <algorithm>
-using namespace std;
+#include <vector>
 
 // lal includes
 #include <lal/generate/all_projective_arrangements.hpp>
@@ -68,7 +68,12 @@ all_projective_arrangements::all_projective_arrangements
 	assert(m_rT.is_rooted_tree());
 #endif
 
-	m_intervals = vector<vector<node>>(m_rT.get_num_nodes());
+	m_intervals = std::vector<std::vector<node>>(m_rT.get_num_nodes());
+	// allocate memory
+	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
+		const uint64_t d = m_rT.get_out_degree(u);
+		m_intervals[u] = std::vector<node>(d + 1);
+	}
 	reset();
 }
 
@@ -92,7 +97,7 @@ void all_projective_arrangements::next() noexcept {
 	bool has_perm = false;
 	node u = 0;
 	while (u < m_rT.get_num_nodes() and not has_perm) {
-		vector<node>& inter_u = m_intervals[u];
+		std::vector<node>& inter_u = m_intervals[u];
 
 		has_perm = std::next_permutation(inter_u.begin(), inter_u.end());
 		if (not has_perm) {
@@ -115,17 +120,18 @@ void all_projective_arrangements::reset() noexcept {
 
 void all_projective_arrangements::initialise_intervals_tree() noexcept {
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		const uint64_t d = m_rT.get_out_degree(u);
-		m_intervals[u] = vector<node>(d + 1);
 		initialise_interval_node(u);
 	}
 }
 
 void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 	const neighbourhood& neighs_u = m_rT.get_out_neighbours(u);
-	vector<node>& interval_u = m_intervals[u];
+	std::vector<node>& interval_u = m_intervals[u];
 
 	if (m_rT.is_normalised()) {
+		// copy directly vertices from the neighbour
+		// list -- no sorting is needed
+
 		size_t neighs_it = 0;
 		size_t interval_it = 0;
 

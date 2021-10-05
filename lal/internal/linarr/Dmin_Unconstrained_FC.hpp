@@ -260,7 +260,7 @@ inline void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
 	data_array<uint64_t> s(t.get_num_nodes());
-	internal::get_size_subtrees(t, u - 1, s.data);
+	internal::get_size_subtrees(t, u - 1, s.data());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbours(u - 1);

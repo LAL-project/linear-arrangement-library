@@ -301,10 +301,10 @@ noexcept
 
 	// compute the number of crossings
 	if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
-		return __compute_C_brute_force_undir<false>(g, pi, T.data);
+		return __compute_C_brute_force_undir<false>(g, pi, T.data());
 	}
 	else {
-		return __compute_C_brute_force_dir<false>(g, pi, T.data);
+		return __compute_C_brute_force_dir<false>(g, pi, T.data());
 	}
 }
 
@@ -354,10 +354,10 @@ noexcept
 
 		// compute C
 		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
-			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i], T.data);
+			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i], T.data());
 		}
 		else {
-			cs[i] = __compute_C_brute_force_dir<false>(g, pis[i], T.data);
+			cs[i] = __compute_C_brute_force_dir<false>(g, pis[i], T.data());
 		}
 	}
 
@@ -409,11 +409,11 @@ noexcept
 	// compute the number of crossings
 	if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
 		return
-		__compute_C_brute_force_undir<true>(g, pi, T.data, upper_bound);
+		__compute_C_brute_force_undir<true>(g, pi, T.data(), upper_bound);
 	}
 	else {
 		return
-		__compute_C_brute_force_dir<true>(g, pi, T.data, upper_bound);
+		__compute_C_brute_force_dir<true>(g, pi, T.data(), upper_bound);
 	}
 }
 
@@ -475,11 +475,11 @@ noexcept
 		// compute C
 		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
 			cs[i] =
-			__compute_C_brute_force_undir<true>(g, pis[i], T.data, upper_bound);
+			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bound);
 		}
 		else {
 			cs[i] =
-			__compute_C_brute_force_dir<true>(g, pis[i], T.data, upper_bound);
+			__compute_C_brute_force_dir<true>(g, pis[i], T.data(), upper_bound);
 		}
 	}
 
@@ -537,11 +537,11 @@ noexcept
 		// compute C
 		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
 			cs[i] =
-			__compute_C_brute_force_undir<true>(g, pis[i], T.data, upper_bounds[i]);
+			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bounds[i]);
 		}
 		else {
 			cs[i] =
-			__compute_C_brute_force_dir<true>(g, pis[i], T.data, upper_bounds[i]);
+			__compute_C_brute_force_dir<true>(g, pis[i], T.data(), upper_bounds[i]);
 		}
 	}
 

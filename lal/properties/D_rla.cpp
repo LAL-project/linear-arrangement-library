@@ -68,7 +68,7 @@ inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 	const uint64_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
 	internal::data_array<uint64_t> size_subtrees(size_array, 0);
 	if constexpr (not size_subtrees_valid) {
-		internal::get_size_subtrees(t, t.get_root(), size_subtrees.data);
+		internal::get_size_subtrees(t, t.get_root(), size_subtrees.data());
 	}
 
 	rational E_pr_D = 0;

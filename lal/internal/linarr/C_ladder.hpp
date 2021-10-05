@@ -161,7 +161,7 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	uint64_t * const __restrict__ L1 = &all_memory[n];
 
-	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data, T,L1);
+	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data(), T,L1);
 }
 
 uint64_t n_C_ladder(
@@ -225,7 +225,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,false>
-				(g, pis[i], boolean_neighborhood.data, T,L1);
+				(g, pis[i], boolean_neighborhood.data(), T,L1);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -280,7 +280,7 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	uint64_t * const __restrict__ L1 = &all_memory[n];
 
-	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data, T,L1, upper_bound);
+	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data(), T,L1, upper_bound);
 }
 
 uint64_t is_n_C_ladder_lesseq_than(
@@ -347,7 +347,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bound);
+				(g, pis[i], boolean_neighborhood.data(), T,L1, upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -421,7 +421,7 @@ noexcept
 		boolean_neighborhood.fill(0);
 
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data, T,L1, upper_bounds[i]);
+				(g, pis[i], boolean_neighborhood.data(), T,L1, upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

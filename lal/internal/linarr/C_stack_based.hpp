@@ -211,7 +211,7 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<false>(g, pi, T.data, size_adjN_u.data);
+	return __compute_C_stack_based<false>(g, pi, T.data(), size_adjN_u.data());
 }
 
 // ------------------
@@ -259,7 +259,8 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<false>(g, pis[i], T.data, size_adjN_u.data);
+		cs[i] = __compute_C_stack_based<false>
+				(g, pis[i], T.data(), size_adjN_u.data());
 	}
 
 	return cs;
@@ -286,7 +287,8 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<true>(g, pi, T.data, size_adjN_u.data, upper_bound);
+	return __compute_C_stack_based<true>
+			(g, pi, T.data(), size_adjN_u.data(), upper_bound);
 }
 
 // ------------------
@@ -338,7 +340,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], T.data, size_adjN_u.data, upper_bound);
+				(g, pis[i], T.data(), size_adjN_u.data(), upper_bound);
 	}
 
 	return cs;
@@ -378,7 +380,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], T.data, size_adjN_u.data, upper_bounds[i]);
+				(g, pis[i], T.data(), size_adjN_u.data(), upper_bounds[i]);
 	}
 
 	return cs;

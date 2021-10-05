@@ -142,7 +142,7 @@ noexcept
 				sorted_neighbourhoods[u].begin(),
 				sorted_neighbourhoods[u].end(),
 				sorted_neighbourhoods[u].size(),
-				mem.data
+				mem.data()
 			);
 		}
 	}

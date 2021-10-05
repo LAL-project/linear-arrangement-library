@@ -77,7 +77,7 @@ void graph::normalise() noexcept {
 
 		if (not is_sorted(nu.begin(), nu.end())) {
 			internal::bit_sort_mem<node>
-			(nu.begin(), nu.end(), nu.size(), mem.data);
+			(nu.begin(), nu.end(), nu.size(), mem.data());
 		}
 	}
 	m_normalised = true;
