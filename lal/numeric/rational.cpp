@@ -114,7 +114,7 @@ void rational::as_integer(integer& i) const noexcept {
 	// integer division (numerator/denominator)
 	mpz_div(i.m_val, numerator, denominator);
 
-	mpz_clears(numerator, denominator);
+	mpz_clears(numerator, denominator, NULL);
 }
 
 } // -- namespace numeric
