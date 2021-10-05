@@ -134,7 +134,8 @@ public:
 	 * constant reference.
 	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
 	 */
-	const linear_arrangement& get_arrangement() const noexcept { return m_arr; }
+	inline const linear_arrangement& get_arrangement() const noexcept
+	{ return m_arr; }
 
 	/// Returns true if the end of the iteration was reached.
 	inline bool end() const noexcept { return m_reached_end; }
