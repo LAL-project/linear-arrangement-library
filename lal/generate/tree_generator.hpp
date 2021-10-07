@@ -106,13 +106,13 @@ public:
 	 * @param Gen Generator of the same type.
 	 */
 	_tree_generator(const _tree_generator& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Generator of the same type.
 	 */
 	_tree_generator(_tree_generator&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	virtual ~_tree_generator() = default;
 
@@ -131,7 +131,6 @@ public:
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Default copy assignment operator.
 	 * @param Gen Generator of the same type.
@@ -142,7 +141,6 @@ public:
 	 * @param Gen Generator of the same type.
 	 */
 	_tree_generator& operator= (_tree_generator&& Gen) = default;
-#endif
 
 	/* GETTERS */
 

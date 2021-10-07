@@ -76,9 +76,11 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
+
 	graph(uint64_t n) noexcept {
 		_init(n);
 	}
+
 	/**
 	 * @brief Copy constructor.
 	 * @param g Graph.
@@ -86,7 +88,7 @@ public:
 	graph(const graph& g) noexcept {
 		copy_full_graph(g);
 	}
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param g Graph.
@@ -94,13 +96,12 @@ public:
 	graph(graph&& g) noexcept {
 		move_full_graph(std::move(g));
 	}
-#endif
+
 	/// Destructor.
 	virtual ~graph() noexcept { }
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Copy assignment operator.
 	 * @param g Graph.
@@ -109,6 +110,7 @@ public:
 		copy_full_graph(g);
 		return *this;
 	}
+
 	/**
 	 * @brief Move assignment operator.
 	 * @param g Graph.
@@ -117,7 +119,6 @@ public:
 		move_full_graph(std::move(g));
 		return *this;
 	}
-#endif
 
 	/* MODIFIERS */
 

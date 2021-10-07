@@ -82,7 +82,7 @@ public:
 	tree(const tree& t) noexcept : graph() {
 		tree_only_copy(t);
 	}
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param t Tree.
@@ -90,13 +90,12 @@ public:
 	tree(tree&& t) noexcept {
 		tree_only_move(std::move(t));
 	}
-#endif
+
 	/// Destructor.
 	virtual ~tree() noexcept { }
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Copy assignment operator.
 	 * @param t Tree.
@@ -113,7 +112,6 @@ public:
 		tree_only_move(std::move(t));
 		return *this;
 	}
-#endif
 
 	/* MODIFIERS */
 

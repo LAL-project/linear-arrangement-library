@@ -84,7 +84,7 @@ public:
 	undirected_graph(const undirected_graph& g) noexcept : graph() {
 		copy_full_undirected_graph(g);
 	}
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param g Undirected graph.
@@ -92,13 +92,12 @@ public:
 	undirected_graph(undirected_graph&& g) noexcept {
 		move_full_undirected_graph(std::move(g));
 	}
-#endif
+
 	/// Destructor.
 	virtual ~undirected_graph() noexcept { }
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Copy assignment operator.
 	 * @param g Undirected graph.
@@ -115,7 +114,6 @@ public:
 		move_full_undirected_graph(std::move(g));
 		return *this;
 	}
-#endif
 
 	/* MODIFIERS */
 

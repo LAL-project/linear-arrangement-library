@@ -124,7 +124,7 @@ public:
 	rooted_tree(const rooted_tree& r) noexcept : graph(), tree(), directed_graph() {
 		copy_full_rooted_tree(r);
 	}
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param r Rooted tree.
@@ -132,7 +132,7 @@ public:
 	rooted_tree(rooted_tree&& r) noexcept {
 		move_full_rooted_tree(std::move(r));
 	}
-#endif
+
 	/// Constructor with tree and root node.
 	rooted_tree(const free_tree& t, node r) noexcept {
 		init_rooted(t, r);
@@ -142,7 +142,6 @@ public:
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Copy assignment operator.
 	 * @param r Rooted tree.
@@ -159,7 +158,6 @@ public:
 		move_full_rooted_tree(std::move(r));
 		return *this;
 	}
-#endif
 
 	/* MODIFIERS */
 

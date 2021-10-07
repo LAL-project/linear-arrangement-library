@@ -85,13 +85,13 @@ public:
 	 * @param Gen Random labelled rooted tree generator.
 	 */
 	_rand_lab_rooted_trees(const _rand_lab_rooted_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
 	_rand_lab_rooted_trees(_rand_lab_rooted_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~_rand_lab_rooted_trees() = default;
 

@@ -68,7 +68,6 @@ public:
 	/// Returns weight of this flux.
 	uint64_t get_weight() const noexcept { return m_weight; }
 
-#ifndef SWIG
 	/// Returns a reference to the left span of this flux.
 	uint64_t& get_left_span() noexcept { return m_left_span;; }
 	/// Returns a reference to the right span of this flux.
@@ -78,7 +77,6 @@ public:
 
 	/// Returns a reference to the set of dependencies.
 	std::vector<edge>& get_dependencies() { return m_dependencies; }
-#endif
 
 	/// Returns the set of dependencies.
 	const std::vector<edge>& get_dependencies() const noexcept
@@ -135,11 +133,9 @@ public:
 	void set_dependencies(const std::vector<edge>& deps) noexcept
 	{ m_dependencies = deps; }
 
-#ifndef SWIG
 	/// Sets the set of dependencies.
 	void set_dependencies(std::vector<edge>&& deps) noexcept
 	{ m_dependencies = std::move(deps); }
-#endif
 
 private:
 	/// Number of words to the left of this flux which are vertices of a

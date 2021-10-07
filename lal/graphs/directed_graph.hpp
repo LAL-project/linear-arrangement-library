@@ -85,7 +85,7 @@ public:
 	directed_graph(const directed_graph& g) noexcept : graph() {
 		copy_full_directed_graph(g);
 	}
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param g Directed graph.
@@ -93,13 +93,12 @@ public:
 	directed_graph(directed_graph&& g) noexcept {
 		move_full_directed_graph(std::move(g));
 	}
-#endif
+
 	/// Destructor.
 	virtual ~directed_graph() noexcept { }
 
 	/* OPERATORS */
 
-#ifndef SWIG
 	/**
 	 * @brief Copy assignment operator.
 	 * @param g Directed graph.
@@ -116,7 +115,6 @@ public:
 		move_full_directed_graph(std::move(g));
 		return *this;
 	}
-#endif
 
 	/* MODIFIERS */
 

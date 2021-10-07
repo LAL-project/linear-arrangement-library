@@ -58,10 +58,10 @@ public:
 	report_treebank_file() = default;
 	/// Default copy constructor.
 	report_treebank_file(const report_treebank_file&) = default;
-#ifndef SWIG
+
 	/// Default move constructor.
 	report_treebank_file(report_treebank_file&&) = default;
-#endif
+
 	/// Default destructor
 	~report_treebank_file() = default;
 
@@ -78,12 +78,10 @@ public:
 		  m_error_message(error_message)
 	{}
 
-#ifndef SWIG
 	/// Default copy assignment.
 	report_treebank_file& operator= (const report_treebank_file&) = default;
 	/// Default move assignment.
 	report_treebank_file& operator= (report_treebank_file&&) = default;
-#endif
 
 	/* GETTERS */
 
@@ -114,10 +112,8 @@ public:
 	report_treebank_collection() = default;
 	/// Default copy constructor.
 	report_treebank_collection(const report_treebank_collection&) = default;
-#ifndef SWIG
 	/// Default move constructor.
 	report_treebank_collection(report_treebank_collection&&) = default;
-#endif
 	/// Default destructor
 	~report_treebank_collection() = default;
 
@@ -140,12 +136,10 @@ public:
 		  m_error_message(error_message)
 	{}
 
-#ifndef SWIG
 	/// Default copy assignment.
 	report_treebank_collection& operator= (const report_treebank_collection&) = default;
 	/// Default move assignment.
 	report_treebank_collection& operator= (report_treebank_collection&&) = default;
-#endif
 
 	/// Returns the line number within the treebank file where the error is found.
 	const std::string& get_treebank_file_name() const noexcept
