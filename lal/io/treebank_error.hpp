@@ -99,6 +99,9 @@ public:
 	/// Compares a treebank error with a treebank error type.
 	bool operator== (const treebank_error_type& tet) const noexcept
 	{ return m_error_type == tet; }
+	/// Compares a treebank error with a treebank error type.
+	bool operator!= (const treebank_error_type& tet) const noexcept
+	{ return m_error_type != tet; }
 
 	/// Retrieve the error message.
 	const std::string& get_error_message() const noexcept

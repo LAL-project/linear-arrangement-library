@@ -70,9 +70,9 @@ namespace io {
  * returns false.
  *
  * If an object of this class was returned by the class @ref treebank_collection_reader,
- * then methods @ref get_treebank_filename and @ref get_identifier might prove
- * useful for debugging since they return, respectively, the full name (path
- * included) of the treebank and an identifier string.
+ * then methods @ref get_treebank_filename and @ref get_treebank_identifier might
+ * prove useful for debugging since they return, respectively, the full name
+ * (path included) of the treebank and an identifier string.
  *
  * An example of usage of this class is given in the following piece of code.
  * @code
@@ -125,7 +125,7 @@ public:
 	{ return m_num_trees; }
 
 	/// Returns the identifier corresponding of the treebank.
-	const std::string& get_identifier() const noexcept
+	const std::string& get_treebank_identifier() const noexcept
 	{ return m_treebank_identifier; }
 
 	/// Returns the name of the treebank file.
