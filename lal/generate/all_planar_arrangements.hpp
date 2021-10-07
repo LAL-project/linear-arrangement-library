@@ -162,8 +162,8 @@ public:
 
 	/**
 	 * @brief Constructs the current arrangement.
-	 * @return Returns the arrangement generated with method @ref next().
-	 * @pre Method @ref next must have been called at least once.
+	 * @return The current arrangement.
+	 * @post This generator is moved to the next arrangement.
 	 */
 	linear_arrangement yield_arrangement() noexcept {
 		const auto arr = get_arrangement();

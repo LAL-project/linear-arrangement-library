@@ -45,7 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
@@ -61,17 +60,6 @@ namespace generate {
 
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
-
-_rand_ulab_rooted_trees::_rand_ulab_rooted_trees
-(uint64_t _n, uint64_t seed) noexcept
-	: m_n(_n),
-	  m_head_vector(m_n)
-{
-	init_rn();
-	// use '__rand_ulab_rooted_trees::' because another class
-	// will inherit from this one
-	_rand_ulab_rooted_trees::init(seed);
-}
 
 rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept {
 	if (m_n <= 1) {
@@ -97,29 +85,9 @@ rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept {
 	return rT;
 }
 
-void _rand_ulab_rooted_trees::clear() noexcept {
-	m_rn.clear();
-	init_rn();
-}
-
 /* PROTECTED */
 
-void _rand_ulab_rooted_trees::init(uint64_t seed) noexcept {
-	if (m_n <= 1) { return; }
-
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
-	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_real_distribution<double>(0, 1);
-
-	init_rn();
-}
-
-pair<uint64_t,uint64_t>
+std::pair<uint64_t,uint64_t>
 _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 {
 	if (n == 0) {
@@ -128,7 +96,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 		//    lr: because we haven't generated any new tree (so, no new root),
 		//    nt: because the place where to store the next tree to be generated
 		//        is still 'nt'
-		return make_pair(lr,nt);
+		return {lr,nt};
 	}
 	if (n == 1) {
 		// The new tree has a single node, to be stored in 'nt'.
@@ -139,7 +107,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 		//    nt: the root of the last tree generated is placed at 'nt'
 		//    nt+1: the place where to store the next tree that will be generated
 		//          has to be placed at nt+1
-		return make_pair(nt, nt + 1);
+		return {nt, nt + 1};
 	}
 	if (n == 2) {
 		// The new tree has two nodes.
@@ -153,7 +121,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 		//    nt: the root of the last tree generated is placed at 'nt'
 		//    nt+1: the place where to store the next tree that will be generated
 		//          has to be placed at nt+1
-		return make_pair(nt, nt + 2);
+		return {nt, nt + 2};
 	}
 
 	const auto [j, d] = choose_jd_from_T(n);
@@ -208,43 +176,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 #if defined DEBUG
 	assert(nt <= m_n);
 #endif
-	return make_pair(root_Tp, nt);
-}
-
-void _rand_ulab_rooted_trees::init_rn() noexcept {
-	// from the OEIS: https://oeis.org/A000081
-	m_rn = vector<integer>(31);
-	m_rn[0] = 0;
-	m_rn[1] = 1;
-	m_rn[2] = 1;
-	m_rn[3] = 2;
-	m_rn[4] = 4;
-	m_rn[5] = 9;
-	m_rn[6] = 20;
-	m_rn[7] = 48;
-	m_rn[8] = 115;
-	m_rn[9] = 286;
-	m_rn[10] = 719;
-	m_rn[11] = 1842;
-	m_rn[12] = 4766;
-	m_rn[13] = 12486;
-	m_rn[14] = 32973;
-	m_rn[15] = 87811;
-	m_rn[16] = 235381;
-	m_rn[17] = 634847;
-	m_rn[18] = 1721159;
-	m_rn[19] = 4688676;
-	m_rn[20] = 12826228;
-	m_rn[21] = 35221832;
-	m_rn[22] = 97055181;
-	m_rn[23] = 268282855;
-	m_rn[24] = 743724984;
-	m_rn[25] = integer("2067174645");
-	m_rn[26] = integer("5759636510");
-	m_rn[27] = integer("16083734329");
-	m_rn[28] = integer("45007066269");
-	m_rn[29] = integer("126186554308");
-	m_rn[30] = integer("354426847597");
+	return {root_Tp, nt};
 }
 
 const integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
@@ -282,7 +214,7 @@ const integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 	return m_rn[n];
 }
 
-pair<uint64_t, uint64_t>
+std::pair<uint64_t, uint64_t>
 _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 {
 	// Weight of the pair to choose. It will be decreased
@@ -317,7 +249,7 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 		}
 	}
 
-	return make_pair(j, d);
+	return {j, d};
 }
 
 } // -- namespace generate

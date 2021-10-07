@@ -157,11 +157,9 @@ public:
 	}
 
 	/**
-	 * @brief Returns the current arrangement and advances the generator.
-	 *
-	 * This method calls @ref next() after retrieving a copy of the current
-	 * arrangement.
-	 * @returns The current arrangement.
+	 * @brief Constructs the current arrangement.
+	 * @return The current arrangement.
+	 * @post This generator is moved to the next arrangement.
 	 */
 	linear_arrangement yield_arrangement() noexcept {
 		// yes, a copy...

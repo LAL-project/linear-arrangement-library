@@ -103,6 +103,9 @@ class all_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor.
+	all_lab_rooted_trees() noexcept : _tree_generator<graphs::rooted_tree>() { }
+
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
@@ -127,6 +130,33 @@ public:
 #endif
 	/// Default destructor.
 	~all_lab_rooted_trees() = default;
+
+	/// Copy assignment operator.
+	all_lab_rooted_trees& operator= (const all_lab_rooted_trees& g) noexcept = default;
+	/// Move assignment operator.
+	all_lab_rooted_trees& operator= (all_lab_rooted_trees&& g) noexcept = default;
+
+	/* INITIALIZE */
+
+	/**
+	 * @brief Initializes the generator with a given number of vertices.
+	 * @param n Number of vertices.
+	 */
+	void init(uint64_t n) noexcept {
+		_tree_generator::init(n);
+		m_gen_lab_free_tree.init(m_n);
+		reset();
+	}
+
+	/**
+	 * @brief Clears the memory used.
+	 * @post Method @ref init must be called after every call to @ref clear.
+	 */
+	void clear() noexcept {
+		_tree_generator::clear();
+		m_cur_ftree.clear();
+		m_gen_lab_free_tree.clear();
+	}
 
 	/* GETTERS */
 

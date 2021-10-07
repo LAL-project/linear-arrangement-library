@@ -167,13 +167,10 @@ public:
 
 	/**
 	 * @brief Returns the current arrangement and advances the generator.
-	 *
-	 * This method calls @ref next() after retrieving a copy of the current
-	 * arrangement.
 	 * @returns The current arrangement.
+	 * @post This generator is moved to the next arrangement.
 	 */
 	linear_arrangement yield_arrangement() noexcept {
-		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();
 		return arr;

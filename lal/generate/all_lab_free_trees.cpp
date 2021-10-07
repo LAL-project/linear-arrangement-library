@@ -42,8 +42,8 @@
 #include <lal/generate/all_lab_free_trees.hpp>
 
 // C++ includes
+#include <vector>
 #include <limits>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
@@ -54,16 +54,6 @@ using namespace graphs;
 namespace generate {
 
 /* PUBLIC */
-
-/* CONSTRUCTORS */
-
-all_lab_free_trees::all_lab_free_trees(uint64_t _n) noexcept
-	: _tree_generator<free_tree>(_n),
-	  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
-	  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
-{
-	reset();
-}
 
 /* MODIFIERS */
 
@@ -104,7 +94,7 @@ free_tree all_lab_free_trees::__get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
 		free_tree t(2);
-		t.set_edges(vector<edge>{edge(0,1)});
+		t.set_edges(std::vector<edge>{edge(0,1)});
 		return t;
 	}
 	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
@@ -126,7 +116,7 @@ void all_lab_free_trees::__reset() noexcept {
 	m_it = m_n - 3;
 	// make sure that the first call to next()
 	// produces the sequence 0 0 ... 0
-	m_Prufer_seq[m_it] = numeric_limits<uint64_t>::max();
+	m_Prufer_seq[m_it] = std::numeric_limits<uint64_t>::max();
 	m_L = m_n - 2;
 }
 

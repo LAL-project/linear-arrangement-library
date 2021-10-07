@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <numeric>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
@@ -56,15 +55,6 @@ using namespace graphs;
 namespace generate {
 
 /* PUBLIC */
-
-all_ulab_rooted_trees::all_ulab_rooted_trees(uint64_t _n) noexcept
-	: _tree_generator<rooted_tree>(_n),
-	  m_save(m_n + 1),
-	  m_prev(m_n + 1),
-	  m_L(m_n + 1)
-{
-	reset();
-}
 
 /* MODIFIERS */
 

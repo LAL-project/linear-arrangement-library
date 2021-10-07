@@ -100,11 +100,21 @@ class all_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor.
+	all_lab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_free_trees(uint64_t n) noexcept;
+	all_lab_free_trees(uint64_t n) noexcept
+		: _tree_generator<graphs::free_tree>(n),
+		  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
+		  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
+	{
+		reset();
+	}
+
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive labelled free tree generator..
@@ -119,6 +129,34 @@ public:
 #endif
 	/// Default destructor.
 	~all_lab_free_trees() = default;
+
+	/// Copy assignment operator.
+	all_lab_free_trees& operator= (const all_lab_free_trees& g) noexcept = default;
+	/// Move assignment operator.
+	all_lab_free_trees& operator= (all_lab_free_trees&& g) noexcept = default;
+
+	/* INITIALIZE */
+
+	/**
+	 * @brief Initializes the generator with a given number of vertices.
+	 * @param n Number of vertices.
+	 */
+	void init(uint64_t n) noexcept {
+		_tree_generator::init(n);
+		m_Prufer_seq.resize(m_n <= 2 ? 1 : m_n - 2, 0);
+		m_sm.resize(m_n <= 2 ? 1 : m_n - 2, 0);
+		reset();
+	}
+
+	/**
+	 * @brief Clears the memory used.
+	 * @post Method @ref init must be called after every call to @ref clear.
+	 */
+	void clear() noexcept {
+		_tree_generator::clear();
+		m_Prufer_seq.clear();
+		m_sm.clear();
+	}
 
 	/* GETTERS */
 

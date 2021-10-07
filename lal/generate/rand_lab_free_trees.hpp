@@ -69,14 +69,21 @@ class _rand_lab_free_trees {
 public:
 	/* CONSTRUCTORS */
 
+	/// Default constructor
+	_rand_lab_free_trees() noexcept { }
+
 	/**
-	 * @brief Constructor with size of tree and seed for the random number generator.
+	 * @brief Constructor with size of tree and seed for the random number
+	 * generator.
 	 *
 	 * In case the seed given is '0', a random seed will be generated.
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept;
+	_rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept {
+		init(n, seed);
+	}
+
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
@@ -90,7 +97,42 @@ public:
 	_rand_lab_free_trees(_rand_lab_free_trees&& Gen) = default;
 #endif
 	/// Default destructor.
-	virtual ~_rand_lab_free_trees() = default;
+	~_rand_lab_free_trees() = default;
+
+	/// Copy assignment operator.
+	_rand_lab_free_trees& operator= (const _rand_lab_free_trees& g) noexcept = default;
+	/// Move assignment operator.
+	_rand_lab_free_trees& operator= (_rand_lab_free_trees&& g) noexcept = default;
+
+	/* INITIALIZE */
+
+	/**
+	 * @brief Initializes the generator with the number of nodes and a seed.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator. If the seed is 0
+	 * then a random seed is generated and used.
+	 */
+	void init(uint64_t n, uint64_t seed = 0) noexcept {
+		m_n = n;
+		m_Prufer_seq.resize(m_n <= 2 ? 2 : m_n - 2);
+
+		if (seed == 0) {
+			std::random_device rd;
+			m_gen = std::mt19937(rd());
+		}
+		else {
+			m_gen = std::mt19937(seed);
+		}
+		m_unif = std::uniform_int_distribution<uint64_t>(0, m_n - 1);
+	}
+
+	/**
+	 * @brief Clears the memory used.
+	 * @post Method @ref init must be called after every call to @ref clear.
+	 */
+	void clear() noexcept {
+		m_Prufer_seq.clear();
+	}
 
 	/* GETTERS */
 
@@ -98,17 +140,8 @@ public:
 	graphs::free_tree get_tree() noexcept;
 
 protected:
-	/**
-	 * @brief Sets the size of the labelled trees to generate.
-	 *
-	 * Initialises the random number generator.
-	 * @param seed Integer value used to seed the random number generator.
-	 */
-	void init(uint64_t seed = 0) noexcept;
-
-protected:
 	/// Number of nodes of the tree.
-	const uint64_t m_n;
+	uint64_t m_n;
 
 	/// Random number generator.
 	std::mt19937 m_gen;
@@ -146,6 +179,9 @@ class rand_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor
+	rand_lab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -170,6 +206,28 @@ public:
 #endif
 	/// Default destructor.
 	~rand_lab_free_trees() = default;
+
+	/// Copy assignment operator.
+	rand_lab_free_trees& operator= (const rand_lab_free_trees& g) noexcept = default;
+	/// Move assignment operator.
+	rand_lab_free_trees& operator= (rand_lab_free_trees&& g) noexcept = default;
+
+	/**
+	 * @brief Initializes the generator with the number of nodes and a seed.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator. If the seed is 0
+	 * then a random seed is generated and used.
+	 */
+	void init(uint64_t n, uint64_t seed = 0) noexcept {
+		_tree_generator::init(n);
+		m_Gen.init(n, seed);
+	}
+
+	/// Clear the memory used by the generator.
+	void clear() noexcept {
+		_tree_generator::clear();
+		m_Gen.clear();
+	}
 
 	graphs::free_tree yield_tree() noexcept {
 		return get_tree();

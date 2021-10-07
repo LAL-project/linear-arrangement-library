@@ -43,12 +43,11 @@
 
 // C++ includes
 #include <limits>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
 
-#define inf numeric_limits<uint64_t>::max()
+#define inf std::numeric_limits<uint64_t>::max()
 
 namespace lal {
 using namespace graphs;
@@ -56,16 +55,6 @@ using namespace graphs;
 namespace generate {
 
 /* PUBLIC */
-
-/* CONSTRUCTORS */
-
-all_ulab_free_trees::all_ulab_free_trees(uint64_t _n) noexcept
-	: _tree_generator<free_tree>(_n),
-	  m_L(m_n + 1),
-	  m_W(m_n + 1)
-{
-	reset();
-}
 
 /* MODIFIERS */
 
@@ -252,7 +241,7 @@ void all_ulab_free_trees::__reset() noexcept {
 		return;
 	}
 
-	uint64_t k = m_n/2 + 1;
+	const uint64_t k = m_n/2 + 1;
 	m_p = (m_n == 4 ? 3 : m_n);
 	m_q = m_n - 1;
 	m_h1 = k;

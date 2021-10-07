@@ -46,14 +46,13 @@
 #include <cassert>
 #endif
 #include <numeric>
-using namespace std;
 
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/internal/graphs/conversions.hpp>
 
-#define get_alpha(m,q) (m_alpha.find(make_pair(m,q))->second)
-#define alpha_exists(m,q) (m_alpha.find(make_pair(m,q)) != m_alpha.end())
+#define get_alpha(m,q) (m_alpha.find({m,q})->second)
+#define alpha_exists(m,q) (m_alpha.find({m,q}) != m_alpha.end())
 
 namespace lal {
 using namespace graphs;
@@ -72,13 +71,6 @@ namespace generate {
 // ACTUAL GENERATOR
 
 /* PUBLIC */
-
-_rand_ulab_free_trees::_rand_ulab_free_trees
-(uint64_t _n, uint64_t seed) noexcept
-	: _rand_ulab_rooted_trees(_n, seed)
-{
-	init_fn();
-}
 
 free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
@@ -154,25 +146,11 @@ free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	return T;
 }
 
-void _rand_ulab_free_trees::clear() noexcept {
-	_rand_ulab_rooted_trees::clear();
-	m_fn.clear();
-	m_alpha.clear();
-	init_fn();
-}
-
-/* PROTECTED */
-
-void _rand_ulab_free_trees::init(uint64_t seed) noexcept {
-	_rand_ulab_rooted_trees::init(seed);
-	init_fn();
-}
-
 /* PRIVATE */
 
 /* PLEASE, NOTE!
  *
- *	-- T is the random free tree that this method's calle (make_rand_tree)
+ *	-- T is the random free tree that this method's callee (make_rand_tree)
  *  is supposed to generate.
  *
  *	-- F' refers to a random forest generated within the method.
@@ -263,7 +241,7 @@ void _rand_ulab_free_trees::bicenter(uint64_t n) noexcept {
 	}
 	else {
 		// step B2: generate another tree
-		tie(lr,nt) = ranrut(h, lr, nt);
+		std::tie(lr,nt) = ranrut(h, lr, nt);
 	}
 
 	// for the sake of debugging
@@ -290,11 +268,11 @@ _rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept
 
 	// base cases, read the paper
 	if (m == 0) {
-		m_alpha.insert(make_pair(make_pair(m,q), 1));
+		m_alpha.insert({{m,q}, 1});
 		return get_alpha(m,q);
 	}
 	if (m <= q) {
-		m_alpha.insert(make_pair(make_pair(m,q), get_rn(m + 1)));
+		m_alpha.insert({{m,q}, get_rn(m + 1)});
 		return get_alpha(m,q);
 	}
 
@@ -311,45 +289,8 @@ _rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept
 		}
 	}
 	alpha_mq /= m;
-	m_alpha.insert(make_pair(make_pair(m,q), std::move(alpha_mq)));
+	m_alpha.insert({{m,q}, std::move(alpha_mq)});
 	return get_alpha(m,q);
-}
-
-void _rand_ulab_free_trees::init_fn() noexcept {
-	// from the OEIS: https://oeis.org/A000055
-
-	m_fn = vector<integer>(31);
-	m_fn[0] = 1;
-	m_fn[1] = 1;
-	m_fn[2] = 1;
-	m_fn[3] = 1;
-	m_fn[4] = 2;
-	m_fn[5] = 3;
-	m_fn[6] = 6;
-	m_fn[7] = 11;
-	m_fn[8] = 23;
-	m_fn[9] = 47;
-	m_fn[10] = 106;
-	m_fn[11] = 235;
-	m_fn[12] = 551;
-	m_fn[13] = 1301;
-	m_fn[14] = 3159;
-	m_fn[15] = 7741;
-	m_fn[16] = 19320;
-	m_fn[17] = 48629;
-	m_fn[18] = 123867;
-	m_fn[19] = 317955;
-	m_fn[20] = 823065;
-	m_fn[21] = 2144505;
-	m_fn[22] = 5623756;
-	m_fn[23] = 14828074;
-	m_fn[24] = 39299897;
-	m_fn[25] = integer("104636890");
-	m_fn[26] = integer("279793450");
-	m_fn[27] = integer("751065460");
-	m_fn[28] = integer("2023443032");
-	m_fn[29] = integer("5469566585");
-	m_fn[30] = integer("14830871802");
 }
 
 const integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
@@ -384,8 +325,9 @@ const integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
 	return m_fn[n];
 }
 
-pair<uint64_t, uint64_t>
-_rand_ulab_free_trees::choose_jd_from_alpha(const uint64_t m, const uint64_t q) noexcept
+std::pair<uint64_t, uint64_t>
+_rand_ulab_free_trees::choose_jd_from_alpha(const uint64_t m, const uint64_t q)
+noexcept
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
@@ -420,7 +362,7 @@ _rand_ulab_free_trees::choose_jd_from_alpha(const uint64_t m, const uint64_t q) 
 		}
 	}
 
-	return make_pair(j, d);
+	return {j, d};
 }
 
 } // -- namespace generate

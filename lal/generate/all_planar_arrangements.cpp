@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <algorithm>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/make_arrangement.hpp>
@@ -66,7 +65,7 @@ all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 	assert(m_T.is_tree());
 #endif
 
-	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
+	m_intervals = std::vector<std::vector<node>>(m_T.get_num_nodes());
 	reset();
 }
 
@@ -79,7 +78,7 @@ all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
 	assert(m_T.is_tree());
 #endif
 
-	m_intervals = vector<vector<node>>(m_T.get_num_nodes());
+	m_intervals = std::vector<std::vector<node>>(m_T.get_num_nodes());
 	reset();
 }
 
@@ -93,7 +92,7 @@ void all_planar_arrangements::next() noexcept {
 	bool has_perm = false;
 	node u = 0;
 	while (u < m_T.get_num_nodes() and not has_perm) {
-		vector<node>& inter_u = m_intervals[u];
+		std::vector<node>& inter_u = m_intervals[u];
 
 		if (u == m_root) {
 			// the root's level should be permuted carefully:
@@ -148,7 +147,7 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 	internal::BFS<free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
-		m_intervals[v] = vector<node>(m_T.get_degree(v));
+		m_intervals[v] = std::vector<node>(m_T.get_degree(v));
 		initialise_interval_node(v, u);
 	}
 	);
@@ -160,7 +159,7 @@ void all_planar_arrangements::initialise_interval_node(node u, node parent) noex
 	const neighbourhood& neighs_u = m_T.get_neighbours(u);
 
 	// the interval of this vertex
-	vector<node>& inter_u = m_intervals[u];
+	std::vector<node>& inter_u = m_intervals[u];
 
 	if (u == m_root) {
 		// the root must be placed at the left most position

@@ -100,25 +100,69 @@ class all_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor.
+	all_ulab_rooted_trees() noexcept : _tree_generator<graphs::rooted_tree>()
+	{ }
+
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_rooted_trees(uint64_t n) noexcept;
+	all_ulab_rooted_trees(uint64_t n) noexcept
+		: _tree_generator<graphs::rooted_tree>(n),
+		  m_save(m_n + 1),
+		  m_prev(m_n + 1),
+		  m_L(m_n + 1)
+	{
+		reset();
+	}
+
 	/**
 	 * @brief Copy constructor.
-	 * @param Gen Exhaustive unlabelled rooted tree generator..
+	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
 	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) = default;
 #ifndef SWIG
 	/**
 	 * @brief Move constructor.
-	 * @param Gen Exhaustive unlabelled rooted tree generator..
+	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
-	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) = delete;
+	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) = default;
 #endif
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;
+
+	/// Copy assignment operator.
+	all_ulab_rooted_trees& operator= (const all_ulab_rooted_trees& g) noexcept = default;
+	/// Move assignment operator.
+	all_ulab_rooted_trees& operator= (all_ulab_rooted_trees&& g) noexcept = default;
+
+	/* INITIALIZE */
+
+	/**
+	 * @brief Initializes the generator with a given number of vertices.
+	 * @param n Number of vertices.
+	 */
+	void init(uint64_t n) noexcept {
+		_tree_generator::init(n);
+		// resize the memory
+		m_save.resize(m_n + 1);
+		m_prev.resize(m_n + 1);
+		m_L.resize(m_n + 1);
+		// reset the state of the generator
+		reset();
+	}
+
+	/**
+	 * @brief Clears the memory used.
+	 * @post Method @ref init must be called after every call to @ref clear.
+	 */
+	void clear() noexcept {
+		_tree_generator::clear();
+		m_save.clear();
+		m_prev.clear();
+		m_L.clear();
+	}
 
 	/* GETTERS */
 
@@ -136,7 +180,11 @@ public:
 	 */
 	void next() noexcept;
 
-	/// Sets the generator to its initial state.
+	/**
+	 * @brief Sets the generator to its initial state.
+	 *
+	 * Postprocessing actions are not modified.
+	 */
 	void reset() noexcept {
 		__reset();
 		next();

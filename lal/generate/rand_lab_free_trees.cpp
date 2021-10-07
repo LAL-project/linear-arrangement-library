@@ -41,9 +41,6 @@
  
 #include <lal/generate/rand_lab_free_trees.hpp>
 
-// C++ includes
-using namespace std;
-
 // lal includes
 #include <lal/internal/graphs/conversions.hpp>
 
@@ -57,14 +54,6 @@ namespace generate {
 
 /* PUBLIC */
 
-_rand_lab_free_trees::_rand_lab_free_trees
-(uint64_t _n, uint64_t seed) noexcept
-	: m_n(_n),
-	  m_Prufer_seq(m_n <= 2 ? 2 : m_n - 2)
-{
-	init(seed);
-}
-
 free_tree _rand_lab_free_trees::get_tree() noexcept {
 	if (m_n <= 1) { return free_tree(m_n); }
 	if (m_n == 2) {
@@ -77,19 +66,6 @@ free_tree _rand_lab_free_trees::get_tree() noexcept {
 		m_Prufer_seq[i] = m_unif(m_gen);
 	}
 	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
-}
-
-/* PROTECTED */
-
-void _rand_lab_free_trees::init(uint64_t seed) noexcept {
-	if (seed == 0) {
-		random_device rd;
-		m_gen = mt19937(rd());
-	}
-	else {
-		m_gen = mt19937(seed);
-	}
-	m_unif = uniform_int_distribution<uint64_t>(0, m_n - 1);
 }
 
 } // -- namespace generate

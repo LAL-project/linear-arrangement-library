@@ -74,14 +74,22 @@ class _rand_ulab_free_trees : public _rand_ulab_rooted_trees {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor.
+	_rand_ulab_free_trees() noexcept : _rand_ulab_rooted_trees() { }
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
 	 * In case the seed given is '0', a random seed will be generated.
 	 * @param n Number of nodes.
-	 * @param seed The seed used for the random generator.
+	 * @param seed The seed used for the random number generator. If the seed is
+	 * 0 then a random seed is generated and used.
 	 */
-	_rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept;
+	_rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept
+		: _rand_ulab_rooted_trees(n, seed)
+	{
+		_rand_ulab_free_trees::init(n, seed);
+	}
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.
@@ -97,33 +105,37 @@ public:
 	/// Default destructor.
 	~_rand_ulab_free_trees() = default;
 
-	/* GETTERS */
+	/// Copy assignment operator.
+	_rand_ulab_free_trees& operator= (const _rand_ulab_free_trees& g) noexcept = default;
+	/// Move assignment operator.
+	_rand_ulab_free_trees& operator= (_rand_ulab_free_trees&& g) noexcept = default;
 
-	/**
-	 * @brief Generates uniformly at random a free unlabelled tree.
-	 *
-	 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
-	 * pointed out in \cite GiacXcas_Manual.
-	 * @returns An unlabelled free tree.
-	 */
-	graphs::free_tree get_tree() noexcept;
+	/* INITIALIZE */
 
-protected:
 	/**
 	 * @brief Sets the size of the unlabelled trees to generate.
 	 *
-	 * Initialises @ref m_rn with 31 values extracted from
-	 * \cite OEIS_A000081. It also initialises @ref m_fn with 31 values
-	 * extracted from \cite OEIS_A000055.
+	 * Initialises @ref m_rn with values extracted from \cite OEIS_A000081.
+	 * It also initialises @ref m_fn with values extracted from
+	 * \cite OEIS_A000055.
 	 *
 	 * Initialises the random number generator with @e seed. When @e seed
 	 * is 0, a random seed is used.
-	 * @param seed Integer value used to seed the random number generator.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random number generator. If the seed is
+	 * 0 then a random seed is generated and used.
 	 */
-	void init(uint64_t seed = 0) noexcept;
+	void init(uint64_t n, uint64_t seed = 0) noexcept {
+		_rand_ulab_rooted_trees::init(n, seed);
+
+		// add the initial values to m_fn
+		init_fn();
+		// force the addition of the necessary values for m_fn and m_rn
+		get_fn(n);
+	}
 
 	/**
-	 * @brief Clears the memory occupied.
+	 * @brief Clears the memory used.
 	 *
 	 * In order to save computation time, this class has been designed
 	 * to reuse memory when generating trees. For example, since it needs
@@ -138,10 +150,28 @@ protected:
 	 *
 	 * @post After calling this method, the contents of the attributes
 	 * @ref m_rn, @ref m_fn and @ref m_alpha are cleared. Attributes
-	 * @ref m_rn and @ref m_fn are then assigned the same 31 values that they
+	 * @ref m_rn and @ref m_fn are then assigned the same values that they
 	 * are assigned when creating an object of this class.
+	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept;
+	void clear() noexcept {
+		_rand_ulab_rooted_trees::clear();
+		m_fn.clear();
+		m_alpha.clear();
+
+		init_fn();
+	}
+
+	/* GETTERS */
+
+	/**
+	 * @brief Generates uniformly at random a free unlabelled tree.
+	 *
+	 * Includes the correction in Wilf's paper (see \cite Wilf1981a), as
+	 * pointed out in \cite GiacXcas_Manual.
+	 * @returns An unlabelled free tree.
+	 */
+	graphs::free_tree get_tree() noexcept;
 
 private:
 	/**
@@ -196,8 +226,44 @@ private:
 	const numeric::integer&
 	get_alpha_mq(const uint64_t m, const uint64_t q) noexcept;
 
-	/// Initialiases @ref m_fn with 31 values from the OEIS (see \cite OEIS_A000055).
-	void init_fn() noexcept;
+	/// Initialiases @ref m_fn with values from the OEIS (see \cite OEIS_A000055).
+	void init_fn() noexcept {
+		// from the OEIS: https://oeis.org/A000055
+		m_fn =
+		std::vector<numeric::integer>{
+			1,
+			1,
+			1,
+			1,
+			2,
+			3,
+			6,
+			11,
+			23,
+			47,
+			106,
+			235,
+			551,
+			1301,
+			3159,
+			7741,
+			19320,
+			48629,
+			123867,
+			317955,
+			823065,
+			2144505,
+			5623756,
+			14828074,
+			39299897,
+			numeric::integer("104636890"),
+			numeric::integer("279793450"),
+			numeric::integer("751065460"),
+			numeric::integer("2023443032"),
+			numeric::integer("5469566585"),
+			numeric::integer("14830871802")
+		};
+	}
 
 	/**
 	 * @brief Computes and returns the value \f$f_n\f$.
@@ -253,6 +319,9 @@ class rand_ulab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
 	/* CONSTRUCTORS */
 
+	/// Empty constructor
+	rand_ulab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
 	 *
@@ -277,6 +346,28 @@ public:
 #endif
 	/// Default destructor.
 	~rand_ulab_free_trees() = default;
+
+	/// Copy assignment operator.
+	rand_ulab_free_trees& operator= (const rand_ulab_free_trees& g) noexcept = default;
+	/// Move assignment operator.
+	rand_ulab_free_trees& operator= (rand_ulab_free_trees&& g) noexcept = default;
+
+	/**
+	 * @brief Initializes the generator with the number of nodes and a seed.
+	 * @param n Number of nodes.
+	 * @param seed The seed used for the random generator. If the seed is 0
+	 * then a random seed is generated and used.
+	 */
+	void init(uint64_t n, uint64_t seed = 0) noexcept {
+		_tree_generator::init(n);
+		m_Gen.init(n, seed);
+	}
+
+	/// Clear the memory used by the generator.
+	void clear() noexcept {
+		_tree_generator::clear();
+		m_Gen.clear();
+	}
 
 	graphs::free_tree yield_tree() noexcept {
 		return get_tree();

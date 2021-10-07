@@ -87,11 +87,14 @@ template<
 class _tree_generator {
 public:
 	/// Shorthand for the type of tree this class returns.
-	typedef std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>
-	tree_type_t;
+	using tree_type_t = typename
+	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>;
 
 public:
 	/* CONSTRUCTORS */
+
+	/// Default constructor
+	_tree_generator() noexcept = default;
 
 	/**
 	 * @brief Constructor with number of nodes.
@@ -112,6 +115,19 @@ public:
 #endif
 	/// Default destructor.
 	virtual ~_tree_generator() = default;
+
+	/* INITIALIZE */
+
+	/// Initializes the tree generator.
+	void init(uint64_t n) noexcept {
+		m_n = n;
+		activate_all_postprocessing_actions();
+	}
+
+	/// Clears the memory used by the generator.
+	void clear() noexcept {
+
+	}
 
 	/* OPERATORS */
 
@@ -180,6 +196,7 @@ public:
 	 * @returns A free/rooted tree depending on the type of the class inheriting
 	 * from this. The type of generation of tree differs from one type of class
 	 * to another.
+	 * @post The generator advances to the next tree.
 	 */
 	virtual tree_type_t yield_tree() noexcept = 0;
 
@@ -241,8 +258,9 @@ protected:
 	 */
 	virtual tree_type_t __get_tree() noexcept = 0;
 
+protected:
 	/// Number of vertices
-	const uint64_t m_n;
+	uint64_t m_n = 0;
 
 	/// Normalise the generated tree.
 	bool m_normalise_tree = true;
