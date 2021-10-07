@@ -14,6 +14,94 @@
 
 %include stdint.i
 
+// ignore operators and constructors
+
+namespace lal {
+namespace generate {
+
+// TREE GENERATING CLASSES
+
+// -- EXHAUSTIVE
+
+%ignore all_lab_free_trees::all_lab_free_trees(const all_lab_free_trees&) noexcept;
+%ignore all_lab_free_trees::all_lab_free_trees(all_lab_free_trees&&) noexcept;
+%ignore all_lab_free_trees::operator= (const all_lab_free_trees&) noexcept;
+%ignore all_lab_free_trees::operator= (all_lab_free_trees&&) noexcept;
+
+%ignore all_ulab_free_trees::all_ulab_free_trees(const all_ulab_free_trees&) noexcept;
+%ignore all_ulab_free_trees::all_ulab_free_trees(all_ulab_free_trees&&) noexcept;
+%ignore all_ulab_free_trees::operator= (const all_ulab_free_trees&) noexcept;
+%ignore all_ulab_free_trees::operator= (all_ulab_free_trees&&) noexcept;
+
+%ignore all_lab_rooted_trees::all_lab_rooted_trees(const all_lab_rooted_trees&) noexcept;
+%ignore all_lab_rooted_trees::all_lab_rooted_trees(all_lab_rooted_trees&&) noexcept;
+%ignore all_lab_rooted_trees::operator= (const all_lab_rooted_trees&) noexcept;
+%ignore all_lab_rooted_trees::operator= (all_lab_rooted_trees&&) noexcept;
+
+%ignore all_ulab_rooted_trees::all_ulab_rooted_trees(const all_ulab_rooted_trees&) noexcept;
+%ignore all_ulab_rooted_trees::all_ulab_rooted_trees(all_ulab_rooted_trees&&) noexcept;
+%ignore all_ulab_rooted_trees::operator= (const all_ulab_rooted_trees&) noexcept;
+%ignore all_ulab_rooted_trees::operator= (all_ulab_rooted_trees&&) noexcept;
+
+// -- RANDOM
+
+%ignore _rand_lab_free_trees::_rand_lab_free_trees(const _rand_lab_free_trees&) noexcept;
+%ignore _rand_lab_free_trees::_rand_lab_free_trees(_rand_lab_free_trees&&) noexcept;
+%ignore rand_lab_free_trees::rand_lab_free_trees(const rand_lab_free_trees&) noexcept;
+%ignore rand_lab_free_trees::rand_lab_free_trees(rand_lab_free_trees&&) noexcept;
+%ignore _rand_lab_free_trees::operator= (const _rand_lab_free_trees&) noexcept;
+%ignore _rand_lab_free_trees::operator= (_rand_lab_free_trees&&) noexcept;
+%ignore rand_lab_free_trees::operator= (const rand_lab_free_trees&) noexcept;
+%ignore rand_lab_free_trees::operator= (rand_lab_free_trees&&) noexcept;
+
+%ignore _rand_ulab_free_trees::_rand_ulab_free_trees(const _rand_ulab_free_trees&) noexcept;
+%ignore _rand_ulab_free_trees::_rand_ulab_free_trees(_rand_ulab_free_trees&&) noexcept;
+%ignore rand_ulab_free_trees::rand_ulab_free_trees(const rand_ulab_free_trees&) noexcept;
+%ignore rand_ulab_free_trees::rand_ulab_free_trees(rand_ulab_free_trees&&) noexcept;
+%ignore _rand_ulab_free_trees::operator= (const _rand_ulab_free_trees&) noexcept;
+%ignore _rand_ulab_free_trees::operator= (_rand_ulab_free_trees&&) noexcept;
+%ignore rand_ulab_free_trees::operator= (const rand_ulab_free_trees&) noexcept;
+%ignore rand_ulab_free_trees::operator= (rand_ulab_free_trees&&) noexcept;
+
+%ignore _rand_lab_rooted_trees::_rand_lab_rooted_trees(const _rand_lab_rooted_trees&) noexcept;
+%ignore _rand_lab_rooted_trees::_rand_lab_rooted_trees(_rand_lab_rooted_trees&&) noexcept;
+%ignore rand_lab_rooted_trees::rand_lab_rooted_trees(const rand_lab_rooted_trees&) noexcept;
+%ignore rand_lab_rooted_trees::rand_lab_rooted_trees(rand_lab_rooted_trees&&) noexcept;
+%ignore _rand_lab_rooted_trees::operator= (const _rand_lab_rooted_trees&) noexcept;
+%ignore _rand_lab_rooted_trees::operator= (_rand_lab_rooted_trees&&) noexcept;
+%ignore rand_lab_rooted_trees::operator= (const rand_lab_rooted_trees&) noexcept;
+%ignore rand_lab_rooted_trees::operator= (rand_lab_rooted_trees&&) noexcept;
+
+%ignore _rand_ulab_rooted_trees::_rand_ulab_rooted_trees(const _rand_ulab_rooted_trees&) noexcept;
+%ignore _rand_ulab_rooted_trees::_rand_ulab_rooted_trees(_rand_ulab_rooted_trees&&) noexcept;
+%ignore rand_ulab_rooted_trees::rand_ulab_rooted_trees(const rand_ulab_rooted_trees&) noexcept;
+%ignore rand_ulab_rooted_trees::rand_ulab_rooted_trees(rand_ulab_rooted_trees&&) noexcept;
+%ignore _rand_ulab_rooted_trees::operator= (const _rand_ulab_rooted_trees&) noexcept;
+%ignore _rand_ulab_rooted_trees::operator= (_rand_ulab_rooted_trees&&) noexcept;
+%ignore rand_ulab_rooted_trees::operator= (const rand_ulab_rooted_trees&) noexcept;
+%ignore rand_ulab_rooted_trees::operator= (rand_ulab_rooted_trees&&) noexcept;
+
+// ARRANGEMENT GENERATING CLASSES
+
+// -- EXHAUSTIVE
+
+%ignore all_planar_arrangements::all_planar_arrangements(const all_planar_arrangements&) noexcept;
+%ignore all_planar_arrangements::all_planar_arrangements(all_planar_arrangements&&) noexcept;
+
+%ignore all_projective_arrangements::all_projective_arrangements(const all_projective_arrangements&) noexcept;
+%ignore all_projective_arrangements::all_projective_arrangements(all_projective_arrangements&&) noexcept;
+
+// -- RANDOM
+
+%ignore rand_planar_arrangements::rand_planar_arrangements(const rand_planar_arrangements&) noexcept;
+%ignore rand_planar_arrangements::rand_planar_arrangements(rand_planar_arrangements&&) noexcept;
+
+%ignore rand_projective_arrangements::rand_projective_arrangements(const rand_projective_arrangements&) noexcept;
+%ignore rand_projective_arrangements::rand_projective_arrangements(rand_projective_arrangements&&) noexcept;
+
+}
+}
+
 // This is a base class of all tree generators. It must be put before
 // all other classes.
 %include "../lal/generate/tree_generator.hpp"
