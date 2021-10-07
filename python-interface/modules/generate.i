@@ -21,6 +21,11 @@ namespace generate {
 
 // TREE GENERATING CLASSES
 
+// BASE CLASS
+
+%ignore _tree_generator::operator= (const _tree_generator&) noexcept;
+%ignore _tree_generator::operator= (_tree_generator&&) noexcept;
+
 // -- EXHAUSTIVE
 
 %ignore all_lab_free_trees::all_lab_free_trees(const all_lab_free_trees&) noexcept;

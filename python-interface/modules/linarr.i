@@ -33,6 +33,19 @@ namespace std {
 %include "../lal/linarr/head_initial.hpp"
 %include "../lal/linarr/formal_constraints.hpp"
 
+namespace lal {
+namespace linarr {
+
+// ignore non-const
+%ignore dependency_flux::get_left_span() noexcept;
+%ignore dependency_flux::get_right_span() noexcept;
+%ignore dependency_flux::get_weight() noexcept;
+
+%ignore dependency_flux::get_dependencies() noexcept;
+
+}
+}
+
 %include "../lal/linarr/dependency_flux.hpp"
 namespace std {
 	%template(list_dependency_flux) vector<lal::linarr::dependency_flux>;

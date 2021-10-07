@@ -184,6 +184,22 @@ def read_head_vector(gtype, filename, norm = True, check = True):
 
 /* ------- WRAP the correctness functions that return error messages -------- */
 
+namespace lal {
+namespace io {
+
+%ignore report_treebank_file::report_treebank_file(const report_treebank_file&) noexcept;
+%ignore report_treebank_file::report_treebank_file(report_treebank_file&&) noexcept;
+%ignore report_treebank_file::operator= (const report_treebank_file&) noexcept;
+%ignore report_treebank_file::operator= (report_treebank_file&&) noexcept;
+
+%ignore report_treebank_collection::report_treebank_collection(const report_treebank_collection&) noexcept;
+%ignore report_treebank_collection::report_treebank_collection(report_treebank_collection&&) noexcept;
+%ignore report_treebank_collection::operator= (const report_treebank_collection&) noexcept;
+%ignore report_treebank_collection::operator= (report_treebank_collection&&) noexcept;
+
+}
+}
+
 %include "../lal/io/report_correctness.hpp"
 
 %extend lal::io::report_treebank_file {
@@ -214,6 +230,17 @@ namespace std {
 %include "../lal/io/check_correctness.hpp"
 
 /* -------------------------------------------------------------------------- */
+
+namespace lal {
+namespace io {
+
+%ignore treebank_error::treebank_error(const treebank_error&) noexcept;
+%ignore treebank_error::treebank_error(treebank_error&&) noexcept;
+%ignore treebank_error::operator= (const treebank_error&) noexcept;
+%ignore treebank_error::operator= (treebank_error&&) noexcept;
+
+}
+}
 
 %include "../lal/io/treebank_error.hpp"
 

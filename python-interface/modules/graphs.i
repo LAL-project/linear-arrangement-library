@@ -18,6 +18,44 @@
 
 %}
 
+namespace lal {
+namespace graphs {
+
+%ignore graph::graph(const graph&) noexcept;
+%ignore graph::graph(graph&&) noexcept;
+%ignore graph::operator= (const graph&) noexcept;
+%ignore graph::operator= (graph&&) noexcept;
+
+%ignore undirected_graph::undirected_graph(const undirected_graph&) noexcept;
+%ignore undirected_graph::undirected_graph(undirected_graph&&) noexcept;
+%ignore undirected_graph::operator= (const undirected_graph&) noexcept;
+%ignore undirected_graph::operator= (undirected_graph&&) noexcept;
+
+%ignore directed_graph::directed_graph(const directed_graph&) noexcept;
+%ignore directed_graph::directed_graph(directed_graph&&) noexcept;
+%ignore directed_graph::operator= (const directed_graph&) noexcept;
+%ignore directed_graph::operator= (directed_graph&&) noexcept;
+
+%ignore tree::tree(const tree&) noexcept;
+%ignore tree::tree(tree&&) noexcept;
+%ignore tree::operator= (const tree&) noexcept;
+%ignore tree::operator= (tree&&) noexcept;
+
+%ignore free_tree::free_tree(const undirected_graph&) noexcept;
+%ignore free_tree::free_tree(undirected_graph&&) noexcept;
+%ignore free_tree::free_tree(const free_tree&) noexcept;
+%ignore free_tree::free_tree(free_tree&&) noexcept;
+%ignore free_tree::operator= (const free_tree&) noexcept;
+%ignore free_tree::operator= (free_tree&&) noexcept;
+
+%ignore rooted_tree::rooted_tree(const rooted_tree&) noexcept;
+%ignore rooted_tree::rooted_tree(rooted_tree&&) noexcept;
+%ignore rooted_tree::operator= (const rooted_tree&) noexcept;
+%ignore rooted_tree::operator= (rooted_tree&&) noexcept;
+
+}
+}
+
 // ----------------
 // lal header files
 
