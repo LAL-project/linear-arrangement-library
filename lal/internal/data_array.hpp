@@ -58,9 +58,12 @@ namespace internal {
 template<typename T>
 struct data_array {
 public:
+	// Default constructor
+	data_array() noexcept = default;
+
 	// Constructor with size
 	data_array(const std::size_t n) noexcept : m_size(n) {
-		m_data = m_size == 0 ? nullptr : new T[m_size];
+		alloc_data();
 	}
 	// Constructor with size and initial value
 	data_array(const std::size_t n, const T& v) noexcept : data_array(n) {
@@ -69,16 +72,20 @@ public:
 
 	// Copy constructor
 	data_array(const data_array& d) noexcept : data_array(d.m_size) {
-		std::copy(d.begin(), d.end(), begin());
+		if (m_size > 0) {
+			std::copy(d.begin(), d.end(), begin());
+		}
 	}
 	// Copy assignment operator
 	data_array& operator= (const data_array& d) noexcept {
 		if (m_size != d.m_size) {
 			delete[] m_data;
 			m_size = d.m_size;
-			m_data = new T[m_size];
+			alloc_data();
 		}
-		std::copy(d.begin(), d.end(), begin());
+		if (m_size > 0) {
+			std::copy(d.begin(), d.end(), begin());
+		}
 		return *this;
 	}
 
@@ -126,6 +133,10 @@ public:
 
 	// Destructor
 	~data_array() noexcept {
+		clear();
+	}
+
+	void clear() noexcept {
 		delete[] m_data;
 		// this is for those who like calling the destructor...
 		m_data = nullptr;
@@ -133,10 +144,18 @@ public:
 
 	// resize the array
 	void resize(std::size_t new_size) noexcept {
-		if (new_size != m_size) {
-			m_size = new_size;
+		if (new_size != m_size or m_data == nullptr) {
 			delete[] m_data;
-			m_data = new T[m_size];
+			m_size = new_size;
+			alloc_data();
+		}
+	}
+
+	// resize-initialize the array
+	void resize(std::size_t new_size, const T& v) noexcept {
+		resize(new_size);
+		if (m_size > 0) {
+			fill(v);
 		}
 	}
 
@@ -162,7 +181,7 @@ public:
 
 	// assign the same value to every element in the data
 	void fill(const T& v) noexcept {
-		std::fill(&m_data[0], &m_data[m_size], v);
+		std::fill(begin(), end(), v);
 	}
 
 	// pointer to data (same as begin)
@@ -178,10 +197,16 @@ public:
 	[[nodiscard]] const T *end() const noexcept { return &m_data[m_size]; }
 
 private:
+	// allocate memory for array m_data only when m_size > 0
+	void alloc_data() noexcept {
+		m_data = m_size == 0 ? nullptr : new T[m_size];
+	}
+
+private:
 	// the data of this array
 	T *m_data = nullptr;
 	// the size of this array in number of elements
-	std::size_t m_size;
+	std::size_t m_size = 0;
 };
 
 } // -- namespace internal
