@@ -248,15 +248,18 @@ uint64_t sum_powers_in_degrees
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
  * the in-degree of vertex \f$i\f$.
- * @param g Input graph.
+ * @param t Input tree.
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  * @pre Tree @e t is a valid rooted tree.
  */
 inline
 numeric::integer sum_powers_in_degrees_integer
-(const graphs::rooted_tree& t, uint64_t) noexcept
+(const graphs::rooted_tree& t, uint64_t p)
+noexcept
 {
+	(void(p));
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -271,15 +274,16 @@ numeric::integer sum_powers_in_degrees_integer
  *
  * where \f$n\f$ denotes the number of nodes of the graph and \f$k_{in, i}\f$ is
  * the in-degree of vertex \f$i\f$.
- * @param g Input graph.
+ * @param t Input tree.
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  * @pre Tree @e t is a valid rooted tree.
  */
 inline
-uint64_t sum_powers_in_degrees
-(const graphs::rooted_tree& t, uint64_t) noexcept
+uint64_t sum_powers_in_degrees(const graphs::rooted_tree& t, uint64_t p) noexcept
 {
+	(void(p));
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -511,9 +515,11 @@ double moment_in_degree(const graphs::directed_graph& g, uint64_t p) noexcept
  * @pre Tree @e t is a valid rooted tree.
  */
 inline
-numeric::rational moment_in_degree_rational
-(const graphs::rooted_tree& t, uint64_t) noexcept
+numeric::rational moment_in_degree_rational(const graphs::rooted_tree& t, uint64_t p)
+noexcept
 {
+	(void(p));
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -531,8 +537,11 @@ numeric::rational moment_in_degree_rational
  * @pre Tree @e t is a valid rooted tree.
  */
 inline
-double moment_in_degree(const graphs::rooted_tree& t, uint64_t) noexcept
+double moment_in_degree(const graphs::rooted_tree& t, uint64_t p)
+noexcept
 {
+	(void(p));
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
