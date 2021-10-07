@@ -126,14 +126,14 @@ public:
 	 * @param Gen Exhaustive projective arrangement generator.
 	 */
 	all_projective_arrangements(const all_projective_arrangements& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive projective arrangement generator.
 	 */
 	all_projective_arrangements(all_projective_arrangements&& Gen) = default;
-#endif
 
+	/// Default destructor
 	~all_projective_arrangements() noexcept = default;
 
 	/* GETTERS */

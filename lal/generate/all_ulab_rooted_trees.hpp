@@ -122,13 +122,13 @@ public:
 	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
 	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
 	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;
 

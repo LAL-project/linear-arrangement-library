@@ -105,13 +105,13 @@ public:
 	 * @param Gen Random planar arrangement generator.
 	 */
 	rand_planar_arrangements(const rand_planar_arrangements& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random planar arrangement generator.
 	 */
 	rand_planar_arrangements(rand_planar_arrangements&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~rand_planar_arrangements() = default;
 

@@ -94,13 +94,13 @@ public:
 	 * @param Gen Random projective arrangement generator.
 	 */
 	rand_projective_arrangements(const rand_projective_arrangements& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
 	rand_projective_arrangements(rand_projective_arrangements&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~rand_projective_arrangements() = default;
 

@@ -89,13 +89,13 @@ public:
 	 * @param Gen Random labelled free tree generator.
 	 */
 	_rand_lab_free_trees(const _rand_lab_free_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
 	_rand_lab_free_trees(_rand_lab_free_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~_rand_lab_free_trees() = default;
 
@@ -197,13 +197,13 @@ public:
 	 * @param Gen Random labelled free tree generator.
 	 */
 	rand_lab_free_trees(const rand_lab_free_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
 	rand_lab_free_trees(rand_lab_free_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~rand_lab_free_trees() = default;
 

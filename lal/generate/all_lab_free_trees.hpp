@@ -120,13 +120,13 @@ public:
 	 * @param Gen Exhaustive labelled free tree generator..
 	 */
 	all_lab_free_trees(const all_lab_free_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive labelled free tree generator..
 	 */
 	all_lab_free_trees(all_lab_free_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~all_lab_free_trees() = default;
 

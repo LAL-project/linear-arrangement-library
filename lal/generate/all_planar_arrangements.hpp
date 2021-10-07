@@ -121,13 +121,13 @@ public:
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
 	all_planar_arrangements(const all_planar_arrangements& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
 	all_planar_arrangements(all_planar_arrangements&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~all_planar_arrangements() noexcept = default;
 

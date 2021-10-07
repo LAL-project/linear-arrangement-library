@@ -92,13 +92,13 @@ public:
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
 	_rand_ulab_rooted_trees(const _rand_ulab_rooted_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
 	_rand_ulab_rooted_trees(_rand_ulab_rooted_trees&& Gen) = default;
-#endif
+
 	/// Destructor.
 	virtual ~_rand_ulab_rooted_trees() = default;
 
@@ -328,13 +328,13 @@ public:
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
 	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen) = default;
-#ifndef SWIG
+
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
 	rand_ulab_rooted_trees(rand_ulab_rooted_trees&& Gen) = default;
-#endif
+
 	/// Default destructor.
 	~rand_ulab_rooted_trees() noexcept = default;
 
