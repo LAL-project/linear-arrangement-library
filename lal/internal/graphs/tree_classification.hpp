@@ -102,6 +102,7 @@ noexcept
 	}
 	if (N == 1) {
 		set_type(graphs::tree_type::singleton);
+		set_type(graphs::tree_type::caterpillar);
 		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
