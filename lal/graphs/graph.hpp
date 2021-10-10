@@ -236,14 +236,33 @@ protected:
 
 protected:
 	/// Initialises memory of @ref graph class.
-	virtual void _init(uint64_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept {
+		m_num_edges = 0;
+		m_normalised = true;
+		m_adjacency_list = std::vector<neighbourhood>(n);
+	}
 	/// Clears memory for the @ref graph class.
-	virtual void _clear() noexcept;
+	virtual void _clear() noexcept {
+		m_num_edges = 0;
+		m_normalised = true;
+		m_adjacency_list.clear();
+	}
 
 	/// Copies all members of this class.
-	void copy_full_graph(const graph& g) noexcept;
+	void copy_full_graph(const graph& g) noexcept {
+		m_adjacency_list = g.m_adjacency_list;
+		m_num_edges = g.m_num_edges;
+		m_normalised = g.m_normalised;
+	}
 	/// Moves all members of this class.
-	void move_full_graph(graph&& g) noexcept;
+	void move_full_graph(graph&& g) noexcept {
+		m_adjacency_list = std::move(g.m_adjacency_list);
+		m_num_edges = std::move(g.m_num_edges);
+		m_normalised = std::move(g.m_normalised);
+
+		g.m_num_edges = 0;
+		g.m_normalised = false;
+	}
 
 	/**
 	 * @brief Disjoint union of graphs.

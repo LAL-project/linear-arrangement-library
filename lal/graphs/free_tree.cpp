@@ -183,16 +183,6 @@ head_vector free_tree::get_head_vector(node r) const noexcept {
 
 /* PROTECTED */
 
-void free_tree::_init(uint64_t n) noexcept {
-	undirected_graph::_init(n);
-	tree::tree_only_init(n);
-}
-
-void free_tree::_clear() noexcept {
-	undirected_graph::_clear();
-	tree::tree_only_clear();
-}
-
 void free_tree::call_union_find_after_add(
 	node u, node v,
 	uint64_t * const root_of,
@@ -225,26 +215,6 @@ void free_tree::call_union_find_after_remove(
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
-}
-
-void free_tree::copy_full_free_tree(const free_tree& f) noexcept {
-	// copy undirected_graph class
-	copy_full_undirected_graph(f);
-
-	// copy only tree's members
-	tree_only_copy(f);
-
-	// copy this class' members
-}
-
-void free_tree::move_full_free_tree(free_tree&& f) noexcept {
-	// move-assign undirected_graph class
-	move_full_undirected_graph(std::move(f));
-
-	// move-assign only tree's members
-	tree_only_move(std::move(f));
-
-	// move this class' members
 }
 
 } // -- namespace graphs

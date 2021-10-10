@@ -448,7 +448,21 @@ public:
 	 * @post The type of rooted tree and the size of the subtrees are
 	 * invalidated.
 	 */
-	void set_root(node r) noexcept;
+	void set_root(node r) noexcept {
+		// if the tree is empty simply consider it has a root...
+		// although it really doesn't
+
+		if (get_num_nodes() > 0) {
+#if defined DEBUG
+			assert(has_node(r));
+#endif
+			m_root = r;
+		}
+		m_has_root = true;
+		m_are_size_subtrees_valid = false;
+		m_valid_orientation = false;
+		m_is_tree_type_valid = false;
+	}
 
 	/* GETTERS */
 
@@ -631,10 +645,23 @@ protected:
 protected:
 	/// Initialises memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _init(uint64_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept {
+		tree::tree_only_init(n);
+		directed_graph::_init(n);
+		m_size_subtrees = std::vector<uint64_t>(n);
+
+		if (n <= 1) {
+			set_root(0);
+			set_valid_orientation(true);
+		}
+	}
 	/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _clear() noexcept;
+	virtual void _clear() noexcept {
+		tree::tree_only_clear();
+		directed_graph::_clear();
+		m_size_subtrees.clear();
+	}
 
 	void call_union_find_after_add(
 		node u, node v,
@@ -658,9 +685,40 @@ protected:
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_rooted_tree(const rooted_tree& r) noexcept;
+	void copy_full_rooted_tree(const rooted_tree& r) noexcept {
+		// copy directed_graph class
+		copy_full_directed_graph(r);
+
+		// copy only tree's members
+		tree_only_copy(r);
+
+		// copy this class' members
+		m_root = r.m_root;
+		m_has_root = r.m_has_root;
+		m_valid_orientation = r.m_valid_orientation;
+		m_size_subtrees = r.m_size_subtrees;
+		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
+	}
 	/// Moves all members of this class and the parent class.
-	void move_full_rooted_tree(rooted_tree&& r) noexcept;
+	void move_full_rooted_tree(rooted_tree&& r) noexcept {
+		// move-assign directed_graph class
+		move_full_directed_graph(std::move(r));
+
+		// move-assign only tree's members
+		tree_only_move(std::move(r));
+
+		// move this class' members
+		m_root = r.m_root;
+		m_has_root = r.m_has_root;
+		m_valid_orientation = r.m_valid_orientation;
+		m_size_subtrees = std::move(r.m_size_subtrees);
+		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
+
+		r.m_root = 0;
+		r.m_has_root = false;
+		r.m_valid_orientation = false;
+		r.m_are_size_subtrees_valid = false;
+	}
 
 private:
 	using directed_graph::disjoint_union;

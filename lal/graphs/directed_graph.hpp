@@ -378,14 +378,32 @@ protected:
 
 protected:
 	/// Initialises memory of @ref directed_graph and @ref graph classes.
-	virtual void _init(uint64_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept {
+		graph::_init(n);
+		m_in_adjacency_list = std::vector<neighbourhood>(n);
+	}
 	/// Clears the memory of @ref directed_graph and @ref graph classes.
-	virtual void _clear() noexcept;
+	virtual void _clear() noexcept {
+		graph::_clear();
+		m_in_adjacency_list.clear();
+	}
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_directed_graph(const directed_graph& d) noexcept;
+	void copy_full_directed_graph(const directed_graph& d) noexcept {
+		// copy parent class
+		copy_full_graph(d);
+
+		// copy this class' members
+		m_in_adjacency_list = d.m_in_adjacency_list;
+	}
 	/// Moves all members of this class and the parent class.
-	void move_full_directed_graph(directed_graph&& d) noexcept;
+	void move_full_directed_graph(directed_graph&& d) noexcept {
+		// move-assign parent class
+		move_full_graph(std::move(d));
+
+		// move-assign this class' members
+		m_in_adjacency_list = std::move(d.m_in_adjacency_list);
+	}
 
 private:
 	/**

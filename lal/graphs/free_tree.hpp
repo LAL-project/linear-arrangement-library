@@ -310,12 +310,17 @@ public:
 	head_vector get_head_vector(node r = 0) const noexcept;
 
 protected:
-	/// Initialises memory of @ref free_tree, @ref undirected_graph and
-	/// @ref graph classes.
-	virtual void _init(uint64_t n) noexcept;
+	/// Initialises memory of @ref free_tree, @ref undirected_graph and @ref graph classes.
+	virtual void _init(uint64_t n) noexcept {
+		undirected_graph::_init(n);
+		tree::tree_only_init(n);
+	}
 	/// Clears the memory of @ref free_tree, @ref undirected_graph and
 	/// @ref graph classes.
-	virtual void _clear() noexcept;
+	virtual void _clear() noexcept {
+		undirected_graph::_clear();
+		tree::tree_only_clear();
+	}
 
 	void call_union_find_after_add(
 		node u, node v,
@@ -339,9 +344,25 @@ protected:
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_free_tree(const free_tree& f) noexcept;
+	void copy_full_free_tree(const free_tree& f) noexcept {
+		// copy undirected_graph class
+		copy_full_undirected_graph(f);
+
+		// copy only tree's members
+		tree_only_copy(f);
+
+		// copy this class' members
+	}
 	/// Moves all members of this class and the parent class.
-	void move_full_free_tree(free_tree&& f) noexcept;
+	void move_full_free_tree(free_tree&& f) noexcept {
+		// move-assign undirected_graph class
+		move_full_undirected_graph(std::move(f));
+
+		// move-assign only tree's members
+		tree_only_move(std::move(f));
+
+		// move this class' members
+	}
 
 private:
 	using undirected_graph::disjoint_union;

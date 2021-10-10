@@ -121,44 +121,6 @@ vector<string> tree::get_tree_type_list() const noexcept {
 
 /* PROTECTED */
 
-void tree::tree_only_init(uint64_t n) noexcept {
-	m_root_of = vector<uint64_t>(n);
-	m_root_size = vector<uint64_t>(n);
-	for (node u = 0; u < n; ++u) {
-		m_root_of[u] = u;
-		m_root_size[u] = 1;
-	}
-	fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
-	m_is_tree_type_valid = false;
-	m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
-}
-
-void tree::tree_only_clear() noexcept {
-	m_root_of.clear();
-	m_root_size.clear();
-	fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
-	m_is_tree_type_valid = false;
-	m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
-}
-
-void tree::tree_only_copy(const tree& t) noexcept {
-	// copy this class' members
-	m_root_of = t.m_root_of;
-	m_root_size = t.m_root_size;
-	m_is_tree_type_valid = t.m_is_tree_type_valid;
-	m_tree_type = t.m_tree_type;
-}
-
-void tree::tree_only_move(tree&& t) noexcept {
-	// move this class' members
-	m_root_of = std::move(t.m_root_of);
-	m_root_size = std::move(t.m_root_size);
-	m_is_tree_type_valid = t.m_is_tree_type_valid;
-	m_tree_type = std::move(t.m_tree_type);
-
-	t.m_is_tree_type_valid = false;
-}
-
 void tree::extra_work_per_edge_add(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	graph::extra_work_per_edge_add(u, v);
@@ -178,15 +140,6 @@ void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 	call_union_find_after_remove(
 		u, v, &m_root_of[0], &m_root_size[0]
 	);
-}
-
-void tree::fill_union_find() noexcept {
-	for (node u = 0; u < get_num_nodes(); ++u) {
-		// all vertices point to root zero
-		m_root_of[u] = 0;
-	}
-	// the size of the connected component of the root 0 is n
-	m_root_size[0] = get_num_nodes();
 }
 
 } // -- namespace graphs

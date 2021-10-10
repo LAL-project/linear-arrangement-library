@@ -323,14 +323,28 @@ public:
 
 protected:
 	/// Initialises memory of @ref undirected_graph and @ref graph classes.
-	virtual void _init(uint64_t n) noexcept;
+	virtual void _init(uint64_t n) noexcept {
+		graph::_init(n);
+	}
 	/// Clears the memory of @ref undirected_graph and @ref graph classes.
-	virtual void _clear() noexcept;
+	virtual void _clear() noexcept {
+		graph::_clear();
+	}
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_undirected_graph(const undirected_graph& u) noexcept;
+	void copy_full_undirected_graph(const undirected_graph& u) noexcept {
+		// copy parent class
+		copy_full_graph(u);
+
+		// copy this class' members
+	}
 	/// Moves all members of this class and the parent class.
-	void move_full_undirected_graph(undirected_graph&& u) noexcept;
+	void move_full_undirected_graph(undirected_graph&& u) noexcept {
+		// move-assign parent class
+		move_full_graph(std::move(u));
+
+		// move-assign this class' members
+	}
 
 private:
 	/**

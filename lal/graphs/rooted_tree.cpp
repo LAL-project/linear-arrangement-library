@@ -347,22 +347,6 @@ void rooted_tree::calculate_tree_type() noexcept {
 
 /* SETTERS */
 
-void rooted_tree::set_root(node r) noexcept {
-	// if the tree is empty simply consider it has a root...
-	// although it really doesn't
-
-	if (get_num_nodes() > 0) {
-#if defined DEBUG
-		assert(has_node(r));
-#endif
-		m_root = r;
-	}
-	m_has_root = true;
-	m_are_size_subtrees_valid = false;
-	m_valid_orientation = false;
-	m_is_tree_type_valid = false;
-}
-
 /* GETTERS */
 
 vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
@@ -435,23 +419,6 @@ head_vector rooted_tree::get_head_vector() const noexcept {
 
 /* PROTECTED */
 
-void rooted_tree::_init(uint64_t n) noexcept {
-	tree::tree_only_init(n);
-	directed_graph::_init(n);
-	m_size_subtrees = vector<uint64_t>(n);
-
-	if (n <= 1) {
-		set_root(0);
-		set_valid_orientation(true);
-	}
-}
-
-void rooted_tree::_clear() noexcept {
-	tree::tree_only_clear();
-	directed_graph::_clear();
-	m_size_subtrees.clear();
-}
-
 void rooted_tree::call_union_find_after_add(
 	node u, node v,
 	uint64_t * const root_of,
@@ -484,41 +451,6 @@ void rooted_tree::call_union_find_after_remove(
 ) const noexcept
 {
 	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
-}
-
-void rooted_tree::copy_full_rooted_tree(const rooted_tree& r) noexcept {
-	// copy directed_graph class
-	copy_full_directed_graph(r);
-
-	// copy only tree's members
-	tree_only_copy(r);
-
-	// copy this class' members
-	m_root = r.m_root;
-	m_has_root = r.m_has_root;
-	m_valid_orientation = r.m_valid_orientation;
-	m_size_subtrees = r.m_size_subtrees;
-	m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
-}
-
-void rooted_tree::move_full_rooted_tree(rooted_tree&& r) noexcept {
-	// move-assign directed_graph class
-	move_full_directed_graph(std::move(r));
-
-	// move-assign only tree's members
-	tree_only_move(std::move(r));
-
-	// move this class' members
-	m_root = r.m_root;
-	m_has_root = r.m_has_root;
-	m_valid_orientation = r.m_valid_orientation;
-	m_size_subtrees = std::move(r.m_size_subtrees);
-	m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
-
-	r.m_root = 0;
-	r.m_has_root = false;
-	r.m_valid_orientation = false;
-	r.m_are_size_subtrees_valid = false;
 }
 
 } // -- namespace graphs

@@ -105,33 +105,6 @@ bool graph::check_normalised() noexcept {
 
 /* PROTECTED */
 
-void graph::_init(uint64_t n) noexcept {
-	m_num_edges = 0;
-	m_normalised = true;
-	m_adjacency_list = vector<neighbourhood>(n);
-}
-
-void graph::_clear() noexcept {
-	m_num_edges = 0;
-	m_normalised = true;
-	m_adjacency_list.clear();
-}
-
-void graph::copy_full_graph(const graph& g) noexcept {
-	m_adjacency_list = g.m_adjacency_list;
-	m_num_edges = g.m_num_edges;
-	m_normalised = g.m_normalised;
-}
-
-void graph::move_full_graph(graph&& g) noexcept {
-	m_adjacency_list = std::move(g.m_adjacency_list);
-	m_num_edges = std::move(g.m_num_edges);
-	m_normalised = std::move(g.m_normalised);
-
-	g.m_num_edges = 0;
-	g.m_normalised = false;
-}
-
 void graph::__disjoint_union(const graph& g) noexcept {
 #if defined DEBUG
 	// If I'm directed, g must be directed.

@@ -263,14 +263,44 @@ protected:
 	 * @brief Initialises only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
-	void tree_only_init(uint64_t n) noexcept;
+	void tree_only_init(uint64_t n) noexcept {
+		m_root_of = std::vector<uint64_t>(n);
+		m_root_size = std::vector<uint64_t>(n);
+		for (node u = 0; u < n; ++u) {
+			m_root_of[u] = u;
+			m_root_size[u] = 1;
+		}
+		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
+		m_is_tree_type_valid = false;
+		m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
+	}
 	/// Clears the memory used by only class @ref tree.
-	void tree_only_clear() noexcept;
+	void tree_only_clear() noexcept {
+		m_root_of.clear();
+		m_root_size.clear();
+		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
+		m_is_tree_type_valid = false;
+		m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
+	}
 
 	/// Copies only members of class @ref tree.
-	void tree_only_copy(const tree& t) noexcept;
+	void tree_only_copy(const tree& t) noexcept {
+		// copy this class' members
+		m_root_of = t.m_root_of;
+		m_root_size = t.m_root_size;
+		m_is_tree_type_valid = t.m_is_tree_type_valid;
+		m_tree_type = t.m_tree_type;
+	}
 	/// Moves only members of class @ref tree.
-	void tree_only_move(tree&& t) noexcept;
+	void tree_only_move(tree&& t) noexcept {
+		// move this class' members
+		m_root_of = std::move(t.m_root_of);
+		m_root_size = std::move(t.m_root_size);
+		m_is_tree_type_valid = t.m_is_tree_type_valid;
+		m_tree_type = std::move(t.m_tree_type);
+
+		t.m_is_tree_type_valid = false;
+	}
 
 	void extra_work_per_edge_add(node u, node v) noexcept;
 	void extra_work_per_edge_remove(node u, node v) noexcept;
@@ -281,7 +311,14 @@ protected:
 
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
-	void fill_union_find() noexcept;
+	void fill_union_find() noexcept {
+		for (node u = 0; u < get_num_nodes(); ++u) {
+			// all vertices point to root zero
+			m_root_of[u] = 0;
+		}
+		// the size of the connected component of the root 0 is n
+		m_root_size[0] = get_num_nodes();
+	}
 
 	/**
 	 * @brief A call to the union find method.

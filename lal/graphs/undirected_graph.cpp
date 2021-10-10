@@ -290,28 +290,6 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 
 /* PROTECTED */
 
-void undirected_graph::_init(uint64_t n) noexcept {
-	graph::_init(n);
-}
-
-void undirected_graph::_clear() noexcept {
-	graph::_clear();
-}
-
-void undirected_graph::copy_full_undirected_graph(const undirected_graph& u) noexcept {
-	// copy parent class
-	copy_full_graph(u);
-
-	// copy this class' members
-}
-
-void undirected_graph::move_full_undirected_graph(undirected_graph&& u) noexcept {
-	// move-assign parent class
-	move_full_graph(std::move(u));
-
-	// move-assign this class' members
-}
-
 /* PRIVATE */
 
 void undirected_graph::remove_single_edge

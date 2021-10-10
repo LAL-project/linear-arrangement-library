@@ -374,32 +374,6 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const noex
 
 /* PROTECTED */
 
-void directed_graph::_init(uint64_t n) noexcept {
-	graph::_init(n);
-	m_in_adjacency_list = vector<neighbourhood>(n);
-}
-
-void directed_graph::_clear() noexcept {
-	graph::_clear();
-	m_in_adjacency_list.clear();
-}
-
-void directed_graph::copy_full_directed_graph(const directed_graph& d) noexcept {
-	// copy parent class
-	copy_full_graph(d);
-
-	// copy this class' members
-	m_in_adjacency_list = d.m_in_adjacency_list;
-}
-
-void directed_graph::move_full_directed_graph(directed_graph&& d) noexcept {
-	// move-assign parent class
-	move_full_graph(std::move(d));
-
-	// move-assign this class' members
-	m_in_adjacency_list = std::move(d.m_in_adjacency_list);
-}
-
 /* PRIVATE */
 
 void directed_graph::remove_single_edge
