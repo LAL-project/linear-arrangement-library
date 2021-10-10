@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
@@ -338,15 +337,15 @@ noexcept
 
 template<typename GRAPH>
 inline
-vector<uint64_t> n_C_brute_force(
+std::vector<uint64_t> n_C_brute_force(
 	const GRAPH& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -373,9 +372,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> n_C_brute_force(
+std::vector<uint64_t> n_C_brute_force(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
@@ -383,9 +382,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> n_C_brute_force(
+std::vector<uint64_t> n_C_brute_force(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
@@ -464,16 +463,16 @@ noexcept
 
 template<typename GRAPH>
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -502,9 +501,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t c
 )
 noexcept
@@ -513,9 +512,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t c
 )
 noexcept
@@ -525,10 +524,10 @@ noexcept
 
 template<typename GRAPH>
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -539,7 +538,7 @@ noexcept
 
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -568,10 +567,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -580,10 +579,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_brute_force_lesseq_than(
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {

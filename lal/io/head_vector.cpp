@@ -44,7 +44,6 @@
 #include <optional>
 #include <fstream>
 #include <string>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/free_tree.hpp>
@@ -56,12 +55,16 @@ using namespace graphs;
 
 namespace io {
 
-static inline optional<head_vector> read_head_vector(const string& filename) noexcept {
-	if (not filesystem::exists(filename)) { return {}; }
+static inline
+std::optional<head_vector> read_head_vector
+(const std::string& filename)
+noexcept
+{
+	if (not std::filesystem::exists(filename)) { return {}; }
 
 	head_vector heads;
 
-	ifstream fin;
+	std::ifstream fin;
 	fin.open(filename);
 	node head;
 	while (fin >> head) { heads.push_back(head); }
@@ -72,7 +75,7 @@ static inline optional<head_vector> read_head_vector(const string& filename) noe
 }
 
 std::optional<free_tree> read_head_vector_free_tree
-(const string& filename, bool norm, bool check_norm)
+(const std::string& filename, bool norm, bool check_norm)
 noexcept
 {
 	const auto heads = read_head_vector(filename);
@@ -84,7 +87,7 @@ noexcept
 }
 
 std::optional<rooted_tree> read_head_vector_rooted_tree
-(const string& filename, bool norm, bool check_norm)
+(const std::string& filename, bool norm, bool check_norm)
 noexcept
 {
 	const auto heads = read_head_vector(filename);

@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <utility>
-using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_Dmin_projective.hpp>
@@ -65,7 +64,7 @@ using namespace graphs;
 
 namespace linarr {
 
-pair<uint64_t, linear_arrangement>
+std::pair<uint64_t, linear_arrangement>
 min_sum_edge_lengths(const free_tree& t, const algorithms_Dmin& a)
 noexcept
 {
@@ -76,7 +75,7 @@ noexcept
 	return internal::Dmin_Unconstrained_FC(t);
 }
 
-pair<uint64_t, linear_arrangement>
+std::pair<uint64_t, linear_arrangement>
 min_sum_edge_lengths_planar(const free_tree& t, const algorithms_Dmin_planar& a)
 noexcept
 {
@@ -87,7 +86,7 @@ noexcept
 	return internal::Dmin_Planar_HS(t);
 }
 
-pair<uint64_t, linear_arrangement>
+std::pair<uint64_t, linear_arrangement>
 min_sum_edge_lengths_projective(const rooted_tree& t, const algorithms_Dmin_projective& a)
 noexcept
 {

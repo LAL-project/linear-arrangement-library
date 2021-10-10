@@ -43,7 +43,6 @@
 #include <filesystem>
 #include <optional>
 #include <fstream>
-using namespace std;
 
 // lal includes
 #include <lal/definitions.hpp>
@@ -58,17 +57,18 @@ using namespace graphs;
 namespace io {
 
 template<class G>
-inline optional<G> __read_edge_list
-(const string& filename, bool norm, bool check)
+inline std::optional<G> __read_edge_list
+(const std::string& filename, bool norm, bool check)
+noexcept
 {
-	if (not filesystem::exists(filename)) {
+	if (not std::filesystem::exists(filename)) {
 		return {};
 	}
 
-	ifstream fin;
+	std::ifstream fin;
 	fin.open(filename);
 
-	vector<edge> edge_list;
+	std::vector<edge> edge_list;
 	node max_vert_idx = 0;
 
 	node u, v;
@@ -84,30 +84,30 @@ inline optional<G> __read_edge_list
 	return g;
 }
 
-optional<undirected_graph>
-read_edge_list_undirected_graph
-(const string& filename, bool norm, bool check)
+std::optional<undirected_graph> read_edge_list_undirected_graph
+(const std::string& filename, bool norm, bool check)
+noexcept
 {
 	return __read_edge_list<undirected_graph>(filename, norm, check);
 }
 
-optional<directed_graph>
-read_edge_list_directed_graph
-(const string& filename, bool norm, bool check)
+std::optional<directed_graph> read_edge_list_directed_graph
+(const std::string& filename, bool norm, bool check)
+noexcept
 {
 	return __read_edge_list<directed_graph>(filename, norm, check);
 }
 
-optional<free_tree>
-read_edge_list_free_tree
-(const string& filename, bool norm, bool check)
+std::optional<free_tree> read_edge_list_free_tree
+(const std::string& filename, bool norm, bool check)
+noexcept
 {
 	return __read_edge_list<free_tree>(filename, norm, check);
 }
 
-optional<rooted_tree>
-read_edge_list_rooted_tree
-(const string& filename, bool norm, bool check)
+std::optional<rooted_tree> read_edge_list_rooted_tree
+(const std::string& filename, bool norm, bool check)
+noexcept
 {
 	return __read_edge_list<rooted_tree>(filename, norm, check);
 }

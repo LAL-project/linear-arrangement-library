@@ -45,7 +45,6 @@
 #endif
 #include <cstring> // for 'memset' below
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/internal/macros.hpp>
@@ -199,15 +198,15 @@ noexcept
 
 template<class G>
 inline
-vector<uint64_t> n_C_ladder(
+std::vector<uint64_t> n_C_ladder(
 	const G& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -240,17 +239,17 @@ noexcept
 }
 
 inline
-vector<uint64_t> n_C_ladder(
+std::vector<uint64_t> n_C_ladder(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
 	return n_C_ladder<directed_graph>(g, pis);
 }
-vector<uint64_t> n_C_ladder(
+std::vector<uint64_t> n_C_ladder(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
@@ -325,16 +324,16 @@ noexcept
 
 template<class G>
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -370,9 +369,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
@@ -382,9 +381,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
@@ -395,10 +394,10 @@ noexcept
 
 template<typename G>
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -409,7 +408,7 @@ noexcept
 
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -447,10 +446,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -459,10 +458,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_ladder_lesseq_than(
+std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {

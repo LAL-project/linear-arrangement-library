@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <utility>
-using namespace std;
 
 // lal includes
 #include <lal/internal/properties/tree_centre.hpp>
@@ -54,14 +53,14 @@ using namespace graphs;
 
 namespace properties {
 
-pair<node, node> tree_centre(const rooted_tree& t) noexcept {
+std::pair<node, node> tree_centre(const rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 	return internal::retrieve_centre<rooted_tree>(t, 0);
 }
 
-pair<node, node> tree_centre(const free_tree& t) noexcept {
+std::pair<node, node> tree_centre(const free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

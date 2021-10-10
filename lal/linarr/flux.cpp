@@ -45,7 +45,6 @@
 #endif
 #include <optional>
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -66,11 +65,13 @@ namespace linarr {
 
 namespace flux {
 
-inline vector<pair<edge,uint64_t>> get_edges_with_max_pos_at
+inline
+std::vector<std::pair<edge,uint64_t>> get_edges_with_max_pos_at
 (const free_tree& t, const linear_arrangement& pi)
 noexcept
 {
-	vector<pair<edge,uint64_t>> edge_ending_at(t.get_num_nodes(), make_pair(edge(), 0));
+	std::vector<std::pair<edge,uint64_t>> edge_ending_at
+			(t.get_num_nodes(), make_pair(edge(), 0));
 
 	for (E_iterator e_it(t); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
@@ -81,15 +82,16 @@ noexcept
 	return edge_ending_at;
 }
 
-inline void calculate_dependencies_span
+inline
+void calculate_dependencies_span
 (
 	const free_tree& t,
 	const linear_arrangement& pi,
 	const internal::data_array<node>& inv_pi,
-	const vector<pair<edge,uint64_t>>& edge_with_max_pos_at,
+	const std::vector<std::pair<edge,uint64_t>>& edge_with_max_pos_at,
 	position cur_pos,
-	vector<dependency_flux>& flux,
-	vector<edge>& cur_deps
+	std::vector<dependency_flux>& flux,
+	std::vector<edge>& cur_deps
 )
 noexcept
 {
@@ -134,8 +136,9 @@ noexcept
 	}
 }
 
-inline uint64_t calculate_weight
-(const vector<edge>& dependencies, undirected_graph& ug)
+inline
+uint64_t calculate_weight
+(const std::vector<edge>& dependencies, undirected_graph& ug)
 noexcept
 {
 	if (dependencies.size() <= 1) { return dependencies.size(); }
@@ -173,7 +176,8 @@ noexcept
 
 } // -- namespace flux
 
-inline vector<dependency_flux> __compute_flux
+inline
+std::vector<dependency_flux> __compute_flux
 (const free_tree& t, const linear_arrangement& pi)
 noexcept
 {
@@ -197,7 +201,7 @@ noexcept
 	internal::countingsort::memory_counting_sort<edge> mem(n, n);
 
 	// declare the result to be returned
-	vector<dependency_flux> flux(n - 1);
+	std::vector<dependency_flux> flux(n - 1);
 
 	for (position cur_pos = 0; cur_pos < n - 1; ++cur_pos) {
 		// current dependencies
@@ -216,7 +220,7 @@ noexcept
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
 		internal::counting_sort
-		<edge, vector<edge>::iterator, internal::countingsort::increasing_t, false>
+		<edge, std::vector<edge>::iterator, internal::countingsort::increasing_t, false>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),
@@ -233,7 +237,7 @@ noexcept
 	return flux;
 }
 
-vector<dependency_flux>
+std::vector<dependency_flux>
 compute_flux(const free_tree& t, const linear_arrangement& pi)
 noexcept
 {
@@ -242,7 +246,7 @@ noexcept
 #endif
 
 	return
-	internal::call_with_empty_arrangement<vector<dependency_flux>,free_tree>
+	internal::call_with_empty_arrangement<std::vector<dependency_flux>,free_tree>
 	(__compute_flux, t, pi);
 }
 

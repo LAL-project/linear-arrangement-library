@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <map>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/graph.hpp>
@@ -53,7 +52,7 @@ using namespace std;
 #include <lal/internal/sorting/counting_sort.hpp>
 #include <lal/internal/data_array.hpp>
 
-typedef pair<uint64_t,lal::edge> indexed_edge;
+typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
 namespace lal {
 using namespace graphs;
@@ -73,8 +72,8 @@ namespace internal {
 inline
 void fill_adjP_adjN(
 	const graph& g, const linear_arrangement& pi,
-	vector<neighbourhood>& adjP,
-	vector<vector<indexed_edge>>& adjN,
+	std::vector<neighbourhood>& adjP,
+	std::vector<std::vector<indexed_edge>>& adjN,
 	size_t * const __restrict__ size_adjN_u
 )
 noexcept
@@ -82,10 +81,10 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	// Retrieve all edges of the graph to sort
-	vector<edge> edges = g.get_edges();
+	std::vector<edge> edges = g.get_edges();
 
 	// sort edges of the graph by increasing edge length
-	internal::counting_sort<edge, vector<edge>::iterator, countingsort::increasing_t>
+	internal::counting_sort<edge, std::vector<edge>::iterator, countingsort::increasing_t>
 	(
 	edges.begin(), edges.end(),
 	n-1, // length of the longest edge
@@ -149,13 +148,13 @@ noexcept
 	// Adjacency lists, sorted by edge length:
 	// - adjP is sorted by increasing edge length
 	// - adjN is sorted by decreasing edge length
-	vector<neighbourhood> adjP(n);
-	vector<vector<indexed_edge>> adjN(n);
+	std::vector<neighbourhood> adjP(n);
+	std::vector<std::vector<indexed_edge>> adjN(n);
 
 	fill_adjP_adjN(g, pi, adjP, adjN, size_adjN_u);
 
 	// relate each edge to an index
-	map<edge, uint64_t> edge_to_idx;
+	std::map<edge, uint64_t> edge_to_idx;
 
 	uint64_t idx = 0;
 	for (position pu = 0; pu < n; ++pu) {
@@ -237,15 +236,15 @@ noexcept
 // list of arrangements
 
 inline
-vector<uint64_t> n_C_stack_based(
+std::vector<uint64_t> n_C_stack_based(
 	const graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -319,16 +318,16 @@ noexcept
 // list of arrangements
 
 inline
-vector<uint64_t> is_n_C_stack_based_lesseq_than(
+std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:
@@ -355,10 +354,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_stack_based_lesseq_than(
+std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -369,7 +368,7 @@ noexcept
 
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
 	// inverse function of the linear arrangement:

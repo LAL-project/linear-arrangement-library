@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <map>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -92,7 +91,7 @@ struct useful_info_pairs {
 	}
 };
 
-typedef map<lal::edge, useful_info_pairs>::const_iterator CIT;
+typedef std::map<lal::edge, useful_info_pairs>::const_iterator CIT;
 
 namespace lal {
 using namespace graphs;
@@ -128,7 +127,7 @@ noexcept
 
 	// this vector is used to store the sorted adjacency lists of
 	// a non-normalised graph
-	vector<neighbourhood> sorted_neighbourhoods;
+	std::vector<neighbourhood> sorted_neighbourhoods;
 
 	// if the graph is not normalised, dump all the vector here and normalise it
 	if constexpr (not is_normalised) {
@@ -182,7 +181,7 @@ noexcept
 	psi /= 2;
 
 	// hash table to reuse computations
-	map<edge, useful_info_pairs> saving_comps;
+	std::map<edge, useful_info_pairs> saving_comps;
 
 	// ------------------------------------------------
 	// compute the variance

@@ -47,7 +47,6 @@
 #endif
 #include <algorithm>
 #include <cmath>
-using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>
@@ -129,7 +128,7 @@ void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
 }
 
 undirected_graph& undirected_graph::add_edges
-(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -146,7 +145,7 @@ undirected_graph& undirected_graph::add_edges
 }
 
 undirected_graph& undirected_graph::set_edges
-(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 	{
 	const uint64_t n = get_num_nodes();
@@ -183,7 +182,7 @@ undirected_graph& undirected_graph::remove_edge
 }
 
 undirected_graph& undirected_graph::remove_edges
-(const vector<edge>& edges, bool norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -257,12 +256,12 @@ void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 
 /* GETTERS */
 
-vector<edge_pair> undirected_graph::get_Q() const noexcept {
+std::vector<edge_pair> undirected_graph::get_Q() const noexcept {
 	const auto qs = properties::num_pairs_independent_edges(*this);
 	return internal::Q(*this, qs);
 }
 
-vector<edge> undirected_graph::get_edges() const noexcept {
+std::vector<edge> undirected_graph::get_edges() const noexcept {
 	return internal::E(*this);
 }
 
@@ -276,7 +275,7 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
-	if (is_normalised() and min(nu.size(), nv.size()) >= 64) {
+	if (is_normalised() and std::min(nu.size(), nv.size()) >= 64) {
 		return (nu.size() <= nv.size() ?
 			binary_search(nu.begin(), nu.end(), v) :
 			binary_search(nv.begin(), nv.end(), u)
@@ -297,7 +296,7 @@ void undirected_graph::remove_single_edge
 {
 	// it_v: pointer to node v in out_u
 	// it_u: pointer to node u in in_v
-	vector<node>::iterator it_v, it_u;
+	std::vector<node>::iterator it_v, it_u;
 
 	// find the nodes in the lists
 	if (is_normalised()) {

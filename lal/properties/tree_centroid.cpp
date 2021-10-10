@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <utility>
-using namespace std;
 
 // lal includes
 #include <lal/internal/properties/tree_centroid.hpp>
@@ -52,14 +51,14 @@ using namespace std;
 namespace lal {
 namespace properties {
 
-pair<node, node> tree_centroid(const graphs::rooted_tree& t) {
+std::pair<node, node> tree_centroid(const graphs::rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
 	return internal::retrieve_centroid(t);
 }
 
-pair<node, node> tree_centroid(const graphs::free_tree& t) {
+std::pair<node, node> tree_centroid(const graphs::free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

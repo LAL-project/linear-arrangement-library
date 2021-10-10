@@ -57,8 +57,9 @@ using namespace numeric;
 
 namespace linarr {
 
-inline uint64_t __left_branching_edges
-(const directed_graph& g, const linear_arrangement& pi) noexcept
+inline
+uint64_t __left_branching_edges(const directed_graph& g, const linear_arrangement& pi)
+noexcept
 {
 	uint64_t edges_to_right = 0;
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {

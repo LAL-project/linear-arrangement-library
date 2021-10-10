@@ -39,9 +39,6 @@
  *
  ********************************************************************/
 
-#include <iostream>
-using namespace std;
-
 // lal includes
 #include <lal/properties/Q.hpp>
 #include <lal/properties/C_rla.hpp>
@@ -111,10 +108,11 @@ rational exp_sum_edge_lengths_projective_rational
 rational exp_sum_edge_lengths_planar_rational(const free_tree& T) noexcept {
 	const uint64_t n = T.get_num_nodes();
 
-	vector<pair<edge, uint64_t>> edge_size(2*(n - 1));
+	std::vector<std::pair<edge, uint64_t>> edge_size(2*(n - 1));
 	{
 	auto it = edge_size.begin();
-	internal::calculate_bidirectional_sizes<free_tree, pair<edge, uint64_t>>(
+	internal::calculate_bidirectional_sizes<free_tree, std::pair<edge, uint64_t>>
+	(
 		T, n, 0,
 		[](std::pair<edge,uint64_t>& p, const edge& e, uint64_t s) -> void
 		{ p.first = e; p.second = s; },

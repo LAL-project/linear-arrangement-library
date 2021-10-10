@@ -47,7 +47,6 @@
 #endif
 #include <cmath>
 #include <set>
-using namespace std;
 
 // lal includes
 #include <lal/properties/Q.hpp>

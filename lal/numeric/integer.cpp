@@ -45,8 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <string>
-using namespace std;
 
 // lal includes
 #include <lal/internal/numeric/utils.hpp>

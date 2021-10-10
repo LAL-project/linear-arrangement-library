@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/union_find.hpp>
@@ -74,7 +73,7 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 	return m_root_of[u] != m_root_of[v];
 }
 
-bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
+bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 	const uint64_t n = get_num_nodes();
 	const uint64_t m = get_num_edges();
 	const uint64_t more_m = edges.size();
@@ -84,8 +83,8 @@ bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
 		return false;
 	}
 
-	vector<uint64_t> _root_of = m_root_of;
-	vector<uint64_t> _root_size = m_root_size;
+	std::vector<uint64_t> _root_of = m_root_of;
+	std::vector<uint64_t> _root_size = m_root_size;
 
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -106,12 +105,12 @@ bool tree::can_add_edges(const vector<edge>& edges) const noexcept {
 	return true;
 }
 
-vector<string> tree::get_tree_type_list() const noexcept {
-	vector<string> l;
+std::vector<std::string> tree::get_tree_type_list() const noexcept {
+	std::vector<std::string> l;
 	l.reserve(__tree_type_size);
 	for (size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
-			l.push_back(string(
+			l.push_back(std::string(
 				internal::tree_type_string(static_cast<tree_type>(i))
 			));
 		}

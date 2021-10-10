@@ -53,7 +53,6 @@
 #include <iostream>
 #include <numeric>
 #include <cmath>
-using namespace std;
 
 // lal includes
 #include <lal/io/treebank_collection_reader.hpp>
@@ -65,13 +64,16 @@ using namespace std;
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
 
 inline
-std::string make_result_file_name(const std::string& treebank_name) noexcept {
+std::string make_result_file_name(const std::string& treebank_name) noexcept
+{
 	return treebank_name + ".csv";
 }
 
 inline
-std::string name_of_file_without_path_extension(const std::string& file_name) {
-	filesystem::path p(file_name);
+std::string name_of_file_without_path_extension(const std::string& file_name)
+noexcept
+{
+	std::filesystem::path p(file_name);
 	p.replace_extension("");
 	return p.filename().string();
 }
@@ -84,7 +86,8 @@ namespace io {
 // CLASS METHODS
 
 treebank_error treebank_collection_processor::init
-(const string& file, const string& odir) noexcept
+(const std::string& file, const std::string& odir)
+noexcept
 {
 	// initialise data
 	m_all_individual_treebank_names.clear();
@@ -96,16 +99,16 @@ treebank_error treebank_collection_processor::init
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
 	// make sure main file exists
-	if (not filesystem::exists(m_main_file)) {
+	if (not std::filesystem::exists(m_main_file)) {
 		return treebank_error(
 			"Treebank collection main file '" + m_main_file + "' does not exist.",
 			treebank_error_type::main_file_does_not_exist
 		);
 	}
 	// check whether output directory exists or not
-	if (m_out_dir != "." and not filesystem::exists(m_out_dir)) {
+	if (m_out_dir != "." and not std::filesystem::exists(m_out_dir)) {
 		// if it does not exist, create it (...?)
-		const auto r = filesystem::create_directory(m_out_dir);
+		const auto r = std::filesystem::create_directory(m_out_dir);
 		if (not r) {
 			return treebank_error(
 				"Output directory '" + m_out_dir + "' could not be created.",
@@ -142,7 +145,7 @@ treebank_error treebank_collection_processor::process() noexcept
 	}
 
 	// Stream object to read the main file.
-	ifstream main_file_reader(m_main_file);
+	std::ifstream main_file_reader(m_main_file);
 	if (not main_file_reader.is_open()) {
 		return treebank_error(
 			"Main file '" + m_main_file + "' could not be opened.",
@@ -156,17 +159,17 @@ treebank_error treebank_collection_processor::process() noexcept
 	const int tid = omp_get_thread_num();
 
 	if (tid == 0) {
-		string treebank_filename, treebank_name;
+		std::string treebank_filename, treebank_name;
 
 		// this is executed only by the main thread
 		while (main_file_reader >> treebank_name >> treebank_filename) {
 
 			// full path to the treebank file
-			filesystem::path treebank_file_full_path(m_main_file);
+			std::filesystem::path treebank_file_full_path(m_main_file);
 			treebank_file_full_path.replace_filename(treebank_filename);
 
 			// full path to the output file corresponding to this treebank
-			filesystem::path output_file_full_path(m_out_dir);
+			std::filesystem::path output_file_full_path(m_out_dir);
 			output_file_full_path /= make_result_file_name(treebank_name);
 
 			// store the name of the treebank so that we can join the files later
@@ -241,21 +244,21 @@ treebank_error treebank_collection_processor::process() noexcept
 treebank_error treebank_collection_processor::join_all_files() const noexcept
 {
 	// use the filesystem namespace to create the path properly
-	filesystem::path p;
+	std::filesystem::path p;
 	if (m_join_to_file == "") {
-		p = filesystem::path(m_out_dir);
+		p = std::filesystem::path(m_out_dir);
 		p /= name_of_file_without_path_extension(m_main_file) + "_full.csv";
 	}
 	else {
-		p = filesystem::path(m_join_to_file);
+		p = std::filesystem::path(m_join_to_file);
 	}
 
 	if (m_be_verbose >= 1) {
-		cout << "Gather all results into file: " << p.string() << endl;
+		std::cout << "Gather all results into file: " << p.string() << '\n';
 	}
 
 	// the file where the contents of all the individual files are dumped to
-	ofstream output_together(p.string());
+	std::ofstream output_together(p.string());
 	if (not output_together.is_open()) {
 		return treebank_error(
 			"Output join file '" + p.string() + "' could not be opened.",
@@ -267,18 +270,18 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 
 	// read all files and dump their contents into
 	for (size_t i = 0; i < m_all_individual_treebank_names.size(); ++i) {
-		const string& name_of_treebank = m_all_individual_treebank_names[i];
+		const std::string& name_of_treebank = m_all_individual_treebank_names[i];
 
-		filesystem::path path_to_treebank_result(m_out_dir);
+		std::filesystem::path path_to_treebank_result(m_out_dir);
 		path_to_treebank_result /= make_result_file_name(name_of_treebank);
 
 		if (m_be_verbose >= 1) {
-			cout << "    "
+			std::cout << "    "
 				 << path_to_treebank_result.string()
-				 << endl;
+				 << '\n';
 		}
 
-		ifstream fin(path_to_treebank_result);
+		std::ifstream fin(path_to_treebank_result);
 		if (not fin.is_open()) {
 			return treebank_error(
 				"Treebank result file '" + path_to_treebank_result.string() + "' could not be opened.",
@@ -286,7 +289,7 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 			);
 		}
 
-		string line;
+		std::string line;
 		bool first_line = true;
 
 		while (getline(fin, line)) {
@@ -299,7 +302,7 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 						output_together
 							<< m_treebank_column_name << m_separator
 							<< line
-							<< endl;
+							<< '\n';
 					}
 					first_time_encounter_header = false;
 				}
@@ -309,17 +312,17 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 
 			output_together
 				<< name_of_treebank << m_separator << line
-				<< endl;
+				<< '\n';
 		}
 
 		fin.close();
 
-		const bool success = filesystem::remove(path_to_treebank_result);
+		const bool success = std::filesystem::remove(path_to_treebank_result);
 		if (not success and m_be_verbose >= 2) {
-			cerr << "Treebank result file '"
+			std::cerr << "Treebank result file '"
 				 << path_to_treebank_result
 				 << "' could not be removed."
-				 << endl;
+				 << '\n';
 		}
 	}
 

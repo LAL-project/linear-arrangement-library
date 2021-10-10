@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
@@ -115,7 +114,7 @@ void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
 }
 
 rooted_tree& rooted_tree::add_edges
-(const vector<edge>& edges, bool norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -134,7 +133,7 @@ rooted_tree& rooted_tree::add_edges
 }
 
 rooted_tree& rooted_tree::set_edges
-(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(edges.size() == get_num_nodes() - 1);
@@ -150,7 +149,7 @@ rooted_tree& rooted_tree::set_edges
 	// of the "remove edge" family.
 
 	// find the tree's root
-	optional<node> R;
+	std::optional<node> R;
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		if (get_in_degree(u) == 0) {
 			// there can only be one root vertex
@@ -310,7 +309,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 #endif
 
 	// list of directed edges out of 'g'
-	vector<edge> dir_edges(_t.get_num_edges());
+	std::vector<edge> dir_edges(_t.get_num_edges());
 	auto it_dir_edges = dir_edges.begin();
 
 	// Build list of directed edges using a breadth-first search.
@@ -349,7 +348,7 @@ void rooted_tree::calculate_tree_type() noexcept {
 
 /* GETTERS */
 
-vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
+std::vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
 	const auto subtree_info =
 		internal::get_edges_subtree<false>(*this, u, relab);
 

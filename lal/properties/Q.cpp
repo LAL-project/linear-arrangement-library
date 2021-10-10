@@ -40,9 +40,7 @@
  ********************************************************************/
  
 // C++ includes
-#include <cmath>
 #include <map>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -79,7 +77,7 @@ integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept 
 
 integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	const uint64_t n = g.get_num_nodes();
-	map<edge, uint64_t> collapsed_edges;
+	std::map<edge, uint64_t> collapsed_edges;
 
 	// count the amount of edges that collapse into a single one
 	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {

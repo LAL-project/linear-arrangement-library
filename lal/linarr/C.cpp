@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/linarr/algorithms_C.hpp>
@@ -124,9 +123,9 @@ uint64_t num_crossings(
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint64_t> num_crossings_list(
+inline std::vector<uint64_t> num_crossings_list(
 	const G& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 noexcept
@@ -146,12 +145,12 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint64_t> num_crossings_list(
+std::vector<uint64_t> num_crossings_list(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 noexcept
@@ -159,9 +158,9 @@ noexcept
 	return num_crossings_list<directed_graph>(g, pis, A);
 }
 
-vector<uint64_t> num_crossings_list(
+std::vector<uint64_t> num_crossings_list(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 noexcept
@@ -243,9 +242,9 @@ noexcept
 // -----------------------------------------------------------------------------
 
 template<class G>
-inline vector<uint64_t> is_num_crossings_lesseq_than_list(
+inline std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const G& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
@@ -266,12 +265,12 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint64_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	 uint64_t upper_bound,
 	const algorithms_C& A
 )
@@ -281,9 +280,9 @@ noexcept
 			(g, pis, upper_bound, A);
 }
 
-vector<uint64_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
@@ -296,11 +295,11 @@ noexcept
 // -----------------------------------------------------------------------------
 
 template<class G>
-vector<uint64_t> is_num_crossings_lesseq_than_list
+std::vector<uint64_t> is_num_crossings_lesseq_than_list
 (
 	const G& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds,
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
@@ -320,13 +319,13 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(pis.size(), g.get_num_edges()*g.get_num_edges());
 }
 
-vector<uint64_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const directed_graph& G,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds,
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
@@ -335,10 +334,10 @@ noexcept
 			(G, pis, upper_bounds, A);
 }
 
-vector<uint64_t> is_num_crossings_lesseq_than_list(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const undirected_graph& G,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds,
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept

@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <sstream>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/conversions.hpp>
@@ -56,7 +55,9 @@ namespace io {
 // MODIFIERS
 
 treebank_error treebank_reader::init
-(const string& file, const string& lang) noexcept {
+(const std::string& file, const std::string& lang)
+noexcept
+{
 	m_treebank.close();
 	m_treebank_identifier = lang;
 	m_treebank_file = file;
@@ -81,7 +82,7 @@ void treebank_reader::next_tree() noexcept {
 		return;
 	}
 
-	stringstream ss;
+	std::stringstream ss;
 	bool correct_line;
 
 	size_t count = 0;

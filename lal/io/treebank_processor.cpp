@@ -51,7 +51,6 @@
 #include <numeric>
 #include <chrono>
 #include <cmath>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -85,11 +84,12 @@ using namespace graphs;
 
 template<typename T>
 void set_average_of(
-	const vector<linarr::dependency_flux>& F,
+	const std::vector<linarr::dependency_flux>& F,
 	const size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
+noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
@@ -111,11 +111,12 @@ void set_average_of(
 }
 template<typename T>
 void set_maximum_of(
-	const vector<linarr::dependency_flux>& F,
+	const std::vector<linarr::dependency_flux>& F,
 	const size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
+noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
@@ -137,11 +138,12 @@ void set_maximum_of(
 }
 template<typename T>
 void set_minimum_of(
-	const vector<linarr::dependency_flux>& F,
+	const std::vector<linarr::dependency_flux>& F,
 	const size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
+noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
@@ -167,10 +169,13 @@ namespace io {
 // -----------------------------------------------------------------------------
 // CLASS METHODS
 
-treebank_error treebank_processor::init(
-	const string& treebank_file, const string& output_file,
-	const string& treebank_id
-) noexcept
+treebank_error treebank_processor::init
+(
+	const std::string& treebank_file,
+	const std::string& output_file,
+	const std::string& treebank_id
+)
+noexcept
 {
 	// keep data
 	m_treebank_filename = treebank_file;
@@ -181,7 +186,7 @@ treebank_error treebank_processor::init(
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
 	// make sure that the treebank file exists
-	if (not filesystem::exists(m_treebank_filename)) {
+	if (not std::filesystem::exists(m_treebank_filename)) {
 		return treebank_error(
 			"Treebank file '" + m_treebank_filename + "' does not exist.",
 			treebank_error_type::treebank_file_does_not_exist
@@ -214,7 +219,7 @@ treebank_error treebank_processor::process() noexcept {
 
 	// output file stream:
 	// since the output directory exists there is no need to check for is_open()
-	ofstream out_treebank_file(m_output_file);
+	std::ofstream out_treebank_file(m_output_file);
 	if (not out_treebank_file.is_open()) {
 		return treebank_error(
 			"Output file '" + m_output_file + "' could not be opened.",
@@ -229,8 +234,9 @@ treebank_error treebank_processor::process() noexcept {
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
 	if (err.get_error_type() != treebank_error_type::no_error) {
 		if (m_be_verbose >= 2) {
-			cerr << "Processing treebank '" << m_treebank_filename << "' failed"
-				 << endl;
+			std::cerr
+				<< "Processing treebank '" << m_treebank_filename << "' failed"
+				<< '\n';
 		}
 		return err;
 	}
@@ -342,7 +348,7 @@ treebank_error treebank_processor::process() noexcept {
 	rooted_tree rT;
 	while (not tbread.end()) {
 		rT = tbread.get_tree();
-		process_tree<rooted_tree, ofstream>
+		process_tree<rooted_tree, std::ofstream>
 		(rT, props.data(), prop_set.data(), out_treebank_file);
 
 		props.fill(0.0);
@@ -356,11 +362,12 @@ treebank_error treebank_processor::process() noexcept {
 	const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(end - start);
 
 	if (m_be_verbose >= 1) {
-		cout << "    processed "
+		std::cout
+			 << "    processed "
 			 << tbread.get_num_trees()
 			 << " trees in treebank '" << m_treebank_filename << "' in "
 			 << elapsed.count() << " seconds."
-			 << endl;
+			 << '\n';
 	}
 
 	return treebank_error("", treebank_error_type::no_error);
@@ -762,11 +769,15 @@ const noexcept
 #undef DFMEM
 	}
 
-	const pair<node,node> centre_of_tree =
-		(m_what_fs[tree_centre_idx] ? properties::tree_centre(fT) : make_pair(n+1,n+1));
+	const auto centre_of_tree =
+		(m_what_fs[tree_centre_idx] ?
+			 properties::tree_centre(fT) :
+			 std::make_pair(n+1,n+1));
 
-	const pair<node,node> centroid_of_tree =
-		(m_what_fs[tree_centroid_idx] ? properties::tree_centroid(fT) : make_pair(n+1,n+1));
+	const auto centroid_of_tree =
+		(m_what_fs[tree_centroid_idx] ?
+			 properties::tree_centroid(fT) :
+			 std::make_pair(n+1,n+1));
 
 	// ---------------
 	// output features

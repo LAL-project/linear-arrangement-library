@@ -45,7 +45,6 @@
 #endif
 #include <array>
 #include <set>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -57,9 +56,9 @@ using namespace std;
 #include <lal/internal/data_array.hpp>
 #include <lal/internal/make_array.hpp>
 
-#define sort_by_index(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
-#define sort_by_pos(a,b, P) (P[a] < P[b] ? make_pair(a,b) : make_pair(b,a))
-#define enum_to_sizet(e) static_cast<size_t>(e)
+#define sort_by_index(a,b) (a < b ? std::make_pair(a,b) : std::make_pair(b,a))
+#define sort_by_pos(a,b, P) (P[a] < P[b] ? std::make_pair(a,b) : std::make_pair(b,a))
+#define enum_to_sizet(e) static_cast<std::size_t>(e)
 
 namespace lal {
 using namespace graphs;
@@ -91,7 +90,7 @@ noexcept
 inline void __get_yields(
 	const rooted_tree& t, const linear_arrangement& pi,
 	node u,
-	vector<vector<position>>& yields
+	std::vector<std::vector<position>>& yields
 )
 noexcept
 {
@@ -105,13 +104,13 @@ noexcept
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
-	internal::bit_sort<node, vector<node>::iterator>
+	internal::bit_sort<node, std::vector<node>::iterator>
 	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 inline bool __are_yields_wellnested(
-	const uint64_t n, const vector<vector<position>>& yields
+	const uint64_t n, const std::vector<std::vector<position>>& yields
 )
 noexcept
 {
@@ -122,7 +121,7 @@ noexcept
 		const auto& yv = yields[v];
 
 		// ensure the yields have empty intersection
-		vector<position> inter;
+		std::vector<position> inter;
 		std::set_intersection(
 			yu.begin(), yu.end(),
 			yv.begin(), yv.end(),
@@ -160,7 +159,8 @@ noexcept
 }
 
 inline
-uint64_t __get_n_discont(const uint64_t n, const vector<vector<node>>& yields)
+uint64_t __get_n_discont
+(const uint64_t n, const std::vector<std::vector<node>>& yields)
 noexcept
 {
 	uint64_t max_g = 0;
@@ -184,7 +184,7 @@ noexcept
 	const uint64_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
-	vector<vector<position>> yields(n);
+	std::vector<std::vector<position>> yields(n);
 	__get_yields(rT,pi, rT.get_root(), yields);
 
 	// test whether the tree is well nested
@@ -224,7 +224,7 @@ noexcept
 		const auto [ps, pt] = sort_by_index(pi[s], pi[t]);
 
 		// the edges crossing the current edge
-		vector<edge> crossing;
+		std::vector<edge> crossing;
 
 		// iterate over the nodes between the endpoints
 		// of 'dep' in the linear arrangement
@@ -253,7 +253,7 @@ noexcept
 
 			// compute the number of common nodes among
 			// the edges that cross the current edge
-			set<node> common_nodes;
+			std::set<node> common_nodes;
 			for (size_t i = 0; i < crossing.size() and not classified; ++i) {
 				const auto [ss,tt] = crossing[i];
 				for (size_t j = i + 1; j < crossing.size() and not classified; ++j) {
@@ -294,15 +294,15 @@ noexcept
 	return _1ec;
 }
 
-inline array<bool, __syntactic_dependency_structure_size>
-__get_syn_dep_tree_type
+inline
+std::array<bool, __syntactic_dependency_structure_size> __get_syn_dep_tree_type
 (const rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
 
 	bool is_some_class = false;
-	array<bool, __syntactic_dependency_structure_size> cl =
+	std::array<bool, __syntactic_dependency_structure_size> cl =
 		internal::make_array_with_value
 		<bool, __syntactic_dependency_structure_size, false>();
 
@@ -417,7 +417,7 @@ noexcept
 	return cl;
 }
 
-array<bool, __syntactic_dependency_structure_size>
+std::array<bool, __syntactic_dependency_structure_size>
 syntactic_dependency_structure_class
 (const rooted_tree& rT, const linear_arrangement& pi)
 noexcept

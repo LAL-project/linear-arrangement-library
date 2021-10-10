@@ -43,12 +43,12 @@
 
 // C++ includes
 #include <filesystem>
-using namespace std;
 
 namespace lal {
 namespace io {
 
-treebank_error treebank_collection_reader::init(const string& main_file) noexcept
+treebank_error treebank_collection_reader::init(const std::string& main_file)
+noexcept
 {
 	// close current dataset (if any)
 	m_list.close();
@@ -56,7 +56,7 @@ treebank_error treebank_collection_reader::init(const string& main_file) noexcep
 	m_no_more_treebanks = false;
 
 	m_main_file = main_file;
-	if (not filesystem::exists(m_main_file)) {
+	if (not std::filesystem::exists(m_main_file)) {
 		return treebank_error(
 			"Treebank collection main file '" + m_main_file + "' does not exist.",
 			treebank_error_type::main_file_does_not_exist
@@ -85,7 +85,7 @@ void treebank_collection_reader::next_treebank() noexcept {
 	}
 
 	// build path to treebank file
-	filesystem::path M(m_main_file);
+	std::filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
 	// this call

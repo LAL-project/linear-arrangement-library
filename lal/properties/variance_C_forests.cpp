@@ -41,7 +41,6 @@
 
 // C++ includes
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>

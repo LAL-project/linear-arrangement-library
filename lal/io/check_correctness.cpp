@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/io/report_correctness.hpp>
@@ -56,8 +55,8 @@ using namespace graphs;
 namespace io {
 
 // line, what
-vector<report_treebank_file>
-check_correctness_treebank(const string& treebank_filename)
+std::vector<report_treebank_file>
+check_correctness_treebank(const std::string& treebank_filename)
 noexcept
 {
 	return internal::check_correctness_treebank<false>
@@ -65,8 +64,8 @@ noexcept
 }
 
 // file, line, what
-vector<report_treebank_collection>
-check_correctness_treebank_collection(const string& main_file_name, size_t n_threads)
+std::vector<report_treebank_collection> check_correctness_treebank_collection
+(const std::string& main_file_name, size_t n_threads)
 noexcept
 {
 	return internal::check_correctness_treebank_collection<false>

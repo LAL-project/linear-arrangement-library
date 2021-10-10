@@ -45,7 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-using namespace std;
 
 // lal includes
 #include <lal/internal/graphs/is_tree.hpp>
@@ -107,7 +106,7 @@ void free_tree::finish_bulk_add(bool norm, bool check) noexcept {
 }
 
 free_tree& free_tree::add_edges
-(const vector<edge>& edges, bool norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -117,7 +116,7 @@ free_tree& free_tree::add_edges
 }
 
 free_tree& free_tree::set_edges
-(const vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
 {
 #if defined DEBUG
 	assert(edges.size() == get_num_nodes() - 1);

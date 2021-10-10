@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <vector>
-using namespace std;
 
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
@@ -290,15 +289,15 @@ noexcept
 
 template<class G>
 inline
-vector<uint64_t> n_C_dynamic_programming(
+std::vector<uint64_t> n_C_dynamic_programming(
 	const G& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -337,9 +336,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> n_C_dynamic_programming(
+std::vector<uint64_t> n_C_dynamic_programming(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
@@ -347,9 +346,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> n_C_dynamic_programming(
+std::vector<uint64_t> n_C_dynamic_programming(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis
+	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
@@ -431,16 +430,16 @@ noexcept
 
 template<class G>
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -480,9 +479,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
@@ -492,9 +491,9 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
@@ -505,10 +504,10 @@ noexcept
 
 template<typename G>
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -519,7 +518,7 @@ noexcept
 
 	const uint64_t n = g.get_num_nodes();
 
-	vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -559,10 +558,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const directed_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
@@ -571,10 +570,10 @@ noexcept
 }
 
 inline
-vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const undirected_graph& g,
-	const vector<linear_arrangement>& pis,
-	const vector<uint64_t>& upper_bounds
+	const std::vector<linear_arrangement>& pis,
+	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
