@@ -227,7 +227,8 @@ noexcept
 			// largest key possible + 1
 			n,
 			// key
-			[&](const edge& e) -> size_t { return max_pos(e.first, e.second); },
+			[&](const edge& e) -> std::size_t
+			{ return max_pos(e.first, e.second); },
 			// reusable memory
 			mem
 		);

@@ -67,23 +67,29 @@ inline constexpr bool is_pointer_iterator_v =
 
 // Function used to tell the compiler what is not used.
 template<class T>
-inline void UNUSED(const T& x) { (void)x; }
+inline void UNUSED(const T& x) noexcept { (void)x; }
 
 /*
  * @brief Call a function @e F that does not admit empty arrangements.
  *
  * In case the arrangement @e pi is empty, function @e F is passed the
  * identity arrangement.
+ *
+ * @tparam result_t The type of the function's reuslt
+ * @tparam graph_t The type of input graph of the function
+ * @tparam Params The other parameters of the function
  * @param F Function to call.
  * @param g Input graph.
  * @param pi Arrangement.
  * @returns The value function @e F returns.
  */
 template<typename result_t, typename graph_t, typename ... Params>
-inline result_t call_with_empty_arrangement(
+inline
+result_t call_with_empty_arrangement(
 	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
 	const graph_t& g, const linear_arrangement& arr, Params... P
 )
+noexcept
 {
 	if (arr.size() != 0) {
 		return F(g,arr,P...);

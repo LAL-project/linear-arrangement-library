@@ -154,7 +154,7 @@ bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&](const auto&, const node) -> bool { return cycle_found; }
+	[&](const BFS<G>&, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
 	[&](const auto& _bfs, node s, node t, bool) -> void {

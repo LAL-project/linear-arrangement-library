@@ -196,85 +196,8 @@ noexcept
 		}
 	}
 
-	*it++ = std::make_pair(edge(u,v), s);
-	*it++ = std::make_pair(edge(v,u), n - s);
-	return s;
-}
-
-/*
- * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(s,t)\f$ reachable
- * from \f$v\f$ in the subtree \f$T^u_v\f$.
- *
- * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
- * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
- * \f$u\f$. This is an implementation of the algorithm described in
- * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
- * section 6 (page 65)).
- *
- * Notice that the values are not stored in an actual map (std::map, or similar),
- * but in a vector.
- * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
- * @tparam Iterated_Type The type that will store the sizes.
- * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
- * the list of bidirectional sizes.
- * @param t Input tree.
- * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
- * @param u First vertex of the edge.
- * @param v Second vertex of the edge.
- * @param F Function to assign the edge and the size to the Iterated_Type pointed
- * by @e it.
- * @param it An iterator to the container that holds the size values. Such
- * container must have size equal to twice the number of edges in the connected
- * component of @e u and @e v.
- * @pre Vertices @e u and @e v belong to the same connected component.
- */
-template<
-	class tree_type,
-	typename Iterated_Type,
-	typename Iterator_Type,
-	std::enable_if_t<
-		(
-			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-			std::is_base_of_v<graphs::free_tree, tree_type>
-		)
-		&&
-		is_pointer_iterator_v<Iterated_Type, Iterator_Type>
-		,
-		bool
-	> = true
->
-inline
-uint64_t calculate_bidirectional_sizes(
-	const tree_type& t,
-	const uint64_t n,
-	const node u, const node v,
-	const std::function<void (Iterated_Type&, const edge&, uint64_t)> F,
-	Iterator_Type& it
-)
-noexcept
-{
-	uint64_t s = 1;
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
-		for (const node w : t.get_out_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-		for (const node w : t.get_in_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-	}
-	else {
-		for (const node w : t.get_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-	}
-
-	F(*it, edge(u,v), s);
-	++it;
-	F(*it, edge(v,u), n - s);
-	++it;
+	*it++ = {edge(u,v), s};
+	*it++ = {edge(v,u), n - s};
 	return s;
 }
 
@@ -349,6 +272,87 @@ noexcept
 	}
 }
 
+namespace __lal {
+
+/*
+ * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(s,t)\f$ reachable
+ * from \f$v\f$ in the subtree \f$T^u_v\f$.
+ *
+ * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
+ * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
+ * \f$u\f$. This is an implementation of the algorithm described in
+ * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
+ * section 6 (page 65)).
+ *
+ * Notice that the values are not stored in an actual map (std::map, or similar),
+ * but in a vector.
+ * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
+ * @tparam Iterated_Type The type that will store the sizes.
+ * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
+ * the list of bidirectional sizes.
+ * @param t Input tree.
+ * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
+ * @param u First vertex of the edge.
+ * @param v Second vertex of the edge.
+ * @param F Function to assign the edge and the size to the Iterated_Type pointed
+ * by @e it.
+ * @param it An iterator to the container that holds the size values. Such
+ * container must have size equal to twice the number of edges in the connected
+ * component of @e u and @e v.
+ * @pre Vertices @e u and @e v belong to the same connected component.
+ */
+template<
+	class tree_type,
+	typename Iterated_Type,
+	typename Iterator_Type,
+	std::enable_if_t<
+		(
+			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
+			std::is_base_of_v<graphs::free_tree, tree_type>
+		)
+		&&
+		is_pointer_iterator_v<Iterated_Type, Iterator_Type>
+		,
+		bool
+	> = true
+>
+inline
+uint64_t calculate_bidirectional_sizes(
+	const tree_type& t,
+	const uint64_t n,
+	const node u, const node v,
+	void (*const F)(Iterated_Type&, const edge&, uint64_t),
+	Iterator_Type& it
+)
+noexcept
+{
+	uint64_t s = 1;
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+		for (const node w : t.get_out_neighbours(v)) {
+			if (w == u) { continue; }
+			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
+		}
+		for (const node w : t.get_in_neighbours(v)) {
+			if (w == u) { continue; }
+			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
+		}
+	}
+	else {
+		for (const node w : t.get_neighbours(v)) {
+			if (w == u) { continue; }
+			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
+		}
+	}
+
+	F(*it, edge(u,v), s);
+	++it;
+	F(*it, edge(v,u), n - s);
+	++it;
+	return s;
+}
+
+} // -- namespace __lal
+
 /*
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
@@ -402,7 +406,7 @@ inline
 void calculate_bidirectional_sizes(
 	const tree_type& t,
 	const uint64_t n, const node x,
-	const std::function<void (Iterated_Type&, const edge&, uint64_t)> F,
+	void (*const F)(Iterated_Type&, const edge&, uint64_t),
 	Iterator_Type& it
 )
 noexcept

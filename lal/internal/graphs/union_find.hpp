@@ -62,7 +62,7 @@ template<typename T>
 inline
 void UnionFind_update_roots_after_add
 (
-	const T& t, node u, node v,
+	const T& t, const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -105,10 +105,10 @@ noexcept
 
 	// update roots of the smaller component,
 	// in the direction parent -> child
-	internal::BFS<T> bfs(t);
+	BFS<T> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = new_root; }
+	[&](const BFS<T>&, node w) -> void { root_of[w] = new_root; }
 	);
 	bfs.set_visited(parent, 1); // avoid going backwards
 	bfs.start_at(child);
@@ -121,7 +121,7 @@ template<typename T>
 inline
 void UnionFind_update_roots_after_remove
 (
-	const T& t, node u, node v,
+	const T& t, const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -134,7 +134,7 @@ noexcept
 
 	const uint64_t size_uv = root_size[root_of[u]];
 
-	internal::BFS<T> bfs(t);
+	BFS<T> bfs(t);
 
 	// --- update u's info ---
 
@@ -154,7 +154,7 @@ noexcept
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = v; }
+	[&](const internal::BFS<T>&, node w) -> void { root_of[w] = v; }
 	);
 	bfs.start_at(v);
 	root_of[v] = v;
@@ -184,7 +184,7 @@ void UnionFind_update_roots_before_remove_all_incident_to
 )
 noexcept
 {
-	internal::BFS<T> bfs(t);
+	BFS<T> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
 	// avoid going 'backwards', we need to go 'onwards'
 	bfs.set_visited(u, 1);
