@@ -52,9 +52,6 @@
 #include <lal/internal/graphs/make_arrangement.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace internal;
-
 namespace generate {
 
 /* PUBLIC */
@@ -62,7 +59,8 @@ namespace generate {
 /* CONSTRUCTORS */
 
 all_projective_arrangements::all_projective_arrangements
-(const rooted_tree& rT) noexcept : m_rT(rT)
+(const graphs::rooted_tree& rT) noexcept
+	: m_rT(rT)
 {
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());
@@ -82,7 +80,7 @@ all_projective_arrangements::all_projective_arrangements
 linear_arrangement all_projective_arrangements::get_arrangement() const noexcept {
 	return (m_rT.get_num_nodes() == 1 ?
 		linear_arrangement(1,0) :
-		make_arrangement_intervals(m_rT, m_intervals)
+		internal::make_arrangement_intervals(m_rT, m_intervals)
 	);
 }
 

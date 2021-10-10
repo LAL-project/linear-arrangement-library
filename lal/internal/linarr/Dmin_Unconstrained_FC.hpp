@@ -61,9 +61,8 @@ typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
-using namespace graphs;
-
 namespace internal {
+
 namespace dmin_Chung {
 
 /*
@@ -251,7 +250,7 @@ std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 }
 
 inline
-void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
+void get_ordering(const graphs::free_tree& t, node u, ordering& ord) noexcept {
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 #if defined DEBUG
@@ -294,7 +293,7 @@ void get_ordering(const free_tree& t, node u, ordering& ord) noexcept {
 template<char root>
 inline
 void calculate_mla(
-	free_tree& t,
+	graphs::free_tree& t,
 	node one_node, 
 	position start,
 	position end,
@@ -306,7 +305,7 @@ noexcept
 	std::vector<node> reachable(t.get_num_nodes_component(one_node - 1));
 	{
 	auto it = reachable.begin();
-	internal::BFS<free_tree> bfs(t);
+	internal::BFS<graphs::free_tree> bfs(t);
 	bfs.set_process_current(
 		// add '1' to vertices so that they range in [1,n]
 		[&](const auto&, node u) { *it++ = u + 1; }
@@ -653,7 +652,8 @@ noexcept
 
 } // -- namespaec dmin_chung
 
-std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_FC(const free_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_FC
+(const graphs::free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -663,10 +663,10 @@ noexcept
 	uint64_t c = 0;
 	linear_arrangement arr(t.get_num_nodes(),0);
 
-	free_tree T = t;
+	graphs::free_tree T = t;
 	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() - 1, arr, c);
 
-	return std::make_pair(c, arr);
+	return {c, arr};
 }
 
 } // -- namespace internal

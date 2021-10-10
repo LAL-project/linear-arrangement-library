@@ -53,13 +53,10 @@
 #define to_double(x) static_cast<double>(x)
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace properties {
 
 template<typename result>
-inline result MHD(const rooted_tree& tree) noexcept {
+inline result MHD(const graphs::rooted_tree& tree) noexcept {
 	const uint64_t n = tree.get_num_nodes();
 
 #if defined DEBUG
@@ -70,7 +67,7 @@ inline result MHD(const rooted_tree& tree) noexcept {
 	uint64_t sum_distances = 0;
 	internal::data_array<uint64_t> distances(n, 0);
 
-	internal::BFS<rooted_tree> bfs(tree);
+	internal::BFS<graphs::rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		distances[t] = distances[s] + 1;
@@ -79,19 +76,22 @@ inline result MHD(const rooted_tree& tree) noexcept {
 	);
 	bfs.start_at(tree.get_root());
 
-	if constexpr (std::is_same_v<rational, result>) {
-		return rational(sum_distances, tree.get_num_edges());
+	if constexpr (std::is_same_v<numeric::rational, result>) {
+		return numeric::rational(sum_distances, tree.get_num_edges());
 	}
 	else {
 		return to_double(sum_distances)/to_double(tree.get_num_edges());
 	}
 }
 
-rational mean_hierarchical_distance_rational(const rooted_tree& tree) noexcept {
-	return MHD<rational>(tree);
+numeric::rational mean_hierarchical_distance_rational
+(const graphs::rooted_tree& tree)
+noexcept
+{
+	return MHD<numeric::rational>(tree);
 }
 
-double mean_hierarchical_distance(const rooted_tree& tree) noexcept {
+double mean_hierarchical_distance(const graphs::rooted_tree& tree) noexcept {
 	return MHD<double>(tree);
 }
 

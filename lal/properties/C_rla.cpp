@@ -44,16 +44,15 @@
 #include <lal/numeric/rational.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace properties {
 
 /* -------------------------- */
 /* EXPECTATION OF C: E_rla[C] */
 
-rational exp_num_crossings_rational(const undirected_graph& g) noexcept {
-	return rational(num_pairs_independent_edges_integer(g), 3);
+numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g)
+noexcept
+{
+	return numeric::rational(num_pairs_independent_edges_integer(g), 3);
 }
 
 } // -- namespace properties

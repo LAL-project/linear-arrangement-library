@@ -56,9 +56,6 @@
 #define to_double(x) static_cast<double>(x)
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace linarr {
 
 inline constexpr
@@ -177,8 +174,8 @@ result __get_approximate_C_2_rational
 			)
 		);
 
-		if constexpr (std::is_same_v<result, rational>) {
-			Ec2 += rational(to_int64(al), be);
+		if constexpr (std::is_same_v<result, numeric::rational>) {
+			Ec2 += numeric::rational(to_int64(al), be);
 		}
 		else {
 			Ec2 += to_double(al)/to_double(be);
@@ -188,8 +185,8 @@ result __get_approximate_C_2_rational
 	return Ec2;
 }
 
-rational predicted_num_crossings_rational
-(const undirected_graph& g, const linear_arrangement& pi)
+numeric::rational predicted_num_crossings_rational
+(const graphs::undirected_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
@@ -197,11 +194,11 @@ noexcept
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<undirected_graph, rational>, g, pi);
+			(__get_approximate_C_2_rational<graphs::undirected_graph, numeric::rational>, g, pi);
 }
 
-rational predicted_num_crossings_rational
-(const directed_graph& g, const linear_arrangement& pi)
+numeric::rational predicted_num_crossings_rational
+(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
@@ -209,11 +206,11 @@ noexcept
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<directed_graph, rational>, g, pi);
+			(__get_approximate_C_2_rational<graphs::directed_graph, numeric::rational>, g, pi);
 }
 
 double predicted_num_crossings
-(const undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
@@ -221,10 +218,10 @@ noexcept
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<undirected_graph, double>, g, pi);
+			(__get_approximate_C_2_rational<graphs::undirected_graph, double>, g, pi);
 }
 double predicted_num_crossings
-(const directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
@@ -232,7 +229,7 @@ noexcept
 #endif
 
 	return internal::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<directed_graph, double>, g, pi);
+			(__get_approximate_C_2_rational<graphs::directed_graph, double>, g, pi);
 }
 
 } // -- namespace linarr

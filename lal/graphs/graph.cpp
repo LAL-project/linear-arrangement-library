@@ -54,8 +54,6 @@
 #include <lal/internal/data_array.hpp>
 
 namespace lal {
-using namespace numeric;
-
 namespace graphs {
 
 /* MODIFIERS */

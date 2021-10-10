@@ -52,8 +52,6 @@
 #include <lal/internal/sorting/bit_sort.hpp>
 #include <lal/internal/data_array.hpp>
 
-typedef uint64_t bigint;
-
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
 
@@ -63,8 +61,8 @@ typedef uint64_t bigint;
  */
 #define iterate(Ni, Nj, JOB)						\
 {													\
-	size_t __i = 0;									\
-	size_t __j = 0;									\
+	std::size_t __i = 0;							\
+	std::size_t __j = 0;							\
 	while (__i < Ni.size() and __j < Nj.size())	{	\
 		if (Ni[__i] == Nj[__j]) {					\
 			JOB;									\
@@ -94,10 +92,6 @@ struct useful_info_pairs {
 typedef std::map<lal::edge, useful_info_pairs>::const_iterator CIT;
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-using namespace iterators;
-
 namespace properties {
 
 // ------------------------------
@@ -113,12 +107,12 @@ namespace properties {
 template<bool reuse, bool is_normalised>
 void compute_data_gen_graphs
 (
-	const undirected_graph& g, const bigint& n, const bigint& m,
-	bigint& Qs, bigint& Kg,
-	bigint& n_paths_4, bigint& n_cycles_4, bigint& paw,
-	bigint& n_paths_5, bigint& pair_C3_L2,
-	bigint& Phi_1, bigint& Phi_2,
-	bigint& Lambda_1, bigint& Lambda_2
+	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,
+	uint64_t& Qs, uint64_t& Kg,
+	uint64_t& n_paths_4, uint64_t& n_cycles_4, uint64_t& paw,
+	uint64_t& n_paths_5, uint64_t& pair_C3_L2,
+	uint64_t& Phi_1, uint64_t& Phi_2,
+	uint64_t& Lambda_1, uint64_t& Lambda_2
 )
 noexcept
 {
@@ -150,25 +144,25 @@ noexcept
 	// local variables (some store precomputed data)
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	internal::data_array<bigint> xi(n);
+	internal::data_array<uint64_t> xi(n);
 	// sum of degrees squared
-	bigint nk2 = 0;
+	uint64_t nk2 = 0;
 	// sum of degrees cubed
-	bigint nk3 = 0;
+	uint64_t nk3 = 0;
 	// sum_{st in E} k_s*k_t
-	bigint psi = 0;
+	uint64_t psi = 0;
 
 	// ------------------------------------------------
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.get_degree(s);
+		const uint64_t ks = g.get_degree(s);
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const bigint kt = g.get_degree(t);
+			const uint64_t kt = g.get_degree(t);
 			psi += ks*kt;
 			xi[s] += kt;
 		}
@@ -191,17 +185,17 @@ noexcept
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
-	bigint mu1 = 0;
-	bigint mu2 = 0;
+	uint64_t mu1 = 0;
+	uint64_t mu2 = 0;
 
-	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [s,t] = e_it.get_edge();
 
-		const bigint ks = g.get_degree(s);
+		const uint64_t ks = g.get_degree(s);
 		const neighbourhood& Ns =
 			(is_normalised ? g.get_neighbours(s) : sorted_neighbourhoods[s]);
 
-		const bigint kt = g.get_degree(t);
+		const uint64_t kt = g.get_degree(t);
 		const neighbourhood& Nt =
 			(is_normalised ? g.get_neighbours(t) : sorted_neighbourhoods[t]);
 
@@ -209,18 +203,18 @@ noexcept
 		for (node u : Ns) {
 			if (u == t) { continue; }
 
-			const bigint ku = g.get_degree(u);
+			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
 				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
 
-			bigint common_ut = 0;
+			uint64_t common_ut = 0;
 			if constexpr (reuse) {
 				if (CIT it_ut; map_has_key(saving_comps, sorted_edge(u,t), it_ut)) {
 					common_ut = it_ut->second.common;
 				}
 				else {
 					// compute values and store them
-					bigint deg_sum = 0;
+					uint64_t deg_sum = 0;
 					iterate(Nt, Nu,
 						++common_ut;
 						deg_sum += g.get_degree(Nu[__j]);
@@ -245,18 +239,18 @@ noexcept
 		for (node u : Nt) {
 			if (u == s) { continue; }
 
-			const bigint ku = g.get_degree(u);
+			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
 				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
 
-			bigint common_us = 0;
+			uint64_t common_us = 0;
 			if constexpr (reuse) {
 				if (CIT it_su; map_has_key(saving_comps, sorted_edge(u,s), it_su)) {
 					common_us = it_su->second.common;
 				}
 				else {
 					// compute values and store them
-					bigint deg_sum = 0;
+					uint64_t deg_sum = 0;
 					iterate(Ns, Nu,
 						++common_us;
 						deg_sum += g.get_degree(Nu[__j]);
@@ -281,8 +275,8 @@ noexcept
 
 		n_cycles_4 -= kt - 1;
 
-		bigint common_st = 0;
-		bigint deg_sum_st = 0;
+		uint64_t common_st = 0;
+		uint64_t deg_sum_st = 0;
 		if constexpr (reuse) {
 			if (CIT it_st; map_has_key(saving_comps, sorted_edge(s,t), it_st)) {
 				// if the neighbours were not searched then the variables
@@ -342,41 +336,44 @@ noexcept
 	pair_C3_L2 /= 3;
 }
 
-rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexcept {
-	const bigint n = g.get_num_nodes();
-	const bigint m = g.get_num_edges();
+numeric::rational var_num_crossings_rational
+(const graphs::undirected_graph& g, bool reuse)
+noexcept
+{
+	const uint64_t n = g.get_num_nodes();
+	const uint64_t m = g.get_num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
 
 	// size of set Q
-	bigint Qs = 0;
+	uint64_t Qs = 0;
 
 	// n_G(L_4)
-	bigint n_paths_4 = 0;
+	uint64_t n_paths_4 = 0;
 	// n_G(L_5)
-	bigint n_paths_5 = 0;
+	uint64_t n_paths_5 = 0;
 	// n_G(C_4)
-	bigint n_cycles_4 = 0;
+	uint64_t n_cycles_4 = 0;
 
 	// (a_{tu} + a_{sv})(a_{tv} + a_{su})
-	bigint paw = 0;
+	uint64_t paw = 0;
 	// the amount of pairs of disjoint
 	// triangle and edge in the graph.
-	bigint pair_C3_L2 = 0;
+	uint64_t pair_C3_L2 = 0;
 
 	// k_s + k_t + k_u + k_v
-	bigint Kg = 0;
+	uint64_t Kg = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint Phi_1 = 0;
+	uint64_t Phi_1 = 0;
 	// (k_s + k_t)(k_u + k_v)
-	bigint Phi_2 = 0;
+	uint64_t Phi_2 = 0;
 
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint Lambda_1 = 0;
+	uint64_t Lambda_1 = 0;
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint Lambda_2 = 0;
+	uint64_t Lambda_2 = 0;
 
 #define parameters_of_compute_data	\
 	(								\
@@ -410,18 +407,18 @@ rational var_num_crossings_rational(const undirected_graph& g, bool reuse) noexc
 	}
 
 	// V[C]
-	rational V(0);
-	V += rational(2,45)*(m + 2)*Qs;
-	V -= rational(1,180)*(2*m + 7)*n_paths_4;
-	V -= rational(1,180)*n_paths_5;
-	V += rational(1,90)*Kg;
-	V -= rational(3,45)*n_cycles_4;
-	V -= rational(1,60)*Lambda_1;
-	V += rational(1,180)*Lambda_2;
-	V += rational(1,180)*Phi_2;
-	V -= rational(1,90)*Phi_1;
-	V += rational(1,30)*paw;
-	V += rational(1,30)*pair_C3_L2;
+	numeric::rational V(0);
+	V += numeric::rational(2,45)*(m + 2)*Qs;
+	V -= numeric::rational(1,180)*(2*m + 7)*n_paths_4;
+	V -= numeric::rational(1,180)*n_paths_5;
+	V += numeric::rational(1,90)*Kg;
+	V -= numeric::rational(3,45)*n_cycles_4;
+	V -= numeric::rational(1,60)*Lambda_1;
+	V += numeric::rational(1,180)*Lambda_2;
+	V += numeric::rational(1,180)*Phi_2;
+	V -= numeric::rational(1,90)*Phi_1;
+	V += numeric::rational(1,30)*paw;
+	V += numeric::rational(1,30)*pair_C3_L2;
 	return V;
 }
 

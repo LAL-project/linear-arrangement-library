@@ -56,8 +56,6 @@
 #include <lal/internal/linarr/Dmin_utils.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace internal {
 
 /* Minimum projective arrangement of a free tree following the description in
@@ -69,8 +67,7 @@ namespace internal {
  * a interval-based algorithm.
  */
 inline
-std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF
-(const rooted_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF(const graphs::rooted_tree& t)
 noexcept
 {
 #if defined DEBUG

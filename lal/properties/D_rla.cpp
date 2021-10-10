@@ -48,9 +48,6 @@
 #include <lal/numeric/rational_output.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace properties {
 
 /* ---------------------------- */
@@ -60,7 +57,9 @@ namespace properties {
 namespace E_pr_D {
 
 template<bool size_subtrees_valid>
-inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
+inline
+numeric::rational exp_sum_edge_lengths(const graphs::rooted_tree& t)
+noexcept
 {
 	const uint64_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
 	internal::data_array<uint64_t> size_subtrees(size_array, 0);
@@ -68,7 +67,7 @@ inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 		internal::get_size_subtrees(t, t.get_root(), size_subtrees.data());
 	}
 
-	rational E_pr_D = 0;
+	numeric::rational E_pr_D = 0;
 	E_pr_D += -1;
 
 	for (node u = 0; u < t.get_num_nodes(); ++u) {
@@ -88,8 +87,9 @@ inline rational exp_sum_edge_lengths(const rooted_tree& t) noexcept
 
 } // -- namespace E_pr_D
 
-rational exp_sum_edge_lengths_projective_rational
-(const rooted_tree& t) noexcept
+numeric::rational exp_sum_edge_lengths_projective_rational
+(const graphs::rooted_tree& t)
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -105,13 +105,15 @@ rational exp_sum_edge_lengths_projective_rational
 /* EXPECTATION OF D: E_pl[D] */
 /*   (planar arrangements)   */
 
-rational exp_sum_edge_lengths_planar_rational(const free_tree& T) noexcept {
+numeric::rational exp_sum_edge_lengths_planar_rational(const graphs::free_tree& T)
+noexcept
+{
 	const uint64_t n = T.get_num_nodes();
 
 	std::vector<std::pair<edge, uint64_t>> edge_size(2*(n - 1));
 	{
 	auto it = edge_size.begin();
-	internal::calculate_bidirectional_sizes<free_tree, std::pair<edge, uint64_t>>
+	internal::calculate_bidirectional_sizes<graphs::free_tree, std::pair<edge, uint64_t>>
 	(
 		T, n, 0,
 		[](std::pair<edge,uint64_t>& p, const edge& e, uint64_t s) -> void
@@ -134,32 +136,34 @@ rational exp_sum_edge_lengths_planar_rational(const free_tree& T) noexcept {
 	}
 	}
 
-	return rational((n - 1)*(3*n*n + 2*n - 2) - V, 6*n);
+	return numeric::rational((n - 1)*(3*n*n + 2*n - 2) - V, 6*n);
 }
 
 /* ---------------------------- */
 /*    VARIANCE OF D: V_rla[D]   */
 /* (unconstrained arrangements) */
 
-rational var_sum_edge_lengths_rational(const undirected_graph& g) noexcept {
+numeric::rational var_sum_edge_lengths_rational(const graphs::undirected_graph& g)
+noexcept
+{
 	// E_rla[D]
-	const rational Ed = exp_sum_edge_lengths_rational(g);
+	const numeric::rational Ed = exp_sum_edge_lengths_rational(g);
 	// E_rla[D^2]
-	const integer n = g.get_num_nodes();
-	const integer m = g.get_num_edges();
+	const numeric::integer n = g.get_num_nodes();
+	const numeric::integer m = g.get_num_edges();
 
 	// calculate expectations of types
-	const rational E0((n + 1)*(n*5 + 4), 45);
-	const rational E1((n + 1)*(n*7 + 4), 60);
-	const rational E2(n*(n + 1), 6);
+	const numeric::rational E0((n + 1)*(n*5 + 4), 45);
+	const numeric::rational E1((n + 1)*(n*7 + 4), 60);
+	const numeric::rational E2(n*(n + 1), 6);
 
 	// calculate frequencies
-	const integer f0 = num_pairs_independent_edges_integer(g)*2;
-	const integer f2(m);
-	const integer f1(m*(m - 1) - f0);
+	const numeric::integer f0 = num_pairs_independent_edges_integer(g)*2;
+	const numeric::integer f2(m);
+	const numeric::integer f1(m*(m - 1) - f0);
 
 	// calculate second moment
-	rational Ed2 = 0;
+	numeric::rational Ed2 = 0;
 	Ed2 += E0*f0;
 	Ed2 += E1*f1;
 	Ed2 += E2*f2;

@@ -79,8 +79,6 @@ noexcept
 }
 
 namespace lal {
-using namespace graphs;
-
 namespace io {
 
 // CLASS METHODS

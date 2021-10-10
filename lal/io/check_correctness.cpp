@@ -50,8 +50,6 @@
 #include <lal/internal/io/check_correctness.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace io {
 
 // line, what

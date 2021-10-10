@@ -58,22 +58,19 @@
 #define max_pos(u,v) (std::max(pi[u], pi[v]))
 
 namespace lal {
-using namespace graphs;
-using namespace iterators;
-
 namespace linarr {
 
 namespace flux {
 
 inline
 std::vector<std::pair<edge,uint64_t>> get_edges_with_max_pos_at
-(const free_tree& t, const linear_arrangement& pi)
+(const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
 {
 	std::vector<std::pair<edge,uint64_t>> edge_ending_at
 			(t.get_num_nodes(), make_pair(edge(), 0));
 
-	for (E_iterator e_it(t); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator e_it(t); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
 		const position max = max_pos(u, v);
 		edge_ending_at[max].first = edge(u,v);
@@ -85,7 +82,7 @@ noexcept
 inline
 void calculate_dependencies_span
 (
-	const free_tree& t,
+	const graphs::free_tree& t,
 	const linear_arrangement& pi,
 	const internal::data_array<node>& inv_pi,
 	const std::vector<std::pair<edge,uint64_t>>& edge_with_max_pos_at,
@@ -138,7 +135,7 @@ noexcept
 
 inline
 uint64_t calculate_weight
-(const std::vector<edge>& dependencies, undirected_graph& ug)
+(const std::vector<edge>& dependencies, graphs::undirected_graph& ug)
 noexcept
 {
 	if (dependencies.size() <= 1) { return dependencies.size(); }
@@ -153,7 +150,7 @@ noexcept
 	// step 3. delete edges incident to the other vertex
 
 	const auto find_leaf =
-	[](const undirected_graph& g) -> std::optional<node> {
+	[](const graphs::undirected_graph& g) -> std::optional<node> {
 		for (node u = 0; u < g.get_num_nodes(); ++u) {
 			if (g.get_degree(u) == 1) { return u; }
 		}
@@ -178,7 +175,7 @@ noexcept
 
 inline
 std::vector<dependency_flux> __compute_flux
-(const free_tree& t, const linear_arrangement& pi)
+(const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
@@ -195,7 +192,7 @@ noexcept
 	const auto edge_with_max_pos_at = flux::get_edges_with_max_pos_at(t, pi);
 
 	// the graph (of n vertices) used to calculate the weight
-	undirected_graph ug(n);
+	graphs::undirected_graph ug(n);
 
 	// the reusable memory for the sorting algorithm
 	internal::countingsort::memory_counting_sort<edge> mem(n, n);
@@ -239,16 +236,16 @@ noexcept
 }
 
 std::vector<dependency_flux>
-compute_flux(const free_tree& t, const linear_arrangement& pi)
+compute_flux(const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	return
-	internal::call_with_empty_arrangement<std::vector<dependency_flux>,free_tree>
-	(__compute_flux, t, pi);
+	return internal::call_with_empty_arrangement
+		<std::vector<dependency_flux>,graphs::free_tree>
+		(__compute_flux, t, pi);
 }
 
 } // -- namespace linarr

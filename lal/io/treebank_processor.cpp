@@ -80,7 +80,7 @@
 #define square(x) ((x)*(x))
 
 namespace lal {
-using namespace graphs;
+namespace io {
 
 template<typename T>
 void set_average_of(
@@ -163,8 +163,6 @@ noexcept
 	}();
 	props[idx] = value;
 }
-
-namespace io {
 
 // -----------------------------------------------------------------------------
 // CLASS METHODS
@@ -345,10 +343,10 @@ treebank_error treebank_processor::process() noexcept {
 	internal::data_array<char> prop_set(__treebank_feature_size, 0);
 
 	// process the current treebank
-	rooted_tree rT;
+	graphs::rooted_tree rT;
 	while (not tbread.end()) {
 		rT = tbread.get_tree();
-		process_tree<rooted_tree, std::ofstream>
+		process_tree<graphs::rooted_tree, std::ofstream>
 		(rT, props.data(), prop_set.data(), out_treebank_file);
 
 		props.fill(0.0);
@@ -468,7 +466,7 @@ void treebank_processor::process_tree
 (const TREE& rT, double *props, char *prop_set, OUT_STREAM& out_treebank_file)
 const noexcept
 {
-	free_tree fT = rT.to_undirected();
+	graphs::free_tree fT = rT.to_undirected();
 	const uint64_t n = fT.get_num_nodes();
 
 	// -------------------------------------------------------------------

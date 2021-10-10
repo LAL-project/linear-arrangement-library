@@ -50,8 +50,6 @@
 #define inf std::numeric_limits<uint64_t>::max()
 
 namespace lal {
-using namespace graphs;
-
 namespace generate {
 
 /* PUBLIC */
@@ -267,10 +265,10 @@ void all_ulab_free_trees::__reset() noexcept {
 
 /* PROTECTED */
 
-free_tree all_ulab_free_trees::__get_tree() noexcept {
-	if (m_n <= 1) { return free_tree(m_n); }
+graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
+	if (m_n <= 1) { return graphs::free_tree(m_n); }
 	if (m_n == 2) {
-		free_tree t(2);
+		graphs::free_tree t(2);
 		t.add_edge(0,1);
 		return t;
 	}

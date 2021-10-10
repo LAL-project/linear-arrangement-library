@@ -50,8 +50,6 @@
 // lal includes
 
 namespace lal {
-using namespace graphs;
-
 namespace generate {
 
 /* PUBLIC */
@@ -96,24 +94,24 @@ void all_ulab_rooted_trees::next() noexcept {
 
 /* PROTECTED */
 
-rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
+graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 	if (m_n == 0) {
-		return rooted_tree(free_tree(0), 0);
+		return graphs::rooted_tree(graphs::free_tree(0), 0);
 	}
 	if (m_n == 1) {
-		return rooted_tree(free_tree(1), 0);
+		return graphs::rooted_tree(graphs::free_tree(1), 0);
 	}
 	if (m_n == 2) {
-		rooted_tree rT(2);
+		graphs::rooted_tree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
 		rT.set_valid_orientation(true);
 		return rT;
 	}
 
-	const free_tree t =
+	const graphs::free_tree t =
 		internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
-	return rooted_tree(t, 0);
+	return graphs::rooted_tree(t, 0);
 }
 
 void all_ulab_rooted_trees::__reset() noexcept {

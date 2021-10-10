@@ -56,8 +56,6 @@
 #include <lal/internal/linarr/Dmin_utils.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace internal {
 
 /* Minimum planar arrangement of a free tree following the description in
@@ -71,8 +69,8 @@ namespace internal {
  * arrangement is done using an displacement-based algorithm.
  */
 inline
-std::pair<uint64_t, linear_arrangement> Dmin_Planar_HS
-(const free_tree& t) noexcept
+std::pair<uint64_t, linear_arrangement> Dmin_Planar_HS(const graphs::free_tree& t)
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());

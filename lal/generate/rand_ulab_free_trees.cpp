@@ -55,13 +55,10 @@
 #define alpha_exists(m,q) (m_alpha.find({m,q}) != m_alpha.end())
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace generate {
 
 #define make_tree(T, N, TREE)			\
-	free_tree T(N);						\
+	graphs::free_tree T(N);				\
 	for (node u = 1; u < N; ++u) {		\
 		T.add_edge_bulk(u, TREE[u]);	\
 	}									\
@@ -72,15 +69,15 @@ namespace generate {
 
 /* PUBLIC */
 
-free_tree _rand_ulab_free_trees::get_tree() noexcept {
-	if (m_n <= 1) { return free_tree(m_n); }
+graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
+	if (m_n <= 1) { return graphs::free_tree(m_n); }
 	if (m_n == 2) {
-		free_tree t(2);
+		graphs::free_tree t(2);
 		t.set_edges({edge(0,1)});
 		return t;
 	}
 	if (m_n == 3) {
-		free_tree t(3);
+		graphs::free_tree t(3);
 		t.set_edges({edge(0,1),edge(1,2)});
 		return t;
 	}
@@ -88,7 +85,7 @@ free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	m_head_vector.fill(0);
 
 	// calculate the probability of generating a bicentroidal tree
-	rational bicent_prob = 0;
+	numeric::rational bicent_prob = 0;
 	if (m_n%2 == 0) {
 		/* The following is a correction of Wilf's algorithm. Instead of
 		 * calculating
@@ -105,9 +102,9 @@ free_tree _rand_ulab_free_trees::get_tree() noexcept {
 		 * Giac/Xcas's manual (read the documentation of this class
 		 * for a reference).
 		 */
-		const integer k = get_rn(m_n/2) + 1;
-		const integer k_choose_2 = k*(k - 1);
-		bicent_prob = rational(k_choose_2, get_fn(m_n)*2);
+		const numeric::integer k = get_rn(m_n/2) + 1;
+		const numeric::integer k_choose_2 = k*(k - 1);
+		bicent_prob = numeric::rational(k_choose_2, get_fn(m_n)*2);
 	}
 #if defined DEBUG
 	assert(bicent_prob.to_double() <= 1.0);
@@ -228,7 +225,7 @@ void _rand_ulab_free_trees::bicenter(uint64_t n) noexcept {
 	// for both steps, make one tree ...
 	auto [lr, nt] = ranrut(h, 0, 0);
 
-	const rational prob(1, get_rn(h) + 1);
+	const numeric::rational prob(1, get_rn(h) + 1);
 	if (m_unif(m_gen) <= prob.to_double()) {
 		// step B1: ... and make a SINGLE copy
 
@@ -250,8 +247,10 @@ void _rand_ulab_free_trees::bicenter(uint64_t n) noexcept {
 #endif
 }
 
-const integer&
-_rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept {
+const numeric::integer& _rand_ulab_free_trees::get_alpha_mq
+(const uint64_t m, const uint64_t q)
+noexcept
+{
 
 	/* This algorithm can be compared to the algorithm in
 	 *		https://github.com/marohnicluka/giac/blob/master/graphe.cc#L7149
@@ -276,15 +275,15 @@ _rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept
 		return get_alpha(m,q);
 	}
 
-	integer alpha_mq(0);
+	numeric::integer alpha_mq(0);
 	for (uint64_t j = 1; j <= m; ++j) {
 		// The variable 'sup' is used to avoid obtaining
 		// negative values in the operation 'm - j*d'.
 		const uint64_t sup = std::min( m/j, q );
 
 		for (uint64_t d = 1; d <= sup; ++d) {
-			const integer& A1 = get_alpha_mq(m - j*d, q);
-			const integer& A2 = get_alpha_mq(d - 1, q);
+			const numeric::integer& A1 = get_alpha_mq(m - j*d, q);
+			const numeric::integer& A2 = get_alpha_mq(d - 1, q);
 			alpha_mq += A1*A2*d;
 		}
 	}
@@ -293,28 +292,30 @@ _rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept
 	return get_alpha(m,q);
 }
 
-const integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
+const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
 	}
 
 	// Compute f_k using Otter's formula (see reference in documentation)
-	rational f_k(0);
-	integer s(0);
+	numeric::rational f_k(0);
+	numeric::integer s(0);
 	uint64_t k = m_fn.size();
 	while (k <= n) {
 
 		// for k=0, f_k=1.
 		f_k = (k == 0);
 		f_k += get_rn(k);
-		f_k += (k%2 == 0 ? rational(get_rn(k/2), 2) : rational(0));
+		f_k += (k%2 == 0 ?
+					numeric::rational(get_rn(k/2), 2) :
+					numeric::rational(0));
 
 		s = 0;
 		for (uint64_t j = 0; j <= k; ++j) {
 			s += get_rn(j)*get_rn(k - j);
 		}
-		f_k -= rational(s,2);
+		f_k -= numeric::rational(s,2);
 
 		m_fn.emplace_back(f_k.to_integer());
 		//m_fn[k] = std::move(f_i__int);

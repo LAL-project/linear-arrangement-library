@@ -61,9 +61,8 @@ typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::internal::data_array<size_node> ordering;
 
 namespace lal {
-using namespace graphs;
-
 namespace internal {
+
 namespace dmin_Shiloach {
 
 template<char anchored>
@@ -163,7 +162,7 @@ noexcept
 template<char alpha>
 inline
 void calculate_mla(
-	free_tree& t,
+	graphs::free_tree& t,
 	node root_or_anchor, position start, position end,
 	linear_arrangement& mla, uint64_t& cost
 )
@@ -327,7 +326,8 @@ noexcept
 
 } // -- namespace dmin_shiloach
 
-std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS(const free_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS
+(const graphs::free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -337,12 +337,12 @@ noexcept
 	uint64_t c = 0;
 	linear_arrangement arrangement(t.get_num_nodes(),0);
 
-	free_tree T = t;
+	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
 	dmin_Shiloach::calculate_mla<NO_ANCHOR>
 		(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
 
-	return std::make_pair(c, arrangement);
+	return {c, arrangement};
 }
 
 } // -- namespace internal

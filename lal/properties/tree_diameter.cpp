@@ -45,15 +45,13 @@
 #include <lal/internal/properties/tree_diameter.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace properties {
 
-uint64_t tree_diameter(const free_tree& t) noexcept {
+uint64_t tree_diameter(const graphs::free_tree& t) noexcept {
 	return internal::tree_diameter(t);
 }
 
-uint64_t tree_diameter(const rooted_tree& t) noexcept {
+uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept {
 	return internal::tree_diameter(t);
 }
 

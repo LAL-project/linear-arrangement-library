@@ -49,22 +49,20 @@
 #include <lal/internal/properties/tree_centre.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace properties {
 
-std::pair<node, node> tree_centre(const rooted_tree& t) noexcept {
+std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return internal::retrieve_centre<rooted_tree>(t, 0);
+	return internal::retrieve_centre<graphs::rooted_tree>(t, 0);
 }
 
-std::pair<node, node> tree_centre(const free_tree& t) noexcept {
+std::pair<node, node> tree_centre(const graphs::free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return internal::retrieve_centre<free_tree>(t, 0);
+	return internal::retrieve_centre<graphs::free_tree>(t, 0);
 }
 
 } // -- namespace properties

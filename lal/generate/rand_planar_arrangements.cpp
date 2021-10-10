@@ -52,13 +52,11 @@
 #include <lal/internal/graphs/make_arrangement.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace internal;
-
 namespace generate {
 
 rand_planar_arrangements::rand_planar_arrangements
-(const free_tree& T, uint64_t seed) noexcept
+(const graphs::free_tree& T, uint64_t seed)
+noexcept
 	: m_T(T),
 	  m_rdata(std::vector<std::vector<node>>(m_T.get_num_nodes())),
 	  m_previous_root(m_T.get_num_nodes() + 1)
@@ -81,7 +79,8 @@ rand_planar_arrangements::rand_planar_arrangements
 }
 
 rand_planar_arrangements::rand_planar_arrangements
-(const rooted_tree& T, uint64_t seed) noexcept
+(const graphs::rooted_tree& T, uint64_t seed)
+noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
 	  m_rdata(std::vector<std::vector<node>>(m_T.get_num_nodes())),

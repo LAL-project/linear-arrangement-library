@@ -52,13 +52,10 @@
 #define to_double(x) static_cast<double>(x)
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-
 namespace linarr {
 
 inline
-uint64_t __left_branching_edges(const directed_graph& g, const linear_arrangement& pi)
+uint64_t __left_branching_edges(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 	uint64_t edges_to_right = 0;
@@ -69,8 +66,9 @@ noexcept
 	return edges_to_right;
 }
 
-rational head_initial_rational
-(const directed_graph& g, const linear_arrangement& pi) noexcept
+numeric::rational head_initial_rational
+(const graphs::directed_graph& g, const linear_arrangement& pi)
+noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
@@ -78,11 +76,11 @@ rational head_initial_rational
 
 	const uint64_t etr =
 		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
-	return rational(etr, g.get_num_edges());
+	return numeric::rational(etr, g.get_num_edges());
 }
 
 double head_initial
-(const directed_graph& g, const linear_arrangement& pi) noexcept
+(const graphs::directed_graph& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);

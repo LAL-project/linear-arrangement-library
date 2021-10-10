@@ -49,8 +49,6 @@
 #include <lal/internal/graphs/conversions.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace generate {
 
 /* PUBLIC */
@@ -90,10 +88,10 @@ void all_lab_free_trees::next() noexcept {
 
 /* PROTECTED */
 
-free_tree all_lab_free_trees::__get_tree() noexcept {
-	if (m_n <= 1) { return free_tree(m_n); }
+graphs::free_tree all_lab_free_trees::__get_tree() noexcept {
+	if (m_n <= 1) { return graphs::free_tree(m_n); }
 	if (m_n == 2) {
-		free_tree t(2);
+		graphs::free_tree t(2);
 		t.set_edges(std::vector<edge>{edge(0,1)});
 		return t;
 	}

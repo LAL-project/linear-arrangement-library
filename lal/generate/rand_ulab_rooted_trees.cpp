@@ -53,17 +53,15 @@
 #define to_uint64(x) static_cast<uint64_t>(x)
 
 namespace lal {
-using namespace numeric;
-using namespace graphs;
-
 namespace generate {
 
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
-rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept {
+graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
+{
 	if (m_n <= 1) {
-		rooted_tree r(m_n, 0);
+		graphs::rooted_tree r(m_n, 0);
 		r.set_root(0);
 		r.set_valid_orientation(true);
 		return r;
@@ -73,7 +71,7 @@ rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept {
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	rooted_tree rT(m_n);
+	graphs::rooted_tree rT(m_n);
 	for (node u = 1; u < m_n; ++u) {
 		// in order to construct an arborescence
 		// orient edges away from the root (node 0).
@@ -179,7 +177,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 	return {root_Tp, nt};
 }
 
-const integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
+const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -189,9 +187,9 @@ const integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 
 	uint64_t k = m_rn.size() - 1;
 	while (k <= n + 1) {
-		integer s = 0;
+		numeric::integer s = 0;
 		for (uint64_t d = 1; d <= k; ++d) {
-			const integer td = m_rn[d]*d;
+			const numeric::integer td = m_rn[d]*d;
 
 			int64_t i = to_int64(k) + 1;
 			int64_t j = 1;

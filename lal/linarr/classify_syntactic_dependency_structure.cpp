@@ -61,19 +61,16 @@
 #define enum_to_sizet(e) static_cast<std::size_t>(e)
 
 namespace lal {
-using namespace graphs;
-using namespace iterators;
-
 namespace linarr {
 
 typedef syntactic_dependency_structure syndepstr_type;
 
 inline
-bool __is_root_covered(const rooted_tree& T, const linear_arrangement& pi)
+bool __is_root_covered(const graphs::rooted_tree& T, const linear_arrangement& pi)
 noexcept
 {
 	const node R = T.get_root();
-	for (E_iterator e_it(T); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator e_it(T); not e_it.end(); e_it.next()) {
 		const auto [s,t] = e_it.get_edge();
 		const bool covered =
 			(pi[s] < pi[R] and pi[R] < pi[t]) or
@@ -88,7 +85,7 @@ noexcept
 }
 
 inline void __get_yields(
-	const rooted_tree& t, const linear_arrangement& pi,
+	const graphs::rooted_tree& t, const linear_arrangement& pi,
 	node u,
 	std::vector<std::vector<position>>& yields
 )
@@ -178,7 +175,7 @@ noexcept
 }
 
 inline
-bool __is_WG1(const rooted_tree& rT, const linear_arrangement& pi)
+bool __is_WG1(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 	const uint64_t n = rT.get_num_nodes();
@@ -199,7 +196,7 @@ noexcept
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
 inline
-uint64_t __is_1EC(const rooted_tree& rT, const linear_arrangement& pi)
+uint64_t __is_1EC(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 	// use the paper in
@@ -215,7 +212,7 @@ noexcept
 	bool classified = false;
 	bool _1ec = false;
 
-	E_iterator e_it(rT);
+	iterators::E_iterator e_it(rT);
 	while (not e_it.end() and not classified) {
 		// check other edges crossing the current edge
 		const auto [s,t] = e_it.get_edge();
@@ -296,7 +293,7 @@ noexcept
 
 inline
 std::array<bool, __syntactic_dependency_structure_size> __get_syn_dep_tree_type
-(const rooted_tree& rT, const linear_arrangement& pi)
+(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
@@ -329,7 +326,7 @@ noexcept
 	// -------------------------------------------------------------------------
 
 	// add an artificial vertex first
-	rooted_tree _rT(1);
+	graphs::rooted_tree _rT(1);
 	_rT.set_root(0);
 	_rT.disjoint_union(rT);
 #if defined DEBUG
@@ -419,7 +416,7 @@ noexcept
 
 std::array<bool, __syntactic_dependency_structure_size>
 syntactic_dependency_structure_class
-(const rooted_tree& rT, const linear_arrangement& pi)
+(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG

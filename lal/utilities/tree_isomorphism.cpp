@@ -57,8 +57,6 @@
 #define to_int(x) (static_cast<int>(x))
 
 namespace lal {
-using namespace graphs;
-
 namespace utilities {
 
 #if defined USE_COMPLICATED
@@ -220,7 +218,10 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
 }
 #endif
 
-bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) noexcept {
+bool are_trees_isomorphic
+(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
+noexcept
+{
 #if defined DEBUG
 	assert(t1.has_root());
 	assert(t2.has_root());
@@ -228,7 +229,10 @@ bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) noexcept
 	return internal::are_full_trees_isomorphic(t1, t2);
 }
 
-bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
+bool are_trees_isomorphic
+(const graphs::free_tree& t1, const graphs::free_tree& t2)
+noexcept
+{
 	const auto discard = internal::fast_non_iso(t1,t2);
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
@@ -245,21 +249,21 @@ bool are_trees_isomorphic(const free_tree& t1, const free_tree& t2) noexcept {
 	const uint64_t size2 = (c2.second < n ? 2 : 1);
 	if (size1 != size2) { return false; }
 
-	const rooted_tree rt1(t1, c1.first);
+	const graphs::rooted_tree rt1(t1, c1.first);
 
 	// the centres have only one vertex
 	if (size1 == 1) {
-		return are_trees_isomorphic(rt1, rooted_tree(t2, c2.first));
+		return are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.first));
 	}
 
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const bool iso1 = are_trees_isomorphic(rt1, rooted_tree(t2, c2.first));
+	const bool iso1 = are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.first));
 	if (iso1) { return true; }
 
 	// try with the second centre of the second tree
-	return are_trees_isomorphic(rt1, rooted_tree(t2, c2.second));
+	return are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.second));
 }
 
 } // -- namespace utilities

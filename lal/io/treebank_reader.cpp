@@ -48,8 +48,6 @@
 #include <lal/graphs/conversions.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace io {
 
 // MODIFIERS
@@ -138,9 +136,9 @@ void treebank_reader::next_tree() noexcept {
 
 // GETTERS
 
-rooted_tree treebank_reader::get_tree() const noexcept {
-	rooted_tree t =
-		from_head_vector_to_rooted_tree(
+graphs::rooted_tree treebank_reader::get_tree() const noexcept {
+	graphs::rooted_tree t =
+		graphs::from_head_vector_to_rooted_tree(
 			m_current_head_vector,
 			m_normalise_tree,
 			true

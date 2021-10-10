@@ -54,16 +54,14 @@
 
 typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
-namespace lal {
-using namespace graphs;
-
-namespace internal {
-
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
+
+namespace lal {
+namespace internal {
 
 // =============================================================================
 // ACTUAL ALGORITHM
@@ -71,7 +69,7 @@ namespace internal {
 
 inline
 void fill_adjP_adjN(
-	const graph& g, const linear_arrangement& pi,
+	const graphs::graph& g, const linear_arrangement& pi,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	size_t * const __restrict__ size_adjN_u
@@ -128,7 +126,7 @@ noexcept
 template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_stack_based(
-	const graph& g, const linear_arrangement& pi,
+	const graphs::graph& g, const linear_arrangement& pi,
 	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
 	uint64_t upper_bound = 0
 )
@@ -197,7 +195,7 @@ noexcept
 
 inline
 uint64_t __call_C_stack_based(
-	const graph& g,
+	const graphs::graph& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -221,7 +219,7 @@ noexcept
 
 inline
 uint64_t n_C_stack_based(
-	const graph& g,
+	const graphs::graph& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -237,7 +235,7 @@ noexcept
 
 inline
 std::vector<uint64_t> n_C_stack_based(
-	const graph& g,
+	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -275,7 +273,7 @@ noexcept
 
 inline
 uint64_t __call_C_stack_based_lesseq_than(
-	const graph& g,
+	const graphs::graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -301,7 +299,7 @@ noexcept
 
 inline
 uint64_t is_n_C_stack_based_lesseq_than(
-	const graph& g,
+	const graphs::graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -319,7 +317,7 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graph& g,
+	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -355,7 +353,7 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graph& g,
+	const graphs::graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )

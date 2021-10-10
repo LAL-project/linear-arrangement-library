@@ -56,15 +56,13 @@ inline constexpr uint64_t sum(uint64_t n, uint64_t t) noexcept {
 }
 
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-using namespace iterators;
-
 namespace properties {
 
-integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept {
+numeric::integer num_pairs_independent_edges_integer(const graphs::undirected_graph& g)
+noexcept
+{
 	const uint64_t m = g.get_num_edges();
-	integer q2 = m*(m + 1);
+	numeric::integer q2 = m*(m + 1);
 
 	// substract sum of squared degrees
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
@@ -75,12 +73,14 @@ integer num_pairs_independent_edges_integer(const undirected_graph& g) noexcept 
 	return q2/2;
 }
 
-integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
+numeric::integer num_pairs_independent_edges_integer(const graphs::directed_graph& g)
+noexcept
+{
 	const uint64_t n = g.get_num_nodes();
 	std::map<edge, uint64_t> collapsed_edges;
 
 	// count the amount of edges that collapse into a single one
-	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge();
 
 		const edge es = sorted_edge(u,v);
@@ -94,7 +94,7 @@ integer num_pairs_independent_edges_integer(const directed_graph& g) noexcept {
 	}
 
 	// the size of Q
-	integer q = 0;
+	numeric::integer q = 0;
 
 	// for each vertex, count how many pairs of
 	// non-independent we can make

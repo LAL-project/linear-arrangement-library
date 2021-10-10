@@ -51,13 +51,11 @@
 #include <lal/internal/graphs/make_arrangement.hpp>
 #include <lal/internal/graphs/traversal.hpp>
 #include <lal/internal/sorting/bit_sort.hpp>
-using namespace lal;
-using namespace graphs;
 
 namespace lal {
 namespace generate {
 
-all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
+all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T) noexcept
 	: m_T(T),
 	  m_memory_bit_sort(T.get_num_nodes(), 0)
 {
@@ -69,7 +67,7 @@ all_planar_arrangements::all_planar_arrangements(const free_tree& T) noexcept
 	reset();
 }
 
-all_planar_arrangements::all_planar_arrangements(const rooted_tree& T) noexcept
+all_planar_arrangements::all_planar_arrangements(const graphs::rooted_tree& T) noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
 	  m_memory_bit_sort(T.get_num_nodes())
@@ -144,7 +142,7 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 
 	// we use a BFS to be able to keep track of the parent of
 	// every vertex with respect to the root.
-	internal::BFS<free_tree> bfs(m_T);
+	internal::BFS<graphs::free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
 		m_intervals[v] = std::vector<node>(m_T.get_degree(v));

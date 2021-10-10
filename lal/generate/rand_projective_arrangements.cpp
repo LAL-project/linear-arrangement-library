@@ -52,13 +52,11 @@
 #include <lal/internal/graphs/make_arrangement.hpp>
 
 namespace lal {
-using namespace graphs;
-using namespace internal;
-
 namespace generate {
 
 rand_projective_arrangements::rand_projective_arrangements
-(const rooted_tree& rT, uint64_t seed) noexcept
+(const graphs::rooted_tree& rT, uint64_t seed)
+noexcept
 	: m_rT(rT)
 {
 #if defined DEBUG
@@ -104,7 +102,7 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	}
 
 	// generate arrangement from data
-	return make_arrangement_intervals(m_rT, m_rdata);
+	return internal::make_arrangement_intervals(m_rT, m_rdata);
 }
 
 } // -- namespace generate

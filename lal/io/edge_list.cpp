@@ -52,8 +52,6 @@
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace io {
 
 template<class G>
@@ -84,32 +82,32 @@ noexcept
 	return g;
 }
 
-std::optional<undirected_graph> read_edge_list_undirected_graph
+std::optional<graphs::undirected_graph> read_edge_list_undirected_graph
 (const std::string& filename, bool norm, bool check)
 noexcept
 {
-	return __read_edge_list<undirected_graph>(filename, norm, check);
+	return __read_edge_list<graphs::undirected_graph>(filename, norm, check);
 }
 
-std::optional<directed_graph> read_edge_list_directed_graph
+std::optional<graphs::directed_graph> read_edge_list_directed_graph
 (const std::string& filename, bool norm, bool check)
 noexcept
 {
-	return __read_edge_list<directed_graph>(filename, norm, check);
+	return __read_edge_list<graphs::directed_graph>(filename, norm, check);
 }
 
-std::optional<free_tree> read_edge_list_free_tree
+std::optional<graphs::free_tree> read_edge_list_free_tree
 (const std::string& filename, bool norm, bool check)
 noexcept
 {
-	return __read_edge_list<free_tree>(filename, norm, check);
+	return __read_edge_list<graphs::free_tree>(filename, norm, check);
 }
 
-std::optional<rooted_tree> read_edge_list_rooted_tree
+std::optional<graphs::rooted_tree> read_edge_list_rooted_tree
 (const std::string& filename, bool norm, bool check)
 noexcept
 {
-	return __read_edge_list<rooted_tree>(filename, norm, check);
+	return __read_edge_list<graphs::rooted_tree>(filename, norm, check);
 }
 
 } // -- namespace io

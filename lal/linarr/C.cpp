@@ -53,8 +53,6 @@
 #include <lal/internal/linarr/C_stack_based.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace linarr {
 
 template<class G>
@@ -84,40 +82,40 @@ noexcept
 }
 
 uint64_t num_crossings(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const algorithms_C& A
 )
 noexcept
 {
-	return num_crossings<directed_graph>(g, {}, A);
+	return num_crossings<graphs::directed_graph>(g, {}, A);
 }
 
 uint64_t num_crossings(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const algorithms_C& A
 )
 noexcept
 {
-	return num_crossings<undirected_graph>(g, {}, A);
+	return num_crossings<graphs::undirected_graph>(g, {}, A);
 }
 
 uint64_t num_crossings(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
 )
 noexcept
 {
-	return num_crossings<directed_graph>(g, pi, A);
+	return num_crossings<graphs::directed_graph>(g, pi, A);
 }
 
 uint64_t num_crossings(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
 )
 {
-	return num_crossings<undirected_graph>(g, pi, A);
+	return num_crossings<graphs::undirected_graph>(g, pi, A);
 }
 
 // -----------------------------------------------------------------------------
@@ -149,23 +147,23 @@ noexcept
 }
 
 std::vector<uint64_t> num_crossings_list(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 noexcept
 {
-	return num_crossings_list<directed_graph>(g, pis, A);
+	return num_crossings_list<graphs::directed_graph>(g, pis, A);
 }
 
 std::vector<uint64_t> num_crossings_list(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
 noexcept
 {
-	return num_crossings_list<undirected_graph>(g, pis, A);
+	return num_crossings_list<graphs::undirected_graph>(g, pis, A);
 }
 
 // -----------------------------------------------------------------------------
@@ -198,45 +196,45 @@ noexcept
 }
 
 uint64_t is_num_crossings_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than<directed_graph>(g, {}, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::directed_graph>(g, {}, upper_bound, A);
 }
 
 uint64_t is_num_crossings_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than<undirected_graph>(g, {}, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::undirected_graph>(g, {}, upper_bound, A);
 }
 
 uint64_t is_num_crossings_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than<directed_graph>(g, pi, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::directed_graph>(g, pi, upper_bound, A);
 }
 
 uint64_t is_num_crossings_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than<undirected_graph>(g, pi, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::undirected_graph>(g, pi, upper_bound, A);
 }
 
 // -----------------------------------------------------------------------------
@@ -269,26 +267,26 @@ noexcept
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	 uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than_list<directed_graph>
+	return is_num_crossings_lesseq_than_list<graphs::directed_graph>
 			(g, pis, upper_bound, A);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than_list<undirected_graph>
+	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>
 			(g, pis, upper_bound, A);
 }
 
@@ -323,26 +321,26 @@ noexcept
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
-	const directed_graph& G,
+	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than_list<directed_graph>
+	return is_num_crossings_lesseq_than_list<graphs::directed_graph>
 			(G, pis, upper_bounds, A);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
-	const undirected_graph& G,
+	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
 )
 noexcept
 {
-	return is_num_crossings_lesseq_than_list<undirected_graph>
+	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>
 			(G, pis, upper_bounds, A);
 }
 

@@ -60,12 +60,10 @@
 #include <lal/internal/linarr/Dmin_Unconstrained_YS.hpp>
 
 namespace lal {
-using namespace graphs;
-
 namespace linarr {
 
-std::pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths(const free_tree& t, const algorithms_Dmin& a)
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths
+(const graphs::free_tree& t, const algorithms_Dmin& a)
 noexcept
 {
 	if (a == algorithms_Dmin::Shiloach) {
@@ -75,8 +73,8 @@ noexcept
 	return internal::Dmin_Unconstrained_FC(t);
 }
 
-std::pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_planar(const free_tree& t, const algorithms_Dmin_planar& a)
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
+(const graphs::free_tree& t, const algorithms_Dmin_planar& a)
 noexcept
 {
 	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
@@ -86,8 +84,8 @@ noexcept
 	return internal::Dmin_Planar_HS(t);
 }
 
-std::pair<uint64_t, linear_arrangement>
-min_sum_edge_lengths_projective(const rooted_tree& t, const algorithms_Dmin_projective& a)
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
+(const graphs::rooted_tree& t, const algorithms_Dmin_projective& a)
 noexcept
 {
 	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {

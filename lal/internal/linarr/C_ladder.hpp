@@ -57,8 +57,6 @@
 #define DECIDED_C_LE C
 
 namespace lal {
-using namespace graphs;
-
 namespace internal {
 
 // =============================================================================
@@ -167,7 +165,7 @@ noexcept
 
 inline
 uint64_t n_C_ladder(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -176,12 +174,12 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_ladder<directed_graph>, g, pi);
+			(__call_C_ladder<graphs::directed_graph>, g, pi);
 }
 
 inline
 uint64_t n_C_ladder(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -190,7 +188,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_ladder<undirected_graph>, g, pi);
+			(__call_C_ladder<graphs::undirected_graph>, g, pi);
 }
 
 // --------------------
@@ -240,20 +238,20 @@ noexcept
 
 inline
 std::vector<uint64_t> n_C_ladder(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
-	return n_C_ladder<directed_graph>(g, pis);
+	return n_C_ladder<graphs::directed_graph>(g, pis);
 }
 std::vector<uint64_t> n_C_ladder(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
-	return n_C_ladder<undirected_graph>(g, pis);
+	return n_C_ladder<graphs::undirected_graph>(g, pis);
 }
 
 // -----------------------------------------------------------------------------
@@ -291,7 +289,7 @@ noexcept
 
 inline
 uint64_t is_n_C_ladder_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -301,12 +299,12 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_ladder_is_lesseq_than<directed_graph>, g, pi, upper_bound);
+			(__call_C_ladder_is_lesseq_than<graphs::directed_graph>, g, pi, upper_bound);
 }
 
 inline
 uint64_t is_n_C_ladder_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -316,7 +314,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_ladder_is_lesseq_than<undirected_graph>, g, pi, upper_bound);
+			(__call_C_ladder_is_lesseq_than<graphs::undirected_graph>, g, pi, upper_bound);
 }
 
 // --------------------
@@ -370,25 +368,25 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
-	return is_n_C_ladder_lesseq_than<directed_graph>
+	return is_n_C_ladder_lesseq_than<graphs::directed_graph>
 			(g, pis, upper_bound);
 }
 
 inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
 noexcept
 {
-	return is_n_C_ladder_lesseq_than<undirected_graph>
+	return is_n_C_ladder_lesseq_than<graphs::undirected_graph>
 			(g, pis, upper_bound);
 }
 
@@ -447,25 +445,25 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
-	return is_n_C_ladder_lesseq_than<directed_graph>
+	return is_n_C_ladder_lesseq_than<graphs::directed_graph>
 			(g, pis, upper_bounds);
 }
 
 inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
-	return is_n_C_ladder_lesseq_than<undirected_graph>
+	return is_n_C_ladder_lesseq_than<graphs::undirected_graph>
 			(g, pis, upper_bounds);
 }
 

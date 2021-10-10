@@ -50,14 +50,11 @@
 #include <lal/internal/macros.hpp>
 #include <lal/internal/data_array.hpp>
 
-namespace lal {
-using namespace graphs;
-using namespace iterators;
-
 #define idx(i,j, C) ((i)*(C) + (j))
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
+namespace lal {
 namespace internal {
 
 // =============================================================================
@@ -72,7 +69,7 @@ namespace internal {
 template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_brute_force_undir(
-	const undirected_graph& g, const linear_arrangement& pi,
+	const graphs::undirected_graph& g, const linear_arrangement& pi,
 	node * const __restrict__ T,
 	uint64_t upper_bound = 0
 )
@@ -139,8 +136,9 @@ noexcept
 template<bool decide_upper_bound = false>
 inline
 std::conditional_t<decide_upper_bound, uint64_t, void>
-__inner_computation_dir(
-	const directed_graph& g, node u, node v,
+__inner_computation_dir
+(
+	const graphs::directed_graph& g, node u, node v,
 	const linear_arrangement& pi, const node * const __restrict__ T,
 	uint64_t& C,
 	uint64_t upper_bound = 0
@@ -206,7 +204,7 @@ noexcept
 template<bool decide_upper_bound = false>
 inline
 uint64_t __compute_C_brute_force_dir(
-	const directed_graph& g, const linear_arrangement& pi,
+	const graphs::directed_graph& g, const linear_arrangement& pi,
 	node * const __restrict__ T,
 	uint64_t upper_bound = 0
 )
@@ -302,7 +300,7 @@ noexcept
 	data_array<node> T(n);
 
 	// compute the number of crossings
-	if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 		return __compute_C_brute_force_undir<false>(g, pi, T.data());
 	}
 	else {
@@ -311,25 +309,26 @@ noexcept
 }
 
 inline
-uint64_t n_C_brute_force(const undirected_graph& g, const linear_arrangement& pi)
+uint64_t n_C_brute_force(const graphs::undirected_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_brute_force<undirected_graph>, g, pi);
+			(__call_C_brute_force<graphs::undirected_graph>, g, pi);
 }
 
 inline
-uint64_t n_C_brute_force(const directed_graph& g, const linear_arrangement& pi)
+uint64_t n_C_brute_force
+(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_C_brute_force<directed_graph>, g, pi);
+			(__call_C_brute_force<graphs::directed_graph>, g, pi);
 }
 
 // --------------------
@@ -360,7 +359,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i], T.data());
 		}
 		else {
@@ -373,22 +372,22 @@ noexcept
 
 inline
 std::vector<uint64_t> n_C_brute_force(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
-	return n_C_brute_force<directed_graph>(g, pis);
+	return n_C_brute_force<graphs::directed_graph>(g, pis);
 }
 
 inline
 std::vector<uint64_t> n_C_brute_force(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
 {
-	return n_C_brute_force<undirected_graph>(g, pis);
+	return n_C_brute_force<graphs::undirected_graph>(g, pis);
 }
 
 // -----------------------------------------------------------------------------
@@ -418,7 +417,7 @@ noexcept
 	data_array<node> T(n);
 
 	// compute the number of crossings
-	if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 		return
 		__compute_C_brute_force_undir<true>(g, pi, T.data(), upper_bound);
 	}
@@ -430,7 +429,7 @@ noexcept
 
 inline
 uint64_t is_n_C_brute_force_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const linear_arrangement& pi,
 	uint64_t c
 )
@@ -440,12 +439,12 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_brute_force_lesseq_than<directed_graph>, g, pi, c);
+			(__call_brute_force_lesseq_than<graphs::directed_graph>, g, pi, c);
 }
 
 inline
 uint64_t is_n_C_brute_force_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const linear_arrangement& pi,
 	uint64_t c
 )
@@ -455,7 +454,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return internal::call_with_empty_arrangement
-			(__call_brute_force_lesseq_than<undirected_graph>, g, pi, c);
+			(__call_brute_force_lesseq_than<graphs::undirected_graph>, g, pi, c);
 }
 
 // --------------------
@@ -487,7 +486,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 			cs[i] =
 			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bound);
 		}
@@ -502,24 +501,26 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t c
 )
 noexcept
 {
-	return is_n_C_brute_force_lesseq_than<directed_graph>(g, pis, c);
+	return is_n_C_brute_force_lesseq_than<graphs::directed_graph>
+			(g, pis, c);
 }
 
 inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t c
 )
 noexcept
 {
-	return is_n_C_brute_force_lesseq_than<undirected_graph>(g, pis, c);
+	return is_n_C_brute_force_lesseq_than<graphs::undirected_graph>
+			(g, pis, c);
 }
 
 template<typename GRAPH>
@@ -553,7 +554,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 			cs[i] =
 			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bounds[i]);
 		}
@@ -568,25 +569,25 @@ noexcept
 
 inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const directed_graph& g,
+	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
-	return is_n_C_brute_force_lesseq_than<directed_graph>
+	return is_n_C_brute_force_lesseq_than<graphs::directed_graph>
 			(g, pis, upper_bounds);
 }
 
 inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const undirected_graph& g,
+	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
-	return is_n_C_brute_force_lesseq_than<undirected_graph>
+	return is_n_C_brute_force_lesseq_than<graphs::undirected_graph>
 			(g, pis, upper_bounds);
 }
 

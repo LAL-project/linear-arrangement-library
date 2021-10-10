@@ -48,13 +48,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/internal/data_array.hpp>
 
-typedef uint64_t bigint;
-
 namespace lal {
-using namespace graphs;
-using namespace numeric;
-using namespace iterators;
-
 namespace properties {
 
 // ------------------------------
@@ -62,10 +56,10 @@ namespace properties {
 
 inline void compute_data_forest
 (
-	const undirected_graph& g, const bigint& n, const bigint& m,
-	bigint& Qs, bigint& n_paths_4, bigint& n_paths_5, bigint& KG,
-	bigint& Phi_1, bigint& Phi_2,
-	bigint& Lambda_1, bigint& Lambda_2
+	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,
+	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
+	uint64_t& Phi_1, uint64_t& Phi_2,
+	uint64_t& Lambda_1, uint64_t& Lambda_2
 )
 noexcept
 {
@@ -73,27 +67,27 @@ noexcept
 	// auxiliary memory and additional variables
 
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
-	internal::data_array<bigint> xi(n);
+	internal::data_array<uint64_t> xi(n);
 
 	// n<k^2>: second moment of degree about zero multiplied by n
-	bigint nk2 = 0;
+	uint64_t nk2 = 0;
 	// n<k^3>: third moment of degree about zero multiplied by n
-	bigint nk3 = 0;
+	uint64_t nk3 = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
-	bigint psi = 0;
+	uint64_t psi = 0;
 
 	// ----------------------
 	// precompute data
 
 	for (node s = 0; s < n; ++s) {
-		const bigint ks = g.get_degree(s);
+		const uint64_t ks = g.get_degree(s);
 		// calculate n*<k^2>, n*<k^3>
 		nk2 += ks*ks;
 		nk3 += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
-			const bigint kt = g.get_degree(t);
+			const uint64_t kt = g.get_degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
 			psi += ks*kt;
@@ -114,11 +108,11 @@ noexcept
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
-	for (E_iterator e_it(g); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [s,t] = e_it.get_edge();
 
-		const bigint ks = g.get_degree(s);
-		const bigint kt = g.get_degree(t);
+		const uint64_t ks = g.get_degree(s);
+		const uint64_t kt = g.get_degree(t);
 
 		n_paths_4 += (ks - 1)*(kt - 1);
 		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
@@ -142,33 +136,35 @@ noexcept
 	Phi_2 /= 2;
 }
 
-rational var_num_crossings_forest_rational(const undirected_graph& g) noexcept {
-	const bigint n = g.get_num_nodes();
-	const bigint m = g.get_num_edges();
+numeric::rational var_num_crossings_forest_rational
+(const graphs::undirected_graph& g) noexcept
+{
+	const uint64_t n = g.get_num_nodes();
+	const uint64_t m = g.get_num_edges();
 
 	// ----------------------------
 	// compute terms dependent of Q
 
-	// bigint of set Q
-	bigint Qs = 0;
+	// uint64_t of set Q
+	uint64_t Qs = 0;
 
 	// n_G(L_4)
-	bigint n_paths_4 = 0;
+	uint64_t n_paths_4 = 0;
 	// n_G(L_5)
-	bigint n_paths_5 = 0;
+	uint64_t n_paths_5 = 0;
 
 	// k_s + k_t + k_u + k_v
-	bigint KG = 0;
+	uint64_t KG = 0;
 	// (k_s*k_t + k_u*k_v)
-	bigint Phi_1 = 0;
+	uint64_t Phi_1 = 0;
 	// (k_s + k_t)(k_u + k_v)
-	bigint Phi_2 = 0;
+	uint64_t Phi_2 = 0;
 
 	// k_s*(a_{tu} + a_{tv}) + k_t*(a_{su} + a_{sv})
 	//             + k_u*(a_{vs} + a_{vt}) + k_v*(a_{us} + a_{ut})
-	bigint Lambda_1 = 0;
+	uint64_t Lambda_1 = 0;
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
-	bigint Lambda_2 = 0;
+	uint64_t Lambda_2 = 0;
 
 	compute_data_forest
 	(
@@ -179,15 +175,15 @@ rational var_num_crossings_forest_rational(const undirected_graph& g) noexcept {
 	);
 
 	// V[C]
-	rational V(0);
-	V += rational(2,45)*(m + 2)*Qs;
-	V -= rational(1,180)*(2*m + 7)*n_paths_4;
-	V -= rational(1,180)*n_paths_5;
-	V += rational(1,90)*KG;
-	V -= rational(1,60)*Lambda_1;
-	V += rational(1,180)*Lambda_2;
-	V += rational(1,180)*Phi_2;
-	V -= rational(1,90)*Phi_1;
+	numeric::rational V(0);
+	V += numeric::rational(2,45)*(m + 2)*Qs;
+	V -= numeric::rational(1,180)*(2*m + 7)*n_paths_4;
+	V -= numeric::rational(1,180)*n_paths_5;
+	V += numeric::rational(1,90)*KG;
+	V -= numeric::rational(1,60)*Lambda_1;
+	V += numeric::rational(1,180)*Lambda_2;
+	V += numeric::rational(1,180)*Phi_2;
+	V -= numeric::rational(1,90)*Phi_1;
 	return V;
 }
 
