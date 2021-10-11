@@ -513,6 +513,7 @@ public:
 	uint64_t get_num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
+		assert(are_size_subtrees_valid());
 #endif
 		return m_size_subtrees[u];
 	}
