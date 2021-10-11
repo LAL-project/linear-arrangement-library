@@ -50,11 +50,18 @@
 namespace lal {
 namespace internal {
 
+// -- for rooted trees
+
 namespace __lal {
+
+template<
+	template<typename... Args> class oContainer,
+	template<typename... Args> class iContainer, typename... iTypes
+>
 inline
 void __make_arrangement_intervals(
 	const graphs::rooted_tree& T, node r,
-	const std::vector<std::vector<lal::node>>& data,
+	const oContainer<iContainer<iTypes...>>& data,
 	position& pos, linear_arrangement& arr
 )
 noexcept
@@ -67,7 +74,7 @@ noexcept
 		arr[r] = pos++;
 		return;
 	}
-	const std::vector<lal::node>& interval = data[r];
+	const auto& interval = data[r];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
@@ -79,10 +86,38 @@ noexcept
 	}
 }
 
+} // namespace __lal
+
+template<
+	template<typename... Args> class oContainer,
+	template<typename... Args> class iContainer, typename... iTypes
+>
+inline
+linear_arrangement make_arrangement_intervals(
+	const graphs::rooted_tree& T,
+	const oContainer<iContainer<iTypes...>>& data
+)
+noexcept
+{
+	linear_arrangement arr(T.get_num_nodes());
+	position pos = 0;
+	__lal::__make_arrangement_intervals(T, T.get_root(), data, pos, arr);
+	return arr;
+}
+
+// -----------------------------------------------------------------------------
+// -- for free trees
+
+namespace __lal {
+
+template<
+	template<typename... Args> class oContainer,
+	template<typename... Args> class iContainer, typename... iTypes
+>
 inline
 void __make_arrangement_intervals(
 	const graphs::free_tree& T, node parent, node u,
-	const std::vector<std::vector<lal::node>>& data,
+	const oContainer<iContainer<iTypes...>>& data,
 	position& pos, linear_arrangement& arr
 )
 noexcept
@@ -90,12 +125,12 @@ noexcept
 	// number of children of 'u' with respect to the tree's root
 	const uint64_t d_out = T.get_degree(u) - (u == parent ? 0 : 1);
 
-	// vertex 'u' is a leaf
+	// vertex 'u' is a leaf in the rooted version of T
 	if (d_out == 0) {
 		arr[u] = pos++;
 		return;
 	}
-	const std::vector<lal::node>& interval = data[u];
+	const auto& interval = data[u];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == u) {
@@ -108,23 +143,14 @@ noexcept
 }
 } // -- namespace __lal
 
-inline
-linear_arrangement make_arrangement_intervals(
-	const graphs::rooted_tree& T,
-	const std::vector<std::vector<lal::node>>& data
-)
-noexcept
-{
-	linear_arrangement arr(T.get_num_nodes());
-	position pos = 0;
-	__lal::__make_arrangement_intervals(T, T.get_root(), data, pos, arr);
-	return arr;
-}
-
+template<
+	template<typename... Args> class oContainer,
+	template<typename... Args> class iContainer, typename... iTypes
+>
 inline
 linear_arrangement make_arrangement_intervals(
 	const graphs::free_tree& T, node root,
-	const std::vector<std::vector<lal::node>>& data
+	const oContainer<iContainer<iTypes...>>& data
 )
 noexcept
 {

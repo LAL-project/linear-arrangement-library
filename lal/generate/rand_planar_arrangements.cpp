@@ -58,7 +58,7 @@ rand_planar_arrangements::rand_planar_arrangements
 (const graphs::free_tree& T, uint64_t seed)
 noexcept
 	: m_T(T),
-	  m_rdata(std::vector<std::vector<node>>(m_T.get_num_nodes())),
+	  m_rdata(m_T.get_num_nodes()),
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined DEBUG
@@ -74,7 +74,7 @@ noexcept
 
 	// initialise m_rdata with the degrees of the tree
 	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
-		m_rdata[u] = std::vector<node>(m_T.get_degree(u));
+		m_rdata[u].resize(m_T.get_degree(u));
 	}
 }
 
@@ -83,7 +83,7 @@ rand_planar_arrangements::rand_planar_arrangements
 noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
-	  m_rdata(std::vector<std::vector<node>>(m_T.get_num_nodes())),
+	  m_rdata(m_T.get_num_nodes()),
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined DEBUG
@@ -99,7 +99,7 @@ noexcept
 
 	// initialise m_rdata with the degrees of the tree
 	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
-		m_rdata[u] = std::vector<node>(m_T.get_degree(u));
+		m_rdata[u].resize(m_T.get_degree(u));
 	}
 }
 
@@ -108,7 +108,7 @@ void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,
 	// Its size must be equal to the number of vertices of the tree.
-	std::vector<std::vector<node>>& data,
+	internal::data_array<std::vector<node>>& data,
 	// random number generator
 	GEN& gen
 )
@@ -126,9 +126,9 @@ void make_random_projective(
 		);
 	}
 
-	// Choose random positions for the intervals corresponding to the
-	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'.
+	// Choose random positions for the intervals corresponding
+	// to the trees rooted at 'u's children, and to the interval
+	// corresponding to vertex 'u'.
 	std::shuffle(
 		inter.begin(),
 		inter.end(),
@@ -176,9 +176,8 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 		);
 	}
 
-	// Choose random positions for the intervals corresponding to the
-	// vertex 'r' and to the trees rooted at 'r's children. These choices
-	// have to be made with respect to 'r'.
+	// Choose random positions for the intervals corresponding
+	// to the trees rooted at 'r's children.
 	std::shuffle(
 		root_interval.begin() + 1,
 		root_interval.end(),

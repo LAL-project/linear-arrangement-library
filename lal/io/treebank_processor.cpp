@@ -245,7 +245,7 @@ treebank_error treebank_processor::process() noexcept {
 		if (m_use_custom_header) {
 			out_treebank_file << m_custom_header;
 			if (m_custom_header.back() != '\n') {
-				out_treebank_file << "\n";
+				out_treebank_file << '\n';
 			}
 		}
 		else {
@@ -314,7 +314,7 @@ treebank_error treebank_processor::process() noexcept {
 
 					case treebank_feature::tree_centre:
 					case treebank_feature::tree_centroid:
-						out_treebank_file << internal::treebank_feature_string(tf) << "1";
+						out_treebank_file << internal::treebank_feature_string(tf) << '1';
 						out_treebank_file << m_separator;
 						out_treebank_file << internal::treebank_feature_string(tf) << "2";
 						break;
@@ -333,7 +333,7 @@ treebank_error treebank_processor::process() noexcept {
 				}
 			}
 
-			out_treebank_file << "\n";
+			out_treebank_file << '\n';
 		}
 	}
 
@@ -416,10 +416,10 @@ const noexcept
 	const auto output_tt =
 	[&](const graphs::tree_type& tt) {
 		if (fT.is_of_tree_type(tt)) {
-			out_treebank_file << "1";
+			out_treebank_file << '1';
 		}
 		else {
-			out_treebank_file << "0";
+			out_treebank_file << '0';
 		}
 	};
 
@@ -447,10 +447,10 @@ const noexcept
 	[&](const linarr::syntactic_dependency_structure& sdst) {
 		const size_t idx_tt = static_cast<size_t>(sdst);
 		if (v[idx_tt]) {
-			out_treebank_file << "1";
+			out_treebank_file << '1';
 		}
 		else {
-			out_treebank_file << "0";
+			out_treebank_file << '0';
 		}
 	};
 
@@ -868,7 +868,7 @@ const noexcept
 		}
 	}
 
-	out_treebank_file << "\n";
+	out_treebank_file << '\n';
 }
 
 } // -- namespace io

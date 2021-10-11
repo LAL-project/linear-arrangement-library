@@ -57,7 +57,8 @@ namespace generate {
 rand_projective_arrangements::rand_projective_arrangements
 (const graphs::rooted_tree& rT, uint64_t seed)
 noexcept
-	: m_rT(rT)
+	: m_rT(rT),
+	  m_rdata(m_rT.get_num_nodes())
 {
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());
@@ -71,21 +72,16 @@ noexcept
 	}
 
 	// initialise the random data of all vertices
-	m_rdata = std::vector<std::vector<node>>(m_rT.get_num_nodes());
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		m_rdata[u] = std::vector<node>(m_rT.get_out_degree(u) + 1);
-
 		// the children of vertex 'u'
 		const neighbourhood& neighs = m_rT.get_out_neighbours(u);
 
 		// fill interval with the root vertex and its children
 		auto& interval = m_rdata[u];
-		interval[0] = u;
-		std::copy(
-			neighs.begin(),
-			neighs.end(),
-			interval.begin() + 1
-		);
+		interval.resize(m_rT.get_out_degree(u) + 1);
+
+		std::copy(neighs.begin(), neighs.end(), interval.begin());
+		interval.back() = u;
 	}
 }
 

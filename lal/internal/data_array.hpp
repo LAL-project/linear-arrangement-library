@@ -179,6 +179,10 @@ public:
 		return m_data[i];
 	}
 
+	// return the last element
+	T& back() noexcept { return m_data[m_size - 1]; }
+	const T& back() const noexcept { return m_data[m_size - 1]; }
+
 	// assign the same value to every element in the data
 	void fill(const T& v) noexcept {
 		std::fill(begin(), end(), v);

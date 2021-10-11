@@ -184,7 +184,7 @@ private:
 	/// Vertex at which we root the tree.
 	node m_root;
 	/// The interval of every node of the tree
-	std::vector<std::vector<node>> m_intervals;
+	internal::data_array<std::vector<node>> m_intervals;
 
 	/// Array for the bit sort algorithm
 	internal::data_array<char> m_memory_bit_sort;

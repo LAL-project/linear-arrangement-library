@@ -48,6 +48,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
+#include <lal/internal/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -180,7 +181,7 @@ private:
 	/// Constant reference to rooted tree.
 	const graphs::rooted_tree& m_rT;
 	/// The interval of every node of the tree
-	std::vector<std::vector<node>> m_intervals;
+	internal::data_array<internal::data_array<node>> m_intervals;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 

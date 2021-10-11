@@ -59,18 +59,19 @@ namespace generate {
 /* CONSTRUCTORS */
 
 all_projective_arrangements::all_projective_arrangements
-(const graphs::rooted_tree& rT) noexcept
-	: m_rT(rT)
+(const graphs::rooted_tree& rT)
+noexcept
+	: m_rT(rT),
+	  m_intervals(m_rT.get_num_nodes())
 {
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());
 #endif
 
-	m_intervals = std::vector<std::vector<node>>(m_rT.get_num_nodes());
 	// allocate memory
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		const uint64_t d = m_rT.get_out_degree(u);
-		m_intervals[u] = std::vector<node>(d + 1);
+		m_intervals[u].resize(d + 1);
 	}
 	reset();
 }
@@ -95,7 +96,7 @@ void all_projective_arrangements::next() noexcept {
 	bool has_perm = false;
 	node u = 0;
 	while (u < m_rT.get_num_nodes() and not has_perm) {
-		std::vector<node>& inter_u = m_intervals[u];
+		auto& inter_u = m_intervals[u];
 
 		has_perm = std::next_permutation(inter_u.begin(), inter_u.end());
 		if (not has_perm) {
@@ -124,7 +125,7 @@ void all_projective_arrangements::initialise_intervals_tree() noexcept {
 
 void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 	const neighbourhood& neighs_u = m_rT.get_out_neighbours(u);
-	std::vector<node>& interval_u = m_intervals[u];
+	auto& interval_u = m_intervals[u];
 
 	if (m_rT.is_normalised()) {
 		// copy directly vertices from the neighbour
@@ -156,10 +157,10 @@ void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 			interval_u[i] = neighs_u[i];
 		}
 		interval_u.back() = u;
+
 		// sort using bitsort
-		internal::bit_sort<node>(
-			interval_u.begin(), interval_u.end(), interval_u.size()
-		);
+		internal::bit_sort<node>
+		(interval_u.begin(), interval_u.end(), interval_u.size());
 	}
 }
 
