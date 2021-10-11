@@ -77,7 +77,10 @@ namespace io {
  *		auto err = tbcolreader.init(mainf)
  *		while (not tbcolreader.end()) {
  *			lal::io::treebank_reader& tbreader = tbcolreader.get_treebank_reader();
- *			if (not tbreader.is_open()) { continue; }
+ *			if (not tbreader.is_open()) {
+ *				tbcolreader.next_treebank();
+ *				continue;
+ *			}
  *			// here goes your custom processing of the treebank
  *			// ...
  *
