@@ -47,6 +47,7 @@
 #endif
 #include <vector>
 #include <array>
+#include <string>
 
 // lal includes
 #include <lal/graphs/graph.hpp>

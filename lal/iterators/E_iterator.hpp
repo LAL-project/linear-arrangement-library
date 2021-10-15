@@ -170,7 +170,7 @@ private:
 		m_reached_end = false;
 
 		m_cur.first = 0;
-		m_cur.second = static_cast<size_t>(-1);
+		m_cur.second = static_cast<std::size_t>(-1);
 
 		auto [found, new_pointer] = find_next_edge();
 		if (not found) {

@@ -195,7 +195,7 @@ private:
 		}
 
 		m_cur1 = E_pointer(0, 0);
-		m_cur2 = E_pointer(1, static_cast<size_t>(-1));
+		m_cur2 = E_pointer(1, static_cast<std::size_t>(-1));
 
 		const auto [found, new_cur1, new_cur2] =
 			find_next_pair(
