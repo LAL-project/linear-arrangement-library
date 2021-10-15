@@ -186,10 +186,8 @@ public:
 	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
 	 * - @ref lal::io::treebank_error_type::output_directory_could_not_be_created
 	 */
-	treebank_error init(
-		const std::string& main_file,
-		const std::string& output_directory
-	)
+	treebank_error init
+	(const std::string& main_file, const std::string& output_directory)
 	noexcept;
 
 	/**
@@ -229,7 +227,7 @@ private:
 
 private:
 	/// The list of names of the treebanks.
-	std::vector<std::string> m_all_individual_treebank_names;
+	std::vector<std::string> m_all_individual_treebank_ids;
 	/// The name of the file that joins all result files.
 	std::string m_join_to_file = "";
 	/// Join the files into a single file.
@@ -277,7 +275,7 @@ noexcept
 	treebank_collection_processor tbcolproc;
 	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
 	tbcolproc.set_number_threads(num_threads);
-	if (err.get_error_type() != treebank_error_type::no_error) {
+	if (err != treebank_error_type::no_error) {
 		return err;
 	}
 	return tbcolproc.process();

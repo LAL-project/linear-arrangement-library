@@ -194,15 +194,13 @@ private:
  * @returns A treebank error (see @ref lal::io::treebank_error) if any.
  */
 inline
-treebank_error process_treebank(
-	const std::string& treebank_file,
-	const std::string& output_file
-)
+treebank_error process_treebank
+(const std::string& treebank_file, const std::string& output_file)
 noexcept
 {
 	treebank_processor tbproc;
 	auto err = tbproc.init(treebank_file, output_file);
-	if (err.get_error_type() != treebank_error_type::no_error) {
+	if (err != treebank_error_type::no_error) {
 		return err;
 	}
 	return tbproc.process();

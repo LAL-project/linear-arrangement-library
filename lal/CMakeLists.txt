@@ -186,7 +186,6 @@ target_sources(
 		internal/graphs/utils.hpp
 		#      io
 		internal/io/check_correctness.hpp
-		internal/io/treebank_feature.hpp
 		#      iterators
 		#          nothing
 		#      linarr

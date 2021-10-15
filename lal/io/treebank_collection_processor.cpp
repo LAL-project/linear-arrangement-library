@@ -58,7 +58,6 @@
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
-#include <lal/internal/io/treebank_feature.hpp>
 #include <lal/internal/io/check_correctness.hpp>
 
 #define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
@@ -88,13 +87,15 @@ treebank_error treebank_collection_processor::init
 noexcept
 {
 	// initialise data
-	m_all_individual_treebank_names.clear();
-	m_errors_from_processing.clear();
+	m_all_individual_treebank_ids.clear();
 	m_main_file = file;
 	m_out_dir = odir;
 
 	// initalise features vector
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
+
+	// initialise column names
+	initialise_column_names();
 
 	// make sure main file exists
 	if (not std::filesystem::exists(m_main_file)) {
@@ -119,6 +120,8 @@ noexcept
 
 treebank_error treebank_collection_processor::process() noexcept
 {
+	m_errors_from_processing.clear();
+
 	if (m_check_before_process) {
 		const bool err =
 		internal::check_correctness_treebank_collection<true>
@@ -157,10 +160,10 @@ treebank_error treebank_collection_processor::process() noexcept
 	const int tid = omp_get_thread_num();
 
 	if (tid == 0) {
-		std::string treebank_filename, treebank_name;
+		std::string treebank_id, treebank_filename;
 
 		// this is executed only by the main thread
-		while (main_file_reader >> treebank_name >> treebank_filename) {
+		while (main_file_reader >> treebank_id >> treebank_filename) {
 
 			// full path to the treebank file
 			std::filesystem::path treebank_file_full_path(m_main_file);
@@ -168,10 +171,10 @@ treebank_error treebank_collection_processor::process() noexcept
 
 			// full path to the output file corresponding to this treebank
 			std::filesystem::path output_file_full_path(m_out_dir);
-			output_file_full_path /= make_result_file_name(treebank_name);
+			output_file_full_path /= make_result_file_name(treebank_id);
 
 			// store the name of the treebank so that we can join the files later
-			m_all_individual_treebank_names.push_back(treebank_name);
+			m_all_individual_treebank_ids.push_back(treebank_id);
 
 			// Launch a task consisting of processing a treebank, catching
 			// error, and storing it into 'm_errors_from_processing'.
@@ -183,32 +186,31 @@ treebank_error treebank_collection_processor::process() noexcept
 				tbproc.init(
 					treebank_file_full_path.string(),
 					output_file_full_path.string(),
-					treebank_name
+					treebank_id
 				);
 				tbproc.clear_features();
 				tbproc.set_output_header(m_output_header);
 				tbproc.set_separator(m_separator);
 				tbproc.set_verbosity(m_be_verbose);
-				if (m_use_custom_header) {
-					tbproc.set_custom_header(m_custom_header);
-				}
 
 				// add features in this treebank collection processor
 				for (size_t i = 0; i < __treebank_feature_size; ++i) {
 					if (m_what_fs[i]) {
-						tbproc.add_feature(static_cast<treebank_feature>(i));
+						tbproc.add_feature(index_to_treebank_feature(i));
 					}
+					tbproc.set_column_name
+					(index_to_treebank_feature(i), m_column_names[i]);
 				}
 
 				// process the treebank file
 				const auto err = tbproc.process();
-				if (err.get_error_type() != treebank_error_type::no_error) {
+				if (err != treebank_error_type::no_error) {
 					#pragma omp critical
 					{
 					m_errors_from_processing.push_back(make_tuple(
 						err,
 						treebank_file_full_path.string(),
-						treebank_name
+						treebank_id
 					));
 					}
 				}
@@ -219,7 +221,7 @@ treebank_error treebank_collection_processor::process() noexcept
 
 	if (m_join_files) {
 		const auto err = join_all_files();
-		if (err.get_error_type() != treebank_error_type::no_error) {
+		if (err != treebank_error_type::no_error) {
 			m_errors_from_processing.push_back(make_tuple(
 				err,
 				m_main_file,
@@ -267,8 +269,8 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 	bool first_time_encounter_header = true;
 
 	// read all files and dump their contents into
-	for (size_t i = 0; i < m_all_individual_treebank_names.size(); ++i) {
-		const std::string& name_of_treebank = m_all_individual_treebank_names[i];
+	for (size_t i = 0; i < m_all_individual_treebank_ids.size(); ++i) {
+		const std::string& name_of_treebank = m_all_individual_treebank_ids[i];
 
 		std::filesystem::path path_to_treebank_result(m_out_dir);
 		path_to_treebank_result /= make_result_file_name(name_of_treebank);

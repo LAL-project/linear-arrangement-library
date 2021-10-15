@@ -77,14 +77,12 @@ public:
 	// SETTERS
 
 	/// Should the treebank file or collection be checked for errors prior to processing?
-	void set_check_before_process(bool v) noexcept {
-		m_check_before_process = v;
-	}
+	void set_check_before_process(bool v) noexcept
+	{ m_check_before_process = v; }
 
 	/// Clear the features in the processor.
-	void clear_features() noexcept {
-		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
-	}
+	void clear_features() noexcept
+	{ std::fill(m_what_fs.begin(), m_what_fs.end(), false); }
 
 	/**
 	 * @brief Sets the separator character.
@@ -112,12 +110,18 @@ public:
 	void set_output_header(bool h) noexcept { m_output_header = h; }
 
 	/**
-	 * @brief Sets the custom header.
-	 * @param h Custom header.
+	 * @brief Sets a custom name for the column corresponding to a given feature.
+	 *
+	 * This does not work for features
+	 * - @ref lal::io::treebank_feature::tree_type
+	 * - @ref lal::io::treebank_feature::syntactic_dependency_structure_class
+	 * @param tf Feature whose column name is to be modified.
+	 * @param name Custom name for the column.
 	 */
-	void set_custom_header(const std::string& h = "") noexcept {
-		m_custom_header = h;
-		m_use_custom_header = true;
+	void set_column_name(const treebank_feature& tf, const std::string& name)
+	noexcept
+	{
+		m_column_names[static_cast<std::size_t>(tf)] = name;
 	}
 
 	// GETTERS
@@ -131,6 +135,8 @@ public:
 	{ return m_what_fs[ static_cast<size_t>(fs) ]; }
 
 protected:
+	/// String for each column.
+	std::array<std::string, __treebank_feature_size> m_column_names;
 	/// The list of features to be computed.
 	std::array<bool, __treebank_feature_size> m_what_fs;
 
@@ -140,10 +146,7 @@ protected:
 	char m_separator = '\t';
 	/// Output a header for each file
 	bool m_output_header = true;
-	/// Header to be used in place of the LAL-generated header
-	std::string m_custom_header = "";
-	/// Use the custom header @ref m_custom_header or not.
-	bool m_use_custom_header = false;
+
 	/**
 	 * @brief The verbosity of the processor.
 	 *
@@ -151,6 +154,14 @@ protected:
 	 * will output progress messages.
 	 */
 	int m_be_verbose = 0;
+
+protected:
+	/// Initialises column names @ref m_column_names
+	void initialise_column_names() noexcept {
+		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+			m_column_names[i] = treebank_feature_index_to_string(i);
+		}
+	}
 };
 
 } // -- namespace io
