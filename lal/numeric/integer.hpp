@@ -215,7 +215,7 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool friend operator== (T i, const integer& ii) noexcept
+	friend bool operator== (T i, const integer& ii) noexcept
 	{ return ii == i; }
 #endif
 	/**
@@ -241,7 +241,7 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool friend operator!= (T i, const integer& ii) noexcept
+	friend bool operator!= (T i, const integer& ii) noexcept
 	{ return ii != i; }
 #endif
 	/**
