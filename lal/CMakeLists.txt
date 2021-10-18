@@ -429,6 +429,8 @@ set(LIBLAL_LINARR_HEADER
 	linarr/2level.hpp
 	linarr/algorithms_C.hpp
 	linarr/algorithms_Dmin.hpp
+	linarr/algorithms_Dmin_planar.hpp
+	linarr/algorithms_Dmin_projective.hpp
 	linarr/C.hpp
 	linarr/classify_syntactic_dependency_structure.hpp
 	linarr/D.hpp
