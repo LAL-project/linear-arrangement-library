@@ -61,15 +61,15 @@ public:
 	}
 
 	[[nodiscard]]
-	size_t remove(const T& x) {
-		size_t top = 0;
+	uint64_t remove(const T& x) noexcept {
+		uint64_t top = 0;
 		root = remove(root, x, top);
 		return top;
 	}
 
 	// pre: -> v is sorted.
 	//      -> v[0] > largest element of tree
-	void join_sorted_all_greater(const std::vector<T>& v) {
+	void join_sorted_all_greater(const std::vector<T>& v) noexcept {
 		// do nothing if there is no data, duh
 		if (v.size() == 0) { return; }
 		// make the tree with the new info
@@ -195,7 +195,7 @@ private:
 	// ---------------------------------------------------------- //
 	// FUNCTIONS
 
-	void free_node(tree_node *n) {
+	void free_node(tree_node *n) noexcept {
 		if (n == nullptr) {
 			return;
 		}
@@ -210,7 +210,7 @@ private:
 	// rotations of nodes
 	//     assume _n has a left subtree
 	[[nodiscard]]
-	tree_node *right_rotation(tree_node *_n) {
+	tree_node *right_rotation(tree_node *_n) noexcept {
 #if defined DEBUG
 		assert(_n != nullptr);
 #endif
@@ -261,7 +261,7 @@ private:
 	// rotations of nodes
 	//     assume _n has a right subtree
 	[[nodiscard]]
-	tree_node *left_rotation(tree_node *_n) {
+	tree_node *left_rotation(tree_node *_n) noexcept {
 #if defined DEBUG
 		assert(_n != nullptr);
 #endif
@@ -305,26 +305,26 @@ private:
 	//     left_* cases assume that _n has left subtree
 	//     right_* cases assume that _n has right subtree
 	[[nodiscard]]
-	tree_node *left_left_case(tree_node *n) {
+	tree_node *left_left_case(tree_node *n) noexcept {
 		return right_rotation(n);
 	}
 	[[nodiscard]]
-	tree_node *left_right_case(tree_node *n) {
+	tree_node *left_right_case(tree_node *n) noexcept {
 		n->left = left_rotation(n->left);
 		return right_rotation(n);
 	}
 	[[nodiscard]]
-	tree_node *right_right_case(tree_node *n) {
+	tree_node *right_right_case(tree_node *n) noexcept {
 		return left_rotation(n);
 	}
 	[[nodiscard]]
-	tree_node *right_left_case(tree_node *n) {
+	tree_node *right_left_case(tree_node *n) noexcept {
 		n->right = right_rotation(n->right);
 		return left_rotation(n);
 	}
 	// returns the root of the new balanced tree
 	[[nodiscard]]
-	tree_node *balance(tree_node *n) {
+	tree_node *balance(tree_node *n) noexcept {
 		if (n == nullptr) { return nullptr; }
 #if defined DEBUG
 		assert(std::abs(n->bf) <= 2);
@@ -371,7 +371,7 @@ private:
 	 * Returns the newly created tree node
 	 */
 	[[nodiscard]]
-	tree_node *insert(tree_node *p, tree_node *n, char s, const T& x) {
+	tree_node *insert(tree_node *p, tree_node *n, char s, const T& x) noexcept {
 		// create a new node
 		if (n == nullptr) {
 			n = new tree_node();
@@ -413,7 +413,7 @@ private:
 	/* REMOVAL OF ELEMENTS */
 
 	[[nodiscard]]
-	tree_node *remove_leftmost(tree_node *n, T *k = nullptr) {
+	tree_node *remove_leftmost(tree_node *n, T *k = nullptr) noexcept {
 		if (n->left == nullptr) {
 			// retrieve leftmost key
 			if (k != nullptr) {
@@ -431,7 +431,7 @@ private:
 		return balance(n);
 	}
 	[[nodiscard]]
-	tree_node *remove_rightmost(tree_node *n, T *k = nullptr) {
+	tree_node *remove_rightmost(tree_node *n, T *k = nullptr) noexcept {
 		if (n->right == nullptr) {
 			// this is the rightmost
 			if (k != nullptr) {
@@ -457,7 +457,7 @@ private:
 	// tree, so there will be work to be done after each recursive call to
 	// 'remove'.
 	[[nodiscard]]
-	tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) {
+	tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) noexcept {
 		if (n == nullptr) {
 			// not found
 			on_top = 0;
@@ -544,7 +544,7 @@ private:
 	// -> height(T1) >= height(T2)
 	// -> L < S
 	[[nodiscard]]
-	tree_node *join_taller(tree_node *T1, tree_node *T2) {
+	tree_node *join_taller(tree_node *T1, tree_node *T2) noexcept {
 #if defined DEBUG
 		assert(T1 != nullptr);
 		assert(T2 != nullptr);
@@ -614,7 +614,7 @@ private:
 	// -> height(T1) < height(T2)
 	// -> L < S
 	[[nodiscard]]
-	tree_node *join_shorter(tree_node *T1, tree_node *T2) {
+	tree_node *join_shorter(tree_node *T1, tree_node *T2) noexcept {
 #if defined DEBUG
 		assert(T1 != nullptr);
 		assert(T2 != nullptr);
@@ -685,6 +685,7 @@ private:
 		const std::vector<T>& v,
 		int64_t l, int64_t r, tree_node *p, char s
 	)
+	noexcept
 	{
 		if (l > r) { return nullptr; }
 		const int64_t m = (l + r)/2;
