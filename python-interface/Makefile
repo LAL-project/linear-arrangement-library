@@ -18,12 +18,15 @@ endif
 ifneq ($(BUILD),debug)
 ifneq ($(BUILD),release)
 $(info Error: invalid value for BUILD variable: $(BUILD))
+exit 1
 endif
 endif
+
 # distribution is devel by default
 ifneq ($(ENVIR),devel)
 ifneq ($(ENVIR),dist)
 $(info Error: invalid value for ENVIR variable: $(ENVIR))
+exit 1
 endif
 endif
 
@@ -32,7 +35,7 @@ ifeq ($(OS),Windows_NT)
 	OS_ID = windows
 else
 	# from https://gist.github.com/sighingnow/deee806603ec9274fd47
-	UNAME_S := $(shell uname -s)
+	UNAME_S = $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OS_ID = linux
 	endif
@@ -40,16 +43,24 @@ else
 	ifeq ($(UNAME_S),Darwin)
 		OS_ID = macos
 	endif
-	
-	ifeq ($(UNAME_S),unknown)
-		$(info Error: Unknown Operative System '$(UNAME_S)'. Contact the developers)
-	endif
+endif
+
+$(info Building for OS '$(OS_ID)')
+ifeq ($(OS_ID),unknown)
+
+$(info Error: Unknown Operative System '$(OS_ID)'. Contact the developers)
+$(info .    https://github.com/LAL-project/linear-arrangement-library)
+$(info .    https://cqllab.upc.edu/lal/)
+
+all: leave
+leave:
+	exit 1
+
 endif
 
 ########################################################################
 # OUTPUT DEBUG INFORMATION
 
-$(info Building for: $(OS_ID))
 $(info Compilation mode: $(BUILD))
 $(info Link against: $(ENVIR))
 $(info .    'devel' = development distribution)
@@ -195,7 +206,7 @@ else ifeq ($(OS_ID),macos)
 	MINOR_PY_LINK	= -lpython3.$(MINOR_VERSION_PYTHON)
 	
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= /usr/local/lib/python3.$(MINOR_VERSION_PYTHON)/dist-packages
+	LAL_PY_DEST		= ~/opt/anaconda3/lib/python3.$(MINOR_VERSION_PYTHON)/site-packages
 	
 	# Other flags needed to compile against Python
 	EXTRA_FLAGS		= -flat_namespace
@@ -224,8 +235,10 @@ SWIG_FLAGS_32	= -DSWIGWORDSIZE32
 SWIG_FLAGS_64 	= -DSWIGWORDSIZE64
 ifeq ($(OS_ID),windows)
 	SWIG_FLAGS	= $(SWIG_FLAGS_32)
-else
+else ifeq ($(OS_ID),linux)
 	SWIG_FLAGS	= $(SWIG_FLAGS_$(ARCH))
+else ifeq ($(OS_ID),macos)
+	SWIG_FLAGS	= 
 endif
 
 # -------------------
@@ -237,7 +250,7 @@ ifeq ($(OS_ID),windows)
 	
 	CXX			= g++
 	FLAGS		= -std=c++17 -fPIC -fopenmp
-	INCLUDES	= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
+	INCLUDES	= -I $(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
 
 else ifeq ($(OS_ID),linux)
 	# ----------------
@@ -245,7 +258,7 @@ else ifeq ($(OS_ID),linux)
 	
 	CXX			= g++
 	FLAGS		= -std=c++17 -fPIC -fopenmp
-	INCLUDES	= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
+	INCLUDES	= -I $(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
 
 else ifeq ($(OS_ID),macos)
 	# ----------------
@@ -253,7 +266,7 @@ else ifeq ($(OS_ID),macos)
 	
 	CXX			= /usr/local/Cellar/gcc/11.2.0/bin/g++-11
 	FLAGS		= -std=c++17 -fPIC -fopenmp
-	INCLUDES	= -I$(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
+	INCLUDES	= -I $(PYTHON_INC_DIR) -I$(LAL_INC_DIR)
 
 endif
 
@@ -304,7 +317,7 @@ else ifeq ($(BUILD),release)
 endif
 
 # complete linkage flags
-LIBS += -lgmp -fopenmp -lpthread
+LIBS += -lgmp -fopenmp -lpthread $(EXTRA_FLAGS)
 ifeq ($(PYTHON_LIB_DIR), )
 	ifneq ($(MINOR_PY_LINK), )
 		LIBS += -L $(MINOR_PY_LINK)
