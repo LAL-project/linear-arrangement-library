@@ -53,7 +53,6 @@
 #include <lal/internal/data_array.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
-#define to_uint64(x) static_cast<uint64_t>(x)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 
 namespace lal {
@@ -63,6 +62,12 @@ namespace internal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
+// When decide_upper_bound is false:
+//		returns the number of crossings
+// When decide_upper_bound is true:
+//		returns m*m + 1 if the number of crossings is greater than the upper_bound
+//		returns the number of crossings if the number of crossings is less
+//			than the upper_bound
 // T: translation table, inverse of pi:
 // T[p] = u <-> at position p we find node u
 template<class G, bool decide_upper_bound>
@@ -70,7 +75,7 @@ inline
 uint64_t __compute_C_dyn_prog
 (
 	const G& g, const linear_arrangement& pi,
-	char * const __restrict__ bn,
+	unsigned char * const __restrict__ bn,
 	node * const __restrict__ inv_pi,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
@@ -104,7 +109,7 @@ noexcept
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
 		// the arrangement
-		k -= to_uint64(bn[inv_pi[0]] + bn[inv_pi[1]]);
+		k -= bn[inv_pi[0]] + bn[inv_pi[1]];
 		bn[inv_pi[0]] = bn[inv_pi[1]] = 0;
 
 		// this is done because there is no need to
@@ -112,7 +117,7 @@ noexcept
 
 		// Now we start filling M at the third column
 		for (uint64_t i = 3; i < n; ++i) {
-			k -= to_uint64(bn[inv_pi[i - 1]]);
+			k -= bn[inv_pi[i - 1]];
 
 			// the row corresponding to node 'u' in M is
 			// the same as its position in the sequence.
@@ -238,7 +243,7 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n);
+	data_array<unsigned char> bool_neighs(n);
 
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
@@ -313,7 +318,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n);
+	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -374,7 +379,7 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n);
+	data_array<unsigned char> bool_neighs(n);
 
 	const size_t n_elems = n + 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
@@ -455,7 +460,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n);
+	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -534,7 +539,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n);
+	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {

@@ -64,8 +64,9 @@ namespace internal {
 // When decide_upper_bound is false:
 //		returns the number of crossings
 // When decide_upper_bound is true:
-//		returns 1 if the number of crossings than the upper_bound
-//		returns 0 if the number of crossings than the upper_bound
+//		returns m*m + 1 if the number of crossings is greater than the upper_bound
+//		returns the number of crossings if the number of crossings is less
+//			than the upper_bound
 template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_brute_force_undir(

@@ -50,9 +50,7 @@
 #include <lal/internal/macros.hpp>
 #include <lal/internal/graphs/utils.hpp>
 #include <lal/internal/data_array.hpp>
-#include <lal/graphs/output.hpp>
 
-#define to_uint64(x) static_cast<uint64_t>(x)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
@@ -63,11 +61,17 @@ namespace internal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
+// When decide_upper_bound is false:
+//		returns the number of crossings
+// When decide_upper_bound is true:
+//		returns m*m + 1 if the number of crossings is greater than the upper_bound
+//		returns the number of crossings if the number of crossings is less
+//			than the upper_bound
 template<class G, bool decide_upper_bound>
 inline
 uint64_t __compute_C_ladder(
 	const G& g, const linear_arrangement& pi,
-	char * const __restrict__ bn,
+	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ inv_pi,
 	uint64_t * const __restrict__ L1,
 	uint64_t upper_bound = 0
@@ -107,8 +111,8 @@ noexcept
 				C += S - L1[q];
 				++L1[q];
 			}*/
-			C += to_uint64(bn[v])*(S - L1[q]);
-			L1[q] += to_uint64(bn[v]);
+			C += bn[v]*(S - L1[q]);
+			L1[q] += bn[v];
 			// --
 
 			if constexpr (decide_upper_bound) {
@@ -149,7 +153,7 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n, 0);
+	data_array<unsigned char> bool_neighs(n, 0);
 
 	const uint64_t n_elems = n + n;
 	data_array<uint64_t> all_memory(n_elems, 0);
@@ -209,7 +213,7 @@ noexcept
 		return cs;
 	}
 
-	data_array<char> boolean_neighborhood(n, 0);
+	data_array<unsigned char> boolean_neighborhood(n, 0);
 	data_array<uint64_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
@@ -275,7 +279,7 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<char> bool_neighs(n, 0);
+	data_array<unsigned char> bool_neighs(n, 0);
 	data_array<uint64_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
@@ -336,7 +340,7 @@ noexcept
 		return cs;
 	}
 
-	data_array<char> boolean_neighborhood(n, 0);
+	data_array<unsigned char> boolean_neighborhood(n, 0);
 	data_array<uint64_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
@@ -411,7 +415,7 @@ noexcept
 		return cs;
 	}
 
-	data_array<char> boolean_neighborhood(n, 0);
+	data_array<unsigned char> boolean_neighborhood(n, 0);
 	data_array<uint64_t> all_memory(n + n, 0);
 
 	// inverse function of the linear arrangement:
