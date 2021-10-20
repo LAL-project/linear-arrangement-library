@@ -63,13 +63,15 @@ namespace internal {
  */
 template<
 	class G,
+	typename char_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>,
+		(std::is_base_of_v<graphs::directed_graph, G> ||
+		std::is_base_of_v<graphs::undirected_graph, G>) &&
+		std::is_integral_v<char_type>,
 	bool> = true
 >
 inline
-void get_bool_neighbours(const G& g, node u, char * const neighs)
+void get_bool_neighbours(const G& g, node u, char_type * const neighs)
 noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
