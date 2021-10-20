@@ -72,11 +72,11 @@ public:
 	void join_sorted_all_greater(const std::vector<T>& v) noexcept {
 		// do nothing if there is no data, duh
 		if (v.size() == 0) { return; }
+		
 		// make the tree with the new info
 		tree_node *n =
-		_make_tree(
-			v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0'
-		);
+			_make_tree
+			(v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0');
 
 		// join the two trees
 
@@ -140,7 +140,6 @@ private:
 		tree_node *right = nullptr;
 
 		void compute_height() noexcept {
-
 			const int64_t lh =
 			(left != nullptr ? static_cast<int64_t>(left->height) : -1);
 
@@ -160,7 +159,7 @@ private:
 			compute_height();
 		}
 
-		void link_parent_to(tree_node *n) {
+		void link_parent_to(tree_node *n) noexcept {
 			if (n == nullptr) { return; }
 			if (parent != nullptr) {
 				if (side == 'l') {
