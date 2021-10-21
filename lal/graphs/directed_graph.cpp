@@ -49,10 +49,10 @@
 #include <cmath>
 
 // lal includes
-#include <lal/internal/data_array.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
-#include <lal/internal/graphs/enumerate_sets.hpp>
-#include <lal/internal/graphs/utils.hpp>
+#include <lal/detail/data_array.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/graphs/enumerate_sets.hpp>
+#include <lal/detail/graphs/utils.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
 
@@ -62,17 +62,17 @@ namespace graphs {
 /* MODIFIERS */
 
 void directed_graph::normalise() noexcept {
-	internal::data_array<char> mem(get_num_nodes(), 0);
+	detail::data_array<char> mem(get_num_nodes(), 0);
 
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
-			internal::bit_sort_mem<node>
+			detail::bit_sort_mem<node>
 			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.data());
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
-			internal::bit_sort_mem<node>
+			detail::bit_sort_mem<node>
 			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.data());
 		}
 	}
@@ -122,10 +122,10 @@ directed_graph& directed_graph::add_edge
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
-			internal::bit_sort<node>
+			detail::bit_sort<node>
 			(out_u.begin(), out_u.end(), out_u.size());
 
-			internal::bit_sort<node>
+			detail::bit_sort<node>
 			(in_v.begin(), in_v.end(), in_v.size());
 		}
 		else if (check_norm) {
@@ -317,8 +317,8 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 	graph::__disjoint_union(g);
 
 	// update the neighbours adjacency list
-	internal::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
-	internal::append_adjacency_lists(m_in_adjacency_list, g.m_in_adjacency_list);
+	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
+	detail::append_adjacency_lists(m_in_adjacency_list, g.m_in_adjacency_list);
 }
 
 /* SETTERS */
@@ -327,11 +327,11 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 
 std::vector<edge_pair> directed_graph::get_Q() const noexcept {
 	const auto qs = properties::num_pairs_independent_edges(*this);
-	return internal::Q(*this, qs);
+	return detail::Q(*this, qs);
 }
 
 std::vector<edge> directed_graph::get_edges() const noexcept {
-	return internal::E(*this);
+	return detail::E(*this);
 }
 
 bool directed_graph::has_edge(node u, node v) const noexcept {

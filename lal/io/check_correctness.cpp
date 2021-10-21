@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/io/report_correctness.hpp>
-#include <lal/internal/io/check_correctness.hpp>
+#include <lal/detail/io/check_correctness.hpp>
 
 namespace lal {
 namespace io {
@@ -57,7 +57,7 @@ std::vector<report_treebank_file>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
 {
-	return internal::check_correctness_treebank<false>
+	return detail::check_correctness_treebank<false>
 			(treebank_filename);
 }
 
@@ -66,7 +66,7 @@ std::vector<report_treebank_collection> check_correctness_treebank_collection
 (const std::string& main_file_name, size_t n_threads)
 noexcept
 {
-	return internal::check_correctness_treebank_collection<false>
+	return detail::check_correctness_treebank_collection<false>
 			(main_file_name, n_threads);
 }
 

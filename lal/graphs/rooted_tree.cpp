@@ -49,12 +49,12 @@
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/graphs/retrieve_subtrees.hpp>
-#include <lal/internal/graphs/size_subtrees.hpp>
-#include <lal/internal/graphs/tree_classification.hpp>
-#include <lal/internal/graphs/union_find.hpp>
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/traversal.hpp>
+#include <lal/detail/graphs/retrieve_subtrees.hpp>
+#include <lal/detail/graphs/size_subtrees.hpp>
+#include <lal/detail/graphs/tree_classification.hpp>
+#include <lal/detail/graphs/union_find.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace graphs {
@@ -196,7 +196,7 @@ noexcept
 	assert(has_node(u));
 #endif
 
-	internal::UnionFind_update_roots_before_remove_all_incident_to(
+	detail::UnionFind_update_roots_before_remove_all_incident_to(
 		*this, u, &m_root_of[0], &m_root_size[0]
 	);
 
@@ -275,7 +275,7 @@ bool rooted_tree::find_edge_orientation() noexcept {
 	// Do a BFS from the root. Make sure that all leaves
 	// can be reached. If so, the tree is an arborescence.
 	if (get_out_degree(get_root()) > 0) {
-		internal::BFS<rooted_tree> bfs(*this);
+		detail::BFS<rooted_tree> bfs(*this);
 		bfs.start_at(get_root());
 
 		// if some node was not visited then the tree
@@ -315,7 +315,7 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	// Build list of directed edges using a breadth-first search.
 	// This is needed to make the edges point in the direction
 	// indicated by the rooted tree type.
-	internal::BFS<free_tree> bfs(_t);
+	detail::BFS<free_tree> bfs(_t);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		// the tree is an arborescence, i.e., the
@@ -336,12 +336,12 @@ void rooted_tree::calculate_size_subtrees() noexcept {
 	assert(is_rooted_tree());
 #endif
 	m_are_size_subtrees_valid = true;
-	internal::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
+	detail::get_size_subtrees(*this, get_root(), &m_size_subtrees[0]);
 }
 
 void rooted_tree::calculate_tree_type() noexcept {
 	m_is_tree_type_valid = true;
-	internal::classify_tree(*this, m_tree_type);
+	detail::classify_tree(*this, m_tree_type);
 }
 
 /* SETTERS */
@@ -350,7 +350,7 @@ void rooted_tree::calculate_tree_type() noexcept {
 
 std::vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
 	const auto subtree_info =
-		internal::get_edges_subtree<false>(*this, u, relab);
+		detail::get_edges_subtree<false>(*this, u, relab);
 
 #if defined DEBUG
 	assert(subtree_info.second == nullptr);
@@ -371,7 +371,7 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 
 	// retrieve the list of edges with their nodes relabelled
 	const auto [es, subsizes] =
-		internal::get_edges_subtree<true>(*this, u, true);
+		detail::get_edges_subtree<true>(*this, u, true);
 
 #if defined DEBUG
 	assert(are_size_subtrees_valid() ? (subsizes != nullptr) : (subsizes == nullptr));
@@ -413,7 +413,7 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 }
 
 head_vector rooted_tree::get_head_vector() const noexcept {
-	return internal::from_tree_to_head_vector(*this);
+	return detail::from_tree_to_head_vector(*this);
 }
 
 /* PROTECTED */
@@ -424,7 +424,7 @@ void rooted_tree::call_union_find_after_add(
 	uint64_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 void rooted_tree::call_union_find_after_add(
 	node u, node v,
@@ -432,7 +432,7 @@ void rooted_tree::call_union_find_after_add(
 	uint64_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 
 void rooted_tree::call_union_find_after_remove(
@@ -441,7 +441,7 @@ void rooted_tree::call_union_find_after_remove(
 	uint64_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 void rooted_tree::call_union_find_after_remove(
 	node u, node v,
@@ -449,7 +449,7 @@ void rooted_tree::call_union_find_after_remove(
 	uint64_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 
 } // -- namespace graphs

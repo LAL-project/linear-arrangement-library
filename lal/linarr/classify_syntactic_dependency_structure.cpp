@@ -51,10 +51,10 @@
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/macros.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
-#include <lal/internal/data_array.hpp>
-#include <lal/internal/make_array.hpp>
+#include <lal/detail/macros.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/data_array.hpp>
+#include <lal/detail/make_array.hpp>
 
 #define sort_by_index(a,b) (a < b ? std::make_pair(a,b) : std::make_pair(b,a))
 #define sort_by_pos(a,b, P) (P[a] < P[b] ? std::make_pair(a,b) : std::make_pair(b,a))
@@ -101,7 +101,7 @@ noexcept
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
-	internal::bit_sort<node, std::vector<node>::iterator>
+	detail::bit_sort<node, std::vector<node>::iterator>
 	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
 
@@ -204,7 +204,7 @@ noexcept
 	// as a reference for the definition of 1ec
 
 	const uint64_t n = rT.get_num_nodes();
-	internal::data_array<node> T(n);
+	detail::data_array<node> T(n);
 	for (node u = 0; u < n; ++u) {
 		T[ pi[u] ] = u;
 	}
@@ -300,7 +300,7 @@ noexcept
 
 	bool is_some_class = false;
 	std::array<bool, __syntactic_dependency_structure_size> cl =
-		internal::make_array_with_value
+		detail::make_array_with_value
 		<bool, __syntactic_dependency_structure_size, false>();
 
 	cl[static_cast<size_t>(syndepstr_type::unknown)] = true;
@@ -422,7 +422,7 @@ noexcept
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
-	return internal::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
+	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
 }
 
 } // -- namespace linarr

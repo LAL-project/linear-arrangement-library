@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/macros.hpp>
+#include <lal/detail/macros.hpp>
 
 #define to_double(x) static_cast<double>(x)
 
@@ -81,7 +81,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__sum_length_edges<graphs::directed_graph>, g, pi);
 }
 uint64_t sum_edge_lengths
@@ -92,7 +92,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__sum_length_edges<graphs::undirected_graph>, g, pi);
 }
 
@@ -123,7 +123,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
 }
 
@@ -135,7 +135,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
 }
 
@@ -149,7 +149,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__MDD_rational<graphs::directed_graph,double>, g, pi);
 }
 double mean_dependency_distance
@@ -160,7 +160,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__MDD_rational<graphs::undirected_graph,double>, g, pi);
 }
 

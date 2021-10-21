@@ -48,7 +48,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -148,7 +148,7 @@ protected:
 	/// Distribution of the numbers.
 	std::uniform_int_distribution<uint64_t> m_unif;
 	/// Prüfer sequence.
-	internal::data_array<uint64_t> m_Prufer_seq;
+	detail::data_array<uint64_t> m_Prufer_seq;
 };
 
 /**

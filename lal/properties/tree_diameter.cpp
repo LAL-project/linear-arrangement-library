@@ -42,17 +42,17 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/properties/tree_diameter.hpp>
+#include <lal/detail/properties/tree_diameter.hpp>
 
 namespace lal {
 namespace properties {
 
 uint64_t tree_diameter(const graphs::free_tree& t) noexcept {
-	return internal::tree_diameter(t);
+	return detail::tree_diameter(t);
 }
 
 uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept {
-	return internal::tree_diameter(t);
+	return detail::tree_diameter(t);
 }
 
 } // -- namespace properties

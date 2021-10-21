@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace io {
@@ -80,7 +80,7 @@ noexcept
 	if (not heads) { return {}; }
 	// move, please
 	return std::move(
-		internal::from_head_vector_to_tree<graphs::free_tree>
+		detail::from_head_vector_to_tree<graphs::free_tree>
 				(*heads, norm, check_norm).first
 	);
 }
@@ -91,7 +91,7 @@ noexcept
 {
 	const auto heads = read_head_vector(filename);
 	if (not heads) { return {}; }
-	return internal::from_head_vector_to_tree<graphs::rooted_tree>
+	return detail::from_head_vector_to_tree<graphs::rooted_tree>
 			(*heads, norm, check_norm);
 }
 

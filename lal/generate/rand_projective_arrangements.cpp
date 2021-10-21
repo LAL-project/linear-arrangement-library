@@ -49,7 +49,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/internal/graphs/make_arrangement.hpp>
+#include <lal/detail/graphs/make_arrangement.hpp>
 
 namespace lal {
 namespace generate {
@@ -98,7 +98,7 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	}
 
 	// generate arrangement from data
-	return internal::make_arrangement_intervals(m_rT, m_rdata);
+	return detail::make_arrangement_intervals(m_rT, m_rdata);
 }
 
 } // -- namespace generate

@@ -40,7 +40,7 @@
  ********************************************************************/
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
@@ -54,14 +54,14 @@ std::pair<free_tree,node> from_head_vector_to_free_tree
 (const head_vector& hv, bool normalise, bool check)
 noexcept
 {
-	return internal::from_head_vector_to_tree<free_tree>(hv, normalise, check);
+	return detail::from_head_vector_to_tree<free_tree>(hv, normalise, check);
 }
 
 rooted_tree from_head_vector_to_rooted_tree
 (const head_vector& hv, bool normalise, bool check)
 noexcept
 {
-	return internal::from_head_vector_to_tree<rooted_tree>(hv, normalise, check);
+	return detail::from_head_vector_to_tree<rooted_tree>(hv, normalise, check);
 }
 
 } // -- namespace graphs

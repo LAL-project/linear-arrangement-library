@@ -46,7 +46,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -129,7 +129,7 @@ private:
 	 * This is a member of the class to avoid its initialisation at
 	 * every call to @ref get_arrangement.
 	 */
-	internal::data_array<internal::data_array<node>> m_rdata;
+	detail::data_array<detail::data_array<node>> m_rdata;
 
 	/// Random number generator
 	std::mt19937 m_gen;

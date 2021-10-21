@@ -48,7 +48,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -184,10 +184,10 @@ private:
 	/// Vertex at which we root the tree.
 	node m_root;
 	/// The interval of every node of the tree
-	internal::data_array<std::vector<node>> m_intervals;
+	detail::data_array<std::vector<node>> m_intervals;
 
 	/// Array for the bit sort algorithm
-	internal::data_array<char> m_memory_bit_sort;
+	detail::data_array<char> m_memory_bit_sort;
 
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;

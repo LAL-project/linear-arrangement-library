@@ -47,7 +47,7 @@
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/internal/macros.hpp>
+#include <lal/detail/macros.hpp>
 
 #define to_double(x) static_cast<double>(x)
 
@@ -75,7 +75,7 @@ noexcept
 #endif
 
 	const uint64_t etr =
-		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
+		detail::call_with_empty_arrangement(__left_branching_edges, g, pi);
 	return numeric::rational(etr, g.get_num_edges());
 }
 
@@ -87,7 +87,7 @@ double head_initial
 #endif
 
 	const uint64_t etr =
-		internal::call_with_empty_arrangement(__left_branching_edges, g, pi);
+		detail::call_with_empty_arrangement(__left_branching_edges, g, pi);
 	return to_double(etr)/to_double(g.get_num_edges());
 }
 

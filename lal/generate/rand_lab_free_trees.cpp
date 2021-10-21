@@ -42,7 +42,7 @@
 #include <lal/generate/rand_lab_free_trees.hpp>
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace generate {
@@ -63,7 +63,7 @@ graphs::free_tree _rand_lab_free_trees::get_tree() noexcept {
 	for (uint64_t i = 0; i < m_n - 2; ++i) {
 		m_Prufer_seq[i] = m_unif(m_gen);
 	}
-	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
+	return detail::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
 }
 
 } // -- namespace generate

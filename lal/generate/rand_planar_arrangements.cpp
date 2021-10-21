@@ -49,7 +49,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/internal/graphs/make_arrangement.hpp>
+#include <lal/detail/graphs/make_arrangement.hpp>
 
 namespace lal {
 namespace generate {
@@ -108,7 +108,7 @@ void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,
 	// Its size must be equal to the number of vertices of the tree.
-	internal::data_array<std::vector<node>>& data,
+	detail::data_array<std::vector<node>>& data,
 	// random number generator
 	GEN& gen
 )
@@ -204,7 +204,7 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	m_previous_root = rand_root;
 
 	// construct arrangement
-	return internal::make_arrangement_intervals(m_T, rand_root, m_rdata);
+	return detail::make_arrangement_intervals(m_T, rand_root, m_rdata);
 }
 
 } // -- namespace generate

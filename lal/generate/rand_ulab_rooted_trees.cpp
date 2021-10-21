@@ -47,7 +47,7 @@
 #endif
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)

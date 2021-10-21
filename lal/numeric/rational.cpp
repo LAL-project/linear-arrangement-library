@@ -47,7 +47,7 @@
 #endif
 
 // lal includes
-#include <lal/internal/numeric/utils.hpp>
+#include <lal/detail/numeric/utils.hpp>
 
 namespace lal {
 namespace numeric {
@@ -59,11 +59,11 @@ namespace numeric {
 // -- DIVISION
 
 rational& rational::operator/= (const integer& i) noexcept {
-	internal::mpz_divide_mpq(m_val, i.get_raw_value());
+	detail::mpz_divide_mpq(m_val, i.get_raw_value());
 	return *this;
 }
 rational& rational::operator/= (const rational& r) noexcept {
-	internal::mpq_divide_mpq(m_val, r.m_val);
+	detail::mpq_divide_mpq(m_val, r.m_val);
 	return *this;
 }
 
@@ -71,23 +71,23 @@ rational& rational::operator/= (const rational& r) noexcept {
 
 rational rational::pow(uint64_t p) const noexcept {
 	rational r(*this);
-	internal::operate_power(r.m_val, p);
+	detail::operate_power(r.m_val, p);
 	return r;
 }
 
 rational rational::pow(const integer& p) const noexcept {
 	rational r(*this);
-	internal::operate_power(r.m_val, p.get_raw_value());
+	detail::operate_power(r.m_val, p.get_raw_value());
 	return r;
 }
 
 rational& rational::powt(uint64_t p) noexcept {
-	internal::operate_power(m_val, p);
+	detail::operate_power(m_val, p);
 	return *this;
 }
 
 rational& rational::powt(const integer& p) noexcept {
-	internal::operate_power(m_val, p.get_raw_value());
+	detail::operate_power(m_val, p.get_raw_value());
 	return *this;
 }
 
@@ -95,8 +95,8 @@ rational& rational::powt(const integer& p) noexcept {
 
 size_t rational::bytes() const noexcept {
 	const size_t bs =
-		internal::mpz_bytes({m_val[0]._mp_num}) +
-		internal::mpz_bytes({m_val[0]._mp_den});
+		detail::mpz_bytes({m_val[0]._mp_num}) +
+		detail::mpz_bytes({m_val[0]._mp_den});
 	return bs;
 }
 

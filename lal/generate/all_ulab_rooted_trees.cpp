@@ -45,7 +45,7 @@
 #include <numeric>
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 // lal includes
 
@@ -110,7 +110,7 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 	}
 
 	const graphs::free_tree t =
-		internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
+		detail::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 	return graphs::rooted_tree(t, 0);
 }
 

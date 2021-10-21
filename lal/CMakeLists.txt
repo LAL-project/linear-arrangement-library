@@ -116,6 +116,82 @@ find_package(OpenMP REQUIRED)
 target_sources(
 	${TargetStringLibrary}
 	PRIVATE
+		# detail namespace -- not to be installed (except for a few exceptions)
+		# -- headers
+		#      generate
+		#          nothing
+		#      graphs
+		detail/graphs/conversions.hpp
+		detail/graphs/cycles.hpp
+		detail/graphs/enumerate_sets.hpp
+		detail/graphs/is_tree.hpp
+		detail/graphs/make_arrangement.hpp
+		detail/graphs/reachability.hpp
+		detail/graphs/retrieve_subtrees.hpp
+		detail/graphs/size_subtrees.hpp
+		detail/graphs/traversal.hpp
+		detail/graphs/tree_classification.hpp
+		detail/graphs/tree_type.hpp
+		detail/graphs/union_find.hpp
+		detail/graphs/utils.hpp
+		#      io
+		detail/io/check_correctness.hpp
+		#      iterators
+		#          nothing
+		#      linarr
+		detail/linarr/algorithms_crossings.hpp
+		detail/linarr/C_brute_force.hpp
+		detail/linarr/C_dyn_prog.hpp
+		detail/linarr/C_ladder.hpp
+		detail/linarr/C_stack_based.hpp
+		detail/linarr/Dmin_Planar_AEF.hpp
+		detail/linarr/Dmin_Planar_HS.hpp
+		detail/linarr/Dmin_Projective_AEF.hpp
+		detail/linarr/Dmin_Projective_HS.hpp
+		detail/linarr/Dmin_Unconstrained_FC.hpp
+		detail/linarr/Dmin_Unconstrained_YS.hpp
+		detail/linarr/Dmin_utils.hpp
+		detail/linarr/syntactic_dependency_structure.hpp
+		#      numeric
+		detail/numeric/utils.hpp
+		#      properties
+		detail/properties/tree_centre.hpp
+		detail/properties/tree_centroid.hpp
+		detail/properties/tree_diameter.hpp
+		#      sorting
+		detail/sorting/bit_sort.hpp
+		detail/sorting/counting_sort.hpp
+		detail/sorting/insertion_sort.hpp
+		#      utilities
+		detail/utilities/tree_isomorphism.hpp
+		#      others
+		detail/avl.hpp
+		detail/data_array.hpp
+		detail/macros.hpp
+		detail/make_array.hpp
+		detail/sorted_vector.hpp
+		
+		# -- sources
+		#      generate
+		#          nothing
+		#      graphs
+		#          nothing
+		#      io
+		#          nothing
+		#      iterators
+		#          nothing
+		#      linarr
+		#      numeric
+		detail/numeric/utils.cpp
+		#      properties
+		#          nothing
+		#      sorting
+		#          nothing
+		#      utilities
+		#          nothing
+		#      others
+		#          nothing
+		
 		# generate namespace
 		# -- headers
 		generate/all_arrangements.hpp
@@ -165,82 +241,6 @@ target_sources(
 		graphs/rooted_tree.cpp
 		graphs/tree.cpp
 		graphs/undirected_graph.cpp
-
-		# internal namespace -- not to be installed
-		# -- headers
-		#      generate
-		#          nothing
-		#      graphs
-		internal/graphs/conversions.hpp
-		internal/graphs/cycles.hpp
-		internal/graphs/enumerate_sets.hpp
-		internal/graphs/is_tree.hpp
-		internal/graphs/make_arrangement.hpp
-		internal/graphs/reachability.hpp
-		internal/graphs/retrieve_subtrees.hpp
-		internal/graphs/size_subtrees.hpp
-		internal/graphs/traversal.hpp
-		internal/graphs/tree_classification.hpp
-		internal/graphs/tree_type.hpp
-		internal/graphs/union_find.hpp
-		internal/graphs/utils.hpp
-		#      io
-		internal/io/check_correctness.hpp
-		#      iterators
-		#          nothing
-		#      linarr
-		internal/linarr/algorithms_crossings.hpp
-		internal/linarr/C_brute_force.hpp
-		internal/linarr/C_dyn_prog.hpp
-		internal/linarr/C_ladder.hpp
-		internal/linarr/C_stack_based.hpp
-		internal/linarr/Dmin_Planar_AEF.hpp
-		internal/linarr/Dmin_Planar_HS.hpp
-		internal/linarr/Dmin_Projective_AEF.hpp
-		internal/linarr/Dmin_Projective_HS.hpp
-		internal/linarr/Dmin_Unconstrained_FC.hpp
-		internal/linarr/Dmin_Unconstrained_YS.hpp
-		internal/linarr/Dmin_utils.hpp
-		internal/linarr/syntactic_dependency_structure.hpp
-		#      numeric
-		internal/numeric/utils.hpp
-		#      properties
-		internal/properties/tree_centre.hpp
-		internal/properties/tree_centroid.hpp
-		internal/properties/tree_diameter.hpp
-		#      sorting
-		internal/sorting/bit_sort.hpp
-		internal/sorting/counting_sort.hpp
-		internal/sorting/insertion_sort.hpp
-		#      utilities
-		internal/utilities/tree_isomorphism.hpp
-		#      others
-		internal/avl.hpp
-		internal/data_array.hpp
-		internal/macros.hpp
-		internal/make_array.hpp
-		internal/sorted_vector.hpp
-		
-		# -- sources
-		#      generate
-		#          nothing
-		#      graphs
-		#          nothing
-		#      io
-		#          nothing
-		#      iterators
-		#          nothing
-		#      linarr
-		#      numeric
-		internal/numeric/utils.cpp
-		#      properties
-		#          nothing
-		#      sorting
-		#          nothing
-		#      utilities
-		#          nothing
-		#      others
-		#          nothing
 
 		# io namespace
 		# -- header
@@ -373,6 +373,9 @@ set(LIBLAL_MAIN_HEADER
 	properties.hpp
 	utilities.hpp
 )
+set(LIBLAL_DETAIL_HEADER
+	detail/data_array.hpp
+)
 set(LIBLAL_GENERATION_HEADER
 	generate/all_arrangements.hpp
 	generate/all_lab_free_trees.hpp
@@ -401,9 +404,6 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/tree.hpp
 	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
-)
-set(LIBLAL_INTERNAL_HEADER
-	internal/data_array.hpp
 )
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
@@ -473,9 +473,9 @@ install(
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
+install(FILES ${LIBLAL_DETAIL_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/detail)
 install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generate)
 install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
-install(FILES ${LIBLAL_INTERNAL_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/internal)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
 install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)

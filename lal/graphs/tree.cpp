@@ -48,8 +48,8 @@
 #include <vector>
 
 // lal includes
-#include <lal/internal/graphs/union_find.hpp>
-#include <lal/internal/graphs/tree_type.hpp>
+#include <lal/detail/graphs/union_find.hpp>
+#include <lal/detail/graphs/tree_type.hpp>
 
 namespace lal {
 namespace graphs {
@@ -111,7 +111,7 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 	for (size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
 			l.push_back(std::string(
-				internal::tree_type_string(static_cast<tree_type>(i))
+				detail::tree_type_string(static_cast<tree_type>(i))
 			));
 		}
 	}

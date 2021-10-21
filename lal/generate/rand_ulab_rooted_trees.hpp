@@ -48,7 +48,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -204,7 +204,7 @@ protected:
 	 * Do not use its actual type (@ref lal::head_vector) in an attempt to make
 	 * memory usage a bit more efficient.
 	 */
-	internal::data_array<uint64_t> m_head_vector;
+	detail::data_array<uint64_t> m_head_vector;
 
 protected:
 

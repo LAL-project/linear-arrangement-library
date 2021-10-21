@@ -71,9 +71,9 @@
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
-#include <lal/internal/graphs/tree_type.hpp>
-#include <lal/internal/io/check_correctness.hpp>
-#include <lal/internal/linarr/syntactic_dependency_structure.hpp>
+#include <lal/detail/graphs/tree_type.hpp>
+#include <lal/detail/io/check_correctness.hpp>
+#include <lal/detail/linarr/syntactic_dependency_structure.hpp>
 
 #define to_double(x) static_cast<double>(x)
 #define square(x) ((x)*(x))
@@ -198,7 +198,7 @@ noexcept
 treebank_error treebank_processor::process() noexcept {
 	if (m_check_before_process) {
 		const bool err =
-		internal::check_correctness_treebank<true>(m_treebank_filename);
+		detail::check_correctness_treebank<true>(m_treebank_filename);
 
 		if (err) {
 			return treebank_error(
@@ -334,8 +334,8 @@ treebank_error treebank_processor::process() noexcept {
 
 	const auto start = std::chrono::system_clock::now();
 
-	internal::data_array<double> props(__treebank_feature_size, 0.0);
-	internal::data_array<char> prop_set(__treebank_feature_size, 0);
+	detail::data_array<double> props(__treebank_feature_size, 0.0);
+	detail::data_array<char> prop_set(__treebank_feature_size, 0);
 
 	// process the current treebank
 	graphs::rooted_tree rT;
@@ -374,12 +374,12 @@ void treebank_processor::output_tree_type_header(OUT_STREAM& out_treebank_file)
 const noexcept
 {
 	out_treebank_file
-	<< internal::tree_type_string(internal::array_of_tree_types[0]);
+	<< detail::tree_type_string(detail::array_of_tree_types[0]);
 
 	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
 		out_treebank_file
 			<< m_separator
-			<< internal::tree_type_string(internal::array_of_tree_types[j]);
+			<< detail::tree_type_string(detail::array_of_tree_types[j]);
 	}
 }
 
@@ -388,15 +388,15 @@ void treebank_processor::output_syndepstruct_type_header(OUT_STREAM& out_treeban
 const noexcept
 {
 	out_treebank_file
-	<< internal::syntactic_dependency_structure_to_string(
-		   internal::array_of_syntactic_dependency_structures[0]
+	<< detail::syntactic_dependency_structure_to_string(
+		   detail::array_of_syntactic_dependency_structures[0]
 	   );
 
 	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
 		out_treebank_file
 			<< m_separator
-			<< internal::syntactic_dependency_structure_to_string(
-				   internal::array_of_syntactic_dependency_structures[j]
+			<< detail::syntactic_dependency_structure_to_string(
+				   detail::array_of_syntactic_dependency_structures[j]
 			   );
 	}
 }
@@ -418,10 +418,10 @@ const noexcept
 		fT.calculate_tree_type();
 	}
 
-	output_tt(internal::array_of_tree_types[0]);
+	output_tt(detail::array_of_tree_types[0]);
 	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
 		out_treebank_file << m_separator;
-		output_tt(internal::array_of_tree_types[j]);
+		output_tt(detail::array_of_tree_types[j]);
 	}
 }
 
@@ -440,10 +440,10 @@ const noexcept
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
 
-	output_sdst(internal::array_of_syntactic_dependency_structures[0]);
+	output_sdst(detail::array_of_syntactic_dependency_structures[0]);
 	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
 		out_treebank_file << m_separator;
-		output_sdst(internal::array_of_syntactic_dependency_structures[j]);
+		output_sdst(detail::array_of_syntactic_dependency_structures[j]);
 	}
 }
 

@@ -48,8 +48,8 @@
 
 // lal includes
 #include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
-#include <lal/internal/graphs/make_arrangement.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/graphs/make_arrangement.hpp>
 
 namespace lal {
 namespace generate {
@@ -81,7 +81,7 @@ noexcept
 linear_arrangement all_projective_arrangements::get_arrangement() const noexcept {
 	return (m_rT.get_num_nodes() == 1 ?
 		linear_arrangement(1,0) :
-		internal::make_arrangement_intervals(m_rT, m_intervals)
+		detail::make_arrangement_intervals(m_rT, m_intervals)
 	);
 }
 
@@ -159,7 +159,7 @@ void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 		interval_u.back() = u;
 
 		// sort using bitsort
-		internal::bit_sort<node>
+		detail::bit_sort<node>
 		(interval_u.begin(), interval_u.end(), interval_u.size());
 	}
 }

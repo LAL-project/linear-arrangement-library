@@ -46,7 +46,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace properties {
@@ -67,7 +67,7 @@ noexcept
 	// auxiliary memory and additional variables
 
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
-	internal::data_array<uint64_t> xi(n);
+	detail::data_array<uint64_t> xi(n);
 
 	// n<k^2>: second moment of degree about zero multiplied by n
 	uint64_t nk2 = 0;

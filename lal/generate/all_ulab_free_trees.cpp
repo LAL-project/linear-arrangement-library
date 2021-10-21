@@ -45,7 +45,7 @@
 #include <limits>
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 #define inf std::numeric_limits<uint64_t>::max()
 
@@ -272,7 +272,7 @@ graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
 		t.add_edge(0,1);
 		return t;
 	}
-	return internal::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
+	return detail::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 }
 
 } // -- namespace generate

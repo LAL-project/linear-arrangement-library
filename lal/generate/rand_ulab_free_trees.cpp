@@ -49,7 +49,7 @@
 
 // lal includes
 #include <lal/numeric/rational.hpp>
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 #define get_alpha(m,q) (m_alpha.find({m,q})->second)
 #define alpha_exists(m,q) (m_alpha.find({m,q}) != m_alpha.end())

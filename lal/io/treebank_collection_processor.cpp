@@ -58,9 +58,9 @@
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_processor.hpp>
 #include <lal/io/treebank_reader.hpp>
-#include <lal/internal/io/check_correctness.hpp>
+#include <lal/detail/io/check_correctness.hpp>
 
-#define feature_to_str(i) internal::treebank_feature_string(static_cast<treebank_feature>(i))
+#define feature_to_str(i) detail::treebank_feature_string(static_cast<treebank_feature>(i))
 
 inline
 std::string make_result_file_name(const std::string& treebank_name) noexcept
@@ -124,7 +124,7 @@ treebank_error treebank_collection_processor::process() noexcept
 
 	if (m_check_before_process) {
 		const bool err =
-		internal::check_correctness_treebank_collection<true>
+		detail::check_correctness_treebank_collection<true>
 		(m_main_file, m_num_threads);
 
 		if (err) {

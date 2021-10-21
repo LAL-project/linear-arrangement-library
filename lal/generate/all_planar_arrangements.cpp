@@ -48,9 +48,9 @@
 #include <algorithm>
 
 // lal includes
-#include <lal/internal/graphs/make_arrangement.hpp>
-#include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/detail/graphs/make_arrangement.hpp>
+#include <lal/detail/graphs/traversal.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
 
 namespace lal {
 namespace generate {
@@ -124,7 +124,7 @@ void all_planar_arrangements::next() noexcept {
 linear_arrangement all_planar_arrangements::get_arrangement() const noexcept {
 	return (m_T.get_num_nodes() == 1 ?
 		linear_arrangement(1) :
-		internal::make_arrangement_intervals(m_T, m_root, m_intervals)
+		detail::make_arrangement_intervals(m_T, m_root, m_intervals)
 	);
 }
 
@@ -142,7 +142,7 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 
 	// we use a BFS to be able to keep track of the parent of
 	// every vertex with respect to the root.
-	internal::BFS<graphs::free_tree> bfs(m_T);
+	detail::BFS<graphs::free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
 		m_intervals[v].resize(m_T.get_degree(v));
@@ -167,7 +167,7 @@ void all_planar_arrangements::initialise_interval_node(node u, node parent) noex
 
 		// if the neighbours of node u are not normalised
 		if (not m_T.is_normalised()) {
-			internal::bit_sort<node>
+			detail::bit_sort<node>
 			(inter_u.begin() + 1, inter_u.end(), inter_u.size());
 		}
 	}
@@ -182,7 +182,7 @@ void all_planar_arrangements::initialise_interval_node(node u, node parent) noex
 
 		// in order to obtain a lexicographically sorted permutation,
 		// we must sort it (vertex 'u' might not be placed properly).
-		internal::bit_sort_mem<node>
+		detail::bit_sort_mem<node>
 		(inter_u.begin(), inter_u.end(), inter_u.size(), m_memory_bit_sort.data());
 	}
 }

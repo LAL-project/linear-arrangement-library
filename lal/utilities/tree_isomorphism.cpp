@@ -49,9 +49,9 @@
 #endif
 
 // lal includes
-#include <lal/internal/properties/tree_centre.hpp>
-#include <lal/internal/data_array.hpp>
-#include <lal/internal/utilities/tree_isomorphism.hpp>
+#include <lal/detail/properties/tree_centre.hpp>
+#include <lal/detail/data_array.hpp>
+#include <lal/detail/utilities/tree_isomorphism.hpp>
 
 #define to_uint64(x) (static_cast<uint64_t>(x))
 #define to_int(x) (static_cast<int>(x))
@@ -119,7 +119,7 @@ public:
 
 		nodes_per_level[0].push_back(t.get_root());
 
-		internal::BFS<rooted_tree> bfs(t);
+		detail::BFS<rooted_tree> bfs(t);
 		bfs.set_use_rev_edges(false);
 
 		uint64_t max_level = 0;
@@ -226,14 +226,14 @@ noexcept
 	assert(t1.has_root());
 	assert(t2.has_root());
 #endif
-	return internal::are_full_trees_isomorphic(t1, t2);
+	return detail::are_full_trees_isomorphic(t1, t2);
 }
 
 bool are_trees_isomorphic
 (const graphs::free_tree& t1, const graphs::free_tree& t2)
 noexcept
 {
-	const auto discard = internal::fast_non_iso(t1,t2);
+	const auto discard = detail::fast_non_iso(t1,t2);
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
@@ -241,8 +241,8 @@ noexcept
 	if (n == 3) { return true; }
 
 	// find centres of the trees
-	const auto c1 = internal::retrieve_centre(t1, 0);
-	const auto c2 = internal::retrieve_centre(t2, 0);
+	const auto c1 = detail::retrieve_centre(t1, 0);
+	const auto c2 = detail::retrieve_centre(t2, 0);
 
 	// check centre sizes
 	const uint64_t size1 = (c1.second < n ? 2 : 1);

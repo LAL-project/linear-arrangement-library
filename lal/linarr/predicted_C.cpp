@@ -49,7 +49,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/internal/macros.hpp>
+#include <lal/detail/macros.hpp>
 
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)
@@ -193,7 +193,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__get_approximate_C_2_rational<graphs::undirected_graph, numeric::rational>, g, pi);
 }
 
@@ -205,7 +205,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__get_approximate_C_2_rational<graphs::directed_graph, numeric::rational>, g, pi);
 }
 
@@ -217,7 +217,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__get_approximate_C_2_rational<graphs::undirected_graph, double>, g, pi);
 }
 double predicted_num_crossings
@@ -228,7 +228,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 			(__get_approximate_C_2_rational<graphs::directed_graph, double>, g, pi);
 }
 

@@ -49,8 +49,8 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/data_array.hpp>
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
 #define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
@@ -125,13 +125,13 @@ noexcept
 
 	// if the graph is not normalised, dump all the vector here and normalise it
 	if constexpr (not is_normalised) {
-		internal::data_array<char> mem(n, 0);
+		detail::data_array<char> mem(n, 0);
 
 		sorted_neighbourhoods.resize(n);
 		for (node u = 0; u < n; ++u) {
 			sorted_neighbourhoods[u] = g.get_neighbours(u);
 
-			internal::bit_sort_mem<node>(
+			detail::bit_sort_mem<node>(
 				sorted_neighbourhoods[u].begin(),
 				sorted_neighbourhoods[u].end(),
 				sorted_neighbourhoods[u].size(),
@@ -144,7 +144,7 @@ noexcept
 	// local variables (some store precomputed data)
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
-	internal::data_array<uint64_t> xi(n);
+	detail::data_array<uint64_t> xi(n);
 	// sum of degrees squared
 	uint64_t nk2 = 0;
 	// sum of degrees cubed

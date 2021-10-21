@@ -46,7 +46,7 @@
 #include <limits>
 
 // lal includes
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace generate {
@@ -95,7 +95,7 @@ graphs::free_tree all_lab_free_trees::__get_tree() noexcept {
 		t.set_edges(std::vector<edge>{edge(0,1)});
 		return t;
 	}
-	return internal::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
+	return detail::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
 }
 
 void all_lab_free_trees::__reset() noexcept {

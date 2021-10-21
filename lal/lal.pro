@@ -71,6 +71,46 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    detail/data_array.hpp \
+	detail/graphs/conversions.hpp \
+	detail/graphs/enumerate_sets.hpp \
+	detail/graphs/is_tree.hpp \
+	detail/graphs/make_arrangement.hpp \
+	detail/graphs/retrieve_subtrees.hpp \
+	detail/graphs/size_subtrees.hpp \
+	detail/graphs/tree_classification.hpp \
+	detail/graphs/tree_type.hpp \
+	detail/io/check_correctness.hpp \
+	detail/linarr/C_brute_force.hpp \
+	detail/linarr/C_dyn_prog.hpp \
+	detail/linarr/C_ladder.hpp \
+	detail/linarr/Dmin_Planar_AEF.hpp \
+	detail/linarr/Dmin_Planar_HS.hpp \
+	detail/linarr/Dmin_Projective_AEF.hpp \
+	detail/linarr/Dmin_Projective_HS.hpp \
+	detail/linarr/Dmin_utils.hpp \
+	detail/linarr/algorithms_crossings.hpp \
+	detail/linarr/C_stack_based.hpp \
+	detail/linarr/Dmin_Unconstrained_FC.hpp \
+	detail/linarr/Dmin_Unconstrained_YS.hpp \
+	detail/linarr/syntactic_dependency_structure.hpp \
+	detail/macros.hpp \
+	detail/avl.hpp \
+	detail/make_array.hpp \
+	detail/numeric/utils.hpp \
+	detail/properties/tree_centre.hpp \
+	detail/properties/tree_centroid.hpp \
+	detail/properties/tree_diameter.hpp \
+	detail/sorted_vector.hpp \
+	detail/sorting/bit_sort.hpp \
+	detail/sorting/counting_sort.hpp \
+	detail/sorting/insertion_sort.hpp \
+	detail/graphs/union_find.hpp \
+	detail/graphs/utils.hpp \
+	detail/graphs/cycles.hpp \
+	detail/graphs/reachability.hpp \
+	detail/graphs/traversal.hpp \
+	detail/utilities/tree_isomorphism.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \
 	generate/all_lab_free_trees.hpp \
@@ -98,46 +138,6 @@ HEADERS += \
 	graphs/rooted_tree.hpp \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
-	internal/data_array.hpp \
-	internal/graphs/conversions.hpp \
-	internal/graphs/enumerate_sets.hpp \
-	internal/graphs/is_tree.hpp \
-	internal/graphs/make_arrangement.hpp \
-	internal/graphs/retrieve_subtrees.hpp \
-	internal/graphs/size_subtrees.hpp \
-	internal/graphs/tree_classification.hpp \
-	internal/graphs/tree_type.hpp \
-	internal/io/check_correctness.hpp \
-	internal/linarr/C_brute_force.hpp \
-	internal/linarr/C_dyn_prog.hpp \
-	internal/linarr/C_ladder.hpp \
-	internal/linarr/Dmin_Planar_AEF.hpp \
-	internal/linarr/Dmin_Planar_HS.hpp \
-	internal/linarr/Dmin_Projective_AEF.hpp \
-	internal/linarr/Dmin_Projective_HS.hpp \
-	internal/linarr/Dmin_utils.hpp \
-	internal/linarr/algorithms_crossings.hpp \
-	internal/linarr/C_stack_based.hpp \
-	internal/linarr/Dmin_Unconstrained_FC.hpp \
-	internal/linarr/Dmin_Unconstrained_YS.hpp \
-	internal/linarr/syntactic_dependency_structure.hpp \
-	internal/macros.hpp \
-	internal/avl.hpp \
-	internal/make_array.hpp \
-	internal/numeric/utils.hpp \
-	internal/properties/tree_centre.hpp \
-	internal/properties/tree_centroid.hpp \
-	internal/properties/tree_diameter.hpp \
-	internal/sorted_vector.hpp \
-	internal/sorting/bit_sort.hpp \
-	internal/sorting/counting_sort.hpp \
-	internal/sorting/insertion_sort.hpp \
-	internal/graphs/union_find.hpp \
-	internal/graphs/utils.hpp \
-	internal/graphs/cycles.hpp \
-	internal/graphs/reachability.hpp \
-	internal/graphs/traversal.hpp \
-	internal/utilities/tree_isomorphism.hpp \
 	io/check_correctness.hpp \
 	io/edge_list.hpp \
 	io.hpp \
@@ -194,6 +194,7 @@ HEADERS += \
 	definitions.hpp
 
 SOURCES += \
+    detail/numeric/utils.cpp \
 	generate/all_lab_free_trees.cpp \
 	generate/all_planar_arrangements.cpp \
 	generate/all_projective_arrangements.cpp \
@@ -211,7 +212,6 @@ SOURCES += \
 	graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
 	graphs/undirected_graph.cpp \
-	internal/numeric/utils.cpp \
 	io/check_correctness.cpp \
 	io/edge_list.cpp \
 	io/head_vector.cpp \

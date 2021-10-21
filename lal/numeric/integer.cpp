@@ -47,7 +47,7 @@
 #endif
 
 // lal includes
-#include <lal/internal/numeric/utils.hpp>
+#include <lal/detail/numeric/utils.hpp>
 
 /* This macro takes a signed integer and converts it into an unsigned
  * integer. First, drops the negative sign (if appropriate) and then
@@ -66,14 +66,14 @@ namespace numeric {
 // -- EXPONENTIATION
 
 integer& integer::powt(const integer& i) noexcept {
-	internal::mpz_pow_mpz(m_val, m_val, i.m_val);
+	detail::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
 
 /* GETTERS */
 
 size_t integer::bytes() const noexcept
-{ return internal::mpz_bytes(m_val); }
+{ return detail::mpz_bytes(m_val); }
 
 } // -- namespace numeric
 } // -- namespace lal

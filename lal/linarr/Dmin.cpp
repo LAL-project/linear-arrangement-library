@@ -50,14 +50,14 @@
 #include <lal/linarr/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/algorithms_Dmin.hpp>
 
-#include <lal/internal/linarr/Dmin_Projective_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Projective_HS.hpp>
+#include <lal/detail/linarr/Dmin_Projective_AEF.hpp>
+#include <lal/detail/linarr/Dmin_Projective_HS.hpp>
 
-#include <lal/internal/linarr/Dmin_Planar_AEF.hpp>
-#include <lal/internal/linarr/Dmin_Planar_HS.hpp>
+#include <lal/detail/linarr/Dmin_Planar_AEF.hpp>
+#include <lal/detail/linarr/Dmin_Planar_HS.hpp>
 
-#include <lal/internal/linarr/Dmin_Unconstrained_FC.hpp>
-#include <lal/internal/linarr/Dmin_Unconstrained_YS.hpp>
+#include <lal/detail/linarr/Dmin_Unconstrained_FC.hpp>
+#include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
 
 namespace lal {
 namespace linarr {
@@ -67,10 +67,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths
 noexcept
 {
 	if (a == algorithms_Dmin::Shiloach) {
-		return internal::Dmin_Unconstrained_YS(t);
+		return detail::Dmin_Unconstrained_YS(t);
 	}
 
-	return internal::Dmin_Unconstrained_FC(t);
+	return detail::Dmin_Unconstrained_FC(t);
 }
 
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
@@ -78,10 +78,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
 noexcept
 {
 	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
-		return internal::Dmin_Planar_AEF(t);
+		return detail::Dmin_Planar_AEF(t);
 	}
 
-	return internal::Dmin_Planar_HS(t);
+	return detail::Dmin_Planar_HS(t);
 }
 
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
@@ -89,10 +89,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
 noexcept
 {
 	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
-		return internal::Dmin_Projective_AEF(t);
+		return detail::Dmin_Projective_AEF(t);
 	}
 
-	return internal::Dmin_Projective_HS(t);
+	return detail::Dmin_Projective_HS(t);
 }
 
 } // -- namespace linarr

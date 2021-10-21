@@ -47,10 +47,10 @@
 
 // lal includes
 #include <lal/linarr/algorithms_C.hpp>
-#include <lal/internal/linarr/C_brute_force.hpp>
-#include <lal/internal/linarr/C_dyn_prog.hpp>
-#include <lal/internal/linarr/C_ladder.hpp>
-#include <lal/internal/linarr/C_stack_based.hpp>
+#include <lal/detail/linarr/C_brute_force.hpp>
+#include <lal/detail/linarr/C_dyn_prog.hpp>
+#include <lal/detail/linarr/C_ladder.hpp>
+#include <lal/detail/linarr/C_stack_based.hpp>
 
 namespace lal {
 namespace linarr {
@@ -65,13 +65,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::n_C_brute_force(g, pi);
+		return detail::n_C_brute_force(g, pi);
 	case algorithms_C::dynamic_programming:
-		return internal::n_C_dynamic_programming(g, pi);
+		return detail::n_C_dynamic_programming(g, pi);
 	case algorithms_C::ladder:
-		return internal::n_C_ladder(g, pi);
+		return detail::n_C_ladder(g, pi);
 	case algorithms_C::stack_based:
-		return internal::n_C_stack_based(g, pi);
+		return detail::n_C_stack_based(g, pi);
 	}
 
 #if defined DEBUG
@@ -130,13 +130,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::n_C_brute_force(g, pis);
+		return detail::n_C_brute_force(g, pis);
 	case algorithms_C::dynamic_programming:
-		return internal::n_C_dynamic_programming(g, pis);
+		return detail::n_C_dynamic_programming(g, pis);
 	case algorithms_C::ladder:
-		return internal::n_C_ladder(g, pis);
+		return detail::n_C_ladder(g, pis);
 	case algorithms_C::stack_based:
-		return internal::n_C_stack_based(g, pis);
+		return detail::n_C_stack_based(g, pis);
 	}
 
 #if defined DEBUG
@@ -179,13 +179,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::is_n_C_brute_force_lesseq_than(g, pi, upper_bound);
+		return detail::is_n_C_brute_force_lesseq_than(g, pi, upper_bound);
 	case algorithms_C::dynamic_programming:
-		return internal::is_n_C_dynamic_programming_lesseq_than(g, pi, upper_bound);
+		return detail::is_n_C_dynamic_programming_lesseq_than(g, pi, upper_bound);
 	case algorithms_C::ladder:
-		return internal::is_n_C_ladder_lesseq_than(g, pi, upper_bound);
+		return detail::is_n_C_ladder_lesseq_than(g, pi, upper_bound);
 	case algorithms_C::stack_based:
-		return internal::is_n_C_stack_based_lesseq_than(g, pi, upper_bound);
+		return detail::is_n_C_stack_based_lesseq_than(g, pi, upper_bound);
 	}
 
 #if defined DEBUG
@@ -250,13 +250,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::is_n_C_brute_force_lesseq_than(g, pis, upper_bound);
+		return detail::is_n_C_brute_force_lesseq_than(g, pis, upper_bound);
 	case algorithms_C::dynamic_programming:
-		return internal::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bound);
+		return detail::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bound);
 	case algorithms_C::ladder:
-		return internal::is_n_C_ladder_lesseq_than(g, pis, upper_bound);
+		return detail::is_n_C_ladder_lesseq_than(g, pis, upper_bound);
 	case algorithms_C::stack_based:
-		return internal::is_n_C_stack_based_lesseq_than(g, pis, upper_bound);
+		return detail::is_n_C_stack_based_lesseq_than(g, pis, upper_bound);
 	}
 
 #if defined DEBUG
@@ -304,13 +304,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return internal::is_n_C_brute_force_lesseq_than(g, pis, upper_bounds);
+		return detail::is_n_C_brute_force_lesseq_than(g, pis, upper_bounds);
 	case algorithms_C::dynamic_programming:
-		return internal::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bounds);
+		return detail::is_n_C_dynamic_programming_lesseq_than(g, pis, upper_bounds);
 	case algorithms_C::ladder:
-		return internal::is_n_C_ladder_lesseq_than(g, pis, upper_bounds);
+		return detail::is_n_C_ladder_lesseq_than(g, pis, upper_bounds);
 	case algorithms_C::stack_based:
-		return internal::is_n_C_stack_based_lesseq_than(g, pis, upper_bounds);
+		return detail::is_n_C_stack_based_lesseq_than(g, pis, upper_bounds);
 	}
 
 #if defined DEBUG

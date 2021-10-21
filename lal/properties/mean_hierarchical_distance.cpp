@@ -47,8 +47,8 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/internal/graphs/traversal.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/graphs/traversal.hpp>
+#include <lal/detail/data_array.hpp>
 
 #define to_double(x) static_cast<double>(x)
 
@@ -65,9 +65,9 @@ inline result MHD(const graphs::rooted_tree& tree) noexcept {
 #endif
 
 	uint64_t sum_distances = 0;
-	internal::data_array<uint64_t> distances(n, 0);
+	detail::data_array<uint64_t> distances(n, 0);
 
-	internal::BFS<graphs::rooted_tree> bfs(tree);
+	detail::BFS<graphs::rooted_tree> bfs(tree);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
 		distances[t] = distances[s] + 1;

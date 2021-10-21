@@ -50,10 +50,10 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/macros.hpp>
-#include <lal/internal/sorting/counting_sort.hpp>
-#include <lal/internal/sorted_vector.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/macros.hpp>
+#include <lal/detail/sorting/counting_sort.hpp>
+#include <lal/detail/sorted_vector.hpp>
+#include <lal/detail/data_array.hpp>
 
 #define max_pos(u,v) (std::max(pi[u], pi[v]))
 
@@ -84,7 +84,7 @@ void calculate_dependencies_span
 (
 	const graphs::free_tree& t,
 	const linear_arrangement& pi,
-	const internal::data_array<node>& inv_pi,
+	const detail::data_array<node>& inv_pi,
 	const std::vector<std::pair<edge,uint64_t>>& edge_with_max_pos_at,
 	position cur_pos,
 	std::vector<dependency_flux>& flux,
@@ -183,7 +183,7 @@ noexcept
 
 	// inverse function of the linear arrangement:
 	// T[p] = u <-> node u is at position p
-	internal::data_array<node> inv_pi(n, 0);
+	detail::data_array<node> inv_pi(n, 0);
 	for (node u = 0; u < n; ++u) {
 		inv_pi[ pi[u] ] = u;
 	}
@@ -195,7 +195,7 @@ noexcept
 	graphs::undirected_graph ug(n);
 
 	// the reusable memory for the sorting algorithm
-	internal::countingsort::memory_counting_sort<edge> mem(n, n);
+	detail::countingsort::memory_counting_sort<edge> mem(n, n);
 
 	// declare the result to be returned
 	std::vector<dependency_flux> flux(n - 1);
@@ -216,8 +216,8 @@ noexcept
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		internal::counting_sort
-		<edge, std::vector<edge>::iterator, internal::countingsort::increasing_t, false>
+		detail::counting_sort
+		<edge, std::vector<edge>::iterator, detail::countingsort::increasing_t, false>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),
@@ -243,7 +243,7 @@ noexcept
 	assert(t.is_tree());
 #endif
 
-	return internal::call_with_empty_arrangement
+	return detail::call_with_empty_arrangement
 		<std::vector<dependency_flux>,graphs::free_tree>
 		(__compute_flux, t, pi);
 }

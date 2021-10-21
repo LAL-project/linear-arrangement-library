@@ -44,7 +44,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -220,11 +220,11 @@ private:
 	/// Pointer as in the paper.
 	uint64_t m_p = 0;
 	/// Sequence SAVE
-	internal::data_array<node> m_save;
+	detail::data_array<node> m_save;
 	/// Sequence PREV
-	internal::data_array<node> m_prev;
+	detail::data_array<node> m_prev;
 	/// Level sequence of the tree
-	internal::data_array<node> m_L;
+	detail::data_array<node> m_L;
 };
 
 } // -- namespace generate

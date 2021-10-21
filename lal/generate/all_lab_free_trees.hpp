@@ -45,7 +45,7 @@
 #include <lal/definitions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace generate {
@@ -210,9 +210,9 @@ private:
 	/// Left-most position with value \f$n-1\f$.
 	uint64_t m_L;
 	/// Prüfer sequence.
-	internal::data_array<uint64_t> m_Prufer_seq;
+	detail::data_array<uint64_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
-	internal::data_array<bool> m_sm;
+	detail::data_array<bool> m_sm;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 };

@@ -51,7 +51,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/C.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace linarr {
@@ -69,7 +69,7 @@ inline
 bool is_permutation(const linear_arrangement& arr = {}) noexcept {
 	if (arr.size() == 0) { return true; }
 	// ensure that no position has been used twice
-	internal::data_array<position> d(arr.size(), 0);
+	detail::data_array<position> d(arr.size(), 0);
 	for (const position p : arr) {
 		if (p >= arr.size()) { return false; }
 		if (d[p] > 0) { return false; }

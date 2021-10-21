@@ -52,9 +52,9 @@
 #include <lal/properties/Q.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/internal/graphs/enumerate_sets.hpp>
-#include <lal/internal/graphs/utils.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
+#include <lal/detail/graphs/enumerate_sets.hpp>
+#include <lal/detail/graphs/utils.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
 
 namespace lal {
 namespace graphs {
@@ -79,8 +79,8 @@ undirected_graph& undirected_graph::add_edge
 		// the graph was normalised
 		if (to_norm) {
 			// Keep it normalised. The attribute m_normalised need not be updated.
-			internal::bit_sort<node>(nu.begin(), nu.end(), nu.size());
-			internal::bit_sort<node>(nv.begin(), nv.end(), nv.size());
+			detail::bit_sort<node>(nu.begin(), nu.end(), nu.size());
+			detail::bit_sort<node>(nv.begin(), nv.end(), nv.size());
 		}
 		else if (check_norm) {
 			// Even though we are not asked to normalise the graph, it may be
@@ -249,7 +249,7 @@ void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 	graph::__disjoint_union(g);
 
 	// update the adjacency list
-	internal::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
+	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
 }
 
 /* SETTERS */
@@ -258,11 +258,11 @@ void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 
 std::vector<edge_pair> undirected_graph::get_Q() const noexcept {
 	const auto qs = properties::num_pairs_independent_edges(*this);
-	return internal::Q(*this, qs);
+	return detail::Q(*this, qs);
 }
 
 std::vector<edge> undirected_graph::get_edges() const noexcept {
-	return internal::E(*this);
+	return detail::E(*this);
 }
 
 bool undirected_graph::has_edge(node u, node v) const noexcept {

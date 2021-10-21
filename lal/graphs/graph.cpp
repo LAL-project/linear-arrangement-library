@@ -50,8 +50,8 @@
 
 // lal includes
 #include <lal/properties/Q.hpp>
-#include <lal/internal/sorting/bit_sort.hpp>
-#include <lal/internal/data_array.hpp>
+#include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/data_array.hpp>
 
 namespace lal {
 namespace graphs {
@@ -68,12 +68,12 @@ void graph::clear() noexcept {
 }
 
 void graph::normalise() noexcept {
-	internal::data_array<char> mem(get_num_nodes(), 0);
+	detail::data_array<char> mem(get_num_nodes(), 0);
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not is_sorted(nu.begin(), nu.end())) {
-			internal::bit_sort_mem<node>
+			detail::bit_sort_mem<node>
 			(nu.begin(), nu.end(), nu.size(), mem.data());
 		}
 	}

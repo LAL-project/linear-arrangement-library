@@ -47,10 +47,10 @@
 #endif
 
 // lal includes
-#include <lal/internal/graphs/is_tree.hpp>
-#include <lal/internal/graphs/tree_classification.hpp>
-#include <lal/internal/graphs/union_find.hpp>
-#include <lal/internal/graphs/conversions.hpp>
+#include <lal/detail/graphs/is_tree.hpp>
+#include <lal/detail/graphs/tree_classification.hpp>
+#include <lal/detail/graphs/union_find.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace graphs {
@@ -60,7 +60,7 @@ namespace graphs {
 free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 #if defined DEBUG
 	// check that the input graph is a tree
-	assert(internal::is_graph_a_tree(t));
+	assert(detail::is_graph_a_tree(t));
 #endif
 
 	free_tree::tree_only_init(t.get_num_nodes());
@@ -71,7 +71,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move(t)) {
 #if defined DEBUG
 	// check that the input graph is a tree
-	assert(internal::is_graph_a_tree(*this));
+	assert(detail::is_graph_a_tree(*this));
 #endif
 
 	free_tree::tree_only_init(get_num_nodes());
@@ -158,7 +158,7 @@ noexcept
 	assert(has_node(u));
 #endif
 
-	internal::UnionFind_update_roots_before_remove_all_incident_to(
+	detail::UnionFind_update_roots_before_remove_all_incident_to(
 		*this, u, &m_root_of[0], &m_root_size[0]
 	);
 
@@ -168,7 +168,7 @@ noexcept
 
 void free_tree::calculate_tree_type() noexcept {
 	m_is_tree_type_valid = true;
-	internal::classify_tree(*this, m_tree_type);
+	detail::classify_tree(*this, m_tree_type);
 }
 
 /* GETTERS */
@@ -177,7 +177,7 @@ head_vector free_tree::get_head_vector(node r) const noexcept {
 #if defined DEBUG
 	assert(has_node(r));
 #endif
-	return internal::from_tree_to_head_vector(*this, r);
+	return detail::from_tree_to_head_vector(*this, r);
 }
 
 /* PROTECTED */
@@ -188,7 +188,7 @@ void free_tree::call_union_find_after_add(
 	uint64_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_after_add(
 	node u, node v,
@@ -196,7 +196,7 @@ void free_tree::call_union_find_after_add(
 	uint64_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
 }
 
 void free_tree::call_union_find_after_remove(
@@ -205,7 +205,7 @@ void free_tree::call_union_find_after_remove(
 	uint64_t * const root_size
 ) noexcept
 {
-	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 void free_tree::call_union_find_after_remove(
 	node u, node v,
@@ -213,7 +213,7 @@ void free_tree::call_union_find_after_remove(
 	uint64_t * const root_size
 ) const noexcept
 {
-	internal::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
 }
 
 } // -- namespace graphs
