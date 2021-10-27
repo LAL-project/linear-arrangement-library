@@ -4,7 +4,9 @@
 %include std_array.i
 %include std_pair.i
 
-%import definitions.i // this is necessary for the wrapper
+%include "typemaps/linear_arrangement.i"
+
+%import types.i // this is necessary for the wrapper
 %import enums/syntactic_dependency_structure.i
 %import enums/algorithms_C.i
 %import enums/algorithms_Dmin.i
@@ -250,8 +252,8 @@ def is_planar(g, arr):
 %}
 
 %pythoncode %{
-__definitions = definitions
-del definitions
+__types = types
+del types
 
 # remove unnecessary modules (not required for python)
 del graphs

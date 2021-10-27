@@ -142,23 +142,23 @@ else
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 
-# -----------
-# DEFINITIONS
+# -----
+# TYPES
 
-# definitions module
-$(DEFINITIONS_INSTALL_SO_FILE): $(DEFINITIONS_WRAP).o $(LIBRARY_SHARED_DEP)
+# types module
+$(TYPES_INSTALL_SO_FILE): $(TYPES_WRAP).o $(LIBRARY_SHARED_DEP)
 	$(CXX) $(FLAGS) -shared -o $@ $< $(LIBS)
-$(DEFINITIONS_WRAP).o: $(DEFINITIONS_WRAP).cxx
+$(TYPES_WRAP).o: $(TYPES_WRAP).cxx
 	$(CXX) $(FLAGS) -o $@ -c $< $(INCLUDES)
-$(DEFINITIONS_WRAP).cxx: $(DEFINITIONS_MOD_DEPS) $(DEFINITIONS_MAIN_INT)
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFINITIONS_WRAP).cxx $(DEFINITIONS_MAIN_INT)
-	scripts/postprocess_interface_file.sh $(DEFINITIONS_INSTALL_PY_FILE) | sed "s/^/    /g"
+$(TYPES_WRAP).cxx: $(TYPES_MOD_DEPS) $(TYPES_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TYPES_WRAP).cxx $(TYPES_MAIN_INT)
+	scripts/postprocess_interface_file.sh $(TYPES_INSTALL_PY_FILE) | sed "s/^/    /g"
 
-$(DEFINITIONS_INSTALL_PY_FILE): $(DEFINITIONS_MOD_DEPS) $(DEFINITIONS_MOD_DOCS) $(DOCUMENTATION_FILE)
-ifeq (,$(wildcard $(DEFINITIONS_WRAP).cxx))
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(DEFINITIONS_WRAP).cxx $(DEFINITIONS_MAIN_INT)
+$(TYPES_INSTALL_PY_FILE): $(TYPES_MOD_DEPS) $(TYPES_MOD_DOCS) $(DOCUMENTATION_FILE)
+ifeq (,$(wildcard $(TYPES_WRAP).cxx))
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(TYPES_WRAP).cxx $(TYPES_MAIN_INT)
 else
-	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(DEFINITIONS_MAIN_INT)
+	$(SWIG_EXE) $(SWIG_FLAGS) -Wall -c++ -python -py3 -o $(ARCH_DIR)/$(INTERFACE_DIRECTORY)/temp.cxx $(TYPES_MAIN_INT)
 endif
 	scripts/postprocess_interface_file.sh $@ | sed "s/^/    /g"
 

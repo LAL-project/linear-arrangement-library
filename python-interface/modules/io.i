@@ -3,7 +3,7 @@
 %include std_string.i
 %include std_vector.i
 
-%import definitions.i
+%import types.i
 %import graphs.i
 %import enums/treebank_error_type.i
 %import enums/treebank_feature.i
@@ -266,8 +266,8 @@ namespace io {
 /* -------------------------------------------------------------------------- */
 
 %pythoncode %{
-__definitions = definitions
-del definitions
+__types = types
+del types
 
 # remove unnecessary modules
 del graphs

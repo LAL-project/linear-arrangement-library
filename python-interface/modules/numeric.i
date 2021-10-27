@@ -1,17 +1,15 @@
 %module numeric
 
-%import definitions.i
+%import types.i
 
 %include documentation.i
 
 %{
-
 // C++ includes
 #include <sstream>
 
 // lal includes
 #include <lal/numeric.hpp>
-
 %}
 
 %ignore lal::numeric::operator<<;
@@ -75,8 +73,8 @@
 }
 
 %pythoncode %{
-__definitions = definitions
-del definitions
+__types = types
+del types
 
 def __radd__(self, k):
 	return self + k

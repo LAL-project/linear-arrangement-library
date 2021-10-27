@@ -1,17 +1,14 @@
 %module iterators
 
-%import definitions.i
+%import types.i
 %import graphs.i
 
 
 %include documentation.i
 
 %{
-
-// C++ includes
 #include <lal/graphs.hpp>
 #include <lal/iterators.hpp>
-
 %}
 
 %include "../lal/iterators/E_iterator.hpp"
@@ -59,8 +56,8 @@ def Q_iterator(g):
 %}
 
 %pythoncode %{
-__definitions = definitions
-del definitions
+__types = types
+del types
 
 # remove unnecessary modules
 del graphs

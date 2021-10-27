@@ -1,16 +1,14 @@
 %module properties
 
-%import definitions.i
+%import types.i
 %import graphs.i
 %import numeric.i
 
 %include documentation.i
 
 %{
-
 #include <lal/graphs.hpp>
 #include <lal/properties.hpp>
-
 %}
 
 %include "../lal/properties/C_rla.hpp"
@@ -23,8 +21,8 @@
 %include "../lal/properties/tree_diameter.hpp"
 
 %pythoncode %{
-__definitions = definitions
-del definitions
+__types = types
+del types
 
 # remove unnecessary modules
 del graphs

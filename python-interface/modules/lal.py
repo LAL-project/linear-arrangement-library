@@ -17,3 +17,4 @@ from lal import numeric
 from lal import properties
 from lal import utilities
 from lal import version
+from lal import types

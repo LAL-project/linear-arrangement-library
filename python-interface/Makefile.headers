@@ -16,9 +16,10 @@ ALG_DMIN_DPHDRS		= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin.hpp
 ALG_DMIN_PL_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin_planar.hpp
 ALG_DMIN_PR_DPHDRS	= $(LAL_INC_DIR)/lal/linarr/algorithms_Dmin_projective.hpp
 
-# DEFINITIONS
+# TYPES
 
-DEFINITIONS_DPHDRS	= $(LAL_INC_DIR)/lal/definitions.hpp
+TYPES_DPHDRS		= $(LAL_INC_DIR)/lal/basic_types.hpp \
+					  $(LAL_INC_DIR)/lal/linear_arrangement.hpp
 
 # NAMESPACES
 
