@@ -278,7 +278,7 @@ public:
 	static linear_arrangement identity(std::size_t n) noexcept
 	{
 		linear_arrangement arr(n);
-		for (std::size_t i = 0; i < n; ++i) { arr.assign(i,i); }
+		arr.identity();
 		return arr;
 	}
 
