@@ -68,15 +68,12 @@ namespace detail {
 //		returns m*m + 1 if the number of crossings is greater than the upper_bound
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
 template<class G, bool decide_upper_bound>
 inline
 uint64_t __compute_C_dyn_prog
 (
 	const G& g, const linear_arrangement& pi,
 	unsigned char * const __restrict__ bn,
-	node * const __restrict__ inv_pi,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
 	uint64_t upper_bound = 0
@@ -88,19 +85,17 @@ noexcept
 	}
 
 	const uint64_t n = g.get_num_nodes();
-	std::fill(&bn[0], &bn[n], 0);
-	std::fill(&K[0], &K[(n - 3)*(n - 3)], 0);
+	std::fill(bn, &bn[n], 0);
+	std::fill(K, &K[(n - 3)*(n - 3)], 0);
 
-	// compute pi
-	for (node i = 0; i < n; ++i) {
-		inv_pi[ pi[i] ] = i;
-	}
+	const node u0 = pi[position_t{0ULL}];
+	const node u1 = pi[position_t{1ULL}];
 
 	/* fill matrix M */
 
-	for (position pu = 0; pu < n - 3; ++pu) {
+	for (position_t pu = 0ULL; pu < n - 3; ++pu) {
 		// node at position pu + 1
-		const node u = inv_pi[pu + 1];
+		const node u = pi[pu + 1ULL];
 
 		detail::get_bool_neighbours<G>(g, u, bn);
 
@@ -109,26 +104,28 @@ noexcept
 		// check existence of edges between node u
 		// and the nodes in positions 0 and 1 of
 		// the arrangement
-		k -= bn[inv_pi[0]] + bn[inv_pi[1]];
-		bn[inv_pi[0]] = bn[inv_pi[1]] = 0;
+		k -= bn[u0] + bn[u1];
+		bn[u0] = bn[u1] = 0;
 
 		// this is done because there is no need to
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
-		for (uint64_t i = 3; i < n; ++i) {
-			k -= bn[inv_pi[i - 1]];
+		for (position_t i = 3ULL; i < n; ++i) {
+			// node at position i - 1
+			const node ui = pi[i - 1ULL];
+			k -= bn[ui];
 
 			// the row corresponding to node 'u' in M is
 			// the same as its position in the sequence.
 			// This explains M[pu][*]
 
 			//M[pu][i - 3] = k;
-			M[ idx(pu,i-3, n-3) ] = k;
+			M[ idx(pu.value, i.value - 3, n-3) ] = k;
 
 			// clear boolean neighbours so that at the next
 			// iteration all its values are valid
-			bn[inv_pi[i - 1]] = 0;
+			bn[ui] = 0;
 		}
 	}
 
@@ -170,7 +167,8 @@ noexcept
 	uint64_t C = 0;
 
 	const auto process_neighbours =
-	[&](position pu, node v) -> void {
+	[&](const position pu, const node_t v) -> void {
+		const position pv = pi[v];
 		// 'u' and 'v' is an edge of the graph.
 		// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
 		// then 'u' is "in front of" 'v' in the linear arrangement.
@@ -182,24 +180,24 @@ noexcept
 			C += K[idx(pu,pi[v]-2, n-3)];
 		}*/
 		// --
-		if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-			C += K[idx(pu,pi[v]-2, n-3)];
+		if (pu < pv and 2 <= pv and pv < n - 1) {
+			C += K[idx(pu,pv-2, n-3)];
 		}
 	};
 
 	for (position pu = 0; pu < n - 3; ++pu) {
-		const node u = inv_pi[pu];
+		const node u = pi[position_t{pu}];
 
 		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
 			const neighbourhood& Nu = g.get_out_neighbours(u);
-			for (const node& v : Nu) {
+			for (node_t v : Nu) {
 				process_neighbours(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
 				}
 			}
 			const neighbourhood& Nu_in = g.get_in_neighbours(u);
-			for (const node& v : Nu_in) {
+			for (node_t v : Nu_in) {
 				process_neighbours(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
@@ -208,7 +206,7 @@ noexcept
 		}
 		else {
 			const neighbourhood& Nu = g.get_neighbours(u);
-			for (const node& v : Nu) {
+			for (node_t v : Nu) {
 				process_neighbours(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
@@ -245,19 +243,16 @@ noexcept
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
 
-	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	const size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
-	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.data(), T,M,K);
+	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.data(), M,K);
 }
 
 uint64_t n_C_dynamic_programming(
@@ -306,16 +301,13 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	const size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
@@ -329,7 +321,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, false>
-				(g, pis[i], bool_neighs.data(), T,M,K);
+				(g, pis[i], bool_neighs.data(), M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -381,19 +373,16 @@ noexcept
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
 
-	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	const size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* decide */
-	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data(), T,M,K, upper_bound);
+	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data(), M,K, upper_bound);
 }
 
 inline
@@ -448,16 +437,13 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	const size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
@@ -471,7 +457,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, true>
-				(g, pis[i], bool_neighs.data(), T,M,K, upper_bound);
+				(g, pis[i], bool_neighs.data(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -527,16 +513,13 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = n + 2*(n - 3)*(n - 3);
+	const size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	position * const __restrict__ T = &all_memory[0];
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[n];
+	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + n + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
@@ -550,7 +533,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, true>
-				(g, pis[i], bool_neighs.data(), T,M,K, upper_bounds[i]);
+				(g, pis[i], bool_neighs.data(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

@@ -70,9 +70,9 @@ namespace detail {
 template<class G, bool decide_upper_bound>
 inline
 uint64_t __compute_C_ladder(
-	const G& g, const linear_arrangement& pi,
+	const G& g,
+	const linear_arrangement& pi,
 	unsigned char * const __restrict__ bn,
-	uint64_t * const __restrict__ inv_pi,
 	uint64_t * const __restrict__ L1,
 	uint64_t upper_bound = 0
 )
@@ -83,17 +83,13 @@ noexcept
 	}
 
 	const uint64_t n = g.get_num_nodes();
-	// inverse arrangement
-	for (uint64_t i = 0; i < n; ++i) {
-		inv_pi[ pi[i] ] = i;
-	}
 
 	/* compute number of crossings */
 	uint64_t C = 0;
 
 	// no need to reach the last position of the arrangement
-	for (uint64_t p = 0; p < n - 1; ++p) {
-		const node u = inv_pi[p];
+	for (position pu = 0; pu < n - 1; ++pu) {
+		const node u = pi[position_t{pu}];
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement
@@ -102,17 +98,17 @@ noexcept
 		// neighbours of node u, as a list of Boolean values.
 		detail::get_bool_neighbours<G>(g, u, bn);
 
-		for (uint64_t q = p + 1; q < n; ++q) {
-			const node v = inv_pi[q];
-			S += L1[q];
+		for (position pv = pu + 1; pv < n; ++pv) {
+			const node v = pi[position_t{pv}];
+			S += L1[pv];
 
 			// --
 			/*if (bn[v]) {
 				C += S - L1[q];
 				++L1[q];
 			}*/
-			C += bn[v]*(S - L1[q]);
-			L1[q] += bn[v];
+			C += bn[v]*(S - L1[pv]);
+			L1[pv] += bn[v];
 			// --
 
 			if constexpr (decide_upper_bound) {
@@ -124,7 +120,7 @@ noexcept
 			bn[v] = 0;
 		}
 
-		L1[p] = 0;
+		L1[pu] = 0;
 	}
 
 	// none of the conditions above were true, so we must have
@@ -153,18 +149,12 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n, 0);
-
-	const uint64_t n_elems = n + n;
-	data_array<uint64_t> all_memory(n_elems, 0);
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	uint64_t * const __restrict__ T = &all_memory[0];
+	data_array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	uint64_t * const __restrict__ L1 = &all_memory[n];
+	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<G,false>(g, pi, bool_neighs.data(), T,L1);
+	return __compute_C_ladder<G,false>
+			(g, pi, boolean_neighborhood.data(), L1.data());
 }
 
 inline
@@ -213,14 +203,10 @@ noexcept
 		return cs;
 	}
 
+	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
-	data_array<uint64_t> all_memory(n + n, 0);
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	uint64_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint64_t * const __restrict__ L1 = &all_memory[n];
+	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -231,7 +217,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,false>
-				(g, pis[i], boolean_neighborhood.data(), T,L1);
+				(g, pis[i], boolean_neighborhood.data(), L1.data());
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -279,16 +265,12 @@ noexcept
 	}
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n, 0);
-	data_array<uint64_t> all_memory(n + n, 0);
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	uint64_t * const __restrict__ T = &all_memory[0];
+	data_array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	uint64_t * const __restrict__ L1 = &all_memory[n];
+	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<G,true>(g, pi, bool_neighs.data(), T,L1, upper_bound);
+	return __compute_C_ladder<G,true>
+			(g, pi, boolean_neighborhood.data(), L1.data(), upper_bound);
 }
 
 inline
@@ -340,14 +322,10 @@ noexcept
 		return cs;
 	}
 
+	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
-	data_array<uint64_t> all_memory(n + n, 0);
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	uint64_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint64_t * const __restrict__ L1 = &all_memory[n];
+	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -358,7 +336,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data(), T,L1, upper_bound);
+				(g, pis[i], boolean_neighborhood.data(), L1.data(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -415,14 +393,10 @@ noexcept
 		return cs;
 	}
 
+	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
-	data_array<uint64_t> all_memory(n + n, 0);
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p ( size n )
-	uint64_t * const __restrict__ T = &all_memory[0];
 	// array L1 (same as in the pseudocode) ( size n )
-	uint64_t * const __restrict__ L1 = &all_memory[n];
+	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
@@ -435,7 +409,7 @@ noexcept
 		boolean_neighborhood.fill(0);
 
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data(), T,L1, upper_bounds[i]);
+				(g, pis[i], boolean_neighborhood.data(), L1.data(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

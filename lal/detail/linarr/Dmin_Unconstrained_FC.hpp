@@ -327,7 +327,7 @@ noexcept
 		assert(one_node == reachable[0]);
 		assert(start <= t.get_num_nodes());
 #endif
-		mla[one_node - 1] = start;
+		mla.assign(one_node - 1, start);
 		cost = 0;
 		return;
 	}
@@ -407,7 +407,7 @@ noexcept
 
 				// Right part of the arrangement
 				//start_aux += ord[i].first + 1 + size_rest_of_trees;
-				start_aux=end_for_here+1;
+				start_aux = end_for_here + 1;
 				for (uint64_t j = uq + 1; j <= 2*uq; ++j) {
 					const position pos_in_ord = Q_i[j];
 					uint64_t n_i = ord[pos_in_ord].first;
@@ -463,10 +463,9 @@ noexcept
 			uint64_t c1 = 0;
 			uint64_t c2 = 0;
 			
-			
 			if constexpr (root == LEFT_ANCHOR) {
 				calculate_mla<NO_ANCHOR>(t, one_node, start, end - n_0, mla, c1);
-				calculate_mla<LEFT_ANCHOR>(t, t_0, end-n_0+1, end, mla, c2);
+				calculate_mla<LEFT_ANCHOR>(t, t_0, end - n_0 + 1, end, mla, c2);
 			}
 			else
 			{
@@ -662,7 +661,7 @@ noexcept
 #endif
 
 	uint64_t c = 0;
-	linear_arrangement arr(t.get_num_nodes(),0);
+	linear_arrangement arr(t.get_num_nodes());
 
 	graphs::free_tree T = t;
 	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() - 1, arr, c);

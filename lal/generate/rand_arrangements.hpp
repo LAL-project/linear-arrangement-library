@@ -46,6 +46,7 @@
 #include <random>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/graph.hpp>
 
 namespace lal {
@@ -108,12 +109,13 @@ public:
 		else {
 			m_gen = std::mt19937(seed);
 		}
-		std::iota(m_arr.begin(), m_arr.end(), 0);
+		m_arr.identity();
 	}
 
 	/// Returns a linear arrangement constructed uniformly at random.
 	const linear_arrangement& get_arrangement() noexcept {
-		std::shuffle(m_arr.begin(), m_arr.end(), m_gen);
+		std::shuffle(m_arr.begin_direct(), m_arr.end_direct(), m_gen);
+		m_arr.update_inverse();
 		return m_arr;
 	}
 

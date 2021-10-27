@@ -48,7 +48,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>

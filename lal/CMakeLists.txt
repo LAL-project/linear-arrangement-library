@@ -339,15 +339,16 @@ target_sources(
 
 		# lal namespace
 		# -- heaers
+		basic_types.hpp
 		C.hpp
 		D.hpp
-		definitions.hpp
 		generate.hpp
 		graphs.hpp
 		io.hpp
 		iterators.hpp
 		lal_version.hpp
 		linarr.hpp
+		linear_arrangement.hpp
 		numeric.hpp
 		properties.hpp
 		utilities.hpp
@@ -360,15 +361,16 @@ target_sources(
 # These are not installed through the usual PUBLIC_HEADER property,
 # but via several custom variables
 set(LIBLAL_MAIN_HEADER
+	basic_types.hpp
 	C.hpp
 	D.hpp
-	definitions.hpp
 	generate.hpp
 	graphs.hpp
 	io.hpp
 	iterators.hpp
 	lal_version.hpp
 	linarr.hpp
+	linear_arrangement.hpp
 	numeric.hpp
 	properties.hpp
 	utilities.hpp

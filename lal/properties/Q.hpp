@@ -46,7 +46,6 @@
 
 // lal includes
 #include <lal/numeric/integer.hpp>
-#include <lal/definitions.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
 

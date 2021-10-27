@@ -52,7 +52,7 @@
 #include <iostream>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/io/report_correctness.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/cycles.hpp>

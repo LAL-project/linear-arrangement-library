@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 
 namespace lal {
 namespace graphs {

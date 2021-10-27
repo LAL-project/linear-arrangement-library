@@ -189,7 +189,7 @@ noexcept
 #if defined DEBUG
 	assert(ini == fin);
 #endif
-	arr[r] = ini;
+	arr.assign(r, ini);
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
@@ -373,14 +373,14 @@ noexcept
 	}
 
 	// the '-1' is used to offset the positions from [1,n] to [0,n-1]
-	arr[r] = left_sum + 1 - 1;
+	arr.assign(r, left_sum + 1 - 1);
 	rel_pos[r] = 0;
 	for (node v = 0; v < n; ++v) {
-		const int64_t pos = to_int64(arr[r]) + rel_pos[v];
+		const int64_t pos = to_int64(arr[node_t{r}]) + rel_pos[v];
 #if defined DEBUG
 		assert(pos >= 0);
 #endif
-		arr[v] = to_uint64(pos);
+		arr.assign(v, to_uint64(pos));
 	}
 
 	return D;

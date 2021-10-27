@@ -45,7 +45,7 @@
 #include <random>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
 #include <lal/detail/data_array.hpp>

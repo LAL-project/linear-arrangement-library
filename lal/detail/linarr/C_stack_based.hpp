@@ -55,8 +55,6 @@
 typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
-#define edge_sorted_by_pos(u,v) (pi[u] < pi[v] ? edge(u,v) : edge(v,u) )
-#define my_abs_diff(a,b) (a < b ? b - a : a - b)
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
 #define DECIDED_C_LE C
 
@@ -88,8 +86,11 @@ noexcept
 	n-1, // length of the longest edge
 	edges.size(),
 	[&](const edge& e) -> size_t {
-		const auto [u,v] = edge_sorted_by_pos(e.first, e.second);
-		++size_adjN_u[u];
+		const node_t u = e.first;
+		const node_t v = e.second;
+		++size_adjN_u[u.value];
+
+#define my_abs_diff(a,b) (a < b ? b - a : a - b)
 		return my_abs_diff(pi[u], pi[v]);
 	}
 	);
@@ -108,7 +109,9 @@ noexcept
 	// fill adjP and adjN at the same time
 	for (const auto& [uu, vv] : edges) {
 		// pi[u] < pi[v]
-		const auto [u,v] = edge_sorted_by_pos(uu, vv);
+		const auto [u,v] =
+			(pi[node_t{uu}] < pi[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
+
 		// oriented edge (u,v) "enters" node v
 		adjP[v].push_back(u);
 
@@ -133,7 +136,7 @@ template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_stack_based(
 	const graphs::graph& g, const linear_arrangement& pi,
-	node * __restrict__ T, size_t * __restrict__ size_adjN_u,
+	size_t * __restrict__ size_adjN_u,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -143,11 +146,6 @@ noexcept
 	}
 
 	const uint64_t n = g.get_num_nodes();
-
-	// construct inverse arrangement
-	for (node u = 0; u < n; ++u) {
-		T[ pi[u] ] = u;
-	}
 
 	// Adjacency lists, sorted by edge length:
 	// - adjP is sorted by increasing edge length
@@ -161,8 +159,8 @@ noexcept
 	std::map<edge, uint64_t> edge_to_idx;
 
 	uint64_t idx = 0;
-	for (position pu = 0; pu < n; ++pu) {
-		const node u = T[pu];
+	for (position_t pu = 0ULL; pu < n; ++pu) {
+		const node u = pi[pu];
 		for (auto& v : adjN[u]) {
 			v.first = idx;
 
@@ -176,8 +174,8 @@ noexcept
 
 	// calculate the number of crossings
 	uint64_t C = 0;
-	for (position pu = 0; pu < n; ++pu) {
-		const node u = T[pu];
+	for (position_t pu = 0ULL; pu < n; ++pu) {
+		const node u = pi[pu];
 		for (node v : adjP[u]) {
 			const edge uv = edge_sorted_by_vertex_index(u,v);
 			const auto on_top = S.remove(indexed_edge(edge_to_idx[uv], uv));
@@ -209,15 +207,11 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n, 0);
-
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<false>(g, pi, T.data(), size_adjN_u.data());
+	return __compute_C_stack_based<false>(g, pi, size_adjN_u.data());
 }
 
 // ------------------
@@ -251,10 +245,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n,0);
-
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
@@ -268,7 +258,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<false>
-				(g, pis[i], T.data(), size_adjN_u.data());
+				(g, pis[i], size_adjN_u.data());
 	}
 
 	return cs;
@@ -288,16 +278,12 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n, 0);
-
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
 
 	return __compute_C_stack_based<true>
-			(g, pi, T.data(), size_adjN_u.data(), upper_bound);
+			(g, pi, size_adjN_u.data(), upper_bound);
 }
 
 // ------------------
@@ -334,10 +320,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n,0);
-
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
@@ -351,7 +333,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], T.data(), size_adjN_u.data(), upper_bound);
+				(g, pis[i], size_adjN_u.data(), upper_bound);
 	}
 
 	return cs;
@@ -375,10 +357,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n,0);
-
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<size_t> size_adjN_u(n, 0);
@@ -392,7 +370,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], T.data(), size_adjN_u.data(), upper_bounds[i]);
+				(g, pis[i], size_adjN_u.data(), upper_bounds[i]);
 	}
 
 	return cs;

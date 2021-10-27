@@ -47,7 +47,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/io/treebank_error.hpp>
 

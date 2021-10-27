@@ -54,6 +54,7 @@
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)
 #define to_double(x) static_cast<double>(x)
+#define my_abs_diff(a,b) (a < b ? b - a : a - b)
 
 namespace lal {
 namespace linarr {
@@ -155,12 +156,12 @@ result __get_approximate_C_2_rational
 	const uint64_t n = g.get_num_nodes();
 
 	for (iterators::Q_iterator<G> q(g); not q.end(); q.next()) {
-		const auto [st, uv] = q.get_edge_pair();
+		const auto [st, uv] = q.get_edge_pair_t();
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 
-		const uint64_t len_st = (pi[s] < pi[t] ? pi[t] - pi[s] : pi[s] - pi[t]);
-		const uint64_t len_uv = (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
+		const uint64_t len_st = my_abs_diff(pi[s], pi[t]);
+		const uint64_t len_uv = my_abs_diff(pi[u], pi[v]);
 
 		const auto [al, be] =
 		(len_st <= len_uv ?

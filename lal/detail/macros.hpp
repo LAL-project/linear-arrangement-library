@@ -45,7 +45,7 @@
 #include <numeric>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/linear_arrangement.hpp>
 
 namespace lal {
 namespace detail {
@@ -94,9 +94,8 @@ noexcept
 	if (arr.size() != 0) {
 		return F(g,arr,P...);
 	}
-	linear_arrangement __arr(g.get_num_nodes());
-	std::iota(__arr.begin(), __arr.end(), 0);
-	return F(g, __arr, P...);
+	const auto n = g.get_num_nodes();
+	return F(g, linear_arrangement::identity(n), P...);
 }
 
 } // -- namespace detail

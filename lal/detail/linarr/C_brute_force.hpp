@@ -71,25 +71,19 @@ template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_brute_force_undir(
 	const graphs::undirected_graph& g, const linear_arrangement& pi,
-	node * const __restrict__ T,
 	uint64_t upper_bound = 0
 )
 noexcept
 {
-	const uint64_t n = g.get_num_nodes();
-	for (uint64_t i = 0; i < n; ++i) {
-		T[ pi[i] ] = i;
-	}
-
 	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node u = 0; u < g.get_num_nodes(); ++u) {
+	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
-		const neighbourhood& Nu = g.get_neighbours(u);
-		for (const node& v : Nu) {
+		const neighbourhood& Nu = g.get_neighbours(u.value);
+		for (node_t v : Nu) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];
 			if (pu >= pv) { continue; }
@@ -98,14 +92,15 @@ noexcept
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
 			// iterate through the positions between 'u' and 'v'
-			const position begin = pi[u] + 1;
-			const position end = pi[v] - 1;
+			const position begin = pu + 1;
+			const position end = pv - 1;
 
-			for (position pw = begin; pw <= end; ++pw) {
+			for (position_t pw = begin; pw <= end; ++pw) {
 				// 'w' is the node at position 'pw'
-				const node w = T[pw];
+				const node w = pi[pw];
 				const neighbourhood& Nw = g.get_neighbours(w);
-				for (const node& z : Nw) {
+				for (node_t z : Nw) {
+					const position pz = pi[z];
 
 					// if     pi[w] < pi[z]    then
 					// 'w' and 'z' is a pair of connected nodes such that
@@ -113,8 +108,8 @@ noexcept
 					// Formally: pi[w] < pi[z]
 
 					// Also, by construction: pi[u] < pi[w]
-					C += pi[w] < pi[z] and
-						 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+					C += pw < pz and
+						 pu < pw and pw < pv and pv < pz;
 
 					if constexpr (decide_upper_bound) {
 						if (C > upper_bound) { return DECIDED_C_GT; }
@@ -139,8 +134,9 @@ inline
 std::conditional_t<decide_upper_bound, uint64_t, void>
 __inner_computation_dir
 (
-	const graphs::directed_graph& g, node u, node v,
-	const linear_arrangement& pi, const node * const __restrict__ T,
+	const graphs::directed_graph& g,
+	position pu, position pv,
+	const linear_arrangement& pi,
 	uint64_t& C,
 	uint64_t upper_bound = 0
 )
@@ -150,14 +146,15 @@ noexcept
 	// is "to the left of" 'v' in the linear arrangement 'seq'
 
 	// iterate through the positions between 'u' and 'v'
-	const position begin = pi[u] + 1;
-	const position end = pi[v] - 1;
+	const position begin = pu + 1;
+	const position end = pv - 1;
 
-	for (position pw = begin; pw <= end; ++pw) {
+	for (position_t pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
-		const node w = T[pw];
+		const node w = pi[pw];
 		const neighbourhood& Nw_out = g.get_out_neighbours(w);
-		for (const node& z : Nw_out) {
+		for (node_t z : Nw_out) {
+			const position pz = pi[z];
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
@@ -165,15 +162,16 @@ noexcept
 			// Formally: pi[w] < pi[z]
 
 			// Also, by construction: pi[u] < pi[w]
-			C += pi[w] < pi[z] and
-				 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+			C += pw < pz and
+				 pu < pw and pw < pv and pv < pz;
 
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
 		}
 		const neighbourhood& Nw_in = g.get_in_neighbours(w);
-		for (const node& z : Nw_in) {
+		for (node_t z : Nw_in) {
+			const position pz = pi[z];
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
@@ -181,8 +179,8 @@ noexcept
 			// Formally: pi[w] < pi[z]
 
 			// Also, by construction: pi[u] < pi[w]
-			C += pi[w] < pi[z] and
-				 pi[u] < pi[w] and pi[w] < pi[v] and pi[v] < pi[z];
+			C += pw < pz and
+				 pu < pw and pw < pv and pv < pz;
 
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
@@ -206,7 +204,6 @@ template<bool decide_upper_bound = false>
 inline
 uint64_t __compute_C_brute_force_dir(
 	const graphs::directed_graph& g, const linear_arrangement& pi,
-	node * const __restrict__ T,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -215,20 +212,15 @@ noexcept
 		UNUSED(upper_bound);
 	}
 
-	const uint64_t n = g.get_num_nodes();
-	for (uint64_t i = 0; i < n; ++i) {
-		T[ pi[i] ] = i;
-	}
-
 	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node u = 0; u < g.get_num_nodes(); ++u) {
+	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
-		const neighbourhood& Nu_out = g.get_out_neighbours(u);
-		for (const node& v : Nu_out) {
+		const neighbourhood& Nu_out = g.get_out_neighbours(u.value);
+		for (node_t v : Nu_out) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];
 			if (pu >= pv) { continue; }
@@ -237,18 +229,18 @@ noexcept
 
 			if constexpr (decide_upper_bound) {
 				const uint64_t res =
-					__inner_computation_dir<true>(g, u,v, pi, T, C, upper_bound);
+					__inner_computation_dir<true>(g, pu,pv, pi, C, upper_bound);
 
 				// if decided that C > upper_bound, return
 				if (res == DECIDED_C_GT) { return DECIDED_C_GT; }
 				// if not, continue
 			}
 			else {
-				__inner_computation_dir<false>(g, u,v, pi, T, C);
+				__inner_computation_dir<false>(g, pu,pv, pi, C);
 			}
 		}
-		const neighbourhood& Nu_in = g.get_in_neighbours(u);
-		for (const node& v : Nu_in) {
+		const neighbourhood& Nu_in = g.get_in_neighbours(u.value);
+		for (node_t v : Nu_in) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];
 			if (pu >= pv) { continue; }
@@ -257,14 +249,14 @@ noexcept
 
 			if constexpr (decide_upper_bound) {
 				const uint64_t res =
-					__inner_computation_dir<true>(g, u,v, pi, T, C, upper_bound);
+					__inner_computation_dir<true>(g, pu,pv, pi, C, upper_bound);
 
 				// if decided that C > upper_bound, return
 				if (res == DECIDED_C_GT) { return DECIDED_C_GT; }
 				// if not, continue
 			}
 			else {
-				__inner_computation_dir<false>(g, u,v, pi, T, C);
+				__inner_computation_dir<false>(g, pu,pv, pi, C);
 			}
 		}
 	}
@@ -281,8 +273,6 @@ noexcept
 // ------------------
 // single arrangement
 
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
 template<typename GRAPH>
 inline
 uint64_t __call_C_brute_force(
@@ -294,18 +284,12 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
-	/* allocate memory */
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n);
-
 	// compute the number of crossings
 	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
-		return __compute_C_brute_force_undir<false>(g, pi, T.data());
+		return __compute_C_brute_force_undir<false>(g, pi);
 	}
 	else {
-		return __compute_C_brute_force_dir<false>(g, pi, T.data());
+		return __compute_C_brute_force_dir<false>(g, pi);
 	}
 }
 
@@ -348,10 +332,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n);
-
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
@@ -361,10 +341,10 @@ noexcept
 
 		// compute C
 		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
-			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i], T.data());
+			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i]);
 		}
 		else {
-			cs[i] = __compute_C_brute_force_dir<false>(g, pis[i], T.data());
+			cs[i] = __compute_C_brute_force_dir<false>(g, pis[i]);
 		}
 	}
 
@@ -397,8 +377,6 @@ noexcept
 // ------------------
 // single arrangement
 
-// T: translation table, inverse of pi:
-// T[p] = u <-> at position p we find node u
 template<typename GRAPH>
 inline
 uint64_t __call_brute_force_lesseq_than(
@@ -411,20 +389,14 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
-	/* allocate memory */
-
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n);
-
 	// compute the number of crossings
 	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 		return
-		__compute_C_brute_force_undir<true>(g, pi, T.data(), upper_bound);
+		__compute_C_brute_force_undir<true>(g, pi, upper_bound);
 	}
 	else {
 		return
-		__compute_C_brute_force_dir<true>(g, pi, T.data(), upper_bound);
+		__compute_C_brute_force_dir<true>(g, pi, upper_bound);
 	}
 }
 
@@ -475,10 +447,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n);
-
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
@@ -489,11 +457,11 @@ noexcept
 		// compute C
 		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 			cs[i] =
-			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bound);
+			__compute_C_brute_force_undir<true>(g, pis[i], upper_bound);
 		}
 		else {
 			cs[i] =
-			__compute_C_brute_force_dir<true>(g, pis[i], T.data(), upper_bound);
+			__compute_C_brute_force_dir<true>(g, pis[i], upper_bound);
 		}
 	}
 
@@ -543,10 +511,6 @@ noexcept
 	std::vector<uint64_t> cs(pis.size(), 0);
 	if (n < 4) { return cs; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	data_array<node> T(n);
-
 	/* compute C for every linear arrangement */
 	for (size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
@@ -557,11 +521,11 @@ noexcept
 		// compute C
 		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
 			cs[i] =
-			__compute_C_brute_force_undir<true>(g, pis[i], T.data(), upper_bounds[i]);
+			__compute_C_brute_force_undir<true>(g, pis[i], upper_bounds[i]);
 		}
 		else {
 			cs[i] =
-			__compute_C_brute_force_dir<true>(g, pis[i], T.data(), upper_bounds[i]);
+			__compute_C_brute_force_dir<true>(g, pis[i], upper_bounds[i]);
 		}
 	}
 

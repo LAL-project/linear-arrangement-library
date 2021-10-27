@@ -76,7 +76,7 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
-		return make_pair(0, linear_arrangement(0,0));
+		return {0, linear_arrangement::identity(1)};
 	}
 
 	// In short, Hochberg and Stallmann described their algorithm
@@ -98,7 +98,7 @@ noexcept
 	linear_arrangement arr(n);
 	const uint64_t D = intervals::arrange(n, L, c, arr);
 
-	return make_pair(D, std::move(arr));
+	return {D, std::move(arr)};
 }
 
 } // -- namespace detail

@@ -64,11 +64,15 @@ noexcept
 	// sum of lengths
 	uint64_t l = 0;
 
-	for (iterators::E_iterator<G> e_it(g); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge();
+	iterators::E_iterator<G> e_it(g);
+	for (; not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge_t();
+
+		const auto pu = pi[u];
+		const auto pv = pi[v];
 
 		// accumulate length of edge
-		l += (pi[u] < pi[v] ? pi[v] - pi[u] : pi[u] - pi[v]);
+		l += (pu < pv ? pv - pu : pu - pv);
 	}
 	return l;
 }

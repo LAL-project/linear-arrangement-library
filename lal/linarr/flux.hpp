@@ -47,7 +47,7 @@
 #endif
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/linear_arrangement.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>

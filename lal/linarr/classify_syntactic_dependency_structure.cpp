@@ -69,12 +69,14 @@ inline
 bool __is_root_covered(const graphs::rooted_tree& T, const linear_arrangement& pi)
 noexcept
 {
-	const node R = T.get_root();
+	const node_t R = T.get_root();
 	for (iterators::E_iterator e_it(T); not e_it.end(); e_it.next()) {
-		const auto [s,t] = e_it.get_edge();
+		const auto [s,t] = e_it.get_edge_t();
 		const bool covered =
-			(pi[s] < pi[R] and pi[R] < pi[t]) or
-			(pi[t] < pi[R] and pi[R] < pi[s]);
+			(pi[s] < pi[R] and pi[R] < pi[t])
+			or
+			(pi[t] < pi[R] and pi[R] < pi[s]
+		);
 
 		// the root is covered
 		if (covered) {
@@ -93,7 +95,7 @@ noexcept
 {
 	// add this node to its own yield
 	auto& yu = yields[u];
-	yu.push_back(pi[u]);
+	yu.push_back(pi[node_t{u}]);
 
 	for (node v : t.get_out_neighbours(u)) {
 		__get_yields(t,pi, v, yields);
@@ -203,19 +205,13 @@ noexcept
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
 	// as a reference for the definition of 1ec
 
-	const uint64_t n = rT.get_num_nodes();
-	detail::data_array<node> T(n);
-	for (node u = 0; u < n; ++u) {
-		T[ pi[u] ] = u;
-	}
-
 	bool classified = false;
 	bool _1ec = false;
 
 	iterators::E_iterator e_it(rT);
 	while (not e_it.end() and not classified) {
 		// check other edges crossing the current edge
-		const auto [s,t] = e_it.get_edge();
+		const auto [s,t] = e_it.get_edge_t();
 		e_it.next();
 
 		const auto [ps, pt] = sort_by_index(pi[s], pi[t]);
@@ -225,8 +221,8 @@ noexcept
 
 		// iterate over the nodes between the endpoints
 		// of 'dep' in the linear arrangement
-		for (position r = ps + 1; r <= pt - 1; ++r) {
-			const node u = T[r];
+		for (position_t pu = ps + 1; pu <= pt - 1; ++pu) {
+			const node u = pi[pu];
 
 			neighbourhood neighs_u = rT.get_out_neighbours(u);
 			if (u != rT.get_root()) {
@@ -234,10 +230,10 @@ noexcept
 			}
 
 			// check neighbours
-			for (const node v : neighs_u) {
+			for (const node_t v : neighs_u) {
 				if (pi[v] < ps or pt < pi[v]) {
 					// the edge (u,v) crosses (s,t)
-					crossing.push_back(sort_by_index(u,v));
+					crossing.push_back(sort_by_index(u,v.value));
 				}
 			}
 		}
@@ -336,14 +332,11 @@ noexcept
 	// update the linear arrangement
 	linear_arrangement _pi(pi.size() + 1);
 	if (_pi.size() > 0) {
-		_pi[0] = 0;
+		_pi.assign(0ULL, 0ULL);
 	}
-	std::copy(pi.begin(), pi.end(), _pi.begin() + 1);
-	std::transform(
-		_pi.begin() + 1, _pi.end(),
-		_pi.begin() + 1,
-		[](const position p) -> position { return p + 1; }
-	);
+	for (node u = 0; u < n; ++u) {
+		_pi.assign(u + 1, pi[node_t{u}] + 1);
+	}
 
 	// -------------------------------------------------------------------------
 	// classify small trees

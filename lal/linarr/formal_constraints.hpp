@@ -70,7 +70,8 @@ bool is_permutation(const linear_arrangement& arr = {}) noexcept {
 	if (arr.size() == 0) { return true; }
 	// ensure that no position has been used twice
 	detail::data_array<position> d(arr.size(), 0);
-	for (const position p : arr) {
+	for (node u = 0; u < arr.size(); ++u) {
+		const position p = arr[node_t{u}];
 		if (p >= arr.size()) { return false; }
 		if (d[p] > 0) { return false; }
 		d[p] += 1;
@@ -104,7 +105,9 @@ bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
 	// ensure that the input arrangement is a permutation
 	if (not is_permutation(arr)) { return false; }
 	// the largest number must be exactly one less than the size
-	const position max_pos = *std::max_element(arr.begin(), arr.end());
+	const position max_pos =
+		*std::max_element
+		(arr.begin_direct(), arr.end_direct());
 	return max_pos == arr.size() - 1;
 }
 
@@ -178,11 +181,16 @@ noexcept
 	}
 
 	const node r = rt.get_root();
+	const position pr = arr[node_t{r}];
+
 	iterators::E_iterator e_it(rt);
 	while (not e_it.end()) {
-		const auto [s,t] = e_it.get_edge();
-		const bool r_covered_st = arr[s] < arr[r] and arr[r] < arr[t];
-		const bool r_covered_ts = arr[t] < arr[r] and arr[r] < arr[s];
+		const auto [s,t] = e_it.get_edge_t();
+		const position ps = arr[s];
+		const position pt = arr[t];
+
+		const bool r_covered_st = ps < pr and pr < pt;
+		const bool r_covered_ts = pt < pr and pr < ps;
 		if (r_covered_st or r_covered_ts) { return false; }
 		e_it.next();
 	}

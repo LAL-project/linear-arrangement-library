@@ -45,6 +45,7 @@
 #include <array>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 

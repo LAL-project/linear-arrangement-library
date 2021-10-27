@@ -47,6 +47,7 @@
 
 // lal includes
 #include <lal/graphs/graph.hpp>
+#include <lal/linear_arrangement.hpp>
 
 namespace lal {
 namespace generate {
@@ -147,13 +148,15 @@ public:
 	 * can be retrieved using method @ref get_arrangement.
 	 */
 	void next() noexcept {
-		m_reached_end = not std::next_permutation(m_arr.begin(), m_arr.end());
+		m_reached_end =
+			not std::next_permutation(m_arr.begin_direct(), m_arr.end_direct());
+		m_arr.update_inverse();
 	}
 
 	/// Sets the generator to its initial state.
 	void reset() noexcept {
 		m_reached_end = false;
-		std::iota(m_arr.begin(), m_arr.end(), 0);
+		m_arr.identity();
 	}
 
 	/**

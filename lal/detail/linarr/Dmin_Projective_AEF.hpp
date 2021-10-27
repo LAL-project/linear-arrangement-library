@@ -76,7 +76,7 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
-		return std::make_pair(0, linear_arrangement(0,0));
+		return std::make_pair(0, linear_arrangement::identity(1));
 	}
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
@@ -89,7 +89,7 @@ noexcept
 	linear_arrangement arr(n);
 	const uint64_t D = intervals::arrange(n, L, t.get_root(), arr);
 
-	return make_pair(D, std::move(arr));
+	return {D, std::move(arr)};
 }
 
 } // -- namespace detail

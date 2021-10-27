@@ -48,7 +48,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/graphs/graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 

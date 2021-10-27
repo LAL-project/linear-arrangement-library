@@ -126,6 +126,9 @@ public:
 	/// Returns the current edge pair.
 	edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
 
+	/// Returns the current edge pair.
+	edge_pair_t get_edge_pair_t() const noexcept { return m_cur_pair; }
+
 	/// Returns the current edge pair and advances the iterator
 	edge_pair yield_edge_pair() noexcept {
 		const auto e = get_edge_pair();

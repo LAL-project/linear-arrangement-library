@@ -54,14 +54,11 @@ namespace detail {
 
 namespace __lal {
 
-template<
-	template<typename... Args> class oContainer,
-	template<typename... Args> class iContainer, typename... iTypes
->
+template<class container>
 inline
 void __make_arrangement_intervals(
 	const graphs::rooted_tree& T, node r,
-	const oContainer<iContainer<iTypes...>>& data,
+	const container& data,
 	position& pos, linear_arrangement& arr
 )
 noexcept
@@ -71,14 +68,14 @@ noexcept
 
 	// vertex 'r' is a leaf
 	if (d_out == 0) {
-		arr[r] = pos++;
+		arr.assign(r, pos++);
 		return;
 	}
 	const auto& interval = data[r];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
-			arr[vi] = pos++;
+			arr.assign(vi, pos++);
 		}
 		else {
 			__make_arrangement_intervals(T, vi, data, pos, arr);
@@ -88,14 +85,11 @@ noexcept
 
 } // namespace __lal
 
-template<
-	template<typename... Args> class oContainer,
-	template<typename... Args> class iContainer, typename... iTypes
->
+template<class container>
 inline
 linear_arrangement make_arrangement_intervals(
 	const graphs::rooted_tree& T,
-	const oContainer<iContainer<iTypes...>>& data
+	const container& data
 )
 noexcept
 {
@@ -110,14 +104,11 @@ noexcept
 
 namespace __lal {
 
-template<
-	template<typename... Args> class oContainer,
-	template<typename... Args> class iContainer, typename... iTypes
->
+template<class container>
 inline
 void __make_arrangement_intervals(
 	const graphs::free_tree& T, node parent, node u,
-	const oContainer<iContainer<iTypes...>>& data,
+	const container& data,
 	position& pos, linear_arrangement& arr
 )
 noexcept
@@ -127,14 +118,14 @@ noexcept
 
 	// vertex 'u' is a leaf in the rooted version of T
 	if (d_out == 0) {
-		arr[u] = pos++;
+		arr.assign(u, pos++);
 		return;
 	}
 	const auto& interval = data[u];
 	for (size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == u) {
-			arr[vi] = pos++;
+			arr.assign(vi, pos++);
 		}
 		else {
 			__make_arrangement_intervals(T, u, vi, data, pos, arr);
@@ -143,14 +134,11 @@ noexcept
 }
 } // -- namespace __lal
 
-template<
-	template<typename... Args> class oContainer,
-	template<typename... Args> class iContainer, typename... iTypes
->
+template<class container>
 inline
 linear_arrangement make_arrangement_intervals(
 	const graphs::free_tree& T, node root,
-	const oContainer<iContainer<iTypes...>>& data
+	const container& data
 )
 noexcept
 {

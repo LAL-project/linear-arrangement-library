@@ -42,6 +42,7 @@
 #pragma once
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/algorithms_Dmin_projective.hpp>

@@ -80,7 +80,7 @@ noexcept
 	const uint64_t n = t.get_num_nodes();
 	const node r = t.get_root();
 	if (n == 1) {
-		return std::make_pair(0, linear_arrangement(0,0));
+		return std::make_pair(0, linear_arrangement::identity(1));
 	}
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according

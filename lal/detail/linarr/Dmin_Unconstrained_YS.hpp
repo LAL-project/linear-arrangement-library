@@ -180,7 +180,7 @@ noexcept
 	// Base case
 	if (size_tree == 1) {
 		cost = 0;
-		mla[root_or_anchor - 1] = start;
+		mla.assign(root_or_anchor - 1, start);
 		return;
 	}
 
@@ -318,7 +318,9 @@ noexcept
 	// We choose B-recursion only if it is better
 	if (p_alpha != 0) {
 		if (cost_B < cost) {
-			mla.swap(mla_B);
+			//mla.swap(mla_B);
+			mla = std::move(mla_B);
+
 			cost = cost_B;
 		}
 	}
@@ -335,12 +337,12 @@ noexcept
 #endif
 
 	uint64_t c = 0;
-	linear_arrangement arrangement(t.get_num_nodes(),0);
+	linear_arrangement arrangement(t.get_num_nodes());
 
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
 	dmin_Shiloach::calculate_mla<NO_ANCHOR>
-		(T, 1, 0, t.get_num_nodes() -1, arrangement, c);
+		(T, 1, 0, t.get_num_nodes() - 1, arrangement, c);
 
 	return {c, arrangement};
 }

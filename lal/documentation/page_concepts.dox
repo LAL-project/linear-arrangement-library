@@ -22,21 +22,35 @@ A pair of independent/disjoint edges \f$e_1,e_2\f$ are two edges that do not sha
 
 \subsection LAL_concepts__linear_arrangement Linear Arrangement
 
-A linear arrangement object is a vector whose size is equal to the number of nodes of its corresponding graph. Note, however, that a linear arrangement has no associated graph; it is just a vector. Throughout this namespace we use the symbol for the number pi, :math:`\pi`, to denote a linear arrangement, as is usually done in the scientific literature.
+A linear arrangement is a well-known concept that relates vertices to distinct positions in a linear ordering. Linear arrangements are often denoted with \f$\pi\f$ in the literature; in this library we also follow this notation. Moreover, in this library linear arrangements are implemented with two arrays describing said relationship. One array gives the values \f$\pi(u)\f$, which is the position of vertex \f$u\f$ in the linear arrangement; the other array gives the values \f$\pi^{-1}(p)\f$, which is the vertex at position \f$p\f$ in the linear arrangement.
 
-If @e pi is a linear arrangement of @e n nodes:
+In the mathematical sense, a linear arrangement is a permutation, a bijective function \f$\pi \;:\; V \longrightarrow [0,n-1]\f$, for which:
+- \f$\pi(u)=p\f$ when the position of vertex \f$u\f$ is \f$p\f$.
+- \f$\pi^{-1}(p)=u\f$ when at position \f$p\f$ we find vertex \f$u\f$.
+
+The two arrays underlying a linear arrangement describe the function \f$\pi\f$. One array gives the values \f$\pi(u)\f$ (@ref lal::linear_arrangement::m_direct); the other array gives the values \f$\pi^{-1}(p)\f$ (@ref lal::linear_arrangement::m_inverse).
+
+In code, if @e arr is a linear arrangement of @e n nodes:
 
 @code
-lal::linear_arrangement pi(n);
+lal::linear_arrangement arr(n);
 @endcode
 
-then the @e u-th position gives the position of node @e u in the arrangement:
+then the vertex at position @e p can be retrieved using:
 
 @code
-position pu = pi[u];
+lal::node u = arr.get_node_at_position(p);
 @endcode
 
-For the sake of simplicity in documenting this library, we define the identity arrangement \f$\pi_I\f$ as \f$\pi_I[u_i]=i\f$, where \f$u_i\f$ denotes the \f$i\f$-th vertex in the graph. This is a special case of linear arrangement used in many functions. Such an arrangement is one that maps each node into the position corresponding to their label. When omitting the arrangement in the functions of this namespace, the user should consider that the arrangement used is the identity arrangement.
+and the position of vertex @e u can be retrieved using:
+
+@code
+lal::position p = arr.get_position_of_node(u);
+@endcode
+
+\subsubsection LAL_concepts__identity_linear_arrangement Identity Linear Arrangement
+
+For the sake of simplicity in documenting this library, we define the identity arrangement \f$\pi_I\f$ as the arrangement that maps each node into the position corresponding to their label. More formally, \f$\pi_I(u_i)=i\f$, where \f$u_i\f$ denotes the \f$i\f$-th vertex in the graph. This is a special case of linear arrangement used in many functions in this library.
 
 \subsection LAL_concepts__edge_list Edge list
 

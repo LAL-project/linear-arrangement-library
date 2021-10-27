@@ -42,7 +42,7 @@
 #pragma once
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>

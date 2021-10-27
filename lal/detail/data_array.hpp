@@ -69,7 +69,6 @@ public:
 	data_array(const std::size_t n, const T& v) noexcept : data_array(n) {
 		fill(v);
 	}
-
 	// Copy constructor
 	data_array(const data_array& d) noexcept : data_array(d.m_size) {
 		if (m_size > 0) {
@@ -209,7 +208,7 @@ private:
 		m_data = m_size == 0 ? nullptr : new T[m_size];
 	}
 
-private:
+protected:
 	// the data of this array
 	T *m_data = nullptr;
 	// the size of this array in number of elements

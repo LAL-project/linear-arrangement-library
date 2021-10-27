@@ -45,6 +45,7 @@
 #include <random>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/data_array.hpp>
 

@@ -45,6 +45,7 @@
 #include <vector>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/rational.hpp>
 

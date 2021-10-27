@@ -71,6 +71,7 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
+    basic_types.hpp \
     detail/data_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \
@@ -173,6 +174,7 @@ HEADERS += \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
 	linarr/syntactic_dependency_structure.hpp \
+    linear_arrangement.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
 	numeric/integer_output.hpp \
@@ -190,8 +192,7 @@ HEADERS += \
 	properties/tree_diameter.hpp \
 	utilities.hpp \
 	utilities/tree_isomorphism.hpp \
-	lal_version.hpp \
-	definitions.hpp
+	lal_version.hpp
 
 SOURCES += \
     detail/numeric/utils.cpp \

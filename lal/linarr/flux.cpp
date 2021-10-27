@@ -63,17 +63,17 @@ namespace linarr {
 namespace flux {
 
 inline
-std::vector<std::pair<edge,uint64_t>> get_edges_with_max_pos_at
+std::vector<std::pair<edge_t,uint64_t>> get_edges_with_max_pos_at
 (const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
 {
-	std::vector<std::pair<edge,uint64_t>> edge_ending_at
-			(t.get_num_nodes(), make_pair(edge(), 0));
+	const auto n = t.get_num_nodes();
+	std::vector<std::pair<edge_t,uint64_t>> edge_ending_at(n, {{}, 0});
 
 	for (iterators::E_iterator e_it(t); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge();
+		const auto [u,v] = e_it.get_edge_t();
 		const position max = max_pos(u, v);
-		edge_ending_at[max].first = edge(u,v);
+		edge_ending_at[max].first = {u,v};
 		++edge_ending_at[max].second;
 	}
 	return edge_ending_at;
@@ -84,15 +84,15 @@ void calculate_dependencies_span
 (
 	const graphs::free_tree& t,
 	const linear_arrangement& pi,
-	const detail::data_array<node>& inv_pi,
-	const std::vector<std::pair<edge,uint64_t>>& edge_with_max_pos_at,
+	const std::vector<std::pair<edge_t,uint64_t>>& edge_with_max_pos_at,
 	position cur_pos,
 	std::vector<dependency_flux>& flux,
 	std::vector<edge>& cur_deps
 )
 noexcept
 {
-	const node u = inv_pi[cur_pos];
+	const node u = pi[position_t{cur_pos}];
+
 	if (cur_pos > 0) {
 		// copy previous dependencies
 		cur_deps = flux[cur_pos - 1].get_dependencies();
@@ -104,7 +104,7 @@ noexcept
 		std::equal_range(
 			cur_deps.begin(), cur_deps.end(),
 			edge_with_max_pos_at[cur_pos].first, // this ends at position p-1
-			[&](const edge& e1, const edge& e2) -> bool {
+			[&](const edge_t& e1, const edge_t& e2) -> bool {
 				const auto pos_e1 = max_pos(e1.first, e1.second);
 				const auto pos_e2 = max_pos(e2.first, e2.second);
 				return pos_e1 < pos_e2;
@@ -116,9 +116,9 @@ noexcept
 	}
 
 	// add the new dependencies
-	for (const node v : t.get_neighbours(u)) {
+	for (const node_t v : t.get_neighbours(u)) {
 		if (pi[v] > cur_pos) {
-			cur_deps.push_back(edge(u,v));
+			cur_deps.push_back({u,v.value});
 		}
 	}
 
@@ -127,7 +127,7 @@ noexcept
 		set_endpoints.insert_sorted(v);
 		set_endpoints.insert_sorted(w);
 	}
-	for (node v : set_endpoints) {
+	for (node_t v : set_endpoints) {
 		flux[cur_pos].get_left_span() += (pi[v] <= cur_pos);
 		flux[cur_pos].get_right_span() += (pi[v] > cur_pos);
 	}
@@ -181,13 +181,6 @@ noexcept
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) { return  {}; }
 
-	// inverse function of the linear arrangement:
-	// T[p] = u <-> node u is at position p
-	detail::data_array<node> inv_pi(n, 0);
-	for (node u = 0; u < n; ++u) {
-		inv_pi[ pi[u] ] = u;
-	}
-
 	// one edge entering each position
 	const auto edge_with_max_pos_at = flux::get_edges_with_max_pos_at(t, pi);
 
@@ -207,7 +200,7 @@ noexcept
 		// ----------------------
 		// calculate dependencies
 		flux::calculate_dependencies_span
-		(t, pi, inv_pi, edge_with_max_pos_at, cur_pos, flux, cur_deps);
+		(t, pi, edge_with_max_pos_at, cur_pos, flux, cur_deps);
 
 		// -------------------------------------------------
 		// calculate the weight of the flux at this position
@@ -224,7 +217,7 @@ noexcept
 			// largest key possible + 1
 			n,
 			// key
-			[&](const edge& e) -> std::size_t
+			[&](const edge_t& e) -> std::size_t
 			{ return max_pos(e.first, e.second); },
 			// reusable memory
 			mem

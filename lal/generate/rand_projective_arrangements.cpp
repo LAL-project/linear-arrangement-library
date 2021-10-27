@@ -87,7 +87,7 @@ noexcept
 
 linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	if (m_rT.get_num_nodes() == 1) {
-		return linear_arrangement(1, 0);
+		return linear_arrangement::identity(1);
 	}
 
 	// generate random intervals

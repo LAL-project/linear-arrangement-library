@@ -120,9 +120,19 @@ public:
 	/// Returns the current edge.
 	edge get_edge() const noexcept { return m_cur_edge; }
 
+	/// Returns the current edge.
+	edge_t get_edge_t() const noexcept { return m_cur_edge; }
+
 	/// Returns the current edge and advances the iterator
 	edge yield_edge() noexcept {
 		const auto e = get_edge();
+		next();
+		return e;
+	}
+
+	/// Returns the current edge and advances the iterator
+	edge_t yield_edge_t() noexcept {
+		const auto e = get_edge_t();
 		next();
 		return e;
 	}
