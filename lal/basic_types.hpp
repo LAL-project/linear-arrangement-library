@@ -138,6 +138,7 @@ struct node_t {
 	node_t& operator-= (const node_t& u) noexcept { value -= u.value; return *this; }
 
 	node_t& operator++() noexcept { ++value; return *this; }
+	node_t& operator--() noexcept { --value; return *this; }
 
 	// input/output operators
 
@@ -236,6 +237,7 @@ struct position_t {
 	position_t& operator-= (const position_t& u) noexcept { value -= u.value; return *this; }
 
 	position_t& operator++() noexcept { ++value; return *this; }
+	position_t& operator--() noexcept { --value; return *this; }
 
 	// input/output operators
 
