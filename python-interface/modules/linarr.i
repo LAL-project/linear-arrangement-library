@@ -4,7 +4,7 @@
 %include std_array.i
 %include std_pair.i
 
-%include "typemaps/linear_arrangement.i"
+%implicitconv lal::linear_arrangement;
 
 %import types.i // this is necessary for the wrapper
 %import enums/syntactic_dependency_structure.i

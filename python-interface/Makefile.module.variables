@@ -1,11 +1,6 @@
 DOCUMENTATION_FILE = modules/documentation.i
 
 # ######################################################################
-# TYPEMAPS
-
-TYPE_MAP__LINEAR_ARRANGEMENT	= modules/typemaps/linear_arrangement.i
-
-# ######################################################################
 # MODULE NAME variables
 
 # ------------
@@ -295,8 +290,7 @@ LINARR_MAIN_INT					= modules/$(LINARR_INTERFACE_NAME).i
 LINARR_MOD_DEPS					= $(LINARR_MAIN_INT) $(LINARR_DPHDRS)				\
 									$(SYN_DEP_STR_MOD_DEPS) $(ALG_C_MOD_DEPS)		\
 									$(ALG_DMIN_MOD_DEPS) $(ALG_DMIN_PL_MOD_DEPS)	\
-									$(ALG_DMIN_PR_MOD_DEPS) $(TYPES_MOD_DEPS)		\
-									$(TYPE_MAP__LINEAR_ARRANGEMENT)
+									$(ALG_DMIN_PR_MOD_DEPS) $(TYPES_MOD_DEPS)
 LINARR_PREFIX					= $(INTERFACE_DIRECTORY)/$(LINARR_INTERFACE_NAME)
 LINARR_RAW_PY_FILE				= $(LINARR_PREFIX).py
 LINARR_INSTALL_PY_FILE			= $(ARCH_DIR)/$(LINARR_RAW_PY_FILE)
