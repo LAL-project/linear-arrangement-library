@@ -118,7 +118,7 @@ public:
 	void set_join_files(bool v) noexcept { m_join_files = v; }
 
 	/// Set the number of threads
-	void set_number_threads(size_t n_threads) noexcept {
+	void set_number_threads(std::size_t n_threads) noexcept {
 #if defined DEBUG
 		assert(n_threads != 0);
 #endif
@@ -128,7 +128,7 @@ public:
 	// GETTERS
 
 	/// Returns the number of errors that arised during processing.
-	size_t get_num_errors() const noexcept
+	std::size_t get_num_errors() const noexcept
 	{ return m_errors_from_processing.size(); }
 
 	/**
@@ -136,7 +136,7 @@ public:
 	 * @param i The index of the error, an unsigned integer.
 	 * @returns A value of the enumeration @ref lal::io::treebank_error.
 	 */
-	const treebank_error& get_error_type(size_t i) const noexcept
+	const treebank_error& get_error_type(std::size_t i) const noexcept
 	{ return std::get<0>(m_errors_from_processing[i]); }
 
 	/**
@@ -145,7 +145,7 @@ public:
 	 * @returns The name of the treebank file where the @e i-th error happened
 	 * as a string.
 	 */
-	const std::string& get_error_treebank_filename(size_t i) const noexcept
+	const std::string& get_error_treebank_filename(std::size_t i) const noexcept
 	{ return std::get<1>(m_errors_from_processing[i]); }
 
 	/**
@@ -154,7 +154,7 @@ public:
 	 * @returns The name of the treebank where the @e i-th error happened
 	 * as a string.
 	 */
-	const std::string& get_error_treebank_name(size_t i) const noexcept
+	const std::string& get_error_treebank_name(std::size_t i) const noexcept
 	{ return std::get<2>(m_errors_from_processing[i]); }
 
 	/**
@@ -235,7 +235,7 @@ private:
 	/// Name of the column that identifies each treebank.
 	std::string m_treebank_column_name = "treebank";
 	/// Number of threads to use.
-	size_t m_num_threads = 1;
+	std::size_t m_num_threads = 1;
 	/// The name of the column in the join file
 	std::string m_column_join_name = "";
 

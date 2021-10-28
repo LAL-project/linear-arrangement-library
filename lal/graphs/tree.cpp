@@ -108,7 +108,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 std::vector<std::string> tree::get_tree_type_list() const noexcept {
 	std::vector<std::string> l;
 	l.reserve(__tree_type_size);
-	for (size_t i = 0; i < __tree_type_size; ++i) {
+	for (std::size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
 			l.push_back(std::string(
 				detail::tree_type_string(static_cast<tree_type>(i))

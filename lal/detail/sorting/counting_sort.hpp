@@ -126,7 +126,7 @@ inline
 void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key_plus_1,
-	const std::function<size_t (const T&)>& key,
+	const std::function<std::size_t (const T&)>& key,
 	countingsort::memory_counting_sort<T>& mem
 )
 noexcept
@@ -216,7 +216,7 @@ void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
-	const std::function<size_t (const T&)>& key
+	const std::function<std::size_t (const T&)>& key
 )
 noexcept
 {

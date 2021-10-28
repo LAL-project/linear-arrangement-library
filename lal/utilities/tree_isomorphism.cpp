@@ -163,13 +163,13 @@ public:
 
 		for (int l = to_int(nodes_per_level_t.size()) - 1; l >= 0; --l) {
 			const auto& nodes_level_l = nodes_per_level_t[l];
-			const size_t n_nodes_in_level = nodes_level_l.size();
+			const std::size_t n_nodes_in_level = nodes_level_l.size();
 
-			size_t i = 0;
+			std::size_t i = 0;
 			for (node u : nodes_level_l) {
 				// store the neighbours names in a vector for later sorting
 
-				size_t j = 0;
+				std::size_t j = 0;
 				for (node v : t.get_out_neighbours(u)) {
 					_pieces_of_node[j++] = name_per_node_t[v];
 				}
@@ -177,7 +177,7 @@ public:
 
 				// build the name for this node
 				name_per_node_t[u] = "1";
-				for (size_t k = 0; k < j; ++k) {
+				for (std::size_t k = 0; k < j; ++k) {
 					name_per_node_t[u] += _pieces_of_node[k];
 				}
 				name_per_node_t[u] += "0";
@@ -191,7 +191,7 @@ public:
 			sort(&_pieces_of_level[0], &_pieces_of_level[n_nodes_in_level]);
 
 			// build the level's name
-			for (size_t k = 0; k < n_nodes_in_level; ++k) {
+			for (std::size_t k = 0; k < n_nodes_in_level; ++k) {
 				name_per_level_t[l] += _pieces_of_level[k];
 			}
 

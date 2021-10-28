@@ -96,7 +96,7 @@ noexcept
 {
 	const uint64_t n_target = target.size();
 
-	for (size_t u = 0; u < source.size(); ++u) {
+	for (std::size_t u = 0; u < source.size(); ++u) {
 		// add new edges by appending all the neighbours of 'u' in 'g'
 		target.push_back( source[u] );
 		// relabel the nodes

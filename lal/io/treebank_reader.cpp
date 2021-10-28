@@ -83,7 +83,7 @@ void treebank_reader::next_tree() noexcept {
 	std::stringstream ss;
 	bool correct_line;
 
-	size_t count = 0;
+	std::size_t count = 0;
 	node k;
 
 	do {

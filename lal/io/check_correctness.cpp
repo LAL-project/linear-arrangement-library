@@ -63,7 +63,7 @@ noexcept
 
 // file, line, what
 std::vector<report_treebank_collection> check_correctness_treebank_collection
-(const std::string& main_file_name, size_t n_threads)
+(const std::string& main_file_name, std::size_t n_threads)
 noexcept
 {
 	return detail::check_correctness_treebank_collection<false>

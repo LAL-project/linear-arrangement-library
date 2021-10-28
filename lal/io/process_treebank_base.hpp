@@ -66,13 +66,13 @@ public:
 	 * @param fs Feature to be added.
 	 */
 	void add_feature(const treebank_feature& fs) noexcept
-	{ m_what_fs[ static_cast<size_t>(fs) ] = true; }
+	{ m_what_fs[ static_cast<std::size_t>(fs) ] = true; }
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
 	void remove_feature(const treebank_feature& fs) noexcept
-	{ m_what_fs[ static_cast<size_t>(fs) ] = false; }
+	{ m_what_fs[ static_cast<std::size_t>(fs) ] = false; }
 
 	// SETTERS
 
@@ -132,7 +132,7 @@ public:
 	 * @returns True or False depending on whether the feature was added or removed.
 	 */
 	bool has_feature(const treebank_feature& fs) const noexcept
-	{ return m_what_fs[ static_cast<size_t>(fs) ]; }
+	{ return m_what_fs[ static_cast<std::size_t>(fs) ]; }
 
 protected:
 	/// String for each column.

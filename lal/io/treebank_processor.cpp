@@ -84,7 +84,7 @@ namespace io {
 template<typename T>
 void set_average_of(
 	const std::vector<linarr::dependency_flux>& F,
-	const size_t idx,
+	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
@@ -111,7 +111,7 @@ noexcept
 template<typename T>
 void set_maximum_of(
 	const std::vector<linarr::dependency_flux>& F,
-	const size_t idx,
+	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
@@ -138,7 +138,7 @@ noexcept
 template<typename T>
 void set_minimum_of(
 	const std::vector<linarr::dependency_flux>& F,
-	const size_t idx,
+	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double *props
 )
@@ -246,7 +246,7 @@ treebank_error treebank_processor::process() noexcept {
 	// output header to the file
 	if (m_output_header) {
 		bool first = true;
-		for (size_t i = 0; i < __treebank_feature_size; ++i) {
+		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
 			if (m_what_fs[i]) {
 
 				if (first) {
@@ -376,7 +376,7 @@ const noexcept
 	out_treebank_file
 	<< detail::tree_type_string(detail::array_of_tree_types[0]);
 
-	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
+	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
 		out_treebank_file
 			<< m_separator
 			<< detail::tree_type_string(detail::array_of_tree_types[j]);
@@ -392,7 +392,7 @@ const noexcept
 		   detail::array_of_syntactic_dependency_structures[0]
 	   );
 
-	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+	for (std::size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
 		out_treebank_file
 			<< m_separator
 			<< detail::syntactic_dependency_structure_to_string(
@@ -419,7 +419,7 @@ const noexcept
 	}
 
 	output_tt(detail::array_of_tree_types[0]);
-	for (size_t j = 1; j < graphs::__tree_type_size; ++j) {
+	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
 		out_treebank_file << m_separator;
 		output_tt(detail::array_of_tree_types[j]);
 	}
@@ -436,12 +436,12 @@ const noexcept
 
 	const auto output_sdst =
 	[&](const linarr::syntactic_dependency_structure& sdst) {
-		const size_t idx_tt = static_cast<size_t>(sdst);
+		const std::size_t idx_tt = static_cast<std::size_t>(sdst);
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
 
 	output_sdst(detail::array_of_syntactic_dependency_structures[0]);
-	for (size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+	for (std::size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
 		out_treebank_file << m_separator;
 		output_sdst(detail::array_of_syntactic_dependency_structures[j]);
 	}
@@ -457,61 +457,61 @@ const noexcept
 
 	// -------------------------------------------------------------------
 	// indices of treebank features
-	static constexpr size_t n_idx = treebank_feature_to_index(treebank_feature::num_nodes);
-	static constexpr size_t k2_idx = treebank_feature_to_index(treebank_feature::second_moment_degree);
-	static constexpr size_t k2_out_idx = treebank_feature_to_index(treebank_feature::second_moment_degree_out);
-	static constexpr size_t k3_idx = treebank_feature_to_index(treebank_feature::third_moment_degree);
-	static constexpr size_t k3_out_idx = treebank_feature_to_index(treebank_feature::third_moment_degree_out);
-	static constexpr size_t SK2_idx = treebank_feature_to_index(treebank_feature::sum_squared_degrees);
-	static constexpr size_t SK2_out_idx = treebank_feature_to_index(treebank_feature::sum_squared_out_degrees);
-	static constexpr size_t SK3_idx = treebank_feature_to_index(treebank_feature::sum_cubed_degrees);
-	static constexpr size_t SK3_out_idx = treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
-	static constexpr size_t num_pairs_independent_edges_idx = treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
-	static constexpr size_t head_initial_idx = treebank_feature_to_index(treebank_feature::head_initial);
-	static constexpr size_t hubiness_idx = treebank_feature_to_index(treebank_feature::hubiness);
-	static constexpr size_t mean_hierarchical_distance_idx = treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
-	static constexpr size_t tree_centre_idx = treebank_feature_to_index(treebank_feature::tree_centre);
-	static constexpr size_t tree_centroid_idx = treebank_feature_to_index(treebank_feature::tree_centroid);
-	static constexpr size_t tree_diameter_idx = treebank_feature_to_index(treebank_feature::tree_diameter);
-	static constexpr size_t C_idx = treebank_feature_to_index(treebank_feature::num_crossings);
-	static constexpr size_t C_predicted_idx = treebank_feature_to_index(treebank_feature::predicted_num_crossings);
-	static constexpr size_t C_expected_idx = treebank_feature_to_index(treebank_feature::exp_num_crossings);
-	static constexpr size_t C_variance_idx = treebank_feature_to_index(treebank_feature::var_num_crossings);
-	static constexpr size_t C_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_num_crossings);
-	static constexpr size_t D_idx = treebank_feature_to_index(treebank_feature::sum_edge_lengths);
-	static constexpr size_t D_expected_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths);
-	static constexpr size_t D_expected_projective_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_projective);
-	static constexpr size_t D_expected_planar_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_planar);
-	static constexpr size_t D_variance_idx = treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);
-	static constexpr size_t D_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_sum_edge_lengths);
-	static constexpr size_t Dmin_Unconstrained_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
-	static constexpr size_t Dmin_Planar_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
-	static constexpr size_t Dmin_Projective_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
-	static constexpr size_t mean_dependency_distance_idx = treebank_feature_to_index(treebank_feature::mean_dependency_distance);
-	static constexpr size_t flux_max_weight_idx = treebank_feature_to_index(treebank_feature::flux_max_weight);
-	static constexpr size_t flux_mean_weight_idx = treebank_feature_to_index(treebank_feature::flux_mean_weight);
-	static constexpr size_t flux_min_weight_idx = treebank_feature_to_index(treebank_feature::flux_min_weight);
-	static constexpr size_t flux_max_left_span_idx = treebank_feature_to_index(treebank_feature::flux_max_left_span);
-	static constexpr size_t flux_mean_left_span_idx = treebank_feature_to_index(treebank_feature::flux_mean_left_span);
-	static constexpr size_t flux_min_left_span_idx = treebank_feature_to_index(treebank_feature::flux_min_left_span);
-	static constexpr size_t flux_max_right_span_idx = treebank_feature_to_index(treebank_feature::flux_max_right_span);
-	static constexpr size_t flux_mean_right_span_idx = treebank_feature_to_index(treebank_feature::flux_mean_right_span);
-	static constexpr size_t flux_min_right_span_idx = treebank_feature_to_index(treebank_feature::flux_min_right_span);
-	static constexpr size_t flux_max_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_max_RL_ratio);
-	static constexpr size_t flux_mean_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_mean_RL_ratio);
-	static constexpr size_t flux_min_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_min_RL_ratio);
-	static constexpr size_t flux_max_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_max_WS_ratio);
-	static constexpr size_t flux_mean_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_mean_WS_ratio);
-	static constexpr size_t flux_min_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_min_WS_ratio);
-	static constexpr size_t flux_max_size_idx = treebank_feature_to_index(treebank_feature::flux_max_size);
-	static constexpr size_t flux_mean_size_idx = treebank_feature_to_index(treebank_feature::flux_mean_size);
-	static constexpr size_t flux_min_size_idx = treebank_feature_to_index(treebank_feature::flux_min_size);
+	static constexpr std::size_t n_idx = treebank_feature_to_index(treebank_feature::num_nodes);
+	static constexpr std::size_t k2_idx = treebank_feature_to_index(treebank_feature::second_moment_degree);
+	static constexpr std::size_t k2_out_idx = treebank_feature_to_index(treebank_feature::second_moment_degree_out);
+	static constexpr std::size_t k3_idx = treebank_feature_to_index(treebank_feature::third_moment_degree);
+	static constexpr std::size_t k3_out_idx = treebank_feature_to_index(treebank_feature::third_moment_degree_out);
+	static constexpr std::size_t SK2_idx = treebank_feature_to_index(treebank_feature::sum_squared_degrees);
+	static constexpr std::size_t SK2_out_idx = treebank_feature_to_index(treebank_feature::sum_squared_out_degrees);
+	static constexpr std::size_t SK3_idx = treebank_feature_to_index(treebank_feature::sum_cubed_degrees);
+	static constexpr std::size_t SK3_out_idx = treebank_feature_to_index(treebank_feature::sum_cubed_out_degrees);
+	static constexpr std::size_t num_pairs_independent_edges_idx = treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
+	static constexpr std::size_t head_initial_idx = treebank_feature_to_index(treebank_feature::head_initial);
+	static constexpr std::size_t hubiness_idx = treebank_feature_to_index(treebank_feature::hubiness);
+	static constexpr std::size_t mean_hierarchical_distance_idx = treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
+	static constexpr std::size_t tree_centre_idx = treebank_feature_to_index(treebank_feature::tree_centre);
+	static constexpr std::size_t tree_centroid_idx = treebank_feature_to_index(treebank_feature::tree_centroid);
+	static constexpr std::size_t tree_diameter_idx = treebank_feature_to_index(treebank_feature::tree_diameter);
+	static constexpr std::size_t C_idx = treebank_feature_to_index(treebank_feature::num_crossings);
+	static constexpr std::size_t C_predicted_idx = treebank_feature_to_index(treebank_feature::predicted_num_crossings);
+	static constexpr std::size_t C_expected_idx = treebank_feature_to_index(treebank_feature::exp_num_crossings);
+	static constexpr std::size_t C_variance_idx = treebank_feature_to_index(treebank_feature::var_num_crossings);
+	static constexpr std::size_t C_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_num_crossings);
+	static constexpr std::size_t D_idx = treebank_feature_to_index(treebank_feature::sum_edge_lengths);
+	static constexpr std::size_t D_expected_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths);
+	static constexpr std::size_t D_expected_projective_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_projective);
+	static constexpr std::size_t D_expected_planar_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_planar);
+	static constexpr std::size_t D_variance_idx = treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);
+	static constexpr std::size_t D_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_sum_edge_lengths);
+	static constexpr std::size_t Dmin_Unconstrained_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
+	static constexpr std::size_t Dmin_Planar_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
+	static constexpr std::size_t Dmin_Projective_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
+	static constexpr std::size_t mean_dependency_distance_idx = treebank_feature_to_index(treebank_feature::mean_dependency_distance);
+	static constexpr std::size_t flux_max_weight_idx = treebank_feature_to_index(treebank_feature::flux_max_weight);
+	static constexpr std::size_t flux_mean_weight_idx = treebank_feature_to_index(treebank_feature::flux_mean_weight);
+	static constexpr std::size_t flux_min_weight_idx = treebank_feature_to_index(treebank_feature::flux_min_weight);
+	static constexpr std::size_t flux_max_left_span_idx = treebank_feature_to_index(treebank_feature::flux_max_left_span);
+	static constexpr std::size_t flux_mean_left_span_idx = treebank_feature_to_index(treebank_feature::flux_mean_left_span);
+	static constexpr std::size_t flux_min_left_span_idx = treebank_feature_to_index(treebank_feature::flux_min_left_span);
+	static constexpr std::size_t flux_max_right_span_idx = treebank_feature_to_index(treebank_feature::flux_max_right_span);
+	static constexpr std::size_t flux_mean_right_span_idx = treebank_feature_to_index(treebank_feature::flux_mean_right_span);
+	static constexpr std::size_t flux_min_right_span_idx = treebank_feature_to_index(treebank_feature::flux_min_right_span);
+	static constexpr std::size_t flux_max_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_max_RL_ratio);
+	static constexpr std::size_t flux_mean_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_mean_RL_ratio);
+	static constexpr std::size_t flux_min_RL_ratio_idx = treebank_feature_to_index(treebank_feature::flux_min_RL_ratio);
+	static constexpr std::size_t flux_max_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_max_WS_ratio);
+	static constexpr std::size_t flux_mean_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_mean_WS_ratio);
+	static constexpr std::size_t flux_min_WS_ratio_idx = treebank_feature_to_index(treebank_feature::flux_min_WS_ratio);
+	static constexpr std::size_t flux_max_size_idx = treebank_feature_to_index(treebank_feature::flux_max_size);
+	static constexpr std::size_t flux_mean_size_idx = treebank_feature_to_index(treebank_feature::flux_mean_size);
+	static constexpr std::size_t flux_min_size_idx = treebank_feature_to_index(treebank_feature::flux_min_size);
 
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
 
 	const auto set_prop =
-	[&](size_t idx, double val) -> void {
+	[&](std::size_t idx, double val) -> void {
 		props[idx] = val;
 		prop_set[idx] = 1;
 	};
@@ -767,7 +767,7 @@ const noexcept
 	// output features
 
 	bool first = true;
-	for (size_t i = 0; i < __treebank_feature_size; ++i) {
+	for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
 		if (m_what_fs[i]) {
 			if (first) {
 				first = false;

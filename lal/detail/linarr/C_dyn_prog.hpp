@@ -243,7 +243,7 @@ noexcept
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
 
-	const size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
@@ -301,7 +301,7 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
@@ -313,7 +313,7 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -373,7 +373,7 @@ noexcept
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
 
-	const size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
@@ -437,7 +437,7 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
@@ -449,7 +449,7 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -513,7 +513,7 @@ noexcept
 	}
 
 	/* allocate memory */
-	const size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
 	data_array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
@@ -525,7 +525,7 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -590,20 +590,20 @@ noexcept
 
 inline void compute_M
 (
-	size_t L,
-	const graph& G, const vector<size_t>& seq,
-	vector<vector<size_t> >& M
+	std::size_t L,
+	const graph& G, const vector<std::size_t>& seq,
+	vector<vector<std::size_t> >& M
 )
 {
-	for (size_t pu = 0; pu < L; ++pu) {
-		size_t u = seq[pu];
+	for (std::size_t pu = 0; pu < L; ++pu) {
+		std::size_t u = seq[pu];
 
 		// the row corresponding to node 'u' in M is
 		// the same as its position in the sequence
 
-		size_t k = G.get_degree(u);
+		std::size_t k = G.get_degree(u);
 		M[pu][0] = k;
-		for (size_t i = 1; i < L and k > 0; ++i) {
+		for (std::size_t i = 1; i < L and k > 0; ++i) {
 			if (G.has_edge(u, seq[i - 1])) --k;
 			M[pu][i] = k;
 		}
@@ -612,47 +612,47 @@ inline void compute_M
 
 inline void compute_K
 (
-	size_t L,
-	const graph& G, const vector<size_t>& seq,
-	vector<vector<size_t> >& K
+	std::size_t L,
+	const graph& G, const vector<std::size_t>& seq,
+	vector<vector<std::size_t> >& K
 )
 {
 	// Fill M matrix
-	vector<vector<size_t> > M(L, vector<size_t>(L));
+	vector<vector<std::size_t> > M(L, vector<std::size_t>(L));
 	compute_M(L, G, seq, M);
 
 	// Fill K matrix
-	for (size_t i = L - 3 - 1; i > 0; --i) {
-		for (size_t j = L - 1 - 1; j >= i + 2; --j) {
+	for (std::size_t i = L - 3 - 1; i > 0; --i) {
+		for (std::size_t j = L - 1 - 1; j >= i + 2; --j) {
 			K[i][j] = M[i + 1][j + 1] + K[i + 1][j];
 		}
 	}
-	for (size_t j = L - 1 - 1; j >= 2; --j) {
+	for (std::size_t j = L - 1 - 1; j >= 2; --j) {
 		K[0][j] = M[1][j + 1] + K[1][j];
 	}
 }
 
-size_t crossings_sequence_n2_n2(const graph& G, const vector<size_t>& seq) {
-	const size_t L = seq.size();
+std::size_t crossings_sequence_n2_n2(const graph& G, const vector<std::size_t>& seq) {
+	const std::size_t L = seq.size();
 	if (L < 4) return 0;
 
 	// translation table
 	// T[u] = p <-> node u is at position p
-	vector<size_t> T(G.get_num_nodes(), L + 1);
-	for (size_t i = 0; i < L; ++i) {
+	vector<std::size_t> T(G.get_num_nodes(), L + 1);
+	for (std::size_t i = 0; i < L; ++i) {
 		T[ seq[i] ] = i;
 	}
 
-	vector<vector<size_t> > K(L, vector<size_t>(L, 0));
+	vector<vector<std::size_t> > K(L, vector<std::size_t>(L, 0));
 	compute_K(L, G, seq, K);
 
-	size_t C = 0;
+	std::size_t C = 0;
 
-	for (size_t pu = 0; pu < L; ++pu) {
-		size_t u = seq[pu];
+	for (std::size_t pu = 0; pu < L; ++pu) {
+		std::size_t u = seq[pu];
 
 		const neighbourhood& Nu = G.get_neighbours(u);
-		for (const size_t& v : Nu) {
+		for (const std::size_t& v : Nu) {
 
 			if (pu < T[v]) {
 				// 'u' and 'v' is a pair of connected nodes such that

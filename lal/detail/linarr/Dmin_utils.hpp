@@ -259,7 +259,7 @@ noexcept
 	uint64_t after = 0;
 	uint64_t under_anchor = 0;
 
-	for (size_t i = 1; i < Cv.size(); i += 2) {
+	for (std::size_t i = 1; i < Cv.size(); i += 2) {
 		const auto [vi, ni] = Cv[i];
 		under_anchor += ni;
 	}
@@ -429,7 +429,7 @@ noexcept
 	data_array<edge_size> edge_list(n - 1);
 
 	{
-	const size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
+	const std::size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
 	data_array<uint64_t> size_subtrees(k, 0);
 
 	countingsort::memory_counting_sort<edge_size> memcs(n, n);
@@ -467,7 +467,7 @@ noexcept
 	<edge_size, edge_size*, sort_type, true>
 	(
 		edge_list.begin(), edge_list.end(), n,
-		[](const edge_size& T) -> size_t { return T.second; },
+		[](const edge_size& T) -> std::size_t { return T.second; },
 		memcs
 	);
 	}

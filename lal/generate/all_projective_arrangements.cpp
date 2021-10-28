@@ -131,8 +131,8 @@ void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 		// copy directly vertices from the neighbour
 		// list -- no sorting is needed
 
-		size_t neighs_it = 0;
-		size_t interval_it = 0;
+		std::size_t neighs_it = 0;
+		std::size_t interval_it = 0;
 
 		while (
 			neighs_it < neighs_u.size() and interval_it < interval_u.size() and
@@ -153,7 +153,7 @@ void all_projective_arrangements::initialise_interval_node(node u) noexcept {
 	}
 	else {
 		// fill the interval and then sort it
-		for (size_t i = 0; i < neighs_u.size(); ++i) {
+		for (std::size_t i = 0; i < neighs_u.size(); ++i) {
 			interval_u[i] = neighs_u[i];
 		}
 		interval_u.back() = u;

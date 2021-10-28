@@ -49,7 +49,7 @@ namespace detail {
 
 namespace __lal {
 
-template<typename T, size_t size, T v, std::size_t... I>
+template<typename T, std::size_t size, T v, std::size_t... I>
 std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
 	std::array<T, size> a;
 	((a[I] = v), ...);
@@ -65,13 +65,13 @@ std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
  * @param array_size Size of the array.
  * @param value_to_fill_with The value to fill the array with.
  */
-template<typename T, size_t array_size, T value_to_fill_with>
+template<typename T, std::size_t array_size, T value_to_fill_with>
 std::array<T, array_size>
 make_array_with_value() {
 	return
 	__lal::make_array_with_value_impl
 	<T, array_size, value_to_fill_with>
-	(std::make_integer_sequence<size_t, array_size>{});
+	(std::make_integer_sequence<std::size_t, array_size>{});
 }
 
 namespace __lal {

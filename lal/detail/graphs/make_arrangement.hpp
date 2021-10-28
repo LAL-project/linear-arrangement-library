@@ -72,7 +72,7 @@ noexcept
 		return;
 	}
 	const auto& interval = data[r];
-	for (size_t i = 0; i < interval.size(); ++i) {
+	for (std::size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == r) {
 			arr.assign(vi, pos++);
@@ -122,7 +122,7 @@ noexcept
 		return;
 	}
 	const auto& interval = data[u];
-	for (size_t i = 0; i < interval.size(); ++i) {
+	for (std::size_t i = 0; i < interval.size(); ++i) {
 		const node vi = interval[i];
 		if (vi == u) {
 			arr.assign(vi, pos++);

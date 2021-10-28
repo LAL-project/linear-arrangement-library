@@ -82,7 +82,7 @@ noexcept
 	}
 
 	// pointer to see
-	size_t seenit = 0;
+	std::size_t seenit = 0;
 	// element to assign to container
 	T i = m;
 
@@ -123,7 +123,7 @@ template<
 	> = true
 >
 inline
-void bit_sort_mem(It begin, It end, const size_t size, char * const seen)
+void bit_sort_mem(It begin, It end, const std::size_t size, char * const seen)
 noexcept
 {
 	if (size <= 1) { return; }
@@ -158,7 +158,7 @@ template<
 	> = true
 >
 inline
-void bit_sort(It begin, It end, const size_t size)
+void bit_sort(It begin, It end, const std::size_t size)
 noexcept
 {
 	if (size <= 1) { return; }

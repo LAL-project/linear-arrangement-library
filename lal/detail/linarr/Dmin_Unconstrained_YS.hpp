@@ -203,7 +203,7 @@ noexcept
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
-	for (size_t i = 0; i < v_star_neighs.size(); ++i) {
+	for (std::size_t i = 0; i < v_star_neighs.size(); ++i) {
 		// i-th child of v_star
 		const node ui = v_star_neighs[i];
 		// size of subtree rooted at 'ui'

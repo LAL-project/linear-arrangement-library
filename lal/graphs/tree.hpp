@@ -273,7 +273,7 @@ protected:
 		}
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
-		m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
+		m_tree_type[static_cast<std::size_t>(tree_type::unknown)] = true;
 	}
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept {
@@ -281,7 +281,7 @@ protected:
 		m_root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
-		m_tree_type[static_cast<size_t>(tree_type::unknown)] = true;
+		m_tree_type[static_cast<std::size_t>(tree_type::unknown)] = true;
 	}
 
 	/// Copies only members of class @ref tree.

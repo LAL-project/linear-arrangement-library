@@ -113,7 +113,7 @@ is not a valid non-negative integer number."
 template<bool decide>
 inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
-find_errors(const std::string& current_line, const size_t line)
+find_errors(const std::string& current_line, const std::size_t line)
 noexcept
 {
 	std::vector<io::report_treebank_file> treebank_err_list;
@@ -128,7 +128,7 @@ noexcept
 
 	// ensure there are only numeric characters
 	{
-	size_t i = 1;
+	std::size_t i = 1;
 	std::stringstream ss(current_line);
 	std::string chunk;
 	while (ss >> chunk) {
@@ -167,7 +167,7 @@ noexcept
 	bool can_make_graph = true;
 
 	// inspect the head vector
-	for (size_t i = 0; i < hv.size(); ++i) {
+	for (std::size_t i = 0; i < hv.size(); ++i) {
 		if (hv[i] == 0) {
 			++n_roots;
 			continue;
@@ -260,7 +260,7 @@ noexcept
 	std::vector<io::report_treebank_file> treebank_err_list;
 	std::string current_line;
 
-	size_t line = 1;
+	std::size_t line = 1;
 	while (getline(fin, current_line)) {
 		if (current_line == "") {
 			// do nothing
@@ -291,7 +291,7 @@ template<bool decide>
 inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_collection>>
 check_correctness_treebank_collection
-(const std::string& main_file_name, size_t n_threads)
+(const std::string& main_file_name, std::size_t n_threads)
 noexcept
 {
 	if (not std::filesystem::exists(main_file_name)) {
@@ -313,7 +313,7 @@ noexcept
 	const int tid = omp_get_thread_num();
 	if (tid == 0) {
 
-	size_t main_file_line = 1;
+	std::size_t main_file_line = 1;
 	std::string id, treebankname;
 
 	while (fin_main_file >> id >> treebankname and errors_found == 0) {

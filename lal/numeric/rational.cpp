@@ -93,8 +93,8 @@ rational& rational::powt(const integer& p) noexcept {
 
 /* GETTERS */
 
-size_t rational::bytes() const noexcept {
-	const size_t bs =
+std::size_t rational::bytes() const noexcept {
+	const std::size_t bs =
 		detail::mpz_bytes({m_val[0]._mp_num}) +
 		detail::mpz_bytes({m_val[0]._mp_den});
 	return bs;

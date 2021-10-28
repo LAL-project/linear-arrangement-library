@@ -362,13 +362,13 @@ private:
 		assert(m_inverse != nullptr);
 #endif
 		if constexpr (from_direct_arr) {
-			for (size_t i = 0; i < v.size(); ++i) {
+			for (std::size_t i = 0; i < v.size(); ++i) {
 				m_direct[i] = v[i];
 				m_inverse[v[i]] = i;
 			}
 		}
 		else {
-			for (size_t i = 0; i < v.size(); ++i) {
+			for (std::size_t i = 0; i < v.size(); ++i) {
 				m_direct[v[i]] = i;
 				m_inverse[i] = v[i];
 			}

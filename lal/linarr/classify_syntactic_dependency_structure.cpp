@@ -70,8 +70,8 @@ bool __is_root_covered(const graphs::rooted_tree& T, const linear_arrangement& p
 noexcept
 {
 	const node_t R = T.get_root();
-	for (iterators::E_iterator e_it(T); not e_it.end(); e_it.next()) {
-		const auto [s,t] = e_it.get_edge_t();
+	for (iterators::E_iterator it(T); not it.end(); it.next()) {
+		const auto [s,t] = it.get_edge_t();
 		const bool covered =
 			(pi[s] < pi[R] and pi[R] < pi[t])
 			or
@@ -132,16 +132,16 @@ noexcept
 		}
 
 		// ensure the yields do not 'cross'
-		for (size_t iu_1 = 0;        iu_1 < yu.size(); ++iu_1) {
+		for (std::size_t iu_1 = 0;        iu_1 < yu.size(); ++iu_1) {
 		const position u1 = yu[iu_1];
-		for (size_t iu_2 = iu_1 + 1; iu_2 < yu.size(); ++iu_2) {
+		for (std::size_t iu_2 = iu_1 + 1; iu_2 < yu.size(); ++iu_2) {
 		const position u2 = yu[iu_2];
 		// sorted values u1,u2
 		const auto [su1,su2] = sort_by_index(u1, u2);
 
-		for (size_t iv_1 = 0;        iv_1 < yv.size(); ++iv_1) {
+		for (std::size_t iv_1 = 0;        iv_1 < yv.size(); ++iv_1) {
 		const position v1 = yv[iv_1];
-		for (size_t iv_2 = iv_1 + 1; iv_2 < yv.size(); ++iv_2) {
+		for (std::size_t iv_2 = iv_1 + 1; iv_2 < yv.size(); ++iv_2) {
 		const position v2 = yv[iv_2];
 		// sorted values v1,v2
 		const auto [sv1,sv2] = sort_by_index(v1, v2);
@@ -166,7 +166,7 @@ noexcept
 	for (node u = 0; u < n; ++u) {
 		const auto& yu = yields[u];
 		uint64_t g = 0;
-		for (size_t i = 1; i < yu.size(); ++i) {
+		for (std::size_t i = 1; i < yu.size(); ++i) {
 			if (yu[i] - yu[i - 1] > 1) {
 				++g;
 			}
@@ -247,9 +247,9 @@ noexcept
 			// compute the number of common nodes among
 			// the edges that cross the current edge
 			std::set<node> common_nodes;
-			for (size_t i = 0; i < crossing.size() and not classified; ++i) {
+			for (std::size_t i = 0; i < crossing.size() and not classified; ++i) {
 				const auto [ss,tt] = crossing[i];
-				for (size_t j = i + 1; j < crossing.size() and not classified; ++j) {
+				for (std::size_t j = i + 1; j < crossing.size() and not classified; ++j) {
 					const auto [uu,vv] = crossing[j];
 
 					// if the intersection is empty then the tree is certainly
@@ -299,7 +299,7 @@ noexcept
 		detail::make_array_with_value
 		<bool, __syntactic_dependency_structure_size, false>();
 
-	cl[static_cast<size_t>(syndepstr_type::unknown)] = true;
+	cl[static_cast<std::size_t>(syndepstr_type::unknown)] = true;
 
 	const auto __set_type = [&](const syndepstr_type& ts) {
 		is_some_class = true;

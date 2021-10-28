@@ -98,12 +98,12 @@ noexcept
 	numeric::rational sum_MDD(0);
 	if (P.size() == 0) {
 		const linear_arrangement empty_arr;
-		for (size_t i = 0; i < L.size(); ++i) {
+		for (std::size_t i = 0; i < L.size(); ++i) {
 			sum_MDD += mean_dependency_distance_rational(L[i], empty_arr);
 		}
 	}
 	else {
-		for (size_t i = 0; i < L.size(); ++i) {
+		for (std::size_t i = 0; i < L.size(); ++i) {
 			sum_MDD += mean_dependency_distance_rational(L[i], P[i]);
 		}
 	}

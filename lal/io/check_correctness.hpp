@@ -69,7 +69,7 @@ noexcept;
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_collection.
  */
 std::vector<report_treebank_collection>
-check_correctness_treebank_collection(const std::string& main_file_name, size_t n_threads = 1)
+check_correctness_treebank_collection(const std::string& main_file_name, std::size_t n_threads = 1)
 noexcept;
 
 } // -- namespace io

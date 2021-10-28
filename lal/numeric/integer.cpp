@@ -72,7 +72,7 @@ integer& integer::powt(const integer& i) noexcept {
 
 /* GETTERS */
 
-size_t integer::bytes() const noexcept
+std::size_t integer::bytes() const noexcept
 { return detail::mpz_bytes(m_val); }
 
 } // -- namespace numeric

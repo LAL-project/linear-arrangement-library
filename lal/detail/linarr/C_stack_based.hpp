@@ -70,7 +70,7 @@ void fill_adjP_adjN(
 	const graphs::graph& g, const linear_arrangement& pi,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
-	size_t * const __restrict__ size_adjN_u
+	std::size_t * const __restrict__ size_adjN_u
 )
 noexcept
 {
@@ -85,7 +85,7 @@ noexcept
 	edges.begin(), edges.end(),
 	n-1, // length of the longest edge
 	edges.size(),
-	[&](const edge& e) -> size_t {
+	[&](const edge& e) -> std::size_t {
 		const node_t u = e.first;
 		const node_t v = e.second;
 		++size_adjN_u[u.value];
@@ -136,7 +136,7 @@ template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_stack_based(
 	const graphs::graph& g, const linear_arrangement& pi,
-	size_t * __restrict__ size_adjN_u,
+	std::size_t * __restrict__ size_adjN_u,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -209,7 +209,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<size_t> size_adjN_u(n, 0);
+	data_array<std::size_t> size_adjN_u(n, 0);
 
 	return __compute_C_stack_based<false>(g, pi, size_adjN_u.data());
 }
@@ -247,10 +247,10 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<size_t> size_adjN_u(n, 0);
+	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -280,7 +280,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<size_t> size_adjN_u(n, 0);
+	data_array<std::size_t> size_adjN_u(n, 0);
 
 	return __compute_C_stack_based<true>
 			(g, pi, size_adjN_u.data(), upper_bound);
@@ -322,10 +322,10 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<size_t> size_adjN_u(n, 0);
+	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -359,10 +359,10 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<size_t> size_adjN_u(n, 0);
+	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);

@@ -333,7 +333,7 @@ noexcept
 	if (n < 4) { return cs; }
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -448,7 +448,7 @@ noexcept
 	if (n < 4) { return cs; }
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -512,7 +512,7 @@ noexcept
 	if (n < 4) { return cs; }
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);

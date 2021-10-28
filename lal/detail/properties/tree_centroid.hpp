@@ -95,7 +95,7 @@ noexcept
 	detail::counting_sort<edge_size, Iterator_Type, countingsort::decreasing_t>
 	(
 		sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
-		[](const edge_size& edge_pair) -> size_t { return edge_pair.second; }
+		[](const edge_size& edge_pair) -> std::size_t { return edge_pair.second; }
 	);
 	}
 

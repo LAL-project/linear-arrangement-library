@@ -209,7 +209,7 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -328,7 +328,7 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);
@@ -399,7 +399,7 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < pis.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
 		assert(pis[i].size() == n);

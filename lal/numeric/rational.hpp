@@ -821,7 +821,7 @@ public:
 	int64_t get_sign() const noexcept { return mpq_sgn(m_val); }
 
 	/// Returns the amount of bytes this integer occupies.
-	size_t bytes() const noexcept;
+	std::size_t bytes() const noexcept;
 
 	/* CONVERTERS */
 

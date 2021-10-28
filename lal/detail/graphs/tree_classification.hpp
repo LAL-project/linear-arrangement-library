@@ -73,7 +73,7 @@ noexcept
 	bool is_some = false; // the type is different from 'none'
 	const auto set_type =
 	[&](const graphs::tree_type& tt) {
-		array[static_cast<size_t>(tt)] = true;
+		array[static_cast<std::size_t>(tt)] = true;
 		is_some = true;
 	};
 
@@ -97,13 +97,13 @@ noexcept
 	const uint64_t N = t.get_num_nodes();
 	if (N == 0) {
 		set_type(graphs::tree_type::empty);
-		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
+		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 1) {
 		set_type(graphs::tree_type::singleton);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
+		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 2) {
@@ -111,7 +111,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
+		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (N == 3) {
@@ -119,7 +119,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
+		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 
@@ -222,7 +222,7 @@ noexcept
 	if (is_spider) { set_type(graphs::tree_type::spider); }
 
 	if (is_some) {
-		array[static_cast<size_t>(graphs::tree_type::unknown)] = false;
+		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 	}
 }
 

@@ -99,7 +99,7 @@ char fast_non_iso(const T& t1, const T& t2) noexcept
 inline
 void assign_name_and_keep(
 	const graphs::rooted_tree& t, node u,
-	std::string * const aux_memory_for_names, size_t idx,
+	std::string * const aux_memory_for_names, std::size_t idx,
 	std::string * const keep_name_of
 )
 noexcept
@@ -110,7 +110,7 @@ noexcept
 	}
 
 	// make childrens' names
-	const size_t begin_idx = idx;
+	const std::size_t begin_idx = idx;
 	for (node v : t.get_out_neighbours(u)) {
 		// make the name for v
 		assign_name_and_keep(t,v, aux_memory_for_names, idx+1, keep_name_of);
@@ -122,7 +122,7 @@ noexcept
 
 	// join the names in a single string to make the name of vertex 'v'
 	std::string name = "1";
-	for (size_t j = begin_idx; j < idx; ++j) {
+	for (std::size_t j = begin_idx; j < idx; ++j) {
 		name += aux_memory_for_names[j];
 	}
 	name += "0";
@@ -146,7 +146,7 @@ noexcept
  */
 inline
 std::string assign_name
-(const graphs::rooted_tree& t, node u, std::string * const names, size_t idx)
+(const graphs::rooted_tree& t, node u, std::string * const names, std::size_t idx)
 noexcept
 {
 	if (t.get_out_degree(u) == 0) {
@@ -154,7 +154,7 @@ noexcept
 	}
 
 	// make childrens' names
-	const size_t begin_idx = idx;
+	const std::size_t begin_idx = idx;
 	for (node v : t.get_out_neighbours(u)) {
 		// make the name for v
 		names[idx] = assign_name(t,v, names, idx+1);
@@ -164,7 +164,7 @@ noexcept
 
 	// join the names in a single string to make the name of vertex 'v'
 	std::string name = "1";
-	for (size_t j = begin_idx; j < idx; ++j) {
+	for (std::size_t j = begin_idx; j < idx; ++j) {
 		name += names[j];
 	}
 	name += "0";

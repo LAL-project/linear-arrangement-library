@@ -101,13 +101,13 @@ noexcept
 	uint64_t sumM = 0;
 	if (P.size() == 0) {
 		const linear_arrangement empty_arr;
-		for (size_t i = 0; i < L.size(); ++i) {
+		for (std::size_t i = 0; i < L.size(); ++i) {
 			sumD += sum_edge_lengths(L[i], empty_arr);
 			sumM += L[i].get_num_edges();
 		}
 	}
 	else {
-		for (size_t i = 0; i < L.size(); ++i) {
+		for (std::size_t i = 0; i < L.size(); ++i) {
 			sumD += sum_edge_lengths(L[i], P[i]);
 			sumM += L[i].get_num_edges();
 		}

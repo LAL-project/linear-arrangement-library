@@ -86,8 +86,8 @@ undirected_graph& undirected_graph::add_edge
 			// Even though we are not asked to normalise the graph, it may be
 			// so after the addition. This means we have to check whether the
 			// graph is normalised.
-			const size_t su = nu.size();
-			const size_t sv = nv.size();
+			const std::size_t su = nu.size();
+			const std::size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
 				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}

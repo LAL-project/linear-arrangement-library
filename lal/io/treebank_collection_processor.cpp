@@ -194,7 +194,7 @@ treebank_error treebank_collection_processor::process() noexcept
 				tbproc.set_verbosity(m_be_verbose);
 
 				// add features in this treebank collection processor
-				for (size_t i = 0; i < __treebank_feature_size; ++i) {
+				for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
 					if (m_what_fs[i]) {
 						tbproc.add_feature(index_to_treebank_feature(i));
 					}
@@ -269,7 +269,7 @@ treebank_error treebank_collection_processor::join_all_files() const noexcept
 	bool first_time_encounter_header = true;
 
 	// read all files and dump their contents into
-	for (size_t i = 0; i < m_all_individual_treebank_ids.size(); ++i) {
+	for (std::size_t i = 0; i < m_all_individual_treebank_ids.size(); ++i) {
 		const std::string& name_of_treebank = m_all_individual_treebank_ids[i];
 
 		std::filesystem::path path_to_treebank_result(m_out_dir);

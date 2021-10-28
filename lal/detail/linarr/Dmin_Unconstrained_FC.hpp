@@ -266,7 +266,7 @@ void get_ordering(const graphs::free_tree& t, node u, ordering& ord) noexcept {
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbours(u - 1);
-	for (size_t i = 0; i < u_neighs.size(); ++i) {
+	for (std::size_t i = 0; i < u_neighs.size(); ++i) {
 		// i-th child of v_star
 		const node ui = u_neighs[i];
 		// size of subtree rooted at 'ui'

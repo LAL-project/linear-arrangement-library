@@ -121,7 +121,7 @@ public:
 	 * When method @ref end returns 'true', this method returns the exact
 	 * amount of trees in the treebank.
 	 */
-	size_t get_num_trees() const noexcept
+	std::size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
 
 	/// Returns the identifier corresponding of the treebank.
@@ -193,7 +193,7 @@ private:
 	std::ifstream m_treebank;
 
 	/// Number of trees in the treebank.
-	size_t m_num_trees = 0;
+	std::size_t m_num_trees = 0;
 	/// Current line.
 	std::string m_file_line;
 	/// Current head vector
