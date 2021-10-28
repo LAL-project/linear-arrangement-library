@@ -37,9 +37,11 @@ namespace std {
 namespace lal {
 
 %ignore node_t::operator++ () noexcept;
+%ignore node_t::operator-- () noexcept;
 %ignore node_t::operator=;
 
 %ignore position_t::operator++ () noexcept;
+%ignore position_t::operator-- () noexcept;
 %ignore position_t::operator=;
 
 %ignore linear_arrangement::linear_arrangement(linear_arrangement&&) noexcept;
