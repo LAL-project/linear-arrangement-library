@@ -58,7 +58,7 @@
 namespace lal {
 namespace detail {
 
-/* Minimum projective arrangement of a free tree following the description in
+/* Minimum projective arrangement of a rooted tree following the description in
  * \cite Alemany2021a.
  *
  * This algorithm frst constructs the sorted adjacency matrix rooted
@@ -82,12 +82,12 @@ noexcept
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	// This is used to find the optimal projective arrangement of the tree.
-	std::vector<std::vector<node_size>> L(n);
-	rooted::make_sorted_rooted_adjacency_list(t, L);
+	std::vector<std::vector<Dmin_utils::node_size>> L(n);
+	Dmin_utils::rooted::make_sorted_rooted_adjacency_list(t, L);
 
 	// construct the optimal planar arrangement
 	linear_arrangement arr(n);
-	const uint64_t D = intervals::arrange(n, L, t.get_root(), arr);
+	const uint64_t D = Dmin_utils::intervals::arrange(n, L, t.get_root(), arr);
 
 	return {D, std::move(arr)};
 }

@@ -90,13 +90,13 @@ noexcept
 	// of T. For this reason, any optimal projective arrangement of T^c
 	// is an optimal planar arrangement of T.
 
-	std::vector<std::vector<node_size>> L;
-	const node c = free::make_sorted_rooted_adjacency_list_centroid(t, L);
+	std::vector<std::vector<Dmin_utils::node_size>> L;
+	const node c = Dmin_utils::free::make_sorted_rooted_adjacency_list_centroid(t, L);
 
 	// construct the optimal interval by calculating the optimal
 	// projective arrangement
 	linear_arrangement arr(n);
-	const uint64_t D = intervals::arrange(n, L, c, arr);
+	const uint64_t D = Dmin_utils::intervals::arrange(n, L, c, arr);
 
 	return {D, std::move(arr)};
 }

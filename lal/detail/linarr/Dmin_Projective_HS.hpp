@@ -59,7 +59,7 @@
 namespace lal {
 namespace detail {
 
-/* Minimum projective arrangement of a free tree following the description in
+/* Minimum projective arrangement of a rooted tree following the description in
  * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
  * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
  * \cite Alemany2021a.
@@ -86,13 +86,13 @@ noexcept
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
 	// This is used to find the optimal projective arrangement of the tree.
-	std::vector<std::vector<node_size>> L(n);
-	rooted::make_sorted_rooted_adjacency_list(t, L);
+	std::vector<std::vector<Dmin_utils::node_size>> L(n);
+	Dmin_utils::rooted::make_sorted_rooted_adjacency_list(t, L);
 
 	linear_arrangement arr(n);
-	const uint64_t D = displacement::embed(L, r, arr);
+	const uint64_t D = Dmin_utils::displacement::embed(L, r, arr);
 
-	return std::make_pair(D, std::move(arr));
+	return {D, std::move(arr)};
 }
 
 } // -- namespace detail

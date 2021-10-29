@@ -344,7 +344,7 @@ noexcept
 	dmin_Shiloach::calculate_mla<NO_ANCHOR>
 		(T, 1, 0, t.get_num_nodes() - 1, arrangement, c);
 
-	return {c, arrangement};
+	return {c, std::move(arrangement)};
 }
 
 } // -- namespace detail

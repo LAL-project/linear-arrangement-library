@@ -666,7 +666,7 @@ noexcept
 	graphs::free_tree T = t;
 	dmin_Chung::calculate_mla<NO_ANCHOR>(T, 1, 0, t.get_num_nodes() - 1, arr, c);
 
-	return {c, arr};
+	return {c, std::move(arr)};
 }
 
 } // -- namespace detail

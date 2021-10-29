@@ -63,6 +63,7 @@
 
 namespace lal {
 namespace detail {
+namespace Dmin_utils {
 
 typedef std::pair<lal::node,uint64_t> node_size;
 typedef std::pair<lal::edge,uint64_t> edge_size;
@@ -291,7 +292,8 @@ noexcept
 		}
 		*/
 
-		cost_branch += embed_branch(
+		cost_branch +=
+		embed_branch(
 			L, vi,
 			( (i&0x1) == 0 ? base - dir*to_int64(before) : base + dir*to_int64(after) ),
 			( (i&0x1) == 0 ? -dir : dir ),
@@ -358,7 +360,8 @@ noexcept
 		}
 		*/
 
-		D += embed_branch(
+		D +=
+		embed_branch(
 			L, vi,
 			( (i&0x1) == 0 ? to_int64(right_sum) : -to_int64(left_sum) ),
 			( (i&0x1) == 0 ? to_int64(1) : to_int64(-1) ),
@@ -442,7 +445,7 @@ noexcept
 			const edge e = E_it.get_edge();
 			const node v = e.second;
 			const uint64_t suv = t.get_num_nodes_subtree(v);
-			*it++ = make_pair(e, suv);
+			*it++ = {e, suv};
 			++memcs.count[suv];
 
 			E_it.next();
@@ -455,7 +458,7 @@ noexcept
 			const edge e = E_it.get_edge();
 			const node v = e.second;
 			const uint64_t suv = size_subtrees[v];
-			*it++ = make_pair(e, suv);
+			*it++ = {e, suv};
 			++memcs.count[suv];
 
 			E_it.next();
@@ -478,7 +481,7 @@ noexcept
 	for (const auto& T : edge_list) {
 		const auto [u, v] = T.first;
 		const uint64_t nv = T.second;
-		L[u].push_back(std::make_pair(v,nv));
+		L[u].push_back({v,nv});
 #if defined DEBUG
 		assert(t.has_edge(u,v));
 #endif
@@ -579,5 +582,6 @@ noexcept
 
 } // -- namespace free
 
+} // -- namespcae Dmin_utils
 } // -- namespace detail
 } // -- namespace lal
