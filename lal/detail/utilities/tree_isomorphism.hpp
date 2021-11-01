@@ -183,8 +183,8 @@ noexcept
 
 	const uint64_t n = t1.get_num_nodes();
 	data_array<std::string> names(n);
-	const std::string name_r1 = assign_name(t1, t1.get_root(), names.data(), 0);
-	const std::string name_r2 = assign_name(t2, t2.get_root(), names.data(), 0);
+	const std::string name_r1 = assign_name(t1, t1.get_root(), names.begin(), 0);
+	const std::string name_r2 = assign_name(t2, t2.get_root(), names.begin(), 0);
 	return name_r1 == name_r2;
 }
 

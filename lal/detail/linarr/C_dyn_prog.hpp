@@ -252,7 +252,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
-	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.data(), M,K);
+	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.begin(), M,K);
 }
 
 uint64_t n_C_dynamic_programming(
@@ -321,7 +321,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, false>
-				(g, pis[i], bool_neighs.data(), M,K);
+				(g, pis[i], bool_neighs.begin(), M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -382,7 +382,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* decide */
-	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.data(), M,K, upper_bound);
+	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.begin(), M,K, upper_bound);
 }
 
 inline
@@ -457,7 +457,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, true>
-				(g, pis[i], bool_neighs.data(), M,K, upper_bound);
+				(g, pis[i], bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -533,7 +533,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_dyn_prog<G, true>
-				(g, pis[i], bool_neighs.data(), M,K, upper_bounds[i]);
+				(g, pis[i], bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

@@ -70,7 +70,7 @@ void fill_adjP_adjN(
 	const graphs::graph& g, const linear_arrangement& pi,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
-	std::size_t * const __restrict__ size_adjN_u
+	std::size_t * const size_adjN_u
 )
 noexcept
 {
@@ -136,7 +136,7 @@ template<bool decide_upper_bound>
 inline
 uint64_t __compute_C_stack_based(
 	const graphs::graph& g, const linear_arrangement& pi,
-	std::size_t * __restrict__ size_adjN_u,
+	std::size_t * const size_adjN_u,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -211,7 +211,7 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<false>(g, pi, size_adjN_u.data());
+	return __compute_C_stack_based<false>(g, pi, size_adjN_u.begin());
 }
 
 // ------------------
@@ -258,7 +258,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<false>
-				(g, pis[i], size_adjN_u.data());
+				(g, pis[i], size_adjN_u.begin());
 	}
 
 	return cs;
@@ -283,7 +283,7 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	return __compute_C_stack_based<true>
-			(g, pi, size_adjN_u.data(), upper_bound);
+			(g, pi, size_adjN_u.begin(), upper_bound);
 }
 
 // ------------------
@@ -333,7 +333,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], size_adjN_u.data(), upper_bound);
+				(g, pis[i], size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
@@ -370,7 +370,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_stack_based<true>
-				(g, pis[i], size_adjN_u.data(), upper_bounds[i]);
+				(g, pis[i], size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;

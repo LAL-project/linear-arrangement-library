@@ -120,8 +120,8 @@ inline
 bool has_directed_cycles(const graphs::directed_graph& g) {
 	const uint64_t n = g.get_num_nodes();
 	data_array<char> all_mem(2*n);
-	char * const __restrict__ vis = &all_mem.data()[0];
-	char * const __restrict__ in_stack = &all_mem.data()[n];
+	char * const __restrict__ vis = all_mem.begin();
+	char * const __restrict__ in_stack = all_mem.at(n);
 	const bool has_cycle = __lal::has_directed_cycles(g, vis, in_stack);
 	return has_cycle;
 }

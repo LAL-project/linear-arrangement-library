@@ -68,12 +68,12 @@ void directed_graph::normalise() noexcept {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			detail::bit_sort_mem<node>
-			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.data());
+			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.begin());
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
 			detail::bit_sort_mem<node>
-			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.data());
+			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin());
 		}
 	}
 	m_normalised = true;

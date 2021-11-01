@@ -179,28 +179,38 @@ public:
 	}
 
 	// return the first element
-	T& first() noexcept { return *m_data; }
-	const T& first() const noexcept { return *m_data; }
+	[[nodiscard]] T& first() noexcept { return *m_data; }
+	[[nodiscard]] const T& first() const noexcept { return *m_data; }
 	// return the last element
-	T& back() noexcept { return *(m_data + m_size - 1); }
-	const T& back() const noexcept { return *(m_data + m_size - 1); }
+	[[nodiscard]] T& back() noexcept { return *(m_data + m_size - 1); }
+	[[nodiscard]] const T& back() const noexcept { return *(m_data + m_size - 1); }
 
 	// assign the same value to every element in the data
 	void fill(const T& v) noexcept {
 		std::fill(begin(), end(), v);
 	}
 
-	// pointer to data (same as begin)
-	[[nodiscard]] T *data() noexcept { return m_data; }
-	[[nodiscard]] T *data() const noexcept { return m_data; }
+	// pointer to a specific location in the memory
+	[[nodiscard]] T *at(std::size_t n) noexcept {
+#if defined DEBUG
+		assert(n < m_size);
+#endif
+		return &m_data[n];
+	}
+	[[nodiscard]] T const *at(std::size_t n) const noexcept {
+#if defined DEBUG
+		assert(n < m_size);
+#endif
+		return &m_data[n];
+	}
 
 	// pointer to non-constant first element and last+1 element
 	[[nodiscard]] T *begin() noexcept { return m_data; }
 	[[nodiscard]] T *end() noexcept { return m_data + m_size; }
 
 	// pointer to constant first element and last+1 element
-	[[nodiscard]] const T *begin() const noexcept { return m_data; }
-	[[nodiscard]] const T *end() const noexcept { return m_data + m_size; }
+	[[nodiscard]] T const *begin() const noexcept { return m_data; }
+	[[nodiscard]] T const *end() const noexcept { return m_data + m_size; }
 
 private:
 	// allocate memory for array m_data only when m_size > 0

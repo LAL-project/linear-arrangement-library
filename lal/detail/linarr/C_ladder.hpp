@@ -154,7 +154,7 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	return __compute_C_ladder<G,false>
-			(g, pi, boolean_neighborhood.data(), L1.data());
+			(g, pi, boolean_neighborhood.begin(), L1.begin());
 }
 
 inline
@@ -217,7 +217,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,false>
-				(g, pis[i], boolean_neighborhood.data(), L1.data());
+				(g, pis[i], boolean_neighborhood.begin(), L1.begin());
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -270,7 +270,7 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	return __compute_C_ladder<G,true>
-			(g, pi, boolean_neighborhood.data(), L1.data(), upper_bound);
+			(g, pi, boolean_neighborhood.begin(), L1.begin(), upper_bound);
 }
 
 inline
@@ -336,7 +336,7 @@ noexcept
 
 		// compute C
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data(), L1.data(), upper_bound);
+				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -409,7 +409,7 @@ noexcept
 		boolean_neighborhood.fill(0);
 
 		cs[i] = __compute_C_ladder<G,true>
-				(g, pis[i], boolean_neighborhood.data(), L1.data(), upper_bounds[i]);
+				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

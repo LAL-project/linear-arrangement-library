@@ -183,7 +183,7 @@ void all_planar_arrangements::initialise_interval_node(node u, node parent) noex
 		// in order to obtain a lexicographically sorted permutation,
 		// we must sort it (vertex 'u' might not be placed properly).
 		detail::bit_sort_mem<node>
-		(inter_u.begin(), inter_u.end(), inter_u.size(), m_memory_bit_sort.data());
+		(inter_u.begin(), inter_u.end(), inter_u.size(), m_memory_bit_sort.begin());
 	}
 }
 

@@ -64,7 +64,7 @@ noexcept
 	const uint64_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
 	detail::data_array<uint64_t> size_subtrees(size_array, 0);
 	if constexpr (not size_subtrees_valid) {
-		detail::get_size_subtrees(t, t.get_root(), size_subtrees.data());
+		detail::get_size_subtrees(t, t.get_root(), size_subtrees.begin());
 	}
 
 	numeric::rational E_pr_D = 0;

@@ -342,7 +342,7 @@ treebank_error treebank_processor::process() noexcept {
 	while (not tbread.end()) {
 		rT = tbread.get_tree();
 		process_tree<graphs::rooted_tree, std::ofstream>
-		(rT, props.data(), prop_set.data(), out_treebank_file);
+		(rT, props.begin(), prop_set.begin(), out_treebank_file);
 
 		props.fill(0.0);
 		prop_set.fill(0);
