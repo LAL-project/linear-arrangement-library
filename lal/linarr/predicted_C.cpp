@@ -49,7 +49,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)

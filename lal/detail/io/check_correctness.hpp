@@ -56,7 +56,6 @@
 #include <lal/io/report_correctness.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/cycles.hpp>
-#include <lal/detail/macros.hpp>
 
 namespace lal {
 namespace detail {

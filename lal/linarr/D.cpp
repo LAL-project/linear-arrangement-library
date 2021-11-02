@@ -45,9 +45,10 @@
 #endif
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 
 #define to_double(x) static_cast<double>(x)
 
