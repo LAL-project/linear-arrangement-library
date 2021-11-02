@@ -41,11 +41,9 @@
 
 #pragma once
 
-// C++ includes
-#include <numeric>
-
-// lal includes
-#include <lal/linear_arrangement.hpp>
+// C*+ includes
+#include <type_traits>
+#include <iterator>
 
 namespace lal {
 namespace detail {
@@ -54,7 +52,7 @@ namespace detail {
 template<typename Iterated_Type, typename Iterator>
 struct is_pointer_iterator {
 	static constexpr bool value =
-		std::is_same_v<Iterator, Iterated_Type*> ||
+		std::is_pointer_v<Iterator> ||
 		std::is_same_v<
 			typename std::iterator_traits<Iterator>::value_type,
 			Iterated_Type
@@ -64,35 +62,6 @@ struct is_pointer_iterator {
 template<typename Iterated_Type, typename Iterator>
 inline constexpr bool is_pointer_iterator_v =
 	is_pointer_iterator<Iterated_Type, Iterator>::value;
-
-/*
- * @brief Call a function @e F that does not admit empty arrangements.
- *
- * In case the arrangement @e pi is empty, function @e F is passed the
- * identity arrangement.
- *
- * @tparam result_t The type of the function's reuslt
- * @tparam graph_t The type of input graph of the function
- * @tparam Params The other parameters of the function
- * @param F Function to call.
- * @param g Input graph.
- * @param pi Arrangement.
- * @returns The value function @e F returns.
- */
-template<typename result_t, typename graph_t, typename ... Params>
-inline
-result_t call_with_empty_arrangement(
-	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
-	const graph_t& g, const linear_arrangement& arr, Params... P
-)
-noexcept
-{
-	if (arr.size() != 0) {
-		return F(g,arr,P...);
-	}
-	const auto n = g.get_num_nodes();
-	return F(g, linear_arrangement::identity(n), P...);
-}
 
 } // -- namespace detail
 } // -- namespace lal

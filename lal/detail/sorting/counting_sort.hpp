@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/is_pointer_iterator.hpp>
 
 namespace lal {
 namespace detail {

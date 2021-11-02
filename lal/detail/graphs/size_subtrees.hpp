@@ -50,7 +50,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/is_pointer_iterator.hpp>
 
 namespace lal {
 namespace detail {

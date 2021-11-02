@@ -47,8 +47,8 @@
 
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/detail/macros.hpp>
 #include <lal/detail/data_array.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)

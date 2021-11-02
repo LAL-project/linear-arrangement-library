@@ -51,7 +51,7 @@
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/make_array.hpp>

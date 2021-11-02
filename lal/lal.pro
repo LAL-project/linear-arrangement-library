@@ -95,8 +95,9 @@ HEADERS += \
 	detail/linarr/Dmin_Unconstrained_FC.hpp \
 	detail/linarr/Dmin_Unconstrained_YS.hpp \
 	detail/linarr/syntactic_dependency_structure.hpp \
-	detail/macros.hpp \
 	detail/avl.hpp \
+    detail/macros/call_with_empty_arr.hpp \
+    detail/macros/is_pointer_iterator.hpp \
 	detail/make_array.hpp \
 	detail/numeric/utils.hpp \
 	detail/properties/tree_centre.hpp \

@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 

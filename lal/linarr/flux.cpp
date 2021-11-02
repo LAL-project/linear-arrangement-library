@@ -50,7 +50,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/sorted_vector.hpp>
 #include <lal/detail/data_array.hpp>
