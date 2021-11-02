@@ -208,10 +208,6 @@ uint64_t __compute_C_brute_force_dir(
 )
 noexcept
 {
-	if constexpr (not decide_upper_bound) {
-		UNUSED(upper_bound);
-	}
-
 	uint64_t C = 0;
 
 	// iterate over the pairs of edges that will potentially cross

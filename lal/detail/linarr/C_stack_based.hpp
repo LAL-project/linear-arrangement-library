@@ -141,10 +141,6 @@ uint64_t __compute_C_stack_based(
 )
 noexcept
 {
-	if constexpr (not decide_upper_bound) {
-		UNUSED(upper_bound);
-	}
-
 	const uint64_t n = g.get_num_nodes();
 
 	// Adjacency lists, sorted by edge length:

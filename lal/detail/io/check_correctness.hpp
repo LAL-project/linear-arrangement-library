@@ -118,11 +118,6 @@ noexcept
 {
 	std::vector<io::report_treebank_file> treebank_err_list;
 
-	if constexpr (decide) {
-		UNUSED(treebank_err_list);
-		UNUSED(line);
-	}
-
 	bool non_numeric_characters = false;
 	head_vector hv;
 

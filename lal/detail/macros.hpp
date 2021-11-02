@@ -65,10 +65,6 @@ template<typename Iterated_Type, typename Iterator>
 inline constexpr bool is_pointer_iterator_v =
 	is_pointer_iterator<Iterated_Type, Iterator>::value;
 
-// Function used to tell the compiler what is not used.
-template<class T>
-inline void UNUSED(const T& x) noexcept { (void)x; }
-
 /*
  * @brief Call a function @e F that does not admit empty arrangements.
  *

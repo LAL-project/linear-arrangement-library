@@ -80,10 +80,6 @@ uint64_t __compute_C_dyn_prog
 )
 noexcept
 {
-	if constexpr (not decide_upper_bound) {
-		UNUSED(upper_bound);
-	}
-
 	const uint64_t n = g.get_num_nodes();
 	std::fill(bn, &bn[n], 0);
 	std::fill(K, &K[(n - 3)*(n - 3)], 0);
