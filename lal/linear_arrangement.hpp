@@ -59,7 +59,39 @@ namespace lal {
  * A linear arrangement is a pair of two functions that relate vertices to a
  * distinct position in a linear ordering.
  *
- * This is further explained in page @ref LAL_concepts__linear_arrangement.
+ * This concept is further explained in page @ref LAL_concepts__linear_arrangement.
+ *
+ * Now, this class's usage is simple enough. Declare a linear arrangement with a
+ * given number of vertices
+ * @code
+ lal::linear_arrangement arr(n);
+ * @endcode
+ * or initialize it
+ * @code
+ lal::linear_arrangement arr;
+ arr.resize(n);
+ * @endcode
+ * Assign a vertex to a given position using the method @ref assign. Retrieving
+ * a vertex's position can be done using either the method @ref get_position_of
+ * or using the @ref operator[] passing to it a @ref lal::node_t object. Likewise,
+ * use the method @ref get_node_at or the @ref operator[] with a @ref lal::position_t
+ * to retrieve the vertex at a given position. Therefore, the following loops are
+ * equivalent
+ * @code
+ lal::linear_arrangement(n);
+ // ...
+ for (lal::node u = 0; u < n; ++u) {
+	const lal::position p = arr.get_position_of(u);
+	// ...
+ }
+ for (lal::node_t u = 0; u < n; ++u) {
+	const lal::position p = arr[u];
+ }
+ * @endcode
+ * Types @ref lal::node_t and @ref lal::position_t are useful also in swapping
+ * vertices in the arrangement (see @ref swap).
+ *
+ * Linear arrangements can be transformed
  */
 class linear_arrangement {
 public:
@@ -233,8 +265,6 @@ public:
 	 * @param p Position.
 	 * @pre Values @e u and @e p must both be strictly less than the size of
 	 * the arrangement (see @ref m_n).
-	 * @post This overwrites the corresponding positions of both
-	 * @ref m_direct and @ref m_inverse.
 	 */
 	template<
 		typename NODE, typename POSITION,
@@ -266,6 +296,63 @@ public:
 			m_direct[u] = p;
 			m_inverse[p] = u;
 		}
+	}
+
+	/**
+	 * @brief Swaps the position of two vertices or of two positions.
+	 *
+	 * Updates @ref m_direct and @ref m_inverse so that the vertices are
+	 * effectively swapped.
+	 * @tparam what Swap either vertices or positions.
+	 * @param u_t Value indicating the first object.
+	 * @param v_t Value indicating the second object.
+	 */
+	template<
+		typename what,
+		std::enable_if_t<
+			std::is_same_v<what, node_t> or std::is_same_v<what, position_t>
+		,
+		bool> = true
+	>
+	void swap(const what u_t, const what v_t) noexcept {
+		if constexpr (std::is_same_v<what, node_t>) {
+			// swap vertices
+			const position pu = m_direct[u_t.value];
+			const position pv = m_direct[v_t.value];
+			assign(u_t, pv);
+			assign(v_t, pu);
+		}
+		else {
+			// swap positions
+			const node u = m_inverse[u_t.value];
+			const node v = m_inverse[v_t.value];
+			assign(u, v_t);
+			assign(v, u_t);
+		}
+	}
+
+	/// Shifts the vertices one position to the left.
+	void shift_left() noexcept {
+		const node_t u0 = m_inverse[0];
+		// shift every vertex one position to the left
+		for (position pu = 0; pu < m_n - 1; ++pu) {
+			const node u = get_node_at(pu + 1);
+			assign(u, pu);
+		}
+		// put the first vertex at the last position
+		assign(u0, position_t{m_n - 1});
+	}
+
+	/// Shifts the vertices one position to the right.
+	void shift_right() noexcept {
+		const node_t ulast = m_inverse[m_n - 1];
+		// shift every vertex one position to the left
+		for (position pu = m_n - 1; pu > 0; --pu) {
+			const node u = get_node_at(pu - 1);
+			assign(u, pu);
+		}
+		// put the last vertex at the first position
+		assign(ulast, position_t{0ULL});
 	}
 
 	/// Size of the arrangement (number of nodes in the arrangement).
