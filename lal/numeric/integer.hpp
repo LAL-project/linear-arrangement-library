@@ -554,13 +554,13 @@ public:
 	 * @brief Exponentiation operator.
 	 * @param i An unsigned integer (basic type).
 	 */
-	integer pow(uint64_t i) const noexcept
+	integer power(uint64_t i) const noexcept
 	{ integer r(*this); r.powt(i);	return r; }
 	/**
 	 * @brief Exponentiation operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	integer pow(const integer& i) const noexcept
+	integer power(const integer& i) const noexcept
 	{ integer r(*this); r.powt(i);	return r; }
 
 	/**

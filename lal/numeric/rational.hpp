@@ -795,12 +795,12 @@ public:
 	 * @brief Exponentiation operator.
 	 * @param i An unsigned integer (basic type).
 	 */
-	rational pow(uint64_t i) const noexcept;
+	rational power(uint64_t i) const noexcept;
 	/**
 	 * @brief Exponentiation operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational pow(const integer& i) const noexcept;
+	rational power(const integer& i) const noexcept;
 
 	/**
 	 * @brief Exponentiation operator.

@@ -69,13 +69,13 @@ rational& rational::operator/= (const rational& r) noexcept {
 
 // -- EXPONENTIATION
 
-rational rational::pow(uint64_t p) const noexcept {
+rational rational::power(uint64_t p) const noexcept {
 	rational r(*this);
 	detail::operate_power(r.m_val, p);
 	return r;
 }
 
-rational rational::pow(const integer& p) const noexcept {
+rational rational::power(const integer& p) const noexcept {
 	rational r(*this);
 	detail::operate_power(r.m_val, p.get_raw_value());
 	return r;
