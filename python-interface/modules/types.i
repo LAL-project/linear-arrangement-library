@@ -55,62 +55,109 @@ namespace lal {
 %ignore linear_arrangement::begin_inverse() noexcept;
 %ignore linear_arrangement::end_inverse() noexcept;
 
-}
-
-// wrap code
+} // -- namespace lal
 
 %include "../lal/basic_types.hpp"
-%include "../lal/linear_arrangement.hpp"
-
-%template(assign) lal::linear_arrangement::assign<
-	lal::node,lal::position,
-	std::enable_if_t<
-		(std::is_integral_v<lal::node> or std::is_same_v<lal::node, node_t>)
-		and
-		(std::is_integral_v<lal::position> or std::is_same_v<lal::position, position_t>)
-	,
-	bool> = true>;
-
-namespace lal {
-
-%extend linear_arrangement {
-	std::string __repr__() const {
-		std::ostringstream out;
-		out << "(";
-		const std::size_t size = $self->size();
-		if (size > 0) {
-			out << (*$self)[lal::node_t{0}];
-			for (lal::node_t u = 1; u < size; ++u) {
-				out << ", " << (*$self)[u];
-			}
-		}
-		out << ") | (";
-		if (size > 0) {
-			out << (*$self)[lal::position_t{0}];
-			for (lal::position_t p = 1; p < size; ++p) {
-				out << ", " << (*$self)[p];
-			}
-		}
-		out << ")";
-		return out.str();
-	}
-}
-
-}
 
 // -------------------------
 // renaming of C++ templates
 // (lal types)
 
 namespace std {
+
 	%template(_edge) pair<lal::node, lal::node>;
 	%template(_edge_pair) pair<lal::edge, lal::edge>;
 	
 	%template(_list_edge) vector<lal::edge>;
 	%template(_list_edge_pair) vector<lal::edge_pair>;
+
+} // -- namespace std
+
+namespace lal {
+
+%template(node_t) node_t::node_t<uint64_t, std::enable_if_t<true, bool> = true>;
+%template(position_t) position_t::position_t<uint64_t, std::enable_if_t<true, bool> = true>;
+
+} // -- namespace lal
+
+%include "../lal/linear_arrangement.hpp"
+
+namespace lal {
+
+%template(assign) linear_arrangement::assign<node, position, std::enable_if_t<true, bool> = true>;
+
+%template(_swap_nodes) linear_arrangement::swap<node_t, std::enable_if_t<true, bool> = true>;
+%template(_swap_positions) linear_arrangement::swap<position_t, std::enable_if_t<true, bool> = true>;
+
+} // -- namespace lal
+
+namespace lal {
+
+%extend linear_arrangement {
+
+std::string __repr__() const {
+	std::ostringstream out;
+	out << "(";
+	const std::size_t size = $self->size();
+	if (size > 0) {
+		out << (*$self)[lal::node_t{0}];
+		for (lal::node_t u = 1; u < size; ++u) {
+			out << ", " << (*$self)[u];
+		}
+	}
+	out << ") | (";
+	if (size > 0) {
+		out << (*$self)[lal::position_t{0}];
+		for (lal::position_t p = 1; p < size; ++p) {
+			out << ", " << (*$self)[p];
+		}
+	}
+	out << ")";
+	return out.str();
 }
 
+}
+
+} // -- namespace lal
+
 %pythoncode %{
+
+def swap_nodes(self, u,v):
+	r"""
+	Swaps the two nodes passed as parameters.
+	
+	Parameters
+	----------
+	* `u` :  
+		Pne of the nodes
+	* `v` :  
+		The other node
+	"""
+	u_t = node_t(u)
+	v_t = node_t(v)
+	self._swap_nodes(u_t, v_t)
+
+def swap_positions(self, pu,pv):
+	r"""
+	Swaps the two nodes at the positions passed as parameters.
+	
+	Parameters
+	----------
+	* `pu` :  
+		The position of one of the nodes
+	* `pv` :  
+		The position of one of the other node
+	"""
+	pu_t = position_t(pu)
+	pv_t = position_t(pv)
+	self._swap_positions(pu_t, pv_t)
+
+setattr(linear_arrangement, swap_nodes.__name__, swap_nodes)
+setattr(linear_arrangement, swap_positions.__name__, swap_positions)
+
+del swap_nodes
+del swap_positions
+
 del linear_arrangement_from_direct
 del linear_arrangement_from_inverse
 %}
