@@ -65,11 +65,11 @@ namespace lal {
 
 namespace std {
 
-	%template(_edge) pair<lal::node, lal::node>;
-	%template(_edge_pair) pair<lal::edge, lal::edge>;
-	
-	%template(_list_edge) vector<lal::edge>;
-	%template(_list_edge_pair) vector<lal::edge_pair>;
+%template(_edge) pair<lal::node, lal::node>;
+%template(_edge_pair) pair<lal::edge, lal::edge>;
+
+%template(_list_edge) vector<lal::edge>;
+%template(_list_edge_pair) vector<lal::edge_pair>;
 
 } // -- namespace std
 
@@ -95,26 +95,26 @@ namespace lal {
 
 %extend linear_arrangement {
 
-std::string __repr__() const {
-	std::ostringstream out;
-	out << "(";
-	const std::size_t size = $self->size();
-	if (size > 0) {
-		out << (*$self)[lal::node_t{0}];
-		for (lal::node_t u = 1; u < size; ++u) {
-			out << ", " << (*$self)[u];
+	std::string __repr__() const {
+		std::ostringstream out;
+		out << "(";
+		const std::size_t size = $self->size();
+		if (size > 0) {
+			out << (*$self)[lal::node_t{0}];
+			for (lal::node_t u = 1; u < size; ++u) {
+				out << ", " << (*$self)[u];
+			}
 		}
-	}
-	out << ") | (";
-	if (size > 0) {
-		out << (*$self)[lal::position_t{0}];
-		for (lal::position_t p = 1; p < size; ++p) {
-			out << ", " << (*$self)[p];
+		out << ") | (";
+		if (size > 0) {
+			out << (*$self)[lal::position_t{0}];
+			for (lal::position_t p = 1; p < size; ++p) {
+				out << ", " << (*$self)[p];
+			}
 		}
+		out << ")";
+		return out.str();
 	}
-	out << ")";
-	return out.str();
-}
 
 }
 

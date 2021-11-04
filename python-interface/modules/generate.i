@@ -89,8 +89,8 @@ namespace generate {
 
 %ignore rand_projective_arrangements::rand_projective_arrangements(rand_projective_arrangements&&) noexcept;
 
-}
-}
+} // -- namespace generate
+} // -- namespace lal
 
 // This is a base class of all tree generators. It must be put before
 // all other classes.
@@ -117,47 +117,75 @@ namespace generate {
 %include "../lal/generate/rand_planar_arrangements.hpp"
 %include "../lal/generate/rand_projective_arrangements.hpp"
 
-%extend lal::generate::rand_ulab_rooted_trees {
-	lal::graphs::rooted_tree get_tree() noexcept {
+namespace lal {
+namespace generate {
+
+%extend rand_ulab_rooted_trees {
+
+	graphs::rooted_tree get_tree() noexcept {
 		return $self->get_tree();
 	}
-}
-%extend lal::generate::rand_lab_rooted_trees {
-	lal::graphs::rooted_tree get_tree() noexcept {
-		return $self->get_tree();
-	}
-}
-%extend lal::generate::rand_ulab_free_trees {
-	lal::graphs::free_tree get_tree() noexcept {
-		return $self->get_tree();
-	}
-}
-%extend lal::generate::rand_lab_free_trees {
-	lal::graphs::free_tree get_tree() noexcept {
-		return $self->get_tree();
-	}
+
 }
 
-%extend lal::generate::all_ulab_rooted_trees {
-	lal::graphs::rooted_tree get_tree() noexcept {
+%extend rand_lab_rooted_trees {
+
+	graphs::rooted_tree get_tree() noexcept {
 		return $self->get_tree();
 	}
+
 }
-%extend lal::generate::all_lab_rooted_trees {
-	lal::graphs::rooted_tree get_tree() noexcept {
+
+%extend rand_ulab_free_trees {
+
+	graphs::free_tree get_tree() noexcept {
 		return $self->get_tree();
 	}
+
 }
-%extend lal::generate::all_ulab_free_trees {
-	lal::graphs::free_tree get_tree() noexcept {
+
+%extend rand_lab_free_trees {
+
+	graphs::free_tree get_tree() noexcept {
 		return $self->get_tree();
 	}
+
 }
-%extend lal::generate::all_lab_free_trees {
-	lal::graphs::free_tree get_tree() noexcept {
+
+%extend all_ulab_rooted_trees {
+
+	graphs::rooted_tree get_tree() noexcept {
 		return $self->get_tree();
 	}
+
 }
+
+%extend all_lab_rooted_trees {
+
+	graphs::rooted_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+
+}
+
+%extend all_ulab_free_trees {
+
+	graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+
+}
+
+%extend all_lab_free_trees {
+
+	graphs::free_tree get_tree() noexcept {
+		return $self->get_tree();
+	}
+
+}
+
+} // -- namespace generate
+} // -- namespace lal
 
 %pythoncode %{
 __types = types

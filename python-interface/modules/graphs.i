@@ -43,8 +43,8 @@ namespace graphs {
 %ignore rooted_tree::operator= (const rooted_tree&) noexcept;
 %ignore rooted_tree::operator= (rooted_tree&&) noexcept;
 
-}
-}
+} // -- namespace graphs
+} // -- namespace lal
 
 // ----------------
 // lal header files
@@ -73,6 +73,7 @@ namespace graphs {
 		return *$self;
 	}
 }
+
 %extend directed_graph {
 	std::string __repr__() const {
 		std::ostringstream out;
@@ -83,6 +84,7 @@ namespace graphs {
 		return *$self;
 	}
 }
+
 %extend rooted_tree {
 	std::string __repr__() const {
 		std::ostringstream out;
@@ -93,6 +95,7 @@ namespace graphs {
 		return *$self;
 	}
 }
+
 %extend free_tree {
 	std::string __repr__() const {
 		std::ostringstream out;
@@ -104,21 +107,25 @@ namespace graphs {
 	}
 }
 
-}
-}
+} // -- namespace graphs
+} // -- namespace lal
 
 // making lists of graphs...
 namespace std {
-	%template(_list_undirected_graph) vector<lal::graphs::undirected_graph>;
-	%template(_list_directed_graph) vector<lal::graphs::directed_graph>;
-	%template(_list_free_tree) vector<lal::graphs::free_tree>;
-	%template(_list_rooted_tree) vector<lal::graphs::rooted_tree>;
-}
+
+%template(_list_undirected_graph) vector<lal::graphs::undirected_graph>;
+%template(_list_directed_graph) vector<lal::graphs::directed_graph>;
+%template(_list_free_tree) vector<lal::graphs::free_tree>;
+%template(_list_rooted_tree) vector<lal::graphs::rooted_tree>;
+
+} // -- namespace std
 
 // making pairs of graphs and node...
 namespace std {
-	%template(_pair_free_tree_node) pair<lal::graphs::free_tree, lal::node>;
-}
+
+%template(_pair_free_tree_node) pair<lal::graphs::free_tree, lal::node>;
+
+} // -- namespace std
 
 %include "../lal/graphs/conversions.hpp"
 
@@ -163,7 +170,6 @@ def from_edge_list_to_graph(gtype, edge_list, norm = True, check = True):
 	
 	return globals()[ "from_edge_list_to_" + gtype ](edge_list, norm, check)
 %}
-
 
 %pythoncode %{
 __types = types

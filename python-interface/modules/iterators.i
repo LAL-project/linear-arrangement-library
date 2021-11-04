@@ -3,7 +3,6 @@
 %import types.i
 %import graphs.i
 
-
 %include documentation.i
 
 %{
@@ -12,16 +11,30 @@
 %}
 
 %include "../lal/iterators/E_iterator.hpp"
-%template(E_iterator_directed_graphs) lal::iterators::E_iterator<lal::graphs::directed_graph>;
-%template(E_iterator_undirected_graphs) lal::iterators::E_iterator<lal::graphs::undirected_graph>;
-%template(E_iterator_rooted_tree) lal::iterators::E_iterator<lal::graphs::rooted_tree>;
-%template(E_iterator_free_tree) lal::iterators::E_iterator<lal::graphs::free_tree>;
+
+namespace lal {
+namespace iterators {
+
+%template(E_iterator_directed_graphs) E_iterator<lal::graphs::directed_graph>;
+%template(E_iterator_undirected_graphs) E_iterator<lal::graphs::undirected_graph>;
+%template(E_iterator_rooted_tree) E_iterator<lal::graphs::rooted_tree>;
+%template(E_iterator_free_tree) E_iterator<lal::graphs::free_tree>;
+
+} // -- namespace iterators
+} // -- namespace lal
 
 %include "../lal/iterators/Q_iterator.hpp"
-%template(Q_iterator_directed_graphs) lal::iterators::Q_iterator<lal::graphs::directed_graph>;
-%template(Q_iterator_undirected_graphs) lal::iterators::Q_iterator<lal::graphs::undirected_graph>;
-%template(Q_iterator_rooted_tree) lal::iterators::Q_iterator<lal::graphs::rooted_tree>;
-%template(Q_iterator_free_tree) lal::iterators::Q_iterator<lal::graphs::free_tree>;
+
+namespace lal {
+namespace iterators {
+
+%template(Q_iterator_directed_graphs) Q_iterator<graphs::directed_graph>;
+%template(Q_iterator_undirected_graphs) Q_iterator<graphs::undirected_graph>;
+%template(Q_iterator_rooted_tree) Q_iterator<graphs::rooted_tree>;
+%template(Q_iterator_free_tree) Q_iterator<graphs::free_tree>;
+
+} // -- namespace iterators
+} // -- namespace lal
 
 %pythoncode %{
 def E_iterator(g):

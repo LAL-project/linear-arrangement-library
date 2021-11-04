@@ -197,20 +197,31 @@ namespace io {
 %ignore report_treebank_collection::operator= (const report_treebank_collection&) noexcept;
 %ignore report_treebank_collection::operator= (report_treebank_collection&&) noexcept;
 
-}
-}
+%ignore report_treebank_collection::report_treebank_collection(const report_treebank_collection&) noexcept;
+%ignore report_treebank_collection::report_treebank_collection(report_treebank_collection&&) noexcept;
+%ignore report_treebank_collection::operator= (const report_treebank_collection&) noexcept;
+%ignore report_treebank_collection::operator= (report_treebank_collection&&) noexcept;
+
+} // -- namespace io
+} // -- namespace lal
 
 %include "../lal/io/report_correctness.hpp"
 
-%extend lal::io::report_treebank_file {
+namespace lal {
+namespace io {
+
+%extend report_treebank_file {
+
 	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		out << "(" << $self->get_line_number() << ", " << $self->get_error_message() << ")";
 		return out.str();
 	}
+
 }
 
-%extend lal::io::report_treebank_collection {
+%extend report_treebank_collection {
+
 	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		out << "(Treebank: "                   << $self->get_treebank_file_name()
@@ -220,12 +231,18 @@ namespace io {
 			<< ")";
 		return out.str();
 	}
+
 }
 
+} // -- namespace io
+} // -- namespace lal
+
 namespace std {
-	%template(_list_report_treebank_file) vector<lal::io::report_treebank_file>;
-	%template(_list_report_treebank_collection) vector<lal::io::report_treebank_collection>;
-}
+
+%template(_list_report_treebank_file) vector<lal::io::report_treebank_file>;
+%template(_list_report_treebank_collection) vector<lal::io::report_treebank_collection>;
+
+} // -- namespace std
 
 %include "../lal/io/check_correctness.hpp"
 
@@ -239,12 +256,13 @@ namespace io {
 %ignore treebank_error::operator= (const treebank_error&) noexcept;
 %ignore treebank_error::operator= (treebank_error&&) noexcept;
 
-}
-}
+} // -- namespace io
+} // -- namespace lal
 
 %include "../lal/io/treebank_error.hpp"
 
 %extend lal::io::treebank_error {
+
 	std::string __repr__() const noexcept {
 		std::ostringstream out;
 		if ($self->get_error_type() != lal::io::treebank_error_type::no_error) {
@@ -253,6 +271,7 @@ namespace io {
 		}
 		return out.str();
 	}
+
 }
 
 %include "../lal/io/process_treebank_base.hpp"

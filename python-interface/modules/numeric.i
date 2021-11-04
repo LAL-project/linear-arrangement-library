@@ -12,65 +12,94 @@
 #include <lal/numeric.hpp>
 %}
 
-%ignore lal::numeric::operator<<;
-%ignore lal::numeric::integer::operator-();
-%ignore lal::numeric::rational::operator-();
-%ignore lal::numeric::integer::operator=;
-%ignore lal::numeric::rational::operator=;
+namespace lal {
+namespace numeric {
 
-%rename(__mod__) operator% (uint64_t) const;
-%rename(__mod__) operator% (const integer&) const;
-%rename(__pow__) pow (uint64_t) const;
-%rename(__pow__) pow (const integer&) const;
+%ignore operator<<;
+%ignore integer::operator-();
+%ignore rational::operator-();
+%ignore integer::operator=;
+%ignore rational::operator=;
+
+%rename(__mod__) operator% (uint64_t) const noexcept;
+%rename(__mod__) operator% (const integer&) const noexcept;
+%rename(__pow__) power (uint64_t) const noexcept;
+%rename(__pow__) power (const integer&) const noexcept;
+
+} // -- namespace numeric
+} // -- namespace lal
 
 %include "../lal/numeric/integer.hpp"
 
-%template(integer) lal::numeric::integer::integer<int64_t,std::enable_if_t<true, bool> = true>;
-%template(set_number) lal::numeric::integer::set_number<int64_t,std::enable_if_t<true, bool> = true>;
-%template(__eq__) lal::numeric::integer::operator== <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__neq__) lal::numeric::integer::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__lt__) lal::numeric::integer::operator< <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__le__) lal::numeric::integer::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__gt__) lal::numeric::integer::operator> <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__ge__) lal::numeric::integer::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__add__) lal::numeric::integer::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__sub__) lal::numeric::integer::operator- <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__mul__) lal::numeric::integer::operator* <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__truediv__) lal::numeric::integer::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__iadd__) lal::numeric::integer::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__isub__) lal::numeric::integer::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__imul__) lal::numeric::integer::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__itruediv__) lal::numeric::integer::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
+namespace lal {
+namespace numeric {
+
+%template(integer) integer::integer<int64_t,std::enable_if_t<true, bool> = true>;
+%template(set_number) integer::set_number<int64_t,std::enable_if_t<true, bool> = true>;
+%template(__eq__) integer::operator== <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__neq__) integer::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__lt__) integer::operator< <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__le__) integer::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__gt__) integer::operator> <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__ge__) integer::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__add__) integer::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__sub__) integer::operator- <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__mul__) integer::operator* <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__truediv__) integer::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__iadd__) integer::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__isub__) integer::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__imul__) integer::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__itruediv__) integer::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
+
+} // -- namespace numeric
+} // -- namespace lal
 
 %include "../lal/numeric/rational.hpp"
 
-%template(rational) lal::numeric::rational::rational<int64_t,std::enable_if_t<true, bool> = true>;
-%template(set_number) lal::numeric::rational::set_number<int64_t,std::enable_if_t<true, bool> = true>;
-%template(__eq__) lal::numeric::rational::operator== <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__neq__) lal::numeric::rational::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__lt__) lal::numeric::rational::operator< <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__le__) lal::numeric::rational::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__gt__) lal::numeric::rational::operator> <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__ge__) lal::numeric::rational::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__add__) lal::numeric::rational::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__sub__) lal::numeric::rational::operator- <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__mul__) lal::numeric::rational::operator* <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__truediv__) lal::numeric::rational::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__iadd__) lal::numeric::rational::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__isub__) lal::numeric::rational::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__imul__) lal::numeric::rational::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
-%template(__itruediv__) lal::numeric::rational::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
+namespace lal {
+namespace numeric {
 
-%extend lal::numeric::integer {
+%template(rational) rational::rational<int64_t,std::enable_if_t<true, bool> = true>;
+%template(set_number) rational::set_number<int64_t,std::enable_if_t<true, bool> = true>;
+%template(__eq__) rational::operator== <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__neq__) rational::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__lt__) rational::operator< <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__le__) rational::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__gt__) rational::operator> <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__ge__) rational::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__add__) rational::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__sub__) rational::operator- <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__mul__) rational::operator* <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__truediv__) rational::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__iadd__) rational::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__isub__) rational::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__imul__) rational::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__itruediv__) rational::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
+
+} // -- namespace numeric
+} // -- namespace lal
+
+namespace lal {
+namespace numeric {
+
+%extend integer {
+
 	std::string __repr__() const {
 		return $self->to_string();
 	}
+
 }
-%extend lal::numeric::rational {
+
+%extend rational {
+
 	std::string __repr__() const {
 		return $self->to_string();
 	}
+
 }
+
+} // -- namespace numeric
+} // -- namespace lal
 
 %pythoncode %{
 __types = types
