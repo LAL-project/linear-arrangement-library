@@ -25,41 +25,41 @@
 
 %include "../lal/numeric/integer.hpp"
 
-%template(integer) lal::numeric::integer::integer<int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(set_number) lal::numeric::integer::set_number<int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__eq__) lal::numeric::integer::operator== <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__neq__) lal::numeric::integer::operator!= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__lt__) lal::numeric::integer::operator< <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__le__) lal::numeric::integer::operator<= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__gt__) lal::numeric::integer::operator> <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__ge__) lal::numeric::integer::operator>= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__add__) lal::numeric::integer::operator+ <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__sub__) lal::numeric::integer::operator- <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__mul__) lal::numeric::integer::operator* <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__truediv__) lal::numeric::integer::operator/ <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__iadd__) lal::numeric::integer::operator+= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__isub__) lal::numeric::integer::operator-= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__imul__) lal::numeric::integer::operator*= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__itruediv__) lal::numeric::integer::operator/= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
+%template(integer) lal::numeric::integer::integer<int64_t,std::enable_if_t<true, bool> = true>;
+%template(set_number) lal::numeric::integer::set_number<int64_t,std::enable_if_t<true, bool> = true>;
+%template(__eq__) lal::numeric::integer::operator== <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__neq__) lal::numeric::integer::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__lt__) lal::numeric::integer::operator< <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__le__) lal::numeric::integer::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__gt__) lal::numeric::integer::operator> <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__ge__) lal::numeric::integer::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__add__) lal::numeric::integer::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__sub__) lal::numeric::integer::operator- <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__mul__) lal::numeric::integer::operator* <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__truediv__) lal::numeric::integer::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__iadd__) lal::numeric::integer::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__isub__) lal::numeric::integer::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__imul__) lal::numeric::integer::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__itruediv__) lal::numeric::integer::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
 
 %include "../lal/numeric/rational.hpp"
 
-%template(rational) lal::numeric::rational::rational<int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(set_number) lal::numeric::rational::set_number<int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__eq__) lal::numeric::rational::operator== <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__neq__) lal::numeric::rational::operator!= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__lt__) lal::numeric::rational::operator< <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__le__) lal::numeric::rational::operator<= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__gt__) lal::numeric::rational::operator> <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__ge__) lal::numeric::rational::operator>= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__add__) lal::numeric::rational::operator+ <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__sub__) lal::numeric::rational::operator- <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__mul__) lal::numeric::rational::operator* <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__truediv__) lal::numeric::rational::operator/ <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__iadd__) lal::numeric::rational::operator+= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__isub__) lal::numeric::rational::operator-= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__imul__) lal::numeric::rational::operator*= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
-%template(__itruediv__) lal::numeric::rational::operator/= <int64_t,std::enable_if_t<std::is_integral_v<int64_t>, bool> = true>;
+%template(rational) lal::numeric::rational::rational<int64_t,std::enable_if_t<true, bool> = true>;
+%template(set_number) lal::numeric::rational::set_number<int64_t,std::enable_if_t<true, bool> = true>;
+%template(__eq__) lal::numeric::rational::operator== <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__neq__) lal::numeric::rational::operator!= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__lt__) lal::numeric::rational::operator< <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__le__) lal::numeric::rational::operator<= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__gt__) lal::numeric::rational::operator> <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__ge__) lal::numeric::rational::operator>= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__add__) lal::numeric::rational::operator+ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__sub__) lal::numeric::rational::operator- <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__mul__) lal::numeric::rational::operator* <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__truediv__) lal::numeric::rational::operator/ <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__iadd__) lal::numeric::rational::operator+= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__isub__) lal::numeric::rational::operator-= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__imul__) lal::numeric::rational::operator*= <int64_t,std::enable_if_t<true, bool> = true>;
+%template(__itruediv__) lal::numeric::rational::operator/= <int64_t,std::enable_if_t<true, bool> = true>;
 
 %extend lal::numeric::integer {
 	std::string __repr__() const {
