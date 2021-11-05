@@ -277,11 +277,12 @@ void get_ordering(const graphs::free_tree& t, node u, ordering& ord) noexcept {
 
 		M = std::max(M, s_ui);
 	}
-	detail::counting_sort<size_node, size_node*, countingsort::decreasing_t>
-	(
-		ord.begin(), ord.end(), M, ord.size(),
-		[](const size_node& p) { return p.first; }
-	);
+	detail::counting_sort
+		<size_node, size_node*, countingsort::non_increasing_t>
+		(
+			ord.begin(), ord.end(), M, ord.size(),
+			[](const size_node& p) { return p.first; }
+		);
 }
 
 // t: input forest a single connected component of which has to be arranged.

@@ -80,20 +80,21 @@ noexcept
 	std::vector<edge> edges = g.get_edges();
 
 	// sort edges of the graph by increasing edge length
-	detail::counting_sort<edge, std::vector<edge>::iterator, countingsort::increasing_t>
-	(
-	edges.begin(), edges.end(),
-	n-1, // length of the longest edge
-	edges.size(),
-	[&](const edge& e) -> std::size_t {
-		const node_t u = e.first;
-		const node_t v = e.second;
-		++size_adjN_u[u.value];
+	detail::counting_sort
+		<edge, std::vector<edge>::iterator, countingsort::non_decreasing_t>
+		(
+		edges.begin(), edges.end(),
+		n-1, // length of the longest edge
+		edges.size(),
+		[&](const edge& e) -> std::size_t {
+			const node_t u = e.first;
+			const node_t v = e.second;
+			++size_adjN_u[u.value];
 
 #define my_abs_diff(a,b) (a < b ? b - a : a - b)
-		return my_abs_diff(pi[u], pi[v]);
-	}
-	);
+			return my_abs_diff(pi[u], pi[v]);
+		}
+		);
 
 	// initialise adjN
 	for (node u = 0; u < n; ++u) {

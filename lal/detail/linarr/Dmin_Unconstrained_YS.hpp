@@ -213,12 +213,13 @@ noexcept
 		M = std::max(M, s_ui);
 		ord[i].second = ui + 1;
 	}
-	detail::counting_sort<size_node, size_node*, countingsort::decreasing_t>
-	(
-		ord.begin(), ord.end(), M, ord.size(),
-		[](const size_node& p) { return p.first; }
-	);
-	}
+	detail::counting_sort
+		<size_node, size_node*, countingsort::non_increasing_t>
+		(
+			ord.begin(), ord.end(), M, ord.size(),
+			[](const size_node& p) { return p.first; }
+		);
+		}
 
 	const node v_0 = ord[0].second;		// Root of biggest subtree
 	const uint64_t n_0 = ord[0].first;	// Size of biggest subtree

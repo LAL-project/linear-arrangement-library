@@ -82,22 +82,26 @@ noexcept
 #endif
 
 	typedef std::pair<edge,uint64_t> edge_size;
-	typedef std::vector<edge_size>::iterator Iterator_Type;
+	typedef std::vector<edge_size>::iterator iterator_t;
 
-	// calculate s(u,v) with H&S algorithm (lemma 8)
 	{
 	sizes_edge.resize(2*(n - 1));
 	auto it = sizes_edge.begin();
-	detail::calculate_bidirectional_sizes
-	<tree_type, Iterator_Type>(t, n, x, it);
 
-	// sort all tuples in sizes_edge using the sizes
-	detail::counting_sort<edge_size, Iterator_Type, countingsort::decreasing_t>
-	(
-		sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
-		[](const edge_size& edge_pair) -> std::size_t { return edge_pair.second; }
-	);
-	}
+	// calculate s(u,v) with H&S algorithm (lemma 8)
+	detail::calculate_bidirectional_sizes
+		<tree_type, iterator_t>
+		(t, n, x, it);
+
+	// sort all tuples in sizes_edge using the sizes s(u,v)
+	detail::counting_sort
+		<edge_size, iterator_t, countingsort::non_increasing_t>
+		(
+			sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
+			[](const edge_size& edge_pair) -> std::size_t
+			{ return edge_pair.second; }
+		);
+		}
 
 	// put the s(u,v) into an adjacency list
 	// M[u] : adjacency list of vertex u sorted decreasingly according

@@ -49,6 +49,7 @@
 
 // C++ includes
 #if defined DEBUG
+#include <optional>
 #include <cassert>
 #endif
 #include <vector>
@@ -104,8 +105,8 @@ typedef char place;
  *		attach an integer that represents the size of the subtree rooted
  *		at that vertex. Each adjacency list is sorted DECREASINGLY by that size.
  * r: the vertex root of the subtree whose interval is to be made
- * r_place: where, respect to its parent, has 'r' been placed in the interval.
- *		LEFT_PLACE, RIGHT_PLACE, ROOT_PLACE
+ * r_place: where, respect to its parent, node 'r' has been placed in the arrangement.
+ *		PLACE_LEFT_OF, PLACE_RIGHT_OF, PLACE_NONE_OF
  *		The last value is only valid for the root of the whole tree.
  * ini, fin: left and right limits of the positions of the arrangement in which
  *		the tree has to be arranged. Note that the limits are included [ini,fin].
@@ -118,7 +119,8 @@ typedef char place;
  * 'r_place' is LEFT_PLACE.
  */
 inline
-uint64_t Dmin_Pr_rooted_adjacency_list(
+uint64_t arrange
+(
 	const std::vector<std::vector<node_size>>& L, const node r,
 	const place r_place,
 	position ini, position fin,
@@ -154,13 +156,27 @@ noexcept
 	// total sum of lengths of edges from 'r' to 'vi' without the anchor
 	uint64_t d = 0;
 
+#if defined DEBUG
+	// store the size of the previous subtree (previous in the lists's sorted)
+	std::optional<uint64_t> previous_size;
+#endif
+
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
+	// LARGEST to SMALLEST
 	for (const auto& [vi, ni] : children) {
+
+#if defined DEBUG
+		// ensure that the list is sorted non-increasingly
+		if (previous_size) {
+			assert(*previous_size >= ni);
+		}
+		previous_size = {ni};
+#endif
 
 		// recursive call: make the interval of 'vi'
 		D +=
-		Dmin_Pr_rooted_adjacency_list(
+		arrange(
 			L, vi,
 			(side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
 			(side == LEFT_SIDE ? ini : fin - ni + 1),
@@ -204,14 +220,15 @@ noexcept
 /* A method that wraps the first call to the recursive method above.
  */
 inline
-uint64_t arrange(
+uint64_t arrange_projective
+(
 	uint64_t n,
 	const std::vector<std::vector<node_size>>& M,
 	node r, linear_arrangement& arr
 )
 noexcept
 {
-	return Dmin_Pr_rooted_adjacency_list(M, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange(M, r, PLACE_NONE_OF, 0, n-1, arr);
 }
 
 } // -- namespace intervals
@@ -261,37 +278,24 @@ noexcept
 	uint64_t after = 0;
 	uint64_t under_anchor = 0;
 
+	// LARGEST to SMALLEST
 	for (std::size_t i = 1; i < Cv.size(); i += 2) {
-		const auto [vi, ni] = Cv[i];
-		under_anchor += ni;
+		//const auto [vi, ni] = Cv[i];
+		//ni := Cv[i].second
+		under_anchor += Cv[i].second;
 	}
+
 	base += dir*(to_int64(under_anchor) + 1);
 	cost_branch += under_anchor;
 
+	// SMALLEST to LARGEST
 	uint64_t i = Cv.size();
-	// iterate from the smallest to the largest subtree
 	for (auto it = Cv.rbegin(); it != Cv.rend(); ++it, --i) {
-		const auto [vi, ni] = *it;
 #if defined DEBUG
 		assert(i <= Cv.size());
 #endif
 
-		/*
-		// i is even
-		if (i%2 == 0) {
-			cost_branch += embed_branch(L, vi, base - dir*to_int64(before), -dir, rel_pos);
-			cost_branch += before;
-
-			before += ni;
-		}
-		// i is odd
-		else {
-			cost_branch += embed_branch(L, vi, base + dir*to_int64(after), dir, rel_pos);
-
-			cost_branch += after;
-			after += ni;
-		}
-		*/
+		const auto [vi, ni] = *it;
 
 		cost_branch +=
 		embed_branch(
@@ -338,28 +342,13 @@ noexcept
 	uint64_t right_sum = 0;
 
 	uint64_t i = L[r].size();
+
+	// SMALLEST to LARGEST
 	for (auto it = L[r].rbegin(); it != L[r].rend(); ++it, --i) {
 		const auto [vi, ni] = *it;
 #if defined DEBUG
 		assert(i <= L[r].size());
 #endif
-
-		/*
-		// if is even
-		if (i%2 == 0) {
-			D += embed_branch(L, vi, to_int64(right_sum), 1, rel_pos);
-			D += right_sum;
-
-			right_sum += ni;
-		}
-		// if i is odd
-		else {
-			D += embed_branch(L, vi, -to_int64(left_sum), -1, rel_pos);
-			D += left_sum;
-
-			left_sum += ni;
-		}
-		*/
 
 		D +=
 		embed_branch(
@@ -416,9 +405,9 @@ namespace rooted {
  * @pre Parameter @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
-template<typename sort_type = countingsort::decreasing_t>
+template<typename sort_type>
 inline
-void make_sorted_rooted_adjacency_list(
+void make_sorted_adjacency_list_rooted(
 	const graphs::rooted_tree& t,
 	std::vector<std::vector<node_size>>& L
 )
@@ -468,13 +457,13 @@ noexcept
 
 	// sort all tuples in L using the size of the subtree
 	detail::counting_sort
-	<edge_size, edge_size*, sort_type, true>
-	(
-		edge_list.begin(), edge_list.end(), n,
-		[](const edge_size& T) -> std::size_t { return T.second; },
-		memcs
-	);
-	}
+		<edge_size, edge_size*, sort_type, true>
+		(
+			edge_list.begin(), edge_list.end(), n,
+			[](const edge_size& T) -> std::size_t { return T.second; },
+			memcs
+		);
+		}
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
@@ -561,9 +550,9 @@ noexcept
  * @pre Parameter @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
-template<typename sort_type = countingsort::decreasing_t>
+template<typename sort_type>
 inline
-node make_sorted_rooted_adjacency_list_centroid(
+node make_sorted_adjacency_list_rooted_centroid(
 	const graphs::free_tree& t,
 	std::vector<std::vector<node_size>>& L
 )

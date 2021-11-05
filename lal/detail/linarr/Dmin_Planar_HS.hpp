@@ -81,13 +81,22 @@ noexcept
 		return {0, linear_arrangement::identity(1)};
 	}
 
-	std::vector<std::vector<Dmin_utils::node_size>> L;
-	const node c = Dmin_utils::free::make_sorted_rooted_adjacency_list_centroid(t, L);
+	// Make the sorted adjacency list rooted at the centroid of the tree.
+	// This adjacency list is sorted non-increasingly by size of the subtrees.
+	// LARGEST to SMALLEST
 
-	// construct the optimal interval by calculating the optimal
+	std::vector<std::vector<Dmin_utils::node_size>> L;
+	const node c =
+		Dmin_utils::free::make_sorted_adjacency_list_rooted_centroid
+			<countingsort::non_increasing_t>
+			(t, L);
+
+	// construct the optimal planar arrangement by calculating the optimal
 	// projective arrangement
+
 	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::displacement::embed(L, c, arr);
+	const uint64_t D =
+		Dmin_utils::displacement::embed(L, c, arr);
 
 	return {D, std::move(arr)};
 }

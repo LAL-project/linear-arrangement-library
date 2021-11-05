@@ -79,15 +79,20 @@ noexcept
 		return std::make_pair(0, linear_arrangement::identity(1));
 	}
 
-	// M[u] : adjacency list of vertex u sorted decreasingly according
-	// to the sizes of the subtrees.
-	// This is used to find the optimal projective arrangement of the tree.
-	std::vector<std::vector<Dmin_utils::node_size>> L(n);
-	Dmin_utils::rooted::make_sorted_rooted_adjacency_list(t, L);
+	// Make the sorted adjacency list rooted at the centroid of the tree.
+	// This adjacency list is sorted non-increasingly by size of the subtrees.
+	// LARGEST to SMALLEST
 
-	// construct the optimal planar arrangement
+	std::vector<std::vector<Dmin_utils::node_size>> L(n);
+	Dmin_utils::rooted::make_sorted_adjacency_list_rooted
+		<countingsort::non_increasing_t>
+		(t, L);
+
+	// construct the optimal projective arrangement
+
 	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::intervals::arrange(n, L, t.get_root(), arr);
+	const uint64_t D =
+		Dmin_utils::intervals::arrange_projective(n, L, t.get_root(), arr);
 
 	return {D, std::move(arr)};
 }

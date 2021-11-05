@@ -54,10 +54,10 @@ namespace detail {
 
 namespace countingsort {
 
-// Non-decreasing type of sort.
-struct increasing_t { };
-// Non-increasing type of sort.
-struct decreasing_t { };
+// Non-decreasing sort.
+struct non_decreasing_t { };
+// Non-increasing sort.
+struct non_increasing_t { };
 
 template<typename T>
 struct memory_counting_sort {
@@ -116,8 +116,8 @@ template<
 	std::enable_if_t<
 		is_pointer_iterator_v<T, It> &&
 		(
-		std::is_same_v<sort_type, countingsort::increasing_t> ||
-		std::is_same_v<sort_type, countingsort::decreasing_t>
+		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
+		std::is_same_v<sort_type, countingsort::non_increasing_t>
 		),
 		bool
 	> = true
@@ -132,7 +132,7 @@ void counting_sort(
 noexcept
 {
 	constexpr bool is_increasing =
-		std::is_same_v<sort_type, countingsort::increasing_t>;
+		std::is_same_v<sort_type, countingsort::non_decreasing_t>;
 
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
@@ -203,10 +203,10 @@ template<
 	typename T, typename It,
 	typename sort_type,
 	std::enable_if_t<
-		is_pointer_iterator_v<T, It>&&
+		is_pointer_iterator_v<T, It> &&
 		(
-		std::is_same_v<sort_type, countingsort::increasing_t> ||
-		std::is_same_v<sort_type, countingsort::decreasing_t>
+		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
+		std::is_same_v<sort_type, countingsort::non_increasing_t>
 		),
 		bool
 	> = true
