@@ -88,15 +88,14 @@ noexcept
 	// LARGEST to SMALLEST
 
 	std::vector<std::vector<Dmin_utils::node_size>> L(n);
-	Dmin_utils::rooted::make_sorted_adjacency_list_rooted
+	Dmin_utils::make_sorted_adjacency_list_rooted
 		<countingsort::non_increasing_t>
 		(t, L);
 
 	// construct the optimal projective arrangement
 
 	linear_arrangement arr(n);
-	const uint64_t D =
-		Dmin_utils::displacement::embed(L, r, arr);
+	const uint64_t D = Dmin_utils::embed(L, r, arr);
 
 	return {D, std::move(arr)};
 }

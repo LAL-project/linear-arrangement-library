@@ -86,16 +86,12 @@ typedef std::vector<edge_size>::iterator edge_size_t;
 #define other_side(s) ((s + 1)&0x1)
 
 /* ************************************************************************** */
-/* ------------------------- INTERVALS namespace ---------------------------- */
+/* ---------------------- INTERVAL-based methods ---------------------------- */
 
 /* The following namespace contains functions for the interval-based algorithms
  * to calculate the planar and projective minimum sum of edge lengths.
  */
 
-
-
-
-namespace intervals {
 
 typedef char place;
 
@@ -231,22 +227,15 @@ noexcept
 	return arrange(M, r, PLACE_NONE_OF, 0, n-1, arr);
 }
 
-} // -- namespace intervals
-
-
 
 
 /* ************************************************************************** */
-/* ---------------------- DISPLACEMENT namespace ---------------------------- */
+/* ----------------- DISPLACEMENT-based methods namespace ------------------- */
 
 /* The following namespace contains functions for the interval-based algorithms
  * to calculate the planar and projective minimum sum of edge lengths.
  */
 
-
-
-
-namespace displacement {
 
 /* Procedure 'embed' as defined by Hochberg and Stallmann in \cite Hochberg2003a
  * and with the correction in \cite Alemany2021a.
@@ -379,22 +368,13 @@ noexcept
 	return D;
 }
 
-} // -- namespace displacement
-
-
-
 
 /* ************************************************************************** */
-/* --------------------------- ROOTED namespace ----------------------------- */
+/* ----------------------- ROOTED ADJACENCY LISTS --------------------------- */
 
-/* The following namespace contains functions to calculate the sorted, rooted
- * adjacency list of rooted trees.
+/* Functions to calculate the sorted, rooted
+ * adjacency list of rooted and free trees.
  */
-
-
-
-
-namespace rooted {
 
 /* Make a sorted, rooted adjacency list sorted according to the sizes of
  * the subtrees of the input rooted tree @e t.
@@ -484,23 +464,6 @@ noexcept
 #endif
 }
 
-} // -- namespace rooted
-
-
-
-
-/* ************************************************************************** */
-/* ----------------------------- FREE namespace ----------------------------- */
-
-/* The following namespace contains functions to calculate the sorted, rooted
- * adjacency list of free trees.
- */
-
-
-
-
-namespace free {
-
 inline
 void make_adjacency_list_rooted(
 	const graphs::free_tree& t, node pu, node u,
@@ -569,8 +532,6 @@ noexcept
 
 	return c;
 }
-
-} // -- namespace free
 
 } // -- namespcae Dmin_utils
 } // -- namespace detail

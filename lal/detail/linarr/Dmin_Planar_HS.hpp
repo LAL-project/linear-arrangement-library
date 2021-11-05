@@ -87,7 +87,7 @@ noexcept
 
 	std::vector<std::vector<Dmin_utils::node_size>> L;
 	const node c =
-		Dmin_utils::free::make_sorted_adjacency_list_rooted_centroid
+		Dmin_utils::make_sorted_adjacency_list_rooted_centroid
 			<countingsort::non_increasing_t>
 			(t, L);
 
@@ -95,8 +95,7 @@ noexcept
 	// projective arrangement
 
 	linear_arrangement arr(n);
-	const uint64_t D =
-		Dmin_utils::displacement::embed(L, c, arr);
+	const uint64_t D = Dmin_utils::embed(L, c, arr);
 
 	return {D, std::move(arr)};
 }
