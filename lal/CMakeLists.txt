@@ -184,8 +184,9 @@ target_sources(
 		#      iterators
 		#          nothing
 		#      linarr
+		#          nothing
 		#      numeric
-		detail/numeric/utils.cpp
+		#          nothing
 		#      properties
 		#          nothing
 		#      sorting

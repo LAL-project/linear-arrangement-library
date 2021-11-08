@@ -73,6 +73,8 @@ INCLUDEPATH += ..
 HEADERS += \
     basic_types.hpp \
     detail/data_array.hpp \
+	detail/avl.hpp \
+	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \
 	detail/graphs/is_tree.hpp \
@@ -95,11 +97,9 @@ HEADERS += \
 	detail/linarr/Dmin_Unconstrained_FC.hpp \
 	detail/linarr/Dmin_Unconstrained_YS.hpp \
 	detail/linarr/syntactic_dependency_structure.hpp \
-	detail/avl.hpp \
+	detail/numeric/utils.hpp \
     detail/macros/call_with_empty_arr.hpp \
     detail/macros/is_pointer_iterator.hpp \
-	detail/make_array.hpp \
-	detail/numeric/utils.hpp \
 	detail/properties/tree_centre.hpp \
 	detail/properties/tree_centroid.hpp \
 	detail/properties/tree_diameter.hpp \
@@ -196,7 +196,6 @@ HEADERS += \
 	lal_version.hpp
 
 SOURCES += \
-    detail/numeric/utils.cpp \
 	generate/all_lab_free_trees.cpp \
 	generate/all_planar_arrangements.cpp \
 	generate/all_projective_arrangements.cpp \

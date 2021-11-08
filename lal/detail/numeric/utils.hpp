@@ -63,7 +63,45 @@ namespace detail {
  * @param[in] b Base.
  * @param[in] e Exponent.
  */
-void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e);
+inline
+void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept  {
+	if (mpz_fits_ulong_p(e)) {
+		mpz_pow_ui(r, b, mpz_get_ui(e));
+		return;
+	}
+
+	if (mpz_even_p(e)) {
+		// r = (b^(e/2))^2
+
+		mpz_t e_half;
+		mpz_init(e_half);
+
+		// e_half = e/2
+		mpz_div_ui(e_half, e, 2);
+
+		// r = b^(e/2)
+		mpz_pow_mpz(r, b, e_half);
+
+		// r = (b^(e/2))^2 = b^e
+		mpz_mul(r, r, r);
+		mpz_clear(e_half);
+		return;
+	}
+
+	// r = (b^(e - 1))*b
+
+	mpz_t e_minus_one;
+	mpz_init(e_minus_one);
+	// e_minus_one = e - 1
+	mpz_sub_ui(e_minus_one, e, 1);
+
+	// r = b^(e - 1)
+	mpz_pow_mpz(r, b, e_minus_one);
+
+	// r = (b^(e - 1))*b = b^e
+	mpz_mul(r, r, b);
+	mpz_clear(e_minus_one);
+}
 
 /*
  * @brief Rational-Integer division.
@@ -72,7 +110,20 @@ void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e);
  * @param[out] r The rational to be divided by \f$k\f$. Result is \f$r := r/k\f$.
  * @param[in] k The integer that divides the rational.
  */
-void mpz_divide_mpq(mpq_t& r, const mpz_t& k);
+inline
+void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept {
+	mpz_t b;
+	mpz_init(b);
+
+	mpq_get_den(b, r);	// r = a/b
+
+	mpz_mul(b, b, k); // b <- b*k
+
+	mpq_set_den(r, b); // r <- a/(b*k)
+	mpq_canonicalize(r);
+
+	mpz_clear(b);
+}
 
 /*
  * @brief Rational-Rational division.
@@ -81,7 +132,25 @@ void mpz_divide_mpq(mpq_t& r, const mpz_t& k);
  * @param[out] r1 The rational to be divided by \f$k\f$. Result is \f$r_1 := r_1/r_2\f$.
  * @param[in] r2 The integer that divides the rational.
  */
-void mpq_divide_mpq(mpq_t& r1, const mpq_t& r2);
+inline
+void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
+	mpz_t a, b, c, d;
+	mpz_inits(a, b, c, d, nullptr);
+
+	mpq_get_num(a, num);	// num = a/b
+	mpq_get_den(b, num);
+	mpq_get_num(c, den);	// den = c/d
+	mpq_get_den(d, den);
+
+	mpz_mul(a, a, d);
+	mpz_mul(b, b, c);
+
+	mpq_set_num(num, a);
+	mpq_set_den(num, b);
+	mpq_canonicalize(num);
+
+	mpz_clears(a, b, c, d, nullptr);
+}
 
 /*
  * @brief Power operation.
@@ -90,7 +159,36 @@ void mpq_divide_mpq(mpq_t& r1, const mpq_t& r2);
  * @param[out] r Rational value. Result is \f$ r = r^p\f$.
  * @param[in] p Exponent.
  */
-void operate_power(mpq_t& r, uint64_t p);
+inline
+void operate_power(mpq_t& r, uint64_t p) noexcept {
+	if (p == 0) {
+		mpq_set_si(r, 1, 1);
+		return;
+	}
+	if (p == 1) {
+		return;
+	}
+
+	mpz_t num, den;
+	mpz_inits(num, den, nullptr);
+
+	// get numerator and denominator of 'res'
+	mpq_get_num(num, r);
+	mpq_get_den(den, r);
+
+	// operate power
+	mpz_pow_ui(num, num, p);
+	mpz_pow_ui(den, den, p);
+
+	// set value into 'res'
+	mpq_set_num(r, num);
+	mpq_set_den(r, den);
+
+	// canonicalise
+	mpq_canonicalize(r);
+
+	mpz_clears(num, den, nullptr);
+}
 
 /*
  * @brief Power operation.
@@ -99,7 +197,36 @@ void operate_power(mpq_t& r, uint64_t p);
  * @param[out] r Rational value. Result is \f$ r = r^p\f$.
  * @param[in] p Exponent.
  */
-void operate_power(mpq_t& r, const mpz_t& p);
+inline
+void operate_power(mpq_t& r, const mpz_t& p) noexcept {
+	if (mpz_cmp_ui(p, 0) == 0) {
+		mpq_set_si(r, 1, 1);
+		return;
+	}
+	if (mpz_cmp_ui(p, 1) == 0) {
+		return;
+	}
+
+	mpz_t num, den;
+	mpz_inits(num, den, nullptr);
+
+	// get numerator and denominator of 'res'
+	mpq_get_num(num, r);
+	mpq_get_den(den, r);
+
+	// operate power
+	mpz_pow_mpz(num, num, p);
+	mpz_pow_mpz(den, den, p);
+
+	// set value into 'res'
+	mpq_set_num(r, num);
+	mpq_set_den(r, den);
+
+	// canonicalise
+	mpq_canonicalize(r);
+
+	mpz_clears(num, den, nullptr);
+}
 
 /* Getters of mpz_t objects */
 
