@@ -195,7 +195,7 @@ private:
 	/// Number of trees in the treebank.
 	std::size_t m_num_trees = 0;
 	/// Current line.
-	std::string m_file_line;
+	std::string m_current_line;
 	/// Current head vector
 	head_vector m_current_head_vector;
 

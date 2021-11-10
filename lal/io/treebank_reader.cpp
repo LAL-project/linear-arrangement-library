@@ -90,25 +90,25 @@ void treebank_reader::next_tree() noexcept {
 		m_current_head_vector.clear();
 		correct_line = true;
 
-		getline(m_treebank, m_file_line);
+		getline(m_treebank, m_current_line);
 
-		if (m_file_line.length() == 1) {
+		if (m_current_line.length() == 1) {
 			// line is probably empty...
-			const bool is_digit = '0' <= m_file_line[0] and m_file_line[0] <= '9';
-			const bool is_eol = m_file_line[0] == '\n';
+			const bool is_digit = '0' <= m_current_line[0] and m_current_line[0] <= '9';
+			const bool is_eol = m_current_line[0] == '\n';
 			if (not is_digit or is_eol) {
 				// if the only character is not a number or is an empty line
 				// then we say that the line is not correct.
 				correct_line = false;
 			}
 		}
-		else if (m_file_line.length() == 0) {
+		else if (m_current_line.length() == 0) {
 			// incorrect line (no characters)
 			correct_line = false;
 		}
 
 		if (correct_line) {
-			ss.str(m_file_line);
+			ss.str(m_current_line);
 			while (ss >> k) {
 				m_current_head_vector.push_back(k);
 				++count;
