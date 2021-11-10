@@ -100,6 +100,7 @@ HEADERS += \
 	detail/numeric/utils.hpp \
     detail/macros/call_with_empty_arr.hpp \
     detail/macros/is_pointer_iterator.hpp \
+    detail/pairs_utils.hpp \
 	detail/properties/tree_centre.hpp \
 	detail/properties/tree_centroid.hpp \
 	detail/properties/tree_diameter.hpp \

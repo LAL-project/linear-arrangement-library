@@ -55,6 +55,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
+#include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -87,7 +88,7 @@ noexcept
 	// This adjacency list is sorted non-increasingly by size of the subtrees.
 	// LARGEST to SMALLEST
 
-	std::vector<std::vector<Dmin_utils::node_size>> L(n);
+	std::vector<std::vector<node_size>> L(n);
 	Dmin_utils::make_sorted_adjacency_list_rooted
 		<countingsort::non_increasing_t>
 		(t, L);

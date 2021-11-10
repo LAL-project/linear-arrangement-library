@@ -67,7 +67,8 @@ namespace detail {
  * a interval-based algorithm.
  */
 inline
-std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF(const graphs::rooted_tree& t)
+std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF
+(const graphs::rooted_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -83,7 +84,7 @@ noexcept
 	// This adjacency list is sorted non-increasingly by size of the subtrees.
 	// LARGEST to SMALLEST
 
-	std::vector<std::vector<Dmin_utils::node_size>> L(n);
+	std::vector<std::vector<node_size>> L(n);
 	Dmin_utils::make_sorted_adjacency_list_rooted
 		<countingsort::non_increasing_t>
 		(t, L);

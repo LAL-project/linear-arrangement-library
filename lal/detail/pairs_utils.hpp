@@ -30,12 +30,6 @@
  *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *          Webpage: https://cqllab.upc.edu/people/lalemany/
  *
- *      Juan Luis Esteban (esteban@cs.upc.edu)
- *          Office 110, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpage: https://www.cs.upc.edu/~esteban/
- *          Research Gate: https://www.researchgate.net/profile/Juan_Esteban13
- *
  *      Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
  *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
  *          CQL (Complexity and Quantitative Linguistics Lab)
@@ -45,61 +39,23 @@
  *
  ********************************************************************/
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-#include <vector>
+#pragma once
 
 // lal includes
-#include <lal/graphs/free_tree.hpp>
-#include <lal/detail/linarr/Dmin_utils.hpp>
-#include <lal/detail/pairs_utils.hpp>
+#include <lal/basic_types.hpp>
 
 namespace lal {
 namespace detail {
 
-/* Minimum planar arrangement of a free tree following the description in
- * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
- * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
- * \cite Alemany2021a.
- *
- * This algorithm first constructs the sorted adjacency matrix rooted
- * at one of the tree's centroidal vertices. Then, it arranges the tree so that
- * there are no edge crossings and the centroidal vertex is not covered. Such
- * arrangement is done using an displacement-based algorithm.
- */
-inline
-std::pair<uint64_t, linear_arrangement> Dmin_Planar_HS(const graphs::free_tree& t)
-noexcept
-{
-#if defined DEBUG
-	assert(t.is_tree());
-#endif
+struct node_size {
+	node v;
+	uint64_t size;
+};
 
-	const uint64_t n = t.get_num_nodes();
-	if (n == 1) {
-		return {0, linear_arrangement::identity(1)};
-	}
-
-	// Make the sorted adjacency list rooted at the centroid of the tree.
-	// This adjacency list is sorted non-increasingly by size of the subtrees.
-	// LARGEST to SMALLEST
-
-	std::vector<std::vector<node_size>> L;
-	const node c =
-		Dmin_utils::make_sorted_adjacency_list_rooted_centroid
-			<countingsort::non_increasing_t>
-			(t, L);
-
-	// construct the optimal planar arrangement by calculating the optimal
-	// projective arrangement
-
-	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::embed(L, c, arr);
-
-	return {D, std::move(arr)};
-}
+struct edge_size {
+	edge e;
+	uint64_t size;
+};
 
 } // -- namespace detail
 } // -- namespace lal

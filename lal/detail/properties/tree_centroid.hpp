@@ -52,6 +52,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
+#include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -72,8 +73,8 @@ inline
 std::pair<node, node> retrieve_centroid(
 	const tree_type& t,
 	const uint64_t N, const uint64_t n, const node x,
-	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
-	std::vector<std::pair<edge, uint64_t>>& sizes_edge
+	std::vector<std::vector<node_size>>& L,
+	std::vector<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -81,7 +82,6 @@ noexcept
 	assert(n > 0);
 #endif
 
-	typedef std::pair<edge,uint64_t> edge_size;
 	typedef std::vector<edge_size>::iterator iterator_t;
 
 	{
@@ -99,7 +99,7 @@ noexcept
 		(
 			sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
 			[](const edge_size& edge_pair) -> std::size_t
-			{ return edge_pair.second; }
+			{ return edge_pair.size; }
 		);
 		}
 
@@ -109,7 +109,7 @@ noexcept
 	L.resize(N);
 	for (const auto& [uv, suv] : sizes_edge) {
 		const auto [u, v] = uv;
-		L[u].push_back(std::make_pair(v,suv));
+		L[u].push_back({v, suv});
 	}
 
 	// find the first centroidal vertex
@@ -131,8 +131,8 @@ noexcept
 	// neighbours of the first centroidal vertex
 	node c2 = N + 1;
 	for (const auto& p : L[c1]) {
-		const node v = p.first;
-		if (L[v][0].second <= n/2) {
+		const node v = p.v;
+		if (L[v][0].size <= n/2) {
 			c2 = v;
 			break;
 		}
@@ -183,8 +183,8 @@ template<
 inline
 std::pair<node, node> retrieve_centroid(
 	const T& t, const node x,
-	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
-	std::vector<std::pair<edge, uint64_t>>& sizes_edge
+	std::vector<std::vector<node_size>>& L,
+	std::vector<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -217,8 +217,8 @@ inline
 std::pair<node, node> retrieve_centroid(const T& t, const node x)
 noexcept
 {
-	std::vector<std::vector<std::pair<node,uint64_t>>> M;
-	std::vector<std::pair<edge, uint64_t>> sizes_edge;
+	std::vector<std::vector<node_size>> M;
+	std::vector<edge_size> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
 }
 
@@ -257,8 +257,8 @@ template<
 inline
 std::pair<node, node> retrieve_centroid(
 	const T& t,
-	std::vector<std::vector<std::pair<node,uint64_t>>>& L,
-	std::vector<std::pair<edge, uint64_t>>& sizes_edge
+	std::vector<std::vector<node_size>>& L,
+	std::vector<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -289,8 +289,30 @@ inline
 std::pair<node, node> retrieve_centroid(const T& t)
 noexcept
 {
-	std::vector<std::vector<std::pair<node,uint64_t>>> L;
-	std::vector<std::pair<edge, uint64_t>> sizes_edge;
+	std::vector<std::vector<node_size>> L;
+	std::vector<edge_size> sizes_edge;
+	return retrieve_centroid(t, L, sizes_edge);
+}
+
+/*
+ * @brief Calculate the centroid of the tree @e t.
+ *
+ * For details on the parameters and return value see documentation of the
+ * function above.
+ */
+template<
+	class T,
+	std::enable_if_t<
+		std::is_base_of_v<graphs::free_tree, T> ||
+		std::is_base_of_v<graphs::rooted_tree, T>,
+	bool> = true
+>
+inline
+std::pair<node, node> retrieve_centroid
+(const T& t, std::vector<std::vector<node_size>>& L)
+noexcept
+{
+	std::vector<edge_size> sizes_edge;
 	return retrieve_centroid(t, L, sizes_edge);
 }
 

@@ -51,6 +51,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/detail/macros/is_pointer_iterator.hpp>
+#include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -168,7 +169,7 @@ template<
 			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
 			std::is_base_of_v<graphs::free_tree, tree_type>
 		)
-		&& is_pointer_iterator_v<std::pair<edge,uint64_t>, Iterator_Type>
+		&& is_pointer_iterator_v<edge_size, Iterator_Type>
 		,
 		bool
 	> = true
@@ -244,7 +245,7 @@ template<
 			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
 			std::is_base_of_v<graphs::free_tree, tree_type>
 		)
-		&& is_pointer_iterator_v<std::pair<edge,uint64_t>, Iterator_Type>
+		&& is_pointer_iterator_v<edge_size, Iterator_Type>
 		,
 		bool
 	> = true

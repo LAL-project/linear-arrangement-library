@@ -67,10 +67,6 @@ namespace lal {
 namespace detail {
 namespace Dmin_utils {
 
-typedef std::pair<lal::node,uint64_t> node_size;
-typedef std::pair<lal::edge,uint64_t> edge_size;
-typedef std::vector<edge_size>::iterator edge_size_t;
-
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)
 
@@ -114,7 +110,7 @@ typedef char place;
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
  */
-inline
+template<bool make_arrangement>
 uint64_t arrange
 (
 	const std::vector<std::vector<node_size>>& L, const node r,
@@ -172,11 +168,11 @@ noexcept
 
 		// recursive call: make the interval of 'vi'
 		D +=
-		arrange(
+		arrange<make_arrangement>(
 			L, vi,
 			(side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
-			(side == LEFT_SIDE ? ini : fin - ni + 1),
-			(side == LEFT_SIDE ? ini + ni - 1 : fin),
+			(make_arrangement ? (side == LEFT_SIDE ? ini : fin - ni + 1) : 0),
+			(make_arrangement ? (side == LEFT_SIDE ? ini + ni - 1 : fin) : 0),
 			arr
 		);
 
@@ -193,9 +189,11 @@ noexcept
 		acc_size_left += side*ni;
 		acc_size_right += other_side(side)*ni;
 
-		// update limits of embedding
+		// update limits of the embedding
+		if constexpr (make_arrangement) {
 		ini += side*ni;
 		fin -= other_side(side)*ni;
+		}
 
 		// change side
 		side = other_side(side);
@@ -203,7 +201,9 @@ noexcept
 #if defined DEBUG
 	assert(ini == fin);
 #endif
+	if constexpr (make_arrangement) {
 	arr.assign(r, ini);
+	}
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
@@ -215,16 +215,24 @@ noexcept
 
 /* A method that wraps the first call to the recursive method above.
  */
-inline
-uint64_t arrange_projective
+inline uint64_t arrange_projective
 (
-	uint64_t n,
-	const std::vector<std::vector<node_size>>& M,
+	uint64_t n, const std::vector<std::vector<node_size>>& M,
 	node r, linear_arrangement& arr
 )
 noexcept
 {
-	return arrange(M, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<true>(M, r, PLACE_NONE_OF, 0, n-1, arr);
+}
+
+/* A method that wraps the first call to the recursive method above.
+ */
+inline uint64_t arrange_projective
+(uint64_t n, const std::vector<std::vector<node_size>>& M, node r)
+noexcept
+{
+	linear_arrangement arr;
+	return arrange<false>(M, r, PLACE_NONE_OF, 0, n-1, arr);
 }
 
 
@@ -250,12 +258,11 @@ noexcept
  * @param dir Whether or not @e v is to the left or to the right of its parent
  * @param[out] rel_pos the displacement from the root of all nodes of the subtree
  */
-inline
+template<bool make_arrangement>
 uint64_t embed_branch(
 	const std::vector<std::vector<node_size>>& L,
 	node v,
-	int64_t base,
-	int64_t dir,
+	int64_t base, int64_t dir,
 	data_array<int64_t>& rel_pos
 )
 noexcept
@@ -271,10 +278,13 @@ noexcept
 	for (std::size_t i = 1; i < Cv.size(); i += 2) {
 		//const auto [vi, ni] = Cv[i];
 		//ni := Cv[i].second
-		under_anchor += Cv[i].second;
+		under_anchor += Cv[i].size;
 	}
 
+	if constexpr (make_arrangement) {
 	base += dir*(to_int64(under_anchor) + 1);
+	}
+
 	cost_branch += under_anchor;
 
 	// SMALLEST to LARGEST
@@ -287,10 +297,16 @@ noexcept
 		const auto [vi, ni] = *it;
 
 		cost_branch +=
-		embed_branch(
+		embed_branch<make_arrangement>(
 			L, vi,
-			( (i&0x1) == 0 ? base - dir*to_int64(before) : base + dir*to_int64(after) ),
-			( (i&0x1) == 0 ? -dir : dir ),
+			make_arrangement ?
+				(i&0x1) == 0 ? base - dir*to_int64(before) : base + dir*to_int64(after)
+				: 0
+			,
+			make_arrangement ?
+				(i&0x1) == 0 ? -dir : dir
+				: 0
+			,
 			rel_pos
 		);
 		cost_branch += ( (i&0x1) == 0 ? before : after );
@@ -301,7 +317,9 @@ noexcept
 		cost_branch += 1;
 	}
 
+	if constexpr (make_arrangement) {
 	rel_pos[v] = base;
+	}
 	return cost_branch;
 }
 
@@ -315,7 +333,7 @@ noexcept
  *
  * @param[out] arr The optimal arrangement.
  */
-inline
+template<bool make_arrangement>
 uint64_t embed(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
@@ -340,10 +358,16 @@ noexcept
 #endif
 
 		D +=
-		embed_branch(
+		embed_branch<make_arrangement>(
 			L, vi,
-			( (i&0x1) == 0 ? to_int64(right_sum) : -to_int64(left_sum) ),
-			( (i&0x1) == 0 ? to_int64(1) : to_int64(-1) ),
+			make_arrangement ?
+				(i&0x1) == 0 ? to_int64(right_sum) : -to_int64(left_sum)
+				: 0
+			,
+			make_arrangement ?
+				(i&0x1) == 0 ? to_int64(1) : to_int64(-1)
+				: 0
+			,
 			rel_pos
 		);
 		D += ( (i&0x1) == 0 ? right_sum : left_sum );
@@ -355,6 +379,7 @@ noexcept
 	}
 
 	// the '-1' is used to offset the positions from [1,n] to [0,n-1]
+	if constexpr (make_arrangement) {
 	arr.assign(r, left_sum + 1 - 1);
 	rel_pos[r] = 0;
 	for (node v = 0; v < n; ++v) {
@@ -364,10 +389,25 @@ noexcept
 #endif
 		arr.assign(v, to_uint64(pos));
 	}
+	}
 
 	return D;
 }
 
+inline uint64_t embed
+(const std::vector<std::vector<node_size>>& L, const node r, linear_arrangement& arr)
+noexcept
+{
+	return embed<true>(L, r, arr);
+}
+
+inline uint64_t embed
+(const std::vector<std::vector<node_size>>& L, const node r)
+noexcept
+{
+	linear_arrangement arr;
+	return embed<false>(L, r, arr);
+}
 
 /* ************************************************************************** */
 /* ----------------------- ROOTED ADJACENCY LISTS --------------------------- */
@@ -440,7 +480,7 @@ noexcept
 		<edge_size, edge_size*, sort_type, true>
 		(
 			edge_list.begin(), edge_list.end(), n,
-			[](const edge_size& T) -> std::size_t { return T.second; },
+			[](const edge_size& T) -> std::size_t { return T.size; },
 			memcs
 		);
 		}
@@ -449,8 +489,8 @@ noexcept
 	// to the sizes of the subtrees.
 	// This is used to find the optimal projective arrangement of the tree.
 	for (const auto& T : edge_list) {
-		const auto [u, v] = T.first;
-		const uint64_t nv = T.second;
+		const auto [u, v] = T.e;
+		const uint64_t nv = T.size;
 		L[u].push_back({v,nv});
 #if defined DEBUG
 		assert(t.has_edge(u,v));
@@ -464,16 +504,20 @@ noexcept
 #endif
 }
 
+/* @brief Roots an adjacency list with respect to root @e u.
+ *
+ * The initial value of @e parent_u must be @e u itself.
+ */
 inline
-void make_adjacency_list_rooted(
-	const graphs::free_tree& t, node pu, node u,
+void root_adjacency_list(
+	const graphs::free_tree& t, node parent_u, node u,
 	std::vector<std::vector<node_size>>& L
 )
 noexcept
 {
-	if (pu == u) {
+	if (parent_u == u) {
 		for (node v : t.get_neighbours(u)) {
-			make_adjacency_list_rooted(t, u, v, L);
+			root_adjacency_list(t, u, v, L);
 		}
 		return;
 	}
@@ -485,7 +529,7 @@ noexcept
 	auto it = Lu.begin();
 	bool found = false;
 	while (not found and it != Lu.end()) {
-		if (it->first == pu) {
+		if (it->v == parent_u) {
 			Lu.erase(it);
 			found = true;
 		}
@@ -495,8 +539,8 @@ noexcept
 	}
 
 	for (node v : t.get_neighbours(u)) {
-		if (v != pu) {
-			make_adjacency_list_rooted(t, u, v, L);
+		if (v != parent_u) {
+			root_adjacency_list(t, u, v, L);
 		}
 	}
 }
@@ -528,7 +572,7 @@ noexcept
 	const node c = detail::retrieve_centroid(t, L, sizes_edge).first;
 
 	// convert M into a rooted (also, directed) adjacency matrix
-	make_adjacency_list_rooted(t, c, c, L);
+	root_adjacency_list(t, c, c, L);
 
 	return c;
 }
