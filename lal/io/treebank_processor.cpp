@@ -57,8 +57,8 @@
 #include <lal/linarr/C.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/head_initial.hpp>
-#include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/flux.hpp>
+#include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
@@ -75,6 +75,7 @@
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/linarr/syntactic_dependency_structure.hpp>
 
+#include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 
@@ -443,11 +444,12 @@ const noexcept
 template<class TREE_TYPE, class OUT_STREAM>
 void treebank_processor::output_syndepstruct_type_values(
 	const TREE_TYPE& rT,
+	uint64_t C,
 	OUT_STREAM& out_treebank_file
 )
 const noexcept
 {
-	const auto v = linarr::syntactic_dependency_structure_class(rT);
+	const auto v = linarr::syntactic_dependency_structure_class(rT, C);
 
 	const auto output_sdst =
 	[&](const linarr::syntactic_dependency_structure& sdst) {
@@ -469,6 +471,20 @@ noexcept
 {
 	graphs::free_tree fT = rT.to_undirected();
 	const uint64_t n = fT.get_num_nodes();
+	// choose a suitable algorithm depending on the value of 'n'
+	const auto algo_C =
+	[](uint64_t N) -> linarr::algorithms_C {
+		if (N <= 8) {
+			return linarr::algorithms_C::ladder;
+		}
+		if (N == 9) {
+			return linarr::algorithms_C::dynamic_programming;
+		}
+		if (N <= 100) {
+			return linarr::algorithms_C::ladder;
+		}
+		return linarr::algorithms_C::stack_based;
+	}(rT.get_num_nodes());
 
 	if (m_id_linarrs.size() <= n) {
 		for (std::size_t i = m_id_linarrs.size(); i <= n; ++i) {
@@ -575,22 +591,6 @@ noexcept
 	// C
 
 	if (m_what_fs[C_idx]) {
-
-		// choose a suitable algorithm depending on the value of 'n'
-		const auto algo_C =
-		[](uint64_t N) -> linarr::algorithms_C {
-			if (N <= 8) {
-				return linarr::algorithms_C::ladder;
-			}
-			if (N == 9) {
-				return linarr::algorithms_C::dynamic_programming;
-			}
-			if (N <= 100) {
-				return linarr::algorithms_C::ladder;
-			}
-			return linarr::algorithms_C::stack_based;
-		}(rT.get_num_nodes());
-
 		set_prop(C_idx, to_double(linarr::num_crossings(fT, id_arr, algo_C)));
 	}
 	if (m_what_fs[C_predicted_idx]) {
@@ -607,7 +607,7 @@ noexcept
 	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, to_double(linarr::num_crossings(fT, id_arr)));
+			set_prop(C_idx, to_double(linarr::num_crossings(fT, id_arr, algo_C)));
 		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
@@ -719,8 +719,8 @@ noexcept
 	}
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		set_prop(Dmin_Unconstrained_idx,
-				 to_double(linarr::min_sum_edge_lengths(fT).first));
+		const auto Dmin = detail::Dmin_Unconstrained_YS<false>(fT);
+		set_prop(Dmin_Unconstrained_idx, to_double(Dmin));
 	}
 
 	// -----------------
@@ -854,7 +854,14 @@ noexcept
 				break;
 
 			case treebank_feature::syntactic_dependency_structure_class:
-				output_syndepstruct_type_values(rT, out_treebank_file);
+				uint64_t C;
+				if (m_what_fs[C_idx]) {
+					C = static_cast<uint64_t>(props[C_idx]);
+				}
+				else {
+					C = linarr::num_crossings(fT, id_arr, algo_C);
+				}
+				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;
 
 			case treebank_feature::__last_value:

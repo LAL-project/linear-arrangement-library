@@ -171,7 +171,7 @@ private:
 	/// Output the values for the syntactic dependency tree types
 	template<class TREE_TYPE, class OUT_STREAM>
 	void output_syndepstruct_type_values
-	(const TREE_TYPE& t, OUT_STREAM& out_lab_file)
+	(const TREE_TYPE& t, uint64_t C, OUT_STREAM& out_lab_file)
 	const noexcept;
 
 private:
