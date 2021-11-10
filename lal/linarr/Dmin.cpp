@@ -67,10 +67,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths
 noexcept
 {
 	if (a == algorithms_Dmin::Shiloach) {
-		return detail::Dmin_Unconstrained_YS(t);
+		return detail::Dmin_Unconstrained_YS<true>(t);
 	}
 
-	return detail::Dmin_Unconstrained_FC(t);
+	return detail::Dmin_Unconstrained_FC<true>(t);
 }
 
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar

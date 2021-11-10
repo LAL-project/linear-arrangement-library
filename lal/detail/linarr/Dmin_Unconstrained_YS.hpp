@@ -44,6 +44,7 @@
 #endif
 #include <vector>
 
+#include <lal/linear_arrangement.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
@@ -159,8 +160,7 @@ noexcept
 //     in the mla for the subtree).
 // end: position where to end placing the vertices (the rightmost position
 //     int the mla for the subtree).
-template<char alpha>
-inline
+template<char alpha, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
 	node root_or_anchor, position start, position end,
@@ -168,7 +168,9 @@ void calculate_mla(
 )
 noexcept
 {
-	static_assert(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
+	static_assert(
+		alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR
+	);
 
 	// Size of the tree
 	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
@@ -180,7 +182,9 @@ noexcept
 	// Base case
 	if (size_tree == 1) {
 		cost = 0;
+		if constexpr (make_arrangement) {
 		mla.assign(root_or_anchor - 1, start);
+		}
 		return;
 	}
 
@@ -232,18 +236,21 @@ noexcept
 
 	// t -t0 : t0  if t has a LEFT_ANCHOR
 	if constexpr (alpha == LEFT_ANCHOR) {
-		calculate_mla<NO_ANCHOR>
+		calculate_mla<NO_ANCHOR, make_arrangement>
 			(t, v_star, start, end - n_0, mla, c2);
 
-		calculate_mla<LEFT_ANCHOR>
+		calculate_mla<LEFT_ANCHOR, make_arrangement>
 			(t, v_0, end - n_0 + 1, end, mla, c1);
 	}
 	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
 	else {
-		calculate_mla<RIGHT_ANCHOR>
+		calculate_mla<RIGHT_ANCHOR, make_arrangement>
 			(t, v_0, start, start + n_0 - 1, mla, c1);
 
-		calculate_mla<(alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR)>
+		constexpr auto new_alpha =
+			alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR;
+
+		calculate_mla<new_alpha, make_arrangement>
 			(t, v_star, start + n_0, end, mla, c2);
 	}
 
@@ -258,7 +265,7 @@ noexcept
 
 	// Left or right anchored is not important for the cost.
 	// Note that the result returned is either 0 or 1.
-	constexpr unsigned char anchored =
+	constexpr auto anchored =
 		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
 
 	uint64_t s_0 = 0;
@@ -266,7 +273,7 @@ noexcept
 	const uint64_t p_alpha = calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
 
 	uint64_t cost_B = 0;
-	linear_arrangement mla_B(mla);
+	linear_arrangement mla_B(make_arrangement ? mla : linear_arrangement{});
 
 	if (p_alpha > 0) {
 		std::vector<edge> edges(2*p_alpha - anchored);
@@ -287,12 +294,16 @@ noexcept
 			const node r = ord[i].second;
 			const uint64_t n_i = ord[i].first;
 			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
-				calculate_mla<RIGHT_ANCHOR>(t, r, start, start + n_i - 1, mla_B, c_aux);
+				calculate_mla<RIGHT_ANCHOR, make_arrangement>
+					(t, r, start, start + n_i - 1, mla_B, c_aux);
+
 				cost_B += c_aux;
 				start += n_i;
 			}
 			else {
-				calculate_mla<LEFT_ANCHOR>(t, r, end - n_i + 1, end, mla_B, c_aux);
+				calculate_mla<LEFT_ANCHOR, make_arrangement>
+					(t, r, end - n_i + 1, end, mla_B, c_aux);
+
 				cost_B += c_aux;
 				end -= n_i;
 			}
@@ -300,7 +311,9 @@ noexcept
 
 		// t*
 		uint64_t c_aux = 0;
-		calculate_mla<NO_ANCHOR>(t, v_star, start, end, mla_B, c_aux);
+		calculate_mla<NO_ANCHOR, make_arrangement>
+			(t, v_star, start, end, mla_B, c_aux);
+
 		cost_B += c_aux;
 
 		// reconstruct t
@@ -319,8 +332,10 @@ noexcept
 	// We choose B-recursion only if it is better
 	if (p_alpha != 0) {
 		if (cost_B < cost) {
+			if constexpr (make_arrangement) {
 			//mla.swap(mla_B);
 			mla = std::move(mla_B);
+			}
 
 			cost = cost_B;
 		}
@@ -329,23 +344,33 @@ noexcept
 
 } // -- namespace dmin_shiloach
 
-std::pair<uint64_t, linear_arrangement> Dmin_Unconstrained_YS
-(const graphs::free_tree& t)
+template<bool make_arrangement>
+std::conditional_t<
+	make_arrangement,
+	std::pair<uint64_t, linear_arrangement>,
+	uint64_t
+>
+Dmin_Unconstrained_YS(const graphs::free_tree& t)
 noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	uint64_t c = 0;
-	linear_arrangement arrangement(t.get_num_nodes());
+	uint64_t Dmin = 0;
+	linear_arrangement arrangement(make_arrangement ? t.get_num_nodes() : 0);
 
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
-	dmin_Shiloach::calculate_mla<NO_ANCHOR>
-		(T, 1, 0, t.get_num_nodes() - 1, arrangement, c);
+	dmin_Shiloach::calculate_mla<NO_ANCHOR, make_arrangement>
+		(T, 1, 0, t.get_num_nodes() - 1, arrangement, Dmin);
 
-	return {c, std::move(arrangement)};
+	if constexpr (make_arrangement) {
+		return {Dmin, std::move(arrangement)};
+	}
+	else {
+		return Dmin;
+	}
 }
 
 } // -- namespace detail
