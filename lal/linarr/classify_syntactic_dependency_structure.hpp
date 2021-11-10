@@ -58,6 +58,27 @@ namespace linarr {
  * Given an undirected rooted tree and a linear arrangement of its nodes,
  * computes the class of projective structure the tree belongs to.
  *
+ * This function admits the precomputed number of edge crossings in the same
+ * linear arrangement passed as parameter to this function.
+ *
+ * @param t Input tree.
+ * @param C Number of crossings (see @ref lal::linarr::num_crossings).
+ * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @returns The class of projective structure. If the class could not
+ * be determined the method returns @ref lal::linarr::syntactic_dependency_structure::unknown.
+ */
+std::array<bool, __syntactic_dependency_structure_size>
+syntactic_dependency_structure_class
+(const graphs::rooted_tree& t, uint64_t C, const linear_arrangement& pi = {})
+noexcept;
+
+/**
+ * @brief Computes the type of syntactic dependency tree.
+ *
+ * Given an undirected rooted tree and a linear arrangement of its nodes,
+ * computes the class of projective structure the tree belongs to.
+ *
  * @param t Input tree.
  * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.

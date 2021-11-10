@@ -49,6 +49,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/C.hpp>
+#include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
@@ -64,27 +65,6 @@ namespace lal {
 namespace linarr {
 
 typedef syntactic_dependency_structure syndepstr_type;
-
-inline
-bool __is_root_covered(const graphs::rooted_tree& T, const linear_arrangement& pi)
-noexcept
-{
-	const node_t R = T.get_root();
-	for (iterators::E_iterator it(T); not it.end(); it.next()) {
-		const auto [s,t] = it.get_edge_t();
-		const bool covered =
-			(pi[s] < pi[R] and pi[R] < pi[t])
-			or
-			(pi[t] < pi[R] and pi[R] < pi[s]
-		);
-
-		// the root is covered
-		if (covered) {
-			return true;
-		}
-	}
-	return false;
-}
 
 inline void __get_yields(
 	const graphs::rooted_tree& t, const linear_arrangement& pi,
@@ -289,7 +269,11 @@ noexcept
 
 inline
 std::array<bool, __syntactic_dependency_structure_size> __get_syn_dep_tree_type
-(const graphs::rooted_tree& rT, const linear_arrangement& pi)
+(
+	const graphs::rooted_tree& rT,
+	const linear_arrangement& pi,
+	const uint64_t C
+)
 noexcept
 {
 #define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
@@ -346,13 +330,11 @@ noexcept
 		return cl;
 	}
 
-	const bool is_root_covered = __is_root_covered(rT, pi);
-
 	// the case of n == 3, C is trivially 0, and we only need to test
 	// whether the root is covered or not.
 	if (n == 3) {
 		const auto t =
-			is_root_covered ?
+			is_root_covered(rT, pi) ?
 			syndepstr_type::planar : syndepstr_type::projective;
 
 		__set_type(t);
@@ -365,12 +347,10 @@ noexcept
 	// from this point on we need an artificial vertex pointing to the
 	// root of the input tree
 
-	const uint64_t C = num_crossings(rT, pi);
-
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
 		__set_type(
-			__is_root_covered(rT, pi) ?
+			is_root_covered(rT, pi) ?
 			syndepstr_type::planar : syndepstr_type::projective
 		);
 
@@ -409,13 +389,29 @@ noexcept
 
 std::array<bool, __syntactic_dependency_structure_size>
 syntactic_dependency_structure_class
+(
+	const graphs::rooted_tree& rT,
+	const uint64_t C,
+	const linear_arrangement& pi
+)
+noexcept
+{
+#if defined DEBUG
+	assert(rT.is_rooted_tree());
+#endif
+	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi, C);
+}
+
+std::array<bool, __syntactic_dependency_structure_size>
+syntactic_dependency_structure_class
 (const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
-	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi);
+	const uint64_t C = rT.get_num_nodes() >= 4 ? num_crossings(rT, pi) : 0;
+	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi, C);
 }
 
 } // -- namespace linarr

@@ -135,6 +135,60 @@ bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
 }
 
 /**
+ * @brief Is the root of a rooted tree covered in a given arrangement?
+ *
+ * The root is covered if, for a given input arrangement \f$\pi\f$, there exists
+ * an edge of the tree \f$\{s,t\}\f$ such that \f$\pi(s) < \pi(r) < \pi(t)\f$ or
+ * \f$\pi(t) < \pi(r) < \pi(s)\f$.
+ *
+ * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
+ * is used.
+ * @param rt Input rooted tree
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the root is covered in the given arrangement.
+ * @pre The input rooted tree must be a valid rooted tree
+ * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
+ */
+inline
+bool is_root_covered
+(const graphs::rooted_tree& rt, const linear_arrangement& arr = {})
+noexcept
+{
+#if defined DEBUG
+	assert(rt.is_rooted_tree());
+#endif
+
+	if (arr.size() == 0) {
+		const node r = rt.get_root();
+		iterators::E_iterator e_it(rt);
+		while (not e_it.end()) {
+			const auto [s,t] = e_it.get_edge();
+			const bool r_covered_st = s < r and r < t;
+			const bool r_covered_ts = t < r and r < s;
+			if (r_covered_st or r_covered_ts) { return true; }
+			e_it.next();
+		}
+		return false;
+	}
+
+	const node r = rt.get_root();
+	const position pr = arr[node_t{r}];
+
+	iterators::E_iterator e_it(rt);
+	while (not e_it.end()) {
+		const auto [s,t] = e_it.get_edge_t();
+		const position ps = arr[s];
+		const position pt = arr[t];
+
+		const bool r_covered_st = ps < pr and pr < pt;
+		const bool r_covered_ts = pt < pr and pr < ps;
+		if (r_covered_st or r_covered_ts) { return true; }
+		e_it.next();
+	}
+	return false;
+}
+
+/**
  * @brief Is a given arrangement projective?
  *
  * A projective arrangement of a rooted tree is an arrangement that is planar
@@ -166,35 +220,7 @@ noexcept
 	// check for planarity
 	// this function already checks that an arrangement must be valid
 	if (not is_planar(rt, arr)) { return false; }
-
-	if (arr.size() == 0) {
-		const node r = rt.get_root();
-		iterators::E_iterator e_it(rt);
-		while (not e_it.end()) {
-			const auto [s,t] = e_it.get_edge();
-			const bool r_covered_st = s < r and r < t;
-			const bool r_covered_ts = t < r and r < s;
-			if (r_covered_st or r_covered_ts) { return false; }
-			e_it.next();
-		}
-		return true;
-	}
-
-	const node r = rt.get_root();
-	const position pr = arr[node_t{r}];
-
-	iterators::E_iterator e_it(rt);
-	while (not e_it.end()) {
-		const auto [s,t] = e_it.get_edge_t();
-		const position ps = arr[s];
-		const position pt = arr[t];
-
-		const bool r_covered_st = ps < pr and pr < pt;
-		const bool r_covered_ts = pt < pr and pr < ps;
-		if (r_covered_st or r_covered_ts) { return false; }
-		e_it.next();
-	}
-	return true;
+	return not is_root_covered(rt, arr);
 }
 
 } // -- namespace linarr
