@@ -304,25 +304,6 @@ noexcept
 	if (n == 0) { return cl; }
 
 	// -------------------------------------------------------------------------
-
-	// add an artificial vertex first
-	graphs::rooted_tree _rT(1);
-	_rT.set_root(0);
-	_rT.disjoint_union(rT);
-#if defined DEBUG
-	_rT.find_edge_orientation();
-	assert(_rT.is_rooted_tree());
-#endif
-	// update the linear arrangement
-	linear_arrangement _pi(pi.size() + 1);
-	if (_pi.size() > 0) {
-		_pi.assign(0ULL, 0ULL);
-	}
-	for (node u = 0; u < n; ++u) {
-		_pi.assign(u + 1, pi[node_t{u}] + 1);
-	}
-
-	// -------------------------------------------------------------------------
 	// classify small trees
 	if (n <= 2) {
 		__set_type(syndepstr_type::projective);
@@ -347,6 +328,27 @@ noexcept
 	// from this point on we need an artificial vertex pointing to the
 	// root of the input tree
 
+	// add an artificial vertex first
+	graphs::rooted_tree _rT(1);
+	_rT.set_root(0);
+	_rT.disjoint_union(rT);
+#if defined DEBUG
+	_rT.find_edge_orientation();
+	assert(_rT.is_rooted_tree());
+#endif
+
+	// update the linear arrangement
+	linear_arrangement _pi(pi.size() + 1);
+	if (_pi.size() > 0) {
+		_pi.assign(0ULL, 0ULL);
+	}
+	for (node u = 0; u < n; ++u) {
+		_pi.assign(u + 1, pi[node_t{u}] + 1);
+	}
+
+	// +++++++++++++++++++++++++
+	// projective structures
+
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
 		__set_type(
@@ -354,8 +356,29 @@ noexcept
 			syndepstr_type::planar : syndepstr_type::projective
 		);
 
+		// calculate the number of crossings taking into account
+		// the edge from the artificial root to the root of the
+		// original tree
+		uint64_t _C = C;
+		{
+		const node only_child = _rT.get_out_neighbours(0)[0];
+		const position poc = _pi[node_t{only_child}];
+
+		iterators::E_iterator eit(_rT);
+		while (not eit.end()) {
+			const auto [u,v] = eit.yield_edge_t();
+			const position pu = _pi[u];
+			const position pv = _pi[v];
+			if (pu < pv) {
+				_C += 0 < pu and pu < poc and poc < pv;
+			}
+			else {
+				_C += 0 < pv and pv < poc and poc < pu;
+			}
+		}
+		}
+
 		// remove 1-ec from the types when needed
-		const uint64_t _C = num_crossings(_rT, _pi);
 		if (_C > 0 and not __is_1EC(_rT, _pi)) {
 			nullify(EC1);
 		}
