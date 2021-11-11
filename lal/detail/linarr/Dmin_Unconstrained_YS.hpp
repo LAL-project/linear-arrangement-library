@@ -67,7 +67,6 @@ namespace detail {
 namespace dmin_Shiloach {
 
 template<char anchored>
-inline
 uint64_t calculate_p_alpha(
 	const uint64_t n, const ordering& ord,
 	uint64_t& s_0, uint64_t& s_1
@@ -76,9 +75,7 @@ noexcept
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
-#if defined DEBUG
-	assert(anchored == NO_ANCHOR or anchored == ANCHOR);
-#endif
+	static_assert(anchored == NO_ANCHOR or anchored == ANCHOR);
 
 	// number of subtrees
 	const uint64_t k = ord.size() - 1;
@@ -168,9 +165,8 @@ void calculate_mla(
 )
 noexcept
 {
-	static_assert(
-		alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR
-	);
+	static_assert
+	(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
 	// Size of the tree
 	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
