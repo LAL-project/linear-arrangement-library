@@ -148,7 +148,9 @@ public:
 
 		m_cur_pair = make_current_pair();
 #if defined DEBUG
-		assert(not share_nodes(m_cur_pair));
+		assert(not share_nodes(
+				   m_cur_pair.first.first, m_cur_pair.first.second,
+				   m_cur_pair.second.first, m_cur_pair.second.second));
 #endif
 
 		// find the next edge
@@ -218,7 +220,9 @@ private:
 		}
 
 #if defined DEBUG
-		assert(not share_nodes(new_cur1, new_cur2));
+		assert(not share_nodes_pointer(
+				   new_cur1.first, new_cur1.second,
+				   new_cur2.first, new_cur2.second));
 #endif
 
 		// since a pair was found, store it in current
@@ -277,7 +281,7 @@ private:
 	 * @param pv Pointer to the second node of the second edge.
 	 * @returns Whether or not the edges share nodes.
 	 */
-	bool share_nodes(
+	bool share_nodes_pointer(
 		const node s, const std::size_t pt,
 		const node u, const std::size_t pv
 	)
@@ -292,8 +296,20 @@ private:
 			t = m_G.get_neighbours(s)[pt];
 			v = m_G.get_neighbours(u)[pv];
 		}
-		return s == u or s == v or t == u or t == v;
+		return share_nodes(s,t, u,v);
 	}
+
+	/**
+	 * @brief Returns whether two edges share vertices or not.
+	 * @param s First node of the first edge.
+	 * @param t Second node of the first edge.
+	 * @param u First node of the second edge.
+	 * @param v Second node of the second edge.
+	 * @returns Whether or not the edges share nodes.
+	 */
+	bool share_nodes(const node s, const node t, const node u, const node v)
+	const noexcept
+	{ return s == u or s == v or t == u or t == v; }
 
 	/// Find the next pair in a directed graph.
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
@@ -320,7 +336,7 @@ private:
 			return find_next_pair(s, pt, u + 1, 0);
 		}
 
-		if (share_nodes(s,pt, u,pv)) {
+		if (share_nodes_pointer(s,pt, u,pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
@@ -358,7 +374,7 @@ private:
 		}
 
 		const auto& Nu = m_G.get_neighbours(u);
-		if (u > Nu[pv] or share_nodes(s,pt, u,pv)) {
+		if (u > Nu[pv] or share_nodes_pointer(s,pt, u,pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
