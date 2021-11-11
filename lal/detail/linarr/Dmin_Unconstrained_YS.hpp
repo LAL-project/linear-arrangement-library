@@ -223,7 +223,7 @@ noexcept
 			ord.begin(), ord.end(), M, ord.size(),
 			[](const size_node& p) { return p.first; }
 		);
-		}
+	}
 
 	const node v_0 = ord[0].second;		// Root of biggest subtree
 	const uint64_t n_0 = ord[0].first;	// Size of biggest subtree
@@ -270,10 +270,11 @@ noexcept
 
 	uint64_t s_0 = 0;
 	uint64_t s_1 = 0;
-	const uint64_t p_alpha = calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
+	const uint64_t p_alpha =
+		calculate_p_alpha<anchored>(size_tree, ord, s_0, s_1);
 
 	uint64_t cost_B = 0;
-	linear_arrangement mla_B(make_arrangement ? mla : linear_arrangement{});
+	linear_arrangement mla_B(make_arrangement ? mla : 0);
 
 	if (p_alpha > 0) {
 		std::vector<edge> edges(2*p_alpha - anchored);

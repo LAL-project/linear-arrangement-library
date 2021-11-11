@@ -19,6 +19,10 @@ QMAKE_CXXFLAGS_DEBUG += -O3 -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 
+# uncomment when doing actual profiling
+#QMAKE_CXXFLAGS_RELEASE += -pg
+#QMAKE_LFLAGS += -pg
+
 # libraries
 LIBS += -lgmp -fopenmp -lpthread
 
@@ -36,10 +40,6 @@ equals(ENVIR, "CLUSTER") {
 	QMAKE_CXX = /home/soft/gcc-11.2.0/bin/g++
 	QMAKE_LINK = /home/soft/gcc-11.2.0/bin/g++
 }
-
-# uncomment when doing actual profiling
-#QMAKE_CXXFLAGS_RELEASE += -pg
-#QMAKE_LFLAGS += -pg
 
 QMAKE_CXXFLAGS +=			\
 	-Wall					\

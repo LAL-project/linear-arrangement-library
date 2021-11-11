@@ -150,33 +150,33 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 
 template<class G, typename result>
 result __get_approximate_C_2_rational
-(const G& g, const linear_arrangement& pi) noexcept
+(const G& g, const linear_arrangement& pi)
+noexcept
 {
 	result Ec2(0);
 	const uint64_t n = g.get_num_nodes();
+	const int64_t nn = to_int64(n);
 
-	for (iterators::Q_iterator<G> q(g); not q.end(); q.next()) {
+	iterators::Q_iterator<G> q(g);
+	while (not q.end()) {
 		const auto [st, uv] = q.get_edge_pair_t();
+		q.next();
+
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 
-		const uint64_t len_st = my_abs_diff(pi[s], pi[t]);
-		const uint64_t len_uv = my_abs_diff(pi[u], pi[v]);
+		const int64_t len_st = to_int64(my_abs_diff(pi[s], pi[t]));
+		const int64_t len_uv = to_int64(my_abs_diff(pi[u], pi[v]));
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
-			std::make_pair(
-				alpha(to_int64(n), to_int64(len_st), to_int64(len_uv)),
-				beta(to_int64(n), to_int64(len_st), to_int64(len_uv))
-			) :
-			std::make_pair(
-				alpha(to_int64(n), to_int64(len_uv), to_int64(len_st)),
-				beta(to_int64(n), to_int64(len_uv), to_int64(len_st))
-			)
+			std::make_pair(alpha(nn, len_st, len_uv), beta(nn, len_st, len_uv))
+			:
+			std::make_pair(alpha(nn, len_uv, len_st), beta(nn, len_uv, len_st))
 		);
 
 		if constexpr (std::is_same_v<result, numeric::rational>) {
-			Ec2 += numeric::rational(to_int64(al), be);
+			Ec2 += numeric::rational(al, be);
 		}
 		else {
 			Ec2 += to_double(al)/to_double(be);
