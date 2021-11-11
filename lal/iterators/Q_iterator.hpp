@@ -46,6 +46,7 @@
 #include <cassert>
 #endif
 #include <type_traits>
+#include <limits>
 #include <tuple>
 
 // lal includes
@@ -111,7 +112,7 @@ public:
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	Q_iterator(const GRAPH& g) noexcept : m_G(g) {
+	Q_iterator(const GRAPH& g) noexcept : m_G(g), m_n(m_G.get_num_nodes()) {
 		reset();
 	}
 
@@ -174,6 +175,8 @@ private:
 
 	/// Graph we are iterating on
 	const GRAPH& m_G;
+	/// Number of vertices
+	const uint64_t m_n;
 
 	/// Current pointers to the first edge.
 	E_pointer m_cur1 = E_pointer(0,0);
@@ -197,14 +200,16 @@ private:
 			return;
 		}
 
-		m_cur1 = E_pointer(0, 0);
-		m_cur2 = E_pointer(1, static_cast<std::size_t>(-1));
+		m_cur1.first = m_cur1.second = 0;
+		m_cur2.first = 1;
+		m_cur2.second = std::numeric_limits<std::size_t>::max();
 
 		const auto [found, new_cur1, new_cur2] =
 			find_next_pair(
 				m_cur1.first, m_cur1.second,
 				m_cur2.first, m_cur2.second + 1
 			);
+
 		if (not found) {
 			// if we can't find the next pair, then there is no next...
 			m_exists_next = false;
@@ -247,47 +252,47 @@ private:
 	 */
 	edge_pair make_current_pair() const noexcept {
 		node s,t,u,v;
+		s = m_cur1.first;
+		u = m_cur2.first;
 		if constexpr (is_directed) {
-			s = m_cur1.first;
 			t = m_G.get_out_neighbours(s)[m_cur1.second];
-			u = m_cur2.first;
 			v = m_G.get_out_neighbours(u)[m_cur2.second];
 		}
 		else {
-			s = m_cur1.first;
 			t = m_G.get_neighbours(s)[m_cur1.second];
-			u = m_cur2.first;
 			v = m_G.get_neighbours(u)[m_cur2.second];
 		}
-		return edge_pair(edge(s,t), edge(u,v));
+		return {{s,t}, {u,v}};
 	}
 
-	/// Returns whether the edges share vertices or not.
-	static bool share_nodes(const edge_pair& st_uv) noexcept {
-		const auto [s,t] = st_uv.first;
-		const auto [u,v] = st_uv.second;
-		return s == u or s == v or t == u or t == v;
-	}
-
-	/// Returns whether the edges share vertices or not.
-	inline
-	bool share_nodes(const E_pointer& p1, const E_pointer& p2)
+	/**
+	 * @brief Returns whether two edges share vertices or not.
+	 *
+	 * The edges are determined in the following manner. The first edge is
+	 * determined by node @e s, and the node pointed by @e pt. The second edge
+	 * is determined by node @e u, and the node pointed by @e pv.
+	 * @param s First node of the first edge.
+	 * @param pt Pointer to the second node of the first edge.
+	 * @param u First node of the second edge.
+	 * @param pv Pointer to the second node of the second edge.
+	 * @returns Whether or not the edges share nodes.
+	 */
+	bool share_nodes(
+		const node s, const std::size_t pt,
+		const node u, const std::size_t pv
+	)
 	const noexcept
 	{
-		node s, t, u, v;
+		node t, v;
 		if constexpr (is_directed) {
-			s = p1.first;
-			t = m_G.get_out_neighbours(s)[p1.second];
-			u = p2.first;
-			v = m_G.get_out_neighbours(u)[p2.second];
+			t = m_G.get_out_neighbours(s)[pt];
+			v = m_G.get_out_neighbours(u)[pv];
 		}
 		else {
-			s = p1.first;
-			t = m_G.get_neighbours(s)[p1.second];
-			u = p2.first;
-			v = m_G.get_neighbours(u)[p2.second];
+			t = m_G.get_neighbours(s)[pt];
+			v = m_G.get_neighbours(u)[pv];
 		}
-		return share_nodes(edge_pair(edge(s,t),edge(u,v)));
+		return s == u or s == v or t == u or t == v;
 	}
 
 	/// Find the next pair in a directed graph.
@@ -296,19 +301,17 @@ private:
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
-		const uint64_t n = m_G.get_num_nodes();
-
 		// base case 1: consumed all pairs
-		if (s == n) {
-			return make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
+		if (s == m_n) {
+			return {false, {s,pt}, {u,pv}};
 		}
 		// base case 2: consumed neighbours of 's'
 		if (pt >= m_G.get_out_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
 		// base case 3: consumed second pointer
-		if (u == n) {
-			// advance the first pointer
+		if (u == m_n) {
+			// advance the first^ pointer
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
 		// base case 4: consumed neighbours of 'u'
@@ -317,11 +320,11 @@ private:
 			return find_next_pair(s, pt, u + 1, 0);
 		}
 
-		if (share_nodes(E_pointer(s,pt), E_pointer(u,pv))) {
+		if (share_nodes(s,pt, u,pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
-		return make_tuple(true, E_pointer(s,pt), E_pointer(u,pv));
+		return {true, {s,pt}, {u,pv}};
 	}
 
 	/// Find the next pair in an undirected graph.
@@ -330,19 +333,16 @@ private:
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
 	{
-		// FOR GOD'S SAKE! DO NOT USE 'STATIC'!!!
-		const uint64_t n = m_G.get_num_nodes();
-
 		// base case 1: consumed all pairs
-		if (s == n) {
-			return std::make_tuple(false, E_pointer(s,pt), E_pointer(u,pv));
+		if (s == m_n) {
+			return {false, {s,pt}, {u,pv}};
 		}
 		// base case 2: consumed neighbours of 's'
 		if (pt >= m_G.get_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
 		// base case 3: consumed second pointer
-		if (u == n) {
+		if (u == m_n) {
 			// advance the first pointer
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
@@ -352,17 +352,17 @@ private:
 			return find_next_pair(s, pt, u + 1, 0);
 		}
 
-		auto Ns = m_G.get_neighbours(s);
+		const auto& Ns = m_G.get_neighbours(s);
 		if (s > Ns[pt]) {
 			return find_next_pair(s, pt+1, u, 0);
 		}
 
-		auto Nu = m_G.get_neighbours(u);
-		if (u > Nu[pv] or share_nodes(E_pointer(s,pt), E_pointer(u,pv))) {
+		const auto& Nu = m_G.get_neighbours(u);
+		if (u > Nu[pv] or share_nodes(s,pt, u,pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
-		return make_tuple(true, E_pointer(s,pt), E_pointer(u,pv));
+		return {true, {s,pt}, {u,pv}};
 	}
 
 };
