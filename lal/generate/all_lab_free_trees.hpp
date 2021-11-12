@@ -172,7 +172,36 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialised.
 	 */
-	void next() noexcept;
+	void next() noexcept {
+		if (not has_next() or m_reached_end) {
+			m_reached_end = true;
+			return;
+		}
+
+		if (m_n <= 2) {
+			// there is only one tree we can make
+			m_sm[0] = true;
+			return;
+		}
+
+		while (m_it > 0 and m_Prufer_seq[m_it] == m_n - 1) {
+			--m_it;
+		}
+		++m_Prufer_seq[m_it];
+
+		m_sm[m_it] =
+		(m_Prufer_seq[m_it] == m_n - 1 ?
+			(m_it == 0) or (m_sm[m_it - 1] and m_Prufer_seq[m_it - 1] == m_n - 1)
+			:
+			m_sm[m_it]
+		);
+
+		++m_it;
+		if (m_it < m_Prufer_seq.size()) {
+			std::fill(m_Prufer_seq.begin() + m_it, m_Prufer_seq.end(), 0);
+		}
+		m_it = m_n - 3;
+	}
 
 	/// Sets the generator to its initial state.
 	void reset() noexcept {
@@ -197,7 +226,25 @@ protected:
 	graphs::free_tree __get_tree() noexcept;
 
 	/// Sets the generator to its initial state.
-	void __reset() noexcept;
+	void __reset() noexcept {
+		m_reached_end = false;
+
+		if (m_n <= 2) {
+			m_sm[0] = false;
+			// there is only one tree we can make
+			return;
+		}
+
+		m_it = 0;
+		m_sm.fill(false);
+		m_Prufer_seq.fill(0);
+		// place 'it' at the end of the sequence
+		m_it = m_n - 3;
+		// make sure that the first call to next()
+		// produces the sequence 0 0 ... 0
+		m_Prufer_seq[m_it] = static_cast<uint64_t>(-1);
+		m_L = m_n - 2;
+	}
 
 	/// Returns whether there are more trees to generate.
 	bool has_next() const noexcept {
