@@ -65,7 +65,6 @@ namespace detail {
  * @returns The value function @e F returns.
  */
 template<typename result_t, typename graph_t, typename ... Params>
-inline
 result_t call_with_empty_arrangement(
 	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
 	const graph_t& g, const linear_arrangement& arr, Params... P
