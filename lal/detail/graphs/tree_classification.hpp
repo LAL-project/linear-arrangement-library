@@ -67,6 +67,9 @@ inline
 void classify_tree(const T& t, std::array<bool, graphs::__tree_type_size>& array)
 noexcept
 {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
 	// -------------------------------------------------------------------------
 	// utilities
 
