@@ -291,7 +291,14 @@ public:
 	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept
+	{
+		directed_graph::remove_edge(s,t, norm, check_norm);
+		m_valid_orientation = false;
+		m_are_size_subtrees_valid = false;
+		m_is_tree_type_valid = false;
+		return *this;
+	}
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -318,7 +325,14 @@ public:
 	 */
 	rooted_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
-	noexcept;
+	noexcept
+	{
+		directed_graph::remove_edges(edges, norm, check_norm);
+		m_valid_orientation = false;
+		m_are_size_subtrees_valid = false;
+		m_is_tree_type_valid = false;
+		return *this;
+	}
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.
@@ -348,8 +362,8 @@ public:
 	 *
 	 * Append a rooted tree to this tree. All the nodes in @e t are relabelled
 	 * starting at @e n, the number of nodes of the current tree. If the
-	 * current graph has no vertices, then the contents of @e t are simply
-	 * copied into this graph.
+	 * current graph has no vertices, then the whole input tree (and its state)
+	 * is simply copied into this tree.
 	 *
 	 * @param t Input tree.
 	 * @param connect_roots The root of the current tree and the root of
@@ -367,6 +381,7 @@ public:
 	 * returns false then it will still return false after this operation.
 	 * @post The graph resulting from the union is normalised only if the
 	 * two graphs were normalised prior to the union.
+	 * @post The type of tree is invalidated.
 	 */
 	void disjoint_union(const rooted_tree& t, bool connect_roots = true)
 	noexcept;
@@ -420,7 +435,7 @@ public:
 	 * parameter @e t (otherwise, some edges might not be reachable from
 	 * the root and hence completely undirectable).
 	 * @param t Undirected tree.
-	 * @param r Root of the directed tree. A node of @e g.
+	 * @param r Root of the rooted tree. A node of @e g.
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
 	 */

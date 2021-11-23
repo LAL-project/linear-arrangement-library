@@ -221,8 +221,54 @@ public:
 	 * @pre There are no repeated edges in the list.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
+	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	free_tree& set_edges
+	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	noexcept;
+
+	/**
+	 * @brief Remove an edge from this graph.
+	 *
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
+	 * called after the edge has been removed.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre The edge must exist.
+	 * @post If @e norm is true the tree is guaranteed to be normalised
+	 * after the addition of the edge.
+	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
+	 */
+	free_tree& remove_edge
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+
+	/**
+	 * @brief Remove an edge from this graph.
+	 *
+	 * This operation is faster than removing edges one by one with
+	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
+	 * bulk.
+	 *
+	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
+	 * called after each edge has been removed.
+	 * @param edges The edges to be deleted.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre All the edges in @e edges must meet the precondition of method
+	 * @ref add_edge(node,node,bool,bool).
+	 * @post If @e norm is true the tree is guaranteed to be normalised
+	 * after the addition of the edge.
+	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
+	 */
+	free_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
 	noexcept;
 
@@ -242,8 +288,9 @@ public:
 	 * the result is normalised or not? This might be useful in case the
 	 * resulting graph is normalised. If @e norm is true then @e check_norm
 	 * is ignored.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the tree is guaranteed to be normalised
 	 * after the addition of the edge.
+	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	virtual free_tree& remove_edges_incident_to
 	(node u, bool norm = true, bool check_norm = true)
@@ -252,13 +299,19 @@ public:
 	/**
 	 * @brief Disjoint union of trees.
 	 *
-	 * Given a free tree, append it to the current tree.
+	 * Given a free tree, append it to the current tree. If the current is empty
+	 * (i.e., size 0), then the new tree is simply copied into the new one.
 	 *
-	 * All the nodes in @e t are relabelled starting at @e n,
-	 * the number of nodes of the current tree.
+	 * If the current tree is not empty, all the new nodes in @e t (appended to
+	 * the current tree) are relabelled starting at @e n, the number of nodes of
+	 * the current tree.
+	 *
 	 * @param t Input tree.
-	 * @post The current tree is not an actual tree, i.e., method
-	 * @ref is_tree() returns false since the resulting tree lacks an edge.
+	 * @post If the current tree is empty, the whole state of the new tree is
+	 * copied into the new one.
+	 * @post If the current tree is not empty, then the resulting graph is not
+	 * a tree since it lacks an edge. Then method @ref is_tree() returns false.
+	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	void disjoint_union(const free_tree& t) noexcept;
 

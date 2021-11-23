@@ -86,6 +86,14 @@ free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) noexc
 	assert(can_add_edge(u,v));
 #endif
 	undirected_graph::add_edge(u,v, norm, check_norm);
+
+	// There is no need to invalidate
+	//    m_is_tree_type_valid = false;
+	// since these attributes start at false and cannot be calculated if the
+	// graph is not an actual tree. These can be calculated when the graph is
+	// full. After that, this method can only be called after calling any
+	// of the "remove edge" family.
+
 	return *this;
 }
 
@@ -94,6 +102,14 @@ free_tree& free_tree::add_edge_bulk(node u, node v) noexcept {
 	assert(can_add_edge(u,v));
 #endif
 	undirected_graph::add_edge_bulk(u,v);
+
+	// There is no need to invalidate
+	//    m_is_tree_type_valid = false;
+	// since these attributes start at false and cannot be calculated if the
+	// graph is not an actual tree. These can be calculated when the graph is
+	// full. After that, this method can only be called after calling any
+	// of the "remove edge" family.
+
 	return *this;
 }
 
@@ -103,6 +119,13 @@ void free_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #endif
 	undirected_graph::finish_bulk_add(norm, check);
 	fill_union_find();
+
+	// There is no need to invalidate
+	//    m_is_tree_type_valid = false;
+	// since these attributes start at false and cannot be calculated if the
+	// graph is not an actual tree. These can be calculated when the graph is
+	// full. After that, this method can only be called after calling any
+	// of the "remove edge" family.
 }
 
 free_tree& free_tree::add_edges
@@ -112,6 +135,14 @@ free_tree& free_tree::add_edges
 	assert(can_add_edges(edges));
 #endif
 	undirected_graph::add_edges(edges, norm, check_norm);
+
+	// There is no need to invalidate
+	//    m_is_tree_type_valid = false;
+	// since these attributes start at false and cannot be calculated if the
+	// graph is not an actual tree. These can be calculated when the graph is
+	// full. After that, this method can only be called after calling any
+	// of the "remove edge" family.
+
 	return *this;
 }
 
@@ -127,12 +158,47 @@ free_tree& free_tree::set_edges
 	return *this;
 }
 
+free_tree& free_tree::remove_edge
+(node s, node t, bool norm, bool check_norm) noexcept
+{
+	undirected_graph::remove_edge(s, t, norm, check_norm);
+	m_is_tree_type_valid =false;
+	return *this;
+}
+
+free_tree& free_tree::remove_edges
+(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
+{
+	undirected_graph::remove_edges(edges, norm, check_norm);
+	m_is_tree_type_valid =false;
+	return *this;
+}
+
+free_tree& free_tree::remove_edges_incident_to
+(node u, bool norm, bool check_norm)
+noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	m_is_tree_type_valid = false;
+
+	detail::UnionFind_update_roots_before_remove_all_incident_to
+		(*this, u, &m_root_of[0], &m_root_size[0]);
+
+	undirected_graph::remove_edges_incident_to(u, norm, check_norm);
+	return *this;
+}
+
 void free_tree::disjoint_union(const free_tree& t) noexcept {
 	const node prev_n = get_num_nodes();
 	if (prev_n == 0) {
 		*this = t;
 		return;
 	}
+
+	m_is_tree_type_valid = false;
 
 	// tree 't' and tree 'this' do not have cycles, so the disjoint
 	// union of both trees does not have cycles. However, the resulting
@@ -148,22 +214,6 @@ void free_tree::disjoint_union(const free_tree& t) noexcept {
 	for (node u = prev_n; u < get_num_nodes(); ++u) {
 		m_root_of[u] += prev_n;
 	}
-}
-
-free_tree& free_tree::remove_edges_incident_to
-(node u, bool norm, bool check_norm)
-noexcept
-{
-#if defined DEBUG
-	assert(has_node(u));
-#endif
-
-	detail::UnionFind_update_roots_before_remove_all_incident_to(
-		*this, u, &m_root_of[0], &m_root_size[0]
-	);
-
-	undirected_graph::remove_edges_incident_to(u, norm, check_norm);
-	return *this;
 }
 
 void free_tree::calculate_tree_type() noexcept {

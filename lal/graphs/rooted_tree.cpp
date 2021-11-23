@@ -72,6 +72,7 @@ rooted_tree& rooted_tree::add_edge
 	// There is no need to invalidate
 	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
+	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
 	// graph is not an actual tree. These can be calculated when the graph is
 	// full. After that, this method can only be called after calling any
@@ -89,6 +90,7 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 	// There is no need to invalidate
 	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
+	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
 	// graph is not an actual tree. These can be calculated when the graph is
 	// full. After that, this method can only be called after calling any
@@ -107,6 +109,7 @@ void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
 	// There is no need to invalidate
 	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
+	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
 	// graph is not an actual tree. These can be calculated when the graph is
 	// full. After that, this method can only be called after calling any
@@ -124,6 +127,7 @@ rooted_tree& rooted_tree::add_edges
 	// There is no need to invalidate
 	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
+	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
 	// graph is not an actual tree. These can be calculated when the graph is
 	// full. After that, this method can only be called after calling any
@@ -140,13 +144,6 @@ rooted_tree& rooted_tree::set_edges
 	assert(can_add_edges(edges));
 #endif
 	directed_graph::set_edges(edges, to_norm, check_norm);
-
-	// There is no need to invalidate
-	//    m_are_size_subtrees_valid = false;
-	// since these attributes start at false and cannot be calculated if the
-	// graph is not an actual tree. These can be calculated when the graph is
-	// full. After that, this method can only be called after calling any
-	// of the "remove edge" family.
 
 	// find the tree's root
 	std::optional<node> R;
@@ -167,24 +164,11 @@ rooted_tree& rooted_tree::set_edges
 #endif
 
 	tree_only_extra_work_edges_set();
-	return *this;
-}
-
-rooted_tree& rooted_tree::remove_edge
-(node u, node v, bool norm, bool check_norm) noexcept
-{
-	directed_graph::remove_edge(u,v, norm, check_norm);
-	m_valid_orientation = false;
+	// have been set:
+	//    m_valid_orientation
+	//    m_is_tree_type_valid
 	m_are_size_subtrees_valid = false;
-	return *this;
-}
 
-rooted_tree& rooted_tree::remove_edges
-(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
-{
-	directed_graph::remove_edges(edges, norm, check_norm);
-	m_valid_orientation = false;
-	m_are_size_subtrees_valid = false;
 	return *this;
 }
 
@@ -195,6 +179,10 @@ noexcept
 #if defined DEBUG
 	assert(has_node(u));
 #endif
+
+	m_valid_orientation = false;
+	m_are_size_subtrees_valid = false;
+	m_is_tree_type_valid = false;
 
 	detail::UnionFind_update_roots_before_remove_all_incident_to(
 		*this, u, &m_root_of[0], &m_root_size[0]
@@ -251,10 +239,14 @@ void rooted_tree::disjoint_union
 		add_edge(this_r, t_r);
 	}
 	else {
-		// if roots are not connected then
-		// the sizes need to be recalculated
+		// if roots are not connected then the sizes need to be recalculated
 		m_are_size_subtrees_valid = false;
 	}
+
+	// the type of tree always needs to be recalculated
+	m_is_tree_type_valid = false;
+
+#undef append
 }
 
 bool rooted_tree::find_edge_orientation() noexcept {
@@ -329,6 +321,12 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	rooted_tree::_init(n);
 	// fill rooted tree
 	rooted_tree::set_edges(dir_edges);
+
+	// the set_edges function sets the attributes
+	//    m_is_tree_typ_valid
+	//    m_are_size_subtrees_valid
+	//    m_valid_orientation
+	// appropriately.
 }
 
 void rooted_tree::calculate_size_subtrees() noexcept {
@@ -383,7 +381,6 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 	// make subtree
 	rooted_tree sub(n_verts);
 	sub.set_root(0);
-	sub.m_valid_orientation = true;
 	sub.set_edges(es);
 
 	// if the subtree sizes are valid then copy them

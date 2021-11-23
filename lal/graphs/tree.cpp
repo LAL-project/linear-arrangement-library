@@ -98,9 +98,8 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
 
-		call_union_find_after_add(
-			u, v, &_root_of[0], &_root_size[0]
-		);
+		call_union_find_after_add
+			(u, v, &_root_of[0], &_root_size[0]);
 	}
 	return true;
 }
@@ -110,9 +109,8 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 	l.reserve(__tree_type_size);
 	for (std::size_t i = 0; i < __tree_type_size; ++i) {
 		if (m_tree_type[i]) {
-			l.push_back(std::string(
-				detail::tree_type_string(static_cast<tree_type>(i))
-			));
+			l.emplace_back
+			(detail::tree_type_string(static_cast<tree_type>(i)));
 		}
 	}
 	return l;
@@ -123,9 +121,8 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 void tree::extra_work_per_edge_add(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	graph::extra_work_per_edge_add(u, v);
-	call_union_find_after_add(
-		u, v, &m_root_of[0], &m_root_size[0]
-	);
+	call_union_find_after_add
+		(u, v, &m_root_of[0], &m_root_size[0]);
 }
 
 void tree::tree_only_extra_work_edges_set() noexcept {
@@ -136,9 +133,8 @@ void tree::tree_only_extra_work_edges_set() noexcept {
 void tree::extra_work_per_edge_remove(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	graph::extra_work_per_edge_remove(u, v);
-	call_union_find_after_remove(
-		u, v, &m_root_of[0], &m_root_size[0]
-	);
+	call_union_find_after_remove
+		(u, v, &m_root_of[0], &m_root_size[0]);
 }
 
 } // -- namespace graphs

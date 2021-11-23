@@ -303,11 +303,26 @@ protected:
 		t.m_is_tree_type_valid = false;
 	}
 
+	/**
+	 * @brief Makes some extra work after the addition of an edge.
+	 * @param u First node of the edge.
+	 * @param v Second node of the edge.
+	 * @post The tree type is invalidated.
+	 */
 	void extra_work_per_edge_add(node u, node v) noexcept;
+	/**
+	 * @brief Makes some extra work after the removal of an edge.
+	 * @param u First node of the edge.
+	 * @param v Second node of the edge.
+	 * @post The tree type is invalidated.
+	 */
 	void extra_work_per_edge_remove(node u, node v) noexcept;
 
-	/// Updates the data structures of a tree after the graph structure
-	/// has had its set of edges set.
+	/**
+	 * @brief Updates the data structures of a tree after the graph structure
+	 * has had its set of edges set.
+	 * @post The tree type is invalidated.
+	 */
 	void tree_only_extra_work_edges_set() noexcept;
 
 	/// Fills the Union-Find data structure assuming that the graph
@@ -325,7 +340,7 @@ protected:
 	 * @brief A call to the union find method.
 	 *
 	 * This is a helper method to be able to call a template in the
-	 * lal::internal namespace which updates the union find data structure
+	 * lal::detail namespace which updates the union find data structure
 	 * under addition of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
@@ -342,7 +357,7 @@ protected:
 	 * @brief A const call to the union find method.
 	 *
 	 * This is a helper method to be able to call a template in the
-	 * lal::internal namespace which updates the union find data structure
+	 * lal::detail namespace which updates the union find data structure
 	 * under addition of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
@@ -359,7 +374,7 @@ protected:
 	 * @brief A call to the union find method.
 	 *
 	 * This is a helper method to be able to call a template in the
-	 * lal::internal namespace which updates the union find data structure
+	 * lal::detail namespace which updates the union find data structure
 	 * under removal of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
@@ -376,7 +391,7 @@ protected:
 	 * @brief A const call to the union find method.
 	 *
 	 * This is a helper method to be able to call a template in the
-	 * lal::internal namespace which updates the union find data structure
+	 * lal::detail namespace which updates the union find data structure
 	 * under removal of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
