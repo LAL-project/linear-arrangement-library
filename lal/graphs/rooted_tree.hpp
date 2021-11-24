@@ -162,13 +162,32 @@ public:
 	/* MODIFIERS */
 
 	/**
+	 * @brief Remove a node from this tree.
+	 *
+	 * @param u Valid node index: \f$0 \le u < n\f$.
+	 * @param connect If connect is true then the parent of @e u is connected
+	 * to the children of @e u, if both parent and children exist.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre The node must exist.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the removal of the node.
+	 * @post If @e u is the root of this tree, then this tree no longer has a root.
+	 */
+	rooted_tree& remove_node
+	(node u, bool connect = false, bool norm = true, bool check_norm = true) noexcept;
+
+	/**
 	 * @brief Adds an edge to the tree.
 	 *
 	 * This operation checks that the edge added does not produce cycles
 	 * only in a @e debug compilation of the library. For a more controlled
 	 * addition of the edges, see @ref can_add_edge.
 	 *
-	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_add is
+	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_add_edge is
 	 * called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -215,8 +234,8 @@ public:
 	 * faster than calling @ref add_edge since the edges are added in bulk.
 	 * For a more controlled addition of the edges, see @ref can_add_edges.
 	 *
-	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_add is
-	 * called after each edge has been added.
+	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_add_edge
+	 * is called after each edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -274,8 +293,8 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
-	 * called after the edge has been removed.
+	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge
+	 * is called after the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Normalise the graph after the deletion.
@@ -291,14 +310,7 @@ public:
 	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept
-	{
-		directed_graph::remove_edge(s,t, norm, check_norm);
-		m_valid_orientation = false;
-		m_are_size_subtrees_valid = false;
-		m_is_tree_type_valid = false;
-		return *this;
-	}
+	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -307,7 +319,7 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 *
-	 * <b>For developers:</b> method @ref graph::extra_work_per_edge_remove is
+	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge is
 	 * called after each edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
@@ -325,14 +337,7 @@ public:
 	 */
 	rooted_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
-	noexcept
-	{
-		directed_graph::remove_edges(edges, norm, check_norm);
-		m_valid_orientation = false;
-		m_are_size_subtrees_valid = false;
-		m_is_tree_type_valid = false;
-		return *this;
-	}
+	noexcept;
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.
@@ -342,7 +347,7 @@ public:
 	 * in bulk.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * @ref lal::graphs::graph::actions_after_remove_edge is called after each
 	 * edge has been removed.
 	 * @param u The node whose incident vertices are to be removed.
 	 * @param norm Normalise the graph after the deletion.
@@ -683,25 +688,35 @@ protected:
 		m_size_subtrees.clear();
 	}
 
-	void call_union_find_after_add(
+	void update_union_find_after_edge_add(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
 	) noexcept;
-	void call_union_find_after_add(
+	void update_union_find_after_edge_add(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
 	) const noexcept;
-	void call_union_find_after_remove(
+
+	void update_union_find_after_edge_remove(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
 	) noexcept;
-	void call_union_find_after_remove(
+	void update_union_find_after_edge_remove(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
+	) const noexcept;
+
+	void update_union_find_before_incident_edges_removed(
+		node u,
+		uint64_t * const root_of, uint64_t * const root_size
+	) noexcept;
+	void update_union_find_before_incident_edges_removed(
+		node u,
+		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
 	/// Copies all members of this class and the parent class.
@@ -742,6 +757,7 @@ protected:
 
 private:
 	using directed_graph::disjoint_union;
+	using directed_graph::remove_node;
 };
 
 } // -- namespace graphs

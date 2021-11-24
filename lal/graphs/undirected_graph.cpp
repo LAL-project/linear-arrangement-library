@@ -61,6 +61,34 @@ namespace graphs {
 
 /* MODIFIERS */
 
+undirected_graph& undirected_graph::remove_node
+(node u, bool norm, bool check_norm) noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+	// ---------------------------------
+	// remove every edge incident to 'u'
+	remove_edges_incident_to(u, norm, check_norm);
+
+	// ---------------------------------
+	// relabel the vertices in the graph
+
+	// remove the corresponding row in the adjacency matrix
+	m_adjacency_list.erase(m_adjacency_list.begin() + u);
+
+	// now, relabel
+	const auto n = get_num_nodes();
+	for (node v = 0; v < n; ++v) {
+		for (node& w : m_adjacency_list[v]) {
+			w -= (w > u);
+		}
+	}
+
+	actions_after_remove_node(u);
+	return *this;
+}
+
 undirected_graph& undirected_graph::add_edge
 (node u, node v, bool to_norm, bool check_norm) noexcept
 {
@@ -73,7 +101,7 @@ undirected_graph& undirected_graph::add_edge
 	nu.push_back(v);
 	nv.push_back(u);
 
-	extra_work_per_edge_add(u, v);
+	actions_after_add_edge(u, v);
 
 	if (is_normalised()) {
 		// the graph was normalised
@@ -105,7 +133,7 @@ undirected_graph& undirected_graph::add_edge
 	}
 	else {
 		// the graph was not normalised.
-		normalise_after_add(to_norm, check_norm);
+		normalise_after_edge_addition(to_norm, check_norm);
 	}
 
 	return *this;
@@ -124,7 +152,7 @@ undirected_graph& undirected_graph::add_edge_bulk(node u, node v) noexcept {
 
 void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
 	// normalise
-	graph::normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::add_edges
@@ -137,10 +165,10 @@ undirected_graph& undirected_graph::add_edges
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
-		extra_work_per_edge_add(u, v);
+		actions_after_add_edge(u, v);
 	}
 
-	normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -162,7 +190,7 @@ undirected_graph& undirected_graph::set_edges
 	}
 	m_num_edges = edges.size();
 
-	graph::normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -177,7 +205,7 @@ undirected_graph& undirected_graph::remove_edge
 	neighbourhood& nv = m_adjacency_list[v];
 	remove_single_edge(u,v, nu, nv);
 
-	normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -194,7 +222,7 @@ undirected_graph& undirected_graph::remove_edges
 		remove_single_edge(u,v, nu, nv);
 	}
 
-	normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -204,6 +232,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 #if defined DEBUG
 	assert(has_node(u));
 #endif
+	actions_before_remove_edges_incident_to(u);
 
 	auto& neighs_u = m_adjacency_list[u];
 
@@ -213,7 +242,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 		for (node v : neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = lower_bound(out_v.begin(), out_v.end(), u);
+			auto it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -228,7 +257,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 		for (node v : neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = find(out_v.begin(), out_v.end(), u);
+			auto it_u = std::find(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -240,13 +269,13 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 	m_num_edges -= get_degree(u);
 	neighs_u.clear();
 
-	graph::normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
 void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 	// updates the number of edges and other base-class related attributes
-	graph::__disjoint_union(g);
+	__disjoint_union(g);
 
 	// update the adjacency list
 	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
@@ -321,7 +350,7 @@ void undirected_graph::remove_single_edge
 	in_v.erase(it_u);
 
 	// do the extra work!
-	extra_work_per_edge_remove(u, v);
+	actions_after_remove_edge(u, v);
 }
 
 } // -- namespace graphs

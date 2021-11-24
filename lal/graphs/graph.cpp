@@ -118,15 +118,18 @@ void graph::__disjoint_union(const graph& g) noexcept {
 	m_normalised = m_normalised and g.is_normalised();
 }
 
-void graph::extra_work_per_edge_add(node, node) noexcept {
+void graph::actions_after_remove_node(node) noexcept { }
+void graph::actions_before_remove_edges_incident_to(node) noexcept { }
+
+void graph::actions_after_add_edge(node, node) noexcept {
 	++m_num_edges;
 }
 
-void graph::extra_work_per_edge_remove(node, node) noexcept {
+void graph::actions_after_remove_edge(node, node) noexcept {
 	--m_num_edges;
 }
 
-void graph::normalise_after_add(bool to_norm, bool check_norm) noexcept {
+void graph::normalise_after_edge_addition(bool to_norm, bool check_norm) noexcept {
 	if (to_norm) {
 		// the graph needs to be normalised from a non-normalised state
 		normalise();
@@ -148,7 +151,7 @@ void graph::normalise_after_add(bool to_norm, bool check_norm) noexcept {
 	}
 }
 
-void graph::normalise_after_remove(bool to_norm, bool check_norm) noexcept {
+void graph::normalise_after_edge_removal(bool to_norm, bool check_norm) noexcept {
 	// if (is_normalised()) {
 	//		Removing an edge does not change normalisation
 	// }

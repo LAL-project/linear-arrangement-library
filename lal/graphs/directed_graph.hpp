@@ -123,10 +123,26 @@ public:
 	bool check_normalised() noexcept;
 
 	/**
+	 * @brief Remove a node from this graph.
+	 *
+	 * @param u Valid node index: \f$0 \le u < n\f$.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre The node must exist.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the addition of the edge.
+	 */
+	virtual directed_graph& remove_node
+	(node u, bool norm = true, bool check_norm = true) noexcept;
+
+	/**
 	 * @brief Adds a directed edge to the graph.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_add is called after the
+	 * @ref lal::graphs::graph::actions_after_add_edge is called after the
 	 * edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -166,7 +182,7 @@ public:
 	 * @ref add_edge since the edges are added in bulk.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_add is called after each
+	 * @ref lal::graphs::graph::actions_after_add_edge is called after each
 	 * edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
@@ -216,7 +232,7 @@ public:
 	 * @brief Remove an edge from this graph.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after the
+	 * @ref lal::graphs::graph::actions_after_remove_edge is called after the
 	 * edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
@@ -230,7 +246,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual directed_graph& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -240,7 +256,7 @@ public:
 	 * in bulk.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * @ref lal::graphs::graph::actions_after_remove_edge is called after each
 	 * edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
@@ -265,7 +281,7 @@ public:
 	 * in bulk.
 	 *
 	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::extra_work_per_edge_remove is called after each
+	 * @ref lal::graphs::graph::actions_after_remove_edge is called after each
 	 * edge has been removed.
 	 * @param u The node whose incident vertices are to be removed.
 	 * @param norm Normalise the graph after the deletion.

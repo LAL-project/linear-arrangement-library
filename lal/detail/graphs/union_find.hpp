@@ -59,8 +59,7 @@ namespace detail {
  * addition of the edge between the edges 'u' and 'v'.
  */
 template<typename T>
-inline
-void UnionFind_update_roots_after_add
+void update_unionfind_after_add_edge
 (
 	const T& t, const node u, const node v,
 	node * const root_of,
@@ -118,8 +117,7 @@ noexcept
  * removal of the edge between the edges 'u' and 'v'.
  */
 template<typename T>
-inline
-void UnionFind_update_roots_after_remove
+void update_unionfind_after_remove_edge
 (
 	const T& t, const node u, const node v,
 	node * const root_of,
@@ -140,25 +138,30 @@ noexcept
 
 	// Update the root of the vertices reachable from 'u'.
 	//   (also calculate the size of u's component)
-	uint64_t size_u = 0;
+	uint64_t size_cc_u = 0;
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = u; ++size_u; }
+	[&](const auto&, node w) -> void {
+		root_of[w] = u;
+		++size_cc_u;
+	}
 	);
 	bfs.start_at(u);
 	root_of[u] = u;
-	root_size[u] = size_u;
+	root_size[u] = size_cc_u;
 
 	// --- update v's info ---
 
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-	[&](const detail::BFS<T>&, node w) -> void { root_of[w] = v; }
+	[&](const detail::BFS<T>&, node w) -> void {
+		root_of[w] = v;
+	}
 	);
 	bfs.start_at(v);
 	root_of[v] = v;
-	root_size[v] = size_uv - size_u;
+	root_size[v] = size_uv - size_cc_u;
 }
 
 // -----------------------------------------------------------------------------
@@ -175,23 +178,20 @@ namespace __lal {
  * in the direction (u,v).
  */
 template<typename T>
-inline
-void UnionFind_update_roots_before_remove_all_incident_to
+void update_unionfind_before_remove_edges_incident_to
 (
-	const T& t, node u, node v,
+	BFS<T>& bfs, node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
 noexcept
 {
-	BFS<T> bfs(t);
-	bfs.set_use_rev_edges(t.is_directed());
-	// avoid going 'backwards', we need to go 'onwards'
-	bfs.set_visited(u, 1);
-
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
-	[&](const auto&, node w) -> void { root_of[w] = v; ++size_cc_v; }
+	[&](const auto&, node w) -> void {
+		root_of[w] = v;
+		++size_cc_v;
+	}
 	);
 	bfs.start_at(v);
 
@@ -205,8 +205,7 @@ noexcept
  * removal of the edges incidents to vertex 'u'.
  */
 template<typename T>
-inline
-void UnionFind_update_roots_before_remove_all_incident_to
+void update_unionfind_before_remove_edges_incident_to
 (
 	const T& t, node u,
 	node * const root_of,
@@ -214,29 +213,31 @@ void UnionFind_update_roots_before_remove_all_incident_to
 )
 noexcept
 {
+	BFS<T> bfs(t);
+	bfs.set_use_rev_edges(t.is_directed());
+	// avoid going 'backwards', we need to go 'onwards'
+	bfs.set_visited(u, 1);
+
 	if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
 		for (node v : t.get_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::UnionFind_update_roots_before_remove_all_incident_to(
-				t, u, v, root_of, root_size
-			);
+			__lal::update_unionfind_before_remove_edges_incident_to
+				(bfs, v, root_of, root_size);
 		}
 	}
 	else {
 		for (node v : t.get_in_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::UnionFind_update_roots_before_remove_all_incident_to(
-				t, u, v, root_of, root_size
-			);
+			__lal::update_unionfind_before_remove_edges_incident_to
+				(bfs, v, root_of, root_size);
 		}
 		for (node v : t.get_out_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::UnionFind_update_roots_before_remove_all_incident_to(
-				t, u, v, root_of, root_size
-			);
+			__lal::update_unionfind_before_remove_edges_incident_to
+				(bfs, v, root_of, root_size);
 		}
 	}
 

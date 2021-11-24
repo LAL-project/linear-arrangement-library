@@ -65,7 +65,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 
 	free_tree::tree_only_init(t.get_num_nodes());
 	// no need to call set_edges
-	tree_only_extra_work_edges_set();
+	tree_only_set_edges();
 }
 
 free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move(t)) {
@@ -76,12 +76,23 @@ free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move
 
 	free_tree::tree_only_init(get_num_nodes());
 	// no need to call set_edges
-	tree_only_extra_work_edges_set();
+	tree_only_set_edges();
 }
 
 /* MODIFIERS */
 
-free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) noexcept {
+free_tree& free_tree::remove_node(node u, bool norm, bool check_norm) noexcept {
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	// note: method 'actions_after_node_remove' is called by the next method
+	undirected_graph::remove_node(u, norm, check_norm);
+	return *this;
+}
+
+free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) noexcept
+{
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
@@ -117,7 +128,10 @@ void free_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
+	// note: method 'actions_after_edge_add' is called for every edge
+	// in the set 'edges' by the next method.
 	undirected_graph::finish_bulk_add(norm, check);
+
 	fill_union_find();
 
 	// There is no need to invalidate
@@ -134,6 +148,8 @@ free_tree& free_tree::add_edges
 #if defined DEBUG
 	assert(can_add_edges(edges));
 #endif
+	// note: method 'actions_after_edge_add' is called for every edge
+	// in the set 'edges' by the next method.
 	undirected_graph::add_edges(edges, norm, check_norm);
 
 	// There is no need to invalidate
@@ -154,15 +170,15 @@ free_tree& free_tree::set_edges
 	assert(can_add_edges(edges));
 #endif
 	undirected_graph::set_edges(edges, to_norm, check_norm);
-	tree_only_extra_work_edges_set();
+	tree_only_set_edges();
 	return *this;
 }
 
 free_tree& free_tree::remove_edge
 (node s, node t, bool norm, bool check_norm) noexcept
 {
+	// note: method 'actions_after_edge_remove' is called by the next method
 	undirected_graph::remove_edge(s, t, norm, check_norm);
-	m_is_tree_type_valid =false;
 	return *this;
 }
 
@@ -170,24 +186,22 @@ free_tree& free_tree::remove_edges
 (const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 	undirected_graph::remove_edges(edges, norm, check_norm);
-	m_is_tree_type_valid =false;
+	m_is_tree_type_valid = false;
 	return *this;
 }
 
-free_tree& free_tree::remove_edges_incident_to
-(node u, bool norm, bool check_norm)
+free_tree& free_tree::remove_edges_incident_to(node u, bool norm, bool check_norm)
 noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
 #endif
 
-	m_is_tree_type_valid = false;
-
-	detail::UnionFind_update_roots_before_remove_all_incident_to
-		(*this, u, &m_root_of[0], &m_root_size[0]);
-
 	undirected_graph::remove_edges_incident_to(u, norm, check_norm);
+#if defined DEBUG
+	assert(m_root_of[u] == u);
+	assert(m_root_size[u] == 1);
+#endif
 	return *this;
 }
 
@@ -232,38 +246,65 @@ head_vector free_tree::get_head_vector(node r) const noexcept {
 
 /* PROTECTED */
 
-void free_tree::call_union_find_after_add(
+// -----------------------------------------------------------------------------
+
+void free_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) noexcept
 {
-	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_add_edge
+		(*this, u, v, root_of, root_size);
 }
-void free_tree::call_union_find_after_add(
+void free_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) const noexcept
 {
-	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_add_edge
+		(*this, u, v, root_of, root_size);
 }
 
-void free_tree::call_union_find_after_remove(
+// -----------------------------------------------------------------------------
+
+void free_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) noexcept
 {
-	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_remove_edge
+		(*this, u, v, root_of, root_size);
 }
-void free_tree::call_union_find_after_remove(
+void free_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) const noexcept
 {
-	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_remove_edge
+		(*this, u, v, root_of, root_size);
+}
+
+// -----------------------------------------------------------------------------
+
+void free_tree::update_union_find_before_incident_edges_removed(
+	node u,
+	uint64_t * const root_of, uint64_t * const root_size
+) noexcept
+{
+	detail::update_unionfind_before_remove_edges_incident_to
+		(*this, u, root_of, root_size);
+}
+void free_tree::update_union_find_before_incident_edges_removed(
+	node u,
+	uint64_t * const root_of, uint64_t * const root_size
+) const noexcept
+{
+	detail::update_unionfind_before_remove_edges_incident_to
+		(*this, u, root_of, root_size);
 }
 
 } // -- namespace graphs

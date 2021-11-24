@@ -69,7 +69,8 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 
 	// * if m_root_of[s] == m_root_of[t] then either
 	//		- the edge already exists, or
-	//		- there exists a path from 's' to 't'
+	//		- there exists a path from 's' to 't' in the undirected
+	//        underlying structure
 	return m_root_of[u] != m_root_of[v];
 }
 
@@ -83,6 +84,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 		return false;
 	}
 
+	// make a copy
 	std::vector<uint64_t> _root_of = m_root_of;
 	std::vector<uint64_t> _root_size = m_root_size;
 
@@ -98,7 +100,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
 
-		call_union_find_after_add
+		update_union_find_after_edge_add
 			(u, v, &_root_of[0], &_root_size[0]);
 	}
 	return true;
@@ -118,23 +120,57 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 
 /* PROTECTED */
 
-void tree::extra_work_per_edge_add(node u, node v) noexcept {
+void tree::actions_after_remove_node(node u) noexcept {
 	m_is_tree_type_valid = false;
-	graph::extra_work_per_edge_add(u, v);
-	call_union_find_after_add
+	graph::actions_after_remove_node(u);
+
+#if defined DEBUG
+	assert(m_root_of[u] == u);
+	assert(m_root_size[u] == 1);
+#endif
+
+	// update union-find data structure
+	{
+	auto e = m_root_of.begin();
+	std::advance(e, u);
+	m_root_of.erase(e);
+	}
+	{
+	auto e = m_root_size.begin();
+	std::advance(e, u);
+	m_root_size.erase(e);
+	}
+
+	// relabel the roots when necessary
+	for (node v = 0; v < m_root_of.size(); ++v) {
+		m_root_of[v] -= (m_root_of[v] > u);
+	}
+}
+
+void tree::actions_after_add_edge(node u, node v) noexcept {
+	m_is_tree_type_valid = false;
+	graph::actions_after_add_edge(u, v);
+	update_union_find_after_edge_add
 		(u, v, &m_root_of[0], &m_root_size[0]);
 }
 
-void tree::tree_only_extra_work_edges_set() noexcept {
+void tree::actions_after_remove_edge(node u, node v) noexcept {
+	m_is_tree_type_valid = false;
+	graph::actions_after_remove_edge(u, v);
+	update_union_find_after_edge_remove
+		(u, v, &m_root_of[0], &m_root_size[0]);
+}
+
+void tree::actions_before_remove_edges_incident_to(node u) noexcept {
+	m_is_tree_type_valid = false;
+	graph::actions_before_remove_edges_incident_to(u);
+	update_union_find_before_incident_edges_removed
+		(u, &m_root_of[0], &m_root_size[0]);
+}
+
+void tree::tree_only_set_edges() noexcept {
 	m_is_tree_type_valid = false;
 	fill_union_find();
-}
-
-void tree::extra_work_per_edge_remove(node u, node v) noexcept {
-	m_is_tree_type_valid = false;
-	graph::extra_work_per_edge_remove(u, v);
-	call_union_find_after_remove
-		(u, v, &m_root_of[0], &m_root_size[0]);
 }
 
 } // -- namespace graphs

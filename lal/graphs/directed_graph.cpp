@@ -98,10 +98,37 @@ bool directed_graph::check_normalised() noexcept {
 			return false;
 		}
 	}
-	// all adjacency lists are sorted so
-	// the graph is normalised
+	// all adjacency lists are sorted so the graph is normalised
 	m_normalised = true;
 	return true;
+}
+
+directed_graph& directed_graph::remove_node
+(node u, bool norm, bool check_norm) noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+	// ---------------------------------
+	// remove every edge incident to 'u'
+	remove_edges_incident_to(u, norm, check_norm);
+
+	// ---------------------------------
+	// relabel the vertices in the graph
+
+	// remove the corresponding row in the adjacency matrix
+	m_adjacency_list.erase(m_adjacency_list.begin() + u);
+	m_in_adjacency_list.erase(m_in_adjacency_list.begin() + u);
+
+	// now, relabel
+	const auto n = get_num_nodes();
+	for (node v = 0; v < n; ++v) {
+		for (node& w : m_adjacency_list[v]) { w -= (w > u); }
+		for (node& w : m_in_adjacency_list[v]) { w -= (w > u); }
+	}
+
+	actions_after_remove_node(u);
+	return *this;
 }
 
 directed_graph& directed_graph::add_edge
@@ -116,7 +143,7 @@ directed_graph& directed_graph::add_edge
 	out_u.push_back(v);
 	in_v.push_back(u);
 
-	extra_work_per_edge_add(u, v);
+	actions_after_add_edge(u, v);
 
 	if (is_normalised()) {
 		// the graph was normalised
@@ -150,7 +177,7 @@ directed_graph& directed_graph::add_edge
 	}
 	else {
 		// the graph was not normalised.
-		graph::normalise_after_add(to_norm, check_norm);
+		normalise_after_edge_addition(to_norm, check_norm);
 	}
 
 	return *this;
@@ -169,7 +196,7 @@ directed_graph& directed_graph::add_edge_bulk(node u, node v) noexcept {
 
 void directed_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
 	// normalise
-	graph::normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 }
 
 directed_graph& directed_graph::add_edges
@@ -181,9 +208,9 @@ directed_graph& directed_graph::add_edges
 #endif
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
-		extra_work_per_edge_add(u, v);
+		actions_after_add_edge(u, v);
 	}
-	graph::normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -205,7 +232,7 @@ directed_graph& directed_graph::set_edges
 
 	m_num_edges = edges.size();
 
-	graph::normalise_after_add(to_norm, check_norm);
+	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -220,7 +247,7 @@ directed_graph& directed_graph::remove_edge
 	neighbourhood& in_v = m_in_adjacency_list[v];
 	remove_single_edge(u,v, out_u, in_v);
 
-	graph::normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -236,7 +263,7 @@ directed_graph& directed_graph::remove_edges
 		remove_single_edge(u,v, out_u, in_v);
 	}
 
-	graph::normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -247,6 +274,8 @@ directed_graph& directed_graph::remove_edges_incident_to
 	assert(has_node(u));
 #endif
 
+	actions_before_remove_edges_incident_to(u);
+
 	auto& in_neighs_u = m_in_adjacency_list[u];
 	auto& out_neighs_u = m_adjacency_list[u];
 
@@ -256,7 +285,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : in_neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = lower_bound(out_v.begin(), out_v.end(), u);
+			auto it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -268,7 +297,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : out_neighs_u) {
 			auto& in_v = m_in_adjacency_list[v];
 
-			auto it_u = lower_bound(in_v.begin(), in_v.end(), u);
+			auto it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -282,7 +311,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : in_neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = find(out_v.begin(), out_v.end(), u);
+			auto it_u = std::find(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -294,7 +323,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : out_neighs_u) {
 			auto& in_v = m_in_adjacency_list[v];
 
-			auto it_u = find(in_v.begin(), in_v.end(), u);
+			auto it_u = std::find(in_v.begin(), in_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -307,14 +336,14 @@ directed_graph& directed_graph::remove_edges_incident_to
 	out_neighs_u.clear();
 	in_neighs_u.clear();
 
-	graph::normalise_after_remove(norm, check_norm);
+	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
 void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 	// this call updates the out-neighbours adjacency list,
 	// as well as the number of edges and the graph's normalisation
-	graph::__disjoint_union(g);
+	__disjoint_union(g);
 
 	// update the neighbours adjacency list
 	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
@@ -346,13 +375,13 @@ bool directed_graph::has_edge(node u, node v) const noexcept {
 
 	if (is_normalised() and std::min(out_u.size(), in_v.size()) >= 64) {
 		return (out_u.size() <= in_v.size() ?
-			binary_search(out_u.begin(), out_u.end(), v) :
-			binary_search(in_v.begin(), in_v.end(), u)
+			std::binary_search(out_u.begin(), out_u.end(), v) :
+			std::binary_search(in_v.begin(), in_v.end(), u)
 		);
 	}
 	return (out_u.size() <= in_v.size() ?
-		find(out_u.begin(), out_u.end(), v) != out_u.end() :
-		find(in_v.begin(), in_v.end(), u) != in_v.end()
+		std::find(out_u.begin(), out_u.end(), v) != out_u.end() :
+		std::find(in_v.begin(), in_v.end(), u) != in_v.end()
 	);
 }
 
@@ -384,12 +413,12 @@ void directed_graph::remove_single_edge
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = lower_bound(in_v.begin(), in_v.end(), u);
+		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
 	}
 	else {
-		it_v = find(out_u.begin(), out_u.end(), v);
-		it_u = find(in_v.begin(), in_v.end(), u);
+		it_v = std::find(out_u.begin(), out_u.end(), v);
+		it_u = std::find(in_v.begin(), in_v.end(), u);
 	}
 
 #if defined DEBUG
@@ -403,7 +432,7 @@ void directed_graph::remove_single_edge
 	in_v.erase(it_u);
 
 	// do the extra work!
-	extra_work_per_edge_remove(u, v);
+	actions_after_remove_edge(u, v);
 }
 
 } // -- namespace graphs

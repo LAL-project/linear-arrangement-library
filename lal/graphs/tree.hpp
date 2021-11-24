@@ -164,7 +164,7 @@ public:
 	 * @returns Whether the addition of this new edge can be added
 	 * to the tree without producing cycles.
 	 */
-	bool can_add_edge(node s, node t) const noexcept;
+	virtual bool can_add_edge(node s, node t) const noexcept;
 
 	/**
 	 * @brief Can these edges be added?
@@ -175,7 +175,7 @@ public:
 	 * @returns Whether the addition of these new edges can be added
 	 * to the tree without producing cycles.
 	 */
-	bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+	virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
 	/**
 	 * @brief Amount of nodes in a connected component of the tree.
@@ -304,26 +304,51 @@ protected:
 	}
 
 	/**
-	 * @brief Makes some extra work after the addition of an edge.
-	 * @param u First node of the edge.
-	 * @param v Second node of the edge.
+	 * @brief Do some work before an node is removed.
+	 * @param u Node to be removed.
 	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
 	 */
-	void extra_work_per_edge_add(node u, node v) noexcept;
+	void actions_after_remove_node(node u) noexcept;
 	/**
-	 * @brief Makes some extra work after the removal of an edge.
+	 * @brief Do some work after the addition of an edge.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
 	 */
-	void extra_work_per_edge_remove(node u, node v) noexcept;
+	void actions_after_add_edge(node u, node v) noexcept;
+	/**
+	 * @brief Do some work after the removal of an edge.
+	 * @param u First node of the edge.
+	 * @param v Second node of the edge.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void actions_after_remove_edge(node u, node v) noexcept;
+	/**
+	 * @brief Do some work before all edges incident to a node is removed.
+	 * @param u Node whose incident edges are to be removed.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void actions_before_remove_edges_incident_to(node u) noexcept;
 
 	/**
 	 * @brief Updates the data structures of a tree after the graph structure
 	 * has had its set of edges set.
 	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
 	 */
-	void tree_only_extra_work_edges_set() noexcept;
+	void tree_only_set_edges() noexcept;
+
+	/**
+	 * @brief Removes a vertex from the union-find data structure.
+	 * @param u Node that was removed.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_remove_node(node u) noexcept;
 
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
@@ -337,7 +362,7 @@ protected:
 	}
 
 	/**
-	 * @brief A call to the union find method.
+	 * @brief Update the union find data structure after an edge addition.
 	 *
 	 * This is a helper method to be able to call a template in the
 	 * lal::detail namespace which updates the union find data structure
@@ -349,12 +374,12 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_after_add(
+	virtual void update_union_find_after_edge_add(
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) noexcept = 0;
 	/**
-	 * @brief A const call to the union find method.
+	 * @brief Update the union find data structure after an edge addition.
 	 *
 	 * This is a helper method to be able to call a template in the
 	 * lal::detail namespace which updates the union find data structure
@@ -366,12 +391,13 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_after_add(
+	virtual void update_union_find_after_edge_add(
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
+
 	/**
-	 * @brief A call to the union find method.
+	 * @brief Update the union find data structure after an edge removal.
 	 *
 	 * This is a helper method to be able to call a template in the
 	 * lal::detail namespace which updates the union find data structure
@@ -383,12 +409,12 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_after_remove(
+	virtual void update_union_find_after_edge_remove(
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) noexcept = 0;
 	/**
-	 * @brief A const call to the union find method.
+	 * @brief Update the union find data structure after an edge removal.
 	 *
 	 * This is a helper method to be able to call a template in the
 	 * lal::detail namespace which updates the union find data structure
@@ -400,8 +426,43 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void call_union_find_after_remove(
+	virtual void update_union_find_after_edge_remove(
 		node u, node v,
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
+
+	/**
+	 * @brief Update the union find data structure before the removal of all
+	 * edges incident to a node.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::detail namespace which updates the union find data structure
+	 * under removal of all incident edges to a node.
+	 * @param u Node whose incident edges are to be removed.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void update_union_find_before_incident_edges_removed(
+		node u,
+		uint64_t * const root_of, uint64_t * const root_size
+	) noexcept = 0;
+	/**
+	 * @brief Update the union find data structure before the removal of all
+	 * edges incident to a node.
+	 *
+	 * This is a helper method to be able to call a template in the
+	 * lal::detail namespace which updates the union find data structure
+	 * under removal of all incident edges to a node.
+	 * @param u Node whose incident edges are to be removed.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void update_union_find_before_incident_edges_removed(
+		node u,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
 };

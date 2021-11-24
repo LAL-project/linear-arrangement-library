@@ -61,6 +61,56 @@ namespace graphs {
 
 /* MODIFIERS */
 
+rooted_tree& rooted_tree::remove_node
+(node u, bool connect, bool norm, bool check_norm)
+noexcept
+{
+#if defined DEBUG
+	assert(has_node(u));
+#endif
+
+	// !
+	// Recall that due to the rules of construction, node u cannot have more
+	// than one parent.
+
+	if (m_has_root and m_root == u) {
+		// the root has been removed
+		m_root = get_num_nodes();
+		m_has_root = false;
+		m_are_size_subtrees_valid = false;
+	}
+
+	// the new edges, if any
+	std::vector<edge> new_edges;
+	if (connect and get_in_degree(u) == 1 and get_out_degree(u) > 0) {
+		new_edges.reserve(get_out_degree(u));
+		// parent of u exists
+		const node parent_u = get_in_neighbours(u)[0];
+		for (node v : get_out_neighbours(u)) {
+			new_edges.push_back({parent_u - (parent_u > u), v - (v > u)});
+		}
+	}
+
+	// 'action_after_node_remove' is called by the following method.
+	// Said method updates 'm_is_tree_type_valid'
+	directed_graph::remove_node(u, norm, check_norm);
+
+	// If connect is true:
+	//		The orientation of the edges does not change.
+	//		If it was valid before the removal, it stays valid.
+	//		If it wasn't, it stays invalid.
+
+	if (not connect) {
+		// the orientation is invalidated
+		m_valid_orientation = false;
+	}
+	else {
+		add_edges(new_edges, norm, check_norm);
+	}
+
+	return *this;
+}
+
 rooted_tree& rooted_tree::add_edge
 (node u, node v, bool norm, bool check_norm) noexcept
 {
@@ -163,12 +213,31 @@ rooted_tree& rooted_tree::set_edges
 	assert(is_orientation_valid());
 #endif
 
-	tree_only_extra_work_edges_set();
+	tree_only_set_edges();
 	// have been set:
 	//    m_valid_orientation
 	//    m_is_tree_type_valid
 	m_are_size_subtrees_valid = false;
 
+	return *this;
+}
+
+rooted_tree& rooted_tree::remove_edge
+(node s, node t, bool norm, bool check_norm) noexcept
+{
+	directed_graph::remove_edge(s,t, norm, check_norm);
+	m_valid_orientation = false;
+	m_are_size_subtrees_valid = false;
+	return *this;
+}
+
+rooted_tree& rooted_tree::remove_edges
+(const std::vector<edge>& edges, bool norm, bool check_norm)
+noexcept
+{
+	directed_graph::remove_edges(edges, norm, check_norm);
+	m_valid_orientation = false;
+	m_are_size_subtrees_valid = false;
 	return *this;
 }
 
@@ -182,13 +251,11 @@ noexcept
 
 	m_valid_orientation = false;
 	m_are_size_subtrees_valid = false;
-	m_is_tree_type_valid = false;
-
-	detail::UnionFind_update_roots_before_remove_all_incident_to(
-		*this, u, &m_root_of[0], &m_root_size[0]
-	);
-
 	directed_graph::remove_edges_incident_to(u, norm, check_norm);
+#if defined DEBUG
+	assert(m_root_of[u] == u);
+	assert(m_root_size[u] == 1);
+#endif
 	return *this;
 }
 
@@ -444,38 +511,65 @@ head_vector rooted_tree::get_head_vector() const noexcept {
 
 /* PROTECTED */
 
-void rooted_tree::call_union_find_after_add(
+// -----------------------------------------------------------------------------
+
+void rooted_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) noexcept
 {
-	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_add_edge
+		(*this, u, v, root_of, root_size);
 }
-void rooted_tree::call_union_find_after_add(
+void rooted_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) const noexcept
 {
-	detail::UnionFind_update_roots_after_add(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_add_edge
+		(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::call_union_find_after_remove(
+// -----------------------------------------------------------------------------
+
+void rooted_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) noexcept
 {
-	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_remove_edge
+		(*this, u, v, root_of, root_size);
 }
-void rooted_tree::call_union_find_after_remove(
+void rooted_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 ) const noexcept
 {
-	detail::UnionFind_update_roots_after_remove(*this, u, v, root_of, root_size);
+	detail::update_unionfind_after_remove_edge
+		(*this, u, v, root_of, root_size);
+}
+
+// -----------------------------------------------------------------------------
+
+void rooted_tree::update_union_find_before_incident_edges_removed(
+	node u,
+	uint64_t * const root_of, uint64_t * const root_size
+) noexcept
+{
+	detail::update_unionfind_before_remove_edges_incident_to
+		(*this, u, root_of, root_size);
+}
+void rooted_tree::update_union_find_before_incident_edges_removed(
+	node u,
+	uint64_t * const root_of, uint64_t * const root_size
+) const noexcept
+{
+	detail::update_unionfind_before_remove_edges_incident_to
+		(*this, u, root_of, root_size);
 }
 
 } // -- namespace graphs

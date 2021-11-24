@@ -279,14 +279,35 @@ protected:
 	 */
 	void __disjoint_union(const graph& g) noexcept;
 
-	/// Do some extra work after an edge has been added.
-	virtual void extra_work_per_edge_add(node u, node v) noexcept;
-	/// Do some extra work after an edge has been removed.
-	virtual void extra_work_per_edge_remove(node u, node v) noexcept;
+	/**
+	 * @brief Do some work before an node is removed.
+	 * @param u Node to be removed.
+	 */
+	virtual void actions_after_remove_node(node u) noexcept;
+
+	/**
+	 * @brief Do some work before all edges incident to a node is removed.
+	 * @param u Node whose incident edges are to be removed.
+	 */
+	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+
+	/**
+	 * @brief Do some extra work after an edge has been added.
+	 * @param u Node of the edge
+	 * @param v Node of the edge
+	 */
+	virtual void actions_after_add_edge(node u, node v) noexcept;
+	/**
+	 * @brief Do some extra work after an edge has been removed.
+	 * @param u Node of the edge
+	 * @param v Node of the edge
+	 */
+	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
 	/// Normalise the graph after one (or more) edges have been added
-	void normalise_after_add(bool norm, bool check) noexcept;
+	void normalise_after_edge_addition(bool norm, bool check) noexcept;
 	/// Normalise the graph after one (or more) edges have been removed
-	void normalise_after_remove(bool norm, bool check) noexcept;
+	void normalise_after_edge_removal(bool norm, bool check) noexcept;
 };
 
 } // -- namespace graphs
