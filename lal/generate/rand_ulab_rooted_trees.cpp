@@ -63,7 +63,6 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 	if (m_n <= 1) {
 		graphs::rooted_tree r(m_n, 0);
 		r.set_root(0);
-		r.set_valid_orientation(true);
 		return r;
 	}
 
@@ -79,7 +78,6 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 	}
 	rT.finish_bulk_add(false, false);
 	rT.set_root(0);
-	rT.set_valid_orientation(true);
 	return rT;
 }
 

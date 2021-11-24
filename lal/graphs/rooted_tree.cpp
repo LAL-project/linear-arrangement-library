@@ -95,16 +95,7 @@ noexcept
 	// Said method updates 'm_is_tree_type_valid'
 	directed_graph::remove_node(u, norm, check_norm);
 
-	// If connect is true:
-	//		The orientation of the edges does not change.
-	//		If it was valid before the removal, it stays valid.
-	//		If it wasn't, it stays invalid.
-
-	if (not connect) {
-		// the orientation is invalidated
-		m_valid_orientation = false;
-	}
-	else {
+	if (connect) {
 		add_edges(new_edges, norm, check_norm);
 	}
 
@@ -208,14 +199,9 @@ rooted_tree& rooted_tree::set_edges
 	}
 	set_root(*R);
 
-	find_edge_orientation();
-#if defined DEBUG
-	assert(is_orientation_valid());
-#endif
-
 	tree_only_set_edges();
+
 	// have been set:
-	//    m_valid_orientation
 	//    m_is_tree_type_valid
 	m_are_size_subtrees_valid = false;
 
@@ -226,7 +212,6 @@ rooted_tree& rooted_tree::remove_edge
 (node s, node t, bool norm, bool check_norm) noexcept
 {
 	directed_graph::remove_edge(s,t, norm, check_norm);
-	m_valid_orientation = false;
 	m_are_size_subtrees_valid = false;
 	return *this;
 }
@@ -236,7 +221,6 @@ rooted_tree& rooted_tree::remove_edges
 noexcept
 {
 	directed_graph::remove_edges(edges, norm, check_norm);
-	m_valid_orientation = false;
 	m_are_size_subtrees_valid = false;
 	return *this;
 }
@@ -249,7 +233,6 @@ noexcept
 	assert(has_node(u));
 #endif
 
-	m_valid_orientation = false;
 	m_are_size_subtrees_valid = false;
 	directed_graph::remove_edges_incident_to(u, norm, check_norm);
 #if defined DEBUG
@@ -316,40 +299,6 @@ void rooted_tree::disjoint_union
 #undef append
 }
 
-bool rooted_tree::find_edge_orientation() noexcept {
-#if defined DEBUG
-	assert(is_tree());
-	assert(has_root());
-#endif
-
-	// assign arborescence type to trees of 1 vertex
-	if (get_num_nodes() == 1) {
-		// the out-degree of the root is equal to and so it
-		// would be assumed that it is not an arborescence
-		m_valid_orientation = true;
-		return m_valid_orientation;
-	}
-
-	// First case: the tree is NOT an anti-arborescence.
-	// Do a BFS from the root. Make sure that all leaves
-	// can be reached. If so, the tree is an arborescence.
-	if (get_out_degree(get_root()) > 0) {
-		detail::BFS<rooted_tree> bfs(*this);
-		bfs.start_at(get_root());
-
-		// if some node was not visited then the tree
-		// will remain unclassified
-		set_valid_orientation(bfs.all_visited());
-	}
-	else {
-		// Second case: the tree is NOT an arborescence.
-		// In this case we do not consider the tree to be (validly) rooted
-		m_valid_orientation = false;
-	}
-
-	return m_valid_orientation;
-}
-
 void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	const uint64_t n = _t.get_num_nodes();
 #if defined DEBUG
@@ -358,7 +307,6 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 
 	if (n == 0) {
 		rooted_tree::_init(0);
-		m_valid_orientation = true;
 		set_root(0);
 		return;
 	}

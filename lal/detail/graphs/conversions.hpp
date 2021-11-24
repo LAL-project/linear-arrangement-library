@@ -172,7 +172,6 @@ noexcept
 
 	if constexpr (is_rooted) {
 		t.set_root(*r);
-		t.set_valid_orientation(true);
 #if defined DEBUG
 		assert(t.is_rooted_tree());
 #endif

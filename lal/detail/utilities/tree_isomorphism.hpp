@@ -37,13 +37,6 @@ char fast_non_iso(const T& t1, const T& t2) noexcept
 	// check number of nodes
 	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
 
-	if constexpr (std::is_base_of_v<lal::graphs::rooted_tree, T>) {
-	// rooted trees must have correct orientation of edges
-	if (not t1.is_orientation_valid() or not t2.is_orientation_valid()) {
-		return false;
-	}
-	}
-
 	const uint64_t n = t1.get_num_nodes();
 
 	// trees ARE isomorphic

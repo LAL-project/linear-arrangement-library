@@ -333,7 +333,6 @@ noexcept
 	_rT.set_root(0);
 	_rT.disjoint_union(rT);
 #if defined DEBUG
-	_rT.find_edge_orientation();
 	assert(_rT.is_rooted_tree());
 #endif
 

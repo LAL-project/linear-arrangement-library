@@ -105,7 +105,6 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 		graphs::rooted_tree rT(2);
 		rT.add_edge(0,1);
 		rT.set_root(0);
-		rT.set_valid_orientation(true);
 		return rT;
 	}
 

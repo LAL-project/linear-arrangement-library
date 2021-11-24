@@ -64,8 +64,7 @@ namespace graphs {
  * oriented towards the leaves (away from the root); this is known as an
  * arborescence. Many methods require objects of this class to be valid rooted
  * trees: the object must be a tree (see @ref is_tree), must have a root (see
- * @ref has_root), and be a valid rooted tree (be an arborescence, that is,
- * see @ref is_orientation_valid).
+ * @ref has_root), and be a valid rooted tree (see @ref is_rooted_tree).
  *
  * Rooted trees can be constructed in two different ways:
  * - Using an already-constructed free tree via a class constructor, where
@@ -75,34 +74,30 @@ namespace graphs {
  * - Adding edge after edge. In this class, as in @ref free_tree, this addition
  * is constrained so that the underlying undirected graph does not contain cycles.
  * Before (or after) the addition of all the edges, it is recommended
- * the root be set using @ref set_root. If the edges have been added in a
- * systematic fashion -- so it is known whether the tree is an arborescence or
- * not --, it is recommended that the validity of the edges' orientation be set
- * by the user via method @ref set_valid_orientation. If it is not known (or it
- * can't be guaranteed) that the resulting tree is an arborescence, use
- * method @ref find_edge_orientation.
+ * the root be set using @ref set_root.
  *
  * Adding edges one by one has a serious drawback. In case the edges do not
  * have a consistent orientation (either always pointing away from the root
  * or always pointing towards it), the resulting graph is not considered to be
- * a valid rooted tree (see @ref is_rooted_tree). Due to efficiency reasons,
- * orientation of edges is not checked before or after their addition. Recall
- * that removal of edges is allowed at every moment.
+ * a valid rooted tree (see @ref is_rooted_tree). Therefore, consider the use
+ * of methods @ref can_add_edge or @ref can_add_edges. Recall that removal of
+ * edges is allowed at every moment.
  *
  * The root allows defining further properties on these graphs. For example,
  * the user can query information regarding subtrees of a particular rooted tree
  * (see methods @ref get_num_nodes_subtree, @ref calculate_size_subtrees,
- * @ref get_edges_subtree, and @ref get_subtree).
+ * @ref get_edges_subtree, and @ref get_subtree). Not every vertex can be a root
+ * of the tree: in general, only those vertices with in-degree 0 can
+ * (see @ref is_root_valid).
  *
  * This class allows flexibility of use of rooted trees regarding the root's
- * choice. Method @ref set_root allows changing the root of rooted trees
- * multiple times and at any time. However, any information dependent
- * on the root becomes invalid upon any change of the root. This information
- * includes, and may not be limited to, the type of rooted tree and the size
- * of the subtrees (see @ref get_num_nodes_subtree). For this reason, is is strongly
- * recommended to build a free tree first and use the constructor
- * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted,
- * in order to build rooted trees.
+ * choice (within the valid possibilities). Method @ref set_root allows changing
+ * the root of rooted trees multiple times and at any time. However, when the
+ * tree has all of its edges then only one vertex can be the root (that with
+ * in-degree 0). For this reason, in case a user wants to build "different rooted
+ * trees on different roots", it is strongly recommended that first a @ref lal::graphs::free_tree
+ * is built, and then create a rooted tree using the constructor
+ * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted.
  */
 class rooted_tree : public directed_graph, virtual public tree {
 public:
@@ -277,13 +272,12 @@ public:
 	 * list of edges.
 	 * @pre There are no repeated edges in the list.
 	 * @pre The list of edges must form a valid rooted tree, i.e., there must
-	 * be a unique vertex with no in-going edges, and there must be no cycles.
+	 * be a unique vertex with no in-going edges, there must be no cycles, and
+	 * every vertex has in-degree at most 1.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 * @post The tree has a valid root which is, potentially, different from
 	 * the previous root it had. Therefore, method @ref has_root returns true.
-	 * @post The tree has a valid edge orientation, i.e., method @ref is_orientation_valid
-	 * returns true.
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
 	rooted_tree& set_edges
@@ -305,9 +299,6 @@ public:
 	 * @pre The edge must exist.
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
-	 * @post The validity of rooted tree and the size of the subtrees are
-	 * invalidated, i.e., methods @ref is_orientation_valid and
-	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edge
 	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
@@ -331,9 +322,6 @@ public:
 	 * @ref add_edge(node,node,bool,bool).
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
-	 * @post The validity of the rooted tree and the size of the subtrees
-	 * are invalidated, i.e., methods @ref is_orientation_valid and
-	 * @ref are_size_subtrees_valid return false.
 	 */
 	rooted_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
@@ -376,8 +364,6 @@ public:
 	 * @pre If @e connect_roots is true then both trees need to have a root
 	 * (see method @ref has_root).
 	 * @post The root (if set) of the current tree is kept.
-	 * @post Copying the edges of @e t into this tree retains their original
-	 * orientation.
 	 * @post The size of the subtrees might need recalculating:
 	 * - If method @ref are_size_subtrees_valid() returns true for both trees then
 	 * the subtree sizes are updated and do not need to be recalculated and
@@ -390,45 +376,6 @@ public:
 	 */
 	void disjoint_union(const rooted_tree& t, bool connect_roots = true)
 	noexcept;
-
-	/**
-	 * @brief Finds the orientation of the edges.
-	 *
-	 * It is mandatory that this tree be an arborescence. Therefore, when
-	 * the tree has been built by adding edges (see @ref add_edge, @ref add_edges),
-	 * the user must tell this class whether what has been built is an
-	 * arborescence or not. One can do this by calling method
-	 * @ref find_edge_orientation or by setting the type directly using
-	 * method @ref set_valid_orientation.
-	 *
-	 * This method examines the orientation of the tree's edges with respect
-	 * to the root and to the leaves, i.e., it determines whether all edges
-	 * are oriented towards the leaves (away from the root).
-	 * @returns True if the tree is an arborescence. Returns false
-	 * otherwise.
-	 * @pre This object is a tree (see @ref is_tree).
-	 * @pre This tree has a root (see @ref has_root).
-	 * @post Method @ref is_orientation_valid evaluates to true if the tree is
-	 * an arborescence, or to false if it not an arborescence.
-	 */
-	bool find_edge_orientation() noexcept;
-
-	/**
-	 * @brief Sets wether the type of the rooted tree is valid or not.
-	 *
-	 * It is mandatory that this tree be an arborescence. Therefore, when
-	 * the tree has been built by adding edges (see @ref add_edge, add_edges),
-	 * the user must tell this class whether what has been built is an
-	 * arborescence or not. One can do this by calling method
-	 * @ref find_edge_orientation or by setting the type directly using
-	 * method @ref set_valid_orientation.
-	 * @param valid Boolean value telling whether the tree is valid or not.
-	 * @post Method @ref is_orientation_valid returns the value set by this
-	 * function.
-	 */
-	void set_valid_orientation(bool valid) noexcept {
-		m_valid_orientation = valid;
-	}
 
 	/**
 	 * @brief Initialiser with tree and root node.
@@ -475,16 +422,31 @@ public:
 		if (get_num_nodes() > 0) {
 #if defined DEBUG
 			assert(has_node(r));
+			assert(is_root_valid(r));
 #endif
 			m_root = r;
 		}
 		m_has_root = true;
 		m_are_size_subtrees_valid = false;
-		m_valid_orientation = false;
 		m_is_tree_type_valid = false;
 	}
 
 	/* GETTERS */
+
+	/**
+	 * @brief Is the root valid?
+	 *
+	 * A root is valid if it has in-degree 0. This is calculated as a function
+	 * of the current state of the tree.
+	 * @param r Given node.
+	 * @returns Whether or not the node passed as parameter is a valid root.
+	 */
+	bool is_root_valid(node r) const noexcept {
+#if defined DEBUG
+		assert(has_node(r));
+#endif
+		return get_in_degree(r) == 0;
+	}
 
 	bool can_add_edge(node s, node t) const noexcept;
 
@@ -498,24 +460,11 @@ public:
 	 * A tree is a valid rooted tree when:
 	 * - the underlying undirected graph is connected and does not contain
 	 * cycles (see @ref is_tree()),
-	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root),
-	 * - the orientation of the edges is valid (see @ref is_orientation_valid).
+	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root).
 	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
-	bool is_rooted_tree() const noexcept
-	{ return is_tree() and has_root() and is_orientation_valid(); }
-
-	/**
-	 * @brief Is the orientation of the edges valid?
-	 *
-	 * The edges' orientation is valid if they are all oriented towards the
-	 * leaves (away from the root).
-	 *
-	 * This function returns the value of private attribute @ref m_valid_orientation.
-	 * @returns The whether the orientation is valid or not.
-	 */
-	bool is_orientation_valid() const noexcept { return m_valid_orientation; }
+	bool is_rooted_tree() const noexcept { return is_tree() and has_root(); }
 
 	/// Return the root of this tree.
 	node get_root() const noexcept {
@@ -565,17 +514,16 @@ public:
 	 * labelling of numbers in \f$[0,n)\f$, where @e n is the number of
 	 * nodes of the tree.
 	 *
-	 * In case of directed trees, the subtree is extracted regardless of the
-	 * orientation of the edges. For example, consider the following
-	 * complete binary tree of 7 nodes, whose edges are
+	 * For example, consider the following complete binary tree of 7 nodes,
+	 * whose edges are
 	 * <pre>
 	 * 0 -> 1 -> 3
 	 *        -> 4
 	 *   -> 2 -> 5
 	 *        -> 6
 	 * </pre>
-	 * The edges of the subtree rooted at 1 are "1 -> 3" and "1 -> 4".
-	 * Moreover, the orientation of the edges in the new tree is kept.
+	 * The edges of the subtree rooted at 1 are "1 -> 3" and "1 -> 4", or, for
+	 * the mathematically inclined \f$(1,3), (1,4)\f$.
 	 *
 	 * This method can be seen as a way of relabelling nodes when @e u is
 	 * the root of the tree and @e relab is true.
@@ -594,8 +542,6 @@ public:
 	 * @returns A tree containing the nodes of the subtree
 	 * rooted at node @e u.
 	 * @pre The object must be a valid rooted tree (see @ref is_rooted_tree).
-	 * @post The subtree keeps the orientation of the edges in the original
-	 * tree.
 	 */
 	rooted_tree get_subtree(node u) const noexcept;
 
@@ -654,9 +600,6 @@ protected:
 	/// Has the root been set?
 	bool m_has_root = false;
 
-	/// Is the orientation of the edges valid?
-	bool m_valid_orientation = false;
-
 	/**
 	 * @brief Number of nodes of the subtrees rooted at a certain node.
 	 *
@@ -674,10 +617,8 @@ protected:
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
 		m_size_subtrees = std::vector<uint64_t>(n);
-
 		if (n <= 1) {
 			set_root(0);
-			set_valid_orientation(true);
 		}
 	}
 	/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
@@ -730,7 +671,6 @@ protected:
 		// copy this class' members
 		m_root = r.m_root;
 		m_has_root = r.m_has_root;
-		m_valid_orientation = r.m_valid_orientation;
 		m_size_subtrees = r.m_size_subtrees;
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 	}
@@ -745,13 +685,11 @@ protected:
 		// move this class' members
 		m_root = r.m_root;
 		m_has_root = r.m_has_root;
-		m_valid_orientation = r.m_valid_orientation;
 		m_size_subtrees = std::move(r.m_size_subtrees);
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 
 		r.m_root = 0;
 		r.m_has_root = false;
-		r.m_valid_orientation = false;
 		r.m_are_size_subtrees_valid = false;
 	}
 
