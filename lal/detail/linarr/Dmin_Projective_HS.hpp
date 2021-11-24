@@ -49,7 +49,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <iostream>
 #include <vector>
 
 // lal includes
