@@ -346,6 +346,35 @@ void rooted_tree::calculate_tree_type() noexcept {
 
 /* GETTERS */
 
+bool rooted_tree::can_add_edge(node u, node v) const noexcept {
+	if (not tree::can_add_edge(u, v)) { return false; }
+
+	// Vertex 'v' is already pointed by somebody else.
+	// Rooted trees in LAL are arborescences.
+	if (get_in_degree(v) != 0) { return false; }
+
+	// no more cases that I can come up with right now...
+	return true;
+}
+
+bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
+	// this function ensures there are no cycles in the tree
+	if (not tree::can_add_edges(edges)) { return false; }
+
+	const auto n = get_num_nodes();
+	// check the in-degrees
+	detail::data_array<uint64_t> in_degrees(n, 0);
+	for (node u = 0; u < n; ++u) { in_degrees[u] = get_in_degree(u); }
+
+	// check the indegrees of the vertices...
+	for (const auto& [u,v] : edges) {
+		in_degrees[v] += 1;
+		if (in_degrees[v] > 1) { return false; }
+	}
+
+	return true;
+}
+
 std::vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
 	const auto subtree_info =
 		detail::get_edges_subtree<false>(*this, u, relab);

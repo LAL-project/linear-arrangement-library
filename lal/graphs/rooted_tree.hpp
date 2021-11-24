@@ -481,6 +481,10 @@ public:
 
 	/* GETTERS */
 
+	bool can_add_edge(node s, node t) const noexcept;
+
+	bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+
 	bool is_rooted() const noexcept { return true; }
 
 	/**
