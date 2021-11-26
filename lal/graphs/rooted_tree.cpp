@@ -5,9 +5,9 @@
  *
  *  Copyright (C) 2019 - 2021
  *
- *  This file is part of Linear Arrangement Library. To see the full code
- *  visit the webpage:
- *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
+ *  This file is part of Linear Arrangement Library. The full code is available
+ *  at:
+ *      https://github.com/LAL-project/linear-arrangement-library.git
  *
  *  Linear Arrangement Library is free software: you can redistribute it
  *  and/or modify it under the terms of the GNU Affero General Public License
@@ -73,13 +73,6 @@ noexcept
 	// Recall that due to the rules of construction, node u cannot have more
 	// than one parent.
 
-	if (m_has_root and m_root == u) {
-		// the root has been removed
-		m_root = get_num_nodes();
-		m_has_root = false;
-		m_are_size_subtrees_valid = false;
-	}
-
 	// the new edges, if any
 	std::vector<edge> new_edges;
 	if (connect and get_in_degree(u) == 1 and get_out_degree(u) > 0) {
@@ -94,6 +87,22 @@ noexcept
 	// 'action_after_node_remove' is called by the following method.
 	// Said method updates 'm_is_tree_type_valid'
 	directed_graph::remove_node(u, norm, check_norm);
+
+	// update root's label, if any
+	if (m_has_root) {
+		if (m_root == u) {
+			// the root has been removed
+			m_root = get_num_nodes();
+			m_has_root = false;
+		}
+		else if (m_root > u) {
+			--m_root;
+		}
+	}
+
+	// update vector of subtree sizes
+	m_are_size_subtrees_valid = false;
+	m_size_subtrees.resize(get_num_nodes());
 
 	if (connect) {
 		add_edges(new_edges, norm, check_norm);
@@ -111,7 +120,6 @@ rooted_tree& rooted_tree::add_edge
 	directed_graph::add_edge(u,v, norm, check_norm);
 
 	// There is no need to invalidate
-	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
 	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
@@ -129,7 +137,6 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 	directed_graph::add_edge_bulk(u,v);
 
 	// There is no need to invalidate
-	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
 	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
@@ -148,7 +155,6 @@ void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
 	fill_union_find();
 
 	// There is no need to invalidate
-	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
 	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the
@@ -166,7 +172,6 @@ rooted_tree& rooted_tree::add_edges
 	directed_graph::add_edges(edges, norm, check_norm);
 
 	// There is no need to invalidate
-	//    m_valid_orientation = false;
 	//    m_are_size_subtrees_valid = false;
 	//    m_is_tree_type_valid = false;
 	// since these attributes start at false and cannot be calculated if the

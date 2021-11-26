@@ -3,11 +3,11 @@
  *  Linear Arrangement Library - A library that implements a collection
  *  algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019
+ *  Copyright (C) 2019 - 2021
  *
- *  This file is part of Linear Arrangement Library. To see the full code
- *  visit the webpage:
- *      https://github.com/lluisalemanypuig/linear-arrangement-library.git
+ *  This file is part of Linear Arrangement Library. The full code is available
+ *  at:
+ *      https://github.com/LAL-project/linear-arrangement-library.git
  *
  *  Linear Arrangement Library is free software: you can redistribute it
  *  and/or modify it under the terms of the GNU Affero General Public License
