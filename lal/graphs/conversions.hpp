@@ -166,7 +166,6 @@ noexcept;
  * @pre No edge in the list is repeated.
  */
 template<class G>
-inline
 G from_edge_list_to_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
