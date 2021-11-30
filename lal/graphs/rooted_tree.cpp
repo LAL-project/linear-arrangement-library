@@ -382,8 +382,9 @@ bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 	if (not tree::can_add_edges(edges)) { return false; }
 
 	const auto n = get_num_nodes();
-	// check the in-degrees
-	detail::data_array<char> in_degrees(n, 0);
+
+	// check the in-degrees (no need to initialize the array here)
+	detail::data_array<char> in_degrees(n);
 	for (node u = 0; u < n; ++u) {
 		// the in-degree is either 0 or 1.
 		in_degrees[u] = static_cast<char>(get_in_degree(u));
