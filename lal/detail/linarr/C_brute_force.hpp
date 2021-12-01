@@ -51,7 +51,7 @@
 #include <lal/detail/macros/call_with_empty_arr.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
+#define DECIDED_C_GT (upper_bound + 1)
 #define DECIDED_C_LE C
 
 namespace lal {
@@ -68,7 +68,6 @@ namespace detail {
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
 template<bool decide_upper_bound>
-inline
 uint64_t __compute_C_brute_force_undir(
 	const graphs::undirected_graph& g, const linear_arrangement& pi,
 	uint64_t upper_bound = 0
@@ -130,7 +129,6 @@ noexcept
 //		returns 0 if the number of crossings than the upper_bound
 //
 template<bool decide_upper_bound = false>
-inline
 std::conditional_t<decide_upper_bound, uint64_t, void>
 __inner_computation_dir
 (
@@ -201,7 +199,6 @@ noexcept
 //		returns 1 if the number of crossings than the upper_bound
 //		returns 0 if the number of crossings than the upper_bound
 template<bool decide_upper_bound = false>
-inline
 uint64_t __compute_C_brute_force_dir(
 	const graphs::directed_graph& g, const linear_arrangement& pi,
 	uint64_t upper_bound = 0
@@ -270,7 +267,6 @@ noexcept
 // single arrangement
 
 template<typename GRAPH>
-inline
 uint64_t __call_C_brute_force(
 	const GRAPH& g,
 	const linear_arrangement& pi
@@ -316,7 +312,6 @@ noexcept
 // list of arrangements
 
 template<typename GRAPH>
-inline
 std::vector<uint64_t> n_C_brute_force(
 	const GRAPH& g,
 	const std::vector<linear_arrangement>& pis
@@ -374,7 +369,6 @@ noexcept
 // single arrangement
 
 template<typename GRAPH>
-inline
 uint64_t __call_brute_force_lesseq_than(
 	const GRAPH& g,
 	const linear_arrangement& pi,
@@ -430,7 +424,6 @@ noexcept
 // list of arrangements
 
 template<typename GRAPH>
-inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
 	const std::vector<linear_arrangement>& pis,
@@ -489,7 +482,6 @@ noexcept
 }
 
 template<typename GRAPH>
-inline
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const GRAPH& g,
 	const std::vector<linear_arrangement>& pis,

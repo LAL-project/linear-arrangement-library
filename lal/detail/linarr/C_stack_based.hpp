@@ -55,7 +55,7 @@
 typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
+#define DECIDED_C_GT (upper_bound + 1)
 #define DECIDED_C_LE C
 
 namespace lal {
@@ -134,7 +134,6 @@ noexcept
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
 template<bool decide_upper_bound>
-inline
 uint64_t __compute_C_stack_based(
 	const graphs::graph& g, const linear_arrangement& pi,
 	std::size_t * const size_adjN_u,

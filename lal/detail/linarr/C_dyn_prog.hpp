@@ -53,7 +53,7 @@
 #include <lal/detail/data_array.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
+#define DECIDED_C_GT (upper_bound + 1)
 
 namespace lal {
 namespace detail {
@@ -69,7 +69,6 @@ namespace detail {
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
 template<class G, bool decide_upper_bound>
-inline
 uint64_t __compute_C_dyn_prog
 (
 	const G& g, const linear_arrangement& pi,
@@ -224,7 +223,6 @@ noexcept
 // single arrangement
 
 template<class G>
-inline
 uint64_t __call_C_dyn_prog(
 	const G& g,
 	const linear_arrangement& pi
@@ -251,6 +249,7 @@ noexcept
 	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.begin(), M,K);
 }
 
+inline
 uint64_t n_C_dynamic_programming(
 	const graphs::directed_graph& g,
 	const linear_arrangement& pi
@@ -282,7 +281,6 @@ noexcept
 // list of arrangements
 
 template<class G>
-inline
 std::vector<uint64_t> n_C_dynamic_programming(
 	const G& g,
 	const std::vector<linear_arrangement>& pis
@@ -353,7 +351,6 @@ noexcept
 // single arrangement
 
 template<class G>
-inline
 uint64_t __call_C_dyn_prog_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
@@ -417,7 +414,6 @@ noexcept
 // list of arrangements
 
 template<class G>
-inline
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const std::vector<linear_arrangement>& pis,
@@ -488,7 +484,6 @@ noexcept
 }
 
 template<typename G>
-inline
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const G& g,
 	const std::vector<linear_arrangement>& pis,

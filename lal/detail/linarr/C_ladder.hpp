@@ -51,7 +51,7 @@
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 
-#define DECIDED_C_GT (g.get_num_edges()*g.get_num_edges() + 1)
+#define DECIDED_C_GT (upper_bound + 1)
 #define DECIDED_C_LE C
 
 namespace lal {
@@ -68,7 +68,6 @@ namespace detail {
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
 template<class G, bool decide_upper_bound>
-inline
 uint64_t __compute_C_ladder(
 	const G& g,
 	const linear_arrangement& pi,
@@ -132,7 +131,6 @@ noexcept
 // single arrangement
 
 template<class G>
-inline
 uint64_t __call_C_ladder(
 	const G& g,
 	const linear_arrangement& pi
@@ -185,7 +183,6 @@ noexcept
 // list of arrangements
 
 template<class G>
-inline
 std::vector<uint64_t> n_C_ladder(
 	const G& g,
 	const std::vector<linear_arrangement>& pis
@@ -247,7 +244,6 @@ noexcept
 // single arrangement
 
 template<class G>
-inline
 uint64_t __call_C_ladder_is_lesseq_than(
 	const G& g,
 	const linear_arrangement& pi,
@@ -303,7 +299,6 @@ noexcept
 // list of arrangements
 
 template<class G>
-inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
 	const std::vector<linear_arrangement>& pis,
@@ -369,7 +364,6 @@ noexcept
 }
 
 template<typename G>
-inline
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const G& g,
 	const std::vector<linear_arrangement>& pis,
