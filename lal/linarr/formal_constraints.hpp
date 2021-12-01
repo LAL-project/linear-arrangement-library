@@ -90,7 +90,6 @@ bool is_permutation(const linear_arrangement& arr = {}) noexcept {
  * @returns Whether or not the input arrangement is a valid permutation.
  */
 template<class G>
-inline
 bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
 {
 	if constexpr (std::is_base_of_v<G, graphs::tree>) {
@@ -124,14 +123,12 @@ bool is_arrangement(const G& g, const linear_arrangement& arr) noexcept
  * is planar.
  */
 template<class G>
-inline
 bool is_planar(const G& g, const linear_arrangement& arr = {}) noexcept {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
 #endif
 
-	const uint64_t invalid = g.get_num_edges()*g.get_num_edges() + 1;
-	return is_num_crossings_lesseq_than(g, arr, 0) < invalid;
+	return is_num_crossings_lesseq_than(g, arr, 0) <= 0;
 }
 
 /**
@@ -158,6 +155,7 @@ noexcept
 	assert(rt.is_rooted_tree());
 #endif
 
+	// case where the linear arrangement is not given
 	if (arr.size() == 0) {
 		const node r = rt.get_root();
 		iterators::E_iterator e_it(rt);
@@ -171,6 +169,7 @@ noexcept
 		return false;
 	}
 
+	// the linear arrangement is given
 	const node r = rt.get_root();
 	const position pr = arr[node_t{r}];
 
