@@ -170,8 +170,8 @@ target_sources(
 		#      others
 		detail/avl.hpp
 		detail/data_array.hpp
-		detail/macros.hpp
 		detail/make_array.hpp
+		detail/pairs_utils.hpp
 		detail/sorted_vector.hpp
 		
 		# -- sources
