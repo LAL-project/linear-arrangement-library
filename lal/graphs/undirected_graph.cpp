@@ -75,7 +75,11 @@ undirected_graph& undirected_graph::remove_node
 	// relabel the vertices in the graph
 
 	// remove the corresponding row in the adjacency matrix
-	m_adjacency_list.erase(m_adjacency_list.begin() + u);
+	{
+	auto it = m_adjacency_list.begin();
+	std::advance(it, u);
+	m_adjacency_list.erase(it);
+	}
 
 	// now, relabel
 	const auto n = get_num_nodes();

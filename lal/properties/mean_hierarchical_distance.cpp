@@ -56,7 +56,7 @@ namespace lal {
 namespace properties {
 
 template<typename result>
-inline result MHD(const graphs::rooted_tree& tree) noexcept {
+result MHD(const graphs::rooted_tree& tree) noexcept {
 	const uint64_t n = tree.get_num_nodes();
 
 #if defined DEBUG

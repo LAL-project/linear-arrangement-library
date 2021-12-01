@@ -45,6 +45,7 @@
 #include <vector>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
@@ -55,7 +56,6 @@ namespace detail {
 namespace __lal {
 
 template<class container>
-inline
 void __make_arrangement_intervals(
 	const graphs::rooted_tree& T, node r,
 	const container& data,
@@ -86,7 +86,6 @@ noexcept
 } // namespace __lal
 
 template<class container>
-inline
 linear_arrangement make_arrangement_intervals(
 	const graphs::rooted_tree& T,
 	const container& data
@@ -105,7 +104,6 @@ noexcept
 namespace __lal {
 
 template<class container>
-inline
 void __make_arrangement_intervals(
 	const graphs::free_tree& T, node parent, node u,
 	const container& data,
@@ -135,7 +133,6 @@ noexcept
 } // -- namespace __lal
 
 template<class container>
-inline
 linear_arrangement make_arrangement_intervals(
 	const graphs::free_tree& T, node root,
 	const container& data

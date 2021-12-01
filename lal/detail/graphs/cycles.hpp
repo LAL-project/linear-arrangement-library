@@ -136,7 +136,6 @@ namespace __lal {
  * @returns Whether the graph has cycles or not.
  */
 template<class G>
-inline
 bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	const auto n = g.get_num_nodes();
 
@@ -200,7 +199,6 @@ bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
  * @returns Whether the graph has cycles or not.
  */
 template<class G>
-inline
 bool has_undirected_cycles(const G& g) {
 	// BFS traversal object
 	BFS<G> bfs(g);

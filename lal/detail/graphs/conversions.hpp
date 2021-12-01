@@ -97,7 +97,6 @@ template<
 	class tree_type,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_type>
 >
-inline
 std::conditional_t<
 	is_rooted,
 	graphs::rooted_tree,

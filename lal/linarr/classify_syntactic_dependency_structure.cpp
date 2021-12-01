@@ -48,7 +48,6 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/linarr/C.hpp>
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
