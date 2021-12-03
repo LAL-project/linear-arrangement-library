@@ -163,10 +163,6 @@ public:
 	/// Returns true if the end of the iteration was reached.
 	bool end() const noexcept { return m_reached_end; }
 
-	/// Returns the current Prüfer sequence.
-	const detail::data_array<uint64_t>& get_current_Prufer_sequence() const noexcept
-	{ return m_Prufer_seq; }
-
 	/* MODIFIERS */
 
 	/**
