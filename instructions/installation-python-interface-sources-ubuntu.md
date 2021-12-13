@@ -4,6 +4,12 @@ This library has been interfaced to [Python 3](https://www.python.org/) using th
 
 ## Installing the dependencies
 
+### Doxygen
+
+[`doxygen`](https://www.doxygen.nl/index.html) can be installed by issuing the following command
+
+	$ sudo apt install doxygen
+
 ### LAL
 
 Install LAL either from binaries or sources (see the [main README file](https://github.com/LAL-project/linear-arrangement-library/blob/master/README.md)).
@@ -84,6 +90,13 @@ and also,
 ## Compiling and installing the interface
 
 We offer two different builds for the python interface `debug` and `release`. Each build is linked against the corresponding compilation of the library.
+
+First, you must make the documentation for the Python interface files. For this, issue the following commands.
+
+	$ cd /path/to/linear-arrangement-library
+	$ ./make_docs.sh python
+
+Now you can actually compile the Python interface.
 
 ### `release` compilation and installation
 

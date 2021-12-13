@@ -2,11 +2,17 @@
 
 This library has been interfaced to [Python 3](https://www.python.org/) using the software [SWIG](http://www.swig.org/) (version 4.0.1). In order to compile the interface, you need to have the `SWIG` tool installed in your system. As for the rest, you only need the `make` tool.
 
-## Installing Python 3
+## Installing the dependencies
+
+### Install doxygen
+
+Download the binaries from Windows following [these instructions](https://www.doxygen.nl/download.html).
+
+### Installing Python 3
 
 Go to Python's [webpage](https://www.python.org/) and download one of the `3.x` builds for Windows. We have tested the interface with Python 3.6, but any `3.x` should work. Python builds for Windows can be found [here](https://www.python.org/downloads/windows/). When installing Python, make sure to check the box that says `Add Python 3.x to PATH`.
 
-## Installing SWIG
+### Installing SWIG
 
 Download and install `SWIG` from its webpage. Authors of `SWIG` already provide downloadable files with prebuilt executables for windows. Download these and install them in your system. It is key to include the path to the installation folder in the `PATH` environment variable. For example, you can install SWIG in
 
@@ -71,6 +77,13 @@ and also,
 ## Compiling and installing the interface
 
 We offer two different builds for the python interface `debug` and `release`. Each build is linked against the corresponding compilation of the library.
+
+First, you must make the documentation for the Python interface files. For this, issue the following commands.
+
+	$ cd /path/to/linear-arrangement-library
+	$ ./make_docs.sh python
+
+Now you can actually compile the Python interface.
 
 ### RELEASE compilation and installation
 
