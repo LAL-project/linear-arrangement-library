@@ -842,7 +842,7 @@ public:
 	 *
 	 * This function returns \f$\left\lfloor n/d \right\rfloor\f$ where
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
-	 * @returns The floor of this rational.
+	 * @param[out] i Integer representation of this rational.
 	 */
 	void as_integer(integer& i) const noexcept;
 
