@@ -20,38 +20,53 @@ In order to compile the interface, you need to configure one of the build files 
 	
 	linear-arrangement-library/python-interface/Makefile
 
-First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example, if you installed LAL from sources and followed the instructions in [this](https://github.com/lluisalemanypuig/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file, you will need
-
+First of all, modify the variables `LAL_INC_DIR` and `LAL_LIB_DIR`. For example, if you installed LAL from sources and followed the instructions in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file, you will need
+	
+	# ------------------
+	# WINDOWS USERS ONLY
+	
 	# where are LAL's include files
 	LAL_INC_DIR = C:/programming/c++/include
 	# where are LAL's library files
 	LAL_LIB_DIR = C:/programming/c++/bin
 
+(Modify the variables under the header `WINDOWS USERS ONLY`).
+
 Secondly, specify the version of Python against which the interface is linked. Indicate where Python's header files are located at, and where to find the binaries. To do this, modify the variable `MINOR_VERSION_PYTHON`. For example, 
+
+	# ------------------
+	# WINDOWS USERS ONLY
 
 	# Python's minor version
 	MINOR_VERSION_PYTHON = 8
 
 Replace the `8` above with the minor version of Python installed in your system.
 
-Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. This could be
+Thirdly, you can also choose the destination directory of LAL's python interface. Modify the variable `LAL_PY_DEST`. The default value is
 
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST = C:/programming/python_lib
+	LAL_PY_DEST		= C:/programming/python_lib_3.$(MINOR_VERSION_PYTHON)
 
-Last but not least, you must specify the compiler to be used. One requirement is that the compiler used has to support for `C++17`'s standard. In particular, the compiler must support the flags
+Last but not least, you must specify the compiler to be used. One requirement is that the compiler used has to support for `C++17`'s standard. The default compiler is `g++`.
 
-	-std=c++17 -fPIC -fopenmp
+	# ------------------
+	# WINDOWS USERS ONLY
+	
+	CXX			= g++
+
+If you change the compiler, change also the flags correspondingly.
+
+	FLAGS		= -std=c++17 -fPIC -fopenmp
 
 and also,
 
-	-O3 -DNDEBUG                        # for release builds
-	-g -O0 -DDEBUG -D_GLIBCXX_DEBUG     # for debug builds
+	# for debug builds
+	FLAGS		+= -g -O3 -DDEBUG -D_GLIBCXX_DEBUG
+	LIBS		+= -L $(LAL_LIB_DIR) -llaldebug
 
-In order to specify compiler, modify variable `CXX`. By default, we use GNU's `g++` (version 9.2.0)
-
-	# Compiler to be used
-	CXX = g++
+	# for release builds
+	FLAGS		+= -O3 -UDEBUG -DNDEBUG
+	LIBS		+= -L $(LAL_LIB_DIR) -llal
 
 ## Compiling and installing the interface
 
@@ -77,6 +92,6 @@ It only remains one final step. This step depends on the minor version of Python
 
 Locate the destination directory of these files that you chose when installing LAL. Now add to the `PYTHONPATH` environment variable the directory to which the interface has been installed. This is the directory given to the variable `LAL_PY_DEST` in the Makefile (as explained above). This way, the python interpreter can find the `.py` files generated. This is sufficient for minor versions `6` and `7`. For minor version `8` copy the `.dll` files into your Python installation directory. For example,
 
-	C:/Users/User/AppData/Python/Python3.8/
+	C:/Users/%USERNAME%/AppData/Python/Python3.8/
 
 Note: this workaround does not look too good, but importing LAL does not work without this step.

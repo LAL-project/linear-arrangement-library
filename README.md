@@ -9,28 +9,28 @@ This library implements several algorithms to solve problems related to linear a
 
 Some of the algorithms listed above are implemented for both general graphs and trees (the latter being more efficient). The library also provides functions for the generation of random/exhasutive labelled/unlabelled free/rooted trees. Besides, there's algorithms for the generation of arrangements under different constraints of projectivity. Users will also find utilities to process treebanks, and collection of treebanks.
 
-For more information, visit [LAL's webpage](https://cqllab.upc.edu/lal/).
+For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/).
 
-## Installation of the library
+## Installation of the library and Python interface from binaries
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-windows.md) file.
-- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md) file.
+- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md) file. We do not currently maintain any official repository for any of the Linux distributions' package manager.
 
-## Compilation and installation of the library from sources
+## Installation of the library from sources
 
 We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-library-windows.md) file.
-- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-library-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md) file.
+- Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-ubuntu.md) file.
 
-## Compilation and installation of the Python interface
+## Installation of the Python interface from sources
 
 We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-windows.md) file.
-- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compilation-pyhton-interface-linux.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-windows.md) file.
+- Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-ubuntu.md) file.
 
 ## Compile a program that uses LAL
 

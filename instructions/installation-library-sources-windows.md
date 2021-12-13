@@ -1,6 +1,10 @@
 # Installation of LAL and its dependencies (Windows)
 
-Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them (step 0). Then, we list the library's dependencies and explain how to install them, from sources (step 1). We finish by explaining how to compile and install this library from sources (step 2). Instructions given in step 1 and step 2, assume that the you have done the basic setup explained in step 0. Other steps can be followed, but we do not provide them. You are encouraged to read through all steps before actually performing any of them.
+**NOTE** We provide binaries for Windows that can be installed with an installer (those *Next*, *Next* clicky things). We recommend you install LAL using the installer, if possible.
+
+Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them (step 0). Then, we list the library's dependencies and explain how to install them, from sources (step 1). We finish by explaining how to compile and install this library from sources (step 2). Instructions given in step 1 and step 2, assume that the you have done the basic setup explained in step 0.
+
+We encourage you to read through all steps before actually performing any of them.
 
 ## 0. Downloading the necessary tools and doing a basic setup of the system
 
@@ -42,7 +46,7 @@ Here we first detail step by step the configuration of the Windows system in ord
 		C:/programming/c++/lib
 		C:/programming/c++/share
 	
-	* 0.4.1. Add the following directories to the `PATH` environment variable
+	* 0.4.1. Add the following directories to the `PATH` environment variable (see [these instructions](https://www.tenforums.com/tutorials/121855-edit-user-system-environment-variables-windows.html) -- these were [recommended here](https://answers.microsoft.com/en-us/windows/forum/all/need-to-edit-user-environment-variables-on-windows/a2d4f5c6-7e18-4a1c-8051-5bd40866a237))
 	
 			C:/programming/c++/bin
 			C:/programming/c++/lib
@@ -86,7 +90,7 @@ Alternatively, the sources can be compiled and installed following these steps:
 
 		$ ./configure --prefix=C:/programming/c++ --enable-cxx
 		$ make -j4
-		$ make check -j4
+		$ make check -j4 # GMP developers strongly recommend to run these commands, and so do we.
 		$ make install
 
 ### Compiler
@@ -97,10 +101,10 @@ You will need a compiler that supports the `C++17` standard. We use GNU's `g++` 
 
 The library can be installed in both `Release` and `Debug` mode. First of all
 
-- Download LAL's source files from its [github page](https://github.com/lluisalemanypuig/linear-arrangement-library.git) either using a web browser or the command-line terminal
+- Download LAL's source files from its [github page](https://github.com/LAL-project/linear-arrangement-library.git) either using a web browser or the command-line terminal
 
 		$ cd C:/programming/sources
-		$ git clone https://github.com/lluisalemanypuig/linear-arrangement-library.git
+		$ git clone https://github.com/LAL-project/linear-arrangement-library.git
 
 - In the command-line interface launched in step 0.5. navigate to the directory with LAL's source files.
 
