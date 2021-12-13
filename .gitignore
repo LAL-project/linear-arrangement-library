@@ -1,4 +1,5 @@
 slurm-*
+*.html
 
 cppdocshtml/
 pythondocshtml/
