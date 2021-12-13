@@ -83,27 +83,27 @@ ifeq ($(OS_ID),windows)
 	# ------------------
 	# WINDOWS USERS ONLY
 	
-	# where are LAL's include files
+	# where are LAL's include files if installed with default values in CMake
 	LAL_INC_DIR = C:/programming/c++/include
-	# where are LAL's library files
+	# where are LAL's library files if installed with default values in CMake
 	LAL_LIB_DIR = C:/programming/c++/lib
 
 else ifeq ($(OS_ID),linux)
 	# ----------------
 	# LINUX USERS ONLY
 	
-	# location of LAL's header files
+	# location of LAL's header files if installed with default values in CMake
 	LAL_INC_DIR = /usr/local/include
-	# location of LAL's library files
+	# location of LAL's library files if installed with default values in CMake
 	LAL_LIB_DIR = /usr/local/lib
 
 else ifeq ($(OS_ID),macos)
 	# ----------------
 	# MACOS USERS ONLY
 	
-	# location of LAL's header files
+	# location of LAL's header files if installed with default values in CMake
 	LAL_INC_DIR = /usr/local/include
-	# location of LAL's library files
+	# location of LAL's library files if installed with default values in CMake
 	LAL_LIB_DIR = /usr/local/lib
 endif
 
