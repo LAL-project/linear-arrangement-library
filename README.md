@@ -15,22 +15,24 @@ For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md) file.
 - Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md) file. We do not currently maintain any official repository for any of the Linux distributions' package manager.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md) file.
 
 ## Installation of the library from sources
 
 We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md) file.
 - Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-ubuntu.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md) file.
+- Mac OS in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-macos.md) file.
 
 ## Installation of the Python interface from sources
 
 We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
 
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-windows.md) file.
 - Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-ubuntu.md) file.
+- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-windows.md) file.
+- Mac OS in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-macos.md) file.
 
 ## Compile a program that uses LAL
 
