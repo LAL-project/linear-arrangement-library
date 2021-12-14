@@ -1,28 +1,17 @@
 # Installation of LAL and its dependencies (Ubuntu)
 
-In this file is detailed step by step the compilation and installation process of this library and all its dependencies from sources.
+In this file is detailed step by step the compilation and installation process of this library and all its dependencies from sources. In order to compile the library, you need to have `g++` and `cmake` tools installed in your system, and the `GMP` library.
 
 ## Installing the dependencies
 
-### GMP
-
-The [GMP](https://gmplib.org/) library can be installed via the typical package managers following the usual procedure.
-
-Alternatively, it can be installed from sources. First, download the source files and issue
-
-	$ ./configure --enable-cxx
-	$ make -j4
-	$ make check -j4   # optional but recommended
-	$ make install
-
 ### Compiler
 
-You will need a compiler that supports the `C++17` standard. We use GNU's `g++` (version 11.1.0). There are several guides on the Internet explaining how to install said compiler. Here we summarize [this guide](https://lindevs.com/install-g-on-ubuntu/):
+You will need a compiler that supports the `C++17` standard. We use GNU's `g++` (version `11.1.0`). There are several guides on the Internet explaining how to install said compiler. Here we summarize [this guide](https://lindevs.com/install-g-on-ubuntu/):
 
 	$ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 	$ sudo apt install g++-11
 
-In order to check that the compilar has been installed, issue the following command:
+In order to check that the compiler has been installed, issue the following command:
 
 	$ g++-11 --version
 
@@ -35,11 +24,38 @@ You should see something like this:
 
 In order to run `g++-11` using the shorter `g++` command, you have to configure the 'alternatives' in Ubuntu.
 
+### CMake
+
+Install CMake by issuing the command
+
+	$ sudo apt install cmake
+
+A version newer than the minimum required to compile LAL (`3.10.2`) should have been installed. To check this, run
+
+	$ cmake --version
+
+### GMP
+
+The [GMP](https://gmplib.org/) library can be installed via the package manager:
+
+	$ sudo apt install libgmp10 libgmp10-dev
+
+At the moment of writing this, the command above installs GMP version `6.2.0`.
+
+Alternatively, it can be installed from sources. First, download the source files, uncompress the file and issue the following commands in the new directory
+
+	$ ./configure --enable-cxx
+	$ make -j4
+	$ make check -j4   # GMP developers strongly recommend to run these commands, and so do we.
+	$ make install
+
 ### Git
 
 You can install [git](https://git-scm.com/) in Ubuntu issuing the following command
 
 	$ sudo apt install git
+
+Alternatively, you can download the sources through the web browser.
 
 ## Compiling and installing LAL
 

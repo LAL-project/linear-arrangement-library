@@ -1,10 +1,16 @@
 # Installation of the interface for Python (Ubuntu)
 
-This library has been interfaced to [Python 3](https://www.python.org/) using the software [SWIG](http://www.swig.org/) (version 4.0.1). In order to compile the interface, you need to have `python3` and the `SWIG` tool installed in your system. As for the rest, you only need the `make` tool.
+This library has been interfaced to [Python 3](https://www.python.org/) using the software [SWIG](http://www.swig.org/) (version 4.0.2). In order to compile the interface, you need to have `python3`, `SWIG` and `make` tools installed in your system. Optionally, you may install `bibtex` 
 
 ## Installing the dependencies
 
-### Doxygen
+### Bibtex (optional, for the documentation)
+
+The easiest way to install the latest LaTeX distribution is by issuing the command
+
+	$ sudo apt install texlive-full
+
+### Doxygen (optional, for the documentation)
 
 [`doxygen`](https://www.doxygen.nl/index.html) can be installed by issuing the following command
 
@@ -94,7 +100,7 @@ We offer two different builds for the python interface `debug` and `release`. Ea
 First, you must make the documentation for the Python interface files. For this, issue the following commands.
 
 	$ cd /path/to/linear-arrangement-library
-	$ ./make_docs.sh python
+	$ ./make_docs.sh python # optional
 
 Now you can actually compile the Python interface.
 

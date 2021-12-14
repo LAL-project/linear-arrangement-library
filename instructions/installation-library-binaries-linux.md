@@ -1,6 +1,6 @@
 # Installation of LAL from binaries (Linux)
 
-**NOTE** This has *only* been tested on Ubuntu 20.04.
+**NOTE** *This has *only* been tested on Ubuntu 20.04.*
 
 LAL package for Linux are distributed in four folders
 
