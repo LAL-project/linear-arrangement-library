@@ -196,17 +196,20 @@ else ifeq ($(OS_ID),macos)
 	MINOR_VERSION_PYTHON = 8
 	
 	# Python 3 include dir
-	PYTHON_INC_DIR	= ~/opt/anaconda3/include/python3.$(MINOR_VERSION_PYTHON)
+	PYTHON_INC_DIR	= /usr/include/python3.$(MINOR_VERSION_PYTHON)
+	#PYTHON_INC_DIR	= ~/opt/anaconda3/include/python3.$(MINOR_VERSION_PYTHON)
 	
 	# Python3 library directory
-	PYTHON_LIB_DIR	= ~/opt/anaconda3/lib/python3.$(MINOR_VERSION_PYTHON)
+	PYTHON_LIB_DIR	= /usr/lib/x86_64-linux-gnu/
+	#PYTHON_LIB_DIR	= ~/opt/anaconda3/lib/
 	
 	# Python3 linkage
 	MAJOR_PY_LINK	=
 	MINOR_PY_LINK	= -lpython3.$(MINOR_VERSION_PYTHON)
 	
 	# Directory where LAL's interface will be installed to
-	LAL_PY_DEST		= ~/opt/anaconda3/lib/python3.$(MINOR_VERSION_PYTHON)/site-packages
+	LAL_PY_DEST		= /usr/local/lib/python3.$(MINOR_VERSION_PYTHON)/dist-packages
+	#LAL_PY_DEST		= ~/opt/anaconda3/lib/python3.$(MINOR_VERSION_PYTHON)/site-packages
 	
 	# Other flags needed to compile against Python
 	EXTRA_FLAGS		= -flat_namespace
@@ -389,5 +392,5 @@ install: $(LAL_SO)
 	cp $(ALL_INSTALL_PY_FILES) $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
 
 uninstall:
-	rm -f $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
-	rm -f $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
+	rm -rf $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
+	rm -rf $(LAL_PY_DEST)/$(INTERFACE_DIRECTORY)/
