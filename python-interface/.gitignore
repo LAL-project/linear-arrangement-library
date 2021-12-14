@@ -1,8 +1,0 @@
-*.so
-*.o
-*.pyd
-__pycache__
-linux/
-windows/
-win/
-modules/documentation.i

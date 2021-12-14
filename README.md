@@ -26,14 +26,6 @@ We wrote different sets of instructions for compiling and installing LAL from so
 - Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md) file.
 - Mac OS in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-macos.md) file.
 
-## Installation of the Python interface from sources
-
-We wrote different sets of instructions for compiling and installing LAL's Python interface from sources for
-
-- Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-ubuntu.md) file.
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-windows.md) file.
-- Mac OS in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-python-interface-sources-macos.md) file.
-
 ## Compile a program that uses LAL
 
 See [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.

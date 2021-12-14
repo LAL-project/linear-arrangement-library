@@ -1,15 +1,10 @@
 slurm-*
 *.html
 
-cppdocshtml/
-pythondocshtml/
+docshtml/
 
 lal/lal.pro.user
 lal/CMakeLists.txt.user
 
 lal-debug/
 lal-release/
-
-build-debug/
-build-release/
-build/
