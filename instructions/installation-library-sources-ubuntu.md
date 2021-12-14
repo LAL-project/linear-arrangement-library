@@ -110,3 +110,38 @@ to the `cmake` command. See below for examples.
 
 	$ make -j4
 	$ sudo make install
+
+## Generating LAL's documentation
+
+### Dependencies
+
+In order to generate the `html` documentation of LAL (with [`doxygen`](https://www.doxygen.nl/index.html)) you need to install the following software.
+
+#### epstopdf
+
+	$ sudo apt install texlive-font-utils
+
+#### ghostscript
+
+	$ sudo apt install ghostscript
+
+#### Bibtex
+
+	$ sudo apt install texlive-bibtex-extra
+
+#### [`doxygen`](https://www.doxygen.nl/index.html)
+
+	$ sudo apt install doxygen
+
+### Making the documentation
+
+Inside the directory `linear-arrangement-library`, run the following command.
+
+	$ ./make_docs.sh
+
+This will generate a directory called `docshtml`. In order to visualize it, 
+
+- choose a web browser,
+- in said browser, open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
+
+		linear-arrangement-library/docshtml/html/index.html
