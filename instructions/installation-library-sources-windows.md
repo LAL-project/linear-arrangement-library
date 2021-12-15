@@ -2,124 +2,123 @@
 
 **NOTE** *We provide binaries for Windows that can be installed with an installer (those *Next*, *Next* clicky things). We recommend you install LAL using the installer, if possible.*
 
-Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them (step 0). Then, we list the library's dependencies and explain how to install them, from sources (step 1). We finish by explaining how to compile and install this library from sources (step 2). Instructions given in step 1 and step 2, assume that the you have done the basic setup explained in step 0.
+Here we first detail step by step the configuration of the Windows system in order to compile and install the library from sources. That is, we first give instructions on how to install the necessary tools and where to find them. After completing this first step, almost all the dependencies and software necessary to compile the library will be installed. We finish by explaining how to compile and install this library from sources.
 
 We encourage you to read through all steps before actually performing any of them.
 
-## 0. Downloading the necessary tools and doing a basic setup of the system
+## Necessary tools and basic setup of the system
 
-- 0.1. Download [MinGW](https://nuwen.net/mingw.html). Download the most recent file. Version 17.1 (last visited 5th January 2020) provides all the tools you need (and some more). Use at your own risk.
+We recommend installing the [`MSYS2`](https://www.msys2.org/) subsystem for simplicity. This can be done following the 7 steps in their webpage. These consist of downloading and executing the installer and executing some very well-explained commands. With a fast internet connection it should take no more than 15 minutes.
 
-	* 0.1.1. Extract the files in the following directory
+## Installing the dependencies
 
-			C:/programming
+The dependencies should be installed using the `MSYS2 MSYS` program. In Windows' Start menu, launch `MSYS2 MSYS`, and type the following commands.
 
-	* 0.1.2. Add the following paths to the `PATH` environment variable
+### cmake
 
-			C:/programming/MinGW/bin
-			C:/programming/MinGW/git/bin
+	$ pacman -S mingw-w64-x86_64-cmake
 
-- 0.2. Download part of the GnuWin32 toolkit. We need the tool [m4](https://www.gnu.org/software/m4/). Download both [binaries](https://sourceforge.net/projects/gnuwin32/files/m4/1.4.14-1/m4-1.4.14-1-bin.zip/download) and [dependencies](https://sourceforge.net/projects/gnuwin32/files/m4/1.4.14-1/m4-1.4.14-1-dep.zip/download) (last visited 5th January 2020).
+### git
 
-	* 0.2.1. Unpack the directories in the compressed files and move them to
+	$ pacman -S git
 
-			C:/programming/GnuWin32
+## Compiling and installing LAL
 
-	* 0.2.2. Add the following paths to the `PATH` environment variable
-	
-			C:/programming/GnuWin32/bin
+The following commands provide an easy and quick way of downloading, compiling and installing the library. These commands have to be run using the `MSYS2 MinGW` terminal; launch it from Windows' start menu typing `MSYS2 MingGW` (at the time of writing, the program has a blue icon which can be seen in the start menu).
 
-- 0.3. Download [CMake](https://cmake.org/) for Windows. Version 3.16.2 can be downloaded [here](https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-win64-x64.zip) (last visited 5th January 2020)
+First, download LAL's sources from its [github page](https://github.com/LAL-project/linear-arrangement-library.git).
 
-	* 0.3.1. Extract the files and move them to
+	$ git clone https://github.com/LAL-project/linear-arrangement-library.git
 
-			C:/programming/cmake/
+The following commands are used to compile the library in both `debug` and `release` builds. The `cmake` command is configured by default to install the compiled files in the `/usr` directory. In order to change this, simply specify the desired installation directory by adding this
 
-	* 0.3.2. Add to the PATH environment variable the path
+	-DCMAKE_INSTALL_PREFIX=directory
 
-			C:/programming/cmake/bin
-
-- 0.4. Since we are going to be installing several libraries, create the following directories
-
-		C:/programming/c++/bin
-		C:/programming/c++/include
-		C:/programming/c++/lib
-		C:/programming/c++/share
-	
-	* 0.4.1. Add the following directories to the `PATH` environment variable (see [these instructions](https://www.tenforums.com/tutorials/121855-edit-user-system-environment-variables-windows.html) -- these were [recommended here](https://answers.microsoft.com/en-us/windows/forum/all/need-to-edit-user-environment-variables-on-windows/a2d4f5c6-7e18-4a1c-8051-5bd40866a237))
-	
-			C:/programming/c++/bin
-			C:/programming/c++/lib
-
-- 0.5. Moreover, add the following environment variables, and set their contents to directory to their right
-
-		CPLUS_INCLUDE_PATH      C:/programming/c++/include
-		LIBRARY_PATH            C:/programming/c++/lib
-
-The next steps require using the Git-Bash command-line interface. In order to launch it, double click on the file
-
-	C:/programming/MinGW/git/git-bash
-
-## 1. Installing the dependencies
-
-### Installation of GMP
-
-Instead of installing the [GMP](https://gmplib.org/) library by compiling its sources, one can download the compiled library from a trustworthy source. The downloaded files should provide three folders
-	
-	include/
-	lib/
-	share/
-
-which should be moved into the recently created directory
-
-	C:/programming/c++/
-
-Alternatively, the sources can be compiled and installed following these steps:
-
-- 1.1. Download the source files. Windows users might want to download
-[this](https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2) file (last visited 5th January 2020).
-- 1.2. Extract the files into
-
-		C:/programming/sources
-
-- 1.3. In the command line interface launched in step 0.5 navigate to the directory with GMP's source files.
-
-		$ cd C:/programming/sources/gmp-6.1.2
-
-- 1.4. Compile and install the library.
-
-		$ ./configure --prefix=C:/programming/c++ --enable-cxx
-		$ make -j4
-		$ make check -j4 # GMP developers strongly recommend to run these commands, and so do we.
-		$ make install
-
-### Compiler
-
-You will need a compiler that supports the `C++17` standard. We use GNU's `g++` (version 9.2.0). The downloaded MinGW files (step 0.1) should provide such a compiler.
-
-## 2. Compiling and installing LAL
-
-The library can be installed in both `Release` and `Debug` mode. First of all
-
-- Download LAL's source files from its [github page](https://github.com/LAL-project/linear-arrangement-library.git) either using a web browser or the command-line terminal
-
-		$ cd C:/programming/sources
-		$ git clone https://github.com/LAL-project/linear-arrangement-library.git
-
-- In the command-line interface launched in step 0.5. navigate to the directory with LAL's source files.
-
-		$ cd C:/programming/sources/linear-arrangement-library
-
-Now, apply the following steps. In both cases the `-DGMP_LIB=C:/programming/c++` is only necessary when `GMP` is already installed in a directory different from `C:/programming/c++`.
+to the `cmake` command. See below for examples.
 
 ### Release build
 
-	$ mkdir lal-release ; cd lal-release
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DGMP_LIB=C:/programming/c++ -DCMAKE_BUILD_TYPE=Release ../lal
-	$ make -j4 && make install
+First, you should make the build directory. This can be done using three commands. First, navigate to the library's directory.
+
+	$ cd linear-arrangement-library
+
+Make the directory, and navigate into it.
+
+	$ mkdir lal-release
+	$ cd lal-release
+
+#### Prepare the build
+
+You can prepare the build with the predefined settings like this:
+
+	$ cmake -G "MSYS Makefiles" ../lal
+
+You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
+
+	$ cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+
+Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
+
+#### Compile and install
+
+	$ make -j4
+	$ make install
 
 ### Debug build
 
-	$ mkdir lal-debug ; cd lal-debug
-	$ cmake -G "MSYS Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX_PATH=C:/programming/c++ -DGMP_LIB=C:/programming/c++ -DCMAKE_BUILD_TYPE=Debug ../lal
-	$ make -j4 && make install
+The steps to make the debug build are very similar to the ones to make a release build. 
+
+#### Make the build directory
+
+	$ cd linear-arrangement-library
+	$ mkdir lal-debug
+	$ cd lal-debug
+
+#### Prepare the build
+
+You can prepare the build with the predefined settings like this:
+
+	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug ../lal
+
+You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
+
+	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+
+Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
+
+#### Compile and install
+
+	$ make -j4
+	$ sudo make install
+
+## Generating LAL's `html` documentation
+
+### Dependencies
+
+The dependencies have to be installed using `MSYS2 MSYS`. To launch it, type `MSYS2 MSYS` in Windows' Start menu.
+
+#### epstopdf, ghostscript
+
+The following command will install `epstopdf` and `ghostscript` and other software on which these two depend.
+
+	$ pacman -S mingw-w64-x86_64-texlive-font-utils
+
+#### Bibtex
+
+	$ pacman -S mingw-w64-x86_64-texlive-bibtex-extra
+
+#### [`doxygen`](https://www.doxygen.nl/index.html)
+
+	$ pacman -S mingw-w64-x86_64-doxygen
+
+### Making the documentation
+
+Close `MSYS2 MSYS` used in the steps above and launch `MSYS2 MinGW` from Windows' Start menu.
+
+Inside the directory `linear-arrangement-library`, run the following command.
+
+	$ ./make_docs.sh
+
+This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
+
+	linear-arrangement-library/docshtml/html/index.html
