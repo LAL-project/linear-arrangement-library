@@ -89,7 +89,7 @@ Run only one of the two commands above (*one* of the two calls to `cmake`). The 
 #### Compile and install
 
 	$ make -j4
-	$ sudo make install
+	$ make install
 
 ## Generating LAL's `html` documentation
 
