@@ -49,9 +49,7 @@ Alternatively, it can be installed from sources. First, download the source file
 	$ make check -j4   # GMP developers strongly recommend to run these commands, and so do we.
 	$ make install
 
-### Git
-
-You can install [git](https://git-scm.com/) in Ubuntu issuing the following command
+### [git](https://git-scm.com/)
 
 	$ sudo apt install git
 
@@ -71,26 +69,35 @@ to the `cmake` command. See below for examples.
 
 ### Release build
 
-#### Make the build directory
+First, you should make the build directory. This can be done using three commands. First, navigate to the library's directory.
 
 	$ cd linear-arrangement-library
+
+Make the directory, and navigate into it.
+
 	$ mkdir lal-release
 	$ cd lal-release
 
-#### CMake with the predefined settings
+#### Prepare the build
 
-	$ cmake ../lal
+You can prepare the build with the predefined settings like this:
 
-#### CMake with other settings
+	$ cmake -G "MSYS Makefiles" ../lal
 
-	$ cmake -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
+
+	$ cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+
+Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
 
 #### Compile and install
 
 	$ make -j4
-	$ sudo make install
+	$ make install
 
 ### Debug build
+
+The steps to make the debug build are very similar to the ones to make a release build. 
 
 #### Make the build directory
 
@@ -98,20 +105,24 @@ to the `cmake` command. See below for examples.
 	$ mkdir lal-debug
 	$ cd lal-debug
 
-#### CMake with the predefined settings
+#### Prepare the build
 
-	$ cmake -DCMAKE_BUILD_TYPE=Debug ../lal
+You can prepare the build with the predefined settings like this:
 
-#### CMake with other settings
+	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug ../lal
 
-	$ cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
+
+	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+
+Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
 
 #### Compile and install
 
 	$ make -j4
 	$ sudo make install
 
-## Generating LAL's documentation
+## Generating LAL's `html` documentation
 
 ### Dependencies
 
@@ -139,9 +150,6 @@ Inside the directory `linear-arrangement-library`, run the following command.
 
 	$ ./make_docs.sh
 
-This will generate a directory called `docshtml`. In order to visualize it, 
+This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
 
-- choose a web browser,
-- in said browser, open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
-
-		linear-arrangement-library/docshtml/html/index.html
+	linear-arrangement-library/docshtml/html/index.html
