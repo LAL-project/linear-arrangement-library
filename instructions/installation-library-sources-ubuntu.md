@@ -109,11 +109,11 @@ The steps to make the debug build are very similar to the ones to make a release
 
 You can prepare the build with the predefined settings like this:
 
-	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug ../lal
+	$ cmake -DCMAKE_BUILD_TYPE=Debug ../lal
 
 You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
 
-	$ cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+	$ cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
 
 Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
 
