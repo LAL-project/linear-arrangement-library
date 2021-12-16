@@ -118,6 +118,6 @@ Inside the directory `linear-arrangement-library`, run the following command.
 
 	$ ./make_docs.sh
 
-This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
+This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File > Open File...`) that you will find in
 
 	linear-arrangement-library/docshtml/html/index.html
