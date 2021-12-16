@@ -82,11 +82,11 @@ Make the directory, and navigate into it.
 
 You can prepare the build with the predefined settings like this:
 
-	$ cmake -G "MSYS Makefiles" ../lal
+	$ cmake ../lal
 
 You can also set your own settings specifying the appropriate flags to `cmake`. For example, you can change the installation directory like this:
 
-	$ cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+	$ cmake -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
 
 Run only one of the two commands above (*one* of the two calls to `cmake`). The output of the `cmake` program may be important for us in case errors arise during compilation. Please, save the output to a text file in case errors arise.
 
@@ -150,6 +150,6 @@ Inside the directory `linear-arrangement-library`, run the following command.
 
 	$ ./make_docs.sh
 
-This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File`>`Open File...`) that you will find in
+This will generate a directory called `docshtml`. In order to visualize it, choose a web browser and open the `index.html` file (`Ctrl+o` or `File > Open File...`) that you will find in
 
 	linear-arrangement-library/docshtml/html/index.html
