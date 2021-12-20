@@ -79,7 +79,7 @@ struct memory_counting_sort {
 		  output(max_size_container)
 	{ }
 
-	~memory_counting_sort() { }
+	~memory_counting_sort() noexcept = default;
 
 	void reset_count() { count.fill(0); }
 };
@@ -107,7 +107,10 @@ struct memory_counting_sort {
  * @param key Function that returns a single integer value used to compare the
  * elements.
  * @param mem Reusable memory for the counting sort algorithm.
- * @post The elements in the range [begin,end) are sorted increasingly.
+ * @post The elements in the range [begin,end) are sorted according to the sorting
+ * criterion.
+ * @post The function @e key is called exactly twice for each element in the
+ * range to be sorted.
  */
 template<
 	typename T, typename It,
@@ -140,7 +143,10 @@ noexcept
 	if constexpr (not memory_has_frequencies) {
 		// calculate frequency of each element
 		for (auto it = begin; it != end; ) {
+			// get the key of the element into a variable so that
+			// the function is NOT called more than once per iteration
 			const std::size_t elem_key = key(*(it++));
+
 			++mem.count[elem_key];
 		}
 	}
@@ -155,7 +161,10 @@ noexcept
 	for (auto it = begin; it != end; ) {
 		++size_container;
 
+		// get the key of the element into a variable so that
+		// the function is NOT called more than once per iteration
 		const std::size_t elem_key = key(*it);
+
 		mem.output[mem.count[elem_key]] = std::move(*(it++));
 		mem.count[elem_key] += 1;
 	}
@@ -197,7 +206,10 @@ noexcept
  * container.
  * @param key Function that returns a single integer value used to compare the
  * elements.
- * @post The elements in the range [begin,end) are sorted increasingly.
+ * @post The elements in the range [begin,end) are sorted according to the sorting
+ * criterion.
+ * @post The function @e key is called exactly twice for each element in the
+ * range to be sorted.
  */
 template<
 	typename T, typename It,
@@ -226,9 +238,7 @@ noexcept
 	countingsort::memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
 
 	counting_sort<T, It, sort_type, false>
-	(begin, end, largest_key+1, key, mem);
-
-	// memory is freed automatically (see destructor)
+		(begin, end, largest_key+1, key, mem);
 }
 
 } // -- namespace detail
