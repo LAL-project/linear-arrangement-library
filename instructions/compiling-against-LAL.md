@@ -3,18 +3,20 @@
 Programs that use LAL have to be compiled with a compiler that supports `C++17` (e.g., GNU's `g++` 9.2.0).
 
 When compiling a `.cpp` into a `.o` file, you have two options:
+
 - configure your system's environment variables so that the compiler can find the header files,
 - or indicate in the compilation command the header directory (with `-I`).
 
 When compiling one or more `.o` into an executable file, again, you have two options:
-- configure your system's environment variables so that the compiler can find the binaries (`.so` in Linux and `.dll` in Windows),
-- or indicate in the compilation command the directory with the binaries (with `-L`).
+
+- configure your system's environment variables so that the compiler can find the library (`.so` in Linux, `.dll` in Windows, and `.dylib` in macOS),
+- or indicate in the compilation command the directory with the library (with `-L`).
 
 There are a few differences between compiling against LAL in Linux and in Windows. The following examples show the minimum requirements for compiling the libraries.
 
 ## Compiling in Linux
 
-Here it is assumed that the library GMP is installed in your system.
+Here it is assumed that the library `GMP` is installed in your system and that you are using `g++`.
 
 ### Debug builds
 
