@@ -11,20 +11,20 @@ Some of the algorithms listed above are implemented for both general graphs and 
 
 For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/). Do not forget to [take a look at the guides!](https://cqllab.upc.edu/lal/guides/).
 
-## Installation of the library and Python interface from binaries
+## Installation of the library from binaries
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- Linux in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md) file. We do not currently maintain any official repository for any of the Linux distributions' package manager.
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md) file.
+- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md). We do not currently maintain any official repository for any of the Linux distributions' package manager.
+- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md).
 
 ## Installation of the library from sources
 
 We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- Ubuntu in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-ubuntu.md) file.
-- Windows in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md) file.
-- Mac OS in [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-macos.md) file.
+- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-ubuntu.md).
+- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md).
+- [Mac OS](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-macos.md).
 
 ## Compile a program that uses LAL
 
