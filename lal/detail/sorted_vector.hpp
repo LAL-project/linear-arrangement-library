@@ -49,6 +49,7 @@
 #include <vector>
 
 namespace lal {
+namespace detail {
 
 template<class T, bool unique>
 class sorted_vector : public std::vector<T> {
@@ -134,4 +135,5 @@ public:
 	}
 };
 
+} // -- namespace detail
 } // -- namespace lal

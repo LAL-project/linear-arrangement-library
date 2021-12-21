@@ -122,7 +122,7 @@ noexcept
 		}
 	}
 
-	sorted_vector<node,true> set_endpoints;
+	detail::sorted_vector<node,true> set_endpoints;
 	for (const auto& [v,w] : cur_deps) {
 		set_endpoints.insert_sorted(v);
 		set_endpoints.insert_sorted(w);
