@@ -51,6 +51,11 @@
 namespace lal {
 namespace detail {
 
+/**
+ * @brief Enumerate the set of edges of the input graph @e g.
+ * @param g Input graph.
+ * @returns A vector with all @e g's edges.
+ */
 template<typename G>
 std::vector<edge> E(const G& g) noexcept {
 	std::vector<edge> e(g.get_num_edges());
@@ -62,6 +67,12 @@ std::vector<edge> E(const G& g) noexcept {
 	return e;
 }
 
+/**
+ * @brief Enumerate the set of pairs of independent edges of the input graph @e g.
+ * @param g Input graph.
+ * @param qs Total amount of pairs of independent edges.
+ * @returns A vector with all @e g's pairs of independent edges.
+ */
 template<typename G>
 std::vector<edge_pair> Q(const G& g, uint64_t qs) noexcept {
 	std::vector<edge_pair> q(qs);

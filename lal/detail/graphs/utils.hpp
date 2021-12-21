@@ -51,7 +51,8 @@
 namespace lal {
 namespace detail {
 
-/* @brief Retrieves the neighbours of a node in an undirected graph as a
+/**
+ * @brief Retrieves the neighbours of a node in an undirected graph as a
  * list of 0-1 values.
  *
  * Sets to 1 the positions in @e neighs that correspond to the nodes
@@ -62,19 +63,18 @@ namespace detail {
  * @pre The contents of @e neighs must be all 0 (or false).
  */
 template<
-	class G,
+	class graph_type,
 	typename char_type,
 	std::enable_if_t<
-		(std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>) &&
+		(std::is_base_of_v<graphs::directed_graph, graph_type> ||
+		std::is_base_of_v<graphs::undirected_graph, graph_type>) &&
 		std::is_integral_v<char_type>,
 	bool> = true
 >
-inline
-void get_bool_neighbours(const G& g, node u, char_type * const neighs)
+void get_bool_neighbours(const graph_type& g, node u, char_type * const neighs)
 noexcept
 {
-	if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_type>) {
 		const auto& in_u = g.get_in_neighbours(u);
 		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
 		const auto& out_u = g.get_out_neighbours(u);
@@ -86,8 +86,10 @@ noexcept
 	}
 }
 
-/*
- * Append adjacency list 'source' to list 'target'
+/**
+ * @brief Append adjacency list 'source' to list 'target'
+ * @param target List into which @e source will be appended to.
+ * @param source List to append to @e target.
  */
 inline
 void append_adjacency_lists
@@ -95,7 +97,6 @@ void append_adjacency_lists
 noexcept
 {
 	const uint64_t n_target = target.size();
-
 	for (std::size_t u = 0; u < source.size(); ++u) {
 		// add new edges by appending all the neighbours of 'u' in 'g'
 		target.push_back( source[u] );

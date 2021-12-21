@@ -266,9 +266,9 @@ noexcept
 // ------------------
 // single arrangement
 
-template<typename GRAPH>
+template<class graph_type>
 uint64_t __call_C_brute_force(
-	const GRAPH& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -277,7 +277,7 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// compute the number of crossings
-	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
+	if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_type>) {
 		return __compute_C_brute_force_undir<false>(g, pi);
 	}
 	else {
@@ -285,35 +285,23 @@ noexcept
 	}
 }
 
-inline
-uint64_t n_C_brute_force(const graphs::undirected_graph& g, const linear_arrangement& pi)
+template<class graph_type>
+uint64_t n_C_brute_force(const graph_type& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_brute_force<graphs::undirected_graph>, g, pi);
-}
-
-inline
-uint64_t n_C_brute_force
-(const graphs::directed_graph& g, const linear_arrangement& pi)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return detail::call_with_empty_arrangement
-			(__call_C_brute_force<graphs::directed_graph>, g, pi);
+			(__call_C_brute_force<graph_type>, g, pi);
 }
 
 // --------------------
 // list of arrangements
 
-template<typename GRAPH>
+template<class graph_type>
 std::vector<uint64_t> n_C_brute_force(
-	const GRAPH& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -331,7 +319,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_type>) {
 			cs[i] = __compute_C_brute_force_undir<false>(g, pis[i]);
 		}
 		else {
@@ -342,35 +330,15 @@ noexcept
 	return cs;
 }
 
-inline
-std::vector<uint64_t> n_C_brute_force(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_brute_force<graphs::directed_graph>(g, pis);
-}
-
-inline
-std::vector<uint64_t> n_C_brute_force(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_brute_force<graphs::undirected_graph>(g, pis);
-}
-
 // -----------------------------------------------------------------------------
 // DECISION
 
 // ------------------
 // single arrangement
 
-template<typename GRAPH>
+template<class graph_type>
 uint64_t __call_brute_force_lesseq_than(
-	const GRAPH& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -380,7 +348,7 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// compute the number of crossings
-	if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
+	if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_type>) {
 		return
 		__compute_C_brute_force_undir<true>(g, pi, upper_bound);
 	}
@@ -390,9 +358,9 @@ noexcept
 	}
 }
 
-inline
+template<class graph_type>
 uint64_t is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t c
 )
@@ -402,30 +370,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_brute_force_lesseq_than<graphs::directed_graph>, g, pi, c);
-}
-
-inline
-uint64_t is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi,
-	uint64_t c
-)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return detail::call_with_empty_arrangement
-			(__call_brute_force_lesseq_than<graphs::undirected_graph>, g, pi, c);
+			(__call_brute_force_lesseq_than<graph_type>, g, pi, c);
 }
 
 // --------------------
 // list of arrangements
 
-template<typename GRAPH>
+template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const GRAPH& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -444,7 +397,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_type>) {
 			cs[i] =
 			__compute_C_brute_force_undir<true>(g, pis[i], upper_bound);
 		}
@@ -457,33 +410,9 @@ noexcept
 	return cs;
 }
 
-inline
+template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t c
-)
-noexcept
-{
-	return is_n_C_brute_force_lesseq_than<graphs::directed_graph>
-			(g, pis, c);
-}
-
-inline
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t c
-)
-noexcept
-{
-	return is_n_C_brute_force_lesseq_than<graphs::undirected_graph>
-			(g, pis, c);
-}
-
-template<typename GRAPH>
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const GRAPH& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
@@ -507,7 +436,7 @@ noexcept
 #endif
 
 		// compute C
-		if constexpr (std::is_base_of_v<graphs::undirected_graph, GRAPH>) {
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_type>) {
 			cs[i] =
 			__compute_C_brute_force_undir<true>(g, pis[i], upper_bounds[i]);
 		}
@@ -518,30 +447,6 @@ noexcept
 	}
 
 	return cs;
-}
-
-inline
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_brute_force_lesseq_than<graphs::directed_graph>
-			(g, pis, upper_bounds);
-}
-
-inline
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_brute_force_lesseq_than<graphs::undirected_graph>
-			(g, pis, upper_bounds);
 }
 
 } // -- namespace detail

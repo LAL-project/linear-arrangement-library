@@ -51,24 +51,45 @@
 namespace lal {
 namespace detail {
 
+/**
+ * @brief Sorted vector class
+ *
+ * This class inherits from std::vector to implement a vector-like container
+ * whose elements are always sorted lexicographically non-decreasing.
+ *
+ * @tparam T type of data.
+ * @tparam unique Whether or not the elements inserted should be unique.
+ */
 template<class T, bool unique>
 class sorted_vector : public std::vector<T> {
 public:
-	sorted_vector() : std::vector<T>() { }
-	sorted_vector(std::size_t n) : std::vector<T>(n) { }
-	sorted_vector(std::size_t n, const T& x) : std::vector<T>(n, x) { }
+	/// Empty constructor
+	sorted_vector() noexcept : std::vector<T>() { }
+	/// Constructor with number of elements
+	sorted_vector(std::size_t n) noexcept : std::vector<T>(n) { }
+	/// Constructor with number of elements and initial element
+	sorted_vector(std::size_t n, const T& x) noexcept : std::vector<T>(n, x) { }
 
-	sorted_vector(const sorted_vector& v) : std::vector<T>(v) { }
-	sorted_vector(sorted_vector&& v) : std::vector<T>(std::move(v)) { }
+	/// Copy constructor
+	sorted_vector(const sorted_vector& v) noexcept : std::vector<T>(v) { }
+	/// Move constructor
+	sorted_vector(sorted_vector&& v) noexcept : std::vector<T>(std::move(v)) { }
 
-	sorted_vector& operator= (const sorted_vector& v) { *this = v; }
-	sorted_vector& operator= (sorted_vector&& v) { *this = std::move(v); }
+	/// Copy-assignment operator
+	sorted_vector& operator= (const sorted_vector& v) noexcept { *this = v; }
+	/// Move-assignment operator
+	sorted_vector& operator= (sorted_vector&& v) noexcept { *this = std::move(v); }
 
-	~sorted_vector() { }
+	/// Empty destructor
+	~sorted_vector() noexcept { }
 
-	// insert sorted, with copies
+	/**
+	 * @brief Insert an element to the vector.
+	 * @param x Element to be inserted.
+	 * @returns An iterator to the inserted element.
+	 */
 	inline typename std::vector<T>::iterator
-	insert_sorted(const T& x) {
+	insert_sorted(const T& x) noexcept {
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, x);
@@ -87,9 +108,13 @@ public:
 			return it;
 		}
 	}
-
+	/**
+	 * @brief Insert an element to the vector.
+	 * @param x Element to be inserted.
+	 * @returns An iterator to the inserted element.
+	 */
 	inline typename std::vector<T>::iterator
-	insert_sorted(T&& x) {
+	insert_sorted(T&& x) noexcept {
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, std::move(x));
@@ -109,9 +134,13 @@ public:
 		}
 	}
 
-	// remove an element, assuming that the element is sorted
+	/**
+	 * @brief Remove an element from the vector.
+	 * @param x Element to be removed.
+	 * @returns An iterator to the previous element in the original vector.
+	 */
 	inline typename std::vector<T>::iterator
-	remove_sorted(const T& x) {
+	remove_sorted(const T& x) noexcept {
 #if defined DEBUG
 		assert(contains(x));
 #endif
@@ -119,14 +148,25 @@ public:
 		return this->erase(i1);
 	}
 
-	// returns whether the vector contains an element
-	inline bool contains(const T& x) const {
+	/**
+	 * @brief Query whether an element is in the vector or not.
+	 *
+	 * Has the same complexity as std::binary_search.
+	 * @param x The element to look for.
+	 * @returns True or false telling if the element is in the vector or not.
+	 */
+	inline bool contains(const T& x) const noexcept {
 		return std::binary_search(this->begin(), this->end(), x);
 	}
 
-	// find the position of an element in logarithmic time
+	/**
+	 * @brief Find the position of an element in the vector.
+	 * @param x The element to be searched.
+	 * @returns An iterator to the element, or std::vector::end() if it does not
+	 * exist.
+	 */
 	inline typename std::vector<T>::iterator
-	find_sorted(const T& x) {
+	find_sorted(const T& x) noexcept {
 		const auto i = std::lower_bound(this->begin(), this->end(), x);
 		if (i == this->end()) { return this->end(); }
 

@@ -55,23 +55,21 @@
 namespace lal {
 namespace detail {
 
-/*
+/**
  * @brief Retrieves the edges of a subtree
- *
- * @param T Input tree.
+ * @tparam get_subsizes Should the result also keep the sizes of the subtrees?
+ * @param T Input rooted tree.
  * @param u Root of the subtree.
  * @param relabel Relabel the vertices? If so, vertex 'u' is relabelled to 0
- * @param subsizes Store in an array the sizes of the subtrees of the subtree
- * rooted at 'u'.
- *
- * @pre The tree is a valid rooted tree
- * @pre The tree has vertex 'u'
+ * @returns A pair consisting of the list of edges and, optionally, a raw pointer
+ * to memory containing the sizes of the subtrees.
+ * @pre The tree is a valid rooted tree.
+ * @pre The tree has vertex 'u'.
  * @post The function has NO ownership of the raw pointer returned in the pair.
  * @post The pointer returned is not nullptr only when T.size_subtrees_valid()
  * AND the boolean parameter sizes are BOTH true.
  */
 template<bool get_subsizes>
-inline
 std::pair<std::vector<edge>, uint64_t *> get_edges_subtree
 (const graphs::rooted_tree& T, node u, bool relabel)
 {

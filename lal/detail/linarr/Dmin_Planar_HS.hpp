@@ -59,10 +59,13 @@
 namespace lal {
 namespace detail {
 
-/* Minimum planar arrangement of a free tree following the description in
- * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
- * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
- * \cite Alemany2021a.
+/**
+ * @brief Minimum planar arrangement of a free tree.
+ *
+ * This function implements the algorithm following the description in
+ * \cite Alemany2022a, i.e., this algorithm uses the approach first described by
+ * Hochberg and Stallmann in \cite Hochberg2003a using the correction in
+ * \cite Alemany2022a.
  *
  * This algorithm first constructs the sorted adjacency matrix rooted
  * at one of the tree's centroidal vertices. Then, it arranges the tree so that
@@ -96,7 +99,7 @@ noexcept
 	// projective arrangement
 
 	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::embed(L, c, arr);
+	const uint64_t D = Dmin_utils::embed<true>(L, c, arr);
 
 	return {D, std::move(arr)};
 }

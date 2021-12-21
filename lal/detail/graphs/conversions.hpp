@@ -57,8 +57,7 @@ namespace detail {
 // -----------------------------------------------------------------------------
 // -- HEAD VECTOR --
 
-/* Constructs the head vector representation of a tree.
- */
+/// Constructs the head vector representation of a tree.
 inline
 head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 {
@@ -80,8 +79,7 @@ head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 	return hv;
 }
 
-/* Constructs the head vector representation of a tree.
- */
+/// Constructs the head vector representation of a tree.
 inline
 head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcept
 {
@@ -91,8 +89,7 @@ head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcep
 	return from_tree_to_head_vector(graphs::rooted_tree(t,r));
 }
 
-/* Converts a head vector into a tree
- */
+/// Converts a head vector into a tree
 template<
 	class tree_type,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_type>
@@ -189,18 +186,24 @@ noexcept
 // -----------------------------------------------------------------------------
 // -- LEVEL SEQUENCE --
 
-/*
+/**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
  * Examples of level sequences:
- * -- linear tree of n nodes:
- *		0 1 2 3 4 ... (n-1) n
- * -- star tree of n nodes
- *		0 1 2 2 2 .... 2 2
- *          |------------| > (n-1) two's
+ *	- linear tree of n nodes:
+	@verbatim
+		0 1 2 3 4 ... (n-1) n
+	@endverbatim
+ *	- star tree of n nodes
+	@verbatim
+		0 1 2 2 2 .... 2 2
+		   |------------| > (n-1) two's
+	@endverbatim
  *
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
+ * @param normalise Should the tree be normalised?
+ * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with the sequence level @e L.
  * @pre n >= 2.
  * @pre The size of L is exactly @e n + 1.
@@ -264,16 +267,15 @@ noexcept
 // -----------------------------------------------------------------------------
 // -- PRUFER SEQUENCE --
 
-/*
+/**
  * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
  *
  * For details on Prüfer sequences, see \cite Pruefer1918a.
- *
- * The algorithm used to decode the sequence is the one presented in
- * \cite Alonso1995a.
- * @param S The Prufer sequence sequence.
+ * @param seq The Prufer sequence sequence.
  * @param n Number of nodes of the tree.
- * @returns The tree built with @e L.
+ * @param normalise Should the tree be normalised?
+ * @param check Should it be checked whether the tree is normalized or not?
+ * @returns The tree built with @e seq.
  */
 inline
 graphs::free_tree Prufer_sequence_to_ftree
@@ -330,11 +332,21 @@ noexcept
 	return t;
 }
 
+/**
+ * @brief Converts the Prüfer sequence of a labelled tree into a tree structure.
+ *
+ * For details on Prüfer sequences, see \cite Pruefer1918a.
+ * @param seq The Prufer sequence sequence.
+ * @param n Number of nodes of the tree.
+ * @param normalise Should the tree be normalised?
+ * @param check Should it be checked whether the tree is normalized or not?
+ * @returns The tree built with @e seq.
+ */
 inline
 graphs::free_tree Prufer_sequence_to_ftree
-(const std::vector<uint64_t>& S, uint64_t n, bool normalise = true, bool check = true)
+(const std::vector<uint64_t>& seq, uint64_t n, bool normalise = true, bool check = true)
 noexcept
-{ return Prufer_sequence_to_ftree(&S[0], n, normalise, check); }
+{ return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
 
 } // -- namespace detail

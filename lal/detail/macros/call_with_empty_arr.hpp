@@ -50,18 +50,19 @@
 namespace lal {
 namespace detail {
 
-/*
+/**
  * @brief Call a function @e F that does not admit empty arrangements.
  *
- * In case the arrangement @e pi is empty, function @e F is passed the
+ * In case the arrangement @e arr is empty, function @e F is passed the
  * identity arrangement.
  *
- * @tparam result_t The type of the function's reuslt
- * @tparam graph_t The type of input graph of the function
- * @tparam Params The other parameters of the function
+ * @tparam result_t The type of the function's reuslt.
+ * @tparam graph_t The type of input graph of the function @e F.
+ * @tparam Params The remaining parameters of the function.
  * @param F Function to call.
  * @param g Input graph.
- * @param pi Arrangement.
+ * @param arr Arrangement.
+ * @param P Remaining parameters of the function F.
  * @returns The value function @e F returns.
  */
 template<typename result_t, typename graph_t, typename ... Params>

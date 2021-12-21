@@ -54,49 +54,57 @@
 namespace lal {
 namespace detail {
 
-/* This class implements an abstract graph breadth-first traversal.
+/**
+ * @brief Abstract graph Breadth-First Search traversal.
  *
- * Users of this class can control the traversal by setting custom control-flow
- * functions. The user can set:
+ * The traversal can be controlled by setting custom control-flow functions:
  * - a function used for early termination of the traversal
  * (see @ref set_terminate),
  * - a function that processes the current node in the traversal
  * (see @ref set_process_current),
  * - a function that processes the current edge in the traversal
  * (see @ref set_process_neighbour),
- * - a function that can decide when to add another node to the queue of the
- * traversal (see @ref set_node_add).
  *
  * This graph_traversal traversal can also use "reversed edges" when doing traversals on
  * directed graphs. A back edge in a directed graph of a node u is a node
  * that points to u, namely, the directed edge is of the form (v,u), for another
- * node v of the graph. This can be set via the @ref set_use_back_edges method.
+ * node v of the graph. This can be set via the @ref set_use_rev_edges method.
+ *
+ * An example of usage is as follows:
+ @code
+ detail::BFS<graphs::undirected_graph> bfs(g); // 'g' is an undirected graph
+ bfs.set_terminate( ... ); // assign a function to decide when to terminate the search.
+ bfs.set_process_neighbour( ... ); // assign a function to process neighbours
+ bfs.start_at(0); // start the traversal now at node 0.
+ @endcode
+ *
+ * @tparam graph_type Type of graph.
  */
 template<
-	typename G,
-	bool is_directed = std::is_base_of_v<graphs::directed_graph, G>,
+	class graph_type,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_type>,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, G> ||
-		std::is_base_of_v<graphs::undirected_graph, G>
+		std::is_base_of_v<graphs::directed_graph, graph_type> ||
+		std::is_base_of_v<graphs::undirected_graph, graph_type>
 		, bool
 	> = true
 >
 class BFS {
 public:
-	typedef std::function<void (const BFS<G>&, node)> BFS_process_one;
-	typedef std::function<void (const BFS<G>&, node, node, bool)> BFS_process_two;
-	typedef std::function<bool (const BFS<G>&, node)> BFS_bool_one;
-	typedef std::function<bool (const BFS<G>&, node, node)> BFS_bool_two;
+	typedef std::function<void (const BFS<graph_type>&, node)> BFS_process_one;
+	typedef std::function<void (const BFS<graph_type>&, node, node, bool)> BFS_process_two;
+	typedef std::function<bool (const BFS<graph_type>&, node)> BFS_bool_one;
+	typedef std::function<bool (const BFS<graph_type>&, node, node)> BFS_bool_two;
 
 public:
-	// Constructor
-	BFS(const G& g) : m_G(g), m_vis(m_G.get_num_nodes()) {
+	/// Constructor
+	BFS(const graph_type& g) noexcept : m_G(g), m_vis(m_G.get_num_nodes()) {
 		reset();
 	}
-	// Destructor
-	~BFS() { }
+	/// Destructor
+	~BFS() noexcept { }
 
-	// Set the graph_traversal to its default state.
+	/// Set the graph_traversal to its default state.
 	void reset() noexcept {
 		reset_visited();
 		clear_structure();
@@ -110,12 +118,20 @@ public:
 		set_node_add_default();
 	}
 
+	/**
+	 * @brief Start traversal at a given node.
+	 * @param source Node.
+	 */
 	void start_at(node source) noexcept {
 		m_X.push(source);
 		m_vis[source] = 1;
 		do_traversal();
 	}
 
+	/**
+	 * @brief Start the traversal at every given node.
+	 * @param sources List of node.
+	 */
 	void start_at(const std::vector<node>& sources) noexcept {
 		for (const node& u : sources) {
 			m_X.push(u);
@@ -126,62 +142,67 @@ public:
 
 	/* SETTERS */
 
-	// set whether the traversal can use reversed edges
+	/// Set whether the traversal can use reversed edges
 	void set_use_rev_edges(bool use) noexcept { m_use_rev_edges = use; }
 
-	// see @ref m_term
+	/// Set the default value of @ref m_term.
 	void set_terminate_default() noexcept
-	{ m_term = [](const BFS<G>&, const node) -> bool { return false; }; }
+	{ m_term = [](const BFS<graph_type>&, const node) -> bool { return false; }; }
+	/// Set the function that controls the termination of the loop.
 	void set_terminate(const BFS_bool_one& f) noexcept
 	{ m_term = f; }
 
-	// see @ref m_proc_cur
+	/// Set the default value of @ref m_proc_cur.
 	void set_process_current_default() noexcept
-	{ m_proc_cur = [](const BFS<G>&, const node) -> void { }; }
+	{ m_proc_cur = [](const BFS<graph_type>&, const node) -> void { }; }
+	/// Set the function that controls the processing of the current node.
 	void set_process_current(const BFS_process_one& f) noexcept
 	{ m_proc_cur = f; }
 
-	// see @ref m_proc_neigh
+	/// Set the default value of @ref m_proc_neigh.
 	void set_process_neighbour_default() noexcept
-	{ m_proc_neigh = [](const BFS<G>&, const node, const node, bool) -> void { }; }
+	{ m_proc_neigh = [](const BFS<graph_type>&, const node, const node, bool) -> void { }; }
+	/// Set the function that controls the processing of the current neighbour.
 	void set_process_neighbour(const BFS_process_two& f) noexcept
 	{ m_proc_neigh = f; }
 
 	// see @ref m_add_node
 	void set_node_add_default() noexcept
-	{ m_add_node = [](const BFS<G>&, const node, const node) -> bool { return true; }; }
+	{ m_add_node = [](const BFS<graph_type>&, const node, const node) -> bool { return true; }; }
 	void set_node_add(const BFS_bool_two& f) noexcept
 	{ m_add_node = f; }
 
-	/*
+	/**
 	 * @brief Should the algorithm call the neighbour processing function
 	 * for already visited neighbours?
 	 * @param v Either true or false.
 	 */
-	void set_process_visited_neighbours(bool v) noexcept { m_proc_vis_neighs = v; }
+	void set_process_visited_neighbours(bool v) noexcept
+	{ m_proc_vis_neighs = v; }
 
-	// Sets all nodes to not visited.
+	/// Sets all nodes to not visited.
 	void reset_visited() noexcept { m_vis.fill(0); }
 
+	/// Clear the memory allocated for this structure.
 	void clear_structure() noexcept { std::queue<node> q; m_X.swap(q); }
 
-	// Set node @e u as visited.
+	/// Set node @e u as visited or not.
 	void set_visited(node u, char vis) noexcept { m_vis[u] = vis; }
 
 	/* GETTERS */
 
-	// Returns the set of visited nodes.
+	/// Returns whether or not node @e u has been visited.
 	bool node_was_visited(node u) const noexcept { return m_vis[u]; }
 
-	// have all nodes been visited?
+	/// Have all nodes been visited?
 	bool all_visited() const noexcept {
 		return std::all_of(m_vis.begin(), m_vis.end(), [](auto x){return x == 1;});
 	}
 
-	// returns the graph
-	const G& get_graph() const noexcept { return m_G; }
+	/// Returns a constant reference to the graph
+	const graph_type& get_graph() const noexcept { return m_G; }
 
-	// Return visited nodes information
+	/// Return visited nodes information
 	const data_array<char>& get_visited() const noexcept { return m_vis; }
 
 protected:
@@ -201,10 +222,9 @@ protected:
 		}
 	}
 
-	// process neighbours
-	//     when the graph is an undirected graph
+	/// Process the neighbours of node @e s in an undirected graph.
 	template<
-		class GG = G,
+		class GG = graph_type,
 		std::enable_if_t<
 			std::is_base_of_v<graphs::undirected_graph, GG>, bool
 		> = true
@@ -218,9 +238,9 @@ protected:
 		}
 	}
 
-	//     when the graph is a directed graph
+	/// Process the neighbours of node @e s in an directed graph.
 	template<
-		class GG = G,
+		class GG = graph_type,
 		std::enable_if_t<
 			std::is_base_of_v<graphs::directed_graph, GG>, bool
 		> = true
@@ -243,9 +263,13 @@ protected:
 		}
 	}
 
+	/// Return the next node in line.
 	node next_node() const noexcept { return m_X.front(); }
 
-	/* The graph_traversal traversal is implemented as follows:
+	/**
+	 * @brief Traversal through the graph's vertices.
+	 *
+	 * The graph_traversal traversal is implemented as follows:
 	 *
 	 * <pre>
 	 * ProcessNeighbourhood(graph, u, Nv):
@@ -265,10 +289,11 @@ protected:
 	 *
 	 * <pre>
 	 * graph_traversal(graph, source):
-	 *	 1.	vis = {false}	// set of |V(graph)| bits set to false
-	 *	 2.	X = {source}	// structure of the traversal,
-	 *	   					// initialised with the source,
-	 *						// either a stack or a queue.
+	 *    .	// set of |V(graph)| bits set to false
+	 *	 1.	vis = {false}
+	 *    .	// structure of the traversal, initialised with the source,
+	 *	  .	// either a stack or a queue.
+	 *	 2.	X = {source}
 	 *	 3.	while X is not empty do
 	 *	 4.		v = X.front or X.top
 	 *	 5.		remove X's top
@@ -306,22 +331,22 @@ protected:
 	}
 
 protected:
-	// Constant reference to the graph.
-	const G& m_G;
-	// The structure of the traversal (either a queue or a stack).
+	/// Constant reference to the graph.
+	const graph_type& m_G;
+	/// The structure of the traversal (either a queue or a stack).
 	std::queue<node> m_X;
-	// The set of visited nodes.
+	/// The set of visited nodes.
 	data_array<char> m_vis;
-	// Should we process already visitied neighbours?
+	/// Should we process already visitied neighbours?
 	bool m_proc_vis_neighs = false;
-	// Use back edges in directed graphs.
+	/// Use back edges in directed graphs.
 	bool m_use_rev_edges = false;
 
 protected:
-	/*
+	/**
 	 * @brief graph_traversal early terminating function.
 	 *
-	 * Returns true if the @ref graph_traversal algorithm should terminate.
+	 * Returns true if the graph_traversal algorithm should terminate.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
 	 * @param graph_traversal The object containing the traversal. This also contains
@@ -330,7 +355,7 @@ protected:
 	 */
 	BFS_bool_one m_term;
 
-	/*
+	/**
 	 * @brief graph_traversal node processing function.
 	 *
 	 * Processes the current node visited.
@@ -342,7 +367,7 @@ protected:
 	 */
 	BFS_process_one m_proc_cur;
 
-	/*
+	/**
 	 * @brief graph_traversal neighbour node processing function.
 	 *
 	 * Processes the next visited node. The direction of the nodes
@@ -358,7 +383,7 @@ protected:
 	 */
 	BFS_process_two m_proc_neigh;
 
-	/*
+	/**
 	 * @brief graph_traversal node addition function.
 	 *
 	 * Determines whether a node @e s should be added to the queue or not.

@@ -58,7 +58,7 @@ namespace detail {
 
 namespace __lal {
 
-/*
+/**
  * @brief Calculate the size of every subtree of the tree @e t.
  *
  * @param t Input tree.
@@ -69,20 +69,19 @@ namespace __lal {
  * @pre Parameter @e sizes has size the number of vertices.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::rooted_tree, T> ||
-		std::is_base_of_v<graphs::free_tree, T>,
+		std::is_base_of_v<graphs::rooted_tree, tree_type> ||
+		std::is_base_of_v<graphs::free_tree, tree_type>,
 	bool> = true
 >
-inline
 void get_size_subtrees
-(const T& t, const node u, const node v, uint64_t * const sizes)
+(const tree_type& t, const node u, const node v, uint64_t * const sizes)
 noexcept
 {
 	sizes[v] = 1;
 
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
@@ -105,7 +104,7 @@ noexcept
 
 } // -- namespace __lal
 
-/*
+/**
  * @brief Calculate the size of every subtree of tree @e t.
  *
  * The method starts calculating the sizes at node @e r. Since rooted trees
@@ -113,19 +112,17 @@ noexcept
  * may not calculate every subtree's size.
  * @param t Input rooted tree.
  * @param r Start calculating sizes of subtrees at this node.
- * @param vis Mark nodes as visited as the algorithm goes on.
  * @param sizes The size of the subtree rooted at every reachable node from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::rooted_tree, T> ||
-		std::is_base_of_v<graphs::free_tree, T>,
+		std::is_base_of_v<graphs::rooted_tree, tree_type> ||
+		std::is_base_of_v<graphs::free_tree, tree_type>,
 	bool> = true
 >
-inline
-void get_size_subtrees(const T& t, node r, uint64_t * const sizes)
+void get_size_subtrees(const tree_type& t, node r, uint64_t * const sizes)
 noexcept
 {
 #if defined DEBUG
@@ -136,7 +133,7 @@ noexcept
 
 namespace __lal {
 
-/*
+/**
  * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(s,t)\f$ reachable
  * from \f$v\f$ in the subtree \f$T^u_v\f$.
  *
@@ -149,7 +146,6 @@ namespace __lal {
  * Notice that the values are not stored in an actual map (std::map, or similar),
  * but in a vector.
  * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
- * @tparam Iterated_Type The type that will store the sizes.
  * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
  * the list of bidirectional sizes.
  * @param t Input tree.
@@ -174,7 +170,6 @@ template<
 		bool
 	> = true
 >
-inline
 uint64_t calculate_bidirectional_sizes
 (const tree_type& t, const uint64_t n, const node u, const node v, Iterator_Type& it)
 noexcept
@@ -204,17 +199,17 @@ noexcept
 
 } // -- namespace __lal
 
-/*
- * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
+/**
+ * @brief Calculates the values \f$s_u(v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * Calculates the values \f$s(u,v)\f$ for all edges \f$(u,v)\f$ in linear time.
+ * Calculates the values \f$s_u(v)\f$ for all edges \f$(u,v)\f$ in linear time.
  * This is an implementation of the algorithm described in \cite Hochberg2003a
  * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
  *
  * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
- * The value \f$s(u,v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
- * i.e., \f$|V(T^u_v)|\f$.
+ * The value \f$s_u(v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
+ * i.e., \f$s_u(v)=|V(T^u_v)|\f$.
  *
  * Example of usage (mind the vector! its initial size is \f$2*m\f$).
  *
@@ -250,7 +245,6 @@ template<
 		bool
 	> = true
 >
-inline
 void calculate_bidirectional_sizes
 (const tree_type& t, const uint64_t n, const node x, Iterator_Type& it)
 noexcept
@@ -275,15 +269,17 @@ noexcept
 
 namespace __lal {
 
-/*
- * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(s,t)\f$ reachable
- * from \f$v\f$ in the subtree \f$T^u_v\f$.
+/**
+ * @brief Calculates the values \f$s_u(v)\f$ for the edges \f$(u,v)\f$ reachable
+ * from vertex @e x.
  *
- * This function calculates the 'map' relating each edge \f$(u, v)\f$ with the
- * size of the subtree rooted at \f$v\f$ with respect to the hypothetical root
- * \f$u\f$. This is an implementation of the algorithm described in
- * \cite Hochberg2003a (proof of lemma 8 (page 63), and the beginning of
- * section 6 (page 65)).
+ * Calculates the values \f$s_u(v)\f$ for all edges \f$(u,v)\f$ in linear time.
+ * This is an implementation of the algorithm described in \cite Hochberg2003a
+ * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
+ *
+ * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
+ * The value \f$s_u(v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
+ * i.e., \f$s_u(v)=|V(T^u_v)|\f$.
  *
  * Notice that the values are not stored in an actual map (std::map, or similar),
  * but in a vector.
@@ -317,7 +313,6 @@ template<
 		bool
 	> = true
 >
-inline
 uint64_t calculate_bidirectional_sizes(
 	const tree_type& t,
 	const uint64_t n,
@@ -354,17 +349,17 @@ noexcept
 
 } // -- namespace __lal
 
-/*
- * @brief Calculates the values \f$s(u,v)\f$ for the edges \f$(u,v)\f$ reachable
+/**
+ * @brief Calculates the values \f$s_u(v)\f$ for the edges \f$(u,v)\f$ reachable
  * from vertex @e x.
  *
- * Calculates the values \f$s(u,v)\f$ for all edges \f$(u,v)\f$ in linear time.
+ * Calculates the values \f$s_u(v)\f$ for all edges \f$(u,v)\f$ in linear time.
  * This is an implementation of the algorithm described in \cite Hochberg2003a
  * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
  *
  * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
- * The value \f$s(u,v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
- * i.e., \f$|V(T^u_v)|\f$.
+ * The value \f$s_u(v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
+ * i.e., \f$s_u(v)=|V(T^u_v)|\f$.
  *
  * Example of usage (mind the vector! its initial size is \f$2*m\f$).
  *
@@ -403,7 +398,6 @@ template<
 		bool
 	> = true
 >
-inline
 void calculate_bidirectional_sizes(
 	const tree_type& t,
 	const uint64_t n, const node x,

@@ -47,7 +47,7 @@
 namespace lal {
 namespace detail {
 
-/*
+/**
  * @brief Insertion sort.
  *
  * @param begin Iterator at the beginning of the container.
@@ -55,9 +55,7 @@ namespace detail {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<typename It>
-inline
-void insertion_sort(It begin, It end)
-noexcept
+void insertion_sort(It begin, It end) noexcept
 {
 	if (begin == end) { return; }
 	for (It i = begin + 1; i != end; ++i) {

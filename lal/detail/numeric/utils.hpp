@@ -52,7 +52,7 @@ namespace detail {
 
 /* Other arithmetic operations */
 
-/*
+/**
  * @brief Computes the exponentiation of a big integer to another big integer.
  *
  * Fast exponentiation algorithm.
@@ -103,7 +103,7 @@ void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept  {
 	mpz_clear(e_minus_one);
 }
 
-/*
+/**
  * @brief Rational-Integer division.
  *
  * Divide a rational \f$r\f$ by an integer \f$k\f$.
@@ -125,12 +125,12 @@ void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept {
 	mpz_clear(b);
 }
 
-/*
+/**
  * @brief Rational-Rational division.
  *
  * Divide a rational \f$r_1\f$ by another rational \f$r_2\f$.
- * @param[out] r1 The rational to be divided by \f$k\f$. Result is \f$r_1 := r_1/r_2\f$.
- * @param[in] r2 The integer that divides the rational.
+ * @param[out] num The rational to be divided by \f$k\f$. Result is \f$r_1 := r_1/r_2\f$.
+ * @param[in] den The rational that divides the rational.
  */
 inline
 void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
@@ -152,7 +152,7 @@ void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
 	mpz_clears(a, b, c, d, nullptr);
 }
 
-/*
+/**
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
@@ -190,7 +190,7 @@ void operate_power(mpq_t& r, uint64_t p) noexcept {
 	mpz_clears(num, den, nullptr);
 }
 
-/*
+/**
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
@@ -230,9 +230,8 @@ void operate_power(mpq_t& r, const mpz_t& p) noexcept {
 
 /* Getters of mpz_t objects */
 
-// Return the amount of bytes of a gmp's integer value.
-inline
-std::size_t mpz_bytes(const mpz_t& v) noexcept
+/// Returns the amount of bytes of a gmp's integer value.
+inline std::size_t mpz_bytes(const mpz_t& v) noexcept
 {
 	const std::size_t alloc = static_cast<std::size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;

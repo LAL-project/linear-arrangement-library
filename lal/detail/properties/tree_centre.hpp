@@ -56,7 +56,7 @@
 namespace lal {
 namespace detail {
 
-/*
+/**
  * @brief Calculate the centre of the connected component that has node @e x.
  *
  * Here, "centre" should NOT be confused with "centroid". The center is the set
@@ -72,24 +72,25 @@ namespace detail {
  * This method finds the central nodes of the connected components node
  * 'x' belongs to.
  *
+ * @tparam tree_type type of tree.
  * @param t Input tree.
- * @param x Input node.
+ * @param X Input node.
+ * @pre Input tree @e t may be a forest.
  * @returns A tuple of two values: the nodes in the centre. If the
  * tree has a single central node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
-std::pair<node, node> retrieve_centre(const T& t, node X) noexcept
+std::pair<node, node> retrieve_centre(const tree_type& t, node X) noexcept
 {
-
+	// number of nodes of the whole tree
 	const auto n = t.get_num_nodes();
 
 	// First simple case:
@@ -106,7 +107,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) noexcept
 
 		// only neighbour of X
 		node v2;
-		if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
+		if constexpr (std::is_base_of_v<graphs::free_tree, tree_type>) {
 			v2 = t.get_neighbours(X)[0];
 		}
 		else {
@@ -117,7 +118,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) noexcept
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
-	BFS<T> bfs(t);
+	BFS<tree_type> bfs(t);
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
@@ -159,7 +160,7 @@ std::pair<node, node> retrieve_centre(const T& t, node X) noexcept
 	}
 	);
 
-	if constexpr (std::is_base_of_v<graphs::free_tree, T>)
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_type>)
 	{ bfs.set_use_rev_edges(false); }
 	else
 	{ bfs.set_use_rev_edges(true); }

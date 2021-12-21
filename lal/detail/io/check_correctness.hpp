@@ -60,24 +60,6 @@
 namespace lal {
 namespace detail {
 
-inline
-graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
-noexcept
-{
-	const uint64_t n = hv.size();
-	graphs::directed_graph t(n);
-	for (uint64_t i = 0; i < n; ++i) {
-		if (hv[i] != 0) {
-			// add the edge:
-			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, hv[i] - 1);
-		}
-	}
-	t.finish_bulk_add(true);
-	return t;
-}
-
 #define file_does_not_exist(F) \
 "Error: Treebank '" + F + "' does not exist."
 
@@ -109,8 +91,33 @@ is not a valid non-negative integer number."
 #define self_loop(pos) \
 "Error: found a self-loop at position '" + std::to_string(pos) + "'."
 
-template<bool decide>
+/// Transforms a head vector in a directed graph
 inline
+graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
+noexcept
+{
+	const uint64_t n = hv.size();
+	graphs::directed_graph t(n);
+	for (uint64_t i = 0; i < n; ++i) {
+		if (hv[i] != 0) {
+			// add the edge:
+			// * i ranges in [0,n-1]
+			// * L[i] ranges in [1,n]
+			t.add_edge_bulk(i, hv[i] - 1);
+		}
+	}
+	t.finish_bulk_add(true);
+	return t;
+}
+
+/**
+ * @brief Find errors in a line of a treebank.
+ * @tparam decide When true, return a value as soon as an error is found.
+ * @param current_line The line being analyzed.
+ * @param line Line number of the treebank.
+ * @returns A Boolean if @e decide is true, a list of errors if otherwise.
+ */
+template<bool decide>
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
 find_errors(const std::string& current_line, const std::size_t line)
 noexcept
@@ -234,8 +241,13 @@ noexcept
 	else { return treebank_err_list;}
 }
 
+/**
+ * @brief Find errors in a treebank file.
+ * @tparam decide When true, return a value as soon as an error is found.
+ * @param treebank_filename Name of the treebank file.
+ * @returns A Boolean if @e decide is true, a list of errors if otherwise.
+ */
 template<bool decide>
-inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
@@ -280,9 +292,14 @@ noexcept
 	else { return treebank_err_list; }
 }
 
-// file, line, what
+/**
+ * @brief Find errors in a treebank collection.
+ * @tparam decide When true, return a value as soon as an error is found.
+ * @param main_file_name Name of the collection's main file.
+ * @param n_threads Number of threads that this function can use.
+ * @returns A Boolean if @e decide is true, a list of errors if otherwise.
+ */
 template<bool decide>
-inline
 std::conditional_t<decide, bool, std::vector<io::report_treebank_collection>>
 check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)

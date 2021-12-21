@@ -48,7 +48,11 @@
 namespace lal {
 namespace detail {
 
-// It type 'It' a pointer to type or an iterator whose value type is T?
+/**
+ * @brief Decide if a type is a pointer or iterator to another.
+ * @tparam Iterated_Type Underlying type.
+ * @tparam Iterator Alleged iterator type.
+ */
 template<typename Iterated_Type, typename Iterator>
 struct is_pointer_iterator {
 	static constexpr bool value =
@@ -58,9 +62,10 @@ struct is_pointer_iterator {
 			Iterated_Type
 		>;
 };
-// value of 'is_pointer_iterator'
+
+/// Shorthand for @ref is_pointer_iterator.
 template<typename Iterated_Type, typename Iterator>
-inline constexpr bool is_pointer_iterator_v =
+constexpr bool is_pointer_iterator_v =
 	is_pointer_iterator<Iterated_Type, Iterator>::value;
 
 } // -- namespace detail

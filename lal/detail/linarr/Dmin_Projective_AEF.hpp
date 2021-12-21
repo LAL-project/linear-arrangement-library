@@ -58,8 +58,11 @@
 namespace lal {
 namespace detail {
 
-/* Minimum projective arrangement of a rooted tree following the description in
- * \cite Alemany2021a.
+/**
+ * @brief Minimum projective arrangement of a rooted tree.
+ *
+ * This function implements the algorithm following the description in
+ * \cite Alemany2022a.
  *
  * This algorithm frst constructs the sorted adjacency matrix rooted
  * at the tree's root. Then, it arranges the tree so that there are no edge

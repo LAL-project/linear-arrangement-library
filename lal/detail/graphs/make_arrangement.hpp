@@ -55,8 +55,17 @@ namespace detail {
 
 namespace __lal {
 
+/**
+ * @brief Make an arrangement using permutations.
+ * @tparam container Object containing the permutations.
+ * @param T Input rooted tree.
+ * @param r Root of the current subtree.
+ * @param data The permutations used to construct the arrangement.
+ * @param[out] pos Current position in the arrangement.
+ * @param[arr] arr Arrangement constructed.
+ */
 template<class container>
-void __make_arrangement_intervals(
+void __make_arrangement_permutations(
 	const graphs::rooted_tree& T, node r,
 	const container& data,
 	position& pos, linear_arrangement& arr
@@ -78,15 +87,22 @@ noexcept
 			arr.assign(vi, pos++);
 		}
 		else {
-			__make_arrangement_intervals(T, vi, data, pos, arr);
+			__make_arrangement_permutations(T, vi, data, pos, arr);
 		}
 	}
 }
 
 } // namespace __lal
 
+/**
+ * @brief Make an arrangement using permutations.
+ * @tparam container Object containing the permutations.
+ * @param T Input rooted tree.
+ * @param data The permutations to construct the arrangement from.
+ * @returns The arrangement constructed with the permutations.
+ */
 template<class container>
-linear_arrangement make_arrangement_intervals(
+linear_arrangement make_arrangement_permutations(
 	const graphs::rooted_tree& T,
 	const container& data
 )
@@ -94,7 +110,7 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::__make_arrangement_intervals(T, T.get_root(), data, pos, arr);
+	__lal::__make_arrangement_permutations(T, T.get_root(), data, pos, arr);
 	return arr;
 }
 
@@ -103,9 +119,20 @@ noexcept
 
 namespace __lal {
 
+/**
+ * @brief Make an arrangement using permutations.
+ * @tparam container Object containing the permutations.
+ * @param T Input rooted tree.
+ * @param parent Parent of node @e u.
+ * @param u Root of the current subtree.
+ * @param data The permutations used to construct the arrangement.
+ * @param[out] pos Current position in the arrangement.
+ * @param[arr] arr Arrangement constructed.
+ */
 template<class container>
-void __make_arrangement_intervals(
-	const graphs::free_tree& T, node parent, node u,
+void __make_arrangement_permutations(
+	const graphs::free_tree& T,
+	node parent, node u,
 	const container& data,
 	position& pos, linear_arrangement& arr
 )
@@ -126,14 +153,22 @@ noexcept
 			arr.assign(vi, pos++);
 		}
 		else {
-			__make_arrangement_intervals(T, u, vi, data, pos, arr);
+			__make_arrangement_permutations(T, u, vi, data, pos, arr);
 		}
 	}
 }
 } // -- namespace __lal
 
+/**
+ * @brief Make an arrangement using permutations.
+ * @tparam container Object containing the permutations.
+ * @param T Input rooted tree.
+ * @param root Node used as root.
+ * @param data The permutations to construct the arrangement from.
+ * @returns The arrangement constructed with the permutations.
+ */
 template<class container>
-linear_arrangement make_arrangement_intervals(
+linear_arrangement make_arrangement_permutations(
 	const graphs::free_tree& T, node root,
 	const container& data
 )
@@ -141,7 +176,7 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::__make_arrangement_intervals(T, root, root, data, pos, arr);
+	__lal::__make_arrangement_permutations(T, root, root, data, pos, arr);
 	return arr;
 }
 

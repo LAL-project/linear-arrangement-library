@@ -64,8 +64,21 @@ typedef lal::detail::data_array<size_node> ordering;
 namespace lal {
 namespace detail {
 
+/// Namespace that holds function for Shiloach's algorithm for the minimum linear
+/// arrangement problem.
 namespace dmin_Shiloach {
 
+/**
+ * @brief Calculate \f$p_{\alpha}\f$.
+ *
+ * See \cite Shiloach1979a for details.
+ * @tparam anchored Is the tree anchored?
+ * @param n Number of vertices of the tree.
+ * @param ord Ordering of the children of a vertex in non-increasing order.
+ * @param s_0 Value \f$s_0\f$.
+ * @param s_1 Value \f$s_1\f$.
+ * @returns Maximum \f$p_\alpha\f$.
+ */
 template<char anchored>
 uint64_t calculate_p_alpha(
 	const uint64_t n, const ordering& ord,
@@ -149,14 +162,22 @@ noexcept
 	return max_p;
 }
 
-// t: input forest a single connected component of which has to be arranged.
-// alpha: indicates whether the connected component of 't' is rooted or anchored.
-// root_or_anchor: node used as a reference to the said connected component.
-//     Its value is within [1,n]
-// start: position where to start placing the vertices (the leftmost position
-//     in the mla for the subtree).
-// end: position where to end placing the vertices (the rightmost position
-//     int the mla for the subtree).
+/**
+ * @brief Calculate a minimum linear arrangment using Shiloach's algorithm.
+ *
+ * For further details, see \cite Shiloach1979a.
+ * @tparam alpha indicates whether the connected component of 't' is rooted or anchored.
+ * @tparam make_arrangement Whether or not the arrangement should be constructed.
+ * @param t input forest a single connected component of which has to be arranged.
+ * @param root_or_anchor: node used as a reference to the said connected component.
+ * Its value is within [1,n]
+ * @param start position where to start placing the vertices (the leftmost position
+ * in the mla for the subtree).
+ * @param end position where to end placing the vertices (the rightmost position
+ * int the mla for the subtree).
+ * @param[out] mla A minimum arrangement.
+ * @param[out] cost The cost of the minimum arrangement.
+ */
 template<char alpha, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
@@ -341,6 +362,15 @@ noexcept
 
 } // -- namespace dmin_shiloach
 
+/**
+ * @brief Calculates a minimum linear arrangment using Shiloach's algorithm.
+ *
+ * See \cite Shiloach1979a for further details.
+ * @tparam make_arrangement Whether or not the arrangement should be constructed.
+ * @param t Input free tree.
+ * @returns Either a pair of <cost, linear arrangement> or just the cost depending
+ * on the value of the template parameter @e make_arrangement.
+ */
 template<bool make_arrangement>
 std::conditional_t<
 	make_arrangement,

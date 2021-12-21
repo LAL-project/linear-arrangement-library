@@ -45,7 +45,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/definitions.hpp>
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
@@ -58,429 +58,430 @@ namespace detail {
  * algorithms to calculate the number of edge crossings.
  */
 
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
+template<class graph_type>
 uint64_t n_C_brute_force(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 ) noexcept;
-uint64_t n_C_brute_force(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi
-) noexcept;
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
+template<class graph_type>
 std::vector<uint64_t> n_C_brute_force(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-) noexcept;
-std::vector<uint64_t> n_C_brute_force(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 ) noexcept;
 
-/*
+/**
  * @brief Returns whether the number of crossings is less than a given constant.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 uint64_t is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-) noexcept;
-uint64_t is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
+/**
  * @brief Returns whether the number of crossings is less than a given constant.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
+ * is applied to all linear arrangements.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	uint64_t upper_bound
-) noexcept;
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
+/**
  * @brief Returns whether the number of crossings is less than a given constant.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. To each arrangement
+ * corresponds only one upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param upper_bound Constant (upper bound).
+ * @param upper_bounds List of constants (each an upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	const std::vector<uint64_t>& upper_bounds
-) noexcept;
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
 
 // -----------------------------------------------------------------------------
 
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a linear arrangement of its nodes, computes using
- * dynamic programming the number of edges that cross in such linear
- * arrangement. If the arrangement is not specified, the identity arrangement
- * is used.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
+template<class graph_type>
 uint64_t n_C_dynamic_programming(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 ) noexcept;
-uint64_t n_C_dynamic_programming(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi
-) noexcept;
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a list of linear arrangements of its nodes, computes
- * using dynamic programming the number of edges that cross in every linear
- * arrangement.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
+template<class graph_type>
 std::vector<uint64_t> n_C_dynamic_programming(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-) noexcept;
-std::vector<uint64_t> n_C_dynamic_programming(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
+ * is applied to all linear arrangements.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 uint64_t is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-) noexcept;
-uint64_t is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. To each arrangement
+ * corresponds only one upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	uint64_t upper_bound
-) noexcept;
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. To each arrangement
+ * corresponds only one upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param upper_bound Constant (upper bound).
+ * @param pi List of linear arrangements of the nodes. When one is omitted,
+ * \f$\pi_I\f$ is used.
+ * @param upper_bounds List of constants (each an upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	const std::vector<uint64_t>& upper_bounds
-) noexcept;
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
 
 // -----------------------------------------------------------------------------
 
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a permutation of its nodes, computes using
- * dynamic programming the number of edges that cross in such linear
- * arrangement. If the arrangement is not specified, the identity arrangement
- * is used.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
+template<class graph_type>
 uint64_t n_C_ladder(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 ) noexcept;
-uint64_t n_C_ladder(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi
-) noexcept;
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a list of linear arrangements of its nodes, computes
- * using dynamic programming the number of edges that cross in such linear
- * arrangement.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
+template<class graph_type>
 std::vector<uint64_t> n_C_ladder(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-) noexcept;
-std::vector<uint64_t> n_C_ladder(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 uint64_t is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-) noexcept;
-uint64_t is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
+ * is applied to all linear arrangements.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param pi List of linear arrangements of the nodes. When one is omitted,
+ * \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	uint64_t upper_bound
-) noexcept;
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. To each arrangement
+ * corresponds only one upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param upper_bound Constant (upper bound).
+ * @param pi List of linear arrangements of the nodes. When one is omitted,
+ * \f$\pi_I\f$ is used.
+ * @param upper_bounds List of constants (each an upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pi,
-	const std::vector<uint64_t>& upper_bounds
-) noexcept;
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
 
 // -----------------------------------------------------------------------------
 
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a linear arrangements of its nodes, computes
- * using the algorithm by K. Palios and G. Pitsiladis the number of edges that
- * cross in such linear arrangement. If the arrangement is not specified, the
- * identity arrangement is used.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
+template<class graph_type>
 uint64_t n_C_stack_based(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 ) noexcept;
-/*
- * @brief Computes the number of edge crossings in a linear arrangement.
+
+/**
+ * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
- * Given a graph, and a list of linear arrangements of its nodes, computes
- * using the algorithm by K. Palios and G. Pitsiladis the number of edges that
- * cross in such linear arrangement. If the arrangement is not specified, the
- * identity arrangement is used.
+ * Given a graph, and a linear arrangement of its nodes, computes by
+ * brute force the number of edges that cross in such linear arrangement.
+ * If the arrangement is not specified, the identity arrangement is used.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pis List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
+template<class graph_type>
 std::vector<uint64_t> n_C_stack_based(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 uint64_t is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
+ * is applied to all linear arrangements.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	uint64_t upper_bound
 ) noexcept;
 
-/*
- * @brief Returns whether the number of crossings is less than a given constant.
+/**
+ * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
  *
- * Given a graph, and a linear arrangement of its nodes, tells by
- * brute force whether the number of edges that cross in such linear arrangement
- * is less than the given constant.
- * If the arrangement is not specified, the identity arrangement is used.
+ * Given a graph \f$G\f$ and a linear arrangements \f$\pi\f$ of its nodes, returns
+ * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
+ * given upper bound constant \f$u\f$. In case the number of crossings is greater,
+ * returns a value strictly larger than the upper bound.
+ *
+ * This is applied to every linear arrangement in @e pi. To each arrangement
+ * corresponds only one upper bound.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @param upper_bound Constant (upper bound).
+ * @param upper_bounds List of constants (each an upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns \f$m^2+1\f$ if otherwise.
+ * to the upper bound. The function returns \f$u+1\f$ if otherwise.
  */
+template<class graph_type>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pi,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;

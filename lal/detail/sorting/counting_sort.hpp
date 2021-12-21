@@ -52,24 +52,46 @@
 namespace lal {
 namespace detail {
 
+/// The set of functions related to the counting sort algorithm.
 namespace countingsort {
 
-// Non-decreasing sort.
+/// Non-decreasing sort.
 struct non_decreasing_t { };
-// Non-increasing sort.
+/// Non-increasing sort.
 struct non_increasing_t { };
 
+/**
+ * @brief Memory used for the counting sort algorithm.
+ *
+ * This allows users of the algorithm to initialize it outside the algorithm,
+ * thus being able to save some time.
+ */
 template<typename T>
 struct memory_counting_sort {
+	/// Amount of times the key of an element occurs.
 	data_array<std::size_t> count;
+	/// The output array.
 	data_array<T> output;
 
+	/// Constructor.
 	memory_counting_sort() noexcept = default;
+	/// Copy constructor.
 	memory_counting_sort(const memory_counting_sort&) noexcept = default;
+	/// Move constructor.
 	memory_counting_sort(memory_counting_sort&&) noexcept = default;
+	/// Copy assignment operator.
 	memory_counting_sort& operator= (const memory_counting_sort&) noexcept = default;
+	/// Move assignment operator.
 	memory_counting_sort& operator= (memory_counting_sort&&) noexcept = default;
 
+	/**
+	 * @brief Constructor with largest key (+1) and maximum container size.
+	 * @param largest_key_plus_1 The value of the largest key over all elements
+	 * to be sorted (+1).
+	 * @param max_size_container The size of the container, equal to the largest
+	 * key over all elements to be sorted. This is typically equal to @e largest_key_plus_1
+	 * but not necessarily.
+	 */
 	memory_counting_sort(
 		const std::size_t largest_key_plus_1,
 		const std::size_t max_size_container
@@ -79,20 +101,22 @@ struct memory_counting_sort {
 		  output(max_size_container)
 	{ }
 
+	/// Destructor.
 	~memory_counting_sort() noexcept = default;
 
+	/// Set the @ref count member to 0.
 	void reset_count() { count.fill(0); }
 };
 
 } // -- namespace countingsort
 
-/*
+/**
  * @brief Counting sort algorithm with reusable memory.
  *
- * This algorithm is interesting for sorting containers with non-unique values.
- * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
+ * This algorithm is interesting for sorting containers with non-unique values
+ * that can be easily mapped to integers within a reasonable range, e.g., in the
+ * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
- * Template parameters:
  * @tparam T Iterated type
  * @tparam It Iterator type
  * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
@@ -125,7 +149,6 @@ template<
 		bool
 	> = true
 >
-inline
 void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key_plus_1,
@@ -185,11 +208,12 @@ noexcept
 	}
 }
 
-/*
+/**
  * @brief Counting sort algorithm.
  *
- * This algorithm is interesting for sorting containers with non-unique values.
- * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
+ * This algorithm is interesting for sorting containers with non-unique values
+ * that can be easily mapped to integers within a reasonable range, e.g., in the
+ * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
  * @tparam T Iterated type
@@ -199,8 +223,8 @@ noexcept
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
- * @param M Integer value equal to the largest key that can be obtained with
- * function @e key.
+ * @param largest_key Integer value equal to the largest key that can be
+ * obtained with function @e key.
  * @param upper_bound_size An upper bound of he size of the container to be
  * sorted. The lowest value is std::distance(begin,end), the actual size of the
  * container.
@@ -223,7 +247,6 @@ template<
 		bool
 	> = true
 >
-inline
 void counting_sort(
 	It begin, It end,
 	const std::size_t largest_key,

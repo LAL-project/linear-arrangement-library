@@ -204,7 +204,7 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	m_previous_root = rand_root;
 
 	// construct arrangement
-	return detail::make_arrangement_intervals(m_T, rand_root, m_rdata);
+	return detail::make_arrangement_permutations(m_T, rand_root, m_rdata);
 }
 
 } // -- namespace generate

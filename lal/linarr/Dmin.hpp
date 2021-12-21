@@ -101,12 +101,12 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
  *
- * This function implements the algorithm published in \cite Alemany2021a.
+ * This function implements the algorithm published in \cite Alemany2022a.
  *
  * Computes an optimal planar linear arrangement for free trees. A planar linear
  * arrangement is an arrangement in which there are no edge crossings. This problem
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
+ * and Stallmann \cite Hochberg2003a. See \cite Alemany2022a for a review.
  * @param t Input free tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and an optimum arrangement.
@@ -121,12 +121,12 @@ noexcept;
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
  *
- * This function implements the algorithm published in \cite Alemany2021a.
+ * This function implements the algorithm published in \cite Alemany2022a.
  *
  * Computes an optimal planar linear arrangement for free trees. A planar linear
  * arrangement is an arrangement in which there are no edge crossings. This problem
  * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2021a for a review.
+ * and Stallmann \cite Hochberg2003a. See \cite Alemany2022a for a review.
  *
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_undirected())
@@ -153,7 +153,7 @@ noexcept
  * projective linear arrangement is an arrangement in which there are no edge
  * crossings and the root is not covered by any edge.
  *
- * This function implements the algorithm in \cite Alemany2021a. A non-linear
+ * This function implements the algorithm in \cite Alemany2022a. A non-linear
  * time algorithm to solve this problem was oulined in \cite Gildea2007a.
  *
  * @param t Input rooted tree.

@@ -65,9 +65,9 @@ namespace detail {
 // ACTUAL ALGORITHM
 // =============================================================================
 
-inline
+template<class graph_type>
 void fill_adjP_adjN(
-	const graphs::graph& g, const linear_arrangement& pi,
+	const graph_type& g, const linear_arrangement& pi,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	std::size_t * const size_adjN_u
@@ -133,9 +133,9 @@ noexcept
 //		returns m*m + 1 if the number of crossings is greater than the upper_bound
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
-template<bool decide_upper_bound>
+template<class graph_type, bool decide_upper_bound>
 uint64_t __compute_C_stack_based(
-	const graphs::graph& g, const linear_arrangement& pi,
+	const graph_type& g, const linear_arrangement& pi,
 	std::size_t * const size_adjN_u,
 	uint64_t upper_bound = 0
 )
@@ -193,9 +193,9 @@ noexcept
 // CALLS TO ALGORITHM
 // =============================================================================
 
-inline
+template<class graph_type>
 uint64_t __call_C_stack_based(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -207,15 +207,15 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<false>(g, pi, size_adjN_u.begin());
+	return __compute_C_stack_based<graph_type,false>(g, pi, size_adjN_u.begin());
 }
 
 // ------------------
 // single arrangement
 
-inline
+template<class graph_type>
 uint64_t n_C_stack_based(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -223,15 +223,16 @@ noexcept
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
-	return detail::call_with_empty_arrangement(__call_C_stack_based, g, pi);
+	return detail::call_with_empty_arrangement
+			(__call_C_stack_based<graph_type>, g, pi);
 }
 
 // --------------------
 // list of arrangements
 
-inline
+template<class graph_type>
 std::vector<uint64_t> n_C_stack_based(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -253,7 +254,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<false>
+		cs[i] = __compute_C_stack_based<graph_type,false>
 				(g, pis[i], size_adjN_u.begin());
 	}
 
@@ -263,9 +264,9 @@ noexcept
 // -----------------------------------------------------------------------------
 // DECISION
 
-inline
+template<class graph_type>
 uint64_t __call_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -278,16 +279,16 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<true>
+	return __compute_C_stack_based<graph_type,true>
 			(g, pi, size_adjN_u.begin(), upper_bound);
 }
 
 // ------------------
 // single arrangement
 
-inline
+template<class graph_type>
 uint64_t is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -297,15 +298,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_stack_based_lesseq_than, g, pi, upper_bound);
+			(__call_C_stack_based_lesseq_than<graph_type>, g, pi, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
-inline
+template<class graph_type>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -328,16 +329,16 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<true>
+		cs[i] = __compute_C_stack_based<graph_type,true>
 				(g, pis[i], size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
 }
 
-inline
+template<class graph_type>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graphs::graph& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
@@ -365,7 +366,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<true>
+		cs[i] = __compute_C_stack_based<graph_type,true>
 				(g, pis[i], size_adjN_u.begin(), upper_bounds[i]);
 	}
 

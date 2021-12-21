@@ -98,7 +98,7 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	}
 
 	// generate arrangement from data
-	return detail::make_arrangement_intervals(m_rT, m_rdata);
+	return detail::make_arrangement_permutations(m_rT, m_rdata);
 }
 
 } // -- namespace generate

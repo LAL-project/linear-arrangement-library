@@ -54,15 +54,17 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
-#include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
 namespace detail {
 
-/* Minimum projective arrangement of a rooted tree following the description in
- * \cite Alemany2021a, i.e., this algorithm uses the approach first described by
- * Hochberg and Stallmann in \cite Hochberg2003 using the correction in
- * \cite Alemany2021a.
+/**
+ * @brief Minimum projective arrangement of a rooted tree.
+ *
+ * This function implements the algorithm following the description in
+ * \cite Alemany2022a, i.e., this algorithm uses the approach first described by
+ * Hochberg and Stallmann in \cite Hochberg2003a using the correction in
+ * \cite Alemany2022a.
  *
  * This algorithm first constructs the sorted adjacency matrix rooted
  * at the tree's root. Then, it arranges the tree so that there are no edge
@@ -95,7 +97,7 @@ noexcept
 	// construct the optimal projective arrangement
 
 	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::embed(L, r, arr);
+	const uint64_t D = Dmin_utils::embed<true>(L, r, arr);
 
 	return {D, std::move(arr)};
 }

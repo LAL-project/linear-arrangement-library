@@ -64,7 +64,7 @@ enum class algorithms_Dmin_planar {
 	 * @brief Alemany-Esteban-Ferrer's algorithm.
 	 *
 	 * Interval-based approach to the calculation of minimum planar arrangements.
-	 * Algorithm published in \cite Alemany2021a.
+	 * Algorithm published in \cite Alemany2022a.
 	 *
 	 * This algorithm's complexity is \f$O(n)\f$.
 	 */
@@ -75,7 +75,7 @@ enum class algorithms_Dmin_planar {
 	 *
 	 * Displacement-based approach to the calculation of minimum planar
 	 * arrangements. The algorithm was originally published in \cite Hochberg2003a,
-	 * however, the implementation uses the correction in \cite Alemany2021a.
+	 * however, the implementation uses the correction in \cite Alemany2022a.
 	 *
 	 * This algorithm's complexity is \f$O(n)\f$.
 	 */

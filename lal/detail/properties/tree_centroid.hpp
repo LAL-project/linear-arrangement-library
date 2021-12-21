@@ -59,9 +59,34 @@ namespace detail {
 
 namespace __lal {
 
-// N: actual number of vertices of the tree
-// n: number of vertices of the connected component of x
-// x: start at node x
+/**
+ * @brief Retrieves the centroid of the tree
+ *
+ * While looking for the centroid, this function updates @e L and @e sizes_edge.
+ *
+ * This function uses @ref lal::detail::calculate_bidirectional_sizes, an
+ * algorithm described in \cite Hochberg2003a (see function's documentation for
+ * details).
+ *
+ * @tparam tree_type The type of tree.
+ * @param t Input tree.
+ * @param N Actual number of vertices of the tree
+ * @param n Number of vertices of the connected component of node @e x.
+ * @param x Starting node. Node of the component whose centroid we want.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param[out] sizes_edge Auxiliary memory to construct @e L. For every edge
+ * \f$\{u,v\}\f$ contains two pairs \f$((u,v), s)\f$ and \f$((v,u), n-s)\f$,
+ * where \f$n\f$ is the number of vertices of the connected component of 'x'
+ * and \f$s=|V(T^u_v)|\f$.
+ * @returns A tuple of two values: the nodes in the centroid. If the
+ * tree has a single centroidal node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
+ * @post @e L is updated. It is sorted decreasingly.
+ * @post @e sizes_edge is updated.
+ */
 template<
 	class tree_type,
 	std::enable_if_t<
@@ -69,7 +94,6 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
 std::pair<node, node> retrieve_centroid(
 	const tree_type& t,
 	const uint64_t N, const uint64_t n, const node x,
@@ -145,7 +169,7 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-/*
+/**
  * @brief Calculate the centroid of the connected component that has node @e x.
  *
  * Here, "centroid" should NOT be confused with "centre". The centre is the set
@@ -160,29 +184,34 @@ noexcept
  * components. So, this method finds the centroidal nodes of the connected
  * component node @e x belongs to.
  *
- * This function uses @ref lal::detail::calculate_suvs, an algorithm described
- * in \cite Hochberg2003a (see function's documentation for details).
+ * This function calls @ref lal::detail::__lal::retrieve_centroid.
+ *
+ * @tparam tree_type Type of tree.
  * @param t Input tree.
  * @param x Input node.
- * @param[out] L A sorted and enriched adjacency list where @e M[u] is a list of
- * pairs \f$(v,sv)\f$ where @e v is a neighbour of @e u and @e sv is the size of
- * the subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
- * @param[out] sizes_edge See documentation of method detail::calculate_suvs.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param[out] sizes_edge Auxiliary memory to construct @e L. For every edge
+ * \f$\{u,v\}\f$ contains two pairs \f$((u,v), s)\f$ and \f$((v,u), n-s)\f$,
+ * where \f$n\f$ is the number of vertices of the connected component of @e x
+ * and \f$s=|V(T^u_v)|\f$.
  * @returns A tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
+ * @post @e L is updated. It is sorted decreasingly.
+ * @post @e sizes_edge is updated.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
 std::pair<node, node> retrieve_centroid(
-	const T& t, const node x,
+	const tree_type& t, const node x,
 	std::vector<std::vector<node_size>>& L,
 	std::vector<edge_size>& sizes_edge
 )
@@ -200,21 +229,27 @@ noexcept
 	return __lal::retrieve_centroid(t, component_size, n, x, L, sizes_edge);
 }
 
-/*
+/**
  * @brief Calculate the centroid of the connected component that has node @e x.
  *
  * For details on the parameters and return value see documentation of the
  * function above.
+ * @tparam tree_type Type of tree.
+ * @param t Input tree
+ * @param x Node belonging to a connected component whose centroid we want.
+ * @returns A tuple of two values: the nodes in the centroid. If the
+ * tree has a single centroidal node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
-std::pair<node, node> retrieve_centroid(const T& t, const node x)
+std::pair<node, node> retrieve_centroid(const tree_type& t, const node x)
 noexcept
 {
 	std::vector<std::vector<node_size>> M;
@@ -224,7 +259,7 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-/*
+/**
  * @brief Calculate the centroid of the tree @e t.
  *
  * Here, "centroid" should NOT be confused with "centre". The centre is the set
@@ -234,13 +269,15 @@ noexcept
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * This function uses @ref lal::detail::calculate_suvs, an algorithm described
- * in \cite Hochberg2003a (see function's documentation for details).
+ * @tparam tree_type Type of the input tree.
  * @param t Input tree.
- * @param[out] M A sorted and enriched adjacency list where @e M[u] is a list of
- * pairs (v,sv) where @e v is a neighbour of @e u and @e sv is the size of the
- * subtree rooted at @e v with parent @e u. The list is sorted decreasingly.
- * @param[out] sizes_edge See documentation of method detail::calculate_suvs.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param[out] sizes_edge Auxiliary memory to construct @e L. For every edge
+ * \f$\{u,v\}\f$ contains two pairs \f$((u,v), s)\f$ and \f$((v,u), n-s)\f$,
+ * where \f$n\f$ is the number of vertices of the connected component of @e x
+ * and \f$s=|V(T^u_v)|\f$.
  * @returns A tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
@@ -248,15 +285,14 @@ noexcept
  * @pre The tree @e t is a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
 std::pair<node, node> retrieve_centroid(
-	const T& t,
+	const tree_type& t,
 	std::vector<std::vector<node_size>>& L,
 	std::vector<edge_size>& sizes_edge
 )
@@ -272,21 +308,31 @@ noexcept
 	return __lal::retrieve_centroid(t, n, n, 0, L, sizes_edge);
 }
 
-/*
+/**
  * @brief Calculate the centroid of the tree @e t.
  *
- * For details on the parameters and return value see documentation of the
- * function above.
+ * Here, "centroid" should NOT be confused with "centre". The centre is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex. In both case, if
+ * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
+ * for further details.
+ *
+ * @tparam tree_type Type of the input tree.
+ * @param t Input tree.
+ * @returns A tuple of two values: the nodes in the centroid. If the
+ * tree has a single centroidal node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
-std::pair<node, node> retrieve_centroid(const T& t)
+std::pair<node, node> retrieve_centroid(const tree_type& t)
 noexcept
 {
 	std::vector<std::vector<node_size>> L;
@@ -294,11 +340,25 @@ noexcept
 	return retrieve_centroid(t, L, sizes_edge);
 }
 
-/*
+/**
  * @brief Calculate the centroid of the tree @e t.
  *
- * For details on the parameters and return value see documentation of the
- * function above.
+ * Here, "centroid" should NOT be confused with "centre". The centre is the set
+ * of (at most) two vertices that have minimum eccentricity. The centroid is the
+ * set of (at most) two vertices that have minimum weight, where the weight is
+ * the maximum size of the subtrees rooted at that vertex. In both case, if
+ * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
+ * for further details.
+ *
+ * @tparam tree_type Type of the input tree.
+ * @param t Input tree.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @returns A tuple of two values: the nodes in the centroid. If the
+ * tree has a single centroidal node, only the first node is valid and the second
+ * is assigned an invalid vertex index. It is guaranteed that the first vertex
+ * has smaller index value than the second.
  */
 template<
 	class T,
@@ -307,7 +367,6 @@ template<
 		std::is_base_of_v<graphs::rooted_tree, T>,
 	bool> = true
 >
-inline
 std::pair<node, node> retrieve_centroid
 (const T& t, std::vector<std::vector<node_size>>& L)
 noexcept

@@ -50,32 +50,39 @@
 namespace lal {
 namespace detail {
 
-/*
- * @brief Wrapper of an array for autmatic deallocation of memory.
+/**
+ * @brief Wrapper of a C array for autmatic deallocation of memory.
  *
  * Automatically manage deallocation of memory via destructors.
  */
 template<typename T>
 struct data_array {
 public:
-	// Default constructor
+	/// Default constructor
 	data_array() noexcept = default;
 
-	// Constructor with size
+	/**
+	 * @brief Constructor with size
+	 * @param n Size.
+	 */
 	data_array(const std::size_t n) noexcept : m_size(n) {
 		alloc_data();
 	}
-	// Constructor with size and initial value
+	/**
+	 * @brief Constructor with size
+	 * @param n Size.
+	 * @param v Value to initialize the array with.
+	 */
 	data_array(const std::size_t n, const T& v) noexcept : data_array(n) {
 		fill(v);
 	}
-	// Copy constructor
+	/// Copy constructor
 	data_array(const data_array& d) noexcept : data_array(d.m_size) {
 		if (m_size > 0) {
 			std::copy(d.begin(), d.end(), begin());
 		}
 	}
-	// Copy assignment operator
+	/// Copy assignment operator
 	data_array& operator= (const data_array& d) noexcept {
 		if (m_size != d.m_size) {
 			delete[] m_data;
@@ -88,7 +95,7 @@ public:
 		return *this;
 	}
 
-	// Move constructor
+	/// Move constructor
 	data_array(data_array&& d) noexcept {
 		// steal data
 		m_data = d.m_data;
@@ -97,7 +104,7 @@ public:
 		d.m_data = nullptr;
 		d.m_size = 0;
 	}
-	// Move assignment operator
+	/// Move assignment operator
 	data_array& operator= (data_array&& d) noexcept {
 		// free yourself
 		delete[] m_data;
@@ -110,7 +117,7 @@ public:
 		return *this;
 	}
 
-	// COPY constructor from generic container
+	/// Copy constructor from generic container
 	template<template<typename... Args> class container, typename... Types>
 	data_array(const container<Types...>& v) noexcept : data_array(v.size()) {
 		// assert first type in Types... is 'T'
@@ -119,7 +126,7 @@ public:
 		std::copy(v.begin(), v.end(), begin());
 	}
 
-	// COPY assignment from generic container
+	/// Copy assignment operator from generic container
 	template<template<typename... Args> class container, typename... Types>
 	data_array& operator= (const container<Types...>& v) noexcept {
 		// assert first type in Types... is 'T'
@@ -130,18 +137,25 @@ public:
 		return *this;
 	}
 
-	// Destructor
+	/// Destructor
 	~data_array() noexcept {
 		clear();
 	}
 
+	/// Clear the contents of the array.
 	void clear() noexcept {
 		delete[] m_data;
+		m_size = 0;
 		// this is for those who like calling the destructor...
 		m_data = nullptr;
 	}
 
-	// resize the array
+	/**
+	 * @brief Resize the array.
+	 *
+	 * Does nothing if @e new_size is the same as the current size.
+	 * @param new_size The new size of the array.
+	 */
 	void resize(std::size_t new_size) noexcept {
 		if (new_size != m_size or m_data == nullptr) {
 			delete[] m_data;
@@ -150,7 +164,13 @@ public:
 		}
 	}
 
-	// resize-initialize the array
+	/**
+	 * @brief Resize-initialize the array
+	 *
+	 * Resizes and initializes the array in the same function.
+	 * @param new_size New size of the array.
+	 * @param v Value to initialize the array with.
+	 */
 	void resize(std::size_t new_size, const T& v) noexcept {
 		resize(new_size);
 		if (m_size > 0) {
@@ -158,11 +178,21 @@ public:
 		}
 	}
 
-	// imitate the vector::size() method
+	/**
+	 * @brief Size of the array.
+	 *
+	 * Imitate the vector::size() method.
+	 * @returns The size of the array.
+	 */
 	[[nodiscard]]
 	std::size_t size() const noexcept { return m_size; }
 
-	// operator[]
+	/**
+	 * @brief Element at position @e i.
+	 *
+	 * Same as std::vector::operator[]
+	 * @returns A non-constant reference to the @e i-th element.
+	 */
 	[[nodiscard]]
 	T& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
@@ -170,6 +200,12 @@ public:
 #endif
 		return m_data[i];
 	}
+	/**
+	 * @brief Element at position @e i.
+	 *
+	 * Same as std::vector::operator[]
+	 * @returns A constant reference to the @e i-th element.
+	 */
 	[[nodiscard]]
 	const T& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
@@ -178,50 +214,83 @@ public:
 		return m_data[i];
 	}
 
-	// return the first element
-	[[nodiscard]] T& first() noexcept { return *m_data; }
-	[[nodiscard]] const T& first() const noexcept { return *m_data; }
-	// return the last element
-	[[nodiscard]] T& back() noexcept { return *(m_data + m_size - 1); }
-	[[nodiscard]] const T& back() const noexcept { return *(m_data + m_size - 1); }
+	/// Non-constant reference to the first element in the array.
+	[[nodiscard]] T& first() noexcept {
+#if defined DEBUG
+		assert(m_size > 0);
+#endif
+		return *m_data;
+	}
+	/// Constant reference to the first element in the array.
+	[[nodiscard]] const T& first() const noexcept {
+#if defined DEBUG
+		assert(m_size > 0);
+#endif
+		return *m_data;
+	}
+	/// Non-constant reference to the last element in the array.
+	[[nodiscard]] T& back() noexcept {
+#if defined DEBUG
+		assert(m_size > 0);
+#endif
+		return *(m_data + m_size - 1);
+	}
+	/// Constant reference to the first element in the array.
+	[[nodiscard]] const T& back() const noexcept {
+#if defined DEBUG
+		assert(m_size > 0);
+#endif
+		return *(m_data + m_size - 1);
+	}
 
-	// assign the same value to every element in the data
+	/// Assign the same value to every element in the data
 	void fill(const T& v) noexcept {
 		std::fill(begin(), end(), v);
 	}
 
-	// pointer to a specific location in the memory
-	[[nodiscard]] T *at(std::size_t n) noexcept {
+	/**
+	 * @brief Pointer at a specific location of the array.
+	 * @param i Position.
+	 * @returns A non-constant raw pointer.
+	 */
+	[[nodiscard]] T *at(std::size_t i) noexcept {
 #if defined DEBUG
-		assert(n < m_size);
+		assert(i < m_size);
 #endif
-		return &m_data[n];
+		return &m_data[i];
 	}
-	[[nodiscard]] T const *at(std::size_t n) const noexcept {
+	/**
+	 * @brief Pointer at a specific location of the array.
+	 * @param i Position.
+	 * @returns A constant raw pointer.
+	 */
+	[[nodiscard]] T const *at(std::size_t i) const noexcept {
 #if defined DEBUG
-		assert(n < m_size);
+		assert(i < m_size);
 #endif
-		return &m_data[n];
+		return &m_data[i];
 	}
 
-	// pointer to non-constant first element and last+1 element
+	/// Non-constant raw pointer to first element.
 	[[nodiscard]] T *begin() noexcept { return m_data; }
+	/// Non-constant raw pointer to last+1 element.
 	[[nodiscard]] T *end() noexcept { return m_data + m_size; }
 
-	// pointer to constant first element and last+1 element
+	/// Constant raw pointer to first element.
 	[[nodiscard]] T const *begin() const noexcept { return m_data; }
+	/// Constant raw pointer to last+1 element.
 	[[nodiscard]] T const *end() const noexcept { return m_data + m_size; }
 
 private:
-	// allocate memory for array m_data only when m_size > 0
+	/// Allocate memory for array m_data only when @ref m_size > 0.
 	void alloc_data() noexcept {
 		m_data = m_size == 0 ? nullptr : new T[m_size];
 	}
 
 protected:
-	// the data of this array
+	/// Pointer to the memory allocated by this array.
 	T *m_data = nullptr;
-	// the size of this array in number of elements
+	/// the size of this array in number of elements.
 	std::size_t m_size = 0;
 };
 

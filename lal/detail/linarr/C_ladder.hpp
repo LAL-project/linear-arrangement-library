@@ -130,9 +130,9 @@ noexcept
 // ------------------
 // single arrangement
 
-template<class G>
+template<class graph_type>
 uint64_t __call_C_ladder(
-	const G& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -147,13 +147,13 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<G,false>
+	return __compute_C_ladder<graph_type,false>
 			(g, pi, boolean_neighborhood.begin(), L1.begin());
 }
 
-inline
+template<class graph_type>
 uint64_t n_C_ladder(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -162,29 +162,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_ladder<graphs::directed_graph>, g, pi);
-}
-
-inline
-uint64_t n_C_ladder(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi
-)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return detail::call_with_empty_arrangement
-			(__call_C_ladder<graphs::undirected_graph>, g, pi);
+			(__call_C_ladder<graph_type>, g, pi);
 }
 
 // --------------------
 // list of arrangements
 
-template<class G>
+template<class graph_type>
 std::vector<uint64_t> n_C_ladder(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -209,7 +195,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder<G,false>
+		cs[i] = __compute_C_ladder<graph_type,false>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin());
 
 		boolean_neighborhood.fill(0);
@@ -219,33 +205,15 @@ noexcept
 	return cs;
 }
 
-inline
-std::vector<uint64_t> n_C_ladder(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_ladder<graphs::directed_graph>(g, pis);
-}
-std::vector<uint64_t> n_C_ladder(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_ladder<graphs::undirected_graph>(g, pis);
-}
-
 // -----------------------------------------------------------------------------
 // DECISION
 
 // ------------------
 // single arrangement
 
-template<class G>
+template<class graph_type>
 uint64_t __call_C_ladder_is_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -261,13 +229,13 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<G,true>
+	return __compute_C_ladder<graph_type,true>
 			(g, pi, boolean_neighborhood.begin(), L1.begin(), upper_bound);
 }
 
-inline
+template<class graph_type>
 uint64_t is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -277,30 +245,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_ladder_is_lesseq_than<graphs::directed_graph>, g, pi, upper_bound);
-}
-
-inline
-uint64_t is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return detail::call_with_empty_arrangement
-			(__call_C_ladder_is_lesseq_than<graphs::undirected_graph>, g, pi, upper_bound);
+			(__call_C_ladder_is_lesseq_than<graph_type>, g, pi, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
-template<class G>
+template<class graph_type>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -326,7 +279,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder<G,true>
+		cs[i] = __compute_C_ladder<graph_type,true>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -339,33 +292,9 @@ noexcept
 	return cs;
 }
 
-inline
+template<class graph_type>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t upper_bound
-)
-noexcept
-{
-	return is_n_C_ladder_lesseq_than<graphs::directed_graph>
-			(g, pis, upper_bound);
-}
-
-inline
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t upper_bound
-)
-noexcept
-{
-	return is_n_C_ladder_lesseq_than<graphs::undirected_graph>
-			(g, pis, upper_bound);
-}
-
-template<typename G>
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
@@ -398,7 +327,7 @@ noexcept
 		// compute C
 		boolean_neighborhood.fill(0);
 
-		cs[i] = __compute_C_ladder<G,true>
+		cs[i] = __compute_C_ladder<graph_type,true>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -409,30 +338,6 @@ noexcept
 	}
 
 	return cs;
-}
-
-inline
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_ladder_lesseq_than<graphs::directed_graph>
-			(g, pis, upper_bounds);
-}
-
-inline
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_ladder_lesseq_than<graphs::undirected_graph>
-			(g, pis, upper_bounds);
 }
 
 } // -- namespace detail

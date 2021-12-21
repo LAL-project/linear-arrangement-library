@@ -54,14 +54,16 @@ namespace detail {
 
 namespace __lal {
 
-/*
- * @brief Sorts the elements within range [begin, end)
- *
+/**
+ * @brief Sorts the elements within range [@e begin, @e end)
+ * @tparam T The type of the values ot be sorted.
+ * @tparam It The type of iterator over the range [@e being, @e end)
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
+ * @param m Smallest value in the range to sort.
  * @param seen The bit array used to sort.
- * @pre All values of @e mem must be set to false.
- * @pre All values within [begin, end) must be unique.
+ * @pre All values of @e mem are set to false.
+ * @pre All values within [begin, end) are unique.
  * @post All the values of @e seen are set to false.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
@@ -72,7 +74,6 @@ template<
 		bool
 	> = true
 >
-inline
 void __bit_sort(It begin, It end, const T& m, char * const seen)
 noexcept
 {
@@ -102,9 +103,10 @@ noexcept
 
 } // -- namespace __lal
 
-/*
+/**
  * @brief Sort integer values increasingly.
- *
+ * @tparam T The type of the values ot be sorted.
+ * @tparam It The type of iterator over the range [@e being, @e end)
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
  * @param size The value of std::distance(begin, end), i.e., the number of
@@ -122,7 +124,6 @@ template<
 		bool
 	> = true
 >
-inline
 void bit_sort_mem(It begin, It end, const std::size_t size, char * const seen)
 noexcept
 {
@@ -140,9 +141,10 @@ noexcept
 	__lal::__bit_sort(begin,end, static_cast<T>(0), seen);
 }
 
-/*
+/**
  * @brief Sort integer values increasingly.
- *
+ * @tparam T The type of the values ot be sorted.
+ * @tparam It The type of iterator over the range [@e being, @e end)
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
  * @param size The value of std::distance(begin, end), i.e., the number of
@@ -157,7 +159,6 @@ template<
 		bool
 	> = true
 >
-inline
 void bit_sort(It begin, It end, const std::size_t size)
 noexcept
 {

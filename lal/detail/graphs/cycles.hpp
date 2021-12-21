@@ -51,7 +51,7 @@ namespace detail {
 
 namespace __lal {
 
-/*
+/**
  * @brief Returns true if, and only if, the graph has cycles.
  * @param g Input graph.
  * @param u Node of the directed graph
@@ -83,8 +83,8 @@ bool __find_cycle
 	return false;
 }
 
-/*
- * @brief Returns true if, and only if, the graph has DIRECTED cycles.
+/**
+ * @brief Returns true if, and only if, the graph has *DIRECTED* cycles.
  * @param g Input graph.
  * @param vis Array of size 'n', where 'n' is the number of vertices of 'g'.
  * @param in_stack Array of size 'n', where 'n' is the number of vertices of 'g'.
@@ -111,7 +111,7 @@ bool has_directed_cycles(
 
 } // -- namespace __lal
 
-/*
+/**
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
@@ -128,11 +128,12 @@ bool has_directed_cycles(const graphs::directed_graph& g) {
 
 namespace __lal {
 
-/*
+/**
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.
  * @param g Input graph.
+ * @param bfs Breadth-First Search object.
  * @returns Whether the graph has cycles or not.
  */
 template<class G>
@@ -191,7 +192,7 @@ bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 
 } // -- namespace __lal
 
-/*
+/**
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.

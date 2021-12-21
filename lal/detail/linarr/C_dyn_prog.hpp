@@ -249,9 +249,9 @@ noexcept
 	return __compute_C_dyn_prog<G, false>(g, pi, bool_neighs.begin(), M,K);
 }
 
-inline
+template<class graph_type>
 uint64_t n_C_dynamic_programming(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -260,29 +260,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_dyn_prog<graphs::directed_graph>, g, pi);
-}
-
-inline
-uint64_t n_C_dynamic_programming(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi
-)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return detail::call_with_empty_arrangement
-			(__call_C_dyn_prog<graphs::undirected_graph>, g, pi);
+			(__call_C_dyn_prog<graph_type>, g, pi);
 }
 
 // --------------------
 // list of arrangements
 
-template<class G>
+template<class graph_type>
 std::vector<uint64_t> n_C_dynamic_programming(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -314,7 +300,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_dyn_prog<G, false>
+		cs[i] = __compute_C_dyn_prog<graph_type, false>
 				(g, pis[i], bool_neighs.begin(), M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -324,35 +310,15 @@ noexcept
 	return cs;
 }
 
-inline
-std::vector<uint64_t> n_C_dynamic_programming(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_dynamic_programming<graphs::directed_graph>(g, pis);
-}
-
-inline
-std::vector<uint64_t> n_C_dynamic_programming(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis
-)
-noexcept
-{
-	return n_C_dynamic_programming<graphs::undirected_graph>(g, pis);
-}
-
 // -----------------------------------------------------------------------------
 // DECISION
 
 // ------------------
 // single arrangement
 
-template<class G>
+template<class graph_type>
 uint64_t __call_C_dyn_prog_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -375,12 +341,13 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* decide */
-	return __compute_C_dyn_prog<G, true>(g, pi, bool_neighs.begin(), M,K, upper_bound);
+	return __compute_C_dyn_prog<graph_type, true>
+			(g, pi, bool_neighs.begin(), M,K, upper_bound);
 }
 
-inline
+template<class graph_type>
 uint64_t is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
+	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -391,31 +358,15 @@ noexcept
 #endif
 	return
 	detail::call_with_empty_arrangement
-	(__call_C_dyn_prog_lesseq_than<graphs::directed_graph>, g, pi, upper_bound);
-}
-
-inline
-uint64_t is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-)
-noexcept
-{
-#if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
-#endif
-	return
-	detail::call_with_empty_arrangement
-	(__call_C_dyn_prog_lesseq_than<graphs::undirected_graph>, g, pi, upper_bound);
+	(__call_C_dyn_prog_lesseq_than<graph_type>, g, pi, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
-template<class G>
+template<class graph_type>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -448,7 +399,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_dyn_prog<G, true>
+		cs[i] = __compute_C_dyn_prog<graph_type, true>
 				(g, pis[i], bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -459,33 +410,9 @@ noexcept
 	return cs;
 }
 
-inline
+template<class graph_type>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t upper_bound
-)
-noexcept
-{
-	return is_n_C_dynamic_programming_lesseq_than<graphs::directed_graph>
-			(g, pis, upper_bound);
-}
-
-inline
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t upper_bound
-)
-noexcept
-{
-	return is_n_C_dynamic_programming_lesseq_than<graphs::undirected_graph>
-			(g, pis, upper_bound);
-}
-
-template<typename G>
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const G& g,
+	const graph_type& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )
@@ -523,7 +450,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_dyn_prog<G, true>
+		cs[i] = __compute_C_dyn_prog<graph_type, true>
 				(g, pis[i], bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -532,30 +459,6 @@ noexcept
 
 	/* free memory */
 	return cs;
-}
-
-inline
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::directed_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_dynamic_programming_lesseq_than<graphs::directed_graph>
-			(g, pis, upper_bounds);
-}
-
-inline
-std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graphs::undirected_graph& g,
-	const std::vector<linear_arrangement>& pis,
-	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
-{
-	return is_n_C_dynamic_programming_lesseq_than<graphs::undirected_graph>
-			(g, pis, upper_bounds);
 }
 
 } // -- namespace detail

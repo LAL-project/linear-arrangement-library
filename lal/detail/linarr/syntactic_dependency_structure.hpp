@@ -52,7 +52,8 @@
 namespace lal {
 namespace detail {
 
-// Converts to a string a value of the enumeration @ref syntactic_dependency_structure.
+/// Converts a value of the enumeration
+/// @ref lal::linarr::syntactic_dependency_structure into a string.
 constexpr std::string_view
 syntactic_dependency_structure_to_string
 (const linarr::syntactic_dependency_structure& tt)
@@ -67,6 +68,7 @@ noexcept
 	}
 }
 
+/// The array of all types of syntact dependency structures.
 static constexpr
 std::array<
 	linarr::syntactic_dependency_structure,

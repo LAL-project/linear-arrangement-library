@@ -65,6 +65,8 @@ typedef lal::detail::data_array<size_node> ordering;
 namespace lal {
 namespace detail {
 
+/// Namespace that holds function for Chung's algorithm for the minimum linear
+/// arrangement problem.
 namespace dmin_Chung {
 
 /*
@@ -98,6 +100,14 @@ int calculate_q(uint64_t n, const ordering& ord) {
 }
 */
 
+/**
+ * @brief Calculate \f$q\f$
+ *
+ * See \cite Chung1984a for details.
+ * @param n Number of vertices
+ * @param ord Ordering of the children with respect to a node.
+ * @returns Returns the value of \f$q\f$.
+ */
 inline
 std::optional<uint64_t> calculate_q(uint64_t n, const ordering& ord) noexcept {
 #if defined DEBUG
@@ -165,6 +175,14 @@ int calculate_p(uint64_t n, const ordering& ord) {
 }
 */
 
+/**
+ * @brief Calculate \f$p\f$
+ *
+ * See \cite Chung1984a for details.
+ * @param n Number of vertices
+ * @param ord Ordering of the children with respect to a node.
+ * @returns Returns the value of \f$p\f$.
+ */
 inline
 std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
 	if (ord.size() < 2) { return {}; }
@@ -195,6 +213,14 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
 	return p;
 }
 
+/**
+ * @brief Calculate \f$P\f$
+ *
+ * See \cite Chung1984a for details.
+ * @param p See @ref lal::detail::dmin_Chung::calculate_p.
+ * @param i Index of the i-th children in the ordering.
+ * @returns Returns the value of \f$P\f$.
+ */
 inline
 std::vector<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
 	std::vector<uint64_t> v(2*p + 1 + 1);
@@ -224,6 +250,14 @@ std::vector<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
 	return v;
 }
 
+/**
+ * @brief Calculate \f$Q\f$
+ *
+ * See \cite Chung1984a for details.
+ * @param q See @ref lal::detail::dmin_Chung::calculate_q.
+ * @param i Index of the i-th children in the ordering.
+ * @returns Returns the value of \f$Q\f$.
+ */
 inline
 std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 	std::vector<uint64_t> v(2*q + 1);
@@ -252,17 +286,23 @@ std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 	return v;
 }
 
+/**
+ * @brief Sort the children of @e u in the rooted tree \f$T^u\f$.
+ *
+ * See \cite Chung1984a for further details.
+ * @param t Input free tree.
+ * @param u Vertex.
+ * @returns Returns the children of @e u sorted in non-increasing order.
+ */
 inline
-void get_ordering(const graphs::free_tree& t, node u, ordering& ord) noexcept {
-	// Let 'T_v' to be a tree rooted at vertex 'v'.
-	// Order subtrees of 'T_v' by size.
-#if defined DEBUG
-	assert(ord.size() == t.get_degree(u - 1));
-#endif
+ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
+	// Let 'T_u' to be a tree rooted at vertex 'u'.
+	// Order subtrees of 'T_u' by size.
+	ordering ord(t.get_degree(u - 1));
 
-	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
-	// of 'T_v' rooted at vertex 'u'. Now,
-	//     s[u] := the size of the subtree 'T_v[u]'
+	// Retrieve size of every subtree. Let 'T_u[v]' be the subtree
+	// of 'T_u' rooted at vertex 'v'. Now,
+	//     s[v] := the size of the subtree 'T_u[v]'
 	data_array<uint64_t> s(t.get_num_nodes());
 	detail::get_size_subtrees(t, u - 1, s.begin());
 
@@ -285,17 +325,24 @@ void get_ordering(const graphs::free_tree& t, node u, ordering& ord) noexcept {
 			ord.begin(), ord.end(), M, ord.size(),
 			[](const size_node& p) { return p.first; }
 		);
+
+	return ord;
 }
 
-// t: input forest a single connected component of which has to be arranged.
-// root: indicates whether the connected component of 't' is rooted or anchored.
-// one_node: node used as a reference to the said connected component.
-//     Its value is within [1,n]
-// start: position where to start placing the vertices (the leftmost position
-//     in the mla for the subtree). We could also have an anologous finish
-//     (rightmost position) but it is not needed.
+/**
+ * @brief Calculate a minimum linear arrangment using Fan Chung's algorithm.
+ *
+ * For further details, see \cite Chung1984a.
+ * @tparam root Is the call to this function with a root?
+ * @tparam make_arrangement Whether or not the arrangement should be constructed.
+ * @param t Input free tree.
+ * @param one_node Root or anchor.
+ * @param start Starting position of the minLA of this tree.
+ * @param end Ending position of the minLA of this tree.
+ * @param[out] mla A minimum arrangement.
+ * @param[out] cost The cost of the minimum arrangement.
+ */
 template<char root, bool make_arrangement>
-inline
 void calculate_mla(
 	graphs::free_tree& t,
 	node one_node, 
@@ -341,8 +388,7 @@ noexcept
 	if constexpr (root == NO_ANCHOR) {
 		const node u = detail::retrieve_centroid(t, one_node - 1).first + 1;
 
-		ordering ord(t.get_degree(u - 1));
-		get_ordering(t, u, ord);
+		const ordering ord = get_ordering(t, u);
 
 		const auto q = calculate_q(size_tree, ord);
 		if (not q) {
@@ -464,8 +510,7 @@ noexcept
 		}
 	}
 	else {
-		ordering ord(t.get_degree(one_node - 1));
-		get_ordering(t, one_node, ord);
+		const ordering ord = get_ordering(t, one_node);
 
 		const auto p = calculate_p(size_tree, ord);
 		if (not p) {
@@ -685,17 +730,24 @@ noexcept
 	}*/
 }
 
-} // -- namespaec dmin_chung
+} // -- namespaec dmin_Chung
 
+/**
+ * @brief Calculates a minimum linear arrangment using Fan Chung's algorithm.
+ *
+ * See \cite Chung1984a for further details.
+ * @tparam make_arrangement Whether or not the arrangement should be constructed.
+ * @param t Input free tree.
+ * @returns Either a pair of <cost, linear arrangement> or just the cost depending
+ * on the value of the template parameter @e make_arrangement.
+ */
 template<bool make_arrangement>
 std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-Dmin_Unconstrained_FC
-(const graphs::free_tree& t)
-noexcept
+Dmin_Unconstrained_FC(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());

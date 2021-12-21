@@ -52,14 +52,23 @@
 namespace lal {
 namespace detail {
 
+/**
+ * @brief Simple class that implements an AVL tree.
+ */
 template<class T>
 class AVL {
 public:
+	/// Destructor.
 	~AVL() {
 		free_node(root);
 		root = nullptr;
 	}
 
+	/**
+	 * @brief Remove an element from the tree.
+	 * @param x The element to be removed.
+	 * @returns The amount of elements larger than 'x' in the tree.
+	 */
 	[[nodiscard]]
 	uint64_t remove(const T& x) noexcept {
 		uint64_t top = 0;
@@ -67,8 +76,13 @@ public:
 		return top;
 	}
 
-	// pre: -> v is sorted.
-	//      -> v[0] > largest element of tree
+	/**
+	 * @brief Add to the tree the elements in the vector @e v.
+	 * @param v A collection of elements
+	 * @pre The vector @e is sorted.
+	 * @pre The first element of the vector is larger than the largest element
+	 * of the tree.
+	 */
 	void join_sorted_all_greater(const std::vector<T>& v) noexcept {
 		// do nothing if there is no data, duh
 		if (v.size() == 0) { return; }
@@ -112,33 +126,47 @@ private:
 	// ---------------------------------------------------------- //
 	// DEFINITIONS
 
+	/// Node of the tree.
 	struct tree_node {
-		// contents of the node
+		/// contents of the node
 		T key;
 
-		// side of this node:
-		//		l: this node is a left subtree
-		//		r: this node is a right subtree
-		//		0: this node is the root.
-		//         Eq. parent = nullptr
+		/**
+		 * @brief Side of this node
+		 *
+		 * l: this node is a left subtree
+		 * r: this node is a right subtree
+		 * 0: this node is the root.
+		 *		Eq. parent = nullptr
+		 */
 		char side = '0';
 
-		// Amount of nodes in the rooted at this node.
-		// Number of nodes in the left and right subtrees
-		// plus this node.
+		/**
+		 * @brief Amount of nodes in the rooted at this node.
+		 *
+		 * Number of nodes in the left and right subtrees plus this node.
+		 */
 		uint64_t tree_size = 0;
-		// Maximum height of the left and right subtrees' height
+		/// Maximum height of the left and right subtrees' height
 		uint64_t height = 0;
-		// balance factor of a node:
-		// right subtree's height - left subtree's height
+		/**
+		 * @brief Balance factor of a node:
+		 *
+		 * right subtree's height - left subtree's height
+		 */
 		int64_t bf = 0;
 
-		// parent of this node
+		/// Pointer to the parent of this node.
 		tree_node *parent = nullptr;
-		// left and right subtrees
+		/// Pointer to the left subtree.
 		tree_node *left = nullptr;
+		/// Pointer to the right subtree.
 		tree_node *right = nullptr;
 
+		/**
+		 * @brief Calculate the height of this node.
+		 * @post Updates the @ref height and @ref bf members.
+		 */
 		void compute_height() noexcept {
 			const int64_t lh =
 			(left != nullptr ? static_cast<int64_t>(left->height) : -1);
@@ -149,16 +177,26 @@ private:
 			height = static_cast<uint64_t>(std::max(lh, rh)) + 1;
 			bf = rh - lh;
 		}
+		/**
+		 * @brief Computes the size of the subtree rooted at this node.
+		 * @post Updates the @ref tree_size member.
+		 */
 		void compute_size() noexcept {
 			const uint64_t ls = (left != nullptr ? left->tree_size : 0);
 			const uint64_t rs = (right != nullptr ? right->tree_size : 0);
 			tree_size = 1 + ls + rs;
 		}
+		/// Computes the size (see @ref compute_size) and the height (see @ref compute_height)
+		/// of the subtree rooted at this node.
 		void update() noexcept {
 			compute_size();
 			compute_height();
 		}
 
+		/**
+		 * @brief Link this node's parent node to node @e n.
+		 * @param n Node to link this node's parent to.
+		 */
 		void link_parent_to(tree_node *n) noexcept {
 			if (n == nullptr) { return; }
 			if (parent != nullptr) {
@@ -173,12 +211,12 @@ private:
 			n->side = side;
 		}
 
-		[[nodiscard]]
-		uint64_t left_size() const noexcept {
+		/// Returns the size of the left subtree.
+		[[nodiscard]] uint64_t left_size() const noexcept {
 			return (left == nullptr ? 0 : left->tree_size);
 		}
-		[[nodiscard]]
-		uint64_t right_size() const noexcept {
+		/// Returns the size of the right subtree.
+		[[nodiscard]] uint64_t right_size() const noexcept {
 			return (right == nullptr ? 0 : right->tree_size);
 		}
 	};
@@ -187,13 +225,14 @@ private:
 	// ---------------------------------------------------------- //
 	// ATTRIBUTES
 
-	// root of the tree
+	/// Root of this AVL tree.
 	tree_node *root = nullptr;
 
 private:
 	// ---------------------------------------------------------- //
 	// FUNCTIONS
 
+	/// Deallocates the memory of node @e n.
 	void free_node(tree_node *n) noexcept {
 		if (n == nullptr) {
 			return;
@@ -206,10 +245,13 @@ private:
 	/* --------- */
 	/* ROTATIONS */
 
-	// rotations of nodes
-	//     assume _n has a left subtree
-	[[nodiscard]]
-	tree_node *right_rotation(tree_node *_n) noexcept {
+	/**
+	 * @brief Performs a right-rotation at node @e _n.
+	 * @param _n Node.
+	 * @returns A tree node.
+	 * @pre Node @e _n has a left subtree.
+	 */
+	[[nodiscard]] tree_node *right_rotation(tree_node *_n) noexcept {
 #if defined DEBUG
 		assert(_n != nullptr);
 #endif
@@ -257,10 +299,13 @@ private:
 		B->update();
 		return B;
 	}
-	// rotations of nodes
-	//     assume _n has a right subtree
-	[[nodiscard]]
-	tree_node *left_rotation(tree_node *_n) noexcept {
+	/**
+	 * @brief Performs a left-rotation at node @e _n.
+	 * @param _n Node.
+	 * @returns A tree node.
+	 * @pre Node @e _n has a right subtree.
+	 */
+	[[nodiscard]] tree_node *left_rotation(tree_node *_n) noexcept {
 #if defined DEBUG
 		assert(_n != nullptr);
 #endif
@@ -300,30 +345,53 @@ private:
 		A->update();
 		return A;
 	}
-	// cases of imbalances:
-	//     left_* cases assume that _n has left subtree
-	//     right_* cases assume that _n has right subtree
-	[[nodiscard]]
-	tree_node *left_left_case(tree_node *n) noexcept {
+	/**
+	 * @brief Left-left imbalance case.
+	 * @param n Node.
+	 * @returns Tree node.
+	 * @pre Node @e n has a left subtree.
+	 */
+	[[nodiscard]] tree_node *left_left_case(tree_node *n) noexcept {
 		return right_rotation(n);
 	}
-	[[nodiscard]]
-	tree_node *left_right_case(tree_node *n) noexcept {
+	/**
+	 * @brief Left-right imbalance case.
+	 * @param n Node.
+	 * @returns Tree node.
+	 * @pre Node @e n has a left subtree.
+	 */
+	[[nodiscard]] tree_node *left_right_case(tree_node *n) noexcept {
 		n->left = left_rotation(n->left);
 		return right_rotation(n);
 	}
-	[[nodiscard]]
-	tree_node *right_right_case(tree_node *n) noexcept {
+	/**
+	 * @brief Right-right imbalance case.
+	 * @param n Node.
+	 * @returns Tree node.
+	 * @pre Node @e n has a right subtree.
+	 */
+	[[nodiscard]] tree_node *right_right_case(tree_node *n) noexcept {
 		return left_rotation(n);
 	}
-	[[nodiscard]]
-	tree_node *right_left_case(tree_node *n) noexcept {
+	/**
+	 * @brief Right-left imbalance case.
+	 * @param n Node.
+	 * @returns Tree node.
+	 * @pre Node @e n has a right subtree.
+	 */
+	[[nodiscard]] tree_node *right_left_case(tree_node *n) noexcept {
 		n->right = right_rotation(n->right);
 		return left_rotation(n);
 	}
-	// returns the root of the new balanced tree
-	[[nodiscard]]
-	tree_node *balance(tree_node *n) noexcept {
+	/**
+	 * @brief Balance a node of the AVL tree.
+	 *
+	 * Uses the functions @ref left_left_case, @ref left_right_case,
+	 * @ref right_right_case, @ref right_left_case.
+	 * @param n Node to balance
+	 * @returns The root of the new balanced tree
+	 */
+	[[nodiscard]] tree_node *balance(tree_node *n) noexcept {
 		if (n == nullptr) { return nullptr; }
 #if defined DEBUG
 		assert(std::abs(n->bf) <= 2);
@@ -336,6 +404,7 @@ private:
 			(n->right->bf >= 0 ? right_right_case(n) : right_left_case(n))
 		);
 
+		// the code above is equivalent to the code below.
 		/*
 		if (n->bf == -2) {
 			// //if (n->left == nullptr) { return n; }
@@ -362,12 +431,13 @@ private:
 	/* --------------------- */
 	/* INSERTION OF ELEMENTS */
 
-	/* p: Parent of n.
-	 * n: Reference to node.
-	 * s: paren't side (0: root, l: left, r: right)
-	 * x: Element to be added.
-	 *
-	 * Returns the newly created tree node
+	/**
+	 * @brief Insert element 'x' to the tree.
+	 * @param p Parent of node @e n
+	 * @param n Node to which the element 'x' is to be assigned.
+	 * @param s Side of @e n with respect to the parent (0: root, l: left, r: right).
+	 * @param x Element to be added.
+	 * @returns The newly created tree node
 	 */
 	[[nodiscard]]
 	tree_node *insert(tree_node *p, tree_node *n, char s, const T& x) noexcept {
@@ -411,8 +481,14 @@ private:
 	/* ------------------- */
 	/* REMOVAL OF ELEMENTS */
 
+	/**
+	 * @brief Remove the leftmost element in node @e n.
+	 * @param n Node of the tree.
+	 * @param[out] k Value of the leftmost node.
+	 * @returns A tree node.
+	 */
 	[[nodiscard]]
-	tree_node *remove_leftmost(tree_node *n, T *k = nullptr) noexcept {
+	tree_node *remove_leftmost(tree_node *n, T *k) noexcept {
 		if (n->left == nullptr) {
 			// retrieve leftmost key
 			if (k != nullptr) {
@@ -429,8 +505,14 @@ private:
 		n->update();
 		return balance(n);
 	}
+	/**
+	 * @brief Remove the rightmost element in node @e n.
+	 * @param n Node of the tree.
+	 * @param[out] k Value of the rightmost node.
+	 * @returns A tree node.
+	 */
 	[[nodiscard]]
-	tree_node *remove_rightmost(tree_node *n, T *k = nullptr) noexcept {
+	tree_node *remove_rightmost(tree_node *n, T *k) noexcept {
 		if (n->right == nullptr) {
 			// this is the rightmost
 			if (k != nullptr) {
@@ -452,9 +534,16 @@ private:
 	// In a "general" implementation of an AVL tree, after a recursive call
 	// to 'remove', we may not want to continue doing work. Since this AVL
 	// tree is going to be used in a way that all 'x' this function is called
-	// with exist in the tree then we will always find this element in the
-	// tree, so there will be work to be done after each recursive call to
-	// 'remove'.
+	// with will always be found in the tree, so there will be work to be done
+	// after each recursive call to 'remove'.
+	/**
+	 * @brief Remove element from the tree.
+	 * @param n Node.
+	 * @param x Element to be removed.
+	 * @param on_top Amount of values larger than element 'x'.
+	 * @returns A tree node.
+	 * @pre Element @e x is in the tree.
+	 */
 	[[nodiscard]]
 	tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) noexcept {
 		if (n == nullptr) {
@@ -537,11 +626,14 @@ private:
 	/* ----------------- */
 	/* UNION OF TWO AVLS */
 
-	// L := largest key in T1
-	// S := smallest key in T2
-	// pre:
-	// -> height(T1) >= height(T2)
-	// -> L < S
+	/**
+	 * @brief Join two AVL trees.
+	 * @param T1 Taller tree.
+	 * @param T2 Shorter tree.
+	 * @returns A tree node.
+	 * @pre The largest element in @e T1 is smaller than the smallest
+	 * element in @e T2.
+	 */
 	[[nodiscard]]
 	tree_node *join_taller(tree_node *T1, tree_node *T2) noexcept {
 #if defined DEBUG
@@ -607,11 +699,15 @@ private:
 		u->update();
 		return balance(u);
 	}
-	// L := largest key in T1
-	// S := smallest key in T2
-	// pre:
-	// -> height(T1) < height(T2)
-	// -> L < S
+
+	/**
+	 * @brief Join two AVL trees.
+	 * @param T1 Shorter tree.
+	 * @param T2 Taller tree.
+	 * @returns A tree node.
+	 * @pre The largest element in @e T1 is smaller than the smallest
+	 * element in @e T2.
+	 */
 	[[nodiscard]]
 	tree_node *join_shorter(tree_node *T1, tree_node *T2) noexcept {
 #if defined DEBUG
@@ -679,6 +775,19 @@ private:
 	/* ------ */
 	/* OTHERS */
 
+	/**
+	 * @brief Make an AVL tree from the elements in @e v
+	 *
+	 * This function performs a recursive binary search over @e v. The limits
+	 * of this search are @e l and @e r. At each call, this function creates a
+	 * @ref tree_node with the value in the midpoint between @e l and @e r.
+	 * @param v Vector sorted non-decreasingly.
+	 * @param l Left-limit of the binary search-
+	 * @param r Right-limit of the binary search.
+	 * @param p Parent of the new node to be created.
+	 * @param s Side of the node to create with respect to the parent.
+	 * @return
+	 */
 	[[nodiscard]]
 	tree_node *_make_tree(
 		const std::vector<T>& v,

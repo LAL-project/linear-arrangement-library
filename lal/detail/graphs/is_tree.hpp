@@ -47,13 +47,14 @@
 namespace lal {
 namespace detail {
 
-/*
- * @brief Returns true if, and only if, the graph is a tree.
+/**
+ * @brief Is the input graph a tree?
  *
  * By definition, an undirected graph is a tree if it does not contain
  * cycles and has one single connected component. Note that isloated nodes
  * count as single connected components. Directed graphs are allowed.
  * @param g Input graph.
+ * @returns True if, and only if, the graph is a tree.
  */
 template<class G>
 bool is_graph_a_tree(const G& g) noexcept {

@@ -49,6 +49,7 @@ namespace detail {
 
 namespace __lal {
 
+/// Function used by @ref lal::detail::make_array_with_value().
 template<typename T, std::size_t size, T v, std::size_t... I>
 std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
 	std::array<T, size> a;
@@ -58,12 +59,11 @@ std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
 
 } // -- namespace __lal
 
-/*
+/**
  * @brief Returns an array initialised at a given value.
- *
- * @param T Type of the array's elements.
- * @param array_size Size of the array.
- * @param value_to_fill_with The value to fill the array with.
+ * @tparam T Type of the array's elements.
+ * @tparam array_size Size of the array.
+ * @tparam value_to_fill_with The value to fill the array with.
  */
 template<typename T, std::size_t array_size, T value_to_fill_with>
 std::array<T, array_size>
@@ -76,13 +76,20 @@ make_array_with_value() {
 
 namespace __lal {
 
+/// Amount of values given in a template function.
 template<typename T, T A, T... ARGS>
 constexpr std::size_t size_arguments = 1 + size_arguments<T, ARGS...>;
+/// Amount of values given in a template function.
 template<typename T, T A>
 constexpr std::size_t size_arguments<T,A> = 1;
 
 } // -- namespace __lal
 
+/**
+ * @brief Make an array with the values given as parameters of the template.
+ * @tparam T Type of the array
+ * @tparam ARGS List of values to be stored in the array.
+ */
 template<typename T, T... ARGS>
 constexpr std::array<T, __lal::size_arguments<T, ARGS...>>
 make_array()

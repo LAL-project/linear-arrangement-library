@@ -65,21 +65,28 @@
 
 namespace lal {
 namespace detail {
+
+/// Utilities for the various minimum linear arrangement algorithms.
 namespace Dmin_utils {
 
 #define to_int64(x) static_cast<int64_t>(x)
 #define to_uint64(x) static_cast<uint64_t>(x)
 
-#define PLACE_LEFT_OF 0
-#define PLACE_RIGHT_OF 1
-#define PLACE_NONE_OF 2
+/// Useful typedef to denote relative position.
+typedef unsigned char place;
+/// Useful typedef to denote relative position.
+typedef unsigned char side;
 
-#define RIGHT_SIDE 0
-#define LEFT_SIDE 1
+constexpr place PLACE_LEFT_OF = 0;
+constexpr place PLACE_RIGHT_OF = 1;
+constexpr place PLACE_NONE_OF = 2;
+
+constexpr side RIGHT_SIDE = 0;
+constexpr side LEFT_SIDE  = 1;
 
 // if s = 0 then (s+1)&0x1 = 1
 // if s = 1 then (s+1)&0x1 = 0
-#define other_side(s) ((s + 1)&0x1)
+constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
 
 /* ************************************************************************** */
 /* ---------------------- INTERVAL-based methods ---------------------------- */
@@ -88,32 +95,37 @@ namespace Dmin_utils {
  * to calculate the planar and projective minimum sum of edge lengths.
  */
 
-
-typedef char place;
-
-/* Make a minimum projective arrangement using the sorted, rooted adjacency list L.
+/**
+ * @brief Make a minimum projective arrangement using the sorted, rooted
+ * adjacency list @e L.
  *
- * M: adjacency matrix of the tree with extra information: for each vertex,
- *		attach an integer that represents the size of the subtree rooted
- *		at that vertex. Each adjacency list is sorted DECREASINGLY by that size.
- * r: the vertex root of the subtree whose interval is to be made
- * r_place: where, respect to its parent, node 'r' has been placed in the arrangement.
- *		PLACE_LEFT_OF, PLACE_RIGHT_OF, PLACE_NONE_OF
- *		The last value is only valid for the root of the whole tree.
- * ini, fin: left and right limits of the positions of the arrangement in which
- *		the tree has to be arranged. Note that the limits are included [ini,fin].
- * arr: the arrangement of the tree
+ * @tparam make_arrangement Whether or not the arrangement is to be constructed.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param r The vertex root of the subtree whose interval is to be made
+ * @param r_place Where, respect to its parent, node 'r' has been placed in the
+ * arrangement. Possible values: PLACE_LEFT_OF, PLACE_RIGHT_OF, PLACE_NONE_OF.
+ * The latter value is only valid for the root of the whole tree.
+ * @param ini Left limit of the positions of the arrangement in which the tree
+ * has to be arranged. Note that the limits are included [@e ini,@e fin].
+ * @param fin Right limit of the positions of the arrangement in which
+ * the tree has to be arranged. Note that the limits are included [@e ini,@e fin].
+ * @param[out] arr the arrangement of the tree
  *
- * Returns the sum of the length of the outgoing edges from vertex 'r' plus
+ * @returns The sum of the length of the outgoing edges from vertex 'r' plus
  * the length of the anchor of the edge from 'r' to its parent. Such length
  * is defined as the number of vertices to the left of 'r' if 'r_place'
  * is RIGHT_PLACE, or as the number of vertices to the right of 'r' if
  * 'r_place' is LEFT_PLACE.
+ *
+ * @pre @e L is sorted decreasingly.
  */
 template<bool make_arrangement>
 uint64_t arrange
 (
-	const std::vector<std::vector<node_size>>& L, const node r,
+	const std::vector<std::vector<node_size>>& L,
+	const node r,
 	const place r_place,
 	position ini, position fin,
 	linear_arrangement& arr
@@ -130,7 +142,7 @@ noexcept
 	// -- place the children --
 
 	// work out the starting side of the first-largest subtree
-	uint64_t side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
+	side roots_side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
 
 	// size of the intervals from the root to the left end
 	uint64_t acc_size_left = 0;
@@ -170,33 +182,33 @@ noexcept
 		D +=
 		arrange<make_arrangement>(
 			L, vi,
-			(side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
-			(make_arrangement ? (side == LEFT_SIDE ? ini : fin - ni + 1) : 0),
-			(make_arrangement ? (side == LEFT_SIDE ? ini + ni - 1 : fin) : 0),
+			(roots_side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
+			(make_arrangement ? (roots_side == LEFT_SIDE ? ini : fin - ni + 1) : 0),
+			(make_arrangement ? (roots_side == LEFT_SIDE ? ini + ni - 1 : fin) : 0),
 			arr
 		);
 
 		// accumulate size of interval
-		d += ni*(side == LEFT_SIDE ? n_intervals_left : n_intervals_right);
+		d += ni*(roots_side == LEFT_SIDE ? n_intervals_left : n_intervals_right);
 		// add length of edge over root 'r'
 		d += 1;
 
 		// number of intervals to the left and right of the root
-		n_intervals_left += side;
-		n_intervals_right += other_side(side);
+		n_intervals_left += roots_side;
+		n_intervals_right += other_side(roots_side);
 
 		// accumulate size of subtree rooted at vi
-		acc_size_left += side*ni;
-		acc_size_right += other_side(side)*ni;
+		acc_size_left += roots_side*ni;
+		acc_size_right += other_side(roots_side)*ni;
 
 		// update limits of the embedding
 		if constexpr (make_arrangement) {
-		ini += side*ni;
-		fin -= other_side(side)*ni;
+		ini += roots_side*ni;
+		fin -= other_side(roots_side)*ni;
 		}
 
 		// change side
-		side = other_side(side);
+		roots_side = other_side(roots_side);
 	}
 #if defined DEBUG
 	assert(ini == fin);
@@ -213,28 +225,49 @@ noexcept
 	return D + d;
 }
 
-/* A method that wraps the first call to the recursive method above.
+/**
+ * @brief Wrapper method for the recursive method of the same name.
+ *
+ * A call to this function is done when the goal is to construct a linear arrangement.
+ * @param n Number of vertices.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param r Root of the tree represented by @e L.
+ * @param[out] arr Minimum projective linear arrangement.
+ * @returns The cost of a minimum projective linear arrangement.
+ * @pre @e L is sorted decreasingly.
  */
 inline uint64_t arrange_projective
 (
-	uint64_t n, const std::vector<std::vector<node_size>>& M,
+	uint64_t n, const std::vector<std::vector<node_size>>& L,
 	node r, linear_arrangement& arr
 )
 noexcept
 {
-	return arrange<true>(M, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<true>(L, r, PLACE_NONE_OF, 0, n-1, arr);
 }
 
-/* A method that wraps the first call to the recursive method above.
+/**
+ * @brief Wrapper method for the recursive method of the same name.
+ *
+ * A call to this function is done when the goal is not to construct a linear
+ * arrangement, only to calculate its cost.
+ * @param n Number of vertices.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param r Root of the tree represented by @e L.
+ * @returns The cost of a minimum projective linear arrangement.
+ * @pre @e L is sorted decreasingly.
  */
 inline uint64_t arrange_projective
-(uint64_t n, const std::vector<std::vector<node_size>>& M, node r)
+(uint64_t n, const std::vector<std::vector<node_size>>& L, node r)
 noexcept
 {
 	linear_arrangement arr;
-	return arrange<false>(M, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<false>(L, r, PLACE_NONE_OF, 0, n-1, arr);
 }
-
 
 
 /* ************************************************************************** */
@@ -245,18 +278,23 @@ noexcept
  */
 
 
-/* Procedure 'embed' as defined by Hochberg and Stallmann in \cite Hochberg2003a
- * and with the correction in \cite Alemany2021a.
+/**
+ * @brief Embed a tree's branch.
  *
- * @param L Input sorted rooted adjacency list. Entry L[u] contains the
- * out-neighbours (with respect to the given root 'r') of vertex 'u' sorted
- * decreasingly by size of subtrees.
+ * Implementation of procedure 'embed' as defined by Hochberg and Stallmann in
+ * \cite Hochberg2003a and with the correction in \cite Alemany2022a.
  *
- * @param v The current branch of the tree to be arranged
+ * @tparam make_arrangement Whether or not the arrangement is to be constructed.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @param v The current branch of the tree to be arranged.
  * @param base The displacement for the starting position of the subtree
  * arrangement
  * @param dir Whether or not @e v is to the left or to the right of its parent
  * @param[out] rel_pos the displacement from the root of all nodes of the subtree
+ * @returns The cost of a minimum linear arrangement of the corresponding branch.
+ * @pre @e L is sorted decreasingly.
  */
 template<bool make_arrangement>
 uint64_t embed_branch(
@@ -323,15 +361,20 @@ noexcept
 	return cost_branch;
 }
 
-/* Procedure 'embed' as defined by Hochberg and Stallmann in \cite Hochberg2003a.
+/**
+ * @brief Embed a tree's branch.
  *
- * @param L Input sorted rooted adjacency list. Entry L[u] contains the
- * out-neighbours (with respect to the given root 'r') of vertex 'u' sorted
- * decreasingly by size of subtrees.
+ * Implementation of procedure 'embed' as defined by Hochberg and Stallmann in
+ * \cite Hochberg2003a and with the correction in \cite Alemany2022a.
  *
+ * @tparam make_arrangement Whether or not the arrangement is to be constructed.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
  * @param r The vertex root used to construct L.
- *
  * @param[out] arr The optimal arrangement.
+ * @returns The cost of a minimum linear arrangement of the corresponding branch.
+ * @pre @e L is sorted decreasingly.
  */
 template<bool make_arrangement>
 uint64_t embed(
@@ -394,21 +437,6 @@ noexcept
 	return D;
 }
 
-inline uint64_t embed
-(const std::vector<std::vector<node_size>>& L, const node r, linear_arrangement& arr)
-noexcept
-{
-	return embed<true>(L, r, arr);
-}
-
-inline uint64_t embed
-(const std::vector<std::vector<node_size>>& L, const node r)
-noexcept
-{
-	linear_arrangement arr;
-	return embed<false>(L, r, arr);
-}
-
 /* ************************************************************************** */
 /* ----------------------- ROOTED ADJACENCY LISTS --------------------------- */
 
@@ -416,17 +444,18 @@ noexcept
  * adjacency list of rooted and free trees.
  */
 
-/* Make a sorted, rooted adjacency list sorted according to the sizes of
+/**
+ * @brief Make a sorted, rooted adjacency list sorted according to the sizes of
  * the subtrees of the input rooted tree @e t.
  *
- * @param L The sorted, rooted adjacency list. This is an input/output
- * parameter.
- *
+ * @param t Input rooted tree.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
  * @pre Parameter @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
 template<typename sort_type>
-inline
 void make_sorted_adjacency_list_rooted(
 	const graphs::rooted_tree& t,
 	std::vector<std::vector<node_size>>& L
@@ -504,9 +533,17 @@ noexcept
 #endif
 }
 
-/* @brief Roots an adjacency list with respect to root @e u.
+/**
+ * @brief Roots an adjacency list with respect to root @e u.
  *
- * The initial value of @e parent_u must be @e u itself.
+ * This is described in \cite Alemany2022a.
+ * @param t Input free tree.
+ * @param parent_u Parent node of node @e u.
+ * @param u Node being processed.
+ * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
+ * @pre The initial value of @e parent_u must be @e u itself.
  */
 inline
 void root_adjacency_list(
@@ -545,20 +582,20 @@ noexcept
 	}
 }
 
-/* Make a sorted, rooted adjacency list sorted according to the sizes of
- * the subtrees of the input free tree @e t, using a centroidal vertex as the
- * root.
+/**
+ * @brief Make a sorted, rooted adjacency list sorted according to the sizes of
+ * the subtrees of the input free tree @e t.
  *
- * @param L The sorted, rooted adjacency list. This is an input/output
- * parameter.
- *
+ * This function uses a centroidal vertex as the root.
+ * @param t Input free tree.
+ * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
+ * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
+ * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
  * @returns The centroidal vertex used to root the adjacency list.
- *
- * @pre Parameter @e L is initialised to have size n, the number of vertices of
+ * @pre @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
 template<typename sort_type>
-inline
 node make_sorted_adjacency_list_rooted_centroid(
 	const graphs::free_tree& t,
 	std::vector<std::vector<node_size>>& L

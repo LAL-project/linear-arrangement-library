@@ -55,25 +55,29 @@
 namespace lal {
 namespace detail {
 
-/*
- * Returns whether the input trees are, might be, or are not isomorphic.
+/**
+ * @brief Fast tree non-isomorphism test.
  *
- * Returns 0 if the trees ARE isomorphic
- * Returns 1 if the trees ARE NOT isomorphic:
- * - number of vertices do not coincide
- * - number of leaves do not coincide
- * - second moment of degree do not coincide
- * Returns 2 if the trees MIGHT BE isomorphic
+ * @tparam tree_type Tree type.
+ * @param t1 One tree.
+ * @param t2 Another tree.
+ * @returns Whether the input trees are, might be, or are not isomorphic.
+ * @returns 0 if the trees ARE isomorphic
+ * @returns 1 if the trees ARE NOT isomorphic:
+ * - number of vertices do not coincide,
+ * - number of leaves do not coincide,
+ * - second moment of degree do not coincide,
+ * - maximum vertex degrees do not coincide,
+ * @returns 2 if the trees MIGHT BE isomorphic
  */
 template<
-	class T,
+	class tree_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
+		std::is_base_of_v<graphs::free_tree, tree_type> ||
+		std::is_base_of_v<graphs::rooted_tree, tree_type>,
 	bool> = true
 >
-inline
-char fast_non_iso(const T& t1, const T& t2) noexcept
+char fast_non_iso(const tree_type& t1, const tree_type& t2) noexcept
 {
 	// check number of nodes
 	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
@@ -112,7 +116,7 @@ char fast_non_iso(const T& t1, const T& t2) noexcept
 	return 2;
 }
 
-/*
+/**
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
  * This function stores the names of every node in the subtree rooted at 'u'.
@@ -121,19 +125,21 @@ char fast_non_iso(const T& t1, const T& t2) noexcept
  * For further details on the algorithm, see \cite Aho1974a for further details.
  * @param t Input rooted tree
  * @param u Root of the subtree whose name we want to calculate
- * @param names An array of strings where the names are stored (as in a dynamic
- * programming algorithm). The size of this array must be at least the number of
- * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
- * but I don't know how much less: better be safe than sorry.
  * @param idx A pointer to the position within @e names that will contain the
- * name of the first child of 'u'. The position @names[idx+1] will contain the
+ * name of the first child of 'u'. The position @e names[idx+1] will contain the
  * name of the second child of 'u'.
- * @returns The code for the subtree rooted at 'u'.
+ * @param aux_memory_for_names Auxiliary memory used to sort names of subtrees.
+ * @param keep_name_of An array of strings where the names are stored
+ * (as in a dynamic programming algorithm). The size of this array must be at
+ * least the number of vertices in the subtree of 't' rooted at 'u'. Actually,
+ * less memory suffices, but I don't know how much less: better be safe than
+ * sorry.
  */
 inline
 void assign_name_and_keep(
 	const graphs::rooted_tree& t, node u,
-	std::string * const aux_memory_for_names, std::size_t idx,
+	std::size_t idx,
+	std::string * const aux_memory_for_names,
 	std::string * const keep_name_of
 )
 noexcept
@@ -147,7 +153,7 @@ noexcept
 	const std::size_t begin_idx = idx;
 	for (node v : t.get_out_neighbours(u)) {
 		// make the name for v
-		assign_name_and_keep(t,v, aux_memory_for_names, idx+1, keep_name_of);
+		assign_name_and_keep(t,v, idx+1, aux_memory_for_names, keep_name_of);
 
 		aux_memory_for_names[idx] = keep_name_of[v];
 		++idx;
@@ -163,7 +169,7 @@ noexcept
 	keep_name_of[u] = name;
 }
 
-/*
+/**
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
  * For further details on the algorithm, see \cite Aho1974a for further details.
@@ -174,7 +180,7 @@ noexcept
  * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
  * but I don't know how much less: better be safe than sorry.
  * @param idx A pointer to the position within @e names that will contain the
- * name of the first child of 'u'. The position @names[idx+1] will contain the
+ * name of the first child of 'u'. The position @e names[idx+1] will contain the
  * name of the second child of 'u'.
  * @returns The code for the subtree rooted at 'u'.
  */
@@ -206,6 +212,7 @@ noexcept
 	return name;
 }
 
+/// Test whether two rooted trees are isomorphic or not.
 inline
 bool are_full_trees_isomorphic
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)

@@ -47,13 +47,25 @@
 namespace lal {
 namespace detail {
 
+/**
+ * @brief Struct used in many algorithms to sort vertices according
+ * to some integer value.
+ */
 struct node_size {
+	/// Vertex.
 	node v;
+	/// Integer value, usually a size.
 	uint64_t size;
 };
 
+/**
+ * @brief Struct used in many algorithms to sort edges according
+ * to some integer value.
+ */
 struct edge_size {
+	/// Vertex.
 	edge e;
+	/// Integer value, usually a size.
 	uint64_t size;
 };
 

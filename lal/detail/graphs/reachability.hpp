@@ -47,15 +47,15 @@
 namespace lal {
 namespace detail {
 
-/*
- * @brief Returns true if, and only if, node target is reachable from node source.
+/**
+ * @brief Is a node reachable from another?
  * @param g Input graph.
  * @param source Node where the search starts at.
  * @param target The node we want to know whether it is reachable from
  * @e source or not.
+ * @returns True if, and only if, node target is reachable from node source.
  */
 template<class G>
-inline
 bool is_node_reachable_from(const G& g, const node source, const node target)
 noexcept
 {

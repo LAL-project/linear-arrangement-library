@@ -81,7 +81,7 @@ noexcept
 linear_arrangement all_projective_arrangements::get_arrangement() const noexcept {
 	return (m_rT.get_num_nodes() == 1 ?
 		linear_arrangement::identity(1) :
-		detail::make_arrangement_intervals(m_rT, m_intervals)
+		detail::make_arrangement_permutations(m_rT, m_intervals)
 	);
 }
 
