@@ -49,8 +49,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/data_array.hpp>
-
-#define to_double(x) static_cast<double>(x)
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace properties {
@@ -80,7 +79,7 @@ result MHD(const graphs::rooted_tree& tree) noexcept {
 		return numeric::rational(sum_distances, tree.get_num_edges());
 	}
 	else {
-		return to_double(sum_distances)/to_double(tree.get_num_edges());
+		return detail::to_double(sum_distances)/detail::to_double(tree.get_num_edges());
 	}
 }
 

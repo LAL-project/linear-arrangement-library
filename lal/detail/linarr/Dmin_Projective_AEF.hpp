@@ -68,6 +68,8 @@ namespace detail {
  * at the tree's root. Then, it arranges the tree so that there are no edge
  * crossings and the root vertex is not covered. Such arrangement is done using
  * a interval-based algorithm.
+ * @param t Input tree.
+ * @returns A pair of cost and minimum linear arrangement.
  */
 inline
 std::pair<uint64_t, linear_arrangement> Dmin_Projective_AEF

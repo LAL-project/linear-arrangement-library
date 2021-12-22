@@ -59,12 +59,13 @@ namespace __lal {
  * @param in_stack For each node, is it in the recursion stack?
  */
 inline
-bool __find_cycle
+bool find_cycle
 (
 	const graphs::directed_graph& g, node u,
 	char * const __restrict__ visited,
 	char * const __restrict__ in_stack
 )
+noexcept
 {
 	if (visited[u]) { return false; }
 	visited[u] = 1;
@@ -74,7 +75,7 @@ bool __find_cycle
 		if (in_stack[v]) {
 			return true;
 		}
-		if (visited[v] == 0 and __find_cycle(g,v,visited,in_stack)) {
+		if (visited[v] == 0 and find_cycle(g,v,visited,in_stack)) {
 			return true;
 		}
 	}
@@ -96,6 +97,7 @@ bool has_directed_cycles(
 	char * const __restrict__ vis,
 	char * const __restrict__ in_stack
 )
+noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	std::fill(&vis[0], &vis[n], 0);
@@ -103,7 +105,7 @@ bool has_directed_cycles(
 	bool has_cycle = false;
 	for (node u = 0; u < n and not has_cycle; ++u) {
 		if (vis[u] == 0) {
-			has_cycle = __lal::__find_cycle(g, u, vis, in_stack);
+			has_cycle = __lal::find_cycle(g, u, vis, in_stack);
 		}
 	}
 	return has_cycle;
@@ -117,7 +119,7 @@ bool has_directed_cycles(
  * @returns Whether the graph has cycles or not.
  */
 inline
-bool has_directed_cycles(const graphs::directed_graph& g) {
+bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
 	const uint64_t n = g.get_num_nodes();
 	data_array<char> all_mem(2*n);
 	char * const __restrict__ vis = all_mem.begin();
@@ -132,12 +134,13 @@ namespace __lal {
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @param bfs Breadth-First Search object.
  * @returns Whether the graph has cycles or not.
  */
-template<class G>
-bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
+template<class graph_type>
+bool has_undirected_cycles(const graph_type& g, BFS<graph_type>& bfs) noexcept {
 	const auto n = g.get_num_nodes();
 
 	// parent[s] = t <->
@@ -154,7 +157,7 @@ bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&](const BFS<G>&, const node) -> bool { return cycle_found; }
+	[&](const BFS<graph_type>&, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
 	[&](const auto& _bfs, node s, node t, bool) -> void {
@@ -196,13 +199,14 @@ bool has_undirected_cycles(const G& g, BFS<G>& bfs) {
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.
+ * @tparam graph_type Type of graph.
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-template<class G>
-bool has_undirected_cycles(const G& g) {
+template<class graph_type>
+bool has_undirected_cycles(const graph_type& g) noexcept {
 	// BFS traversal object
-	BFS<G> bfs(g);
+	BFS<graph_type> bfs(g);
 	return __lal::has_undirected_cycles(g, bfs);
 }
 

@@ -79,7 +79,8 @@
 #include <lal/detail/linarr/Dmin_utils.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 
-#define to_double(x) static_cast<double>(x)
+#include <lal/detail/macros/integer_convert.hpp>
+
 #define square(x) ((x)*(x))
 
 namespace lal {
@@ -105,12 +106,12 @@ noexcept
 		std::accumulate(
 			F.begin(), F.end(),
 			0.0, [&](double x, const linarr::dependency_flux& f) {
-				return x + to_double( (f.*FUNC)() );
+				return x + detail::to_double( (f.*FUNC)() );
 			}
 		);
 		return v;
 	}();
-	props[idx] = cumul/to_double(F.size());
+	props[idx] = cumul/detail::to_double(F.size());
 }
 template<typename T>
 void set_maximum_of(
@@ -132,7 +133,7 @@ noexcept
 		std::for_each(
 			F.begin(), F.end(),
 			[&](const linarr::dependency_flux& f) {
-				v = std::max(v, to_double( (f.*FUNC)() ));
+				v = std::max(v, detail::to_double( (f.*FUNC)() ));
 			}
 		);
 		return v;
@@ -159,7 +160,7 @@ noexcept
 		std::for_each(
 			F.begin(), F.end(),
 			[&](const linarr::dependency_flux& f) {
-				v = std::min(v, to_double( (f.*FUNC)() ));
+				v = std::min(v, detail::to_double( (f.*FUNC)() ));
 			}
 		);
 		return v;
@@ -505,7 +506,7 @@ noexcept
 
 	// number of nodes
 	if (m_what_fs[n_idx]) {
-		set_prop(n_idx, to_double(n));
+		set_prop(n_idx, detail::to_double(n));
 	}
 
 	// <k^2>
@@ -525,24 +526,24 @@ noexcept
 
 	// K^2
 	if (m_what_fs[SK2_idx]) {
-		set_prop(SK2_idx, to_double(properties::sum_powers_degrees(fT, 2)));
+		set_prop(SK2_idx, detail::to_double(properties::sum_powers_degrees(fT, 2)));
 	}
 	if (m_what_fs[SK2_out_idx]) {
-		set_prop(SK2_out_idx, to_double(properties::sum_powers_out_degrees(rT, 2)));
+		set_prop(SK2_out_idx, detail::to_double(properties::sum_powers_out_degrees(rT, 2)));
 	}
 	// K^3
 	if (m_what_fs[SK3_idx]) {
-		set_prop(SK3_idx, to_double(properties::sum_powers_degrees(fT, 3)));
+		set_prop(SK3_idx, detail::to_double(properties::sum_powers_degrees(fT, 3)));
 	}
 	if (m_what_fs[SK3_out_idx]) {
-		set_prop(SK3_out_idx, to_double(properties::sum_powers_out_degrees(rT, 3)));
+		set_prop(SK3_out_idx, detail::to_double(properties::sum_powers_out_degrees(rT, 3)));
 	}
 
 
 	// |Q|
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
 		set_prop(num_pairs_independent_edges_idx,
-				 to_double(properties::num_pairs_independent_edges(fT)));
+				 detail::to_double(properties::num_pairs_independent_edges(fT)));
 	}
 	// head initial
 	if (m_what_fs[head_initial_idx]) {
@@ -584,14 +585,14 @@ noexcept
 	}
 	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
-		set_prop(tree_diameter_idx, to_double(properties::tree_diameter(rT)));
+		set_prop(tree_diameter_idx, detail::to_double(properties::tree_diameter(rT)));
 	}
 
 	// -----------------------------------------------------------------
 	// C
 
 	if (m_what_fs[C_idx]) {
-		set_prop(C_idx, to_double(linarr::num_crossings(fT, id_arr, algo_C)));
+		set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, id_arr, algo_C)));
 	}
 	if (m_what_fs[C_predicted_idx]) {
 		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT, id_arr));
@@ -607,7 +608,7 @@ noexcept
 	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, to_double(linarr::num_crossings(fT, id_arr, algo_C)));
+			set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, id_arr, algo_C)));
 		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
@@ -632,7 +633,7 @@ noexcept
 	// D
 
 	if (m_what_fs[D_idx]) {
-		set_prop(D_idx, to_double(linarr::sum_edge_lengths(fT, id_arr)));
+		set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT, id_arr)));
 	}
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
@@ -651,7 +652,7 @@ noexcept
 	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, to_double(linarr::sum_edge_lengths(fT, id_arr)));
+			set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT, id_arr)));
 		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
@@ -688,7 +689,7 @@ noexcept
 		Dmin_projective =
 			detail::Dmin_utils::arrange_projective(n, L, rT.get_root());
 
-		set_prop(Dmin_Projective_idx, to_double(Dmin_projective));
+		set_prop(Dmin_Projective_idx, detail::to_double(Dmin_projective));
 	}
 
 	if (m_what_fs[Dmin_Planar_idx]) {
@@ -702,7 +703,7 @@ noexcept
 		if (m_what_fs[Dmin_Projective_idx] and centroid_contains_root) {
 			// if 'Dmin_projective' has been set and the centroid contains the
 			// root, do nothing
-			set_prop(Dmin_Planar_idx, to_double(Dmin_projective));
+			set_prop(Dmin_Planar_idx, detail::to_double(Dmin_projective));
 		}
 		else {
 			// Dmin_projective was not calculated, or the centroid does
@@ -714,13 +715,13 @@ noexcept
 			const uint64_t Dmin_planar =
 				detail::Dmin_utils::arrange_projective(n, L, centroid.first);
 
-			set_prop(Dmin_Planar_idx, to_double(Dmin_planar));
+			set_prop(Dmin_Planar_idx, detail::to_double(Dmin_planar));
 		}
 	}
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
 		const auto Dmin = detail::Dmin_Unconstrained_YS<false>(fT);
-		set_prop(Dmin_Unconstrained_idx, to_double(Dmin));
+		set_prop(Dmin_Unconstrained_idx, detail::to_double(Dmin));
 	}
 
 	// -----------------

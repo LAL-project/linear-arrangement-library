@@ -74,6 +74,7 @@ HEADERS += \
     basic_types.hpp \
     detail/data_array.hpp \
 	detail/avl.hpp \
+    detail/macros/integer_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \

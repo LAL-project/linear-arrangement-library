@@ -65,7 +65,7 @@ namespace __lal {
  * @param[arr] arr Arrangement constructed.
  */
 template<class container>
-void __make_arrangement_permutations(
+void make_arrangement_permutations(
 	const graphs::rooted_tree& T, node r,
 	const container& data,
 	position& pos, linear_arrangement& arr
@@ -87,7 +87,7 @@ noexcept
 			arr.assign(vi, pos++);
 		}
 		else {
-			__make_arrangement_permutations(T, vi, data, pos, arr);
+			make_arrangement_permutations(T, vi, data, pos, arr);
 		}
 	}
 }
@@ -110,7 +110,7 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::__make_arrangement_permutations(T, T.get_root(), data, pos, arr);
+	__lal::make_arrangement_permutations(T, T.get_root(), data, pos, arr);
 	return arr;
 }
 
@@ -130,7 +130,7 @@ namespace __lal {
  * @param[arr] arr Arrangement constructed.
  */
 template<class container>
-void __make_arrangement_permutations(
+void make_arrangement_permutations(
 	const graphs::free_tree& T,
 	node parent, node u,
 	const container& data,
@@ -153,10 +153,11 @@ noexcept
 			arr.assign(vi, pos++);
 		}
 		else {
-			__make_arrangement_permutations(T, u, vi, data, pos, arr);
+			make_arrangement_permutations(T, u, vi, data, pos, arr);
 		}
 	}
 }
+
 } // -- namespace __lal
 
 /**
@@ -176,7 +177,7 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::__make_arrangement_permutations(T, root, root, data, pos, arr);
+	__lal::make_arrangement_permutations(T, root, root, data, pos, arr);
 	return arr;
 }
 

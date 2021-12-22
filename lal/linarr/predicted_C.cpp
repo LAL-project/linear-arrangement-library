@@ -50,11 +50,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
-
-#define to_int64(x) static_cast<int64_t>(x)
-#define to_uint64(x) static_cast<uint64_t>(x)
-#define to_double(x) static_cast<double>(x)
-#define my_abs_diff(a,b) (a < b ? b - a : a - b)
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace linarr {
@@ -90,7 +86,7 @@ uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 #if defined DEBUG
 	assert(f >= 0);
 #endif
-	return to_uint64(f);
+	return detail::to_uint64(f);
 }
 
 inline constexpr
@@ -145,7 +141,7 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	assert(f >= 0);
 	assert(f%2 == 0);
 #endif
-	return to_uint64(f/2);
+	return detail::to_uint64(f/2);
 }
 
 template<class G, typename result>
@@ -155,7 +151,7 @@ noexcept
 {
 	result Ec2(0);
 	const uint64_t n = g.get_num_nodes();
-	const int64_t nn = to_int64(n);
+	const int64_t nn = detail::to_int64(n);
 
 	iterators::Q_iterator<G> q(g);
 	while (not q.end()) {
@@ -165,8 +161,8 @@ noexcept
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 
-		const int64_t len_st = to_int64(my_abs_diff(pi[s], pi[t]));
-		const int64_t len_uv = to_int64(my_abs_diff(pi[u], pi[v]));
+		const int64_t len_st = detail::to_int64(detail::abs_diff(pi[s], pi[t]));
+		const int64_t len_uv = detail::to_int64(detail::abs_diff(pi[u], pi[v]));
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
@@ -179,7 +175,7 @@ noexcept
 			Ec2 += numeric::rational(al, be);
 		}
 		else {
-			Ec2 += to_double(al)/to_double(be);
+			Ec2 += detail::to_double(al)/detail::to_double(be);
 		}
 	}
 

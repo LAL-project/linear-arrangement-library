@@ -71,6 +71,8 @@ namespace detail {
  * at one of the tree's centroidal vertices. Then, it arranges the tree so that
  * there are no edge crossings and the centroidal vertex is not covered. Such
  * arrangement is done using an displacement-based algorithm.
+ * @param t Input tree.
+ * @returns A pair of cost and minimum linear arrangement.
  */
 inline
 std::pair<uint64_t, linear_arrangement> Dmin_Planar_HS(const graphs::free_tree& t)

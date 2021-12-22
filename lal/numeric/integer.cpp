@@ -49,13 +49,6 @@
 // lal includes
 #include <lal/detail/numeric/utils.hpp>
 
-/* This macro takes a signed integer and converts it into an unsigned
- * integer. First, drops the negative sign (if appropriate) and then
- * converts the result into an actual uint64_t (using static cast).
- */
-#define my_abs(x) static_cast<uint64_t>((x < 0 ? -x : x))
-#define to_uint64(x) static_cast<uint64_t>(x)
-
 namespace lal {
 namespace numeric {
 

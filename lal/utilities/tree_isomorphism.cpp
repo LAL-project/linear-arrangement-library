@@ -52,9 +52,7 @@
 #include <lal/detail/properties/tree_centre.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/utilities/tree_isomorphism.hpp>
-
-#define to_uint64(x) (static_cast<uint64_t>(x))
-#define to_int(x) (static_cast<int>(x))
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace utilities {

@@ -47,9 +47,9 @@
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/detail/macros/integer_convert.hpp>
 
 #define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
-#define to_int64(x) static_cast<int64_t>(x)
 
 inline constexpr uint64_t sum(uint64_t n, uint64_t t) noexcept {
 	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
@@ -67,7 +67,7 @@ noexcept
 	// substract sum of squared degrees
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
 		const uint64_t ku = g.get_degree(u);
-		q2 -= to_int64(ku*ku);
+		q2 -= detail::to_int64(ku*ku);
 	}
 
 	return q2/2;

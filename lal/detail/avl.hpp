@@ -69,8 +69,7 @@ public:
 	 * @param x The element to be removed.
 	 * @returns The amount of elements larger than 'x' in the tree.
 	 */
-	[[nodiscard]]
-	uint64_t remove(const T& x) noexcept {
+	[[nodiscard]] uint64_t remove(const T& x) noexcept {
 		uint64_t top = 0;
 		root = remove(root, x, top);
 		return top;
@@ -246,17 +245,17 @@ private:
 	/* ROTATIONS */
 
 	/**
-	 * @brief Performs a right-rotation at node @e _n.
-	 * @param _n Node.
+	 * @brief Performs a right-rotation at node @e n.
+	 * @param n Node.
 	 * @returns A tree node.
-	 * @pre Node @e _n has a left subtree.
+	 * @pre Node @e n has a left subtree.
 	 */
-	[[nodiscard]] tree_node *right_rotation(tree_node *_n) noexcept {
+	[[nodiscard]] tree_node *right_rotation(tree_node *n) noexcept {
 #if defined DEBUG
-		assert(_n != nullptr);
+		assert(n != nullptr);
 #endif
 
-		tree_node *A = _n;
+		tree_node *A = n;
 		tree_node *P = A->parent;
 		tree_node *B = A->left;
 
@@ -300,17 +299,17 @@ private:
 		return B;
 	}
 	/**
-	 * @brief Performs a left-rotation at node @e _n.
-	 * @param _n Node.
+	 * @brief Performs a left-rotation at node @e n.
+	 * @param n Node.
 	 * @returns A tree node.
-	 * @pre Node @e _n has a right subtree.
+	 * @pre Node @e n has a right subtree.
 	 */
-	[[nodiscard]] tree_node *left_rotation(tree_node *_n) noexcept {
+	[[nodiscard]] tree_node *left_rotation(tree_node *n) noexcept {
 #if defined DEBUG
-		assert(_n != nullptr);
+		assert(n != nullptr);
 #endif
 
-		tree_node *B = _n;
+		tree_node *B = n;
 		tree_node *A = B->right;
 
 		// parent of B is now parent of A

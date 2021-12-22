@@ -57,6 +57,8 @@
 namespace lal {
 namespace detail {
 
+namespace __lal {
+
 // =============================================================================
 // ACTUAL ALGORITHM
 // =============================================================================
@@ -67,9 +69,9 @@ namespace detail {
 //		returns m*m + 1 if the number of crossings is greater than the upper_bound
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
-template<class G, bool decide_upper_bound>
-uint64_t __compute_C_ladder(
-	const G& g,
+template<class graph_type, bool decide_upper_bound>
+uint64_t compute_C_ladder(
+	const graph_type& g,
 	const linear_arrangement& pi,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
@@ -91,7 +93,7 @@ noexcept
 		uint64_t S = 0;
 
 		// neighbours of node u, as a list of Boolean values.
-		detail::get_bool_neighbours<G>(g, u, bn);
+		detail::get_bool_neighbours<graph_type>(g, u, bn);
 
 		for (position pv = pu + 1; pv < n; ++pv) {
 			const node v = pi[position_t{pv}];
@@ -123,6 +125,8 @@ noexcept
 	return C;
 }
 
+} // -- namespace __lal
+
 // =============================================================================
 // CALLS TO ALGORITHM
 // =============================================================================
@@ -131,10 +135,8 @@ noexcept
 // single arrangement
 
 template<class graph_type>
-uint64_t __call_C_ladder(
-	const graph_type& g,
-	const linear_arrangement& pi
-)
+uint64_t call_C_ladder
+(const graph_type& g, const linear_arrangement& pi)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -147,7 +149,7 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<graph_type,false>
+	return __lal::compute_C_ladder<graph_type, false>
 			(g, pi, boolean_neighborhood.begin(), L1.begin());
 }
 
@@ -162,7 +164,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_ladder<graph_type>, g, pi);
+			(call_C_ladder<graph_type>, g, pi);
 }
 
 // --------------------
@@ -195,7 +197,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder<graph_type,false>
+		cs[i] = __lal::compute_C_ladder<graph_type, false>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin());
 
 		boolean_neighborhood.fill(0);
@@ -212,7 +214,7 @@ noexcept
 // single arrangement
 
 template<class graph_type>
-uint64_t __call_C_ladder_is_lesseq_than(
+uint64_t call_C_ladder_is_lesseq_than(
 	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
@@ -229,7 +231,7 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __compute_C_ladder<graph_type,true>
+	return __lal::compute_C_ladder<graph_type, true>
 			(g, pi, boolean_neighborhood.begin(), L1.begin(), upper_bound);
 }
 
@@ -245,7 +247,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_ladder_is_lesseq_than<graph_type>, g, pi, upper_bound);
+			(call_C_ladder_is_lesseq_than<graph_type>, g, pi, upper_bound);
 }
 
 // --------------------
@@ -279,7 +281,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_ladder<graph_type,true>
+		cs[i] = __lal::compute_C_ladder<graph_type, true>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -327,7 +329,7 @@ noexcept
 		// compute C
 		boolean_neighborhood.fill(0);
 
-		cs[i] = __compute_C_ladder<graph_type,true>
+		cs[i] = __lal::compute_C_ladder<graph_type, true>
 				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {

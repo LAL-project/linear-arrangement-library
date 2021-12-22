@@ -49,14 +49,15 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
-
-#define to_double(x) static_cast<double>(x)
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace linarr {
 
+namespace __lal {
+
 inline
-uint64_t __left_branching_edges(const graphs::directed_graph& g, const linear_arrangement& pi)
+uint64_t left_branching_edges(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 	uint64_t edges_to_right = 0;
@@ -67,6 +68,8 @@ noexcept
 	return edges_to_right;
 }
 
+} // -- namespace __lal
+
 numeric::rational head_initial_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
@@ -76,7 +79,7 @@ noexcept
 #endif
 
 	const uint64_t etr =
-		detail::call_with_empty_arrangement(__left_branching_edges, g, pi);
+		detail::call_with_empty_arrangement(__lal::left_branching_edges, g, pi);
 	return numeric::rational(etr, g.get_num_edges());
 }
 
@@ -88,8 +91,9 @@ double head_initial
 #endif
 
 	const uint64_t etr =
-		detail::call_with_empty_arrangement(__left_branching_edges, g, pi);
-	return to_double(etr)/to_double(g.get_num_edges());
+		detail::call_with_empty_arrangement(__lal::left_branching_edges, g, pi);
+
+	return detail::to_double(etr)/detail::to_double(g.get_num_edges());
 }
 
 } // -- namespace linarr

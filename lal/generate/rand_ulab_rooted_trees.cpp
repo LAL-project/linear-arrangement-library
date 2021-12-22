@@ -48,9 +48,7 @@
 
 // lal includes
 #include <lal/detail/graphs/conversions.hpp>
-
-#define to_int64(x) static_cast<int64_t>(x)
-#define to_uint64(x) static_cast<uint64_t>(x)
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace generate {
@@ -189,14 +187,14 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 		for (uint64_t d = 1; d <= k; ++d) {
 			const numeric::integer td = m_rn[d]*d;
 
-			int64_t i = to_int64(k) + 1;
+			int64_t i = detail::to_int64(k) + 1;
 			int64_t j = 1;
-			while (j <= to_int64(k) and i > 0) {
-				i -= to_int64(d);
+			while (j <= detail::to_int64(k) and i > 0) {
+				i -= detail::to_int64(d);
 
 				// --
 				//if (i > 0) { s += m_rn[utils::to_uint64(i)]*td; }
-				s += (i > 0 ? m_rn[to_uint64(i)]*td : 0);
+				s += (i > 0 ? m_rn[detail::to_uint64(i)]*td : 0);
 				// --
 
 				++j;

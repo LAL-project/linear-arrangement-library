@@ -49,8 +49,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
-
-#define to_double(x) static_cast<double>(x)
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace linarr {
@@ -58,14 +57,16 @@ namespace linarr {
 // -----------------------------------------------------------------------------
 /* D */
 
-template<class G>
-inline uint64_t __sum_length_edges(const G& g, const linear_arrangement& pi)
+namespace __lal {
+
+template<class graph_type>
+uint64_t sum_length_edges(const graph_type& g, const linear_arrangement& pi)
 noexcept
 {
 	// sum of lengths
 	uint64_t l = 0;
 
-	iterators::E_iterator<G> e_it(g);
+	iterators::E_iterator<graph_type> e_it(g);
 	for (; not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge_t();
 
@@ -78,6 +79,8 @@ noexcept
 	return l;
 }
 
+} // -- namespace __lal
+
 uint64_t sum_edge_lengths
 (const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
@@ -87,7 +90,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__sum_length_edges<graphs::directed_graph>, g, pi);
+			(__lal::sum_length_edges<graphs::directed_graph>, g, pi);
 }
 uint64_t sum_edge_lengths
 (const graphs::undirected_graph& g, const linear_arrangement& pi)
@@ -98,14 +101,16 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__sum_length_edges<graphs::undirected_graph>, g, pi);
+			(__lal::sum_length_edges<graphs::undirected_graph>, g, pi);
 }
 
 // -----------------------------------------------------------------------------
 /* MDD */
 
+namespace __lal {
+
 template<class G, typename result>
-inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept
+result MDD_rational(const G& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
@@ -116,9 +121,11 @@ inline result __MDD_rational(const G& g, const linear_arrangement& pi) noexcept
 		return numeric::rational(D, g.get_num_edges());
 	}
 	else {
-		return to_double(D)/to_double(g.get_num_edges());
+		return detail::to_double(D)/detail::to_double(g.get_num_edges());
 	}
 }
+
+} // -- namespace __lal
 
 numeric::rational mean_dependency_distance_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi)
@@ -129,7 +136,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
+			(__lal::MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
 }
 
 numeric::rational mean_dependency_distance_rational
@@ -141,7 +148,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
+			(__lal::MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
 }
 
 // -----------------------------------------------------------------------------
@@ -155,7 +162,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__MDD_rational<graphs::directed_graph,double>, g, pi);
+			(__lal::MDD_rational<graphs::directed_graph,double>, g, pi);
 }
 double mean_dependency_distance
 (const graphs::undirected_graph& g, const linear_arrangement& pi)
@@ -166,7 +173,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__MDD_rational<graphs::undirected_graph,double>, g, pi);
+			(__lal::MDD_rational<graphs::undirected_graph,double>, g, pi);
 }
 
 } // -- namespace linarr

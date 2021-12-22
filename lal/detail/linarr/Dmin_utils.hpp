@@ -62,15 +62,13 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
+#include <lal/detail/macros/integer_convert.hpp>
 
 namespace lal {
 namespace detail {
 
 /// Utilities for the various minimum linear arrangement algorithms.
 namespace Dmin_utils {
-
-#define to_int64(x) static_cast<int64_t>(x)
-#define to_uint64(x) static_cast<uint64_t>(x)
 
 /// Useful typedef to denote relative position.
 typedef unsigned char place;

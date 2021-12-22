@@ -49,9 +49,20 @@ namespace detail {
 
 namespace __lal {
 
-/// Function used by @ref lal::detail::make_array_with_value().
+/**
+ * @brief Implementation of @ref lal::detail::make_array_with_value.
+ *
+ * Function used by @ref lal::detail::make_array_with_value().
+ * @tparam T Type of the value.
+ * @tparam size Size of the array.
+ * @tparam v Value to use.
+ * @tparam I Index sequence.
+ * @returns An array of the given size where all elements are equal to @e v.
+ */
 template<typename T, std::size_t size, T v, std::size_t... I>
-std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
+constexpr std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>)
+noexcept
+{
 	std::array<T, size> a;
 	((a[I] = v), ...);
 	return a;
@@ -66,12 +77,10 @@ std::array<T, size> make_array_with_value_impl(std::index_sequence<I...>) {
  * @tparam value_to_fill_with The value to fill the array with.
  */
 template<typename T, std::size_t array_size, T value_to_fill_with>
-std::array<T, array_size>
-make_array_with_value() {
+constexpr std::array<T, array_size> make_array_with_value() noexcept {
 	return
-	__lal::make_array_with_value_impl
-	<T, array_size, value_to_fill_with>
-	(std::make_integer_sequence<std::size_t, array_size>{});
+	__lal::make_array_with_value_impl<T, array_size, value_to_fill_with>
+		(std::make_integer_sequence<std::size_t, array_size>{});
 }
 
 /**

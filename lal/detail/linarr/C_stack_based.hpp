@@ -51,6 +51,7 @@
 #include <lal/detail/avl.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
+#include <lal/detail/macros/integer_convert.hpp>
 
 typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
@@ -60,6 +61,8 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
 
 namespace lal {
 namespace detail {
+
+namespace __lal {
 
 // =============================================================================
 // ACTUAL ALGORITHM
@@ -90,9 +93,7 @@ noexcept
 			const node_t u = e.first;
 			const node_t v = e.second;
 			++size_adjN_u[u.value];
-
-#define my_abs_diff(a,b) (a < b ? b - a : a - b)
-			return my_abs_diff(pi[u], pi[v]);
+			return abs_diff(pi[u], pi[v]);
 		}
 		);
 
@@ -130,11 +131,11 @@ noexcept
 // When decide_upper_bound is false:
 //		returns the number of crossings
 // When decide_upper_bound is true:
-//		returns m*m + 1 if the number of crossings is greater than the upper_bound
+//		returns uuper_bound+1 if the number of crossings is greater than the upper_bound
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
 template<class graph_type, bool decide_upper_bound>
-uint64_t __compute_C_stack_based(
+uint64_t compute_C_stack_based(
 	const graph_type& g, const linear_arrangement& pi,
 	std::size_t * const size_adjN_u,
 	uint64_t upper_bound = 0
@@ -189,12 +190,14 @@ noexcept
 	return C;
 }
 
+} // -- namespace __lal
+
 // =============================================================================
 // CALLS TO ALGORITHM
 // =============================================================================
 
 template<class graph_type>
-uint64_t __call_C_stack_based(
+uint64_t call_C_stack_based(
 	const graph_type& g,
 	const linear_arrangement& pi
 )
@@ -207,7 +210,8 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<graph_type,false>(g, pi, size_adjN_u.begin());
+	return __lal::compute_C_stack_based<graph_type, false>
+			(g, pi, size_adjN_u.begin());
 }
 
 // ------------------
@@ -224,7 +228,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_stack_based<graph_type>, g, pi);
+			(call_C_stack_based<graph_type>, g, pi);
 }
 
 // --------------------
@@ -254,7 +258,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<graph_type,false>
+		cs[i] = __lal::compute_C_stack_based<graph_type, false>
 				(g, pis[i], size_adjN_u.begin());
 	}
 
@@ -265,7 +269,7 @@ noexcept
 // DECISION
 
 template<class graph_type>
-uint64_t __call_C_stack_based_lesseq_than(
+uint64_t call_C_stack_based_lesseq_than(
 	const graph_type& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
@@ -279,7 +283,7 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __compute_C_stack_based<graph_type,true>
+	return __lal::compute_C_stack_based<graph_type, true>
 			(g, pi, size_adjN_u.begin(), upper_bound);
 }
 
@@ -298,7 +302,7 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(__call_C_stack_based_lesseq_than<graph_type>, g, pi, upper_bound);
+			(call_C_stack_based_lesseq_than<graph_type>, g, pi, upper_bound);
 }
 
 // --------------------
@@ -329,7 +333,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<graph_type,true>
+		cs[i] = __lal::compute_C_stack_based<graph_type, true>
 				(g, pis[i], size_adjN_u.begin(), upper_bound);
 	}
 
@@ -366,7 +370,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __compute_C_stack_based<graph_type,true>
+		cs[i] = __lal::compute_C_stack_based<graph_type, true>
 				(g, pis[i], size_adjN_u.begin(), upper_bounds[i]);
 	}
 

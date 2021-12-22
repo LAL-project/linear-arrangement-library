@@ -74,8 +74,7 @@ template<
 		bool
 	> = true
 >
-void __bit_sort(It begin, It end, const T& m, char * const seen)
-noexcept
+void bit_sort(It begin, It end, const T& m, char * const seen) noexcept
 {
 	// fill bit array
 	for (auto it = begin; it != end; ++it) {
@@ -138,7 +137,7 @@ noexcept
 	}
 
 	// sort
-	__lal::__bit_sort(begin,end, static_cast<T>(0), seen);
+	__lal::bit_sort(begin,end, static_cast<T>(0), seen);
 }
 
 /**
@@ -159,8 +158,7 @@ template<
 		bool
 	> = true
 >
-void bit_sort(It begin, It end, const std::size_t size)
-noexcept
+void bit_sort(It begin, It end, const std::size_t size) noexcept
 {
 	if (size <= 1) { return; }
 	if (size <= 14) {
@@ -181,7 +179,7 @@ noexcept
 	data_array<char> seen(M - m + 1, 0);
 
 	// sort
-	__lal::__bit_sort(begin,end, m, seen.begin());
+	__lal::bit_sort(begin,end, m, seen.begin());
 }
 
 } // -- namspace utils

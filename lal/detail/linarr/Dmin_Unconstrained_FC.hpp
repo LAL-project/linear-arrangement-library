@@ -52,12 +52,7 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
-
-#define LEFT_ANCHOR -1
-#define RIGHT_ANCHOR 1
-#define NO_ANCHOR 0
-
-#define to_int64(x) static_cast<int64_t>(x)
+#include <lal/detail/macros/integer_convert.hpp>
 
 typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::detail::data_array<size_node> ordering;
@@ -65,9 +60,20 @@ typedef lal::detail::data_array<size_node> ordering;
 namespace lal {
 namespace detail {
 
-/// Namespace that holds function for Chung's algorithm for the minimum linear
-/// arrangement problem.
+/**
+ * @brief Functions for Chung's minimum linear arrangement algorithm.
+ *
+ * Namespace that holds function for Chung's algorithm for the minimum linear
+ * arrangement problem. See \cite Chung1984a for further details.
+ */
 namespace dmin_Chung {
+
+/// The tree is left-anchored
+constexpr char LEFT_ANCHOR = -1;
+/// The tree is right-anchored
+constexpr char RIGHT_ANCHOR = 1;
+/// The tree is not anchored
+constexpr char NO_ANCHOR = 0;
 
 /*
 int calculate_q(uint64_t n, const ordering& ord) {
@@ -757,7 +763,7 @@ Dmin_Unconstrained_FC(const graphs::free_tree& t) noexcept
 	linear_arrangement arr(make_arrangement ? t.get_num_nodes() : 0);
 
 	graphs::free_tree T = t;
-	dmin_Chung::calculate_mla<NO_ANCHOR, make_arrangement>
+	dmin_Chung::calculate_mla<dmin_Chung::NO_ANCHOR, make_arrangement>
 		(T, 1, 0, t.get_num_nodes() - 1, arr, Dmin);
 
 	if constexpr (make_arrangement) {
