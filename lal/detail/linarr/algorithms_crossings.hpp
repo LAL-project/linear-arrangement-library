@@ -70,10 +70,9 @@ namespace detail {
  * @returns The number of crossings \f$C\f$.
  */
 template<class graph_type>
-uint64_t n_C_brute_force(
-	const graph_type& g,
-	const linear_arrangement& pi
-) noexcept;
+uint64_t n_C_brute_force
+(const graph_type& g, const linear_arrangement& arr)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -89,10 +88,9 @@ uint64_t n_C_brute_force(
  * @pre None of the arrangements is empty.
  */
 template<class graph_type>
-std::vector<uint64_t> n_C_brute_force(
-	const graph_type& g,
-	const std::vector<linear_arrangement>& arrss
-) noexcept;
+std::vector<uint64_t> n_C_brute_force
+(const graph_type& g, const std::vector<linear_arrangement>& arrs)
+noexcept;
 
 /**
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -106,7 +104,8 @@ std::vector<uint64_t> n_C_brute_force(
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns a value strictly larger than the upper bound if otherwise.
+ * to the upper bound. The function returns a value strictly larger than the upper
+ * bound if otherwise.
  */
 template<class graph_type>
 uint64_t is_n_C_brute_force_lesseq_than(
@@ -127,10 +126,11 @@ uint64_t is_n_C_brute_force_lesseq_than(
  * is applied to all linear arrangements.
  * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns a value strictly larger than the upper bound if otherwise.
+ * to the upper bound. The function returns a value strictly larger than the upper
+ * bound if otherwise.
  */
 template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
@@ -151,10 +151,12 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
  * corresponds only one upper bound.
  * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * When one is omitted, \f$\pi_I\f$ is used.
  * @param upper_bounds List of constants (each an upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
- * to the upper bound. The function returns a value strictly larger than the upper bound if otherwise.
+ * to the upper bound. The function returns a value strictly larger than the upper
+ * bound if otherwise.
  */
 template<class graph_type>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
@@ -177,10 +179,9 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
  * @returns The number of crossings \f$C\f$.
  */
 template<class graph_type>
-uint64_t n_C_dynamic_programming(
-	const graph_type& g,
-	const linear_arrangement& pi
-) noexcept;
+uint64_t n_C_dynamic_programming
+(const graph_type& g, const linear_arrangement& arr)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -198,7 +199,7 @@ uint64_t n_C_dynamic_programming(
 template<class graph_type>
 std::vector<uint64_t> n_C_dynamic_programming(
 	const graph_type& g,
-	const std::vector<linear_arrangement>& arrss
+	const std::vector<linear_arrangement>& arrs
 ) noexcept;
 
 /**
@@ -238,7 +239,8 @@ uint64_t is_n_C_dynamic_programming_lesseq_than(
  * corresponds only one upper bound.
  * @tparam graph_type Type of graph.
  * @param g Input graph.
- * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * When one is omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
  * to the upper bound. The function returns a value strictly larger than the upper
@@ -291,10 +293,9 @@ std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
  * @returns The number of crossings \f$C\f$.
  */
 template<class graph_type>
-uint64_t n_C_ladder(
-	const graph_type& g,
-	const linear_arrangement& pi
-) noexcept;
+uint64_t n_C_ladder
+(const graph_type& g, const linear_arrangement& arr)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -312,7 +313,7 @@ uint64_t n_C_ladder(
 template<class graph_type>
 std::vector<uint64_t> n_C_ladder(
 	const graph_type& g,
-	const std::vector<linear_arrangement>& arrss
+	const std::vector<linear_arrangement>& arrs
 ) noexcept;
 
 /**
@@ -403,10 +404,9 @@ std::vector<uint64_t> is_n_C_ladder_lesseq_than(
  * @returns The number of crossings \f$C\f$.
  */
 template<class graph_type>
-uint64_t n_C_stack_based(
-	const graph_type& g,
-	const linear_arrangement& pi
-) noexcept;
+uint64_t n_C_stack_based
+(const graph_type& g, const linear_arrangement& arr)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
