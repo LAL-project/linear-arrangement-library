@@ -74,29 +74,14 @@ make_array_with_value() {
 	(std::make_integer_sequence<std::size_t, array_size>{});
 }
 
-namespace __lal {
-
-/// Amount of values given in a template function.
-template<typename T, T A, T... ARGS>
-constexpr std::size_t size_arguments = 1 + size_arguments<T, ARGS...>;
-/// Amount of values given in a template function.
-template<typename T, T A>
-constexpr std::size_t size_arguments<T,A> = 1;
-
-} // -- namespace __lal
-
 /**
  * @brief Make an array with the values given as parameters of the template.
  * @tparam T Type of the array
  * @tparam ARGS List of values to be stored in the array.
  */
 template<typename T, T... ARGS>
-constexpr std::array<T, __lal::size_arguments<T, ARGS...>>
-make_array()
-noexcept
-{
-	return std::array<T, __lal::size_arguments<T, ARGS...>>
-			{ARGS...};
+constexpr std::array<T, sizeof...(ARGS)> make_array() noexcept {
+	return std::array<T, sizeof...(ARGS)>{ARGS...};
 }
 
 } // -- namespace detail
