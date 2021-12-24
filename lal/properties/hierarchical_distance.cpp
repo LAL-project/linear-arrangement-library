@@ -54,8 +54,8 @@
 namespace lal {
 namespace properties {
 
-inline uint64_t SHD(const graphs::rooted_tree& tree) noexcept {
-	const uint64_t n = tree.get_num_nodes();
+uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
+	const uint64_t n = t.get_num_nodes();
 
 #if defined DEBUG
 	assert(tree.is_rooted_tree());
@@ -65,21 +65,21 @@ inline uint64_t SHD(const graphs::rooted_tree& tree) noexcept {
 	uint64_t sum_distances = 0;
 	detail::data_array<uint64_t> distances(n, 0);
 
-	detail::BFS<graphs::rooted_tree> bfs(tree);
+	detail::BFS<graphs::rooted_tree> bfs(t);
 	bfs.set_process_neighbour(
-	[&](const auto&, const node s, const node t, bool) -> void {
-		distances[t] = distances[s] + 1;
-		sum_distances += distances[t];
+	[&](const auto&, const node u, const node v, bool) -> void {
+		distances[v] = distances[u] + 1;
+		sum_distances += distances[v];
 	}
 	);
-	bfs.start_at(tree.get_root());
+	bfs.start_at(t.get_root());
 
 	return sum_distances;
 }
 
 template<typename result>
 result MHD(const graphs::rooted_tree& tree) noexcept {
-	const auto sum_distances = SHD(tree);
+	const auto sum_distances = sum_hierarchical_distances(tree);
 	if constexpr (std::is_same_v<numeric::rational, result>) {
 		return numeric::rational(sum_distances, tree.get_num_edges());
 	}
