@@ -54,8 +54,7 @@
 namespace lal {
 namespace properties {
 
-template<typename result>
-result MHD(const graphs::rooted_tree& tree) noexcept {
+inline uint64_t SHD(const graphs::rooted_tree& tree) noexcept {
 	const uint64_t n = tree.get_num_nodes();
 
 #if defined DEBUG
@@ -75,6 +74,12 @@ result MHD(const graphs::rooted_tree& tree) noexcept {
 	);
 	bfs.start_at(tree.get_root());
 
+	return sum_distances;
+}
+
+template<typename result>
+result MHD(const graphs::rooted_tree& tree) noexcept {
+	const auto sum_distances = SHD(tree);
 	if constexpr (std::is_same_v<numeric::rational, result>) {
 		return numeric::rational(sum_distances, tree.get_num_edges());
 	}

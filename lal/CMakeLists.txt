@@ -319,7 +319,7 @@ target_sources(
 		properties/C_rla.hpp
 		properties/D_rla.hpp
 		properties/degrees.hpp
-		properties/mean_hierarchical_distance.hpp
+		properties/hierarchical_distance.hpp
 		properties/Q.hpp
 		properties/tree_centre.hpp
 		properties/tree_centroid.hpp
@@ -327,7 +327,7 @@ target_sources(
 		# -- sources
 		properties/C_rla.cpp
 		properties/D_rla.cpp
-		properties/mean_hierarchical_distance.cpp
+		properties/hierarchical_distance.cpp
 		properties/Q.cpp
 		properties/tree_centre.cpp
 		properties/tree_centroid.cpp
@@ -458,7 +458,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp
-	properties/mean_hierarchical_distance.hpp
+	properties/hierarchical_distance.hpp
 	properties/Q.hpp
 	properties/tree_centre.hpp
 	properties/tree_centroid.hpp

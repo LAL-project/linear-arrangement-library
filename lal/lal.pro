@@ -189,7 +189,7 @@ HEADERS += \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
 	properties/degrees.hpp \
-	properties/mean_hierarchical_distance.hpp \
+    properties/hierarchical_distance.hpp \
 	properties/tree_centre.hpp \
 	properties/tree_centroid.hpp \
 	properties/tree_diameter.hpp \
@@ -232,7 +232,7 @@ SOURCES += \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \
-	properties/mean_hierarchical_distance.cpp \
+	properties/hierarchical_distance.cpp \
 	properties/tree_centre.cpp \
 	properties/tree_centroid.cpp \
 	properties/tree_diameter.cpp \

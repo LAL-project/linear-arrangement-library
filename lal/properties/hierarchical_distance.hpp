@@ -49,13 +49,31 @@ namespace lal {
 namespace properties {
 
 /**
- * @brief Mean Hierarchical Distance.
+ * @brief Sum of hierarchical distances (SHD).
  *
- * The mean hierarchical distance is calculated as a mean of the different
- * hierarchical distances between each vertex and the root of the tree. The
- * hierarchical distance \f$HD_u\f$ of vertex \f$u\f$ is calculated as the
- * number of edges between the tree's root and \f$u\f$. The result of this
- * function is the mean of these distances:
+ * The hierarchical distance \f$HD_u\f$ of a vertex \f$u\f$ to the root of the
+ * tree is calculated as the number of edges between these two vertices. Therefore,
+ * the hierarchical distance from a root's child and the root is exactly 1.
+ *
+ * The result of this function is the sum of such distances:
+ * \f$SHD = \sum_{u\in V} HD_u\f$.
+ *
+ * For furhter details see \cite Jing2015a.
+ * @param t Input rooted tree.
+ * @returns The sum of hierarchical distances of a rooted tree.
+ * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
+ * returns true.
+ */
+uint64_t sum_hierarchical_distance(const graphs::rooted_tree& t) noexcept;
+
+/**
+ * @brief Mean Hierarchical Distance (MHD).
+ *
+ * The hierarchical distance \f$HD_u\f$ of a vertex \f$u\f$ to the root of the
+ * tree is calculated as the number of edges between these two vertices. Therefore,
+ * the hierarchical distance from a root's child and the root is exactly 1.
+ *
+ * The result of this function is the average of such distances:
  * \f$MHD = \frac{1}{n-1} \sum_{u\in V} HD_u\f$.
  *
  * For furhter details see \cite Jing2015a.
@@ -69,7 +87,7 @@ numeric::rational mean_hierarchical_distance_rational(const graphs::rooted_tree&
 noexcept;
 
 /**
- * @brief Mean Hierarchical Distance.
+ * @brief Mean Hierarchical Distance (MHD).
  *
  * See @ref lal::properties::mean_hierarchical_distance_rational for details.
  * @param t Input rooted tree.
