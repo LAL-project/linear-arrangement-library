@@ -143,6 +143,12 @@ enum class treebank_feature {
 	 */
 	hubiness,
 	/**
+	 * @brief Sum of hierarchical distances of the tree.
+	 *
+	 * See @ref lal::properties::sum_hierarchical_distances for details.
+	 */
+	sum_hierarchical_distances,
+	/**
 	 * @brief Mean hierarchical distance of the tree.
 	 *
 	 * In case a tree has 1 vertex the output is a 'NaN' value.
@@ -524,6 +530,7 @@ noexcept
 	case treebank_feature::num_pairs_independent_edges: return "num_pairs_independent_edges";
 	case treebank_feature::head_initial: return "head_initial";
 	case treebank_feature::hubiness: return "hubiness";
+	case treebank_feature::sum_hierarchical_distances: return "sum_hierarchical_distance";
 	case treebank_feature::mean_hierarchical_distance: return "mean_hierarchical_distance";
 	case treebank_feature::tree_centre: return "tree_centre";
 	case treebank_feature::tree_centroid: return "tree_centroid";

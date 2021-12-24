@@ -286,6 +286,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::num_pairs_independent_edges:
 				case treebank_feature::head_initial:
 				case treebank_feature::hubiness:
+				case treebank_feature::sum_hierarchical_distances:
 				case treebank_feature::mean_hierarchical_distance:
 				case treebank_feature::tree_diameter:
 				case treebank_feature::num_crossings:
@@ -547,7 +548,7 @@ noexcept
 	}
 	// head initial
 	if (m_what_fs[head_initial_idx]) {
-		if (fT.get_num_nodes() > 1) {
+		if (n > 1) {
 			set_prop(head_initial_idx, linarr::head_initial(rT, id_arr));
 		}
 		else {
@@ -556,18 +557,37 @@ noexcept
 	}
 	// hubiness
 	if (m_what_fs[hubiness_idx]) {
-		if (fT.get_num_nodes() > 3) {
+		if (n > 3) {
 			set_prop(hubiness_idx, properties::hubiness(fT));
 		}
 		else {
 			set_prop(hubiness_idx, nan(""));
 		}
 	}
+
+	// SHD
+	if (m_what_fs[sum_hierarchical_distance_idx]) {
+		if (n > 1) {
+			set_prop(sum_hierarchical_distance_idx,
+					 properties::sum_hierarchical_distances(rT));
+		}
+		else {
+			set_prop(mean_hierarchical_distance_idx, nan(""));
+		}
+	}
 	// MHD
 	if (m_what_fs[mean_hierarchical_distance_idx]) {
-		if (fT.get_num_nodes() > 1) {
-			set_prop(mean_hierarchical_distance_idx,
-					 properties::mean_hierarchical_distance(rT));
+		if (n > 1) {
+			if (m_what_fs[sum_hierarchical_distance_idx]) {
+				// sum of hierarchical distances was calculated in the previous
+				// 'if' statement: resuse it!
+				set_prop(mean_hierarchical_distance_idx,
+						 props[sum_hierarchical_distance_idx]/(n - 1));
+			}
+			else {
+				set_prop(mean_hierarchical_distance_idx,
+						 properties::mean_hierarchical_distance(rT));
+			}
 		}
 		else {
 			set_prop(mean_hierarchical_distance_idx, nan(""));
@@ -575,7 +595,7 @@ noexcept
 	}
 	// MDD
 	if (m_what_fs[mean_dependency_distance_idx]) {
-		if (fT.get_num_nodes() > 1) {
+		if (n > 1) {
 			set_prop(mean_dependency_distance_idx,
 					 linarr::mean_dependency_distance(rT, id_arr));
 		}
@@ -800,6 +820,7 @@ noexcept
 			case treebank_feature::num_pairs_independent_edges:
 			case treebank_feature::head_initial:
 			case treebank_feature::hubiness:
+			case treebank_feature::sum_hierarchical_distances:
 			case treebank_feature::mean_hierarchical_distance:
 			case treebank_feature::tree_diameter:
 			case treebank_feature::num_crossings:

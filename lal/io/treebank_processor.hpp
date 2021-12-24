@@ -201,6 +201,7 @@ private:
 	static constexpr std::size_t num_pairs_independent_edges_idx = treebank_feature_to_index(treebank_feature::num_pairs_independent_edges);
 	static constexpr std::size_t head_initial_idx = treebank_feature_to_index(treebank_feature::head_initial);
 	static constexpr std::size_t hubiness_idx = treebank_feature_to_index(treebank_feature::hubiness);
+	static constexpr std::size_t sum_hierarchical_distance_idx = treebank_feature_to_index(treebank_feature::sum_hierarchical_distances);
 	static constexpr std::size_t mean_hierarchical_distance_idx = treebank_feature_to_index(treebank_feature::mean_hierarchical_distance);
 	static constexpr std::size_t tree_centre_idx = treebank_feature_to_index(treebank_feature::tree_centre);
 	static constexpr std::size_t tree_centroid_idx = treebank_feature_to_index(treebank_feature::tree_centroid);
