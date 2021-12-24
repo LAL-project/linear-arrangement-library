@@ -58,8 +58,7 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 	const uint64_t n = t.get_num_nodes();
 
 #if defined DEBUG
-	assert(tree.is_rooted_tree());
-	assert(tree.get_num_nodes() > 1);
+	assert(t.is_rooted_tree());
 #endif
 
 	uint64_t sum_distances = 0;
@@ -78,13 +77,18 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 }
 
 template<typename result>
-result MHD(const graphs::rooted_tree& tree) noexcept {
-	const auto sum_distances = sum_hierarchical_distances(tree);
+result MHD(const graphs::rooted_tree& t) noexcept {
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+	assert(t.get_num_nodes() > 1);
+#endif
+
+	const auto sum_distances = sum_hierarchical_distances(t);
 	if constexpr (std::is_same_v<numeric::rational, result>) {
-		return numeric::rational(sum_distances, tree.get_num_edges());
+		return numeric::rational(sum_distances, t.get_num_edges());
 	}
 	else {
-		return detail::to_double(sum_distances)/detail::to_double(tree.get_num_edges());
+		return detail::to_double(sum_distances)/detail::to_double(t.get_num_edges());
 	}
 }
 
