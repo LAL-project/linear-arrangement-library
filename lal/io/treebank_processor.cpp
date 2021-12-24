@@ -569,7 +569,7 @@ noexcept
 	if (m_what_fs[sum_hierarchical_distance_idx]) {
 		if (n > 1) {
 			set_prop(sum_hierarchical_distance_idx,
-					 properties::sum_hierarchical_distances(rT));
+					 detail::to_double(properties::sum_hierarchical_distances(rT)));
 		}
 		else {
 			set_prop(mean_hierarchical_distance_idx, nan(""));
@@ -582,7 +582,7 @@ noexcept
 				// sum of hierarchical distances was calculated in the previous
 				// 'if' statement: resuse it!
 				set_prop(mean_hierarchical_distance_idx,
-						 props[sum_hierarchical_distance_idx]/(n - 1));
+						 props[sum_hierarchical_distance_idx]/(detail::to_double(n) - 1));
 			}
 			else {
 				set_prop(mean_hierarchical_distance_idx,
