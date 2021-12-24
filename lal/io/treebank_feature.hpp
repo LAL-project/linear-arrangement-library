@@ -96,25 +96,25 @@ enum class treebank_feature {
 	third_moment_degree_out,
 
 	/**
-	 * @brief Second moment of degree \f$\langle k^2 \rangle\f$.
+	 * @brief Sum of squared degrees.
 	 *
 	 * See @ref lal::properties::sum_powers_degrees for details.
 	 */
 	sum_squared_degrees,
 	/**
-	 * @brief Second moment of out-degree \f$\langle k_{out}^2 \rangle\f$.
+	 * @brief Sum of squared out-degrees.
 	 *
 	 * See @ref lal::properties::sum_powers_out_degrees for details.
 	 */
 	sum_squared_out_degrees,
 	/**
-	 * @brief Third moment of degree \f$\langle k^3 \rangle\f$.
+	 * @brief Sum of cube degrees.
 	 *
 	 * See @ref lal::properties::sum_powers_degrees for details.
 	 */
 	sum_cubed_degrees,
 	/**
-	 * @brief Third moment of out-degree \f$\langle k_{out}^3 \rangle\f$.
+	 * @brief Sum of cube out-degrees.
 	 *
 	 * See @ref lal::properties::sum_powers_out_degrees for details.
 	 */
