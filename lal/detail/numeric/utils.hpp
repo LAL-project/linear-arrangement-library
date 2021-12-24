@@ -156,7 +156,7 @@ void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
- * @param[out] r Rational value. Result is \f$ r = r^p\f$.
+ * @param[out] r Rational value. Result is \f$r = r^p\f$.
  * @param[in] p Exponent.
  */
 inline
@@ -194,7 +194,7 @@ void operate_power(mpq_t& r, uint64_t p) noexcept {
  * @brief Power operation.
  *
  * Raise a rational value \f$r\f$ to a certain power \f$p\f$.
- * @param[out] r Rational value. Result is \f$ r = r^p\f$.
+ * @param[out] r Rational value. Result is \f$r = r^p\f$.
  * @param[in] p Exponent.
  */
 inline
