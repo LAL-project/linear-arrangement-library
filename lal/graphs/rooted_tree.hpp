@@ -594,6 +594,18 @@ public:
 	 */
 	head_vector get_head_vector() const noexcept;
 
+	/**
+	 * @brief Does the subtree rooted at @e r contain node @e u?
+	 * @param u Node to query within the subtree.
+	 * @param r The root of the subtree. Notice that if @e r is the actual root
+	 * of the subtree, the tree certainly contains @e u.
+	 * @returns Whether or not the subtree rooted at @e r contains node łe u.
+	 * @pre Node @e r belongs to the tree (see @ref has_node).
+	 * @pre Node @e u belongs to the tree (see @ref has_node).
+	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
+	 */
+	bool subtree_contains_node(node r, node u) const noexcept;
+
 protected:
 	/// Root of the tree.
 	node m_root = 0;

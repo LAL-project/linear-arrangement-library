@@ -466,6 +466,29 @@ head_vector rooted_tree::get_head_vector() const noexcept {
 	return detail::from_tree_to_head_vector(*this);
 }
 
+bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
+#if defined DEBUG
+	assert(has_node(u));
+	assert(has_node(r));
+	assert(is_rooted_tree());
+#endif
+
+	if (r == get_root()) { return true; }
+	if (r == u) { return true; }
+
+	detail::BFS bfs(*this);
+
+	// terminate the BFS traversal as soon as node 'u' has been reached.
+	bfs.set_terminate
+	([&](const auto&, node current) -> bool { return current == u; });
+	// do not search backwards
+	bfs.set_use_rev_edges(false);
+	// start at the root
+	bfs.start_at(r);
+
+	return bfs.node_was_visited(u);
+}
+
 /* PROTECTED */
 
 // -----------------------------------------------------------------------------
