@@ -355,6 +355,19 @@ public:
 		assign(ulast, position_t{0ULL});
 	}
 
+	/**
+	 * @brief Mirror the arrangement.
+	 *
+	 * Swaps the vertices so that the first is placed at the last position,
+	 * the second at the second to last, ... More formally, swaps arr[1] with
+	 * arr[n], arr[2] with arr[n-1], ...
+	 */
+	void mirror() noexcept {
+		for (std::size_t i = 0; i < m_n/2; ++i) {
+			swap(position_t{i}, position_t{m_n - 1 - i});
+		}
+	}
+
 	/// Size of the arrangement (number of nodes in the arrangement).
 	std::size_t size() const noexcept { return m_n; }
 
