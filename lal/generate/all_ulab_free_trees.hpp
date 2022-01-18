@@ -105,12 +105,8 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_trees(uint64_t n) noexcept
-		: _tree_generator<graphs::free_tree>(n),
-		  m_L(m_n + 1),
-		  m_W(m_n + 1)
-	{
-		reset();
+	all_ulab_free_trees(uint64_t n) noexcept {
+		init(n);
 	}
 	/**
 	 * @brief Copy constructor.

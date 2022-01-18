@@ -110,11 +110,8 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_rooted_trees(uint64_t n) noexcept
-		: _tree_generator<graphs::rooted_tree>(n),
-		m_gen_lab_free_tree(m_n)
-	{
-		reset();
+	all_lab_rooted_trees(uint64_t n) noexcept {
+		init(n);
 	}
 	/**
 	 * @brief Copy constructor.

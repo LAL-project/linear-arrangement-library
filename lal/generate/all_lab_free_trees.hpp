@@ -107,12 +107,8 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_free_trees(uint64_t n) noexcept
-		: _tree_generator<graphs::free_tree>(n),
-		  m_Prufer_seq(m_n <= 2 ? 1 : m_n - 2, 0),
-		  m_sm(m_n <= 2 ? 1 : m_n - 2, 0)
-	{
-		reset();
+	all_lab_free_trees(uint64_t n) noexcept {
+		init(n);
 	}
 
 	/**
