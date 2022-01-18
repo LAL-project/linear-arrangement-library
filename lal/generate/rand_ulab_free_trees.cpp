@@ -307,9 +307,7 @@ const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept
 		// for k=0, f_k=1.
 		f_k = (k == 0);
 		f_k += get_rn(k);
-		f_k += (k%2 == 0 ?
-					numeric::rational(get_rn(k/2), 2) :
-					numeric::rational(0));
+		f_k += (k%2 == 0 ? numeric::rational(get_rn(k/2), 2) : 0);
 
 		s = 0;
 		for (uint64_t j = 0; j <= k; ++j) {
