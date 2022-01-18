@@ -69,7 +69,10 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
-	_rand_ulab_rooted_trees() noexcept { }
+	_rand_ulab_rooted_trees() noexcept {
+		// add the initial values to m_rn
+		init_rn();
+	}
 
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
@@ -82,8 +85,9 @@ public:
 	_rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _rand_ulab_rooted_trees()
 	{
-		// use '__rand_ulab_rooted_trees::' because another class
-		// will inherit from this one
+		// add the initial values to m_rn
+		init_rn();
+
 		init(n, seed);
 	}
 
@@ -136,8 +140,6 @@ public:
 		}
 		m_unif = std::uniform_real_distribution<double>(0, 1);
 
-		// add the initial values to m_rn
-		init_rn();
 		// force the addition of the necessary values for m_rn
 		get_rn(n);
 	}
@@ -164,7 +166,7 @@ public:
 	void clear() noexcept {
 		// clear the values in m_rn
 		m_rn.clear();
-		// this is needed for the next call to init
+		// add the initial values to m_rn
 		init_rn();
 		// clear the other memory
 		m_head_vector.clear();
@@ -227,37 +229,37 @@ protected:
 		// from the OEIS: https://oeis.org/A000081
 		m_rn =
 		std::vector<numeric::integer>{
-			0,
-			1,
-			1,
-			2,
-			4,
-			9,
-			20,
-			48,
-			115,
-			286,
-			719,
-			1842,
-			4766,
-			12486,
-			32973,
-			87811,
-			235381,
-			634847,
-			1721159,
-			4688676,
-			12826228,
-			35221832,
-			97055181,
-			268282855,
-			743724984,
-			numeric::integer("2067174645"),
-			numeric::integer("5759636510"),
-			numeric::integer("16083734329"),
-			numeric::integer("45007066269"),
-			numeric::integer("126186554308"),
-			numeric::integer("354426847597")
+			0ull,
+			1ull,
+			1ull,
+			2ull,
+			4ull,
+			9ull,
+			20ull,
+			48ull,
+			115ull,
+			286ull,
+			719ull,
+			1842ull,
+			4766ull,
+			12486ull,
+			32973ull,
+			87811ull,
+			235381ull,
+			634847ull,
+			1721159ull,
+			4688676ull,
+			12826228ull,
+			35221832ull,
+			97055181ull,
+			268282855ull,
+			743724984ull,
+			2067174645ull,
+			5759636510ull,
+			16083734329ull,
+			45007066269ull,
+			126186554308ull,
+			354426847597ull
 		};
 	}
 

@@ -75,7 +75,10 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	_rand_ulab_free_trees() noexcept : _rand_ulab_rooted_trees() { }
+	_rand_ulab_free_trees() noexcept : _rand_ulab_rooted_trees() {
+		// add the initial values to m_fn
+		init_fn();
+	}
 
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
@@ -88,6 +91,9 @@ public:
 	_rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept
 		: _rand_ulab_rooted_trees(n, seed)
 	{
+		// add the initial values to m_fn
+		init_fn();
+
 		_rand_ulab_free_trees::init(n, seed);
 	}
 	/**
@@ -127,9 +133,6 @@ public:
 	 */
 	void init(uint64_t n, uint64_t seed = 0) noexcept {
 		_rand_ulab_rooted_trees::init(n, seed);
-
-		// add the initial values to m_fn
-		init_fn();
 		// force the addition of the necessary values for m_fn and m_rn
 		get_fn(n);
 	}
@@ -159,6 +162,7 @@ public:
 		m_fn.clear();
 		m_alpha.clear();
 
+		// add the initial values to m_fn
 		init_fn();
 	}
 
@@ -231,37 +235,37 @@ private:
 		// from the OEIS: https://oeis.org/A000055
 		m_fn =
 		std::vector<numeric::integer>{
-			1,
-			1,
-			1,
-			1,
-			2,
-			3,
-			6,
-			11,
-			23,
-			47,
-			106,
-			235,
-			551,
-			1301,
-			3159,
-			7741,
-			19320,
-			48629,
-			123867,
-			317955,
-			823065,
-			2144505,
-			5623756,
-			14828074,
-			39299897,
-			numeric::integer("104636890"),
-			numeric::integer("279793450"),
-			numeric::integer("751065460"),
-			numeric::integer("2023443032"),
-			numeric::integer("5469566585"),
-			numeric::integer("14830871802")
+			1ull,
+			1ull,
+			1ull,
+			1ull,
+			2ull,
+			3ull,
+			6ull,
+			11ull,
+			23ull,
+			47ull,
+			106ull,
+			235ull,
+			551ull,
+			1301ull,
+			3159ull,
+			7741ull,
+			19320ull,
+			48629ull,
+			123867ull,
+			317955ull,
+			823065ull,
+			2144505ull,
+			5623756ull,
+			14828074ull,
+			39299897ull,
+			104636890ull,
+			279793450ull,
+			751065460ull,
+			2023443032ull,
+			5469566585ull,
+			14830871802ull
 		};
 	}
 
