@@ -123,7 +123,7 @@ public:
 	 * @param source Node.
 	 */
 	void start_at(node source) noexcept {
-		m_X.push(source);
+		m_queue.push(source);
 		m_vis[source] = 1;
 		do_traversal();
 	}
@@ -134,7 +134,7 @@ public:
 	 */
 	void start_at(const std::vector<node>& sources) noexcept {
 		for (const node& u : sources) {
-			m_X.push(u);
+			m_queue.push(u);
 			m_vis[u] = 1;
 		}
 		do_traversal();
@@ -184,7 +184,7 @@ public:
 	void reset_visited() noexcept { m_vis.fill(0); }
 
 	/// Clear the memory allocated for this structure.
-	void clear_structure() noexcept { std::queue<node> q; m_X.swap(q); }
+	void clear_structure() noexcept { std::queue<node> q; m_queue.swap(q); }
 
 	/// Set node @e u as visited or not.
 	void set_visited(node u, char vis) noexcept { m_vis[u] = vis; }
@@ -216,7 +216,7 @@ protected:
 		}
 
 		if (not m_vis[t] and m_add_node(*this, s, t)) {
-			m_X.push(t);
+			m_queue.push(t);
 			// set node as visited
 			m_vis[t] = true;
 		}
@@ -264,7 +264,7 @@ protected:
 	}
 
 	/// Return the next node in line.
-	node next_node() const noexcept { return m_X.front(); }
+	node next_node() const noexcept { return m_queue.front(); }
 
 	/**
 	 * @brief Traversal through the graph's vertices.
@@ -316,9 +316,9 @@ protected:
 	 * is not limited to "out-neighbours", but also to "in-neighbours".
 	 */
 	void do_traversal() noexcept {
-		while (not m_X.empty()) {
+		while (not m_queue.empty()) {
 			const node s = next_node();
-			m_X.pop();
+			m_queue.pop();
 
 			// process current node
 			m_proc_cur(*this, s);
@@ -333,8 +333,8 @@ protected:
 protected:
 	/// Constant reference to the graph.
 	const graph_type& m_G;
-	/// The structure of the traversal (either a queue or a stack).
-	std::queue<node> m_X;
+	/// The structure of the traversal.
+	std::queue<node> m_queue;
 	/// The set of visited nodes.
 	data_array<char> m_vis;
 	/// Should we process already visitied neighbours?
