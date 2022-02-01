@@ -56,12 +56,12 @@ namespace detail {
  * @param g Input graph.
  * @returns A vector with all @e g's edges.
  */
-template<typename G>
-std::vector<edge> E(const G& g) noexcept {
+template<class graph_t>
+std::vector<edge> E(const graph_t& g) noexcept {
 	std::vector<edge> e(g.get_num_edges());
 
 	auto vec_it = e.begin();
-	for (iterators::E_iterator<G> e_it(g); not e_it.end(); e_it.next()) {
+	for (iterators::E_iterator<graph_t> e_it(g); not e_it.end(); e_it.next()) {
 		*vec_it++ = e_it.get_edge();
 	}
 	return e;
@@ -73,12 +73,12 @@ std::vector<edge> E(const G& g) noexcept {
  * @param qs Total amount of pairs of independent edges.
  * @returns A vector with all @e g's pairs of independent edges.
  */
-template<typename G>
-std::vector<edge_pair> Q(const G& g, uint64_t qs) noexcept {
+template<class graph_t>
+std::vector<edge_pair> Q(const graph_t& g, uint64_t qs) noexcept {
 	std::vector<edge_pair> q(qs);
 
 	auto vec_it = q.begin();
-	for (iterators::Q_iterator<G> q_it(g); not q_it.end(); q_it.next()) {
+	for (iterators::Q_iterator<graph_t> q_it(g); not q_it.end(); q_it.next()) {
 		*vec_it++ = q_it.get_edge_pair();
 	}
 	return q;

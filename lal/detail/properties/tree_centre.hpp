@@ -72,7 +72,7 @@ namespace detail {
  * This method finds the central nodes of the connected components node
  * 'x' belongs to.
  *
- * @tparam tree_type type of tree.
+ * @tparam tree_t type of tree.
  * @param t Input tree.
  * @param X Input node.
  * @pre Input tree @e t may be a forest.
@@ -82,13 +82,10 @@ namespace detail {
  * has smaller index value than the second.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centre(const tree_type& t, node X) noexcept
+std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 {
 	// number of nodes of the whole tree
 	const auto n = t.get_num_nodes();
@@ -107,7 +104,7 @@ std::pair<node, node> retrieve_centre(const tree_type& t, node X) noexcept
 
 		// only neighbour of X
 		node v2;
-		if constexpr (std::is_base_of_v<graphs::free_tree, tree_type>) {
+		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			v2 = t.get_neighbours(X)[0];
 		}
 		else {
@@ -118,7 +115,7 @@ std::pair<node, node> retrieve_centre(const tree_type& t, node X) noexcept
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
 
-	BFS<tree_type> bfs(t);
+	BFS<tree_t> bfs(t);
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
@@ -160,7 +157,7 @@ std::pair<node, node> retrieve_centre(const tree_type& t, node X) noexcept
 	}
 	);
 
-	if constexpr (std::is_base_of_v<graphs::free_tree, tree_type>)
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>)
 	{ bfs.set_use_rev_edges(false); }
 	else
 	{ bfs.set_use_rev_edges(true); }

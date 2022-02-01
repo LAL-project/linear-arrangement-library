@@ -55,9 +55,9 @@
 namespace lal {
 namespace linarr {
 
-template<class G>
+template<class graph_t>
 inline uint64_t num_crossings(
-	const G& g,
+	const graph_t& g,
 	const linear_arrangement& pi,
 	const algorithms_C& A
 )
@@ -120,9 +120,9 @@ uint64_t num_crossings(
 
 // -----------------------------------------------------------------------------
 
-template<class G>
+template<class graph_t>
 inline std::vector<uint64_t> num_crossings_list(
-	const G& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis,
 	const algorithms_C& A
 )
@@ -168,9 +168,9 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class G>
+template<class graph_t>
 uint64_t is_num_crossings_lesseq_than(
-	const G& g,
+	const graph_t& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound,
 	const algorithms_C& A
@@ -239,9 +239,9 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class G>
+template<class graph_t>
 inline std::vector<uint64_t> is_num_crossings_lesseq_than_list(
-	const G& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound,
 	const algorithms_C& A
@@ -292,10 +292,10 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class G>
+template<class graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list
 (
-	const G& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A

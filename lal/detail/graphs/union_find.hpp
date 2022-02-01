@@ -60,7 +60,7 @@ namespace detail {
  *
  * This function updates the union-find data structure of a tree after the
  * addition of the edge between the edges 'u' and 'v'.
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree
  * @param u Node
  * @param v Node
@@ -69,10 +69,10 @@ namespace detail {
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template<class tree_type>
+template<class tree_t>
 void update_unionfind_after_add_edge
 (
-	const tree_type& t, const node u, const node v,
+	const tree_t& t, const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -115,10 +115,10 @@ noexcept
 
 	// update roots of the smaller component,
 	// in the direction parent -> child
-	BFS<tree_type> bfs(t);
+	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
 	bfs.set_process_current(
-	[&](const BFS<tree_type>&, node w) -> void { root_of[w] = new_root; }
+	[&](const BFS<tree_t>&, node w) -> void { root_of[w] = new_root; }
 	);
 	bfs.set_visited(parent, 1); // avoid going backwards
 	bfs.start_at(child);
@@ -129,7 +129,7 @@ noexcept
  *
  * This function updates the union-find data structure of a tree after the
  * removal of the edge between the edges 'u' and 'v'.
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree
  * @param u Node
  * @param v Node
@@ -138,10 +138,10 @@ noexcept
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template<class tree_type>
+template<class tree_t>
 void update_unionfind_after_remove_edge
 (
-	const tree_type& t, const node u, const node v,
+	const tree_t& t, const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -154,7 +154,7 @@ noexcept
 
 	const uint64_t size_uv = root_size[root_of[u]];
 
-	BFS<tree_type> bfs(t);
+	BFS<tree_t> bfs(t);
 
 	// --- update u's info ---
 
@@ -177,7 +177,7 @@ noexcept
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-	[&](const detail::BFS<tree_type>&, node w) -> void {
+	[&](const detail::BFS<tree_t>&, node w) -> void {
 		root_of[w] = v;
 	}
 	);
@@ -201,17 +201,17 @@ namespace __lal {
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param bfs Breadth-First Search object.
  * @param v Node to be removed.
  * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template<class tree_type>
+template<class tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
-	BFS<tree_type>& bfs, node v,
+	BFS<tree_t>& bfs, node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -243,28 +243,28 @@ noexcept
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param u Node to be removed.
  * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template<typename T>
+template<typename tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
-	const T& t, node u,
+	const tree_t& t, node u,
 	node * const root_of,
 	uint64_t * const root_size
 )
 noexcept
 {
-	BFS<T> bfs(t);
+	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
 	// avoid going 'backwards', we need to go 'onwards'
 	bfs.set_visited(u, 1);
 
-	if constexpr (std::is_base_of_v<graphs::free_tree, T>) {
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 		for (node v : t.get_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"

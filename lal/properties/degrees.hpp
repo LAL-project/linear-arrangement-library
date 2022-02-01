@@ -65,7 +65,7 @@ namespace properties {
  *
  * Each degree is raised to a certain power according to the parameter.
  *
- * @tparam G Type of graph.
+ * @tparam graph_t Type of graph.
  * @tparam return_type Type of function's result (uint64_t, @ref lal::numeric::integer)
  * @param g Input graph
  * @param p Power to which degrees must be raised
@@ -73,10 +73,10 @@ namespace properties {
  * (in+out, out, in, or other).
  * @return The sum of degrees raised to the input power @e p.
  */
-template<class G, class return_type>
+template<class graph_t, class return_type>
 inline
 return_type sum_powers_degrees
-(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const noexcept)
+(const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
 {
 	static_assert(
@@ -343,7 +343,7 @@ uint64_t sum_powers_out_degrees
  * Calculates the \f$p\f$-th moment of degree about 0, where the degree is given
  * by some function.
  *
- * @tparam G Type of graph
+ * @tparam graph_t Type of graph
  * @tparam return_type Type of function's result (double, @ref lal::numeric::rational)
  * @param g Input graph
  * @param p Power to which degrees must be raised
@@ -351,10 +351,10 @@ uint64_t sum_powers_out_degrees
  * out, in, or other).
  * @return The \f$p\f$-th moment of degree about 0.
  */
-template<class G, class return_type>
+template<class graph_t, class return_type>
 inline
 return_type moment_degree
-(const G& g, uint64_t p, uint64_t (G::*degree_function)(node) const noexcept)
+(const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
 {
 	static_assert(
@@ -364,12 +364,12 @@ noexcept
 
 	if constexpr (std::is_floating_point_v<return_type>) {
 		const uint64_t S =
-			sum_powers_degrees<G,uint64_t>(g,p,degree_function);
+			sum_powers_degrees<graph_t,uint64_t>(g,p,degree_function);
 		return static_cast<return_type>(S)/static_cast<return_type>(g.get_num_nodes());
 	}
 	else {
 		const numeric::integer S =
-			sum_powers_degrees<G,numeric::integer>(g,p,degree_function);
+			sum_powers_degrees<graph_t,numeric::integer>(g,p,degree_function);
 		return numeric::rational(S,g.get_num_nodes());
 	}
 }

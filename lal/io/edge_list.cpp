@@ -54,8 +54,8 @@
 namespace lal {
 namespace io {
 
-template<class G>
-inline std::optional<G> __read_edge_list
+template<class graph_t>
+inline std::optional<graph_t> __read_edge_list
 (const std::string& filename, bool norm, bool check)
 noexcept
 {
@@ -77,7 +77,7 @@ noexcept
 	}
 	fin.close();
 
-	G g(max_vert_idx + 1);
+	graph_t g(max_vert_idx + 1);
 	g.set_edges(edge_list, norm, check);
 	return g;
 }

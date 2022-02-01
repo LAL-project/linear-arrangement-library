@@ -58,7 +58,7 @@ namespace detail {
 /**
  * @brief Fast tree non-isomorphism test.
  *
- * @tparam tree_type Tree type.
+ * @tparam tree_t Tree type.
  * @param t1 One tree.
  * @param t2 Another tree.
  * @returns Whether the input trees are, might be, or are not isomorphic.
@@ -71,13 +71,10 @@ namespace detail {
  * @returns 2 if the trees MIGHT BE isomorphic
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-char fast_non_iso(const tree_type& t1, const tree_type& t2) noexcept
+char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
 {
 	// check number of nodes
 	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }

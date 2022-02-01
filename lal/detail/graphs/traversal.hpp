@@ -78,27 +78,23 @@ namespace detail {
  bfs.start_at(0); // start the traversal now at node 0.
  @endcode
  *
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  */
 template<
-	class graph_type,
-	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_type>,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, graph_type> ||
-		std::is_base_of_v<graphs::undirected_graph, graph_type>
-		, bool
-	> = true
+	class graph_t,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
+	std::enable_if_t< std::is_base_of_v<graphs::graph, graph_t>, bool > = true
 >
 class BFS {
 public:
-	typedef std::function<void (const BFS<graph_type>&, node)> BFS_process_one;
-	typedef std::function<void (const BFS<graph_type>&, node, node, bool)> BFS_process_two;
-	typedef std::function<bool (const BFS<graph_type>&, node)> BFS_bool_one;
-	typedef std::function<bool (const BFS<graph_type>&, node, node)> BFS_bool_two;
+	typedef std::function<void (const BFS<graph_t>&, node)> BFS_process_one;
+	typedef std::function<void (const BFS<graph_t>&, node, node, bool)> BFS_process_two;
+	typedef std::function<bool (const BFS<graph_t>&, node)> BFS_bool_one;
+	typedef std::function<bool (const BFS<graph_t>&, node, node)> BFS_bool_two;
 
 public:
 	/// Constructor
-	BFS(const graph_type& g) noexcept : m_G(g), m_vis(m_G.get_num_nodes()) {
+	BFS(const graph_t& g) noexcept : m_G(g), m_vis(m_G.get_num_nodes()) {
 		reset();
 	}
 	/// Destructor
@@ -147,28 +143,28 @@ public:
 
 	/// Set the default value of @ref m_term.
 	void set_terminate_default() noexcept
-	{ m_term = [](const BFS<graph_type>&, const node) -> bool { return false; }; }
+	{ m_term = [](const BFS<graph_t>&, const node) -> bool { return false; }; }
 	/// Set the function that controls the termination of the loop.
 	void set_terminate(const BFS_bool_one& f) noexcept
 	{ m_term = f; }
 
 	/// Set the default value of @ref m_proc_cur.
 	void set_process_current_default() noexcept
-	{ m_proc_cur = [](const BFS<graph_type>&, const node) -> void { }; }
+	{ m_proc_cur = [](const BFS<graph_t>&, const node) -> void { }; }
 	/// Set the function that controls the processing of the current node.
 	void set_process_current(const BFS_process_one& f) noexcept
 	{ m_proc_cur = f; }
 
 	/// Set the default value of @ref m_proc_neigh.
 	void set_process_neighbour_default() noexcept
-	{ m_proc_neigh = [](const BFS<graph_type>&, const node, const node, bool) -> void { }; }
+	{ m_proc_neigh = [](const BFS<graph_t>&, const node, const node, bool) -> void { }; }
 	/// Set the function that controls the processing of the current neighbour.
 	void set_process_neighbour(const BFS_process_two& f) noexcept
 	{ m_proc_neigh = f; }
 
 	// see @ref m_add_node
 	void set_node_add_default() noexcept
-	{ m_add_node = [](const BFS<graph_type>&, const node, const node) -> bool { return true; }; }
+	{ m_add_node = [](const BFS<graph_t>&, const node, const node) -> bool { return true; }; }
 	void set_node_add(const BFS_bool_two& f) noexcept
 	{ m_add_node = f; }
 
@@ -200,7 +196,7 @@ public:
 	}
 
 	/// Returns a constant reference to the graph
-	const graph_type& get_graph() const noexcept { return m_G; }
+	const graph_t& get_graph() const noexcept { return m_G; }
 
 	/// Return visited nodes information
 	const data_array<char>& get_visited() const noexcept { return m_vis; }
@@ -224,7 +220,7 @@ protected:
 
 	/// Process the neighbours of node @e s in an undirected graph.
 	template<
-		class GG = graph_type,
+		class GG = graph_t,
 		std::enable_if_t<
 			std::is_base_of_v<graphs::undirected_graph, GG>, bool
 		> = true
@@ -240,7 +236,7 @@ protected:
 
 	/// Process the neighbours of node @e s in an directed graph.
 	template<
-		class GG = graph_type,
+		class GG = graph_t,
 		std::enable_if_t<
 			std::is_base_of_v<graphs::directed_graph, GG>, bool
 		> = true
@@ -332,7 +328,7 @@ protected:
 
 protected:
 	/// Constant reference to the graph.
-	const graph_type& m_G;
+	const graph_t& m_G;
 	/// The structure of the traversal.
 	std::queue<node> m_queue;
 	/// The set of visited nodes.

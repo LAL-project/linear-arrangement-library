@@ -60,24 +60,21 @@ namespace detail {
  *
  * The diameter of the tree is the length of the longest path. See \cite Harary1969a
  * (pages 24, 35) for further details.
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @returns The diameter of the tree.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-uint64_t tree_diameter(const tree_type& t) noexcept
+uint64_t tree_diameter(const tree_t& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
-	BFS<tree_type> bfs(t);
+	BFS<tree_t> bfs(t);
 
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 	bfs.set_use_rev_edges(true);
 	}
 	else {

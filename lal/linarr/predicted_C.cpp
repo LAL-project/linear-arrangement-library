@@ -144,16 +144,16 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	return detail::to_uint64(f/2);
 }
 
-template<class G, typename result>
+template<class graph_t, typename result>
 result __get_approximate_C_2_rational
-(const G& g, const linear_arrangement& pi)
+(const graph_t& g, const linear_arrangement& pi)
 noexcept
 {
 	result Ec2(0);
 	const uint64_t n = g.get_num_nodes();
 	const int64_t nn = detail::to_int64(n);
 
-	iterators::Q_iterator<G> q(g);
+	iterators::Q_iterator<graph_t> q(g);
 	while (not q.end()) {
 		const auto [st, uv] = q.get_edge_pair_t();
 		q.next();

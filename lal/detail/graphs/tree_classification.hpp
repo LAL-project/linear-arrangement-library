@@ -58,19 +58,16 @@ namespace detail {
 
 /**
  * @brief Classify a tree into one of the types @ref lal::graphs::tree_type.
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param[out] array A set of bits (or flags) each indicating whether or not @e t
  * is of a certain tree type.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-void classify_tree(const tree_type& t, std::array<bool, graphs::__tree_type_size>& array)
+void classify_tree(const tree_t& t, std::array<bool, graphs::__tree_type_size>& array)
 noexcept
 {
 #if defined DEBUG
@@ -89,7 +86,7 @@ noexcept
 	// only neighbour of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_only_neighbour =
 	[&](lal::node u) -> lal::node {
-		if constexpr (std::is_base_of_v<lal::graphs::free_tree, tree_type>) {
+		if constexpr (std::is_base_of_v<lal::graphs::free_tree, tree_t>) {
 			return t.get_neighbours(u)[0];
 		}
 		else {

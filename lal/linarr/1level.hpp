@@ -79,17 +79,17 @@ namespace linarr {
  * @param L List of input graphs.
  * @param P List of linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.
- * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
+ * @tparam graph_t A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as an
  * exact rational value.
  */
-template<class G>
+template<class graph_t>
 inline
 numeric::rational mean_dependency_distance_1level_rational
-(const std::vector<G>& L, const std::vector<linear_arrangement>& P = {})
+(const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
 {
-	static_assert(std::is_base_of_v<graphs::graph, G>);
+	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
 #if defined DEBUG
 	// the number of graphs and number of linear arrangements
@@ -126,17 +126,17 @@ noexcept
  * @param L List of input graphs.
  * @param P List of linear arrangements of the nodes \f$Pi = \{\pi_i\}_{i=1}^k\f$.
  * When omitted, \f$\pi_I\f$ is used for every graph.
- * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
+ * @tparam graph_t A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as a
  * floating point value.
  */
-template<class G>
+template<class graph_t>
 inline
 double mean_dependency_distance_1level
-(const std::vector<G>& L, const std::vector<linear_arrangement>& P = {})
+(const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
 {
-	static_assert(std::is_base_of_v<graphs::graph, G>);
+	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	return mean_dependency_distance_1level_rational(L, P).to_double();
 }
 

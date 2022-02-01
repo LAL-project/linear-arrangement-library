@@ -56,8 +56,8 @@ namespace detail {
  * @param g Input graph.
  * @returns True if, and only if, the graph is a tree.
  */
-template<class G>
-bool is_graph_a_tree(const G& g) noexcept {
+template<class graph_t>
+bool is_graph_a_tree(const graph_t& g) noexcept {
 	const auto n = g.get_num_nodes();
 
 	// simplest case
@@ -68,7 +68,7 @@ bool is_graph_a_tree(const G& g) noexcept {
 
 	// visit all vertices, if all vertices
 	// were visited then the graph is a tree
-	BFS<G> bfs(g);
+	BFS<graph_t> bfs(g);
 	bfs.set_use_rev_edges(g.is_directed());
 	bfs.start_at(0);
 	return bfs.all_visited();

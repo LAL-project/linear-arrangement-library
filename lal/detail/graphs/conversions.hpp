@@ -91,8 +91,8 @@ head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcep
 
 /// Converts a head vector into a tree
 template<
-	class tree_type,
-	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_type>
+	class tree_t,
+	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>
 >
 std::conditional_t<
 	is_rooted,
@@ -126,7 +126,7 @@ noexcept
 	const uint64_t n = hv.size();
 
 	// output tree
-	tree_type t(n);
+	tree_t t(n);
 
 	// root node of the tree
 	std::optional<node> r;

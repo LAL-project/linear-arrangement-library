@@ -127,13 +127,13 @@ static_assert(std::is_same_v<labelled_unlabelled_type_t<false>, unlabelled_t>);
  * Creates the appropriate type according to the parameters given.
  * @tparam exhaustive_random Either @ref random_t or @ref exhaustive_t.
  * @tparam labelled_unlabelled Either @ref labelled_t or @ref unlabelled_t.
- * @tparam tree_type A class inheriting either from @ref graphs::free_tree or
+ * @tparam tree_t A class inheriting either from @ref graphs::free_tree or
  * @ref graphs::rooted_tree.
  */
 template<
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_type
+	class tree_t
 >
 struct tree_generator_type {
 	static_assert(
@@ -153,13 +153,13 @@ struct tree_generator_type {
 				std::is_same_v<labelled_unlabelled, labelled_t>,
 				// labelled types
 				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_type>,
+					std::is_base_of_v<graphs::free_tree, tree_t>,
 					all_lab_free_trees,
 					all_lab_rooted_trees
 				>,
 				// unlabelled types
 				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_type>,
+					std::is_base_of_v<graphs::free_tree, tree_t>,
 					all_ulab_free_trees,
 					all_ulab_rooted_trees
 				>
@@ -169,13 +169,13 @@ struct tree_generator_type {
 				std::is_same_v<labelled_unlabelled, labelled_t>,
 				// labelled types
 				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_type>,
+					std::is_base_of_v<graphs::free_tree, tree_t>,
 					rand_lab_free_trees,
 					rand_lab_rooted_trees
 				>,
 				// unlabelled types
 				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_type>,
+					std::is_base_of_v<graphs::free_tree, tree_t>,
 					rand_ulab_free_trees,
 					rand_ulab_rooted_trees
 				>
@@ -188,13 +188,13 @@ struct tree_generator_type {
 template<
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_type
+	class tree_t
 >
 using tree_generator_type_t =
 	typename tree_generator_type<
 		exhaustive_random,
 		labelled_unlabelled,
-		tree_type
+		tree_t
 	>::type;
 
 // some sanity checks

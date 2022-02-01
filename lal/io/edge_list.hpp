@@ -147,28 +147,28 @@ noexcept;
  * See @ref lal::graphs::graph::is_normalised()
  * @param check_norm If the graph is not to be normalised check whether or
  * not the graph read is normalised.
- * @tparam G A graph type. A class that derives from @ref lal::graphs::graph.
+ * @tparam graph_t A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 template<
-	class G,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, G>, bool> = true
+	class graph_t,
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
 >
 inline
-std::optional<G> read_edge_list
+std::optional<graph_t> read_edge_list
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept
 {
-	if constexpr (std::is_base_of_v<graphs::free_tree, G>) {
+	if constexpr (std::is_base_of_v<graphs::free_tree, graph_t>) {
 		return read_edge_list_free_tree(filename, norm, check_norm);
 	}
-	else if constexpr (std::is_base_of_v<graphs::rooted_tree, G>) {
+	else if constexpr (std::is_base_of_v<graphs::rooted_tree, graph_t>) {
 		return read_edge_list_rooted_tree(filename, norm, check_norm);
 	}
-	else if constexpr (std::is_base_of_v<graphs::undirected_graph, G>) {
+	else if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_t>) {
 		return read_edge_list_undirected_graph(filename, norm, check_norm);
 	}
-	else if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+	else if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
 		return read_edge_list_directed_graph(filename, norm, check_norm);
 	}
 }

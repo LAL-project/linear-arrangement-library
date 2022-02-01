@@ -69,19 +69,16 @@ namespace __lal {
  * @pre Parameter @e sizes has size the number of vertices.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-		std::is_base_of_v<graphs::free_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
 void get_size_subtrees
-(const tree_type& t, const node u, const node v, uint64_t * const sizes)
+(const tree_t& t, const node u, const node v, uint64_t * const sizes)
 noexcept
 {
 	sizes[v] = 1;
 
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
@@ -116,13 +113,10 @@ noexcept
  * @pre Parameter @e sizes has size the number of vertices.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-		std::is_base_of_v<graphs::free_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-void get_size_subtrees(const tree_type& t, node r, uint64_t * const sizes)
+void get_size_subtrees(const tree_t& t, node r, uint64_t * const sizes)
 noexcept
 {
 #if defined DEBUG
@@ -145,7 +139,7 @@ namespace __lal {
  *
  * Notice that the values are not stored in an actual map (std::map, or similar),
  * but in a vector.
- * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
+ * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
  * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
  * the list of bidirectional sizes.
  * @param t Input tree.
@@ -158,24 +152,21 @@ namespace __lal {
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
 template<
-	class tree_type,
+	class tree_t,
 	typename Iterator_Type,
 	std::enable_if_t<
-		(
-			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-			std::is_base_of_v<graphs::free_tree, tree_type>
-		)
+		std::is_base_of_v<graphs::tree, tree_t>
 		&& is_pointer_iterator_v<edge_size, Iterator_Type>
 		,
 		bool
 	> = true
 >
 uint64_t calculate_bidirectional_sizes
-(const tree_type& t, const uint64_t n, const node u, const node v, Iterator_Type& it)
+(const tree_t& t, const uint64_t n, const node u, const node v, Iterator_Type& it)
 noexcept
 {
 	uint64_t s = 1;
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
@@ -220,7 +211,7 @@ noexcept
  detail::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
  @endcode
  *
- * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
+ * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
  * @tparam Iterated_Type The type that will store the sizes.
  * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
  * the list of bidirectional sizes.
@@ -233,35 +224,32 @@ noexcept
  * component of @e u and @e v.
  */
 template<
-	class tree_type,
+	class tree_t,
 	typename Iterator_Type,
 	std::enable_if_t<
-		(
-			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-			std::is_base_of_v<graphs::free_tree, tree_type>
-		)
+		std::is_base_of_v<graphs::tree, tree_t>
 		&& is_pointer_iterator_v<edge_size, Iterator_Type>
 		,
 		bool
 	> = true
 >
 void calculate_bidirectional_sizes
-(const tree_type& t, const uint64_t n, const node x, Iterator_Type& it)
+(const tree_t& t, const uint64_t n, const node x, Iterator_Type& it)
 noexcept
 {
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (node y : t.get_out_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterator_Type>
 			(t,n, x, y, it);
 		}
 		for (node y : t.get_in_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterator_Type>
 			(t,n, x, y, it);
 		}
 	}
 	else {
 		for (node y : t.get_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterator_Type>
 			(t,n, x, y, it);
 		}
 	}
@@ -283,7 +271,7 @@ namespace __lal {
  *
  * Notice that the values are not stored in an actual map (std::map, or similar),
  * but in a vector.
- * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
+ * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
  * @tparam Iterated_Type The type that will store the sizes.
  * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
  * the list of bidirectional sizes.
@@ -299,22 +287,18 @@ namespace __lal {
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
 template<
-	class tree_type,
+	class tree_t,
 	typename Iterated_Type,
 	typename Iterator_Type,
 	std::enable_if_t<
-		(
-			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-			std::is_base_of_v<graphs::free_tree, tree_type>
-		)
-		&&
-		is_pointer_iterator_v<Iterated_Type, Iterator_Type>
+		std::is_base_of_v<graphs::tree, tree_t>
+		&& is_pointer_iterator_v<Iterated_Type, Iterator_Type>
 		,
 		bool
 	> = true
 >
 uint64_t calculate_bidirectional_sizes(
-	const tree_type& t,
+	const tree_t& t,
 	const uint64_t n,
 	const node u, const node v,
 	void (*const F)(Iterated_Type&, const edge&, uint64_t),
@@ -323,7 +307,7 @@ uint64_t calculate_bidirectional_sizes(
 noexcept
 {
 	uint64_t s = 1;
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node w : t.get_out_neighbours(v)) {
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
@@ -370,7 +354,7 @@ noexcept
  detail::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
  @endcode
  *
- * @tparam tree_type Type of the tree. Must be 'rooted_tree' or 'free_tree'.
+ * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
  * @tparam Iterated_Type The type that will store the sizes.
  * @tparam Iterator_Type Iterator type on a container of Iterated_Type that stores
  * the list of bidirectional sizes.
@@ -385,40 +369,37 @@ noexcept
  * component of @e u and @e v.
  */
 template<
-	class tree_type,
+	class tree_t,
 	typename Iterated_Type,
 	typename Iterator_Type,
 	std::enable_if_t<
-		(
-			std::is_base_of_v<graphs::rooted_tree, tree_type> ||
-			std::is_base_of_v<graphs::free_tree, tree_type>
-		)
+		std::is_base_of_v<graphs::tree, tree_t>
 		&& is_pointer_iterator_v<Iterated_Type, Iterator_Type>
 		,
 		bool
 	> = true
 >
 void calculate_bidirectional_sizes(
-	const tree_type& t,
+	const tree_t& t,
 	const uint64_t n, const node x,
 	void (*const F)(Iterated_Type&, const edge&, uint64_t),
 	Iterator_Type& it
 )
 noexcept
 {
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_type>) {
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (node y : t.get_out_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterated_Type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterated_Type, Iterator_Type>
 			(t,n, x, y, F, it);
 		}
 		for (node y : t.get_in_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterated_Type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterated_Type, Iterator_Type>
 			(t,n, x, y, F, it);
 		}
 	}
 	else {
 		for (node y : t.get_neighbours(x)) {
-			__lal::calculate_bidirectional_sizes<tree_type, Iterated_Type, Iterator_Type>
+			__lal::calculate_bidirectional_sizes<tree_t, Iterated_Type, Iterator_Type>
 			(t,n, x, y, F, it);
 		}
 	}

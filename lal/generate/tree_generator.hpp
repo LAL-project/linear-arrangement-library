@@ -114,23 +114,14 @@ namespace generate {
  *		}
  * @endcode
  *
- * @tparam T Type of tree.
+ * @tparam tree_t Type of tree.
  */
 template<
-	class tree_type,
-	bool is_free = std::is_base_of_v<graphs::free_tree, tree_type>,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-		bool
-	> = true
+	class tree_t,
+	bool is_free = std::is_base_of_v<graphs::free_tree, tree_t>,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 class _tree_generator {
-public:
-	/// Shorthand for the type of tree this class returns.
-	using tree_type_t = typename
-	std::conditional_t<is_free, graphs::free_tree, graphs::rooted_tree>;
-
 public:
 	/* CONSTRUCTORS */
 
@@ -198,7 +189,7 @@ public:
 	 * from this. The type of generation of tree differs from one type of class
 	 * to another.
 	 */
-	tree_type_t get_tree() noexcept
+	tree_t get_tree() noexcept
 	{
 		auto t = __get_tree();
 
@@ -237,7 +228,7 @@ public:
 	 * to another.
 	 * @post The generator advances to the next tree.
 	 */
-	virtual tree_type_t yield_tree() noexcept = 0;
+	virtual tree_t yield_tree() noexcept = 0;
 
 	/**
 	 * @brief Activates all postprocessing actions.
@@ -295,7 +286,7 @@ protected:
 	 * See the documentation of each child class to see the correct usage
 	 * of this method.
 	 */
-	virtual tree_type_t __get_tree() noexcept = 0;
+	virtual tree_t __get_tree() noexcept = 0;
 
 protected:
 	/// Number of vertices

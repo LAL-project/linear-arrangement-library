@@ -63,18 +63,17 @@ namespace detail {
  * @pre The contents of @e neighs must be all 0 (or false).
  */
 template<
-	class graph_type,
+	class graph_t,
 	typename char_type,
 	std::enable_if_t<
-		(std::is_base_of_v<graphs::directed_graph, graph_type> ||
-		std::is_base_of_v<graphs::undirected_graph, graph_type>) &&
-		std::is_integral_v<char_type>,
+		std::is_base_of_v<graphs::graph, graph_t>
+		&& std::is_integral_v<char_type>,
 	bool> = true
 >
-void get_bool_neighbours(const graph_type& g, node u, char_type * const neighs)
+void get_bool_neighbours(const graph_t& g, node u, char_type * const neighs)
 noexcept
 {
-	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_type>) {
+	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
 		const auto& in_u = g.get_in_neighbours(u);
 		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
 		const auto& out_u = g.get_out_neighbours(u);

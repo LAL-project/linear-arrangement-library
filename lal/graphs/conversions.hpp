@@ -165,8 +165,8 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-template<class G>
-G from_edge_list_to_graph
+template<class graph_t>
+graph_t from_edge_list_to_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
 {
@@ -176,7 +176,7 @@ noexcept
 		max_vertex_index = std::max(max_vertex_index, e.second);
 	}
 	const uint64_t num_nodes = 1 + max_vertex_index;
-	G g(num_nodes);
+	graph_t g(num_nodes);
 	g.set_edges(edge_list, normalise, check);
 	return g;
 }

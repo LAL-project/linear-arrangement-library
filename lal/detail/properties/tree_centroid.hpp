@@ -68,7 +68,7 @@ namespace __lal {
  * algorithm described in \cite Hochberg2003a (see function's documentation for
  * details).
  *
- * @tparam tree_type The type of tree.
+ * @tparam tree_t The type of tree.
  * @param t Input tree.
  * @param N Actual number of vertices of the tree
  * @param n Number of vertices of the connected component of node @e x.
@@ -88,14 +88,11 @@ namespace __lal {
  * @post @e sizes_edge is updated.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
 std::pair<node, node> retrieve_centroid(
-	const tree_type& t,
+	const tree_t& t,
 	const uint64_t N, const uint64_t n, const node x,
 	std::vector<std::vector<node_size>>& L,
 	std::vector<edge_size>& sizes_edge
@@ -114,7 +111,7 @@ noexcept
 
 	// calculate s(u,v) with H&S algorithm (lemma 8)
 	detail::calculate_bidirectional_sizes
-		<tree_type, iterator_t>
+		<tree_t, iterator_t>
 		(t, n, x, it);
 
 	// sort all tuples in sizes_edge using the sizes s(u,v)
@@ -186,7 +183,7 @@ noexcept
  *
  * This function calls @ref lal::detail::__lal::retrieve_centroid.
  *
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param x Input node.
  * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
@@ -204,14 +201,11 @@ noexcept
  * @post @e sizes_edge is updated.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
 std::pair<node, node> retrieve_centroid(
-	const tree_type& t, const node x,
+	const tree_t& t, const node x,
 	std::vector<std::vector<node_size>>& L,
 	std::vector<edge_size>& sizes_edge
 )
@@ -234,7 +228,7 @@ noexcept
  *
  * For details on the parameters and return value see documentation of the
  * function above.
- * @tparam tree_type Type of tree.
+ * @tparam tree_t Type of tree.
  * @param t Input tree
  * @param x Node belonging to a connected component whose centroid we want.
  * @returns A tuple of two values: the nodes in the centroid. If the
@@ -243,13 +237,10 @@ noexcept
  * has smaller index value than the second.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centroid(const tree_type& t, const node x)
+std::pair<node, node> retrieve_centroid(const tree_t& t, const node x)
 noexcept
 {
 	std::vector<std::vector<node_size>> M;
@@ -269,7 +260,7 @@ noexcept
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * @tparam tree_type Type of the input tree.
+ * @tparam tree_t Type of the input tree.
  * @param t Input tree.
  * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
  * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
@@ -285,14 +276,11 @@ noexcept
  * @pre The tree @e t is a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 std::pair<node, node> retrieve_centroid(
-	const tree_type& t,
+	const tree_t& t,
 	std::vector<std::vector<node_size>>& L,
 	std::vector<edge_size>& sizes_edge
 )
@@ -326,13 +314,10 @@ noexcept
  * has smaller index value than the second.
  */
 template<
-	class tree_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, tree_type> ||
-		std::is_base_of_v<graphs::rooted_tree, tree_type>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centroid(const tree_type& t)
+std::pair<node, node> retrieve_centroid(const tree_t& t)
 noexcept
 {
 	std::vector<std::vector<node_size>> L;
@@ -350,7 +335,7 @@ noexcept
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * @tparam tree_type Type of the input tree.
+ * @tparam tree_t Type of the input tree.
  * @param t Input tree.
  * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
  * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
@@ -361,14 +346,11 @@ noexcept
  * has smaller index value than the second.
  */
 template<
-	class T,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
-	bool> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 std::pair<node, node> retrieve_centroid
-(const T& t, std::vector<std::vector<node_size>>& L)
+(const tree_t& t, std::vector<std::vector<node_size>>& L)
 noexcept
 {
 	std::vector<edge_size> sizes_edge;

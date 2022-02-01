@@ -55,11 +55,11 @@ namespace detail {
  * @e source or not.
  * @returns True if, and only if, node target is reachable from node source.
  */
-template<class G>
-bool is_node_reachable_from(const G& g, const node source, const node target)
+template<class graph_t>
+bool is_node_reachable_from(const graph_t& g, const node source, const node target)
 noexcept
 {
-	BFS<G> bfs(g);
+	BFS<graph_t> bfs(g);
 	bfs.set_terminate(
 		[target](const auto&, const node s) -> bool { return (s == target); }
 	);

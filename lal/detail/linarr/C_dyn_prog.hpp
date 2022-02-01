@@ -70,10 +70,10 @@ namespace __lal {
 //		returns m*m + 1 if the number of crossings is greater than the upper_bound
 //		returns the number of crossings if the number of crossings is less
 //			than the upper_bound
-template<class G, bool decide_upper_bound>
+template<class graph_t, bool decide_upper_bound>
 uint64_t compute_C_dyn_prog
 (
-	const G& g, const linear_arrangement& pi,
+	const graph_t& g, const linear_arrangement& pi,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
@@ -94,7 +94,7 @@ noexcept
 		// node at position pu + 1
 		const node u = pi[pu + 1ULL];
 
-		detail::get_bool_neighbours<G>(g, u, bn);
+		detail::get_bool_neighbours<graph_t>(g, u, bn);
 
 		uint64_t k = g.get_degree(u);
 
@@ -185,7 +185,7 @@ noexcept
 	for (position pu = 0; pu < n - 3; ++pu) {
 		const node u = pi[position_t{pu}];
 
-		if constexpr (std::is_base_of_v<graphs::directed_graph, G>) {
+		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
 			const neighbourhood& Nu = g.get_out_neighbours(u);
 			for (node_t v : Nu) {
 				process_neighbours(pu, v);

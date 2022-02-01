@@ -108,22 +108,18 @@ noexcept;
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 template<
-	class T,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::free_tree, T> ||
-		std::is_base_of_v<graphs::rooted_tree, T>,
-		bool
-	> = true
+	class tree_t,
+	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 inline
-std::optional<T> read_head_vector
+std::optional<tree_t> read_head_vector
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept
 {
-	if constexpr (std::is_same_v<graphs::free_tree, T>) {
+	if constexpr (std::is_same_v<graphs::free_tree, tree_t>) {
 		return read_head_vector_free_tree(filename, norm, check_norm);
 	}
-	else if constexpr (std::is_same_v<graphs::rooted_tree, T>) {
+	else if constexpr (std::is_same_v<graphs::rooted_tree, tree_t>) {
 		return read_head_vector_rooted_tree(filename, norm, check_norm);
 	}
 }

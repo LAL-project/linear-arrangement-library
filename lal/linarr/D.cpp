@@ -109,8 +109,8 @@ noexcept
 
 namespace __lal {
 
-template<class G, typename result>
-result MDD_rational(const G& g, const linear_arrangement& pi) noexcept
+template<class graph_t, typename result>
+result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
