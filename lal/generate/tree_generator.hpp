@@ -118,10 +118,15 @@ namespace generate {
  */
 template<
 	class tree_t,
-	bool is_free = std::is_base_of_v<graphs::free_tree, tree_t>,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 class _tree_generator {
+private:
+	static constexpr bool is_free = std::is_base_of_v<graphs::free_tree, tree_t>;
+
+public:
+	using generated_tree_t = tree_t;
+
 public:
 	/* CONSTRUCTORS */
 
