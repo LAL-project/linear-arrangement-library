@@ -153,6 +153,8 @@ struct node_t {
 		s << p.value;
 		return s;
 	}
+
+	uint64_t operator*() const noexcept { return value; }
 };
 
 /// Similar to @ref edge.
@@ -252,6 +254,8 @@ struct position_t {
 		s << p.value;
 		return s;
 	}
+
+	uint64_t operator*() const noexcept { return value; }
 };
 
 static_assert(    std::is_trivial_v<node_t>);
