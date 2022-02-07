@@ -92,7 +92,7 @@ noexcept
 		[&](const edge& e) -> std::size_t {
 			const node_t u = e.first;
 			const node_t v = e.second;
-			++size_adjN_u[u.value];
+			++size_adjN_u[*u];
 			return abs_diff(pi[u], pi[v]);
 		}
 		);

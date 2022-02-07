@@ -118,7 +118,7 @@ noexcept
 	// add the new dependencies
 	for (const node_t v : t.get_neighbours(u)) {
 		if (pi[v] > cur_pos) {
-			cur_deps.push_back({u,v.value});
+			cur_deps.push_back({u,*v});
 		}
 	}
 

@@ -83,7 +83,7 @@ noexcept
 	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
-		const neighbourhood& Nu = g.get_neighbours(u.value);
+		const neighbourhood& Nu = g.get_neighbours(*u);
 		for (node_t v : Nu) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];
@@ -214,7 +214,7 @@ noexcept
 	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = pi[u];
-		const neighbourhood& Nu_out = g.get_out_neighbours(u.value);
+		const neighbourhood& Nu_out = g.get_out_neighbours(*u);
 		for (node_t v : Nu_out) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];
@@ -234,7 +234,7 @@ noexcept
 				inner_computation<false>(g, pu,pv, pi, C);
 			}
 		}
-		const neighbourhood& Nu_in = g.get_in_neighbours(u.value);
+		const neighbourhood& Nu_in = g.get_in_neighbours(*u);
 		for (node_t v : Nu_in) {
 			// 'pv' is the position of node 'v'
 			const position pv = pi[v];

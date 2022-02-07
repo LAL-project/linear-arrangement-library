@@ -223,11 +223,11 @@ public:
 
 	/// Access to linear arrangement using a type-safe node.
 	node operator[] (const node_t& u) const noexcept
-	{ return get_position_of(u.value); }
+	{ return get_position_of(*^u); }
 
 	/// Access to linear arrangement using a type-safe position.
 	position operator[] (const position_t& p) const noexcept
-	{ return get_node_at(p.value); }
+	{ return get_node_at(*p); }
 
 	/// Frees the memory used by the linear arrangement.
 	void clear() noexcept {

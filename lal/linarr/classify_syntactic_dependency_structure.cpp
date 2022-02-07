@@ -212,7 +212,7 @@ noexcept
 			for (const node_t v : neighs_u) {
 				if (pi[v] < ps or pt < pi[v]) {
 					// the edge (u,v) crosses (s,t)
-					crossing.push_back(sort_by_index(u,v.value));
+					crossing.push_back(sort_by_index(u,*v));
 				}
 			}
 		}

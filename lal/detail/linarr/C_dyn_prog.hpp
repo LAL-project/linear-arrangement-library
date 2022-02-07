@@ -118,7 +118,7 @@ noexcept
 			// This explains M[pu][*]
 
 			//M[pu][i - 3] = k;
-			M[ idx(pu.value, i.value - 3, n-3) ] = k;
+			M[ idx(*pu, *i - 3, n-3) ] = k;
 
 			// clear boolean neighbours so that at the next
 			// iteration all its values are valid
