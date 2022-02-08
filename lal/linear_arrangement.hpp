@@ -223,7 +223,7 @@ public:
 
 	/// Access to linear arrangement using a type-safe node.
 	node operator[] (const node_t& u) const noexcept
-	{ return get_position_of(*^u); }
+	{ return get_position_of(*u); }
 
 	/// Access to linear arrangement using a type-safe position.
 	position operator[] (const position_t& p) const noexcept
@@ -281,16 +281,16 @@ public:
 		assert(p < m_n);
 #endif
 		if constexpr (std::is_same_v<NODE, node_t> and std::is_same_v<POSITION, position_t>) {
-			m_direct[u.value] = p.value;
-			m_inverse[p.value] = u.value;
+			m_direct[*u] = *p;
+			m_inverse[*p] = *u;
 		}
 		else if constexpr (std::is_same_v<NODE, node_t>) {
-			m_direct[u.value] = p;
-			m_inverse[p] = u.value;
+			m_direct[*u] = p;
+			m_inverse[p] = *u;
 		}
 		else if constexpr (std::is_same_v<POSITION, position_t>) {
-			m_direct[u] = p.value;
-			m_inverse[p.value] = u;
+			m_direct[u] = *p;
+			m_inverse[*p] = u;
 		}
 		else {
 			m_direct[u] = p;
@@ -317,15 +317,15 @@ public:
 	void swap(const what u_t, const what v_t) noexcept {
 		if constexpr (std::is_same_v<what, node_t>) {
 			// swap vertices
-			const position pu = m_direct[u_t.value];
-			const position pv = m_direct[v_t.value];
+			const position pu = m_direct[*u_t];
+			const position pv = m_direct[*v_t];
 			assign(u_t, pv);
 			assign(v_t, pu);
 		}
 		else {
 			// swap positions
-			const node u = m_inverse[u_t.value];
-			const node v = m_inverse[v_t.value];
+			const node u = m_inverse[*u_t];
+			const node v = m_inverse[*v_t];
 			assign(u, v_t);
 			assign(v, u_t);
 		}
