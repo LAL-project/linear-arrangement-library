@@ -119,7 +119,7 @@ char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
  * This function stores the names of every node in the subtree rooted at 'u'.
  * This is useful if we want to make lots of comparisons between subtrees
  *
- * For further details on the algorithm, see \cite Aho1974a for further details.
+ * For further details on the algorithm, see \cite Aho1974a.
  * @param t Input rooted tree
  * @param u Root of the subtree whose name we want to calculate
  * @param idx A pointer to the position within @e names that will contain the
