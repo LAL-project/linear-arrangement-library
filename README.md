@@ -42,7 +42,22 @@ This library is the result of the joint effort of several people (in alphabetica
 
 In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of a great effort put directly by the developers, and indirectly by other researchers. Besides citing the library in an academic paper, users *must* also acknowledge the effort made by other researchers by citing their papers in which they present the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation. In case a citation is lacking, or is just incorrect, do not hesitate to contact us to inform us about this issue.
 
-For now we do not have any formal publication of this library, so we do not have a preferred way of citing it. Please, contact any of the authors for further information about this matter.
+In order to cite the Linear Arrangement Library, please cite the following paper(s):
+
+- Lluı́s Alemany-Puig, Juan Luis Esteban, and Ramon Ferrer-i-Cancho. "The Linear Arrangement Library. A new tool for research on syntactic dependency structures". In: Proceedings of the Second Workshop on Quantitative Syntax (Quasy, SyntaxFest 2021). Sofia, Bulgaria: Association for Computational Linguistics, Dec. 2021, pp. 1–16. url: https://aclanthology.org/2021.quasy-1.1.
+
+		@inproceedings{Alemany2021b,
+			title = {{The Linear Arrangement Library. A new tool for research on syntactic dependency structures}},
+			author = {{Alemany-Puig}, Llu\'{i}s and Esteban, {Juan Luis} and {Ferrer-i-Cancho}, Ramon},
+			arxivId = {2112.02512},
+			booktitle = {{P}roceedings of the {S}econd {W}orkshop on {Q}uantitative {S}yntax ({Q}uasy, {S}yntaxFest 2021)},
+			url = {https://aclanthology.org/2021.quasy-1.1},
+			month = {dec},
+			year = {2021},
+			address = {Sofia, Bulgaria},
+			publisher = {Association for Computational Linguistics},
+			pages = {1--16}
+		}
 
 ## Documentation
 
