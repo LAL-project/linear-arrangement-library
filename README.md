@@ -50,7 +50,7 @@ In order to cite the Linear Arrangement Library, please cite the following paper
 			title = {{The Linear Arrangement Library. A new tool for research on syntactic dependency structures}},
 			author = {{Alemany-Puig}, Llu\'{i}s and Esteban, {Juan Luis} and {Ferrer-i-Cancho}, Ramon},
 			arxivId = {2112.02512},
-			booktitle = {{P}roceedings of the {S}econd {W}orkshop on {Q}uantitative {S}yntax ({Q}uasy, {S}yntaxFest 2021)},
+			booktitle = {Proceedings of the Second Workshop on Quantitative Syntax (Quasy, SyntaxFest 2021)},
 			url = {https://aclanthology.org/2021.quasy-1.1},
 			month = {dec},
 			year = {2021},
