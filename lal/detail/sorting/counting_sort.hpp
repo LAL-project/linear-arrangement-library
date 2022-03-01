@@ -117,8 +117,8 @@ struct memory_counting_sort {
  * that can be easily mapped to integers within a reasonable range, e.g., in the
  * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
- * @tparam T Iterated type
- * @tparam It Iterator type
+ * @tparam value_t Iterated type
+ * @tparam value_iterator_t Iterator type
  * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
@@ -137,11 +137,11 @@ struct memory_counting_sort {
  * range to be sorted.
  */
 template<
-	typename T, typename It,
+	typename value_t, typename value_iterator_t,
 	typename sort_type,
 	bool memory_has_frequencies,
 	std::enable_if_t<
-		is_pointer_iterator_v<T, It> &&
+		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
 		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
 		std::is_same_v<sort_type, countingsort::non_increasing_t>
@@ -150,10 +150,10 @@ template<
 	> = true
 >
 void counting_sort(
-	It begin, It end,
+	value_iterator_t begin, value_iterator_t end,
 	const std::size_t largest_key_plus_1,
-	const std::function<std::size_t (const T&)>& key,
-	countingsort::memory_counting_sort<T>& mem
+	const std::function<std::size_t (const value_t&)>& key,
+	countingsort::memory_counting_sort<value_t>& mem
 )
 noexcept
 {
@@ -216,8 +216,8 @@ noexcept
  * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
- * @tparam T Iterated type
- * @tparam It Iterator type
+ * @tparam value_t Type of the values sorted.
+ * @tparam value_iterator_t Iterator over type 'value_t' type.
  * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
  *
  * Function paremeters:
@@ -236,10 +236,10 @@ noexcept
  * range to be sorted.
  */
 template<
-	typename T, typename It,
+	typename value_t, typename value_iterator_t,
 	typename sort_type,
 	std::enable_if_t<
-		is_pointer_iterator_v<T, It> &&
+		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
 		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
 		std::is_same_v<sort_type, countingsort::non_increasing_t>
@@ -248,19 +248,19 @@ template<
 	> = true
 >
 void counting_sort(
-	It begin, It end,
+	value_iterator_t begin, value_iterator_t end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
-	const std::function<std::size_t (const T&)>& key
+	const std::function<std::size_t (const value_t&)>& key
 )
 noexcept
 {
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
-	countingsort::memory_counting_sort<T> mem(largest_key+1, upper_bound_size);
+	countingsort::memory_counting_sort<value_t> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<T, It, sort_type, false>
+	counting_sort<value_t, value_iterator_t, sort_type, false>
 		(begin, end, largest_key+1, key, mem);
 }
 
