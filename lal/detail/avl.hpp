@@ -122,9 +122,6 @@ public:
 	}
 
 private:
-	// ---------------------------------------------------------- //
-	// DEFINITIONS
-
 	/// Node of the tree.
 	struct tree_node {
 		/// contents of the node
@@ -221,16 +218,10 @@ private:
 	};
 
 private:
-	// ---------------------------------------------------------- //
-	// ATTRIBUTES
-
 	/// Root of this AVL tree.
 	tree_node *root = nullptr;
 
 private:
-	// ---------------------------------------------------------- //
-	// FUNCTIONS
-
 	/// Deallocates the memory of node @e n.
 	void free_node(tree_node *n) noexcept {
 		if (n == nullptr) {

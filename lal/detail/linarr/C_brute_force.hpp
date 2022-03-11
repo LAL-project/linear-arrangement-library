@@ -270,9 +270,9 @@ noexcept
 // ------------------
 // single arrangement
 
-template<class graph_type>
+template<class graph_t>
 uint64_t call_C_brute_force(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& pi
 )
 noexcept
@@ -284,23 +284,23 @@ noexcept
 	return __lal::compute_C_brute_force<false>(g, pi);
 }
 
-template<class graph_type>
-uint64_t n_C_brute_force(const graph_type& g, const linear_arrangement& pi)
+template<class graph_t>
+uint64_t n_C_brute_force(const graph_t& g, const linear_arrangement& pi)
 noexcept
 {
 #if defined DEBUG
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_brute_force<graph_type>, g, pi);
+			(call_C_brute_force<graph_t>, g, pi);
 }
 
 // --------------------
 // list of arrangements
 
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> n_C_brute_force(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis
 )
 noexcept
@@ -333,9 +333,9 @@ noexcept
 // ------------------
 // single arrangement
 
-template<class graph_type>
+template<class graph_t>
 uint64_t call_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& pi,
 	uint64_t upper_bound
 )
@@ -348,9 +348,9 @@ noexcept
 	return __lal::compute_C_brute_force<true>(g, pi, upper_bound);
 }
 
-template<class graph_type>
+template<class graph_t>
 uint64_t is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& pi,
 	uint64_t c
 )
@@ -360,15 +360,15 @@ noexcept
 	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_brute_force_lesseq_than<graph_type>, g, pi, c);
+			(call_brute_force_lesseq_than<graph_t>, g, pi, c);
 }
 
 // --------------------
 // list of arrangements
 
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis,
 	uint64_t upper_bound
 )
@@ -396,9 +396,9 @@ noexcept
 	return cs;
 }
 
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& pis,
 	const std::vector<uint64_t>& upper_bounds
 )

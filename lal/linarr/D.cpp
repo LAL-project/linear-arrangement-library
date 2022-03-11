@@ -59,14 +59,14 @@ namespace linarr {
 
 namespace __lal {
 
-template<class graph_type>
-uint64_t sum_length_edges(const graph_type& g, const linear_arrangement& pi)
+template<class graph_t>
+uint64_t sum_length_edges(const graph_t& g, const linear_arrangement& pi)
 noexcept
 {
 	// sum of lengths
 	uint64_t l = 0;
 
-	iterators::E_iterator<graph_type> e_it(g);
+	iterators::E_iterator<graph_t> e_it(g);
 	for (; not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge_t();
 

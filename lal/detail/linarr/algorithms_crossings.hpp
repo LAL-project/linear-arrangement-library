@@ -64,14 +64,14 @@ namespace detail {
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t n_C_brute_force
-(const graph_type& g, const linear_arrangement& arr)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept;
 
 /**
@@ -80,16 +80,16 @@ noexcept;
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> n_C_brute_force
-(const graph_type& g, const std::vector<linear_arrangement>& arrs)
+(const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept;
 
 /**
@@ -99,7 +99,7 @@ noexcept;
  * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
  * given upper bound constant \f$u\f$. In case the number of crossings is greater,
  * returns a value strictly larger than the upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
@@ -107,9 +107,9 @@ noexcept;
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
 ) noexcept;
@@ -124,7 +124,7 @@ uint64_t is_n_C_brute_force_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
  * is applied to all linear arrangements.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
@@ -132,9 +132,9 @@ uint64_t is_n_C_brute_force_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 ) noexcept;
@@ -149,7 +149,7 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. To each arrangement
  * corresponds only one upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -158,9 +158,9 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
@@ -173,14 +173,14 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t n_C_dynamic_programming
-(const graph_type& g, const linear_arrangement& arr)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept;
 
 /**
@@ -189,16 +189,16 @@ noexcept;
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> n_C_dynamic_programming(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs
 ) noexcept;
 
@@ -212,7 +212,7 @@ std::vector<uint64_t> n_C_dynamic_programming(
  *
  * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
  * is applied to all linear arrangements.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
@@ -220,9 +220,9 @@ std::vector<uint64_t> n_C_dynamic_programming(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t is_n_C_dynamic_programming_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
 ) noexcept;
@@ -237,7 +237,7 @@ uint64_t is_n_C_dynamic_programming_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. To each arrangement
  * corresponds only one upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -246,9 +246,9 @@ uint64_t is_n_C_dynamic_programming_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 ) noexcept;
@@ -263,7 +263,7 @@ std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. To each arrangement
  * corresponds only one upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -272,9 +272,9 @@ std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
@@ -287,14 +287,14 @@ std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t n_C_ladder
-(const graph_type& g, const linear_arrangement& arr)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept;
 
 /**
@@ -303,16 +303,16 @@ noexcept;
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> n_C_ladder(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs
 ) noexcept;
 
@@ -323,7 +323,7 @@ std::vector<uint64_t> n_C_ladder(
  * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
  * given upper bound constant \f$u\f$. In case the number of crossings is greater,
  * returns a value strictly larger than the upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
@@ -331,9 +331,9 @@ std::vector<uint64_t> n_C_ladder(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t is_n_C_ladder_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
 ) noexcept;
@@ -348,7 +348,7 @@ uint64_t is_n_C_ladder_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
  * is applied to all linear arrangements.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -357,9 +357,9 @@ uint64_t is_n_C_ladder_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 ) noexcept;
@@ -374,7 +374,7 @@ std::vector<uint64_t> is_n_C_ladder_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. To each arrangement
  * corresponds only one upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -383,9 +383,9 @@ std::vector<uint64_t> is_n_C_ladder_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;
@@ -398,14 +398,14 @@ std::vector<uint64_t> is_n_C_ladder_lesseq_than(
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t n_C_stack_based
-(const graph_type& g, const linear_arrangement& arr)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept;
 
 /**
@@ -414,16 +414,16 @@ noexcept;
  * Given a graph, and a linear arrangement of its nodes, computes by
  * brute force the number of edges that cross in such linear arrangement.
  * If the arrangement is not specified, the identity arrangement is used.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> n_C_stack_based(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs
 ) noexcept;
 
@@ -434,7 +434,7 @@ std::vector<uint64_t> n_C_stack_based(
  * the number of edge crossings \f$C_{\pi}(G)\f$ if it is less than or equal to the
  * given upper bound constant \f$u\f$. In case the number of crossings is greater,
  * returns a value strictly larger than the upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Constant (upper bound).
@@ -442,9 +442,9 @@ std::vector<uint64_t> n_C_stack_based(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 uint64_t is_n_C_stack_based_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
 ) noexcept;
@@ -459,7 +459,7 @@ uint64_t is_n_C_stack_based_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. The upper bound @e upper_bound
  * is applied to all linear arrangements.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -468,9 +468,9 @@ uint64_t is_n_C_stack_based_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 ) noexcept;
@@ -485,7 +485,7 @@ std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
  *
  * This is applied to every linear arrangement in @e pi. To each arrangement
  * corresponds only one upper bound.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arrs List of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * When one is omitted, \f$\pi_I\f$ is used.
@@ -494,9 +494,9 @@ std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template<class graph_type>
+template<class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
-	const graph_type& g,
+	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 ) noexcept;

@@ -58,8 +58,7 @@ namespace __lal {
  * @param visited For each node, has it been visited?
  * @param in_stack For each node, is it in the recursion stack?
  */
-inline
-bool find_cycle
+inline bool find_cycle
 (
 	const graphs::directed_graph& g, node u,
 	char * const __restrict__ visited,
@@ -91,8 +90,7 @@ noexcept
  * @param in_stack Array of size 'n', where 'n' is the number of vertices of 'g'.
  * @returns Whether the graph has cycles or not.
  */
-inline
-bool has_directed_cycles(
+inline bool has_directed_cycles(
 	const graphs::directed_graph& g,
 	char * const __restrict__ vis,
 	char * const __restrict__ in_stack
@@ -134,13 +132,13 @@ namespace __lal {
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param bfs Breadth-First Search object.
  * @returns Whether the graph has cycles or not.
  */
-template<class graph_type>
-bool has_undirected_cycles(const graph_type& g, BFS<graph_type>& bfs) noexcept {
+template<class graph_t>
+bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	const auto n = g.get_num_nodes();
 
 	// parent[s] = t <->
@@ -157,7 +155,7 @@ bool has_undirected_cycles(const graph_type& g, BFS<graph_type>& bfs) noexcept {
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&](const BFS<graph_type>&, const node) -> bool { return cycle_found; }
+	[&](const BFS<graph_t>&, const node) -> bool { return cycle_found; }
 	);
 	bfs.set_process_neighbour(
 	[&](const auto& _bfs, node s, node t, bool) -> void {
@@ -199,14 +197,14 @@ bool has_undirected_cycles(const graph_type& g, BFS<graph_type>& bfs) noexcept {
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
  * In case the input graph is a directed graph, reverse edges are considered.
- * @tparam graph_type Type of graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-template<class graph_type>
-bool has_undirected_cycles(const graph_type& g) noexcept {
+template<class graph_t>
+bool has_undirected_cycles(const graph_t& g) noexcept {
 	// BFS traversal object
-	BFS<graph_type> bfs(g);
+	BFS<graph_t> bfs(g);
 	return __lal::has_undirected_cycles(g, bfs);
 }
 

@@ -216,9 +216,7 @@ noexcept
 	// calculate the size of the connected component
 	const uint64_t n = t.get_num_nodes_component(x);
 	// easy case
-	if (n == 1) {
-		return std::make_pair(x, component_size+1);
-	}
+	if (n == 1) { return {x, component_size + 1}; }
 	// general case
 	return __lal::retrieve_centroid(t, component_size, n, x, L, sizes_edge);
 }
@@ -289,9 +287,7 @@ noexcept
 	// actual number of vertices of the tree
 	const uint64_t n = t.get_num_nodes();
 	// easy case
-	if (n == 1) {
-		return std::make_pair(0, n+1);
-	}
+	if (n == 1) { return {0, n+1}; }
 	// general case
 	return __lal::retrieve_centroid(t, n, n, 0, L, sizes_edge);
 }
@@ -306,7 +302,7 @@ noexcept
  * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
  * for further details.
  *
- * @tparam tree_type Type of the input tree.
+ * @tparam tree_t Type of the input tree.
  * @param t Input tree.
  * @returns A tuple of two values: the nodes in the centroid. If the
  * tree has a single centroidal node, only the first node is valid and the second
