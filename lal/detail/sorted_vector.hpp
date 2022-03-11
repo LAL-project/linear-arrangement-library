@@ -60,20 +60,20 @@ namespace detail {
  * @tparam T type of data.
  * @tparam unique Whether or not the elements inserted should be unique.
  */
-template<class T, bool unique>
-class sorted_vector : public std::vector<T> {
+template<class T, bool unique, typename allocator_t = std::allocator<T> >
+class sorted_vector : public std::vector<T, allocator_t> {
 public:
 	/// Empty constructor
-	sorted_vector() noexcept : std::vector<T>() { }
+	sorted_vector() noexcept : std::vector<T, allocator_t>() { }
 	/// Constructor with number of elements
-	sorted_vector(std::size_t n) noexcept : std::vector<T>(n) { }
+	sorted_vector(std::size_t n) noexcept : std::vector<T, allocator_t>(n) { }
 	/// Constructor with number of elements and initial element
-	sorted_vector(std::size_t n, const T& x) noexcept : std::vector<T>(n, x) { }
+	sorted_vector(std::size_t n, const T& x) noexcept : std::vector<T, allocator_t>(n, x) { }
 
 	/// Copy constructor
-	sorted_vector(const sorted_vector& v) noexcept : std::vector<T>(v) { }
+	sorted_vector(const sorted_vector& v) noexcept : std::vector<T, allocator_t>(v) { }
 	/// Move constructor
-	sorted_vector(sorted_vector&& v) noexcept : std::vector<T>(std::move(v)) { }
+	sorted_vector(sorted_vector&& v) noexcept : std::vector<T, allocator_t>(std::move(v)) { }
 
 	/// Copy-assignment operator
 	sorted_vector& operator= (const sorted_vector& v) noexcept { *this = v; }
@@ -88,7 +88,7 @@ public:
 	 * @param x Element to be inserted.
 	 * @returns An iterator to the inserted element.
 	 */
-	inline typename std::vector<T>::iterator
+	typename std::vector<T, allocator_t>::iterator
 	insert_sorted(const T& x) noexcept {
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
@@ -113,7 +113,7 @@ public:
 	 * @param x Element to be inserted.
 	 * @returns An iterator to the inserted element.
 	 */
-	inline typename std::vector<T>::iterator
+	typename std::vector<T, allocator_t>::iterator
 	insert_sorted(T&& x) noexcept {
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
@@ -139,7 +139,7 @@ public:
 	 * @param x Element to be removed.
 	 * @returns An iterator to the previous element in the original vector.
 	 */
-	inline typename std::vector<T>::iterator
+	typename std::vector<T, allocator_t>::iterator
 	remove_sorted(const T& x) noexcept {
 #if defined DEBUG
 		assert(contains(x));
@@ -155,7 +155,7 @@ public:
 	 * @param x The element to look for.
 	 * @returns True or false telling if the element is in the vector or not.
 	 */
-	inline bool contains(const T& x) const noexcept {
+	bool contains(const T& x) const noexcept {
 		return std::binary_search(this->begin(), this->end(), x);
 	}
 
@@ -165,7 +165,7 @@ public:
 	 * @returns An iterator to the element, or std::vector::end() if it does not
 	 * exist.
 	 */
-	inline typename std::vector<T>::iterator
+	typename std::vector<T, allocator_t>::iterator
 	find_sorted(const T& x) noexcept {
 		const auto i = std::lower_bound(this->begin(), this->end(), x);
 		if (i == this->end()) { return this->end(); }
