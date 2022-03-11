@@ -62,7 +62,6 @@ namespace linarr {
 
 namespace flux {
 
-inline
 std::vector<std::pair<edge_t,uint64_t>> get_edges_with_max_pos_at
 (const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
@@ -79,7 +78,6 @@ noexcept
 	return edge_ending_at;
 }
 
-inline
 void calculate_dependencies_span
 (
 	const graphs::free_tree& t,
@@ -133,7 +131,6 @@ noexcept
 	}
 }
 
-inline
 uint64_t calculate_weight
 (const std::vector<edge>& dependencies, graphs::undirected_graph& ug)
 noexcept
@@ -173,13 +170,12 @@ noexcept
 
 } // -- namespace flux
 
-inline
 std::vector<dependency_flux> __compute_flux
 (const graphs::free_tree& t, const linear_arrangement& pi)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
-	if (n == 1) { return  {}; }
+	if (n == 1) { return {}; }
 
 	// one edge entering each position
 	const auto edge_with_max_pos_at = flux::get_edges_with_max_pos_at(t, pi);
