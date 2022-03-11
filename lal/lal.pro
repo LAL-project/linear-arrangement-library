@@ -23,6 +23,11 @@ QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 #QMAKE_CXXFLAGS_RELEASE += -pg
 #QMAKE_LFLAGS += -pg
 
+# for tests only
+# (not to be used in combination with valgrind)
+#QMAKE_CXXFLAGS += -fsanitize=address
+#LIBS += -lasan
+
 # libraries
 LIBS += -lgmp -fopenmp -lpthread
 
