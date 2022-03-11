@@ -103,14 +103,14 @@ noexcept
 	}
 }
 
-template<bool assign_vertices, class GEN>
+template<bool assign_vertices, class generator_t>
 void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,
 	// Its size must be equal to the number of vertices of the tree.
 	detail::data_array<std::vector<node>>& data,
 	// random number generator
-	GEN& gen
+	generator_t& gen
 )
 {
 	const neighbourhood& neighs_u = T.get_neighbours(u);
@@ -129,11 +129,7 @@ void make_random_projective(
 	// Choose random positions for the intervals corresponding
 	// to the trees rooted at 'u's children, and to the interval
 	// corresponding to vertex 'u'.
-	std::shuffle(
-		inter.begin(),
-		inter.end(),
-		gen
-	);
+	std::shuffle(inter.begin(), inter.end(), gen);
 
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them inductively.
