@@ -95,7 +95,7 @@ std::pair<node, node> retrieve_centroid(
 	const tree_t& t,
 	const uint64_t N, const uint64_t n, const node x,
 	std::vector<std::vector<node_size>>& L,
-	std::vector<edge_size>& sizes_edge
+	data_array<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -103,7 +103,7 @@ noexcept
 	assert(n > 0);
 #endif
 
-	typedef std::vector<edge_size>::iterator iterator_t;
+	typedef edge_size* iterator_t;
 
 	{
 	sizes_edge.resize(2*(n - 1));
@@ -207,7 +207,7 @@ template<
 std::pair<node, node> retrieve_centroid(
 	const tree_t& t, const node x,
 	std::vector<std::vector<node_size>>& L,
-	std::vector<edge_size>& sizes_edge
+	data_array<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -244,7 +244,7 @@ std::pair<node, node> retrieve_centroid(const tree_t& t, const node x)
 noexcept
 {
 	std::vector<std::vector<node_size>> M;
-	std::vector<edge_size> sizes_edge;
+	data_array<edge_size> sizes_edge;
 	return retrieve_centroid(t, x, M, sizes_edge);
 }
 
@@ -282,7 +282,7 @@ template<
 std::pair<node, node> retrieve_centroid(
 	const tree_t& t,
 	std::vector<std::vector<node_size>>& L,
-	std::vector<edge_size>& sizes_edge
+	data_array<edge_size>& sizes_edge
 )
 noexcept
 {
@@ -321,7 +321,7 @@ std::pair<node, node> retrieve_centroid(const tree_t& t)
 noexcept
 {
 	std::vector<std::vector<node_size>> L;
-	std::vector<edge_size> sizes_edge;
+	data_array<edge_size> sizes_edge;
 	return retrieve_centroid(t, L, sizes_edge);
 }
 
@@ -353,7 +353,7 @@ std::pair<node, node> retrieve_centroid
 (const tree_t& t, std::vector<std::vector<node_size>>& L)
 noexcept
 {
-	std::vector<edge_size> sizes_edge;
+	data_array<edge_size> sizes_edge;
 	return retrieve_centroid(t, L, sizes_edge);
 }
 

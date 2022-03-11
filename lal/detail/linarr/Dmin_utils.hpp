@@ -600,7 +600,7 @@ node make_sorted_adjacency_list_rooted_centroid(
 )
 noexcept
 {
-	std::vector<edge_size> sizes_edge;
+	detail::data_array<edge_size> sizes_edge;
 	// Find a centroidal vertex of the tree.
 	// With this method we can retrieve the sorted adjacency matrix;
 	// such matrix is used to retrieve the centroid and arrange the tree.
