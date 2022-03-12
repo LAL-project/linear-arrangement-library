@@ -738,7 +738,7 @@ noexcept
 	}*/
 }
 
-} // -- namespaec dmin_Chung
+} // -- namespace dmin_Chung
 
 /**
  * @brief Calculates a minimum linear arrangment using Fan Chung's algorithm.
