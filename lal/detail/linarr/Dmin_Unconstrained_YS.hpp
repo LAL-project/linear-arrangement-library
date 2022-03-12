@@ -67,13 +67,13 @@ namespace detail {
 namespace dmin_Shiloach {
 
 /// The tree is left-anchored
-constexpr char LEFT_ANCHOR = -1;
+static constexpr char LEFT_ANCHOR = -1;
 /// The tree is right-anchored
-constexpr char RIGHT_ANCHOR = 1;
+static constexpr char RIGHT_ANCHOR = 1;
 /// The tree is not anchored
-constexpr char NO_ANCHOR = 0;
+static constexpr char NO_ANCHOR = 0;
 /// The tree is anchored
-constexpr char ANCHOR = 1;
+static constexpr char ANCHOR = 1;
 
 /**
  * @brief Calculate \f$p_{\alpha}\f$.

@@ -67,9 +67,9 @@ namespace linarr {
  */
 inline
 bool is_permutation(const linear_arrangement& arr = {}) noexcept {
-	if (arr.size() == 0) { return true; }
+	if (arr.size() <= 1) { return true; }
 	// ensure that no position has been used twice
-	detail::data_array<position> d(arr.size(), 0);
+	detail::data_array<uint64_t> d(arr.size(), 0);
 	for (node u = 0; u < arr.size(); ++u) {
 		const position p = arr[node_t{u}];
 		if (p >= arr.size()) { return false; }
@@ -97,6 +97,7 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 		assert(g.is_tree());
 #endif
 	}
+
 	// identity arrangement is always a permutation
 	if (arr.size() == 0) { return true; }
 	// if sizes differ then the arrangement is not a permutation
@@ -105,8 +106,8 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 	if (not is_permutation(arr)) { return false; }
 	// the largest number must be exactly one less than the size
 	const position max_pos =
-		*std::max_element
-		(arr.begin_direct(), arr.end_direct());
+		*std::max_element(arr.begin_direct(), arr.end_direct());
+
 	return max_pos == arr.size() - 1;
 }
 
