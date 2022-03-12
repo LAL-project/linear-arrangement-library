@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <map>
 
 // lal includes
@@ -70,7 +71,7 @@ namespace __lal {
 
 template<class graph_t>
 void fill_adjP_adjN(
-	const graph_t& g, const linear_arrangement& pi,
+	const graph_t& g, const linear_arrangement& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	std::size_t * const size_adjN_u
@@ -87,13 +88,17 @@ noexcept
 		<edge, std::vector<edge>::iterator, countingsort::non_decreasing_t>
 		(
 		edges.begin(), edges.end(),
-		n-1, // length of the longest edge
+		n - 1, // length of the longest edge
 		edges.size(),
 		[&](const edge& e) -> std::size_t {
-			const node_t u = e.first;
-			const node_t v = e.second;
-			++size_adjN_u[*u];
-			return abs_diff(pi[u], pi[v]);
+
+			const node uu = e.first;
+			const node vv = e.second;
+			const auto [u,v] =
+				(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
+
+			++size_adjN_u[u];
+			return abs_diff(arr[node_t{u}], arr[node_t{v}]);
 		}
 		);
 
@@ -102,8 +107,12 @@ noexcept
 		// divide by two because the 'key' function in the call to
 		// the sorting function is called twice for every edge
 #if defined DEBUG
-		assert( (size_adjN_u[u]%2) == 0 );
+		assert((size_adjN_u[u]%2) == 0);
+		// the assertion
+		//     assert(size_adjN_u[u] != 0);
+		// is wrong.
 #endif
+
 		size_adjN_u[u] /= 2;
 		adjN[u].resize(size_adjN_u[u]);
 	}
@@ -112,7 +121,7 @@ noexcept
 	for (const auto& [uu, vv] : edges) {
 		// pi[u] < pi[v]
 		const auto [u,v] =
-			(pi[node_t{uu}] < pi[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
+			(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
 
 		// oriented edge (u,v) "enters" node v
 		adjP[v].push_back(u);
@@ -121,6 +130,7 @@ noexcept
 		--size_adjN_u[u];
 		adjN[u][size_adjN_u[u]] = indexed_edge(0, edge_sorted_by_vertex_index(u,v));
 	}
+
 #if defined DEBUG
 	for (node u = 0; u < n; ++u) {
 		assert(size_adjN_u[u] == 0);
