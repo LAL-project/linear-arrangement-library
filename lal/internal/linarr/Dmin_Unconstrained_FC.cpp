@@ -43,6 +43,7 @@
 #include <cassert>
 #endif
 #include <optional>
+#include <limits>
 #include <vector>
 using namespace std;
 
