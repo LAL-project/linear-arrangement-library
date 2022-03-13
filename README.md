@@ -11,6 +11,8 @@ Some of the algorithms listed above are implemented for both general graphs and 
 
 For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/). Do not forget to [take a look at the guides!](https://cqllab.upc.edu/lal/guides/).
 
+**A word of caution** The master branch of this repository may contain unstable code.
+
 ## Installation of the library from binaries
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
