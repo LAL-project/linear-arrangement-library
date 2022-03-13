@@ -235,6 +235,7 @@ target_sources(
 		graphs/output.hpp
 		graphs/rooted_tree.hpp
 		graphs/tree.hpp
+		graphs/tree_literals.hpp
 		graphs/tree_type.hpp
 		graphs/undirected_graph.hpp
 		# -- sources
@@ -408,6 +409,7 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/output.hpp
 	graphs/rooted_tree.hpp
 	graphs/tree.hpp
+	graphs/tree_literals.hpp
 	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
 )

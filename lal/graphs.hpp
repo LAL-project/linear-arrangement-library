@@ -52,3 +52,5 @@
 #include <lal/graphs/conversions.hpp>
 
 #include <lal/graphs/output.hpp>
+
+#include <lal/graphs/tree_literals.hpp>
