@@ -228,8 +228,8 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$P\f$.
  */
-std::vector<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
-	std::vector<uint64_t> v(2*p + 1 + 1);
+data_array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
+	data_array<uint64_t> v(2*p + 1 + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -264,8 +264,8 @@ std::vector<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$Q\f$.
  */
-std::vector<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
-	std::vector<uint64_t> v(2*q + 1);
+data_array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+	data_array<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -430,7 +430,7 @@ noexcept
 			}
 
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
-				const std::vector<uint64_t> Q_i = get_Q(uq, i);
+				const data_array<uint64_t> Q_i = get_Q(uq, i);
 
 				t.add_edge(centroidal_vertex, ord[i].v);
 
@@ -450,7 +450,7 @@ noexcept
 					(
 						t,
 						ord[pos_in_ord].v, start_aux,
-						start_aux + n_i -1,
+						start_aux + n_i - 1,
 						arr_aux, cost_i_j
 					);
 					start_aux += n_i; // ord[pos_in_ord].first;
@@ -570,7 +570,7 @@ noexcept
 			}
 
 			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
-				const std::vector<uint64_t> P_i = get_P(up, i);
+				const data_array<uint64_t> P_i = get_P(up, i);
 				t.add_edge(one_node, ord[i].v, false, false);
 
 				uint64_t c_i = 0;
