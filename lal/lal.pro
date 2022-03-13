@@ -145,6 +145,7 @@ HEADERS += \
 	graphs/directed_graph.hpp \
 	graphs/free_tree.hpp \
 	graphs/rooted_tree.hpp \
+    graphs/tree_literals.hpp \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	io/check_correctness.hpp \
@@ -219,6 +220,7 @@ SOURCES += \
 	graphs/graph.cpp \
 	graphs/rooted_tree.cpp \
 	graphs/tree.cpp \
+	graphs/tree_literals.cpp \
 	graphs/undirected_graph.cpp \
 	io/check_correctness.cpp \
 	io/edge_list.cpp \

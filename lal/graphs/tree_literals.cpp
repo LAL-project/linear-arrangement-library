@@ -39,72 +39,54 @@
  *
  ********************************************************************/
 
-#pragma once
+#include <lal/graphs/tree_literals.hpp>
+
+// C++ includes
+#include <sstream>
 
 // lal includes
+#include <lal/graphs/conversions.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
-/**
- * @brief User-defined literal to denote free trees.
- *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
- *
- @code
- const std::pair<lal::graphs::free_tree, lal::node> tree_and_root = "0 1 1 1 1 1"_pfree_tree;
- @endcode
- *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the result of @ref lal::graphs::from_head_vector_to_free_tree
- * when passed to it the head vector encoded in @e hv_str as parameter.
- */
 [[nodiscard]] std::pair<lal::graphs::free_tree, lal::node>
 operator""_pfree_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
-noexcept;
+noexcept
+{
+	std::vector<uint64_t> hv;
+	// parse the elements in the string
+	{
+	std::stringstream ss(hv_str);
+	uint64_t v;
+	while (ss >> v) { hv.push_back(v); }
+	}
+	return lal::graphs::from_head_vector_to_free_tree(hv);
+}
 
-/**
- * @brief User-defined literal to denote free trees.
- *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
- *
- @code
- const lal::graphs::free_tree tree = "0 1 1 1 1 1"_free_tree;
- @endcode
- *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the first element in the result of function
- * @ref lal::graphs::from_head_vector_to_free_tree when passed to it the head
- * vector encoded in @e hv_str as parameter.
- */
 [[nodiscard]] lal::graphs::free_tree
 operator""_free_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
-noexcept;
+noexcept
+{
+	std::vector<uint64_t> hv;
+	// parse the elements in the string
+	{
+	std::stringstream ss(hv_str);
+	uint64_t v;
+	while (ss >> v) { hv.push_back(v); }
+	}
+	return std::move(lal::graphs::from_head_vector_to_free_tree(hv).first);
+}
 
-/**
- * @brief User-defined literal to denote free trees.
- *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
- *
- @code
- const lal::graphs::rooted_tree tree = "0 1 1 1 1 1"_rooted_tree;
- @endcode
- *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the result of @ref lal::graphs::from_head_vector_to_free_tree
- * when passed as parameter the head vector encoded in @e hv_str.
- */
 [[nodiscard]] lal::graphs::rooted_tree
 operator""_rooted_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
-noexcept;
+noexcept
+{
+	std::vector<uint64_t> hv;
+	// parse the elements in the string
+	{
+	std::stringstream ss(hv_str);
+	uint64_t v;
+	while (ss >> v) { hv.push_back(v); }
+	}
+	return lal::graphs::from_head_vector_to_rooted_tree(hv);
+}

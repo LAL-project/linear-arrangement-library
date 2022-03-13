@@ -245,6 +245,7 @@ target_sources(
 		graphs/graph.cpp
 		graphs/rooted_tree.cpp
 		graphs/tree.cpp
+		graphs/tree_literals.cpp
 		graphs/undirected_graph.cpp
 
 		# io namespace
