@@ -64,19 +64,19 @@ enum class algorithms_C {
 	 */
 	brute_force,
 	/**
-	 * @brief Dynamic programming algorithm.
+	 * @brief Dynamic programming algorithm \cite Alemany2019a.
 	 *
 	 * Complexity: time \f$O(n^2)\f$, space \f$O(n^2)\f$.
 	 */
 	dynamic_programming,
 	/**
-	 * @brief Dynamic programming algorithm.
+	 * @brief Dynamic programming algorithm \cite Alemany2019a.
 	 *
 	 * Complexity: time \f$O(n^2)\f$, space \f$O(n)\f$.
 	 */
 	ladder,
 	/**
-	 * @brief Algorithm based on sorting.
+	 * @brief Algorithm based on sorting \cite Alemany2019a.
 	 *
 	 * Complexity: time \f$O(m\log n)\f$, space \f$O(m)\f$.
 	 */

@@ -54,8 +54,6 @@
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/macros/integer_convert.hpp>
 
-typedef std::pair<uint64_t,lal::edge> indexed_edge;
-
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define DECIDED_C_GT (upper_bound + 1)
 #define DECIDED_C_LE C
@@ -65,10 +63,26 @@ namespace detail {
 
 namespace __lal {
 
+/// Useful typedef.
+typedef std::pair<uint64_t,lal::edge> indexed_edge;
+
 // =============================================================================
 // ACTUAL ALGORITHM
 // =============================================================================
 
+/**
+ * @brief Auxiliary function to sort edges as a function of the arrangement.
+ *
+ * See \cite Alemany2019a for details on the correctness and behaviour.
+ * @tparam graph_t Type of graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param adjP @e adjP[v] contains the list of vertices @e u that form edges (u,v)
+ * such that arr[u] < arr[v] sorted nondecreasingly by edge length.
+ * @param adjN @e adjN[v] contains the list of vertices @e u that form edges (u,v)
+ * such that arr[v] < arr[u] sorted nonincreasingly by edge length.
+ * @param size_adjN_u Auxiliary memory array of size @e n.
+ */
 template<class graph_t>
 void fill_adjP_adjN(
 	const graph_t& g, const linear_arrangement& arr,
@@ -83,7 +97,8 @@ noexcept
 	// Retrieve all edges of the graph to sort
 	std::vector<edge> edges = g.get_edges();
 
-	// sort edges of the graph by increasing edge length
+	// sort edges of the graph by non-decreasing edge length
+	// l(e_1) <= l(e_2) <= ... <= l(e_m)
 	detail::counting_sort
 		<edge, std::vector<edge>::iterator, countingsort::non_decreasing_t>
 		(
@@ -138,15 +153,23 @@ noexcept
 #endif
 }
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns uuper_bound+1 if the number of crossings is greater than the upper_bound
-//		returns the number of crossings if the number of crossings is less
-//			than the upper_bound
+/**
+ * @brief Stack based computation of \f$C\f$ for undirected graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param size_adjN_u See \cite Alemany2019a for details.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
 template<class graph_t, bool decide_upper_bound>
 uint64_t compute_C_stack_based(
-	const graph_t& g, const linear_arrangement& pi,
+	const graph_t& g, const linear_arrangement& arr,
 	std::size_t * const size_adjN_u,
 	uint64_t upper_bound = 0
 )
@@ -156,18 +179,18 @@ noexcept
 
 	// Adjacency lists, sorted by edge length:
 	// - adjP is sorted by increasing edge length
-	// - adjN is sorted by decreasing edge length
 	std::vector<neighbourhood> adjP(n);
+	// - adjN is sorted by decreasing edge length
 	std::vector<std::vector<indexed_edge>> adjN(n);
 
-	fill_adjP_adjN(g, pi, adjP, adjN, size_adjN_u);
+	fill_adjP_adjN(g, arr, adjP, adjN, size_adjN_u);
 
 	// relate each edge to an index
 	std::map<edge, uint64_t> edge_to_idx;
 
 	uint64_t idx = 0;
 	for (position_t pu = 0ULL; pu < n; ++pu) {
-		const node u = pi[pu];
+		const node u = arr[pu];
 		for (auto& v : adjN[u]) {
 			v.first = idx;
 
@@ -182,7 +205,7 @@ noexcept
 	// calculate the number of crossings
 	uint64_t C = 0;
 	for (position_t pu = 0ULL; pu < n; ++pu) {
-		const node u = pi[pu];
+		const node u = arr[pu];
 		for (node v : adjP[u]) {
 			const edge uv = edge_sorted_by_vertex_index(u,v);
 			const auto on_top = S.remove(indexed_edge(edge_to_idx[uv], uv));
@@ -206,11 +229,18 @@ noexcept
 // CALLS TO ALGORITHM
 // =============================================================================
 
+// ------------------
+// single arrangement
+
+/**
+ * @brief Stack based computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t call_C_stack_based(
-	const graph_t& g,
-	const linear_arrangement& pi
-)
+uint64_t call_C_stack_based(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -221,39 +251,47 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	return __lal::compute_C_stack_based<graph_t, false>
-			(g, pi, size_adjN_u.begin());
+			(g, arr, size_adjN_u.begin());
 }
 
-// ------------------
-// single arrangement
-
+/**
+ * @brief Stack based computation of \f$C\f$.
+ *
+ * Calls function @ref lal::detail::call_C_stack_based.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t n_C_stack_based(
-	const graph_t& g,
-	const linear_arrangement& pi
-)
+uint64_t n_C_stack_based(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_stack_based<graph_t>, g, pi);
+			(call_C_stack_based<graph_t>, g, arr);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Stack based computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
+ */
 template<class graph_t>
-std::vector<uint64_t> n_C_stack_based(
-	const graph_t& g,
-	const std::vector<linear_arrangement>& pis
-)
+std::vector<uint64_t> n_C_stack_based
+(const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) { return cs; }
 
 	// size_adjN_u[u] := size of adjN[u]
@@ -261,15 +299,15 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_stack_based<graph_t, false>
-				(g, pis[i], size_adjN_u.begin());
+				(g, arrs[i], size_adjN_u.begin());
 	}
 
 	return cs;
@@ -278,10 +316,22 @@ noexcept
 // -----------------------------------------------------------------------------
 // DECISION
 
+// ------------------
+// single arrangement
+
+/**
+ * @brief Stack based computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t call_C_stack_based_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -294,41 +344,58 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	return __lal::compute_C_stack_based<graph_t, true>
-			(g, pi, size_adjN_u.begin(), upper_bound);
+			(g, arr, size_adjN_u.begin(), upper_bound);
 }
 
-// ------------------
-// single arrangement
-
+/**
+ * @brief Stack based computation of \f$C\f$ with early termination.
+ *
+ * Calls function @ref lal::detail::call_C_stack_based_lesseq_than.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_stack_based_lesseq_than<graph_t>, g, pi, upper_bound);
+			(call_C_stack_based_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Stack based computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) { return cs; }
 
 	// size_adjN_u[u] := size of adjN[u]
@@ -336,36 +403,46 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_stack_based<graph_t, true>
-				(g, pis[i], size_adjN_u.begin(), upper_bound);
+				(g, arrs[i], size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
 }
 
+/**
+ * @brief Stack based computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bounds List of bounds used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * corresponding upper bound. It returns a value one unit larger than the upper
+ * bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 	#if defined DEBUG
 		// ensure that there are as many linear arrangements as upper bounds
-		assert(pis.size() == upper_bounds.size());
+		assert(arrs.size() == upper_bounds.size());
 	#endif
 
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) { return cs; }
 
 	// size_adjN_u[u] := size of adjN[u]
@@ -373,15 +450,15 @@ noexcept
 	data_array<std::size_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_stack_based<graph_t, true>
-				(g, pis[i], size_adjN_u.begin(), upper_bounds[i]);
+				(g, arrs[i], size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;

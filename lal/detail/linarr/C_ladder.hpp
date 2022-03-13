@@ -63,16 +63,26 @@ namespace __lal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns m*m + 1 if the number of crossings is greater than the upper_bound
-//		returns the number of crossings if the number of crossings is less
-//			than the upper_bound
+/**
+ * @brief Ladder computation of \f$C\f$ for undirected graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @bn[i]
+ * is 1 if vertex @e u and vertex @e i are adjacent.
+ * @param L1 See \cite Alemany2019a for details.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
 template<class graph_t, bool decide_upper_bound>
 uint64_t compute_C_ladder(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
 	uint64_t upper_bound = 0
@@ -86,7 +96,7 @@ noexcept
 
 	// no need to reach the last position of the arrangement
 	for (position pu = 0; pu < n - 1; ++pu) {
-		const node u = pi[position_t{pu}];
+		const node u = arr[position_t{pu}];
 
 		// amount of crossings the edges incident to this node and
 		// connecting nodes "to the right" of 'u' in the arrangement
@@ -96,7 +106,7 @@ noexcept
 		detail::get_bool_neighbours<graph_t>(g, u, bn);
 
 		for (position pv = pu + 1; pv < n; ++pv) {
-			const node v = pi[position_t{pv}];
+			const node v = arr[position_t{pv}];
 			S += L1[pv];
 
 			// --
@@ -134,9 +144,15 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Ladder computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t call_C_ladder
-(const graph_t& g, const linear_arrangement& pi)
+uint64_t call_C_ladder(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -150,36 +166,47 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	return __lal::compute_C_ladder<graph_t, false>
-			(g, pi, boolean_neighborhood.begin(), L1.begin());
+			(g, arr, boolean_neighborhood.begin(), L1.begin());
 }
 
+/**
+ * @brief Ladder computation of \f$C\f$.
+ *
+ * Calls function @ref lal::detail::call_C_ladder.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t n_C_ladder(
-	const graph_t& g,
-	const linear_arrangement& pi
-)
+uint64_t n_C_ladder(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_ladder<graph_t>, g, pi);
+			(call_C_ladder<graph_t>, g, arr);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Ladder computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
+ */
 template<class graph_t>
-std::vector<uint64_t> n_C_ladder(
-	const graph_t& g,
-	const std::vector<linear_arrangement>& pis
-)
+std::vector<uint64_t> n_C_ladder
+(const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -190,15 +217,15 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_ladder<graph_t, false>
-				(g, pis[i], boolean_neighborhood.begin(), L1.begin());
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin());
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -213,10 +240,19 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Ladder computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t call_C_ladder_is_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -232,38 +268,58 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	return __lal::compute_C_ladder<graph_t, true>
-			(g, pi, boolean_neighborhood.begin(), L1.begin(), upper_bound);
+			(g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound);
 }
 
+/**
+ * @brief Ladder computation of \f$C\f$ with early termination.
+ *
+ * Calls function @ref lal::detail::call_C_ladder_lesseq_than.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t is_n_C_ladder_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_ladder_is_lesseq_than<graph_t>, g, pi, upper_bound);
+			(call_C_ladder_is_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Ladder computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -274,15 +330,15 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_ladder<graph_t, true>
-				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -294,22 +350,32 @@ noexcept
 	return cs;
 }
 
+/**
+ * @brief Ladder computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bounds List of bounds used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * corresponding upper bound. It returns a value one unit larger than the upper
+ * bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 #if defined DEBUG
 	// ensure that there are as many linear arrangements as upper bounds
-	assert(pis.size() == upper_bounds.size());
+	assert(arrs.size() == upper_bounds.size());
 #endif
 
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -320,17 +386,17 @@ noexcept
 	data_array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		boolean_neighborhood.fill(0);
 
 		cs[i] = __lal::compute_C_ladder<graph_t, true>
-				(g, pis[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

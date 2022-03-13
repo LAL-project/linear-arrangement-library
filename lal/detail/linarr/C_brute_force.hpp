@@ -63,15 +63,22 @@ namespace __lal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns m*m + 1 if the number of crossings is greater than the upper_bound
-//		returns the number of crossings if the number of crossings is less
-//			than the upper_bound
+/**
+ * @brief Brute force computation of \f$C\f$ for undirected graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
 template<bool decide_upper_bound>
 uint64_t compute_C_brute_force(
-	const graphs::undirected_graph& g, const linear_arrangement& pi,
+	const graphs::undirected_graph& g, const linear_arrangement& arr,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -82,11 +89,11 @@ noexcept
 	// using the information given in the linear arrangement
 	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
-		const position pu = pi[u];
+		const position pu = arr[u];
 		const neighbourhood& Nu = g.get_neighbours(*u);
 		for (node_t v : Nu) {
 			// 'pv' is the position of node 'v'
-			const position pv = pi[v];
+			const position pv = arr[v];
 			if (pu >= pv) { continue; }
 
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
@@ -98,10 +105,10 @@ noexcept
 
 			for (position_t pw = begin; pw <= end; ++pw) {
 				// 'w' is the node at position 'pw'
-				const node w = pi[pw];
+				const node w = arr[pw];
 				const neighbourhood& Nw = g.get_neighbours(w);
 				for (node_t z : Nw) {
-					const position pz = pi[z];
+					const position pz = arr[z];
 
 					// if     pi[w] < pi[z]    then
 					// 'w' and 'z' is a pair of connected nodes such that
@@ -125,19 +132,29 @@ noexcept
 	return C;
 }
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns 0 if the number of crossings than the upper_bound
-//
-template<bool decide_upper_bound = false>
-std::conditional_t<decide_upper_bound, uint64_t, void>
-inner_computation
+/**
+ * @brief Brute force computation of \f$C\f$ for directed graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param pu Starting position of the computation.
+ * @param pv Ending position of the computation.
+ * @param arr Input arrangement.
+ * @param C Current number of crossings.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
+template<bool decide_upper_bound>
+[[nodiscard]] uint64_t inner_computation
 (
 	const graphs::directed_graph& g,
 	position pu, position pv,
-	const linear_arrangement& pi,
-	uint64_t& C,
+	const linear_arrangement& arr,
+	uint64_t C,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -151,10 +168,10 @@ noexcept
 
 	for (position_t pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
-		const node w = pi[pw];
+		const node w = arr[pw];
 		const neighbourhood& Nw_out = g.get_out_neighbours(w);
 		for (node_t z : Nw_out) {
-			const position pz = pi[z];
+			const position pz = arr[z];
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
@@ -171,7 +188,7 @@ noexcept
 		}
 		const neighbourhood& Nw_in = g.get_in_neighbours(w);
 		for (node_t z : Nw_in) {
-			const position pz = pi[z];
+			const position pz = arr[z];
 
 			// if     pi[w] < pi[z]    then
 			// 'w' and 'z' is a pair of connected nodes such that
@@ -188,18 +205,24 @@ noexcept
 		}
 	}
 
-	if constexpr (decide_upper_bound) {
-		// none of the conditions above were true, so we must have
-		// C <= upper_bound
-		return DECIDED_C_LE;
-	}
+	// none of the conditions above were true, so we must have
+	// C <= upper_bound
+	return C;
 }
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns 1 if the number of crossings than the upper_bound
-//		returns 0 if the number of crossings than the upper_bound
+/**
+ * @brief Brute force computation of \f$C\f$ for directed graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
 template<bool decide_upper_bound = false>
 uint64_t compute_C_brute_force(
 	const graphs::directed_graph& g, const linear_arrangement& pi,
@@ -223,15 +246,14 @@ noexcept
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
 			if constexpr (decide_upper_bound) {
-				const uint64_t res =
-					inner_computation<true>(g, pu,pv, pi, C, upper_bound);
+				C += inner_computation<true>(g, pu,pv, pi, C, upper_bound);
 
 				// if decided that C > upper_bound, return
-				if (res == DECIDED_C_GT) { return DECIDED_C_GT; }
+				if (C > upper_bound) { return DECIDED_C_GT; }
 				// if not, continue
 			}
 			else {
-				inner_computation<false>(g, pu,pv, pi, C);
+				C += inner_computation<false>(g, pu,pv, pi, C);
 			}
 		}
 		const neighbourhood& Nu_in = g.get_in_neighbours(*u);
@@ -243,15 +265,14 @@ noexcept
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
 			if constexpr (decide_upper_bound) {
-				const uint64_t res =
-					inner_computation<true>(g, pu,pv, pi, C, upper_bound);
+				C += inner_computation<true>(g, pu,pv, pi, C, upper_bound);
 
 				// if decided that C > upper_bound, return
-				if (res == DECIDED_C_GT) { return DECIDED_C_GT; }
+				if (C > upper_bound) { return DECIDED_C_GT; }
 				// if not, continue
 			}
 			else {
-				inner_computation<false>(g, pu,pv, pi, C);
+				C += inner_computation<false>(g, pu,pv, pi, C);
 			}
 		}
 	}
@@ -270,58 +291,78 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Brute force computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t call_C_brute_force(
-	const graph_t& g,
-	const linear_arrangement& pi
-)
+uint64_t call_C_brute_force(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// compute the number of crossings
-	return __lal::compute_C_brute_force<false>(g, pi);
+	return __lal::compute_C_brute_force<false>(g, arr);
 }
 
+/**
+ * @brief Brute force computation of \f$C\f$.
+ *
+ * Calls function @ref lal::detail::call_C_brute_force.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
-uint64_t n_C_brute_force(const graph_t& g, const linear_arrangement& pi)
+uint64_t n_C_brute_force(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_brute_force<graph_t>, g, pi);
+			(call_C_brute_force<graph_t>, g, arr);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Brute force computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
+ */
 template<class graph_t>
-std::vector<uint64_t> n_C_brute_force(
-	const graph_t& g,
-	const std::vector<linear_arrangement>& pis
-)
+std::vector<uint64_t> n_C_brute_force
+(const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size());
+	std::vector<uint64_t> cs(arrs.size());
 	if (n < 4) {
+		// fill only when necessary
 		std::fill(cs.begin(), cs.end(), 0);
 		return cs;
 	}
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
+
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_brute_force<false>(g, pis[i]);
+		cs[i] = __lal::compute_C_brute_force<false>(g, arrs[i]);
 	}
 
 	return cs;
@@ -333,99 +374,129 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Brute force computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
-uint64_t call_brute_force_lesseq_than(
-	const graph_t& g,
-	const linear_arrangement& pi,
-	uint64_t upper_bound
-)
+uint64_t call_C_brute_force_lesseq_than
+(const graph_t& g, const linear_arrangement& arr, uint64_t upper_bound)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	if (n < 4) { return 0; }
 
 	// compute the number of crossings
-	return __lal::compute_C_brute_force<true>(g, pi, upper_bound);
+	return __lal::compute_C_brute_force<true>(g, arr, upper_bound);
 }
 
+/**
+ * @brief Brute force computation of \f$C\f$ with early termination.
+ *
+ * Calls function @ref lal::detail::call_C_brute_force_lesseq_than.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
-uint64_t is_n_C_brute_force_lesseq_than(
-	const graph_t& g,
-	const linear_arrangement& pi,
-	uint64_t c
-)
+uint64_t is_n_C_brute_force_lesseq_than
+(const graph_t& g, const linear_arrangement& arr, uint64_t upper_bound)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_brute_force_lesseq_than<graph_t>, g, pi, c);
+			(call_C_brute_force_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Brute force computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
-std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
-	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
-	uint64_t upper_bound
-)
+std::vector<uint64_t> is_n_C_brute_force_lesseq_than
+(const graph_t& g, const std::vector<linear_arrangement>& arrs, uint64_t upper_bound)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size());
+	std::vector<uint64_t> cs(arrs.size());
 	if (n < 4) {
 		std::fill(cs.begin(), cs.end(), 0);
 		return cs;
 	}
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_brute_force<true>(g, pis[i], upper_bound);
+		cs[i] = __lal::compute_C_brute_force<true>(g, arrs[i], upper_bound);
 	}
 
 	return cs;
 }
 
+/**
+ * @brief Brute force computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bounds List of bounds used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * corresponding upper bound. It returns a value one unit larger than the upper
+ * bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis.size() == upper_bounds.size());
+		assert(arrs.size() == upper_bounds.size());
 #endif
 
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size());
+	std::vector<uint64_t> cs(arrs.size());
 	if (n < 4) {
 		std::fill(cs.begin(), cs.end(), 0);
 		return cs;
 	}
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_brute_force<true>(g, pis[i], upper_bounds[i]);
+		cs[i] = __lal::compute_C_brute_force<true>(g, arrs[i], upper_bounds[i]);
 	}
 
 	return cs;

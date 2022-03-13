@@ -64,16 +64,29 @@ namespace __lal {
 // ACTUAL ALGORITHM
 // =============================================================================
 
-// When decide_upper_bound is false:
-//		returns the number of crossings
-// When decide_upper_bound is true:
-//		returns m*m + 1 if the number of crossings is greater than the upper_bound
-//		returns the number of crossings if the number of crossings is less
-//			than the upper_bound
+/**
+ * @brief Dynamic programming computation of \f$C\f$ for undirected graphs.
+ *
+ * When template parameter @e decide_upper_bound is false, the function returns
+ * the number of crossings.
+ * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @bn[i]
+ * is 1 if vertex @e u and vertex @e i are adjacent.
+ * @param M See \cite Alemany2019a for details. Also, see the end of the
+ * corresponding file.
+ * @param L See \cite Alemany2019a for details. Also, see the end of the
+ * corresponding file.
+ * @param upper_bound Upper bound on the number of crossings.
+ * @returns When @e decide_upper_bound is true, the return value is:
+ * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
+ * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
+ */
 template<class graph_t, bool decide_upper_bound>
 uint64_t compute_C_dyn_prog
 (
-	const graph_t& g, const linear_arrangement& pi,
+	const graph_t& g, const linear_arrangement& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
@@ -85,14 +98,14 @@ noexcept
 	std::fill(bn, &bn[n], 0);
 	std::fill(K, &K[(n - 3)*(n - 3)], 0);
 
-	const node u0 = pi[position_t{0ULL}];
-	const node u1 = pi[position_t{1ULL}];
+	const node u0 = arr[position_t{0ULL}];
+	const node u1 = arr[position_t{1ULL}];
 
 	/* fill matrix M */
 
 	for (position_t pu = 0ULL; pu < n - 3; ++pu) {
 		// node at position pu + 1
-		const node u = pi[pu + 1ULL];
+		const node u = arr[pu + 1ULL];
 
 		detail::get_bool_neighbours<graph_t>(g, u, bn);
 
@@ -110,7 +123,7 @@ noexcept
 		// Now we start filling M at the third column
 		for (position_t i = 3ULL; i < n; ++i) {
 			// node at position i - 1
-			const node ui = pi[i - 1ULL];
+			const node ui = arr[i - 1ULL];
 			k -= bn[ui];
 
 			// the row corresponding to node 'u' in M is
@@ -165,7 +178,7 @@ noexcept
 
 	const auto process_neighbours =
 	[&](const position pu, const node_t v) -> void {
-		const position pv = pi[v];
+		const position pv = arr[v];
 		// 'u' and 'v' is an edge of the graph.
 		// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
 		// then 'u' is "in front of" 'v' in the linear arrangement.
@@ -183,7 +196,7 @@ noexcept
 	};
 
 	for (position pu = 0; pu < n - 3; ++pu) {
-		const node u = pi[position_t{pu}];
+		const node u = arr[position_t{pu}];
 
 		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
 			const neighbourhood& Nu = g.get_out_neighbours(u);
@@ -226,9 +239,16 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
 uint64_t call_C_dyn_prog
-(const graph_t& g, const linear_arrangement& pi)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -248,34 +268,48 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
-	return __lal::compute_C_dyn_prog<graph_t, false>(g, pi, bool_neighs.begin(), M,K);
+	return __lal::compute_C_dyn_prog<graph_t, false>(g, arr, bool_neighs.begin(), M,K);
 }
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$.
+ *
+ * Calls function @ref lal::detail::call_C_dyn_prog.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
+ */
 template<class graph_t>
 uint64_t n_C_dynamic_programming
-(const graph_t& g, const linear_arrangement& pi)
+(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_dyn_prog<graph_t>, g, pi);
+			(call_C_dyn_prog<graph_t>, g, arr);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
+ */
 template<class graph_t>
-std::vector<uint64_t> n_C_dynamic_programming(
-	const graph_t& g,
-	const std::vector<linear_arrangement>& pis
-)
+std::vector<uint64_t> n_C_dynamic_programming
+(const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -293,15 +327,15 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_dyn_prog<graph_t, false>
-				(g, pis[i], bool_neighs.begin(), M,K);
+				(g, arrs[i], bool_neighs.begin(), M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -316,10 +350,19 @@ noexcept
 // ------------------
 // single arrangement
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$.
+ * @tparam graph_t Type of input graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t call_C_dyn_prog_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -342,39 +385,59 @@ noexcept
 
 	/* decide */
 	return __lal::compute_C_dyn_prog<graph_t, true>
-			(g, pi, bool_neighs.begin(), M,K, upper_bound);
+			(g, arr, bool_neighs.begin(), M,K, upper_bound);
 }
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$.
+ *
+ * Calls function @ref lal::detail::call_C_dyn_prog_lesseq_than.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound
 )
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return
 	detail::call_with_empty_arrangement
-	(call_C_dyn_prog_lesseq_than<graph_t>, g, pi, upper_bound);
+	(call_C_dyn_prog_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
 // list of arrangements
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bound Bound used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * upper bound. It returns a value one unit larger than the upper bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
 )
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -392,15 +455,15 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_dyn_prog<graph_t, true>
-				(g, pis[i], bool_neighs.begin(), M,K, upper_bound);
+				(g, arrs[i], bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -410,22 +473,32 @@ noexcept
 	return cs;
 }
 
+/**
+ * @brief Dynamic programming computation of \f$C\f$ with early termination.
+ * @tparam graph_t Type of input graph
+ * @param g Input graph.
+ * @param arrs List of input arrangement.
+ * @param upper_bounds List of bounds used for early termination.
+ * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
+ * corresponding upper bound. It returns a value one unit larger than the upper
+ * bound otherwise.
+ */
 template<class graph_t>
 std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
 )
 noexcept
 {
 #if defined DEBUG
 	// ensure that there are as many linear arrangements as upper bounds
-	assert(pis.size() == upper_bounds.size());
+	assert(arrs.size() == upper_bounds.size());
 #endif
 
 	const uint64_t n = g.get_num_nodes();
 
-	std::vector<uint64_t> cs(pis.size(), 0);
+	std::vector<uint64_t> cs(arrs.size(), 0);
 	if (n < 4) {
 		return cs;
 	}
@@ -443,15 +516,15 @@ noexcept
 	data_array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
-	for (std::size_t i = 0; i < pis.size(); ++i) {
+	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG
 		// ensure that no linear arrangement is empty
-		assert(pis[i].size() == n);
+		assert(arrs[i].size() == n);
 #endif
 
 		// compute C
 		cs[i] = __lal::compute_C_dyn_prog<graph_t, true>
-				(g, pis[i], bool_neighs.begin(), M,K, upper_bounds[i]);
+				(g, arrs[i], bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

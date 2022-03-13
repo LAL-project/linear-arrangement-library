@@ -94,7 +94,7 @@ uint64_t num_crossings(
  * computes the number of edge crossings \f$C_{\pi}(G)\f$ using the algorithm
  * specified by the parameter @e A.
  * @param G Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
@@ -102,7 +102,7 @@ uint64_t num_crossings(
  */
 uint64_t num_crossings(
 	const graphs::directed_graph& G,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -112,7 +112,7 @@ uint64_t num_crossings(
  * computes the number of edge crossings \f$C_{\pi}(G)\f$ using the algorithm
  * specified by the parameter @e A.
  * @param G Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$.
  * @pre The preconditions of this function depend on the choice of algorithm.
@@ -120,7 +120,7 @@ uint64_t num_crossings(
  */
 uint64_t num_crossings(
 	const graphs::undirected_graph& G,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 
@@ -132,7 +132,7 @@ uint64_t num_crossings(
  * arrangements \f$\pi_i\f$, i.e., computes \f$\{C_{\pi_i}(G)\}_{i=1}^k\f$,
  * using the algorithm specified by the parameter @e A.
  * @param G Input graph.
- * @param pis A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param arrs A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(G)\f$.
  * @pre None of the arrangements in @e pis can be empty.
@@ -141,7 +141,7 @@ uint64_t num_crossings(
  */
 std::vector<uint64_t> num_crossings_list(
 	const graphs::directed_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 /**
@@ -152,7 +152,7 @@ std::vector<uint64_t> num_crossings_list(
  * arrangements \f$\pi_i\f$, i.e., computes \f$\{C_{\pi_i}(G)\}_{i=1}^k\f$,
  * using the algorithm specified by the parameter @e A.
  * @param G Input graph.
- * @param pis A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
+ * @param arrs A list of \f$k\f$ linear arrangements of the nodes \f$\Pi = \{\pi_i\}_{i=1}^k\f$.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(G)\f$.
  * @pre None of the arrangements in @e pis can be empty.
@@ -161,7 +161,7 @@ std::vector<uint64_t> num_crossings_list(
  */
 std::vector<uint64_t> num_crossings_list(
 	const graphs::undirected_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
 
@@ -225,7 +225,7 @@ uint64_t is_num_crossings_lesseq_than(
  * involves early termination in case the actual number of crossings is strictly
  * larger than the upper bound.
  * @param G Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
@@ -236,7 +236,7 @@ uint64_t is_num_crossings_lesseq_than(
  */
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& G,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -251,7 +251,7 @@ uint64_t is_num_crossings_lesseq_than(
  * involves early termination in case the actual number of crossings is strictly
  * larger than the upper bound.
  * @param G Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
@@ -262,7 +262,7 @@ uint64_t is_num_crossings_lesseq_than(
  */
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& G,
-	const linear_arrangement& pi,
+	const linear_arrangement& arr,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -280,7 +280,7 @@ uint64_t is_num_crossings_lesseq_than(
  * involves early termination in case the actual number of crossings is strictly
  * larger than the upper bound.
  * @param G Input graph.
- * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
@@ -291,7 +291,7 @@ uint64_t is_num_crossings_lesseq_than(
  */
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -307,7 +307,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * specified by the parameter @e A. The modification involves early termination
  * in case the actual number of crossings is strictly larger than the upper bound.
  * @param G Input graph.
- * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bound Upper bound on the number of crossings.
  * @param A Algorithm to use to compute the number of crossings.
  * @returns The number of crossings \f$C\f$ if said number is less than or equal
@@ -318,7 +318,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  */
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -336,7 +336,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * specified by the parameter @e A. The modification involves early termination
  * in case the actual number of crossings is strictly larger than the upper bound.
  * @param G Input graph.
- * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bounds A list of upper bounds on the number of crossings for
  * each linear arrangement.
  * @param A Algorithm to use to compute the number of crossings.
@@ -349,7 +349,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  */
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -366,7 +366,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * @e A. The modification involves early termination in case the actual number
  * of crossings is strictly larger than the upper bound.
  * @param G Input graph.
- * @param pis A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arrs A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @param upper_bounds A list of upper bounds on the number of crossings for
  * each linear arrangement.
  * @param A Algorithm to use to compute the number of crossings.
@@ -379,7 +379,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  */
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& G,
-	const std::vector<linear_arrangement>& pis,
+	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
 ) noexcept;
@@ -395,11 +395,11 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * linear arrangement. Implementation of \cite Ferrer2014a. If the arrangement
  * is not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational predicted_num_crossings_rational
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {}) noexcept;
+(const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 /**
  * @brief Predicts the number of crossings.
@@ -409,33 +409,33 @@ numeric::rational predicted_num_crossings_rational
  * linear arrangement. Implementation of \cite Ferrer2014a. If the arrangement
  * is not specified, the identity arrangement is used.
  * @param g Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
  */
 numeric::rational predicted_num_crossings_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
+(const graphs::directed_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 /**
  * @brief Approximates the number of crossings.
  *
  * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
 double predicted_num_crossings
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {}) noexcept;
+(const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 /**
  * @brief Approximates the number of crossings.
  *
  * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
- * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The return value is a floating point value.
  */
 double predicted_num_crossings
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
+(const graphs::directed_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal
