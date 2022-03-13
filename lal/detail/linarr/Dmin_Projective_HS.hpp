@@ -57,6 +57,8 @@
 
 namespace lal {
 namespace detail {
+namespace Dmin {
+namespace projective {
 
 /**
  * @brief Minimum projective arrangement of a rooted tree.
@@ -74,7 +76,7 @@ namespace detail {
  * @returns A pair of cost and minimum linear arrangement.
  */
 inline
-std::pair<uint64_t, linear_arrangement> Dmin_Projective_HS(const graphs::rooted_tree& t)
+std::pair<uint64_t, linear_arrangement> HS(const graphs::rooted_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -104,5 +106,7 @@ noexcept
 	return {D, std::move(arr)};
 }
 
+} // -- namespace projective
+} // -- namespace Dmin
 } // -- namespace detail
 } // -- namespace lal

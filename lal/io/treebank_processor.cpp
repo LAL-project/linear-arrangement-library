@@ -740,7 +740,7 @@ noexcept
 	}
 
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
-		const auto Dmin = detail::Dmin_Unconstrained_YS<false>(fT);
+		const auto Dmin = detail::Dmin::unconstrained::YossiShiloach<false>(fT);
 		set_prop(Dmin_Unconstrained_idx, detail::to_double(Dmin));
 	}
 

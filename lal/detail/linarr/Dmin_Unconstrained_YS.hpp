@@ -57,6 +57,8 @@ typedef lal::detail::data_array<size_node> ordering;
 
 namespace lal {
 namespace detail {
+namespace Dmin {
+namespace unconstrained {
 
 /**
  * @brief Functions for Shiloach's minimum linear arrangement algorithm.
@@ -64,7 +66,7 @@ namespace detail {
  * Namespace that holds function for Shiloach's algorithm for the minimum linear
  * arrangement problem. See \cite Shiloach1979a for further details.
  */
-namespace dmin_Shiloach {
+namespace Shiloach {
 
 /// The tree is left-anchored
 static constexpr char LEFT_ANCHOR = -1;
@@ -384,7 +386,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-Dmin_Unconstrained_YS(const graphs::free_tree& t)
+YossiShiloach(const graphs::free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -396,7 +398,7 @@ noexcept
 
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
-	dmin_Shiloach::calculate_mla<dmin_Shiloach::NO_ANCHOR, make_arrangement>
+	Shiloach::calculate_mla<Shiloach::NO_ANCHOR, make_arrangement>
 		(T, 1, 0, t.get_num_nodes() - 1, arrangement, Dmin);
 
 	if constexpr (make_arrangement) {
@@ -407,5 +409,7 @@ noexcept
 	}
 }
 
+} // -- namespace unconstrained
+} // -- namespace Dmin
 } // -- namespace detail
 } // -- namespace lal

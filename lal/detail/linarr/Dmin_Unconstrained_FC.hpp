@@ -59,6 +59,8 @@
 
 namespace lal {
 namespace detail {
+namespace Dmin {
+namespace unconstrained {
 
 /**
  * @brief Functions for Chung's minimum linear arrangement algorithm.
@@ -66,7 +68,7 @@ namespace detail {
  * Namespace that holds function for Chung's algorithm for the minimum linear
  * arrangement problem. See \cite Chung1984a for further details.
  */
-namespace dmin_Chung {
+namespace Chung {
 
 /// Typedef for a useful type
 typedef lal::detail::data_array<node_size> ordering;
@@ -224,7 +226,7 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
  * @brief Calculate \f$P\f$
  *
  * See \cite Chung1984a for details.
- * @param p See @ref lal::detail::dmin_Chung::calculate_p.
+ * @param p See @ref lal::detail::Dmin::unconstrained::Chung::calculate_p.
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$P\f$.
  */
@@ -260,7 +262,7 @@ data_array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
  * @brief Calculate \f$Q\f$
  *
  * See \cite Chung1984a for details.
- * @param q See @ref lal::detail::dmin_Chung::calculate_q.
+ * @param q See @ref lal::detail::Dmin::unconstrained::Chung::calculate_q.
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$Q\f$.
  */
@@ -755,7 +757,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-Dmin_Unconstrained_FC(const graphs::free_tree& t) noexcept
+FanChung_2(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -765,7 +767,7 @@ Dmin_Unconstrained_FC(const graphs::free_tree& t) noexcept
 	linear_arrangement arr(make_arrangement ? t.get_num_nodes() : 0);
 
 	graphs::free_tree T = t;
-	dmin_Chung::calculate_mla<dmin_Chung::NO_ANCHOR, make_arrangement>
+	Chung::calculate_mla<Chung::NO_ANCHOR, make_arrangement>
 		(T, 0, 0, t.get_num_nodes() - 1, arr, Dmin);
 
 	if constexpr (make_arrangement) {
@@ -776,5 +778,7 @@ Dmin_Unconstrained_FC(const graphs::free_tree& t) noexcept
 	}
 }
 
+} // -- namespace unconstrained
+} // -- namespace Dmin
 } // -- namespace detail
 } // -- namespace lal

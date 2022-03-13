@@ -65,13 +65,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::n_C_brute_force(g, arr);
+		return detail::crossings::n_C_brute_force(g, arr);
 	case algorithms_C::dynamic_programming:
-		return detail::n_C_dynamic_programming(g, arr);
+		return detail::crossings::n_C_dynamic_programming(g, arr);
 	case algorithms_C::ladder:
-		return detail::n_C_ladder(g, arr);
+		return detail::crossings::n_C_ladder(g, arr);
 	case algorithms_C::stack_based:
-		return detail::n_C_stack_based(g, arr);
+		return detail::crossings::n_C_stack_based(g, arr);
 	}
 
 #if defined DEBUG
@@ -130,13 +130,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::n_C_brute_force(g, arrs);
+		return detail::crossings::n_C_brute_force(g, arrs);
 	case algorithms_C::dynamic_programming:
-		return detail::n_C_dynamic_programming(g, arrs);
+		return detail::crossings::n_C_dynamic_programming(g, arrs);
 	case algorithms_C::ladder:
-		return detail::n_C_ladder(g, arrs);
+		return detail::crossings::n_C_ladder(g, arrs);
 	case algorithms_C::stack_based:
-		return detail::n_C_stack_based(g, arrs);
+		return detail::crossings::n_C_stack_based(g, arrs);
 	}
 
 #if defined DEBUG
@@ -179,13 +179,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::is_n_C_brute_force_lesseq_than(g, arr, upper_bound);
+		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arr, upper_bound);
 	case algorithms_C::dynamic_programming:
-		return detail::is_n_C_dynamic_programming_lesseq_than(g, arr, upper_bound);
+		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arr, upper_bound);
 	case algorithms_C::ladder:
-		return detail::is_n_C_ladder_lesseq_than(g, arr, upper_bound);
+		return detail::crossings::is_n_C_ladder_lesseq_than(g, arr, upper_bound);
 	case algorithms_C::stack_based:
-		return detail::is_n_C_stack_based_lesseq_than(g, arr, upper_bound);
+		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arr, upper_bound);
 	}
 
 #if defined DEBUG
@@ -250,13 +250,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::is_n_C_brute_force_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arrs, upper_bound);
 	case algorithms_C::dynamic_programming:
-		return detail::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bound);
 	case algorithms_C::ladder:
-		return detail::is_n_C_ladder_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_ladder_lesseq_than(g, arrs, upper_bound);
 	case algorithms_C::stack_based:
-		return detail::is_n_C_stack_based_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arrs, upper_bound);
 	}
 
 #if defined DEBUG
@@ -304,13 +304,13 @@ noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::is_n_C_brute_force_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arrs, upper_bounds);
 	case algorithms_C::dynamic_programming:
-		return detail::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bounds);
 	case algorithms_C::ladder:
-		return detail::is_n_C_ladder_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_ladder_lesseq_than(g, arrs, upper_bounds);
 	case algorithms_C::stack_based:
-		return detail::is_n_C_stack_based_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arrs, upper_bounds);
 	}
 
 #if defined DEBUG

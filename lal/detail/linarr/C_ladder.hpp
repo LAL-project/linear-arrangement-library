@@ -56,8 +56,14 @@
 
 namespace lal {
 namespace detail {
+namespace crossings {
 
-namespace __lal {
+/**
+ * @brief Namespace for the "ladder" algorithm to calculate \f$C\f$.
+ *
+ * See \cite Alemany2019a.
+ */
+namespace ladder {
 
 // =============================================================================
 // ACTUAL ALGORITHM
@@ -71,7 +77,7 @@ namespace __lal {
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
  * @param g Input graph.
  * @param arr Input arrangement.
- * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @bn[i]
+ * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @e bn[i]
  * is 1 if vertex @e u and vertex @e i are adjacent.
  * @param L1 See \cite Alemany2019a for details.
  * @param upper_bound Upper bound on the number of crossings.
@@ -80,7 +86,7 @@ namespace __lal {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template<class graph_t, bool decide_upper_bound>
-uint64_t compute_C_ladder(
+uint64_t compute(
 	const graph_t& g,
 	const linear_arrangement& arr,
 	unsigned char * const __restrict__ bn,
@@ -135,7 +141,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace __lal
+} // -- namespace ladder
 
 // =============================================================================
 // CALLS TO ALGORITHM
@@ -152,7 +158,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_C_ladder(const graph_t& g, const linear_arrangement& arr)
+uint64_t call_ladder(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -165,14 +171,14 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __lal::compute_C_ladder<graph_t, false>
+	return ladder::compute<graph_t, false>
 			(g, arr, boolean_neighborhood.begin(), L1.begin());
 }
 
 /**
  * @brief Ladder computation of \f$C\f$.
  *
- * Calls function @ref lal::detail::call_C_ladder.
+ * Calls function @ref lal::detail::call_ladder.
  * @tparam graph_t Type of input graph.
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -186,7 +192,7 @@ noexcept
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_ladder<graph_t>, g, arr);
+			(call_ladder<graph_t>, g, arr);
 }
 
 // --------------------
@@ -224,7 +230,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_ladder<graph_t, false>
+		cs[i] = ladder::compute<graph_t, false>
 				(g, arrs[i], boolean_neighborhood.begin(), L1.begin());
 
 		boolean_neighborhood.fill(0);
@@ -250,7 +256,7 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template<class graph_t>
-uint64_t call_C_ladder_is_lesseq_than(
+uint64_t call_ladder_is_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
@@ -267,14 +273,14 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return __lal::compute_C_ladder<graph_t, true>
+	return ladder::compute<graph_t, true>
 			(g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound);
 }
 
 /**
  * @brief Ladder computation of \f$C\f$ with early termination.
  *
- * Calls function @ref lal::detail::call_C_ladder_lesseq_than.
+ * Calls function @ref lal::detail::call_ladder_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -294,7 +300,7 @@ noexcept
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_ladder_is_lesseq_than<graph_t>, g, arr, upper_bound);
+			(call_ladder_is_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
@@ -337,7 +343,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_ladder<graph_t, true>
+		cs[i] = ladder::compute<graph_t, true>
 				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -395,7 +401,7 @@ noexcept
 		// compute C
 		boolean_neighborhood.fill(0);
 
-		cs[i] = __lal::compute_C_ladder<graph_t, true>
+		cs[i] = ladder::compute<graph_t, true>
 				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -408,5 +414,6 @@ noexcept
 	return cs;
 }
 
+} // -- namespace crossings
 } // -- namespace detail
 } // -- namespace lal

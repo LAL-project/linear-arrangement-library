@@ -58,6 +58,8 @@
 
 namespace lal {
 namespace detail {
+namespace Dmin {
+namespace planar {
 
 /**
  * @brief Minimum planar arrangement of a free tree.
@@ -75,7 +77,7 @@ namespace detail {
  * @returns A pair of cost and minimum linear arrangement.
  */
 inline
-std::pair<uint64_t, linear_arrangement> Dmin_Planar_HS(const graphs::free_tree& t)
+std::pair<uint64_t, linear_arrangement> HS(const graphs::free_tree& t)
 noexcept
 {
 #if defined DEBUG
@@ -106,5 +108,7 @@ noexcept
 	return {D, std::move(arr)};
 }
 
+} // -- namespace planar
+} // -- namespace Dmin
 } // -- namespace detail
 } // -- namespace lal

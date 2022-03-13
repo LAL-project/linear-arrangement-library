@@ -60,8 +60,14 @@
 
 namespace lal {
 namespace detail {
+namespace crossings {
 
-namespace __lal {
+/**
+ * @brief Namespace for the stack-based algorithm to calculate \f$C\f$.
+ *
+ * See \cite Alemany2019a.
+ */
+namespace stack_based {
 
 /// Useful typedef.
 typedef std::pair<uint64_t,lal::edge> indexed_edge;
@@ -134,7 +140,7 @@ noexcept
 
 	// fill adjP and adjN at the same time
 	for (const auto& [uu, vv] : edges) {
-		// pi[u] < pi[v]
+		// arr[u] < arr[v]
 		const auto [u,v] =
 			(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
 
@@ -223,7 +229,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace __lal
+} // -- namespace stack_based
 
 // =============================================================================
 // CALLS TO ALGORITHM
@@ -240,7 +246,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_C_stack_based(const graph_t& g, const linear_arrangement& arr)
+uint64_t call_stack_based(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -250,14 +256,14 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __lal::compute_C_stack_based<graph_t, false>
+	return stack_based::compute_C_stack_based<graph_t, false>
 			(g, arr, size_adjN_u.begin());
 }
 
 /**
  * @brief Stack based computation of \f$C\f$.
  *
- * Calls function @ref lal::detail::call_C_stack_based.
+ * Calls function @ref lal::detail::call_stack_based.
  * @tparam graph_t Type of input graph.
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -271,7 +277,7 @@ noexcept
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_stack_based<graph_t>, g, arr);
+			(call_stack_based<graph_t>, g, arr);
 }
 
 // --------------------
@@ -306,7 +312,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_stack_based<graph_t, false>
+		cs[i] = stack_based::compute_C_stack_based<graph_t, false>
 				(g, arrs[i], size_adjN_u.begin());
 	}
 
@@ -329,7 +335,7 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template<class graph_t>
-uint64_t call_C_stack_based_lesseq_than(
+uint64_t call_stack_based_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
@@ -343,14 +349,14 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return __lal::compute_C_stack_based<graph_t, true>
+	return stack_based::compute_C_stack_based<graph_t, true>
 			(g, arr, size_adjN_u.begin(), upper_bound);
 }
 
 /**
  * @brief Stack based computation of \f$C\f$ with early termination.
  *
- * Calls function @ref lal::detail::call_C_stack_based_lesseq_than.
+ * Calls function @ref lal::detail::call_stack_based_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -370,7 +376,7 @@ noexcept
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_stack_based_lesseq_than<graph_t>, g, arr, upper_bound);
+			(call_stack_based_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
@@ -410,7 +416,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_stack_based<graph_t, true>
+		cs[i] = stack_based::compute_C_stack_based<graph_t, true>
 				(g, arrs[i], size_adjN_u.begin(), upper_bound);
 	}
 
@@ -457,12 +463,13 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_stack_based<graph_t, true>
+		cs[i] = stack_based::compute_C_stack_based<graph_t, true>
 				(g, arrs[i], size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;
 }
 
+} // -- namespace crossings
 } // -- namespace detail
 } // -- namespace lal

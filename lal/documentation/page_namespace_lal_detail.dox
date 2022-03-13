@@ -63,10 +63,26 @@ namespace detail {
 /**
 @brief Private namespace.
 
-This namespace is used, simply, to hide functions that are to be called only by other functions.
+This namespace is used, simply, to hide non-classifiable functions that are to be called only by other functions.
 */
 namespace __lal {}
 
-} // -- namespace detail
+/// Namespace for the algorithms that compute the number of crossings.
+namespace crossings { }
 
+/// Namespace for algorithms to calculate the minimum sum of edge lengths
+namespace Dmin {
+
+/// In unconstrained arrangements
+namespace unconstrained {}
+
+/// In planar arrangements.
+namespace planar {}
+
+/// In projective arrangements.
+namespace projective {}
+
+} // -- namespace Dmin
+
+} // -- namespace detail
 } // -- namespace lal

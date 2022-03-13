@@ -57,8 +57,14 @@
 
 namespace lal {
 namespace detail {
+namespace crossings {
 
-namespace __lal {
+/**
+ * @brief Namespace for the dynamic programming algorithm to calculate \f$C\f$.
+ *
+ * See \cite Alemany2019a.
+ */
+namespace dyn_prog {
 
 // =============================================================================
 // ACTUAL ALGORITHM
@@ -72,11 +78,11 @@ namespace __lal {
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
  * @param g Input graph.
  * @param arr Input arrangement.
- * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @bn[i]
+ * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @e bn[i]
  * is 1 if vertex @e u and vertex @e i are adjacent.
  * @param M See \cite Alemany2019a for details. Also, see the end of the
  * corresponding file.
- * @param L See \cite Alemany2019a for details. Also, see the end of the
+ * @param K See \cite Alemany2019a for details. Also, see the end of the
  * corresponding file.
  * @param upper_bound Upper bound on the number of crossings.
  * @returns When @e decide_upper_bound is true, the return value is:
@@ -84,7 +90,7 @@ namespace __lal {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template<class graph_t, bool decide_upper_bound>
-uint64_t compute_C_dyn_prog
+uint64_t compute
 (
 	const graph_t& g, const linear_arrangement& arr,
 	unsigned char * const __restrict__ bn,
@@ -180,14 +186,14 @@ noexcept
 	[&](const position pu, const node_t v) -> void {
 		const position pv = arr[v];
 		// 'u' and 'v' is an edge of the graph.
-		// In case that pi[u] < pi[v], or, equivalently, pu < pi[v],
+		// In case that arr[u] < arr[v], or, equivalently, pu < arr[v],
 		// then 'u' is "in front of" 'v' in the linear arrangement.
-		// This explains the first condition 'pu < pi[v]'.
-		// The second condition '2 <= pi[v] and pi[v] < n -1' is used
+		// This explains the first condition 'pu < arr[v]'.
+		// The second condition '2 <= arr[v] and arr[v] < n -1' is used
 		// to avoid making illegal memory accesses.
 		// --
-		/*if (pu < pi[v] and 2 <= pi[v] and pi[v] < n - 1) {
-			C += K[idx(pu,pi[v]-2, n-3)];
+		/*if (pu < arr[v] and 2 <= arr[v] and arr[v] < n - 1) {
+			C += K[idx(pu,arr[v]-2, n-3)];
 		}*/
 		// --
 		if (pu < pv and 2 <= pv and pv < n - 1) {
@@ -230,7 +236,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace __lal
+} // -- namespace dyn_prog
 
 // =============================================================================
 // CALLS TO THE ALGORITHM
@@ -247,7 +253,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_C_dyn_prog
+uint64_t call_dyn_prog
 (const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
@@ -268,13 +274,13 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* compute number of crossings */
-	return __lal::compute_C_dyn_prog<graph_t, false>(g, arr, bool_neighs.begin(), M,K);
+	return dyn_prog::compute<graph_t, false>(g, arr, bool_neighs.begin(), M,K);
 }
 
 /**
  * @brief Dynamic programming computation of \f$C\f$.
  *
- * Calls function @ref lal::detail::call_C_dyn_prog.
+ * Calls function @ref lal::detail::call_dyn_prog.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -289,7 +295,7 @@ noexcept
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 	return detail::call_with_empty_arrangement
-			(call_C_dyn_prog<graph_t>, g, arr);
+			(call_dyn_prog<graph_t>, g, arr);
 }
 
 // --------------------
@@ -334,7 +340,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_dyn_prog<graph_t, false>
+		cs[i] = dyn_prog::compute<graph_t, false>
 				(g, arrs[i], bool_neighs.begin(), M,K);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -360,7 +366,7 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template<class graph_t>
-uint64_t call_C_dyn_prog_lesseq_than(
+uint64_t call_dyn_prog_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
 	uint64_t upper_bound
@@ -384,14 +390,14 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* decide */
-	return __lal::compute_C_dyn_prog<graph_t, true>
+	return dyn_prog::compute<graph_t, true>
 			(g, arr, bool_neighs.begin(), M,K, upper_bound);
 }
 
 /**
  * @brief Dynamic programming computation of \f$C\f$.
  *
- * Calls function @ref lal::detail::call_C_dyn_prog_lesseq_than.
+ * Calls function @ref lal::detail::call_dyn_prog_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -412,7 +418,7 @@ noexcept
 #endif
 	return
 	detail::call_with_empty_arrangement
-	(call_C_dyn_prog_lesseq_than<graph_t>, g, arr, upper_bound);
+	(call_dyn_prog_lesseq_than<graph_t>, g, arr, upper_bound);
 }
 
 // --------------------
@@ -462,7 +468,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_dyn_prog<graph_t, true>
+		cs[i] = dyn_prog::compute<graph_t, true>
 				(g, arrs[i], bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -523,7 +529,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = __lal::compute_C_dyn_prog<graph_t, true>
+		cs[i] = dyn_prog::compute<graph_t, true>
 				(g, arrs[i], bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
@@ -534,6 +540,7 @@ noexcept
 	return cs;
 }
 
+} // -- namespace crossings
 } // -- namespace detail
 } // -- namespace lal
 
