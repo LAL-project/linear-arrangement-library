@@ -157,7 +157,7 @@ template<bool decide_upper_bound>
 	position pu, position pv,
 	const linear_arrangement& arr,
 	uint64_t C,
-	uint64_t upper_bound = 0
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -225,10 +225,10 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template<bool decide_upper_bound = false>
+template<bool decide_upper_bound>
 uint64_t compute(
 	const graphs::directed_graph& g, const linear_arrangement& arr,
-	uint64_t upper_bound = 0
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -247,15 +247,9 @@ noexcept
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
+			C = inner_compute<decide_upper_bound>(g, pu,pv, arr, C, upper_bound);
 			if constexpr (decide_upper_bound) {
-				C += inner_compute<true>(g, pu,pv, arr, C, upper_bound);
-
-				// if decided that C > upper_bound, return
 				if (C > upper_bound) { return DECIDED_C_GT; }
-				// if not, continue
-			}
-			else {
-				C += inner_compute<false>(g, pu,pv, arr, C);
 			}
 		}
 		const neighbourhood& Nu_in = g.get_in_neighbours(*u);
@@ -266,15 +260,9 @@ noexcept
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
+			C = inner_compute<decide_upper_bound>(g, pu,pv, arr, C, upper_bound);
 			if constexpr (decide_upper_bound) {
-				C += inner_compute<true>(g, pu,pv, arr, C, upper_bound);
-
-				// if decided that C > upper_bound, return
 				if (C > upper_bound) { return DECIDED_C_GT; }
-				// if not, continue
-			}
-			else {
-				C += inner_compute<false>(g, pu,pv, arr, C);
 			}
 		}
 	}
@@ -308,7 +296,7 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// compute the number of crossings
-	return brute_force::compute<false>(g, arr);
+	return brute_force::compute<false>(g, arr, 0);
 }
 
 /**
@@ -364,7 +352,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<false>(g, arrs[i]);
+		cs[i] = brute_force::compute<false>(g, arrs[i], 0);
 	}
 
 	return cs;
