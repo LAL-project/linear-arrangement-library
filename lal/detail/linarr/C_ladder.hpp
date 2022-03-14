@@ -91,7 +91,7 @@ uint64_t compute(
 	const linear_arrangement& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
-	uint64_t upper_bound = 0
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -158,41 +158,28 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_ladder(const graph_t& g, const linear_arrangement& arr)
+uint64_t n_C_ladder(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	if (n < 4) {
-		return 0;
-	}
+
+#if defined DEBUG
+	assert(arr.size() == 0 or n == arr.size());
+#endif
+
+	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return ladder::compute<graph_t, false>
-			(g, arr, boolean_neighborhood.begin(), L1.begin());
-}
-
-/**
- * @brief Ladder computation of \f$C\f$.
- *
- * Calls function @ref lal::detail::call_ladder.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
- */
-template<class graph_t>
-uint64_t n_C_ladder(const graph_t& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
 	return detail::call_with_empty_arrangement
-			(call_ladder<graph_t>, g, arr);
+		<uint64_t, graph_t, unsigned char * const, uint64_t * const, uint64_t>
+		(
+			ladder::compute<graph_t, false>,
+			g, arr, boolean_neighborhood.begin(), L1.begin(), 0
+		);
 }
 
 // --------------------
@@ -213,9 +200,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
@@ -231,7 +216,7 @@ noexcept
 
 		// compute C
 		cs[i] = ladder::compute<graph_t, false>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin());
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), 0);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -248,39 +233,6 @@ noexcept
 
 /**
  * @brief Ladder computation of \f$C\f$ with early termination.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @param upper_bound Bound used for early termination.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
- * upper bound. It returns a value one unit larger than the upper bound otherwise.
- */
-template<class graph_t>
-uint64_t call_ladder_is_lesseq_than(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	uint64_t upper_bound
-)
-noexcept
-{
-	const uint64_t n = g.get_num_nodes();
-	if (n < 4) {
-		return 0;
-	}
-
-	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
-	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
-
-	return ladder::compute<graph_t, true>
-			(g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound);
-}
-
-/**
- * @brief Ladder computation of \f$C\f$ with early termination.
- *
- * Calls function @ref lal::detail::call_ladder_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -296,11 +248,25 @@ uint64_t is_n_C_ladder_lesseq_than(
 )
 noexcept
 {
+	const uint64_t n = g.get_num_nodes();
+
 #if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+	assert(arr.size() == 0 or n == arr.size());
 #endif
+
+	if (n < 4) { return 0; }
+
+	// boolean neighbourhood of nodes
+	data_array<unsigned char> boolean_neighborhood(n, 0);
+	// array L1 (same as in the pseudocode) ( size n )
+	data_array<uint64_t> L1(n, 0);
+
 	return detail::call_with_empty_arrangement
-			(call_ladder_is_lesseq_than<graph_t>, g, arr, upper_bound);
+		<uint64_t, graph_t, unsigned char * const, uint64_t * const, uint64_t>
+		(
+			ladder::compute<graph_t, true>,
+			g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound
+		);
 }
 
 // --------------------
@@ -326,9 +292,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
@@ -344,7 +308,8 @@ noexcept
 
 		// compute C
 		cs[i] = ladder::compute<graph_t, true>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bound);
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(),
+				 upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -382,9 +347,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> boolean_neighborhood(n, 0);
@@ -402,7 +365,8 @@ noexcept
 		boolean_neighborhood.fill(0);
 
 		cs[i] = ladder::compute<graph_t, true>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
+				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(),
+				 upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

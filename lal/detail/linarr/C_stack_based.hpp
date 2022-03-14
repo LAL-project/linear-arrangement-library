@@ -177,7 +177,7 @@ template<class graph_t, bool decide_upper_bound>
 uint64_t compute_C_stack_based(
 	const graph_t& g, const linear_arrangement& arr,
 	std::size_t * const size_adjN_u,
-	uint64_t upper_bound = 0
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -246,38 +246,27 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_stack_based(const graph_t& g, const linear_arrangement& arr)
+uint64_t n_C_stack_based(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
+
+#if defined DEBUG
+	assert(arr.size() == 0 or n == arr.size());
+#endif
+
 	if (n < 4) { return 0; }
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return stack_based::compute_C_stack_based<graph_t, false>
-			(g, arr, size_adjN_u.begin());
-}
-
-/**
- * @brief Stack based computation of \f$C\f$.
- *
- * Calls function @ref lal::detail::call_stack_based.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
- */
-template<class graph_t>
-uint64_t n_C_stack_based(const graph_t& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
 	return detail::call_with_empty_arrangement
-			(call_stack_based<graph_t>, g, arr);
+		<uint64_t, graph_t, std::size_t * const, uint64_t>
+		(
+			stack_based::compute_C_stack_based<graph_t, false>,
+			g, arr, size_adjN_u.begin(), 0
+		);
 }
 
 // --------------------
@@ -313,7 +302,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<graph_t, false>
-				(g, arrs[i], size_adjN_u.begin());
+				(g, arrs[i], size_adjN_u.begin(), 0);
 	}
 
 	return cs;
@@ -327,36 +316,6 @@ noexcept
 
 /**
  * @brief Stack based computation of \f$C\f$ with early termination.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @param upper_bound Bound used for early termination.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
- * upper bound. It returns a value one unit larger than the upper bound otherwise.
- */
-template<class graph_t>
-uint64_t call_stack_based_lesseq_than(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	uint64_t upper_bound
-)
-noexcept
-{
-	const uint64_t n = g.get_num_nodes();
-	if (n < 4) { return 0; }
-
-	// size_adjN_u[u] := size of adjN[u]
-	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
-
-	return stack_based::compute_C_stack_based<graph_t, true>
-			(g, arr, size_adjN_u.begin(), upper_bound);
-}
-
-/**
- * @brief Stack based computation of \f$C\f$ with early termination.
- *
- * Calls function @ref lal::detail::call_stack_based_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -372,11 +331,24 @@ uint64_t is_n_C_stack_based_lesseq_than(
 )
 noexcept
 {
+	const uint64_t n = g.get_num_nodes();
+
 #if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+	assert(arr.size() == 0 or n == arr.size());
 #endif
+
+	if (n < 4) { return 0; }
+
+	// size_adjN_u[u] := size of adjN[u]
+	// (adjN declared and defined inside the algorithm)
+	data_array<std::size_t> size_adjN_u(n, 0);
+
 	return detail::call_with_empty_arrangement
-			(call_stack_based_lesseq_than<graph_t>, g, arr, upper_bound);
+		<uint64_t, graph_t, std::size_t * const, uint64_t>
+		(
+			stack_based::compute_C_stack_based<graph_t, true>,
+			g, arr, size_adjN_u.begin(), upper_bound
+		);
 }
 
 // --------------------

@@ -289,34 +289,20 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_brute_force(const graph_t& g, const linear_arrangement& arr)
-noexcept
-{
-	const uint64_t n = g.get_num_nodes();
-	if (n < 4) { return 0; }
-
-	// compute the number of crossings
-	return brute_force::compute<false>(g, arr, 0);
-}
-
-/**
- * @brief Brute force computation of \f$C\f$.
- *
- * Calls function @ref lal::detail::call_brute_force.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
- */
-template<class graph_t>
 uint64_t n_C_brute_force(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
+	const uint64_t n = g.get_num_nodes();
+
 #if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+	assert(arr.size() == 0 or n == arr.size());
 #endif
+
+	if (n < 4) { return 0; }
+
 	return detail::call_with_empty_arrangement
-			(call_brute_force<graph_t>, g, arr);
+		<uint64_t, graph_t, uint64_t>
+		(brute_force::compute<false>, g, arr, 0);
 }
 
 // --------------------
@@ -366,29 +352,6 @@ noexcept
 
 /**
  * @brief Brute force computation of \f$C\f$ with early termination.
- * @tparam graph_t Type of input graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @param upper_bound Bound used for early termination.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
- * upper bound. It returns a value one unit larger than the upper bound otherwise.
- */
-template<class graph_t>
-uint64_t call_brute_force_lesseq_than
-(const graph_t& g, const linear_arrangement& arr, uint64_t upper_bound)
-noexcept
-{
-	const uint64_t n = g.get_num_nodes();
-	if (n < 4) { return 0; }
-
-	// compute the number of crossings
-	return brute_force::compute<true>(g, arr, upper_bound);
-}
-
-/**
- * @brief Brute force computation of \f$C\f$ with early termination.
- *
- * Calls function @ref lal::detail::call_brute_force_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -401,11 +364,17 @@ uint64_t is_n_C_brute_force_lesseq_than
 (const graph_t& g, const linear_arrangement& arr, uint64_t upper_bound)
 noexcept
 {
+	const uint64_t n = g.get_num_nodes();
+
 #if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+	assert(arr.size() == 0 or n == arr.size());
 #endif
+
+	if (n < 4) { return 0; }
+
 	return detail::call_with_empty_arrangement
-			(call_brute_force_lesseq_than<graph_t>, g, arr, upper_bound);
+		<uint64_t, graph_t, uint64_t>
+		(brute_force::compute<true>, g, arr, upper_bound);
 }
 
 // --------------------

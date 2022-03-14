@@ -96,7 +96,7 @@ uint64_t compute
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
-	uint64_t upper_bound = 0
+	uint64_t upper_bound
 )
 noexcept
 {
@@ -247,20 +247,23 @@ noexcept
 
 /**
  * @brief Dynamic programming computation of \f$C\f$.
- * @tparam graph_t Type of input graph.
+ * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template<class graph_t>
-uint64_t call_dyn_prog
+uint64_t n_C_dynamic_programming
 (const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	if (n < 4) {
-		return 0;
-	}
+
+#if defined DEBUG
+	assert(arr.size() == 0 or n == arr.size());
+#endif
+
+	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
@@ -273,29 +276,15 @@ noexcept
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
-	/* compute number of crossings */
-	return dyn_prog::compute<graph_t, false>(g, arr, bool_neighs.begin(), M,K);
-}
-
-/**
- * @brief Dynamic programming computation of \f$C\f$.
- *
- * Calls function @ref lal::detail::call_dyn_prog.
- * @tparam graph_t Type of input graph
- * @param g Input graph.
- * @param arr Input arrangement.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
- */
-template<class graph_t>
-uint64_t n_C_dynamic_programming
-(const graph_t& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
 	return detail::call_with_empty_arrangement
-			(call_dyn_prog<graph_t>, g, arr);
+		<
+			uint64_t, graph_t,
+			unsigned char * const, uint64_t * const, uint64_t * const, uint64_t
+		>
+		(
+			dyn_prog::compute<graph_t, false>,
+			g, arr, bool_neighs.begin(), M,K, 0
+		);
 }
 
 // --------------------
@@ -316,9 +305,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
@@ -341,7 +328,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<graph_t, false>
-				(g, arrs[i], bool_neighs.begin(), M,K);
+				(g, arrs[i], bool_neighs.begin(), M,K, 0);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -374,9 +361,7 @@ uint64_t call_dyn_prog_lesseq_than(
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	if (n < 4) {
-		return 0;
-	}
+	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
 	data_array<unsigned char> bool_neighs(n);
@@ -396,8 +381,6 @@ noexcept
 
 /**
  * @brief Dynamic programming computation of \f$C\f$.
- *
- * Calls function @ref lal::detail::call_dyn_prog_lesseq_than.
  * @tparam graph_t Type of input graph
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -413,12 +396,32 @@ uint64_t is_n_C_dynamic_programming_lesseq_than(
 )
 noexcept
 {
+	const uint64_t n = g.get_num_nodes();
+
 #if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+	assert(arr.size() == 0 or n == arr.size());
 #endif
-	return
-	detail::call_with_empty_arrangement
-	(call_dyn_prog_lesseq_than<graph_t>, g, arr, upper_bound);
+
+	// boolean neighbourhood of nodes
+	data_array<unsigned char> bool_neighs(n);
+
+	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	data_array<uint64_t> all_memory(n_elems);
+
+	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
+	uint64_t * const __restrict__ M = &all_memory[0];
+	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+
+	return detail::call_with_empty_arrangement
+		<
+			uint64_t, graph_t,
+			unsigned char * const, uint64_t * const, uint64_t * const, uint64_t
+		>
+		(
+			dyn_prog::compute<graph_t, true>,
+			g, arr, bool_neighs.begin(), M,K, upper_bound
+		);
 }
 
 // --------------------
@@ -444,9 +447,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
@@ -505,9 +506,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) {
-		return cs;
-	}
+	if (n < 4) { return cs; }
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
