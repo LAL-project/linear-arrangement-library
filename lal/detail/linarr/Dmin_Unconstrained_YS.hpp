@@ -89,10 +89,8 @@ static constexpr char ANCHOR = 1;
  * @returns Maximum \f$p_\alpha\f$.
  */
 template<char anchored>
-uint64_t calculate_p_alpha(
-	const uint64_t n, const ordering& ord,
-	uint64_t& s_0, uint64_t& s_1
-)
+uint64_t calculate_p_alpha
+(const uint64_t n, const ordering& ord, uint64_t& s_0, uint64_t& s_1)
 noexcept
 {
 	// anchored is ANCHOR or NO_ANCHOR
@@ -199,7 +197,7 @@ noexcept
 	(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
 
 	// Size of the tree
-	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor - 1);
+	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -209,7 +207,7 @@ noexcept
 	if (size_tree == 1) {
 		cost = 0;
 		if constexpr (make_arrangement) {
-		mla.assign(root_or_anchor - 1, start);
+		mla.assign(root_or_anchor, start);
 		}
 		return;
 	}
@@ -217,22 +215,21 @@ noexcept
 	// Recursion for COST A
 	const node v_star = (
 		alpha == NO_ANCHOR ?
-			detail::retrieve_centroid(t, root_or_anchor - 1).first + 1 :
-			root_or_anchor
+			detail::retrieve_centroid(t, root_or_anchor).first : root_or_anchor
 	);
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
-	ordering ord(t.get_degree(v_star - 1));
+	ordering ord(t.get_degree(v_star));
 	{
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
 	data_array<uint64_t> s(t.get_num_nodes());
-	detail::get_size_subtrees(t, v_star - 1, s.begin());
+	detail::get_size_subtrees(t, v_star, s.begin());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
-	const neighbourhood& v_star_neighs = t.get_neighbours(v_star - 1);
+	const neighbourhood& v_star_neighs = t.get_neighbours(v_star);
 	for (std::size_t i = 0; i < v_star_neighs.size(); ++i) {
 		// i-th child of v_star
 		const node ui = v_star_neighs[i];
@@ -241,7 +238,7 @@ noexcept
 
 		ord[i].first = s_ui;
 		M = std::max(M, s_ui);
-		ord[i].second = ui + 1;
+		ord[i].second = ui;
 	}
 	detail::counting_sort
 		<size_node, size_node*, countingsort::non_increasing_t>
@@ -255,7 +252,7 @@ noexcept
 	const uint64_t n_0 = ord[0].first;	// Size of biggest subtree
 
 	// remove edge connecting v_star and its largest subtree
-	t.remove_edge(v_star - 1, v_0 - 1, false, false);
+	t.remove_edge(v_star, v_0, false, false);
 
 	uint64_t c1, c2;
 	c1 = c2 = 0;
@@ -285,7 +282,7 @@ noexcept
 	else							  { cost = c1 + c2 + size_tree - n_0; }
 
 	// reconstruct t
-	t.add_edge(v_star - 1, v_0 - 1, false, false);
+	t.add_edge(v_star, v_0, false, false);
 
 	// Recursion B
 
@@ -308,8 +305,8 @@ noexcept
 		// number of nodes not in the central tree
 		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			const node r = ord[i].second;
-			edges[i - 1].first = v_star - 1;
-			edges[i - 1].second = r - 1;
+			edges[i - 1].first = v_star;
+			edges[i - 1].second = r;
 		}
 		t.remove_edges(edges, false, false);
 
@@ -399,7 +396,7 @@ noexcept
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
 	Shiloach::calculate_mla<Shiloach::NO_ANCHOR, make_arrangement>
-		(T, 1, 0, t.get_num_nodes() - 1, arrangement, Dmin);
+		(T, 0, 0, t.get_num_nodes() - 1, arrangement, Dmin);
 
 	if constexpr (make_arrangement) {
 		return {Dmin, std::move(arrangement)};
