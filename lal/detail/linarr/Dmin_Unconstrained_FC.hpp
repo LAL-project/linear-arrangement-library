@@ -343,8 +343,7 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
  * @tparam make_arrangement Whether or not the arrangement should be constructed.
  * @param t Input free tree.
  * @param one_node Root or anchor.
- * @param start Starting position of the minLA of this tree.
- * @param end Ending position of the minLA of this tree.
+ * @param start Starting position of the minLA of the current tree.
  * @param[out] mla A minimum arrangement.
  * @param[out] cost The cost of the minimum arrangement.
  */

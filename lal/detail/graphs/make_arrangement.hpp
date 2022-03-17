@@ -62,7 +62,7 @@ namespace __lal {
  * @param r Root of the current subtree.
  * @param data The permutations used to construct the arrangement.
  * @param[out] pos Current position in the arrangement.
- * @param[arr] arr Arrangement constructed.
+ * @param[out] arr Arrangement constructed.
  */
 template<class container>
 void make_arrangement_permutations(
@@ -127,7 +127,7 @@ namespace __lal {
  * @param u Root of the current subtree.
  * @param data The permutations used to construct the arrangement.
  * @param[out] pos Current position in the arrangement.
- * @param[arr] arr Arrangement constructed.
+ * @param[out] arr Arrangement constructed.
  */
 template<class container>
 void make_arrangement_permutations(
