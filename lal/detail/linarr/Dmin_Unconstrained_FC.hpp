@@ -83,28 +83,28 @@ static constexpr char NO_ANCHOR = 0;
 /*
 int calculate_q(uint64_t n, const ordering& ord) {
 	const uint64_t k = to_uint64(ord.size()) - 1;
-	const uint64_t t_0 = ord[0].first;
+	const uint64_t t_0 = ord[0].size;
 
 	// Maximum possible p_alpha
 	int64_t q = to_int64(k)/2;
 	uint64_t sum = 0;
 	for (uint64_t i = 0; i <= 2*to_uint64(q); ++i) {
-		sum += ord[i].first;
+		sum += ord[i].size;
 	}
 
 	uint64_t z = n - sum;
 	uint64_t tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
 	// t_0 >= t_1 >= ... >= t_k
-	uint64_t t_2q = ord[2*q].first;
+	uint64_t t_2q = ord[2*q].size;
 	while (q >= 0 and t_2q <= tricky_formula) {
-		z += ord[2*q].first;
+		z += ord[2*q].size;
 		if (q > 0) {
-			z += ord[2*q - 1].first;
+			z += ord[2*q - 1].size;
 		}
 		--q;
 		tricky_formula = (t_0 + 2)/2 + (z + 2)/2;
 		if (q >= 0) {
-			t_2q = ord[2*q].first;
+			t_2q = ord[2*q].size;
 		}
 	}
 	return q;
@@ -160,25 +160,25 @@ int calculate_p(uint64_t n, const ordering& ord) {
 
 	// number of subtrees (T_0, T_1, ..., T_k)
 	const uint64_t k = to_uint64(ord.size() - 1);
-	const uint64_t t_0 = ord[0].first;
+	const uint64_t t_0 = ord[0].size;
 
 	int p = (k - 1)/2;
 
 	uint64_t sum = 0;
 	for (uint64_t i = 0; i <= 2*to_uint64(p) + 1; ++i) {
-		sum += ord[i].first;
+		sum += ord[i].size;
 	}
 
 	uint64_t y = n - sum;
 	uint64_t tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
-	uint64_t t_2p_plus_1 = ord[2*p + 1].first;
+	uint64_t t_2p_plus_1 = ord[2*p + 1].size;
 
 	while (p >= 0 and t_2p_plus_1 <= tricky_formula) {
-		y = y + ord[2*p + 1].first + ord[2*p].first;
+		y = y + ord[2*p + 1].size + ord[2*p].size;
 		--p;
 		tricky_formula = (t_0 + 2)/2 + (y + 2)/2;
 		if (p >= 0) {
-			t_2p_plus_1 = ord[2*p + 1].first;
+			t_2p_plus_1 = ord[2*p + 1].size;
 		}
 	}
 	return p;
@@ -351,20 +351,16 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
 template<char root, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
-	node one_node,
-	position start,
-	position end,
-	linear_arrangement& mla,
-	uint64_t& cost
+	node one_node, position start,
+	linear_arrangement& mla, uint64_t& cost
 )
 noexcept
 {
 	std::vector<node> reachable(t.get_num_nodes_component(one_node));
 	{
 	auto it = reachable.begin();
-	detail::BFS<graphs::free_tree> bfs(t);
-	bfs.set_process_current
-	([&](const auto&, node u) { *it++ = u; });
+	detail::BFS bfs(t);
+	bfs.set_process_current([&](const auto&, node u) { *it++ = u; });
 	bfs.start_at(one_node);
 	}
 	const uint64_t size_tree = t.get_num_nodes_component(one_node);
@@ -384,42 +380,40 @@ noexcept
 		if constexpr (make_arrangement) {
 		mla.assign(one_node, start);
 		}
-
 		cost = 0;
 		return;
 	}
 
 	if constexpr (root == NO_ANCHOR) {
-		const node centroidal_vertex = detail::retrieve_centroid(t, one_node).first;
+		const node u = detail::retrieve_centroid(t, one_node).first;
 
-		const ordering ord = get_ordering(t, centroidal_vertex);
+		const ordering ord = get_ordering(t, u);
 
 		const auto q = calculate_q(size_tree, ord);
 		if (not q) {
 			const uint64_t n_0 = ord[0].size;
 			const node t_0 = ord[0].v;
 
-			t.remove_edge(centroidal_vertex, t_0, false, false);
+			t.remove_edge(u, t_0, false, false);
 
 			uint64_t c1 = 0;
-			uint64_t c2 = 0;
-			calculate_mla<RIGHT_ANCHOR, make_arrangement>
-				(t, t_0, start, start + n_0 - 1, mla, c1);
+			calculate_mla<RIGHT_ANCHOR, make_arrangement>(t, t_0, start, mla, c1);
 
-			calculate_mla<LEFT_ANCHOR, make_arrangement>
-				(t, centroidal_vertex, start + n_0, end, mla, c2);
+			uint64_t c2 = 0;
+			calculate_mla<LEFT_ANCHOR, make_arrangement>(t, u, start + n_0, mla, c2);
 
 			cost = c1 + c2 + 1;
-			t.add_edge(centroidal_vertex, t_0, false, false);
+
+			t.add_edge(u, t_0, false, false);
 		}
 		else {
-			const uint64_t uq = *q; // uq: unsigned 'q'
+			// uq: unsigned 'q'
+			const uint64_t uq = *q;
 			cost = std::numeric_limits<uint64_t>::max();
 
 			std::vector<edge> edges(2*uq + 1);
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
-				edges[i].first = centroidal_vertex;
-				edges[i].second = ord[i].v;
+				edges[i] = {u, ord[i].v};
 			}
 
 			// Transform g into Y
@@ -432,91 +426,75 @@ noexcept
 			}
 
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
-				const data_array<uint64_t> Q_i = get_Q(uq, i);
+				const auto Q_i = get_Q(uq, i);
 
-				t.add_edge(centroidal_vertex, ord[i].v);
+				t.add_edge(u, ord[i].v);
 
 				uint64_t c_i = 0;
-				linear_arrangement arr_aux(make_arrangement ? mla : linear_arrangement());
-
+				linear_arrangement arr_aux = mla;
 				uint64_t start_aux = start;
-				//uint64_t end_aux = end;
 
 				// Left part of the arrangement
 				for (uint64_t j = 1; j <= uq; ++j) {
 					const position pos_in_ord = Q_i[j];
-					const uint64_t n_i = ord[pos_in_ord].size;
 
-					uint64_t cost_i_j = 0;
-					calculate_mla<RIGHT_ANCHOR, make_arrangement>
-					(
+					uint64_t c_i_j = 0;
+					calculate_mla<RIGHT_ANCHOR, make_arrangement>(
 						t,
 						ord[pos_in_ord].v, start_aux,
-						start_aux + n_i - 1,
-						arr_aux, cost_i_j
+						arr_aux, c_i_j
 					);
-					start_aux += n_i; // ord[pos_in_ord].first;
-					c_i += cost_i_j;
+					start_aux += ord[pos_in_ord].size;
+					c_i += c_i_j;
 				}
 
 				// Central part of the arrangement
-				const uint64_t end_here = start_aux + ord[i].size + size_rest_of_trees;
-
 				uint64_t c_i_j = 0;
-				calculate_mla<NO_ANCHOR, make_arrangement>
-					(t, centroidal_vertex, start_aux, end_here, arr_aux, c_i_j);
-
+				calculate_mla<NO_ANCHOR, make_arrangement>(t, u, start_aux, arr_aux, c_i_j);
 				c_i += c_i_j;
 
 				// Right part of the arrangement
-				//start_aux += ord[i].first + 1 + size_rest_of_trees;
-				start_aux = end_here + 1;
+				start_aux += ord[i].size + 1 + size_rest_of_trees;
 				for (uint64_t j = uq + 1; j <= 2*uq; ++j) {
 					const position pos_in_ord = Q_i[j];
-					const uint64_t n_i = ord[pos_in_ord].size;
 
-					uint64_t cost_i_j_in = 0;
-					calculate_mla<LEFT_ANCHOR, make_arrangement>
-					(
+					uint64_t c_i_j_in = 0;
+					calculate_mla<LEFT_ANCHOR, make_arrangement>(
 						t,
 						ord[pos_in_ord].v, start_aux,
-						start_aux + n_i - 1,
-						arr_aux, cost_i_j_in
+						arr_aux, c_i_j_in
 					);
-					start_aux += n_i; // ord[pos_in_ord].first;
-					c_i += cost_i_j_in;
+					start_aux += ord[pos_in_ord].size;
+					c_i += c_i_j_in;
 				}
 
-				// Adding parts of the anchors over trees nearer to the
-				// central tree
+				// Adding parts of the anchors over trees nearer to the central tree
 				c_i += size_tree*uq;
 
 				uint64_t subs = 0;
 				for (uint64_t j = 1; j <= uq; ++j) {
-					subs += (uq - j + 1)*
-							(ord[Q_i[j]].size + ord[Q_i[2*uq - j + 1]].size);
+					subs += (uq - j + 1)*(ord[Q_i[j]].size + ord[Q_i[2*uq - j + 1]].size);
 				}
 				c_i -= subs;
 				c_i += uq; // NOT IN CHUNG'S PAPER
 
 				if (c_i < cost) {
 					cost = c_i;
-
 					if constexpr (make_arrangement) {
 					mla = std::move(arr_aux);
 					}
 				}
 #if defined DEBUG
-				assert(centroidal_vertex != ord[i].v);
+				assert(u != ord[i].v);
 #endif
-				t.remove_edge(centroidal_vertex, ord[i].v, false, false);
+				t.remove_edge(u, ord[i].v, false, false);
 			}
 
 			// Transform g into its previous form
 			t.add_edges(edges, false, false);
 		}
 	}
-	else {
+	else { // root == ANCHOR
 		const ordering ord = get_ordering(t, one_node);
 
 		const auto p = calculate_p(size_tree, ord);
@@ -534,22 +512,34 @@ noexcept
 
 			if constexpr (root == LEFT_ANCHOR) {
 				calculate_mla<NO_ANCHOR, make_arrangement>
-					(t, one_node, start, end - n_0, mla, c1);
+					(t, one_node, start, mla, c1);
 
 				calculate_mla<LEFT_ANCHOR, make_arrangement>
-					(t, t_0, end - n_0 + 1, end, mla, c2);
+					(t, t_0, start + size_tree - ord[0].size, mla, c2);
 			}
 			else {
-
 				calculate_mla<RIGHT_ANCHOR, make_arrangement>
-					(t, t_0, start, start + n_0 - 1, mla, c1);
+					(t, t_0, start, mla, c1);
 
 				calculate_mla<NO_ANCHOR, make_arrangement>
-					(t, one_node, start + n_0, end, mla, c2);
+					(t, one_node, start + n_0, mla, c2);
 			}
-			cost = c1 + c2 + size_tree - ord[0].size;
 
+			cost = c1 + c2 + size_tree - ord[0].size;
 			t.add_edge(one_node, t_0, false, false);
+
+			/*
+			if constexpr (root == LEFT_ANCHOR) {
+				//if (2*mla[one_node - 1] - 2*start > size_tree - 1) {
+
+					// Left anchor and the root is too much to the right
+					for (uint64_t i = 0; i < size_tree; ++i) {
+						const uint64_t aux = start + size_tree - 1 - mla[reachable[i]] + start;
+						mla[reachable[i]] = aux;
+					}
+				//}
+			}
+			*/
 		}
 		else {
 			// up: unsigned 'p'
@@ -558,57 +548,46 @@ noexcept
 
 			std::vector<edge> edges(2*up + 2);
 			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
-				edges[i].first = one_node;
-				edges[i].second = ord[i].v;
+				edges[i] = {one_node, ord[i].v};
 			}
 
 			// Transform g into Y
 			t.remove_edges(edges, false, false);
 
 			// Central tree size
-			uint64_t size_rest_of_trees = 0;
-			for (uint64_t i = 2*up + 2; i < ord.size(); ++i) {
+			uint64_t size_rest_of_trees= 0;
+			for (uint64_t i = 2*up + 2; i < ord.size() ;++i) {
 				size_rest_of_trees += ord[i].size;
 			}
 
 			for (uint64_t i = 0; i <= 2*up + 1; ++i) {
-				const data_array<uint64_t> P_i = get_P(up, i);
+				const auto P_i = get_P(up, i);
 				t.add_edge(one_node, ord[i].v, false, false);
 
 				uint64_t c_i = 0;
-				linear_arrangement arr_aux(make_arrangement ? mla : linear_arrangement());
+				linear_arrangement arr_aux = mla;
 				uint64_t start_aux = start;
-				uint64_t end_aux = end;
 
+///////////////////////////////////////////////////////////////////////////
 				if constexpr (root == LEFT_ANCHOR) {
-
 					// Left part of the arrangement
 					for (uint64_t j = 1; j <= up; ++j) {
 						const position pos_in_ord = P_i[j];
-						const node r = ord[pos_in_ord].v;
-						const uint64_t n_i = ord[pos_in_ord].size;
 
-						uint64_t cost_i_j_in = 0;
-						calculate_mla<RIGHT_ANCHOR, make_arrangement>
-						(
-							t, r,
-							//ord[pos_in_ord].second,
-							start_aux,
-							start_aux + n_i - 1,
-							arr_aux, cost_i_j_in
+						uint64_t c_i_j_in = 0;
+						calculate_mla<RIGHT_ANCHOR, make_arrangement>(
+							t,
+							ord[pos_in_ord].v, start_aux,
+							arr_aux, c_i_j_in
 						);
-						start_aux += n_i; //ord[pos_in_ord].first;
-						c_i += cost_i_j_in;
+						start_aux += ord[pos_in_ord].size;
+						c_i += c_i_j_in;
 					}
 
 					// Central part of the arrangement
 					uint64_t c_i_j = 0;
 					calculate_mla<NO_ANCHOR, make_arrangement>
-					(
-						t, one_node, start_aux,
-						start_aux + ord[i].size + 1 + size_rest_of_trees - 1,
-						arr_aux, c_i_j
-					);
+						(t, one_node, start_aux, arr_aux, c_i_j);
 
 					start_aux += ord[i].size + 1 + size_rest_of_trees;
 					c_i += c_i_j;
@@ -616,83 +595,60 @@ noexcept
 					// Right part of the arrangement
 					for (uint64_t j = up + 1; j <= 2*up + 1; ++j) {
 						const position pos_in_ord = P_i[j];
-						const node r = ord[pos_in_ord].v;
-						const uint64_t n_i = ord[pos_in_ord].size;
 
-						uint64_t cost_i_j_in = 0;
-						calculate_mla<LEFT_ANCHOR, make_arrangement>
-						(
-							t, r,
-							//ord[pos_in_ord].second,
-							start_aux,
-							start_aux + n_i - 1,
-							arr_aux, cost_i_j_in
+						uint64_t c_i_j_in = 0;
+						calculate_mla<LEFT_ANCHOR, make_arrangement>(
+							t,
+							ord[pos_in_ord].v, start_aux,
+							arr_aux, c_i_j_in
 						);
-						start_aux += n_i; // ord[pos_in_ord].first;
-						c_i += cost_i_j_in;
+						start_aux += ord[pos_in_ord].size;
+						c_i += c_i_j_in;
 					}
 				}
-				else { // RIGHT ANCHOR
-					// Right part of the arrangement
-					for (uint64_t j = 1; j <= up; ++j) {
-						const position pos_in_ord = P_i[j];
-						const node r = ord[pos_in_ord].v;
-						const uint64_t n_i = ord[pos_in_ord].size;
+				else { // root == RIGHT_ANCHOR
 
-						uint64_t cost_i_j_in = 0;
-						calculate_mla<LEFT_ANCHOR, make_arrangement>
-						(
-							t, r,
-							//ord[pos_in_ord].second,
-							end_aux - n_i + 1,
-							end_aux,
-							//start_aux,
-							//start_aux + n_i - 1,
-							arr_aux, cost_i_j_in
+					// Right part of the arrangement
+					for (uint64_t j = 2*up + 1; j >= up + 1; --j) {
+						const position pos_in_ord = P_i[j];
+
+						uint64_t c_i_j_in = 0;
+						calculate_mla<RIGHT_ANCHOR, make_arrangement>(
+							t,
+							ord[pos_in_ord].v, start_aux,
+							arr_aux, c_i_j_in
 						);
-						start_aux -= n_i; //ord[pos_in_ord].first;
-						c_i += cost_i_j_in;
+						start_aux += ord[pos_in_ord].size;
+						c_i += c_i_j_in;
 					}
 
 					// Central part of the arrangement
 					uint64_t c_i_j = 0;
 					calculate_mla<NO_ANCHOR, make_arrangement>
-					(
-						t, one_node,
-						end_aux - ord[i].size - 1 - size_rest_of_trees + 1,
-						end_aux,
-						//start_aux,
-						//start_aux + ord[i].first + 1 + size_rest_of_trees - 1,
-						arr_aux, c_i_j);
+						(t, one_node, start_aux, arr_aux, c_i_j);
 
-					end_aux -= ord[i].size + 1 + size_rest_of_trees;
-					//start_aux += ord[i].first + 1 + size_rest_of_trees;
+					start_aux += ord[i].size + 1 + size_rest_of_trees;
 					c_i += c_i_j;
 
-					// Right part of the arrangement
-					for (uint64_t j = up + 1; j <= 2*up + 1; ++j) {
+					// Left part of the arrangement
+					for (uint64_t j = up; j >= 1; --j) {
 						const position pos_in_ord = P_i[j];
-						const node r = ord[pos_in_ord].v;
-						const uint64_t n_i = ord[pos_in_ord].size;
 
-						uint64_t cost_i_j_in = 0;
-						calculate_mla<RIGHT_ANCHOR, make_arrangement>
-						(
-							t, r,
-							//ord[pos_in_ord].second,
-							end_aux - n_i + 1, end_aux,
-							//start_aux,
-							//start_aux + n_i -1,
-							arr_aux, cost_i_j_in
+						uint64_t c_i_j_in = 0;
+						calculate_mla<LEFT_ANCHOR, make_arrangement>(
+							t,
+							ord[pos_in_ord].v, start_aux,
+							arr_aux, c_i_j_in
 						);
-						start_aux -= n_i; // ord[pos_in_ord].first;
-						c_i += cost_i_j_in;
+						start_aux += ord[pos_in_ord].size;
+						c_i += c_i_j_in;
 					}
 				}
+/////////////////////////////////////////////////////////////////////////////////////////
 
 				// Adding parts of the anchors over trees nearer to the central tree
 				c_i += size_tree*(up + 1);
-				c_i -= (up + 1)*ord[P_i[P_i.size() - 1]].size;
+				c_i -= (up + 1)*ord[P_i[P_i.size()-1]].size;
 
 				uint64_t subs = 0;
 				for (uint64_t j = 1; j <= up; ++j) {
@@ -703,10 +659,7 @@ noexcept
 
 				if (c_i < cost) {
 					cost = c_i;
-
-					if constexpr (make_arrangement) {
-					mla = std::move(arr_aux);
-					}
+					mla = arr_aux;
 				}
 #if defined DEBUG
 				assert(one_node != ord[i].v);
@@ -716,28 +669,9 @@ noexcept
 
 			// Transform g into its previous form
 			t.add_edges(edges, false, false);
-		}
-	}
 
-	// Flipping arrangement if needed
-	/*if constexpr (root == RIGHT_ANCHOR) {
-		if (2*mla[one_node - 1] - 2*start < size_tree - 1) {
-			// Right anchor and the root is too much to the left
-			for (uint64_t i = 0; i < size_tree; ++i) {
-				const uint64_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
-				mla[reachable[i] - 1] = aux;
-			}
 		}
 	}
-	else if constexpr (root == LEFT_ANCHOR) {
-		if (2*mla[one_node - 1] - 2*start > size_tree - 1) {
-			// Left anchor and the root is too much to the right
-			for (uint64_t i = 0; i < size_tree; ++i) {
-				const uint64_t aux = start + size_tree - 1 - mla[reachable[i] - 1] + start;
-				mla[reachable[i] - 1] = aux;
-			}
-		}
-	}*/
 }
 
 } // -- namespace dmin_Chung
@@ -767,8 +701,7 @@ FanChung_2(const graphs::free_tree& t) noexcept
 	linear_arrangement arr(make_arrangement ? t.get_num_nodes() : 0);
 
 	graphs::free_tree T = t;
-	Chung::calculate_mla<Chung::NO_ANCHOR, make_arrangement>
-		(T, 0, 0, t.get_num_nodes() - 1, arr, Dmin);
+	Chung::calculate_mla<Chung::NO_ANCHOR, make_arrangement>(T, 0, 0, arr, Dmin);
 
 	if constexpr (make_arrangement) {
 		return {Dmin, std::move(arr)};
