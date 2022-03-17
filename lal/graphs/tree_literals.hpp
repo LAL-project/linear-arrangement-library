@@ -63,7 +63,7 @@
  * when passed to it the head vector encoded in @e hv_str as parameter.
  */
 [[nodiscard]] std::pair<lal::graphs::free_tree, lal::node>
-operator""_pfree_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
+operator""_pfree_tree (const char *hv_str, std::size_t s)
 noexcept;
 
 /**
@@ -85,7 +85,7 @@ noexcept;
  * vector encoded in @e hv_str as parameter.
  */
 [[nodiscard]] lal::graphs::free_tree
-operator""_free_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
+operator""_free_tree (const char *hv_str, std::size_t s)
 noexcept;
 
 /**
@@ -106,5 +106,5 @@ noexcept;
  * when passed as parameter the head vector encoded in @e hv_str.
  */
 [[nodiscard]] lal::graphs::rooted_tree
-operator""_rooted_tree (const char *hv_str, [[maybe_unused]] std::size_t s)
+operator""_rooted_tree (const char *hv_str, std::size_t s)
 noexcept;
