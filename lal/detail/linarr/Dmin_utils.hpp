@@ -472,7 +472,7 @@ noexcept
 	const std::size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
 	data_array<uint64_t> size_subtrees(k, 0);
 
-	countingsort::memory_counting_sort<edge_size> memcs(n, n);
+	sorting::countingsort::memory<edge_size> memcs(n, n);
 	auto it = edge_list.begin();
 
 	iterators::E_iterator<graphs::rooted_tree> E_it(t);
@@ -503,7 +503,7 @@ noexcept
 	}
 
 	// sort all tuples in L using the size of the subtree
-	detail::counting_sort
+	detail::sorting::counting_sort
 		<edge_size, edge_size*, sort_type, true>
 		(
 			edge_list.begin(), edge_list.end(), n,

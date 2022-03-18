@@ -67,12 +67,12 @@ void directed_graph::normalise() noexcept {
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
-			detail::bit_sort_mem<node>
+			detail::sorting::bit_sort_mem<node>
 			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.begin());
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
-			detail::bit_sort_mem<node>
+			detail::sorting::bit_sort_mem<node>
 			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin());
 		}
 	}
@@ -157,10 +157,10 @@ directed_graph& directed_graph::add_edge
 		// the graph was normalised
 		if (to_norm) {
 			// keep it normalised
-			detail::bit_sort<node>
+			detail::sorting::bit_sort<node>
 			(out_u.begin(), out_u.end(), out_u.size());
 
-			detail::bit_sort<node>
+			detail::sorting::bit_sort<node>
 			(in_v.begin(), in_v.end(), in_v.size());
 		}
 		else if (check_norm) {
@@ -364,11 +364,11 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 
 std::vector<edge_pair> directed_graph::get_Q() const noexcept {
 	const auto qs = properties::num_pairs_independent_edges(*this);
-	return detail::Q(*this, qs);
+	return detail::set_pairs_independent_edges(*this, qs);
 }
 
 std::vector<edge> directed_graph::get_edges() const noexcept {
-	return detail::E(*this);
+	return detail::set_edges(*this);
 }
 
 bool directed_graph::has_edge(node u, node v) const noexcept {

@@ -94,7 +94,7 @@ noexcept
 	std::vector<std::vector<node_size>> L;
 	const node c =
 		Dmin_utils::make_sorted_adjacency_list_rooted_centroid
-			<countingsort::non_increasing_t>
+			<sorting::non_increasing_t>
 			(t, L);
 
 	// construct the optimal planar arrangement by calculating the optimal

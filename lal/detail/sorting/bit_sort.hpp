@@ -51,8 +51,7 @@
 
 namespace lal {
 namespace detail {
-
-namespace __lal {
+namespace sorting {
 
 /**
  * @brief Sorts the elements within range [@e begin, @e end)
@@ -100,8 +99,6 @@ void bit_sort(It begin, It end, const T& m, char * const seen) noexcept
 	}
 }
 
-} // -- namespace __lal
-
 /**
  * @brief Sort integer values increasingly.
  * @tparam T The type of the values ot be sorted.
@@ -136,8 +133,7 @@ noexcept
 		return;
 	}
 
-	// sort
-	__lal::bit_sort(begin,end, static_cast<T>(0), seen);
+	bit_sort(begin,end, T{0}, seen);
 }
 
 /**
@@ -178,9 +174,9 @@ void bit_sort(It begin, It end, const std::size_t size) noexcept
 	// bit array
 	data_array<char> seen(M - m + 1, 0);
 
-	// sort
-	__lal::bit_sort(begin,end, m, seen.begin());
+	bit_sort(begin,end, m, seen.begin());
 }
 
+} // -- namespace sorting
 } // -- namspace utils
 } // -- namespace lal

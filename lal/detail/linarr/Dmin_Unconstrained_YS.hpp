@@ -240,8 +240,8 @@ noexcept
 		M = std::max(M, s_ui);
 		ord[i].second = ui;
 	}
-	detail::counting_sort
-		<size_node, size_node*, countingsort::non_increasing_t>
+	detail::sorting::counting_sort
+		<size_node, size_node*, sorting::non_increasing_t>
 		(
 			ord.begin(), ord.end(), M, ord.size(),
 			[](const size_node& p) { return p.first; }

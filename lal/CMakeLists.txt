@@ -119,13 +119,12 @@ target_sources(
 		# detail namespace -- not to be installed (except for a few exceptions)
 		# -- headers
 		#      generate
-		#          nothing
+		detail/generate/make_arrangement.hpp
 		#      graphs
 		detail/graphs/conversions.hpp
 		detail/graphs/cycles.hpp
 		detail/graphs/enumerate_sets.hpp
 		detail/graphs/is_tree.hpp
-		detail/graphs/make_arrangement.hpp
 		detail/graphs/reachability.hpp
 		detail/graphs/retrieve_subtrees.hpp
 		detail/graphs/size_subtrees.hpp
@@ -165,6 +164,8 @@ target_sources(
 		detail/sorting/bit_sort.hpp
 		detail/sorting/counting_sort.hpp
 		detail/sorting/insertion_sort.hpp
+		detail/sorting/sorted_vector.hpp
+		detail/sorting/sorting_types.hpp
 		#      utilities
 		detail/utilities/tree_isomorphism.hpp
 		#      others
@@ -172,7 +173,6 @@ target_sources(
 		detail/data_array.hpp
 		detail/make_array.hpp
 		detail/pairs_utils.hpp
-		detail/sorted_vector.hpp
 		
 		# -- sources
 		#      generate

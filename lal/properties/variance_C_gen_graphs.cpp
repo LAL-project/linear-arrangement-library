@@ -131,7 +131,7 @@ noexcept
 		for (node u = 0; u < n; ++u) {
 			sorted_neighbourhoods[u] = g.get_neighbours(u);
 
-			detail::bit_sort_mem<node>(
+			detail::sorting::bit_sort_mem<node>(
 				sorted_neighbourhoods[u].begin(),
 				sorted_neighbourhoods[u].end(),
 				sorted_neighbourhoods[u].size(),

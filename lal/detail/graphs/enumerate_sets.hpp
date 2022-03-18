@@ -57,7 +57,7 @@ namespace detail {
  * @returns A vector with all @e g's edges.
  */
 template<class graph_t>
-std::vector<edge> E(const graph_t& g) noexcept {
+std::vector<edge> set_edges(const graph_t& g) noexcept {
 	std::vector<edge> e(g.get_num_edges());
 
 	auto vec_it = e.begin();
@@ -74,7 +74,7 @@ std::vector<edge> E(const graph_t& g) noexcept {
  * @returns A vector with all @e g's pairs of independent edges.
  */
 template<class graph_t>
-std::vector<edge_pair> Q(const graph_t& g, uint64_t qs) noexcept {
+std::vector<edge_pair> set_pairs_independent_edges(const graph_t& g, uint64_t qs) noexcept {
 	std::vector<edge_pair> q(qs);
 
 	auto vec_it = q.begin();

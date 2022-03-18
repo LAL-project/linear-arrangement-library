@@ -57,8 +57,6 @@ namespace linarr {
 // -----------------------------------------------------------------------------
 /* D */
 
-namespace __lal {
-
 template<class graph_t>
 uint64_t sum_length_edges(const graph_t& g, const linear_arrangement& pi)
 noexcept
@@ -79,8 +77,6 @@ noexcept
 	return l;
 }
 
-} // -- namespace __lal
-
 uint64_t sum_edge_lengths
 (const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
@@ -90,7 +86,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::sum_length_edges<graphs::directed_graph>, g, pi);
+			(sum_length_edges<graphs::directed_graph>, g, pi);
 }
 uint64_t sum_edge_lengths
 (const graphs::undirected_graph& g, const linear_arrangement& pi)
@@ -101,13 +97,11 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::sum_length_edges<graphs::undirected_graph>, g, pi);
+			(sum_length_edges<graphs::undirected_graph>, g, pi);
 }
 
 // -----------------------------------------------------------------------------
 /* MDD */
-
-namespace __lal {
 
 template<class graph_t, typename result>
 result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
@@ -125,8 +119,6 @@ result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
 	}
 }
 
-} // -- namespace __lal
-
 numeric::rational mean_dependency_distance_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
@@ -136,7 +128,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
+			(MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
 }
 
 numeric::rational mean_dependency_distance_rational
@@ -148,7 +140,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
+			(MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
 }
 
 // -----------------------------------------------------------------------------
@@ -162,7 +154,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::MDD_rational<graphs::directed_graph,double>, g, pi);
+			(MDD_rational<graphs::directed_graph,double>, g, pi);
 }
 double mean_dependency_distance
 (const graphs::undirected_graph& g, const linear_arrangement& pi)
@@ -173,7 +165,7 @@ noexcept
 #endif
 
 	return detail::call_with_empty_arrangement
-			(__lal::MDD_rational<graphs::undirected_graph,double>, g, pi);
+			(MDD_rational<graphs::undirected_graph,double>, g, pi);
 }
 
 } // -- namespace linarr

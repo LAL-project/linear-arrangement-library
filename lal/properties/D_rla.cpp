@@ -112,13 +112,16 @@ noexcept
 
 	std::vector<std::pair<edge, uint64_t>> edge_size(2*(n - 1));
 	{
-	auto it = edge_size.begin();
-	detail::calculate_bidirectional_sizes<graphs::free_tree, std::pair<edge, uint64_t>>
+	detail::calculate_bidirectional_sizes
+	<
+		graphs::free_tree, std::pair<edge, uint64_t>,
+		std::vector<std::pair<edge, uint64_t>>::iterator
+	>
 	(
 		T, n, 0,
 		[](std::pair<edge,uint64_t>& p, const edge& e, uint64_t s) -> void
 		{ p.first = e; p.second = s; },
-		it
+		edge_size.begin()
 	);
 	}
 

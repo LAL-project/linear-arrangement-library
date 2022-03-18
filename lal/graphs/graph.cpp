@@ -73,7 +73,7 @@ void graph::normalise() noexcept {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not std::is_sorted(nu.begin(), nu.end())) {
-			detail::bit_sort_mem<node>
+			detail::sorting::bit_sort_mem<node>
 			(nu.begin(), nu.end(), nu.size(), mem.begin());
 		}
 	}

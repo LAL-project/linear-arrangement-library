@@ -188,8 +188,6 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-namespace __lal {
-
 /**
  * @brief Update Union-Find after a vertex removal.
  *
@@ -230,8 +228,6 @@ noexcept
 	root_size[v] = size_cc_v;
 }
 
-} // -- namespace __lal
-
 /**
  * @brief Update Union-Find after a vertex removal.
  *
@@ -268,7 +264,7 @@ noexcept
 		for (node v : t.get_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::update_unionfind_before_remove_edges_incident_to
+			update_unionfind_before_remove_edges_incident_to
 				(bfs, v, root_of, root_size);
 		}
 	}
@@ -276,13 +272,13 @@ noexcept
 		for (node v : t.get_in_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::update_unionfind_before_remove_edges_incident_to
+			update_unionfind_before_remove_edges_incident_to
 				(bfs, v, root_of, root_size);
 		}
 		for (node v : t.get_out_neighbours(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			__lal::update_unionfind_before_remove_edges_incident_to
+			update_unionfind_before_remove_edges_incident_to
 				(bfs, v, root_of, root_size);
 		}
 	}

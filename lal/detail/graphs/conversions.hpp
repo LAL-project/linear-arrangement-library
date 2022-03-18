@@ -57,7 +57,11 @@ namespace detail {
 // -----------------------------------------------------------------------------
 // -- HEAD VECTOR --
 
-/// Constructs the head vector representation of a tree.
+/**
+ * @brief Constructs the head vector representation of a tree.
+ * @param t Input rooted tree.
+ * @returns A head vector encoding the tree.
+ */
 inline
 head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 {
@@ -79,7 +83,12 @@ head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 	return hv;
 }
 
-/// Constructs the head vector representation of a tree.
+/**
+ * @brief Constructs the head vector representation of a tree.
+ * @param t Input free tree.
+ * @param r Root of the tree.
+ * @returns A head vector
+ */
 inline
 head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcept
 {
@@ -89,7 +98,15 @@ head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcep
 	return from_tree_to_head_vector(graphs::rooted_tree(t,r));
 }
 
-/// Converts a head vector into a tree
+/**
+ * @brief Converts a head vector into a tree
+ * @tparam tree_t Type of input tree
+ * @param hv Input head vector.
+ * @param normalise Normalise the resulting tree.
+ * @param check Check whether the constructed tree is normalised.
+ * @returns A @ref lal::graphs::rooted_tree or a pair of @ref lal::graphs::free_tree
+ * and the root encoded in the head vector.
+ */
 template<
 	class tree_t,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>
@@ -258,6 +275,12 @@ noexcept
 	return t;
 }
 
+/**
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
+ * See @ref lal::detail::level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * for further details.
+ */
 inline
 graphs::free_tree level_sequence_to_ftree
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise = true, bool check = true)

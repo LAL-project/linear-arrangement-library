@@ -50,6 +50,7 @@
 
 namespace lal {
 namespace detail {
+namespace sorting {
 
 /**
  * @brief Sorted vector class
@@ -175,5 +176,6 @@ public:
 	}
 };
 
+} // -- namespace sorting
 } // -- namespace detail
 } // -- namespace lal

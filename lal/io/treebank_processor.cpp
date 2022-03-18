@@ -703,7 +703,7 @@ noexcept
 		// rooted adjacency list for the rooted tree
 		std::vector<std::vector<detail::node_size>> L(n);
 		detail::Dmin_utils::make_sorted_adjacency_list_rooted
-			<detail::countingsort::non_increasing_t>
+			<detail::sorting::non_increasing_t>
 			(rT, L);
 
 		Dmin_projective =

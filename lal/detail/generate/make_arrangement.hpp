@@ -53,8 +53,6 @@ namespace detail {
 
 // -- for rooted trees
 
-namespace __lal {
-
 /**
  * @brief Make an arrangement using permutations.
  * @tparam container Object containing the permutations.
@@ -92,8 +90,6 @@ noexcept
 	}
 }
 
-} // namespace __lal
-
 /**
  * @brief Make an arrangement using permutations.
  * @tparam container Object containing the permutations.
@@ -110,14 +106,12 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::make_arrangement_permutations(T, T.get_root(), data, pos, arr);
+	make_arrangement_permutations(T, T.get_root(), data, pos, arr);
 	return arr;
 }
 
 // -----------------------------------------------------------------------------
 // -- for free trees
-
-namespace __lal {
 
 /**
  * @brief Make an arrangement using permutations.
@@ -158,8 +152,6 @@ noexcept
 	}
 }
 
-} // -- namespace __lal
-
 /**
  * @brief Make an arrangement using permutations.
  * @tparam container Object containing the permutations.
@@ -177,7 +169,7 @@ noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
-	__lal::make_arrangement_permutations(T, root, root, data, pos, arr);
+	make_arrangement_permutations(T, root, root, data, pos, arr);
 	return arr;
 }
 

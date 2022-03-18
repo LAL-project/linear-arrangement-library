@@ -49,8 +49,6 @@
 namespace lal {
 namespace detail {
 
-namespace __lal {
-
 /**
  * @brief Returns true if, and only if, the graph has cycles.
  * @param g Input graph.
@@ -103,13 +101,11 @@ noexcept
 	bool has_cycle = false;
 	for (node u = 0; u < n and not has_cycle; ++u) {
 		if (vis[u] == 0) {
-			has_cycle = __lal::find_cycle(g, u, vis, in_stack);
+			has_cycle = find_cycle(g, u, vis, in_stack);
 		}
 	}
 	return has_cycle;
 }
-
-} // -- namespace __lal
 
 /**
  * @brief Returns true if, and only if, the graph has DIRECTED cycles.
@@ -122,11 +118,9 @@ bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
 	data_array<char> all_mem(2*n);
 	char * const __restrict__ vis = all_mem.begin();
 	char * const __restrict__ in_stack = all_mem.at(n);
-	const bool has_cycle = __lal::has_directed_cycles(g, vis, in_stack);
+	const bool has_cycle = has_directed_cycles(g, vis, in_stack);
 	return has_cycle;
 }
-
-namespace __lal {
 
 /**
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
@@ -191,8 +185,6 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	return cycle_found;
 }
 
-} // -- namespace __lal
-
 /**
  * @brief Returns true if, and only if, the graph has UNDIRECTED cycles.
  *
@@ -205,7 +197,7 @@ template<class graph_t>
 bool has_undirected_cycles(const graph_t& g) noexcept {
 	// BFS traversal object
 	BFS<graph_t> bfs(g);
-	return __lal::has_undirected_cycles(g, bfs);
+	return has_undirected_cycles(g, bfs);
 }
 
 } // -- namespace detail

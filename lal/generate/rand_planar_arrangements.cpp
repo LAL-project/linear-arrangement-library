@@ -49,7 +49,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/detail/graphs/make_arrangement.hpp>
+#include <lal/detail/generate/make_arrangement.hpp>
 
 namespace lal {
 namespace generate {

@@ -52,7 +52,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/sorted_vector.hpp>
+#include <lal/detail/sorting/sorted_vector.hpp>
 #include <lal/detail/data_array.hpp>
 
 #define max_pos(u,v) (std::max(pi[u], pi[v]))
@@ -120,7 +120,7 @@ noexcept
 		}
 	}
 
-	detail::sorted_vector<node,true> set_endpoints;
+	detail::sorting::sorted_vector<node,true> set_endpoints;
 	for (const auto& [v,w] : cur_deps) {
 		set_endpoints.insert_sorted(v);
 		set_endpoints.insert_sorted(w);
@@ -184,7 +184,7 @@ noexcept
 	graphs::undirected_graph ug(n);
 
 	// the reusable memory for the sorting algorithm
-	detail::countingsort::memory_counting_sort<edge> mem(n, n);
+	detail::sorting::countingsort::memory<edge> mem(n, n);
 
 	// declare the result to be returned
 	std::vector<dependency_flux> flux(n - 1);
@@ -205,8 +205,10 @@ noexcept
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		detail::counting_sort
-		<edge, std::vector<edge>::iterator, detail::countingsort::non_decreasing_t, false>
+		detail::sorting::counting_sort<
+			edge, std::vector<edge>::iterator,
+			detail::sorting::non_decreasing_t, false
+		>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),

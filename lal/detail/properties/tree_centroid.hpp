@@ -57,10 +57,11 @@
 namespace lal {
 namespace detail {
 
-namespace __lal {
-
 /**
  * @brief Retrieves the centroid of the tree
+ *
+ * See page @ref LAL_concepts__centre_centroid for a definition of centre and
+ * centroid.
  *
  * While looking for the centroid, this function updates @e L and @e sizes_edge.
  *
@@ -107,16 +108,14 @@ noexcept
 
 	{
 	sizes_edge.resize(2*(n - 1));
-	auto it = sizes_edge.begin();
 
 	// calculate s(u,v) with H&S algorithm (lemma 8)
 	detail::calculate_bidirectional_sizes
-		<tree_t, iterator_t>
-		(t, n, x, it);
+		<tree_t, iterator_t>(t, n, x, sizes_edge.begin());
 
 	// sort all tuples in sizes_edge using the sizes s(u,v)
-	detail::counting_sort
-		<edge_size, iterator_t, countingsort::non_increasing_t>
+	detail::sorting::counting_sort
+		<edge_size, iterator_t, sorting::non_increasing_t>
 		(
 			sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
 			[](const edge_size& edge_pair) -> std::size_t
@@ -162,26 +161,18 @@ noexcept
 	return (c1 < c2 ? std::make_pair(c1, c2) : std::make_pair(c2, c1));
 }
 
-} // -- namespace __lal
-
 // -----------------------------------------------------------------------------
 
 /**
  * @brief Calculate the centroid of the connected component that has node @e x.
  *
- * Here, "centroid" should NOT be confused with "centre". The centre is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. In both case, if
- * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
- * for further details.
+ * See page @ref LAL_concepts__centre_centroid for a definition of centre and
+ * centroid.
  *
  * A graph of type @ref lal::graphs::tree may lack some edges tree so it can have
  * several connected components. Vertex @e x belongs to one of these connected
  * components. So, this method finds the centroidal nodes of the connected
  * component node @e x belongs to.
- *
- * This function calls @ref lal::detail::__lal::retrieve_centroid.
  *
  * @tparam tree_t Type of tree.
  * @param t Input tree.
@@ -218,7 +209,7 @@ noexcept
 	// easy case
 	if (n == 1) { return {x, component_size + 1}; }
 	// general case
-	return __lal::retrieve_centroid(t, component_size, n, x, L, sizes_edge);
+	return retrieve_centroid(t, component_size, n, x, L, sizes_edge);
 }
 
 /**
@@ -251,12 +242,8 @@ noexcept
 /**
  * @brief Calculate the centroid of the tree @e t.
  *
- * Here, "centroid" should NOT be confused with "centre". The centre is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. In both case, if
- * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
- * for further details.
+ * See page @ref LAL_concepts__centre_centroid for a definition of centre and
+ * centroid.
  *
  * @tparam tree_t Type of the input tree.
  * @param t Input tree.
@@ -289,18 +276,14 @@ noexcept
 	// easy case
 	if (n == 1) { return {0, n+1}; }
 	// general case
-	return __lal::retrieve_centroid(t, n, n, 0, L, sizes_edge);
+	return retrieve_centroid(t, n, n, 0, L, sizes_edge);
 }
 
 /**
  * @brief Calculate the centroid of the tree @e t.
  *
- * Here, "centroid" should NOT be confused with "centre". The centre is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. In both case, if
- * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
- * for further details.
+ * See page @ref LAL_concepts__centre_centroid for a definition of centre and
+ * centroid.
  *
  * @tparam tree_t Type of the input tree.
  * @param t Input tree.
@@ -324,12 +307,8 @@ noexcept
 /**
  * @brief Calculate the centroid of the tree @e t.
  *
- * Here, "centroid" should NOT be confused with "centre". The centre is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. In both case, if
- * the set has two vertices then they are adjacent in the tree. See \cite Harary1969a
- * for further details.
+ * See page @ref LAL_concepts__centre_centroid for a definition of centre and
+ * centroid.
  *
  * @tparam tree_t Type of the input tree.
  * @param t Input tree.

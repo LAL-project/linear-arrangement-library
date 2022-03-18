@@ -60,13 +60,6 @@ the algorithms in this namespace, please, refrain from doing so.
 */
 namespace detail {
 
-/**
-@brief Private namespace.
-
-This namespace is used, simply, to hide non-classifiable functions that are to be called only by other functions.
-*/
-namespace __lal {}
-
 /// Namespace for the algorithms that compute the number of crossings.
 namespace crossings { }
 
@@ -83,6 +76,9 @@ namespace planar {}
 namespace projective {}
 
 } // -- namespace Dmin
+
+/// Sorting algorithms.
+namespace sorting {}
 
 } // -- namespace detail
 } // -- namespace lal

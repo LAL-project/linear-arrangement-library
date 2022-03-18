@@ -48,17 +48,16 @@
 // lal includes
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/macros/is_pointer_iterator.hpp>
+#include <lal/detail/sorting/sorting_types.hpp>
 
 namespace lal {
 namespace detail {
+namespace sorting {
 
-/// The set of functions related to the counting sort algorithm.
+/**
+ * @brief Types used only by the counting sort algorithm.
+ */
 namespace countingsort {
-
-/// Non-decreasing sort.
-struct non_decreasing_t { };
-/// Non-increasing sort.
-struct non_increasing_t { };
 
 /**
  * @brief Memory used for the counting sort algorithm.
@@ -67,22 +66,22 @@ struct non_increasing_t { };
  * thus being able to save some time.
  */
 template<typename T>
-struct memory_counting_sort {
+struct memory {
 	/// Amount of times the key of an element occurs.
 	data_array<std::size_t> count;
 	/// The output array.
 	data_array<T> output;
 
 	/// Constructor.
-	memory_counting_sort() noexcept = default;
+	memory() noexcept = default;
 	/// Copy constructor.
-	memory_counting_sort(const memory_counting_sort&) noexcept = default;
+	memory(const memory&) noexcept = default;
 	/// Move constructor.
-	memory_counting_sort(memory_counting_sort&&) noexcept = default;
+	memory(memory&&) noexcept = default;
 	/// Copy assignment operator.
-	memory_counting_sort& operator= (const memory_counting_sort&) noexcept = default;
+	memory& operator= (const memory&) noexcept = default;
 	/// Move assignment operator.
-	memory_counting_sort& operator= (memory_counting_sort&&) noexcept = default;
+	memory& operator= (memory&&) noexcept = default;
 
 	/**
 	 * @brief Constructor with largest key (+1) and maximum container size.
@@ -92,17 +91,14 @@ struct memory_counting_sort {
 	 * key over all elements to be sorted. This is typically equal to @e largest_key_plus_1
 	 * but not necessarily.
 	 */
-	memory_counting_sort(
-		const std::size_t largest_key_plus_1,
-		const std::size_t max_size_container
-	)
+	memory(const std::size_t largest_key_plus_1, const std::size_t max_size_container)
 	noexcept
 		: count(largest_key_plus_1, 0),
 		  output(max_size_container)
 	{ }
 
 	/// Destructor.
-	~memory_counting_sort() noexcept = default;
+	~memory() noexcept = default;
 
 	/// Set the @ref count member to 0.
 	void reset_count() { count.fill(0); }
@@ -116,10 +112,12 @@ struct memory_counting_sort {
  * This algorithm is interesting for sorting containers with non-unique values
  * that can be easily mapped to integers within a reasonable range, e.g., in the
  * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
+ * and \cite Cormen2001a.
  *
  * @tparam value_t Iterated type
  * @tparam value_iterator_t Iterator type
- * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
+ * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
+ * @ref lal::detail::sorting::non_decreasing_t.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
  *
@@ -143,8 +141,8 @@ template<
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
-		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
-		std::is_same_v<sort_type, countingsort::non_increasing_t>
+		std::is_same_v<sort_type, non_decreasing_t> ||
+		std::is_same_v<sort_type, non_increasing_t>
 		),
 		bool
 	> = true
@@ -153,12 +151,12 @@ void counting_sort(
 	value_iterator_t begin, value_iterator_t end,
 	const std::size_t largest_key_plus_1,
 	const std::function<std::size_t (const value_t&)>& key,
-	countingsort::memory_counting_sort<value_t>& mem
+	countingsort::memory<value_t>& mem
 )
 noexcept
 {
 	constexpr bool is_increasing =
-		std::is_same_v<sort_type, countingsort::non_decreasing_t>;
+		std::is_same_v<sort_type, non_decreasing_t>;
 
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
@@ -218,7 +216,8 @@ noexcept
  * Template parameters:
  * @tparam value_t Type of the values sorted.
  * @tparam value_iterator_t Iterator over type 'value_t' type.
- * @tparam sort_type One of 'increasing_t' or 'decreasing_t'.
+ * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
+ * @ref lal::detail::sorting::non_decreasing_t.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -241,8 +240,8 @@ template<
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
-		std::is_same_v<sort_type, countingsort::non_decreasing_t> ||
-		std::is_same_v<sort_type, countingsort::non_increasing_t>
+		std::is_same_v<sort_type, non_decreasing_t> ||
+		std::is_same_v<sort_type, non_increasing_t>
 		),
 		bool
 	> = true
@@ -258,11 +257,12 @@ noexcept
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
-	countingsort::memory_counting_sort<value_t> mem(largest_key+1, upper_bound_size);
+	countingsort::memory<value_t> mem(largest_key+1, upper_bound_size);
 
 	counting_sort<value_t, value_iterator_t, sort_type, false>
 		(begin, end, largest_key+1, key, mem);
 }
 
+} // -- namespace sorting
 } // -- namespace detail
 } // -- namespace lal

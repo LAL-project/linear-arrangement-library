@@ -79,12 +79,12 @@ HEADERS += \
     basic_types.hpp \
     detail/data_array.hpp \
 	detail/avl.hpp \
+    detail/generate/make_arrangement.hpp \
     detail/macros/integer_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \
 	detail/graphs/is_tree.hpp \
-	detail/graphs/make_arrangement.hpp \
 	detail/graphs/retrieve_subtrees.hpp \
 	detail/graphs/size_subtrees.hpp \
 	detail/graphs/tree_classification.hpp \
@@ -110,7 +110,6 @@ HEADERS += \
 	detail/properties/tree_centre.hpp \
 	detail/properties/tree_centroid.hpp \
 	detail/properties/tree_diameter.hpp \
-	detail/sorted_vector.hpp \
 	detail/sorting/bit_sort.hpp \
 	detail/sorting/counting_sort.hpp \
 	detail/sorting/insertion_sort.hpp \
@@ -119,6 +118,8 @@ HEADERS += \
 	detail/graphs/cycles.hpp \
 	detail/graphs/reachability.hpp \
 	detail/graphs/traversal.hpp \
+    detail/sorting/sorted_vector.hpp \
+    detail/sorting/sorting_types.hpp \
 	detail/utilities/tree_isomorphism.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \

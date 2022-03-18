@@ -95,7 +95,7 @@ noexcept
 
 	std::vector<std::vector<node_size>> L(n);
 	Dmin_utils::make_sorted_adjacency_list_rooted
-		<countingsort::non_increasing_t>
+		<sorting::non_increasing_t>
 		(t, L);
 
 	// construct the optimal projective arrangement

@@ -111,8 +111,8 @@ undirected_graph& undirected_graph::add_edge
 		// the graph was normalised
 		if (to_norm) {
 			// Keep it normalised. The attribute m_normalised need not be updated.
-			detail::bit_sort<node>(nu.begin(), nu.end(), nu.size());
-			detail::bit_sort<node>(nv.begin(), nv.end(), nv.size());
+			detail::sorting::bit_sort<node>(nu.begin(), nu.end(), nu.size());
+			detail::sorting::bit_sort<node>(nv.begin(), nv.end(), nv.size());
 		}
 		else if (check_norm) {
 			// Even though we are not asked to normalise the graph, it may be
@@ -291,11 +291,11 @@ void undirected_graph::disjoint_union(const undirected_graph& g) noexcept {
 
 std::vector<edge_pair> undirected_graph::get_Q() const noexcept {
 	const auto qs = properties::num_pairs_independent_edges(*this);
-	return detail::Q(*this, qs);
+	return detail::set_pairs_independent_edges(*this, qs);
 }
 
 std::vector<edge> undirected_graph::get_edges() const noexcept {
-	return detail::E(*this);
+	return detail::set_edges(*this);
 }
 
 bool undirected_graph::has_edge(node u, node v) const noexcept {

@@ -56,7 +56,7 @@ namespace detail {
 template<typename Iterated_Type, typename Iterator>
 struct is_pointer_iterator {
 	static constexpr bool value =
-		std::is_pointer_v<Iterator> ||
+		std::is_pointer_v<Iterator> or
 		std::is_same_v<
 			typename std::iterator_traits<Iterator>::value_type,
 			Iterated_Type

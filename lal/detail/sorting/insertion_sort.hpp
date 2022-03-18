@@ -46,10 +46,10 @@
 
 namespace lal {
 namespace detail {
+namespace sorting {
 
 /**
  * @brief Insertion sort.
- *
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
  * @post The elements in the range [begin,end) are sorted increasingly.
@@ -70,7 +70,6 @@ void insertion_sort(It begin, It end) noexcept
 	}
 }
 
+} // -- namespace sorting
 } // -- namespace detail
 } // -- namespace lal
-
-

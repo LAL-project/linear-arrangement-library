@@ -47,8 +47,6 @@
 namespace lal {
 namespace detail {
 
-namespace __lal {
-
 /**
  * @brief Implementation of @ref lal::detail::make_array_with_value.
  *
@@ -68,8 +66,6 @@ noexcept
 	return a;
 }
 
-} // -- namespace __lal
-
 /**
  * @brief Returns an array initialised at a given value.
  * @tparam T Type of the array's elements.
@@ -79,7 +75,7 @@ noexcept
 template<typename T, std::size_t array_size, T value_to_fill_with>
 constexpr std::array<T, array_size> make_array_with_value() noexcept {
 	return
-	__lal::make_array_with_value_impl<T, array_size, value_to_fill_with>
+	make_array_with_value_impl<T, array_size, value_to_fill_with>
 		(std::make_integer_sequence<std::size_t, array_size>{});
 }
 
