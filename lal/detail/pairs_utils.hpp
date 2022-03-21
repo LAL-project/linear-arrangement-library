@@ -63,7 +63,7 @@ struct node_size {
  * to some integer value.
  */
 struct edge_size {
-	/// Vertex.
+	/// Edege.
 	edge e;
 	/// Integer value, usually a size.
 	uint64_t size;
