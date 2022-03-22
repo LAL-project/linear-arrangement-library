@@ -104,14 +104,14 @@ noexcept
 	std::fill(bn, &bn[n], 0);
 	std::fill(K, &K[(n - 3)*(n - 3)], 0);
 
-	const node u0 = arr[position_t{0ULL}];
-	const node u1 = arr[position_t{1ULL}];
+	const node u0 = arr[position_t{0ull}];
+	const node u1 = arr[position_t{1ull}];
 
 	/* fill matrix M */
 
-	for (position_t pu = 0ULL; pu < n - 3; ++pu) {
+	for (position_t pu = 0ull; pu < n - 3; ++pu) {
 		// node at position pu + 1
-		const node u = arr[pu + 1ULL];
+		const node u = arr[pu + 1ull];
 
 		detail::get_bool_neighbours<graph_t>(g, u, bn);
 
@@ -127,9 +127,9 @@ noexcept
 		// fill the first two columns.
 
 		// Now we start filling M at the third column
-		for (position_t i = 3ULL; i < n; ++i) {
+		for (position_t i = 3ull; i < n; ++i) {
 			// node at position i - 1
-			const node ui = arr[i - 1ULL];
+			const node ui = arr[i - 1ull];
 			k -= bn[ui];
 
 			// the row corresponding to node 'u' in M is

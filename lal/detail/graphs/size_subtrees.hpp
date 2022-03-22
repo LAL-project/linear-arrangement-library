@@ -82,8 +82,8 @@ noexcept
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
-		for (const node w : t.get_in_neighbours(v)) {
-			if (w == u) { continue; }
+		const node w = t.get_in_neighbours(v)[0];
+		if (w != u) {
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
@@ -164,8 +164,8 @@ noexcept
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
-		for (const node w : t.get_in_neighbours(v)) {
-			if (w == u) { continue; }
+		const node w = t.get_in_neighbours(v)[0];
+		if (w != u) {
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
 	}
@@ -228,164 +228,15 @@ void calculate_bidirectional_sizes
 noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (node y : t.get_out_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>
-				(t,n, x, y, it);
+		for (const node y : t.get_out_neighbours(x)) {
+			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
 		}
-		for (node y : t.get_in_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>
-				(t,n, x, y, it);
-		}
+		const node y = t.get_in_neighbours(x)[0];
+		calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
 	}
 	else {
 		for (node y : t.get_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>
-				(t,n, x, y, it);
-		}
-	}
-}
-
-/**
- * @brief Calculates the values \f$s_u(v)\f$ for the edges \f$(u,v)\f$ reachable
- * from vertex @e x.
- *
- * Calculates the values \f$s_u(v)\f$ for all edges \f$(u,v)\f$ in linear time.
- * This is an implementation of the algorithm described in \cite Hochberg2003a
- * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
- *
- * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
- * The value \f$s_u(v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
- * i.e., \f$s_u(v)=|V(T^u_v)|\f$.
- *
- * Notice that the values are not stored in an actual map (std::map, or similar),
- * but in a vector.
- * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
- * @tparam iterated_t The type that stores the sizes.
- * @tparam iterator_t The type of the iterator on a container containing values
- * of type iterated_t.
- * @param t Input tree.
- * @param n Size of the connected component to which edge \f$(u,v)\f$ belongs to.
- * @param u First vertex of the edge.
- * @param v Second vertex of the edge.
- * @param F Function to assign the edge and the size to the iterated_t pointed
- * by @e it.
- * @param it An iterator to the container that holds the size values. Such
- * container must have size equal to twice the number of edges in the connected
- * component of @e u and @e v.
- * @pre Vertices @e u and @e v belong to the same connected component.
- */
-template<
-	class tree_t,
-	typename iterated_t,
-	typename iterator_t,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t>
-		and is_pointer_iterator_v<iterated_t, iterator_t>,
-		bool
-	> = true
->
-uint64_t calculate_bidirectional_sizes(
-	const tree_t& t,
-	const uint64_t n,
-	const node u, const node v,
-	void (*const F)(iterated_t&, const edge&, uint64_t),
-	iterator_t& it
-)
-noexcept
-{
-	uint64_t s = 1;
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (const node w : t.get_out_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-		for (const node w : t.get_in_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-	}
-	else {
-		for (const node w : t.get_neighbours(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, F, it);
-		}
-	}
-
-	F(*it, edge(u,v), s);
-	++it;
-	F(*it, edge(v,u), n - s);
-	++it;
-	return s;
-}
-
-/**
- * @brief Calculates the values \f$s_u(v)\f$ for the edges \f$(u,v)\f$ reachable
- * from vertex @e x.
- *
- * Calculates the values \f$s_u(v)\f$ for all edges \f$(u,v)\f$ in linear time.
- * This is an implementation of the algorithm described in \cite Hochberg2003a
- * (proof of lemma 8 (page 63), and the beginning of section 6 (page 65)).
- *
- * For any edge \f$(u,v)\f$ let \f$T^u\f$ be the tree \f$T\f$ rooted at \f$u\f$.
- * The value \f$s_u(v)\f$ is the size of the subtree of \f$T^u\f$ rooted at \f$v\f$,
- * i.e., \f$s_u(v)=|V(T^u_v)|\f$.
- *
- * Example of usage (mind the vector! its initial size is \f$2*m\f$).
- *
- @code
- const free_tree t = ... ;
- vector<pair<edge,uint64_t>> sizes_edges(2*t.get_num_edges());
- auto it = sizes_edges.begin();
- detail::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
- @endcode
- *
- * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
- * @tparam iterated_t The type that stores the sizes.
- * @tparam iterator_t The type of the iterator on a container containing values
- * of type iterated_t.
- * @param t Input tree
- * @param n Number of nodes in the connected component of vertex @e x
- * @param x Node of the connected component for which we want to calculate the
- * bidirectional sizes
- * @param F Function to assign the edge and the size to the iterated_t pointed
- * by @e it.
- * @param it An iterator to the container where to store the size values. Such
- * container must have size equal to twice the number of edges in the connected
- * component of @e u and @e v.
- */
-template<
-	class tree_t,
-	typename iterated_t,
-	typename iterator_t,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t>
-		and
-		is_pointer_iterator_v<iterated_t, iterator_t>,
-		bool
-	> = true
->
-void calculate_bidirectional_sizes(
-	const tree_t& t,
-	const uint64_t n, const node x,
-	void (*const F)(iterated_t&, const edge&, uint64_t),
-	iterator_t it
-)
-noexcept
-{
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (node y : t.get_out_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterated_t, iterator_t>
-				(t,n, x, y, F, it);
-		}
-		for (node y : t.get_in_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterated_t, iterator_t>
-				(t,n, x, y, F, it);
-		}
-	}
-	else {
-		for (node y : t.get_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterated_t, iterator_t>
-				(t,n, x, y, F, it);
+			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
 		}
 	}
 }

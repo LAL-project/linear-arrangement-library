@@ -65,7 +65,7 @@ namespace linarr {
 
 typedef syntactic_dependency_structure syndepstr_type;
 
-inline void __get_yields(
+void __get_yields(
 	const graphs::rooted_tree& t, const linear_arrangement& pi,
 	node u,
 	std::vector<std::vector<position>>& yields
@@ -87,9 +87,9 @@ noexcept
 }
 
 #define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
-inline bool __are_yields_wellnested(
-	const uint64_t n, const std::vector<std::vector<position>>& yields
-)
+
+bool __are_yields_wellnested
+(const uint64_t n, const std::vector<std::vector<position>>& yields)
 noexcept
 {
 	// for every pair of nodes
@@ -136,7 +136,6 @@ noexcept
 	return true;
 }
 
-inline
 uint64_t __get_n_discont
 (const uint64_t n, const std::vector<std::vector<node>>& yields)
 noexcept
@@ -155,7 +154,6 @@ noexcept
 	return max_g;
 }
 
-inline
 bool __is_WG1(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
@@ -176,7 +174,6 @@ noexcept
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
-inline
 uint64_t __is_1EC(const graphs::rooted_tree& rT, const linear_arrangement& pi)
 noexcept
 {
@@ -266,8 +263,8 @@ noexcept
 	return _1ec;
 }
 
-inline
-std::array<bool, __syntactic_dependency_structure_size> __get_syn_dep_tree_type
+std::array<bool, __syntactic_dependency_structure_size>
+__get_syn_dep_tree_type
 (
 	const graphs::rooted_tree& rT,
 	const linear_arrangement& pi,
@@ -338,7 +335,7 @@ noexcept
 	// update the linear arrangement
 	linear_arrangement _pi(pi.size() + 1);
 	if (_pi.size() > 0) {
-		_pi.assign(0ULL, 0ULL);
+		_pi.assign(0ull, 0ull);
 	}
 	for (node u = 0; u < n; ++u) {
 		_pi.assign(u + 1, pi[node_t{u}] + 1);

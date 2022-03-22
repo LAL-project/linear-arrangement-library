@@ -195,7 +195,7 @@ noexcept
 	std::map<edge, uint64_t> edge_to_idx;
 
 	uint64_t idx = 0;
-	for (position_t pu = 0ULL; pu < n; ++pu) {
+	for (position_t pu = 0ull; pu < n; ++pu) {
 		const node u = arr[pu];
 		for (auto& v : adjN[u]) {
 			v.first = idx;
@@ -210,7 +210,7 @@ noexcept
 
 	// calculate the number of crossings
 	uint64_t C = 0;
-	for (position_t pu = 0ULL; pu < n; ++pu) {
+	for (position_t pu = 0ull; pu < n; ++pu) {
 		const node u = arr[pu];
 		for (node v : adjP[u]) {
 			const edge uv = edge_sorted_by_vertex_index(u,v);

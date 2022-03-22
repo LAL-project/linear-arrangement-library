@@ -352,7 +352,7 @@ public:
 			assign(u, pu);
 		}
 		// put the last vertex at the first position
-		assign(ulast, position_t{0ULL});
+		assign(ulast, position_t{0ull});
 	}
 
 	/**

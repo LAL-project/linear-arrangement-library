@@ -46,6 +46,7 @@
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/numeric/rational_output.hpp>
+#include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
 namespace properties {
@@ -110,19 +111,11 @@ noexcept
 {
 	const uint64_t n = T.get_num_nodes();
 
-	std::vector<std::pair<edge, uint64_t>> edge_size(2*(n - 1));
+	std::vector<detail::edge_size> edge_size(2*(n - 1));
 	{
 	detail::calculate_bidirectional_sizes
-	<
-		graphs::free_tree, std::pair<edge, uint64_t>,
-		std::vector<std::pair<edge, uint64_t>>::iterator
-	>
-	(
-		T, n, 0,
-		[](std::pair<edge,uint64_t>& p, const edge& e, uint64_t s) -> void
-		{ p.first = e; p.second = s; },
-		edge_size.begin()
-	);
+		<graphs::free_tree, std::vector<detail::edge_size>::iterator>
+		(T, n, 0, edge_size.begin());
 	}
 
 	uint64_t V = 0;
@@ -130,8 +123,8 @@ noexcept
 	{
 	detail::data_array<uint64_t> L(n, 0);
 	for (const auto& p : edge_size) {
-		const edge& e = p.first;
-		const uint64_t s = p.second;
+		const edge& e = p.e;
+		const uint64_t s = p.size;
 		L[e.first] += s*s;
 	}
 	for (node v = 0; v < n; ++v) {

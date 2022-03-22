@@ -98,7 +98,7 @@ public:
 		reset();
 	}
 	/// Destructor
-	~BFS() noexcept { }
+	~BFS() noexcept = default;
 
 	/// Set the graph_traversal to its default state.
 	void reset() noexcept {

@@ -72,6 +72,7 @@ namespace detail {
 template<bool get_subsizes>
 std::pair<std::vector<edge>, uint64_t *> get_edges_subtree
 (const graphs::rooted_tree& T, node u, bool relabel)
+noexcept
 {
 #if defined DEBUG
 	assert(T.is_rooted_tree());

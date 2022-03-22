@@ -89,7 +89,7 @@ noexcept
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
+	for (node_t u = 0ull; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = arr[u];
 		const neighbourhood& Nu = g.get_neighbours(*u);
@@ -236,7 +236,7 @@ noexcept
 
 	// iterate over the pairs of edges that will potentially cross
 	// using the information given in the linear arrangement
-	for (node_t u = 0ULL; u < g.get_num_nodes(); ++u) {
+	for (node_t u = 0ull; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = arr[u];
 		const neighbourhood& Nu_out = g.get_out_neighbours(*u);
