@@ -63,6 +63,8 @@ namespace detail {
  * (see @ref set_process_current),
  * - a function that processes the current edge in the traversal
  * (see @ref set_process_neighbour),
+ * - a function that controls when a node is to be added to the queue of the
+ * traversal (see @ref set_node_add).
  *
  * This graph_traversal traversal can also use "reversed edges" when doing traversals on
  * directed graphs. A back edge in a directed graph of a node u is a node
@@ -86,9 +88,13 @@ template<
 >
 class BFS {
 public:
+	/// Single node processing function.
 	typedef std::function<void (const BFS<graph_t>&, node)> BFS_process_one;
+	/// Two nodes processing function.
 	typedef std::function<void (const BFS<graph_t>&, node, node, bool)> BFS_process_two;
+	/// One node decision function.
 	typedef std::function<bool (const BFS<graph_t>&, node)> BFS_bool_one;
+	/// Two nodes decision function.
 	typedef std::function<bool (const BFS<graph_t>&, node, node)> BFS_bool_two;
 
 public:
@@ -103,9 +109,20 @@ public:
 	/// Destructor
 	~BFS() noexcept = default;
 
-	/// Set the graph_traversal to its default state.
+	/**
+	 * @brief Set the graph traversal to its default state.
+	 *
+	 * This includes the node processing functions:
+	 * - @ref m_proc_cur,
+	 * - @ref m_proc_neigh,
+	 * - @ref m_add_node,
+	 *
+	 * the termination function @ref m_term, and the attributes:
+	 * - @ref m_use_rev_edges,
+	 * - @ref m_proc_vis_neighs.
+	 */
 	void reset() noexcept {
-		reset_visited();
+		clear_visited();
 		clear_queue();
 
 		set_use_rev_edges(false);
@@ -165,9 +182,10 @@ public:
 	void set_process_neighbour(const BFS_process_two& f) noexcept
 	{ m_proc_neigh = f; }
 
-	// see @ref m_add_node
+	/// Set the default value of @ref m_add_node.
 	void set_node_add_default() noexcept
 	{ m_add_node = [](const BFS<graph_t>&, const node, const node) -> bool { return true; }; }
+	/// Set the function that controls when a node is to be added to the queue.
 	void set_node_add(const BFS_bool_two& f) noexcept
 	{ m_add_node = f; }
 
@@ -184,16 +202,29 @@ public:
 	 *
 	 * When using this function, users might also want to call @ref clear_queue.
 	 */
-	void reset_visited() noexcept { m_vis.fill(0); }
+	void clear_visited() noexcept { m_vis.fill(0); }
 
-	/// Clear the memory allocated for this structure.
+	/**
+	 * @brief Clear the memory allocated for this structure.
+	 *
+	 * When using this function, users might also want to call @ref clear_visited.
+	 */
 	void clear_queue() noexcept {
 		m_queue_left_ptr = 0;
 		m_queue_right_ptr = 0;
 	}
 
-	/// Set node @e u as visited or not.
-	void set_visited(node u, char vis) noexcept { m_vis[u] = vis; }
+	/**
+	 * @brief Set node @e u as visited or not.
+	 * @param u Node to set as visitied.
+	 * @param vis A 0-1 value.
+	 */
+	void set_visited(node u, char vis) noexcept {
+#if defined DEBUG
+		assert(vis == 0 or vis == 1);
+#endif
+		m_vis[u] = vis;
+	}
 
 	/* GETTERS */
 
@@ -392,9 +423,16 @@ protected:
 
 	/// The set of visited nodes.
 	data_array<char> m_vis;
-	/// Should we process already visitied neighbours?
+	/// Should the traversal process previously-visitied neighbours?
 	bool m_proc_vis_neighs = false;
-	/// Use back edges in directed graphs.
+	/**
+	 * @brief In directed graphs, traverse edges in the reverse direction.
+	 *
+	 * Besides reaching neighbours following out-edges, reach neighbours
+	 * following in-neighbours. If vertex @e s has out-neighbours @e {1,2,3}
+	 * and in-neighbours @e {4,5}, this attribute controls whether vertices
+	 * @e {4,5} should also be included in the traversal.
+	 */
 	bool m_use_rev_edges = false;
 
 protected:
