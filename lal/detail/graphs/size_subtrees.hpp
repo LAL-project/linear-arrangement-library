@@ -82,8 +82,8 @@ noexcept
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
-		const node w = t.get_in_neighbours(v)[0];
-		if (w != u) {
+		for (const node w : t.get_in_neighbours(v)) {
+			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
@@ -164,8 +164,8 @@ noexcept
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
-		const node w = t.get_in_neighbours(v)[0];
-		if (w != u) {
+		for (const node w : t.get_in_neighbours(v)) {
+			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
 	}
@@ -231,11 +231,12 @@ noexcept
 		for (const node y : t.get_out_neighbours(x)) {
 			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
 		}
-		const node y = t.get_in_neighbours(x)[0];
-		calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
+		for (const node y : t.get_in_neighbours(x)) {
+			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
+		}
 	}
 	else {
-		for (node y : t.get_neighbours(x)) {
+		for (const node y : t.get_neighbours(x)) {
 			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
 		}
 	}
