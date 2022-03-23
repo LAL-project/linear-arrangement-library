@@ -178,7 +178,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	// find cycles
 	for (node u = 0; u < n and not cycle_found; ++u) {
 		if (not bfs.node_was_visited(u)) {
-			bfs.clear_structure();
+			bfs.clear_queue();
 			bfs.start_at(u);
 		}
 	}

@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <functional>
-#include <queue>
 
 // lal includes
 #include <lal/basic_types.hpp>
@@ -94,7 +93,11 @@ public:
 
 public:
 	/// Constructor
-	BFS(const graph_t& g) noexcept : m_G(g), m_vis(m_G.get_num_nodes()) {
+	BFS(const graph_t& g) noexcept :
+		m_G(g),
+		m_queue(m_G.get_num_nodes()),
+		m_vis(m_G.get_num_nodes())
+	{
 		reset();
 	}
 	/// Destructor
@@ -103,7 +106,7 @@ public:
 	/// Set the graph_traversal to its default state.
 	void reset() noexcept {
 		reset_visited();
-		clear_structure();
+		clear_queue();
 
 		set_use_rev_edges(false);
 		set_process_visited_neighbours(false);
@@ -119,7 +122,7 @@ public:
 	 * @param source Node.
 	 */
 	void start_at(node source) noexcept {
-		m_queue.push(source);
+		push_queue(source);
 		m_vis[source] = 1;
 		do_traversal();
 	}
@@ -130,7 +133,7 @@ public:
 	 */
 	void start_at(const std::vector<node>& sources) noexcept {
 		for (const node& u : sources) {
-			m_queue.push(u);
+			push_queue(u);
 			m_vis[u] = 1;
 		}
 		do_traversal();
@@ -176,11 +179,18 @@ public:
 	void set_process_visited_neighbours(bool v) noexcept
 	{ m_proc_vis_neighs = v; }
 
-	/// Sets all nodes to not visited.
+	/**
+	 * @brief Sets all nodes to not visited.
+	 *
+	 * When using this function, users might also want to call @ref clear_queue.
+	 */
 	void reset_visited() noexcept { m_vis.fill(0); }
 
 	/// Clear the memory allocated for this structure.
-	void clear_structure() noexcept { std::queue<node> q; m_queue.swap(q); }
+	void clear_queue() noexcept {
+		m_queue_left_ptr = 0;
+		m_queue_right_ptr = 0;
+	}
 
 	/// Set node @e u as visited or not.
 	void set_visited(node u, char vis) noexcept { m_vis[u] = vis; }
@@ -188,7 +198,7 @@ public:
 	/* GETTERS */
 
 	/// Returns whether or not node @e u has been visited.
-	bool node_was_visited(node u) const noexcept { return m_vis[u]; }
+	bool node_was_visited(node u) const noexcept { return m_vis[u] == 1; }
 
 	/// Have all nodes been visited?
 	bool all_visited() const noexcept {
@@ -202,65 +212,70 @@ public:
 	const data_array<char>& get_visited() const noexcept { return m_vis; }
 
 protected:
-	// ltr: is the 'natural' orientation of the vertices "s -> t"?
-	//      If true, then the edge in the graph is (s,t)
-	//      If false, the edge in the graph is (t,s)
+	/**
+	 * @brief Deal with a neighbour of an input node.
+	 *
+	 * Processes the neighbour and pushes it into the queue.
+	 *
+	 * The neighbour is processed if it has not been visited before. In case the
+	 * node was visited in a previous iteration, it is processed only if
+	 * @ref m_proc_vis_neighs has been set via method @ref set_process_visited_neighbours.
+	 *
+	 * Node @e t is pushed into the queue only if it has not been visited before
+	 * and the user function @ref m_add_node allows it.
+	 * @param s Input node.
+	 * @param t The neighbour of the input node.
+	 * @param ltr Left-to-right orientation of the edge \f$\{s,t\}\f$. If @e ltr
+	 * is true then the edge has orientation from @e s to @e t. If @e ltr is
+	 * false, the edge has orientation from @e t to @e s.
+	 */
 	void deal_with_neighbour(node s, node t, bool ltr) noexcept {
 		// Process the neighbour 't' of 's'.
-		if ((m_vis[t] and m_proc_vis_neighs) or not m_vis[t]) {
+		const bool t_vis = node_was_visited(t);
+
+		if ((not t_vis) or (t_vis and m_proc_vis_neighs)) {
 			m_proc_neigh(*this, s, t, ltr);
 		}
 
-		if (not m_vis[t] and m_add_node(*this, s, t)) {
-			m_queue.push(t);
+		if ((not t_vis) and m_add_node(*this, s, t)) {
+			push_queue(t);
 			// set node as visited
-			m_vis[t] = true;
+			m_vis[t] = 1;
 		}
 	}
 
-	/// Process the neighbours of node @e s in an undirected graph.
-	template<
-		class GG = graph_t,
-		std::enable_if_t<
-			std::is_base_of_v<graphs::undirected_graph, GG>, bool
-		> = true
-	>
+	/// Process the neighbours of node @e s
 	void process_neighbours(node s) noexcept {
-		for (const node& t : m_G.get_neighbours(s)) {
-			// Edges are processed in the direction "s -> t".
-			// This is also the 'natural' orientation of the edge,
-			// so this explains the 'true'.
-			deal_with_neighbour(s, t, true);
-		}
-	}
+		if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_t>) {
+			// for undirected graphs
 
-	/// Process the neighbours of node @e s in an directed graph.
-	template<
-		class GG = graph_t,
-		std::enable_if_t<
-			std::is_base_of_v<graphs::directed_graph, GG>, bool
-		> = true
-	>
-	void process_neighbours(node s) noexcept {
-		for (const node& t : m_G.get_out_neighbours(s)) {
-			// Edges are processed in the direction "s -> t".
-			// This is also the 'natural' orientation of the edge,
-			// hence the 'true'.
-			deal_with_neighbour(s, t, true);
-		}
-		// process in-neighbours whenever appropriate
-		if (m_use_rev_edges) {
-			for (const node& t : m_G.get_in_neighbours(s)) {
+			for (const node& t : m_G.get_neighbours(s)) {
 				// Edges are processed in the direction "s -> t".
-				// However, the 'natural' orientation of the edge
-				// is "t -> s", hence the 'false'.
-				deal_with_neighbour(s, t, false);
+				// This is also the 'natural' orientation of the edge,
+				// so this explains the 'true'.
+				deal_with_neighbour(s, t, true);
+			}
+		}
+		else {
+			// for directed graphs
+
+			for (const node& t : m_G.get_out_neighbours(s)) {
+				// Edges are processed in the direction "s -> t".
+				// This is also the 'natural' orientation of the edge,
+				// hence the 'true'.
+				deal_with_neighbour(s, t, true);
+			}
+			// process in-neighbours whenever appropriate
+			if (m_use_rev_edges) {
+				for (const node& t : m_G.get_in_neighbours(s)) {
+					// Edges are processed in the direction "s -> t".
+					// However, the 'natural' orientation of the edge
+					// is "t -> s", hence the 'false'.
+					deal_with_neighbour(s, t, false);
+				}
 			}
 		}
 	}
-
-	/// Return the next node in line.
-	node next_node() const noexcept { return m_queue.front(); }
 
 	/**
 	 * @brief Traversal through the graph's vertices.
@@ -312,9 +327,9 @@ protected:
 	 * is not limited to "out-neighbours", but also to "in-neighbours".
 	 */
 	void do_traversal() noexcept {
-		while (not m_queue.empty()) {
+		while (not queue_empty()) {
 			const node s = next_node();
-			m_queue.pop();
+			pop_queue();
 
 			// process current node
 			m_proc_cur(*this, s);
@@ -326,11 +341,55 @@ protected:
 		}
 	}
 
+	/// Return the next node in line.
+	node next_node() const noexcept {
+#if defined DEBUG
+		assert(not queue_empty());
+#endif
+		return m_queue[m_queue_left_ptr];
+	}
+
+	/// Returns whether or not the queue is empty
+	bool queue_empty() const noexcept
+	{ return m_queue_left_ptr == m_queue_right_ptr; }
+
+	/**
+	 * @brief Pop the front value in the queue.
+	 *
+	 * Advance one position the left iterator.
+	 */
+	void pop_queue() noexcept {
+#if defined DEBUG
+		assert(not queue_empty());
+#endif
+		++m_queue_left_ptr;
+	}
+
+	/**
+	 * @brief Push a new node into the queue.
+	 *
+	 * Assigns the new node at the position pointed by @ref m_queue_right_ptr,
+	 * and advances @ref m_queue_right_ptr one position.
+	 * @param s The new node to be pushed.
+	 */
+	void push_queue(node s) noexcept {
+#if defined DEBUG
+		assert(m_queue_right_ptr < m_queue.size());
+#endif
+		m_queue[m_queue_right_ptr++] = s;
+	}
+
 protected:
 	/// Constant reference to the graph.
 	const graph_t& m_G;
+
 	/// The structure of the traversal.
-	std::queue<node> m_queue;
+	data_array<node> m_queue;
+	/// Pointer to the beginning of the queue
+	std::size_t m_queue_left_ptr;
+	/// Pointer to the end of the queue
+	std::size_t m_queue_right_ptr;
+
 	/// The set of visited nodes.
 	data_array<char> m_vis;
 	/// Should we process already visitied neighbours?
@@ -345,8 +404,8 @@ protected:
 	 * Returns true if the graph_traversal algorithm should terminate.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
-	 * @param graph_traversal The object containing the traversal. This also contains
-	 * several attributes that might be useful to guide the traversal.
+	 * @param graph_traversal The object containing the traversal. This also
+	 * contains several attributes that might be useful to guide the traversal.
 	 * @param s The node at the front of the queue of the algorithm.
 	 */
 	BFS_bool_one m_term;
