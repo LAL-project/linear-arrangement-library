@@ -148,7 +148,7 @@ template<
 	> = true
 >
 void counting_sort(
-	value_iterator_t begin, value_iterator_t end,
+	const value_iterator_t begin, const value_iterator_t end,
 	const std::size_t largest_key_plus_1,
 	const std::function<std::size_t (const value_t&)>& key,
 	countingsort::memory<value_t>& mem
