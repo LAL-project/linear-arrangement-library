@@ -161,7 +161,8 @@ public:
 	 * and it has not been added before.
 	 *
 	 * In a rooted tree, an edge can only be added if the in-degree of vertex
-	 * @e t (see @ref get_in_degree) is exactly 1 after adding the edge.
+	 * @e t (see @ref lal::graphs::directed_graph::get_in_degree) is exactly 1
+	 * after adding the edge.
 	 * @param s First node of the edge.
 	 * @param t Second node of the edge.
 	 * @returns Whether or not this edge can be added to the tree without
@@ -176,7 +177,8 @@ public:
 	 * tree do not produce cycles and none of them have been added before.
 	 *
 	 * In a rooted tree, edges \f$(s,t)\f$ can only be added if the in-degree of
-	 * vertex @e t (see @ref get_in_degree) is exactly 1 after adding the edge.
+	 * vertex @e t (see @ref lal::graphs::directed_graph::get_in_degree) is
+	 * exactly 1 after adding the edge.
 	 * @param edges List of edges.
 	 * @returns Whether or not these edges can be added to the tree without
 	 * producing cycles.
