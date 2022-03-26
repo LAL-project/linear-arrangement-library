@@ -161,8 +161,8 @@ public:
 	 * and it has not been added before.
 	 * @param s First node of the edge.
 	 * @param t Second node of the edge.
-	 * @returns Whether the addition of this new edge can be added
-	 * to the tree without producing cycles.
+	 * @returns Whether or not this edge can be added to the tree without
+	 * producing cycles.
 	 */
 	virtual bool can_add_edge(node s, node t) const noexcept;
 
@@ -172,8 +172,8 @@ public:
 	 * In a tree, a set of edges can only be added if their addition to the
 	 * tree do not produce cycles and none of them have been added before.
 	 * @param edges List of edges.
-	 * @returns Whether the addition of these new edges can be added
-	 * to the tree without producing cycles.
+	 * @returns Whether or not these edges can be added to the tree without
+	 * producing cycles.
 	 */
 	virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
