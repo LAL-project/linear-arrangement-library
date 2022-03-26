@@ -91,7 +91,7 @@ public:
 	 * @param g Directed graph.
 	 */
 	directed_graph(directed_graph&& g) noexcept {
-		move_full_directed_graph(std::move(g));
+		move_full_directed_graph(std::forward<directed_graph>(g));
 	}
 
 	/// Destructor.
@@ -112,7 +112,7 @@ public:
 	 * @param g Directed graph.
 	 */
 	directed_graph& operator= (directed_graph&& g) noexcept {
-		move_full_directed_graph(std::move(g));
+		move_full_directed_graph(std::forward<directed_graph>(g));
 		return *this;
 	}
 
@@ -415,7 +415,7 @@ protected:
 	/// Moves all members of this class and the parent class.
 	void move_full_directed_graph(directed_graph&& d) noexcept {
 		// move-assign parent class
-		move_full_graph(std::move(d));
+		move_full_graph(std::forward<directed_graph>(d));
 
 		// move-assign this class' members
 		m_in_adjacency_list = std::move(d.m_in_adjacency_list);

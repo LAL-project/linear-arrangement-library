@@ -94,7 +94,7 @@ public:
 	 * @param g Graph.
 	 */
 	graph(graph&& g) noexcept {
-		move_full_graph(std::move(g));
+		move_full_graph(std::forward<graph>(g));
 	}
 
 	/// Destructor.
@@ -116,7 +116,7 @@ public:
 	 * @param g Graph.
 	 */
 	graph& operator= (graph&& g) noexcept {
-		move_full_graph(std::move(g));
+		move_full_graph(std::forward<graph>(g));
 		return *this;
 	}
 

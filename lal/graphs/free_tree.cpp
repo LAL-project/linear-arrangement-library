@@ -68,7 +68,7 @@ free_tree::free_tree(const undirected_graph& t) noexcept : undirected_graph(t) {
 	tree_only_set_edges();
 }
 
-free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::move(t)) {
+free_tree::free_tree(undirected_graph&& t) noexcept : undirected_graph(std::forward<undirected_graph>(t)) {
 #if defined DEBUG
 	// check that the input graph is a tree
 	assert(detail::is_graph_a_tree(*this));

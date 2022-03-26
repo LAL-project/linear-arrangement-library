@@ -125,7 +125,7 @@ public:
 	 * @param r Rooted tree.
 	 */
 	rooted_tree(rooted_tree&& r) noexcept {
-		move_full_rooted_tree(std::move(r));
+		move_full_rooted_tree(std::forward<rooted_tree>(r));
 	}
 
 	/// Constructor with tree and root node.
@@ -150,7 +150,7 @@ public:
 	 * @param r Rooted tree.
 	 */
 	rooted_tree& operator= (rooted_tree&& r) noexcept {
-		move_full_rooted_tree(std::move(r));
+		move_full_rooted_tree(std::forward<rooted_tree>(r));
 		return *this;
 	}
 
@@ -689,10 +689,10 @@ protected:
 	/// Moves all members of this class and the parent class.
 	void move_full_rooted_tree(rooted_tree&& r) noexcept {
 		// move-assign directed_graph class
-		move_full_directed_graph(std::move(r));
+		move_full_directed_graph(std::forward<rooted_tree>(r));
 
 		// move-assign only tree's members
-		tree_only_move(std::move(r));
+		tree_only_move(std::forward<rooted_tree>(r));
 
 		// move this class' members
 		m_root = r.m_root;

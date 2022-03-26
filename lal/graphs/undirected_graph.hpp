@@ -90,7 +90,7 @@ public:
 	 * @param g Undirected graph.
 	 */
 	undirected_graph(undirected_graph&& g) noexcept {
-		move_full_undirected_graph(std::move(g));
+		move_full_undirected_graph(std::forward<undirected_graph>(g));
 	}
 
 	/// Destructor.
@@ -111,7 +111,7 @@ public:
 	 * @param g Undirected graph.
 	 */
 	undirected_graph& operator= (undirected_graph&& g) noexcept {
-		move_full_undirected_graph(std::move(g));
+		move_full_undirected_graph(std::forward<undirected_graph>(g));
 		return *this;
 	}
 
@@ -357,7 +357,7 @@ protected:
 	/// Moves all members of this class and the parent class.
 	void move_full_undirected_graph(undirected_graph&& u) noexcept {
 		// move-assign parent class
-		move_full_graph(std::move(u));
+		move_full_graph(std::forward<undirected_graph>(u));
 
 		// move-assign this class' members
 	}

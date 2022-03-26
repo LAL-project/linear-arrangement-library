@@ -82,7 +82,7 @@ public:
 	 * @param t Free tree.
 	 */
 	free_tree(free_tree&& t) noexcept {
-		move_full_free_tree(std::move(t));
+		move_full_free_tree(std::forward<free_tree>(t));
 	}
 
 	/**
@@ -117,7 +117,7 @@ public:
 	 * @param f A lal::graphs::free_tree.
 	 */
 	free_tree& operator= (free_tree&& f) noexcept {
-		move_full_free_tree(std::move(f));
+		move_full_free_tree(std::forward<free_tree>(f));
 		return *this;
 	}
 
@@ -422,10 +422,10 @@ protected:
 	/// Moves all members of this class and the parent class.
 	void move_full_free_tree(free_tree&& f) noexcept {
 		// move-assign undirected_graph class
-		move_full_undirected_graph(std::move(f));
+		move_full_undirected_graph(std::forward<free_tree>(f));
 
 		// move-assign only tree's members
-		tree_only_move(std::move(f));
+		tree_only_move(std::forward<free_tree>(f));
 
 		// move this class' members
 	}
