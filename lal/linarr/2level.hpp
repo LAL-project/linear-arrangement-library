@@ -50,7 +50,8 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/graphs/graph.hpp>
+#include <lal/linarr/D.hpp>
+#include <lal/utilities/averages.hpp>
 
 namespace lal {
 namespace linarr {
@@ -82,7 +83,6 @@ namespace linarr {
  * exact rational value.
  */
 template<class graph_t>
-inline
 numeric::rational mean_dependency_distance_2level_rational
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
@@ -95,19 +95,41 @@ noexcept
 	assert(P.size() == 0 or L.size() == P.size());
 #endif
 
-	numeric::rational sum_MDD(0);
+	typedef numeric::rational ratio;
+	typedef linear_arrangement ARR;
+
 	if (P.size() == 0) {
-		const linear_arrangement empty_arr;
-		for (std::size_t i = 0; i < L.size(); ++i) {
-			sum_MDD += mean_dependency_distance_rational(L[i], empty_arr);
-		}
+
+#define IDE linear_arrangement::identity(G.get_num_nodes())
+		return utilities::two_level_average<ratio, true>
+		(
+			L.begin(), L.end(), nullptr, nullptr,
+			// values
+			[](const graph_t& G) { return mean_dependency_distance_rational(G, IDE); },
+			// combine values
+			[](const ratio& MDD) { return MDD; },
+			// accumulate
+			[](ratio& total, const ratio& MDD) { total += MDD; },
+			// average the values
+			[](const ratio& sum_MDD, std::size_t num_graphs) { return sum_MDD/num_graphs; }
+		);
+#undef IDE
+
 	}
 	else {
-		for (std::size_t i = 0; i < L.size(); ++i) {
-			sum_MDD += mean_dependency_distance_rational(L[i], P[i]);
-		}
+		return utilities::two_level_average<ratio, false>
+		(
+			L.begin(), L.end(), P.begin(), P.end(),
+			// values
+			[](const graph_t& G, const ARR& arr) { return mean_dependency_distance_rational(G, arr); },
+			// combine values
+			[](const ratio& MDD) { return MDD; },
+			// accumulate
+			[](ratio& sum_MDD, const ratio& MDD) { sum_MDD += MDD; },
+			// average the values
+			[](const ratio& sum_MDD, std::size_t num_graphs) { return sum_MDD/num_graphs; }
+		);
 	}
-	return sum_MDD/static_cast<int64_t>(L.size());
 }
 
 // **DEVELOPER NOTE**
@@ -125,7 +147,6 @@ noexcept
  * floating point value.
  */
 template<class graph_t>
-inline
 double mean_dependency_distance_2level
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept

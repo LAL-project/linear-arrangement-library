@@ -339,6 +339,7 @@ target_sources(
 		
 		# utilities namespace
 		# -- headers
+		utilities/averages.hpp
 		utilities/tree_isomorphism.hpp
 		# -- sources
 		utilities/tree_isomorphism.cpp
@@ -468,6 +469,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/tree_diameter.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
+	utilities/averages.hpp
 	utilities/tree_isomorphism.hpp
 )
 

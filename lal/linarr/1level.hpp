@@ -51,6 +51,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/graph.hpp>
+#include <lal/utilities/averages.hpp>
 
 namespace lal {
 namespace linarr {
@@ -84,7 +85,6 @@ namespace linarr {
  * exact rational value.
  */
 template<class graph_t>
-inline
 numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
@@ -97,22 +97,50 @@ noexcept
 	assert(P.size() == 0 or L.size() == P.size());
 #endif
 
-	uint64_t sumD = 0;
-	uint64_t sumM = 0;
+	typedef numeric::rational ratio;
+	typedef linear_arrangement ARR;
+	typedef std::pair<uint64_t, uint64_t> DD_m;
+
 	if (P.size() == 0) {
-		const linear_arrangement empty_arr;
-		for (std::size_t i = 0; i < L.size(); ++i) {
-			sumD += sum_edge_lengths(L[i], empty_arr);
-			sumM += L[i].get_num_edges();
-		}
+
+#define IDE linear_arrangement::identity(G.get_num_nodes())
+		return utilities::one_level_average<ratio, true>
+		(
+			L.begin(), L.end(), nullptr, nullptr,
+			// make values DD,m
+			[](const graph_t& G) { return DD_m{sum_edge_lengths(G, IDE), G.get_num_edges()}; },
+			// accumulate DD
+			[](uint64_t& total, uint64_t new_value) { total += new_value; },
+			// accumulate m
+			[](uint64_t& total, uint64_t new_value) { total += new_value; },
+			// average accumulated DD
+			[](uint64_t DDs, std::size_t) { return DDs; },
+			// average accumulated m
+			[](uint64_t num_edges, std::size_t) { return num_edges; },
+			// average accumulated DD, m
+			[](uint64_t DDs, uint64_t sum_num_edges) { return ratio(DDs, sum_num_edges); }
+		);
+#undef IDE
+
 	}
 	else {
-		for (std::size_t i = 0; i < L.size(); ++i) {
-			sumD += sum_edge_lengths(L[i], P[i]);
-			sumM += L[i].get_num_edges();
-		}
+		return utilities::one_level_average<ratio, false>
+		(
+			L.begin(), L.end(), P.begin(), P.end(),
+			// make values Q,R
+			[](const graph_t& G, const ARR& arr) { return DD_m(sum_edge_lengths(G, arr), G.get_num_edges()); },
+			// accumulate Q
+			[](uint64_t& total, uint64_t new_value) { total += new_value; },
+			// accumulate R
+			[](uint64_t& total, uint64_t new_value) { total += new_value; },
+			// average accumulated Q
+			[](uint64_t DDs, std::size_t) { return DDs; },
+			// average accumulated R
+			[](uint64_t num_edges, std::size_t) { return num_edges; },
+			// average Q,R
+			[](uint64_t DDs, uint64_t sum_num_edges) { return ratio(DDs, sum_num_edges); }
+		);
 	}
-	return numeric::rational(sumD, sumM);
 }
 
 // **DEVELOPER NOTE**
@@ -131,7 +159,6 @@ noexcept
  * floating point value.
  */
 template<class graph_t>
-inline
 double mean_dependency_distance_1level
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
