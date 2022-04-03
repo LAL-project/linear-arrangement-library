@@ -118,11 +118,11 @@ struct memory {
  * and \cite Cormen2001a.
  *
  * @tparam value_t Iterated type
- * @tparam value_iterator_t Iterator type
  * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
  * @ref lal::detail::sorting::non_decreasing_t.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
+ * @tparam value_iterator_t Iterator type
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -138,9 +138,10 @@ struct memory {
  * range to be sorted.
  */
 template<
-	typename value_t, typename value_iterator_t,
+	typename value_t,
 	typename sort_type,
 	bool memory_has_frequencies,
+	typename value_iterator_t,
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
@@ -218,9 +219,9 @@ noexcept
  *
  * Template parameters:
  * @tparam value_t Type of the values sorted.
- * @tparam value_iterator_t Iterator over type 'value_t' type.
  * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
  * @ref lal::detail::sorting::non_decreasing_t.
+ * @tparam value_iterator_t Iterator over type 'value_t' type.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -238,8 +239,9 @@ noexcept
  * range to be sorted.
  */
 template<
-	typename value_t, typename value_iterator_t,
+	typename value_t,
 	typename sort_type,
+	typename value_iterator_t,
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> &&
 		(
@@ -262,7 +264,7 @@ noexcept
 
 	countingsort::memory<value_t> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<value_t, value_iterator_t, sort_type, false>
+	counting_sort<value_t, sort_type, false, value_iterator_t>
 		(begin, end, largest_key+1, key, mem);
 }
 

@@ -326,11 +326,11 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
 		M = std::max(M, s_ui);
 	}
 	detail::sorting::counting_sort
-		<node_size, node_size*, sorting::non_increasing_t>
-		(
-			ord.begin(), ord.end(), M, ord.size(),
-			[](const node_size& p) { return p.size; }
-		);
+	<node_size, sorting::non_increasing_t>
+	(
+		ord.begin(), ord.end(), M, ord.size(),
+		[](const node_size& p) { return p.size; }
+	);
 
 	return ord;
 }

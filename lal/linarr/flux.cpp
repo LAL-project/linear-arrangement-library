@@ -205,10 +205,8 @@ noexcept
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		detail::sorting::counting_sort<
-			edge, std::vector<edge>::iterator,
-			detail::sorting::non_decreasing_t, false
-		>
+		detail::sorting::counting_sort
+		<edge, detail::sorting::non_decreasing_t, false>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),

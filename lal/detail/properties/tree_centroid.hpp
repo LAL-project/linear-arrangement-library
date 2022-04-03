@@ -115,13 +115,13 @@ noexcept
 
 	// sort all tuples in sizes_edge using the sizes s(u,v)
 	detail::sorting::counting_sort
-		<edge_size, iterator_t, sorting::non_increasing_t>
-		(
-			sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
-			[](const edge_size& edge_pair) -> std::size_t
-			{ return edge_pair.size; }
-		);
-		}
+	<edge_size, sorting::non_increasing_t>
+	(
+		sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
+		[](const edge_size& edge_pair) -> std::size_t
+		{ return edge_pair.size; }
+	);
+	}
 
 	// put the s(u,v) into an adjacency list
 	// M[u] : adjacency list of vertex u sorted decreasingly according

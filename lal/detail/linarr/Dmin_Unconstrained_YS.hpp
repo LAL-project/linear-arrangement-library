@@ -241,7 +241,7 @@ noexcept
 		ord[i].second = ui;
 	}
 	detail::sorting::counting_sort
-		<size_node, size_node*, sorting::non_increasing_t>
+		<size_node, sorting::non_increasing_t>
 		(
 			ord.begin(), ord.end(), M, ord.size(),
 			[](const size_node& p) { return p.first; }

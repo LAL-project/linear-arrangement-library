@@ -504,7 +504,7 @@ noexcept
 
 	// sort all tuples in L using the size of the subtree
 	detail::sorting::counting_sort
-		<edge_size, edge_size*, sort_type, true>
+		<edge_size, sort_type, true>
 		(
 			edge_list.begin(), edge_list.end(), n,
 			[](const edge_size& T) -> std::size_t { return T.size; },
