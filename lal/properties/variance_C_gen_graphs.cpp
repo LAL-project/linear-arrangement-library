@@ -218,7 +218,7 @@ noexcept
 					iterate(Nt, Nu,
 						++common_ut;
 						deg_sum += g.get_degree(Nu[__j]);
-					)
+					);
 					saving_comps.insert(
 						make_pair(
 							sorted_edge(u,t),
@@ -229,7 +229,7 @@ noexcept
 			else {
 				iterate(Nu, Nt,
 					++common_ut;
-				)
+				);
 			}
 
 			const bool ut_is_edge = g.has_edge(u,t);
@@ -254,7 +254,7 @@ noexcept
 					iterate(Ns, Nu,
 						++common_us;
 						deg_sum += g.get_degree(Nu[__j]);
-					)
+					);
 					saving_comps.insert(
 						make_pair(
 							sorted_edge(u,s),
@@ -265,7 +265,7 @@ noexcept
 			else {
 				iterate(Nu, Ns,
 					++common_us;
-				)
+				);
 			}
 
 			const bool is_us_edge = g.has_edge(u,s);
@@ -290,7 +290,7 @@ noexcept
 				iterate(Ns, Nt,
 					++common_st;
 					deg_sum_st += g.get_degree(Nt[__j]);
-				)
+				);
 				saving_comps.insert(
 					make_pair(
 						sorted_edge(s,t),
@@ -302,7 +302,7 @@ noexcept
 			iterate(Ns, Nt,
 				++common_st;
 				deg_sum_st += g.get_degree(Ns[__i]);
-			)
+			);
 		}
 
 		paw += deg_sum_st - 2*common_st;
