@@ -363,8 +363,8 @@ public:
 	 * arr[n], arr[2] with arr[n-1], ...
 	 */
 	void mirror() noexcept {
-		for (std::size_t i = 0; i < m_n/2; ++i) {
-			swap(position_t{i}, position_t{m_n - 1 - i});
+		for (position_t i = 0ull; i < m_n/2; ++i) {
+			swap(i, m_n - 1ull - i);
 		}
 	}
 
