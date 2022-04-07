@@ -56,7 +56,7 @@ namespace sorting {
 /**
  * @brief Sorts the elements within range [@e begin, @e end)
  * @tparam T The type of the values ot be sorted.
- * @tparam It The type of iterator over the range [@e being, @e end)
+ * @tparam iterator_t The type of iterator over the range [@e being, @e end)
  * @param begin Iterator at the beginning of the container.
  * @param end Iterator at the end of the container.
  * @param m Smallest value in the range to sort.
@@ -67,13 +67,14 @@ namespace sorting {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template<
-	typename T, typename It,
+	typename T, typename iterator_t,
 	std::enable_if_t<
-		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		std::is_integral_v<T> && is_pointer_iterator_v<T, iterator_t>,
 		bool
 	> = true
 >
-void bit_sort(It begin, It end, const T& m, char * const seen) noexcept
+void bit_sort(iterator_t begin, iterator_t end, const T& m, char * const seen)
+noexcept
 {
 	// fill bit array
 	for (auto it = begin; it != end; ++it) {
@@ -86,7 +87,7 @@ void bit_sort(It begin, It end, const T& m, char * const seen) noexcept
 	T i = m;
 
 	// pointer to container
-	It it = begin;
+	iterator_t it = begin;
 	while (it != end) {
 		// assign value to container
 		*it = i;
