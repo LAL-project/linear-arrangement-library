@@ -201,7 +201,7 @@ HEADERS += \
 	properties/tree_centroid.hpp \
 	properties/tree_diameter.hpp \
 	utilities.hpp \
-	utilities/averages.hpp \
+	utilities/aggregations.hpp \
 	utilities/tree_isomorphism.hpp \
 	lal_version.hpp
 

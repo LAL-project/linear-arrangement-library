@@ -51,7 +51,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/linarr/D.hpp>
-#include <lal/utilities/averages.hpp>
+#include <lal/utilities/aggregations.hpp>
 
 namespace lal {
 namespace linarr {
@@ -101,7 +101,7 @@ noexcept
 	if (P.size() == 0) {
 
 #define IDE linear_arrangement::identity(G.get_num_nodes())
-		return utilities::two_level_average<ratio, true>
+		return utilities::two_level_aggregation<ratio, true>
 		(
 			L.begin(), L.end(), nullptr, nullptr,
 			// values
@@ -117,7 +117,7 @@ noexcept
 
 	}
 	else {
-		return utilities::two_level_average<ratio, false>
+		return utilities::two_level_aggregation<ratio, false>
 		(
 			L.begin(), L.end(), P.begin(), P.end(),
 			// values

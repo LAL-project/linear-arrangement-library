@@ -51,7 +51,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/graph.hpp>
-#include <lal/utilities/averages.hpp>
+#include <lal/utilities/aggregations.hpp>
 
 namespace lal {
 namespace linarr {
@@ -104,27 +104,27 @@ noexcept
 	if (P.size() == 0) {
 
 #define IDE linear_arrangement::identity(G.get_num_nodes())
-		return utilities::one_level_average<ratio, true>
+		return utilities::one_level_aggregation<ratio, true>
 		(
 			L.begin(), L.end(), nullptr, nullptr,
-			// make values DD,m
+			// make values Q,R
 			[](const graph_t& G) { return DD_m{sum_edge_lengths(G, IDE), G.get_num_edges()}; },
-			// accumulate DD
+			// accumulate Q
 			[](uint64_t& total, uint64_t new_value) { total += new_value; },
-			// accumulate m
+			// accumulate R
 			[](uint64_t& total, uint64_t new_value) { total += new_value; },
-			// average accumulated DD
+			// average accumulated Q
 			[](uint64_t DDs, std::size_t) { return DDs; },
-			// average accumulated m
+			// average accumulated R
 			[](uint64_t num_edges, std::size_t) { return num_edges; },
-			// average accumulated DD, m
+			// average accumulated Q,R
 			[](uint64_t DDs, uint64_t sum_num_edges) { return ratio(DDs, sum_num_edges); }
 		);
 #undef IDE
 
 	}
 	else {
-		return utilities::one_level_average<ratio, false>
+		return utilities::one_level_aggregation<ratio, false>
 		(
 			L.begin(), L.end(), P.begin(), P.end(),
 			// make values Q,R

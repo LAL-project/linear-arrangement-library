@@ -52,10 +52,11 @@ namespace lal {
 namespace utilities {
 
 /**
- * @brief Computation of 1-level averages of \f$Q\f$ and \f$R\f$.
+ * @brief Computation of 1-level aggregation of \f$Q\f$ and \f$R\f$.
  *
  * Given
- * - a list of \f$n\f$ values \f$Q_i\f$ and \f$n\f$ values \f$R_i\f$,
+ * - a list of \f$n\f$ values \f$Q_i\f$ and \f$n\f$ values \f$R_i\f$ (produced
+ * by the function @e values),
  * - an 'accumulator' operator \f$\oplus\f$ for \f$Q_i\f$ (parameter @e accQ),
  * - an 'accumulator' operator \f$\otimes\f$ for \f$R_i\f$ (parameter @e accR),
  * - a \f$Q\f$-average function \f$F_Q\f$ (parameter @e avgQ),
@@ -105,7 +106,7 @@ namespace utilities {
  * @param efirst Iterator at the end of the first set.
  * @param bsecond Iterator at the beginning of the second set.
  * @param esecond Iterator at the end of the second set.
- * @param QR Function to calculate the values \f$Q_i,R_i\f$ called with the
+ * @param values Function to calculate the values \f$Q_i,R_i\f$ called with the
  * \f$i\f$-th element in the first set only (if @e second_set_empty is true) or
  * called with the \f$i\f$-th elements in the first and second sets (if
  * @e second_set_empty is false). Implements \f$\odot\f$.
@@ -136,11 +137,11 @@ template<
 	class make_average_Q, class make_average_R,
 	class make_average
 >
-[[nodiscard]] result_t one_level_average
+[[nodiscard]] result_t one_level_aggregation
 (
 	iterator_first_t bfirst, const iterator_first_t efirst,
 	iterator_second_t bsecond, [[maybe_unused]] const iterator_second_t esecond,
-	metric QR,
+	metric values,
 	accumulate_Q accQ, accumulate_R accR,
 	make_average_Q avgQ, make_average_R avgR,
 	make_average avg
@@ -149,12 +150,12 @@ noexcept
 {
 	if constexpr (second_set_empty) {
 		// no elements from the second set
-		auto [total_Q, total_R] = QR(*bfirst);
+		auto [total_Q, total_R] = values(*bfirst);
 		std::size_t amount = 1;
 
 		++bfirst;
 		for (; bfirst != efirst; ++bfirst, ++amount) {
-			const auto [Qi, Ri] = QR(*bfirst);
+			const auto [Qi, Ri] = values(*bfirst);
 			accQ(total_Q, Qi);
 			accR(total_R, Ri);
 		}
@@ -167,12 +168,12 @@ noexcept
 		assert(std::distance(bfirst, efirst) == std::distance(bsecond, esecond));
 #endif
 
-		auto [total_Q, total_R] = QR(*bfirst, *bsecond);
+		auto [total_Q, total_R] = values(*bfirst, *bsecond);
 		std::size_t amount = 1;
 
 		++bfirst; ++bsecond;
 		for (; bfirst != efirst; ++bfirst, ++bsecond, ++amount) {
-			const auto [Qi, Ri] = QR(*bfirst, *bsecond);
+			const auto [Qi, Ri] = values(*bfirst, *bsecond);
 			accQ(total_Q, Qi);
 			accR(total_R, Ri);
 		}
@@ -182,10 +183,11 @@ noexcept
 }
 
 /**
- * @brief Computation of 2-level averages of \f$Q\f$ and \f$R\f$.
+ * @brief Computation of 2-level aggregation of \f$Q\f$ and \f$R\f$.
  *
  * Given
- * - a list of \f$n\f$ values \f$Q_i\f$  and \f$n\f$ values \f$R_i\f$,
+ * - a list of \f$n\f$ values \f$Q_i\f$  and \f$n\f$ values \f$R_i\f$ (produced
+ * by the function @e values),
  * - and a combination operator \f$\oplus\f$ to operator two values \f$Q_i\f$
  * and \f$R_i\f$ (parameter @e comb_values),
  * - an 'accumulator' operator \f$\otimes\f$ for \f$Q_i\oplus R_i\f$ (parameter
@@ -256,7 +258,7 @@ template<
 	typename iterator_second_t,
 	class metric, class combine, class accumulate, class make_average
 >
-[[nodiscard]] result_t two_level_average
+[[nodiscard]] result_t two_level_aggregation
 (
 	iterator_first_t bfirst, const iterator_first_t efirst,
 	iterator_second_t bsecond, [[maybe_unused]] const iterator_second_t esecond,

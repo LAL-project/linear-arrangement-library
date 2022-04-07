@@ -339,7 +339,7 @@ target_sources(
 		
 		# utilities namespace
 		# -- headers
-		utilities/averages.hpp
+		utilities/aggregations.hpp
 		utilities/tree_isomorphism.hpp
 		# -- sources
 		utilities/tree_isomorphism.cpp
