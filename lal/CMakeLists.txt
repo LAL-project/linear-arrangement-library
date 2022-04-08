@@ -469,7 +469,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/tree_diameter.hpp
 )
 set(LIBLAL_UTILITIES_HEADER
-	utilities/averages.hpp
+	utilities/aggregations.hpp
 	utilities/tree_isomorphism.hpp
 )
 
