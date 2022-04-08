@@ -249,7 +249,7 @@ noexcept
  * passed the result of \f$\otimes\f$ and the total amount of elements.
  *
  * @pre If the second set of elements is empty then @e second_set_empty must be
-		 * true. It must be false otherwise.
+ * true. It must be false otherwise.
  * @returns \f$A_2(Q,R)\f$.
  */
 template<

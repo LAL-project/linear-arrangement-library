@@ -90,13 +90,9 @@ namespace iterators {
  * @endcode
  */
 template<
-	typename GRAPH,
-	bool is_directed = std::is_base_of_v<graphs::directed_graph, GRAPH>,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::directed_graph, GRAPH> ||
-		std::is_base_of_v<graphs::undirected_graph, GRAPH>
-		, bool
-	> = true
+	typename graph_t,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
 >
 class E_iterator {
 public:
@@ -106,7 +102,10 @@ public:
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	E_iterator(const GRAPH& g) noexcept : m_G(g) {
+	E_iterator(const graph_t& g) noexcept
+		: m_G(g),
+		  m_num_nodes(m_G.get_num_nodes())
+	{
 		reset();
 	}
 	/// Default destructor.
@@ -163,7 +162,10 @@ private:
 
 private:
 	/// The graph whose edges have to be iterated on.
-	const GRAPH& m_G;
+	const graph_t& m_G;
+	/// Number of nodes of the graph.
+	const uint64_t m_num_nodes;
+
 	/// Pointer to the next edge.
 	E_pointer m_cur;
 	/// Is there a next edge to iterate over?
@@ -234,21 +236,19 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const noexcept {
-		const uint64_t n = m_G.get_num_nodes();
-
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
 		bool found = false;
 
 		++pt;
-		if (s < n and pt < m_G.get_out_degree(s)) {
+		if (s < m_num_nodes and pt < m_G.get_out_degree(s)) {
 			found = true;
 		}
 		else {
 			pt = 0;
 			++s;
-			while (s < n and m_G.get_out_degree(s) == 0) { ++s; }
-			found = s < n;
+			while (s < m_num_nodes and m_G.get_out_degree(s) == 0) { ++s; }
+			found = s < m_num_nodes;
 		}
 		return make_pair(found, E_pointer(s, pt));
 	}
@@ -260,13 +260,11 @@ private:
 	 */
 	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const noexcept {
-		const uint64_t n = m_G.get_num_nodes();
-
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;
 		bool found = false;
 
-		while (s < n and not found) {
+		while (s < m_num_nodes and not found) {
 			const auto& Ns = m_G.get_neighbours(s);
 			while (pt < Ns.size() and s > Ns[pt]) { ++pt; }
 
