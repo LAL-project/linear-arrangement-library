@@ -65,10 +65,8 @@ namespace utilities {
  *
  * this function computes the following average
  *
- * \f$
- * A_1(Q,R) = \left( F_Q\left( \bigoplus_{i=1}^n Q_i \right) \right) \odot
- *          \left( F_R\left( \bigotimes_{i=1}^n R_i \right) \right)
- * \f$
+ * \f$A_1(Q,R) = \left( F_Q\left( \bigoplus_{i=1}^n Q_i \right) \right) \odot
+ *          \left( F_R\left( \bigotimes_{i=1}^n R_i \right) \right)\f$
  *
  * The values \f$Q_i\f$ and \f$R_i\f$ are obtained from applying function @e QR
  * passed as parameter. This function iterates over two sets of elements, where
@@ -197,9 +195,7 @@ noexcept
  *
  * this function computes the following average
  *
- * \f$
- * A_2(Q,R) = F\left( \bigotimes_{i=1}^n (Q_i\oplus R_i) \right)
- * \f$
+ * \f$A_2(Q,R) = F\left( \bigotimes_{i=1}^n (Q_i\oplus R_i) \right)\f$
  *
  * The values \f$Q_i\f$ and \f$R_i\f$ are obtained from applying function @e values
  * passed as parameter. This function iterates over two sets of elements, where
