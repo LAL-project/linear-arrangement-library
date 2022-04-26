@@ -182,28 +182,28 @@ noexcept
 			= std::make_pair(total, mem.count[k] + total);
 	}
 
-	std::size_t size_container = 0;
+	std::size_t actual_container_size = 0;
 	for (auto it = begin; it != end; ) {
-		++size_container;
+		++actual_container_size;
 
 		// get the key of the element into a variable so that
 		// the function is NOT called more than once per iteration
 		const std::size_t elem_key = key(*it);
 
 		mem.output[mem.count[elem_key]] = std::move(*(it++));
-		mem.count[elem_key] += 1;
+		++mem.count[elem_key];
 	}
 
 	// calculate output
 	if constexpr (is_increasing) {
 		auto it = begin;
-		for (std::size_t k = 0; k < size_container;) {
+		for (std::size_t k = 0; k < actual_container_size;) {
 			*(it++) = std::move(mem.output[k++]);
 		}
 	}
 	else {
 		auto it = begin;
-		for (std::size_t k = size_container - 1; k > 0;) {
+		for (std::size_t k = actual_container_size - 1; k > 0;) {
 			*(it++) = std::move(mem.output[k--]);
 		}
 		*it = std::move(mem.output[0]);
