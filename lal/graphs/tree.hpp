@@ -186,15 +186,36 @@ public:
 	virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
 	/**
+	 * @brief Representative node of the connected component in which @e u belongs.
+	 *
+	 * If the current graph lacks some edges then it is clearly a forest,
+	 * i.e., a series of disconnected components. This function returns a
+	 * representative node of the connected component to which node @e u belongs.
+	 *
+	 * Further, let \f$cc(u)\f$ be the connected component of vertex @e u, and
+	 * \f$rep(cc(u))\f$ be the representative node of \f$cc(u)\f$. For every
+	 * other node \f$v\in cc(u)\f$, this function will return the same
+	 * representative node \f$rep(cc(u))\f$. Therefore, \f$rep(cc(u))=rep(cc(v))\f$
+	 * for every $v\in cc(u)\f$.
+	 * @param u Input node.
+	 * @returns The representative node of node @e u's component.
+	 */
+	uint64_t get_component_representative(node u) const noexcept {
+#if defined DEBUG
+		assert(has_node(u));
+#endif
+		return m_root_of[u];
+	}
+
+	/**
 	 * @brief Amount of nodes in a connected component of the tree.
 	 *
-	 * When tree has had an edge removed, or when it is not completely
-	 * built, i.e., it lack some edges, the resulting graph is clearly
-	 * a forest. This function returns the size of the forest node @e u
-	 * belongs to.
+	 * If the current graph lacks some edges then it is clearly a forest,
+	 * i.e., a series of disconnected components. This function returns the size
+	 * of the component node @e u belongs to.
 	 *
-	 * In directed trees one has to see this amount as the number of nodes
-	 * of the component in the undirected version of the forest.
+	 * In rooted trees one has to see this amount as the number of nodes of the
+	 * component in the underlying undirected forest.
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
