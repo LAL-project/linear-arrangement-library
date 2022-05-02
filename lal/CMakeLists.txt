@@ -78,7 +78,7 @@ endif()
 
 # project's version
 set(LAL_MAJOR 21.07)
-set(LAL_PATCH 00)
+set(LAL_PATCH 01)
 
 # project declaration
 project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
