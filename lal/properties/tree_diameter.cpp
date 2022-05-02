@@ -48,11 +48,11 @@ namespace lal {
 namespace properties {
 
 uint64_t tree_diameter(const graphs::free_tree& t) noexcept {
-	return detail::tree_diameter(t);
+	return detail::tree_diameter(t, 0);
 }
 
 uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept {
-	return detail::tree_diameter(t);
+	return detail::tree_diameter(t, 0);
 }
 
 } // -- namespace properties

@@ -55,14 +55,14 @@ std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return detail::retrieve_centre<graphs::rooted_tree>(t, 0);
+	return detail::retrieve_centre(t, 0);
 }
 
 std::pair<node, node> tree_centre(const graphs::free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return detail::retrieve_centre<graphs::free_tree>(t, 0);
+	return detail::retrieve_centre(t, 0);
 }
 
 } // -- namespace properties
