@@ -58,18 +58,22 @@ namespace detail {
 /**
  * @brief Calculate the diameter of a tree.
  *
- * The diameter of the tree is the length of the longest path. See \cite Harary1969a
+ * The diameter of the connected component to which node @e x belongs to.
+ * The diameter is the length of the longest path. See \cite Harary1969a
  * (pages 24, 35) for further details.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
+ * @param x Input node.
  * @returns The diameter of the tree.
  */
 template<
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-uint64_t tree_diameter(const tree_t& t) noexcept
+uint64_t tree_diameter(const tree_t& t, node x) noexcept
 {
+	if (t.get_num_nodes_component(x) == 1) { return 0; }
+
 	const uint64_t n = t.get_num_nodes();
 
 	BFS<tree_t> bfs(t);
@@ -81,25 +85,25 @@ uint64_t tree_diameter(const tree_t& t) noexcept
 	bfs.set_use_rev_edges(false);
 	}
 
-	// find a leaf
-	node leaf = 0;
-	while (leaf < n and t.get_degree(leaf) > 1) { ++leaf; }
-#if defined DEBUG
-	// a leaf must exist in 't'
-	assert(leaf < n);
-#endif
+	node farthest_from_x;
 
+	// calculate the farthest vertex from a starting 'random' vertex
+	bfs.set_process_neighbour
+	( [&](const auto&, node, node v, bool) { farthest_from_x = v; } );
+	bfs.start_at(x);
+
+	// calculate the longest distance from 'farthest_from_0'
 	uint64_t diameter = 0;
-	data_array<uint64_t> distance_from_leaf(n, 0);
+	data_array<uint64_t> distance(n, 0);
 
-	// calculate the maximum distance (in edges)
+	bfs.clear_visited();
+	bfs.clear_queue();
+
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) {
-		distance_from_leaf[v] = distance_from_leaf[u] + 1;
-		diameter = std::max(diameter, distance_from_leaf[v]);
-	}
+		distance[v] = distance[u] + 1; diameter = std::max(diameter, distance[v]); }
 	);
-	bfs.start_at(leaf);
+	bfs.start_at(farthest_from_x);
 
 	return diameter;
 }
