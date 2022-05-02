@@ -63,9 +63,11 @@ template<
 	bool> = true
 >
 uint32_t tree_diameter(const T& t) {
-	const uint32_t n = t.get_num_nodes();
+	if (t.get_num_nodes_component(0) == 1) { return 0; }
 
-	BFS<T> bfs(t);
+	const uint64_t n = t.get_num_nodes();
+
+	BFS bfs(t);
 
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
 	bfs.set_use_rev_edges(true);
@@ -74,25 +76,30 @@ uint32_t tree_diameter(const T& t) {
 	bfs.set_use_rev_edges(false);
 	}
 
-	// find a leaf
-	node leaf = 0;
-	while (leaf < n and t.get_degree(leaf) > 1) { ++leaf; }
-#if defined DEBUG
-	// a leaf must exist in 't'
-	assert(leaf < n);
-#endif
+	node farthest_from_0;
 
+	// calculate the farthest vertex from a starting 'random' vertex
+	bfs.set_process_neighbour
+	( [&](const auto&, node, node v, bool) { farthest_from_0 = v; } );
+	bfs.start_at(0);
+
+	// calculate the longest distance from 'farthest_from_0'
 	uint32_t diameter = 0;
-	data_array<uint32_t> distance_from_leaf(n, 0);
+	data_array<uint32_t> distance(n, 0);
 
-	// calculate the maximum distance (in edges)
+	bfs.reset();
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, T>) {
+	bfs.set_use_rev_edges(true);
+	}
+	else {
+	bfs.set_use_rev_edges(false);
+	}
+
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) {
-		distance_from_leaf[v] = distance_from_leaf[u] + 1;
-		diameter = std::max(diameter, distance_from_leaf[v]);
-	}
+		distance[v] = distance[u] + 1; diameter = std::max(diameter, distance[v]); }
 	);
-	bfs.start_at(leaf);
+	bfs.start_at(farthest_from_0);
 
 	return diameter;
 }
