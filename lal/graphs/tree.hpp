@@ -196,7 +196,7 @@ public:
 	 * \f$rep(cc(u))\f$ be the representative node of \f$cc(u)\f$. For every
 	 * other node \f$v\in cc(u)\f$, this function will return the same
 	 * representative node \f$rep(cc(u))\f$. Therefore, \f$rep(cc(u))=rep(cc(v))\f$
-	 * for every $v\in cc(u)\f$.
+	 * for every \f$v\in cc(u)\f$.
 	 * @param u Input node.
 	 * @returns The representative node of node @e u's component.
 	 */
