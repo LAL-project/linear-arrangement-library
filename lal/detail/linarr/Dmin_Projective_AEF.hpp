@@ -83,7 +83,7 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
-		return std::make_pair(0, linear_arrangement::identity(1));
+		return {0, linear_arrangement::identity(1)};
 	}
 
 	// Make the sorted adjacency list rooted at the centroid of the tree.

@@ -86,7 +86,7 @@ noexcept
 	uint64_t *sizes = nullptr;
 
 	const uint64_t n = T.get_num_nodes();
-	if (n <= 1) { return {es, sizes}; }
+	if (n <= 1) { return {std::move(es), sizes}; }
 
 	// reserve some space for the vector edges
 	// initialise the array of sizes if needed
@@ -149,7 +149,7 @@ noexcept
 			}
 			e.second = relabelling[t];
 
-			es.push_back(e);
+			es.emplace_back(e);
 		}
 		);
 	}
@@ -164,13 +164,13 @@ noexcept
 				sizes[s] = T.get_num_nodes_subtree(s);
 				sizes[t] = T.get_num_nodes_subtree(t);
 			}
-			es.push_back(edge(s,t));
+			es.emplace_back(s,t);
 		}
 		);
 	}
 	bfs.start_at(u);
 
-	return {es, sizes};
+	return {std::move(es), sizes};
 }
 
 } // -- namespace detail

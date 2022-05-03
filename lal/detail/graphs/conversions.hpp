@@ -124,7 +124,7 @@ noexcept
 			return graphs::rooted_tree(0);
 		}
 		else {
-			return std::make_pair(graphs::free_tree(0), 0);
+			return {graphs::free_tree(0), 0};
 		}
 	}
 	if (hv.size() == 1) {
@@ -136,7 +136,7 @@ noexcept
 			return graphs::rooted_tree(1);
 		}
 		else {
-			return std::make_pair(graphs::free_tree(1), 0);
+			return {graphs::free_tree(1), 0};
 		}
 	}
 
@@ -196,7 +196,7 @@ noexcept
 		assert(t.is_tree());
 #endif
 
-		return std::make_pair(t, *r);
+		return {std::move(t), *r};
 	}
 }
 

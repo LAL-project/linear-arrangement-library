@@ -225,7 +225,7 @@ private:
 			s = m_cur.first;
 			t = m_G.get_neighbours(s)[m_cur.second];
 		}
-		return edge(s,t);
+		return {s,t};
 	}
 
 	/**
@@ -250,7 +250,7 @@ private:
 			while (s < m_num_nodes and m_G.get_out_degree(s) == 0) { ++s; }
 			found = s < m_num_nodes;
 		}
-		return make_pair(found, E_pointer(s, pt));
+		return {found, E_pointer(s, pt)};
 	}
 	/**
 	 * @brief Finds the next edge on an undirected graph.
@@ -274,7 +274,7 @@ private:
 				pt = 0;
 			}
 		}
-		return make_pair(found, E_pointer(s, pt));
+		return {found, E_pointer(s, pt)};
 	}
 };
 
