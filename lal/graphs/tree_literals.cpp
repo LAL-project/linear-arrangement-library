@@ -49,7 +49,7 @@
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
-[[nodiscard]] std::pair<lal::graphs::free_tree, lal::node>
+std::pair<lal::graphs::free_tree, lal::node>
 operator""_pfree_tree (const char *hv_str, std::size_t)
 noexcept
 {
@@ -63,7 +63,7 @@ noexcept
 	return lal::graphs::from_head_vector_to_free_tree(hv);
 }
 
-[[nodiscard]] lal::graphs::free_tree
+lal::graphs::free_tree
 operator""_free_tree (const char *hv_str, std::size_t)
 noexcept
 {
@@ -77,7 +77,7 @@ noexcept
 	return std::move(lal::graphs::from_head_vector_to_free_tree(hv).first);
 }
 
-[[nodiscard]] lal::graphs::rooted_tree
+lal::graphs::rooted_tree
 operator""_rooted_tree (const char *hv_str, std::size_t)
 noexcept
 {
