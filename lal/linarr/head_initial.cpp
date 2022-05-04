@@ -55,7 +55,7 @@ namespace lal {
 namespace linarr {
 
 inline
-uint64_t left_branching_edges(const graphs::directed_graph& g, const linear_arrangement& pi)
+uint64_t right_branching_edges(const graphs::directed_graph& g, const linear_arrangement& pi)
 noexcept
 {
 	uint64_t edges_to_right = 0;
@@ -75,7 +75,7 @@ noexcept
 #endif
 
 	const uint64_t etr =
-		detail::call_with_empty_arrangement(left_branching_edges, g, pi);
+		detail::call_with_empty_arrangement(right_branching_edges, g, pi);
 	return numeric::rational(etr, g.get_num_edges());
 }
 
@@ -87,7 +87,7 @@ double head_initial
 #endif
 
 	const uint64_t etr =
-		detail::call_with_empty_arrangement(left_branching_edges, g, pi);
+		detail::call_with_empty_arrangement(right_branching_edges, g, pi);
 
 	return detail::to_double(etr)/detail::to_double(g.get_num_edges());
 }
