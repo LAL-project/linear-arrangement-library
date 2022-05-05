@@ -229,15 +229,15 @@ noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node y : t.get_out_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
+			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 		for (const node y : t.get_in_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
+			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}
 	else {
 		for (const node y : t.get_neighbours(x)) {
-			calculate_bidirectional_sizes<tree_t, iterator_t>(t,n, x, y, it);
+			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}
 }
