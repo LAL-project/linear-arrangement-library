@@ -52,7 +52,7 @@
 #include <lal/detail/avl.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define DECIDED_C_GT (upper_bound + 1)

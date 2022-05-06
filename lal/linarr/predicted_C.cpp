@@ -50,7 +50,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
 namespace linarr {

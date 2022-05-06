@@ -49,7 +49,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
 namespace properties {

@@ -49,7 +49,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/macros/call_with_empty_arr.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
 namespace linarr {

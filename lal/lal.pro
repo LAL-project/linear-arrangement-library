@@ -80,7 +80,7 @@ HEADERS += \
     detail/data_array.hpp \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
-    detail/macros/integer_convert.hpp \
+    detail/macros/basic_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \

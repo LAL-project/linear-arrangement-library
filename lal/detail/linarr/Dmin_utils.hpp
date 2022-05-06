@@ -62,7 +62,7 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
 namespace detail {

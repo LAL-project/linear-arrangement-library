@@ -47,7 +47,7 @@
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/integer.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 #define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
 

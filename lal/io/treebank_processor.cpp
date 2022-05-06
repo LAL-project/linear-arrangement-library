@@ -79,7 +79,7 @@
 #include <lal/detail/linarr/Dmin_utils.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 #define square(x) ((x)*(x))
 

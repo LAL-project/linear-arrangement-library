@@ -48,7 +48,7 @@
 
 // lal includes
 #include <lal/detail/graphs/conversions.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
 namespace generate {
@@ -113,8 +113,8 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 		m_head_vector[nt + 1] = nt;
 		// The returned indices are:
 		//    nt: the root of the last tree generated is placed at 'nt'
-		//    nt+1: the place where to store the next tree that will be generated
-		//          has to be placed at nt+1
+		//    nt+2: the place where to store the next tree that will be generated
+		//          has to be placed at nt+2
 		return {nt, nt + 2};
 	}
 

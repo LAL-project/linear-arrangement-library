@@ -50,7 +50,7 @@
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros/integer_convert.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::detail::data_array<size_node> ordering;
