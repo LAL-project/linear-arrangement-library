@@ -164,7 +164,10 @@ public:
 	 * This is meant to be used after several calls to
 	 * @ref undirected_graph::add_edge_bulk,
 	 * @ref directed_graph::add_edge_bulk.
-	 * @param norm Normalise the graph
+	 *
+	 * Also, the graph must have been completely constructed after all the
+	 * bulk additions of edges to the graph.
+	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;

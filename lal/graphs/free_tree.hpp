@@ -168,7 +168,7 @@ public:
 	 * @brief Finishes adding edges in bulk.
 	 * @param norm Normalise the tree.
 	 * @param check Check whether the tree is normalised or not.
-	 * @pre All edges have been added.
+	 * @pre All edges of the have been added with method @ref add_edge_bulk.
 	 */
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 

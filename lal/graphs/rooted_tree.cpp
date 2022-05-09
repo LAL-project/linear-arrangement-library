@@ -117,6 +117,7 @@ rooted_tree& rooted_tree::add_edge
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
+
 	directed_graph::add_edge(u,v, norm, check_norm);
 
 	// There is no need to invalidate
@@ -134,6 +135,7 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
+
 	directed_graph::add_edge_bulk(u,v);
 
 	// There is no need to invalidate
@@ -151,6 +153,7 @@ void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
+
 	directed_graph::finish_bulk_add(norm, check);
 	fill_union_find();
 
@@ -192,17 +195,17 @@ rooted_tree& rooted_tree::set_edges
 	directed_graph::set_edges(edges, to_norm, check_norm);
 
 	// find the tree's root
-	std::optional<node> R;
+	node R = get_num_nodes() + 1;
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		if (get_in_degree(u) == 0) {
 			// there can only be one root vertex
 #if defined DEBUG
-			assert(not R);
+			assert(R > get_num_nodes());
 #endif
 			R = u;
 		}
 	}
-	set_root(*R);
+	set_root(R);
 
 	tree_only_set_edges();
 

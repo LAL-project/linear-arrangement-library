@@ -96,6 +96,7 @@ free_tree& free_tree::add_edge(node u, node v, bool norm, bool check_norm) noexc
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
+
 	undirected_graph::add_edge(u,v, norm, check_norm);
 
 	// There is no need to invalidate
@@ -112,6 +113,7 @@ free_tree& free_tree::add_edge_bulk(node u, node v) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
+
 	undirected_graph::add_edge_bulk(u,v);
 
 	// There is no need to invalidate
@@ -128,10 +130,8 @@ void free_tree::finish_bulk_add(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
-	// note: method 'actions_after_edge_add' is called for every edge
-	// in the set 'edges' by the next method.
-	undirected_graph::finish_bulk_add(norm, check);
 
+	undirected_graph::finish_bulk_add(norm, check);
 	fill_union_find();
 
 	// There is no need to invalidate
