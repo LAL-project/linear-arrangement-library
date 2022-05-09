@@ -151,37 +151,6 @@ noexcept;
 // edge list -> graph
 
 /**
- * @brief Converts an edge list into a graph.
- *
- * An edge list is a list of pairs of indices, each index in the pair being
- * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
- * of the tree.
- *
- * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
- * @param edge_list An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
- * it is nor not?
- * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
- * @pre No edge in the list is repeated.
- */
-template<class graph_t>
-graph_t from_edge_list_to_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
-noexcept
-{
-	uint64_t max_vertex_index = 0;
-	for (const edge& e : edge_list) {
-		max_vertex_index = std::max(max_vertex_index, e.first);
-		max_vertex_index = std::max(max_vertex_index, e.second);
-	}
-	const uint64_t num_nodes = 1 + max_vertex_index;
-	graph_t g(num_nodes);
-	g.set_edges(edge_list, normalise, check);
-	return g;
-}
-
-/**
  * @brief Converts an edge list into a rooted tree.
  *
  * An edge list is a list of pairs of indices, each index in the pair being
@@ -197,13 +166,9 @@ noexcept
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-inline
 rooted_tree from_edge_list_to_rooted_tree
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
-noexcept
-{
-	return from_edge_list_to_graph<rooted_tree>(edge_list, normalise, check);
-}
+noexcept;
 
 /**
  * @brief Converts an edge list into a rooted tree.
@@ -221,13 +186,9 @@ noexcept
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-inline
 free_tree from_edge_list_to_free_tree
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
-noexcept
-{
-	return from_edge_list_to_graph<free_tree>(edge_list, normalise, check);
-}
+noexcept;
 
 /**
  * @brief Converts an edge list into a directed graph.
@@ -244,13 +205,9 @@ noexcept
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-inline
 directed_graph from_edge_list_to_directed_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
-noexcept
-{
-	return from_edge_list_to_graph<directed_graph>(edge_list, normalise, check);
-}
+noexcept;
 
 /**
  * @brief Converts an edge list into an undirected graph.
@@ -267,13 +224,9 @@ noexcept
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-inline
 undirected_graph from_edge_list_to_undirected_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
-noexcept
-{
-	return from_edge_list_to_graph<undirected_graph>(edge_list, normalise, check);
-}
+noexcept;
 
 } // -- namespace graphs
 } // -- namespace lal

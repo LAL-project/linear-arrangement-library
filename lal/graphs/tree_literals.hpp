@@ -46,65 +46,82 @@
 #include <lal/graphs/rooted_tree.hpp>
 
 /**
- * @brief User-defined literal to denote free trees.
+ * @brief String literal to easily describe free trees.
  *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
+ * This is meant to be used only on strings that represent:
+ * - an edge list, or
+ * - a head vector.
+ * See the code example for the format of both.
+ *
+ * Numbers in valid strings are always in base 10. The number of spaces that
+ * separate characters can be arbitrarily long or short.
  *
  @code
- const std::pair<lal::graphs::free_tree, lal::node> tree_and_root = "0 1 1 1 1 1"_pfree_tree;
+ const std::pair<lal::graphs::free_tree, lal::node> tree_and_root =
+	"0 1 1 1 1 1"_root_free_tree;
+ const std::pair<lal::graphs::free_tree, lal::node> tree_and_root =
+	"{0 1} {0 2} {0 3} {0 4} {0 5} {0 6}"_root_free_tree;
  @endcode
  *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the result of @ref lal::graphs::from_head_vector_to_free_tree
- * when passed to it the head vector encoded in @e hv_str as parameter.
+ * @param str A pointer to a C-string encoding the head vector or the edge list.
+ * @param s Size of @e str.
+ * @returns Returns a std::pair<@ref lal::graphs::free_tree,@ref lal::node>.
+ * In case the input string is a head vector the node is the root of the head
+ * vector. In case the input is an edge list, the node is invalid, i.e., a value
+ * larger than the number of vertices.
+ * @post The tree is normalized.
  */
 [[nodiscard]] std::pair<lal::graphs::free_tree, lal::node>
-operator""_pfree_tree (const char *hv_str, std::size_t s)
+operator""_root_free_tree (const char *str, std::size_t s)
 noexcept;
 
 /**
  * @brief User-defined literal to denote free trees.
  *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
+ * This is meant to be used only on strings that represent:
+ * - an edge list, or
+ * - a head vector.
+ * See the code example for the format of both.
+ *
+ * Numbers in valid strings are always in base 10. The number of spaces that
+ * separate characters can be arbitrarily long or short.
  *
  @code
  const lal::graphs::free_tree tree = "0 1 1 1 1 1"_free_tree;
+ const lal::graphs::free_tree tree =
+	"{0 1} {0 2} {0 3} {0 4} {0 5} {0 6}"_free_tree;
  @endcode
  *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the first element in the result of function
- * @ref lal::graphs::from_head_vector_to_free_tree when passed to it the head
- * vector encoded in @e hv_str as parameter.
+ * @param str A pointer to a C-string encoding the head vector or the edge list.
+ * @param s Size of @e str.
+ * @returns Returns a @ref lal::graphs::free_tree.
+ * @post The tree is normalized.
  */
 [[nodiscard]] lal::graphs::free_tree
-operator""_free_tree (const char *hv_str, std::size_t s)
+operator""_free_tree (const char *str, std::size_t s)
 noexcept;
 
 /**
  * @brief User-defined literal to denote free trees.
  *
- * This is meant to be used only on strings that represent a head vector.
- * Such a string is valid when it contains only base 10 decimal values all
- * separated by spaces. The number of spaces that separate two decimal values
- * can be arbitrarily long.
+ * This is meant to be used only on strings that represent:
+ * - an edge list, or
+ * - a head vector.
+ * See the code example for the format of both.
+ *
+ * Numbers in valid strings are always in base 10. The number of spaces that
+ * separate characters can be arbitrarily long or short.
  *
  @code
  const lal::graphs::rooted_tree tree = "0 1 1 1 1 1"_rooted_tree;
+ const lal::graphs::rooted_tree tree =
+	"{0 1} {0 2} {0 3} {0 4} {0 5} {0 6}"_rooted_tree;
  @endcode
- *
- * @param hv_str A pointer to a C-string encoding the head vector.
- * @param s Size of @e hv_str.
- * @returns Returns the result of @ref lal::graphs::from_head_vector_to_free_tree
- * when passed as parameter the head vector encoded in @e hv_str.
+ * @param str A pointer to a C-string encoding the head vector or the edge list.
+ * @param s Size of @e str.
+ * @returns Returns a @ref lal::graphs::free_tree.
+ * @post The tree is normalized.
  */
 [[nodiscard]] lal::graphs::rooted_tree
-operator""_rooted_tree (const char *hv_str, std::size_t s)
+operator""_rooted_tree (const char *str, std::size_t s)
 noexcept;

@@ -43,7 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <optional>
+#include <sstream>
 
 // lal includes
 #include <lal/basic_types.hpp>
@@ -55,7 +55,208 @@ namespace lal {
 namespace detail {
 
 // -----------------------------------------------------------------------------
+// -- EDGE LIST --
+
+template<
+	typename tree_t,
+	bool ensure_root_is_returned,
+	bool free_tree_plus_root =
+		ensure_root_is_returned and
+		std::is_same_v<tree_t, lal::graphs::free_tree>
+>
+std::conditional_t<
+	free_tree_plus_root,
+	std::pair<tree_t, lal::node>,
+	tree_t
+>
+from_edge_list_to_tree(std::stringstream& ss) noexcept
+{
+	// Read an edge list: {1 2} {2 3} {4 5} ...
+	// The edge list is assumed to be complete due to
+	// the requirements of this function.
+
+	uint64_t max_node_idx = 0;
+
+	// parse the edge list to find the
+	// number of vertices of the tree
+	char curly_bracket;
+	lal::node u,v;
+	while (ss >> curly_bracket) {
+		ss >> u >> v >> curly_bracket;
+		max_node_idx = std::max(max_node_idx, u);
+		max_node_idx = std::max(max_node_idx, v);
+	}
+	ss.clear();
+	ss.seekg(0);
+
+	const auto num_nodes = max_node_idx + 1;
+
+	// read the edge list (again...) to construct the tree
+	// without using extra memory
+
+	tree_t t(num_nodes);
+	while (ss >> curly_bracket) {
+		ss >> u >> v >> curly_bracket;
+		t.add_edge_bulk(u,v);
+	}
+	t.finish_bulk_add();
+
+	if constexpr (std::is_same_v<tree_t, lal::graphs::rooted_tree>) {
+#if defined DEBUG
+		// If in the future the call to "finish_bulk_add" above
+		// finds the root of the tree then this assertion should
+		// fail and thus giving us a heads up that the code that
+		// follows is completely useless, hence saving us some
+		// execution time...
+		assert(not t.has_root());
+#endif
+
+		// find and set the root in linear time :( ...
+		for (lal::node w = 0; w < num_nodes; ++w) {
+			if (t.get_in_degree(w) == 0) {
+				t.set_root(w);
+				break;
+			}
+		}
+
+#if defined DEBUG
+		assert(t.is_rooted_tree());
+#endif
+	}
+	else {
+#if defined DEBUG
+		assert(t.is_tree());
+#endif
+	}
+
+	if constexpr (free_tree_plus_root) {
+		static_assert(std::is_same_v<tree_t, lal::graphs::free_tree>);
+		return {std::move(t), num_nodes + 1};
+	}
+	else {
+		return t;
+	}
+}
+
+/**
+ * @brief Converts an edge list into a graph.
+ *
+ * An edge list is a list of pairs of indices, each index in the pair being
+ * different and in \f$[0,n-1]\f$., where \f$n\f$ is the number of vertices
+ * of the tree.
+ *
+ * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
+ * @param edge_list An edge list.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre No edge in the list is repeated.
+ */
+template<class graph_t>
+graph_t from_edge_list_to_graph
+(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+noexcept
+{
+	uint64_t max_vertex_index = 0;
+	for (const edge& e : edge_list) {
+		max_vertex_index = std::max(max_vertex_index, e.first);
+		max_vertex_index = std::max(max_vertex_index, e.second);
+	}
+	const uint64_t num_nodes = 1 + max_vertex_index;
+	graph_t g(num_nodes);
+	g.set_edges(edge_list, normalise, check);
+	return g;
+}
+
+// -----------------------------------------------------------------------------
 // -- HEAD VECTOR --
+
+
+template <
+	typename tree_t,
+	bool ensure_root_is_returned,
+	bool free_tree_plus_root =
+		ensure_root_is_returned and
+		std::is_same_v<tree_t, lal::graphs::free_tree>
+>
+std::conditional_t<
+	free_tree_plus_root,
+	std::pair<tree_t, lal::node>,
+	tree_t
+>
+from_head_vector_to_tree(std::stringstream& ss) noexcept
+{
+	uint64_t num_nodes = 0;
+
+	// parse the edge list to find the number of vertices of the tree
+	lal::node u;
+	while (ss >> u) { ++num_nodes; }
+	ss.clear();
+	ss.seekg(0);
+
+	// construct the tree
+	tree_t t(num_nodes);
+
+	// root node of the tree
+	lal::node r = num_nodes + 1;
+
+#if defined DEBUG
+	uint64_t num_edges_added = 0;
+#endif
+
+	uint64_t i = 0;
+	while (ss >> u) {
+		if (u == 0) {
+			// root, do nothing
+			r = i;
+		}
+		else {
+			// note:
+			// * i ranges in [0,n-1]
+			// * L[i] ranges in [1,n] (hence the '-1')
+
+			// In the head vector the edge (i, hv[i] - 1) is an edge of an
+			// anti-arborescence. Since for our rooted trees we need the edge
+			// of an arborescence, then we add the edge as (hv[i] - 1, i).
+			// For free trees the order of vertices does not matter.
+			t.add_edge_bulk(u - 1, i);
+
+#if defined DEBUG
+			++num_edges_added;
+#endif
+		}
+		++i;
+	}
+
+#if defined DEBUG
+	// root must have been set
+	assert(r < num_nodes);
+	// amount of edges added must be 'n-1'
+	assert(num_edges_added == num_nodes - 1);
+#endif
+
+	t.finish_bulk_add();
+	if constexpr (std::is_same_v<tree_t, lal::graphs::rooted_tree>) {
+		t.set_root(r);
+#if defined DEBUG
+		assert(t.is_rooted_tree());
+#endif
+	}
+	else {
+#if defined DEBUG
+		assert(t.is_tree());
+#endif
+	}
+
+	if constexpr (free_tree_plus_root) {
+		static_assert(std::is_same_v<tree_t, lal::graphs::free_tree>);
+		return {std::move(t), r};
+	}
+	else {
+		return t;
+	}
+}
 
 /**
  * @brief Constructs the head vector representation of a tree.
@@ -140,19 +341,19 @@ noexcept
 		}
 	}
 
-	const uint64_t n = hv.size();
+	const uint64_t num_nodes = hv.size();
 
 	// output tree
-	tree_t t(n);
+	tree_t t(num_nodes);
 
 	// root node of the tree
-	std::optional<node> r;
+	node r = num_nodes + 1;
 
 #if defined DEBUG
 	uint64_t num_edges_added = 0;
 #endif
 
-	for (uint64_t i = 0; i < n; ++i) {
+	for (uint64_t i = 0; i < num_nodes; ++i) {
 		if (hv[i] == 0) {
 			// root, do nothing
 			r = i;
@@ -176,15 +377,15 @@ noexcept
 
 #if defined DEBUG
 	// root must have been set
-	assert(r);
+	assert(r < num_nodes);
 	// amount of edges added must be 'n-1'
-	assert(num_edges_added == n - 1);
+	assert(num_edges_added == num_nodes - 1);
 #endif
 
 	t.finish_bulk_add(normalise, check);
 
 	if constexpr (is_rooted) {
-		t.set_root(*r);
+		t.set_root(r);
 #if defined DEBUG
 		assert(t.is_rooted_tree());
 #endif
@@ -196,7 +397,7 @@ noexcept
 		assert(t.is_tree());
 #endif
 
-		return {std::move(t), *r};
+		return {std::move(t), r};
 	}
 }
 
