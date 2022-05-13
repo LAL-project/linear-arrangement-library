@@ -48,6 +48,7 @@
 #include <vector>
 
 // lal includes
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -556,43 +557,13 @@ public:
 	/**
 	 * @brief Converts a rooted tree into a head vector.
 	 *
-	 * A head vector of an @e n-vertex tree is a list of non-negative integer
-	 * numbers. The number at position @e i denotes the parent node of the vertex
-	 * at said position. Value '0' denotes the root. In this case, the vertex
-	 * corresponding to the value '0' is not labelled as a root.
+	 * See @ref LAL_concepts__head_vector page for a definition of 'head vector'.
 	 *
-	 * Each tree is formatted as a list of whole, positive numbers (including
-	 * zero), each representing a node of the tree. The number 0 denotes the root
-	 * of the tree, and a number at a certain position indicates its parent node.
-	 * For example, when number 4 is at position 9 it means that node 9 has parent
-	 * node 4. Therefore, if number 0 is at position 1 it means that node 1 is
-	 * the root of the tree. A complete example of such a tree's representation
-	 * is the following
-	 *
-	 *       0 3 4 1 6 3
-	 *
-	 *
-	 * which should be interpreted as
-	 *
-	 *		(a) predecessor:       0 3 4 1 6 3
-	 *		(b) node of the tree:  1 2 3 4 5 6
-	 *
-	 *
-	 * Note that lines like these are not valid:
-	 *
-	 *		(1) 0 2 2 2 2 2
-	 *		(2) 2 0 0
-	 *
-	 *
-	 * Line (1) is not valid due to a self-reference in the second position,
-	 * and (2) is not valid since it contains two '0' (i.e., two roots).
-	 *
-	 * Methods @ref lal::io::read_head_vector read a head vector from a file in
-	 * disk.
+	 * @param arr Linear arrangement of the tree.
 	 * @returns The head vector representation of this tree.
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	head_vector get_head_vector() const noexcept;
+	head_vector get_head_vector(const linear_arrangement& arr = {}) const noexcept;
 
 	/**
 	 * @brief Does the subtree rooted at @e r contain node @e u?

@@ -237,11 +237,13 @@ void free_tree::calculate_tree_type() noexcept {
 
 /* GETTERS */
 
-head_vector free_tree::get_head_vector(node r) const noexcept {
+head_vector free_tree::get_head_vector(node r, const linear_arrangement& arr)
+const noexcept
+{
 #if defined DEBUG
 	assert(has_node(r));
 #endif
-	return detail::from_tree_to_head_vector(*this, r);
+	return detail::from_tree_to_head_vector(*this, r, arr);
 }
 
 /* PROTECTED */

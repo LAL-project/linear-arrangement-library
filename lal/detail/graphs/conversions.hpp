@@ -47,6 +47,7 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
+#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/data_array.hpp>
@@ -261,10 +262,13 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 /**
  * @brief Constructs the head vector representation of a tree.
  * @param t Input rooted tree.
+ * @param arr Linear arrangement of the vertices.
  * @returns A head vector encoding the tree.
  */
 inline
-head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
+head_vector from_tree_to_head_vector
+(const graphs::rooted_tree& t, const linear_arrangement& arr = {})
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -272,15 +276,30 @@ head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	head_vector hv(n);
-	for (node u = 0; u < n; ++u) {
-		if (u == t.get_root()) {
-			hv[u] = 0;
-		}
-		else {
-			// this is guaranteed to be a legal access (within bounds).
-			hv[u] = t.get_in_neighbours(u)[0] + 1;
+
+	if (arr.size() == 0) {
+		for (node u = 0; u < n; ++u) {
+			if (u == t.get_root()) {
+				hv[u] = 0;
+			}
+			else {
+				// this is guaranteed to be a legal access (within bounds).
+				hv[u] = t.get_in_neighbours(u)[0] + 1;
+			}
 		}
 	}
+	else {
+		for (position_t p = 0ull; p < n; ++p) {
+			const node u = arr[p];
+			if (t.get_root() == u) {
+				hv[*p] = 0;
+			}
+			else {
+				hv[*p] = t.get_in_neighbours(u)[0];
+			}
+		}
+	}
+
 	return hv;
 }
 
@@ -288,15 +307,19 @@ head_vector from_tree_to_head_vector(const graphs::rooted_tree& t) noexcept
  * @brief Constructs the head vector representation of a tree.
  * @param t Input free tree.
  * @param r Root of the tree.
+ * @param arr Linear arrangement of the vertices.
  * @returns A head vector
  */
 inline
-head_vector from_tree_to_head_vector(const graphs::free_tree& t, node r) noexcept
+head_vector from_tree_to_head_vector
+(const graphs::free_tree& t, node r, const linear_arrangement& arr = {})
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return from_tree_to_head_vector(graphs::rooted_tree(t,r));
+
+	return from_tree_to_head_vector(graphs::rooted_tree(t,r), arr);
 }
 
 /**

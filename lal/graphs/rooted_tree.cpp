@@ -465,8 +465,8 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 	return t;
 }
 
-head_vector rooted_tree::get_head_vector() const noexcept {
-	return detail::from_tree_to_head_vector(*this);
+head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const noexcept {
+	return detail::from_tree_to_head_vector(*this, arr);
 }
 
 bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
