@@ -295,7 +295,8 @@ noexcept
 				hv[*p] = 0;
 			}
 			else {
-				hv[*p] = t.get_in_neighbours(u)[0];
+				const node_t parent = t.get_in_neighbours(u)[0];
+				hv[*p] = arr[parent] + 1;
 			}
 		}
 	}
