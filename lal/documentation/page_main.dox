@@ -165,11 +165,12 @@ The possibility of expliciting a linear arrangement increases the flexibility of
 lal::graphs::free_tree t(4);
 t.add_edges({lal::edge(0,1), lal::edge(1,2), lal::edge(2,3)});
 lal::numeric::rational Dt = 0;
-lal::linearrgmnt arr = {0,1,2,3};
+lal::linear_arrangement arr({0,1,2,3});
 do {
-		Dt += lal::linarr::sum_edge_lengths(t, arr);
+	arr.update_inverse();
+	Dt += lal::linarr::sum_edge_lengths(t, arr);
 }
-while (std::next_permutation(arr.begin(), arr.end());
+while (std::next_permutation(arr.begin_direct(), arr.end_direct()));
 Dt /= 24;
 @endcode
 
@@ -183,8 +184,8 @@ One the one hand, the wrong choice of operation can affect the library's perform
 lal::graphs::free_tree t(10);
 lal::node u, v;
 for (int i = 0; i < 9; ++i) {
-		cin >> u >> v;
-		t.add_edge(u,v);
+	cin >> u >> v;
+	t.add_edge(u,v);
 }
 @endcode
 
@@ -194,7 +195,7 @@ while the next piece of code is strongly encouraged whenever possible
 lal::graphs::free_tree t(10);
 vector<lal::edge> e(9);
 for (int i = 0; i < 9; ++i) {
-		cin >> e[i].first >> e[i].second;
+	cin >> e[i].first >> e[i].second;
 }
 t.set_edges(e);
 @endcode
