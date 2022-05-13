@@ -42,14 +42,18 @@
 #pragma once
 
 #include <lal/linarr/algorithms_C.hpp>
-#include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/linarr/syntactic_dependency_structure.hpp>
-
 #include <lal/linarr/C.hpp>
+
+#include <lal/linarr/algorithms_Dmin.hpp>
+#include <lal/linarr/algorithms_Dmin_planar.hpp>
+#include <lal/linarr/algorithms_Dmin_projective.hpp>
 #include <lal/linarr/D.hpp>
 #include <lal/linarr/Dmin.hpp>
-#include <lal/linarr/head_initial.hpp>
+
+#include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
+
+#include <lal/linarr/head_initial.hpp>
 
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/linarr/flux.hpp>
