@@ -55,6 +55,7 @@
 #include <lal/detail/graphs/tree_classification.hpp>
 #include <lal/detail/graphs/union_find.hpp>
 #include <lal/detail/graphs/conversions.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 
 namespace lal {
 namespace graphs {
@@ -465,8 +466,12 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 	return t;
 }
 
-head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const noexcept {
-	return detail::from_tree_to_head_vector(*this, arr);
+head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
+noexcept
+{
+	return
+		detail::call_with_empty_arrangement<head_vector>
+		(detail::from_tree_to_head_vector, *this, arr);
 }
 
 bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {

@@ -267,7 +267,7 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
  */
 inline
 head_vector from_tree_to_head_vector
-(const graphs::rooted_tree& t, const linear_arrangement& arr = {})
+(const graphs::rooted_tree& t, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
@@ -276,31 +276,16 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	head_vector hv(n);
-
-	if (arr.size() == 0) {
-		for (node u = 0; u < n; ++u) {
-			if (u == t.get_root()) {
-				hv[u] = 0;
-			}
-			else {
-				// this is guaranteed to be a legal access (within bounds).
-				hv[u] = t.get_in_neighbours(u)[0] + 1;
-			}
+	for (position_t p = 0ull; p < n; ++p) {
+		const node u = arr[p];
+		if (t.get_root() == u) {
+			hv[*p] = 0;
+		}
+		else {
+			const node_t parent = t.get_in_neighbours(u)[0];
+			hv[*p] = arr[parent] + 1;
 		}
 	}
-	else {
-		for (position_t p = 0ull; p < n; ++p) {
-			const node u = arr[p];
-			if (t.get_root() == u) {
-				hv[*p] = 0;
-			}
-			else {
-				const node_t parent = t.get_in_neighbours(u)[0];
-				hv[*p] = arr[parent] + 1;
-			}
-		}
-	}
-
 	return hv;
 }
 
@@ -313,7 +298,7 @@ noexcept
  */
 inline
 head_vector from_tree_to_head_vector
-(const graphs::free_tree& t, node r, const linear_arrangement& arr = {})
+(const graphs::free_tree& t, const linear_arrangement& arr, node r)
 noexcept
 {
 #if defined DEBUG

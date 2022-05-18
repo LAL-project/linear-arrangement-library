@@ -51,6 +51,7 @@
 #include <lal/detail/graphs/tree_classification.hpp>
 #include <lal/detail/graphs/union_find.hpp>
 #include <lal/detail/graphs/conversions.hpp>
+#include <lal/detail/macros/call_with_empty_arr.hpp>
 
 namespace lal {
 namespace graphs {
@@ -243,7 +244,10 @@ const noexcept
 #if defined DEBUG
 	assert(has_node(r));
 #endif
-	return detail::from_tree_to_head_vector(*this, r, arr);
+
+	return
+		detail::call_with_empty_arrangement<head_vector>
+		(detail::from_tree_to_head_vector, *this, arr, r);
 }
 
 /* PROTECTED */
