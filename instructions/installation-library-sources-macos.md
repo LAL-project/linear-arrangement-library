@@ -119,6 +119,6 @@ Notice that `/usr/local/include` has to be replaced with the actual directory wh
 
 - The compiler cannot find the gmp library when linking: in this case we suggest adding the directory gmp's library to the environment variable `LIBRARY_PATH`, like so:
 
-		$ export LIBRARY_PATH=LIBRARY_PATH:/usr/local/lib
+		$ export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
 	
 Notice that `/usr/local/lib` has to be replaced with the actual directory where gmp's library files were installed.
