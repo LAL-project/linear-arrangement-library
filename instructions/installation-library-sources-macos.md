@@ -45,7 +45,11 @@ The following commands are used to compile the library in both `debug` and `rele
 
 to the `cmake` command. See below for examples.
 
+We recommend all users to create the library's _release_ and _debug_ builds.
+
 ### Release build
+
+First, create the build directory.
 
 #### Make the build directory
 
@@ -53,14 +57,22 @@ to the `cmake` command. See below for examples.
 	$ mkdir lal-release
 	$ cd lal-release
 
+The next step is to create the _Makefile_ file.
+
 #### CMake with the predefined settings
+
+We recommend the following default settings. This should be enough for most users; in case some of the default have to be changed see the example in the next section.
 
 	$ cmake \
 		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
 		-DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 \
 		../lal
 
+If this command did not fail, users can continue reading.
+
 #### CMake with other settings
+
+This is an example that shows how to generate the _Makefile_ with a different installation prefix directory. Users who do not need to change the installation directory can move on to compiling and installing the library.
 
 	$ cmake \
 		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
@@ -69,6 +81,8 @@ to the `cmake` command. See below for examples.
 		../lal
 
 #### Compile and install
+
+Issue the following commands to compile and install the library.
 
 	$ make -j4
 	$ make install
@@ -77,13 +91,19 @@ See `Known issues` for a list of known issues.
 
 ### Debug build
 
+First, create the build directory.
+
 #### Make the build directory
 
 	$ cd linear-arrangement-library
 	$ mkdir lal-debug
 	$ cd lal-debug
 
+The next step is to create the _Makefile_ file.
+
 #### CMake with the predefined settings
+
+We recommend the following default settings. This should be enough for most users; in case some of the default have to be changed see the example in the next section.
 
 	$ cmake \
 		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
@@ -91,7 +111,11 @@ See `Known issues` for a list of known issues.
 		-DCMAKE_BUILD_TYPE=Debug \
 		../lal
 
+If this command did not fail, users can continue reading.
+
 #### CMake with other settings
+
+This is an example that shows how to generate the _Makefile_ with a different installation prefix directory. Users who do not need to change the installation directory can move on to compiling and installing the library.
 
 	$ cmake \
 		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
@@ -101,6 +125,8 @@ See `Known issues` for a list of known issues.
 		../lal
 
 #### Compile and install
+
+Issue the following commands to compile and install the library.
 
 	$ make -j4
 	$ make install
