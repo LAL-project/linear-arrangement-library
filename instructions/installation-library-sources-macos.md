@@ -25,6 +25,8 @@ The [GMP](https://gmplib.org/) can be installed very easily from sources. First,
 	$ make check -j4   # GMP developers strongly recommend to run these commands, and so do we.
 	$ make install
 
+Make sure to write down the directory where the header (`.h`) and library (`.dylib`) files have been installed. These will most likely be `/usr/local/include/` and `/usr/local/lib`.
+
 ### Git
 
 You can install [git](https://git-scm.com/) [in Mac OS](https://git-scm.com/download/mac) issuing the following command
@@ -53,16 +55,25 @@ to the `cmake` command. See below for examples.
 
 #### CMake with the predefined settings
 
-	$ cmake -DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 -DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 ../lal
+	$ cmake \
+		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
+		-DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 \
+		../lal
 
 #### CMake with other settings
 
-	$ cmake -DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 -DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+	$ cmake \
+		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
+		-DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 \
+		-DCMAKE_INSTALL_PREFIX=~/Desktop \
+		../lal
 
 #### Compile and install
 
 	$ make -j4
 	$ make install
+
+See `Known issues` for a list of known issues.
 
 ### Debug build
 
@@ -74,13 +85,40 @@ to the `cmake` command. See below for examples.
 
 #### CMake with the predefined settings
 
-	$ cmake -DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 -DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 -DCMAKE_BUILD_TYPE=Debug ../lal
+	$ cmake \
+		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
+		-DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 \
+		-DCMAKE_BUILD_TYPE=Debug \
+		../lal
 
 #### CMake with other settings
 
-	$ cmake -DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 -DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/Desktop ../lal
+	$ cmake \
+		-DCMAKE_CXX_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/g++-11 \
+		-DCMAKE_C_COMPILER=/usr/local/Cellar/gcc/11.2.0/bin/gcc-11 \
+		-DCMAKE_BUILD_TYPE=Debug \
+		-DCMAKE_INSTALL_PREFIX=~/Desktop \
+		../lal
 
 #### Compile and install
 
 	$ make -j4
 	$ make install
+
+See `Known issues` for a list of known issues.
+
+### Known issues
+
+There are several known issues when compiling LAL:
+
+- The compiler cannot find the header file `gmp.h`: in this case we suggest adding the installation of gmp's header files to the environment variable `CPLUS_INCLUDE_PATH`, like so:
+
+		$ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/include
+	
+Notice that `/usr/local/include` has to be replaced with the actual directory where gmp's header files were installed.
+
+- The compiler cannot find the gmp library when linking: in this case we suggest adding the directory gmp's library to the environment variable `LIBRARY_PATH`, like so:
+
+		$ export LIBRARY_PATH=LIBRARY_PATH:/usr/local/lib
+	
+Notice that `/usr/local/lib` has to be replaced with the actual directory where gmp's library files were installed.
