@@ -89,7 +89,7 @@ namespace iterators {
  *		}
  * @endcode
  */
-template<
+template <
 	typename graph_t,
 	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
 	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
@@ -234,7 +234,7 @@ private:
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
-	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
+	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
@@ -258,7 +258,7 @@ private:
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
-	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
+	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;

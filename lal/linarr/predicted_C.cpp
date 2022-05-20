@@ -144,7 +144,7 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	return detail::to_uint64(f/2);
 }
 
-template<class graph_t, typename result>
+template <class graph_t, typename result>
 result __get_approximate_C_2_rational
 (const graph_t& g, const linear_arrangement& pi)
 noexcept

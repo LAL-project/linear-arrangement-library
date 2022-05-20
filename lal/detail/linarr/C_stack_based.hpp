@@ -89,7 +89,7 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
  * such that arr[v] < arr[u] sorted nonincreasingly by edge length.
  * @param size_adjN_u Auxiliary memory array of size @e n.
  */
-template<class graph_t>
+template <class graph_t>
 void fill_adjP_adjN(
 	const graph_t& g, const linear_arrangement& arr,
 	std::vector<neighbourhood>& adjP,
@@ -173,7 +173,7 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template<class graph_t, bool decide_upper_bound>
+template <class graph_t, bool decide_upper_bound>
 uint64_t compute_C_stack_based(
 	const graph_t& g, const linear_arrangement& arr,
 	std::size_t * const size_adjN_u,
@@ -245,7 +245,7 @@ noexcept
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template<class graph_t>
+template <class graph_t>
 uint64_t n_C_stack_based(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
@@ -279,7 +279,7 @@ noexcept
  * @param arrs List of input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> n_C_stack_based
 (const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
@@ -323,7 +323,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 uint64_t is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
@@ -363,7 +363,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -405,7 +405,7 @@ noexcept
  * corresponding upper bound. It returns a value one unit larger than the upper
  * bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,

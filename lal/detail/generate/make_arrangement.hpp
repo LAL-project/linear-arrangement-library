@@ -62,7 +62,7 @@ namespace detail {
  * @param[out] pos Current position in the arrangement.
  * @param[out] arr Arrangement constructed.
  */
-template<class container>
+template <class container>
 void make_arrangement_permutations(
 	const graphs::rooted_tree& T, node r,
 	const container& data,
@@ -97,7 +97,7 @@ noexcept
  * @param data The permutations to construct the arrangement from.
  * @returns The arrangement constructed with the permutations.
  */
-template<class container>
+template <class container>
 linear_arrangement make_arrangement_permutations(
 	const graphs::rooted_tree& T,
 	const container& data
@@ -123,7 +123,7 @@ noexcept
  * @param[out] pos Current position in the arrangement.
  * @param[out] arr Arrangement constructed.
  */
-template<class container>
+template <class container>
 void make_arrangement_permutations(
 	const graphs::free_tree& T,
 	node parent, node u,
@@ -160,7 +160,7 @@ noexcept
  * @param data The permutations to construct the arrangement from.
  * @returns The arrangement constructed with the permutations.
  */
-template<class container>
+template <class container>
 linear_arrangement make_arrangement_permutations(
 	const graphs::free_tree& T, node root,
 	const container& data

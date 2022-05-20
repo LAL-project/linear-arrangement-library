@@ -119,7 +119,7 @@ constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
  *
  * @pre @e L is sorted decreasingly.
  */
-template<bool make_arrangement>
+template <bool make_arrangement>
 uint64_t arrange
 (
 	const std::vector<std::vector<node_size>>& L,
@@ -294,7 +294,7 @@ noexcept
  * @returns The cost of a minimum linear arrangement of the corresponding branch.
  * @pre @e L is sorted decreasingly.
  */
-template<bool make_arrangement>
+template <bool make_arrangement>
 uint64_t embed_branch(
 	const std::vector<std::vector<node_size>>& L,
 	node v,
@@ -374,7 +374,7 @@ noexcept
  * @returns The cost of a minimum linear arrangement of the corresponding branch.
  * @pre @e L is sorted decreasingly.
  */
-template<bool make_arrangement>
+template <bool make_arrangement>
 uint64_t embed(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
@@ -453,7 +453,7 @@ noexcept
  * @pre Parameter @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
-template<typename sort_type>
+template <typename sort_type>
 void make_sorted_adjacency_list_rooted(
 	const graphs::rooted_tree& t,
 	std::vector<std::vector<node_size>>& L
@@ -593,7 +593,7 @@ noexcept
  * @pre @e L is initialised to have size n, the number of vertices of
  * the tree.
  */
-template<typename sort_type>
+template <typename sort_type>
 node make_sorted_adjacency_list_rooted_centroid(
 	const graphs::free_tree& t,
 	std::vector<std::vector<node_size>>& L

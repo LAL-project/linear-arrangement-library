@@ -58,7 +58,7 @@ namespace detail {
 // -----------------------------------------------------------------------------
 // -- EDGE LIST --
 
-template<
+template <
 	typename tree_t,
 	bool ensure_root_is_returned,
 	bool free_tree_plus_root =
@@ -154,7 +154,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-template<class graph_t>
+template <class graph_t>
 graph_t from_edge_list_to_graph
 (const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
 noexcept
@@ -317,7 +317,7 @@ noexcept
  * @returns A @ref lal::graphs::rooted_tree or a pair of @ref lal::graphs::free_tree
  * and the root encoded in the head vector.
  */
-template<
+template <
 	class tree_t,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>
 >

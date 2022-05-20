@@ -76,14 +76,14 @@ struct exhaustive_t { };
 struct random_t { };
 
 /// Shorthand to get one of @ref exhaustive_t or @ref random_t.
-template<bool is_exhaustive>
+template <bool is_exhaustive>
 struct exhaustive_random_type {
 	typedef
 		std::conditional_t<is_exhaustive, exhaustive_t, random_t>
 		type;
 };
 /// Shorthand of @ref exhaustive_random_type.
-template<bool is_exhaustive>
+template <bool is_exhaustive>
 using exhaustive_random_type_t =
 	typename exhaustive_random_type<is_exhaustive>::type;
 
@@ -107,14 +107,14 @@ struct labelled_t { };
 struct unlabelled_t { };
 
 /// Shorthand to get one of @ref labelled_t or @ref unlabelled_t.
-template<bool is_labelled>
+template <bool is_labelled>
 struct labelled_unlabelled_type {
 	typedef
 		std::conditional_t<is_labelled, labelled_t, unlabelled_t>
 		type;
 };
 /// Shorthand of @ref labelled_unlabelled_type.
-template<bool is_labelled>
+template <bool is_labelled>
 using labelled_unlabelled_type_t =
 	typename labelled_unlabelled_type<is_labelled>::type;
 
@@ -130,7 +130,7 @@ static_assert(std::is_same_v<labelled_unlabelled_type_t<false>, unlabelled_t>);
  * @tparam tree_t A class inheriting either from @ref graphs::free_tree or
  * @ref graphs::rooted_tree.
  */
-template<
+template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
 	class tree_t
@@ -185,7 +185,7 @@ struct tree_generator_type {
 };
 
 /// Typedef of @ref tree_generator_type
-template<
+template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
 	class tree_t

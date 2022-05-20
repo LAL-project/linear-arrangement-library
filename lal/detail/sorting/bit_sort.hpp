@@ -66,7 +66,7 @@ namespace sorting {
  * @post All the values of @e seen are set to false.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template<
+template <
 	typename T, typename iterator_t,
 	std::enable_if_t<
 		std::is_integral_v<T> && is_pointer_iterator_v<T, iterator_t>,
@@ -114,7 +114,7 @@ noexcept
  * @post All the values of @e seen are set to 0.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template<
+template <
 	typename T, typename It,
 	std::enable_if_t<
 		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
@@ -148,7 +148,7 @@ noexcept
  * @pre All values within [begin, end) must be unique.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template<
+template <
 	typename T, typename It,
 	std::enable_if_t<
 		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,

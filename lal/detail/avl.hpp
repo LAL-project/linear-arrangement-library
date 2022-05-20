@@ -55,7 +55,7 @@ namespace detail {
 /**
  * @brief Simple class that implements an AVL tree.
  */
-template<class T>
+template <class T>
 class AVL {
 public:
 	/// Destructor.

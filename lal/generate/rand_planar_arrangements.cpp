@@ -103,7 +103,7 @@ noexcept
 	}
 }
 
-template<bool assign_vertices, class generator_t>
+template <bool assign_vertices, class generator_t>
 void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,

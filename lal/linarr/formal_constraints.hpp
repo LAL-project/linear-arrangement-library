@@ -89,7 +89,7 @@ bool is_permutation(const linear_arrangement& arr = {}) noexcept {
  * @param arr Input arrangement.
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-template<class graph_t>
+template <class graph_t>
 bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 {
 	if constexpr (std::is_base_of_v<graph_t, graphs::tree>) {
@@ -123,7 +123,7 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
  * @returns Whether or not the input graph arranged with the input arrangement
  * is planar.
  */
-template<class graph_t>
+template <class graph_t>
 bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));

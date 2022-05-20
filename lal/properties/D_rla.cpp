@@ -57,7 +57,7 @@ namespace properties {
 
 namespace E_pr_D {
 
-template<bool size_subtrees_valid>
+template <bool size_subtrees_valid>
 inline
 numeric::rational exp_sum_edge_lengths(const graphs::rooted_tree& t)
 noexcept

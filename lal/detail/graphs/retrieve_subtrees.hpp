@@ -69,7 +69,7 @@ namespace detail {
  * @post The pointer returned is not nullptr only when T.size_subtrees_valid()
  * AND the boolean parameter sizes are BOTH true.
  */
-template<bool get_subsizes>
+template <bool get_subsizes>
 std::pair<std::vector<edge>, uint64_t *> get_edges_subtree
 (const graphs::rooted_tree& T, node u, bool relabel)
 noexcept

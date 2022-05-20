@@ -127,7 +127,7 @@ namespace utilities {
  * true. It must be false otherwise.
  * @returns \f$A_1(Q,R)\f$.
  */
-template<
+template <
 	typename result_t, bool second_set_empty,
 	typename iterator_first_t, typename iterator_second_t,
 	class metric,
@@ -248,7 +248,7 @@ noexcept
  * true. It must be false otherwise.
  * @returns \f$A_2(Q,R)\f$.
  */
-template<
+template <
 	typename result_t, bool second_set_empty,
 	typename iterator_first_t,
 	typename iterator_second_t,

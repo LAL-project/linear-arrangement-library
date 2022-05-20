@@ -104,7 +104,7 @@ namespace properties {
  * so that we don't have to change the rational numbers used to
  * compute the variance.
  */
-template<bool reuse, bool is_normalised>
+template <bool reuse, bool is_normalised>
 void compute_data_gen_graphs
 (
 	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,

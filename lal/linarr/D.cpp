@@ -57,7 +57,7 @@ namespace linarr {
 // -----------------------------------------------------------------------------
 /* D */
 
-template<class graph_t>
+template <class graph_t>
 uint64_t sum_length_edges(const graph_t& g, const linear_arrangement& pi)
 noexcept
 {
@@ -103,7 +103,7 @@ noexcept
 // -----------------------------------------------------------------------------
 /* MDD */
 
-template<class graph_t, typename result>
+template <class graph_t, typename result>
 result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
 {
 #if defined DEBUG

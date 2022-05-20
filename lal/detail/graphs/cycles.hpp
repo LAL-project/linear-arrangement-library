@@ -131,7 +131,7 @@ bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
  * @param bfs Breadth-First Search object.
  * @returns Whether the graph has cycles or not.
  */
-template<class graph_t>
+template <class graph_t>
 bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	const auto n = g.get_num_nodes();
 
@@ -193,7 +193,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-template<class graph_t>
+template <class graph_t>
 bool has_undirected_cycles(const graph_t& g) noexcept {
 	// BFS traversal object
 	BFS<graph_t> bfs(g);

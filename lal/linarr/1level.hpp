@@ -84,7 +84,7 @@ namespace linarr {
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as an
  * exact rational value.
  */
-template<class graph_t>
+template <class graph_t>
 numeric::rational mean_dependency_distance_1level_rational
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
@@ -158,7 +158,7 @@ noexcept
  * @returns Jing's and Liu's 1-level \f$MDD\f$ for an ensemble of graphs as a
  * floating point value.
  */
-template<class graph_t>
+template <class graph_t>
 double mean_dependency_distance_1level
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept

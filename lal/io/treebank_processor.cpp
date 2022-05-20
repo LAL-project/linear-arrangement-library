@@ -86,7 +86,7 @@
 namespace lal {
 namespace io {
 
-template<typename T>
+template <typename T>
 void set_average_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
@@ -113,7 +113,7 @@ noexcept
 	}();
 	props[idx] = cumul/detail::to_double(F.size());
 }
-template<typename T>
+template <typename T>
 void set_maximum_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
@@ -140,7 +140,7 @@ noexcept
 	}();
 	props[idx] = value;
 }
-template<typename T>
+template <typename T>
 void set_minimum_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
@@ -387,7 +387,7 @@ treebank_error treebank_processor::process() noexcept {
 
 // PRIVATE
 
-template<class OUT_STREAM>
+template <class OUT_STREAM>
 void treebank_processor::output_tree_type_header(OUT_STREAM& out_treebank_file)
 const noexcept
 {
@@ -401,7 +401,7 @@ const noexcept
 	}
 }
 
-template<class OUT_STREAM>
+template <class OUT_STREAM>
 void treebank_processor::output_syndepstruct_type_header(OUT_STREAM& out_treebank_file)
 const noexcept
 {
@@ -420,7 +420,7 @@ const noexcept
 }
 
 // output the tree type
-template<class TREE_TYPE, class OUT_STREAM>
+template <class TREE_TYPE, class OUT_STREAM>
 void treebank_processor::output_tree_type_values(
 	TREE_TYPE& fT,
 	OUT_STREAM& out_treebank_file
@@ -443,7 +443,7 @@ const noexcept
 	}
 }
 
-template<class TREE_TYPE, class OUT_STREAM>
+template <class TREE_TYPE, class OUT_STREAM>
 void treebank_processor::output_syndepstruct_type_values(
 	const TREE_TYPE& rT,
 	uint64_t C,
@@ -466,7 +466,7 @@ const noexcept
 	}
 }
 
-template<class TREE, class OUT_STREAM>
+template <class TREE, class OUT_STREAM>
 void treebank_processor::process_tree
 (const TREE& rT, double *props, char *prop_set, OUT_STREAM& out_treebank_file)
 noexcept

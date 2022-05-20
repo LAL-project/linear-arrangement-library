@@ -66,7 +66,7 @@ namespace detail {
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
@@ -108,7 +108,7 @@ noexcept
  * @param sizes The size of the subtree rooted at every reachable node from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
@@ -145,7 +145,7 @@ noexcept
  * component of @e u and @e v.
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
-template<
+template <
 	class tree_t,
 	typename iterator_t,
 	std::enable_if_t<
@@ -214,7 +214,7 @@ noexcept
  * container must have size equal to twice the number of edges in the connected
  * component of @e u and @e v.
  */
-template<
+template <
 	class tree_t,
 	typename iterator_t,
 	std::enable_if_t<

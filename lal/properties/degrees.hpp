@@ -73,7 +73,7 @@ namespace properties {
  * (in+out, out, in, or other).
  * @return The sum of degrees raised to the input power @e p.
  */
-template<class graph_t, class return_type>
+template <class graph_t, class return_type>
 inline
 return_type sum_powers_degrees
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
@@ -351,7 +351,7 @@ uint64_t sum_powers_out_degrees
  * out, in, or other).
  * @return The \f$p\f$-th moment of degree about 0.
  */
-template<class graph_t, class return_type>
+template <class graph_t, class return_type>
 inline
 return_type moment_degree
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)

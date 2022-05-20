@@ -54,7 +54,7 @@ namespace sorting {
  * @param end Iterator at the end of the container.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template<typename It>
+template <typename It>
 void insertion_sort(It begin, It end) noexcept
 {
 	if (begin == end) { return; }

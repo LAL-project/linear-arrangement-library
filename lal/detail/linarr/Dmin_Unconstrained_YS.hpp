@@ -88,7 +88,7 @@ static constexpr char ANCHOR = 1;
  * @param s_1 Value \f$s_1\f$.
  * @returns Maximum \f$p_\alpha\f$.
  */
-template<char anchored>
+template <char anchored>
 uint64_t calculate_p_alpha
 (const uint64_t n, const ordering& ord, uint64_t& s_0, uint64_t& s_1)
 noexcept
@@ -185,7 +185,7 @@ noexcept
  * @param[out] mla A minimum arrangement.
  * @param[out] cost The cost of the minimum arrangement.
  */
-template<char alpha, bool make_arrangement>
+template <char alpha, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
 	node root_or_anchor, position start, position end,
@@ -377,7 +377,7 @@ noexcept
  * @returns Either a pair of <cost, linear arrangement> or just the cost depending
  * on the value of the template parameter @e make_arrangement.
  */
-template<bool make_arrangement>
+template <bool make_arrangement>
 std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,

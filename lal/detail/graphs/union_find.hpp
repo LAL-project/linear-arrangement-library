@@ -69,7 +69,7 @@ namespace detail {
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template<class tree_t>
+template <class tree_t>
 void update_unionfind_after_add_edge
 (
 	const tree_t& t, const node u, const node v,
@@ -138,7 +138,7 @@ noexcept
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template<class tree_t>
+template <class tree_t>
 void update_unionfind_after_remove_edge
 (
 	const tree_t& t, const node u, const node v,
@@ -206,7 +206,7 @@ noexcept
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template<class tree_t>
+template <class tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
 	BFS<tree_t>& bfs, node v,
@@ -246,7 +246,7 @@ noexcept
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template<typename tree_t>
+template <typename tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
 	const tree_t& t, node u,

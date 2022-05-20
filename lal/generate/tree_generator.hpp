@@ -116,7 +116,7 @@ namespace generate {
  *
  * @tparam tree_t Type of tree.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >

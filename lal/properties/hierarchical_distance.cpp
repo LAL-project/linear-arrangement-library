@@ -76,7 +76,7 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 	return sum_distances;
 }
 
-template<typename result>
+template <typename result>
 result MHD(const graphs::rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_rooted_tree());

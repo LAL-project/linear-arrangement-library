@@ -78,7 +78,7 @@ namespace brute_force {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template<bool decide_upper_bound>
+template <bool decide_upper_bound>
 [[nodiscard]] uint64_t compute(
 	const graphs::undirected_graph& g, const linear_arrangement& arr,
 	uint64_t upper_bound = 0
@@ -150,7 +150,7 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template<bool decide_upper_bound>
+template <bool decide_upper_bound>
 [[nodiscard]] uint64_t inner_compute
 (
 	const graphs::directed_graph& g,
@@ -225,7 +225,7 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template<bool decide_upper_bound>
+template <bool decide_upper_bound>
 uint64_t compute(
 	const graphs::directed_graph& g, const linear_arrangement& arr,
 	uint64_t upper_bound
@@ -288,7 +288,7 @@ noexcept
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template<class graph_t>
+template <class graph_t>
 uint64_t n_C_brute_force(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
@@ -315,7 +315,7 @@ noexcept
  * @param arrs List of input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> n_C_brute_force
 (const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
@@ -359,7 +359,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 uint64_t is_n_C_brute_force_lesseq_than
 (const graph_t& g, const linear_arrangement& arr, uint64_t upper_bound)
 noexcept
@@ -389,7 +389,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than
 (const graph_t& g, const std::vector<linear_arrangement>& arrs, uint64_t upper_bound)
 noexcept
@@ -426,7 +426,7 @@ noexcept
  * corresponding upper bound. It returns a value one unit larger than the upper
  * bound otherwise.
  */
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,

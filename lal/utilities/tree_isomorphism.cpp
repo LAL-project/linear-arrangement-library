@@ -58,7 +58,7 @@ namespace lal {
 namespace utilities {
 
 #if defined USE_COMPLICATED
-template<typename T>
+template <typename T>
 void free_memory(T*& m) {
 	if (m != nullptr) { delete[] m; m = nullptr; }
 }
@@ -138,9 +138,9 @@ public:
 	#endif
 	}
 
-	template<bool compare>
+	template <bool compare>
 	using Type = typename std::conditional<compare, bool, void>::type;
-	template<bool compare> Type<compare>
+	template <bool compare> Type<compare>
 	make_names_per_level
 	(
 		const rooted_tree& t,

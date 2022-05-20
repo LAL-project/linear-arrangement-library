@@ -69,71 +69,71 @@ struct node_t {
 
 	node_t() = default;
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t(const T& _v) noexcept : value(_v) { }
 
 	// -- ASSIGNMENT OPERATORS --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t& operator= (const T& _v) noexcept { value = _v; return *this; }
 
 	// -- COMPARISONS --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator== (const T& t) const noexcept { return value == t; }
 	bool operator== (const node_t& u) const noexcept { return value == u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator== (const T& t, const node_t& u) noexcept { return u.value == t; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator!= (const T& t) const noexcept { return value != t; }
 	bool operator!= (const node_t& u) const noexcept { return value != u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator!= (const T& t, const node_t& u) noexcept { return u.value != t; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator< (const T& t) const noexcept { return value < t; }
 	bool operator< (const node_t& u) const noexcept { return value < u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator< (const T& t, const node_t& u) noexcept { return t < u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator<= (const T& t) const noexcept { return value <= t; }
 	bool operator<= (const node_t& u) const noexcept { return value <= u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator<= (const T& t, const node_t& u) noexcept { return t <= u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator> (const T& t) const noexcept { return value > t; }
 	bool operator> (const node_t& u) const noexcept { return value > u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator> (const T& t, const node_t& u) noexcept { return t > u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator>= (const T& t) const noexcept { return value >= t; }
 	bool operator>= (const node_t& u) const noexcept { return value >= u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator>= (const T& t, const node_t& u) noexcept { return t >= u.value; }
 
 	// -- ARITHMETIC --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t operator+ (const T& t) const noexcept { return node_t{value + t}; }
 	node_t operator+ (const node_t& u) const noexcept { return node_t{value + u.value}; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend node_t operator+ (const T& t, const node_t& u) noexcept { return node_t{u.value + t}; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t& operator+= (const T& t) noexcept { value += t; return *this; }
 	node_t& operator+= (const node_t& u) noexcept { value += u.value; return *this; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t operator- (const T& t) const noexcept { return node_t{value - t}; }
 	node_t operator- (const node_t& u) const noexcept { return node_t{value - u.value}; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend node_t operator- (const T& t, const node_t& u) noexcept { return node_t{t - u.value}; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	node_t& operator-= (const T& t) noexcept { value -= t; return *this; }
 	node_t& operator-= (const node_t& u) noexcept { value -= u.value; return *this; }
 
@@ -142,13 +142,13 @@ struct node_t {
 
 	// input/output operators
 
-	template<class stream>
+	template <class stream>
 	friend stream& operator>> (stream& s, node_t& p) noexcept {
 		s >> p.value;
 		return s;
 	}
 
-	template<class stream>
+	template <class stream>
 	friend stream& operator<< (stream& s, const node_t& p) noexcept {
 		s << p.value;
 		return s;
@@ -170,71 +170,71 @@ struct position_t {
 
 	position_t() = default;
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t(const T& _v) noexcept : value(_v) { }
 
 	// -- ASSIGNMENT OPERATORS --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t& operator= (const T& _v) noexcept { value = _v; return *this; }
 
 	// -- COMPARISONS --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator== (const T& t) const noexcept { return value == t; }
 	bool operator== (const position_t& u) const noexcept { return value == u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator== (const T& t, const position_t& u) noexcept { return u.value == t; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator!= (const T& t) const noexcept { return value != t; }
 	bool operator!= (const position_t& u) const noexcept { return value != u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator!= (const T& t, const position_t& u) noexcept { return u.value != t; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator< (const T& t) const noexcept { return value < t; }
 	bool operator< (const position_t& u) const noexcept { return value < u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator< (const T& t, const position_t& u) noexcept { return t < u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator<= (const T& t) const noexcept { return value <= t; }
 	bool operator<= (const position_t& u) const noexcept { return value <= u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator<= (const T& t, const position_t& u) noexcept { return t <= u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator> (const T& t) const noexcept { return value > t; }
 	bool operator> (const position_t& u) const noexcept { return value > u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator> (const T& t, const position_t& u) noexcept { return t > u.value; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator>= (const T& t) const noexcept { return value >= t; }
 	bool operator>= (const position_t& u) const noexcept { return value >= u.value; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend bool operator>= (const T& t, const position_t& u) noexcept { return t >= u.value; }
 
 	// -- ARITHMETIC --
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t operator+ (const T& t) const noexcept { return position_t{value + t}; }
 	position_t operator+ (const position_t& u) const noexcept { return position_t{value + u.value}; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend position_t operator+ (const T& t, const position_t& u) noexcept { return position_t{u.value + t}; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t& operator+= (const T& t) noexcept { value += t; return *this; }
 	position_t& operator+= (const position_t& u) noexcept { value += u.value; return *this; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t operator- (const T& t) const noexcept { return position_t{value - t}; }
 	position_t operator- (const position_t& u) const noexcept { return position_t{value - u.value}; }
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	friend position_t operator- (const T& t, const position_t& u) noexcept { return position_t{t - u.value}; }
 
-	template<typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	position_t& operator-= (const T& t) noexcept { value -= t; return *this; }
 	position_t& operator-= (const position_t& u) noexcept { value -= u.value; return *this; }
 
@@ -243,13 +243,13 @@ struct position_t {
 
 	// input/output operators
 
-	template<class stream>
+	template <class stream>
 	friend stream& operator>> (stream& s, position_t& p) noexcept {
 		s >> p.value;
 		return s;
 	}
 
-	template<class stream>
+	template <class stream>
 	friend stream& operator<< (stream& s, const position_t& p) noexcept {
 		s << p.value;
 		return s;

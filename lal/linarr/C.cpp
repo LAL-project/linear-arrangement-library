@@ -55,7 +55,7 @@
 namespace lal {
 namespace linarr {
 
-template<class graph_t>
+template <class graph_t>
 uint64_t num_crossings(
 	const graph_t& g,
 	const linear_arrangement& arr,
@@ -120,7 +120,7 @@ uint64_t num_crossings(
 
 // -----------------------------------------------------------------------------
 
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> num_crossings_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -168,7 +168,7 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class graph_t>
+template <class graph_t>
 uint64_t is_num_crossings_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
@@ -239,7 +239,7 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -292,7 +292,7 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-template<class graph_t>
+template <class graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list
 (
 	const graph_t& g,

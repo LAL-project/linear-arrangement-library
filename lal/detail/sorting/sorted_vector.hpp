@@ -61,7 +61,7 @@ namespace sorting {
  * @tparam T type of data.
  * @tparam unique Whether or not the elements inserted should be unique.
  */
-template<class T, bool unique, typename allocator_t = std::allocator<T> >
+template <class T, bool unique, typename allocator_t = std::allocator<T> >
 class sorted_vector : public std::vector<T, allocator_t> {
 public:
 	using iterator_t = typename std::vector<T, allocator_t>::iterator;

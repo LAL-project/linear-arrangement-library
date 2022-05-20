@@ -53,7 +53,7 @@ namespace detail {
  * @tparam Iterated_Type Underlying type.
  * @tparam Iterator Alleged iterator type.
  */
-template<typename Iterated_Type, typename Iterator>
+template <typename Iterated_Type, typename Iterator>
 struct is_pointer_iterator {
 	static constexpr bool value =
 		std::is_pointer_v<Iterator> or
@@ -64,7 +64,7 @@ struct is_pointer_iterator {
 };
 
 /// Shorthand for @ref is_pointer_iterator.
-template<typename Iterated_Type, typename Iterator>
+template <typename Iterated_Type, typename Iterator>
 constexpr bool is_pointer_iterator_v =
 	is_pointer_iterator<Iterated_Type, Iterator>::value;
 

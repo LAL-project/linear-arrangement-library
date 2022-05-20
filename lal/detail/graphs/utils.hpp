@@ -62,7 +62,7 @@ namespace detail {
  * @param neighs 0-1 list of neighbours of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */
-template<
+template <
 	class graph_t,
 	typename char_type,
 	std::enable_if_t<

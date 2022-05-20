@@ -95,7 +95,7 @@ namespace iterators {
  *		}
  * @endcode
  */
-template<
+template <
 	typename GRAPH,
 	bool is_directed = std::is_base_of_v<graphs::directed_graph, GRAPH>,
 	std::enable_if_t<
@@ -312,7 +312,7 @@ private:
 	{ return s == u or s == v or t == u or t == v; }
 
 	/// Find the next pair in a directed graph.
-	template<bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
+	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept
@@ -344,7 +344,7 @@ private:
 	}
 
 	/// Find the next pair in an undirected graph.
-	template<bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
+	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
 	noexcept

@@ -70,7 +70,7 @@ namespace detail {
  * - maximum vertex degrees do not coincide,
  * @returns 2 if the trees MIGHT BE isomorphic
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >

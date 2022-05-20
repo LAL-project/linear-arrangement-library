@@ -88,7 +88,7 @@ namespace detail {
  * @post @e L is updated. It is sorted decreasingly.
  * @post @e sizes_edge is updated.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
@@ -191,7 +191,7 @@ noexcept
  * @post @e L is updated. It is sorted decreasingly.
  * @post @e sizes_edge is updated.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
@@ -225,7 +225,7 @@ noexcept
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
@@ -260,7 +260,7 @@ noexcept
  * has smaller index value than the second.
  * @pre The tree @e t is a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
@@ -292,7 +292,7 @@ noexcept
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
@@ -320,7 +320,7 @@ noexcept
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >

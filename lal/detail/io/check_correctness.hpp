@@ -117,7 +117,7 @@ noexcept
  * @param line Line number of the treebank.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
-template<bool decide>
+template <bool decide>
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
 find_errors(const std::string& current_line, const std::size_t line)
 noexcept
@@ -247,7 +247,7 @@ noexcept
  * @param treebank_filename Name of the treebank file.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
-template<bool decide>
+template <bool decide>
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
@@ -299,7 +299,7 @@ noexcept
  * @param n_threads Number of threads that this function can use.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
-template<bool decide>
+template <bool decide>
 std::conditional_t<decide, bool, std::vector<io::report_treebank_collection>>
 check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)

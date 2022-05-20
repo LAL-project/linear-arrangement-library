@@ -81,7 +81,7 @@ namespace detail {
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
-template<
+template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >

@@ -55,7 +55,7 @@ namespace detail {
  *
  * Automatically manage deallocation of memory via destructors.
  */
-template<typename T>
+template <typename T>
 struct data_array {
 public:
 	/// Default constructor
@@ -118,7 +118,7 @@ public:
 	}
 
 	/// Copy constructor from generic container
-	template<template<typename... Args> class container, typename... Types>
+	template <template <typename... Args> class container, typename... Types>
 	data_array(const container<Types...>& v) noexcept : data_array(v.size()) {
 		// assert first type in Types... is 'T'
 		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);
@@ -127,7 +127,7 @@ public:
 	}
 
 	/// Copy assignment operator from generic container
-	template<template<typename... Args> class container, typename... Types>
+	template <template <typename... Args> class container, typename... Types>
 	data_array& operator= (const container<Types...>& v) noexcept {
 		// assert first type in Types... is 'T'
 		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);

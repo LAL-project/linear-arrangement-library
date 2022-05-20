@@ -266,7 +266,7 @@ public:
 	 * @pre Values @e u and @e p must both be strictly less than the size of
 	 * the arrangement (see @ref m_n).
 	 */
-	template<
+	template <
 		typename NODE, typename POSITION,
 		std::enable_if_t<
 			(std::is_integral_v<NODE> or std::is_same_v<NODE, node_t>)
@@ -307,7 +307,7 @@ public:
 	 * @param u_t Value indicating the first object.
 	 * @param v_t Value indicating the second object.
 	 */
-	template<
+	template <
 		typename what,
 		std::enable_if_t<
 			std::is_same_v<what, node_t> or std::is_same_v<what, position_t>
@@ -454,7 +454,7 @@ private:
 	 * @pre Pointers @ref m_direct and @ref m_inverse must have been set
 	 * appropriately.
 	 */
-	template<bool from_direct_arr>
+	template <bool from_direct_arr>
 	void from_data(const std::vector<uint64_t>& v) noexcept
 	{
 #if defined DEBUG

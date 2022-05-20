@@ -141,7 +141,7 @@ public:
 
 private:
 	/// Process a single tree in a treebank.
-	template<class TREE, class OUT_STREAM>
+	template <class TREE, class OUT_STREAM>
 	void process_tree
 	(const TREE& rT, double *props, char *prop_set, OUT_STREAM& out_lab_file)
 	noexcept;
@@ -149,13 +149,13 @@ private:
 	// HEADER
 
 	/// Output the header for the tree types
-	template<class OUT_STREAM>
+	template <class OUT_STREAM>
 	void output_tree_type_header
 	(OUT_STREAM& out_lab_file)
 	const noexcept;
 
 	/// Output the header for the tree types
-	template<class OUT_STREAM>
+	template <class OUT_STREAM>
 	void output_syndepstruct_type_header
 	(OUT_STREAM& out_lab_file)
 	const noexcept;
@@ -163,13 +163,13 @@ private:
 	// VALUES
 
 	/// Output the values for the tree types
-	template<class TREE_TYPE, class OUT_STREAM>
+	template <class TREE_TYPE, class OUT_STREAM>
 	void output_tree_type_values
 	(TREE_TYPE& t, OUT_STREAM& out_lab_file)
 	const noexcept;
 
 	/// Output the values for the syntactic dependency tree types
-	template<class TREE_TYPE, class OUT_STREAM>
+	template <class TREE_TYPE, class OUT_STREAM>
 	void output_syndepstruct_type_values
 	(const TREE_TYPE& t, uint64_t C, OUT_STREAM& out_lab_file)
 	const noexcept;

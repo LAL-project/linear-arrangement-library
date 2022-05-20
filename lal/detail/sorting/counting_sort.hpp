@@ -68,7 +68,7 @@ namespace countingsort {
  * This allows users of the algorithm to initialize it outside the algorithm,
  * thus being able to save some time.
  */
-template<typename T>
+template <typename T>
 struct memory {
 	/// Amount of times the key of an element occurs.
 	data_array<std::size_t> count;
@@ -137,7 +137,7 @@ struct memory {
  * @post The function @e key is called exactly twice for each element in the
  * range to be sorted.
  */
-template<
+template <
 	typename value_t,
 	typename sort_type,
 	bool memory_has_frequencies,
@@ -238,7 +238,7 @@ noexcept
  * @post The function @e key is called exactly twice for each element in the
  * range to be sorted.
  */
-template<
+template <
 	typename value_t,
 	typename sort_type,
 	typename value_iterator_t,

@@ -347,7 +347,7 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
  * @param[out] mla A minimum arrangement.
  * @param[out] cost The cost of the minimum arrangement.
  */
-template<char root, bool make_arrangement>
+template <char root, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
 	node one_node, position start,
@@ -684,7 +684,7 @@ noexcept
  * @returns Either a pair of <cost, linear arrangement> or just the cost depending
  * on the value of the template parameter @e make_arrangement.
  */
-template<bool make_arrangement>
+template <bool make_arrangement>
 std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
