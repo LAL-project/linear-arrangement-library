@@ -1,18 +1,16 @@
 # Compiling against the library
 
-Programs that use LAL have to be compiled with a compiler that supports `C++17` (e.g., GNU's `g++` 9.2.0).
+Programs that use LAL have to be compiled with a compiler that supports `C++17` (e.g., GNU's `g++` 9.2.0). Here it is assumed that the library `GMP` is installed in the system and the compile used is GNU's `g++`.
 
 When compiling a `.cpp` into a `.o` file, you have two options:
 
-- configure your system's environment variables so that the compiler can find the header files,
-- or indicate in the compilation command the header directory (with `-I`).
+- Configure your system's environment variables so that the compiler can find the header files. For example, GNU's `g++` uses the environment variable `CPLUS_INCLUDE_PATH`.
+- Indicate in the compilation command the header directory (with `-I`).
 
 When compiling one or more `.o` into an executable file, again, you have two options:
 
-- configure your system's environment variables so that the compiler can find the library (`.so` in Linux, `.dll` in Windows, and `.dylib` in macOS),
-- or indicate in the compilation command the directory with the library (with `-L`).
-
-Here it is assumed that the library `GMP` is installed in your system and that you are using `g++`.
+- Configure your system's environment variables so that the compiler can find the (dynamic) library; the extensions of these files are `.so` in Linux, `.dll` in Windows, and `.dylib` in macOS. For example, GNU's `g++` uses the environment variable `LIBRARY_PATH`.
+- Indicate in the compilation command the directory with the library (with `-L`).
 
 ## Debug builds
 
