@@ -117,7 +117,7 @@ public:
 	bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge.
-	edge get_edge() const noexcept { return m_cur_edge; }
+	const edge& get_edge() const noexcept { return m_cur_edge; }
 
 	/// Returns the current edge.
 	edge_t get_edge_t() const noexcept { return m_cur_edge; }

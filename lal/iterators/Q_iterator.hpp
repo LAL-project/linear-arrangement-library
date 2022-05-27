@@ -125,7 +125,7 @@ public:
 	bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge pair.
-	edge_pair get_edge_pair() const noexcept { return m_cur_pair; }
+	const edge_pair& get_edge_pair() const noexcept { return m_cur_pair; }
 
 	/// Returns the current edge pair.
 	edge_pair_t get_edge_pair_t() const noexcept { return m_cur_pair; }

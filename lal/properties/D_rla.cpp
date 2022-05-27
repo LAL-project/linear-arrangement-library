@@ -69,7 +69,6 @@ noexcept
 	}
 
 	numeric::rational E_pr_D = 0;
-	E_pr_D += -1;
 
 	for (node u = 0; u < t.get_num_nodes(); ++u) {
 		const uint64_t nu = (
@@ -81,6 +80,7 @@ noexcept
 		const uint64_t du = t.get_out_degree(u);
 		E_pr_D += nu*(2*du + 1);
 	}
+	E_pr_D -= 1;
 	E_pr_D /= 6;
 
 	return E_pr_D;
