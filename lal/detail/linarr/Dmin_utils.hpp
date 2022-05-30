@@ -208,8 +208,11 @@ noexcept
 		// change side
 		roots_side = other_side(roots_side);
 	}
+
 #if defined DEBUG
+	if constexpr (make_arrangement) {
 	assert(ini == fin);
+	}
 #endif
 	if constexpr (make_arrangement) {
 	arr.assign(r, ini);
