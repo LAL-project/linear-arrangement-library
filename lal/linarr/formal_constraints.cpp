@@ -39,71 +39,28 @@
  *
  ********************************************************************/
 
+// C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <numeric>
 
 // lal includes
-#include <lal/linear_arrangement.hpp>
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/iterators/E_iterator.hpp>
-#include <lal/numeric/rational.hpp>
-#include <lal/detail/identity_arrangement.hpp>
-#include <lal/detail/macros/basic_convert.hpp>
+#include <lal/linarr/formal_constraints.hpp>
+#include <lal/detail/linarr/formal_constraints.hpp>
 
 namespace lal {
 namespace linarr {
 
-template <detail::linarr_type arr_type>
-uint64_t right_branching_edges(
-	const graphs::directed_graph& g,
-	const detail::linarr_wrapper<arr_type>& arr
-)
+bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
 noexcept
 {
-	uint64_t edges_to_right = 0;
-	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge_t();
-		edges_to_right += arr[u] < arr[v];
-	}
-	return edges_to_right;
-}
-
-numeric::rational head_initial_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(g.get_num_edges() > 0);
-#endif
-
-	const uint64_t etr =
+	return
 		(arr.size() == 0 ?
-			right_branching_edges(g, detail::linarr_wrapper<detail::identity>(arr))
+			is_root_covered(rt, detail::linarr_wrapper<detail::identity>(arr))
 		:
-			right_branching_edges(g, detail::linarr_wrapper<detail::nonident>(arr))
+			is_root_covered(rt, detail::linarr_wrapper<detail::nonident>(arr))
 		);
-
-	return numeric::rational(etr, g.get_num_edges());
-}
-
-double head_initial
-(const graphs::directed_graph& g, const linear_arrangement& arr) noexcept
-{
-#if defined DEBUG
-	assert(g.get_num_edges() > 0);
-#endif
-
-	const uint64_t etr =
-		(arr.size() == 0 ?
-			right_branching_edges
-			(g, detail::linarr_wrapper<detail::identity>(arr))
-		:
-			right_branching_edges
-			(g, detail::linarr_wrapper<detail::nonident>(arr))
-		);
-
-	return detail::to_double(etr)/detail::to_double(g.get_num_edges());
 }
 
 } // -- namespace linarr

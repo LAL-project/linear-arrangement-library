@@ -80,6 +80,8 @@ HEADERS += \
     detail/data_array.hpp \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
+    detail/identity_arrangement.hpp \
+    detail/linarr/formal_constraints.hpp \
     detail/macros/basic_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
@@ -104,7 +106,6 @@ HEADERS += \
 	detail/linarr/Dmin_Unconstrained_YS.hpp \
 	detail/linarr/syntactic_dependency_structure.hpp \
 	detail/numeric/utils.hpp \
-    detail/macros/call_with_empty_arr.hpp \
     detail/macros/is_pointer_iterator.hpp \
     detail/pairs_utils.hpp \
 	detail/properties/tree_centre.hpp \
@@ -236,6 +237,7 @@ SOURCES += \
 	linarr/classify_syntactic_dependency_structure.cpp \
 	linarr/flux.cpp \
 	linarr/D.cpp \
+	linarr/formal_constraints.cpp \
 	linarr/head_initial.cpp \
 	linarr/predicted_C.cpp \
 	numeric/integer.cpp \

@@ -51,6 +51,7 @@
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/data_array.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 
 namespace lal {
 namespace detail {
@@ -261,13 +262,16 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 
 /**
  * @brief Constructs the head vector representation of a tree.
+ * @tparam arr_type Type of arrangement.
  * @param t Input rooted tree.
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector encoding the tree.
  */
-inline
-head_vector from_tree_to_head_vector
-(const graphs::rooted_tree& t, const linear_arrangement& arr)
+template <detail::linarr_type arr_type>
+head_vector from_tree_to_head_vector(
+	const graphs::rooted_tree& t,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 #if defined DEBUG
@@ -291,14 +295,18 @@ noexcept
 
 /**
  * @brief Constructs the head vector representation of a tree.
+ * @tparam arr_type Type of arrangement.
  * @param t Input free tree.
  * @param r Root of the tree.
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector
  */
-inline
-head_vector from_tree_to_head_vector
-(const graphs::free_tree& t, const linear_arrangement& arr, node r)
+template <detail::linarr_type arr_type>
+head_vector from_tree_to_head_vector(
+	const graphs::free_tree& t,
+	const detail::linarr_wrapper<arr_type>& arr,
+	node r
+)
 noexcept
 {
 #if defined DEBUG

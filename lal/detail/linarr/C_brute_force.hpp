@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define DECIDED_C_GT (upper_bound + 1)
@@ -71,6 +71,7 @@ namespace brute_force {
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Upper bound on the number of crossings.
@@ -78,9 +79,10 @@ namespace brute_force {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound>
+template <bool decide_upper_bound, linarr_type arr_type>
 [[nodiscard]] uint64_t compute(
-	const graphs::undirected_graph& g, const linear_arrangement& arr,
+	const graphs::undirected_graph& g,
+	const linarr_wrapper<arr_type>& arr,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -140,6 +142,7 @@ noexcept
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param pu Starting position of the computation.
  * @param pv Ending position of the computation.
@@ -150,12 +153,12 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound>
+template <bool decide_upper_bound, linarr_type arr_type>
 [[nodiscard]] uint64_t inner_compute
 (
 	const graphs::directed_graph& g,
 	position pu, position pv,
-	const linear_arrangement& arr,
+	const linarr_wrapper<arr_type>& arr,
 	uint64_t C,
 	uint64_t upper_bound
 )
@@ -218,6 +221,7 @@ noexcept
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Upper bound on the number of crossings.
@@ -225,9 +229,9 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound>
+template <bool decide_upper_bound, linarr_type arr_type>
 uint64_t compute(
-	const graphs::directed_graph& g, const linear_arrangement& arr,
+	const graphs::directed_graph& g, const linarr_wrapper<arr_type>& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -247,7 +251,9 @@ noexcept
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
-			C = inner_compute<decide_upper_bound>(g, pu,pv, arr, C, upper_bound);
+			C = inner_compute<decide_upper_bound>
+					(g, pu,pv, arr, C, upper_bound);
+
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
@@ -260,7 +266,9 @@ noexcept
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
-			C = inner_compute<decide_upper_bound>(g, pu,pv, arr, C, upper_bound);
+			C = inner_compute<decide_upper_bound>
+					(g, pu,pv, arr, C, upper_bound);
+
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
@@ -300,9 +308,11 @@ noexcept
 
 	if (n < 4) { return 0; }
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, uint64_t>
-		(brute_force::compute<false>, g, arr, 0);
+	return
+		(arr.size() == 0 ?
+			brute_force::compute<false>(g, linarr_wrapper<identity>(arr), 0) :
+			brute_force::compute<false>(g, linarr_wrapper<nonident>(arr), 0)
+		 );
 }
 
 // --------------------
@@ -338,7 +348,8 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<false>(g, arrs[i], 0);
+		cs[i] = brute_force::compute<false>
+				(g, linarr_wrapper<nonident>(arrs[i]), 0);
 	}
 
 	return cs;
@@ -372,9 +383,14 @@ noexcept
 
 	if (n < 4) { return 0; }
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, uint64_t>
-		(brute_force::compute<true>, g, arr, upper_bound);
+	return
+		(arr.size() == 0 ?
+			brute_force::compute<true>
+				(g, detail::linarr_wrapper<identity>(arr), upper_bound)
+		:
+			brute_force::compute<true>
+				(g, detail::linarr_wrapper<nonident>(arr), upper_bound)
+		);
 }
 
 // --------------------
@@ -410,7 +426,8 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, arrs[i], upper_bound);
+		cs[i] = brute_force::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]), upper_bound);
 	}
 
 	return cs;
@@ -435,10 +452,9 @@ std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 noexcept
 {
 #if defined DEBUG
-		// ensure that no linear arrangement is empty
-		assert(arrs.size() == upper_bounds.size());
+	// there must be as many arrangements as upper bounds
+	assert(arrs.size() == upper_bounds.size());
 #endif
-
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size());
@@ -455,7 +471,8 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, arrs[i], upper_bounds[i]);
+		cs[i] = brute_force::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]), upper_bounds[i]);
 	}
 
 	return cs;

@@ -182,13 +182,6 @@ private:
 	/// Treebank identifier.
 	std::string m_treebank_id = "";
 
-	/**
-	 * @brief Set of identity linear arrangements.
-	 *
-	 * Used for speed up purposes.
-	 */
-	std::vector<linear_arrangement> m_id_linarrs;
-
 	static constexpr std::size_t n_idx = treebank_feature_to_index(treebank_feature::num_nodes);
 	static constexpr std::size_t k2_idx = treebank_feature_to_index(treebank_feature::second_moment_degree);
 	static constexpr std::size_t k2_out_idx = treebank_feature_to_index(treebank_feature::second_moment_degree_out);

@@ -48,7 +48,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
@@ -57,8 +57,11 @@ namespace linarr {
 // -----------------------------------------------------------------------------
 /* D */
 
-template <class graph_t>
-uint64_t sum_length_edges(const graph_t& g, const linear_arrangement& pi)
+template <class graph_t, detail::linarr_type arr_type>
+uint64_t __sum_length_edges(
+	const graph_t& g,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 	// sum of lengths
@@ -68,8 +71,8 @@ noexcept
 	for (; not e_it.end(); e_it.next()) {
 		const auto [u,v] = e_it.get_edge_t();
 
-		const auto pu = pi[u];
-		const auto pv = pi[v];
+		const auto pu = arr[u];
+		const auto pv = arr[v];
 
 		// accumulate length of edge
 		l += (pu < pv ? pv - pu : pu - pv);
@@ -78,39 +81,50 @@ noexcept
 }
 
 uint64_t sum_edge_lengths
-(const graphs::directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(sum_length_edges<graphs::directed_graph>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__sum_length_edges(g, detail::linarr_wrapper<detail::identity>(arr))
+		:
+			__sum_length_edges(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
+
 uint64_t sum_edge_lengths
-(const graphs::undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(sum_length_edges<graphs::undirected_graph>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__sum_length_edges(g, detail::linarr_wrapper<detail::identity>(arr))
+		:
+			__sum_length_edges(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 // -----------------------------------------------------------------------------
 /* MDD */
 
-template <class graph_t, typename result>
-result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
+template <detail::linarr_type arr_type, class graph_t, typename result>
+result __MDD(const graph_t& g, const linear_arrangement& arr) noexcept
 {
 #if defined DEBUG
-	assert(g.get_num_edges() > 0);
+assert(g.get_num_edges() > 0);
 #endif
 
-	const uint64_t D = sum_edge_lengths(g, pi);
+	const uint64_t D =
+		__sum_length_edges(g, detail::linarr_wrapper<arr_type>(arr));
+
 	if constexpr (std::is_same_v<result, numeric::rational>) {
 		return numeric::rational(D, g.get_num_edges());
 	}
@@ -120,52 +134,72 @@ result MDD_rational(const graph_t& g, const linear_arrangement& pi) noexcept
 }
 
 numeric::rational mean_dependency_distance_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(MDD_rational<graphs::directed_graph,numeric::rational>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__MDD<detail::identity, graphs::directed_graph, numeric::rational>
+			(g, arr)
+		:
+			__MDD<detail::nonident, graphs::directed_graph, numeric::rational>
+			(g, arr)
+		);
 }
 
 numeric::rational mean_dependency_distance_rational
-(const graphs::undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(MDD_rational<graphs::undirected_graph,numeric::rational>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__MDD<detail::identity, graphs::undirected_graph, numeric::rational>
+			(g, arr)
+		:
+			__MDD<detail::nonident, graphs::undirected_graph, numeric::rational>
+			(g, arr)
+		);
 }
 
 // -----------------------------------------------------------------------------
 
 double mean_dependency_distance
-(const graphs::directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(MDD_rational<graphs::directed_graph,double>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__MDD<detail::identity, graphs::directed_graph, double>(g, arr)
+		:
+			__MDD<detail::nonident, graphs::directed_graph, double>(g, arr)
+		);
 }
 double mean_dependency_distance
-(const graphs::undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(MDD_rational<graphs::undirected_graph,double>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__MDD<detail::identity, graphs::undirected_graph, double>(g, arr)
+		:
+			__MDD<detail::nonident, graphs::undirected_graph, double>(g, arr)
+		);
 }
 
 } // -- namespace linarr

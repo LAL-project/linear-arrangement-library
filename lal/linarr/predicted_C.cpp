@@ -49,7 +49,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
@@ -144,9 +144,11 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	return detail::to_uint64(f/2);
 }
 
-template <class graph_t, typename result>
-result __get_approximate_C_2_rational
-(const graph_t& g, const linear_arrangement& pi)
+template <typename result, class graph_t, detail::linarr_type arr_type>
+result __get_approximate_C_2(
+	const graph_t& g,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 	result Ec2(0);
@@ -161,8 +163,8 @@ noexcept
 		const auto [s,t] = st;
 		const auto [u,v] = uv;
 
-		const int64_t len_st = detail::to_int64(detail::abs_diff(pi[s], pi[t]));
-		const int64_t len_uv = detail::to_int64(detail::abs_diff(pi[u], pi[v]));
+		const int64_t len_st = detail::to_int64(detail::abs_diff(arr[s], arr[t]));
+		const int64_t len_uv = detail::to_int64(detail::abs_diff(arr[u], arr[v]));
 
 		const auto [al, be] =
 		(len_st <= len_uv ?
@@ -182,51 +184,77 @@ noexcept
 	return Ec2;
 }
 
+
 numeric::rational predicted_num_crossings_rational
-(const graphs::undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<graphs::undirected_graph, numeric::rational>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__get_approximate_C_2<numeric::rational>
+			(g, detail::linarr_wrapper<detail::identity>(arr))
+			:
+			__get_approximate_C_2<numeric::rational>
+			(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 numeric::rational predicted_num_crossings_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<graphs::directed_graph, numeric::rational>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__get_approximate_C_2<numeric::rational>
+			(g, detail::linarr_wrapper<detail::identity>(arr))
+			:
+			__get_approximate_C_2<numeric::rational>
+			(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 double predicted_num_crossings
-(const graphs::undirected_graph& g, const linear_arrangement& pi)
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<graphs::undirected_graph, double>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__get_approximate_C_2<double>
+			(g, detail::linarr_wrapper<detail::identity>(arr))
+			:
+			__get_approximate_C_2<double>
+			(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
+
 double predicted_num_crossings
-(const graphs::directed_graph& g, const linear_arrangement& pi)
+(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(pi.size() == 0 or g.get_num_nodes() == pi.size());
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return detail::call_with_empty_arrangement
-			(__get_approximate_C_2_rational<graphs::directed_graph, double>, g, pi);
+	return
+		(arr.size() == 0 ?
+			__get_approximate_C_2<double>
+			(g, detail::linarr_wrapper<detail::identity>(arr))
+			:
+			__get_approximate_C_2<double>
+			(g, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 } // -- namespace linarr

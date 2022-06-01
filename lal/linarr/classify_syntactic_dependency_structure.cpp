@@ -51,10 +51,11 @@
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/make_array.hpp>
+#include <lal/detail/linarr/formal_constraints.hpp>
 
 #define sort_by_index(a,b) (a < b ? std::make_pair(a,b) : std::make_pair(b,a))
 #define sort_by_pos(a,b, P) (P[a] < P[b] ? std::make_pair(a,b) : std::make_pair(b,a))
@@ -65,8 +66,10 @@ namespace linarr {
 
 typedef syntactic_dependency_structure syndepstr_type;
 
+template <detail::linarr_type arr_type>
 void __get_yields(
-	const graphs::rooted_tree& t, const linear_arrangement& pi,
+	const graphs::rooted_tree& t,
+	const detail::linarr_wrapper<arr_type>& arr,
 	node u,
 	std::vector<std::vector<position>>& yields
 )
@@ -74,10 +77,10 @@ noexcept
 {
 	// add this node to its own yield
 	auto& yu = yields[u];
-	yu.push_back(pi[node_t{u}]);
+	yu.push_back(arr[node_t{u}]);
 
 	for (node v : t.get_out_neighbours(u)) {
-		__get_yields(t,pi, v, yields);
+		__get_yields(t,arr, v, yields);
 		const auto& yv = yields[v];
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
@@ -154,14 +157,18 @@ noexcept
 	return max_g;
 }
 
-bool __is_WG1(const graphs::rooted_tree& rT, const linear_arrangement& pi)
+template <detail::linarr_type arr_type>
+bool __is_WG1(
+	const graphs::rooted_tree& rT,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 	const uint64_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
 	std::vector<std::vector<position>> yields(n);
-	__get_yields(rT,pi, rT.get_root(), yields);
+	__get_yields(rT,arr, rT.get_root(), yields);
 
 	// test whether the tree is well nested
 	const bool is_well_nested = __are_yields_wellnested(n, yields);
@@ -174,7 +181,11 @@ noexcept
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
-uint64_t __is_1EC(const graphs::rooted_tree& rT, const linear_arrangement& pi)
+template <detail::linarr_type arr_type>
+uint64_t __is_1EC(
+	const graphs::rooted_tree& rT,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 	// use the paper in
@@ -190,7 +201,7 @@ noexcept
 		const auto [s,t] = e_it.get_edge_t();
 		e_it.next();
 
-		const auto [ps, pt] = sort_by_index(pi[s], pi[t]);
+		const auto [ps, pt] = sort_by_index(arr[s], arr[t]);
 
 		// the edges crossing the current edge
 		std::vector<edge> crossing;
@@ -198,7 +209,7 @@ noexcept
 		// iterate over the nodes between the endpoints
 		// of 'dep' in the linear arrangement
 		for (position_t pu = ps + 1; pu <= pt - 1; ++pu) {
-			const node u = pi[pu];
+			const node u = arr[pu];
 
 			neighbourhood neighs_u = rT.get_out_neighbours(u);
 			if (u != rT.get_root()) {
@@ -207,7 +218,7 @@ noexcept
 
 			// check neighbours
 			for (const node_t v : neighs_u) {
-				if (pi[v] < ps or pt < pi[v]) {
+				if (arr[v] < ps or pt < arr[v]) {
 					// the edge (u,v) crosses (s,t)
 					crossing.push_back(sort_by_index(u,*v));
 				}
@@ -263,11 +274,12 @@ noexcept
 	return _1ec;
 }
 
+template <detail::linarr_type arr_type>
 std::array<bool, __syntactic_dependency_structure_size>
 __get_syn_dep_tree_type
 (
 	const graphs::rooted_tree& rT,
-	const linear_arrangement& pi,
+	const detail::linarr_wrapper<arr_type>& arr,
 	const uint64_t C
 )
 noexcept
@@ -311,7 +323,7 @@ noexcept
 	// whether the root is covered or not.
 	if (n == 3) {
 		const auto t =
-			is_root_covered(rT, pi) ?
+			is_root_covered(rT, arr) ?
 			syndepstr_type::planar : syndepstr_type::projective;
 
 		__set_type(t);
@@ -333,13 +345,22 @@ noexcept
 #endif
 
 	// update the linear arrangement
-	linear_arrangement _pi(pi.size() + 1);
-	if (_pi.size() > 0) {
-		_pi.assign(0ull, 0ull);
+	linear_arrangement __arr;
+	if constexpr (arr_type == detail::linarr_type::nonident) {
+#if defined DEBUG
+		assert(arr.m_arr.size() > 0);
+#endif
+
+		__arr.resize(arr.m_arr.size() + 1);
+		if (__arr.size() > 0) {
+			__arr.assign(0ull, 0ull);
+		}
+		for (node u = 0; u < n; ++u) {
+			__arr.assign(u + 1, arr[node_t{u}] + 1);
+		}
 	}
-	for (node u = 0; u < n; ++u) {
-		_pi.assign(u + 1, pi[node_t{u}] + 1);
-	}
+
+	detail::linarr_wrapper<arr_type> _arr(__arr);
 
 	// +++++++++++++++++++++++++
 	// projective structures
@@ -347,7 +368,7 @@ noexcept
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
 		__set_type(
-			is_root_covered(rT, pi) ?
+			is_root_covered(rT, arr) ?
 			syndepstr_type::planar : syndepstr_type::projective
 		);
 
@@ -357,13 +378,13 @@ noexcept
 		uint64_t _C = C;
 		{
 		const node only_child = _rT.get_out_neighbours(0)[0];
-		const position poc = _pi[node_t{only_child}];
+		const position poc = _arr[node_t{only_child}];
 
 		iterators::E_iterator eit(_rT);
 		while (not eit.end()) {
 			const auto [u,v] = eit.yield_edge_t();
-			const position pu = _pi[u];
-			const position pv = _pi[v];
+			const position pu = _arr[u];
+			const position pv = _arr[v];
 			if (pu < pv) {
 				_C += 0 < pu and pu < poc and poc < pv;
 			}
@@ -374,7 +395,7 @@ noexcept
 		}
 
 		// remove 1-ec from the types when needed
-		if (_C > 0 and not __is_1EC(_rT, _pi)) {
+		if (_C > 0 and not __is_1EC<arr_type>(_rT, _arr)) {
 			nullify(EC1);
 		}
 
@@ -388,14 +409,14 @@ noexcept
 	// ---------------------------------------------------
 	// is the structure Well-Nest of Gap degree at most 1?
 
-	if (__is_WG1(rT, pi)) {
+	if (__is_WG1(rT, arr)) {
 		__set_type(syndepstr_type::WG1);
 	}
 
 	// ---------------------------------------------------
 	// is the structure 1-Endpoint Crossing?
 
-	if (__is_1EC(_rT, _pi)) {
+	if (__is_1EC<arr_type>(_rT, _arr)) {
 		__set_type(syndepstr_type::EC1);
 	}
 
@@ -410,26 +431,41 @@ syntactic_dependency_structure_class
 (
 	const graphs::rooted_tree& rT,
 	const uint64_t C,
-	const linear_arrangement& pi
+	const linear_arrangement& arr
 )
 noexcept
 {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
-	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi, C);
+
+	return
+		(arr.size() == 0 ?
+			__get_syn_dep_tree_type
+			(rT, detail::linarr_wrapper<detail::identity>(arr), C)
+		:
+			__get_syn_dep_tree_type
+			(rT, detail::linarr_wrapper<detail::nonident>(arr), C)
+		);
 }
 
 std::array<bool, __syntactic_dependency_structure_size>
 syntactic_dependency_structure_class
-(const graphs::rooted_tree& rT, const linear_arrangement& pi)
+(const graphs::rooted_tree& rT, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
 	assert(rT.is_rooted_tree());
 #endif
-	const uint64_t C = rT.get_num_nodes() >= 4 ? num_crossings(rT, pi) : 0;
-	return detail::call_with_empty_arrangement(__get_syn_dep_tree_type, rT, pi, C);
+	const uint64_t C = rT.get_num_nodes() >= 4 ? num_crossings(rT, arr) : 0;
+	return
+		(arr.size() == 0 ?
+			__get_syn_dep_tree_type
+			(rT, detail::linarr_wrapper<detail::identity>(arr), C)
+		:
+			__get_syn_dep_tree_type
+			(rT, detail::linarr_wrapper<detail::nonident>(arr), C)
+		);
 }
 
 } // -- namespace linarr

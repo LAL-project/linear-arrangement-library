@@ -55,7 +55,7 @@
 #include <lal/detail/graphs/tree_classification.hpp>
 #include <lal/detail/graphs/union_find.hpp>
 #include <lal/detail/graphs/conversions.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 
 namespace lal {
 namespace graphs {
@@ -470,8 +470,13 @@ head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
 noexcept
 {
 	return
-		detail::call_with_empty_arrangement<head_vector>
-		(detail::from_tree_to_head_vector, *this, arr);
+		(arr.size() == 0 ?
+			detail::from_tree_to_head_vector
+			(*this, detail::linarr_wrapper<detail::identity>(arr))
+		:
+			detail::from_tree_to_head_vector
+			(*this, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {

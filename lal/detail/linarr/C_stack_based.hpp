@@ -48,7 +48,7 @@
 
 // lal includes
 #include <lal/graphs/graph.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/avl.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
@@ -81,6 +81,7 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
  *
  * See \cite Alemany2019a for details on the correctness and behaviour.
  * @tparam graph_t Type of graph.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param adjP @e adjP[v] contains the list of vertices @e u that form edges (u,v)
@@ -89,9 +90,9 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
  * such that arr[v] < arr[u] sorted nonincreasingly by edge length.
  * @param size_adjN_u Auxiliary memory array of size @e n.
  */
-template <class graph_t>
+template <class graph_t, linarr_type arr_type>
 void fill_adjP_adjN(
-	const graph_t& g, const linear_arrangement& arr,
+	const graph_t& g, const linarr_wrapper<arr_type>& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	std::size_t * const size_adjN_u
@@ -165,6 +166,8 @@ noexcept
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam graph_t Type of graph.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param size_adjN_u See \cite Alemany2019a for details.
@@ -173,9 +176,9 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <class graph_t, bool decide_upper_bound>
+template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
 uint64_t compute_C_stack_based(
-	const graph_t& g, const linear_arrangement& arr,
+	const graph_t& g, const linarr_wrapper<arr_type>& arr,
 	std::size_t * const size_adjN_u,
 	uint64_t upper_bound
 )
@@ -261,11 +264,13 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, std::size_t * const, uint64_t>
-		(
-			stack_based::compute_C_stack_based<graph_t, false>,
-			g, arr, size_adjN_u.begin(), 0
+	return
+		(arr.size() == 0 ?
+			stack_based::compute_C_stack_based<false>
+			(g, linarr_wrapper<identity>(arr), size_adjN_u.begin(), 0)
+		:
+			stack_based::compute_C_stack_based<false>
+			(g, linarr_wrapper<nonident>(arr), size_adjN_u.begin(), 0)
 		);
 }
 
@@ -301,8 +306,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<graph_t, false>
-				(g, arrs[i], size_adjN_u.begin(), 0);
+		cs[i] = stack_based::compute_C_stack_based<false>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 size_adjN_u.begin(), 0);
 	}
 
 	return cs;
@@ -343,11 +349,13 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, std::size_t * const, uint64_t>
-		(
-			stack_based::compute_C_stack_based<graph_t, true>,
-			g, arr, size_adjN_u.begin(), upper_bound
+	return
+		(arr.size() == 0 ?
+			stack_based::compute_C_stack_based<true>
+			(g, linarr_wrapper<identity>(arr), size_adjN_u.begin(), upper_bound)
+		:
+			 stack_based::compute_C_stack_based<true>
+			 (g, linarr_wrapper<nonident>(arr), size_adjN_u.begin(), upper_bound)
 		);
 }
 
@@ -388,8 +396,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<graph_t, true>
-				(g, arrs[i], size_adjN_u.begin(), upper_bound);
+		cs[i] = stack_based::compute_C_stack_based<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
@@ -435,8 +444,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<graph_t, true>
-				(g, arrs[i], size_adjN_u.begin(), upper_bounds[i]);
+		cs[i] = stack_based::compute_C_stack_based<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;

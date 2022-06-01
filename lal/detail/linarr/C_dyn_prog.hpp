@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 
@@ -76,6 +76,7 @@ namespace dyn_prog {
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @e bn[i]
@@ -89,10 +90,10 @@ namespace dyn_prog {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <class graph_t, bool decide_upper_bound>
+template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
 uint64_t compute
 (
-	const graph_t& g, const linear_arrangement& arr,
+	const graph_t& g, const linarr_wrapper<arr_type>& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
@@ -276,14 +277,13 @@ noexcept
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
-	return detail::call_with_empty_arrangement
-		<
-			uint64_t, graph_t,
-			unsigned char * const, uint64_t * const, uint64_t * const, uint64_t
-		>
-		(
-			dyn_prog::compute<graph_t, false>,
-			g, arr, bool_neighs.begin(), M,K, 0
+	return
+		(arr.size() == 0 ?
+			dyn_prog::compute<false>
+			(g, linarr_wrapper<identity>(arr), bool_neighs.begin(), M,K, 0)
+		:
+			 dyn_prog::compute<false>
+			 (g, linarr_wrapper<nonident>(arr), bool_neighs.begin(), M,K, 0)
 		);
 }
 
@@ -327,8 +327,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<graph_t, false>
-				(g, arrs[i], bool_neighs.begin(), M,K, 0);
+		cs[i] = dyn_prog::compute<false>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 bool_neighs.begin(), M,K, 0);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -375,7 +376,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	/* decide */
-	return dyn_prog::compute<graph_t, true>
+	return dyn_prog::compute<true>
 			(g, arr, bool_neighs.begin(), M,K, upper_bound);
 }
 
@@ -413,14 +414,15 @@ noexcept
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
-	return detail::call_with_empty_arrangement
-		<
-			uint64_t, graph_t,
-			unsigned char * const, uint64_t * const, uint64_t * const, uint64_t
-		>
-		(
-			dyn_prog::compute<graph_t, true>,
-			g, arr, bool_neighs.begin(), M,K, upper_bound
+	return
+		(arr.size() == 0 ?
+			dyn_prog::compute<true>
+			(g, linarr_wrapper<identity>(arr),
+			 bool_neighs.begin(), M,K, upper_bound)
+		:
+			 dyn_prog::compute<true>
+			 (g, linarr_wrapper<nonident>(arr),
+			  bool_neighs.begin(), M,K, upper_bound)
 		);
 }
 
@@ -469,8 +471,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<graph_t, true>
-				(g, arrs[i], bool_neighs.begin(), M,K, upper_bound);
+		cs[i] = dyn_prog::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -528,8 +531,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<graph_t, true>
-				(g, arrs[i], bool_neighs.begin(), M,K, upper_bounds[i]);
+		cs[i] = dyn_prog::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

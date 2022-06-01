@@ -51,7 +51,7 @@
 #include <lal/detail/graphs/tree_classification.hpp>
 #include <lal/detail/graphs/union_find.hpp>
 #include <lal/detail/graphs/conversions.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 
 namespace lal {
 namespace graphs {
@@ -246,8 +246,13 @@ const noexcept
 #endif
 
 	return
-		detail::call_with_empty_arrangement<head_vector>
-		(detail::from_tree_to_head_vector, *this, arr, r);
+		(arr.size() == 0 ?
+			detail::from_tree_to_head_vector
+			(*this, detail::linarr_wrapper<detail::identity>(arr), r)
+		:
+			detail::from_tree_to_head_vector
+			(*this, detail::linarr_wrapper<detail::nonident>(arr), r)
+		);
 }
 
 /* PROTECTED */

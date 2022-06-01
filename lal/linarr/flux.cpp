@@ -50,20 +50,23 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/sorting/sorted_vector.hpp>
 #include <lal/detail/data_array.hpp>
 
-#define max_pos(u,v) (std::max(pi[u], pi[v]))
+#define max_pos(u,v) (std::max(arr[u], arr[v]))
 
 namespace lal {
 namespace linarr {
 
 namespace flux {
 
-std::vector<std::pair<edge_t,uint64_t>> get_edges_with_max_pos_at
-(const graphs::free_tree& t, const linear_arrangement& pi)
+template <detail::linarr_type arr_type>
+std::vector<std::pair<edge_t,uint64_t>> get_edges_with_max_pos_at(
+	const graphs::free_tree& t,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 	const auto n = t.get_num_nodes();
@@ -78,10 +81,11 @@ noexcept
 	return edge_ending_at;
 }
 
+template <detail::linarr_type arr_type>
 void calculate_dependencies_span
 (
 	const graphs::free_tree& t,
-	const linear_arrangement& pi,
+	const detail::linarr_wrapper<arr_type>& arr,
 	const std::vector<std::pair<edge_t,uint64_t>>& edge_with_max_pos_at,
 	position cur_pos,
 	std::vector<dependency_flux>& flux,
@@ -89,7 +93,7 @@ void calculate_dependencies_span
 )
 noexcept
 {
-	const node u = pi[position_t{cur_pos}];
+	const node u = arr[position_t{cur_pos}];
 
 	if (cur_pos > 0) {
 		// copy previous dependencies
@@ -115,7 +119,7 @@ noexcept
 
 	// add the new dependencies
 	for (const node_t v : t.get_neighbours(u)) {
-		if (pi[v] > cur_pos) {
+		if (arr[v] > cur_pos) {
 			cur_deps.push_back({u,*v});
 		}
 	}
@@ -126,8 +130,8 @@ noexcept
 		set_endpoints.insert_sorted(w);
 	}
 	for (node_t v : set_endpoints) {
-		flux[cur_pos].get_left_span() += (pi[v] <= cur_pos);
-		flux[cur_pos].get_right_span() += (pi[v] > cur_pos);
+		flux[cur_pos].get_left_span() += (arr[v] <= cur_pos);
+		flux[cur_pos].get_right_span() += (arr[v] > cur_pos);
 	}
 }
 
@@ -170,15 +174,16 @@ noexcept
 
 } // -- namespace flux
 
+template <detail::linarr_type arr_type>
 std::vector<dependency_flux> __compute_flux
-(const graphs::free_tree& t, const linear_arrangement& pi)
+(const graphs::free_tree& t, const detail::linarr_wrapper<arr_type>& arr)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) { return {}; }
 
 	// one edge entering each position
-	const auto edge_with_max_pos_at = flux::get_edges_with_max_pos_at(t, pi);
+	const auto edge_with_max_pos_at = flux::get_edges_with_max_pos_at(t, arr);
 
 	// the graph (of n vertices) used to calculate the weight
 	graphs::undirected_graph ug(n);
@@ -196,7 +201,7 @@ noexcept
 		// ----------------------
 		// calculate dependencies
 		flux::calculate_dependencies_span
-		(t, pi, edge_with_max_pos_at, cur_pos, flux, cur_deps);
+		(t, arr, edge_with_max_pos_at, cur_pos, flux, cur_deps);
 
 		// -------------------------------------------------
 		// calculate the weight of the flux at this position
@@ -225,16 +230,19 @@ noexcept
 }
 
 std::vector<dependency_flux>
-compute_flux(const graphs::free_tree& t, const linear_arrangement& pi)
+compute_flux(const graphs::free_tree& t, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	return detail::call_with_empty_arrangement
-		<std::vector<dependency_flux>,graphs::free_tree>
-		(__compute_flux, t, pi);
+	return
+		(arr.size() == 0 ?
+			__compute_flux(t, detail::linarr_wrapper<detail::identity>(arr))
+		:
+			__compute_flux(t, detail::linarr_wrapper<detail::nonident>(arr))
+		);
 }
 
 } // -- namespace linarr

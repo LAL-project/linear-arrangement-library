@@ -41,97 +41,13 @@
 
 #pragma once
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-#include <numeric>
-
 // lal includes
-#include <lal/graphs/rooted_tree.hpp>
-#include <lal/linarr/C.hpp>
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/data_array.hpp>
 #include <lal/detail/identity_arrangement.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
-namespace linarr {
-
-/**
- * @brief Is a given input arrangement a permutation?
- *
- * A linear arrangement is a permutation if all the positions are numbers in
- * \f$[0,n-1]\f$, where \f$n\f$ denotes the size of the arrangement and if
- * no two numbers appear twice in the arrangement.
- * @param arr Input linear arrangement
- * @returns Whether or not the input arrangement is a valid permutation.
- */
-inline
-bool is_permutation(const linear_arrangement& arr = {}) noexcept {
-	if (arr.size() <= 1) { return true; }
-	// ensure that no position has been used twice
-	detail::data_array<uint64_t> d(arr.size(), 0);
-	for (node_t u = 0ull; u < arr.size(); ++u) {
-		const position p = arr[u];
-		if (p >= arr.size()) { return false; }
-		if (d[p] > 0) { return false; }
-		d[p] += 1;
-	}
-	return true;
-}
-
-/**
- * @brief Is a given arrangement valid?
- *
- * Checks that an input arrangement is valid for the corresponding input graph.
- * An arrangement is valid if it is a valid permutation of the vertices of the
- * graph.
- * @param g Input graph.
- * @param arr Input arrangement.
- * @returns Whether or not the input arrangement is a valid permutation.
- */
-template <class graph_t>
-bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
-{
-	if constexpr (std::is_base_of_v<graph_t, graphs::tree>) {
-#if defined DEBUG
-		assert(g.is_tree());
-#endif
-	}
-
-	// identity arrangement is always a permutation
-	if (arr.size() == 0) { return true; }
-	// if sizes differ then the arrangement is not a permutation
-	if (g.get_num_nodes() != arr.size()) { return false; }
-	// ensure that the input arrangement is a permutation
-	if (not is_permutation(arr)) { return false; }
-	// the largest number must be exactly one less than the size
-	const position max_pos =
-		*std::max_element(arr.begin_direct(), arr.end_direct());
-
-	return max_pos == arr.size() - 1;
-}
-
-/**
- * @brief Is a given arrangement planar?
- *
- * A planar arrangement of a graph is an arrangement in which there are no
- * edge crossings. If the input arrangement is empty then the identity
- * arrangement \f$\pi_I\f$ is used.
- *
- * @param g Input graph.
- * @param arr Input linear arrangement.
- * @returns Whether or not the input graph arranged with the input arrangement
- * is planar.
- */
-template <class graph_t>
-bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
-#if defined DEBUG
-	assert(is_arrangement(g, arr));
-#endif
-
-	return is_num_crossings_lesseq_than(g, arr, 0) <= 0;
-}
+namespace detail {
 
 /**
  * @brief Is the root of a rooted tree covered in a given arrangement?
@@ -142,14 +58,52 @@ bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
+ * @tparam arr_type Type of arrangement.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
  * @returns Whether or not the root is covered in the given arrangement.
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
-noexcept;
+template <detail::linarr_type arr_type>
+bool is_root_covered(
+	const graphs::rooted_tree& rt,
+	const detail::linarr_wrapper<arr_type>& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(rt.is_rooted_tree());
+#endif
+
+	// case where the linear arrangement is not given
+	if (arr.m_arr.size() == 0) {
+		const node r = rt.get_root();
+		iterators::E_iterator e_it(rt);
+		while (not e_it.end()) {
+			const auto [s,t] = e_it.yield_edge();
+			const bool r_covered_st = s < r and r < t;
+			const bool r_covered_ts = t < r and r < s;
+			if (r_covered_st or r_covered_ts) { return true; }
+		}
+		return false;
+	}
+
+	// the linear arrangement is given
+	const position pr = arr[node_t{rt.get_root()}];
+
+	iterators::E_iterator e_it(rt);
+	while (not e_it.end()) {
+		const auto [s,t] = e_it.yield_edge_t();
+		const position ps = arr[s];
+		const position pt = arr[t];
+
+		const bool r_covered_st = ps < pr and pr < pt;
+		const bool r_covered_ts = pt < pr and pr < ps;
+		if (r_covered_st or r_covered_ts) { return true; }
+	}
+	return false;
+}
 
 /**
  * @brief Is a given arrangement projective?
@@ -162,8 +116,9 @@ noexcept;
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
  *
- * See method @ref is_planar for further details on the characterisation of planar
- * arrangements.
+ * See method @ref lal::linarr::is_planar for further details on the definition
+ * of planar arrangements.
+ * @tparam arr_type Type of arrangement.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
  * @returns Whether or not the input rooted tree arranged with the input arrangement
@@ -171,8 +126,11 @@ noexcept;
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline
-bool is_projective(const graphs::rooted_tree& rt, const linear_arrangement& arr)
+template <detail::linarr_type arr_type>
+bool is_projective(
+	const graphs::rooted_tree& rt,
+	const detail::linarr_wrapper<arr_type>& arr
+)
 noexcept
 {
 #if defined DEBUG
@@ -185,5 +143,5 @@ noexcept
 	return not is_root_covered(rt, arr);
 }
 
-} // -- namespace linarr
+} // -- namespace detail
 } // -- namespace lal

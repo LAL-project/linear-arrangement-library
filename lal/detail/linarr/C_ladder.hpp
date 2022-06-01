@@ -47,7 +47,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/detail/macros/call_with_empty_arr.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 
@@ -75,6 +75,7 @@ namespace ladder {
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
+ * @tparam arr_type Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @e bn[i]
@@ -85,10 +86,10 @@ namespace ladder {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <class graph_t, bool decide_upper_bound>
+template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
 uint64_t compute(
 	const graph_t& g,
-	const linear_arrangement& arr,
+	const linarr_wrapper<arr_type>& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
 	uint64_t upper_bound
@@ -174,11 +175,13 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, unsigned char * const, uint64_t * const, uint64_t>
-		(
-			ladder::compute<graph_t, false>,
-			g, arr, boolean_neighborhood.begin(), L1.begin(), 0
+	return
+		(arr.size() == 0 ?
+			ladder::compute<false>(g, linarr_wrapper<identity>(arr),
+			 boolean_neighborhood.begin(), L1.begin(), 0)
+		:
+			 ladder::compute<false>(g, linarr_wrapper<nonident>(arr),
+			  boolean_neighborhood.begin(), L1.begin(), 0)
 		);
 }
 
@@ -215,8 +218,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = ladder::compute<graph_t, false>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(), 0);
+		cs[i] = ladder::compute<false>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 boolean_neighborhood.begin(), L1.begin(), 0);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -261,11 +265,13 @@ noexcept
 	// array L1 (same as in the pseudocode) ( size n )
 	data_array<uint64_t> L1(n, 0);
 
-	return detail::call_with_empty_arrangement
-		<uint64_t, graph_t, unsigned char * const, uint64_t * const, uint64_t>
-		(
-			ladder::compute<graph_t, true>,
-			g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound
+	return
+		(arr.size() == 0 ?
+			ladder::compute<true>(g, linarr_wrapper<identity>(arr),
+			boolean_neighborhood.begin(), L1.begin(), upper_bound)
+		:
+			 ladder::compute<true>(g, linarr_wrapper<nonident>(arr),
+			 boolean_neighborhood.begin(), L1.begin(), upper_bound)
 		);
 }
 
@@ -307,9 +313,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = ladder::compute<graph_t, true>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(),
-				 upper_bound);
+		cs[i] = ladder::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -364,9 +370,9 @@ noexcept
 		// compute C
 		boolean_neighborhood.fill(0);
 
-		cs[i] = ladder::compute<graph_t, true>
-				(g, arrs[i], boolean_neighborhood.begin(), L1.begin(),
-				 upper_bounds[i]);
+		cs[i] = ladder::compute<true>
+				(g, linarr_wrapper<nonident>(arrs[i]),
+				 boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;

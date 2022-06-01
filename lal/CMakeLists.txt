@@ -150,9 +150,9 @@ target_sources(
 		detail/linarr/Dmin_Unconstrained_FC.hpp
 		detail/linarr/Dmin_Unconstrained_YS.hpp
 		detail/linarr/Dmin_utils.hpp
+		detail/linarr/formal_constraints.hpp
 		detail/linarr/syntactic_dependency_structure.hpp
 		#      macros
-		detail/macros/call_with_empty_arr.hpp
 		detail/macros/is_pointer_iterator.hpp
 		#      numeric
 		detail/numeric/utils.hpp
@@ -171,6 +171,7 @@ target_sources(
 		#      others
 		detail/avl.hpp
 		detail/data_array.hpp
+		detail/identity_arrangement.hpp
 		detail/make_array.hpp
 		detail/pairs_utils.hpp
 		
@@ -302,6 +303,7 @@ target_sources(
 		linarr/D.cpp
 		linarr/Dmin.cpp
 		linarr/flux.cpp
+		linarr/formal_constraints.cpp
 		linarr/head_initial.cpp
 		linarr/predicted_C.cpp
 

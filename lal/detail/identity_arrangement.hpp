@@ -51,33 +51,68 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Call a function @e F that does not admit empty arrangements.
+ * @brief Type of arrangement.
  *
- * In case the arrangement @e arr is empty, function @e F is passed the
- * identity arrangement.
- *
- * @tparam result_t The type of the function's reuslt.
- * @tparam graph_t The type of input graph of the function @e F.
- * @tparam Params The remaining parameters of the function.
- * @param F Function to call.
- * @param g Input graph.
- * @param arr Arrangement.
- * @param P Remaining parameters of the function F.
- * @returns The value function @e F returns.
+ * Used to call functions that have arrangements as input parameters.
  */
-template <typename result_t, typename graph_t, typename... Params>
-result_t call_with_empty_arrangement(
-	result_t (*F)(const graph_t&, const linear_arrangement&, Params...),
-	const graph_t& g, const linear_arrangement& arr, Params... P
-)
-noexcept
-{
-	if (arr.size() != 0) {
-		return F(g,arr,P...);
+enum class linarr_type {
+	/// Identity arrangement. \f$\pi(i)=i\f$.
+	identity,
+	/// Non-identity arrangement. An arrangement that is not the identity.
+	nonident
+};
+/// Shorthand for @ref linarr_type::identity.
+static constexpr auto identity = linarr_type::identity;
+/// Shorthand for @ref linarr_type::nonident.
+static constexpr auto nonident = linarr_type::nonident;
+
+/**
+ * @brief A wrapper to easily use identity arrangements.
+ *
+ * This reduces execution time: it prevents the explicit construction of
+ * the identity arrangement (which involves allocation of memory, ...)
+ */
+template <linarr_type type>
+struct linarr_wrapper {
+	/// Constructor with arrangement.
+	linarr_wrapper(const lal::linear_arrangement& arr) noexcept
+		: m_arr(arr)
+	{
+#if defined DEBUG
+		if constexpr (type == identity) {
+			assert(arr.size() == 0);
+		}
+		else {
+			assert(arr.size() != 0);
+		}
+#endif
 	}
-	const auto n = g.get_num_nodes();
-	return F(g, linear_arrangement::identity(n), P...);
-}
+
+	/**
+	 * @brief Access operator.
+	 *
+	 * Only when the arrangement is not the identity arrangement, the
+	 * method accessess @ref m_arr.
+	 * @param p Either a @ref lal::node_t or a @ref lal::position_t.
+	 */
+	template <typename param_t>
+	uint64_t operator[] (const param_t& p) const noexcept {
+		static_assert(
+			std::is_same_v<param_t,lal::node_t> or
+			std::is_same_v<param_t,lal::position_t>
+		);
+
+		if constexpr (type == identity) {
+			return *p;
+		}
+		else {
+			return m_arr[p];
+		}
+	}
+
+	/// Reference to actual arrangement.
+	const lal::linear_arrangement& m_arr;
+};
 
 } // -- namespace detail
 } // -- namespace lal

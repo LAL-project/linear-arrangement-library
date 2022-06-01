@@ -190,17 +190,6 @@ noexcept
 	// initialise column names
 	initialise_column_names();
 
-	// If the linear arrangement cache is empty, fill it up
-	// We should not expect sentences longer than 511 words
-	if (m_id_linarrs.size() < 512) {
-		m_id_linarrs.reserve(1024); // just in case
-		m_id_linarrs.resize(512);
-		// initialize only the most frequent lengths
-		for (std::size_t i = 0; i < m_id_linarrs.size()/2; ++i) {
-			m_id_linarrs[i].identity(i);
-		}
-	}
-
 	// make sure that the treebank file exists
 	if (not std::filesystem::exists(m_treebank_filename)) {
 		return treebank_error(
@@ -488,14 +477,6 @@ noexcept
 		return linarr::algorithms_C::stack_based;
 	}(rT.get_num_nodes());
 
-	if (m_id_linarrs.size() <= n) {
-		for (std::size_t i = m_id_linarrs.size(); i <= n; ++i) {
-			m_id_linarrs.emplace_back(linear_arrangement());
-		}
-	}
-	if (m_id_linarrs[n].size() != n) { m_id_linarrs[n].identity(n); }
-	const linear_arrangement& id_arr = m_id_linarrs[n];
-
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
 
@@ -549,7 +530,7 @@ noexcept
 	// head initial
 	if (m_what_fs[head_initial_idx]) {
 		if (n > 1) {
-			set_prop(head_initial_idx, linarr::head_initial(rT, id_arr));
+			set_prop(head_initial_idx, linarr::head_initial(rT));
 		}
 		else {
 			set_prop(head_initial_idx, nan(""));
@@ -597,7 +578,7 @@ noexcept
 	if (m_what_fs[mean_dependency_distance_idx]) {
 		if (n > 1) {
 			set_prop(mean_dependency_distance_idx,
-					 linarr::mean_dependency_distance(rT, id_arr));
+					 linarr::mean_dependency_distance(rT));
 		}
 		else {
 			set_prop(mean_dependency_distance_idx, nan(""));
@@ -612,10 +593,10 @@ noexcept
 	// C
 
 	if (m_what_fs[C_idx]) {
-		set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, id_arr, algo_C)));
+		set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, algo_C)));
 	}
 	if (m_what_fs[C_predicted_idx]) {
-		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT, id_arr));
+		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT));
 	}
 	if (m_what_fs[C_expected_idx]) {
 		set_prop(C_expected_idx, properties::exp_num_crossings(fT));
@@ -628,7 +609,7 @@ noexcept
 	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, id_arr, algo_C)));
+			set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, algo_C)));
 		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
@@ -653,7 +634,7 @@ noexcept
 	// D
 
 	if (m_what_fs[D_idx]) {
-		set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT, id_arr)));
+		set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT)));
 	}
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
@@ -672,7 +653,7 @@ noexcept
 	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT, id_arr)));
+			set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT)));
 		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
@@ -752,7 +733,7 @@ noexcept
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
-		const auto F = linarr::compute_flux(fT, id_arr);
+		const auto F = linarr::compute_flux(fT);
 		// since these values are cheap to calculate, compute every all of them
 		// and output whatever is needed later
 
@@ -881,7 +862,7 @@ noexcept
 					C = static_cast<uint64_t>(props[C_idx]);
 				}
 				else {
-					C = linarr::num_crossings(fT, id_arr, algo_C);
+					C = linarr::num_crossings(fT, algo_C);
 				}
 				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;
