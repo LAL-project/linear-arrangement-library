@@ -39,50 +39,82 @@
  *
  ********************************************************************/
 
+// C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
 
 // lal includes
-#include <lal/linear_arrangement.hpp>
 #include <lal/graphs/directed_graph.hpp>
+#include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/identity_arrangement.hpp>
-#include <lal/detail/linarr/headedness.hpp>
+#include <lal/detail/linarr/predict_C.hpp>
 
 namespace lal {
 namespace linarr {
 
 #define __ident_arr(arr) detail::identity_arr(arr)
 #define __nonident_arr(arr) detail::nonident_arr(arr)
+#define __rat numeric::rational
 
-numeric::rational head_initial_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
+__rat predicted_num_crossings_rational
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(g.get_num_edges() > 0);
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
 	return
 		(arr.size() == 0 ?
-			detail::head_initial<numeric::rational>(g, __ident_arr(arr)) :
-			detail::head_initial<numeric::rational>(g, __nonident_arr(arr))
+			detail::predict_C_using_edge_lengths<__rat>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<__rat>(g, __nonident_arr(arr))
 		);
 }
 
-double head_initial
+__rat predicted_num_crossings_rational
 (const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
-	assert(g.get_num_edges() > 0);
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
 	return
 		(arr.size() == 0 ?
-			detail::head_initial<double>(g, __ident_arr(arr)) :
-			detail::head_initial<double>(g, __nonident_arr(arr))
+			detail::predict_C_using_edge_lengths<__rat>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<__rat>(g, __nonident_arr(arr))
+		);
+}
+
+double predicted_num_crossings
+(const graphs::undirected_graph& g, const linear_arrangement& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+#endif
+
+	return
+		(arr.size() == 0 ?
+			detail::predict_C_using_edge_lengths<double>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<double>(g, __nonident_arr(arr))
+		);
+}
+
+double predicted_num_crossings
+(const graphs::directed_graph& g, const linear_arrangement& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
+#endif
+
+	return
+		(arr.size() == 0 ?
+			detail::predict_C_using_edge_lengths<double>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<double>(g, __nonident_arr(arr))
 		);
 }
 

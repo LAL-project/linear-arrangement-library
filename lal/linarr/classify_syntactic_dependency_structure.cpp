@@ -442,10 +442,10 @@ noexcept
 	return
 		(arr.size() == 0 ?
 			__get_syn_dep_tree_type
-			(rT, detail::linarr_wrapper<detail::identity>(arr), C)
+			(rT, detail::identity_arr(arr), C)
 		:
 			__get_syn_dep_tree_type
-			(rT, detail::linarr_wrapper<detail::nonident>(arr), C)
+			(rT, detail::nonident_arr(arr), C)
 		);
 }
 
@@ -461,10 +461,10 @@ noexcept
 	return
 		(arr.size() == 0 ?
 			__get_syn_dep_tree_type
-			(rT, detail::linarr_wrapper<detail::identity>(arr), C)
+			(rT, detail::identity_arr(arr), C)
 		:
 			__get_syn_dep_tree_type
-			(rT, detail::linarr_wrapper<detail::nonident>(arr), C)
+			(rT, detail::nonident_arr(arr), C)
 		);
 }
 

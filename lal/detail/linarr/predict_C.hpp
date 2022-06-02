@@ -39,6 +39,8 @@
  *
  ********************************************************************/
 
+#pragma once
+
 // C++ includes
 #if defined DEBUG
 #include <cassert>
@@ -53,8 +55,18 @@
 #include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
-namespace linarr {
+namespace detail {
 
+/**
+ * @brief Amount of crossings pairs of edges of given lengths.
+ *
+ * Complexity: constant time.
+ * @param n Number of edges in the linear arrangement.
+ * @param d1 Length of the first edge.
+ * @param d2 Length of the second edge.
+ * @returns The amount of pairs of edges of lengths @e d1 and @e d2
+ * respectively that can cross in a linear arrangement.
+ */
 inline constexpr
 uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	int64_t f = 0;
@@ -89,6 +101,16 @@ uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	return detail::to_uint64(f);
 }
 
+/**
+ * @brief Amount of pairs of edges of given lengths.
+ *
+ * Complexity: constant time.
+ * @param n Number of edges in the linear arrangement.
+ * @param d1 Length of the first edge.
+ * @param d2 Length of the second edge.
+ * @returns The amount of pairs of edges of lengths @e d1 and @e d2
+ * respectively that can cross in a linear arrangement.
+ */
 inline constexpr
 uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	int64_t f = 0;
@@ -144,14 +166,26 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	return detail::to_uint64(f/2);
 }
 
-template <typename result, class graph_t, detail::linarr_type arr_type>
-result __get_approximate_C_2(
+/**
+ * @brief Predicted number of crossings based on the sum of edge lengths.
+ *
+ * See @cite Ferrer2014a for further details. This functions implements
+ * \f$E_2[C]\f$.
+ * @tparam result_t Type of the return value.
+ * @tparam graph_t Type of graph.
+ * @tparam arrangement_t Type of arrangement.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns The value of \f$E_2[C]\f$.
+ */
+template <typename result_t, class graph_t, class arrangement_t>
+result_t predict_C_using_edge_lengths(
 	const graph_t& g,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {
-	result Ec2(0);
+	result_t Ec2(0);
 	const uint64_t n = g.get_num_nodes();
 	const int64_t nn = detail::to_int64(n);
 
@@ -173,7 +207,7 @@ noexcept
 			std::make_pair(alpha(nn, len_uv, len_st), beta(nn, len_uv, len_st))
 		);
 
-		if constexpr (std::is_same_v<result, numeric::rational>) {
+		if constexpr (std::is_same_v<result_t, numeric::rational>) {
 			Ec2 += numeric::rational(al, be);
 		}
 		else {
@@ -184,78 +218,5 @@ noexcept
 	return Ec2;
 }
 
-
-numeric::rational predicted_num_crossings_rational
-(const graphs::undirected_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
-
-	return
-		(arr.size() == 0 ?
-			__get_approximate_C_2<numeric::rational>
-			(g, detail::linarr_wrapper<detail::identity>(arr))
-			:
-			__get_approximate_C_2<numeric::rational>
-			(g, detail::linarr_wrapper<detail::nonident>(arr))
-		);
-}
-
-numeric::rational predicted_num_crossings_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
-
-	return
-		(arr.size() == 0 ?
-			__get_approximate_C_2<numeric::rational>
-			(g, detail::linarr_wrapper<detail::identity>(arr))
-			:
-			__get_approximate_C_2<numeric::rational>
-			(g, detail::linarr_wrapper<detail::nonident>(arr))
-		);
-}
-
-double predicted_num_crossings
-(const graphs::undirected_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
-
-	return
-		(arr.size() == 0 ?
-			__get_approximate_C_2<double>
-			(g, detail::linarr_wrapper<detail::identity>(arr))
-			:
-			__get_approximate_C_2<double>
-			(g, detail::linarr_wrapper<detail::nonident>(arr))
-		);
-}
-
-double predicted_num_crossings
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
-#endif
-
-	return
-		(arr.size() == 0 ?
-			__get_approximate_C_2<double>
-			(g, detail::linarr_wrapper<detail::identity>(arr))
-			:
-			__get_approximate_C_2<double>
-			(g, detail::linarr_wrapper<detail::nonident>(arr))
-		);
-}
-
-} // -- namespace linarr
+} // -- namespace detail
 } // -- namespace lal

@@ -81,7 +81,11 @@ HEADERS += \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
     detail/identity_arrangement.hpp \
+    detail/linarr/flux.hpp \
     detail/linarr/formal_constraints.hpp \
+    detail/linarr/headedness.hpp \
+    detail/linarr/predict_C.hpp \
+    detail/linarr/sum_edge_lengths.hpp \
     detail/macros/basic_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
@@ -239,7 +243,7 @@ SOURCES += \
 	linarr/D.cpp \
 	linarr/formal_constraints.cpp \
 	linarr/head_initial.cpp \
-	linarr/predicted_C.cpp \
+	linarr/predict_C.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \

@@ -248,10 +248,10 @@ const noexcept
 	return
 		(arr.size() == 0 ?
 			detail::from_tree_to_head_vector
-			(*this, detail::linarr_wrapper<detail::identity>(arr), r)
+			(*this, detail::identity_arr(arr), r)
 		:
 			detail::from_tree_to_head_vector
-			(*this, detail::linarr_wrapper<detail::nonident>(arr), r)
+			(*this, detail::nonident_arr(arr), r)
 		);
 }
 

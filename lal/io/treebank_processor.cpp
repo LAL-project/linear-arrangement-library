@@ -54,10 +54,6 @@
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/linarr/C.hpp>
-#include <lal/linarr/D.hpp>
-#include <lal/linarr/head_initial.hpp>
-#include <lal/linarr/flux.hpp>
 #include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
 #include <lal/properties/Q.hpp>
@@ -71,8 +67,16 @@
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
+#include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
+#include <lal/detail/linarr/C_dyn_prog.hpp>
+#include <lal/detail/linarr/C_ladder.hpp>
+#include <lal/detail/linarr/C_stack_based.hpp>
+#include <lal/detail/linarr/flux.hpp>
+#include <lal/detail/linarr/headedness.hpp>
+#include <lal/detail/linarr/predict_C.hpp>
+#include <lal/detail/linarr/sum_edge_lengths.hpp>
 #include <lal/detail/linarr/syntactic_dependency_structure.hpp>
 
 #include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
@@ -376,8 +380,9 @@ treebank_error treebank_processor::process() noexcept {
 
 // PRIVATE
 
-template <class OUT_STREAM>
-void treebank_processor::output_tree_type_header(OUT_STREAM& out_treebank_file)
+template <class out_stream_t>
+void treebank_processor::output_tree_type_header
+(out_stream_t& out_treebank_file)
 const noexcept
 {
 	out_treebank_file
@@ -390,8 +395,9 @@ const noexcept
 	}
 }
 
-template <class OUT_STREAM>
-void treebank_processor::output_syndepstruct_type_header(OUT_STREAM& out_treebank_file)
+template <class out_stream_t>
+void treebank_processor::output_syndepstruct_type_header
+(out_stream_t& out_treebank_file)
 const noexcept
 {
 	out_treebank_file
@@ -409,10 +415,10 @@ const noexcept
 }
 
 // output the tree type
-template <class TREE_TYPE, class OUT_STREAM>
+template <class tree_t, class out_stream_t>
 void treebank_processor::output_tree_type_values(
-	TREE_TYPE& fT,
-	OUT_STREAM& out_treebank_file
+	tree_t& fT,
+	out_stream_t& out_treebank_file
 )
 const noexcept
 {
@@ -432,11 +438,11 @@ const noexcept
 	}
 }
 
-template <class TREE_TYPE, class OUT_STREAM>
+template <class tree_t, class out_stream_t>
 void treebank_processor::output_syndepstruct_type_values(
-	const TREE_TYPE& rT,
+	const tree_t& rT,
 	uint64_t C,
-	OUT_STREAM& out_treebank_file
+	out_stream_t& out_treebank_file
 )
 const noexcept
 {
@@ -455,27 +461,33 @@ const noexcept
 	}
 }
 
-template <class TREE, class OUT_STREAM>
+template <class tree_t, class out_stream_t>
 void treebank_processor::process_tree
-(const TREE& rT, double *props, char *prop_set, OUT_STREAM& out_treebank_file)
+(const tree_t& rT, double *props, char *prop_set, out_stream_t& out_treebank_file)
 noexcept
 {
+	static const lal::linear_arrangement arr;
+	static const auto id = detail::identity_arr(arr);
+
 	graphs::free_tree fT = rT.to_undirected();
 	const uint64_t n = fT.get_num_nodes();
-	// choose a suitable algorithm depending on the value of 'n'
-	const auto algo_C =
-	[](uint64_t N) -> linarr::algorithms_C {
-		if (N <= 8) {
-			return linarr::algorithms_C::ladder;
+
+	// a suitable algorithm to calculate C depending on the value of 'n'
+	const auto calculate_crossings =
+	[&]() -> uint64_t {
+		if (n < 4) { return 0; }
+
+		if (n <= 8) {
+			return detail::crossings::n_C_ladder(fT, id);
 		}
-		if (N == 9) {
-			return linarr::algorithms_C::dynamic_programming;
+		if (n == 9) {
+			return detail::crossings::n_C_dynamic_programming(fT, id);
 		}
-		if (N <= 100) {
-			return linarr::algorithms_C::ladder;
+		if (n <= 100) {
+			return detail::crossings::n_C_ladder(fT, id);
 		}
-		return linarr::algorithms_C::stack_based;
-	}(rT.get_num_nodes());
+		return detail::crossings::n_C_stack_based(fT, id);
+	};
 
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
@@ -530,7 +542,7 @@ noexcept
 	// head initial
 	if (m_what_fs[head_initial_idx]) {
 		if (n > 1) {
-			set_prop(head_initial_idx, linarr::head_initial(rT));
+			set_prop(head_initial_idx, detail::head_initial<double>(rT, id));
 		}
 		else {
 			set_prop(head_initial_idx, nan(""));
@@ -574,16 +586,6 @@ noexcept
 			set_prop(mean_hierarchical_distance_idx, nan(""));
 		}
 	}
-	// MDD
-	if (m_what_fs[mean_dependency_distance_idx]) {
-		if (n > 1) {
-			set_prop(mean_dependency_distance_idx,
-					 linarr::mean_dependency_distance(rT));
-		}
-		else {
-			set_prop(mean_dependency_distance_idx, nan(""));
-		}
-	}
 	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
 		set_prop(tree_diameter_idx, detail::to_double(properties::tree_diameter(rT)));
@@ -593,10 +595,11 @@ noexcept
 	// C
 
 	if (m_what_fs[C_idx]) {
-		set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, algo_C)));
+		set_prop(C_idx, detail::to_double(calculate_crossings()));
 	}
 	if (m_what_fs[C_predicted_idx]) {
-		set_prop(C_predicted_idx, linarr::predicted_num_crossings(fT));
+		set_prop(C_predicted_idx,
+				 detail::predict_C_using_edge_lengths<double>(fT, id));
 	}
 	if (m_what_fs[C_expected_idx]) {
 		set_prop(C_expected_idx, properties::exp_num_crossings(fT));
@@ -609,7 +612,7 @@ noexcept
 	if (m_what_fs[C_z_score_idx]) {
 		// we need C
 		if (not m_what_fs[C_idx]) {
-			set_prop(C_idx, detail::to_double(linarr::num_crossings(fT, algo_C)));
+			set_prop(C_idx, detail::to_double(calculate_crossings()));
 		}
 		// we need E[C]
 		if (not m_what_fs[C_expected_idx]) {
@@ -634,8 +637,19 @@ noexcept
 	// D
 
 	if (m_what_fs[D_idx]) {
-		set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT)));
+		set_prop(D_idx, detail::to_double(detail::sum_edge_lengths(fT, id)));
 	}
+
+	if (m_what_fs[mean_dependency_distance_idx]) {
+		if (n > 1) {
+			set_prop(mean_dependency_distance_idx,
+					 detail::mean_sum_edge_lengths<double>(rT, id));
+		}
+		else {
+			set_prop(mean_dependency_distance_idx, nan(""));
+		}
+	}
+
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
 	}
@@ -653,7 +667,7 @@ noexcept
 	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, detail::to_double(linarr::sum_edge_lengths(fT)));
+			set_prop(D_idx, detail::to_double(detail::sum_edge_lengths(fT, id)));
 		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
@@ -733,7 +747,7 @@ noexcept
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
-		const auto F = linarr::compute_flux(fT);
+		const auto F = detail::compute_flux(fT, id);
 		// since these values are cheap to calculate, compute every all of them
 		// and output whatever is needed later
 
@@ -862,7 +876,7 @@ noexcept
 					C = static_cast<uint64_t>(props[C_idx]);
 				}
 				else {
-					C = linarr::num_crossings(fT, algo_C);
+					C = calculate_crossings();
 				}
 				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;

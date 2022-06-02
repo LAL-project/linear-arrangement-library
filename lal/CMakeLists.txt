@@ -150,7 +150,11 @@ target_sources(
 		detail/linarr/Dmin_Unconstrained_FC.hpp
 		detail/linarr/Dmin_Unconstrained_YS.hpp
 		detail/linarr/Dmin_utils.hpp
+		detail/linarr/flux.hpp
 		detail/linarr/formal_constraints.hpp
+		detail/linarr/headedness.hpp
+		detail/linarr/predict_C.hpp
+		detail/linarr/sum_edge_lengths.hpp
 		detail/linarr/syntactic_dependency_structure.hpp
 		#      macros
 		detail/macros/is_pointer_iterator.hpp
@@ -305,7 +309,7 @@ target_sources(
 		linarr/flux.cpp
 		linarr/formal_constraints.cpp
 		linarr/head_initial.cpp
-		linarr/predicted_C.cpp
+		linarr/predict_C.cpp
 
 		# numeric namespace
 		# -- headers

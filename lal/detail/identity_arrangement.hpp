@@ -61,10 +61,6 @@ enum class linarr_type {
 	/// Non-identity arrangement. An arrangement that is not the identity.
 	nonident
 };
-/// Shorthand for @ref linarr_type::identity.
-static constexpr auto identity = linarr_type::identity;
-/// Shorthand for @ref linarr_type::nonident.
-static constexpr auto nonident = linarr_type::nonident;
 
 /**
  * @brief A wrapper to easily use identity arrangements.
@@ -79,7 +75,7 @@ struct linarr_wrapper {
 		: m_arr(arr)
 	{
 #if defined DEBUG
-		if constexpr (type == identity) {
+		if constexpr (type == linarr_type::identity) {
 			assert(arr.size() == 0);
 		}
 		else {
@@ -102,7 +98,7 @@ struct linarr_wrapper {
 			std::is_same_v<param_t,lal::position_t>
 		);
 
-		if constexpr (type == identity) {
+		if constexpr (type == linarr_type::identity) {
 			return *p;
 		}
 		else {
@@ -110,9 +106,23 @@ struct linarr_wrapper {
 		}
 	}
 
-	/// Reference to actual arrangement.
+	/// Constant reference to actual arrangement.
 	const lal::linear_arrangement& m_arr;
 };
+
+/// Shorthand for an identity arrangement.
+inline linarr_wrapper<linarr_type::identity> identity_arr(const linear_arrangement& arr)
+noexcept
+{
+	return linarr_wrapper<linarr_type::identity>(arr);
+}
+
+/// Shorthand for a nonidentity arrangement.
+inline linarr_wrapper<linarr_type::nonident> nonident_arr(const linear_arrangement& arr)
+noexcept
+{
+	return linarr_wrapper<linarr_type::nonident>(arr);
+}
 
 } // -- namespace detail
 } // -- namespace lal

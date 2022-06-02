@@ -396,7 +396,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
+ * @return Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
 numeric::rational predicted_num_crossings_rational
 (const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
@@ -410,7 +410,7 @@ numeric::rational predicted_num_crossings_rational
  * is not specified, the identity arrangement is used.
  * @param g Input graph.
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @return Approximation of the number of crossings \f$E_s[C_G\;|\;\delta]\f$.
+ * @return Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
 numeric::rational predicted_num_crossings_rational
 (const graphs::directed_graph& g, const linear_arrangement& arr = {}) noexcept;
@@ -421,7 +421,7 @@ numeric::rational predicted_num_crossings_rational
  * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @returns The return value is a floating point value.
+ * @returns Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
 double predicted_num_crossings
 (const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
@@ -432,7 +432,7 @@ double predicted_num_crossings
  * See @ref lal::linarr::predicted_num_crossings_rational for details.
  * @param g Input graph.
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
- * @returns The return value is a floating point value.
+ * @returns Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
 double predicted_num_crossings
 (const graphs::directed_graph& g, const linear_arrangement& arr = {}) noexcept;

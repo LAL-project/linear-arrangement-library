@@ -51,9 +51,13 @@
 #include <lal/detail/linarr/C_dyn_prog.hpp>
 #include <lal/detail/linarr/C_ladder.hpp>
 #include <lal/detail/linarr/C_stack_based.hpp>
+#include <lal/detail/identity_arrangement.hpp>
 
 namespace lal {
 namespace linarr {
+
+#define __ident(arr) detail::identity_arr(arr)
+#define __nonident(arr) detail::nonident_arr(arr)
 
 template <class graph_t>
 uint64_t num_crossings(
@@ -63,15 +67,29 @@ uint64_t num_crossings(
 )
 noexcept
 {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return detail::crossings::n_C_brute_force(g, arr);
-	case algorithms_C::dynamic_programming:
-		return detail::crossings::n_C_dynamic_programming(g, arr);
-	case algorithms_C::ladder:
-		return detail::crossings::n_C_ladder(g, arr);
-	case algorithms_C::stack_based:
-		return detail::crossings::n_C_stack_based(g, arr);
+	if (arr.size() == 0) {
+		switch (A) {
+		case algorithms_C::brute_force:
+			return detail::crossings::n_C_brute_force(g, __ident(arr));
+		case algorithms_C::dynamic_programming:
+			return detail::crossings::n_C_dynamic_programming(g, __ident(arr));
+		case algorithms_C::ladder:
+			return detail::crossings::n_C_ladder(g, __ident(arr));
+		case algorithms_C::stack_based:
+			return detail::crossings::n_C_stack_based(g, __ident(arr));
+		}
+	}
+	else {
+		switch (A) {
+		case algorithms_C::brute_force:
+			return detail::crossings::n_C_brute_force(g, __nonident(arr));
+		case algorithms_C::dynamic_programming:
+			return detail::crossings::n_C_dynamic_programming(g, __nonident(arr));
+		case algorithms_C::ladder:
+			return detail::crossings::n_C_ladder(g, __nonident(arr));
+		case algorithms_C::stack_based:
+			return detail::crossings::n_C_stack_based(g, __nonident(arr));
+		}
 	}
 
 #if defined DEBUG
@@ -177,15 +195,29 @@ uint64_t is_num_crossings_lesseq_than(
 )
 noexcept
 {
-	switch (A) {
-	case algorithms_C::brute_force:
-		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arr, upper_bound);
-	case algorithms_C::dynamic_programming:
-		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arr, upper_bound);
-	case algorithms_C::ladder:
-		return detail::crossings::is_n_C_ladder_lesseq_than(g, arr, upper_bound);
-	case algorithms_C::stack_based:
-		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arr, upper_bound);
+	if (arr.size() == 0) {
+		switch (A) {
+		case algorithms_C::brute_force:
+			return detail::crossings::is_n_C_brute_force_lesseq_than(g, __ident(arr), upper_bound);
+		case algorithms_C::dynamic_programming:
+			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, __ident(arr), upper_bound);
+		case algorithms_C::ladder:
+			return detail::crossings::is_n_C_ladder_lesseq_than(g, __ident(arr), upper_bound);
+		case algorithms_C::stack_based:
+			return detail::crossings::is_n_C_stack_based_lesseq_than(g, __ident(arr), upper_bound);
+		}
+	}
+	else {
+		switch (A) {
+		case algorithms_C::brute_force:
+			return detail::crossings::is_n_C_brute_force_lesseq_than(g, __nonident(arr), upper_bound);
+		case algorithms_C::dynamic_programming:
+			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, __nonident(arr), upper_bound);
+		case algorithms_C::ladder:
+			return detail::crossings::is_n_C_ladder_lesseq_than(g, __nonident(arr), upper_bound);
+		case algorithms_C::stack_based:
+			return detail::crossings::is_n_C_stack_based_lesseq_than(g, __nonident(arr), upper_bound);
+		}
 	}
 
 #if defined DEBUG

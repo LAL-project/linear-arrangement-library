@@ -39,52 +39,84 @@
  *
  ********************************************************************/
 
+#pragma once
+
+// C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
 
 // lal includes
-#include <lal/linear_arrangement.hpp>
-#include <lal/graphs/directed_graph.hpp>
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/detail/identity_arrangement.hpp>
-#include <lal/detail/linarr/headedness.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
-namespace linarr {
+namespace detail {
 
-#define __ident_arr(arr) detail::identity_arr(arr)
-#define __nonident_arr(arr) detail::nonident_arr(arr)
-
-numeric::rational head_initial_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
+/**
+ * @brief Sum of edge lengths in a graph.
+ * @tparam graph_t Type of graph.
+ * @tparam arrangement_t Type of arrangement.
+ * @param g Input directed graph.
+ * @param arr Input linear arrangement.
+ */
+template <class graph_t, class arrangement_t>
+uint64_t sum_edge_lengths(
+	const graph_t& g,
+	const arrangement_t& arr
+)
 noexcept
 {
+	// sum of lengths
+	uint64_t l = 0;
+
+	iterators::E_iterator<graph_t> e_it(g);
+	for (; not e_it.end(); e_it.next()) {
+		const auto [u,v] = e_it.get_edge_t();
+
+		const auto pu = arr[u];
+		const auto pv = arr[v];
+
+		// accumulate length of edge
+		l += (pu < pv ? pv - pu : pu - pv);
+	}
+	return l;
+}
+
+/**
+ * @brief Average sum of edge lengths in a graph.
+ * @tparam result_t Type of return value.
+ * @tparam graph_t Type of graph.
+ * @tparam arrangement_t Type of arrangement.
+ * @param g Input directed graph.
+ * @param arr Input linear arrangement.
+ */
+template <typename result_t, class graph_t, class arrangement_t>
+result_t mean_sum_edge_lengths(
+	const graph_t& g,
+	const arrangement_t& arr
+)
+noexcept
+{
+	static_assert(
+		std::is_same_v<result_t, numeric::rational> or
+		std::is_same_v<result_t, double>
+	);
+
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::head_initial<numeric::rational>(g, __ident_arr(arr)) :
-			detail::head_initial<numeric::rational>(g, __nonident_arr(arr))
-		);
+	const uint64_t D = sum_edge_lengths(g, arr);
+
+	if constexpr (std::is_same_v<result_t, numeric::rational>) {
+		return numeric::rational(D, g.get_num_edges());
+	}
+	else {
+		return detail::to_double(D)/detail::to_double(g.get_num_edges());
+	}
 }
 
-double head_initial
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(g.get_num_edges() > 0);
-#endif
-
-	return
-		(arr.size() == 0 ?
-			detail::head_initial<double>(g, __ident_arr(arr)) :
-			detail::head_initial<double>(g, __nonident_arr(arr))
-		);
-}
-
-} // -- namespace linarr
+} // -- namespace detail
 } // -- namespace lal

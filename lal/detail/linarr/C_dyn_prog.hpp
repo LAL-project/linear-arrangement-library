@@ -248,20 +248,21 @@ noexcept
 
 /**
  * @brief Dynamic programming computation of \f$C\f$.
- * @tparam graph_t Type of input graph
+ * @tparam graph_t Type of input graph.
+ * @tparam arrangement_t Type of input arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template <class graph_t>
+template <class graph_t, class arrangement_t>
 uint64_t n_C_dynamic_programming
-(const graph_t& g, const linear_arrangement& arr)
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.size() == 0 or n == arr.size());
+	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
 #endif
 
 	if (n < 4) { return 0; }
@@ -277,14 +278,7 @@ noexcept
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
-	return
-		(arr.size() == 0 ?
-			dyn_prog::compute<false>
-			(g, linarr_wrapper<identity>(arr), bool_neighs.begin(), M,K, 0)
-		:
-			 dyn_prog::compute<false>
-			 (g, linarr_wrapper<nonident>(arr), bool_neighs.begin(), M,K, 0)
-		);
+	return dyn_prog::compute<false>(g, arr, bool_neighs.begin(), M,K, 0);
 }
 
 // --------------------
@@ -328,8 +322,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<false>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 bool_neighs.begin(), M,K, 0);
+				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, 0);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -347,52 +340,17 @@ noexcept
 /**
  * @brief Dynamic programming computation of \f$C\f$.
  * @tparam graph_t Type of input graph.
+ * @tparam arrangement_t Type of input arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Bound used for early termination.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template <class graph_t>
-uint64_t call_dyn_prog_lesseq_than(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	uint64_t upper_bound
-)
-noexcept
-{
-	const uint64_t n = g.get_num_nodes();
-	if (n < 4) { return 0; }
-
-	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
-
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
-
-	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ M = &all_memory[0];
-	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
-
-	/* decide */
-	return dyn_prog::compute<true>
-			(g, arr, bool_neighs.begin(), M,K, upper_bound);
-}
-
-/**
- * @brief Dynamic programming computation of \f$C\f$.
- * @tparam graph_t Type of input graph
- * @param g Input graph.
- * @param arr Input arrangement.
- * @param upper_bound Bound used for early termination.
- * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
- * upper bound. It returns a value one unit larger than the upper bound otherwise.
- */
-template <class graph_t>
+template <class graph_t, class arrangement_t>
 uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& arr,
+	const arrangement_t& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -400,7 +358,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.size() == 0 or n == arr.size());
+	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
 #endif
 
 	// boolean neighbourhood of nodes
@@ -414,16 +372,7 @@ noexcept
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
-	return
-		(arr.size() == 0 ?
-			dyn_prog::compute<true>
-			(g, linarr_wrapper<identity>(arr),
-			 bool_neighs.begin(), M,K, upper_bound)
-		:
-			 dyn_prog::compute<true>
-			 (g, linarr_wrapper<nonident>(arr),
-			  bool_neighs.begin(), M,K, upper_bound)
-		);
+	return dyn_prog::compute<true>(g, arr, bool_neighs.begin(), M,K, upper_bound);
 }
 
 // --------------------
@@ -472,8 +421,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<true>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 bool_neighs.begin(), M,K, upper_bound);
+				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -532,8 +480,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<true>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 bool_neighs.begin(), M,K, upper_bounds[i]);
+				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

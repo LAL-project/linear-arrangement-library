@@ -57,9 +57,9 @@ noexcept
 {
 	return
 		(arr.size() == 0 ?
-			is_root_covered(rt, detail::linarr_wrapper<detail::identity>(arr))
+			is_root_covered(rt, detail::identity_arr(arr))
 		:
-			is_root_covered(rt, detail::linarr_wrapper<detail::nonident>(arr))
+			is_root_covered(rt, detail::nonident_arr(arr))
 		);
 }
 

@@ -244,18 +244,19 @@ noexcept
 /**
  * @brief Stack based computation of \f$C\f$.
  * @tparam graph_t Type of input graph.
+ * @tparam arrangement_t Type of input arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template <class graph_t>
-uint64_t n_C_stack_based(const graph_t& g, const linear_arrangement& arr)
+template <class graph_t, class arrangement_t>
+uint64_t n_C_stack_based(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.size() == 0 or n == arr.size());
+	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
 #endif
 
 	if (n < 4) { return 0; }
@@ -264,14 +265,8 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return
-		(arr.size() == 0 ?
-			stack_based::compute_C_stack_based<false>
-			(g, linarr_wrapper<identity>(arr), size_adjN_u.begin(), 0)
-		:
-			stack_based::compute_C_stack_based<false>
-			(g, linarr_wrapper<nonident>(arr), size_adjN_u.begin(), 0)
-		);
+	return stack_based::compute_C_stack_based<false>
+			(g, arr, size_adjN_u.begin(), 0);
 }
 
 // --------------------
@@ -307,8 +302,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<false>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 size_adjN_u.begin(), 0);
+				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), 0);
 	}
 
 	return cs;
@@ -322,17 +316,18 @@ noexcept
 
 /**
  * @brief Stack based computation of \f$C\f$ with early termination.
- * @tparam graph_t Type of input graph
+ * @tparam graph_t Type of input graph.
+ * @tparam arrangement_t Type of input arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Bound used for early termination.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template <class graph_t>
+template <class graph_t, class arrangement_t>
 uint64_t is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
-	const linear_arrangement& arr,
+	const arrangement_t& arr,
 	uint64_t upper_bound
 )
 noexcept
@@ -340,7 +335,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.size() == 0 or n == arr.size());
+	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
 #endif
 
 	if (n < 4) { return 0; }
@@ -349,14 +344,8 @@ noexcept
 	// (adjN declared and defined inside the algorithm)
 	data_array<std::size_t> size_adjN_u(n, 0);
 
-	return
-		(arr.size() == 0 ?
-			stack_based::compute_C_stack_based<true>
-			(g, linarr_wrapper<identity>(arr), size_adjN_u.begin(), upper_bound)
-		:
-			 stack_based::compute_C_stack_based<true>
-			 (g, linarr_wrapper<nonident>(arr), size_adjN_u.begin(), upper_bound)
-		);
+	return stack_based::compute_C_stack_based<true>
+			(g, arr, size_adjN_u.begin(), upper_bound);
 }
 
 // --------------------
@@ -397,8 +386,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<true>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 size_adjN_u.begin(), upper_bound);
+				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
@@ -445,8 +433,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<true>
-				(g, linarr_wrapper<nonident>(arrs[i]),
-				 size_adjN_u.begin(), upper_bounds[i]);
+				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;
