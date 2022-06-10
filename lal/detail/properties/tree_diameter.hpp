@@ -72,7 +72,12 @@ template <
 >
 uint64_t tree_diameter(const tree_t& t, node x) noexcept
 {
-	if (t.get_num_nodes_component(x) == 1) { return 0; }
+	{
+	const auto ccsize = t.get_num_nodes_component(x);
+	if (ccsize == 1) { return 0; }
+	if (ccsize == 2) { return 1; }
+	if (ccsize == 3) { return 2; }
+	}
 
 	const uint64_t n = t.get_num_nodes();
 
