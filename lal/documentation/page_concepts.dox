@@ -100,9 +100,27 @@ and the position of vertex @e u can be retrieved using:
 lal::position p = arr.get_position_of_node(u);
 @endcode
 
-\subsubsection LAL_concepts__identity_linear_arrangement Identity Linear Arrangement
+\subsubsection LAL_concepts__linear_arrangement__identity Identity Linear Arrangement
 
 For the sake of simplicity in documenting this library, we define the identity arrangement \f$\pi_I\f$ as the arrangement that maps each node into the position corresponding to their label. More formally, \f$\pi_I(u_i)=i\f$, where \f$u_i\f$ denotes the \f$i\f$-th vertex in the graph. This is a special case of linear arrangement used in many functions in this library.
+
+\subsubsection LAL_concepts__linear_arrangement__properties Properties that can be defined in linear arrangements
+
+Many properties can be defined in a linear arrangement of a graph \f$G\f$. LAL users need to know the following
+
+- Edge crossings: two edges \f$uv\f$ and \f$st\f$ cross in a linear arrangement \f$\pi\f$ if \f$\pi(u) < \pi(s) < \pi(v) < \pi(t)\f$ or \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ when assuming, without loss of generality, that \f$\pi(u)<\pi(v)\f$ and \f$\pi(s)<\pi(t)\f$.
+
+- Edge lengths: the length of an edge \f$uv\f$ in a linear arrangement \f$\pi\f$ is defined as \f$d_{\pi}=|\pi(u) - \pi(v)|\f$.
+
+- Vertex covering: a vertex \f$u\f$ is covered by an edge \f$st\f$ when \f$\pi(s)<\pi(u)<\pi(t)\f$ or \f$\pi(t)<\pi(u)<\pi(v)\f$
+
+\subsubsection LAL_concepts__linear_arrangement__types Types of arrangements
+
+There are many types of arrangements used in this library. For example, some functions return an arrangement of the types described below, some classes enumerate all arrangements of these types given an input tree.
+
+- Planar arrangements of a graph: A planar arrangement of a graph is an arrangement in which there are no edge crossings. It does not matter if the graph is a free tree, rooted tree, or otherwise.
+
+- Projective arrangements of a rooted tree: A projective arrangement of a rooted graph is an arrangement in which there are no edge crossings and the root vertex of the graph is not covered by any edge. Then, a projective arrangement is also a planar arrangement and the root vertex cannot be covered. Notice that the graph must be rooted, so a tree must be rooted to have a projective arrangement.
 
 \subsection LAL_concepts__edge_list Edge list
 
