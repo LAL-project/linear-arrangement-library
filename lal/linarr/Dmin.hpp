@@ -55,15 +55,16 @@ namespace linarr {
 /**
  * @brief Computes the minimum value of \f$D\f$ in free trees.
  *
- * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
- * yielding this value. Such optimal value of \f$D\f$ depends on the choice
- * of algorithm for its calculation.
+ * Calculates the minimum value of \f$D\f$ over all possible arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. The caller can choose the algorithm to calculate such
+ * minimum value.
  *
  * See the description of the values in @ref lal::linarr::algorithms_Dmin for
  * details on the algorithm implemented and to see references to the papers.
  * @param t Input free tree.
  * @param a The algorithm to use.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
@@ -75,15 +76,19 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
 /**
  * @brief Computes the minimum value of \f$D\f$ in trees.
  *
- * Calculates the minimum value of \f$D\f$ and returns a linear arrangement
- * yielding this value. Such optimal value of \f$D\f$ depends on the choice
- * of algorithm for its calculation.
+ * Calculates the minimum value of \f$D\f$ over all possible arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. The caller can choose the algorithm to calculate such
+ * minimum value.
+ *
+ * See the description of the values in @ref lal::linarr::algorithms_Dmin
+ * for details on the algorithm to be used and to see references to the papers.
  *
  * This function converts the input rooted into a free tree (see @ref
- * lal::graphs::rooted_tree::to_undirected())
+ * lal::graphs::rooted_tree::to_free_tree())
  * @param t Input rooted tree.
  * @param a The algorithm to use.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
@@ -101,15 +106,19 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
  *
- * This function implements the algorithm published in \cite Alemany2022a.
+ * Calculates the minimum value of \f$D\f$ over all planar arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. The caller can choose the algorithm to calculate such
+ * minimum value.
  *
- * Computes an optimal planar linear arrangement for free trees. A planar linear
- * arrangement is an arrangement in which there are no edge crossings. This problem
- * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2022a for a review.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of planar
+ * arrangement.
+ *
+ * See the description of the values in @ref lal::linarr::algorithms_Dmin_planar
+ * for details on the algorithm to be used and to see references to the papers.
  * @param t Input free tree.
  * @param a The algorithm to use.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
@@ -121,18 +130,22 @@ noexcept;
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity
  * constraint.
  *
- * This function implements the algorithm published in \cite Alemany2022a.
+ * Calculates the minimum value of \f$D\f$ over all planar arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. The caller can choose the algorithm to calculate such
+ * minimum value.
  *
- * Computes an optimal planar linear arrangement for free trees. A planar linear
- * arrangement is an arrangement in which there are no edge crossings. This problem
- * was originally tackled by Iordanskii \cite Iordanskii1987a and later by Hochberg
- * and Stallmann \cite Hochberg2003a. See \cite Alemany2022a for a review.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of planar
+ * arrangement.
+ *
+ * See the description of the values in @ref lal::linarr::algorithms_Dmin_planar
+ * for details on the algorithm to be used and to see references to the papers.
  *
  * This function converts the input rooted into a free tree (see @ref
- * lal::graphs::rooted_tree::to_undirected())
+ * lal::graphs::rooted_tree::to_free_tree())
  * @param t Input rooted tree.
  * @param a The algorithm to use.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 inline
@@ -149,16 +162,19 @@ noexcept
  * @brief Computes the minimum value of \f$D\f$ in rooted trees under the projectivity
  * constraint.
  *
- * Computes an optimal projective linear arrangement for rooted trees. A
- * projective linear arrangement is an arrangement in which there are no edge
- * crossings and the root is not covered by any edge.
+ * Calculates the minimum value of \f$D\f$ over all projective arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. The caller can choose the algorithm to calculate such
+ * minimum value.
  *
- * This function implements the algorithm in \cite Alemany2022a. A non-linear
- * time algorithm to solve this problem was oulined in \cite Gildea2007a.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of projective
+ * arrangement.
  *
+ * See the description of the values in @ref lal::linarr::algorithms_Dmin_projective
+ * for details on the algorithm to be used and to see references to the papers.
  * @param t Input rooted tree.
  * @param a The algorithm to use.
- * @returns The minimum value of \f$D\f$ and an optimum arrangement.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective(
