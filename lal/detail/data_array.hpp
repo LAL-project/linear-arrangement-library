@@ -282,7 +282,8 @@ public:
 	[[nodiscard]] T const *end() const noexcept { return m_data + m_size; }
 
 private:
-	/// Allocate memory for array m_data only when @ref m_size > 0.
+	/// Allocate memory for array ·@ref m_data only when @ref m_size is greater
+	/// than 0.
 	void alloc_data() noexcept {
 		m_data = m_size == 0 ? nullptr : new T[m_size];
 	}
@@ -290,7 +291,7 @@ private:
 protected:
 	/// Pointer to the memory allocated by this array.
 	T *m_data = nullptr;
-	/// the size of this array in number of elements.
+	/// The size of this array in number of elements.
 	std::size_t m_size = 0;
 };
 
