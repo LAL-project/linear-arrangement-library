@@ -213,6 +213,8 @@ private:
 	static constexpr std::size_t Dmin_Unconstrained_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
 	static constexpr std::size_t Dmin_Planar_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
 	static constexpr std::size_t Dmin_Projective_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
+	static constexpr std::size_t DMax_Planar_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_planar);
+	static constexpr std::size_t DMax_Projective_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_projective);
 	static constexpr std::size_t mean_dependency_distance_idx = treebank_feature_to_index(treebank_feature::mean_dependency_distance);
 	static constexpr std::size_t flux_max_weight_idx = treebank_feature_to_index(treebank_feature::flux_max_weight);
 	static constexpr std::size_t flux_mean_weight_idx = treebank_feature_to_index(treebank_feature::flux_mean_weight);

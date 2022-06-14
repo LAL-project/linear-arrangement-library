@@ -143,6 +143,9 @@ target_sources(
 		detail/linarr/C_dyn_prog.hpp
 		detail/linarr/C_ladder.hpp
 		detail/linarr/C_stack_based.hpp
+		detail/linarr/DMax_Planar_AEF.hpp
+		detail/linarr/DMax_Projective_AEF.hpp
+		detail/linarr/DMax_utils.hpp
 		detail/linarr/Dmin_Planar_AEF.hpp
 		detail/linarr/Dmin_Planar_HS.hpp
 		detail/linarr/Dmin_Projective_AEF.hpp
@@ -297,6 +300,7 @@ target_sources(
 		linarr/classify_syntactic_dependency_structure.hpp
 		linarr/D.hpp
 		linarr/dependency_flux.hpp
+		linarr/DMax.hpp
 		linarr/Dmin.hpp
 		linarr/flux.hpp
 		linarr/formal_constraints.hpp
@@ -306,6 +310,7 @@ target_sources(
 		linarr/C.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
 		linarr/D.cpp
+		linarr/DMax.cpp
 		linarr/Dmin.cpp
 		linarr/flux.cpp
 		linarr/formal_constraints.cpp
@@ -452,6 +457,7 @@ set(LIBLAL_LINARR_HEADER
 	linarr/classify_syntactic_dependency_structure.hpp
 	linarr/D.hpp
 	linarr/dependency_flux.hpp
+	linarr/DMax.hpp
 	linarr/Dmin.hpp
 	linarr/flux.hpp
 	linarr/formal_constraints.hpp

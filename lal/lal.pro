@@ -81,6 +81,9 @@ HEADERS += \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
     detail/identity_arrangement.hpp \
+	detail/linarr/DMax_Planar_AEF.hpp \
+	detail/linarr/DMax_Projective_AEF.hpp \
+	detail/linarr/DMax_utils.hpp \
 	detail/linarr/Dopt_utils.hpp \
     detail/linarr/flux.hpp \
     detail/linarr/formal_constraints.hpp \
@@ -175,6 +178,7 @@ HEADERS += \
 	linarr.hpp \
 	C.hpp \
 	D.hpp \
+	linarr/DMax.hpp \
 	linarr/Dmin.hpp \
 	linarr/algorithms_C.hpp \
 	linarr/algorithms_Dmin.hpp \
@@ -238,6 +242,7 @@ SOURCES += \
 	io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C.cpp \
+	linarr/DMax.cpp \
 	linarr/Dmin.cpp \
 	linarr/classify_syntactic_dependency_structure.cpp \
 	linarr/flux.cpp \

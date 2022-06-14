@@ -90,6 +90,22 @@ namespace Dopt_utils {
 namespace Dmin_utils {
 } // -- namespace Dmin_utils
 
+/// Functions useful to calculate the maximum sum of edge lengths
+namespace DMax_utils {
+} // -- namespace DMax_utils
+
+
+/// Namespace for algorithms to calculate the maximum sum of edge lengths
+namespace DMax {
+
+/// In planar arrangements.
+namespace planar {}
+
+/// In projective arrangements.
+namespace projective {}
+
+} // -- namespace DMax
+
 
 
 

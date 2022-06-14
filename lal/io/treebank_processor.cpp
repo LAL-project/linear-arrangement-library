@@ -70,6 +70,7 @@
 #include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
+#include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/linarr/C_dyn_prog.hpp>
 #include <lal/detail/linarr/C_ladder.hpp>
 #include <lal/detail/linarr/C_stack_based.hpp>
@@ -82,7 +83,9 @@
 #include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
 #include <lal/detail/linarr/Dopt_utils.hpp>
-#include <lal/detail/properties/tree_centroid.hpp>
+
+#include <lal/detail/linarr/DMax_Planar_AEF.hpp>
+#include <lal/detail/linarr/DMax_utils.hpp>
 
 #include <lal/detail/macros/basic_convert.hpp>
 
@@ -297,6 +300,8 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::min_sum_edge_lengths:
 				case treebank_feature::min_sum_edge_lengths_planar:
 				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::max_sum_edge_lengths_planar:
+				case treebank_feature::max_sum_edge_lengths_projective:
 				case treebank_feature::mean_dependency_distance:
 				case treebank_feature::flux_max_weight:
 				case treebank_feature::flux_mean_weight:
@@ -692,19 +697,19 @@ noexcept
 	// -----------------
 	// Optimisation of D
 
+	// rooted adjacency list for the rooted tree
+	std::vector<std::vector<detail::node_size>> Lpr;
+	if (m_what_fs[Dmin_Projective_idx] or m_what_fs[DMax_Projective_idx]) {
+		Lpr.resize(n);
+		detail::Dopt_utils::make_sorted_adjacency_list_rooted
+			<detail::sorting::non_increasing_t>
+			(rT, Lpr);
+	}
+
 	// initialized to 0 so that compiler does not cry.
 	uint64_t Dmin_projective = 0;
 	if (m_what_fs[Dmin_Projective_idx]) {
-
-		// rooted adjacency list for the rooted tree
-		std::vector<std::vector<detail::node_size>> L(n);
-		detail::Dopt_utils::make_sorted_adjacency_list_rooted
-			<detail::sorting::non_increasing_t>
-			(rT, L);
-
-		Dmin_projective =
-			detail::Dmin_utils::arrange_projective(n, L, rT.get_root());
-
+		Dmin_projective = detail::Dmin_utils::arrange_projective(n, Lpr, rT.get_root());
 		set_prop(Dmin_Projective_idx, detail::to_double(Dmin_projective));
 	}
 
@@ -738,6 +743,15 @@ noexcept
 	if (m_what_fs[Dmin_Unconstrained_idx]) {
 		const auto Dmin = detail::Dmin::unconstrained::YossiShiloach<false>(fT);
 		set_prop(Dmin_Unconstrained_idx, detail::to_double(Dmin));
+	}
+
+	if (m_what_fs[DMax_Projective_idx]) {
+		const uint64_t DMax_projective = detail::DMax_utils::arrange_projective(n, Lpr, rT.get_root());
+		set_prop(DMax_Projective_idx, detail::to_double(DMax_projective));
+	}
+	if (m_what_fs[DMax_Planar_idx]) {
+		const uint64_t DMax_planar = detail::DMax::planar::AEF<false>(fT);
+		set_prop(DMax_Planar_idx, detail::to_double(DMax_planar));
 	}
 
 	// -----------------
@@ -833,6 +847,8 @@ noexcept
 			case treebank_feature::min_sum_edge_lengths:
 			case treebank_feature::min_sum_edge_lengths_planar:
 			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::max_sum_edge_lengths_planar:
+			case treebank_feature::max_sum_edge_lengths_projective:
 			case treebank_feature::mean_dependency_distance:
 			case treebank_feature::flux_max_weight:
 			case treebank_feature::flux_mean_weight:

@@ -280,6 +280,18 @@ enum class treebank_feature {
 	 */
 	min_sum_edge_lengths_projective,
 	/**
+	 * @brief Maximum sum of length of edges under the planary constraint.
+	 *
+	 * See @ref lal::linarr::max_sum_edge_lengths for details.
+	 */
+	max_sum_edge_lengths_planar,
+	/**
+	 * @brief Maximum sum of length of edges under the planary constraint.
+	 *
+	 * See @ref lal::linarr::max_sum_edge_lengths_projective for details.
+	 */
+	max_sum_edge_lengths_projective,
+	/**
 	 * @brief Mean dependency distance of the tree.
 	 *
 	 * In case a tree has 1 vertex the output is a 'NaN' value.
@@ -549,6 +561,8 @@ noexcept
 	case treebank_feature::min_sum_edge_lengths: return "min_sum_edge_lengths";
 	case treebank_feature::min_sum_edge_lengths_planar: return "min_sum_edge_lengths_planar";
 	case treebank_feature::min_sum_edge_lengths_projective: return "min_sum_edge_lengths_projective";
+	case treebank_feature::max_sum_edge_lengths_planar: return "max_sum_edge_lengths_planar";
+	case treebank_feature::max_sum_edge_lengths_projective: return "max_sum_edge_lengths_projective";
 	case treebank_feature::mean_dependency_distance: return "mean_dependency_distance";
 	case treebank_feature::flux_max_weight: return "flux_max_weight";
 	case treebank_feature::flux_mean_weight: return "flux_mean_weight";
