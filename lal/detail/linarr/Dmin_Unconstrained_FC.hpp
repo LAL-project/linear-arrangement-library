@@ -56,6 +56,7 @@
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
+#include <lal/detail/linarr/Dopt_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -69,16 +70,10 @@ namespace unconstrained {
  * arrangement problem. See \cite Chung1984a for further details.
  */
 namespace Chung {
+using namespace Dopt_utils;
 
 /// Typedef for a useful type
 typedef lal::detail::data_array<node_size> ordering;
-
-/// The tree is left-anchored
-static constexpr char LEFT_ANCHOR = -1;
-/// The tree is right-anchored
-static constexpr char RIGHT_ANCHOR = 1;
-/// The tree is not anchored
-static constexpr char NO_ANCHOR = 0;
 
 /*
 int calculate_q(uint64_t n, const ordering& ord) {
@@ -696,10 +691,10 @@ FanChung_2(const graphs::free_tree& t) noexcept
 	assert(t.is_tree());
 #endif
 
+	graphs::free_tree T = t;
+
 	uint64_t Dmin = 0;
 	linear_arrangement arr(make_arrangement ? t.get_num_nodes() : 0);
-
-	graphs::free_tree T = t;
 	Chung::calculate_mla<Chung::NO_ANCHOR, make_arrangement>(T, 0, 0, arr, Dmin);
 
 	if constexpr (make_arrangement) {

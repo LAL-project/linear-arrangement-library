@@ -81,6 +81,7 @@
 
 #include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
+#include <lal/detail/linarr/Dopt_utils.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 
 #include <lal/detail/macros/basic_convert.hpp>
@@ -697,7 +698,7 @@ noexcept
 
 		// rooted adjacency list for the rooted tree
 		std::vector<std::vector<detail::node_size>> L(n);
-		detail::Dmin_utils::make_sorted_adjacency_list_rooted
+		detail::Dopt_utils::make_sorted_adjacency_list_rooted
 			<detail::sorting::non_increasing_t>
 			(rT, L);
 
@@ -724,7 +725,7 @@ noexcept
 			// Dmin_projective was not calculated, or the centroid does
 			// not contain the root
 
-			detail::Dmin_utils::root_adjacency_list
+			detail::Dopt_utils::root_adjacency_list
 				(fT, centroid.first, centroid.first, L);
 
 			const uint64_t Dmin_planar =

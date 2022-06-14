@@ -81,10 +81,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
 noexcept
 {
 	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
-		return detail::Dmin::planar::AEF(t);
+		return detail::Dmin::planar::AEF<true>(t);
 	}
 
-	return detail::Dmin::planar::HS(t);
+	return detail::Dmin::planar::HS<true>(t);
 }
 
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
@@ -92,10 +92,10 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
 noexcept
 {
 	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
-		return detail::Dmin::projective::AEF(t);
+		return detail::Dmin::projective::AEF<true>(t);
 	}
 
-	return detail::Dmin::projective::HS(t);
+	return detail::Dmin::projective::HS<true>(t);
 }
 
 } // -- namespace linarr

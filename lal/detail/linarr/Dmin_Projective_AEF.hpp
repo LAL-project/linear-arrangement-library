@@ -54,6 +54,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
+#include <lal/detail/linarr/Dopt_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -63,19 +64,23 @@ namespace projective {
 /**
  * @brief Minimum projective arrangement of a rooted tree.
  *
- * This function implements the algorithm following the description in
- * \cite Alemany2022a.
- *
- * This algorithm frst constructs the sorted adjacency matrix rooted
+ * This function first constructs the sorted adjacency matrix rooted
  * at the tree's root. Then, it arranges the tree so that there are no edge
  * crossings and the root vertex is not covered. Such arrangement is done using
  * a interval-based algorithm.
+ *
+ * This function implements the algorithm in \cite Alemany2022a.
+ * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and minimum linear arrangement.
  */
-inline
-std::pair<uint64_t, linear_arrangement> AEF(const graphs::rooted_tree& t)
-noexcept
+template <bool make_arrangement>
+std::conditional_t<
+	make_arrangement,
+	std::pair<uint64_t, linear_arrangement>,
+	uint64_t
+>
+AEF(const graphs::rooted_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -83,7 +88,12 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
-		return {0, linear_arrangement::identity(1)};
+		if constexpr (make_arrangement) {
+			return {0, linear_arrangement::identity(1)};
+		}
+		else {
+			return 0;
+		}
 	}
 
 	// Make the sorted adjacency list rooted at the centroid of the tree.
@@ -91,16 +101,21 @@ noexcept
 	// LARGEST to SMALLEST
 
 	std::vector<std::vector<node_size>> L(n);
-	Dmin_utils::make_sorted_adjacency_list_rooted
+	Dopt_utils::make_sorted_adjacency_list_rooted
 		<sorting::non_increasing_t>
 		(t, L);
 
 	// construct the optimal projective arrangement
 
-	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::arrange_projective(n, L, t.get_root(), arr);
-
-	return {D, std::move(arr)};
+	if constexpr (make_arrangement) {
+		linear_arrangement arr(n);
+		const uint64_t D = Dmin_utils::arrange_projective(n, L, t.get_root(), arr);
+		return {D, std::move(arr)};
+	}
+	else {
+		const uint64_t D = Dmin_utils::arrange_projective(n, L, t.get_root());
+		return D;
+	}
 }
 
 } // -- namespace projective

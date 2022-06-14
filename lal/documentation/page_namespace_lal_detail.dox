@@ -63,6 +63,9 @@ namespace detail {
 /// Namespace for the algorithms that compute the number of crossings.
 namespace crossings { }
 
+
+
+
 /// Namespace for algorithms to calculate the minimum sum of edge lengths
 namespace Dmin {
 
@@ -76,6 +79,19 @@ namespace planar {}
 namespace projective {}
 
 } // -- namespace Dmin
+
+
+
+/// Functions useful to calculate both the minimum and maximum sum of edge lengths
+namespace Dopt_utils {
+} // -- namespace Dopt_utils
+
+/// Functions useful to calculate the minimum sum of edge lengths
+namespace Dmin_utils {
+} // -- namespace Dmin_utils
+
+
+
 
 /// Sorting algorithms.
 namespace sorting {}

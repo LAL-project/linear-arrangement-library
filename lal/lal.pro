@@ -81,6 +81,7 @@ HEADERS += \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
     detail/identity_arrangement.hpp \
+	detail/linarr/Dopt_utils.hpp \
     detail/linarr/flux.hpp \
     detail/linarr/formal_constraints.hpp \
     detail/linarr/headedness.hpp \

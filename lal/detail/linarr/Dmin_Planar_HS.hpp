@@ -54,6 +54,7 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
+#include <lal/detail/linarr/Dopt_utils.hpp>
 #include <lal/detail/pairs_utils.hpp>
 
 namespace lal {
@@ -64,21 +65,27 @@ namespace planar {
 /**
  * @brief Minimum planar arrangement of a free tree.
  *
+ * This function first constructs the sorted adjacency matrix rooted
+ * at one of the tree's centroidal vertices. Then, it arranges the tree so that
+ * there are no edge crossings and the centroidal vertex is not covered. Such
+ * arrangement is done using an displacement-based algorithm.
+ *
  * This function implements the algorithm following the description in
  * \cite Alemany2022a, i.e., this algorithm uses the approach first described by
  * Hochberg and Stallmann in \cite Hochberg2003a using the correction in
  * \cite Alemany2022a.
  *
- * This algorithm first constructs the sorted adjacency matrix rooted
- * at one of the tree's centroidal vertices. Then, it arranges the tree so that
- * there are no edge crossings and the centroidal vertex is not covered. Such
- * arrangement is done using an displacement-based algorithm.
+ * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and minimum linear arrangement.
  */
-inline
-std::pair<uint64_t, linear_arrangement> HS(const graphs::free_tree& t)
-noexcept
+template <bool make_arrangement>
+std::conditional_t<
+	make_arrangement,
+	std::pair<uint64_t, linear_arrangement>,
+	uint64_t
+>
+HS(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -86,7 +93,12 @@ noexcept
 
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
-		return {0, linear_arrangement::identity(1)};
+		if constexpr (make_arrangement) {
+			return {0, linear_arrangement::identity(1)};
+		}
+		else {
+			return 0;
+		}
 	}
 
 	// Make the sorted adjacency list rooted at the centroid of the tree.
@@ -95,17 +107,23 @@ noexcept
 
 	std::vector<std::vector<node_size>> L;
 	const node c =
-		Dmin_utils::make_sorted_adjacency_list_rooted_centroid
+		Dopt_utils::make_sorted_adjacency_list_rooted_centroid
 			<sorting::non_increasing_t>
 			(t, L);
 
 	// construct the optimal planar arrangement by calculating the optimal
 	// projective arrangement
 
-	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::embed<true>(L, c, arr);
-
-	return {D, std::move(arr)};
+	if constexpr (make_arrangement) {
+		linear_arrangement arr(n);
+		const uint64_t D = Dmin_utils::embed<true>(L, c, arr);
+		return {D, std::move(arr)};
+	}
+	else {
+		linear_arrangement arr;
+		const uint64_t D = Dmin_utils::embed<false>(L, c, arr);
+		return D;
+	}
 }
 
 } // -- namespace planar

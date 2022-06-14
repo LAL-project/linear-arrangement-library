@@ -51,6 +51,7 @@
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
+#include <lal/detail/linarr/Dopt_utils.hpp>
 
 typedef std::pair<uint64_t,lal::node> size_node;
 typedef lal::detail::data_array<size_node> ordering;
@@ -67,15 +68,7 @@ namespace unconstrained {
  * arrangement problem. See \cite Shiloach1979a for further details.
  */
 namespace Shiloach {
-
-/// The tree is left-anchored
-static constexpr char LEFT_ANCHOR = -1;
-/// The tree is right-anchored
-static constexpr char RIGHT_ANCHOR = 1;
-/// The tree is not anchored
-static constexpr char NO_ANCHOR = 0;
-/// The tree is anchored
-static constexpr char ANCHOR = 1;
+using namespace Dopt_utils;
 
 /**
  * @brief Calculate \f$p_{\alpha}\f$.
