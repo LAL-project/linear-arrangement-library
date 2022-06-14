@@ -216,7 +216,7 @@ noexcept
  * The calculation of DMax on every vertex is done in \f$O(n)\f$ thanks to the
  * adjacency list calculated by function @ref make_sorted_adjacency_list.
  *
- * This function implements the algorithm in \cite Alemany2022b.
+ * This function implements the algorithm in \cite Alemany2022d.
  * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and maximum linear arrangement.

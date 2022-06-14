@@ -72,7 +72,7 @@ namespace generate {
  * initialisation, the generator encodes the first arrangement, which has to be
  * retrieved using method @ref get_arrangement().
  *
- * This class implements the algorithm in \cite Alemany2021c.
+ * This class implements the algorithm in \cite Alemany2022c.
  *
  * A possible usage of this class is the following:
  * @code

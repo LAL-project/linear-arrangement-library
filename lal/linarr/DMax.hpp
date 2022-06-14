@@ -61,7 +61,7 @@ namespace linarr {
  * See @ref LAL_concepts__linear_arrangement__types for the definition of planar
  * arrangement.
  *
- * This function implements the algorithm described in \cite Alemany2022b.
+ * This function implements the algorithm described in \cite Alemany2022d.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
@@ -81,7 +81,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of planar
  * arrangement.
  *
- * This function implements the algorithm described in \cite Alemany2022b.
+ * This function implements the algorithm described in \cite Alemany2022d.
  *
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::rooted_tree::to_free_tree())
@@ -109,7 +109,7 @@ noexcept
  * See @ref LAL_concepts__linear_arrangement__types for the definition of projective
  * arrangement.
  *
- * This function implements the algorithm described in \cite Alemany2022b.
+ * This function implements the algorithm described in \cite Alemany2022d.
  * @param t Input rooted tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).

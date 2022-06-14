@@ -270,7 +270,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Minimum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::min_sum_edge_lengths for details.
+	 * See @ref lal::linarr::min_sum_edge_lengths_planar for details.
 	 */
 	min_sum_edge_lengths_planar,
 	/**
@@ -282,7 +282,7 @@ enum class treebank_feature {
 	/**
 	 * @brief Maximum sum of length of edges under the planary constraint.
 	 *
-	 * See @ref lal::linarr::max_sum_edge_lengths for details.
+	 * See @ref lal::linarr::max_sum_edge_lengths_planar for details.
 	 */
 	max_sum_edge_lengths_planar,
 	/**

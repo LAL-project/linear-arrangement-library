@@ -192,7 +192,8 @@ noexcept
 /**
  * @brief Roots an adjacency list with respect to root @e u.
  *
- * This is described in \cite Alemany2022a.
+ * In an entry of @e L corresponding to vertex @e u, @e L[u], removes the vertex
+ * in said entry that points to the parent of @e u.
  * @param t Input free tree.
  * @param parent_u Parent node of node @e u.
  * @param u Node being processed.
