@@ -112,7 +112,7 @@ Many properties can be defined in a linear arrangement of a graph \f$G\f$. LAL u
 
 - Edge lengths: the length of an edge \f$uv\f$ in a linear arrangement \f$\pi\f$ is defined as \f$d_{\pi}=|\pi(u) - \pi(v)|\f$.
 
-- Vertex covering: a vertex \f$u\f$ is covered by an edge \f$st\f$ when \f$\pi(s)<\pi(u)<\pi(t)\f$ or \f$\pi(t)<\pi(u)<\pi(v)\f$
+- Vertex covering: a vertex \f$u\f$ is covered by an edge \f$st\f$ when \f$\pi(s)<\pi(u)<\pi(t)\f$ or \f$\pi(t)<\pi(u)<\pi(s)\f$
 
 \subsubsection LAL_concepts__linear_arrangement__types Types of arrangements
 
