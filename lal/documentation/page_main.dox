@@ -58,7 +58,12 @@ The main goal of this library is to provide algorithms with which the library's 
 
 All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
 - the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_edge_lengths), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::exp_sum_edge_lengths and lal::properties::var_sum_edge_lengths),
-- the computation of optimal arrangements: unconstrained minimum arrangements with respect to the sum of edge lengths (see @ref lal::linarr::min_sum_edge_lengths), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin), and the computation of minimum planar arrangements (see @ref lal::linarr::min_sum_edge_lengths_planar) and of minimum projective arrangements (see @ref lal::linarr::min_sum_edge_lengths_projective).
+- the computation of optimal arrangements:
+	- minimum unconstrained arrangements with respect to the sum of edge lengths (see @ref lal::linarr::min_sum_edge_lengths), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin),
+	- minimum planar arrangements (see @ref lal::linarr::min_sum_edge_lengths_planar), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin_planar),
+	- minimum projective arrangements (see @ref lal::linarr::min_sum_edge_lengths_projective), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin_projective),
+	- maximum planar arrangements (see @ref lal::linarr::max_sum_edge_lengths_planar),
+	- maximum projective arrangements (see @ref lal::linarr::max_sum_edge_lengths_projective),
 - the number of crossings (see @ref lal::linarr::num_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::exp_num_crossings and lal::properties::var_num_crossings),
 - any moment of the degree of the vertices of a graph (see @ref lal::properties::moment_degree and its variants),
 - the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
