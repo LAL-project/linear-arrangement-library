@@ -98,6 +98,54 @@ noexcept
 }
 
 /**
+ * @brief Computes the maximum value of \f$D\f$ in trees under the projectivity
+ * constraint at every vertex of the tree.
+ *
+ * Calculates the maximum sum of edge lengths under the projectivity constraint
+ * at every vertex of the tree, that is, the result returned is a list of values
+ * \f$\{M_1,M_2,\dots,M_n\}\f$ where \f$M_i\f$ is the maximum sum of edge lengths
+ * under projectivity for the tree rooted at the \f$i\f$-th vertex.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of projective
+ * arrangement.
+ *
+ * This function implements the algorithm described in \cite Alemany2022d.
+ * @param t Input free tree.
+ * @returns The maximum value of \f$D\f$ and a maximum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+(const graphs::free_tree& t)
+noexcept;
+/**
+ * @brief Computes the maximum value of \f$D\f$ in trees under the projectivity
+ * constraint at every vertex of the tree.
+ *
+ * Calculates the maximum sum of edge lengths under the projectivity constraint
+ * at every vertex of the tree, that is, the result returned is a list of values
+ * \f$\{M_1,M_2,\dots,M_n\}\f$ where \f$M_i\f$ is the maximum sum of edge lengths
+ * under projectivity for the tree rooted at the \f$i\f$-th vertex.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of projective
+ * arrangement.
+ *
+ * This function implements the algorithm described in \cite Alemany2022d.
+ *
+ * This function converts the input rooted into a free tree (see @ref
+ * lal::graphs::rooted_tree::to_free_tree()). Therefore, the root is ignored.
+ * @param t Input free tree.
+ * @returns The maximum value of \f$D\f$ and a maximum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+inline
+std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+(const graphs::rooted_tree& t)
+noexcept
+{
+	return max_sum_edge_lengths_projective_roots(t.to_free_tree());
+}
+
+/**
  * @brief Computes the maximum value of \f$D\f$ in rooted trees under the projectivity
  * constraint.
  *

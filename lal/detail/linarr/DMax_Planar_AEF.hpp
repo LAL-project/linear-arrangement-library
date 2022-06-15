@@ -66,12 +66,12 @@ namespace DMax {
 namespace planar {
 
 /// Choose a starting vertex to calculate maximum planar sum of edge lengths.
-inline lal::node choose_starting_vertex(const lal::graphs::free_tree& t)
+inline node choose_starting_vertex(const graphs::free_tree& t)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
-	for (lal::node u = 0; u < n; ++u) {
+	for (node u = 0; u < n; ++u) {
 		if (t.get_degree(u) == 1) {
 			return t.get_neighbours(u)[0];
 		}
@@ -84,13 +84,13 @@ noexcept
 struct sorted_adjacency_list_info {
 	/// The child of the parent. The parent node is the node that is
 	/// the owner of the list.
-	lal::node child; // v
+	node child; // v
 
 	/// The number of nodes in the tree T^parent_child.
 	uint64_t size;
 
 	/// Index of child vertex within the parent's list.
-	/// This one is (or should be!) trivial since this is the lal::position that
+	/// This one is (or should be!) trivial since this is the position that
 	/// this struct occupies within the list it belongs to.
 	uint64_t index_of_child_within_parents_list; // sigma(u,v)
 
@@ -105,7 +105,7 @@ struct sorted_adjacency_list_info {
 /// A tuple used to construct the sorted adjacency list.
 struct edge_size_sigma {
 	/// Edge (u,v)
-	lal::edge e;
+	edge e;
 	/// Directional size (u,v)
 	uint64_t size;
 	/// Index of 'v' within list of 'u'.
@@ -114,7 +114,7 @@ struct edge_size_sigma {
 	/// Constructor.
 	edge_size_sigma() noexcept : e{}, size{0}, sigma{0} {}
 	/// Constructor.
-	edge_size_sigma(lal::edge _e, uint64_t _size, std::size_t _sigma) noexcept
+	edge_size_sigma(edge _e, uint64_t _size, std::size_t _sigma) noexcept
 		: e{_e}, size{_size}, sigma{_sigma}
 	{}
 };
@@ -123,12 +123,19 @@ struct edge_size_sigma {
 typedef std::vector<std::vector<sorted_adjacency_list_info>>
 	sorted_adjacency_list;
 
-/// Construct the sorted adjacency list needed to calculate DMax in every vertex.
+/// Construct the  for every vertex in the tree. .
+/**
+ * @brief Sorted adjacency list needed to calculate the maximum sum of edge legnths.
+ *
+ * This adjacency list is needed in function @ref all_max_sum_lengths_values.
+ * @param t Input free tree.
+ * @returns The appropriate sorted adjacency list.
+ */
 inline
-sorted_adjacency_list make_sorted_adjacency_list(const lal::graphs::free_tree& t)
+sorted_adjacency_list make_sorted_adjacency_list(const graphs::free_tree& t)
 noexcept
 {
-	typedef std::pair<lal::edge, uint64_t> edge_size;
+	typedef std::pair<edge, uint64_t> edge_size;
 
 	const uint64_t n = t.get_num_nodes();
 	const uint64_t m = t.get_num_edges();
@@ -138,15 +145,14 @@ noexcept
 	sorted_adjacency_list M(n);
 
 	// bidirectional sizes
-	lal::detail::data_array<edge_size> S(2*m);
+	data_array<edge_size> S(2*m);
 	{
-	lal::detail::calculate_bidirectional_sizes
-		<lal::graphs::free_tree, edge_size*>
+	calculate_bidirectional_sizes
+		<graphs::free_tree, edge_size*>
 		(t, n, 0, S.begin());
 
 	// sort all tuples in bidir_sizes using the size of the subtree
-	lal::detail::sorting::counting_sort
-		<edge_size, lal::detail::sorting::non_increasing_t>
+	sorting::counting_sort<edge_size, sorting::non_increasing_t>
 		(
 			S.begin(), S.end(), n, S.size(),
 			[](const edge_size& T) -> std::size_t { return std::get<1>(T); }
@@ -154,7 +160,7 @@ noexcept
 	}
 
 	// put the sorted bidirectional sizes into an adjacency list
-	lal::detail::data_array<edge_size_sigma> J(2*m);
+	data_array<edge_size_sigma> J(2*m);
 	for (std::size_t idx = 0; idx < S.size(); ++idx) {
 		const auto& T = S[idx];
 
@@ -185,20 +191,20 @@ noexcept
 	}
 
 #if defined DEBUG
-	for (lal::node u = 0; u < n; ++u) {
+	for (node u = 0; u < n; ++u) {
 		assert(M[u].size() == t.get_degree(u));
 	}
 #endif
 
 	// sort all tuples in bidir_idxs using the size of the subtree
-	lal::detail::sorting::counting_sort
-		<edge_size_sigma, lal::detail::sorting::non_increasing_t>
+	sorting::counting_sort
+		<edge_size_sigma, sorting::non_increasing_t>
 		(
 			J.begin(), J.end(), n, J.size(),
 			[](const edge_size_sigma& T) -> std::size_t { return T.size; }
 		);
 
-	lal::detail::data_array<std::size_t> I(n, 0);
+	data_array<std::size_t> I(n, 0);
 	for (const auto& [e, suv, sigma_v_u] : J) {
 		const auto u = e.first;
 
@@ -209,14 +215,158 @@ noexcept
 	return M;
 }
 
+/// Return type of function @ref all_max_sum_lengths_values.
+enum class return_type_all_maxs {
+	/// Return both the set of max projective values at every vertex and the vertex
+	/// that maximizes the maximum projective.
+	both_DMax_value_and_max_root,
+	/// Return only the max projective values for every vertex of the tree.
+	only_DMax_values,
+	/// Return only a vertex that maximizes the maximum projective.
+	only_max_root
+};
+
+/// Typedef for the result type of function @ref all_max_sum_lengths_values.
+template <return_type_all_maxs res_type>
+using DMax_info =
+	std::conditional_t<
+		res_type == return_type_all_maxs::both_DMax_value_and_max_root,
+		std::pair<std::vector<uint64_t>, uint64_t>,
+		std::conditional_t<
+			res_type == return_type_all_maxs::only_DMax_values,
+			std::vector<uint64_t>,
+			uint64_t
+		>
+	>;
+
 /**
  * @brief Maximum planar arrangement of a free tree.
  *
- * This algorithm calculates DMax on every vertex and keeps track of the maximum.
- * The calculation of DMax on every vertex is done in \f$O(n)\f$ thanks to the
- * adjacency list calculated by function @ref make_sorted_adjacency_list.
+ * This algorithm calculates the maximum sum of edge lengths on every vertex and
+ * keeps track of the maximum. The calculation of the maximum sum of edge lengths
+ * on every vertex is done in \f$O(n)\f$ thanks to the adjacency list calculated
+ * by function @ref make_sorted_adjacency_list.
  *
  * This function implements the algorithm in \cite Alemany2022d.
+ * @tparam res_type The type of result to return. See @ref return_type_all_maxs
+ * for details.
+ * @param t Input tree.
+ * @returns Depending of the value of @e res_type, a list of values, a p
+ */
+template <return_type_all_maxs res_type>
+DMax_info<res_type>
+all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
+{
+	constexpr bool calculate_max_root =
+		res_type == return_type_all_maxs::both_DMax_value_and_max_root or
+		res_type == return_type_all_maxs::only_max_root;
+
+	const uint64_t n = t.get_num_nodes();
+
+	// the value of DMax for all vertices
+	std::vector<uint64_t> DMax_per_vertex(n, 0);
+
+	if (n == 1) {
+		DMax_per_vertex[0] = 0;
+		if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+			return {std::move(DMax_per_vertex), 0};
+		}
+		else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+			return DMax_per_vertex;
+		}
+		else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+			return 0;
+		}
+	}
+	if (n == 2) {
+		DMax_per_vertex[0] = 1;
+		DMax_per_vertex[1] = 1;
+		if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+			return {std::move(DMax_per_vertex), 0};
+		}
+		else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+			return DMax_per_vertex;
+		}
+		else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+			return 0;
+		}
+	}
+
+	const auto M = make_sorted_adjacency_list(t);
+
+	// starting vertex for the algorithm
+	const node starting_vertex = choose_starting_vertex(t);
+#if defined DEBUG
+	assert(starting_vertex < n);
+#endif
+
+	// calculate DMax for the starting vertex
+	{
+	graphs::rooted_tree rt(t, starting_vertex);
+	rt.calculate_size_subtrees();
+	DMax_per_vertex[starting_vertex] = projective::AEF<false>(rt);
+	}
+
+	// the maximum value and the corresponding node
+	uint64_t max_DMax = DMax_per_vertex[starting_vertex];
+	node max_root  = starting_vertex;
+
+	// calculate the value of DMax for all vertices
+	data_array<char> visited(n, 0);
+	visited[starting_vertex] = 1;
+	std::queue<node> Q;
+	Q.push(starting_vertex);
+
+	while (not Q.empty()) {
+		const node u = Q.front();
+		Q.pop();
+
+		const auto& Mu = M[u];
+		for (const auto& [v, s_u_v, sigma_u_v, sigma_v_u, partial_sum_ui] : Mu) {
+			if (visited[v] == 1) { continue; }
+
+			const uint64_t s_v_u = n - s_u_v;
+			const uint64_t partial_sum_vi = M[v][sigma_v_u].partial_sum;
+
+			DMax_per_vertex[v] =
+				  DMax_per_vertex[u]
+				+ (partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1) + 1)*s_v_u)
+				- (partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1) + 1)*s_u_v)
+			;
+
+			visited[v] = 1;
+			Q.push(v);
+
+			if constexpr (calculate_max_root) {
+				if (max_DMax < DMax_per_vertex[v]) {
+					max_DMax = DMax_per_vertex[v];
+					max_root = v;
+				}
+			}
+		}
+	}
+
+	if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+		return {std::move(DMax_per_vertex), max_root};
+	}
+	else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+		return DMax_per_vertex;
+	}
+	else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+		return max_root;
+	}
+}
+
+/**
+ * @brief Maximum planar arrangement of a free tree.
+ *
+ * This algorithm calculates the maximum sum of edge lengths on every vertex and
+ * keeps track of the maximum. The calculation of DMax on every vertex is done
+ * in \f$O(n)\f$ thanks to the adjacency list calculated by function
+ * @ref make_sorted_adjacency_list.
+ *
+ * This function calls @ref all_max_sum_lengths_values, which implements the algorithm
+ * described in \cite Alemany2022d.
  * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and maximum linear arrangement.
@@ -227,7 +377,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(const lal::graphs::free_tree& t) noexcept
+AEF(const graphs::free_tree& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -248,63 +398,11 @@ AEF(const lal::graphs::free_tree& t) noexcept
 		}
 	}
 
-	const auto M = make_sorted_adjacency_list(t);
-
-	// starting vertex for the algorithm
-	const lal::node starting_vertex = choose_starting_vertex(t);
-#if defined DEBUG
-	assert(starting_vertex < n);
-#endif
-
-	// the value of DMax for all vertices
-	lal::detail::data_array<uint64_t> DMax_node(n, 0);
-
-	// calculate DMax for the starting vertex
-	{
-	lal::graphs::rooted_tree rt(t, starting_vertex);
-	rt.calculate_size_subtrees();
-	DMax_node[starting_vertex] = projective::AEF<false>(rt);
-	}
-
-	// the maximum value and the corresponding node
-	uint64_t DMax = DMax_node[starting_vertex];
-	lal::node max_node = starting_vertex;
-
-	// calculate the value of DMax for all vertices
-	lal::detail::data_array<char> visited(n, 0);
-	visited[starting_vertex] = 1;
-	std::queue<lal::node> Q;
-	Q.push(starting_vertex);
-
-	while (not Q.empty()) {
-		const lal::node u = Q.front();
-		Q.pop();
-
-		const auto& Mu = M[u];
-		for (const auto& [v, s_u_v, sigma_u_v, sigma_v_u, partial_sum_ui] : Mu) {
-			if (visited[v] == 1) { continue; }
-
-			const uint64_t s_v_u = n - s_u_v;
-			const uint64_t partial_sum_vi = M[v][sigma_v_u].partial_sum;
-
-			DMax_node[v] =
-				  DMax_node[u]
-				+ (partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1) + 1)*s_v_u)
-				- (partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1) + 1)*s_u_v)
-			;
-
-			visited[v] = 1;
-			Q.push(v);
-
-			if (DMax < DMax_node[v]) {
-				DMax = DMax_node[v];
-				max_node = v;
-			}
-		}
-	}
+	const node max_root =
+		all_max_sum_lengths_values<return_type_all_maxs::only_max_root>(t);
 
 	// root the tree at a maximizing node
-	lal::graphs::rooted_tree rt(t, max_node);
+	graphs::rooted_tree rt(t, max_root);
 	rt.calculate_size_subtrees();
 	return projective::AEF<make_arrangement>(rt);
 }

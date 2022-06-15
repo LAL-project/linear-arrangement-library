@@ -62,6 +62,14 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 	return detail::DMax::planar::AEF<true>(t);
 }
 
+std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+(const graphs::free_tree& t) noexcept
+{
+	static constexpr auto choice =
+		detail::DMax::planar::return_type_all_maxs::both_DMax_value_and_max_root;
+	return detail::DMax::planar::all_max_sum_lengths_values<choice>(t);
+}
+
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_projective
 (const graphs::rooted_tree& t) noexcept
 {

@@ -47,8 +47,11 @@
 #include <lal/linarr/algorithms_Dmin.hpp>
 #include <lal/linarr/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D.hpp>
 #include <lal/linarr/Dmin.hpp>
+
+#include <lal/linarr/DMax.hpp>
+
+#include <lal/linarr/D.hpp>
 
 #include <lal/linarr/syntactic_dependency_structure.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
