@@ -104,14 +104,11 @@ noexcept
 	assert(n > 0);
 #endif
 
-	typedef edge_size* iterator_t;
-
 	{
 	sizes_edge.resize(2*(n - 1));
 
 	// calculate s(u,v) with H&S algorithm (lemma 8)
-	detail::calculate_bidirectional_sizes
-		<tree_t, iterator_t>(t, n, x, sizes_edge.begin());
+	detail::calculate_bidirectional_sizes(t, n, x, sizes_edge.begin());
 
 	// sort all tuples in sizes_edge using the sizes s(u,v)
 	detail::sorting::counting_sort

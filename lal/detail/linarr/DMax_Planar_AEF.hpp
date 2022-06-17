@@ -147,9 +147,7 @@ noexcept
 	// bidirectional sizes
 	data_array<edge_size> S(2*m);
 	{
-	calculate_bidirectional_sizes
-		<graphs::free_tree, edge_size*>
-		(t, n, 0, S.begin());
+	calculate_bidirectional_sizes(t, n, 0, S.begin());
 
 	// sort all tuples in bidir_sizes using the size of the subtree
 	sorting::counting_sort<edge_size, sorting::non_increasing_t>

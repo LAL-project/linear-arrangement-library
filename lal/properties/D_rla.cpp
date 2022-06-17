@@ -112,11 +112,7 @@ noexcept
 	const uint64_t n = T.get_num_nodes();
 
 	std::vector<detail::edge_size> edge_size(2*(n - 1));
-	{
-	detail::calculate_bidirectional_sizes
-		<graphs::free_tree, std::vector<detail::edge_size>::iterator>
-		(T, n, 0, edge_size.begin());
-	}
+	detail::calculate_bidirectional_sizes(T, n, 0, edge_size.begin());
 
 	uint64_t V = 0;
 

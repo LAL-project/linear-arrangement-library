@@ -79,10 +79,10 @@ noexcept
 	const auto heads = read_head_vector(filename);
 	if (not heads) { return {}; }
 	// move, please
-	return std::move(
+	return {std::move(
 		detail::from_head_vector_to_tree<graphs::free_tree>
 				(*heads, norm, check_norm).first
-	);
+	)};
 }
 
 std::optional<graphs::rooted_tree> read_head_vector_rooted_tree

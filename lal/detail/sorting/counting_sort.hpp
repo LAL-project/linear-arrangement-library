@@ -252,7 +252,7 @@ template <
 	> = true
 >
 void counting_sort(
-	value_iterator_t begin, value_iterator_t end,
+	const value_iterator_t begin, const value_iterator_t end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
 	const std::function<std::size_t (const value_t&)>& key

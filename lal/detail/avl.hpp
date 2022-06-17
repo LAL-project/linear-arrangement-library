@@ -661,9 +661,9 @@ private:
 		x->side = '0';
 		x->parent = u;
 		x->left = v;
+		x->right = T2;
 		v->parent = x;
 		v->side = 'l';
-		x->right = T2;
 		T2->side = 'r';
 		T2->parent = x;
 		x->update();
@@ -734,9 +734,9 @@ private:
 		x->side = '0';
 		x->parent = u;
 		x->right = v;
+		x->left = T1;
 		v->parent = x;
 		v->side = 'r';
-		x->left = T1;
 		T1->side = 'l';
 		T1->parent = x;
 		x->update();
