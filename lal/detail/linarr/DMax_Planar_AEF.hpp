@@ -213,29 +213,38 @@ noexcept
 	return M;
 }
 
-/// Return type of function @ref all_max_sum_lengths_values.
+/**
+ * @brief All return types as enumeration values.
+ *
+ * For function @ref all_max_sum_lengths_values.
+ */
 enum class return_type_all_maxs {
 	/// Return both the set of max projective values at every vertex and the vertex
 	/// that maximizes the maximum projective.
-	both_DMax_value_and_max_root,
+	DMax_value_vertex_and_max_root,
 	/// Return only the max projective values for every vertex of the tree.
-	only_DMax_values,
+	DMax_value_vertex,
 	/// Return only a vertex that maximizes the maximum projective.
-	only_max_root
+	max_root
 };
 
-/// Typedef for the result type of function @ref all_max_sum_lengths_values.
+/// Struct that contains a type as a function of @ref return_type_all_maxs.
+template <return_type_all_maxs res_type> struct DMax_info { };
+/// Partial template specialization.
+template <> struct DMax_info <return_type_all_maxs::DMax_value_vertex_and_max_root> {
+	using type = std::pair<std::vector<uint64_t>, uint64_t>;
+};
+/// Partial template specialization.
+template <> struct DMax_info <return_type_all_maxs::DMax_value_vertex> {
+	using type = std::vector<uint64_t>;
+};
+/// Partial template specialization.
+template <> struct DMax_info <return_type_all_maxs::max_root> {
+	using type = uint64_t;
+};
+/// Shorthand of @ref DMax_info.
 template <return_type_all_maxs res_type>
-using DMax_info =
-	std::conditional_t<
-		res_type == return_type_all_maxs::both_DMax_value_and_max_root,
-		std::pair<std::vector<uint64_t>, uint64_t>,
-		std::conditional_t<
-			res_type == return_type_all_maxs::only_DMax_values,
-			std::vector<uint64_t>,
-			uint64_t
-		>
-	>;
+using DMax_info_t = typename DMax_info<res_type>::type;
 
 /**
  * @brief Maximum planar arrangement of a free tree.
@@ -252,12 +261,12 @@ using DMax_info =
  * @returns Depending of the value of @e res_type, a list of values, a p
  */
 template <return_type_all_maxs res_type>
-DMax_info<res_type>
+DMax_info_t<res_type>
 all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 {
 	constexpr bool calculate_max_root =
-		res_type == return_type_all_maxs::both_DMax_value_and_max_root or
-		res_type == return_type_all_maxs::only_max_root;
+		res_type == return_type_all_maxs::DMax_value_vertex_and_max_root or
+		res_type == return_type_all_maxs::max_root;
 
 	const uint64_t n = t.get_num_nodes();
 
@@ -266,26 +275,26 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 
 	if (n == 1) {
 		DMax_per_vertex[0] = 0;
-		if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+		if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
 			return {std::move(DMax_per_vertex), 0};
 		}
-		else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+		else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
 			return DMax_per_vertex;
 		}
-		else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+		else if constexpr (res_type == return_type_all_maxs::max_root) {
 			return 0;
 		}
 	}
 	if (n == 2) {
 		DMax_per_vertex[0] = 1;
 		DMax_per_vertex[1] = 1;
-		if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+		if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
 			return {std::move(DMax_per_vertex), 0};
 		}
-		else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+		else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
 			return DMax_per_vertex;
 		}
-		else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+		else if constexpr (res_type == return_type_all_maxs::max_root) {
 			return 0;
 		}
 	}
@@ -344,13 +353,13 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 		}
 	}
 
-	if constexpr (res_type == return_type_all_maxs::both_DMax_value_and_max_root) {
+	if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
 		return {std::move(DMax_per_vertex), max_root};
 	}
-	else if constexpr (res_type == return_type_all_maxs::only_DMax_values) {
+	else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
 		return DMax_per_vertex;
 	}
-	else if constexpr (res_type == return_type_all_maxs::only_max_root) {
+	else if constexpr (res_type == return_type_all_maxs::max_root) {
 		return max_root;
 	}
 }
@@ -397,7 +406,7 @@ AEF(const graphs::free_tree& t) noexcept
 	}
 
 	const node max_root =
-		all_max_sum_lengths_values<return_type_all_maxs::only_max_root>(t);
+		all_max_sum_lengths_values<return_type_all_maxs::max_root>(t);
 
 	// root the tree at a maximizing node
 	graphs::rooted_tree rt(t, max_root);

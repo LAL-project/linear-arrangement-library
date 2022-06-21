@@ -66,7 +66,7 @@ std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
 (const graphs::free_tree& t) noexcept
 {
 	static constexpr auto choice =
-		detail::DMax::planar::return_type_all_maxs::both_DMax_value_and_max_root;
+		detail::DMax::planar::return_type_all_maxs::DMax_value_vertex_and_max_root;
 	return detail::DMax::planar::all_max_sum_lengths_values<choice>(t);
 }
 
