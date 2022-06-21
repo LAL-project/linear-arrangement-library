@@ -49,6 +49,9 @@
 #include <vector>
 #include <cmath>
 
+// lal includes
+#include <lal/detail/macros/basic_convert.hpp>
+
 namespace lal {
 namespace detail {
 
@@ -76,6 +79,15 @@ public:
 	}
 
 	/**
+	 * @brief Insert a new value @e v into the tree.
+	 * @param v New value.
+	 */
+	void insert(const T& v) noexcept {
+		tree_node *r = insert(nullptr, root, '0', v);
+		root = r;
+	}
+
+	/**
 	 * @brief Add to the tree the elements in the vector @e v.
 	 * @param v A collection of elements
 	 * @pre The vector @e is sorted.
@@ -83,10 +95,10 @@ public:
 	 * of the tree.
 	 */
 	void join_sorted_all_greater(const std::vector<T>& v) noexcept {
-		// do nothing if there is no data, duh
+		// do nothing if there is no data
 		if (v.size() == 0) { return; }
 		
-		// make the tree with the new info
+		// make a tree with the new info
 		tree_node *n =
 			_make_tree
 			(v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0');
@@ -105,20 +117,22 @@ public:
 			tree_node *r = insert(nullptr, n, '0', root->key);
 			free_node(root);
 			root = r;
+			return;
 		}
-		else if (n->tree_size == 1) {
+
+		if (n->tree_size == 1) {
 			tree_node *r = insert(nullptr, root, '0', n->key);
 			free_node(n);
 			root = r;
-		}
-		else {
-			// complicated case
-			root = (root->height >= n->height ?
-					join_taller(root, n) :
-					join_shorter(root, n));
+			return;
 		}
 
-		//sanity_check();
+		// complicated case
+		root =
+			(root->height >= n->height ?
+				join_taller(root, n) :
+				join_shorter(root, n)
+			);
 	}
 
 private:
@@ -128,10 +142,10 @@ private:
 		T key;
 
 		/**
-		 * @brief Side of this node
+		 * @brief Side of this node with respect to its parent.
 		 *
-		 * l: this node is a left subtree
-		 * r: this node is a right subtree
+		 * l: this node is a left subtree of its parent,
+		 * r: this node is a right subtree of its parent,
 		 * 0: this node is the root.
 		 *		Eq. parent = nullptr
 		 */
@@ -150,7 +164,7 @@ private:
 		 *
 		 * right subtree's height - left subtree's height
 		 */
-		int64_t bf = 0;
+		int64_t balance_factor = 0;
 
 		/// Pointer to the parent of this node.
 		tree_node *parent = nullptr;
@@ -160,41 +174,54 @@ private:
 		tree_node *right = nullptr;
 
 		/**
-		 * @brief Calculate the height of this node.
-		 * @post Updates the @ref height and @ref bf members.
+		 * @brief Calculate the height and balance factor of this node.
+		 * @post Updates the @ref height and @ref balance_factor members.
 		 */
-		void compute_height() noexcept {
-			const int64_t lh =
-			(left != nullptr ? static_cast<int64_t>(left->height) : -1);
-
-			const int64_t rh =
-			(right != nullptr ? static_cast<int64_t>(right->height) : -1);
-
-			height = static_cast<uint64_t>(std::max(lh, rh)) + 1;
-			bf = rh - lh;
+		void compute_height_and_balance_factor() noexcept {
+			const int64_t lh = (left != nullptr ? to_int64(left->height) : -1);
+			const int64_t rh = (right != nullptr ? to_int64(right->height) : -1);
+			height = to_uint64(std::max(lh, rh)) + 1;
+			balance_factor = rh - lh;
 		}
 		/**
 		 * @brief Computes the size of the subtree rooted at this node.
 		 * @post Updates the @ref tree_size member.
 		 */
 		void compute_size() noexcept {
-			const uint64_t ls = (left != nullptr ? left->tree_size : 0);
-			const uint64_t rs = (right != nullptr ? right->tree_size : 0);
-			tree_size = 1 + ls + rs;
+			tree_size =
+				1 +
+				(left != nullptr ? left->tree_size : 0) +
+				(right != nullptr ? right->tree_size : 0);
 		}
-		/// Computes the size (see @ref compute_size) and the height (see @ref compute_height)
-		/// of the subtree rooted at this node.
+		/// Computes the size (see @ref compute_size) and the height
+		/// (see @ref compute_height_and_balance_factor) of the subtree rooted
+		/// at this node.
 		void update() noexcept {
 			compute_size();
-			compute_height();
+			compute_height_and_balance_factor();
 		}
 
 		/**
-		 * @brief Link this node's parent node to node @e n.
-		 * @param n Node to link this node's parent to.
+		 * @brief Replace this node with either its left or right child.
+		 *
+		 * Let p := this->parent be the parent of "this" node. That is, the
+		 * grandparent of parameter @e n.
+		 *
+		 * If this node is a left child of 'p', make 'n' be the left child of
+		 * 'p'. If it is a right child of 'p', make 'n' be the right child of
+		 * 'p'.
+		 * @param n Left or right child of this node.
+		 * @post Reference @ref parent is invalid.
+		 * @post If node 'n' is 'this->left', then reference @ref left is invalid.
+		 * @post If node 'n' is 'this->right', then reference @ref right is invalid.
 		 */
-		void link_parent_to(tree_node *n) noexcept {
+		void replace_me_with(tree_node *n) noexcept {
 			if (n == nullptr) { return; }
+
+#if defined DEBUG
+			assert(left == n or right == n);
+#endif
+
 			if (parent != nullptr) {
 				if (side == 'l') {
 					parent->left = n;
@@ -208,13 +235,11 @@ private:
 		}
 
 		/// Returns the size of the left subtree.
-		[[nodiscard]] uint64_t left_size() const noexcept {
-			return (left == nullptr ? 0 : left->tree_size);
-		}
+		[[nodiscard]] uint64_t left_size() const noexcept
+		{ return (left == nullptr ? 0 : left->tree_size); }
 		/// Returns the size of the right subtree.
-		[[nodiscard]] uint64_t right_size() const noexcept {
-			return (right == nullptr ? 0 : right->tree_size);
-		}
+		[[nodiscard]] uint64_t right_size() const noexcept
+		{ return (right == nullptr ? 0 : right->tree_size); }
 	};
 
 private:
@@ -384,14 +409,14 @@ private:
 	[[nodiscard]] tree_node *balance(tree_node *n) noexcept {
 		if (n == nullptr) { return nullptr; }
 #if defined DEBUG
-		assert(std::abs(n->bf) <= 2);
+		assert(std::abs(n->balance_factor) <= 2);
 #endif
 
-		if (std::abs(n->bf) <= 1) { return n; }
+		if (std::abs(n->balance_factor) <= 1) { return n; }
 		return (
-		n->bf == -2 ?
-			(n->left->bf <= 0 ? left_left_case(n) : left_right_case(n)) :
-			(n->right->bf >= 0 ? right_right_case(n) : right_left_case(n))
+		n->balance_factor == -2 ?
+			(n->left->balance_factor <= 0 ? left_left_case(n) : left_right_case(n)) :
+			(n->right->balance_factor >= 0 ? right_right_case(n) : right_left_case(n))
 		);
 
 		// the code above is equivalent to the code below.
@@ -445,7 +470,7 @@ private:
 
 			n->tree_size = 1;
 			n->height = 0;
-			n->bf = 0;
+			n->balance_factor = 0;
 			return n;
 		}
 
@@ -486,7 +511,7 @@ private:
 			}
 
 			tree_node *r = n->right;
-			n->link_parent_to(r);
+			n->replace_me_with(r);
 
 			delete n;
 			return r;
@@ -510,7 +535,7 @@ private:
 			}
 
 			tree_node *l = n->left;
-			n->link_parent_to(l);
+			n->replace_me_with(l);
 
 			delete n;
 			return l;
@@ -572,15 +597,15 @@ private:
 			return nullptr;
 		}
 		if (L != nullptr and R == nullptr) {
-			n->link_parent_to(L);
+			n->replace_me_with(L);
 			delete n;
-			// L is already balanced: not need to do that
+			// L is already balanced
 			return L;
 		}
 		if (L == nullptr and R != nullptr) {
-			n->link_parent_to(R);
+			n->replace_me_with(R);
 			delete n;
-			// R is already balanced: not need to do that
+			// R is already balanced
 			return R;
 		}
 
@@ -647,7 +672,7 @@ private:
 		tree_node *v = T1;
 		uint64_t hp = v->height;
 		while (hp > h + 1 and v != nullptr) {
-			hp = (v->bf == -1 ? hp - 2 : hp - 1);
+			hp = (v->balance_factor == -1 ? hp - 2 : hp - 1);
 			v = v->right;
 		}
 
@@ -721,7 +746,7 @@ private:
 		tree_node *v = T2;
 		uint64_t hp = v->height;
 		while (hp > h + 1 and v != nullptr) {
-			hp = (v->bf == -1 ? hp - 2 : hp - 1);
+			hp = (v->balance_factor == -1 ? hp - 2 : hp - 1);
 			v = v->left;
 		}
 #if defined DEBUG
@@ -776,7 +801,6 @@ private:
 	 * @param r Right-limit of the binary search.
 	 * @param p Parent of the new node to be created.
 	 * @param s Side of the node to create with respect to the parent.
-	 * @return
 	 */
 	[[nodiscard]]
 	tree_node *_make_tree(
