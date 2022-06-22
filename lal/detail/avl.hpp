@@ -483,7 +483,10 @@ private:
 		}
 
 		if (x == n->key) {
-			n->left = insert(n, n->left, 'l', x);
+			// Do not allow repeated elements for now. It may
+			// lead to confusion in the precise meaning of the
+			// value returned by @ref remove(const T&).
+			return n;
 		}
 		else if (x < n->key) {
 			n->left = insert(n, n->left, 'l', x);
