@@ -410,10 +410,10 @@ std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 )
 noexcept
 {
-	#if defined DEBUG
+#if defined DEBUG
 		// ensure that there are as many linear arrangements as upper bounds
 		assert(arrs.size() == upper_bounds.size());
-	#endif
+#endif
 
 	const uint64_t n = g.get_num_nodes();
 
