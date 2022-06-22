@@ -68,23 +68,23 @@ public:
 	}
 
 	/**
-	 * @brief Remove an element from the tree.
-	 * @param x The element to be removed.
-	 * @returns The amount of elements larger than 'x' in the tree.
-	 */
-	[[nodiscard]] uint64_t remove(const T& x) noexcept {
-		uint64_t top = 0;
-		root = remove(root, x, top);
-		return top;
-	}
-
-	/**
 	 * @brief Insert a new value @e v into the tree.
 	 * @param v New value.
 	 */
 	void insert(const T& v) noexcept {
-		tree_node *r = insert(nullptr, root, '0', v);
-		root = r;
+		root = insert(nullptr, root, '0', v);
+	}
+
+	/**
+	 * @brief Remove an element from the tree.
+	 * @param x The element to be removed.
+	 * @returns The amount of elements larger than 'x' in the tree.
+	 */
+	[[nodiscard]]
+	uint64_t remove(const T& x) noexcept {
+		uint64_t num_larger_elements = 0;
+		root = remove(root, x, num_larger_elements);
+		return num_larger_elements;
 	}
 
 	/**
@@ -98,12 +98,15 @@ public:
 		// do nothing if there is no data
 		if (v.size() == 0) { return; }
 		
-		// make a tree with the new info
+		if (v.size() == 1) {
+			root = insert(nullptr, root, '0', v[0]);
+			return;
+		}
+
+		// Make a tree with the new info and then join the two trees.
 		tree_node *n =
 			_make_tree
 			(v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0');
-
-		// join the two trees
 
 		// if our root is empty then the new
 		// node is the root of the new tree
@@ -112,7 +115,7 @@ public:
 			return;
 		}
 
-		// easy, degenerate cases
+		// easy case, we only had one element in the tree
 		if (root->tree_size == 1) {
 			tree_node *r = insert(nullptr, n, '0', root->key);
 			free_node(root);
@@ -120,20 +123,23 @@ public:
 			return;
 		}
 
-		if (n->tree_size == 1) {
-			tree_node *r = insert(nullptr, root, '0', n->key);
-			free_node(n);
-			root = r;
-			return;
-		}
-
-		// complicated case
+		// both 'root' and 'n' have size larger than 2
+#if defined DEBUG
+		assert(root->tree_size >= 2 and n->tree_size >= 2);
+#endif
 		root =
 			(root->height >= n->height ?
 				join_taller(root, n) :
 				join_shorter(root, n)
 			);
 	}
+
+	/**
+	 * @brief Size of the tree.
+	 * @returns The number of elements in the tree.
+	 */
+	uint64_t size() const noexcept
+	{ return (root == nullptr ? 0 : root->tree_size); }
 
 private:
 	/// Node of the tree.
@@ -452,10 +458,12 @@ private:
 	 * @param n Node to which the element 'x' is to be assigned.
 	 * @param s Side of @e n with respect to the parent (0: root, l: left, r: right).
 	 * @param x Element to be added.
-	 * @returns The newly created tree node
+	 * @returns The tree node containing as key the value @e x.
 	 */
-	[[nodiscard]]
-	tree_node *insert(tree_node *p, tree_node *n, char s, const T& x) noexcept {
+	[[nodiscard]] tree_node *insert
+	(tree_node *p, tree_node *n, char s, const T& x)
+	noexcept
+	{
 		// create a new node
 		if (n == nullptr) {
 			n = new tree_node();
@@ -475,13 +483,9 @@ private:
 		}
 
 		if (x == n->key) {
-			// do not insert already
-			// existing values
-			return n;
+			n->left = insert(n, n->left, 'l', x);
 		}
-
-		// insert as usual
-		if (x < n->key) {
+		else if (x < n->key) {
 			n->left = insert(n, n->left, 'l', x);
 		}
 		else {
@@ -555,28 +559,28 @@ private:
 	 * @brief Remove element from the tree.
 	 * @param n Node.
 	 * @param x Element to be removed.
-	 * @param on_top Amount of values larger than element 'x'.
+	 * @param n_larger_elems Amount of values larger than @e x.
 	 * @returns A tree node.
 	 * @pre Element @e x is in the tree.
 	 */
 	[[nodiscard]]
-	tree_node *remove(tree_node *n, const T& x, uint64_t& on_top) noexcept {
+	tree_node *remove(tree_node *n, const T& x, uint64_t& n_larger_elems) noexcept {
 		if (n == nullptr) {
 			// not found
-			on_top = 0;
+			n_larger_elems = 0;
 			return nullptr;
 		}
 
 		if (x < n->key) {
-			on_top += n->right_size() + 1;
-			n->left = remove(n->left, x, on_top);
+			n_larger_elems += n->right_size() + 1;
+			n->left = remove(n->left, x, n_larger_elems);
 			// update this node's size
 			n->update();
 			// balance 'n' to keep the AVL invariant
 			return balance(n);
 		}
 		if (x > n->key) {
-			n->right = remove(n->right, x, on_top);
+			n->right = remove(n->right, x, n_larger_elems);
 			// update this node's size
 			n->update();
 			// balance 'n' to keep the AVL invariant
@@ -586,7 +590,7 @@ private:
 		// found element at node 'n'
 
 		// update amount of elements larger than 'x'
-		on_top += n->right_size();
+		n_larger_elems += n->right_size();
 
 		// update tree
 		tree_node *L = n->left;
@@ -622,7 +626,7 @@ private:
 				lL = lL->right;
 			}
 			n->key = lL->key;
-			n->left = remove(L, lL->key, dummy);
+			n->left = remove(L, n->key, dummy);
 		}
 		else {
 			tree_node *sR = R;
@@ -630,7 +634,7 @@ private:
 				sR = sR->left;
 			}
 			n->key = sR->key;
-			n->right = remove(R, sR->key, dummy);
+			n->right = remove(R, n->key, dummy);
 		}
 
 		// copy the key into n
