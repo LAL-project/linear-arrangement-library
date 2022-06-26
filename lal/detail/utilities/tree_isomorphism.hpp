@@ -50,6 +50,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/data_array.hpp>
 
 namespace lal {
@@ -91,8 +92,8 @@ char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
 	uint64_t maxdeg_t1 = 0; // max degree of t1
 	uint64_t maxdeg_t2 = 0; // max degree of t2
 	for (node u = 0; u < n; ++u) {
-		const uint64_t ku1 = static_cast<uint64_t>(t1.get_degree(u));
-		const uint64_t ku2 = static_cast<uint64_t>(t2.get_degree(u));
+		const uint64_t ku1 = to_uint64(t1.get_degree(u));
+		const uint64_t ku2 = to_uint64(t2.get_degree(u));
 
 		nL_t1 += t1.get_degree(u) == 1;
 		nL_t2 += t2.get_degree(u) == 1;
@@ -219,8 +220,7 @@ noexcept
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	const uint64_t n = t1.get_num_nodes();
-	data_array<std::string> names(n);
+	data_array<std::string> names(t1.get_num_nodes());
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names.begin(), 0);
 	const std::string name_r2 = assign_name(t2, t2.get_root(), names.begin(), 0);
 	return name_r1 == name_r2;
