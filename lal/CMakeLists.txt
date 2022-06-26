@@ -13,6 +13,17 @@ include(CheckCXXCompilerFlag)
 # installation directories (platform dependent)
 include(GNUInstallDirs)
 
+# IPO: Inter-Procedural Optimization
+include(CheckIPOSupported)
+check_ipo_supported(RESULT IPO_IS_SUPPORTED OUTPUT IPO_CHECK_ERROR)
+message(STATUS "IPO_IS_SUPPORTED='${IPO_IS_SUPPORTED}'")
+if("${IPO_IS_SUPPORTED}" STREQUAL "YES")
+	message(STATUS "    IPO is supported.")
+else()
+	message(STATUS "    IPO is not supported.")
+	message(STATUS "    Error message: ${IPO_CHECK_ERROR}")
+endif()
+
 # **********************************************************************
 # Custom functions
 function(add_comp_flag flag)
@@ -73,7 +84,7 @@ endif()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	message(STATUS "Target library laldebug")
 	set(TargetStringLibrary "laldebug")
 else()
@@ -92,6 +103,12 @@ set_target_properties(${TargetStringLibrary} PROPERTIES VERSION "${LAL_MAJOR}.${
 set_target_properties(${TargetStringLibrary} PROPERTIES SOVERSION 1)
 set_target_properties(${TargetStringLibrary} PROPERTIES LINKER_LANGUAGE CXX)
 
+# linker time optimization
+if("${IPO_IS_SUPPORTED}" STREQUAL "YES")
+	message(STATUS "Turning on Inter-Procedural Optimization (IPO)")
+	set_target_properties(${TargetStringLibrary} PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
+
 # **********************************************************************
 # LIBRARIES
 # check if libraries are installed in the system
@@ -103,6 +120,15 @@ if (GMP_LIB)
 	message(STATUS "Found gmp: ${GMP_LIB}")
 else()
 	message(FATAL_ERROR "Error: gmp library not found")
+endif()
+
+# ***
+# pthread
+find_library(PTHREAD_LIB pthread)
+if (PTHREAD_LIB)
+	message(STATUS "Found pthread: ${PTHREAD_LIB}")
+else()
+	message(FATAL_ERROR "Error: pthread library not found")
 endif()
 
 # ******
@@ -551,3 +577,4 @@ endif()
 target_include_directories(${TargetStringLibrary} PRIVATE ..)
 
 target_link_libraries(${TargetStringLibrary} gmp)
+target_link_libraries(${TargetStringLibrary} pthread)
