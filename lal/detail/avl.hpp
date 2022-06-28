@@ -104,9 +104,7 @@ public:
 		}
 
 		// Make a tree with the new info and then join the two trees.
-		tree_node *n =
-			_make_tree
-			(v, 0, static_cast<int64_t>(v.size() - 1), nullptr, '0');
+		tree_node *n = _make_tree(v, 0, to_int64(v.size() - 1), nullptr, '0');
 
 		// if our root is empty then the new
 		// node is the root of the new tree
@@ -824,7 +822,7 @@ private:
 
 		// make a node with the element in the middle
 		tree_node *n = new tree_node();
-		n->key = v[static_cast<uint64_t>(m)];
+		n->key = v[to_uint64(m)];
 		// make sure pointers are correct
 		n->parent = p;
 		n->side = s;
