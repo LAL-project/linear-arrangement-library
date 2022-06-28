@@ -282,7 +282,7 @@ public:
 	[[nodiscard]] T const *end() const noexcept { return m_data + m_size; }
 
 private:
-	/// Allocate memory for array ·@ref m_data only when @ref m_size is greater
+	/// Allocate memory for array @ref m_data only when @ref m_size is greater
 	/// than 0.
 	void alloc_data() noexcept {
 		m_data = m_size == 0 ? nullptr : new T[m_size];

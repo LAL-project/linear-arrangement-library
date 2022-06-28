@@ -19,6 +19,12 @@ QMAKE_CXXFLAGS_DEBUG += -O3 -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -UDEBUG -DNDEBUG -fstrict-aliasing
 
+# use Inter-Procedural Optimization (IPO)
+QMAKE_LFLAGS += -fPIC -O3 -flto -fno-fat-lto-objects
+QMAKE_LFLAGS_RELEASE += -DNDEBUG -UDEBUG
+QMAKE_LFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
+QMAKE_LFLAGS -= -Wl,-O1
+
 # uncomment when doing actual profiling
 #QMAKE_CXXFLAGS_RELEASE += -pg
 #QMAKE_LFLAGS += -pg
