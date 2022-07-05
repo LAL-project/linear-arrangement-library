@@ -95,7 +95,7 @@ void fill_adjP_adjN(
 	const graph_t& g, const linarr_wrapper<arr_type>& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
-	std::size_t * const size_adjN_u
+	uint64_t * const size_adjN_u
 )
 noexcept
 {
@@ -179,7 +179,7 @@ noexcept
 template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
 uint64_t compute_C_stack_based(
 	const graph_t& g, const linarr_wrapper<arr_type>& arr,
-	std::size_t * const size_adjN_u,
+	uint64_t * const size_adjN_u,
 	uint64_t upper_bound
 )
 noexcept
@@ -263,7 +263,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
+	data_array<uint64_t> size_adjN_u(n, 0);
 
 	return stack_based::compute_C_stack_based<false>
 			(g, arr, size_adjN_u.begin(), 0);
@@ -291,7 +291,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
+	data_array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -342,7 +342,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
+	data_array<uint64_t> size_adjN_u(n, 0);
 
 	return stack_based::compute_C_stack_based<true>
 			(g, arr, size_adjN_u.begin(), upper_bound);
@@ -375,7 +375,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
+	data_array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -422,7 +422,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<std::size_t> size_adjN_u(n, 0);
+	data_array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {

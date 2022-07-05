@@ -176,7 +176,7 @@ public:
 
 		if (m_n <= 2) {
 			// there is only one tree we can make
-			m_sm[0] = true;
+			m_sm[0] = 1;
 			return;
 		}
 
@@ -226,7 +226,7 @@ protected:
 		m_reached_end = false;
 
 		if (m_n <= 2) {
-			m_sm[0] = false;
+			m_sm[0] = 0;
 			// there is only one tree we can make
 			return;
 		}
@@ -244,7 +244,7 @@ protected:
 
 	/// Returns whether there are more trees to generate.
 	bool has_next() const noexcept {
-		return not m_sm[(m_n <= 2 ? 0 : m_n - 3)];
+		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] != 0;
 	}
 
 private:
@@ -255,7 +255,7 @@ private:
 	/// Prüfer sequence.
 	detail::data_array<uint64_t> m_Prufer_seq;
 	/// If sm[i] = true iff sm[0..i-1] = true and seq[0..i] = n-2
-	detail::data_array<bool> m_sm;
+	detail::data_array<char> m_sm;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 };
