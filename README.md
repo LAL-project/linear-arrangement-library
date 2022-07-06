@@ -4,7 +4,7 @@ This library implements several algorithms to solve problems related to linear a
 
 - solving the Minimum Linear Arrangement Problem on trees under different constraints of projectivity,
 - the calculation of the expectation and variance of the number of edge crossings and of the sum of the length of the edges under different projectivity constraints,
-- computing the number of edge crossings given a linear arrangement of a graph,
+- computing efficiently the number of edge crossings given a linear arrangement of a graph,
 - and many others.
 
 Some of the algorithms listed above are implemented for both general graphs and trees (the latter being more efficient). The library also provides functions for the generation of random/exhasutive labelled/unlabelled free/rooted trees. Besides, there's algorithms for the generation of arrangements under different constraints of projectivity. Users will also find utilities to process treebanks, and collection of treebanks.
