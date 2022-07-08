@@ -217,14 +217,19 @@ noexcept
 		const node u = arr[pu];
 		for (node v : adjP[u]) {
 			const edge uv = edge_sorted_by_vertex_index(u,v);
-			const auto on_top = S.remove(indexed_edge(edge_to_idx[uv], uv));
 
-			C += static_cast<uint64_t>(on_top);
+			// the elements inserted into the tree are unique by construction,
+			// so we can remove elements without using their counter
+			// (remove<false>) and use the number of larger nodes
+			// (on_top.num_nodes_larger) to calculate the number of crossings.
+			const auto on_top = S.remove<false>(indexed_edge(edge_to_idx[uv], uv));
+			C += on_top.num_nodes_larger;
+
 			if constexpr (decide_upper_bound) {
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
 		}
-		S.join_sorted_all_greater(adjN[u]);
+		S.join_sorted_all_greater(std::move(adjN[u]));
 	}
 
 	// none of the conditions above were true, so we must have
