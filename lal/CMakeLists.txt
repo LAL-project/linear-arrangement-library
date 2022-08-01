@@ -414,6 +414,7 @@ set(LIBLAL_MAIN_HEADER
 )
 set(LIBLAL_DETAIL_HEADER
 	detail/data_array.hpp
+	detail/identity_arrangement.hpp
 )
 set(LIBLAL_GENERATION_HEADER
 	generate/all_arrangements.hpp
