@@ -14,15 +14,15 @@ include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 
 # IPO: Inter-Procedural Optimization
-include(CheckIPOSupported)
-check_ipo_supported(RESULT IPO_IS_SUPPORTED OUTPUT IPO_CHECK_ERROR)
-message(STATUS "IPO_IS_SUPPORTED='${IPO_IS_SUPPORTED}'")
-if("${IPO_IS_SUPPORTED}" STREQUAL "YES")
-	message(STATUS "    IPO is supported.")
-else()
-	message(STATUS "    IPO is not supported.")
-	message(STATUS "    Error message: ${IPO_CHECK_ERROR}")
-endif()
+#include(CheckIPOSupported)
+#check_ipo_supported(RESULT IPO_IS_SUPPORTED OUTPUT IPO_CHECK_ERROR)
+#message(STATUS "IPO_IS_SUPPORTED='${IPO_IS_SUPPORTED}'")
+#if("${IPO_IS_SUPPORTED}" STREQUAL "YES")
+#	message(STATUS "    IPO is supported.")
+#else()
+#	message(STATUS "    IPO is not supported.")
+#	message(STATUS "    Error message: ${IPO_CHECK_ERROR}")
+#endif()
 
 # **********************************************************************
 # Custom functions
@@ -33,20 +33,6 @@ function(add_compiler_flag flag)
 		target_compile_options(${TargetStringLibrary} PRIVATE ${flag})
 	endif()
 endfunction(add_compiler_flag)
-
-function(add_debug_flag flag)
-	check_cxx_compiler_flag(${flag} HAS_FLAG_${flag})
-	if (HAS_FLAG)
-		SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${flag}" PARENT_SCOPE)
-	endif()
-endfunction(add_debug_flag)
-
-function(add_release_flag flag)
-	check_cxx_compiler_flag(${flag} HAS_FLAG_${flag})
-	if (HAS_FLAG)
-		SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${flag}" PARENT_SCOPE)
-	endif()
-endfunction(add_release_flag)
 
 # **********************************************************************
 # Use C++17
@@ -556,14 +542,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # Optimisation flags
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	add_debug_flag(-O3)
-	add_debug_flag(-DDEBUG)
-	add_debug_flag(-D_GLIBCXX_DEBUG)
+	add_compiler_flag(-O3)
+	add_compiler_flag(-DDEBUG)
+	add_compiler_flag(-D_GLIBCXX_DEBUG)
 else()
 	# flags added by default:
 	#   -O3
 	#   -DNDEBUG
-	add_release_flag(-UDEBUG)
+	add_compiler_flag(-UDEBUG)
 endif()
 
 # include path (required by the compiler to find the headers)
