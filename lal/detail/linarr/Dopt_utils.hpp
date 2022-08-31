@@ -73,25 +73,25 @@ typedef unsigned char place;
 /// Useful typedef to denote relative position.
 typedef unsigned char side;
 
-static constexpr place PLACE_LEFT_OF = 0;
-static constexpr place PLACE_RIGHT_OF = 1;
-static constexpr place PLACE_NONE_OF = 2;
+inline constexpr place PLACE_LEFT_OF = 0;
+inline constexpr place PLACE_RIGHT_OF = 1;
+inline constexpr place PLACE_NONE_OF = 2;
 
-static constexpr side RIGHT_SIDE = 0;
-static constexpr side LEFT_SIDE  = 1;
+inline constexpr side RIGHT_SIDE = 0;
+inline constexpr side LEFT_SIDE  = 1;
 
 // if s = 0 then (s+1)&0x1 = 1
 // if s = 1 then (s+1)&0x1 = 0
 inline constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
 
 /// The tree is left-anchored
-static constexpr char LEFT_ANCHOR = -1;
+inline constexpr char LEFT_ANCHOR = -1;
 /// The tree is right-anchored
-static constexpr char RIGHT_ANCHOR = 1;
+inline constexpr char RIGHT_ANCHOR = 1;
 /// The tree is not anchored
-static constexpr char NO_ANCHOR = 0;
+inline constexpr char NO_ANCHOR = 0;
 /// The tree is anchored
-static constexpr char ANCHOR = 1;
+inline constexpr char ANCHOR = 1;
 
 /* ************************************************************************** */
 /* ----------------------- ROOTED ADJACENCY LISTS --------------------------- */

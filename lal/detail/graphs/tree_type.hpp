@@ -73,7 +73,7 @@ noexcept
 }
 
 /// The array of all types of trees.
-static constexpr std::array<graphs::tree_type, graphs::__tree_type_size>
+inline constexpr std::array<graphs::tree_type, graphs::__tree_type_size>
 array_of_tree_types =
 make_array<
 	graphs::tree_type,

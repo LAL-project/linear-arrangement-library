@@ -69,7 +69,7 @@ noexcept
 }
 
 /// The array of all types of syntact dependency structures.
-static constexpr
+inline constexpr
 std::array<
 	linarr::syntactic_dependency_structure,
 	linarr::__syntactic_dependency_structure_size

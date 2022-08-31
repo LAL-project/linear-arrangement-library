@@ -511,7 +511,7 @@ enum class treebank_feature {
  * @ref lal::io::treebank_feature, except the last one (which should never be
  * used).
  */
-static constexpr
+inline constexpr
 std::size_t __treebank_feature_size =
 	static_cast<std::size_t>(treebank_feature::__last_value);
 
