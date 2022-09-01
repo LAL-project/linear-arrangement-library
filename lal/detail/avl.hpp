@@ -132,7 +132,6 @@ public:
 	 * @tparam use_counter If true then a node will be removed only if its
 	 * counter has reached 0. If false then the node will be removed regardless
 	 * of the value of the counter.
-	 * @param v The element to be removed.
 	 * @returns The element's frequency statistics before removal. If the node
 	 * is removed from the tree the references returned by @ref get_largest_value
 	 * are invalidated.
@@ -149,7 +148,6 @@ public:
 	 * @tparam use_counter If true then a node will be removed only if its
 	 * counter has reached 0. If false then the node will be removed regardless
 	 * of the value of the counter.
-	 * @param v The element to be removed.
 	 * @returns The element's frequency statistics before removal. If the node
 	 * is removed from the tree the references returned by @ref get_largest_value
 	 * are invalidated.

@@ -442,9 +442,6 @@ protected:
 	 * Returns true if the graph_traversal algorithm should terminate.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
-	 * @param graph_traversal The object containing the traversal. This also
-	 * contains several attributes that might be useful to guide the traversal.
-	 * @param s The node at the front of the queue of the algorithm.
 	 */
 	BFS_bool_one m_term;
 
@@ -454,9 +451,6 @@ protected:
 	 * Processes the current node visited.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
-	 * @param graph_traversal The object containing the traversal. This also contains
-	 * several attributes that might be useful to guide the traversal.
-	 * @param s The node at the front of the queue of the algorithm.
 	 */
 	BFS_process_one m_proc_cur;
 
@@ -469,10 +463,6 @@ protected:
 	 * t -> s.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
-	 * @param graph_traversal The object containing the traversal. This also contains
-	 * several attributes that might be useful to guide the traversal.
-	 * @param s The node at the front of the queue of the algorithm.
-	 * @param t The node neighbour of @e u visited by the algorithm.
 	 */
 	BFS_process_two m_proc_neigh;
 
@@ -482,9 +472,6 @@ protected:
 	 * Determines whether a node @e s should be added to the queue or not.
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
-	 * @param graph_traversal The object containing the traversal. This also contains
-	 * several attributes that might be useful to guide the traversal.
-	 * @param s The node candidate for addition.
 	 */
 	BFS_bool_two m_add_node;
 };
