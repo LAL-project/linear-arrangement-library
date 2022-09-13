@@ -62,9 +62,9 @@ inline
 numeric::rational exp_sum_edge_lengths(const graphs::rooted_tree& t)
 noexcept
 {
-	const uint64_t size_array = size_subtrees_valid ? 0 : t.get_num_nodes();
-	detail::data_array<uint64_t> size_subtrees(size_array, 0);
+	detail::data_array<uint64_t> size_subtrees;
 	if constexpr (not size_subtrees_valid) {
+		size_subtrees.resize(t.get_num_nodes());
 		detail::get_size_subtrees(t, t.get_root(), size_subtrees.begin());
 	}
 
