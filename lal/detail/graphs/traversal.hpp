@@ -49,6 +49,7 @@
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/detail/data_array.hpp>
+#include <lal/detail/linear_queue.hpp>
 
 namespace lal {
 namespace detail {
@@ -101,7 +102,6 @@ public:
 	/// Constructor
 	BFS(const graph_t& g) noexcept :
 		m_G(g),
-		m_queue(m_G.get_num_nodes()),
 		m_vis(m_G.get_num_nodes())
 	{
 		reset();
@@ -123,7 +123,7 @@ public:
 	 */
 	void reset() noexcept {
 		clear_visited();
-		clear_queue();
+		m_queue.init(m_G.get_num_nodes());
 
 		set_use_rev_edges(false);
 		set_process_visited_neighbours(false);
@@ -139,7 +139,7 @@ public:
 	 * @param source Node.
 	 */
 	void start_at(node source) noexcept {
-		push_queue(source);
+		m_queue.push(source);
 		m_vis[source] = 1;
 		do_traversal();
 	}
@@ -150,7 +150,7 @@ public:
 	 */
 	void start_at(const std::vector<node>& sources) noexcept {
 		for (const node& u : sources) {
-			push_queue(u);
+			m_queue.push(u);
 			m_vis[u] = 1;
 		}
 		do_traversal();
@@ -210,8 +210,7 @@ public:
 	 * When using this function, users might also want to call @ref clear_visited.
 	 */
 	void clear_queue() noexcept {
-		m_queue_left_ptr = 0;
-		m_queue_right_ptr = 0;
+		m_queue.clear();
 	}
 
 	/**
@@ -269,7 +268,7 @@ protected:
 		}
 
 		if ((not t_vis) and m_add_node(*this, s, t)) {
-			push_queue(t);
+			m_queue.push(t);
 			// set node as visited
 			m_vis[t] = 1;
 		}
@@ -358,9 +357,8 @@ protected:
 	 * is not limited to "out-neighbours", but also to "in-neighbours".
 	 */
 	void do_traversal() noexcept {
-		while (not queue_empty()) {
-			const node s = next_node();
-			pop_queue();
+		while (m_queue.size() > 0) {
+			const node s = m_queue.pop();
 
 			// process current node
 			m_proc_cur(*this, s);
@@ -372,54 +370,12 @@ protected:
 		}
 	}
 
-	/// Return the next node in line.
-	node next_node() const noexcept {
-#if defined DEBUG
-		assert(not queue_empty());
-#endif
-		return m_queue[m_queue_left_ptr];
-	}
-
-	/// Returns whether or not the queue is empty
-	bool queue_empty() const noexcept
-	{ return m_queue_left_ptr == m_queue_right_ptr; }
-
-	/**
-	 * @brief Pop the front value in the queue.
-	 *
-	 * Advance one position the left iterator.
-	 */
-	void pop_queue() noexcept {
-#if defined DEBUG
-		assert(not queue_empty());
-#endif
-		++m_queue_left_ptr;
-	}
-
-	/**
-	 * @brief Push a new node into the queue.
-	 *
-	 * Assigns the new node at the position pointed by @ref m_queue_right_ptr,
-	 * and advances @ref m_queue_right_ptr one position.
-	 * @param s The new node to be pushed.
-	 */
-	void push_queue(node s) noexcept {
-#if defined DEBUG
-		assert(m_queue_right_ptr < m_queue.size());
-#endif
-		m_queue[m_queue_right_ptr++] = s;
-	}
-
 protected:
 	/// Constant reference to the graph.
 	const graph_t& m_G;
 
 	/// The structure of the traversal.
-	data_array<node> m_queue;
-	/// Pointer to the beginning of the queue
-	std::size_t m_queue_left_ptr;
-	/// Pointer to the end of the queue
-	std::size_t m_queue_right_ptr;
+	linear_queue<node> m_queue;
 
 	/// The set of visited nodes.
 	data_array<char> m_vis;
