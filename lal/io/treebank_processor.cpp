@@ -715,7 +715,7 @@ noexcept
 
 	if (m_what_fs[Dmin_Planar_idx]) {
 		std::vector<std::vector<detail::node_size>> L;
-		const auto centroid = detail::retrieve_centroid(rT, L);
+		const auto centroid = detail::centroidal_vertex_plus_adjacency_list(rT, 0, L);
 
 		const bool centroid_contains_root =
 			(centroid.first == rT.get_root() or
@@ -729,9 +729,6 @@ noexcept
 		else {
 			// Dmin_projective was not calculated, or the centroid does
 			// not contain the root
-
-			detail::Dopt_utils::root_adjacency_list
-				(fT, centroid.first, centroid.first, L);
 
 			const uint64_t Dmin_planar =
 				detail::Dmin_utils::arrange_projective(n, L, centroid.first);

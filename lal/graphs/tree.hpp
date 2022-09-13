@@ -208,6 +208,16 @@ public:
 	}
 
 	/**
+	 * @brief Checks if two nodes are in the same connected component.
+	 * @param u First node.
+	 * @param v Second node.
+	 * @returns True or false.
+	 */
+	bool are_nodes_in_same_component(node u, node v) const noexcept {
+		return get_component_representative(u) == get_component_representative(v);
+	}
+
+	/**
 	 * @brief Amount of nodes in a connected component of the tree.
 	 *
 	 * If the current graph lacks some edges then it is clearly a forest,

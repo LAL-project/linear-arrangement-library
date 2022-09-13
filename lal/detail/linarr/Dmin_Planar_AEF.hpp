@@ -102,10 +102,7 @@ AEF(const graphs::free_tree& t) noexcept
 	// LARGEST to SMALLEST
 
 	std::vector<std::vector<node_size>> L;
-	const node c =
-		Dopt_utils::make_sorted_adjacency_list_rooted_centroid
-			<sorting::non_increasing_t>
-			(t, L);
+	const node c = centroidal_vertex_plus_adjacency_list(t, 0, L).first;
 
 	// construct the optimal planar arrangement by calculating the optimal
 	// projective arrangement

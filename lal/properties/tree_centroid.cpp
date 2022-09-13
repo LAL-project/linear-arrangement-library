@@ -55,14 +55,14 @@ std::pair<node, node> tree_centroid(const graphs::rooted_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
-	return detail::retrieve_centroid(t);
+	return detail::find_centroidal_vertex<detail::centroid_results::full_centroid>(t, 0);
 }
 
 std::pair<node, node> tree_centroid(const graphs::free_tree& t) noexcept {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
-	return detail::retrieve_centroid(t);
+	return detail::find_centroidal_vertex<detail::centroid_results::full_centroid>(t, 0);
 }
 
 } // -- namespace properties
