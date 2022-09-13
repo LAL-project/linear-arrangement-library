@@ -96,6 +96,7 @@ HEADERS += \
     detail/linarr/headedness.hpp \
     detail/linarr/predict_C.hpp \
     detail/linarr/sum_edge_lengths.hpp \
+    detail/linear_queue.hpp \
     detail/macros/basic_convert.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
