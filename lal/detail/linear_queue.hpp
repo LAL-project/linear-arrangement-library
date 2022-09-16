@@ -57,7 +57,12 @@ namespace detail {
  *
  * This class implements functionalities similar to those of std::queue.
  * This queue, however, can hold only at most a given, fixed amount of elements.
+ * If the size of the queue is @e n, then
+ * - at most @e n @ref push operations can be done,
+ * - at most @e n @ref pop operations can be done.
  *
+ * Once the @e n @ref push operations have been done, the queue has exhausted
+ * its resources (see @ref is_exhausted) and must be reset (see @ref reset).
  * @tparam T Type of the elements in the queue.
  */
 template <class T>
@@ -73,14 +78,14 @@ public:
 	/// Insert a new element to the queue.
 	void push(const T& v) noexcept {
 #if defined DEBUG
-		assert(m_right < m_queue.size());
+		assert(not is_full());
 #endif
 		m_queue[m_right++] = v;
 	}
 	/// Insert a new element to the queue.
 	void push(T&& v) noexcept {
 #if defined DEBUG
-		assert(m_right < m_queue.size());
+		assert(not is_exhausted());
 #endif
 		m_queue[m_right++] = std::move(v);
 	}
@@ -88,6 +93,7 @@ public:
 	 * @brief Pops the first element of the queue
 	 * @returns A copy of the first element.
 	 * @post The size of the queue is reduced by one.
+	 * @post Pointer @ref m_left is updated.
 	 */
 	T pop() noexcept {
 #if defined DEBUG
@@ -95,10 +101,13 @@ public:
 #endif
 		return m_queue[m_left++];
 	}
-	/// Returns a constant reference to the first element.
+	/**
+	 * @brief Returns a constant reference to the first element.
+	 *
+	 */
 	const T& front() const noexcept {
 #if defined DEBUG
-		assert(m_left < m_queue.size());
+		assert(not is_exhausted());
 #endif
 		return m_queue[m_left];
 	}
@@ -113,9 +122,27 @@ public:
 	 * Memory is not reset, freed, or deallocated.
 	 * @post Pointers @ref m_left and @ref m_right are set to 0.
 	 */
-	void clear() noexcept {
+	void reset() noexcept {
 		m_left = m_right = 0;
 	}
+
+	/**
+	 * @brief Has the queue exhausted its resources?
+	 *
+	 * The queue has exhausted its resources if @e n pop operations have been
+	 * performed. This happens when @ref m_left is equal to the queue size.
+	 * @returns A Boolean value (true or false).
+	 */
+	bool is_exhausted() const noexcept { return m_left == m_queue.size(); }
+
+	/**
+	 * @brief Is the queue full?
+	 *
+	 * The queue is full if @e n push operations have been performed. This
+	 * happens when @ref m_right is equal to the queue size.
+	 * @returns A Boolean value (true or false).
+	 */
+	bool is_full() const noexcept { return m_right == m_queue.size(); }
 
 	/// Pointer to begin.
 	T *begin() noexcept { return m_queue.begin() + m_left; }

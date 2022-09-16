@@ -210,7 +210,7 @@ public:
 	 * When using this function, users might also want to call @ref clear_visited.
 	 */
 	void clear_queue() noexcept {
-		m_queue.clear();
+		m_queue.reset();
 	}
 
 	/**
