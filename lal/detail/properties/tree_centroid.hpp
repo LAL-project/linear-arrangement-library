@@ -82,6 +82,8 @@ enum class centroid_results {
 #define m2(mode) (mode == centroid_results::full_centroid)
 #define m3(mode) (mode == centroid_results::full_centroid_plus_subtree_sizes)
 #define m4(mode) (mode == centroid_results::full_centroid_plus_edge_sizes)
+#define node_pair std::pair<lal::node,lal::node>
+#define P std::pair
 
 /**
  * @brief Calculates the centroid of a tree
@@ -89,7 +91,19 @@ enum class centroid_results {
  * If subtree sizes are to be returned, they come in an array of size the number
  * of vertices of the tree.
  *
- * @tparam mode Indicates the value to be returned by this function.
+ * @tparam mode Indicates the value to be returned by this function. If:
+ * - mode == @ref centroid_results::only_one_centroidal, the result of the function
+ * is a node.
+ * - mode == @ref centroid_results::full_centroid, the result of the function
+ * is a pair of (possibly) two nodes. The second node may have an invalid value,
+ * indicating that the tree has only one centroidal vertex.
+ * - mode == @ref centroid_results::full_centroid_plus_subtree_sizes, the result
+ * of the function is a pair of (possibly) two nodes and the sizes of all the
+ * subtrees with respect to the first centroidal node in the pair.
+ * - mode == @ref centroid_results::full_centroid_plus_edge_sizes, the result
+ * of the function is a pair of (possibly) two nodes and an array of the form
+ * \f$(u,v, s(u,v))\f$ for all directed edges \f$(u,v)\f$ that point away from
+ * the first centroidal node in the pair.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param x Node belonging to a connected component whose centroid we want.
@@ -99,38 +113,25 @@ template <
 	class tree_t,
 	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-std::conditional_t<
-	m1(mode),
-	node, // m1
-	std::conditional_t<
-		m2(mode),
-		std::pair<node, node>, // m2
-		std::conditional_t<
-			m3(mode),
-			std::pair<std::pair<node, node>, data_array<uint64_t>>, // m3
-			std::pair<std::pair<node, node>, data_array<edge_size>> // m4
-		>
-	>
->
-find_centroidal_vertex(const tree_t& t, node x)
-noexcept
+auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 {
 	const auto N = t.get_num_nodes();
 	const auto n = t.get_num_nodes_component(x);
+
 	if (n == 1) {
 		if constexpr (m1(mode)) {
 			return x;
 		}
 		else if constexpr (m2(mode)) {
-			return {x,2};
+			return node_pair{x,2};
 		}
 		else if constexpr (m3(mode)) {
 			data_array<uint64_t> s(N, 0);
 			s[x] = 1;
-			return {{x,2}, std::move(s)};
+			return P{node_pair{x,2}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			return {{x,2}, {}};
+			return P{node_pair{x,2}, data_array<edge_size>{}};
 		}
 	}
 	if (n == 2) {
@@ -139,31 +140,28 @@ noexcept
 				return t.get_neighbours(x)[0];
 			}
 			else {
-				if (t.get_out_degree(x) == 0) {
-					return t.get_in_neighbours(x)[0];
-				}
-				else {
-					return t.get_out_neighbours(x)[0];
-				}
+				if (t.get_out_degree(x) == 0) { return t.get_in_neighbours(x)[0]; }
+				else { return t.get_out_neighbours(x)[0]; }
 			}
 		}();
+
 		if (x > only_neigh) { std::swap(x, only_neigh); }
 		if constexpr (m1(mode)) {
 			return x;
 		}
 		else if constexpr (m2(mode)) {
-			return {x,only_neigh};
+			return node_pair{x,only_neigh};
 		}
 		else if constexpr (m3(mode)) {
 			data_array<uint64_t> s(N, 0);
 			s[x] = 2;
 			s[only_neigh] = 1;
-			return {{x,only_neigh}, std::move(s)};
+			return P{node_pair{x,only_neigh}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
 			data_array<edge_size> s(1);
 			s[0] = { {x, only_neigh}, 1 };
-			return {{x,only_neigh}, std::move(s)};
+			return P{node_pair{x,only_neigh}, std::move(s)};
 		}
 	}
 
@@ -301,19 +299,24 @@ noexcept
 #endif
 
 	if constexpr (m2(mode)) {
-		return {c1, c2};
+		return P{c1, c2};
 	}
 	else if constexpr (m3(mode)) {
-		return {{c1, c2}, std::move(weight)};
+		return P{node_pair{c1, c2}, std::move(weight)};
 	}
 	else if constexpr (m4(mode)) {
-		return {{c1, c2}, std::move(edge_sizes)};
+		return P{node_pair{c1, c2}, std::move(edge_sizes)};
 	}
+
+
 }
 
-#undef m1
-#undef m2
+#undef P
+#undef node_pair
+#undef m4
 #undef m3
+#undef m2
+#undef m1
 
 /**
  * @brief Calculates the centroid and the corresponding rooted adjacency list
