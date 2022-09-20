@@ -61,6 +61,20 @@ public:
 	/// Default constructor
 	data_array() noexcept = default;
 
+	/// Constructor from initializer_list.
+	data_array(std::initializer_list<T> l) noexcept : m_size(l.size()) {
+		// (un?)fortunately, this will call the constructor of T
+		// for every element in m_data.
+		alloc_data();
+		// array reference
+		const T* list_data = std::data(l);
+		for (std::size_t i = 0; i < l.size(); ++i) {
+			// the data has to be be copied, it cannot be moved
+			// unless 'list_data' is const_cast<T *>-ed.
+			m_data[i] = list_data[i];
+		}
+	}
+
 	/**
 	 * @brief Constructor with size
 	 * @param n Size.
@@ -117,6 +131,7 @@ public:
 		return *this;
 	}
 
+	/*
 	/// Copy constructor from generic container
 	template <template <typename... Args> class container, typename... Types>
 	data_array(const container<Types...>& v) noexcept : data_array(v.size()) {
@@ -136,6 +151,7 @@ public:
 		std::copy(v.begin(), v.end(), begin());
 		return *this;
 	}
+	*/
 
 	/// Destructor
 	~data_array() noexcept {
