@@ -131,7 +131,10 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return P{node_pair{x,2}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			return P{node_pair{x,2}, data_array<edge_size>{}};
+			return P{
+				node_pair{x,2},
+				data_array<edge_size>{}
+			};
 		}
 	}
 	if (n == 2) {
@@ -159,9 +162,10 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return P{node_pair{x,only_neigh}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			data_array<edge_size> s(1);
-			s[0] = { {x, only_neigh}, 1 };
-			return P{node_pair{x,only_neigh}, std::move(s)};
+			return P{
+				node_pair{x,only_neigh},
+				data_array<edge_size>{ {{x, only_neigh}, 1} }
+			};
 		}
 	}
 
@@ -239,9 +243,7 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 				}
 
 				if constexpr (m4(mode)) {
-					edge_sizes[idx_edge_sizes].e = {v,u};
-					edge_sizes[idx_edge_sizes].size = weight[u];
-					++idx_edge_sizes;
+					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
 		}
@@ -256,9 +258,7 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 				}
 
 				if constexpr (m4(mode)) {
-					edge_sizes[idx_edge_sizes].e = {v,u};
-					edge_sizes[idx_edge_sizes].size = weight[u];
-					++idx_edge_sizes;
+					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
 			for (node v : t.get_out_neighbours(u)) {
@@ -271,9 +271,7 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 				}
 
 				if constexpr (m4(mode)) {
-					edge_sizes[idx_edge_sizes].e = {v,u};
-					edge_sizes[idx_edge_sizes].size = weight[u];
-					++idx_edge_sizes;
+					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
 		}
@@ -286,9 +284,7 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 		weight[c1] += weight[c2];
 
 		if constexpr (m4(mode)) {
-			edge_sizes[idx_edge_sizes].e = {c1,c2};
-			edge_sizes[idx_edge_sizes].size = weight[c2];
-			++idx_edge_sizes;
+			edge_sizes[idx_edge_sizes++] = {{c1,c2}, weight[c2]};
 		}
 	}
 
@@ -307,8 +303,6 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 	else if constexpr (m4(mode)) {
 		return P{node_pair{c1, c2}, std::move(edge_sizes)};
 	}
-
-
 }
 
 #undef P
