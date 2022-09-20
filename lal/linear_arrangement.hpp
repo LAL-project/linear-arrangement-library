@@ -303,6 +303,9 @@ public:
 	 *
 	 * Updates @ref m_direct and @ref m_inverse so that the vertices are
 	 * effectively swapped.
+	 *
+	 * The two parameters have to be of the same type: either @ref lal::node_t
+	 * or @ref lal::position_t.
 	 * @tparam what Swap either vertices or positions.
 	 * @param u_t Value indicating the first object.
 	 * @param v_t Value indicating the second object.
