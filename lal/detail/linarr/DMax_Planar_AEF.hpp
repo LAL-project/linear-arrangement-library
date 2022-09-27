@@ -59,6 +59,7 @@
 #include <lal/detail/linarr/DMax_utils.hpp>
 #include <lal/detail/linarr/Dopt_utils.hpp>
 #include <lal/detail/linarr/DMax_Projective_AEF.hpp>
+#include <lal/detail/type_traits/conditional_list.hpp>
 
 namespace lal {
 namespace detail {
@@ -228,24 +229,6 @@ enum class return_type_all_maxs {
 	max_root
 };
 
-/// Struct that contains a type as a function of @ref return_type_all_maxs.
-template <return_type_all_maxs res_type> struct DMax_info { };
-/// Partial template specialization.
-template <> struct DMax_info <return_type_all_maxs::DMax_value_vertex_and_max_root> {
-	using type = std::pair<std::vector<uint64_t>, uint64_t>;
-};
-/// Partial template specialization.
-template <> struct DMax_info <return_type_all_maxs::DMax_value_vertex> {
-	using type = std::vector<uint64_t>;
-};
-/// Partial template specialization.
-template <> struct DMax_info <return_type_all_maxs::max_root> {
-	using type = uint64_t;
-};
-/// Shorthand of @ref DMax_info.
-template <return_type_all_maxs res_type>
-using DMax_info_t = typename DMax_info<res_type>::type;
-
 /**
  * @brief Maximum planar arrangement of a free tree.
  *
@@ -261,7 +244,18 @@ using DMax_info_t = typename DMax_info<res_type>::type;
  * @returns Depending of the value of @e res_type, a list of values, a p
  */
 template <return_type_all_maxs res_type>
-DMax_info_t<res_type>
+conditional_list_t<
+	bool_sequence<
+		res_type == return_type_all_maxs::DMax_value_vertex_and_max_root,
+		res_type == return_type_all_maxs::DMax_value_vertex,
+		res_type == return_type_all_maxs::max_root
+	>,
+	type_sequence<
+		std::pair<std::vector<uint64_t>, uint64_t>,
+		std::vector<uint64_t>,
+		uint64_t
+	>
+>
 all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 {
 	constexpr bool calculate_max_root =
@@ -387,6 +381,14 @@ std::conditional_t<
 AEF(const graphs::free_tree& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
+
+	// in case the tree is caterpillar then simply apply the formula
+	// when the arrangement is not required.
+	if constexpr (not make_arrangement) {
+		if (t.is_tree_type_valid() and t.is_of_tree_type(graphs::tree_type::caterpillar)) {
+			return (n*(n - 1))/2;
+		}
+	}
 
 	if (n == 1) {
 		if constexpr (make_arrangement) {

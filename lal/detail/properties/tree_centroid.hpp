@@ -55,9 +55,9 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/pairs_utils.hpp>
-
 #include <lal/detail/linear_queue.hpp>
 #include <lal/detail/graphs/traversal.hpp>
+#include <lal/detail/type_traits/conditional_list.hpp>
 
 namespace lal {
 namespace detail {
@@ -113,7 +113,21 @@ template <
 	class tree_t,
 	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-auto find_centroidal_vertex(const tree_t& t, node x) noexcept
+conditional_list_t<
+	bool_sequence<
+		m1(mode),
+		m2(mode),
+		m3(mode),
+		m4(mode)
+	>,
+	type_sequence<
+		node,
+		std::pair<lal::node,lal::node>,
+		std::pair<std::pair<lal::node,lal::node>, data_array<uint64_t>>,
+		std::pair<std::pair<lal::node,lal::node>, data_array<edge_size>>
+	>
+>
+find_centroidal_vertex(const tree_t& t, node x) noexcept
 {
 	const auto N = t.get_num_nodes();
 	const auto n = t.get_num_nodes_component(x);
@@ -123,18 +137,15 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return x;
 		}
 		else if constexpr (m2(mode)) {
-			return node_pair{x,2};
+			return {x,2};
 		}
 		else if constexpr (m3(mode)) {
 			data_array<uint64_t> s(N, 0);
 			s[x] = 1;
-			return P{node_pair{x,2}, std::move(s)};
+			return {{x,2}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			return P{
-				node_pair{x,2},
-				data_array<edge_size>{}
-			};
+			return {{x,2}, data_array<edge_size>{}};
 		}
 	}
 	if (n == 2) {
@@ -153,17 +164,17 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return x;
 		}
 		else if constexpr (m2(mode)) {
-			return node_pair{x,only_neigh};
+			return {x,only_neigh};
 		}
 		else if constexpr (m3(mode)) {
 			data_array<uint64_t> s(N, 0);
 			s[x] = 2;
 			s[only_neigh] = 1;
-			return P{node_pair{x,only_neigh}, std::move(s)};
+			return {{x,only_neigh}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			return P{
-				node_pair{x,only_neigh},
+			return {
+				{x,only_neigh},
 				data_array<edge_size>{ {{x, only_neigh}, 1} }
 			};
 		}
@@ -295,13 +306,13 @@ auto find_centroidal_vertex(const tree_t& t, node x) noexcept
 #endif
 
 	if constexpr (m2(mode)) {
-		return P{c1, c2};
+		return {c1, c2};
 	}
 	else if constexpr (m3(mode)) {
-		return P{node_pair{c1, c2}, std::move(weight)};
+		return {{c1, c2}, std::move(weight)};
 	}
 	else if constexpr (m4(mode)) {
-		return P{node_pair{c1, c2}, std::move(edge_sizes)};
+		return {{c1, c2}, std::move(edge_sizes)};
 	}
 }
 

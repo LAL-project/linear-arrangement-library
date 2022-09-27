@@ -164,8 +164,16 @@ target_sources(
 		detail/linarr/predict_C.hpp
 		detail/linarr/sum_edge_lengths.hpp
 		detail/linarr/syntactic_dependency_structure.hpp
-		#      macros
+		#      type_traits
+		detail/macros/bool_sequence.hpp
+		detail/macros/conditional_list.hpp
+		detail/macros/first_true.hpp
 		detail/macros/is_pointer_iterator.hpp
+		detail/macros/ith_type.hpp
+		detail/macros/sum.hpp
+		detail/macros/type_sequence.hpp
+		#      macros
+		detail/macros/basic_convert.hpp
 		#      numeric
 		detail/numeric/utils.hpp
 		#      properties

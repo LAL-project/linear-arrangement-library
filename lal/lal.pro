@@ -98,6 +98,12 @@ HEADERS += \
     detail/linarr/sum_edge_lengths.hpp \
     detail/linear_queue.hpp \
     detail/macros/basic_convert.hpp \
+    detail/type_traits/bool_sequence.hpp \
+	detail/type_traits/conditional_list.hpp \
+	detail/type_traits/first_true.hpp \
+	detail/type_traits/is_pointer_iterator.hpp \
+	detail/type_traits/ith_type.hpp \
+	detail/type_traits/sum.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \
@@ -121,7 +127,6 @@ HEADERS += \
 	detail/linarr/Dmin_Unconstrained_YS.hpp \
 	detail/linarr/syntactic_dependency_structure.hpp \
 	detail/numeric/utils.hpp \
-    detail/macros/is_pointer_iterator.hpp \
     detail/pairs_utils.hpp \
 	detail/properties/tree_centre.hpp \
 	detail/properties/tree_centroid.hpp \
@@ -136,6 +141,7 @@ HEADERS += \
 	detail/graphs/traversal.hpp \
     detail/sorting/sorted_vector.hpp \
     detail/sorting/sorting_types.hpp \
+    detail/type_traits/type_sequence.hpp \
 	detail/utilities/tree_isomorphism.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \

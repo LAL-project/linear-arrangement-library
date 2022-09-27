@@ -154,9 +154,9 @@ public:
 	const T *end() const noexcept { return m_queue.begin() + m_right; }
 
 private:
-
 	/// Data (array) of the queue
 	data_array<T> m_queue;
+
 	/// Left pointer to @ref m_queue
 	std::size_t m_left;
 	/// Right pointer to @ref m_queue

@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/macros/is_pointer_iterator.hpp>
+#include <lal/detail/type_traits/is_pointer_iterator.hpp>
 #include <lal/detail/sorting/sorting_types.hpp>
 
 namespace lal {
