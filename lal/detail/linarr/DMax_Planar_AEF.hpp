@@ -382,8 +382,8 @@ AEF(const graphs::free_tree& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
-	// in case the tree is caterpillar then simply apply the formula
-	// when the arrangement is not required.
+	// in case the tree is caterpillar and the arrangement is
+	// not required then simply apply the formula
 	if constexpr (not make_arrangement) {
 		if (t.is_tree_type_valid() and t.is_of_tree_type(graphs::tree_type::caterpillar)) {
 			return (n*(n - 1))/2;
