@@ -66,6 +66,7 @@ noexcept
 		case tree_type::linear: return "linear";
 		case tree_type::quasistar: return "quasistar";
 		case tree_type::spider: return "spider";
+		case tree_type::bispider: return "bispider";
 		case tree_type::star: return "star";
 		default: return "unknown";
 	}
@@ -83,6 +84,7 @@ make_array<
 	graphs::tree_type::linear,
 	graphs::tree_type::quasistar,
 	graphs::tree_type::spider,
+	graphs::tree_type::bispider,
 	graphs::tree_type::star,
 	graphs::tree_type::unknown
 >();

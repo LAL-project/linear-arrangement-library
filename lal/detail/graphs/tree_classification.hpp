@@ -76,7 +76,8 @@ noexcept
 	// -------------------------------------------------------------------------
 	// utilities
 
-	bool is_some = false; // the type is different from 'none'
+	bool is_some = false; // the type of the tree is different from 'unknown'
+
 	const auto set_type =
 	[&](const graphs::tree_type& tt) {
 		array[static_cast<std::size_t>(tt)] = true;
@@ -100,19 +101,19 @@ noexcept
 	// -------------------------------------------------------------------------
 
 	// number of vertices
-	const uint64_t N = t.get_num_nodes();
-	if (N == 0) {
+	const uint64_t n = t.get_num_nodes();
+	if (n == 0) {
 		set_type(graphs::tree_type::empty);
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
-	if (N == 1) {
+	if (n == 1) {
 		set_type(graphs::tree_type::singleton);
 		set_type(graphs::tree_type::caterpillar);
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
-	if (N == 2) {
+	if (n == 2) {
 		set_type(graphs::tree_type::linear);
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
@@ -120,7 +121,7 @@ noexcept
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
-	if (N == 3) {
+	if (n == 3) {
 		set_type(graphs::tree_type::linear);
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
@@ -137,6 +138,7 @@ noexcept
 	bool is_bistar = false;
 	bool is_caterpillar = false;
 	bool is_spider = false;
+	bool is_bispider = false;
 
 	// number of vertices
 	uint64_t n_deg_eq_1 = 0; // of degree = 1
@@ -145,10 +147,10 @@ noexcept
 	uint64_t n_deg_ge_3 = 0; // of degree >= 3
 
 	// degree of the internal vertices
-	data_array<int64_t> deg_internal(N, 0);
+	data_array<int64_t> deg_internal(n, 0);
 
 	// fill in data
-	for (lal::node u = 0; u < N; ++u) {
+	for (lal::node u = 0; u < n; ++u) {
 		// 'du' is the degree of the vertex in the underlying undirected graph
 		const int64_t du = static_cast<int64_t>(t.get_degree(u));
 		deg_internal[u] += (du > 1)*du;
@@ -170,20 +172,20 @@ noexcept
 		// if there are only two leaves then we must
 		// have that the remaining vertices are of degree 2.
 #if defined DEBUG
-		assert(n_deg_ge_2 == N - 2);
+		assert(n_deg_ge_2 == n - 2);
 #endif
 		is_linear = true;
 		is_caterpillar = true;
 	}
 
 	// BISTAR
-	if (n_deg_ge_2 == 2 and N - n_deg_ge_2 == n_deg_eq_1) {
+	if (n_deg_ge_2 == 2 and n - n_deg_ge_2 == n_deg_eq_1) {
 		is_bistar = true;
 		is_caterpillar = true;
 	}
 
 	// QUASISTAR
-	if (N - n_deg_ge_2 == n_deg_eq_1 and
+	if (n - n_deg_ge_2 == n_deg_eq_1 and
 		(
 		(n_deg_eq_2 == 2 and n_deg_ge_3 == 0) or
 		(n_deg_ge_3 == 1 and n_deg_eq_2 == 1)
@@ -195,14 +197,19 @@ noexcept
 	}
 
 	// STAR
-	if (n_deg_ge_2 == 1 and n_deg_eq_1 == N - 1) {
+	if (n_deg_ge_2 == 1 and n_deg_eq_1 == n - 1) {
 		is_star = true;
 		is_caterpillar = true;
 	}
 
 	// SPIDER
-	if (n_deg_ge_3 == 1 and n_deg_eq_1 + n_deg_eq_2 == N - 1) {
+	if (n_deg_ge_3 == 1 and n_deg_eq_1 + n_deg_eq_2 == n - 1) {
 		is_spider = true;
+	}
+
+	// bi-SPIDER
+	if (n_deg_ge_3 == 2 and n_deg_eq_1 + n_deg_eq_2 == n - 2) {
+		is_bispider = true;
 	}
 
 	if (not is_caterpillar) {
@@ -213,7 +220,7 @@ noexcept
 		// two vertices of degree 1 are the endpoints of the
 		// linear tree.
 		uint64_t n1 = 0;
-		for (lal::node u = 0; u < N; ++u) {
+		for (lal::node u = 0; u < n; ++u) {
 			n1 += deg_internal[u] == 1;
 		}
 
@@ -226,6 +233,7 @@ noexcept
 	if (is_bistar) { set_type(graphs::tree_type::bistar); }
 	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
 	if (is_spider) { set_type(graphs::tree_type::spider); }
+	if (is_bispider) { set_type(graphs::tree_type::bispider); }
 
 	if (is_some) {
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;

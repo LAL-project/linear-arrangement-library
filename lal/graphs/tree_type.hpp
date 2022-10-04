@@ -102,9 +102,22 @@ enum class tree_type {
 	 * @brief Spider trees.
 	 *
 	 * A spider tree has a unique vertex of degree greater than or equal to 3.
-	 * The other vertices have degree 2 or 1 \cite English2019a.
+	 * The other vertices have degree 2 or 1 \cite English2019a, \cite MathWorld_SpiderGraph.
 	 */
 	spider,
+
+	/**
+	 * @brief Bi-spider trees.
+	 *
+	 * A bi-spider tree is a tree in which there are at most two vertices of
+	 * degree 3 or larger; the other vertices have degree 2 or 1.
+	 *
+	 * It can also be seen as the connection of two independent trees
+	 * \f$T_1\f$ and \f$T_2\f$ where each tree is either a spider tree or a linear
+	 * tree. If one of \f$T_1\f$ or \f$T_2\f$ is a spider tree, the path must
+	 * be incident to the spider's hub vertex.
+	 */
+	bispider,
 
 	/**
 	 * @brief Star trees.
