@@ -95,16 +95,13 @@ public:
 	 * @post The size of the queue is reduced by one.
 	 * @post Pointer @ref m_left is updated.
 	 */
-	T pop() noexcept {
+	T&& pop() noexcept {
 #if defined DEBUG
 		assert(m_left < m_queue.size());
 #endif
-		return m_queue[m_left++];
+		return std::move(m_queue[m_left++]);
 	}
-	/**
-	 * @brief Returns a constant reference to the first element.
-	 *
-	 */
+	/// Returns a constant reference to the first element.
 	const T& front() const noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
