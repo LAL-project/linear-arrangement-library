@@ -101,7 +101,16 @@ public:
 #endif
 		return std::move(m_queue[m_left++]);
 	}
-	/// Returns a constant reference to the first element.
+
+	/// Returns a reference to the front element.
+	T& front() noexcept {
+#if defined DEBUG
+		assert(not is_exhausted());
+#endif
+		return m_queue[m_left];
+	}
+
+	/// Returns a constant reference to the front element.
 	const T& front() const noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());

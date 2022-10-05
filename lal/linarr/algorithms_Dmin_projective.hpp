@@ -79,7 +79,7 @@ enum class algorithms_Dmin_projective {
 	 *
 	 * This algorithm's complexity is \f$O(n)\f$.
 	 */
-	HochbergStallmann,
+	HochbergStallmann
 };
 
 } // -- namespace linarr
