@@ -39,8 +39,6 @@
  *
  ********************************************************************/
 
-#pragma once
-
 // C++ includes
 #if defined DEBUG
 #include <cassert>
@@ -60,9 +58,9 @@
 #define max_pos(u,v) (std::max(arr[u], arr[v]))
 
 namespace lal {
-namespace detail {
+namespace linarr {
 
-/**
+/*
  * @brief Calculate the dependencies and their span.
  * @tparam arrangement_t Type of arrangement.
  * @param t Input tree.
@@ -171,7 +169,7 @@ noexcept
 	return weight;
 }
 
-/**
+/*
  * @brief Calculate fluxes in a linear arrangement.
  * @tparam arrangement_t Type of arrangement.
  * @param t Input free tree.
@@ -239,5 +237,20 @@ noexcept
 	return flux;
 }
 
-} // -- namespace detail
+std::vector<dependency_flux>
+compute_flux(const graphs::free_tree& t, const linear_arrangement& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
+	return
+		(arr.size() == 0 ?
+			compute_flux(t, detail::identity_arr(arr)) :
+			compute_flux(t, detail::nonident_arr(arr))
+		);
+}
+
+} // -- namespace linarr
 } // -- namespace lal

@@ -91,7 +91,6 @@ HEADERS += \
 	detail/linarr/DMax_Projective_AEF.hpp \
 	detail/linarr/DMax_utils.hpp \
 	detail/linarr/Dopt_utils.hpp \
-    detail/linarr/flux.hpp \
     detail/linarr/formal_constraints.hpp \
     detail/linarr/headedness.hpp \
     detail/linarr/predict_C.hpp \
@@ -201,7 +200,6 @@ HEADERS += \
 	linarr/algorithms_Dmin_projective.hpp \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
-	linarr/flux.hpp \
 	linarr/C.hpp \
 	linarr/D.hpp \
 	linarr/formal_constraints.hpp \
@@ -258,8 +256,8 @@ SOURCES += \
 	linarr/DMax.cpp \
 	linarr/Dmin.cpp \
 	linarr/classify_syntactic_dependency_structure.cpp \
-	linarr/flux.cpp \
 	linarr/D.cpp \
+	linarr/dependency_flux.cpp \
 	linarr/formal_constraints.cpp \
 	linarr/head_initial.cpp \
 	linarr/predict_C.cpp \

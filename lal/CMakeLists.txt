@@ -158,7 +158,6 @@ target_sources(
 		detail/linarr/Dmin_Unconstrained_YS.hpp
 		detail/linarr/Dmin_utils.hpp
 		detail/linarr/Dopt_utils.hpp
-		detail/linarr/flux.hpp
 		detail/linarr/formal_constraints.hpp
 		detail/linarr/headedness.hpp
 		detail/linarr/predict_C.hpp
@@ -324,7 +323,6 @@ target_sources(
 		linarr/D.cpp
 		linarr/DMax.cpp
 		linarr/Dmin.cpp
-		linarr/flux.cpp
 		linarr/formal_constraints.cpp
 		linarr/head_initial.cpp
 		linarr/predict_C.cpp
@@ -472,7 +470,6 @@ set(LIBLAL_LINARR_HEADER
 	linarr/dependency_flux.hpp
 	linarr/DMax.hpp
 	linarr/Dmin.hpp
-	linarr/flux.hpp
 	linarr/formal_constraints.hpp
 	linarr/head_initial.hpp
 	linarr/syntactic_dependency_structure.hpp
