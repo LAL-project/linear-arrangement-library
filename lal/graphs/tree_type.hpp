@@ -51,80 +51,36 @@ namespace graphs {
  * @brief Enumeration of several types of trees.
  *
  * Classifies a tree into not necessarily disjoint classes of trees.
+ *
+ * The description of each class can be found in @ref LAL_concepts__tree_types.
  */
 enum class tree_type {
-	/**
-	 * @brief Empty tree.
-	 *
-	 * A tree with no vertices at all.
-	 */
+	/// Empty tree./
 	empty,
-	/**
-	 * @brief Singleton tree.
-	 *
-	 * A tree of a single vertex.
-	 */
+
+	/// Singleton tree.
 	singleton,
 
-	/**
-	 * @brief Bi-star trees.
-	 *
-	 * These trees are made of two star trees joined by an edge at their centers.
-	 */
-	bistar,
-
-	/**
-	 * @brief Caterpillar trees.
-	 *
-	 * These are the trees such that a linear tree is produced when its leaves
-	 * are removed \cite Harary1973a.
-	 */
+	/// Caterpillar trees.
 	caterpillar,
 
-	/**
-	 * @brief Linear trees.
-	 *
-	 * A linear tree has only two leaves, and the rest of the vertices (if any)
-	 * have degree exactly two. This is, precisely, a path graph.
-	 */
+	/// Linear trees.
 	linear,
 
-	/**
-	 * @brief Quasi star trees.
-	 *
-	 * Also quasi star graphs, trees where all vertices but two have degree 1.
-	 * One of these two vertices has degree exactly two, the other has degree
-	 * at least two.
-	 */
-	quasistar,
-
-	/**
-	 * @brief Spider trees.
-	 *
-	 * A spider tree has a unique vertex of degree greater than or equal to 3.
-	 * The other vertices have degree 2 or 1 \cite English2019a, \cite MathWorld_SpiderGraph.
-	 */
+	/// Spider trees.
 	spider,
 
-	/**
-	 * @brief Bi-spider trees.
-	 *
-	 * A bi-spider tree is a tree in which there are at most two vertices of
-	 * degree 3 or larger; the other vertices have degree 2 or 1.
-	 *
-	 * It can also be seen as the connection of two independent trees
-	 * \f$T_1\f$ and \f$T_2\f$ where each tree is either a spider tree or a linear
-	 * tree. If one of \f$T_1\f$ or \f$T_2\f$ is a spider tree, the path must
-	 * be incident to the spider's hub vertex.
-	 */
+	/// Bi-spider trees.
 	bispider,
 
-	/**
-	 * @brief Star trees.
-	 *
-	 * Also star graphs, trees where all vertices but one have degree 1.
-	 */
+	/// Star trees.
 	star,
+
+	/// Quasi star trees.
+	quasistar,
+
+	/// Bi-star trees.
+	bistar,
 
 	// *DEVELOPER NOTE*
 	// This value must always be the last one.

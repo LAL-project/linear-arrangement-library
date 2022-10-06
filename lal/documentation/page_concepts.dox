@@ -177,11 +177,31 @@ Decides whether the input trees are isomorphic or not. Two trees \f$t_1\f$ and \
 and \f$\phi(r_1)=r_2\f$ where \f$r_1\f$ and \f$r_2\f$ are, respectively, the roots of \f$t_1\f$ and \f$t_2\f$. Note that \f$(u,v)\f$ denotes a directed edge.
 
 
+\subsection LAL_concepts__tree_types The different types of trees
 
+Here we describe the different types (classes) of trees used in LAL, some of them listed in @ref lal::graphs::tree_type.
 
+- Empty tree (@ref lal::graphs::tree_type::empty). A tree with no vertices at all.
 
+- Singleton tree (@ref lal::graphs::tree_type::singleton). A tree of a single vertex.
 
+- Caterpillar trees (@ref lal::graphs::tree_type::caterpillar). These are the trees such that a linear tree is produced when its leaves are removed \cite Harary1973a.
 
+- Linear trees (@ref lal::graphs::tree_type::linear). A linear tree has only two leaves, and the rest of the vertices (if any) have degree exactly two. This is, precisely, a path graph.
+
+- Spider trees (@ref lal::graphs::tree_type::spider). A spider tree has a unique vertex of degree greater than or equal to 3. The other vertices have degree 2 or 1 \cite English2019a, \cite MathWorld_SpiderGraph.
+
+- Bi-spider trees (@ref lal::graphs::tree_type::bispider). A bi-spider tree is a tree in which there are at most two vertices of degree 3 or larger; the other vertices have degree 2 or 1.
+	
+	It can also be seen as the connection of two independent trees \f$T_1\f$ and \f$T_2\f$ where each tree is either a spider tree or a linear tree. If one of \f$T_1\f$ or \f$T_2\f$ is a spider tree, the path must be incident to the spider's hub vertex.
+
+- Star trees (@ref lal::graphs::tree_type::star). Also known as star graphs, trees where all vertices but one have degree 1.
+
+- Quasi-star trees (@ref lal::graphs::tree_type::quasistar). Also quasi star graphs, trees where all vertices but two have degree 1. One of these two vertices has degree exactly two, the other has degree at least two.
+
+- Bi-star trees (@ref lal::graphs::tree_type::bistar). These trees are made of two star trees joined by an edge at their centers.
+
+- unknown tree  (@ref lal::graphs::tree_type::unknown). Used when a tree does not fall in any of the categories above.
 
 \section LAL_conecepts_linguistics Linguistics
 
