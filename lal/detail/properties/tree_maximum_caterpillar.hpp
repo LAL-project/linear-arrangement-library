@@ -135,10 +135,10 @@ noexcept
  * @tparam tree_t Tree type
  * @param t Input tree
  * @returns If:
- * - @e ret_type is @ref result::distance, an integer value,
- * - @e ret_type is @ref result::distance_vertices, an integer value and a
+ * - @e ret_type is @ref result::distance, returns an integer value,
+ * - @e ret_type is @ref result::distance_vertices, returns an integer value and a
  * vector of char indicating what vertices are in the caterpillar tree,
- * - @e ret_type is @ref result::distance_structure, an integer value, a
+ * - @e ret_type is @ref result::distance_structure, returns an integer value, a
  * vector of nodes listing all nodes from one end to other of the maximum
  * caterpillar's backbone, and a vector of char indicating what vertices are in
  * the caterpillar tree,
