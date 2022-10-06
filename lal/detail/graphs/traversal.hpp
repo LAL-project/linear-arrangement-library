@@ -84,7 +84,6 @@ namespace detail {
  */
 template <
 	class graph_t,
-	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
 	std::enable_if_t< std::is_base_of_v<graphs::graph, graph_t>, bool > = true
 >
 class BFS {
@@ -97,6 +96,16 @@ public:
 	typedef std::function<bool (const BFS<graph_t>&, node)> BFS_bool_one;
 	/// Two nodes decision function.
 	typedef std::function<bool (const BFS<graph_t>&, node, node)> BFS_bool_two;
+
+public:
+
+	/**
+	 * @brief Is the graph used to initiliaze the object directed?
+	 *
+	 * A graph is directed if it is a base class of @ref lal::graphs::directed_graph.
+	 */
+	static constexpr bool is_graph_directed =
+		std::is_base_of_v<graphs::directed_graph, graph_t>;
 
 public:
 	/// Constructor
@@ -276,7 +285,7 @@ protected:
 
 	/// Process the neighbours of node @e s
 	void process_neighbours(node s) noexcept {
-		if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_t>) {
+		if constexpr (not is_graph_directed) {
 			// for undirected graphs
 
 			for (const node& t : m_G.get_neighbours(s)) {
