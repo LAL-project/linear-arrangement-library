@@ -56,6 +56,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/Dmin.hpp>
 #include <lal/linarr/classify_syntactic_dependency_structure.hpp>
+#include <lal/linarr/dependency_flux.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
@@ -74,7 +75,7 @@
 #include <lal/detail/linarr/C_dyn_prog.hpp>
 #include <lal/detail/linarr/C_ladder.hpp>
 #include <lal/detail/linarr/C_stack_based.hpp>
-#include <lal/detail/linarr/flux.hpp>
+#include <lal/detail/linarr/dependency_flux.hpp>
 #include <lal/detail/linarr/headedness.hpp>
 #include <lal/detail/linarr/predict_C.hpp>
 #include <lal/detail/linarr/sum_edge_lengths.hpp>
@@ -759,7 +760,7 @@ noexcept
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
-		const auto F = detail::compute_flux(fT, id);
+		const auto F = detail::compute_flux<linarr::dependency_flux>(fT, id);
 		// since these values are cheap to calculate, compute every all of them
 		// and output whatever is needed later
 

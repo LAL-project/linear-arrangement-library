@@ -91,6 +91,7 @@ HEADERS += \
 	detail/linarr/DMax_Projective_AEF.hpp \
 	detail/linarr/DMax_utils.hpp \
 	detail/linarr/Dopt_utils.hpp \
+    detail/linarr/dependency_flux.hpp \
     detail/linarr/formal_constraints.hpp \
     detail/linarr/headedness.hpp \
     detail/linarr/predict_C.hpp \

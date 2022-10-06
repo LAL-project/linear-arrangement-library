@@ -43,199 +43,15 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <optional>
 #include <vector>
 
 // lal includes
-#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/linarr/dependency_flux.hpp>
-#include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/identity_arrangement.hpp>
-#include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/sorting/sorted_vector.hpp>
-#include <lal/detail/data_array.hpp>
-
-#define max_pos(u,v) (std::max(arr[u], arr[v]))
+#include <lal/detail/linarr/dependency_flux.hpp>
 
 namespace lal {
 namespace linarr {
-
-/*
- * @brief Calculate the dependencies and their span.
- * @tparam arrangement_t Type of arrangement.
- * @param t Input tree.
- * @param arr Input linear arrangement.
- * @param edge_with_max_pos_at
- * @param cur_pos Current position in the arrangement for which we calculate
- * the dependencies.
- * @param[out] flux The flux at this position.
- * @param[out] cur_deps The dependencies crossing this position.
- */
-template <class arrangement_t>
-void calculate_dependencies_and_span
-(
-	const graphs::free_tree& t,
-	const arrangement_t& arr,
-	const std::vector<std::pair<edge_t,uint64_t>>& edge_with_max_pos_at,
-	position cur_pos,
-	std::vector<linarr::dependency_flux>& flux,
-	std::vector<edge>& cur_deps
-)
-noexcept
-{
-	const node u = arr[position_t{cur_pos}];
-
-	if (cur_pos > 0) {
-		// copy previous dependencies
-		cur_deps = flux[cur_pos - 1].get_dependencies();
-	}
-
-	// find those edges ending at position 'p' ...
-	if (edge_with_max_pos_at[cur_pos].second > 0) {
-		const auto [first, last] =
-			std::equal_range(
-				cur_deps.begin(), cur_deps.end(),
-				edge_with_max_pos_at[cur_pos].first, // this ends at position p-1
-				[&](const edge_t& e1, const edge_t& e2) -> bool {
-					const auto pos_e1 = max_pos(e1.first, e1.second);
-					const auto pos_e2 = max_pos(e2.first, e2.second);
-					return pos_e1 < pos_e2;
-				}
-			);
-		if (first != cur_deps.end()) {
-			cur_deps.erase(first, last);
-		}
-	}
-
-	// add the new dependencies
-	for (const node_t v : t.get_neighbours(u)) {
-		if (arr[v] > cur_pos) {
-			cur_deps.push_back({u,*v});
-		}
-	}
-
-	detail::sorting::sorted_vector<node,true> set_endpoints;
-	for (const auto& [v,w] : cur_deps) {
-		set_endpoints.insert_sorted(v);
-		set_endpoints.insert_sorted(w);
-	}
-	for (node_t v : set_endpoints) {
-		flux[cur_pos].get_left_span() += (arr[v] <= cur_pos);
-		flux[cur_pos].get_right_span() += (arr[v] > cur_pos);
-	}
-}
-
-/**
- * @brief Calculates the weight of a set of dependencies in a flux.
- * @param dependencies Input dependencies.
- * @param ug Input undirected graph.
- * @returns The size of the largest subset of independent dependencies.
- */
-inline
-uint64_t calculate_weight
-(const std::vector<edge>& dependencies, graphs::undirected_graph& ug)
-noexcept
-{
-	if (dependencies.size() <= 1) { return dependencies.size(); }
-
-	// build graph
-	ug.set_edges(dependencies);
-
-	// ------------------------------------------
-	// apply the "algorithm", see what happens...
-	// step 1. while we can find a leaf
-	// step 2. put incident edge in the set of disjoint dependencies
-	// step 3. delete edges incident to the other vertex
-
-	const auto find_leaf =
-	[](const graphs::undirected_graph& g) -> std::optional<node> {
-		for (node u = 0; u < g.get_num_nodes(); ++u) {
-			if (g.get_degree(u) == 1) { return u; }
-		}
-		return {};
-	};
-
-	uint64_t weight = 0;
-	// step 1
-	while (const auto leaf = find_leaf(ug)) {
-		const node u = *leaf;
-		const node v = ug.get_neighbours(u)[0];
-		// step 2
-		++weight;
-		// step 3 -- remove edges incident to the only neighbour of the leaf
-		ug.remove_edges_incident_to(v);
-	}
-
-	return weight;
-}
-
-/*
- * @brief Calculate fluxes in a linear arrangement.
- * @tparam arrangement_t Type of arrangement.
- * @param t Input free tree.
- * @param arr Input linear arrangement.
- * @returns The set of dependency fluxes in the arrangement.
- */
-template <class arrangement_t>
-std::vector<linarr::dependency_flux> compute_flux
-(const graphs::free_tree& t, const arrangement_t& arr)
-noexcept
-{
-	const uint64_t n = t.get_num_nodes();
-	if (n == 1) { return {}; }
-
-	// one edge entering each position
-	std::vector<std::pair<edge_t,uint64_t>> edge_with_max_pos_at(n, {{}, 0});
-	for (iterators::E_iterator e_it(t); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge_t();
-		const position max = max_pos(u, v);
-		edge_with_max_pos_at[max].first = {u,v};
-		++edge_with_max_pos_at[max].second;
-	}
-
-	// the graph (of n vertices) used to calculate the weight
-	graphs::undirected_graph ug(n);
-
-	// the reusable memory for the sorting algorithm
-	detail::sorting::countingsort::memory<edge> mem(n, n);
-
-	// declare the result to be returned
-	std::vector<linarr::dependency_flux> flux(n - 1);
-
-	for (position cur_pos = 0; cur_pos < n - 1; ++cur_pos) {
-		// current dependencies
-		auto& cur_deps = flux[cur_pos].get_dependencies();
-
-		// ----------------------
-		// calculate dependencies
-		calculate_dependencies_and_span
-		(t, arr, edge_with_max_pos_at, cur_pos, flux, cur_deps);
-
-		// -------------------------------------------------
-		// calculate the weight of the flux at this position
-		// (read the paper for an "algorithm")
-		flux[cur_pos].set_weight(calculate_weight(cur_deps, ug));
-
-		// sort the dependencies by ending position so that edges
-		// can be erased more efficiently in the next iteration
-		detail::sorting::counting_sort
-		<edge, detail::sorting::non_decreasing_t, false>
-		(
-			// iterators to the container to be sorted
-			cur_deps.begin(), cur_deps.end(),
-			// largest key possible + 1
-			n,
-			// key
-			[&](const edge_t& e) -> std::size_t
-			{ return max_pos(e.first, e.second); },
-			// reusable memory
-			mem
-		);
-		mem.reset_count();
-	}
-
-	return flux;
-}
 
 std::vector<dependency_flux>
 compute_flux(const graphs::free_tree& t, const linear_arrangement& arr)
@@ -247,8 +63,8 @@ noexcept
 
 	return
 		(arr.size() == 0 ?
-			compute_flux(t, detail::identity_arr(arr)) :
-			compute_flux(t, detail::nonident_arr(arr))
+			detail::compute_flux<dependency_flux>(t, detail::identity_arr(arr)) :
+			detail::compute_flux<dependency_flux>(t, detail::nonident_arr(arr))
 		);
 }
 
