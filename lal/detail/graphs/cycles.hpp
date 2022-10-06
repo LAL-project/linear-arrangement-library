@@ -144,7 +144,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	bool cycle_found = false;
 
 	// we need to traverse "reversed edges" in directed graphs
-	bfs.set_use_rev_edges(g.is_directed());
+	bfs.set_use_rev_edges( BFS<graph_t>::is_graph_directed );
 	// we need this to detect cycles
 	bfs.set_process_visited_neighbours(true);
 	// -- functions for the traversal

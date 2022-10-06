@@ -116,7 +116,7 @@ noexcept
 	// update roots of the smaller component,
 	// in the direction parent -> child
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges(t.is_directed());
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
 	[&](const BFS<tree_t>&, node w) -> void { root_of[w] = new_root; }
 	);
@@ -161,7 +161,7 @@ noexcept
 	// Update the root of the vertices reachable from 'u'.
 	//   (also calculate the size of u's component)
 	uint64_t size_cc_u = 0;
-	bfs.set_use_rev_edges(t.is_directed());
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
 	[&](const auto&, node w) -> void {
 		root_of[w] = u;

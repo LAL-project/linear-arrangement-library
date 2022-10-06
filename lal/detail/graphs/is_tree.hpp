@@ -69,7 +69,7 @@ bool is_graph_a_tree(const graph_t& g) noexcept {
 	// visit all vertices, if all vertices
 	// were visited then the graph is a tree
 	BFS<graph_t> bfs(g);
-	bfs.set_use_rev_edges(g.is_directed());
+	bfs.set_use_rev_edges( BFS<graph_t>::is_graph_directed );
 	bfs.start_at(0);
 	return bfs.all_visited();
 }
