@@ -59,11 +59,8 @@ namespace detail {
 /**
  * @brief Calculate the centre of the connected component that has node @e x.
  *
- * Here, "centre" should NOT be confused with "centroid". The center is the set
- * of (at most) two vertices that have minimum eccentricity. The centroid is the
- * set of (at most) two vertices that have minimum weight, where the weight is
- * the maximum size of the subtrees rooted at that vertex. See \cite Harary1969a
- * for further details.
+ * See @ref LAL_concepts__centre_centroid for details on what the centre of a
+ * tree is.
  *
  * A graph of type @ref lal::graphs::tree may lack some edges tree so it has
  * several connected components. Vertex @e x belongs to one of these connected
@@ -76,10 +73,10 @@ namespace detail {
  * @param t Input tree.
  * @param X Input node.
  * @pre Input tree @e t may be a forest.
- * @returns A tuple of two values: the nodes in the centre. If the
- * tree has a single central node, only the first node is valid and the second
- * is assigned an invalid vertex index. It is guaranteed that the first vertex
- * has smaller index value than the second.
+ * @returns A tuple of the two nodes in the centre. If the tree has a single
+ * central node, only the first node is valid and the second is assigned an
+ * invalid vertex index. It is guaranteed that the first vertex has smaller
+ * index value than the second.
  */
 template <
 	class tree_t,

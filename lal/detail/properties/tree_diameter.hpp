@@ -58,9 +58,10 @@ namespace detail {
 /**
  * @brief Calculate the diameter of a tree.
  *
+ * See @ref LAL_concepts__tree_diameter for details on the definition of the
+ * diameter of a tree.
+ *
  * The diameter of the connected component to which node @e x belongs to.
- * The diameter is the length of the longest path. See \cite Harary1969a
- * (pages 24, 35) for further details.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param x Input node.

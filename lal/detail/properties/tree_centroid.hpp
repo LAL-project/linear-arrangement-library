@@ -88,6 +88,9 @@ enum class centroid_results {
 /**
  * @brief Calculates the centroid of a tree
  *
+ * See @ref LAL_concepts__centre_centroid for details on what the centroid of a
+ * tree is.
+ *
  * If subtree sizes are to be returned, they come in an array of size the number
  * of vertices of the tree.
  *

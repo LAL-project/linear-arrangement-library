@@ -158,7 +158,15 @@ Note that sentences can be, very naturally, represented using head vectors.
 
 \subsection LAL_concepts__centre_centroid Centre and centroid of a tree
 
-"centre" should never be confused with "centroid". The center is the set of (at most) two vertices that have minimum eccentricity. The centroid is the set of (at most) two vertices that have minimum weight, where the weight is the maximum size of the subtrees rooted at that vertex. In both cases, if the set has two vertices then they are adjacent in the tree. See \cite Harary1969a (pages 35-36) for further details.
+The concept of "centre" of a tree should never be confused with "centroid" of a tree. The "centre" of a tree are the (at most two) two that result from removing the leaves of a tree all at a time: remove all leaves from the initial tree, remove all leaves from the resulting tree, and so on. The "centroid" should be seen as a centre of masses: these are the (at most two) vertices such that none of their immediate subtrees have more than half of the vertices of the whole tree.
+
+More formally, the "center" is the set of (at most) two vertices that have minimum eccentricity. The "centroid" is the set of (at most) two vertices that have minimum weight, where the weight is the maximum size of the subtrees rooted at that vertex. In both cases, if the set has two vertices then they are adjacent in the tree. See \cite Harary1969a (pages 35-36) for further details.
+
+\subsection LAL_concepts__tree_diameter Diameter of a tree
+
+The diameter is defined as the longest shortest distance between every pair of vertices. The distance is calculated in number of edges; two adjacent vertices are at a distance 1 from each other. See \cite Harary1969a (pages 24, 35) for further details.
+
+The diameter is the length of the longest path. See \cite Harary1969a (pages 24, 35) for further details.
 
 \subsection LAL_concepts__tree_isomorphism Isomorphism of trees
 

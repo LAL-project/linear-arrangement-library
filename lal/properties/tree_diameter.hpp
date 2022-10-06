@@ -50,10 +50,8 @@ namespace properties {
 /**
  * @brief Calculate the diameter of a free tree.
  *
- * The diameter is defined as the longest shortest distance between every pair
- * of vertices. The distance is calculated in number of edges; two adjacent
- * vertices are at a distance 1 from each other. See \cite Harary1969a
- * (pages 24, 35) for further details.
+ * See @ref LAL_concepts__tree_diameter for details on the definition of the
+ * diameter of a tree.
  * @param t Input tree.
  * @returns The diameter of the input tree.
  */
@@ -62,10 +60,8 @@ uint64_t tree_diameter(const graphs::free_tree& t) noexcept;
 /**
  * @brief Calculate the diameter of a free tree.
  *
- * The diameter is defined as the longest shortest distance between every pair
- * of vertices. The distance is calculated in number of edges; two adjacent
- * vertices are at a distance 1 from each other. See \cite Harary1969a
- * (pages 24, 35) for further details.
+ * See @ref LAL_concepts__tree_diameter for details on the definition of the
+ * diameter of a tree.
  * @param t Input tree.
  * @returns The diameter of the input tree.
  */

@@ -54,9 +54,9 @@ namespace properties {
  * See @ref LAL_concepts__centre_centroid for details on the centre and centroid
  * of a tree.
  * @param t Input tree.
- * @returns A tuple of two values: the nodes in the centre. If the tree has a
- * single central node, only the first node is valid and the second is assigned
- * an invalid vertex index. It is guaranteed that the first vertex has smaller
+ * @returns A tuple of the two nodes in the centre. If the tree has a single
+ * central node, only the first node is valid and the second is assigned an
+ * invalid vertex index. It is guaranteed that the first vertex has smaller
  * index value than the second.
  * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
  * returns true.
@@ -69,9 +69,9 @@ std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept;
  * See @ref LAL_concepts__centre_centroid for details on the centre and centroid
  * of a tree.
  * @param t Input tree.
- * @returns A tuple of two values: the nodes in the centre. If the tree has a
- * single central node, only the first node is valid and the second is assigned
- * an invalid vertex index. It is guaranteed that the first vertex has smaller
+ * @returns A tuple of the two nodes in the centre. If the tree has a single
+ * central node, only the first node is valid and the second is assigned an
+ * invalid vertex index. It is guaranteed that the first vertex has smaller
  * index value than the second.
  * @pre The tree @e t is a valid rooted tree. Method graphs::free_tree::is_tree
  * returns true.
