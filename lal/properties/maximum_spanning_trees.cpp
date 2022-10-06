@@ -39,14 +39,24 @@
  *
  ********************************************************************/
 
-#pragma once
+// lal includes
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/hierarchical_distance.hpp>
-#include <lal/properties/maximum_spanning_trees.hpp>
-#include <lal/properties/Q.hpp>
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
+#include <lal/detail/properties/tree_maximum_caterpillar.hpp>
+
+namespace lal {
+namespace properties {
+
+uint64_t tree_caterpillar_distance(const graphs::free_tree& t) noexcept {
+	using namespace detail::maximum_subtrees::caterpillar;
+	return max_subtree<result::distance>(t);
+}
+
+uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t) noexcept {
+	using namespace detail::maximum_subtrees::caterpillar;
+	return max_subtree<result::distance>(t);
+}
+
+} // -- namespace properties
+} // -- namespace lal

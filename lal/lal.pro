@@ -98,6 +98,7 @@ HEADERS += \
     detail/linarr/sum_edge_lengths.hpp \
     detail/linear_queue.hpp \
     detail/macros/basic_convert.hpp \
+    detail/properties/tree_maximum_caterpillar.hpp \
     detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
 	detail/type_traits/first_true.hpp \
@@ -219,6 +220,7 @@ HEADERS += \
 	properties/C_rla.hpp \
 	properties/degrees.hpp \
     properties/hierarchical_distance.hpp \
+    properties/maximum_spanning_trees.hpp \
 	properties/tree_centre.hpp \
 	properties/tree_centroid.hpp \
 	properties/tree_diameter.hpp \
@@ -266,6 +268,7 @@ SOURCES += \
 	numeric/rational.cpp \
 	properties/Q.cpp \
 	properties/hierarchical_distance.cpp \
+	properties/maximum_spanning_trees.cpp \
 	properties/tree_centre.cpp \
 	properties/tree_centroid.cpp \
 	properties/tree_diameter.cpp \

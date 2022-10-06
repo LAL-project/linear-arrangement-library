@@ -199,6 +199,7 @@ private:
 	static constexpr std::size_t tree_centre_idx = treebank_feature_to_index(treebank_feature::tree_centre);
 	static constexpr std::size_t tree_centroid_idx = treebank_feature_to_index(treebank_feature::tree_centroid);
 	static constexpr std::size_t tree_diameter_idx = treebank_feature_to_index(treebank_feature::tree_diameter);
+	static constexpr std::size_t tree_caterpillar_distance_idx = treebank_feature_to_index(treebank_feature::tree_caterpillar_distance);
 	static constexpr std::size_t C_idx = treebank_feature_to_index(treebank_feature::num_crossings);
 	static constexpr std::size_t C_predicted_idx = treebank_feature_to_index(treebank_feature::predicted_num_crossings);
 	static constexpr std::size_t C_expected_idx = treebank_feature_to_index(treebank_feature::exp_num_crossings);

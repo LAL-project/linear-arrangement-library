@@ -41,12 +41,36 @@
 
 #pragma once
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-#include <lal/properties/hierarchical_distance.hpp>
-#include <lal/properties/maximum_spanning_trees.hpp>
-#include <lal/properties/Q.hpp>
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
+// lal includes
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
+
+namespace lal {
+namespace properties {
+
+/**
+ * @brief Caterpillar distance of a tree.
+ *
+ * The caterpillar distance of a given tree is defined as the minimum amount
+ * of vertices to be removed from the tree so that the result is a caterpillar
+ * tree. See page @ref LAL_concepts__tree_types for a definition of caterpillar
+ * tree.
+ * @param t Input free tree.
+ * @returns A positive integer value, the caterpillar distance of the input tree.
+ */
+uint64_t tree_caterpillar_distance(const graphs::free_tree& t) noexcept;
+
+/**
+ * @brief Caterpillar distance of a tree.
+ *
+ * The caterpillar distance of a given tree is defined as the minimum amount
+ * of vertices to be removed from the tree so that the result is a caterpillar
+ * tree. See page @ref LAL_concepts__tree_types for a definition of caterpillar
+ * tree.
+ * @param t Input free tree.
+ * @returns A positive integer value, the caterpillar distance of the input tree.
+ */
+uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t) noexcept;
+
+} // -- namespace properties
+} // -- namespace lal

@@ -179,6 +179,7 @@ target_sources(
 		detail/properties/tree_centre.hpp
 		detail/properties/tree_centroid.hpp
 		detail/properties/tree_diameter.hpp
+		detail/properties/tree_maximum_caterpillar.hpp
 		#      sorting
 		detail/sorting/bit_sort.hpp
 		detail/sorting/counting_sort.hpp
@@ -344,6 +345,7 @@ target_sources(
 		properties/D_rla.hpp
 		properties/degrees.hpp
 		properties/hierarchical_distance.hpp
+		properties/maximum_spanning_trees.hpp
 		properties/Q.hpp
 		properties/tree_centre.hpp
 		properties/tree_centroid.hpp
@@ -352,6 +354,7 @@ target_sources(
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/hierarchical_distance.cpp
+		properties/maximum_spanning_trees.cpp
 		properties/Q.cpp
 		properties/tree_centre.cpp
 		properties/tree_centroid.cpp
@@ -486,6 +489,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/D_rla.hpp
 	properties/degrees.hpp
 	properties/hierarchical_distance.hpp
+	properties/maximum_spanning_trees.hpp
 	properties/Q.hpp
 	properties/tree_centre.hpp
 	properties/tree_centroid.hpp

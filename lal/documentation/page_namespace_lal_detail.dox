@@ -60,57 +60,88 @@ the algorithms in this namespace, please, refrain from doing so.
 */
 namespace detail {
 
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Namespace for the algorithms that compute the number of crossings.
 namespace crossings { }
 
 
 
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Namespace for algorithms to calculate the minimum sum of edge lengths
 namespace Dmin {
 
-/// In unconstrained arrangements
-namespace unconstrained {}
+	// -------------------------------------------------------------------------
+	/// In unconstrained arrangements
+	namespace unconstrained {}
 
-/// In planar arrangements.
-namespace planar {}
+	// -------------------------------------------------------------------------
+	/// In planar arrangements.
+	namespace planar {}
 
-/// In projective arrangements.
-namespace projective {}
+	// -------------------------------------------------------------------------
+	/// In projective arrangements.
+	namespace projective {}
 
 } // -- namespace Dmin
 
 
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Functions useful to calculate both the minimum and maximum sum of edge lengths
 namespace Dopt_utils {
 } // -- namespace Dopt_utils
 
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Functions useful to calculate the minimum sum of edge lengths
 namespace Dmin_utils {
 } // -- namespace Dmin_utils
 
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Functions useful to calculate the maximum sum of edge lengths
 namespace DMax_utils {
 } // -- namespace DMax_utils
 
 
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Namespace for algorithms to calculate the maximum sum of edge lengths
 namespace DMax {
 
-/// In planar arrangements.
-namespace planar {}
+	// -------------------------------------------------------------------------
+	/// In planar arrangements.
+	namespace planar {}
 
-/// In projective arrangements.
-namespace projective {}
+	// -------------------------------------------------------------------------
+	/// In projective arrangements.
+	namespace projective {}
 
 } // -- namespace DMax
 
 
 
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Sorting algorithms.
-namespace sorting {}
+namespace sorting {
+} // -- namespace sorting
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/// Algorithms to find maximum subtrees
+namespace maximum_subtrees {
+
+	// -------------------------------------------------------------------------
+	/// Algorithms for caterpillar trees.
+	namespace caterpillar {}
+
+} // -- namespace maximum_stubtrees
+
 
 } // -- namespace detail
 } // -- namespace lal

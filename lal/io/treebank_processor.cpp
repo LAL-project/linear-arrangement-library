@@ -65,13 +65,13 @@
 #include <lal/properties/tree_centre.hpp>
 #include <lal/properties/tree_centroid.hpp>
 #include <lal/properties/tree_diameter.hpp>
+#include <lal/properties/maximum_spanning_trees.hpp>
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
 #include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
-#include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/linarr/C_dyn_prog.hpp>
 #include <lal/detail/linarr/C_ladder.hpp>
 #include <lal/detail/linarr/C_stack_based.hpp>
@@ -80,6 +80,7 @@
 #include <lal/detail/linarr/predict_C.hpp>
 #include <lal/detail/linarr/sum_edge_lengths.hpp>
 #include <lal/detail/linarr/syntactic_dependency_structure.hpp>
+#include <lal/detail/properties/tree_centroid.hpp>
 
 #include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
 #include <lal/detail/linarr/Dmin_utils.hpp>
@@ -287,6 +288,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::sum_hierarchical_distances:
 				case treebank_feature::mean_hierarchical_distance:
 				case treebank_feature::tree_diameter:
+				case treebank_feature::tree_caterpillar_distance:
 				case treebank_feature::num_crossings:
 				case treebank_feature::predicted_num_crossings:
 				case treebank_feature::exp_num_crossings:
@@ -540,7 +542,6 @@ noexcept
 		set_prop(SK3_out_idx, detail::to_double(properties::sum_powers_out_degrees(rT, 3)));
 	}
 
-
 	// |Q|
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
 		set_prop(num_pairs_independent_edges_idx,
@@ -596,6 +597,11 @@ noexcept
 	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
 		set_prop(tree_diameter_idx, detail::to_double(properties::tree_diameter(rT)));
+	}
+	// caterpillar distance
+	if (m_what_fs[tree_caterpillar_distance_idx]) {
+		set_prop(tree_caterpillar_distance_idx,
+				 detail::to_double(properties::tree_caterpillar_distance(fT)));
 	}
 
 	// -----------------------------------------------------------------
@@ -831,6 +837,7 @@ noexcept
 			case treebank_feature::sum_hierarchical_distances:
 			case treebank_feature::mean_hierarchical_distance:
 			case treebank_feature::tree_diameter:
+			case treebank_feature::tree_caterpillar_distance:
 			case treebank_feature::num_crossings:
 			case treebank_feature::predicted_num_crossings:
 			case treebank_feature::exp_num_crossings:

@@ -186,6 +186,12 @@ enum class treebank_feature {
 	 * See @ref lal::properties::tree_diameter for details.
 	 */
 	tree_diameter,
+	/**
+	 * @brief Caterpillar distance of the tree.
+	 *
+	 * See @ref lal::properties::tree_caterpillar_distance for details.
+	 */
+	tree_caterpillar_distance,
 
 	// C
 
@@ -547,6 +553,7 @@ noexcept
 	case treebank_feature::tree_centre: return "tree_centre";
 	case treebank_feature::tree_centroid: return "tree_centroid";
 	case treebank_feature::tree_diameter: return "tree_diameter";
+	case treebank_feature::tree_caterpillar_distance: return "caterpillar_distance";
 	case treebank_feature::num_crossings: return "num_crossings";
 	case treebank_feature::predicted_num_crossings: return "predicted_num_crossings";
 	case treebank_feature::exp_num_crossings: return "exp_num_crossings";
