@@ -191,7 +191,7 @@ Here we describe the different types (classes) of trees used in LAL, some of the
 
 - Spider trees (@ref lal::graphs::tree_type::spider). A spider tree has a unique vertex of degree greater than or equal to 3. The other vertices have degree 2 or 1 \cite English2019a, \cite MathWorld_SpiderGraph.
 
-- 2-linear trees (@ref lal::graphs::tree_type::two_linear). A 2-linear tree is a tree in which there are at most two vertices of degree 3 or larger; the other vertices have degree 2 or 1 \cite Johnson2020a. It can also be seen as the connection of two independent trees \f$T_1\f$ and \f$T_2\f$ where each tree is either a spider tree or a linear tree. If one of \f$T_1\f$ or \f$T_2\f$ is a spider tree, the path must be incident to the spider's hub vertex.
+- 2-linear trees (@ref lal::graphs::tree_type::two_linear). A 2-linear tree is a tree in which there are at most two vertices of degree 3 or larger; the other vertices have degree 2 or 1 \cite Johnson2020a, \cite OEIS_kLinearTrees. It can also be seen as the connection of two independent trees \f$T_1\f$ and \f$T_2\f$ where each tree is either a spider tree or a linear tree. If one of \f$T_1\f$ or \f$T_2\f$ is a spider tree, the path must be incident to the spider's hub vertex.
 
 - Star trees (@ref lal::graphs::tree_type::star). Also known as star graphs, trees where all vertices but one have degree 1.
 
