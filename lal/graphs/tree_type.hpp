@@ -70,8 +70,8 @@ enum class tree_type {
 	/// Spider trees.
 	spider,
 
-	/// Bi-spider trees.
-	bispider,
+	/// 2-linear trees.
+	twolinear,
 
 	/// Star trees.
 	star,

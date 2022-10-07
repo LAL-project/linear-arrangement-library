@@ -233,7 +233,7 @@ noexcept
 	if (is_bistar) { set_type(graphs::tree_type::bistar); }
 	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
 	if (is_spider) { set_type(graphs::tree_type::spider); }
-	if (is_bispider) { set_type(graphs::tree_type::bispider); }
+	if (is_bispider) { set_type(graphs::tree_type::twolinear); }
 
 	if (is_some) {
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
