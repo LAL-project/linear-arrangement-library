@@ -138,7 +138,7 @@ noexcept
 	bool is_bistar = false;
 	bool is_caterpillar = false;
 	bool is_spider = false;
-	bool is_bispider = false;
+	bool is_two_linear = false;
 
 	// number of vertices
 	uint64_t n_deg_eq_1 = 0; // of degree = 1
@@ -207,9 +207,9 @@ noexcept
 		is_spider = true;
 	}
 
-	// bi-SPIDER
+	// 2-LINEAR
 	if (n_deg_ge_3 == 2 and n_deg_eq_1 + n_deg_eq_2 == n - 2) {
-		is_bispider = true;
+		is_two_linear  = true;
 	}
 
 	if (not is_caterpillar) {
@@ -233,7 +233,7 @@ noexcept
 	if (is_bistar) { set_type(graphs::tree_type::bistar); }
 	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
 	if (is_spider) { set_type(graphs::tree_type::spider); }
-	if (is_bispider) { set_type(graphs::tree_type::twolinear); }
+	if (is_two_linear ) { set_type(graphs::tree_type::two_linear); }
 
 	if (is_some) {
 		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;

@@ -71,7 +71,7 @@ enum class tree_type {
 	spider,
 
 	/// 2-linear trees.
-	twolinear,
+	two_linear,
 
 	/// Star trees.
 	star,
