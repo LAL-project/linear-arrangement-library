@@ -162,9 +162,7 @@ public:
 	}
 
 	/// Clears the memory used by the generator.
-	void clear() noexcept {
-
-	}
+	void clear() noexcept { }
 
 	/* OPERATORS */
 
