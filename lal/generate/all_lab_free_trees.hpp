@@ -244,7 +244,7 @@ protected:
 
 	/// Returns whether there are more trees to generate.
 	bool has_next() const noexcept {
-		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] != 0;
+		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] == 0;
 	}
 
 private:
