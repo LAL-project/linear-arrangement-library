@@ -164,13 +164,13 @@ target_sources(
 		detail/linarr/sum_edge_lengths.hpp
 		detail/linarr/syntactic_dependency_structure.hpp
 		#      type_traits
-		detail/macros/bool_sequence.hpp
-		detail/macros/conditional_list.hpp
-		detail/macros/first_true.hpp
-		detail/macros/is_pointer_iterator.hpp
-		detail/macros/ith_type.hpp
-		detail/macros/sum.hpp
-		detail/macros/type_sequence.hpp
+		detail/type_traits/bool_sequence.hpp
+		detail/type_traits/conditional_list.hpp
+		detail/type_traits/first_true.hpp
+		detail/type_traits/is_pointer_iterator.hpp
+		detail/type_traits/ith_type.hpp
+		detail/type_traits/sum.hpp
+		detail/type_traits/type_sequence.hpp
 		#      macros
 		detail/macros/basic_convert.hpp
 		#      numeric
@@ -314,7 +314,6 @@ target_sources(
 		linarr/dependency_flux.hpp
 		linarr/DMax.hpp
 		linarr/Dmin.hpp
-		linarr/flux.hpp
 		linarr/formal_constraints.hpp
 		linarr/head_initial.hpp
 		linarr/syntactic_dependency_structure.hpp
@@ -322,6 +321,7 @@ target_sources(
 		linarr/C.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
 		linarr/D.cpp
+		linarr/dependency_flux.cpp
 		linarr/DMax.cpp
 		linarr/Dmin.cpp
 		linarr/formal_constraints.cpp
