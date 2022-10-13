@@ -52,7 +52,19 @@
 namespace lal {
 namespace io {
 
-// line, what
+std::vector<std::string>
+check_correctness_head_vector_string(const std::string& head_vector_str)
+noexcept
+{
+	const auto results = detail::find_errors<false>(head_vector_str, 0);
+
+	std::vector<std::string> msgs(results.size());
+	for (std::size_t i = 0; i < msgs.size(); ++i) {
+		msgs[i] = std::move(results[i].get_error_message());
+	}
+	return msgs;
+}
+
 std::vector<report_treebank_file>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
@@ -61,7 +73,6 @@ noexcept
 			(treebank_filename);
 }
 
-// file, line, what
 std::vector<report_treebank_collection> check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)
 noexcept

@@ -51,7 +51,17 @@
 namespace lal {
 namespace io {
 
-// line, what
+/**
+ * @brief Checks the correctness of a given string.
+ *
+ * The string contains a head vector.
+ * @param head_vector_str A string containing a head vector.
+ * @returns A list of error messages.
+ */
+std::vector<std::string>
+check_correctness_head_vector_string(const std::string& head_vector_str)
+noexcept;
+
 /**
  * @brief Checks the correctness of a treebank collection.
  * @param treebank_filename Name of the treebank file.
@@ -61,7 +71,6 @@ std::vector<report_treebank_file>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept;
 
-// file, line, what
 /**
  * @brief Checks the correctness of a treebank collection.
  * @param main_file_name Name of the main file.
