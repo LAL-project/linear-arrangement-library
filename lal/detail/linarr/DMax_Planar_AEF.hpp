@@ -66,21 +66,6 @@ namespace detail {
 namespace DMax {
 namespace planar {
 
-/// Choose a starting vertex to calculate maximum planar sum of edge lengths.
-inline node choose_starting_vertex(const graphs::free_tree& t)
-noexcept
-{
-	const uint64_t n = t.get_num_nodes();
-
-	for (node u = 0; u < n; ++u) {
-		if (t.get_degree(u) == 1) {
-			return t.get_neighbours(u)[0];
-		}
-	}
-
-	return n + 1;
-}
-
 /// A piece of information within u's list
 struct sorted_adjacency_list_info {
 	/// The child of the parent. The parent node is the node that is
@@ -139,7 +124,7 @@ noexcept
 	typedef std::pair<edge, uint64_t> edge_size;
 
 	const uint64_t n = t.get_num_nodes();
-	const uint64_t m = t.get_num_edges();
+	const uint64_t m = n - 1;
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.
@@ -172,13 +157,13 @@ noexcept
 			v,
 			// The size of the subtree T^u_v
 			nv,
-			// position_child_within_parents_list:
+			// index_of_child_within_parents_list:
 			//      The index of 'v' within the list of 'u'
 			sigma_u_v,
-			// position_parent_within_childs_list:
+			// index_of_parent_within_childs_list:
 			//      calculated after M is filled
 			0,
-			// The sum of all the sizes strictly before this
+			// The sum of all the sizes including this size
 			(M[u].size() > 0 ? M[u].back().size + M[u].back().partial_sum : 0)
 		});
 
@@ -296,7 +281,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 	const auto M = make_sorted_adjacency_list(t);
 
 	// starting vertex for the algorithm
-	const node starting_vertex = choose_starting_vertex(t);
+	const node starting_vertex = 0;
 #if defined DEBUG
 	assert(starting_vertex < n);
 #endif
