@@ -164,7 +164,7 @@ noexcept
 			//      calculated after M is filled
 			0,
 			// The sum of all the sizes including this size
-			(M[u].size() > 0 ? M[u].back().size + M[u].back().partial_sum : 0)
+			nv + (M[u].size() > 0 ? M[u].back().partial_sum : 0)
 		});
 
 		J[idx] = {{v,u}, n - nv, sigma_u_v};
@@ -316,8 +316,8 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 
 			DMax_per_vertex[v] =
 				  DMax_per_vertex[u]
-				+ (partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1) + 1)*s_v_u)
-				- (partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1) + 1)*s_u_v)
+				+ (partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1))*s_v_u)
+				- (partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1))*s_u_v)
 			;
 
 			visited[v] = 1;
