@@ -48,7 +48,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
 #include <iostream>
 
 // lal includes
@@ -92,8 +91,7 @@ is not a valid non-negative integer number."
 "Error: found a self-loop at position '" + std::to_string(pos) + "'."
 
 /// Transforms a head vector in a directed graph
-inline
-graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
+inline graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
 noexcept
 {
 	const uint64_t n = hv.size();
@@ -111,55 +109,20 @@ noexcept
 }
 
 /**
- * @brief Find errors in a line of a treebank.
+ * @brief Find errors in a head vector.
+ *
+ * The head vector may correspond to the contents of a line in a treebank file.
  * @tparam decide When true, return a value as soon as an error is found.
- * @param current_line The line being analyzed.
- * @param line Line number of the treebank.
+ * @param hv Input head vector.
+ * @param line Line number of the treebank, if appropriate.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
 std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
-find_errors(const std::string& current_line, const std::size_t line)
+find_errors(const head_vector& hv, const std::size_t line)
 noexcept
 {
 	std::vector<io::report_treebank_file> treebank_err_list;
-
-	bool non_numeric_characters = false;
-	head_vector hv;
-
-	// ensure there are only numeric characters
-	{
-	std::size_t i = 1;
-	std::stringstream ss(current_line);
-	std::string chunk;
-	while (ss >> chunk) {
-
-		uint64_t value;
-		const auto result = std::from_chars
-		(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
-
-		if (result.ec == std::errc::invalid_argument) {
-			if constexpr (decide) { return true; }
-			else {
-				treebank_err_list.emplace_back(line, invalid_integer(i, chunk));
-				non_numeric_characters = true;
-			}
-		}
-		else {
-			hv.push_back(value);
-		}
-
-		++i;
-	}
-	}
-
-	// if the current line contains non-numeric characters then the
-	// appropriate error messages have been stored, and so we can skip
-	// to the next line
-	if (non_numeric_characters) {
-		if constexpr (decide) { return true; }
-		else { return treebank_err_list; }
-	}
 
 	// number of nodes of the graph
 	const uint64_t n = hv.size();
@@ -239,6 +202,69 @@ noexcept
 
 	if constexpr (decide) { return false; }
 	else { return treebank_err_list;}
+}
+
+/**
+ * @brief Find errors in a line of a treebank.
+ * @tparam decide When true, return a value as soon as an error is found.
+ * @param current_line The line being analyzed.
+ * @param line Line number of the treebank.
+ * @returns A Boolean if @e decide is true, a list of errors if otherwise.
+ */
+template <bool decide>
+std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
+find_errors(const std::string& current_line, const std::size_t line)
+noexcept
+{
+	std::vector<io::report_treebank_file> treebank_err_list;
+
+	bool non_numeric_characters = false;
+	head_vector hv;
+
+	// ensure there are only numeric characters
+	{
+	std::size_t i = 1;
+	std::stringstream ss(current_line);
+	std::string chunk;
+	while (ss >> chunk) {
+
+		uint64_t value;
+		const auto result = std::from_chars
+		(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
+
+		if (result.ec == std::errc::invalid_argument) {
+			if constexpr (decide) { return true; }
+			else {
+				treebank_err_list.emplace_back(line, invalid_integer(i, chunk));
+				non_numeric_characters = true;
+			}
+		}
+		else {
+			hv.push_back(value);
+		}
+
+		++i;
+	}
+	}
+
+	// if the current line contains non-numeric characters then the
+	// appropriate error messages have been stored, and so we can skip
+	// to the next line
+	if (non_numeric_characters) {
+		if constexpr (decide) { return true; }
+		else { return treebank_err_list; }
+	}
+
+	if constexpr (decide) {
+		return find_errors<decide>(hv, line);
+	}
+	else {
+		auto errors = find_errors<decide>(hv, line);
+		for (std::size_t i = 0; i < errors.size(); ++i) {
+			treebank_err_list.emplace_back( std::move(errors[i]) );
+		}
+		return treebank_err_list;
+	}
 }
 
 /**

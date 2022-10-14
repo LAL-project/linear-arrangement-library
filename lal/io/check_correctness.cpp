@@ -53,14 +53,27 @@ namespace lal {
 namespace io {
 
 std::vector<std::string>
-check_correctness_head_vector_string(const std::string& head_vector_str)
+check_correctness_head_vector(const head_vector& head_vector)
 noexcept
 {
-	const auto results = detail::find_errors<false>(head_vector_str, 0);
+	auto errors = detail::find_errors<false>(head_vector, 0);
 
-	std::vector<std::string> msgs(results.size());
-	for (std::size_t i = 0; i < msgs.size(); ++i) {
-		msgs[i] = std::move(results[i].get_error_message());
+	std::vector<std::string> msgs(errors.size());
+	for (std::size_t i = 0; i < errors.size(); ++i) {
+		msgs[i] = std::move(errors[i].get_error_message());
+	}
+	return msgs;
+}
+
+std::vector<std::string>
+check_correctness_head_vector(const std::string& head_vector_str)
+noexcept
+{
+	auto errors = detail::find_errors<false>(head_vector_str, 0);
+
+	std::vector<std::string> msgs(errors.size());
+	for (std::size_t i = 0; i < errors.size(); ++i) {
+		msgs[i] = std::move(errors[i].get_error_message());
 	}
 	return msgs;
 }

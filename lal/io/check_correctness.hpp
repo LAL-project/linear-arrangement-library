@@ -47,19 +47,29 @@
 
 // lal includes
 #include <lal/io/report_correctness.hpp>
+#include <lal/basic_types.hpp>
 
 namespace lal {
 namespace io {
 
 /**
- * @brief Checks the correctness of a given string.
+ * @brief Checks the correctness of a head vector.
+ * @param head_vector A head vector.
+ * @returns A list of error messages.
+ */
+std::vector<std::string>
+check_correctness_head_vector(const head_vector& head_vector)
+noexcept;
+
+/**
+ * @brief Checks the correctness of a head vector.
  *
- * The string contains a head vector.
+ * The head vector is given in a string.
  * @param head_vector_str A string containing a head vector.
  * @returns A list of error messages.
  */
 std::vector<std::string>
-check_correctness_head_vector_string(const std::string& head_vector_str)
+check_correctness_head_vector(const std::string& head_vector_str)
 noexcept;
 
 /**
