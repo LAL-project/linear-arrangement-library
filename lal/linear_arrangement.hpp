@@ -181,7 +181,7 @@ public:
 	}
 
 	/// Default destructor.
-	~linear_arrangement() noexcept = default;
+	virtual ~linear_arrangement() noexcept = default;
 
 	/**
 	 * @brief Construct a linear arrangement from a direct arrangement.
@@ -478,7 +478,7 @@ private:
 		}
 	}
 
-private:
+protected:
 	/// Memory of the linear arrangement. Holds twice as many elements as
 	/// vertices there are in the arrangement.
 	detail::data_array<uint64_t> m_memory;
