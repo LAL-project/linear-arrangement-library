@@ -106,6 +106,8 @@ public:
 	 */
 	static constexpr bool is_graph_directed =
 		std::is_base_of_v<graphs::directed_graph, graph_t>;
+	// ! Note that this member attribute is public, and so it should not have
+	//   a leading 'm_' like the other private/protected members.
 
 public:
 	/// Constructor
