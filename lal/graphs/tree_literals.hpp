@@ -104,9 +104,7 @@ noexcept;
 /**
  * @brief User-defined literal to denote free trees.
  *
- * This is meant to be used only on strings that represent:
- * - an edge list, or
- * - a head vector.
+ * This is meant to be used only on strings that represent a head vector.
  * See the code example for the format of both.
  *
  * Numbers in valid strings are always in base 10. The number of spaces that
@@ -114,12 +112,10 @@ noexcept;
  *
  @code
  const lal::graphs::rooted_tree tree = "0 1 1 1 1 1"_rooted_tree;
- const lal::graphs::rooted_tree tree =
-	"{0 1} {0 2} {0 3} {0 4} {0 5} {0 6}"_rooted_tree;
  @endcode
  * @param str A pointer to a C-string encoding the head vector or the edge list.
  * @param s Size of @e str.
- * @returns Returns a @ref lal::graphs::free_tree.
+ * @returns Returns a @ref lal::graphs::rooted_tree.
  * @post The tree is normalized.
  */
 [[nodiscard]] lal::graphs::rooted_tree
