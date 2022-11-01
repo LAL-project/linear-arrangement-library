@@ -104,7 +104,6 @@ HEADERS += \
 	detail/type_traits/first_true.hpp \
 	detail/type_traits/is_pointer_iterator.hpp \
 	detail/type_traits/ith_type.hpp \
-	detail/type_traits/sum.hpp \
 	detail/make_array.hpp \
 	detail/graphs/conversions.hpp \
 	detail/graphs/enumerate_sets.hpp \

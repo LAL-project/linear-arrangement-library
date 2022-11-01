@@ -169,7 +169,6 @@ target_sources(
 		detail/type_traits/first_true.hpp
 		detail/type_traits/is_pointer_iterator.hpp
 		detail/type_traits/ith_type.hpp
-		detail/type_traits/sum.hpp
 		detail/type_traits/type_sequence.hpp
 		#      macros
 		detail/macros/basic_convert.hpp

@@ -43,7 +43,6 @@
 
 // lal includes
 #include <lal/detail/type_traits/first_true.hpp>
-#include <lal/detail/type_traits/sum.hpp>
 
 namespace lal {
 namespace detail {

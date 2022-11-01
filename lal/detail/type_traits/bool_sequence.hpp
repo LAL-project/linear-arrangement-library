@@ -43,7 +43,6 @@
 
 // lal includes
 #include <lal/detail/type_traits/first_true.hpp>
-#include <lal/detail/type_traits/sum.hpp>
 
 namespace lal {
 namespace detail {
@@ -52,18 +51,24 @@ namespace detail {
 template <bool... values>
 struct bool_sequence {
 	/// Amount of true values in the sequence.
-	static constexpr std::size_t num_true = sum<values...>;
+	static constexpr std::size_t num_true = (values + ...);
 	/// Index of the first value set to true.
 	static constexpr std::size_t index_true = first_true_v<values...>;
 };
 
 static_assert(bool_sequence<true>::index_true == 0);
 static_assert(bool_sequence<false>::index_true == 1);
+static_assert(bool_sequence<true>::num_true == 1);
+static_assert(bool_sequence<false>::num_true == 0);
 
 static_assert(bool_sequence<false,false>::index_true == 2);
 static_assert(bool_sequence<false,true>::index_true == 1);
 static_assert(bool_sequence<true,false>::index_true == 0);
 static_assert(bool_sequence<true,true>::index_true == 0);
+static_assert(bool_sequence<false,false>::num_true == 0);
+static_assert(bool_sequence<false,true>::num_true == 1);
+static_assert(bool_sequence<true,false>::num_true == 1);
+static_assert(bool_sequence<true,true>::num_true == 2);
 
 } // -- namespace detail
 } // -- namespace lal
