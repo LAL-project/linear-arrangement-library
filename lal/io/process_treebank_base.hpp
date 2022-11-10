@@ -42,6 +42,7 @@
 #pragma once
 
 // C++ includes
+#include <string>
 #include <array>
 
 // lal includes

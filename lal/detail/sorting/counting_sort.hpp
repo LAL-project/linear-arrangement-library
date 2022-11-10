@@ -228,7 +228,7 @@ noexcept
  * @param end Iterator at the end of the range.
  * @param largest_key Integer value equal to the largest key that can be
  * obtained with function @e key.
- * @param upper_bound_size An upper bound of he size of the container to be
+ * @param upper_bound_size An upper bound of the size of the container to be
  * sorted. The lowest value is std::distance(begin,end), the actual size of the
  * container.
  * @param key Function that returns a single integer value used to compare the
