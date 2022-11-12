@@ -42,7 +42,7 @@ This library is the result of the joint effort of several people (in alphabetica
 
 ## Citing the library
 
-In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of a great effort put directly by the developers, and indirectly by other researchers. Besides citing the library in an academic paper, users *must* also acknowledge the effort made by other researchers by citing their papers in which they present the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation. In case a citation is lacking, or is just incorrect, do not hesitate to contact us to inform us about this issue.
+In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of a great effort put directly by the developers, and indirectly by other researchers. In an academic paper, besides citing the articles presenting LAL, users *must* also acknowledge the effort made by other researchers by citing their papers in which they describe the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation. In case a citation is lacking, or is just incorrect, do not hesitate to contact us to inform us about this issue. All the citations can be found in doxygen format [here](https://github.com/LAL-project/linear-arrangement-library/blob/master/doxyconfig/bibliography.bib).
 
 In order to cite the Linear Arrangement Library, please cite the following paper(s):
 
@@ -65,4 +65,4 @@ In order to cite the Linear Arrangement Library, please cite the following paper
 
 The C++ documentation can be found online in the [library's webpage](https://cqllab.upc.edu/lal/). Alternatively, it can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
 
-	$ ./make_docs.sh c++
+	$ ./make_docs.sh
