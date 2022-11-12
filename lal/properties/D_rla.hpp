@@ -65,7 +65,7 @@ namespace properties {
  * @brief Expected sum of edge lengths of an undirected graph in unconstrained arrangments,
  * \f$\mathbb{E}[D]\f$.
  *
- * This function uses the formulae derived in \cite Ferrer2019a.
+ * This function uses the formulae derived in \cite Ferrer2004a, \cite Ferrer2019a.
  *
  * Returns the value \f$E[D]\f$ as a rational value.
  * @param g The input graph.
