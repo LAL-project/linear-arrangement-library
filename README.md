@@ -65,4 +65,5 @@ In order to cite the Linear Arrangement Library, please cite the following paper
 
 The C++ documentation can be found online in the [library's webpage](https://cqllab.upc.edu/lal/). Alternatively, it can be generated in _html_ format with [doxygen](http://doxygen.nl/). Simply issue the following command from the directory's root directory
 
+	$ cd /path/to/the/linear-arrangement-library
 	$ ./make_docs.sh
