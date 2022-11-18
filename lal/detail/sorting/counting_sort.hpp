@@ -132,6 +132,7 @@ struct memory {
  * @param key Function that returns a single integer value used to compare the
  * elements.
  * @param mem Reusable memory for the counting sort algorithm.
+ * @pre Memory's count must be set to 0 (see @ref lal::detail::counting::sort::memory::reset_count).
  * @post The elements in the range [begin,end) are sorted according to the sorting
  * criterion.
  * @post The function @e key is called exactly twice for each element in the
