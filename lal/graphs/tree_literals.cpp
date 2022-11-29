@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <sstream>
-#include <iostream>
 
 // lal includes
 #include <lal/graphs/conversions.hpp>

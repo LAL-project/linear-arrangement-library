@@ -46,7 +46,6 @@
 #include <optional>
 #include <limits>
 #include <vector>
-#include <iostream>
 
 #include <lal/linear_arrangement.hpp>
 #include <lal/detail/pairs_utils.hpp>
