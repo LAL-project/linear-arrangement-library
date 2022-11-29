@@ -295,7 +295,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 
 	// the maximum value and the corresponding node
 	uint64_t max_DMax = DMax_per_vertex[starting_vertex];
-	node max_root  = starting_vertex;
+	node max_root = starting_vertex;
 
 	// calculate the value of DMax for all vertices
 	data_array<char> visited(n, 0);
