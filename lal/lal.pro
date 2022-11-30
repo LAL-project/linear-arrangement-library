@@ -6,7 +6,7 @@ VERSION = $${VERSION_MAJOR}.$${VERSION_BUILD}
 
 CONFIG += c++17
 CONFIG -= app_bundle
-QT	 -= core gui
+QT -= core gui
 
 CONFIG(release, debug|release) {
 TARGET = lal
@@ -15,7 +15,19 @@ CONFIG(debug, debug|release) {
 TARGET = laldebug
 }
 
-QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp -flto -fno-fat-lto-objects -O3
+isEmpty(ENVIR) {
+    ENVIR = "HOME"
+}
+
+isEmpty(LTO) {
+    LTO = "NO"
+}
+
+isEmpty(ADDRESS_SANITIZER) {
+    ADDRESS_SANITIZER = "NO"
+}
+
+QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp -O3
 QMAKE_CXXFLAGS +=			\
     -Wall					\
 	-Wextra					\ # reasonable and standard
@@ -45,33 +57,30 @@ QMAKE_CXXFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -UDEBUG -DNDEBUG -fstrict-aliasing
 
-# use Inter-Procedural Optimization (IPO)
-QMAKE_LFLAGS += -fPIC -O3 -flto -fno-fat-lto-objects
-QMAKE_LFLAGS_RELEASE += -DNDEBUG -UDEBUG -Wl,-O3
-QMAKE_LFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG -Wl,-O3
+QMAKE_LFLAGS += -fPIC -O3 -Wl,-O3
+QMAKE_LFLAGS_RELEASE += -DNDEBUG -UDEBUG
+QMAKE_LFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
 
 # uncomment when doing actual profiling
 #QMAKE_CXXFLAGS_RELEASE += -pg
 #QMAKE_LFLAGS += -pg
 
-# for tests only
-# (not to be used in combination with valgrind)
-#QMAKE_CXXFLAGS += -fsanitize=address
-#LIBS += -lasan
+equals(LTO, "YES") {
+    # use Inter-Procedural Optimization (IPO)
+	QMAKE_CXXFLAGS += -flto -fno-fat-lto-objects
+	QMAKE_LFLAGS += -flto -fno-fat-lto-objects
+}
+
+equals(ADDRESS_SANITIZER, "YES") {
+    # not to be used in combination with valgrind
+	QMAKE_CXXFLAGS += -fsanitize=address
+	LIBS += -lasan
+}
 
 # libraries
 LIBS += -lgmp -fopenmp -lpthread
 
-isEmpty(ENVIR) {
-	ENVIR = "HOME"
-}
-
-# configure home
-equals(ENVIR, "HOME") {
-
-}
-
-# configure cluster
+# configure cluster compiler
 equals(ENVIR, "CLUSTER") {
 	QMAKE_CXX = /home/soft/gcc-11.2.0/bin/g++
 	QMAKE_LINK = /home/soft/gcc-11.2.0/bin/g++
