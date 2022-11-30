@@ -91,7 +91,14 @@ namespace lal {
  * Types @ref lal::node_t and @ref lal::position_t are useful also in swapping
  * vertices in the arrangement (see @ref swap).
  *
- * Linear arrangements can be transformed
+ * Linear arrangements can be transformed. For example, an arrangement can be
+ * - shifted to the left (see @ref lal::linear_arrangement::shift_left),
+ * - shifted to the right (see @ref lal::linear_arrangement::shift_right),
+ * - mirrored (see @ref lal::linear_arrangement::mirror).
+ * - in case the inverse arrangement was manipulated, the directed can be updated
+ * (see @ref lal::linear_arrangement::update_direct).
+ * - in case the direct arrangement was manipulated, the inverse can be updated
+ * (see @ref lal::linear_arrangement::update_inverse).
  */
 class linear_arrangement {
 public:
@@ -343,7 +350,7 @@ public:
 			assign(u, pu);
 		}
 		// put the first vertex at the last position
-		assign(u0, position_t{m_n - 1});
+		assign(u0, m_n - 1);
 	}
 
 	/// Shifts the vertices one position to the right.
@@ -355,7 +362,7 @@ public:
 			assign(u, pu);
 		}
 		// put the last vertex at the first position
-		assign(ulast, position_t{0ull});
+		assign(ulast, 0ull);
 	}
 
 	/**
