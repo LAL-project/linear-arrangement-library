@@ -131,7 +131,7 @@ public:
 		  m_inverse(m_memory.begin() + m_n)
 	{
 		// construct m_direct and m_inverse
-		from_data<true>(dir_arr);
+		from_data<true>(dir_arr.begin(), dir_arr.end());
 	}
 
 	/// Copy constructor.
@@ -157,7 +157,7 @@ public:
 		m_direct = m_memory.begin();
 		m_inverse = m_memory.begin() + m_n;
 		// construct m_direct and m_inverse
-		from_data<true>(dir_arr);
+		from_data<true>(dir_arr.begin(), dir_arr.end());
 		return *this;
 	}
 
@@ -192,29 +192,85 @@ public:
 
 	/**
 	 * @brief Construct a linear arrangement from a direct arrangement.
+	 *
+	 * A direct arrangement gives the position of every node.
 	 * @param v A direct arrangement. This gives the position of every node.
 	 * @returns A linear arrangement object constructed from @e v.
 	 */
-	static linear_arrangement
-	from_direct(const std::vector<position>& v) noexcept
-	{
-		linear_arrangement arr(v.size());
-		arr.from_data<true>(v);
+	static linear_arrangement from_direct(const std::vector<position>& v) noexcept {
+		return from_direct(v.begin(), v.end(), v.size());
+	}
+
+#ifndef SWIG
+	/**
+	 * @brief Construct a linear arrangement from a direct arrangement.
+	 *
+	 * A direct arrangement gives the position of every node.
+	 * @param begin A pointer to the beginning of the direct arrangement.
+	 * @param end A pointer to the end of the direct arrangement.
+	 * @returns A linear arrangement object constructed from @e v.
+	 */
+	template <typename It>
+	static linear_arrangement from_direct(It begin, It end) noexcept {
+		return from_direct(begin, end, std::distance(begin, end));
+	}
+
+	/**
+	 * @brief Construct a linear arrangement from a direct arrangement.
+	 *
+	 * A direct arrangement gives the position of every node.
+	 * @param begin A pointer to the beginning of the direct arrangement.
+	 * @param end A pointer to the end of the direct arrangement.
+	 * @param size The size of the container pointer by @e begin and @e end.
+	 * @returns A linear arrangement object constructed from @e v.
+	 */
+	template <typename It>
+	static linear_arrangement from_direct(It begin, It end, std::size_t size) noexcept {
+		linear_arrangement arr(size);
+		arr.from_data<true>(begin, end);
 		return arr;
 	}
+#endif
 
 	/**
 	 * @brief Construct a linear arrangement from an inverse arrangement.
 	 * @param v An inverse arrangement. This gives the node for every position.
 	 * @returns A linear arrangement object constructed from @e v.
 	 */
-	static linear_arrangement
-	from_inverse(const std::vector<node>& v) noexcept
-	{
-		linear_arrangement arr(v.size());
-		arr.from_data<false>(v);
+	static linear_arrangement from_inverse(const std::vector<node>& v) noexcept {
+		return from_inverse(v.begin(), v.end(), v.size());
+	}
+
+#ifndef SWIG
+	/**
+	 * @brief Construct a linear arrangement from an inverse arrangement.
+	 *
+	 * A direct arrangement gives the node for every position.
+	 * @param begin A pointer to the beginning of the inverse arrangement.
+	 * @param end A pointer to the end of the inverse arrangement.
+	 * @returns A linear arrangement object constructed from @e v.
+	 */
+	template <typename It>
+	static linear_arrangement from_inverse(It begin, It end) noexcept {
+		return from_inverse(begin, end, std::distance(begin, end));
+	}
+
+	/**
+	 * @brief Construct a linear arrangement from an inverse arrangement.
+	 *
+	 * A direct arrangement gives the node for every position.
+	 * @param begin A pointer to the beginning of the inverse arrangement.
+	 * @param end A pointer to the end of the inverse arrangement.
+	 * @param size The size of the container pointer by @e begin and @e end.
+	 * @returns A linear arrangement object constructed from @e v.
+	 */
+	template <typename It>
+	static linear_arrangement from_inverse(It begin, It end, std::size_t size) noexcept {
+		linear_arrangement arr(size);
+		arr.from_data<false>(begin, end);
 		return arr;
 	}
+#endif
 
 	/// Lexicographic comparison of two linear arrangements
 	bool operator< (const linear_arrangement& arr) const noexcept {
@@ -464,23 +520,24 @@ private:
 	 * @pre Pointers @ref m_direct and @ref m_inverse must have been set
 	 * appropriately.
 	 */
-	template <bool from_direct_arr>
-	void from_data(const std::vector<uint64_t>& v) noexcept
+	template <bool from_direct_arr, typename It>
+	void from_data(const It begin, const It end) noexcept
 	{
 #if defined DEBUG
 		assert(m_direct != nullptr);
 		assert(m_inverse != nullptr);
 #endif
+		std::size_t i = 0;
 		if constexpr (from_direct_arr) {
-			for (std::size_t i = 0; i < v.size(); ++i) {
-				m_direct[i] = v[i];
-				m_inverse[v[i]] = i;
+			for (It it = begin; it != end; ++it, ++i) {
+				m_direct[i] = *it;
+				m_inverse[*it] = i;
 			}
 		}
 		else {
-			for (std::size_t i = 0; i < v.size(); ++i) {
-				m_direct[v[i]] = i;
-				m_inverse[i] = v[i];
+			for (It it = begin; it != end; ++it, ++i) {
+				m_direct[*it] = i;
+				m_inverse[i] = *it;
 			}
 		}
 	}
