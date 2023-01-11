@@ -516,7 +516,8 @@ private:
 	 * @brief Initializes this arrangement from a direct or inverse arrangement.
 	 * @tparam from_direct_arr If true, parameter @e v is interpreted as a direct
 	 * arrangement; as an inverse arrangement if otherwise.
-	 * @param v Data to construct the arrangement from.
+	 * @param begin Pointer to beginning of data.
+	 * @param end Pointer to ending of data.
 	 * @pre Pointers @ref m_direct and @ref m_inverse must have been set
 	 * appropriately.
 	 */
