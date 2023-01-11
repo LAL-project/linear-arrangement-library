@@ -163,17 +163,6 @@ noexcept
 	constexpr bool is_increasing =
 		std::is_same_v<sort_type, non_decreasing_t>;
 
-	// nothing to do if there are no elements to sort	/// Constructor.
-	memory() noexcept = default;
-	/// Copy constructor.
-	memory(const memory&) noexcept = default;
-	/// Move constructor.
-	memory(memory&&) noexcept = default;
-	/// Copy assignment operator.
-	memory& operator= (const memory&) noexcept = default;
-	/// Move assignment operator.
-	memory& operator= (memory&&) noexcept = default;
-
 	if (begin == end) { return; }
 
 	if constexpr (not memory_has_frequencies) {
