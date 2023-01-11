@@ -104,7 +104,7 @@ struct memory {
 	~memory() noexcept = default;
 
 	/// Set the @ref count member to 0.
-	void reset_count() { count.fill(0); }
+	void reset_count() noexcept { count.fill(0); }
 };
 
 } // -- namespace countingsort
@@ -132,7 +132,7 @@ struct memory {
  * @param key Function that returns a single integer value used to compare the
  * elements.
  * @param mem Reusable memory for the counting sort algorithm.
- * @pre Memory's count must be set to 0 (see @ref lal::detail::counting::sort::memory::reset_count).
+ * @pre Memory's count must be set to 0 (see @ref lal::detail::sorting::countingsort::memory::reset_count).
  * @post The elements in the range [begin,end) are sorted according to the sorting
  * criterion.
  * @post The function @e key is called exactly twice for each element in the
@@ -163,7 +163,17 @@ noexcept
 	constexpr bool is_increasing =
 		std::is_same_v<sort_type, non_decreasing_t>;
 
-	// nothing to do if there are no elements to sort
+	// nothing to do if there are no elements to sort	/// Constructor.
+	memory() noexcept = default;
+	/// Copy constructor.
+	memory(const memory&) noexcept = default;
+	/// Move constructor.
+	memory(memory&&) noexcept = default;
+	/// Copy assignment operator.
+	memory& operator= (const memory&) noexcept = default;
+	/// Move assignment operator.
+	memory& operator= (memory&&) noexcept = default;
+
 	if (begin == end) { return; }
 
 	if constexpr (not memory_has_frequencies) {
