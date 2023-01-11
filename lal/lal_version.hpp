@@ -52,14 +52,14 @@ namespace lal {
 
 #ifdef SWIG
 /// Major version number of the library's current state. The year and month in which it was released.
-const std::string __lal_major_verno = "99.99";
+const std::string __lal_major_verno = "23.01";
 /// Patch version number of the library's current state. Patch number.
-const std::string __lal_patch_verno = "99";
+const std::string __lal_patch_verno = "00";
 #else
 /// Major version number of the library's current state. The year and month in which it was released.
-constexpr std::string_view __lal_major_verno = "99.99";
+constexpr std::string_view __lal_major_verno = "23.01";
 /// Patch version number of the library's current state.
-constexpr std::string_view __lal_patch_verno = "99";
+constexpr std::string_view __lal_patch_verno = "00";
 #endif
 
 };

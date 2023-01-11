@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10.2)
 
 # project's version
-set(LAL_MAJOR 99.99)
-set(LAL_PATCH 99)
+set(LAL_MAJOR 23.01)
+set(LAL_PATCH 00)
 
 # project declaration
 project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
