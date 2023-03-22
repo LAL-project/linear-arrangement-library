@@ -64,7 +64,7 @@ In order to cite the Linear Arrangement Library, please cite all papers presenti
 			pages = {1--16}
 		}
 
-In order to cite the corresponding Zenodo repository, please, refrain from using a non-stable release of LAL (`main' branch) for your research, and use a stable release instead. Contact us or visit the official webpage for help on how to proceed.
+In order to cite the corresponding Zenodo repository, please, refrain from using a non-stable release of LAL (`main` branch) for your research, and use a stable release instead. Contact us or visit the official webpage for help on how to proceed.
 
 ## Documentation
 
