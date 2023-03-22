@@ -42,9 +42,12 @@ This library is the result of the joint effort of several people (in alphabetica
 
 ## Citing the library
 
-In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of a great effort put directly by the developers, and indirectly by other researchers. In an academic paper, besides citing the articles presenting LAL, users *must* also acknowledge the effort made by other researchers by citing their papers in which they describe the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation. In case a citation is lacking, or is just incorrect, do not hesitate to contact us to inform us about this issue. All the citations can be found in doxygen format [here](https://github.com/LAL-project/linear-arrangement-library/blob/master/doxyconfig/bibliography.bib).
+In this library users will find implementations of papers written by the developers of LAL themselves, and implementations of algorithms devised by other researchers. This library is the result of great efforts put directly by the developers, and indirectly by other researchers. In an academic paper, please,
 
-In order to cite the Linear Arrangement Library, please cite the following paper(s):
+- cite the articles presenting LAL and the Zenodo repository that corresponds to the exact version of LAL that is used,
+- acknowledge the effort made by other researchers by citing their papers in which they describe the algorithms implemented in this library. Such papers are cited in the C++ documentation and can be found easily in the doxygen documentation. In case a citation is lacking, or is just incorrect, do not hesitate to contact us to inform us about this issue. All the citations can be found in doxygen format [here](https://github.com/LAL-project/linear-arrangement-library/blob/master/doxyconfig/bibliography.bib).
+
+In order to cite the Linear Arrangement Library, please cite all papers presenting LAL (including, but not limited to the following list of papers):
 
 - Lluı́s Alemany-Puig, Juan Luis Esteban, and Ramon Ferrer-i-Cancho. "The Linear Arrangement Library. A new tool for research on syntactic dependency structures". In: Proceedings of the Second Workshop on Quantitative Syntax (Quasy, SyntaxFest 2021). Sofia, Bulgaria: Association for Computational Linguistics, Dec. 2021, pp. 1–16. url: https://aclanthology.org/2021.quasy-1.1.
 
@@ -59,6 +62,21 @@ In order to cite the Linear Arrangement Library, please cite the following paper
 			address = {Sofia, Bulgaria},
 			publisher = {Association for Computational Linguistics},
 			pages = {1--16}
+		}
+
+And, please, also cite the Zenodo repository that corresponds to version 23.01.
+
+- Lluís Alemany Puig, Juan Luis Esteban, & Ramon Ferrer-i-Cancho. (2023). LAL-project/linear-arrangement-library: The Linear Arrangement Library 23.01 (v23.01). Zenodo. https://doi.org/10.5281/zenodo.7755867
+
+		@software{LAL2301,
+			author = {{Alemany-Puig}, Llu\'{i}s and Esteban, {Juan Luis} and {Ferrer-i-Cancho}, Ramon},
+			title = {{LAL-project/linear-arrangement-library: The Linear Arrangement Library 23.01}},
+			month = mar,
+			year = 2023,
+			publisher = {Zenodo},
+			version = {v23.01},
+			doi = {10.5281/zenodo.7755867},
+			url = {https://doi.org/10.5281/zenodo.7755867}
 		}
 
 ## Documentation
