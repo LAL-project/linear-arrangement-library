@@ -38,12 +38,11 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 // C++ includes
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <map>
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -89,7 +88,59 @@ struct useful_info_pairs {
 	}
 };
 
-typedef std::map<lal::edge, useful_info_pairs>::const_iterator CIT;
+#define USE_HASH
+//#define USE_MAP
+
+#if defined USE_HASH
+
+#include <unordered_map>
+
+/*
+// stackoverflow hash
+
+template<typename T>
+void hash_combine(std::size_t& seed, const T& key) {
+	std::hash<T> hasher;
+	seed ^= hasher(key) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+struct hash_edge {
+	std::size_t operator()(const lal::edge& p) const {
+		std::size_t seed1(0);
+		hash_combine(seed1, p.first);
+		hash_combine(seed1, p.second);
+
+		std::size_t seed2(0);
+		hash_combine(seed2, p.second);
+		hash_combine(seed2, p.first);
+
+		return std::min(seed1, seed2);
+	}
+};
+*/
+
+struct hash_edge {
+	std::size_t operator()(const lal::edge& p) const {
+		// Cantor hash
+		// source: https://cran.r-project.org/web/packages/clustAnalytics/index.html
+		// From the Ph.D. thesis of Martí Renedo Mirambell (Polytechnic University of Catalonia)
+		return (p.first + p.second) * (p.first + p.second + 1) / 2 + p.second;
+	}
+};
+
+typedef std::unordered_map<lal::edge, useful_info_pairs, hash_edge> hash_algorithm;
+typedef hash_algorithm::const_iterator CIT;
+
+#endif
+
+#if defined USE_MAP
+
+#include <map>
+
+typedef std::map<lal::edge, useful_info_pairs> hash_algorithm;
+typedef hash_algorithm::const_iterator CIT;
+
+#endif
 
 namespace lal {
 namespace properties {
@@ -175,7 +226,12 @@ noexcept
 	psi /= 2;
 
 	// hash table to reuse computations
-	std::map<edge, useful_info_pairs> saving_comps;
+	hash_algorithm saving_comps;
+#if defined USE_HASH
+	if constexpr (reuse) {
+		saving_comps.reserve(g.get_num_edges() + g.get_num_nodes());
+	}
+#endif
 
 	// ------------------------------------------------
 	// compute the variance
@@ -388,21 +444,21 @@ noexcept
 	if (reuse) {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<true, true>
-			parameters_of_compute_data;
+				parameters_of_compute_data;
 		}
 		else {
 			compute_data_gen_graphs<true, false>
-			parameters_of_compute_data;
+				parameters_of_compute_data;
 		}
 	}
 	else {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<false, true>
-			parameters_of_compute_data;
+				parameters_of_compute_data;
 		}
 		else {
 			compute_data_gen_graphs<false, false>
-			parameters_of_compute_data;
+				parameters_of_compute_data;
 		}
 	}
 
