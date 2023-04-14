@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -52,7 +53,7 @@
 #include <lal/detail/data_array.hpp>
 
 #define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
-#define map_has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
+#define has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
 
 /* This macro has two local variables: __i, __j
  * The first variable, __i, iterates over Ni.
@@ -226,10 +227,10 @@ noexcept
 	psi /= 2;
 
 	// hash table to reuse computations
-	hash_algorithm saving_comps;
+	hash_algorithm H;
 #if defined USE_HASH
 	if constexpr (reuse) {
-		saving_comps.reserve(g.get_num_edges() + g.get_num_nodes());
+		H.reserve(g.get_num_edges() + g.get_num_nodes());
 	}
 #endif
 
@@ -265,7 +266,7 @@ noexcept
 
 			uint64_t common_ut = 0;
 			if constexpr (reuse) {
-				if (CIT it_ut; map_has_key(saving_comps, sorted_edge(u,t), it_ut)) {
+				if (CIT it_ut; has_key(H, sorted_edge(u,t), it_ut)) {
 					common_ut = it_ut->second.common;
 				}
 				else {
@@ -275,7 +276,7 @@ noexcept
 						++common_ut;
 						deg_sum += g.get_degree(Nu[__j]);
 					);
-					saving_comps.insert(
+					H.insert(
 						make_pair(
 							sorted_edge(u,t),
 							useful_info_pairs(common_ut, deg_sum)
@@ -301,7 +302,7 @@ noexcept
 
 			uint64_t common_us = 0;
 			if constexpr (reuse) {
-				if (CIT it_su; map_has_key(saving_comps, sorted_edge(u,s), it_su)) {
+				if (CIT it_su; has_key(H, sorted_edge(u,s), it_su)) {
 					common_us = it_su->second.common;
 				}
 				else {
@@ -311,7 +312,7 @@ noexcept
 						++common_us;
 						deg_sum += g.get_degree(Nu[__j]);
 					);
-					saving_comps.insert(
+					H.insert(
 						make_pair(
 							sorted_edge(u,s),
 							useful_info_pairs(common_us, deg_sum)
@@ -334,7 +335,7 @@ noexcept
 		uint64_t common_st = 0;
 		uint64_t deg_sum_st = 0;
 		if constexpr (reuse) {
-			if (CIT it_st; map_has_key(saving_comps, sorted_edge(s,t), it_st)) {
+			if (CIT it_st; has_key(H, sorted_edge(s,t), it_st)) {
 				// if the neighbours were not searched then the variables
 				// 'sum_deg_common_st' and 'common_st' are equal to '0',
 				// so we must initialise them now
@@ -347,7 +348,7 @@ noexcept
 					++common_st;
 					deg_sum_st += g.get_degree(Nt[__j]);
 				);
-				saving_comps.insert(
+				H.insert(
 					make_pair(
 						sorted_edge(s,t),
 						useful_info_pairs(common_st, deg_sum_st)
