@@ -69,7 +69,7 @@ public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	undirected_graph() noexcept { }
+	undirected_graph() noexcept : graph() { }
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.

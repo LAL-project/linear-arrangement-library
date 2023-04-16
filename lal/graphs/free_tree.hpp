@@ -67,8 +67,8 @@ public:
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices
 	 */
-	free_tree(uint64_t n) noexcept : undirected_graph(n) {
-		free_tree::tree_only_init(n);
+	free_tree(uint64_t n) noexcept {
+		free_tree::_init(n);
 	}
 	/**
 	 * @brief Copy constructor.
