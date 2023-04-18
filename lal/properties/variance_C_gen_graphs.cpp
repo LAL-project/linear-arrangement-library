@@ -242,8 +242,7 @@ noexcept
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
-	uint64_t mu1 = 0;
-	uint64_t mu2 = 0;
+	uint64_t mu = 0;
 
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [s,t] = e_it.get_edge();
@@ -368,8 +367,7 @@ noexcept
 		Phi_1 -= ks*kt*(ks + kt);
 		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
-		mu1 += xi[t] + xi[s];
-		mu2 += common_st;
+		mu += common_st;
 
 		Lambda_1 += (kt - 1)*(xi[s] - kt) + (ks - 1)*(xi[t] - ks);
 		Lambda_1 -= 2*deg_sum_st;
@@ -379,7 +377,6 @@ noexcept
 
 #if defined DEBUG
 	assert(Phi_2%2 == 0);
-	assert(mu1%2 == 0);
 	assert(n_cycles_4%4 == 0);
 	assert(n_paths_5%2 == 0);
 	assert(pair_C3_L2%3 == 0);
@@ -387,7 +384,7 @@ noexcept
 
 	Lambda_2 += Lambda_1;
 	Phi_2 /= 2;
-	n_paths_4 = m - nk2 + mu1/2 - mu2;
+	n_paths_4 = m - nk2 + psi - mu;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
