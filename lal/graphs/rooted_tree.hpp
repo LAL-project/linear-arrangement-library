@@ -567,15 +567,33 @@ public:
 
 	/**
 	 * @brief Does the subtree rooted at @e r contain node @e u?
-	 * @param u Node to query within the subtree.
 	 * @param r The root of the subtree. Notice that if @e r is the actual root
 	 * of the subtree, the tree certainly contains @e u.
+	 * @param u Node to query within the subtree.
 	 * @returns Whether or not the subtree rooted at @e r contains node łe u.
 	 * @pre Node @e r belongs to the tree (see @ref has_node).
 	 * @pre Node @e u belongs to the tree (see @ref has_node).
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
 	bool subtree_contains_node(node r, node u) const noexcept;
+
+	/**
+	 * @brief Are two nodes siblings?
+	 *
+	 * Do to two nodes share the same parent?
+	 * @param u A node.
+	 * @param v Another node.
+	 * @returns True if the nodes are siblings. False, if they are not.
+	 */
+	bool are_nodes_siblings(node u, node v) const noexcept {
+		// if one of the in-degrees is zero, then 'u' and 'v' cannot be siblings
+		if (get_in_degree(u) == 0 or get_in_degree(v) == 0) {
+			return false;
+		}
+		// two nodes are siblings when their respective parent vertices
+		// are the same
+		return get_in_neighbours(u)[0] == get_in_neighbours(v)[0];
+	}
 
 protected:
 	/// Root of the tree.
