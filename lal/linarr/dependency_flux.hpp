@@ -194,6 +194,5 @@ std::vector<dependency_flux> compute_flux
 	return compute_flux(t.to_free_tree(), pi);
 }
 
-
 } // -- namespace linarr
 } // -- namespace lal

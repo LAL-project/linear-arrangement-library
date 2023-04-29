@@ -96,8 +96,6 @@ enum class syntactic_dependency_structure {
 	unknown
 };
 
-// *DEVELOPER NOTE*
-// Swig does not like multilines for this declaration! Use only one line!
 /// Number of elements within enumeration @ref syntactic_dependency_structure.
 inline constexpr std::size_t __syntactic_dependency_structure_size =
 	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_structure::unknown);
