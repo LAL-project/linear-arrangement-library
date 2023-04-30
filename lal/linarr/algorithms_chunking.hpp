@@ -41,31 +41,35 @@
 
 #pragma once
 
-#include <lal/linarr/algorithms_C.hpp>
-#include <lal/linarr/C.hpp>
+namespace lal {
+namespace linarr {
 
-#include <lal/linarr/algorithms_chunking.hpp>
+// **DEVELOPER NOTE**
+// This enumeration's documentation has to be updated manually in the
+// algorithms_chunking.py python file.
 
-#include <lal/linarr/algorithms_Dmin.hpp>
-#include <lal/linarr/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/Dmin.hpp>
+/**
+ * @brief The different algorithms for chunking a syntactic dependency tree.
+ * 
+ * Chunking is the art of grouping nodes (a.k.a. words) of a syntactic dependency
+ * tree in such a way that the resulting groups share common properties. This
+ * enumeration lists all the chunking algorithms implemented in this library.
+ */
+enum class algorithms_chunking {
+	/**
+	 * @brief Chunking algorithm by Anderson.
+	 * 
+	 * 
+	 * For further details see \cite Anderson2021a and \cite Anderson2019a.
+	 */
+	Anderson,
+	/**
+	 * @brief Chunking algorithm by Mačutek.
+	 *
+	 * For further details see \cite Macutek2021a.
+	 */
+	Macutek
+};
 
-#include <lal/linarr/DMax.hpp>
-
-#include <lal/linarr/D.hpp>
-
-#include <lal/linarr/syntactic_dependency_structure.hpp>
-#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
-
-#include <lal/linarr/head_initial.hpp>
-
-#include <lal/linarr/dependency_flux.hpp>
-
-#include <lal/linarr/formal_constraints.hpp>
-
-#include <lal/linarr/1level.hpp>
-#include <lal/linarr/2level.hpp>
-
-#include <lal/linarr/chunk.hpp>
-#include <lal/linarr/chunking.hpp>
+} // -- namespace linarr
+} // -- namespace lal

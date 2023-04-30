@@ -100,6 +100,8 @@ HEADERS += \
 	detail/linarr/DMax_Projective_AEF.hpp \
 	detail/linarr/DMax_utils.hpp \
 	detail/linarr/Dopt_utils.hpp \
+	detail/linarr/chunking_Anderson.hpp \
+    detail/linarr/chunking_Macutek.hpp \
     detail/linarr/dependency_flux.hpp \
     detail/linarr/formal_constraints.hpp \
     detail/linarr/headedness.hpp \
@@ -208,6 +210,9 @@ HEADERS += \
 	linarr/2level.hpp \
 	linarr/algorithms_Dmin_planar.hpp \
 	linarr/algorithms_Dmin_projective.hpp \
+    linarr/algorithms_chunking.hpp \
+    linarr/chunk.hpp \
+    linarr/chunking.hpp \
 	linarr/classify_syntactic_dependency_structure.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/C.hpp \
@@ -266,6 +271,7 @@ SOURCES += \
 	linarr/C.cpp \
 	linarr/DMax.cpp \
 	linarr/Dmin.cpp \
+	linarr/chunking.cpp \
 	linarr/classify_syntactic_dependency_structure.cpp \
 	linarr/D.cpp \
 	linarr/dependency_flux.cpp \

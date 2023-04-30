@@ -147,6 +147,9 @@ target_sources(
 		detail/linarr/C_dyn_prog.hpp
 		detail/linarr/C_ladder.hpp
 		detail/linarr/C_stack_based.hpp
+		detail/linarr/chunking_Anderson.hpp
+		detail/linarr/chunking_Macutek.hpp
+		detail/linarr/dependency_flux.hpp
 		detail/linarr/DMax_Planar_AEF.hpp
 		detail/linarr/DMax_Projective_AEF.hpp
 		detail/linarr/DMax_utils.hpp
@@ -163,13 +166,6 @@ target_sources(
 		detail/linarr/predict_C.hpp
 		detail/linarr/sum_edge_lengths.hpp
 		detail/linarr/syntactic_dependency_structure.hpp
-		#      type_traits
-		detail/type_traits/bool_sequence.hpp
-		detail/type_traits/conditional_list.hpp
-		detail/type_traits/first_true.hpp
-		detail/type_traits/is_pointer_iterator.hpp
-		detail/type_traits/ith_type.hpp
-		detail/type_traits/type_sequence.hpp
 		#      macros
 		detail/macros/basic_convert.hpp
 		#      numeric
@@ -185,6 +181,13 @@ target_sources(
 		detail/sorting/insertion_sort.hpp
 		detail/sorting/sorted_vector.hpp
 		detail/sorting/sorting_types.hpp
+		#      type_traits
+		detail/type_traits/bool_sequence.hpp
+		detail/type_traits/conditional_list.hpp
+		detail/type_traits/first_true.hpp
+		detail/type_traits/is_pointer_iterator.hpp
+		detail/type_traits/ith_type.hpp
+		detail/type_traits/type_sequence.hpp
 		#      utilities
 		detail/utilities/tree_isomorphism.hpp
 		#      others
@@ -245,7 +248,7 @@ target_sources(
 		generate/rand_projective_arrangements.cpp
 		generate/rand_ulab_free_trees.cpp
 		generate/rand_ulab_rooted_trees.cpp
-		
+
 		# graphs namespace
 		# --headers
 		graphs/conversions.hpp
@@ -304,10 +307,13 @@ target_sources(
 		linarr/1level.hpp
 		linarr/2level.hpp
 		linarr/algorithms_C.hpp
+		linarr/algorithms_chunking.hpp
 		linarr/algorithms_Dmin.hpp
 		linarr/algorithms_Dmin_planar.hpp
 		linarr/algorithms_Dmin_projective.hpp
 		linarr/C.hpp
+		linarr/chunk.hpp
+		linarr/chunking.hpp
 		linarr/classify_syntactic_dependency_structure.hpp
 		linarr/D.hpp
 		linarr/dependency_flux.hpp
@@ -318,6 +324,7 @@ target_sources(
 		linarr/syntactic_dependency_structure.hpp
 		# -- sources
 		linarr/C.cpp
+		linarr/chunking.cpp
 		linarr/classify_syntactic_dependency_structure.cpp
 		linarr/D.cpp
 		linarr/dependency_flux.cpp
@@ -463,10 +470,13 @@ set(LIBLAL_LINARR_HEADER
 	linarr/1level.hpp
 	linarr/2level.hpp
 	linarr/algorithms_C.hpp
+	linarr/algorithms_chunking.hpp
 	linarr/algorithms_Dmin.hpp
 	linarr/algorithms_Dmin_planar.hpp
 	linarr/algorithms_Dmin_projective.hpp
 	linarr/C.hpp
+	linarr/chunk.hpp
+	linarr/chunking.hpp
 	linarr/classify_syntactic_dependency_structure.hpp
 	linarr/D.hpp
 	linarr/dependency_flux.hpp
