@@ -108,5 +108,12 @@ chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
 	const algorithms_chunking& algo
 ) noexcept;
 
+/**
+ * @brief Constructs a rooted tree from the given chunk sequence.
+ * @param seq Chunk sequence
+ * @returns A rooted tree.
+ */
+graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq) noexcept;
+
 } // -- namespace linarr
 } // -- namespace lal

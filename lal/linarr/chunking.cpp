@@ -54,27 +54,6 @@ namespace linarr {
 #define __ident(arr) detail::identity_arr(arr)
 #define __nonident(arr) detail::nonident_arr(arr)
 
-graphs::rooted_tree make_tree_from_chunks(const linarr::chunk_sequence& seq)
-noexcept
-{
-	graphs::rooted_tree t(seq.size());
-	
-	for (node chunk_idx = 0; chunk_idx < seq.size(); ++chunk_idx) {
-		const auto& c = seq.get_chunk(chunk_idx);
-		
-		if (c.has_parent_node()) {
-			const std::size_t parent_chunk_idx = seq.get_chunk_index(c.get_parent_node());
-			t.add_edge_bulk( parent_chunk_idx, chunk_idx );
-		}
-		else {
-			t.set_root(chunk_idx);
-		}
-	}
-	
-	t.finish_bulk_add();
-	return t;
-}
-
 /*
 void print_chunk_list(
 	const graphs::rooted_tree& rt,
@@ -117,12 +96,12 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunks(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.m_sequence);
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunks(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.m_sequence);
 	}
 	else {
 #if defined DEBUG
@@ -144,12 +123,12 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunks(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.m_sequence);
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunks(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.m_sequence);
 	}
 	else {
 #if defined DEBUG
@@ -216,6 +195,27 @@ noexcept
 	}
 
 	return chunk_sequence();
+}
+
+graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq)
+noexcept
+{
+	graphs::rooted_tree t(seq.size());
+
+	for (node chunk_idx = 0; chunk_idx < seq.size(); ++chunk_idx) {
+	const auto& c = seq.get_chunk(chunk_idx);
+
+	if (c.has_parent_node()) {
+		const std::size_t parent_chunk_idx = seq.get_chunk_index(c.get_parent_node());
+		t.add_edge_bulk( parent_chunk_idx, chunk_idx );
+	}
+	else {
+		t.set_root(chunk_idx);
+		}
+	}
+
+	t.finish_bulk_add();
+	return t;
 }
 
 } // -- namespace linarr
