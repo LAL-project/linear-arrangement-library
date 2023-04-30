@@ -147,6 +147,7 @@ target_sources(
 		detail/linarr/C_dyn_prog.hpp
 		detail/linarr/C_ladder.hpp
 		detail/linarr/C_stack_based.hpp
+		detail/linarr/dependency_flux.hpp
 		detail/linarr/DMax_Planar_AEF.hpp
 		detail/linarr/DMax_Projective_AEF.hpp
 		detail/linarr/DMax_utils.hpp
