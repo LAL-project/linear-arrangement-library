@@ -8,3 +8,4 @@ lal/CMakeLists.txt.user
 
 lal-debug/
 lal-release/
+lal-profile/
