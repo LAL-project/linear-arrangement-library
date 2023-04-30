@@ -58,8 +58,7 @@ namespace linarr {
 enum class algorithms_chunking {
 	/**
 	 * @brief Chunking algorithm by Anderson.
-	 * 
-	 * 
+	 *
 	 * For further details see \cite Anderson2021a and \cite Anderson2019a.
 	 */
 	Anderson,
