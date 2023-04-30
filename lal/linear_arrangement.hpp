@@ -284,12 +284,12 @@ public:
 		return m_direct[size() - 1] < arr.m_direct[size() - 1];
 	}
 
-	/// Access to linear arrangement using a type-safe node.
-	node operator[] (const node_t& u) const noexcept
+	/// Returns the position of node @e u.
+	position operator[] (const node_t& u) const noexcept
 	{ return get_position_of(*u); }
 
-	/// Access to linear arrangement using a type-safe position.
-	position operator[] (const position_t& p) const noexcept
+	/// Returns the node at position @e p.
+	node operator[] (const position_t& p) const noexcept
 	{ return get_node_at(*p); }
 
 	/// Frees the memory used by the linear arrangement.
