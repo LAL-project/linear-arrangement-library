@@ -595,6 +595,28 @@ public:
 		return get_in_neighbours(u)[0] == get_in_neighbours(v)[0];
 	}
 
+	/**
+	 * @brief Does a node have a parent vertex?
+	 * @param u Input node.
+	 * @returns If the node has a parent vertex.
+	 */
+	bool node_has_parent(node u) const noexcept {
+		return get_in_degree(u) > 0;
+	}
+
+	/**
+	 * @brief Parent vertex of a node.
+	 * @param u Input node.
+	 * @returns The parent vertex of a node.
+	 * @pre Method @ref node_has_parent must return true.
+	 */
+	node get_parent_node(node u) const noexcept {
+#if defined DEBUG
+		assert(node_has_parent(u));
+#endif
+		return get_in_neighbours(u)[0];
+	}
+
 protected:
 	/// Root of the tree.
 	node m_root = 0;
