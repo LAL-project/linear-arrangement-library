@@ -71,7 +71,7 @@ namespace brute_force {
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Upper bound on the number of crossings.
@@ -79,10 +79,10 @@ namespace brute_force {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, linarr_type arr_type>
+template <bool decide_upper_bound, class arrangement_t>
 [[nodiscard]] uint64_t compute(
 	const graphs::undirected_graph& g,
-	const linarr_wrapper<arr_type>& arr,
+	const arrangement_t& arr,
 	uint64_t upper_bound = 0
 )
 noexcept
@@ -142,7 +142,7 @@ noexcept
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param pu Starting position of the computation.
  * @param pv Ending position of the computation.
@@ -153,12 +153,12 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, linarr_type arr_type>
+template <bool decide_upper_bound, class arrangement_t>
 [[nodiscard]] uint64_t inner_compute
 (
 	const graphs::directed_graph& g,
 	position pu, position pv,
-	const linarr_wrapper<arr_type>& arr,
+	const arrangement_t& arr,
 	uint64_t C,
 	uint64_t upper_bound
 )
@@ -221,7 +221,7 @@ noexcept
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param upper_bound Upper bound on the number of crossings.
@@ -229,9 +229,10 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, linarr_type arr_type>
+template <bool decide_upper_bound, class arrangement_t>
 uint64_t compute(
-	const graphs::directed_graph& g, const linarr_wrapper<arr_type>& arr,
+	const graphs::directed_graph& g,
+	const arrangement_t& arr,
 	uint64_t upper_bound
 )
 noexcept

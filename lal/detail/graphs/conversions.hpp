@@ -262,15 +262,15 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 
 /**
  * @brief Constructs the head vector representation of a tree.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param t Input rooted tree.
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector encoding the tree.
  */
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 head_vector from_tree_to_head_vector(
 	const graphs::rooted_tree& t,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {
@@ -295,16 +295,16 @@ noexcept
 
 /**
  * @brief Constructs the head vector representation of a tree.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param t Input free tree.
  * @param r Root of the tree.
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector
  */
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 head_vector from_tree_to_head_vector(
 	const graphs::free_tree& t,
-	const detail::linarr_wrapper<arr_type>& arr,
+	const arrangement_t& arr,
 	node r
 )
 noexcept

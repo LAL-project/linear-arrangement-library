@@ -66,10 +66,10 @@ namespace linarr {
 
 typedef syntactic_dependency_tree syndepstr_type;
 
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 void __get_yields(
 	const graphs::rooted_tree& t,
-	const detail::linarr_wrapper<arr_type>& arr,
+	const arrangement_t& arr,
 	node u,
 	std::vector<std::vector<position>>& yields
 )
@@ -157,10 +157,10 @@ noexcept
 	return max_g;
 }
 
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 bool __is_WG1(
 	const graphs::rooted_tree& rT,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {
@@ -181,10 +181,10 @@ noexcept
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 uint64_t __is_1EC(
 	const graphs::rooted_tree& rT,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {
@@ -274,12 +274,12 @@ noexcept
 	return _1ec;
 }
 
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 std::array<bool, __syntactic_dependency_tree_size>
 __get_syn_dep_tree_type
 (
 	const graphs::rooted_tree& rT,
-	const detail::linarr_wrapper<arr_type>& arr,
+	const arrangement_t& arr,
 	const uint64_t C
 )
 noexcept
@@ -344,9 +344,11 @@ noexcept
 	assert(_rT.is_rooted_tree());
 #endif
 
+	typedef detail::linarr_wrapper<detail::linarr_type::nonident> nonident;
+
 	// update the linear arrangement
 	linear_arrangement __arr;
-	if constexpr (arr_type == detail::linarr_type::nonident) {
+	if constexpr (std::is_same_v<arrangement_t, nonident>) {
 #if defined DEBUG
 		assert(arr.m_arr.size() > 0);
 #endif
@@ -360,7 +362,7 @@ noexcept
 		}
 	}
 
-	detail::linarr_wrapper<arr_type> _arr(__arr);
+	arrangement_t _arr(__arr);
 
 	// +++++++++++++++++++++++++
 	// projective structures
@@ -395,7 +397,7 @@ noexcept
 		}
 
 		// remove 1-ec from the types when needed
-		if (_C > 0 and not __is_1EC<arr_type>(_rT, _arr)) {
+		if (_C > 0 and not __is_1EC(_rT, _arr)) {
 			nullify(EC1);
 		}
 
@@ -416,7 +418,7 @@ noexcept
 	// ---------------------------------------------------
 	// is the structure 1-Endpoint Crossing?
 
-	if (__is_1EC<arr_type>(_rT, _arr)) {
+	if (__is_1EC(_rT, _arr)) {
 		__set_type(syndepstr_type::EC1);
 	}
 

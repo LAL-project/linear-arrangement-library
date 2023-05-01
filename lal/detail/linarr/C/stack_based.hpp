@@ -80,7 +80,7 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
  *
  * See \cite Alemany2019a for details on the correctness and behaviour.
  * @tparam graph_t Type of graph.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param adjP @e adjP[v] contains the list of vertices @e u that form edges (u,v)
@@ -89,9 +89,9 @@ typedef std::pair<uint64_t,lal::edge> indexed_edge;
  * such that arr[v] < arr[u] sorted nonincreasingly by edge length.
  * @param size_adjN_u Auxiliary memory array of size @e n.
  */
-template <class graph_t, linarr_type arr_type>
+template <class graph_t, class arrangement_t>
 void fill_adjP_adjN(
-	const graph_t& g, const linarr_wrapper<arr_type>& arr,
+	const graph_t& g, const arrangement_t& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	uint64_t * const size_adjN_u
@@ -166,7 +166,7 @@ noexcept
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
  * @tparam graph_t Type of graph.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param size_adjN_u See \cite Alemany2019a for details.
@@ -175,9 +175,9 @@ noexcept
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
+template <bool decide_upper_bound, class graph_t, class arrangement_t>
 uint64_t compute_C_stack_based(
-	const graph_t& g, const linarr_wrapper<arr_type>& arr,
+	const graph_t& g, const arrangement_t& arr,
 	uint64_t * const size_adjN_u,
 	uint64_t upper_bound
 )

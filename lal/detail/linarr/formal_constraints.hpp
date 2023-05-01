@@ -58,17 +58,17 @@ namespace detail {
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
  * @returns Whether or not the root is covered in the given arrangement.
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 bool is_root_covered(
 	const graphs::rooted_tree& rt,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {
@@ -118,7 +118,7 @@ noexcept
  *
  * See method @ref lal::linarr::is_planar for further details on the definition
  * of planar arrangements.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
  * @returns Whether or not the input rooted tree arranged with the input arrangement
@@ -126,10 +126,10 @@ noexcept
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-template <detail::linarr_type arr_type>
+template <class arrangement_t>
 bool is_projective(
 	const graphs::rooted_tree& rt,
-	const detail::linarr_wrapper<arr_type>& arr
+	const arrangement_t& arr
 )
 noexcept
 {

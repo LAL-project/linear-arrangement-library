@@ -92,7 +92,7 @@ noexcept
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <typename result_t, class graph_t, class arrangement_t>
+template <class result_t, class graph_t, class arrangement_t>
 result_t mean_sum_edge_lengths(
 	const graph_t& g,
 	const arrangement_t& arr

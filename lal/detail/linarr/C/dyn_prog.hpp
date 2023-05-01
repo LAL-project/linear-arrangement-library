@@ -76,7 +76,7 @@ namespace dyn_prog {
  * When template parameter @e decide_upper_bound is false, the function returns
  * the number of crossings.
  * @tparam decide_upper_bound Boolean value to choose the nature of the return type.
- * @tparam arr_type Type of arrangement.
+ * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param bn Array of size @e n. Boolean neighbourhood of a vertex @e u: @e bn[i]
@@ -90,10 +90,10 @@ namespace dyn_prog {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, class graph_t, linarr_type arr_type>
+template <bool decide_upper_bound, class graph_t, class arrangement_t>
 uint64_t compute
 (
-	const graph_t& g, const linarr_wrapper<arr_type>& arr,
+	const graph_t& g, const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
