@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <optional>
 #include <vector>
 
 // lal includes
@@ -427,7 +428,6 @@ public:
 #endif
 			m_root = r;
 		}
-		m_has_root = true;
 		m_are_size_subtrees_valid = false;
 		m_is_tree_type_valid = false;
 	}
@@ -472,11 +472,11 @@ public:
 #if defined DEBUG
 		assert(has_root());
 #endif
-		return m_root;
+		return *m_root;
 	}
 	/// Returns whether this rooted tree's root has been set or not
 	/// (see @ref set_root).
-	bool has_root() const noexcept { return m_has_root; }
+	bool has_root() const noexcept { return m_root.has_value(); }
 
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
@@ -619,9 +619,7 @@ public:
 
 protected:
 	/// Root of the tree.
-	node m_root = 0;
-	/// Has the root been set?
-	bool m_has_root = false;
+	std::optional<node> m_root;
 
 	/**
 	 * @brief Number of nodes of the subtrees rooted at a certain node.
@@ -693,7 +691,6 @@ protected:
 
 		// copy this class' members
 		m_root = r.m_root;
-		m_has_root = r.m_has_root;
 		m_size_subtrees = r.m_size_subtrees;
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 	}
@@ -706,13 +703,11 @@ protected:
 		tree_only_move(std::forward<rooted_tree>(r));
 
 		// move this class' members
-		m_root = r.m_root;
-		m_has_root = r.m_has_root;
+		m_root.swap(r.m_root);
 		m_size_subtrees = std::move(r.m_size_subtrees);
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 
 		r.m_root = 0;
-		r.m_has_root = false;
 		r.m_are_size_subtrees_valid = false;
 	}
 

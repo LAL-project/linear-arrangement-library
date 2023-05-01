@@ -90,14 +90,13 @@ noexcept
 	directed_graph::remove_node(u, norm, check_norm);
 
 	// update root's label, if any
-	if (m_has_root) {
+	if (m_root.has_value()) {
 		if (m_root == u) {
 			// the root has been removed
 			m_root = get_num_nodes();
-			m_has_root = false;
 		}
 		else if (m_root > u) {
-			--m_root;
+			--*m_root;
 		}
 	}
 
