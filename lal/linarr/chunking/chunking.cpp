@@ -47,7 +47,7 @@
 #include <lal/linarr/chunking/chunking.hpp>
 #include <lal/detail/linarr/chunking/Anderson.hpp>
 #include <lal/detail/linarr/chunking/Macutek.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace linarr {

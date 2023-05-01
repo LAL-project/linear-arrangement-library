@@ -92,10 +92,10 @@ INCLUDEPATH += ..
 # PROJECT FILES
 HEADERS += \
     basic_types.hpp \
+    detail/arrangement_wrapper.hpp \
     detail/data_array.hpp \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
-    detail/identity_arrangement.hpp \
     detail/linarr/C/brute_force.hpp \
     detail/linarr/C/crossings.hpp \
     detail/linarr/C/dyn_prog.hpp \

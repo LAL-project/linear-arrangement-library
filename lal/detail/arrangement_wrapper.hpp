@@ -55,7 +55,7 @@ namespace detail {
  *
  * Used to call functions that have arrangements as input parameters.
  */
-enum class linarr_type {
+enum class arrangement_type {
 	/// Identity arrangement. \f$\pi(i)=i\f$.
 	identity,
 	/// Non-identity arrangement. An arrangement that is not the identity.
@@ -68,14 +68,14 @@ enum class linarr_type {
  * This reduces execution time: it prevents the explicit construction of
  * the identity arrangement (which involves allocation of memory, ...)
  */
-template <linarr_type type>
-struct linarr_wrapper {
+template <arrangement_type type>
+struct arrangement_wrapper {
 	/// Constructor with arrangement.
-	linarr_wrapper(const lal::linear_arrangement& arr) noexcept
+	arrangement_wrapper(const lal::linear_arrangement& arr) noexcept
 		: m_arr(arr)
 	{
 #if defined DEBUG
-		if constexpr (type == linarr_type::identity) {
+	if constexpr (type == arrangement_type::identity) {
 			assert(arr.size() == 0);
 		}
 		else {
@@ -98,7 +98,7 @@ struct linarr_wrapper {
 			std::is_same_v<param_t,lal::position_t>
 		);
 
-		if constexpr (type == linarr_type::identity) {
+	if constexpr (type == arrangement_type::identity) {
 			return *p;
 		}
 		else {
@@ -111,17 +111,17 @@ struct linarr_wrapper {
 };
 
 /// Shorthand for an identity arrangement.
-inline linarr_wrapper<linarr_type::identity> identity_arr(const linear_arrangement& arr)
+inline arrangement_wrapper<arrangement_type::identity> identity_arr(const linear_arrangement& arr)
 noexcept
 {
-	return linarr_wrapper<linarr_type::identity>(arr);
+return arrangement_wrapper<arrangement_type::identity>(arr);
 }
 
 /// Shorthand for a nonidentity arrangement.
-inline linarr_wrapper<linarr_type::nonident> nonident_arr(const linear_arrangement& arr)
+inline arrangement_wrapper<arrangement_type::nonident> nonident_arr(const linear_arrangement& arr)
 noexcept
 {
-	return linarr_wrapper<linarr_type::nonident>(arr);
+return arrangement_wrapper<arrangement_type::nonident>(arr);
 }
 
 } // -- namespace detail

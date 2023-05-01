@@ -191,9 +191,9 @@ target_sources(
 		#      utilities
 		detail/utilities/tree_isomorphism.hpp
 		#      others
+		detail/arrangement_wrapper.hpp
 		detail/avl.hpp
 		detail/data_array.hpp
-		detail/identity_arrangement.hpp
 		detail/make_array.hpp
 		detail/pairs_utils.hpp
 		

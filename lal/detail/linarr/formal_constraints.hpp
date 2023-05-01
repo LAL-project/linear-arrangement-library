@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {

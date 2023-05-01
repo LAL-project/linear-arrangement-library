@@ -55,7 +55,7 @@
 #include <lal/detail/graphs/tree_classification.hpp>
 #include <lal/detail/graphs/union_find.hpp>
 #include <lal/detail/graphs/conversions.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace graphs {

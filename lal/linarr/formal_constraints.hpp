@@ -52,7 +52,7 @@
 #include <lal/linarr/C/C.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace linarr {

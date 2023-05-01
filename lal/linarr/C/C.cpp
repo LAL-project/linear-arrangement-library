@@ -51,7 +51,7 @@
 #include <lal/detail/linarr/C/dyn_prog.hpp>
 #include <lal/detail/linarr/C/ladder.hpp>
 #include <lal/detail/linarr/C/stack_based.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace linarr {

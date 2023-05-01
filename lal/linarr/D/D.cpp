@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/D/D.hpp>
 

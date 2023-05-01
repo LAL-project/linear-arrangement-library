@@ -47,7 +47,7 @@
 #include <vector>
 
 // lal includes
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 

@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/graphs/graph.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/avl.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/data_array.hpp>

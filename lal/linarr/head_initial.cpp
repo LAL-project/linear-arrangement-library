@@ -47,7 +47,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/numeric/rational.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/linarr/headedness.hpp>
 
 namespace lal {

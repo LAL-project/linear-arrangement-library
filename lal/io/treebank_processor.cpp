@@ -68,7 +68,7 @@
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>

@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/detail/identity_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/data_array.hpp>
 
