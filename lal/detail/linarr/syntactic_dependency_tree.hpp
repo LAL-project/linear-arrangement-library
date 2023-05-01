@@ -37,32 +37,52 @@
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
- ********************************************************************/
+ *******************************************************************/
 
 #pragma once
 
-#include <lal/linarr/aggregations/1level.hpp>
-#include <lal/linarr/aggregations/2level.hpp>
+// C++ includes
+#include <string_view>
+#include <array>
 
-#include <lal/linarr/C/algorithms_C.hpp>
-#include <lal/linarr/C/C.hpp>
-
-#include <lal/linarr/chunking/algorithms.hpp>
-#include <lal/linarr/chunking/chunk.hpp>
-#include <lal/linarr/chunking/chunking.hpp>
-
-#include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/D/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D/D.hpp>
-#include <lal/linarr/D/DMax.hpp>
-#include <lal/linarr/D/Dmin.hpp>
-
-#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
+// lal includes
 #include <lal/linarr/syntactic_dependency_tree/type.hpp>
+#include <lal/detail/make_array.hpp>
 
-#include <lal/linarr/dependency_flux.hpp>
+namespace lal {
+namespace detail {
 
-#include <lal/linarr/formal_constraints.hpp>
+/// Converts a value of the enumeration
+/// @ref lal::linarr::syntactic_dependency_tree into a string.
+constexpr std::string_view
+syntactic_dependency_tree_to_string
+	(const linarr::syntactic_dependency_tree& tt)
+noexcept
+{
+	switch (tt) {
+	case linarr::syntactic_dependency_tree::EC1: return "EC1";
+	case linarr::syntactic_dependency_tree::planar: return "planar";
+	case linarr::syntactic_dependency_tree::projective: return "projective";
+	case linarr::syntactic_dependency_tree::WG1: return "WG1";
+		default: return "unknown_syntactic_dependency_tree";
+	}
+}
 
-#include <lal/linarr/head_initial.hpp>
+/// The array of all types of syntact dependency structures.
+inline constexpr
+std::array<
+		linarr::syntactic_dependency_tree,
+	linarr::__syntactic_dependency_tree_size
+>
+array_of_syntactic_dependency_trees =
+make_array<
+				linarr::syntactic_dependency_tree,
+				linarr::syntactic_dependency_tree::EC1,
+				linarr::syntactic_dependency_tree::planar,
+				linarr::syntactic_dependency_tree::projective,
+				linarr::syntactic_dependency_tree::WG1,
+				linarr::syntactic_dependency_tree::unknown
+>();
+
+} // -- namespace detail
+} // -- namespace lal

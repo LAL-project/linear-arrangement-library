@@ -39,30 +39,62 @@
  *
  ********************************************************************/
 
-#pragma once
+// C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+#include <utility>
 
-#include <lal/linarr/aggregations/1level.hpp>
-#include <lal/linarr/aggregations/2level.hpp>
+// lal includes
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 
-#include <lal/linarr/C/algorithms_C.hpp>
-#include <lal/linarr/C/C.hpp>
-
-#include <lal/linarr/chunking/algorithms.hpp>
-#include <lal/linarr/chunking/chunk.hpp>
-#include <lal/linarr/chunking/chunking.hpp>
-
-#include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/D/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D/D.hpp>
-#include <lal/linarr/D/DMax.hpp>
-#include <lal/linarr/D/Dmin.hpp>
+#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
+#include <lal/linarr/D/algorithms_Dmin.hpp>
 
-#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
-#include <lal/linarr/syntactic_dependency_tree/type.hpp>
+#include <lal/detail/linarr/D/Dmin/Projective_AEF.hpp>
+#include <lal/detail/linarr/D/Dmin/Projective_HS.hpp>
+#include <lal/detail/linarr/D/Dmin/Planar_AEF.hpp>
+#include <lal/detail/linarr/D/Dmin/Planar_HS.hpp>
+#include <lal/detail/linarr/D/Dmin/Unconstrained_FC.hpp>
+#include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
 
-#include <lal/linarr/dependency_flux.hpp>
+namespace lal {
+namespace linarr {
 
-#include <lal/linarr/formal_constraints.hpp>
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths
+(const graphs::free_tree& t, const algorithms_Dmin& a)
+noexcept
+{
+	if (a == algorithms_Dmin::Shiloach) {
+		return detail::Dmin::unconstrained::YossiShiloach<true>(t);
+	}
 
-#include <lal/linarr/head_initial.hpp>
+	return detail::Dmin::unconstrained::FanChung_2<true>(t);
+}
+
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
+(const graphs::free_tree& t, const algorithms_Dmin_planar& a)
+noexcept
+{
+	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
+		return detail::Dmin::planar::AEF<true>(t);
+	}
+
+	return detail::Dmin::planar::HS<true>(t);
+}
+
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
+(const graphs::rooted_tree& t, const algorithms_Dmin_projective& a)
+noexcept
+{
+	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
+		return detail::Dmin::projective::AEF<true>(t);
+	}
+
+	return detail::Dmin::projective::HS<true>(t);
+}
+
+} // -- namespace linarr
+} // -- namespace lal

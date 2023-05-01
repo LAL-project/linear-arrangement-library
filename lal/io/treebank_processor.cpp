@@ -54,8 +54,7 @@
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/linarr/Dmin.hpp>
-#include <lal/linarr/classify_syntactic_dependency_structure.hpp>
+#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
 #include <lal/linarr/dependency_flux.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
@@ -72,22 +71,22 @@
 #include <lal/detail/identity_arrangement.hpp>
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
-#include <lal/detail/linarr/C_dyn_prog.hpp>
-#include <lal/detail/linarr/C_ladder.hpp>
-#include <lal/detail/linarr/C_stack_based.hpp>
-#include <lal/detail/linarr/dependency_flux.hpp>
-#include <lal/detail/linarr/headedness.hpp>
-#include <lal/detail/linarr/predict_C.hpp>
-#include <lal/detail/linarr/sum_edge_lengths.hpp>
-#include <lal/detail/linarr/syntactic_dependency_structure.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 
-#include <lal/detail/linarr/Dmin_Unconstrained_YS.hpp>
-#include <lal/detail/linarr/Dmin_utils.hpp>
-#include <lal/detail/linarr/Dopt_utils.hpp>
+#include <lal/detail/linarr/dependency_flux.hpp>
+#include <lal/detail/linarr/headedness.hpp>
+#include <lal/detail/linarr/syntactic_dependency_tree.hpp>
 
-#include <lal/detail/linarr/DMax_Planar_AEF.hpp>
-#include <lal/detail/linarr/DMax_utils.hpp>
+#include <lal/detail/linarr/C/dyn_prog.hpp>
+#include <lal/detail/linarr/C/ladder.hpp>
+#include <lal/detail/linarr/C/stack_based.hpp>
+#include <lal/detail/linarr/C/predict.hpp>
+
+#include <lal/detail/linarr/D/D.hpp>
+#include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
+#include <lal/detail/linarr/D/Dmin/utils.hpp>
+#include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/utils.hpp>
 
 #include <lal/detail/macros/basic_convert.hpp>
 
@@ -338,7 +337,7 @@ treebank_error treebank_processor::process() noexcept {
 					output_tree_type_header(out_treebank_file);
 					break;
 
-				case treebank_feature::syntactic_dependency_structure_class:
+				case treebank_feature::syntactic_dependency_tree_class:
 					output_syndepstruct_type_header(out_treebank_file);
 					break;
 
@@ -410,15 +409,15 @@ void treebank_processor::output_syndepstruct_type_header
 const noexcept
 {
 	out_treebank_file
-	<< detail::syntactic_dependency_structure_to_string(
-		   detail::array_of_syntactic_dependency_structures[0]
+	<< detail::syntactic_dependency_tree_to_string(
+		   detail::array_of_syntactic_dependency_trees[0]
 	   );
 
-	for (std::size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
 		out_treebank_file
 			<< m_separator
-			<< detail::syntactic_dependency_structure_to_string(
-				   detail::array_of_syntactic_dependency_structures[j]
+			<< detail::syntactic_dependency_tree_to_string(
+				   detail::array_of_syntactic_dependency_trees[j]
 			   );
 	}
 }
@@ -455,18 +454,18 @@ void treebank_processor::output_syndepstruct_type_values(
 )
 const noexcept
 {
-	const auto v = linarr::syntactic_dependency_structure_class(rT, C);
+const auto v = linarr::syntactic_dependency_tree_classify(rT, C);
 
 	const auto output_sdst =
-	[&](const linarr::syntactic_dependency_structure& sdst) {
+		[&](const linarr::syntactic_dependency_tree& sdst) {
 		const std::size_t idx_tt = static_cast<std::size_t>(sdst);
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
 
-	output_sdst(detail::array_of_syntactic_dependency_structures[0]);
-	for (std::size_t j = 1; j < linarr::__syntactic_dependency_structure_size; ++j) {
+	output_sdst(detail::array_of_syntactic_dependency_trees[0]);
+	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
 		out_treebank_file << m_separator;
-		output_sdst(detail::array_of_syntactic_dependency_structures[j]);
+		output_sdst(detail::array_of_syntactic_dependency_trees[j]);
 	}
 }
 
@@ -892,7 +891,7 @@ noexcept
 				output_tree_type_values(fT, out_treebank_file);
 				break;
 
-			case treebank_feature::syntactic_dependency_structure_class:
+			case treebank_feature::syntactic_dependency_tree_class:
 				uint64_t C;
 				if (m_what_fs[C_idx]) {
 					C = static_cast<uint64_t>(props[C_idx]);

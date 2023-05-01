@@ -49,7 +49,7 @@
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/linarr/C.hpp>
+#include <lal/linarr/C/C.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/identity_arrangement.hpp>

@@ -115,7 +115,7 @@ public:
 	 *
 	 * This does not work for features
 	 * - @ref lal::io::treebank_feature::tree_type
-	 * - @ref lal::io::treebank_feature::syntactic_dependency_structure_class
+	 * - @ref lal::io::treebank_feature::syntactic_dependency_tree_class
 	 * @param tf Feature whose column name is to be modified.
 	 * @param name Custom name for the column.
 	 */

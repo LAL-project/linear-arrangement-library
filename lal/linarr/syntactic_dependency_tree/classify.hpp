@@ -41,28 +41,54 @@
 
 #pragma once
 
-#include <lal/linarr/aggregations/1level.hpp>
-#include <lal/linarr/aggregations/2level.hpp>
+// C++ includes
+#include <array>
 
-#include <lal/linarr/C/algorithms_C.hpp>
-#include <lal/linarr/C/C.hpp>
-
-#include <lal/linarr/chunking/algorithms.hpp>
-#include <lal/linarr/chunking/chunk.hpp>
-#include <lal/linarr/chunking/chunking.hpp>
-
-#include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/D/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D/D.hpp>
-#include <lal/linarr/D/DMax.hpp>
-#include <lal/linarr/D/Dmin.hpp>
-
-#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
+// lal includes
+#include <lal/linear_arrangement.hpp>
+#include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/syntactic_dependency_tree/type.hpp>
 
-#include <lal/linarr/dependency_flux.hpp>
+namespace lal {
+namespace linarr {
 
-#include <lal/linarr/formal_constraints.hpp>
+/**
+ * @brief Computes the type of syntactic dependency tree.
+ *
+ * Given an undirected rooted tree and a linear arrangement of its nodes,
+ * computes the class of projective structure the tree belongs to.
+ *
+ * This function admits the precomputed number of edge crossings in the same
+ * linear arrangement passed as parameter to this function.
+ *
+ * @param t Input tree.
+ * @param C Number of crossings (see @ref lal::linarr::num_crossings).
+ * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @returns The class of projective structure. If the class could not
+ * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
+ */
+std::array<bool, __syntactic_dependency_tree_size>
+syntactic_dependency_tree_classify
+(const graphs::rooted_tree& t, uint64_t C, const linear_arrangement& pi = {})
+noexcept;
 
-#include <lal/linarr/head_initial.hpp>
+/**
+ * @brief Computes the type of syntactic dependency tree.
+ *
+ * Given an undirected rooted tree and a linear arrangement of its nodes,
+ * computes the class of projective structure the tree belongs to.
+ *
+ * @param t Input tree.
+ * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
+ * node @e u is placed in position @e p of the arrangement.
+ * @returns The class of projective structure. If the class could not
+ * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
+ */
+std::array<bool, __syntactic_dependency_tree_size>
+syntactic_dependency_tree_classify
+(const graphs::rooted_tree& t, const linear_arrangement& pi = {})
+noexcept;
+
+} // -- namespace linarr
+} // -- namespace lal

@@ -497,10 +497,10 @@ enum class treebank_feature {
 	 * a 0 or a 1 depending on whether or not the tree can be classified into
 	 * that syntactic dependency structure.
 	 *
-	 * See @ref lal::linarr::syntactic_dependency_structure for a complete
+	 * See @ref lal::linarr::syntactic_dependency_tree for a complete
 	 * list of types.
 	 */
-	syntactic_dependency_structure_class,
+	syntactic_dependency_tree_class,
 
 	/*
 	 * @brief The last value of the enumeration.
@@ -590,8 +590,8 @@ noexcept
 	case treebank_feature::flux_mean_size: return "flux_mean_size";
 	case treebank_feature::flux_min_size: return "flux_min_size";
 	case treebank_feature::tree_type: return "tree_type";
-	case treebank_feature::syntactic_dependency_structure_class:
-		return "syntactic_dependency_structure_class";
+	case treebank_feature::syntactic_dependency_tree_class:
+		return "syntactic_dependency_tree_class";
 	case treebank_feature::__last_value: return "__last_value";
 	}
 	// should never happen

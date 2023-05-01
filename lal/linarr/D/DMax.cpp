@@ -39,30 +39,42 @@
  *
  ********************************************************************/
 
-#pragma once
+// C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
+#include <cinttypes>
+#include <utility>
 
-#include <lal/linarr/aggregations/1level.hpp>
-#include <lal/linarr/aggregations/2level.hpp>
+// lal includes
+#include <lal/linear_arrangement.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
 
-#include <lal/linarr/C/algorithms_C.hpp>
-#include <lal/linarr/C/C.hpp>
+namespace lal {
+namespace linarr {
 
-#include <lal/linarr/chunking/algorithms.hpp>
-#include <lal/linarr/chunking/chunk.hpp>
-#include <lal/linarr/chunking/chunking.hpp>
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
+(const graphs::free_tree& t) noexcept
+{
+	return detail::DMax::planar::AEF<true>(t);
+}
 
-#include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/D/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D/D.hpp>
-#include <lal/linarr/D/DMax.hpp>
-#include <lal/linarr/D/Dmin.hpp>
+std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+(const graphs::free_tree& t) noexcept
+{
+	static constexpr auto choice =
+		detail::DMax::planar::return_type_all_maxs::DMax_value_vertex_and_max_root;
+	return detail::DMax::planar::all_max_sum_lengths_values<choice>(t);
+}
 
-#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
-#include <lal/linarr/syntactic_dependency_tree/type.hpp>
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_projective
+(const graphs::rooted_tree& t) noexcept
+{
+	return detail::DMax::projective::AEF<true>(t);
+}
 
-#include <lal/linarr/dependency_flux.hpp>
-
-#include <lal/linarr/formal_constraints.hpp>
-
-#include <lal/linarr/head_initial.hpp>
+} // -- namespace linarr
+} // -- namespace lal

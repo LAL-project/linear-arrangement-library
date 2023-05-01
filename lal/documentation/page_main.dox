@@ -70,7 +70,7 @@ All the features of syntactic dependency trees that can be calculated with the a
 - the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
 - the mean hierarchical distance (see @ref lal::properties::mean_hierarchical_distance),
 - the headedness of a tree (see @ref lal::linarr::head_initial),
-- the type of syntactic dependency trees according to their projectivity (see @ref lal::linarr::syntactic_dependency_structure_class).
+- the type of syntactic dependency trees according to their projectivity (see @ref lal::linarr::syntactic_dependency_tree_classify).
 - calculation of the centre of a tree (see @ref lal::properties::tree_centre), the centroid of a tree (see @ref lal::properties::tree_centroid), a tree's diameter (see @ref lal::properties::tree_diameter).
 
 As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the @ref lal::generate namespace. We have implemented existing techniques (cited accordingly) or made or own to enumerate

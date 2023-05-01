@@ -96,17 +96,29 @@ HEADERS += \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
     detail/identity_arrangement.hpp \
-	detail/linarr/DMax_Planar_AEF.hpp \
-	detail/linarr/DMax_Projective_AEF.hpp \
-	detail/linarr/DMax_utils.hpp \
-	detail/linarr/Dopt_utils.hpp \
-	detail/linarr/chunking_Anderson.hpp \
-    detail/linarr/chunking_Macutek.hpp \
+    detail/linarr/C/brute_force.hpp \
+    detail/linarr/C/crossings.hpp \
+    detail/linarr/C/dyn_prog.hpp \
+    detail/linarr/C/ladder.hpp \
+    detail/linarr/C/predict.hpp \
+    detail/linarr/C/stack_based.hpp \
+    detail/linarr/D/D.hpp \
+    detail/linarr/D/DMax/Planar_AEF.hpp \
+    detail/linarr/D/DMax/Projective_AEF.hpp \
+    detail/linarr/D/DMax/utils.hpp \
+    detail/linarr/D/Dmin/Planar_AEF.hpp \
+    detail/linarr/D/Dmin/Planar_HS.hpp \
+    detail/linarr/D/Dmin/Projective_AEF.hpp \
+    detail/linarr/D/Dmin/Projective_HS.hpp \
+    detail/linarr/D/Dmin/Unconstrained_FC.hpp \
+    detail/linarr/D/Dmin/Unconstrained_YS.hpp \
+    detail/linarr/D/Dmin/utils.hpp \
+    detail/linarr/D/Dopt_utils.hpp \
+    detail/linarr/chunking/Anderson.hpp \
+    detail/linarr/chunking/Macutek.hpp \
     detail/linarr/dependency_flux.hpp \
     detail/linarr/formal_constraints.hpp \
     detail/linarr/headedness.hpp \
-    detail/linarr/predict_C.hpp \
-    detail/linarr/sum_edge_lengths.hpp \
     detail/linear_queue.hpp \
     detail/macros/basic_convert.hpp \
     detail/properties/tree_maximum_caterpillar.hpp \
@@ -124,19 +136,7 @@ HEADERS += \
 	detail/graphs/tree_classification.hpp \
 	detail/graphs/tree_type.hpp \
 	detail/io/check_correctness.hpp \
-	detail/linarr/C_brute_force.hpp \
-	detail/linarr/C_dyn_prog.hpp \
-	detail/linarr/C_ladder.hpp \
-	detail/linarr/Dmin_Planar_AEF.hpp \
-	detail/linarr/Dmin_Planar_HS.hpp \
-	detail/linarr/Dmin_Projective_AEF.hpp \
-	detail/linarr/Dmin_Projective_HS.hpp \
-	detail/linarr/Dmin_utils.hpp \
-	detail/linarr/algorithms_crossings.hpp \
-	detail/linarr/C_stack_based.hpp \
-	detail/linarr/Dmin_Unconstrained_FC.hpp \
-	detail/linarr/Dmin_Unconstrained_YS.hpp \
-	detail/linarr/syntactic_dependency_structure.hpp \
+	detail/linarr/syntactic_dependency_tree.hpp \
 	detail/numeric/utils.hpp \
     detail/pairs_utils.hpp \
 	detail/properties/tree_centre.hpp \
@@ -202,24 +202,24 @@ HEADERS += \
 	linarr.hpp \
 	C.hpp \
 	D.hpp \
-	linarr/DMax.hpp \
-	linarr/Dmin.hpp \
-	linarr/algorithms_C.hpp \
-	linarr/algorithms_Dmin.hpp \
-	linarr/1level.hpp \
-	linarr/2level.hpp \
-	linarr/algorithms_Dmin_planar.hpp \
-	linarr/algorithms_Dmin_projective.hpp \
-    linarr/algorithms_chunking.hpp \
-    linarr/chunk.hpp \
-    linarr/chunking.hpp \
-	linarr/classify_syntactic_dependency_structure.hpp \
+    linarr/C/C.hpp \
+    linarr/C/algorithms_C.hpp \
+    linarr/D/D.hpp \
+    linarr/D/DMax.hpp \
+    linarr/D/Dmin.hpp \
+    linarr/D/algorithms_Dmin.hpp \
+    linarr/D/algorithms_Dmin_planar.hpp \
+    linarr/D/algorithms_Dmin_projective.hpp \
+    linarr/aggregations/1level.hpp \
+    linarr/aggregations/2level.hpp \
+    linarr/chunking/algorithms.hpp \
+    linarr/chunking/chunk.hpp \
+    linarr/chunking/chunking.hpp \
 	linarr/dependency_flux.hpp \
-	linarr/C.hpp \
-	linarr/D.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
-	linarr/syntactic_dependency_structure.hpp \
+	linarr/syntactic_dependency_tree/classify.hpp \
+	linarr/syntactic_dependency_tree/type.hpp \
     linear_arrangement.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
@@ -268,16 +268,16 @@ SOURCES += \
 	io/treebank_collection_reader.cpp \
 	io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
-	linarr/C.cpp \
-	linarr/DMax.cpp \
-	linarr/Dmin.cpp \
-	linarr/chunking.cpp \
-	linarr/classify_syntactic_dependency_structure.cpp \
-	linarr/D.cpp \
+	linarr/C/C.cpp \
+	linarr/C/predict_C.cpp \
+	linarr/D/D.cpp \
+	linarr/D/DMax.cpp \
+	linarr/D/Dmin.cpp \
+	linarr/chunking/chunking.cpp \
 	linarr/dependency_flux.cpp \
 	linarr/formal_constraints.cpp \
 	linarr/head_initial.cpp \
-	linarr/predict_C.cpp \
+	linarr/syntactic_dependency_tree/classify.cpp \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \
