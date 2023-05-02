@@ -707,7 +707,7 @@ protected:
 		m_size_subtrees = std::move(r.m_size_subtrees);
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 
-		r.m_root = 0;
+		r.m_root.reset(); // old tree cannot have a root anymore.. it's been moved!
 		r.m_are_size_subtrees_valid = false;
 	}
 
