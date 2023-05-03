@@ -215,6 +215,7 @@ HEADERS += \
     linarr/chunking/algorithms.hpp \
     linarr/chunking/chunk.hpp \
     linarr/chunking/chunking.hpp \
+	linarr/chunking/output.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \

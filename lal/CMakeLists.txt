@@ -311,6 +311,7 @@ target_sources(
 		linarr/chunking/algorithms.hpp
 		linarr/chunking/chunk.hpp
 		linarr/chunking/chunking.hpp
+		linarr/chunking/output.hpp
 		linarr/D/algorithms_Dmin.hpp
 		linarr/D/algorithms_Dmin_planar.hpp
 		linarr/D/algorithms_Dmin_projective.hpp
@@ -474,6 +475,7 @@ set(LIBLAL_LINARR_HEADER
 	linarr/chunking/algorithms.hpp
 	linarr/chunking/chunk.hpp
 	linarr/chunking/chunking.hpp
+	linarr/chunking/output.hpp
 	linarr/D/algorithms_Dmin.hpp
 	linarr/D/algorithms_Dmin_planar.hpp
 	linarr/D/algorithms_Dmin_projective.hpp

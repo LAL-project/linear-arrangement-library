@@ -50,6 +50,7 @@
 #include <lal/linarr/chunking/algorithms.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
 #include <lal/linarr/chunking/chunking.hpp>
+#include <lal/linarr/chunking/output.hpp>
 
 #include <lal/linarr/D/algorithms_Dmin.hpp>
 #include <lal/linarr/D/algorithms_Dmin_planar.hpp>

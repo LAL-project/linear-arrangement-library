@@ -45,97 +45,51 @@
 #include <ostream>
 
 // lal includes
-#include <lal/graphs/undirected_graph.hpp>
-#include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/rooted_tree.hpp>
+#include <lal/linarr/chunking/chunk.hpp>
 
 namespace lal {
-namespace graphs {
+namespace linarr {
 
 /**
- * @brief Standard output operator for undirected graphs.
+ * @brief Standard output operator for chunks.
  *
- * Usable by @ref lal::graphs::undirected_graph, @ref lal::graphs::free_tree.
+ * Usable by @ref lal::linarr::chunk.
  * @param os ostream C++ object.
- * @param g Input graph.
+ * @param g Input chunk.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
-noexcept
-{
-	const auto N = g.get_num_nodes();
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
+inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept {
+	os << "parent: ";
+	if (c.has_parent_node()) {
+		os << c.get_parent_node();
+	}
+	else {
+		os << '*';
+	}
+	os << "; nodes:";
+	for (node u : c.get_nodes()) {
+		os << ' ' << u;
 	}
 	return os;
 }
 
 /**
- * @brief Standard output operator for directed graphs.
+ * @brief Standard output operator for chunk sequences.
  *
- * Usable only by @ref lal::graphs::directed_graph.
+ * Usable by @ref lal::linarr::chunk_sequence.
  * @param os ostream C++ object.
- * @param g Input graph.
+ * @param g Input chunk sequence.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
+inline std::ostream& operator<< (std::ostream& os, const chunk_sequence& seq)
 noexcept
 {
-	const auto N = g.get_num_nodes();
-	os << "out:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_out_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	os << "\n" << "in:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_in_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
+	for (std::size_t i = 0; i < seq.size(); ++i) {
+		os << i << ": " << seq.get_chunk(i) << '\n';
 	}
 	return os;
 }
 
-/**
- * @brief Standard output operator for directed rooted trees.
- *
- * Usable by @ref lal::graphs::rooted_tree.
- * @param os ostream C++ object.
- * @param g Input graph.
- * @returns The output stream.
- */
-inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g)
-noexcept
-{
-	const auto N = g.get_num_nodes();
-	const std::string pad = (g.has_root() ? " " : "");
-	os << "out:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_out_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	os << "\n" << "in:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_in_neighbours(u)) {
-			os << " " << v;
-		}
-		os << (u < N - 1 ? "\n" : "");
-	}
-	return os;
-}
 
-} // -- namespace graphs
+} // -- namespace linarr
 } // -- namespace lal
