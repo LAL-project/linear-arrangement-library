@@ -467,26 +467,36 @@ set(LIBLAL_ITERATORS_HEADER
 	iterators/E_iterator.hpp
 	iterators/Q_iterator.hpp
 )
-set(LIBLAL_LINARR_HEADER
+set(LIBLAL_LINARR_MAIN_HEADER
+	linarr/dependency_flux.hpp
+	linarr/formal_constraints.hpp
+	linarr/head_initial.hpp
+)
+set(LIBLAL_LINARR_aggregations_HEADER
 	linarr/aggregations/1level.hpp
 	linarr/aggregations/2level.hpp
+)
+set(LIBLAL_LINARR_C_HEADER
 	linarr/C/algorithms_C.hpp
 	linarr/C/C.hpp
+)
+set(LIBLAL_LINARR_chunking_HEADER
 	linarr/chunking/algorithms.hpp
 	linarr/chunking/chunk.hpp
 	linarr/chunking/chunking.hpp
 	linarr/chunking/output.hpp
+)
+set(LIBLAL_LINARR_D_HEADER
 	linarr/D/algorithms_Dmin.hpp
 	linarr/D/algorithms_Dmin_planar.hpp
 	linarr/D/algorithms_Dmin_projective.hpp
 	linarr/D/D.hpp
 	linarr/D/DMax.hpp
 	linarr/D/Dmin.hpp
+)
+set(LIBLAL_LINARR_syndeptree_HEADER
 	linarr/syntactic_dependency_tree/classify.hpp
 	linarr/syntactic_dependency_tree/type.hpp
-	linarr/dependency_flux.hpp
-	linarr/formal_constraints.hpp
-	linarr/head_initial.hpp
 )
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp
@@ -527,7 +537,12 @@ install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR
 install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
 install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
 install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
-install(FILES ${LIBLAL_LINARR_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
+install(FILES ${LIBLAL_LINARR_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
+install(FILES ${LIBLAL_LINARR_aggregations_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/aggregations)
+install(FILES ${LIBLAL_LINARR_C_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/C)
+install(FILES ${LIBLAL_LINARR_chunking_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/chunking)
+install(FILES ${LIBLAL_LINARR_D_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/D)
+install(FILES ${LIBLAL_LINARR_syndeptree_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/syntactic_dependency_tree)
 install(FILES ${LIBLAL_NUMERIC_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/numeric)
 install(FILES ${LIBLAL_PROPERTIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)
 install(FILES ${LIBLAL_UTILITIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/utilities)
