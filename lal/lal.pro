@@ -270,7 +270,7 @@ SOURCES += \
 	io/treebank_processor.cpp \
 	io/treebank_reader.cpp \
 	linarr/C/C.cpp \
-	linarr/C/predict_C.cpp \
+	linarr/C/predict.cpp \
 	linarr/D/D.cpp \
 	linarr/D/DMax.cpp \
 	linarr/D/Dmin.cpp \
