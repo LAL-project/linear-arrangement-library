@@ -393,12 +393,14 @@ target_sources(
 		utilities.hpp
 )
 
-# **********************************************************************
+# ******************************************************************** #
 # PUBLIC HEADER FILES FOR INSTALLATION
 
 # Public header files of the library (to be installed in the system).
 # These are not installed through the usual PUBLIC_HEADER property,
 # but via several custom variables
+
+# -------------------------------------------------------------------- #
 set(LIBLAL_MAIN_HEADER
 	basic_types.hpp
 	C.hpp
@@ -414,10 +416,12 @@ set(LIBLAL_MAIN_HEADER
 	properties.hpp
 	utilities.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_DETAIL_HEADER
 	detail/data_array.hpp
 	detail/arrangement_wrapper.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_GENERATION_HEADER
 	generate/all_arrangements.hpp
 	generate/all_lab_free_trees.hpp
@@ -436,6 +440,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/tree_generator.hpp
 	generate/tree_generator_type.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_GRAPHS_HEADER
 	graphs/conversions.hpp
 	graphs/directed_graph.hpp
@@ -448,6 +453,7 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/check_correctness.hpp
@@ -463,10 +469,12 @@ set(LIBLAL_IO_HEADER
 	io/treebank_processor.hpp
 	io/treebank_reader.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_ITERATORS_HEADER
 	iterators/E_iterator.hpp
 	iterators/Q_iterator.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_LINARR_MAIN_HEADER
 	linarr/dependency_flux.hpp
 	linarr/formal_constraints.hpp
@@ -498,6 +506,7 @@ set(LIBLAL_LINARR_syndeptree_HEADER
 	linarr/syntactic_dependency_tree/classify.hpp
 	linarr/syntactic_dependency_tree/type.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp
 	numeric/integer_output.hpp
@@ -505,6 +514,7 @@ set(LIBLAL_NUMERIC_HEADER
 	numeric/rational.hpp
 	numeric/rational_output.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_PROPERTIES_HEADER
 	properties/C_rla.hpp
 	properties/D_rla.hpp
@@ -516,10 +526,12 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/tree_centroid.hpp
 	properties/tree_diameter.hpp
 )
+# -------------------------------------------------------------------- #
 set(LIBLAL_UTILITIES_HEADER
 	utilities/aggregations.hpp
 	utilities/tree_isomorphism.hpp
 )
+# **********************************************************************
 
 # **********************************************************************
 # INSTALLATION OF LIBRARY
