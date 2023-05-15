@@ -41,7 +41,8 @@
 
 #pragma once
 
-// C++ include
+// C++ includes
+#include <cstdint>
 #include <string>
 
 namespace lal {
