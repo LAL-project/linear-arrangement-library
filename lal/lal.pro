@@ -82,8 +82,8 @@ LIBS += -lgmp -fopenmp -lpthread
 
 # configure cluster compiler
 equals(ENVIR, "CLUSTER") {
-	QMAKE_CXX = /home/soft/gcc-11.2.0/bin/g++
-	QMAKE_LINK = /home/soft/gcc-11.2.0/bin/g++
+	QMAKE_CXX = /home/soft/gcc-11.3/bin/g++
+	QMAKE_LINK = /home/soft/gcc-11.3/bin/g++
 }
 
 INCLUDEPATH += ..
