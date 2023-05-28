@@ -72,3 +72,4 @@ The C++ documentation can be found online in the [library's webpage](https://cql
 
 	$ cd /path/to/the/linear-arrangement-library
 	$ ./make_docs.sh
+
