@@ -55,7 +55,7 @@ namespace linarr {
  *
  * Usable by @ref lal::linarr::chunk.
  * @param os ostream C++ object.
- * @param g Input chunk.
+ * @param c Input chunk.
  * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept {
@@ -78,7 +78,7 @@ inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept {
  *
  * Usable by @ref lal::linarr::chunk_sequence.
  * @param os ostream C++ object.
- * @param g Input chunk sequence.
+ * @param seq Input chunk sequence.
  * @returns The output stream.
  */
 inline std::ostream& operator<< (std::ostream& os, const chunk_sequence& seq)
