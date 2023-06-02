@@ -19,10 +19,6 @@ isEmpty(ENVIR) {
     ENVIR = "HOME"
 }
 
-isEmpty(LTO) {
-    LTO = "NO"
-}
-
 isEmpty(ADDRESS_SANITIZER) {
     ADDRESS_SANITIZER = "NO"
 }
@@ -64,12 +60,6 @@ QMAKE_LFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
 # uncomment when doing actual profiling
 #QMAKE_CXXFLAGS_RELEASE += -pg
 #QMAKE_LFLAGS += -pg
-
-equals(LTO, "YES") {
-    # use Inter-Procedural Optimization (IPO)
-	QMAKE_CXXFLAGS += -flto -fno-fat-lto-objects
-	QMAKE_LFLAGS += -flto -fno-fat-lto-objects
-}
 
 equals(ADDRESS_SANITIZER, "YES") {
     # not to be used in combination with valgrind
