@@ -9,10 +9,10 @@ CONFIG -= app_bundle
 QT -= core gui
 
 CONFIG(release, debug|release) {
-TARGET = lal
+TARGET = laloptimized
 }
 CONFIG(debug, debug|release) {
-TARGET = laldebug
+TARGET = lal
 }
 
 isEmpty(ENVIR) {
