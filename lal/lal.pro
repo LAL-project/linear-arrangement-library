@@ -23,7 +23,7 @@ isEmpty(ADDRESS_SANITIZER) {
     ADDRESS_SANITIZER = "NO"
 }
 
-QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp -O3
+QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp
 QMAKE_CXXFLAGS +=			\
     -Wall					\
 	-Wextra					\ # reasonable and standard
@@ -49,9 +49,9 @@ QMAKE_CXXFLAGS +=			\
 	-Wuseless-cast			\ # warn if you perform a cast to the same type
 	-Wrestrict
 
-QMAKE_CXXFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
+QMAKE_CXXFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG -Og
 QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -UDEBUG -DNDEBUG -fstrict-aliasing
+QMAKE_CXXFLAGS_RELEASE += -UDEBUG -DNDEBUG -fstrict-aliasing -O3
 
 QMAKE_LFLAGS += -fPIC -O3 -Wl,-O3
 QMAKE_LFLAGS_RELEASE += -DNDEBUG -UDEBUG
