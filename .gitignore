@@ -9,3 +9,10 @@ lal/CMakeLists.txt.user
 lal-debug/
 lal-release/
 lal-profile/
+
+lal-debug-11.3/
+lal-release-11.3/
+lal-debug-12.3/
+lal-release-12.3/
+lal-debug-13.1/
+lal-release-13.1/
