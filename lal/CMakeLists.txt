@@ -589,7 +589,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # Optimisation flags
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	add_compiler_flag(-O3)
+	add_compiler_flag(-Og)
 	add_compiler_flag(-DDEBUG)
 	add_compiler_flag(-D_GLIBCXX_DEBUG)
 else()
