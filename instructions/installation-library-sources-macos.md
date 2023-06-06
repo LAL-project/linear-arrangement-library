@@ -6,7 +6,7 @@ In this file is detailed step by step the compilation and installation process o
 
 ### Compiler
 
-We have tested LAL's compilation on MacOS with [GNU's `gcc`](https://www.gnu.org/software/gcc/) (version `11.2.0`). In order to install it on your computer, we suggest [these instructions](https://discussions.apple.com/thread/8336714), summarized in one command here:
+We have tested LAL's compilation on MacOS with [GNU's `gcc`](https://www.gnu.org/software/gcc/) (version `11.2.0`). In order to install it on your computer, we suggest [these instructions](https://discussions.apple.com/thread/8336714), summarized here. Simply run the command:
 
 	$ brew install gcc
 	
