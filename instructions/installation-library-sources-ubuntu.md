@@ -6,14 +6,13 @@ In this file is detailed step by step the compilation and installation process o
 
 ### Compiler
 
-You will need a compiler that supports the `C++17` standard. We use GNU's `g++` (version `11.1.0`). There are several guides on the Internet explaining how to install said compiler. Here we summarize [this guide](https://lindevs.com/install-g-on-ubuntu/):
+You will need a compiler that supports the `C++17` standard. We use GNU's `g++` (we have tested with several versions). There are several guides on the Internet explaining how to install said compiler. For this you should install the latest version of `g++` available. For example, you can run:
 
-	$ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-	$ sudo apt install g++-11
+	$ sudo apt install build-essential
 
 In order to check that the compiler has been installed, issue the following command:
 
-	$ g++-11 --version
+	$ g++ --version
 
 You should see something like this:
 
@@ -21,8 +20,6 @@ You should see something like this:
 	Copyright (C) 2021 Free Software Foundation, Inc.
 	This is free software; see the source for copying conditions.  There is NO
 	warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-In order to run `g++-11` using the shorter `g++` command, you have to configure the 'alternatives' in Ubuntu.
 
 ### CMake
 
