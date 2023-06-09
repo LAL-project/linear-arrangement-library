@@ -119,6 +119,20 @@ Run only one of the two commands above (*one* of the two calls to `cmake`). The 
 	$ make -j4
 	$ sudo make install
 
+### Compile against LAL
+
+#### Compile against the debug build
+
+To link an executable file against the debug build of LAL, issue the following command
+
+	$ g++ -D_GLIBCXX_DEBUG -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llal
+
+#### Compile against the release build
+
+To link an executable file against the release build of LAL, issue the following command
+
+	$ g++ -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llaloptimized
+
 ## Generating LAL's `html` documentation
 
 ### Dependencies
