@@ -14,3 +14,17 @@ Now,
 - Uncompress the contents of the folder `include` within `windows10-c++-libs-msys64.zip` into `mingw64/include`. You should have moved the only folder inside named `lal`, not just its contents.
 
 You should be ready to use C++ LAL.
+
+## Compile against LAL
+
+### Compile against the debug build
+
+To link an executable file against the debug build of LAL, issue the following command
+
+	$ g++ -D_GLIBCXX_DEBUG -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llal
+
+### Compile against the release build
+
+To link an executable file against the release build of LAL, issue the following command
+
+	$ g++ -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llaloptimized
