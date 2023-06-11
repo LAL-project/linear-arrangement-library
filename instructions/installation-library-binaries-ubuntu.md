@@ -36,10 +36,10 @@ We recommend to add these three commands in your `.bashrc` file, or equivalent, 
 
 To link an executable file against the debug build of LAL, issue the following command
 
-	$ g++ -D_GLIBCXX_DEBUG -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llal
+	$ g++ -D_GLIBCXX_DEBUG -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llal -lgmp -fopenmp -lpthread
 
 ### Compile against the release build
 
 To link an executable file against the release build of LAL, issue the following command
 
-	$ g++ -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llaloptimized
+	$ g++ -std=c++17 *.o -I /path/to/lal/headers -L /path/to/lal -llaloptimized -lgmp -fopenmp -lpthread
