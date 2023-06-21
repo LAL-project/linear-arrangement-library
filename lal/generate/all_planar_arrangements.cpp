@@ -123,7 +123,7 @@ void all_planar_arrangements::next() noexcept {
 
 linear_arrangement all_planar_arrangements::get_arrangement() const noexcept {
 	return (m_T.get_num_nodes() == 1 ?
-		linear_arrangement(1) :
+		linear_arrangement::identity(1) :
 		detail::make_arrangement_permutations(m_T, m_root, m_intervals)
 	);
 }
