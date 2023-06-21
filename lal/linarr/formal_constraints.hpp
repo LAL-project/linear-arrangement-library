@@ -68,12 +68,20 @@ namespace linarr {
  */
 inline
 bool is_permutation(const linear_arrangement& arr = {}) noexcept {
-	if (arr.size() <= 1) { return true; }
+	// identity arrangement is always a permutation
+	if (arr.size() == 0) { return true; }
+	// an arrangement of a single element is a permutation
+	// if its only element is within range
+	if (arr.size() == 1) {
+		return arr[lal::position_t{0ull}] == 0;
+	}
 	// ensure that no position has been used twice
-	detail::data_array<uint64_t> d(arr.size(), 0);
+	detail::data_array<char> d(arr.size(), 0);
 	for (node_t u = 0ull; u < arr.size(); ++u) {
 		const position p = arr[u];
+		// ensure all elements are within range
 		if (p >= arr.size()) { return false; }
+		// if a value already exists, this is not a permutation
 		if (d[p] > 0) { return false; }
 		d[p] += 1;
 	}
