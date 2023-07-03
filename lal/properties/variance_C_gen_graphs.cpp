@@ -43,7 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <iostream>
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
@@ -150,12 +149,6 @@ namespace properties {
 // Variance of C (using formula)
 // GENERAL GRAPHS
 
-/* Warning:
- * 'pair_C3_L2' is 3 times larger than the actual amount of
- * pairs of disjoint cycle of 3 nodes and edge. This is done
- * so that we don't have to change the rational numbers used to
- * compute the variance.
- */
 template <bool reuse, bool is_normalised>
 void compute_data_gen_graphs
 (
@@ -390,8 +383,20 @@ noexcept
 	pair_C3_L2 /= 3;
 }
 
-numeric::rational var_num_crossings_rational
-(const graphs::undirected_graph& g, bool reuse)
+numeric::rational var_num_crossings_rational(
+	const graphs::undirected_graph& g, bool reuse,
+	const numeric::rational& q_coefficient,
+	const numeric::rational& K_coefficient,
+	const numeric::rational& n_paths_4_coefficient,
+	const numeric::rational& n_paths_5_coefficient,
+	const numeric::rational& n_cycles_4_coefficient,
+	const numeric::rational& Lambda_1_coefficient,
+	const numeric::rational& Lambda_2_coefficient,
+	const numeric::rational& Phi_1_coefficient,
+	const numeric::rational& Phi_2_coefficient,
+	const numeric::rational& n_Z_coefficient,
+	const numeric::rational& n_Y_coefficient
+)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -401,7 +406,7 @@ noexcept
 	// compute terms dependent of Q
 
 	// size of set Q
-	uint64_t Qs = 0;
+	uint64_t q = 0;
 
 	// n_G(L_4)
 	uint64_t n_paths_4 = 0;
@@ -411,13 +416,13 @@ noexcept
 	uint64_t n_cycles_4 = 0;
 
 	// (a_{tu} + a_{sv})(a_{tv} + a_{su})
-	uint64_t paw = 0;
+	uint64_t n_paw = 0;
 	// the amount of pairs of disjoint
 	// triangle and edge in the graph.
-	uint64_t pair_C3_L2 = 0;
+	uint64_t n_pair_C3_L2 = 0;
 
 	// k_s + k_t + k_u + k_v
-	uint64_t Kg = 0;
+	uint64_t K = 0;
 	// (k_s*k_t + k_u*k_v)
 	uint64_t Phi_1 = 0;
 	// (k_s + k_t)(k_u + k_v)
@@ -429,51 +434,73 @@ noexcept
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
 	uint64_t Lambda_2 = 0;
 
-#define parameters_of_compute_data	\
-	(								\
-		g, n, m,					\
-		Qs, Kg,						\
-		n_paths_4, n_cycles_4, paw,	\
-		n_paths_5, pair_C3_L2,		\
-		Phi_1, Phi_2,				\
-		Lambda_1, Lambda_2			\
-	)
+	#define parameters_of_compute_data		\
+	(										\
+			 g, n, m,						\
+			 q, K,							\
+			 n_paths_4, n_cycles_4, n_paw,	\
+			 n_paths_5, n_pair_C3_L2,		\
+			 Phi_1, Phi_2,					\
+			 Lambda_1, Lambda_2				\
+		)
 
-	if (reuse) {
+		if (reuse) {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<true, true>
 				parameters_of_compute_data;
-		}
+			}
 		else {
 			compute_data_gen_graphs<true, false>
 				parameters_of_compute_data;
-		}
+			}
 	}
 	else {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<false, true>
 				parameters_of_compute_data;
-		}
+			}
 		else {
 			compute_data_gen_graphs<false, false>
 				parameters_of_compute_data;
-		}
+			}
 	}
 
 	// V[C]
 	numeric::rational V(0);
-	V += numeric::rational(2,45)*(m + 2)*Qs;
-	V -= numeric::rational(1,180)*(2*m + 7)*n_paths_4;
-	V -= numeric::rational(1,180)*n_paths_5;
-	V += numeric::rational(1,90)*Kg;
-	V -= numeric::rational(3,45)*n_cycles_4;
-	V -= numeric::rational(1,60)*Lambda_1;
-	V += numeric::rational(1,180)*Lambda_2;
-	V += numeric::rational(1,180)*Phi_2;
-	V -= numeric::rational(1,90)*Phi_1;
-	V += numeric::rational(1,30)*paw;
-	V += numeric::rational(1,30)*pair_C3_L2;
+	V += q_coefficient*q;
+	V += K_coefficient*K;
+	V += n_paths_4_coefficient*n_paths_4;
+	V -= n_paths_5_coefficient*n_paths_5;
+	V += n_cycles_4_coefficient*n_cycles_4;
+	V += Lambda_1_coefficient*Lambda_1;
+	V -= Lambda_2_coefficient*Lambda_2;
+	V += Phi_1_coefficient*Phi_1;
+	V += Phi_2_coefficient*Phi_2;
+	V += n_Z_coefficient*n_paw;
+	V -= n_Y_coefficient*n_pair_C3_L2;
 	return V;
+}
+
+numeric::rational var_num_crossings_rational
+(const graphs::undirected_graph& g, bool reuse)
+noexcept
+{
+	const uint64_t m = g.get_num_edges();
+
+	return var_num_crossings_rational(
+		g, reuse,
+		 numeric::rational(2*m + 4, 45),  // Q coefficient
+		 numeric::rational(1, 90),        // K coefficient
+		-numeric::rational(2*m + 7, 180), // n_paths_4 coefficient
+		 numeric::rational(1, 180),       // n_paths_5 coefficient
+		-numeric::rational(1, 15),        // n_cycles_4 coefficient
+		-numeric::rational(1, 60),        // Lambda_1 coefficient
+		-numeric::rational(1, 180),       // Lambda_2 coefficient
+		-numeric::rational(1, 90),        // Phi_1_coefficient
+		 numeric::rational(1, 180),       // Phi_2_coefficient
+		 numeric::rational(1, 30),        // n_Z_coefficient
+		-numeric::rational(1, 30)         // n_Y_coefficient
+	);
 }
 
 } // -- namespace properties
