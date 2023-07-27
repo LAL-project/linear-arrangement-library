@@ -694,7 +694,7 @@ FanChung_2(const graphs::free_tree& t) noexcept
 
 	uint64_t Dmin = 0;
 	linear_arrangement arr(make_arrangement ? t.get_num_nodes() : 0);
-	Chung::calculate_mla<Chung::NO_ANCHOR, make_arrangement>(T, 0, 0, arr, Dmin);
+	Chung::calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>(T, 0, 0, arr, Dmin);
 
 	if constexpr (make_arrangement) {
 		return {Dmin, std::move(arr)};

@@ -359,7 +359,7 @@ noexcept
 	}
 }
 
-} // -- namespace dmin_shiloach
+} // -- namespace Shiloach
 
 /**
  * @brief Calculates a minimum linear arrangment using Shiloach's algorithm.
@@ -388,7 +388,7 @@ noexcept
 
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
-	Shiloach::calculate_mla<Shiloach::NO_ANCHOR, make_arrangement>
+	Shiloach::calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 		(T, 0, 0, t.get_num_nodes() - 1, arrangement, Dmin);
 
 	if constexpr (make_arrangement) {
