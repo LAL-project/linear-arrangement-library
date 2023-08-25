@@ -71,12 +71,11 @@ And, please, also cite the Zenodo repository that corresponds to version 23.01.
 		@software{LAL2301,
 			author = {{Alemany-Puig}, Llu\'{i}s and Esteban, {Juan Luis} and {Ferrer-i-Cancho}, Ramon},
 			title = {{LAL-project/linear-arrangement-library: The Linear Arrangement Library 23.01}},
-			month = mar,
+			month = {03},
 			year = 2023,
 			publisher = {Zenodo},
 			version = {v23.01},
-			doi = {10.5281/zenodo.7755867},
-			url = {10.5281/zenodo.7755867}
+			doi = {10.5281/zenodo.7755867}
 		}
 
 ## Documentation
