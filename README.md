@@ -76,7 +76,7 @@ And, please, also cite the Zenodo repository that corresponds to version 23.01.
 			publisher = {Zenodo},
 			version = {v23.01},
 			doi = {10.5281/zenodo.7755867},
-			url = {https://doi.org/10.5281/zenodo.7755867}
+			url = {10.5281/zenodo.7755867}
 		}
 
 ## Documentation
