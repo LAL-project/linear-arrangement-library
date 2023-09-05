@@ -13,8 +13,8 @@ function make_directories_compiler() {
 		CXX_compiler="-DCMAKE_CXX_COMPILER=/home/soft/gcc-$compiler/bin/g++"
 		C_compiler="-DCMAKE_C_COMPILER=/home/soft/gcc-$compiler/bin/gcc"
 	else
-		CXX_compiler="-DCMAKE_CXX_COMPILER=/home/soft/gcc-11.3/bin/g++"
-		C_compiler="-DCMAKE_C_COMPILER=/home/soft/gcc-11.3/bin/gcc"
+		CXX_compiler="-DCMAKE_CXX_COMPILER=/home/soft/gcc-11.4.0/bin/g++"
+		C_compiler="-DCMAKE_C_COMPILER=/home/soft/gcc-11.4.0/bin/gcc"
 	fi
 	
 	mkdir -p lal-debug$suffix
@@ -30,5 +30,6 @@ function make_directories_compiler() {
 
 make_directories_compiler
 make_directories_compiler 11.3
+make_directories_compiler 11.4.0
 make_directories_compiler 12.3
 make_directories_compiler 13.1
