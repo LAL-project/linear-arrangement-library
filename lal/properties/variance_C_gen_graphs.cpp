@@ -120,7 +120,7 @@ struct hash_edge {
 */
 
 struct hash_edge {
-	std::size_t operator()(const lal::edge& p) const {
+	std::size_t operator()(const lal::edge& p) const noexcept {
 		// Cantor hash
 		// source: https://cran.r-project.org/web/packages/clustAnalytics/index.html
 		// From the Ph.D. thesis of Martí Renedo Mirambell (Polytechnic University of Catalonia)
