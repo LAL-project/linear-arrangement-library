@@ -233,7 +233,8 @@ max_subtree(const tree_t& t) noexcept
 	// calculate the caterpillar distance
 	const auto caterpillar_distance = n - num_vertices_in_path[w_star];
 
-	// the tree is not a caterpillar
+	// The result is just the caterpillar distance.
+	// Regardless of the type of input tree, return 'caterpillar_distance'
 	if constexpr (ret_type == result::distance) {
 		return caterpillar_distance;
 	}
@@ -326,6 +327,13 @@ max_subtree(const tree_t& t) noexcept
 			std::move(maximum_caterpillar_backbone),
 			std::move(is_node_in_maximum_caterpillar)
 		};
+	}
+	else {
+		// never reached;
+#if defined DEBUG
+		assert(false);
+#endif
+		return 0;
 	}
 }
 
