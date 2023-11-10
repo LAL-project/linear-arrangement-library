@@ -168,28 +168,30 @@ noexcept
 	if constexpr (not memory_has_frequencies) {
 		// calculate frequency of each element
 		for (auto it = begin; it != end; ) {
-			// get the key of the element into a variable so that the
-			// function is NOT called more than once per iteration
+			// get the key of the element into a variable so that
+			// the function is NOT called more than once per iteration
 			const std::size_t elem_key = key(*(it++));
 
 			++mem.count[elem_key];
 		}
 	}
 
-	for (std::size_t k = 1; k < largest_key_plus_1; ++k) {
-		mem.count[k] += mem.count[k - 1];
+	std::size_t total = 0;
+	for (std::size_t k = 0; k < largest_key_plus_1; ++k) {
+		std::tie(mem.count[k], total)
+			= std::make_pair(total, mem.count[k] + total);
 	}
 
 	std::size_t actual_container_size = 0;
 	for (auto it = begin; it != end; ) {
 		++actual_container_size;
 
-		// get the key of the element into a variable so that the
-		// function is NOT called more than once per iteration
+		// get the key of the element into a variable so that
+		// the function is NOT called more than once per iteration
 		const std::size_t elem_key = key(*it);
 
-		--mem.count[elem_key];
 		mem.output[mem.count[elem_key]] = std::move(*(it++));
+		++mem.count[elem_key];
 	}
 
 	// calculate output
