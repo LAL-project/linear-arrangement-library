@@ -112,8 +112,8 @@ struct memory {
 /**
  * @brief Counting sort algorithm with reusable memory.
  *
- * This algorithm is interesting for sorting containers with non-unique values
- * that can be easily mapped to integers within a reasonable range, e.g., in the
+ * This algorithm is useful for sorting containers with non-unique values that
+ * can be easily mapped to integers within a reasonable range, e.g., in the
  * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  * and \cite Cormen2001a.
  *
@@ -130,7 +130,8 @@ struct memory {
  * @param largest_key_plus_1 Integer value equal to 1 + the largest key that can
  * be obtained with function @e key.
  * @param key Function that returns a single integer value used to compare the
- * elements.
+ * elements. This function is always called twice per element in the range to
+ * be sorted.
  * @param mem Reusable memory for the counting sort algorithm.
  * @pre Memory's count must be set to 0 (see @ref lal::detail::sorting::countingsort::memory::reset_count).
  * @post The elements in the range [begin,end) are sorted according to the sorting
@@ -160,38 +161,35 @@ void counting_sort(
 )
 noexcept
 {
-	constexpr bool is_increasing =
-		std::is_same_v<sort_type, non_decreasing_t>;
+	constexpr bool is_increasing = std::is_same_v<sort_type, non_decreasing_t>;
 
 	if (begin == end) { return; }
 
 	if constexpr (not memory_has_frequencies) {
 		// calculate frequency of each element
 		for (auto it = begin; it != end; ) {
-			// get the key of the element into a variable so that
-			// the function is NOT called more than once per iteration
+			// get the key of the element into a variable so that the
+			// function is NOT called more than once per iteration
 			const std::size_t elem_key = key(*(it++));
 
 			++mem.count[elem_key];
 		}
 	}
 
-	std::size_t total = 0;
-	for (std::size_t k = 0; k < largest_key_plus_1; ++k) {
-		std::tie(mem.count[k], total)
-			= std::make_pair(total, mem.count[k] + total);
+	for (std::size_t k = 1; k < largest_key_plus_1; ++k) {
+		mem.count[k] += mem.count[k - 1];
 	}
 
 	std::size_t actual_container_size = 0;
 	for (auto it = begin; it != end; ) {
 		++actual_container_size;
 
-		// get the key of the element into a variable so that
-		// the function is NOT called more than once per iteration
+		// get the key of the element into a variable so that the
+		// function is NOT called more than once per iteration
 		const std::size_t elem_key = key(*it);
 
+		--mem.count[elem_key];
 		mem.output[mem.count[elem_key]] = std::move(*(it++));
-		++mem.count[elem_key];
 	}
 
 	// calculate output
@@ -213,8 +211,8 @@ noexcept
 /**
  * @brief Counting sort algorithm.
  *
- * This algorithm is interesting for sorting containers with non-unique values
- * that can be easily mapped to integers within a reasonable range, e.g., in the
+ * This algorithm is useful for sorting containers with non-unique values that
+ * can be easily mapped to integers within a reasonable range, e.g., in the
  * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  *
  * Template parameters:
@@ -232,7 +230,8 @@ noexcept
  * sorted. The lowest value is std::distance(begin,end), the actual size of the
  * container.
  * @param key Function that returns a single integer value used to compare the
- * elements.
+ * elements. This function is always called twice per element in the range to
+ * be sorted.
  * @post The elements in the range [begin,end) are sorted according to the sorting
  * criterion.
  * @post The function @e key is called exactly twice for each element in the
