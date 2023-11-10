@@ -158,6 +158,18 @@ public:
 		clear();
 	}
 
+	/// Comparison of equal data arrays
+	bool operator== (const data_array& d) const noexcept {
+		if (size() != d.size()) { return size() < d.size(); }
+
+		for (std::size_t i = 0; i < size(); ++i) {
+			if (m_data[i] != d.m_data[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/// Clear the contents of the array.
 	void clear() noexcept {
 		delete[] m_data;
