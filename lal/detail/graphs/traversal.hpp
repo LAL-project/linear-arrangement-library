@@ -343,12 +343,11 @@ protected:
 	 * graph_traversal(graph, source):
 	 *    .	// set of |V(graph)| bits set to false
 	 *	 1.	vis = {false}
-	 *    .	// structure of the traversal, initialised with the source,
-	 *	  .	// either a stack or a queue.
+	 *    .	// structure of the traversal, initialised with the source, a queue.
 	 *	 2.	X = {source}
 	 *	 3.	while X is not empty do
-	 *	 4.		v = X.front or X.top
-	 *	 5.		remove X's top
+	 *	 4.		v = X.front
+	 *	 5.		remove X's front
 	 *	 6.		proc_curr(v)
 	 *	 7.		if terminate(v) then Finish traversal
 	 *	 8.		else
