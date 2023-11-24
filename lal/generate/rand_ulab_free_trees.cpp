@@ -45,7 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <numeric>
 
 // lal includes
 #include <lal/numeric/rational.hpp>
