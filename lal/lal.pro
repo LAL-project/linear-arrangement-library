@@ -87,6 +87,7 @@ HEADERS += \
     detail/data_array.hpp \
 	detail/avl.hpp \
     detail/generate/make_arrangement.hpp \
+	detail/graphs/bipartite_graph_colorability.hpp \
     detail/linarr/C/brute_force.hpp \
     detail/linarr/C/crossings.hpp \
     detail/linarr/C/dyn_prog.hpp \
@@ -165,6 +166,7 @@ HEADERS += \
 	graphs.hpp \
 	graphs/conversions.hpp \
 	graphs/graph.hpp \
+	graphs/graph_coloring.hpp \
 	graphs/output.hpp \
 	graphs/tree.hpp \
 	graphs/directed_graph.hpp \
