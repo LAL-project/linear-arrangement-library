@@ -97,7 +97,7 @@ HEADERS += \
     detail/linarr/D/D.hpp \
     detail/linarr/D/DMax/Planar_AEF.hpp \
     detail/linarr/D/DMax/Projective_AEF.hpp \
-    detail/linarr/D/DMax/utils.hpp \
+	detail/linarr/D/DMax/utils.hpp \
     detail/linarr/D/Dmin/Planar_AEF.hpp \
     detail/linarr/D/Dmin/Planar_HS.hpp \
     detail/linarr/D/Dmin/Projective_AEF.hpp \
@@ -248,6 +248,7 @@ SOURCES += \
 	generate/rand_projective_arrangements.cpp \
 	generate/rand_ulab_free_trees.cpp \
 	generate/rand_ulab_rooted_trees.cpp \
+	graphs/bipartite_graph_colorability.cpp \
 	graphs/conversions.cpp \
 	graphs/directed_graph.cpp \
 	graphs/free_tree.cpp \
