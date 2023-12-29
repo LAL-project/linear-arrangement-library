@@ -42,7 +42,7 @@
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/graph_coloring.hpp>
+#include <lal/graphs/bipartite_graph_coloring.hpp>
 #include <lal/detail/graphs/bipartite_graph_colorability.hpp>
 
 namespace lal {

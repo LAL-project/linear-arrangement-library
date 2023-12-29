@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
-#include <lal/graphs/graph_coloring.hpp>
+#include <lal/graphs/bipartite_graph_coloring.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 

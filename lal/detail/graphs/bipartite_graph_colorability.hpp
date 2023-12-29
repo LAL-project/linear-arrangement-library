@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/graphs/graph_coloring.hpp>
+#include <lal/graphs/bipartite_graph_coloring.hpp>
 
 namespace lal {
 namespace detail {

@@ -166,9 +166,9 @@ HEADERS += \
 	generate/tree_generator_type.hpp \
 	graphs.hpp \
 	graphs/bipartite_graph_colorability.hpp \
+	graphs/bipartite_graph_coloring.hpp \
 	graphs/conversions.hpp \
 	graphs/graph.hpp \
-	graphs/graph_coloring.hpp \
 	graphs/output.hpp \
 	graphs/tree.hpp \
 	graphs/directed_graph.hpp \
