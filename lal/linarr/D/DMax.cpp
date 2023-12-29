@@ -47,13 +47,31 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
+#include <lal/graphs/graph_coloring.hpp>
+#include <lal/graphs/bipartite_graph_colorability.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
 
 namespace lal {
 namespace linarr {
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::undirected_graph& g, const graphs::bipartite_graph_coloring& c)
+noexcept
+{
+	return detail::DMax::bipartite::AEF<true>(g, c);
+}
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::undirected_graph& g)
+noexcept
+{
+	const auto c = graphs::coloring(g);
+	return max_sum_edge_lengths_bipartite(g, c);
+}
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 (const graphs::free_tree& t) noexcept

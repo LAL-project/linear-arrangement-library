@@ -43,11 +43,95 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
+#include <lal/graphs/graph_coloring.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
 namespace lal {
 namespace linarr {
+
+/* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
+
+/**
+ * @brief Calculates the solution to Bipartite MaxLA as defined in
+ * \cite Alemany2024a.
+ *
+ * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * implements the algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param g Input undirected graph.
+ * @param c Coloring of the input graph.
+ * @returns A maximum bipartite arrangement.
+ * @pre The input graph @e g is a bipartite graph.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::undirected_graph& g, const graphs::bipartite_graph_coloring& c)
+noexcept;
+/**
+ * @brief Calculates the solution to Bipartite MaxLA as defined in
+ * \cite Alemany2024a.
+ *
+ * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * implements the algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param g Input undirected graph.
+ * @returns A maximum bipartite arrangement.
+ * @pre The input graph @e g is a bipartite graph.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::undirected_graph& g)
+noexcept;
+/**
+ * @brief Calculates the solution to Bipartite MaxLA as defined in
+ * \cite Alemany2024a.
+ *
+ * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * implements the algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * This function converts the input directed graph into an undirected graph (see
+ * @ref lal::graphs::directed_graph::to_undirected()).
+ * @param g Input directed graph.
+ * @param c Coloring of the input graph.
+ * @returns A maximum bipartite arrangement.
+ * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
+ */
+inline
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::directed_graph& t, const graphs::bipartite_graph_coloring& c)
+noexcept
+{
+	return max_sum_edge_lengths_bipartite(t.to_undirected(), c);
+}
+/**
+ * @brief Calculates the solution to Bipartite MaxLA as defined in
+ * \cite Alemany2024a.
+ *
+ * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * implements the algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * This function converts the input rooted into a free tree (see @ref
+ * lal::graphs::directed_graph::to_undirected())
+ * @param g Input directed graph.
+ * @returns A maximum bipartite arrangement.
+ * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
+ */
+inline
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::directed_graph& t)
+noexcept
+{
+	return max_sum_edge_lengths_bipartite(t.to_undirected());
+}
 
 /* ------------------- PROJECTIVE AND PLANAR CONSTRAINTS -------------------- */
 

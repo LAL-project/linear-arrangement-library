@@ -82,39 +82,40 @@ INCLUDEPATH += ..
 # -------------
 # PROJECT FILES
 HEADERS += \
-    basic_types.hpp \
-    detail/arrangement_wrapper.hpp \
-    detail/data_array.hpp \
+	basic_types.hpp \
+	detail/arrangement_wrapper.hpp \
+	detail/data_array.hpp \
 	detail/avl.hpp \
-    detail/generate/make_arrangement.hpp \
+	detail/generate/make_arrangement.hpp \
 	detail/graphs/bipartite_graph_colorability.hpp \
-    detail/linarr/C/brute_force.hpp \
-    detail/linarr/C/crossings.hpp \
-    detail/linarr/C/dyn_prog.hpp \
-    detail/linarr/C/ladder.hpp \
-    detail/linarr/C/predict.hpp \
-    detail/linarr/C/stack_based.hpp \
-    detail/linarr/D/D.hpp \
-    detail/linarr/D/DMax/Planar_AEF.hpp \
-    detail/linarr/D/DMax/Projective_AEF.hpp \
+	detail/linarr/C/brute_force.hpp \
+	detail/linarr/C/crossings.hpp \
+	detail/linarr/C/dyn_prog.hpp \
+	detail/linarr/C/ladder.hpp \
+	detail/linarr/C/predict.hpp \
+	detail/linarr/C/stack_based.hpp \
+	detail/linarr/D/D.hpp \
+	detail/linarr/D/DMax/Planar_AEF.hpp \
+	detail/linarr/D/DMax/Projective_AEF.hpp \
+	detail/linarr/D/DMax/bipartite_AEF.hpp \
 	detail/linarr/D/DMax/utils.hpp \
-    detail/linarr/D/Dmin/Planar_AEF.hpp \
-    detail/linarr/D/Dmin/Planar_HS.hpp \
-    detail/linarr/D/Dmin/Projective_AEF.hpp \
-    detail/linarr/D/Dmin/Projective_HS.hpp \
-    detail/linarr/D/Dmin/Unconstrained_FC.hpp \
-    detail/linarr/D/Dmin/Unconstrained_YS.hpp \
-    detail/linarr/D/Dmin/utils.hpp \
-    detail/linarr/D/Dopt_utils.hpp \
-    detail/linarr/chunking/Anderson.hpp \
-    detail/linarr/chunking/Macutek.hpp \
-    detail/linarr/dependency_flux.hpp \
-    detail/linarr/formal_constraints.hpp \
-    detail/linarr/headedness.hpp \
-    detail/linear_queue.hpp \
-    detail/macros/basic_convert.hpp \
-    detail/properties/tree_maximum_caterpillar.hpp \
-    detail/type_traits/bool_sequence.hpp \
+	detail/linarr/D/Dmin/Planar_AEF.hpp \
+	detail/linarr/D/Dmin/Planar_HS.hpp \
+	detail/linarr/D/Dmin/Projective_AEF.hpp \
+	detail/linarr/D/Dmin/Projective_HS.hpp \
+	detail/linarr/D/Dmin/Unconstrained_FC.hpp \
+	detail/linarr/D/Dmin/Unconstrained_YS.hpp \
+	detail/linarr/D/Dmin/utils.hpp \
+	detail/linarr/D/Dopt_utils.hpp \
+	detail/linarr/chunking/Anderson.hpp \
+	detail/linarr/chunking/Macutek.hpp \
+	detail/linarr/dependency_flux.hpp \
+	detail/linarr/formal_constraints.hpp \
+	detail/linarr/headedness.hpp \
+	detail/linear_queue.hpp \
+	detail/macros/basic_convert.hpp \
+	detail/properties/tree_maximum_caterpillar.hpp \
+	detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
 	detail/type_traits/first_true.hpp \
 	detail/type_traits/is_pointer_iterator.hpp \
@@ -130,7 +131,7 @@ HEADERS += \
 	detail/io/check_correctness.hpp \
 	detail/linarr/syntactic_dependency_tree.hpp \
 	detail/numeric/utils.hpp \
-    detail/pairs_utils.hpp \
+	detail/pairs_utils.hpp \
 	detail/properties/tree_centre.hpp \
 	detail/properties/tree_centroid.hpp \
 	detail/properties/tree_diameter.hpp \
@@ -142,9 +143,9 @@ HEADERS += \
 	detail/graphs/cycles.hpp \
 	detail/graphs/reachability.hpp \
 	detail/graphs/traversal.hpp \
-    detail/sorting/sorted_vector.hpp \
-    detail/sorting/sorting_types.hpp \
-    detail/type_traits/type_sequence.hpp \
+	detail/sorting/sorted_vector.hpp \
+	detail/sorting/sorting_types.hpp \
+	detail/type_traits/type_sequence.hpp \
 	detail/utilities/tree_isomorphism.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \
@@ -173,7 +174,7 @@ HEADERS += \
 	graphs/directed_graph.hpp \
 	graphs/free_tree.hpp \
 	graphs/rooted_tree.hpp \
-    graphs/tree_literals.hpp \
+	graphs/tree_literals.hpp \
 	graphs/tree_type.hpp \
 	graphs/undirected_graph.hpp \
 	io/check_correctness.hpp \
@@ -196,26 +197,26 @@ HEADERS += \
 	linarr.hpp \
 	C.hpp \
 	D.hpp \
-    linarr/C/C.hpp \
-    linarr/C/algorithms_C.hpp \
-    linarr/D/D.hpp \
-    linarr/D/DMax.hpp \
-    linarr/D/Dmin.hpp \
-    linarr/D/algorithms_Dmin.hpp \
-    linarr/D/algorithms_Dmin_planar.hpp \
-    linarr/D/algorithms_Dmin_projective.hpp \
-    linarr/aggregations/1level.hpp \
-    linarr/aggregations/2level.hpp \
-    linarr/chunking/algorithms.hpp \
-    linarr/chunking/chunk.hpp \
-    linarr/chunking/chunking.hpp \
+	linarr/C/C.hpp \
+	linarr/C/algorithms_C.hpp \
+	linarr/D/D.hpp \
+	linarr/D/DMax.hpp \
+	linarr/D/Dmin.hpp \
+	linarr/D/algorithms_Dmin.hpp \
+	linarr/D/algorithms_Dmin_planar.hpp \
+	linarr/D/algorithms_Dmin_projective.hpp \
+	linarr/aggregations/1level.hpp \
+	linarr/aggregations/2level.hpp \
+	linarr/chunking/algorithms.hpp \
+	linarr/chunking/chunk.hpp \
+	linarr/chunking/chunking.hpp \
 	linarr/chunking/output.hpp \
 	linarr/dependency_flux.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
 	linarr/syntactic_dependency_tree/classify.hpp \
 	linarr/syntactic_dependency_tree/type.hpp \
-    linear_arrangement.hpp \
+	linear_arrangement.hpp \
 	numeric.hpp \
 	numeric/integer.hpp \
 	numeric/integer_output.hpp \
@@ -227,8 +228,8 @@ HEADERS += \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
 	properties/degrees.hpp \
-    properties/hierarchical_distance.hpp \
-    properties/maximum_spanning_trees.hpp \
+	properties/hierarchical_distance.hpp \
+	properties/maximum_spanning_trees.hpp \
 	properties/tree_centre.hpp \
 	properties/tree_centroid.hpp \
 	properties/tree_diameter.hpp \
