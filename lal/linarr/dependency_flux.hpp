@@ -65,8 +65,7 @@ public:
 	/// Returns right span of this flux.
 	uint64_t get_right_span() const noexcept { return m_right_span; }
 	/// Returns the size of this flux.
-	uint64_t get_size() const noexcept
-	{ return m_dependencies.size(); }
+	uint64_t get_size() const noexcept { return m_dependencies.size(); }
 	/// Returns weight of this flux.
 	uint64_t get_weight() const noexcept { return m_weight; }
 
