@@ -46,6 +46,7 @@
 #include <lal/detail/data_array.hpp>
 
 namespace lal {
+namespace graphs {
 
 /**
  * @brief A class to represent a coloring of the vertices of a bipartite graph.
@@ -110,4 +111,5 @@ private:
 	detail::data_array<char> coloring;
 };
 
+} // -- namespace graphs
 } // -- namespace lal
