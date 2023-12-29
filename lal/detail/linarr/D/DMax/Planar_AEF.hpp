@@ -222,7 +222,7 @@ enum class return_type_all_maxs {
  * on every vertex is done in \f$O(n)\f$ thanks to the adjacency list calculated
  * by function @ref make_sorted_adjacency_list.
  *
- * This function implements the algorithm in \cite Alemany2023a.
+ * This function implements the algorithm in \cite Alemany2024a.
  * @tparam res_type The type of result to return. See @ref return_type_all_maxs
  * for details.
  * @param t Input tree.
@@ -352,7 +352,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
  * @ref make_sorted_adjacency_list.
  *
  * This function calls @ref all_max_sum_lengths_values, which implements the algorithm
- * described in \cite Alemany2023a.
+ * described in \cite Alemany2024a.
  * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and maximum linear arrangement.

@@ -72,7 +72,7 @@ namespace projective {
  * crossings and the root vertex is not covered. Such arrangement is done using
  * a interval-based algorithm.
  *
- * This function implements the algorithm in \cite Alemany2023a.
+ * This function implements the algorithm in \cite Alemany2024a.
  * @tparam make_arrangement Construct a maximum arrangement.
  * @param t Input tree.
  * @returns A pair of cost and maximum linear arrangement.
