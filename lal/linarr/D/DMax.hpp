@@ -85,7 +85,7 @@ noexcept;
  *
  * This function implements the algorithm described in \cite Alemany2024a.
  *
- * This function converts the input rooted into a free tree (see @ref
+ * This function converts the input rooted tree into a free tree (see @ref
  * lal::graphs::rooted_tree::to_free_tree())
  * @param t Input rooted tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
@@ -133,7 +133,7 @@ noexcept;
  *
  * This function implements the algorithm described in \cite Alemany2024a.
  *
- * This function converts the input rooted into a free tree (see @ref
+ * This function converts the input rooted tree into a free tree (see @ref
  * lal::graphs::rooted_tree::to_free_tree()). Therefore, the root is ignored.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
