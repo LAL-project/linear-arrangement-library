@@ -56,3 +56,4 @@
 #include <lal/graphs/tree_literals.hpp>
 
 #include <lal/graphs/graph_coloring.hpp>
+#include <lal/graphs/bipartite_graph_colorability.hpp>
