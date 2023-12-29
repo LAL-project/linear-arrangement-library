@@ -110,7 +110,7 @@ Many properties can be defined in a linear arrangement of a graph \f$G\f$. LAL u
 
 - Edge crossings: two edges \f$uv\f$ and \f$st\f$ cross in a linear arrangement \f$\pi\f$ if \f$\pi(u) < \pi(s) < \pi(v) < \pi(t)\f$ or \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$ when assuming, without loss of generality, that \f$\pi(u)<\pi(v)\f$ and \f$\pi(s)<\pi(t)\f$.
 
-- Edge lengths: the length of an edge \f$uv\f$ in a linear arrangement \f$\pi\f$ is defined as \f$d_{\pi}=|\pi(u) - \pi(v)|\f$.
+- Edge lengths: the length of an edge \f$uv\f$ in a linear arrangement \f$\pi\f$ is defined as \f$d_{\pi}(uv)=|\pi(u) - \pi(v)|\f$.
 
 - Vertex covering: a vertex \f$u\f$ is covered by an edge \f$st\f$ when \f$\pi(s)<\pi(u)<\pi(t)\f$ or \f$\pi(t)<\pi(u)<\pi(s)\f$
 
@@ -121,6 +121,8 @@ There are many types of arrangements used in this library. For example, some fun
 - Planar arrangements of a graph: A planar arrangement of a graph is an arrangement in which there are no edge crossings. It does not matter if the graph is a free tree, rooted tree, or otherwise.
 
 - Projective arrangements of a rooted tree: A projective arrangement of a rooted graph is an arrangement in which there are no edge crossings and the root vertex of the graph is not covered by any edge. Then, a projective arrangement is also a planar arrangement and the root vertex cannot be covered. Notice that the graph must be rooted, so a tree must be rooted to have a projective arrangement.
+
+- Bipartite arrangements of a bipartite graph: a bipartite arrangement of a bipartite graph \f$B = (V_1\cup V_2, E)\f$ is an arrangement where the first vertices in the arrangement are those from \f$V_1\f$ followed by those from \f$V_2\f$ (or viceversa) \cite Alemany2023a.
 
 \subsection LAL_concepts__edge_list Edge list
 

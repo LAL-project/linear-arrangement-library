@@ -42,44 +42,32 @@
 #pragma once
 
 // lal includes
-#include <lal/detail/graphs/traversal.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/graph_coloring.hpp>
 
 namespace lal {
-namespace detail {
+namespace graphs {
 
 /**
- * @brief Colors the vertices of a bipartite graph.
- * @param g Input graph to be colored.
- * @returns A coloring of a bipartite graph @ref bipartite_graph_coloring.
- * @pre The input graph must be a bipartite graph (not necessarily connected),
- * for the coloring to be correct.
+ * @brief Calculates the coloring of a bipartite graph.
+ * @param g Input undirected graph.
+ * @returns An object of type @ref lal::graphs::bipartite_coloring.
+ * @pre The graph must be bipartite.
  */
-template <class graph_t>
-graphs::bipartite_graph_coloring color_vertices_graph(const graph_t& g) noexcept {
-	const auto n = g.get_num_vertices();
-	graphs::bipartite_graph_coloring colors(n);
-
-	BFS<graph_t> bfs(g);
-
-	bfs.set_process_neighbour(
-	[&](const auto&, lal::node u, lal::node v, bool) {
-		if (colors[u] == graphs::bipartite_graph_coloring::blue) {
-			colors[v] = graphs::bipartite_graph_coloring::red;
-		}
-		else {
-			colors[v] = graphs::bipartite_graph_coloring::blue;
-		}
-	});
-
-	for (node u = 0; u < n; ++u) {
-		if (not bfs.node_was_visited(u)) {
-			colors[u] = graphs::bipartite_graph_coloring::blue;
-			bfs.start_at(u);
-		}
-	}
-	return colors;
+bipartite_graph_coloring coloring(const undirected_graph& g) noexcept;
+/**
+ * @brief Calculates the coloring of a bipartite graph.
+ *
+ * This function converts the input directed graph into an undirected graph (see
+ * @ref lal::graphs::directed_graph::to_undirected()).
+ * @param g Input directed graph.
+ * @returns An object of type @ref lal::graphs::bipartite_coloring.
+ * @pre The underlying undirected graph must be bipartite.
+ */
+inline bipartite_graph_coloring coloring(const directed_graph& g) noexcept {
+	return coloring(g.to_undirected(false, false));
 }
 
-} // -- namespace detail
+} // -- namespace graphs
 } // -- namespace lal
