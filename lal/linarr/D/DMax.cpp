@@ -43,7 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <cinttypes>
 #include <utility>
 
 // lal includes
