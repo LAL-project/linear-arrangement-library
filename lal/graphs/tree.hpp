@@ -343,20 +343,13 @@ protected:
 	}
 
 	/**
-	 * @brief Do some work before an node is removed.
-	 * @param u Node to be removed.
-	 * @post The tree type is invalidated.
-	 * @post Updated union-find.
-	 */
-	void actions_after_remove_node(node u) noexcept;
-	/**
 	 * @brief Do some work after the addition of an edge.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void actions_after_add_edge(node u, node v) noexcept;
+	void tree_only_actions_after_add_edge(node u, node v) noexcept;
 	/**
 	 * @brief Do some work after the removal of an edge.
 	 * @param u First node of the edge.
@@ -364,14 +357,21 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void actions_after_remove_edge(node u, node v) noexcept;
+	void tree_only_actions_after_remove_edge(node u, node v) noexcept;
 	/**
-	 * @brief Do some work before all edges incident to a node is removed.
+	 * @brief Do some work before an node is removed.
+	 * @param u Node to be removed.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_remove_node(node u) noexcept;
+	/**
+	 * @brief Do some work before all edges incident to a node are removed.
 	 * @param u Node whose incident edges are to be removed.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void actions_before_remove_edges_incident_to(node u) noexcept;
+	void tree_only_actions_before_remove_edges_incident_to(node u) noexcept;
 
 	/**
 	 * @brief Updates the data structures of a tree after the graph structure
@@ -403,9 +403,8 @@ protected:
 	/**
 	 * @brief Update the union find data structure after an edge addition.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under addition of an edge.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_add_edge
+	 * which updates the Union-Find data structure under addition of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
 	 * @param root_of Array of @e n elements relating each vertex to its root
@@ -420,9 +419,8 @@ protected:
 	/**
 	 * @brief Update the union find data structure after an edge addition.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under addition of an edge.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_add_edge
+	 * which updates the Union-Find data structure under addition of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
 	 * @param root_of Array of @e n elements relating each vertex to its root
@@ -438,9 +436,8 @@ protected:
 	/**
 	 * @brief Update the union find data structure after an edge removal.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under removal of an edge.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_remove_edge
+	 * which updates the Union-Find data structure under removal of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
 	 * @param root_of Array of @e n elements relating each vertex to its root
@@ -455,9 +452,8 @@ protected:
 	/**
 	 * @brief Update the union find data structure after an edge removal.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under removal of an edge.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_remove_edge
+	 * which updates the Union-Find data structure under removal of an edge.
 	 * @param u Node that is connected to @e v.
 	 * @param v Node that is connected to @e u.
 	 * @param root_of Array of @e n elements relating each vertex to its root
@@ -474,9 +470,9 @@ protected:
 	 * @brief Update the union find data structure before the removal of all
 	 * edges incident to a node.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under removal of all incident edges to a node.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_before_remove_edges_incident_to
+	 * which updates the Union-Find data structure under removal of all incident
+	 * edges to a node.
 	 * @param u Node whose incident edges are to be removed.
 	 * @param root_of Array of @e n elements relating each vertex to its root
 	 * in the union find data structure.
@@ -491,9 +487,9 @@ protected:
 	 * @brief Update the union find data structure before the removal of all
 	 * edges incident to a node.
 	 *
-	 * This is a helper method to be able to call a template in the
-	 * lal::detail namespace which updates the union find data structure
-	 * under removal of all incident edges to a node.
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_before_remove_edges_incident_to
+	 * which updates the Union-Find data structure under removal of all incident
+	 * edges to a node.
 	 * @param u Node whose incident edges are to be removed.
 	 * @param root_of Array of @e n elements relating each vertex to its root
 	 * in the union find data structure.

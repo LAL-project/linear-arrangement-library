@@ -120,9 +120,20 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 
 /* PROTECTED */
 
-void tree::actions_after_remove_node(node u) noexcept {
+void tree::tree_only_actions_after_add_edge(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
-	graph::actions_after_remove_node(u);
+	update_union_find_after_edge_add
+		(u, v, &m_root_of[0], &m_root_size[0]);
+}
+
+void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
+	m_is_tree_type_valid = false;
+	update_union_find_after_edge_remove
+		(u, v, &m_root_of[0], &m_root_size[0]);
+}
+
+void tree::tree_only_actions_after_remove_node(node u) noexcept {
+	m_is_tree_type_valid = false;
 
 #if defined DEBUG
 	assert(m_root_of[u] == u);
@@ -131,14 +142,14 @@ void tree::actions_after_remove_node(node u) noexcept {
 
 	// update union-find data structure
 	{
-	auto e = m_root_of.begin();
-	std::advance(e, u);
-	m_root_of.erase(e);
+		auto e = m_root_of.begin();
+		std::advance(e, u);
+		m_root_of.erase(e);
 	}
 	{
-	auto e = m_root_size.begin();
-	std::advance(e, u);
-	m_root_size.erase(e);
+		auto e = m_root_size.begin();
+		std::advance(e, u);
+		m_root_size.erase(e);
 	}
 
 	// relabel the roots when necessary
@@ -147,23 +158,8 @@ void tree::actions_after_remove_node(node u) noexcept {
 	}
 }
 
-void tree::actions_after_add_edge(node u, node v) noexcept {
+void tree::tree_only_actions_before_remove_edges_incident_to(node u) noexcept {
 	m_is_tree_type_valid = false;
-	graph::actions_after_add_edge(u, v);
-	update_union_find_after_edge_add
-		(u, v, &m_root_of[0], &m_root_size[0]);
-}
-
-void tree::actions_after_remove_edge(node u, node v) noexcept {
-	m_is_tree_type_valid = false;
-	graph::actions_after_remove_edge(u, v);
-	update_union_find_after_edge_remove
-		(u, v, &m_root_of[0], &m_root_size[0]);
-}
-
-void tree::actions_before_remove_edges_incident_to(node u) noexcept {
-	m_is_tree_type_valid = false;
-	graph::actions_before_remove_edges_incident_to(u);
 	update_union_find_before_incident_edges_removed
 		(u, &m_root_of[0], &m_root_size[0]);
 }

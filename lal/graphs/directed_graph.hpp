@@ -404,6 +404,14 @@ protected:
 		m_in_adjacency_list.clear();
 	}
 
+	virtual void actions_after_add_edge(node u, node v) noexcept;
+
+	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
+	virtual void actions_after_remove_node(node u) noexcept;
+
+	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+
 	/// Copies all members of this class and the parent class.
 	void copy_full_directed_graph(const directed_graph& d) noexcept {
 		// copy parent class

@@ -350,6 +350,14 @@ protected:
 		tree::tree_only_clear();
 	}
 
+	void actions_after_add_edge(node u, node v) noexcept;
+
+	void actions_after_remove_edge(node u, node v) noexcept;
+
+	void actions_after_remove_node(node u) noexcept;
+
+	void actions_before_remove_edges_incident_to(node u) noexcept;
+
 	void update_union_find_after_edge_add(
 		node u, node v,
 		uint64_t * const root_of,

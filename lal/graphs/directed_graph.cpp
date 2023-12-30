@@ -410,6 +410,22 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const noex
 
 /* PROTECTED */
 
+void directed_graph::actions_after_add_edge(node u, node v) noexcept {
+	graph::actions_after_add_edge(u, v);
+}
+
+void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
+	graph::actions_after_remove_edge(u, v);
+}
+
+void directed_graph::actions_after_remove_node(node u) noexcept {
+	graph::actions_after_remove_node(u);
+}
+
+void directed_graph::actions_before_remove_edges_incident_to(node u) noexcept {
+	graph::actions_before_remove_edges_incident_to(u);
+}
+
 /* PRIVATE */
 
 void directed_graph::remove_single_edge

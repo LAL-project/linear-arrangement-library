@@ -322,6 +322,22 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 
 /* PROTECTED */
 
+void undirected_graph::actions_after_add_edge(node u, node v) noexcept {
+	graph::actions_after_add_edge(u, v);
+}
+
+void undirected_graph::actions_after_remove_edge(node u, node v) noexcept {
+	graph::actions_after_remove_edge(u, v);
+}
+
+void undirected_graph::actions_after_remove_node(node u) noexcept {
+	graph::actions_after_remove_node(u);
+}
+
+void undirected_graph::actions_before_remove_edges_incident_to(node u) noexcept {
+	graph::actions_before_remove_edges_incident_to(u);
+}
+
 /* PRIVATE */
 
 void undirected_graph::remove_single_edge

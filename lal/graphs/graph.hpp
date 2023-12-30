@@ -283,18 +283,6 @@ protected:
 	void __disjoint_union(const graph& g) noexcept;
 
 	/**
-	 * @brief Do some work before an node is removed.
-	 * @param u Node to be removed.
-	 */
-	virtual void actions_after_remove_node(node u) noexcept;
-
-	/**
-	 * @brief Do some work before all edges incident to a node is removed.
-	 * @param u Node whose incident edges are to be removed.
-	 */
-	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
-
-	/**
 	 * @brief Do some extra work after an edge has been added.
 	 * @param u Node of the edge
 	 * @param v Node of the edge
@@ -306,6 +294,16 @@ protected:
 	 * @param v Node of the edge
 	 */
 	virtual void actions_after_remove_edge(node u, node v) noexcept;
+	/**
+	 * @brief Do some work before an node is removed.
+	 * @param u Node to be removed.
+	 */
+	virtual void actions_after_remove_node(node u) noexcept;
+	/**
+	 * @brief Do some work before all edges incident to a node is removed.
+	 * @param u Node whose incident edges are to be removed.
+	 */
+	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
 
 	/// Normalise the graph after one (or more) edges have been added
 	void normalise_after_edge_addition(bool norm, bool check) noexcept;
