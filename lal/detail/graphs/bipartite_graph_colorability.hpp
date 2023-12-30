@@ -51,7 +51,7 @@ namespace detail {
 /**
  * @brief Colors the vertices of a bipartite graph.
  * @param g Input graph to be colored.
- * @returns A coloring of a bipartite graph @ref bipartite_graph_coloring.
+ * @returns A coloring of a bipartite graph @ref lal::graphs::bipartite_graph_coloring.
  * @pre The input graph must be a bipartite graph (not necessarily connected),
  * for the coloring to be correct.
  */
@@ -61,6 +61,8 @@ graphs::bipartite_graph_coloring color_vertices_graph(const graph_t& g) noexcept
 	graphs::bipartite_graph_coloring colors(n);
 
 	BFS<graph_t> bfs(g);
+
+	bfs.set_use_rev_edges( g.is_directed() );
 
 	bfs.set_process_neighbour(
 	[&](const auto&, lal::node u, lal::node v, bool) {

@@ -52,22 +52,21 @@ namespace graphs {
 /**
  * @brief Calculates the coloring of a bipartite graph.
  * @param g Input undirected graph.
- * @returns An object of type @ref lal::graphs::bipartite_coloring.
+ * @returns An object of type @ref lal::graphs::bipartite_graph_coloring.
  * @pre The graph must be bipartite.
  */
 bipartite_graph_coloring coloring(const undirected_graph& g) noexcept;
+
 /**
  * @brief Calculates the coloring of a bipartite graph.
  *
  * This function converts the input directed graph into an undirected graph (see
  * @ref lal::graphs::directed_graph::to_undirected()).
  * @param g Input directed graph.
- * @returns An object of type @ref lal::graphs::bipartite_coloring.
+ * @returns An object of type @ref lal::graphs::bipartite_graph_coloring.
  * @pre The underlying undirected graph must be bipartite.
  */
-inline bipartite_graph_coloring coloring(const directed_graph& g) noexcept {
-	return coloring(g.to_undirected(false, false));
-}
+bipartite_graph_coloring coloring(const directed_graph& g) noexcept;
 
 } // -- namespace graphs
 } // -- namespace lal

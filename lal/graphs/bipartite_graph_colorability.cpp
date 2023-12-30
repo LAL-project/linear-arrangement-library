@@ -52,5 +52,9 @@ bipartite_graph_coloring coloring(const undirected_graph& g) noexcept {
 	return detail::color_vertices_graph(g);
 }
 
+bipartite_graph_coloring coloring(const directed_graph& g) noexcept {
+	return detail::color_vertices_graph(g);
+}
+
 } // -- namespace graphs
 } // -- namespace lal
