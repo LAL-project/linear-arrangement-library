@@ -64,7 +64,7 @@ std::conditional_t<
 	uint64_t
 >
 AEF(const graph_t& g, const graphs::bipartite_graph_coloring& c) {
-	static_assert(std::is_base_of_v<graphs::undirected_graph, graph_t>);
+	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
 	const auto n = g.get_num_nodes();
 
@@ -83,6 +83,7 @@ AEF(const graph_t& g, const graphs::bipartite_graph_coloring& c) {
 			vertices_color_2[size_2++] = u;
 		}
 	}
+
 	const auto sort_nodes =
 		[&](data_array<node>& nodes, std::size_t s) {
 		lal::detail::sorting::counting_sort
@@ -91,8 +92,11 @@ AEF(const graph_t& g, const graphs::bipartite_graph_coloring& c) {
 			nodes.begin(), nodes.begin() + s,
 			n - 1,
 			s,
-			[&](const lal::node u) -> std::size_t
-			{ return g.get_degree(u); }
+			[&](const lal::node u) -> std::size_t {
+				// in directed graphs, this function returns the sum of the
+				// in-degree plus the out-degree of the vertex.
+				return g.get_degree(u);
+			}
 		);
 	};
 	sort_nodes(vertices_color_1, size_1);

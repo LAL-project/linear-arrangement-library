@@ -102,13 +102,9 @@ noexcept;
  * @returns A maximum bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
  */
-inline
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::directed_graph& t, const graphs::bipartite_graph_coloring& c)
-noexcept
-{
-	return max_sum_edge_lengths_bipartite(t.to_undirected(), c);
-}
+(const graphs::directed_graph& g, const graphs::bipartite_graph_coloring& c)
+noexcept;
 /**
  * @brief Calculates the solution to Bipartite MaxLA as defined in
  * \cite Alemany2024a.
@@ -125,13 +121,9 @@ noexcept
  * @returns A maximum bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
  */
-inline
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::directed_graph& t)
-noexcept
-{
-	return max_sum_edge_lengths_bipartite(t.to_undirected());
-}
+(const graphs::directed_graph& g)
+noexcept;
 
 /* ------------------- PROJECTIVE AND PLANAR CONSTRAINTS -------------------- */
 

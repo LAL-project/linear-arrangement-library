@@ -58,6 +58,8 @@
 namespace lal {
 namespace linarr {
 
+/* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
+
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g, const graphs::bipartite_graph_coloring& c)
 noexcept
@@ -72,6 +74,23 @@ noexcept
 	const auto c = graphs::coloring(g);
 	return max_sum_edge_lengths_bipartite(g, c);
 }
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::directed_graph& g, const graphs::bipartite_graph_coloring& c)
+noexcept
+{
+	return detail::DMax::bipartite::AEF<true>(g, c);
+}
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+(const graphs::directed_graph& g)
+noexcept
+{
+	const auto c = graphs::coloring(g);
+	return max_sum_edge_lengths_bipartite(g, c);
+}
+
+/* ------------------- PROJECTIVE AND PLANAR CONSTRAINTS -------------------- */
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 (const graphs::free_tree& t) noexcept
