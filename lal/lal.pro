@@ -87,7 +87,6 @@ HEADERS += \
 	detail/data_array.hpp \
 	detail/avl.hpp \
 	detail/generate/make_arrangement.hpp \
-	detail/graphs/bipartite_graph_colorability.hpp \
 	detail/linarr/C/brute_force.hpp \
 	detail/linarr/C/crossings.hpp \
 	detail/linarr/C/dyn_prog.hpp \
@@ -114,6 +113,7 @@ HEADERS += \
 	detail/linarr/headedness.hpp \
 	detail/linear_queue.hpp \
 	detail/macros/basic_convert.hpp \
+	detail/properties/bipartite_graph_colorability.hpp \
 	detail/properties/tree_maximum_caterpillar.hpp \
 	detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
@@ -165,8 +165,6 @@ HEADERS += \
 	generate/tree_generator.hpp \
 	generate/tree_generator_type.hpp \
 	graphs.hpp \
-	graphs/bipartite_graph_colorability.hpp \
-	graphs/bipartite_graph_coloring.hpp \
 	graphs/conversions.hpp \
 	graphs/graph.hpp \
 	graphs/output.hpp \
@@ -227,6 +225,8 @@ HEADERS += \
 	properties/Q.hpp \
 	properties/D_rla.hpp \
 	properties/C_rla.hpp \
+	properties/bipartite_graph_colorability.hpp \
+	properties/bipartite_graph_coloring.hpp \
 	properties/degrees.hpp \
 	properties/hierarchical_distance.hpp \
 	properties/maximum_spanning_trees.hpp \
@@ -249,7 +249,6 @@ SOURCES += \
 	generate/rand_projective_arrangements.cpp \
 	generate/rand_ulab_free_trees.cpp \
 	generate/rand_ulab_rooted_trees.cpp \
-	graphs/bipartite_graph_colorability.cpp \
 	graphs/conversions.cpp \
 	graphs/directed_graph.cpp \
 	graphs/free_tree.cpp \
@@ -278,6 +277,7 @@ SOURCES += \
 	numeric/integer.cpp \
 	numeric/rational.cpp \
 	properties/Q.cpp \
+	properties/bipartite_graph_colorability.cpp \
 	properties/hierarchical_distance.cpp \
 	properties/maximum_spanning_trees.cpp \
 	properties/tree_centre.cpp \

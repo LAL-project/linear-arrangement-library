@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
-#include <lal/graphs/bipartite_graph_coloring.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 
@@ -67,7 +67,7 @@ namespace linarr {
  * @pre The input graph @e g is a bipartite graph.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::undirected_graph& g, const graphs::bipartite_graph_coloring& c)
+(const graphs::undirected_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
  * @brief Calculates the solution to Bipartite MaxLA as defined in
@@ -103,7 +103,7 @@ noexcept;
  * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::directed_graph& g, const graphs::bipartite_graph_coloring& c)
+(const graphs::directed_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
  * @brief Calculates the solution to Bipartite MaxLA as defined in

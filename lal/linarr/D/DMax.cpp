@@ -47,13 +47,14 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
-#include <lal/graphs/bipartite_graph_coloring.hpp>
-#include <lal/graphs/bipartite_graph_colorability.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
+#include <lal/detail/properties/bipartite_graph_colorability.hpp>
 
 namespace lal {
 namespace linarr {
@@ -61,7 +62,7 @@ namespace linarr {
 /* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::undirected_graph& g, const graphs::bipartite_graph_coloring& c)
+(const graphs::undirected_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept
 {
 	return detail::DMax::bipartite::AEF<true>(g, c);
@@ -71,12 +72,12 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g)
 noexcept
 {
-	const auto c = graphs::coloring(g);
+	const auto c = detail::color_vertices_graph(g);
 	return max_sum_edge_lengths_bipartite(g, c);
 }
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
-(const graphs::directed_graph& g, const graphs::bipartite_graph_coloring& c)
+(const graphs::directed_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept
 {
 	return detail::DMax::bipartite::AEF<true>(g, c);
@@ -86,7 +87,7 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::directed_graph& g)
 noexcept
 {
-	const auto c = graphs::coloring(g);
+	const auto c = detail::color_vertices_graph(g);
 	return max_sum_edge_lengths_bipartite(g, c);
 }
 

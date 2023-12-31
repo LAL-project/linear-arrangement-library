@@ -48,8 +48,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/graphs/bipartite_graph_coloring.hpp>
-#include <lal/graphs/bipartite_graph_colorability.hpp>
+#include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 
 namespace lal {
@@ -63,7 +62,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(const graph_t& g, const graphs::bipartite_graph_coloring& c) {
+AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
 	const auto n = g.get_num_nodes();
@@ -154,7 +153,7 @@ std::conditional_t<
 >
 AEF(const graph_t& g) {
 	static_assert(std::is_base_of_v<graphs::undirected_graph, graph_t>);
-	const auto c = graphs::coloring(g);
+	const auto c = color_vertices_graph(g);
 	return AEF<make_arrangement>(g, c);
 }
 

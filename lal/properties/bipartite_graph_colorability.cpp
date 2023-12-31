@@ -39,34 +39,22 @@
  *
  ********************************************************************/
 
-#pragma once
-
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
-#include <lal/graphs/bipartite_graph_coloring.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
+#include <lal/detail/properties/bipartite_graph_colorability.hpp>
 
 namespace lal {
-namespace graphs {
+namespace properties {
 
-/**
- * @brief Calculates the coloring of a bipartite graph.
- * @param g Input undirected graph.
- * @returns An object of type @ref lal::graphs::bipartite_graph_coloring.
- * @pre The graph must be bipartite.
- */
-bipartite_graph_coloring coloring(const undirected_graph& g) noexcept;
+bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept {
+	return detail::color_vertices_graph(g);
+}
 
-/**
- * @brief Calculates the coloring of a bipartite graph.
- *
- * This function converts the input directed graph into an undirected graph (see
- * @ref lal::graphs::directed_graph::to_undirected()).
- * @param g Input directed graph.
- * @returns An object of type @ref lal::graphs::bipartite_graph_coloring.
- * @pre The underlying undirected graph must be bipartite.
- */
-bipartite_graph_coloring coloring(const directed_graph& g) noexcept;
+bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept {
+	return detail::color_vertices_graph(g);
+}
 
-} // -- namespace graphs
+} // -- namespace properties
 } // -- namespace lal

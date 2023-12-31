@@ -46,7 +46,7 @@
 #include <lal/detail/data_array.hpp>
 
 namespace lal {
-namespace graphs {
+namespace properties {
 
 /**
  * @brief A class to represent a coloring of the vertices of a bipartite graph.
@@ -54,7 +54,7 @@ namespace graphs {
  * Coloring of general graphs is known to be NP-complete \cite Karp1972a. This
  * class is used to represent the vertex coloring of bipartite graphs of @e n vertices,
  * for which two colors are sufficient. This class uses static members @ref red
- * and @ref blue to designate these colors. Function @ref lal::graphs::coloring
+ * and @ref blue to designate these colors. Function @ref lal::properties::coloring
  * calculates such coloring.
  */
 class bipartite_graph_coloring {
@@ -116,5 +116,5 @@ private:
 	detail::data_array<char> coloring;
 };
 
-} // -- namespace graphs
+} // -- namespace properties
 } // -- namespace lal
