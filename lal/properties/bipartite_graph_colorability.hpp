@@ -68,5 +68,19 @@ bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept;
  */
 bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept;
 
+/**
+ * @brief Is a graph bipartite?
+ * @param g Input undirected graph.
+ * @returns Whether or not the input graph is bipartite.
+ */
+bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept;
+
+/**
+ * @brief Is a graph bipartite?
+ * @param g Input directed graph.
+ * @returns Whether or not the input graph is bipartite.
+ */
+bool is_graph_bipartite(const graphs::directed_graph& g) noexcept;
+
 } // -- namespace properties
 } // -- namespace lal

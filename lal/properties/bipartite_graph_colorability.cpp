@@ -42,18 +42,44 @@
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
-#include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
+#include <lal/iterators/E_iterator.hpp>
 
 namespace lal {
 namespace properties {
 
-bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept {
+template <typename graph_t>
+bipartite_graph_coloring _coloring(const graph_t& g) noexcept {
 	return detail::color_vertices_graph(g);
 }
 
+bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept {
+	return _coloring(g);
+}
+
 bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept {
-	return detail::color_vertices_graph(g);
+	return _coloring(g);
+}
+
+template <typename graph_t>
+bool _is_graph_bipartite(const graph_t& g) noexcept {
+	const auto c = detail::color_vertices_graph(g);
+	iterators::E_iterator it(g);
+	while (not it.end()) {
+		const auto [u,v] = it.yield_edge();
+		if (c.get_color_of(u) == c.get_color_of(v)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept {
+	return _is_graph_bipartite(g);
+}
+
+bool is_graph_bipartite(const graphs::directed_graph& g) noexcept {
+	return _is_graph_bipartite(g);
 }
 
 } // -- namespace properties
