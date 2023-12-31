@@ -62,8 +62,7 @@ bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept {
 }
 
 template <typename graph_t>
-bool _is_graph_bipartite(const graph_t& g) noexcept {
-	const auto c = detail::color_vertices_graph(g);
+bool _is_graph_bipartite(const graph_t& g, const bipartite_graph_coloring& c) noexcept {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
 		const auto [u,v] = it.yield_edge();
@@ -74,12 +73,28 @@ bool _is_graph_bipartite(const graph_t& g) noexcept {
 	return true;
 }
 
+bool is_graph_bipartite
+(const graphs::undirected_graph& g, const bipartite_graph_coloring& c)
+noexcept
+{
+	return _is_graph_bipartite(g, c);
+}
+
 bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept {
-	return _is_graph_bipartite(g);
+	const auto c = coloring(g);
+	return _is_graph_bipartite(g, c);
+}
+
+bool is_graph_bipartite
+(const graphs::directed_graph& g, const bipartite_graph_coloring& c)
+noexcept
+{
+	return _is_graph_bipartite(g, c);
 }
 
 bool is_graph_bipartite(const graphs::directed_graph& g) noexcept {
-	return _is_graph_bipartite(g);
+	const auto c = coloring(g);
+	return _is_graph_bipartite(g, c);
 }
 
 } // -- namespace properties
