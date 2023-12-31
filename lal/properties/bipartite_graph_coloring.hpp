@@ -59,10 +59,12 @@ namespace properties {
  */
 class bipartite_graph_coloring {
 public:
+	/// An invalid color, used to initialize colors to an invalid value.
+	static constexpr char invalid = -1;
 	/// A color, called red, of value 0.
-	static const char red = 0;
+	static constexpr char red = 0;
 	/// A color, called blue, of value 1.
-	static const char blue = 1;
+	static constexpr char blue = 1;
 
 public:
 	/// Default constructor.
@@ -89,7 +91,12 @@ public:
 	 * @param n The number of vertices of the graph.
 	 */
 	void init(std::size_t n) noexcept {
-		coloring.resize(n, -1);
+		coloring.resize(n, invalid);
+	}
+
+	/// Returns whether or not the color of vertex @e u is valid.
+	bool is_color_valid(node u) const noexcept {
+		return get_color_of(u) != invalid;
 	}
 
 	/// Returns the color of node @e u
