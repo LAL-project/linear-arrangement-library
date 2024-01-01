@@ -39,18 +39,93 @@
  *
  ********************************************************************/
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-#include <numeric>
-
 // lal includes
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/detail/linarr/formal_constraints.hpp>
 
 namespace lal {
 namespace linarr {
+
+#define __ident(arr) detail::identity_arr(arr)
+#define __nonident(arr) detail::nonident_arr(arr)
+
+template <class graph_t, class arrangement_t>
+bool is_bipartite(
+	const graph_t& g,
+	const properties::bipartite_graph_coloring& c,
+	const arrangement_t& arr
+)
+noexcept
+{
+	const auto n = g.get_num_nodes();
+	std::size_t num_changes = 0;
+	lal::position_t p = 1ull;
+	while (p < n and num_changes <= 1) {
+		num_changes += c.get_color_of(arr[p]) != c.get_color_of(arr[p - 1ull]);
+		++p;
+	}
+	return true;
+}
+
+bool is_bipartite(
+	const graphs::undirected_graph& g,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(g, arr));
+#endif
+
+	if (arr.size() == 0) { return is_bipartite(g, c, __ident(arr)); }
+	return is_bipartite(g, c, __nonident(arr));
+}
+
+bool is_bipartite(
+	const graphs::directed_graph& g,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(g, arr));
+#endif
+
+	if (arr.size() == 0) { return is_bipartite(g, c, __ident(arr)); }
+	return is_bipartite(g, c, __nonident(arr));
+}
+
+bool is_bipartite(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(t, arr));
+#endif
+
+	if (arr.size() == 0) { return is_bipartite(t, c, __ident(arr)); }
+	return is_bipartite(t, c, __nonident(arr));
+}
+
+bool is_bipartite(
+	const graphs::rooted_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(t, arr));
+#endif
+
+	if (arr.size() == 0) { return is_bipartite(t, c, __ident(arr)); }
+	return is_bipartite(t, c, __nonident(arr));
+}
 
 bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
 noexcept

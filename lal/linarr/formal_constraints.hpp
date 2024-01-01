@@ -45,12 +45,13 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <numeric>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/C/C.hpp>
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
+#include <lal/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 
@@ -121,16 +122,107 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 }
 
 /**
- * @brief Is a given arrangement planar?
+ * @brief Is a given arrangement bipartite?
  *
- * A planar arrangement of a graph is an arrangement in which there are no
- * edge crossings. If the input arrangement is empty then the identity
- * arrangement \f$\pi_I\f$ is used.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param g Input undirected graph.
+ * @param c Coloring of the input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite.
+ */
+bool is_bipartite(
+	const graphs::undirected_graph& g,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr = {}
+)
+noexcept;
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param g Input directed graph.
+ * @param c Coloring of the input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite.
+ */
+bool is_bipartite(
+	const graphs::directed_graph& g,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr = {}
+)
+noexcept;
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param t Input free tree.
+ * @param c Coloring of the input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite.
+ */
+bool is_bipartite(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr = {}
+)
+noexcept;
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param t Input rooted graph.
+ * @param c Coloring of the input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite.
+ */
+bool is_bipartite(
+	const graphs::rooted_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const linear_arrangement& arr = {}
+)
+noexcept;
+
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
  *
  * @param g Input graph.
  * @param arr Input linear arrangement.
- * @returns Whether or not the input graph arranged with the input arrangement
- * is planar.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite.
+ */
+template <class graph_t>
+bool is_bipartite(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
+#if defined DEBUG
+	assert(is_arrangement(g, arr));
+#endif
+	const auto c = properties::coloring(g);
+	return is_bipartite(g, c, arr);
+}
+
+/**
+ * @brief Is a given arrangement planar?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of planar
+ * arrangement.
+ *
+ * @param g Input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is planar.
  */
 template <class graph_t>
 bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
@@ -144,9 +236,8 @@ bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
 /**
  * @brief Is the root of a rooted tree covered in a given arrangement?
  *
- * The root is covered if, for a given input arrangement \f$\pi\f$, there exists
- * an edge of the tree \f$\{s,t\}\f$ such that \f$\pi(s) < \pi(r) < \pi(t)\f$ or
- * \f$\pi(t) < \pi(r) < \pi(s)\f$.
+ * See @ref LAL_concepts__linear_arrangement__properties for the definition of
+ * vertex covering.
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
@@ -162,20 +253,14 @@ noexcept;
 /**
  * @brief Is a given arrangement projective?
  *
- * A projective arrangement of a rooted tree is an arrangement that is planar
- * and the root is not covered by any edge. The root is covered if, for a given
- * input arrangement \f$\pi\f$, there exists an edge of the tree \f$\{s,t\}\f$
- * such that \f$\pi(s) < \pi(r) < \pi(t)\f$ or \f$\pi(t) < \pi(r) < \pi(s)\f$.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of projective
+ * arrangement.
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
- *
- * See method @ref is_planar for further details on the characterisation of planar
- * arrangements.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
- * @returns Whether or not the input rooted tree arranged with the input arrangement
- * is projective.
+ * @returns Whether or not the input arrangment of @e rt is projective.
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
