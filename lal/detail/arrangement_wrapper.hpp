@@ -41,11 +41,9 @@
 
 #pragma once
 
-// C++ includes
-#include <numeric>
-
 // lal includes
 #include <lal/linear_arrangement.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -75,7 +73,7 @@ struct arrangement_wrapper {
 		: m_arr(arr)
 	{
 #if defined DEBUG
-	if constexpr (type == arrangement_type::identity) {
+		if constexpr (type == arrangement_type::identity) {
 			assert(arr.size() == 0);
 		}
 		else {
@@ -98,7 +96,7 @@ struct arrangement_wrapper {
 			std::is_same_v<param_t,lal::position_t>
 		);
 
-	if constexpr (type == arrangement_type::identity) {
+		if constexpr (type == arrangement_type::identity) {
 			return *p;
 		}
 		else {
@@ -111,17 +109,19 @@ struct arrangement_wrapper {
 };
 
 /// Shorthand for an identity arrangement.
-inline arrangement_wrapper<arrangement_type::identity> identity_arr(const linear_arrangement& arr)
+inline
+arrangement_wrapper<arrangement_type::identity> identity_arr(const linear_arrangement& arr)
 noexcept
 {
-return arrangement_wrapper<arrangement_type::identity>(arr);
+	return arrangement_wrapper<arrangement_type::identity>(arr);
 }
 
 /// Shorthand for a nonidentity arrangement.
-inline arrangement_wrapper<arrangement_type::nonident> nonident_arr(const linear_arrangement& arr)
+inline
+arrangement_wrapper<arrangement_type::nonident> nonident_arr(const linear_arrangement& arr)
 noexcept
 {
-return arrangement_wrapper<arrangement_type::nonident>(arr);
+	return arrangement_wrapper<arrangement_type::nonident>(arr);
 }
 
 } // -- namespace detail
