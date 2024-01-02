@@ -42,7 +42,6 @@
 #pragma once
 
 // C++ includes
-#include <string>
 #if defined SWIG
 #include <string>
 #else
