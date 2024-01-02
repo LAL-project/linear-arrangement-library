@@ -56,6 +56,19 @@ namespace detail {
 namespace DMax {
 namespace bipartite {
 
+/**
+ * @brief Maximal Bipartite Arrangement.
+ *
+ * Algorithm by Alemany, Ferrer-i-Cancho and Esteban \cite Alemany2023a.
+ * @tparam make_arrangement Boolean value that indicates whether or not the maximal
+ * arrangement should be constructed.
+ * @tparam graph_t Type of graph. Any subclass of @ref lal::graphs::graph.
+ * @param g Input (bipartite) graph.
+ * @param c Coloring of the input graph.
+ * @returns The cost of a maximal bipartite arrangement and possibly the arrangement
+ * that attains it.
+ * @pre The input graph is a bipartite graph.
+ */
 template <bool make_arrangement, class graph_t>
 std::conditional_t<
 	make_arrangement,
@@ -155,6 +168,18 @@ AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) {
 	}
 }
 
+/**
+ * @brief Maximal Bipartite Arrangement.
+ *
+ * Algorithm by Alemany, Ferrer-i-Cancho and Esteban \cite Alemany2023a.
+ * @tparam make_arrangement Boolean value that indicates whether or not the maximal
+ * arrangement should be constructed.
+ * @tparam graph_t Type of graph. Any subclass of @ref lal::graphs::graph.
+ * @param g Input (bipartite) graph.
+ * @returns The cost of a maximal bipartite arrangement and possibly the arrangement
+ * that attains it.
+ * @pre The input graph is a bipartite graph.
+ */
 template <bool make_arrangement, class graph_t>
 std::conditional_t<
 	make_arrangement,
