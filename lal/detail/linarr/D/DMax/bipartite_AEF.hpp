@@ -187,7 +187,7 @@ std::conditional_t<
 	uint64_t
 >
 AEF(const graph_t& g) {
-	static_assert(std::is_base_of_v<graphs::undirected_graph, graph_t>);
+	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	const auto c = color_vertices_graph(g);
 	return AEF<make_arrangement>(g, c);
 }
