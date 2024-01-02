@@ -41,8 +41,8 @@
 
 #pragma once
 
-#include <lal/linarr/D.hpp>
+#include <lal/linarr/D/D.hpp>
 #include <lal/properties/D_rla.hpp>
 
 #include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/Dmin.hpp>
+#include <lal/linarr/D/Dmin.hpp>

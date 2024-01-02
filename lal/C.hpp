@@ -41,5 +41,5 @@
 
 #pragma once
 
-#include <lal/linarr/C.hpp>
+#include <lal/linarr/C/C.hpp>
 #include <lal/properties/C_rla.hpp>
