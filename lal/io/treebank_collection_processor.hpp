@@ -48,7 +48,6 @@
 #include <vector>
 #include <string>
 #include <tuple>
-#include <array>
 
 // lal includes
 #include <lal/io/treebank_error.hpp>

@@ -65,6 +65,7 @@
 #include <lal/properties/tree_centroid.hpp>
 #include <lal/properties/tree_diameter.hpp>
 #include <lal/properties/maximum_spanning_trees.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
@@ -72,6 +73,7 @@
 #include <lal/detail/graphs/tree_type.hpp>
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
+#include <lal/detail/properties/bipartite_graph_colorability.hpp>
 
 #include <lal/detail/linarr/dependency_flux.hpp>
 #include <lal/detail/linarr/headedness.hpp>
@@ -85,7 +87,9 @@
 #include <lal/detail/linarr/D/D.hpp>
 #include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
 #include <lal/detail/linarr/D/Dmin/utils.hpp>
+#include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/utils.hpp>
 
 #include <lal/detail/macros/basic_convert.hpp>
@@ -302,6 +306,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::min_sum_edge_lengths:
 				case treebank_feature::min_sum_edge_lengths_planar:
 				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::max_sum_edge_lengths_bipartite:
 				case treebank_feature::max_sum_edge_lengths_planar:
 				case treebank_feature::max_sum_edge_lengths_projective:
 				case treebank_feature::mean_dependency_distance:
@@ -479,6 +484,11 @@ noexcept
 
 	graphs::free_tree fT = rT.to_undirected();
 	const uint64_t n = fT.get_num_nodes();
+
+	properties::bipartite_graph_coloring c;
+	if (m_what_fs[DMax_Bipartite_idx]) {
+		c = detail::color_vertices_graph(fT);
+	}
 
 	// a suitable algorithm to calculate C depending on the value of 'n'
 	const auto calculate_crossings =
@@ -755,6 +765,10 @@ noexcept
 	if (m_what_fs[DMax_Planar_idx]) {
 		const uint64_t DMax_planar = detail::DMax::planar::AEF<false>(fT);
 		set_prop(DMax_Planar_idx, detail::to_double(DMax_planar));
+	}
+	if (m_what_fs[DMax_Bipartite_idx]) {
+		const uint64_t DMax_bipartite = detail::DMax::bipartite::AEF<false>(fT, c);
+		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_bipartite));
 	}
 
 	// -----------------
