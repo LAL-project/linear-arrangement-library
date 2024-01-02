@@ -42,7 +42,6 @@
 #pragma once
 
 // C++ includes
-#include <cstdint>
 #if defined DEBUG
 #include <cassert>
 #endif
@@ -274,25 +273,25 @@ enum class treebank_feature {
 	 */
 	min_sum_edge_lengths,
 	/**
-	 * @brief Minimum sum of length of edges under the planary constraint.
+	 * @brief Minimum sum of length of edges under the planarity constraint.
 	 *
 	 * See @ref lal::linarr::min_sum_edge_lengths_planar for details.
 	 */
 	min_sum_edge_lengths_planar,
 	/**
-	 * @brief Minimum sum of length of edges under the planary constraint.
+	 * @brief Minimum sum of length of edges under the planarity constraint.
 	 *
 	 * See @ref lal::linarr::min_sum_edge_lengths_projective for details.
 	 */
 	min_sum_edge_lengths_projective,
 	/**
-	 * @brief Maximum sum of length of edges under the planary constraint.
+	 * @brief Maximum sum of length of edges under the planarity constraint.
 	 *
 	 * See @ref lal::linarr::max_sum_edge_lengths_planar for details.
 	 */
 	max_sum_edge_lengths_planar,
 	/**
-	 * @brief Maximum sum of length of edges under the planary constraint.
+	 * @brief Maximum sum of length of edges under the planarity constraint.
 	 *
 	 * See @ref lal::linarr::max_sum_edge_lengths_projective for details.
 	 */
