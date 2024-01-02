@@ -3,7 +3,7 @@
  * Linear Arrangement Library - A library that implements a collection
  * algorithms for linear arrangments of graphs.
  *
- * Copyright (C) 2019 - 2023
+ * Copyright (C) 2019 - 2024
  *
  * This file is part of Linear Arrangement Library. The full code is available
  * at:
@@ -25,15 +25,15 @@
  * Contact:
  *
  *     Lluís Alemany Puig (lalemany@cs.upc.edu)
- *         LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
  *         CQL (Complexity and Quantitative Linguistics Lab)
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/lalemany/
  *
  *     Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *         LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
+ *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
  *         CQL (Complexity and Quantitative Linguistics Lab)
- *         Office S124, Omega building
+ *         Office 220, Omega building
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
