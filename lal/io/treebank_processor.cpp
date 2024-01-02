@@ -865,6 +865,7 @@ noexcept
 			case treebank_feature::min_sum_edge_lengths:
 			case treebank_feature::min_sum_edge_lengths_planar:
 			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::max_sum_edge_lengths_bipartite:
 			case treebank_feature::max_sum_edge_lengths_planar:
 			case treebank_feature::max_sum_edge_lengths_projective:
 			case treebank_feature::mean_dependency_distance:
