@@ -67,6 +67,16 @@ AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) {
 
 	const auto n = g.get_num_nodes();
 
+	// annoying corner case
+	if (n == 1) {
+		if constexpr (make_arrangement) {
+			return {0, lal::linear_arrangement::identity(n)};
+		}
+		else {
+			return 0;
+		}
+	}
+
 	data_array<node> vertices_color_1(n - 1);
 	std::size_t size_1 = 0;
 	data_array<node> vertices_color_2(n - 1);
