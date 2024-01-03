@@ -61,10 +61,12 @@ noexcept
 	std::size_t num_changes = 0;
 	lal::position_t p = 1ull;
 	while (p < n and num_changes <= 1) {
-		num_changes += c.get_color_of(arr[p]) != c.get_color_of(arr[p - 1ull]);
+		const auto color_p = c.get_color_of(arr[p]);
+		const auto color_p1 = c.get_color_of(arr[p - 1ull]);
+		num_changes += color_p != color_p1;
 		++p;
 	}
-	return true;
+	return num_changes <= 1;
 }
 
 bool is_bipartite(
