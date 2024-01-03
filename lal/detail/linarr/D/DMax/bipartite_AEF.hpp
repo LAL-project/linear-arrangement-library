@@ -75,7 +75,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) {
+AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
 	const auto n = g.get_num_nodes();
@@ -186,7 +186,7 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(const graph_t& g) {
+AEF(const graph_t& g) noexcept {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	const auto c = color_vertices_graph(g);
 	return AEF<make_arrangement>(g, c);
