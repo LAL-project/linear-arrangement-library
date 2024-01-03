@@ -56,14 +56,14 @@ namespace linarr {
  * @brief Calculates the solution to Bipartite MaxLA as defined in
  * \cite Alemany2024a.
  *
- * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * It computes a maximal bipartite arrangement of a bipartite graph. This function
  * implements the algorithm described in \cite Alemany2023a.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param g Input undirected graph.
  * @param c Coloring of the input graph.
- * @returns A maximum bipartite arrangement.
+ * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
@@ -73,13 +73,13 @@ noexcept;
  * @brief Calculates the solution to Bipartite MaxLA as defined in
  * \cite Alemany2024a.
  *
- * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * It computes a maximal bipartite arrangement of a bipartite graph. This function
  * implements the algorithm described in \cite Alemany2023a.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param g Input undirected graph.
- * @returns A maximum bipartite arrangement.
+ * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
@@ -89,7 +89,7 @@ noexcept;
  * @brief Calculates the solution to Bipartite MaxLA as defined in
  * \cite Alemany2024a.
  *
- * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * It computes a maximal bipartite arrangement of a bipartite graph. This function
  * implements the algorithm described in \cite Alemany2023a.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
@@ -99,7 +99,7 @@ noexcept;
  * @ref lal::graphs::directed_graph::to_undirected()).
  * @param g Input directed graph.
  * @param c Coloring of the input graph.
- * @returns A maximum bipartite arrangement.
+ * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
@@ -109,7 +109,7 @@ noexcept;
  * @brief Calculates the solution to Bipartite MaxLA as defined in
  * \cite Alemany2024a.
  *
- * It computes a maximum bipartite arrangement of a bipartite graph. This function
+ * It computes a maximal bipartite arrangement of a bipartite graph. This function
  * implements the algorithm described in \cite Alemany2023a.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
@@ -118,7 +118,7 @@ noexcept;
  * This function converts the input rooted into a free tree (see @ref
  * lal::graphs::directed_graph::to_undirected())
  * @param g Input directed graph.
- * @returns A maximum bipartite arrangement.
+ * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
