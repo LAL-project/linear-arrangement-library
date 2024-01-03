@@ -252,7 +252,10 @@ public:
 	 */
 	template <typename It>
 	static linear_arrangement from_inverse(It begin, It end) noexcept {
-		return from_inverse(begin, end, std::distance(begin, end));
+		return from_inverse(
+			begin, end,
+			static_cast<std::size_t>(std::distance(begin, end))
+		);
 	}
 
 	/**
