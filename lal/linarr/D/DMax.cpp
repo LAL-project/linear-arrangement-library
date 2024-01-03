@@ -40,9 +40,6 @@
  ********************************************************************/
 
 // C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
 #include <utility>
 
 // lal includes
@@ -51,13 +48,30 @@
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+
 #include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/1_thistle_AEF.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 
 namespace lal {
 namespace linarr {
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_thistle
+(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
+noexcept
+{
+	return detail::DMax::thistle_1::AEF<true>(t, c);
+}
+
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_thistle
+(const graphs::free_tree& t)
+noexcept
+{
+	const auto c = detail::color_vertices_graph(t);
+	return max_sum_edge_lengths_1_thistle(t, c);
+}
 
 /* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
 

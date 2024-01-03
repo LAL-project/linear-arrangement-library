@@ -94,6 +94,7 @@ HEADERS += \
 	detail/linarr/C/predict.hpp \
 	detail/linarr/C/stack_based.hpp \
 	detail/linarr/D/D.hpp \
+	detail/linarr/D/DMax/1_thistle_AEF.hpp \
 	detail/linarr/D/DMax/Planar_AEF.hpp \
 	detail/linarr/D/DMax/Projective_AEF.hpp \
 	detail/linarr/D/DMax/bipartite_AEF.hpp \
@@ -111,6 +112,7 @@ HEADERS += \
 	detail/linarr/dependency_flux.hpp \
 	detail/linarr/formal_constraints.hpp \
 	detail/linarr/headedness.hpp \
+	detail/linarr/level_sequence.hpp \
 	detail/linear_queue.hpp \
 	detail/macros/basic_convert.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
