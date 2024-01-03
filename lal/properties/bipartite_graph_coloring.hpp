@@ -105,9 +105,9 @@ public:
 	char& get_color_of(node u) noexcept { return coloring[u]; }
 
 	/// Returns the color of node @e u
-	char operator[] (std::size_t u) const noexcept { return coloring[u]; }
+	char operator[] (node u) const noexcept { return coloring[u]; }
 	/// Returns the color of node @e u
-	char& operator[] (std::size_t u) noexcept { return coloring[u]; }
+	char& operator[] (node u) noexcept { return coloring[u]; }
 
 	/// Returns the color of node @e u
 	char operator[] (lal::node_t u) const noexcept { return coloring[*u]; }
