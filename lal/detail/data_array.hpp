@@ -212,8 +212,7 @@ public:
 	 * Imitate the vector::size() method.
 	 * @returns The size of the array.
 	 */
-	[[nodiscard]]
-	std::size_t size() const noexcept { return m_size; }
+	[[nodiscard]] std::size_t size() const noexcept { return m_size; }
 
 	/**
 	 * @brief Element at position @e i.
@@ -221,8 +220,7 @@ public:
 	 * Same as std::vector::operator[]
 	 * @returns A non-constant reference to the @e i-th element.
 	 */
-	[[nodiscard]]
-	T& operator[] (const std::size_t i) noexcept {
+	[[nodiscard]] T& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -234,8 +232,7 @@ public:
 	 * Same as std::vector::operator[]
 	 * @returns A constant reference to the @e i-th element.
 	 */
-	[[nodiscard]]
-	const T& operator[] (const std::size_t i) const noexcept {
+	[[nodiscard]] const T& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif

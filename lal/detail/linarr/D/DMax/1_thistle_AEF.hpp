@@ -70,11 +70,12 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/D/D.hpp>
+#include <lal/linarr/level_signature_type.hpp>
 
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
-#include <lal/detail/linarr/level_sequence.hpp>
+#include <lal/linarr/level_signature.hpp>
 
 namespace lal {
 namespace detail {
@@ -128,7 +129,8 @@ void merge_arrangements(
 	linear_arrangement& arr,
 	// the ¡inverse! linear arrangement
 	data_array<node>& inv_arr,
-	data_array<int64_t>& levels_per_vertex,
+	// the level signature of the arrangement
+	linarr::level_signature_per_vertex& levels_per_vertex,
 
 	result_t<make_arrangement>& res
 )
@@ -153,18 +155,18 @@ noexcept
 
 			// Case of single-vertex components
 			if (oriented_vertices[i].size() == 1) {
-				levels_per_vertex[u] = side_of_root[i] == LEFT_SIDE ? d : -d;
+				levels_per_vertex[node_t{u}] = (side_of_root[i] == LEFT_SIDE ? d : -d);
 			}
 			else {
 				// Case where there is more than one vertex.
 				// Here it is guaranteed that there will be more than one color
 				const auto color_cur_vertex = color_per_vertex[u];
 				const auto color_first_vertex = color_per_vertex[ oriented_vertices[i][0] ];
-				levels_per_vertex[u] = color_cur_vertex == color_first_vertex ? d : -d;
+				levels_per_vertex[node_t{u}] = (color_cur_vertex == color_first_vertex ? d : -d);
 			}
 
 			// dump the vertices into 'inv_arr' and sort them later.
-			if (levels_per_vertex[u] > 0) {
+			if (levels_per_vertex[node_t{u}] > 0) {
 				// std::cout << "    inv_arr[" << left << "]= " << u << '\n';
 				inv_arr[left++] = u;
 			}
@@ -173,7 +175,7 @@ noexcept
 				inv_arr[right--] = u;
 			}
 
-			min_level_value = std::min(min_level_value, levels_per_vertex[u]);
+			min_level_value = std::min(min_level_value, levels_per_vertex[node_t{u}]);
 		}
 	}
 	inv_arr[left] = thistle;
@@ -182,13 +184,13 @@ noexcept
 	assert(left == right);
 #endif
 
-	levels_per_vertex[thistle] = thistle_level;
-	min_level_value = std::min(min_level_value, levels_per_vertex[thistle]);
+	levels_per_vertex[node_t{thistle}] = thistle_level;
+	min_level_value = std::min(min_level_value, levels_per_vertex[node_t{thistle}]);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "        Level per vertex:\n";
 	for (node u = 0; u < n; ++u) {
-		std::cout << "            level[" << u << "]= " << levels_per_vertex[u] << '\n';
+		std::cout << "            level[" << u << "]= " << levels_per_vertex[node_t{u}] << '\n';
 	}
 #endif
 
@@ -199,7 +201,7 @@ noexcept
 		(
 			inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
 			[&](const node u) {
-				return to_uint64(levels_per_vertex[u] - min_level_value);
+				return to_uint64(levels_per_vertex[node_t{u}] - min_level_value);
 			}
 		);
 	sorting::counting_sort
@@ -207,7 +209,7 @@ noexcept
 		(
 			inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
 			[&](const node u) {
-				return to_uint64(levels_per_vertex[u] - min_level_value);
+				return to_uint64(levels_per_vertex[node_t{u}] - min_level_value);
 			}
 		);
 
@@ -236,42 +238,42 @@ noexcept
 #endif
 
 	{
-		// Place the thistle where it belongs (according to the level sequence)
-		// only when the constraints (Nurse & De Vos) are not satisfied
-		const bool appropriate =
-			is_level_signature_appropriate_NDV<level_signature_type::per_vertex>
-			(t, arr, levels_per_vertex);
+	// Place the thistle where it belongs (according to the level sequence)
+	// only when the constraints (Nurse & De Vos) are not satisfied
+	const bool appropriate =
+		is_level_signature_appropriate_NDV
+		(t, arr, levels_per_vertex);
 
-		if (not appropriate) {
-			if (thistle_level >= 0) {
-				// move the thistle to the left until the level sequence is right
-				// while keeping 'thistle' an actual thistle vertex
-				position_t p = arr[node_t{thistle}];
-				while (
-					p > 0ull and
-					levels_per_vertex[arr[p - 1ull]] < levels_per_vertex[arr[p]] and
-					(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
-				)
-				{
-					arr.swap(p - 1ull, p);
-					--p;
-				}
-			}
-			else {
-				// move the thistle to the right until the level sequence is right
-				// while keeping 'thistle' an actual thistle vertex
-				position_t p = arr[node_t{thistle}];
-				while (
-					p < n - 1 and
-					levels_per_vertex[arr[p]] > levels_per_vertex[arr[p + 1ull]] and
-					(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
-				)
-				{
-					arr.swap(p, p + 1ull);
-					++p;
-				}
+	if (not appropriate) {
+		if (thistle_level >= 0) {
+			// move the thistle to the left until the level sequence is right
+			// while keeping 'thistle' an actual thistle vertex
+			position_t p = arr[node_t{thistle}];
+			while (
+				p > 0ull and
+				levels_per_vertex[node_t{arr[p - 1ull]}] < levels_per_vertex[node_t{arr[p]}] and
+				(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
+			)
+			{
+				arr.swap(p - 1ull, p);
+				--p;
 			}
 		}
+		else {
+			// move the thistle to the right until the level sequence is right
+			// while keeping 'thistle' an actual thistle vertex
+			position_t p = arr[node_t{thistle}];
+			while (
+				p < n - 1 and
+				levels_per_vertex[node_t{arr[p]}] > levels_per_vertex[node_t{arr[p + 1ull]}] and
+				(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
+			)
+			{
+				arr.swap(p, p + 1ull);
+				++p;
+			}
+		}
+	}
 	}
 
 #if defined PRINT_MESSAGES_1THISTLE
@@ -289,7 +291,7 @@ noexcept
 	std::cout << "        Level values:\n";
 	std::cout << "        levels_per_vertex:\n";
 	for (node u = 0; u < n; ++u) {
-		std::cout << "        " << u << ": " << levels_per_vertex[u] << '\n';
+		std::cout << "        " << u << ": " << levels_per_vertex[node_t{u}] << '\n';
 	}
 	std::cout << '\n';
 #endif
@@ -329,15 +331,15 @@ noexcept
 
 	linear_arrangement arr(n);
 	data_array<node> inv_arr(n);
-	data_array<int64_t> level_per_vertex(n);
-
-// the sets of vertices in 'nodes_subtrees' are oriented so that
-// the neighbours of the root are always on the left half of the
-// arrangement
+	linarr::level_signature_per_vertex level_per_vertex(n);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "Thistle: " << thistle << '\n';
 	int counter = 0;
+#endif
+
+#if defined DEBUG
+	std::size_t num_combinations = 0;
 #endif
 
 	do {
@@ -350,7 +352,15 @@ noexcept
 		std::cout << '\n';
 #endif
 
+#if defined DEBUG
+		++num_combinations;
+#endif
+
 		int64_t level_thistle = 0;
+
+		// the sets of vertices in 'nodes_subtrees' are oriented so that
+		// the neighbours of the root are always on the left half of the
+		// arrangement
 
 		for (std::size_t i = 0; i < deg_root; ++i) {
 			oriented_verts[i] = nodes_subtrees[i];
@@ -406,6 +416,10 @@ noexcept
 
 	}
 	while (next_binary(side_of_root.begin(), side_of_root.end()));
+
+#if defined DEBUG
+	assert(num_combinations == 1ull << deg_root);
+#endif
 }
 
 } // -- namespace detail

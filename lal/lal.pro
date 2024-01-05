@@ -112,7 +112,6 @@ HEADERS += \
 	detail/linarr/dependency_flux.hpp \
 	detail/linarr/formal_constraints.hpp \
 	detail/linarr/headedness.hpp \
-	detail/linarr/level_sequence.hpp \
 	detail/linear_queue.hpp \
 	detail/macros/basic_convert.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
@@ -214,6 +213,8 @@ HEADERS += \
 	linarr/dependency_flux.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
+	linarr/level_signature.hpp \
+	linarr/level_signature_type.hpp \
 	linarr/syntactic_dependency_tree/classify.hpp \
 	linarr/syntactic_dependency_tree/type.hpp \
 	linear_arrangement.hpp \
