@@ -87,6 +87,7 @@
 #include <lal/detail/linarr/D/D.hpp>
 #include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
 #include <lal/detail/linarr/D/Dmin/utils.hpp>
+#include <lal/detail/linarr/D/DMax/1_thistle_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>
@@ -306,6 +307,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::min_sum_edge_lengths:
 				case treebank_feature::min_sum_edge_lengths_planar:
 				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::max_sum_edge_lengths_1_thistle:
 				case treebank_feature::max_sum_edge_lengths_bipartite:
 				case treebank_feature::max_sum_edge_lengths_planar:
 				case treebank_feature::max_sum_edge_lengths_projective:
@@ -486,7 +488,7 @@ noexcept
 	const uint64_t n = fT.get_num_nodes();
 
 	properties::bipartite_graph_coloring c;
-	if (m_what_fs[DMax_Bipartite_idx]) {
+	if (m_what_fs[DMax_Bipartite_idx] or m_what_fs[DMax_1_thistle_idx]) {
 		c = detail::color_vertices_graph(fT);
 	}
 
@@ -770,6 +772,10 @@ noexcept
 		const uint64_t DMax_bipartite = detail::DMax::bipartite::AEF<false>(fT, c);
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_bipartite));
 	}
+	if (m_what_fs[DMax_1_thistle_idx]) {
+		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, c);
+		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_1_thistle));
+	}
 
 	// -----------------
 	// flux computation
@@ -865,6 +871,7 @@ noexcept
 			case treebank_feature::min_sum_edge_lengths:
 			case treebank_feature::min_sum_edge_lengths_planar:
 			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::max_sum_edge_lengths_1_thistle:
 			case treebank_feature::max_sum_edge_lengths_bipartite:
 			case treebank_feature::max_sum_edge_lengths_planar:
 			case treebank_feature::max_sum_edge_lengths_projective:

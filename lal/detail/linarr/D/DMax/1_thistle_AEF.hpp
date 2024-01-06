@@ -448,6 +448,15 @@ noexcept
 #endif
 
 	detail::result_t<make_arrangement> res;
+	// so the compiler does not cry
+	if constexpr (make_arrangement) {
+		res.first = 0;
+		res.second.resize(1);
+	}
+	else {
+		res.first = 0;
+	}
+
 	data_array<detail::node_set> nodes_subtrees;
 	// used to query, in constant time, whether a vertex is neighbor of the
 	// thistle or not
