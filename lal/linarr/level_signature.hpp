@@ -336,14 +336,14 @@ noexcept
 {
 	const auto n = g.get_num_nodes();
 
-	// the sequence of level values must be non-increasing
+	// (1) the sequence of level values must be non-increasing
 	for (position_t p = 0ull; p < n - 1ull; ++p) {
 		if (levels[p] < levels[p + 1ull]) {
 			return false;
 		}
 	}
 
-	// no two adjacent vertices can have equal level value
+	// (2) no two adjacent vertices can have equal level value
 	for (iterators::E_iterator it(g); not it.end(); it.next()) {
 		const auto [u,v] = it.yield_edge_t();
 		const position_t pu = (arr.size() == 0 ? *u : arr[u]);
@@ -375,6 +375,7 @@ noexcept
 {
 	const auto n = g.get_num_nodes();
 
+	// (1) the sequence of level values must be non-increasing
 	for (position_t p = 0ull; p < n - 1ull; ++p) {
 		const node_t u = (arr.size() == 0 ? *p : arr[p]);
 		const node_t v = (arr.size() == 0 ? *p + 1 : arr[p + 1ull]);
@@ -383,7 +384,7 @@ noexcept
 		}
 	}
 
-	// no two adjacent vertices can have equal level value
+	// (2) no two adjacent vertices can have equal level value
 	for (iterators::E_iterator it(g); not it.end(); it.next()) {
 		const auto [u,v] = it.yield_edge_t();
 		if (levels[u] == levels[v]) {
