@@ -71,11 +71,12 @@
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/D/D.hpp>
 #include <lal/linarr/level_signature_type.hpp>
+#include <lal/linarr/level_signature.hpp>
 
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
-#include <lal/linarr/level_signature.hpp>
+#include <lal/detail/linarr/level_signature.hpp>
 
 namespace lal {
 namespace detail {
@@ -241,7 +242,7 @@ noexcept
 	// Place the thistle where it belongs (according to the level sequence)
 	// only when the constraints (Nurse & De Vos) are not satisfied
 	const bool appropriate =
-		is_level_signature_appropriate_NDV
+		is_level_signature_maximum
 		(t, arr, levels_per_vertex);
 
 	if (not appropriate) {
