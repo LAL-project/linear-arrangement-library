@@ -75,7 +75,6 @@
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/level_signature.hpp>
-#include <lal/detail/linarr/level_signature.hpp>
 
 namespace lal {
 namespace detail {
@@ -239,39 +238,33 @@ noexcept
 
 	{
 	// Place the thistle where it belongs (according to the level sequence)
-	// only when the constraints (Nurse & De Vos) are not satisfied
-	const bool appropriate =
-		is_level_signature_maximum
-		(t, arr, levels_per_vertex);
 
-	if (not appropriate) {
-		if (thistle_level >= 0) {
-			// move the thistle to the left until the level sequence is right
-			// while keeping 'thistle' an actual thistle vertex
-			position_t p = arr[node_t{thistle}];
-			while (
-				p > 0ull and
-				levels_per_vertex[node_t{arr[p - 1ull]}] < levels_per_vertex[node_t{arr[p]}] and
-				(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
-			)
-			{
-				arr.swap(p - 1ull, p);
-				--p;
-			}
+	if (thistle_level >= 0) {
+		// move the thistle to the left until the level sequence is right
+		// while keeping 'thistle' an actual thistle vertex
+		position_t p = arr[node_t{thistle}];
+		while (
+			p > 0ull and
+			levels_per_vertex[node_t{arr[p - 1ull]}] < levels_per_vertex[node_t{arr[p]}] and
+			(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
+		)
+		{
+			arr.swap(p - 1ull, p);
+			--p;
 		}
-		else {
-			// move the thistle to the right until the level sequence is right
-			// while keeping 'thistle' an actual thistle vertex
-			position_t p = arr[node_t{thistle}];
-			while (
-				p < n - 1 and
-				levels_per_vertex[node_t{arr[p]}] > levels_per_vertex[node_t{arr[p + 1ull]}] and
-				(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
-			)
-			{
-				arr.swap(p, p + 1ull);
-				++p;
-			}
+	}
+	else {
+		// move the thistle to the right until the level sequence is right
+		// while keeping 'thistle' an actual thistle vertex
+		position_t p = arr[node_t{thistle}];
+		while (
+			p < n - 1 and
+			levels_per_vertex[node_t{arr[p]}] > levels_per_vertex[node_t{arr[p + 1ull]}] and
+			(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
+		)
+		{
+			arr.swap(p, p + 1ull);
+			++p;
 		}
 	}
 	}
