@@ -87,6 +87,7 @@ public:
 	 */
 	level_signature(std::size_t n) noexcept : m_data(n, 0) { }
 
+#ifndef SWIG
 	/// Access position 'i'
 	template <typename T> [[nodiscard]] int64_t operator[] (T i) const noexcept {
 		static_assert(
@@ -103,6 +104,7 @@ public:
 		);
 		return m_data[*i];
 	}
+#endif
 
 	/**
 	 * @brief Gets the level value of a vertex.
@@ -172,7 +174,9 @@ static constexpr bool is_per_position(const level_signature_type& t) noexcept {
 	return t == level_signature_type::per_position;
 }
 
+/// A useful typedef for level signatures per vertex.
 typedef level_signature<level_signature_type::per_vertex> level_signature_per_vertex;
+/// A useful typedef for level signatures per position.
 typedef level_signature<level_signature_type::per_position> level_signature_per_position;
 
 /**
@@ -197,9 +201,6 @@ noexcept
 
 /**
  * @brief Returns whether or not the input vertex is a thistle vertex.
- *
- * A thistle vertex is a vertex whose value is different from its degree in the
- * given arrangmeent.
  * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Input arrangement.
@@ -220,73 +221,95 @@ noexcept
 
 /**
  * @brief Calculates the level signature of an arrangement of a graph.
- *
- * Level values are given per position or per vertex according to @e t.
- *
- * As defined by \cite Nurse2018a \cite Nurse2019a.
- * @tparam t Type of level signature.
  * @tparam graph_t Type of graph.
- * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param[out] L Level signature of the arrangement of the input graph.
  * @pre Parameter @e L is initialized at 0.
  */
-template <level_signature_type t, class graph_t, class arrangement_t>
+template <class graph_t>
 void calculate_level_signature
-(const graph_t& g, const arrangement_t& arr, level_signature<t>& L)
+(const graph_t& g, const linear_arrangement& arr, level_signature_per_vertex& L)
 noexcept
 {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
 		const auto [u,v] = it.yield_edge_t();
-		const position_t pu = arr[u];
-		const position_t pv = arr[v];
-		if constexpr (lal::linarr::is_per_position(t)) {
-			if (pu < pv) {
-				++L[pu];
-				--L[pv];
-			}
-			else {
-				--L[pu];
-				++L[pv];
-			}
+		const position_t pu = (arr.size() == 0 ? *u : arr[u]);
+		const position_t pv = (arr.size() == 0 ? *v : arr[v]);
+		if (pu < pv) {
+			++L[u];
+			--L[v];
 		}
 		else {
-			if (pu < pv) {
-				++L[u];
-				--L[v];
-			}
-			else {
-				--L[u];
-				++L[v];
-			}
+			--L[u];
+			++L[v];
 		}
 	}
 }
 
 /**
  * @brief Calculates the level signature of an arrangement of a graph.
- *
- * Level values are given per position or per vertex according to @e t.
- *
- * As defined by \cite Nurse2018a \cite Nurse2019a.
- * @tparam stype Type of level signature.
- * @tparam container_t The type of the container where to store the values. The
- * contained type should be a signed integer value.
  * @tparam graph_t Type of graph.
- * @tparam arrangement_t Type of arrangement.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param[out] L Level signature of the arrangement of the input graph.
+ * @pre Parameter @e L is initialized at 0.
+ */
+template <class graph_t>
+void calculate_level_signature
+(const graph_t& g, const linear_arrangement& arr, level_signature_per_position& L)
+noexcept
+{
+	iterators::E_iterator it(g);
+	while (not it.end()) {
+		const auto [u,v] = it.yield_edge_t();
+		const position_t pu = (arr.size() == 0 ? u : arr[u]);
+		const position_t pv = (arr.size() == 0 ? v : arr[v]);
+		if (pu < pv) {
+			++L[pu];
+			--L[pv];
+		}
+		else {
+			--L[pu];
+			++L[pv];
+		}
+	}
+}
+
+/**
+ * @brief Calculates the level signature of an arrangement of a graph.
+ * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @returns The level sequence of an arrangement per vertex.
  */
-template <level_signature_type t, class graph_t, class arrangement_t>
-level_signature<t> calculate_level_signature
-(const graph_t& g, const arrangement_t& arr)
+template <class graph_t>
+level_signature_per_vertex calculate_level_signature_per_vertex
+(const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const auto n = g.get_num_nodes();
-	linarr::level_signature<t> L(n);
+	level_signature_per_vertex L(n);
+	for (position p = 0ull; p < n; ++p) { L[p] = 0; }
+	calculate_level_signature(g, arr, L);
+	return L;
+}
+
+/**
+ * @brief Calculates the level signature of an arrangement of a graph.
+ * @tparam graph_t Type of graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @returns The level sequence of an arrangement per vertex.
+ */
+template <class graph_t>
+level_signature_per_position calculate_level_signature_per_position
+	(const graph_t& g, const linear_arrangement& arr)
+	noexcept
+{
+	const auto n = g.get_num_nodes();
+	level_signature_per_position L(n);
 	for (position p = 0ull; p < n; ++p) { L[p] = 0; }
 	calculate_level_signature(g, arr, L);
 	return L;
@@ -300,59 +323,71 @@ noexcept
  * - The sequence of level values has to be non-decreasing.
  * - No two adjacent vertices in the graph can have equal level value.
  *
- * Level values are given per position or per vertex according to @e t.
- * @tparam stype Type of level signature.
  * @tparam graph_t Type of graph.
- * @tparam arrangement_t Type of arrangement.
  * @param g Input graph.
  * @param arr Input arrangement.
  * @param Level signature of the arrangement.
  * @returns Whether or not the level sequence satisfies the two conditions.
  */
-template <level_signature_type t, class graph_t, class arrangement_t>
+template <class graph_t>
 bool is_level_signature_appropriate_NDV
-(const graph_t& g, const arrangement_t& arr, const level_signature<t>& levels)
+(const graph_t& g, const linear_arrangement& arr, const level_signature_per_position& levels)
 noexcept
 {
 	const auto n = g.get_num_nodes();
 
 	// the sequence of level values must be non-increasing
-	if constexpr (linarr::is_per_position(t)) {
-		// check constraint per position
-		for (position_t p = 0ull; p < n - 1ull; ++p) {
-			if (levels[p] < levels[p + 1ull]) {
-				return false;
-			}
-		}
-	}
-	else {
-		// check constraint per vertex
-		for (position_t p = 0ull; p < n - 1ull; ++p) {
-			const node_t u = arr[p];
-			const node_t v = arr[p + 1ull];
-			if (levels[u] < levels[v]) {
-				return false;
-			}
+	for (position_t p = 0ull; p < n - 1ull; ++p) {
+		if (levels[p] < levels[p + 1ull]) {
+			return false;
 		}
 	}
 
 	// no two adjacent vertices can have equal level value
 	for (iterators::E_iterator it(g); not it.end(); it.next()) {
-		if constexpr (linarr::is_per_position(t)) {
-			// check constraint per position
-			const auto [u,v] = it.yield_edge_t();
-			const position_t pu = arr[u];
-			const position_t pv = arr[v];
-			if (levels[pu] == levels[pv]) {
-				return false;
-			}
+		const auto [u,v] = it.yield_edge_t();
+		const position_t pu = (arr.size() == 0 ? *u : arr[u]);
+		const position_t pv = (arr.size() == 0 ? *v : arr[v]);
+		if (levels[pu] == levels[pv]) {
+			return false;
 		}
-		else {
-			// check constraint per vertex
-			const auto [u,v] = it.yield_edge_t();
-			if (levels[u] == levels[v]) {
-				return false;
-			}
+	}
+	return true;
+}
+
+/**
+ * @brief Returns true if the level sequence follows that of a maximum arrangement.
+ *
+ * Checks the conditions defined by Nurse and De Vos \cite Nurse2018a \cite Nurse2019a,
+ * defined as:
+ * - The sequence of level values has to be non-decreasing.
+ * - No two adjacent vertices in the graph can have equal level value.
+ * @tparam graph_t Type of graph.
+ * @param g Input graph.
+ * @param arr Input arrangement.
+ * @param Level signature of the arrangement.
+ * @returns Whether or not the level sequence satisfies the two conditions.
+ */
+template <class graph_t>
+bool is_level_signature_appropriate_NDV
+(const graph_t& g, const linear_arrangement& arr, const level_signature_per_vertex& levels)
+noexcept
+{
+	const auto n = g.get_num_nodes();
+
+	for (position_t p = 0ull; p < n - 1ull; ++p) {
+		const node_t u = (arr.size() == 0 ? *p : arr[p]);
+		const node_t v = (arr.size() == 0 ? *p + 1 : arr[p + 1ull]);
+		if (levels[u] < levels[v]) {
+			return false;
+		}
+	}
+
+	// no two adjacent vertices can have equal level value
+	for (iterators::E_iterator it(g); not it.end(); it.next()) {
+		const auto [u,v] = it.yield_edge_t();
+		if (levels[u] == levels[v]) {
+			return false;
 		}
 	}
 	return true;
