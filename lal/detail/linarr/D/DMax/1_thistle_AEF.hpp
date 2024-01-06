@@ -70,12 +70,11 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/formal_constraints.hpp>
 #include <lal/linarr/D/D.hpp>
-#include <lal/linarr/level_signature_type.hpp>
-#include <lal/linarr/level_signature.hpp>
 
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
+#include <lal/detail/linarr/level_signature.hpp>
 #include <lal/detail/linarr/level_signature.hpp>
 
 namespace lal {
@@ -131,7 +130,7 @@ void merge_arrangements(
 	// the ¡inverse! linear arrangement
 	data_array<node>& inv_arr,
 	// the level signature of the arrangement
-	linarr::level_signature_per_vertex& levels_per_vertex,
+	level_signature_per_vertex& levels_per_vertex,
 
 	result_t<make_arrangement>& res
 )
@@ -332,7 +331,7 @@ noexcept
 
 	linear_arrangement arr(n);
 	data_array<node> inv_arr(n);
-	linarr::level_signature_per_vertex level_per_vertex(n);
+	level_signature_per_vertex level_per_vertex(n);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "Thistle: " << thistle << '\n';

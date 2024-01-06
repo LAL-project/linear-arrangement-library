@@ -214,8 +214,6 @@ HEADERS += \
 	linarr/dependency_flux.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
-	linarr/level_signature.hpp \
-	linarr/level_signature_type.hpp \
 	linarr/syntactic_dependency_tree/classify.hpp \
 	linarr/syntactic_dependency_tree/type.hpp \
 	linear_arrangement.hpp \

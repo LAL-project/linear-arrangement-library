@@ -62,9 +62,6 @@
 #include <lal/linarr/syntactic_dependency_tree/classify.hpp>
 #include <lal/linarr/syntactic_dependency_tree/type.hpp>
 
-#include <lal/linarr/level_signature_type.hpp>
-#include <lal/linarr/level_signature.hpp>
-
 #include <lal/linarr/dependency_flux.hpp>
 
 #include <lal/linarr/formal_constraints.hpp>
