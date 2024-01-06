@@ -150,6 +150,8 @@ target_sources(
 		detail/linarr/C/stack_based.hpp
 		detail/linarr/chunking/Anderson.hpp
 		detail/linarr/chunking/Macutek.hpp
+		detail/linarr/D/DMax/1_thistle_AEF.hpp
+		detail/linarr/D/DMax/bipartite_AEF.hpp
 		detail/linarr/D/DMax/Planar_AEF.hpp
 		detail/linarr/D/DMax/Projective_AEF.hpp
 		detail/linarr/D/DMax/utils.hpp
@@ -165,6 +167,7 @@ target_sources(
 		detail/linarr/dependency_flux.hpp
 		detail/linarr/formal_constraints.hpp
 		detail/linarr/headedness.hpp
+		detail/linarr/level_signature.hpp
 		detail/linarr/syntactic_dependency_tree.hpp
 		#      macros
 		detail/macros/basic_convert.hpp
@@ -348,6 +351,8 @@ target_sources(
 
 		# properties namespace
 		# -- headers
+		properties/bipartite_graph_colorability.hpp
+		properties/bipartite_graph_coloring.hpp
 		properties/C_rla.hpp
 		properties/D_rla.hpp
 		properties/degrees.hpp
@@ -358,6 +363,7 @@ target_sources(
 		properties/tree_centroid.hpp
 		properties/tree_diameter.hpp
 		# -- sources
+		properties/bipartite_graph_colorability.cpp
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/hierarchical_distance.cpp
@@ -516,6 +522,8 @@ set(LIBLAL_NUMERIC_HEADER
 )
 # -------------------------------------------------------------------- #
 set(LIBLAL_PROPERTIES_HEADER
+	properties/bipartite_graph_colorability.hpp
+	properties/bipartite_graph_coloring.hpp
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp
@@ -543,21 +551,21 @@ install(
 	TARGETS ${TargetStringLibrary}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
-install(FILES ${LIBLAL_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
-install(FILES ${LIBLAL_DETAIL_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/detail)
-install(FILES ${LIBLAL_GENERATION_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generate)
-install(FILES ${LIBLAL_GRAPHS_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
-install(FILES ${LIBLAL_IO_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
-install(FILES ${LIBLAL_ITERATORS_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
+install(FILES ${LIBLAL_MAIN_HEADER}					DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal)
+install(FILES ${LIBLAL_DETAIL_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/detail)
+install(FILES ${LIBLAL_GENERATION_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/generate)
+install(FILES ${LIBLAL_GRAPHS_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/graphs)
+install(FILES ${LIBLAL_IO_HEADER}					DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/io)
+install(FILES ${LIBLAL_ITERATORS_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/iterators)
 install(FILES ${LIBLAL_LINARR_MAIN_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr)
 install(FILES ${LIBLAL_LINARR_aggregations_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/aggregations)
 install(FILES ${LIBLAL_LINARR_C_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/C)
 install(FILES ${LIBLAL_LINARR_chunking_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/chunking)
 install(FILES ${LIBLAL_LINARR_D_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/D)
 install(FILES ${LIBLAL_LINARR_syndeptree_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/linarr/syntactic_dependency_tree)
-install(FILES ${LIBLAL_NUMERIC_HEADER}		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/numeric)
-install(FILES ${LIBLAL_PROPERTIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)
-install(FILES ${LIBLAL_UTILITIES_HEADER}	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/utilities)
+install(FILES ${LIBLAL_NUMERIC_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/numeric)
+install(FILES ${LIBLAL_PROPERTIES_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)
+install(FILES ${LIBLAL_UTILITIES_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/utilities)
 
 # **********************************************************************
 # COMPILATION FLAGS
