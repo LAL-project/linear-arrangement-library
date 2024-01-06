@@ -454,7 +454,7 @@ noexcept
 		res.second.resize(1);
 	}
 	else {
-		res.first = 0;
+		res = 0;
 	}
 
 	data_array<detail::node_set> nodes_subtrees;
