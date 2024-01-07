@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <iostream>
 #if defined DEBUG
 #include <cassert>
 #endif
@@ -94,15 +93,6 @@ noexcept
 	// the vertices in the red half have been placed in reversed order
 	std::reverse(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
 	m_arr.update_direct();
-
-	for (lal::position_t p = 0ull; p < n; ++p) {
-		std::cout << m_arr[p] << ' ';
-	}
-	std::cout << '\n';
-	for (lal::position_t p = 0ull; p < n; ++p) {
-		std::cout << (c[m_arr[p]] == blue ? 'b' : 'r') << ' ';
-	}
-	std::cout << '\n';
 
 	m_reached_end_blue = false;
 	m_reached_end_red = false;
