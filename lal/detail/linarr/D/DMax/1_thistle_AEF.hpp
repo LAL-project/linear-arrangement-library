@@ -41,7 +41,7 @@
 
 #pragma once
 
-#define PRINT_MESSAGES_1THISTLE
+#undef PRINT_MESSAGES_1THISTLE
 
 #if not defined DEBUG
 #if defined PRINT_MESSAGES_1THISTLE
