@@ -39,25 +39,80 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/generate/all_lab_rooted_trees.hpp>
-#include <lal/generate/all_ulab_free_trees.hpp>
-#include <lal/generate/all_ulab_rooted_trees.hpp>
-
-#include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/generate/rand_lab_rooted_trees.hpp>
-#include <lal/generate/rand_ulab_free_trees.hpp>
-#include <lal/generate/rand_ulab_rooted_trees.hpp>
-
-#include <lal/generate/tree_generator_type.hpp>
-
-#include <lal/generate/all_arrangements.hpp>
 #include <lal/generate/all_bipartite_arrangements.hpp>
-#include <lal/generate/all_planar_arrangements.hpp>
-#include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/generate/rand_arrangements.hpp>
-#include <lal/generate/rand_bipartite_arrangements.hpp>
-#include <lal/generate/rand_planar_arrangements.hpp>
-#include <lal/generate/rand_projective_arrangements.hpp>
+
+// C++ includes
+#include <algorithm>
+#include <iostream>
+#if defined DEBUG
+#include <cassert>
+#endif
+
+namespace lal {
+namespace generate {
+
+void all_bipartite_arrangements::next() noexcept {
+	m_reached_end_red =
+		not
+		std::next_permutation(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+
+	m_arr.update_direct();
+
+	if (m_reached_end_red) {
+		m_reached_end_blue =
+			not
+			std::next_permutation(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue);
+
+		m_arr.update_direct();
+	}
+}
+
+void all_bipartite_arrangements::init(const properties::bipartite_graph_coloring& c)
+noexcept
+{
+	static constexpr auto blue = properties::bipartite_graph_coloring::blue;
+	static constexpr auto red = properties::bipartite_graph_coloring::red;
+
+	const auto n = c.size();
+	m_arr.resize(n);
+
+	m_n_blue = m_n_red = 0;
+
+	position left = 0ull;
+	position right = n - 1ull;
+	for (node u = 0; u < n; ++u) {
+		if (c[u] == blue) {
+			m_arr.assign(u, left++);
+			++m_n_blue;
+		}
+		else if (c[u] == red) {
+			m_arr.assign(u, right--);
+			++m_n_red;
+		}
+	}
+
+	// the vertices in the red half have been placed in reversed order
+	std::reverse(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+	m_arr.update_direct();
+
+	for (lal::position_t p = 0ull; p < n; ++p) {
+		std::cout << m_arr[p] << ' ';
+	}
+	std::cout << '\n';
+	for (lal::position_t p = 0ull; p < n; ++p) {
+		std::cout << (c[m_arr[p]] == blue ? 'b' : 'r') << ' ';
+	}
+	std::cout << '\n';
+
+	m_reached_end_blue = false;
+	m_reached_end_red = false;
+
+#if defined DEBUG
+	assert(m_n_red + m_n_blue == n);
+	assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue));
+	assert(std::is_sorted(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()));
+#endif
+}
+
+} // -- namespace generate
+} // -- namespace lal

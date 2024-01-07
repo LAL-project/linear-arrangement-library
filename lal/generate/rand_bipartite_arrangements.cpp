@@ -39,25 +39,57 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/generate/all_lab_rooted_trees.hpp>
-#include <lal/generate/all_ulab_free_trees.hpp>
-#include <lal/generate/all_ulab_rooted_trees.hpp>
-
-#include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/generate/rand_lab_rooted_trees.hpp>
-#include <lal/generate/rand_ulab_free_trees.hpp>
-#include <lal/generate/rand_ulab_rooted_trees.hpp>
-
-#include <lal/generate/tree_generator_type.hpp>
-
-#include <lal/generate/all_arrangements.hpp>
-#include <lal/generate/all_bipartite_arrangements.hpp>
-#include <lal/generate/all_planar_arrangements.hpp>
-#include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/generate/rand_arrangements.hpp>
 #include <lal/generate/rand_bipartite_arrangements.hpp>
-#include <lal/generate/rand_planar_arrangements.hpp>
-#include <lal/generate/rand_projective_arrangements.hpp>
+
+// C++ includes
+#include <algorithm>
+
+// lal includes
+#include <lal/basic_types.hpp>
+
+namespace lal {
+namespace generate {
+
+const linear_arrangement& rand_bipartite_arrangements::get_arrangement() noexcept {
+	std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue, m_gen);
+	std::shuffle(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse(), m_gen);
+	m_arr.update_direct();
+	return m_arr;
+}
+
+void rand_bipartite_arrangements::init
+(const properties::bipartite_graph_coloring& c, uint64_t seed)
+noexcept
+{
+	if (seed == 0) {
+		std::random_device rd;
+		m_gen = std::mt19937(rd());
+	}
+	else {
+		m_gen = std::mt19937(seed);
+	}
+
+	static constexpr auto blue = properties::bipartite_graph_coloring::blue;
+	static constexpr auto red = properties::bipartite_graph_coloring::red;
+
+	const auto n = c.size();
+	m_arr.resize(n);
+
+	m_n_blue = m_n_red = 0;
+
+	position left = 0ull;
+	position right = n - 1ull;
+	for (node u = 0; u < n; ++u) {
+		if (c[u] == blue) {
+			m_arr.assign(u, left++);
+			++m_n_blue;
+		}
+		else if (c[u] == red) {
+			m_arr.assign(u, right--);
+			++m_n_red;
+		}
+	}
+}
+
+} // -- namespace generate
+} // -- namespace lal
