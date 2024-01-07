@@ -215,6 +215,10 @@ noexcept
 	// build the actual arrangement object now
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
+#if defined DEBUG
+	const auto __D = linarr::sum_edge_lengths(t, arr);
+#endif
+
 #if defined PRINT_MESSAGES_1THISTLE
 	{
 	const auto dir = arr.direct_as_vector();
@@ -245,7 +249,7 @@ noexcept
 		position_t p = arr[node_t{thistle}];
 		while (
 			p > 0ull and
-			levels_per_vertex[node_t{arr[p - 1ull]}] < levels_per_vertex[node_t{arr[p]}] and
+			levels_per_vertex[node_t{arr[p - 1ull]}] <= levels_per_vertex[node_t{arr[p]}] and
 			(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
 		)
 		{
@@ -259,7 +263,7 @@ noexcept
 		position_t p = arr[node_t{thistle}];
 		while (
 			p < n - 1 and
-			levels_per_vertex[node_t{arr[p]}] > levels_per_vertex[node_t{arr[p + 1ull]}] and
+			levels_per_vertex[node_t{arr[p]}] >= levels_per_vertex[node_t{arr[p + 1ull]}] and
 			(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
 		)
 		{
@@ -291,7 +295,12 @@ noexcept
 
 	const auto D = linarr::sum_edge_lengths(t, arr);
 #if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        D= " << D << '\n';
+	std::cout << "          D=  " << D << '\n';
+	std::cout << "        __D= " << __D << '\n';
+#endif
+
+#if defined DEBUG
+	assert(D >= __D);
 #endif
 
 	if constexpr (make_arrangement) {
@@ -312,19 +321,19 @@ void choose_orientations_for_root(
 	const data_array<char>& is_thistle_neighbor,
 	const data_array<node_set>& nodes_subtrees,
 	const properties::bipartite_graph_coloring& colors,
+
+	linear_arrangement& arr,
+	data_array<node>& inv_arr,
+	level_signature_per_vertex& level_per_vertex,
+
 	result_t<make_arrangement>& res
 )
 noexcept
 {
-	const auto n = t.get_num_nodes();
 	const auto deg_root = t.get_degree(thistle);
 
 	data_array<char> side_of_root(deg_root, 0);
 	data_array<node_set> oriented_verts(deg_root);
-
-	linear_arrangement arr(n);
-	data_array<node> inv_arr(n);
-	level_signature_per_vertex level_per_vertex(n);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "Thistle: " << thistle << '\n';
@@ -450,12 +459,18 @@ noexcept
 		res = 0;
 	}
 
+	linear_arrangement arr(n);
+	data_array<node> inv_arr(n);
+	level_signature_per_vertex level_per_vertex(n);
+
+	// the set of nodes in every subtree of the tree rooted at the thistle
 	data_array<detail::node_set> nodes_subtrees;
-	// used to query, in constant time, whether a vertex is neighbor of the
-	// thistle or not
+
+	// used to query whether a vertex is neighbor of the thistle or not
 	data_array<char> is_thistle_neighbor(n, 0);
 
 	for (node thistle = 0; thistle < n; ++thistle) {
+		if (thistle != 6) { continue; }
 		const uint64_t deg_thistle = t.get_degree(thistle);
 
 		// ignore leaves
@@ -524,8 +539,11 @@ noexcept
 		}
 
 		// Find best orientation for this thistle.
-		detail::choose_orientations_for_root<make_arrangement>
-			(t, thistle, is_thistle_neighbor, nodes_subtrees, c, res);
+		detail::choose_orientations_for_root<make_arrangement>(
+			t, thistle, is_thistle_neighbor, nodes_subtrees, c,
+			arr, inv_arr, level_per_vertex,
+			res
+		);
 
 		// unset neighbors of thistle
 		for (node u : neighs) {
