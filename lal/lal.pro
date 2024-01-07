@@ -241,11 +241,13 @@ HEADERS += \
 	lal_version.hpp
 
 SOURCES += \
+	generate/all_arrangements.cpp \
 	generate/all_lab_free_trees.cpp \
 	generate/all_planar_arrangements.cpp \
 	generate/all_projective_arrangements.cpp \
 	generate/all_ulab_free_trees.cpp \
 	generate/all_ulab_rooted_trees.cpp \
+	generate/rand_arrangements.cpp \
 	generate/rand_lab_free_trees.cpp \
 	generate/rand_planar_arrangements.cpp \
 	generate/rand_projective_arrangements.cpp \

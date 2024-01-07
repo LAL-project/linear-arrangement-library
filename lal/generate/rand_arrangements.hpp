@@ -42,7 +42,6 @@
 #pragma once
 
 // C++ includes
-#include <algorithm>
 #include <random>
 
 // lal includes
@@ -57,9 +56,10 @@ namespace generate {
  *
  * This class generates linear arrangements uniformly at random. Unlike other
  * random generators (e.g., @ref lal::generate::rand_projective_arrangements)
- * The arrangements are not generatee
+ * the arrangements are not generated from a graph since the graph structure
+ * is not required at all.
  *
- * This class is a wrapper over the C++'s std::shuffle algorithm.
+ * This class is a simple wrapper over C++'s std::shuffle algorithm.
  *
  * A possible usage of this class is the following:
  * @code
@@ -73,7 +73,7 @@ namespace generate {
  * Equivalently,
  * @code
  *		// given a tree T (or any other graph)
- *		lal::generate::rand_arrangements Gen(T);
+ *		lal::generate::rand_arrangements Gen(T.get_num_nodes());
  *		for (int i = 0; i < 100; ++i) {
  *			const linear_arrangement arr = Gen.yield_arrangement();
  *			// ...
@@ -91,6 +91,17 @@ public:
 	rand_arrangements(const lal::graphs::graph& g, uint64_t seed = 0) noexcept
 		: rand_arrangements(g.get_num_nodes(), seed)
 	{ }
+
+	/**
+	 * @brief Default copy constructor.
+	 * @param Gen Random arrangement generator.
+	 */
+	rand_arrangements(const rand_arrangements& Gen) = default;
+	/**
+	 * @brief Default move constructor.
+	 * @param Gen Random arrangement generator.
+	 */
+	rand_arrangements(rand_arrangements&& Gen) = default;
 
 	/**
 	 * @brief Constructor with number of vertices.
@@ -113,11 +124,7 @@ public:
 	}
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	const linear_arrangement& get_arrangement() noexcept {
-		std::shuffle(m_arr.begin_direct(), m_arr.end_direct(), m_gen);
-		m_arr.update_inverse();
-		return m_arr;
-	}
+	const linear_arrangement& get_arrangement() noexcept;
 
 	/// Returns a linear arrangement constructed uniformly at random.
 	const linear_arrangement& yield_arrangement() noexcept {

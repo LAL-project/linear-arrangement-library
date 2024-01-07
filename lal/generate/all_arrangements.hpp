@@ -41,10 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <algorithm>
-#include <numeric>
-
 // lal includes
 #include <lal/graphs/graph.hpp>
 #include <lal/linear_arrangement.hpp>
@@ -147,11 +143,7 @@ public:
 	 * Modifies the internal state so that the next arrangement
 	 * can be retrieved using method @ref get_arrangement.
 	 */
-	void next() noexcept {
-		m_reached_end =
-			not std::next_permutation(m_arr.begin_direct(), m_arr.end_direct());
-		m_arr.update_inverse();
-	}
+	void next() noexcept;
 
 	/// Sets the generator to its initial state.
 	void reset() noexcept {
