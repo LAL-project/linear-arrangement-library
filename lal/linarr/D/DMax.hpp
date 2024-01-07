@@ -77,7 +77,7 @@ noexcept;
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
- * @param g Input free tree.
+ * @param t Input free tree.
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_thistle

@@ -68,9 +68,17 @@ enum class level_signature_type {
  * @brief A class that implements level signatures of an array.
  *
  * This class is just an array of signed integer values, each corresponding
- * to a level value. In case the template parameter @e t is equal to
- * @ref lal::linarr::level_signature_type::per_vertex, the level values are
- * defined per vertex, that is
+ * to a level value.
+ *
+ * In case the template parameter @e t is equal to
+ * @ref lal::detail::level_signature_type::per_vertex, the level values
+ * are defined per vertex, that is, level values have to be accessed using a
+ * vertex 'u' via the operator [], @e L[u].
+ *
+ * In case the template parameter @e t is equal to
+ * @ref lal::detail::level_signature_type::per_position, the level values
+ * are defined per position, that is, level values have to be accessed using a
+ * position 'p' via the operator [], @e L[p].
  */
 template <level_signature_type t>
 class level_signature {
@@ -114,7 +122,7 @@ public:
 	 * @brief Gets the level value of a vertex.
 	 *
 	 * Only usable when the type of this level signature is
-	 * @ref lal::linarr::level_signature_type::per_vertex.
+	 * @ref lal::detail::level_signature_type::per_vertex.
 	 * @param u Input vertex.
 	 * @returns The level value of the input vertex.
 	 */
@@ -127,7 +135,7 @@ public:
 	 * @brief Sets the level value of a vertex.
 	 *
 	 * Only usable when the type of this level signature is
-	 * @ref lal::linarr::level_signature_type::per_vertex.
+	 * @ref lal::detail::level_signature_type::per_vertex.
 	 * @param u Input vertex.
 	 * @param l Level value.
 	 */
@@ -141,7 +149,7 @@ public:
 	 * @brief Gets the level value of a position.
 	 *
 	 * Only usable when the type of this level signature is
-	 * @ref lal::linarr::level_signature_type::per_position.
+	 * @ref lal::detail::level_signature_type::per_position.
 	 * @param p Input position.
 	 * @returns The level value of the input position.
 	 */
@@ -154,7 +162,7 @@ public:
 	 * @brief Sets the level value of a position.
 	 *
 	 * Only usable when the type of this level signature is
-	 * @ref lal::linarr::level_signature_type::per_position.
+	 * @ref lal::detail::level_signature_type::per_position.
 	 * @param p Input position.
 	 * @param l Level value.
 	 */
@@ -169,11 +177,11 @@ private:
 	data_array<int64_t> m_data;
 };
 
-/// Returns true if the template parameter is @ref lal::linarr::level_signature_type::per_vertex.
+/// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_vertex.
 static constexpr bool is_per_vertex(const level_signature_type& t) noexcept {
 	return t == level_signature_type::per_vertex;
 }
-/// Returns true if the template parameter is @ref lal::linarr::level_signature_type::per_position.
+/// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_position.
 static constexpr bool is_per_position(const level_signature_type& t) noexcept {
 	return t == level_signature_type::per_position;
 }
@@ -222,7 +230,7 @@ noexcept
  * @tparam graph_t Type of graph.
  * @param g Input graph.
  * @param arr Input arrangement.
- * @param Level signature of the arrangement.
+ * @param levels signature of the arrangement.
  * @returns Whether or not the level sequence satisfies the two conditions.
  */
 template <class graph_t, level_signature_type t>
