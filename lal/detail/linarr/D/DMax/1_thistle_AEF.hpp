@@ -41,7 +41,7 @@
 
 #pragma once
 
-#undef PRINT_MESSAGES_1THISTLE
+#define PRINT_MESSAGES_1THISTLE
 
 #if not defined DEBUG
 #if defined PRINT_MESSAGES_1THISTLE
@@ -52,6 +52,7 @@
 // C++ includes
 #include <type_traits>
 #include <algorithm>
+#include <iostream>
 #include <cstdint>
 #include <vector>
 #if defined PRINT_MESSAGES_1THISTLE
@@ -137,8 +138,9 @@ noexcept
 {
 	const auto n = t.get_num_nodes();
 
-	// the level value of every vertex in the configuration
-	int64_t min_level_value = 999999999;
+	// The minimum level value in the configuration. There is always
+	// a negative (<0) level value, so the minimum can be initialized at 0.
+	int64_t min_level_value = 0;
 
 	position left = 0;
 	position right = n - 1ull;
@@ -442,6 +444,8 @@ detail::result_t<make_arrangement>
 AEF(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept
 {
+	std::cerr << "Warning! This function contains unfixed bugs\n"; // sorry :(
+
 	const auto n = t.get_num_nodes();
 
 #if defined PRINT_MESSAGES_1THISTLE
