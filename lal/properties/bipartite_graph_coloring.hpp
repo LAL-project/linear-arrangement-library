@@ -99,6 +99,9 @@ public:
 		return get_color_of(u) != invalid;
 	}
 
+	/// Returns the size of this coloring (the number of vertices)
+	std::size_t size() const noexcept { return coloring.size(); }
+
 	/// Returns the color of node @e u
 	char get_color_of(node u) const noexcept { return coloring[u]; }
 	/// Returns the color of node @e u
