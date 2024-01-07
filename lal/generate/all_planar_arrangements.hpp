@@ -116,12 +116,12 @@ public:
 	 * @pre The object @e T is a valid tree (see @ref graphs::rooted_tree::is_tree).
 	 */
 	all_planar_arrangements(const graphs::rooted_tree& T) noexcept;
+
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
 	all_planar_arrangements(const all_planar_arrangements& Gen) = default;
-
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive planar arrangement generator.

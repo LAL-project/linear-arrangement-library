@@ -91,12 +91,12 @@ public:
 	 * @ref lal::graphs::rooted_tree::is_rooted_tree).
 	 */
 	rand_projective_arrangements(const graphs::rooted_tree& rT, uint64_t seed = 0) noexcept;
+
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
 	rand_projective_arrangements(const rand_projective_arrangements& Gen) = default;
-
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random projective arrangement generator.

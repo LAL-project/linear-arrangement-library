@@ -122,12 +122,12 @@ public:
 	all_projective_arrangements(const graphs::free_tree& T, node root) noexcept
 		: all_projective_arrangements(graphs::rooted_tree(T, root))
 	{ }
+
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive projective arrangement generator.
 	 */
 	all_projective_arrangements(const all_projective_arrangements& Gen) = default;
-
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive projective arrangement generator.
