@@ -99,36 +99,6 @@ noexcept
 	return is_bipartite(g, c, __nonident(arr));
 }
 
-bool is_bipartite(
-	const graphs::free_tree& t,
-	const properties::bipartite_graph_coloring& c,
-	const linear_arrangement& arr
-)
-noexcept
-{
-#if defined DEBUG
-	assert(is_arrangement(t, arr));
-#endif
-
-	if (arr.size() == 0) { return is_bipartite(t, c, __ident(arr)); }
-	return is_bipartite(t, c, __nonident(arr));
-}
-
-bool is_bipartite(
-	const graphs::rooted_tree& t,
-	const properties::bipartite_graph_coloring& c,
-	const linear_arrangement& arr
-)
-noexcept
-{
-#if defined DEBUG
-	assert(is_arrangement(t, arr));
-#endif
-
-	if (arr.size() == 0) { return is_bipartite(t, c, __ident(arr)); }
-	return is_bipartite(t, c, __nonident(arr));
-}
-
 bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
 noexcept
 {

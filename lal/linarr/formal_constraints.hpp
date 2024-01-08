@@ -157,42 +157,6 @@ bool is_bipartite(
 	const linear_arrangement& arr = {}
 )
 noexcept;
-/**
- * @brief Is a given arrangement bipartite?
- *
- * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
- * arrangement.
- *
- * @param t Input free tree.
- * @param c Coloring of the input graph.
- * @param arr Input linear arrangement.
- * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite.
- */
-bool is_bipartite(
-	const graphs::free_tree& t,
-	const properties::bipartite_graph_coloring& c,
-	const linear_arrangement& arr = {}
-)
-noexcept;
-/**
- * @brief Is a given arrangement bipartite?
- *
- * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
- * arrangement.
- *
- * @param t Input rooted graph.
- * @param c Coloring of the input graph.
- * @param arr Input linear arrangement.
- * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite.
- */
-bool is_bipartite(
-	const graphs::rooted_tree& t,
-	const properties::bipartite_graph_coloring& c,
-	const linear_arrangement& arr = {}
-)
-noexcept;
 
 /**
  * @brief Is a given arrangement bipartite?
