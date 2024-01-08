@@ -225,6 +225,7 @@ target_sources(
 		# generate namespace
 		# -- headers
 		generate/all_arrangements.hpp
+		generate/all_bipartite_arrangements.hpp
 		generate/all_lab_free_trees.hpp
 		generate/all_lab_rooted_trees.hpp
 		generate/all_planar_arrangements.hpp
@@ -232,6 +233,7 @@ target_sources(
 		generate/all_ulab_free_trees.hpp
 		generate/all_ulab_rooted_trees.hpp
 		generate/rand_arrangements.hpp
+		generate/rand_bipartite_arrangements.hpp
 		generate/rand_lab_free_trees.hpp
 		generate/rand_lab_rooted_trees.hpp
 		generate/rand_planar_arrangements.hpp
@@ -241,11 +243,15 @@ target_sources(
 		generate/tree_generator.hpp
 		generate/tree_generator_type.hpp
 		# -- sources
+		generate/all_arrangements.cpp
+		generate/all_bipartite_arrangements.cpp
 		generate/all_lab_free_trees.cpp
 		generate/all_planar_arrangements.cpp
 		generate/all_projective_arrangements.cpp
 		generate/all_ulab_free_trees.cpp
 		generate/all_ulab_rooted_trees.cpp
+		generate/rand_arrangements.cpp
+		generate/rand_bipartite_arrangements.cpp
 		generate/rand_lab_free_trees.cpp
 		generate/rand_planar_arrangements.cpp
 		generate/rand_projective_arrangements.cpp
@@ -430,6 +436,7 @@ set(LIBLAL_DETAIL_HEADER
 # -------------------------------------------------------------------- #
 set(LIBLAL_GENERATION_HEADER
 	generate/all_arrangements.hpp
+	generate/all_bipartite_arrangements.hpp
 	generate/all_lab_free_trees.hpp
 	generate/all_lab_rooted_trees.hpp
 	generate/all_planar_arrangements.hpp
@@ -437,6 +444,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/all_ulab_free_trees.hpp
 	generate/all_ulab_rooted_trees.hpp
 	generate/rand_arrangements.hpp
+	generate/rand_bipartite_arrangements.hpp
 	generate/rand_lab_free_trees.hpp
 	generate/rand_lab_rooted_trees.hpp
 	generate/rand_planar_arrangements.hpp
