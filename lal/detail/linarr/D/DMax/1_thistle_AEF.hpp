@@ -214,10 +214,18 @@ noexcept
 			}
 		);
 
+	// if the thistle has negative level, reverse the sequence
+	std::reverse(inv_arr.begin(), inv_arr.end());
+	// reverse the level sequence as well
+	for (node_t u = 0ull; u < n; ++u) {
+		levels_per_vertex[u] = -levels_per_vertex[u];
+	}
+
 	// build the actual arrangement object now
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
 #if defined DEBUG
+	// sum of edge lengths prior to adjustments
 	const auto __D = linarr::sum_edge_lengths(t, arr);
 #endif
 
@@ -243,35 +251,17 @@ noexcept
 #endif
 
 	{
-	// Place the thistle where it belongs (according to the level sequence)
-
-	if (thistle_level >= 0) {
-		// move the thistle to the left until the level sequence is right
-		// while keeping 'thistle' an actual thistle vertex
-		position_t p = arr[node_t{thistle}];
-		while (
-			p > 0ull and
-			levels_per_vertex[node_t{arr[p - 1ull]}] <= levels_per_vertex[node_t{arr[p]}] and
-			(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
-		)
-		{
-			arr.swap(p - 1ull, p);
-			--p;
-		}
-	}
-	else {
-		// move the thistle to the right until the level sequence is right
-		// while keeping 'thistle' an actual thistle vertex
-		position_t p = arr[node_t{thistle}];
-		while (
-			p < n - 1 and
-			levels_per_vertex[node_t{arr[p]}] >= levels_per_vertex[node_t{arr[p + 1ull]}] and
-			(is_thistle_neighbor[ arr[p + 1ull] ] == 0)
-		)
-		{
-			arr.swap(p, p + 1ull);
-			++p;
-		}
+	// move the thistle to the left until the level sequence is right
+	// while keeping 'thistle' an actual thistle vertex
+	position_t p = arr[node_t{thistle}];
+	while (
+		p > 0ull and
+		levels_per_vertex[node_t{arr[p - 1ull]}] <= levels_per_vertex[node_t{arr[p]}] and
+		(is_thistle_neighbor[ arr[p - 1ull] ] == 0)
+	)
+	{
+		arr.swap(p - 1ull, p);
+		--p;
 	}
 	}
 
@@ -444,7 +434,7 @@ detail::result_t<make_arrangement>
 AEF(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept
 {
-	std::cerr << "Warning! This function contains unfixed bugs\n"; // sorry :(
+	std::cerr << "Warning! This function contains unfixed bugs. Sorry :(\n";
 
 	const auto n = t.get_num_nodes();
 
@@ -474,7 +464,7 @@ noexcept
 	data_array<char> is_thistle_neighbor(n, 0);
 
 	for (node thistle = 0; thistle < n; ++thistle) {
-		if (thistle != 6) { continue; }
+
 		const uint64_t deg_thistle = t.get_degree(thistle);
 
 		// ignore leaves
