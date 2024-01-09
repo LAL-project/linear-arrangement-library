@@ -119,7 +119,7 @@ template <bool make_arrangement>
 void merge_arrangements(
 	const graphs::free_tree& t,
 	const node thistle,
-	const int64_t thistle_level,
+	int64_t thistle_level,
 	const data_array<char>& is_thistle_neighbor,
 	const properties::bipartite_graph_coloring& color_per_vertex,
 	const data_array<char>& side_of_root,
@@ -214,11 +214,14 @@ noexcept
 			}
 		);
 
-	// if the thistle has negative level, reverse the sequence
-	std::reverse(inv_arr.begin(), inv_arr.end());
-	// reverse the level sequence as well
-	for (node_t u = 0ull; u < n; ++u) {
-		levels_per_vertex[u] = -levels_per_vertex[u];
+	if (thistle_level < 0) {
+		// if the thistle has negative level, reverse the sequence
+		std::reverse(inv_arr.begin(), inv_arr.end());
+		// reverse the level sequence as well
+		for (node_t u = 0ull; u < n; ++u) {
+			levels_per_vertex[u] = -levels_per_vertex[u];
+		}
+		thistle_level = -thistle_level;
 	}
 
 	// build the actual arrangement object now
