@@ -49,25 +49,6 @@ namespace linarr {
 #define __ident(arr) detail::identity_arr(arr)
 #define __nonident(arr) detail::nonident_arr(arr)
 
-template <class arrangement_t>
-bool is_bipartite(
-	const properties::bipartite_graph_coloring& c,
-	const arrangement_t& arr
-)
-noexcept
-{
-	const auto n = c.size();
-	std::size_t num_changes = 0;
-	lal::position_t p = 1ull;
-	while (p < n and num_changes <= 1) {
-		const auto color_p = c.get_color_of(arr[p]);
-		const auto color_p1 = c.get_color_of(arr[p - 1ull]);
-		num_changes += color_p != color_p1;
-		++p;
-	}
-	return num_changes <= 1;
-}
-
 bool is_bipartite(
 	[[maybe_unused]] const graphs::undirected_graph& g,
 	const properties::bipartite_graph_coloring& c,

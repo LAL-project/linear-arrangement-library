@@ -43,8 +43,9 @@
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
-#include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -52,9 +53,8 @@ namespace detail {
 /**
  * @brief Is the root of a rooted tree covered in a given arrangement?
  *
- * The root is covered if, for a given input arrangement \f$\pi\f$, there exists
- * an edge of the tree \f$\{s,t\}\f$ such that \f$\pi(s) < \pi(r) < \pi(t)\f$ or
- * \f$\pi(t) < \pi(r) < \pi(s)\f$.
+ * See @ref LAL_concepts__linear_arrangement__properties for details on vertex
+ * covering in an arrangement.
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
@@ -108,16 +108,11 @@ noexcept
 /**
  * @brief Is a given arrangement projective?
  *
- * A projective arrangement of a rooted tree is an arrangement that is planar
- * and the root is not covered by any edge. The root is covered if, for a given
- * input arrangement \f$\pi\f$, there exists an edge of the tree \f$\{s,t\}\f$
- * such that \f$\pi(s) < \pi(r) < \pi(t)\f$ or \f$\pi(t) < \pi(r) < \pi(s)\f$.
+ * See @ref LAL_concepts__linear_arrangement__types for details on projective
+ * arrangements.
  *
  * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
  * is used.
- *
- * See method @ref lal::linarr::is_planar for further details on the definition
- * of planar arrangements.
  * @tparam arrangement_t Type of arrangement.
  * @param rt Input rooted tree
  * @param arr Input linear arrangement.
@@ -141,6 +136,38 @@ noexcept
 	// this function already checks that an arrangement must be valid
 	if (not is_planar(rt, arr)) { return false; }
 	return not is_root_covered(rt, arr);
+}
+
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for details on bipartite
+ * arrangements.
+ *
+ * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
+ * is used.
+ * @tparam arrangement_t Type of arrangement.
+ * @param c Coloring of a bipartite graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangement is bipartite.
+ */
+template <class arrangement_t>
+bool is_bipartite(
+	const properties::bipartite_graph_coloring& c,
+	const arrangement_t& arr
+)
+noexcept
+{
+	const auto n = c.size();
+	std::size_t num_changes = 0;
+	lal::position_t p = 1ull;
+	while (p < n and num_changes <= 1) {
+		const auto color_p = c.get_color_of(arr[p]);
+		const auto color_p1 = c.get_color_of(arr[p - 1ull]);
+		num_changes += color_p != color_p1;
+		++p;
+	}
+	return num_changes <= 1;
 }
 
 } // -- namespace detail
