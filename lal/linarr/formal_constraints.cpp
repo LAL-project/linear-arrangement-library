@@ -49,15 +49,14 @@ namespace linarr {
 #define __ident(arr) detail::identity_arr(arr)
 #define __nonident(arr) detail::nonident_arr(arr)
 
-template <class graph_t, class arrangement_t>
+template <class arrangement_t>
 bool is_bipartite(
-	const graph_t& g,
 	const properties::bipartite_graph_coloring& c,
 	const arrangement_t& arr
 )
 noexcept
 {
-	const auto n = g.get_num_nodes();
+	const auto n = c.size();
 	std::size_t num_changes = 0;
 	lal::position_t p = 1ull;
 	while (p < n and num_changes <= 1) {
@@ -70,7 +69,7 @@ noexcept
 }
 
 bool is_bipartite(
-	const graphs::undirected_graph& g,
+	[[maybe_unused]] const graphs::undirected_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr
 )
@@ -80,12 +79,12 @@ noexcept
 	assert(is_arrangement(g, arr));
 #endif
 
-	if (arr.size() == 0) { return is_bipartite(g, c, __ident(arr)); }
-	return is_bipartite(g, c, __nonident(arr));
+	if (arr.size() == 0) { return is_bipartite(c, __ident(arr)); }
+	return is_bipartite(c, __nonident(arr));
 }
 
 bool is_bipartite(
-	const graphs::directed_graph& g,
+	[[maybe_unused]] const graphs::directed_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr
 )
@@ -95,8 +94,8 @@ noexcept
 	assert(is_arrangement(g, arr));
 #endif
 
-	if (arr.size() == 0) { return is_bipartite(g, c, __ident(arr)); }
-	return is_bipartite(g, c, __nonident(arr));
+	if (arr.size() == 0) { return is_bipartite(c, __ident(arr)); }
+	return is_bipartite(c, __nonident(arr));
 }
 
 bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
