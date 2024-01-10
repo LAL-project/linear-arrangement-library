@@ -214,16 +214,6 @@ noexcept
 			}
 		);
 
-	if (thistle_level < 0) {
-		// if the thistle has negative level, reverse the sequence
-		std::reverse(inv_arr.begin(), inv_arr.end());
-		// reverse the level sequence as well
-		for (node_t u = 0ull; u < n; ++u) {
-			levels_per_vertex[u] = -levels_per_vertex[u];
-		}
-		thistle_level = -thistle_level;
-	}
-
 	// build the actual arrangement object now
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
@@ -325,10 +315,10 @@ void choose_orientations_for_root(
 )
 noexcept
 {
-	const auto deg_root = t.get_degree(thistle);
+	const auto deg_thistle = t.get_degree(thistle);
 
-	data_array<char> side_of_root(deg_root, 0);
-	data_array<node_set> oriented_verts(deg_root);
+	data_array<char> side_of_root(deg_thistle, 0);
+	data_array<node_set> oriented_verts(deg_thistle);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "Thistle: " << thistle << '\n';
@@ -343,7 +333,7 @@ noexcept
 #if defined PRINT_MESSAGES_1THISTLE
 		std::cout << "    Binary: " << counter++ << '\n';
 		std::cout << "    ";
-		for (std::size_t j = 0; j < deg_root; ++j) {
+		for (std::size_t j = 0; j < deg_thistle; ++j) {
 			std::cout << int(side_of_root[j]) << ' ';
 		}
 		std::cout << '\n';
@@ -359,7 +349,7 @@ noexcept
 		// the neighbours of the root are always on the left half of the
 		// arrangement
 
-		for (std::size_t i = 0; i < deg_root; ++i) {
+		for (std::size_t i = 0; i < deg_thistle; ++i) {
 			oriented_verts[i] = nodes_subtrees[i];
 
 			if (side_of_root[i] == LEFT_SIDE) {
@@ -378,12 +368,12 @@ noexcept
 		}
 
 		// ignore orientations where the root is not a thistle vertex
-		if (to_uint64(std::abs(level_thistle)) != deg_root) {
+		if (level_thistle >= 0 and to_uint64(level_thistle) != deg_thistle) {
 
 #if defined PRINT_MESSAGES_1THISTLE
 			std::cout << "        Level of thistle: " << level_thistle << '\n';
 			std::cout << "        Oriented vertices:\n";
-			for (std::size_t i = 0; i < deg_root; ++i) {
+			for (std::size_t i = 0; i < deg_thistle; ++i) {
 				std::cout
 					<< "            "
 					<< (side_of_root[i] == LEFT_SIDE ? "(L)" : "(R)")
@@ -415,7 +405,7 @@ noexcept
 	while (next_binary(side_of_root.begin(), side_of_root.end()));
 
 #if defined DEBUG
-	assert(num_combinations == 1ull << deg_root);
+	assert(num_combinations == 1ull << deg_thistle);
 #endif
 }
 
