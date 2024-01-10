@@ -174,7 +174,7 @@ bool is_bipartite(const graph_t& g, const linear_arrangement& arr = {}) noexcept
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
 #endif
-	const auto c = properties::coloring(g);
+	const auto c = properties::bipartite_coloring(g);
 	return is_bipartite(g, c, arr);
 }
 

@@ -131,7 +131,7 @@ public:
 	template <class graph_t>
 	all_bipartite_arrangements(const graph_t& g) {
 		static_assert(std::is_base_of_v<lal::graphs::graph, graph_t>);
-		const auto c = properties::coloring(g);
+		const auto c = properties::bipartite_coloring(g);
 		init(c);
 	}
 

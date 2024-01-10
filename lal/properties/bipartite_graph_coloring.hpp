@@ -54,8 +54,8 @@ namespace properties {
  * Coloring of general graphs is known to be NP-complete \cite Karp1972a. This
  * class is used to represent the vertex coloring of bipartite graphs of @e n vertices,
  * for which two colors are sufficient. This class uses static members @ref red
- * and @ref blue to designate these colors. Function @ref lal::properties::coloring
- * calculates such coloring.
+ * and @ref blue to designate these colors.
+ * Function @ref lal::properties::bipartite_coloring calculates such coloring.
  */
 class bipartite_graph_coloring {
 public:

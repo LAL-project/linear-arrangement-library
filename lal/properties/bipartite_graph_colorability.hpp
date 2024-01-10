@@ -55,7 +55,7 @@ namespace properties {
  * @returns An object of type @ref lal::properties::bipartite_graph_coloring.
  * @pre The graph must be bipartite.
  */
-bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept;
+bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g) noexcept;
 
 /**
  * @brief Calculates the coloring of a bipartite graph.
@@ -66,7 +66,7 @@ bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept;
  * @returns An object of type @ref lal::properties::bipartite_graph_coloring.
  * @pre The underlying undirected graph must be bipartite.
  */
-bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept;
+bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g) noexcept;
 
 /**
  * @brief Is a graph bipartite?

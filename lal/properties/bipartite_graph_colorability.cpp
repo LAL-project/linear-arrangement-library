@@ -53,11 +53,11 @@ bipartite_graph_coloring _coloring(const graph_t& g) noexcept {
 	return detail::color_vertices_graph(g);
 }
 
-bipartite_graph_coloring coloring(const graphs::undirected_graph& g) noexcept {
+bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g) noexcept {
 	return _coloring(g);
 }
 
-bipartite_graph_coloring coloring(const graphs::directed_graph& g) noexcept {
+bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g) noexcept {
 	return _coloring(g);
 }
 
@@ -81,7 +81,7 @@ noexcept
 }
 
 bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept {
-	const auto c = coloring(g);
+	const auto c = bipartite_coloring(g);
 	return _is_graph_bipartite(g, c);
 }
 
@@ -93,7 +93,7 @@ noexcept
 }
 
 bool is_graph_bipartite(const graphs::directed_graph& g) noexcept {
-	const auto c = coloring(g);
+	const auto c = bipartite_coloring(g);
 	return _is_graph_bipartite(g, c);
 }
 
