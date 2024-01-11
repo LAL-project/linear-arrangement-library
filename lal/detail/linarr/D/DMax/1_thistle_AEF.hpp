@@ -86,6 +86,13 @@ namespace thistle_1 {
 
 namespace detail {
 
+/**
+ * @brief Next binary combination of 0's and 1's.
+ * @tparam iterator_t Type of pointer to a sequence.
+ * @param begin Start of the sequence.
+ * @param end End of the sequence.
+ * @returns Whether or not there are more configurations
+ */
 template <typename iterator_t>
 bool next_binary(iterator_t begin, iterator_t end) noexcept
 {
@@ -103,12 +110,18 @@ bool next_binary(iterator_t begin, iterator_t end) noexcept
 	return true;
 }
 
+/// Useful typedef for this algorithm
 typedef std::vector<lal::node> node_set;
+/// Typedef for @ref properties::bipartite_graph_coloring::blue.
 static constexpr auto blue = properties::bipartite_graph_coloring::blue;
+/// Typedef for @ref properties::bipartite_graph_coloring::red.
 static constexpr auto red = properties::bipartite_graph_coloring::red;
 
+/// Left side of the thistle vertex.
 static constexpr char LEFT_SIDE = 0;
+/// Right side of the thistle vertex.
 static constexpr char RIGHT_SIDE = 1;
+
 
 template <bool make_arrangement>
 using result_t = std::conditional_t<
@@ -117,6 +130,30 @@ using result_t = std::conditional_t<
 	uint64_t
 >;
 
+/**
+ * @brief Tries to make a maximal arrangement with a given thistle vertex of a
+ * given level value
+ *
+ * Parameters @e arr, @e inv_arr, @e levels_per_vertex are temporary memory
+ * passed as parameters to avoid constant allocations and deallocations.
+ * @tparam make_arrangement Should the arrangement be returned?
+ * @param t Input free tree.
+ * @param thistle Thistle vertex.
+ * @param thistle_level Level value for @e thistle.
+ * @param is_thistle_neighbor Is a given vertex a neighbor of @e thistle?
+ * @param color_per_vertex Coloring of the tree.
+ * @param side_of_thistle Side of @e thistle in which the neighbors of the thistle
+ * have to be placed at.
+ * @param oriented_vertices Vertices of the connected components sorted by degree
+ * and color.
+ * @param arr Linear arrangement (used to evaluate the cost of the distribution).
+ * @param inv_arr Inverse linear arrangement (used to evaluate the cost of the
+ * distribution).
+ * @param levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[inout] res Contains the best arrangement produced here if it is better
+ * than the one it already contains.
+ */
 template <bool make_arrangement>
 void merge_arrangements(
 	const graphs::free_tree& t,
@@ -124,7 +161,7 @@ void merge_arrangements(
 	int64_t thistle_level,
 	const data_array<char>& is_thistle_neighbor,
 	const properties::bipartite_graph_coloring& color_per_vertex,
-	const data_array<char>& side_of_root,
+	const data_array<char>& side_of_thistle,
 	const data_array<node_set>& oriented_vertices,
 
 	// the actual linear arrangement
@@ -158,7 +195,7 @@ noexcept
 
 			// Case of single-vertex components
 			if (oriented_vertices[i].size() == 1) {
-				levels_per_vertex[node_t{u}] = (side_of_root[i] == LEFT_SIDE ? d : -d);
+				levels_per_vertex[node_t{u}] = (side_of_thistle[i] == LEFT_SIDE ? d : -d);
 			}
 			else {
 				// Case where there is more than one vertex.
@@ -301,13 +338,34 @@ noexcept
 	}
 }
 
+/**
+ * @brief Tries to make a maximal arrangement with a given thistle vertex of a
+ * given level value
+ *
+ * Parameters @e arr, @e inv_arr, @e levels_per_vertex are temporary memory
+ * passed as parameters to avoid constant allocations and deallocations.
+ * @tparam make_arrangement Should the arrangement be returned?
+ * @param t Input free tree.
+ * @param thistle Thistle vertex.
+ * @param is_thistle_neighbor Is a given vertex a neighbor of @e thistle?
+ * @param color_per_vertex Coloring of the tree.
+ * @param oriented_vertices Vertices of the connected components sorted by degree
+ * and color.
+ * @param arr Linear arrangement (used to evaluate the cost of the distribution).
+ * @param inv_arr Inverse linear arrangement (used to evaluate the cost of the
+ * distribution).
+ * @param levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[inout] res Contains the best arrangement produced here if it is better
+ * than the one it already contains.
+ */
 template <bool make_arrangement>
 void choose_orientations_for_root(
 	const graphs::free_tree& t,
 	const node thistle,
 	const data_array<char>& is_thistle_neighbor,
 	const data_array<node_set>& nodes_subtrees,
-	const properties::bipartite_graph_coloring& colors,
+	const properties::bipartite_graph_coloring& color_per_vertex,
 
 	linear_arrangement& arr,
 	data_array<node>& inv_arr,
@@ -319,7 +377,7 @@ noexcept
 {
 	const auto deg_thistle = t.get_degree(thistle);
 
-	data_array<char> side_of_root(deg_thistle, 0);
+	data_array<char> side_of_thistle(deg_thistle, 0);
 	data_array<node_set> oriented_verts(deg_thistle);
 
 #if defined PRINT_MESSAGES_1THISTLE
@@ -354,7 +412,7 @@ noexcept
 		for (std::size_t i = 0; i < deg_thistle; ++i) {
 			oriented_verts[i] = nodes_subtrees[i];
 
-			if (side_of_root[i] == LEFT_SIDE) {
+			if (side_of_thistle[i] == LEFT_SIDE) {
 				// Neighbour of the root goes to the
 				// left half of the arrangement.
 				// Nothing to do.
@@ -391,7 +449,7 @@ noexcept
 			merge_arrangements<make_arrangement>(
 				t,
 				thistle, level_thistle, is_thistle_neighbor,
-				colors, side_of_root,
+				color_per_vertex, side_of_thistle,
 				oriented_verts,
 				arr, inv_arr, level_per_vertex,
 				res
@@ -404,7 +462,7 @@ noexcept
 #endif
 
 	}
-	while (next_binary(side_of_root.begin(), side_of_root.end()));
+	while (next_binary(side_of_thistle.begin(), side_of_thistle.end()));
 
 #if defined DEBUG
 	assert(num_combinations == 1ull << deg_thistle);
