@@ -404,31 +404,37 @@ noexcept
 #endif
 
 		int64_t level_thistle = 0;
-
-		// the sets of vertices in 'nodes_subtrees' are oriented so that
-		// the neighbours of the root are always on the left half of the
-		// arrangement
-
 		for (std::size_t i = 0; i < deg_thistle; ++i) {
-			oriented_verts[i] = nodes_subtrees[i];
-
 			if (side_of_thistle[i] == LEFT_SIDE) {
-				// Neighbour of the root goes to the
-				// left half of the arrangement.
-				// Nothing to do.
+				// Neighbour of the thistle goes to the left half of the arrangement.
 				--level_thistle;
 			}
 			else {
-				// Neighbour of the root goes to the
-				// right half of the arrangement.
-				// Reverse the arrangement.
+				// Neighbour of the thistle goes to the right half of the arrangement.
 				++level_thistle;
-				std::reverse(oriented_verts[i].begin(), oriented_verts[i].end());
 			}
 		}
 
 		// ignore orientations where the root is not a thistle vertex
 		if (level_thistle >= 0 and to_uint64(level_thistle) != deg_thistle) {
+
+			// the sets of vertices in 'nodes_subtrees' are oriented so that
+			// the neighbours of the thistle are always on the left half of the
+			// arrangement
+			for (std::size_t i = 0; i < deg_thistle; ++i) {
+				oriented_verts[i] = nodes_subtrees[i];
+				if (side_of_thistle[i] == LEFT_SIDE) {
+					// Neighbour of the root goes to the
+					// left half of the arrangement.
+					// Nothing to do.
+				}
+				else {
+					// Neighbour of the root goes to the
+					// right half of the arrangement.
+					// Reverse the arrangement.
+					std::reverse(oriented_verts[i].begin(), oriented_verts[i].end());
+				}
+			}
 
 #if defined PRINT_MESSAGES_1THISTLE
 			std::cout << "        Level of thistle: " << level_thistle << '\n';
