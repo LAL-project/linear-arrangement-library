@@ -59,12 +59,19 @@ namespace properties {
  */
 class bipartite_graph_coloring {
 public:
+	/**
+	 * @brief A useful type for colors
+	 *
+	 * A 64-bit integer is used so that these values can be used to index vectors
+	 * and arrays through operator [].
+	 */
+	typedef uint64_t color_t;
 	/// An invalid color, used to initialize colors to an invalid value.
-	static constexpr char invalid = -1;
+	static constexpr color_t invalid_color = 2;
 	/// A color, called red, of value 0.
-	static constexpr char red = 0;
+	static constexpr color_t red = 0;
 	/// A color, called blue, of value 1.
-	static constexpr char blue = 1;
+	static constexpr color_t blue = 1;
 
 public:
 	/// Default constructor.
@@ -91,31 +98,31 @@ public:
 	 * @param n The number of vertices of the graph.
 	 */
 	void init(std::size_t n) noexcept {
-		coloring.resize(n, invalid);
+		coloring.resize(n, invalid_color);
 	}
 
 	/// Returns whether or not the color of vertex @e u is valid.
 	bool is_color_valid(node u) const noexcept {
-		return get_color_of(u) != invalid;
+		return get_color_of(u) != invalid_color;
 	}
 
 	/// Returns the size of this coloring (the number of vertices)
 	std::size_t size() const noexcept { return coloring.size(); }
 
 	/// Returns the color of node @e u
-	char get_color_of(node u) const noexcept { return coloring[u]; }
+	color_t get_color_of(node u) const noexcept { return coloring[u]; }
 	/// Returns the color of node @e u
-	char& get_color_of(node u) noexcept { return coloring[u]; }
+	color_t& get_color_of(node u) noexcept { return coloring[u]; }
 
 	/// Returns the color of node @e u
-	char operator[] (node u) const noexcept { return coloring[u]; }
+	color_t operator[] (node u) const noexcept { return coloring[u]; }
 	/// Returns the color of node @e u
-	char& operator[] (node u) noexcept { return coloring[u]; }
+	color_t& operator[] (node u) noexcept { return coloring[u]; }
 
 	/// Returns the color of node @e u
-	char operator[] (lal::node_t u) const noexcept { return coloring[*u]; }
+	color_t operator[] (lal::node_t u) const noexcept { return coloring[*u]; }
 	/// Returns the color of node @e u
-	char& operator[] (lal::node_t u) noexcept { return coloring[*u]; }
+	color_t& operator[] (lal::node_t u) noexcept { return coloring[*u]; }
 
 private:
 	/**
@@ -123,7 +130,7 @@ private:
 	 *
 	 * For any vertex @e u, coloring[u] is the color of vertex @e u.
 	 */
-	detail::data_array<char> coloring;
+	detail::data_array<color_t> coloring;
 };
 
 } // -- namespace properties
