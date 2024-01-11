@@ -93,6 +93,9 @@ public:
 		init(n);
 	}
 
+	/// Default destrutor.
+	~bipartite_graph_coloring() = default;
+
 	/**
 	 * @brief Initializes this object with @e n vertices.
 	 * @param n The number of vertices of the graph.
