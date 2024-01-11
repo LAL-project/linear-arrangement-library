@@ -49,13 +49,15 @@
 #endif
 #endif
 
+#define BUG
+
 // C++ includes
 #include <type_traits>
 #include <algorithm>
-#include <iostream>
 #include <cstdint>
 #include <vector>
-#if defined PRINT_MESSAGES_1THISTLE
+
+#if defined PRINT_MESSAGES_1THISTLE || defined BUG
 #include <iostream>
 #endif
 #if defined DEBUG
@@ -427,7 +429,9 @@ detail::result_t<make_arrangement>
 AEF(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept
 {
+#if defined BUG
 	std::cerr << "Warning! This function contains unfixed bugs. Sorry :(\n";
+#endif
 
 	const auto n = t.get_num_nodes();
 
@@ -437,7 +441,6 @@ noexcept
 #endif
 
 	detail::result_t<make_arrangement> res;
-	// so the compiler does not cry
 	if constexpr (make_arrangement) {
 		res.first = 0;
 		res.second.resize(1);
