@@ -53,11 +53,43 @@ namespace linarr {
 /* ------------------------ Non-BIPARTITE CONSTRAINT ------------------------ */
 
 /**
- * @brief Calculates the solution to 1-thistle MaxLA as defined in \cite Alemany2024a.
+ * @brief Calculates the solution to \f$\le 1\f$-thistle MaxLA.
  *
- * It computes a maximal non-bipartite arrangement of a tree constrained to the
- * arrangement having only one thistle vertex. This function implements the
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
  * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param c Coloring of the input tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
+noexcept;
+/**
+ * @brief Calculates the solution to \f$\le1\f$-thistle MaxLA.
+ *
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
+ * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+(const graphs::free_tree& t)
+noexcept;
+
+/**
+ * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
+ *
+ * It computes a maximal non-bipartite arrangement of a tree constrained to having
+ * only one thistle vertex. This function implements the algorithm described in
+ * \cite Alemany2023a.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
@@ -65,11 +97,11 @@ namespace linarr {
  * @param c Coloring of the input tree.
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
- * @brief Calculates the solution to 1-thistle MaxLA as defined in \cite Alemany2024a.
+ * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
  *
  * It computes a maximal non-bipartite arrangement of a tree constrained to the
  * arrangement having only one thistle vertex. This function implements the
@@ -80,7 +112,7 @@ noexcept;
  * @param t Input free tree.
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
 (const graphs::free_tree& t)
 noexcept;
 

@@ -150,7 +150,7 @@ target_sources(
 		detail/linarr/C/stack_based.hpp
 		detail/linarr/chunking/Anderson.hpp
 		detail/linarr/chunking/Macutek.hpp
-		detail/linarr/D/DMax/1_thistle_AEF.hpp
+		detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
 		detail/linarr/D/DMax/bipartite_AEF.hpp
 		detail/linarr/D/DMax/Planar_AEF.hpp
 		detail/linarr/D/DMax/Projective_AEF.hpp

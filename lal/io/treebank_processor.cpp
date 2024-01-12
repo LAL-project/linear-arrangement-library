@@ -87,7 +87,7 @@
 #include <lal/detail/linarr/D/D.hpp>
 #include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
 #include <lal/detail/linarr/D/Dmin/utils.hpp>
-#include <lal/detail/linarr/D/DMax/1_thistle_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Projective_AEF.hpp>

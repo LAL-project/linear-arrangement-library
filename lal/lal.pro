@@ -94,7 +94,7 @@ HEADERS += \
 	detail/linarr/C/predict.hpp \
 	detail/linarr/C/stack_based.hpp \
 	detail/linarr/D/D.hpp \
-	detail/linarr/D/DMax/1_thistle_AEF.hpp \
+	detail/linarr/D/DMax/1_eq_thistle_AEF.hpp \
 	detail/linarr/D/DMax/Planar_AEF.hpp \
 	detail/linarr/D/DMax/Projective_AEF.hpp \
 	detail/linarr/D/DMax/bipartite_AEF.hpp \
