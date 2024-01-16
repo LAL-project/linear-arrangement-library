@@ -65,7 +65,7 @@ namespace linarr {
  * @param c Coloring of the input tree.
  * @returns A maximal arrangement with at most one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
@@ -80,7 +80,7 @@ noexcept;
  * @param t Input free tree.
  * @returns A maximal arrangement with at most one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
 noexcept;
 
@@ -97,7 +97,7 @@ noexcept;
  * @param c Coloring of the input tree.
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
@@ -112,7 +112,7 @@ noexcept;
  * @param t Input free tree.
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
 (const graphs::free_tree& t)
 noexcept;
 

@@ -58,7 +58,7 @@
 namespace lal {
 namespace linarr {
 
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept
 {
@@ -67,27 +67,27 @@ noexcept
 	return (max_1_thistle.first > max_bipartite.first ? max_1_thistle : max_bipartite);
 }
 
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_le_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
 noexcept
 {
 	const auto c = detail::color_vertices_graph(t);
-	return max_sum_edge_lengths_le_1_thistle(t, c);
+	return max_sum_edge_lengths_1_le_thistle(t, c);
 }
 
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept
 {
 	return detail::DMax::thistle_1::AEF<true>(t, c);
 }
 
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_eq_1_thistle
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
 (const graphs::free_tree& t)
 noexcept
 {
 	const auto c = detail::color_vertices_graph(t);
-	return max_sum_edge_lengths_eq_1_thistle(t, c);
+	return max_sum_edge_lengths_1_eq_thistle(t, c);
 }
 
 /* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
