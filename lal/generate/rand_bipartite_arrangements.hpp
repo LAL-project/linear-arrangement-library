@@ -74,7 +74,7 @@ namespace generate {
  * @code
  *		// given a tree T (or any other bipartite graph)
  *		lal::properties::bipartite_graph_coloring c = lal::properties::coloring(T);
- *		lal::generate::rand_arrangements Gen(c);
+ *		lal::generate::rand_bipartite_arrangements Gen(c);
  *		for (int i = 0; i < 100; ++i) {
  *			const linear_arrangement arr = Gen.yield_arrangement();
  *			// ...
