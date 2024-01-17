@@ -51,15 +51,24 @@ namespace lal {
 namespace generate {
 
 const linear_arrangement& rand_bipartite_arrangements::get_arrangement() noexcept {
-	std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue, m_gen);
-	std::shuffle(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse(), m_gen);
+
+	const bool use_red = m_red_or_blue(m_gen);
+	init_arrangement(use_red);
+
+	if (use_red) {
+		std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red, m_gen);
+		std::shuffle(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse(), m_gen);
+	}
+	else {
+		std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue, m_gen);
+		std::shuffle(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse(), m_gen);
+	}
+
 	m_arr.update_direct();
 	return m_arr;
 }
 
-void rand_bipartite_arrangements::init
-(const properties::bipartite_graph_coloring& c, uint64_t seed)
-noexcept
+void rand_bipartite_arrangements::init(uint64_t seed) noexcept
 {
 	if (seed == 0) {
 		std::random_device rd;
@@ -69,24 +78,46 @@ noexcept
 		m_gen = std::mt19937(seed);
 	}
 
-	static constexpr auto blue = properties::bipartite_graph_coloring::blue;
-	static constexpr auto red = properties::bipartite_graph_coloring::red;
-
-	const auto n = c.size();
+	const auto n = m_coloring.size();
 	m_arr.resize(n);
 
 	m_n_blue = m_n_red = 0;
+	for (node u = 0; u < n; ++u) {
+		if (m_coloring[u] == blue) {
+			++m_n_blue;
+		}
+		else if (m_coloring[u] == red) {
+			++m_n_red;
+		}
+	}
+
+	m_what_in_left = properties::bipartite_graph_coloring::invalid_color;
+	m_red_or_blue = std::bernoulli_distribution(0.5);
+}
+
+void rand_bipartite_arrangements::init_arrangement(bool red_first) noexcept {
+	const auto n = m_coloring.size();
 
 	position left = 0ull;
 	position right = n - 1ull;
-	for (node u = 0; u < n; ++u) {
-		if (c[u] == blue) {
-			m_arr.assign(u, left++);
-			++m_n_blue;
+	if (red_first) {
+		for (node u = 0; u < n; ++u) {
+			if (m_coloring[u] == red) {
+				m_arr.assign(u, left++);
+			}
+			else if (m_coloring[u] == blue) {
+				m_arr.assign(u, right--);
+			}
 		}
-		else if (c[u] == red) {
-			m_arr.assign(u, right--);
-			++m_n_red;
+	}
+	else {
+		for (node u = 0; u < n; ++u) {
+			if (m_coloring[u] == blue) {
+				m_arr.assign(u, left++);
+			}
+			else if (m_coloring[u] == red) {
+				m_arr.assign(u, right--);
+			}
 		}
 	}
 }
