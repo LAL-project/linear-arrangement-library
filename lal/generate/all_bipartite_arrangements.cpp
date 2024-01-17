@@ -51,56 +51,114 @@ namespace lal {
 namespace generate {
 
 void all_bipartite_arrangements::next() noexcept {
-	m_reached_end_red =
-		not
-		std::next_permutation(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+	if (m_arr.size() == 1) {
+		m_do_mirror = true;
+		m_reached_end_red = true;
+	}
 
-	m_arr.update_direct();
+	if (not m_do_mirror) {
+		// in this part of the enumeration, the left half contains red vertices
+		m_reached_end_red =
+			not
+			std::next_permutation(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red);
+		m_arr.update_direct();
 
-	if (m_reached_end_red) {
+		if (m_reached_end_red) {
+			m_reached_end_blue =
+				not
+				std::next_permutation(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse());
+			m_arr.update_direct();
+
+			if (m_reached_end_blue) {
+				init_arrangement(false);
+				m_do_mirror = true;
+			}
+		}
+	}
+	else {
+		// in this part of the enumeration, the left half contains blue vertices
 		m_reached_end_blue =
 			not
 			std::next_permutation(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue);
-
 		m_arr.update_direct();
+
+		if (m_reached_end_blue) {
+			m_reached_end_red =
+				not
+				std::next_permutation(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+			m_arr.update_direct();
+		}
 	}
 }
 
-void all_bipartite_arrangements::init(const properties::bipartite_graph_coloring& c)
-noexcept
-{
-	static constexpr auto blue = properties::bipartite_graph_coloring::blue;
-	static constexpr auto red = properties::bipartite_graph_coloring::red;
-
-	const auto n = c.size();
+void all_bipartite_arrangements::init() noexcept {
+	const auto n = m_coloring.size();
 	m_arr.resize(n);
 
 	m_n_blue = m_n_red = 0;
-
-	position left = 0ull;
-	position right = n - 1ull;
 	for (node u = 0; u < n; ++u) {
-		if (c[u] == blue) {
-			m_arr.assign(u, left++);
+		if (m_coloring[u] == blue) {
 			++m_n_blue;
 		}
-		else if (c[u] == red) {
-			m_arr.assign(u, right--);
+		else if (m_coloring[u] == red) {
 			++m_n_red;
 		}
 	}
 
-	// the vertices in the red half have been placed in reversed order
-	std::reverse(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+#if defined DEBUG
+	assert(m_n_red + m_n_blue == n);
+#endif
+
+	init_arrangement(true);
+}
+
+void all_bipartite_arrangements::init_arrangement(bool red_first) noexcept {
+	const auto n = m_coloring.size();
+
+	position left = 0ull;
+	position right = n - 1ull;
+	if (red_first) {
+		for (node u = 0; u < n; ++u) {
+			if (m_coloring[u] == red) {
+				m_arr.assign(u, left++);
+			}
+			else if (m_coloring[u] == blue) {
+				m_arr.assign(u, right--);
+			}
+		}
+
+		// the vertices in the blue half have been placed in reversed order
+		std::reverse(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse());
+	}
+	else {
+		for (node u = 0; u < n; ++u) {
+			if (m_coloring[u] == blue) {
+				m_arr.assign(u, left++);
+			}
+			else if (m_coloring[u] == red) {
+				m_arr.assign(u, right--);
+			}
+		}
+
+		// the vertices in the red half have been placed in reversed order
+		std::reverse(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+	}
+
 	m_arr.update_direct();
 
+	m_do_mirror = false;
 	m_reached_end_blue = false;
 	m_reached_end_red = false;
 
 #if defined DEBUG
-	assert(m_n_red + m_n_blue == n);
-	assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue));
-	assert(std::is_sorted(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()));
+	if (red_first) {
+		assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red));
+		assert(std::is_sorted(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse()));
+	}
+	else {
+		assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue));
+		assert(std::is_sorted(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()));
+	}
 #endif
 }
 
