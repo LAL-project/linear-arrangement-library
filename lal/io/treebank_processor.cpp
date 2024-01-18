@@ -201,9 +201,6 @@ noexcept
 	// initalise features vector
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
-	// deactivate this by default for now
-	m_what_fs[DMax_1_thistle_idx] = false;
-
 	// initialise column names
 	initialise_column_names();
 
