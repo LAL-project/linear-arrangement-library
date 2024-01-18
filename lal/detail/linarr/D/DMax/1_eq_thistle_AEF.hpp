@@ -398,49 +398,6 @@ noexcept
 #endif
 #endif
 
-	{
-	// Move the thistle to the left
-	// - while the level value of the vertex to the left is less than the thistle's
-	// - while the other vertex is not a neighbor of the thistle
-	position p = left;
-	while (
-		p > 0ull and
-		level_position(p - 1ull) <= level_position(p) and
-		(is_thistle_neighbor[inv_arr[p - 1ull]] == 0)
-	)
-	{
-		std::swap(inv_arr[p - 1ull], inv_arr[p]);
-		--p;
-	}
-	}
-
-#if defined DEBUG
-	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
-
-#if defined PRINT_MESSAGES_1THISTLE
-	{
-	const auto dir = arr.direct_as_vector();
-	const auto inv = arr.inverse_as_vector();
-	std::cout << "        After adjusting the thistle vertex:\n";
-	std::cout << "        Direct: ";
-	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-	std::cout << '\n';
-	std::cout << "        Inverse:";
-	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-	std::cout << '\n';
-	}
-#endif
-
-	assert(linarr::is_arrangement(t, arr));
-	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
-
-#if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        __D2= " << __D2 << std::endl;
-#endif
-
-	assert(__D2 >= __D1);
-#endif
-
 	// sort the vertices of level value equal to the thistle's so that we find
 	// - for positive (>= 0) level value of the thistle: (N ... N t O ... O)
 	// - for negative (< 0) level value of the thistle: (O ... O t N ... N)
@@ -469,13 +426,55 @@ noexcept
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
+	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
+
+#if defined PRINT_MESSAGES_1THISTLE
+	std::cout << "        __D2= " << __D2 << std::endl;
+#endif
+
+	assert(__D2 == __D1);
+#endif
+
+	{
+	// Move the thistle to the left
+	// - while the level value of the vertex to the left is less than the thistle's
+	// - while the other vertex is not a neighbor of the thistle
+	position_t p = arr[node_t{thistle}];
+	while (
+		p > 0ull and
+		level_vertex(arr[p - 1ull]) <= level_vertex(arr[p]) and
+		(is_thistle_neighbor[arr[p - 1ull]] == 0)
+	)
+	{
+		arr.swap(p - 1ull, p);
+		--p;
+	}
+	}
+
+#if defined DEBUG
+
+#if defined PRINT_MESSAGES_1THISTLE
+	{
+	const auto dir = arr.direct_as_vector();
+	const auto inv = arr.inverse_as_vector();
+	std::cout << "        After adjusting the thistle vertex:\n";
+	std::cout << "        Direct: ";
+	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
+	std::cout << '\n';
+	std::cout << "        Inverse:";
+	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
+	std::cout << '\n';
+	}
+#endif
+
+	assert(linarr::is_arrangement(t, arr));
 	const uint64_t __D3 = linarr::sum_edge_lengths(t, arr);
 
 #if defined PRINT_MESSAGES_1THISTLE
 	std::cout << "        __D3= " << __D3 << std::endl;
 #endif
 
-	assert(__D3 == __D2);
+	assert(__D3 >= __D2);
 #endif
 
 
