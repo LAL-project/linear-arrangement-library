@@ -78,7 +78,7 @@ public:
 
 	/// Move constructor.
 	treebank_error(treebank_error&& te) noexcept
-		: m_error_msg(std::forward<std::string>(te.m_error_msg)),
+		: m_error_msg(std::move(te.m_error_msg)),
 		  m_error_type(te.m_error_type)
 	{ }
 
