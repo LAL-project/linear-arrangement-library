@@ -192,32 +192,17 @@ noexcept
 		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
 #endif
 
-		if (current_level >= 0) {
-			sorting::counting_sort
-				<node, sorting::non_decreasing_t>
-				(
-					inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
-					[&](const node u) {
-						// 0, 1, 2
-						if (is_thistle_neighbor[u]) { return 0; }
-						if (u == thistle) { return 1; }
-						return 2;
-					}
-				);
-		}
-		else {
-			sorting::counting_sort
-				<node, sorting::non_increasing_t>
-				(
-					inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
-					[&](const node u) {
-						// 2, 1, 0
-						if (is_thistle_neighbor[u]) { return 0; }
-						if (u == thistle) { return 1; }
-						return 2;
-					}
-				);
-		}
+		sorting::counting_sort
+		<node, sorting::non_decreasing_t>
+		(
+			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
+			[&](const node u) {
+				// 0, 1, 2
+				if (is_thistle_neighbor[u]) { return 0; }
+				if (u == thistle) { return 1; }
+				return 2;
+			}
+		);
 
 		p = q;
 	}
