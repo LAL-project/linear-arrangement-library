@@ -68,22 +68,23 @@ namespace utilities {
  * \f$A_1(Q,R) = \left( F_Q\left( \bigoplus_{i=1}^n Q_i \right) \right) \odot
  *          \left( F_R\left( \bigotimes_{i=1}^n R_i \right) \right)\f$
  *
- * The values \f$Q_i\f$ and \f$R_i\f$ are obtained from applying function @e QR
+ * The values \f$Q_i\f$ and \f$R_i\f$ are obtained from applying function @e values
  * passed as parameter. This function iterates over two sets of elements, where
  * the second is optional and may be empty; this must be known at compile time
  * through the template parameter @e second_set_empty. These sets are passed with
  * iterators (parameters @e bfirst, @e efirst, @e bsecond, @e esecond).
  *
- * If the second set is empty then function @e QR only has one parameter of the
+ * If the second set is empty then function @e values only has one parameter of the
  * same type as the values in the first set. If the second set is not empty then
- * @e QR has two parameters: the first parameter is of the same type as the elements
+ * @e values has two parameters: the first parameter is of the same type as the elements
  * in the first set, and the second parameter is of the same type as the elements
- * in the second set. In the latter case, @e QR is called with the @e i-th element
+ * in the second set. In the latter case, @e values is called with the @e i-th element
  * in the first set and the @e i-th element in the second set.
  *
- * The function that average the values \f$Q_i\f$, function @e avgQ, (resp.
- * \f$R_i\f$, function @e avgR) has two parameters: the summation of the values
- * \f$Q_i\f$ (resp. \f$R_i\f$) and the total amount of values.
+ * The function that averages the values \f$Q_i\f$, function @e avgQ, (resp.
+ * \f$R_i\f$, function @e avgR) has two parameters: the accumulation of the values
+ * \f$Q_i\f$ (resp. \f$R_i\f$) and the total amount of values. Said accumulation
+ * is done via functions @e accQ and @e accR respectively.
  *
  * See the implementation of function
  * @ref lal::linarr::mean_dependency_distance_1level_rational and its documentation
@@ -216,7 +217,7 @@ noexcept
  * for an example of usage of this function.
  *
  * Note: this function can be extended to more values than just \f$Q\f$ and \f$R\f$
- * by implementing the functions accordingly: @e QR can return a structure with
+ * by implementing the functions accordingly: @e values can return a structure with
  * several values, function @e comb_values should accept said structure and combine
  * the values accordingly, ...
  *
