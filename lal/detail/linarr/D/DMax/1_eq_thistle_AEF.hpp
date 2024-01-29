@@ -77,6 +77,7 @@
 #endif
 
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
+#include <lal/detail/properties/branchless_path_find.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/level_signature.hpp>
@@ -801,6 +802,21 @@ noexcept
 		res = 0;
 	}
 
+	// all branchless path in the tree
+	const std::vector<properties::branchless_path> all_paths = find_all_branchless_paths(t);
+	// assign all internal vertices a path index.
+	data_array<std::size_t> node_to_path(n);
+	for (std::size_t i = 0; i < all_paths.size(); ++i) {
+		const properties::branchless_path& p = all_paths[i];
+		const std::vector<node>& seq = p.get_vertex_sequence();
+		for (std::size_t j = 1; j < seq.size() - 1; ++j) {
+			const node u = seq[j];
+			node_to_path[u] = i;
+		}
+	}
+	// whether or an internal of a branchless path was already used
+	data_array<char> internal_in_path_was_used(all_paths.size(), 0);
+
 	// actual linear arrangement
 	linear_arrangement arr(n);
 	// simple inverse arrangement
@@ -819,6 +835,24 @@ noexcept
 
 		// ignore leaves
 		if (t.get_degree(thistle) == 1) { continue; }
+
+		// do we have to use this internal vertex of a branchless path as a thistle?
+		if (deg_thistle == 2) {
+			const std::size_t pidx = node_to_path[thistle];
+			// not in this case
+			if (internal_in_path_was_used[pidx] == 1) {
+#if defined PRINT_MESSAGES_1THISTLE
+				std::cout << "Thistle belongs to path " << pidx << " and will not be tested.\n";
+#endif
+				continue;
+			}
+
+			// do not use internal vertices of this branchless path anymore
+			internal_in_path_was_used[pidx] = 1;
+#if defined PRINT_MESSAGES_1THISTLE
+			std::cout << "Thistle vertex belongs to path " << pidx << ".\n";
+#endif
+		}
 
 		nodes_subtrees.clear();
 		nodes_subtrees.resize(deg_thistle);
