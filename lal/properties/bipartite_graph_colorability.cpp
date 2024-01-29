@@ -53,16 +53,22 @@ bipartite_graph_coloring _coloring(const graph_t& g) noexcept {
 	return detail::color_vertices_graph(g);
 }
 
-bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g) noexcept {
+bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g)
+noexcept
+{
 	return _coloring(g);
 }
 
-bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g) noexcept {
+bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g)
+noexcept
+{
 	return _coloring(g);
 }
 
 template <typename graph_t>
-bool _is_graph_bipartite(const graph_t& g, const bipartite_graph_coloring& c) noexcept {
+bool _is_graph_bipartite(const graph_t& g, const bipartite_graph_coloring& c)
+noexcept
+{
 	iterators::E_iterator it(g);
 	while (not it.end()) {
 		const auto [u,v] = it.yield_edge();
