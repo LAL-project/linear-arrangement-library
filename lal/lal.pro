@@ -116,6 +116,7 @@ HEADERS += \
 	detail/linear_queue.hpp \
 	detail/macros/basic_convert.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
+	detail/properties/branchless_path_find.hpp \
 	detail/properties/tree_maximum_caterpillar.hpp \
 	detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
@@ -231,6 +232,8 @@ HEADERS += \
 	properties/C_rla.hpp \
 	properties/bipartite_graph_colorability.hpp \
 	properties/bipartite_graph_coloring.hpp \
+	properties/branchless_path.hpp \
+	properties/branchless_path_find.hpp \
 	properties/degrees.hpp \
 	properties/hierarchical_distance.hpp \
 	properties/maximum_spanning_trees.hpp \
@@ -286,6 +289,7 @@ SOURCES += \
 	numeric/rational.cpp \
 	properties/Q.cpp \
 	properties/bipartite_graph_colorability.cpp \
+	properties/branchless_path_find.cpp \
 	properties/hierarchical_distance.cpp \
 	properties/maximum_spanning_trees.cpp \
 	properties/tree_centre.cpp \

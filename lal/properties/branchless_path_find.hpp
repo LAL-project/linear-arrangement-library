@@ -41,20 +41,32 @@
 
 #pragma once
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
+// C++ includes
+#include <vector>
 
-#include <lal/properties/hierarchical_distance.hpp>
-#include <lal/properties/maximum_spanning_trees.hpp>
-#include <lal/properties/Q.hpp>
-
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
-
-#include <lal/properties/bipartite_graph_coloring.hpp>
-#include <lal/properties/bipartite_graph_colorability.hpp>
-
+// lal includes
 #include <lal/properties/branchless_path.hpp>
-#include <lal/properties/branchless_path_find.hpp>
+#include <lal/graphs/free_tree.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+
+namespace lal {
+namespace properties {
+
+/**
+ * @brief Finds all branchless paths in a tree.
+ * @param t Input tree.
+ * @returns The list of branchless paths.
+ */
+std::vector<branchless_path>
+find_all_branchless_paths(const graphs::free_tree& t) noexcept;
+
+/**
+ * @brief Finds all branchless paths in a tree.
+ * @param t Input tree.
+ * @returns The list of branchless paths.
+ */
+std::vector<branchless_path>
+find_all_branchless_paths(const graphs::rooted_tree& t) noexcept;
+
+} // -- namespace properties
+} // -- namespace lal
