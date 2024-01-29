@@ -46,7 +46,6 @@
 #include <iterator>
 #include <cassert>
 #endif
-#include <cinttypes>
 
 namespace lal {
 namespace utilities {

@@ -41,9 +41,6 @@
  
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/numeric/integer.hpp>
 #include <lal/graphs/undirected_graph.hpp>
