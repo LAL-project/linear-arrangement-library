@@ -84,9 +84,29 @@ void expand_branchless_path(
 )
 noexcept
 {
-	const auto n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
-	if (bfs.node_was_visited(v)) { return; }
+	const bool visited_u = bfs.node_was_visited(u);
+	const bool visited_v = bfs.node_was_visited(v);
+
+	if (visited_u and visited_v) { return; }
+	if (not visited_u and visited_v) {
+		bfs.set_visited(u, 1);
+		// initialize the path
+		p.init(n);
+		// set and add the first and second non-internal vertices
+		p.add_node(u);
+		p.set_h1(u);
+		p.add_node(v);
+		p.set_h2(v);
+		// push the new path
+		res.push_back(std::move(p));
+		return;
+	}
+
+	// remaining cases:
+	// visited_u and not visited_v
+	// not visited_u and not visited_v
 
 	if (label[v] == 0) {
 		label[v] = ++max_label;
@@ -95,20 +115,20 @@ noexcept
 #endif
 
 		// initialize the path
-		p.init(t.get_num_nodes());
+		p.init(n);
 		// set the first non-internal vertex and add it
-		p.set_h1(u);
 		p.add_node(u);
+		p.set_h1(u);
 
-		// construct the new path
+		// expand the new path
+		bfs.set_visited(u, 1);
 		bfs.start_at(v);
 
 		// find the lowest *internal* vertex in lexicographic order
 		const auto& seq = p.get_vertex_sequence();
 		node lowest_lexicographic = n + 1;
 		for (std::size_t i = 1; i < seq.size() - 1; ++i) {
-			const lal::node w = seq[i];
-			lowest_lexicographic = std::min(lowest_lexicographic, w);
+			lowest_lexicographic = std::min(lowest_lexicographic, seq[i]);
 		}
 		p.set_lowest_lexicographic(lowest_lexicographic);
 
@@ -128,7 +148,7 @@ std::vector<properties::branchless_path>
 find_all_branchless_paths(const tree_t& t)
 noexcept
 {
-	const auto n = t.get_num_nodes();
+	const uint64_t n = t.get_num_nodes();
 
 	// result of the function (to be returned)
 	std::vector<properties::branchless_path> res;
@@ -137,16 +157,18 @@ noexcept
 	detail::data_array<std::size_t> label(n, 0);
 	std::size_t max_label = 0;
 
-	detail::BFS bfs(t);
-
 	// path to be filled
 	properties::branchless_path p;
+
+	detail::BFS bfs(t);
 
 	// detect the last hub
 	bfs.set_process_current(
 		[&](const auto&, node u) {
 			const auto d = t.get_degree(u);
 			if (d == 1 or d > 2) {
+				// The exploration will finish in the
+				// next call to the 'terminate' function.
 				p.add_node(u);
 				p.set_h2(u);
 			}
@@ -169,7 +191,6 @@ noexcept
 	for (node u = 0; u < n; ++u) {
 		if (t.get_degree(u) == 2) { continue; }
 
-		bfs.set_visited(u, 1);
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			for (node v : t.get_neighbours(u)) {
 				expand_branchless_path(t, u, v, bfs, label, max_label, res, p);
