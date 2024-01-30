@@ -43,15 +43,52 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
-#include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
+#include <lal/properties/branchless_path.hpp>
 
 namespace lal {
 namespace linarr {
 
 /* ------------------------ Non-BIPARTITE CONSTRAINT ------------------------ */
 
+/**
+ * @brief Calculates the solution to \f$\le 1\f$-thistle MaxLA.
+ *
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
+ * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param c Coloring of the input tree.
+ * @param bps Branchless paths of the tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& bps
+)
+noexcept;
+/**
+ * @brief Calculates the solution to \f$\le 1\f$-thistle MaxLA.
+ *
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
+ * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param bps Branchless paths of the tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
+(const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
+noexcept;
 /**
  * @brief Calculates the solution to \f$\le 1\f$-thistle MaxLA.
  *
@@ -84,6 +121,42 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
 noexcept;
 
+/**
+ * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
+ *
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
+ * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param c Coloring of the input tree.
+ * @param bps Branchless paths of the tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& bps
+)
+noexcept;
+/**
+ * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
+ *
+ * It computes a maximal either bipartite or non-bipartite arrangement of a tree
+ * constrained to having at most one thistle vertex. This function implements the
+ * algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param bps Branchless paths of the tree.
+ * @returns A maximal arrangement with at most one thistle vertex.
+ */
+std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
+(const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
+noexcept;
 /**
  * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
  *

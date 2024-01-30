@@ -774,8 +774,12 @@ noexcept
  * @pre The input graph is a bipartite graph.
  */
 template <bool make_arrangement>
-detail::result_t<make_arrangement>
-AEF(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
+detail::result_t<make_arrangement> AEF(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& all_paths,
+	const data_array<std::size_t>& node_to_path
+)
 noexcept
 {
 	const auto n = t.get_num_nodes();
@@ -802,18 +806,6 @@ noexcept
 		res = 0;
 	}
 
-	// all branchless path in the tree
-	const std::vector<properties::branchless_path> all_paths = find_all_branchless_paths(t);
-	// assign all internal vertices a path index.
-	data_array<std::size_t> node_to_path(n);
-	for (std::size_t i = 0; i < all_paths.size(); ++i) {
-		const properties::branchless_path& p = all_paths[i];
-		const std::vector<node>& seq = p.get_vertex_sequence();
-		for (std::size_t j = 1; j < seq.size() - 1; ++j) {
-			const node u = seq[j];
-			node_to_path[u] = i;
-		}
-	}
 	// whether or an internal of a branchless path was already used
 	data_array<char> internal_in_path_was_used(all_paths.size(), 0);
 
@@ -922,9 +914,25 @@ std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(const graphs::free_tree& g) noexcept {
-	const auto c = color_vertices_graph(g);
-	return AEF<make_arrangement>(g, c);
+AEF(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& all_paths
+)
+noexcept
+{
+	// assign all internal vertices a path index.
+	data_array<std::size_t> node_to_path(t.get_num_nodes());
+	for (std::size_t i = 0; i < all_paths.size(); ++i) {
+		const properties::branchless_path& p = all_paths[i];
+		const std::vector<node>& seq = p.get_vertex_sequence();
+		for (std::size_t j = 1; j < seq.size() - 1; ++j) {
+			const node u = seq[j];
+			node_to_path[u] = i;
+		}
+	}
+
+	return AEF<make_arrangement>(t, c, all_paths, node_to_path);
 }
 
 #undef level_position

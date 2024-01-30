@@ -74,6 +74,7 @@
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
+#include <lal/detail/properties/branchless_path_find.hpp>
 
 #include <lal/detail/linarr/dependency_flux.hpp>
 #include <lal/detail/linarr/headedness.hpp>
@@ -491,6 +492,10 @@ noexcept
 	if (m_what_fs[DMax_Bipartite_idx] or m_what_fs[DMax_1_thistle_idx]) {
 		c = detail::color_vertices_graph(fT);
 	}
+	std::vector<properties::branchless_path> bps;
+	if (m_what_fs[DMax_1_thistle_idx]) {
+		bps = detail::find_all_branchless_paths(fT);
+	}
 
 	// a suitable algorithm to calculate C depending on the value of 'n'
 	const auto calculate_crossings =
@@ -773,7 +778,7 @@ noexcept
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_bipartite));
 	}
 	if (m_what_fs[DMax_1_thistle_idx]) {
-		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, c);
+		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, c, bps);
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_1_thistle));
 	}
 
