@@ -127,14 +127,14 @@ public:
 	 * The number of vertices includes the endpoints.
 	 * @returns The number of vertices.
 	 */
-	std::size_t num_vertices() const noexcept { return m_vertex_sequence.size(); }
+	std::size_t get_num_nodes() const noexcept { return m_vertex_sequence.size(); }
 	/**
 	 * @brief Number of edges in this path.
 	 *
 	 * The number of edges includes the edges incident to the endpoints.
 	 * @returns The number of edges.
 	 */
-	std::size_t num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
+	std::size_t get_num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
 	bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
 
