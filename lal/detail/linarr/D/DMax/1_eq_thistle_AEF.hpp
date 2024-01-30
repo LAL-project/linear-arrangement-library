@@ -199,7 +199,7 @@ noexcept
 			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
 			[&](const node u) {
 				// 0, 1, 2
-				if (is_thistle_neighbor[u]) { return 0; }
+				if (is_thistle_neighbor[u] == 1) { return 0; }
 				if (u == thistle) { return 1; }
 				return 2;
 			}
@@ -212,7 +212,8 @@ noexcept
 /**
  * @brief Readjusts vertices to increase the cost of the arrangement.
  *
- * Moves vertices to the right starting at vertices of level +2.
+ * Moves vertices to the right of the thistle. It stops when 'p' was moved to
+ * the right of the thistle.
  * @param t Input tree.
  * @param thistle Thistle vertex.
  * @param p Position of the vertex to readjust.
@@ -385,8 +386,7 @@ noexcept
 #endif
 
 	// sort the vertices of level value equal to the thistle's so that we find
-	// - for positive (>= 0) level value of the thistle: (N ... N t O ... O)
-	// - for negative (< 0) level value of the thistle: (O ... O t N ... N)
+	//                 (N ... N t O ... O)
 	// where
 	// - N denotes the neighbors of the thistle
 	// - t is the thistle
