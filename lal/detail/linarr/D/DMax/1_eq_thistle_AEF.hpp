@@ -171,9 +171,7 @@ inline void sort_level_sequences(
 	const uint64_t n,
 	const node thistle,
 	const data_array<char>& is_thistle_neighbor,
-	// the level signature of the arrangement
 	const level_signature_per_vertex& levels_per_vertex,
-	// the ¡inverse! linear arrangement
 	data_array<node>& inv_arr
 )
 noexcept
@@ -187,12 +185,11 @@ noexcept
 			++q;
 		}
 
-		// sort interval [p,q)
-
 #if defined PRINT_MESSAGES_1THISTLE
 		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
 #endif
 
+		// sort interval [p,q)
 		sorting::counting_sort
 		<node, sorting::non_decreasing_t>
 		(
@@ -224,8 +221,6 @@ inline void shift_vertex_to_right(
 	const graphs::free_tree& t,
 	const node thistle,
 	position_t p,
-
-	// the actual linear arrangement
 	linear_arrangement& arr
 )
 noexcept
@@ -238,6 +233,22 @@ noexcept
 	}
 	arr.swap(p, p + 1ull);
 }
+
+#if defined PRINT_MESSAGES_1THISTLE
+inline void print_arrangement(const std::string& msg, const linear_arrangement& arr)
+noexcept
+{
+	const auto dir = arr.direct_as_vector();
+	const auto inv = arr.inverse_as_vector();
+	std::cout << "        " << msg << ":\n";
+	std::cout << "        Direct: ";
+	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
+	std::cout << '\n';
+	std::cout << "        Inverse:";
+	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
+	std::cout << '\n';
+}
+#endif
 
 /**
  * @brief Tries to make a maximal arrangement with a given thistle vertex of a
@@ -267,14 +278,9 @@ void merge_arrangements(
 	const int64_t thistle_level,
 	const data_array<char>& is_thistle_neighbor,
 	const data_array<char>& thistle_side_per_vertex,
-
-	// the actual linear arrangement
 	linear_arrangement& arr,
-	// the ¡inverse! linear arrangement
 	data_array<node>& inv_arr,
-	// the level signature of the arrangement
 	level_signature_per_vertex& levels_per_vertex,
-
 	result_t<make_arrangement>& res
 )
 noexcept
@@ -362,17 +368,7 @@ noexcept
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
 #if defined PRINT_MESSAGES_1THISTLE
-	{
-	const auto dir = arr.direct_as_vector();
-	const auto inv = arr.inverse_as_vector();
-	std::cout << "        Initial arrangement:\n";
-	std::cout << "        Direct: ";
-	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-	std::cout << '\n';
-	std::cout << "        Inverse:";
-	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-	std::cout << '\n';
-	}
+	print_arrangement("Initial arrangement", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
@@ -398,17 +394,7 @@ noexcept
 #if defined DEBUG
 
 #if defined PRINT_MESSAGES_1THISTLE
-	{
-	const auto dir = arr.direct_as_vector();
-	const auto inv = arr.inverse_as_vector();
-	std::cout << "        After sorting all sequences of equal level vertex:\n";
-	std::cout << "        Direct: ";
-	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-	std::cout << '\n';
-	std::cout << "        Inverse:";
-	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-	std::cout << '\n';
-	}
+	print_arrangement("After sorting all sequences of equal level vertex", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
@@ -440,17 +426,7 @@ noexcept
 #if defined DEBUG
 
 #if defined PRINT_MESSAGES_1THISTLE
-	{
-	const auto dir = arr.direct_as_vector();
-	const auto inv = arr.inverse_as_vector();
-	std::cout << "        After adjusting the thistle vertex:\n";
-	std::cout << "        Direct: ";
-	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-	std::cout << '\n';
-	std::cout << "        Inverse:";
-	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-	std::cout << '\n';
-	}
+	print_arrangement("After adjusting the thistle vertex", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
@@ -547,17 +523,7 @@ noexcept
 		}
 
 #if defined PRINT_MESSAGES_1THISTLE
-		{
-		const auto dir = arr.direct_as_vector();
-		const auto inv = arr.inverse_as_vector();
-		std::cout << "        After moving vertex '" << to_move << "'\n";
-		std::cout << "        Direct: ";
-		for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-		std::cout << '\n';
-		std::cout << "        Inverse:";
-		for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-		std::cout << '\n';
-		}
+		print_arrangement("After moving vertex '" + std::to_string(to_move) + "'", arr);
 #endif
 	}
 	}
@@ -565,23 +531,7 @@ noexcept
 #if defined DEBUG
 
 #if defined PRINT_MESSAGES_1THISTLE
-	{
-	const auto dir = arr.direct_as_vector();
-	const auto inv = arr.inverse_as_vector();
-	std::cout << "        After moving thistle and readjusting other vertices:\n";
-	std::cout << "        Direct: ";
-	for (std::size_t i = 0; i < dir.size(); ++i) { std::cout << ' ' << dir[i]; }
-	std::cout << '\n';
-	std::cout << "        Inverse:";
-	for (std::size_t i = 0; i < inv.size(); ++i) { std::cout << ' ' << inv[i]; }
-	std::cout << '\n';
-	}
-	std::cout << "        Level values:\n";
-	std::cout << "        levels_per_vertex:\n";
-	for (node u = 0; u < n; ++u) {
-		std::cout << "        " << u << ": " << levels_per_vertex[node_t{u}] << '\n';
-	}
-	std::cout << '\n';
+	print_arrangement("After moving thistle and readjusting other vertices", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
