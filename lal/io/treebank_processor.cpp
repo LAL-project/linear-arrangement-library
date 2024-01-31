@@ -489,7 +489,7 @@ noexcept
 	const uint64_t n = fT.get_num_nodes();
 
 	properties::bipartite_graph_coloring c;
-	if (m_what_fs[DMax_Bipartite_idx] or m_what_fs[DMax_1_thistle_idx]) {
+	if (m_what_fs[DMax_Bipartite_idx]) {
 		c = detail::color_vertices_graph(fT);
 	}
 	std::vector<properties::branchless_path> bps;
@@ -778,7 +778,7 @@ noexcept
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_bipartite));
 	}
 	if (m_what_fs[DMax_1_thistle_idx]) {
-		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, c, bps);
+		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, bps);
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_1_thistle));
 	}
 
