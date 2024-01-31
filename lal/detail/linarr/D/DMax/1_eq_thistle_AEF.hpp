@@ -148,92 +148,6 @@ using result_t = std::conditional_t<
 #define level_position(p) levels_per_vertex[node_t{inv_arr[p]}]
 #define level_vertex(u)	  levels_per_vertex[node_t{u}]
 
-/**
- * @brief Sorts the intervals of vertices of equal level value
- *
- * In such a way that, for positive (>= 0) level values
- * - the neighbors of the thistle are placed to the leftmost positions,
- * - then comes the thistle,
- * - and then the remaining vertices are placed in the rightmost positions.
- * for negative (< 0) level values
- * - then the remaining vertices are placed in the leftmost positions,
- * - then comes the thistle,
- * - and the neighbors of the thistle are placed to the rightmost positions.
- *
- * This is Ok thanks to Nurse and De Vos \cite Nurse2018a \cite Nurse2019a.
- * @param n Number of vertices
- * @param thistle Thistle vertex.
- * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
- * @param levels_per_vertex Array of levels per vertex.
- * @param[out] inv_arr Inverse linear arrangement.
- */
-inline void sort_level_sequences(
-	const uint64_t n,
-	const node thistle,
-	const data_array<char>& is_thistle_neighbor,
-	const level_signature_per_vertex& levels_per_vertex,
-	data_array<node>& inv_arr
-)
-noexcept
-{
-	position p = 0;
-	while (p < n) {
-
-		position q = p;
-		const int64_t current_level = level_position(p);
-		while (q < n and level_position(q) == current_level) {
-			++q;
-		}
-
-#if defined PRINT_MESSAGES_1THISTLE
-		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
-#endif
-
-		// sort interval [p,q)
-		sorting::counting_sort
-		<node, sorting::non_decreasing_t>
-		(
-			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
-			[&](const node u) {
-				// 0, 1, 2
-				if (is_thistle_neighbor[u] == 1) { return 0; }
-				if (u == thistle) { return 1; }
-				return 2;
-			}
-		);
-
-		p = q;
-	}
-}
-
-/**
- * @brief Readjusts vertices to increase the cost of the arrangement.
- *
- * Moves vertices to the right of the thistle. It stops when 'p' was moved to
- * the right of the thistle.
- * @param t Input tree.
- * @param thistle Thistle vertex.
- * @param p Position of the vertex to readjust.
- * @param[out] arr Actual linear arrangement
- * @post The arrangement is updated but the level signature is not.
- */
-inline void shift_vertex_to_right(
-	const graphs::free_tree& t,
-	const node thistle,
-	position_t p,
-	linear_arrangement& arr
-)
-noexcept
-{
-	const auto n = t.get_num_nodes();
-
-	while (p < n - 1 and arr[p + 1ull] != thistle) {
-		arr.swap(p, p + 1ull);
-		++p;
-	}
-	arr.swap(p, p + 1ull);
-}
-
 #if defined PRINT_MESSAGES_1THISTLE
 inline void print_arrangement(const std::string& msg, const linear_arrangement& arr)
 noexcept
@@ -251,47 +165,29 @@ noexcept
 #endif
 
 /**
- * @brief Tries to make a maximal arrangement with a given thistle vertex of a
- * given level value
- *
- * Parameters @e arr, @e inv_arr, @e levels_per_vertex are temporary memory
- * passed as parameters to avoid constant allocations and deallocations.
- * @tparam make_arrangement Should the arrangement be returned?
+ * @brief Construct the initial arrangement that will later be improved.
  * @param t Input free tree.
  * @param thistle Thistle vertex.
  * @param thistle_level Level value for @e thistle.
- * @param is_thistle_neighbor Is a given vertex a neighbor of @e thistle?
+ * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
  * @param thistle_side_per_vertex Side of @e thistle in which each vertex
  * have to be placed at in the first arrangement.
- * @param arr Linear arrangement (used to evaluate the cost of the distribution).
- * @param inv_arr Inverse linear arrangement (used to evaluate the cost of the
- * distribution).
- * @param levels_per_vertex Array containing the level value of each vertex of
+ * @param[out] levels_per_vertex Array containing the level value of each vertex of
  * the tree.
- * @param[inout] res Contains the best arrangement produced here if it is better
- * than the one it already contains.
+ * @param[out] inv_arr Inverse linear arrangement (used to evaluate the cost of the
+ * distribution).
  */
-template <bool make_arrangement>
-void merge_arrangements(
+inline void construct_initial_arrangement(
 	const graphs::free_tree& t,
 	const node thistle,
 	const int64_t thistle_level,
-	const data_array<char>& is_thistle_neighbor,
 	const data_array<char>& thistle_side_per_vertex,
-	linear_arrangement& arr,
-	data_array<node>& inv_arr,
 	level_signature_per_vertex& levels_per_vertex,
-	result_t<make_arrangement>& res
-)
-noexcept
+	data_array<node>& inv_arr
+	)
+	noexcept
 {
-	const auto n = t.get_num_nodes();
-
-#if defined DEBUG
-#if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        Chosen level value: " << thistle_level << '\n';
-#endif
-#endif
+	const uint64_t n = t.get_num_nodes();
 
 	// The minimum level value in the configuration. There is always
 	// a negative (<0) level value, so the minimum can be initialized at 0.
@@ -352,9 +248,9 @@ noexcept
 		(
 			inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
 			[&](const node u) {
-			return to_uint64(level_vertex(u) - min_level_value);
+				return to_uint64(level_vertex(u) - min_level_value);
 			}
-		);
+			);
 	sorting::counting_sort
 		<node, sorting::non_increasing_t>
 		(
@@ -362,52 +258,84 @@ noexcept
 			[&](const node u) {
 				return to_uint64(level_vertex(u) - min_level_value);
 			}
+			);
+}
+
+/**
+ * @brief Sorts the intervals of vertices of equal level value
+ *
+ * In such a way that, for positive (>= 0) level values
+ * - the neighbors of the thistle are placed to the leftmost positions,
+ * - then comes the thistle,
+ * - and then the remaining vertices are placed in the rightmost positions.
+ * for negative (< 0) level values
+ * - then the remaining vertices are placed in the leftmost positions,
+ * - then comes the thistle,
+ * - and the neighbors of the thistle are placed to the rightmost positions.
+ *
+ * This is Ok thanks to Nurse and De Vos \cite Nurse2018a \cite Nurse2019a.
+ * @param n Number of vertices
+ * @param thistle Thistle vertex.
+ * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
+ * @param levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[out] inv_arr Inverse linear arrangement.
+ */
+inline void sort_level_sequences(
+	const uint64_t n,
+	const node thistle,
+	const data_array<char>& is_thistle_neighbor,
+	const level_signature_per_vertex& levels_per_vertex,
+	data_array<node>& inv_arr
+)
+noexcept
+{
+	position p = 0;
+	while (p < n) {
+
+		position q = p;
+		const int64_t current_level = level_position(p);
+		while (q < n and level_position(q) == current_level) {
+			++q;
+		}
+
+#if defined PRINT_MESSAGES_1THISTLE
+		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
+#endif
+
+		// sort interval [p,q)
+		sorting::counting_sort
+		<node, sorting::non_decreasing_t>
+		(
+			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
+			[&](const node u) {
+				// 0, 1, 2
+				if (is_thistle_neighbor[u] == 1) { return 0; }
+				if (u == thistle) { return 1; }
+				return 2;
+			}
 		);
 
-#if defined DEBUG
-	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
+		p = q;
+	}
+}
 
-#if defined PRINT_MESSAGES_1THISTLE
-	print_arrangement("Initial arrangement", arr);
-#endif
-
-	assert(linarr::is_arrangement(t, arr));
-
-	// sum of edge lengths prior to adjustments
-	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
-
-#if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        __D1= " << __D1 << std::endl;
-#endif
-#endif
-
-	// sort the vertices of level value equal to the thistle's so that we find
-	//                 (N ... N t O ... O)
-	// where
-	// - N denotes the neighbors of the thistle
-	// - t is the thistle
-	// - O are the other vertices
-	sort_level_sequences(n, thistle, is_thistle_neighbor, levels_per_vertex, inv_arr);
-
-	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
-
-#if defined DEBUG
-
-#if defined PRINT_MESSAGES_1THISTLE
-	print_arrangement("After sorting all sequences of equal level vertex", arr);
-#endif
-
-	assert(linarr::is_arrangement(t, arr));
-	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
-
-#if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        __D2= " << __D2 << std::endl;
-#endif
-
-	assert(__D2 == __D1);
-#endif
-
-	{
+/**
+ * @brief Move the thistle vertex to the left in the arrangement.
+ * @param thistle Thistle vertex.
+ * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
+ * @param[out] levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[out] arr Arrangement.
+ */
+inline void move_thistle_to_left(
+	const node thistle,
+	const data_array<char>& is_thistle_neighbor,
+	const level_signature_per_vertex& levels_per_vertex,
+	linear_arrangement& arr
+)
+noexcept
+{
 	// Move the thistle to the left
 	// - while the level value of the vertex to the left is less than the thistle's
 	// - while the other vertex is not a neighbor of the thistle
@@ -421,35 +349,61 @@ noexcept
 		arr.swap(p - 1ull, p);
 		--p;
 	}
+}
+
+/**
+ * @brief Readjusts vertices to increase the cost of the arrangement.
+ *
+ * Moves vertices to the right of the thistle. It stops when 'p' was moved to
+ * the right of the thistle.
+ * @param t Input tree.
+ * @param thistle Thistle vertex.
+ * @param p Position of the vertex to readjust.
+ * @param[out] arr Actual linear arrangement
+ * @post The arrangement is updated but the level signature is not.
+ */
+inline void shift_vertex_to_right(
+	const graphs::free_tree& t,
+	const node thistle,
+	position_t p,
+	linear_arrangement& arr
+	)
+	noexcept
+{
+	const auto n = t.get_num_nodes();
+
+	while (p < n - 1 and arr[p + 1ull] != thistle) {
+		arr.swap(p, p + 1ull);
+		++p;
 	}
+	arr.swap(p, p + 1ull);
+}
 
-#if defined DEBUG
-
-#if defined PRINT_MESSAGES_1THISTLE
-	print_arrangement("After adjusting the thistle vertex", arr);
-#endif
-
-	assert(linarr::is_arrangement(t, arr));
-	const uint64_t __D3 = linarr::sum_edge_lengths(t, arr);
-
-#if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        __D3= " << __D3 << std::endl;
-#endif
-
-	assert(__D3 >= __D2);
-#endif
-
-
-#if defined DEBUG
-	assert(arr[node_t{thistle}] != 0);
-#endif
-
-	{
+/**
+ * @brief Adjust mistplaced nonneighbors of the thistle vertex.
+ * @param t Input tree
+ * @param thistle_level Level of the thistle
+ * @param thistle Thistle vertex
+ * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
+ * @param levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[out] arr Arrangement to be manipulated.
+ */
+inline void adjust_mistplaced_nonneighbors_of_thistle(
+	const graphs::free_tree& t,
+	const int64_t thistle_level,
+	const node thistle,
+	const data_array<char>& is_thistle_neighbor,
+	const level_signature_per_vertex& levels_per_vertex,
+	linear_arrangement& arr
+)
+noexcept
+{
 	// position of thistle can never be '0'
 	position p = arr[node_t{thistle}] - 1;
 
 #if defined PRINT_MESSAGES_1THISTLE
-	std::cout << "        Thistle position p= " << p+1 << '\n';
+	std::cout << "        Thistle position p= " << p + 1 << '\n';
 #endif
 
 	bool stop = false;
@@ -526,7 +480,126 @@ noexcept
 		print_arrangement("After moving vertex '" + std::to_string(to_move) + "'", arr);
 #endif
 	}
-	}
+}
+
+/**
+ * @brief Tries to make a maximal arrangement with a given thistle vertex of a
+ * given level value
+ *
+ * Parameters @e arr, @e inv_arr, @e levels_per_vertex are temporary memory
+ * passed as parameters to avoid constant allocations and deallocations.
+ * @tparam make_arrangement Should the arrangement be returned?
+ * @param t Input free tree.
+ * @param thistle Thistle vertex.
+ * @param thistle_level Level value for @e thistle.
+ * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
+ * @param thistle_side_per_vertex Side of @e thistle in which each vertex
+ * have to be placed at in the first arrangement.
+ * @param[out] arr Linear arrangement (used to evaluate the cost of the distribution).
+ * @param[out] inv_arr Inverse linear arrangement (used to evaluate the cost of the
+ * distribution).
+ * @param[out] levels_per_vertex Array containing the level value of each vertex of
+ * the tree.
+ * @param[inout] res Contains the best arrangement produced here if it is better
+ * than the one it already contains.
+ */
+template <bool make_arrangement>
+void merge_arrangements(
+	const graphs::free_tree& t,
+	const node thistle,
+	const int64_t thistle_level,
+	const data_array<char>& is_thistle_neighbor,
+	const data_array<char>& thistle_side_per_vertex,
+	linear_arrangement& arr,
+	data_array<node>& inv_arr,
+	level_signature_per_vertex& levels_per_vertex,
+	result_t<make_arrangement>& res
+)
+noexcept
+{
+	const auto n = t.get_num_nodes();
+
+#if defined DEBUG
+#if defined PRINT_MESSAGES_1THISTLE
+	std::cout << "        Chosen level value: " << thistle_level << '\n';
+#endif
+#endif
+
+	construct_initial_arrangement(
+		t, thistle, thistle_level, thistle_side_per_vertex,
+		levels_per_vertex, inv_arr
+	);
+
+#if defined DEBUG
+	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
+
+#if defined PRINT_MESSAGES_1THISTLE
+	print_arrangement("Initial arrangement", arr);
+#endif
+
+	assert(linarr::is_arrangement(t, arr));
+
+	// sum of edge lengths prior to adjustments
+	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
+
+#if defined PRINT_MESSAGES_1THISTLE
+	std::cout << "        __D1= " << __D1 << std::endl;
+#endif
+#endif
+
+	// sort the vertices of level value equal to the thistle's so that we find
+	//                 (N ... N t O ... O)
+	// where
+	// - N denotes the neighbors of the thistle
+	// - t is the thistle
+	// - O are the other vertices
+	sort_level_sequences(n, thistle, is_thistle_neighbor, levels_per_vertex, inv_arr);
+
+	// Construct the arrangement object now, since it is needed for further
+	// operations. Object 'inv_arr' is no longer needed.
+	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
+
+#if defined DEBUG
+
+#if defined PRINT_MESSAGES_1THISTLE
+	print_arrangement("After sorting all sequences of equal level vertex", arr);
+#endif
+
+	assert(linarr::is_arrangement(t, arr));
+	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
+
+#if defined PRINT_MESSAGES_1THISTLE
+	std::cout << "        __D2= " << __D2 << std::endl;
+#endif
+
+	assert(__D2 == __D1);
+#endif
+
+	move_thistle_to_left(thistle, is_thistle_neighbor, levels_per_vertex, arr);
+
+#if defined DEBUG
+
+#if defined PRINT_MESSAGES_1THISTLE
+	print_arrangement("After adjusting the thistle vertex", arr);
+#endif
+
+	assert(linarr::is_arrangement(t, arr));
+	const uint64_t __D3 = linarr::sum_edge_lengths(t, arr);
+
+#if defined PRINT_MESSAGES_1THISTLE
+	std::cout << "        __D3= " << __D3 << std::endl;
+#endif
+
+	assert(__D3 >= __D2);
+#endif
+
+
+#if defined DEBUG
+	assert(arr[node_t{thistle}] != 0);
+#endif
+
+	adjust_mistplaced_nonneighbors_of_thistle
+	(t, thistle_level, thistle, is_thistle_neighbor, levels_per_vertex, arr);
 
 #if defined DEBUG
 
