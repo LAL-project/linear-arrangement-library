@@ -792,9 +792,12 @@ noexcept
  * @tparam make_arrangement Boolean value that indicates whether or not the maximal
  * arrangement should be constructed.
  * @param t Input tree.
- * @returns The cost of a maximal bipartite arrangement and possibly the arrangement
- * that attains it.
- * @pre The input graph is a bipartite graph.
+ * @param c Bipartite coloring of the input tree.
+ * @param all_paths The set of all paths that span sequences of vertices of degree 2.
+ * @param node_to_path An index array that points every degree-2 vertex to its
+ * path in @e all_paths.
+ * @returns The cost of a maximal non-bipartite arrangement with exactly 1 thistle
+ * vertex.
  */
 template <bool make_arrangement>
 detail::result_t<make_arrangement> AEF(
@@ -927,9 +930,10 @@ noexcept
  * @tparam make_arrangement Boolean value that indicates whether or not the maximal
  * arrangement should be constructed.
  * @param t Input tree.
- * @returns The cost of a maximal bipartite arrangement and possibly the arrangement
- * that attains it.
- * @pre The input graph is a bipartite graph.
+ * @param c Bipartite coloring of the input tree.
+ * @param all_paths The set of all paths that span sequences of vertices of degree 2.
+ * @returns The cost of a maximal non-bipartite arrangement with exactly 1 thistle
+ * vertex.
  */
 template <bool make_arrangement>
 std::conditional_t<
