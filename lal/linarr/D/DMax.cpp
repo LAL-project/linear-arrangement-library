@@ -59,6 +59,10 @@
 namespace lal {
 namespace linarr {
 
+/* ------------------------------- 1 THISTLE -------------------------------- */
+
+// *** LE ***
+
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
@@ -99,8 +103,10 @@ noexcept
 		= detail::color_vertices_graph(t);
 	const std::vector<properties::branchless_path> all_paths
 		= lal::detail::find_all_branchless_paths(t);
-	return max_sum_edge_lengths_1_le_thistle(t, c);
+	return max_sum_edge_lengths_1_le_thistle(t, c, all_paths);
 }
+
+// *** EQ ***
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
 	const graphs::free_tree& t,
@@ -109,9 +115,7 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
 )
 noexcept
 {
-	const auto max_1_thistle = detail::DMax::thistle_1::AEF<true>(t, c, all_paths);
-	const auto max_bipartite = detail::DMax::bipartite::AEF<true>(t, c);
-	return (max_1_thistle.first > max_bipartite.first ? max_1_thistle : max_bipartite);
+	return detail::DMax::thistle_1::AEF<true>(t, c, all_paths);
 }
 
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
@@ -142,7 +146,7 @@ noexcept
 		= detail::color_vertices_graph(t);
 	const std::vector<properties::branchless_path> all_paths
 		= lal::detail::find_all_branchless_paths(t);
-	return max_sum_edge_lengths_1_eq_thistle(t, c);
+	return max_sum_edge_lengths_1_eq_thistle(t, c, all_paths);
 }
 
 /* -------------------------- BIPARTITE CONSTRAINT -------------------------- */
