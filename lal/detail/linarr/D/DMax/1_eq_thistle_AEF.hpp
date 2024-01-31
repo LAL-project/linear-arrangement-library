@@ -76,6 +76,7 @@
 #include <lal/graphs/output.hpp>
 #endif
 
+#include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/properties/branchless_path_find.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
@@ -113,8 +114,6 @@ bool next_binary(iterator_t begin, iterator_t end) noexcept
 	return true;
 }
 
-/// Useful typedef for this algorithm
-typedef std::vector<lal::node> node_set;
 /// Typedef for @ref properties::bipartite_graph_coloring::blue.
 static constexpr auto blue = properties::bipartite_graph_coloring::blue;
 /// Typedef for @ref properties::bipartite_graph_coloring::red.
@@ -184,8 +183,8 @@ inline void construct_initial_arrangement(
 	const data_array<char>& thistle_side_per_vertex,
 	level_signature_per_vertex& levels_per_vertex,
 	data_array<node>& inv_arr
-	)
-	noexcept
+)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -656,8 +655,6 @@ void choose_orientations_for_thistle_neighbors(
 	const graphs::free_tree& t,
 	const node thistle,
 	const data_array<char>& is_thistle_neighbor,
-	const data_array<node_set>& nodes_subtrees,
-	const properties::bipartite_graph_coloring& color_per_vertex,
 
 	linear_arrangement& arr,
 	data_array<node>& inv_arr,
@@ -681,6 +678,13 @@ noexcept
 #if defined DEBUG
 	std::size_t num_combinations = 0;
 #endif
+
+	BFS bfs(t);
+	bfs.set_process_neighbour(
+	[&](const auto&, node u, node v, bool) {
+		thistle_side_per_vertex[v] = other_side(thistle_side_per_vertex[u]);
+	}
+	);
 
 	do {
 #if defined PRINT_MESSAGES_1THISTLE
@@ -712,64 +716,27 @@ noexcept
 		}
 
 		// ignore orientations where the root is not a thistle vertex
-		if (thistle_level >= 0) {
-			if (to_uint64(thistle_level) != thistle_deg) {
+		if (thistle_level >= 0 and to_uint64(thistle_level) != thistle_deg) {
 
-				// Decide the original side of the thistle at which each vertex goes.
-				for (std::size_t i = 0; i < thistle_deg; ++i) {
-					const node neigh = thistle_neighs[i];
-					for (node u : nodes_subtrees[i]) {
-						if (color_per_vertex[neigh] == color_per_vertex[u]) {
-							thistle_side_per_vertex[u] = thistle_side_per_vertex[neigh];
-						}
-						else {
-							thistle_side_per_vertex[u] = other_side(thistle_side_per_vertex[neigh]);
-						}
-					}
-				}
-
-#if defined PRINT_MESSAGES_1THISTLE
-				std::cout << "        Level of thistle: " << thistle_level << '\n';
-				std::cout << "        Oriented vertices:\n";
-				for (std::size_t i = 0; i < thistle_deg; ++i) {
-					const node neigh = thistle_neighs[i];
-					std::cout
-						<< "            "
-						<< (thistle_side_per_vertex[neigh] == LEFT_SIDE ? "(L)" : "(R)")
-						<< ' ' << neigh
-						<< '\n';
-					for (std::size_t j = 0; j < nodes_subtrees[i].size(); ++j) {
-						const node other = nodes_subtrees[i][j];
-						std::cout
-							<< "                "
-							<< (thistle_side_per_vertex[other] == LEFT_SIDE ? "(L)" : "(R)")
-							<< ' ' << other
-							<< '\n';
-					}
-					std::cout << '\n';
-				}
-#endif
-
-				// merge the arrangements and keep track of the maximum
-				merge_arrangements<make_arrangement>(
-					t,
-					thistle, thistle_level,
-					is_thistle_neighbor, thistle_side_per_vertex,
-					arr, inv_arr, level_per_vertex,
-					res
-				);
+			bfs.set_visited(thistle, true);
+			for (std::size_t i = 0; i < thistle_neighs.size(); ++i) {
+				bfs.start_at(thistle_neighs[i]);
 			}
-#if defined PRINT_MESSAGES_1THISTLE
-			else {
-				std::cout << "        This subset does not make the thistle be a thistle\n";
-				std::cout << "        Level value: " << thistle_level << '\n';
-				std::cout << "        Degree: " << t.get_degree(thistle) << '\n';
-			}
-#endif
+			bfs.clear_visited();
+			bfs.clear_queue();
+
+			// merge the arrangements and keep track of the maximum
+			merge_arrangements<make_arrangement>(
+				t,
+				thistle, thistle_level,
+				is_thistle_neighbor, thistle_side_per_vertex,
+				arr, inv_arr, level_per_vertex,
+				res
+			);
 		}
 #if defined PRINT_MESSAGES_1THISTLE
 		else {
-			std::cout << "        Ignore negative level values\n";
+			std::cout << "        Ignore negative values and non-thistle configurations.\n";
 			std::cout << "        Level value: " << thistle_level << '\n';
 			std::cout << "        Degree: " << t.get_degree(thistle) << '\n';
 		}
@@ -802,7 +769,6 @@ noexcept
 template <bool make_arrangement>
 detail::result_t<make_arrangement> AEF(
 	const graphs::free_tree& t,
-	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& all_paths,
 	const data_array<std::size_t>& node_to_path
 )
@@ -843,8 +809,6 @@ noexcept
 	level_signature_per_vertex level_per_vertex(n);
 	// the side of the thistle at which every vertex is found
 	data_array<char> thistle_side_per_vertex(n);
-	// the set of nodes in every subtree of the tree rooted at the thistle
-	data_array<detail::node_set> nodes_subtrees;
 	// used to query whether a vertex is neighbor of the thistle or not
 	data_array<char> is_thistle_neighbor(n, 0);
 
@@ -872,39 +836,20 @@ noexcept
 #endif
 		}
 
-		nodes_subtrees.clear();
-		nodes_subtrees.resize(deg_thistle);
-		const graphs::rooted_tree rt(t, thistle);
-		const neighbourhood& neighs = rt.get_out_neighbours(thistle);
+		const neighbourhood& neighs = t.get_neighbours(thistle);
 
 		// set neighbors of thistle
-		for (node u : neighs) {
-			is_thistle_neighbor[u] = 1;
-		}
-
-		// Gather nodes of the connected components.
-		// The nodes in the i-th container correspond to the connected component
-		// of the i-th neighbour.
-		for (node u = 0; u < n; ++u) {
-			if (u == thistle) { continue; }
-			for (std::size_t i = 0; i < deg_thistle; ++i) {
-				if (rt.subtree_contains_node(neighs[i], u)) {
-					nodes_subtrees[i].push_back(u);
-				}
-			}
-		}
+		for (node u : neighs) { is_thistle_neighbor[u] = 1; }
 
 		// Find best orientation for this thistle.
 		detail::choose_orientations_for_thistle_neighbors<make_arrangement>(
-			t, thistle, is_thistle_neighbor, nodes_subtrees, c,
+			t, thistle, is_thistle_neighbor,
 			arr, inv_arr, level_per_vertex, thistle_side_per_vertex,
 			res
 		);
 
 		// unset neighbors of thistle
-		for (node u : neighs) {
-			is_thistle_neighbor[u] = 0;
-		}
+		for (node u : neighs) { is_thistle_neighbor[u] = 0; }
 	}
 
 #if defined PRINT_MESSAGES_1THISTLE
@@ -943,7 +888,6 @@ std::conditional_t<
 >
 AEF(
 	const graphs::free_tree& t,
-	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& all_paths
 )
 noexcept
@@ -959,7 +903,7 @@ noexcept
 		}
 	}
 
-	return AEF<make_arrangement>(t, c, all_paths, node_to_path);
+	return AEF<make_arrangement>(t, all_paths, node_to_path);
 }
 
 #undef level_position
