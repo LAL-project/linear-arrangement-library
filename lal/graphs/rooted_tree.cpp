@@ -492,7 +492,7 @@ bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
 
 	// terminate the BFS traversal as soon as node 'u' has been reached.
 	bfs.set_terminate
-	([&](const auto&, node current) -> bool { return current == u; });
+	([u](const auto&, node current) -> bool { return current == u; });
 	// do not search backwards
 	bfs.set_use_rev_edges(false);
 	// start at the root
