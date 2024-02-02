@@ -59,7 +59,7 @@ namespace bipartite {
 /**
  * @brief Maximal Bipartite Arrangement.
  *
- * Algorithm by Alemany, Ferrer-i-Cancho and Esteban \cite Alemany2023a.
+ * This function implements the algorithm in \cite Alemany2023a.
  * @tparam make_arrangement Boolean value that indicates whether or not the maximal
  * arrangement should be constructed.
  * @tparam graph_t Type of graph. Any subclass of @ref lal::graphs::graph.

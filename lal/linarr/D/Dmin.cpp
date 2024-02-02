@@ -40,9 +40,6 @@
  ********************************************************************/
 
 // C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
 #include <utility>
 
 // lal includes
@@ -53,6 +50,10 @@
 #include <lal/linarr/D/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/D/algorithms_Dmin.hpp>
 
+#include <lal/properties/bipartite_graph_colorability.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
+
+#include <lal/detail/linarr/D/Dmin/Bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/Dmin/Projective_AEF.hpp>
 #include <lal/detail/linarr/D/Dmin/Projective_HS.hpp>
 #include <lal/detail/linarr/D/Dmin/Planar_AEF.hpp>
@@ -72,6 +73,21 @@ noexcept
 	}
 
 	return detail::Dmin::unconstrained::FanChung_2<true>(t);
+}
+
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
+(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
+noexcept
+{
+	return detail::Dmin::bipartite::AEF<true>(t,c);
+}
+
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
+(const graphs::free_tree& t)
+noexcept
+{
+	const auto c = properties::bipartite_coloring(t);
+	return min_sum_edge_lengths_bipartite(t, c);
 }
 
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar

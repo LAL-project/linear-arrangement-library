@@ -45,6 +45,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/linarr/D/algorithms_Dmin_projective.hpp>
 #include <lal/linarr/D/algorithms_Dmin_planar.hpp>
 #include <lal/linarr/D/algorithms_Dmin.hpp>
@@ -101,6 +102,43 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
 {
 	return min_sum_edge_lengths(t.to_free_tree(), a);
 }
+
+/**
+ * @brief Computes the minimum value of \f$D\f$ in trees over bipartite arrangements.
+ *
+ * Calculates the minimum value of \f$D\f$ over all bipartite arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. This function implements the algorithm described in
+ * \cite Alemany2024b.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @param c Coloring of the input graph.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
+(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
+noexcept;
+
+/**
+ * @brief Computes the minimum value of \f$D\f$ in trees over bipartite arrangements.
+ *
+ * Calculates the minimum value of \f$D\f$ over all bipartite arrangements of
+ * the input tree. This function also returns the linear arrangement that yields
+ * the minimum value. This function implements the algorithm described in
+ * \cite Alemany2024b.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ * @param t Input free tree.
+ * @returns The minimum value of \f$D\f$ and a minimum arrangement.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
+(const graphs::free_tree& t)
+noexcept;
 
 /**
  * @brief Computes the minimum value of \f$D\f$ in trees under the planarity

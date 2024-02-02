@@ -208,6 +208,7 @@ private:
 	static constexpr std::size_t D_variance_idx = treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);
 	static constexpr std::size_t D_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_sum_edge_lengths);
 	static constexpr std::size_t Dmin_Unconstrained_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths);
+	static constexpr std::size_t Dmin_Bipartite_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_bipartite);
 	static constexpr std::size_t Dmin_Planar_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
 	static constexpr std::size_t Dmin_Projective_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
 	static constexpr std::size_t DMax_1_thistle_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_1_thistle);

@@ -151,10 +151,11 @@ target_sources(
 		detail/linarr/chunking/Anderson.hpp
 		detail/linarr/chunking/Macutek.hpp
 		detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
-		detail/linarr/D/DMax/bipartite_AEF.hpp
+		detail/linarr/D/DMax/Bipartite_AEF.hpp
 		detail/linarr/D/DMax/Planar_AEF.hpp
 		detail/linarr/D/DMax/Projective_AEF.hpp
 		detail/linarr/D/DMax/utils.hpp
+		detail/linarr/D/Dmin/Bipartite_AEF.hpp
 		detail/linarr/D/Dmin/Planar_AEF.hpp
 		detail/linarr/D/Dmin/Planar_HS.hpp
 		detail/linarr/D/Dmin/Projective_AEF.hpp
@@ -174,6 +175,8 @@ target_sources(
 		#      numeric
 		detail/numeric/utils.hpp
 		#      properties
+		detail/properties/bipartite_graph_colorability.hpp
+		detail/properties/branchless_path_find.hpp
 		detail/properties/tree_centre.hpp
 		detail/properties/tree_centroid.hpp
 		detail/properties/tree_diameter.hpp
@@ -359,6 +362,8 @@ target_sources(
 		# -- headers
 		properties/bipartite_graph_colorability.hpp
 		properties/bipartite_graph_coloring.hpp
+		properties/branchless_path_find.hpp
+		properties/branchless_path.hpp
 		properties/C_rla.hpp
 		properties/D_rla.hpp
 		properties/degrees.hpp
@@ -370,6 +375,7 @@ target_sources(
 		properties/tree_diameter.hpp
 		# -- sources
 		properties/bipartite_graph_colorability.cpp
+		properties/branchless_path_find.cpp
 		properties/C_rla.cpp
 		properties/D_rla.cpp
 		properties/hierarchical_distance.cpp
@@ -532,6 +538,8 @@ set(LIBLAL_NUMERIC_HEADER
 set(LIBLAL_PROPERTIES_HEADER
 	properties/bipartite_graph_colorability.hpp
 	properties/bipartite_graph_coloring.hpp
+	properties/branchless_path_find.hpp
+	properties/branchless_path.hpp
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp

@@ -168,7 +168,7 @@ noexcept
 			[](const edge_size& T) -> std::size_t { return T.size; },
 			memcs
 		);
-		}
+	}
 
 	// M[u] : adjacency list of vertex u sorted decreasingly according
 	// to the sizes of the subtrees.

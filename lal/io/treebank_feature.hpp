@@ -273,6 +273,12 @@ enum class treebank_feature {
 	 */
 	min_sum_edge_lengths,
 	/**
+	 * @brief Minimum sum of length of edges over bipartite arrangements.
+	 *
+	 * See @ref lal::linarr::min_sum_edge_lengths_bipartite for details.
+	 */
+	min_sum_edge_lengths_bipartite,
+	/**
 	 * @brief Minimum sum of length of edges under the planarity constraint.
 	 *
 	 * See @ref lal::linarr::min_sum_edge_lengths_planar for details.
@@ -577,6 +583,7 @@ noexcept
 	case treebank_feature::var_sum_edge_lengths: return "var_sum_edge_lengths";
 	case treebank_feature::z_score_sum_edge_lengths: return "z_score_sum_edge_lengths";
 	case treebank_feature::min_sum_edge_lengths: return "min_sum_edge_lengths";
+	case treebank_feature::min_sum_edge_lengths_bipartite: return "min_sum_edge_lengths_bipartite";
 	case treebank_feature::min_sum_edge_lengths_planar: return "min_sum_edge_lengths_planar";
 	case treebank_feature::min_sum_edge_lengths_projective: return "min_sum_edge_lengths_projective";
 	case treebank_feature::max_sum_edge_lengths_1_thistle: return "max_sum_edge_lengths_1_thistle";

@@ -66,6 +66,7 @@ namespace linarr {
  * @param c Coloring of the input tree.
  * @param bps Branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle(
 	const graphs::free_tree& t,
@@ -84,7 +85,9 @@ noexcept;
  * arrangement.
  * @param t Input free tree.
  * @param bps Branchless paths of the tree.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @returns A maximal arrangement with at most one thistle vertex.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
@@ -101,6 +104,7 @@ noexcept;
  * @param t Input free tree.
  * @param c Coloring of the input tree.
  * @returns A maximal arrangement with at most one thistle vertex.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
@@ -116,6 +120,7 @@ noexcept;
  * arrangement.
  * @param t Input free tree.
  * @returns A maximal arrangement with at most one thistle vertex.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
@@ -133,6 +138,7 @@ noexcept;
  * @param t Input free tree.
  * @param bps Branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
 	const graphs::free_tree& t,
@@ -149,6 +155,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
