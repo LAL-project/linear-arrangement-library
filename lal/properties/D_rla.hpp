@@ -170,8 +170,6 @@ double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
  * @brief Expected sum of edge lengths of a bipartite graph in bipartite arrangments,
  * \f$\mathbb{E}_bip[D]\f$.
  *
- * See @ref lal::properties::exp_sum_edge_lengths_bipartite_rational for details.
- *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  *
@@ -191,7 +189,8 @@ noexcept
  * @brief Expected sum of edge lengths of a bipartite graph in bipartite arrangments,
  * \f$\mathbb{E}_bip[D]\f$.
  *
- * See @ref lal::properties::exp_sum_edge_lengths_bipartite_rational for details.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
  *
  * This function uses the formula in \cite Alemany2024b.
  * @param g The input bipartite graph.
