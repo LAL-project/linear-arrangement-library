@@ -73,25 +73,25 @@ namespace generate {
  *
  * A possible usage of this class is the following:
  * @code
- *		all_lab_free_trees Gen(n);
+ *		lal::generate::all_lab_free_trees Gen(n);
  *		while (not Gen.end()) {
- *			const auto t = Gen.get_tree();
+ *			const lal::graphs::free_tree t = Gen.get_tree();
  *			// ...
  *			Gen.next();
  *		}
  * @endcode
  * Alternatively, this class can be used in a for loop:
  * @code
- *		for (all_lab_free_trees Gen(n); not Gen.end(); Gen.next()) {
- *			const auto t = Gen.get_tree();
+ *		for (lal::generate::all_lab_free_trees Gen(n); not Gen.end(); Gen.next()) {
+ *			const lal::graphs::free_tree t = Gen.get_tree();
  *			// ...
  *		}
  * @endcode
  * Equivalently,
  * @code
- *		all_lab_free_trees Gen(n);
+ *		lal::generate::all_lab_free_trees Gen(n);
  *		while (not Gen.end()) {
- *			const auto t = Gen.yield_tree();
+ *			const lal::graphs::free_tree t = Gen.yield_tree();
  *			// ...
  *		}
  * @endcode

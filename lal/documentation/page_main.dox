@@ -1,88 +1,94 @@
 /*********************************************************************
  *
- *  Linear Arrangement Library - A library that implements a collection
- *  algorithms for linear arrangments of graphs.
+ * Linear Arrangement Library - A library that implements a collection
+ * algorithms for linear arrangments of graphs.
  *
- *  Copyright (C) 2019 - 2021
+ * Copyright (C) 2019 - 2024
  *
- *  This file is part of Linear Arrangement Library. The full code is available
- *  at:
+ * This file is part of Linear Arrangement Library. The full code is available
+ * at:
  *      https://github.com/LAL-project/linear-arrangement-library.git
  *
- *  Linear Arrangement Library is free software: you can redistribute it
- *  and/or modify it under the terms of the GNU Affero General Public License
- *  as published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * Linear Arrangement Library is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  Linear Arrangement Library is distributed in the hope that it will be
- *  useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * Linear Arrangement Library is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with Linear Arrangement Library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Linear Arrangement Library.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Contact:
+ * Contact:
  *
- *      Lluís Alemany-Puig (lalemany@cs.upc.edu)
- *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
- *          CQL (Complexity and Quantitative Linguistics Lab)
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpages:
- *              https://cqllab.upc.edu/people/lalemany/
- *              https://www.researchgate.net/profile/Lluis_Alemany-Puig
+ *     Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
+ *         CQL (Complexity and Quantitative Linguistics Lab)
+ *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *         Webpage: https://cqllab.upc.edu/people/lalemany/
  *
  *     Juan Luis Esteban (esteban@cs.upc.edu)
- *          Office 110, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpages:
- *              https://www.cs.upc.edu/~esteban/
- *              https://www.researchgate.net/profile/Juan_Esteban13
- * 
- *      Ramon Ferrer-i-Cancho (rferrericancho@cs.upc.edu)
- *          LARCA (Laboratory for Relational Algorithmics, Complexity and Learning)
- *          CQL (Complexity and Quantitative Linguistics Lab)
- *          Office S124, Omega building
- *          Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *          Webpages:
- *              https://cqllab.upc.edu/people/rferrericancho/
- *              https://www.researchgate.net/profile/Ramon_Ferrer-i-Cancho
+ *         LOGPROG: Logics and Programming Research Group
+ *         Office 110, Omega building
+ *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *         Webpage: https://www.cs.upc.edu/~esteban/
+ *
+ *     Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
+ *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
+ *         CQL (Complexity and Quantitative Linguistics Lab)
+ *         Office 220, Omega building
+ *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+ *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
 
 /** \mainpage Documentation of the Linear Arrangement Library
 
-This library offers a variety of algorithms related to linear arrangements of graphs so as to provide researchers in the field of Quantitative Linguistics with a toolset with which they can perform statistical analyses on different corpora of treebanks efficiently and effectively. Therefore, this library implements several state-of-the-art algorithms and offers a variety of functionalities. While most of the functions have been generalised to be applicable to general graphs, we also provide specialised functions for trees, which are more efficient than their more general counterparts.
+This library offers a wide variety of algorithms related to linear arrangements of graphs so as to provide researchers (mainly, but not exclusively) in the field of Quantitative Linguistics with a toolset with which they can perform statistical analyses on different corpora of treebanks efficiently and effectively. This library implements several state-of-the-art algorithms and offers a variety of functionalities. While most of the functions have been generalised to be applicable to general graphs, we also provide specialised functions for trees, which are more efficient than their more general counterparts. In order to understand the documentation of the functions and classes in this library, readers are urged to read through the @ref LAL_concepts page to learn about the terminology and notation.
 
 The main goal of this library is to provide algorithms with which the library's users can use to do statistical studies. One of the most attractive features offered in this library is that of treebank collection processing. This library offers a class that automatically processes a collection and computes several metrics based on the capabilities of the library. See class @ref lal::io::treebank_collection_processor and @ref lal::io::treebank_processor for details. We also provide classes for custom processing of treebanks (see @ref lal::io::treebank_collection_reader and @ref lal::io::treebank_reader).
 
 All the features of syntactic dependency trees that can be calculated with the algorithms in this library are gathered in the namespaces @ref lal::linarr and in @ref lal::properties. These features include, but are not limited to,
-- the sum of edge lengths \f$D\f$ (see @ref lal::linarr::sum_edge_lengths), and the expectation and variance of the sum of edge lengths (see @ref lal::properties::exp_sum_edge_lengths and lal::properties::var_sum_edge_lengths),
-- the computation of optimal arrangements:
-	- minimum unconstrained arrangements with respect to the sum of edge lengths (see @ref lal::linarr::min_sum_edge_lengths), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin),
-	- minimum planar arrangements (see @ref lal::linarr::min_sum_edge_lengths_planar), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin_planar),
-	- minimum projective arrangements (see @ref lal::linarr::min_sum_edge_lengths_projective), with free choice on the algorithm to be used (see @ref lal::linarr::algorithms_Dmin_projective),
-	- maximum planar arrangements (see @ref lal::linarr::max_sum_edge_lengths_planar),
-	- maximum projective arrangements (see @ref lal::linarr::max_sum_edge_lengths_projective),
-- the number of crossings (see @ref lal::linarr::num_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::exp_num_crossings and lal::properties::var_num_crossings),
+- the sum of edge lengths \f$D\f$ (@ref lal::linarr::sum_edge_lengths),
+- the expectation and variance of the sum of edge lengths
+	- expectation of \f$D\f$ in uniformly random unconstrained arrangements (@ref lal::properties::exp_sum_edge_lengths),
+	- variance of \f$D\f$ in uniformly random unconstrained arrangements (@ref lal::properties::var_sum_edge_lengths),
+	- expectation of \f$D\f$ in uniformly random bipartite arrangements (@ref lal::properties::exp_sum_edge_lengths_bipartite),
+	- expectation of \f$D\f$ in uniformly random planar arrangements (@ref lal::properties::exp_sum_edge_lengths_planar),
+	- expectation of \f$D\f$ in uniformly random projective arrangements (@ref lal::properties::exp_sum_edge_lengths_projective),
+- the computation of optimal arrangements with respect to the sum of edge lengths:
+	- minimum unconstrained arrangements (@ref lal::linarr::min_sum_edge_lengths), with free choice on the algorithm to be used (@ref lal::linarr::algorithms_Dmin),
+	- minimum bipartite arrangements (@ref lal::linarr::min_sum_edge_lengths_bipartite),
+	- minimum planar arrangements (@ref lal::linarr::min_sum_edge_lengths_planar), with free choice on the algorithm to be used (@ref lal::linarr::algorithms_Dmin_planar),
+	- minimum projective arrangements (@ref lal::linarr::min_sum_edge_lengths_projective), with free choice on the algorithm to be used (@ref lal::linarr::algorithms_Dmin_projective),
+	- maximum arrangements with at most one thistle vertex (@ref lal::linarr::max_sum_edge_lengths_1_le_thistle),
+	- maximum arrangements with exactly one thistle vertex (@ref lal::linarr::max_sum_edge_lengths_1_eq_thistle),
+	- maximum bipartite arrangements (@ref lal::linarr::max_sum_edge_lengths_bipartite),
+	- maximum planar arrangements (@ref lal::linarr::max_sum_edge_lengths_planar),
+	- maximum projective arrangements (@ref lal::linarr::max_sum_edge_lengths_projective),
+- the number of crossings (@ref lal::linarr::num_crossings), and the expectation and variance of the number of crossings (see @ref lal::properties::exp_num_crossings and @ref lal::properties::var_num_crossings),
 - any moment of the degree of the vertices of a graph (see @ref lal::properties::moment_degree and its variants),
-- the mean dependency distance (see @ref lal::linarr::mean_dependency_distance),
-- the mean dependency distance over ensembles of graphs (see @ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
-- the mean hierarchical distance (see @ref lal::properties::mean_hierarchical_distance),
-- the headedness of a tree (see @ref lal::linarr::head_initial),
-- the type of syntactic dependency trees according to their projectivity (see @ref lal::linarr::syntactic_dependency_tree_classify).
-- calculation of the centre of a tree (see @ref lal::properties::tree_centre), the centroid of a tree (see @ref lal::properties::tree_centroid), a tree's diameter (see @ref lal::properties::tree_diameter).
+- the mean dependency distance (@ref lal::linarr::mean_dependency_distance),
+- the mean dependency distance over ensembles of graphs (@ref lal::linarr::mean_dependency_distance_1level and @ref lal::linarr::mean_dependency_distance_2level),
+- the mean hierarchical distance (@ref lal::properties::mean_hierarchical_distance),
+- the headedness of a tree (@ref lal::linarr::head_initial),
+- the type of syntactic dependency trees according to their projectivity (@ref lal::linarr::syntactic_dependency_tree_classify).
+- calculation of the centre of a tree (@ref lal::properties::tree_centre), the centroid of a tree (@ref lal::properties::tree_centroid), a tree's diameter (@ref lal::properties::tree_diameter).
 
 As extra features, useful for experimentation, are the generation of different types of trees, all of which are available in the @ref lal::generate namespace. We have implemented existing techniques (cited accordingly) or made or own to enumerate
-- all labelled/unlabelled free trees,
-- all labelled/unlabelled rooted trees,
-- all projective arrangements of rooted trees,
-- all planar arrangements of free trees,
+- all labelled (@ref lal::generate::all_lab_free_trees) and unlabelled (@ref lal::generate::all_ulab_free_trees) free trees,
+- all labelled (@ref lal::generate::all_lab_rooted_trees) and unlabelled (@ref lal::generate::all_ulab_rooted_trees) rooted trees,
+- all projective arrangements of rooted trees (@ref lal::generate::all_projective_arrangements),
+- all planar arrangements of free trees (@ref lal::generate::all_planar_arrangements),
 
 and to generate uniformly at random
-- labelled/unlabelled free/rooted trees,
-- projective arrangements of rooted trees.
-- planar arrangements of free trees.
+- labelled (@ref lal::generate::rand_lab_free_trees) and unlabelled (@ref lal::generate::rand_ulab_free_trees) free trees,
+- labelled (@ref lal::generate::rand_lab_rooted_trees) and unlabelled (@ref lal::generate::rand_ulab_rooted_trees) rooted trees,
+- projective arrangements of rooted trees (@ref lal::generate::rand_projective_arrangements),
+- planar arrangements of free trees (@ref lal::generate::rand_planar_arrangements).
 
 The documentation of each class includes usage examples.
 

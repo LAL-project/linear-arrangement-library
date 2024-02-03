@@ -53,18 +53,23 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Uniformly random generation of planar arrangements of a labeled rooted tree.
+ * @brief Uniformly random selection of planar arrangements of a free tree.
  *
- * A planar arrangement of a directed rooted tree is one in which the
- * root is not covered by any of the tree's edges and there are no edge
- * crossings.
+ * This class does not take into account the symmetries between arrangements
+ * produced by swapping leaves of the tree connected to the same parent. That
+ * is, the arrangements are select from the can be seen as arrangements of
+ * labelled trees. Therefore, this class will select u.a.r. one of the \f$n!\f$
+ * arrangements for a star tree of \f$n\f$ vertices.
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of
+ * planar arrangements.
  *
  * An example of usage of this class is
  * @code
  *		// given a rooted tree T
  *		lal::generate::rand_planar_arrgements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -73,7 +78,7 @@ namespace generate {
  *		// given a rooted tree T
  *		lal::generate::rand_planar_arrangements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement arr = Gen.yield_arrangement();
+ *			const linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

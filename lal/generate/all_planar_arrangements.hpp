@@ -54,9 +54,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive enumeration of planar arrangements of a labeled free tree.
- *
- * Generates all planar arrangements of a given free tree.
+ * @brief Exhaustive enumeration of planar arrangements of a free tree.
  *
  * The arrangements generated do not take into account the symmetrical
  * arrangements produced by swapping leaves of the tree connected to the
@@ -78,7 +76,7 @@ namespace generate {
  * @code
  *		all_planar_arrangements Gen(t); // t is a free tree
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *			Gen.next();
  *		}
@@ -86,7 +84,7 @@ namespace generate {
  * Alternatively, this class can be used in a for loop:
  * @code
  *		for (all_planar_arrangements Gen(t); not Gen.end(); Gen.next()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -95,7 +93,7 @@ namespace generate {
  * @code
  *		all_planar_arrangements Gen(t); // t is a free tree
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

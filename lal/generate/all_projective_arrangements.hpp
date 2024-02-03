@@ -41,9 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
@@ -54,15 +51,16 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive enumeration of projective arrangements of a labeled rooted tree.
+ * @brief Exhaustive enumeration of projective arrangements of a rooted tree.
  *
- * Generates all projective arrangements of a given rooted tree.
+ * This class does not take into account the symmetries between arrangements
+ * produced by swapping leaves of the tree connected to the same parent. That
+ * is, the arrangements produced can be seen as arrangements of labelled trees.
+ * Therefore, this class will generate \f$n!\f$ arrangements for a star tree of
+ * \f$n\f$ vertices.
  *
- * The arrangements generated do not take into account the symmetrical
- * arrangements produced by swapping leaves of the tree connected to the
- * same parent. That is, the arrangements produced can be seen as arrangements
- * of labelled trees. Therefore, this class will generate \f$n!\f$ arrangements
- * for a star tree of \f$n\f$ vertices.
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of
+ * projective arrangements.
  *
  * In order to use this class, you must first provide the tree object in the
  * constructor. Arrangements are generated internally, i.e., they are encoded in
@@ -79,7 +77,7 @@ namespace generate {
  * @code
  *		all_projective_arrangements Gen(t); // t is a rooted tree
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *			Gen.next();
  *		}
@@ -87,7 +85,7 @@ namespace generate {
  * Alternatively, this class can be used in a for loop:
  * @code
  *		for (all_projective_arrangements Gen(t); not Gen.end(); Gen.next()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode

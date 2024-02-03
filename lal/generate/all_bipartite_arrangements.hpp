@@ -51,18 +51,17 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Exhaustive enumeration of all bipartite arrangements of any graph.
+ * @brief Exhaustive enumeration of all bipartite arrangements of any bipartite graph.
  *
  * This class generates all \f$|V_1|!\cdot|V_2|!\f$ bipartite arrangements of a
  * bipartite graph \f$B=(V_1\cup V_2, E)\f$ (see page @ref LAL_concepts__linear_arrangement__types
  * for a definition of bipartite arrangements). Unlike other generators
- * (e.g. @ref lal::generate::all_projective_arrangements), this class needs not
- * be instantiated with a graph but, rather, with the coloring of the bipartite
- * graph, from which the "blue" and "red" vertices are extracted. This is due to
- * the simple fact that the graph structure does not matter for the enumeration
- * of these arrangements. However, constructing this class with a graph is allowed
- * for the sake of consistency; neverthless, only its number of vertices is
- * actually needed.
+ * (e.g. @ref lal::generate::all_projective_arrangements), this class can be
+ * instantiated with the coloring of the bipartite graph, from which the "blue"
+ * and "red" vertices are extracted. However, constructing this class with a graph
+ * is allowed for the sake of consistency; neverthless, only its number of vertices
+ * is actually needed. This is due to the simple fact that the graph structure
+ * does not matter for the enumeration of these arrangements.
  *
  * In order to use this class, you must first provide the coloring of the graph.
  * Arrangements are generated internally, i.e., arragements are encoded in the
@@ -98,7 +97,7 @@ namespace generate {
  * @code
  *		lal::generate::all_bipartite_arrangements Gen(g);
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -112,7 +111,7 @@ namespace generate {
  *		lal::properties::bipartite_graph_coloring c = lal::properties::coloring(g);
  *		lal::generate::all_bipartite_arrangements Gen(c);
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

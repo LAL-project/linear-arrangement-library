@@ -114,7 +114,7 @@ public:
 	 * @brief Gets the vertex sequence of this path as a vector.
 	 *
 	 * This sequence includes vertices @ref m_h1 and @ref m_h2 (returned by
-	 * @ref get_h1 and @ref get_h2) and are returned sequentially, that is, in
+	 * @ref get_h1 and @ref get_h2 and are returned sequentially, that is, in
 	 * the order they are found in the tree.
 	 * @returns A vector with all nodes in the path.
 	 */
@@ -159,8 +159,10 @@ private:
 	/// The vertex sequence includes h1 and h2
 	std::vector<node> m_vertex_sequence;
 
-	/// The two endpoints of this path
-	node m_h1, m_h2;
+	/// The first endpoint of this path
+	node m_h1;
+	/// The second endpoint of this path
+	node m_h2;
 	/// The @e internal vertex with lowest index lexicographically
 	node m_lowest_lexicographic;
 };

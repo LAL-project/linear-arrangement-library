@@ -86,7 +86,7 @@ namespace generate {
  * To alleviate this source of bugs, this class can also be used in a for loop:
  * @code
  *		for (all_arrangements Gen(9); not Gen.end(); Gen.next()) {
- *			const lal::linear_arrangement arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -95,7 +95,7 @@ namespace generate {
  * @code
  *		all_arrangements Gen(8);
  *		while (not Gen.end()) {
- *			const lal::linear_arrangement arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

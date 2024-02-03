@@ -54,7 +54,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Random generation of arrangements of any graph.
+ * @brief Random generation of arrangements of any bipartite graph.
  *
  * This class generates bipartite linear arrangements uniformly at random
  * (see page @ref LAL_concepts__linear_arrangement__types for a definition of
@@ -66,7 +66,7 @@ namespace generate {
  *		// given a tree T (or any other bipartite graph)
  *		lal::generate::rand_bipartite_arrangements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement arr = Gen.get_arrangement();
+ *			const linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -76,7 +76,7 @@ namespace generate {
  *		lal::properties::bipartite_graph_coloring c = lal::properties::coloring(T);
  *		lal::generate::rand_bipartite_arrangements Gen(c);
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement arr = Gen.yield_arrangement();
+ *			const linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

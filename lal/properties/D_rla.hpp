@@ -168,7 +168,7 @@ double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
 
 /**
  * @brief Expected sum of edge lengths of a bipartite graph in bipartite arrangments,
- * \f$\mathbb{E}_bip[D]\f$.
+ * \f$\mathbb{E}_{\mathrm{bip}}[D]\f$.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
@@ -176,7 +176,7 @@ double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
  * This function uses the formula in \cite Alemany2024b.
  * @param g The input bipartite graph.
  * @returns The expected value of the sum of edge lengths as a rational value.
- * @pre Input graph @g is a bipartite arrangement.
+ * @pre Input graph @e g is a bipartite arrangement.
  */
 inline
 numeric::rational exp_sum_edge_lengths_bipartite_rational(const graphs::undirected_graph& g)
@@ -187,7 +187,7 @@ noexcept
 
 /**
  * @brief Expected sum of edge lengths of a bipartite graph in bipartite arrangments,
- * \f$\mathbb{E}_bip[D]\f$.
+ * \f$\mathbb{E}_{\mathrm{bip}}[D]\f$.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
@@ -195,7 +195,7 @@ noexcept
  * This function uses the formula in \cite Alemany2024b.
  * @param g The input bipartite graph.
  * @returns The expected value of the sum of edge lengths as a floating point value.
- * @pre Input graph @g is a bipartite arrangement.
+ * @pre Input graph @e g is a bipartite arrangement.
  */
 inline
 double exp_sum_edge_lengths_bipartite(const graphs::undirected_graph& g) noexcept {

@@ -54,7 +54,7 @@ namespace lal {
 namespace generate {
 
 /**
- * @brief Uniformly random generation of unlabelled rooted trees.
+ * @brief Uniformly random selection of unlabelled rooted trees.
  *
  * <b>Users should refrain from using this class.</b> The generation of random
  * labelled trees should be done using the wrapper class @ref rand_ulab_rooted_trees.
@@ -285,7 +285,7 @@ protected:
 };
 
 /**
- * @brief Uniformly random generation of unlabelled rooted trees.
+ * @brief Uniformly random selection of unlabelled rooted trees.
  *
  * This is a wrapper class of @ref _rand_ulab_rooted_trees. Users should refrain
  * from using said class. However, users will find the implementation details
