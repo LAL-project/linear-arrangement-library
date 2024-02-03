@@ -302,6 +302,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::z_score_num_crossings:
 				case treebank_feature::sum_edge_lengths:
 				case treebank_feature::exp_sum_edge_lengths:
+				case treebank_feature::exp_sum_edge_lengths_bipartite:
 				case treebank_feature::exp_sum_edge_lengths_projective:
 				case treebank_feature::exp_sum_edge_lengths_planar:
 				case treebank_feature::var_sum_edge_lengths:
@@ -684,6 +685,9 @@ noexcept
 	if (m_what_fs[D_expected_idx]) {
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
 	}
+	if (m_what_fs[D_expected_bipartite_idx]) {
+		set_prop(D_expected_bipartite_idx, properties::exp_sum_edge_lengths_bipartite(fT));
+	}
 	if (m_what_fs[D_expected_projective_idx]) {
 		set_prop(D_expected_projective_idx, properties::exp_sum_edge_lengths_projective(rT));
 	}
@@ -876,6 +880,7 @@ noexcept
 			case treebank_feature::z_score_num_crossings:
 			case treebank_feature::sum_edge_lengths:
 			case treebank_feature::exp_sum_edge_lengths:
+			case treebank_feature::exp_sum_edge_lengths_bipartite:
 			case treebank_feature::exp_sum_edge_lengths_projective:
 			case treebank_feature::exp_sum_edge_lengths_planar:
 			case treebank_feature::var_sum_edge_lengths:

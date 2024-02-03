@@ -203,6 +203,7 @@ private:
 	static constexpr std::size_t C_z_score_idx = treebank_feature_to_index(treebank_feature::z_score_num_crossings);
 	static constexpr std::size_t D_idx = treebank_feature_to_index(treebank_feature::sum_edge_lengths);
 	static constexpr std::size_t D_expected_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths);
+	static constexpr std::size_t D_expected_bipartite_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_bipartite);
 	static constexpr std::size_t D_expected_projective_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_projective);
 	static constexpr std::size_t D_expected_planar_idx = treebank_feature_to_index(treebank_feature::exp_sum_edge_lengths_planar);
 	static constexpr std::size_t D_variance_idx = treebank_feature_to_index(treebank_feature::var_sum_edge_lengths);

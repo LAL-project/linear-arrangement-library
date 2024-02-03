@@ -241,6 +241,12 @@ enum class treebank_feature {
 	 */
 	exp_sum_edge_lengths,
 	/**
+	 * @brief Expectation of \f$D\f$ constrained to bipartite arrangements, \f$E_{\mathrm{bip}}[D]\f$.
+	 *
+	 * See @ref lal::properties::exp_sum_edge_lengths_bipartite for details.
+	 */
+	exp_sum_edge_lengths_bipartite,
+	/**
 	 * @brief Expectation of \f$D\f$ constrained to projective arrangements, \f$E_{\mathrm{pr}}[D]\f$.
 	 *
 	 * See @ref lal::properties::exp_sum_edge_lengths_projective for details.
@@ -578,6 +584,7 @@ noexcept
 	case treebank_feature::z_score_num_crossings: return "z_score_num_crossings";
 	case treebank_feature::sum_edge_lengths: return "sum_edge_lengths";
 	case treebank_feature::exp_sum_edge_lengths: return "exp_sum_edge_lengths";
+	case treebank_feature::exp_sum_edge_lengths_bipartite: return "exp_sum_edge_lengths_bipartite";
 	case treebank_feature::exp_sum_edge_lengths_projective: return "exp_sum_edge_lengths_projective";
 	case treebank_feature::exp_sum_edge_lengths_planar: return "exp_sum_edge_lengths_planar";
 	case treebank_feature::var_sum_edge_lengths: return "var_sum_edge_lengths";
