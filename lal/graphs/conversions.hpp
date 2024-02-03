@@ -41,10 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#include <algorithm>
-#include <vector>
-
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
@@ -158,7 +154,7 @@ noexcept;
  * of the tree.
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
- * @param edge_list An edge list.
+ * @param el An edge list.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
@@ -167,7 +163,7 @@ noexcept;
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
 rooted_tree from_edge_list_to_rooted_tree
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept;
 
 /**
@@ -178,7 +174,7 @@ noexcept;
  * of the tree.
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
- * @param edge_list An edge list.
+ * @param el An edge list.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
@@ -187,7 +183,7 @@ noexcept;
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
 free_tree from_edge_list_to_free_tree
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept;
 
 /**
@@ -198,7 +194,7 @@ noexcept;
  * of the tree.
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
- * @param edge_list An edge list.
+ * @param el An edge list.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
@@ -206,7 +202,7 @@ noexcept;
  * @pre No edge in the list is repeated.
  */
 directed_graph from_edge_list_to_directed_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept;
 
 /**
@@ -217,7 +213,7 @@ noexcept;
  * of the tree.
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
- * @param edge_list An edge list.
+ * @param el An edge list.
  * @param normalise Should the graph be normalised?
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
@@ -225,7 +221,7 @@ noexcept;
  * @pre No edge in the list is repeated.
  */
 undirected_graph from_edge_list_to_undirected_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept;
 
 } // -- namespace graphs

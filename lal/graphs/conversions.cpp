@@ -68,35 +68,35 @@ noexcept
 // edge list -> graph
 
 rooted_tree from_edge_list_to_rooted_tree
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept
 {
 	return detail::from_edge_list_to_graph<rooted_tree>
-			(edge_list, normalise, check);
+		(el, normalise, check);
 }
 
 free_tree from_edge_list_to_free_tree
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept
 {
 	return detail::from_edge_list_to_graph<free_tree>
-			(edge_list, normalise, check);
+		(el, normalise, check);
 }
 
 directed_graph from_edge_list_to_directed_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept
 {
 	return detail::from_edge_list_to_graph<directed_graph>
-			(edge_list, normalise, check);
+		(el, normalise, check);
 }
 
 undirected_graph from_edge_list_to_undirected_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalise = true, bool check = true)
 noexcept
 {
 	return detail::from_edge_list_to_graph<undirected_graph>
-			(edge_list, normalise, check);
+		(el, normalise, check);
 }
 
 } // -- namespace graphs

@@ -1,5 +1,3 @@
-
-
 /*********************************************************************
  *
  * Linear Arrangement Library - A library that implements a collection
@@ -56,12 +54,14 @@ typedef uint64_t position;
 
 /// See @ref LAL_concepts__edge page for further details.
 typedef std::pair<node, node> edge;
+/// See @ref LAL_concepts__head_vector page for further details.
+typedef std::vector<uint64_t> head_vector;
+/// See @ref LAL_concepts__edge_list page for further details.
+typedef std::vector<edge> edge_list;
 /// Edge pair type.
 typedef std::pair<edge,edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
-/// See @ref LAL_concepts__head_vector page for further details.
-typedef std::vector<uint64_t> head_vector;
 
 /// Typesafe @ref node type.
 struct node_t {
