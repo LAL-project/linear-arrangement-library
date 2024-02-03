@@ -297,9 +297,10 @@ enum class treebank_feature {
 	 */
 	min_sum_edge_lengths_projective,
 	/**
-	 * @brief Maximum sum of length of edges among bipartite arrangements.
+	 * @brief Maximum sum of length of edges over arrangements with 1 thistle
+	 * vertex.
 	 *
-	 * See @ref lal::linarr::max_sum_edge_lengths_bipartite for details.
+	 * See @ref lal::linarr::max_sum_edge_lengths_1_eq_thistle for details.
 	 */
 	max_sum_edge_lengths_1_thistle,
 	/**
