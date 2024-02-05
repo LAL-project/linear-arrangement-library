@@ -767,7 +767,7 @@ noexcept
 	}
 
 	if (m_what_fs[Dmin_Bipartite_idx]) {
-		const auto Dmin = detail::Dmin::bipartite::AEF<false>(fT);
+		const auto Dmin = detail::Dmin::bipartite::AEF<false>(fT, c);
 		set_prop(Dmin_Bipartite_idx, detail::to_double(Dmin));
 	}
 
