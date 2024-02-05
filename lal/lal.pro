@@ -108,6 +108,7 @@ HEADERS += \
 	detail/linarr/D/Dmin/Unconstrained_YS.hpp \
 	detail/linarr/D/Dmin/utils.hpp \
 	detail/linarr/D/Dopt_utils.hpp \
+	detail/linarr/D/bipartite_opt_utils.hpp \
 	detail/linarr/chunking/Anderson.hpp \
 	detail/linarr/chunking/Macutek.hpp \
 	detail/linarr/dependency_flux.hpp \

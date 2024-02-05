@@ -163,8 +163,9 @@ target_sources(
 		detail/linarr/D/Dmin/Unconstrained_FC.hpp
 		detail/linarr/D/Dmin/Unconstrained_YS.hpp
 		detail/linarr/D/Dmin/utils.hpp
-		detail/linarr/D/Dopt_utils.hpp
+		detail/linarr/D/bipartite_opt_utils.hpp
 		detail/linarr/D/D.hpp
+		detail/linarr/D/Dopt_utils.hpp
 		detail/linarr/dependency_flux.hpp
 		detail/linarr/formal_constraints.hpp
 		detail/linarr/headedness.hpp

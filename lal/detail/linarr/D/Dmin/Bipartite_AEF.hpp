@@ -50,7 +50,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/linarr/D/Dopt_utils.hpp>
+#include <lal/detail/linarr/D/bipartite_opt_utils.hpp>
 
 namespace lal {
 namespace detail {
@@ -79,7 +79,7 @@ std::conditional_t<
 AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	return
-		Dopt_utils::optimal_bipartite_arrangement_AEF
+		bipartite_opt_utils::optimal_bipartite_arrangement_AEF
 		<make_arrangement, lal::detail::sorting::non_increasing_t>
 		(g, c);
 }
