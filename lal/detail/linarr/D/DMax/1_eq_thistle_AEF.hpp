@@ -309,9 +309,9 @@ noexcept
 			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
 			[&](const node u) {
 				// 0, 1, 2
-				if (is_thistle_neighbor[u] == 1) { return 0; }
-				if (u == thistle) { return 1; }
-				return 2;
+				if (is_thistle_neighbor[u] == 1) { return 0ull; }
+				if (u == thistle) { return 1ull; }
+				return 2ull;
 			}
 		);
 
