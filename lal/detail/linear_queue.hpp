@@ -87,7 +87,7 @@ public:
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
-		m_queue[m_right++] = std::move(v);
+		m_queue[m_right++] = std::forward<T>(v);
 	}
 	/**
 	 * @brief Pops the first element of the queue
