@@ -92,11 +92,6 @@ public:
 	/// Returns the error message.
 	const std::string& get_error_message() const noexcept { return m_error_message; }
 
-#ifndef SWIG
-	/// Returns the error message.
-	std::string&& get_error_message() noexcept { return std::move(m_error_message); }
-#endif
-
 private:
 	/// The line number within the treebank file
 	uint64_t m_treebank_file_line_number;
