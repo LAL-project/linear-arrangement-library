@@ -110,9 +110,9 @@ public:
 	 */
 	linear_arrangement(std::size_t n) noexcept
 		: m_memory(2*n, n+1),
-		  m_n(n),
-		  m_direct(m_memory.begin()),
-		  m_inverse(m_memory.begin() + m_n)
+		  m_n{n},
+		  m_direct{m_memory.begin()},
+		  m_inverse{m_memory.begin() + m_n}
 	{ }
 
 	/**
@@ -126,9 +126,9 @@ public:
 	 */
 	linear_arrangement(const std::vector<position>& dir_arr) noexcept
 		: m_memory(2*dir_arr.size()),
-		  m_n(dir_arr.size()),
-		  m_direct(m_memory.begin()),
-		  m_inverse(m_memory.begin() + m_n)
+		  m_n{dir_arr.size()},
+		  m_direct{m_memory.begin()},
+		  m_inverse{m_memory.begin() + m_n}
 	{
 		// construct m_direct and m_inverse
 		from_data<true>(dir_arr.begin(), dir_arr.end());
@@ -137,9 +137,9 @@ public:
 	/// Copy constructor.
 	linear_arrangement(const linear_arrangement& arr) noexcept
 		: m_memory(arr.m_memory),
-		  m_n(arr.m_n),
-		  m_direct(m_memory.begin()),
-		  m_inverse(m_memory.begin() + m_n)
+		  m_n{arr.m_n},
+		  m_direct{m_memory.begin()},
+		  m_inverse{m_memory.begin() + m_n}
 	{ }
 	/// Copy assignment operator.
 	linear_arrangement& operator= (const linear_arrangement& arr) noexcept {
@@ -164,9 +164,9 @@ public:
 	/// Move constructor
 	linear_arrangement(linear_arrangement&& arr) noexcept
 		: m_memory(std::move(arr.m_memory)),
-		  m_n(arr.m_n),
-		  m_direct(std::move(arr.m_direct)),
-		  m_inverse(std::move(arr.m_inverse))
+		  m_n{arr.m_n},
+		  m_direct{std::move(arr.m_direct)},
+		  m_inverse{std::move(arr.m_inverse)}
 	{
 		// invalidate data
 		arr.m_n = 0;
@@ -178,8 +178,8 @@ public:
 		// steal data
 		m_memory = std::move(arr.m_memory);
 		m_n = arr.m_n;
-		m_direct = std::move(arr.m_direct);
-		m_inverse = std::move(arr.m_inverse);
+		m_direct = arr.m_direct;
+		m_inverse = arr.m_inverse;
 		// invalidate data
 		arr.m_n = 0;
 		arr.m_direct = nullptr;
