@@ -122,7 +122,8 @@ struct memory {
  * @ref lal::detail::sorting::non_decreasing_t.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
- * @tparam value_iterator_t Iterator type
+ * @tparam value_iterator_t Iterator type. Can be inferred.
+ * @tparam Callable The type of the function passed as parameter. Can be inferred.
  *
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
@@ -143,12 +144,14 @@ template <
 	typename value_t,
 	typename sort_type,
 	bool memory_has_frequencies,
+	// Can be inferred \/ ...
 	typename value_iterator_t,
+	typename Callable,
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> and
 		(
-		std::is_same_v<sort_type, non_decreasing_t> ||
-		std::is_same_v<sort_type, non_increasing_t>
+			std::is_same_v<sort_type, non_decreasing_t> or
+			std::is_same_v<sort_type, non_increasing_t>
 		),
 		bool
 	> = true
@@ -156,11 +159,19 @@ template <
 void counting_sort(
 	const value_iterator_t begin, const value_iterator_t end,
 	const std::size_t largest_key_plus_1,
-	const std::function<std::size_t (const value_t&)>& key,
+	const Callable& key,
 	countingsort::memory<value_t>& mem
 )
 noexcept
 {
+	// ensure the 'key' function is correct
+	static_assert(
+		std::is_constructible_v<
+			std::function<std::size_t (const value_t&)>,
+			Callable
+		>
+	);
+
 	constexpr bool is_increasing = std::is_same_v<sort_type, non_decreasing_t>;
 
 	if (begin == end) { return; }
@@ -215,15 +226,15 @@ noexcept
  *
  * This algorithm is useful for sorting containers with non-unique values that
  * can be easily mapped to integers within a reasonable range, e.g., in the
- * range [1,n]. For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
+ * range [1,n]. For details on the algorithm, see
+ * https://en.wikipedia.org/wiki/Counting_sort
  *
- * Template parameters:
  * @tparam value_t Type of the values sorted.
  * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
  * @ref lal::detail::sorting::non_decreasing_t.
- * @tparam value_iterator_t Iterator over type 'value_t' type.
+ * @tparam value_iterator_t Iterator over type 'value_t' type. Can be inferred.
+ * @tparam Callable The type of the function passed as parameter. Can be inferred.
  *
- * Function paremeters:
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
  * @param largest_key Integer value equal to the largest key that can be
@@ -243,11 +254,13 @@ template <
 	typename value_t,
 	typename sort_type,
 	typename value_iterator_t,
+	// Can be inferred \/ ...
+	typename Callable,
 	std::enable_if_t<
 		is_pointer_iterator_v<value_t, value_iterator_t> and
 		(
-		std::is_same_v<sort_type, non_decreasing_t> ||
-		std::is_same_v<sort_type, non_increasing_t>
+			std::is_same_v<sort_type, non_decreasing_t> or
+			std::is_same_v<sort_type, non_increasing_t>
 		),
 		bool
 	> = true
@@ -256,10 +269,18 @@ void counting_sort(
 	const value_iterator_t begin, const value_iterator_t end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
-	const std::function<std::size_t (const value_t&)>& key
+	const Callable& key
 )
 noexcept
 {
+	// ensure the 'key' function is correct
+	static_assert(
+		std::is_constructible_v<
+			std::function<std::size_t (const value_t&)>,
+			Callable
+		>
+	);
+
 	// nothing to do if there are no elements to sort
 	if (begin == end) { return; }
 
