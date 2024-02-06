@@ -324,7 +324,7 @@ protected:
 	 * The graph_traversal traversal is implemented as follows:
 	 *
 	 * <pre>
-	 * ProcessNeighbourhood(graph, u, Nv):
+	 * ProcessNeighbourhood(graph, Q, u, Nv):
 	 *	 1. for each w in Nv do
 	 *   2.		if w has not been visited before, or it has been but
 	 *	 3.			already-visited nodes have to be processed
@@ -333,7 +333,7 @@ protected:
 	 *	 6.		endif
 	 *	 7.
 	 *	 8.		if w not visited before and node_add(w) then
-	 *	 9.			push w into X
+	 *	 9.			push w into Q
 	 *	10.			mark w as visited in vis
 	 *	11.		endif
 	 *	12.	endfor
@@ -344,18 +344,18 @@ protected:
 	 *    .	// set of |V(graph)| bits set to false
 	 *	 1.	vis = {false}
 	 *    .	// structure of the traversal, initialised with the source, a queue.
-	 *	 2.	X = {source}
-	 *	 3.	while X is not empty do
-	 *	 4.		v = X.front
-	 *	 5.		remove X's front
+	 *	 2.	Q = {source}
+	 *	 3.	while Q is not empty do
+	 *	 4.		v = Q.front
+	 *	 5.		remove Q's front
 	 *	 6.		proc_curr(v)
 	 *	 7.		if terminate(v) then Finish traversal
 	 *	 8.		else
 	 *	 9.			Nv = out-neighbourhood of v
-	 *	10.			ProcessNeighbourhood(graph, v, Nv)
+	 *	10.			ProcessNeighbourhood(graph, Q, v, Nv)
 	 *	11.			If graph is directed and process reverse edges then
 	 *	12.				Nv = in-neighbourhood of v
-	 *	13.				ProcessNeighbourhood(graph, v, Nv)
+	 *	13.				ProcessNeighbourhood(graph, Q, v, Nv)
 	 *	14.			endif
 	 *	15.		endif
 	 *	16.	endwhile
