@@ -44,7 +44,6 @@
 #include <cassert>
 #endif
 #include <algorithm>
-#include <vector>
 
 // lal includes
 #include <lal/generate/all_projective_arrangements.hpp>

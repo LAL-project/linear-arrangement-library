@@ -42,9 +42,6 @@
 #pragma once
 
 // C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
 #include <optional>
 
 // lal includes

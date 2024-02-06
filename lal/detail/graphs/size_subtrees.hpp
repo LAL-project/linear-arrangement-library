@@ -45,7 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <functional>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>

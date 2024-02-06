@@ -48,7 +48,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <iostream>
 
 // lal includes
 #include <lal/basic_types.hpp>

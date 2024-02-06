@@ -43,8 +43,8 @@
 #undef USE_COMPLICATED
 
 // C++ includes
-#include <string>
 #if defined USE_COMPLICATED
+#include <string>
 #include <vector>
 #endif
 

@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <algorithm>
-#include <cmath>
 
 // lal includes
 #include <lal/properties/Q.hpp>

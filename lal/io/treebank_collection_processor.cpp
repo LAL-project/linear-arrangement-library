@@ -45,14 +45,9 @@
 #include <omp.h>
 
 // C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
-#include <numeric>
-#include <cmath>
 
 // lal includes
 #include <lal/io/treebank_collection_reader.hpp>

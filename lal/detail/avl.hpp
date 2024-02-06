@@ -46,7 +46,6 @@
 #include <algorithm>
 #include <cassert>
 #endif
-#include <cinttypes>
 #include <vector>
 #include <cmath>
 

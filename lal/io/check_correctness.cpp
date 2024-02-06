@@ -40,9 +40,6 @@
  ********************************************************************/
 
 // C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
 #include <vector>
 
 // lal includes

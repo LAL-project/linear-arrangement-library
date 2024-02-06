@@ -41,11 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-
 // lal includes
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>

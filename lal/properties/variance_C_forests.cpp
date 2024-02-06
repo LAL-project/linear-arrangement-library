@@ -39,9 +39,6 @@
  *
  ********************************************************************/
 
-// C++ includes
-#include <vector>
-
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>

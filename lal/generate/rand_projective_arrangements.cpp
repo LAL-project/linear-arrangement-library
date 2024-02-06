@@ -46,7 +46,6 @@
 #include <cassert>
 #endif
 #include <algorithm>
-#include <vector>
 
 // lal includes
 #include <lal/detail/generate/make_arrangement.hpp>

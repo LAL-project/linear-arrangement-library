@@ -43,10 +43,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <cinttypes>
-#if defined DEBUG
-#include <cassert>
-#endif
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>

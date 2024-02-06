@@ -45,8 +45,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <cmath>
-#include <set>
 
 // lal includes
 #include <lal/properties/Q.hpp>

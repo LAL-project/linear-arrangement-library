@@ -44,7 +44,6 @@
 // C++ includes
 #include <fstream>
 #include <string>
-#include <vector>
 
 // lal includes
 #include <lal/basic_types.hpp>

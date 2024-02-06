@@ -47,10 +47,10 @@
 // lal includes
 #include <lal/detail/graphs/conversions.hpp>
 
-#define inf std::numeric_limits<uint64_t>::max()
-
 namespace lal {
 namespace generate {
+
+static constexpr uint64_t inf = std::numeric_limits<uint64_t>::max();
 
 /* PUBLIC */
 

@@ -41,9 +41,6 @@
 
 #include <lal/generate/all_lab_free_trees.hpp>
 
-// C++ includes
-#include <limits>
-
 // lal includes
 #include <lal/detail/graphs/conversions.hpp>
 

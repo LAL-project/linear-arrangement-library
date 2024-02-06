@@ -39,9 +39,6 @@
  *
  ********************************************************************/
 
-// C++ includes
-#include <iostream>
-
 // lal includes
 #include <lal/linarr/chunking/algorithms.hpp>
 #include <lal/linarr/chunking/chunking.hpp>

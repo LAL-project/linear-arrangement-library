@@ -41,11 +41,6 @@
  
 #include <lal/numeric/rational.hpp>
 
-// C++ includes
-#if defined DEBUG
-#include <cassert>
-#endif
-
 // lal includes
 #include <lal/detail/numeric/utils.hpp>
 
