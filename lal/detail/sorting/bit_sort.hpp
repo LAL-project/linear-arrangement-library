@@ -69,7 +69,7 @@ namespace sorting {
 template <
 	typename T, typename iterator_t,
 	std::enable_if_t<
-		std::is_integral_v<T> && is_pointer_iterator_v<T, iterator_t>,
+		std::is_integral_v<T> and is_pointer_iterator_v<T, iterator_t>,
 		bool
 	> = true
 >
@@ -117,7 +117,7 @@ noexcept
 template <
 	typename T, typename It,
 	std::enable_if_t<
-		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
 		bool
 	> = true
 >
@@ -151,7 +151,7 @@ noexcept
 template <
 	typename T, typename It,
 	std::enable_if_t<
-		std::is_integral_v<T> && is_pointer_iterator_v<T, It>,
+		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
 		bool
 	> = true
 >

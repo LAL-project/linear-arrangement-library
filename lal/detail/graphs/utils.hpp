@@ -67,7 +67,7 @@ template <
 	typename char_type,
 	std::enable_if_t<
 		std::is_base_of_v<graphs::graph, graph_t>
-		&& std::is_integral_v<char_type>,
+		and std::is_integral_v<char_type>,
 	bool> = true
 >
 void get_bool_neighbours(const graph_t& g, node u, char_type * const neighs)

@@ -145,7 +145,7 @@ template <
 	bool memory_has_frequencies,
 	typename value_iterator_t,
 	std::enable_if_t<
-		is_pointer_iterator_v<value_t, value_iterator_t> &&
+		is_pointer_iterator_v<value_t, value_iterator_t> and
 		(
 		std::is_same_v<sort_type, non_decreasing_t> ||
 		std::is_same_v<sort_type, non_increasing_t>
@@ -244,7 +244,7 @@ template <
 	typename sort_type,
 	typename value_iterator_t,
 	std::enable_if_t<
-		is_pointer_iterator_v<value_t, value_iterator_t> &&
+		is_pointer_iterator_v<value_t, value_iterator_t> and
 		(
 		std::is_same_v<sort_type, non_decreasing_t> ||
 		std::is_same_v<sort_type, non_increasing_t>
