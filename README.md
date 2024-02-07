@@ -1,13 +1,14 @@
 # Linear Arrangement Library
 
-This library implements several algorithms to solve problems related to linear arrangements. For example, it implements algorithms for
+This library implements several algorithms to solve problems related to linear arrangements. For example, it implements algorithms that
 
-- solving the Minimum Linear Arrangement Problem on trees under different constraints of projectivity,
-- the calculation of the expectation and variance of the number of edge crossings and of the sum of the length of the edges under different projectivity constraints,
-- computing efficiently the number of edge crossings given a linear arrangement of a graph,
-- and many others.
+- solve the Minimum Linear Arrangement Problem on trees under different constraints of projectivity,
+- solve different variants of the Maximum Linear Arrangement Problem on bipartite graphs and trees,
+- calculate the expectation and variance of the number of edge crossings and of the sum of the length of the edges under different constraints (such as projectivity and planarity),
+- compute efficiently the number of edge crossings given a linear arrangement of a graph,
+- and solve many other problems.
 
-Some of the algorithms listed above are implemented for both general graphs and trees (the latter being more efficient). The library also provides functions for the generation of random/exhasutive labelled/unlabelled free/rooted trees. Besides, there's algorithms for the generation of arrangements under different constraints of projectivity. Users will also find utilities to process treebanks, and collection of treebanks.
+Some of the algorithms listed above are implemented for both general graphs and trees (the latter being more efficient). The library also provides functions for the generation of random/exhasutive labelled/unlabelled free/rooted trees. Besides, there's algorithms for the generation of arrangements under different constraints (such as projectivity and planarity). Users will also find utilities to process treebanks, and collection of treebanks.
 
 For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/). Do not forget to [take a look at the guides!](https://cqllab.upc.edu/lal/guides/).
 
