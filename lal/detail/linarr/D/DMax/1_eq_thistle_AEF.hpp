@@ -41,11 +41,11 @@
 
 #pragma once
 
-#undef PRINT_MESSAGES_1THISTLE
+#undef __LAL_PRINT_MESSAGES_1_THISTLE
 
 #if not defined DEBUG
-#if defined PRINT_MESSAGES_1THISTLE
-#error "PRINT_MESSAGES_1THISTLE can only be defined when DEBUG is defined"
+#if defined __LAL_PRINT_MESSAGES_1THISTLE
+#error "__LAL_PRINT_MESSAGES_1THISTLE can only be defined when DEBUG is defined"
 #endif
 #endif
 
@@ -55,7 +55,7 @@
 #include <cstdint>
 #include <vector>
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 #include <iostream>
 #endif
 #if defined DEBUG
@@ -72,7 +72,7 @@
 #if defined DEBUG
 #include <lal/linarr/formal_constraints.hpp>
 #endif
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -144,10 +144,10 @@ using result_t = std::conditional_t<
 	uint64_t
 >;
 
-#define level_position(p) levels_per_vertex[node_t{inv_arr[p]}]
-#define level_vertex(u)	  levels_per_vertex[node_t{u}]
+#define __LAL_level_position(p) levels_per_vertex[node_t{inv_arr[p]}]
+#define __LAL_level_vertex(u)	levels_per_vertex[node_t{u}]
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 inline void print_arrangement(const std::string& msg, const linear_arrangement& arr)
 noexcept
 {
@@ -201,17 +201,17 @@ noexcept
 		if (u == thistle) { continue; }
 		const int64_t d = to_int64(t.get_degree(u));
 		if (thistle_side_per_vertex[u] == LEFT_SIDE) {
-			level_vertex(u) = d;
+			__LAL_level_vertex(u) = d;
 			inv_arr[left++] = u;
 		}
 		else if (thistle_side_per_vertex[u] == RIGHT_SIDE) {
-			level_vertex(u) = -d;
+			__LAL_level_vertex(u) = -d;
 			inv_arr[right--] = u;
 			min_level_value = std::min(min_level_value, -d);
 		}
 #if defined DEBUG
 		else {
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 			std::cout << "Vertex " << u << " was not assigned a side\n";
 #endif
 			assert(false);
@@ -221,7 +221,7 @@ noexcept
 
 	// This function assumes that the thistle will never have negative (<0)
 	// level value.
-	level_vertex(thistle) = thistle_level;
+	__LAL_level_vertex(thistle) = thistle_level;
 	// The position to place the thistle is either 'left' or 'right' since,
 	// at this point, their values are equal (see next assertion).
 	inv_arr[left] = thistle;
@@ -230,7 +230,7 @@ noexcept
 	assert(left == right);
 #endif
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        Level per vertex:\n";
 	for (node u = 0; u < n; ++u) {
 		std::cout
@@ -243,21 +243,21 @@ noexcept
 	// Sort the vertices by level (first, those with positive level. Then, those
 	// with negative level). Independent tasks.
 	sorting::counting_sort
-		<node, sorting::non_increasing_t>
-		(
-			inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
-			[&](const node u) {
-				return to_uint64(level_vertex(u) - min_level_value);
-			}
-			);
+	<node, sorting::non_increasing_t>
+	(
+		inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
+		[&](const node u) {
+			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+		}
+	);
 	sorting::counting_sort
-		<node, sorting::non_increasing_t>
-		(
-			inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
-			[&](const node u) {
-				return to_uint64(level_vertex(u) - min_level_value);
-			}
-			);
+	<node, sorting::non_increasing_t>
+	(
+		inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
+		[&](const node u) {
+			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+		}
+	);
 }
 
 /**
@@ -293,12 +293,12 @@ noexcept
 	while (p < n) {
 
 		position q = p;
-		const int64_t current_level = level_position(p);
-		while (q < n and level_position(q) == current_level) {
+		const int64_t current_level = __LAL_level_position(p);
+		while (q < n and __LAL_level_position(q) == current_level) {
 			++q;
 		}
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
 #endif
 
@@ -341,7 +341,7 @@ noexcept
 	position_t p = arr[node_t{thistle}];
 	while (
 		p > 0ull and
-		level_vertex(arr[p - 1ull]) <= level_vertex(arr[p]) and
+		__LAL_level_vertex(arr[p - 1ull]) <= __LAL_level_vertex(arr[p]) and
 		(is_thistle_neighbor[arr[p - 1ull]] == 0)
 	)
 	{
@@ -366,8 +366,8 @@ inline void shift_vertex_to_right(
 	const node thistle,
 	position_t p,
 	linear_arrangement& arr
-	)
-	noexcept
+)
+noexcept
 {
 	const auto n = t.get_num_nodes();
 
@@ -401,32 +401,33 @@ noexcept
 	// position of thistle can never be '0'
 	position p = arr[node_t{thistle}] - 1;
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        Thistle position p= " << p + 1 << '\n';
 #endif
 
 	bool stop = false;
 	while (p > 0 and not stop) {
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		std::cout << "        __________________________________________\n";
 		std::cout << "        Find next non-neighbor starting at p= " << p << '\n';
 #endif
 
-		// number of vertices between the thistle and the first non-neighbor
+		// number of vertices between the thistle and its first non-neighbor
 		int64_t j = 0;
-		// sum of level values between the thistle and the first non-neighbor
+		// sum of level values between the thistle and its first non-neighbor
 		int64_t total_level_value = 0;
+
 		position q = p;
 		// find the first non-neighbor of 'thistle'
 		while (q > 0 and is_thistle_neighbor[arr[position_t{q}]] == 1) {
-			total_level_value += level_vertex(arr[position_t{q}]);
+			total_level_value += __LAL_level_vertex(arr[position_t{q}]);
 			++j;
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 			std::cout << "            Vertex " << arr[position_t{q}] << " is a neighbor\n";
 			std::cout << "                Position " << q << '\n';
-			std::cout << "            Of level value:      " << level_vertex(arr[position_t{q}]) << '\n';
+			std::cout << "            Of level value:      " << __LAL_level_vertex(arr[position_t{q}]) << '\n';
 			std::cout << "            Sum of level values: " << total_level_value << '\n';
 			std::cout << "            Number of vertices:  " << j << '\n';
 #endif
@@ -437,18 +438,18 @@ noexcept
 		const node to_move = arr[position_t{q}];
 
 		if (is_thistle_neighbor[to_move] == 1) {
-			if (q == 0) {
-				stop = true;
-			}
-			else {
-				// continue one more iteration
-				p = q - 1;
-			}
+#if defined DEBUG
+			assert(q == 0);
+#endif
+			stop = true;
 		}
 		else {
-			const int64_t level_nonneigh = level_vertex(to_move);
+#if defined DEBUG
+			assert(is_thistle_neighbor[to_move] == 0);
+#endif
+			const int64_t level_nonneigh = __LAL_level_vertex(to_move);
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 			std::cout << "            First non-neighbor: " << to_move << '\n';
 			std::cout << "                   at position: " << q << '\n';
 			std::cout << "                      of level: " << level_nonneigh << '\n';
@@ -459,7 +460,7 @@ noexcept
 
 			const int64_t r = -(j + 1)*level_nonneigh + total_level_value + thistle_level;
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 			std::cout << "        r= " << r << '\n';
 #endif
 
@@ -475,7 +476,7 @@ noexcept
 			}
 		}
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		print_arrangement("After moving vertex '" + std::to_string(to_move) + "'", arr);
 #endif
 	}
@@ -519,7 +520,7 @@ noexcept
 	const auto n = t.get_num_nodes();
 
 #if defined DEBUG
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        Chosen level value: " << thistle_level << '\n';
 #endif
 #endif
@@ -532,7 +533,7 @@ noexcept
 #if defined DEBUG
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	print_arrangement("Initial arrangement", arr);
 #endif
 
@@ -541,7 +542,7 @@ noexcept
 	// sum of edge lengths prior to adjustments
 	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        __D1= " << __D1 << std::endl;
 #endif
 #endif
@@ -560,14 +561,14 @@ noexcept
 
 #if defined DEBUG
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	print_arrangement("After sorting all sequences of equal level vertex", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
 	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        __D2= " << __D2 << std::endl;
 #endif
 
@@ -578,14 +579,14 @@ noexcept
 
 #if defined DEBUG
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	print_arrangement("After adjusting the thistle vertex", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
 	const uint64_t __D3 = linarr::sum_edge_lengths(t, arr);
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        __D3= " << __D3 << std::endl;
 #endif
 
@@ -602,7 +603,7 @@ noexcept
 
 #if defined DEBUG
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	print_arrangement("After moving thistle and readjusting other vertices", arr);
 #endif
 
@@ -612,7 +613,7 @@ noexcept
 	const uint64_t D = linarr::sum_edge_lengths(t, arr);
 
 #if defined DEBUG
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "        D= " << D << '\n';
 #endif
 	assert(D >= __D3);
@@ -670,7 +671,7 @@ noexcept
 
 	data_array<char> binary_combination(thistle_deg, 0);
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	std::cout << "Thistle: " << thistle << '\n';
 	int counter = 0;
 #endif
@@ -687,7 +688,7 @@ noexcept
 	);
 
 	do {
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		std::cout << "    Binary combination: " << counter++ << '\n';
 		std::cout << "    ";
 		for (std::size_t j = 0; j < thistle_deg; ++j) {
@@ -734,7 +735,7 @@ noexcept
 				res
 			);
 		}
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		else {
 			std::cout << "        Ignore negative values and non-thistle configurations.\n";
 			std::cout << "        Level value: " << thistle_level << '\n';
@@ -774,9 +775,13 @@ detail::result_t<make_arrangement> AEF(
 )
 noexcept
 {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
 	const auto n = t.get_num_nodes();
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	{
 	std::cout << "Start tree\n";
 	std::cout << t << '\n';
@@ -823,7 +828,7 @@ noexcept
 			const std::size_t pidx = node_to_path[thistle];
 			// not in this case
 			if (internal_in_path_was_used[pidx] == 1) {
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 				std::cout << "Thistle belongs to path " << pidx << " and will not be tested.\n";
 #endif
 				continue;
@@ -831,7 +836,7 @@ noexcept
 
 			// do not use internal vertices of this branchless path anymore
 			internal_in_path_was_used[pidx] = 1;
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 			std::cout << "Thistle vertex belongs to path " << pidx << ".\n";
 #endif
 		}
@@ -852,7 +857,7 @@ noexcept
 		for (node u : neighs) { is_thistle_neighbor[u] = 0; }
 	}
 
-#if defined PRINT_MESSAGES_1THISTLE
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
 	{
 	std::cout << "Finish tree\n";
 	std::cout << t << '\n';
@@ -893,6 +898,10 @@ AEF(
 )
 noexcept
 {
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
 	// assign all internal vertices a path index.
 	data_array<std::size_t> node_to_path(t.get_num_nodes());
 	for (std::size_t i = 0; i < all_paths.size(); ++i) {
@@ -907,8 +916,12 @@ noexcept
 	return AEF<make_arrangement>(t, all_paths, node_to_path);
 }
 
-#undef level_position
-#undef level_vertex
+#undef __LAL_level_position
+#undef __LAL_level_vertex
+
+#if defined __LAL_PRINT_MESSAGES_1_THISTLE
+#undef __LAL_PRINT_MESSAGES_1_THISTLE
+#endif
 
 } // -- namespace thistle_1
 } // -- namespace DMax
