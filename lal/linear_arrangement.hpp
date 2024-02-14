@@ -123,6 +123,7 @@ public:
 	 *
 	 * This helps the conversion from python's list to this object.
 	 * @param dir_arr Direct arrangement.
+	 * @post @ref m_inverse is updated.
 	 */
 	linear_arrangement(const std::vector<position>& dir_arr) noexcept
 		: m_memory(2*dir_arr.size()),
@@ -196,6 +197,7 @@ public:
 	 * A direct arrangement gives the position of every node.
 	 * @param v A direct arrangement. This gives the position of every node.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_inverse is updated.
 	 */
 	static linear_arrangement from_direct(const std::vector<position>& v) noexcept {
 		return from_direct(v.begin(), v.end(), v.size());
@@ -209,6 +211,7 @@ public:
 	 * @param begin A pointer to the beginning of the direct arrangement.
 	 * @param end A pointer to the end of the direct arrangement.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_inverse is updated.
 	 */
 	template <typename It>
 	static linear_arrangement from_direct(It begin, It end) noexcept {
@@ -223,6 +226,7 @@ public:
 	 * @param end A pointer to the end of the direct arrangement.
 	 * @param size The size of the container pointer by @e begin and @e end.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_inverse is updated.
 	 */
 	template <typename It>
 	static linear_arrangement from_direct(It begin, It end, std::size_t size) noexcept {
@@ -236,6 +240,7 @@ public:
 	 * @brief Construct a linear arrangement from an inverse arrangement.
 	 * @param v An inverse arrangement. This gives the node for every position.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_direct is updated.
 	 */
 	static linear_arrangement from_inverse(const std::vector<node>& v) noexcept {
 		return from_inverse(v.begin(), v.end(), v.size());
@@ -249,6 +254,7 @@ public:
 	 * @param begin A pointer to the beginning of the inverse arrangement.
 	 * @param end A pointer to the end of the inverse arrangement.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_direct is updated.
 	 */
 	template <typename It>
 	static linear_arrangement from_inverse(It begin, It end) noexcept {
@@ -266,6 +272,7 @@ public:
 	 * @param end A pointer to the end of the inverse arrangement.
 	 * @param size The size of the container pointer by @e begin and @e end.
 	 * @returns A linear arrangement object constructed from @e v.
+	 * @post @ref m_direct is updated.
 	 */
 	template <typename It>
 	static linear_arrangement from_inverse(It begin, It end, std::size_t size) noexcept {
@@ -287,11 +294,25 @@ public:
 		return m_direct[size() - 1] < arr.m_direct[size() - 1];
 	}
 
-	/// Returns the position of node @e u.
+	/**
+	 * @brief Returns the position of node @e u.
+	 * @param u Node.
+	 * @returns The position of node @e u.
+	 * @pre The @e u-th index of @ref m_direct is up to date.
+	 * @pre The value of @e u must be strictly less than the size of
+	 * the arrangement (see @ref m_n).
+	 */
 	position operator[] (const node_t& u) const noexcept
 	{ return get_position_of(*u); }
 
-	/// Returns the node at position @e p.
+	/**
+	 * @brief Returns the node at position @e p.
+	 * @param p Position.
+	 * @returns The node at position @e p.
+	 * @pre The @e p-th index of @ref m_inverse is up to date.
+	 * @pre The value of @e p must be strictly less than the size of
+	 * the arrangement (see @ref m_n).
+	 */
 	node operator[] (const position_t& p) const noexcept
 	{ return get_node_at(*p); }
 
@@ -303,11 +324,25 @@ public:
 		m_inverse = nullptr;
 	}
 
-	/// Returns the position of node @e u.
+	/**
+	 * @brief Returns the position of node @e u.
+	 * @param u Node.
+	 * @returns The position of node @e u.
+	 * @pre The @e u-th index of @ref m_direct is up to date.
+	 * @pre The value of @e u must be strictly less than the size of
+	 * the arrangement (see @ref m_n).
+	 */
 	position get_position_of(const node u) const noexcept
 	{ return m_direct[u]; }
 
-	/// Returns the node at position @e p.
+	/**
+	 * @brief Returns the node at position @e p.
+	 * @param p Position.
+	 * @returns The node at position @e p.
+	 * @pre The @e p-th index of @ref m_inverse is up to date.
+	 * @pre The value of @e p must be strictly less than the size of
+	 * the arrangement (see @ref m_n).
+	 */
 	node get_node_at(const position p) const noexcept
 	{ return m_inverse[p]; }
 
@@ -375,6 +410,8 @@ public:
 	 * @tparam what Swap either vertices or positions.
 	 * @param u_t Value indicating the first object.
 	 * @param v_t Value indicating the second object.
+	 * @pre Values @e u and @e p must both be strictly less than the size of
+	 * the arrangement (see @ref m_n).
 	 */
 	template <
 		typename what,
@@ -400,7 +437,10 @@ public:
 		}
 	}
 
-	/// Shifts the vertices one position to the left.
+	/**
+	 * @brief Shifts the vertices one position to the left.
+	 * @pre All nodes to have been assigned to a position.
+	 */
 	void shift_left() noexcept {
 		const node_t u0 = m_inverse[0];
 		// shift every vertex one position to the left
@@ -412,7 +452,10 @@ public:
 		assign(u0, m_n - 1);
 	}
 
-	/// Shifts the vertices one position to the right.
+	/**
+	 * @brief Shifts the vertices one position to the right.
+	 * @pre All nodes to have been assigned to a position.
+	 */
 	void shift_right() noexcept {
 		const node_t ulast = m_inverse[m_n - 1];
 		// shift every vertex one position to the left
@@ -430,6 +473,7 @@ public:
 	 * Swaps the vertices so that the first is placed at the last position,
 	 * the second at the second to last, ... More formally, swaps arr[1] with
 	 * arr[n], arr[2] with arr[n-1], ...
+	 * @pre All nodes to have been assigned to a position.
 	 */
 	void mirror() noexcept {
 		for (position_t i = 0ull; i < m_n/2; ++i) {
@@ -441,7 +485,10 @@ public:
 	std::size_t size() const noexcept { return m_n; }
 
 	/**
-	 * @brief Constructs a linear arrangement from an inverse arrangement.
+	 * @brief Constructs an identity linear arrangement.
+	 *
+	 * This is the arrangement in which vertex 0 is assigned to position 0,
+	 * vertex 1 is assigned to position 1, and so on.
 	 * @param n Number of vertices.
 	 */
 	static linear_arrangement identity(std::size_t n) noexcept
@@ -451,13 +498,18 @@ public:
 		return arr;
 	}
 
-	/// Makes this arrangement an identity arrangement.
+	/**
+	 * @brief Makes this arrangement an identity arrangement.
+	 *
+	 * This is the arrangement in which vertex 0 is assigned to position 0,
+	 * vertex 1 is assigned to position 1, and so on.
+	 */
 	void identity() noexcept {
 		for (std::size_t i = 0; i < m_n; ++i) { assign(i,i); }
 	}
 
 	/**
-	 * @brief Updates the direct arrangement using the inverse arrangement
+	 * @brief Updates the direct arrangement using the inverse arrangement.
 	 *
 	 * This function is only useful when there have been changes to the inverse
 	 * arrangement not via the @ref assign function.
@@ -469,7 +521,7 @@ public:
 	}
 
 	/**
-	 * @brief Updates the inverse arrangement using the direct arrangement
+	 * @brief Updates the inverse arrangement using the direct arrangement.
 	 *
 	 * This function is only useful when there have been changes to the direct
 	 * arrangement not via the @ref assign function.
@@ -508,8 +560,12 @@ public:
 
 private:
 
-	/// Sets the pointers @ref m_direct and @ref m_inverse appropriate
-	/// locations of the memory allocated by @ref m_memory.
+	/**
+	 * @brief Sets @ref m_direct and @ref m_inverse appropriately.
+	 *
+	 * Sets the pointers @ref m_direct and @ref m_inverse to appropriate
+	 * locations of @ref m_memory.
+	 */
 	void set_pointers() noexcept {
 		m_direct = m_memory.begin();
 		m_inverse = m_memory.begin() + m_n;
@@ -548,7 +604,7 @@ private:
 
 protected:
 	/// Memory of the linear arrangement. Holds twice as many elements as
-	/// vertices there are in the arrangement.
+	/// vertices there are in the arrangement (see @ref m_n).
 	detail::data_array<uint64_t> m_memory;
 	/// Size of the arrangement (number of nodes in the arrangement).
 	std::size_t m_n = 0;
