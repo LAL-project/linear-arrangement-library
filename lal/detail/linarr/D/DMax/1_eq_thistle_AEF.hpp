@@ -183,8 +183,8 @@ inline void construct_initial_arrangement(
 	const data_array<char>& thistle_side_per_vertex,
 	level_signature_per_vertex& levels_per_vertex,
 	data_array<node>& inv_arr
-	)
-	noexcept
+)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -286,8 +286,8 @@ inline void sort_level_sequences(
 	const data_array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
 	data_array<node>& inv_arr
-	)
-	noexcept
+)
+noexcept
 {
 	position p = 0;
 	while (p < n) {
@@ -332,8 +332,8 @@ inline void move_thistle_to_left(
 	const data_array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
 	linear_arrangement& arr
-	)
-	noexcept
+)
+noexcept
 {
 	// Move the thistle to the left
 	// - while the level value of the vertex to the left is less than the thistle's
@@ -366,8 +366,8 @@ inline void shift_vertex_to_right(
 	const node thistle,
 	position_t p,
 	linear_arrangement& arr
-	)
-	noexcept
+)
+noexcept
 {
 	const auto n = t.get_num_nodes();
 
@@ -395,8 +395,8 @@ inline void adjust_mistplaced_nonneighbors_of_thistle(
 	const data_array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
 	linear_arrangement& arr
-	)
-	noexcept
+)
+noexcept
 {
 #if defined DEBUG
 	assert(arr[node_t{thistle}] > 0);
@@ -525,8 +525,8 @@ void merge_arrangements(
 	data_array<node>& inv_arr,
 	level_signature_per_vertex& levels_per_vertex,
 	result_t<make_arrangement>& res
-	)
-	noexcept
+)
+noexcept
 {
 	const auto n = t.get_num_nodes();
 
@@ -674,8 +674,8 @@ void choose_orientations_for_thistle_neighbors(
 	data_array<char>& thistle_side_per_vertex,
 
 	result_t<make_arrangement>& res
-	)
-	noexcept
+)
+noexcept
 {
 	const auto thistle_deg = t.get_degree(thistle);
 	const neighbourhood& thistle_neighs = t.get_neighbours(thistle);
@@ -783,8 +783,8 @@ detail::result_t<make_arrangement> AEF(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
 	const data_array<std::size_t>& node_to_path
-	)
-	noexcept
+)
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -902,12 +902,12 @@ std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
-	>
+>
 AEF(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths
-	)
-	noexcept
+)
+noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
