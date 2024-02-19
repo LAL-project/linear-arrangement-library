@@ -142,7 +142,7 @@ using result_t = std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
-	>;
+>;
 
 #define __LAL_level_position(p) levels_per_vertex[node_t{inv_arr[p]}]
 #define __LAL_level_vertex(u)	levels_per_vertex[node_t{u}]
@@ -243,21 +243,21 @@ noexcept
 	// Sort the vertices by level (first, those with positive level. Then, those
 	// with negative level). Independent tasks.
 	sorting::counting_sort
-		<node, sorting::non_increasing_t>
-		(
-			inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
-			[&](const node u) {
-				return to_uint64(__LAL_level_vertex(u) - min_level_value);
-			}
-			);
+	<node, sorting::non_increasing_t>
+	(
+		inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
+		[&](const node u) {
+			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+		}
+	);
 	sorting::counting_sort
-		<node, sorting::non_increasing_t>
-		(
-			inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
-			[&](const node u) {
-				return to_uint64(__LAL_level_vertex(u) - min_level_value);
-			}
-			);
+	<node, sorting::non_increasing_t>
+	(
+		inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
+		[&](const node u) {
+			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+		}
+	);
 }
 
 /**
@@ -304,16 +304,16 @@ noexcept
 
 		// sort interval [p,q)
 		sorting::counting_sort
-			<node, sorting::non_decreasing_t>
-			(
-				inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
-				[&](const node u) {
-					// 0, 1, 2
-					if (is_thistle_neighbor[u] == 1) { return 0ull; }
-					if (u == thistle) { return 1ull; }
-					return 2ull;
-				}
-				);
+		<node, sorting::non_decreasing_t>
+		(
+			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
+			[&](const node u) {
+				// 0, 1, 2
+				if (is_thistle_neighbor[u] == 1) { return 0ull; }
+				if (u == thistle) { return 1ull; }
+				return 2ull;
+			}
+		);
 
 		p = q;
 	}
@@ -343,7 +343,7 @@ noexcept
 		p > 0ull and
 		__LAL_level_vertex(arr[p - 1ull]) <= __LAL_level_vertex(arr[p]) and
 		(is_thistle_neighbor[arr[p - 1ull]] == 0)
-		)
+	)
 	{
 		arr.swap(p - 1ull, p);
 		--p;
@@ -539,7 +539,7 @@ noexcept
 	construct_initial_arrangement(
 		t, thistle, thistle_level, thistle_side_per_vertex,
 		levels_per_vertex, inv_arr
-		);
+	);
 
 #if defined DEBUG
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
@@ -696,7 +696,7 @@ noexcept
 		[&](const auto&, node u, node v, bool) {
 			thistle_side_per_vertex[v] = other_side(thistle_side_per_vertex[u]);
 		}
-		);
+	);
 
 	do {
 #if defined __LAL_PRINT_MESSAGES_1_THISTLE
@@ -744,7 +744,7 @@ noexcept
 				is_thistle_neighbor, thistle_side_per_vertex,
 				arr, inv_arr, level_per_vertex,
 				res
-				);
+			);
 		}
 #if defined __LAL_PRINT_MESSAGES_1_THISTLE
 		else {
@@ -832,7 +832,7 @@ noexcept
 		const uint64_t deg_thistle = t.get_degree(thistle);
 
 		// ignore leaves
-		if (t.get_degree(thistle) == 1) { continue; }
+		if (deg_thistle == 1) { continue; }
 
 		// do we have to use this internal vertex of a branchless path as a thistle?
 		if (deg_thistle == 2) {
@@ -862,7 +862,7 @@ noexcept
 			t, thistle, is_thistle_neighbor,
 			arr, inv_arr, level_per_vertex, thistle_side_per_vertex,
 			res
-			);
+		);
 
 		// unset neighbors of thistle
 		for (node u : neighs) { is_thistle_neighbor[u] = 0; }
