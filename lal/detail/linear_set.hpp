@@ -227,6 +227,24 @@ public:
 		}
 	}
 
+	/// Begin iterator to @ref m_values.
+	const value_t* begin_values() const noexcept { return m_values.begin(); }
+	/// Begin iterator to @ref m_values.
+	value_t* begin_values() noexcept { return m_values.begin(); }
+	/// End iterator to @ref m_values.
+	const value_t* end_values() const noexcept { return m_values.end(); }
+	/// End iterator to @ref m_values.
+	value_t* end_values() noexcept { return m_values.end(); }
+
+	/// Begin iterator to @ref m_position.
+	const value_t* begin_position() const noexcept { return m_position.begin(); }
+	/// Begin iterator to @ref m_position.
+	value_t* begin_position() noexcept { return m_position.begin(); }
+	/// End iterator to @ref m_position.
+	const value_t* end_position() const noexcept { return m_position.end(); }
+	/// End iterator to @ref m_position.
+	value_t* end_position() noexcept { return m_position.end(); }
+
 private:
 	/// Does an element exist in the set?
 	static constexpr char EXISTS = 1;
