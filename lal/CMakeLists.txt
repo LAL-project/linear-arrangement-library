@@ -201,6 +201,8 @@ target_sources(
 		detail/arrangement_wrapper.hpp
 		detail/avl.hpp
 		detail/data_array.hpp
+		detail/linear_queue.hpp
+		detail/linear_set.hpp
 		detail/make_array.hpp
 		detail/pairs_utils.hpp
 		

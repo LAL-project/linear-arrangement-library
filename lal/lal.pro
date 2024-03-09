@@ -116,6 +116,7 @@ HEADERS += \
 	detail/linarr/headedness.hpp \
 	detail/linarr/level_signature.hpp \
 	detail/linear_queue.hpp \
+	detail/linear_set.hpp \
 	detail/macros/basic_convert.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
 	detail/properties/branchless_path_find.hpp \
