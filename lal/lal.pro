@@ -243,6 +243,7 @@ HEADERS += \
 	properties/tree_centre.hpp \
 	properties/tree_centroid.hpp \
 	properties/tree_diameter.hpp \
+	properties/vertex_orbits.hpp \
 	utilities.hpp \
 	utilities/aggregations.hpp \
 	utilities/tree_isomorphism.hpp \
@@ -302,4 +303,5 @@ SOURCES += \
 	properties/variance_C_forests.cpp \
 	properties/D_rla.cpp \
 	properties/C_rla.cpp \
+	properties/vertex_orbits.cpp \
 	utilities/tree_isomorphism.cpp
