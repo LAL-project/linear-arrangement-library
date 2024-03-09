@@ -207,8 +207,7 @@ noexcept
 }
 
 /// Test whether two rooted trees are isomorphic or not.
-inline
-bool are_full_trees_isomorphic
+inline bool are_rooted_trees_isomorphic
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
 noexcept
 {

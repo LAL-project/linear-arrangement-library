@@ -224,7 +224,7 @@ noexcept
 	assert(t1.has_root());
 	assert(t2.has_root());
 #endif
-	return detail::are_full_trees_isomorphic(t1, t2);
+	return detail::are_rooted_trees_isomorphic(t1, t2);
 }
 
 bool are_trees_isomorphic
