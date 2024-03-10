@@ -51,6 +51,208 @@
 namespace lal {
 namespace linarr {
 
+/* ----------------------------- Unconstrained ------------------------------ */
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param orbits The orbits of the input graph.
+ * @param c Bipartite coloring of the input tree.
+ * @param bps All branchless paths of the tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& bps,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param orbits The orbits of the input graph.
+ * @param bps All branchless paths of the tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	const std::vector<properties::branchless_path>& bps,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param c Bipartite coloring of the input tree.
+ * @param bps All branchless paths of the tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::vector<properties::branchless_path>& bps,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param orbits The orbits of the input graph.
+ * @param c Bipartite coloring of the input tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	const properties::bipartite_graph_coloring& c,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param bps All branchless paths of the tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<properties::branchless_path>& bps,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param c Bipartite coloring of the input tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& c,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param orbits The orbits of the input graph.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
+/**
+ * @brief Calculates all the linear arrangements that yield the maximum sum of edge lengths.
+ *
+ * This function runs a Branch and Bound algorithm that finds al arrangements (up
+ * to level isomorphism) that yield the maximum sum of edge lengths over the entire
+ * set of \f$n!\f$ arrangements.
+ *
+ * This function implements the Branch and Bound algorithm described in \cite Alemany2023a.
+ *
+ * See @ref LAL_concepts__linear_arrangement__isomorphism for the definition of
+ * level isomorphism.
+ * @param t Input free tree.
+ * @param num_threads Number of threads to use.
+ * @returns All maximum arrangements up to level isomorphism.
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ */
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::size_t num_threads = 1
+)
+noexcept;
+
 /* ------------------------ Non-BIPARTITE CONSTRAINT ------------------------ */
 
 /**
@@ -63,8 +265,8 @@ namespace linarr {
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
- * @param c Coloring of the input tree.
- * @param bps Branchless paths of the tree.
+ * @param c Bipartite coloring of the input tree.
+ * @param bps All branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -84,7 +286,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
- * @param bps Branchless paths of the tree.
+ * @param bps All branchless paths of the tree.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
@@ -102,7 +304,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
- * @param c Coloring of the input tree.
+ * @param c Bipartite coloring of the input tree.
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */
@@ -136,7 +338,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
- * @param bps Branchless paths of the tree.
+ * @param bps All branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
  */

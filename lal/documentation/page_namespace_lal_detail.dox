@@ -113,6 +113,10 @@ namespace DMax_utils {
 namespace DMax {
 	
 	// -------------------------------------------------------------------------
+	/// In unconstrained arrangements
+	namespace unconstrained {}
+	
+	// -------------------------------------------------------------------------
 	/// In arrangements with only 1 thistle.
 	namespace thistle_1 {}
 	

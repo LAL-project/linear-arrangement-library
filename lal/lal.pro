@@ -98,6 +98,8 @@ HEADERS += \
 	detail/linarr/D/DMax/Bipartite_AEF.hpp \
 	detail/linarr/D/DMax/Planar_AEF.hpp \
 	detail/linarr/D/DMax/Projective_AEF.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/maximum_arrangements.hpp \
 	detail/linarr/D/DMax/utils.hpp \
 	detail/linarr/D/Dmin/Bipartite_AEF.hpp \
 	detail/linarr/D/Dmin/Planar_AEF.hpp \
@@ -250,6 +252,13 @@ HEADERS += \
 	lal_version.hpp
 
 SOURCES += \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_constraints.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution_independent_set.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_initialisation.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_next_action.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_state_manipulation.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_utils.cpp \
 	generate/all_arrangements.cpp \
 	generate/all_bipartite_arrangements.cpp \
 	generate/all_lab_free_trees.cpp \
@@ -283,6 +292,7 @@ SOURCES += \
 	linarr/C/predict.cpp \
 	linarr/D/D.cpp \
 	linarr/D/DMax.cpp \
+	linarr/D/DMax_unconstrained_all.cpp \
 	linarr/D/Dmin.cpp \
 	linarr/chunking/chunking.cpp \
 	linarr/dependency_flux.cpp \
