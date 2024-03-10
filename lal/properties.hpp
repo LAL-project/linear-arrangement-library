@@ -58,3 +58,5 @@
 
 #include <lal/properties/branchless_path.hpp>
 #include <lal/properties/branchless_path_find.hpp>
+
+#include <lal/properties/vertex_orbits.hpp>
