@@ -101,8 +101,14 @@ public:
 	 */
 	level_signature(std::size_t n) noexcept : m_data(n, 0) { }
 
+	/// Initializes this level signature.
+	void init(std::size_t n) noexcept {
+		m_data.resize(n, 0);
+	}
+
 	/// Access position 'i'
-	template <typename T> [[nodiscard]] int64_t operator[] (T i) const noexcept {
+	template <typename T>
+	[[nodiscard]] int64_t operator[] (T i) const noexcept {
 		static_assert(
 			(t == level_signature_type::per_position and std::is_same_v<T, position_t>) or
 			(t == level_signature_type::per_vertex and std::is_same_v<T, node_t>)
@@ -110,12 +116,32 @@ public:
 		return m_data[*i];
 	}
 	/// Access position 'i'
-	template <typename T> [[nodiscard]] int64_t& operator[] (T i) noexcept {
+	template <typename T>
+	[[nodiscard]] int64_t& operator[] (T i) noexcept {
 		static_assert(
 			(t == level_signature_type::per_position and std::is_same_v<T, position_t>) or
 			(t == level_signature_type::per_vertex and std::is_same_v<T, node_t>)
 		);
 		return m_data[*i];
+	}
+
+	/**
+	 * @brief Equality test
+	 *
+	 * Two level signatures of two arrangements of the same tree are equal if
+	 * their values are equal position-wise, regardless of the type of level
+	 * signature.
+	 * @param L Other level signature.
+	 * @returns Whether this and @e L are equal or not.
+	 * @pre Both level signatures must be of arrangements the same tree.
+	 */
+	template <level_signature_type st = t>
+	bool operator== (const level_signature<st>& L) const noexcept {
+		static_assert(st == t);
+		for (std::size_t i = 0; i < m_data.size(); ++i) {
+			if (m_data[i] != L.m_data[i]) { return false; }
+		}
+		return true;
 	}
 
 	/**
@@ -171,6 +197,31 @@ public:
 		std::enable_if_t<st == level_signature_type::per_position, bool> = true
 	>
 	void set_position_level(position p, int64_t l) noexcept { m_data[p] = l; }
+
+	/**
+	 * @brief Mirrors this level signature.
+	 *
+	 * The operation is equivalent to recalculating the level signature for the
+	 * mirrored arrangement.
+	 */
+	void mirror() noexcept {
+		if constexpr (t == level_signature_type::per_position) {
+			const std::size_t n = m_data.size();
+			for (position p = 0ull; p < n/2; ++p) {
+				std::swap( m_data[p], m_data[n - 1ull - p] );
+				m_data[p] = -m_data[p];
+				m_data[n - 1ull - p] = -m_data[n - 1ull - p];
+			}
+			if (n%2 == 1) {
+				m_data[n/2] = -m_data[n/2];
+			}
+		}
+		else {
+			for (node u = 0ull; u < m_data.size(); ++u) {
+				m_data[u] = -m_data[u];
+			}
+		}
+	}
 
 private:
 	/// The signature of level values.
@@ -335,15 +386,36 @@ noexcept
  * @returns The level sequence of an arrangement per vertex.
  */
 template <level_signature_type t, class graph_t>
-level_signature<t> calculate_level_signature_per_vertex
+level_signature<t> calculate_level_signature
 (const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
 	const auto n = g.get_num_nodes();
 	level_signature<t> L(n);
-	for (position p = 0ull; p < n; ++p) { L[p] = 0; }
+	if constexpr (t == level_signature_type::per_vertex) {
+		for (node_t u = 0ull; u < n; ++u) { L[u] = 0; }
+	}
+	else {
+		for (position_t p = 0ull; p < n; ++p) { L[p] = 0; }
+	}
+
 	calculate_level_signature(g, arr, L);
 	return L;
+}
+
+/**
+ * @brief Mirrors a level signature.
+ * @tparam t Level signature type.
+ * @param L Input level signature.
+ * @returns A mirrored copy of the input level signature.
+ */
+template <level_signature_type t>
+level_signature<t> mirror_level_signature(const level_signature<t>& L)
+noexcept
+{
+	level_signature<t> L2 = L;
+	L2.mirror();
+	return L2;
 }
 
 } // -- namespace detail
