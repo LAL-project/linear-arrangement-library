@@ -72,6 +72,10 @@ namespace Dmin {
 	namespace unconstrained {}
 
 	// -------------------------------------------------------------------------
+	/// In bipartite arrangements.
+	namespace bipartite {}
+
+	// -------------------------------------------------------------------------
 	/// In planar arrangements.
 	namespace planar {}
 
@@ -107,7 +111,15 @@ namespace DMax_utils {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Namespace for algorithms to calculate the maximum sum of edge lengths
 namespace DMax {
-
+	
+	// -------------------------------------------------------------------------
+	/// In arrangements with only 1 thistle.
+	namespace thistle_1 {}
+	
+	// -------------------------------------------------------------------------
+	/// In bipartite arrangements.
+	namespace bipartite {}
+	
 	// -------------------------------------------------------------------------
 	/// In planar arrangements.
 	namespace planar {}
