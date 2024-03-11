@@ -78,7 +78,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	assert(m_num_threads == 1);
+	assert(num_threads == 1);
 #endif
 
 	std::pair<uint64_t, std::vector<linear_arrangement>> res;
