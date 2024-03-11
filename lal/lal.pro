@@ -79,6 +79,9 @@ equals(ENVIR, "CLUSTER") {
 
 INCLUDEPATH += ..
 
+#DEFINES += __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#DEFINES += __LAL_PRINT_MESSAGES_DMax_1_thistle
+
 # -------------
 # PROJECT FILES
 HEADERS += \
