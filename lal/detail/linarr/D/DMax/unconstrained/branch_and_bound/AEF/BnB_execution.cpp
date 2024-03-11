@@ -58,16 +58,16 @@ namespace DMax {
 namespace unconstrained {
 
 AEF_BnB::exe_result_type
-AEF_BnB::exe(const uint64_t D_1, const uint64_t D_12_m, const position pos)
+AEF_BnB::exe(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	display_all_info(D_1, D_12_m, pos);
+	display_all_info(D_p, D_ps_m, pos);
 #endif
 
 	// Did the algorithm complete an arrangement?
 	{
-	const auto res = process_end(D_1, pos);
+	const auto res = process_end(D_p, pos);
 	if (did_reach_end(res)) {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		return did_find_max(res);
@@ -79,7 +79,7 @@ noexcept
 
 	{
 	// what should we do next? ...
-	const auto next = what_to_do_next(D_1, D_12_m, pos);
+	const auto next = what_to_do_next(D_p, D_ps_m, pos);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout
@@ -102,7 +102,7 @@ noexcept
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		const bool reached_maximum =
 #endif
-		exe_independent_set(D_1, pos);
+		exe_independent_set(D_p, pos);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		return reached_maximum;
@@ -115,7 +115,7 @@ noexcept
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		const bool reached_maximum =
 #endif
-		exe_independent_set_leaves(D_1, pos);
+		exe_independent_set_leaves(D_p, pos);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		return reached_maximum;
@@ -140,9 +140,9 @@ noexcept
 		if (discard_vertex(u, pos)) { continue; }
 
 		// assign vertex 'u' at position 'p'
-		uint64_t D_1_next = D_1;
-		uint64_t D_12_m_next = D_12_m;
-		update_state(u, pos, D_1_next, D_12_m_next);
+		uint64_t D_p_next = D_p;
+		uint64_t D_ps_m_next = D_ps_m;
+		update_state(u, pos, D_p_next, D_ps_m_next);
 
 		// Try solving DMax with the current configuration
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
@@ -152,7 +152,7 @@ noexcept
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		const bool branch_reached_maximum =
 #endif
-		exe(D_1_next, D_12_m_next, pos + 1);
+		exe(D_p_next, D_ps_m_next, pos + 1);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 		reached_max = reached_max or branch_reached_maximum;
@@ -192,11 +192,11 @@ void AEF_BnB::exe(node first_node) noexcept {
 	push_tab();
 #endif
 
-	uint64_t D_1_next = 0;
-	uint64_t D_12_next = 0;
-	update_state(m_first_vertex, 0ull, D_1_next, D_12_next);
+	uint64_t D_p_next = 0;
+	uint64_t D_ps_next = 0;
+	update_state(m_first_vertex, 0ull, D_p_next, D_ps_next);
 
-	exe(D_1_next, D_12_next, 1);
+	exe(D_p_next, D_ps_next, 1);
 	recover_state(0ull);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB

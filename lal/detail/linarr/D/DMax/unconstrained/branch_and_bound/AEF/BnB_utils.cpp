@@ -208,7 +208,7 @@ void AEF_BnB::output_border_vertices() const noexcept {
 }
 
 void AEF_BnB::display_all_info(
-	const uint64_t D_1, const uint64_t D_12_m,
+	const uint64_t D_p, const uint64_t D_ps_m,
 	const position pos
 )
 noexcept
@@ -242,24 +242,24 @@ noexcept
 	std::cout << tab() << "Border vertices:\n";
 	output_border_vertices();
 	std::cout << tab() << "Lengths:\n";
-	std::cout << tab() << "    D_1=    " << D_1 << '\n';
-	std::cout << tab() << "    D_12^-= " << D_12_m << '\n';
+	std::cout << tab() << "    D_p=    " << D_p << '\n';
+	std::cout << tab() << "    D_ps^-= " << D_ps_m << '\n';
 	std::cout << tab() << "Edge sets:\n";
-	std::cout << tab() << "    E_1: ";
-	for (std::size_t i = 0; i < m_E_s.size(); ++i) {
-		const auto [u,v] = m_E_s[i];
+	std::cout << tab() << "    E_p: ";
+	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
+		const auto [u,v] = m_E_p[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
-	std::cout << tab() << "    E_12:";
-	for (std::size_t i = 0; i < m_E_12.size(); ++i) {
-		const auto [u,v] = m_E_12[i];
+	std::cout << tab() << "    E_ps:";
+	for (std::size_t i = 0; i < m_E_ps.size(); ++i) {
+		const auto [u,v] = m_E_ps[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
-	std::cout << tab() << "    E_2: ";
-	for (std::size_t i = 0; i < m_E_2.size(); ++i) {
-		const auto [u,v] = m_E_2[i];
+	std::cout << tab() << "    E_s: ";
+	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
+		const auto [u,v] = m_E_p[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';

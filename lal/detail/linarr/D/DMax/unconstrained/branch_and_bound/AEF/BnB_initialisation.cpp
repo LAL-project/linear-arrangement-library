@@ -113,17 +113,17 @@ noexcept
 	m_node_level.resize(m_n_nodes, 0);
 	m_cut_values.resize(m_n_nodes, 0);
 
-	indexer_edge I1, I12, I2;
-	I1.init(m_n_nodes);
-	I12.init(m_n_nodes);
-	I2.init(m_n_nodes);
-	m_E_p.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I1));
-	m_E_ps.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I12));
-	m_E_s.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I2));
+	indexer_edge I_p, I_ps, I_s;
+	I_p.init(m_n_nodes);
+	I_ps.init(m_n_nodes);
+	I_s.init(m_n_nodes);
+	m_E_p.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_p));
+	m_E_ps.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_ps));
+	m_E_s.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_s));
 
 	for (node u = 0; u < m_n_nodes; ++u) {
 		// -----------
-		// edges in E_2
+		// edges in E_s
 		for (node v : m_t.get_neighbours(u)) {
 			if (u < v) { m_E_s.add( {u,v} ); }
 		}

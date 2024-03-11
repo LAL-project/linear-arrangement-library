@@ -62,7 +62,7 @@ namespace unconstrained {
 
 AEF_BnB::exe_result_type
 AEF_BnB::exe_independent_set
-(const uint64_t D_1, position pos)
+(const uint64_t D_p, position pos)
 noexcept
 {
 	// number of remaining vertices
@@ -107,7 +107,7 @@ noexcept
 	// algorithm, we no longer generate all arrangements since all of them
 	// will yield the same level signature.
 
-	uint64_t D = D_1;
+	uint64_t D = D_p;
 	for (std::size_t i = 0; i < remain_verts.size(); ++i) {
 		const auto u = remain_verts[i];
 		m_arr.assign(u, pos);
@@ -137,7 +137,7 @@ noexcept
 // -----------------------------------------------------------------------------
 
 AEF_BnB::exe_result_type AEF_BnB::exe_independent_set_leaves
-(const uint64_t D_1, position pos)
+(const uint64_t D_p, position pos)
 noexcept
 {
 	/*
@@ -158,7 +158,7 @@ noexcept
 	 * non-isomorphic solutions (w.r.t. level sequences).
 	 */
 
-	uint64_t D = D_1;
+	uint64_t D = D_p;
 	for (node u = 0; u < m_n_nodes; ++u) {
 		if (is_vertex_assigned(u)) { continue; }
 

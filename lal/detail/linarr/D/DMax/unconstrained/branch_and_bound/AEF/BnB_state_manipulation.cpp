@@ -115,7 +115,7 @@ noexcept
 }
 
 void AEF_BnB::update_state
-(const node u, const position_t pos, uint64_t& D_1, uint64_t& D_12_m)
+(const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m)
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
@@ -158,22 +158,22 @@ noexcept
 			assert(pv < pos);
 #endif
 
-			// update D_1
-			D_1 += *pos - pv;
+			// update D_p
+			D_p += *pos - pv;
 
-			// edge is in E_1 -> move it
-			m_E_s.add(e);
+			// edge is in E_p -> move it
+			m_E_p.add(e);
 			m_E_ps.remove(e);
 
-			// update D_12^-: substract the length of the edge that goes to E_1
-			D_12_m -= *pos - pv;
+			// update D_ps^-: substract the length of the edge that goes to E_p
+			D_ps_m -= *pos - pv;
 		}
 		else {
 			// update left and right directional degrees
 			++m_node_right_degree[u];
 			++m_node_left_degree[v];
 
-			// edge is in E_2 -> move it
+			// edge is in E_s -> move it
 			m_E_ps.add(e);
 			m_E_s.remove(e);
 
@@ -185,8 +185,8 @@ noexcept
 	// remove 'u' from the border vertex set
 	m_border_vertices.remove(u);
 
-	// update D_12^-: add a unit of length for every edge in E_12
-	D_12_m += m_E_ps.size();
+	// update D_ps^-: add a unit of length for every edge in E_ps
+	D_ps_m += m_E_ps.size();
 
 	// update vertex's level
 	m_node_level[u] =
@@ -290,8 +290,8 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 			assert(m_node_right_degree[v] > 0);
 #endif
 
-			// edge is in E_1 -> move it
-			m_E_s.remove(e);
+			// edge is in E_p -> move it
+			m_E_p.remove(e);
 			m_E_ps.add(e);
 		}
 		else {
@@ -302,7 +302,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 			// update directional degree
 			--m_node_left_degree[v];
 
-			// edge is in E_2 -> move it
+			// edge is in E_s -> move it
 			m_E_ps.remove(e);
 			m_E_s.add(e);
 

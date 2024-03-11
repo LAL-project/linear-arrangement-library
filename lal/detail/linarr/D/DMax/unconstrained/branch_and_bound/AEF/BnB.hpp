@@ -76,9 +76,9 @@ namespace unconstrained {
  * inner workings of the algorithm.
  *
  * In many of the parameters of the functions of this class we find the names:
- * - D_1: this is the sum of edge lengths of the edges contained entirely in
+ * - D_p: this is the sum of edge lengths of the edges contained entirely in
  * the prefix of the arrangement.
- * - D_12_m: this is the sum of edge lengths of the parts over the prefix of the
+ * - D_ps_m: this is the sum of edge lengths of the parts over the prefix of the
  * arrangement of the edges partially contained in the prefix,
  */
 class AEF_BnB {
@@ -204,7 +204,7 @@ public:
 protected:
 
 	// -- constraints --
-	// Called before 'update_state'. Vertex 'u' is still to be assigned at position 'pos'.
+
 	/**
 	 * @brief Function to discard a vertex as the next vertex to add to the arrangement.
 	 *
@@ -218,13 +218,14 @@ protected:
 	const noexcept;
 
 	// -- bounds --
+
 	/// Calculate a 'generic' upper bound
 	[[nodiscard]] uint64_t upper_bound_generic
-	(const uint64_t D_1, const uint64_t D_12_m, const position_t pos) noexcept;
+	(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos) noexcept;
 
 	/// Decide what to do next according to the value of the upper bound.
 	[[nodiscard]] next_action what_to_do_next
-	(const uint64_t D_1, const uint64_t D_12_m, const position_t pos) noexcept;
+	(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos) noexcept;
 
 	// -- state manipulation --
 
@@ -234,11 +235,11 @@ protected:
 	 * Assuming that vertex @e u will be placed at position @e pos.
 	 * @param u Next vertex in the arrangement.
 	 * @param pos Next position.
-	 * @param D_1 Sum of edge lengths of edges in the prefix.
-	 * @param D_12_m Sum of edge lengths of edges partially in the prefix.
+	 * @param D_p Sum of edge lengths of edges in the prefix.
+	 * @param D_ps_m Sum of edge lengths of edges partially in the prefix.
 	 */
 	void update_state
-	(const node u, const position_t pos, uint64_t& D_1, uint64_t& D_12_m)
+	(const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m)
 	noexcept;
 
 	/**
@@ -296,7 +297,7 @@ protected:
 	 * function is not needed anymore. Moreover, each call to 'update_state' requires
 	 * a subsequent call to 'recover_state'.
 	 *
-	 * The value of D passed as parameter, 'D_1' is the sum of the lengths of all
+	 * The value of D passed as parameter, 'D_p' is the sum of the lengths of all
 	 * the edges whose both endpoints are assigned to the prefix of the arrangement
 	 * before calling the function.
 	 */
@@ -306,24 +307,24 @@ protected:
 	 *
 	 * Under the assumption that the unassigned vertices make up an independent
 	 * set.
-	 * @param D_1 Sum of the lengths of the edges contained inside the prefix.
+	 * @param D_p Sum of the lengths of the edges contained inside the prefix.
 	 * @param pos Position where to continue building the arrangement from.
 	 * @returns Whether or not the algorithm found a new maximum arrangement.
 	 */
 	exe_result_type exe_independent_set
-	(const uint64_t D_1, position pos) noexcept;
+	(const uint64_t D_p, position pos) noexcept;
 
 	/**
 	 * @brief Finish constructing the arrangement.
 	 *
 	 * Under the assumption that the unassigned vertices make up an independent
 	 * set, and that all remaining vertices are leaves.
-	 * @param D_1 Sum of the lengths of the edges contained inside the prefix.
+	 * @param D_p Sum of the lengths of the edges contained inside the prefix.
 	 * @param pos Position where to continue building the arrangement from.
 	 * @returns Whether or not the algorithm found a new maximum arrangement.
 	 */
 	exe_result_type exe_independent_set_leaves
-	(const uint64_t D_1, position pos) noexcept;
+	(const uint64_t D_p, position pos) noexcept;
 
 	// -------------------------------------------------------------------------
 	// execute Branch and Bound for any tree
@@ -332,16 +333,16 @@ protected:
 	 *
 	 * The algorithm will add vertices starting at position 'pos'.
 	 *
-	 * @param D_1 The sum of the lengths of the edges in E_1, that is, the set of
+	 * @param D_p The sum of the lengths of the edges in E_p, that is, the set of
 	 * edges where both endpoints are assigned to the prefix.
-	 * @param D_12_m The sum of the partial length of the edges in E_12, from the
+	 * @param D_ps_m The sum of the partial length of the edges in E_ps, from the
 	 * vertex assigned to the prefix to the border that separates the prefix and
 	 * the suffix (between positions 'pos-1' and 'pos'), calculated as the length
 	 * of the edge as if it ended at position 'pos'.
 	 * @param pos Position where to place the next vertex.
 	 */
 	exe_result_type exe
-	(const uint64_t D_1, const uint64_t D_12_m, const position pos)
+	(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
 	noexcept;
 
 private:
@@ -448,7 +449,7 @@ private:
 	void output_num_unassigned_neighbors() const noexcept;
 	void output_border_vertices() const noexcept;
 	void display_all_info
-	(const uint64_t D_1, const uint64_t D_12_m, const position pos)
+	(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
 	noexcept;
 
 	// progress of algorithm

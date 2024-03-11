@@ -67,7 +67,7 @@ namespace DMax {
 namespace unconstrained {
 
 uint64_t AEF_BnB::upper_bound_generic
-(const uint64_t D_1, const uint64_t D_12_m, const position_t pos)
+(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos)
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
@@ -76,10 +76,10 @@ noexcept
 
 	uint64_t D_upper = 0;
 
-	// upper bound on E_12
+	// upper bound on E_ps
 	{
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	std::cout << tab() << "Upper bound E_12\n";
+	std::cout << tab() << "Upper bound E_ps\n";
 	std::cout << tab() << "    Vertices with some neighbor assigned:\n";
 #endif
 
@@ -148,62 +148,62 @@ noexcept
 	}
 #endif
 
-	uint64_t D_upper_E_12_p = 0;
+	uint64_t D_upper_E_ps_p = 0;
 	uint64_t current_length = m_n_nodes - (*pos + 1);
 	for (std::size_t i = 0; i < idx; ++i) {
 		const node ui = m_border_vertices[i];
 		const uint64_t k = m_num_assigned_neighbors[ui];
-		D_upper_E_12_p += current_length*k;
+		D_upper_E_ps_p += current_length*k;
 		--current_length;
 	}
 
-	const uint64_t second_D_upper_E_12 = D_12_m + D_upper_E_12_p;
+	const uint64_t second_D_upper_E_ps = D_ps_m + D_upper_E_ps_p;
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	std::cout << tab() << "    D_12_m=             " << D_12_m << '\n';
-	std::cout << tab() << "    upper bound D_12_p= " << D_upper_E_12_p << '\n';
-	std::cout << tab() << "    upper bound E_12=   " << second_D_upper_E_12 << '\n';
+	std::cout << tab() << "    D_ps_m=             " << D_ps_m << '\n';
+	std::cout << tab() << "    upper bound D_ps_p= " << D_upper_E_ps_p << '\n';
+	std::cout << tab() << "    upper bound E_ps=   " << second_D_upper_E_ps << '\n';
 #endif
 
-	D_upper += second_D_upper_E_12;
+	D_upper += second_D_upper_E_ps;
 	}
 
-	// upper bound on E_2
+	// upper bound on E_s
 	{
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	std::cout << tab() << "Upper bound E_2\n";
+	std::cout << tab() << "Upper bound E_s\n";
 #endif
 
 	const uint64_t n = nodes_in_suffix(m_n_nodes, *pos);
 	const uint64_t m = m_E_s.size();
 #if defined DEBUG
-	// if we have that m=n then the graph induced by E_2 is not a tree,
+	// if we have that m=n then the graph induced by E_s is not a tree,
 	// but this can never happen because the input graph *is* a tree.
 	assert(m < n);
 #endif
 	// The upper bound is calculated in the launcher.
-	// The values are stored in this matrix 'm_upper_bound_E_2'
+	// The values are stored in this matrix 'm_upper_bound_E_s'
 	// to avoid calculation of the same values over and over
 	// again.
-	const uint64_t D_upper_E_2 = (4*n*m + (m%2) - m*m - 4*m)/4;
-	D_upper += D_upper_E_2;
+	const uint64_t D_upper_E_s = (4*n*m + (m%2) - m*m - 4*m)/4;
+	D_upper += D_upper_E_s;
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << tab() << "    n=               " << n << '\n';
 	std::cout << tab() << "    m=               " << m << '\n';
-	std::cout << tab() << "    upper bound E_2= " << D_upper_E_2 << '\n';
+	std::cout << tab() << "    upper bound E_s= " << D_upper_E_s << '\n';
 #endif
 	}
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	std::cout << tab() << "D_1= " << D_1 << '\n';
+	std::cout << tab() << "D_p= " << D_p << '\n';
 	std::cout << tab() << "Upper bounds:\n";
 	std::cout << tab() << "    D_upper= " << D_upper << '\n';
 #endif
 
-	return D_upper + D_1;
+	return D_upper + D_p;
 }
 
 AEF_BnB::next_action AEF_BnB::what_to_do_next
-(const uint64_t D_1, const uint64_t D_12_m, const position_t pos)
+(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos)
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
@@ -212,7 +212,7 @@ noexcept
 
 	{
 	// calculate generic upper bound
-	const uint64_t D_upper = upper_bound_generic(D_1, D_12_m, pos);
+	const uint64_t D_upper = upper_bound_generic(D_p, D_ps_m, pos);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << tab() << "D_upper_generic= " << D_upper << '\n';
@@ -227,7 +227,7 @@ noexcept
 	if (m_E_s.size() == 0) {
 
 		// If the generic upper bound did not fail then it means that,
-		// in the case of E_2 being empty, the remaining vertices can
+		// in the case of E_s being empty, the remaining vertices can
 		// be rearranged so that the result is a potential new maximum.
 
 		// decide whether or not the remaining have all degree 1
