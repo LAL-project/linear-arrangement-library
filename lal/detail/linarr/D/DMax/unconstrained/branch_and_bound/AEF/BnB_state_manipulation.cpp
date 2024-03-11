@@ -163,7 +163,7 @@ noexcept
 
 			// edge is in E_1 -> move it
 			m_E_s.add(e);
-			m_E_sp.remove(e);
+			m_E_ps.remove(e);
 
 			// update D_12^-: substract the length of the edge that goes to E_1
 			D_12_m -= *pos - pv;
@@ -174,7 +174,7 @@ noexcept
 			++m_node_left_degree[v];
 
 			// edge is in E_2 -> move it
-			m_E_sp.add(e);
+			m_E_ps.add(e);
 			m_E_s.remove(e);
 
 			// add 'v' to the border vertex set, if appropriate
@@ -186,7 +186,7 @@ noexcept
 	m_border_vertices.remove(u);
 
 	// update D_12^-: add a unit of length for every edge in E_12
-	D_12_m += m_E_sp.size();
+	D_12_m += m_E_ps.size();
 
 	// update vertex's level
 	m_node_level[u] =
@@ -292,7 +292,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 
 			// edge is in E_1 -> move it
 			m_E_s.remove(e);
-			m_E_sp.add(e);
+			m_E_ps.add(e);
 		}
 		else {
 #if defined DEBUG
@@ -303,7 +303,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 			--m_node_left_degree[v];
 
 			// edge is in E_2 -> move it
-			m_E_sp.remove(e);
+			m_E_ps.remove(e);
 			m_E_s.add(e);
 
 			// remove 'v' from the border vertex set, if appropriate
