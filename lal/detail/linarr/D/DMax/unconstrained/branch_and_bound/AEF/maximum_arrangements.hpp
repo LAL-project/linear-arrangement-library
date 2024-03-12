@@ -70,7 +70,6 @@ namespace unconstrained {
 class set_max_arrangements {
 private:
 	static constexpr level_signature_type per_vertex = level_signature_type::per_vertex;
-	typedef level_signature<per_vertex> vertex_level_signature;
 
 public:
 	/// Constructor bound to a free tree.
@@ -120,7 +119,8 @@ public:
 	}
 
 	/// Returns the level signature of the @e i-th representative.
-	[[nodiscard]] const vertex_level_signature& get_level_signature(std::size_t i)
+	[[nodiscard]]
+	const level_signature_per_vertex& get_level_signature(std::size_t i)
 	const noexcept
 	{
 #if defined DEBUG
@@ -144,14 +144,17 @@ public:
 			m_max_value = value;
 
 			m_representatives.clear();
+			m_level_signatures.clear();
+			m_amount.clear();
+
 			m_representatives.push_back(arr);
 
-			vertex_level_signature L = calculate_level_signature<per_vertex>(m_t, arr);
+			level_signature_per_vertex L = calculate_level_signature<per_vertex>(m_t, arr);
 			m_level_signatures.push_back(std::move(L));
 			m_amount.push_back(1);
 		}
 		else if (m_max_value == value) {
-			vertex_level_signature L = calculate_level_signature<per_vertex>(m_t, arr);
+			level_signature_per_vertex L = calculate_level_signature<per_vertex>(m_t, arr);
 			const std::size_t idx_repr = find_representative(L);
 			if (idx_repr == m_representatives.size()) {
 				m_representatives.push_back(arr);
@@ -178,6 +181,10 @@ public:
 
 		// just copy the contents of 'max_arrs'
 		if (m_max_value < max_arrs.m_max_value) {
+			m_representatives.clear();
+			m_level_signatures.clear();
+			m_amount.clear();
+
 			m_max_value = max_arrs.m_max_value;
 			m_representatives = std::move(max_arrs.m_representatives);
 			m_level_signatures = std::move(max_arrs.m_level_signatures);
@@ -211,10 +218,11 @@ private:
 	 * @returns An index in the range \f$[0,N]\f$, where \f$N\f$ equals the number
 	 * of representatives in this set.
 	 */
-	[[nodiscard]] std::size_t find_representative(const vertex_level_signature& L)
+	[[nodiscard]] std::size_t find_representative
+	(const level_signature_per_vertex& L)
 	const noexcept
 	{
-		const vertex_level_signature mL = mirror_level_signature(L);
+		const level_signature_per_vertex mL = mirror_level_signature(L);
 
 		// The isomorphism to use is based on 'simple' arrangement isomorphism
 		for (std::size_t i = 0; i < m_representatives.size(); ++i) {
@@ -238,7 +246,7 @@ private:
 	/// List of representative arrangements.
 	std::vector<linear_arrangement> m_representatives;
 	/// List of level signatures per representatives.
-	std::vector<vertex_level_signature> m_level_signatures;
+	std::vector<level_signature_per_vertex> m_level_signatures;
 	/// Multiplicities of each representative.
 	std::vector<uint64_t> m_amount;
 };
