@@ -2,8 +2,8 @@
 
 This library implements several algorithms to solve problems related to linear arrangements. For example, it implements algorithms that
 
-- solve the Minimum Linear Arrangement Problem on trees under different constraints of projectivity,
-- solve different variants of the Maximum Linear Arrangement Problem on bipartite graphs and trees,
+- solve the Minimum Linear Arrangement Problem on trees under different constraints (no constraint, over bipartite, planar and projective arrangements),
+- solve the Maximum Linear Arrangement Problem on trees under different constraints (no constraint, over bipartite, planar and projective arrangements),
 - calculate the expectation and variance of the number of edge crossings and of the sum of the length of the edges under different constraints (such as projectivity and planarity),
 - compute efficiently the number of edge crossings given a linear arrangement of a graph,
 - and solve many other problems.
