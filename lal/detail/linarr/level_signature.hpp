@@ -208,9 +208,9 @@ public:
 		if constexpr (t == level_signature_type::per_position) {
 			const std::size_t n = m_data.size();
 			for (position p = 0ull; p < n/2; ++p) {
-				std::swap( m_data[p], m_data[n - 1ull - p] );
 				m_data[p] = -m_data[p];
 				m_data[n - 1ull - p] = -m_data[n - 1ull - p];
+				std::swap( m_data[p], m_data[n - 1ull - p] );
 			}
 			if (n%2 == 1) {
 				m_data[n/2] = -m_data[n/2];
@@ -405,15 +405,15 @@ noexcept
 
 /**
  * @brief Mirrors a level signature.
- * @tparam t Level signature type.
+ * @tparam level_signature_t Level signature type.
  * @param L Input level signature.
  * @returns A mirrored copy of the input level signature.
  */
-template <level_signature_type t>
-level_signature<t> mirror_level_signature(const level_signature<t>& L)
+template <class level_signature_t>
+level_signature_t mirror_level_signature(const level_signature_t& L)
 noexcept
 {
-	level_signature<t> L2 = L;
+	level_signature_t L2 = L;
 	L2.mirror();
 	return L2;
 }
