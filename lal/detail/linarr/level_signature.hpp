@@ -109,19 +109,23 @@ public:
 	/// Access position 'i'
 	template <typename T>
 	[[nodiscard]] int64_t operator[] (T i) const noexcept {
-		static_assert(
-			(t == level_signature_type::per_position and std::is_same_v<T, position_t>) or
-			(t == level_signature_type::per_vertex and std::is_same_v<T, node_t>)
-		);
+		if constexpr (t == level_signature_type::per_position) {
+			static_assert(std::is_same_v<T, position_t>);
+		}
+		else {
+			static_assert(std::is_same_v<T, node_t>);
+		}
 		return m_data[*i];
 	}
 	/// Access position 'i'
 	template <typename T>
 	[[nodiscard]] int64_t& operator[] (T i) noexcept {
-		static_assert(
-			(t == level_signature_type::per_position and std::is_same_v<T, position_t>) or
-			(t == level_signature_type::per_vertex and std::is_same_v<T, node_t>)
-		);
+		if constexpr (t == level_signature_type::per_position) {
+			static_assert(std::is_same_v<T, position_t>);
+		}
+		else {
+			static_assert(std::is_same_v<T, node_t>);
+		}
 		return m_data[*i];
 	}
 
