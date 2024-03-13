@@ -69,7 +69,8 @@ namespace unconstrained {
  */
 class set_max_arrangements {
 private:
-	static constexpr level_signature_type per_vertex = level_signature_type::per_vertex;
+	/// Typedef to write less
+	static constexpr level_signature_type per_position = level_signature_type::per_position;
 
 public:
 	/// Constructor bound to a free tree.
@@ -120,7 +121,7 @@ public:
 
 	/// Returns the level signature of the @e i-th representative.
 	[[nodiscard]]
-	const level_signature_per_vertex& get_level_signature(std::size_t i)
+	const level_signature_per_position& get_level_signature(std::size_t i)
 	const noexcept
 	{
 #if defined DEBUG
@@ -147,15 +148,17 @@ public:
 			m_level_signatures.clear();
 			m_amount.clear();
 
-			m_representatives.push_back(arr);
+			level_signature_per_position L =
+				calculate_level_signature<per_position>(m_t, arr);
 
-			level_signature_per_vertex L = calculate_level_signature<per_vertex>(m_t, arr);
+			m_representatives.push_back(arr);
 			m_level_signatures.push_back(std::move(L));
 			m_amount.push_back(1);
 		}
 		else if (m_max_value == value) {
-			level_signature_per_vertex L = calculate_level_signature<per_vertex>(m_t, arr);
+			level_signature_per_position L = calculate_level_signature<per_position>(m_t, arr);
 			const std::size_t idx_repr = find_representative(L);
+
 			if (idx_repr == m_representatives.size()) {
 				m_representatives.push_back(arr);
 				m_level_signatures.push_back(std::move(L));
@@ -219,17 +222,17 @@ private:
 	 * of representatives in this set.
 	 */
 	[[nodiscard]] std::size_t find_representative
-	(const level_signature_per_vertex& L)
+	(const level_signature_per_position& L)
 	const noexcept
 	{
-		const level_signature_per_vertex mL = mirror_level_signature(L);
+		const level_signature_per_position mL = mirror_level_signature(L);
 
 		// The isomorphism to use is based on 'simple' arrangement isomorphism
 		for (std::size_t i = 0; i < m_representatives.size(); ++i) {
 
 			const bool isomorphic =
-				m_level_signatures[i] == L or
-				m_level_signatures[i] == mL;
+				(m_level_signatures[i] == L) or
+				(m_level_signatures[i] == mL);
 
 			if (isomorphic) { return i; }
 		}
@@ -246,7 +249,7 @@ private:
 	/// List of representative arrangements.
 	std::vector<linear_arrangement> m_representatives;
 	/// List of level signatures per representatives.
-	std::vector<level_signature_per_vertex> m_level_signatures;
+	std::vector<level_signature_per_position> m_level_signatures;
 	/// Multiplicities of each representative.
 	std::vector<uint64_t> m_amount;
 };
