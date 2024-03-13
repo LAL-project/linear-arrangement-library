@@ -61,7 +61,7 @@ Readers might find the noun <em>vertex</em> used instead of <em>node</em>. These
 
 \subsection LAL_concepts__edge Edge
 
-An edge of a graph is simply a pair of index vertices. An edge is represented with the type @ref lal::edge.
+An edge of a graph is simply a pair of vertices. Recall vertices are usually implemented using integer values; these are simply values from \f$0\f$ to\f$n-1\f$, where \f$n\f$ denotes the number of vertices of the graph. An edge is represented with the type @ref lal::edge.
 
 \subsection LAL_concepts__edge_independent_edges Pair of independent/disjoint edges
 
@@ -74,6 +74,10 @@ A linear arrangement is a well-known concept that relates vertices to distinct p
 In the mathematical sense, a linear arrangement is a permutation, a bijective function \f$\pi \;:\; V \longrightarrow [0,n-1]\f$, for which:
 - \f$\pi(u)=p\f$ when the position of vertex \f$u\f$ is \f$p\f$.
 - \f$\pi^{-1}(p)=u\f$ when at position \f$p\f$ we find vertex \f$u\f$.
+
+See the figure below for an illustration of a linear arrangement.
+
+\image html linear_arrangement.png
 
 The two arrays underlying a linear arrangement describe the function \f$\pi\f$. One array gives the values \f$\pi(u)\f$ (@ref lal::linear_arrangement::m_direct); the other array gives the values \f$\pi^{-1}(p)\f$ (@ref lal::linear_arrangement::m_inverse).
 
@@ -165,6 +169,38 @@ There are many types of arrangements used in this library. For example, some fun
 - Bipartite arrangements of a bipartite graph: a bipartite arrangement of a bipartite graph \f$B = (V_1\cup V_2, E)\f$ is an arrangement where the first vertices in the arrangement are those from \f$V_1\f$ followed by those from \f$V_2\f$ (or viceversa) \cite Alemany2023a.
 
 There are no types for these arrangements.
+
+\subsubsection LAL_concepts__linear_arrangement__mirroring Mirroring an arrangement
+
+An arrangement \f$\pi\f$ can be mirrored, denoted with \f$\tilde{\pi}\f$ in that we can revert the sequence of vertices in the linear ordering.
+
+\image html arrangement_mirror.png
+
+\subsubsection LAL_concepts__linear_arrangement__level_sequence Level sequence of an arrangement
+
+We define the level sequence \f$L_\pi(G)\f$ of an arrangement \f$\pi\f$ of a graph \f$G\f$ \cite Nurse2018a \cite Nurse2019a \cite Alemany2023a as the sequence of level values of the vertices of \f$G\f$ in \f$\pi\f$. The level value of a vertex \f$u\f$, denoted as \f$l_\pi(u)\f$ is simply the difference between the number of its neighbours to its right in the arrangement, \f$r_\pi(u)\f$, and the number of its neighbours to its left in the arrangement, \f$l_\pi(u)\f$.
+
+- \f$\mathfrak{r}_\pi(u) := |\{ v\in\Gamma(u) \;|\; \pi(u)<\pi(v) \}|\f$
+- \f$\mathfrak{l}_\pi(u) := |\{ v\in\Gamma(u) \;|\; \pi(v)<\pi(u) \}|\f$
+- \f$l_\pi(u) := \mathfrak{r}_\pi(u) - \mathfrak{l}_\pi(u)\f$
+
+Then, \f$L_\pi(G) := (l_\pi(u_1), \dots, l_\pi(u_n))\f$, where \f$u_i\f$ denotes the vertex at position \f$i\f$ in \f$\pi\f$.
+
+\subsubsection LAL_concepts__linear_arrangement__isomorphism Arrangement isomorphism
+
+Two arrangements \f$\pi_1\f$ and \f$\pi_2\f$ of the same graph \f$G\f$ may not be exactly the same, namely, the distribution of the vertices may not the same in both arrangements. However, they may be similar enough to the point in which one could say they are actually the same. To formalize this, we introduce here several variants of the concept of arrangement @e isomorphism, each of which defines when two arrangements are similar enough to be the same while the exact distribution of the vertices is not.
+
+Consider, for example, the tree in shown in (a) in the figure below.
+
+\image html arrangement_isomorphism.png
+
+- Edge isomorphism \cite Alemany2023a. The arrangements in (b) are not the same, yet they would overlap perfectly when drawn on top of each other. This motivates the definition of @e edge isomorphism. Two arrangements \f$\pi_1\f$ and \f$\pi_2\f$ of the same graph are edge-isomorphic if a pair of positions \f$p,q\f$ in \f$\pi_1\f$ are connected by an edge if, and only if, the same pair of positions are also connected by an edge. More formally, two arrangements \f$\pi_1\f$ and \f$\pi_2\f$ of the same \f$n\f$-vertex graph \f$G\f$ are edge-isomorphic if
+
+	\f$\forall p,q\f$ such that \f$1<p<q<n\f$, we have that \f$\pi_1^{-1}(p)\pi_1^{-1}(q) \in E  \longleftrightarrow \pi_2^{-1}(p)\pi_2^{-1}(q)\f$ or \f$\tilde{\pi_1}^{-1}(p)\tilde{\pi_1}^{-1}(q) \in E  \longleftrightarrow \pi_2^{-1}(p)\pi_2^{-1}(q)\f$
+
+	where, recall, \f$\tilde{\pi}\f$ denotes the mirror of arrangement \f$\pi\f$.
+
+- Level isomorphism \cite Alemany2023a. The arrangements in (c) are not the same, and they would not overlap if we drew them on top of each other (as it would happen with the arrangements in (b) ). Nevertheless, both yield the same sum of edge lengths. The reason why is that their level sequences are the same. We say two arrangements \f$\pi_1\f$ and \f$\pi_2\f$ of the same graph are level-isomorphic if their level sequences are the same. More formally, two arrangements \f$\pi_1\f$ and \f$\pi_2\f$ of the same graph \f$G\f$ are level-isomorphic if, and only if, \f$L_{\pi_1}(G) = L_{\pi_2}(G)\f$ or \f$L_{\tilde{\pi}_1}(G) = L_{\pi_2}(G)\f$.
 
 \subsection LAL_concepts__edge_list Edge list
 
