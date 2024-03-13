@@ -47,8 +47,6 @@
 #include <vector>
 #include <omp.h>
 
-#include <iostream>
-
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -62,59 +60,24 @@
 #include <lal/detail/properties/branchless_path_find.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 
+#include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>
+#include <lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/maximum_arrangements.hpp>
 
 namespace lal {
 namespace linarr {
 
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+void split_vertices_by_color(
 	const graphs::free_tree& t,
-	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& vertex_colors,
-	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
-	const std::size_t num_threads
+	std::vector<node>& blue_vertices_sorted_by_degree,
+	std::vector<node>& red_vertices_sorted_by_degree
 )
 noexcept
 {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	assert(num_threads == 1);
-#endif
+	const uint64_t n = t.get_num_nodes();
 
-	std::pair<uint64_t, std::vector<linear_arrangement>> res;
-
-	const auto n = t.get_num_nodes();
-
-	// annyoing, base case
-	if (n == 1) {
-		linear_arrangement arr(1);
-		arr.assign(0ull, 0ull);
-		res.first = 0;
-		res.second = {{std::move(arr)}};
-		return res;
-	}
-
-	// leaves_per_vertex[u] := set of vertices of degree 1 adjacent to u
-	detail::data_array<std::vector<node>> leaves_per_vertex;
-
-	// initial value of DMax used to initialize the workers
-	std::pair<uint64_t, linear_arrangement> initial_DMax;
-
-	// paths in the tree
-	detail::data_array<std::size_t> internal_path_node_to_path_idx;
-
-	// colors
-	std::vector<node> blue_vertices_sorted_by_degree;
-	std::vector<node> red_vertices_sorted_by_degree;
-
-	detail::data_array<std::size_t> vertex_to_orbit;
-
-	// The list of objects that run DMax. No two objects are ever run in the
-	// same thread at the same time.
-	std::vector<detail::DMax::unconstrained::AEF_BnB> BnB_runners;
-
-	// retrieve vertex colors
-	{
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	for (node u = 0; u < n; ++u) {
@@ -145,7 +108,6 @@ noexcept
 	};
 	sort_nodes(blue_vertices_sorted_by_degree);
 	sort_nodes(red_vertices_sorted_by_degree);
-	}
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << "-----------------\n";
@@ -161,16 +123,17 @@ noexcept
 	std::cout << '\n';
 	std::cout << "-----------------\n";
 #endif
+}
 
-	initial_DMax = linarr::max_sum_edge_lengths_bipartite(t, vertex_colors);
+void retrieve_leave_sets(
+	const graphs::free_tree& t,
+	detail::data_array<std::vector<node>>& leaves_per_vertex
+)
+noexcept
+{
+	const uint64_t n = t.get_num_nodes();
 
-	detail::DMax::unconstrained::set_max_arrangements max_arrs(t);
-	max_arrs.init();
-	max_arrs.add(initial_DMax.first, initial_DMax.second);
-
-	// retrieve leaves
-	{
-	leaves_per_vertex.resize(t.get_num_nodes());
+	leaves_per_vertex.resize(n);
 	for (node u = 0; u < n; ++u) {
 		// retrieve leaves of vertex u
 		leaves_per_vertex[u].reserve(t.get_degree(u));
@@ -180,8 +143,16 @@ noexcept
 		// sort the leaves by vertex index
 		std::sort(leaves_per_vertex[u].begin(), leaves_per_vertex[u].end());
 	}
-	}
+}
 
+void relate_vertices_to_paths(
+	const graphs::free_tree& t,
+	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
+	detail::data_array<std::size_t>& internal_path_node_to_path_idx
+)
+noexcept
+{
+	const uint64_t n = t.get_num_nodes();
 	internal_path_node_to_path_idx.resize(n, n + 1);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
@@ -203,6 +174,7 @@ noexcept
 	}
 	std::cout << "-----------------\n";
 #endif
+
 	// Relate every vertex to the path it belongs to.
 	// Only vertices of degree <= 2 are taken into account.
 	for (std::size_t i = 0; i < branchless_paths_in_tree.size(); ++i) {
@@ -219,13 +191,23 @@ noexcept
 	}
 	std::cout << "-----------------\n";
 #endif
+}
 
+void relate_vertices_to_orbits(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	detail::data_array<std::size_t>& vertex_to_orbit
+)
+noexcept
+{
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << "Computing orbits...\n";
 #endif
 
-	// orbits of this tree
+	const uint64_t n = t.get_num_nodes();
 	vertex_to_orbit.resize(n);
+
+	// relate vertices to their orbit
 	for (std::size_t i = 0; i < orbits.size(); ++i) {
 		for (node u : orbits[i]) {
 			vertex_to_orbit[u] = i;
@@ -242,10 +224,90 @@ noexcept
 		std::cout << '\n';
 	}
 #endif
+}
+
+void calculate_initial_solution(
+	const lal::graphs::free_tree& t,
+	const properties::bipartite_graph_coloring& vertex_colors,
+	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
+	const detail::data_array<std::size_t>& internal_path_node_to_path_idx,
+
+	detail::DMax::unconstrained::set_max_arrangements& max_arrs,
+	std::pair<uint64_t, linear_arrangement>& initial_DMax
+)
+noexcept
+{
+	max_arrs.init();
+
+	std::pair<uint64_t, lal::linear_arrangement> Bipartite_MaxLA =
+		detail::DMax::bipartite::AEF<true>(t, vertex_colors);
+	max_arrs.add(Bipartite_MaxLA.first, Bipartite_MaxLA.second);
+
+	std::pair<uint64_t, lal::linear_arrangement> OneThistle_MaxLA =
+		lal::detail::DMax::thistle_1::AEF<true>
+		(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
+	max_arrs.add(OneThistle_MaxLA.first, OneThistle_MaxLA.second);
+
+	if (Bipartite_MaxLA.first > OneThistle_MaxLA.first) {
+		initial_DMax = std::move(Bipartite_MaxLA);
+	}
+	else {
+		initial_DMax = std::move(OneThistle_MaxLA);
+	}
+}
+
+std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+	const graphs::free_tree& t,
+	const std::vector<std::vector<node>>& orbits,
+	const properties::bipartite_graph_coloring& vertex_colors,
+	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
+	const std::size_t num_threads
+)
+noexcept
+{
+#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+	assert(num_threads == 1);
+#endif
+
+	// annyoing, base case
+	if (t.get_num_nodes() == 1) {
+		linear_arrangement arr(1);
+		arr.assign(0ull, 0ull);
+		return { 0, {{std::move(arr)}} };
+	}
+
+	std::vector<node> blue_vertices_sorted_by_degree;
+	std::vector<node> red_vertices_sorted_by_degree;
+	split_vertices_by_color(
+		t, vertex_colors,
+		blue_vertices_sorted_by_degree, red_vertices_sorted_by_degree
+	);
+
+	// leaves_per_vertex[u] := set of vertices of degree 1 adjacent to u
+	detail::data_array<std::vector<node>> leaves_per_vertex;
+	retrieve_leave_sets(t, leaves_per_vertex);
+
+	detail::data_array<std::size_t> internal_path_node_to_path_idx;
+	relate_vertices_to_paths(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
+
+	detail::data_array<std::size_t> vertex_to_orbit;
+	relate_vertices_to_orbits(t, orbits, vertex_to_orbit);
+
+	detail::DMax::unconstrained::set_max_arrangements max_arrs(t);
+	std::pair<uint64_t, linear_arrangement> initial_DMax;
+	calculate_initial_solution(
+		t, vertex_colors,
+		branchless_paths_in_tree, internal_path_node_to_path_idx,
+		max_arrs, initial_DMax
+	);
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 	std::cout << "Making runners...\n";
 #endif
+
+	// The list of objects that run DMax. No two objects are ever run in the
+	// same thread at the same time.
+	std::vector<detail::DMax::unconstrained::AEF_BnB> BnB_runners;
 
 	// initialize runners
 	BnB_runners =
@@ -282,10 +344,9 @@ noexcept
 		BnB_runners[0].exe(orbit[0]);
 	}
 #else
-#pragma omp parallel for schedule(dynamic) num_threads(num_threads)
+	#pragma omp parallel for schedule(dynamic) num_threads(num_threads)
 	for (std::size_t i = 0; i < orbits.size(); ++i) {
 		const auto u = orbits[i][0];
-		//if (m_t.get_degree(u) != max_degree) { continue; }
 
 		const uint64_t tid = static_cast<uint64_t>(omp_get_thread_num());
 		BnB_runners[tid].exe(u);
@@ -296,6 +357,7 @@ noexcept
 		max_arrs.merge(std::move(runner.m_max_arrs));
 	}
 
+	std::pair<uint64_t, std::vector<linear_arrangement>> res;
 	res.first = max_arrs.get_max_value();
 	res.second = max_arrs.retrieve_all_representatives();
 	return res;
