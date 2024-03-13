@@ -147,23 +147,23 @@ public:
 	 * @param t The tree of which @e bp is a path.
 	 * @returns True if @e bp is an antenna. False if it is not.
 	 */
-	template <class tree_t>
-	bool is_antenna(const tree_t& t) const noexcept {
-		static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+	template <class graph_t>
+	bool is_antenna(const graph_t& t) const noexcept {
+		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		return t.get_degree(m_h1) == 1 or t.get_degree(m_h2) == 1;
 	}
 
 private:
-	/// A 0-1 array to indicate if a vertex belongs to this path or not
+	/// A 0-1 array to indicate if a vertex belongs to this path or not.
 	detail::data_array<char> m_vertex_set;
-	/// The vertex sequence includes h1 and h2
+	/// The vertex sequence of this branchless path (includes h1 and h2).
 	std::vector<node> m_vertex_sequence;
 
-	/// The first endpoint of this path
+	/// The first endpoint of this path.
 	node m_h1;
-	/// The second endpoint of this path
+	/// The second endpoint of this path.
 	node m_h2;
-	/// The @e internal vertex with lowest index lexicographically
+	/// The @e internal vertex with lowest index lexicographically.
 	node m_lowest_lexicographic;
 };
 
