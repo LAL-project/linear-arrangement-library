@@ -261,12 +261,12 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
-	const std::size_t num_threads
+	const std::size_t number_of_threads
 )
 noexcept
 {
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-	assert(num_threads == 1);
+	assert(number_of_threads == 1);
 #endif
 
 	// annyoing, base case
@@ -312,7 +312,7 @@ noexcept
 	// initialize runners
 	BnB_runners =
 		std::vector<detail::DMax::unconstrained::AEF_BnB>(
-			num_threads,
+			number_of_threads,
 			detail::DMax::unconstrained::AEF_BnB(
 				t,
 				leaves_per_vertex,
@@ -340,11 +340,12 @@ noexcept
 	}
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+	// execute BnB sequentially
 	for (const auto& orbit : orbits) {
 		BnB_runners[0].exe(orbit[0]);
 	}
 #else
-	#pragma omp parallel for schedule(dynamic) num_threads(num_threads)
+	#pragma omp parallel for schedule(dynamic) num_threads(number_of_threads)
 	for (std::size_t i = 0; i < orbits.size(); ++i) {
 		const auto u = orbits[i][0];
 
