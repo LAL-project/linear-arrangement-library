@@ -366,12 +366,12 @@ noexcept
 		}
 		else {
 			if (pu < pv) {
-				++L[*pu];
-				--L[*pv];
+				++L[pu];
+				--L[pv];
 			}
 			else {
-				--L[*pu];
-				++L[*pv];
+				--L[pu];
+				++L[pv];
 			}
 		}
 	}
