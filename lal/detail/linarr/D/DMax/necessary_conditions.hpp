@@ -96,7 +96,7 @@ noexcept
 /**
  * @brief Returns true if no two adjacent vertices (in the graph) have the same level value.
  *
- * Checks that no edge \f$uv\in E(G)\f$ is such that \f$l_{\pi}(u) = l_{\pi}(v)$.
+ * Checks that no edge \f$uv\in E(G)\f$ is such that \f$l_{\pi}(u) = l_{\pi}(v)\f$.
  * This is a necessary condition for an arrangement to be maximum (in sum of edge
  * lengths), as shown in \cite Nurse2018a \cite Nurse2019a and \cite Alemany2023a.
  *
