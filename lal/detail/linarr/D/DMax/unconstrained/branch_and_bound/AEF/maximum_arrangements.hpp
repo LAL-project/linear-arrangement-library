@@ -172,7 +172,7 @@ public:
 
 	/**
 	 * @brief Merges another set of maximum arrangements into this one.
-	 * @param max_arrs Set of maximum arrangements.
+	 * @param max_arrs Other set of maximum arrangements.
 	 * @post The set passed as parameter should be considered moved and thus
 	 * unusable after this call.
 	 */
@@ -197,8 +197,6 @@ public:
 
 		// actually merge the two sets
 		for (std::size_t i = 0; i < max_arrs.m_representatives.size(); ++i) {
-			const linear_arrangement& arr_i = max_arrs.m_representatives[i];
-
 			// find the representative's index in this set of arrangements
 			const std::size_t idx_repr = find_representative(max_arrs.m_level_signatures[i]);
 
@@ -207,8 +205,10 @@ public:
 				++m_amount[idx_repr];
 			}
 			else {
-				m_representatives.push_back(arr_i);
-				m_level_signatures.push_back(max_arrs.m_level_signatures[i]);
+				m_representatives.push_back
+					(std::move(max_arrs.m_representatives[i]));
+				m_level_signatures.push_back
+					(std::move(max_arrs.m_level_signatures[i]));
 				m_amount.push_back(max_arrs.m_amount[i]);
 			}
 		}
