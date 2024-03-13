@@ -145,6 +145,7 @@ public:
 			m_max_value = value;
 
 			m_representatives.clear();
+			m_mirrored_level_signatures.clear();
 			m_level_signatures.clear();
 			m_amount.clear();
 
@@ -152,6 +153,7 @@ public:
 				calculate_level_signature<per_position>(m_t, arr);
 
 			m_representatives.push_back(arr);
+			m_mirrored_level_signatures.push_back(mirror_level_signature(L));
 			m_level_signatures.push_back(std::move(L));
 			m_amount.push_back(1);
 		}
@@ -161,6 +163,7 @@ public:
 
 			if (idx_repr == m_representatives.size()) {
 				m_representatives.push_back(arr);
+				m_mirrored_level_signatures.push_back(mirror_level_signature(L));
 				m_level_signatures.push_back(std::move(L));
 				m_amount.push_back(1);
 			}
@@ -185,11 +188,13 @@ public:
 		// just copy the contents of 'max_arrs'
 		if (m_max_value < max_arrs.m_max_value) {
 			m_representatives.clear();
+			m_mirrored_level_signatures.clear();
 			m_level_signatures.clear();
 			m_amount.clear();
 
 			m_max_value = max_arrs.m_max_value;
 			m_representatives = std::move(max_arrs.m_representatives);
+			m_mirrored_level_signatures = std::move(max_arrs.m_mirrored_level_signatures);
 			m_level_signatures = std::move(max_arrs.m_level_signatures);
 			m_amount = std::move(max_arrs.m_amount);
 			return;
@@ -205,10 +210,9 @@ public:
 				++m_amount[idx_repr];
 			}
 			else {
-				m_representatives.push_back
-					(std::move(max_arrs.m_representatives[i]));
-				m_level_signatures.push_back
-					(std::move(max_arrs.m_level_signatures[i]));
+				m_representatives.push_back(std::move(max_arrs.m_representatives[i]));
+				m_mirrored_level_signatures.push_back(std::move(max_arrs.m_mirrored_level_signatures[i]));
+				m_level_signatures.push_back(std::move(max_arrs.m_level_signatures[i]));
 				m_amount.push_back(max_arrs.m_amount[i]);
 			}
 		}
@@ -225,14 +229,12 @@ private:
 	(const level_signature_per_position& L)
 	const noexcept
 	{
-		const level_signature_per_position mL = mirror_level_signature(L);
-
 		// The isomorphism to use is based on 'simple' arrangement isomorphism
 		for (std::size_t i = 0; i < m_representatives.size(); ++i) {
 
 			const bool isomorphic =
 				(m_level_signatures[i] == L) or
-				(m_level_signatures[i] == mL);
+				(m_mirrored_level_signatures[i] == L);
 
 			if (isomorphic) { return i; }
 		}
@@ -248,6 +250,8 @@ private:
 	uint64_t m_max_value;
 	/// List of representative arrangements.
 	std::vector<linear_arrangement> m_representatives;
+	/// List of mirrored level signatures per representatives.
+	std::vector<level_signature_per_position> m_mirrored_level_signatures;
 	/// List of level signatures per representatives.
 	std::vector<level_signature_per_position> m_level_signatures;
 	/// Multiplicities of each representative.
