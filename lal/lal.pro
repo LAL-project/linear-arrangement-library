@@ -101,6 +101,7 @@ HEADERS += \
 	detail/linarr/D/DMax/Bipartite_AEF.hpp \
 	detail/linarr/D/DMax/Planar_AEF.hpp \
 	detail/linarr/D/DMax/Projective_AEF.hpp \
+	detail/linarr/D/DMax/necessary_conditions.hpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/maximum_arrangements.hpp \
 	detail/linarr/D/DMax/utils.hpp \

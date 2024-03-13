@@ -152,6 +152,7 @@ target_sources(
 		detail/linarr/chunking/Macutek.hpp
 		detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
 		detail/linarr/D/DMax/Bipartite_AEF.hpp
+		detail/linarr/D/DMax/necessary_conditions.hpp
 		detail/linarr/D/DMax/Planar_AEF.hpp
 		detail/linarr/D/DMax/Projective_AEF.hpp
 		detail/linarr/D/DMax/utils.hpp
