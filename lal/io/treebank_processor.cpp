@@ -790,7 +790,7 @@ noexcept
 	}
 	if (m_what_fs[DMax_1_thistle_idx]) {
 		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, bps);
-		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_1_thistle));
+		set_prop(DMax_1_thistle_idx, detail::to_double(DMax_1_thistle));
 	}
 
 	// -----------------
