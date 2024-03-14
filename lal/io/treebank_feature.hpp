@@ -297,6 +297,12 @@ enum class treebank_feature {
 	 */
 	min_sum_edge_lengths_projective,
 	/**
+	 * @brief Maximum sum of length of edges over all arrangements.
+	 *
+	 * See @ref lal::linarr::max_sum_edge_lengths_all for details.
+	 */
+	max_sum_edge_lengths,
+	/**
 	 * @brief Maximum sum of length of edges over arrangements with 1 thistle
 	 * vertex.
 	 *
@@ -594,6 +600,7 @@ noexcept
 	case treebank_feature::min_sum_edge_lengths_bipartite: return "min_sum_edge_lengths_bipartite";
 	case treebank_feature::min_sum_edge_lengths_planar: return "min_sum_edge_lengths_planar";
 	case treebank_feature::min_sum_edge_lengths_projective: return "min_sum_edge_lengths_projective";
+	case treebank_feature::max_sum_edge_lengths: return "max_sum_edge_lengths";
 	case treebank_feature::max_sum_edge_lengths_1_thistle: return "max_sum_edge_lengths_1_thistle";
 	case treebank_feature::max_sum_edge_lengths_bipartite: return "max_sum_edge_lengths_bipartite";
 	case treebank_feature::max_sum_edge_lengths_planar: return "max_sum_edge_lengths_planar";

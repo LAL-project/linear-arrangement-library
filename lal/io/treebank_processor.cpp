@@ -56,6 +56,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/linarr/syntactic_dependency_tree/classify.hpp>
 #include <lal/linarr/dependency_flux.hpp>
+#include <lal/linarr/D/DMax.hpp>
 #include <lal/properties/Q.hpp>
 #include <lal/properties/degrees.hpp>
 #include <lal/properties/D_rla.hpp>
@@ -66,6 +67,7 @@
 #include <lal/properties/tree_diameter.hpp>
 #include <lal/properties/maximum_spanning_trees.hpp>
 #include <lal/properties/bipartite_graph_coloring.hpp>
+#include <lal/properties/vertex_orbits.hpp>
 #include <lal/io/treebank_collection_reader.hpp>
 #include <lal/io/treebank_reader.hpp>
 
@@ -89,6 +91,7 @@
 #include <lal/detail/linarr/D/Dmin/Unconstrained_YS.hpp>
 #include <lal/detail/linarr/D/Dmin/Bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/Dmin/utils.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 #include <lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/Planar_AEF.hpp>
@@ -218,8 +221,7 @@ noexcept
 
 treebank_error treebank_processor::process() noexcept {
 	if (m_check_before_process) {
-		const bool err =
-		detail::check_correctness_treebank<true>(m_treebank_filename);
+		const bool err = detail::check_correctness_treebank<true>(m_treebank_filename);
 
 		if (err) {
 			return treebank_error(
@@ -255,6 +257,7 @@ treebank_error treebank_processor::process() noexcept {
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
 	if (err != treebank_error_type::no_error) {
 		if (m_be_verbose >= 2) {
+
 			#pragma omp critical
 			std::cerr
 				<< "Processing treebank '" << m_treebank_filename << "' failed"
@@ -311,6 +314,7 @@ treebank_error treebank_processor::process() noexcept {
 				case treebank_feature::min_sum_edge_lengths_bipartite:
 				case treebank_feature::min_sum_edge_lengths_planar:
 				case treebank_feature::min_sum_edge_lengths_projective:
+				case treebank_feature::max_sum_edge_lengths:
 				case treebank_feature::max_sum_edge_lengths_1_thistle:
 				case treebank_feature::max_sum_edge_lengths_bipartite:
 				case treebank_feature::max_sum_edge_lengths_planar:
@@ -387,11 +391,11 @@ treebank_error treebank_processor::process() noexcept {
 	if (m_be_verbose >= 1) {
 		#pragma omp critical
 		std::cout
-			 << "    processed "
-			 << tbread.get_num_trees()
-			 << " trees in treebank '" << m_treebank_filename << "' in "
-			 << elapsed.count() << " seconds."
-			 << '\n';
+			<< "    processed "
+			<< tbread.get_num_trees()
+			<< " trees in treebank '" << m_treebank_filename << "' in "
+			<< elapsed.count() << " seconds."
+			<< '\n';
 	}
 
 	return treebank_error("", treebank_error_type::no_error);
@@ -405,7 +409,7 @@ void treebank_processor::output_tree_type_header
 const noexcept
 {
 	out_treebank_file
-	<< detail::tree_type_string(detail::array_of_tree_types[0]);
+		<< detail::tree_type_string(detail::array_of_tree_types[0]);
 
 	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
 		out_treebank_file
@@ -420,25 +424,21 @@ void treebank_processor::output_syndepstruct_type_header
 const noexcept
 {
 	out_treebank_file
-	<< detail::syntactic_dependency_tree_to_string(
-		   detail::array_of_syntactic_dependency_trees[0]
-	   );
+		<< detail::syntactic_dependency_tree_to_string
+			(detail::array_of_syntactic_dependency_trees[0]);
 
 	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
 		out_treebank_file
 			<< m_separator
-			<< detail::syntactic_dependency_tree_to_string(
-				   detail::array_of_syntactic_dependency_trees[j]
-			   );
+			<< detail::syntactic_dependency_tree_to_string
+				(detail::array_of_syntactic_dependency_trees[j]);
 	}
 }
 
 // output the tree type
 template <class tree_t, class out_stream_t>
-void treebank_processor::output_tree_type_values(
-	tree_t& fT,
-	out_stream_t& out_treebank_file
-)
+void treebank_processor::output_tree_type_values
+(tree_t& fT, out_stream_t& out_treebank_file)
 const noexcept
 {
 	const auto output_tt =
@@ -459,16 +459,15 @@ const noexcept
 
 template <class tree_t, class out_stream_t>
 void treebank_processor::output_syndepstruct_type_values(
-	const tree_t& rT,
-	uint64_t C,
+	const tree_t& rT, uint64_t C,
 	out_stream_t& out_treebank_file
 )
 const noexcept
 {
-const auto v = linarr::syntactic_dependency_tree_classify(rT, C);
+	const auto v = linarr::syntactic_dependency_tree_classify(rT, C);
 
 	const auto output_sdst =
-		[&](const linarr::syntactic_dependency_tree& sdst) {
+	[&](const linarr::syntactic_dependency_tree& sdst) {
 		const std::size_t idx_tt = static_cast<std::size_t>(sdst);
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
@@ -496,8 +495,12 @@ noexcept
 		c = detail::color_vertices_graph(fT);
 	}
 	std::vector<properties::branchless_path> bps;
-	if (m_what_fs[DMax_1_thistle_idx]) {
+	if (m_what_fs[DMax_1_thistle_idx] or m_what_fs[DMax_Unconstrained_idx]) {
 		bps = detail::find_all_branchless_paths(fT);
+	}
+	std::vector<std::vector<node>> orbits;
+	if (m_what_fs[DMax_Unconstrained_idx]) {
+		orbits = properties::compute_vertex_orbits(fT);
 	}
 
 	// a suitable algorithm to calculate C depending on the value of 'n'
@@ -660,7 +663,8 @@ noexcept
 		assert(prop_set[C_variance_idx]);
 		assert(prop_set[C_expected_idx]);
 #endif
-		set_prop(C_z_score_idx,
+		set_prop(
+			C_z_score_idx,
 			(props[C_idx] - props[C_expected_idx])/std::sqrt(props[C_variance_idx])
 		);
 	}
@@ -718,7 +722,8 @@ noexcept
 		assert(prop_set[D_variance_idx]);
 		assert(prop_set[D_expected_idx]);
 #endif
-		set_prop(D_z_score_idx,
+		set_prop(
+			D_z_score_idx,
 			(props[D_idx] - props[D_expected_idx])/std::sqrt(props[D_variance_idx])
 		);
 	}
@@ -792,6 +797,10 @@ noexcept
 		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, bps);
 		set_prop(DMax_1_thistle_idx, detail::to_double(DMax_1_thistle));
 	}
+	if (m_what_fs[DMax_Unconstrained_idx]) {
+		const auto DMax = linarr::max_sum_edge_lengths_all(fT, orbits, c, bps);
+		set_prop(DMax_Unconstrained_idx, detail::to_double(DMax.first));
+	}
 
 	// -----------------
 	// flux computation
@@ -834,13 +843,11 @@ noexcept
 
 	const auto centre_of_tree =
 		(m_what_fs[tree_centre_idx] ?
-			 properties::tree_centre(fT) :
-			 std::make_pair(n+1,n+1));
+			properties::tree_centre(fT) : std::make_pair(n+1,n+1));
 
 	const auto centroid_of_tree =
 		(m_what_fs[tree_centroid_idx] ?
-			 properties::tree_centroid(fT) :
-			 std::make_pair(n+1,n+1));
+			properties::tree_centroid(fT) : std::make_pair(n+1,n+1));
 
 	// ---------------
 	// output features
@@ -889,6 +896,7 @@ noexcept
 			case treebank_feature::min_sum_edge_lengths_bipartite:
 			case treebank_feature::min_sum_edge_lengths_planar:
 			case treebank_feature::min_sum_edge_lengths_projective:
+			case treebank_feature::max_sum_edge_lengths:
 			case treebank_feature::max_sum_edge_lengths_1_thistle:
 			case treebank_feature::max_sum_edge_lengths_bipartite:
 			case treebank_feature::max_sum_edge_lengths_planar:

@@ -212,6 +212,7 @@ private:
 	static constexpr std::size_t Dmin_Bipartite_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_bipartite);
 	static constexpr std::size_t Dmin_Planar_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_planar);
 	static constexpr std::size_t Dmin_Projective_idx = treebank_feature_to_index(treebank_feature::min_sum_edge_lengths_projective);
+	static constexpr std::size_t DMax_Unconstrained_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths);
 	static constexpr std::size_t DMax_1_thistle_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_1_thistle);
 	static constexpr std::size_t DMax_Bipartite_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_bipartite);
 	static constexpr std::size_t DMax_Planar_idx = treebank_feature_to_index(treebank_feature::max_sum_edge_lengths_planar);
