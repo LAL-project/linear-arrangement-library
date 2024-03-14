@@ -63,7 +63,7 @@
 #include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
-#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/maximum_arrangements.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
 
 namespace lal {
 namespace linarr {
@@ -231,8 +231,8 @@ void calculate_initial_solution(
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
 	const detail::data_array<std::size_t>& internal_path_node_to_path_idx,
-
-	detail::DMax::unconstrained::set_max_arrangements& max_arrs,
+	
+	detail::DMax::unconstrained::set_maximum_arrangements& max_arrs,
 	std::pair<uint64_t, linear_arrangement>& initial_DMax
 )
 noexcept
@@ -292,8 +292,8 @@ noexcept
 
 	detail::data_array<std::size_t> vertex_to_orbit;
 	relate_vertices_to_orbits(t, orbits, vertex_to_orbit);
-
-	detail::DMax::unconstrained::set_max_arrangements max_arrs(t);
+	
+	detail::DMax::unconstrained::set_maximum_arrangements max_arrs(t);
 	std::pair<uint64_t, linear_arrangement> initial_DMax;
 	calculate_initial_solution(
 		t, vertex_colors,

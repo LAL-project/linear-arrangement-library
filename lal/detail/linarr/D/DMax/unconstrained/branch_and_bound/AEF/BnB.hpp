@@ -56,7 +56,7 @@
 #include <lal/detail/linear_set.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/maximum_arrangements.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
 
 #if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
 #if not defined DEBUG
@@ -152,7 +152,7 @@ public:
 	 * The entire set of maximum arrangements we can make starting at the given
 	 * vertex.
 	 */
-	set_max_arrangements m_max_arrs;
+	set_maximum_arrangements m_max_arrs;
 	/**
 	 * @brief Partial result of the algorithm.
 	 *

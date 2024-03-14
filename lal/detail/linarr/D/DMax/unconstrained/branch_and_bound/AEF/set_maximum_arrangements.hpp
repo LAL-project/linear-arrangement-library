@@ -67,17 +67,17 @@ namespace unconstrained {
  * alongside its multiplicity (@ref m_amount) and its corresponding level signature
  * (@ref m_level_signatures).
  */
-class set_max_arrangements {
+class set_maximum_arrangements {
 private:
 	/// Typedef to write less
 	static constexpr level_signature_type per_position = level_signature_type::per_position;
 
 public:
 	/// Constructor bound to a free tree.
-	set_max_arrangements(const graphs::free_tree& t) noexcept : m_t(t) { }
+	set_maximum_arrangements(const graphs::free_tree& t) noexcept : m_t(t) { }
 
 	/// Destructor
-	~set_max_arrangements() noexcept { }
+	~set_maximum_arrangements() noexcept { }
 
 	/// Initialize the object.
 	void init() noexcept {
@@ -149,8 +149,7 @@ public:
 			m_level_signatures.clear();
 			m_amount.clear();
 
-			level_signature_per_position L =
-				calculate_level_signature<per_position>(m_t, arr);
+			level_signature_per_position L = calculate_level_signature<per_position>(m_t, arr);
 
 			m_representatives.push_back(arr);
 			m_mirrored_level_signatures.push_back(mirror_level_signature(L));
@@ -179,7 +178,7 @@ public:
 	 * @post The set passed as parameter should be considered moved and thus
 	 * unusable after this call.
 	 */
-	void merge(set_max_arrangements&& max_arrs) noexcept {
+	void merge(set_maximum_arrangements&& max_arrs) noexcept {
 		// nothing to do
 		if (m_max_value > max_arrs.m_max_value) {
 			return;
