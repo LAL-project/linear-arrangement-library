@@ -142,14 +142,14 @@ void tree::tree_only_actions_after_remove_node(node u) noexcept {
 
 	// update union-find data structure
 	{
-		auto e = m_root_of.begin();
-		std::advance(e, u);
-		m_root_of.erase(e);
+	auto e = m_root_of.begin();
+	std::advance(e, u);
+	m_root_of.erase(e);
 	}
 	{
-		auto e = m_root_size.begin();
-		std::advance(e, u);
-		m_root_size.erase(e);
+	auto e = m_root_size.begin();
+	std::advance(e, u);
+	m_root_size.erase(e);
 	}
 
 	// relabel the roots when necessary

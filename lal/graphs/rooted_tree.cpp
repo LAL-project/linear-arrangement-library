@@ -71,7 +71,7 @@ noexcept
 #endif
 
 	// !
-	// Recall that due to the rules of construction, node u cannot have more
+	// Recall that, due to the rules of construction, node u cannot have more
 	// than one parent.
 
 	// the new edges, if any
@@ -86,7 +86,8 @@ noexcept
 	}
 
 	// 'action_after_node_remove' is called by the following method.
-	// Said method updates 'm_is_tree_type_valid'
+	// This method updates 'm_is_tree_type_valid', the union-find data
+	// structure, ...
 	directed_graph::remove_node(u, norm, check_norm);
 
 	// update root's label, if any
