@@ -491,7 +491,11 @@ noexcept
 	const uint64_t n = fT.get_num_nodes();
 
 	properties::bipartite_graph_coloring c;
-	if (m_what_fs[DMax_Bipartite_idx] or m_what_fs[Dmin_Bipartite_idx]) {
+	if (m_what_fs[Dmin_Bipartite_idx] or
+		m_what_fs[DMax_Bipartite_idx] or
+		m_what_fs[DMax_Unconstrained_idx]
+	)
+	{
 		c = detail::color_vertices_graph(fT);
 	}
 	std::vector<properties::branchless_path> bps;
