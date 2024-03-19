@@ -67,8 +67,6 @@ namespace detail {
  * @param u First vertex of the path.
  * @param v Second vertex of the path.
  * @param bfs Breadth-First Search traversal object.
- * @param label Label per (internal) vertex so as to identify paths.
- * @param max_label Next label to be used.
  * @param res Vector containing all branchless paths.
  * @param p Current branchless path.
  */
@@ -77,8 +75,6 @@ void expand_branchless_path(
 	const tree_t& t,
 	const node u, const node v,
 	detail::BFS<tree_t>& bfs,
-	detail::data_array<std::size_t>& label,
-	std::size_t& max_label,
 	std::vector<properties::branchless_path>& res,
 	properties::branchless_path& p
 )
@@ -86,13 +82,15 @@ noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
-	const bool visited_u = bfs.node_was_visited(u);
-	const bool visited_v = bfs.node_was_visited(v);
+	// the case of an edge...
+	if (t.get_degree(u) != 2 and t.get_degree(v) != 2) {
 
-	if (visited_u and visited_v) { return; }
+		// avoid symmetric paths
+		if (u > v) { return; }
 
-	if (not visited_u and visited_v) {
-		bfs.set_visited(u, 1);
+#if defined DEBUG
+		assert(t.has_edge(u, v) or t.has_edge(v, u));
+#endif
 		// initialize the path
 		p.init(n);
 		// set and add the first and second non-internal vertices
@@ -105,37 +103,38 @@ noexcept
 		return;
 	}
 
-	// remaining cases:
-	// visited_u and not visited_v
-	// not visited_u and not visited_v
-
-	if (label[v] == 0) {
-		label[v] = ++max_label;
 #if defined DEBUG
-		assert(max_label <= n);
+	assert(not bfs.node_was_visited(u));
 #endif
 
-		// initialize the path
-		p.init(n);
-		// set the first non-internal vertex and add it
-		p.add_node(u);
-		p.set_h1(u);
+	if (bfs.node_was_visited(v)) { return; }
 
-		// expand the new path
-		bfs.set_visited(u, 1);
-		bfs.start_at(v);
+	// initialize the path
+	p.init(n);
+	// set the first non-internal vertex and add it
+	p.add_node(u);
+	p.set_h1(u);
 
-		// find the lowest *internal* vertex in lexicographic order
-		const auto& seq = p.get_vertex_sequence();
-		node lowest_lexicographic = n + 1;
-		for (std::size_t i = 1; i < seq.size() - 1; ++i) {
-			lowest_lexicographic = std::min(lowest_lexicographic, seq[i]);
-		}
-		p.set_lowest_lexicographic(lowest_lexicographic);
+	// set 'u' as visited to avoid going 'back' in the tree
+	bfs.set_visited(u, 1);
 
-		// push the new path
-		res.push_back(std::move(p));
+	// expand the new path
+	bfs.start_at(v);
+
+	// find the lowest *internal* vertex in lexicographic order
+	const auto& seq = p.get_vertex_sequence();
+	node lowest_lexicographic = n + 1;
+	for (std::size_t i = 1; i < seq.size() - 1; ++i) {
+		lowest_lexicographic = std::min(lowest_lexicographic, seq[i]);
 	}
+	p.set_lowest_lexicographic(lowest_lexicographic);
+
+	// only let the internal vertices of the paths be visited
+	bfs.set_visited(p.get_h1(), 0);
+	bfs.set_visited(p.get_h2(), 0);
+
+	// push the new path
+	res.push_back(std::move(p));
 }
 
 /**
@@ -154,10 +153,6 @@ noexcept
 	// result of the function (to be returned)
 	std::vector<properties::branchless_path> res;
 
-	// label of each internal vertex
-	detail::data_array<std::size_t> label(n, 0);
-	std::size_t max_label = 0;
-
 	// path to be filled
 	properties::branchless_path p;
 
@@ -165,27 +160,18 @@ noexcept
 
 	// detect the last hub
 	bfs.set_process_current(
-		[&](const auto&, node u) {
-			const auto d = t.get_degree(u);
-			if (d == 1 or d > 2) {
-				// The exploration will finish in the
-				// next call to the 'terminate' function.
-				p.add_node(u);
-				p.set_h2(u);
-			}
+	[&](const auto&, node u) {
+		p.add_node(u);
+		if (t.get_degree(u) != 2) {
+			// The exploration will stop in the
+			// next call to the 'terminate' function.
+			p.set_h2(u);
 		}
+	}
 	);
-	// stop the traversal as soon as we find a
-	// vertex of degree different from 2
+	// stop the traversal as soon as we find a vertex of degree != 2
 	bfs.set_terminate(
-		[&](const auto&, node u) { return t.get_degree(u) != 2; }
-	);
-	// propagate the labels
-	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) {
-			label[v] = label[u];
-			p.add_node(u);
-		}
+	[&](const auto&, node u) { return t.get_degree(u) != 2; }
 	);
 
 	// find all paths starting at vertices of degree != 2
@@ -194,15 +180,15 @@ noexcept
 
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			for (node v : t.get_neighbours(u)) {
-				expand_branchless_path(t, u, v, bfs, label, max_label, res, p);
+				expand_branchless_path(t, u, v, bfs, res, p);
 			}
 		}
 		else if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 			for (node v : t.get_out_neighbours(u)) {
-				expand_branchless_path(t, u, v, bfs, label, max_label, res, p);
+				expand_branchless_path(t, u, v, bfs, res, p);
 			}
 			for (node v : t.get_in_neighbours(u)) {
-				expand_branchless_path(t, v, u, bfs, label, max_label, res, p);
+				expand_branchless_path(t, u, v, bfs, res, p);
 			}
 		}
 	}
