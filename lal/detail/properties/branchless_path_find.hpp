@@ -90,6 +90,7 @@ noexcept
 	const bool visited_v = bfs.node_was_visited(v);
 
 	if (visited_u and visited_v) { return; }
+
 	if (not visited_u and visited_v) {
 		bfs.set_visited(u, 1);
 		// initialize the path
@@ -201,7 +202,7 @@ noexcept
 				expand_branchless_path(t, u, v, bfs, label, max_label, res, p);
 			}
 			for (node v : t.get_in_neighbours(u)) {
-				expand_branchless_path(t, u, v, bfs, label, max_label, res, p);
+				expand_branchless_path(t, v, u, bfs, label, max_label, res, p);
 			}
 		}
 	}
