@@ -43,6 +43,9 @@
 #include <omp.h>
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <filesystem>
 #include <charconv>
 #include <fstream>
@@ -246,24 +249,18 @@ noexcept
 	}
 	}
 
-	// if the current line contains non-numeric characters then the
-	// appropriate error messages have been stored, and so we can skip
-	// to the next line
+	// if the current line contains non-numeric characters then the appropriate
+	// error messages have been stored, and so we can skip to the next line
 	if (non_numeric_characters) {
 		if constexpr (decide) { return true; }
 		else { return treebank_err_list; }
 	}
 
-	if constexpr (decide) {
-		return find_errors<decide>(hv, line);
-	}
-	else {
-		auto errors = find_errors<decide>(hv, line);
-		for (std::size_t i = 0; i < errors.size(); ++i) {
-			treebank_err_list.emplace_back( std::move(errors[i]) );
-		}
-		return treebank_err_list;
-	}
+	// if the program reaches this point, the vector 'treebank_err_list' is empty.
+#if defined DEBUG
+	assert(treebank_err_list.size() == 0);
+#endif
+	return find_errors<decide>(hv, line);
 }
 
 /**
