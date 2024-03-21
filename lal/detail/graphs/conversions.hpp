@@ -157,7 +157,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  */
 template <class graph_t>
 graph_t from_edge_list_to_graph
-(const std::vector<edge>& edge_list, bool normalise = true, bool check = true)
+(const std::vector<edge>& edge_list, bool normalise, bool check)
 noexcept
 {
 	uint64_t max_vertex_index = 0;
@@ -447,7 +447,7 @@ noexcept
  */
 inline
 graphs::free_tree level_sequence_to_ftree
-(const uint64_t * const L, uint64_t n, bool normalise = true, bool check = true)
+(const uint64_t * const L, uint64_t n, bool normalise, bool check)
 noexcept
 {
 #if defined DEBUG
@@ -501,7 +501,7 @@ noexcept
  */
 inline
 graphs::free_tree level_sequence_to_ftree
-(const std::vector<uint64_t>& L, uint64_t n, bool normalise = true, bool check = true)
+(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
 noexcept
 { return level_sequence_to_ftree(&L[0], n, normalise, check); }
 
@@ -520,7 +520,7 @@ noexcept
  */
 inline
 graphs::free_tree Prufer_sequence_to_ftree
-(const uint64_t * const seq, uint64_t n, bool normalise = true, bool check = true)
+(const uint64_t * const seq, uint64_t n, bool normalise, bool check)
 noexcept
 {
 	// initialisation
@@ -585,7 +585,7 @@ noexcept
  */
 inline
 graphs::free_tree Prufer_sequence_to_ftree
-(const std::vector<uint64_t>& seq, uint64_t n, bool normalise = true, bool check = true)
+(const std::vector<uint64_t>& seq, uint64_t n, bool normalise, bool check)
 noexcept
 { return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
