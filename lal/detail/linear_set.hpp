@@ -50,9 +50,10 @@ namespace detail {
 /**
  * @brief A set-like data structure implemented with an array.
  *
- * It is actually 4 arrays that implement a set-like data structure. Elements
- * contained in the set are added to array @ref m_values which is known to hold
- * a maximum number of elements \f$M\f$; its actual size is stored in @ref m_size.
+ * It is actually a simplified unordered hash map implemented using 4 arrays. The
+ * goal is to implement a set-like data structure. Elements contained in the set
+ * are added to array @ref m_values which is known to hold a maximum number of
+ * elements \f$M\f$; its actual size is stored in @ref m_size.
  *
  * Every time an element \f$E\f$ is added to the set, its position (in @ref m_values)
  * is recorded in @ref m_position via a function that maps \f$E\f$ to an integer
