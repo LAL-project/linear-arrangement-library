@@ -183,7 +183,7 @@ noexcept
 	// one edge entering each position
 	std::vector<std::pair<edge_t,uint64_t>> edge_with_max_pos_at(n, {{}, 0});
 	for (iterators::E_iterator e_it(t); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge_t();
+		const auto [u, v] = e_it.get_edge_t();
 		const position max = max_pos(u, v);
 		edge_with_max_pos_at[max].first = {u,v};
 		++edge_with_max_pos_at[max].second;

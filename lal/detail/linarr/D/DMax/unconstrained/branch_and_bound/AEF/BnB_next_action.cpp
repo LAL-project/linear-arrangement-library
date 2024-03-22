@@ -233,7 +233,7 @@ noexcept
 		// decide whether or not the remaining have all degree 1
 		bool all_are_leaves = true;
 		for (std::size_t i = 0; i < m_E_ps.size() and all_are_leaves; ++i) {
-			const auto [u,v] = m_E_ps[i];
+			const auto [u, v] = m_E_ps[i];
 			const auto du = m_t.get_degree(u);
 			const auto dv = m_t.get_degree(v);
 			if (is_vertex_assigned(u)) {

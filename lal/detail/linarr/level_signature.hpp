@@ -295,7 +295,7 @@ noexcept
 {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
-		const auto [u,v] = it.yield_edge_t();
+		const auto [u, v] = it.yield_edge_t();
 		const position_t pu = (arr.size() == 0 ? *u : arr[u]);
 		const position_t pv = (arr.size() == 0 ? *v : arr[v]);
 		if constexpr (t == level_signature_type::per_vertex) {

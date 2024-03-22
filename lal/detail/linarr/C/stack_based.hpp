@@ -115,7 +115,7 @@ noexcept
 
 			const node uu = e.first;
 			const node vv = e.second;
-			const auto [u,v] =
+			const auto [u, v] =
 				(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
 
 			++size_adjN_u[u];
@@ -141,7 +141,7 @@ noexcept
 	// fill adjP and adjN at the same time
 	for (const auto& [uu, vv] : edges) {
 		// arr[u] < arr[v]
-		const auto [u,v] =
+		const auto [u, v] =
 			(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
 
 		// oriented edge (u,v) "enters" node v

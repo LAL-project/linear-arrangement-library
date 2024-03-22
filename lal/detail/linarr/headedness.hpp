@@ -70,7 +70,7 @@ noexcept
 {
 	uint64_t edges_to_right = 0;
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge_t();
+		const auto [u, v] = e_it.get_edge_t();
 		edges_to_right += arr[u] < arr[v];
 	}
 	return edges_to_right;

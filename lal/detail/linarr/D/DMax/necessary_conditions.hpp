@@ -119,7 +119,7 @@ noexcept
 {
 	if constexpr (t == level_signature_type::per_position) {
 		for (iterators::E_iterator it(g); not it.end(); it.next()) {
-			const auto [u,v] = it.yield_edge_t();
+			const auto [u, v] = it.yield_edge_t();
 			const position_t pu = (arr.size() == 0 ? *u : arr[u]);
 			const position_t pv = (arr.size() == 0 ? *v : arr[v]);
 			if (levels[pu] == levels[pv]) {
@@ -129,7 +129,7 @@ noexcept
 	}
 	else {
 		for (iterators::E_iterator it(g); not it.end(); it.next()) {
-			const auto [u,v] = it.yield_edge_t();
+			const auto [u, v] = it.yield_edge_t();
 			if (levels[u] == levels[v]) {
 				return false;
 			}

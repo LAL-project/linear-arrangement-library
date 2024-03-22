@@ -338,13 +338,23 @@ public:
 	const noexcept;
 
 protected:
-	/// Initialises memory of @ref free_tree, @ref undirected_graph and @ref graph classes.
+	/**
+	 * @brief Initializes the memory in the graph hierarchy.
+	 *
+	 * Initialises memory of @ref lal::graphs::free_tree,
+	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
+	 * @param n Number of nodes.
+	 */
 	virtual void _init(uint64_t n) noexcept {
 		undirected_graph::_init(n);
 		tree::tree_only_init(n);
 	}
-	/// Clears the memory of @ref free_tree, @ref undirected_graph and
-	/// @ref graph classes.
+	/**
+	 * @brief Clears the memory in the graph hierarchy.
+	 *
+	 * Clears the memory of @ref lal::graphs::free_tree,
+	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
+	 */
 	virtual void _clear() noexcept {
 		undirected_graph::_clear();
 		tree::tree_only_clear();
@@ -389,7 +399,7 @@ protected:
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
-	/// Copies all members of this class and the parent class.
+	/// Copies all members of this class and the parent classes.
 	void copy_full_free_tree(const free_tree& f) noexcept {
 		// copy undirected_graph class
 		copy_full_undirected_graph(f);
@@ -399,7 +409,7 @@ protected:
 
 		// copy this class' members
 	}
-	/// Moves all members of this class and the parent class.
+	/// Moves all members of this class and the parent classes.
 	void move_full_free_tree(free_tree&& f) noexcept {
 		// move-assign undirected_graph class
 		move_full_undirected_graph(std::forward<free_tree>(f));

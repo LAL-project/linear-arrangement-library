@@ -384,7 +384,7 @@ noexcept
 
 		iterators::E_iterator eit(_rT);
 		while (not eit.end()) {
-			const auto [u,v] = eit.yield_edge_t();
+			const auto [u, v] = eit.yield_edge_t();
 			const position pu = _arr[u];
 			const position pv = _arr[v];
 			if (pu < pv) {

@@ -478,7 +478,7 @@ noexcept
 		const node r = lev[stack_it];
 
 		// add the edge...
-		const auto [u,v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		const auto [u, v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
 		t.add_edge_bulk(u, v);
 
 		// the last node added at level L[i] is i.

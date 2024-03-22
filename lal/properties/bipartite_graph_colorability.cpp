@@ -71,7 +71,7 @@ noexcept
 {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
-		const auto [u,v] = it.yield_edge();
+		const auto [u, v] = it.yield_edge();
 		if (c.get_color_of(u) == c.get_color_of(v)) {
 			return false;
 		}

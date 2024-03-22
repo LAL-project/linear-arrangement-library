@@ -247,19 +247,19 @@ noexcept
 	std::cout << tab() << "Edge sets:\n";
 	std::cout << tab() << "    E_p: ";
 	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
-		const auto [u,v] = m_E_p[i];
+		const auto [u, v] = m_E_p[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
 	std::cout << tab() << "    E_ps:";
 	for (std::size_t i = 0; i < m_E_ps.size(); ++i) {
-		const auto [u,v] = m_E_ps[i];
+		const auto [u, v] = m_E_ps[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
 	std::cout << tab() << "    E_s: ";
 	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
-		const auto [u,v] = m_E_p[i];
+		const auto [u, v] = m_E_p[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';

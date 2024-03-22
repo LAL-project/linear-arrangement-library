@@ -81,7 +81,7 @@ noexcept
 
 	// count the amount of edges that collapse into a single one
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge();
+		const auto [u, v] = e_it.get_edge();
 
 		const edge es = sorted_edge(u,v);
 		const auto it_es = collapsed_edges.find(es);

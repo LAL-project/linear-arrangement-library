@@ -458,7 +458,7 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 	free_tree t(get_num_nodes());
 
 	for (iterators::E_iterator e_it(*this); not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge();
+		const auto [u, v] = e_it.get_edge();
 		t.add_edge_bulk(u, v);
 	}
 

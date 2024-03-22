@@ -67,7 +67,7 @@ namespace iterators {
  * @code
  *		E_iterator it(g); // g is a graph
  *		while (not it.end()) {
- *			const auto [u,v] = it.get_edge();
+ *			const auto [u, v] = it.get_edge();
  *			// ...
  *			it.next();
  *		}
@@ -76,7 +76,7 @@ namespace iterators {
  * @code
  *		E_iterator it(g); // g is a graph
  *		while (not it.end()) {
- *			const auto [u,v] = it.get_edge();
+ *			const auto [u, v] = it.get_edge();
  *			// ...
  *		}
  * @endcode
@@ -84,7 +84,7 @@ namespace iterators {
  * for loop:
  * @code
  *		for (E_iterator it(g); not it.end(); it.next()) {
- *			const auto [u,v] = it.yield_edge();
+ *			const auto [u, v] = it.yield_edge();
  *			// ...
  *		}
  * @endcode

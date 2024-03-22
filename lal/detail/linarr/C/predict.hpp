@@ -194,8 +194,8 @@ noexcept
 		const auto [st, uv] = q.get_edge_pair_t();
 		q.next();
 
-		const auto [s,t] = st;
-		const auto [u,v] = uv;
+		const auto [s, t] = st;
+		const auto [u, v] = uv;
 
 		const int64_t len_st = detail::to_int64(detail::abs_diff(arr[s], arr[t]));
 		const int64_t len_uv = detail::to_int64(detail::abs_diff(arr[u], arr[v]));

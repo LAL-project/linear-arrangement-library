@@ -632,8 +632,13 @@ protected:
 	bool m_are_size_subtrees_valid = false;
 
 protected:
-	/// Initialises memory of @ref rooted_tree, @ref undirected_graph and
-	/// @ref graph classes.
+	/**
+	 * @brief Initializes the memory in the graph hierarchy.
+	 *
+	 * Initialises memory of @ref lal::graphs::free_tree,
+	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
+	 * @param n Number of nodes.
+	 */
 	virtual void _init(uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
@@ -642,8 +647,12 @@ protected:
 			set_root(0);
 		}
 	}
-	/// Clears the memory of @ref rooted_tree, @ref undirected_graph and
-	/// @ref graph classes.
+	/**
+	 * @brief Clears the memory in the graph hierarchy.
+	 *
+	 * Clears the memory of @ref lal::graphs::free_tree,
+	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
+	 */
 	virtual void _clear() noexcept {
 		tree::tree_only_clear();
 		directed_graph::_clear();
@@ -689,7 +698,7 @@ protected:
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
-	/// Copies all members of this class and the parent class.
+	/// Copies all members of this class and the parent classes.
 	void copy_full_rooted_tree(const rooted_tree& r) noexcept {
 		// copy directed_graph class
 		copy_full_directed_graph(r);
@@ -702,7 +711,7 @@ protected:
 		m_size_subtrees = r.m_size_subtrees;
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 	}
-	/// Moves all members of this class and the parent class.
+	/// Moves all members of this class and the parent classes.
 	void move_full_rooted_tree(rooted_tree&& r) noexcept {
 		// move-assign directed_graph class
 		move_full_directed_graph(std::forward<rooted_tree>(r));

@@ -73,7 +73,7 @@ noexcept
 
 	iterators::E_iterator<graph_t> e_it(g);
 	for (; not e_it.end(); e_it.next()) {
-		const auto [u,v] = e_it.get_edge_t();
+		const auto [u, v] = e_it.get_edge_t();
 
 		const auto pu = arr[u];
 		const auto pv = arr[v];
