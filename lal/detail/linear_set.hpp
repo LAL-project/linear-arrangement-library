@@ -79,7 +79,7 @@ namespace detail {
  *
  * Now follows an example that shows how to use this set with integer types,
  * @code
- *		linear_set<int> s(10, 10);
+ *		lal::detail::linear_set<int> s(10, 10);
  *		s.add(3);
  *		s.add(4);
  *		s.remove(3);
@@ -92,7 +92,7 @@ namespace detail {
  *			}
  *		};
  *		indexer I;
- *		linear_set<std::pair<int, int>> s(10, 100, std::move(I));
+ *		lal::detail::linear_set<std::pair<int, int>> s(10, 100, std::move(I));
  *		s.add({3,4});
  *		s.add({4,4});
  *		s.remove({3,4});
