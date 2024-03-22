@@ -169,6 +169,7 @@ public:
 	 * bulk additions of edges to the graph.
 	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
+	 * @pre All edges of the graph have been added with method @ref add_edge_bulk.
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 

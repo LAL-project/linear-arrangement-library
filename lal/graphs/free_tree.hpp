@@ -169,7 +169,8 @@ public:
 	 * @brief Finishes adding edges in bulk.
 	 * @param norm Normalise the tree.
 	 * @param check Check whether the tree is normalised or not.
-	 * @pre All edges of the have been added with method @ref add_edge_bulk.
+	 * @pre All edges of the tree have been added with method @ref add_edge_bulk.
+	 * @post The union-find data structure of the graph is built.
 	 */
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
@@ -234,8 +235,8 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge is
-	 * called after the edge has been removed.
+	 * Method @ref lal::graphs::graph::actions_after_remove_edge is called after
+	 * the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Normalise the graph after the deletion.
