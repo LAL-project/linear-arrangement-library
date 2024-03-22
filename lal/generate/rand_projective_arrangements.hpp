@@ -78,7 +78,7 @@ namespace generate {
  *		// given a rooted tree T
  *		lal::generate::rand_projective_arrangements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement& arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

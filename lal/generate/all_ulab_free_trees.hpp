@@ -89,7 +89,7 @@ namespace generate {
  * @endcode
  * Equivalently,
  * @code
- *		all_ulab_free_trees Gen(n);
+ *		lal::generate::all_ulab_free_trees Gen(n);
  *		while (not Gen.end()) {
  *			const lal::graphs::free_tree t = Gen.yield_tree();
  *			// ...

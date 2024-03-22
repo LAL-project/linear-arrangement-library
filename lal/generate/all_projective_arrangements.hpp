@@ -75,7 +75,7 @@ namespace generate {
  *
  * A possible usage of this class is the following:
  * @code
- *		all_projective_arrangements Gen(t); // t is a rooted tree
+ *		lal::generate::all_projective_arrangements Gen(t); // t is a rooted tree
  *		while (not Gen.end()) {
  *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
@@ -84,7 +84,7 @@ namespace generate {
  * @endcode
  * Alternatively, this class can be used in a for loop:
  * @code
- *		for (all_projective_arrangements Gen(t); not Gen.end(); Gen.next()) {
+ *		for (lal::generate::all_projective_arrangements Gen(t); not Gen.end(); Gen.next()) {
  *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
@@ -92,7 +92,7 @@ namespace generate {
  * This class also has method @ref yield_arrangement() which is aimed at simplifying
  * this class' usage:
  * @code
- *		all_projective_arrangements Gen(t); // t is a rooted tree
+ *		lal::generate::all_projective_arrangements Gen(t); // t is a rooted tree
  *		while (not Gen.end()) {
  *			const lal::linear_arrangement arr = Gen.yield_arrangement();
  *			// ...

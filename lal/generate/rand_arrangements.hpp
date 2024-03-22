@@ -66,7 +66,7 @@ namespace generate {
  *		// given a tree T (or any other graph)
  *		lal::generate::rand_arrangements Gen(T);
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement& arr = Gen.get_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
  * @endcode
@@ -75,7 +75,7 @@ namespace generate {
  *		// given a tree T (or any other graph)
  *		lal::generate::rand_arrangements Gen(T.get_num_nodes());
  *		for (int i = 0; i < 100; ++i) {
- *			const linear_arrangement& arr = Gen.yield_arrangement();
+ *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
  *		}
  * @endcode

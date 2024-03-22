@@ -73,7 +73,7 @@ namespace generate {
  *
  * A possible usage of this class is the following:
  * @code
- *		all_arrangements Gen(g); // t is any graph (tree included)
+ *		lal::generate::all_arrangements Gen(g); // t is any graph (tree included)
  *		while (not Gen.end()) {
  *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
@@ -93,7 +93,7 @@ namespace generate {
  * This class also has method @ref yield_arrangement() which is aimed at avoiding
  * potential source of bugs:
  * @code
- *		all_arrangements Gen(8);
+ *		lal::generate::all_arrangements Gen(8);
  *		while (not Gen.end()) {
  *			const lal::linear_arrangement& arr = Gen.yield_arrangement();
  *			// ...
