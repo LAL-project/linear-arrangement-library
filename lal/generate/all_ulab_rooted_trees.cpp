@@ -109,7 +109,7 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 	}
 
 	const graphs::free_tree t =
-		detail::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
+		detail::from_level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 	return graphs::rooted_tree(t, 0);
 }
 

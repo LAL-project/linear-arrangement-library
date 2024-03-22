@@ -446,7 +446,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 inline
-graphs::free_tree level_sequence_to_ftree
+graphs::free_tree from_level_sequence_to_ftree
 (const uint64_t * const L, uint64_t n, bool normalise, bool check)
 noexcept
 {
@@ -500,10 +500,10 @@ noexcept
  * for further details.
  */
 inline
-graphs::free_tree level_sequence_to_ftree
+graphs::free_tree from_level_sequence_to_ftree
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
 noexcept
-{ return level_sequence_to_ftree(&L[0], n, normalise, check); }
+{ return from_level_sequence_to_ftree(&L[0], n, normalise, check); }
 
 // -----------------------------------------------------------------------------
 // -- PRUFER SEQUENCE --
@@ -519,7 +519,7 @@ noexcept
  * @returns The tree built with @e seq.
  */
 inline
-graphs::free_tree Prufer_sequence_to_ftree
+graphs::free_tree from_Prufer_sequence_to_ftree
 (const uint64_t * const seq, uint64_t n, bool normalise, bool check)
 noexcept
 {
@@ -584,10 +584,10 @@ noexcept
  * @returns The tree built with @e seq.
  */
 inline
-graphs::free_tree Prufer_sequence_to_ftree
+graphs::free_tree from_Prufer_sequence_to_ftree
 (const std::vector<uint64_t>& seq, uint64_t n, bool normalise, bool check)
 noexcept
-{ return Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
+{ return from_Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
 
 
 } // -- namespace detail

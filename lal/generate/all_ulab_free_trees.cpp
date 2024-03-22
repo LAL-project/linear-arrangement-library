@@ -272,7 +272,7 @@ graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
 		t.add_edge(0,1);
 		return t;
 	}
-	return detail::level_sequence_to_ftree(m_L.begin(), m_n, false, false);
+	return detail::from_level_sequence_to_ftree(m_L.begin(), m_n, false, false);
 }
 
 } // -- namespace generate

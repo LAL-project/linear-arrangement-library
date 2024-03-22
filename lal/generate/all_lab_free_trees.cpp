@@ -56,7 +56,7 @@ graphs::free_tree all_lab_free_trees::__get_tree() noexcept {
 		t.set_edges({edge(0,1)});
 		return t;
 	}
-	return detail::Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
+	return detail::from_Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
 }
 
 } // -- namespace generate
