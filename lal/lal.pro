@@ -58,9 +58,8 @@ QMAKE_LFLAGS_RELEASE += -DNDEBUG -UDEBUG
 QMAKE_LFLAGS_DEBUG += -DDEBUG -D_GLIBCXX_DEBUG
 
 # uncomment when doing actual profiling
-#QMAKE_CXXFLAGS_RELEASE += -pg -g
-#QMAKE_CXXFLAGS_RELEASE -= -O3
-#QMAKE_LFLAGS += -pg
+# QMAKE_CXXFLAGS_RELEASE += -pg
+# QMAKE_LFLAGS += -pg
 
 equals(ADDRESS_SANITIZER, "YES") {
     # not to be used in combination with valgrind
