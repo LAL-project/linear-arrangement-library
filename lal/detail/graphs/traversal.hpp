@@ -172,33 +172,49 @@ public:
 	/// Set whether the traversal can use reversed edges
 	void set_use_rev_edges(bool use) noexcept { m_use_rev_edges = use; }
 
-	/// Set the default value of @ref m_term.
-	void set_terminate_default() noexcept
-	{ m_term = [](const BFS<graph_t>&, const node) -> bool { return false; }; }
+	/// Set the default value of @ref m_terminate.
+	void set_terminate_default() noexcept {
+		m_terminate = [](const BFS<graph_t>&, const node) -> bool { return false; };
+		m_is_terminate_set = false;
+	}
 	/// Set the function that controls the termination of the loop.
-	void set_terminate(const BFS_bool_one& f) noexcept
-	{ m_term = f; }
+	void set_terminate(const BFS_bool_one& f) noexcept {
+		m_terminate = f;
+		m_is_terminate_set = true;
+	}
 
-	/// Set the default value of @ref m_proc_cur.
-	void set_process_current_default() noexcept
-	{ m_proc_cur = [](const BFS<graph_t>&, const node) -> void { }; }
+	/// Set the default value of @ref m_process_current.
+	void set_process_current_default() noexcept {
+		m_process_current = [](const BFS<graph_t>&, const node) -> void { };
+		m_is_process_current_set = false;
+	}
 	/// Set the function that controls the processing of the current node.
-	void set_process_current(const BFS_process_one& f) noexcept
-	{ m_proc_cur = f; }
+	void set_process_current(const BFS_process_one& f) noexcept {
+		m_process_current = f;
+		m_is_process_current_set = true;
+	}
 
-	/// Set the default value of @ref m_proc_neigh.
-	void set_process_neighbour_default() noexcept
-	{ m_proc_neigh = [](const BFS<graph_t>&, const node, const node, bool) -> void { }; }
+	/// Set the default value of @ref m_process_neighbor.
+	void set_process_neighbour_default() noexcept {
+		m_process_neighbor = [](const BFS<graph_t>&, const node, const node, bool) -> void { };
+		m_is_process_neighbor_set = false;
+	}
 	/// Set the function that controls the processing of the current neighbour.
-	void set_process_neighbour(const BFS_process_two& f) noexcept
-	{ m_proc_neigh = f; }
+	void set_process_neighbour(const BFS_process_two& f) noexcept {
+		m_process_neighbor = f;
+		m_is_process_neighbor_set = true;
+	}
 
 	/// Set the default value of @ref m_add_node.
-	void set_node_add_default() noexcept
-	{ m_add_node = [](const BFS<graph_t>&, const node, const node) -> bool { return true; }; }
+	void set_node_add_default() noexcept {
+		m_add_node = [](const BFS<graph_t>&, const node, const node) -> bool { return true; };
+		m_is_add_node_set = false;
+	}
 	/// Set the function that controls when a node is to be added to the queue.
-	void set_node_add(const BFS_bool_two& f) noexcept
-	{ m_add_node = f; }
+	void set_node_add(const BFS_bool_two& f) noexcept {
+		m_add_node = f;
+		m_is_add_node_set = true;
+	}
 
 	/**
 	 * @brief Should the algorithm call the neighbour processing function
@@ -275,13 +291,18 @@ protected:
 		const bool t_vis = node_was_visited(t);
 
 		if ((not t_vis) or (t_vis and m_proc_vis_neighs)) {
-			m_proc_neigh(*this, s, t, ltr);
+			if (m_is_process_neighbor_set) {
+				m_process_neighbor(*this, s, t, ltr);
+			}
 		}
 
-		if ((not t_vis) and m_add_node(*this, s, t)) {
-			m_queue.push(t);
-			// set node as visited
-			m_vis[t] = 1;
+		if (not t_vis) {
+			const bool add_node = m_is_add_node_set ? m_add_node(*this, s, t) : true;
+			if (add_node) {
+				m_queue.push(t);
+				// set node as visited
+				m_vis[t] = 1;
+			}
 		}
 	}
 
@@ -371,10 +392,14 @@ protected:
 			const node s = m_queue.pop();
 
 			// process current node
-			m_proc_cur(*this, s);
+			if (m_is_process_current_set) {
+				m_process_current(*this, s);
+			}
 
 			// check user-defined early termination condition
-			if (m_term(*this, s)) { break; }
+			if (m_is_terminate_set) {
+				if (m_terminate(*this, s)) { break; }
+			}
 
 			process_neighbours(s);
 		}
@@ -409,7 +434,9 @@ protected:
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
 	 */
-	BFS_bool_one m_term;
+	BFS_bool_one m_terminate;
+	/// Is function @ref m_terminate set?
+	bool m_is_terminate_set;
 
 	/**
 	 * @brief graph_traversal node processing function.
@@ -418,7 +445,9 @@ protected:
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
 	 */
-	BFS_process_one m_proc_cur;
+	BFS_process_one m_process_current;
+	/// Is function @ref m_process_current set?
+	bool m_is_process_current_set;
 
 	/**
 	 * @brief graph_traversal neighbour node processing function.
@@ -430,7 +459,9 @@ protected:
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
 	 */
-	BFS_process_two m_proc_neigh;
+	BFS_process_two m_process_neighbor;
+	/// Is function @ref m_process_neighbor set?
+	bool m_is_process_neighbor_set;
 
 	/**
 	 * @brief graph_traversal node addition function.
@@ -440,6 +471,8 @@ protected:
 	 * For more details on when this function is called see @ref do_traversal.
 	 */
 	BFS_bool_two m_add_node;
+	/// Is function @ref m_add_node set?
+	bool m_is_add_node_set;
 };
 
 } // -- namespace detail
