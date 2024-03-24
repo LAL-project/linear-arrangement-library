@@ -461,21 +461,21 @@ noexcept
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
-	data_array<node> lev(n+1, 0);
+	data_array<node> root_candidates(n+1, 0);
 	uint64_t stack_it = 0;
 
 	// evidently,
-	lev[0] = 1;
+	root_candidates[0] = 1;
 
 	for (node i = 2; i <= n; ++i) {
 		// find in the stack the node which
 		// has to be connected to node 'i'.
-		if (lev[stack_it] + 2 > L[i]) {
+		if (root_candidates[stack_it] + 2 > L[i]) {
 			stack_it = L[i] - 2 + 1;
 		}
 
 		// the top of the stack is the parent of this node
-		const node r = lev[stack_it];
+		const node r = root_candidates[stack_it];
 
 		// add the edge...
 		const auto [u, v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
@@ -486,7 +486,7 @@ noexcept
 #if defined DEBUG
 		assert(stack_it == L[i]);
 #endif
-		lev[stack_it] = i;
+		root_candidates[stack_it] = i;
 	}
 
 	t.finish_bulk_add(normalise, check);

@@ -277,4 +277,3 @@ graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
 
 } // -- namespace generate
 } // -- namespace lal
-
