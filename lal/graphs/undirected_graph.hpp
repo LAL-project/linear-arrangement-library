@@ -353,7 +353,14 @@ public:
 	bool is_undirected() const noexcept { return true; }
 
 protected:
-	/// Initialises memory of @ref undirected_graph and @ref graph classes.
+	/**
+	 * @brief Initialises the memory in the graph hierarchy.
+	 *
+	 * Initializes memory of @ref lal::graphs::undirected_graph and
+	 * @ref lal::graphs::graph classes.
+	 * @param n Number of nodes
+	 * @pre The graph is cleared.
+	 */
 	virtual void _init(uint64_t n) noexcept {
 		graph::_init(n);
 	}

@@ -422,10 +422,17 @@ protected:
 	std::vector<neighbourhood> m_in_adjacency_list;
 
 protected:
-	/// Initialises memory of @ref directed_graph and @ref graph classes.
+	/**
+	 * @brief Initialises the memory in the graph hierarchy.
+	 *
+	 * Initializes memory of @ref lal::graphs::directed_graph and
+	 * @ref lal::graphs::graph classes.
+	 * @param n Number of nodes.
+	 * @pre The graph is cleared.
+	 */
 	virtual void _init(uint64_t n) noexcept {
 		graph::_init(n);
-		m_in_adjacency_list = std::vector<neighbourhood>(n);
+		m_in_adjacency_list.resize(n);
 	}
 	/// Clears the memory of @ref directed_graph and @ref graph classes.
 	virtual void _clear() noexcept {

@@ -239,11 +239,15 @@ protected:
 	bool m_normalised = true;
 
 protected:
-	/// Initialises memory of @ref graph class.
+	/**
+	 * @brief Initialises memory of @ref graph class.
+	 * @param n Number of nodes.
+	 * @pre The graph is cleared.
+	 */
 	virtual void _init(uint64_t n) noexcept {
 		m_num_edges = 0;
 		m_normalised = true;
-		m_adjacency_list = std::vector<neighbourhood>(n);
+		m_adjacency_list.resize(n);
 	}
 	/// Clears memory for the @ref graph class.
 	virtual void _clear() noexcept {

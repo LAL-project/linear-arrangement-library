@@ -657,11 +657,12 @@ protected:
 	 * Initialises memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 * @param n Number of nodes.
+	 * @pre The graph is cleared.
 	 */
 	virtual void _init(uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
-		m_size_subtrees = std::vector<uint64_t>(n);
+		m_size_subtrees.resize(n);
 		if (n <= 1) {
 			set_root(0);
 		}

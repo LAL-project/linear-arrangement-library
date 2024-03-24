@@ -345,10 +345,11 @@ protected:
 	 * Initialises memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 * @param n Number of nodes.
+	 * @pre The graph is cleared.
 	 */
 	virtual void _init(uint64_t n) noexcept {
-		undirected_graph::_init(n);
 		tree::tree_only_init(n);
+		undirected_graph::_init(n);
 	}
 	/**
 	 * @brief Clears the memory in the graph hierarchy.
