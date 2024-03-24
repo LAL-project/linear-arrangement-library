@@ -71,7 +71,7 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 	//		- the edge already exists, or
 	//		- there exists a path from 's' to 't' in the undirected
 	//        underlying structure
-	return m_root_of[u] != m_root_of[v];
+	return m_union_find__root_of[u] != m_union_find__root_of[v];
 }
 
 bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
@@ -85,8 +85,8 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 	}
 
 	// make a copy
-	std::vector<uint64_t> _root_of = m_root_of;
-	std::vector<uint64_t> _root_size = m_root_size;
+	std::vector<uint64_t> _root_of = m_union_find__root_of;
+	std::vector<uint64_t> _root_size = m_union_find__root_size;
 
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -123,13 +123,13 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 void tree::tree_only_actions_after_add_edge(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_after_edge_add
-		(u, v, &m_root_of[0], &m_root_size[0]);
+		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
 void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_after_edge_remove
-		(u, v, &m_root_of[0], &m_root_size[0]);
+		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
 void tree::tree_only_actions_after_remove_node(node u) noexcept {
@@ -142,26 +142,26 @@ void tree::tree_only_actions_after_remove_node(node u) noexcept {
 
 	// update union-find data structure
 	{
-	auto e = m_root_of.begin();
+		auto e = m_union_find__root_of.begin();
 	std::advance(e, u);
-	m_root_of.erase(e);
+		m_union_find__root_of.erase(e);
 	}
 	{
-	auto e = m_root_size.begin();
+		auto e = m_union_find__root_size.begin();
 	std::advance(e, u);
-	m_root_size.erase(e);
+		m_union_find__root_size.erase(e);
 	}
 
 	// relabel the roots when necessary
-	for (node v = 0; v < m_root_of.size(); ++v) {
-		m_root_of[v] -= (m_root_of[v] > u);
+	for (node v = 0; v < m_union_find__root_of.size(); ++v) {
+		m_union_find__root_of[v] -= (m_union_find__root_of[v] > u);
 	}
 }
 
 void tree::tree_only_actions_before_remove_edges_incident_to(node u) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_before_incident_edges_removed
-		(u, &m_root_of[0], &m_root_size[0]);
+		(u, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
 void tree::tree_only_set_edges() noexcept {

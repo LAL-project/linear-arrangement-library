@@ -382,11 +382,11 @@ void rooted_tree::disjoint_union
 	append(m_size_subtrees, t.m_size_subtrees);
 
 	// update union-find (1/3)
-	append(m_root_of, t.m_root_of);
-	append(m_root_size, t.m_root_size);
+	append(m_union_find__root_of, t.m_union_find__root_of);
+	append(m_union_find__root_size, t.m_union_find__root_size);
 	// update the labels of the vertices' root of the union find (2/3)
 	for (node u = prev_n; u < get_num_nodes(); ++u) {
-		m_root_of[u] += prev_n;
+		m_union_find__root_of[u] += prev_n;
 	}
 
 	// connect the roots if told to do so

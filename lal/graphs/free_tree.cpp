@@ -222,12 +222,12 @@ void free_tree::disjoint_union(const free_tree& t) noexcept {
 
 	// join union-find
 #define vec_join(A, B) A.insert(A.end(), B.begin(), B.end())
-	vec_join(m_root_of, t.m_root_of);
-	vec_join(m_root_size, t.m_root_size);
+	vec_join(m_union_find__root_of, t.m_union_find__root_of);
+	vec_join(m_union_find__root_size, t.m_union_find__root_size);
 
 	// update the labels of the vertices' root of the union find
 	for (node u = prev_n; u < get_num_nodes(); ++u) {
-		m_root_of[u] += prev_n;
+		m_union_find__root_of[u] += prev_n;
 	}
 }
 

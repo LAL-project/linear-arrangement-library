@@ -204,7 +204,7 @@ public:
 #if defined DEBUG
 		assert(has_node(u));
 #endif
-		return m_root_of[u];
+		return m_union_find__root_of[u];
 	}
 
 	/**
@@ -233,7 +233,7 @@ public:
 #if defined DEBUG
 		assert(has_node(u));
 #endif
-		return m_root_size[m_root_of[u]];
+		return m_union_find__root_size[m_union_find__root_of[u]];
 	}
 
 	/**
@@ -275,17 +275,17 @@ public:
 
 protected:
 	/// The root of every vertex in the union-find data structure
-	std::vector<node> m_root_of;
+	std::vector<node> m_union_find__root_of;
 	/**
 	 * @brief The size of the connected component that a @e root belongs to.
 	 *
 	 * Formally, @e m_size_of[v] is the size of the connected component of
 	 * a @e root vertex @e v. A vertex @e u is a root vertex if there
-	 * exists a vertex @e w such that @ref m_root_of[w] = u.
+	 * exists a vertex @e w such that @ref m_union_find__root_of[w] = u.
 	 *
 	 * In this context, root is within the union-find data structure.
 	 */
-	std::vector<uint64_t> m_root_size;
+	std::vector<uint64_t> m_union_find__root_size;
 
 	/// The type of this tree
 	std::array<bool,__tree_type_size> m_tree_type;
@@ -304,11 +304,11 @@ protected:
 	 * @param n Number of vertices.
 	 */
 	void tree_only_init(uint64_t n) noexcept {
-		m_root_of = std::vector<uint64_t>(n);
-		m_root_size = std::vector<uint64_t>(n);
+		m_union_find__root_of = std::vector<uint64_t>(n);
+		m_union_find__root_size = std::vector<uint64_t>(n);
 		for (node u = 0; u < n; ++u) {
-			m_root_of[u] = u;
-			m_root_size[u] = 1;
+			m_union_find__root_of[u] = u;
+			m_union_find__root_size[u] = 1;
 		}
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
@@ -316,8 +316,8 @@ protected:
 	}
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept {
-		m_root_of.clear();
-		m_root_size.clear();
+		m_union_find__root_of.clear();
+		m_union_find__root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
 		m_tree_type[static_cast<std::size_t>(tree_type::unknown)] = true;
@@ -326,16 +326,16 @@ protected:
 	/// Copies only members of class @ref tree.
 	void tree_only_copy(const tree& t) noexcept {
 		// copy this class' members
-		m_root_of = t.m_root_of;
-		m_root_size = t.m_root_size;
+		m_union_find__root_of = t.m_union_find__root_of;
+		m_union_find__root_size = t.m_union_find__root_size;
 		m_is_tree_type_valid = t.m_is_tree_type_valid;
 		m_tree_type = t.m_tree_type;
 	}
 	/// Moves only members of class @ref tree.
 	void tree_only_move(tree&& t) noexcept {
 		// move this class' members
-		m_root_of = std::move(t.m_root_of);
-		m_root_size = std::move(t.m_root_size);
+		m_union_find__root_of = std::move(t.m_union_find__root_of);
+		m_union_find__root_size = std::move(t.m_union_find__root_size);
 		m_is_tree_type_valid = t.m_is_tree_type_valid;
 		m_tree_type = std::move(t.m_tree_type);
 
@@ -394,10 +394,10 @@ protected:
 	void fill_union_find() noexcept {
 		for (node u = 0; u < get_num_nodes(); ++u) {
 			// all vertices point to root zero
-			m_root_of[u] = 0;
+			m_union_find__root_of[u] = 0;
 		}
 		// the size of the connected component of the root 0 is n
-		m_root_size[0] = get_num_nodes();
+		m_union_find__root_size[0] = get_num_nodes();
 	}
 
 	/**
