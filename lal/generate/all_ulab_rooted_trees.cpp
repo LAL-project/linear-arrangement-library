@@ -108,9 +108,9 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 		return rT;
 	}
 
-	const graphs::free_tree t =
+	graphs::free_tree t =
 		detail::from_level_sequence_to_ftree(m_L.begin(), m_n, false, false);
-	return graphs::rooted_tree(t, 0);
+	return graphs::rooted_tree(std::move(t), 0, false, false);
 }
 
 void all_ulab_rooted_trees::__reset() noexcept {
