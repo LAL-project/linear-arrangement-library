@@ -59,6 +59,11 @@ namespace graphs {
  */
 class free_tree : public undirected_graph, virtual public tree {
 public:
+	/// We want the @ref lal::graphs::rooted_tree class to be a friend of this
+	/// so as to do move operations.
+	friend class rooted_tree;
+
+public:
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.

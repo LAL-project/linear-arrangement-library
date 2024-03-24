@@ -62,6 +62,121 @@ namespace graphs {
 
 /* MODIFIERS */
 
+void rooted_tree::init_rooted
+(const free_tree& t, node r, bool norm, bool check_norm)
+noexcept
+{
+	const uint64_t n = t.get_num_nodes();
+
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
+	if (n == 0) {
+		rooted_tree::_clear();
+		rooted_tree::_init(0);
+		set_root(0);
+		return;
+	}
+
+#if defined DEBUG
+	assert(t.has_node(r));
+#endif
+
+	// allocate rooted tree
+	tree_only_copy(t);
+	directed_graph::_init(n);
+	m_size_subtrees.resize(n);
+	m_are_size_subtrees_valid = false;
+
+	// pre-allocate memory
+	for (node u = 0; u < n; ++u) {
+		reserve_out_degree(u, t.get_degree(u) - (u != r));
+		reserve_in_degree(u, u != r ? 1 : 0);
+	}
+
+	// Build list of directed edges using a breadth-first search traversal.
+	// This is needed to make the edges point in the direction indicated by
+	// the root.
+	detail::BFS bfs(t);
+	bfs.set_process_neighbour(
+	[&](const auto&, const node u, const node v, bool) -> void {
+		m_adjacency_list[u].push_back(v);
+		m_in_adjacency_list[v].push_back(u);
+	}
+	);
+	bfs.start_at(r);
+
+	m_num_edges = n - 1;
+	set_root(r);
+
+	normalise_after_edge_addition(norm, check_norm);
+}
+
+void rooted_tree::init_rooted
+(free_tree&& t, node r, bool norm, bool check_norm)
+noexcept
+{
+	const uint64_t n = t.get_num_nodes();
+
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
+	if (n == 0) {
+		rooted_tree::_clear();
+		rooted_tree::_init(0);
+		set_root(0);
+		return;
+	}
+
+#if defined DEBUG
+	assert(t.has_node(r));
+#endif
+
+	const bool is_t_normalized = t.is_normalised();
+
+	// allocate rooted tree
+	tree_only_move(std::forward<tree>(t));
+	m_adjacency_list = std::move(t.m_adjacency_list);
+	m_in_adjacency_list.resize(n);
+	m_size_subtrees.resize(n);
+	m_are_size_subtrees_valid = false;
+	m_num_edges = n - 1;
+	set_root(r);
+
+	// pre-allocate memory
+	for (node u = 0; u < n; ++u) {
+		reserve_in_degree(u, u != r ? 1 : 0);
+	}
+
+	// Build list of directed edges using a breadth-first search traversal.
+	// This is needed to make the edges point in the direction indicated by
+	// the root.
+	detail::BFS bfs(*this);
+	bfs.set_use_rev_edges(false);
+	bfs.set_process_neighbour(
+	[&](const auto&, const node u, const node v, bool) -> void {
+		// add missing edges.
+		m_in_adjacency_list[v].push_back(u);
+
+		// remove 'u' from the list of 'v'
+		neighbourhood::iterator it_u;
+		neighbourhood& out_v = m_adjacency_list[v];
+		if (is_t_normalized) {
+			it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
+		}
+		else {
+			it_u = std::find(out_v.begin(), out_v.end(), u);
+		}
+		out_v.erase(it_u);
+	}
+	);
+	bfs.start_at(r);
+
+	normalise_after_edge_addition(norm, check_norm);
+}
+
 rooted_tree& rooted_tree::remove_node
 (node u, bool connect, bool norm, bool check_norm)
 noexcept
@@ -308,54 +423,6 @@ void rooted_tree::disjoint_union
 #undef append
 }
 
-void rooted_tree::init_rooted
-(const free_tree& _t, node r, bool norm, bool check_norm)
-noexcept
-{
-	const uint64_t n = _t.get_num_nodes();
-	rooted_tree::_clear();
-
-#if defined DEBUG
-	assert(_t.is_tree());
-#endif
-
-	if (n == 0) {
-		rooted_tree::_init(0);
-		set_root(0);
-		return;
-	}
-
-#if defined DEBUG
-	assert(_t.has_node(r));
-#endif
-
-	// allocate rooted tree
-	rooted_tree::_init(n);
-
-	// pre-allocate memory
-	for (node u = 0; u < n; ++u) {
-		reserve_out_degree(u, _t.get_degree(u) - (u != r));
-		reserve_in_degree(u, u != r ? 1 : 0);
-	}
-
-	// Build list of directed edges using a breadth-first search traversal.
-	// This is needed to make the edges point in the direction indicated by
-	// the root.
-	detail::BFS bfs(_t);
-	bfs.set_process_neighbour(
-	[&](const auto&, const node s, const node t, bool) -> void {
-		add_edge_bulk(s, t);
-	}
-	);
-	bfs.start_at(r);
-
-	finish_bulk_add(norm, check_norm);
-	set_root(r);
-
-	m_is_tree_type_valid = false;
-	m_are_size_subtrees_valid = false;
-}
-
 void rooted_tree::calculate_size_subtrees() noexcept {
 #if defined DEBUG
 	assert(is_rooted_tree());
@@ -448,7 +515,7 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 		std::copy(
 			&subsizes[0], &subsizes[n_verts],
 			sub.m_size_subtrees.begin()
-		);
+			);
 		sub.m_are_size_subtrees_valid = true;
 
 		delete[] subsizes;
@@ -470,16 +537,16 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 }
 
 head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
-noexcept
+	noexcept
 {
 	return
 		(arr.size() == 0 ?
-			detail::from_tree_to_head_vector
-			(*this, detail::identity_arr(arr))
-		:
-			detail::from_tree_to_head_vector
-			(*this, detail::nonident_arr(arr))
-		);
+			 detail::from_tree_to_head_vector
+			 (*this, detail::identity_arr(arr))
+						 :
+			 detail::from_tree_to_head_vector
+			 (*this, detail::nonident_arr(arr))
+		 );
 }
 
 bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
@@ -496,7 +563,7 @@ bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
 
 	// terminate the BFS traversal as soon as node 'u' has been reached.
 	bfs.set_terminate
-	([u](const auto&, node current) -> bool { return current == u; });
+		([u](const auto&, node current) -> bool { return current == u; });
 	// do not search backwards
 	bfs.set_use_rev_edges(false);
 	// start at the root

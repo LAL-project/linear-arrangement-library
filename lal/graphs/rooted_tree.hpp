@@ -132,7 +132,7 @@ public:
 	}
 
 	/**
-	 * @brief Constructor with tree and root node.
+	 * @brief Constructor with free tree and root node.
 	 * @param t Free tree.
 	 * @param r Root node.
 	 * @param norm Normalise the graph after the deletion.
@@ -146,6 +146,24 @@ public:
 	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept {
 		init_rooted(t, r, norm, check_norm);
 	}
+
+	/**
+	 * @brief Constructor with tree and root node.
+	 * @param t Free tree.
+	 * @param r Root node.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre Tree @e t is a valid free tree.
+	 * @post Tree @e t is moved and should not be used.
+	 */
+	rooted_tree
+	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept {
+		init_rooted(std::forward<free_tree>(t), r, norm, check_norm);
+	}
+
 	/// Destructor
 	virtual ~rooted_tree() noexcept { }
 
@@ -169,6 +187,49 @@ public:
 	}
 
 	/* MODIFIERS */
+
+	/**
+	 * @brief Initialiser with tree and root node.
+	 *
+	 * Constructs a rooted tree from a free tree and one of its nodes as
+	 * the root of the rooted tree.
+	 *
+	 * Since the edges are oriented, method @ref is_tree must be true on
+	 * parameter @e t (otherwise, some edges might not be reachable from
+	 * the root and hence completely undirectable).
+	 * @param t Undirected tree.
+	 * @param r Root of the rooted tree. A node of @e g.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre Parameter @e t must be a tree (see @ref is_tree).
+	 * @post Method @ref is_rooted_tree returns true.
+	 */
+	void init_rooted
+	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
+	/**
+	 * @brief Initialiser with tree and root node.
+	 *
+	 * Constructs a rooted tree from a free tree and one of its nodes as
+	 * the root of the rooted tree.
+	 *
+	 * Since the edges are oriented, method @ref is_tree must be true on
+	 * parameter @e t (otherwise, some edges might not be reachable from
+	 * the root and hence completely undirectable).
+	 * @param t Undirected tree.
+	 * @param r Root of the rooted tree. A node of @e g.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre Parameter @e t must be a tree (see @ref is_tree).
+	 * @post Method @ref is_rooted_tree returns true.
+	 */
+	void init_rooted
+	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Remove a node from this tree.
@@ -391,28 +452,6 @@ public:
 	 */
 	void disjoint_union(const rooted_tree& t, bool connect_roots = true)
 	noexcept;
-
-	/**
-	 * @brief Initialiser with tree and root node.
-	 *
-	 * Constructs a rooted tree from a free tree and one of its nodes as
-	 * the root of the rooted tree.
-	 *
-	 * Since the edges are oriented, method @ref is_tree must be true on
-	 * parameter @e t (otherwise, some edges might not be reachable from
-	 * the root and hence completely undirectable).
-	 * @param t Undirected tree.
-	 * @param r Root of the rooted tree. A node of @e g.
-	 * @param norm Normalise the graph after the deletion.
-	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
-	 * is ignored.
-	 * @pre Parameter @e t must be a tree (see @ref is_tree).
-	 * @post Method @ref is_rooted_tree returns true.
-	 */
-	void init_rooted
-	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Calculates the number of nodes at every rooted subtree.
@@ -737,7 +776,7 @@ protected:
 		move_full_directed_graph(std::forward<rooted_tree>(r));
 
 		// move-assign only tree's members
-		tree_only_move(std::forward<rooted_tree>(r));
+		tree_only_move(std::forward<tree>(r));
 
 		// move this class' members
 		m_root.swap(r.m_root);
