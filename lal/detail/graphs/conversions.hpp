@@ -313,7 +313,7 @@ noexcept
 	assert(t.is_tree());
 #endif
 
-	return from_tree_to_head_vector(graphs::rooted_tree(t,r), arr);
+	return from_tree_to_head_vector(graphs::rooted_tree(t,r,false,false), arr);
 }
 
 /**
