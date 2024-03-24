@@ -118,6 +118,21 @@ public:
 	/* MODIFIERS */
 
 	/**
+	 * @brief Predicts that the degree of node @e u is @e d.
+	 *
+	 * Memory of size @e d is reserved so that adding edges is done more efficiently.
+	 * @param u Node to reserve the degree for.
+	 * @param d The amount of memory to reserve.
+	 * @pre The graph must have been initialized.
+	 */
+	void reserve_degree(node u, uint64_t d) noexcept {
+#if defined DEBUG
+		assert(u < get_num_nodes());
+#endif
+		m_adjacency_list[u].reserve(d);
+	}
+
+	/**
 	 * @brief Remove a node from this graph.
 	 *
 	 * @param u Valid node index: \f$0 \le u < n\f$.

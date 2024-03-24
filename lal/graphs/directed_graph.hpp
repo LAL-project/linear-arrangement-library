@@ -118,6 +118,35 @@ public:
 
 	/* MODIFIERS */
 
+	/**
+	 * @brief Predicts that the in-degree of node @e u is @e d.
+	 *
+	 * Memory of size @e d is reserved so that adding edges is done more efficiently.
+	 * @param u Node to reserve the degree for.
+	 * @param d The amount of memory to reserve.
+	 * @pre The graph must have been initialized.
+	 */
+	void reserve_in_degree(node u, uint64_t d) noexcept {
+#if defined DEBUG
+		assert(u < get_num_nodes());
+#endif
+		m_in_adjacency_list[u].reserve(d);
+	}
+	/**
+	 * @brief Predicts that the out-degree of node @e u is @e d.
+	 *
+	 * Memory of size @e d is reserved so that adding edges is done more efficiently.
+	 * @param u Node to reserve the degree for.
+	 * @param d The amount of memory to reserve.
+	 * @pre The graph must have been initialized.
+	 */
+	void reserve_out_degree(node u, uint64_t d) noexcept {
+#if defined DEBUG
+		assert(u < get_num_nodes());
+#endif
+		m_adjacency_list[u].reserve(d);
+	}
+
 	void normalise() noexcept;
 
 	bool check_normalised() noexcept;
