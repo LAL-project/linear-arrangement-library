@@ -77,7 +77,7 @@ In the mathematical sense, a linear arrangement is a permutation, a bijective fu
 
 See the figure below for an illustration of a linear arrangement.
 
-\image html linear_arrangement.png
+\image html arrangement_example.png
 
 The two arrays underlying a linear arrangement describe the function \f$\pi\f$. One array gives the values \f$\pi(u)\f$ (@ref lal::linear_arrangement::m_direct); the other array gives the values \f$\pi^{-1}(p)\f$ (@ref lal::linear_arrangement::m_inverse).
 
