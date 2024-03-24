@@ -432,7 +432,7 @@ void directed_graph::remove_single_edge
 {
 	// it_v: pointer to node v in out_u
 	// it_u: pointer to node u in in_v
-	std::vector<node>::iterator it_v, it_u;
+	neighbourhood::iterator it_v, it_u;
 
 	// find the nodes in the lists
 	if (is_normalised()) {

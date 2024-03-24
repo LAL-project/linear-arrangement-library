@@ -85,7 +85,7 @@ noexcept
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
-	detail::sorting::bit_sort<node, std::vector<node>::iterator>
+	detail::sorting::bit_sort<node, neighbourhood::iterator>
 	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
 
