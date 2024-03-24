@@ -124,8 +124,8 @@ public:
 	 * @brief Set the graph traversal to its default state.
 	 *
 	 * This includes the node processing functions:
-	 * - @ref m_proc_cur,
-	 * - @ref m_proc_neigh,
+	 * - @ref m_process_current,
+	 * - @ref m_process_neighbor,
 	 * - @ref m_add_node,
 	 *
 	 * the termination function @ref m_term, and the attributes:
