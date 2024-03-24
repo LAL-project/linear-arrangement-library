@@ -151,6 +151,7 @@ public:
 		init_rooted(t, r, norm, check_norm);
 	}
 
+#ifndef SWIG
 	/**
 	 * @brief Constructor with tree and root node.
 	 * @param t Free tree.
@@ -167,6 +168,7 @@ public:
 	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept {
 		init_rooted(std::forward<free_tree>(t), r, norm, check_norm);
 	}
+#endif
 
 	/// Destructor
 	virtual ~rooted_tree() noexcept { }
@@ -213,6 +215,8 @@ public:
 	 */
 	void init_rooted
 	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
+
+#ifndef SWIG
 	/**
 	 * @brief Initialiser with tree and root node.
 	 *
@@ -234,6 +238,7 @@ public:
 	 */
 	void init_rooted
 	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept;
+#endif
 
 	/**
 	 * @brief Remove a node from this tree.
