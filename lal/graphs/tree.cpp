@@ -136,20 +136,20 @@ void tree::tree_only_actions_after_remove_node(node u) noexcept {
 	m_is_tree_type_valid = false;
 
 #if defined DEBUG
-	assert(m_root_of[u] == u);
-	assert(m_root_size[u] == 1);
+	assert(m_union_find__root_of[u] == u);
+	assert(m_union_find__root_size[u] == 1);
 #endif
 
 	// update union-find data structure
 	{
-		auto e = m_union_find__root_of.begin();
+	auto e = m_union_find__root_of.begin();
 	std::advance(e, u);
-		m_union_find__root_of.erase(e);
+	m_union_find__root_of.erase(e);
 	}
 	{
-		auto e = m_union_find__root_size.begin();
+	auto e = m_union_find__root_size.begin();
 	std::advance(e, u);
-		m_union_find__root_size.erase(e);
+	m_union_find__root_size.erase(e);
 	}
 
 	// relabel the roots when necessary

@@ -200,8 +200,8 @@ noexcept
 
 	undirected_graph::remove_edges_incident_to(u, norm, check_norm);
 #if defined DEBUG
-	assert(m_root_of[u] == u);
-	assert(m_root_size[u] == 1);
+	assert(m_union_find__root_of[u] == u);
+	assert(m_union_find__root_size[u] == 1);
 #endif
 	return *this;
 }
