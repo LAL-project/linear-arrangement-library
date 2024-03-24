@@ -67,13 +67,13 @@ void rooted_tree::init_rooted
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
+	rooted_tree::_clear();
 
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
 	if (n == 0) {
-		rooted_tree::_clear();
 		rooted_tree::_init(0);
 		set_root(0);
 		return;
@@ -84,8 +84,9 @@ noexcept
 #endif
 
 	// allocate rooted tree
-	tree_only_copy(t);
 	directed_graph::_init(n);
+	set_root(r);
+	tree_only_copy(t);
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
 
@@ -108,7 +109,6 @@ noexcept
 	bfs.start_at(r);
 
 	m_num_edges = n - 1;
-	set_root(r);
 
 	normalise_after_edge_addition(norm, check_norm);
 }
@@ -118,13 +118,13 @@ void rooted_tree::init_rooted
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
+	rooted_tree::_clear();
 
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
 	if (n == 0) {
-		rooted_tree::_clear();
 		rooted_tree::_init(0);
 		set_root(0);
 		return;
@@ -137,13 +137,14 @@ noexcept
 	const bool is_t_normalized = t.is_normalised();
 
 	// allocate rooted tree
-	tree_only_move(std::forward<tree>(t));
 	m_adjacency_list = std::move(t.m_adjacency_list);
 	m_in_adjacency_list.resize(n);
+	set_root(r);
+	tree_only_move(std::forward<tree>(t));
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
 	m_num_edges = n - 1;
-	set_root(r);
+	t.m_num_edges = 0;
 
 	// pre-allocate memory
 	for (node u = 0; u < n; ++u) {
