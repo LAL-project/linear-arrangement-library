@@ -97,9 +97,10 @@ namespace graphs {
  * the root of rooted trees multiple times and at any time. However, when the
  * tree has all of its edges then only one vertex can be the root (that with
  * in-degree 0). For this reason, in case a user wants to build "different rooted
- * trees on different roots", it is strongly recommended that first a @ref lal::graphs::free_tree
- * is built, and then create a rooted tree using the constructor
- * @ref rooted_tree(const free_tree&, node), or the method @ref init_rooted.
+ * trees on different roots", it is strongly recommended that first a
+ * @ref lal::graphs::free_tree is built, and then create a rooted tree using the
+ * constructor @ref rooted_tree(const free_tree&, node), or the method
+ * @ref init_rooted.
  */
 class rooted_tree : public directed_graph, virtual public tree {
 public:
@@ -130,9 +131,20 @@ public:
 		move_full_rooted_tree(std::forward<rooted_tree>(r));
 	}
 
-	/// Constructor with tree and root node.
-	rooted_tree(const free_tree& t, node r) noexcept {
-		init_rooted(t, r);
+	/**
+	 * @brief Constructor with tree and root node.
+	 * @param t Free tree.
+	 * @param r Root node.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
+	 * @pre Tree @e t is a valid free tree.
+	 */
+	rooted_tree
+	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept {
+		init_rooted(t, r, norm, check_norm);
 	}
 	/// Destructor
 	virtual ~rooted_tree() noexcept { }
@@ -391,10 +403,16 @@ public:
 	 * the root and hence completely undirectable).
 	 * @param t Undirected tree.
 	 * @param r Root of the rooted tree. A node of @e g.
+	 * @param norm Normalise the graph after the deletion.
+	 * @param check_norm If @e norm is false then, should we check whether
+	 * the result is normalised or not? This might be useful in case the
+	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * is ignored.
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
-	void init_rooted(const free_tree& t, node r) noexcept;
+	void init_rooted
+	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
 	 * @brief Calculates the number of nodes at every rooted subtree.

@@ -308,8 +308,13 @@ void rooted_tree::disjoint_union
 #undef append
 }
 
-void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
+void rooted_tree::init_rooted
+(const free_tree& _t, node r, bool norm, bool check_norm)
+noexcept
+{
 	const uint64_t n = _t.get_num_nodes();
+	rooted_tree::_clear();
+
 #if defined DEBUG
 	assert(_t.is_tree());
 #endif
@@ -324,33 +329,31 @@ void rooted_tree::init_rooted(const free_tree& _t, node r) noexcept {
 	assert(_t.has_node(r));
 #endif
 
-	// list of directed edges out of 'g'
-	std::vector<edge> dir_edges(_t.get_num_edges());
-	auto it_dir_edges = dir_edges.begin();
+	// allocate rooted tree
+	rooted_tree::_init(n);
 
-	// Build list of directed edges using a breadth-first search.
-	// This is needed to make the edges point in the direction
-	// indicated by the rooted tree type.
-	detail::BFS<free_tree> bfs(_t);
+	// pre-allocate memory
+	for (node u = 0; u < n; ++u) {
+		reserve_out_degree(u, _t.get_degree(u) - (u != r));
+		reserve_in_degree(u, u != r ? 1 : 0);
+	}
+
+	// Build list of directed edges using a breadth-first search traversal.
+	// This is needed to make the edges point in the direction indicated by
+	// the root.
+	detail::BFS bfs(_t);
 	bfs.set_process_neighbour(
 	[&](const auto&, const node s, const node t, bool) -> void {
-		// the tree is an arborescence, i.e., the
-		// edges point away from the root
-		*it_dir_edges++ = edge(s,t);
+		add_edge_bulk(s, t);
 	}
 	);
 	bfs.start_at(r);
 
-	// allocate rooted tree
-	rooted_tree::_init(n);
-	// fill rooted tree
-	rooted_tree::set_edges(dir_edges);
+	finish_bulk_add(norm, check_norm);
+	set_root(r);
 
-	// the set_edges function sets the attributes
-	//    m_is_tree_typ_valid
-	//    m_are_size_subtrees_valid
-	//    m_valid_orientation
-	// appropriately.
+	m_is_tree_type_valid = false;
+	m_are_size_subtrees_valid = false;
 }
 
 void rooted_tree::calculate_size_subtrees() noexcept {
