@@ -125,12 +125,12 @@ public:
 	 *
 	 * This includes the node processing functions:
 	 * - @ref m_process_current,
-	 * - @ref m_process_neighbor,
+	 * - @ref m_process_neighbour,
 	 * - @ref m_add_node,
 	 *
-	 * the termination function @ref m_term, and the attributes:
+	 * the termination function @ref m_terminate, and the attributes:
 	 * - @ref m_use_rev_edges,
-	 * - @ref m_proc_vis_neighs.
+	 * - @ref m_process_visited_neighbours.
 	 */
 	void reset() noexcept {
 		clear_visited();
@@ -194,15 +194,15 @@ public:
 		m_is_process_current_set = true;
 	}
 
-	/// Set the default value of @ref m_process_neighbor.
+	/// Set the default value of @ref m_process_neighbour.
 	void set_process_neighbour_default() noexcept {
-		m_process_neighbor = [](const BFS<graph_t>&, const node, const node, bool) -> void { };
-		m_is_process_neighbor_set = false;
+		m_process_neighbour = [](const BFS<graph_t>&, const node, const node, bool) -> void { };
+		m_is_process_neighbour_set = false;
 	}
 	/// Set the function that controls the processing of the current neighbour.
 	void set_process_neighbour(const BFS_process_two& f) noexcept {
-		m_process_neighbor = f;
-		m_is_process_neighbor_set = true;
+		m_process_neighbour = f;
+		m_is_process_neighbour_set = true;
 	}
 
 	/// Set the default value of @ref m_add_node.
@@ -222,7 +222,7 @@ public:
 	 * @param v Either true or false.
 	 */
 	void set_process_visited_neighbours(bool v) noexcept
-	{ m_proc_vis_neighs = v; }
+	{ m_process_visited_neighbours = v; }
 
 	/**
 	 * @brief Sets all nodes to not visited.
@@ -276,7 +276,7 @@ protected:
 	 *
 	 * The neighbour is processed if it has not been visited before. In case the
 	 * node was visited in a previous iteration, it is processed only if
-	 * @ref m_proc_vis_neighs has been set via method @ref set_process_visited_neighbours.
+	 * @ref m_process_visited_neighbours has been set via method @ref set_process_visited_neighbours.
 	 *
 	 * Node @e t is pushed into the queue only if it has not been visited before
 	 * and the user function @ref m_add_node allows it.
@@ -290,9 +290,9 @@ protected:
 		// Process the neighbour 't' of 's'.
 		const bool t_vis = node_was_visited(t);
 
-		if ((not t_vis) or (t_vis and m_proc_vis_neighs)) {
-			if (m_is_process_neighbor_set) {
-				m_process_neighbor(*this, s, t, ltr);
+		if ((not t_vis) or (t_vis and m_process_visited_neighbours)) {
+			if (m_is_process_neighbour_set) {
+				m_process_neighbour(*this, s, t, ltr);
 			}
 		}
 
@@ -415,7 +415,7 @@ protected:
 	/// The set of visited nodes.
 	data_array<char> m_vis;
 	/// Should the traversal process previously-visitied neighbours?
-	bool m_proc_vis_neighs = false;
+	bool m_process_visited_neighbours = false;
 	/**
 	 * @brief In directed graphs, traverse edges in the reverse direction.
 	 *
@@ -459,9 +459,9 @@ protected:
 	 *
 	 * For more details on when this function is called see @ref do_traversal.
 	 */
-	BFS_process_two m_process_neighbor;
-	/// Is function @ref m_process_neighbor set?
-	bool m_is_process_neighbor_set;
+	BFS_process_two m_process_neighbour;
+	/// Is function @ref m_process_neighbour set?
+	bool m_is_process_neighbour_set;
 
 	/**
 	 * @brief graph_traversal node addition function.
