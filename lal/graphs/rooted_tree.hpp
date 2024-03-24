@@ -70,13 +70,15 @@ namespace graphs {
  *
  * Rooted trees can be constructed in two different ways:
  * - Using an already-constructed free tree via a class constructor, where
- * users have to indicate the root (see @ref rooted_tree(const free_tree&, node)).
+ * users have to indicate the root (either
+ * @ref rooted_tree(const lal::graphs::free_tree&, node, bool, bool)
+ * or @ref rooted_tree(lal::graphs::free_tree&&, node, bool, bool)).
  * Alternatively, one can use the method @ref init_rooted, which has the same set
  * of parameters.
- * - Adding edge after edge. In this class, as in @ref free_tree, this addition
- * is constrained so that the underlying undirected graph does not contain cycles.
- * Before (or after) the addition of all the edges, it is recommended
- * the root be set using @ref set_root.
+ * - Adding edge after edge. In this class, as in @ref lal::graphs::free_tree,
+ * this addition is constrained so that the underlying undirected graph does not
+ * contain cycles. Before (or after) the addition of all the edges, it is
+ * recommended the root be set using @ref set_root.
  *
  * Adding edges one by one has a serious drawback. In case the edges do not
  * have a consistent orientation (either always pointing away from the root
@@ -98,8 +100,10 @@ namespace graphs {
  * tree has all of its edges then only one vertex can be the root (that with
  * in-degree 0). For this reason, in case a user wants to build "different rooted
  * trees on different roots", it is strongly recommended that first a
- * @ref lal::graphs::free_tree is built, and then create a rooted tree using the
- * constructor @ref rooted_tree(const free_tree&, node), or the method
+ * @ref lal::graphs::free_tree is built, and then create a rooted tree using one
+ * of the two constructors with a free tree (either
+ * @ref rooted_tree(const lal::graphs::free_tree&, node, bool, bool), or
+ * @ref rooted_tree(lal::graphs::free_tree&&, node, bool, bool)), or the method
  * @ref init_rooted.
  */
 class rooted_tree : public directed_graph, virtual public tree {
