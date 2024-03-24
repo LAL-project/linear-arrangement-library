@@ -480,6 +480,7 @@ public:
 	 * Changing the root of a rooted tree invalidates information dependant
 	 * on the tree. See the postconditions for details.
 	 * @param r Vertex that represents the root.
+	 * @pre The adjacency list must have been initialized.
 	 * @post Method @ref has_root returns true.
 	 * @post The type of rooted tree and the size of the subtrees are
 	 * invalidated.
