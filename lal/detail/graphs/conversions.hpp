@@ -496,7 +496,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
  */
 inline

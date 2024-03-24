@@ -169,7 +169,10 @@ public:
 	 * bulk additions of edges to the graph.
 	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
-	 * @pre All edges of the graph have been added with method @ref add_edge_bulk.
+	 * @pre All edges of the graph have been added with either the method
+	 * @ref lal::graphs::undirected_graph::add_edge_bulk or
+	 * @ref lal::graphs::directed_graph::add_edge_bulk depending on the base
+	 * clas.
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 
