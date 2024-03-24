@@ -75,7 +75,7 @@ void directed_graph::normalise() noexcept {
 			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin());
 		}
 	}
-	m_normalised = true;
+	m_is_normalised = true;
 }
 
 bool directed_graph::check_normalised() noexcept {
@@ -86,19 +86,19 @@ bool directed_graph::check_normalised() noexcept {
 		const neighbourhood& out_nu = m_adjacency_list[u];
 		if (not is_sorted(out_nu.begin(), out_nu.end())) {
 			// if some is not then the graph is not normalised
-			m_normalised = false;
+			m_is_normalised = false;
 			return false;
 		}
 
 		const neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not is_sorted(in_nu.begin(), in_nu.end())) {
 			// if some is not then the graph is not normalised
-			m_normalised = false;
+			m_is_normalised = false;
 			return false;
 		}
 	}
 	// all adjacency lists are sorted so the graph is normalised
-	m_normalised = true;
+	m_is_normalised = true;
 	return true;
 }
 
@@ -169,17 +169,17 @@ directed_graph& directed_graph::add_edge
 			// be lucky....
 			const std::size_t out_u_s = out_u.size();
 			const bool out_u_norm =
-				(out_u_s <= 1 ? m_normalised : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
+				(out_u_s <= 1 ? m_is_normalised : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
 			const std::size_t in_v_s = in_v.size();
 			const bool in_v_norm =
-				(in_v_s <= 1 ? m_normalised : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
-			m_normalised = m_normalised and out_u_norm and in_v_norm;
+				(in_v_s <= 1 ? m_is_normalised : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
+			m_is_normalised = m_is_normalised and out_u_norm and in_v_norm;
 			/*if (su > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1];
+				m_is_normalised = nu[su - 2] < nu[su - 1];
 			}*/
 		}
 		else {
-			m_normalised = false;
+			m_is_normalised = false;
 		}
 	}
 	else {

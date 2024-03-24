@@ -153,7 +153,7 @@ public:
 	 * @brief Checks if the graph is normalised.
 	 *
 	 * Checks, whether the graph's adjacency structure is normalised or not.
-	 * In case it is, attribute @ref m_normalised is set to true, so method
+	 * In case it is, attribute @ref m_is_normalised is set to true, so method
 	 * @ref is_normalised evaluates to true.
 	 */
 	virtual bool check_normalised() noexcept;
@@ -176,7 +176,7 @@ public:
 	/* SETTERS */
 
 	/// Sets whether this graph is normalised or not.
-	void set_normalised(bool v = true) noexcept { m_normalised = v; }
+	void set_normalised(bool v = true) noexcept { m_is_normalised = v; }
 
 	/* GETTERS */
 
@@ -210,9 +210,9 @@ public:
 	 *
 	 * A graph is normalised if every node's adjacency list is sorted
 	 * increasingly. For this, use method @ref normalise().
-	 * @returns The value of @ref m_normalised.
+	 * @returns The value of @ref m_is_normalised.
 	 */
-	bool is_normalised() const noexcept { return m_normalised; }
+	bool is_normalised() const noexcept { return m_is_normalised; }
 
 	/// Returns whether this graph is directed or not.
 	virtual bool is_directed() const noexcept = 0;
@@ -236,7 +236,7 @@ protected:
 	 * This attribute is set to 'true' in all graph's initialisation
 	 * and destruction (when @ref clear() method is called).
 	 */
-	bool m_normalised = true;
+	bool m_is_normalised = true;
 
 protected:
 	/**
@@ -246,13 +246,13 @@ protected:
 	 */
 	virtual void _init(uint64_t n) noexcept {
 		m_num_edges = 0;
-		m_normalised = true;
+		m_is_normalised = true;
 		m_adjacency_list.resize(n);
 	}
 	/// Clears memory for the @ref graph class.
 	virtual void _clear() noexcept {
 		m_num_edges = 0;
-		m_normalised = true;
+		m_is_normalised = true;
 		m_adjacency_list.clear();
 	}
 
@@ -260,16 +260,16 @@ protected:
 	void copy_full_graph(const graph& g) noexcept {
 		m_adjacency_list = g.m_adjacency_list;
 		m_num_edges = g.m_num_edges;
-		m_normalised = g.m_normalised;
+		m_is_normalised = g.m_is_normalised;
 	}
 	/// Moves all members of this class.
 	void move_full_graph(graph&& g) noexcept {
 		m_adjacency_list = std::move(g.m_adjacency_list);
 		m_num_edges = std::move(g.m_num_edges);
-		m_normalised = std::move(g.m_normalised);
+		m_is_normalised = std::move(g.m_is_normalised);
 
 		g.m_num_edges = 0;
-		g.m_normalised = false;
+		g.m_is_normalised = false;
 	}
 
 	/**

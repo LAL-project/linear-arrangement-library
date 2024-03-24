@@ -75,7 +75,7 @@ void graph::normalise() noexcept {
 			(nu.begin(), nu.end(), nu.size(), mem.begin());
 		}
 	}
-	m_normalised = true;
+	m_is_normalised = true;
 }
 
 bool graph::check_normalised() noexcept {
@@ -84,13 +84,13 @@ bool graph::check_normalised() noexcept {
 		const neighbourhood& nu = m_adjacency_list[u];
 		if (not std::is_sorted(nu.begin(), nu.end())) {
 			// if some is not then the graph is not normalised
-			m_normalised = false;
+			m_is_normalised = false;
 			return false;
 		}
 	}
 	// all adjacency lists are sorted so
 	// the graph is normalised
-	m_normalised = true;
+	m_is_normalised = true;
 	return true;
 }
 
@@ -113,7 +113,7 @@ void graph::__disjoint_union(const graph& g) noexcept {
 	// If one or none of the two graphs involved are normalised,
 	// the result is not normalised.
 	// If both graphs are normalised, the result is normalised.
-	m_normalised = m_normalised and g.is_normalised();
+	m_is_normalised = m_is_normalised and g.is_normalised();
 }
 
 void graph::actions_after_remove_node(node) noexcept { }
@@ -145,7 +145,7 @@ void graph::normalise_after_edge_addition(bool to_norm, bool check_norm) noexcep
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		m_normalised = false;
+		m_is_normalised = false;
 	}
 }
 
@@ -172,7 +172,7 @@ void graph::normalise_after_edge_removal(bool to_norm, bool check_norm) noexcept
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			m_normalised = false;
+			m_is_normalised = false;
 		}
 	}
 }

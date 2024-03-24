@@ -109,7 +109,7 @@ undirected_graph& undirected_graph::add_edge
 	if (is_normalised()) {
 		// the graph was normalised
 		if (to_norm) {
-			// Keep it normalised. The attribute m_normalised need not be updated.
+			// Keep it normalised. The attribute m_is_normalised need not be updated.
 			detail::sorting::bit_sort<node>(nu.begin(), nu.end(), nu.size());
 			detail::sorting::bit_sort<node>(nv.begin(), nv.end(), nv.size());
 		}
@@ -120,18 +120,18 @@ undirected_graph& undirected_graph::add_edge
 			const std::size_t su = nu.size();
 			const std::size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
+				m_is_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}
 			else if (su > 1) {
-				m_normalised = nu[su - 2] < nu[su - 1];
+				m_is_normalised = nu[su - 2] < nu[su - 1];
 			}
 			else if (sv > 1) {
-				m_normalised = nv[sv - 2] < nv[sv - 1];
+				m_is_normalised = nv[sv - 2] < nv[sv - 1];
 			}
 		}
 		else {
 			// not 'to_norm' and not 'check_norm'
-			m_normalised = false;
+			m_is_normalised = false;
 		}
 	}
 	else {
