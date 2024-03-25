@@ -89,6 +89,7 @@ noexcept
 	tree_only_copy(t);
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
+	m_is_normalised = t.m_is_normalised;
 
 	// pre-allocate memory
 	for (node u = 0; u < n; ++u) {
@@ -110,7 +111,9 @@ noexcept
 
 	m_num_edges = n - 1;
 
-	normalise_after_edge_addition(norm, check_norm);
+	if (norm or check_norm) {
+		normalise_after_edge_addition(norm, check_norm);
+	}
 }
 
 void rooted_tree::init_rooted
@@ -143,6 +146,7 @@ noexcept
 	tree_only_move(std::forward<tree>(t));
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
+	m_is_normalised = t.m_is_normalised;
 	m_num_edges = n - 1;
 	t.m_num_edges = 0;
 
@@ -175,7 +179,9 @@ noexcept
 	);
 	bfs.start_at(r);
 
-	normalise_after_edge_addition(norm, check_norm);
+	if (norm or check_norm) {
+		normalise_after_edge_addition(norm, check_norm);
+	}
 }
 
 rooted_tree& rooted_tree::remove_node
