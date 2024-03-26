@@ -73,7 +73,7 @@ namespace generate {
  *
  * A possible usage of this class is the following:
  * @code
- *		lal::graphs::all_ulab_rooted_trees Gen(n);
+ *		lal::generate::all_ulab_rooted_trees Gen(n);
  *		while (not Gen.end()) {
  *			const lal::graphs::rooted_tree t = Gen.get_tree();
  *			// ...
@@ -82,14 +82,14 @@ namespace generate {
  * @endcode
  * Alternatively, this class can be used in a for loop:
  * @code
- *		for (lal::graphs::all_ulab_rooted_trees Gen(n); not Gen.end(); Gen.next()) {
+ *		for (lal::generate::all_ulab_rooted_trees Gen(n); not Gen.end(); Gen.next()) {
  *			const lal::graphs::rooted_tree t = Gen.get_tree();
  *			// ...
  *		}
  * @endcode
  * Equivalently,
  * @code
- *		lal::graphs::all_ulab_rooted_trees Gen(n);
+ *		lal::generate::all_ulab_rooted_trees Gen(n);
  *		while (not Gen.end()) {
  *			const lal::graphs::rooted_tree t = Gen.yield_tree();
  *			// ...

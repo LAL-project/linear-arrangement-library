@@ -82,7 +82,7 @@ namespace generate {
  * @endcode
  * Alternatively, this class can be used in a for loop:
  * @code
- *		for (lal::graphs::all_ulab_free_trees Gen(n); not Gen.end(); Gen.next()) {
+ *		for (lal::generate::all_ulab_free_trees Gen(n); not Gen.end(); Gen.next()) {
  *			const lal::graphs::free_tree t = Gen.get_tree();
  *			// ...
  *		}

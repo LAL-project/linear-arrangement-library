@@ -85,7 +85,7 @@ namespace generate {
  * users should <b>not</b> call @ref next() before using the retrieved arrangement.
  * To alleviate this source of bugs, this class can also be used in a for loop:
  * @code
- *		for (all_arrangements Gen(9); not Gen.end(); Gen.next()) {
+ *		for (lal::generate::all_arrangements Gen(9); not Gen.end(); Gen.next()) {
  *			const lal::linear_arrangement& arr = Gen.get_arrangement();
  *			// ...
  *		}
