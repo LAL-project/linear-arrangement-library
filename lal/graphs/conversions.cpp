@@ -64,6 +64,13 @@ noexcept
 	return detail::from_head_vector_to_tree<rooted_tree>(hv, normalise, check);
 }
 
+directed_graph from_head_vector_to_directed_graph
+(const head_vector& hv, bool normalise, bool check)
+noexcept
+{
+	return detail::from_head_vector_to_graph<directed_graph>(hv, normalise, check);
+}
+
 // -----------------------------------------------------------------------------
 // edge list -> graph
 

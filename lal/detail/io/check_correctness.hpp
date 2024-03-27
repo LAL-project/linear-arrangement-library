@@ -57,6 +57,7 @@
 #include <lal/io/report_correctness.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/cycles.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 
 namespace lal {
 namespace detail {
@@ -91,24 +92,6 @@ is not a valid non-negative integer number."
 
 #define self_loop(pos) \
 "Error: found a self-loop at position '" + std::to_string(pos) + "'."
-
-/// Transforms a head vector in a directed graph
-inline graphs::directed_graph head_vector_to_directed_graph(const head_vector& hv)
-noexcept
-{
-	const uint64_t n = hv.size();
-	graphs::directed_graph t(n);
-	for (uint64_t i = 0; i < n; ++i) {
-		if (hv[i] != 0) {
-			// add the edge:
-			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
-			t.add_edge_bulk(i, hv[i] - 1);
-		}
-	}
-	t.finish_bulk_add(true);
-	return t;
-}
 
 /**
  * @brief Find errors in a head vector.
@@ -173,13 +156,15 @@ noexcept
 		}
 
 		// make a directed graph with the values
-		const auto dgraph = head_vector_to_directed_graph(hv);
+		const auto dgraph = from_head_vector_to_graph<graphs::directed_graph>(hv,false,false);
+		{
 		const bool has_cycles = detail::has_undirected_cycles(dgraph);
 		if (has_cycles) {
 			if constexpr (decide) { return true; }
 			else {
 				treebank_err_list.emplace_back(line, graph_has_cycles);
 			}
+		}
 		}
 
 		// find isolated vertices

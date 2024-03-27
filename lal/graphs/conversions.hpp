@@ -64,6 +64,7 @@ namespace graphs {
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre The head vector must be of a valid rooted tree.
  */
 std::pair<free_tree,node> from_head_vector_to_free_tree
 (const head_vector& hv, bool normalise = true, bool check = true)
@@ -80,8 +81,30 @@ noexcept;
  * @param check In case the graph is not to be normalised, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
+ * @pre The head vector must be of a valid rooted tree.
  */
 rooted_tree from_head_vector_to_rooted_tree
+(const head_vector& hv, bool normalise = true, bool check = true)
+noexcept;
+
+/**
+ * @brief Converts a head vector into a directed graph.
+ *
+ * See @ref LAL_concepts__head_vector for the definition of head vector.
+ *
+ * The difference with methods @ref lal::graphs::from_head_vector_to_free_tree and
+ * @ref lal::graphs::from_head_vector_to_rooted_tree is that these methods require
+ * the head vector to be that of a (free or rooted) tree. This method does not
+ * impose any requirement on the head vector.
+ *
+ * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
+ * @param hv A head vector as specified above.
+ * @param normalise Should the graph be normalised?
+ * @param check In case the graph is not to be normalised, should we check whether
+ * it is nor not?
+ * @returns Returns a lal::graphs::directed_graph obtained from the head vector.
+ */
+directed_graph from_head_vector_to_directed_graph
 (const head_vector& hv, bool normalise = true, bool check = true)
 noexcept;
 

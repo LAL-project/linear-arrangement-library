@@ -174,17 +174,51 @@ noexcept
 // -----------------------------------------------------------------------------
 // -- HEAD VECTOR --
 
+/**
+ * @brief Transforms a head vector in a directed graph.
+ * @tparam graph_t The type of graph.
+ * @param hv The input head vector.
+ * @param normalize Normalize the grpah or not?
+ * @param check Check whether the graph is normalized or not?
+ * @returns A graph.
+ */
+template <class graph_t>
+graph_t from_head_vector_to_graph
+(const head_vector& hv, bool normalize = true, bool check = true)
+noexcept
+{
+	const uint64_t n = hv.size();
+	graph_t g(n);
+	for (uint64_t i = 0; i < n; ++i) {
+		if (hv[i] != 0) {
+			// add the edge:
+			// * i ranges in [0,n-1]
+			// * L[i] ranges in [1,n]
+			g.add_edge_bulk(i, hv[i] - 1);
+		}
+	}
+	g.finish_bulk_add(normalize, check);
+	return g;
+}
 
+/**
+ * @brief Transforms a head vector in a tree.
+ *
+ * Reads the head vector from a stream object.
+ * @tparam tree_t The type of tree.
+ * @param ss Stream to read the head vector from.
+ * @returns Either a pair of free tree and its root, or a rooted tree.
+ */
 template <
 	typename tree_t,
 	bool ensure_root_is_returned,
 	bool free_tree_plus_root =
 		ensure_root_is_returned and
-		std::is_same_v<tree_t, lal::graphs::free_tree>
+		std::is_same_v<tree_t, graphs::free_tree>
 >
 std::conditional_t<
 	free_tree_plus_root,
-	std::pair<tree_t, lal::node>,
+	std::pair<tree_t, node>,
 	tree_t
 >
 from_head_vector_to_tree(std::stringstream& ss) noexcept
@@ -192,7 +226,7 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 	uint64_t num_nodes = 0;
 
 	// parse the edge list to find the number of vertices of the tree
-	lal::node u;
+	node u;
 	while (ss >> u) { ++num_nodes; }
 	ss.clear();
 	ss.seekg(0);
@@ -201,7 +235,7 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 	tree_t t(num_nodes);
 
 	// root node of the tree
-	lal::node r = num_nodes + 1;
+	node r = num_nodes + 1;
 
 #if defined DEBUG
 	uint64_t num_edges_added = 0;
@@ -239,7 +273,7 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 #endif
 
 	t.finish_bulk_add();
-	if constexpr (std::is_same_v<tree_t, lal::graphs::rooted_tree>) {
+	if constexpr (std::is_same_v<tree_t, graphs::rooted_tree>) {
 		t.set_root(r);
 #if defined DEBUG
 		assert(t.is_rooted_tree());
@@ -252,7 +286,7 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 	}
 
 	if constexpr (free_tree_plus_root) {
-		static_assert(std::is_same_v<tree_t, lal::graphs::free_tree>);
+		static_assert(std::is_same_v<tree_t, graphs::free_tree>);
 		return {std::move(t), r};
 	}
 	else {
