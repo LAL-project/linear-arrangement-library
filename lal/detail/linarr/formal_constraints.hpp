@@ -66,28 +66,12 @@ namespace detail {
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-bool is_root_covered(
-	const graphs::rooted_tree& rt,
-	const arrangement_t& arr
-)
+bool is_root_covered(const graphs::rooted_tree& rt, const arrangement_t& arr)
 noexcept
 {
 #if defined DEBUG
 	assert(rt.is_rooted_tree());
 #endif
-
-	// case where the linear arrangement is not given
-	if (arr.m_arr.size() == 0) {
-		const node r = rt.get_root();
-		iterators::E_iterator e_it(rt);
-		while (not e_it.end()) {
-			const auto [s,t] = e_it.yield_edge();
-			const bool r_covered_st = s < r and r < t;
-			const bool r_covered_ts = t < r and r < s;
-			if (r_covered_st or r_covered_ts) { return true; }
-		}
-		return false;
-	}
 
 	// the linear arrangement is given
 	const position pr = arr[node_t{rt.get_root()}];
@@ -122,10 +106,7 @@ noexcept
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-bool is_projective(
-	const graphs::rooted_tree& rt,
-	const arrangement_t& arr
-)
+bool is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr)
 noexcept
 {
 #if defined DEBUG

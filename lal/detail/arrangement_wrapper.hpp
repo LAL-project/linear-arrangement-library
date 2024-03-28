@@ -57,7 +57,7 @@ enum class arrangement_type {
 	/// Identity arrangement. \f$\pi(i)=i\f$.
 	identity,
 	/// Non-identity arrangement. An arrangement that is not the identity.
-	nonident
+	nonidentity
 };
 
 /**
@@ -118,10 +118,10 @@ noexcept
 
 /// Shorthand for a nonidentity arrangement.
 inline
-arrangement_wrapper<arrangement_type::nonident> nonident_arr(const linear_arrangement& arr)
+	arrangement_wrapper<arrangement_type::nonidentity> nonident_arr(const linear_arrangement& arr)
 noexcept
 {
-	return arrangement_wrapper<arrangement_type::nonident>(arr);
+	return arrangement_wrapper<arrangement_type::nonidentity>(arr);
 }
 
 } // -- namespace detail

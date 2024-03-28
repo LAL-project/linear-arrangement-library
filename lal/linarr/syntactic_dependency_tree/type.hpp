@@ -71,24 +71,27 @@ enum class syntactic_dependency_tree {
 	/**
 	 * @brief Planar structures.
 	 *
-	 * A structure is
-	 * planar if none of its dependencies cross. Two dependencies \f$(s,t), (u,v)\f$
-	 * cross if, and only if, their positions in the arrangement are interleaved,
-	 * i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming that \f$s\f$
-	 * precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
+	 * A structure is planar if none of its dependencies cross. Two dependencies
+	 * \f$(s,t), (u,v)\f$ cross if, and only if, their positions in the arrangement
+	 * are interleaved, i.e., if \f$\pi(s) < \pi(u) < \pi(t) < \pi(v)\f$, assuming
+	 * that \f$s\f$ precedes \f$t\f$ and \f$u\f$ precedes \f$v\f$ in the arrangement.
 	 */
 	planar,
 	/**
 	 * @brief Projective structures.
 	 *
-	 * A structure is projective if it is @ref syntactic_dependency_tree::planar
+	 * A structure is projective if it is
+	 * @ref lal::linarr::syntactic_dependency_tree::planar
 	 * and the root is not covered by any dependency.
 	 */
 	projective,
 	/**
 	 * @brief Well nested trees with maximum gap-degree 1.
 	 *
-	 * For further details and a thorough discussion, see \cite Gomez2011a.
+	 * All trees classified (by this library) as \f$WG_1\f$ are not in \f$WG_0\f$
+	 * (notice that \f$WG_0\f$ is the class of projective trees).
+	 *
+	 * For further details and thorough definitions of \f$WG_k\f$, see \cite Gomez2011a.
 	 */
 	WG1,
 	// This value must always be the last one.

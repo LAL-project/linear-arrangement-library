@@ -65,6 +65,7 @@ namespace lal {
 namespace linarr {
 
 typedef syntactic_dependency_tree syndepstr_type;
+typedef detail::arrangement_wrapper<detail::arrangement_type::nonidentity> arr_nonident;
 
 template <class arrangement_t>
 void __get_yields(
@@ -85,11 +86,9 @@ noexcept
 		yu.insert(yu.end(), yv.begin(), yv.end());
 	}
 
-	detail::sorting::bit_sort<node, neighbourhood::iterator>
+	detail::sorting::bit_sort<node, std::vector<position>::iterator>
 	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
-
-#define sort2(a,b) (a < b ? make_pair(a,b) : make_pair(b,a))
 
 bool __are_yields_wellnested
 (const uint64_t n, const std::vector<std::vector<position>>& yields)
@@ -158,10 +157,7 @@ noexcept
 }
 
 template <class arrangement_t>
-bool __is_WG1(
-	const graphs::rooted_tree& rT,
-	const arrangement_t& arr
-)
+bool __is_WG1(const graphs::rooted_tree& rT, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = rT.get_num_nodes();
@@ -182,10 +178,7 @@ noexcept
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
 template <class arrangement_t>
-uint64_t __is_1EC(
-	const graphs::rooted_tree& rT,
-	const arrangement_t& arr
-)
+uint64_t __is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr)
 noexcept
 {
 	// use the paper in
@@ -284,7 +277,7 @@ __get_syn_dep_tree_type
 )
 noexcept
 {
-#define nullify(X) cl[enum_to_sizet(syndepstr_type::X)] = false;
+#define nullify(X) cl[enum_to_sizet(X)] = false;
 
 	bool is_some_class = false;
 	std::array<bool, __syntactic_dependency_tree_size> cl =
@@ -315,7 +308,7 @@ noexcept
 	// classify small trees
 	if (n <= 2) {
 		__set_type(syndepstr_type::projective);
-		nullify(unknown);
+		nullify(syndepstr_type::unknown);
 		return cl;
 	}
 
@@ -327,7 +320,7 @@ noexcept
 			syndepstr_type::planar : syndepstr_type::projective;
 
 		__set_type(t);
-		nullify(unknown);
+		nullify(syndepstr_type::unknown);
 		return cl;
 	}
 
@@ -339,16 +332,14 @@ noexcept
 	// add an artificial vertex first
 	graphs::rooted_tree _rT(1);
 	_rT.set_root(0);
-	_rT.disjoint_union(rT);
+	_rT.disjoint_union(rT, true);
 #if defined DEBUG
 	assert(_rT.is_rooted_tree());
 #endif
 
-	typedef detail::arrangement_wrapper<detail::arrangement_type::nonident> nonident;
-
 	// update the linear arrangement
 	linear_arrangement __arr;
-	if constexpr (std::is_same_v<arrangement_t, nonident>) {
+	if constexpr (std::is_same_v<arrangement_t, arr_nonident>) {
 #if defined DEBUG
 		assert(arr.m_arr.size() > 0);
 #endif
@@ -370,7 +361,7 @@ noexcept
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
 		__set_type(
-			is_root_covered(rT, arr) ?
+			detail::is_root_covered(rT, arr) ?
 			syndepstr_type::planar : syndepstr_type::projective
 		);
 
@@ -398,10 +389,10 @@ noexcept
 
 		// remove 1-ec from the types when needed
 		if (_C > 0 and not __is_1EC(_rT, _arr)) {
-			nullify(EC1);
+			nullify(syndepstr_type::EC1);
 		}
 
-		nullify(unknown);
+		nullify(syndepstr_type::unknown);
 		return cl;
 	}
 
@@ -409,7 +400,7 @@ noexcept
 	// non-projective structures
 
 	// ---------------------------------------------------
-	// is the structure Well-Nest of Gap degree at most 1?
+	// is the structure Well-Nested of Gap degree at most 1?
 
 	if (__is_WG1(rT, arr)) {
 		__set_type(syndepstr_type::WG1);
@@ -423,7 +414,7 @@ noexcept
 	}
 
 	if (is_some_class) {
-		nullify(unknown);
+		nullify(syndepstr_type::unknown);
 	}
 	return cl;
 }

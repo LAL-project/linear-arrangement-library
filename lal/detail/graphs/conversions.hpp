@@ -51,7 +51,6 @@
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/data_array.hpp>
-#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
