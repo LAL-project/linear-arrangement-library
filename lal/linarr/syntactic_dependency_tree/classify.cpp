@@ -43,6 +43,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <array>
 #include <set>
 
@@ -82,33 +83,28 @@ noexcept
 
 	for (node v : t.get_out_neighbours(u)) {
 		__get_yields(t,arr, v, yields);
-		const auto& yv = yields[v];
-		yu.insert(yu.end(), yv.begin(), yv.end());
+		yu.insert(yu.end(), yields[v].begin(), yields[v].end());
 	}
 
 	detail::sorting::bit_sort<node, std::vector<position>::iterator>
 	(yields[u].begin(), yields[u].end(), yields[u].size());
 }
 
-bool __are_yields_wellnested
-(const uint64_t n, const std::vector<std::vector<position>>& yields)
+bool __are_yields_wellnested(
+	const uint64_t n,
+	const graphs::rooted_tree& rT,
+	const std::vector<std::vector<position>>& yields
+)
 noexcept
 {
 	// for every pair of nodes
 	for (node u = 0; u < n; ++u) {
 	for (node v = u + 1; v < n; ++v) {
-		const auto& yu = yields[u];
-		const auto& yv = yields[v];
+	const auto& yu = yields[u];
+	const auto& yv = yields[v];
 
-		// ensure the yields have empty intersection
-		std::vector<position> inter;
-		std::set_intersection(
-			yu.begin(), yu.end(),
-			yv.begin(), yv.end(),
-			std::back_inserter(inter)
-		);
-		if (inter.size() > 0) {
-			// ignore intersecting yeilds
+		if (rT.subtree_contains_node(u, v) or rT.subtree_contains_node(v, u)) {
+			// ignore intersecting yields
 			continue;
 		}
 
@@ -120,25 +116,28 @@ noexcept
 		// sorted values u1,u2
 		const auto [su1,su2] = sort_by_index(u1, u2);
 
-		for (std::size_t iv_1 = 0;        iv_1 < yv.size(); ++iv_1) {
-		const position v1 = yv[iv_1];
-		for (std::size_t iv_2 = iv_1 + 1; iv_2 < yv.size(); ++iv_2) {
-		const position v2 = yv[iv_2];
-		// sorted values v1,v2
-		const auto [sv1,sv2] = sort_by_index(v1, v2);
+			for (std::size_t iv_1 = 0;        iv_1 < yv.size(); ++iv_1) {
+			const position v1 = yv[iv_1];
+			for (std::size_t iv_2 = iv_1 + 1; iv_2 < yv.size(); ++iv_2) {
+			const position v2 = yv[iv_2];
+			// sorted values v1,v2
+			const auto [sv1,sv2] = sort_by_index(v1, v2);
 
-			const bool edges_cross =
-				(su1 < sv1 and sv1 < su2 and su2 < sv2) or
-				(sv1 < su1 and su1 < sv2 and sv2 < su2);
+				const bool yields_cross =
+					(su1 < sv1 and sv1 < su2 and su2 < sv2) or
+					(sv1 < su1 and su1 < sv2 and sv2 < su2);
 
-			if (edges_cross) { return false; }
+				if (yields_cross) {
+					return false;
+				}
 
-		}}}}
+			}}
+		}}
 	}}
 	return true;
 }
 
-uint64_t __get_n_discont
+uint64_t __get_num_discontinuities
 (const uint64_t n, const std::vector<std::vector<node>>& yields)
 noexcept
 {
@@ -166,13 +165,12 @@ noexcept
 	std::vector<std::vector<position>> yields(n);
 	__get_yields(rT,arr, rT.get_root(), yields);
 
+	// calculate maximum discontinuities in the yields
+	const uint64_t max_dis = __get_num_discontinuities(n, yields);
+	if (max_dis != 1) { return false; }
+
 	// test whether the tree is well nested
-	const bool is_well_nested = __are_yields_wellnested(n, yields);
-
-	// calculate degree of discontinuities in the yields
-	const uint64_t max_dis = (is_well_nested ? __get_n_discont(n, yields) : 0);
-
-	return (is_well_nested and max_dis > 0 ? max_dis == 1 : false);
+	return __are_yields_wellnested(n, rT, yields);
 }
 
 // The input tree has an "artificial" vertex pointing to the root of the
