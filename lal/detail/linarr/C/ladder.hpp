@@ -214,7 +214,7 @@ noexcept
 
 		// compute C
 		cs[i] = ladder::compute<false>
-				(g, nonident_arr(arrs[i]), boolean_neighborhood.begin(), L1.begin(), 0);
+			(g, nonidentity_arr(arrs[i]), boolean_neighborhood.begin(), L1.begin(), 0);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -304,7 +304,7 @@ noexcept
 
 		// compute C
 		cs[i] = ladder::compute<true>
-				(g, nonident_arr(arrs[i]),
+			(g, nonidentity_arr(arrs[i]),
 				 boolean_neighborhood.begin(), L1.begin(), upper_bound);
 
 		for (uint64_t z = 0; z < n; ++z) {
@@ -361,7 +361,7 @@ noexcept
 		boolean_neighborhood.fill(0);
 
 		cs[i] = ladder::compute<true>
-				(g, nonident_arr(arrs[i]),
+			(g, nonidentity_arr(arrs[i]),
 				 boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
 
 		for (uint64_t z = 0; z < n; ++z) {

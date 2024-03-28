@@ -55,7 +55,7 @@ namespace lal {
 namespace linarr {
 
 #define __ident_arr(arr) detail::identity_arr(arr)
-#define __nonident_arr(arr) detail::nonident_arr(arr)
+#define __nonident_arr(arr) detail::nonidentity_arr(arr)
 #define __rat numeric::rational
 
 __rat predicted_num_crossings_rational

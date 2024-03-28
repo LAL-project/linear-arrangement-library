@@ -322,7 +322,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<false>
-				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, 0);
+			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, 0);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -421,7 +421,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<true>
-				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bound);
+			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bound);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -480,7 +480,7 @@ noexcept
 
 		// compute C
 		cs[i] = dyn_prog::compute<true>
-				(g, nonident_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bounds[i]);
+			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bounds[i]);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);

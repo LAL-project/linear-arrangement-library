@@ -346,7 +346,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<false>(g, nonident_arr(arrs[i]), 0);
+		cs[i] = brute_force::compute<false>(g, nonidentity_arr(arrs[i]), 0);
 	}
 
 	return cs;
@@ -417,7 +417,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, nonident_arr(arrs[i]), upper_bound);
+		cs[i] = brute_force::compute<true>(g, nonidentity_arr(arrs[i]), upper_bound);
 	}
 
 	return cs;
@@ -461,7 +461,7 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, nonident_arr(arrs[i]), upper_bounds[i]);
+		cs[i] = brute_force::compute<true>(g, nonidentity_arr(arrs[i]), upper_bounds[i]);
 	}
 
 	return cs;

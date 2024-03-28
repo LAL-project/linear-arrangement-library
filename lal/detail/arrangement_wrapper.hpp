@@ -110,7 +110,8 @@ struct arrangement_wrapper {
 
 /// Shorthand for an identity arrangement.
 inline
-arrangement_wrapper<arrangement_type::identity> identity_arr(const linear_arrangement& arr)
+arrangement_wrapper<arrangement_type::identity> identity_arr
+(const linear_arrangement& arr)
 noexcept
 {
 	return arrangement_wrapper<arrangement_type::identity>(arr);
@@ -118,7 +119,8 @@ noexcept
 
 /// Shorthand for a nonidentity arrangement.
 inline
-	arrangement_wrapper<arrangement_type::nonidentity> nonident_arr(const linear_arrangement& arr)
+arrangement_wrapper<arrangement_type::nonidentity> nonidentity_arr
+(const linear_arrangement& arr)
 noexcept
 {
 	return arrangement_wrapper<arrangement_type::nonidentity>(arr);

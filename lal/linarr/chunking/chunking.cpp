@@ -50,7 +50,7 @@ namespace lal {
 namespace linarr {
 
 #define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonident_arr(arr)
+#define __nonident(arr) detail::nonidentity_arr(arr)
 
 graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq)
 	noexcept

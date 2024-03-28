@@ -251,7 +251,7 @@ const noexcept
 			(*this, detail::identity_arr(arr), r)
 		:
 			detail::from_tree_to_head_vector
-			(*this, detail::nonident_arr(arr), r)
+				(*this, detail::nonidentity_arr(arr), r)
 		);
 }
 

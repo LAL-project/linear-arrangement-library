@@ -47,7 +47,7 @@ namespace lal {
 namespace linarr {
 
 #define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonident_arr(arr)
+#define __nonident(arr) detail::nonidentity_arr(arr)
 
 bool is_bipartite(
 	[[maybe_unused]] const graphs::undirected_graph& g,
@@ -86,7 +86,7 @@ noexcept
 		(arr.size() == 0 ?
 			detail::is_root_covered(rt, detail::identity_arr(arr))
 		:
-			detail::is_root_covered(rt, detail::nonident_arr(arr))
+				detail::is_root_covered(rt, detail::nonidentity_arr(arr))
 		);
 }
 

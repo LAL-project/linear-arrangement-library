@@ -306,7 +306,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<false>
-				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), 0);
+			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), 0);
 	}
 
 	return cs;
@@ -390,7 +390,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<true>
-				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), upper_bound);
+			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bound);
 	}
 
 	return cs;
@@ -437,7 +437,7 @@ noexcept
 
 		// compute C
 		cs[i] = stack_based::compute_C_stack_based<true>
-				(g, nonident_arr(arrs[i]), size_adjN_u.begin(), upper_bounds[i]);
+			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bounds[i]);
 	}
 
 	return cs;

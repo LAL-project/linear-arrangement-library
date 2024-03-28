@@ -64,7 +64,7 @@ noexcept
 	return
 		(arr.size() == 0 ?
 			detail::compute_flux<dependency_flux>(t, detail::identity_arr(arr)) :
-			detail::compute_flux<dependency_flux>(t, detail::nonident_arr(arr))
+				detail::compute_flux<dependency_flux>(t, detail::nonidentity_arr(arr))
 		);
 }
 

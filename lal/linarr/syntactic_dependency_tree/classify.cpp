@@ -438,7 +438,7 @@ noexcept
 			(rT, detail::identity_arr(arr), C)
 		:
 			__get_syn_dep_tree_type
-			(rT, detail::nonident_arr(arr), C)
+				(rT, detail::nonidentity_arr(arr), C)
 		);
 }
 
@@ -457,7 +457,7 @@ noexcept
 			(rT, detail::identity_arr(arr), C)
 		:
 			__get_syn_dep_tree_type
-			(rT, detail::nonident_arr(arr), C)
+				(rT, detail::nonidentity_arr(arr), C)
 		);
 }
 

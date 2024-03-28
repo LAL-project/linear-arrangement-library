@@ -57,7 +57,7 @@ namespace lal {
 namespace linarr {
 
 #define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonident_arr(arr)
+#define __nonident(arr) detail::nonidentity_arr(arr)
 
 template <class graph_t>
 uint64_t num_crossings(
