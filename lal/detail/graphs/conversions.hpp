@@ -637,6 +637,42 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
+ * Examples of level sequences:
+ *	- linear tree of n nodes:
+	@verbatim
+		0 1 2 3 4 ... (n-1) n
+	@endverbatim
+ *	- star tree of n nodes
+	@verbatim
+		0 1 2 2 2 .... 2 2
+		   |------------| > (n-1) two's
+	@endverbatim
+ *
+ * @tparam tree_t The type of tree.
+ * @param L The level sequence, in preorder.
+ * @param n Number of nodes of the tree.
+ * @param normalise Should the tree be normalised?
+ * @param check Should it be checked whether the tree is normalized or not?
+ * @returns The tree built with the sequence level @e L.
+ * @pre n >= 2.
+ * @pre The size of L is exactly @e n + 1.
+ * @pre The first value of a sequence must be a zero.
+ * @pre The second value of a sequence must be a one.
+ */
+template <class tree_t>
+tree_t from_level_sequence_to_tree
+(const uint64_t * const L, uint64_t n, bool normalise, bool check)
+noexcept
+{
+	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+	return n <= 7 ?
+		from_level_sequence_to_tree_small<tree_t>(L, n, normalise, check) :
+		from_level_sequence_to_tree_large<tree_t>(L, n, normalise, check);
+}
+
+/**
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
  * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
  * @tparam
@@ -665,6 +701,22 @@ noexcept
 	return from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalise, check);
 }
 
+/**
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
+ * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * for further details.
+ */
+template <class tree_t>
+tree_t from_level_sequence_to_tree
+(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
+noexcept
+{
+	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+	return n <= 7 ?
+		from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalise, check) :
+		from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalise, check);
+}
 
 // -----------------------------------------------------------------------------
 // -- PRUFER SEQUENCE --

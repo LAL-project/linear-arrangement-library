@@ -272,10 +272,7 @@ graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
 		t.add_edge(0,1);
 		return t;
 	}
-	return
-		m_n <= 7 ?
-			detail::from_level_sequence_to_tree_small<graphs::free_tree>(m_L.begin(), m_n, false, false) :
-			detail::from_level_sequence_to_tree_large<graphs::free_tree>(m_L.begin(), m_n, false, false);
+	return detail::from_level_sequence_to_tree<graphs::free_tree>(m_L.begin(), m_n, false, false);
 }
 
 } // -- namespace generate
