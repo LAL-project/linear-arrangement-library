@@ -673,9 +673,8 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
- * @tparam
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree_small
@@ -689,7 +688,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
  */
 template <class tree_t>
@@ -704,7 +703,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
  */
 template <class tree_t>
