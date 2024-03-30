@@ -479,7 +479,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 inline
-graphs::free_tree from_level_sequence_to_ftree
+graphs::free_tree from_level_sequence_to_ftree_small
 (const uint64_t * const L, uint64_t n, bool normalise, bool check)
 noexcept
 {
@@ -489,20 +489,17 @@ noexcept
 	assert(L[1] == 1);
 #endif
 
-	// output tree
 	graphs::free_tree t(n);
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
-	data_array<node> root_candidates(n+1, 0);
-	uint64_t stack_it = 0;
+	data_array<node> root_candidates(n + 1, 0);
+	std::size_t stack_it = 0;
 
 	// evidently,
 	root_candidates[0] = 1;
-
 	for (node i = 2; i <= n; ++i) {
-		// find in the stack the node which
-		// has to be connected to node 'i'.
+		// find in the stack the node which has to be connected to node 'i'.
 		if (root_candidates[stack_it] + 2 > L[i]) {
 			stack_it = L[i] - 2 + 1;
 		}
@@ -510,8 +507,8 @@ noexcept
 		// the top of the stack is the parent of this node
 		const node r = root_candidates[stack_it];
 
-		// add the edge...
-		const auto [u, v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		// add edge...
+		const auto [u,v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
 		t.add_edge_bulk(u, v);
 
 		// the last node added at level L[i] is i.
@@ -520,6 +517,95 @@ noexcept
 		assert(stack_it == L[i]);
 #endif
 		root_candidates[stack_it] = i;
+	}
+
+#if defined DEBUG
+	assert(edge_it == n - 1);
+#endif
+
+	t.finish_bulk_add(normalise, check);
+	return t;
+}
+
+/**
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
+ * Examples of level sequences:
+ *	- linear tree of n nodes:
+	@verbatim
+		0 1 2 3 4 ... (n-1) n
+	@endverbatim
+ *	- star tree of n nodes
+	@verbatim
+		0 1 2 2 2 .... 2 2
+		   |------------| > (n-1) two's
+	@endverbatim
+ *
+ * @param L The level sequence, in preorder.
+ * @param n Number of nodes of the tree.
+ * @param normalise Should the tree be normalised?
+ * @param check Should it be checked whether the tree is normalized or not?
+ * @returns The tree built with the sequence level @e L.
+ * @pre n >= 2.
+ * @pre The size of L is exactly @e n + 1.
+ * @pre The first value of a sequence must be a zero.
+ * @pre The second value of a sequence must be a one.
+ */
+inline
+graphs::free_tree from_level_sequence_to_ftree_large
+(const uint64_t * const L, uint64_t n, bool normalise, bool check)
+noexcept
+{
+#if defined DEBUG
+	// a little sanity check
+	assert(L[0] == 0);
+	assert(L[1] == 1);
+#endif
+
+	// 'stack' of root candidates: node at every level in {1,...,N}.
+	// at position j, lev[j] contains the last node added at level j.
+	data_array<node> root_candidates(n + 1, 0);
+	std::size_t stack_it = 0;
+
+	data_array<edge> edge_list(n - 1);
+	std::size_t edge_it = 0;
+	data_array<uint64_t> vertex_degrees(n, 0);
+
+	// evidently,
+	root_candidates[0] = 1;
+	for (node i = 2; i <= n; ++i) {
+		// find in the stack the node which has to be connected to node 'i'.
+		if (root_candidates[stack_it] + 2 > L[i]) {
+			stack_it = L[i] - 2 + 1;
+		}
+
+		// the top of the stack is the parent of this node
+		const node r = root_candidates[stack_it];
+
+		// retrieve and store the edge, calculate vertex degrees
+		const edge e = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		edge_list[edge_it++] = e;
+		++vertex_degrees[e.first];
+		++vertex_degrees[e.second];
+
+		// the last node added at level L[i] is i.
+		++stack_it;
+#if defined DEBUG
+		assert(stack_it == L[i]);
+#endif
+		root_candidates[stack_it] = i;
+	}
+
+#if defined DEBUG
+	assert(edge_it == n - 1);
+#endif
+
+	graphs::free_tree t(n);
+	for (node u = 0; u < n; ++u) {
+		t.reserve_degree(u, vertex_degrees[u]);
+	}
+	for (const edge& e : edge_list) {
+		t.add_edge_bulk(e.first, e.second);
 	}
 
 	t.finish_bulk_add(normalise, check);
@@ -533,10 +619,23 @@ noexcept
  * for further details.
  */
 inline
-graphs::free_tree from_level_sequence_to_ftree
+graphs::free_tree from_level_sequence_to_ftree_small
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
 noexcept
-{ return from_level_sequence_to_ftree(&L[0], n, normalise, check); }
+{ return from_level_sequence_to_ftree_small(&L[0], n, normalise, check); }
+
+/**
+ * @brief Converts the level sequence of a tree into a graph structure.
+ *
+ * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
+ * for further details.
+ */
+inline
+graphs::free_tree from_level_sequence_to_ftree_large
+(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
+noexcept
+{ return from_level_sequence_to_ftree_large(&L[0], n, normalise, check); }
+
 
 // -----------------------------------------------------------------------------
 // -- PRUFER SEQUENCE --
