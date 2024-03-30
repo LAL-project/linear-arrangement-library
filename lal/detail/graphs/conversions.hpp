@@ -519,10 +519,6 @@ noexcept
 		root_candidates[stack_it] = i;
 	}
 
-#if defined DEBUG
-	assert(edge_it == n - 1);
-#endif
-
 	t.finish_bulk_add(normalise, check);
 	return t;
 }
