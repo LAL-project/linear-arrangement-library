@@ -468,6 +468,7 @@ noexcept
 		   |------------| > (n-1) two's
 	@endverbatim
  *
+ * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
  * @param normalise Should the tree be normalised?
@@ -478,8 +479,8 @@ noexcept
  * @pre The first value of a sequence must be a zero.
  * @pre The second value of a sequence must be a one.
  */
-inline
-graphs::free_tree from_level_sequence_to_ftree_small
+template <class tree_t>
+tree_t from_level_sequence_to_tree_small
 (const uint64_t * const L, uint64_t n, bool normalise, bool check)
 noexcept
 {
@@ -489,7 +490,7 @@ noexcept
 	assert(L[1] == 1);
 #endif
 
-	graphs::free_tree t(n);
+	tree_t t(n);
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
@@ -519,7 +520,16 @@ noexcept
 		root_candidates[stack_it] = i;
 	}
 
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
+		t.set_root(0);
+	}
+
 	t.finish_bulk_add(normalise, check);
+
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
 	return t;
 }
 
@@ -537,6 +547,7 @@ noexcept
 		   |------------| > (n-1) two's
 	@endverbatim
  *
+ * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
  * @param normalise Should the tree be normalised?
@@ -547,11 +558,13 @@ noexcept
  * @pre The first value of a sequence must be a zero.
  * @pre The second value of a sequence must be a one.
  */
-inline
-graphs::free_tree from_level_sequence_to_ftree_large
+template <class tree_t>
+tree_t from_level_sequence_to_tree_large
 (const uint64_t * const L, uint64_t n, bool normalise, bool check)
 noexcept
 {
+	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+
 #if defined DEBUG
 	// a little sanity check
 	assert(L[0] == 0);
@@ -596,13 +609,26 @@ noexcept
 	assert(edge_it == n - 1);
 #endif
 
-	graphs::free_tree t(n);
+	tree_t t(n);
 	for (node u = 0; u < n; ++u) {
-		t.reserve_degree(u, vertex_degrees[u]);
+		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
+			t.reserve_degree(u, vertex_degrees[u]);
+		}
+		else {
+			t.reserve_out_degree(u, vertex_degrees[u] - (u != 0));
+		}
 	}
 	for (const edge& e : edge_list) {
 		t.add_edge_bulk(e.first, e.second);
 	}
+
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
+		t.set_root(0);
+	}
+
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
 
 	t.finish_bulk_add(normalise, check);
 	return t;
@@ -613,12 +639,16 @@ noexcept
  *
  * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
+ * @tparam
  */
-inline
-graphs::free_tree from_level_sequence_to_ftree_small
+template <class tree_t>
+tree_t from_level_sequence_to_tree_small
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
 noexcept
-{ return from_level_sequence_to_ftree_small(&L[0], n, normalise, check); }
+{
+	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+	return from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalise, check);
+}
 
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
@@ -626,11 +656,14 @@ noexcept
  * See @ref lal::detail::from_level_sequence_to_ftree(const uint64_t*, uint64_t, bool, bool)
  * for further details.
  */
-inline
-graphs::free_tree from_level_sequence_to_ftree_large
+template <class tree_t>
+tree_t from_level_sequence_to_tree_large
 (const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
 noexcept
-{ return from_level_sequence_to_ftree_large(&L[0], n, normalise, check); }
+{
+	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
+	return from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalise, check);
+}
 
 
 // -----------------------------------------------------------------------------
