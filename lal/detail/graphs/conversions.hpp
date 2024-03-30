@@ -616,6 +616,7 @@ noexcept
 		}
 		else {
 			t.reserve_out_degree(u, vertex_degrees[u] - (u != 0));
+			t.reserve_in_degree(u, u != 0);
 		}
 	}
 	for (const edge& e : edge_list) {
