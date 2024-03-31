@@ -351,7 +351,6 @@ uint64_t sum_powers_out_degrees
  * @return The \f$p\f$-th moment of degree about 0.
  */
 template <class graph_t, class return_type>
-inline
 return_type moment_degree
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
