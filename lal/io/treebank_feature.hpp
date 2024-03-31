@@ -45,7 +45,8 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#ifdef SWIG
+
+#if defined __LAL_SWIG_PYTHON
 #include <string>
 #else
 #include <string_view>
@@ -557,7 +558,7 @@ std::size_t __treebank_feature_size =
  * @returns A string used to format output files.
  */
 inline constexpr
-#ifdef SWIG
+#if defined __LAL_SWIG_PYTHON
 std::string
 #else
 std::string_view
@@ -650,7 +651,7 @@ io::treebank_feature index_to_treebank_feature(std::size_t idx) noexcept {
 
 /// Returns the treebank feature corresponding to the index as a string.
 inline constexpr
-#ifdef SWIG
+#if defined __LAL_SWIG_PYTHON
 std::string
 #else
 std::string_view

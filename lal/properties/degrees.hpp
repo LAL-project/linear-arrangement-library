@@ -58,7 +58,7 @@ namespace properties {
 
 /* -------------------------------------------------------------------------- */
 
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the sum of degrees.
@@ -74,7 +74,6 @@ namespace properties {
  * @return The sum of degrees raised to the input power @e p.
  */
 template <class graph_t, class return_type>
-inline
 return_type sum_powers_degrees
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
@@ -335,7 +334,7 @@ uint64_t sum_powers_out_degrees
 
 /* -------------------------------------------------------------------------- */
 
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the moment of degree about 0.

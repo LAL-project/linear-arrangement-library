@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#ifdef SWIG
+#if defined __LAL_SWIG_PYTHON
 #include <string>
 #else
 #include <string_view>
@@ -50,7 +50,7 @@
 
 namespace lal {
 
-#ifdef SWIG
+#if defined __LAL_SWIG_PYTHON
 /// Major version number of the library's current state. The year and month in which it was released.
 static const std::string __lal_major_verno = "99.99";
 /// Patch version number of the library's current state. Patch number.

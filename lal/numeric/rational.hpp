@@ -93,7 +93,7 @@ public:
 	 */
 	rational(const rational& r) noexcept
 	{ mpq_init(m_val); mpq_set(m_val, r.m_val); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer
@@ -242,7 +242,7 @@ public:
 	 */
 	rational& operator= (const rational& r) noexcept
 	{ set_rational(r); return *this; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Move assignment operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -305,7 +305,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) == 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Equality operator.
 	 * @param i An integer (basic type) number.
@@ -321,7 +321,7 @@ public:
 	 */
 	bool operator== (const integer& i) const noexcept
 	{ rational r(i); return mpq_equal(m_val, r.m_val); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Equality operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -348,7 +348,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator!= (T i) const noexcept
 	{ return not (*this == i); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Non-equality operator.
 	 * @param i An integer (basic type) number.
@@ -363,7 +363,7 @@ public:
 	 */
 	bool operator!= (const integer& i) const noexcept
 	{ return not (*this == i); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Non-equality operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -390,7 +390,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) < 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less than operator.
 	 * @param i An integer (basic type) number.
@@ -406,7 +406,7 @@ public:
 	 */
 	bool operator< (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) < 0; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less than operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -433,7 +433,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) <= 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param i An integer (basic type) number.
@@ -449,7 +449,7 @@ public:
 	 */
 	bool operator<= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) <= 0; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -476,7 +476,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) > 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than operator.
 	 * @param i An integer (basic type) number.
@@ -492,7 +492,7 @@ public:
 	 */
 	bool operator> (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) > 0; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -519,7 +519,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) >= 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param i An integer (basic type) number.
@@ -535,7 +535,7 @@ public:
 	 */
 	bool operator>= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) >= 0; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -560,7 +560,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	rational operator+ (T i) const noexcept
 	{ rational r(*this); r += i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -576,7 +576,7 @@ public:
 	 */
 	rational operator+ (const integer& i) const noexcept
 	{ rational r(*this); r += i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -624,7 +624,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	rational operator- (T i) const noexcept
 	{ rational r(*this); r -= i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -640,7 +640,7 @@ public:
 	 */
 	rational operator- (const integer& i) const noexcept
 	{ rational r(*this); r -= i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -685,7 +685,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	rational operator* (T i) const noexcept
 	{ rational r(*this); r *= i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i An integer (basic type) number.
@@ -701,7 +701,7 @@ public:
 	 */
 	rational operator* (const integer& i) const noexcept
 	{ rational r(*this); r *= i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -746,7 +746,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	rational operator/ (T i) const noexcept
 	{ rational r(*this); r /= i; return r; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -894,7 +894,7 @@ public:
 	 */
 	void swap(rational& r) noexcept { mpq_swap(m_val, r.m_val); }
 
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Swaps two rationals.
 	 * @param r1 Input rational.

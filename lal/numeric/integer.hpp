@@ -65,7 +65,7 @@ public:
 
 	/// Empty constructor.
 	integer() noexcept { mpz_init(m_val); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Constructor with mpz_t.
 	 * @post Object @e raw will have to be initialized by the callee.
@@ -95,7 +95,7 @@ public:
 	 * @param s A string.
 	 */
 	integer(const std::string& s) noexcept { mpz_init_set_str(m_val, s.c_str(), 10); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer.
@@ -157,7 +157,7 @@ public:
 
 	// -- ASSIGNMENT
 
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Assignment operator.
 	 * @param i An integer (basic type) number.
@@ -208,7 +208,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val,i) : mpz_cmp_ui(m_val,i)) == 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Equality operator.
 	 * @param i An integer (basic type) number.
@@ -234,7 +234,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	bool operator!= (T i) const noexcept
 	{ return not (*this == i); }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Non-equality operator.
 	 * @param i An integer (basic type) number.
@@ -262,7 +262,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) < 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less operator.
 	 * @param i An integer (basic type) number.
@@ -290,7 +290,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) <= 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param i An integer (basic type) number.
@@ -318,7 +318,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) > 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than operator.
 	 * @param i An integer (basic type) number.
@@ -346,7 +346,7 @@ public:
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) >= 0;
 	}
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param i An integer (basic type) number.
@@ -374,7 +374,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	integer operator+ (T i) const noexcept
 	{ integer a(*this); a += i; return a; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -422,7 +422,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	integer operator- (T i) const noexcept
 	{ integer a(*this); a -= i; return a; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -467,7 +467,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	integer operator* (T i) const noexcept
 	{ integer a(*this); a *= i; return a; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Product operator.
 	 * @param i An integer (basic type) number.
@@ -510,7 +510,7 @@ public:
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	integer operator/ (T i) const noexcept
 	{ integer a(*this); a /= i;	return a; }
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -655,7 +655,7 @@ public:
 	 */
 	void swap(integer& i) noexcept { mpz_swap(m_val, i.m_val); }
 
-#ifndef SWIG
+#ifndef __LAL_SWIG_PYTHON
 	/**
 	 * @brief Swaps two integers.
 	 * @param i Input lal::numeric::integer.
