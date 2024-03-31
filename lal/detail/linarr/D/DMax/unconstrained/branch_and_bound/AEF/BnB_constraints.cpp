@@ -41,7 +41,7 @@
 
 // C++ includes
 #if defined DEBUG
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
@@ -80,7 +80,7 @@ const noexcept
 		 new_num_assigned_verts_blue == 0)
 	)
 	{
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		std::cout << tab() << "A bipartite arrangement is to be constructed.\n";
 		std::cout << tab() << "But we already have one! Bound!!\n";
 #endif

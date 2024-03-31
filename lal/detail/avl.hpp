@@ -333,7 +333,7 @@ public:
 	std::size_t total_elements() const noexcept
 	{ return (m_root == nullptr ? 0 : m_root->tree_counter); }
 
-#if defined __LAL_INSPECT
+#if defined __LAL_DEBUG_AVL
 	/// Perform a series of correctness checks
 	bool sanity_check() const noexcept {
 		return sanity_check(m_root);
@@ -1245,7 +1245,7 @@ private:
 
 private:
 
-#if defined __LAL_INSPECT
+#if defined __LAL_DEBUG_AVL
 	std::size_t exhaustive_size(tree_node *n) const noexcept {
 		if (n == nullptr) { return 0; }
 		return 1 + exhaustive_size(n->right) + exhaustive_size(n->left);

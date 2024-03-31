@@ -74,8 +74,15 @@ equals(ENVIR, "CLUSTER") {
 
 INCLUDEPATH += ..
 
-#DEFINES += __LAL_PRINT_MESSAGES_DMax_Unc_BnB
-#DEFINES += __LAL_PRINT_MESSAGES_DMax_1_thistle
+# lal/detail/avl.hpp
+#DEFINES += __LAL_DEBUG_AVL
+
+# lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/*.cpp *.hpp
+# lal/linarr/D/DMax_unconstrained_all.cpp
+#DEFINES += __LAL_DEBUG_DMax_Unc_BnB
+
+# lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
+#DEFINES += __LAL_DEBUG_DMax_1_thistle
 
 # -------------
 # PROJECT FILES

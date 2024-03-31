@@ -41,7 +41,7 @@
 
 #pragma once
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
 #endif
 
@@ -58,9 +58,9 @@
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #if not defined DEBUG
-#error("'__LAL_PRINT_MESSAGES_DMax_Unc_BnB' must be defined along with 'DEBUG'")
+#error("'__LAL_DEBUG_DMax_Unc_BnB' must be defined along with 'DEBUG'")
 #endif
 #endif
 
@@ -87,7 +87,7 @@ public:
 	static constexpr char VERTEX_UNASSIGNED = 0;
 
 	static constexpr bool debug_Unc_BnB_01 =
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	true;
 #else
 	false;
@@ -123,7 +123,7 @@ public:
 		continue_independent_set_leaves
 	};
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	[[nodiscard]] constexpr std::string_view next_action_type_to_string
 	(const next_action at) const noexcept {
 		switch (at) {
@@ -434,7 +434,7 @@ private:
 	/// Cuts in the arrangement
 	data_array<uint64_t> m_cut_values;
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	// -------------------------------------------------------------------------
 	// Display of algorithm's data and progress
 

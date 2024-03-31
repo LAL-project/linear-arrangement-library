@@ -41,7 +41,7 @@
 
 // C++ includes
 #if defined DEBUG
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
@@ -61,7 +61,7 @@ AEF_BnB::exe_result_type
 AEF_BnB::exe(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
 noexcept
 {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	display_all_info(D_p, D_ps_m, pos);
 #endif
 
@@ -69,7 +69,7 @@ noexcept
 	{
 	const auto res = process_end(D_p, pos);
 	if (did_reach_end(res)) {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		return did_find_max(res);
 #else
 		return;
@@ -81,7 +81,7 @@ noexcept
 	// what should we do next? ...
 	const auto next = what_to_do_next(D_p, D_ps_m, pos);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout
 		<< tab()
 		<< "Decided: "
@@ -90,7 +90,7 @@ noexcept
 #endif
 
 	if (next == next_action::bound) {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		// did not reach a maximum
 		return false;
 #else
@@ -99,12 +99,12 @@ noexcept
 	}
 
 	if (next == next_action::continue_independent_set) {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		const bool reached_maximum =
 #endif
 		exe_independent_set(D_p, pos);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		return reached_maximum;
 #else
 		return;
@@ -112,12 +112,12 @@ noexcept
 	}
 
 	if (next == next_action::continue_independent_set_leaves) {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		const bool reached_maximum =
 #endif
 		exe_independent_set_leaves(D_p, pos);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		return reached_maximum;
 #else
 		return;
@@ -125,13 +125,13 @@ noexcept
 	}
 	}
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	bool reached_max = false;
 #endif
 
 	// for every remaining vertex u
 	for (node u = 0; u < m_n_nodes; ++u) {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		std::cout << tab() << "Trying vertex '" << u << "' at position '" << pos << "'\n";
 #endif
 
@@ -145,16 +145,16 @@ noexcept
 		update_state(u, pos, D_p_next, D_ps_m_next);
 
 		// Try solving DMax with the current configuration
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		push_tab();
 #endif
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		const bool branch_reached_maximum =
 #endif
 		exe(D_p_next, D_ps_m_next, pos + 1);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 		reached_max = reached_max or branch_reached_maximum;
 		pop_tab();
 
@@ -168,7 +168,7 @@ noexcept
 		recover_state(pos);
 	}
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	return reached_max;
 #endif
 }
@@ -178,7 +178,7 @@ void AEF_BnB::exe(node first_node) noexcept {
 
 	m_rt.init_rooted(m_t, m_first_vertex);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "**************************************************\n";
 	std::cout << "*** Started execution of Branch & Bound at '" << m_first_vertex << "' ***\n";
 	std::cout << "**************************************************\n";
@@ -188,7 +188,7 @@ void AEF_BnB::exe(node first_node) noexcept {
 	std::cout << m_rt << '\n';
 #endif
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	push_tab();
 #endif
 
@@ -199,7 +199,7 @@ void AEF_BnB::exe(node first_node) noexcept {
 	exe(D_p_next, D_ps_next, 1);
 	recover_state(0ull);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	pop_tab();
 #endif
 }

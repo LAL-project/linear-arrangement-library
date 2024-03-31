@@ -42,7 +42,7 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
@@ -72,7 +72,7 @@ noexcept
 	assert(num_remain_verts > 0);
 #endif
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout
 		<< tab()
 		<< "The remaining vertices (" << num_remain_verts << ") "
@@ -126,7 +126,7 @@ noexcept
 
 	m_max_arrs.add(D, m_arr);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	const bool reached_maximum = m_max_arrs.get_max_value() == D;
 	return reached_maximum;
 #else
@@ -181,7 +181,7 @@ noexcept
 
 	m_max_arrs.add(D, m_arr);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	const bool reached_maximum = m_max_arrs.get_max_value() == D;
 	return reached_maximum;
 #else

@@ -40,7 +40,7 @@
  ********************************************************************/
 
 // C++ includes
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #include <cassert>
 #endif
@@ -78,7 +78,7 @@ noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	for (node u = 0; u < n; ++u) {
 		std::cout << "Node '" << u << "' has color '" << int(vertex_colors[u]) << "'.\n";
@@ -109,7 +109,7 @@ noexcept
 	sort_nodes(blue_vertices_sorted_by_degree);
 	sort_nodes(red_vertices_sorted_by_degree);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	std::cout << "Color 0:";
 	for (node u : blue_vertices_sorted_by_degree) {
@@ -155,7 +155,7 @@ noexcept
 	const uint64_t n = t.get_num_nodes();
 	internal_path_node_to_path_idx.resize(n, n + 1);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Num paths: " << branchless_paths_in_tree.size() << '\n';
 	for (const auto& path : branchless_paths_in_tree) {
 		std::cout << "-----------------\n";
@@ -183,7 +183,7 @@ noexcept
 			internal_path_node_to_path_idx[ p.get_vertex_sequence()[j] ] = i;
 		}
 	}
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	for (node u = 0; u < n; ++u) {
 		std::cout
 			<< "Node '" << u << "' belongs to path '"
@@ -200,7 +200,7 @@ void relate_vertices_to_orbits(
 )
 noexcept
 {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Computing orbits...\n";
 #endif
 
@@ -214,7 +214,7 @@ noexcept
 		}
 	}
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "    Orbits: " << orbits.size() << '\n';
 	for (const auto& orbit : orbits) {
 		std::cout << "    ->";
@@ -265,7 +265,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 )
 noexcept
 {
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	assert(number_of_threads == 1);
 #endif
 
@@ -301,7 +301,7 @@ noexcept
 		max_arrs, initial_DMax
 	);
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Making runners...\n";
 #endif
 
@@ -331,7 +331,7 @@ noexcept
 
 // ---------------------------------------------------------------------- //
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Initializing runners...\n";
 #endif
 
@@ -339,7 +339,7 @@ noexcept
 		BnB_runners[i].initialise(initial_DMax);
 	}
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 	// execute BnB sequentially
 	for (const auto& orbit : orbits) {
 		BnB_runners[0].exe(orbit[0]);

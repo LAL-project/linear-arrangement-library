@@ -41,7 +41,7 @@
 
 // C++ includes
 #if defined DEBUG
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #include <iomanip>
 #endif
@@ -50,7 +50,7 @@
 // lal includes
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 
 #define WHITE "1"
 #define GRAY "2"
@@ -89,7 +89,7 @@ namespace unconstrained {
 #define column_width 2
 #define set_col_width std::setw(column_width)
 
-#if defined __LAL_PRINT_MESSAGES_DMax_Unc_BnB
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 void AEF_BnB::output_arrangement() const noexcept {
 	for (node_t u = 0ull; u < m_n_nodes; ++u) {
 		std::cout << ' ';
