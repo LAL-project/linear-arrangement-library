@@ -59,7 +59,7 @@
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-#if not defined DEBUG
+#if !defined DEBUG
 #error("'__LAL_DEBUG_DMax_Unc_BnB' must be defined along with 'DEBUG'")
 #endif
 #endif
