@@ -42,8 +42,8 @@
 #pragma once
 
 #if not defined DEBUG
-#if defined __LAL_PRINT_MESSAGES_1THISTLE
-#error "__LAL_PRINT_MESSAGES_1THISTLE can only be defined when DEBUG is defined"
+#if defined __LAL_DEBUG_DMax_1_thistle
+#error "__LAL_DEBUG_DMax_1_thistle can only be defined when DEBUG is defined"
 #endif
 #endif
 
