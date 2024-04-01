@@ -58,7 +58,7 @@ namespace properties {
 
 /* -------------------------------------------------------------------------- */
 
-#ifndef __LAL_SWIG_PYTHON
+#if !defined __LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the sum of degrees.
@@ -334,7 +334,7 @@ uint64_t sum_powers_out_degrees
 
 /* -------------------------------------------------------------------------- */
 
-#ifndef __LAL_SWIG_PYTHON
+#if !defined __LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the moment of degree about 0.
