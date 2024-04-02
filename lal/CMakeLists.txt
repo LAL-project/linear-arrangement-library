@@ -386,6 +386,7 @@ target_sources(
 		properties/tree_centre.hpp
 		properties/tree_centroid.hpp
 		properties/tree_diameter.hpp
+		properties/vertex_orbits.hpp
 		# -- sources
 		properties/bipartite_graph_colorability.cpp
 		properties/branchless_path_find.cpp
@@ -399,6 +400,7 @@ target_sources(
 		properties/tree_diameter.cpp
 		properties/variance_C_forests.cpp
 		properties/variance_C_gen_graphs.cpp
+		properties/vertex_orbits.cpp
 		
 		# utilities namespace
 		# -- headers
