@@ -71,7 +71,7 @@ namespace iterators {
  *
  * A possible usage of this class is the following:
  * @code
- *		Q_iterator it(g); // g is a graph
+ *		lal::iterators::Q_iterator it(g); // g is a graph
  *		while (not it.end()) {
  *			const auto [e1,e2] = it.get_edge_pair();
  *			// ...
@@ -80,7 +80,7 @@ namespace iterators {
  * @endcode
  * or, in a more compact way:
  * @code
- *		Q_iterator it(g); // g is a graph
+ *		lal::iterators::Q_iterator it(g); // g is a graph
  *		while (not it.end()) {
  *			const auto [e1,e2] = it.yield_edge_pair();
  *			// ...
@@ -89,7 +89,7 @@ namespace iterators {
  * Alternatively, the @ref lal::iterators::Q_iterator object can be used in a
  * for loop:
  * @code
- *		for (Q_iterator it(g); not it.end(); it.next()) {
+ *		for (lal::iterators::Q_iterator it(g); not it.end(); it.next()) {
  *			const auto [e1,e2] = it.get_edge_pair();
  *			// ...
  *		}

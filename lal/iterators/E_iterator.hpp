@@ -65,7 +65,7 @@ namespace iterators {
  *
  * A possible usage of this class is the following:
  * @code
- *		E_iterator it(g); // g is a graph
+ *		lal::iterators::E_iterator it(g); // g is a graph
  *		while (not it.end()) {
  *			const auto [u, v] = it.get_edge();
  *			// ...
@@ -74,7 +74,7 @@ namespace iterators {
  * @endcode
  * or, in a more compact way
  * @code
- *		E_iterator it(g); // g is a graph
+ *		lal::iterators::E_iterator it(g); // g is a graph
  *		while (not it.end()) {
  *			const auto [u, v] = it.get_edge();
  *			// ...
@@ -83,7 +83,7 @@ namespace iterators {
  * Alternatively, the @ref lal::iterators::E_iterator object can be used in a
  * for loop:
  * @code
- *		for (E_iterator it(g); not it.end(); it.next()) {
+ *		for (lal::iterators::E_iterator it(g); not it.end(); it.next()) {
  *			const auto [u, v] = it.get_edge();
  *			// ...
  *		}
