@@ -170,9 +170,9 @@ private:
 	/// Pointer to the next edge.
 	E_pointer m_cur;
 	/// Is there a next edge to iterate over?
-	bool m_exists_next = true;
+	bool m_exists_next;
 	/// Has the end of the iteration been reached?
-	bool m_reached_end = false;
+	bool m_reached_end;
 	/// Copy of the current edge.
 	edge m_cur_edge;
 

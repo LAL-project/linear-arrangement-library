@@ -181,20 +181,23 @@ private:
 	const uint64_t m_n;
 
 	/// Current pointers to the first edge.
-	E_pointer m_cur1 = E_pointer(0,0);
+	E_pointer m_cur1;
 	/// Current pointers to the second edge.
-	E_pointer m_cur2 = E_pointer(0,0);
+	E_pointer m_cur2;
 
 	/// Is there a next pair of independent edges?
-	bool m_exists_next = true;
+	bool m_exists_next;
 	/// Has the end of the iteration been reached?
-	bool m_reached_end = false;
+	bool m_reached_end;
 	/// Current pair of independent edges.
-	edge_pair m_cur_pair = { {0,0}, {0,0} };
+	edge_pair m_cur_pair;
 
 private:
 	/// Sets the iterator at the beginning of the set of edges.
 	void __reset() noexcept {
+		m_exists_next = true;
+		m_reached_end = false;
+
 		// there are not enough edges to have |Q| > 0
 		if (m_G.get_num_edges() <= 1) {
 			m_exists_next = false;
@@ -231,7 +234,7 @@ private:
 		m_cur_pair = make_current_pair();
 
 		// how do we know there is a next edge?
-		// well, find it!
+		// well, look for it!
 		const auto [f2, _, __] =
 			find_next_pair(
 				m_cur1.first, m_cur1.second,
