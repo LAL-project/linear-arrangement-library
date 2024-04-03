@@ -564,6 +564,7 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/tree_centre.hpp
 	properties/tree_centroid.hpp
 	properties/tree_diameter.hpp
+	properties/vertex_orbits.hpp
 )
 # ---------------------------------------------------------------------------- #
 set(LIBLAL_UTILITIES_HEADER
