@@ -84,7 +84,7 @@ namespace iterators {
  * for loop:
  * @code
  *		for (E_iterator it(g); not it.end(); it.next()) {
- *			const auto [u, v] = it.yield_edge();
+ *			const auto [u, v] = it.get_edge();
  *			// ...
  *		}
  * @endcode
@@ -158,6 +158,7 @@ public:
 	}
 
 private:
+	/// Useful typedef.
 	typedef std::pair<node,std::size_t> E_pointer;
 
 private:
@@ -203,8 +204,8 @@ private:
 
 #if defined DEBUG
 		if (m_G.get_num_edges() == 1) {
-			assert(m_exists_next == false);
-			assert(m_reached_end == false);
+			assert(not m_exists_next);
+			assert(not m_reached_end);
 		}
 #endif
 
