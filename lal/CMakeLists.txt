@@ -624,7 +624,7 @@ add_compiler_flag(-Wuseless-cast)
 add_compiler_flag(-Wrestrict)
 
 # OpenMP
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+add_compiler_flag(${OpenMP_CXX_FLAGS})
 
 # Optimisation flags
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
@@ -641,5 +641,6 @@ endif()
 # include path (required by the compiler to find the headers)
 target_include_directories(${TargetStringLibrary} PRIVATE ..)
 
-target_link_libraries(${TargetStringLibrary} gmp)
-target_link_libraries(${TargetStringLibrary} pthread)
+target_link_libraries(${TargetStringLibrary} 	gmp)
+target_link_libraries(${TargetStringLibrary}	pthread)
+target_link_libraries(${TargetStringLibrary}	${OpenMP_CXX_LIBRARIES})
