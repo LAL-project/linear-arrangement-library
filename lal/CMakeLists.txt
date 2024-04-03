@@ -24,7 +24,7 @@ include(GNUInstallDirs)
 #	message(STATUS "    Error message: ${IPO_CHECK_ERROR}")
 #endif()
 
-# **********************************************************************
+# ******************************************************************************
 # Custom functions
 function(add_compiler_flag flag)
 	check_cxx_compiler_flag(${flag} CXX_HAS_FLAG_${flag})
@@ -34,12 +34,12 @@ function(add_compiler_flag flag)
 	endif()
 endfunction(add_compiler_flag)
 
-# **********************************************************************
+# ******************************************************************************
 # Use C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# **********************************************************************
+# ******************************************************************************
 # Set default build type
 # (following the guide in https://blog.kitware.com/cmake-and-the-default-build-type/)
 
@@ -70,8 +70,8 @@ else()
 	set(TargetStringLibrary "laloptimized")
 endif()
 
-# **********************************************************************
-# **********************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 # declare library
 add_library(${TargetStringLibrary} SHARED "")
@@ -87,7 +87,7 @@ if("${IPO_IS_SUPPORTED}" STREQUAL "YES")
 	set_target_properties(${TargetStringLibrary} PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
-# **********************************************************************
+# ******************************************************************************
 # LIBRARIES
 # check if libraries are installed in the system
 
@@ -113,7 +113,7 @@ endif()
 # OpenMP
 find_package(OpenMP REQUIRED)
 
-# **********************************************************************
+# ******************************************************************************
 # SOURCE FILES FOR COMPILATION
 
 # source files of the library
@@ -426,14 +426,14 @@ target_sources(
 		utilities.hpp
 )
 
-# ******************************************************************** #
+# **************************************************************************** #
 # PUBLIC HEADER FILES FOR INSTALLATION
 
 # Public header files of the library (to be installed in the system).
 # These are not installed through the usual PUBLIC_HEADER property,
 # but via several custom variables
 
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_MAIN_HEADER
 	basic_types.hpp
 	C.hpp
@@ -449,12 +449,12 @@ set(LIBLAL_MAIN_HEADER
 	properties.hpp
 	utilities.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_DETAIL_HEADER
 	detail/data_array.hpp
 	detail/arrangement_wrapper.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_GENERATION_HEADER
 	generate/all_arrangements.hpp
 	generate/all_bipartite_arrangements.hpp
@@ -475,7 +475,7 @@ set(LIBLAL_GENERATION_HEADER
 	generate/tree_generator.hpp
 	generate/tree_generator_type.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_GRAPHS_HEADER
 	graphs/conversions.hpp
 	graphs/directed_graph.hpp
@@ -488,7 +488,7 @@ set(LIBLAL_GRAPHS_HEADER
 	graphs/tree_type.hpp
 	graphs/undirected_graph.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/check_correctness.hpp
@@ -504,12 +504,12 @@ set(LIBLAL_IO_HEADER
 	io/treebank_processor.hpp
 	io/treebank_reader.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_ITERATORS_HEADER
 	iterators/E_iterator.hpp
 	iterators/Q_iterator.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_LINARR_MAIN_HEADER
 	linarr/dependency_flux.hpp
 	linarr/formal_constraints.hpp
@@ -541,7 +541,7 @@ set(LIBLAL_LINARR_syndeptree_HEADER
 	linarr/syntactic_dependency_tree/classify.hpp
 	linarr/syntactic_dependency_tree/type.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_NUMERIC_HEADER
 	numeric/integer.hpp
 	numeric/integer_output.hpp
@@ -549,7 +549,7 @@ set(LIBLAL_NUMERIC_HEADER
 	numeric/rational.hpp
 	numeric/rational_output.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_PROPERTIES_HEADER
 	properties/bipartite_graph_colorability.hpp
 	properties/bipartite_graph_coloring.hpp
@@ -565,14 +565,14 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/tree_centroid.hpp
 	properties/tree_diameter.hpp
 )
-# -------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
 set(LIBLAL_UTILITIES_HEADER
 	utilities/aggregations.hpp
 	utilities/tree_isomorphism.hpp
 )
-# **********************************************************************
+# ******************************************************************************
 
-# **********************************************************************
+# ******************************************************************************
 # INSTALLATION OF LIBRARY
 
 message("-- LAL binaries will be installed in: ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
@@ -598,7 +598,7 @@ install(FILES ${LIBLAL_NUMERIC_HEADER}				DESTINATION ${CMAKE_INSTALL_INCLUDEDIR
 install(FILES ${LIBLAL_PROPERTIES_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/properties)
 install(FILES ${LIBLAL_UTILITIES_HEADER}			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lal/utilities)
 
-# **********************************************************************
+# ******************************************************************************
 # COMPILATION FLAGS
 
 # Warning flags
@@ -641,6 +641,14 @@ endif()
 # include path (required by the compiler to find the headers)
 target_include_directories(${TargetStringLibrary} PRIVATE ..)
 
+# ******************************************************************************
+# DEPENDENCIES
+
+# GMP
 target_link_libraries(${TargetStringLibrary} 	gmp)
+
+# pthread
 target_link_libraries(${TargetStringLibrary}	pthread)
+
+# OpenMP
 target_link_libraries(${TargetStringLibrary}	${OpenMP_CXX_LIBRARIES})
