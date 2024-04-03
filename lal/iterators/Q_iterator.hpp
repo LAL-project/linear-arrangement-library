@@ -314,7 +314,10 @@ private:
 	/// Find the next pair in a directed graph.
 	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
 	std::tuple<bool, E_pointer, E_pointer>
-	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
+	find_next_pair(
+		const node s, const std::size_t pt,
+		const node u, const std::size_t pv
+	)
 	noexcept
 	{
 		// base case 1: consumed all pairs
@@ -346,7 +349,10 @@ private:
 	/// Find the next pair in an undirected graph.
 	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
 	std::tuple<bool, E_pointer, E_pointer>
-	find_next_pair(node s, std::size_t pt, node u, std::size_t pv)
+	find_next_pair(
+		const node s, const std::size_t pt,
+		const node u, const std::size_t pv
+	)
 	noexcept
 	{
 		// base case 1: consumed all pairs
