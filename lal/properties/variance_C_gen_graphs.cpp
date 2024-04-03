@@ -268,11 +268,8 @@ noexcept
 						++common_ut;
 						deg_sum += g.get_degree(Nu[__j]);
 					);
-					H.insert(
-						make_pair(
-							sorted_edge(u,t),
-							useful_info_pairs(common_ut, deg_sum)
-						));
+					H.insert
+					({sorted_edge(u,t), useful_info_pairs(common_ut, deg_sum)});
 				}
 			}
 			else {
@@ -304,11 +301,8 @@ noexcept
 						++common_us;
 						deg_sum += g.get_degree(Nu[__j]);
 					);
-					H.insert(
-						make_pair(
-							sorted_edge(u,s),
-							useful_info_pairs(common_us, deg_sum)
-						));
+					H.insert
+					({sorted_edge(u,s), useful_info_pairs(common_us, deg_sum)});
 				}
 			}
 			else {
@@ -340,11 +334,8 @@ noexcept
 					++common_st;
 					deg_sum_st += g.get_degree(Nt[__j]);
 				);
-				H.insert(
-					make_pair(
-						sorted_edge(s,t),
-						useful_info_pairs(common_st, deg_sum_st)
-					));
+				H.insert
+				({sorted_edge(s,t), useful_info_pairs(common_st, deg_sum_st)});
 			}
 		}
 		else {
@@ -434,35 +425,35 @@ noexcept
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
 	uint64_t Lambda_2 = 0;
 
-	#define parameters_of_compute_data		\
-	(										\
-			 g, n, m,						\
-			 q, K,							\
-			 n_paths_4, n_cycles_4, n_paw,	\
-			 n_paths_5, n_pair_C3_L2,		\
-			 Phi_1, Phi_2,					\
-			 Lambda_1, Lambda_2				\
-		)
+	#define parameters_of_compute_data	\
+	(									\
+		g, n, m,						\
+		q, K,							\
+		n_paths_4, n_cycles_4, n_paw,	\
+		n_paths_5, n_pair_C3_L2,		\
+		Phi_1, Phi_2,					\
+		Lambda_1, Lambda_2				\
+	)
 
-		if (reuse) {
+	if (reuse) {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<true, true>
 				parameters_of_compute_data;
-			}
+		}
 		else {
 			compute_data_gen_graphs<true, false>
 				parameters_of_compute_data;
-			}
+		}
 	}
 	else {
 		if (g.is_normalised()) {
 			compute_data_gen_graphs<false, true>
 				parameters_of_compute_data;
-			}
+		}
 		else {
 			compute_data_gen_graphs<false, false>
 				parameters_of_compute_data;
-			}
+		}
 	}
 
 	// V[C]
