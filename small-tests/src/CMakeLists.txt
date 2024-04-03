@@ -77,24 +77,17 @@ if (NOT DEFINED LAL_DEV_DIR)
 	message(STATUS "    Make sure it is an absolute path!")
 	message(FATAL_ERROR "Please, read the last few lines and follow the instructions given.")
 else()
-	if (NOT DEFINED LAL_DEV_DIR)
-		message(STATUS "Path to the root directory of the linear arrangement library not given.")
-		message(STATUS "    Use -DLAL_DIR=/path/to/the/library")
-		message(STATUS "Rerun 'cmake' with the appropriate arguments")
-		message(FATAL_ERROR "Please, read the last few lines and follow the instructions given.")
+	if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+		message(STATUS "Link against laldebug (debug compilation of lal)")
+		set(LAL_LIB_DIR ${LAL_DEV_DIR}/lal-debug)
+		set(LAL_LIB_NAME lal)
 	else()
-		if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-			message(STATUS "Link against laldebug (debug compilation of lal)")
-			set(LAL_LIB_DIR ${LAL_DEV_DIR}/lal-debug)
-			set(LAL_LIB_NAME lal)
-		else()
-			message(STATUS "Link against lal (release compilation of lal)")
-			set(LAL_LIB_DIR ${LAL_DEV_DIR}/lal-release)
-			set(LAL_LIB_NAME laloptimized)
-		endif()
-		message(STATUS "    LAL_LIB_DIR:  ${LAL_LIB_DIR}")
-		message(STATUS "    LAL_LIB_NAME: ${LAL_LIB_NAME}")
+		message(STATUS "Link against lal (release compilation of lal)")
+		set(LAL_LIB_DIR ${LAL_DEV_DIR}/lal-release)
+		set(LAL_LIB_NAME laloptimized)
 	endif()
+	message(STATUS "    LAL_LIB_DIR:  ${LAL_LIB_DIR}")
+	message(STATUS "    LAL_LIB_NAME: ${LAL_LIB_NAME}")
 endif()
 
 # ----------------------
@@ -122,33 +115,7 @@ add_executable(
 )
 
 # ******************************************************************************
-# DEPENDENCIES
-
-# ----------------------
-# Add external libraries
-
-# self includes
-target_include_directories(small_tests	PUBLIC .)
-
-# LAL
-# lal includes
-target_include_directories(small_tests	PUBLIC ${LAL_DEV_DIR})
-# lal linking
-if (UNIX)
-target_link_libraries(small_tests	${LAL_LIB_DIR}/lib${LAL_LIB_NAME}.so)
-endif (UNIX)
-if (WIN32)
-target_link_libraries(small_tests	${LAL_LIB_DIR}/lib${LAL_LIB_NAME}.dll)
-endif (WIN32)
-
-# ******************************************************************************
 # COMPILATION FLAGS
-
-# OpenMP
-target_link_libraries(small_tests	${OpenMP_CXX_LIBRARIES})
-
-# GMP
-target_link_libraries(small_tests	gmp)
 
 # Optimisation and warning flags
 add_compiler_flag(-Wall)
@@ -170,7 +137,11 @@ add_compiler_flag(-Wduplicated-branches)
 add_compiler_flag(-Wlogical-op)
 add_compiler_flag(-Wuseless-cast)
 add_compiler_flag(-Wrestrict)
-add_compiler_flag(-D__LAL_INSPECT)
+add_compiler_flag(-D__LAL_DEBUG_AVL)
+
+# OpenMP
+add_compiler_flag(${OpenMP_CXX_FLAGS})
+
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	add_debug_flag(-Og)
 	add_debug_flag(-DDEBUG)
@@ -183,3 +154,31 @@ else()
 	add_release_flag(-fstrict-aliasing)
 endif()
 
+# ******************************************************************************
+# DEPENDENCIES
+
+# ----------------------
+# Add external libraries
+
+# self includes
+target_include_directories(small_tests	PUBLIC .)
+
+# LAL
+# lal includes
+target_include_directories(small_tests	PUBLIC ${LAL_DEV_DIR})
+# lal linking
+if (UNIX)
+target_link_libraries(small_tests	${LAL_LIB_DIR}/lib${LAL_LIB_NAME}.so)
+endif (UNIX)
+if (WIN32)
+target_link_libraries(small_tests	${LAL_LIB_DIR}/lib${LAL_LIB_NAME}.dll)
+endif (WIN32)
+
+# GMP
+target_link_libraries(small_tests	gmp)
+
+# pthread
+target_link_libraries(small_tests	pthread)
+
+# OpenMP
+target_link_libraries(small_tests	${OpenMP_CXX_LIBRARIES})
