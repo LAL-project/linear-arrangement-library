@@ -66,10 +66,10 @@ noexcept
 	// neighbour's degree sum: nds[s] = sum_{st in E} k_t
 	detail::data_array<uint64_t> xi(n);
 
-	// n<k^2>: second moment of degree about zero multiplied by n
-	uint64_t nk2 = 0;
-	// n<k^3>: third moment of degree about zero multiplied by n
-	uint64_t nk3 = 0;
+	// in the paper: n<k^2>
+	uint64_t sum_squared_degrees = 0;
+	// in the paper: n<k^3>
+	uint64_t sum_cubed_degrees = 0;
 	// sum_{st in E} k_s*k_t = sum_{s in V} ndp_s
 	uint64_t psi = 0;
 
@@ -79,8 +79,8 @@ noexcept
 	for (node s = 0; s < n; ++s) {
 		const uint64_t ks = g.get_degree(s);
 		// calculate n*<k^2>, n*<k^3>
-		nk2 += ks*ks;
-		nk3 += ks*ks*ks;
+		sum_squared_degrees += ks*ks;
+		sum_cubed_degrees += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
@@ -100,8 +100,8 @@ noexcept
 	// ------------------------
 	// start computing variance
 
-	Qs = (m*(m + 1) - nk2)/2;
-	KG = (m + 1)*nk2 - nk3 - 2*psi;
+	Qs = (m*(m + 1) - sum_squared_degrees)/2;
+	KG = (m + 1)*sum_squared_degrees - sum_cubed_degrees - 2*psi;
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
@@ -119,7 +119,7 @@ noexcept
 		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
 
 		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 += (ks + kt)*(nk2 - xi[s] - xi[t] - kt*(kt - 1) - ks*(ks - 1));
+		Phi_2 += (ks + kt)*(sum_squared_degrees - xi[s] - xi[t] - kt*(kt - 1) - ks*(ks - 1));
 	}
 
 	Lambda_2 += Lambda_1;

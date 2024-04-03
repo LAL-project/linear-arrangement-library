@@ -190,10 +190,10 @@ noexcept
 
 	// neighbour's degree sum: nds_s = sum_{st in E} k_t
 	detail::data_array<uint64_t> xi(n);
-	// sum of degrees squared
-	uint64_t nk2 = 0;
-	// sum of degrees cubed
-	uint64_t nk3 = 0;
+	// in the paper: n<k^2>
+	uint64_t sum_squared_degrees = 0;
+	// in the paper: n<k^3>
+	uint64_t sum_cubed_degrees = 0;
 	// sum_{st in E} k_s*k_t
 	uint64_t psi = 0;
 
@@ -202,8 +202,8 @@ noexcept
 
 	for (node s = 0; s < n; ++s) {
 		const uint64_t ks = g.get_degree(s);
-		nk2 += ks*ks;
-		nk3 += ks*ks*ks;
+		sum_squared_degrees += ks*ks;
+		sum_cubed_degrees += ks*ks*ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbours(s)) {
@@ -230,8 +230,8 @@ noexcept
 	// ------------------------------------------------
 	// compute the variance
 
-	Qs = (m*(m + 1) - nk2)/2;
-	Kg = (m + 1)*nk2 - nk3 - 2*psi;
+	Qs = (m*(m + 1) - sum_squared_degrees)/2;
+	Kg = (m + 1)*sum_squared_degrees - sum_cubed_degrees - 2*psi;
 	Phi_1 = (m + 1)*psi;
 	Phi_2 = 0;
 
@@ -349,7 +349,7 @@ noexcept
 		pair_C3_L2 += common_st*(m - ks - kt + 3) - deg_sum_st;
 
 		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 += (ks + kt)*(nk2 - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
+		Phi_2 += (ks + kt)*(sum_squared_degrees - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
 
 		mu += common_st;
 
@@ -368,7 +368,7 @@ noexcept
 
 	Lambda_2 += Lambda_1;
 	Phi_2 /= 2;
-	n_paths_4 = m - nk2 + psi - mu;
+	n_paths_4 = m - sum_squared_degrees + psi - mu;
 	n_cycles_4 /= 4;
 	n_paths_5 /= 2;
 	pair_C3_L2 /= 3;
