@@ -78,6 +78,11 @@ void update_unionfind_after_add_edge
 )
 noexcept
 {
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
 	// 'u' and 'v' are not connected, so they belong to
 	// (different) connected components of the tree.
 
@@ -147,6 +152,11 @@ void update_unionfind_after_remove_edge
 )
 noexcept
 {
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
 	// 'u' and 'v' are connected
 #if defined DEBUG
 	assert(root_of[u] == root_of[v]);
@@ -215,6 +225,11 @@ void update_unionfind_before_remove_edges_incident_to
 )
 noexcept
 {
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
 	[&](const auto&, node w) -> void {
@@ -255,6 +270,11 @@ void update_unionfind_before_remove_edges_incident_to
 )
 noexcept
 {
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(t.is_directed());
 	// avoid going 'backwards', we need to go 'onwards'
