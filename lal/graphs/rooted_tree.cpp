@@ -522,7 +522,7 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 		std::copy(
 			&subsizes[0], &subsizes[n_verts],
 			sub.m_size_subtrees.begin()
-			);
+		);
 		sub.m_are_size_subtrees_valid = true;
 
 		delete[] subsizes;
@@ -548,10 +548,10 @@ head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
 {
 	return
 		(arr.size() == 0 ?
-			 detail::from_tree_to_head_vector
-			 (*this, detail::identity_arr(arr))
-						 :
-			 detail::from_tree_to_head_vector
+			detail::from_tree_to_head_vector
+				(*this, detail::identity_arr(arr))
+			:
+			detail::from_tree_to_head_vector
 				(*this, detail::nonidentity_arr(arr))
 		 );
 }
@@ -570,7 +570,7 @@ bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
 
 	// terminate the BFS traversal as soon as node 'u' has been reached.
 	bfs.set_terminate
-		([u](const auto&, node current) -> bool { return current == u; });
+	([u](const auto&, node current) -> bool { return current == u; });
 	// do not search backwards
 	bfs.set_use_rev_edges(false);
 	// start at the root
@@ -607,15 +607,6 @@ void rooted_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_after_add_edge
-		(*this, u, v, root_of, root_size);
-}
-void rooted_tree::update_union_find_after_edge_add(
-	node u, node v,
-	uint64_t * const root_of,
-	uint64_t * const root_size
 ) const noexcept
 {
 	detail::update_unionfind_after_add_edge
@@ -628,15 +619,6 @@ void rooted_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_after_remove_edge
-		(*this, u, v, root_of, root_size);
-}
-void rooted_tree::update_union_find_after_edge_remove(
-	node u, node v,
-	uint64_t * const root_of,
-	uint64_t * const root_size
 ) const noexcept
 {
 	detail::update_unionfind_after_remove_edge
@@ -645,14 +627,6 @@ void rooted_tree::update_union_find_after_edge_remove(
 
 // -----------------------------------------------------------------------------
 
-void rooted_tree::update_union_find_before_incident_edges_removed(
-	node u,
-	uint64_t * const root_of, uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_before_remove_edges_incident_to
-		(*this, u, root_of, root_size);
-}
 void rooted_tree::update_union_find_before_incident_edges_removed(
 	node u,
 	uint64_t * const root_of, uint64_t * const root_size

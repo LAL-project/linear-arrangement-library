@@ -285,15 +285,6 @@ void free_tree::update_union_find_after_edge_add(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_after_add_edge
-		(*this, u, v, root_of, root_size);
-}
-void free_tree::update_union_find_after_edge_add(
-	node u, node v,
-	uint64_t * const root_of,
-	uint64_t * const root_size
 ) const noexcept
 {
 	detail::update_unionfind_after_add_edge
@@ -306,15 +297,6 @@ void free_tree::update_union_find_after_edge_remove(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_after_remove_edge
-		(*this, u, v, root_of, root_size);
-}
-void free_tree::update_union_find_after_edge_remove(
-	node u, node v,
-	uint64_t * const root_of,
-	uint64_t * const root_size
 ) const noexcept
 {
 	detail::update_unionfind_after_remove_edge
@@ -323,14 +305,6 @@ void free_tree::update_union_find_after_edge_remove(
 
 // -----------------------------------------------------------------------------
 
-void free_tree::update_union_find_before_incident_edges_removed(
-	node u,
-	uint64_t * const root_of, uint64_t * const root_size
-) noexcept
-{
-	detail::update_unionfind_before_remove_edges_incident_to
-		(*this, u, root_of, root_size);
-}
 void free_tree::update_union_find_before_incident_edges_removed(
 	node u,
 	uint64_t * const root_of, uint64_t * const root_size

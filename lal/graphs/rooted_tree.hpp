@@ -736,28 +736,14 @@ protected:
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) noexcept;
-	void update_union_find_after_edge_add(
-		node u, node v,
-		uint64_t * const root_of,
-		uint64_t * const root_size
 	) const noexcept;
 
 	void update_union_find_after_edge_remove(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) noexcept;
-	void update_union_find_after_edge_remove(
-		node u, node v,
-		uint64_t * const root_of,
-		uint64_t * const root_size
 	) const noexcept;
 
-	void update_union_find_before_incident_edges_removed(
-		node u,
-		uint64_t * const root_of, uint64_t * const root_size
-	) noexcept;
 	void update_union_find_before_incident_edges_removed(
 		node u,
 		uint64_t * const root_of, uint64_t * const root_size
