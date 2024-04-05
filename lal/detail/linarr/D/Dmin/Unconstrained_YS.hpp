@@ -53,9 +53,6 @@
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
 
-typedef std::pair<uint64_t,lal::node> size_node;
-typedef lal::detail::data_array<size_node> ordering;
-
 namespace lal {
 namespace detail {
 namespace Dmin {
@@ -69,6 +66,9 @@ namespace unconstrained {
  */
 namespace Shiloach {
 using namespace Dopt_utils;
+
+/// Typedef for a useful type.
+typedef data_array<node_size> ordering;
 
 /**
  * @brief Calculate \f$p_{\alpha}\f$.
@@ -93,7 +93,7 @@ noexcept
 	// number of subtrees
 	const uint64_t k = ord.size() - 1;
 
-	uint64_t n_0 = ord[0].first;
+	uint64_t n_0 = ord[0].size;
 	uint64_t max_p = 0;
 
 	if constexpr (anchored == NO_ANCHOR) {
@@ -104,15 +104,15 @@ noexcept
 		if (max_p == 0) { return 0; }
 
 		uint64_t sum = 0;
-		for (uint64_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].first; }
+		for (uint64_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].size; }
 
 		uint64_t n_star = n - sum;
 		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
 
 		// n_0 >= n_1 >= ... >= n_k
-		uint64_t n_p = ord[2*max_p].first;
+		uint64_t n_p = ord[2*max_p].size;
 		while (max_p > 0 and n_p <= tricky_formula) {
-			sum -= ord[2*max_p].first + ord[2*max_p - 1].first;
+			sum -= ord[2*max_p].size + ord[2*max_p - 1].size;
 
 			--max_p;
 			n_star = n - sum;
@@ -120,13 +120,13 @@ noexcept
 
 			// --
 			//if (max_p > 0) { n_p = ord[2*max_p].first; }
-			n_p = (max_p > 0 ? ord[2*max_p].first : n_p);
+			n_p = (max_p > 0 ? ord[2*max_p].size : n_p);
 			// --
 		}
 		s_0 = max_p*(n_star + 1 + n_0);
 		s_1 = 0;
 		for (uint64_t i = 1; i < max_p; ++i) {
-			s_0 += i*(ord[2*i + 1].first + ord[2*i + 2].first);
+			s_0 += i*(ord[2*i + 1].size + ord[2*i + 2].size);
 		}
 	}
 	else {
@@ -137,26 +137,26 @@ noexcept
 		if (max_p == 0) { return 0; }
 
 		uint64_t sum = 0;
-		for (uint64_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].first; }
+		for (uint64_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].size; }
 		uint64_t n_star = n - sum;
 		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
-		uint64_t n_p = ord[2*max_p - 1].first;
+		uint64_t n_p = ord[2*max_p - 1].size;
 		while (max_p > 0 and n_p <= tricky_formula) {
-			sum -= ord[2*max_p - 1].first;
-			sum -= ord[2*max_p - 2].first;
+			sum -= ord[2*max_p - 1].size;
+			sum -= ord[2*max_p - 2].size;
 			--max_p;
 			n_star = n - sum;
 			tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
 
 			// --
 			//if (max_p > 0) { n_p = ord[2*max_p - 1].first; }
-			n_p = (max_p > 0 ? ord[2*max_p - 1].first : n_p);
+			n_p = (max_p > 0 ? ord[2*max_p - 1].size : n_p);
 			// --
 		}
 		s_0 = 0;
 		s_1 = max_p*(n_star + 1 + n_0) - 1;
 		for (uint64_t i = 1; i < max_p; ++i) {
-			s_1 += i*(ord[2*i].first + ord[2*i + 1].first);
+			s_1 += i*(ord[2*i].size + ord[2*i + 1].size);
 		}
 	}
 	return max_p;
@@ -181,7 +181,8 @@ noexcept
 template <char alpha, bool make_arrangement>
 void calculate_mla(
 	graphs::free_tree& t,
-	node root_or_anchor, position start, position end,
+	const node root_or_anchor,
+	position start, position end,
 	linear_arrangement& mla, uint64_t& cost
 )
 noexcept
@@ -208,7 +209,7 @@ noexcept
 	// Recursion for COST A
 	const node v_star = (
 		alpha == NO_ANCHOR ?
-			detail::retrieve_centroid(t, root_or_anchor).first : root_or_anchor
+			retrieve_centroid(t, root_or_anchor).first : root_or_anchor
 	);
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
@@ -219,7 +220,7 @@ noexcept
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
 	data_array<uint64_t> s(t.get_num_nodes());
-	detail::get_size_subtrees(t, v_star, s.begin());
+	get_size_subtrees(t, v_star, s.begin());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& v_star_neighs = t.get_neighbours(v_star);
@@ -229,20 +230,20 @@ noexcept
 		// size of subtree rooted at 'ui'
 		const uint64_t s_ui = s[ui];
 
-		ord[i].first = s_ui;
+		ord[i].size = s_ui;
 		M = std::max(M, s_ui);
-		ord[i].second = ui;
+		ord[i].v = ui;
 	}
-	detail::sorting::counting_sort
-		<size_node, sorting::non_increasing_t>
+	sorting::counting_sort
+		<node_size, sorting::non_increasing_t>
 		(
 			ord.begin(), ord.end(), M, ord.size(),
-			[](const size_node& p) { return p.first; }
+			[](const node_size& p) { return p.size; }
 		);
 	}
 
-	const node v_0 = ord[0].second;		// Root of biggest subtree
-	const uint64_t n_0 = ord[0].first;	// Size of biggest subtree
+	const node v_0 = ord[0].v;		  // Root of biggest subtree
+	const uint64_t n_0 = ord[0].size; // Size of biggest subtree
 
 	// remove edge connecting v_star and its largest subtree
 	t.remove_edge(v_star, v_0, false, false);
@@ -297,7 +298,7 @@ noexcept
 
 		// number of nodes not in the central tree
 		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
-			const node r = ord[i].second;
+			const node r = ord[i].v;
 			edges[i - 1].first = v_star;
 			edges[i - 1].second = r;
 		}
@@ -308,8 +309,8 @@ noexcept
 		for(uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			uint64_t c_aux = 0;
 
-			const node r = ord[i].second;
-			const uint64_t n_i = ord[i].first;
+			const node r = ord[i].v;
+			const uint64_t n_i = ord[i].size;
 			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
 				calculate_mla<RIGHT_ANCHOR, make_arrangement>
 					(t, r, start, start + n_i - 1, mla_B, c_aux);
