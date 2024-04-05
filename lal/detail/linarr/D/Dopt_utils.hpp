@@ -148,7 +148,7 @@ noexcept
 	}
 	else {
 		// fill in the size of the subtrees
-		detail::get_size_subtrees(t, r, size_subtrees.begin());
+		get_size_subtrees(t, r, size_subtrees.begin());
 		while (not E_it.end()) {
 			const edge e = E_it.get_edge();
 			const node v = e.second;
@@ -161,7 +161,7 @@ noexcept
 	}
 
 	// sort all tuples in L using the size of the subtree
-	detail::sorting::counting_sort
+	sorting::counting_sort
 		<edge_size, sort_type, true>
 		(
 			edge_list.begin(), edge_list.end(), n,
