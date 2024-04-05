@@ -212,11 +212,10 @@ noexcept
 	}
 
 	// Recursion for COST A
-	const node v_star = (
+	const node v_star =
 		alpha == Dopt_utils::NO_ANCHOR ?
 			retrieve_centroid(t, root_or_anchor).first :
-			root_or_anchor
-	);
+			root_or_anchor;
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
@@ -290,11 +289,10 @@ noexcept
 
 	// Left or right anchored is not important for the cost.
 	// Note that the result returned is either 0 or 1.
-	constexpr auto anchored = (
+	constexpr auto anchored =
 		alpha == Dopt_utils::RIGHT_ANCHOR or alpha == Dopt_utils::LEFT_ANCHOR ?
 			Dopt_utils::ANCHOR :
-			Dopt_utils::NO_ANCHOR
-		);
+			Dopt_utils::NO_ANCHOR;
 
 	uint64_t s_0 = 0;
 	uint64_t s_1 = 0;
@@ -309,9 +307,7 @@ noexcept
 
 		// number of nodes not in the central tree
 		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
-			const node r = ord[i].v;
-			edges[i - 1].first = v_star;
-			edges[i - 1].second = r;
+			edges[i - 1] = {v_star, ord[i].v};
 		}
 		t.remove_edges(edges, false, false);
 

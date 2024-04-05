@@ -129,9 +129,9 @@ char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
  * less memory suffices, but I don't know how much less: better be safe than
  * sorry.
  */
-inline
-void assign_name_and_keep(
-	const graphs::rooted_tree& t, node u,
+inline void assign_name_and_keep(
+	const graphs::rooted_tree& t,
+	const node u,
 	std::size_t idx,
 	std::string * const aux_memory_for_names,
 	std::string * const keep_name_of
@@ -178,8 +178,7 @@ noexcept
  * name of the second child of 'u'.
  * @returns The code for the subtree rooted at 'u'.
  */
-inline
-std::string assign_name
+inline std::string assign_name
 (const graphs::rooted_tree& t, node u, std::string * const names, std::size_t idx)
 noexcept
 {
