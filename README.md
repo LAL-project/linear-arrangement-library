@@ -17,20 +17,20 @@ For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md). We do not currently maintain any official repository for any of the Linux distributions' package manager.
-- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md).
+- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/installation-library-binaries-ubuntu.md). We do not currently maintain any official repository for any of the Linux distributions' package manager.
+- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/installation-library-binaries-windows.md).
 
 ## Installation of the library from sources
 
 We wrote different sets of instructions for compiling and installing LAL from sources for
 
-- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-ubuntu.md).
-- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-windows.md).
-- [Mac OS](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-sources-macos.md).
+- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/installation-library-sources-ubuntu.md).
+- [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/installation-library-sources-windows.md).
+- [Mac OS](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/installation-library-sources-macos.md).
 
 ## Compile a program that uses LAL
 
-See [this](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.
+See [this](https://github.com/LAL-project/linear-arrangement-library/blob/23.01/instructions/compiling-against-LAL.md) file for instructions on how to compile and link a C++ program that uses LAL.
 
 ## Author information
 
