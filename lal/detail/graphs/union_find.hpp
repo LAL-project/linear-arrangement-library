@@ -56,10 +56,10 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Update the Union-Find data structure after an edge addition to a tree.
+ * @brief Update the Union-Find data structure after the addition of an edge.
  *
- * This function updates the union-find data structure of a tree after the
- * addition of the edge between the edges 'u' and 'v'.
+ * This function updates the Union-Find data structure of a tree after the
+ * addition of an edge between vertices @e u and @e v.
  * @tparam tree_t Type of tree.
  * @param t Input tree
  * @param u Node
@@ -130,10 +130,10 @@ noexcept
 }
 
 /**
- * @brief Updates Union-Find after an edge removal.
+ * @brief Updates Union-Find after the removal of an edge.
  *
- * This function updates the union-find data structure of a tree after the
- * removal of the edge between the edges 'u' and 'v'.
+ * This function updates the Union-Find data structure of a tree after the
+ * removal of the edge between vertices @e u and @e v.
  * @tparam tree_t Type of tree.
  * @param t Input tree
  * @param u Node
@@ -199,13 +199,13 @@ noexcept
 // -----------------------------------------------------------------------------
 
 /**
- * @brief Update Union-Find after a vertex removal.
+ * @brief Update Union-Find after the removal of a vertex.
  *
- * This function updates the union-find data structure of a tree prior to the
+ * This function updates the Union-Find data structure of a tree prior to the
  * removal of the edge (u,v).
  *
  * This function is called by the function
- *		lal::detail::UnionFind_update_roots_before_remove_all_incident_to
+ *		lal::detail::update_unionfind_before_remove_edges_incident_to
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
@@ -219,7 +219,8 @@ noexcept
 template <class tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
-	BFS<tree_t>& bfs, node v,
+	BFS<tree_t>& bfs,
+	const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -246,11 +247,8 @@ noexcept
 /**
  * @brief Update Union-Find after a vertex removal.
  *
- * This function updates the union-find data structure of a tree prior to the
+ * This function updates the Union-Find data structure of a tree prior to the
  * removal of the edge (u,v).
- *
- * This function is called by the function
- *		lal::detail::UnionFind_update_roots_before_remove_all_incident_to
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
@@ -264,7 +262,8 @@ noexcept
 template <typename tree_t>
 void update_unionfind_before_remove_edges_incident_to
 (
-	const tree_t& t, node u,
+	const tree_t& t,
+	const node u,
 	node * const root_of,
 	uint64_t * const root_size
 )
