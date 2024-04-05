@@ -426,7 +426,7 @@ noexcept
 			for (uint64_t i = 0; i <= 2*uq; ++i) {
 				const auto Q_i = get_Q(uq, i);
 
-				t.add_edge(u, ord[i].v);
+				t.add_edge(u, ord[i].v, false, false);
 
 				uint64_t c_i = 0;
 				linear_arrangement arr_aux = mla;
@@ -650,7 +650,7 @@ noexcept
 
 				// Adding parts of the anchors over trees nearer to the central tree
 				c_i += size_tree*(up + 1);
-				c_i -= (up + 1)*ord[P_i[P_i.size()-1]].size;
+				c_i -= (up + 1)*ord[P_i[P_i.size() - 1]].size;
 
 				uint64_t subs = 0;
 				for (uint64_t j = 1; j <= up; ++j) {
