@@ -60,7 +60,8 @@ namespace detail {
  *
  * This function updates the Union-Find data structure of a tree after the
  * addition of an edge between vertices @e u and @e v.
- * @tparam tree_t Type of tree.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
  * @param t Input tree
  * @param u Node
  * @param v Node
@@ -72,7 +73,8 @@ namespace detail {
 template <class tree_t>
 void update_unionfind_after_add_edge
 (
-	const tree_t& t, const node u, const node v,
+	const tree_t& t,
+	const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -134,7 +136,8 @@ noexcept
  *
  * This function updates the Union-Find data structure of a tree after the
  * removal of the edge between vertices @e u and @e v.
- * @tparam tree_t Type of tree.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
  * @param t Input tree
  * @param u Node
  * @param v Node
@@ -146,7 +149,8 @@ noexcept
 template <class tree_t>
 void update_unionfind_after_remove_edge
 (
-	const tree_t& t, const node u, const node v,
+	const tree_t& t,
+	const node u, const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -209,7 +213,8 @@ noexcept
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
- * @tparam tree_t Type of tree.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
  * @param bfs Breadth-First Search object.
  * @param v Node to be removed.
  * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
@@ -252,7 +257,8 @@ noexcept
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).
- * @tparam tree_t Type of tree.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
  * @param t Input tree.
  * @param u Node to be removed.
  * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
