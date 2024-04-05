@@ -216,9 +216,9 @@ directed_graph& directed_graph::add_edges
 
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
-		actions_after_add_edge(u, v);
 	}
 
+	actions_after_add_edges(edges);
 	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
@@ -271,9 +271,9 @@ directed_graph& directed_graph::remove_edges
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
 		remove_single_edge(u,v, out_u, in_v);
-		actions_after_remove_edge(u, v);
 	}
 
+	actions_after_remove_edges(edges);
 	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }

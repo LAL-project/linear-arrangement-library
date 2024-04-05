@@ -168,9 +168,9 @@ undirected_graph& undirected_graph::add_edges
 
 		m_adjacency_list[u].push_back(v);
 		m_adjacency_list[v].push_back(u);
-		actions_after_add_edge(u, v);
 	}
 
+	actions_after_add_edges(edges);
 	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
@@ -224,9 +224,9 @@ undirected_graph& undirected_graph::remove_edges
 		neighbourhood& nu = m_adjacency_list[u];
 		neighbourhood& nv = m_adjacency_list[v];
 		remove_single_edge(u,v, nu, nv);
-		actions_after_remove_edge(u, v);
 	}
 
+	actions_after_remove_edges(edges);
 	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
