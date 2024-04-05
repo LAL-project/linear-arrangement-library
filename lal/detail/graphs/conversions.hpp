@@ -63,11 +63,11 @@ template <
 	bool ensure_root_is_returned,
 	bool free_tree_plus_root =
 		ensure_root_is_returned and
-		std::is_same_v<tree_t, lal::graphs::free_tree>
+		std::is_same_v<tree_t, graphs::free_tree>
 >
 std::conditional_t<
 	free_tree_plus_root,
-	std::pair<tree_t, lal::node>,
+	std::pair<tree_t, node>,
 	tree_t
 >
 from_edge_list_to_tree(std::stringstream& ss) noexcept
@@ -102,7 +102,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 	}
 	t.finish_bulk_add();
 
-	if constexpr (std::is_same_v<tree_t, lal::graphs::rooted_tree>) {
+	if constexpr (std::is_same_v<tree_t, graphs::rooted_tree>) {
 #if defined DEBUG
 		// If in the future the call to "finish_bulk_add" above
 		// finds the root of the tree then this assertion should
@@ -131,7 +131,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 	}
 
 	if constexpr (free_tree_plus_root) {
-		static_assert(std::is_same_v<tree_t, lal::graphs::free_tree>);
+		static_assert(std::is_same_v<tree_t, graphs::free_tree>);
 		return {std::move(t), num_nodes + 1};
 	}
 	else {
@@ -156,7 +156,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  */
 template <class graph_t>
 graph_t from_edge_list_to_graph
-(const std::vector<edge>& edge_list, bool normalise, bool check)
+(const edge_list& edge_list, bool normalise, bool check)
 noexcept
 {
 	uint64_t max_vertex_index = 0;
@@ -183,7 +183,7 @@ noexcept
  */
 template <class graph_t>
 graph_t from_head_vector_to_graph
-(const head_vector& hv, bool normalize = true, bool check = true)
+(const head_vector& hv, bool normalize, bool check)
 noexcept
 {
 	const uint64_t n = hv.size();

@@ -50,6 +50,20 @@ namespace graphs {
 // -----------------------------------------------------------------------------
 // head vector -> tree
 
+undirected_graph from_head_vector_to_undirected_graph
+(const head_vector& hv, bool normalise, bool check)
+noexcept
+{
+	return detail::from_head_vector_to_graph<undirected_graph>(hv, normalise, check);
+}
+
+directed_graph from_head_vector_to_directed_graph
+(const head_vector& hv, bool normalise, bool check)
+noexcept
+{
+	return detail::from_head_vector_to_graph<directed_graph>(hv, normalise, check);
+}
+
 std::pair<free_tree,node> from_head_vector_to_free_tree
 (const head_vector& hv, bool normalise, bool check)
 noexcept
@@ -62,13 +76,6 @@ rooted_tree from_head_vector_to_rooted_tree
 noexcept
 {
 	return detail::from_head_vector_to_tree<rooted_tree>(hv, normalise, check);
-}
-
-directed_graph from_head_vector_to_directed_graph
-(const head_vector& hv, bool normalise, bool check)
-noexcept
-{
-	return detail::from_head_vector_to_graph<directed_graph>(hv, normalise, check);
 }
 
 // -----------------------------------------------------------------------------
