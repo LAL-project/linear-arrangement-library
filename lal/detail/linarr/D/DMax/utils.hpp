@@ -70,8 +70,6 @@ namespace detail {
 /// Utilities for the various maximum linear arrangement algorithms.
 namespace DMax_utils {
 
-using namespace Dopt_utils;
-
 /* ************************************************************************** */
 /* ---------------------- INTERVAL-based methods ---------------------------- */
 
@@ -102,7 +100,7 @@ using namespace Dopt_utils;
  * 'r_place' is LEFT_PLACE.
  * @pre @e L is sorted decreasingly.
  */
-template <place r_place, bool make_arrangement>
+template <Dopt_utils::place r_place, bool make_arrangement>
 uint64_t arrange
 (
 	const std::vector<std::vector<node_size>>& L,
@@ -117,7 +115,7 @@ noexcept
 #endif
 
 	if constexpr (make_arrangement) {
-		if constexpr (r_place == PLACE_LEFT_OF) {
+		if constexpr (r_place == Dopt_utils::PLACE_LEFT_OF) {
 			arr.assign(r, ini);
 		}
 		else {
@@ -144,15 +142,17 @@ noexcept
 	// Initialized so the compiler does not cry
 	position next_ini = 0, next_fin = 0;
 
-	constexpr place next_place =
-		(r_place == PLACE_LEFT_OF ? PLACE_RIGHT_OF : PLACE_LEFT_OF);
+	constexpr Dopt_utils::place next_place =
+		r_place == Dopt_utils::PLACE_LEFT_OF ?
+			Dopt_utils::PLACE_RIGHT_OF :
+			Dopt_utils::PLACE_LEFT_OF;
 
 	// while placing the children, calculate the
 	// length of the edge from 'r' to vertex 'vi'
 	for (const auto& [vi, ni] : children) {
 
 		if constexpr (make_arrangement) {
-			if constexpr (r_place == PLACE_LEFT_OF) {
+			if constexpr (r_place == Dopt_utils::PLACE_LEFT_OF) {
 				next_ini = ini + acc_size + 1;
 				next_fin = next_ini + ni - 1;
 			}
@@ -173,7 +173,7 @@ noexcept
 		acc_size += ni;
 	}
 
-	if constexpr (r_place != PLACE_NONE_OF) {
+	if constexpr (r_place != Dopt_utils::PLACE_NONE_OF) {
 		// accumulate this subtree's anchor
 		D += acc_size;
 	}
@@ -200,7 +200,7 @@ inline uint64_t arrange_projective
 )
 noexcept
 {
-	return arrange<PLACE_NONE_OF, true>(L, r, 0, n-1, arr);
+	return arrange<Dopt_utils::PLACE_NONE_OF, true>(L, r, 0, n-1, arr);
 }
 
 /**
@@ -221,7 +221,7 @@ inline uint64_t arrange_projective
 noexcept
 {
 	linear_arrangement arr;
-	return arrange<PLACE_NONE_OF, false>(L, r, 0, n-1, arr);
+	return arrange<Dopt_utils::PLACE_NONE_OF, false>(L, r, 0, n-1, arr);
 }
 
 } // -- namespcae DMax_utils

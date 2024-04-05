@@ -71,8 +71,6 @@ namespace detail {
 /// Utilities for the various minimum linear arrangement algorithms.
 namespace Dmin_utils {
 
-using namespace Dopt_utils;
-
 /* ************************************************************************** */
 /* ---------------------- INTERVAL-based methods ---------------------------- */
 
@@ -113,7 +111,7 @@ uint64_t arrange
 (
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
-	const place r_place,
+	const Dopt_utils::place r_place,
 	position ini, position fin,
 	linear_arrangement& arr
 )
@@ -129,7 +127,10 @@ noexcept
 	// -- place the children --
 
 	// work out the starting side of the first-largest subtree
-	side roots_side = (r_place == PLACE_RIGHT_OF ? RIGHT_SIDE : LEFT_SIDE);
+	Dopt_utils::side roots_side =
+		r_place == Dopt_utils::PLACE_RIGHT_OF ?
+			Dopt_utils::RIGHT_SIDE :
+			Dopt_utils::LEFT_SIDE;
 
 	// size of the intervals from the root to the left end
 	uint64_t acc_size_left = 0;
@@ -169,33 +170,33 @@ noexcept
 		D +=
 		arrange<make_arrangement>(
 			L, vi,
-			(roots_side == LEFT_SIDE ? PLACE_LEFT_OF : PLACE_RIGHT_OF),
-			(make_arrangement ? (roots_side == LEFT_SIDE ? ini : fin - ni + 1) : 0),
-			(make_arrangement ? (roots_side == LEFT_SIDE ? ini + ni - 1 : fin) : 0),
+			(roots_side == Dopt_utils::LEFT_SIDE ? Dopt_utils::PLACE_LEFT_OF : Dopt_utils::PLACE_RIGHT_OF),
+			(make_arrangement ? (roots_side == Dopt_utils::LEFT_SIDE ? ini : fin - ni + 1) : 0),
+			(make_arrangement ? (roots_side == Dopt_utils::LEFT_SIDE ? ini + ni - 1 : fin) : 0),
 			arr
 		);
 
 		// accumulate size of interval
-		d += ni*(roots_side == LEFT_SIDE ? n_intervals_left : n_intervals_right);
+		d += ni*(roots_side == Dopt_utils::LEFT_SIDE ? n_intervals_left : n_intervals_right);
 		// add length of edge over root 'r'
 		d += 1;
 
 		// number of intervals to the left and right of the root
 		n_intervals_left += roots_side;
-		n_intervals_right += other_side(roots_side);
+		n_intervals_right += Dopt_utils::other_side(roots_side);
 
 		// accumulate size of subtree rooted at vi
 		acc_size_left += roots_side*ni;
-		acc_size_right += other_side(roots_side)*ni;
+		acc_size_right += Dopt_utils::other_side(roots_side)*ni;
 
 		// update limits of the embedding
 		if constexpr (make_arrangement) {
 		ini += roots_side*ni;
-		fin -= other_side(roots_side)*ni;
+		fin -= Dopt_utils::other_side(roots_side)*ni;
 		}
 
 		// change side
-		roots_side = other_side(roots_side);
+		roots_side = Dopt_utils::other_side(roots_side);
 	}
 
 #if defined DEBUG
@@ -209,8 +210,8 @@ noexcept
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
-	(r_place == PLACE_NONE_OF ? 0 :
-	 r_place == PLACE_LEFT_OF ? acc_size_right : acc_size_left);
+	(r_place == Dopt_utils::PLACE_NONE_OF ? 0 :
+	 r_place == Dopt_utils::PLACE_LEFT_OF ? acc_size_right : acc_size_left);
 
 	return D + d;
 }
@@ -235,7 +236,7 @@ inline uint64_t arrange_projective
 )
 noexcept
 {
-	return arrange<true>(L, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<true>(L, r, Dopt_utils::PLACE_NONE_OF, 0, n-1, arr);
 }
 
 /**
@@ -256,7 +257,7 @@ inline uint64_t arrange_projective
 noexcept
 {
 	linear_arrangement arr;
-	return arrange<false>(L, r, PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<false>(L, r, Dopt_utils::PLACE_NONE_OF, 0, n-1, arr);
 }
 
 

@@ -65,7 +65,6 @@ namespace unconstrained {
  * arrangement problem. See \cite Shiloach1979a for further details.
  */
 namespace Shiloach {
-using namespace Dopt_utils;
 
 /// Typedef for a useful type.
 typedef data_array<node_size> ordering;
@@ -88,7 +87,10 @@ noexcept
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
-	static_assert(anchored == NO_ANCHOR or anchored == ANCHOR);
+	static_assert(
+		anchored == Dopt_utils::NO_ANCHOR or
+		anchored == Dopt_utils::ANCHOR
+	);
 
 	// number of subtrees
 	const uint64_t k = ord.size() - 1;
@@ -96,7 +98,7 @@ noexcept
 	uint64_t n_0 = ord[0].size;
 	uint64_t max_p = 0;
 
-	if constexpr (anchored == NO_ANCHOR) {
+	if constexpr (anchored == Dopt_utils::NO_ANCHOR) {
 		// -- not anchored
 
 		// Maximum possible p_alpha
@@ -187,8 +189,11 @@ void calculate_mla(
 )
 noexcept
 {
-	static_assert
-	(alpha == NO_ANCHOR or alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR);
+	static_assert(
+		alpha == Dopt_utils::NO_ANCHOR or
+		alpha == Dopt_utils::RIGHT_ANCHOR or
+		alpha == Dopt_utils::LEFT_ANCHOR
+	);
 
 	// Size of the tree
 	const uint64_t size_tree = t.get_num_nodes_component(root_or_anchor);
@@ -208,8 +213,9 @@ noexcept
 
 	// Recursion for COST A
 	const node v_star = (
-		alpha == NO_ANCHOR ?
-			retrieve_centroid(t, root_or_anchor).first : root_or_anchor
+		alpha == Dopt_utils::NO_ANCHOR ?
+			retrieve_centroid(t, root_or_anchor).first :
+			root_or_anchor
 	);
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
@@ -252,28 +258,30 @@ noexcept
 	c1 = c2 = 0;
 
 	// t -t0 : t0  if t has a LEFT_ANCHOR
-	if constexpr (alpha == LEFT_ANCHOR) {
-		calculate_mla<NO_ANCHOR, make_arrangement>
+	if constexpr (alpha == Dopt_utils::LEFT_ANCHOR) {
+		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 			(t, v_star, start, end - n_0, mla, c2);
 
-		calculate_mla<LEFT_ANCHOR, make_arrangement>
+		calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
 			(t, v_0, end - n_0 + 1, end, mla, c1);
 	}
 	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
 	else {
-		calculate_mla<RIGHT_ANCHOR, make_arrangement>
+		calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
 			(t, v_0, start, start + n_0 - 1, mla, c1);
 
 		constexpr auto new_alpha =
-			alpha == NO_ANCHOR ? LEFT_ANCHOR : NO_ANCHOR;
+			alpha == Dopt_utils::NO_ANCHOR ?
+				Dopt_utils::LEFT_ANCHOR :
+				Dopt_utils::NO_ANCHOR;
 
 		calculate_mla<new_alpha, make_arrangement>
 			(t, v_star, start + n_0, end, mla, c2);
 	}
 
 	// Cost for recursion A
-	if constexpr (alpha == NO_ANCHOR) { cost = c1 + c2 + 1; }
-	else							  { cost = c1 + c2 + size_tree - n_0; }
+	if constexpr (alpha == Dopt_utils::NO_ANCHOR) { cost = c1 + c2 + 1; }
+	else							              { cost = c1 + c2 + size_tree - n_0; }
 
 	// reconstruct t
 	t.add_edge(v_star, v_0, false, false);
@@ -282,8 +290,11 @@ noexcept
 
 	// Left or right anchored is not important for the cost.
 	// Note that the result returned is either 0 or 1.
-	constexpr auto anchored =
-		(alpha == RIGHT_ANCHOR or alpha == LEFT_ANCHOR ? ANCHOR : NO_ANCHOR);
+	constexpr auto anchored = (
+		alpha == Dopt_utils::RIGHT_ANCHOR or alpha == Dopt_utils::LEFT_ANCHOR ?
+			Dopt_utils::ANCHOR :
+			Dopt_utils::NO_ANCHOR
+		);
 
 	uint64_t s_0 = 0;
 	uint64_t s_1 = 0;
@@ -311,15 +322,19 @@ noexcept
 
 			const node r = ord[i].v;
 			const uint64_t n_i = ord[i].size;
-			if ((alpha == LEFT_ANCHOR and i%2 == 0) or (alpha != LEFT_ANCHOR and i%2 == 1)) {
-				calculate_mla<RIGHT_ANCHOR, make_arrangement>
+			if (
+				(alpha == Dopt_utils::LEFT_ANCHOR and i%2 == 0) or
+				(alpha != Dopt_utils::LEFT_ANCHOR and i%2 == 1)
+			)
+			{
+				calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
 					(t, r, start, start + n_i - 1, mla_B, c_aux);
 
 				cost_B += c_aux;
 				start += n_i;
 			}
 			else {
-				calculate_mla<LEFT_ANCHOR, make_arrangement>
+				calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
 					(t, r, end - n_i + 1, end, mla_B, c_aux);
 
 				cost_B += c_aux;
@@ -329,7 +344,7 @@ noexcept
 
 		// t*
 		uint64_t c_aux = 0;
-		calculate_mla<NO_ANCHOR, make_arrangement>
+		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 			(t, v_star, start, end, mla_B, c_aux);
 
 		cost_B += c_aux;
@@ -338,7 +353,7 @@ noexcept
 		t.add_edges(edges, false, false);
 
 		// We add the anchors part not previously added
-		if constexpr (alpha == NO_ANCHOR) {
+		if constexpr (alpha == Dopt_utils::NO_ANCHOR) {
 			cost_B += s_0;
 		}
 		else {

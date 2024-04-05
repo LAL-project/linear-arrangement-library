@@ -69,10 +69,9 @@ namespace unconstrained {
  * arrangement problem. See \cite Chung1984a for further details.
  */
 namespace Chung {
-using namespace Dopt_utils;
 
-/// Typedef for a useful type
-typedef lal::detail::data_array<node_size> ordering;
+/// Typedef for a useful type.
+typedef data_array<node_size> ordering;
 
 /*
 int calculate_q(uint64_t n, const ordering& ord) {
@@ -358,7 +357,11 @@ noexcept
 	}
 	const uint64_t size_tree = t.get_num_nodes_component(one_node);
 
-	static_assert(root == NO_ANCHOR or root == RIGHT_ANCHOR or root == LEFT_ANCHOR);
+	static_assert(
+		root == Dopt_utils::NO_ANCHOR or
+		root == Dopt_utils::RIGHT_ANCHOR or
+		root == Dopt_utils::LEFT_ANCHOR
+	);
 
 #if defined DEBUG
 	assert(size_tree > 0);
@@ -377,7 +380,7 @@ noexcept
 		return;
 	}
 
-	if constexpr (root == NO_ANCHOR) {
+	if constexpr (root == Dopt_utils::NO_ANCHOR) {
 		const node u = detail::retrieve_centroid(t, one_node).first;
 
 		const ordering ord = get_ordering(t, u);
@@ -390,10 +393,12 @@ noexcept
 			t.remove_edge(u, t_0, false, false);
 
 			uint64_t c1 = 0;
-			calculate_mla<RIGHT_ANCHOR, make_arrangement>(t, t_0, start, mla, c1);
+			calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
+				(t, t_0, start, mla, c1);
 
 			uint64_t c2 = 0;
-			calculate_mla<LEFT_ANCHOR, make_arrangement>(t, u, start + n_0, mla, c2);
+			calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
+				(t, u, start + n_0, mla, c2);
 
 			cost = c1 + c2 + 1;
 
@@ -432,7 +437,8 @@ noexcept
 					const position pos_in_ord = Q_i[j];
 
 					uint64_t c_i_j = 0;
-					calculate_mla<RIGHT_ANCHOR, make_arrangement>(
+					calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
+					(
 						t,
 						ord[pos_in_ord].v, start_aux,
 						arr_aux, c_i_j
@@ -443,7 +449,7 @@ noexcept
 
 				// Central part of the arrangement
 				uint64_t c_i_j = 0;
-				calculate_mla<NO_ANCHOR, make_arrangement>(t, u, start_aux, arr_aux, c_i_j);
+				calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>(t, u, start_aux, arr_aux, c_i_j);
 				c_i += c_i_j;
 
 				// Right part of the arrangement
@@ -452,7 +458,8 @@ noexcept
 					const position pos_in_ord = Q_i[j];
 
 					uint64_t c_i_j_in = 0;
-					calculate_mla<LEFT_ANCHOR, make_arrangement>(
+					calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
+					(
 						t,
 						ord[pos_in_ord].v, start_aux,
 						arr_aux, c_i_j_in
@@ -503,18 +510,18 @@ noexcept
 			uint64_t c1 = 0;
 			uint64_t c2 = 0;
 
-			if constexpr (root == LEFT_ANCHOR) {
-				calculate_mla<NO_ANCHOR, make_arrangement>
+			if constexpr (root == Dopt_utils::LEFT_ANCHOR) {
+				calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 					(t, one_node, start, mla, c1);
 
-				calculate_mla<LEFT_ANCHOR, make_arrangement>
+				calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
 					(t, t_0, start + size_tree - ord[0].size, mla, c2);
 			}
 			else {
-				calculate_mla<RIGHT_ANCHOR, make_arrangement>
+				calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
 					(t, t_0, start, mla, c1);
 
-				calculate_mla<NO_ANCHOR, make_arrangement>
+				calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 					(t, one_node, start + n_0, mla, c2);
 			}
 
@@ -561,14 +568,14 @@ noexcept
 				linear_arrangement arr_aux = mla;
 				uint64_t start_aux = start;
 
-///////////////////////////////////////////////////////////////////////////
-				if constexpr (root == LEFT_ANCHOR) {
+				if constexpr (root == Dopt_utils::LEFT_ANCHOR) {
 					// Left part of the arrangement
 					for (uint64_t j = 1; j <= up; ++j) {
 						const position pos_in_ord = P_i[j];
 
 						uint64_t c_i_j_in = 0;
-						calculate_mla<RIGHT_ANCHOR, make_arrangement>(
+						calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
+						(
 							t,
 							ord[pos_in_ord].v, start_aux,
 							arr_aux, c_i_j_in
@@ -579,7 +586,7 @@ noexcept
 
 					// Central part of the arrangement
 					uint64_t c_i_j = 0;
-					calculate_mla<NO_ANCHOR, make_arrangement>
+					calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 						(t, one_node, start_aux, arr_aux, c_i_j);
 
 					start_aux += ord[i].size + 1 + size_rest_of_trees;
@@ -590,7 +597,8 @@ noexcept
 						const position pos_in_ord = P_i[j];
 
 						uint64_t c_i_j_in = 0;
-						calculate_mla<LEFT_ANCHOR, make_arrangement>(
+						calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
+						(
 							t,
 							ord[pos_in_ord].v, start_aux,
 							arr_aux, c_i_j_in
@@ -606,7 +614,8 @@ noexcept
 						const position pos_in_ord = P_i[j];
 
 						uint64_t c_i_j_in = 0;
-						calculate_mla<RIGHT_ANCHOR, make_arrangement>(
+						calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
+						(
 							t,
 							ord[pos_in_ord].v, start_aux,
 							arr_aux, c_i_j_in
@@ -617,7 +626,7 @@ noexcept
 
 					// Central part of the arrangement
 					uint64_t c_i_j = 0;
-					calculate_mla<NO_ANCHOR, make_arrangement>
+					calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
 						(t, one_node, start_aux, arr_aux, c_i_j);
 
 					start_aux += ord[i].size + 1 + size_rest_of_trees;
@@ -628,7 +637,8 @@ noexcept
 						const position pos_in_ord = P_i[j];
 
 						uint64_t c_i_j_in = 0;
-						calculate_mla<LEFT_ANCHOR, make_arrangement>(
+						calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
+						(
 							t,
 							ord[pos_in_ord].v, start_aux,
 							arr_aux, c_i_j_in
@@ -637,7 +647,6 @@ noexcept
 						c_i += c_i_j_in;
 					}
 				}
-/////////////////////////////////////////////////////////////////////////////////////////
 
 				// Adding parts of the anchors over trees nearer to the central tree
 				c_i += size_tree*(up + 1);
