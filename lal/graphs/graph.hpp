@@ -290,19 +290,31 @@ protected:
 	void __disjoint_union(const graph& g) noexcept;
 
 	/**
-	 * @brief Do some extra work after an edge has been added.
+	 * @brief Do some extra work after the addition of an edge.
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
 	virtual void actions_after_add_edge(node u, node v) noexcept;
 	/**
-	 * @brief Do some extra work after an edge has been removed.
+	 * @brief Do some extra work after the removal of an edge.
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
 	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
 	/**
-	 * @brief Do some work before an node is removed.
+	 * @brief Do some extra work after the addition of several edges.
+	 * @param e List of edges.
+	 */
+	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+	/**
+	 * @brief Do some extra work after the removal of several edges.
+	 * @param e List of edges.
+	 */
+	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
+
+	/**
+	 * @brief Do some work before the removal of a vertex.
 	 * @param u Node to be removed.
 	 */
 	virtual void actions_after_remove_node(node u) noexcept;

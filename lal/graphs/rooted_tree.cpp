@@ -591,6 +591,16 @@ void rooted_tree::actions_after_remove_edge(node u, node v) noexcept {
 	tree_only_actions_after_remove_edge(u, v);
 }
 
+void rooted_tree::actions_after_add_edges(const edge_list& e) noexcept {
+	directed_graph::actions_after_add_edges(e);
+	tree_only_actions_after_add_edges(e);
+}
+
+void rooted_tree::actions_after_remove_edges(const edge_list& e) noexcept {
+	directed_graph::actions_after_remove_edges(e);
+	tree_only_actions_after_remove_edges(e);
+}
+
 void rooted_tree::actions_after_remove_node(node u) noexcept {
 	directed_graph::actions_after_remove_node(u);
 	tree_only_actions_after_remove_node(u);
@@ -613,6 +623,15 @@ void rooted_tree::update_union_find_after_edge_add(
 		(*this, u, v, root_of, root_size);
 }
 
+void rooted_tree::update_union_find_after_edges_add(
+	const edge_list& edges,
+	uint64_t * const root_of, uint64_t * const root_size
+) const noexcept
+{
+	detail::update_unionfind_after_add_edges
+		(*this, edges, root_of, root_size);
+}
+
 // -----------------------------------------------------------------------------
 
 void rooted_tree::update_union_find_after_edge_remove(
@@ -623,6 +642,15 @@ void rooted_tree::update_union_find_after_edge_remove(
 {
 	detail::update_unionfind_after_remove_edge
 		(*this, u, v, root_of, root_size);
+}
+
+void rooted_tree::update_union_find_after_edges_remove(
+	const edge_list& edges,
+	uint64_t * const root_of, uint64_t * const root_size
+) const noexcept
+{
+	detail::update_unionfind_after_remove_edges
+		(*this, edges, root_of, root_size);
 }
 
 // -----------------------------------------------------------------------------

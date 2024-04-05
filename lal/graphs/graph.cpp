@@ -119,6 +119,13 @@ void graph::__disjoint_union(const graph& g) noexcept {
 void graph::actions_after_remove_node(node) noexcept { }
 void graph::actions_before_remove_edges_incident_to(node) noexcept { }
 
+void graph::actions_after_add_edges(const edge_list& e) noexcept {
+	m_num_edges += e.size();
+}
+void graph::actions_after_remove_edges(const edge_list& e) noexcept {
+	m_num_edges -= e.size();
+}
+
 void graph::actions_after_add_edge(node, node) noexcept {
 	++m_num_edges;
 }

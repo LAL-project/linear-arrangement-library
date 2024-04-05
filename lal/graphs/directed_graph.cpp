@@ -213,10 +213,12 @@ directed_graph& directed_graph::add_edges
 #if defined DEBUG
 		assert(not has_edge(u,v));
 #endif
+
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
 		actions_after_add_edge(u, v);
 	}
+
 	normalise_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
@@ -254,6 +256,7 @@ directed_graph& directed_graph::remove_edge
 	neighbourhood& in_v = m_in_adjacency_list[v];
 	remove_single_edge(u,v, out_u, in_v);
 
+	actions_after_remove_edge(u, v);
 	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
@@ -268,6 +271,7 @@ directed_graph& directed_graph::remove_edges
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
 		remove_single_edge(u,v, out_u, in_v);
+		actions_after_remove_edge(u, v);
 	}
 
 	normalise_after_edge_removal(norm, check_norm);
@@ -417,6 +421,14 @@ void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
 	graph::actions_after_remove_edge(u, v);
 }
 
+void directed_graph::actions_after_add_edges(const edge_list& e) noexcept {
+	graph::actions_after_add_edges(e);
+}
+
+void directed_graph::actions_after_remove_edges(const edge_list& e) noexcept {
+	graph::actions_after_remove_edges(e);
+}
+
 void directed_graph::actions_after_remove_node(node u) noexcept {
 	graph::actions_after_remove_node(u);
 }
@@ -453,9 +465,6 @@ void directed_graph::remove_single_edge
 	// remove edge from the lists
 	out_u.erase(it_v);
 	in_v.erase(it_u);
-
-	// do the extra work!
-	actions_after_remove_edge(u, v);
 }
 
 } // -- namespace graphs

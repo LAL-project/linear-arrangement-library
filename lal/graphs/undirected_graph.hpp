@@ -188,9 +188,6 @@ public:
 	 *
 	 * This operation is faster than calling @ref add_edge(node,node,bool,bool)
 	 * since the edges are added in bulk.
-	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_add_edge is
-	 * called for every edge added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -260,10 +257,6 @@ public:
 	 * This operation is faster than removing edges one by one with
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
 	 * bulk.
-	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge is
-	 * called after each edge has been removed.
-	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
 	 * the result is normalised or not? This might be useful in case the
@@ -370,8 +363,10 @@ protected:
 	}
 
 	virtual void actions_after_add_edge(node u, node v) noexcept;
-
 	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
+	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	virtual void actions_after_remove_node(node u) noexcept;
 

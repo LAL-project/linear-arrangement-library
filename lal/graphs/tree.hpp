@@ -358,15 +358,31 @@ protected:
 	 * @post Updated union-find.
 	 */
 	void tree_only_actions_after_remove_edge(node u, node v) noexcept;
+
 	/**
-	 * @brief Do some work before an node is removed.
+	 * @brief Do some work after the addition of several edges.
+	 * @param e List of edges.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_add_edges(const edge_list& e) noexcept;
+	/**
+	 * @brief Do some work after the removal of several edges.
+	 * @param e List of edges.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_remove_edges(const edge_list& e) noexcept;
+
+	/**
+	 * @brief Do some work before the removal of a vertex.
 	 * @param u Node to be removed.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
 	void tree_only_actions_after_remove_node(node u) noexcept;
 	/**
-	 * @brief Do some work before all edges incident to a node are removed.
+	 * @brief Do some work before the removal of all edges incident to a vertex.
 	 * @param u Node whose incident edges are to be removed.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
@@ -416,6 +432,21 @@ protected:
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
+	/**
+	 * @brief Update the union find data structure after the addition of a set of edges.
+	 *
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_add_edges
+	 * which updates the Union-Find data structure under addition of an edge.
+	 * @param edges A set of edges.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void update_union_find_after_edges_add(
+		const edge_list& edges,
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after an edge removal.
@@ -431,6 +462,21 @@ protected:
 	 */
 	virtual void update_union_find_after_edge_remove(
 		node u, node v,
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
+	/**
+	 * @brief Update the union find data structure after the removal of a set of edges.
+	 *
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_remove_edges
+	 * which updates the Union-Find data structure under removal of an edge.
+	 * @param edges A set of edges.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void update_union_find_after_edges_remove(
+		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
 

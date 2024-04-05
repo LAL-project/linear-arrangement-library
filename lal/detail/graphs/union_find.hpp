@@ -203,6 +203,118 @@ noexcept
 // -----------------------------------------------------------------------------
 
 /**
+ * @brief Update the Union-Find data structure after the addition of several edges.
+ * @tparam tree_t Type of tree
+ * @param t Input tree
+ * @param edges Edges added to the tree
+ * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
+ * of the connected component of @e s is @e t
+ * @param root_size Sizes of each connected component.
+ * @pre The edge \f$\{u,v\}\f$ must exist.
+ */
+template <class tree_t>
+void update_unionfind_after_add_edges
+(
+	const tree_t& t,
+	[[maybe_unused]] const edge_list& edges,
+	node * const root_of,
+	uint64_t * const root_size
+)
+noexcept
+{
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
+	const auto n = t.get_num_nodes();
+
+	// These two variables are used by the BFS object, but are initialized
+	// in the for loop before 'start_at' is called.
+	uint64_t size_current_root = n + 1;
+	node current_root = n + 1;
+
+	BFS<tree_t> bfs(t);
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_process_current(
+	[&](const auto&, node w) {
+		root_of[w] = current_root;
+		++size_current_root;
+	}
+	);
+
+	for (const auto& [u, v] : edges) {
+		if (bfs.node_was_visited(u)) { continue; }
+
+		current_root = u;
+		size_current_root = 0;
+		bfs.start_at(u);
+		root_size[current_root] = size_current_root;
+	}
+}
+
+/**
+ * @brief Update the Union-Find data structure after the addition of several edges.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
+ * @param t Input tree
+ * @param edges Edges added to the tree
+ * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
+ * of the connected component of @e s is @e t
+ * @param root_size Sizes of each connected component.
+ * @pre The edge \f$\{u,v\}\f$ must exist.
+ */
+template <class tree_t>
+void update_unionfind_after_remove_edges
+(
+	const tree_t& t,
+	[[maybe_unused]] const edge_list& edges,
+	node * const root_of,
+	uint64_t * const root_size
+)
+noexcept
+{
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
+	const auto n = t.get_num_nodes();
+
+	// These two variables are used by the BFS object, but are initialized
+	// in the for loop before 'start_at' is called.
+	uint64_t size_current_cc = n + 1;
+	node current_root = n + 1;
+
+	BFS<tree_t> bfs(t);
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_process_current(
+	[&](const auto&, node w) {
+		root_of[w] = current_root;
+		++size_current_cc;
+	}
+	);
+
+	for (const auto& [u, v] : edges) {
+		if (not bfs.node_was_visited(u)) {
+			current_root = u;
+			size_current_cc = 0;
+			bfs.start_at(u);
+			root_size[u] = size_current_cc;
+		}
+
+		if (not bfs.node_was_visited(v)) {
+			current_root = v;
+			size_current_cc = 0;
+			bfs.start_at(v);
+			root_size[v] = size_current_cc;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+
+/**
  * @brief Update Union-Find after the removal of a vertex.
  *
  * This function updates the Union-Find data structure of a tree prior to the
@@ -281,7 +393,7 @@ noexcept
 	);
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges(t.is_directed());
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	// avoid going 'backwards', we need to go 'onwards'
 	bfs.set_visited(u, 1);
 

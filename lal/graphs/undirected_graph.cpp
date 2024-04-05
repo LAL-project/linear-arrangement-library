@@ -208,6 +208,7 @@ undirected_graph& undirected_graph::remove_edge
 	neighbourhood& nv = m_adjacency_list[v];
 	remove_single_edge(u,v, nu, nv);
 
+	actions_after_remove_edge(u, v);
 	normalise_after_edge_removal(norm, check_norm);
 	return *this;
 }
@@ -223,6 +224,7 @@ undirected_graph& undirected_graph::remove_edges
 		neighbourhood& nu = m_adjacency_list[u];
 		neighbourhood& nv = m_adjacency_list[v];
 		remove_single_edge(u,v, nu, nv);
+		actions_after_remove_edge(u, v);
 	}
 
 	normalise_after_edge_removal(norm, check_norm);
@@ -329,6 +331,14 @@ void undirected_graph::actions_after_remove_edge(node u, node v) noexcept {
 	graph::actions_after_remove_edge(u, v);
 }
 
+void undirected_graph::actions_after_add_edges(const edge_list& e) noexcept {
+	graph::actions_after_add_edges(e);
+}
+
+void undirected_graph::actions_after_remove_edges(const edge_list& e) noexcept {
+	graph::actions_after_remove_edges(e);
+}
+
 void undirected_graph::actions_after_remove_node(node u) noexcept {
 	graph::actions_after_remove_node(u);
 }
@@ -367,9 +377,6 @@ void undirected_graph::remove_single_edge
 	// remove edges from the lists
 	out_u.erase(it_v);
 	in_v.erase(it_u);
-
-	// do the extra work!
-	actions_after_remove_edge(u, v);
 }
 
 } // -- namespace graphs

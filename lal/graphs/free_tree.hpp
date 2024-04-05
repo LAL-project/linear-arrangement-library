@@ -368,8 +368,10 @@ protected:
 	}
 
 	void actions_after_add_edge(node u, node v) noexcept;
-
 	void actions_after_remove_edge(node u, node v) noexcept;
+
+	void actions_after_add_edges(const edge_list& e) noexcept;
+	void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	void actions_after_remove_node(node u) noexcept;
 
@@ -381,10 +383,20 @@ protected:
 		uint64_t * const root_size
 	) const noexcept;
 
+	void update_union_find_after_edges_add(
+		const edge_list& edges,
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
+
 	void update_union_find_after_edge_remove(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
+	) const noexcept;
+
+	void update_union_find_after_edges_remove(
+		const edge_list& edges,
+		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
 	void update_union_find_before_incident_edges_removed(
