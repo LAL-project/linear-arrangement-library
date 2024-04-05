@@ -18,7 +18,7 @@ For more information, visit [LAL's official webpage](https://cqllab.upc.edu/lal/
 
 We wrote different sets of instructions for installing LAL's compiled distribution files for
 
-- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-linux.md). We do not currently maintain any official repository for any of the Linux distributions' package manager.
+- [Ubuntu](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-ubuntu.md). We do not currently maintain any official repository for any of the Linux distributions' package manager.
 - [Windows](https://github.com/LAL-project/linear-arrangement-library/blob/master/instructions/installation-library-binaries-windows.md).
 
 ## Installation of the library from sources
