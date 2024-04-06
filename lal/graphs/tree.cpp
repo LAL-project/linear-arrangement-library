@@ -143,6 +143,17 @@ void tree::tree_only_actions_after_add_edges_bulk_complete() noexcept {
 	fill_union_find();
 }
 
+void tree::tree_only_actions_after_remove_edges_bulk() noexcept {
+	m_is_tree_type_valid = false;
+	update_union_find_after_remove_edges_bulk
+		(&m_union_find__root_of[0], &m_union_find__root_size[0]);
+}
+
+void tree::tree_only_actions_after_remove_edges_bulk_complete() noexcept {
+	m_is_tree_type_valid = false;
+	empty_union_find();
+}
+
 void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_after_remove_edge

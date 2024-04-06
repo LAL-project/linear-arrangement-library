@@ -172,6 +172,15 @@ free_tree& free_tree::remove_edges
 	return *this;
 }
 
+void free_tree::finish_bulk_remove_complete(bool norm, bool check) noexcept {
+#if defined DEBUG
+	assert(get_num_edges() == 0);
+#endif
+
+	undirected_graph::finish_bulk_remove(norm, check);
+	tree_only_actions_after_remove_edges_bulk_complete();
+}
+
 free_tree& free_tree::remove_edges_incident_to(node u, bool norm, bool check_norm)
 noexcept
 {
@@ -265,6 +274,11 @@ void free_tree::actions_after_remove_edges(const edge_list& e) noexcept {
 	tree_only_actions_after_remove_edges(e);
 }
 
+void free_tree::actions_after_remove_edges_bulk() noexcept {
+	undirected_graph::actions_after_remove_edges_bulk();
+	tree_only_actions_after_remove_edges_bulk();
+}
+
 void free_tree::actions_before_remove_edges_incident_to(node u) noexcept {
 	undirected_graph::actions_before_remove_edges_incident_to(u);
 	tree_only_actions_before_remove_edges_incident_to(u);
@@ -302,7 +316,7 @@ void free_tree::update_union_find_after_add_edges_bulk
 (uint64_t * const root_of, uint64_t * const root_size)
 const noexcept
 {
-	detail::update_unionfind_after_add_edges_bulk
+	detail::update_unionfind_after_add_rem_edges_bulk
 		(*this, root_of, root_size);
 }
 
@@ -325,6 +339,14 @@ const noexcept
 {
 	detail::update_unionfind_after_remove_edges
 		(*this, edges, root_of, root_size);
+}
+
+void free_tree::update_union_find_after_remove_edges_bulk
+(uint64_t * const root_of, uint64_t * const root_size)
+const noexcept
+{
+	detail::update_unionfind_after_add_rem_edges_bulk
+		(*this, root_of, root_size);
 }
 
 void free_tree::update_union_find_before_remove_incident_edges_to(

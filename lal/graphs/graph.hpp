@@ -168,6 +168,17 @@ public:
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 
+	/**
+	 * @brief Completes the inner structure of the graph after removing edges in bulk.
+	 *
+	 * This is meant to be used after several calls to
+	 * @ref undirected_graph::remove_edge_bulk,
+	 * @ref directed_graph::remove_edge_bulk.
+	 * @param norm Normalise the graph.
+	 * @param check Check wether the graph is normalised or not.
+	 */
+	virtual void finish_bulk_remove(bool norm = true, bool check = true) noexcept = 0;
+
 	/* SETTERS */
 
 	/// Sets whether this graph is normalised or not.
@@ -314,6 +325,13 @@ protected:
 	 * @param e List of edges.
 	 */
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
+
+	/**
+	 * @brief Do some extra work after the removal of several edges in bulk.
+	 *
+	 * This method should only be called after several calls to @ref remove_edge_bulk.
+	 */
+	virtual void actions_after_remove_edges_bulk() noexcept;
 
 	/**
 	 * @brief Do some work before all edges incident to a node is removed.

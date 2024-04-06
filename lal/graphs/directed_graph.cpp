@@ -261,6 +261,25 @@ directed_graph& directed_graph::remove_edge
 	return *this;
 }
 
+directed_graph& directed_graph::remove_edge_bulk(node u, node v) noexcept
+{
+#if defined DEBUG
+	assert(has_edge(u,v));
+#endif
+
+	neighbourhood& nu = m_adjacency_list[u];
+	neighbourhood& nv = m_adjacency_list[v];
+	remove_single_edge(u,v, nu, nv);
+
+	--m_num_edges;
+	return *this;
+}
+
+void directed_graph::finish_bulk_remove(bool to_norm, bool check_norm) noexcept {
+	actions_after_remove_edges_bulk();
+	normalise_after_edge_addition(to_norm, check_norm);
+}
+
 directed_graph& directed_graph::remove_edges
 (const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
@@ -431,6 +450,10 @@ void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
 
 void directed_graph::actions_after_remove_edges(const edge_list& e) noexcept {
 	graph::actions_after_remove_edges(e);
+}
+
+void directed_graph::actions_after_remove_edges_bulk() noexcept {
+	graph::actions_after_remove_edges_bulk();
 }
 
 void directed_graph::actions_before_remove_edges_incident_to(node u) noexcept {

@@ -279,6 +279,8 @@ public:
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
 	noexcept;
 
+	void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept;
+
 	/**
 	 * @brief Remove all edges incident to a given vertex.
 	 *
@@ -370,6 +372,8 @@ protected:
 
 	void actions_after_remove_edges(const edge_list& e) noexcept;
 
+	void actions_after_remove_edges_bulk() noexcept;
+
 	void actions_after_remove_node(node u) noexcept;
 
 	void actions_before_remove_edges_incident_to(node u) noexcept;
@@ -399,6 +403,10 @@ protected:
 		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
+
+	void update_union_find_after_remove_edges_bulk
+	(uint64_t * const root_of, uint64_t * const root_size)
+	const noexcept;
 
 	void update_union_find_before_remove_incident_edges_to(
 		node u,

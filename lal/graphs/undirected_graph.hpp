@@ -248,6 +248,22 @@ public:
 	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
+	 * @brief Removes an edge from the graph.
+	 *
+	 * This method only removes an edge, and does no other work: normalisation
+	 * is not checked, and no extra work per edge is done.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is part of the graph.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the removal of the edge.
+	 */
+	virtual undirected_graph& remove_edge_bulk(node s, node t) noexcept;
+
+	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
+
+	/**
 	 * @brief Remove an edge from this graph.
 	 *
 	 * This operation is faster than removing edges one by one with
@@ -364,6 +380,8 @@ protected:
 	virtual void actions_after_remove_edge(node u, node v) noexcept;
 
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
+
+	virtual void actions_after_remove_edges_bulk() noexcept;
 
 	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
 
