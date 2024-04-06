@@ -151,8 +151,7 @@ public:
 	/**
 	 * @brief Adds an edge to the graph.
 	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_add_edge is
-	 * called after the edge has been added.
+	 * Method @ref actions_after_add_edge is called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Should the graph be normalised?
@@ -186,8 +185,8 @@ public:
 	/**
 	 * @brief Adds a list of edges to the graph.
 	 *
-	 * This operation is faster than calling @ref add_edge(node,node,bool,bool)
-	 * since the edges are added in bulk.
+	 * This operation is faster than calling @ref add_edge since the edges are
+	 * added in bulk.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -232,8 +231,8 @@ public:
 	/**
 	 * @brief Remove an edge from this graph.
 	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge is
-	 * called after the edge has been removed.
+	 * Method @ref actions_after_remove_edge is called after the edge has been
+	 * removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @param norm Normalise the graph after the deletion.
@@ -252,8 +251,7 @@ public:
 	 * @brief Remove an edge from this graph.
 	 *
 	 * This operation is faster than removing edges one by one with
-	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
-	 * bulk.
+	 * @ref remove_edge since the edges are removed in bulk.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
 	 * the result is normalised or not? This might be useful in case the
@@ -272,11 +270,9 @@ public:
 	 * @brief Remove all edges incident to a given vertex.
 	 *
 	 * This operation is faster than removing edges one by one with
-	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
-	 * in bulk.
+	 * @ref remove_edge since the edges are removed in bulk.
 	 *
-	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::actions_after_remove_edge is called after each
+	 * Method @ref actions_after_remove_edge is called after each
 	 * edge has been removed.
 	 * @param u The node whose incident vertices are to be removed.
 	 * @param norm Normalise the graph after the deletion.
