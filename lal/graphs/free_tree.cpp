@@ -168,8 +168,16 @@ free_tree& free_tree::remove_edges
 (const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
 {
 	undirected_graph::remove_edges(edges, norm, check_norm);
-	m_is_tree_type_valid = false;
 	return *this;
+}
+
+free_tree& free_tree::remove_edge_bulk(node u, node v) noexcept {
+	undirected_graph::remove_edge_bulk(u,v);
+	return *this;
+}
+
+void free_tree::finish_bulk_remove(bool norm, bool check) noexcept {
+	undirected_graph::finish_bulk_remove(norm, check);
 }
 
 void free_tree::finish_bulk_remove_complete(bool norm, bool check) noexcept {

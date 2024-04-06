@@ -157,7 +157,7 @@ public:
 	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
-	 * @brief Adds an edge to the graph.
+	 * @brief Adds an edge to the tree.
 	 *
 	 * This method only adds an edge, and does no other work: normalisation
 	 * is not checked, and no extra work per edge is done.
@@ -258,6 +258,32 @@ public:
 	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
 
 	/**
+	 * @brief Removes an edge from the tree.
+	 *
+	 * This method only removes an edge, and does no other work: normalisation
+	 * is not checked, and no extra work per edge is done.
+	 * @param s Valid node index: \f$0 \le s < n\f$.
+	 * @param t Valid node index: \f$0 \le t < n\f$.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * after the removal of the edge.
+	 */
+	free_tree& remove_edge_bulk(node s, node t) noexcept;
+
+	/**
+	 * @brief Finishes removing edges in bulk.
+	 *
+	 * This method updates the Union-Find data structure and all the necessary
+	 * members after several calls to @ref rmeove_edge_bulk.
+	 * @param norm Normalise the tree.
+	 * @param check Check whether the tree is normalised or not.
+	 */
+	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
+
+	void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept;
+
+	/**
 	 * @brief Remove an edge from this graph.
 	 *
 	 * This operation is faster than removing edges one by one with
@@ -278,8 +304,6 @@ public:
 	free_tree& remove_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
 	noexcept;
-
-	void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.

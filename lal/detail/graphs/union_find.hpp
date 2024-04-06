@@ -183,7 +183,8 @@ noexcept
 }
 
 /**
- * @brief Update the Union-Find data structure after the addition of several edges.
+ * @brief Update the Union-Find data structure after several edges have been
+ * operated in bulk.
  * @tparam tree_t Type of tree
  * @param t Input tree
  * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
@@ -192,7 +193,7 @@ noexcept
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_add_edges_bulk
+void update_unionfind_after_add_rem_edges_bulk
 (
 	const tree_t& t,
 	node * const root_of,

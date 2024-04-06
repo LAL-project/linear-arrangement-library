@@ -327,6 +327,15 @@ noexcept
 	return *this;
 }
 
+rooted_tree& rooted_tree::remove_edge_bulk(node u, node v) noexcept {
+	directed_graph::remove_edge_bulk(u,v);
+	return *this;
+}
+
+void rooted_tree::finish_bulk_remove(bool norm, bool check) noexcept {
+	directed_graph::finish_bulk_remove(norm, check);
+}
+
 void rooted_tree::finish_bulk_remove_complete(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(get_num_edges() == 0);
