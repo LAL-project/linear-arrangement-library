@@ -268,6 +268,7 @@ public:
 	 *
 	 * This operation is faster than removing edges one by one with
 	 * @ref remove_edge since the edges are removed in bulk.
+	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
 	 * the result is normalised or not? This might be useful in case the

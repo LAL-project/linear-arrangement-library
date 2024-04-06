@@ -309,7 +309,8 @@ protected:
 	/**
 	 * @brief Do some extra work after the addition of several edges in bulk.
 	 *
-	 * This method should only be called after several calls to @ref add_edge_bulk.
+	 * This method should only be called after several calls to
+	 * @ref undirected_graph::add_edge_bulk or @ref directed_graph::add_edge_bulk.
 	 */
 	virtual void actions_after_add_edges_bulk() noexcept;
 
@@ -329,7 +330,8 @@ protected:
 	/**
 	 * @brief Do some extra work after the removal of several edges in bulk.
 	 *
-	 * This method should only be called after several calls to @ref remove_edge_bulk.
+	 * This method should only be called after several calls to
+	 * @ref undirected_graph::remove_edge_bulk or @ref directed_graph::remove_edge_bulk.
 	 */
 	virtual void actions_after_remove_edges_bulk() noexcept;
 

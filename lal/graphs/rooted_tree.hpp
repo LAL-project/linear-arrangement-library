@@ -402,7 +402,7 @@ public:
 	 * @brief Finishes removing edges in bulk.
 	 *
 	 * This method updates the Union-Find data structure and all the necessary
-	 * members after several calls to @ref rmeove_edge_bulk.
+	 * members after several calls to @ref remove_edge_bulk.
 	 * @param norm Normalise the tree.
 	 * @param check Check whether the tree is normalised or not.
 	 */

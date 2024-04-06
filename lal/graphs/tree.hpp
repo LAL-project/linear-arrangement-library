@@ -134,7 +134,8 @@ public:
 	 * members assuming that the tree is now complete.
 	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
-	 * @pre All edges have been added with method @ref add_edge_builk(node,node).
+	 * @pre All edges have been added with method @ref undirected_graph::add_edge_bulk
+	 * or @ref directed_graph::add_edge_bulk.
 	 */
 	virtual void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept = 0;
 
@@ -149,7 +150,8 @@ public:
 	 * members assuming that the tree is now empty.
 	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
-	 * @pre All edges have been added with method @ref add_edge_builk(node,node).
+	 * @pre All edges have been added with method @ref undirected_graph::remove_edge_bulk
+	 * or @ref directed_graph::remove_edge_bulk.
 	 */
 	virtual void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept = 0;
 
@@ -191,8 +193,8 @@ public:
 	 * and it has not been added before.
 	 *
 	 * In a rooted tree, an edge can only be added if the in-degree of vertex
-	 * @e t (see @ref lal::graphs::directed_graph::get_in_degree) is exactly 1
-	 * after adding the edge.
+	 * @e t (see @ref directed_graph::get_in_degree) is exactly 1 after adding
+	 * the edge.
 	 * @param s First node of the edge.
 	 * @param t Second node of the edge.
 	 * @returns Whether or not this edge can be added to the tree without
@@ -207,8 +209,8 @@ public:
 	 * tree do not produce cycles and none of them have been added before.
 	 *
 	 * In a rooted tree, edges \f$(s,t)\f$ can only be added if the in-degree of
-	 * vertex @e t (see @ref lal::graphs::directed_graph::get_in_degree) is
-	 * exactly 1 after adding the edge.
+	 * vertex @e t (see @ref directed_graph::get_in_degree) is exactly 1 after
+	 * adding the edge.
 	 * @param edges List of edges.
 	 * @returns Whether or not these edges can be added to the tree without
 	 * producing cycles.
@@ -270,7 +272,7 @@ public:
 	 * @brief Returns whether this tree is of type @e tt.
 	 *
 	 * See method @ref calculate_tree_type to know how to calculate a tree's type.
-	 * @param tt Type of tree (see @ref lal::graphs::tree_type).
+	 * @param tt Type of tree (see @ref graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
 	bool is_of_tree_type(const tree_type& tt) const noexcept {
@@ -286,10 +288,10 @@ public:
 	 * In case this function returns false, users should call function
 	 * @ref calculate_tree_type in order to obtain a valid tree type. Note,
 	 * however, that prior to calling the function the type of this tree might
-	 * be @ref lal::graphs::tree_type::unknown and that the tree type may remain
-	 * @ref lal::graphs::tree_type::unknown even after the type has been calculated.
+	 * be @ref graphs::tree_type::unknown and that the tree type may remain
+	 * @ref graphs::tree_type::unknown even after the type has been calculated.
 	 * Nevertheless, users should be suspicious of a tree being of
-	 * @ref lal::graphs::tree_type::unknown (in fact, of any) type if this method
+	 * @ref graphs::tree_type::unknown (in fact, of any) type if this method
 	 * returns false, yet they should be sure of it if the type was calculated
 	 * via method @ref calculate_tree_type.
 	 * @returns True or false depending on whether the tree type was calculated
@@ -392,7 +394,8 @@ protected:
 	/**
 	 * @brief Do some work after the addition of several edges in bulk.
 	 *
-	 * To be called only after veral calls to @ref add_edge_bulk.
+	 * To be called only after veral calls to @ref undirected_graph::add_edge_bulk
+	 * or @ref directed_graph::add_edge_bulk.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
@@ -403,7 +406,8 @@ protected:
 	/**
 	 * @brief Do some work after the addition of several edges in bulk.
 	 *
-	 * To be called only after veral calls to @ref add_edge_bulk.
+	 * To be called only after veral calls to @ref undirected_graph::add_edge_bulk
+	 * or @ref directed_graph::add_edge_bulk.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
@@ -414,7 +418,8 @@ protected:
 	/**
 	 * @brief Do some work after the removal of several edges in bulk.
 	 *
-	 * To be called only after veral calls to @ref remove_edge_bulk.
+	 * To be called only after veral calls to @ref undirected_graph::remove_edge_bulk
+	 * or @ref directed_graph::remove_edge_bulk.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
@@ -425,7 +430,8 @@ protected:
 	/**
 	 * @brief Do some work after the removal of several edges in bulk.
 	 *
-	 * To be called only after veral calls to @ref remove_edge_bulk.
+	 * To be called only after veral calls to @ref undirected_graph::remove_edge_bulk
+	 * or @ref directed_graph::remove_edge_bulk.
 	 * @param u First node of the edge.
 	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
