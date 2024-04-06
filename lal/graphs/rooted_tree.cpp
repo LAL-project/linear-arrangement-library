@@ -419,14 +419,7 @@ void rooted_tree::calculate_tree_type() noexcept {
 /* GETTERS */
 
 bool rooted_tree::can_add_edge(node u, node v) const noexcept {
-	if (not tree::can_add_edge(u, v)) { return false; }
-
-	// Vertex 'v' is already pointed by somebody else.
-	// Rooted trees in LAL are arborescences.
-	if (get_in_degree(v) != 0) { return false; }
-
-	// no more cases that I can come up with right now...
-	return true;
+	return get_in_degree(v) == 0 and tree::can_add_edge(u, v);
 }
 
 bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
