@@ -132,77 +132,6 @@ noexcept
 }
 
 /**
- * @brief Updates Union-Find after the removal of an edge.
- *
- * This function updates the Union-Find data structure of a tree after the
- * removal of the edge between vertices @e u and @e v.
- * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
- * or a derived class of @ref lal::graphs::rooted_tree.
- * @param t Input tree
- * @param u Node
- * @param v Node
- * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
- * of the connected component of @e s is @e t
- * @param root_size Sizes of each connected component.
- * @pre The edge \f$\{u,v\}\f$ must exist.
- */
-template <class tree_t>
-void update_unionfind_after_remove_edge
-(
-	const tree_t& t,
-	const node u, const node v,
-	node * const root_of,
-	uint64_t * const root_size
-)
-noexcept
-{
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
-
-	// 'u' and 'v' are connected
-#if defined DEBUG
-	assert(root_of[u] == root_of[v]);
-#endif
-
-	const uint64_t size_uv = root_size[root_of[u]];
-
-	BFS<tree_t> bfs(t);
-
-	// --- update u's info ---
-
-	// Update the root of the vertices reachable from 'u'.
-	//   (also calculate the size of u's component)
-	uint64_t size_cc_u = 0;
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
-	bfs.set_process_current(
-	[&](const auto&, node w) -> void {
-		root_of[w] = u;
-		++size_cc_u;
-	}
-	);
-	bfs.start_at(u);
-	root_of[u] = u;
-	root_size[u] = size_cc_u;
-
-	// --- update v's info ---
-
-	// Update the root of the vertices reachable from 'v'.
-	//   (there is no need to reset the BFS object)
-	bfs.set_process_current(
-	[&](const detail::BFS<tree_t>&, node w) -> void {
-		root_of[w] = v;
-	}
-	);
-	bfs.start_at(v);
-	root_of[v] = v;
-	root_size[v] = size_uv - size_cc_u;
-}
-
-// -----------------------------------------------------------------------------
-
-/**
  * @brief Update the Union-Find data structure after the addition of several edges.
  * @tparam tree_t Type of tree
  * @param t Input tree
@@ -216,7 +145,7 @@ template <class tree_t>
 void update_unionfind_after_add_edges
 (
 	const tree_t& t,
-	[[maybe_unused]] const edge_list& edges,
+	const edge_list& edges,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -251,6 +180,124 @@ noexcept
 		bfs.start_at(u);
 		root_size[current_root] = size_current_root;
 	}
+}
+
+/**
+ * @brief Update the Union-Find data structure after the addition of several edges.
+ * @tparam tree_t Type of tree
+ * @param t Input tree
+ * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
+ * of the connected component of @e s is @e t
+ * @param root_size Sizes of each connected component.
+ * @pre The edge \f$\{u,v\}\f$ must exist.
+ */
+template <class tree_t>
+void update_unionfind_after_add_edges_bulk
+(
+	const tree_t& t,
+	node * const root_of,
+	uint64_t * const root_size
+)
+noexcept
+{
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+	);
+
+	const auto n = t.get_num_nodes();
+
+	// These two variables are used by the BFS object, but are initialized
+	// in the for loop before 'start_at' is called.
+	uint64_t size_current_root = n + 1;
+	node current_root = n + 1;
+
+	BFS<tree_t> bfs(t);
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_process_current(
+	[&](const auto&, node w) {
+		root_of[w] = current_root;
+		++size_current_root;
+	}
+	);
+
+	for (node u = 0; u < n; ++u) {
+		if (bfs.node_was_visited(u)) { continue; }
+
+		current_root = u;
+		size_current_root = 0;
+		bfs.start_at(u);
+		root_size[current_root] = size_current_root;
+	}
+}
+
+/**
+ * @brief Updates Union-Find after the removal of an edge.
+ *
+ * This function updates the Union-Find data structure of a tree after the
+ * removal of the edge between vertices @e u and @e v.
+ * @tparam tree_t Type of input tree. A derived class of @ref lal::graphs::free_tree
+ * or a derived class of @ref lal::graphs::rooted_tree.
+ * @param t Input tree
+ * @param u Node
+ * @param v Node
+ * @param root_of Pointer to an array where @e root_of[@e s] = @e t if the root
+ * of the connected component of @e s is @e t
+ * @param root_size Sizes of each connected component.
+ * @pre The edge \f$\{u,v\}\f$ must exist.
+ */
+template <class tree_t>
+void update_unionfind_after_remove_edge
+(
+	const tree_t& t,
+	const node u, const node v,
+	node * const root_of,
+	uint64_t * const root_size
+)
+noexcept
+{
+	static_assert(
+		std::is_base_of_v<graphs::free_tree, tree_t> or
+		std::is_base_of_v<graphs::rooted_tree, tree_t>
+		);
+
+// 'u' and 'v' are connected
+#if defined DEBUG
+	assert(root_of[u] == root_of[v]);
+#endif
+
+	const uint64_t size_uv = root_size[root_of[u]];
+
+	BFS<tree_t> bfs(t);
+
+	// --- update u's info ---
+
+	// Update the root of the vertices reachable from 'u'.
+	//   (also calculate the size of u's component)
+	uint64_t size_cc_u = 0;
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_process_current(
+		[&](const auto&, node w) -> void {
+			root_of[w] = u;
+			++size_cc_u;
+		}
+		);
+	bfs.start_at(u);
+	root_of[u] = u;
+	root_size[u] = size_cc_u;
+
+	// --- update v's info ---
+
+	// Update the root of the vertices reachable from 'v'.
+	//   (there is no need to reset the BFS object)
+	bfs.set_process_current(
+		[&](const detail::BFS<tree_t>&, node w) -> void {
+			root_of[w] = v;
+		}
+		);
+	bfs.start_at(v);
+	root_of[v] = v;
+	root_size[v] = size_uv - size_cc_u;
 }
 
 /**
