@@ -197,7 +197,7 @@ public:
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
 	 * @post If @e norm is true the graph is guaranteed to be normalised
-	 * after the addition of the edge.
+	 * after the addition of the edges.
 	 */
 	virtual undirected_graph& add_edges
 	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
@@ -206,16 +206,12 @@ public:
 	/**
 	 * @brief Sets the edges to the graph.
 	 *
-	 * Sets the edges of this graph assuming that the nodes indexed in the
-	 * list are, at most, the number of nodes of this graph.
-	 *
 	 * This list of edges is assumed to be all the edges that are going
 	 * to be added to this graph. This means that the internal data structures
 	 * are constructed more efficiently than when adding edges one by one
 	 * (see @ref add_edge) or in several chunks (see @ref add_edges).
 	 *
-	 * Moreover, the current structure of the graph is cleared before setting
-	 * the new edges.
+	 * The current structure of the graph is cleared before setting the new edges.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -224,7 +220,8 @@ public:
 	 * is ignored.
 	 * @pre The graph has been initialized with as many nodes as vertices in the
 	 * list of edges.
-	 * @pre There are no repeated edges in the list.
+	 * @pre All the edges in @e edges must meet the precondition of method
+	 * @ref add_edge(node,node,bool,bool).
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
@@ -363,14 +360,18 @@ protected:
 	}
 
 	virtual void actions_after_add_edge(node u, node v) noexcept;
-	virtual void actions_after_remove_edge(node u, node v) noexcept;
 
 	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+
+	virtual void actions_after_add_edges_bulk() noexcept;
+
+	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
 
-	virtual void actions_after_remove_node(node u) noexcept;
-
 	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+
+	virtual void actions_after_remove_node(node u) noexcept;
 
 	/// Copies all members of this class and the parent class.
 	void copy_full_undirected_graph(const undirected_graph& u) noexcept {

@@ -243,14 +243,6 @@ rooted_tree& rooted_tree::add_edge
 
 	directed_graph::add_edge(u,v, norm, check_norm);
 
-	// There is no need to invalidate
-	//    m_are_size_subtrees_valid = false;
-	//    m_is_tree_type_valid = false;
-	// since these attributes start at false and cannot be calculated if the
-	// graph is not an actual tree. These can be calculated when the graph is
-	// full. After that, this method can only be called after calling any
-	// of the "remove edge" family.
-
 	return *this;
 }
 
@@ -260,33 +252,20 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 #endif
 
 	directed_graph::add_edge_bulk(u,v);
-
-	// There is no need to invalidate
-	//    m_are_size_subtrees_valid = false;
-	//    m_is_tree_type_valid = false;
-	// since these attributes start at false and cannot be calculated if the
-	// graph is not an actual tree. These can be calculated when the graph is
-	// full. After that, this method can only be called after calling any
-	// of the "remove edge" family.
-
 	return *this;
 }
 
 void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
+	directed_graph::finish_bulk_add(norm, check);
+}
+
+void rooted_tree::finish_bulk_add_complete(bool norm, bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
 
 	directed_graph::finish_bulk_add(norm, check);
-	fill_union_find();
-
-	// There is no need to invalidate
-	//    m_are_size_subtrees_valid = false;
-	//    m_is_tree_type_valid = false;
-	// since these attributes start at false and cannot be calculated if the
-	// graph is not an actual tree. These can be calculated when the graph is
-	// full. After that, this method can only be called after calling any
-	// of the "remove edge" family.
+	tree_only_actions_after_add_edges_bulk_complete();
 }
 
 rooted_tree& rooted_tree::add_edges
@@ -295,16 +274,8 @@ rooted_tree& rooted_tree::add_edges
 #if defined DEBUG
 	assert(can_add_edges(edges));
 #endif
+
 	directed_graph::add_edges(edges, norm, check_norm);
-
-	// There is no need to invalidate
-	//    m_are_size_subtrees_valid = false;
-	//    m_is_tree_type_valid = false;
-	// since these attributes start at false and cannot be calculated if the
-	// graph is not an actual tree. These can be calculated when the graph is
-	// full. After that, this method can only be called after calling any
-	// of the "remove edge" family.
-
 	return *this;
 }
 
@@ -538,7 +509,7 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 		const auto [u, v] = e_it.get_edge();
 		t.add_edge_bulk(u, v);
 	}
-
+	
 	t.finish_bulk_add(norm, check);
 	return t;
 }
@@ -586,14 +557,19 @@ void rooted_tree::actions_after_add_edge(node u, node v) noexcept {
 	tree_only_actions_after_add_edge(u, v);
 }
 
-void rooted_tree::actions_after_remove_edge(node u, node v) noexcept {
-	directed_graph::actions_after_remove_edge(u, v);
-	tree_only_actions_after_remove_edge(u, v);
-}
-
 void rooted_tree::actions_after_add_edges(const edge_list& e) noexcept {
 	directed_graph::actions_after_add_edges(e);
 	tree_only_actions_after_add_edges(e);
+}
+
+void rooted_tree::actions_after_add_edges_bulk() noexcept {
+	directed_graph::actions_after_add_edges_bulk();
+	tree_only_actions_after_add_edges_bulk();
+}
+
+void rooted_tree::actions_after_remove_edge(node u, node v) noexcept {
+	directed_graph::actions_after_remove_edge(u, v);
+	tree_only_actions_after_remove_edge(u, v);
 }
 
 void rooted_tree::actions_after_remove_edges(const edge_list& e) noexcept {
@@ -601,64 +577,73 @@ void rooted_tree::actions_after_remove_edges(const edge_list& e) noexcept {
 	tree_only_actions_after_remove_edges(e);
 }
 
-void rooted_tree::actions_after_remove_node(node u) noexcept {
-	directed_graph::actions_after_remove_node(u);
-	tree_only_actions_after_remove_node(u);
-}
-
 void rooted_tree::actions_before_remove_edges_incident_to(node u) noexcept {
 	directed_graph::actions_before_remove_edges_incident_to(u);
 	tree_only_actions_before_remove_edges_incident_to(u);
 }
 
+void rooted_tree::actions_after_remove_node(node u) noexcept {
+	directed_graph::actions_after_remove_node(u);
+	tree_only_actions_after_remove_node(u);
+}
+
 // -----------------------------------------------------------------------------
 
-void rooted_tree::update_union_find_after_edge_add(
+void rooted_tree::update_union_find_after_add_edge(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) const noexcept
+)
+const noexcept
 {
 	detail::update_unionfind_after_add_edge
 		(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_after_edges_add(
+void rooted_tree::update_union_find_after_add_edges(
 	const edge_list& edges,
 	uint64_t * const root_of, uint64_t * const root_size
-) const noexcept
+)
+const noexcept
 {
 	detail::update_unionfind_after_add_edges
 		(*this, edges, root_of, root_size);
 }
 
-// -----------------------------------------------------------------------------
+void rooted_tree::update_union_find_after_add_edges_bulk
+(uint64_t * const root_of, uint64_t * const root_size)
+const noexcept
+{
+	detail::update_unionfind_after_add_edges_bulk
+		(*this, root_of, root_size);
+}
 
-void rooted_tree::update_union_find_after_edge_remove(
+void rooted_tree::update_union_find_after_remove_edge(
 	node u, node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
-) const noexcept
+)
+const noexcept
 {
 	detail::update_unionfind_after_remove_edge
 		(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_after_edges_remove(
+void rooted_tree::update_union_find_after_remove_edges(
 	const edge_list& edges,
 	uint64_t * const root_of, uint64_t * const root_size
-) const noexcept
+)
+const noexcept
 {
 	detail::update_unionfind_after_remove_edges
 		(*this, edges, root_of, root_size);
 }
 
-// -----------------------------------------------------------------------------
-
-void rooted_tree::update_union_find_before_incident_edges_removed(
+void rooted_tree::update_union_find_before_remove_incident_edges_to(
 	node u,
 	uint64_t * const root_of, uint64_t * const root_size
-) const noexcept
+)
+const noexcept
 {
 	detail::update_unionfind_before_remove_edges_incident_to
 		(*this, u, root_of, root_size);

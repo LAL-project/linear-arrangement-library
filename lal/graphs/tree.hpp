@@ -123,6 +123,21 @@ public:
 	 */
 	virtual void calculate_tree_type() noexcept = 0;
 
+	/**
+	 * @brief Completes the inner structure of the tree after adding a bulk of edges
+	 *
+	 * This is meant to be used after several calls to
+	 * @ref undirected_graph::add_edge_bulk,
+	 * @ref directed_graph::add_edge_bulk.
+	 *
+	 * This method completes the Union-Find data structure and the other necessary
+	 * members assuming that the tree is now complete.
+	 * @param norm Normalise the graph.
+	 * @param check Check wether the graph is normalised or not.
+	 * @pre All edges have been added with method @ref add_edge_builk(node,node).
+	 */
+	virtual void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept = 0;
+
 	/* GETTERS */
 
 	/**
@@ -350,6 +365,37 @@ protected:
 	 * @post Updated union-find.
 	 */
 	void tree_only_actions_after_add_edge(node u, node v) noexcept;
+
+	/**
+	 * @brief Do some work after the addition of several edges.
+	 * @param e List of edges.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_add_edges(const edge_list& e) noexcept;
+
+	/**
+	 * @brief Do some work after the addition of several edges in bulk.
+	 *
+	 * To be called only after veral calls to @ref add_edge_bulk.
+	 * @param u First node of the edge.
+	 * @param v Second node of the edge.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_add_edges_bulk() noexcept;
+
+	/**
+	 * @brief Do some work after the addition of several edges in bulk.
+	 *
+	 * To be called only after veral calls to @ref add_edge_bulk.
+	 * @param u First node of the edge.
+	 * @param v Second node of the edge.
+	 * @post The tree type is invalidated.
+	 * @post Updated union-find.
+	 */
+	void tree_only_actions_after_add_edges_bulk_complete() noexcept;
+
 	/**
 	 * @brief Do some work after the removal of an edge.
 	 * @param u First node of the edge.
@@ -359,13 +405,6 @@ protected:
 	 */
 	void tree_only_actions_after_remove_edge(node u, node v) noexcept;
 
-	/**
-	 * @brief Do some work after the addition of several edges.
-	 * @param e List of edges.
-	 * @post The tree type is invalidated.
-	 * @post Updated union-find.
-	 */
-	void tree_only_actions_after_add_edges(const edge_list& e) noexcept;
 	/**
 	 * @brief Do some work after the removal of several edges.
 	 * @param e List of edges.
@@ -381,6 +420,7 @@ protected:
 	 * @post Updated union-find.
 	 */
 	void tree_only_actions_after_remove_node(node u) noexcept;
+
 	/**
 	 * @brief Do some work before the removal of all edges incident to a vertex.
 	 * @param u Node whose incident edges are to be removed.
@@ -428,10 +468,11 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_edge_add(
+	virtual void update_union_find_after_add_edge(
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
+
 	/**
 	 * @brief Update the union find data structure after the addition of a set of edges.
 	 *
@@ -443,10 +484,24 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_edges_add(
+	virtual void update_union_find_after_add_edges(
 		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
+
+	/**
+	 * @brief Update the union find data structure after the addition of several edges.
+	 *
+	 * This is a helper method to be able to call @ref lal::detail::update_unionfind_after_add_edges_bulk
+	 * which updates the Union-Find data structure under addition of an edge.
+	 * @param root_of Array of @e n elements relating each vertex to its root
+	 * in the union find data structure.
+	 * @param root_size Array of @e n elements relating each vertex to the size
+	 * of the connected component it belongs to.
+	 */
+	virtual void update_union_find_after_add_edges_bulk
+	(uint64_t * const root_of, uint64_t * const root_size)
+	const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after an edge removal.
@@ -460,10 +515,11 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_edge_remove(
+	virtual void update_union_find_after_remove_edge(
 		node u, node v,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
+
 	/**
 	 * @brief Update the union find data structure after the removal of a set of edges.
 	 *
@@ -475,7 +531,7 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_edges_remove(
+	virtual void update_union_find_after_remove_edges(
 		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;
@@ -493,7 +549,7 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_before_incident_edges_removed(
+	virtual void update_union_find_before_remove_incident_edges_to(
 		node u,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept = 0;

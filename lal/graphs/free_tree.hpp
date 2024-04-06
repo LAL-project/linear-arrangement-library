@@ -172,12 +172,15 @@ public:
 
 	/**
 	 * @brief Finishes adding edges in bulk.
+	 *
+	 * This method updates the Union-Find data structure and all the necessary
+	 * members after several calls to @ref add_edge_bulk.
 	 * @param norm Normalise the tree.
 	 * @param check Check whether the tree is normalised or not.
-	 * @pre All edges of the tree have been added with method @ref add_edge_bulk.
-	 * @post The union-find data structure of the graph is built.
 	 */
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
+
+	void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -186,9 +189,6 @@ public:
 	 * @e debug compilation of the library. Moreover, this operation is
 	 * faster than calling @ref add_edge since the edges are added in bulk.
 	 * For a more controlled addition of the edges, see @ref can_add_edges.
-	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_add_edge is
-	 * called after each edge has been added.
 	 * @param edges The edges to be added.
 	 * @param norm Normalise the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -263,9 +263,6 @@ public:
 	 * This operation is faster than removing edges one by one with
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
 	 * bulk.
-	 *
-	 * <b>For developers:</b> method @ref lal::graphs::graph::actions_after_remove_edge is
-	 * called after each edge has been removed.
 	 * @param edges The edges to be deleted.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -288,10 +285,6 @@ public:
 	 * This operation is faster than removing edges one by one with
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
-	 *
-	 * <b>For developers:</b> method
-	 * @ref lal::graphs::graph::actions_after_remove_edge is called after each
-	 * edge has been removed.
 	 * @param u The node whose incident vertices are to be removed.
 	 * @param norm Normalise the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
@@ -368,38 +361,46 @@ protected:
 	}
 
 	void actions_after_add_edge(node u, node v) noexcept;
-	void actions_after_remove_edge(node u, node v) noexcept;
 
 	void actions_after_add_edges(const edge_list& e) noexcept;
+
+	void actions_after_add_edges_bulk() noexcept;
+
+	void actions_after_remove_edge(node u, node v) noexcept;
+
 	void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	void actions_after_remove_node(node u) noexcept;
 
 	void actions_before_remove_edges_incident_to(node u) noexcept;
 
-	void update_union_find_after_edge_add(
+	void update_union_find_after_add_edge(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
 	) const noexcept;
 
-	void update_union_find_after_edges_add(
+	void update_union_find_after_add_edges(
 		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
-	void update_union_find_after_edge_remove(
+	void update_union_find_after_add_edges_bulk
+	(uint64_t * const root_of, uint64_t * const root_size)
+	const noexcept;
+
+	void update_union_find_after_remove_edge(
 		node u, node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
 	) const noexcept;
 
-	void update_union_find_after_edges_remove(
+	void update_union_find_after_remove_edges(
 		const edge_list& edges,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;
 
-	void update_union_find_before_incident_edges_removed(
+	void update_union_find_before_remove_incident_edges_to(
 		node u,
 		uint64_t * const root_of, uint64_t * const root_size
 	) const noexcept;

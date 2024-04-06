@@ -202,7 +202,7 @@ directed_graph& directed_graph::add_edge_bulk(node u, node v) noexcept {
 }
 
 void directed_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
-	// normalise
+	actions_after_add_edges_bulk();
 	normalise_after_edge_addition(to_norm, check_norm);
 }
 
@@ -406,7 +406,7 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const noex
 			g.add_edge_bulk(u, v);
 		}
 	}
-
+	
 	g.finish_bulk_add(norm, check);
 	return g;
 }
@@ -417,24 +417,28 @@ void directed_graph::actions_after_add_edge(node u, node v) noexcept {
 	graph::actions_after_add_edge(u, v);
 }
 
-void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
-	graph::actions_after_remove_edge(u, v);
-}
-
 void directed_graph::actions_after_add_edges(const edge_list& e) noexcept {
 	graph::actions_after_add_edges(e);
+}
+
+void directed_graph::actions_after_add_edges_bulk() noexcept {
+	graph::actions_after_add_edges_bulk();
+}
+
+void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
+	graph::actions_after_remove_edge(u, v);
 }
 
 void directed_graph::actions_after_remove_edges(const edge_list& e) noexcept {
 	graph::actions_after_remove_edges(e);
 }
 
-void directed_graph::actions_after_remove_node(node u) noexcept {
-	graph::actions_after_remove_node(u);
-}
-
 void directed_graph::actions_before_remove_edges_incident_to(node u) noexcept {
 	graph::actions_before_remove_edges_incident_to(u);
+}
+
+void directed_graph::actions_after_remove_node(node u) noexcept {
+	graph::actions_after_remove_node(u);
 }
 
 /* PRIVATE */

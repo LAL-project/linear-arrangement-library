@@ -201,7 +201,7 @@ public:
 	 * after the addition of the edge.
 	 */
 	directed_graph& add_edge_bulk(node s, node t) noexcept;
-
+	
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
 	/**
@@ -433,14 +433,18 @@ protected:
 	}
 
 	virtual void actions_after_add_edge(node u, node v) noexcept;
-	virtual void actions_after_remove_edge(node u, node v) noexcept;
 
 	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+
+	virtual void actions_after_add_edges_bulk() noexcept;
+
+	virtual void actions_after_remove_edge(node u, node v) noexcept;
+
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
 
-	virtual void actions_after_remove_node(node u) noexcept;
-
 	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+
+	virtual void actions_after_remove_node(node u) noexcept;
 
 	/// Copies all members of this class and the parent class.
 	void copy_full_directed_graph(const directed_graph& d) noexcept {

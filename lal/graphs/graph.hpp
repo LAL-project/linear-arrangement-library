@@ -163,15 +163,8 @@ public:
 	 * This is meant to be used after several calls to
 	 * @ref undirected_graph::add_edge_bulk,
 	 * @ref directed_graph::add_edge_bulk.
-	 *
-	 * Also, the graph must have been completely constructed after all the
-	 * bulk additions of edges to the graph.
 	 * @param norm Normalise the graph.
 	 * @param check Check wether the graph is normalised or not.
-	 * @pre All edges of the graph have been added with either the method
-	 * @ref lal::graphs::undirected_graph::add_edge_bulk or
-	 * @ref lal::graphs::directed_graph::add_edge_bulk depending on the base
-	 * clas.
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 
@@ -295,6 +288,20 @@ protected:
 	 * @param v Node of the edge
 	 */
 	virtual void actions_after_add_edge(node u, node v) noexcept;
+
+	/**
+	 * @brief Do some extra work after the addition of several edges.
+	 * @param e List of edges.
+	 */
+	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+
+	/**
+	 * @brief Do some extra work after the addition of several edges in bulk.
+	 *
+	 * This method should only be called after several calls to @ref add_edge_bulk.
+	 */
+	virtual void actions_after_add_edges_bulk() noexcept;
+
 	/**
 	 * @brief Do some extra work after the removal of an edge.
 	 * @param u Node of the edge
@@ -303,26 +310,22 @@ protected:
 	virtual void actions_after_remove_edge(node u, node v) noexcept;
 
 	/**
-	 * @brief Do some extra work after the addition of several edges.
-	 * @param e List of edges.
-	 */
-	virtual void actions_after_add_edges(const edge_list& e) noexcept;
-	/**
 	 * @brief Do some extra work after the removal of several edges.
 	 * @param e List of edges.
 	 */
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	/**
-	 * @brief Do some work before the removal of a vertex.
-	 * @param u Node to be removed.
-	 */
-	virtual void actions_after_remove_node(node u) noexcept;
-	/**
 	 * @brief Do some work before all edges incident to a node is removed.
 	 * @param u Node whose incident edges are to be removed.
 	 */
 	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+
+	/**
+	 * @brief Do some work before the removal of a vertex.
+	 * @param u Node to be removed.
+	 */
+	virtual void actions_after_remove_node(node u) noexcept;
 
 	/// Normalise the graph after one (or more) edges have been added
 	void normalise_after_edge_addition(bool norm, bool check) noexcept;

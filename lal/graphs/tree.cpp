@@ -100,7 +100,7 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 		// exists a path from 's' to 't'
 		if (_root_of[u] == _root_of[v]) { return false; }
 
-		update_union_find_after_edge_add
+		update_union_find_after_add_edge
 			(u, v, &_root_of[0], &_root_size[0]);
 	}
 	return true;
@@ -122,25 +122,36 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 
 void tree::tree_only_actions_after_add_edge(node u, node v) noexcept {
 	m_is_tree_type_valid = false;
-	update_union_find_after_edge_add
-		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
-}
-
-void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
-	m_is_tree_type_valid = false;
-	update_union_find_after_edge_remove
+	update_union_find_after_add_edge
 		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
 void tree::tree_only_actions_after_add_edges(const edge_list& e) noexcept {
 	m_is_tree_type_valid = false;
-	update_union_find_after_edges_add
+	update_union_find_after_add_edges
 		(e, &m_union_find__root_of[0], &m_union_find__root_size[0]);
+}
+
+void tree::tree_only_actions_after_add_edges_bulk() noexcept {
+	m_is_tree_type_valid = false;
+	update_union_find_after_add_edges_bulk
+		(&m_union_find__root_of[0], &m_union_find__root_size[0]);
+}
+
+void tree::tree_only_actions_after_add_edges_bulk_complete() noexcept {
+	m_is_tree_type_valid = false;
+	fill_union_find();
+}
+
+void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
+	m_is_tree_type_valid = false;
+	update_union_find_after_remove_edge
+		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
 void tree::tree_only_actions_after_remove_edges(const edge_list& e) noexcept {
 	m_is_tree_type_valid = false;
-	update_union_find_after_edges_remove
+	update_union_find_after_remove_edges
 		(e, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
@@ -172,7 +183,7 @@ void tree::tree_only_actions_after_remove_node(node u) noexcept {
 
 void tree::tree_only_actions_before_remove_edges_incident_to(node u) noexcept {
 	m_is_tree_type_valid = false;
-	update_union_find_before_incident_edges_removed
+	update_union_find_before_remove_incident_edges_to
 		(u, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
