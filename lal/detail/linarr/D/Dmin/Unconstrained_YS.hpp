@@ -312,7 +312,7 @@ noexcept
 		t.remove_edges(edges, false, false);
 
 		// t1 : t3 : ... : t* : ... : t4 : t2 if t has NO_ANCHOR or RIGHT_ANCHOR
-		// t2 : t4 : ... : t* : ... : t3 : t1 ig t has LEFT_ANCHOR
+		// t2 : t4 : ... : t* : ... : t3 : t1 if t has LEFT_ANCHOR
 		for(uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
 			uint64_t c_aux = 0;
 
