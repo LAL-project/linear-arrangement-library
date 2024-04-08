@@ -305,57 +305,6 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 }
 
 /**
- * @brief Constructs the head vector representation of a tree.
- * @tparam arrangement_t Type of arrangement.
- * @param t Input rooted tree.
- * @param arr Linear arrangement of the vertices.
- * @returns A head vector encoding the tree.
- */
-template <class arrangement_t>
-head_vector from_tree_to_head_vector
-(const graphs::rooted_tree& t, const arrangement_t& arr)
-noexcept
-{
-#if defined DEBUG
-	assert(t.is_rooted_tree());
-#endif
-
-	const uint64_t n = t.get_num_nodes();
-	head_vector hv(n);
-	for (position_t p = 0ull; p < n; ++p) {
-		const node u = arr[p];
-		if (t.get_root() == u) {
-			hv[*p] = 0;
-		}
-		else {
-			const node_t parent = t.get_in_neighbours(u)[0];
-			hv[*p] = arr[parent] + 1;
-		}
-	}
-	return hv;
-}
-
-/**
- * @brief Constructs the head vector representation of a tree.
- * @tparam arrangement_t Type of arrangement.
- * @param t Input free tree.
- * @param r Root of the tree.
- * @param arr Linear arrangement of the vertices.
- * @returns A head vector
- */
-template <class arrangement_t>
-head_vector from_tree_to_head_vector
-(const graphs::free_tree& t, const arrangement_t& arr, node r)
-noexcept
-{
-#if defined DEBUG
-	assert(t.is_tree());
-#endif
-
-	return from_tree_to_head_vector(graphs::rooted_tree(t,r,false,false), arr);
-}
-
-/**
  * @brief Converts a head vector into a tree
  * @tparam tree_t Type of input tree
  * @param hv Input head vector.
@@ -457,6 +406,57 @@ noexcept
 
 		return {std::move(t), r};
 	}
+}
+
+/**
+ * @brief Constructs the head vector representation of a tree.
+ * @tparam arrangement_t Type of arrangement.
+ * @param t Input rooted tree.
+ * @param arr Linear arrangement of the vertices.
+ * @returns A head vector encoding the tree.
+ */
+template <class arrangement_t>
+head_vector from_tree_to_head_vector
+(const graphs::rooted_tree& t, const arrangement_t& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+
+	const uint64_t n = t.get_num_nodes();
+	head_vector hv(n);
+	for (position_t p = 0ull; p < n; ++p) {
+		const node u = arr[p];
+		if (t.get_root() == u) {
+			hv[*p] = 0;
+		}
+		else {
+			const node_t parent = t.get_in_neighbours(u)[0];
+			hv[*p] = arr[parent] + 1;
+		}
+	}
+	return hv;
+}
+
+/**
+ * @brief Constructs the head vector representation of a tree.
+ * @tparam arrangement_t Type of arrangement.
+ * @param t Input free tree.
+ * @param r Root of the tree.
+ * @param arr Linear arrangement of the vertices.
+ * @returns A head vector
+ */
+template <class arrangement_t>
+head_vector from_tree_to_head_vector
+(const graphs::free_tree& t, const arrangement_t& arr, node r)
+noexcept
+{
+#if defined DEBUG
+	assert(t.is_tree());
+#endif
+
+	return from_tree_to_head_vector(graphs::rooted_tree(t,r,false,false), arr);
 }
 
 // -----------------------------------------------------------------------------
