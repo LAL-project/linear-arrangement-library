@@ -405,15 +405,13 @@ bool directed_graph::has_edge(node u, node v) const noexcept {
 	const neighbourhood& in_v = m_in_adjacency_list[v];
 
 	if (is_normalised()) {
-		return (out_u.size() <= in_v.size() ?
-					detail::exists_sorted(out_u.begin(), out_u.end(), out_u.size(), v) :
-					detail::exists_sorted(in_v.begin(), in_v.end(), in_v.size(), u)
-		);
+		return out_u.size() <= in_v.size() ?
+			detail::exists_sorted(out_u.begin(), out_u.end(), out_u.size(), v) :
+			detail::exists_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 	}
-	return (out_u.size() <= in_v.size() ?
+	return out_u.size() <= in_v.size() ?
 		std::find(out_u.begin(), out_u.end(), v) != out_u.end() :
-		std::find(in_v.begin(), in_v.end(), u) != in_v.end()
-	);
+		std::find(in_v.begin(), in_v.end(), u) != in_v.end();
 }
 
 undirected_graph directed_graph::to_undirected(bool norm, bool check) const noexcept {
