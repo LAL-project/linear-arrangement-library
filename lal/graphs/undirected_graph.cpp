@@ -330,13 +330,13 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 
 	if (is_normalised() and std::min(nu.size(), nv.size()) >= 64) {
 		return (nu.size() <= nv.size() ?
-			binary_search(nu.begin(), nu.end(), v) :
-			binary_search(nv.begin(), nv.end(), u)
+			std::binary_search(nu.begin(), nu.end(), v) :
+			std::binary_search(nv.begin(), nv.end(), u)
 		);
 	}
 	return (nu.size() <= nv.size() ?
-		find(nu.begin(), nu.end(), v) != nu.end() :
-		find(nv.begin(), nv.end(), u) != nv.end()
+		std::find(nu.begin(), nu.end(), v) != nu.end() :
+		std::find(nv.begin(), nv.end(), u) != nv.end()
 	);
 }
 
@@ -385,14 +385,14 @@ void undirected_graph::remove_single_edge
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = lower_bound(in_v.begin(), in_v.end(), u);
+		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
+		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
 
 		// after removing this edge the normalisation does not change.
 	}
 	else {
-		it_v = find(out_u.begin(), out_u.end(), v);
-		it_u = find(in_v.begin(), in_v.end(), u);
+		it_v = std::find(out_u.begin(), out_u.end(), v);
+		it_u = std::find(in_v.begin(), in_v.end(), u);
 	}
 
 #if defined DEBUG

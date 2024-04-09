@@ -65,12 +65,12 @@ void directed_graph::normalise() noexcept {
 
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
-		if (not is_sorted(out_nu.begin(), out_nu.end())) {
+		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
 			detail::sorting::bit_sort_mem<node>
 			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.begin());
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not is_sorted(in_nu.begin(), in_nu.end())) {
+		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
 			detail::sorting::bit_sort_mem<node>
 			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin());
 		}
@@ -84,14 +84,14 @@ bool directed_graph::check_normalised() noexcept {
 	// check that every adjacency list is sorted
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		const neighbourhood& out_nu = m_adjacency_list[u];
-		if (not is_sorted(out_nu.begin(), out_nu.end())) {
+		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_is_normalised = false;
 			return false;
 		}
 
 		const neighbourhood& in_nu = m_in_adjacency_list[u];
-		if (not is_sorted(in_nu.begin(), in_nu.end())) {
+		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
 			// if some is not then the graph is not normalised
 			m_is_normalised = false;
 			return false;
