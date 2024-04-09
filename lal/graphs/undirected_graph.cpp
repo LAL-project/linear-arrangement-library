@@ -54,6 +54,7 @@
 #include <lal/detail/graphs/enumerate_sets.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/macros/search.hpp>
 
 namespace lal {
 namespace graphs {
@@ -266,14 +267,13 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 		for (node v : neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
+			const auto it_u = detail::find_sorted(out_v.begin(), out_v.end(), out_v.size(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
 #endif
 			out_v.erase(it_u);
 		}
-
 	}
 	// the graph is NOT NORMALISED
 	else {
@@ -281,7 +281,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 		for (node v : neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = std::find(out_v.begin(), out_v.end(), u);
+			const auto it_u = std::find(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -328,10 +328,10 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
-	if (is_normalised() and std::min(nu.size(), nv.size()) >= 64) {
+	if (is_normalised()) {
 		return (nu.size() <= nv.size() ?
-			std::binary_search(nu.begin(), nu.end(), v) :
-			std::binary_search(nv.begin(), nv.end(), u)
+					detail::exists_sorted(nu.begin(), nu.end(), nu.size(), v) :
+					detail::exists_sorted(nv.begin(), nv.end(), nv.size(), u)
 		);
 	}
 	return (nu.size() <= nv.size() ?
@@ -385,8 +385,8 @@ void undirected_graph::remove_single_edge
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+		it_v = detail::find_sorted(out_u.begin(), out_u.end(), out_u.size(), v);
+		it_u = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 
 		// after removing this edge the normalisation does not change.
 	}

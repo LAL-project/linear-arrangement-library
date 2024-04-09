@@ -48,12 +48,13 @@
 #include <algorithm>
 
 // lal includes
+#include <lal/iterators/E_iterator.hpp>
+#include <lal/properties/Q.hpp>
 #include <lal/detail/data_array.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/graphs/enumerate_sets.hpp>
 #include <lal/detail/graphs/utils.hpp>
-#include <lal/iterators/E_iterator.hpp>
-#include <lal/properties/Q.hpp>
+#include <lal/detail/macros/search.hpp>
 
 namespace lal {
 namespace graphs {
@@ -315,7 +316,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : in_neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
+			const auto it_u = std::lower_bound(out_v.begin(), out_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -327,7 +328,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : out_neighs_u) {
 			auto& in_v = m_in_adjacency_list[v];
 
-			auto it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+			const auto it_u = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -341,7 +342,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : in_neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			auto it_u = std::find(out_v.begin(), out_v.end(), u);
+			const auto it_u = detail::find_sorted(out_v.begin(), out_v.end(), out_v.size(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -353,7 +354,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 		for (node v : out_neighs_u) {
 			auto& in_v = m_in_adjacency_list[v];
 
-			auto it_u = std::find(in_v.begin(), in_v.end(), u);
+			const auto it_u = std::find(in_v.begin(), in_v.end(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -403,10 +404,10 @@ bool directed_graph::has_edge(node u, node v) const noexcept {
 	const neighbourhood& out_u = m_adjacency_list[u];
 	const neighbourhood& in_v = m_in_adjacency_list[v];
 
-	if (is_normalised() and std::min(out_u.size(), in_v.size()) >= 64) {
+	if (is_normalised()) {
 		return (out_u.size() <= in_v.size() ?
-			std::binary_search(out_u.begin(), out_u.end(), v) :
-			std::binary_search(in_v.begin(), in_v.end(), u)
+					detail::exists_sorted(out_u.begin(), out_u.end(), out_u.size(), v) :
+					detail::exists_sorted(in_v.begin(), in_v.end(), in_v.size(), u)
 		);
 	}
 	return (out_u.size() <= in_v.size() ?
@@ -473,8 +474,8 @@ void directed_graph::remove_single_edge
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_out_u = std::lower_bound(out_u.begin(), out_u.end(), v);
-		it_in_v = std::lower_bound(in_v.begin(), in_v.end(), u);
+		it_out_u = detail::find_sorted(out_u.begin(), out_u.end(), out_u.size(), v);
+		it_in_v = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 	}
 	else {
 		it_out_u = std::find(out_u.begin(), out_u.end(), v);

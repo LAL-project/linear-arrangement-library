@@ -176,6 +176,7 @@ target_sources(
 		detail/linarr/syntactic_dependency_tree.hpp
 		#      macros
 		detail/macros/basic_convert.hpp
+		detail/macros/search.hpp
 		#      numeric
 		detail/numeric/utils.hpp
 		#      properties
