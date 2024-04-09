@@ -267,9 +267,9 @@ directed_graph& directed_graph::remove_edge_bulk(node u, node v) noexcept
 	assert(has_edge(u,v));
 #endif
 
-	neighbourhood& nu = m_adjacency_list[u];
-	neighbourhood& nv = m_adjacency_list[v];
-	remove_single_edge(u,v, nu, nv);
+	neighbourhood& out_u = m_adjacency_list[u];
+	neighbourhood& in_v = m_in_adjacency_list[v];
+	remove_single_edge(u,v, out_u, in_v);
 
 	--m_num_edges;
 	return *this;
@@ -469,29 +469,30 @@ void directed_graph::actions_after_remove_node(node u) noexcept {
 void directed_graph::remove_single_edge
 (node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept
 {
-	// it_v: pointer to node v in out_u
-	// it_u: pointer to node u in in_v
-	neighbourhood::iterator it_v, it_u;
+	neighbourhood::iterator it_out_u, it_in_v;
 
 	// find the nodes in the lists
 	if (is_normalised()) {
-		it_v = std::lower_bound(out_u.begin(), out_u.end(), v);
-		it_u = std::lower_bound(in_v.begin(), in_v.end(), u);
+		it_out_u = std::lower_bound(out_u.begin(), out_u.end(), v);
+		it_in_v = std::lower_bound(in_v.begin(), in_v.end(), u);
 	}
 	else {
-		it_v = std::find(out_u.begin(), out_u.end(), v);
-		it_u = std::find(in_v.begin(), in_v.end(), u);
+		it_out_u = std::find(out_u.begin(), out_u.end(), v);
+		it_in_v = std::find(in_v.begin(), in_v.end(), u);
 	}
 
 #if defined DEBUG
+	// check that the iterators are not past the end of their containers
+	assert(it_out_u != out_u.end());
+	assert(it_in_v != in_v.end());
 	// check that the iterators point to the correct value
-	assert(*it_v == v);
-	assert(*it_u == u);
+	assert(*it_out_u == v);
+	assert(*it_in_v == u);
 #endif
 
 	// remove edge from the lists
-	out_u.erase(it_v);
-	in_v.erase(it_u);
+	out_u.erase(it_out_u);
+	in_v.erase(it_in_v);
 }
 
 } // -- namespace graphs
