@@ -67,10 +67,10 @@ bool tree::can_add_edge(node u, node v) const noexcept {
 		return false;
 	}
 
-	// * if m_root_of[s] == m_root_of[t] then either
-	//		- the edge already exists, or
-	//		- there exists a path from 's' to 't' in the undirected
-	//        underlying structure
+	// if m_root_of[u] == m_root_of[v] then either
+	//     - the edge already exists, or
+	//     - there exists a path from 'u' to 'v' in the undirected
+	//       underlying structure, hence creating a cycle
 	return m_union_find__root_of[u] != m_union_find__root_of[v];
 }
 
