@@ -56,13 +56,6 @@
 namespace lal {
 namespace generate {
 
-#define make_tree(T, N, TREE)			\
-	graphs::free_tree T(N);				\
-	for (node u = 1; u < N; ++u) {		\
-		T.add_edge_bulk(u, TREE[u]);	\
-	}									\
-	T.finish_bulk_add(false, false);
-
 // -----------------------------------------------------------------------------
 // ACTUAL GENERATOR
 
@@ -81,7 +74,7 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 		return t;
 	}
 
-	m_head_vector.fill(0);
+	std::fill(m_head_vector.begin(), m_head_vector.end(), 0);
 
 	// calculate the probability of generating a bicentroidal tree
 	numeric::rational bicent_prob = 0;
@@ -113,7 +106,10 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
-		make_tree(T, m_n, m_head_vector);
+		const graphs::free_tree T =
+			detail::from_head_vector_to_graph<graphs::free_tree>
+			(m_head_vector, false, false);
+
 #if defined DEBUG
 		assert(T.is_tree());
 #endif
@@ -135,7 +131,10 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	forest(m,q, 1);
 	// -----------------------------------
 
-	make_tree(T, m_n, m_head_vector);
+	const graphs::free_tree T =
+		detail::from_head_vector_to_graph<graphs::free_tree>
+		(m_head_vector, false, false);
+
 #if defined DEBUG
 	assert(T.is_tree());
 #endif

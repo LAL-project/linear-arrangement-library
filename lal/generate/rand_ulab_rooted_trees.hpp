@@ -206,7 +206,7 @@ protected:
 	 * Do not use its actual type (@ref lal::head_vector) in an attempt to make
 	 * memory usage a bit more efficient.
 	 */
-	detail::data_array<uint64_t> m_head_vector;
+	head_vector m_head_vector;
 
 protected:
 
