@@ -51,7 +51,6 @@
 #include <lal/detail/graphs/conversions.hpp>
 
 #define get_alpha(m,q) (m_alpha.find({m,q})->second)
-#define alpha_exists(m,q) (m_alpha.find({m,q}) != m_alpha.end())
 
 namespace lal {
 namespace generate {
@@ -174,7 +173,7 @@ uint64_t _rand_ulab_free_trees::forest(uint64_t m, uint64_t q, uint64_t nt) noex
 		return nt + 1;
 	}
 
-	auto [j, d] = choose_jd_from_alpha(m, q);
+	const auto [j, d] = choose_jd_from_alpha(m, q);
 
 	// Make a forest F' of trees of m - j*d nodes in
 	// total, so that each tree has at most q nodes
@@ -258,19 +257,19 @@ noexcept
 	 * coincide up to n=400.
 	 */
 
-	if (alpha_exists(m,q)) {
+	if (const auto it = m_alpha.find({m,q}); it != m_alpha.end()) {
 		// already computed
-		return get_alpha(m,q);
+		return it->second;
 	}
 
 	// base cases, read the paper
 	if (m == 0) {
-		m_alpha.insert({{m,q}, 1});
-		return get_alpha(m,q);
+		const auto it = m_alpha.insert({{m,q}, 1});
+		return it.first->second;
 	}
 	if (m <= q) {
-		m_alpha.insert({{m,q}, get_rn(m + 1)});
-		return get_alpha(m,q);
+		const auto it = m_alpha.insert({{m,q}, get_rn(m + 1)});
+		return it.first->second;
 	}
 
 	numeric::integer alpha_mq(0);
@@ -286,8 +285,8 @@ noexcept
 		}
 	}
 	alpha_mq /= m;
-	m_alpha.insert({{m,q}, std::move(alpha_mq)});
-	return get_alpha(m,q);
+	const auto it = m_alpha.insert({{m,q}, std::move(alpha_mq)});
+	return it.first->second;
 }
 
 const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
