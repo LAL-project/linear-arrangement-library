@@ -68,15 +68,9 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	graphs::rooted_tree rT(m_n);
-	for (node u = 1; u < m_n; ++u) {
-		// in order to construct an arborescence
-		// orient edges away from the root (node 0).
-		rT.add_edge_bulk(m_head_vector[u], u);
-	}
-	rT.finish_bulk_add(false, false);
-	rT.set_root(0);
-	return rT;
+	return
+		detail::from_head_vector_to_tree<graphs::rooted_tree>
+		(m_head_vector, false, false);
 }
 
 /* PROTECTED */
@@ -238,7 +232,7 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 
 			// --
 			//if (weight > 0) { ++j; }
-			j += (weight > 0 ? 1 : 0);
+			j += weight > 0;
 			// --
 		}
 	}
