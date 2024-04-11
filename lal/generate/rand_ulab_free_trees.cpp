@@ -105,9 +105,11 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	// with probability 'bicent_prob' the tree has two centroids
 	if (m_unif(m_gen) <= bicent_prob.to_double()) {
 		bicenter(m_n);
-		const graphs::free_tree T =
-			detail::from_head_vector_to_graph<graphs::free_tree>
-			(m_head_vector, false, false);
+		graphs::free_tree T(m_n);
+		for (node u = 1; u < m_n; ++u) {
+			T.add_edge_bulk(m_head_vector[u], u);
+		}
+		T.finish_bulk_add_complete(false, false);
 
 #if defined DEBUG
 		assert(T.is_tree());
@@ -130,9 +132,11 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	forest(m,q, 1);
 	// -----------------------------------
 
-	const graphs::free_tree T =
-		detail::from_head_vector_to_graph<graphs::free_tree>
-		(m_head_vector, false, false);
+	graphs::free_tree T(m_n);
+	for (node u = 1; u < m_n; ++u) {
+		T.add_edge_bulk(m_head_vector[u], u);
+	}
+	T.finish_bulk_add_complete(false, false);
 
 #if defined DEBUG
 	assert(T.is_tree());

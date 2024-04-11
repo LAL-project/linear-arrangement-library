@@ -200,11 +200,9 @@ protected:
 	/**
 	 * @brief The head vector of the tree under construction.
 	 *
-	 * This list has @e n values for @ref m_n nodes. The first position contains
-	 * the root vertex.
-	 *
-	 * Do not use its actual type (@ref lal::head_vector) in an attempt to make
-	 * memory usage a bit more efficient.
+	 * The first position always contains the root vertex. The parent of vertex
+	 * @e u is located at @e m_head_vector[u], but the value is an index from
+	 * 0 to \f$n - 1\f$, both included.
 	 */
 	head_vector m_head_vector;
 

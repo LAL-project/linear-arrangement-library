@@ -68,9 +68,19 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 	// so as to indicate that there is no such thing at this moment.
 	ranrut(m_n, 0, 0);
 
-	return
-		detail::from_head_vector_to_tree<graphs::rooted_tree>
-		(m_head_vector, false, false);
+#if defined DEBUG
+	assert(m_head_vector[0] == 0);
+#endif
+
+	graphs::rooted_tree rT(m_n);
+	for (node u = 1; u < m_n; ++u) {
+		// in order to construct an arborescence
+		// orient edges away from the root (node 0).
+		rT.add_edge_bulk(m_head_vector[u], u);
+	}
+	rT.finish_bulk_add_complete(false, false);
+	rT.set_root(0);
+	return rT;
 }
 
 /* PROTECTED */
