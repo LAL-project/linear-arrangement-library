@@ -189,7 +189,7 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 	while (k <= n + 1) {
 		numeric::integer s = 0;
 		for (uint64_t d = 1; d <= k; ++d) {
-			const numeric::integer& td = m_td[d];
+			const numeric::integer& td = m_rn_times_n[d];
 
 			int64_t i = detail::to_int64(k) + 1;
 			int64_t j = 1;
@@ -205,9 +205,9 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 			}
 		}
 
-		m_td.push_back(s);
+		m_rn_times_n.push_back(s);
 		s /= k;
-		m_td.back() += s;
+		m_rn_times_n.back() += s;
 
 		m_rn.push_back(std::move(s));
 
@@ -249,6 +249,7 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 		else {
 			// substract weight of current pair
 			weight -= (get_rn(n - j*d)*get_rn(d)*d).to_double();
+
 			// if 'z' has not reached 0 then generate next pair
 
 			// --

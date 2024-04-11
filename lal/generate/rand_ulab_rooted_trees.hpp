@@ -202,7 +202,7 @@ protected:
 	 *
 	 * Contains \f$r_n \cdot n\f$ for \f$n\ge 0\f$.
 	 */
-	std::vector<numeric::integer> m_td;
+	std::vector<numeric::integer> m_rn_times_n;
 
 	/**
 	 * @brief The head vector of the tree under construction.
@@ -266,9 +266,10 @@ protected:
 			126186554308ull,
 			354426847597ull
 		};
-		m_td.resize(m_rn.size());
-		for (uint64_t d = 0; d < m_rn.size(); ++d) {
-			m_td[d] = m_rn[d]*d;
+		m_rn_times_n.resize(m_rn.size());
+		m_rn_times_n[0] = 0;
+		for (uint64_t n = 1; n < m_rn.size(); ++n) {
+			m_rn_times_n[n] = m_rn[n]*n;
 		}
 	}
 
