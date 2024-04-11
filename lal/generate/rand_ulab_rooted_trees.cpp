@@ -189,7 +189,7 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 	while (k <= n + 1) {
 		numeric::integer s = 0;
 		for (uint64_t d = 1; d <= k; ++d) {
-			const numeric::integer td = m_rn[d]*d;
+			const numeric::integer& td = m_td[d];
 
 			int64_t i = detail::to_int64(k) + 1;
 			int64_t j = 1;
@@ -204,9 +204,20 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 				++j;
 			}
 		}
+
+		m_td.push_back(s);
 		s /= k;
+		m_td.back() += s;
 
 		m_rn.push_back(std::move(s));
+
+#if defined DEBUG
+		{
+		const std::size_t i = m_td.size() - 1;
+		assert(m_td[i] == m_rn[i]*i);
+		}
+#endif
+
 		++k;
 	}
 	return m_rn[n];

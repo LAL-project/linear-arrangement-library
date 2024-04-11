@@ -198,6 +198,13 @@ protected:
 	std::vector<numeric::integer> m_rn;
 
 	/**
+	 * @brief The number of unlabelled rooted trees times number of vertices.
+	 *
+	 * Contains \f$r_n \cdot n\f$ for \f$n\ge 0\f$.
+	 */
+	std::vector<numeric::integer> m_td;
+
+	/**
 	 * @brief The head vector of the tree under construction.
 	 *
 	 * The first position always contains the root vertex. The parent of vertex
@@ -259,6 +266,10 @@ protected:
 			126186554308ull,
 			354426847597ull
 		};
+		m_td.resize(m_rn.size());
+		for (uint64_t d = 0; d < m_rn.size(); ++d) {
+			m_td[d] = m_rn[d]*d;
+		}
 	}
 
 	/**
