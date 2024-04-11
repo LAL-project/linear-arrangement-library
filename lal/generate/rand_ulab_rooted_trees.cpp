@@ -213,8 +213,8 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 
 #if defined DEBUG
 		{
-		const std::size_t i = m_td.size() - 1;
-		assert(m_td[i] == m_rn[i]*i);
+		const std::size_t i = m_rn_times_n.size() - 1;
+		assert(m_rn_times_n[i] == m_rn[i]*i);
 		}
 #endif
 
