@@ -354,7 +354,12 @@ noexcept
 			}
 		}
 		else {
-			z -= (get_rn(d)*get_alpha_mq(m-j*d, q)*d).to_double();
+			if (has_rn(d)) {
+				z -= (get_alpha_mq(m-j*d, q)*m_rn_times_n[d]).to_double();
+			}
+			else {
+				z -= (get_alpha_mq(m-j*d, q)*get_rn(d)*d).to_double();
+			}
 
 			// if 'z' has not reached 0 then generate next pair
 			//if (z > 0) { ++j; }
