@@ -203,6 +203,12 @@ protected:
 	 * Contains \f$r_n \cdot n\f$ for \f$n\ge 0\f$.
 	 */
 	std::vector<numeric::integer> m_rn_times_n;
+	/**
+	 * @brief The number of unlabelled rooted trees times number of vertices minus 1.
+	 *
+	 * Contains \f$r_n \cdot (n - 1)\f$ for \f$n\ge 0\f$.
+	 */
+	std::vector<numeric::integer> m_rn_times_n_minus_1;
 
 	/**
 	 * @brief The head vector of the tree under construction.
@@ -268,8 +274,11 @@ protected:
 		};
 		m_rn_times_n.resize(m_rn.size());
 		m_rn_times_n[0] = 0;
+		m_rn_times_n_minus_1.resize(m_rn.size());
+		m_rn_times_n_minus_1[0] = 0;
 		for (uint64_t n = 1; n < m_rn.size(); ++n) {
 			m_rn_times_n[n] = m_rn[n]*n;
+			m_rn_times_n_minus_1[n] = m_rn_times_n[n] - m_rn[n];
 		}
 	}
 
@@ -280,6 +289,9 @@ protected:
 	 * calculated, this method does nothing.
 	 */
 	const numeric::integer& get_rn(uint64_t n) noexcept;
+
+	/// Returns whether or not the value \f$r_n\f$ (@ref m_rn) has been computed.
+	bool has_rn(uint64_t n) const noexcept { return m_rn.size() >= n + 1; }
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according

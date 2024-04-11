@@ -208,13 +208,17 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 		m_rn_times_n.push_back(s);
 		s /= k;
 		m_rn_times_n.back() += s;
+		m_rn_times_n_minus_1.push_back( m_rn_times_n.back() - s );
 
 		m_rn.push_back(std::move(s));
 
 #if defined DEBUG
+		assert(m_rn_times_n.size() == m_rn.size());
+		assert(m_rn_times_n.size() == m_rn_times_n_minus_1.size());
 		{
 		const std::size_t i = m_rn_times_n.size() - 1;
 		assert(m_rn_times_n[i] == m_rn[i]*i);
+		assert(m_rn_times_n_minus_1[i] == m_rn[i]*(i - 1));
 		}
 #endif
 
@@ -231,7 +235,9 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 	// when it reaches a value below or equal to 0
 
 	const double r = m_unif(m_gen);
-	double weight = (get_rn(n)*(n - 1)).to_double()*r;
+	double weight = has_rn(n) ?
+		m_rn_times_n_minus_1[n].to_double()*r :
+		(get_rn(n)*(n - 1)).to_double()*r;
 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
@@ -248,7 +254,12 @@ _rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
 		}
 		else {
 			// substract weight of current pair
-			weight -= (get_rn(n - j*d)*get_rn(d)*d).to_double();
+			if (has_rn(d)) {
+				weight -= (get_rn(n - j*d)*m_rn_times_n[d]).to_double();
+			}
+			else {
+				weight -= (get_rn(n - j*d)*get_rn(d)*d).to_double();
+			}
 
 			// if 'z' has not reached 0 then generate next pair
 
