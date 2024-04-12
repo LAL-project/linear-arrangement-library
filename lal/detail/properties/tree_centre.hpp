@@ -233,7 +233,7 @@ std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
 	bfs.set_node_add(
-	[&](const auto&, node, node v) -> bool { return (trimmed_degree[v] == 1); }
+	[&](const auto&, node, node v, bool) -> bool { return (trimmed_degree[v] == 1); }
 	);
 
 	// do the bfs from the leaves inwards

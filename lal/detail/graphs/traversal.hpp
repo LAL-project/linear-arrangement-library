@@ -95,7 +95,7 @@ public:
 	/// One node decision function.
 	typedef std::function<bool (const BFS<graph_t>&, node)> BFS_bool_one;
 	/// Two nodes decision function.
-	typedef std::function<bool (const BFS<graph_t>&, node, node)> BFS_bool_two;
+	typedef std::function<bool (const BFS<graph_t>&, node, node, bool)> BFS_bool_two;
 
 public:
 
@@ -174,7 +174,7 @@ public:
 
 	/// Set the default value of @ref m_terminate.
 	void set_terminate_default() noexcept {
-		m_terminate = [](const BFS<graph_t>&, const node) -> bool { return false; };
+		m_terminate = [](const BFS<graph_t>&, node) -> bool { return false; };
 		m_is_terminate_set = false;
 	}
 	/// Set the function that controls the termination of the loop.
@@ -185,7 +185,7 @@ public:
 
 	/// Set the default value of @ref m_process_current.
 	void set_process_current_default() noexcept {
-		m_process_current = [](const BFS<graph_t>&, const node) -> void { };
+		m_process_current = [](const BFS<graph_t>&, node) -> void { };
 		m_is_process_current_set = false;
 	}
 	/// Set the function that controls the processing of the current node.
@@ -196,7 +196,7 @@ public:
 
 	/// Set the default value of @ref m_process_neighbour.
 	void set_process_neighbour_default() noexcept {
-		m_process_neighbour = [](const BFS<graph_t>&, const node, const node, bool) -> void { };
+		m_process_neighbour = [](const BFS<graph_t>&, node, node, bool) -> void { };
 		m_is_process_neighbour_set = false;
 	}
 	/// Set the function that controls the processing of the current neighbour.
@@ -207,7 +207,7 @@ public:
 
 	/// Set the default value of @ref m_add_node.
 	void set_node_add_default() noexcept {
-		m_add_node = [](const BFS<graph_t>&, const node, const node) -> bool { return true; };
+		m_add_node = [](const BFS<graph_t>&, node, node, bool) -> bool { return true; };
 		m_is_add_node_set = false;
 	}
 	/// Set the function that controls when a node is to be added to the queue.
@@ -297,7 +297,9 @@ protected:
 		}
 
 		if (not t_vis) {
-			const bool add_node = m_is_add_node_set ? m_add_node(*this, s, t) : true;
+			const bool add_node =
+				m_is_add_node_set ? m_add_node(*this, s, t, ltr) : true;
+
 			if (add_node) {
 				m_queue.push(t);
 				// set node as visited
