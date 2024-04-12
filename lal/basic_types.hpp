@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#include <cinttypes>
+#include <cstdint>
 #include <vector>
 
 namespace lal {

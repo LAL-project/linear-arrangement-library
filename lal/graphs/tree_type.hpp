@@ -42,7 +42,7 @@
 #pragma once
 
 // C++ includes
-#include <cinttypes>
+#include <cstdlib>
 
 namespace lal {
 namespace graphs {
