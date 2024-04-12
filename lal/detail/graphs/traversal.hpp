@@ -345,15 +345,15 @@ protected:
 	 * The graph_traversal traversal is implemented as follows:
 	 *
 	 * <pre>
-	 * ProcessNeighbourhood(graph, Q, u, Nv):
+	 * ProcessNeighbourhood(graph, Q, v, Nv):
 	 *	 1. for each w in Nv do
 	 *   2.		if w has not been visited before, or it has been but
 	 *	 3.			already-visited nodes have to be processed
 	 *	 4.		then
-	 *	 5.			proc_neigh(u,w)
+	 *	 5.			proc_neigh(v,w)
 	 *	 6.		endif
 	 *	 7.
-	 *	 8.		if w not visited before and node_add(w) then
+	 *	 8.		if w not visited before and node_add(v,w) then
 	 *	 9.			push w into Q
 	 *	10.			mark w as visited in vis
 	 *	11.		endif
