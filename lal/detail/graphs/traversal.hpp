@@ -428,7 +428,7 @@ protected:
 
 protected:
 	/**
-	 * @brief graph_traversal early terminating function.
+	 * @brief Early terminating function.
 	 *
 	 * Returns true if the graph_traversal algorithm should terminate.
 	 *
@@ -439,7 +439,7 @@ protected:
 	bool m_is_terminate_set;
 
 	/**
-	 * @brief graph_traversal node processing function.
+	 * @brief Node processing function.
 	 *
 	 * Processes the current node visited.
 	 *
@@ -450,7 +450,7 @@ protected:
 	bool m_is_process_current_set;
 
 	/**
-	 * @brief graph_traversal neighbour node processing function.
+	 * @brief Node processing function.
 	 *
 	 * Processes the next visited node. The direction of the nodes
 	 * visited passed as parameters is given by the boolean parameter. If
@@ -464,7 +464,7 @@ protected:
 	bool m_is_process_neighbour_set;
 
 	/**
-	 * @brief graph_traversal node addition function.
+	 * @brief Node addition function.
 	 *
 	 * Determines whether a node @e s should be added to the queue or not.
 	 *
