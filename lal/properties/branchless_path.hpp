@@ -81,6 +81,7 @@ public:
 		m_vertex_sequence.clear();
 		m_vertex_sequence.reserve(n);
 		m_vertex_set.resize(n, 0);
+		m_position.resize(n, n + 1);
 	}
 
 	/**
@@ -91,6 +92,7 @@ public:
 	void add_node(node u) noexcept {
 		m_vertex_set[u] = 1;
 		m_vertex_sequence.push_back(u);
+		m_position[u] = m_vertex_sequence.size() - 1;
 	}
 
 	/* SETTERS */
@@ -137,6 +139,13 @@ public:
 	std::size_t get_num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
 	bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
+	/// Returns the position of node @e u in @ref m_vetrex_sequence.
+	std::size_t position(node u) const noexcept {
+#if defined DEBUG
+		assert(has_node(u));
+#endif
+		return m_position[u];
+	}
 
 	/**
 	 * @brief Is the given path an antenna?
@@ -156,6 +165,8 @@ public:
 private:
 	/// A 0-1 array to indicate if a vertex belongs to this path or not.
 	detail::data_array<char> m_vertex_set;
+	/// The position in @ref m_vertex_sequence of each vertex.
+	detail::data_array<std::size_t> m_position;
 	/// The vertex sequence of this branchless path (includes h1 and h2).
 	std::vector<node> m_vertex_sequence;
 
