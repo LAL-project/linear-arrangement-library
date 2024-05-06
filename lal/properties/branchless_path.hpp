@@ -113,6 +113,14 @@ public:
 
 	/* GETTERS */
 
+	/// Access the i-th node in the path.
+	lal::node operator[](std::size_t i) const noexcept {
+#if defined DEBUG
+		assert(i < m_vertex_sequence.size());
+#endif
+		return m_vertex_sequence[i];
+	}
+
 	/// Gets the first vertex of degree different from 2.
 	node get_h1() const noexcept { return m_h1; }
 	/// Gets the second vertex of degree different from 2.
