@@ -41,6 +41,12 @@
 
 #pragma once
 
+// C++ includes
+#include <optional>
+#if defined DEBUG
+#include <cassert>
+#endif
+
 // lal includes
 #include <lal/basic_types.hpp>
 #include <lal/detail/data_array.hpp>
@@ -77,7 +83,8 @@ public:
 	 * @post Memory for @ref m_vertex_set has been allocated.
 	 */
 	void init(std::size_t n) noexcept {
-		m_h1 = m_h2 = m_lowest_lexicographic = n + 1;
+		m_lowest_lexicographic.reset();
+		m_h1 = m_h2 = n + 1;
 		m_vertex_sequence.clear();
 		m_vertex_sequence.reserve(n);
 		m_vertex_set.resize(n, 0);
@@ -110,8 +117,28 @@ public:
 	node get_h1() const noexcept { return m_h1; }
 	/// Gets the second vertex of degree different from 2.
 	node get_h2() const noexcept { return m_h2; }
-	/// Gets the lowest lexicographic vertex.
-	node get_lowest_lexicographic() const noexcept { return m_lowest_lexicographic; }
+
+	/**
+	 * @brief Does this path have a lowest lexicographic vertex?
+	 *
+	 * This method only returns true when the vertex sequence has 3 or more vertices.
+	 * @returns True if the path has a lowest lexicographic. False, if otherwise.
+	 */
+	bool has_lowest_lexicographic() const noexcept {
+		return m_lowest_lexicographic.has_value();
+	}
+	/**
+	 * @brief Gets the lowest lexicographic vertex.
+	 * @returns The lowest vertex in the lexicographic order.
+	 * @pre This method should only be called when @ref has_lowest_lexicographic
+	 * returns true.
+	 */
+	node get_lowest_lexicographic() const noexcept {
+#if defined DEBUG
+		assert(has_lowest_lexicographic());
+#endif
+		return *m_lowest_lexicographic;
+	}
 	/**
 	 * @brief Gets the vertex sequence of this path as a vector.
 	 *
@@ -139,8 +166,8 @@ public:
 	std::size_t get_num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
 	bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
-	/// Returns the position of node @e u in @ref m_vetrex_sequence.
-	std::size_t position(node u) const noexcept {
+	/// Returns the get_position of node @e u in @ref m_vetrex_sequence.
+	std::size_t get_position(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -174,8 +201,12 @@ private:
 	node m_h1;
 	/// The second endpoint of this path.
 	node m_h2;
-	/// The @e internal vertex with lowest index lexicographically.
-	node m_lowest_lexicographic;
+	/**
+	 * @brief The @e internal vertex with lowest index lexicographically.
+	 *
+	 * This vertex may not exist. See @ref has_lowest_lexicographic.
+	 */
+	std::optional<node> m_lowest_lexicographic;
 };
 
 } // -- namespace properties
