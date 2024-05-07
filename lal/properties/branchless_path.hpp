@@ -113,6 +113,7 @@ public:
 
 	/* GETTERS */
 
+#if !defined __LAL_SWIG_PYTHON
 	/// Access the i-th node in the path.
 	lal::node operator[](std::size_t i) const noexcept {
 #if defined DEBUG
@@ -120,6 +121,7 @@ public:
 #endif
 		return m_vertex_sequence[i];
 	}
+#endif
 
 	/// Gets the first vertex of degree different from 2.
 	node get_h1() const noexcept { return m_h1; }
