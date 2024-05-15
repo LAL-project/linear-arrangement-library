@@ -43,7 +43,7 @@
 #include <lal/properties/Q.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/D_rla.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/numeric/rational_output.hpp>
 #include <lal/detail/pairs_utils.hpp>
@@ -62,7 +62,7 @@ inline
 numeric::rational exp_sum_edge_lengths(const graphs::rooted_tree& t)
 noexcept
 {
-	detail::data_array<uint64_t> size_subtrees;
+	detail::array<uint64_t> size_subtrees;
 	if constexpr (not size_subtrees_valid) {
 		size_subtrees.resize(t.get_num_nodes());
 		detail::get_size_subtrees(t, t.get_root(), size_subtrees.begin());
@@ -117,7 +117,7 @@ noexcept
 	uint64_t V = 0;
 
 	{
-	detail::data_array<uint64_t> L(n, 0);
+	detail::array<uint64_t> L(n, 0);
 	for (const auto& p : edge_size) {
 		const edge& e = p.e;
 		const uint64_t s = p.size;

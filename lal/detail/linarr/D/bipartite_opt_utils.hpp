@@ -49,7 +49,7 @@
 
 // lal includes
 #include <lal/linear_arrangement.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
@@ -113,9 +113,9 @@ noexcept
 		}
 	}
 
-	data_array<node> vertices_color_1(n - 1);
+	array<node> vertices_color_1(n - 1);
 	std::size_t size_1 = 0;
-	data_array<node> vertices_color_2(n - 1);
+	array<node> vertices_color_2(n - 1);
 	std::size_t size_2 = 0;
 
 	{
@@ -130,7 +130,7 @@ noexcept
 	}
 
 	const auto sort_nodes =
-	[&](data_array<node>& nodes, std::size_t s) {
+	[&](array<node>& nodes, std::size_t s) {
 		lal::detail::sorting::counting_sort
 			<lal::node, sorting_type_t>
 			(

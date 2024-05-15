@@ -52,8 +52,8 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/properties/branchless_path.hpp>
 #include <lal/properties/bipartite_graph_coloring.hpp>
-#include <lal/detail/data_array.hpp>
-#include <lal/detail/linear_set.hpp>
+#include <lal/detail/array.hpp>
+#include <lal/detail/set_array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
@@ -177,17 +177,17 @@ public:
 	 */
 	AEF_BnB(
 		const graphs::free_tree& t,
-		const data_array<std::vector<node>>& leaves,
+		const array<std::vector<node>>& leaves,
 		// colors of vertices
 		const properties::bipartite_graph_coloring& colors,
 		const uint64_t num_verts_blue,
 		const uint64_t num_verts_red,
 		// paths
 		const std::vector<properties::branchless_path>& paths_in_tree,
-		const data_array<std::size_t>& node_to_path_idx,
+		const array<std::size_t>& node_to_path_idx,
 		// orbits
 		const std::vector<std::vector<node>>& orbits,
-		const data_array<std::size_t>& vertex_to_orbit
+		const array<std::size_t>& vertex_to_orbit
 	)
 	noexcept;
 	/// Destructor
@@ -352,7 +352,7 @@ private:
 	/// Number of nodes.
 	const uint64_t m_n_nodes;
 	/// Set of leaves per vertex.
-	const data_array<std::vector<node>>& m_leaves;
+	const array<std::vector<node>>& m_leaves;
 	/// Bipartite coloring of the tree.
 	const properties::bipartite_graph_coloring& m_vertex_colors;
 	/// Number of blue vertices (@ref m_vertex_colors).
@@ -366,31 +366,31 @@ private:
 	/// All the branchless paths of the tree.
 	const std::vector<properties::branchless_path>& m_paths_in_tree;
 	/// An index for each vertex that points to its path in @ref m_paths_in_tree.
-	const data_array<std::size_t>& m_node_to_path_idx;
+	const array<std::size_t>& m_node_to_path_idx;
 	/// The number of thistle vertices for each branchless path.
-	data_array<uint8_t> m_num_thistle_per_path;
+	array<uint8_t> m_num_thistle_per_path;
 	/// The set of vertex orbits of the tree.
 	const std::vector<std::vector<node>>& m_orbits;
 	/// An index for each vertex that points to its vertex orbit in @ref m_orbits.
-	const data_array<std::size_t>& m_vertex_to_orbit;
+	const array<std::size_t>& m_vertex_to_orbit;
 
 	// -------------------------------------------------------------------------
 	// Data used for upper bounds
 
 	/// Frequency of degrees among unassigned vertices.
-	data_array<uint64_t> m_degree_count;
+	array<uint64_t> m_degree_count;
 
 	/// Number of assigned neighbor vertices for each vertex.
-	data_array<uint64_t> m_num_assigned_neighbors;
+	array<uint64_t> m_num_assigned_neighbors;
 	/// Number of unassigned neighbor vertices for each vertex.
-	data_array<uint64_t> m_num_unassigned_neighbors;
+	array<uint64_t> m_num_unassigned_neighbors;
 
 	/* -------------------------- BORDER VERTICES -------------------------- */
 	// memory used to sort those vertices with some neighbor assigned.
 	// sorted by amount of assigned neighbors
 
 	/// The set of border vertices.
-	linear_set<node> m_border_vertices;
+	set_array<node> m_border_vertices;
 
 	/* -------------------------- BORDER VERTICES -------------------------- */
 
@@ -401,7 +401,7 @@ private:
 	node m_first_vertex;
 
 	/// The set of assigned nodes.
-	data_array<char> m_is_node_assigned;
+	array<char> m_is_node_assigned;
 
 	/// A helper class to be able to store edges in @ref m_E_p, @ref m_E_ps, @ref m_E_s.
 	class indexer_edge {
@@ -418,21 +418,21 @@ private:
 	};
 
 	/// The set of edges fully contained in the prefix.
-	linear_set<edge, indexer_edge> m_E_p;
+	set_array<edge, indexer_edge> m_E_p;
 	/// The set of edges with one endpoint in the prefix, the other in the suffix.
-	linear_set<edge, indexer_edge> m_E_ps;
+	set_array<edge, indexer_edge> m_E_ps;
 	/// The set of edges fully contained in the suffix.
-	linear_set<edge, indexer_edge> m_E_s;
+	set_array<edge, indexer_edge> m_E_s;
 
 	/// Directional left degree of each vertex.
-	data_array<uint64_t> m_node_left_degree;
+	array<uint64_t> m_node_left_degree;
 	/// Directional right degree of each vertex.
-	data_array<uint64_t> m_node_right_degree;
+	array<uint64_t> m_node_right_degree;
 	/// The level value of each vertex.
-	data_array<int64_t> m_node_level;
+	array<int64_t> m_node_level;
 
 	/// Cuts in the arrangement
-	data_array<uint64_t> m_cut_values;
+	array<uint64_t> m_cut_values;
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	// -------------------------------------------------------------------------

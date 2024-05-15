@@ -45,7 +45,7 @@
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -95,7 +95,7 @@ uint64_t tree_diameter(const tree_t& t, node x) noexcept
 
 	// calculate the longest distance from 'farthest_from_0'
 	uint64_t diameter = 0;
-	data_array<uint64_t> distance(n, 0);
+	array<uint64_t> distance(n, 0);
 
 	bfs.clear_visited();
 	bfs.clear_queue();

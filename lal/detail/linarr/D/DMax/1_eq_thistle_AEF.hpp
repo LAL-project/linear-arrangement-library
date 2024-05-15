@@ -178,9 +178,9 @@ inline void construct_initial_arrangement(
 	const graphs::free_tree& t,
 	const node thistle,
 	const int64_t thistle_level,
-	const data_array<char>& thistle_side_per_vertex,
+	const array<char>& thistle_side_per_vertex,
 	level_signature_per_vertex& levels_per_vertex,
-	data_array<node>& inv_arr
+	array<node>& inv_arr
 )
 noexcept
 {
@@ -281,9 +281,9 @@ noexcept
 inline void sort_level_sequences(
 	const uint64_t n,
 	const node thistle,
-	const data_array<char>& is_thistle_neighbor,
+	const array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
-	data_array<node>& inv_arr
+	array<node>& inv_arr
 )
 noexcept
 {
@@ -327,7 +327,7 @@ noexcept
  */
 inline void move_thistle_to_left(
 	const node thistle,
-	const data_array<char>& is_thistle_neighbor,
+	const array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
 	linear_arrangement& arr
 )
@@ -390,7 +390,7 @@ inline void adjust_mistplaced_nonneighbors_of_thistle(
 	const graphs::free_tree& t,
 	const int64_t thistle_level,
 	const node thistle,
-	const data_array<char>& is_thistle_neighbor,
+	const array<char>& is_thistle_neighbor,
 	const level_signature_per_vertex& levels_per_vertex,
 	linear_arrangement& arr
 )
@@ -517,10 +517,10 @@ void merge_arrangements(
 	const graphs::free_tree& t,
 	const node thistle,
 	const int64_t thistle_level,
-	const data_array<char>& is_thistle_neighbor,
-	const data_array<char>& thistle_side_per_vertex,
+	const array<char>& is_thistle_neighbor,
+	const array<char>& thistle_side_per_vertex,
 	linear_arrangement& arr,
-	data_array<node>& inv_arr,
+	array<node>& inv_arr,
 	level_signature_per_vertex& levels_per_vertex,
 	result_t<make_arrangement>& res
 )
@@ -664,12 +664,12 @@ template <bool make_arrangement>
 void choose_orientations_for_thistle_neighbors(
 	const graphs::free_tree& t,
 	const node thistle,
-	const data_array<char>& is_thistle_neighbor,
+	const array<char>& is_thistle_neighbor,
 
 	linear_arrangement& arr,
-	data_array<node>& inv_arr,
+	array<node>& inv_arr,
 	level_signature_per_vertex& level_per_vertex,
-	data_array<char>& thistle_side_per_vertex,
+	array<char>& thistle_side_per_vertex,
 
 	result_t<make_arrangement>& res
 )
@@ -678,7 +678,7 @@ noexcept
 	const auto thistle_deg = t.get_degree(thistle);
 	const neighbourhood& thistle_neighs = t.get_neighbours(thistle);
 
-	data_array<char> binary_combination(thistle_deg, 0);
+	array<char> binary_combination(thistle_deg, 0);
 
 #if defined __LAL_DEBUG_DMax_1_thistle
 	std::cout << "Thistle: " << thistle << '\n';
@@ -779,7 +779,7 @@ template <bool make_arrangement>
 detail::result_t<make_arrangement> AEF(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
-	const data_array<std::size_t>& node_to_path
+	const array<std::size_t>& node_to_path
 )
 noexcept
 {
@@ -812,18 +812,18 @@ noexcept
 	}
 
 	// whether or an internal of a branchless path was already used
-	data_array<char> internal_in_path_was_used(all_paths.size(), 0);
+	array<char> internal_in_path_was_used(all_paths.size(), 0);
 
 	// actual linear arrangement
 	linear_arrangement arr(n);
 	// simple inverse arrangement
-	data_array<node> inv_arr(n);
+	array<node> inv_arr(n);
 	// the level value per vertex
 	level_signature_per_vertex level_per_vertex(n);
 	// the side of the thistle at which every vertex is found
-	data_array<char> thistle_side_per_vertex(n);
+	array<char> thistle_side_per_vertex(n);
 	// used to query whether a vertex is neighbor of the thistle or not
-	data_array<char> is_thistle_neighbor(n, 0);
+	array<char> is_thistle_neighbor(n, 0);
 
 	for (node thistle = 0; thistle < n; ++thistle) {
 		const uint64_t deg_thistle = t.get_degree(thistle);
@@ -910,7 +910,7 @@ noexcept
 #endif
 
 	// assign all internal vertices a path index.
-	data_array<std::size_t> node_to_path(t.get_num_nodes());
+	array<std::size_t> node_to_path(t.get_num_nodes());
 	for (std::size_t i = 0; i < all_paths.size(); ++i) {
 		const properties::branchless_path& p = all_paths[i];
 		const std::vector<node>& seq = p.get_vertex_sequence();

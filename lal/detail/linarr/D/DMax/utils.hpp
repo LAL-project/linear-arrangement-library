@@ -56,7 +56,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>

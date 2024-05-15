@@ -108,7 +108,7 @@ void make_random_projective(
 	const graphs::free_tree& T,
 	node parent_u, node u,
 	// Its size must be equal to the number of vertices of the tree.
-	detail::data_array<std::vector<node>>& data,
+	detail::array<std::vector<node>>& data,
 	// random number generator
 	generator_t& gen
 )

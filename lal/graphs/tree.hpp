@@ -396,8 +396,6 @@ protected:
 	 *
 	 * To be called only after veral calls to @ref undirected_graph::add_edge_bulk
 	 * or @ref directed_graph::add_edge_bulk.
-	 * @param u First node of the edge.
-	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
@@ -408,8 +406,6 @@ protected:
 	 *
 	 * To be called only after veral calls to @ref undirected_graph::add_edge_bulk
 	 * or @ref directed_graph::add_edge_bulk.
-	 * @param u First node of the edge.
-	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
@@ -420,8 +416,6 @@ protected:
 	 *
 	 * To be called only after veral calls to @ref undirected_graph::remove_edge_bulk
 	 * or @ref directed_graph::remove_edge_bulk.
-	 * @param u First node of the edge.
-	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
@@ -432,8 +426,6 @@ protected:
 	 *
 	 * To be called only after veral calls to @ref undirected_graph::remove_edge_bulk
 	 * or @ref directed_graph::remove_edge_bulk.
-	 * @param u First node of the edge.
-	 * @param v Second node of the edge.
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */

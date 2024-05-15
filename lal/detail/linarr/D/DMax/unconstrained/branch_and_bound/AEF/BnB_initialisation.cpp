@@ -49,17 +49,17 @@ namespace unconstrained {
 
 AEF_BnB::AEF_BnB(
 	const graphs::free_tree& t,
-	const data_array<std::vector<node>>& leaves,
+	const array<std::vector<node>>& leaves,
 	// colors of vertices
 	const properties::bipartite_graph_coloring& colors,
 	const uint64_t num_verts_blue,
 	const uint64_t num_verts_red,
 	// paths
 	const std::vector<properties::branchless_path>& paths_in_tree,
-	const data_array<std::size_t>& node_to_path_idx,
+	const array<std::size_t>& node_to_path_idx,
 	// orbits
 	const std::vector<std::vector<node>>& orbits,
-	const data_array<std::size_t>& vertex_to_orbit
+	const array<std::size_t>& vertex_to_orbit
 )
 noexcept :
 	m_t(t),

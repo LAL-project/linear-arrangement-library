@@ -50,7 +50,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/utils.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define DECIDED_C_GT (upper_bound + 1)
@@ -268,10 +268,10 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
+	array<unsigned char> bool_neighs(n);
 
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
+	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
@@ -303,7 +303,7 @@ noexcept
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
+	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
@@ -311,7 +311,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
+	array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -362,10 +362,10 @@ noexcept
 #endif
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
+	array<unsigned char> bool_neighs(n);
 
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
+	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
@@ -402,7 +402,7 @@ noexcept
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
+	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
@@ -410,7 +410,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
+	array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -461,7 +461,7 @@ noexcept
 
 	/* allocate memory */
 	const std::size_t n_elems = 2*(n - 3)*(n - 3);
-	data_array<uint64_t> all_memory(n_elems);
+	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
@@ -469,7 +469,7 @@ noexcept
 	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> bool_neighs(n);
+	array<unsigned char> bool_neighs(n);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {

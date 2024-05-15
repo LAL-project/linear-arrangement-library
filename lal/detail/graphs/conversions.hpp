@@ -50,7 +50,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -504,7 +504,7 @@ noexcept
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
-	data_array<node> root_candidates(n + 1, 0);
+	array<node> root_candidates(n + 1, 0);
 	std::size_t stack_it = 0;
 
 	// evidently,
@@ -583,12 +583,12 @@ noexcept
 
 	// 'stack' of root candidates: node at every level in {1,...,N}.
 	// at position j, lev[j] contains the last node added at level j.
-	data_array<node> root_candidates(n + 1, 0);
+	array<node> root_candidates(n + 1, 0);
 	std::size_t stack_it = 0;
 
-	data_array<edge> edge_list(n - 1);
+	array<edge> edge_list(n - 1);
 	std::size_t edge_it = 0;
-	data_array<uint64_t> vertex_degrees(n, 0);
+	array<uint64_t> vertex_degrees(n, 0);
 
 	// evidently,
 	root_candidates[0] = 1;
@@ -747,7 +747,7 @@ noexcept
 {
 	// initialisation
 	const uint64_t L = n - 2;
-	data_array<uint64_t> degree(n, 1);
+	array<uint64_t> degree(n, 1);
 	for (uint64_t i = 0; i < L; ++i) {
 		degree[ seq[i] ] += 1;
 	}

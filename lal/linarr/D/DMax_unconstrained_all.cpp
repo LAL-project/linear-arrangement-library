@@ -55,7 +55,7 @@
 #include <lal/properties/vertex_orbits.hpp>
 #include <lal/linarr/D/DMax.hpp>
 
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/properties/branchless_path_find.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
@@ -127,7 +127,7 @@ noexcept
 
 void retrieve_leave_sets(
 	const graphs::free_tree& t,
-	detail::data_array<std::vector<node>>& leaves_per_vertex
+	detail::array<std::vector<node>>& leaves_per_vertex
 )
 noexcept
 {
@@ -148,7 +148,7 @@ noexcept
 void relate_vertices_to_paths(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
-	detail::data_array<std::size_t>& internal_path_node_to_path_idx
+	detail::array<std::size_t>& internal_path_node_to_path_idx
 )
 noexcept
 {
@@ -196,7 +196,7 @@ noexcept
 void relate_vertices_to_orbits(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
-	detail::data_array<std::size_t>& vertex_to_orbit
+	detail::array<std::size_t>& vertex_to_orbit
 )
 noexcept
 {
@@ -230,7 +230,7 @@ void calculate_initial_solution(
 	const lal::graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
-	const detail::data_array<std::size_t>& internal_path_node_to_path_idx,
+	const detail::array<std::size_t>& internal_path_node_to_path_idx,
 	
 	detail::DMax::unconstrained::set_maximum_arrangements& max_arrs,
 	std::pair<uint64_t, linear_arrangement>& initial_DMax
@@ -284,13 +284,13 @@ noexcept
 	);
 
 	// leaves_per_vertex[u] := set of vertices of degree 1 adjacent to u
-	detail::data_array<std::vector<node>> leaves_per_vertex;
+	detail::array<std::vector<node>> leaves_per_vertex;
 	retrieve_leave_sets(t, leaves_per_vertex);
 
-	detail::data_array<std::size_t> internal_path_node_to_path_idx;
+	detail::array<std::size_t> internal_path_node_to_path_idx;
 	relate_vertices_to_paths(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
 
-	detail::data_array<std::size_t> vertex_to_orbit;
+	detail::array<std::size_t> vertex_to_orbit;
 	relate_vertices_to_orbits(t, orbits, vertex_to_orbit);
 	
 	detail::DMax::unconstrained::set_maximum_arrangements max_arrs(t);

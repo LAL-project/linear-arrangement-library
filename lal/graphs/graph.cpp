@@ -49,7 +49,7 @@
 // lal includes
 #include <lal/properties/Q.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace graphs {
@@ -66,7 +66,7 @@ void graph::clear() noexcept {
 }
 
 void graph::normalise() noexcept {
-	detail::data_array<char> mem(get_num_nodes(), 0);
+	detail::array<char> mem(get_num_nodes(), 0);
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 

@@ -42,7 +42,7 @@
 #pragma once
 
 // lal includes
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -79,7 +79,7 @@ namespace detail {
  *
  * Now follows an example that shows how to use this set with integer types,
  * @code
- *		lal::detail::linear_set<int> s(10, 10);
+ *		lal::detail::set_array<int> s(10, 10);
  *		s.add(3);
  *		s.add(4);
  *		s.remove(3);
@@ -92,7 +92,7 @@ namespace detail {
  *			}
  *		};
  *		indexer I;
- *		lal::detail::linear_set<std::pair<int, int>> s(10, 100, std::move(I));
+ *		lal::detail::set_array<std::pair<int, int>> s(10, 100, std::move(I));
  *		s.add({3,4});
  *		s.add({4,4});
  *		s.remove({3,4});
@@ -102,7 +102,7 @@ namespace detail {
  * @tparam indexer_t The type of the indexer object
  */
 template<typename value_t, class indexer_t = value_t>
-class linear_set {
+class set_array {
 public:
 
 	/**
@@ -257,18 +257,18 @@ private:
 	indexer_t m_I;
 
 	/// The unique values in this set.
-	data_array<value_t> m_values;
+	array<value_t> m_values;
 	/// The number of values in @ref m_values.
 	std::size_t m_size;
 
 	/// Does a value exist in the set?
-	data_array<char> m_exists;
+	array<char> m_exists;
 	/**
 	 * @brief The position of every value in the set.
 	 *
 	 * This position is an index that points to a cell of @ref m_values.
 	 */
-	data_array<std::size_t> m_position;
+	array<std::size_t> m_position;
 
 private:
 	/// Calculate the index of an element using the indexer object @ref m_I.

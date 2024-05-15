@@ -48,7 +48,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
 namespace lal {
@@ -62,7 +62,7 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 #endif
 
 	uint64_t sum_distances = 0;
-	detail::data_array<uint64_t> distances(n, 0);
+	detail::array<uint64_t> distances(n, 0);
 
 	detail::BFS<graphs::rooted_tree> bfs(t);
 	bfs.set_process_neighbour(

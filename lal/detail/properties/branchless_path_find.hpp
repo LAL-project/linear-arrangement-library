@@ -51,7 +51,7 @@
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/properties/branchless_path.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 
 namespace lal {

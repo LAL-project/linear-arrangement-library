@@ -204,11 +204,11 @@ target_sources(
 		#      others
 		detail/arrangement_wrapper.hpp
 		detail/avl.hpp
-		detail/data_array.hpp
-		detail/linear_queue.hpp
-		detail/linear_set.hpp
+		detail/array.hpp
 		detail/make_array.hpp
 		detail/pairs_utils.hpp
+		detail/queue_array.hpp
+		detail/set_array.hpp
 		
 		# -- sources
 		#      generate
@@ -452,7 +452,7 @@ set(LIBLAL_MAIN_HEADER
 )
 # ---------------------------------------------------------------------------- #
 set(LIBLAL_DETAIL_HEADER
-	detail/data_array.hpp
+	detail/array.hpp
 	detail/arrangement_wrapper.hpp
 )
 # ---------------------------------------------------------------------------- #

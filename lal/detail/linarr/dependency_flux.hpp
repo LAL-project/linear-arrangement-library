@@ -50,7 +50,7 @@
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/sorting/sorted_vector.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 #define max_pos(u,v) (std::max(arr[u], arr[v]))
 

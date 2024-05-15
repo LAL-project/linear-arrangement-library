@@ -45,7 +45,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace generate {
@@ -179,7 +179,7 @@ private:
 	/// Constant reference to rooted tree.
 	const graphs::rooted_tree& m_rT;
 	/// The interval of every node of the tree
-	detail::data_array<detail::data_array<node>> m_intervals;
+	detail::array<detail::array<node>> m_intervals;
 	/// Has the end of the generation been reached?
 	bool m_reached_end = false;
 

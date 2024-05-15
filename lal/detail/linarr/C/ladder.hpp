@@ -49,7 +49,7 @@
 // lal includes
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/utils.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 #define DECIDED_C_GT (upper_bound + 1)
 #define DECIDED_C_LE C
@@ -172,9 +172,9 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
+	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
+	array<uint64_t> L1(n, 0);
 
 	return ladder::compute<false>
 			(g, arr, boolean_neighborhood.begin(), L1.begin(), 0);
@@ -201,9 +201,9 @@ noexcept
 	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
+	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
+	array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -256,9 +256,9 @@ noexcept
 	if (n < 4) { return 0; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
+	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
+	array<uint64_t> L1(n, 0);
 
 	return
 		ladder::compute<true>
@@ -291,9 +291,9 @@ noexcept
 	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
+	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
+	array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -346,9 +346,9 @@ noexcept
 	if (n < 4) { return cs; }
 
 	// boolean neighbourhood of nodes
-	data_array<unsigned char> boolean_neighborhood(n, 0);
+	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
-	data_array<uint64_t> L1(n, 0);
+	array<uint64_t> L1(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {

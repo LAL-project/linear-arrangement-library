@@ -54,7 +54,7 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/pairs_utils.hpp>
-#include <lal/detail/linear_queue.hpp>
+#include <lal/detail/queue_array.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/type_traits/conditional_list.hpp>
 
@@ -125,8 +125,8 @@ conditional_list_t<
 	type_sequence<
 		node,
 		std::pair<lal::node,lal::node>,
-		std::pair<std::pair<lal::node,lal::node>, data_array<uint64_t>>,
-		std::pair<std::pair<lal::node,lal::node>, data_array<edge_size>>
+		std::pair<std::pair<lal::node,lal::node>, array<uint64_t>>,
+		std::pair<std::pair<lal::node,lal::node>, array<edge_size>>
 	>
 >
 find_centroidal_vertex(const tree_t& t, node x) noexcept
@@ -142,12 +142,12 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return {x,2};
 		}
 		else if constexpr (m3(mode)) {
-			data_array<uint64_t> s(N, 0);
+			array<uint64_t> s(N, 0);
 			s[x] = 1;
 			return {{x,2}, std::move(s)};
 		}
 		else if constexpr (m4(mode)) {
-			return {{x,2}, data_array<edge_size>{}};
+			return {{x,2}, array<edge_size>{}};
 		}
 	}
 	if (n == 2) {
@@ -169,7 +169,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return {x,only_neigh};
 		}
 		else if constexpr (m3(mode)) {
-			data_array<uint64_t> s(N, 0);
+			array<uint64_t> s(N, 0);
 			s[x] = 2;
 			s[only_neigh] = 1;
 			return {{x,only_neigh}, std::move(s)};
@@ -177,7 +177,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		else if constexpr (m4(mode)) {
 			return {
 				{x,only_neigh},
-				data_array<edge_size>{ {{x, only_neigh}, 1} }
+				array<edge_size>{ {{x, only_neigh}, 1} }
 			};
 		}
 	}
@@ -189,18 +189,18 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	node c2 = N + 1;
 
 	// weight of every node: needed to detect the centroid.
-	data_array<uint64_t> weight(N, 1);
+	array<uint64_t> weight(N, 1);
 	// degree of every vertex: needed to find leaves
-	data_array<uint64_t> degree(N, 0);
+	array<uint64_t> degree(N, 0);
 	// array of pairs of edge and directional size
-	data_array<edge_size> edge_sizes;
+	array<edge_size> edge_sizes;
 	std::size_t idx_edge_sizes = 0;
 	if constexpr (m4(mode)) {
 	edge_sizes.resize(n - 1);
 	}
 
 	// queue of the traversal
-	linear_queue<node> queue;
+	queue_array<node> queue;
 	queue.init(n);
 
 	// push leaves of the connected component into the queue.
@@ -347,7 +347,7 @@ std::pair<node,node> centroidal_vertex_plus_adjacency_list(
 noexcept
 {
 	// retrieve centroid and set of edges and directional size
-	std::pair< std::pair<node,node>, data_array<edge_size> >
+	std::pair< std::pair<node,node>, array<edge_size> >
 		centroid_subtree_sizes =
 		find_centroidal_vertex<centroid_results::full_centroid_plus_edge_sizes>(t, x);
 

@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace generate {
@@ -153,7 +153,7 @@ private:
 	 * This is a member of the class to avoid its initialisation at
 	 * every call to @ref get_arrangement.
 	 */
-	detail::data_array<std::vector<node>> m_rdata;
+	detail::array<std::vector<node>> m_rdata;
 
 	/// The root chosen in the previous call to @ref get_arrangement or
 	/// @ref yield_arrangement.

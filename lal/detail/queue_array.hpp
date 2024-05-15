@@ -47,7 +47,7 @@
 #endif
 
 // lal includes
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -66,7 +66,7 @@ namespace detail {
  * @tparam T Type of the elements in the queue.
  */
 template <class T>
-class linear_queue {
+class queue_array {
 public:
 	/// Initializes the queue to hold @e n elements.
 	void init(std::size_t n) noexcept {
@@ -161,7 +161,7 @@ public:
 
 private:
 	/// Data (array) of the queue
-	data_array<T> m_queue;
+	array<T> m_queue;
 
 	/// Left pointer to @ref m_queue
 	std::size_t m_left;

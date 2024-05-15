@@ -54,7 +54,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/make_array.hpp>
 #include <lal/detail/linarr/formal_constraints.hpp>
 

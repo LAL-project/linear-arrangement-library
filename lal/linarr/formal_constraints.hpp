@@ -52,7 +52,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/bipartite_graph_coloring.hpp>
 #include <lal/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
@@ -77,7 +77,7 @@ bool is_permutation(const linear_arrangement& arr = {}) noexcept {
 		return arr[lal::position_t{0ull}] == 0;
 	}
 	// ensure that no position has been used twice
-	detail::data_array<char> d(arr.size(), 0);
+	detail::array<char> d(arr.size(), 0);
 	for (node_t u = 0ull; u < arr.size(); ++u) {
 		const position p = arr[u];
 		// ensure all elements are within range

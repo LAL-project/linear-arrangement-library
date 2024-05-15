@@ -43,7 +43,7 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace properties {
@@ -133,7 +133,7 @@ private:
 	 *
 	 * For any vertex @e u, coloring[u] is the color of vertex @e u.
 	 */
-	detail::data_array<color_t> coloring;
+	detail::array<color_t> coloring;
 };
 
 } // -- namespace properties

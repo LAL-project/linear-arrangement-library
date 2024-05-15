@@ -89,7 +89,7 @@ INCLUDEPATH += ..
 HEADERS += \
 	basic_types.hpp \
 	detail/arrangement_wrapper.hpp \
-	detail/data_array.hpp \
+	detail/array.hpp \
 	detail/avl.hpp \
 	detail/generate/make_arrangement.hpp \
 	detail/linarr/C/brute_force.hpp \
@@ -123,13 +123,13 @@ HEADERS += \
 	detail/linarr/formal_constraints.hpp \
 	detail/linarr/headedness.hpp \
 	detail/linarr/level_signature.hpp \
-	detail/linear_queue.hpp \
-	detail/linear_set.hpp \
 	detail/macros/basic_convert.hpp \
 	detail/macros/search.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
 	detail/properties/branchless_path_find.hpp \
 	detail/properties/tree_maximum_caterpillar.hpp \
+	detail/queue_array.hpp \
+	detail/set_array.hpp \
 	detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
 	detail/type_traits/first_true.hpp \

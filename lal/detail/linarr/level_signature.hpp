@@ -235,7 +235,7 @@ public:
 
 private:
 	/// The signature of level values.
-	data_array<int64_t> m_data;
+	array<int64_t> m_data;
 };
 
 /// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_vertex.

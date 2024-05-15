@@ -50,7 +50,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -108,7 +108,7 @@ noexcept
 	}
 
 	// data structures for node relabelling
-	data_array<node> relabelling(n, n + 1);
+	array<node> relabelling(n, n + 1);
 
 	// relabel 'u' to '0' and make it the root
 	relabelling[u] = 0;

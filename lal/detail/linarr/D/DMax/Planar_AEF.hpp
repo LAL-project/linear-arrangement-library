@@ -131,7 +131,7 @@ noexcept
 	sorted_adjacency_list M(n);
 
 	// bidirectional sizes
-	data_array<edge_size> S(2*m);
+	array<edge_size> S(2*m);
 	{
 	calculate_bidirectional_sizes(t, n, 0, S.begin());
 
@@ -144,7 +144,7 @@ noexcept
 	}
 
 	// put the sorted bidirectional sizes into an adjacency list
-	data_array<edge_size_sigma> J(2*m);
+	array<edge_size_sigma> J(2*m);
 	for (std::size_t idx = 0; idx < S.size(); ++idx) {
 		const auto& T = S[idx];
 
@@ -188,7 +188,7 @@ noexcept
 			[](const edge_size_sigma& T) -> std::size_t { return T.size; }
 		);
 
-	data_array<std::size_t> I(n, 0);
+	array<std::size_t> I(n, 0);
 	for (const auto& [e, suv, sigma_v_u] : J) {
 		const auto u = e.first;
 
@@ -298,7 +298,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 	node max_root = starting_vertex;
 
 	// calculate the value of DMax for all vertices
-	data_array<char> visited(n, 0);
+	array<char> visited(n, 0);
 	visited[starting_vertex] = 1;
 	std::queue<node> Q;
 	Q.push(starting_vertex);

@@ -48,8 +48,8 @@
 #include <lal/basic_types.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
-#include <lal/detail/data_array.hpp>
-#include <lal/detail/linear_queue.hpp>
+#include <lal/detail/array.hpp>
+#include <lal/detail/queue_array.hpp>
 
 namespace lal {
 namespace detail {
@@ -266,7 +266,7 @@ public:
 	const graph_t& get_graph() const noexcept { return m_G; }
 
 	/// Return visited nodes information
-	const data_array<char>& get_visited() const noexcept { return m_vis; }
+	const array<char>& get_visited() const noexcept { return m_vis; }
 
 protected:
 	/**
@@ -412,10 +412,10 @@ protected:
 	const graph_t& m_G;
 
 	/// The structure of the traversal.
-	linear_queue<node> m_queue;
+	queue_array<node> m_queue;
 
 	/// The set of visited nodes.
-	data_array<char> m_vis;
+	array<char> m_vis;
 	/// Should the traversal process previously-visitied neighbours?
 	bool m_process_visited_neighbours = false;
 	/**

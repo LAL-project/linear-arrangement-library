@@ -53,7 +53,7 @@
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
 
@@ -71,7 +71,7 @@ namespace unconstrained {
 namespace Chung {
 
 /// Typedef for a useful type.
-typedef data_array<node_size> ordering;
+typedef array<node_size> ordering;
 
 /*
 int calculate_q(uint64_t n, const ordering& ord) {
@@ -223,8 +223,8 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$P\f$.
  */
-data_array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
-	data_array<uint64_t> v(2*p + 1 + 1);
+array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
+	array<uint64_t> v(2*p + 1 + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -259,8 +259,8 @@ data_array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$Q\f$.
  */
-data_array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
-	data_array<uint64_t> v(2*q + 1);
+array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+	array<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
 	uint64_t left_pos = 1;
@@ -302,7 +302,7 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
 	// Retrieve size of every subtree. Let 'T_u[v]' be the subtree
 	// of 'T_u' rooted at vertex 'v'. Now,
 	//     s[v] := the size of the subtree 'T_u[v]'
-	data_array<uint64_t> s(t.get_num_nodes());
+	array<uint64_t> s(t.get_num_nodes());
 	detail::get_size_subtrees(t, u, s.begin());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)

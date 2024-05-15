@@ -44,7 +44,7 @@
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -115,7 +115,7 @@ noexcept
 inline
 bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
 	const uint64_t n = g.get_num_nodes();
-	data_array<char> all_mem(2*n);
+	array<char> all_mem(2*n);
 	char * const __restrict__ vis = all_mem.begin();
 	char * const __restrict__ in_stack = all_mem.at(n);
 	const bool has_cycle = has_directed_cycles(g, vis, in_stack);
@@ -139,7 +139,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
 	// Note that read operations "if (parent[s] != t)" always come after
 	// the first write "parent[t] = s".
-	data_array<node> parent(n, n+1);
+	array<node> parent(n, n+1);
 	// a cycle was found
 	bool cycle_found = false;
 

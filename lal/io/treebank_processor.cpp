@@ -367,8 +367,8 @@ treebank_error treebank_processor::process() noexcept {
 
 	const auto start = std::chrono::system_clock::now();
 
-	detail::data_array<double> props(__treebank_feature_size, 0.0);
-	detail::data_array<char> prop_set(__treebank_feature_size, 0);
+	detail::array<double> props(__treebank_feature_size, 0.0);
+	detail::array<char> prop_set(__treebank_feature_size, 0);
 
 	// process the current treebank
 	graphs::rooted_tree rT;

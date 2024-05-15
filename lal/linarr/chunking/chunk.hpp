@@ -50,7 +50,7 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace linarr {
@@ -268,7 +268,7 @@ private:
 	/// The sequence of chunks
 	std::vector<chunk> m_chunks;
 	/// Index of every 
-	detail::data_array<std::size_t> m_from_node_to_chunk;
+	detail::array<std::size_t> m_from_node_to_chunk;
 };
 
 } // -- namespace linarr

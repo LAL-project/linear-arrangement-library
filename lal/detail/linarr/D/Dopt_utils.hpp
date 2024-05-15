@@ -56,7 +56,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
@@ -124,11 +124,11 @@ noexcept
 	// for every edge (u,v), store the tuple
 	//    (n_v, (u,v))
 	// at L[u]
-	data_array<edge_size> edge_list(n - 1);
+	array<edge_size> edge_list(n - 1);
 
 	{
 	const std::size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
-	data_array<uint64_t> size_subtrees(k, 0);
+	array<uint64_t> size_subtrees(k, 0);
 
 	sorting::countingsort::memory<edge_size> memcs(n, n);
 	auto it = edge_list.begin();

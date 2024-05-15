@@ -49,7 +49,7 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 
@@ -605,7 +605,7 @@ private:
 protected:
 	/// Memory of the linear arrangement. Holds twice as many elements as
 	/// vertices there are in the arrangement (see @ref m_n).
-	detail::data_array<uint64_t> m_memory;
+	detail::array<uint64_t> m_memory;
 	/// Size of the arrangement (number of nodes in the arrangement).
 	std::size_t m_n = 0;
 

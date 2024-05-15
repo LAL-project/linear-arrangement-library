@@ -48,8 +48,8 @@
 #include <lal/graphs/tree_type.hpp>
 #include <lal/graphs/tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>
-#include <lal/detail/data_array.hpp>
-#include <lal/detail/linear_queue.hpp>
+#include <lal/detail/array.hpp>
+#include <lal/detail/queue_array.hpp>
 #include <lal/detail/type_traits/conditional_list.hpp>
 
 namespace lal {
@@ -99,8 +99,8 @@ node find_farthest_vertex(
 	const tree_t& t,
 	node start_at,
 	BFS<tree_t>& bfs,
-	data_array<uint64_t>& num_vertices_in_path,
-	data_array<uint64_t>& weight
+	array<uint64_t>& num_vertices_in_path,
+	array<uint64_t>& weight
 )
 noexcept
 {
@@ -207,7 +207,7 @@ max_subtree(const tree_t& t) noexcept
 	// -------------------------------------------------------------------------
 	// initialize data
 
-	data_array<uint64_t> weight(n);
+	array<uint64_t> weight(n);
 	for (node u = 0; u < n; ++u) {
 		weight[u] = (t.get_degree(u) == 1 ? 0 : t.get_degree(u) - 2);
 	}
@@ -216,7 +216,7 @@ max_subtree(const tree_t& t) noexcept
 	BFS bfs(t);
 
 	// distance to every vertex from source
-	data_array<uint64_t> num_vertices_in_path(n, 0);
+	array<uint64_t> num_vertices_in_path(n, 0);
 
 	// -------------------------------------------------------------------------
 	// do the two traversals
@@ -266,7 +266,7 @@ max_subtree(const tree_t& t) noexcept
 	path path_to_current;
 
 	// initialize the queue
-	linear_queue<path> path_queue;
+	queue_array<path> path_queue;
 	path_queue.init(n);
 	path_queue.push({w_star});
 

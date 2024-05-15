@@ -50,7 +50,7 @@
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/avl.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
@@ -267,7 +267,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<uint64_t> size_adjN_u(n, 0);
+	array<uint64_t> size_adjN_u(n, 0);
 
 	return stack_based::compute_C_stack_based<false>
 			(g, arr, size_adjN_u.begin(), 0);
@@ -295,7 +295,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<uint64_t> size_adjN_u(n, 0);
+	array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -346,7 +346,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<uint64_t> size_adjN_u(n, 0);
+	array<uint64_t> size_adjN_u(n, 0);
 
 	return stack_based::compute_C_stack_based<true>
 			(g, arr, size_adjN_u.begin(), upper_bound);
@@ -379,7 +379,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<uint64_t> size_adjN_u(n, 0);
+	array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
@@ -426,7 +426,7 @@ noexcept
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
-	data_array<uint64_t> size_adjN_u(n, 0);
+	array<uint64_t> size_adjN_u(n, 0);
 
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {

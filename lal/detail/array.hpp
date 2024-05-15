@@ -51,18 +51,18 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Wrapper of a C array for autmatic deallocation of memory.
+ * @brief Wrapper of a C array for automatic deallocation of memory.
  *
  * Automatically manage deallocation of memory via destructors.
  */
 template <typename T>
-struct data_array {
+struct array {
 public:
 	/// Default constructor
-	data_array() noexcept = default;
+	array() noexcept = default;
 
 	/// Constructor from initializer_list.
-	data_array(std::initializer_list<T> l) noexcept : m_size(l.size()) {
+	array(std::initializer_list<T> l) noexcept : m_size(l.size()) {
 		// (un?)fortunately, this will call the constructor of T
 		// for every element in m_data.
 		alloc_data();
@@ -79,7 +79,7 @@ public:
 	 * @brief Constructor with size
 	 * @param n Size.
 	 */
-	data_array(const std::size_t n) noexcept : m_size(n) {
+	array(const std::size_t n) noexcept : m_size(n) {
 		alloc_data();
 	}
 	/**
@@ -87,17 +87,17 @@ public:
 	 * @param n Size.
 	 * @param v Value to initialize the array with.
 	 */
-	data_array(const std::size_t n, const T& v) noexcept : data_array(n) {
+	array(const std::size_t n, const T& v) noexcept : array(n) {
 		fill(v);
 	}
 	/// Copy constructor
-	data_array(const data_array& d) noexcept : data_array(d.m_size) {
+	array(const array& d) noexcept : array(d.m_size) {
 		if (m_size > 0) {
 			std::copy(d.begin(), d.end(), begin());
 		}
 	}
 	/// Copy assignment operator
-	data_array& operator= (const data_array& d) noexcept {
+	array& operator= (const array& d) noexcept {
 		if (m_size != d.m_size) {
 			delete[] m_data;
 			m_size = d.m_size;
@@ -110,7 +110,7 @@ public:
 	}
 
 	/// Move constructor
-	data_array(data_array&& d) noexcept {
+	array(array&& d) noexcept {
 		// steal data
 		m_data = d.m_data;
 		m_size = d.m_size;
@@ -119,7 +119,7 @@ public:
 		d.m_size = 0;
 	}
 	/// Move assignment operator
-	data_array& operator= (data_array&& d) noexcept {
+	array& operator= (array&& d) noexcept {
 		// free yourself
 		delete[] m_data;
 		// steal from others
@@ -134,7 +134,7 @@ public:
 	/*
 	/// Copy constructor from generic container
 	template <template <typename... Args> class container, typename... Types>
-	data_array(const container<Types...>& v) noexcept : data_array(v.size()) {
+	array(const container<Types...>& v) noexcept : array(v.size()) {
 		// assert first type in Types... is 'T'
 		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);
 
@@ -143,7 +143,7 @@ public:
 
 	/// Copy assignment operator from generic container
 	template <template <typename... Args> class container, typename... Types>
-	data_array& operator= (const container<Types...>& v) noexcept {
+	array& operator= (const container<Types...>& v) noexcept {
 		// assert first type in Types... is 'T'
 		static_assert(std::is_same_v<T, std::tuple_element_t<0, std::tuple<Types...>>>);
 
@@ -154,12 +154,12 @@ public:
 	*/
 
 	/// Destructor
-	~data_array() noexcept {
+	~array() noexcept {
 		clear();
 	}
 
 	/// Comparison of equal data arrays
-	bool operator== (const data_array& d) const noexcept {
+	bool operator== (const array& d) const noexcept {
 		if (size() != d.size()) { return size() < d.size(); }
 
 		for (std::size_t i = 0; i < size(); ++i) {

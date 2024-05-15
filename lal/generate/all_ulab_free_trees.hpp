@@ -44,7 +44,7 @@
 // lal includes
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace generate {
@@ -193,12 +193,12 @@ protected:
 
 private:
 	/// Canonical level sequence of the tree.
-	detail::data_array<uint64_t> m_L;
+	detail::array<uint64_t> m_L;
 	/**
 	 * @brief \f$W_i\f$ is the subscript of the level number in \f$L\f$
 	 * corresponding to the parent of the node corresponding to \f$l_i\f$.
 	 */
-	detail::data_array<uint64_t> m_W;
+	detail::array<uint64_t> m_W;
 
 	/// Largest integer such that \f$l_p \neq 2\f$.
 	uint64_t m_p;

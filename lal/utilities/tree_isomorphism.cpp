@@ -50,7 +50,7 @@
 
 // lal includes
 #include <lal/detail/properties/tree_centre.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/utilities/tree_isomorphism.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 

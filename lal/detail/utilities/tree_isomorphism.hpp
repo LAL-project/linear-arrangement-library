@@ -47,7 +47,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -214,7 +214,7 @@ noexcept
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 
-	data_array<std::string> names(t1.get_num_nodes());
+	array<std::string> names(t1.get_num_nodes());
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names.begin(), 0);
 	const std::string name_r2 = assign_name(t2, t2.get_root(), names.begin(), 0);
 	return name_r1 == name_r2;

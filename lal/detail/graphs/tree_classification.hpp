@@ -51,7 +51,7 @@
 #include <lal/graphs/tree_type.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace detail {
@@ -67,7 +67,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-void classify_tree(const tree_t& t, std::array<bool, graphs::__tree_type_size>& array)
+void classify_tree(const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types)
 noexcept
 {
 #if defined DEBUG
@@ -80,7 +80,7 @@ noexcept
 
 	const auto set_type =
 	[&](const graphs::tree_type& tt) {
-		array[static_cast<std::size_t>(tt)] = true;
+		tree_types[static_cast<std::size_t>(tt)] = true;
 		is_some = true;
 	};
 
@@ -104,13 +104,13 @@ noexcept
 	const uint64_t n = t.get_num_nodes();
 	if (n == 0) {
 		set_type(graphs::tree_type::empty);
-		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (n == 1) {
 		set_type(graphs::tree_type::singleton);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (n == 2) {
@@ -118,7 +118,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 	if (n == 3) {
@@ -126,7 +126,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 		return;
 	}
 
@@ -147,7 +147,7 @@ noexcept
 	uint64_t n_deg_ge_3 = 0; // of degree >= 3
 
 	// degree of the internal vertices
-	data_array<int64_t> deg_internal(n, 0);
+	array<int64_t> deg_internal(n, 0);
 
 	// fill in data
 	for (lal::node u = 0; u < n; ++u) {
@@ -236,7 +236,7 @@ noexcept
 	if (is_two_linear) { set_type(graphs::tree_type::two_linear); }
 
 	if (is_some) {
-		array[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
 	}
 }
 

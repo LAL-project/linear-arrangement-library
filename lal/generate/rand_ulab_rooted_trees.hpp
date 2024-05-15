@@ -48,7 +48,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 
 namespace lal {
 namespace generate {

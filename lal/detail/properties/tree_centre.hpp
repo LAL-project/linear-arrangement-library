@@ -118,7 +118,7 @@ std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 	std::vector<node> tree_leaves;
 	tree_leaves.reserve(t.get_num_nodes_component(X) - 1);
 	// full degree of every node of the connected component
-	data_array<uint64_t> trimmed_degree(n, 0);
+	array<uint64_t> trimmed_degree(n, 0);
 	// number of nodes in the connected component
 	uint64_t size_trimmed = t.get_num_nodes_component(X);
 

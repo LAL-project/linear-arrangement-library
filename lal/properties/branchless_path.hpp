@@ -49,7 +49,7 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/graphs/tree.hpp>
 
 namespace lal {
@@ -176,7 +176,7 @@ public:
 	std::size_t get_num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
 	bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
-	/// Returns the get_position of node @e u in @ref m_vetrex_sequence.
+	/// Returns the get_position of node @e u in @ref m_vertex_sequence.
 	std::size_t get_position(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
@@ -201,9 +201,9 @@ public:
 
 private:
 	/// A 0-1 array to indicate if a vertex belongs to this path or not.
-	detail::data_array<char> m_vertex_set;
+	detail::array<char> m_vertex_set;
 	/// The position in @ref m_vertex_sequence of each vertex.
-	detail::data_array<std::size_t> m_position;
+	detail::array<std::size_t> m_position;
 	/// The vertex sequence of this branchless path (includes h1 and h2).
 	std::vector<node> m_vertex_sequence;
 

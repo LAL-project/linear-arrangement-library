@@ -50,7 +50,7 @@
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/properties/Q.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/graphs/enumerate_sets.hpp>
 #include <lal/detail/graphs/utils.hpp>
@@ -62,7 +62,7 @@ namespace graphs {
 /* MODIFIERS */
 
 void directed_graph::normalise() noexcept {
-	detail::data_array<char> mem(get_num_nodes(), 0);
+	detail::array<char> mem(get_num_nodes(), 0);
 
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];

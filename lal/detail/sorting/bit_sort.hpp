@@ -45,7 +45,7 @@
 #include <algorithm>
 
 // lal includes
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/sorting/insertion_sort.hpp>
 #include <lal/detail/type_traits/is_pointer_iterator.hpp>
 
@@ -173,7 +173,7 @@ void bit_sort(It begin, It end, const std::size_t size) noexcept
 	const auto M = *M_it;
 
 	// bit array
-	data_array<char> seen(M - m + 1, 0);
+	array<char> seen(M - m + 1, 0);
 
 	bit_sort(begin,end, m, seen.begin());
 }

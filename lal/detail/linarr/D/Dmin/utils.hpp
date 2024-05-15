@@ -57,7 +57,7 @@
 // lal includes
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
@@ -292,7 +292,7 @@ uint64_t embed_branch(
 	const std::vector<std::vector<node_size>>& L,
 	node v,
 	int64_t base, int64_t dir,
-	data_array<int64_t>& rel_pos
+	array<int64_t>& rel_pos
 )
 noexcept
 {
@@ -378,7 +378,7 @@ noexcept
 	const uint64_t n = L.size();
 	uint64_t D = 0;
 
-	data_array<int64_t> rel_pos(n, 0);
+	array<int64_t> rel_pos(n, 0);
 	uint64_t left_sum = 0;
 	uint64_t right_sum = 0;
 

@@ -49,7 +49,7 @@
 #include <lal/detail/graphs/size_subtrees.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
 
@@ -67,7 +67,7 @@ namespace unconstrained {
 namespace Shiloach {
 
 /// Typedef for a useful type.
-typedef data_array<node_size> ordering;
+typedef array<node_size> ordering;
 
 /**
  * @brief Calculate \f$p_{\alpha}\f$.
@@ -224,7 +224,7 @@ noexcept
 	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
 	// of 'T_v' rooted at vertex 'u'. Now,
 	//     s[u] := the size of the subtree 'T_v[u]'
-	data_array<uint64_t> s(t.get_num_nodes());
+	array<uint64_t> s(t.get_num_nodes());
 	get_size_subtrees(t, v_star, s.begin());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)

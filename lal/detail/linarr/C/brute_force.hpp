@@ -47,7 +47,7 @@
 
 // lal includes
 #include <lal/iterators/Q_iterator.hpp>
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 
 #define idx(i,j, C) ((i)*(C) + (j))

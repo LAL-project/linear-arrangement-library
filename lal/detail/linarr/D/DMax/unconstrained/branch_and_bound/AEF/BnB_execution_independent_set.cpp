@@ -79,7 +79,7 @@ noexcept
 		<< "make up an various-degree independent set.\n";
 #endif
 
-	data_array<node> remain_verts(num_remain_verts);
+	array<node> remain_verts(num_remain_verts);
 	{
 	std::size_t i = 0;
 	uint64_t max_deg = 0;

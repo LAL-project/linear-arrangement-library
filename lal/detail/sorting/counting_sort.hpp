@@ -46,7 +46,7 @@
 #include <tuple>
 
 // lal includes
-#include <lal/detail/data_array.hpp>
+#include <lal/detail/array.hpp>
 #include <lal/detail/type_traits/is_pointer_iterator.hpp>
 #include <lal/detail/sorting/sorting_types.hpp>
 
@@ -71,9 +71,9 @@ namespace countingsort {
 template <typename T>
 struct memory {
 	/// Amount of times the key of an element occurs.
-	data_array<std::size_t> count;
+	array<std::size_t> count;
 	/// The output array.
-	data_array<T> output;
+	array<T> output;
 
 	/// Constructor.
 	memory() noexcept = default;
