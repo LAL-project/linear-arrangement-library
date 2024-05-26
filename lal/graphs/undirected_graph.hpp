@@ -355,6 +355,9 @@ public:
 	bool is_directed() const noexcept { return false; }
 	bool is_undirected() const noexcept { return true; }
 
+	/// Returns all the connected components of this graph as individual graphs.
+	std::vector<undirected_graph> get_connected_components() const noexcept;
+
 protected:
 	/**
 	 * @brief Initialises the memory in the graph hierarchy.

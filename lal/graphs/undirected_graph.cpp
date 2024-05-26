@@ -52,7 +52,9 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/iterators/Q_iterator.hpp>
 #include <lal/detail/graphs/enumerate_sets.hpp>
+#include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/graphs/utils.hpp>
+#include <lal/detail/graphs/conversions.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/macros/search.hpp>
 
@@ -336,6 +338,47 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 	return nu.size() <= nv.size() ?
 		std::find(nu.begin(), nu.end(), v) != nu.end() :
 		std::find(nv.begin(), nv.end(), u) != nv.end();
+}
+
+std::vector<undirected_graph> undirected_graph::get_connected_components()
+const noexcept
+{
+	const auto n = get_num_nodes();
+	detail::BFS bfs(*this);
+
+	std::vector<undirected_graph> all_ccs;
+
+	std::unordered_map<node, node> reduce;
+	std::vector<node> nodes_cc;
+
+	bfs.set_process_current(
+	[&](const auto&, node u) {
+		reduce.insert({u, reduce.size()});
+		nodes_cc.push_back(u);
+	}
+	);
+
+	for (node u = 0; u < n; ++u) {
+		if (bfs.node_was_visited(u)) { continue; }
+
+		nodes_cc.clear();
+		nodes_cc.reserve(n);
+		reduce.clear();
+		reduce.reserve(n);
+
+		bfs.start_at(u);
+		undirected_graph cc(nodes_cc.size());
+		for (node v : nodes_cc) {
+			for (node w : get_neighbours(v)) {
+				if (v < w) {
+					cc.add_edge_bulk(reduce[v], reduce[w]);
+				}
+			}
+		}
+		all_ccs.push_back( std::move(cc) );
+	}
+
+	return all_ccs;
 }
 
 /* PROTECTED */

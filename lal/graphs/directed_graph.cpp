@@ -52,6 +52,7 @@
 #include <lal/properties/Q.hpp>
 #include <lal/detail/array.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
+#include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/graphs/enumerate_sets.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/macros/search.hpp>
@@ -428,6 +429,55 @@ undirected_graph directed_graph::to_undirected(bool norm, bool check) const noex
 	g.finish_bulk_add(norm, check);
 	return g;
 }
+
+
+std::vector<directed_graph> directed_graph::get_connected_components()
+const noexcept
+{
+	const auto n = get_num_nodes();
+	detail::BFS bfs(*this);
+	bfs.set_use_rev_edges(true);
+
+	std::vector<directed_graph> all_ccs;
+
+	std::unordered_map<node, node> reduce;
+	std::vector<node> nodes_cc;
+
+	bfs.set_process_current(
+	[&](const auto&, node u) {
+		reduce.insert({u, reduce.size()});
+		nodes_cc.push_back(u);
+	}
+	);
+
+	for (node u = 0; u < n; ++u) {
+		if (bfs.node_was_visited(u)) { continue; }
+
+		nodes_cc.clear();
+		nodes_cc.reserve(n);
+		reduce.clear();
+		reduce.reserve(n);
+
+		bfs.start_at(u);
+		directed_graph cc(nodes_cc.size());
+		for (node v : nodes_cc) {
+			for (node w : get_out_neighbours(v)) {
+				if (v < w) {
+					cc.add_edge_bulk(reduce[v], reduce[w]);
+				}
+			}
+			for (node w : get_in_neighbours(v)) {
+				if (v < w) {
+					cc.add_edge_bulk(reduce[w], reduce[v]);
+				}
+			}
+		}
+		all_ccs.push_back( std::move(cc) );
+	}
+
+	return all_ccs;
+}
+
 
 /* PROTECTED */
 

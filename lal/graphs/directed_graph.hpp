@@ -419,6 +419,9 @@ public:
 	undirected_graph to_undirected
 	(bool norm = true, bool check = true) const noexcept;
 
+	/// Returns all the connected components of this graph as individual graphs.
+	std::vector<directed_graph> get_connected_components() const noexcept;
+
 protected:
 	/// In-neighbours for every node.
 	std::vector<neighbourhood> m_in_adjacency_list;
