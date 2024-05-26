@@ -49,6 +49,7 @@
 
 // lal includes
 #include <lal/iterators/E_iterator.hpp>
+#include <lal/detail/graphs/is_tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/graphs/retrieve_subtrees.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
@@ -59,6 +60,29 @@
 
 namespace lal {
 namespace graphs {
+
+rooted_tree::rooted_tree(const directed_graph& t) noexcept : directed_graph(t) {
+#if defined DEBUG
+	// check that the input graph is a tree
+	assert(detail::is_graph_a_tree(t));
+#endif
+
+	rooted_tree::tree_only_init(t.get_num_nodes());
+	// no need to call set_edges
+	tree_only_set_edges();
+}
+
+rooted_tree::rooted_tree(directed_graph&& t) noexcept : directed_graph(std::forward<directed_graph>(t)) {
+#if defined DEBUG
+	// check that the input graph is a tree
+	assert(detail::is_graph_a_tree(*this));
+#endif
+
+	rooted_tree::tree_only_init(get_num_nodes());
+	// no need to call set_edges
+	tree_only_set_edges();
+}
+
 
 /* MODIFIERS */
 

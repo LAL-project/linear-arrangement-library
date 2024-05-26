@@ -119,6 +119,21 @@ public:
 	rooted_tree(uint64_t n) noexcept {
 		rooted_tree::_init(n);
 	}
+
+	/**
+	 * @brief Copy constructor with directed graph.
+	 * @param t A directed graph.
+	 * @pre Graph @e t is a tree.
+	 */
+	rooted_tree(const directed_graph& t) noexcept;
+
+	/**
+	 * @brief Move constructor with directed graph.
+	 * @param t A directed graph.
+	 * @pre Graph @e t is a tree.
+	 */
+	rooted_tree(directed_graph&& t) noexcept;
+
 	/**
 	 * @brief Copy constructor.
 	 * @param r Rooted tree.
