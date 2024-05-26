@@ -196,7 +196,7 @@ noexcept
 		if (hv[i] != 0) {
 			// add the edge:
 			// * i ranges in [0,n-1]
-			// * L[i] ranges in [1,n]
+			// * hv[i] ranges in [1,n]
 			g.add_edge_bulk(i, hv[i] - 1);
 		}
 	}
