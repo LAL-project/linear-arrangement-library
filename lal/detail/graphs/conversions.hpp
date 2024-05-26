@@ -197,7 +197,7 @@ noexcept
 			// add the edge:
 			// * i ranges in [0,n-1]
 			// * hv[i] ranges in [1,n]
-			g.add_edge_bulk(i, hv[i] - 1);
+			g.add_edge_bulk(hv[i] - 1, i);
 		}
 	}
 	if constexpr (std::is_base_of_v<graphs::tree, graph_t>) {
