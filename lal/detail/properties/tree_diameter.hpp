@@ -78,13 +78,7 @@ uint64_t tree_diameter(const tree_t& t, node x) noexcept
 	const uint64_t n = t.get_num_nodes();
 
 	BFS<tree_t> bfs(t);
-
-	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-	bfs.set_use_rev_edges(true);
-	}
-	else {
-	bfs.set_use_rev_edges(false);
-	}
+	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 
 	node farthest_from_x;
 
