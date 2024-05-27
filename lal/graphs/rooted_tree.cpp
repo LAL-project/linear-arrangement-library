@@ -68,6 +68,11 @@ rooted_tree::rooted_tree(const directed_graph& t) noexcept : directed_graph(t) {
 #endif
 
 	rooted_tree::tree_only_init(t.get_num_nodes());
+	for (node u = 0; u < get_num_nodes(); ++u) {
+		if (get_in_degree(u) == 0) {
+			set_root(u);
+		}
+	}
 	// no need to call set_edges
 	tree_only_set_edges();
 }
@@ -79,6 +84,12 @@ rooted_tree::rooted_tree(directed_graph&& t) noexcept : directed_graph(std::forw
 #endif
 
 	rooted_tree::tree_only_init(get_num_nodes());
+	for (node u = 0; u < get_num_nodes(); ++u) {
+		if (get_in_degree(u) == 0) {
+			set_root(u);
+		}
+	}
+
 	// no need to call set_edges
 	tree_only_set_edges();
 }
