@@ -76,6 +76,9 @@ noexcept
 	[&](const auto&, node u) {
 		map_nodes_to_current_cc.insert({u, map_nodes_to_current_cc.size()});
 		nodes_current_cc.push_back(u);
+		if constexpr (full_structure) {
+			all_ccs_full.set_node_label(u, num_ccs);
+		}
 	}
 	);
 
@@ -123,9 +126,6 @@ noexcept
 
 		if constexpr (full_structure) {
 			all_ccs_full.add_graph( std::move(cc) );
-			for (node w : nodes_current_cc) {
-				all_ccs_full.set_node_label(w, num_ccs);
-			}
 		}
 		else {
 			all_ccs_simple.push_back( std::move(cc) );
