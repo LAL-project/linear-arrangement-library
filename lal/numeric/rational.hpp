@@ -93,7 +93,7 @@ public:
 	 */
 	rational(const rational& r) noexcept
 	{ mpq_init(m_val); mpq_set(m_val, r.m_val); }
-#if !defined __LAL_SWIG_PYTHON
+
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer
@@ -155,7 +155,7 @@ public:
 		r.m_val->_mp_den._mp_d = nullptr;
 		r.m_initialized = false;
 	}
-#endif
+
 	/// Destructor.
 	~rational() noexcept { mpq_clear(m_val); }
 
@@ -242,7 +242,7 @@ public:
 	 */
 	rational& operator= (const rational& r) noexcept
 	{ set_rational(r); return *this; }
-#if !defined __LAL_SWIG_PYTHON
+
 	/**
 	 * @brief Move assignment operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -292,7 +292,6 @@ public:
 
 		return *this;
 	}
-#endif
 
 	// -- EQUALITY
 

@@ -65,7 +65,7 @@ public:
 
 	/// Empty constructor.
 	integer() noexcept { mpz_init(m_val); }
-#if !defined __LAL_SWIG_PYTHON
+
 	/**
 	 * @brief Constructor with mpz_t.
 	 * @post Object @e raw will have to be initialized by the callee.
@@ -80,7 +80,7 @@ public:
 		raw->_mp_size = 0;
 		raw->_mp_d = nullptr;
 	}
-#endif
+
 	/**
 	 * @brief Constructor with unsigned integer value.
 	 * @param i An integer (basic type) number.
@@ -95,7 +95,7 @@ public:
 	 * @param s A string.
 	 */
 	integer(const std::string& s) noexcept { mpz_init_set_str(m_val, s.c_str(), 10); }
-#if !defined __LAL_SWIG_PYTHON
+
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer.
@@ -111,7 +111,7 @@ public:
 		i.m_val->_mp_d = nullptr;
 		i.m_initialized = false;
 	}
-#endif
+
 	/**
 	 * @brief Copy constructor.
 	 * @param i A @ref lal::numeric::integer.
@@ -157,7 +157,6 @@ public:
 
 	// -- ASSIGNMENT
 
-#if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Assignment operator.
 	 * @param i An integer (basic type) number.
@@ -195,7 +194,6 @@ public:
 
 		return *this;
 	}
-#endif
 
 	// -- EQUALITY
 

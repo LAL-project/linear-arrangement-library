@@ -65,7 +65,6 @@ template <class graph_t>
 class connected_components {
 public:
 
-#if !defined __LAL_SWIG_PYTHON
 	graph_t& operator[] (std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < m_connected_components.size());
@@ -79,7 +78,6 @@ public:
 #endif
 		return m_connected_components[i];
 	}
-#endif
 
 	// MODIFIERS
 
@@ -92,12 +90,10 @@ public:
 		m_node_to_cc.resize(n, n + 1);
 	}
 
-#if !defined __LAL_SWIG_PYTHON
 	/// Add a graph to the list of connected components.
 	void add_graph(graph_t&& g) noexcept {
 		m_connected_components.push_back(std::forward<graph_t>(g));
 	}
-#endif
 	/// Add a graph to the list of connected components.
 	void add_graph(const graph_t& g) noexcept {
 		m_connected_components.push_back(g);
