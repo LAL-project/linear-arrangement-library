@@ -182,6 +182,7 @@ target_sources(
 		#      properties
 		detail/properties/bipartite_graph_colorability.hpp
 		detail/properties/branchless_path_find.hpp
+		detail/properties/connected_components_compute.hpp
 		detail/properties/tree_centre.hpp
 		detail/properties/tree_centroid.hpp
 		detail/properties/tree_diameter.hpp
@@ -379,6 +380,8 @@ target_sources(
 		properties/branchless_path_find.hpp
 		properties/branchless_path.hpp
 		properties/C_rla.hpp
+		properties/connected_components_compute.hpp
+		properties/connected_components.hpp
 		properties/D_rla.hpp
 		properties/degrees.hpp
 		properties/hierarchical_distance.hpp
@@ -392,6 +395,7 @@ target_sources(
 		properties/bipartite_graph_colorability.cpp
 		properties/branchless_path_find.cpp
 		properties/C_rla.cpp
+		properties/connected_components_compute.cpp
 		properties/D_rla.cpp
 		properties/hierarchical_distance.cpp
 		properties/maximum_spanning_trees.cpp

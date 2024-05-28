@@ -41,25 +41,31 @@
 
 #pragma once
 
-#include <lal/properties/degrees.hpp>
-#include <lal/properties/C_rla.hpp>
-#include <lal/properties/D_rla.hpp>
-
-#include <lal/properties/hierarchical_distance.hpp>
-#include <lal/properties/maximum_spanning_trees.hpp>
-#include <lal/properties/Q.hpp>
-
-#include <lal/properties/tree_centre.hpp>
-#include <lal/properties/tree_centroid.hpp>
-#include <lal/properties/tree_diameter.hpp>
-
-#include <lal/properties/bipartite_graph_coloring.hpp>
-#include <lal/properties/bipartite_graph_colorability.hpp>
-
-#include <lal/properties/branchless_path.hpp>
-#include <lal/properties/branchless_path_find.hpp>
-
+// lal includes
+#include <lal/detail/array.hpp>
+#include <lal/basic_types.hpp>
 #include <lal/properties/connected_components.hpp>
-#include <lal/properties/connected_components_compute.hpp>
+#include <lal/graphs/undirected_graph.hpp>
+#include <lal/graphs/directed_graph.hpp>
 
-#include <lal/properties/vertex_orbits.hpp>
+namespace lal {
+namespace properties {
+
+/**
+ * @brief Compute the connected components of an undirected graph.
+ * @param g Input undirected graph.
+ * @returns An object containing all connected components.
+ */
+connected_components<graphs::undirected_graph> compute_connected_components
+(const graphs::undirected_graph& g);
+
+/**
+ * @brief Compute the connected components of a directed graph.
+ * @param g Input directed graph.
+ * @returns An object containing all connected components.
+ */
+connected_components<graphs::directed_graph> compute_connected_components
+(const graphs::directed_graph& g);
+
+} // -- namespace properties
+} // -- namespace lal

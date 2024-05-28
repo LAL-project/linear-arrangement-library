@@ -127,6 +127,7 @@ HEADERS += \
 	detail/macros/search.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
 	detail/properties/branchless_path_find.hpp \
+	detail/properties/connected_components_compute.hpp \
 	detail/properties/tree_maximum_caterpillar.hpp \
 	detail/queue_array.hpp \
 	detail/set_array.hpp \
@@ -246,6 +247,8 @@ HEADERS += \
 	properties/bipartite_graph_coloring.hpp \
 	properties/branchless_path.hpp \
 	properties/branchless_path_find.hpp \
+	properties/connected_components.hpp \
+	properties/connected_components_compute.hpp \
 	properties/degrees.hpp \
 	properties/hierarchical_distance.hpp \
 	properties/maximum_spanning_trees.hpp \
@@ -311,6 +314,7 @@ SOURCES += \
 	properties/Q.cpp \
 	properties/bipartite_graph_colorability.cpp \
 	properties/branchless_path_find.cpp \
+	properties/connected_components_compute.cpp \
 	properties/hierarchical_distance.cpp \
 	properties/maximum_spanning_trees.cpp \
 	properties/tree_centre.cpp \
