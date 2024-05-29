@@ -560,6 +560,8 @@ set(LIBLAL_PROPERTIES_HEADER
 	properties/bipartite_graph_coloring.hpp
 	properties/branchless_path_find.hpp
 	properties/branchless_path.hpp
+	properties/connected_components.hpp
+	properties/connected_components_compute.hpp
 	properties/C_rla.hpp
 	properties/D_rla.hpp
 	properties/degrees.hpp
