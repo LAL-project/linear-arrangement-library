@@ -63,9 +63,9 @@ namespace detail {
  *
  * Once the @e n @ref push operations have been done, the queue has exhausted
  * its resources (see @ref is_exhausted) and must be reset (see @ref reset).
- * @tparam T Type of the elements in the queue.
+ * @tparam value_t Type of the elements in the queue.
  */
-template <class T>
+template <typename value_t>
 class queue_array {
 public:
 	/// Initializes the queue to hold @e n elements.
@@ -76,18 +76,18 @@ public:
 	}
 
 	/// Insert a new element to the queue.
-	void push(const T& v) noexcept {
+	void push(const value_t& v) noexcept {
 #if defined DEBUG
 		assert(not is_full());
 #endif
 		m_queue[m_right++] = v;
 	}
 	/// Insert a new element to the queue.
-	void push(T&& v) noexcept {
+	void push(value_t&& v) noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
-		m_queue[m_right++] = std::forward<T>(v);
+		m_queue[m_right++] = std::forward<value_t>(v);
 	}
 	/**
 	 * @brief Pops the first element of the queue
@@ -95,7 +95,7 @@ public:
 	 * @post The size of the queue is reduced by one.
 	 * @post Pointer @ref m_left is updated.
 	 */
-	T&& pop() noexcept {
+	value_t&& pop() noexcept {
 #if defined DEBUG
 		assert(m_left < m_queue.size());
 #endif
@@ -103,7 +103,7 @@ public:
 	}
 
 	/// Returns a reference to the front element.
-	T& front() noexcept {
+	value_t& front() noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
@@ -111,7 +111,7 @@ public:
 	}
 
 	/// Returns a constant reference to the front element.
-	const T& front() const noexcept {
+	const value_t& front() const noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
@@ -151,17 +151,17 @@ public:
 	bool is_full() const noexcept { return m_right == m_queue.size(); }
 
 	/// Pointer to begin.
-	T *begin() noexcept { return m_queue.begin() + m_left; }
+	value_t *begin() noexcept { return m_queue.begin() + m_left; }
 	/// Constant pointer to begin.
-	const T *begin() const noexcept { return m_queue.begin() + m_left; }
+	const value_t *begin() const noexcept { return m_queue.begin() + m_left; }
 	/// Pointer to end.
-	T *end() noexcept { return m_queue.begin() + m_right; }
+	value_t *end() noexcept { return m_queue.begin() + m_right; }
 	/// Constant pointer to end.
-	const T *end() const noexcept { return m_queue.begin() + m_right; }
+	const value_t *end() const noexcept { return m_queue.begin() + m_right; }
 
 private:
 	/// Data (array) of the queue
-	array<T> m_queue;
+	array<value_t> m_queue;
 
 	/// Left pointer to @ref m_queue
 	std::size_t m_left;

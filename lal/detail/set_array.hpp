@@ -101,7 +101,7 @@ namespace detail {
  * @tparam value_t The type of the contained elements
  * @tparam indexer_t The type of the indexer object
  */
-template<typename value_t, class indexer_t = value_t>
+template <typename value_t, class indexer_t = value_t>
 class set_array {
 public:
 
