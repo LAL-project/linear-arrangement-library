@@ -58,7 +58,7 @@ noexcept
 	graphs::rooted_tree t(seq.size());
 
 	for (node chunk_idx = 0; chunk_idx < seq.size(); ++chunk_idx) {
-		const auto& c = seq.get_chunk(chunk_idx);
+		const auto& c = seq[chunk_idx];
 
 		if (c.has_parent_node()) {
 			const std::size_t parent_chunk_idx = seq.get_chunk_index(c.get_parent_node());

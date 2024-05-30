@@ -122,7 +122,7 @@ private:
 
 	/// Returns a reference to the last chunk in the sentence.
 	linarr::chunk& last_chunk() noexcept {
-		return m_sequence.get_chunk(m_sequence.size() - 1);
+		return m_sequence[m_sequence.size() - 1];
 	}
 
 	/// Returns the chunk index of node @e u.
@@ -137,7 +137,7 @@ private:
 	/// Set the parent node of all chunks.
 	void set_parent_chunks() noexcept {
 		for (std::size_t i = 0; i < m_sequence.size(); ++i) {
-			linarr::chunk& c = m_sequence.get_chunk(i);
+			linarr::chunk& c = m_sequence[i];
 
 			for (node v : c.get_nodes()) {
 				if (m_rt.get_in_degree(v) == 0) {

@@ -186,6 +186,30 @@ public:
 		m_from_node_to_chunk.resize(n, n + 1);
 	}
 
+	/**
+	 * @brief The @e i-th chunk.
+	 * @param i Chunk index.
+	 * @returns A constant reference to the @e i-th chunk.
+	 */
+	[[nodiscard]] const chunk& operator[] (std::size_t i) const noexcept {
+#if defined DEBUG
+		assert(i < size());
+#endif
+		return m_chunks[i];
+	}
+
+	/**
+	 * @brief The @e i-th chunk.
+	 * @param i Chunk index.
+	 * @returns A non-constant reference to the @e i-th chunk.
+	 */
+	[[nodiscard]] chunk& operator[] (std::size_t i) noexcept {
+#if defined DEBUG
+		assert(i < size());
+#endif
+		return m_chunks[i];
+	}
+
 	/* MODIFIERS */
 
 	/**
@@ -228,30 +252,6 @@ public:
 		assert(u < m_from_node_to_chunk.size());
 #endif
 		return m_from_node_to_chunk[u];
-	}
-
-	/**
-	 * @brief The @e i-th chunk.
-	 * @param i Chunk index.
-	 * @returns A constant reference to the @e i-th chunk.
-	 */
-	const chunk& get_chunk(std::size_t i) const noexcept {
-#if defined DEBUG
-		assert(i < size());
-#endif
-		return m_chunks[i];
-	}
-
-	/**
-	 * @brief The @e i-th chunk.
-	 * @param i Chunk index.
-	 * @returns A non-constant reference to the @e i-th chunk.
-	 */
-	chunk& get_chunk(std::size_t i) noexcept {
-#if defined DEBUG
-		assert(i < size());
-#endif
-		return m_chunks[i];
 	}
 
 	/**

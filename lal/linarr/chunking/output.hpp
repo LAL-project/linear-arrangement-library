@@ -85,7 +85,7 @@ inline std::ostream& operator<< (std::ostream& os, const chunk_sequence& seq)
 noexcept
 {
 	for (std::size_t i = 0; i < seq.size(); ++i) {
-		os << i << ": " << seq.get_chunk(i) << '\n';
+		os << i << ": " << seq[i] << '\n';
 	}
 	return os;
 }

@@ -127,7 +127,7 @@ private:
 	}
 	/// Returns a reference to the last chunk in the sentence.
 	linarr::chunk& last_chunk() noexcept {
-		return m_sequence.get_chunk(m_sequence.size() - 1);
+		return m_sequence[m_sequence.size() - 1];
 	}
 
 	/**
