@@ -54,6 +54,10 @@ namespace linarr {
  * Chunking is the art of grouping nodes (a.k.a. words) of a syntactic dependency
  * tree in such a way that the resulting groups share common properties. This
  * enumeration lists all the chunking algorithms implemented in this library.
+ *
+ * Here we use 'chunking' as an umbrella term for all the algorithms that
+ * group nodes in units in a systematic way. Some researchers may not use this
+ * term.
  */
 enum class algorithms_chunking {
 	/**
@@ -65,7 +69,11 @@ enum class algorithms_chunking {
 	/**
 	 * @brief Chunking algorithm by Mačutek.
 	 *
+	 * Mačutek et al. termed chunks as Linear Dependency Sequences (LDSs).
 	 * For further details see \cite Macutek2021a.
+	 *
+	 * Note: the implementation of Mačutek's algorithm in LAL does not take
+	 * clauses into account when computing an LDS.
 	 */
 	Macutek
 };
