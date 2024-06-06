@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <iostream>
 #include <vector>
 
 // lal includes
@@ -88,20 +89,47 @@ public:
 	 */
 	void init(std::size_t n) noexcept {
 		m_node_to_cc.resize(n, n + 1);
+		m__graph_node__to__cc_node.resize(n, n + 1);
 	}
 
 	/// Add a graph to the list of connected components.
 	void add_graph(graph_t&& g) noexcept {
+		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(std::forward<graph_t>(g));
+		m__cc_node__to__graph_node.emplace_back(n, n + 1);
 	}
 	/// Add a graph to the list of connected components.
 	void add_graph(const graph_t& g) noexcept {
+		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(g);
+		m__cc_node__to__graph_node.emplace_back(n, n + 1);
 	}
 
-	/// Sets the label @e lof the connected component to which node @e u belongs.
-	void set_node_label(node u, std::size_t label) noexcept {
+	/**
+	 * @brief Relates vertex @e u to the label of its connected component.
+	 * @param u Input node (of the original graph).
+	 * @param label The label of the connected component of @e u.
+	 */
+	void set_node_cc(node u, std::size_t label) noexcept {
 		m_node_to_cc[u] = label;
+	}
+
+	/**
+	 * @brief Relates vertex @e u to the corresponding vertex within its connected component.
+	 * @param u Input node (of the original graph).
+	 * @param label The label of the vertex @e u within its connected component.
+	 */
+	void set_label_graph_node_to_cc_node(node u, std::size_t label) noexcept {
+		m__graph_node__to__cc_node[u] = label;
+	}
+	/**
+	 * @brief Relates vertex @e u to the corresponding vertex within its connected component.
+	 * @param cc_idx The label of the connected component of @e u.
+	 * @param u Input node (within the connected component).
+	 * @param label The label of @e u in the whole graph.
+	 */
+	void set_label_cc_node_to_graph_node(std::size_t cc_idx, node u, std::size_t label) noexcept {
+		m__cc_node__to__graph_node[cc_idx][u] = label;
 	}
 
 	// GETTERS
@@ -111,16 +139,47 @@ public:
 		return m_connected_components.size();
 	}
 
-	/// Returns the label of the connected component to which @e u belongs.
-	std::size_t get_label(node u) const noexcept {
+	/**
+	 * @brief Returns the label of the connected component @e u belongs to.
+	 * @param u Node of the original graph.
+	 * @returns A numeric value from 0 to the number of connected components (see
+	 * @ref size())
+	 */
+	std::size_t get_cc_node(node u) const noexcept {
 		return m_node_to_cc[u];
+	}
+
+	/**
+	 * @brief The corresponding vertex within its connected component.
+	 * @param u Input node (of the original graph).
+	 * @returns The label of the vertex @e u within its connected component.
+	 */
+	std::size_t get_label_graph_node_to_cc_node(node u) const noexcept {
+		return m__graph_node__to__cc_node[u];
+	}
+	/**
+	 * @brief The corresponding vertex within its connected component.
+	 * @param cc_idx The label of the connected component of @e u.
+	 * @param u Input node (within the connected component).
+	 * @returns The label of @e u in the whole graph.
+	 */
+	std::size_t get_label_cc_node_to_graph_node(std::size_t cc_idx, node u) const noexcept {
+		return m__cc_node__to__graph_node[cc_idx][u];
 	}
 
 private:
 	/// The connected components of the graph.
 	std::vector<graph_t> m_connected_components;
+
+	/// Relates the vertices in each connected components to their corresponding
+	/// vertex in the original graph.
+	std::vector<detail::array<std::size_t>> m__cc_node__to__graph_node;
+	/// Relates the vertices in the original graph components to their corresponding
+	/// vertex in the connected_component.
+	detail::array<std::size_t> m__graph_node__to__cc_node;
+
 	/// The label of the connected component a vertex belongs to.
-	lal::detail::array<std::size_t> m_node_to_cc;
+	detail::array<std::size_t> m_node_to_cc;
 };
 
 } // -- namespace properties
