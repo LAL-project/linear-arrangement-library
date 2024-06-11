@@ -378,7 +378,7 @@ noexcept;
  * @param g Input undirected graph.
  * @param c Coloring of the input graph.
  * @returns A maximal bipartite arrangement.
- * @pre The input graph @e g is a bipartite graph.
+ * @pre The input graph @e g is a connected bipartite graph.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g, const properties::bipartite_graph_coloring& c)
@@ -394,7 +394,7 @@ noexcept;
  * arrangement.
  * @param g Input undirected graph.
  * @returns A maximal bipartite arrangement.
- * @pre The input graph @e g is a bipartite graph.
+ * @pre The input graph @e g is a connected bipartite graph.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g)
@@ -414,7 +414,7 @@ noexcept;
  * @param g Input directed graph.
  * @param c Coloring of the input graph.
  * @returns A maximal bipartite arrangement.
- * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
+ * @pre The input graph @e g is a connected bipartite graph (ignoring orientation of edges).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::directed_graph& g, const properties::bipartite_graph_coloring& c)
@@ -433,7 +433,7 @@ noexcept;
  * lal::graphs::directed_graph::to_undirected())
  * @param g Input directed graph.
  * @returns A maximal bipartite arrangement.
- * @pre The input graph @e g is a bipartite graph (ignoring orientation of edges).
+ * @pre The input graph @e g is a connected bipartite graph (ignoring orientation of edges).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::directed_graph& g)
