@@ -60,7 +60,7 @@ namespace detail {
  * @brief Classify a tree into one of the types @ref lal::graphs::tree_type.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
- * @param[out] array A set of bits (or flags) each indicating whether or not @e t
+ * @param[out] tree_types A set of bits (or flags) each indicating whether or not @e t
  * is of a certain tree type.
  */
 template <
