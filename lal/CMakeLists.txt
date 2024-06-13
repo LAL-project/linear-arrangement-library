@@ -346,6 +346,7 @@ target_sources(
 		linarr/D/Dmin.hpp
 		linarr/syntactic_dependency_tree/classify.hpp
 		linarr/syntactic_dependency_tree/type.hpp
+		linarr/dependency_flux_compute.hpp
 		linarr/dependency_flux.hpp
 		linarr/formal_constraints.hpp
 		linarr/head_initial.hpp

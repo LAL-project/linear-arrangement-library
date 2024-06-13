@@ -41,30 +41,48 @@
 
 #pragma once
 
-#include <lal/linarr/aggregations/1level.hpp>
-#include <lal/linarr/aggregations/2level.hpp>
-
-#include <lal/linarr/C/algorithms_C.hpp>
-#include <lal/linarr/C/C.hpp>
-
-#include <lal/linarr/chunking/algorithms.hpp>
-#include <lal/linarr/chunking/chunk.hpp>
-#include <lal/linarr/chunking/chunking.hpp>
-#include <lal/linarr/chunking/output.hpp>
-
-#include <lal/linarr/D/algorithms_Dmin.hpp>
-#include <lal/linarr/D/algorithms_Dmin_planar.hpp>
-#include <lal/linarr/D/algorithms_Dmin_projective.hpp>
-#include <lal/linarr/D/D.hpp>
-#include <lal/linarr/D/DMax.hpp>
-#include <lal/linarr/D/Dmin.hpp>
-
-#include <lal/linarr/syntactic_dependency_tree/classify.hpp>
-#include <lal/linarr/syntactic_dependency_tree/type.hpp>
-
+// lal includes
+#include <lal/linear_arrangement.hpp>
+#include <lal/numeric/rational.hpp>
+#include <lal/graphs/rooted_tree.hpp>
+#include <lal/graphs/free_tree.hpp>
 #include <lal/linarr/dependency_flux.hpp>
-#include <lal/linarr/dependency_flux_compute.hpp>
 
-#include <lal/linarr/formal_constraints.hpp>
+namespace lal {
+namespace linarr {
 
-#include <lal/linarr/head_initial.hpp>
+/**
+ * @brief Computes the flux of a dependency tree.
+ *
+ * This function is implemented based on the explanations given in \cite Kahane2017a.
+ * @param t Input free tree (or dependency tree).
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @returns The set of dependency fluxes in the arrangement.
+ * @pre The tree @e t is a valid free tree. Method graphs::free_tree::is_tree
+ * returns true.
+ */
+std::vector<dependency_flux>
+compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noexcept;
+
+/**
+ * @brief Computes the flux of a dependency tree.
+ *
+ * This function is implemented based on the explanations given in \cite Kahane2017a.
+ * @param t Input rooted tree (or dependency tree).
+ * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
+ * @returns The set of dependency fluxes in the arrangement.
+ * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
+ * returns true.
+ */
+inline
+	std::vector<dependency_flux> compute_flux
+	(const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
+{
+#if defined DEBUG
+	assert(t.is_rooted_tree());
+#endif
+	return compute_flux(t.to_free_tree(), pi);
+}
+
+} // -- namespace linarr
+} // -- namespace lal

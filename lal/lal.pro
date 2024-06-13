@@ -228,6 +228,7 @@ HEADERS += \
 	linarr/chunking/chunking.hpp \
 	linarr/chunking/output.hpp \
 	linarr/dependency_flux.hpp \
+	linarr/dependency_flux_compute.hpp \
 	linarr/formal_constraints.hpp \
 	linarr/head_initial.hpp \
 	linarr/syntactic_dependency_tree/classify.hpp \
