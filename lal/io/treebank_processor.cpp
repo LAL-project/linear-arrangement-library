@@ -500,7 +500,7 @@ noexcept
 	}
 	std::vector<properties::branchless_path> bps;
 	if (m_what_fs[DMax_1_thistle_idx] or m_what_fs[DMax_Unconstrained_idx]) {
-		bps = detail::find_all_branchless_paths(fT);
+		bps = detail::compute_branchless_paths(fT);
 	}
 	std::vector<std::vector<node>> orbits;
 	if (m_what_fs[DMax_Unconstrained_idx]) {

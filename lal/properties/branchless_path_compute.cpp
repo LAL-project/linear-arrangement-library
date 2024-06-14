@@ -49,13 +49,13 @@ namespace lal {
 namespace properties {
 
 std::vector<branchless_path>
-find_all_branchless_paths(const graphs::free_tree& t) noexcept {
-	return detail::find_all_branchless_paths(t);
+compute_branchless_paths(const graphs::free_tree& t) noexcept {
+	return detail::compute_branchless_paths(t);
 }
 
 std::vector<branchless_path>
-find_all_branchless_paths(const graphs::rooted_tree& t) noexcept {
-	return detail::find_all_branchless_paths(t);
+compute_branchless_paths(const graphs::rooted_tree& t) noexcept {
+	return detail::compute_branchless_paths(t);
 }
 
 } // -- namespace properties

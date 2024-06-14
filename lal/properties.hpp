@@ -57,7 +57,7 @@
 #include <lal/properties/bipartite_graph_colorability.hpp>
 
 #include <lal/properties/branchless_path.hpp>
-#include <lal/properties/branchless_path_find.hpp>
+#include <lal/properties/branchless_path_compute.hpp>
 
 #include <lal/properties/connected_components.hpp>
 #include <lal/properties/connected_components_compute.hpp>

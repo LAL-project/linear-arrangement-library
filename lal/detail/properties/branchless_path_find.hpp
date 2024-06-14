@@ -145,7 +145,7 @@ noexcept
  */
 template <class tree_t>
 std::vector<properties::branchless_path>
-find_all_branchless_paths(const tree_t& t)
+compute_branchless_paths(const tree_t& t)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();

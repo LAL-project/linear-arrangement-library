@@ -91,7 +91,7 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 noexcept
 {
 	const std::vector<properties::branchless_path> all_paths
-		= lal::detail::find_all_branchless_paths(t);
+		= lal::detail::compute_branchless_paths(t);
 	return max_sum_edge_lengths_1_le_thistle(t, c, all_paths);
 }
 
@@ -102,7 +102,7 @@ noexcept
 	const properties::bipartite_graph_coloring c
 		= detail::color_vertices_graph(t);
 	const std::vector<properties::branchless_path> all_paths
-		= lal::detail::find_all_branchless_paths(t);
+		= lal::detail::compute_branchless_paths(t);
 	return max_sum_edge_lengths_1_le_thistle(t, c, all_paths);
 }
 
@@ -122,7 +122,7 @@ std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
 noexcept
 {
 	const std::vector<properties::branchless_path> all_paths
-		= lal::detail::find_all_branchless_paths(t);
+		= lal::detail::compute_branchless_paths(t);
 	return max_sum_edge_lengths_1_eq_thistle(t, all_paths);
 }
 
