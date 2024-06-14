@@ -75,8 +75,8 @@ compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noex
  * returns true.
  */
 inline
-	std::vector<dependency_flux> compute_flux
-	(const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
+std::vector<dependency_flux> compute_flux
+(const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());

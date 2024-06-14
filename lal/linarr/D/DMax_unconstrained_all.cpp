@@ -57,7 +57,7 @@
 
 #include <lal/detail/array.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_find.hpp>
+#include <lal/detail/properties/branchless_path_compute.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 
 #include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>
@@ -398,7 +398,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 )
 noexcept
 {
-	const std::vector<properties::branchless_path> bps = lal::detail::compute_branchless_paths(t);
+	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 
@@ -421,7 +421,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 )
 noexcept
 {
-	const std::vector<properties::branchless_path> bps = lal::detail::compute_branchless_paths(t);
+	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
 	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
@@ -434,7 +434,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = lal::detail::compute_branchless_paths(t);
+	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 
@@ -445,7 +445,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = lal::detail::compute_branchless_paths(t);
+	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
 	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }

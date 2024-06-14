@@ -76,7 +76,7 @@
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_find.hpp>
+#include <lal/detail/properties/branchless_path_compute.hpp>
 
 #include <lal/detail/linarr/dependency_flux.hpp>
 #include <lal/detail/linarr/headedness.hpp>
@@ -500,7 +500,7 @@ noexcept
 	}
 	std::vector<properties::branchless_path> bps;
 	if (m_what_fs[DMax_1_thistle_idx] or m_what_fs[DMax_Unconstrained_idx]) {
-		bps = detail::compute_branchless_paths(fT);
+		bps = detail::branchless_paths_compute(fT);
 	}
 	std::vector<std::vector<node>> orbits;
 	if (m_what_fs[DMax_Unconstrained_idx]) {

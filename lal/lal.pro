@@ -126,7 +126,7 @@ HEADERS += \
 	detail/macros/basic_convert.hpp \
 	detail/macros/search.hpp \
 	detail/properties/bipartite_graph_colorability.hpp \
-	detail/properties/branchless_path_find.hpp \
+	detail/properties/branchless_path_compute.hpp \
 	detail/properties/connected_components_compute.hpp \
 	detail/properties/tree_maximum_caterpillar.hpp \
 	detail/queue_array.hpp \
