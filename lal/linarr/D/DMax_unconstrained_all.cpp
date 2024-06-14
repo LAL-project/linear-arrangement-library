@@ -57,7 +57,7 @@
 
 #include <lal/detail/array.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_compute.hpp>
+#include <lal/detail/properties/branchless_paths_compute.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 
 #include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>

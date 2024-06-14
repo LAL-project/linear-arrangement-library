@@ -76,7 +76,7 @@
 #include <lal/detail/io/check_correctness.hpp>
 #include <lal/detail/properties/tree_centroid.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_compute.hpp>
+#include <lal/detail/properties/branchless_paths_compute.hpp>
 
 #include <lal/detail/linarr/dependency_flux.hpp>
 #include <lal/detail/linarr/headedness.hpp>

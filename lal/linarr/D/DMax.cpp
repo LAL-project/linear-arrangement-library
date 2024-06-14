@@ -54,7 +54,7 @@
 #include <lal/detail/linarr/D/DMax/Bipartite_AEF.hpp>
 #include <lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_compute.hpp>
+#include <lal/detail/properties/branchless_paths_compute.hpp>
 
 namespace lal {
 namespace linarr {

@@ -76,7 +76,7 @@
 
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
-#include <lal/detail/properties/branchless_path_compute.hpp>
+#include <lal/detail/properties/branchless_paths_compute.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/linarr/level_signature.hpp>

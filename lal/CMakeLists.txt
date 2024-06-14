@@ -181,7 +181,7 @@ target_sources(
 		detail/numeric/utils.hpp
 		#      properties
 		detail/properties/bipartite_graph_colorability.hpp
-		detail/properties/branchless_path_compute.hpp
+		detail/properties/branchless_paths_compute.hpp
 		detail/properties/connected_components_compute.hpp
 		detail/properties/tree_centre.hpp
 		detail/properties/tree_centroid.hpp
@@ -378,7 +378,7 @@ target_sources(
 		# -- headers
 		properties/bipartite_graph_colorability.hpp
 		properties/bipartite_graph_coloring.hpp
-		properties/branchless_path_compute.hpp
+		properties/branchless_paths_compute.hpp
 		properties/branchless_path.hpp
 		properties/C_rla.hpp
 		properties/connected_components_compute.hpp
@@ -394,7 +394,7 @@ target_sources(
 		properties/vertex_orbits.hpp
 		# -- sources
 		properties/bipartite_graph_colorability.cpp
-		properties/branchless_path_compute.cpp
+		properties/branchless_paths_compute.cpp
 		properties/C_rla.cpp
 		properties/connected_components_compute.cpp
 		properties/D_rla.cpp
@@ -559,7 +559,7 @@ set(LIBLAL_NUMERIC_HEADER
 set(LIBLAL_PROPERTIES_HEADER
 	properties/bipartite_graph_colorability.hpp
 	properties/bipartite_graph_coloring.hpp
-	properties/branchless_path_compute.hpp
+	properties/branchless_paths_compute.hpp
 	properties/branchless_path.hpp
 	properties/connected_components_compute.hpp
 	properties/connected_components.hpp

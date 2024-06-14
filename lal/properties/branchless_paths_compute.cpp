@@ -43,18 +43,18 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/properties/branchless_path.hpp>
-#include <lal/detail/properties/branchless_path_compute.hpp>
+#include <lal/detail/properties/branchless_paths_compute.hpp>
 
 namespace lal {
 namespace properties {
 
 std::vector<branchless_path>
-compute_branchless_paths(const graphs::free_tree& t) noexcept {
+branchless_paths_compute(const graphs::free_tree& t) noexcept {
 	return detail::branchless_paths_compute(t);
 }
 
 std::vector<branchless_path>
-compute_branchless_paths(const graphs::rooted_tree& t) noexcept {
+branchless_paths_compute(const graphs::rooted_tree& t) noexcept {
 	return detail::branchless_paths_compute(t);
 }
 

@@ -58,7 +58,7 @@ namespace properties {
  * @returns The list of branchless paths.
  */
 std::vector<branchless_path>
-compute_branchless_paths(const graphs::free_tree& t) noexcept;
+branchless_paths_compute(const graphs::free_tree& t) noexcept;
 
 /**
  * @brief Finds all branchless paths in a tree.
@@ -66,7 +66,7 @@ compute_branchless_paths(const graphs::free_tree& t) noexcept;
  * @returns The list of branchless paths.
  */
 std::vector<branchless_path>
-compute_branchless_paths(const graphs::rooted_tree& t) noexcept;
+branchless_paths_compute(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal
