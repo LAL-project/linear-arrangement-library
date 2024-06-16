@@ -92,6 +92,23 @@ public:
 		m_parent = u;
 	}
 
+	/**
+	 * @brief Unsets the root node of this chunk.
+	 * @post After calling this, method @ref has_root_node returns false.
+	 */
+	void unset_root_node() noexcept {
+		m_root = {};
+	}
+
+	/**
+	 * @brief Sets the root node of this chunk.
+	 * @param u Root parent of this chunk.
+	 * @post After calling this, method @ref has_root_node returns true.
+	 */
+	void set_root_node(node u) noexcept {
+		m_root = u;
+	}
+
 	/* GETTERS */
 
 	/**
@@ -102,7 +119,7 @@ public:
 	 */
 	const std::vector<node>& get_nodes() const noexcept { return m_nodes; }
 
-	/// Does this chunk have a parent vertex?
+	/// Does this chunk have a parent node?
 	bool has_parent_node() const noexcept { return m_parent.has_value(); }
 
 	/**
@@ -117,11 +134,28 @@ public:
 		return *m_parent;
 	}
 
+	/// Does this chunk have a parent node?
+	bool has_root_node() const noexcept { return m_root.has_value(); }
+
+	/**
+	 * @brief Retrieve the root node of this chunk.
+	 * @returns The root node if it exists.
+	 * @pre Method @ref has_root_node must evaluate to true.
+	 */
+	node get_root_node() const noexcept {
+#if defined DEBUG
+		assert(has_root_node());
+#endif
+		return *m_root;
+	}
+
 private:
 	/// Collection of nodes in this chunk
 	std::vector<node> m_nodes;
 	/// The parent vertex of this chunk
 	std::optional<node> m_parent;
+	/// The root vertex of this chunk
+	std::optional<node> m_root;
 };
 
 /**

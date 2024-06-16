@@ -245,6 +245,7 @@ private:
 					else {
 						const auto chunk_parent = m_rt.get_parent_node(v);
 						c.set_parent_node( chunk_parent );
+						c.set_root_node( v );
 					}
 				}
 			}
@@ -253,6 +254,7 @@ private:
 			if (not head_found) {
 				const auto first_vertex = c.get_nodes()[0];
 				c.set_parent_node( m_rt.get_parent_node(first_vertex) );
+				c.set_root_node( first_vertex );
 			}
 
 			if (p < m_n) {

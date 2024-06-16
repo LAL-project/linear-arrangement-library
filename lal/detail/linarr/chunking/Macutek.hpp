@@ -148,6 +148,7 @@ private:
 					const node pv = m_rt.get_parent_node(v);
 					if (node_to_chunk(pv) != i) {
 						c.set_parent_node(pv);
+						c.set_root_node(v);
 					}
 				}
 			}
