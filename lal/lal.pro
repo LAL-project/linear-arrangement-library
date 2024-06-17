@@ -119,6 +119,7 @@ HEADERS += \
 	detail/linarr/D/bipartite_opt_utils.hpp \
 	detail/linarr/chunking/Anderson.hpp \
 	detail/linarr/chunking/Macutek.hpp \
+	detail/linarr/chunking/generic.hpp \
 	detail/linarr/dependency_flux.hpp \
 	detail/linarr/formal_constraints.hpp \
 	detail/linarr/headedness.hpp \

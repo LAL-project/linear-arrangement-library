@@ -44,6 +44,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
+#include <lal/detail/linarr/chunking/generic.hpp>
 
 namespace lal {
 namespace detail {
@@ -59,18 +60,7 @@ namespace detail {
  * @tparam arr_t Type of arrangement.
  */
 template <class arrangement_t>
-class chunks_Anderson {
-public:
-	/// Input rooted tree.
-	const graphs::rooted_tree& m_rt;
-	/// Linear arrangement.
-	const arrangement_t m_arr;
-	/// Number of vertices of the tree.
-	const uint64_t m_n;
-
-	/// The sequence of chunks obtained.
-	linarr::chunk_sequence m_sequence;
-
+class chunks_Anderson : public chunks_generic<arrangement_t> {
 public:
 	/**
 	 * @brief Constructor
@@ -79,8 +69,7 @@ public:
 	 */
 	chunks_Anderson(const graphs::rooted_tree& rt, const arrangement_t& arr)
 	noexcept
-		: m_rt(rt), m_arr(arr),
-		  m_n(rt.get_num_nodes())
+		: generic(rt, arr)
 	{
 	}
 
@@ -116,18 +105,6 @@ private:
 	/// Can node @e u be added to the same chunk as @e r.
 	bool can_be_added(node r, node u) const noexcept {
 		return m_rt.get_out_degree(u) == 0 and m_rt.has_edge(r, u);
-	}
-	/// Returns the chunk index of node @e u.
-	std::size_t node_to_chunk(node u) const noexcept {
-		return m_sequence.get_chunk_index(u);
-	}
-	/// Sets the chunk index of node @e u to index @e i.
-	void set_chunk_index(node u, std::size_t i) noexcept {
-		m_sequence.set_chunk_index(u, i);
-	}
-	/// Returns a reference to the last chunk in the sentence.
-	linarr::chunk& last_chunk() noexcept {
-		return m_sequence[m_sequence.size() - 1];
 	}
 
 	/**
@@ -231,37 +208,30 @@ private:
 				++p;
 			}
 
-			// set the parent of the chunk
-			bool head_found = false;
-			for (node v : c.get_nodes()) {
-				if (m_rt.get_out_degree(v) > 0) {
-					// found the head of the chunk!
-					head_found = true;
-
-					if (not m_rt.node_has_parent(v)) {
-						// the chunk should not have a parent.
-						// this is the "chunk's root"
-					}
-					else {
-						const auto chunk_parent = m_rt.get_parent_node(v);
-						c.set_parent_node( chunk_parent );
-						c.set_root_node( v );
-					}
-				}
-			}
-			// if the chunk does not have a head, assign
-			// the parent of any of the vertices
-			if (not head_found) {
-				const auto first_vertex = c.get_nodes()[0];
-				c.set_parent_node( m_rt.get_parent_node(first_vertex) );
-				c.set_root_node( first_vertex );
-			}
+			set_parent_chunk(c);
 
 			if (p < m_n) {
 				m_sequence.push_chunk();
 			}
 		}
 	}
+
+private:
+
+	/// Useful typedef
+	typedef chunks_generic<arrangement_t> generic;
+
+	// member variables
+	using generic::m_sequence;
+	using generic::m_n;
+	using generic::m_arr;
+	using generic::m_rt;
+
+	// member functions
+	using generic::set_parent_chunk;
+	using generic::set_chunk_index;
+	using generic::node_to_chunk;
+	using generic::last_chunk;
 };
 
 } // -- namespace detail

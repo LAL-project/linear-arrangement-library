@@ -114,12 +114,12 @@ noexcept
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunk_sequence(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunk_sequence(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else {
 #if defined DEBUG
@@ -142,12 +142,12 @@ noexcept
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunk_sequence(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return make_tree_from_chunk_sequence(C.m_sequence);
+		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else {
 #if defined DEBUG
@@ -170,12 +170,12 @@ noexcept
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return std::move(C.m_sequence);
+		return std::move(C.retrieve_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return std::move(C.m_sequence);
+		return std::move(C.retrieve_chunk_sequence());
 	}
 	else {
 #if defined DEBUG
@@ -198,12 +198,12 @@ noexcept
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
-		return std::move(C.m_sequence);
+		return std::move(C.retrieve_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
 		detail::chunks_Macutek C(rt, __arr);
 		C.chunk_input_tree();
-		return std::move(C.m_sequence);
+		return std::move(C.retrieve_chunk_sequence());
 	}
 	else {
 #if defined DEBUG

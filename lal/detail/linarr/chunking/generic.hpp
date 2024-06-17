@@ -44,92 +44,104 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
-#include <lal/detail/linarr/chunking/generic.hpp>
 
 namespace lal {
 namespace detail {
 
+
 /**
- * @brief Implementation of Mačutek's algorithm for chunking.
+ * @brief Basic algorithms existent in every definition of chunking.
  *
  * Chunking applied to syntactic dependency trees alone (a.k.a., rooted trees).
- *
- * See \cite Macutek2021a for a complete definition of Mačutek (et al.)'s chunks.
  *
  * @tparam arr_t Type of arrangement.
  */
 template <class arrangement_t>
-class chunks_Macutek : public chunks_generic<arrangement_t> {
+class chunks_generic {
 public:
 	/**
 	 * @brief Constructor
 	 * @param rt Input rooted tree.
 	 * @param arr Input linear arrangement.
 	 */
-	chunks_Macutek(const graphs::rooted_tree& rt, const arrangement_t& arr)
+	chunks_generic(const graphs::rooted_tree& rt, const arrangement_t& arr)
 	noexcept
-		: generic(rt, arr)
+		: m_rt(rt), m_arr(arr),
+		  m_n(rt.get_num_nodes())
 	{
 	}
 
-	/**
-	 * @brief Main method of this class
-	 *
-	 * Calling this method will chunk the input rooted tree using Mačutek
-	 * (et al.)'s definition.
-	 */
-	void chunk_input_tree() noexcept {
-		m_sequence.init(m_n);
+	/// Destructor
+	virtual ~chunks_generic() noexcept { }
 
-		position_t p{0ull};
+	/// Returns a constant reference to the chunk sequence @ref m_sequence.
+	const linarr::chunk_sequence& get_chunk_sequence() const noexcept {
+		return m_sequence;
+	}
+	/*
+	/// Returns a reference to the chunk sequence @ref m_sequence.
+	linarr::chunk_sequence& get_chunk_sequence() noexcept {
+		return m_sequence;
+	}
+	*/
+	/// Moves the chunk sequence @ref m_sequence.
+	linarr::chunk_sequence&& retrieve_chunk_sequence() noexcept {
+		return std::move(m_sequence);
+	}
 
-		m_sequence.push_chunk(m_arr[p]);
-		m_sequence.set_chunk_index(m_arr[p], 0);
+protected:
+	/// Returns a reference to the last chunk in the sentence.
+	linarr::chunk& last_chunk() noexcept {
+		return m_sequence[m_sequence.size() - 1];
+	}
 
-		++p;
-		for (; p < m_n; ++p) {
-			const node prev = m_arr[p - 1ull];
-			const node current = m_arr[p];
+	/// Returns the chunk index of node @e u.
+	std::size_t node_to_chunk(node u) const noexcept {
+		return m_sequence.get_chunk_index(u);
+	}
+	/// Sets the chunk index of node @e u to index @e i.
+	void set_chunk_index(node u, std::size_t i) noexcept {
+		m_sequence.set_chunk_index(u, i);
+	}
 
-			const bool are_syntactically_linked =
-				m_rt.has_edge(prev, current) or m_rt.has_edge(current, prev);
+	/// Set the parent node of a chunks.
+	void set_parent_chunk(linarr::chunk& c) noexcept {
+		// set the parent of the chunk
+		bool head_found = false;
+		for (node u : c.get_nodes()) {
 
-			if (are_syntactically_linked) {
-				last_chunk().add_node( current );
+			// if the parent of 'u' (if it exists) is outside the chunk
+			// of 'u', then that parent is the parent of this chunk and 'u'
+			// is the root node of the chunk.
+			if (m_rt.get_in_degree(u) == 1) {
+				const node v = m_rt.get_parent_node(u);
+				if (node_to_chunk(v) != node_to_chunk(u)) {
+					c.set_root_node(u);
+					c.set_parent_node(v);
+					head_found = true;
+				}
 			}
 			else {
-				m_sequence.push_chunk(m_arr[p]);
+				c.set_root_node(u);
+				head_found = true;
 			}
-
-			m_sequence.set_chunk_index(m_arr[p], m_sequence.size() - 1);
 		}
 
-		set_parent_chunks();
+#if defined DEBUG
+		assert(head_found);
+#endif
 	}
 
-private:
-	/// Set the parent node of all chunks.
-	void set_parent_chunks() noexcept {
-		for (std::size_t i = 0; i < m_sequence.size(); ++i) {
-			set_parent_chunk(m_sequence[i]);
-		}
-	}
+protected:
+	/// Input rooted tree.
+	const graphs::rooted_tree& m_rt;
+	/// Linear arrangement.
+	const arrangement_t m_arr;
+	/// Number of vertices of the tree.
+	const uint64_t m_n;
 
-private:
-
-	/// Useful typedef
-	typedef chunks_generic<arrangement_t> generic;
-
-	// member variables
-	using generic::m_sequence;
-	using generic::m_n;
-	using generic::m_arr;
-	using generic::m_rt;
-
-	// member functions
-	using generic::set_parent_chunk;
-	using generic::last_chunk;
-
+	/// The sequence of chunks obtained.
+	linarr::chunk_sequence m_sequence;
 };
 
 } // -- namespace detail

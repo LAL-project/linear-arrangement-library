@@ -149,6 +149,7 @@ target_sources(
 		detail/linarr/C/predict.hpp
 		detail/linarr/C/stack_based.hpp
 		detail/linarr/chunking/Anderson.hpp
+		detail/linarr/chunking/generic.hpp
 		detail/linarr/chunking/Macutek.hpp
 		detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
 		detail/linarr/D/DMax/Bipartite_AEF.hpp
