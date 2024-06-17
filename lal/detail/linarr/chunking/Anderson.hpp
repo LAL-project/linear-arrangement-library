@@ -85,6 +85,7 @@ public:
 		if (m_rt.get_num_nodes() == 1) {
 			m_sequence.set_chunk_index(0, 0);
 			m_sequence.push_chunk(0);
+			last_chunk().set_root_node(0);
 		}
 		else {
 			// assign chunk indices
