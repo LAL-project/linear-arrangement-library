@@ -106,8 +106,9 @@ protected:
 
 	/// Set the parent node of a chunks.
 	void set_parent_chunk(linarr::chunk& c) noexcept {
-		// set the parent of the chunk
+#if defined DEBUG
 		bool head_found = false;
+#endif
 		for (node u : c.get_nodes()) {
 
 			// if the parent of 'u' (if it exists) is outside the chunk
@@ -118,12 +119,16 @@ protected:
 				if (node_to_chunk(v) != node_to_chunk(u)) {
 					c.set_root_node(u);
 					c.set_parent_node(v);
+#if defined DEBUG
 					head_found = true;
+#endif
 				}
 			}
 			else {
 				c.set_root_node(u);
+#if defined DEBUG
 				head_found = true;
+#endif
 			}
 		}
 
