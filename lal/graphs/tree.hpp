@@ -158,14 +158,16 @@ public:
 	/* GETTERS */
 
 	/**
-	 * @brief Is this graph is an actual tree?
+	 * @brief Is this graph an actual tree?
 	 *
 	 * Returns true if the number of edges is one less than the
-	 * number of nodes. Note that this would not really be true if the
-	 * addition of edges was not constrained. Since it is constrained in a
-	 * way that no cycles can be produced (for example, see
-	 * @ref free_tree::add_edge, or @ref free_tree::add_edges), then we
-	 * only need to check for the number of edges.
+	 * number of nodes.
+	 *
+	 * Note that this would not really be true if the addition of edges was not
+	 * constrained. That is, since it is constrained (behind the scenes) in a
+	 * way that no cycles can be produced (for example, see @ref free_tree::add_edge,
+	 * or @ref free_tree::add_edges), then we only need to check for the number
+	 * of edges.
 	 *
 	 * For further characterisations of a tree see \cite Harary1969a
 	 * (chapter 4, pages 32-33).
