@@ -519,6 +519,7 @@ set(LIBLAL_ITERATORS_HEADER
 # ---------------------------------------------------------------------------- #
 set(LIBLAL_LINARR_MAIN_HEADER
 	linarr/dependency_flux.hpp
+	linarr/dependency_flux_compute.hpp
 	linarr/formal_constraints.hpp
 	linarr/head_initial.hpp
 )
