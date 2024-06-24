@@ -131,21 +131,76 @@ noexcept
  * @param c Coloring of a bipartite graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangement is bipartite.
+ * @pre Input @e arr is an arrangement of a connected bipartite graph.
  */
 template <class arrangement_t>
-bool is_bipartite(
+bool is_bipartite__connected(
 	const properties::bipartite_graph_coloring& c,
 	const arrangement_t& arr
 )
 noexcept
 {
 	const auto n = c.size();
-	std::size_t num_changes = 0;
+	int num_changes = 0;
 	lal::position_t p = 1ull;
 	while (p < n and num_changes <= 1) {
-		const auto color_p = c.get_color_of(arr[p]);
-		const auto color_p1 = c.get_color_of(arr[p - 1ull]);
-		num_changes += color_p != color_p1;
+		const node u = arr[p - 1ull];
+		const auto color_u = c.get_color_of(u);
+		const node v = arr[p];
+		const auto color_v = c.get_color_of(v);
+		num_changes += color_v != color_u;
+		++p;
+	}
+	return num_changes <= 1;
+}
+
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for details on bipartite
+ * arrangements.
+ *
+ * If the input arrangement is empty then the identity arrangement \f$\pi_I\f$
+ * is used.
+ * @tparam arrangement_t Type of arrangement.
+ * @param g Input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangement is bipartite.
+ */
+template <class graph_t, class arrangement_t>
+bool is_bipartite(const graph_t& g, const arrangement_t& arr)
+noexcept
+{
+	typedef properties::bipartite_graph_coloring::color_t color_t;
+	static constexpr color_t blue = properties::bipartite_graph_coloring::blue;
+	static constexpr color_t red = properties::bipartite_graph_coloring::red;
+	static constexpr color_t invalid = properties::bipartite_graph_coloring::invalid_color;
+
+	const auto n = g.get_num_nodes();
+	array<color_t> color_per_vertex(n, invalid);
+
+	const auto color_a_vertex = [&](node u) {
+		color_per_vertex[u] = blue;
+		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
+			for (node v : g.get_out_neighbours(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_in_neighbours(u)) { color_per_vertex[v] = red; }
+		}
+		else {
+			for (node v : g.get_neighbours(u)) { color_per_vertex[v] = red; }
+		}
+	};
+
+	color_a_vertex( arr[position_t{0ull}] );
+
+	int num_changes = 0;
+	position_t p = 1ull;
+	while (p < n and num_changes <= 1) {
+		const node u = arr[p];
+		if (color_per_vertex[u] == invalid) {
+			color_a_vertex(u);
+		}
+		const node v = arr[p - 1ull];
+		num_changes += color_per_vertex[v] != color_per_vertex[u];
 		++p;
 	}
 	return num_changes <= 1;

@@ -41,6 +41,7 @@
 
 // lal includes
 #include <lal/linarr/formal_constraints.hpp>
+#include <lal/properties/bipartite_graph_colorability.hpp>
 #include <lal/detail/linarr/formal_constraints.hpp>
 
 namespace lal {
@@ -58,10 +59,11 @@ noexcept
 {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
+	assert(properties::is_graph_bipartite(g));
 #endif
 
-	if (arr.size() == 0) { return is_bipartite(c, __ident(arr)); }
-	return is_bipartite(c, __nonident(arr));
+	if (arr.size() == 0) { return detail::is_bipartite__connected(c, __ident(arr)); }
+	return detail::is_bipartite__connected(c, __nonident(arr));
 }
 
 bool is_bipartite(
@@ -73,10 +75,35 @@ noexcept
 {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
+	assert(properties::is_graph_bipartite(g));
 #endif
 
-	if (arr.size() == 0) { return is_bipartite(c, __ident(arr)); }
-	return is_bipartite(c, __nonident(arr));
+	if (arr.size() == 0) { return detail::is_bipartite__connected(c, __ident(arr)); }
+	return detail::is_bipartite__connected(c, __nonident(arr));
+}
+
+bool is_bipartite(const graphs::directed_graph& g, const linear_arrangement& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(g, arr));
+	assert(properties::is_graph_bipartite(g));
+#endif
+
+	if (arr.size() == 0) { return detail::is_bipartite(g, __ident(arr)); }
+	return detail::is_bipartite(g, __nonident(arr));
+}
+
+bool is_bipartite(const graphs::undirected_graph& g, const linear_arrangement& arr)
+noexcept
+{
+#if defined DEBUG
+	assert(is_arrangement(g, arr));
+	assert(properties::is_graph_bipartite(g));
+#endif
+
+	if (arr.size() == 0) { return detail::is_bipartite(g, __ident(arr)); }
+	return detail::is_bipartite(g, __nonident(arr));
 }
 
 bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
@@ -86,7 +113,7 @@ noexcept
 		(arr.size() == 0 ?
 			detail::is_root_covered(rt, detail::identity_arr(arr))
 		:
-				detail::is_root_covered(rt, detail::nonidentity_arr(arr))
+			detail::is_root_covered(rt, detail::nonidentity_arr(arr))
 		);
 }
 

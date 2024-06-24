@@ -131,7 +131,7 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
  * @param c Coloring of the input graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite.
+ * @pre The input graph is bipartite and connected.
  */
 bool is_bipartite(
 	const graphs::undirected_graph& g,
@@ -149,7 +149,7 @@ noexcept;
  * @param c Coloring of the input graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite.
+ * @pre The input graph is bipartite and connected.
  */
 bool is_bipartite(
 	const graphs::directed_graph& g,
@@ -167,16 +167,28 @@ noexcept;
  * @param g Input graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite.
+ * @pre The input graph is bipartite, and needs not be connected.
  */
-template <class graph_t>
-bool is_bipartite(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
-#if defined DEBUG
-	assert(is_arrangement(g, arr));
-#endif
-	const auto c = properties::bipartite_coloring(g);
-	return is_bipartite(g, c, arr);
-}
+bool is_bipartite(
+	const graphs::directed_graph& g,
+	const linear_arrangement& arr = {}
+)
+noexcept;
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param g Input graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The input graph is bipartite, and needs not be connected.
+ */
+bool is_bipartite(
+	const graphs::undirected_graph& g,
+	const linear_arrangement& arr = {}
+) noexcept;
 
 /**
  * @brief Is a given arrangement planar?
