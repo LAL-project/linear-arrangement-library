@@ -346,7 +346,6 @@ protected:
 		}
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
-		m_tree_type[static_cast<std::size_t>(tree_type::unknown)] = true;
 	}
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept {
@@ -354,7 +353,6 @@ protected:
 		m_union_find__root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		m_is_tree_type_valid = false;
-		m_tree_type[static_cast<std::size_t>(tree_type::unknown)] = true;
 	}
 
 	/// Copies only members of class @ref tree.
@@ -374,6 +372,18 @@ protected:
 		m_tree_type = std::move(t.m_tree_type);
 
 		t.m_is_tree_type_valid = false;
+	}
+
+	/**
+	 * @brief Adds a node to this tree.
+	 *
+	 * Updates all the internal data structures.
+	 */
+	void tree_only_add_node() noexcept {
+		const node new_node = m_union_find__root_of.size();
+		m_union_find__root_of.push_back(new_node);
+		m_union_find__root_size.push_back(1);
+		m_is_tree_type_valid = false;
 	}
 
 	/**

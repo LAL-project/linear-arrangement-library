@@ -397,13 +397,13 @@ noexcept
 	return *this;
 }
 
-void rooted_tree::disjoint_union
+rooted_tree& rooted_tree::disjoint_union
 (const rooted_tree& t, bool connect_roots) noexcept
 {
 	const uint64_t prev_n = get_num_nodes();
 	if (prev_n == 0) {
 		*this = t;
-		return;
+		return *this;
 	}
 
 #define append(A, B) A.insert(A.end(), B.begin(), B.end())
@@ -452,6 +452,8 @@ void rooted_tree::disjoint_union
 	m_is_tree_type_valid = false;
 
 #undef append
+
+	return *this;
 }
 
 void rooted_tree::calculate_size_subtrees() noexcept {

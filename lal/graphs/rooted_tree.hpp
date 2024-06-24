@@ -184,7 +184,7 @@ public:
 	}
 
 	/// Destructor
-	virtual ~rooted_tree() noexcept { }
+	~rooted_tree() noexcept { }
 
 	/* OPERATORS */
 
@@ -250,6 +250,14 @@ public:
 	 */
 	void init_rooted
 	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept;
+
+	rooted_tree& add_node() noexcept {
+		directed_graph::add_node();
+		tree_only_add_node();
+		m_size_subtrees.push_back(1);
+		m_are_size_subtrees_valid = false;
+		return *this;
+	}
 
 	/**
 	 * @brief Remove a node from this tree.
@@ -461,7 +469,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalised
 	 * after the addition of the edge.
 	 */
-	virtual rooted_tree& remove_edges_incident_to
+	rooted_tree& remove_edges_incident_to
 	(node u, bool norm = true, bool check_norm = true)
 	noexcept;
 
@@ -489,7 +497,7 @@ public:
 	 * two graphs were normalised prior to the union.
 	 * @post The type of tree is invalidated.
 	 */
-	void disjoint_union(const rooted_tree& t, bool connect_roots = true)
+	rooted_tree& disjoint_union(const rooted_tree& t, bool connect_roots = true)
 	noexcept;
 
 	/**
@@ -738,10 +746,11 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	virtual void _init(uint64_t n) noexcept {
+	void _init(uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
 		m_size_subtrees.resize(n);
+		m_are_size_subtrees_valid = false;
 		if (n <= 1) {
 			set_root(0);
 		}
@@ -752,10 +761,11 @@ protected:
 	 * Clears the memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 */
-	virtual void _clear() noexcept {
+	void _clear() noexcept {
 		tree::tree_only_clear();
 		directed_graph::_clear();
 		m_size_subtrees.clear();
+		m_are_size_subtrees_valid = false;
 	}
 
 	void actions_after_add_edge(node u, node v) noexcept;

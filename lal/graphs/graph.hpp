@@ -278,6 +278,11 @@ protected:
 		g.m_is_normalised = false;
 	}
 
+	/// Adds a node to the graph.
+	void __add_node() noexcept {
+		m_adjacency_list.emplace_back();
+	}
+
 	/**
 	 * @brief Disjoint union of graphs.
 	 *

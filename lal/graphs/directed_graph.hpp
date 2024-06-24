@@ -151,6 +151,13 @@ public:
 
 	bool check_normalised() noexcept;
 
+	/// Adds a node to the graph.
+	virtual directed_graph& add_node() noexcept {
+		graph::__add_node();
+		m_in_adjacency_list.emplace_back();
+		return *this;
+	}
+
 	/**
 	 * @brief Remove a node from this graph.
 	 *
@@ -338,7 +345,7 @@ public:
 	 * @post The graph is normalised only if it was normalised before
 	 * the call and @e g is also normalised.
 	 */
-	void disjoint_union(const directed_graph& g) noexcept;
+	directed_graph& disjoint_union(const directed_graph& g) noexcept;
 
 	/* SETTERS */
 

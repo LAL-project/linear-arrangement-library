@@ -132,6 +132,12 @@ public:
 		m_adjacency_list[u].reserve(d);
 	}
 
+	/// Adds a vertex to the graph.
+	virtual undirected_graph& add_node() noexcept {
+		graph::__add_node();
+		return *this;
+	}
+
 	/**
 	 * @brief Remove a node from this graph.
 	 *
@@ -315,7 +321,7 @@ public:
 	 * @post The graph is normalised only if it was normalised before
 	 * the call and @e g is also normalised.
 	 */
-	void disjoint_union(const undirected_graph& g) noexcept;
+	undirected_graph& disjoint_union(const undirected_graph& g) noexcept;
 
 	/* SETTERS */
 

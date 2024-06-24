@@ -106,7 +106,7 @@ public:
 	free_tree(undirected_graph&& t) noexcept;
 
 	/// Destructor.
-	virtual ~free_tree() noexcept { }
+	~free_tree() noexcept { }
 
 	/* OPERATORS */
 
@@ -129,7 +129,13 @@ public:
 
 	/* MODIFIERS */
 
-	virtual free_tree& remove_node
+	free_tree& add_node() noexcept {
+		undirected_graph::add_node();
+		tree_only_add_node();
+		return *this;
+	}
+
+	free_tree& remove_node
 	(node u, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
@@ -321,7 +327,7 @@ public:
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	virtual free_tree& remove_edges_incident_to
+	free_tree& remove_edges_incident_to
 	(node u, bool norm = true, bool check_norm = true)
 	noexcept;
 
@@ -342,7 +348,7 @@ public:
 	 * a tree since it lacks an edge. Then method @ref is_tree() returns false.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	void disjoint_union(const free_tree& t) noexcept;
+	free_tree& disjoint_union(const free_tree& t) noexcept;
 
 	void calculate_tree_type() noexcept;
 
@@ -371,7 +377,7 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	virtual void _init(uint64_t n) noexcept {
+	void _init(uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		undirected_graph::_init(n);
 	}
@@ -381,7 +387,7 @@ protected:
 	 * Clears the memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 */
-	virtual void _clear() noexcept {
+	void _clear() noexcept {
 		undirected_graph::_clear();
 		tree::tree_only_clear();
 	}

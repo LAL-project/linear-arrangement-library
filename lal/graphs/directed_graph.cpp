@@ -372,7 +372,7 @@ directed_graph& directed_graph::remove_edges_incident_to
 	return *this;
 }
 
-void directed_graph::disjoint_union(const directed_graph& g) noexcept {
+directed_graph& directed_graph::disjoint_union(const directed_graph& g) noexcept {
 	// this call updates the out-neighbours adjacency list,
 	// as well as the number of edges and the graph's normalisation
 	__disjoint_union(g);
@@ -380,6 +380,8 @@ void directed_graph::disjoint_union(const directed_graph& g) noexcept {
 	// update the neighbours adjacency list
 	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);
 	detail::append_adjacency_lists(m_in_adjacency_list, g.m_in_adjacency_list);
+
+	return *this;
 }
 
 /* SETTERS */

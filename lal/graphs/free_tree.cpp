@@ -204,11 +204,11 @@ noexcept
 	return *this;
 }
 
-void free_tree::disjoint_union(const free_tree& t) noexcept {
+free_tree& free_tree::disjoint_union(const free_tree& t) noexcept {
 	const node prev_n = get_num_nodes();
 	if (prev_n == 0) {
 		*this = t;
-		return;
+		return *this;
 	}
 
 	m_is_tree_type_valid = false;
@@ -227,6 +227,8 @@ void free_tree::disjoint_union(const free_tree& t) noexcept {
 	for (node u = prev_n; u < get_num_nodes(); ++u) {
 		m_union_find__root_of[u] += prev_n;
 	}
+
+	return *this;
 }
 
 void free_tree::calculate_tree_type() noexcept {
