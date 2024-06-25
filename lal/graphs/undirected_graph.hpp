@@ -164,7 +164,8 @@ public:
 	 * the result is normalized or not? This might be useful in case the
 	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
-	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
+	 * @pre \f$u \neq v\f$.
+	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */

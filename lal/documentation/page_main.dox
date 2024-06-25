@@ -112,12 +112,12 @@ As it should be expected, this library offers a number of different graph abstra
 
 Although all graphs should be regarded as unlabelled, each node carries an implicit labelling. Such labelling has a most trivial nature since each node is labelled with a number between 0 and the total number of vertices minus one.
 
-Due to most graphs being sparse, the data structure of choice are adjacency lists where each vertex has a list of neighbouring nodes, or simply neighbours, associated to it. The user can affect the order of appearance of neighbours in multiple ways. One of them is, evidently, the order in which edges are added. Another way is via the @ref lal::graphs::graph::normalise function, which sorts every list of neighbours increasingly by index. By default, the addition of edges is normalising, namely the following code
+Due to most graphs being sparse, the data structure of choice are adjacency lists where each vertex has a list of neighbouring nodes, or simply neighbors, associated to it. The user can affect the order of appearance of neighbors in multiple ways. One of them is, evidently, the order in which edges are added. Another way is via the @ref lal::graphs::graph::normalize function, which sorts every list of neighbors increasingly by index. By default, the addition of edges is normalising, namely the following code
 
 @code
 lal::graphs::free_tree t(4);
 t.add_edge(0,1,false,false).add_edge(0,3,false,false).add_edge(0,2,false,false);
-t.normalise();
+t.normalize();
 cout << t << endl;
 @endcode
 
@@ -138,7 +138,7 @@ which is
 3: 0
 @endverbatim
 
-The output is easy to interpret: the first line indicates the nodes are incident to vertex 0, the second line indicates the nodes incident to vertex 1, and so on. Without normalisation (neither the call to @ref lal::graphs::free_tree::normalise, and using 'false' in the optional parameters), the output is
+The output is easy to interpret: the first line indicates the nodes are incident to vertex 0, the second line indicates the nodes incident to vertex 1, and so on. Without normalisation (neither the call to @ref lal::graphs::free_tree::normalize, and using 'false' in the optional parameters), the output is
 
 @verbatim
 0: 1 3 2
@@ -151,7 +151,7 @@ where only the first line changes.
 
 Such normalisation is required by some of the algorithms in this library. Without proper normalisation, the algorithms are not likely to compute correct values. The parameter that governs the graphs' normalisation is called the normalisation parameter.
 
-The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see @ref lal::graphs::directed_graph::get_in_degree) and in-neighbours (see @ref lal::graphs::directed_graph::get_in_neighbours).
+The adjacency list structure has been extended to directed graphs in a way that the user can query them for in-degree (see @ref lal::graphs::directed_graph::get_in_degree) and in-neighbors (see @ref lal::graphs::directed_graph::get_in_neighbors).
 
 \section MP_terminology Basic terminology and notation
 
@@ -213,7 +213,7 @@ t.set_edges(e);
 
 A similar reasoning should be applied to the deletion of edges.
 
-Furthermore, graphs are seldom required to be normalised. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::var_num_crossings), it is mandatory that the graph be normalised, namely, the function has a precondition that requires the graph to be normalised. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
+Furthermore, graphs are seldom required to be normalized. For example, when calculating the variance of \f$C\f$ (see @ref lal::properties::var_num_crossings), it is mandatory that the graph be normalized, namely, the function has a precondition that requires the graph to be normalized. If such a function is to be called eventually then add all edges in bulk and with normalisation, or read the graph from disk also with normalisation. However, if such functions will never be called then the users are encouraged to set the normalisation parameter to false. For example, if the variance of \f$C\f$ is to be calculated,
 
 @code
 const string filename = "..."; // a valid name of a file
