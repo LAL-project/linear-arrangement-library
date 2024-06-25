@@ -30,7 +30,7 @@
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://www.cs.upc.edu/~esteban/
  *
- *     Lluís Alemany Puig (lalemany@cs.upc.edu)
+ *     Lluís Alemany Puig (lluis.alemany.puig@upc.edu)
  *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
  *         CQL (Complexity and Quantitative Linguistics Lab)
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
