@@ -334,7 +334,7 @@ protected:
 
 protected:
 	/**
-	 * @brief Initialises only the memory of class @ref tree.
+	 * @brief Initializes only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
 	void tree_only_init(uint64_t n) noexcept {

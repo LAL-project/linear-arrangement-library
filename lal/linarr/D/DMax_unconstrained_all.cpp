@@ -336,7 +336,7 @@ noexcept
 #endif
 
 	for (std::size_t i = 0; i < BnB_runners.size(); ++i) {
-		BnB_runners[i].initialise(initial_DMax);
+		BnB_runners[i].initialize(initial_DMax);
 	}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB

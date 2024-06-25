@@ -61,7 +61,7 @@ namespace iterators {
  * always has left-to-right orientation, therefore said inequality need not
  * always hold.
  *
- * This class has to be initialised with a constant reference to a graph.
+ * This class has to be initialized with a constant reference to a graph.
  *
  * A possible usage of this class is the following:
  * @code

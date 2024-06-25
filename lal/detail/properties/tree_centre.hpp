@@ -133,7 +133,7 @@ std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 	uint64_t l1 = 0;
 
 	// ---------------------------------------------------
-	// Initialise data:
+	// Initialize data:
 	// 1. fill in 'trimmed_degree' values
 	// 2. retrieve connected component's leaves ('tree_leaves')
 	// 3. calculate amount of leaves left to process ('l0')

@@ -76,7 +76,7 @@ noexcept :
 {
 }
 
-void AEF_BnB::initialise
+void AEF_BnB::initialize
 (const std::pair<uint64_t, linear_arrangement>& initial_DMax)
 noexcept
 {

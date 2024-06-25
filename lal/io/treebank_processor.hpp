@@ -63,7 +63,7 @@ namespace io {
  * This class is meant to process a single treebank file only (see
  * @ref LAL_concepts__treebank for further details on treebank files).
  *
- * Every processor must be initialised prior to processing the treebank file.
+ * Every processor must be initialized prior to processing the treebank file.
  * This is done via method @ref init, which requires the path to the treebank file
  * and the name of the output file (the treebank result) where the results are
  * going to be stored. It also requires a Boolean value indicating whether all
@@ -74,11 +74,11 @@ namespace io {
  * @ref set_output_header has been called with true). Progress and error messages
  * can be controlled via method @ref set_verbosity.
  *
- * When initialised, features can be added to or removed from the processor: when
- * the number of features to calculate is low, it can be initialised with no
+ * When initialized, features can be added to or removed from the processor: when
+ * the number of features to calculate is low, it can be initialized with no
  * features, and then be added some via method @ref add_feature. Conversely, if
  * the number of features is high, but not all features are needed, a processer
- * can be initialised with all features, and then be removed some of them via
+ * can be initialized with all features, and then be removed some of them via
  * method @ref remove_feature.
  *
  * Finally, the treebank file is processed via method @ref process. This method
@@ -88,7 +88,7 @@ namespace io {
  * @ref treebank_collection_reader. For example:
  * @code
  *		treebank_processor tbproc;
- *		// initialise the processor without features (remmeber to check for errors)
+ *		// initialize the processor without features (remmeber to check for errors)
  *		tbproc.init(treebank_input_file, result_filename, "Book_1");
  *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
  *		tbproc.add_feature(lal::io::treebank_feature::var_num_crossings);
@@ -101,7 +101,7 @@ public:
 	// PROCESS THE TREEBANK collection
 
 	/**
-	 * @brief Initialise the processor with a new collection.
+	 * @brief Initialize the processor with a new collection.
 	 * @param treebank_input_file File listing all the treebanks.
 	 * @param output_file File where the results are to be stored.
 	 * @param treebank_id A nickname for this treebank (for example, an ISO code).

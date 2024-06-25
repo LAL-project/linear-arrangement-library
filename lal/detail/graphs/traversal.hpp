@@ -366,7 +366,7 @@ protected:
 	 * graph_traversal(graph, source):
 	 *    .	// set of |V(graph)| bits set to false
 	 *	 1.	vis = {false}
-	 *    .	// structure of the traversal, initialised with the source, a queue.
+	 *    .	// structure of the traversal, initialized with the source, a queue.
 	 *	 2.	Q = {source}
 	 *	 3.	while Q is not empty do
 	 *	 4.		v = Q.front

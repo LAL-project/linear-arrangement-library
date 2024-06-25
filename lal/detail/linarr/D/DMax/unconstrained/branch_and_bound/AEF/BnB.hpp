@@ -194,7 +194,7 @@ public:
 	~AEF_BnB() noexcept = default;
 
 	/// Initialize the Branch and Bound algorithm.
-	void initialise
+	void initialize
 	(const std::pair<uint64_t, linear_arrangement>& initial_DMax)
 	noexcept;
 

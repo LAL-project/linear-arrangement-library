@@ -157,8 +157,8 @@ protected:
 	int m_be_verbose = 0;
 
 protected:
-	/// Initialises column names @ref m_column_names
-	void initialise_column_names() noexcept {
+	/// Initializes column names @ref m_column_names
+	void initialize_column_names() noexcept {
 		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
 			m_column_names[i] = treebank_feature_index_to_string(i);
 		}

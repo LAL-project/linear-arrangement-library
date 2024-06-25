@@ -66,17 +66,17 @@ namespace io {
  * see @ref LAL_concepts__treebank_collection and @ref LAL_concepts__treebank for
  * further details on treebank collections and treebanks.
  *
- * Every processor must be initialised prior to processing the collection. This is done
+ * Every processor must be initialized prior to processing the collection. This is done
  * via method @ref init, which requires the path to the main file and the output
  * directory where the results are going to be stored. It also requires a Boolean
  * value indicating whether all (or none) of the features should be used. Moreover,
  * it also admits an optional parameter indicating the number of threads to be
  * used to parallelise the processing of the files.
  *
- * When initialised, a processor can be removed or added features: when the number
- * of features to calculate is low, it can be initialised with no features, and
+ * When initialized, a processor can be removed or added features: when the number
+ * of features to calculate is low, it can be initialized with no features, and
  * then be added some via method @ref add_feature. Conversely, if the number of
- * features is high, but not all features are needed, a processer can be initialised
+ * features is high, but not all features are needed, a processer can be initialized
  * with all features, and then be removed some of them via method @ref remove_feature.
  *
  * Processing a treebank collection with this class will produce a file for every
@@ -97,7 +97,7 @@ namespace io {
  * @ref treebank_collection_reader. For example:
  * @code
  *		treebank_collection_processor tbproc;
- *		// initialise the processor without features (remember to check for errors)
+ *		// initialize the processor without features (remember to check for errors)
  *      // and 4 threads for faster processing.
  *		tbproc.init(main_file, output_dir, 4);
  *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
@@ -177,7 +177,7 @@ public:
 	// PROCESS THE TREEBANK COLLECTION
 
 	/**
-	 * @brief Initialise the processor with a new collection.
+	 * @brief Initialize the processor with a new collection.
 	 * @param main_file File listing all the treebanks.
 	 * @param output_directory Directory where the result files are to be stored.
 	 * @returns The type of the error, if any. The list of errors that this

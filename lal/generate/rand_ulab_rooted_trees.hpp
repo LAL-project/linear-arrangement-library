@@ -118,7 +118,7 @@ public:
 	 *
 	 * Adds the remaining necessary values to @ref m_rn..
 	 *
-	 * Initialises the random number generator with @e seed. When @e seed
+	 * Initializes the random number generator with @e seed. When @e seed
 	 * is 0, a random seed is used.
 	 * @param n Number of vertices.
 	 * @param seed Integer value used to seed the random number generator.
@@ -368,7 +368,7 @@ public:
 	rand_ulab_rooted_trees& operator= (rand_ulab_rooted_trees&& g) noexcept = default;
 
 	/**
-	 * @brief Initialise the generator.
+	 * @brief Initialize the generator.
 	 * @param n Number of vertices
 	 * @param seed The seed used for the random generator. If @e seed is 0 then
 	 * a random seed is used.

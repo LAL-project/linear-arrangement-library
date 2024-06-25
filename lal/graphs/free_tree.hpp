@@ -55,7 +55,7 @@ namespace graphs {
  * This class constrains the addition of edges so that the resulting graphs
  * does not contain cycles. Furthermore, the edges added are undirected.
  *
- * For another type of tree-like graphs, see @ref rooted_tree.
+ * For another type of tree-like graphs, see @ref lal::graphs::rooted_tree.
  */
 class free_tree : public undirected_graph, virtual public tree {
 public:
@@ -372,7 +372,7 @@ protected:
 	/**
 	 * @brief Initializes the memory in the graph hierarchy.
 	 *
-	 * Initialises memory of @ref lal::graphs::free_tree,
+	 * Initializes memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.

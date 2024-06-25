@@ -59,8 +59,8 @@ namespace io {
  * @ref LAL_concepts__treebank_collection and @ref LAL_concepts__treebank for
  * further details on treebanks and treebank collections).
  *
- * The user has to initialise a collection reader with the main file (the main file
- * list). For example, to read the Stanford collection the reader has to be initialised
+ * The user has to initialize a collection reader with the main file (the main file
+ * list). For example, to read the Stanford collection the reader has to be initialized
  * with the main file \a stanford.txt which could contain the contents given
  * above. Bear in mind that a collection reader only processes the main file: it
  * iterates through the list of files within the main file using the method
@@ -92,7 +92,7 @@ class treebank_collection_reader {
 public:
 
 	/**
-	 * @brief Initialise the reader with a new collection.
+	 * @brief Initialize the reader with a new collection.
 	 *
 	 * Objects of this class can't be used to read a treebank until this method
 	 * returns no error.

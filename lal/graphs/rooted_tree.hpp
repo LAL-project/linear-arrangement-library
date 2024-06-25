@@ -208,7 +208,7 @@ public:
 	/* MODIFIERS */
 
 	/**
-	 * @brief Initialiser with tree and root node.
+	 * @brief Initializer with tree and root node.
 	 *
 	 * Constructs a rooted tree from a free tree and one of its nodes as
 	 * the root of the rooted tree.
@@ -230,7 +230,7 @@ public:
 	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
 
 	/**
-	 * @brief Initialiser with tree and root node.
+	 * @brief Initializer with tree and root node.
 	 *
 	 * Constructs a rooted tree from a free tree and one of its nodes as
 	 * the root of the rooted tree.
@@ -741,7 +741,7 @@ protected:
 	/**
 	 * @brief Initializes the memory in the graph hierarchy.
 	 *
-	 * Initialises memory of @ref lal::graphs::free_tree,
+	 * Initializes memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.

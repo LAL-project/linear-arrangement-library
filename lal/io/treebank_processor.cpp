@@ -206,8 +206,8 @@ noexcept
 	// initalise features vector
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
-	// initialise column names
-	initialise_column_names();
+	// initialize column names
+	initialize_column_names();
 
 	// make sure that the treebank file exists
 	if (not std::filesystem::exists(m_treebank_filename)) {

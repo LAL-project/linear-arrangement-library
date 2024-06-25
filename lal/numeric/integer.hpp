@@ -602,7 +602,7 @@ public:
 
 	/* GETTERS */
 
-	/// Returns whether this object is initialised or not.
+	/// Returns whether this object is initialized or not.
 	constexpr bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this integer.
 	int64_t get_sign() const noexcept { return mpz_sgn(m_val); }
@@ -643,11 +643,11 @@ public:
 	/**
 	 * @brief Swaps the value of this integer with integer @e i's value.
 	 *
-	 * - If none of the integers is initialised, it does nothing.
-	 * - If only one of the integers is initialised, moves the contents
-	 * of the initialised integer to the other. At the end, one of the two
+	 * - If none of the integers is initialized, it does nothing.
+	 * - If only one of the integers is initialized, moves the contents
+	 * of the initialized integer to the other. At the end, one of the two
 	 * integers is left uninitiliased.
-	 * - If both integers are initialised, swaps the values they contain.
+	 * - If both integers are initialized, swaps the values they contain.
 	 *
 	 * @param i A @ref lal::numeric::integer
 	 */
@@ -667,7 +667,7 @@ public:
 private:
 	/// Structure from GMP storing the integer's value.
 	mpz_t m_val;
-	/// Is this integer initialised?
+	/// Is this integer initialized?
 	bool m_initialized = true;
 };
 

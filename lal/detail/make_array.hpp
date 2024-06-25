@@ -67,7 +67,7 @@ noexcept
 }
 
 /**
- * @brief Returns an array initialised at a given value.
+ * @brief Returns an array initialized at a given value.
  * @tparam T Type of the array's elements.
  * @tparam array_size Size of the array.
  * @tparam value_to_fill_with The value to fill the array with.

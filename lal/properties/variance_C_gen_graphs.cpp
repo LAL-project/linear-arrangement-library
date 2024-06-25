@@ -324,7 +324,7 @@ noexcept
 			if (CIT it_st; has_key(H, sorted_edge(s,t), it_st)) {
 				// if the neighbors were not searched then the variables
 				// 'sum_deg_common_st' and 'common_st' are equal to '0',
-				// so we must initialise them now
+				// so we must initialize them now
 				deg_sum_st = it_st->second.sum_deg_common;
 				common_st = it_st->second.common;
 			}

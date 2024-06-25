@@ -814,7 +814,7 @@ public:
 
 	/* GETTERS */
 
-	/// Returns whether this object is initialised or not.
+	/// Returns whether this object is initialized or not.
 	bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this rational.
 	int64_t get_sign() const noexcept { return mpq_sgn(m_val); }
@@ -885,11 +885,11 @@ public:
 	/**
 	 * @brief Swaps the value of this rational with rational @e r's value.
 	 *
-	 * - If none of the rationals is initialised, it does nothing.
-	 * - If only one of the rationals is initialised, moves the contents
-	 * of the initialised rational to the other. At the end, one of the two
+	 * - If none of the rationals is initialized, it does nothing.
+	 * - If only one of the rationals is initialized, moves the contents
+	 * of the initialized rational to the other. At the end, one of the two
 	 * rationals is left uninitiliased.
-	 * - If both rationals are initialised, swaps the values they contain.
+	 * - If both rationals are initialized, swaps the values they contain.
 	 */
 	void swap(rational& r) noexcept { mpq_swap(m_val, r.m_val); }
 
@@ -905,7 +905,7 @@ public:
 private:
 	/// Structure from GMP storing the rational's value.
 	mpq_t m_val;
-	/// Is this rational initialised?
+	/// Is this rational initialized?
 	bool m_initialized = true;
 };
 

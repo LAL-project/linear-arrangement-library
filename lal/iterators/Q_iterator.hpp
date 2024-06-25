@@ -67,7 +67,7 @@ namespace iterators {
  * so that the inequality \f$u < v\f$ always holds. For directed graphs, this
  * is not always true, since the edges returned always has left-to-right direction.
  *
- * This class has to be initialised with a constant reference to a graph.
+ * This class has to be initialized with a constant reference to a graph.
  *
  * A possible usage of this class is the following:
  * @code

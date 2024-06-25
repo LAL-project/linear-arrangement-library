@@ -247,7 +247,7 @@ void all_ulab_free_trees::__reset() noexcept {
 	m_r = k;
 	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
 
-	// initialise L and W
+	// initialize L and W
 	for (uint64_t i = 1; i <= k; ++i) {
 		m_W[i] = i - 1;
 		m_L[i] = i;

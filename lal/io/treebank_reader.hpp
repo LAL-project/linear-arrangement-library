@@ -63,7 +63,7 @@ namespace io {
  *
  * In order to use it, this class has to be first initialized with the treebank
  * file and, optionally, a self-descriptive string, i.e., something that identifies
- * the treebank (e.g., an ISO code of a language). Once initialised, the first
+ * the treebank (e.g., an ISO code of a language). Once initialized, the first
  * tree can be retrievend with @ref get_tree. The other trees can be iterated over
  * by calling @ref next_tree. This function can only be called as long as @ref end
  * returns false.
@@ -91,7 +91,7 @@ public:
 	// MODIFIERS
 
 	/**
-	 * @brief Initialises the treebank reader
+	 * @brief Initializes the treebank reader
 	 * @param file Treebank file.
 	 * @param identifier Identifier string for the treebank.
 	 * @returns The type of the error, if any. The list of errors that this

@@ -123,7 +123,7 @@ noexcept
 		}
 		);
 
-	// initialise adjN
+	// initialize adjN
 	for (node u = 0; u < n; ++u) {
 		// divide by two because the 'key' function in the call to
 		// the sorting function is called twice for every edge

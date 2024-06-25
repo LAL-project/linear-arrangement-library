@@ -184,10 +184,10 @@ private:
 	bool m_reached_end = false;
 
 private:
-	/// Initialise the interval every node of the tree, starting at @e r.
-	void initialise_intervals_tree() noexcept;
-	/// Initialise the interval of node @e u.
-	void initialise_interval_node(node u) noexcept;
+	/// Initialize the interval every node of the tree, starting at @e r.
+	void initialize_intervals_tree() noexcept;
+	/// Initialize the interval of node @e u.
+	void initialize_interval_node(node u) noexcept;
 };
 
 } // -- namespace generate

@@ -171,7 +171,7 @@ public:
 	 *
 	 * Modifies the internal state so that the next tree
 	 * can be retrieved using method @ref get_tree.
-	 * @pre The generator must have been initialised.
+	 * @pre The generator must have been initialized.
 	 */
 	void next() noexcept;
 
@@ -196,7 +196,7 @@ protected:
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next(). The tree
 	 * is rooted at vertex 0.
-	 * @pre The generator must have been initialised.
+	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
 	graphs::rooted_tree __get_tree() noexcept;

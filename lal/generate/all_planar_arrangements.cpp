@@ -116,7 +116,7 @@ void all_planar_arrangements::next() noexcept {
 		}
 		else {
 			++m_root;
-			initialise_intervals_tree();
+			initialize_intervals_tree();
 		}
 	}
 }
@@ -133,12 +133,12 @@ linear_arrangement all_planar_arrangements::get_arrangement() const noexcept {
 void all_planar_arrangements::reset() noexcept {
 	m_root = 0;
 	m_reached_end = false;
-	initialise_intervals_tree();
+	initialize_intervals_tree();
 }
 
-void all_planar_arrangements::initialise_intervals_tree() noexcept {
+void all_planar_arrangements::initialize_intervals_tree() noexcept {
 	m_intervals[m_root].resize(m_T.get_degree(m_root) + 1);
-	initialise_interval_node(m_root, m_root);
+	initialize_interval_node(m_root, m_root);
 
 	// we use a BFS to be able to keep track of the parent of
 	// every vertex with respect to the root.
@@ -146,13 +146,13 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void {
 		m_intervals[v].resize(m_T.get_degree(v));
-		initialise_interval_node(v, u);
+		initialize_interval_node(v, u);
 	}
 	);
 	bfs.start_at(m_root);
 }
 
-void all_planar_arrangements::initialise_interval_node(node u, node parent) noexcept
+void all_planar_arrangements::initialize_interval_node(node u, node parent) noexcept
 {
 	const neighbourhood& neighs_u = m_T.get_neighbors(u);
 

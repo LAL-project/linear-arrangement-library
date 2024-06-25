@@ -59,10 +59,9 @@ namespace graphs {
  *
  * Class implementing an undirected graph, using the adjacency list data structure.
  *
- * An object of this class must be initialised either with its constructor
- * or with the @ref init(uint64_t) method. Edges can then be added one by one
- * (see @ref add_edge(node,node,bool,bool) ) or all at the same time (see
- * @ref add_edges(const std::vector<edge>&, bool, bool) ).
+ * An object of this class must be initialized either with its constructor
+ * or with the @ref init method. Edges can then be added one by one
+ * (see @ref add_edge) or all at the same time (see @ref add_edges).
  */
 class undirected_graph : virtual public graph {
 public:
@@ -366,7 +365,7 @@ public:
 
 protected:
 	/**
-	 * @brief Initialises the memory in the graph hierarchy.
+	 * @brief Initializes the memory in the graph hierarchy.
 	 *
 	 * Initializes memory of @ref lal::graphs::undirected_graph and
 	 * @ref lal::graphs::graph classes.

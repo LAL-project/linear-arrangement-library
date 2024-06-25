@@ -108,7 +108,7 @@ static constexpr char ANCHOR = 1;
  * @param[out] L Adjacency list-like data structure. \f$L[u]\f$ is a list of
  * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
  * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
- * @pre Parameter @e L is initialised to have size n, the number of vertices of
+ * @pre Parameter @e L is initialized to have size n, the number of vertices of
  * the tree.
  */
 template <typename sort_type>

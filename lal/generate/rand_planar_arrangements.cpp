@@ -72,7 +72,7 @@ noexcept
 		m_gen = std::mt19937(seed);
 	}
 
-	// initialise m_rdata with the degrees of the tree
+	// initialize m_rdata with the degrees of the tree
 	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
 		m_rdata[u].resize(m_T.get_degree(u));
 	}
@@ -97,7 +97,7 @@ noexcept
 		m_gen = std::mt19937(seed);
 	}
 
-	// initialise m_rdata with the degrees of the tree
+	// initialize m_rdata with the degrees of the tree
 	for (node u = 0; u < m_T.get_num_nodes(); ++u) {
 		m_rdata[u].resize(m_T.get_degree(u));
 	}

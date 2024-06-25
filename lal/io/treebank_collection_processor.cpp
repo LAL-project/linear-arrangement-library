@@ -81,7 +81,7 @@ treebank_error treebank_collection_processor::init
 (const std::string& file, const std::string& odir)
 noexcept
 {
-	// initialise data
+	// initialize data
 	m_all_individual_treebank_ids.clear();
 	m_main_file = file;
 	m_out_dir = odir;
@@ -89,8 +89,8 @@ noexcept
 	// initalise features vector
 	std::fill(m_what_fs.begin(), m_what_fs.end(), true);
 
-	// initialise column names
-	initialise_column_names();
+	// initialize column names
+	initialize_column_names();
 
 	// make sure main file exists
 	if (not std::filesystem::exists(m_main_file)) {
@@ -175,7 +175,7 @@ treebank_error treebank_collection_processor::process() noexcept
 			// error, and storing it into 'm_errors_from_processing'.
 			#pragma omp task
 			{
-				// declare and initialise treebank processor
+				// declare and initialize treebank processor
 				treebank_processor tbproc;
 				tbproc.set_check_before_process(false);
 				tbproc.init(

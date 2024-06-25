@@ -70,7 +70,7 @@ noexcept
 		m_gen = std::mt19937(seed);
 	}
 
-	// initialise the random data of all vertices
+	// initialize the random data of all vertices
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		// the children of vertex 'u'
 		const neighbourhood& neighs = m_rT.get_out_neighbors(u);

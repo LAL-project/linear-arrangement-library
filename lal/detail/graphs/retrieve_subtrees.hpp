@@ -89,7 +89,7 @@ noexcept
 	if (n <= 1) { return {std::move(es), sizes}; }
 
 	// reserve some space for the vector edges
-	// initialise the array of sizes if needed
+	// initialize the array of sizes if needed
 	bool update_sizes = false;
 	if (T.are_size_subtrees_valid()) {
 		es.reserve(T.get_num_nodes_subtree(u));

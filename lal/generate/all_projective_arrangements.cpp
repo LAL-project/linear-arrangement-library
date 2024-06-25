@@ -99,7 +99,7 @@ void all_projective_arrangements::next() noexcept {
 
 		has_perm = std::next_permutation(inter_u.begin(), inter_u.end());
 		if (not has_perm) {
-			initialise_interval_node(u);
+			initialize_interval_node(u);
 		}
 		++u;
 	}
@@ -113,16 +113,16 @@ void all_projective_arrangements::next() noexcept {
 
 void all_projective_arrangements::reset() noexcept {
 	m_reached_end = false;
-	initialise_intervals_tree();
+	initialize_intervals_tree();
 }
 
-void all_projective_arrangements::initialise_intervals_tree() noexcept {
+void all_projective_arrangements::initialize_intervals_tree() noexcept {
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
-		initialise_interval_node(u);
+		initialize_interval_node(u);
 	}
 }
 
-void all_projective_arrangements::initialise_interval_node(node u) noexcept {
+void all_projective_arrangements::initialize_interval_node(node u) noexcept {
 	const neighbourhood& neighs_u = m_rT.get_out_neighbors(u);
 	auto& interval_u = m_intervals[u];
 

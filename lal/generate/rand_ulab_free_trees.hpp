@@ -121,11 +121,11 @@ public:
 	/**
 	 * @brief Sets the size of the unlabelled trees to generate.
 	 *
-	 * Initialises @ref m_rn with values extracted from \cite OEIS_A000081.
-	 * It also initialises @ref m_fn with values extracted from
+	 * Initializes @ref m_rn with values extracted from \cite OEIS_A000081.
+	 * It also initializes @ref m_fn with values extracted from
 	 * \cite OEIS_A000055.
 	 *
-	 * Initialises the random number generator with @e seed. When @e seed
+	 * Initializes the random number generator with @e seed. When @e seed
 	 * is 0, a random seed is used.
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random number generator. If the seed is
