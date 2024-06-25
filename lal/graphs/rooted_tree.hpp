@@ -502,8 +502,8 @@ public:
 
 	/**
 	 * @brief Calculates the number of nodes at every rooted subtree.
-	 * @pre The object must be a tree (see @ref is_tree()).
-	 * @pre The tree must have a root (see @ref has_root()).
+	 * @pre The object must be a tree (see @ref is_tree).
+	 * @pre The tree must have a root (see @ref has_root).
 	 * @post Method @ref are_size_subtrees_valid returns true.
 	 */
 	void calculate_size_subtrees() noexcept;
@@ -566,7 +566,7 @@ public:
 	 *
 	 * A tree is a valid rooted tree when:
 	 * - the underlying undirected graph is connected and does not contain
-	 * cycles (see @ref is_tree()),
+	 * cycles (see @ref is_tree),
 	 * - the tree has a root (see @ref has_root, @ref set_root, @ref get_root).
 	 *
 	 * @returns Whether this tree is a valid rooted tree or not.

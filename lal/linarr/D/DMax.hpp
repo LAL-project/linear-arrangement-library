@@ -70,7 +70,7 @@ namespace linarr {
  * @param bps All branchless paths of the tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -97,7 +97,7 @@ noexcept;
  * @param bps All branchless paths of the tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -123,7 +123,7 @@ noexcept;
  * @param bps All branchless paths of the tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -149,7 +149,7 @@ noexcept;
  * @param c Bipartite coloring of the input tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -174,7 +174,7 @@ noexcept;
  * @param bps All branchless paths of the tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -198,7 +198,7 @@ noexcept;
  * @param c Bipartite coloring of the input tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -222,7 +222,7 @@ noexcept;
  * @param orbits The orbits of the input graph.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -245,7 +245,7 @@ noexcept;
  * @param t Input free tree.
  * @param num_threads Number of threads to use.
  * @returns All maximum arrangements up to level isomorphism.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
@@ -268,7 +268,7 @@ noexcept;
  * @param c Bipartite coloring of the input tree.
  * @param bps All branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle(
 	const graphs::free_tree& t,
@@ -287,9 +287,9 @@ noexcept;
  * arrangement.
  * @param t Input free tree.
  * @param bps All branchless paths of the tree.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  * @returns A maximal arrangement with at most one thistle vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
@@ -306,7 +306,7 @@ noexcept;
  * @param t Input free tree.
  * @param c Bipartite coloring of the input tree.
  * @returns A maximal arrangement with at most one thistle vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
@@ -322,7 +322,7 @@ noexcept;
  * arrangement.
  * @param t Input free tree.
  * @returns A maximal arrangement with at most one thistle vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
@@ -340,7 +340,7 @@ noexcept;
  * @param t Input free tree.
  * @param bps All branchless paths of the tree.
  * @returns A maximal arrangement with at most one thistle vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
 	const graphs::free_tree& t,
@@ -357,7 +357,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  * @param t Input free tree.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
@@ -456,7 +456,7 @@ noexcept;
  * This function implements the algorithm described in \cite Alemany2024a.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 (const graphs::free_tree& t)
@@ -479,7 +479,7 @@ noexcept;
  * lal::graphs::rooted_tree::to_free_tree())
  * @param t Input rooted tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 inline
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
@@ -504,7 +504,7 @@ noexcept
  * This function implements the algorithm described in \cite Alemany2024a.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
 (const graphs::free_tree& t)
@@ -527,7 +527,7 @@ noexcept;
  * lal::graphs::rooted_tree::to_free_tree()). Therefore, the root is ignored.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 inline
 std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
@@ -552,7 +552,7 @@ noexcept
  * This function implements the algorithm described in \cite Alemany2024a.
  * @param t Input rooted tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_projective
 (const graphs::rooted_tree& t)

@@ -891,7 +891,7 @@ noexcept
  * @param all_paths The set of all paths that span sequences of vertices of degree 2.
  * @returns The cost of a maximal non-bipartite arrangement with exactly 1 thistle
  * vertex.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template <bool make_arrangement>
 std::conditional_t<

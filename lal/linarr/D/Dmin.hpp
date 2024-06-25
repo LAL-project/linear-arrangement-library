@@ -66,7 +66,7 @@ namespace linarr {
  * @param t Input free tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
  */
@@ -90,7 +90,7 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * @param t Input rooted tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  * @pre This function has as extra preconditions those specified in the enumeration
  * passed as parameter.
  */
@@ -116,7 +116,7 @@ std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
  * @param t Input free tree.
  * @param c Coloring of the input graph.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
@@ -134,7 +134,7 @@ noexcept;
  * arrangement.
  * @param t Input free tree.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
 (const graphs::free_tree& t)
@@ -157,7 +157,7 @@ noexcept;
  * @param t Input free tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
 	const graphs::free_tree& t,
@@ -184,7 +184,7 @@ noexcept;
  * @param t Input rooted tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 inline
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
@@ -213,7 +213,7 @@ noexcept
  * @param t Input rooted tree.
  * @param a The algorithm to use.
  * @returns The minimum value of \f$D\f$ and a minimum arrangement.
- * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree()).
+ * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective(
 	const graphs::rooted_tree& t,
