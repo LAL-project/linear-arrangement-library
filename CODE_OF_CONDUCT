@@ -24,8 +24,6 @@ We favor the shorthands in the left column over those in the right column
 DOCUMENTATION FORMAT GUIDELINES
 ===============================
 
-* Minimise references to other methods, like 'see @ref ...', since python users can't do that... Therefore, be redundant when documenting.
-
 * The format of a doxygen string: ( the string '//!' here denotes a comment explaining something about the format and must NOT be included in the actual documentation)
 
 	/**
