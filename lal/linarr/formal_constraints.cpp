@@ -82,7 +82,7 @@ noexcept
 	return detail::is_bipartite__connected(c, __nonident(arr));
 }
 
-bool is_bipartite(const graphs::directed_graph& g, const linear_arrangement& arr)
+bool is_bipartite(const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
@@ -93,8 +93,7 @@ noexcept
 	if (arr.size() == 0) { return detail::is_bipartite(g, __ident(arr)); }
 	return detail::is_bipartite(g, __nonident(arr));
 }
-
-bool is_bipartite(const graphs::undirected_graph& g, const linear_arrangement& arr)
+bool is_bipartite(const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG

@@ -149,7 +149,7 @@ noexcept;
  * @param c Coloring of the input graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite and connected.
+ * @pre The underlying undirected graph is bipartite and connected.
  */
 bool is_bipartite(
 	const graphs::directed_graph& g,
@@ -164,23 +164,7 @@ noexcept;
  * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
  * arrangement.
  *
- * @param g Input graph.
- * @param arr Input linear arrangement.
- * @returns Whether or not the input arrangment of @e g is bipartite.
- * @pre The input graph is bipartite, and needs not be connected.
- */
-bool is_bipartite(
-	const graphs::directed_graph& g,
-	const linear_arrangement& arr = {}
-)
-noexcept;
-/**
- * @brief Is a given arrangement bipartite?
- *
- * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
- * arrangement.
- *
- * @param g Input graph.
+ * @param g Input undirected graph.
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The input graph is bipartite, and needs not be connected.
@@ -189,6 +173,22 @@ bool is_bipartite(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& arr = {}
 ) noexcept;
+/**
+ * @brief Is a given arrangement bipartite?
+ *
+ * See @ref LAL_concepts__linear_arrangement__types for the definition of bipartite
+ * arrangement.
+ *
+ * @param g Input directed graph.
+ * @param arr Input linear arrangement.
+ * @returns Whether or not the input arrangment of @e g is bipartite.
+ * @pre The underlying undirected graph is bipartite, but needs not be connected.
+ */
+bool is_bipartite(
+	const graphs::directed_graph& g,
+	const linear_arrangement& arr = {}
+)
+noexcept;
 
 /**
  * @brief Is a given arrangement planar?
