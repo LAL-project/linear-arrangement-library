@@ -94,7 +94,7 @@ noexcept
 	for (node_t u = 0ull; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = arr[u];
-		const neighbourhood& Nu = g.get_neighbours(*u);
+		const neighbourhood& Nu = g.get_neighbors(*u);
 		for (node_t v : Nu) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];
@@ -110,7 +110,7 @@ noexcept
 			for (position_t pw = begin; pw <= end; ++pw) {
 				// 'w' is the node at position 'pw'
 				const node w = arr[pw];
-				const neighbourhood& Nw = g.get_neighbours(w);
+				const neighbourhood& Nw = g.get_neighbors(w);
 				for (node_t z : Nw) {
 					const position pz = arr[z];
 
@@ -174,7 +174,7 @@ noexcept
 	for (position_t pw = begin; pw <= end; ++pw) {
 		// 'w' is the node at position 'pw'
 		const node w = arr[pw];
-		const neighbourhood& Nw_out = g.get_out_neighbours(w);
+		const neighbourhood& Nw_out = g.get_out_neighbors(w);
 		for (node_t z : Nw_out) {
 			const position pz = arr[z];
 
@@ -191,7 +191,7 @@ noexcept
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
 		}
-		const neighbourhood& Nw_in = g.get_in_neighbours(w);
+		const neighbourhood& Nw_in = g.get_in_neighbors(w);
 		for (node_t z : Nw_in) {
 			const position pz = arr[z];
 
@@ -244,7 +244,7 @@ noexcept
 	for (node_t u = 0ull; u < g.get_num_nodes(); ++u) {
 		// 'pu' is the position of node 'u'
 		const position pu = arr[u];
-		const neighbourhood& Nu_out = g.get_out_neighbours(*u);
+		const neighbourhood& Nu_out = g.get_out_neighbors(*u);
 		for (node_t v : Nu_out) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];
@@ -259,7 +259,7 @@ noexcept
 				if (C > upper_bound) { return DECIDED_C_GT; }
 			}
 		}
-		const neighbourhood& Nu_in = g.get_in_neighbours(*u);
+		const neighbourhood& Nu_in = g.get_in_neighbors(*u);
 		for (node_t v : Nu_in) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];

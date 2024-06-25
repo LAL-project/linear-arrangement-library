@@ -150,11 +150,11 @@ public:
 	/* SETTERS */
 
 	/**
-	 * @brief Should trees be normalised?
+	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalise(bool v) noexcept
-	{ m_normalise_tree = v; }
+	void set_normalize(bool v) noexcept
+	{ m_normalize_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
@@ -198,8 +198,8 @@ private:
 	/// Current head vector
 	head_vector m_current_head_vector;
 
-	/// Normalise the current tree.
-	bool m_normalise_tree = true;
+	/// Normalize the current tree.
+	bool m_normalize_tree = true;
 	/// Calculate the size of the subtrees of the generated rooted tree.
 	bool m_calculate_size_subtrees = true;
 	/// Calculate the type of tree of the generated tree.

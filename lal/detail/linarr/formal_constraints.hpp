@@ -182,11 +182,11 @@ noexcept
 	const auto color_a_vertex = [&](node u) {
 		color_per_vertex[u] = blue;
 		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
-			for (node v : g.get_out_neighbours(u)) { color_per_vertex[v] = red; }
-			for (node v : g.get_in_neighbours(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_out_neighbors(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_in_neighbors(u)) { color_per_vertex[v] = red; }
 		}
 		else {
-			for (node v : g.get_neighbours(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_neighbors(u)) { color_per_vertex[v] = red; }
 		}
 	};
 

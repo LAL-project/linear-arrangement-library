@@ -56,7 +56,7 @@ namespace generate {
  * rooted tree or a free tree.
  *
  * The list of methods that govern postprocessing actions are:
- * - @ref set_normalise_tree (rooted and free trees)
+ * - @ref set_normalize_tree (rooted and free trees)
  * - @ref set_calculate_size_subtrees (rooted trees)
  * - @ref set_calculate_tree_type (rooted and free trees)
  *
@@ -184,7 +184,7 @@ public:
 	 *
 	 * This function first calls @ref __get_tree and then modifies the
 	 * generated tree according to the values:
-	 * - @ref set_normalise_tree
+	 * - @ref set_normalize_tree
 	 * - @ref set_calculate_size_subtrees
 	 * - @ref set_calculate_tree_type
 	 *
@@ -197,8 +197,8 @@ public:
 		auto t = __get_tree();
 
 		// free and rooted trees
-		if (m_normalise_tree) {
-			t.normalise();
+		if (m_normalize_tree) {
+			t.normalize();
 		}
 		if (m_calculate_tree_type) {
 			t.calculate_tree_type();
@@ -240,7 +240,7 @@ public:
 	 * of this class.
 	 */
 	void activate_all_postprocessing_actions() noexcept {
-		set_normalise_tree(true);
+		set_normalize_tree(true);
 		set_calculate_size_subtrees(true);
 		set_calculate_tree_type(true);
 	}
@@ -252,7 +252,7 @@ public:
 	 * of this class.
 	 */
 	void deactivate_all_postprocessing_actions() noexcept {
-		set_normalise_tree(false);
+		set_normalize_tree(false);
 		set_calculate_size_subtrees(false);
 		set_calculate_tree_type(false);
 	}
@@ -260,11 +260,11 @@ public:
 	/* SETTERS */
 
 	/**
-	 * @brief Should trees be normalised?
+	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalise_tree(bool v) noexcept
-	{ m_normalise_tree = v; }
+	void set_normalize_tree(bool v) noexcept
+	{ m_normalize_tree = v; }
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
@@ -295,8 +295,8 @@ protected:
 	/// Number of vertices
 	uint64_t m_n = 0;
 
-	/// Normalise the generated tree.
-	bool m_normalise_tree = true;
+	/// Normalize the generated tree.
+	bool m_normalize_tree = true;
 	/// Calculate the size of the subtrees of the generated rooted tree.
 	bool m_calculate_size_subtrees = true;
 	/// Calculate the type of tree of the generated tree.

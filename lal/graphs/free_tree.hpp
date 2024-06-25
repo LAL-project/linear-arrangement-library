@@ -149,14 +149,14 @@ public:
 	 * called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Should the graph be normalised?
+	 * @param norm Should the graph be normalized?
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre \f$s \neq t\f$
 	 * @pre Edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	free_tree& add_edge
@@ -171,7 +171,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	free_tree& add_edge_bulk(node s, node t) noexcept;
@@ -181,8 +181,8 @@ public:
 	 *
 	 * This method updates the Union-Find data structure and all the necessary
 	 * members after several calls to @ref add_edge_bulk.
-	 * @param norm Normalise the tree.
-	 * @param check Check whether the tree is normalised or not.
+	 * @param norm Normalize the tree.
+	 * @param check Check whether the tree is normalized or not.
 	 */
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
@@ -196,16 +196,16 @@ public:
 	 * faster than calling @ref add_edge since the edges are added in bulk.
 	 * For a more controlled addition of the edges, see @ref can_add_edges.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge.
 	 * @pre None of the subsets of the list of edges can produce cycles
 	 * when added.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edges.
 	 */
 	free_tree& add_edges
@@ -227,15 +227,15 @@ public:
 	 * Moreover, the current structure of the graph is cleared before setting
 	 * the new edges.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The graph has been initialized with as many nodes as vertices in the
 	 * list of edges.
 	 * @pre There are no repeated edges in the list.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
@@ -250,13 +250,13 @@ public:
 	 * the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The edge must exist.
-	 * @post If @e norm is true the tree is guaranteed to be normalised
+	 * @post If @e norm is true the tree is guaranteed to be normalized
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
@@ -272,7 +272,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
 	free_tree& remove_edge_bulk(node s, node t) noexcept;
@@ -282,8 +282,8 @@ public:
 	 *
 	 * This method updates the Union-Find data structure and all the necessary
 	 * members after several calls to @ref remove_edge_bulk.
-	 * @param norm Normalise the tree.
-	 * @param check Check whether the tree is normalised or not.
+	 * @param norm Normalize the tree.
+	 * @param check Check whether the tree is normalized or not.
 	 */
 	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
 
@@ -296,14 +296,14 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed in
 	 * bulk.
 	 * @param edges The edges to be deleted.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
-	 * @post If @e norm is true the tree is guaranteed to be normalised
+	 * @post If @e norm is true the tree is guaranteed to be normalized
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
@@ -318,12 +318,12 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 * @param u The node whose incident vertices are to be removed.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
-	 * @post If @e norm is true the tree is guaranteed to be normalised
+	 * @post If @e norm is true the tree is guaranteed to be normalized
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */

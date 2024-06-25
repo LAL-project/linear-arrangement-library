@@ -137,7 +137,7 @@ noexcept
 	for (node u = 0; u < n; ++u) {
 		// retrieve leaves of vertex u
 		leaves_per_vertex[u].reserve(t.get_degree(u));
-		for (node v : t.get_neighbours(u)) {
+		for (node v : t.get_neighbors(u)) {
 			if (t.get_degree(v) == 1) { leaves_per_vertex[u].push_back(v); }
 		}
 		// sort the leaves by vertex index

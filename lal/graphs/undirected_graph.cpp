@@ -109,37 +109,37 @@ undirected_graph& undirected_graph::add_edge
 
 	actions_after_add_edge(u, v);
 
-	if (is_normalised()) {
-		// the graph was normalised
+	if (is_normalized()) {
+		// the graph was normalized
 		if (to_norm) {
-			// Keep it normalised. The attribute m_is_normalised need not be updated.
+			// Keep it normalized. The attribute m_is_normalized need not be updated.
 			detail::sorting::bit_sort<node>(nu.begin(), nu.end(), nu.size());
 			detail::sorting::bit_sort<node>(nv.begin(), nv.end(), nv.size());
 		}
 		else if (check_norm) {
-			// Even though we are not asked to normalise the graph, it may be
+			// Even though we are not asked to normalize the graph, it may be
 			// so after the addition. This means we have to check whether the
-			// graph is normalised.
+			// graph is normalized.
 			const std::size_t su = nu.size();
 			const std::size_t sv = nv.size();
 			if (su > 1 and sv > 1) {
-				m_is_normalised = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
+				m_is_normalized = nu[su - 2] < nu[su - 1] and nv[sv - 2] < nv[sv - 1];
 			}
 			else if (su > 1) {
-				m_is_normalised = nu[su - 2] < nu[su - 1];
+				m_is_normalized = nu[su - 2] < nu[su - 1];
 			}
 			else if (sv > 1) {
-				m_is_normalised = nv[sv - 2] < nv[sv - 1];
+				m_is_normalized = nv[sv - 2] < nv[sv - 1];
 			}
 		}
 		else {
 			// not 'to_norm' and not 'check_norm'
-			m_is_normalised = false;
+			m_is_normalized = false;
 		}
 	}
 	else {
-		// the graph was not normalised.
-		normalise_after_edge_addition(to_norm, check_norm);
+		// the graph was not normalized.
+		normalize_after_edge_addition(to_norm, check_norm);
 	}
 
 	return *this;
@@ -158,7 +158,7 @@ undirected_graph& undirected_graph::add_edge_bulk(node u, node v) noexcept {
 
 void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
 	actions_after_add_edges_bulk();
-	normalise_after_edge_addition(to_norm, check_norm);
+	normalize_after_edge_addition(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::add_edges
@@ -174,7 +174,7 @@ undirected_graph& undirected_graph::add_edges
 	}
 
 	actions_after_add_edges(edges);
-	normalise_after_edge_addition(to_norm, check_norm);
+	normalize_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -196,7 +196,7 @@ undirected_graph& undirected_graph::set_edges
 	}
 	m_num_edges = edges.size();
 
-	normalise_after_edge_addition(to_norm, check_norm);
+	normalize_after_edge_addition(to_norm, check_norm);
 	return *this;
 }
 
@@ -212,7 +212,7 @@ undirected_graph& undirected_graph::remove_edge
 	remove_single_edge(u,v, nu, nv);
 
 	actions_after_remove_edge(u, v);
-	normalise_after_edge_removal(norm, check_norm);
+	normalize_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -232,7 +232,7 @@ undirected_graph& undirected_graph::remove_edge_bulk(node u, node v) noexcept
 
 void undirected_graph::finish_bulk_remove(bool to_norm, bool check_norm) noexcept {
 	actions_after_remove_edges_bulk();
-	normalise_after_edge_addition(to_norm, check_norm);
+	normalize_after_edge_addition(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::remove_edges
@@ -249,7 +249,7 @@ undirected_graph& undirected_graph::remove_edges
 	}
 
 	actions_after_remove_edges(edges);
-	normalise_after_edge_removal(norm, check_norm);
+	normalize_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -264,7 +264,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 	auto& neighs_u = m_adjacency_list[u];
 
 	// the graph is NORMALISED
-	if (is_normalised()) {
+	if (is_normalized()) {
 		// find the vertices that point to 'u'
 		for (node v : neighs_u) {
 			auto& out_v = m_adjacency_list[v];
@@ -295,7 +295,7 @@ undirected_graph& undirected_graph::remove_edges_incident_to
 	m_num_edges -= get_degree(u);
 	neighs_u.clear();
 
-	normalise_after_edge_removal(norm, check_norm);
+	normalize_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
@@ -331,7 +331,7 @@ bool undirected_graph::has_edge(node u, node v) const noexcept {
 	const neighbourhood& nu = m_adjacency_list[u];
 	const neighbourhood& nv = m_adjacency_list[v];
 
-	if (is_normalised()) {
+	if (is_normalized()) {
 		return nu.size() <= nv.size() ?
 			detail::exists_sorted(nu.begin(), nu.end(), nu.size(), v) :
 			detail::exists_sorted(nv.begin(), nv.end(), nv.size(), u);
@@ -391,7 +391,7 @@ void undirected_graph::remove_single_edge
 	neighbourhood::iterator it_v, it_u;
 
 	// find the nodes in the lists
-	if (is_normalised()) {
+	if (is_normalized()) {
 		it_v = detail::find_sorted(out_u.begin(), out_u.end(), out_u.size(), v);
 		it_u = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 

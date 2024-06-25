@@ -77,7 +77,7 @@
 }
 
 struct useful_info_pairs {
-	// number of common neighbours
+	// number of common neighbors
 	uint64_t common = 0;
 	// sum of the degrees of the common nodes
 	uint64_t sum_deg_common = 0;
@@ -149,7 +149,7 @@ namespace properties {
 // Variance of C (using formula)
 // GENERAL GRAPHS
 
-template <bool reuse, bool is_normalised>
+template <bool reuse, bool is_normalized>
 void compute_data_gen_graphs
 (
 	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,
@@ -165,16 +165,16 @@ noexcept
 	// DATA USED TO DEAL WITH THE NON-NORMALISED CASE
 
 	// this vector is used to store the sorted adjacency lists of
-	// a non-normalised graph
+	// a non-normalized graph
 	std::vector<neighbourhood> sorted_neighbourhoods;
 
-	// if the graph is not normalised, dump all the vector here and normalise it
-	if constexpr (not is_normalised) {
+	// if the graph is not normalized, dump all the vector here and normalize it
+	if constexpr (not is_normalized) {
 		detail::array<char> mem(n, 0);
 
 		sorted_neighbourhoods.resize(n);
 		for (node u = 0; u < n; ++u) {
-			sorted_neighbourhoods[u] = g.get_neighbours(u);
+			sorted_neighbourhoods[u] = g.get_neighbors(u);
 
 			detail::sorting::bit_sort_mem<node>(
 				sorted_neighbourhoods[u].begin(),
@@ -206,7 +206,7 @@ noexcept
 		sum_cubed_degrees += ks*ks*ks;
 
 		xi[s] = 0;
-		for (node t : g.get_neighbours(s)) {
+		for (node t : g.get_neighbors(s)) {
 			const uint64_t kt = g.get_degree(t);
 			psi += ks*kt;
 			xi[s] += kt;
@@ -242,11 +242,11 @@ noexcept
 
 		const uint64_t ks = g.get_degree(s);
 		const neighbourhood& Ns =
-			(is_normalised ? g.get_neighbours(s) : sorted_neighbourhoods[s]);
+			(is_normalized ? g.get_neighbors(s) : sorted_neighbourhoods[s]);
 
 		const uint64_t kt = g.get_degree(t);
 		const neighbourhood& Nt =
-			(is_normalised ? g.get_neighbours(t) : sorted_neighbourhoods[t]);
+			(is_normalized ? g.get_neighbors(t) : sorted_neighbourhoods[t]);
 
 		// for each neighbour of 's' different from 't'
 		for (node u : Ns) {
@@ -254,7 +254,7 @@ noexcept
 
 			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
-				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
+				(is_normalized ? g.get_neighbors(u) : sorted_neighbourhoods[u]);
 
 			uint64_t common_ut = 0;
 			if constexpr (reuse) {
@@ -287,7 +287,7 @@ noexcept
 
 			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
-				(is_normalised ? g.get_neighbours(u) : sorted_neighbourhoods[u]);
+				(is_normalized ? g.get_neighbors(u) : sorted_neighbourhoods[u]);
 
 			uint64_t common_us = 0;
 			if constexpr (reuse) {
@@ -322,7 +322,7 @@ noexcept
 		uint64_t deg_sum_st = 0;
 		if constexpr (reuse) {
 			if (CIT it_st; has_key(H, sorted_edge(s,t), it_st)) {
-				// if the neighbours were not searched then the variables
+				// if the neighbors were not searched then the variables
 				// 'sum_deg_common_st' and 'common_st' are equal to '0',
 				// so we must initialise them now
 				deg_sum_st = it_st->second.sum_deg_common;
@@ -436,7 +436,7 @@ noexcept
 	)
 
 	if (reuse) {
-		if (g.is_normalised()) {
+		if (g.is_normalized()) {
 			compute_data_gen_graphs<true, true>
 				parameters_of_compute_data;
 		}
@@ -446,7 +446,7 @@ noexcept
 		}
 	}
 	else {
-		if (g.is_normalised()) {
+		if (g.is_normalized()) {
 			compute_data_gen_graphs<false, true>
 				parameters_of_compute_data;
 		}

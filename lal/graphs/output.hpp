@@ -66,7 +66,7 @@ noexcept
 	const auto N = g.get_num_nodes();
 	for (node u = 0; u < N; ++u) {
 		os << u << ":";
-		for (auto v : g.get_neighbours(u)) {
+		for (auto v : g.get_neighbors(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");
@@ -89,7 +89,7 @@ noexcept
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << u << ":";
-		for (auto v : g.get_out_neighbours(u)) {
+		for (auto v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");
@@ -97,7 +97,7 @@ noexcept
 	os << "\n" << "in:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << u << ":";
-		for (auto v : g.get_in_neighbours(u)) {
+		for (auto v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");
@@ -121,7 +121,7 @@ noexcept
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_out_neighbours(u)) {
+		for (auto v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");
@@ -129,7 +129,7 @@ noexcept
 	os << "\n" << "in:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_in_neighbours(u)) {
+		for (auto v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
 		os << (u < N - 1 ? "\n" : "");

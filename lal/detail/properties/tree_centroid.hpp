@@ -153,11 +153,11 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	if (n == 2) {
 		auto only_neigh = [&]() {
 			if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-				return t.get_neighbours(x)[0];
+				return t.get_neighbors(x)[0];
 			}
 			else {
-				if (t.get_out_degree(x) == 0) { return t.get_in_neighbours(x)[0]; }
-				else { return t.get_out_neighbours(x)[0]; }
+				if (t.get_out_degree(x) == 0) { return t.get_in_neighbors(x)[0]; }
+				else { return t.get_out_neighbors(x)[0]; }
 			}
 		}();
 
@@ -246,7 +246,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 
 		// append a new leaf to the queue
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-			for (node v : t.get_neighbours(u)) {
+			for (node v : t.get_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];
@@ -261,7 +261,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			}
 		}
 		else {
-			for (node v : t.get_in_neighbours(u)) {
+			for (node v : t.get_in_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];
@@ -274,7 +274,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
-			for (node v : t.get_out_neighbours(u)) {
+			for (node v : t.get_out_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];

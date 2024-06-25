@@ -165,10 +165,10 @@ public:
 
 			std::size_t i = 0;
 			for (node u : nodes_level_l) {
-				// store the neighbours names in a vector for later sorting
+				// store the neighbors names in a vector for later sorting
 
 				std::size_t j = 0;
-				for (node v : t.get_out_neighbours(u)) {
+				for (node v : t.get_out_neighbors(u)) {
 					_pieces_of_node[j++] = name_per_node_t[v];
 				}
 				sort(&_pieces_of_node[0], &_pieces_of_node[j]);

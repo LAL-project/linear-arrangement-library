@@ -135,7 +135,7 @@ noexcept
 	m_num_assigned_verts_red += m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
 
 	// iterate over the neighbors of 'u'
-	for (const node v : m_t.get_neighbours(u)) {
+	for (const node v : m_t.get_neighbors(u)) {
 		const edge e = edge_sorted_by_index(u,v);
 
 		// keep track of assigned and unassigned
@@ -268,7 +268,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 	m_node_level[u] = 0;
 	m_node_right_degree[u] = 0;
 
-	for (node v : m_t.get_neighbours(u)) {
+	for (node v : m_t.get_neighbors(u)) {
 		const edge e = edge_sorted_by_index(u,v);
 
 		// keep track of assigned and unassigned

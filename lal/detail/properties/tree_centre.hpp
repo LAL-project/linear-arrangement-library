@@ -102,11 +102,11 @@ std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 		// only neighbour of X
 		node v2;
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-			v2 = t.get_neighbours(X)[0];
+			v2 = t.get_neighbors(X)[0];
 		}
 		else {
 			v2 = (t.get_out_degree(X) == 0 ?
-				t.get_in_neighbours(X)[0] : t.get_out_neighbours(X)[0]
+				t.get_in_neighbors(X)[0] : t.get_out_neighbors(X)[0]
 			);
 		}
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
@@ -195,7 +195,7 @@ std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
 	bool has_single_center = false;
 	node single_center = n + 1;
 
-	bfs.set_process_visited_neighbours(true);
+	bfs.set_process_visited_neighbors(true);
 	bfs.set_process_neighbour(
 	[&](const auto&, node u, node v, bool) -> void
 	{

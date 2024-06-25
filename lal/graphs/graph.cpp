@@ -65,7 +65,7 @@ void graph::clear() noexcept {
 	_clear();
 }
 
-void graph::normalise() noexcept {
+void graph::normalize() noexcept {
 	detail::array<char> mem(get_num_nodes(), 0);
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
@@ -75,22 +75,22 @@ void graph::normalise() noexcept {
 			(nu.begin(), nu.end(), nu.size(), mem.begin());
 		}
 	}
-	m_is_normalised = true;
+	m_is_normalized = true;
 }
 
-bool graph::check_normalised() noexcept {
+bool graph::check_normalized() noexcept {
 	// check that every adjacency list is sorted
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		const neighbourhood& nu = m_adjacency_list[u];
 		if (not std::is_sorted(nu.begin(), nu.end())) {
-			// if some is not then the graph is not normalised
-			m_is_normalised = false;
+			// if some is not then the graph is not normalized
+			m_is_normalized = false;
 			return false;
 		}
 	}
 	// all adjacency lists are sorted so
-	// the graph is normalised
-	m_is_normalised = true;
+	// the graph is normalized
+	m_is_normalized = true;
 	return true;
 }
 
@@ -110,10 +110,10 @@ void graph::__disjoint_union(const graph& g) noexcept {
 	// update number of edges
 	m_num_edges += g.m_num_edges;
 
-	// If one or none of the two graphs involved are normalised,
-	// the result is not normalised.
-	// If both graphs are normalised, the result is normalised.
-	m_is_normalised = m_is_normalised and g.is_normalised();
+	// If one or none of the two graphs involved are normalized,
+	// the result is not normalized.
+	// If both graphs are normalized, the result is normalized.
+	m_is_normalized = m_is_normalized and g.is_normalized();
 }
 
 void graph::actions_after_add_edge(node, node) noexcept {
@@ -140,52 +140,52 @@ void graph::actions_before_remove_edges_incident_to(node) noexcept { }
 
 void graph::actions_after_remove_node(node) noexcept { }
 
-void graph::normalise_after_edge_addition(bool to_norm, bool check_norm) noexcept {
+void graph::normalize_after_edge_addition(bool to_norm, bool check_norm) noexcept {
 	if (to_norm) {
-		// the graph needs to be normalised from a non-normalised state
-		normalise();
+		// the graph needs to be normalized from a non-normalized state
+		normalize();
 	}
 	else if (check_norm) {
-		if (not is_normalised()) {
-			// the graph is certainly not normalised --
+		if (not is_normalized()) {
+			// the graph is certainly not normalized --
 			// no need to check anything
 		}
 		else {
 			// the graph structure has been modified
-			// so we have to check whether it is normalised or not
-			check_normalised();
+			// so we have to check whether it is normalized or not
+			check_normalized();
 		}
 	}
 	else {
 		// not 'to_norm' and not 'check_norm' --
-		m_is_normalised = false;
+		m_is_normalized = false;
 	}
 }
 
-void graph::normalise_after_edge_removal(bool to_norm, bool check_norm) noexcept {
-	// if (is_normalised()) {
+void graph::normalize_after_edge_removal(bool to_norm, bool check_norm) noexcept {
+	// if (is_normalized()) {
 	//		Removing an edge does not change normalisation
 	// }
-	// if (not is_normalised()) {
-	//		Since the graph was not normalised, we need to do something about it.
+	// if (not is_normalized()) {
+	//		Since the graph was not normalized, we need to do something about it.
 	//      if (norm)     ... NORMALISE THE GRAPH
 	//      if (not norm) ... the result of deleting edges is certainly
-	//                        not normalised since the deletion of edges
+	//                        not normalized since the deletion of edges
 	//                        keeps the normalisation invariant. No need
 	//                        to check.
 	// }
 
-	if (not is_normalised()) {
+	if (not is_normalized()) {
 		if (to_norm) {
-			normalise();
+			normalize();
 		}
 		else if (check_norm) {
 			// we might have been lucky...
-			check_normalised();
+			check_normalized();
 		}
 		else {
 			// not 'to_norm' and not 'check_norm' --
-			m_is_normalised = false;
+			m_is_normalized = false;
 		}
 	}
 }

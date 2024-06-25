@@ -123,10 +123,10 @@ void all_projective_arrangements::initialise_intervals_tree() noexcept {
 }
 
 void all_projective_arrangements::initialise_interval_node(node u) noexcept {
-	const neighbourhood& neighs_u = m_rT.get_out_neighbours(u);
+	const neighbourhood& neighs_u = m_rT.get_out_neighbors(u);
 	auto& interval_u = m_intervals[u];
 
-	if (m_rT.is_normalised()) {
+	if (m_rT.is_normalized()) {
 		// copy directly vertices from the neighbour
 		// list -- no sorting is needed
 

@@ -140,7 +140,7 @@ graphs::rooted_tree treebank_reader::get_tree() const noexcept {
 	graphs::rooted_tree t =
 		graphs::from_head_vector_to_rooted_tree(
 			m_current_head_vector,
-			m_normalise_tree,
+			m_normalize_tree,
 			true
 		);
 

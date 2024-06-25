@@ -112,7 +112,7 @@ noexcept
 		const auto u = remain_verts[i];
 		m_arr.assign(u, pos);
 
-		for (node_t v : m_t.get_neighbours(u)) {
+		for (node_t v : m_t.get_neighbors(u)) {
 			D += pos - m_arr[v];
 		}
 

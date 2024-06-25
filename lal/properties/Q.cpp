@@ -101,13 +101,13 @@ noexcept
 	for (node u = 0; u < n; ++u) {
 		uint64_t no_u = 0;
 		uint64_t t_u = 0;
-		for (node v : g.get_out_neighbours(u)) {
+		for (node v : g.get_out_neighbors(u)) {
 			// u -> v
 			const bool edge_vu = g.has_edge(v,u);
 			no_u += not edge_vu;
 			t_u += edge_vu;
 		}
-		for (node v : g.get_in_neighbours(u)) {
+		for (node v : g.get_in_neighbors(u)) {
 			// v -> u
 			const bool edge_uv = g.has_edge(u,v);
 			no_u += not edge_uv;

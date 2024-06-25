@@ -68,7 +68,7 @@ noexcept
 	visited[u] = 1;
 
 	in_stack[u] = 1;
-	for (node v : g.get_out_neighbours(u)) {
+	for (node v : g.get_out_neighbors(u)) {
 		if (in_stack[v]) {
 			return true;
 		}
@@ -146,7 +146,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
 	// we need to traverse "reversed edges" in directed graphs
 	bfs.set_use_rev_edges( BFS<graph_t>::is_graph_directed );
 	// we need this to detect cycles
-	bfs.set_process_visited_neighbours(true);
+	bfs.set_process_visited_neighbors(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
 	[&](const BFS<graph_t>&, const node) -> bool { return cycle_found; }

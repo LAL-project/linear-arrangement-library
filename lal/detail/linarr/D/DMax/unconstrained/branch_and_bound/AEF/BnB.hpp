@@ -282,7 +282,7 @@ protected:
 #if defined DEBUG
 		assert(m_t.get_degree(u) == 1);
 #endif
-		return m_t.get_neighbours(u)[0];
+		return m_t.get_neighbors(u)[0];
 	}
 
 	// -------------------------------------------------------------------------

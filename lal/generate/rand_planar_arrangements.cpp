@@ -113,7 +113,7 @@ void make_random_projective(
 	generator_t& gen
 )
 {
-	const neighbourhood& neighs_u = T.get_neighbours(u);
+	const neighbourhood& neighs_u = T.get_neighbors(u);
 
 	// fill interval with the root vertex and its children
 	auto& inter = data[u];
@@ -146,7 +146,7 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	const node rand_root = U(m_gen);
 
 	// number of children of 'r' with respect to the tree's root
-	const neighbourhood& neighs_root = m_T.get_neighbours(rand_root);
+	const neighbourhood& neighs_root = m_T.get_neighbors(rand_root);
 
 	// intervals corresponding to the root
 	auto& root_interval = m_rdata[rand_root];

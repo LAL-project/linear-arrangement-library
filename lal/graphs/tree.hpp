@@ -132,8 +132,8 @@ public:
 	 *
 	 * This method completes the Union-Find data structure and the other necessary
 	 * members assuming that the tree is now complete.
-	 * @param norm Normalise the graph.
-	 * @param check Check wether the graph is normalised or not.
+	 * @param norm Normalize the graph.
+	 * @param check Check wether the graph is normalized or not.
 	 * @pre All edges have been added with method @ref undirected_graph::add_edge_bulk
 	 * or @ref directed_graph::add_edge_bulk.
 	 */
@@ -148,8 +148,8 @@ public:
 	 *
 	 * This method completes the Union-Find data structure and the other necessary
 	 * members assuming that the tree is now empty.
-	 * @param norm Normalise the graph.
-	 * @param check Check wether the graph is normalised or not.
+	 * @param norm Normalize the graph.
+	 * @param check Check wether the graph is normalized or not.
 	 * @pre All edges have been added with method @ref undirected_graph::remove_edge_bulk
 	 * or @ref directed_graph::remove_edge_bulk.
 	 */

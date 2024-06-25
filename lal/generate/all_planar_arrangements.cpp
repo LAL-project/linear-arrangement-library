@@ -154,7 +154,7 @@ void all_planar_arrangements::initialise_intervals_tree() noexcept {
 
 void all_planar_arrangements::initialise_interval_node(node u, node parent) noexcept
 {
-	const neighbourhood& neighs_u = m_T.get_neighbours(u);
+	const neighbourhood& neighs_u = m_T.get_neighbors(u);
 
 	// the interval of this vertex
 	auto& inter_u = m_intervals[u];
@@ -165,8 +165,8 @@ void all_planar_arrangements::initialise_interval_node(node u, node parent) noex
 
 		std::copy(neighs_u.begin(), neighs_u.end(), inter_u.begin() + 1);
 
-		// if the neighbours of node u are not normalised
-		if (not m_T.is_normalised()) {
+		// if the neighbors of node u are not normalized
+		if (not m_T.is_normalized()) {
 			detail::sorting::bit_sort<node>
 			(inter_u.begin() + 1, inter_u.end(), inter_u.size());
 		}

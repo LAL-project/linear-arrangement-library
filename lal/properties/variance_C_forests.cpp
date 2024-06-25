@@ -83,7 +83,7 @@ noexcept
 		sum_cubed_degrees += ks*ks*ks;
 
 		xi[s] = 0;
-		for (node t : g.get_neighbours(s)) {
+		for (node t : g.get_neighbors(s)) {
 			const uint64_t kt = g.get_degree(t);
 
 			// calculate sum_{st in E} k_s*k_t

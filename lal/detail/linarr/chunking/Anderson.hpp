@@ -147,7 +147,7 @@ private:
 		}
 
 		// assign new chunk indices to the terminal, unassigned children of 'r'
-		for (node v : m_rt.get_out_neighbours(*r)) {
+		for (node v : m_rt.get_out_neighbors(*r)) {
 			if (node_to_chunk(v) > m_n and m_rt.get_out_degree(v) == 0) {
 				set_chunk_index(v, chunk_idx);
 				++chunk_idx;
@@ -155,7 +155,7 @@ private:
 		}
 
 		// traverse down the tree and recursively build new chunks
-		for (node_t v : m_rt.get_out_neighbours(*r)) {
+		for (node_t v : m_rt.get_out_neighbors(*r)) {
 			if (m_rt.get_out_degree(*v) > 0) {
 				assign_chunk_indices(v, chunk_idx);
 			}

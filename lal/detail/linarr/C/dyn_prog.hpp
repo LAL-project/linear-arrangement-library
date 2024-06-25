@@ -114,7 +114,7 @@ noexcept
 		// node at position pu + 1
 		const node u = arr[pu + 1ull];
 
-		detail::get_bool_neighbours<graph_t>(g, u, bn);
+		detail::get_bool_neighbors<graph_t>(g, u, bn);
 
 		uint64_t k = g.get_degree(u);
 
@@ -140,7 +140,7 @@ noexcept
 			//M[pu][i - 3] = k;
 			M[ idx(*pu, *i - 3, n-3) ] = k;
 
-			// clear boolean neighbours so that at the next
+			// clear boolean neighbors so that at the next
 			// iteration all its values are valid
 			bn[ui] = 0;
 		}
@@ -183,7 +183,7 @@ noexcept
 
 	uint64_t C = 0;
 
-	const auto process_neighbours =
+	const auto process_neighbors =
 	[&](const position pu, const node_t v) -> void {
 		const position pv = arr[v];
 		// 'u' and 'v' is an edge of the graph.
@@ -206,25 +206,25 @@ noexcept
 		const node u = arr[position_t{pu}];
 
 		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
-			const neighbourhood& Nu = g.get_out_neighbours(u);
+			const neighbourhood& Nu = g.get_out_neighbors(u);
 			for (node_t v : Nu) {
-				process_neighbours(pu, v);
+				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
 				}
 			}
-			const neighbourhood& Nu_in = g.get_in_neighbours(u);
+			const neighbourhood& Nu_in = g.get_in_neighbors(u);
 			for (node_t v : Nu_in) {
-				process_neighbours(pu, v);
+				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
 				}
 			}
 		}
 		else {
-			const neighbourhood& Nu = g.get_neighbours(u);
+			const neighbourhood& Nu = g.get_neighbors(u);
 			for (node_t v : Nu) {
-				process_neighbours(pu, v);
+				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
 					if (C > upper_bound) { return DECIDED_C_GT; }
 				}
@@ -575,7 +575,7 @@ std::size_t crossings_sequence_n2_n2(const graph& G, const vector<std::size_t>& 
 	for (std::size_t pu = 0; pu < L; ++pu) {
 		std::size_t u = seq[pu];
 
-		const neighbourhood& Nu = G.get_neighbours(u);
+		const neighbourhood& Nu = G.get_neighbors(u);
 		for (const std::size_t& v : Nu) {
 
 			if (pu < T[v]) {

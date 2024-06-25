@@ -95,7 +95,7 @@ noexcept
 		for (node v : nodes_current_cc) {
 
 			if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
-				for (node w : g.get_out_neighbours(v)) {
+				for (node w : g.get_out_neighbors(v)) {
 					if (v < w) {
 						cc.add_edge_bulk(
 							map_nodes_to_current_cc[v],
@@ -103,7 +103,7 @@ noexcept
 						);
 					}
 				}
-				for (node w : g.get_in_neighbours(v)) {
+				for (node w : g.get_in_neighbors(v)) {
 					if (v < w) {
 						cc.add_edge_bulk(
 							map_nodes_to_current_cc[w],
@@ -113,7 +113,7 @@ noexcept
 				}
 			}
 			else if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_t>) {
-				for (node w : g.get_neighbours(v)) {
+				for (node w : g.get_neighbors(v)) {
 					if (v < w) {
 						cc.add_edge_bulk(
 							map_nodes_to_current_cc[v],

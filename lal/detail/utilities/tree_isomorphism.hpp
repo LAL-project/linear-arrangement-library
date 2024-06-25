@@ -145,7 +145,7 @@ noexcept
 
 	// make childrens' names
 	const std::size_t begin_idx = idx;
-	for (node v : t.get_out_neighbours(u)) {
+	for (node v : t.get_out_neighbors(u)) {
 		// make the name for v
 		assign_name_and_keep(t,v, idx+1, aux_memory_for_names, keep_name_of);
 
@@ -188,7 +188,7 @@ noexcept
 
 	// make childrens' names
 	const std::size_t begin_idx = idx;
-	for (node v : t.get_out_neighbours(u)) {
+	for (node v : t.get_out_neighbors(u)) {
 		// make the name for v
 		names[idx] = assign_name(t,v, names, idx+1);
 		++idx;

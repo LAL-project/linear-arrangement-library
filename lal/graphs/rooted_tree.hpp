@@ -154,10 +154,10 @@ public:
 	 * @brief Constructor with free tree and root node.
 	 * @param t Free tree.
 	 * @param r Root node.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre Tree @e t is a valid free tree.
 	 */
@@ -170,10 +170,10 @@ public:
 	 * @brief Constructor with tree and root node.
 	 * @param t Free tree.
 	 * @param r Root node.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre Tree @e t is a valid free tree.
 	 * @post Tree @e t is moved and should not be used.
@@ -218,10 +218,10 @@ public:
 	 * the root and hence completely undirectable).
 	 * @param t Undirected tree.
 	 * @param r Root of the rooted tree. A node of @e g.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
@@ -240,10 +240,10 @@ public:
 	 * the root and hence completely undirectable).
 	 * @param t Undirected tree.
 	 * @param r Root of the rooted tree. A node of @e g.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
@@ -265,13 +265,13 @@ public:
 	 * @param u Valid node index: \f$0 \le u < n\f$.
 	 * @param connect If connect is true then the parent of @e u is connected
 	 * to the children of @e u, if both parent and children exist.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The node must exist.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the node.
 	 * @post If @e u is the root of this tree, then this tree no longer has a root.
 	 */
@@ -289,14 +289,14 @@ public:
 	 * called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Should the graph be normalised?
+	 * @param norm Should the graph be normalized?
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre \f$s \neq t\f$
 	 * @pre Edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	rooted_tree& add_edge
@@ -311,7 +311,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	rooted_tree& add_edge_bulk(node s, node t) noexcept;
@@ -321,8 +321,8 @@ public:
 	 *
 	 * This method updates the Union-Find data structure and all the necessary
 	 * members after several calls to @ref add_edge_bulk.
-	 * @param norm Normalise the tree.
-	 * @param check Check whether the tree is normalised or not.
+	 * @param norm Normalize the tree.
+	 * @param check Check whether the tree is normalized or not.
 	 */
 	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
 
@@ -336,16 +336,16 @@ public:
 	 * faster than calling @ref add_edge since the edges are added in bulk.
 	 * For a more controlled addition of the edges, see @ref can_add_edges.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge.
 	 * @pre None of the subsets of the list of edges can produce cycles
 	 * when added.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edges.
 	 */
 	rooted_tree& add_edges
@@ -367,10 +367,10 @@ public:
 	 * Moreover, the current structure of the graph is cleared before setting
 	 * the new edges.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The graph has been initialized with as many nodes as vertices in the
 	 * list of edges.
@@ -378,7 +378,7 @@ public:
 	 * @pre The list of edges must form a valid rooted tree, i.e., there must
 	 * be a unique vertex with no in-going edges, there must be no cycles, and
 	 * every vertex has in-degree at most 1.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 * @post The tree has a valid root which is, potentially, different from
 	 * the previous root it had. Therefore, method @ref has_root returns true.
@@ -395,13 +395,13 @@ public:
 	 * is called after the edge has been removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The edge must exist.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edge
@@ -416,7 +416,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
 	rooted_tree& remove_edge_bulk(node s, node t) noexcept;
@@ -426,8 +426,8 @@ public:
 	 *
 	 * This method updates the Union-Find data structure and all the necessary
 	 * members after several calls to @ref remove_edge_bulk.
-	 * @param norm Normalise the tree.
-	 * @param check Check whether the tree is normalised or not.
+	 * @param norm Normalize the tree.
+	 * @param check Check whether the tree is normalized or not.
 	 */
 	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
 
@@ -440,14 +440,14 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 * @param edges The edges to be deleted.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edges
@@ -461,12 +461,12 @@ public:
 	 * @ref remove_edge(node,node,bool,bool) since the edges are removed
 	 * in bulk.
 	 * @param u The node whose incident vertices are to be removed.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edges_incident_to
@@ -493,8 +493,8 @@ public:
 	 * method @ref are_size_subtrees_valid() still returns true.
 	 * - If for one of the two graphs the method @ref are_size_subtrees_valid()
 	 * returns false then it will still return false after this operation.
-	 * @post The graph resulting from the union is normalised only if the
-	 * two graphs were normalised prior to the union.
+	 * @post The graph resulting from the union is normalized only if the
+	 * two graphs were normalized prior to the union.
 	 * @post The type of tree is invalidated.
 	 */
 	rooted_tree& disjoint_union(const rooted_tree& t, bool connect_roots = true)
@@ -654,8 +654,8 @@ public:
 
 	/**
 	 * @brief Converts this rooted tree into a free tree (see @ref free_tree).
-	 * @param norm Normalise the tree.
-	 * @param check Chech whether the resulting graph is normalised or not.
+	 * @param norm Normalize the tree.
+	 * @param check Chech whether the resulting graph is normalized or not.
 	 */
 	free_tree to_free_tree
 	(bool norm = true, bool check = true) const noexcept;
@@ -698,7 +698,7 @@ public:
 		}
 		// two nodes are siblings when their respective parent vertices
 		// are the same
-		return get_in_neighbours(u)[0] == get_in_neighbours(v)[0];
+		return get_in_neighbors(u)[0] == get_in_neighbors(v)[0];
 	}
 
 	/**
@@ -720,7 +720,7 @@ public:
 #if defined DEBUG
 		assert(node_has_parent(u));
 #endif
-		return get_in_neighbours(u)[0];
+		return get_in_neighbors(u)[0];
 	}
 
 protected:

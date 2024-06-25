@@ -179,15 +179,15 @@ noexcept
 		if (t.get_degree(u) == 2) { continue; }
 
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-			for (node v : t.get_neighbours(u)) {
+			for (node v : t.get_neighbors(u)) {
 				expand_branchless_path(t, u, v, bfs, res, p);
 			}
 		}
 		else if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-			for (node v : t.get_out_neighbours(u)) {
+			for (node v : t.get_out_neighbors(u)) {
 				expand_branchless_path(t, u, v, bfs, res, p);
 			}
-			for (node v : t.get_in_neighbours(u)) {
+			for (node v : t.get_in_neighbors(u)) {
 				expand_branchless_path(t, u, v, bfs, res, p);
 			}
 		}

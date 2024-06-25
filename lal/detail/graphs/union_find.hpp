@@ -446,7 +446,7 @@ noexcept
 	bfs.set_visited(u, 1);
 
 	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-		for (node v : t.get_neighbours(u)) {
+		for (node v : t.get_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to
@@ -454,13 +454,13 @@ noexcept
 		}
 	}
 	else {
-		for (node v : t.get_in_neighbours(u)) {
+		for (node v : t.get_in_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to
 				(bfs, v, root_of, root_size);
 		}
-		for (node v : t.get_out_neighbours(u)) {
+		for (node v : t.get_out_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to

@@ -88,12 +88,12 @@ noexcept
 	const auto get_only_neighbour =
 	[&](lal::node u) -> lal::node {
 		if constexpr (std::is_base_of_v<lal::graphs::free_tree, tree_t>) {
-			return t.get_neighbours(u)[0];
+			return t.get_neighbors(u)[0];
 		}
 		else {
 			return (t.get_out_degree(u) == 0 ?
-				t.get_in_neighbours(u)[0] :
-				t.get_out_neighbours(u)[0]
+				t.get_in_neighbors(u)[0] :
+				t.get_out_neighbors(u)[0]
 			);
 		}
 	};

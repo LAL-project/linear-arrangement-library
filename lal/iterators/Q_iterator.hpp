@@ -262,12 +262,12 @@ private:
 		s = m_cur1.first;
 		u = m_cur2.first;
 		if constexpr (is_directed) {
-			t = m_G.get_out_neighbours(s)[m_cur1.second];
-			v = m_G.get_out_neighbours(u)[m_cur2.second];
+			t = m_G.get_out_neighbors(s)[m_cur1.second];
+			v = m_G.get_out_neighbors(u)[m_cur2.second];
 		}
 		else {
-			t = m_G.get_neighbours(s)[m_cur1.second];
-			v = m_G.get_neighbours(u)[m_cur2.second];
+			t = m_G.get_neighbors(s)[m_cur1.second];
+			v = m_G.get_neighbors(u)[m_cur2.second];
 		}
 		return {{s,t}, {u,v}};
 	}
@@ -292,12 +292,12 @@ private:
 	{
 		node t, v;
 		if constexpr (is_directed) {
-			t = m_G.get_out_neighbours(s)[pt];
-			v = m_G.get_out_neighbours(u)[pv];
+			t = m_G.get_out_neighbors(s)[pt];
+			v = m_G.get_out_neighbors(u)[pv];
 		}
 		else {
-			t = m_G.get_neighbours(s)[pt];
-			v = m_G.get_neighbours(u)[pv];
+			t = m_G.get_neighbors(s)[pt];
+			v = m_G.get_neighbors(u)[pv];
 		}
 		return share_nodes(s,t, u,v);
 	}
@@ -327,7 +327,7 @@ private:
 		if (s == m_n) {
 			return {false, {s,pt}, {u,pv}};
 		}
-		// base case 2: consumed neighbours of 's'
+		// base case 2: consumed neighbors of 's'
 		if (pt >= m_G.get_out_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
@@ -336,7 +336,7 @@ private:
 			// advance the first^ pointer
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
-		// base case 4: consumed neighbours of 'u'
+		// base case 4: consumed neighbors of 'u'
 		if (pv >= m_G.get_out_degree(u)) {
 			// advance second pointer
 			return find_next_pair(s, pt, u + 1, 0);
@@ -362,7 +362,7 @@ private:
 		if (s == m_n) {
 			return {false, {s,pt}, {u,pv}};
 		}
-		// base case 2: consumed neighbours of 's'
+		// base case 2: consumed neighbors of 's'
 		if (pt >= m_G.get_degree(s)) {
 			return find_next_pair(s+1, 0, s+2, 0);
 		}
@@ -371,18 +371,18 @@ private:
 			// advance the first pointer
 			return find_next_pair(s, pt + 1, s + 1, 0);
 		}
-		// base case 4: consumed neighbours of 'u'
+		// base case 4: consumed neighbors of 'u'
 		if (pv >= m_G.get_degree(u)) {
 			// advance second pointer
 			return find_next_pair(s, pt, u + 1, 0);
 		}
 
-		const auto& Ns = m_G.get_neighbours(s);
+		const auto& Ns = m_G.get_neighbors(s);
 		if (s > Ns[pt]) {
 			return find_next_pair(s, pt+1, u, 0);
 		}
 
-		const auto& Nu = m_G.get_neighbours(u);
+		const auto& Nu = m_G.get_neighbors(u);
 		if (u > Nu[pv] or share_nodes_pointer(s,pt, u,pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}

@@ -301,15 +301,15 @@ max_subtree(const tree_t& t) noexcept
 	for (node u : maximum_caterpillar_backbone) {
 		is_node_in_maximum_caterpillar[u] = 1;
 		if constexpr (not BFS<tree_t>::is_graph_directed) {
-			for (node v : t.get_neighbours(u)) {
+			for (node v : t.get_neighbors(u)) {
 				is_node_in_maximum_caterpillar[v] = 1;
 			}
 		}
 		else {
-			for (node v : t.get_in_neighbours(u)) {
+			for (node v : t.get_in_neighbors(u)) {
 				is_node_in_maximum_caterpillar[v] = 1;
 			}
-			for (node v : t.get_out_neighbours(u)) {
+			for (node v : t.get_out_neighbors(u)) {
 				is_node_in_maximum_caterpillar[v] = 1;
 			}
 		}

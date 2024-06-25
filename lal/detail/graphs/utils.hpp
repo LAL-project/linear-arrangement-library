@@ -52,14 +52,14 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Retrieves the neighbours of a node in an undirected graph as a
+ * @brief Retrieves the neighbors of a node in an undirected graph as a
  * list of 0-1 values.
  *
  * Sets to 1 the positions in @e neighs that correspond to the nodes
  * neighours of @e u.
  * @param g Input graph.
  * @param u Input node.
- * @param neighs 0-1 list of neighbours of @e u in @e g.
+ * @param neighs 0-1 list of neighbors of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */
 template <
@@ -70,17 +70,17 @@ template <
 		and std::is_integral_v<char_type>,
 	bool> = true
 >
-void get_bool_neighbours(const graph_t& g, node u, char_type * const neighs)
+void get_bool_neighbors(const graph_t& g, node u, char_type * const neighs)
 noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
-		const auto& in_u = g.get_in_neighbours(u);
+		const auto& in_u = g.get_in_neighbors(u);
 		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
-		const auto& out_u = g.get_out_neighbours(u);
+		const auto& out_u = g.get_out_neighbors(u);
 		std::for_each(out_u.begin(), out_u.end(), [&](node v) { neighs[v] = 1; });
 	}
 	else {
-		const auto& neighs_u = g.get_neighbours(u);
+		const auto& neighs_u = g.get_neighbors(u);
 		std::for_each(neighs_u.begin(), neighs_u.end(), [&](node v) { neighs[v] = 1; });
 	}
 }
@@ -97,7 +97,7 @@ noexcept
 {
 	const uint64_t n_target = target.size();
 	for (std::size_t u = 0; u < source.size(); ++u) {
-		// add new edges by appending all the neighbours of 'u' in 'g'
+		// add new edges by appending all the neighbors of 'u' in 'g'
 		target.push_back( source[u] );
 		// relabel the nodes
 		for (node& v : target.back()) {

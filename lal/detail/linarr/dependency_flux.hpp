@@ -105,7 +105,7 @@ noexcept
 	}
 
 	// add the new dependencies
-	for (const node_t v : t.get_neighbours(u)) {
+	for (const node_t v : t.get_neighbors(u)) {
 		if (arr[v] > cur_pos) {
 			cur_deps.push_back({u,*v});
 		}
@@ -155,7 +155,7 @@ noexcept
 	// step 1
 	while (const auto leaf = find_leaf(ug)) {
 		const node u = *leaf;
-		const node v = ug.get_neighbours(u)[0];
+		const node v = ug.get_neighbors(u)[0];
 		// step 2
 		++weight;
 		// step 3 -- remove edges incident to the only neighbour of the leaf

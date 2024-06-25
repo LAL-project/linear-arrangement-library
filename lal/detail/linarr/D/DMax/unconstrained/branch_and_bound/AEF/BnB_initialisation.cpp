@@ -124,7 +124,7 @@ noexcept
 	for (node u = 0; u < m_n_nodes; ++u) {
 		// -----------
 		// edges in E_s
-		for (node v : m_t.get_neighbours(u)) {
+		for (node v : m_t.get_neighbors(u)) {
 			if (u < v) { m_E_s.add( {u,v} ); }
 		}
 	}

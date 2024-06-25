@@ -65,13 +65,13 @@ namespace graphs {
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::undirected_graph obtained from the head vector.
  */
 undirected_graph from_head_vector_to_undirected_graph
-(const head_vector& hv, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -86,13 +86,13 @@ noexcept;
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::directed_graph obtained from the head vector.
  */
 directed_graph from_head_vector_to_directed_graph
-(const head_vector& hv, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -102,14 +102,14 @@ noexcept;
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
 std::pair<free_tree,node> from_head_vector_to_free_tree
-(const head_vector& hv, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -119,14 +119,14 @@ noexcept;
  *
  * Methods @ref lal::io::read_head_vector read a head vector from a file in disk.
  * @param hv A head vector as specified above.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
 rooted_tree from_head_vector_to_rooted_tree
-(const head_vector& hv, bool normalise = true, bool check = true)
+(const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
 // -----------------------------------------------------------------------------
@@ -141,15 +141,15 @@ noexcept;
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
  * @param el An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
 rooted_tree from_edge_list_to_rooted_tree
-(const edge_list& el, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -161,15 +161,15 @@ noexcept;
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
  * @param el An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
 free_tree from_edge_list_to_free_tree
-(const edge_list& el, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -181,14 +181,14 @@ noexcept;
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
  * @param el An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
 directed_graph from_edge_list_to_directed_graph
-(const edge_list& el, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
 /**
@@ -200,14 +200,14 @@ noexcept;
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
  * @param el An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
 undirected_graph from_edge_list_to_undirected_graph
-(const edge_list& el, bool normalise = true, bool check = true)
+(const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
 } // -- namespace graphs

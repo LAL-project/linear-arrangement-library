@@ -676,7 +676,7 @@ void choose_orientations_for_thistle_neighbors(
 noexcept
 {
 	const auto thistle_deg = t.get_degree(thistle);
-	const neighbourhood& thistle_neighs = t.get_neighbours(thistle);
+	const neighbourhood& thistle_neighs = t.get_neighbors(thistle);
 
 	array<char> binary_combination(thistle_deg, 0);
 
@@ -849,7 +849,7 @@ noexcept
 #endif
 		}
 
-		const neighbourhood& neighs = t.get_neighbours(thistle);
+		const neighbourhood& neighs = t.get_neighbors(thistle);
 
 		// set neighbors of thistle
 		for (node u : neighs) { is_thistle_neighbor[u] = 1; }

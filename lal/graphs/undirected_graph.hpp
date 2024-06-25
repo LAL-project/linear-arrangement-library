@@ -142,13 +142,13 @@ public:
 	 * @brief Remove a node from this graph.
 	 *
 	 * @param u Valid node index: \f$0 \le u < n\f$.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The node must exist.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_node
@@ -160,13 +160,13 @@ public:
 	 * Method @ref actions_after_add_edge is called after the edge has been added.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Should the graph be normalised?
+	 * @param norm Should the graph be normalized?
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre \f$u \neq v\f$. The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& add_edge
@@ -181,7 +181,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is not part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	undirected_graph& add_edge_bulk(node s, node t) noexcept;
@@ -194,14 +194,14 @@ public:
 	 * This operation is faster than calling @ref add_edge since the edges are
 	 * added in bulk.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edges.
 	 */
 	virtual undirected_graph& add_edges
@@ -218,16 +218,16 @@ public:
 	 *
 	 * The current structure of the graph is cleared before setting the new edges.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the insertions.
+	 * @param norm Normalize the graph after the insertions.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The graph has been initialized with as many nodes as vertices in the
 	 * list of edges.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& set_edges
@@ -241,13 +241,13 @@ public:
 	 * removed.
 	 * @param s Valid node index: \f$0 \le s < n\f$.
 	 * @param t Valid node index: \f$0 \le t < n\f$.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre The edge must exist.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edge
@@ -262,7 +262,7 @@ public:
 	 * @param t Valid node index: \f$0 \le t < n\f$.
 	 * @pre \f$u \neq v\f$.
 	 * @pre The edge \f$\{s,t\}\f$ is part of the graph.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
 	virtual undirected_graph& remove_edge_bulk(node s, node t) noexcept;
@@ -275,14 +275,14 @@ public:
 	 * This operation is faster than removing edges one by one with
 	 * @ref remove_edge since the edges are removed in bulk.
 	 * @param edges The edges to be added.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
 	 * @pre All the edges in @e edges must meet the precondition of method
 	 * @ref add_edge(node,node,bool,bool).
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edges
@@ -298,12 +298,12 @@ public:
 	 * Method @ref actions_after_remove_edge is called after each
 	 * edge has been removed.
 	 * @param u The node whose incident vertices are to be removed.
-	 * @param norm Normalise the graph after the deletion.
+	 * @param norm Normalize the graph after the deletion.
 	 * @param check_norm If @e norm is false then, should we check whether
-	 * the result is normalised or not? This might be useful in case the
-	 * resulting graph is normalised. If @e norm is true then @e check_norm
+	 * the result is normalized or not? This might be useful in case the
+	 * resulting graph is normalized. If @e norm is true then @e check_norm
 	 * is ignored.
-	 * @post If @e norm is true the graph is guaranteed to be normalised
+	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edges_incident_to
@@ -318,8 +318,8 @@ public:
 	 * All the nodes in @e g are relabelled starting at @e n,
 	 * the number of nodes of the current graph.
 	 * @param g Input graph.
-	 * @post The graph is normalised only if it was normalised before
-	 * the call and @e g is also normalised.
+	 * @post The graph is normalized only if it was normalized before
+	 * the call and @e g is also normalized.
 	 */
 	undirected_graph& disjoint_union(const undirected_graph& g) noexcept;
 
@@ -336,7 +336,7 @@ public:
 	 * @param u Node.
 	 * @returns The list of nodes adjacent to node @e u.
 	 */
-	const neighbourhood& get_neighbours(node u) const noexcept {
+	const neighbourhood& get_neighbors(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -344,7 +344,7 @@ public:
 	}
 
 	/**
-	 * @brief Returns the number of neighbours of @e u.
+	 * @brief Returns the number of neighbors of @e u.
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */

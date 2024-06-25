@@ -220,11 +220,11 @@ private:
 		node s, t;
 		if constexpr (is_directed) {
 			s = m_cur.first;
-			t = m_G.get_out_neighbours(s)[m_cur.second];
+			t = m_G.get_out_neighbors(s)[m_cur.second];
 		}
 		else {
 			s = m_cur.first;
-			t = m_G.get_neighbours(s)[m_cur.second];
+			t = m_G.get_neighbors(s)[m_cur.second];
 		}
 		return {s,t};
 	}
@@ -266,7 +266,7 @@ private:
 		bool found = false;
 
 		while (s < m_num_nodes and not found) {
-			const auto& Ns = m_G.get_neighbours(s);
+			const auto& Ns = m_G.get_neighbors(s);
 			while (pt < Ns.size() and s > Ns[pt]) { ++pt; }
 
 			found = pt < Ns.size();

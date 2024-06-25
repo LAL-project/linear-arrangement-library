@@ -109,8 +109,8 @@ noexcept
 		// connecting nodes "to the right" of 'u' in the arrangement
 		uint64_t S = 0;
 
-		// neighbours of node u, as a list of Boolean values.
-		detail::get_bool_neighbours<graph_t>(g, u, bn);
+		// neighbors of node u, as a list of Boolean values.
+		detail::get_bool_neighbors<graph_t>(g, u, bn);
 
 		for (position pv = pu + 1; pv < n; ++pv) {
 			const node v = arr[position_t{pv}];

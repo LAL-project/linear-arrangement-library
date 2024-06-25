@@ -76,7 +76,7 @@ namespace detail {
  @code
  detail::BFS<graphs::undirected_graph> bfs(g); // 'g' is an undirected graph
  bfs.set_terminate( ... ); // assign a function to decide when to terminate the search.
- bfs.set_process_neighbour( ... ); // assign a function to process neighbours
+ bfs.set_process_neighbour( ... ); // assign a function to process neighbors
  bfs.start_at(0); // start the traversal now at node 0.
  @endcode
  *
@@ -130,14 +130,14 @@ public:
 	 *
 	 * the termination function @ref m_terminate, and the attributes:
 	 * - @ref m_use_rev_edges,
-	 * - @ref m_process_visited_neighbours.
+	 * - @ref m_process_visited_neighbors.
 	 */
 	void reset() noexcept {
 		clear_visited();
 		m_queue.init(m_G.get_num_nodes());
 
 		set_use_rev_edges(false);
-		set_process_visited_neighbours(false);
+		set_process_visited_neighbors(false);
 
 		set_terminate_default();
 		set_process_current_default();
@@ -218,11 +218,11 @@ public:
 
 	/**
 	 * @brief Should the algorithm call the neighbour processing function
-	 * for already visited neighbours?
+	 * for already visited neighbors?
 	 * @param v Either true or false.
 	 */
-	void set_process_visited_neighbours(bool v) noexcept
-	{ m_process_visited_neighbours = v; }
+	void set_process_visited_neighbors(bool v) noexcept
+	{ m_process_visited_neighbors = v; }
 
 	/**
 	 * @brief Sets all nodes to not visited.
@@ -276,7 +276,7 @@ protected:
 	 *
 	 * The neighbour is processed if it has not been visited before. In case the
 	 * node was visited in a previous iteration, it is processed only if
-	 * @ref m_process_visited_neighbours has been set via method @ref set_process_visited_neighbours.
+	 * @ref m_process_visited_neighbors has been set via method @ref set_process_visited_neighbors.
 	 *
 	 * Node @e t is pushed into the queue only if it has not been visited before
 	 * and the user function @ref m_add_node allows it.
@@ -290,7 +290,7 @@ protected:
 		// Process the neighbour 't' of 's'.
 		const bool t_vis = node_was_visited(t);
 
-		if ((not t_vis) or (t_vis and m_process_visited_neighbours)) {
+		if ((not t_vis) or (t_vis and m_process_visited_neighbors)) {
 			if (m_is_process_neighbour_set) {
 				m_process_neighbour(*this, s, t, ltr);
 			}
@@ -308,12 +308,12 @@ protected:
 		}
 	}
 
-	/// Process the neighbours of node @e s
-	void process_neighbours(node s) noexcept {
+	/// Process the neighbors of node @e s
+	void process_neighbors(node s) noexcept {
 		if constexpr (not is_graph_directed) {
 			// for undirected graphs
 
-			for (const node& t : m_G.get_neighbours(s)) {
+			for (const node& t : m_G.get_neighbors(s)) {
 				// Edges are processed in the direction "s -> t".
 				// This is also the 'natural' orientation of the edge,
 				// so this explains the 'true'.
@@ -323,15 +323,15 @@ protected:
 		else {
 			// for directed graphs
 
-			for (const node& t : m_G.get_out_neighbours(s)) {
+			for (const node& t : m_G.get_out_neighbors(s)) {
 				// Edges are processed in the direction "s -> t".
 				// This is also the 'natural' orientation of the edge,
 				// hence the 'true'.
 				deal_with_neighbour(s, t, true);
 			}
-			// process in-neighbours whenever appropriate
+			// process in-neighbors whenever appropriate
 			if (m_use_rev_edges) {
-				for (const node& t : m_G.get_in_neighbours(s)) {
+				for (const node& t : m_G.get_in_neighbors(s)) {
 					// Edges are processed in the direction "s -> t".
 					// However, the 'natural' orientation of the edge
 					// is "t -> s", hence the 'false'.
@@ -387,7 +387,7 @@ protected:
 	 * Note that lines (...) extend the neighbourhood of a node "Nv"
 	 * depending of the type of graph. If the graph is directed and
 	 * the user wants to process "reversed edges", then the neighbourhood
-	 * is not limited to "out-neighbours", but also to "in-neighbours".
+	 * is not limited to "out-neighbors", but also to "in-neighbors".
 	 */
 	void do_traversal() noexcept {
 		while (m_queue.size() > 0) {
@@ -403,7 +403,7 @@ protected:
 				if (m_terminate(*this, s)) { break; }
 			}
 
-			process_neighbours(s);
+			process_neighbors(s);
 		}
 	}
 
@@ -416,14 +416,14 @@ protected:
 
 	/// The set of visited nodes.
 	array<char> m_vis;
-	/// Should the traversal process previously-visitied neighbours?
-	bool m_process_visited_neighbours = false;
+	/// Should the traversal process previously-visitied neighbors?
+	bool m_process_visited_neighbors = false;
 	/**
 	 * @brief In directed graphs, traverse edges in the reverse direction.
 	 *
-	 * Besides reaching neighbours following out-edges, reach neighbours
-	 * following in-neighbours. If vertex @e s has out-neighbours @e {1,2,3}
-	 * and in-neighbours @e {4,5}, this attribute controls whether vertices
+	 * Besides reaching neighbors following out-edges, reach neighbors
+	 * following in-neighbors. If vertex @e s has out-neighbors @e {1,2,3}
+	 * and in-neighbors @e {4,5}, this attribute controls whether vertices
 	 * @e {4,5} should also be included in the traversal.
 	 */
 	bool m_use_rev_edges = false;

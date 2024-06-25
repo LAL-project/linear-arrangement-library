@@ -73,7 +73,7 @@ noexcept
 	// initialise the random data of all vertices
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		// the children of vertex 'u'
-		const neighbourhood& neighs = m_rT.get_out_neighbours(u);
+		const neighbourhood& neighs = m_rT.get_out_neighbors(u);
 
 		// fill interval with the root vertex and its children
 		auto& interval = m_rdata[u];

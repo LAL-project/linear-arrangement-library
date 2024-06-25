@@ -68,10 +68,10 @@ namespace io {
  * The current contents of the graph will be cleared and replaced by the contents
  * of the file.
  * @param filename Name of the file.
- * @param norm Should the tree be normalised?
- * See @ref lal::graphs::free_tree::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the tree be normalized?
+ * See @ref lal::graphs::free_tree::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 std::optional<graphs::free_tree> read_head_vector_free_tree
@@ -85,9 +85,9 @@ noexcept;
  * The current contents of the graph will be cleared and replaced by the contents
  * of the file.
  * @param filename Name of the file.
- * @param norm Should the graph be normalised? See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized? See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
@@ -102,9 +102,9 @@ noexcept;
  * The current contents of the graph will be cleared and replaced by the contents
  * of the file.
  * @param filename Name of the file.
- * @param norm Should the graph be normalised? See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized? See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 template <

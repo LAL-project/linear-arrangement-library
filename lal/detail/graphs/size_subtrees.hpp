@@ -76,19 +76,19 @@ noexcept
 	sizes[v] = 1;
 
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (const node w : t.get_out_neighbours(v)) {
+		for (const node w : t.get_out_neighbors(v)) {
 			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
-		for (const node w : t.get_in_neighbours(v)) {
+		for (const node w : t.get_in_neighbors(v)) {
 			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
 	}
 	else {
-		for (const node w : t.get_neighbours(v)) {
+		for (const node w : t.get_neighbors(v)) {
 			if (w == u) { continue; }
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
@@ -159,17 +159,17 @@ noexcept
 {
 	uint64_t s = 1;
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (const node w : t.get_out_neighbours(v)) {
+		for (const node w : t.get_out_neighbors(v)) {
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
-		for (const node w : t.get_in_neighbours(v)) {
+		for (const node w : t.get_in_neighbors(v)) {
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
 	}
 	else {
-		for (const node w : t.get_neighbours(v)) {
+		for (const node w : t.get_neighbors(v)) {
 			if (w == u) { continue; }
 			s += calculate_bidirectional_sizes(t,n, v, w, it);
 		}
@@ -227,15 +227,15 @@ void calculate_bidirectional_sizes
 noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
-		for (const node y : t.get_out_neighbours(x)) {
+		for (const node y : t.get_out_neighbors(x)) {
 			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
-		for (const node y : t.get_in_neighbours(x)) {
+		for (const node y : t.get_in_neighbors(x)) {
 			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}
 	else {
-		for (const node y : t.get_neighbours(x)) {
+		for (const node y : t.get_neighbors(x)) {
 			calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}

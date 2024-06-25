@@ -132,30 +132,30 @@ public:
 	 * @brief Frees the memory occupied by this graph.
 	 *
 	 * See @ref _clear for details.
-	 * @post The graph is normalised. The number of edges is 0.
+	 * @post The graph is normalized. The number of edges is 0.
 	 */
 	virtual void clear() noexcept;
 
 	/**
-	 * @brief Normalises the graph.
+	 * @brief Normalizes the graph.
 	 *
 	 * Sorts this graph's adjacency list structure in increasing order.
 	 *
 	 * Besides expensive, this method may be unnecessary. Method
-	 * @ref check_normalised() checks whether the graph is normalised or
+	 * @ref check_normalized() checks whether the graph is normalized or
 	 * not; in case it is, using this method is completely unnecessary.
-	 * @post Method @ref is_normalised evaluates to true.
+	 * @post Method @ref is_normalized evaluates to true.
 	 */
-	virtual void normalise() noexcept;
+	virtual void normalize() noexcept;
 
 	/**
-	 * @brief Checks if the graph is normalised.
+	 * @brief Checks if the graph is normalized.
 	 *
-	 * Checks, whether the graph's adjacency structure is normalised or not.
-	 * In case it is, attribute @ref m_is_normalised is set to true, so method
-	 * @ref is_normalised evaluates to true.
+	 * Checks, whether the graph's adjacency structure is normalized or not.
+	 * In case it is, attribute @ref m_is_normalized is set to true, so method
+	 * @ref is_normalized evaluates to true.
 	 */
-	virtual bool check_normalised() noexcept;
+	virtual bool check_normalized() noexcept;
 
 	/**
 	 * @brief Completes the inner structure of the graph after adding a bulk of edges
@@ -163,8 +163,8 @@ public:
 	 * This is meant to be used after several calls to
 	 * @ref undirected_graph::add_edge_bulk,
 	 * @ref directed_graph::add_edge_bulk.
-	 * @param norm Normalise the graph.
-	 * @param check Check wether the graph is normalised or not.
+	 * @param norm Normalize the graph.
+	 * @param check Check wether the graph is normalized or not.
 	 */
 	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
 
@@ -174,15 +174,15 @@ public:
 	 * This is meant to be used after several calls to
 	 * @ref undirected_graph::remove_edge_bulk,
 	 * @ref directed_graph::remove_edge_bulk.
-	 * @param norm Normalise the graph.
-	 * @param check Check wether the graph is normalised or not.
+	 * @param norm Normalize the graph.
+	 * @param check Check wether the graph is normalized or not.
 	 */
 	virtual void finish_bulk_remove(bool norm = true, bool check = true) noexcept = 0;
 
 	/* SETTERS */
 
-	/// Sets whether this graph is normalised or not.
-	void set_normalised(bool v = true) noexcept { m_is_normalised = v; }
+	/// Sets whether this graph is normalized or not.
+	void set_normalized(bool v = true) noexcept { m_is_normalized = v; }
 
 	/* GETTERS */
 
@@ -212,13 +212,13 @@ public:
 	virtual std::vector<edge> get_edges() const noexcept = 0;
 
 	/**
-	 * @brief Returns whether this graph is normalised or not.
+	 * @brief Returns whether this graph is normalized or not.
 	 *
-	 * A graph is normalised if every node's adjacency list is sorted
-	 * increasingly. For this, use method @ref normalise().
-	 * @returns The value of @ref m_is_normalised.
+	 * A graph is normalized if every node's adjacency list is sorted
+	 * increasingly. For this, use method @ref normalize().
+	 * @returns The value of @ref m_is_normalized.
 	 */
-	bool is_normalised() const noexcept { return m_is_normalised; }
+	bool is_normalized() const noexcept { return m_is_normalized; }
 
 	/// Returns whether this graph is directed or not.
 	virtual bool is_directed() const noexcept = 0;
@@ -231,18 +231,18 @@ protected:
 	/// Amount of edges of this graph.
 	uint64_t m_num_edges = 0;
 	/**
-	 * @brief Is this graph normalised?
+	 * @brief Is this graph normalized?
 	 *
-	 * An undirected graph is normalised iff every node's adjacency list is
+	 * An undirected graph is normalized iff every node's adjacency list is
 	 * sorted in increasing order.
 	 *
 	 * In directed graphs, however, it is necessary that the adjacency lists
-	 * of the out-neighbours and in-neighbours of nodes be sorted.
+	 * of the out-neighbors and in-neighbors of nodes be sorted.
 	 *
 	 * This attribute is set to 'true' in all graph's initialisation
 	 * and destruction (when @ref clear() method is called).
 	 */
-	bool m_is_normalised = true;
+	bool m_is_normalized = true;
 
 protected:
 	/**
@@ -252,13 +252,13 @@ protected:
 	 */
 	virtual void _init(uint64_t n) noexcept {
 		m_num_edges = 0;
-		m_is_normalised = true;
+		m_is_normalized = true;
 		m_adjacency_list.resize(n);
 	}
 	/// Clears memory for the @ref graph class.
 	virtual void _clear() noexcept {
 		m_num_edges = 0;
-		m_is_normalised = true;
+		m_is_normalized = true;
 		m_adjacency_list.clear();
 	}
 
@@ -266,16 +266,16 @@ protected:
 	void copy_full_graph(const graph& g) noexcept {
 		m_adjacency_list = g.m_adjacency_list;
 		m_num_edges = g.m_num_edges;
-		m_is_normalised = g.m_is_normalised;
+		m_is_normalized = g.m_is_normalized;
 	}
 	/// Moves all members of this class.
 	void move_full_graph(graph&& g) noexcept {
 		m_adjacency_list = std::move(g.m_adjacency_list);
 		m_num_edges = std::move(g.m_num_edges);
-		m_is_normalised = std::move(g.m_is_normalised);
+		m_is_normalized = std::move(g.m_is_normalized);
 
 		g.m_num_edges = 0;
-		g.m_is_normalised = false;
+		g.m_is_normalized = false;
 	}
 
 	/// Adds a node to the graph.
@@ -293,8 +293,8 @@ protected:
 	 * @param g Input graph.
 	 * @pre This graph and @e g must be of the same type (both must be either
 	 * undirected, or both directed).
-	 * @post The graph is normalised only if it was normalised before the call
-	 * and @e g is also normalised.
+	 * @post The graph is normalized only if it was normalized before the call
+	 * and @e g is also normalized.
 	 */
 	void __disjoint_union(const graph& g) noexcept;
 
@@ -352,10 +352,10 @@ protected:
 	 */
 	virtual void actions_after_remove_node(node u) noexcept;
 
-	/// Normalise the graph after one (or more) edges have been added
-	void normalise_after_edge_addition(bool norm, bool check) noexcept;
-	/// Normalise the graph after one (or more) edges have been removed
-	void normalise_after_edge_removal(bool norm, bool check) noexcept;
+	/// Normalize the graph after one (or more) edges have been added
+	void normalize_after_edge_addition(bool norm, bool check) noexcept;
+	/// Normalize the graph after one (or more) edges have been removed
+	void normalize_after_edge_removal(bool norm, bool check) noexcept;
 };
 
 } // -- namespace graphs

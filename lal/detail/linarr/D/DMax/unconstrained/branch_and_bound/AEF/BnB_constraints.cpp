@@ -98,7 +98,7 @@ const noexcept
 	 * ensure that:
 	 * (1) [1] the level sequence is non-increasing and that
 	 *
-	 * (2) [1] there are no adjacent vertices (neighbours in the tree!) with
+	 * (2) [1] there are no adjacent vertices (neighbors in the tree!) with
 	 * the same level value
 	 *
 	 * (3) [1] vertices of equal level value should be sorted by index
@@ -186,7 +186,7 @@ const noexcept
 		}
 
 		// (2,7)
-		for (node v : m_t.get_neighbours(u)) {
+		for (node v : m_t.get_neighbors(u)) {
 
 			if (is_vertex_assigned(v)) {
 
@@ -199,7 +199,7 @@ const noexcept
 			}
 			else {
 				// (7)
-				// If there is no possible configuration of the neighbours of
+				// If there is no possible configuration of the neighbors of
 				// vertex 'u' to make a level value that is less than 'level_u'
 				// then vertex 'u' is misplaced in the arrangement.
 				const auto dv = to_int64(m_t.get_degree(v));

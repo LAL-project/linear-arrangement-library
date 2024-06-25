@@ -68,10 +68,10 @@ namespace io {
  * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
- * @param norm Should the graph be normalised?
- * See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized?
+ * See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 std::optional<graphs::undirected_graph>
@@ -85,10 +85,10 @@ noexcept;
  * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
- * @param norm Should the graph be normalised?
- * See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized?
+ * See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 std::optional<graphs::directed_graph>
@@ -102,10 +102,10 @@ noexcept;
  * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
- * @param norm Should the graph be normalised?
- * See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized?
+ * See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 std::optional<graphs::free_tree>
@@ -119,10 +119,10 @@ noexcept;
  * See @ref LAL_concepts__edge_list_file for further details on the format.
  *
  * @param filename Name of the file.
- * @param norm Should the graph be normalised?
- * See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized?
+ * See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 std::optional<graphs::rooted_tree>
@@ -143,10 +143,10 @@ noexcept;
  * depending on the type of the template
  * parameter @e G.
  * @param filename Name of the file.
- * @param norm Should the graph be normalised?
- * See @ref lal::graphs::graph::is_normalised()
- * @param check_norm If the graph is not to be normalised check whether or
- * not the graph read is normalised.
+ * @param norm Should the graph be normalized?
+ * See @ref lal::graphs::graph::is_normalized()
+ * @param check_norm If the graph is not to be normalized check whether or
+ * not the graph read is normalized.
  * @tparam graph_t A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */

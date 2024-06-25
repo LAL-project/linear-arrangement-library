@@ -58,7 +58,7 @@ namespace linarr {
  * @param t Input free tree (or dependency tree).
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The set of dependency fluxes in the arrangement.
- * @pre The tree @e t is a valid free tree. Method graphs::free_tree::is_tree
+ * @pre The tree @e t is a valid free tree. Method lal::graphs::free_tree::is_tree
  * returns true.
  */
 std::vector<dependency_flux>
@@ -71,7 +71,7 @@ compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noex
  * @param t Input rooted tree (or dependency tree).
  * @param pi A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The set of dependency fluxes in the arrangement.
- * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
+ * @pre The tree @e t is a valid rooted tree. Method lal::graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
 inline

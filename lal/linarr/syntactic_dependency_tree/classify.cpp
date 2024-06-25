@@ -81,7 +81,7 @@ noexcept
 	auto& yu = yields[u];
 	yu.push_back(arr[node_t{u}]);
 
-	for (node v : t.get_out_neighbours(u)) {
+	for (node v : t.get_out_neighbors(u)) {
 		__get_yields(t,arr, v, yields);
 		yu.insert(yu.end(), yields[v].begin(), yields[v].end());
 	}
@@ -202,12 +202,12 @@ noexcept
 		for (position_t pu = ps + 1; pu <= pt - 1; ++pu) {
 			const node u = arr[pu];
 
-			neighbourhood neighs_u = rT.get_out_neighbours(u);
+			neighbourhood neighs_u = rT.get_out_neighbors(u);
 			if (u != rT.get_root()) {
-				neighs_u.push_back(rT.get_in_neighbours(u)[0]);
+				neighs_u.push_back(rT.get_in_neighbors(u)[0]);
 			}
 
-			// check neighbours
+			// check neighbors
 			for (const node_t v : neighs_u) {
 				if (arr[v] < ps or pt < arr[v]) {
 					// the edge (u,v) crosses (s,t)
@@ -368,7 +368,7 @@ noexcept
 		// original tree
 		uint64_t _C = C;
 		{
-		const node only_child = _rT.get_out_neighbours(0)[0];
+		const node only_child = _rT.get_out_neighbors(0)[0];
 		const position poc = _arr[node_t{only_child}];
 
 		iterators::E_iterator eit(_rT);

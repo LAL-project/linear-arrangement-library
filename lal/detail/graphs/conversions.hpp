@@ -152,15 +152,15 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  *
  * Methods @ref lal::io::read_edge_list read an edge list from a file in disk.
  * @param edge_list An edge list.
- * @param normalise Should the graph be normalised?
- * @param check In case the graph is not to be normalised, should we check whether
+ * @param normalize Should the graph be normalized?
+ * @param check In case the graph is not to be normalized, should we check whether
  * it is nor not?
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
 template <class graph_t>
 graph_t from_edge_list_to_graph
-(const edge_list& edge_list, bool normalise, bool check)
+(const edge_list& edge_list, bool normalize, bool check)
 noexcept
 {
 	uint64_t max_vertex_index = 0;
@@ -170,7 +170,7 @@ noexcept
 	}
 	const uint64_t num_nodes = 1 + max_vertex_index;
 	graph_t g(num_nodes);
-	g.set_edges(edge_list, normalise, check);
+	g.set_edges(edge_list, normalize, check);
 	return g;
 }
 
@@ -308,8 +308,8 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
  * @brief Converts a head vector into a tree
  * @tparam tree_t Type of input tree
  * @param hv Input head vector.
- * @param normalise Normalise the resulting tree.
- * @param check Check whether the constructed tree is normalised.
+ * @param normalize Normalize the resulting tree.
+ * @param check Check whether the constructed tree is normalized.
  * @returns A @ref lal::graphs::rooted_tree or a pair of @ref lal::graphs::free_tree
  * and the root encoded in the head vector.
  */
@@ -322,7 +322,7 @@ std::conditional_t<
 	graphs::rooted_tree,
 	std::pair<graphs::free_tree,node>
 >
-from_head_vector_to_tree(const head_vector& hv, bool normalise, bool check)
+from_head_vector_to_tree(const head_vector& hv, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -389,7 +389,7 @@ noexcept
 	assert(num_edges_added == num_nodes - 1);
 #endif
 
-	t.finish_bulk_add_complete(normalise, check);
+	t.finish_bulk_add_complete(normalize, check);
 
 	if constexpr (is_rooted) {
 		t.set_root(r);
@@ -432,7 +432,7 @@ noexcept
 			hv[*p] = 0;
 		}
 		else {
-			const node_t parent = t.get_in_neighbours(u)[0];
+			const node_t parent = t.get_in_neighbors(u)[0];
 			hv[*p] = arr[parent] + 1;
 		}
 	}
@@ -479,7 +479,7 @@ noexcept
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
- * @param normalise Should the tree be normalised?
+ * @param normalize Should the tree be normalized?
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with the sequence level @e L.
  * @pre n >= 2.
@@ -489,7 +489,7 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree_small
-(const uint64_t * const L, uint64_t n, bool normalise, bool check)
+(const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -534,7 +534,7 @@ noexcept
 		t.set_root(0);
 	}
 
-	t.finish_bulk_add_complete(normalise, check);
+	t.finish_bulk_add_complete(normalize, check);
 
 #if defined DEBUG
 	assert(t.is_tree());
@@ -560,7 +560,7 @@ noexcept
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
- * @param normalise Should the tree be normalised?
+ * @param normalize Should the tree be normalized?
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with the sequence level @e L.
  * @pre n >= 2.
@@ -570,7 +570,7 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree_large
-(const uint64_t * const L, uint64_t n, bool normalise, bool check)
+(const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -641,7 +641,7 @@ noexcept
 	assert(t.is_tree());
 #endif
 
-	t.finish_bulk_add_complete(normalise, check);
+	t.finish_bulk_add_complete(normalize, check);
 	return t;
 }
 
@@ -662,7 +662,7 @@ noexcept
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
- * @param normalise Should the tree be normalised?
+ * @param normalize Should the tree be normalized?
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with the sequence level @e L.
  * @pre n >= 2.
@@ -672,13 +672,13 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree
-(const uint64_t * const L, uint64_t n, bool normalise, bool check)
+(const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 	return n <= 7 ?
-		from_level_sequence_to_tree_small<tree_t>(L, n, normalise, check) :
-		from_level_sequence_to_tree_large<tree_t>(L, n, normalise, check);
+		from_level_sequence_to_tree_small<tree_t>(L, n, normalize, check) :
+		from_level_sequence_to_tree_large<tree_t>(L, n, normalize, check);
 }
 
 /**
@@ -689,11 +689,11 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree_small
-(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
+(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalise, check);
+	return from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalize, check);
 }
 
 /**
@@ -704,11 +704,11 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree_large
-(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
+(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalise, check);
+	return from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalize, check);
 }
 
 /**
@@ -719,13 +719,13 @@ noexcept
  */
 template <class tree_t>
 tree_t from_level_sequence_to_tree
-(const std::vector<uint64_t>& L, uint64_t n, bool normalise, bool check)
+(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 	return n <= 7 ?
-		from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalise, check) :
-		from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalise, check);
+		from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalize, check) :
+		from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalize, check);
 }
 
 // -----------------------------------------------------------------------------
@@ -737,12 +737,12 @@ noexcept
  * For details on Prüfer sequences, see \cite Pruefer1918a.
  * @param seq The Prufer sequence sequence.
  * @param n Number of nodes of the tree.
- * @param normalise Should the tree be normalised?
+ * @param normalize Should the tree be normalized?
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
 inline graphs::free_tree from_Prufer_sequence_to_ftree
-(const uint64_t * const seq, uint64_t n, bool normalise, bool check)
+(const uint64_t * const seq, uint64_t n, bool normalize, bool check)
 noexcept
 {
 	// initialisation
@@ -791,7 +791,7 @@ noexcept
 
 	// add edge (u,v) to the tree
 	t.add_edge_bulk(u, v);
-	t.finish_bulk_add_complete(normalise, check);
+	t.finish_bulk_add_complete(normalize, check);
 	return t;
 }
 
@@ -801,14 +801,14 @@ noexcept
  * For details on Prüfer sequences, see \cite Pruefer1918a.
  * @param seq The Prufer sequence sequence.
  * @param n Number of nodes of the tree.
- * @param normalise Should the tree be normalised?
+ * @param normalize Should the tree be normalized?
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
 inline graphs::free_tree from_Prufer_sequence_to_ftree
-(const std::vector<uint64_t>& seq, uint64_t n, bool normalise, bool check)
+(const std::vector<uint64_t>& seq, uint64_t n, bool normalize, bool check)
 noexcept
-{ return from_Prufer_sequence_to_ftree(&seq[0], n, normalise, check); }
+{ return from_Prufer_sequence_to_ftree(&seq[0], n, normalize, check); }
 
 
 } // -- namespace detail

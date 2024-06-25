@@ -124,7 +124,7 @@ noexcept
 	tree_only_copy(t);
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
-	m_is_normalised = t.m_is_normalised;
+	m_is_normalized = t.m_is_normalized;
 
 	// pre-allocate memory
 	for (node u = 0; u < n; ++u) {
@@ -147,7 +147,7 @@ noexcept
 	m_num_edges = n - 1;
 
 	if (norm or check_norm) {
-		normalise_after_edge_addition(norm, check_norm);
+		normalize_after_edge_addition(norm, check_norm);
 	}
 }
 
@@ -172,7 +172,7 @@ noexcept
 	assert(t.has_node(r));
 #endif
 
-	const bool is_t_normalized = t.is_normalised();
+	const bool is_t_normalized = t.is_normalized();
 
 	// allocate rooted tree
 	m_adjacency_list = std::move(t.m_adjacency_list);
@@ -181,7 +181,7 @@ noexcept
 	tree_only_move(std::forward<tree>(t));
 	m_size_subtrees.resize(n);
 	m_are_size_subtrees_valid = false;
-	m_is_normalised = t.m_is_normalised;
+	m_is_normalized = t.m_is_normalized;
 	m_num_edges = n - 1;
 	t.m_num_edges = 0;
 
@@ -215,7 +215,7 @@ noexcept
 	bfs.start_at(r);
 
 	if (norm or check_norm) {
-		normalise_after_edge_addition(norm, check_norm);
+		normalize_after_edge_addition(norm, check_norm);
 	}
 }
 
@@ -236,8 +236,8 @@ noexcept
 	if (connect and get_in_degree(u) == 1 and get_out_degree(u) > 0) {
 		new_edges.reserve(get_out_degree(u));
 		// parent of u exists
-		const node parent_u = get_in_neighbours(u)[0];
-		for (node v : get_out_neighbours(u)) {
+		const node parent_u = get_in_neighbors(u)[0];
+		for (node v : get_out_neighbors(u)) {
 			new_edges.push_back({parent_u - (parent_u > u), v - (v > u)});
 		}
 	}
