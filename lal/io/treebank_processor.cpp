@@ -504,7 +504,7 @@ noexcept
 	}
 	std::vector<std::vector<node>> orbits;
 	if (m_what_fs[DMax_Unconstrained_idx]) {
-		orbits = properties::compute_vertex_orbits(fT);
+		orbits = properties::vertex_orbits_compute(fT);
 	}
 
 	// a suitable algorithm to calculate C depending on the value of 'n'
@@ -814,7 +814,7 @@ noexcept
 		[](const bool& b) -> bool { return b; }
 	);
 	if (compute_any_of_flux) {
-		const auto F = detail::compute_flux<linarr::dependency_flux>(fT, id);
+		const auto F = detail::dependency_flux_compute<linarr::dependency_flux>(fT, id);
 		// since these values are cheap to calculate, compute every all of them
 		// and output whatever is needed later
 

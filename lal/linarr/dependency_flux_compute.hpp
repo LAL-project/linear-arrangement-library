@@ -62,7 +62,7 @@ namespace linarr {
  * returns true.
  */
 std::vector<dependency_flux>
-compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noexcept;
+dependency_flux_compute(const graphs::free_tree& t, const linear_arrangement& pi = {}) noexcept;
 
 /**
  * @brief Computes the flux of a dependency tree.
@@ -75,13 +75,13 @@ compute_flux(const graphs::free_tree& t, const linear_arrangement& pi = {}) noex
  * returns true.
  */
 inline
-std::vector<dependency_flux> compute_flux
+std::vector<dependency_flux> dependency_flux_compute
 (const graphs::rooted_tree& t, const linear_arrangement& pi = {}) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
-	return compute_flux(t.to_free_tree(), pi);
+	return dependency_flux_compute(t.to_free_tree(), pi);
 }
 
 } // -- namespace linarr

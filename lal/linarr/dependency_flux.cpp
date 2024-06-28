@@ -54,7 +54,7 @@ namespace lal {
 namespace linarr {
 
 std::vector<dependency_flux>
-compute_flux(const graphs::free_tree& t, const linear_arrangement& arr)
+dependency_flux_compute(const graphs::free_tree& t, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG
@@ -63,8 +63,8 @@ noexcept
 
 	return
 		(arr.size() == 0 ?
-			detail::compute_flux<dependency_flux>(t, detail::identity_arr(arr)) :
-			detail::compute_flux<dependency_flux>(t, detail::nonidentity_arr(arr))
+			detail::dependency_flux_compute<dependency_flux>(t, detail::identity_arr(arr)) :
+			detail::dependency_flux_compute<dependency_flux>(t, detail::nonidentity_arr(arr))
 		);
 }
 

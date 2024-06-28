@@ -173,7 +173,7 @@ noexcept
  * @returns The set of dependency fluxes in the arrangement.
  */
 template <class depflux, class arrangement_t>
-std::vector<depflux> compute_flux
+std::vector<depflux> dependency_flux_compute
 (const graphs::free_tree& t, const arrangement_t& arr)
 noexcept
 {

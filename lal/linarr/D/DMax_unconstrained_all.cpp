@@ -386,7 +386,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 )
 noexcept
 {
-	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
+	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 
@@ -410,7 +410,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
+	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 
@@ -422,7 +422,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 noexcept
 {
 	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
-	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
+	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 
@@ -446,7 +446,7 @@ noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
 	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
-	const std::vector<std::vector<node>> orbits = properties::compute_vertex_orbits(t);
+	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
 }
 

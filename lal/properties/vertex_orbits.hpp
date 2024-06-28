@@ -57,7 +57,7 @@ namespace properties {
  * @param t The input free tree.
  * @returns A vector, each with a list of vertices that belong to the same orbit.
  */
-std::vector<std::vector<node>> compute_vertex_orbits(const graphs::free_tree& t) noexcept;
+std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

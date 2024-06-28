@@ -49,7 +49,7 @@
 namespace lal {
 namespace properties {
 
-std::vector<std::vector<node>> compute_vertex_orbits(const graphs::free_tree& t)
+std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
