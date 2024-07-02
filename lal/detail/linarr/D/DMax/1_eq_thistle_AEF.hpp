@@ -147,7 +147,7 @@ using result_t = std::conditional_t<
 
 #if defined __LAL_DEBUG_DMax_1_thistle
 inline void print_arrangement(const std::string& msg, const linear_arrangement& arr)
-	noexcept
+noexcept
 {
 	const auto dir = arr.direct_as_vector();
 	const auto inv = arr.inverse_as_vector();
@@ -343,6 +343,9 @@ noexcept
 		(is_thistle_neighbor[arr[p - 1ull]] == 0)
 	)
 	{
+#if defined DEBUG
+		assert(arr[p] == thistle);
+#endif
 		arr.swap(p - 1ull, p);
 		--p;
 	}
@@ -571,7 +574,7 @@ noexcept
 #if defined DEBUG
 
 #if defined __LAL_DEBUG_DMax_1_thistle
-	print_arrangement("After sorting all sequences of equal level vertex", arr);
+	print_arrangement("After sorting all sequences of equal level value", arr);
 #endif
 
 	assert(linarr::is_arrangement(t, arr));
