@@ -318,49 +318,16 @@ noexcept
 }
 
 /**
- * @brief Move the thistle vertex to the left in the arrangement.
- * @param thistle Thistle vertex.
- * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
- * @param[out] levels_per_vertex Array containing the level value of each vertex of
- * the tree.
- * @param[out] arr Arrangement.
- */
-inline void move_thistle_to_left(
-	const node thistle,
-	const array<char>& is_thistle_neighbor,
-	const level_signature_per_vertex& levels_per_vertex,
-	linear_arrangement& arr
-)
-noexcept
-{
-	// Move the thistle to the left
-	// - while the level value of the vertex to the left is less than the thistle's
-	// - while the other vertex is not a neighbor of the thistle
-	position_t p = arr[node_t{thistle}];
-	while (
-		p > 0ull and
-		__LAL_level_vertex(arr[p - 1ull]) <= __LAL_level_vertex(arr[p]) and
-		(is_thistle_neighbor[arr[p - 1ull]] == 0)
-	)
-	{
-#if defined DEBUG
-		assert(arr[p] == thistle);
-#endif
-		arr.swap(p - 1ull, p);
-		--p;
-	}
-}
-
-/**
- * @brief Readjusts vertices to increase the cost of the arrangement.
+ * @brief Moves the vertex at position @e p to the right of the thistle vertex.
  *
- * Moves vertices to the right of the thistle. It stops when 'p' was moved to
- * the right of the thistle.
+ * This is implemented as a series of consecutive swaps starting at @p towards
+ * the thistle between consecutive vertices in the arrangement.
  * @param t Input tree.
  * @param thistle Thistle vertex.
- * @param p Position of the vertex to readjust.
- * @param[out] arr Actual linear arrangement
- * @post The arrangement is updated but the level signature is not.
+ * @param p Position of the vertex to move.
+ * @param[out] arr Actual linear arrangement.
+ * @pre The thistle vertex is at a position @e q such that \f$p < q\f$.
+ * @post The arrangement is updated.
  */
 inline void shift_vertex_to_right(
 	const graphs::free_tree& t,
@@ -380,7 +347,9 @@ noexcept
 }
 
 /**
- * @brief Adjust mistplaced nonneighbors of the thistle vertex.
+ * @brief Adjust misplaced nonneighbors of the thistle vertex in a smart way.
+ *
+ * This function stops moving vertices as soon as one moving operation
  * @param t Input tree
  * @param thistle_level Level of the thistle
  * @param thistle Thistle vertex
@@ -389,7 +358,7 @@ noexcept
  * the tree.
  * @param[out] arr Arrangement to be manipulated.
  */
-inline void adjust_mistplaced_nonneighbors_of_thistle(
+inline void adjust_nonneighbors_of_thistle_smart(
 	const graphs::free_tree& t,
 	const int64_t thistle_level,
 	const node thistle,
@@ -587,30 +556,7 @@ noexcept
 	assert(__D2 == __D1);
 #endif
 
-	move_thistle_to_left(thistle, is_thistle_neighbor, levels_per_vertex, arr);
-
-#if defined DEBUG
-
-#if defined __LAL_DEBUG_DMax_1_thistle
-	print_arrangement("After adjusting the thistle vertex", arr);
-#endif
-
-	assert(linarr::is_arrangement(t, arr));
-	const uint64_t __D3 = linarr::sum_edge_lengths(t, arr);
-
-#if defined __LAL_DEBUG_DMax_1_thistle
-	std::cout << "        __D3= " << __D3 << std::endl;
-#endif
-
-	assert(__D3 >= __D2);
-#endif
-
-
-#if defined DEBUG
-	assert(arr[node_t{thistle}] != 0);
-#endif
-
-	adjust_mistplaced_nonneighbors_of_thistle
+	adjust_nonneighbors_of_thistle_smart
 		(t, thistle_level, thistle, is_thistle_neighbor, levels_per_vertex, arr);
 
 #if defined DEBUG
@@ -628,7 +574,7 @@ noexcept
 #if defined __LAL_DEBUG_DMax_1_thistle
 	std::cout << "        D= " << D << '\n';
 #endif
-	assert(D >= __D3);
+	assert(D >= __D2);
 #endif
 
 	if constexpr (make_arrangement) {
@@ -694,9 +640,9 @@ noexcept
 
 	BFS bfs(t);
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) {
-			thistle_side_per_vertex[v] = other_side(thistle_side_per_vertex[u]);
-		}
+	[&](const auto&, node u, node v, bool) {
+		thistle_side_per_vertex[v] = other_side(thistle_side_per_vertex[u]);
+	}
 	);
 
 	do {
