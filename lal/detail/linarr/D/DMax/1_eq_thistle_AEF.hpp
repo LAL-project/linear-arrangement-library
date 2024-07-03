@@ -349,7 +349,8 @@ noexcept
 /**
  * @brief Adjust misplaced nonneighbors of the thistle vertex in a smart way.
  *
- * This function stops moving vertices as soon as one moving operation
+ * This function stops moving vertices as soon as one moving operation decreases
+ * the cost of the arrangement (without actually applying it).
  * @param t Input tree
  * @param thistle_level Level of the thistle
  * @param thistle Thistle vertex
