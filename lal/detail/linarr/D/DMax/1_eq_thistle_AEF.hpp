@@ -338,7 +338,6 @@ inline void shift_vertex_to_right(
 noexcept
 {
 	const auto n = t.get_num_nodes();
-
 	while (p < n - 1 and arr[p + 1ull] != thistle) {
 		arr.swap(p, p + 1ull);
 		++p;
@@ -464,6 +463,66 @@ noexcept
 	}
 }
 
+/*
+inline void adjust_nonneighbors_of_thistle_exhaustive(
+	const graphs::free_tree& t,
+	const node thistle,
+	const array<char>& is_thistle_neighbor,
+	linear_arrangement& arr
+)
+noexcept
+{
+#if defined DEBUG
+	assert(arr[node_t{thistle}] > 0);
+#endif
+
+	linear_arrangement copy = arr;
+	uint64_t D = linarr::sum_edge_lengths(t, copy);
+
+	position_t p = arr[node_t{thistle}];
+
+	bool stop = false;
+	while (not stop) {
+#if defined DEBUG
+		// ensure 'p' does not contain an infinite
+		// value caused by possible underflows
+		assert(p <= t.get_num_nodes());
+#endif
+
+#if defined __LAL_DEBUG_DMax_1_thistle
+		std::cout << "        __________________________________________\n";
+		std::cout << "        Find next non-neighbor starting at p= " << p << '\n';
+#endif
+
+		// find the next non-neighbor of 'thistle'
+		while (p > 0ull and is_thistle_neighbor[arr[p]] == 1) {
+			--p;
+		}
+
+		const node to_move = arr[p];
+
+		if (is_thistle_neighbor[to_move] == 1) {
+#if defined DEBUG
+			assert(p == 0ull);
+#endif
+			stop = true;
+		}
+		else {
+
+			shift_vertex_to_right(t, thistle, p, copy);
+			uint64_t D_new = linarr::sum_edge_lengths(t, copy);
+
+			if (D_new > D) {
+				arr = copy;
+				D = D_new;
+			}
+
+			stop = p == 0ull;
+		}
+	}
+}
+*/
+
 /**
  * @brief Tries to make a maximal arrangement with a given thistle vertex of a
  * given level value
@@ -514,16 +573,12 @@ noexcept
 
 #if defined DEBUG
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
-
 #if defined __LAL_DEBUG_DMax_1_thistle
 	print_arrangement("Initial arrangement", arr);
 #endif
-
 	assert(linarr::is_arrangement(t, arr));
-
 	// sum of edge lengths prior to adjustments
 	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
-
 #if defined __LAL_DEBUG_DMax_1_thistle
 	std::cout << "        __D1= " << __D1 << std::endl;
 #endif
@@ -542,30 +597,29 @@ noexcept
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
 #if defined DEBUG
-
 #if defined __LAL_DEBUG_DMax_1_thistle
 	print_arrangement("After sorting all sequences of equal level value", arr);
 #endif
-
 	assert(linarr::is_arrangement(t, arr));
 	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
-
 #if defined __LAL_DEBUG_DMax_1_thistle
 	std::cout << "        __D2= " << __D2 << std::endl;
 #endif
-
 	assert(__D2 == __D1);
 #endif
 
 	adjust_nonneighbors_of_thistle_smart
 		(t, thistle_level, thistle, is_thistle_neighbor, levels_per_vertex, arr);
 
-#if defined DEBUG
+	/*
+	adjust_nonneighbors_of_thistle_exhaustive
+		(t, thistle, is_thistle_neighbor, arr);
+	*/
 
+#if defined DEBUG
 #if defined __LAL_DEBUG_DMax_1_thistle
 	print_arrangement("After moving thistle and readjusting other vertices", arr);
 #endif
-
 	assert(linarr::is_arrangement(t, arr));
 #endif
 
