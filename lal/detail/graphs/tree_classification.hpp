@@ -78,6 +78,10 @@ noexcept
 
 	bool is_some = false; // the type of the tree is different from 'unknown'
 
+	const auto unset_type =
+	[&](const graphs::tree_type& tt) {
+		tree_types[static_cast<std::size_t>(tt)] = false;
+	};
 	const auto set_type =
 	[&](const graphs::tree_type& tt) {
 		tree_types[static_cast<std::size_t>(tt)] = true;
@@ -104,13 +108,13 @@ noexcept
 	const uint64_t n = t.get_num_nodes();
 	if (n == 0) {
 		set_type(graphs::tree_type::empty);
-		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		unset_type(graphs::tree_type::unknown);
 		return;
 	}
 	if (n == 1) {
 		set_type(graphs::tree_type::singleton);
 		set_type(graphs::tree_type::caterpillar);
-		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		unset_type(graphs::tree_type::unknown);
 		return;
 	}
 	if (n == 2) {
@@ -118,7 +122,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		unset_type(graphs::tree_type::unknown);
 		return;
 	}
 	if (n == 3) {
@@ -126,7 +130,7 @@ noexcept
 		set_type(graphs::tree_type::star);
 		set_type(graphs::tree_type::bistar);
 		set_type(graphs::tree_type::caterpillar);
-		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		unset_type(graphs::tree_type::unknown);
 		return;
 	}
 
@@ -236,7 +240,10 @@ noexcept
 	if (is_two_linear) { set_type(graphs::tree_type::two_linear); }
 
 	if (is_some) {
-		tree_types[static_cast<std::size_t>(graphs::tree_type::unknown)] = false;
+		unset_type(graphs::tree_type::unknown);
+	}
+	else {
+		set_type(graphs::tree_type::unknown);
 	}
 }
 
