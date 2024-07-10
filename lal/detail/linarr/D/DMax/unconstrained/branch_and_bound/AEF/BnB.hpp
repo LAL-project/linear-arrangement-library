@@ -41,11 +41,6 @@
 
 #pragma once
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
-#include <string_view>
-#endif
-
-
 // lal includes
 #include <lal/basic_types.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -56,7 +51,12 @@
 #include <lal/detail/set_array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/sorting/counting_sort.hpp>
+
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/reason_discard.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/next_action.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/level_value_propagation_origin.hpp>
+#include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/propagation_result.hpp>
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 #if !defined DEBUG
@@ -83,62 +83,50 @@ namespace unconstrained {
  */
 class AEF_BnB {
 public:
+	/// Value to indicate that a vertex is assigned to the arrangement.
 	static constexpr char VERTEX_ASSIGNED = 1;
+	/// Value to indicate that a vertex is not assigned to the arrangement.
 	static constexpr char VERTEX_UNASSIGNED = 0;
 
-	static constexpr bool debug_Unc_BnB_01 =
+	/// Used to determine the result type of certain functions.
+	static constexpr bool debug_BnB =
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	true;
 #else
 	false;
 #endif
 
-	typedef std::conditional_t<debug_Unc_BnB_01, bool, void>
+	/**
+	 * @brief Result of the main function of the algorithm.
+	 *
+	 * If @ref debug_BnB is true, then the function is to return a Boolean value
+	 * that indicates if it found a maxium arrangement.
+	 */
+	typedef std::conditional_t<debug_BnB, bool, void>
 	exe_result_type;
 
 public:
-	// enumeration used in the function @ref process_end()/2
-	// These values are used as flags!
+	/**
+	 * @brief Enumeration used in the function @ref process_end
+	 *
+	 * These values are used as flags!
+	 */
 	enum process_end_result {
-		// algorithm did not reach the end of the arrangement
+		/// Algorithm did not completely construct the arrangement.
 		did_not_reach_end	= 0b00000000,
-		// algorithm reached the end of the arrangement
-		reached_end			= 0b00000010,
-		// algorithm reached found a new maximum
-		found_max			= 0b00000100
+		/// Algorithm reached the end of the arrangement.
+		reached_end			= 0b00000001,
+		/// Algorithm reached found a new maximum.
+		found_max			= 0b00000010
 	};
 
-	[[nodiscard]]
-	constexpr bool did_reach_end(const int at) const noexcept
+	/// Returns true if @e at does not contain @ref process_end_result::did_not_reach_end.
+	[[nodiscard]] constexpr bool did_reach_end(const int at) const noexcept
 	{ return at & process_end_result::reached_end; }
 
-	[[nodiscard]]
-	constexpr bool did_find_max(const int at) const noexcept
+	/// Returns true if @e at contains @ref process_end_result::found_max.
+	[[nodiscard]] constexpr bool did_find_max(const int at) const noexcept
 	{ return at & process_end_result::found_max; }
-
-	enum class next_action {
-		bound,
-		continue_normally,
-		continue_independent_set,
-		continue_independent_set_leaves
-	};
-
-#if defined __LAL_DEBUG_DMax_Unc_BnB
-	[[nodiscard]] constexpr std::string_view next_action_type_to_string
-	(const next_action at) const noexcept {
-		switch (at) {
-		case next_action::bound:
-			return "Bound computation";
-		case next_action::continue_normally:
-			return "Continue computation";
-		case next_action::continue_independent_set:
-			return "Continue computation for an independent set";
-		case next_action::continue_independent_set_leaves:
-			return "Continue computation for an independent set of leaves";
-		}
-		return "";
-	}
-#endif
 
 public:
 	/// Reference to the input free tree
@@ -171,6 +159,8 @@ public:
 	 * @param paths_in_tree All the branchless paths in the tree.
 	 * @param node_to_path_idx An index for each vertex pointing to the branchless
 	 * path it belongs.
+	 * @param incident_antennas For every vertex @e u, this contains the list of
+	 * the first nodes in all incident antennas
 	 * @param orbits The set of vertex orbits of the tree.
 	 * @param vertex_to_orbit An index for each vertex pointing to the vertex
 	 * orbit it belongs.
@@ -185,6 +175,7 @@ public:
 		// paths
 		const std::vector<properties::branchless_path>& paths_in_tree,
 		const array<std::size_t>& node_to_path_idx,
+		const array<std::vector<node>>& incident_antennas,
 		// orbits
 		const std::vector<std::vector<node>>& orbits,
 		const array<std::size_t>& vertex_to_orbit
@@ -206,6 +197,34 @@ protected:
 	// -- constraints --
 
 	/**
+	 * @brief Can the propagation from vertex @e u to vertex @e v fail?
+	 *
+	 * This is only checked for pairs of vertices connected by a propagation path
+	 * (any pair of vertices in an antenna, or pairs of vertices in a bridge
+	 * where both are on the same side of its lowest lexicographic).
+	 */
+	[[nodiscard]] reason_discard check_propagation_node_to_node(
+		const node u, const int64_t level_u,
+		const node v, const int64_t level_v
+	) const noexcept;
+	/// Can a vertex of a bridge be discarded when it is to be assigned with level 0?
+	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_0
+	(const node u)
+	const noexcept;
+	/// Can a vertex of a bridge be discarded when it is to be assigned with level \f$\pm2\f$?
+	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_pm2
+	(const node u, const int64_t level_u)
+	const noexcept;
+	/// Can a vertex of degree 2 be discarded?
+	[[nodiscard]] reason_discard discard_node_degree_2
+	(const node u, const int64_t level_u)
+	const noexcept;
+	/// Can a vertex of degree 3 be discarded?
+	[[nodiscard]] reason_discard discard_node_degree_3
+	(const node u, const int64_t level_u)
+	const noexcept;
+
+	/**
 	 * @brief Function to discard a vertex as the next vertex to add to the arrangement.
 	 *
 	 * This function implements symmetry breaking constraints, optimality
@@ -214,7 +233,7 @@ protected:
 	 * @param pos Position where the vertex is to be placed at.
 	 * @returns Whether or not the vertex is to be discarded at this stage.
 	 */
-	[[nodiscard]] bool discard_vertex(const node u, const position_t pos)
+	[[nodiscard]] reason_discard discard_vertex(const node u, const position_t pos)
 	const noexcept;
 
 	// -- bounds --
@@ -249,6 +268,107 @@ protected:
 	 * @param pos Position to remove the vertex from.
 	 */
 	void recover_state(const position_t pos) noexcept;
+
+	// -- propagation of constraints -- //
+
+	/// Propagate level values at an antenna, starting at its hub.
+	void propagate_LV__antenna__from_hub
+	(const node h, const node u) noexcept;
+	/// Propagate level values at an antenna, starting at its leaf.
+	void propagate_LV__antenna__from_leaf
+	(const node u) noexcept;
+	/// Propagate level values at an antenna, starting at an internal vertex.
+	void propagate_LV__antenna__from_internal
+	(const node u) noexcept;
+
+	/**
+	 * @brief In a bridge, predict the level value of the lowest lexicographic vertex.
+	 *
+	 * Checks if, after several propagations on the bridge, the level value of the
+	 * lowest lexicographic vertex can be predicted, and assigns one when appropriate.
+	 * This check can fail.
+	 */
+	[[nodiscard]] propagation_result propagate_LV__bridge__check_lowest_can_be_predicted
+	(const std::size_t path_idx, const LV_propagation_origin origin)
+	noexcept;
+
+	/// Propagate level values at a bridge, starting at the second hub.
+	void propagate_LV__bridge__from_hub__h2
+	(const std::size_t path_idx) noexcept;
+	/// Propagate level values at a bridge, starting at the first hub.
+	void propagate_LV__bridge__from_hub__h1
+	(const std::size_t path_idx) noexcept;
+	/// Propagate level values at a bridge, starting at a hub @e h.
+	[[nodiscard]] propagation_result propagate_LV__bridge__from_hub
+	(const node h, const std::size_t path_idx) noexcept;
+
+	/// Propagate level values at a bridge starting at the lowest lexicographic
+	/// with level value \f$\pm 2\f$ towards the second hub.
+	void propagate_LV__bridge__from_lowest__level_0__towards_h2
+	(const std::size_t path_idx) noexcept;
+	/// Propagate level values at a bridge starting at the lowest lexicographic
+	/// with level value \f$\pm 2\f$ towards the first hub.
+	void propagate_LV__bridge__from_lowest__level_0__towards_h1
+	(const std::size_t path_idx) noexcept;
+	/// Propagate level values at a bridge starting at the lowest lexicographic.
+	void propagate_LV__bridge__from_lowest__level_0
+	(const node u) noexcept;
+
+	/// Propagate level values at a bridge starting at the lowest lexicographic
+	/// with level value \f$0\f$.
+	[[nodiscard]] propagation_result propagate_LV__bridge__from_lowest__level_pm2
+	(const node u) noexcept;
+
+	/// Propagate level values at a bridge starting at an internal vertex that is
+	/// not the lowest lexicographic.
+	[[nodiscard]] propagation_result propagate_LV__bridge__from_internal
+	(const node u) noexcept;
+
+	/// Propagate level values starting at vertex @e u.
+	propagation_result propagate_constraints
+	(const node u) noexcept;
+
+	// -- rollback constraints -- //
+
+	/// Undo the propagation of level values at an antenna.
+	void roll_back_LV__antenna
+	(const node u) noexcept;
+
+	/// Undo the propagation of level values at a bridge, starting at the second hub.
+	void roll_back_LV__bridge__from_hub__h2
+	(const std::size_t path_idx) noexcept;
+	/// Undo the propagation of level values at a bridge, starting at the first hub.
+	void roll_back_LV__bridge__from_hub__h1
+	(const std::size_t path_idx) noexcept;
+	/// Undo the propagation of level values at a bridge.
+	void roll_back_LV__bridge__from_hub
+	(const node h, const std::size_t path_idx) noexcept;
+
+	/// Undo the propagation of level values at a bridge, starting at the lowest
+	/// lexicographic of level value \f$0\f$ towards the second hub.
+	void roll_back_LV__bridge__from_lowest__level_0__towards_h2
+	(const std::size_t path_idx) noexcept;
+	/// Undo the propagation of level values at a bridge, starting at the lowest
+	/// lexicographic of level value \f$0\f$ towards the first hub.
+	void roll_back_LV__bridge__from_lowest__level_0__towards_h1
+	(const std::size_t path_idx) noexcept;
+	/// Undo the propagation of level values at a bridge, starting at the lowest
+	/// lexicographic of level value \f$0\f$.
+	void roll_back_LV__bridge__from_lowest__level_0
+	(const node u) noexcept;
+
+	/// Undo the propagation of level values at a bridge, starting at the lowest
+	/// lexicographic of level value \f$\pm2\f$.
+	void roll_back_LV__bridge__from_lowest__level_pm2
+	(const node u) noexcept;
+
+	/// Undo the propagation of level values at a bridge, starting at an internal
+	/// vertex.
+	void roll_back_LV__bridge__from_internal
+	(const node u) noexcept;
+	/// Undo the propagation of level values at a vertex @e u.
+	void roll_back_constraints
+	(const node u) noexcept;
 
 	/**
 	 * @brief Take action at the end of the recursion.
@@ -356,23 +476,22 @@ private:
 	/// Bipartite coloring of the tree.
 	const properties::bipartite_graph_coloring& m_vertex_colors;
 	/// Number of blue vertices (@ref m_vertex_colors).
-	const uint64_t m_num_verts_blue;
+	const uint64_t m_num_nodes_blue;
 	/// Number of red vertices (@ref m_vertex_colors).
-	const uint64_t m_num_verts_red;
+	const uint64_t m_num_nodes_red;
 	/// Number of blue vertices that are assigned to the prefix of the arrangement (@ref m_vertex_colors).
-	uint64_t m_num_assigned_verts_blue;
+	uint64_t m_num_assigned_nodes_blue;
 	/// Number of red vertices that are assigned to the prefix of the arrangement (@ref m_vertex_colors).
-	uint64_t m_num_assigned_verts_red;
+	uint64_t m_num_assigned_nodes_red;
 	/// All the branchless paths of the tree.
 	const std::vector<properties::branchless_path>& m_paths_in_tree;
 	/// An index for each vertex that points to its path in @ref m_paths_in_tree.
 	const array<std::size_t>& m_node_to_path_idx;
-	/// The number of thistle vertices for each branchless path.
-	array<uint8_t> m_num_thistle_per_path;
+	const array<std::vector<node>>& m_incident_antennas;
 	/// The set of vertex orbits of the tree.
 	const std::vector<std::vector<node>>& m_orbits;
 	/// An index for each vertex that points to its vertex orbit in @ref m_orbits.
-	const array<std::size_t>& m_vertex_to_orbit;
+	const array<std::size_t>& m_node_to_orbit;
 
 	// -------------------------------------------------------------------------
 	// Data used for upper bounds
@@ -390,15 +509,66 @@ private:
 	// sorted by amount of assigned neighbors
 
 	/// The set of border vertices.
-	set_array<node> m_border_vertices;
+	set_array<node> m_border_nodes;
+	/// Auxiliary memory to speed up the calculation of the upper bound.
+	sorting::countingsort::memory<node> m_sorting_memory;
 
 	/* -------------------------- BORDER VERTICES -------------------------- */
 
 	// -------------------------------------------------------------------------
 	// Algorithm control
 
+	/**
+	 * @brief Data related to paths in the tree.
+	 *
+	 * This struct contains:
+	 * - Counting of vertices assigned to the arrangement,
+	 * - Maximum and minimum number of vertices of level values \f$\pm2\f$ (these
+	 * are generous bounds)
+	 * - Actual maximum and minimum number of vertices of level values \f$\pm2\f$.
+	 */
+	struct path_info {
+		/// Number of thistle vertices in the path (assigned to the arrangement).
+		uint64_t num_thistles;
+		/// Number of vertices in the path assigned to the arrangement.
+		uint64_t num_assigned_nodes;
+		/// Number of vertices in the path assigned to the arrangement with level +2.
+		uint64_t num_assigned_nodes_p2;
+		/// Number of vertices in the path assigned to the arrangement with level -2.
+		uint64_t num_assigned_nodes_m2;
+
+		/// Lower bound on the number of vertices of this path with level +-2 to
+		/// be assigned.
+		uint64_t min_pm_two;
+		/// Upper bound on the number of vertices of this path with level +-2 to
+		/// be assigned.
+		uint64_t max_pm_two;
+
+		// number of vertices of level +-2 to assign to the arrangement
+		// known after the entire propagation of the path is complete
+		// (done only for antennas)
+		/**
+		 * @brief Number of vertices of this path to be assigned with level +2
+		 * in the arrangement.
+		 *
+		 * Known only after propagating level values. Reset when a propagation is
+		 * undone.
+		 */
+		std::optional<uint64_t> nodes_p2_to_assign;
+		/**
+		 * @brief Number of vertices of this path to be assigned with level -2
+		 * in the arrangement.
+		 *
+		 * Known only after propagating level values. Reset when a propagation is
+		 * undone.
+		 */
+		std::optional<uint64_t> nodes_m2_to_assign;
+	};
+	/// Control of vertices to assign in the arrangement with a specific level value.
+	array<path_info> m_path_info;
+
 	/// First vertex with which to start the algorithm.
-	node m_first_vertex;
+	node m_first_node;
 
 	/// The set of assigned nodes.
 	array<char> m_is_node_assigned;
@@ -424,20 +594,55 @@ private:
 	/// The set of edges fully contained in the suffix.
 	set_array<edge, indexer_edge> m_E_s;
 
-	/// Directional left degree of each vertex.
+	/**
+	 * @brief Directional left degree of each assigned vertex.
+	 *
+	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * returns true for @e u.
+	 */
 	array<uint64_t> m_node_left_degree;
-	/// Directional right degree of each vertex.
+	/**
+	 * @brief Directional right degree of each assigned vertex.
+	 *
+	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * returns true for @e u.
+	 */
 	array<uint64_t> m_node_right_degree;
-	/// The level value of each vertex.
+	/**
+	 * @brief The level value of each assigned vertex.
+	 *
+	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * returns true for @e u.
+	 */
 	array<int64_t> m_node_level;
 
 	/// Cuts in the arrangement
 	array<uint64_t> m_cut_values;
 
+	/// The set of predicted level values for all vertices of the tree.
+	array<int64_t> m_predicted_LV;
+	/**
+	 * @brief Origin of a propagation of level values.
+	 *
+	 * For each vertex @e u, information of the origin of the propagation of level
+	 * values that went through @e u. Notice that @e u may be the origin of the
+	 * propagation (see @ref lal::detail::DMax::unconstrained::LV_propagation_origin::self).
+	 */
+	array<LV_propagation_origin> m_predicted_LV__origin;
+
+	/// Does vertex @e u have a valid prediction of level value?
+	bool has_valid_LV_prediction(node u) const noexcept
+	{ return m_predicted_LV__origin[u] != LV_propagation_origin::none; }
+
+	/// Did a propagation of level values start at vertex @e u?
+	bool is_node_a_trigger_of_LV(node u) const noexcept
+	{ return m_predicted_LV__origin[u] == LV_propagation_origin::self; }
+
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	// -------------------------------------------------------------------------
 	// Display of algorithm's data and progress
 
+	void output_edge_list() const noexcept;
 	void output_arrangement() const noexcept;
 	void output_invarr(position p) const noexcept;
 	void output_degree_sequence(position p) const noexcept;
@@ -447,7 +652,9 @@ private:
 	void output_cut_signature(position p) const noexcept;
 	void output_num_assigned_neighbors() const noexcept;
 	void output_num_unassigned_neighbors() const noexcept;
-	void output_border_vertices() const noexcept;
+	void output_border_nodes() const noexcept;
+	void output_predicted_level_values() const noexcept;
+	void output_path_info() const noexcept;
 	void display_all_info
 	(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
 	noexcept;

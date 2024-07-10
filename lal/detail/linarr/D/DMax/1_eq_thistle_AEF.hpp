@@ -580,7 +580,7 @@ noexcept
 	// sum of edge lengths prior to adjustments
 	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
 #if defined __LAL_DEBUG_DMax_1_thistle
-	std::cout << "        __D1= " << __D1 << std::endl;
+	std::cout << "        __D1= " << __D1 << '\n';
 #endif
 #endif
 
@@ -603,7 +603,7 @@ noexcept
 	assert(linarr::is_arrangement(t, arr));
 	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
 #if defined __LAL_DEBUG_DMax_1_thistle
-	std::cout << "        __D2= " << __D2 << std::endl;
+	std::cout << "        __D2= " << __D2 << '\n';
 #endif
 	assert(__D2 == __D1);
 #endif

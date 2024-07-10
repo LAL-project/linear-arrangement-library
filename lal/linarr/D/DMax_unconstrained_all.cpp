@@ -148,12 +148,14 @@ noexcept
 void relate_vertices_to_paths(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
-	detail::array<std::size_t>& internal_path_node_to_path_idx
+	detail::array<std::size_t>& internal_path_node_to_path_idx,
+	detail::array<std::vector<node>>& incident_antennas
 )
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 	internal_path_node_to_path_idx.resize(n, n + 1);
+	incident_antennas.resize(n);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Num paths: " << branchless_paths_in_tree.size() << '\n';
@@ -170,7 +172,9 @@ noexcept
 			std::cout << ' ' << int(path.has_node(u));
 		}
 		std::cout << '\n';
-		std::cout << "Lowest: " << path.get_lowest_lexicographic() << '\n';
+		if (path.has_lowest_lexicographic()) {
+			std::cout << "Lowest: " << path.get_lowest_lexicographic() << '\n';
+		}
 	}
 	std::cout << "-----------------\n";
 #endif
@@ -179,15 +183,36 @@ noexcept
 	// Only vertices of degree <= 2 are taken into account.
 	for (std::size_t i = 0; i < branchless_paths_in_tree.size(); ++i) {
 		const auto& p = branchless_paths_in_tree[i];
-		for (std::size_t j = 1; j < p.get_vertex_sequence().size() - 1; ++j) {
-			internal_path_node_to_path_idx[ p.get_vertex_sequence()[j] ] = i;
+		for (std::size_t j = 1; j < p.get_num_nodes() - 1; ++j) {
+			internal_path_node_to_path_idx[ p[j] ] = i;
+		}
+		if (const node h = p.get_h1(); t.get_degree(h) == 1) {
+			internal_path_node_to_path_idx[h] = i;
+		}
+		if (const node h = p.get_h2(); t.get_degree(h) == 1) {
+			internal_path_node_to_path_idx[h] = i;
 		}
 	}
+	for (node u = 0; u < n; ++u) {
+		if (t.get_degree(u) <= 2) { continue; }
+
+		for (node v : t.get_neighbors(u)) {
+			if (t.get_degree(v) > 2) { continue; }
+
+			const std::size_t idx_v = internal_path_node_to_path_idx[v];
+			const auto& p = branchless_paths_in_tree[idx_v];
+			if (p.is_antenna(t)) {
+				incident_antennas[u].push_back(v);
+			}
+		}
+	}
+
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	for (node u = 0; u < n; ++u) {
 		std::cout
 			<< "Node '" << u << "' belongs to path '"
-			<< internal_path_node_to_path_idx[u] << "'.\n";
+			<< internal_path_node_to_path_idx[u]
+			<< "'.\n";
 	}
 	std::cout << "-----------------\n";
 #endif
@@ -227,7 +252,7 @@ noexcept
 }
 
 void calculate_initial_solution(
-	const lal::graphs::free_tree& t,
+	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
 	const detail::array<std::size_t>& internal_path_node_to_path_idx,
@@ -239,14 +264,18 @@ noexcept
 {
 	max_arrs.init();
 
-	std::pair<uint64_t, lal::linear_arrangement> Bipartite_MaxLA =
+	std::pair<uint64_t, linear_arrangement> Bipartite_MaxLA =
 		detail::DMax::bipartite::AEF<true>(t, vertex_colors);
 	max_arrs.add(Bipartite_MaxLA.first, Bipartite_MaxLA.second);
 
-	std::pair<uint64_t, lal::linear_arrangement> OneThistle_MaxLA =
-		lal::detail::DMax::thistle_1::AEF<true>
-		(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
-	max_arrs.add(OneThistle_MaxLA.first, OneThistle_MaxLA.second);
+	std::pair<uint64_t, linear_arrangement> OneThistle_MaxLA = {0, {}};
+
+	if (t.get_num_nodes() >= 3) {
+		OneThistle_MaxLA =
+			detail::DMax::thistle_1::AEF<true>
+			(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
+		max_arrs.add(OneThistle_MaxLA.first, OneThistle_MaxLA.second);
+	}
 
 	if (Bipartite_MaxLA.first > OneThistle_MaxLA.first) {
 		initial_DMax = std::move(Bipartite_MaxLA);
@@ -288,7 +317,13 @@ noexcept
 	retrieve_leave_sets(t, leaves_per_vertex);
 
 	detail::array<std::size_t> internal_path_node_to_path_idx;
-	relate_vertices_to_paths(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
+	detail::array<std::vector<node>> incident_antennas;
+	relate_vertices_to_paths(
+		t,
+		branchless_paths_in_tree,
+		internal_path_node_to_path_idx,
+		incident_antennas
+	);
 
 	detail::array<std::size_t> vertex_to_orbit;
 	relate_vertices_to_orbits(t, orbits, vertex_to_orbit);
@@ -323,6 +358,7 @@ noexcept
 				// paths
 				branchless_paths_in_tree,
 				internal_path_node_to_path_idx,
+				incident_antennas,
 				// orbits
 				orbits,
 				vertex_to_orbit
@@ -370,84 +406,84 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const std::vector<properties::branchless_path>& bps,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& bps,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
 	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& c,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
-	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& bps,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
 	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
-	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
+	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
 	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
-	std::size_t num_threads
+	std::size_t nuthreads
 )
 noexcept
 {
 	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = lal::detail::branchless_paths_compute(t);
+	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
 	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
-	return max_sum_edge_lengths_all(t, orbits, c, bps, num_threads);
+	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 } // -- namespace linarr

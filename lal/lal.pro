@@ -105,6 +105,10 @@ HEADERS += \
 	detail/linarr/D/DMax/Projective_AEF.hpp \
 	detail/linarr/D/DMax/necessary_conditions.hpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/level_value_propagation_origin.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/next_action.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/propagation_result.hpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/reason_discard.hpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/set_maximum_arrangements.hpp \
 	detail/linarr/D/DMax/utils.hpp \
 	detail/linarr/D/Dmin/Bipartite_AEF.hpp \
@@ -269,6 +273,12 @@ SOURCES += \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution_independent_set.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_initialisation.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_next_action.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate__antenna.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate__bridge.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back__antenna.cpp \
+	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back__bridge.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_state_manipulation.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_utils.cpp \
 	generate/all_arrangements.cpp \

@@ -48,6 +48,7 @@
 #endif
 
 // lal includes
+#include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
@@ -90,6 +91,15 @@ namespace unconstrained {
 #define set_col_width std::setw(column_width)
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
+
+void AEF_BnB::output_edge_list() const noexcept {
+	iterators::E_iterator it(m_t);
+	while (not it.end()) {
+		const lal::edge e = it.yield_edge();
+		std::cout << e.first << ' ' << e.second << '\n';
+	}
+}
+
 void AEF_BnB::output_arrangement() const noexcept {
 	for (node_t u = 0ull; u < m_n_nodes; ++u) {
 		std::cout << ' ';
@@ -186,23 +196,126 @@ void AEF_BnB::output_num_unassigned_neighbors() const noexcept {
 	}
 }
 
-void AEF_BnB::output_border_vertices() const noexcept {
+void AEF_BnB::output_border_nodes() const noexcept {
 	std::cout << tab() << "    Vertices: ";
-	for (std::size_t i = 0; i < m_border_vertices.size(); ++i) {
-		std::cout << ' ' << m_border_vertices[i];
+	for (std::size_t i = 0; i < m_border_nodes.size(); ++i) {
+		std::cout << ' ' << m_border_nodes[i];
 	}
 	std::cout << '\n';
 
 	std::cout << tab() << "    Positions:";
-	for (std::size_t i = 0; i < m_border_vertices.size(); ++i) {
-		const auto ui = m_border_vertices[i];
-		std::cout << ' ' << m_border_vertices.position(ui);
+	for (std::size_t i = 0; i < m_border_nodes.size(); ++i) {
+		const auto ui = m_border_nodes[i];
+		std::cout << ' ' << m_border_nodes.position(ui);
 	}
 	std::cout << '\n';
 
 	std::cout << tab() << "    In border:";
 	for (node u = 0; u < m_n_nodes; ++u) {
-		std::cout << ' ' << (m_border_vertices.exists(u) ? 'o' : 'x');
+		std::cout << ' ' << (m_border_nodes.exists(u) ? 'o' : 'x');
+	}
+	std::cout << '\n';
+}
+
+void AEF_BnB::output_predicted_level_values() const noexcept {
+	array<int> widths(m_n_nodes, 0);
+
+	std::cout << tab() << "    Vertices:  ";
+	for (node u = 0; u < m_n_nodes; ++u) {
+		widths[u] = 1;
+		if (has_valid_LV_prediction(u)) {
+			widths[u] = static_cast<int>(std::to_string(m_predicted_LV[u]).length());
+		}
+		widths[u] =
+			std::max(
+				widths[u],
+				static_cast<int>(std::to_string(u).length())
+			);
+		widths[u] =
+			std::max(
+				widths[u],
+				static_cast<int>(LV_propagation_origin_to_short_string(m_predicted_LV__origin[u]).length())
+			);
+		std::cout << ' ' << std::setw(widths[u]) << u;
+	}
+	std::cout << '\n';
+
+	std::cout << tab() << "    Prediction:";
+	for (node u = 0; u < m_n_nodes; ++u) {
+		std::cout << ' ' << std::setw(widths[u]);
+		if (has_valid_LV_prediction(u)) {
+			std::cout << m_predicted_LV[u];
+		}
+		else {
+			std::cout << ' ';
+		}
+	}
+	std::cout << '\n';
+	std::cout << tab() << "    Origin:    ";
+	for (node u = 0; u < m_n_nodes; ++u) {
+		std::cout
+			<< ' ' << std::setw(widths[u])
+			<< LV_propagation_origin_to_short_string(m_predicted_LV__origin[u]);
+	}
+	std::cout << '\n';
+
+	std::cout << tab() << "    Triggers:  ";
+	for (node u = 0; u < m_n_nodes; ++u) {
+		std::cout
+			<< ' '
+			<< std::setw(widths[u])
+			<< (is_node_a_trigger_of_LV(u) ? 'x' : ' ');
+	}
+	std::cout << '\n';
+}
+
+void AEF_BnB::output_path_info() const noexcept {
+	const std::size_t num_paths = m_paths_in_tree.size();
+
+	array<std::size_t> widths(num_paths, 0);
+	for (std::size_t i = 0; i < num_paths; ++i) {
+		widths[i] = std::max(
+			widths[i],
+			std::to_string(int(m_path_info[i].num_assigned_nodes)).length()
+		);
+
+		widths[i] = std::max(
+			widths[i],
+			std::to_string(int(m_path_info[i].num_thistles)).length()
+		);
+	}
+
+	std::cout << tab() << "    Assigned vertices:                  ";
+	for (std::size_t i = 0; i < num_paths; ++i) {
+		std::cout
+			<< ' '
+			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< int(m_path_info[i].num_assigned_nodes);
+	}
+	std::cout << '\n';
+	std::cout << tab() << "    Assigned vertices (+2):             ";
+	for (std::size_t i = 0; i < num_paths; ++i) {
+		std::cout
+			<< ' '
+			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< int(m_path_info[i].num_assigned_nodes_p2);
+	}
+	std::cout << '\n';
+	std::cout << tab() << "    Assigned vertices (-2):             ";
+	for (std::size_t i = 0; i < num_paths; ++i) {
+		std::cout
+			<< ' '
+			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< int(m_path_info[i].num_assigned_nodes_m2);
+	}
+	std::cout << '\n';
+
+	std::cout << tab() << "    Amount thistles per antenna/bridge: ";
+	for (std::size_t i = 0; i < num_paths; ++i) {
+		std::cout
+			<< ' '
+			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< int(m_path_info[i].num_thistles);
 	}
 	std::cout << '\n';
 }
@@ -240,26 +353,30 @@ noexcept
 	std::cout << tab() << "    Assigned neighbors:   ";   output_num_assigned_neighbors(); std::cout << '\n';
 	std::cout << tab() << "    Unassigned neighbors: ";   output_num_unassigned_neighbors(); std::cout << '\n';
 	std::cout << tab() << "Border vertices:\n";
-	output_border_vertices();
+	output_border_nodes();
+	std::cout << tab() << "Predicted level values:\n";
+	output_predicted_level_values();
+	std::cout << tab() << "Paths\n";
+	output_path_info();
 	std::cout << tab() << "Lengths:\n";
 	std::cout << tab() << "    D_p=    " << D_p << '\n';
 	std::cout << tab() << "    D_ps^-= " << D_ps_m << '\n';
 	std::cout << tab() << "Edge sets:\n";
 	std::cout << tab() << "    E_p: ";
 	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
-		const auto [u, v] = m_E_p[i];
+		const auto [u,v] = m_E_p[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
 	std::cout << tab() << "    E_ps:";
 	for (std::size_t i = 0; i < m_E_ps.size(); ++i) {
-		const auto [u, v] = m_E_ps[i];
+		const auto [u,v] = m_E_ps[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';
 	std::cout << tab() << "    E_s: ";
-	for (std::size_t i = 0; i < m_E_p.size(); ++i) {
-		const auto [u, v] = m_E_p[i];
+	for (std::size_t i = 0; i < m_E_s.size(); ++i) {
+		const auto [u,v] = m_E_s[i];
 		std::cout << " (" << u << "," << v << ")";
 	}
 	std::cout << '\n';

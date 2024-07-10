@@ -83,11 +83,11 @@ noexcept
 	std::cout << tab() << "    Vertices with some neighbor assigned:\n";
 #endif
 
-	const std::size_t idx = m_border_vertices.size();
+	const std::size_t idx = m_border_nodes.size();
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_vertices[i];
+		const auto ui = m_border_nodes[i];
 		std::cout
 			<< tab() << "        "
 			<< ui << " -> "
@@ -98,48 +98,51 @@ noexcept
 
 #if defined DEBUG
 	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_vertices[i];
-		assert(m_border_vertices.position(ui) == i);
+		const auto ui = m_border_nodes[i];
+		assert(m_border_nodes.position(ui) == i);
 		assert(m_num_assigned_neighbors[ui] > 0);
 		assert(not is_vertex_assigned(ui));
-		assert(m_border_vertices.exists(ui));
+		assert(m_border_nodes.exists(ui));
 	}
 	for (node u = 0; u < m_n_nodes; ++u) {
-		if (not m_border_vertices.exists(u) and not is_vertex_assigned(u)) {
+		if (not m_border_nodes.exists(u) and not is_vertex_assigned(u)) {
 			assert(m_num_assigned_neighbors[u] == 0);
 		}
 	}
 #endif
 
-	{
+	// largest_key: m_n_nodes
+	// upper_bound_size: idx
+	m_sorting_memory.reset_count();
+
 	// sort the vector of border vertices
-	sorting::counting_sort
-	<node, sorting::non_increasing_t>
+	lal::detail::sorting::counting_sort
+	<lal::node, lal::detail::sorting::non_increasing_t, false>
 	(
-		m_border_vertices.begin_values(),
-		m_border_vertices.begin_values() + idx,
-		m_n_nodes, idx,
-		[&](node u) { return m_num_assigned_neighbors[u]; }
+		m_border_nodes.begin_values(),
+		m_border_nodes.begin_values() + idx,
+		m_n_nodes + 1,
+		[&](lal::node u) { return m_num_assigned_neighbors[u]; },
+		m_sorting_memory
 	);
-	}
 
 	// fix (as in 'correct', 'repair') the positions of the vertices...
 	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_vertices[i];
-		m_border_vertices.begin_position()[ui] = i;
+		const auto ui = m_border_nodes[i];
+		m_border_nodes.begin_position()[ui] = i;
 	}
 
 #if defined DEBUG
 	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_vertices[i];
-		assert(m_border_vertices.position(ui) == i);
+		const auto ui = m_border_nodes[i];
+		assert(m_border_nodes.position(ui) == i);
 	}
 #endif
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "    Vertices with some neighbor assigned ordered by degree:\n";
 	for (std::size_t i = 0; i < idx; ++i) {
-		const node ui = m_border_vertices[i];
+		const node ui = m_border_nodes[i];
 		std::cout
 			<< tab() << "        "
 			<< ui << " -> "
@@ -151,7 +154,7 @@ noexcept
 	uint64_t D_upper_E_ps_p = 0;
 	uint64_t current_length = m_n_nodes - (*pos + 1);
 	for (std::size_t i = 0; i < idx; ++i) {
-		const node ui = m_border_vertices[i];
+		const node ui = m_border_nodes[i];
 		const uint64_t k = m_num_assigned_neighbors[ui];
 		D_upper_E_ps_p += current_length*k;
 		--current_length;
@@ -202,7 +205,7 @@ noexcept
 	return D_upper + D_p;
 }
 
-AEF_BnB::next_action AEF_BnB::what_to_do_next
+next_action AEF_BnB::what_to_do_next
 (const uint64_t D_p, const uint64_t D_ps_m, const position_t pos)
 noexcept
 {
@@ -248,7 +251,8 @@ noexcept
 		return (
 			all_are_leaves ?
 				next_action::continue_independent_set_leaves :
-				next_action::continue_independent_set);
+				next_action::continue_independent_set
+			);
 	}
 
 	return next_action::continue_normally;

@@ -131,8 +131,8 @@ noexcept
 	m_arr.assign(u, pos);
 
 	// update count of vertex colors
-	m_num_assigned_verts_blue += m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
-	m_num_assigned_verts_red += m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
+	m_num_assigned_nodes_blue += m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
+	m_num_assigned_nodes_red += m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
 
 	// iterate over the neighbors of 'u'
 	for (const node v : m_t.get_neighbors(u)) {
@@ -178,12 +178,12 @@ noexcept
 			m_E_s.remove(e);
 
 			// add 'v' to the border vertex set, if appropriate
-			m_border_vertices.add(v);
+			m_border_nodes.add(v);
 		}
 	}
 
 	// remove 'u' from the border vertex set
-	m_border_vertices.remove(u);
+	m_border_nodes.remove(u);
 
 	// update D_ps^-: add a unit of length for every edge in E_ps
 	D_ps_m += m_E_ps.size();
@@ -193,11 +193,23 @@ noexcept
 		to_int64(m_node_right_degree[u]) - to_int64(m_node_left_degree[u]);
 
 	// update this vertex's path information
-	if (m_t.get_degree(u) == 2) {
+	if (m_t.get_degree(u) <= 2) {
 		const auto idx = m_node_to_path_idx[u];
 		if (m_node_level[u] == 0) {
-			++m_num_thistle_per_path[idx];
+#if defined DEBUG
+			// If this path was an antenna we could not possibly have this vertex
+			// as a thistle at this point of the algorithm.
+			assert(not m_paths_in_tree[m_node_to_path_idx[u]].is_antenna(m_t));
+#endif
+			++m_path_info[idx].num_thistles;
 		}
+		else if (m_node_level[u] == 2) {
+			++m_path_info[idx].num_assigned_nodes_p2;
+		}
+		else if (m_node_level[u] == -2) {
+			++m_path_info[idx].num_assigned_nodes_m2;
+		}
+		++m_path_info[idx].num_assigned_nodes;
 	}
 
 	if (pos > 0ull) {
@@ -230,8 +242,11 @@ noexcept
 #endif
 
 		if (is_vertex_assigned(v)) {
-			assert(m_node_left_degree[v] + m_node_right_degree[v]
-				   == m_t.get_degree(v));
+			assert(
+				m_node_left_degree[v] + m_node_right_degree[v]
+				==
+				m_t.get_degree(v)
+			);
 		}
 	}
 
@@ -253,15 +268,22 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 #endif
 
 	// update count of vertex colors
-	m_num_assigned_verts_blue -= m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
-	m_num_assigned_verts_red -= m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
+	m_num_assigned_nodes_blue -= m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
+	m_num_assigned_nodes_red -= m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
 
 	// update this vertex's path information
 	if (m_t.get_degree(u) <= 2) {
 		const auto idx = m_node_to_path_idx[u];
 		if (m_node_level[u] == 0) {
-			--m_num_thistle_per_path[idx];
+			--m_path_info[idx].num_thistles;
 		}
+		else if (m_node_level[u] == 2) {
+			--m_path_info[idx].num_assigned_nodes_p2;
+		}
+		else if (m_node_level[u] == -2) {
+			--m_path_info[idx].num_assigned_nodes_m2;
+		}
+		--m_path_info[idx].num_assigned_nodes;
 	}
 
 	// update vertex's level
@@ -276,7 +298,11 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 		++m_num_unassigned_neighbors[v];
 		--m_num_assigned_neighbors[v];
 #if defined DEBUG
-		assert(m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v] == m_t.get_degree(v));
+		assert(
+			m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v]
+			==
+			m_t.get_degree(v)
+		);
 #endif
 
 		if (is_vertex_assigned(v)) {
@@ -285,8 +311,6 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 			// just in case, you never know!
 			const position pv = m_arr[node_t{v}];
 			assert(pv < pos);
-
-			//
 			assert(m_node_right_degree[v] > 0);
 #endif
 
@@ -308,14 +332,14 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 
 			// remove 'v' from the border vertex set, if appropriate
 			if (m_num_assigned_neighbors[v] == 0) {
-				m_border_vertices.remove(v);
+				m_border_nodes.remove(v);
 			}
 		}
 	}
 
 	// add 'u' to the border vertex set, if appropriate
 	if (m_num_assigned_neighbors[u] > 0) {
-		m_border_vertices.add(u);
+		m_border_nodes.add(u);
 	}
 
 	// remove vertex from the arrangement
@@ -339,8 +363,11 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 #endif
 
 		if (is_vertex_assigned(v)) {
-			assert(m_node_left_degree[v] + m_node_right_degree[v]
-				   == m_t.get_degree(v));
+			assert(
+				m_node_left_degree[v] + m_node_right_degree[v]
+				==
+				m_t.get_degree(v)
+			);
 		}
 	}
 #endif

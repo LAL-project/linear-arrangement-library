@@ -131,38 +131,77 @@ noexcept
 
 	// for every remaining vertex u
 	for (node u = 0; u < m_n_nodes; ++u) {
+		if (is_vertex_assigned(u)) { continue; }
+
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 		std::cout << tab() << "Trying vertex '" << u << "' at position '" << pos << "'\n";
 #endif
 
 		// if the filtering says 'do not use this vertex', then move
 		// on to the next vertex
-		if (discard_vertex(u, pos)) { continue; }
+		const reason_discard discard = discard_vertex(u, pos);
+
+		if (discard != reason_discard::none) {
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+			std::cout
+				<< tab()
+				<< "    Vertex was discarded because: '"
+				<< reason_discard_to_string(discard)
+				<< "'\n";
+#endif
+			continue;
+		}
 
 		// assign vertex 'u' at position 'p'
 		uint64_t D_p_next = D_p;
 		uint64_t D_ps_m_next = D_ps_m;
 		update_state(u, pos, D_p_next, D_ps_m_next);
 
-		// Try solving DMax with the current configuration
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		push_tab();
+		std::cout << tab() << "Propagating...\n";
+#endif
+
+		const propagation_result propagation = propagate_constraints(u);
+
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+		if (propagation != propagation_result::success) {
+			std::cout
+				<< tab()
+				<< "Result of propagation: '"
+				<< propagation_result_to_string(propagation)
+				<< "'\n";
+		}
+#endif
+
+		if (propagation == propagation_result::success) {
+			// Try solving DMax with the current configuration
+
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+			push_tab();
 #endif
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		const bool branch_reached_maximum =
+			const bool branch_reached_maximum =
 #endif
-		exe(D_p_next, D_ps_m_next, pos + 1);
+			exe(D_p_next, D_ps_m_next, pos + 1);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		reached_max = reached_max or branch_reached_maximum;
-		pop_tab();
+			reached_max = reached_max or branch_reached_maximum;
+			pop_tab();
 
-		std::cout
-			<< tab()
-			<< "Branch reached maximum? "
-			<< std::boolalpha << branch_reached_maximum
-			<< '\n';
+			std::cout
+				<< tab()
+				<< "Branch reached maximum? "
+				<< std::boolalpha << branch_reached_maximum
+				<< '\n';
+#endif
+
+		}
+
+		roll_back_constraints(u);
+
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+		display_all_info(D_p, D_ps_m, pos);
 #endif
 
 		recover_state(pos);
@@ -174,33 +213,60 @@ noexcept
 }
 
 void AEF_BnB::exe(node first_node) noexcept {
-	m_first_vertex = first_node;
+	m_first_node = first_node;
 
-	m_rt.init_rooted(m_t, m_first_vertex);
+	m_rt.init_rooted(m_t, m_first_node);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "**************************************************\n";
-	std::cout << "*** Started execution of Branch & Bound at '" << m_first_vertex << "' ***\n";
+	std::cout << "*** Started execution of Branch & Bound at '" << m_first_node << "' ***\n";
 	std::cout << "**************************************************\n";
 	std::cout << "Input (free) tree:\n";
 	std::cout << m_t << '\n';
 	std::cout << "Input (rooted) tree:\n";
 	std::cout << m_rt << '\n';
-#endif
-
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+	output_edge_list();
+	display_all_info(0, 0, 0);
 	push_tab();
 #endif
 
 	uint64_t D_p_next = 0;
 	uint64_t D_ps_next = 0;
-	update_state(m_first_vertex, 0ull, D_p_next, D_ps_next);
+	update_state(m_first_node, 0ull, D_p_next, D_ps_next);
 
-	exe(D_p_next, D_ps_next, 1);
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+	std::cout << tab() << "Propagating...\n";
+#endif
+
+	const propagation_result res = propagate_constraints(m_first_node);
+
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+	std::cout
+		<< tab()
+		<< "Result of propagation: '"
+		<< propagation_result_to_string(res)
+		<< "'\n";
+#endif
+
+	if (res == propagation_result::success) {
+		exe(D_p_next, D_ps_next, 1);
+	}
+
+	roll_back_constraints(m_first_node);
+
 	recover_state(0ull);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	pop_tab();
+#endif
+
+#if defined DEBUG
+	// assert there are no valid predictions
+	for (const auto& path : m_paths_in_tree) {
+		for (lal::node u : path.get_vertex_sequence()) {
+			assert(not has_valid_LV_prediction(u));
+		}
+	}
 #endif
 }
 

@@ -61,8 +61,7 @@ namespace DMax {
 namespace unconstrained {
 
 AEF_BnB::exe_result_type
-AEF_BnB::exe_independent_set
-(const uint64_t D_p, position pos)
+AEF_BnB::exe_independent_set(const uint64_t D_p, position pos)
 noexcept
 {
 	// number of remaining vertices

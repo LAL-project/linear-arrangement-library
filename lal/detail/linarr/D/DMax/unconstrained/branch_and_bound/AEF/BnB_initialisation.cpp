@@ -57,6 +57,7 @@ AEF_BnB::AEF_BnB(
 	// paths
 	const std::vector<properties::branchless_path>& paths_in_tree,
 	const array<std::size_t>& node_to_path_idx,
+	const lal::detail::array<std::vector<lal::node>>& incident_antennas,
 	// orbits
 	const std::vector<std::vector<node>>& orbits,
 	const array<std::size_t>& vertex_to_orbit
@@ -66,13 +67,17 @@ noexcept :
 	m_max_arrs(t),
 	m_n_nodes(t.get_num_nodes()),
 	m_leaves(leaves),
+	// colors of vertices
 	m_vertex_colors(colors),
-	m_num_verts_blue(num_verts_blue),
-	m_num_verts_red(num_verts_red),
+	m_num_nodes_blue(num_verts_blue),
+	m_num_nodes_red(num_verts_red),
+	// paths
 	m_paths_in_tree(paths_in_tree),
 	m_node_to_path_idx(node_to_path_idx),
+	m_incident_antennas(incident_antennas),
+	// orbits
 	m_orbits(orbits),
-	m_vertex_to_orbit(vertex_to_orbit)
+	m_node_to_orbit(vertex_to_orbit)
 {
 }
 
@@ -86,13 +91,6 @@ noexcept
 	m_max_arrs.add(initial_DMax.first, initial_DMax.second);
 
 	// -------------------------------------------------------------------------
-	// Tree-related data
-
-	m_num_thistle_per_path.resize(m_paths_in_tree.size(), 0);
-	m_num_assigned_verts_blue = 0;
-	m_num_assigned_verts_red = 0;
-
-	// -------------------------------------------------------------------------
 	// Data used for upper bounds
 
 	m_degree_count.resize(m_n_nodes, 0);
@@ -102,16 +100,47 @@ noexcept
 		m_num_unassigned_neighbors[u] = m_t.get_degree(u);
 	}
 
-	m_border_vertices.init(m_n_nodes, m_n_nodes);
+	m_border_nodes.init(m_n_nodes, m_n_nodes);
+	m_sorting_memory.count.resize(m_n_nodes + 1);
+	m_sorting_memory.output.resize(m_n_nodes);
 
 	// -------------------------------------------------------------------------
 	// Algorithm control
+
+	m_num_assigned_nodes_blue = 0;
+	m_num_assigned_nodes_red = 0;
+	m_path_info.resize(m_paths_in_tree.size(), {0,0,0,0,0,0,{},{}});
+	for (std::size_t i = 0; i < m_path_info.size(); ++i) {
+		const auto& path = m_paths_in_tree[i];
+		const uint64_t N_2 = path.get_num_nodes() - 2;
+		if (path.is_antenna(m_t)) {
+			m_path_info[i].min_pm_two = N_2/2;
+			m_path_info[i].max_pm_two = N_2/2 + N_2%2;
+		}
+		else {
+			if (N_2 == 0) {
+				m_path_info[i].min_pm_two = 0;
+				m_path_info[i].max_pm_two = 0;
+			}
+			else if (N_2 <= 2) {
+				m_path_info[i].min_pm_two = 0;
+				m_path_info[i].max_pm_two = 1;
+			}
+			else {
+				m_path_info[i].min_pm_two = (N_2 + 1)/2 - 1;
+				m_path_info[i].max_pm_two = (N_2 + 1)/2;
+			}
+		}
+	}
 
 	m_is_node_assigned.resize(m_n_nodes, VERTEX_UNASSIGNED);
 	m_node_left_degree.resize(m_n_nodes, 0);
 	m_node_right_degree.resize(m_n_nodes, 0);
 	m_node_level.resize(m_n_nodes, 0);
 	m_cut_values.resize(m_n_nodes, 0);
+
+	m_predicted_LV.resize(m_n_nodes);
+	m_predicted_LV__origin.resize(m_n_nodes, LV_propagation_origin::none);
 
 	indexer_edge I_p, I_ps, I_s;
 	I_p.init(m_n_nodes);
