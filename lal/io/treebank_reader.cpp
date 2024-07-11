@@ -53,12 +53,12 @@ namespace io {
 // MODIFIERS
 
 treebank_error treebank_reader::init
-(const std::string& file, const std::string& lang)
+(const std::string& treebank_filename, const std::string& treebank_id)
 noexcept
 {
 	m_treebank.close();
-	m_treebank_identifier = lang;
-	m_treebank_file = file;
+	m_treebank_file = treebank_filename;
+	m_treebank_identifier = treebank_id;
 	m_num_trees = 0;
 	m_no_more_trees = false;
 

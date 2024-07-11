@@ -89,7 +89,7 @@ void treebank_collection_reader::next_treebank() noexcept {
 	M.replace_filename(m_cur_treebank_filename);
 
 	// this call
-	m_treebank_reader.init(M.string(), m_cur_treebank_name);
+	m_treebank_reader.init(M.string(), m_cur_treebank_id);
 	// can only return
 	//     lal::io::treebank_error::treebank_file_could_not_be_opened
 	// which can be checked with 'is_open'

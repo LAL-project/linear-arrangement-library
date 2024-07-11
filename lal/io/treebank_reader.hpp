@@ -92,8 +92,8 @@ public:
 
 	/**
 	 * @brief Initializes the treebank reader
-	 * @param file Treebank file.
-	 * @param identifier Identifier string for the treebank.
+	 * @param treebank_filename Treebank file name.
+	 * @param treebank_id Identifier string for the treebank.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
 	 * - @ref lal::io::treebank_error_type::treebank_file_could_not_be_opened
@@ -101,7 +101,7 @@ public:
 	 * set to 0.
 	 */
 	treebank_error init
-	(const std::string& file, const std::string& identifier = "") noexcept;
+	(const std::string& treebank_filename, const std::string& treebank_id = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
 	bool end() const noexcept { return m_no_more_trees; }

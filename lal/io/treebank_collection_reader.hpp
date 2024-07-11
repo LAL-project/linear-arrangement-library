@@ -72,7 +72,7 @@ namespace io {
  *
  * An example of usage of this class is given in the following piece of code.
  * @code
- *		lal::io::treebank_collection tbcolreader;
+ *		lal::io::treebank_collection_reader tbcolreader;
  *		// it is advisable to check for errors
  *		auto err = tbcolreader.init(mainf)
  *		while (not tbcolreader.end()) {
@@ -129,8 +129,8 @@ private:
 	 */
 	std::string m_main_file = "none";
 
-	/// The name of the current treebank file.
-	std::string m_cur_treebank_name = "none";
+	/// The identifier of the current treebank file.
+	std::string m_cur_treebank_id = "none";
 	/// The name of the current treebank file.
 	std::string m_cur_treebank_filename = "none";
 
@@ -147,12 +147,12 @@ private:
 private:
 	/// Consumes one line of the main file @ref m_main_file.
 	void step_line() noexcept {
-		if (m_list >> m_cur_treebank_name >> m_cur_treebank_filename) {
+		if (m_list >> m_cur_treebank_id >> m_cur_treebank_filename) {
 			// do nothing, there are more trees
 		}
 		else {
 			m_no_more_treebanks = true;
-			m_cur_treebank_name = m_cur_treebank_filename = "!";
+			m_cur_treebank_id = m_cur_treebank_filename = "!";
 		}
 	}
 };
