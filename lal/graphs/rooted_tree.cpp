@@ -329,23 +329,19 @@ rooted_tree& rooted_tree::set_edges
 	directed_graph::set_edges(edges, to_norm, check_norm);
 
 	// find the tree's root
-	node R = get_num_nodes() + 1;
+	node root = get_num_nodes() + 1;
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		if (get_in_degree(u) == 0) {
 			// there can only be one root vertex
 #if defined DEBUG
-			assert(R > get_num_nodes());
+			assert(root > get_num_nodes());
 #endif
-			R = u;
+			root = u;
 		}
 	}
-	set_root(R);
+	set_root(root);
 
 	tree_only_set_edges();
-
-	// have been set:
-	//    m_is_tree_type_valid
-	m_are_size_subtrees_valid = false;
 
 	return *this;
 }
@@ -453,8 +449,7 @@ rooted_tree& rooted_tree::disjoint_union
 		m_are_size_subtrees_valid = false;
 	}
 
-	// the type of tree always needs to be recalculated
-	m_is_tree_type_valid = false;
+	tree_only_invalidate();
 
 #undef append
 

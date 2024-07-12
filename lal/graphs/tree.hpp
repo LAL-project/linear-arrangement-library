@@ -345,14 +345,14 @@ protected:
 			m_union_find__root_size[u] = 1;
 		}
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
-		m_is_tree_type_valid = false;
+		tree_only_invalidate();
 	}
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept {
 		m_union_find__root_of.clear();
 		m_union_find__root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
-		m_is_tree_type_valid = false;
+		tree_only_invalidate();
 	}
 
 	/// Copies only members of class @ref tree.
@@ -371,7 +371,7 @@ protected:
 		m_is_tree_type_valid = t.m_is_tree_type_valid;
 		m_tree_type = std::move(t.m_tree_type);
 
-		t.m_is_tree_type_valid = false;
+		t.tree_only_invalidate();
 	}
 
 	/**
@@ -383,6 +383,10 @@ protected:
 		const node new_node = m_union_find__root_of.size();
 		m_union_find__root_of.push_back(new_node);
 		m_union_find__root_size.push_back(1);
+		tree_only_invalidate();
+	}
+
+	void tree_only_invalidate() noexcept {
 		m_is_tree_type_valid = false;
 	}
 

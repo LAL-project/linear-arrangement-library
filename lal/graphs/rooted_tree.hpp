@@ -535,7 +535,7 @@ public:
 			m_root = r;
 		}
 		m_are_size_subtrees_valid = false;
-		m_is_tree_type_valid = false;
+		tree_only_invalidate();
 	}
 
 	/* GETTERS */
