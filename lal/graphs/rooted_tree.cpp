@@ -227,6 +227,11 @@ noexcept
 	assert(has_node(u));
 #endif
 
+	// the root is going to be removed
+	if (m_root.has_value() and *m_root == u) {
+		m_root.reset();
+	}
+
 	// !
 	// Recall that, due to the rules of construction, node u cannot have more
 	// than one parent.
@@ -247,7 +252,7 @@ noexcept
 	// structure, ...
 	directed_graph::remove_node(u, norm, check_norm);
 
-	// update root's label, if any
+	// update root's label, if it was not removed before
 	if (m_root.has_value()) {
 		if (m_root == u) {
 			// the root has been removed
