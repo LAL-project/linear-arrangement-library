@@ -386,6 +386,12 @@ protected:
 		tree_only_invalidate();
 	}
 
+	/**
+	 * @brief Invalidates the aggregated information of the tree.
+	 *
+	 * Invalidates:
+	 * - @ref m_is_tree_type_valid.
+	 */
 	void tree_only_invalidate() noexcept {
 		m_is_tree_type_valid = false;
 	}
