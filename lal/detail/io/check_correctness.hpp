@@ -102,7 +102,6 @@ is not a valid non-negative integer number."
  * The head vector may correspond to the contents of a line in a treebank file.
  * @tparam decide When true, return a value as soon as an error is found.
  * @param hv Input head vector.
- * @param line Line number of the treebank, if appropriate.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
@@ -215,7 +214,6 @@ noexcept
  * @brief Find errors in a line of a treebank.
  * @tparam decide When true, return a value as soon as an error is found.
  * @param current_line The line being analyzed.
- * @param line Line number of the treebank.
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
