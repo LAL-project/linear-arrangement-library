@@ -240,7 +240,7 @@ noexcept
 	std::vector<edge> new_edges;
 	if (connect and get_in_degree(u) == 1 and get_out_degree(u) > 0) {
 		new_edges.reserve(get_out_degree(u));
-		// parent of u exists
+		// parent and children of u exist
 		const node parent_u = get_in_neighbors(u)[0];
 		for (node v : get_out_neighbors(u)) {
 			new_edges.push_back({parent_u - (parent_u > u), v - (v > u)});
@@ -256,7 +256,7 @@ noexcept
 	if (m_root.has_value()) {
 		if (m_root == u) {
 			// the root has been removed
-			m_root = get_num_nodes();
+			m_root.reset();
 		}
 		else if (m_root > u) {
 			--*m_root;
@@ -267,7 +267,7 @@ noexcept
 	m_are_size_subtrees_valid = false;
 	m_size_subtrees.resize(get_num_nodes());
 
-	if (connect) {
+	if (connect and new_edges.size() > 0) {
 		add_edges(new_edges, norm, check_norm);
 	}
 
