@@ -54,7 +54,10 @@
 
 // lal includes
 #include <lal/basic_types.hpp>
-#include <lal/io/report_correctness.hpp>
+#include <lal/io/head_vector_error.hpp>
+#include <lal/io/treebank_file_error.hpp>
+#include <lal/io/treebank_file_report.hpp>
+#include <lal/io/treebank_collection_report.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/cycles.hpp>
 #include <lal/detail/graphs/conversions.hpp>
@@ -72,8 +75,8 @@ namespace detail {
 "Error: Value at position '" + std::to_string(i) + "' (value: '" + chunk + "') \
 is not a valid non-negative integer number."
 
-#define number_out_of_bounds(i) \
-"Error: Number at position '" + std::to_string(i) + "' (value: \
+#define head_out_of_bounds(i) \
+"Error: Head index at position '" + std::to_string(i) + "' (value: \
 " + std::to_string(hv[i]) + ") is out of bounds."
 
 #define wrong_num_roots(r) \
@@ -84,7 +87,7 @@ is not a valid non-negative integer number."
 	"'. Number of edges is '" + std::to_string(m) + "'; " + \
 	"should be '" + std::to_string(n-1) + "'."
 
-#define graph_has_cycles \
+#define graph_has_cycles_msg \
 "Error: The graph described is not a tree, i.e., it has cycles."
 
 #define isolated_vertex(u) \
@@ -103,11 +106,11 @@ is not a valid non-negative integer number."
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
-find_errors(const head_vector& hv, const std::size_t line)
+std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
+find_errors(const head_vector& hv)
 noexcept
 {
-	std::vector<io::report_treebank_file> treebank_err_list;
+	std::vector<io::head_vector_error> error_list;
 
 	// number of nodes of the graph
 	const uint64_t n = hv.size();
@@ -126,7 +129,10 @@ noexcept
 		if (hv[i] > hv.size()) {
 			if constexpr (decide) { return true; }
 			else {
-				treebank_err_list.emplace_back(line, number_out_of_bounds(i));
+				error_list.emplace_back(
+					head_out_of_bounds(i),
+					io::head_vector_error_type::head_out_bounds
+				);
 				can_make_graph = false;
 			}
 		}
@@ -134,7 +140,10 @@ noexcept
 		else if (hv[i] == i + 1) {
 			if constexpr (decide) { return true; }
 			else {
-				treebank_err_list.emplace_back(line, self_loop(i + 1));
+				error_list.emplace_back(
+					self_loop(i + 1),
+					io::head_vector_error_type::self_loop
+				);
 				can_make_graph = false;
 			}
 		}
@@ -144,7 +153,10 @@ noexcept
 	if (n_roots != 1) {
 		if constexpr (decide) { return true; }
 		else {
-			treebank_err_list.emplace_back(line, wrong_num_roots(n_roots));
+			error_list.emplace_back(
+				wrong_num_roots(n_roots),
+				io::head_vector_error_type::wrong_number_of_roots
+			);
 		}
 	}
 
@@ -152,7 +164,7 @@ noexcept
 		// ignore singleton graphs
 		if (n == 1) {
 			if constexpr (decide) { return false; }
-			else { return treebank_err_list; }
+			else { return error_list; }
 		}
 
 		// make a directed graph with the values
@@ -162,7 +174,10 @@ noexcept
 		if (has_cycles) {
 			if constexpr (decide) { return true; }
 			else {
-				treebank_err_list.emplace_back(line, graph_has_cycles);
+				error_list.emplace_back(
+					graph_has_cycles_msg,
+					io::head_vector_error_type::graph_has_cycles
+				);
 			}
 		}
 		}
@@ -172,7 +187,10 @@ noexcept
 			if (dgraph.get_degree(u) == 0) {
 				if constexpr (decide) { return true; }
 				else {
-					treebank_err_list.emplace_back(line, isolated_vertex(u));
+					error_list.emplace_back(
+						isolated_vertex(u),
+						io::head_vector_error_type::isolated_vertex
+					);
 				}
 			}
 		}
@@ -181,14 +199,16 @@ noexcept
 		if (dgraph.get_num_edges() != dgraph.get_num_nodes() - 1) {
 			if constexpr (decide) { return true; }
 			else {
-				treebank_err_list.emplace_back
-				(line, wrong_num_edges(dgraph.get_num_nodes(), dgraph.get_num_edges()));
+				error_list.emplace_back(
+					wrong_num_edges(dgraph.get_num_nodes(), dgraph.get_num_edges()),
+					io::head_vector_error_type::wrong_number_of_edges
+				);
 			}
 		}
 	}
 
 	if constexpr (decide) { return false; }
-	else { return treebank_err_list;}
+	else { return error_list;}
 }
 
 /**
@@ -199,11 +219,11 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
-find_errors(const std::string& current_line, const std::size_t line)
+std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
+find_errors(const std::string& current_line)
 noexcept
 {
-	std::vector<io::report_treebank_file> treebank_err_list;
+	std::vector<io::head_vector_error> error_list;
 
 	bool non_numeric_characters = false;
 	head_vector hv;
@@ -217,12 +237,15 @@ noexcept
 
 		uint64_t value;
 		const auto result = std::from_chars
-		(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
+			(&chunk[0], (&chunk[chunk.size() - 1]) + 1, value);
 
 		if (result.ec == std::errc::invalid_argument) {
 			if constexpr (decide) { return true; }
 			else {
-				treebank_err_list.emplace_back(line, invalid_integer(i, chunk));
+				error_list.emplace_back(
+					invalid_integer(i, chunk),
+					io::head_vector_error_type::invalid_integer
+				);
 				non_numeric_characters = true;
 			}
 		}
@@ -238,14 +261,14 @@ noexcept
 	// error messages have been stored, and so we can skip to the next line
 	if (non_numeric_characters) {
 		if constexpr (decide) { return true; }
-		else { return treebank_err_list; }
+		else { return error_list; }
 	}
 
 	// if the program reaches this point, the vector 'treebank_err_list' is empty.
 #if defined DEBUG
-	assert(treebank_err_list.size() == 0);
+	assert(error_list.size() == 0);
 #endif
-	return find_errors<decide>(hv, line);
+	return find_errors<decide>(hv);
 }
 
 /**
@@ -255,22 +278,34 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::report_treebank_file>>
+std::conditional_t<decide, bool, io::treebank_file_report>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
 {
 	if (not std::filesystem::exists(treebank_filename)) {
 		if constexpr (decide) { return true; }
-		else { return {{0, file_does_not_exist(treebank_filename)}}; }
+		else {
+			return io::treebank_file_report({
+				file_does_not_exist(treebank_filename),
+				io::treebank_file_error_type::treebank_file_does_not_exist
+			});
+		}
 	}
 
 	std::ifstream fin(treebank_filename);
 	if (not fin.is_open()) {
 		if constexpr (decide) { return true; }
-		else { return {{0, file_could_not_be_opened(treebank_filename)}}; }
+		else {
+			return io::treebank_file_report({
+				file_could_not_be_opened(treebank_filename),
+				io::treebank_file_error_type::treebank_result_file_could_not_be_opened
+			});
+		}
 	}
 
-	std::vector<io::report_treebank_file> treebank_err_list;
+	io::treebank_file_report report;
+	report.set_treebank_error({"", io::treebank_file_error_type::no_error});
+
 	std::string current_line;
 
 	std::size_t line = 1;
@@ -279,16 +314,16 @@ noexcept
 			// do nothing
 		}
 		else {
-			const auto r = find_errors<decide>(current_line, line);
+			auto r = find_errors<decide>(current_line);
 			if constexpr (decide) {
 				// if there are errors, return
 				if (r) { return true; }
 			}
 			else {
 				// append errors to the list
-				treebank_err_list.insert(
-					treebank_err_list.end(), r.begin(), r.end()
-				);
+				for (io::head_vector_error& err : r) {
+					report.add_error(line, std::move(err));
+				}
 			}
 		}
 
@@ -296,7 +331,7 @@ noexcept
 	}
 
 	if constexpr (decide) { return false; }
-	else { return treebank_err_list; }
+	else { return report; }
 }
 
 /**
@@ -307,22 +342,33 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::report_treebank_collection>>
+std::conditional_t<decide, bool, io::treebank_collection_report>
 check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)
 noexcept
 {
 	if (not std::filesystem::exists(main_file_name)) {
 		if constexpr (decide) { return true; }
-		else { return {{"-", 0, 0, file_does_not_exist(main_file_name)}}; }
+		else {
+			return io::treebank_collection_report({
+				file_does_not_exist(main_file_name),
+				io::treebank_file_error_type::main_file_does_not_exist
+			});
+		}
 	}
 	std::ifstream fin_main_file(main_file_name);
 	if (not fin_main_file.is_open()) {
 		if constexpr (decide) { return true; }
-		else { return {{"-", 0, 0, file_could_not_be_opened(main_file_name)}}; }
+		else {
+			return io::treebank_collection_report({
+				file_could_not_be_opened(main_file_name),
+				io::treebank_file_error_type::main_file_could_not_be_opened
+			});
+		}
 	}
 
-	std::vector<io::report_treebank_collection> dataset_err_list;
+	io::treebank_collection_report report;
+	report.set_treebank_error({"", io::treebank_file_error_type::no_error});
 	char errors_found = 0;
 
 	#pragma omp parallel num_threads(n_threads) shared(errors_found)
@@ -346,11 +392,11 @@ noexcept
 		if (errors_found == 0) {
 			
 			// check correctess of treebank
-			const auto r =
-				check_correctness_treebank<decide>(full_path_as_string);
+			auto r = check_correctness_treebank<decide>(full_path_as_string);
 
 			if constexpr (decide) {
 				if (r) {
+					#pragma omp critical
 					errors_found = 1;
 				}
 			}
@@ -359,33 +405,12 @@ noexcept
 				// the list of errors of this dataset
 				#pragma omp critical
 				{
-				for (const auto& report_treebank : r) {
-					if (report_treebank.get_line_number() > 0) {
-						dataset_err_list.emplace_back(
-							full_path_as_string,
-							main_file_line,
-							report_treebank.get_line_number(),
-							report_treebank.get_error_message()
-						);
-					}
-					else {
-						const auto& err_msg = report_treebank.get_error_message();
-						std::string new_err_msg;
-						if (err_msg.find("exist") != std::string::npos) {
-							new_err_msg = "Treebank file does not exist";
-						}
-						else if (err_msg.find("opened") != std::string::npos) {
-							new_err_msg = "Treebank file could not be opened";
-						}
-
-						dataset_err_list.emplace_back(
-							full_path_as_string,
-							main_file_line,
-							report_treebank.get_line_number(),
-							new_err_msg
-						);
-					}
-				}
+					report.add_report(
+						main_file_line,
+						std::move(treebankname),
+						std::move(id),
+						std::move(r)
+					);
 				}
 			}
 		}
@@ -399,7 +424,7 @@ noexcept
 	if constexpr (decide) {
 		return (errors_found == 0 ? false : true);
 	}
-	else { return dataset_err_list; }
+	else { return report; }
 }
 
 } // -- namespace detail

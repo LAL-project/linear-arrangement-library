@@ -48,7 +48,7 @@
 // lal includes
 #include <lal/basic_types.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/io/treebank_error.hpp>
+#include <lal/io/treebank_file_error.hpp>
 
 namespace lal {
 namespace io {
@@ -96,11 +96,11 @@ public:
 	 * @param treebank_id Identifier string for the treebank.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error_type::treebank_file_could_not_be_opened
+	 * - @ref lal::io::treebank_file_error_type::treebank_file_could_not_be_opened
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
-	treebank_error init
+	treebank_file_error init
 	(const std::string& treebank_filename, const std::string& treebank_id = "") noexcept;
 
 	/// Returns whether there is another tree to be processed.
@@ -142,7 +142,7 @@ public:
 	 * @brief Can the treebank be read?
 	 *
 	 * If the @ref init method returned an error different from
-	 * @ref lal::io::treebank_error_type::no_error then this returns false.
+	 * @ref lal::io::treebank_file_error_type::no_error then this returns false.
 	 * @return Whether the treebank is readable or not.
 	 */
 	bool is_open() const noexcept { return m_treebank.is_open(); }

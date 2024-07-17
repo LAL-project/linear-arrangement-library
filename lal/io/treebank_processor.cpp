@@ -190,7 +190,7 @@ noexcept
 // -----------------------------------------------------------------------------
 // CLASS METHODS
 
-treebank_error treebank_processor::init
+treebank_file_error treebank_processor::init
 (
 	const std::string& treebank_file,
 	const std::string& output_file,
@@ -211,22 +211,22 @@ noexcept
 
 	// make sure that the treebank file exists
 	if (not std::filesystem::exists(m_treebank_filename)) {
-		return treebank_error(
+		return treebank_file_error(
 			"Treebank file '" + m_treebank_filename + "' does not exist.",
-			treebank_error_type::treebank_file_does_not_exist
+			treebank_file_error_type::treebank_file_does_not_exist
 		);
 	}
-	return treebank_error("", treebank_error_type::no_error);
+	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
-treebank_error treebank_processor::process() noexcept {
+treebank_file_error treebank_processor::process() noexcept {
 	if (m_check_before_process) {
 		const bool err = detail::check_correctness_treebank<true>(m_treebank_filename);
 
 		if (err) {
-			return treebank_error(
+			return treebank_file_error(
 				"The treebank '" + m_treebank_filename + "' contains errors.",
-				treebank_error_type::malformed_treebank_file
+				treebank_file_error_type::malformed_treebank_file
 			);
 		}
 	}
@@ -234,9 +234,9 @@ treebank_error treebank_processor::process() noexcept {
 	// check that there is something to be computed
 	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
 	{
-		return treebank_error(
+		return treebank_file_error(
 			"No features to be computed. Nothing to do.",
-			treebank_error_type::no_features
+			treebank_file_error_type::no_features
 		);
 	}
 
@@ -244,9 +244,9 @@ treebank_error treebank_processor::process() noexcept {
 	// since the output directory exists there is no need to check for is_open()
 	std::ofstream out_treebank_file(m_output_file);
 	if (not out_treebank_file.is_open()) {
-		return treebank_error(
+		return treebank_file_error(
 			"Output file '" + m_output_file + "' could not be opened.",
-			treebank_error_type::output_file_could_not_be_opened
+			treebank_file_error_type::output_file_could_not_be_opened
 		);
 	}
 
@@ -255,7 +255,7 @@ treebank_error treebank_processor::process() noexcept {
 	treebank_reader tbread;
 	{
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
-	if (err != treebank_error_type::no_error) {
+	if (err != treebank_file_error_type::no_error) {
 		if (m_be_verbose >= 2) {
 
 			#pragma omp critical
@@ -398,7 +398,7 @@ treebank_error treebank_processor::process() noexcept {
 			<< '\n';
 	}
 
-	return treebank_error("", treebank_error_type::no_error);
+	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
 // PRIVATE

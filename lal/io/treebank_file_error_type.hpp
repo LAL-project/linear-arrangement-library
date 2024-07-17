@@ -41,13 +41,6 @@
 
 #pragma once
 
-// C++ includes
-#if defined SWIG
-#include <string>
-#else
-#include <string_view>
-#endif
-
 namespace lal {
 namespace io {
 
@@ -58,7 +51,7 @@ namespace io {
  * could not be processed. Because of this, certain methods return one of these
  * values instead of a plain 'false' value.
  */
-enum class treebank_error_type {
+enum class treebank_file_error_type {
 	/**
 	 * @brief No error occurred.
 	 *
@@ -179,44 +172,6 @@ enum class treebank_error_type {
 	 */
 	malformed_treebank_collection,
 };
-
-inline
-#if defined SWIG
-std::string
-#else
-std::string_view
-#endif
-treebank_error_type_to_string(const treebank_error_type& err) noexcept {
-	switch (err) {
-	case treebank_error_type::no_error:
-		return "No error";
-	case treebank_error_type::no_features:
-		return "No features";
-	case treebank_error_type::treebank_file_does_not_exist:
-		return "Treebank file does not exist";
-	case treebank_error_type::treebank_file_could_not_be_opened:
-		return "Treebank file could not be opened";
-	case treebank_error_type::output_file_could_not_be_opened:
-		return "Output file could not be opened";
-	case treebank_error_type::malformed_treebank_file:
-		return "Malformed treebank file";
-	case treebank_error_type::main_file_does_not_exist:
-		return "Main file does not exist";
-	case treebank_error_type::main_file_could_not_be_opened:
-		return "Main file could not be opened";
-	case treebank_error_type::output_directory_could_not_be_created:
-		return "Output directory could not be opened";
-	case treebank_error_type::output_join_file_could_not_be_opened:
-		return "Output join file could not be opened";
-	case treebank_error_type::treebank_result_file_could_not_be_opened:
-		return "Treebank result file could not be opened";
-	case treebank_error_type::some_treebank_file_failed:
-		return "Some freebank failed";
-	case treebank_error_type::malformed_treebank_collection:
-		return "Malformed freebank collection";
-	}
-	return "";
-}
 
 } // -- namespace io
 } // -- namespace lal

@@ -303,14 +303,17 @@ target_sources(
 		io/basic_output.hpp
 		io/check_correctness.hpp
 		io/edge_list.hpp
+		io/head_vector_error_type.hpp
+		io/head_vector_error.hpp
 		io/head_vector.hpp
-		io/process_treebank_base.hpp
-		io/report_correctness.hpp
 		io/treebank_collection_processor.hpp
 		io/treebank_collection_reader.hpp
-		io/treebank_error.hpp
-		io/treebank_error_type.hpp
+		io/treebank_collection_report.hpp
 		io/treebank_feature.hpp
+		io/treebank_file_error_type.hpp
+		io/treebank_file_error.hpp
+		io/treebank_file_report.hpp
+		io/treebank_processor_base.hpp
 		io/treebank_processor.hpp
 		io/treebank_reader.hpp
 		# -- sources
@@ -500,14 +503,17 @@ set(LIBLAL_IO_HEADER
 	io/basic_output.hpp
 	io/check_correctness.hpp
 	io/edge_list.hpp
+	io/head_vector_error_type.hpp
+	io/head_vector_error.hpp
 	io/head_vector.hpp
-	io/process_treebank_base.hpp
-	io/report_correctness.hpp
 	io/treebank_collection_processor.hpp
 	io/treebank_collection_reader.hpp
-	io/treebank_error.hpp
-	io/treebank_error_type.hpp
+	io/treebank_collection_report.hpp
 	io/treebank_feature.hpp
+	io/treebank_file_error_type.hpp
+	io/treebank_file_error.hpp
+	io/treebank_file_report.hpp
+	io/treebank_processor_base.hpp
 	io/treebank_processor.hpp
 	io/treebank_reader.hpp
 )

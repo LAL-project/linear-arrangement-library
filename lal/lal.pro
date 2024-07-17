@@ -203,13 +203,16 @@ HEADERS += \
 	io.hpp \
 	io/basic_output.hpp \
 	io/head_vector.hpp \
-	io/process_treebank_base.hpp \
-	io/report_correctness.hpp \
+	io/head_vector_error.hpp \
+	io/head_vector_error_type.hpp \
 	io/treebank_collection_processor.hpp \
 	io/treebank_collection_reader.hpp \
-	io/treebank_error.hpp \
-	io/treebank_error_type.hpp \
+	io/treebank_collection_report.hpp \
+	io/treebank_file_error.hpp \
+	io/treebank_file_error_type.hpp \
+	io/treebank_file_report.hpp \
 	io/treebank_processor.hpp \
+	io/treebank_processor_base.hpp \
 	io/treebank_reader.hpp \
 	io/treebank_feature.hpp \
 	iterators.hpp \

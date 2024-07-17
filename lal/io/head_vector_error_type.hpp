@@ -39,63 +39,38 @@
  *
  ********************************************************************/
 
-#include <lal/io/treebank_collection_reader.hpp>
-
-// C++ includes
-#include <filesystem>
+#pragma once
 
 namespace lal {
 namespace io {
 
-treebank_file_error treebank_collection_reader::init(const std::string& main_file)
-noexcept
-{
-	// close current dataset (if any)
-	m_list.close();
-	m_reached_end = false;
-	m_no_more_treebanks = false;
-
-	m_main_file = main_file;
-	if (not std::filesystem::exists(m_main_file)) {
-		return treebank_file_error(
-			"Treebank collection main file '" + m_main_file + "' does not exist.",
-			treebank_file_error_type::main_file_does_not_exist
-		);
-	}
-
-	// open new dataset and read the first line
-	m_list.open(m_main_file);
-	if (not m_list.is_open()) {
-		return treebank_file_error(
-			"Treebank collection main file '" + m_main_file + "' could not be opened.",
-			treebank_file_error_type::main_file_could_not_be_opened
-		);
-	}
-
-	step_line();
-	next_treebank();
-
-	return treebank_file_error("", treebank_file_error_type::no_error);
-}
-
-void treebank_collection_reader::next_treebank() noexcept {
-	if (m_no_more_treebanks) {
-		m_reached_end = true;
-		return;
-	}
-
-	// build path to treebank file
-	std::filesystem::path M(m_main_file);
-	M.replace_filename(m_cur_treebank_filename);
-
-	// this call
-	m_treebank_reader.init(M.string(), m_cur_treebank_id);
-	// can only return
-	//     lal::io::treebank_error::treebank_file_could_not_be_opened
-	// which can be checked with 'is_open'
-
-	step_line();
-}
+/**
+ * @brief The different types of errors that can be present in a head vector.
+ */
+enum class head_vector_error_type {
+	/**
+	 * @brief The current head index is not a valid non-integer integer number.
+	 * It could be a letter, a negative number, ...
+	 */
+	invalid_integer,
+	/**
+	 * @brief The current head index is a valid non-negative integer value, but
+	 * points outside the head vector.
+	 */
+	head_out_bounds,
+	/// The head vector contains too many roots.
+	wrong_number_of_roots,
+	/// The graph does not contain enough edges to be a tree.
+	wrong_number_of_edges,
+	/// The graph contains an undirected cycle, that is, the graph is not a tree.
+	graph_has_cycles,
+	/// There are isolated vertices in the graph.
+	isolated_vertex,
+	/**
+	 * @brief The current head index points to itself.
+	 */
+	self_loop
+};
 
 } // -- namespace io
 } // -- namespace lal

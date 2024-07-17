@@ -52,7 +52,7 @@ namespace io {
 
 // MODIFIERS
 
-treebank_error treebank_reader::init
+treebank_file_error treebank_reader::init
 (const std::string& treebank_filename, const std::string& treebank_id)
 noexcept
 {
@@ -64,14 +64,14 @@ noexcept
 
 	m_treebank.open(m_treebank_file.c_str());
 	if (not m_treebank.is_open()) {
-		return treebank_error(
+		return treebank_file_error(
 			"Treebank file '" + m_treebank_file + "' could not be opened.",
-			treebank_error_type::treebank_file_could_not_be_opened
+			treebank_file_error_type::treebank_file_could_not_be_opened
 		);
 	}
 
 	next_tree();
-	return treebank_error("", treebank_error_type::no_error);
+	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
 void treebank_reader::next_tree() noexcept {

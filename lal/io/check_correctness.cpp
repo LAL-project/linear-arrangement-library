@@ -43,52 +43,38 @@
 #include <vector>
 
 // lal includes
-#include <lal/io/report_correctness.hpp>
+#include <lal/io/treebank_file_report.hpp>
 #include <lal/detail/io/check_correctness.hpp>
 
 namespace lal {
 namespace io {
 
-std::vector<std::string>
+std::vector<head_vector_error>
 check_correctness_head_vector(const head_vector& head_vector)
 noexcept
 {
-	auto errors = detail::find_errors<false>(head_vector, 0);
-
-	std::vector<std::string> msgs(errors.size());
-	for (std::size_t i = 0; i < errors.size(); ++i) {
-		msgs[i] = std::move(errors[i].get_error_message());
-	}
-	return msgs;
+	return detail::find_errors<false>(head_vector);
 }
 
-std::vector<std::string>
+std::vector<head_vector_error>
 check_correctness_head_vector(const std::string& head_vector_str)
 noexcept
 {
-	auto errors = detail::find_errors<false>(head_vector_str, 0);
-
-	std::vector<std::string> msgs(errors.size());
-	for (std::size_t i = 0; i < errors.size(); ++i) {
-		msgs[i] = std::move(errors[i].get_error_message());
-	}
-	return msgs;
+	return detail::find_errors<false>(head_vector_str);
 }
 
-std::vector<report_treebank_file>
+treebank_file_report
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
 {
-	return detail::check_correctness_treebank<false>
-			(treebank_filename);
+	return detail::check_correctness_treebank<false>(treebank_filename);
 }
 
-std::vector<report_treebank_collection> check_correctness_treebank_collection
+treebank_collection_report check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)
 noexcept
 {
-	return detail::check_correctness_treebank_collection<false>
-			(main_file_name, n_threads);
+	return detail::check_correctness_treebank_collection<false>(main_file_name, n_threads);
 }
 
 } // -- namespace io

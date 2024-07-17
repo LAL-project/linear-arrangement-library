@@ -53,12 +53,18 @@
 #include <lal/io/head_vector.hpp>
 
 // check correctness of treebanks
-#include <lal/io/report_correctness.hpp>
+#include <lal/io/head_vector_error_type.hpp>
+#include <lal/io/head_vector_error.hpp>
+
+#include <lal/io/treebank_file_error_type.hpp>
+#include <lal/io/treebank_file_error.hpp>
+
+#include <lal/io/treebank_collection_report.hpp>
+#include <lal/io/treebank_file_report.hpp>
+
 #include <lal/io/check_correctness.hpp>
 
 // process treebanks
-#include <lal/io/treebank_error_type.hpp>
-#include <lal/io/treebank_error.hpp>
 #include <lal/io/treebank_feature.hpp>
 
 #include <lal/io/treebank_reader.hpp>

@@ -46,7 +46,9 @@
 #include <vector>
 
 // lal includes
-#include <lal/io/report_correctness.hpp>
+#include <lal/io/head_vector_error.hpp>
+#include <lal/io/treebank_file_report.hpp>
+#include <lal/io/treebank_collection_report.hpp>
 #include <lal/basic_types.hpp>
 
 namespace lal {
@@ -57,7 +59,7 @@ namespace io {
  * @param head_vector A head vector.
  * @returns A list of error messages.
  */
-std::vector<std::string>
+std::vector<head_vector_error>
 check_correctness_head_vector(const head_vector& head_vector)
 noexcept;
 
@@ -68,7 +70,7 @@ noexcept;
  * @param head_vector_str A string containing a head vector.
  * @returns A list of error messages.
  */
-std::vector<std::string>
+std::vector<head_vector_error>
 check_correctness_head_vector(const std::string& head_vector_str)
 noexcept;
 
@@ -77,7 +79,7 @@ noexcept;
  * @param treebank_filename Name of the treebank file.
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_file.
  */
-std::vector<report_treebank_file>
+treebank_file_report
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept;
 
@@ -87,8 +89,9 @@ noexcept;
  * @param n_threads Number of threads to use.
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_collection.
  */
-std::vector<report_treebank_collection>
-check_correctness_treebank_collection(const std::string& main_file_name, std::size_t n_threads = 1)
+treebank_collection_report
+check_correctness_treebank_collection
+(const std::string& main_file_name, std::size_t n_threads = 1)
 noexcept;
 
 } // -- namespace io

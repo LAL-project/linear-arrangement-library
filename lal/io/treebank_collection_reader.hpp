@@ -45,7 +45,7 @@
 #include <string>
 
 // lal includes
-#include <lal/io/treebank_error.hpp>
+#include <lal/io/treebank_file_error.hpp>
 #include <lal/io/treebank_reader.hpp>
 
 namespace lal {
@@ -99,10 +99,10 @@ public:
 	 * @param main_file Main file of the collection.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
-	 * - @ref lal::io::treebank_error_type::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_file_error_type::main_file_does_not_exist
+	 * - @ref lal::io::treebank_file_error_type::main_file_could_not_be_opened
 	 */
-	treebank_error init(const std::string& main_file) noexcept;
+	treebank_file_error init(const std::string& main_file) noexcept;
 
 	/// Returns true or false depending on whether there is a next treebank
 	/// to be read.

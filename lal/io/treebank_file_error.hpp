@@ -45,77 +45,97 @@
 #include <string>
 
 // lal includes
-#include <lal/io/treebank_error_type.hpp>
+#include <lal/io/treebank_file_error_type.hpp>
 
 namespace lal {
 namespace io {
 
 /**
- * @brief Treebank error report class.
+ * @brief Treebank file error report class.
  *
  * This class is used only to be able to display errors arising in treebank
  * processing more clearly.
  *
- * Use method @ref get_error_message to retrieve an error message.
+ * Use method @ref get_error_message to retrieve the error message.
  *
  * Method @ref get_error_type returns a value from the enumeration
- * @ref lal::io::treebank_error_type.
+ * @ref lal::io::treebank_file_error_type.
  */
-class treebank_error {
+class treebank_file_error {
 public:
+	/// Default constructor
+	treebank_file_error() noexcept = default;
+
 	/// Constructor with error message and error type.
-	treebank_error(const std::string& msg, const treebank_error_type& tet) noexcept
-		: m_error_msg(msg), m_error_type(tet)
+	treebank_file_error
+	(const std::string& msg, const treebank_file_error_type& tet)
+	noexcept
+		:
+		m_error_msg(msg),
+		m_error_type(tet)
 	{ }
 
-	/// 
-	~treebank_error() = default;
+	/// Destructor
+	~treebank_file_error() = default;
 
 	/// Copy constructor.
-	treebank_error(const treebank_error& te) noexcept
-		: m_error_msg(te.m_error_msg), m_error_type(te.m_error_type)
+	treebank_file_error(const treebank_file_error& te) noexcept :
+		m_error_msg(te.m_error_msg),
+		m_error_type(te.m_error_type)
 	{ }
 
 	/// Move constructor.
-	treebank_error(treebank_error&& te) noexcept
-		: m_error_msg(std::move(te.m_error_msg)),
-		  m_error_type(te.m_error_type)
+	treebank_file_error(treebank_file_error&& te) noexcept :
+		m_error_msg(std::move(te.m_error_msg)),
+		m_error_type(te.m_error_type)
 	{ }
 
+	/* ASSIGNMENT OPERATOR */
+
 	/// Copy assignment operator.
-	treebank_error& operator= (const treebank_error& te) noexcept {
+	treebank_file_error& operator= (const treebank_file_error& te)
+	noexcept
+	{
 		m_error_msg = te.m_error_msg;
 		m_error_type = te.m_error_type;
 		return *this;
 	}
 
 	/// Move assignment operator.
-	treebank_error& operator= (treebank_error&& te) noexcept {
+	treebank_file_error& operator= (treebank_file_error&& te) noexcept {
 		m_error_msg = std::move(te.m_error_msg);
 		m_error_type = te.m_error_type;
 		return *this;
 	}
 
-	/// Compares a treebank error with a treebank error type.
-	bool operator== (const treebank_error_type& tet) const noexcept
+	/* COMPARISON OPERATOR */
+
+	/// Compares the treebank error with a treebank error type.
+	bool operator== (const treebank_file_error_type& tet) const noexcept
 	{ return m_error_type == tet; }
-	/// Compares a treebank error with a treebank error type.
-	bool operator!= (const treebank_error_type& tet) const noexcept
+	/// Compares the treebank error with a treebank error type.
+	bool operator!= (const treebank_file_error_type& tet) const noexcept
 	{ return m_error_type != tet; }
 
-	/// Retrieve the error message.
+	/* GETTERS */
+
+	/// Returns the error message.
 	const std::string& get_error_message() const noexcept
 	{ return m_error_msg; }
 
-	/// Retrieve the error type.
-	treebank_error_type get_error_type() const noexcept
+	/// Returns the error type.
+	treebank_file_error_type get_error_type() const noexcept
 	{ return m_error_type; }
+
+	/// Returns whether or not this is an actual error.
+	bool is_error() const noexcept
+	{ return m_error_type != treebank_file_error_type::no_error; }
 
 private:
 	/// Error message
 	std::string m_error_msg;
 	/// Error type.
-	treebank_error_type m_error_type;
+	treebank_file_error_type m_error_type;
 };
 
 } // -- namespace io

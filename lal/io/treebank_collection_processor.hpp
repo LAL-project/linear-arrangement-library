@@ -50,8 +50,8 @@
 #include <tuple>
 
 // lal includes
-#include <lal/io/treebank_error.hpp>
-#include <lal/io/process_treebank_base.hpp>
+#include <lal/io/treebank_file_error.hpp>
+#include <lal/io/treebank_processor_base.hpp>
 
 namespace lal {
 namespace io {
@@ -106,7 +106,7 @@ namespace io {
  *		// it is advisable to check for errors
  * @endcode
  */
-class treebank_collection_processor : public _process_treebank_base {
+class treebank_collection_processor : public _treebank_processor_base {
 public:
 	// SETTERS
 
@@ -126,16 +126,22 @@ public:
 
 	// GETTERS
 
-	/// Returns the number of errors that arised during processing.
+	/**
+	 * @brief Returns the number of errors that arised during processing.
+	 * @pre Can only be checked when @ref process returns
+	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
+	 */
 	std::size_t get_num_errors() const noexcept
 	{ return m_errors_from_processing.size(); }
 
 	/**
 	 * @brief Get the @e ith error.
 	 * @param i The index of the error, an unsigned integer.
-	 * @returns A value of the enumeration @ref lal::io::treebank_error.
+	 * @returns A value of the enumeration @ref lal::io::treebank_file_error.
+	 * @pre Can only be checked when @ref process returns
+	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	const treebank_error& get_error_type(std::size_t i) const noexcept
+	const treebank_file_error& get_error_type(std::size_t i) const noexcept
 	{ return std::get<0>(m_errors_from_processing[i]); }
 
 	/**
@@ -143,6 +149,8 @@ public:
 	 * @param i The index of the error, an unsigned integer.
 	 * @returns The name of the treebank file where the @e i-th error happened
 	 * as a string.
+	 * @pre Can only be checked when @ref process returns
+	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
 	const std::string& get_error_treebank_filename(std::size_t i) const noexcept
 	{ return std::get<1>(m_errors_from_processing[i]); }
@@ -152,6 +160,8 @@ public:
 	 * @param i The index of the error, an unsigned integer.
 	 * @returns The name of the treebank where the @e i-th error happened
 	 * as a string.
+	 * @pre Can only be checked when @ref process returns
+	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
 	const std::string& get_error_treebank_name(std::size_t i) const noexcept
 	{ return std::get<2>(m_errors_from_processing[i]); }
@@ -182,10 +192,10 @@ public:
 	 * @param output_directory Directory where the result files are to be stored.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error_type::main_file_does_not_exist
-	 * - @ref lal::io::treebank_error_type::output_directory_could_not_be_created
+	 * - @ref lal::io::treebank_file_error_type::main_file_does_not_exist
+	 * - @ref lal::io::treebank_file_error_type::output_directory_could_not_be_created
 	 */
-	treebank_error init
+	treebank_file_error init
 	(const std::string& main_file, const std::string& output_directory)
 	noexcept;
 
@@ -194,7 +204,7 @@ public:
 	 *
 	 * This method produces the information as explained in this class'
 	 * description. However, it may fail to do so. In this case it will return
-	 * a value different from @ref lal::io::treebank_error_type::no_error.
+	 * a value different from @ref lal::io::treebank_file_error_type::no_error.
 	 *
 	 * This function uses attributes @ref m_separator, @ref m_output_header to
 	 * format the output data. It also outputs the current progress if
@@ -205,24 +215,24 @@ public:
 	 * @ref get_error_treebank_name.
 	 * @returns The type of the error, if any. The list of errors that this
 	 * method can return is:
-	 * - @ref lal::io::treebank_error_type::no_features
-	 * - @ref lal::io::treebank_error_type::main_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error_type::some_treebank_file_failed
-	 * - @ref lal::io::treebank_error_type::output_join_file_could_not_be_opened
-	 * - @ref lal::io::treebank_error_type::treebank_result_file_could_not_be_opened
+	 * - @ref lal::io::treebank_file_error_type::no_features
+	 * - @ref lal::io::treebank_file_error_type::main_file_could_not_be_opened
+	 * - @ref lal::io::treebank_file_error_type::some_treebank_file_failed
+	 * - @ref lal::io::treebank_file_error_type::output_join_file_could_not_be_opened
+	 * - @ref lal::io::treebank_file_error_type::treebank_result_file_could_not_be_opened
 	 *
 	 * See methods @ref get_num_errors, @ref get_error_treebank_filename,
 	 * @ref get_error_treebank_name to know how to retrieve these errors.
 	 * @pre Initialisation did not return any errors.
 	 */
-	treebank_error process() noexcept;
+	treebank_file_error process() noexcept;
 
 private:
 	/**
 	 * @brief Joins all resulting files into a single file
 	 * @returns An error code, if any.
 	 */
-	treebank_error join_all_files() const noexcept;
+	treebank_file_error join_all_files() const noexcept;
 
 private:
 	/// The list of names of the treebanks.
@@ -238,8 +248,18 @@ private:
 	/// The name of the column in the join file
 	std::string m_column_join_name = "";
 
-	/// Set of errors resulting from processing the treebank collection.
-	std::vector<std::tuple<treebank_error, std::string, std::string>>
+	/**
+	 * @brief Set of errors resulting from processing the treebank collection.
+	 *
+	 * - First value: an instance of @ref lal::io::treebank_file_error.
+	 * - Second value: full path to the treebank file.
+	 * - Third value: id of the treebank where this happened (retrieved from the
+	 * main file).
+	 *
+	 * Errors are pushed to this member only when processing could actually be
+	 * initiated.
+	 */
+	std::vector<std::tuple<treebank_file_error, std::string, std::string>>
 	m_errors_from_processing;
 
 	/// Output directory.
@@ -264,7 +284,7 @@ private:
  * @returns A treebank error (see @ref lal::io::treebank_error) if any.
  */
 inline
-treebank_error process_treebank_collection(
+treebank_file_error process_treebank_collection(
 	const std::string& treebank_collection_main_file,
 	const std::string& output_directory,
 	std::size_t num_threads = 1
@@ -274,7 +294,7 @@ noexcept
 	treebank_collection_processor tbcolproc;
 	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
 	tbcolproc.set_number_threads(num_threads);
-	if (err != treebank_error_type::no_error) {
+	if (err != treebank_file_error_type::no_error) {
 		return err;
 	}
 	return tbcolproc.process();
