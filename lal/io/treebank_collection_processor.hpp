@@ -293,10 +293,8 @@ noexcept
 {
 	treebank_collection_processor tbcolproc;
 	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
+	if (not err.is_error()) { return err; }
 	tbcolproc.set_number_threads(num_threads);
-	if (err != treebank_file_error_type::no_error) {
-		return err;
-	}
 	return tbcolproc.process();
 }
 

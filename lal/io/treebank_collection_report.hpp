@@ -48,57 +48,10 @@
 // lal includes
 #include <lal/io/treebank_file_report.hpp>
 #include <lal/io/treebank_file_error.hpp>
+#include <lal/io/treebank_collection_report_location.hpp>
 
 namespace lal {
 namespace io {
-
-/// An auxiliary struct in replacement of std::tuple.
-struct report_location {
-	/// The line number within the main file.
-	uint64_t line_number;
-	/// The name of the treebank file where the report comes from.
-	std::string treebank_file_name;
-	/// The id of the treebank file where the report comes from.
-	std::string treebank_id;
-	/// The report of errors in the treebank file.
-	treebank_file_report report;
-
-	/// Default constructor.
-	report_location() noexcept = default;
-
-	/// Constructor with data.
-	report_location(
-		uint64_t ln,
-		const std::string& tfn,
-		const std::string& tid,
-		const treebank_file_report& rep
-	)
-	noexcept
-		:
-		line_number(ln),
-		treebank_file_name(tfn),
-		treebank_id(tid),
-		report(rep)
-	{ }
-
-	/// Constructor with data.
-	report_location(
-		uint64_t ln,
-		std::string&& tfn,
-		std::string&& tid,
-		treebank_file_report&& rep
-	)
-	noexcept
-		:
-		line_number(ln),
-		treebank_file_name(std::move(tfn)),
-		treebank_id(std::move(tid)),
-		report(std::move(rep))
-	{ }
-
-	/// Default destructor.
-	~report_location() noexcept = default;
-};
 
 /**
  * @brief Report on a treebank collection.
@@ -115,7 +68,7 @@ class treebank_collection_report {
 public:
 
 	/// The list of reports of errors of the treebanks within the collection.
-	typedef std::vector<report_location> error_list;
+	typedef std::vector<treebank_collection_report_location> error_list;
 
 public:
 	/// Default constructor.

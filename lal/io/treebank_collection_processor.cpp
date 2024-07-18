@@ -199,7 +199,7 @@ treebank_file_error treebank_collection_processor::process() noexcept
 
 				// process the treebank file
 				auto err = tbproc.process();
-				if (err != treebank_file_error_type::no_error) {
+				if (not err.is_error()) {
 					#pragma omp critical
 					{
 					m_errors_from_processing.push_back(make_tuple(
@@ -216,7 +216,7 @@ treebank_file_error treebank_collection_processor::process() noexcept
 
 	if (m_join_files) {
 		auto err = join_all_files();
-		if (err != treebank_file_error_type::no_error) {
+		if (not err.is_error()) {
 			m_errors_from_processing.push_back(make_tuple(
 				std::move(err),
 				m_main_file,

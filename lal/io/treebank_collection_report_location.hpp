@@ -41,35 +41,62 @@
 
 #pragma once
 
-/* This file is used only to include all
- * other files grouping the i/o functions.
- */
+// C++ includes
+#include <cstdint>
 
-// output of graphs to some std::ostream
-#include <lal/io/basic_output.hpp>
-
-// read formatted files
-#include <lal/io/edge_list.hpp>
-#include <lal/io/head_vector.hpp>
-
-// check correctness of treebanks
-#include <lal/io/head_vector_error_type.hpp>
-#include <lal/io/head_vector_error.hpp>
-
-#include <lal/io/treebank_file_error_type.hpp>
-#include <lal/io/treebank_file_error.hpp>
-
-#include <lal/io/treebank_collection_report_location.hpp>
-#include <lal/io/treebank_collection_report.hpp>
+// lal includes
 #include <lal/io/treebank_file_report.hpp>
 
-#include <lal/io/check_correctness.hpp>
+namespace lal {
+namespace io {
 
-// process treebanks
-#include <lal/io/treebank_feature.hpp>
+/// An auxiliary struct in replacement of std::tuple.
+struct treebank_collection_report_location {
+	/// The line number within the main file.
+	uint64_t line_number;
+	/// The name of the treebank file where the report comes from.
+	std::string treebank_file_name;
+	/// The id of the treebank file where the report comes from.
+	std::string treebank_id;
+	/// The report of errors in the treebank file.
+	treebank_file_report report;
 
-#include <lal/io/treebank_reader.hpp>
-#include <lal/io/treebank_collection_reader.hpp>
+	/// Default constructor.
+	treebank_collection_report_location() noexcept = default;
 
-#include <lal/io/treebank_processor.hpp>
-#include <lal/io/treebank_collection_processor.hpp>
+	/// Constructor with data.
+	treebank_collection_report_location(
+		uint64_t ln,
+		const std::string& tfn,
+		const std::string& tid,
+		const treebank_file_report& rep
+	)
+	noexcept
+		:
+		line_number(ln),
+		treebank_file_name(tfn),
+		treebank_id(tid),
+		report(rep)
+	{ }
+
+	/// Constructor with data.
+	treebank_collection_report_location(
+		uint64_t ln,
+		std::string&& tfn,
+		std::string&& tid,
+		treebank_file_report&& rep
+	)
+	noexcept
+		:
+		line_number(ln),
+		treebank_file_name(std::move(tfn)),
+		treebank_id(std::move(tid)),
+		report(std::move(rep))
+	{ }
+
+	/// Default destructor.
+	~treebank_collection_report_location() noexcept = default;
+};
+
+} // -- namespace io
+} // -- namespace lal

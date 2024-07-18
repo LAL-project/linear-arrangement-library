@@ -256,9 +256,7 @@ noexcept
 {
 	treebank_processor tbproc;
 	auto err = tbproc.init(treebank_file, output_file);
-	if (err != treebank_file_error_type::no_error) {
-		return err;
-	}
+	if (not err.is_error()) { return err; }
 	return tbproc.process();
 }
 

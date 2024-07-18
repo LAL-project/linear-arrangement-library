@@ -208,6 +208,7 @@ HEADERS += \
 	io/treebank_collection_processor.hpp \
 	io/treebank_collection_reader.hpp \
 	io/treebank_collection_report.hpp \
+	io/treebank_collection_report_location.hpp \
 	io/treebank_file_error.hpp \
 	io/treebank_file_error_type.hpp \
 	io/treebank_file_report.hpp \

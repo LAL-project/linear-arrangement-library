@@ -255,7 +255,7 @@ treebank_file_error treebank_processor::process() noexcept {
 	treebank_reader tbread;
 	{
 	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
-	if (err != treebank_file_error_type::no_error) {
+	if (not err.is_error()) {
 		if (m_be_verbose >= 2) {
 
 			#pragma omp critical

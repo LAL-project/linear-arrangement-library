@@ -401,14 +401,16 @@ noexcept
 			else {
 				// append errors found in the treebank to
 				// the list of errors of this dataset
-				#pragma omp critical
-				{
-					report.add_report(
-						main_file_line,
-						std::move(treebankname),
-						std::move(id),
-						std::move(r)
-					);
+				if (r.get_num_errors() > 0) {
+					#pragma omp critical
+					{
+						report.add_report(
+							main_file_line,
+							std::move(treebankname),
+							std::move(id),
+							std::move(r)
+						);
+					}
 				}
 			}
 		}
