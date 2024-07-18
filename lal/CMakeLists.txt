@@ -227,6 +227,12 @@ target_sources(
 		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution.cpp
 		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_initialisation.cpp
 		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_next_action.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate__antenna.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate__bridge.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_propagate.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back__antenna.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back__bridge.cpp
+		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_roll_back.cpp
 		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_state_manipulation.cpp
 		detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_utils.cpp
 		#      numeric
