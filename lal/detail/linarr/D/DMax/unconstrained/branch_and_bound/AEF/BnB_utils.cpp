@@ -48,6 +48,7 @@
 // C++ includes
 #if defined DEBUG
 #if defined __LAL_DEBUG_DMax_Unc_BnB
+#include <string_view>
 #include <iostream>
 #include <iomanip>
 #endif
@@ -59,19 +60,20 @@
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 
-#define WHITE "1"
-#define GRAY "2"
-#define RED "31"
-#define GREEN "32"
-#define YELLOW "33"
-#define BLUE "34"
-#define PURPLE "35"
-#define CYAN "36"
-#define LIGHT_GRAY "37"
+//static constexpr std::string_view WHITE = "1";
+//static constexpr std::string_view GRAY = "2";
+static constexpr std::string_view RED = "31";
+//static constexpr std::string_view GREEN = "32";
+//static constexpr std::string_view YELLOW = "33";
+static constexpr std::string_view BLUE = "34";
+//static constexpr std::string_view PURPLE = "35";
+//static constexpr std::string_view CYAN = "36";
+//static constexpr std::string_view LIGHT_GRAY = "37";
 
 #define COLOR(c)	\
 std::string("\033[m\033[1;") + std::string(c) + std::string("m")
 
+/*
 #define DIM_COLOR(c)	\
 	std::string("\033[m\033[2;") + std::string(c) + std::string("m")
 
@@ -83,8 +85,9 @@ std::string("\033[m\033[1;") + std::string(c) + std::string("m")
 
 #define HIGHLIGHT_COLOR(c)	\
 	std::string("\033[m\033[7;") + std::string(c) + std::string("m")
+*/
 
-#define END_COLOR std::string("\033[0m")
+static constexpr std::string_view END_COLOR = "\033[0m";
 
 #endif
 
@@ -93,7 +96,7 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-#define column_width 2
+static constexpr uint64_t column_width = 2;
 #define set_col_width std::setw(column_width)
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB

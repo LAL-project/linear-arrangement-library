@@ -52,7 +52,6 @@
 #include <lal/detail/array.hpp>
 
 #define DECIDED_C_GT (upper_bound + 1)
-#define DECIDED_C_LE C
 
 namespace lal {
 namespace detail {

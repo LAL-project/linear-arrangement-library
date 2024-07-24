@@ -52,7 +52,6 @@
 
 #define idx(i,j, C) ((i)*(C) + (j))
 #define DECIDED_C_GT (upper_bound + 1)
-#define DECIDED_C_LE C
 
 namespace lal {
 namespace detail {

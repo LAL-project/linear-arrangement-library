@@ -43,7 +43,6 @@
 #if defined DEBUG
 #include <cassert>
 #endif
-#include <iostream>
 #include <array>
 #include <set>
 
@@ -64,6 +63,8 @@
 
 namespace lal {
 namespace linarr {
+
+#define nullify(X) cl[enum_to_sizet(X)] = false;
 
 typedef syntactic_dependency_tree syndepstr_type;
 typedef detail::arrangement_wrapper<detail::arrangement_type::nonidentity> arr_nonident;
@@ -275,7 +276,6 @@ __get_syn_dep_tree_type
 )
 noexcept
 {
-#define nullify(X) cl[enum_to_sizet(X)] = false;
 
 	bool is_some_class = false;
 	std::array<bool, __syntactic_dependency_tree_size> cl =
@@ -458,6 +458,8 @@ noexcept
 				(rT, detail::nonidentity_arr(arr), C)
 		);
 }
+
+#undef nullify
 
 } // -- namespace linarr
 } // -- namespace lal

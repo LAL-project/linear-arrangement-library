@@ -56,9 +56,8 @@ namespace linarr {
 
 #define __ident_arr(arr) detail::identity_arr(arr)
 #define __nonident_arr(arr) detail::nonidentity_arr(arr)
-#define __rat numeric::rational
 
-__rat predicted_num_crossings_rational
+numeric::rational predicted_num_crossings_rational
 (const graphs::undirected_graph& g, const linear_arrangement& arr)
 noexcept
 {
@@ -68,12 +67,12 @@ noexcept
 
 	return
 		(arr.size() == 0 ?
-			detail::predict_C_using_edge_lengths<__rat>(g, __ident_arr(arr)) :
-			detail::predict_C_using_edge_lengths<__rat>(g, __nonident_arr(arr))
+			detail::predict_C_using_edge_lengths<numeric::rational>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<numeric::rational>(g, __nonident_arr(arr))
 		);
 }
 
-__rat predicted_num_crossings_rational
+numeric::rational predicted_num_crossings_rational
 (const graphs::directed_graph& g, const linear_arrangement& arr)
 noexcept
 {
@@ -83,8 +82,8 @@ noexcept
 
 	return
 		(arr.size() == 0 ?
-			detail::predict_C_using_edge_lengths<__rat>(g, __ident_arr(arr)) :
-			detail::predict_C_using_edge_lengths<__rat>(g, __nonident_arr(arr))
+			detail::predict_C_using_edge_lengths<numeric::rational>(g, __ident_arr(arr)) :
+			detail::predict_C_using_edge_lengths<numeric::rational>(g, __nonident_arr(arr))
 		);
 }
 

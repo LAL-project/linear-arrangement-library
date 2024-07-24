@@ -55,7 +55,6 @@
 
 #define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
 #define DECIDED_C_GT (upper_bound + 1)
-#define DECIDED_C_LE C
 
 namespace lal {
 namespace detail {

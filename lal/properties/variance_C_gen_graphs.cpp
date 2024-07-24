@@ -95,30 +95,6 @@ struct useful_info_pairs {
 
 #include <unordered_map>
 
-/*
-// stackoverflow hash
-
-template<typename T>
-void hash_combine(std::size_t& seed, const T& key) {
-	std::hash<T> hasher;
-	seed ^= hasher(key) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-}
-
-struct hash_edge {
-	std::size_t operator()(const lal::edge& p) const {
-		std::size_t seed1(0);
-		hash_combine(seed1, p.first);
-		hash_combine(seed1, p.second);
-
-		std::size_t seed2(0);
-		hash_combine(seed2, p.second);
-		hash_combine(seed2, p.first);
-
-		return std::min(seed1, seed2);
-	}
-};
-*/
-
 struct hash_edge {
 	std::size_t operator()(const lal::edge& p) const noexcept {
 		// Cantor hash
@@ -426,35 +402,34 @@ noexcept
 	uint64_t Lambda_2 = 0;
 
 	#define parameters_of_compute_data	\
-	(									\
 		g, n, m,						\
 		q, K,							\
 		n_paths_4, n_cycles_4, n_paw,	\
 		n_paths_5, n_pair_C3_L2,		\
 		Phi_1, Phi_2,					\
-		Lambda_1, Lambda_2				\
-	)
+		Lambda_1, Lambda_2
 
 	if (reuse) {
 		if (g.is_normalized()) {
 			compute_data_gen_graphs<true, true>
-				parameters_of_compute_data;
+				(parameters_of_compute_data);
 		}
 		else {
 			compute_data_gen_graphs<true, false>
-				parameters_of_compute_data;
+				(parameters_of_compute_data);
 		}
 	}
 	else {
 		if (g.is_normalized()) {
 			compute_data_gen_graphs<false, true>
-				parameters_of_compute_data;
+				(parameters_of_compute_data);
 		}
 		else {
 			compute_data_gen_graphs<false, false>
-				parameters_of_compute_data;
+				(parameters_of_compute_data);
 		}
 	}
+#undef parameters_of_compute_data
 
 	// V[C]
 	numeric::rational V(0);

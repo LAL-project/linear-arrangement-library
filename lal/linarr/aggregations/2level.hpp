@@ -100,12 +100,16 @@ noexcept
 
 	if (P.size() == 0) {
 
-#define IDE linear_arrangement::identity(G.get_num_nodes())
 		return utilities::two_level_aggregation<ratio, true>
 		(
 			L.begin(), L.end(), nullptr, nullptr,
 			// values
-			[](const graph_t& G) { return mean_dependency_distance_rational(G, IDE); },
+			[](const graph_t& G) {
+				return mean_dependency_distance_rational(
+					G,
+					linear_arrangement::identity(G.get_num_nodes())
+				);
+			},
 			// combine values
 			[](const ratio& MDD) { return MDD; },
 			// accumulate
@@ -113,7 +117,6 @@ noexcept
 			// average the values
 			[](const ratio& sum_MDD, std::size_t num_graphs) { return sum_MDD/num_graphs; }
 		);
-#undef IDE
 
 	}
 	else {

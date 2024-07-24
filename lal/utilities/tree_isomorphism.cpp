@@ -40,7 +40,6 @@
  ********************************************************************/
 
 //#define USE_COMPLICATED
-#undef USE_COMPLICATED
 
 // C++ includes
 #if defined USE_COMPLICATED

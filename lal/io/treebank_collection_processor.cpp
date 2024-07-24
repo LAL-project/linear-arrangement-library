@@ -55,16 +55,13 @@
 #include <lal/io/treebank_reader.hpp>
 #include <lal/detail/io/check_correctness.hpp>
 
-#define feature_to_str(i) detail::treebank_feature_string(static_cast<treebank_feature>(i))
-
-inline
-std::string make_result_file_name(const std::string& treebank_name) noexcept
+inline std::string make_result_file_name(const std::string& treebank_name)
+noexcept
 {
 	return treebank_name + ".csv";
 }
 
-inline
-std::string name_of_file_without_path_extension(const std::string& file_name)
+inline std::string name_of_file_without_path_extension(const std::string& file_name)
 noexcept
 {
 	std::filesystem::path p(file_name);

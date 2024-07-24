@@ -104,12 +104,16 @@ noexcept
 
 	if (P.size() == 0) {
 
-#define IDE linear_arrangement::identity(G.get_num_nodes())
 		return utilities::one_level_aggregation<ratio, true>
 		(
 			L.begin(), L.end(), nullptr, nullptr,
 			// make values Q,R
-			[](const graph_t& G) { return DD_m{sum_edge_lengths(G, IDE), G.get_num_edges()}; },
+			[](const graph_t& G) {
+				return DD_m{
+					sum_edge_lengths(G, linear_arrangement::identity(G.get_num_nodes())),
+					G.get_num_edges()
+				};
+			},
 			// accumulate Q
 			[](uint64_t& total, uint64_t new_value) { total += new_value; },
 			// accumulate R
@@ -121,7 +125,6 @@ noexcept
 			// average accumulated Q,R
 			[](uint64_t DDs, uint64_t sum_num_edges) { return ratio(DDs, sum_num_edges); }
 		);
-#undef IDE
 
 	}
 	else {
@@ -129,7 +132,9 @@ noexcept
 		(
 			L.begin(), L.end(), P.begin(), P.end(),
 			// make values Q,R
-			[](const graph_t& G, const ARR& arr) { return DD_m(sum_edge_lengths(G, arr), G.get_num_edges()); },
+			[](const graph_t& G, const ARR& arr) {
+				return DD_m(sum_edge_lengths(G, arr), G.get_num_edges());
+			},
 			// accumulate Q
 			[](uint64_t& total, uint64_t new_value) { total += new_value; },
 			// accumulate R

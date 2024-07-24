@@ -81,8 +81,6 @@ enum class centroid_results {
 #define m2(mode) (mode == centroid_results::full_centroid)
 #define m3(mode) (mode == centroid_results::full_centroid_plus_subtree_sizes)
 #define m4(mode) (mode == centroid_results::full_centroid_plus_edge_sizes)
-#define node_pair std::pair<lal::node,lal::node>
-#define P std::pair
 
 /**
  * @brief Calculates the centroid of a tree
