@@ -62,10 +62,8 @@ namespace detail {
  * @param arr Input linear arrangement.
  */
 template <class graph_t, class arrangement_t>
-uint64_t sum_edge_lengths(
-	const graph_t& g,
-	const arrangement_t& arr
-)
+[[nodiscard]] uint64_t sum_edge_lengths
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	// sum of lengths
@@ -93,10 +91,8 @@ noexcept
  * @param arr Input linear arrangement.
  */
 template <class result_t, class graph_t, class arrangement_t>
-result_t mean_sum_edge_lengths(
-	const graph_t& g,
-	const arrangement_t& arr
-)
+[[nodiscard]] result_t mean_sum_edge_lengths
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	static_assert(

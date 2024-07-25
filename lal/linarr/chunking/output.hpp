@@ -46,6 +46,7 @@
 
 // lal includes
 #include <lal/linarr/chunking/chunk.hpp>
+#include <lal/linarr/chunking/chunk_sequence.hpp>
 
 namespace lal {
 namespace linarr {

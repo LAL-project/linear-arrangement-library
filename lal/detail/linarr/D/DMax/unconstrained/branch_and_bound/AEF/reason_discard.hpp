@@ -162,7 +162,7 @@ enum class reason_discard : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::reason_discard
 /// to a long string.
-static constexpr std::string_view reason_discard_to_string
+[[nodiscard]] static constexpr std::string_view reason_discard_to_string
 (const reason_discard at) noexcept
 {
 	switch (at) {
@@ -220,13 +220,13 @@ static constexpr std::string_view reason_discard_to_string
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::reason_discard
 /// to an index value.
-static inline constexpr std::size_t reason_discard_to_index
+[[nodiscard]] static inline constexpr std::size_t reason_discard_to_index
 (reason_discard rd) noexcept
 { return static_cast<std::size_t>(rd); }
 
 /// Converts an index value to a value of
 /// @ref lal::detail::DMax::unconstrained::reason_discard.
-static inline constexpr reason_discard index_to_reason_discard
+[[nodiscard]] static inline constexpr reason_discard index_to_reason_discard
 (std::size_t i) noexcept
 { return static_cast<reason_discard>(i); }
 #endif

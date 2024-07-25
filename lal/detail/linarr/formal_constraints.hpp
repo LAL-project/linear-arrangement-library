@@ -66,7 +66,8 @@ namespace detail {
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-bool is_root_covered(const graphs::rooted_tree& rt, const arrangement_t& arr)
+[[nodiscard]] bool is_root_covered
+(const graphs::rooted_tree& rt, const arrangement_t& arr)
 noexcept
 {
 #if defined DEBUG
@@ -106,7 +107,8 @@ noexcept
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-bool is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr)
+[[nodiscard]] bool is_projective
+(const graphs::rooted_tree& rt, const arrangement_t& arr)
 noexcept
 {
 #if defined DEBUG
@@ -134,10 +136,8 @@ noexcept
  * @pre Input @e arr is an arrangement of a connected bipartite graph.
  */
 template <class arrangement_t>
-bool is_bipartite__connected(
-	const properties::bipartite_graph_coloring& c,
-	const arrangement_t& arr
-)
+[[nodiscard]] bool is_bipartite__connected
+(const properties::bipartite_graph_coloring& c, const arrangement_t& arr)
 noexcept
 {
 	const auto n = c.size();
@@ -168,7 +168,7 @@ noexcept
  * @returns Whether or not the input arrangement is bipartite.
  */
 template <class graph_t, class arrangement_t>
-bool is_bipartite(const graph_t& g, const arrangement_t& arr)
+[[nodiscard]] bool is_bipartite(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	typedef properties::bipartite_graph_coloring::color_t color_t;

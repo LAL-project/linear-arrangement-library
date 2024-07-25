@@ -109,7 +109,8 @@ public:
 	 * method can return is:
 	 * - @ref lal::io::treebank_file_error_type::treebank_file_does_not_exist
 	 */
-	treebank_file_error init(
+	treebank_file_error init
+	(
 		const std::string& treebank_input_file,
 		const std::string& output_file,
 		const std::string& treebank_id = ""
@@ -133,7 +134,7 @@ public:
 	 * - @ref lal::io::treebank_file_error_type::treebank_file_could_not_be_opened
 	 * @pre Initialisation did not return any errors.
 	 */
-	treebank_file_error process() noexcept;
+	[[nodiscard]] treebank_file_error process() noexcept;
 
 private:
 	/// Process a single tree in a treebank.
@@ -249,8 +250,7 @@ private:
  * @param output_file The output file name.
  * @returns A treebank error (see @ref lal::io::treebank_error) if any.
  */
-inline
-treebank_file_error process_treebank
+[[nodiscard]] inline treebank_file_error process_treebank
 (const std::string& treebank_file, const std::string& output_file)
 noexcept
 {

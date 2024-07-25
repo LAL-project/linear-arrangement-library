@@ -81,7 +81,7 @@ typedef array<node_size> ordering;
  * @returns Maximum \f$p_\alpha\f$.
  */
 template <char anchored>
-uint64_t calculate_p_alpha
+[[nodiscard]] uint64_t calculate_p_alpha
 (const uint64_t n, const ordering& ord, uint64_t& s_0, uint64_t& s_1)
 noexcept
 {
@@ -181,7 +181,8 @@ noexcept
  * @param[out] cost The cost of the minimum arrangement.
  */
 template <char alpha, bool make_arrangement>
-void calculate_mla(
+void calculate_mla
+(
 	graphs::free_tree& t,
 	const node root_or_anchor,
 	position start, position end,
@@ -383,7 +384,7 @@ noexcept
  * on the value of the template parameter @e make_arrangement.
  */
 template <bool make_arrangement>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t

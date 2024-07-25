@@ -300,7 +300,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator== (T i) const noexcept {
+	[[nodiscard]] bool operator== (T i) const noexcept
+	{
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) == 0;
 	}
@@ -311,14 +312,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend bool operator== (T i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator== (T i, const rational& r) noexcept
 	{ return r == i; }
 #endif
 	/**
 	 * @brief Equality operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator== (const integer& i) const noexcept
+	[[nodiscard]] bool operator== (const integer& i) const noexcept
 	{ rational r(i); return mpq_equal(m_val, r.m_val); }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -326,14 +327,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator== (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator== (const integer& i, const rational& r) noexcept
 	{ return r == i; }
 #endif
 	/**
 	 * @brief Equality operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator== (const rational& r) const noexcept {
+	[[nodiscard]] bool operator== (const rational& r) const noexcept {
 		// this function returns non-zero if parameters are equal!
 		return mpq_equal(m_val, r.m_val);
 	}
@@ -345,7 +346,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator!= (T i) const noexcept
+	[[nodiscard]] bool operator!= (T i) const noexcept
 	{ return not (*this == i); }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -353,14 +354,14 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator!= (int64_t i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator!= (int64_t i, const rational& r) noexcept
 	{ return r != i; }
 #endif
 	/**
 	 * @brief Non-equality operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator!= (const integer& i) const noexcept
+	[[nodiscard]] bool operator!= (const integer& i) const noexcept
 	{ return not (*this == i); }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -368,14 +369,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator!= (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator!= (const integer& i, const rational& r) noexcept
 	{ return r != i; }
 #endif
 	/**
 	 * @brief Non-equality operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator!= (const rational& r) const noexcept
+	[[nodiscard]] bool operator!= (const rational& r) const noexcept
 	{ return not (*this == r); }
 
 	// -- LESS THAN
@@ -385,7 +386,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator< (T i) const noexcept {
+	[[nodiscard]] bool operator< (T i) const noexcept
+	{
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) < 0;
 	}
@@ -396,14 +398,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend bool operator< (T i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator< (T i, const rational& r) noexcept
 	{ return r > i; }
 #endif
 	/**
 	 * @brief Less than operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator< (const integer& i) const noexcept
+	[[nodiscard]] bool operator< (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) < 0; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -411,14 +413,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator< (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator< (const integer& i, const rational& r) noexcept
 	{ return r > i; }
 #endif
 	/**
 	 * @brief Less than operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator< (const rational& r) const noexcept
+	[[nodiscard]] bool operator< (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) < 0; }
 
 	// -- LESS THAN OR EQUAL TO
@@ -428,7 +430,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator<= (T i) const noexcept {
+	[[nodiscard]] bool operator<= (T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) <= 0;
 	}
@@ -439,14 +441,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend bool operator<= (T i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator<= (T i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator<= (const integer& i) const noexcept
+	[[nodiscard]] bool operator<= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) <= 0; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -454,14 +456,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator<= (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator<= (const integer& i, const rational& r) noexcept
 	{ return r >= i; }
 #endif
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator<= (const rational& r) const noexcept
+	[[nodiscard]] bool operator<= (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) <= 0; }
 
 	// -- GREATER THAN
@@ -471,7 +473,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator> (T i) const noexcept {
+	[[nodiscard]] bool operator> (T i) const noexcept
+	{
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) > 0;
 	}
@@ -482,14 +485,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend bool operator> (T i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator> (T i, const rational& r) noexcept
 	{ return r < i; }
 #endif
 	/**
 	 * @brief Greater than operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator> (const integer& i) const noexcept
+	[[nodiscard]] bool operator> (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) > 0; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -497,14 +500,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator> (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator> (const integer& i, const rational& r) noexcept
 	{ return r < i; }
 #endif
 	/**
 	 * @brief Greater than operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator> (const rational& r) const noexcept
+	[[nodiscard]] bool operator> (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) > 0; }
 
 	// -- GREATER THAN OR EQUAL TO
@@ -514,7 +517,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	bool operator>= (T i) const noexcept {
+	[[nodiscard]] bool operator>= (T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1) : mpq_cmp_ui(m_val, i, 1)) >= 0;
 	}
@@ -525,14 +528,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend bool operator>= (T i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator>= (T i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	bool operator>= (const integer& i) const noexcept
+	[[nodiscard]] bool operator>= (const integer& i) const noexcept
 	{ rational r(i); return mpq_cmp(m_val, r.m_val) >= 0; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -540,14 +543,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend bool operator>= (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend bool operator>= (const integer& i, const rational& r) noexcept
 	{ return r <= i; }
 #endif
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	bool operator>= (const rational& r) const noexcept
+	[[nodiscard]] bool operator>= (const rational& r) const noexcept
 	{ return mpq_cmp(m_val, r.m_val) >= 0; }
 
 	// -- ADDITION
@@ -557,7 +560,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	rational operator+ (T i) const noexcept
+	[[nodiscard]] rational operator+ (T i) const noexcept
 	{ rational r(*this); r += i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -566,14 +569,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend rational operator+ (T i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator+ (T i, const rational& r) noexcept
 	{ return r + i; }
 #endif
 	/**
 	 * @brief Addition operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational operator+ (const integer& i) const noexcept
+	[[nodiscard]] rational operator+ (const integer& i) const noexcept
 	{ rational r(*this); r += i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -581,14 +584,15 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend rational operator+ (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator+ (const integer& i, const rational& r)
+	noexcept
 	{ return r + i; }
 #endif
 	/**
 	 * @brief Addition operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	rational operator+ (const rational& r) const noexcept
+	[[nodiscard]] rational operator+ (const rational& r) const noexcept
 	{ rational k(*this); k += r; return k; }
 
 	/**
@@ -614,14 +618,14 @@ public:
 	// -- SUBSTRACTION
 
 	/// Substraction unary operator.
-	rational operator- () const noexcept
+	[[nodiscard]] rational operator- () const noexcept
 	{ rational r(*this); mpq_neg(r.m_val, r.m_val); return r; }
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	rational operator- (T i) const noexcept
+	[[nodiscard]] rational operator- (T i) const noexcept
 	{ rational r(*this); r -= i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -630,14 +634,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend rational operator- (T i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator- (T i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
 	/**
 	 * @brief Substraction operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational operator- (const integer& i) const noexcept
+	[[nodiscard]] rational operator- (const integer& i) const noexcept
 	{ rational r(*this); r -= i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -645,14 +649,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend rational operator- (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator- (const integer& i, const rational& r) noexcept
 	{ return -r + i; }
 #endif
 	/**
 	 * @brief Substraction operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	rational operator- (const rational& r) const noexcept
+	[[nodiscard]] rational operator- (const rational& r) const noexcept
 	{ rational k(*this); k -= r; return k; }
 
 	/**
@@ -682,7 +686,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	rational operator* (T i) const noexcept
+	[[nodiscard]] rational operator* (T i) const noexcept
 	{ rational r(*this); r *= i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -691,14 +695,14 @@ public:
 	 * @param r A @ref lal::numeric::rational.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend rational operator* (T i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator* (T i, const rational& r) noexcept
 	{ return r*i; }
 #endif
 	/**
 	 * @brief Multiplication operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational operator* (const integer& i) const noexcept
+	[[nodiscard]] rational operator* (const integer& i) const noexcept
 	{ rational r(*this); r *= i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -706,14 +710,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	friend rational operator* (const integer& i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator* (const integer& i, const rational& r) noexcept
 	{ return r*i; }
 #endif
 	/**
 	 * @brief Multiplication operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	rational operator* (const rational& r) const noexcept
+	[[nodiscard]] rational operator* (const rational& r) const noexcept
 	{ rational k(*this); k *= r; return k; }
 
 	/**
@@ -743,7 +747,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	rational operator/ (T i) const noexcept
+	[[nodiscard]] rational operator/ (T i) const noexcept
 	{ rational r(*this); r /= i; return r; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -752,7 +756,7 @@ public:
 	 * @param r Rational value.
 	 */
 	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	friend rational operator/ (T i, const rational& r) noexcept
+	[[nodiscard]] friend rational operator/ (T i, const rational& r) noexcept
 	{ rational inv(r); inv.invert(); return inv*i; }
 #endif
 
@@ -760,13 +764,13 @@ public:
 	 * @brief Division operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational operator/ (const integer& i) const noexcept
+	[[nodiscard]] rational operator/ (const integer& i) const noexcept
 	{ rational r(*this); r /= i; return r; }
 	/**
 	 * @brief Division operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	rational operator/ (const rational& r) const noexcept
+	[[nodiscard]] rational operator/ (const rational& r) const noexcept
 	{ rational k(*this); k /= r; return k; }
 
 	/**
@@ -794,12 +798,12 @@ public:
 	 * @brief Exponentiation operator.
 	 * @param i An unsigned integer (basic type).
 	 */
-	rational power(uint64_t i) const noexcept;
+	[[nodiscard]] rational power(uint64_t i) const noexcept;
 	/**
 	 * @brief Exponentiation operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational power(const integer& i) const noexcept;
+	[[nodiscard]] rational power(const integer& i) const noexcept;
 
 	/**
 	 * @brief Exponentiation operator.
@@ -815,12 +819,12 @@ public:
 	/* GETTERS */
 
 	/// Returns whether this object is initialized or not.
-	bool is_initialized() const noexcept { return m_initialized; }
+	[[nodiscard]] bool is_initialized() const noexcept { return m_initialized; }
 	/// Returns the sign of this rational.
-	int64_t get_sign() const noexcept { return mpq_sgn(m_val); }
+	[[nodiscard]] int64_t get_sign() const noexcept { return mpq_sgn(m_val); }
 
 	/// Returns the amount of bytes this integer occupies.
-	std::size_t bytes() const noexcept;
+	[[nodiscard]] std::size_t bytes() const noexcept;
 
 	/* CONVERTERS */
 
@@ -831,7 +835,7 @@ public:
 	 * \f$n,d\f$ are, respectively, the numerator and denominator.
 	 * @returns The floor of this rational.
 	 */
-	integer to_integer() const noexcept {
+	[[nodiscard]] integer to_integer() const noexcept {
 		integer i;
 		as_integer(i);
 		return i;
@@ -846,12 +850,12 @@ public:
 	void as_integer(integer& i) const noexcept;
 
 	/// Converts this rational to a double-precision floating-point value.
-	double to_double() const noexcept { return mpq_get_d(m_val); }
+	[[nodiscard]] double to_double() const noexcept { return mpq_get_d(m_val); }
 	/// Converts this rational to a double-precision floating-point value.
 	void as_double(double& d) const noexcept { d = mpq_get_d(m_val); }
 
 	/// Converts this integer to a string.
-	std::string to_string() const noexcept {
+	[[nodiscard]] std::string to_string() const noexcept {
 		std::string k;
 		as_string(k);
 		return k;
@@ -865,7 +869,7 @@ public:
 	}
 
 	/// Returns the numerator of this rational number
-	integer get_numerator() const noexcept {
+	[[nodiscard]] integer get_numerator() const noexcept {
 		mpz_t numerator;
 		mpz_init(numerator);
 		mpq_get_num(numerator, m_val);
@@ -873,7 +877,7 @@ public:
 	}
 
 	/// Returns the denominator of this rational number
-	integer get_denominator() const noexcept {
+	[[nodiscard]] integer get_denominator() const noexcept {
 		mpz_t denominator;
 		mpz_init(denominator);
 		mpq_get_den(denominator, m_val);

@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <tuple>
 
 // lal includes
 #include <lal/detail/graphs/conversions.hpp>
@@ -66,7 +67,7 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 
 	// call with an invalid index for the 'root of the last tree added'
 	// so as to indicate that there is no such thing at this moment.
-	ranrut(m_n, 0, 0);
+	std::ignore = ranrut(m_n, 0, 0);
 
 #if defined DEBUG
 	assert(m_head_vector[0] == 0);

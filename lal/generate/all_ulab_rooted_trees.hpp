@@ -162,7 +162,7 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -185,7 +185,7 @@ public:
 		next();
 	}
 
-	graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;
@@ -199,7 +199,7 @@ protected:
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	graphs::rooted_tree __get_tree() noexcept;
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept;
 
 	/// Sets the generator to its initial state.
 	void __reset() noexcept;

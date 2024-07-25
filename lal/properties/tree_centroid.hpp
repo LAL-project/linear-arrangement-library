@@ -61,7 +61,8 @@ namespace properties {
  * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
-std::pair<node, node> tree_centroid(const graphs::rooted_tree& t) noexcept;
+[[nodiscard]] std::pair<node, node> tree_centroid(const graphs::rooted_tree& t)
+noexcept;
 
 /**
  * @brief Calculate the centroid of a free tree.
@@ -76,7 +77,8 @@ std::pair<node, node> tree_centroid(const graphs::rooted_tree& t) noexcept;
  * @pre The tree @e t is a valid free tree. Method graphs::free_tree::is_tree
  * returns true.
  */
-std::pair<node, node> tree_centroid(const graphs::free_tree& t) noexcept;
+[[nodiscard]] std::pair<node, node> tree_centroid(const graphs::free_tree& t)
+noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

@@ -68,7 +68,7 @@ namespace linarr {
  * @returns The class of projective structure. If the class could not
  * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
  */
-std::array<bool, __syntactic_dependency_tree_size>
+[[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify
 (const graphs::rooted_tree& t, uint64_t C, const linear_arrangement& pi = {})
 noexcept;
@@ -85,7 +85,7 @@ noexcept;
  * @returns The class of projective structure. If the class could not
  * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
  */
-std::array<bool, __syntactic_dependency_tree_size>
+[[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify
 (const graphs::rooted_tree& t, const linear_arrangement& pi = {})
 noexcept;

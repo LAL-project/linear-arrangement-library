@@ -95,10 +95,8 @@ noexcept
  * @returns The arrangement constructed with the permutations.
  */
 template <class container>
-linear_arrangement make_arrangement_permutations(
-	const graphs::rooted_tree& T,
-	const container& data
-)
+[[nodiscard]] linear_arrangement make_arrangement_permutations
+(const graphs::rooted_tree& T, const container& data)
 noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
@@ -158,10 +156,8 @@ noexcept
  * @returns The arrangement constructed with the permutations.
  */
 template <class container>
-linear_arrangement make_arrangement_permutations(
-	const graphs::free_tree& T, node root,
-	const container& data
-)
+[[nodiscard]] linear_arrangement make_arrangement_permutations
+(const graphs::free_tree& T, node root, const container& data)
 noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());

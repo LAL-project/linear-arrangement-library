@@ -65,14 +65,16 @@ template <class graph_t>
 class connected_components {
 public:
 
-	graph_t& operator[] (std::size_t i) noexcept {
+	/// Access operator
+	[[nodiscard]] graph_t& operator[] (std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
 		return m_connected_components[i];
 	}
 
-	const graph_t& operator[] (std::size_t i) const noexcept {
+	/// Access operator
+	[[nodiscard]] const graph_t& operator[] (std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
@@ -134,7 +136,7 @@ public:
 	// GETTERS
 
 	/// Returns the number of connected components.
-	std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept {
 		return m_connected_components.size();
 	}
 
@@ -144,7 +146,7 @@ public:
 	 * @returns A numeric value from 0 to the number of connected components (see
 	 * @ref size())
 	 */
-	std::size_t get_cc_node(node u) const noexcept {
+	[[nodiscard]] std::size_t get_cc_node(node u) const noexcept {
 		return m_node_to_cc[u];
 	}
 
@@ -153,7 +155,8 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @returns The label of the vertex @e u within its connected component.
 	 */
-	std::size_t get_label_graph_node_to_cc_node(node u) const noexcept {
+	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(node u) const noexcept
+	{
 		return m__graph_node__to__cc_node[u];
 	}
 	/**
@@ -162,7 +165,10 @@ public:
 	 * @param u Input node (within the connected component).
 	 * @returns The label of @e u in the whole graph.
 	 */
-	std::size_t get_label_cc_node_to_graph_node(std::size_t cc_idx, node u) const noexcept {
+	[[nodiscard]] std::size_t get_label_cc_node_to_graph_node
+	(std::size_t cc_idx, node u)
+	const noexcept
+	{
 		return m__cc_node__to__graph_node[cc_idx][u];
 	}
 

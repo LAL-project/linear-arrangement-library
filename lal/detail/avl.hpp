@@ -81,14 +81,14 @@ public:
 		/// Number of nodes with a key larger than @e v in the tree.
 		std::size_t num_nodes_larger;
 		/// Equality comparison.
-		bool operator== (const frequencies& f) const noexcept {
+		[[nodiscard]] bool operator== (const frequencies& f) const noexcept {
 			return
 				counter_equal == f.counter_equal and
 				counter_larger == f.counter_larger and
 				num_nodes_larger == f.num_nodes_larger;
 		}
 		/// Different operator.
-		bool operator!= (const frequencies& f) const noexcept
+		[[nodiscard]] bool operator!= (const frequencies& f) const noexcept
 		{ return not (*this == f); }
 	};
 
@@ -115,8 +115,9 @@ public:
 	 * @returns A pair with a constant reference to the largest value and its
 	 * frequency statistics.
 	 */
-	[[nodiscard]]
-	std::pair<const T&, frequencies> get_largest_value() const noexcept {
+	[[nodiscard]] std::pair<const T&, frequencies> get_largest_value()
+	const noexcept
+	{
 #if defined DEBUG
 		assert(m_root != nullptr);
 #endif
@@ -136,7 +137,7 @@ public:
 	 * are invalidated.
 	 */
 	template <bool use_counter>
-	frequencies remove_largest() noexcept {
+	[[nodiscard]] frequencies remove_largest() noexcept {
 		frequencies freqs{0,0,0};
 		m_root = remove_rightmost<use_counter>(m_root, nullptr, freqs);
 		return freqs;
@@ -152,7 +153,7 @@ public:
 	 * are invalidated.
 	 */
 	template <bool use_counter>
-	frequencies remove_smallest() noexcept {
+	[[nodiscard]] frequencies remove_smallest() noexcept {
 		frequencies freqs{0,0,0};
 		m_root = remove_leftmost<use_counter>(m_root, nullptr, freqs);
 		return freqs;
@@ -163,8 +164,9 @@ public:
 	 * @returns A pair with a constant reference to the largest value and its
 	 * frequency statistics.
 	 */
-	[[nodiscard]]
-	std::pair<const T&, frequencies> get_smallest_value() const noexcept {
+	[[nodiscard]] std::pair<const T&, frequencies> get_smallest_value()
+	const noexcept
+	{
 #if defined DEBUG
 		assert(m_root != nullptr);
 #endif
@@ -323,19 +325,19 @@ public:
 	 * @brief Size of the tree.
 	 * @returns The number of nodes in the tree.
 	 */
-	std::size_t num_nodes() const noexcept
+	[[nodiscard]] std::size_t num_nodes() const noexcept
 	{ return (m_root == nullptr ? 0 : m_root->tree_size); }
 
 	/**
 	 * @brief Total number of elements inserted.
 	 * @returns The total sum of occurrences of the elements in the tree.
 	 */
-	std::size_t total_elements() const noexcept
+	[[nodiscard]] std::size_t total_elements() const noexcept
 	{ return (m_root == nullptr ? 0 : m_root->tree_counter); }
 
 #if defined __LAL_DEBUG_AVL
 	/// Perform a series of correctness checks
-	bool sanity_check() const noexcept {
+	[[nodiscard]] bool sanity_check() const noexcept {
 		return sanity_check(m_root);
 	}
 
@@ -672,8 +674,8 @@ private:
 	 * @returns The tree node containing as key the value @e x.
 	 */
 	template <typename U>
-	[[nodiscard]]
-	tree_node *insert(tree_node *p, tree_node *n, U&& x, frequencies& freqs)
+	[[nodiscard]] tree_node *insert
+	(tree_node *p, tree_node *n, U&& x, frequencies& freqs)
 	const noexcept
 	{
 		// Find where the node with key 'x' could be located in the tree.
@@ -774,7 +776,9 @@ private:
 	 * be deleted.
 	 */
 	template <bool use_counter_to_remove, bool move_in_leftmost>
-	bool delete_after_move(tree_node *n, tree_node *k, frequencies& freqs) const noexcept
+	[[nodiscard]] bool delete_after_move
+	(tree_node *n, tree_node *k, frequencies& freqs)
+	const noexcept
 	{
 		freqs.counter_equal = n->node_counter;
 		if constexpr (move_in_leftmost) {
@@ -812,8 +816,8 @@ private:
 	 * node in tree @e n.
 	 */
 	template <bool use_counter_to_remove>
-	[[nodiscard]]
-	tree_node *remove_leftmost(tree_node *n, tree_node *k, frequencies& freqs)
+	[[nodiscard]] tree_node *remove_leftmost
+	(tree_node *n, tree_node *k, frequencies& freqs)
 	const noexcept
 	{
 		if (n == nullptr) { return nullptr; }
@@ -881,8 +885,8 @@ private:
 	 * node in tree @e n.
 	 */
 	template <bool use_counter_to_remove>
-	[[nodiscard]]
-	tree_node *remove_rightmost(tree_node *n, tree_node *k, frequencies& freqs)
+	[[nodiscard]] tree_node *remove_rightmost
+	(tree_node *n, tree_node *k, frequencies& freqs)
 	const noexcept
 	{
 		if (n == nullptr) { return nullptr; }
@@ -946,8 +950,8 @@ private:
 	 * @returns A tree node.
 	 */
 	template <bool use_counter_to_remove>
-	[[nodiscard]]
-	tree_node *remove(tree_node *n, const T& x, frequencies& freqs)
+	[[nodiscard]] tree_node *remove
+	(tree_node *n, const T& x, frequencies& freqs)
 	const noexcept
 	{
 		if (n == nullptr) {
@@ -1054,8 +1058,9 @@ private:
 	 * @pre The largest element in @e T1 is smaller than the smallest
 	 * element in @e T2.
 	 */
-	[[nodiscard]]
-	tree_node *join_taller(tree_node *T1, tree_node *T2) const noexcept {
+	[[nodiscard]] tree_node *join_taller(tree_node *T1, tree_node *T2)
+	const noexcept
+	{
 #if defined DEBUG
 		assert(T1 != nullptr);
 		assert(T2 != nullptr);
@@ -1128,8 +1133,9 @@ private:
 	 * @pre The largest element in @e T1 is smaller than the smallest
 	 * element in @e T2.
 	 */
-	[[nodiscard]]
-	tree_node *join_shorter(tree_node *T1, tree_node *T2) const noexcept {
+	[[nodiscard]] tree_node *join_shorter(tree_node *T1, tree_node *T2)
+	const noexcept
+	{
 #if defined DEBUG
 		assert(T1 != nullptr);
 		assert(T2 != nullptr);
@@ -1246,17 +1252,17 @@ private:
 private:
 
 #if defined __LAL_DEBUG_AVL
-	std::size_t exhaustive_size(tree_node *n) const noexcept {
+	[[nodiscard]] std::size_t exhaustive_size(tree_node *n) const noexcept {
 		if (n == nullptr) { return 0; }
 		return 1 + exhaustive_size(n->right) + exhaustive_size(n->left);
 	}
-	std::size_t exhaustive_occurrences(tree_node *n) const noexcept {
+	[[nodiscard]] std::size_t exhaustive_occurrences(tree_node *n) const noexcept {
 		if (n == nullptr) { return 0; }
 		return n->node_counter +
 				exhaustive_occurrences(n->right) +
 				exhaustive_occurrences(n->left);
 	}
-	std::size_t exhaustive_height(tree_node *n) const noexcept {
+	[[nodiscard]] std::size_t exhaustive_height(tree_node *n) const noexcept {
 		if (n == nullptr) { return 0; }
 		if (n->left == nullptr and n->right == nullptr) { return 0; }
 		const auto height_left = exhaustive_height(n->left);
@@ -1264,17 +1270,17 @@ private:
 		return 1 + std::max(height_left, height_right);
 	}
 
-	bool all_smaller_than(tree_node *n, const T& x) const noexcept {
+	[[nodiscard]] bool all_smaller_than(tree_node *n, const T& x) const noexcept {
 		if (n == nullptr) { return true; }
 		if (n->key > x) { return false; }
 		return all_smaller_than(n->left, x) and all_smaller_than(n->right, x);
 	}
-	bool all_greater_than(tree_node *n, const T& x) const noexcept {
+	[[nodiscard]] bool all_greater_than(tree_node *n, const T& x) const noexcept {
 		if (n == nullptr) { return true; }
 		if (n->key < x) { return false; }
 		return all_greater_than(n->left, x) and all_greater_than(n->right, x);
 	}
-	bool check_relations(tree_node *n) const noexcept
+	[[nodiscard]] bool check_relations(tree_node *n) const noexcept
 	{
 		if (n == nullptr) { return true; }
 		const bool smaller_left = all_smaller_than(n->left, n->key);
@@ -1282,7 +1288,7 @@ private:
 		if (not smaller_left or not greater_right) { return false; }
 		return check_relations(n->left) and check_relations(n->right);
 	}
-	bool sanity_check(tree_node *n) const noexcept {
+	[[nodiscard]] bool sanity_check(tree_node *n) const noexcept {
 		if (n == nullptr) { return true; }
 
 		if (not check_relations(n)) {

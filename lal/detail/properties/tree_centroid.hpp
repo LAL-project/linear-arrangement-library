@@ -113,6 +113,7 @@ template <
 	class tree_t,
 	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
+[[nodiscard]]
 conditional_list_t<
 	bool_sequence<
 		m1(mode),
@@ -338,7 +339,8 @@ template <
 	class tree_t,
 	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-std::pair<node,node> centroidal_vertex_plus_adjacency_list(
+[[nodiscard]] std::pair<node,node> centroidal_vertex_plus_adjacency_list
+(
 	const tree_t& t, node x,
 	std::vector< std::vector<node_size> >& L
 )
@@ -391,7 +393,8 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centroid(const tree_t& t, const node x)
+[[nodiscard]] std::pair<node, node> retrieve_centroid
+(const tree_t& t, const node x)
 noexcept
 {
 	return find_centroidal_vertex<centroid_results::full_centroid>(t, x);
@@ -414,7 +417,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centroid(const tree_t& t)
+[[nodiscard]] std::pair<node, node> retrieve_centroid(const tree_t& t)
 noexcept
 {
 	return find_centroidal_vertex<centroid_results::full_centroid>(t, 0);

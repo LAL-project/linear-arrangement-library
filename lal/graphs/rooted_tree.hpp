@@ -161,8 +161,9 @@ public:
 	 * is ignored.
 	 * @pre Tree @e t is a valid free tree.
 	 */
-	rooted_tree
-	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept {
+	rooted_tree(const free_tree& t, node r, bool norm = true, bool check_norm = true)
+	noexcept
+	{
 		init_rooted(t, r, norm, check_norm);
 	}
 
@@ -178,8 +179,9 @@ public:
 	 * @pre Tree @e t is a valid free tree.
 	 * @post Tree @e t is moved and should not be used.
 	 */
-	rooted_tree
-	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept {
+	rooted_tree(free_tree&& t, node r, bool norm = true, bool check_norm = true)
+	noexcept
+	{
 		init_rooted(std::forward<free_tree>(t), r, norm, check_norm);
 	}
 
@@ -548,18 +550,18 @@ public:
 	 * @param r Given node.
 	 * @returns Whether or not the node passed as parameter is a valid root.
 	 */
-	bool is_root_valid(node r) const noexcept {
+	[[nodiscard]] bool is_root_valid(node r) const noexcept {
 #if defined DEBUG
 		assert(has_node(r));
 #endif
 		return get_in_degree(r) == 0;
 	}
 
-	bool can_add_edge(node s, node t) const noexcept;
+	[[nodiscard]] bool can_add_edge(node s, node t) const noexcept;
 
-	bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+	[[nodiscard]] bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
-	bool is_rooted() const noexcept { return true; }
+	[[nodiscard]] bool is_rooted() const noexcept { return true; }
 
 	/**
 	 * @brief Is this tree a valid rooted tree?
@@ -571,10 +573,10 @@ public:
 	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
-	bool is_rooted_tree() const noexcept { return is_tree() and has_root(); }
+	[[nodiscard]] bool is_rooted_tree() const noexcept { return is_tree() and has_root(); }
 
 	/// Return the root of this tree.
-	node get_root() const noexcept {
+	[[nodiscard]] node get_root() const noexcept {
 #if defined DEBUG
 		assert(has_root());
 #endif
@@ -582,7 +584,7 @@ public:
 	}
 	/// Returns whether this rooted tree's root has been set or not
 	/// (see @ref set_root).
-	bool has_root() const noexcept { return m_root.has_value(); }
+	[[nodiscard]] bool has_root() const noexcept { return m_root.has_value(); }
 
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
@@ -590,7 +592,7 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	uint64_t get_num_nodes_subtree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_subtree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 		assert(are_size_subtrees_valid());
@@ -608,7 +610,7 @@ public:
 	 * @returns Whether @ref m_size_subtrees should be recalculated
 	 * or not.
 	 */
-	bool are_size_subtrees_valid() const noexcept
+	[[nodiscard]] bool are_size_subtrees_valid() const noexcept
 	{ return m_are_size_subtrees_valid; }
 
 	/**
@@ -641,7 +643,8 @@ public:
 	 * @post Whenever @e relab is true, the label of the first node of
 	 * the first edge is guaranteed to be node '0'.
 	 */
-	std::vector<edge> get_edges_subtree(node u, bool relab = false) const noexcept;
+	[[nodiscard]] std::vector<edge> get_edges_subtree(node u, bool relab = false)
+	const noexcept;
 
 	/**
 	 * @brief Retrieve the subtree rooted at node @e u.
@@ -650,14 +653,14 @@ public:
 	 * rooted at node @e u.
 	 * @pre The object must be a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	rooted_tree get_subtree(node u) const noexcept;
+	[[nodiscard]] rooted_tree get_subtree(node u) const noexcept;
 
 	/**
 	 * @brief Converts this rooted tree into a free tree (see @ref free_tree).
 	 * @param norm Normalize the tree.
 	 * @param check Chech whether the resulting graph is normalized or not.
 	 */
-	free_tree to_free_tree
+	[[nodiscard]] free_tree to_free_tree
 	(bool norm = true, bool check = true) const noexcept;
 
 	/**
@@ -669,7 +672,8 @@ public:
 	 * @returns The head vector representation of this tree.
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	head_vector get_head_vector(const linear_arrangement& arr = {}) const noexcept;
+	[[nodiscard]] head_vector get_head_vector(const linear_arrangement& arr = {})
+	const noexcept;
 
 	/**
 	 * @brief Does the subtree rooted at @e r contain node @e u?
@@ -681,7 +685,7 @@ public:
 	 * @pre Node @e u belongs to the tree (see @ref has_node).
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	bool subtree_contains_node(node r, node u) const noexcept;
+	[[nodiscard]] bool subtree_contains_node(node r, node u) const noexcept;
 
 	/**
 	 * @brief Are two nodes siblings?
@@ -691,7 +695,7 @@ public:
 	 * @param v Another node.
 	 * @returns True if the nodes are siblings. False, if they are not.
 	 */
-	bool are_nodes_siblings(node u, node v) const noexcept {
+	[[nodiscard]] bool are_nodes_siblings(node u, node v) const noexcept {
 		// if one of the in-degrees is zero, then 'u' and 'v' cannot be siblings
 		if (get_in_degree(u) == 0 or get_in_degree(v) == 0) {
 			return false;
@@ -706,7 +710,7 @@ public:
 	 * @param u Input node.
 	 * @returns If the node has a parent vertex.
 	 */
-	bool node_has_parent(node u) const noexcept {
+	[[nodiscard]] bool node_has_parent(node u) const noexcept {
 		return get_in_degree(u) > 0;
 	}
 
@@ -716,7 +720,7 @@ public:
 	 * @returns The parent vertex of a node.
 	 * @pre Method @ref node_has_parent must return true.
 	 */
-	node get_parent_node(node u) const noexcept {
+	[[nodiscard]] node get_parent_node(node u) const noexcept {
 #if defined DEBUG
 		assert(node_has_parent(u));
 #endif

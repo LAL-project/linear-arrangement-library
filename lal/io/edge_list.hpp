@@ -74,7 +74,7 @@ namespace io {
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-std::optional<graphs::undirected_graph>
+[[nodiscard]] std::optional<graphs::undirected_graph>
 read_edge_list_undirected_graph
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
@@ -91,7 +91,7 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-std::optional<graphs::directed_graph>
+[[nodiscard]] std::optional<graphs::directed_graph>
 read_edge_list_directed_graph
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
@@ -108,7 +108,7 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-std::optional<graphs::free_tree>
+[[nodiscard]] std::optional<graphs::free_tree>
 read_edge_list_free_tree
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
@@ -125,7 +125,7 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-std::optional<graphs::rooted_tree>
+[[nodiscard]] std::optional<graphs::rooted_tree>
 read_edge_list_rooted_tree
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
@@ -154,8 +154,7 @@ template <
 	class graph_t,
 	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
 >
-inline
-std::optional<graph_t> read_edge_list
+[[nodiscard]] inline std::optional<graph_t> read_edge_list
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept
 {

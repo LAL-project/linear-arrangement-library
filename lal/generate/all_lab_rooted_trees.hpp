@@ -158,10 +158,10 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current root.
-	node get_current_root() const noexcept { return m_cur_root; }
+	[[nodiscard]] node get_current_root() const noexcept { return m_cur_root; }
 
 	/* MODIFIERS */
 
@@ -197,11 +197,11 @@ public:
 	}
 
 	/// Returns whether there are more trees to generate.
-	bool has_next() const noexcept {
+	[[nodiscard]] bool has_next() const noexcept {
 		return m_cur_root + 1 < m_n or not m_gen_lab_free_tree.end();
 	}
 
-	graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;
@@ -214,7 +214,7 @@ protected:
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	graphs::rooted_tree __get_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept {
 #if defined DEBUG
 		assert(m_cur_root < m_n);
 #endif

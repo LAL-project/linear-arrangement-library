@@ -96,7 +96,7 @@ namespace detail {
  * @returns Whether or not there are more configurations
  */
 template <typename iterator_t>
-bool next_binary(iterator_t begin, iterator_t end) noexcept
+[[nodiscard]] bool next_binary(iterator_t begin, iterator_t end) noexcept
 {
 	while (begin != end and *begin == 1) {
 		*begin = 0;
@@ -174,7 +174,8 @@ noexcept
  * @param[out] inv_arr Inverse linear arrangement (used to evaluate the cost of the
  * distribution).
  */
-inline void construct_initial_arrangement(
+inline void construct_initial_arrangement
+(
 	const graphs::free_tree& t,
 	const node thistle,
 	const int64_t thistle_level,
@@ -278,7 +279,8 @@ noexcept
  * the tree.
  * @param[out] inv_arr Inverse linear arrangement.
  */
-inline void sort_level_sequences(
+inline void sort_level_sequences
+(
 	const uint64_t n,
 	const node thistle,
 	const array<char>& is_thistle_neighbor,
@@ -329,7 +331,8 @@ noexcept
  * @pre The thistle vertex is at a position @e q such that \f$p < q\f$.
  * @post The arrangement is updated.
  */
-inline void shift_vertex_to_right(
+inline void shift_vertex_to_right
+(
 	const graphs::free_tree& t,
 	const node thistle,
 	position_t p,
@@ -358,7 +361,8 @@ noexcept
  * the tree.
  * @param[out] arr Arrangement to be manipulated.
  */
-inline void adjust_nonneighbors_of_thistle_smart(
+inline void adjust_nonneighbors_of_thistle_smart
+(
 	const graphs::free_tree& t,
 	const int64_t thistle_level,
 	const node thistle,
@@ -464,7 +468,8 @@ noexcept
 }
 
 /*
-inline void adjust_nonneighbors_of_thistle_exhaustive(
+inline void adjust_nonneighbors_of_thistle_exhaustive
+(
 	const graphs::free_tree& t,
 	const node thistle,
 	const array<char>& is_thistle_neighbor,
@@ -545,7 +550,8 @@ noexcept
  * than the one it already contains.
  */
 template <bool make_arrangement>
-void merge_arrangements(
+void merge_arrangements
+(
 	const graphs::free_tree& t,
 	const node thistle,
 	const int64_t thistle_level,
@@ -665,7 +671,8 @@ noexcept
  * than the one it already contains.
  */
 template <bool make_arrangement>
-void choose_orientations_for_thistle_neighbors(
+void choose_orientations_for_thistle_neighbors
+(
 	const graphs::free_tree& t,
 	const node thistle,
 	const array<char>& is_thistle_neighbor,
@@ -780,7 +787,8 @@ noexcept
  * vertex.
  */
 template <bool make_arrangement>
-detail::result_t<make_arrangement> AEF(
+[[nodiscard]] detail::result_t<make_arrangement> AEF
+(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
 	const array<std::size_t>& node_to_path
@@ -898,15 +906,13 @@ noexcept
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template <bool make_arrangement>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF(
-	const graphs::free_tree& t,
-	const std::vector<properties::branchless_path>& all_paths
-)
+AEF
+(const graphs::free_tree& t, const std::vector<properties::branchless_path>& all_paths)
 noexcept
 {
 #if defined DEBUG

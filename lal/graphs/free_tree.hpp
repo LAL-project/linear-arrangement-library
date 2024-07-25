@@ -365,7 +365,8 @@ public:
 	 * @returns The head vector representation of this tree.
 	 * @pre This tree is a valid free tree (see @ref is_tree).
 	 */
-	head_vector get_head_vector(node r = 0, const linear_arrangement& arr = {})
+	[[nodiscard]] head_vector get_head_vector
+	(node r = 0, const linear_arrangement& arr = {})
 	const noexcept;
 
 protected:

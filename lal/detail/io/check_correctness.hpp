@@ -105,7 +105,7 @@ is not a valid non-negative integer number."
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
+[[nodiscard]] std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
 find_errors(const head_vector& hv)
 noexcept
 {
@@ -217,7 +217,7 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
+[[nodiscard]] std::conditional_t<decide, bool, std::vector<io::head_vector_error>>
 find_errors(const std::string& current_line)
 noexcept
 {
@@ -276,7 +276,7 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, io::treebank_file_report>
+[[nodiscard]] std::conditional_t<decide, bool, io::treebank_file_report>
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept
 {
@@ -340,7 +340,7 @@ noexcept
  * @returns A Boolean if @e decide is true, a list of errors if otherwise.
  */
 template <bool decide>
-std::conditional_t<decide, bool, io::treebank_collection_report>
+[[nodiscard]] std::conditional_t<decide, bool, io::treebank_collection_report>
 check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads)
 noexcept

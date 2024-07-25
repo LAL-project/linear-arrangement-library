@@ -86,18 +86,18 @@ public:
 	}
 	*/
 	/// Moves the chunk sequence @ref m_sequence.
-	linarr::chunk_sequence&& retrieve_chunk_sequence() noexcept {
+	[[nodiscard]] linarr::chunk_sequence&& retrieve_chunk_sequence() noexcept {
 		return std::move(m_sequence);
 	}
 
 protected:
 	/// Returns a reference to the last chunk in the sentence.
-	linarr::chunk& last_chunk() noexcept {
+	[[nodiscard]] linarr::chunk& last_chunk() noexcept {
 		return m_sequence[m_sequence.size() - 1];
 	}
 
 	/// Returns the chunk index of node @e u.
-	std::size_t node_to_chunk(node u) const noexcept {
+	[[nodiscard]] std::size_t node_to_chunk(node u) const noexcept {
 		return m_sequence.get_chunk_index(u);
 	}
 	/// Sets the chunk index of node @e u to index @e i.

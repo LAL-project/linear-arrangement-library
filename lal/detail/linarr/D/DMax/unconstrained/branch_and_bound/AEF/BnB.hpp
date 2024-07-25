@@ -331,7 +331,7 @@ protected:
 	(const node u) noexcept;
 
 	/// Propagate level values starting at vertex @e u.
-	propagation_result propagate_constraints
+	[[nodiscard]] propagation_result propagate_constraints
 	(const node u) noexcept;
 
 	// -- rollback constraints -- //
@@ -637,11 +637,11 @@ private:
 	array<LV_propagation_origin> m_predicted_LV__origin;
 
 	/// Does vertex @e u have a valid prediction of level value?
-	bool has_valid_LV_prediction(node u) const noexcept
+	[[nodiscard]] bool has_valid_LV_prediction(node u) const noexcept
 	{ return m_predicted_LV__origin[u] != LV_propagation_origin::none; }
 
 	/// Did a propagation of level values start at vertex @e u?
-	bool is_node_a_trigger_of_LV(node u) const noexcept
+	[[nodiscard]] bool is_node_a_trigger_of_LV(node u) const noexcept
 	{ return m_predicted_LV__origin[u] == LV_propagation_origin::self; }
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB

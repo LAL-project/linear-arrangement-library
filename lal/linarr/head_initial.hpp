@@ -68,8 +68,9 @@ namespace linarr {
  * @returns The headedness ratio as an exact rational number.
  * @pre \f$m > 0\f$.
  */
-numeric::rational head_initial_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
+[[nodiscard]] numeric::rational head_initial_rational
+(const graphs::directed_graph& g, const linear_arrangement& pi = {})
+noexcept;
 
 /**
  * @brief Computes the headedness of a linearly arranged directed graph.
@@ -80,8 +81,9 @@ numeric::rational head_initial_rational
  * @returns The return value is a floating point value.
  * @pre \f$m > 0\f$.
  */
-double head_initial
-(const graphs::directed_graph& g, const linear_arrangement& pi = {}) noexcept;
+[[nodiscard]] double head_initial
+(const graphs::directed_graph& g, const linear_arrangement& pi = {})
+noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal

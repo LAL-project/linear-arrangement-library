@@ -56,7 +56,8 @@ namespace detail {
  * @returns True if, and only if, node target is reachable from node source.
  */
 template <class graph_t>
-bool is_node_reachable_from(const graph_t& g, const node source, const node target)
+[[nodiscard]] bool is_node_reachable_from
+(const graph_t& g, const node source, const node target)
 noexcept
 {
 	BFS<graph_t> bfs(g);

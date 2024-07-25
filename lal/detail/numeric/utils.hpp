@@ -231,7 +231,7 @@ void operate_power(mpq_t& r, const mpz_t& p) noexcept {
 /* Getters of mpz_t objects */
 
 /// Returns the amount of bytes of a gmp's integer value.
-inline std::size_t mpz_bytes(const mpz_t& v) noexcept
+[[nodiscard]] inline std::size_t mpz_bytes(const mpz_t& v) noexcept
 {
 	const std::size_t alloc = static_cast<std::size_t>(v[0]._mp_alloc);
 	return sizeof(mp_limb_t)*alloc;

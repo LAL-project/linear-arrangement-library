@@ -56,7 +56,9 @@ namespace linarr {
  * @param seq Chunk sequence
  * @returns A rooted tree.
  */
-graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq) noexcept;
+[[nodiscard]] graphs::rooted_tree make_tree_from_chunk_sequence
+(const chunk_sequence& seq)
+noexcept;
 
 /**
  * @brief Chunks a syntactic dependency tree according to the algorithm passed
@@ -67,10 +69,9 @@ graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq) noe
  * @param algo Algorithm of choice.
  * @returns A syntactic dependency tree result of the chosen chunking algorithm.
  */
-graphs::rooted_tree chunk_syntactic_dependency_tree(
-	const graphs::rooted_tree& rt,
-	const algorithms_chunking& algo
-) noexcept;
+[[nodiscard]] graphs::rooted_tree chunk_syntactic_dependency_tree
+(const graphs::rooted_tree& rt, const algorithms_chunking& algo)
+noexcept;
 
 /**
  * @brief Chunks a syntactic dependency tree according to the algorithm passed
@@ -80,11 +81,13 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
  * @param algo Algorithm of choice.
  * @returns A syntactic dependency tree result of the chosen chunking algorithm.
  */
-graphs::rooted_tree chunk_syntactic_dependency_tree(
+[[nodiscard]] graphs::rooted_tree chunk_syntactic_dependency_tree
+(
 	const graphs::rooted_tree& rt,
 	const linear_arrangement& arr,
 	const algorithms_chunking& algo
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Chunks a syntactic dependency tree according to the algorithm passed
@@ -96,10 +99,9 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
  * @returns The sequence of chunks as a simple collection of nodes plus parent
  * node for each chunk.
  */
-chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
-	const graphs::rooted_tree& rt,
-	const algorithms_chunking& algo
-) noexcept;
+[[nodiscard]] chunk_sequence chunk_syntactic_dependency_tree_as_sequence
+(const graphs::rooted_tree& rt, const algorithms_chunking& algo)
+noexcept;
 
 /**
  * @brief Chunks a syntactic dependency tree according to the algorithm passed
@@ -110,11 +112,13 @@ chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
  * @returns The sequence of chunks as a simple collection of nodes plus parent
  * node for each chunk.
  */
-chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
+[[nodiscard]] chunk_sequence chunk_syntactic_dependency_tree_as_sequence
+(
 	const graphs::rooted_tree& rt,
 	const linear_arrangement& arr,
 	const algorithms_chunking& algo
-) noexcept;
+)
+noexcept;
 
 } // -- namespace linarr
 } // -- namespace lal

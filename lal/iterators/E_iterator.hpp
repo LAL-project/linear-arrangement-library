@@ -102,9 +102,9 @@ public:
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	E_iterator(const graph_t& g) noexcept
-		: m_G(g),
-		  m_num_nodes(m_G.get_num_nodes())
+	E_iterator(const graph_t& g) noexcept :
+		m_G(g),
+		m_num_nodes(m_G.get_num_nodes())
 	{
 		reset();
 	}
@@ -114,23 +114,23 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge.
-	const edge& get_edge() const noexcept { return m_cur_edge; }
+	[[nodiscard]] const edge& get_edge() const noexcept { return m_cur_edge; }
 
 	/// Returns the current edge.
-	edge_t get_edge_t() const noexcept { return m_cur_edge; }
+	[[nodiscard]] edge_t get_edge_t() const noexcept { return m_cur_edge; }
 
 	/// Returns the current edge and advances the iterator
-	edge yield_edge() noexcept {
+	[[nodiscard]] edge yield_edge() noexcept {
 		const auto e = get_edge();
 		next();
 		return e;
 	}
 
 	/// Returns the current edge and advances the iterator
-	edge_t yield_edge_t() noexcept {
+	[[nodiscard]] edge_t yield_edge_t() noexcept {
 		const auto e = get_edge_t();
 		next();
 		return e;
@@ -216,7 +216,7 @@ private:
 	}
 
 	/// Returns the edge pointed by @ref m_cur.
-	edge make_current_edge() const noexcept {
+	[[nodiscard]] edge make_current_edge() const noexcept {
 		node s, t;
 		if constexpr (is_directed) {
 			s = m_cur.first;
@@ -236,7 +236,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
 		bool found = false;
@@ -260,7 +260,7 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept {
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;
 		bool found = false;

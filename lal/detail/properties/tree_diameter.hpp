@@ -66,8 +66,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-uint64_t tree_diameter(const tree_t& t, node x) noexcept
-{
+[[nodiscard]] uint64_t tree_diameter(const tree_t& t, node x) noexcept {
 	{
 	const auto ccsize = t.get_num_nodes_component(x);
 	if (ccsize == 1) { return 0; }

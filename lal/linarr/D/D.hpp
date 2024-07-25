@@ -62,7 +62,7 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint64_t sum_edge_lengths
+[[nodiscard]] uint64_t sum_edge_lengths
 (const graphs::directed_graph& g, const linear_arrangement& pi = {})
 noexcept;
 /**
@@ -77,7 +77,7 @@ noexcept;
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-uint64_t sum_edge_lengths
+[[nodiscard]] uint64_t sum_edge_lengths
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {})
 noexcept;
 
@@ -96,7 +96,7 @@ noexcept;
  * @returns Jing's and Liu's \f$MDD\f$.
  * @pre \f$m > 0\f$.
  */
-numeric::rational mean_dependency_distance_rational
+[[nodiscard]] numeric::rational mean_dependency_distance_rational
 (const graphs::directed_graph& g, const linear_arrangement& pi = {})
 noexcept;
 /**
@@ -112,7 +112,7 @@ noexcept;
  * @returns Jing's and Liu's \f$MDD\f$.
  * @pre \f$m > 0\f$.
  */
-numeric::rational mean_dependency_distance_rational
+[[nodiscard]] numeric::rational mean_dependency_distance_rational
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {})
 noexcept;
 
@@ -125,7 +125,7 @@ noexcept;
  * @returns The return value is a floating point value.
  * @pre \f$m > 0\f$.
  */
-double mean_dependency_distance
+[[nodiscard]] double mean_dependency_distance
 (const graphs::directed_graph& g, const linear_arrangement& pi = {})
 noexcept;
 /**
@@ -137,7 +137,7 @@ noexcept;
  * @returns The return value is a floating point value.
  * @pre \f$m > 0\f$.
  */
-double mean_dependency_distance
+[[nodiscard]] double mean_dependency_distance
 (const graphs::undirected_graph& g, const linear_arrangement& pi = {})
 noexcept;
 

@@ -82,7 +82,8 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-std::pair<node, node> retrieve_centre(const tree_t& t, node X) noexcept
+[[nodiscard]] std::pair<node, node> retrieve_centre(const tree_t& t, node X)
+noexcept
 {
 	// number of nodes of the whole tree
 	const auto n = t.get_num_nodes();

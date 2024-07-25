@@ -112,10 +112,8 @@ static constexpr char ANCHOR = 1;
  * the tree.
  */
 template <typename sort_type>
-void make_sorted_adjacency_list_rooted(
-	const graphs::rooted_tree& t,
-	std::vector<std::vector<node_size>>& L
-)
+void make_sorted_adjacency_list_rooted
+(const graphs::rooted_tree& t, std::vector<std::vector<node_size>>& L)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();

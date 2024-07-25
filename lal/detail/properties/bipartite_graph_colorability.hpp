@@ -56,7 +56,10 @@ namespace detail {
  * for the coloring to be correct.
  */
 template <class graph_t>
-properties::bipartite_graph_coloring color_vertices_graph(const graph_t& g) noexcept {
+[[nodiscard]] properties::bipartite_graph_coloring color_vertices_graph
+(const graph_t& g)
+noexcept
+{
 	const auto n = g.get_num_nodes();
 	properties::bipartite_graph_coloring colors(n);
 

@@ -66,10 +66,9 @@ namespace linarr {
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t num_crossings(
-	const graphs::directed_graph& G,
-	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+[[nodiscard]] uint64_t num_crossings
+(const graphs::directed_graph& G, const algorithms_C& A = algorithms_C::ladder)
+noexcept;
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -82,10 +81,9 @@ uint64_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t num_crossings(
-	const graphs::undirected_graph& G,
-	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+[[nodiscard]] uint64_t num_crossings
+(const graphs::undirected_graph& G, const algorithms_C& A = algorithms_C::ladder)
+noexcept;
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -100,11 +98,13 @@ uint64_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t num_crossings(
+[[nodiscard]] uint64_t num_crossings
+(
 	const graphs::directed_graph& G,
 	const linear_arrangement& arr,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -122,7 +122,8 @@ uint64_t num_crossings(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& arr,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
@@ -139,11 +140,13 @@ uint64_t num_crossings(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> num_crossings_list(
+[[nodiscard]] std::vector<uint64_t> num_crossings_list
+(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Computes the number of edge crossings in a linear arrangement.
  *
@@ -159,11 +162,13 @@ std::vector<uint64_t> num_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> num_crossings_list(
+[[nodiscard]] std::vector<uint64_t> num_crossings_list
+(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -184,11 +189,13 @@ std::vector<uint64_t> num_crossings_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t is_num_crossings_lesseq_than(
+[[nodiscard]] uint64_t is_num_crossings_lesseq_than
+(
 	const graphs::directed_graph& G,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
@@ -208,11 +215,13 @@ uint64_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t is_num_crossings_lesseq_than(
+[[nodiscard]] uint64_t is_num_crossings_lesseq_than
+(
 	const graphs::undirected_graph& G,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -234,12 +243,14 @@ uint64_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t is_num_crossings_lesseq_than(
+[[nodiscard]] uint64_t is_num_crossings_lesseq_than
+(
 	const graphs::directed_graph& G,
 	const linear_arrangement& arr,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
@@ -260,12 +271,14 @@ uint64_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-uint64_t is_num_crossings_lesseq_than(
+[[nodiscard]] uint64_t is_num_crossings_lesseq_than
+(
 	const graphs::undirected_graph& G,
 	const linear_arrangement& arr,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -289,12 +302,14 @@ uint64_t is_num_crossings_lesseq_than(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> is_num_crossings_lesseq_than_list(
+[[nodiscard]] std::vector<uint64_t> is_num_crossings_lesseq_than_list
+(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
@@ -316,12 +331,14 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> is_num_crossings_lesseq_than_list(
+[[nodiscard]] std::vector<uint64_t> is_num_crossings_lesseq_than_list
+(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -347,12 +364,14 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> is_num_crossings_lesseq_than_list(
+[[nodiscard]] std::vector<uint64_t> is_num_crossings_lesseq_than_list
+(
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
  *
@@ -377,12 +396,14 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * @pre The preconditions of this function depend on the choice of algorithm.
  * See the preconditions of each algorithm in @ref lal::linarr::algorithms_C.
  */
-std::vector<uint64_t> is_num_crossings_lesseq_than_list(
+[[nodiscard]] std::vector<uint64_t> is_num_crossings_lesseq_than_list
+(
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A = algorithms_C::ladder
-) noexcept;
+)
+noexcept;
 
 /* ---------------------------------------- */
 /* APPROXIMATION OF THE NUMBER OF CROSSINGS */
@@ -398,7 +419,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @return Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
-numeric::rational predicted_num_crossings_rational
+[[nodiscard]] numeric::rational predicted_num_crossings_rational
 (const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 /**
@@ -423,7 +444,7 @@ numeric::rational predicted_num_crossings_rational
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
-double predicted_num_crossings
+[[nodiscard]] double predicted_num_crossings
 (const graphs::undirected_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 /**
@@ -434,7 +455,7 @@ double predicted_num_crossings
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns Approximation of the number of crossings \f$E_2[C_G\;|\;\delta]\f$.
  */
-double predicted_num_crossings
+[[nodiscard]] double predicted_num_crossings
 (const graphs::directed_graph& g, const linear_arrangement& arr = {}) noexcept;
 
 } // -- namespace linarr

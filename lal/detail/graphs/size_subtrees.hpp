@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <tuple>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -153,7 +154,7 @@ template <
 		bool
 	> = true
 >
-uint64_t calculate_bidirectional_sizes
+[[nodiscard]] uint64_t calculate_bidirectional_sizes
 (const tree_t& t, const uint64_t n, const node u, const node v, iterator_t& it)
 noexcept
 {
@@ -228,15 +229,15 @@ noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node y : t.get_out_neighbors(x)) {
-			calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 		for (const node y : t.get_in_neighbors(x)) {
-			calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}
 	else {
 		for (const node y : t.get_neighbors(x)) {
-			calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
 		}
 	}
 }

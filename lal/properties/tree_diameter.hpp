@@ -55,7 +55,7 @@ namespace properties {
  * @param t Input tree.
  * @returns The diameter of the input tree.
  */
-uint64_t tree_diameter(const graphs::free_tree& t) noexcept;
+[[nodiscard]] uint64_t tree_diameter(const graphs::free_tree& t) noexcept;
 
 /**
  * @brief Calculate the diameter of a free tree.
@@ -65,7 +65,7 @@ uint64_t tree_diameter(const graphs::free_tree& t) noexcept;
  * @param t Input tree.
  * @returns The diameter of the input tree.
  */
-uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept;
+[[nodiscard]] uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

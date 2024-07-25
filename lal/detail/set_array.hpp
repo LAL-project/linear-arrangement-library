@@ -151,7 +151,7 @@ public:
 	 * @param i Index value.
 	 * @returns The value at the @e i-th position of @ref m_values.
 	 */
-	const value_t& operator[] (std::size_t i) const noexcept {
+	[[nodiscard]] const value_t& operator[] (std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -159,16 +159,16 @@ public:
 	}
 
 	/// Maximum size of this set.
-	std::size_t capacity() const noexcept { return m_exists.size(); }
+	[[nodiscard]] std::size_t capacity() const noexcept { return m_exists.size(); }
 	/// Actual size of this set.
-	std::size_t size() const noexcept { return m_size; }
+	[[nodiscard]] std::size_t size() const noexcept { return m_size; }
 
 	/// Does an element exist?
-	bool exists(const value_t& v) const noexcept
+	[[nodiscard]] bool exists(const value_t& v) const noexcept
 	{ return m_exists[index(v)] == EXISTS; }
 
 	/// Where is an element located?
-	std::size_t position(const value_t& v) const noexcept
+	[[nodiscard]] std::size_t position(const value_t& v) const noexcept
 	{ return m_position[index(v)]; }
 
 	/// Add a new element to the set.
@@ -229,22 +229,22 @@ public:
 	}
 
 	/// Begin iterator to @ref m_values.
-	const value_t* begin_values() const noexcept { return m_values.begin(); }
+	[[nodiscard]] const value_t* begin_values() const noexcept { return m_values.begin(); }
 	/// Begin iterator to @ref m_values.
-	value_t* begin_values() noexcept { return m_values.begin(); }
+	[[nodiscard]] value_t* begin_values() noexcept { return m_values.begin(); }
 	/// End iterator to @ref m_values.
-	const value_t* end_values() const noexcept { return m_values.end(); }
+	[[nodiscard]] const value_t* end_values() const noexcept { return m_values.end(); }
 	/// End iterator to @ref m_values.
-	value_t* end_values() noexcept { return m_values.end(); }
+	[[nodiscard]] value_t* end_values() noexcept { return m_values.end(); }
 
 	/// Begin iterator to @ref m_position.
-	const value_t* begin_position() const noexcept { return m_position.begin(); }
+	[[nodiscard]] const value_t* begin_position() const noexcept { return m_position.begin(); }
 	/// Begin iterator to @ref m_position.
-	value_t* begin_position() noexcept { return m_position.begin(); }
+	[[nodiscard]] value_t* begin_position() noexcept { return m_position.begin(); }
 	/// End iterator to @ref m_position.
-	const value_t* end_position() const noexcept { return m_position.end(); }
+	[[nodiscard]] const value_t* end_position() const noexcept { return m_position.end(); }
 	/// End iterator to @ref m_position.
-	value_t* end_position() noexcept { return m_position.end(); }
+	[[nodiscard]] value_t* end_position() noexcept { return m_position.end(); }
 
 private:
 	/// Does an element exist in the set?
@@ -272,7 +272,7 @@ private:
 
 private:
 	/// Calculate the index of an element using the indexer object @ref m_I.
-	std::size_t index(const value_t& v) const noexcept {
+	[[nodiscard]] std::size_t index(const value_t& v) const noexcept {
 		if constexpr (not std::is_same_v<value_t, indexer_t>) {
 			return m_I(v);
 		}

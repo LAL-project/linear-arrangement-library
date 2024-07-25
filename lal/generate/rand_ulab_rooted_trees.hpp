@@ -43,6 +43,7 @@
 
 // C++ includes
 #include <random>
+#include <tuple>
 
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
@@ -82,8 +83,8 @@ public:
 	 * @param seed The seed used for the random number generator. If the seed is
 	 * 0 then a random seed is generated and used.
 	 */
-	_rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
-		: _rand_ulab_rooted_trees()
+	_rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept :
+		_rand_ulab_rooted_trees()
 	{
 		// add the initial values to m_rn
 		init_rn();
@@ -141,7 +142,7 @@ public:
 		m_unif = std::uniform_real_distribution<double>(0, 1);
 
 		// force the addition of the necessary values for m_rn
-		get_rn(n);
+		std::ignore = get_rn(n);
 	}
 
 	/**
@@ -179,7 +180,7 @@ public:
 	 * @returns An unlabelled rooted tree. The tree is rooted
 	 * at vertex 0.
 	 */
-	graphs::rooted_tree get_tree() noexcept;
+	[[nodiscard]] graphs::rooted_tree get_tree() noexcept;
 
 protected:
 	/// Number of nodes of the tree.
@@ -232,7 +233,7 @@ protected:
 	 * @returns Two indices: the index of the root of the last
 	 * tree generated and where to store the next tree in @ref m_head_vector.
 	 */
-	std::pair<uint64_t,uint64_t> ranrut
+	[[nodiscard]] std::pair<uint64_t,uint64_t> ranrut
 	(uint64_t n, uint64_t lr, uint64_t nt) noexcept;
 
 	/// Initialiases @ref m_rn with values from the OEIS (see \cite OEIS_A000081).
@@ -288,10 +289,10 @@ protected:
 	 * Here \f$n\f$ is @ref m_n. In case these values have already been
 	 * calculated, this method does nothing.
 	 */
-	const numeric::integer& get_rn(uint64_t n) noexcept;
+	[[nodiscard]] const numeric::integer& get_rn(uint64_t n) noexcept;
 
 	/// Returns whether or not the value \f$r_n\f$ (@ref m_rn) has been computed.
-	bool has_rn(uint64_t n) const noexcept { return m_rn.size() >= n + 1; }
+	[[nodiscard]] bool has_rn(uint64_t n) const noexcept { return m_rn.size() >= n + 1; }
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -303,7 +304,7 @@ protected:
 	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
-	std::pair<uint64_t,uint64_t> choose_jd_from_T(uint64_t n) noexcept;
+	[[nodiscard]] std::pair<uint64_t,uint64_t> choose_jd_from_T(uint64_t n) noexcept;
 };
 
 /**
@@ -345,8 +346,8 @@ public:
 	 * @param seed The seed used for the random generator. If @e seed is 0 then
 	 * a random seed is used.
 	 */
-	rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
-		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+	rand_ulab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept :
+		_tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
@@ -384,7 +385,7 @@ public:
 		m_Gen.clear();
 	}
 
-	graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -395,7 +396,7 @@ protected:
 	 * See @ref _rand_ulab_rooted_trees::get_tree for details.
 	 * @returns An unlabelled rooted tree chosen uniformly at random.
 	 */
-	graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_ulab_rooted_trees for details.

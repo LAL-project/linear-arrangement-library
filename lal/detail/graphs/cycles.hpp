@@ -56,7 +56,7 @@ namespace detail {
  * @param visited For each node, has it been visited?
  * @param in_stack For each node, is it in the recursion stack?
  */
-inline bool find_cycle
+[[nodiscard]] inline bool find_cycle
 (
 	const graphs::directed_graph& g, node u,
 	char * const __restrict__ visited,
@@ -88,7 +88,7 @@ noexcept
  * @param in_stack Array of size 'n', where 'n' is the number of vertices of 'g'.
  * @returns Whether the graph has cycles or not.
  */
-inline bool has_directed_cycles(
+[[nodiscard]] inline bool has_directed_cycles(
 	const graphs::directed_graph& g,
 	char * const __restrict__ vis,
 	char * const __restrict__ in_stack
@@ -112,8 +112,10 @@ noexcept
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-inline
-bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
+[[nodiscard]] inline bool has_directed_cycles
+(const graphs::directed_graph& g)
+noexcept
+{
 	const uint64_t n = g.get_num_nodes();
 	array<char> all_mem(2*n);
 	char * const __restrict__ vis = all_mem.begin();
@@ -132,7 +134,9 @@ bool has_directed_cycles(const graphs::directed_graph& g) noexcept {
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
+[[nodiscard]] bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs)
+noexcept
+{
 	const auto n = g.get_num_nodes();
 
 	// parent[s] = t <->
@@ -194,7 +198,7 @@ bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept {
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-bool has_undirected_cycles(const graph_t& g) noexcept {
+[[nodiscard]] bool has_undirected_cycles(const graph_t& g) noexcept {
 	// BFS traversal object
 	BFS<graph_t> bfs(g);
 	return has_undirected_cycles(g, bfs);

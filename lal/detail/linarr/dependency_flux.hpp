@@ -128,7 +128,7 @@ noexcept
  * @param ug Input undirected graph.
  * @returns The size of the largest subset of independent dependencies.
  */
-inline uint64_t calculate_weight
+[[nodiscard]] inline uint64_t calculate_weight
 (const std::vector<edge>& dependencies, graphs::undirected_graph& ug)
 noexcept
 {
@@ -173,7 +173,7 @@ noexcept
  * @returns The set of dependency fluxes in the arrangement.
  */
 template <class depflux, class arrangement_t>
-std::vector<depflux> dependency_flux_compute
+[[nodiscard]] std::vector<depflux> dependency_flux_compute
 (const graphs::free_tree& t, const arrangement_t& arr)
 noexcept
 {

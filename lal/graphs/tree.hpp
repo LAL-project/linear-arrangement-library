@@ -174,7 +174,7 @@ public:
 	 * @returns True or false depending on whether this graph fits the defintion
 	 * of tree.
 	 */
-	bool is_tree() const noexcept {
+	[[nodiscard]] bool is_tree() const noexcept {
 		// NOTE: this would not really be true if the addition of edges
 		// was not constrained. Since it is, in a way that no cycles can
 		// be produced, then we only need to check for the number of edges.
@@ -186,7 +186,7 @@ public:
 	}
 
 	/// Returns whether this tree is a rooted tree.
-	virtual bool is_rooted() const noexcept = 0;
+	[[nodiscard]] virtual bool is_rooted() const noexcept = 0;
 
 	/**
 	 * @brief Can this edge be added?
@@ -202,7 +202,7 @@ public:
 	 * @returns Whether or not this edge can be added to the tree without
 	 * producing cycles.
 	 */
-	virtual bool can_add_edge(node s, node t) const noexcept;
+	[[nodiscard]] virtual bool can_add_edge(node s, node t) const noexcept;
 
 	/**
 	 * @brief Can these edges be added?
@@ -217,7 +217,7 @@ public:
 	 * @returns Whether or not these edges can be added to the tree without
 	 * producing cycles.
 	 */
-	virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+	[[nodiscard]] virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
 	/**
 	 * @brief Representative node of the connected component in which @e u belongs.
@@ -234,7 +234,7 @@ public:
 	 * @param u Input node.
 	 * @returns The representative node of node @e u's component.
 	 */
-	uint64_t get_component_representative(node u) const noexcept {
+	[[nodiscard]] uint64_t get_component_representative(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -247,7 +247,7 @@ public:
 	 * @param v Second node.
 	 * @returns True or false.
 	 */
-	bool are_nodes_in_same_component(node u, node v) const noexcept {
+	[[nodiscard]] bool are_nodes_in_same_component(node u, node v) const noexcept {
 		return get_component_representative(u) == get_component_representative(v);
 	}
 
@@ -263,7 +263,7 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	uint64_t get_num_nodes_component(node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_component(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -277,7 +277,7 @@ public:
 	 * @param tt Type of tree (see @ref graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
-	bool is_of_tree_type(const tree_type& tt) const noexcept {
+	[[nodiscard]] bool is_of_tree_type(const tree_type& tt) const noexcept {
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
@@ -299,13 +299,13 @@ public:
 	 * @returns True or false depending on whether the tree type was calculated
 	 * or not.
 	 */
-	bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
+	[[nodiscard]] bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
 
 	/**
 	 * @brief Returns the list of types as a list of strings.
 	 * @returns The list of types as a list of strings.
 	 */
-	std::vector<std::string> get_tree_type_list() const noexcept;
+	[[nodiscard]] std::vector<std::string> get_tree_type_list() const noexcept;
 
 protected:
 	/// The root of every vertex in the union-find data structure

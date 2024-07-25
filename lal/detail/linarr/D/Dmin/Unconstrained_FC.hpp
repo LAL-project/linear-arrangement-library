@@ -112,7 +112,9 @@ int calculate_q(uint64_t n, const ordering& ord) {
  * @param ord Ordering of the children with respect to a node.
  * @returns Returns the value of \f$q\f$.
  */
-std::optional<uint64_t> calculate_q(uint64_t n, const ordering& ord) noexcept {
+[[nodiscard]] std::optional<uint64_t> calculate_q(uint64_t n, const ordering& ord)
+noexcept
+{
 #if defined DEBUG
 	assert(ord.size() > 0);
 #endif
@@ -186,7 +188,9 @@ int calculate_p(uint64_t n, const ordering& ord) {
  * @param ord Ordering of the children with respect to a node.
  * @returns Returns the value of \f$p\f$.
  */
-std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
+[[nodiscard]] std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord)
+noexcept
+{
 	if (ord.size() < 2) { return {}; }
 
 	// number of subtrees (T_0, T_1, ..., T_k)
@@ -223,7 +227,7 @@ std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$P\f$.
  */
-array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
+[[nodiscard]] array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
 	array<uint64_t> v(2*p + 1 + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
@@ -259,7 +263,7 @@ array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$Q\f$.
  */
-array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+[[nodiscard]] array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
 	array<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
@@ -294,7 +298,7 @@ array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
  * @param u Vertex.
  * @returns Returns the children of @e u sorted in non-increasing order.
  */
-ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
+[[nodiscard]] ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
 	// Let 'T_u' to be a tree rooted at vertex 'u'.
 	// Order subtrees of 'T_u' by size.
 	ordering ord(t.get_degree(u));
@@ -341,7 +345,8 @@ ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
  * @param[out] cost The cost of the minimum arrangement.
  */
 template <char root, bool make_arrangement>
-void calculate_mla(
+void calculate_mla
+(
 	graphs::free_tree& t,
 	node one_node, position start,
 	linear_arrangement& mla, uint64_t& cost
@@ -688,7 +693,7 @@ noexcept
  * on the value of the template parameter @e make_arrangement.
  */
 template <bool make_arrangement>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t

@@ -114,7 +114,7 @@ public:
 	/* GETTERS */
 
 	/// Access the i-th node in the path.
-	lal::node operator[](std::size_t i) const noexcept {
+	[[nodiscard]] node operator[](std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_vertex_sequence.size());
 #endif
@@ -122,9 +122,9 @@ public:
 	}
 
 	/// Gets the first vertex of degree different from 2.
-	node get_h1() const noexcept { return m_h1; }
+	[[nodiscard]] node get_h1() const noexcept { return m_h1; }
 	/// Gets the second vertex of degree different from 2.
-	node get_h2() const noexcept { return m_h2; }
+	[[nodiscard]] node get_h2() const noexcept { return m_h2; }
 
 	/**
 	 * @brief Does this path have a lowest lexicographic vertex?
@@ -132,7 +132,7 @@ public:
 	 * This method only returns true when the vertex sequence has 3 or more vertices.
 	 * @returns True if the path has a lowest lexicographic. False, if otherwise.
 	 */
-	bool has_lowest_lexicographic() const noexcept {
+	[[nodiscard]] bool has_lowest_lexicographic() const noexcept {
 		return m_lowest_lexicographic.has_value();
 	}
 	/**
@@ -141,7 +141,7 @@ public:
 	 * @pre This method should only be called when @ref has_lowest_lexicographic
 	 * returns true.
 	 */
-	node get_lowest_lexicographic() const noexcept {
+	[[nodiscard]] node get_lowest_lexicographic() const noexcept {
 #if defined DEBUG
 		assert(has_lowest_lexicographic());
 #endif
@@ -155,7 +155,7 @@ public:
 	 * the order they are found in the tree.
 	 * @returns A vector with all nodes in the path.
 	 */
-	const std::vector<node>& get_vertex_sequence() const noexcept
+	[[nodiscard]] const std::vector<node>& get_vertex_sequence() const noexcept
 	{ return m_vertex_sequence; }
 
 	/**
@@ -164,18 +164,20 @@ public:
 	 * The number of vertices includes the endpoints.
 	 * @returns The number of vertices.
 	 */
-	std::size_t get_num_nodes() const noexcept { return m_vertex_sequence.size(); }
+	[[nodiscard]] std::size_t get_num_nodes() const noexcept
+	{ return m_vertex_sequence.size(); }
 	/**
 	 * @brief Number of edges in this path.
 	 *
 	 * The number of edges includes the edges incident to the endpoints.
 	 * @returns The number of edges.
 	 */
-	std::size_t get_num_edges() const noexcept { return m_vertex_sequence.size() - 1; }
+	[[nodiscard]] std::size_t get_num_edges() const noexcept
+	{ return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
-	bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
+	[[nodiscard]] bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
 	/// Returns the get_position of node @e u in @ref m_vertex_sequence.
-	std::size_t get_position(node u) const noexcept {
+	[[nodiscard]] std::size_t get_position(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -192,7 +194,7 @@ public:
 	 * @returns True if @e bp is an antenna. False if it is not.
 	 */
 	template <class graph_t>
-	bool is_antenna(const graph_t& t) const noexcept {
+	[[nodiscard]] bool is_antenna(const graph_t& t) const noexcept {
 		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		return t.get_degree(m_h1) == 1 or t.get_degree(m_h2) == 1;
 	}

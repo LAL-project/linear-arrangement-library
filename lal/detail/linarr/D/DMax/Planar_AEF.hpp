@@ -117,7 +117,7 @@ typedef std::vector<std::vector<sorted_adjacency_list_info>>
  * @param t Input free tree.
  * @returns The appropriate sorted adjacency list.
  */
-inline
+[[nodiscard]] inline
 sorted_adjacency_list make_sorted_adjacency_list(const graphs::free_tree& t)
 noexcept
 {
@@ -229,7 +229,7 @@ enum class return_type_all_maxs {
  * @returns Depending of the value of @e res_type, a list of values, a p
  */
 template <return_type_all_maxs res_type>
-conditional_list_t<
+[[nodiscard]] conditional_list_t<
 	bool_sequence<
 		res_type == return_type_all_maxs::DMax_value_vertex_and_max_root,
 		res_type == return_type_all_maxs::DMax_value_vertex,
@@ -358,7 +358,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
  * @returns A pair of cost and maximum linear arrangement.
  */
 template <bool make_arrangement>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t

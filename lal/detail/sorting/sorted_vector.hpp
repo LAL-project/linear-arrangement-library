@@ -79,9 +79,9 @@ public:
 	sorted_vector(sorted_vector&& v) noexcept = default;
 
 	/// Copy-assignment operator
-	sorted_vector& operator= (const sorted_vector& v) noexcept = default;
+	[[nodiscard]] sorted_vector& operator= (const sorted_vector& v) noexcept = default;
 	/// Move-assignment operator
-	sorted_vector& operator= (sorted_vector&& v) noexcept = default;
+	[[nodiscard]] sorted_vector& operator= (sorted_vector&& v) noexcept = default;
 
 	/// Empty destructor
 	~sorted_vector() noexcept = default;
@@ -155,7 +155,7 @@ public:
 	 * @param x The element to look for.
 	 * @returns True or false telling if the element is in the vector or not.
 	 */
-	bool contains(const T& x) const noexcept {
+	[[nodiscard]] bool contains(const T& x) const noexcept {
 		return std::binary_search(this->begin(), this->end(), x);
 	}
 
@@ -165,7 +165,7 @@ public:
 	 * @returns An iterator to the element, or std::vector::end() if it does not
 	 * exist.
 	 */
-	iterator_t find_sorted(const T& x) noexcept {
+	[[nodiscard]] iterator_t find_sorted(const T& x) noexcept {
 		const auto i = std::lower_bound(this->begin(), this->end(), x);
 		if (i == this->end()) { return this->end(); }
 

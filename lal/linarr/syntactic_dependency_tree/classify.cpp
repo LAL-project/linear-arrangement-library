@@ -339,10 +339,10 @@ noexcept
 	linear_arrangement __arr;
 	if constexpr (std::is_same_v<arrangement_t, arr_nonident>) {
 #if defined DEBUG
-		assert(arr.m_arr.size() > 0);
+		assert(arr.size() > 0);
 #endif
 
-		__arr.resize(arr.m_arr.size() + 1);
+		__arr.resize(arr.size() + 1);
 		if (__arr.size() > 0) {
 			__arr.assign(0ull, 0ull);
 		}

@@ -101,7 +101,7 @@ namespace DMax_utils {
  * @pre @e L is sorted decreasingly.
  */
 template <Dopt_utils::place r_place, bool make_arrangement>
-uint64_t arrange
+[[nodiscard]] uint64_t arrange
 (
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
@@ -193,7 +193,7 @@ noexcept
  * @returns The cost of a maximum projective linear arrangement.
  * @pre @e L is sorted decreasingly.
  */
-inline uint64_t arrange_projective
+[[nodiscard]] inline uint64_t arrange_projective
 (
 	uint64_t n, const std::vector<std::vector<node_size>>& L,
 	node r, linear_arrangement& arr
@@ -216,7 +216,7 @@ noexcept
  * @returns The cost of a maximum projective linear arrangement.
  * @pre @e L is sorted decreasingly.
  */
-inline uint64_t arrange_projective
+[[nodiscard]] inline uint64_t arrange_projective
 (uint64_t n, const std::vector<std::vector<node_size>>& L, node r)
 noexcept
 {

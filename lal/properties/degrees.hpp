@@ -74,7 +74,7 @@ namespace properties {
  * @return The sum of degrees raised to the input power @e p.
  */
 template <class graph_t, class return_type>
-return_type sum_powers_degrees
+[[nodiscard]] return_type sum_powers_degrees
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
 {
@@ -122,9 +122,9 @@ noexcept
  * @param p Power of degree.
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
-inline
-numeric::integer sum_powers_degrees_integer
-(const graphs::undirected_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::integer sum_powers_degrees_integer
+(const graphs::undirected_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::undirected_graph, numeric::integer>
@@ -143,9 +143,9 @@ numeric::integer sum_powers_degrees_integer
  * @param p Power of degree.
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
-inline
-uint64_t sum_powers_degrees
-(const graphs::undirected_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline uint64_t sum_powers_degrees
+(const graphs::undirected_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::undirected_graph, uint64_t>
@@ -165,9 +165,9 @@ uint64_t sum_powers_degrees
  * @param p Power of degree.
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
-inline
-numeric::integer sum_powers_degrees_integer
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::integer sum_powers_degrees_integer
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, numeric::integer>
@@ -186,9 +186,9 @@ numeric::integer sum_powers_degrees_integer
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
-inline
-uint64_t sum_powers_degrees
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline uint64_t sum_powers_degrees
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, uint64_t>
@@ -208,9 +208,9 @@ uint64_t sum_powers_degrees
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
-inline
-numeric::integer sum_powers_in_degrees_integer
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::integer sum_powers_in_degrees_integer
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, numeric::integer>
@@ -229,9 +229,9 @@ numeric::integer sum_powers_in_degrees_integer
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
-inline
-uint64_t sum_powers_in_degrees
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline uint64_t sum_powers_in_degrees
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, uint64_t>
@@ -252,8 +252,7 @@ uint64_t sum_powers_in_degrees
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  * @pre Tree @e t is a valid rooted tree.
  */
-inline
-numeric::integer sum_powers_in_degrees_integer
+[[nodiscard]] inline numeric::integer sum_powers_in_degrees_integer
 (const graphs::rooted_tree& t, uint64_t p)
 noexcept
 {
@@ -278,11 +277,13 @@ noexcept
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  * @pre Tree @e t is a valid rooted tree.
  */
-inline
-uint64_t sum_powers_in_degrees(const graphs::rooted_tree& t, uint64_t p) noexcept
+[[nodiscard]] inline uint64_t sum_powers_in_degrees
+(
+	const graphs::rooted_tree& t,
+	[[maybe_unused]] uint64_t p
+)
+noexcept
 {
-	(void(p));
-
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -302,9 +303,10 @@ uint64_t sum_powers_in_degrees(const graphs::rooted_tree& t, uint64_t p) noexcep
  * @param p Power of degree.
  * @return The sum of out-degrees raised to the \f$p\f$-th power.
  */
-inline
+[[nodiscard]] inline
 numeric::integer sum_powers_out_degrees_integer
-(const graphs::directed_graph& g, uint64_t p) noexcept
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, numeric::integer>
@@ -323,9 +325,9 @@ numeric::integer sum_powers_out_degrees_integer
  * @param p Power of degree.
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
-inline
-uint64_t sum_powers_out_degrees
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline uint64_t sum_powers_out_degrees
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	sum_powers_degrees<graphs::directed_graph, uint64_t>
@@ -351,7 +353,7 @@ uint64_t sum_powers_out_degrees
  * @return The \f$p\f$-th moment of degree about 0.
  */
 template <class graph_t, class return_type>
-return_type moment_degree
+[[nodiscard]] return_type moment_degree
 (const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
 noexcept
 {
@@ -389,9 +391,9 @@ noexcept
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-inline
-numeric::rational moment_degree_rational
-(const graphs::undirected_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::rational moment_degree_rational
+(const graphs::undirected_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::undirected_graph, numeric::rational>
@@ -406,8 +408,9 @@ numeric::rational moment_degree_rational
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
-inline
-double moment_degree(const graphs::undirected_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline double moment_degree
+(const graphs::undirected_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::undirected_graph, double>
@@ -429,9 +432,9 @@ double moment_degree(const graphs::undirected_graph& g, uint64_t p) noexcept
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-inline
-numeric::rational moment_degree_rational
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::rational moment_degree_rational
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, numeric::rational>
@@ -446,8 +449,9 @@ numeric::rational moment_degree_rational
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
-inline
-double moment_degree(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline double moment_degree
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, double>
@@ -469,9 +473,9 @@ double moment_degree(const graphs::directed_graph& g, uint64_t p) noexcept
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
-inline
-numeric::rational moment_in_degree_rational
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::rational moment_in_degree_rational
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, numeric::rational>
@@ -486,8 +490,9 @@ numeric::rational moment_in_degree_rational
  * @param p Moment of degree.
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
-inline
-double moment_in_degree(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline double moment_in_degree
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, double>
@@ -512,12 +517,13 @@ double moment_in_degree(const graphs::directed_graph& g, uint64_t p) noexcept
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  * @pre Tree @e t is a valid rooted tree.
  */
-inline
-numeric::rational moment_in_degree_rational(const graphs::rooted_tree& t, uint64_t p)
+[[nodiscard]] inline numeric::rational moment_in_degree_rational
+(
+	const graphs::rooted_tree& t,
+	[[maybe_unused]] uint64_t p
+)
 noexcept
 {
-	(void(p));
-
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -535,11 +541,13 @@ noexcept
  * @pre Tree @e t is a valid rooted tree.
  */
 inline
-double moment_in_degree(const graphs::rooted_tree& t, uint64_t p)
+double moment_in_degree
+(
+	const graphs::rooted_tree& t,
+	[[maybe_unused]] uint64_t p
+)
 noexcept
 {
-	(void(p));
-
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -562,9 +570,9 @@ noexcept
  * @param p Moment of degree.
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
-inline
-numeric::rational moment_out_degree_rational
-(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline numeric::rational moment_out_degree_rational
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, numeric::rational>
@@ -580,8 +588,9 @@ numeric::rational moment_out_degree_rational
  * @returns The \f$p\f$-th moment of the out-degree about 0 as a floating point
  * value.
  */
-inline
-double moment_out_degree(const graphs::directed_graph& g, uint64_t p) noexcept
+[[nodiscard]] inline double moment_out_degree
+(const graphs::directed_graph& g, uint64_t p)
+noexcept
 {
 	return
 	moment_degree<graphs::directed_graph, double>
@@ -611,8 +620,9 @@ double moment_out_degree(const graphs::directed_graph& g, uint64_t p) noexcept
  * @pre The tree @e t is a valid tree. Method graphs::free_tree::is_tree returns true.
  * @pre \f$n > 3\f$.
  */
-inline
-numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept
+[[nodiscard]] inline numeric::rational hubiness_rational
+(const graphs::free_tree& t)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -649,8 +659,9 @@ numeric::rational hubiness_rational(const graphs::free_tree& t) noexcept
  * returns true.
  * @pre \f$n > 3\f$.
  */
-inline
-numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept
+[[nodiscard]] inline numeric::rational hubiness_rational
+(const graphs::rooted_tree& t)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -677,8 +688,9 @@ numeric::rational hubiness_rational(const graphs::rooted_tree& t) noexcept
  * @pre The tree @e t is a valid tree. Method graphs::free_tree::is_tree returns true.
  * @pre \f$n > 3\f$.
  */
-inline
-double hubiness(const graphs::free_tree& t) noexcept
+[[nodiscard]] inline double hubiness
+(const graphs::free_tree& t)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -706,8 +718,9 @@ double hubiness(const graphs::free_tree& t) noexcept
  * returns true.
  * @pre \f$n > 3\f$.
  */
-inline
-double hubiness(const graphs::rooted_tree& t) noexcept
+[[nodiscard]] inline double hubiness
+(const graphs::rooted_tree& t)
+noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 

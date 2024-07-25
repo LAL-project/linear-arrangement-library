@@ -142,14 +142,14 @@ public:
 	 * @returns True if there are still more arrangements to generate.
 	 * Returns false if all arrangements have been generated.
 	 */
-	bool end() const noexcept { return m_reached_end; };
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; };
 
 	/**
 	 * @brief Constructs the current arrangement.
 	 * @returns The arrangement generated with method @ref next().
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	linear_arrangement get_arrangement() const noexcept;
+	[[nodiscard]] linear_arrangement get_arrangement() const noexcept;
 
 	/* MODIFIERS */
 
@@ -169,7 +169,7 @@ public:
 	 * @returns The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
 		const linear_arrangement arr = get_arrangement();
 		next();
 		return arr;

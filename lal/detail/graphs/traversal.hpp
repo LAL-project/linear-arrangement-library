@@ -255,18 +255,18 @@ public:
 	/* GETTERS */
 
 	/// Returns whether or not node @e u has been visited.
-	bool node_was_visited(node u) const noexcept { return m_vis[u] == 1; }
+	[[nodiscard]] bool node_was_visited(node u) const noexcept { return m_vis[u] == 1; }
 
 	/// Have all nodes been visited?
-	bool all_visited() const noexcept {
+	[[nodiscard]] bool all_visited() const noexcept {
 		return std::all_of(m_vis.begin(), m_vis.end(), [](auto x){return x == 1;});
 	}
 
 	/// Returns a constant reference to the graph
-	const graph_t& get_graph() const noexcept { return m_G; }
+	[[nodiscard]] const graph_t& get_graph() const noexcept { return m_G; }
 
 	/// Return visited nodes information
-	const array<char>& get_visited() const noexcept { return m_vis; }
+	[[nodiscard]] const array<char>& get_visited() const noexcept { return m_vis; }
 
 protected:
 	/**

@@ -59,7 +59,7 @@ namespace io {
  * @param head_vector A head vector.
  * @returns A list of error messages.
  */
-std::vector<head_vector_error>
+[[nodiscard]] std::vector<head_vector_error>
 check_correctness_head_vector(const head_vector& head_vector)
 noexcept;
 
@@ -70,7 +70,7 @@ noexcept;
  * @param head_vector_str A string containing a head vector.
  * @returns A list of error messages.
  */
-std::vector<head_vector_error>
+[[nodiscard]] std::vector<head_vector_error>
 check_correctness_head_vector(const std::string& head_vector_str)
 noexcept;
 
@@ -79,7 +79,7 @@ noexcept;
  * @param treebank_filename Name of the treebank file.
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_file.
  */
-treebank_file_report
+[[nodiscard]] treebank_file_report
 check_correctness_treebank(const std::string& treebank_filename)
 noexcept;
 
@@ -89,7 +89,7 @@ noexcept;
  * @param n_threads Number of threads to use.
  * @returns A list of errors, objects of the class @ref lal::io::report_treebank_collection.
  */
-treebank_collection_report
+[[nodiscard]] treebank_collection_report
 check_correctness_treebank_collection
 (const std::string& main_file_name, std::size_t n_threads = 1)
 noexcept;

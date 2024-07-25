@@ -146,7 +146,7 @@ public:
 	 * @pre Both level signatures must be of arrangements of the same tree.
 	 */
 	template <level_signature_type st = t>
-	bool operator== (const level_signature<st>& L) const noexcept {
+	[[nodiscard]] bool operator== (const level_signature<st>& L) const noexcept {
 		static_assert(st == t);
 		for (std::size_t i = 0; i < m_data.size(); ++i) {
 			if (m_data[i] != L.m_data[i]) { return false; }
@@ -166,7 +166,7 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true
 	>
-	int64_t get_vertex_level(node u) const noexcept { return m_data[u]; }
+	[[nodiscard]] int64_t get_vertex_level(node u) const noexcept { return m_data[u]; }
 	/**
 	 * @brief Sets the level value of a vertex.
 	 *
@@ -193,7 +193,7 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_position, bool> = true
 	>
-	int64_t get_position_level(position p) const noexcept { return m_data[p]; }
+	[[nodiscard]] int64_t get_position_level(position p) const noexcept { return m_data[p]; }
 	/**
 	 * @brief Sets the level value of a position.
 	 *
@@ -239,11 +239,15 @@ private:
 };
 
 /// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_vertex.
-inline constexpr bool is_per_vertex(const level_signature_type& t) noexcept {
+[[nodiscard]] inline constexpr bool is_per_vertex(const level_signature_type& t)
+noexcept
+{
 	return t == level_signature_type::per_vertex;
 }
 /// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_position.
-inline constexpr bool is_per_position(const level_signature_type& t) noexcept {
+[[nodiscard]] inline constexpr bool is_per_position(const level_signature_type& t)
+noexcept
+{
 	return t == level_signature_type::per_position;
 }
 
@@ -263,7 +267,8 @@ typedef level_signature<level_signature_type::per_position> level_signature_per_
  * @returns Whether or not the input vertex is a thistle.
  */
 template <level_signature_type t, class graph_t>
-bool is_thistle_vertex(
+[[nodiscard]] bool is_thistle_vertex
+(
 	const graph_t& g, const level_signature<t>& levels, node_t u,
 	const linear_arrangement& arr = {}
 )
@@ -330,7 +335,7 @@ noexcept
  * @returns The level sequence of an arrangement per vertex.
  */
 template <level_signature_type t, class graph_t>
-level_signature<t> calculate_level_signature
+[[nodiscard]] level_signature<t> calculate_level_signature
 (const graph_t& g, const linear_arrangement& arr)
 noexcept
 {
@@ -354,7 +359,7 @@ noexcept
  * @returns A mirrored copy of the input level signature.
  */
 template <class level_signature_t>
-level_signature_t mirror_level_signature(const level_signature_t& L)
+[[nodiscard]] level_signature_t mirror_level_signature(const level_signature_t& L)
 noexcept
 {
 	level_signature_t L2 = L;

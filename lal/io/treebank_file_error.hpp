@@ -111,24 +111,24 @@ public:
 	/* COMPARISON OPERATOR */
 
 	/// Compares the treebank error with a treebank error type.
-	bool operator== (const treebank_file_error_type& tet) const noexcept
+	[[nodiscard]] bool operator== (const treebank_file_error_type& tet) const noexcept
 	{ return m_error_type == tet; }
 	/// Compares the treebank error with a treebank error type.
-	bool operator!= (const treebank_file_error_type& tet) const noexcept
+	[[nodiscard]] bool operator!= (const treebank_file_error_type& tet) const noexcept
 	{ return m_error_type != tet; }
 
 	/* GETTERS */
 
 	/// Returns the error message.
-	const std::string& get_error_message() const noexcept
+	[[nodiscard]] const std::string& get_error_message() const noexcept
 	{ return m_error_msg; }
 
 	/// Returns the error type.
-	treebank_file_error_type get_error_type() const noexcept
+	[[nodiscard]] treebank_file_error_type get_error_type() const noexcept
 	{ return m_error_type; }
 
 	/// Returns whether or not this is an actual error.
-	bool is_error() const noexcept
+	[[nodiscard]] bool is_error() const noexcept
 	{ return m_error_type != treebank_file_error_type::no_error; }
 
 private:

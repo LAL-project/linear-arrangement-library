@@ -65,6 +65,7 @@ template <
 		ensure_root_is_returned and
 		std::is_same_v<tree_t, graphs::free_tree>
 >
+[[nodiscard]]
 std::conditional_t<
 	free_tree_plus_root,
 	std::pair<tree_t, node>,
@@ -159,7 +160,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  * @pre No edge in the list is repeated.
  */
 template <class graph_t>
-graph_t from_edge_list_to_graph
+[[nodiscard]] graph_t from_edge_list_to_graph
 (const edge_list& edge_list, bool normalize, bool check)
 noexcept
 {
@@ -186,7 +187,7 @@ noexcept
  * @returns A graph.
  */
 template <class graph_t>
-graph_t from_head_vector_to_graph
+[[nodiscard]] graph_t from_head_vector_to_graph
 (const head_vector& hv, bool normalize, bool check)
 noexcept
 {
@@ -224,6 +225,7 @@ template <
 		ensure_root_is_returned and
 		std::is_same_v<tree_t, graphs::free_tree>
 >
+[[nodiscard]]
 std::conditional_t<
 	free_tree_plus_root,
 	std::pair<tree_t, node>,
@@ -317,6 +319,7 @@ template <
 	class tree_t,
 	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>
 >
+[[nodiscard]]
 std::conditional_t<
 	is_rooted,
 	graphs::rooted_tree,
@@ -416,7 +419,7 @@ noexcept
  * @returns A head vector encoding the tree.
  */
 template <class arrangement_t>
-head_vector from_tree_to_head_vector
+[[nodiscard]] head_vector from_tree_to_head_vector
 (const graphs::rooted_tree& t, const arrangement_t& arr)
 noexcept
 {
@@ -448,7 +451,7 @@ noexcept
  * @returns A head vector
  */
 template <class arrangement_t>
-head_vector from_tree_to_head_vector
+[[nodiscard]] head_vector from_tree_to_head_vector
 (const graphs::free_tree& t, const arrangement_t& arr, node r)
 noexcept
 {
@@ -488,7 +491,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree_small
+[[nodiscard]] tree_t from_level_sequence_to_tree_small
 (const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -569,7 +572,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree_large
+[[nodiscard]] tree_t from_level_sequence_to_tree_large
 (const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -671,7 +674,7 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree
+[[nodiscard]] tree_t from_level_sequence_to_tree
 (const uint64_t * const L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -688,7 +691,7 @@ noexcept
  * for further details.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree_small
+[[nodiscard]] tree_t from_level_sequence_to_tree_small
 (const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -703,7 +706,7 @@ noexcept
  * for further details.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree_large
+[[nodiscard]] tree_t from_level_sequence_to_tree_large
 (const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -718,7 +721,7 @@ noexcept
  * for further details.
  */
 template <class tree_t>
-tree_t from_level_sequence_to_tree
+[[nodiscard]] tree_t from_level_sequence_to_tree
 (const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -741,7 +744,7 @@ noexcept
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
-inline graphs::free_tree from_Prufer_sequence_to_ftree
+[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree
 (const uint64_t * const seq, uint64_t n, bool normalize, bool check)
 noexcept
 {
@@ -805,7 +808,7 @@ noexcept
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
-inline graphs::free_tree from_Prufer_sequence_to_ftree
+[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree
 (const std::vector<uint64_t>& seq, uint64_t n, bool normalize, bool check)
 noexcept
 { return from_Prufer_sequence_to_ftree(&seq[0], n, normalize, check); }

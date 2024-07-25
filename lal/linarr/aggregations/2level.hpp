@@ -83,7 +83,7 @@ namespace linarr {
  * exact rational value.
  */
 template <class graph_t>
-numeric::rational mean_dependency_distance_2level_rational
+[[nodiscard]] numeric::rational mean_dependency_distance_2level_rational
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
 {
@@ -150,7 +150,7 @@ noexcept
  * floating point value.
  */
 template <class graph_t>
-double mean_dependency_distance_2level
+[[nodiscard]] double mean_dependency_distance_2level
 (const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
 noexcept
 {

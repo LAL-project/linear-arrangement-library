@@ -95,7 +95,8 @@ enum result {
  * @returns The farthest vertex from @e start_at
  */
 template <class tree_t>
-node find_farthest_vertex(
+[[nodiscard]] node find_farthest_vertex
+(
 	const tree_t& t,
 	node start_at,
 	BFS<tree_t>& bfs,
@@ -148,6 +149,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
+[[nodiscard]]
 conditional_list_t<
 	bool_sequence<
 		ret_type == result::distance,

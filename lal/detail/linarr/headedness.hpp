@@ -62,10 +62,8 @@ namespace detail {
  * @param arr Input linear arrangement.
  */
 template <class arrangement_t>
-uint64_t right_branching_edges(
-	const graphs::directed_graph& g,
-	const arrangement_t& arr
-)
+[[nodiscard]] uint64_t right_branching_edges
+(const graphs::directed_graph& g, const arrangement_t& arr)
 noexcept
 {
 	uint64_t edges_to_right = 0;
@@ -84,10 +82,8 @@ noexcept
  * @param arr Input linear arrangement.
  */
 template <typename result_t, class arrangement_t>
-result_t head_initial(
-	const graphs::directed_graph& g,
-	const arrangement_t& arr
-)
+[[nodiscard]] result_t head_initial
+(const graphs::directed_graph& g, const arrangement_t& arr)
 noexcept
 {
 	static_assert(

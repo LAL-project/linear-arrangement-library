@@ -49,7 +49,7 @@ namespace lal {
 namespace detail {
 
 template <bool full_structure, class graph_t>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	full_structure,
 	properties::connected_components<graph_t>,
 	std::vector<graph_t>

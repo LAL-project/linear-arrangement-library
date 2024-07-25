@@ -57,7 +57,7 @@ namespace properties {
  * @param t Input tree.
  * @returns The list of branchless paths.
  */
-std::vector<branchless_path>
+[[nodiscard]] std::vector<branchless_path>
 branchless_paths_compute(const graphs::free_tree& t) noexcept;
 
 /**
@@ -65,7 +65,7 @@ branchless_paths_compute(const graphs::free_tree& t) noexcept;
  * @param t Input tree.
  * @returns The list of branchless paths.
  */
-std::vector<branchless_path>
+[[nodiscard]] std::vector<branchless_path>
 branchless_paths_compute(const graphs::rooted_tree& t) noexcept;
 
 } // -- namespace properties

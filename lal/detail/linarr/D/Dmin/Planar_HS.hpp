@@ -80,7 +80,7 @@ namespace planar {
  * @returns A pair of cost and minimum linear arrangement.
  */
 template <bool make_arrangement>
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t

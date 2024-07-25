@@ -118,10 +118,10 @@ public:
 	 * @returns A projective arrangement chosen uniformly at random
 	 * chosen amongst all projective arrangements of @e t.
 	 */
-	linear_arrangement get_arrangement() noexcept;
+	[[nodiscard]] linear_arrangement get_arrangement() noexcept;
 
 	/// Returns a random projective arrangement.
-	linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
 		return get_arrangement();
 	}
 

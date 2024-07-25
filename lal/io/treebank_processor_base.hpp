@@ -132,7 +132,7 @@ public:
 	 * @param fs The feature being queried.
 	 * @returns True or False depending on whether the feature was added or removed.
 	 */
-	bool has_feature(const treebank_feature& fs) const noexcept
+	[[nodiscard]] bool has_feature(const treebank_feature& fs) const noexcept
 	{ return m_what_fs[ static_cast<std::size_t>(fs) ]; }
 
 protected:

@@ -109,19 +109,19 @@ public:
 	/* COMPARISON OPERATORS */
 
 	/// Compares this head vector error with a head vector error type.
-	bool operator== (const head_vector_error_type& tet) const noexcept
+	[[nodiscard]] bool operator== (const head_vector_error_type& tet) const noexcept
 	{ return m_error_type == tet; }
 	/// Compares this head vector error with a head vector error type.
-	bool operator!= (const head_vector_error_type& tet) const noexcept
+	[[nodiscard]] bool operator!= (const head_vector_error_type& tet) const noexcept
 	{ return m_error_type != tet; }
 
 	/* GETTERS */
 
 	/// Returns the error message.
-	const std::string& get_error_message() const noexcept { return m_error_msg; }
+	[[nodiscard]] const std::string& get_error_message() const noexcept { return m_error_msg; }
 
 	/// Returns the error type.
-	head_vector_error_type get_error_type() const noexcept
+	[[nodiscard]] head_vector_error_type get_error_type() const noexcept
 	{ return m_error_type; }
 
 private:

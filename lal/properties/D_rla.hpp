@@ -71,9 +71,10 @@ namespace properties {
  * @param g The input graph.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
-inline
-numeric::rational exp_sum_edge_lengths_rational(const graphs::undirected_graph& g)
-noexcept {
+[[nodiscard]] inline numeric::rational exp_sum_edge_lengths_rational
+(const graphs::undirected_graph& g)
+noexcept
+{
 	return numeric::rational((g.get_num_nodes() + 1)*g.get_num_edges(), 3);
 }
 
@@ -85,8 +86,9 @@ noexcept {
  * @param g The input graph.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
-inline
-double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
+[[nodiscard]] inline double exp_sum_edge_lengths(const graphs::undirected_graph& g)
+noexcept
+{
 	return exp_sum_edge_lengths_rational(g).to_double();
 }
 
@@ -100,9 +102,10 @@ double exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept {
  * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
-inline
-numeric::rational exp_sum_edge_lengths_rational(const graphs::free_tree& t)
-noexcept {
+[[nodiscard]] inline numeric::rational exp_sum_edge_lengths_rational
+(const graphs::free_tree& t)
+noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
@@ -118,8 +121,8 @@ noexcept {
  * @param t The input free tree.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
-inline
-double exp_sum_edge_lengths(const graphs::free_tree& t) noexcept {
+[[nodiscard]] inline double exp_sum_edge_lengths(const graphs::free_tree& t) noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
@@ -136,9 +139,10 @@ double exp_sum_edge_lengths(const graphs::free_tree& t) noexcept {
  * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a rational value.
  */
-inline
-numeric::rational exp_sum_edge_lengths_rational(const graphs::rooted_tree& t)
-noexcept {
+[[nodiscard]] inline numeric::rational exp_sum_edge_lengths_rational
+(const graphs::rooted_tree& t)
+noexcept
+{
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -154,8 +158,9 @@ noexcept {
  * @param t The input rooted tree.
  * @returns The expected value of the sum of edge lengths as a floating point value.
  */
-inline
-double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
+[[nodiscard]] inline double exp_sum_edge_lengths(const graphs::rooted_tree& t)
+noexcept
+{
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -178,8 +183,8 @@ double exp_sum_edge_lengths(const graphs::rooted_tree& t) noexcept {
  * @returns The expected value of the sum of edge lengths as a rational value.
  * @pre Input graph @e g is a bipartite arrangement.
  */
-inline
-numeric::rational exp_sum_edge_lengths_bipartite_rational(const graphs::undirected_graph& g)
+[[nodiscard]] inline numeric::rational exp_sum_edge_lengths_bipartite_rational
+(const graphs::undirected_graph& g)
 noexcept
 {
 	return numeric::rational(g.get_num_nodes()*g.get_num_edges(), 2);
@@ -197,8 +202,10 @@ noexcept
  * @returns The expected value of the sum of edge lengths as a floating point value.
  * @pre Input graph @e g is a bipartite arrangement.
  */
-inline
-double exp_sum_edge_lengths_bipartite(const graphs::undirected_graph& g) noexcept {
+[[nodiscard]] inline double exp_sum_edge_lengths_bipartite
+(const graphs::undirected_graph& g)
+noexcept
+{
 	return exp_sum_edge_lengths_bipartite_rational(g).to_double();
 }
 
@@ -218,8 +225,9 @@ double exp_sum_edge_lengths_bipartite(const graphs::undirected_graph& g) noexcep
  * arrangements as an exact rational value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-numeric::rational exp_sum_edge_lengths_projective_rational
-(const graphs::rooted_tree& rt) noexcept;
+[[nodiscard]] numeric::rational exp_sum_edge_lengths_projective_rational
+(const graphs::rooted_tree& rt)
+noexcept;
 
 /**
  * @brief Expected sum of edge lengths of a tree constrained to projective arrangments,
@@ -231,8 +239,9 @@ numeric::rational exp_sum_edge_lengths_projective_rational
  * arrangements as a floating point value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline
-double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
+[[nodiscard]] inline double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt)
+noexcept
+{
 	return exp_sum_edge_lengths_projective_rational(rt).to_double();
 }
 
@@ -253,8 +262,9 @@ double exp_sum_edge_lengths_projective(const graphs::rooted_tree& rt) noexcept {
  * arrangements as an exact rational value.
  * @pre @e rt must be a valid free tree (see @ref lal::graphs::free_tree::is_tree).
  */
-numeric::rational exp_sum_edge_lengths_planar_rational
-(const graphs::free_tree& t) noexcept;
+[[nodiscard]] numeric::rational exp_sum_edge_lengths_planar_rational
+(const graphs::free_tree& t)
+noexcept;
 /**
  * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
  * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
@@ -269,10 +279,12 @@ numeric::rational exp_sum_edge_lengths_planar_rational
  * arrangements as an exact rational value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline
-numeric::rational exp_sum_edge_lengths_planar_rational
-(const graphs::rooted_tree& rt) noexcept
-{ return exp_sum_edge_lengths_planar_rational(rt.to_undirected()); }
+[[nodiscard]] inline numeric::rational exp_sum_edge_lengths_planar_rational
+(const graphs::rooted_tree& rt)
+noexcept
+{
+	return exp_sum_edge_lengths_planar_rational(rt.to_undirected());
+}
 
 /**
  * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
@@ -284,10 +296,12 @@ numeric::rational exp_sum_edge_lengths_planar_rational
  * arrangements as a floating point value.
  * @pre @e rt must be a valid free tree (see @ref lal::graphs::free_tree::is_tree).
  */
-inline
-double exp_sum_edge_lengths_planar
-(const graphs::free_tree& t) noexcept
-{ return exp_sum_edge_lengths_planar_rational(t).to_double(); }
+[[nodiscard]] inline double exp_sum_edge_lengths_planar
+(const graphs::free_tree& t)
+noexcept
+{
+	return exp_sum_edge_lengths_planar_rational(t).to_double();
+}
 /**
  * @brief Expected sum of edge lengths of a tree constrained to planar arrangments,
  * \f$\mathbb{E}_{\mathrm{pl}}[D]\f$.
@@ -298,10 +312,12 @@ double exp_sum_edge_lengths_planar
  * arrangements as a floating point value.
  * @pre @e rt must be a valid rooted tree (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline
-double exp_sum_edge_lengths_planar
-(const graphs::rooted_tree& rt) noexcept
-{ return exp_sum_edge_lengths_planar_rational(rt).to_double(); }
+[[nodiscard]] inline double exp_sum_edge_lengths_planar
+(const graphs::rooted_tree& rt)
+noexcept
+{
+	return exp_sum_edge_lengths_planar_rational(rt).to_double();
+}
 
 
 /* ---------------------------- */
@@ -318,7 +334,8 @@ double exp_sum_edge_lengths_planar
  * @param g Input graph.
  * @returns The exact value of \f$V[D]\f$ as a rational value.
  */
-numeric::rational var_sum_edge_lengths_rational(const graphs::undirected_graph& g)
+[[nodiscard]] numeric::rational var_sum_edge_lengths_rational
+(const graphs::undirected_graph& g)
 noexcept;
 /**
  * @brief Computes the variance of the sum of the length of edges of a graph,
@@ -328,9 +345,12 @@ noexcept;
  * @param g The input graph.
  * @returns The exact value of \f$V[D]\f$ as a floating point value.
  */
-inline
-double var_sum_edge_lengths(const graphs::undirected_graph& g) noexcept
-{ return var_sum_edge_lengths_rational(g).to_double(); }
+[[nodiscard]] inline double var_sum_edge_lengths
+(const graphs::undirected_graph& g)
+noexcept
+{
+	return var_sum_edge_lengths_rational(g).to_double();
+}
 
 } // -- namespace properties
 } // -- namespace lal

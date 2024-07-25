@@ -67,8 +67,8 @@ namespace linarr {
  * @param arr Input linear arrangement
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-inline
-bool is_permutation(const linear_arrangement& arr = {}) noexcept {
+[[nodiscard]] inline bool is_permutation(const linear_arrangement& arr = {}) noexcept
+{
 	// identity arrangement is always a permutation
 	if (arr.size() == 0) { return true; }
 	// an arrangement of a single element is a permutation
@@ -100,7 +100,8 @@ bool is_permutation(const linear_arrangement& arr = {}) noexcept {
  * @returns Whether or not the input arrangement is a valid permutation.
  */
 template <class graph_t>
-bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
+[[nodiscard]] bool is_arrangement(const graph_t& g, const linear_arrangement& arr)
+noexcept
 {
 	if constexpr (std::is_base_of_v<graph_t, graphs::tree>) {
 #if defined DEBUG
@@ -133,7 +134,8 @@ bool is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The input graph is bipartite and connected.
  */
-bool is_bipartite(
+[[nodiscard]] bool is_bipartite
+(
 	const graphs::undirected_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr = {}
@@ -151,7 +153,8 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The underlying undirected graph is bipartite and connected.
  */
-bool is_bipartite(
+[[nodiscard]] bool is_bipartite
+(
 	const graphs::directed_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr = {}
@@ -169,10 +172,9 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The input graph is bipartite, and needs not be connected.
  */
-bool is_bipartite(
-	const graphs::undirected_graph& g,
-	const linear_arrangement& arr = {}
-) noexcept;
+[[nodiscard]] bool is_bipartite
+(const graphs::undirected_graph& g, const linear_arrangement& arr = {})
+noexcept;
 /**
  * @brief Is a given arrangement bipartite?
  *
@@ -184,10 +186,8 @@ bool is_bipartite(
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The underlying undirected graph is bipartite, but needs not be connected.
  */
-bool is_bipartite(
-	const graphs::directed_graph& g,
-	const linear_arrangement& arr = {}
-)
+[[nodiscard]] bool is_bipartite
+(const graphs::directed_graph& g, const linear_arrangement& arr = {})
 noexcept;
 
 /**
@@ -201,7 +201,9 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is planar.
  */
 template <class graph_t>
-bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
+[[nodiscard]] bool is_planar(const graph_t& g, const linear_arrangement& arr = {})
+noexcept
+{
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
 #endif
@@ -223,7 +225,8 @@ bool is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept {
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-bool is_root_covered(const graphs::rooted_tree& rt, const linear_arrangement& arr)
+[[nodiscard]] bool is_root_covered
+(const graphs::rooted_tree& rt, const linear_arrangement& arr)
 noexcept;
 
 /**
@@ -240,8 +243,8 @@ noexcept;
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-inline
-bool is_projective(const graphs::rooted_tree& rt, const linear_arrangement& arr)
+[[nodiscard]] inline bool is_projective
+(const graphs::rooted_tree& rt, const linear_arrangement& arr)
 noexcept
 {
 #if defined DEBUG

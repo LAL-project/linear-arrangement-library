@@ -157,7 +157,7 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/* MODIFIERS */
 
@@ -206,7 +206,7 @@ public:
 		next();
 	}
 
-	graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
 		const auto t = get_tree();
 		next();
 		return t;
@@ -243,7 +243,7 @@ protected:
 	}
 
 	/// Returns whether there are more trees to generate.
-	bool has_next() const noexcept {
+	[[nodiscard]] bool has_next() const noexcept {
 		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] == 0;
 	}
 

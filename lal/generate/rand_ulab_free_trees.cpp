@@ -129,7 +129,7 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	//     m: make a forest of m nodes
 	//     q: needed to choose pairs (j,d)
 	//     1: where to start storing nodes in m_tree
-	forest(m,q, 1);
+	std::ignore = forest(m,q, 1);
 	// -----------------------------------
 
 	graphs::free_tree T(m_n);

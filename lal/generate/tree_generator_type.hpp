@@ -137,12 +137,12 @@ template <
 >
 struct tree_generator_type {
 	static_assert(
-	std::is_same_v<exhaustive_random, exhaustive_t> ||
-	std::is_same_v<exhaustive_random, random_t>
+		std::is_same_v<exhaustive_random, exhaustive_t> ||
+		std::is_same_v<exhaustive_random, random_t>
 	);
 	static_assert(
-	std::is_same_v<labelled_unlabelled, labelled_t> ||
-	std::is_same_v<labelled_unlabelled, unlabelled_t>
+		std::is_same_v<labelled_unlabelled, labelled_t> ||
+		std::is_same_v<labelled_unlabelled, unlabelled_t>
 	);
 
 	typedef

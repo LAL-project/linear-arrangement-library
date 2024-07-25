@@ -86,7 +86,8 @@ namespace ladder {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
-uint64_t compute(
+[[nodiscard]] uint64_t compute
+(
 	const graph_t& g,
 	const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
@@ -159,13 +160,13 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-uint64_t n_C_ladder(const graph_t& g, const arrangement_t& arr)
+[[nodiscard]] uint64_t n_C_ladder(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
+	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
 	if (n < 4) { return 0; }
@@ -190,7 +191,7 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
 template <class graph_t>
-std::vector<uint64_t> n_C_ladder
+[[nodiscard]] std::vector<uint64_t> n_C_ladder
 (const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept
 {
@@ -239,7 +240,8 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t, class arrangement_t>
-uint64_t is_n_C_ladder_lesseq_than(
+[[nodiscard]] uint64_t is_n_C_ladder_lesseq_than
+(
 	const graph_t& g,
 	const arrangement_t& arr,
 	uint64_t upper_bound
@@ -249,7 +251,7 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 #if defined DEBUG
-	assert(arr.m_arr.size() == 0 or arr.m_arr.size() == n);
+	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
 	if (n < 4) { return 0; }
@@ -277,7 +279,8 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t>
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
+(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	uint64_t upper_bound
@@ -327,7 +330,8 @@ noexcept
  * bound otherwise.
  */
 template <class graph_t>
-std::vector<uint64_t> is_n_C_ladder_lesseq_than(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
+(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds

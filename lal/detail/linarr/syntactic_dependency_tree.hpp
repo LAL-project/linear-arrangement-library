@@ -54,9 +54,9 @@ namespace detail {
 
 /// Converts a value of the enumeration
 /// @ref lal::linarr::syntactic_dependency_tree into a string.
-constexpr std::string_view
+[[nodiscard]] constexpr std::string_view
 syntactic_dependency_tree_to_string
-	(const linarr::syntactic_dependency_tree& tt)
+(const linarr::syntactic_dependency_tree& tt)
 noexcept
 {
 	switch (tt) {
@@ -71,18 +71,18 @@ noexcept
 /// The array of all types of syntact dependency structures.
 inline constexpr
 std::array<
-		linarr::syntactic_dependency_tree,
+	linarr::syntactic_dependency_tree,
 	linarr::__syntactic_dependency_tree_size
 >
 array_of_syntactic_dependency_trees =
-make_array<
-				linarr::syntactic_dependency_tree,
-				linarr::syntactic_dependency_tree::EC1,
-				linarr::syntactic_dependency_tree::planar,
-				linarr::syntactic_dependency_tree::projective,
-				linarr::syntactic_dependency_tree::WG1,
-				linarr::syntactic_dependency_tree::unknown
->();
+	make_array<
+		linarr::syntactic_dependency_tree,
+		linarr::syntactic_dependency_tree::EC1,
+		linarr::syntactic_dependency_tree::planar,
+		linarr::syntactic_dependency_tree::projective,
+		linarr::syntactic_dependency_tree::WG1,
+		linarr::syntactic_dependency_tree::unknown
+	>();
 
 } // -- namespace detail
 } // -- namespace lal

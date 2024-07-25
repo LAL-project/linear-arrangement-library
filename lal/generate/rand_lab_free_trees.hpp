@@ -137,7 +137,7 @@ public:
 	/* GETTERS */
 
 	/// Returns a labelled free tree chosen uniformly at random.
-	graphs::free_tree get_tree() noexcept;
+	[[nodiscard]] graphs::free_tree get_tree() noexcept;
 
 protected:
 	/// Number of nodes of the tree.
@@ -190,8 +190,8 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept
-		: _tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
+	rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept :
+		_tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
@@ -229,7 +229,7 @@ public:
 		m_Gen.clear();
 	}
 
-	graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -240,7 +240,7 @@ protected:
 	 * See @ref _rand_lab_free_trees::get_tree for details.
 	 * @returns A labelled free tree chosen uniformly at random.
 	 */
-	graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_lab_free_trees.

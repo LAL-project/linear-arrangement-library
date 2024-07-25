@@ -120,8 +120,8 @@ public:
 	}
 
 	/// Returns the level signature of the @e i-th representative.
-	[[nodiscard]]
-	const level_signature_per_position& get_level_signature(std::size_t i)
+	[[nodiscard]] const level_signature_per_position& get_level_signature
+	(std::size_t i)
 	const noexcept
 	{
 #if defined DEBUG

@@ -119,7 +119,7 @@ public:
 	 * @returns A labelled tree generated uniformly at random. The
 	 * tree is rooted at vertex 0.
 	 */
-	graphs::rooted_tree get_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree get_tree() noexcept {
 		const graphs::free_tree t = _rand_lab_free_trees::get_tree();
 		const node r = m_unif(m_gen);
 		return graphs::rooted_tree(t, r);
@@ -165,8 +165,8 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept
-		: _tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+	rand_lab_rooted_trees(uint64_t n, uint64_t seed = 0) noexcept :
+		_tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
@@ -204,7 +204,7 @@ public:
 		m_Gen.clear();
 	}
 
-	graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
 		return get_tree();
 	}
 
@@ -215,7 +215,7 @@ protected:
 	 * See @ref _rand_lab_rooted_trees::get_tree for details.
 	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
-	graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_lab_rooted_trees for details.

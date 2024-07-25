@@ -94,7 +94,7 @@ public:
 	 * @pre The input graph @e g is bipartite.
 	 */
 	template <class graph_t>
-	rand_bipartite_arrangements(const graph_t& g, uint64_t seed = 0) {
+	rand_bipartite_arrangements(const graph_t& g, uint64_t seed = 0) noexcept {
 		static_assert(std::is_base_of_v<lal::graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init(seed);
@@ -116,10 +116,8 @@ public:
 	 * @param c Input coloring of a bipartite graph.
 	 * @param seed Integer value to seed the random number generator.
 	 */
-	rand_bipartite_arrangements(
-		const properties::bipartite_graph_coloring& c,
-		uint64_t seed = 0
-	)
+	rand_bipartite_arrangements
+	(const properties::bipartite_graph_coloring& c, uint64_t seed = 0)
 	noexcept
 	{
 		m_coloring = c;
@@ -130,10 +128,8 @@ public:
 	 * @param c Input coloring of a bipartite graph.
 	 * @param seed Integer value to seed the random number generator.
 	 */
-	rand_bipartite_arrangements(
-		properties::bipartite_graph_coloring&& c,
-		uint64_t seed = 0
-	)
+	rand_bipartite_arrangements
+	(properties::bipartite_graph_coloring&& c, uint64_t seed = 0)
 	noexcept
 	{
 		m_coloring = std::move(c);
@@ -141,10 +137,10 @@ public:
 	}
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	const linear_arrangement& get_arrangement() noexcept;
+	[[nodiscard]] const linear_arrangement& get_arrangement() noexcept;
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	const linear_arrangement& yield_arrangement() noexcept {
+	[[nodiscard]] const linear_arrangement& yield_arrangement() noexcept {
 		return get_arrangement();
 	}
 

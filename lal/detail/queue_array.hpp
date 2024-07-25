@@ -95,7 +95,7 @@ public:
 	 * @post The size of the queue is reduced by one.
 	 * @post Pointer @ref m_left is updated.
 	 */
-	value_t&& pop() noexcept {
+	[[nodiscard]] value_t&& pop() noexcept {
 #if defined DEBUG
 		assert(m_left < m_queue.size());
 #endif
@@ -103,7 +103,7 @@ public:
 	}
 
 	/// Returns a reference to the front element.
-	value_t& front() noexcept {
+	[[nodiscard]] value_t& front() noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
@@ -111,14 +111,14 @@ public:
 	}
 
 	/// Returns a constant reference to the front element.
-	const value_t& front() const noexcept {
+	[[nodiscard]] const value_t& front() const noexcept {
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
 		return m_queue[m_left];
 	}
 	/// Returns the size of the queue.
-	std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept {
 		return m_right - m_left;
 	}
 
@@ -139,7 +139,7 @@ public:
 	 * performed. This happens when @ref m_left is equal to the queue size.
 	 * @returns A Boolean value (true or false).
 	 */
-	bool is_exhausted() const noexcept { return m_left == m_queue.size(); }
+	[[nodiscard]] bool is_exhausted() const noexcept { return m_left == m_queue.size(); }
 
 	/**
 	 * @brief Is the queue full?
@@ -148,16 +148,16 @@ public:
 	 * happens when @ref m_right is equal to the queue size.
 	 * @returns A Boolean value (true or false).
 	 */
-	bool is_full() const noexcept { return m_right == m_queue.size(); }
+	[[nodiscard]] bool is_full() const noexcept { return m_right == m_queue.size(); }
 
 	/// Pointer to begin.
-	value_t *begin() noexcept { return m_queue.begin() + m_left; }
+	[[nodiscard]] value_t *begin() noexcept { return m_queue.begin() + m_left; }
 	/// Constant pointer to begin.
-	const value_t *begin() const noexcept { return m_queue.begin() + m_left; }
+	[[nodiscard]] const value_t *begin() const noexcept { return m_queue.begin() + m_left; }
 	/// Pointer to end.
-	value_t *end() noexcept { return m_queue.begin() + m_right; }
+	[[nodiscard]] value_t *end() noexcept { return m_queue.begin() + m_right; }
 	/// Constant pointer to end.
-	const value_t *end() const noexcept { return m_queue.begin() + m_right; }
+	[[nodiscard]] const value_t *end() const noexcept { return m_queue.begin() + m_right; }
 
 private:
 	/// Data (array) of the queue

@@ -102,11 +102,11 @@ public:
 	 * - @ref lal::io::treebank_file_error_type::main_file_does_not_exist
 	 * - @ref lal::io::treebank_file_error_type::main_file_could_not_be_opened
 	 */
-	treebank_file_error init(const std::string& main_file) noexcept;
+	[[nodiscard]] treebank_file_error init(const std::string& main_file) noexcept;
 
 	/// Returns true or false depending on whether there is a next treebank
 	/// to be read.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
@@ -116,7 +116,7 @@ public:
 	void next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
-	treebank_reader& get_treebank_reader() noexcept
+	[[nodiscard]] treebank_reader& get_treebank_reader() noexcept
 	{ return m_treebank_reader; }
 
 private:

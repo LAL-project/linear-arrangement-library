@@ -55,7 +55,9 @@ namespace properties {
  * @returns An object of type @ref lal::properties::bipartite_graph_coloring.
  * @pre The graph must be bipartite.
  */
-bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g) noexcept;
+[[nodiscard]] bipartite_graph_coloring bipartite_coloring
+(const graphs::undirected_graph& g)
+noexcept;
 
 /**
  * @brief Calculates the coloring of a bipartite graph.
@@ -66,7 +68,9 @@ bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g) n
  * @returns An object of type @ref lal::properties::bipartite_graph_coloring.
  * @pre The underlying undirected graph must be bipartite.
  */
-bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g) noexcept;
+[[nodiscard]] bipartite_graph_coloring bipartite_coloring
+(const graphs::directed_graph& g)
+noexcept;
 
 /**
  * @brief Is a graph bipartite?
@@ -74,13 +78,15 @@ bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g) noe
  * @param c Coloring of the input graph.
  * @returns Whether or not the input graph is bipartite.
  */
-bool is_graph_bipartite(const graphs::undirected_graph& g, const bipartite_graph_coloring& c) noexcept;
+[[nodiscard]] bool is_graph_bipartite
+(const graphs::undirected_graph& g, const bipartite_graph_coloring& c)
+noexcept;
 /**
  * @brief Is a graph bipartite?
  * @param g Input undirected graph.
  * @returns Whether or not the input graph is bipartite.
  */
-bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept;
+[[nodiscard]] bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept;
 
 /**
  * @brief Is a graph bipartite?
@@ -88,13 +94,15 @@ bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept;
  * @param c Coloring of the input graph.
  * @returns Whether or not the input graph is bipartite.
  */
-bool is_graph_bipartite(const graphs::directed_graph& g, const bipartite_graph_coloring& c) noexcept;
+[[nodiscard]] bool is_graph_bipartite
+(const graphs::directed_graph& g, const bipartite_graph_coloring& c)
+noexcept;
 /**
  * @brief Is a graph bipartite?
  * @param g Input directed graph.
  * @returns Whether or not the input graph is bipartite.
  */
-bool is_graph_bipartite(const graphs::directed_graph& g) noexcept;
+[[nodiscard]] bool is_graph_bipartite(const graphs::directed_graph& g) noexcept;
 
 } // -- namespace properties
 } // -- namespace lal

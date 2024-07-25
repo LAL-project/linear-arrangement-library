@@ -70,7 +70,7 @@ namespace graphs {
  * it is nor not?
  * @returns Returns a lal::graphs::undirected_graph obtained from the head vector.
  */
-undirected_graph from_head_vector_to_undirected_graph
+[[nodiscard]] undirected_graph from_head_vector_to_undirected_graph
 (const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
@@ -91,7 +91,7 @@ noexcept;
  * it is nor not?
  * @returns Returns a lal::graphs::directed_graph obtained from the head vector.
  */
-directed_graph from_head_vector_to_directed_graph
+[[nodiscard]] directed_graph from_head_vector_to_directed_graph
 (const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
@@ -108,7 +108,7 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
-std::pair<free_tree,node> from_head_vector_to_free_tree
+[[nodiscard]] std::pair<free_tree,node> from_head_vector_to_free_tree
 (const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
@@ -125,7 +125,7 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
-rooted_tree from_head_vector_to_rooted_tree
+[[nodiscard]] rooted_tree from_head_vector_to_rooted_tree
 (const head_vector& hv, bool normalize = true, bool check = true)
 noexcept;
 
@@ -148,7 +148,7 @@ noexcept;
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-rooted_tree from_edge_list_to_rooted_tree
+[[nodiscard]] rooted_tree from_edge_list_to_rooted_tree
 (const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
@@ -168,7 +168,7 @@ noexcept;
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-free_tree from_edge_list_to_free_tree
+[[nodiscard]] free_tree from_edge_list_to_free_tree
 (const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
@@ -187,7 +187,7 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-directed_graph from_edge_list_to_directed_graph
+[[nodiscard]] directed_graph from_edge_list_to_directed_graph
 (const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 
@@ -206,7 +206,7 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-undirected_graph from_edge_list_to_undirected_graph
+[[nodiscard]] undirected_graph from_edge_list_to_undirected_graph
 (const edge_list& el, bool normalize = true, bool check = true)
 noexcept;
 

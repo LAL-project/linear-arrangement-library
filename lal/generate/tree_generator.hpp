@@ -192,7 +192,7 @@ public:
 	 * from this. The type of generation of tree differs from one type of class
 	 * to another.
 	 */
-	tree_t get_tree() noexcept
+	[[nodiscard]] tree_t get_tree() noexcept
 	{
 		auto t = __get_tree();
 
@@ -231,7 +231,7 @@ public:
 	 * to another.
 	 * @post The generator advances to the next tree.
 	 */
-	virtual tree_t yield_tree() noexcept = 0;
+	[[nodiscard]] virtual tree_t yield_tree() noexcept = 0;
 
 	/**
 	 * @brief Activates all postprocessing actions.
@@ -289,7 +289,7 @@ protected:
 	 * See the documentation of each child class to see the correct usage
 	 * of this method.
 	 */
-	virtual tree_t __get_tree() noexcept = 0;
+	[[nodiscard]] virtual tree_t __get_tree() noexcept = 0;
 
 protected:
 	/// Number of vertices

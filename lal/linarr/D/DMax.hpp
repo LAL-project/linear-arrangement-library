@@ -72,7 +72,9 @@ namespace linarr {
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& c,
@@ -99,7 +101,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const std::vector<properties::branchless_path>& bps,
@@ -125,7 +129,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& bps,
@@ -151,7 +157,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& c,
@@ -176,7 +184,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& bps,
 	const std::size_t num_threads = 1
@@ -200,7 +210,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
 	const std::size_t num_threads = 1
@@ -224,7 +236,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	const std::size_t num_threads = 1
@@ -247,10 +261,9 @@ noexcept;
  * @returns All maximum arrangements up to level isomorphism.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
-	const graphs::free_tree& t,
-	const std::size_t num_threads = 1
-)
+[[nodiscard]] std::pair<uint64_t, std::vector<linear_arrangement>>
+max_sum_edge_lengths_all
+(const graphs::free_tree& t, const std::size_t num_threads = 1)
 noexcept;
 
 /* ------------------------ Non-BIPARTITE CONSTRAINT ------------------------ */
@@ -270,7 +283,8 @@ noexcept;
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle(
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
+(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& bps
@@ -291,7 +305,7 @@ noexcept;
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
 noexcept;
 /**
@@ -308,7 +322,7 @@ noexcept;
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
@@ -324,7 +338,8 @@ noexcept;
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_le_thistle
+[[nodiscard]] std::pair<uint64_t, linear_arrangement>
+max_sum_edge_lengths_1_le_thistle
 (const graphs::free_tree& t)
 noexcept;
 
@@ -342,10 +357,8 @@ noexcept;
  * @returns A maximal arrangement with at most one thistle vertex.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle(
-	const graphs::free_tree& t,
-	const std::vector<properties::branchless_path>& bps
-)
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
+(const graphs::free_tree& t, const std::vector<properties::branchless_path>& bps)
 noexcept;
 /**
  * @brief Calculates the solution to \f$=1\f$-thistle MaxLA.
@@ -360,7 +373,8 @@ noexcept;
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  * @returns A maximal non-bipartite arrangement with exactly one thistle vertex.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_1_eq_thistle
+[[nodiscard]] std::pair<uint64_t, linear_arrangement>
+max_sum_edge_lengths_1_eq_thistle
 (const graphs::free_tree& t)
 noexcept;
 
@@ -380,7 +394,7 @@ noexcept;
  * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a connected bipartite graph.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
@@ -396,7 +410,7 @@ noexcept;
  * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a connected bipartite graph.
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::undirected_graph& g)
 noexcept;
 /**
@@ -416,7 +430,7 @@ noexcept;
  * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a connected bipartite graph (ignoring orientation of edges).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::directed_graph& g, const properties::bipartite_graph_coloring& c)
 noexcept;
 /**
@@ -435,7 +449,7 @@ noexcept;
  * @returns A maximal bipartite arrangement.
  * @pre The input graph @e g is a connected bipartite graph (ignoring orientation of edges).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_bipartite
 (const graphs::directed_graph& g)
 noexcept;
 
@@ -458,7 +472,7 @@ noexcept;
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
+[[nodiscard]] std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 (const graphs::free_tree& t)
 noexcept;
 /**
@@ -481,8 +495,7 @@ noexcept;
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-inline
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
+[[nodiscard]] inline std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_planar
 (const graphs::rooted_tree& t)
 noexcept
 {
@@ -506,7 +519,7 @@ noexcept
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+[[nodiscard]] std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
 (const graphs::free_tree& t)
 noexcept;
 /**
@@ -524,13 +537,13 @@ noexcept;
  * This function implements the algorithm described in \cite Alemany2024a.
  *
  * This function converts the input rooted tree into a free tree (see @ref
- * lal::graphs::rooted_tree::to_free_tree()). Therefore, the root is ignored.
+ * lal::graphs::rooted_tree::to_free_tree). Therefore, the root is ignored.
  * @param t Input free tree.
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-inline
-std::pair<std::vector<uint64_t>, node> max_sum_edge_lengths_projective_roots
+[[nodiscard]] inline std::pair<std::vector<uint64_t>, node>
+max_sum_edge_lengths_projective_roots
 (const graphs::rooted_tree& t)
 noexcept
 {
@@ -554,7 +567,8 @@ noexcept
  * @returns The maximum value of \f$D\f$ and a maximum arrangement.
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
-std::pair<uint64_t, linear_arrangement> max_sum_edge_lengths_projective
+[[nodiscard]] std::pair<uint64_t, linear_arrangement>
+max_sum_edge_lengths_projective
 (const graphs::rooted_tree& t)
 noexcept;
 

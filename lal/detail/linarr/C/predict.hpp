@@ -67,6 +67,7 @@ namespace detail {
  * @returns The amount of pairs of edges of lengths @e d1 and @e d2
  * respectively that can cross in a linear arrangement.
  */
+[[nodiscard]]
 inline constexpr
 uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	int64_t f = 0;
@@ -111,6 +112,7 @@ uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
  * @returns The amount of pairs of edges of lengths @e d1 and @e d2
  * respectively that can cross in a linear arrangement.
  */
+[[nodiscard]]
 inline constexpr
 uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
 	int64_t f = 0;
@@ -179,10 +181,8 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
  * @returns The value of \f$E_2[C]\f$.
  */
 template <typename result_t, class graph_t, class arrangement_t>
-result_t predict_C_using_edge_lengths(
-	const graph_t& g,
-	const arrangement_t& arr
-)
+[[nodiscard]] result_t predict_C_using_edge_lengths
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	result_t Ec2(0);

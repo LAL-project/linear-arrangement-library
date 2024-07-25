@@ -327,16 +327,16 @@ public:
 
 	/* GETTERS */
 
-	std::vector<edge_pair> get_Q() const noexcept;
+	[[nodiscard]] std::vector<edge_pair> get_Q() const noexcept;
 
-	std::vector<edge> get_edges() const noexcept;
+	[[nodiscard]] std::vector<edge> get_edges() const noexcept;
 
 	/**
 	 * @brief Returns the neighbourhood of node @e u.
 	 * @param u Node.
 	 * @returns The list of nodes adjacent to node @e u.
 	 */
-	const neighbourhood& get_neighbors(node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_neighbors(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -348,7 +348,7 @@ public:
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */
-	uint64_t get_degree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -356,13 +356,13 @@ public:
 	}
 
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
-	bool has_edge(node u, node v) const noexcept;
+	[[nodiscard]] bool has_edge(node u, node v) const noexcept;
 
-	bool is_directed() const noexcept { return false; }
-	bool is_undirected() const noexcept { return true; }
+	[[nodiscard]] bool is_directed() const noexcept { return false; }
+	[[nodiscard]] bool is_undirected() const noexcept { return true; }
 
 	/// Returns all the connected components of this graph as individual graphs.
-	std::vector<undirected_graph> get_connected_components() const noexcept;
+	[[nodiscard]] std::vector<undirected_graph> get_connected_components() const noexcept;
 
 protected:
 	/**

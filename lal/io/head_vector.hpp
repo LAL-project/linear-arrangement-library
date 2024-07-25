@@ -74,7 +74,7 @@ namespace io {
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
-std::optional<graphs::free_tree> read_head_vector_free_tree
+[[nodiscard]] std::optional<graphs::free_tree> read_head_vector_free_tree
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
 /**
@@ -90,7 +90,7 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
-std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
+[[nodiscard]] std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept;
 
@@ -111,8 +111,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
-inline
-std::optional<tree_t> read_head_vector
+[[nodiscard]] inline std::optional<tree_t> read_head_vector
 (const std::string& filename, bool norm = true, bool check_norm = true)
 noexcept
 {

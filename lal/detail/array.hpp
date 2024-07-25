@@ -159,7 +159,7 @@ public:
 	}
 
 	/// Comparison of equal data arrays
-	bool operator== (const array& d) const noexcept {
+	[[nodiscard]] bool operator== (const array& d) const noexcept {
 		if (size() != d.size()) { return size() < d.size(); }
 
 		for (std::size_t i = 0; i < size(); ++i) {

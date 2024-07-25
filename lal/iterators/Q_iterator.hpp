@@ -112,7 +112,10 @@ public:
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	Q_iterator(const GRAPH& g) noexcept : m_G(g), m_n(m_G.get_num_nodes()) {
+	Q_iterator(const GRAPH& g) noexcept :
+		m_G(g),
+		m_n(m_G.get_num_nodes())
+	{
 		reset();
 	}
 
@@ -122,16 +125,16 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
 
 	/// Returns the current edge pair.
-	const edge_pair& get_edge_pair() const noexcept { return m_cur_pair; }
+	[[nodiscard]] const edge_pair& get_edge_pair() const noexcept { return m_cur_pair; }
 
 	/// Returns the current edge pair.
-	edge_pair_t get_edge_pair_t() const noexcept { return m_cur_pair; }
+	[[nodiscard]] edge_pair_t get_edge_pair_t() const noexcept { return m_cur_pair; }
 
 	/// Returns the current edge pair and advances the iterator
-	edge_pair yield_edge_pair() noexcept {
+	[[nodiscard]] edge_pair yield_edge_pair() noexcept {
 		const auto e = get_edge_pair();
 		next();
 		return e;
@@ -257,7 +260,7 @@ private:
 	 * These are the edges pointed by attribute @ref m_cur1 and by attribute
 	 * @ref m_cur2.
 	 */
-	edge_pair make_current_pair() const noexcept {
+	[[nodiscard]] edge_pair make_current_pair() const noexcept {
 		node s,t,u,v;
 		s = m_cur1.first;
 		u = m_cur2.first;
@@ -284,7 +287,8 @@ private:
 	 * @param pv Pointer to the second node of the second edge.
 	 * @returns Whether or not the edges share nodes.
 	 */
-	bool share_nodes_pointer(
+	[[nodiscard]] bool share_nodes_pointer
+	(
 		const node s, const std::size_t pt,
 		const node u, const std::size_t pv
 	)
@@ -310,13 +314,18 @@ private:
 	 * @param v Second node of the second edge.
 	 * @returns Whether or not the edges share nodes.
 	 */
-	bool share_nodes(const node s, const node t, const node u, const node v)
+	[[nodiscard]] bool share_nodes(
+		const node s, const node t,
+		const node u, const node v
+	)
 	const noexcept
-	{ return s == u or s == v or t == u or t == v; }
+	{
+		return s == u or s == v or t == u or t == v;
+	}
 
 	/// Find the next pair in a directed graph.
 	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	std::tuple<bool, E_pointer, E_pointer>
+	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(
 		const node s, const std::size_t pt,
 		const node u, const std::size_t pv
@@ -351,7 +360,7 @@ private:
 
 	/// Find the next pair in an undirected graph.
 	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	std::tuple<bool, E_pointer, E_pointer>
+	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer>
 	find_next_pair(
 		const node s, const std::size_t pt,
 		const node u, const std::size_t pv

@@ -144,7 +144,7 @@ public:
 	/* GETTERS */
 
 	/// Returns the number of errors in this report.
-	std::size_t get_num_errors() const noexcept {
+	[[nodiscard]] std::size_t get_num_errors() const noexcept {
 		std::size_t c =
 			(m_treebank_error.get_error_type() != io::treebank_file_error_type::no_error);
 
@@ -159,14 +159,16 @@ public:
 	 *
 	 * If the list returned is empty, then there were no errors.
 	 */
-	const error_list& get_treebank_reports() const noexcept { return m_reports; }
+	[[nodiscard]] const error_list& get_treebank_reports() const noexcept
+	{ return m_reports; }
 
 	/**
 	 * @brief Returns the only treebank error concerning the file (if any).
 	 * @returns An error that informs that the file does not exist or that it
 	 * could not be opened.
 	 */
-	const treebank_file_error& get_treebank_error() const noexcept { return m_treebank_error; }
+	[[nodiscard]] const treebank_file_error& get_treebank_error() const noexcept
+	{ return m_treebank_error; }
 
 private:
 	/// The error in the head vector and the line number where it happened.

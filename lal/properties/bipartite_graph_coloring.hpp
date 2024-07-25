@@ -105,27 +105,27 @@ public:
 	}
 
 	/// Returns whether or not the color of vertex @e u is valid.
-	bool is_color_valid(node u) const noexcept {
+	[[nodiscard]] bool is_color_valid(node u) const noexcept {
 		return get_color_of(u) != invalid_color;
 	}
 
 	/// Returns the size of this m_coloring (the number of vertices)
-	std::size_t size() const noexcept { return m_coloring.size(); }
+	[[nodiscard]] std::size_t size() const noexcept { return m_coloring.size(); }
 
 	/// Returns the color of node @e u
-	color_t get_color_of(node u) const noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t get_color_of(node u) const noexcept { return m_coloring[u]; }
 	/// Returns the color of node @e u
-	color_t& get_color_of(node u) noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t& get_color_of(node u) noexcept { return m_coloring[u]; }
 
 	/// Returns the color of node @e u
-	color_t operator[] (node u) const noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t operator[] (node u) const noexcept { return m_coloring[u]; }
 	/// Returns the color of node @e u
-	color_t& operator[] (node u) noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t& operator[] (node u) noexcept { return m_coloring[u]; }
 
 	/// Returns the color of node @e u
-	color_t operator[] (lal::node_t u) const noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t operator[] (lal::node_t u) const noexcept { return m_coloring[*u]; }
 	/// Returns the color of node @e u
-	color_t& operator[] (lal::node_t u) noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t& operator[] (lal::node_t u) noexcept { return m_coloring[*u]; }
 
 private:
 	/**

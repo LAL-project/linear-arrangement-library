@@ -104,7 +104,7 @@ public:
 private:
 
 	/// Can node @e u be added to the same chunk as @e r.
-	bool can_be_added(node r, node u) const noexcept {
+	[[nodiscard]] bool can_be_added(node r, node u) const noexcept {
 		return m_rt.get_out_degree(u) == 0 and m_rt.has_edge(r, u);
 	}
 

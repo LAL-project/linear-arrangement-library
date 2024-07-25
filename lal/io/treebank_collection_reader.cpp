@@ -43,6 +43,7 @@
 
 // C++ includes
 #include <filesystem>
+#include <tuple>
 
 namespace lal {
 namespace io {
@@ -88,9 +89,8 @@ void treebank_collection_reader::next_treebank() noexcept {
 	std::filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
-	// this call
-	m_treebank_reader.init(M.string(), m_cur_treebank_id);
-	// can only return
+	std::ignore = m_treebank_reader.init(M.string(), m_cur_treebank_id);
+	// this call can only return
 	//     lal::io::treebank_error::treebank_file_could_not_be_opened
 	// which can be checked with 'is_open'
 

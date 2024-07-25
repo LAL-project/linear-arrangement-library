@@ -66,7 +66,8 @@ namespace detail {
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-bool is_level_signature_nonincreasing(
+[[nodiscard]] bool is_level_signature_nonincreasing
+(
 	const graph_t& g,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
@@ -110,7 +111,8 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-bool no_two_adjacent_vertices_have_same_level(
+[[nodiscard]] bool no_two_adjacent_vertices_have_same_level
+(
 	const graph_t& g,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
@@ -156,7 +158,8 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-bool no_vertex_in_antenna_is_thistle(
+[[nodiscard]] bool no_vertex_in_antenna_is_thistle
+(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,
 	const level_signature<t>& levels,
@@ -199,7 +202,8 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-bool at_most_one_thistle_in_bridges(
+[[nodiscard]] bool at_most_one_thistle_in_bridges
+(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,
 	const level_signature<t>& levels,

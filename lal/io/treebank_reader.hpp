@@ -100,11 +100,12 @@ public:
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
-	treebank_file_error init
-	(const std::string& treebank_filename, const std::string& treebank_id = "") noexcept;
+	[[nodiscard]] treebank_file_error init
+	(const std::string& treebank_filename, const std::string& treebank_id = "")
+	noexcept;
 
 	/// Returns whether there is another tree to be processed.
-	bool end() const noexcept { return m_no_more_trees; }
+	[[nodiscard]] bool end() const noexcept { return m_no_more_trees; }
 
 	/**
 	 * @brief Retrieves the next tree in the file.
@@ -120,22 +121,22 @@ public:
 	 * When method @ref end returns 'true', this method returns the exact
 	 * amount of trees in the treebank.
 	 */
-	std::size_t get_num_trees() const noexcept
+	[[nodiscard]] std::size_t get_num_trees() const noexcept
 	{ return m_num_trees; }
 
 	/// Returns the identifier corresponding of the treebank.
-	const std::string& get_treebank_identifier() const noexcept
+	[[nodiscard]] const std::string& get_treebank_identifier() const noexcept
 	{ return m_treebank_identifier; }
 
 	/// Returns the name of the treebank file.
-	const std::string& get_treebank_filename() const noexcept
+	[[nodiscard]] const std::string& get_treebank_filename() const noexcept
 	{ return m_treebank_file; }
 
 	/// Returns the current tree.
-	graphs::rooted_tree get_tree() const noexcept;
+	[[nodiscard]] graphs::rooted_tree get_tree() const noexcept;
 
 	/// Returns the current head vector.
-	head_vector get_head_vector() const noexcept
+	[[nodiscard]] head_vector get_head_vector() const noexcept
 	{ return m_current_head_vector; }
 
 	/**
@@ -145,7 +146,7 @@ public:
 	 * @ref lal::io::treebank_file_error_type::no_error then this returns false.
 	 * @return Whether the treebank is readable or not.
 	 */
-	bool is_open() const noexcept { return m_treebank.is_open(); }
+	[[nodiscard]] bool is_open() const noexcept { return m_treebank.is_open(); }
 
 	/* SETTERS */
 

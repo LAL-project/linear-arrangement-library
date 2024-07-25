@@ -173,11 +173,11 @@ public:
 	 * constant reference.
 	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
 	 */
-	const linear_arrangement& get_arrangement() const noexcept
+	[[nodiscard]] const linear_arrangement& get_arrangement() const noexcept
 	{ return m_arr; }
 
 	/// Returns true if the end of the iteration was reached.
-	bool end() const noexcept { return m_do_mirror and m_reached_end_red; }
+	[[nodiscard]] bool end() const noexcept { return m_do_mirror and m_reached_end_red; }
 
 	/**
 	 * @brief Generates the next arrangement.
@@ -200,7 +200,7 @@ public:
 	 * @return The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
 		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();

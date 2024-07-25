@@ -84,15 +84,13 @@ template <
 	class graph_t,
 	class bipartite_coloring_t
 >
-std::conditional_t<
+[[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-optimal_bipartite_arrangement_AEF(
-	const graph_t& g,
-	const bipartite_coloring_t& c
-)
+optimal_bipartite_arrangement_AEF
+(const graph_t& g, const bipartite_coloring_t& c)
 noexcept
 {
 	static_assert(
@@ -106,7 +104,7 @@ noexcept
 	// annoying corner case
 	if (n == 1) {
 		if constexpr (make_arrangement) {
-			return {0, lal::linear_arrangement::identity(n)};
+			return {0, linear_arrangement::identity(n)};
 		}
 		else {
 			return 0;
@@ -120,7 +118,7 @@ noexcept
 
 	{
 	const auto first_color = c[0];
-	for (lal::node u = 0; u < n; ++u) {
+	for (node u = 0; u < n; ++u) {
 		if (c[u] == first_color) {
 			vertices_color_1[size_1++] = u;
 		}
@@ -131,13 +129,13 @@ noexcept
 
 	const auto sort_nodes =
 	[&](array<node>& nodes, std::size_t s) {
-		lal::detail::sorting::counting_sort
-			<lal::node, sorting_type_t>
+		sorting::counting_sort
+			<node, sorting_type_t>
 			(
 				nodes.begin(), nodes.begin() + s,
 				n - 1,
 				s,
-				[&](const lal::node u) -> std::size_t {
+				[&](const node u) -> std::size_t {
 					// in directed graphs, this function returns the sum of the
 					// in-degree plus the out-degree of the vertex.
 					return g.get_degree(u);
@@ -149,13 +147,13 @@ noexcept
 	}
 
 	uint64_t D = 0;
-	lal::linear_arrangement arr;
+	linear_arrangement arr;
 
 	if constexpr (make_arrangement) {
 		arr.resize(n);
 	}
 
-	lal::position p = 0;
+	position p = 0;
 	for (std::size_t i = size_1 - 1; i > 0; --i) {
 		const node u = vertices_color_1[i];
 		if constexpr (make_arrangement) {

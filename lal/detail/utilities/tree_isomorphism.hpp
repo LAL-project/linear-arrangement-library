@@ -71,7 +71,7 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
+[[nodiscard]] char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
 {
 	// check number of nodes
 	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
@@ -129,7 +129,8 @@ char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
  * less memory suffices, but I don't know how much less: better be safe than
  * sorry.
  */
-inline void assign_name_and_keep(
+inline void assign_name_and_keep
+(
 	const graphs::rooted_tree& t,
 	const node u,
 	std::size_t idx,
@@ -178,7 +179,7 @@ noexcept
  * name of the second child of 'u'.
  * @returns The code for the subtree rooted at 'u'.
  */
-inline std::string assign_name
+[[nodiscard]] inline std::string assign_name
 (const graphs::rooted_tree& t, node u, std::string * const names, std::size_t idx)
 noexcept
 {
@@ -206,7 +207,7 @@ noexcept
 }
 
 /// Test whether two rooted trees are isomorphic or not.
-inline bool are_rooted_trees_isomorphic
+[[nodiscard]] inline bool are_rooted_trees_isomorphic
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
 noexcept
 {

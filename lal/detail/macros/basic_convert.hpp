@@ -49,32 +49,32 @@ namespace detail {
 
 /// Conversion to uint64_t.
 template <typename T>
-constexpr uint64_t to_uint64(const T& t) noexcept
+[[nodiscard]] constexpr uint64_t to_uint64(const T& t) noexcept
 { return static_cast<uint64_t>(t); }
 
 /// Conversion to int64_t.
 template <typename T>
-constexpr int64_t to_int64(const T& t) noexcept
+[[nodiscard]] constexpr int64_t to_int64(const T& t) noexcept
 { return static_cast<int64_t>(t); }
 
 /// Conversion to uint32_t.
 template <typename T>
-constexpr uint32_t to_uint32(const T& t) noexcept
+[[nodiscard]] constexpr uint32_t to_uint32(const T& t) noexcept
 { return static_cast<uint32_t>(t); }
 
 /// Conversion to int32_t.
 template <typename T>
-constexpr int32_t to_int32(const T& t) noexcept
+[[nodiscard]] constexpr int32_t to_int32(const T& t) noexcept
 { return static_cast<int32_t>(t); }
 
 /// Conversion to double.
 template <typename T>
-constexpr double to_double(const T& t) noexcept
+[[nodiscard]] constexpr double to_double(const T& t) noexcept
 { return static_cast<double>(t); }
 
 /// Absolute difference of two values.
 template <typename T>
-constexpr T abs_diff(const T& t1, const T& t2) noexcept
+[[nodiscard]] constexpr T abs_diff(const T& t1, const T& t2) noexcept
 { return (t1 < t2 ? t2 - t1 : t1 - t2); }
 
 } // -- namespace detail

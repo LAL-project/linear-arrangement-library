@@ -148,7 +148,7 @@ public:
 
 	void normalize() noexcept;
 
-	bool check_normalized() noexcept;
+	[[nodiscard]] bool check_normalized() noexcept;
 
 	/// Adds a node to the graph.
 	virtual directed_graph& add_node() noexcept {
@@ -350,19 +350,19 @@ public:
 
 	/* GETTERS */
 
-	std::vector<edge_pair> get_Q() const noexcept;
+	[[nodiscard]] std::vector<edge_pair> get_Q() const noexcept;
 
-	std::vector<edge> get_edges() const noexcept;
+	[[nodiscard]] std::vector<edge> get_edges() const noexcept;
 
 	/// Returns true if the edge \f$(u,v)\f$ exists in the graph.
-	bool has_edge(node u, node v) const noexcept;
+	[[nodiscard]] bool has_edge(node u, node v) const noexcept;
 
 	/**
 	 * @brief Returns the out-neighbors of node @e u
 	 * @param u Node
 	 * @returns The list of nodes leaving node @e u.
 	 */
-	const neighbourhood& get_out_neighbors(node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_out_neighbors(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -373,7 +373,7 @@ public:
 	 * @param u Node
 	 * @returns The list of nodes entering at node @e u.
 	 */
-	const neighbourhood& get_in_neighbors(node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_in_neighbors(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -388,26 +388,26 @@ public:
 	 * @param u Vertex
 	 * @returns The (in + out) degree of this vertex.
 	 */
-	uint64_t get_degree(node u) const noexcept
+	[[nodiscard]] uint64_t get_degree(node u) const noexcept
 	{ return get_out_degree(u) + get_in_degree(u); }
 
 	/// Returns the out-degree of a node.
-	uint64_t get_out_degree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_out_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_adjacency_list[u].size();
 	}
 	/// Returns the in-degree of a node.
-	uint64_t get_in_degree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_in_degree(node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_in_adjacency_list[u].size();
 	}
 
-	bool is_directed() const noexcept { return true; }
-	bool is_undirected() const noexcept { return false; }
+	[[nodiscard]] bool is_directed() const noexcept { return true; }
+	[[nodiscard]] bool is_undirected() const noexcept { return false; }
 
 	/**
 	 * @brief Converts this directed graph into an undirected graph.
@@ -422,11 +422,11 @@ public:
 	 * @param check Chech whether the resulting graph is normalized or not.
 	 * @returns This graph in which the edges are undirected.
 	 */
-	undirected_graph to_undirected
+	[[nodiscard]] undirected_graph to_undirected
 	(bool norm = true, bool check = true) const noexcept;
 
 	/// Returns all the connected components of this graph as individual graphs.
-	std::vector<directed_graph> get_connected_components() const noexcept;
+	[[nodiscard]] std::vector<directed_graph> get_connected_components() const noexcept;
 
 protected:
 	/// In-neighbors for every node.
