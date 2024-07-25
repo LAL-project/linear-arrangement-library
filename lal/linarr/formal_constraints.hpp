@@ -67,7 +67,8 @@ namespace linarr {
  * @param arr Input linear arrangement
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-[[nodiscard]] inline bool is_permutation(const linear_arrangement& arr = {}) noexcept
+[[nodiscard]] inline bool is_permutation(const linear_arrangement& arr = {})
+noexcept
 {
 	// identity arrangement is always a permutation
 	if (arr.size() == 0) { return true; }
