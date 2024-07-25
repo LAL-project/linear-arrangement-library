@@ -63,6 +63,12 @@ namespace linarr {
  */
 class chunk {
 public:
+	/// Useful typedef for constant iterators.
+	typedef typename std::vector<node>::const_iterator const_iterator;
+	/// Useful typedef for non-constant iterators.
+	typedef typename std::vector<node>::iterator iterator;
+
+public:
 	/* MODIFIERS */
 
 	/**
@@ -111,29 +117,6 @@ public:
 
 	/* GETTERS */
 
-	/// A pointer to the beginning of the node sequence.
-	[[nodiscard]] const std::vector<node>::const_iterator begin() const noexcept
-	{ return m_nodes.begin(); }
-	/// A pointer to the beginning of the node sequence.
-	[[nodiscard]] std::vector<node>::iterator begin() noexcept
-	{ return m_nodes.begin(); }
-
-	/// A pointer to the ending of the node sequence.
-	[[nodiscard]] const std::vector<node>::const_iterator end() const noexcept
-	{ return m_nodes.end(); }
-	/// A pointer to the ending of the node sequence.
-	[[nodiscard]] std::vector<node>::iterator end() noexcept
-	{ return m_nodes.end(); }
-
-	/**
-	 * @brief Collection of nodes of this chunk.
-	 *
-	 * See member @ref m_nodes.
-	 * @returns A constant reference to the collection of nodes.
-	 */
-	[[nodiscard]] const std::vector<node>& get_nodes() const noexcept
-	{ return m_nodes; }
-
 	/// Does this chunk have a parent node?
 	[[nodiscard]] bool has_parent_node() const noexcept
 	{ return m_parent.has_value(); }
@@ -164,6 +147,29 @@ public:
 #endif
 		return *m_root;
 	}
+
+	/// A pointer to the beginning of the node sequence.
+	[[nodiscard]] const const_iterator begin() const noexcept
+	{ return m_nodes.begin(); }
+	/// A pointer to the beginning of the node sequence.
+	[[nodiscard]] iterator begin() noexcept
+	{ return m_nodes.begin(); }
+
+	/// A pointer to the ending of the node sequence.
+	[[nodiscard]] const const_iterator end() const noexcept
+	{ return m_nodes.end(); }
+	/// A pointer to the ending of the node sequence.
+	[[nodiscard]] iterator end() noexcept
+	{ return m_nodes.end(); }
+
+	/**
+	 * @brief Collection of nodes of this chunk.
+	 *
+	 * See member @ref m_nodes.
+	 * @returns A constant reference to the collection of nodes.
+	 */
+	[[nodiscard]] const std::vector<node>& get_nodes() const noexcept
+	{ return m_nodes; }
 
 private:
 	/// Collection of nodes in this chunk

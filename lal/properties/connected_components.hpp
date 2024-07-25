@@ -64,6 +64,12 @@ namespace properties {
 template <class graph_t>
 class connected_components {
 public:
+	/// Useful typedef for constant iterators.
+	typedef typename std::vector<graph_t>::const_iterator const_iterator;
+	/// Useful typedef for non-constant iterators.
+	typedef typename std::vector<graph_t>::iterator iterator;
+
+public:
 
 	/// Access operator
 	[[nodiscard]] graph_t& operator[] (std::size_t i) noexcept {
@@ -173,17 +179,17 @@ public:
 	}
 
 	/// A pointer to the beginning of the sequence of connected components.
-	[[nodiscard]] typename std::vector<graph_t>::const_iterator begin() const noexcept
+	[[nodiscard]] const_iterator begin() const noexcept
 	{ return m_connected_components.begin(); }
 	/// A pointer to the beginning of the sequence of connected components.
-	[[nodiscard]] typename std::vector<graph_t>::iterator begin() noexcept
+	[[nodiscard]] iterator begin() noexcept
 	{ return m_connected_components.begin(); }
 
 	/// A pointer to the end of the sequence of connected components.
-	[[nodiscard]] typename std::vector<graph_t>::const_iterator end() const noexcept
+	[[nodiscard]] const_iterator end() const noexcept
 	{ return m_connected_components.end(); }
 	/// A pointer to the end of the sequence of connected components.
-	[[nodiscard]] typename std::vector<graph_t>::iterator end() noexcept
+	[[nodiscard]] iterator end() noexcept
 	{ return m_connected_components.end(); }
 
 private:

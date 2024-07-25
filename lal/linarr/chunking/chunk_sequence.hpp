@@ -106,6 +106,12 @@ namespace linarr {
  */
 class chunk_sequence {
 public:
+	/// Useful typedef for constant iterators.
+	typedef typename std::vector<chunk>::const_iterator const_iterator;
+	/// Useful typedef for non-constant iterators.
+	typedef typename std::vector<chunk>::iterator iterator;
+
+public:
 
 	/**
 	 * @brief Initializes this chunk sequence.
@@ -185,17 +191,17 @@ public:
 	}
 
 	/// A pointer to the beginning of the chunk sequence.
-	[[nodiscard]] const std::vector<chunk>::const_iterator begin() const noexcept
+	[[nodiscard]] const const_iterator begin() const noexcept
 	{ return m_chunks.begin(); }
 	/// A pointer to the beginning of the chunk sequence.
-	[[nodiscard]] std::vector<chunk>::iterator begin() noexcept
+	[[nodiscard]] iterator begin() noexcept
 	{ return m_chunks.begin(); }
 
 	/// A pointer to the ending of the chunk sequence.
-	[[nodiscard]] const std::vector<chunk>::const_iterator end() const noexcept
+	[[nodiscard]] const const_iterator end() const noexcept
 	{ return m_chunks.end(); }
 	/// A pointer to the ending of the chunk sequence.
-	[[nodiscard]] std::vector<chunk>::iterator end() noexcept
+	[[nodiscard]] iterator end() noexcept
 	{ return m_chunks.end(); }
 
 	/**
