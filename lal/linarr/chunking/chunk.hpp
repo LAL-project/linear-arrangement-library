@@ -149,14 +149,14 @@ public:
 	}
 
 	/// A pointer to the beginning of the node sequence.
-	[[nodiscard]] const const_iterator begin() const noexcept
+	[[nodiscard]] const_iterator begin() const noexcept
 	{ return m_nodes.begin(); }
 	/// A pointer to the beginning of the node sequence.
 	[[nodiscard]] iterator begin() noexcept
 	{ return m_nodes.begin(); }
 
 	/// A pointer to the ending of the node sequence.
-	[[nodiscard]] const const_iterator end() const noexcept
+	[[nodiscard]] const_iterator end() const noexcept
 	{ return m_nodes.end(); }
 	/// A pointer to the ending of the node sequence.
 	[[nodiscard]] iterator end() noexcept

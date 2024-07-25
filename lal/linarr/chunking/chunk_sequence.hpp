@@ -191,14 +191,14 @@ public:
 	}
 
 	/// A pointer to the beginning of the chunk sequence.
-	[[nodiscard]] const const_iterator begin() const noexcept
+	[[nodiscard]] const_iterator begin() const noexcept
 	{ return m_chunks.begin(); }
 	/// A pointer to the beginning of the chunk sequence.
 	[[nodiscard]] iterator begin() noexcept
 	{ return m_chunks.begin(); }
 
 	/// A pointer to the ending of the chunk sequence.
-	[[nodiscard]] const const_iterator end() const noexcept
+	[[nodiscard]] const_iterator end() const noexcept
 	{ return m_chunks.end(); }
 	/// A pointer to the ending of the chunk sequence.
 	[[nodiscard]] iterator end() noexcept
