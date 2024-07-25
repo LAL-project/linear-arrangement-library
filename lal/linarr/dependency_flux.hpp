@@ -76,9 +76,6 @@ public:
 	/// Returns a reference to the weight of this flux.
 	[[nodiscard]] uint64_t& get_weight() noexcept { return m_weight; }
 
-	/// Returns a reference to the set of dependencies.
-	[[nodiscard]] std::vector<edge>& get_dependencies() { return m_dependencies; }
-
 	/// Returns the set of dependencies.
 	[[nodiscard]] const std::vector<edge>& get_dependencies() const noexcept
 	{ return m_dependencies; }

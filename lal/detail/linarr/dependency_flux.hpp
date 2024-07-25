@@ -200,7 +200,7 @@ noexcept
 
 	for (position cur_pos = 0; cur_pos < n - 1; ++cur_pos) {
 		// current dependencies
-		auto& cur_deps = flux[cur_pos].get_dependencies();
+		std::vector<edge> cur_deps;
 
 		// ----------------------
 		// calculate dependencies
@@ -228,6 +228,8 @@ noexcept
 			mem
 		);
 		mem.reset_count();
+
+		flux[cur_pos].set_dependencies(std::move(cur_deps));
 	}
 
 	return flux;
