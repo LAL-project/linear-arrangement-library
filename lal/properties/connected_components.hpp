@@ -81,7 +81,7 @@ public:
 		return m_connected_components[i];
 	}
 
-	// MODIFIERS
+	/* MODIFIERS */
 
 	/**
 	 * @brief Initializes this object
@@ -133,7 +133,7 @@ public:
 		m__cc_node__to__graph_node[cc_idx][u] = label;
 	}
 
-	// GETTERS
+	/* GETTERS */
 
 	/// Returns the number of connected components.
 	[[nodiscard]] std::size_t size() const noexcept {
@@ -171,6 +171,20 @@ public:
 	{
 		return m__cc_node__to__graph_node[cc_idx][u];
 	}
+
+	/// A pointer to the beginning of the sequence of connected components.
+	[[nodiscard]] typename std::vector<graph_t>::const_iterator begin() const noexcept
+	{ return m_connected_components.begin(); }
+	/// A pointer to the beginning of the sequence of connected components.
+	[[nodiscard]] typename std::vector<graph_t>::iterator begin() noexcept
+	{ return m_connected_components.begin(); }
+
+	/// A pointer to the end of the sequence of connected components.
+	[[nodiscard]] typename std::vector<graph_t>::const_iterator end() const noexcept
+	{ return m_connected_components.end(); }
+	/// A pointer to the end of the sequence of connected components.
+	[[nodiscard]] typename std::vector<graph_t>::iterator end() noexcept
+	{ return m_connected_components.end(); }
 
 private:
 	/// The connected components of the graph.

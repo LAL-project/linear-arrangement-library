@@ -184,6 +184,20 @@ public:
 		return m_from_node_to_chunk[u];
 	}
 
+	/// A pointer to the beginning of the chunk sequence.
+	[[nodiscard]] const std::vector<chunk>::const_iterator begin() const noexcept
+	{ return m_chunks.begin(); }
+	/// A pointer to the beginning of the chunk sequence.
+	[[nodiscard]] std::vector<chunk>::iterator begin() noexcept
+	{ return m_chunks.begin(); }
+
+	/// A pointer to the ending of the chunk sequence.
+	[[nodiscard]] const std::vector<chunk>::const_iterator end() const noexcept
+	{ return m_chunks.end(); }
+	/// A pointer to the ending of the chunk sequence.
+	[[nodiscard]] std::vector<chunk>::iterator end() noexcept
+	{ return m_chunks.end(); }
+
 	/**
 	 * @brief The sequence of chunks.
 	 *
