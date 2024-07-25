@@ -44,6 +44,7 @@
 // lal includes
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
+#include <lal/linarr/chunking/chunk_sequence.hpp>
 
 namespace lal {
 namespace detail {

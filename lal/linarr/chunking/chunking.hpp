@@ -45,6 +45,7 @@
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
+#include <lal/linarr/chunking/chunk_sequence.hpp>
 #include <lal/linarr/chunking/algorithms.hpp>
 
 namespace lal {

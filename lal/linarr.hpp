@@ -49,6 +49,7 @@
 
 #include <lal/linarr/chunking/algorithms.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
+#include <lal/linarr/chunking/chunk_sequence.hpp>
 #include <lal/linarr/chunking/chunking.hpp>
 #include <lal/linarr/chunking/output.hpp>
 

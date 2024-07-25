@@ -347,6 +347,7 @@ target_sources(
 		linarr/C/C.hpp
 		linarr/chunking/algorithms.hpp
 		linarr/chunking/chunk.hpp
+		linarr/chunking/chunk_sequence.hpp
 		linarr/chunking/chunking.hpp
 		linarr/chunking/output.hpp
 		linarr/D/algorithms_Dmin.hpp
@@ -548,6 +549,7 @@ set(LIBLAL_LINARR_C_HEADER
 set(LIBLAL_LINARR_chunking_HEADER
 	linarr/chunking/algorithms.hpp
 	linarr/chunking/chunk.hpp
+	linarr/chunking/chunk_sequence.hpp
 	linarr/chunking/chunking.hpp
 	linarr/chunking/output.hpp
 )

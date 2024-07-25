@@ -234,6 +234,7 @@ HEADERS += \
 	linarr/aggregations/2level.hpp \
 	linarr/chunking/algorithms.hpp \
 	linarr/chunking/chunk.hpp \
+	linarr/chunking/chunk_sequence.hpp \
 	linarr/chunking/chunking.hpp \
 	linarr/chunking/output.hpp \
 	linarr/dependency_flux.hpp \

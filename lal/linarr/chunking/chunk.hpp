@@ -117,17 +117,19 @@ public:
 	 * See member @ref m_nodes.
 	 * @returns A constant reference to the collection of nodes.
 	 */
-	const std::vector<node>& get_nodes() const noexcept { return m_nodes; }
+	[[nodiscard]] const std::vector<node>& get_nodes() const noexcept
+	{ return m_nodes; }
 
 	/// Does this chunk have a parent node?
-	bool has_parent_node() const noexcept { return m_parent.has_value(); }
+	[[nodiscard]] bool has_parent_node() const noexcept
+	{ return m_parent.has_value(); }
 
 	/**
 	 * @brief Retrieve the parent node of this chunk.
 	 * @returns The parent node if it exists.
 	 * @pre Method @ref has_parent_node must evaluate to true.
 	 */
-	node get_parent_node() const noexcept {
+	[[nodiscard]] node get_parent_node() const noexcept {
 #if defined DEBUG
 		assert(has_parent_node());
 #endif
@@ -135,14 +137,14 @@ public:
 	}
 
 	/// Does this chunk have a parent node?
-	bool has_root_node() const noexcept { return m_root.has_value(); }
+	[[nodiscard]] bool has_root_node() const noexcept { return m_root.has_value(); }
 
 	/**
 	 * @brief Retrieve the root node of this chunk.
 	 * @returns The root node if it exists.
 	 * @pre Method @ref has_root_node must evaluate to true.
 	 */
-	node get_root_node() const noexcept {
+	[[nodiscard]] node get_root_node() const noexcept {
 #if defined DEBUG
 		assert(has_root_node());
 #endif
@@ -156,153 +158,6 @@ private:
 	std::optional<node> m_parent;
 	/// The root vertex of this chunk
 	std::optional<node> m_root;
-};
-
-/**
- * @brief Chunk sequence of a syntactic dependency tree.
- * 
- * This can be seen as the ordered sequence of chunks obtained from applying a
- * chunking algorithm. The sequence is ordered because the first chunk (at index
- * 0) is the leftmost chunk in the ordering of the nodes. For instance, we may
- * have the following tree (in the head vector format --
- * see @ref LAL_concepts__head_vector),
- *
- @verbatim
- 2 5 2 5 0 9 9 9 10 5
- @endverbatim
- *
- * The chunks obtained could be (there are other ways to obtain chunks) the
- * follownig
- *
- @verbatim
- |-------|-----|----------|---|
- | 2 5 2 | 5 0 | 9 9 9 10 | 5 |
- |-------|-----|----------|---|
-     0      1       2       3
- @endverbatim
- * 
- * and so the first chunk has index 0, the second chunk index 1, and so on. Use
- * @code
- * 		lal::linarr::chunk_sequence s;
- * 		// call a chunking algorithm
- * 		const std::vector<chunk> chunks = s.get_chunks();
- * 		const chunk& c0 = chunks[0];
- * 		const chunk& c1 = chunks[1];
- * 		// ...
- * @endcode
- * 
- * Nodes can be queried for their chunk index with method @ref get_chunk_index.
- * Since in the tree example the nodes are distributed from left to right, the
- * chunk indices are the following (left column: nodes, right column: chunk index).
- * 
- @verbatim
- 0: 0
- 1: 0
- 2: 0
- 3: 1
- 4: 1
- 5: 2
- 6: 2
- 7: 2
- 8: 2
- 9: 3
- @endverbatim
- */
-class chunk_sequence {
-public:
-
-	/**
-	 * @brief Initializes this chunk sequence.
-	 * @param n Size to initialize the sequence with, the number of nodes of the
-	 * tree to be chunked.
-	 */
-	void init(std::size_t n) noexcept {
-		m_from_node_to_chunk.resize(n, n + 1);
-	}
-
-	/**
-	 * @brief The @e i-th chunk.
-	 * @param i Chunk index.
-	 * @returns A constant reference to the @e i-th chunk.
-	 */
-	[[nodiscard]] const chunk& operator[] (std::size_t i) const noexcept {
-#if defined DEBUG
-		assert(i < size());
-#endif
-		return m_chunks[i];
-	}
-
-	/**
-	 * @brief The @e i-th chunk.
-	 * @param i Chunk index.
-	 * @returns A non-constant reference to the @e i-th chunk.
-	 */
-	[[nodiscard]] chunk& operator[] (std::size_t i) noexcept {
-#if defined DEBUG
-		assert(i < size());
-#endif
-		return m_chunks[i];
-	}
-
-	/* MODIFIERS */
-
-	/**
-	 * @brief Adds a new chunk to the collection.
-	 * @post The new chunk does not have a parent.
-	 */
-	void push_chunk() noexcept {
-		m_chunks.push_back({});
-	}
-
-	/**
-	 * @brief Adds a new chunk to the collection.
-	 * @param u Node to be added into the new chunk.
-	 * @post The new chunk does not have a parent.
-	 */
-	void push_chunk(node u) noexcept {
-		push_chunk();
-		m_chunks.back().add_node(u);
-	}
-
-	/* SETTERS */
-
-	void set_chunk_index(node u, std::size_t i) noexcept {
-#if defined DEBUG
-		assert(u < m_from_node_to_chunk.size());
-#endif
-		m_from_node_to_chunk[u] = i;
-	}
-
-	/* GETTERS */
-
-	/// Returns the number of chunks.
-	std::size_t size() const noexcept {
-		return m_chunks.size();
-	}
-
-	/// Returns the chunk index of node @e u.
-	std::size_t get_chunk_index(node u) const noexcept {
-#if defined DEBUG
-		assert(u < m_from_node_to_chunk.size());
-#endif
-		return m_from_node_to_chunk[u];
-	}
-
-	/**
-	 * @brief The sequence of chunks.
-	 * 
-	 * See member @ref m_chunks.
-	 * @returns A constant reference to the sequence of chunks.
-	 */
-	const std::vector<chunk>& get_chunks() const noexcept {
-		return m_chunks;
-	}
-
-private:
-	/// The sequence of chunks
-	std::vector<chunk> m_chunks;
-	/// Index of every 
-	detail::array<std::size_t> m_from_node_to_chunk;
 };
 
 } // -- namespace linarr
