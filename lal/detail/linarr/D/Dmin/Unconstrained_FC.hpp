@@ -353,7 +353,7 @@ void calculate_mla
 )
 noexcept
 {
-	std::vector<node> reachable(t.get_num_nodes_component(one_node));
+	array<node> reachable(t.get_num_nodes_component(one_node));
 	{
 	auto it = reachable.begin();
 	detail::BFS bfs(t);
