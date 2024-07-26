@@ -46,13 +46,13 @@
 namespace lal {
 namespace properties {
 
-connected_components<graphs::undirected_graph> compute_connected_components
+connected_components<graphs::undirected_graph> connected_components_compute
 (const graphs::undirected_graph& g)
 {
 	return detail::connected_components<true>(g);
 }
 
-connected_components<graphs::directed_graph> compute_connected_components
+connected_components<graphs::directed_graph> connected_components_compute
 (const graphs::directed_graph& g)
 {
 	return detail::connected_components<true>(g);
