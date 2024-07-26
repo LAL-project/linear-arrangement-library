@@ -282,81 +282,81 @@ treebank_file_error treebank_processor::process() noexcept {
 
 				const auto tf = index_to_treebank_feature(i);
 				switch (tf) {
-				case treebank_feature::num_nodes:
-				case treebank_feature::second_moment_degree:
-				case treebank_feature::second_moment_degree_out:
-				case treebank_feature::third_moment_degree:
-				case treebank_feature::third_moment_degree_out:
-				case treebank_feature::sum_squared_degrees:
-				case treebank_feature::sum_squared_out_degrees:
-				case treebank_feature::sum_cubed_degrees:
-				case treebank_feature::sum_cubed_out_degrees:
-				case treebank_feature::num_pairs_independent_edges:
-				case treebank_feature::head_initial:
-				case treebank_feature::hubiness:
-				case treebank_feature::sum_hierarchical_distances:
-				case treebank_feature::mean_hierarchical_distance:
-				case treebank_feature::tree_diameter:
-				case treebank_feature::tree_caterpillar_distance:
-				case treebank_feature::num_crossings:
-				case treebank_feature::predicted_num_crossings:
-				case treebank_feature::exp_num_crossings:
-				case treebank_feature::var_num_crossings:
-				case treebank_feature::z_score_num_crossings:
-				case treebank_feature::sum_edge_lengths:
-				case treebank_feature::exp_sum_edge_lengths:
-				case treebank_feature::exp_sum_edge_lengths_bipartite:
-				case treebank_feature::exp_sum_edge_lengths_projective:
-				case treebank_feature::exp_sum_edge_lengths_planar:
-				case treebank_feature::var_sum_edge_lengths:
-				case treebank_feature::z_score_sum_edge_lengths:
-				case treebank_feature::min_sum_edge_lengths:
-				case treebank_feature::min_sum_edge_lengths_bipartite:
-				case treebank_feature::min_sum_edge_lengths_planar:
-				case treebank_feature::min_sum_edge_lengths_projective:
-				case treebank_feature::max_sum_edge_lengths:
-				case treebank_feature::max_sum_edge_lengths_1_thistle:
-				case treebank_feature::max_sum_edge_lengths_bipartite:
-				case treebank_feature::max_sum_edge_lengths_planar:
-				case treebank_feature::max_sum_edge_lengths_projective:
-				case treebank_feature::mean_dependency_distance:
-				case treebank_feature::flux_max_weight:
-				case treebank_feature::flux_mean_weight:
-				case treebank_feature::flux_min_weight:
-				case treebank_feature::flux_max_left_span:
-				case treebank_feature::flux_mean_left_span:
-				case treebank_feature::flux_min_left_span:
-				case treebank_feature::flux_max_right_span:
-				case treebank_feature::flux_mean_right_span:
-				case treebank_feature::flux_min_right_span:
-				case treebank_feature::flux_max_RL_ratio:
-				case treebank_feature::flux_mean_RL_ratio:
-				case treebank_feature::flux_min_RL_ratio:
-				case treebank_feature::flux_max_WS_ratio:
-				case treebank_feature::flux_mean_WS_ratio:
-				case treebank_feature::flux_min_WS_ratio:
-				case treebank_feature::flux_max_size:
-				case treebank_feature::flux_mean_size:
-				case treebank_feature::flux_min_size:
+				case treebank_feature_type::num_nodes:
+				case treebank_feature_type::second_moment_degree:
+				case treebank_feature_type::second_moment_degree_out:
+				case treebank_feature_type::third_moment_degree:
+				case treebank_feature_type::third_moment_degree_out:
+				case treebank_feature_type::sum_squared_degrees:
+				case treebank_feature_type::sum_squared_out_degrees:
+				case treebank_feature_type::sum_cubed_degrees:
+				case treebank_feature_type::sum_cubed_out_degrees:
+				case treebank_feature_type::num_pairs_independent_edges:
+				case treebank_feature_type::head_initial:
+				case treebank_feature_type::hubiness:
+				case treebank_feature_type::sum_hierarchical_distances:
+				case treebank_feature_type::mean_hierarchical_distance:
+				case treebank_feature_type::tree_diameter:
+				case treebank_feature_type::tree_caterpillar_distance:
+				case treebank_feature_type::num_crossings:
+				case treebank_feature_type::predicted_num_crossings:
+				case treebank_feature_type::exp_num_crossings:
+				case treebank_feature_type::var_num_crossings:
+				case treebank_feature_type::z_score_num_crossings:
+				case treebank_feature_type::sum_edge_lengths:
+				case treebank_feature_type::exp_sum_edge_lengths:
+				case treebank_feature_type::exp_sum_edge_lengths_bipartite:
+				case treebank_feature_type::exp_sum_edge_lengths_projective:
+				case treebank_feature_type::exp_sum_edge_lengths_planar:
+				case treebank_feature_type::var_sum_edge_lengths:
+				case treebank_feature_type::z_score_sum_edge_lengths:
+				case treebank_feature_type::min_sum_edge_lengths:
+				case treebank_feature_type::min_sum_edge_lengths_bipartite:
+				case treebank_feature_type::min_sum_edge_lengths_planar:
+				case treebank_feature_type::min_sum_edge_lengths_projective:
+				case treebank_feature_type::max_sum_edge_lengths:
+				case treebank_feature_type::max_sum_edge_lengths_1_thistle:
+				case treebank_feature_type::max_sum_edge_lengths_bipartite:
+				case treebank_feature_type::max_sum_edge_lengths_planar:
+				case treebank_feature_type::max_sum_edge_lengths_projective:
+				case treebank_feature_type::mean_dependency_distance:
+				case treebank_feature_type::flux_max_weight:
+				case treebank_feature_type::flux_mean_weight:
+				case treebank_feature_type::flux_min_weight:
+				case treebank_feature_type::flux_max_left_span:
+				case treebank_feature_type::flux_mean_left_span:
+				case treebank_feature_type::flux_min_left_span:
+				case treebank_feature_type::flux_max_right_span:
+				case treebank_feature_type::flux_mean_right_span:
+				case treebank_feature_type::flux_min_right_span:
+				case treebank_feature_type::flux_max_RL_ratio:
+				case treebank_feature_type::flux_mean_RL_ratio:
+				case treebank_feature_type::flux_min_RL_ratio:
+				case treebank_feature_type::flux_max_WS_ratio:
+				case treebank_feature_type::flux_mean_WS_ratio:
+				case treebank_feature_type::flux_min_WS_ratio:
+				case treebank_feature_type::flux_max_size:
+				case treebank_feature_type::flux_mean_size:
+				case treebank_feature_type::flux_min_size:
 					out_treebank_file << m_column_names[i];
 					break;
 
-				case treebank_feature::tree_centre:
-				case treebank_feature::tree_centroid:
+				case treebank_feature_type::tree_centre:
+				case treebank_feature_type::tree_centroid:
 					out_treebank_file << m_column_names[i] << '1';
 					out_treebank_file << m_separator;
 					out_treebank_file << m_column_names[i] << "2";
 					break;
 
-				case treebank_feature::tree_type:
+				case treebank_feature_type::tree_type:
 					output_tree_type_header(out_treebank_file);
 					break;
 
-				case treebank_feature::syntactic_dependency_tree_class:
+				case treebank_feature_type::syntactic_dependency_tree_class:
 					output_syndepstruct_type_header(out_treebank_file);
 					break;
 
-				case treebank_feature::__last_value:
+				case treebank_feature_type::__last_value:
 					break;
 				}
 			}
@@ -467,7 +467,7 @@ const noexcept
 	const auto v = linarr::syntactic_dependency_tree_classify(rT, C);
 
 	const auto output_sdst =
-	[&](const linarr::syntactic_dependency_tree& sdst) {
+	[&](const linarr::syntactic_dependency_tree_type& sdst) {
 		const std::size_t idx_tt = static_cast<std::size_t>(sdst);
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
@@ -868,82 +868,82 @@ noexcept
 
 			const auto tf = index_to_treebank_feature(i);
 			switch (tf) {
-			case treebank_feature::num_nodes:
-			case treebank_feature::second_moment_degree:
-			case treebank_feature::second_moment_degree_out:
-			case treebank_feature::third_moment_degree:
-			case treebank_feature::third_moment_degree_out:
-			case treebank_feature::sum_squared_degrees:
-			case treebank_feature::sum_squared_out_degrees:
-			case treebank_feature::sum_cubed_degrees:
-			case treebank_feature::sum_cubed_out_degrees:
-			case treebank_feature::num_pairs_independent_edges:
-			case treebank_feature::head_initial:
-			case treebank_feature::hubiness:
-			case treebank_feature::sum_hierarchical_distances:
-			case treebank_feature::mean_hierarchical_distance:
-			case treebank_feature::tree_diameter:
-			case treebank_feature::tree_caterpillar_distance:
-			case treebank_feature::num_crossings:
-			case treebank_feature::predicted_num_crossings:
-			case treebank_feature::exp_num_crossings:
-			case treebank_feature::var_num_crossings:
-			case treebank_feature::z_score_num_crossings:
-			case treebank_feature::sum_edge_lengths:
-			case treebank_feature::exp_sum_edge_lengths:
-			case treebank_feature::exp_sum_edge_lengths_bipartite:
-			case treebank_feature::exp_sum_edge_lengths_projective:
-			case treebank_feature::exp_sum_edge_lengths_planar:
-			case treebank_feature::var_sum_edge_lengths:
-			case treebank_feature::z_score_sum_edge_lengths:
-			case treebank_feature::min_sum_edge_lengths:
-			case treebank_feature::min_sum_edge_lengths_bipartite:
-			case treebank_feature::min_sum_edge_lengths_planar:
-			case treebank_feature::min_sum_edge_lengths_projective:
-			case treebank_feature::max_sum_edge_lengths:
-			case treebank_feature::max_sum_edge_lengths_1_thistle:
-			case treebank_feature::max_sum_edge_lengths_bipartite:
-			case treebank_feature::max_sum_edge_lengths_planar:
-			case treebank_feature::max_sum_edge_lengths_projective:
-			case treebank_feature::mean_dependency_distance:
-			case treebank_feature::flux_max_weight:
-			case treebank_feature::flux_mean_weight:
-			case treebank_feature::flux_min_weight:
-			case treebank_feature::flux_max_left_span:
-			case treebank_feature::flux_mean_left_span:
-			case treebank_feature::flux_min_left_span:
-			case treebank_feature::flux_max_right_span:
-			case treebank_feature::flux_mean_right_span:
-			case treebank_feature::flux_min_right_span:
-			case treebank_feature::flux_max_RL_ratio:
-			case treebank_feature::flux_mean_RL_ratio:
-			case treebank_feature::flux_min_RL_ratio:
-			case treebank_feature::flux_max_WS_ratio:
-			case treebank_feature::flux_mean_WS_ratio:
-			case treebank_feature::flux_min_WS_ratio:
-			case treebank_feature::flux_max_size:
-			case treebank_feature::flux_mean_size:
-			case treebank_feature::flux_min_size:
+			case treebank_feature_type::num_nodes:
+			case treebank_feature_type::second_moment_degree:
+			case treebank_feature_type::second_moment_degree_out:
+			case treebank_feature_type::third_moment_degree:
+			case treebank_feature_type::third_moment_degree_out:
+			case treebank_feature_type::sum_squared_degrees:
+			case treebank_feature_type::sum_squared_out_degrees:
+			case treebank_feature_type::sum_cubed_degrees:
+			case treebank_feature_type::sum_cubed_out_degrees:
+			case treebank_feature_type::num_pairs_independent_edges:
+			case treebank_feature_type::head_initial:
+			case treebank_feature_type::hubiness:
+			case treebank_feature_type::sum_hierarchical_distances:
+			case treebank_feature_type::mean_hierarchical_distance:
+			case treebank_feature_type::tree_diameter:
+			case treebank_feature_type::tree_caterpillar_distance:
+			case treebank_feature_type::num_crossings:
+			case treebank_feature_type::predicted_num_crossings:
+			case treebank_feature_type::exp_num_crossings:
+			case treebank_feature_type::var_num_crossings:
+			case treebank_feature_type::z_score_num_crossings:
+			case treebank_feature_type::sum_edge_lengths:
+			case treebank_feature_type::exp_sum_edge_lengths:
+			case treebank_feature_type::exp_sum_edge_lengths_bipartite:
+			case treebank_feature_type::exp_sum_edge_lengths_projective:
+			case treebank_feature_type::exp_sum_edge_lengths_planar:
+			case treebank_feature_type::var_sum_edge_lengths:
+			case treebank_feature_type::z_score_sum_edge_lengths:
+			case treebank_feature_type::min_sum_edge_lengths:
+			case treebank_feature_type::min_sum_edge_lengths_bipartite:
+			case treebank_feature_type::min_sum_edge_lengths_planar:
+			case treebank_feature_type::min_sum_edge_lengths_projective:
+			case treebank_feature_type::max_sum_edge_lengths:
+			case treebank_feature_type::max_sum_edge_lengths_1_thistle:
+			case treebank_feature_type::max_sum_edge_lengths_bipartite:
+			case treebank_feature_type::max_sum_edge_lengths_planar:
+			case treebank_feature_type::max_sum_edge_lengths_projective:
+			case treebank_feature_type::mean_dependency_distance:
+			case treebank_feature_type::flux_max_weight:
+			case treebank_feature_type::flux_mean_weight:
+			case treebank_feature_type::flux_min_weight:
+			case treebank_feature_type::flux_max_left_span:
+			case treebank_feature_type::flux_mean_left_span:
+			case treebank_feature_type::flux_min_left_span:
+			case treebank_feature_type::flux_max_right_span:
+			case treebank_feature_type::flux_mean_right_span:
+			case treebank_feature_type::flux_min_right_span:
+			case treebank_feature_type::flux_max_RL_ratio:
+			case treebank_feature_type::flux_mean_RL_ratio:
+			case treebank_feature_type::flux_min_RL_ratio:
+			case treebank_feature_type::flux_max_WS_ratio:
+			case treebank_feature_type::flux_mean_WS_ratio:
+			case treebank_feature_type::flux_min_WS_ratio:
+			case treebank_feature_type::flux_max_size:
+			case treebank_feature_type::flux_mean_size:
+			case treebank_feature_type::flux_min_size:
 				out_treebank_file << props[i];
 				break;
 
-			case treebank_feature::tree_centre:
+			case treebank_feature_type::tree_centre:
 				out_treebank_file
 					<< centre_of_tree.first << m_separator
 					<< centre_of_tree.second;
 				break;
 
-			case treebank_feature::tree_centroid:
+			case treebank_feature_type::tree_centroid:
 				out_treebank_file
 					<< centroid_of_tree.first << m_separator
 					<< centroid_of_tree.second;
 				break;
 
-			case treebank_feature::tree_type:
+			case treebank_feature_type::tree_type:
 				output_tree_type_values(fT, out_treebank_file);
 				break;
 
-			case treebank_feature::syntactic_dependency_tree_class:
+			case treebank_feature_type::syntactic_dependency_tree_class:
 				uint64_t C;
 				if (m_what_fs[C_idx]) {
 					C = static_cast<uint64_t>(props[C_idx]);
@@ -954,7 +954,7 @@ noexcept
 				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;
 
-			case treebank_feature::__last_value:
+			case treebank_feature_type::__last_value:
 				break;
 			}
 		}

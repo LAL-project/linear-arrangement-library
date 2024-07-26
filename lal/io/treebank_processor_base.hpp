@@ -46,7 +46,7 @@
 #include <array>
 
 // lal includes
-#include <lal/io/treebank_feature.hpp>
+#include <lal/io/treebank_feature_type.hpp>
 
 namespace lal {
 namespace io {
@@ -66,13 +66,13 @@ public:
 	 * @brief Adds a feature to the processor.
 	 * @param fs Feature to be added.
 	 */
-	void add_feature(const treebank_feature& fs) noexcept
+	void add_feature(const treebank_feature_type& fs) noexcept
 	{ m_what_fs[ static_cast<std::size_t>(fs) ] = true; }
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
-	void remove_feature(const treebank_feature& fs) noexcept
+	void remove_feature(const treebank_feature_type& fs) noexcept
 	{ m_what_fs[ static_cast<std::size_t>(fs) ] = false; }
 
 	// SETTERS
@@ -119,7 +119,7 @@ public:
 	 * @param tf Feature whose column name is to be modified.
 	 * @param name Custom name for the column.
 	 */
-	void set_column_name(const treebank_feature& tf, const std::string& name)
+	void set_column_name(const treebank_feature_type& tf, const std::string& name)
 	noexcept
 	{
 		m_column_names[static_cast<std::size_t>(tf)] = name;
@@ -132,7 +132,7 @@ public:
 	 * @param fs The feature being queried.
 	 * @returns True or False depending on whether the feature was added or removed.
 	 */
-	[[nodiscard]] bool has_feature(const treebank_feature& fs) const noexcept
+	[[nodiscard]] bool has_feature(const treebank_feature_type& fs) const noexcept
 	{ return m_what_fs[ static_cast<std::size_t>(fs) ]; }
 
 protected:

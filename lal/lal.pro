@@ -209,13 +209,13 @@ HEADERS += \
 	io/treebank_collection_reader.hpp \
 	io/treebank_collection_report.hpp \
 	io/treebank_collection_report_location.hpp \
+	io/treebank_feature_type.hpp \
 	io/treebank_file_error.hpp \
 	io/treebank_file_error_type.hpp \
 	io/treebank_file_report.hpp \
 	io/treebank_processor.hpp \
 	io/treebank_processor_base.hpp \
 	io/treebank_reader.hpp \
-	io/treebank_feature.hpp \
 	iterators.hpp \
 	iterators/E_iterator.hpp \
 	iterators/Q_iterator.hpp \

@@ -316,7 +316,7 @@ target_sources(
 		io/treebank_collection_reader.hpp
 		io/treebank_collection_report_location.hpp
 		io/treebank_collection_report.hpp
-		io/treebank_feature.hpp
+		io/treebank_feature_type.hpp
 		io/treebank_file_error_type.hpp
 		io/treebank_file_error.hpp
 		io/treebank_file_report.hpp
@@ -518,7 +518,7 @@ set(LIBLAL_IO_HEADER
 	io/treebank_collection_reader.hpp
 	io/treebank_collection_report_location.hpp
 	io/treebank_collection_report.hpp
-	io/treebank_feature.hpp
+	io/treebank_feature_type.hpp
 	io/treebank_file_error_type.hpp
 	io/treebank_file_error.hpp
 	io/treebank_file_report.hpp

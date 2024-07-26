@@ -66,7 +66,7 @@ namespace linarr {
 
 #define nullify(X) cl[enum_to_sizet(X)] = false;
 
-typedef syntactic_dependency_tree syndepstr_type;
+typedef syntactic_dependency_tree_type syndepstr_type;
 typedef detail::arrangement_wrapper<detail::arrangement_type::nonidentity> arr_nonident;
 
 template <class arrangement_t>

@@ -59,7 +59,7 @@ namespace linarr {
  * - Well nested trees with maximum degree gap 1 (see @ref syntactic_dependency_tree::WG1),
  * - 1-Endpoint Crossing (see @ref syntactic_dependency_tree::EC1),
  */
-enum class syntactic_dependency_tree {
+enum class syntactic_dependency_tree_type {
 	/**
 	 * @brief 1-Endpoint Crossing.
 	 *
@@ -101,7 +101,7 @@ enum class syntactic_dependency_tree {
 
 /// Number of elements within enumeration @ref syntactic_dependency_tree.
 inline constexpr std::size_t __syntactic_dependency_tree_size =
-	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_tree::unknown);
+	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_tree_type::unknown);
 
 } // -- namespace linarr
 } // -- namespace lal
