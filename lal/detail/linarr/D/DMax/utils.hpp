@@ -184,6 +184,7 @@ noexcept
  * @brief Wrapper method for the recursive method @ref arrange.
  *
  * A call to this function is done when the goal is to construct a linear arrangement.
+ * @tparam make_arrangement Should the arrangement be constructed?
  * @param n Number of vertices.
  * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
  * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
@@ -193,6 +194,7 @@ noexcept
  * @returns The cost of a maximum projective linear arrangement.
  * @pre @e L is sorted decreasingly.
  */
+template <bool make_arrangement>
 [[nodiscard]] inline uint64_t arrange_projective
 (
 	uint64_t n, const std::vector<std::vector<node_size>>& L,
@@ -200,28 +202,7 @@ noexcept
 )
 noexcept
 {
-	return arrange<Dopt_utils::PLACE_NONE_OF, true>(L, r, 0, n-1, arr);
-}
-
-/**
- * @brief Wrapper method for the recursive method @ref arrange.
- *
- * A call to this function is done when the goal is not to construct a linear
- * arrangement, only to calculate its cost.
- * @param n Number of vertices.
- * @param L Adjacency list-like data structure. \f$L[u]\f$ is a list of
- * pairs \f$(v, n_u(v))\f$ where \f$v\f$ is a neighbour of \f$u\f$ and
- * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
- * @param r Root of the tree represented by @e L.
- * @returns The cost of a maximum projective linear arrangement.
- * @pre @e L is sorted decreasingly.
- */
-[[nodiscard]] inline uint64_t arrange_projective
-(uint64_t n, const std::vector<std::vector<node_size>>& L, node r)
-noexcept
-{
-	linear_arrangement arr;
-	return arrange<Dopt_utils::PLACE_NONE_OF, false>(L, r, 0, n-1, arr);
+	return arrange<Dopt_utils::PLACE_NONE_OF, make_arrangement>(L, r, 0, n-1, arr);
 }
 
 } // -- namespcae DMax_utils

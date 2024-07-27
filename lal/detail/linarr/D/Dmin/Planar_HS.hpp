@@ -111,14 +111,15 @@ HS(const graphs::free_tree& t) noexcept
 	// construct the optimal planar arrangement by calculating the optimal
 	// projective arrangement
 
+	linear_arrangement arr(make_arrangement ? n : 0);
+	const uint64_t D =
+		Dmin_utils::embed<make_arrangement>
+		(L, c, arr);
+
 	if constexpr (make_arrangement) {
-		linear_arrangement arr(n);
-		const uint64_t D = Dmin_utils::embed<true>(L, c, arr);
 		return {D, std::move(arr)};
 	}
 	else {
-		linear_arrangement arr;
-		const uint64_t D = Dmin_utils::embed<false>(L, c, arr);
 		return D;
 	}
 }

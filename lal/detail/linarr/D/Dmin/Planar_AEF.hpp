@@ -107,10 +107,17 @@ AEF(const graphs::free_tree& t) noexcept
 	// construct the optimal planar arrangement by calculating the optimal
 	// projective arrangement
 
-	linear_arrangement arr(n);
-	const uint64_t D = Dmin_utils::arrange_projective(n, L, c, arr);
-
-	return {D, std::move(arr)};
+	linear_arrangement arr(make_arrangement ? n : 0);
+	const uint64_t D =
+		Dmin_utils::arrange_projective<make_arrangement>
+		(n, L, c, arr);
+	
+	if constexpr (make_arrangement) {
+		return {D, std::move(arr)};
+	}
+	else {
+		return D;
+	}
 }
 
 } // -- namespace planar

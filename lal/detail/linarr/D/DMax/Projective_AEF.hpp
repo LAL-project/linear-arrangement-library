@@ -106,13 +106,15 @@ AEF(const graphs::rooted_tree& t) noexcept
 
 	// construct the optimal projective arrangement
 
+	linear_arrangement arr(make_arrangement ? n : 0);
+	const uint64_t D =
+		DMax_utils::arrange_projective<make_arrangement>
+		(n, L, t.get_root(), arr);
+
 	if constexpr (make_arrangement) {
-		linear_arrangement arr(n);
-		const uint64_t D = DMax_utils::arrange_projective(n, L, t.get_root(), arr);
 		return {D, std::move(arr)};
 	}
 	else {
-		const uint64_t D = DMax_utils::arrange_projective(n, L, t.get_root());
 		return D;
 	}
 }

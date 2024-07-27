@@ -111,15 +111,15 @@ HS(const graphs::rooted_tree& t) noexcept
 		(t, L);
 
 	// construct the optimal projective arrangement
+	linear_arrangement arr(make_arrangement ? n : 0);
+	const uint64_t D =
+		Dmin_utils::embed<make_arrangement>
+		(L, r, arr);
 
 	if constexpr (make_arrangement) {
-		linear_arrangement arr(n);
-		const uint64_t D = Dmin_utils::embed<true>(L, r, arr);
 		return {D, std::move(arr)};
 	}
 	else {
-		linear_arrangement arr;
-		const uint64_t D = Dmin_utils::embed<false>(L, r, arr);
 		return D;
 	}
 }

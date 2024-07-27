@@ -747,7 +747,11 @@ noexcept
 	// initialized to 0 so that compiler does not cry.
 	uint64_t Dmin_projective = 0;
 	if (m_what_fs[Dmin_Projective_idx]) {
-		Dmin_projective = detail::Dmin_utils::arrange_projective(n, Lpr, rT.get_root());
+		linear_arrangement empty;
+		Dmin_projective =
+			detail::Dmin_utils::arrange_projective<false>
+			(n, Lpr, rT.get_root(), empty);
+
 		set_prop(Dmin_Projective_idx, detail::to_double(Dmin_projective));
 	}
 
@@ -765,11 +769,13 @@ noexcept
 			set_prop(Dmin_Planar_idx, detail::to_double(Dmin_projective));
 		}
 		else {
-			// Dmin_projective was not calculated, or the centroid does
-			// not contain the root
+			// Dmin_projective was not calculated, or the centroid does not contain
+			// the root
 
+			linear_arrangement empty;
 			const uint64_t Dmin_planar =
-				detail::Dmin_utils::arrange_projective(n, L, centroid.first);
+				detail::Dmin_utils::arrange_projective<false>
+				(n, L, centroid.first, empty);
 
 			set_prop(Dmin_Planar_idx, detail::to_double(Dmin_planar));
 		}
@@ -786,7 +792,10 @@ noexcept
 	}
 
 	if (m_what_fs[DMax_Projective_idx]) {
-		const uint64_t DMax_projective = detail::DMax_utils::arrange_projective(n, Lpr, rT.get_root());
+		linear_arrangement empty;
+		const uint64_t DMax_projective =
+			detail::DMax_utils::arrange_projective<false>
+			(n, Lpr, rT.get_root(), empty);
 		set_prop(DMax_Projective_idx, detail::to_double(DMax_projective));
 	}
 	if (m_what_fs[DMax_Planar_idx]) {
