@@ -39,27 +39,34 @@
  *
  ********************************************************************/
 
-#pragma once
-
-#include <lal/generate/all_lab_free_trees.hpp>
-#include <lal/generate/all_lab_rooted_trees.hpp>
-#include <lal/generate/all_ulab_free_trees.hpp>
-#include <lal/generate/all_ulab_rooted_trees.hpp>
-
 #include <lal/generate/all_ulab_free_bistar_trees.hpp>
 
-#include <lal/generate/rand_lab_free_trees.hpp>
-#include <lal/generate/rand_lab_rooted_trees.hpp>
-#include <lal/generate/rand_ulab_free_trees.hpp>
-#include <lal/generate/rand_ulab_rooted_trees.hpp>
+// lal includes
+#include <lal/graphs/free_tree.hpp>
 
-#include <lal/generate/tree_generator_type.hpp>
+namespace lal {
+namespace generate {
 
-#include <lal/generate/all_arrangements.hpp>
-#include <lal/generate/all_bipartite_arrangements.hpp>
-#include <lal/generate/all_planar_arrangements.hpp>
-#include <lal/generate/all_projective_arrangements.hpp>
-#include <lal/generate/rand_arrangements.hpp>
-#include <lal/generate/rand_bipartite_arrangements.hpp>
-#include <lal/generate/rand_planar_arrangements.hpp>
-#include <lal/generate/rand_projective_arrangements.hpp>
+/* PROTECTED */
+
+graphs::free_tree all_ulab_free_bistar_trees::__get_tree() noexcept {
+	if (m_n <= 1) { return graphs::free_tree(m_n); }
+	if (m_n == 2) {
+		graphs::free_tree t(2);
+		t.add_edge(0,1);
+		return t;
+	}
+
+	graphs::free_tree t(m_n);
+	t.add_edge_bulk(0,1);
+	for (lal::node u = 2; u < 2 + m_size; ++u) {
+		t.add_edge_bulk(0, u);
+	}
+	for (lal::node u = 2 + m_size; u < m_n; ++u) {
+		t.add_edge_bulk(1, u);
+	}
+	return t;
+}
+
+} // -- namespace generate
+} // -- namespace lal

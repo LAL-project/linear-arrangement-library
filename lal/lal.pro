@@ -173,6 +173,7 @@ HEADERS += \
 	generate/all_bipartite_arrangements.hpp \
 	generate/all_lab_free_trees.hpp \
 	generate/all_planar_arrangements.hpp \
+	generate/all_ulab_free_bistar_trees.hpp \
 	generate/all_ulab_free_trees.hpp \
 	generate/all_ulab_rooted_trees.hpp \
 	generate/all_lab_rooted_trees.hpp \
@@ -291,6 +292,7 @@ SOURCES += \
 	generate/all_lab_free_trees.cpp \
 	generate/all_planar_arrangements.cpp \
 	generate/all_projective_arrangements.cpp \
+	generate/all_ulab_free_bistar_trees.cpp \
 	generate/all_ulab_free_trees.cpp \
 	generate/all_ulab_rooted_trees.cpp \
 	generate/rand_arrangements.cpp \
