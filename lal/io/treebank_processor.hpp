@@ -58,7 +58,7 @@ namespace io {
  * This class, the objects of which will be referred to as the "processors",
  * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
- * @ref lal::io::treebank_feature for details on the features available.
+ * @ref lal::io::treebank_feature_type for details on the features available.
  *
  * This class is meant to process a single treebank file only (see
  * @ref LAL_concepts__treebank for further details on treebank files).
@@ -81,8 +81,8 @@ namespace io {
  * can be initialized with all features, and then be removed some of them via
  * method @ref remove_feature.
  *
- * Finally, the treebank file is processed via method @ref process. This method
- * returns a value of the enumeration @ref treebank_error.
+ * Finally, the treebank file is processed via method @ref process. This
+ * method returns an error, if any, via @ref lal::io::treebank_file_error.
  *
  * The usage of this class is a lot simpler than that of class
  * @ref treebank_collection_reader. For example:
@@ -90,8 +90,8 @@ namespace io {
  *		treebank_processor tbproc;
  *		// initialize the processor without features (remmeber to check for errors)
  *		tbproc.init(treebank_input_file, result_filename, "Book_1");
- *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
- *		tbproc.add_feature(lal::io::treebank_feature::var_num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature_type::num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature_type::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
@@ -245,10 +245,10 @@ private:
  * This function is an utility to process easily a single treebank file.
  * This function uses the class @ref lal::io::treebank_processor in order to
  * process such a file. The default values of the processor are used, i.e.,
- * all features available in @ref lal::io::treebank_feature are computed.
+ * all features available in @ref lal::io::treebank_feature_type are computed.
  * @param treebank_file The treebank file name.
  * @param output_file The output file name.
- * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ * @returns A treebank error if any.
  */
 [[nodiscard]] inline treebank_file_error process_treebank
 (const std::string& treebank_file, const std::string& output_file)

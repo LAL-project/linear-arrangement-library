@@ -58,7 +58,7 @@ namespace properties {
  * single central node, only the first node is valid and the second is assigned
  * an invalid vertex index. It is guaranteed that the first vertex has smaller
  * index value than the second.
- * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
+ * @pre The tree @e t is a valid rooted tree. Method lal::graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
 [[nodiscard]] std::pair<node, node> tree_centroid(const graphs::rooted_tree& t)
@@ -74,7 +74,7 @@ noexcept;
  * single central node, only the first node is valid and the second is assigned
  * an invalid vertex index. It is guaranteed that the first vertex has smaller
  * index value than the second.
- * @pre The tree @e t is a valid free tree. Method graphs::free_tree::is_tree
+ * @pre The tree @e t is a valid free tree. Method lal::graphs::free_tree::is_tree
  * returns true.
  */
 [[nodiscard]] std::pair<node, node> tree_centroid(const graphs::free_tree& t)

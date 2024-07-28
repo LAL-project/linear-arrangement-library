@@ -528,7 +528,7 @@ enum class treebank_feature_type {
 	 * a 0 or a 1 depending on whether or not the tree can be classified into
 	 * that syntactic dependency structure.
 	 *
-	 * See @ref lal::linarr::syntactic_dependency_tree for a complete
+	 * See @ref lal::linarr::syntactic_dependency_tree_type for a complete
 	 * list of types.
 	 */
 	syntactic_dependency_tree_class,
@@ -545,7 +545,7 @@ enum class treebank_feature_type {
  * @brief The total number of features available.
  *
  * This number equals the total amount of values within the enumeration
- * @ref lal::io::treebank_feature, except the last one (which should never be
+ * @ref lal::io::treebank_feature_type, except the last one (which should never be
  * used).
  */
 inline constexpr
@@ -553,7 +553,7 @@ std::size_t __treebank_feature_size =
 	static_cast<std::size_t>(treebank_feature_type::__last_value);
 
 /**
- * @brief Converts a @ref lal::io::treebank_feature value into a string.
+ * @brief Converts a @ref lal::io::treebank_feature_type value into a string.
  * @param tf A treebank feature.
  * @returns A string used to format output files.
  */

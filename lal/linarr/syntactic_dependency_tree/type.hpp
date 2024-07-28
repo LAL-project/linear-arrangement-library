@@ -52,12 +52,6 @@ namespace linarr {
  *
  * Any tree with its nodes linearly arranged can be classified into several
  * different classes.
- *
- * We can currently identify the following structures:
- * - Projective structures (see @ref syntactic_dependency_tree::projective),
- * - Planar structures (see @ref syntactic_dependency_tree::planar),
- * - Well nested trees with maximum degree gap 1 (see @ref syntactic_dependency_tree::WG1),
- * - 1-Endpoint Crossing (see @ref syntactic_dependency_tree::EC1),
  */
 enum class syntactic_dependency_tree_type {
 	/**
@@ -81,7 +75,7 @@ enum class syntactic_dependency_tree_type {
 	 * @brief Projective structures.
 	 *
 	 * A structure is projective if it is
-	 * @ref lal::linarr::syntactic_dependency_tree::planar
+	 * @ref lal::linarr::syntactic_dependency_tree_type::planar
 	 * and the root is not covered by any dependency.
 	 */
 	projective,
@@ -99,7 +93,7 @@ enum class syntactic_dependency_tree_type {
 	unknown
 };
 
-/// Number of elements within enumeration @ref syntactic_dependency_tree.
+/// Number of elements within enumeration @ref syntactic_dependency_tree_type.
 inline constexpr std::size_t __syntactic_dependency_tree_size =
 	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_tree_type::unknown);
 

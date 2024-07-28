@@ -53,7 +53,7 @@ namespace lal {
 namespace detail {
 
 /// Converts a value of the enumeration
-/// @ref lal::linarr::syntactic_dependency_tree into a string.
+/// @ref lal::linarr::syntactic_dependency_tree_type into a string.
 [[nodiscard]] constexpr std::string_view
 syntactic_dependency_tree_to_string
 (const linarr::syntactic_dependency_tree_type& tt)

@@ -89,8 +89,8 @@ enum class tree_type {
 	 *
 	 * These trees have two vertex hubs, \f$h_1\f$ and \f$h_2\f$, which are the
 	 * only vertices that can have degree \f$\ge 2\f$.
-	 * - If \f$deg(h_1) = 1\f$ then the tree is an instance of a @ref star tree.
-	 * - If \f$deg(h_1) = 2\f$ then the tree is an instance of a @ref quasistar
+	 * - If \f$deg(h_1) = 1\f$ then the tree is an instance of a @ref lal::graphs::tree_type::star tree.
+	 * - If \f$deg(h_1) = 2\f$ then the tree is an instance of a @ref lal::graphs::tree_type::quasistar
 	 * tree.
 	 */
 	bistar,
@@ -98,16 +98,19 @@ enum class tree_type {
 	/**
 	 * @brief Quasi star trees.
 	 *
-	 * A @ref bistar tree where \f$deg(h_1) = 2\f$. These are a specific instance
-	 * of @ref caterpillar trees and @ref spider trees.
+	 * A @ref lal::graphs::tree_type::bistar tree where \f$deg(h_1) = 2\f$. These
+	 * are a specific instance of @ref lal::graphs::tree_type::caterpillar trees
+	 * and @ref lal::graphs::tree_type::spider trees.
 	 */
 	quasistar,
 
 	/**
 	 * @brief Star trees.
 	 *
-	 * A @ref bistar tree where \f$deg(h_1) = 1\f$. These are a specific instance
-	 * of @ref quasistar trees, @ref caterpillar trees and @ref spider trees.
+	 * A @ref lal::graphs::tree_type::bistar tree where \f$deg(h_1) = 1\f$. These
+	 * are a specific instance of @ref lal::graphs::tree_type::quasistar trees,
+	 * @ref lal::graphs::tree_type::caterpillar trees and
+	 * @ref lal::graphs::tree_type::spider trees.
 	 */
 	star,
 
@@ -117,8 +120,8 @@ enum class tree_type {
 	 * A tree where one vertex (the hub) has degree \f$\ge 3\f$ and the rest have
 	 * degree \f$\le 2\f$ \cite English2019a. This type of trees have as particular
 	 * instances:
-	 * - @ref star tree
-	 * - @ref quasi tree
+	 * - @ref lal::graphs::tree_type::star tree
+	 * - @ref lal::graphs::tree_type::quasistar tree
 	 */
 	spider,
 
@@ -126,11 +129,13 @@ enum class tree_type {
 	 * @brief 2-linear trees.
 	 *
 	 * Trees that have exactly two vertices of degree \f$\ge 3\f$ \cite Johnson2020a.
-	 * Equivalently, these trees are two @ref spider trees whose hubs are joined
-	 * with a @ref linear tree by the hubs.
+	 * Equivalently, these trees are two @ref lal::graphs::tree_type::spider trees
+	 * whose hubs are joined with a @ref lal::graphs::tree_type::linear tree by
+	 * the hubs.
 	 *
-	 * These trees have as specific instance @ref bistar trees, but not @ref star
-	 * or @ref quasistar trees.
+	 * These trees have as specific instance @ref lal::graphs::tree_type::bistar
+	 * trees, but not @ref lal::graphs::tree_type::star or
+	 * @ref lal::graphs::tree_type::quasistar trees.
 	 */
 	two_linear,
 

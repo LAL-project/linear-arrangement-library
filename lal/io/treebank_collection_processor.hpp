@@ -62,16 +62,16 @@ namespace io {
  * This class, the objects of which will be referred to as the "processors",
  * has the goal to ease the processing a whole treebank collection and produce
  * data for a fixed set of features available in the library. See the enumeration
- * @ref lal::io::treebank_feature for details on the features available, and
+ * @ref lal::io::treebank_feature_type for details on the features available, and
  * see @ref LAL_concepts__treebank_collection and @ref LAL_concepts__treebank for
  * further details on treebank collections and treebanks.
  *
- * Every processor must be initialized prior to processing the collection. This is done
- * via method @ref init, which requires the path to the main file and the output
- * directory where the results are going to be stored. It also requires a Boolean
- * value indicating whether all (or none) of the features should be used. Moreover,
- * it also admits an optional parameter indicating the number of threads to be
- * used to parallelise the processing of the files.
+ * Every processor must be initialized prior to processing the collection. This
+ * is done via method @ref init, which requires the path to the main file and the
+ * output directory where the results are going to be stored. It also requires a
+ * Boolean value indicating whether all (or none) of the features should be used.
+ * Moreover, it also admits an optional parameter indicating the number of threads
+ * to be used to parallelise the processing of the files.
  *
  * When initialized, a processor can be removed or added features: when the number
  * of features to calculate is low, it can be initialized with no features, and
@@ -88,9 +88,9 @@ namespace io {
  * indicating the treebank each line pertains. The name of this column can be
  * changed using method @ref set_treebank_column_name.
  *
- * Finally, the treebank collection is processed via method @ref process. Said
- * method returns a value of the enumeration @ref treebank_error. Further errors
- * can be checked via methods @ref get_num_errors, @ref get_error_type,
+ * Finally, the treebank collection is processed via method @ref process. This
+ * method returns an error, if any, via @ref lal::io::treebank_file_error. Further
+ * errors can be checked via methods @ref get_num_errors, @ref get_error_type,
  * @ref get_error_treebank_filename, @ref get_error_treebank_name.
  *
  * The usage of this class is a lot simpler than that of class
@@ -100,8 +100,8 @@ namespace io {
  *		// initialize the processor without features (remember to check for errors)
  *      // and 4 threads for faster processing.
  *		tbproc.init(main_file, output_dir, 4);
- *		tbproc.add_feature(lal::io::treebank_feature::num_crossings);
- *		tbproc.add_feature(lal::io::treebank_feature::var_num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature_type::num_crossings);
+ *		tbproc.add_feature(lal::io::treebank_feature_type::var_num_crossings);
  *		tbproc.process();
  *		// it is advisable to check for errors
  * @endcode
@@ -275,13 +275,13 @@ private:
  * This function uses the class @ref lal::io::treebank_collection_processor in
  * order to process such a collection, with all its options set to their default
  * value. The default options are:
- * - All features in @ref lal::io::treebank_feature are computed,
+ * - All features in @ref lal::io::treebank_feature_type are computed,
  * - All files produced are joined into a single file,
  * - The individual files are deleted.
  * @param treebank_collection_main_file The main file of the treebank collection.
  * @param output_directory The output .
  * @param num_threads The number of threads.
- * @returns A treebank error (see @ref lal::io::treebank_error) if any.
+ * @returns A treebank error if any.
  */
 [[nodiscard]] inline treebank_file_error process_treebank_collection
 (

@@ -114,8 +114,8 @@ public:
 	 * @brief Sets a custom name for the column corresponding to a given feature.
 	 *
 	 * This does not work for features
-	 * - @ref lal::io::treebank_feature::tree_type
-	 * - @ref lal::io::treebank_feature::syntactic_dependency_tree_class
+	 * - @ref lal::io::treebank_feature_type::tree_type
+	 * - @ref lal::io::treebank_feature_type::syntactic_dependency_tree_class
 	 * @param tf Feature whose column name is to be modified.
 	 * @param name Custom name for the column.
 	 */

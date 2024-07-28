@@ -66,7 +66,8 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @returns The class of projective structure. If the class could not
- * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
+ * be determined the method sets the corresponding position for
+ * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
 [[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify
@@ -83,7 +84,8 @@ noexcept;
  * @param pi Linear arrangement of the nodes. If \f$\pi[u]=p\f$ then
  * node @e u is placed in position @e p of the arrangement.
  * @returns The class of projective structure. If the class could not
- * be determined the method returns @ref lal::linarr::syntactic_dependency_tree::unknown.
+ * be determined the method sets the corresponding position for
+ * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
 [[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify
