@@ -186,6 +186,7 @@ noexcept
 	if (n_deg_ge_2 == 2 and n - n_deg_ge_2 == n_deg_eq_1) {
 		is_bistar = true;
 		is_caterpillar = true;
+		is_two_linear = true;
 	}
 
 	// QUASISTAR
@@ -197,13 +198,19 @@ noexcept
 	)
 	{
 		is_quasistar = true;
+		is_bistar = true;
 		is_caterpillar = true;
+		is_spider = n > 4;
+		is_two_linear = false;
 	}
 
 	// STAR
 	if (n_deg_ge_2 == 1 and n_deg_eq_1 == n - 1) {
 		is_star = true;
+		is_quasistar = true;
+		is_bistar = true;
 		is_caterpillar = true;
+		is_spider = true;
 	}
 
 	// SPIDER
