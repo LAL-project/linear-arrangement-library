@@ -55,32 +55,84 @@ namespace graphs {
  * The description of each class can be found in @ref LAL_concepts__tree_types.
  */
 enum class tree_type {
-	/// Empty tree./
+	/**
+	 * @brief Empty tree.
+	 *
+	 * This is a tree with no vertices.
+	 */
 	empty,
 
-	/// Singleton tree.
+	/**
+	 * @brief Singleton tree.
+	 *
+	 * This is a tree with a single vertex.
+	 */
 	singleton,
 
-	/// Caterpillar trees.
+	/**
+	 * @brief Caterpillar trees.
+	 *
+	 * These are the trees which, after removing their leaves, only a path graph
+	 * remains \cite Harary1973a.
+	 */
 	caterpillar,
 
-	/// Linear trees.
+	/**
+	 * @brief Linear trees.
+	 *
+	 * Also known as path graphs, a tree where all vertices have degree \f$\le 2\f$.
+	 */
 	linear,
 
-	/// Spider trees.
-	spider,
+	/**
+	 * @brief Bi-star trees.
+	 *
+	 * These trees have two vertex hubs, \f$h_1\f$ and \f$h_2\f$, which are the
+	 * only vertices that can have degree \f$\ge 2\f$.
+	 * - If \f$deg(h_1) = 1\f$ then the tree is an instance of a @ref star tree.
+	 * - If \f$deg(h_1) = 2\f$ then the tree is an instance of a @ref quasistar
+	 * tree.
+	 */
+	bistar,
 
-	/// 2-linear trees.
-	two_linear,
-
-	/// Star trees.
-	star,
-
-	/// Quasi star trees.
+	/**
+	 * @brief Quasi star trees.
+	 *
+	 * A @ref bistar tree where \f$deg(h_1) = 2\f$. These are a specific instance
+	 * of @ref caterpillar trees and @ref spider trees.
+	 */
 	quasistar,
 
-	/// Bi-star trees.
-	bistar,
+	/**
+	 * @brief Star trees.
+	 *
+	 * A @ref bistar tree where \f$deg(h_1) = 1\f$. These are a specific instance
+	 * of @ref quasistar trees, @ref caterpillar trees and @ref spider trees.
+	 */
+	star,
+
+	/**
+	 * @brief Spider trees.
+	 *
+	 * A tree where one vertex (the hub) has degree \f$\ge 3\f$ and the rest have
+	 * degree \f$\le 2\f$ \cite English2019a. This type of trees have as particular
+	 * instances:
+	 * - @ref star tree
+	 * - @ref quasi tree
+	 */
+	spider,
+
+	/**
+	 * @brief 2-linear trees.
+	 *
+	 * Trees that have exactly two vertices of degree \f$\ge 3\f$ \cite Johnson2020a.
+	 * Equivalently, these trees are two @ref spider trees whose hubs are joined
+	 * with a @ref linear tree by the hubs.
+	 *
+	 * These trees have as specific instance @ref bistar trees, but not @ref star
+	 * or @ref quasistar trees.
+	 */
+	two_linear,
 
 	// *DEVELOPER NOTE*
 	// This value must always be the last one.
