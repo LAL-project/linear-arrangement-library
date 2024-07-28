@@ -53,6 +53,8 @@ namespace generate {
  * @brief Exhaustive enumeration of unlabelled free trees.
  *
  * Generates all the unlabelled free bistar trees of a given number of nodes.
+ * This enumeration always includes the @ref lal::graphs::tree_type::star tree
+ * of \f$n\f$ vertices as the first tree.
  *
  * In order to use this class, users must provide the size \f$n\f$ of the tree
  * (number of nodes) in the constructor. Trees are generated internally, i.e.,
