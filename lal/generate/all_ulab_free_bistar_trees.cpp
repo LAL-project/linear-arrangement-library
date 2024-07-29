@@ -65,6 +65,7 @@ graphs::free_tree all_ulab_free_bistar_trees::__get_tree() noexcept {
 	for (lal::node u = 2 + m_size; u < m_n; ++u) {
 		t.add_edge_bulk(1, u);
 	}
+	t.finish_bulk_add(false, false);
 	return t;
 }
 
