@@ -129,7 +129,7 @@ public:
 	 */
 	template <class graph_t>
 	all_bipartite_arrangements(const graph_t& g) {
-		static_assert(std::is_base_of_v<lal::graphs::graph, graph_t>);
+		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init();
 	}
@@ -138,12 +138,12 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	all_bipartite_arrangements(const all_bipartite_arrangements& Gen) = default;
+	all_bipartite_arrangements(const all_bipartite_arrangements& Gen) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	all_bipartite_arrangements(all_bipartite_arrangements&& Gen) = default;
+	all_bipartite_arrangements(all_bipartite_arrangements&& Gen) noexcept = default;
 
 	/**
 	 * @brief Constructor with coloring.

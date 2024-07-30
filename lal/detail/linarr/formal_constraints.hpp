@@ -142,7 +142,7 @@ noexcept
 {
 	const auto n = c.size();
 	int num_changes = 0;
-	lal::position_t p = 1ull;
+	position_t p = 1ull;
 	while (p < n and num_changes <= 1) {
 		const node u = arr[p - 1ull];
 		const auto color_u = c.get_color_of(u);

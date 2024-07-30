@@ -101,13 +101,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled free tree generator.
 	 */
-	_rand_ulab_free_trees(const _rand_ulab_free_trees& Gen) = default;
+	_rand_ulab_free_trees(const _rand_ulab_free_trees& Gen) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random unlabelled free tree generator.
 	 */
-	_rand_ulab_free_trees(_rand_ulab_free_trees&& Gen) = default;
+	_rand_ulab_free_trees(_rand_ulab_free_trees&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~_rand_ulab_free_trees() = default;

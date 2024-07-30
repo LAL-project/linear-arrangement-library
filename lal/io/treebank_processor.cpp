@@ -484,7 +484,7 @@ void treebank_processor::process_tree
 (const tree_t& rT, double *props, char *prop_set, out_stream_t& out_treebank_file)
 noexcept
 {
-	static const lal::linear_arrangement arr;
+	static const linear_arrangement arr;
 	static const auto id = detail::identity_arr(arr);
 
 	graphs::free_tree fT = rT.to_undirected();

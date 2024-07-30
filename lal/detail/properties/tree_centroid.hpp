@@ -123,9 +123,9 @@ conditional_list_t<
 	>,
 	type_sequence<
 		node,
-		std::pair<lal::node,lal::node>,
-		std::pair<std::pair<lal::node,lal::node>, array<uint64_t>>,
-		std::pair<std::pair<lal::node,lal::node>, array<edge_size>>
+		std::pair<node, node>,
+		std::pair<std::pair<node, node>, array<uint64_t>>,
+		std::pair<std::pair<node, node>, array<edge_size>>
 	>
 >
 find_centroidal_vertex(const tree_t& t, node x) noexcept

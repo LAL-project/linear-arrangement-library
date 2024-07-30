@@ -95,7 +95,7 @@ public:
 	 */
 	template <class graph_t>
 	rand_bipartite_arrangements(const graph_t& g, uint64_t seed = 0) noexcept {
-		static_assert(std::is_base_of_v<lal::graphs::graph, graph_t>);
+		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init(seed);
 	}
@@ -104,12 +104,12 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	rand_bipartite_arrangements(const rand_bipartite_arrangements& Gen) = default;
+	rand_bipartite_arrangements(const rand_bipartite_arrangements& Gen) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	rand_bipartite_arrangements(rand_bipartite_arrangements&& Gen) = default;
+	rand_bipartite_arrangements(rand_bipartite_arrangements&& Gen) noexcept = default;
 
 	/**
 	 * @brief Constructor with coloring.

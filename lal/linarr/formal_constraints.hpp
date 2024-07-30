@@ -75,7 +75,7 @@ noexcept
 	// an arrangement of a single element is a permutation
 	// if its only element is within range
 	if (arr.size() == 1) {
-		return arr[lal::position_t{0ull}] == 0;
+		return arr[position_t{0ull}] == 0;
 	}
 	// ensure that no position has been used twice
 	detail::array<char> d(arr.size(), 0);

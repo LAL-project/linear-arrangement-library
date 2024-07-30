@@ -104,7 +104,7 @@ static constexpr uint64_t column_width = 2;
 void AEF_BnB::output_edge_list() const noexcept {
 	iterators::E_iterator it(m_t);
 	while (not it.end()) {
-		const lal::edge e = it.yield_edge();
+		const edge e = it.yield_edge();
 		std::cout << e.first << ' ' << e.second << '\n';
 	}
 }
@@ -298,7 +298,7 @@ void AEF_BnB::output_path_info() const noexcept {
 	for (std::size_t i = 0; i < num_paths; ++i) {
 		std::cout
 			<< ' '
-			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< std::setw(detail::to_int32(widths[i]))
 			<< int(m_path_info[i].num_assigned_nodes);
 	}
 	std::cout << '\n';
@@ -306,7 +306,7 @@ void AEF_BnB::output_path_info() const noexcept {
 	for (std::size_t i = 0; i < num_paths; ++i) {
 		std::cout
 			<< ' '
-			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< std::setw(detail::to_int32(widths[i]))
 			<< int(m_path_info[i].num_assigned_nodes_p2);
 	}
 	std::cout << '\n';
@@ -314,7 +314,7 @@ void AEF_BnB::output_path_info() const noexcept {
 	for (std::size_t i = 0; i < num_paths; ++i) {
 		std::cout
 			<< ' '
-			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< std::setw(detail::to_int32(widths[i]))
 			<< int(m_path_info[i].num_assigned_nodes_m2);
 	}
 	std::cout << '\n';
@@ -323,7 +323,7 @@ void AEF_BnB::output_path_info() const noexcept {
 	for (std::size_t i = 0; i < num_paths; ++i) {
 		std::cout
 			<< ' '
-			<< std::setw(lal::detail::to_int32(widths[i]))
+			<< std::setw(detail::to_int32(widths[i]))
 			<< int(m_path_info[i].num_thistles);
 	}
 	std::cout << '\n';

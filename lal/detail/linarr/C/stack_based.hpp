@@ -68,7 +68,7 @@ namespace crossings {
 namespace stack_based {
 
 /// Useful typedef.
-typedef std::pair<uint64_t,lal::edge> indexed_edge;
+typedef std::pair<uint64_t, edge> indexed_edge;
 
 // =============================================================================
 // ACTUAL ALGORITHM

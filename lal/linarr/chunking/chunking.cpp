@@ -96,7 +96,7 @@ noexcept
 
 	std::cout << "=================================\n";
 	std::cout << "Mapping:\n";
-	for (lal::node u = 0; u < rt.get_num_nodes(); ++u) {
+	for (node u = 0; u < rt.get_num_nodes(); ++u) {
 		std::cout << "    map[" << u << "]= " << seq.get_chunk_index(u) << '\n';
 	}
 }

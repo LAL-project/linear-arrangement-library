@@ -122,13 +122,13 @@ noexcept
 	m_sorting_memory.reset_count();
 
 	// sort the vector of border vertices
-	lal::detail::sorting::counting_sort
-	<lal::node, lal::detail::sorting::non_increasing_t, false>
+	detail::sorting::counting_sort
+	<node, detail::sorting::non_increasing_t, false>
 	(
 		m_border_nodes.begin_values(),
 		m_border_nodes.begin_values() + idx,
 		m_n_nodes + 1,
-		[&](lal::node u) { return m_num_assigned_neighbors[u]; },
+		[&](node u) { return m_num_assigned_neighbors[u]; },
 		m_sorting_memory
 	);
 

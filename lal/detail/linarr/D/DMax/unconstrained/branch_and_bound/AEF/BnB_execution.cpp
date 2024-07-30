@@ -269,7 +269,7 @@ void AEF_BnB::exe(node first_node) noexcept {
 #if defined DEBUG
 	// assert there are no valid predictions
 	for (const auto& path : m_paths_in_tree) {
-		for (lal::node u : path.get_vertex_sequence()) {
+		for (node u : path.get_vertex_sequence()) {
 			assert(not has_valid_LV_prediction(u));
 		}
 	}

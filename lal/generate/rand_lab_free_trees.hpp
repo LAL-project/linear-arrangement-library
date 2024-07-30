@@ -88,13 +88,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	_rand_lab_free_trees(const _rand_lab_free_trees& Gen) = default;
+	_rand_lab_free_trees(const _rand_lab_free_trees& Gen) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Random labelled free tree generator.
 	 */
-	_rand_lab_free_trees(_rand_lab_free_trees&& Gen) = default;
+	_rand_lab_free_trees(_rand_lab_free_trees&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~_rand_lab_free_trees() = default;
@@ -240,7 +240,8 @@ protected:
 	 * See @ref _rand_lab_free_trees::get_tree for details.
 	 * @returns A labelled free tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::free_tree __get_tree() noexcept
+	{ return m_Gen.get_tree(); }
 
 protected:
 	/// See @ref _rand_lab_free_trees.

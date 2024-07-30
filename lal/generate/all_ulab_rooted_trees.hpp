@@ -116,13 +116,13 @@ public:
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
-	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) = default;
+	all_ulab_rooted_trees(const all_ulab_rooted_trees& Gen) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive unlabelled rooted tree generator.
 	 */
-	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) = default;
+	all_ulab_rooted_trees(all_ulab_rooted_trees&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~all_ulab_rooted_trees() noexcept = default;

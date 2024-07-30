@@ -123,9 +123,9 @@ public:
 	[[nodiscard]] color_t& operator[] (node u) noexcept { return m_coloring[u]; }
 
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t operator[] (lal::node_t u) const noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t operator[] (node_t u) const noexcept { return m_coloring[*u]; }
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t& operator[] (lal::node_t u) noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t& operator[] (node_t u) noexcept { return m_coloring[*u]; }
 
 private:
 	/**

@@ -111,13 +111,13 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Random planar arrangement generator.
 	 */
-	rand_planar_arrangements(const rand_planar_arrangements& Gen) = default;
+	rand_planar_arrangements(const rand_planar_arrangements& Gen) noexcept = default;
 
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random planar arrangement generator.
 	 */
-	rand_planar_arrangements(rand_planar_arrangements&& Gen) = default;
+	rand_planar_arrangements(rand_planar_arrangements&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~rand_planar_arrangements() = default;

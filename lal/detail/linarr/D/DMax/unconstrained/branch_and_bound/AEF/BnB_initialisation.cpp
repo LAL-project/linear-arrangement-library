@@ -63,7 +63,7 @@ AEF_BnB::AEF_BnB(
 	// paths
 	const std::vector<properties::branchless_path>& paths_in_tree,
 	const array<std::size_t>& node_to_path_idx,
-	const lal::detail::array<std::vector<lal::node>>& incident_antennas,
+	const detail::array<std::vector<node>>& incident_antennas,
 	// orbits
 	const std::vector<std::vector<node>>& orbits,
 	const array<std::size_t>& vertex_to_orbit

@@ -68,7 +68,7 @@ noexcept
 	bfs.set_use_rev_edges( g.is_directed() );
 
 	bfs.set_process_neighbour(
-	[&](const auto&, lal::node u, lal::node v, bool) {
+	[&](const auto&, node u, node v, bool) {
 		if (colors[u] == properties::bipartite_graph_coloring::blue) {
 			colors[v] = properties::bipartite_graph_coloring::red;
 		}

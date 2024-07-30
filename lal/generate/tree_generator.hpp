@@ -122,6 +122,7 @@ template <
 >
 class _tree_generator {
 private:
+	/// Helpful Boolean value to compact 'if constexpr' expressions.
 	static constexpr bool is_free = std::is_base_of_v<graphs::free_tree, tree_t>;
 
 public:
@@ -142,16 +143,16 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	_tree_generator(const _tree_generator& Gen) = default;
+	_tree_generator(const _tree_generator& Gen) noexcept = default;
 
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Generator of the same type.
 	 */
-	_tree_generator(_tree_generator&& Gen) = default;
+	_tree_generator(_tree_generator&& Gen) noexcept = default;
 
 	/// Default destructor.
-	virtual ~_tree_generator() = default;
+	virtual ~_tree_generator() noexcept = default;
 
 	/* INITIALIZE */
 
@@ -194,7 +195,7 @@ public:
 	 */
 	[[nodiscard]] tree_t get_tree() noexcept
 	{
-		auto t = __get_tree();
+		tree_t t = __get_tree();
 
 		// free and rooted trees
 		if (m_normalize_tree) {

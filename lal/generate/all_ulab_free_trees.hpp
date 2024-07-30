@@ -110,15 +110,15 @@ public:
 	}
 	/**
 	 * @brief Copy constructor.
-	 * @param Gen Exhaustive unlabelled free tree generator..
+	 * @param Gen Exhaustive unlabelled free tree generator.
 	 */
-	all_ulab_free_trees(const all_ulab_free_trees& Gen) = default;
+	all_ulab_free_trees(const all_ulab_free_trees& Gen) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
-	 * @param Gen Exhaustive unlabelled free tree generator..
+	 * @param Gen Exhaustive unlabelled free tree generator.
 	 */
-	all_ulab_free_trees(all_ulab_free_trees&& Gen) = default;
+	all_ulab_free_trees(all_ulab_free_trees&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~all_ulab_free_trees() noexcept = default;

@@ -103,7 +103,7 @@ public:
 	/**
 	 * @brief Constructor with constant reference to a free tree.
 	 * @param T Input free tree
-	 * @pre The object @e T is a valid tree (see @ref graphs::free_tree::is_tree).
+	 * @pre The object @e T is a valid tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
 	all_planar_arrangements(const graphs::free_tree& T) noexcept;
 	/**
@@ -111,7 +111,7 @@ public:
 	 *
 	 * This constructor transforms the input rooted tree into a free tree.
 	 * @param T Input rooted tree
-	 * @pre The object @e T is a valid tree (see @ref graphs::rooted_tree::is_tree).
+	 * @pre The object @e T is a valid tree (see @ref lal::graphs::rooted_tree::is_tree).
 	 */
 	all_planar_arrangements(const graphs::rooted_tree& T) noexcept;
 
@@ -119,12 +119,12 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
-	all_planar_arrangements(const all_planar_arrangements& Gen) = default;
+	all_planar_arrangements(const all_planar_arrangements& Gen) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
-	all_planar_arrangements(all_planar_arrangements&& Gen) = default;
+	all_planar_arrangements(all_planar_arrangements&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~all_planar_arrangements() noexcept = default;

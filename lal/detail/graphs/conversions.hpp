@@ -84,7 +84,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 	// parse the edge list to find the
 	// number of vertices of the tree
 	char curly_bracket;
-	lal::node u,v;
+	node u,v;
 	while (ss >> curly_bracket) {
 		ss >> u >> v >> curly_bracket;
 		max_node_idx = std::max(max_node_idx, u);
@@ -118,7 +118,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 #endif
 
 		// find and set the root in linear time :( ...
-		for (lal::node w = 0; w < num_nodes; ++w) {
+		for (node w = 0; w < num_nodes; ++w) {
 			if (t.get_in_degree(w) == 0) {
 				t.set_root(w);
 				break;

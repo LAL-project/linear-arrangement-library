@@ -88,7 +88,7 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(const lal::graphs::graph& g, uint64_t seed = 0) noexcept :
+	rand_arrangements(const graphs::graph& g, uint64_t seed = 0) noexcept :
 		rand_arrangements(g.get_num_nodes(), seed)
 	{ }
 
@@ -96,12 +96,12 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Random arrangement generator.
 	 */
-	rand_arrangements(const rand_arrangements& Gen) = default;
+	rand_arrangements(const rand_arrangements& Gen) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random arrangement generator.
 	 */
-	rand_arrangements(rand_arrangements&& Gen) = default;
+	rand_arrangements(rand_arrangements&& Gen) noexcept = default;
 
 	/**
 	 * @brief Constructor with number of vertices.

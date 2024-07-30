@@ -101,12 +101,12 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(const rand_projective_arrangements& Gen) = default;
+	rand_projective_arrangements(const rand_projective_arrangements& Gen) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(rand_projective_arrangements&& Gen) = default;
+	rand_projective_arrangements(rand_projective_arrangements&& Gen) noexcept = default;
 
 	/// Default destructor.
 	~rand_projective_arrangements() = default;

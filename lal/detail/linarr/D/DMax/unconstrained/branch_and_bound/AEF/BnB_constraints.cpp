@@ -55,8 +55,8 @@ namespace DMax {
 namespace unconstrained {
 
 reason_discard AEF_BnB::check_propagation_node_to_node(
-	const lal::node u, const int64_t level_u,
-	const lal::node v, const int64_t level_v
+	const node u, const int64_t level_u,
+	const node v, const int64_t level_v
 )
 const noexcept
 {
@@ -76,12 +76,12 @@ const noexcept
 }
 
 reason_discard AEF_BnB::discard_node__degree_2__bridge__level_0
-(const lal::node u)
+(const node u)
 const noexcept
 {
 	const auto path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
-	const lal::node w = path.get_lowest_lexicographic();
+	const node w = path.get_lowest_lexicographic();
 
 #if defined DEBUG
 	assert(
@@ -102,8 +102,8 @@ const noexcept
 
 #if defined DEBUG
 	const std::size_t pw = path.get_position(w);
-	const lal::node wm1 = path[pw - 1];
-	const lal::node wp1 = path[pw + 1];
+	const node wm1 = path[pw - 1];
+	const node wp1 = path[pw + 1];
 	if (has_valid_LV_prediction(wm1) and has_valid_LV_prediction(wp1)) {
 		// this should never be reached
 		assert(has_valid_LV_prediction(w));
@@ -116,7 +116,7 @@ const noexcept
 }
 
 reason_discard AEF_BnB::discard_node__degree_2__bridge__level_pm2
-(const lal::node u, const int64_t level_u)
+(const node u, const int64_t level_u)
 const noexcept
 {
 #if defined DEBUG
@@ -131,13 +131,13 @@ const noexcept
 	const auto& path = m_paths_in_tree[path_idx];
 
 	// w:= loWest lexicographic
-	const lal::node w = path.get_lowest_lexicographic();
+	const node w = path.get_lowest_lexicographic();
 	const std::size_t pw = path.get_position(w);
 
-	const lal::node wm1 = path[pw - 1];
+	const node wm1 = path[pw - 1];
 	const bool valid_prediction_wm1 = has_valid_LV_prediction(wm1);
 	const bool valid_prediction_w = has_valid_LV_prediction(w);
-	const lal::node wp1 = path[pw + 1];
+	const node wp1 = path[pw + 1];
 	const bool valid_prediction_wp1 = has_valid_LV_prediction(wp1);
 
 	// simple case
@@ -205,7 +205,7 @@ const noexcept
 }
 
 reason_discard AEF_BnB::discard_node_degree_2
-(const lal::node u, const int64_t level_u)
+(const node u, const int64_t level_u)
 const noexcept
 {
 	const std::size_t path_idx = m_node_to_path_idx[u];
@@ -234,10 +234,10 @@ const noexcept
 }
 
 reason_discard AEF_BnB::discard_node_degree_3
-(const lal::node u, const int64_t level_u)
+(const node u, const int64_t level_u)
 const noexcept
 {
-	for (const lal::node v : m_t.get_neighbors(u)) {
+	for (const node v : m_t.get_neighbors(u)) {
 		if (m_t.get_degree(v) >= 3) { continue; }
 
 		const std::size_t path_v_idx = m_node_to_path_idx[v];
@@ -279,7 +279,7 @@ const noexcept
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_vertex(const lal::node u, const lal::position_t pos)
+reason_discard AEF_BnB::discard_vertex(const node u, const position_t pos)
 const noexcept
 {
 #if defined DEBUG
@@ -314,10 +314,10 @@ const noexcept
 	//   level = right - left
 	//         = degree - 2*left
 	const int64_t level_u =
-		lal::detail::to_int64(m_t.get_degree(u))
-		- 2*lal::detail::to_int64(m_node_left_degree[u]);
+		detail::to_int64(m_t.get_degree(u))
+		- 2*detail::to_int64(m_node_left_degree[u]);
 
-	const lal::node previous_node = m_arr[pos - 1ull];
+	const node previous_node = m_arr[pos - 1ull];
 	const int64_t previous_level = m_node_level[previous_node];
 	if (previous_level < level_u) {
 		return reason_discard::level_signature_will_not_be_nonincreasing;
@@ -327,14 +327,14 @@ const noexcept
 		return reason_discard::nodes_of_equal_level_disobey_lexicographic_order;
 	}
 
-	for (lal::node v : m_t.get_neighbors(u)) {
+	for (node v : m_t.get_neighbors(u)) {
 		if (is_vertex_assigned(v)) {
 			if (m_node_level[v] <= level_u) {
 				return reason_discard::adjacent_vertices_with_equal_level_value;
 			}
 		}
 		else {
-			const auto dv = lal::detail::to_int64(m_t.get_degree(v));
+			const auto dv = detail::to_int64(m_t.get_degree(v));
 			if (level_u < -dv) {
 				return reason_discard::node_disallows_placement_of_neighbors;
 			}
@@ -348,7 +348,7 @@ const noexcept
 	if (level_u < -2) {
 		// -3, -4, -5, ...
 		for (std::size_t i = 0; i < m_paths_in_tree.size(); ++i) {
-			const lal::properties::branchless_path& p = m_paths_in_tree[i];
+			const properties::branchless_path& p = m_paths_in_tree[i];
 			const path_info& info = m_path_info[i];
 
 			if (info.num_assigned_nodes == 0) {
@@ -357,9 +357,9 @@ const noexcept
 
 			if (p.is_antenna(m_t)) {
 				// check leaf is assigned
-				const lal::node h1 = p.get_h1();
-				const lal::node h2 = p.get_h2();
-				const lal::node leaf = m_t.get_degree(h1) == 1 ? h1 : h2;
+				const node h1 = p.get_h1();
+				const node h2 = p.get_h2();
+				const node leaf = m_t.get_degree(h1) == 1 ? h1 : h2;
 				if (not is_vertex_assigned(leaf)) {
 					return reason_discard::missing_degree1;
 				}
@@ -401,15 +401,15 @@ const noexcept
 		for (std::size_t i = 0; i < m_paths_in_tree.size(); ++i) {
 			if (i == path_u_idx) { continue; }
 
-			const lal::properties::branchless_path& p = m_paths_in_tree[i];
+			const properties::branchless_path& p = m_paths_in_tree[i];
 			const path_info& info = m_path_info[i];
 
 			if (p.is_antenna(m_t)) {
 
 				// check leaf is assigned
-				const lal::node h1 = p.get_h1();
-				const lal::node h2 = p.get_h2();
-				const lal::node leaf = m_t.get_degree(h1) == 1 ? h1 : h2;
+				const node h1 = p.get_h1();
+				const node h2 = p.get_h2();
+				const node leaf = m_t.get_degree(h1) == 1 ? h1 : h2;
 				if (not is_vertex_assigned(leaf)) {
 					return reason_discard::missing_degree1;
 				}
@@ -437,7 +437,7 @@ const noexcept
 		for (std::size_t i = 0; i < m_paths_in_tree.size(); ++i) {
 			if (i == path_u_idx) { continue; }
 
-			const lal::properties::branchless_path& p = m_paths_in_tree[i];
+			const properties::branchless_path& p = m_paths_in_tree[i];
 			const path_info& info = m_path_info[i];
 
 			if (p.is_antenna(m_t)) {
@@ -485,10 +485,10 @@ const noexcept
 		// order of label because every permutation yield the same sum of
 		// edge lengths
 
-		const lal::node p = leaf_parent(u);
+		const node p = leaf_parent(u);
 
 		bool all_lower_leaves_assigned = true;
-		for (lal::node l : m_leaves[p]) {
+		for (node l : m_leaves[p]) {
 			if (l < u and not is_vertex_assigned(l)) {
 				all_lower_leaves_assigned = false;
 				break;
@@ -509,7 +509,7 @@ const noexcept
 		// among its isomorphic siblings
 
 		bool all_lower_nodes_assigned = true;
-		for (lal::node w : orbit_u) {
+		for (node w : orbit_u) {
 			// ensure that 'u' and 'w' are siblings
 			if (not m_rt.are_nodes_siblings(u, w)) { continue; }
 
