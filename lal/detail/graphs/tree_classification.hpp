@@ -67,7 +67,8 @@ template <
 	class tree_t,
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
 >
-void classify_tree(const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types)
+void classify_tree
+(const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types)
 noexcept
 {
 #if defined DEBUG
@@ -83,7 +84,7 @@ noexcept
 		tree_types[static_cast<std::size_t>(tt)] = false;
 	};
 	const auto set_type =
-		[&](const graphs::tree_type& tt) {
+	[&](const graphs::tree_type& tt) {
 		tree_types[static_cast<std::size_t>(tt)] = true;
 		is_some = true;
 	};
