@@ -57,7 +57,7 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Classify a tree into one of the types @ref lal::graphs::tree_type.
+ * @brief Classify a tree into one of the types @ref graphs::tree_type.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param[out] tree_types A set of bits (or flags) each indicating whether or not @e t
@@ -83,15 +83,15 @@ noexcept
 		tree_types[static_cast<std::size_t>(tt)] = false;
 	};
 	const auto set_type =
-	[&](const graphs::tree_type& tt) {
+		[&](const graphs::tree_type& tt) {
 		tree_types[static_cast<std::size_t>(tt)] = true;
 		is_some = true;
 	};
 
 	// only neighbour of a vertex of a tree in its underlying UNDIRECTED structure
 	const auto get_only_neighbour =
-	[&](lal::node u) -> lal::node {
-		if constexpr (std::is_base_of_v<lal::graphs::free_tree, tree_t>) {
+	[&](node u) -> node {
+		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			return t.get_neighbors(u)[0];
 		}
 		else {
@@ -134,15 +134,7 @@ noexcept
 		return;
 	}
 
-	// N >= 4
-
-	bool is_linear = false;
-	bool is_star = false;
-	bool is_quasistar = false;
-	bool is_bistar = false;
-	bool is_caterpillar = false;
-	bool is_spider = false;
-	bool is_two_linear = false;
+	// n >= 4
 
 	// number of vertices
 	uint64_t n_deg_eq_1 = 0; // of degree = 1
@@ -154,7 +146,7 @@ noexcept
 	array<int64_t> deg_internal(n, 0);
 
 	// fill in data
-	for (lal::node u = 0; u < n; ++u) {
+	for (node u = 0; u < n; ++u) {
 		// 'du' is the degree of the vertex in the underlying undirected graph
 		const int64_t du = static_cast<int64_t>(t.get_degree(u));
 		deg_internal[u] += (du > 1)*du;
@@ -166,10 +158,16 @@ noexcept
 
 		// this reduces the degree of the internal vertices
 		// as many times as leaves are connected to them
-		if (du == 1) {
-			deg_internal[ get_only_neighbour(u) ] -= 1;
-		}
+		deg_internal[ get_only_neighbour(u) ] -= (du == 1);
 	}
+
+	bool is_linear = false;
+	bool is_star = false;
+	bool is_quasistar = false;
+	bool is_bistar = false;
+	bool is_caterpillar = false;
+	bool is_spider = false;
+	bool is_two_linear = false;
 
 	// LINEAR
 	if (n_deg_eq_1 == 2) {
@@ -231,10 +229,9 @@ noexcept
 		// two vertices of degree 1 are the endpoints of the
 		// linear tree.
 		uint64_t n1 = 0;
-		for (lal::node u = 0; u < n; ++u) {
+		for (node u = 0; u < n and n1 <= 2; ++u) {
 			n1 += deg_internal[u] == 1;
 		}
-
 		is_caterpillar = n1 == 2 or n1 == 0;
 	}
 
