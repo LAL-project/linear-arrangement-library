@@ -151,18 +151,6 @@ public:
 	}
 
 	/**
-	 * @brief Does the report contain head vector errors?
-	 * @returns True or false if the report has errors concerning head vectors.
-	 * @pre
-	 */
-	[[nodiscard]] bool contains_errors() const noexcept {
-#if defined DEBUG
-		assert(not m_treebank_error.is_error());
-#endif
-		return m_hv_errors.size() > 0;
-	}
-
-	/**
 	 * @brief Returns the list of errors in the head vectors.
 	 *
 	 * If the list returned is empty, then there were no errors.
