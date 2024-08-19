@@ -85,8 +85,8 @@ public:
 	 * @brief Constructor with unsigned integer value.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer(T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer(const T i) noexcept {
 		if constexpr (std::is_signed_v<T>) { mpz_init_set_si(m_val, i); }
 		else { mpz_init_set_ui(m_val, i); }
 	}
@@ -126,8 +126,8 @@ public:
 	 * @brief Overwrites the value of this integer with @e i.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	void set_number(T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	void set_number(const T i) noexcept {
 		if (not is_initialized()) { mpz_init(m_val); }
 		if constexpr (std::is_signed_v<T>) { mpz_set_si(m_val, i); }
 		else { mpz_set_ui(m_val, i); }
@@ -161,8 +161,8 @@ public:
 	 * @brief Assignment operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator= (T i) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer& operator= (const T i) noexcept
 	{
 		set_number(i);
 		return *this;
@@ -202,8 +202,8 @@ public:
 	 * @brief Equality operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator== (T i) const noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator== (const T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val,i) : mpz_cmp_ui(m_val,i)) == 0;
 	}
@@ -213,8 +213,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator== (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator== (const T i, const integer& ii) noexcept
 	{ return ii == i; }
 #endif
 	/**
@@ -230,8 +230,8 @@ public:
 	 * @brief Non-equality operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator!= (T i) const noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator!= (const T i) const noexcept
 	{ return not (*this == i); }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -239,8 +239,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator!= (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator!= (const T i, const integer& ii) noexcept
 	{ return ii != i; }
 #endif
 	/**
@@ -256,8 +256,8 @@ public:
 	 * @brief Less than operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator< (T i) const noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator< (const T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) < 0;
 	}
@@ -267,8 +267,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator< (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator< (const T i, const integer& ii) noexcept
 	{ return ii > i; }
 #endif
 	/**
@@ -284,8 +284,8 @@ public:
 	 * @brief Less than or equal to operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator<= (T i) const noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator<= (const T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) <= 0;
 	}
@@ -295,8 +295,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator<= (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator<= (const T i, const integer& ii) noexcept
 	{ return ii >= i; }
 #endif
 	/**
@@ -312,8 +312,8 @@ public:
 	 * @brief Greater than operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator> (T i) const noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator> (const T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) > 0;
 	}
@@ -323,8 +323,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator> (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator> (const T i, const integer& ii) noexcept
 	{ return ii < i; }
 #endif
 	/**
@@ -340,8 +340,8 @@ public:
 	 * @brief Greater than or equal to operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator>= (T i) const noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] bool operator>= (const T i) const noexcept {
 		return
 		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) >= 0;
 	}
@@ -351,8 +351,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator>= (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator>= (const T i, const integer& ii) noexcept
 	{ return ii <= i; }
 #endif
 	/**
@@ -370,8 +370,8 @@ public:
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] integer operator+ (T i) const noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] integer operator+ (const T i) const noexcept
 	{ integer a(*this); a += i; return a; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -379,8 +379,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator+ (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend integer operator+ (const T i, const integer& ii) noexcept
 	{ return ii + i; }
 #endif
 	/**
@@ -393,8 +393,8 @@ public:
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator+= (T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer& operator+= (const T i) noexcept {
 		if constexpr (not std::is_signed_v<T>) { mpz_add_ui(m_val, m_val, i); }
 		else {
 			if (i > 0) {mpz_add_ui(m_val, m_val, static_cast<uint64_t>(i));	}
@@ -418,8 +418,8 @@ public:
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] integer operator- (T i) const noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] integer operator- (const T i) const noexcept
 	{ integer a(*this); a -= i; return a; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -427,8 +427,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator- (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend integer operator- (const T i, const integer& ii) noexcept
 	{ return -ii + i; }
 #endif
 	/**
@@ -441,8 +441,8 @@ public:
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator-= (T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer& operator-= (const T i) noexcept {
 		if constexpr (not std::is_signed_v<T>) { mpz_sub_ui(m_val, m_val, i); }
 		else {
 			if (i > 0) {mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(i));	}
@@ -463,8 +463,8 @@ public:
 	 * @brief Product operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] integer operator* (T i) const noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] integer operator* (const T i) const noexcept
 	{ integer a(*this); a *= i; return a; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -472,8 +472,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator* (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend integer operator* (const T i, const integer& ii) noexcept
 	{ return ii*i; }
 #endif
 
@@ -487,8 +487,8 @@ public:
 	 * @brief Product operator.
 	 * @param i A signed/unsigned integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator*= (T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer& operator*= (const T i) noexcept {
 		if constexpr (std::is_signed_v<T>) { mpz_mul_si(m_val, m_val, i); }
 		else {								 mpz_mul_ui(m_val, m_val, i); }
 		return *this;
@@ -506,8 +506,8 @@ public:
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] integer operator/ (T i) const noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] integer operator/ (const T i) const noexcept
 	{ integer a(*this); a /= i;	return a; }
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -515,8 +515,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param ii A @ref lal::numeric::integer.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend int64_t operator/ (T i, const integer& ii) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend int64_t operator/ (const T i, const integer& ii) noexcept
 	{ return i/ii.to_int(); }
 #endif
 	/**
@@ -529,8 +529,8 @@ public:
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T,std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator/= (T i) noexcept {
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	integer& operator/= (const T i) noexcept {
 		if constexpr (not std::is_signed_v<T>) {
 			mpz_fdiv_q_ui(m_val, m_val, i);
 		}
@@ -553,7 +553,7 @@ public:
 	 * @brief Exponentiation operator.
 	 * @param i An unsigned integer (basic type).
 	 */
-	[[nodiscard]] integer power(uint64_t i) const noexcept
+	[[nodiscard]] integer power(const uint64_t i) const noexcept
 	{ integer r(*this); r.powt(i);	return r; }
 	/**
 	 * @brief Exponentiation operator.
@@ -568,7 +568,7 @@ public:
 	 * Modifies the current object.
 	 * @param i Unsigned integer (basic type) number.
 	 */
-	integer& powt(uint64_t i) noexcept
+	integer& powt(const uint64_t i) noexcept
 	{ mpz_pow_ui(m_val, m_val, i); return *this; }
 	/**
 	 * @brief Exponentiation operator.
@@ -584,7 +584,7 @@ public:
 	 * @brief Modulus operator.
 	 * @param i Unsigned integer (basic type) number.
 	 */
-	[[nodiscard]] uint64_t operator% (uint64_t i) const noexcept {
+	[[nodiscard]] uint64_t operator% (const uint64_t i) const noexcept {
 		mpz_t r;
 		mpz_init(r);
 		const uint64_t m = mpz_mod_ui(r, m_val, i);

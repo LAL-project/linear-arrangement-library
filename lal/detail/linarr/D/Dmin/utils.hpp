@@ -112,7 +112,8 @@ template <bool make_arrangement>
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	const Dopt_utils::place r_place,
-	position ini, position fin,
+	position ini,
+	position fin,
 	linear_arrangement& arr
 )
 noexcept
@@ -233,8 +234,10 @@ noexcept
 template <bool make_arrangement>
 [[nodiscard]] inline uint64_t arrange_projective
 (
-	uint64_t n, const std::vector<std::vector<node_size>>& L,
-	node r, linear_arrangement& arr
+	const uint64_t n,
+	const std::vector<std::vector<node_size>>& L,
+	const node r,
+	linear_arrangement& arr
 )
 noexcept
 {
@@ -271,8 +274,9 @@ template <bool make_arrangement>
 [[nodiscard]] uint64_t embed_branch
 (
 	const std::vector<std::vector<node_size>>& L,
-	node v,
-	int64_t base, int64_t dir,
+	const node v,
+	int64_t base,
+	const int64_t dir,
 	array<int64_t>& rel_pos
 )
 noexcept

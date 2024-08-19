@@ -73,7 +73,13 @@ template <
 		bool
 	> = true
 >
-void bit_sort(iterator_t begin, iterator_t end, const T& m, char * const seen)
+void bit_sort
+(
+	const iterator_t begin,
+	const iterator_t end,
+	const T& m,
+	char * const seen
+)
 noexcept
 {
 	// fill bit array
@@ -121,7 +127,13 @@ template <
 		bool
 	> = true
 >
-void bit_sort_mem(It begin, It end, const std::size_t size, char * const seen)
+void bit_sort_mem
+(
+	const It begin,
+	const It end,
+	const std::size_t size,
+	char * const seen
+)
 noexcept
 {
 	if (size <= 1) { return; }
@@ -155,7 +167,13 @@ template <
 		bool
 	> = true
 >
-void bit_sort(It begin, It end, const std::size_t size) noexcept
+void bit_sort
+(
+	const It begin,
+	const It end,
+	const std::size_t size
+)
+noexcept
 {
 	if (size <= 1) { return; }
 	if (size <= 14) {

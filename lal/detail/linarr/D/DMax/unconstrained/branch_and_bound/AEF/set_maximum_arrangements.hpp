@@ -102,7 +102,7 @@ public:
 	}
 
 	/// Returns the multiplicity of the @e i-th representative.
-	[[nodiscard]] std::size_t get_size_class(std::size_t i) const noexcept {
+	[[nodiscard]] std::size_t get_size_class(const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_amount.size());
 #endif
@@ -110,7 +110,7 @@ public:
 	}
 
 	/// Returns the @e i-th representative.
-	[[nodiscard]] const linear_arrangement& get_representative(std::size_t i)
+	[[nodiscard]] const linear_arrangement& get_representative(const std::size_t i)
 	const noexcept
 	{
 #if defined DEBUG
@@ -121,7 +121,7 @@ public:
 
 	/// Returns the level signature of the @e i-th representative.
 	[[nodiscard]] const level_signature_per_position& get_level_signature
-	(std::size_t i)
+	(const std::size_t i)
 	const noexcept
 	{
 #if defined DEBUG
@@ -140,7 +140,7 @@ public:
 	 * @param value Value of the arrangement.
 	 * @param arr New arrangement.
 	 */
-	void add(uint64_t value, const linear_arrangement& arr) noexcept {
+	void add(const uint64_t value, const linear_arrangement& arr) noexcept {
 		if (m_max_value < value) {
 			m_max_value = value;
 

@@ -112,7 +112,7 @@ void all_bipartite_arrangements::init() noexcept {
 	init_arrangement(true);
 }
 
-void all_bipartite_arrangements::init_arrangement(bool red_first) noexcept {
+void all_bipartite_arrangements::init_arrangement(const bool red_first) noexcept {
 	const auto n = m_coloring.size();
 
 	position left = 0ull;

@@ -73,7 +73,7 @@ template <class arrangement_t>
 void __get_yields(
 	const graphs::rooted_tree& t,
 	const arrangement_t& arr,
-	node u,
+	const node u,
 	std::vector<std::vector<position>>& yields
 )
 noexcept
@@ -82,7 +82,7 @@ noexcept
 	auto& yu = yields[u];
 	yu.push_back(arr[node_t{u}]);
 
-	for (node v : t.get_out_neighbors(u)) {
+	for (const node v : t.get_out_neighbors(u)) {
 		__get_yields(t,arr, v, yields);
 		yu.insert(yu.end(), yields[v].begin(), yields[v].end());
 	}

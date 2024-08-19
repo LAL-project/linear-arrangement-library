@@ -69,7 +69,7 @@ template <typename value_t>
 class queue_array {
 public:
 	/// Initializes the queue to hold @e n elements.
-	void init(std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept {
 		m_queue.resize(n);
 		m_left = 0;
 		m_right = 0;

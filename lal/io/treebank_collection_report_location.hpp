@@ -67,7 +67,7 @@ struct treebank_collection_report_location {
 	/// Constructor with data.
 	treebank_collection_report_location
 	(
-		uint64_t ln,
+		const uint64_t ln,
 		const std::string& tfn,
 		const std::string& tid,
 		const treebank_file_report& rep
@@ -83,7 +83,7 @@ struct treebank_collection_report_location {
 	/// Constructor with data.
 	treebank_collection_report_location
 	(
-		uint64_t ln,
+		const uint64_t ln,
 		std::string&& tfn,
 		std::string&& tid,
 		treebank_file_report&& rep

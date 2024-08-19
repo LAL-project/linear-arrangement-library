@@ -59,7 +59,6 @@ namespace detail {
 template <class graph_t>
 [[nodiscard]] std::vector<edge> set_edges(const graph_t& g) noexcept {
 	std::vector<edge> e(g.get_num_edges());
-
 	auto vec_it = e.begin();
 	for (iterators::E_iterator<graph_t> e_it(g); not e_it.end(); e_it.next()) {
 		*vec_it++ = e_it.get_edge();
@@ -75,11 +74,10 @@ template <class graph_t>
  */
 template <class graph_t>
 [[nodiscard]] std::vector<edge_pair> set_pairs_independent_edges
-(const graph_t& g, uint64_t qs)
+(const graph_t& g, const uint64_t qs)
 noexcept
 {
 	std::vector<edge_pair> q(qs);
-
 	auto vec_it = q.begin();
 	for (iterators::Q_iterator<graph_t> q_it(g); not q_it.end(); q_it.next()) {
 		*vec_it++ = q_it.get_edge_pair();

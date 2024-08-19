@@ -116,7 +116,7 @@ public:
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices of the arrangements.
 	 */
-	all_arrangements(uint64_t n) noexcept
+	all_arrangements(const uint64_t n) noexcept
 		: m_n(n),
 		  m_arr(linear_arrangement(m_n))
 	{

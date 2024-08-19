@@ -73,7 +73,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	undirected_graph(uint64_t n) noexcept {
+	undirected_graph(const uint64_t n) noexcept {
 		init(n);
 	}
 	/**
@@ -124,7 +124,7 @@ public:
 	 * @param d The amount of memory to reserve.
 	 * @pre The graph must have been initialized.
 	 */
-	void reserve_degree(node u, uint64_t d) noexcept {
+	void reserve_degree(const node u, const uint64_t d) noexcept {
 #if defined DEBUG
 		assert(u < get_num_nodes());
 #endif
@@ -151,7 +151,12 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_node
-	(node u, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node u,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -170,7 +175,13 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& add_edge
-	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -184,9 +195,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	undirected_graph& add_edge_bulk(node s, node t) noexcept;
+	undirected_graph& add_edge_bulk(const node s, const node t) noexcept;
 
-	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -205,7 +216,11 @@ public:
 	 * after the addition of the edges.
 	 */
 	virtual undirected_graph& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -231,7 +246,11 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -251,7 +270,13 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edge
-	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Removes an edge from the graph.
@@ -265,9 +290,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
-	virtual undirected_graph& remove_edge_bulk(node s, node t) noexcept;
+	virtual undirected_graph& remove_edge_bulk(const node s, const node t) noexcept;
 
-	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -286,7 +311,11 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -307,7 +336,11 @@ public:
 	 * after the addition of the edge.
 	 */
 	virtual undirected_graph& remove_edges_incident_to
-	(node u, bool norm = true, bool check_norm = true)
+	(
+		const node u,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -336,7 +369,7 @@ public:
 	 * @param u Node.
 	 * @returns The list of nodes adjacent to node @e u.
 	 */
-	[[nodiscard]] const neighbourhood& get_neighbors(node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_neighbors(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -348,7 +381,7 @@ public:
 	 * @param u Node to be queried.
 	 * @returns The number of adjacent nodes.
 	 */
-	[[nodiscard]] uint64_t get_degree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_degree(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -356,7 +389,7 @@ public:
 	}
 
 	/// Returns true if the edge \f$\{u,v\}\f$ exists in the graph.
-	[[nodiscard]] bool has_edge(node u, node v) const noexcept;
+	[[nodiscard]] bool has_edge(const node u, const node v) const noexcept;
 
 	[[nodiscard]] bool is_directed() const noexcept { return false; }
 	[[nodiscard]] bool is_undirected() const noexcept { return true; }
@@ -373,7 +406,7 @@ protected:
 	 * @param n Number of nodes
 	 * @pre The graph is cleared.
 	 */
-	virtual void _init(uint64_t n) noexcept {
+	virtual void _init(const uint64_t n) noexcept {
 		graph::_init(n);
 	}
 	/// Clears the memory of @ref undirected_graph and @ref graph classes.
@@ -381,21 +414,21 @@ protected:
 		graph::_clear();
 	}
 
-	virtual void actions_after_add_edge(node u, node v) noexcept;
+	virtual void actions_after_add_edge(const node u, const node v) noexcept;
 
 	virtual void actions_after_add_edges(const edge_list& e) noexcept;
 
 	virtual void actions_after_add_edges_bulk() noexcept;
 
-	virtual void actions_after_remove_edge(node u, node v) noexcept;
+	virtual void actions_after_remove_edge(const node u, const node v) noexcept;
 
 	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	virtual void actions_after_remove_edges_bulk() noexcept;
 
-	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+	virtual void actions_before_remove_edges_incident_to(const node u) noexcept;
 
-	virtual void actions_after_remove_node(node u) noexcept;
+	virtual void actions_after_remove_node(const node u) noexcept;
 
 	/// Copies all members of this class and the parent class.
 	void copy_full_undirected_graph(const undirected_graph& u) noexcept {
@@ -421,7 +454,13 @@ private:
 	 * @param in_v In-neighbourhood of node @e v.
 	 */
 	void remove_single_edge
-	(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept;
+	(
+		const node u,
+		const node v,
+		neighbourhood& out_u,
+		neighbourhood& in_v
+	)
+	noexcept;
 };
 
 } // -- namespace graphs

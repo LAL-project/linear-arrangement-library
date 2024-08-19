@@ -184,7 +184,7 @@ public:
 	 * Does nothing if @e new_size is the same as the current size.
 	 * @param new_size The new size of the array.
 	 */
-	void resize(std::size_t new_size) noexcept {
+	void resize(const std::size_t new_size) noexcept {
 		if (new_size != m_size or m_data == nullptr) {
 			delete[] m_data;
 			m_size = new_size;
@@ -199,7 +199,7 @@ public:
 	 * @param new_size New size of the array.
 	 * @param v Value to initialize the array with.
 	 */
-	void resize(std::size_t new_size, const T& v) noexcept {
+	void resize(const std::size_t new_size, const T& v) noexcept {
 		resize(new_size);
 		if (m_size > 0) {
 			fill(v);
@@ -278,7 +278,7 @@ public:
 	 * @param i Position.
 	 * @returns A non-constant raw pointer.
 	 */
-	[[nodiscard]] T *at(std::size_t i) noexcept {
+	[[nodiscard]] T *at(const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < m_size);
 #endif
@@ -289,7 +289,7 @@ public:
 	 * @param i Position.
 	 * @returns A constant raw pointer.
 	 */
-	[[nodiscard]] T const *at(std::size_t i) const noexcept {
+	[[nodiscard]] T const *at(const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_size);
 #endif

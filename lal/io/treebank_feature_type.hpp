@@ -642,7 +642,7 @@ std::size_t treebank_feature_to_index(const io::treebank_feature_type& tf) noexc
 
 /// Returns the treebank feature corresponding to the input index
 inline constexpr
-io::treebank_feature_type index_to_treebank_feature(std::size_t idx) noexcept {
+io::treebank_feature_type index_to_treebank_feature(const std::size_t idx) noexcept {
 #if defined DEBUG
 	assert(idx < treebank_feature_to_index(treebank_feature_type::__last_value));
 #endif
@@ -656,7 +656,7 @@ std::string
 #else
 std::string_view
 #endif
-treebank_feature_index_to_string(std::size_t idx) noexcept {
+treebank_feature_index_to_string(const std::size_t idx) noexcept {
 	return treebank_feature_string(index_to_treebank_feature(idx));
 }
 

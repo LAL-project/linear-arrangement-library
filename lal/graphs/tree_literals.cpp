@@ -62,7 +62,7 @@ std::conditional_t<
 	std::pair<tree_t, lal::node>,
 	tree_t
 >
-parse_literal_string(const char *str, std::size_t) noexcept
+parse_literal_string(const char *str, const std::size_t) noexcept
 {
 	std::stringstream ss(str);
 
@@ -87,21 +87,21 @@ parse_literal_string(const char *str, std::size_t) noexcept
 }
 
 std::pair<lal::graphs::free_tree, lal::node>
-operator""_root_free_tree (const char *str, std::size_t length)
+operator""_root_free_tree (const char *str, const std::size_t length)
 noexcept
 {
 	return parse_literal_string<lal::graphs::free_tree, true>(str, length);
 }
 
 lal::graphs::free_tree
-operator""_free_tree (const char *str, std::size_t length)
+operator""_free_tree (const char *str, const std::size_t length)
 noexcept
 {
 	return parse_literal_string<lal::graphs::free_tree, false>(str, length);
 }
 
 lal::graphs::rooted_tree
-operator""_rooted_tree (const char *str, std::size_t length)
+operator""_rooted_tree (const char *str, const std::size_t length)
 noexcept
 {
 	return parse_literal_string<lal::graphs::rooted_tree, false>(str, length);

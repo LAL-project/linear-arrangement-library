@@ -116,7 +116,7 @@ public:
 	 * @brief Constructor with number of nodes and root node.
 	 * @param n Number of vertices.
 	 */
-	rooted_tree(uint64_t n) noexcept {
+	rooted_tree(const uint64_t n) noexcept {
 		rooted_tree::_init(n);
 	}
 
@@ -161,7 +161,13 @@ public:
 	 * is ignored.
 	 * @pre Tree @e t is a valid free tree.
 	 */
-	rooted_tree(const free_tree& t, node r, bool norm = true, bool check_norm = true)
+	rooted_tree
+	(
+		const free_tree& t,
+		const node r,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept
 	{
 		init_rooted(t, r, norm, check_norm);
@@ -179,7 +185,13 @@ public:
 	 * @pre Tree @e t is a valid free tree.
 	 * @post Tree @e t is moved and should not be used.
 	 */
-	rooted_tree(free_tree&& t, node r, bool norm = true, bool check_norm = true)
+	rooted_tree
+	(
+		free_tree&& t,
+		const node r,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept
 	{
 		init_rooted(std::forward<free_tree>(t), r, norm, check_norm);
@@ -229,7 +241,13 @@ public:
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
 	void init_rooted
-	(const free_tree& t, node r, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const free_tree& t,
+		const node r,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Initializer with tree and root node.
@@ -251,7 +269,13 @@ public:
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
 	void init_rooted
-	(free_tree&& t, node r, bool norm = true, bool check_norm = true) noexcept;
+	(
+		free_tree&& t,
+		const node r,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	rooted_tree& add_node() noexcept {
 		directed_graph::add_node();
@@ -278,7 +302,13 @@ public:
 	 * @post If @e u is the root of this tree, then this tree no longer has a root.
 	 */
 	rooted_tree& remove_node
-	(node u, bool connect = false, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node u,
+		const bool connect = false,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -302,7 +332,13 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& add_edge
-	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -316,7 +352,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	rooted_tree& add_edge_bulk(node s, node t) noexcept;
+	rooted_tree& add_edge_bulk(const node s, const node t) noexcept;
 
 	/**
 	 * @brief Finishes adding edges in bulk.
@@ -326,9 +362,9 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -351,7 +387,11 @@ public:
 	 * after the addition of the edges.
 	 */
 	rooted_tree& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -387,7 +427,11 @@ public:
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
 	rooted_tree& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -407,7 +451,13 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = false,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Removes an edge from the tree.
@@ -421,7 +471,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
-	rooted_tree& remove_edge_bulk(node s, node t) noexcept;
+	rooted_tree& remove_edge_bulk(const node s, const node t) noexcept;
 
 	/**
 	 * @brief Finishes removing edges in bulk.
@@ -431,9 +481,9 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -453,7 +503,11 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -472,7 +526,11 @@ public:
 	 * after the addition of the edge.
 	 */
 	rooted_tree& remove_edges_incident_to
-	(node u, bool norm = true, bool check_norm = true)
+	(
+		const node u,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -499,7 +557,7 @@ public:
 	 * two graphs were normalized prior to the union.
 	 * @post The type of tree is invalidated.
 	 */
-	rooted_tree& disjoint_union(const rooted_tree& t, bool connect_roots = true)
+	rooted_tree& disjoint_union(const rooted_tree& t, const bool connect_roots = true)
 	noexcept;
 
 	/**
@@ -525,7 +583,7 @@ public:
 	 * @post The type of rooted tree and the size of the subtrees are
 	 * invalidated.
 	 */
-	void set_root(node r) noexcept {
+	void set_root(const node r) noexcept {
 		// if the tree is empty simply consider it has a root...
 		// although it really doesn't
 
@@ -550,14 +608,14 @@ public:
 	 * @param r Given node.
 	 * @returns Whether or not the node passed as parameter is a valid root.
 	 */
-	[[nodiscard]] bool is_root_valid(node r) const noexcept {
+	[[nodiscard]] bool is_root_valid(const node r) const noexcept {
 #if defined DEBUG
 		assert(has_node(r));
 #endif
 		return get_in_degree(r) == 0;
 	}
 
-	[[nodiscard]] bool can_add_edge(node s, node t) const noexcept;
+	[[nodiscard]] bool can_add_edge(const node s, const node t) const noexcept;
 
 	[[nodiscard]] bool can_add_edges(const std::vector<edge>& edges) const noexcept;
 
@@ -592,7 +650,7 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	[[nodiscard]] uint64_t get_num_nodes_subtree(node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_subtree(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 		assert(are_size_subtrees_valid());
@@ -643,7 +701,7 @@ public:
 	 * @post Whenever @e relab is true, the label of the first node of
 	 * the first edge is guaranteed to be node '0'.
 	 */
-	[[nodiscard]] std::vector<edge> get_edges_subtree(node u, bool relab = false)
+	[[nodiscard]] std::vector<edge> get_edges_subtree(const node u, const bool relab = false)
 	const noexcept;
 
 	/**
@@ -653,7 +711,7 @@ public:
 	 * rooted at node @e u.
 	 * @pre The object must be a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	[[nodiscard]] rooted_tree get_subtree(node u) const noexcept;
+	[[nodiscard]] rooted_tree get_subtree(const node u) const noexcept;
 
 	/**
 	 * @brief Converts this rooted tree into a free tree (see @ref free_tree).
@@ -661,7 +719,8 @@ public:
 	 * @param check Chech whether the resulting graph is normalized or not.
 	 */
 	[[nodiscard]] free_tree to_free_tree
-	(bool norm = true, bool check = true) const noexcept;
+	(const bool norm = true, const bool check = true)
+	const noexcept;
 
 	/**
 	 * @brief Converts a rooted tree into a head vector.
@@ -685,7 +744,7 @@ public:
 	 * @pre Node @e u belongs to the tree (see @ref has_node).
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	[[nodiscard]] bool subtree_contains_node(node r, node u) const noexcept;
+	[[nodiscard]] bool subtree_contains_node(const node r, const node u) const noexcept;
 
 	/**
 	 * @brief Are two nodes siblings?
@@ -695,7 +754,7 @@ public:
 	 * @param v Another node.
 	 * @returns True if the nodes are siblings. False, if they are not.
 	 */
-	[[nodiscard]] bool are_nodes_siblings(node u, node v) const noexcept {
+	[[nodiscard]] bool are_nodes_siblings(const node u, const node v) const noexcept {
 		// if one of the in-degrees is zero, then 'u' and 'v' cannot be siblings
 		if (get_in_degree(u) == 0 or get_in_degree(v) == 0) {
 			return false;
@@ -710,7 +769,7 @@ public:
 	 * @param u Input node.
 	 * @returns If the node has a parent vertex.
 	 */
-	[[nodiscard]] bool node_has_parent(node u) const noexcept {
+	[[nodiscard]] bool node_has_parent(const node u) const noexcept {
 		return get_in_degree(u) > 0;
 	}
 
@@ -720,7 +779,7 @@ public:
 	 * @returns The parent vertex of a node.
 	 * @pre Method @ref node_has_parent must return true.
 	 */
-	[[nodiscard]] node get_parent_node(node u) const noexcept {
+	[[nodiscard]] node get_parent_node(const node u) const noexcept {
 #if defined DEBUG
 		assert(node_has_parent(u));
 #endif
@@ -750,7 +809,7 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	void _init(uint64_t n) noexcept {
+	void _init(const uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
 		m_size_subtrees.resize(n);
@@ -772,56 +831,76 @@ protected:
 		m_are_size_subtrees_valid = false;
 	}
 
-	void actions_after_add_edge(node u, node v) noexcept;
+	void actions_after_add_edge(const node u, const node v) noexcept;
 
 	void actions_after_add_edges(const edge_list& e) noexcept;
 
 	void actions_after_add_edges_bulk() noexcept;
 
-	void actions_after_remove_edge(node u, node v) noexcept;
+	void actions_after_remove_edge(const node u, const node v) noexcept;
 
 	void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	void actions_after_remove_edges_bulk() noexcept;
 
-	void actions_before_remove_edges_incident_to(node u) noexcept;
+	void actions_before_remove_edges_incident_to(const node u) noexcept;
 
-	void actions_after_remove_node(node u) noexcept;
+	void actions_after_remove_node(const node u) noexcept;
 
-	void update_union_find_after_add_edge(
-		node u, node v,
+	void update_union_find_after_add_edge
+	(
+		const node u,
+		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) const noexcept;
-
-	void update_union_find_after_add_edges(
-		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
-
-	void update_union_find_after_add_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	)
 	const noexcept;
 
-	void update_union_find_after_remove_edge(
-		node u, node v,
+	void update_union_find_after_add_edges
+	(
+		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) const noexcept;
+	)
+	const noexcept;
+
+	void update_union_find_after_add_edges_bulk
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
+
+	void update_union_find_after_remove_edge
+	(
+		const node u,
+		const node v,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
 	
-	void update_union_find_after_remove_edges(
+	void update_union_find_after_remove_edges
+	(
 		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
 
 	void update_union_find_after_remove_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
 	const noexcept;
 
 	void update_union_find_before_remove_incident_edges_to(
-		node u,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
+		const node u,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
 
 	/// Copies all members of this class and the parent classes.
 	void copy_full_rooted_tree(const rooted_tree& r) noexcept {

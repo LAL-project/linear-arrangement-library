@@ -91,7 +91,7 @@ noexcept;
  */
 [[nodiscard]] treebank_collection_report
 check_correctness_treebank_collection
-(const std::string& main_file_name, std::size_t n_threads = 1)
+(const std::string& main_file_name, const std::size_t n_threads = 1)
 noexcept;
 
 } // -- namespace io

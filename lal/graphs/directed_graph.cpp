@@ -105,7 +105,12 @@ bool directed_graph::check_normalized() noexcept {
 }
 
 directed_graph& directed_graph::remove_node
-(node u, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -141,7 +146,13 @@ directed_graph& directed_graph::remove_node
 }
 
 directed_graph& directed_graph::add_edge
-(node u, node v, bool to_norm, bool check_norm) noexcept
+(
+	const node u,
+	const node v,
+	const bool to_norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(not has_edge(u,v));
@@ -192,7 +203,7 @@ directed_graph& directed_graph::add_edge
 	return *this;
 }
 
-directed_graph& directed_graph::add_edge_bulk(node u, node v) noexcept {
+directed_graph& directed_graph::add_edge_bulk(const node u, const node v) noexcept {
 #if defined DEBUG
 	assert(not has_edge(u,v));
 #endif
@@ -203,13 +214,13 @@ directed_graph& directed_graph::add_edge_bulk(node u, node v) noexcept {
 	return *this;
 }
 
-void directed_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
+void directed_graph::finish_bulk_add(const bool to_norm, const bool check_norm) noexcept {
 	actions_after_add_edges_bulk();
 	normalize_after_edge_addition(to_norm, check_norm);
 }
 
 directed_graph& directed_graph::add_edges
-(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, const bool to_norm, const bool check_norm) noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -226,7 +237,7 @@ directed_graph& directed_graph::add_edges
 }
 
 directed_graph& directed_graph::set_edges
-(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(const std::vector<edge>& edges, const bool to_norm, const bool check_norm) noexcept
 {
 	{
 	const uint64_t n = get_num_nodes();
@@ -247,8 +258,36 @@ directed_graph& directed_graph::set_edges
 	return *this;
 }
 
+directed_graph& directed_graph::remove_edge_bulk(const node u, const node v)
+noexcept
+{
+#if defined DEBUG
+	assert(has_edge(u,v));
+#endif
+
+	neighbourhood& out_u = m_adjacency_list[u];
+	neighbourhood& in_v = m_in_adjacency_list[v];
+	remove_single_edge(u,v, out_u, in_v);
+
+	--m_num_edges;
+	return *this;
+}
+
+void directed_graph::finish_bulk_remove(const bool to_norm, const bool check_norm)
+noexcept
+{
+	actions_after_remove_edges_bulk();
+	normalize_after_edge_addition(to_norm, check_norm);
+}
+
 directed_graph& directed_graph::remove_edge
-(node u, node v, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const node v,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_edge(u,v));
@@ -263,27 +302,13 @@ directed_graph& directed_graph::remove_edge
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edge_bulk(node u, node v) noexcept
-{
-#if defined DEBUG
-	assert(has_edge(u,v));
-#endif
-
-	neighbourhood& out_u = m_adjacency_list[u];
-	neighbourhood& in_v = m_in_adjacency_list[v];
-	remove_single_edge(u,v, out_u, in_v);
-
-	--m_num_edges;
-	return *this;
-}
-
-void directed_graph::finish_bulk_remove(bool to_norm, bool check_norm) noexcept {
-	actions_after_remove_edges_bulk();
-	normalize_after_edge_addition(to_norm, check_norm);
-}
-
 directed_graph& directed_graph::remove_edges
-(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -300,7 +325,12 @@ directed_graph& directed_graph::remove_edges
 }
 
 directed_graph& directed_graph::remove_edges_incident_to
-(node u, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -397,7 +427,7 @@ std::vector<edge> directed_graph::get_edges() const noexcept {
 	return detail::set_edges(*this);
 }
 
-bool directed_graph::has_edge(node u, node v) const noexcept {
+bool directed_graph::has_edge(const node u, const node v) const noexcept {
 #if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
@@ -417,7 +447,9 @@ bool directed_graph::has_edge(node u, node v) const noexcept {
 		std::find(in_v.begin(), in_v.end(), u) != in_v.end();
 }
 
-undirected_graph directed_graph::to_undirected(bool norm, bool check) const noexcept {
+undirected_graph directed_graph::to_undirected(const bool norm, const bool check)
+const noexcept
+{
 	undirected_graph g(get_num_nodes());
 
 	// add edges so that none are repeated
@@ -441,7 +473,7 @@ const noexcept
 
 /* PROTECTED */
 
-void directed_graph::actions_after_add_edge(node u, node v) noexcept {
+void directed_graph::actions_after_add_edge(const node u, const node v) noexcept {
 	graph::actions_after_add_edge(u, v);
 }
 
@@ -453,7 +485,7 @@ void directed_graph::actions_after_add_edges_bulk() noexcept {
 	graph::actions_after_add_edges_bulk();
 }
 
-void directed_graph::actions_after_remove_edge(node u, node v) noexcept {
+void directed_graph::actions_after_remove_edge(const node u, const node v) noexcept {
 	graph::actions_after_remove_edge(u, v);
 }
 
@@ -465,18 +497,24 @@ void directed_graph::actions_after_remove_edges_bulk() noexcept {
 	graph::actions_after_remove_edges_bulk();
 }
 
-void directed_graph::actions_before_remove_edges_incident_to(node u) noexcept {
+void directed_graph::actions_before_remove_edges_incident_to(const node u) noexcept {
 	graph::actions_before_remove_edges_incident_to(u);
 }
 
-void directed_graph::actions_after_remove_node(node u) noexcept {
+void directed_graph::actions_after_remove_node(const node u) noexcept {
 	graph::actions_after_remove_node(u);
 }
 
 /* PRIVATE */
 
 void directed_graph::remove_single_edge
-(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept
+(
+	const node u,
+	const node v,
+	neighbourhood& out_u,
+	neighbourhood& in_v
+)
+noexcept
 {
 	neighbourhood::iterator it_out_u, it_in_v;
 

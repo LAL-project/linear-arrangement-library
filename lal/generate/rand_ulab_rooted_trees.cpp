@@ -87,7 +87,13 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 /* PROTECTED */
 
 std::pair<uint64_t,uint64_t>
-_rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
+_rand_ulab_rooted_trees::ranrut
+(
+	const uint64_t n,
+	const uint64_t lr,
+	uint64_t nt
+)
+noexcept
 {
 	if (n == 0) {
 		// The new tree has no nodes.
@@ -178,7 +184,7 @@ _rand_ulab_rooted_trees::ranrut(uint64_t n, uint64_t lr, uint64_t nt) noexcept
 	return {root_Tp, nt};
 }
 
-const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
+const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n) noexcept {
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -229,7 +235,7 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(uint64_t n) noexcept {
 }
 
 std::pair<uint64_t, uint64_t>
-_rand_ulab_rooted_trees::choose_jd_from_T(uint64_t n) noexcept
+_rand_ulab_rooted_trees::choose_jd_from_T(const uint64_t n) noexcept
 {
 	// Weight of the pair to choose. It will be decreased
 	// at every iteration, and we will have found our pair

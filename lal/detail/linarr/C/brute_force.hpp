@@ -83,7 +83,7 @@ template <bool decide_upper_bound, class arrangement_t>
 (
 	const graphs::undirected_graph& g,
 	const arrangement_t& arr,
-	uint64_t upper_bound = 0
+	const uint64_t upper_bound = 0
 )
 noexcept
 {
@@ -157,10 +157,11 @@ template <bool decide_upper_bound, class arrangement_t>
 [[nodiscard]] uint64_t inner_compute
 (
 	const graphs::directed_graph& g,
-	position pu, position pv,
+	const position pu,
+	const position pv,
 	const arrangement_t& arr,
 	uint64_t C,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -234,7 +235,7 @@ template <bool decide_upper_bound, class arrangement_t>
 (
 	const graphs::directed_graph& g,
 	const arrangement_t& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -300,7 +301,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_brute_force(const graph_t& g, const arrangement_t& arr)
+[[nodiscard]] uint64_t n_C_brute_force
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -371,7 +373,7 @@ noexcept
  */
 template <class graph_t, class arrangement_t>
 [[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than
-(const graph_t& g, const arrangement_t& arr, uint64_t upper_bound)
+(const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -398,8 +400,11 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
-(const graph_t& g, const std::vector<linear_arrangement>& arrs, uint64_t upper_bound)
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
+	const graph_t& g,
+	const std::vector<linear_arrangement>& arrs,
+	const uint64_t upper_bound
+)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();

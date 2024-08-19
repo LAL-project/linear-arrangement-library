@@ -70,7 +70,11 @@ template <
 		and std::is_integral_v<char_type>,
 	bool> = true
 >
-void get_bool_neighbors(const graph_t& g, node u, char_type * const neighs)
+inline void get_bool_neighbors(
+	const graph_t& g,
+	const node u,
+	char_type * const neighs
+)
 noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
@@ -90,8 +94,7 @@ noexcept
  * @param target List into which @e source will be appended to.
  * @param source List to append to @e target.
  */
-inline
-void append_adjacency_lists
+inline void append_adjacency_lists
 (std::vector<neighbourhood>& target, const std::vector<neighbourhood>& source)
 noexcept
 {

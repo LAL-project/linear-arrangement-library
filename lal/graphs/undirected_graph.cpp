@@ -64,7 +64,12 @@ namespace graphs {
 /* MODIFIERS */
 
 undirected_graph& undirected_graph::remove_node
-(node u, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -96,7 +101,13 @@ undirected_graph& undirected_graph::remove_node
 }
 
 undirected_graph& undirected_graph::add_edge
-(node u, node v, bool to_norm, bool check_norm) noexcept
+(
+	const node u,
+	const node v,
+	const bool to_norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(not has_edge(u,v));
@@ -145,7 +156,7 @@ undirected_graph& undirected_graph::add_edge
 	return *this;
 }
 
-undirected_graph& undirected_graph::add_edge_bulk(node u, node v) noexcept {
+undirected_graph& undirected_graph::add_edge_bulk(const node u, const node v) noexcept {
 #if defined DEBUG
 	assert(not has_edge(u,v));
 #endif
@@ -156,13 +167,18 @@ undirected_graph& undirected_graph::add_edge_bulk(node u, node v) noexcept {
 	return *this;
 }
 
-void undirected_graph::finish_bulk_add(bool to_norm, bool check_norm) noexcept {
+void undirected_graph::finish_bulk_add(const bool to_norm, const bool check_norm) noexcept {
 	actions_after_add_edges_bulk();
 	normalize_after_edge_addition(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::add_edges
-(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool to_norm,
+	const bool check_norm
+)
+noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -179,7 +195,12 @@ undirected_graph& undirected_graph::add_edges
 }
 
 undirected_graph& undirected_graph::set_edges
-(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool to_norm,
+	const bool check_norm
+)
+noexcept
 {
 	{
 	const uint64_t n = get_num_nodes();
@@ -201,7 +222,13 @@ undirected_graph& undirected_graph::set_edges
 }
 
 undirected_graph& undirected_graph::remove_edge
-(node u, node v, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const node v,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_edge(u,v));
@@ -216,7 +243,7 @@ undirected_graph& undirected_graph::remove_edge
 	return *this;
 }
 
-undirected_graph& undirected_graph::remove_edge_bulk(node u, node v) noexcept
+undirected_graph& undirected_graph::remove_edge_bulk(const node u, const node v) noexcept
 {
 #if defined DEBUG
 	assert(has_edge(u,v));
@@ -230,13 +257,18 @@ undirected_graph& undirected_graph::remove_edge_bulk(node u, node v) noexcept
 	return *this;
 }
 
-void undirected_graph::finish_bulk_remove(bool to_norm, bool check_norm) noexcept {
+void undirected_graph::finish_bulk_remove(const bool to_norm, const bool check_norm) noexcept {
 	actions_after_remove_edges_bulk();
 	normalize_after_edge_addition(to_norm, check_norm);
 }
 
 undirected_graph& undirected_graph::remove_edges
-(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 	for (const auto& [u,v] : edges) {
 #if defined DEBUG
@@ -254,7 +286,12 @@ undirected_graph& undirected_graph::remove_edges
 }
 
 undirected_graph& undirected_graph::remove_edges_incident_to
-(node u, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -321,7 +358,7 @@ std::vector<edge> undirected_graph::get_edges() const noexcept {
 	return detail::set_edges(*this);
 }
 
-bool undirected_graph::has_edge(node u, node v) const noexcept {
+bool undirected_graph::has_edge(const node u, const node v) const noexcept {
 #if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
@@ -349,7 +386,7 @@ const noexcept
 
 /* PROTECTED */
 
-void undirected_graph::actions_after_add_edge(node u, node v) noexcept {
+void undirected_graph::actions_after_add_edge(const node u, const node v) noexcept {
 	graph::actions_after_add_edge(u, v);
 }
 
@@ -361,7 +398,7 @@ void undirected_graph::actions_after_add_edges_bulk() noexcept {
 	graph::actions_after_add_edges_bulk();
 }
 
-void undirected_graph::actions_after_remove_edge(node u, node v) noexcept {
+void undirected_graph::actions_after_remove_edge(const node u, const node v) noexcept {
 	graph::actions_after_remove_edge(u, v);
 }
 
@@ -373,18 +410,24 @@ void undirected_graph::actions_after_remove_edges_bulk() noexcept {
 	graph::actions_after_remove_edges_bulk();
 }
 
-void undirected_graph::actions_before_remove_edges_incident_to(node u) noexcept {
+void undirected_graph::actions_before_remove_edges_incident_to(const node u) noexcept {
 	graph::actions_before_remove_edges_incident_to(u);
 }
 
-void undirected_graph::actions_after_remove_node(node u) noexcept {
+void undirected_graph::actions_after_remove_node(const node u) noexcept {
 	graph::actions_after_remove_node(u);
 }
 
 /* PRIVATE */
 
 void undirected_graph::remove_single_edge
-(node u, node v, neighbourhood& out_u, neighbourhood& in_v) noexcept
+(
+	const node u,
+	const node v,
+	neighbourhood& out_u,
+	neighbourhood& in_v
+)
+noexcept
 {
 	// it_v: pointer to node v in out_u
 	// it_u: pointer to node u in in_v

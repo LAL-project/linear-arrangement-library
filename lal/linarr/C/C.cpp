@@ -190,7 +190,7 @@ template <class graph_t>
 uint64_t is_num_crossings_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -229,7 +229,7 @@ noexcept
 
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& g,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -239,7 +239,7 @@ noexcept
 
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& g,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -250,7 +250,7 @@ noexcept
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -261,7 +261,7 @@ noexcept
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -275,7 +275,7 @@ template <class graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -301,7 +301,7 @@ noexcept
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& arrs,
-	 uint64_t upper_bound,
+	 const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept
@@ -313,7 +313,7 @@ noexcept
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
 )
 noexcept

@@ -112,7 +112,8 @@ int calculate_q(uint64_t n, const ordering& ord) {
  * @param ord Ordering of the children with respect to a node.
  * @returns Returns the value of \f$q\f$.
  */
-[[nodiscard]] std::optional<uint64_t> calculate_q(uint64_t n, const ordering& ord)
+[[nodiscard]] std::optional<uint64_t> calculate_q
+(const uint64_t n, const ordering& ord)
 noexcept
 {
 #if defined DEBUG
@@ -148,7 +149,7 @@ noexcept
 }
 
 /*
-int calculate_p(uint64_t n, const ordering& ord) {
+int calculate_p(const uint64_t n, const ordering& ord) {
 	if (ord.size() < 2) {
 		return -1;
 	}
@@ -188,7 +189,8 @@ int calculate_p(uint64_t n, const ordering& ord) {
  * @param ord Ordering of the children with respect to a node.
  * @returns Returns the value of \f$p\f$.
  */
-[[nodiscard]] std::optional<uint64_t> calculate_p(uint64_t n, const ordering& ord)
+[[nodiscard]] std::optional<uint64_t> calculate_p
+(const uint64_t n, const ordering& ord)
 noexcept
 {
 	if (ord.size() < 2) { return {}; }
@@ -227,7 +229,10 @@ noexcept
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$P\f$.
  */
-[[nodiscard]] array<uint64_t> get_P(uint64_t p, uint64_t i) noexcept {
+[[nodiscard]] array<uint64_t> get_P
+(const uint64_t p, uint64_t i)
+noexcept
+{
 	array<uint64_t> v(2*p + 1 + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
@@ -263,7 +268,7 @@ noexcept
  * @param i Index of the i-th children in the ordering.
  * @returns Returns the value of \f$Q\f$.
  */
-[[nodiscard]] array<uint64_t> get_Q(uint64_t q, uint64_t i) noexcept {
+[[nodiscard]] array<uint64_t> get_Q(const uint64_t q, const uint64_t i) noexcept {
 	array<uint64_t> v(2*q + 1);
 	uint64_t pos = v.size() - 1;
 	uint64_t right_pos = pos;
@@ -298,7 +303,9 @@ noexcept
  * @param u Vertex.
  * @returns Returns the children of @e u sorted in non-increasing order.
  */
-[[nodiscard]] ordering get_ordering(const graphs::free_tree& t, node u) noexcept {
+[[nodiscard]] ordering get_ordering(const graphs::free_tree& t, const node u)
+noexcept
+{
 	// Let 'T_u' to be a tree rooted at vertex 'u'.
 	// Order subtrees of 'T_u' by size.
 	ordering ord(t.get_degree(u));
@@ -348,8 +355,10 @@ template <char root, bool make_arrangement>
 void calculate_mla
 (
 	graphs::free_tree& t,
-	node one_node, position start,
-	linear_arrangement& mla, uint64_t& cost
+	const node one_node,
+	const position start,
+	linear_arrangement& mla,
+	uint64_t& cost
 )
 noexcept
 {

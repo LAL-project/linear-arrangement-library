@@ -88,7 +88,7 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(const graphs::graph& g, uint64_t seed = 0) noexcept :
+	rand_arrangements(const graphs::graph& g, const uint64_t seed = 0) noexcept :
 		rand_arrangements(g.get_num_nodes(), seed)
 	{ }
 
@@ -109,7 +109,7 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(uint64_t n, uint64_t seed = 0) noexcept :
+	rand_arrangements(const uint64_t n, const uint64_t seed = 0) noexcept :
 		m_n(n),
 		m_arr(linear_arrangement(m_n))
 	{

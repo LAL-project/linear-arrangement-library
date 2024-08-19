@@ -105,16 +105,16 @@ public:
 	 *
 	 * All level values are initialized at 0.
 	 */
-	level_signature(std::size_t n) noexcept : m_data(n, 0) { }
+	level_signature(const std::size_t n) noexcept : m_data(n, 0) { }
 
 	/// Initializes this level signature.
-	void init(std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept {
 		m_data.resize(n, 0);
 	}
 
 	/// Access position 'i'
 	template <typename T>
-	[[nodiscard]] int64_t operator[] (T i) const noexcept {
+	[[nodiscard]] int64_t operator[] (const T i) const noexcept {
 		if constexpr (t == level_signature_type::per_position) {
 			static_assert(std::is_same_v<T, position_t>);
 		}
@@ -125,7 +125,7 @@ public:
 	}
 	/// Access position 'i'
 	template <typename T>
-	[[nodiscard]] int64_t& operator[] (T i) noexcept {
+	[[nodiscard]] int64_t& operator[] (const T i) noexcept {
 		if constexpr (t == level_signature_type::per_position) {
 			static_assert(std::is_same_v<T, position_t>);
 		}
@@ -166,7 +166,9 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true
 	>
-	[[nodiscard]] int64_t get_vertex_level(node u) const noexcept { return m_data[u]; }
+	[[nodiscard]] int64_t get_vertex_level(const node u) const noexcept {
+		return m_data[u];
+	}
 	/**
 	 * @brief Sets the level value of a vertex.
 	 *
@@ -179,7 +181,9 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true
 	>
-	void set_vertex_level(node u, int64_t l) noexcept { m_data[u] = l; }
+	void set_vertex_level(const node u, const int64_t l) noexcept {
+		m_data[u] = l;
+	}
 
 	/**
 	 * @brief Gets the level value of a position.
@@ -193,7 +197,9 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_position, bool> = true
 	>
-	[[nodiscard]] int64_t get_position_level(position p) const noexcept { return m_data[p]; }
+	[[nodiscard]] int64_t get_position_level(const position p) const noexcept {
+		return m_data[p];
+	}
 	/**
 	 * @brief Sets the level value of a position.
 	 *
@@ -206,7 +212,9 @@ public:
 		level_signature_type st = t,
 		std::enable_if_t<st == level_signature_type::per_position, bool> = true
 	>
-	void set_position_level(position p, int64_t l) noexcept { m_data[p] = l; }
+	void set_position_level(const position p, const int64_t l) noexcept {
+		m_data[p] = l;
+	}
 
 	/**
 	 * @brief Mirrors this level signature.
@@ -269,7 +277,9 @@ typedef level_signature<level_signature_type::per_position> level_signature_per_
 template <level_signature_type t, class graph_t>
 [[nodiscard]] bool is_thistle_vertex
 (
-	const graph_t& g, const level_signature<t>& levels, node_t u,
+	const graph_t& g,
+	const level_signature<t>& levels,
+	const node_t u,
 	const linear_arrangement& arr = {}
 )
 noexcept
@@ -295,7 +305,11 @@ noexcept
  */
 template <level_signature_type t, class graph_t>
 void calculate_level_signature
-(const graph_t& g, const linear_arrangement& arr, level_signature<t>& L)
+(
+	const graph_t& g,
+	const linear_arrangement& arr,
+	level_signature<t>& L
+)
 noexcept
 {
 	iterators::E_iterator it(g);

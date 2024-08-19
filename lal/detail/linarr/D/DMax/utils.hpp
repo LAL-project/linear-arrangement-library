@@ -105,7 +105,8 @@ template <Dopt_utils::place r_place, bool make_arrangement>
 (
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
-	position ini, position fin,
+	const position ini,
+	const position fin,
 	linear_arrangement& arr
 )
 noexcept
@@ -197,8 +198,10 @@ noexcept
 template <bool make_arrangement>
 [[nodiscard]] inline uint64_t arrange_projective
 (
-	uint64_t n, const std::vector<std::vector<node_size>>& L,
-	node r, linear_arrangement& arr
+	const uint64_t n,
+	const std::vector<std::vector<node_size>>& L,
+	const node r,
+	linear_arrangement& arr
 )
 noexcept
 {

@@ -341,7 +341,8 @@ template <
 >
 [[nodiscard]] std::pair<node,node> centroidal_vertex_plus_adjacency_list
 (
-	const tree_t& t, node x,
+	const tree_t& t,
+	const node x,
 	std::vector< std::vector<node_size> >& L
 )
 noexcept

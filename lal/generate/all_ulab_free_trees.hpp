@@ -105,7 +105,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_trees(uint64_t n) noexcept {
+	all_ulab_free_trees(const uint64_t n) noexcept {
 		init(n);
 	}
 	/**
@@ -134,7 +134,7 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept {
 		_tree_generator::init(n);
 		m_L.resize(m_n + 1);
 		m_W.resize(m_n + 1);

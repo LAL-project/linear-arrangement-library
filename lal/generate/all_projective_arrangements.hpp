@@ -117,7 +117,7 @@ public:
 	 * @pre The object @e T is a valid tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
-	all_projective_arrangements(const graphs::free_tree& T, node root) noexcept
+	all_projective_arrangements(const graphs::free_tree& T, const node root) noexcept
 		: all_projective_arrangements(graphs::rooted_tree(T, root))
 	{ }
 
@@ -187,7 +187,7 @@ private:
 	/// Initialize the interval every node of the tree, starting at @e r.
 	void initialize_intervals_tree() noexcept;
 	/// Initialize the interval of node @e u.
-	void initialize_interval_node(node u) noexcept;
+	void initialize_interval_node(const node u) noexcept;
 };
 
 } // -- namespace generate

@@ -93,11 +93,12 @@ namespace dyn_prog {
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
 [[nodiscard]] uint64_t compute
 (
-	const graph_t& g, const arrangement_t& arr,
+	const graph_t& g,
+	const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -352,7 +353,7 @@ template <class graph_t, class arrangement_t>
 (
 	const graph_t& g,
 	const arrangement_t& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -393,7 +394,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {

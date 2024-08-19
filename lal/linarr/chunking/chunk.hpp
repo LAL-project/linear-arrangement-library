@@ -75,7 +75,7 @@ public:
 	 * @brief Adds a new node to this chunk.
 	 * @param u Node to be added.
 	 */
-	void add_node(node u) noexcept {
+	void add_node(const node u) noexcept {
 		m_nodes.push_back(u);
 	}
 
@@ -94,7 +94,7 @@ public:
 	 * @param u Node parent of this chunk.
 	 * @post After calling this, method @ref has_parent_node returns true.
 	 */
-	void set_parent_node(node u) noexcept {
+	void set_parent_node(const node u) noexcept {
 		m_parent = u;
 	}
 
@@ -111,7 +111,7 @@ public:
 	 * @param u Root parent of this chunk.
 	 * @post After calling this, method @ref has_root_node returns true.
 	 */
-	void set_root_node(node u) noexcept {
+	void set_root_node(const node u) noexcept {
 		m_root = u;
 	}
 

@@ -46,6 +46,7 @@
 #include <iterator>
 #include <cassert>
 #endif
+#include <cstddef>
 
 namespace lal {
 namespace utilities {
@@ -137,11 +138,15 @@ template <
 >
 [[nodiscard]] result_t one_level_aggregation
 (
-	iterator_first_t bfirst, const iterator_first_t efirst,
-	iterator_second_t bsecond, [[maybe_unused]] const iterator_second_t esecond,
+	iterator_first_t bfirst,
+	const iterator_first_t efirst,
+	iterator_second_t bsecond,
+	[[maybe_unused]] const iterator_second_t esecond,
 	metric values,
-	accumulate_Q accQ, accumulate_R accR,
-	make_average_Q avgQ, make_average_R avgR,
+	accumulate_Q accQ,
+	accumulate_R accR,
+	make_average_Q avgQ,
+	make_average_R avgR,
 	make_average avg
 )
 noexcept
@@ -256,10 +261,13 @@ template <
 >
 [[nodiscard]] result_t two_level_aggregation
 (
-	iterator_first_t bfirst, const iterator_first_t efirst,
-	iterator_second_t bsecond, [[maybe_unused]] const iterator_second_t esecond,
+	iterator_first_t bfirst,
+	const iterator_first_t efirst,
+	iterator_second_t bsecond,
+	[[maybe_unused]] const iterator_second_t esecond,
 	metric values,
-	combine comb_values, accumulate acc_values,
+	combine comb_values,
+	accumulate acc_values,
 	make_average avg
 )
 noexcept

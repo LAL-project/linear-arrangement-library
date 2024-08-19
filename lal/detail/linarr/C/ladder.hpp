@@ -92,7 +92,7 @@ template <bool decide_upper_bound, class graph_t, class arrangement_t>
 	const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -160,7 +160,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_ladder(const graph_t& g, const arrangement_t& arr)
+[[nodiscard]] uint64_t n_C_ladder
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -244,7 +245,7 @@ template <class graph_t, class arrangement_t>
 (
 	const graph_t& g,
 	const arrangement_t& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -283,7 +284,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {

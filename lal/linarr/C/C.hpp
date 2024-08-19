@@ -192,7 +192,7 @@ noexcept;
 [[nodiscard]] uint64_t is_num_crossings_lesseq_than
 (
 	const graphs::directed_graph& G,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;
@@ -218,7 +218,7 @@ noexcept;
 [[nodiscard]] uint64_t is_num_crossings_lesseq_than
 (
 	const graphs::undirected_graph& G,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;
@@ -247,7 +247,7 @@ noexcept;
 (
 	const graphs::directed_graph& G,
 	const linear_arrangement& arr,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;
@@ -275,7 +275,7 @@ noexcept;
 (
 	const graphs::undirected_graph& G,
 	const linear_arrangement& arr,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;
@@ -306,7 +306,7 @@ noexcept;
 (
 	const graphs::directed_graph& G,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;
@@ -335,7 +335,7 @@ noexcept;
 (
 	const graphs::undirected_graph& G,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A = algorithms_C::ladder
 )
 noexcept;

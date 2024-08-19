@@ -58,7 +58,8 @@ namespace detail {
  */
 [[nodiscard]] inline bool find_cycle
 (
-	const graphs::directed_graph& g, node u,
+	const graphs::directed_graph& g,
+	const node u,
 	char * const __restrict__ visited,
 	char * const __restrict__ in_stack
 )
@@ -68,7 +69,7 @@ noexcept
 	visited[u] = 1;
 
 	in_stack[u] = 1;
-	for (node v : g.get_out_neighbors(u)) {
+	for (const node v : g.get_out_neighbors(u)) {
 		if (in_stack[v]) {
 			return true;
 		}
@@ -120,8 +121,7 @@ noexcept
 	array<char> all_mem(2*n);
 	char * const __restrict__ vis = all_mem.begin();
 	char * const __restrict__ in_stack = all_mem.at(n);
-	const bool has_cycle = has_directed_cycles(g, vis, in_stack);
-	return has_cycle;
+	return has_directed_cycles(g, vis, in_stack);
 }
 
 /**
@@ -134,7 +134,8 @@ noexcept
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-[[nodiscard]] bool has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs)
+[[nodiscard]] bool has_undirected_cycles
+(const graph_t& g, BFS<graph_t>& bfs)
 noexcept
 {
 	const auto n = g.get_num_nodes();
@@ -198,7 +199,10 @@ noexcept
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-[[nodiscard]] bool has_undirected_cycles(const graph_t& g) noexcept {
+[[nodiscard]] bool has_undirected_cycles
+(const graph_t& g)
+noexcept
+{
 	// BFS traversal object
 	BFS<graph_t> bfs(g);
 	return has_undirected_cycles(g, bfs);

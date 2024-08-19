@@ -104,7 +104,7 @@ public:
 private:
 
 	/// Can node @e u be added to the same chunk as @e r.
-	[[nodiscard]] bool can_be_added(node r, node u) const noexcept {
+	[[nodiscard]] bool can_be_added(const node r, const node u) const noexcept {
 		return m_rt.get_out_degree(u) == 0 and m_rt.has_edge(r, u);
 	}
 
@@ -113,7 +113,7 @@ private:
 	 * @param r Root of the current subtree.
 	 * @param[inout] chunk_idx Current chunk index.
 	 */
-	void assign_chunk_indices(node_t r, std::size_t& chunk_idx) noexcept {
+	void assign_chunk_indices(const node_t r, std::size_t& chunk_idx) noexcept {
 		++chunk_idx;
 
 #if defined DEBUG

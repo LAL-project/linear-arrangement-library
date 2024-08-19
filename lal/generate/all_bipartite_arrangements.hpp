@@ -223,7 +223,7 @@ private:
 	 * left side of the arrangement depending on the value of the parameter.
 	 * @param red_first Place red vertices first if true.
 	 */
-	void init_arrangement(bool red_first) noexcept;
+	void init_arrangement(const bool red_first) noexcept;
 
 private:
 	/// Has the end of the iteration been reached for mirrored arrangements?

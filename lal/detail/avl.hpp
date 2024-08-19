@@ -475,7 +475,7 @@ private:
 		 * @post If node 'n' is 'this->right', then reference @ref right still
 		 * points to its right child.
 		 */
-		void replace_with(tree_node *n) noexcept {
+		void replace_with(tree_node * const n) noexcept {
 			if (parent != nullptr) {
 				if (side == 'l') {
 					parent->left = n;
@@ -502,7 +502,7 @@ private:
 
 private:
 	/// Deallocates the memory of node @e n.
-	void free_node(tree_node *n) const noexcept {
+	void free_node(tree_node * const n) const noexcept {
 		if (n == nullptr) { return; }
 		free_node(n->left);
 		free_node(n->right);
@@ -518,7 +518,7 @@ private:
 	 * @returns The root of the new balanced tree after a right rotation.
 	 * @pre Node @e n has a left subtree.
 	 */
-	[[nodiscard]] tree_node *right_rotation(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *right_rotation(tree_node * const n) const noexcept {
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
@@ -567,7 +567,7 @@ private:
 	 * @returns The root of the new balanced tree after a left rotation.
 	 * @pre Node @e n has a right subtree.
 	 */
-	[[nodiscard]] tree_node *left_rotation(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *left_rotation(tree_node * const n) const noexcept {
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
@@ -608,7 +608,7 @@ private:
 	 * @returns The root of the new balanced tree after a left-left rotation.
 	 * @pre Node @e n has a left subtree.
 	 */
-	[[nodiscard]] tree_node *left_left_case(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *left_left_case(tree_node * const n) const noexcept {
 		return right_rotation(n);
 	}
 	/**
@@ -617,7 +617,7 @@ private:
 	 * @returns The root of the new balanced tree after a left-right rotation.
 	 * @pre Node @e n has a left subtree.
 	 */
-	[[nodiscard]] tree_node *left_right_case(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *left_right_case(tree_node * const n) const noexcept {
 		n->left = left_rotation(n->left);
 		return right_rotation(n);
 	}
@@ -627,7 +627,7 @@ private:
 	 * @returns The root of the new balanced tree after a right-right rotation.
 	 * @pre Node @e n has a right subtree.
 	 */
-	[[nodiscard]] tree_node *right_right_case(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *right_right_case(tree_node * const n) const noexcept {
 		return left_rotation(n);
 	}
 	/**
@@ -636,7 +636,7 @@ private:
 	 * @returns The root of the new balanced tree after a right-left rotation.
 	 * @pre Node @e n has a right subtree.
 	 */
-	[[nodiscard]] tree_node *right_left_case(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *right_left_case(tree_node * const n) const noexcept {
 		n->right = right_rotation(n->right);
 		return left_rotation(n);
 	}
@@ -648,7 +648,7 @@ private:
 	 * @param n Node to balance
 	 * @returns The root of the new balanced tree.
 	 */
-	[[nodiscard]] tree_node *balance(tree_node *n) const noexcept {
+	[[nodiscard]] tree_node *balance(tree_node * const n) const noexcept {
 		if (n == nullptr) { return nullptr; }
 #if defined DEBUG
 		assert(std::abs(n->balance_factor) <= 2);
@@ -675,7 +675,12 @@ private:
 	 */
 	template <typename U>
 	[[nodiscard]] tree_node *insert
-	(tree_node *p, tree_node *n, U&& x, frequencies& freqs)
+	(
+		tree_node * p,
+		tree_node * n,
+		U&& x,
+		frequencies& freqs
+	)
 	const noexcept
 	{
 		// Find where the node with key 'x' could be located in the tree.

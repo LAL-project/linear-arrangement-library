@@ -108,10 +108,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than(
+[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than
+(
 	const graph_t& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -134,10 +135,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
+(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -161,7 +163,8 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
+(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
@@ -200,7 +203,7 @@ noexcept;
  * @pre None of the arrangements is empty.
  */
 template <class graph_t>
-std::vector<uint64_t> n_C_dynamic_programming
+[[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming
 (const graph_t& g, const std::vector<linear_arrangement>& arrs)
 noexcept;
 
@@ -227,7 +230,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -255,7 +258,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -279,7 +282,8 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
+[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than
+(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
@@ -342,7 +346,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -370,7 +374,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -458,7 +462,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const linear_arrangement& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 
@@ -486,7 +490,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept;
 

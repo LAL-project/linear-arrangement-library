@@ -71,7 +71,7 @@ noexcept
 }
 
 treebank_collection_report check_correctness_treebank_collection
-(const std::string& main_file_name, std::size_t n_threads)
+(const std::string& main_file_name, const std::size_t n_threads)
 noexcept
 {
 	return detail::check_correctness_treebank_collection<false>(main_file_name, n_threads);

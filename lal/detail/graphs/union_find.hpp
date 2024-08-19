@@ -74,7 +74,8 @@ template <class tree_t>
 void update_unionfind_after_add_edge
 (
 	const tree_t& t,
-	const node u, const node v,
+	const node u,
+	const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -125,7 +126,7 @@ noexcept
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
-	[&](const BFS<tree_t>&, node w) -> void { root_of[w] = new_root; }
+	[&](const BFS<tree_t>&, const node w) -> void { root_of[w] = new_root; }
 	);
 	bfs.set_visited(parent, 1); // avoid going backwards
 	bfs.start_at(child);
@@ -166,7 +167,7 @@ noexcept
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
-	[&](const auto&, node w) {
+	[&](const auto&, const node w) {
 		root_of[w] = current_root;
 		++size_current_root;
 	}
@@ -216,7 +217,7 @@ noexcept
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
-	[&](const auto&, node w) {
+	[&](const auto&, const node w) {
 		root_of[w] = current_root;
 		++size_current_root;
 	}
@@ -251,7 +252,8 @@ template <class tree_t>
 void update_unionfind_after_remove_edge
 (
 	const tree_t& t,
-	const node u, const node v,
+	const node u,
+	const node v,
 	node * const root_of,
 	uint64_t * const root_size
 )
@@ -278,11 +280,11 @@ noexcept
 	uint64_t size_cc_u = 0;
 	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
-		[&](const auto&, node w) -> void {
-			root_of[w] = u;
-			++size_cc_u;
-		}
-		);
+	[&](const auto&, const node w) -> void {
+		root_of[w] = u;
+		++size_cc_u;
+	}
+	);
 	bfs.start_at(u);
 	root_of[u] = u;
 	root_size[u] = size_cc_u;
@@ -292,10 +294,10 @@ noexcept
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-		[&](const detail::BFS<tree_t>&, node w) -> void {
-			root_of[w] = v;
-		}
-		);
+	[&](const detail::BFS<tree_t>&, const node w) -> void {
+		root_of[w] = v;
+	}
+	);
 	bfs.start_at(v);
 	root_of[v] = v;
 	root_size[v] = size_uv - size_cc_u;
@@ -337,7 +339,7 @@ noexcept
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
 	bfs.set_process_current(
-	[&](const auto&, node w) {
+	[&](const auto&, const node w) {
 		root_of[w] = current_root;
 		++size_current_cc;
 	}
@@ -398,7 +400,7 @@ noexcept
 
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
-	[&](const auto&, node w) -> void {
+	[&](const auto&, const node w) -> void {
 		root_of[w] = v;
 		++size_cc_v;
 	}
@@ -446,7 +448,7 @@ noexcept
 	bfs.set_visited(u, 1);
 
 	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-		for (node v : t.get_neighbors(u)) {
+		for (const node v : t.get_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to
@@ -454,13 +456,13 @@ noexcept
 		}
 	}
 	else {
-		for (node v : t.get_in_neighbors(u)) {
+		for (const node v : t.get_in_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to
 				(bfs, v, root_of, root_size);
 		}
-		for (node v : t.get_out_neighbors(u)) {
+		for (const node v : t.get_out_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
 			update_unionfind_before_remove_edges_incident_to

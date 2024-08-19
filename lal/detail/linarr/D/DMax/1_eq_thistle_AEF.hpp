@@ -96,7 +96,9 @@ namespace detail {
  * @returns Whether or not there are more configurations
  */
 template <typename iterator_t>
-[[nodiscard]] bool next_binary(iterator_t begin, iterator_t end) noexcept
+[[nodiscard]] inline bool next_binary
+(iterator_t begin, iterator_t end)
+noexcept
 {
 	while (begin != end and *begin == 1) {
 		*begin = 0;
@@ -550,7 +552,7 @@ noexcept
  * than the one it already contains.
  */
 template <bool make_arrangement>
-void merge_arrangements
+inline void merge_arrangements
 (
 	const graphs::free_tree& t,
 	const node thistle,
@@ -671,7 +673,7 @@ noexcept
  * than the one it already contains.
  */
 template <bool make_arrangement>
-void choose_orientations_for_thistle_neighbors
+inline void choose_orientations_for_thistle_neighbors
 (
 	const graphs::free_tree& t,
 	const node thistle,
@@ -787,7 +789,7 @@ noexcept
  * vertex.
  */
 template <bool make_arrangement>
-[[nodiscard]] detail::result_t<make_arrangement> AEF
+[[nodiscard]] inline detail::result_t<make_arrangement> AEF
 (
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
@@ -906,13 +908,15 @@ noexcept
  * @pre Input tree @e t must be a valid tree (see @ref lal::graphs::tree::is_tree).
  */
 template <bool make_arrangement>
-[[nodiscard]] std::conditional_t<
+[[nodiscard]] inline std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
 >
-AEF
-(const graphs::free_tree& t, const std::vector<properties::branchless_path>& all_paths)
+AEF(
+	const graphs::free_tree& t,
+	const std::vector<properties::branchless_path>& all_paths
+)
 noexcept
 {
 #if defined DEBUG

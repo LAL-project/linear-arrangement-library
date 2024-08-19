@@ -80,7 +80,7 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept {
+	_rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept {
 		init(n, seed);
 	}
 
@@ -112,7 +112,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(uint64_t n, uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
 		m_n = n;
 		m_Prufer_seq.resize(m_n <= 2 ? 2 : m_n - 2);
 
@@ -190,7 +190,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_free_trees(uint64_t n, uint64_t seed = 0) noexcept :
+	rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
 		_tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
@@ -218,7 +218,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(uint64_t n, uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
 		_tree_generator::init(n);
 		m_Gen.init(n, seed);
 	}

@@ -56,7 +56,7 @@ namespace io {
 
 template <class graph_t>
 inline std::optional<graph_t> __read_edge_list
-(const std::string& filename, bool norm, bool check)
+(const std::string& filename, const bool norm, const bool check)
 noexcept
 {
 	if (not std::filesystem::exists(filename)) {
@@ -83,28 +83,28 @@ noexcept
 }
 
 std::optional<graphs::undirected_graph> read_edge_list_undirected_graph
-(const std::string& filename, bool norm, bool check)
+(const std::string& filename, const bool norm, const bool check)
 noexcept
 {
 	return __read_edge_list<graphs::undirected_graph>(filename, norm, check);
 }
 
 std::optional<graphs::directed_graph> read_edge_list_directed_graph
-(const std::string& filename, bool norm, bool check)
+(const std::string& filename, const bool norm, const bool check)
 noexcept
 {
 	return __read_edge_list<graphs::directed_graph>(filename, norm, check);
 }
 
 std::optional<graphs::free_tree> read_edge_list_free_tree
-(const std::string& filename, bool norm, bool check)
+(const std::string& filename, const bool norm, const bool check)
 noexcept
 {
 	return __read_edge_list<graphs::free_tree>(filename, norm, check);
 }
 
 std::optional<graphs::rooted_tree> read_edge_list_rooted_tree
-(const std::string& filename, bool norm, bool check)
+(const std::string& filename, const bool norm, const bool check)
 noexcept
 {
 	return __read_edge_list<graphs::rooted_tree>(filename, norm, check);

@@ -72,7 +72,7 @@ public:
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices
 	 */
-	free_tree(uint64_t n) noexcept {
+	free_tree(const uint64_t n) noexcept {
 		free_tree::_init(n);
 	}
 	/**
@@ -136,7 +136,12 @@ public:
 	}
 
 	free_tree& remove_node
-	(node u, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node u,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -160,7 +165,13 @@ public:
 	 * after the addition of the edge.
 	 */
 	free_tree& add_edge
-	(node s, node t, bool norm = true, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = true,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -174,7 +185,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	free_tree& add_edge_bulk(node s, node t) noexcept;
+	free_tree& add_edge_bulk(const node s, const node t) noexcept;
 
 	/**
 	 * @brief Finishes adding edges in bulk.
@@ -184,9 +195,9 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_add(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -209,7 +220,11 @@ public:
 	 * after the addition of the edges.
 	 */
 	free_tree& add_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -240,7 +255,11 @@ public:
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	free_tree& set_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -261,7 +280,13 @@ public:
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	free_tree& remove_edge
-	(node s, node t, bool norm = false, bool check_norm = true) noexcept;
+	(
+		const node s,
+		const node t,
+		const bool norm = false,
+		const bool check_norm = true
+	)
+	noexcept;
 
 	/**
 	 * @brief Removes an edge from the tree.
@@ -275,7 +300,7 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
-	free_tree& remove_edge_bulk(node s, node t) noexcept;
+	free_tree& remove_edge_bulk(const node s, const node t) noexcept;
 
 	/**
 	 * @brief Finishes removing edges in bulk.
@@ -285,9 +310,9 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_remove(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept;
+	void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -308,7 +333,11 @@ public:
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	free_tree& remove_edges
-	(const std::vector<edge>& edges, bool norm = true, bool check_norm = true)
+	(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -328,7 +357,11 @@ public:
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
 	free_tree& remove_edges_incident_to
-	(node u, bool norm = true, bool check_norm = true)
+	(
+		const node u,
+		const bool norm = true,
+		const bool check_norm = true
+	)
 	noexcept;
 
 	/**
@@ -366,7 +399,7 @@ public:
 	 * @pre This tree is a valid free tree (see @ref is_tree).
 	 */
 	[[nodiscard]] head_vector get_head_vector
-	(node r = 0, const linear_arrangement& arr = {})
+	(const node r = 0, const linear_arrangement& arr = {})
 	const noexcept;
 
 protected:
@@ -378,7 +411,7 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	void _init(uint64_t n) noexcept {
+	void _init(const uint64_t n) noexcept {
 		tree::tree_only_init(n);
 		undirected_graph::_init(n);
 	}
@@ -393,56 +426,76 @@ protected:
 		tree::tree_only_clear();
 	}
 
-	void actions_after_add_edge(node u, node v) noexcept;
+	void actions_after_add_edge(const node u, const node v) noexcept;
 
 	void actions_after_add_edges(const edge_list& e) noexcept;
 
 	void actions_after_add_edges_bulk() noexcept;
 
-	void actions_after_remove_edge(node u, node v) noexcept;
+	void actions_after_remove_edge(const node u, const node v) noexcept;
 
 	void actions_after_remove_edges(const edge_list& e) noexcept;
 
 	void actions_after_remove_edges_bulk() noexcept;
 
-	void actions_after_remove_node(node u) noexcept;
+	void actions_after_remove_node(const node u) noexcept;
 
-	void actions_before_remove_edges_incident_to(node u) noexcept;
+	void actions_before_remove_edges_incident_to(const node u) noexcept;
 
-	void update_union_find_after_add_edge(
-		node u, node v,
+	void update_union_find_after_add_edge
+	(
+		const node u,
+		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) const noexcept;
-
-	void update_union_find_after_add_edges(
-		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
-
-	void update_union_find_after_add_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	)
 	const noexcept;
 
-	void update_union_find_after_remove_edge(
-		node u, node v,
+	void update_union_find_after_add_edges
+	(
+		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	) const noexcept;
+	)
+	const noexcept;
 
-	void update_union_find_after_remove_edges(
+	void update_union_find_after_add_edges_bulk
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
+
+	void update_union_find_after_remove_edge
+	(
+		const node u,
+		const node v,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
+
+	void update_union_find_after_remove_edges
+	(
 		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
 
 	void update_union_find_after_remove_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
 	const noexcept;
 
 	void update_union_find_before_remove_incident_edges_to(
-		node u,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept;
+		const node u,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept;
 
 	/// Copies all members of this class and the parent classes.
 	void copy_full_free_tree(const free_tree& f) noexcept {

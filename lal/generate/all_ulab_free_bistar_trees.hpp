@@ -104,7 +104,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_bistar_trees(uint64_t n) noexcept {
+	all_ulab_free_bistar_trees(const uint64_t n) noexcept {
 		init(n);
 	}
 	/**
@@ -133,7 +133,7 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept {
 		_tree_generator::init(n);
 		m_size = 0;
 		reset();

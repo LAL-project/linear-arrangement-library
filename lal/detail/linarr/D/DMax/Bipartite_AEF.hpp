@@ -71,7 +71,7 @@ namespace bipartite {
  * @pre The input graph is a bipartite graph.
  */
 template <bool make_arrangement, class graph_t>
-[[nodiscard]] std::conditional_t<
+[[nodiscard]] inline std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t
@@ -97,7 +97,7 @@ AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept {
  * @pre The input graph is a bipartite graph.
  */
 template <bool make_arrangement, class graph_t>
-[[nodiscard]] std::conditional_t<
+[[nodiscard]] inline std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t

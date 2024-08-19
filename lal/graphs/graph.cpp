@@ -116,7 +116,7 @@ void graph::__disjoint_union(const graph& g) noexcept {
 	m_is_normalized = m_is_normalized and g.is_normalized();
 }
 
-void graph::actions_after_add_edge(node, node) noexcept {
+void graph::actions_after_add_edge(const node, const node) noexcept {
 	++m_num_edges;
 }
 
@@ -126,7 +126,7 @@ void graph::actions_after_add_edges(const edge_list& e) noexcept {
 
 void graph::actions_after_add_edges_bulk() noexcept { }
 
-void graph::actions_after_remove_edge(node, node) noexcept {
+void graph::actions_after_remove_edge(const node, const node) noexcept {
 	--m_num_edges;
 }
 
@@ -136,11 +136,13 @@ void graph::actions_after_remove_edges(const edge_list& e) noexcept {
 
 void graph::actions_after_remove_edges_bulk() noexcept { }
 
-void graph::actions_before_remove_edges_incident_to(node) noexcept { }
+void graph::actions_before_remove_edges_incident_to(const node) noexcept { }
 
-void graph::actions_after_remove_node(node) noexcept { }
+void graph::actions_after_remove_node(const node) noexcept { }
 
-void graph::normalize_after_edge_addition(bool to_norm, bool check_norm) noexcept {
+void graph::normalize_after_edge_addition(const bool to_norm, const bool check_norm)
+noexcept
+{
 	if (to_norm) {
 		// the graph needs to be normalized from a non-normalized state
 		normalize();
@@ -162,7 +164,9 @@ void graph::normalize_after_edge_addition(bool to_norm, bool check_norm) noexcep
 	}
 }
 
-void graph::normalize_after_edge_removal(bool to_norm, bool check_norm) noexcept {
+void graph::normalize_after_edge_removal(const bool to_norm, const bool check_norm)
+noexcept
+{
 	// if (is_normalized()) {
 	//		Removing an edge does not change normalisation
 	// }

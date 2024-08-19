@@ -194,7 +194,7 @@ private:
 	/// Initiales the interval of every node of the tree.
 	void initialize_intervals_tree() noexcept;
 	/// Initialize the interval of node @e v, whose parent vertex is @e parent.
-	void initialize_interval_node(node v, node parent) noexcept;
+	void initialize_interval_node(const node v, const node parent) noexcept;
 };
 
 } // -- namespace generate

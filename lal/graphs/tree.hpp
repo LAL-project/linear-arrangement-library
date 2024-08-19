@@ -137,7 +137,7 @@ public:
 	 * @pre All edges have been added with method @ref undirected_graph::add_edge_bulk
 	 * or @ref directed_graph::add_edge_bulk.
 	 */
-	virtual void finish_bulk_add_complete(bool norm = true, bool check = true) noexcept = 0;
+	virtual void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept = 0;
 
 	/**
 	 * @brief Completes the inner structure of the tree after removing edges in bulk.
@@ -153,7 +153,7 @@ public:
 	 * @pre All edges have been added with method @ref undirected_graph::remove_edge_bulk
 	 * or @ref directed_graph::remove_edge_bulk.
 	 */
-	virtual void finish_bulk_remove_complete(bool norm = true, bool check = true) noexcept = 0;
+	virtual void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept = 0;
 
 	/* GETTERS */
 
@@ -202,7 +202,7 @@ public:
 	 * @returns Whether or not this edge can be added to the tree without
 	 * producing cycles.
 	 */
-	[[nodiscard]] virtual bool can_add_edge(node s, node t) const noexcept;
+	[[nodiscard]] virtual bool can_add_edge(node const s, const node t) const noexcept;
 
 	/**
 	 * @brief Can these edges be added?
@@ -234,7 +234,7 @@ public:
 	 * @param u Input node.
 	 * @returns The representative node of node @e u's component.
 	 */
-	[[nodiscard]] uint64_t get_component_representative(node u) const noexcept {
+	[[nodiscard]] uint64_t get_component_representative(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -247,7 +247,7 @@ public:
 	 * @param v Second node.
 	 * @returns True or false.
 	 */
-	[[nodiscard]] bool are_nodes_in_same_component(node u, node v) const noexcept {
+	[[nodiscard]] bool are_nodes_in_same_component(const node u, const node v) const noexcept {
 		return get_component_representative(u) == get_component_representative(v);
 	}
 
@@ -263,7 +263,7 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	[[nodiscard]] uint64_t get_num_nodes_component(node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_component(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -337,7 +337,7 @@ protected:
 	 * @brief Initializes only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
-	void tree_only_init(uint64_t n) noexcept {
+	void tree_only_init(const uint64_t n) noexcept {
 		m_union_find__root_of = std::vector<uint64_t>(n);
 		m_union_find__root_size = std::vector<uint64_t>(n);
 		for (node u = 0; u < n; ++u) {
@@ -403,7 +403,7 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_after_add_edge(node u, node v) noexcept;
+	void tree_only_actions_after_add_edge(const node u, const node v) noexcept;
 
 	/**
 	 * @brief Do some work after the addition of several edges.
@@ -460,7 +460,7 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_after_remove_edge(node u, node v) noexcept;
+	void tree_only_actions_after_remove_edge(const node u, const node v) noexcept;
 
 	/**
 	 * @brief Do some work after the removal of several edges.
@@ -476,7 +476,7 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_after_remove_node(node u) noexcept;
+	void tree_only_actions_after_remove_node(const node u) noexcept;
 
 	/**
 	 * @brief Do some work before the removal of all edges incident to a vertex.
@@ -484,7 +484,7 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_before_remove_edges_incident_to(node u) noexcept;
+	void tree_only_actions_before_remove_edges_incident_to(const node u) noexcept;
 
 	/**
 	 * @brief Updates the data structures of a tree after the graph structure
@@ -500,7 +500,7 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_remove_node(node u) noexcept;
+	void tree_only_remove_node(const node u) noexcept;
 
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
@@ -535,10 +535,14 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_add_edge(
-		node u, node v,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept = 0;
+	virtual void update_union_find_after_add_edge
+	(
+		const node u,
+		const node v,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the addition of a set of edges.
@@ -551,10 +555,13 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_add_edges(
+	virtual void update_union_find_after_add_edges
+	(
 		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept = 0;
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the addition of several edges.
@@ -567,7 +574,10 @@ protected:
 	 * of the connected component it belongs to.
 	 */
 	virtual void update_union_find_after_add_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
 	const noexcept = 0;
 
 	/**
@@ -581,7 +591,10 @@ protected:
 	 * of the connected component it belongs to.
 	 */
 	virtual void update_union_find_after_remove_edges_bulk
-	(uint64_t * const root_of, uint64_t * const root_size)
+	(
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
 	const noexcept = 0;
 
 	/**
@@ -597,9 +610,12 @@ protected:
 	 * of the connected component it belongs to.
 	 */
 	virtual void update_union_find_after_remove_edge(
-		node u, node v,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept = 0;
+		const node u,
+		const node v,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the removal of a set of edges.
@@ -612,10 +628,13 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_remove_edges(
+	virtual void update_union_find_after_remove_edges
+	(
 		const edge_list& edges,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept = 0;
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure before the removal of all
@@ -630,10 +649,13 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_before_remove_incident_edges_to(
-		node u,
-		uint64_t * const root_of, uint64_t * const root_size
-	) const noexcept = 0;
+	virtual void update_union_find_before_remove_incident_edges_to
+	(
+		const node u,
+		uint64_t * const root_of,
+		uint64_t * const root_size
+	)
+	const noexcept = 0;
 };
 
 } // -- namespace graphs

@@ -94,7 +94,7 @@ public:
 	 * @pre The input graph @e g is bipartite.
 	 */
 	template <class graph_t>
-	rand_bipartite_arrangements(const graph_t& g, uint64_t seed = 0) noexcept {
+	rand_bipartite_arrangements(const graph_t& g, const uint64_t seed = 0) noexcept {
 		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init(seed);
@@ -117,7 +117,7 @@ public:
 	 * @param seed Integer value to seed the random number generator.
 	 */
 	rand_bipartite_arrangements
-	(const properties::bipartite_graph_coloring& c, uint64_t seed = 0)
+	(const properties::bipartite_graph_coloring& c, const uint64_t seed = 0)
 	noexcept
 	{
 		m_coloring = c;
@@ -129,7 +129,7 @@ public:
 	 * @param seed Integer value to seed the random number generator.
 	 */
 	rand_bipartite_arrangements
-	(properties::bipartite_graph_coloring&& c, uint64_t seed = 0)
+	(properties::bipartite_graph_coloring&& c, const uint64_t seed = 0)
 	noexcept
 	{
 		m_coloring = std::move(c);
@@ -152,7 +152,7 @@ private:
 	 * vertices (@ref m_n_blue and @ref m_n_red).
 	 * @param seed Seed for the random number generator.
 	 */
-	void init(uint64_t seed) noexcept;
+	void init(const uint64_t seed) noexcept;
 
 	/**
 	 * @brief Initializes this class.
@@ -161,7 +161,7 @@ private:
 	 * left side of the arrangement depending on the value of the parameter.
 	 * @param red_first Place red vertices first if true.
 	 */
-	void init_arrangement(bool red_first) noexcept;
+	void init_arrangement(const bool red_first) noexcept;
 
 private:
 	/// Number of blue vertices.

@@ -100,8 +100,13 @@ struct edge_size_sigma {
 	/// Constructor.
 	edge_size_sigma() noexcept : e{}, size{0}, sigma{0} {}
 	/// Constructor.
-	edge_size_sigma(edge _e, uint64_t _size, std::size_t _sigma) noexcept
-		: e{_e}, size{_size}, sigma{_sigma}
+	edge_size_sigma(
+		const edge _e,
+		const uint64_t _size,
+		const std::size_t _sigma
+	)
+	noexcept :
+		e{_e}, size{_size}, sigma{_sigma}
 	{}
 };
 

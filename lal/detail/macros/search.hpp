@@ -53,8 +53,11 @@ namespace detail {
 template <typename iterator_t, typename value_t>
 [[nodiscard]] inline iterator_t find_sorted
 (
-	const iterator_t begin, const iterator_t end, const std::size_t size,
-	const value_t& v, const std::size_t min_size = 64
+	const iterator_t begin,
+	const iterator_t end,
+	const std::size_t size,
+	const value_t& v,
+	const std::size_t min_size = 64
 )
 noexcept
 {
@@ -79,8 +82,11 @@ noexcept
 template <typename iterator_t, typename value_t>
 [[nodiscard]] inline bool exists_sorted
 (
-	const iterator_t begin, const iterator_t end, const std::size_t size,
-	const value_t& v, const std::size_t min_size = 64
+	const iterator_t begin,
+	const iterator_t end,
+	const std::size_t size,
+	const value_t& v,
+	const std::size_t min_size = 64
 )
 noexcept
 {

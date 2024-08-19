@@ -392,11 +392,12 @@ protected:
 	// -- others --
 
 	/// Is vertex @e u assigned to the prefix of the arrangement?
-	[[nodiscard]] bool is_vertex_assigned(node u) const noexcept
-	{ return m_is_node_assigned[u] == VERTEX_ASSIGNED; }
+	[[nodiscard]] bool is_vertex_assigned(const node u) const noexcept {
+		return m_is_node_assigned[u] == VERTEX_ASSIGNED;
+	}
 
 	/// Is vertex @e u a thistle vertex?
-	[[nodiscard]] bool is_vertex_thistle(node u) const noexcept {
+	[[nodiscard]] bool is_vertex_thistle(const node u) const noexcept {
 #if defined DEBUG
 		assert(is_vertex_assigned(u));
 #endif
@@ -404,7 +405,7 @@ protected:
 	}
 
 	/// Return the only parent of the leaf @e u.
-	[[nodiscard]] node leaf_parent(node u) const noexcept {
+	[[nodiscard]] node leaf_parent(const node u) const noexcept {
 #if defined DEBUG
 		assert(m_t.get_degree(u) == 1);
 #endif
@@ -650,12 +651,12 @@ private:
 
 	void output_edge_list() const noexcept;
 	void output_arrangement() const noexcept;
-	void output_invarr(position p) const noexcept;
-	void output_degree_sequence(position p) const noexcept;
-	void output_left_degree_sequence(position p) const noexcept;
-	void output_right_degree_sequence(position p) const noexcept;
-	void output_level_sequence(position p) const noexcept;
-	void output_cut_signature(position p) const noexcept;
+	void output_invarr(const position p) const noexcept;
+	void output_degree_sequence(const position p) const noexcept;
+	void output_left_degree_sequence(const position p) const noexcept;
+	void output_right_degree_sequence(const position p) const noexcept;
+	void output_level_sequence(const position p) const noexcept;
+	void output_cut_signature(const position p) const noexcept;
 	void output_num_assigned_neighbors() const noexcept;
 	void output_num_unassigned_neighbors() const noexcept;
 	void output_border_nodes() const noexcept;

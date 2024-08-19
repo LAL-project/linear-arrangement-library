@@ -69,9 +69,9 @@ public:
 	/// Empty constructor
 	sorted_vector() noexcept : std::vector<T, allocator_t>() { }
 	/// Constructor with number of elements
-	sorted_vector(std::size_t n) noexcept : std::vector<T, allocator_t>(n) { }
+	sorted_vector(const std::size_t n) noexcept : std::vector<T, allocator_t>(n) { }
 	/// Constructor with number of elements and initial element
-	sorted_vector(std::size_t n, const T& x) noexcept : std::vector<T, allocator_t>(n, x) { }
+	sorted_vector(const std::size_t n, const T& x) noexcept : std::vector<T, allocator_t>(n, x) { }
 
 	/// Copy constructor
 	sorted_vector(const sorted_vector& v) noexcept = default;

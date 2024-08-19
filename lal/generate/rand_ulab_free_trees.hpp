@@ -89,7 +89,7 @@ public:
 	 * @param seed The seed used for the random number generator. If the seed is
 	 * 0 then a random seed is generated and used.
 	 */
-	_rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept :
+	_rand_ulab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
 		_rand_ulab_rooted_trees(n, seed)
 	{
 		// add the initial values to m_fn
@@ -132,7 +132,7 @@ public:
 	 * @param seed The seed used for the random number generator. If the seed is
 	 * 0 then a random seed is generated and used.
 	 */
-	void init(uint64_t n, uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
 		_rand_ulab_rooted_trees::init(n, seed);
 		// force the addition of the necessary values for m_fn and m_rn
 		std::ignore = get_fn(n);
@@ -212,10 +212,16 @@ private:
 	 * @returns The position where to store the following
 	 * trees/forests in @ref m_head_vector.
 	 */
-	[[nodiscard]] uint64_t forest(uint64_t m, uint64_t q, uint64_t nt) noexcept;
+	[[nodiscard]] uint64_t forest
+	(
+		const uint64_t m,
+		const uint64_t q,
+		uint64_t nt
+	)
+	noexcept;
 
 	/// Generates a tree of @e n nodes with two centroids.
-	void bicenter(uint64_t n) noexcept;
+	void bicenter(const uint64_t n) noexcept;
 
 	/**
 	 * @brief Computes and return the value \f$\alpha(m,q)\f$.
@@ -337,7 +343,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_ulab_free_trees(uint64_t n, uint64_t seed = 0) noexcept :
+	rand_ulab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
 		_tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
 	/**
 	 * @brief Copy constructor.
@@ -365,7 +371,7 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(uint64_t n, uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
 		_tree_generator::init(n);
 		m_Gen.init(n, seed);
 	}
@@ -387,7 +393,9 @@ protected:
 	 * See @ref _rand_ulab_free_trees::get_tree for details.
 	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::free_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::free_tree __get_tree() noexcept {
+		return m_Gen.get_tree();
+	}
 
 protected:
 	/// See @ref _rand_ulab_free_trees.

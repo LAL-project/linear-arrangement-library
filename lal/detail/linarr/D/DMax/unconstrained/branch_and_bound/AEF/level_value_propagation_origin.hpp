@@ -106,7 +106,7 @@ enum class LV_propagation_origin : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::LV_propagation_origin
 /// to a long string.
-[[nodiscard]] static constexpr std::string_view LV_propagation_origin_to_string
+[[nodiscard]] inline constexpr std::string_view LV_propagation_origin_to_string
 (const LV_propagation_origin at) noexcept
 {
 	switch (at) {
@@ -127,7 +127,7 @@ enum class LV_propagation_origin : int8_t {
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::LV_propagation_origin
 /// to a short string.
-[[nodiscard]] static constexpr std::string_view LV_propagation_origin_to_short_string
+[[nodiscard]] inline constexpr std::string_view LV_propagation_origin_to_short_string
 (const LV_propagation_origin at) noexcept
 {
 	switch (at) {

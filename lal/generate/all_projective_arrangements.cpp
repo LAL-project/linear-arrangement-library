@@ -122,7 +122,7 @@ void all_projective_arrangements::initialize_intervals_tree() noexcept {
 	}
 }
 
-void all_projective_arrangements::initialize_interval_node(node u) noexcept {
+void all_projective_arrangements::initialize_interval_node(const node u) noexcept {
 	const neighbourhood& neighs_u = m_rT.get_out_neighbors(u);
 	auto& interval_u = m_intervals[u];
 

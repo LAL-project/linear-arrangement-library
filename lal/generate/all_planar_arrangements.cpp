@@ -152,7 +152,9 @@ void all_planar_arrangements::initialize_intervals_tree() noexcept {
 	bfs.start_at(m_root);
 }
 
-void all_planar_arrangements::initialize_interval_node(node u, node parent) noexcept
+void all_planar_arrangements::initialize_interval_node
+(const node u, const node parent)
+noexcept
 {
 	const neighbourhood& neighs_u = m_T.get_neighbors(u);
 

@@ -101,7 +101,7 @@ noexcept
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
 [[nodiscard]] numeric::rational var_num_crossings_rational
-(const graphs::undirected_graph& g, bool reuse = true) noexcept;
+(const graphs::undirected_graph& g, const bool reuse = true) noexcept;
 /**
  * @brief Computes the variance of the number of crossings of a graph in unconstrained
  * arrangements, \f$\mathbb{V}[C]\f$.
@@ -113,7 +113,7 @@ noexcept
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rationafloating point value.
  */
 [[nodiscard]] inline double var_num_crossings
-(const graphs::undirected_graph& g, bool reuse = true)
+(const graphs::undirected_graph& g, const bool reuse = true)
 noexcept
 { return var_num_crossings_rational(g, reuse).to_double(); }
 

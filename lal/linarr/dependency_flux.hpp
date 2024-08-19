@@ -121,11 +121,11 @@ public:
 	// SETTERS
 
 	/// Sets the left span.
-	void set_left_span(uint64_t ls) noexcept { m_left_span = ls; }
+	void set_left_span(const uint64_t ls) noexcept { m_left_span = ls; }
 	/// Sets the right span.
-	void set_right_span(uint64_t rs) noexcept { m_right_span = rs; }
+	void set_right_span(const uint64_t rs) noexcept { m_right_span = rs; }
 	/// Sets the weight.
-	void set_weight(uint64_t w) noexcept { m_weight = w; }
+	void set_weight(const uint64_t w) noexcept { m_weight = w; }
 
 	/// Sets the set of dependencies.
 	void set_dependencies(const std::vector<edge>& deps) noexcept

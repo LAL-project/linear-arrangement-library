@@ -161,7 +161,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  */
 template <class graph_t>
 [[nodiscard]] graph_t from_edge_list_to_graph
-(const edge_list& edge_list, bool normalize, bool check)
+(const edge_list& edge_list, const bool normalize, const bool check)
 noexcept
 {
 	uint64_t max_vertex_index = 0;
@@ -188,7 +188,7 @@ noexcept
  */
 template <class graph_t>
 [[nodiscard]] graph_t from_head_vector_to_graph
-(const head_vector& hv, bool normalize, bool check)
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	const uint64_t n = hv.size();
@@ -325,7 +325,8 @@ std::conditional_t<
 	graphs::rooted_tree,
 	std::pair<graphs::free_tree,node>
 >
-from_head_vector_to_tree(const head_vector& hv, bool normalize, bool check)
+from_head_vector_to_tree
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -452,7 +453,7 @@ noexcept
  */
 template <class arrangement_t>
 [[nodiscard]] head_vector from_tree_to_head_vector
-(const graphs::free_tree& t, const arrangement_t& arr, node r)
+(const graphs::free_tree& t, const arrangement_t& arr, const node r)
 noexcept
 {
 #if defined DEBUG
@@ -492,7 +493,12 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_small
-(const uint64_t * const L, uint64_t n, bool normalize, bool check)
+(
+	const uint64_t * const L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -573,7 +579,12 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_large
-(const uint64_t * const L, uint64_t n, bool normalize, bool check)
+(
+	const uint64_t * const L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -675,7 +686,12 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree
-(const uint64_t * const L, uint64_t n, bool normalize, bool check)
+(
+	const uint64_t * const L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -692,7 +708,12 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_small
-(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
+(
+	const std::vector<uint64_t>& L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -707,7 +728,12 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_large
-(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
+(
+	const std::vector<uint64_t>& L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -721,8 +747,12 @@ noexcept
  * for further details.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree
-(const std::vector<uint64_t>& L, uint64_t n, bool normalize, bool check)
+[[nodiscard]] tree_t from_level_sequence_to_tree(
+	const std::vector<uint64_t>& L,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
@@ -744,8 +774,12 @@ noexcept
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
-[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree
-(const uint64_t * const seq, uint64_t n, bool normalize, bool check)
+[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree(
+	const uint64_t * const seq,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
 {
 	// initialisation
@@ -809,9 +843,16 @@ noexcept
  * @returns The tree built with @e seq.
  */
 [[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree
-(const std::vector<uint64_t>& seq, uint64_t n, bool normalize, bool check)
+(
+	const std::vector<uint64_t>& seq,
+	const uint64_t n,
+	const bool normalize,
+	const bool check
+)
 noexcept
-{ return from_Prufer_sequence_to_ftree(&seq[0], n, normalize, check); }
+{
+	return from_Prufer_sequence_to_ftree(&seq[0], n, normalize, check);
+}
 
 
 } // -- namespace detail

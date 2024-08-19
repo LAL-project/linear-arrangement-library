@@ -51,28 +51,28 @@ namespace graphs {
 // head vector -> tree
 
 undirected_graph from_head_vector_to_undirected_graph
-(const head_vector& hv, bool normalize, bool check)
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_head_vector_to_graph<undirected_graph>(hv, normalize, check);
 }
 
 directed_graph from_head_vector_to_directed_graph
-(const head_vector& hv, bool normalize, bool check)
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_head_vector_to_graph<directed_graph>(hv, normalize, check);
 }
 
 std::pair<free_tree,node> from_head_vector_to_free_tree
-(const head_vector& hv, bool normalize, bool check)
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_head_vector_to_tree<free_tree>(hv, normalize, check);
 }
 
 rooted_tree from_head_vector_to_rooted_tree
-(const head_vector& hv, bool normalize, bool check)
+(const head_vector& hv, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_head_vector_to_tree<rooted_tree>(hv, normalize, check);
@@ -82,7 +82,7 @@ noexcept
 // edge list -> graph
 
 rooted_tree from_edge_list_to_rooted_tree
-(const edge_list& el, bool normalize = true, bool check = true)
+(const edge_list& el, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_edge_list_to_graph<rooted_tree>
@@ -90,7 +90,7 @@ noexcept
 }
 
 free_tree from_edge_list_to_free_tree
-(const edge_list& el, bool normalize = true, bool check = true)
+(const edge_list& el, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_edge_list_to_graph<free_tree>
@@ -98,7 +98,7 @@ noexcept
 }
 
 directed_graph from_edge_list_to_directed_graph
-(const edge_list& el, bool normalize = true, bool check = true)
+(const edge_list& el, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_edge_list_to_graph<directed_graph>
@@ -106,7 +106,7 @@ noexcept
 }
 
 undirected_graph from_edge_list_to_undirected_graph
-(const edge_list& el, bool normalize = true, bool check = true)
+(const edge_list& el, const bool normalize, const bool check)
 noexcept
 {
 	return detail::from_edge_list_to_graph<undirected_graph>

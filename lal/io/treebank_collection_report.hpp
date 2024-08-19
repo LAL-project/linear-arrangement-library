@@ -101,7 +101,7 @@ public:
 
 	/// Adds a report on a treebank file.
 	void add_report(
-		uint64_t line_number,
+		const uint64_t line_number,
 		const std::string& treebank_file_name,
 		const std::string& treebank_id,
 		const treebank_file_report& err
@@ -117,7 +117,7 @@ public:
 	}
 	/// Adds a report on a treebank file.
 	void add_report(
-		uint64_t line_number,
+		const uint64_t line_number,
 		std::string&& treebank_file_name,
 		std::string&& treebank_id,
 		treebank_file_report&& err

@@ -75,7 +75,11 @@ namespace io {
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 [[nodiscard]] std::optional<graphs::free_tree> read_head_vector_free_tree
-(const std::string& filename, bool norm = true, bool check_norm = true)
+(
+	const std::string& filename,
+	const bool norm = true,
+	const bool check_norm = true
+)
 noexcept;
 /**
  * @brief Reads a rooted tree in head vector format.
@@ -91,7 +95,11 @@ noexcept;
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
 [[nodiscard]] std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
-(const std::string& filename, bool norm = true, bool check_norm = true)
+(
+	const std::string& filename,
+	const bool norm = true,
+	const bool check_norm = true
+)
 noexcept;
 
 /**
@@ -112,7 +120,11 @@ template <
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 [[nodiscard]] inline std::optional<tree_t> read_head_vector
-(const std::string& filename, bool norm = true, bool check_norm = true)
+(
+	const std::string& filename,
+	const bool norm = true,
+	const bool check_norm = true
+)
 noexcept
 {
 	if constexpr (std::is_same_v<graphs::free_tree, tree_t>) {

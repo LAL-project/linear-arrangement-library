@@ -98,7 +98,7 @@ template <class tree_t>
 [[nodiscard]] node find_farthest_vertex
 (
 	const tree_t& t,
-	node start_at,
+	const node start_at,
 	BFS<tree_t>& bfs,
 	array<uint64_t>& num_vertices_in_path,
 	array<uint64_t>& weight

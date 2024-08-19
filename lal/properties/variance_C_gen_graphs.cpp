@@ -128,12 +128,20 @@ namespace properties {
 template <bool reuse, bool is_normalized>
 void compute_data_gen_graphs
 (
-	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,
-	uint64_t& Qs, uint64_t& Kg,
-	uint64_t& n_paths_4, uint64_t& n_cycles_4, uint64_t& paw,
-	uint64_t& n_paths_5, uint64_t& pair_C3_L2,
-	uint64_t& Phi_1, uint64_t& Phi_2,
-	uint64_t& Lambda_1, uint64_t& Lambda_2
+	const graphs::undirected_graph& g,
+	const uint64_t& n,
+	const uint64_t& m,
+	uint64_t& Qs,
+	uint64_t& Kg,
+	uint64_t& n_paths_4,
+	uint64_t& n_cycles_4,
+	uint64_t& paw,
+	uint64_t& n_paths_5,
+	uint64_t& pair_C3_L2,
+	uint64_t& Phi_1,
+	uint64_t& Phi_2,
+	uint64_t& Lambda_1,
+	uint64_t& Lambda_2
 )
 noexcept
 {
@@ -351,7 +359,8 @@ noexcept
 }
 
 numeric::rational var_num_crossings_rational(
-	const graphs::undirected_graph& g, bool reuse,
+	const graphs::undirected_graph& g,
+	const bool reuse,
 	const numeric::rational& q_coefficient,
 	const numeric::rational& K_coefficient,
 	const numeric::rational& n_paths_4_coefficient,
@@ -448,7 +457,7 @@ noexcept
 }
 
 numeric::rational var_num_crossings_rational
-(const graphs::undirected_graph& g, bool reuse)
+(const graphs::undirected_graph& g, const bool reuse)
 noexcept
 {
 	const uint64_t m = g.get_num_edges();

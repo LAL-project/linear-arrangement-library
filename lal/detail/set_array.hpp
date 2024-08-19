@@ -114,7 +114,7 @@ public:
 		typename vt = value_t, typename it = indexer_t,
 		std::enable_if_t< std::is_same_v<vt, it>, bool > = true
 	>
-	void init(std::size_t max_num_elems, std::size_t max_index_value) noexcept
+	void init(const std::size_t max_num_elems, const std::size_t max_index_value) noexcept
 	{
 		m_size = 0;
 		m_values.resize(max_num_elems);
@@ -133,8 +133,8 @@ public:
 		std::enable_if_t< not std::is_same_v<vt, it>, bool > = true
 	>
 	void init(
-		std::size_t max_num_elems,
-		std::size_t max_index_value,
+		const std::size_t max_num_elems,
+		const std::size_t max_index_value,
 		indexer_t&& i
 	)
 	noexcept
@@ -151,7 +151,7 @@ public:
 	 * @param i Index value.
 	 * @returns The value at the @e i-th position of @ref m_values.
 	 */
-	[[nodiscard]] const value_t& operator[] (std::size_t i) const noexcept {
+	[[nodiscard]] const value_t& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif

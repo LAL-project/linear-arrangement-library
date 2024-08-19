@@ -61,9 +61,11 @@ namespace detail {
  */
 template <class container>
 void make_arrangement_permutations(
-	const graphs::rooted_tree& T, node r,
+	const graphs::rooted_tree& T,
+	const node r,
 	const container& data,
-	position& pos, linear_arrangement& arr
+	position& pos,
+	linear_arrangement& arr
 )
 noexcept
 {

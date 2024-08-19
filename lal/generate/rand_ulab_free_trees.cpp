@@ -157,7 +157,14 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
  *	number of times.
  *
  */
-uint64_t _rand_ulab_free_trees::forest(uint64_t m, uint64_t q, uint64_t nt) noexcept {
+uint64_t _rand_ulab_free_trees::forest
+(
+	const uint64_t m,
+	const uint64_t q,
+	uint64_t nt
+)
+noexcept
+{
 	if (m == 0) {
 		// Forest of 0 nodes
 		return nt;
@@ -214,7 +221,7 @@ uint64_t _rand_ulab_free_trees::forest(uint64_t m, uint64_t q, uint64_t nt) noex
 	return nt;
 }
 
-void _rand_ulab_free_trees::bicenter(uint64_t n) noexcept {
+void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept {
 	// make sure that the number of nodes is even
 #if defined DEBUG
 	assert(n%2 == 0);

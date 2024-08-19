@@ -342,7 +342,7 @@ noexcept
 template <bool decide>
 [[nodiscard]] std::conditional_t<decide, bool, io::treebank_collection_report>
 check_correctness_treebank_collection
-(const std::string& main_file_name, std::size_t n_threads)
+(const std::string& main_file_name, const std::size_t n_threads)
 noexcept
 {
 	if (not std::filesystem::exists(main_file_name)) {

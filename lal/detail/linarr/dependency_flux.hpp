@@ -74,7 +74,7 @@ void calculate_dependencies_and_span
 	const graphs::free_tree& t,
 	const arrangement_t& arr,
 	const std::vector<std::pair<edge_t,uint64_t>>& edge_with_max_pos_at,
-	position cur_pos,
+	const position cur_pos,
 	std::vector<depflux>& flux,
 	std::vector<edge>& cur_deps
 )

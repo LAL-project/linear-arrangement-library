@@ -145,7 +145,7 @@ void AEF_BnB::output_degree_sequence(const position p) const noexcept {
 	}
 }
 
-void AEF_BnB::output_left_degree_sequence(position p) const noexcept {
+void AEF_BnB::output_left_degree_sequence(const position p) const noexcept {
 	for (position_t i = 0ull; i < p; ++i) {
 		std::cout
 			<< ' '
@@ -156,7 +156,7 @@ void AEF_BnB::output_left_degree_sequence(position p) const noexcept {
 	}
 }
 
-void AEF_BnB::output_right_degree_sequence(position p) const noexcept {
+void AEF_BnB::output_right_degree_sequence(const position p) const noexcept {
 	for (position_t i = 0ull; i < p; ++i) {
 		std::cout
 			<< ' '
@@ -167,7 +167,7 @@ void AEF_BnB::output_right_degree_sequence(position p) const noexcept {
 	}
 }
 
-void AEF_BnB::output_level_sequence(position p) const noexcept {
+void AEF_BnB::output_level_sequence(const position p) const noexcept {
 	for (position_t i = 0ull; i < p; ++i) {
 		std::cout
 			<< ' '
@@ -178,7 +178,7 @@ void AEF_BnB::output_level_sequence(position p) const noexcept {
 	}
 }
 
-void AEF_BnB::output_cut_signature(position p) const noexcept {
+void AEF_BnB::output_cut_signature(const position p) const noexcept {
 	for (position_t i = 0ull; i < p; ++i) {
 		std::cout
 			<< ' '

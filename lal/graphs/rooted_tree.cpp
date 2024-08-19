@@ -98,7 +98,12 @@ rooted_tree::rooted_tree(directed_graph&& t) noexcept : directed_graph(std::forw
 /* MODIFIERS */
 
 void rooted_tree::init_rooted
-(const free_tree& t, node r, bool norm, bool check_norm)
+(
+	const free_tree& t,
+	const node r,
+	const bool norm,
+	const bool check_norm
+)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
@@ -152,7 +157,12 @@ noexcept
 }
 
 void rooted_tree::init_rooted
-(free_tree&& t, node r, bool norm, bool check_norm)
+(
+	free_tree&& t,
+	const node r,
+	const bool norm,
+	const bool check_norm
+)
 noexcept
 {
 	const uint64_t n = t.get_num_nodes();
@@ -220,7 +230,12 @@ noexcept
 }
 
 rooted_tree& rooted_tree::remove_node
-(node u, bool connect, bool norm, bool check_norm)
+(
+	const node u,
+	const bool connect,
+	const bool norm,
+	const bool check_norm
+)
 noexcept
 {
 #if defined DEBUG
@@ -275,7 +290,13 @@ noexcept
 }
 
 rooted_tree& rooted_tree::add_edge
-(node u, node v, bool norm, bool check_norm) noexcept
+(
+	const node u,
+	const node v,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
@@ -286,7 +307,7 @@ rooted_tree& rooted_tree::add_edge
 	return *this;
 }
 
-rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
+rooted_tree& rooted_tree::add_edge_bulk(const node u, const node v) noexcept {
 #if defined DEBUG
 	assert(can_add_edge(u,v));
 #endif
@@ -295,11 +316,11 @@ rooted_tree& rooted_tree::add_edge_bulk(node u, node v) noexcept {
 	return *this;
 }
 
-void rooted_tree::finish_bulk_add(bool norm, bool check) noexcept {
+void rooted_tree::finish_bulk_add(const bool norm, const bool check) noexcept {
 	directed_graph::finish_bulk_add(norm, check);
 }
 
-void rooted_tree::finish_bulk_add_complete(bool norm, bool check) noexcept {
+void rooted_tree::finish_bulk_add_complete(const bool norm, const bool check) noexcept {
 #if defined DEBUG
 	assert(is_tree());
 #endif
@@ -309,7 +330,12 @@ void rooted_tree::finish_bulk_add_complete(bool norm, bool check) noexcept {
 }
 
 rooted_tree& rooted_tree::add_edges
-(const std::vector<edge>& edges, bool norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(can_add_edges(edges));
@@ -320,7 +346,12 @@ rooted_tree& rooted_tree::add_edges
 }
 
 rooted_tree& rooted_tree::set_edges
-(const std::vector<edge>& edges, bool to_norm, bool check_norm) noexcept
+(
+	const std::vector<edge>& edges,
+	const bool to_norm,
+	const bool check_norm
+)
+noexcept
 {
 #if defined DEBUG
 	assert(edges.size() == get_num_nodes() - 1);
@@ -347,7 +378,13 @@ rooted_tree& rooted_tree::set_edges
 }
 
 rooted_tree& rooted_tree::remove_edge
-(node s, node t, bool norm, bool check_norm) noexcept
+(
+	const node s,
+	const node t,
+	const bool norm,
+	const bool check_norm
+)
+noexcept
 {
 	directed_graph::remove_edge(s,t, norm, check_norm);
 	m_are_size_subtrees_valid = false;
@@ -355,7 +392,11 @@ rooted_tree& rooted_tree::remove_edge
 }
 
 rooted_tree& rooted_tree::remove_edges
-(const std::vector<edge>& edges, bool norm, bool check_norm)
+(
+	const std::vector<edge>& edges,
+	const bool norm,
+	const bool check_norm
+)
 noexcept
 {
 	directed_graph::remove_edges(edges, norm, check_norm);
@@ -363,16 +404,16 @@ noexcept
 	return *this;
 }
 
-rooted_tree& rooted_tree::remove_edge_bulk(node u, node v) noexcept {
+rooted_tree& rooted_tree::remove_edge_bulk(const node u, const node v) noexcept {
 	directed_graph::remove_edge_bulk(u,v);
 	return *this;
 }
 
-void rooted_tree::finish_bulk_remove(bool norm, bool check) noexcept {
+void rooted_tree::finish_bulk_remove(const bool norm, const bool check) noexcept {
 	directed_graph::finish_bulk_remove(norm, check);
 }
 
-void rooted_tree::finish_bulk_remove_complete(bool norm, bool check) noexcept {
+void rooted_tree::finish_bulk_remove_complete(const bool norm, const bool check) noexcept {
 #if defined DEBUG
 	assert(get_num_edges() == 0);
 #endif
@@ -382,7 +423,11 @@ void rooted_tree::finish_bulk_remove_complete(bool norm, bool check) noexcept {
 }
 
 rooted_tree& rooted_tree::remove_edges_incident_to
-(node u, bool norm, bool check_norm)
+(
+	const node u,
+	const bool norm,
+	const bool check_norm
+)
 noexcept
 {
 #if defined DEBUG
@@ -399,7 +444,7 @@ noexcept
 }
 
 rooted_tree& rooted_tree::disjoint_union
-(const rooted_tree& t, bool connect_roots) noexcept
+(const rooted_tree& t, const bool connect_roots) noexcept
 {
 	const uint64_t prev_n = get_num_nodes();
 	if (prev_n == 0) {
@@ -473,7 +518,7 @@ void rooted_tree::calculate_tree_type() noexcept {
 
 /* GETTERS */
 
-bool rooted_tree::can_add_edge(node u, node v) const noexcept {
+bool rooted_tree::can_add_edge(const node u, const node v) const noexcept {
 	return get_in_degree(v) == 0 and tree::can_add_edge(u, v);
 }
 
@@ -499,7 +544,9 @@ bool rooted_tree::can_add_edges(const std::vector<edge>& edges) const noexcept {
 	return true;
 }
 
-std::vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexcept {
+std::vector<edge> rooted_tree::get_edges_subtree(const node u, const bool relab)
+const noexcept
+{
 	const auto subtree_info =
 		detail::get_edges_subtree<false>(*this, u, relab);
 
@@ -511,7 +558,7 @@ std::vector<edge> rooted_tree::get_edges_subtree(node u, bool relab) const noexc
 	return std::move(subtree_info.first);
 }
 
-rooted_tree rooted_tree::get_subtree(node u) const noexcept {
+rooted_tree rooted_tree::get_subtree(const node u) const noexcept {
 	// if the tree does not have edges, return a copy.
 	if (get_num_nodes() <= 1) { return *this; }
 
@@ -550,7 +597,8 @@ rooted_tree rooted_tree::get_subtree(node u) const noexcept {
 	return sub;
 }
 
-free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
+free_tree rooted_tree::to_free_tree(const bool norm, const bool check) const noexcept
+{
 	free_tree t(get_num_nodes());
 
 	for (iterators::E_iterator e_it(*this); not e_it.end(); e_it.next()) {
@@ -563,7 +611,7 @@ free_tree rooted_tree::to_free_tree(bool norm, bool check) const noexcept {
 }
 
 head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
-	noexcept
+noexcept
 {
 	return
 		(arr.size() == 0 ?
@@ -575,7 +623,7 @@ head_vector rooted_tree::get_head_vector(const linear_arrangement& arr) const
 		 );
 }
 
-bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
+bool rooted_tree::subtree_contains_node(const node r, const node u) const noexcept {
 #if defined DEBUG
 	assert(has_node(u));
 	assert(has_node(r));
@@ -600,7 +648,7 @@ bool rooted_tree::subtree_contains_node(node r, node u) const noexcept {
 
 /* PROTECTED */
 
-void rooted_tree::actions_after_add_edge(node u, node v) noexcept {
+void rooted_tree::actions_after_add_edge(const node u, const node v) noexcept {
 	directed_graph::actions_after_add_edge(u, v);
 	tree_only_actions_after_add_edge(u, v);
 }
@@ -615,7 +663,7 @@ void rooted_tree::actions_after_add_edges_bulk() noexcept {
 	tree_only_actions_after_add_edges_bulk();
 }
 
-void rooted_tree::actions_after_remove_edge(node u, node v) noexcept {
+void rooted_tree::actions_after_remove_edge(const node u, const node v) noexcept {
 	directed_graph::actions_after_remove_edge(u, v);
 	tree_only_actions_after_remove_edge(u, v);
 }
@@ -630,20 +678,22 @@ void rooted_tree::actions_after_remove_edges_bulk() noexcept {
 	tree_only_actions_after_remove_edges_bulk();
 }
 
-void rooted_tree::actions_before_remove_edges_incident_to(node u) noexcept {
+void rooted_tree::actions_before_remove_edges_incident_to(const node u) noexcept {
 	directed_graph::actions_before_remove_edges_incident_to(u);
 	tree_only_actions_before_remove_edges_incident_to(u);
 }
 
-void rooted_tree::actions_after_remove_node(node u) noexcept {
+void rooted_tree::actions_after_remove_node(const node u) noexcept {
 	directed_graph::actions_after_remove_node(u);
 	tree_only_actions_after_remove_node(u);
 }
 
 // -----------------------------------------------------------------------------
 
-void rooted_tree::update_union_find_after_add_edge(
-	node u, node v,
+void rooted_tree::update_union_find_after_add_edge
+(
+	const node u,
+	const node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 )
@@ -653,9 +703,11 @@ const noexcept
 		(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_after_add_edges(
+void rooted_tree::update_union_find_after_add_edges
+(
 	const edge_list& edges,
-	uint64_t * const root_of, uint64_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 )
 const noexcept
 {
@@ -664,15 +716,20 @@ const noexcept
 }
 
 void rooted_tree::update_union_find_after_add_edges_bulk
-(uint64_t * const root_of, uint64_t * const root_size)
+(
+	uint64_t * const root_of,
+	uint64_t * const root_size
+)
 const noexcept
 {
 	detail::update_unionfind_after_add_rem_edges_bulk
 		(*this, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_after_remove_edge(
-	node u, node v,
+void rooted_tree::update_union_find_after_remove_edge
+(
+	const node u,
+	const node v,
 	uint64_t * const root_of,
 	uint64_t * const root_size
 )
@@ -682,9 +739,11 @@ const noexcept
 		(*this, u, v, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_after_remove_edges(
+void rooted_tree::update_union_find_after_remove_edges
+(
 	const edge_list& edges,
-	uint64_t * const root_of, uint64_t * const root_size
+	uint64_t * const root_of,
+	uint64_t * const root_size
 )
 const noexcept
 {
@@ -693,16 +752,21 @@ const noexcept
 }
 
 void rooted_tree::update_union_find_after_remove_edges_bulk
-(uint64_t * const root_of, uint64_t * const root_size)
+(
+	uint64_t * const root_of,
+	uint64_t * const root_size
+)
 const noexcept
 {
 	detail::update_unionfind_after_add_rem_edges_bulk
 		(*this, root_of, root_size);
 }
 
-void rooted_tree::update_union_find_before_remove_incident_edges_to(
-	node u,
-	uint64_t * const root_of, uint64_t * const root_size
+void rooted_tree::update_union_find_before_remove_incident_edges_to
+(
+	const node u,
+	uint64_t * const root_of,
+	uint64_t * const root_size
 )
 const noexcept
 {

@@ -180,7 +180,12 @@ noexcept
  * @returns The code for the subtree rooted at 'u'.
  */
 [[nodiscard]] inline std::string assign_name
-(const graphs::rooted_tree& t, node u, std::string * const names, std::size_t idx)
+(
+	const graphs::rooted_tree& t,
+	const node u,
+	std::string * const names,
+	std::size_t idx
+)
 noexcept
 {
 	if (t.get_out_degree(u) == 0) {

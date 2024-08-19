@@ -72,7 +72,7 @@ public:
 public:
 
 	/// Access operator
-	[[nodiscard]] graph_t& operator[] (std::size_t i) noexcept {
+	[[nodiscard]] graph_t& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
@@ -80,7 +80,7 @@ public:
 	}
 
 	/// Access operator
-	[[nodiscard]] const graph_t& operator[] (std::size_t i) const noexcept {
+	[[nodiscard]] const graph_t& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
@@ -94,7 +94,7 @@ public:
 	 * @param n Number of nodes.
 	 * @post @ref m_node_to_cc is initialized.
 	 */
-	void init(std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept {
 		m_node_to_cc.resize(n, n + 1);
 		m__graph_node__to__cc_node.resize(n, n + 1);
 	}
@@ -117,7 +117,7 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @param label The label of the connected component of @e u.
 	 */
-	void set_node_cc(node u, std::size_t label) noexcept {
+	void set_node_cc(const node u, const std::size_t label) noexcept {
 		m_node_to_cc[u] = label;
 	}
 
@@ -126,7 +126,7 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @param label The label of the vertex @e u within its connected component.
 	 */
-	void set_label_graph_node_to_cc_node(node u, std::size_t label) noexcept {
+	void set_label_graph_node_to_cc_node(const node u, const std::size_t label) noexcept {
 		m__graph_node__to__cc_node[u] = label;
 	}
 	/**
@@ -135,7 +135,14 @@ public:
 	 * @param u Input node (within the connected component).
 	 * @param label The label of @e u in the whole graph.
 	 */
-	void set_label_cc_node_to_graph_node(std::size_t cc_idx, node u, std::size_t label) noexcept {
+	void set_label_cc_node_to_graph_node
+	(
+		const std::size_t cc_idx,
+		const node u,
+		const std::size_t label
+	)
+	noexcept
+	{
 		m__cc_node__to__graph_node[cc_idx][u] = label;
 	}
 
@@ -152,7 +159,7 @@ public:
 	 * @returns A numeric value from 0 to the number of connected components (see
 	 * @ref size())
 	 */
-	[[nodiscard]] std::size_t get_cc_node(node u) const noexcept {
+	[[nodiscard]] std::size_t get_cc_node(const node u) const noexcept {
 		return m_node_to_cc[u];
 	}
 
@@ -161,7 +168,8 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @returns The label of the vertex @e u within its connected component.
 	 */
-	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(node u) const noexcept
+	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(const node u)
+	const noexcept
 	{
 		return m__graph_node__to__cc_node[u];
 	}
@@ -172,7 +180,7 @@ public:
 	 * @returns The label of @e u in the whole graph.
 	 */
 	[[nodiscard]] std::size_t get_label_cc_node_to_graph_node
-	(std::size_t cc_idx, node u)
+	(const std::size_t cc_idx, const node u)
 	const noexcept
 	{
 		return m__cc_node__to__graph_node[cc_idx][u];

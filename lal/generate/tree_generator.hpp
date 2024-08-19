@@ -138,7 +138,7 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes
 	 */
-	_tree_generator(uint64_t n) noexcept : m_n(n) { }
+	_tree_generator(const uint64_t n) noexcept : m_n(n) { }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
@@ -157,7 +157,7 @@ public:
 	/* INITIALIZE */
 
 	/// Initializes the tree generator.
-	void init(uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept {
 		m_n = n;
 		activate_all_postprocessing_actions();
 	}
@@ -264,15 +264,17 @@ public:
 	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalize_tree(bool v) noexcept
-	{ m_normalize_tree = v; }
+	void set_normalize_tree(const bool v) noexcept {
+		m_normalize_tree = v;
+	}
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(bool v) noexcept
-	{ m_calculate_size_subtrees = v; }
+	void set_calculate_size_subtrees(const bool v) noexcept {
+		m_calculate_size_subtrees = v;
+	}
 
 	/**
 	 * @brief Should the tree be classified into types?
@@ -280,8 +282,9 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(bool v) noexcept
-	{ m_calculate_tree_type = v; }
+	void set_calculate_tree_type(const bool v) noexcept {
+		m_calculate_tree_type = v;
+	}
 
 protected:
 	/**

@@ -75,7 +75,11 @@ namespace properties {
  */
 template <class graph_t, class return_type>
 [[nodiscard]] return_type sum_powers_degrees
-(const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
+(
+	const graph_t& g,
+	const uint64_t p,
+	uint64_t (graph_t::*degree_function)(node) const noexcept
+)
 noexcept
 {
 	static_assert(
@@ -123,7 +127,7 @@ noexcept
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline numeric::integer sum_powers_degrees_integer
-(const graphs::undirected_graph& g, uint64_t p)
+(const graphs::undirected_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -144,7 +148,7 @@ noexcept
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline uint64_t sum_powers_degrees
-(const graphs::undirected_graph& g, uint64_t p)
+(const graphs::undirected_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -166,7 +170,7 @@ noexcept
  * @return The sum of degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline numeric::integer sum_powers_degrees_integer
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -187,7 +191,7 @@ noexcept
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline uint64_t sum_powers_degrees
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -209,7 +213,7 @@ noexcept
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline numeric::integer sum_powers_in_degrees_integer
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -230,7 +234,7 @@ noexcept
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline uint64_t sum_powers_in_degrees
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -253,7 +257,7 @@ noexcept
  * @pre Tree @e t is a valid rooted tree.
  */
 [[nodiscard]] inline numeric::integer sum_powers_in_degrees_integer
-(const graphs::rooted_tree& t, uint64_t p)
+(const graphs::rooted_tree& t, const uint64_t p)
 noexcept
 {
 	(void(p));
@@ -280,7 +284,7 @@ noexcept
 [[nodiscard]] inline uint64_t sum_powers_in_degrees
 (
 	const graphs::rooted_tree& t,
-	[[maybe_unused]] uint64_t p
+	[[maybe_unused]] const uint64_t p
 )
 noexcept
 {
@@ -305,7 +309,7 @@ noexcept
  */
 [[nodiscard]] inline
 numeric::integer sum_powers_out_degrees_integer
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -326,7 +330,7 @@ noexcept
  * @return The sum of in-degrees raised to the \f$p\f$-th power.
  */
 [[nodiscard]] inline uint64_t sum_powers_out_degrees
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -354,7 +358,11 @@ noexcept
  */
 template <class graph_t, class return_type>
 [[nodiscard]] return_type moment_degree
-(const graph_t& g, uint64_t p, uint64_t (graph_t::*degree_function)(node) const noexcept)
+(
+	const graph_t& g,
+	const uint64_t p,
+	uint64_t (graph_t::*degree_function)(node) const noexcept
+)
 noexcept
 {
 	static_assert(
@@ -392,7 +400,7 @@ noexcept
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 [[nodiscard]] inline numeric::rational moment_degree_rational
-(const graphs::undirected_graph& g, uint64_t p)
+(const graphs::undirected_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -409,7 +417,7 @@ noexcept
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 [[nodiscard]] inline double moment_degree
-(const graphs::undirected_graph& g, uint64_t p)
+(const graphs::undirected_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -433,7 +441,7 @@ noexcept
  * @return The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 [[nodiscard]] inline numeric::rational moment_degree_rational
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -450,7 +458,7 @@ noexcept
  * @returns The \f$p\f$-th moment of the degree about 0 as a floating point value.
  */
 [[nodiscard]] inline double moment_degree
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -474,7 +482,7 @@ noexcept
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a rational value.
  */
 [[nodiscard]] inline numeric::rational moment_in_degree_rational
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -491,7 +499,7 @@ noexcept
  * @returns The \f$p\f$-th moment of the in-degree about 0 as a floating point value.
  */
 [[nodiscard]] inline double moment_in_degree
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -520,7 +528,7 @@ noexcept
 [[nodiscard]] inline numeric::rational moment_in_degree_rational
 (
 	const graphs::rooted_tree& t,
-	[[maybe_unused]] uint64_t p
+	[[maybe_unused]] const uint64_t p
 )
 noexcept
 {
@@ -544,7 +552,7 @@ inline
 double moment_in_degree
 (
 	const graphs::rooted_tree& t,
-	[[maybe_unused]] uint64_t p
+	[[maybe_unused]] const uint64_t p
 )
 noexcept
 {
@@ -571,7 +579,7 @@ noexcept
  * @return The \f$p\f$-th moment of the out-degree about 0 as a rational value.
  */
 [[nodiscard]] inline numeric::rational moment_out_degree_rational
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return
@@ -589,7 +597,7 @@ noexcept
  * value.
  */
 [[nodiscard]] inline double moment_out_degree
-(const graphs::directed_graph& g, uint64_t p)
+(const graphs::directed_graph& g, const uint64_t p)
 noexcept
 {
 	return

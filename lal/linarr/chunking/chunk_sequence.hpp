@@ -118,7 +118,7 @@ public:
 	 * @param n Size to initialize the sequence with, the number of nodes of the
 	 * tree to be chunked.
 	 */
-	void init(std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept {
 		m_from_node_to_chunk.resize(n, n + 1);
 	}
 
@@ -127,7 +127,7 @@ public:
 	 * @param i Chunk index.
 	 * @returns A constant reference to the @e i-th chunk.
 	 */
-	[[nodiscard]] const chunk& operator[] (std::size_t i) const noexcept {
+	[[nodiscard]] const chunk& operator[] (const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -139,7 +139,7 @@ public:
 	 * @param i Chunk index.
 	 * @returns A non-constant reference to the @e i-th chunk.
 	 */
-	[[nodiscard]] chunk& operator[] (std::size_t i) noexcept {
+	[[nodiscard]] chunk& operator[] (const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -161,14 +161,14 @@ public:
 	 * @param u Node to be added into the new chunk.
 	 * @post The new chunk does not have a parent.
 	 */
-	void push_chunk(node u) noexcept {
+	void push_chunk(const node u) noexcept {
 		push_chunk();
 		m_chunks.back().add_node(u);
 	}
 
 	/* SETTERS */
 
-	void set_chunk_index(node u, std::size_t i) noexcept {
+	void set_chunk_index(const node u, const std::size_t i) noexcept {
 #if defined DEBUG
 		assert(u < m_from_node_to_chunk.size());
 #endif
@@ -183,7 +183,7 @@ public:
 	}
 
 	/// Returns the chunk index of node @e u.
-	[[nodiscard]] std::size_t get_chunk_index(node u) const noexcept {
+	[[nodiscard]] std::size_t get_chunk_index(const node u) const noexcept {
 #if defined DEBUG
 		assert(u < m_from_node_to_chunk.size());
 #endif

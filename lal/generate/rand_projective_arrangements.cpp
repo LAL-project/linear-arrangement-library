@@ -54,7 +54,7 @@ namespace lal {
 namespace generate {
 
 rand_projective_arrangements::rand_projective_arrangements
-(const graphs::rooted_tree& rT, uint64_t seed)
+(const graphs::rooted_tree& rT, const uint64_t seed)
 noexcept
 	: m_rT(rT),
 	  m_rdata(m_rT.get_num_nodes())

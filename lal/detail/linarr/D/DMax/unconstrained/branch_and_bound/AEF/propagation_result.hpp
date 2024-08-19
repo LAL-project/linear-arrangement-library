@@ -82,7 +82,7 @@ enum class propagation_result : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::propagation_result
 /// to a long string.
-[[nodiscard]] static inline constexpr std::string_view propagation_result_to_string
+[[nodiscard]] inline constexpr std::string_view propagation_result_to_string
 (const propagation_result at) noexcept
 {
 	switch (at) {
@@ -100,14 +100,14 @@ enum class propagation_result : int8_t {
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::propagation_result
 /// to an index value.
-[[nodiscard]] static inline constexpr std::size_t propagation_result_to_index
-(propagation_result rd) noexcept
+[[nodiscard]] inline constexpr std::size_t propagation_result_to_index
+(const propagation_result rd) noexcept
 { return static_cast<std::size_t>(rd); }
 
 /// Converts an index value to a value of
 /// @ref lal::detail::DMax::unconstrained::propagation_result.
-[[nodiscard]] static inline constexpr propagation_result index_to_propagation_result
-(std::size_t i) noexcept
+[[nodiscard]] inline constexpr propagation_result index_to_propagation_result
+(const std::size_t i) noexcept
 { return static_cast<propagation_result>(i); }
 #endif
 

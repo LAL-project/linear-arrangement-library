@@ -97,11 +97,11 @@ protected:
 	}
 
 	/// Returns the chunk index of node @e u.
-	[[nodiscard]] std::size_t node_to_chunk(node u) const noexcept {
+	[[nodiscard]] std::size_t node_to_chunk(const node u) const noexcept {
 		return m_sequence.get_chunk_index(u);
 	}
 	/// Sets the chunk index of node @e u to index @e i.
-	void set_chunk_index(node u, std::size_t i) noexcept {
+	void set_chunk_index(const node u, const std::size_t i) noexcept {
 		m_sequence.set_chunk_index(u, i);
 	}
 

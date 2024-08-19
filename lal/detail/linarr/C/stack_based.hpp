@@ -91,7 +91,8 @@ typedef std::pair<uint64_t, edge> indexed_edge;
 template <class graph_t, class arrangement_t>
 void fill_adjP_adjN
 (
-	const graph_t& g, const arrangement_t& arr,
+	const graph_t& g,
+	const arrangement_t& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	uint64_t * const size_adjN_u
@@ -178,7 +179,8 @@ noexcept
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
 [[nodiscard]] uint64_t compute_C_stack_based
 (
-	const graph_t& g, const arrangement_t& arr,
+	const graph_t& g,
+	const arrangement_t& arr,
 	uint64_t * const size_adjN_u,
 	uint64_t upper_bound
 )
@@ -255,7 +257,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_stack_based(const graph_t& g, const arrangement_t& arr)
+[[nodiscard]] uint64_t n_C_stack_based
+(const graph_t& g, const arrangement_t& arr)
 noexcept
 {
 	const uint64_t n = g.get_num_nodes();
@@ -334,7 +337,7 @@ template <class graph_t, class arrangement_t>
 (
 	const graph_t& g,
 	const arrangement_t& arr,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {
@@ -371,7 +374,7 @@ template <class graph_t>
 (
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
-	uint64_t upper_bound
+	const uint64_t upper_bound
 )
 noexcept
 {

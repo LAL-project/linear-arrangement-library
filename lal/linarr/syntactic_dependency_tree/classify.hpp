@@ -71,7 +71,11 @@ namespace linarr {
  */
 [[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify
-(const graphs::rooted_tree& t, uint64_t C, const linear_arrangement& pi = {})
+(
+	const graphs::rooted_tree& t,
+	const uint64_t C,
+	const linear_arrangement& pi = {}
+)
 noexcept;
 
 /**

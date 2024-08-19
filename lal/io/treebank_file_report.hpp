@@ -97,11 +97,11 @@ public:
 	}
 
 	/// Constructor with a single head vector error.
-	treebank_file_report(uint64_t line_number, const head_vector_error& err) noexcept {
+	treebank_file_report(const uint64_t line_number, const head_vector_error& err) noexcept {
 		m_hv_errors.emplace_back(line_number, err);
 	}
 	/// Constructor with a single head vector error.
-	treebank_file_report(uint64_t line_number, head_vector_error&& err) noexcept {
+	treebank_file_report(const uint64_t line_number, head_vector_error&& err) noexcept {
 		m_hv_errors.emplace_back(line_number, std::move(err));
 	}
 
@@ -122,7 +122,7 @@ public:
 	 * @param line_number Line number of the treebank file where the error is.
 	 * @param err Error to add.
 	 */
-	void add_error(uint64_t line_number, const head_vector_error& err) noexcept {
+	void add_error(const uint64_t line_number, const head_vector_error& err) noexcept {
 		m_hv_errors.emplace_back(line_number, err);
 	}
 	/**
@@ -130,7 +130,7 @@ public:
 	 * @param line_number Line number of the treebank file where the error is.
 	 * @param err Error to add.
 	 */
-	void add_error(uint64_t line_number, head_vector_error&& err) noexcept {
+	void add_error(const uint64_t line_number, head_vector_error&& err) noexcept {
 		m_hv_errors.emplace_back(line_number, std::move(err));
 	}
 

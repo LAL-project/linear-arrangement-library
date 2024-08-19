@@ -114,10 +114,12 @@ public:
 	 * @brief Join the resulting files into a single file.
 	 * @param v A Boolean value.
 	 */
-	void set_join_files(bool v) noexcept { m_join_files = v; }
+	void set_join_files(const bool v) noexcept {
+		m_join_files = v;
+	}
 
 	/// Set the number of threads
-	void set_number_threads(std::size_t n_threads) noexcept {
+	void set_number_threads(const std::size_t n_threads) noexcept {
 #if defined DEBUG
 		assert(n_threads != 0);
 #endif
@@ -131,8 +133,9 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] std::size_t get_num_errors() const noexcept
-	{ return m_errors_from_processing.size(); }
+	[[nodiscard]] std::size_t get_num_errors() const noexcept {
+		return m_errors_from_processing.size();
+	}
 
 	/**
 	 * @brief Get the @e ith error.
@@ -141,8 +144,11 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const treebank_file_error& get_error_type(std::size_t i) const noexcept
-	{ return std::get<0>(m_errors_from_processing[i]); }
+	[[nodiscard]] const treebank_file_error& get_error_type(const std::size_t i)
+	const noexcept
+	{
+		return std::get<0>(m_errors_from_processing[i]);
+	}
 
 	/**
 	 * @brief Get the treebank's file name where the @e ith error happened.
@@ -152,8 +158,11 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const std::string& get_error_treebank_filename(std::size_t i) const noexcept
-	{ return std::get<1>(m_errors_from_processing[i]); }
+	[[nodiscard]] const std::string& get_error_treebank_filename(const std::size_t i)
+	const noexcept
+	{
+		return std::get<1>(m_errors_from_processing[i]);
+	}
 
 	/**
 	 * @brief Get the treebank's name for where  the @e ith error happened.
@@ -163,8 +172,11 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const std::string& get_error_treebank_name(std::size_t i) const noexcept
-	{ return std::get<2>(m_errors_from_processing[i]); }
+	[[nodiscard]] const std::string& get_error_treebank_name(const std::size_t i)
+	const noexcept
+	{
+		return std::get<2>(m_errors_from_processing[i]);
+	}
 
 	/**
 	 * @brief Sets the name of the file where all values are going to be stored.
@@ -287,7 +299,7 @@ private:
 (
 	const std::string& treebank_collection_main_file,
 	const std::string& output_directory,
-	std::size_t num_threads = 1
+	const std::size_t num_threads = 1
 )
 noexcept
 {

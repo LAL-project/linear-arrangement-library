@@ -154,15 +154,17 @@ public:
 	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalize(bool v) noexcept
-	{ m_normalize_tree = v; }
+	void set_normalize(const bool v) noexcept {
+		m_normalize_tree = v;
+	}
 
 	/**
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(bool v) noexcept
-	{ m_calculate_size_subtrees = v; }
+	void set_calculate_size_subtrees(const bool v) noexcept {
+		m_calculate_size_subtrees = v;
+	}
 
 	/**
 	 * @brief Should the tree be classified into types?
@@ -170,8 +172,9 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(bool v) noexcept
-	{ m_calculate_tree_type = v; }
+	void set_calculate_tree_type(const bool v) noexcept {
+		m_calculate_tree_type = v;
+	}
 
 	/**
 	 * @brief Set this treebank's identifier string.

@@ -76,7 +76,7 @@ public:
 	 * @param n Number of nodes.
 	 */
 
-	graph(uint64_t n) noexcept {
+	graph(const uint64_t n) noexcept {
 		_init(n);
 	}
 
@@ -127,7 +127,7 @@ public:
 	 * See @ref _init for details.
 	 * @param n Number of nodes.
 	 */
-	virtual void init(uint64_t n) noexcept;
+	virtual void init(const uint64_t n) noexcept;
 	/**
 	 * @brief Frees the memory occupied by this graph.
 	 *
@@ -166,7 +166,7 @@ public:
 	 * @param norm Normalize the graph.
 	 * @param check Check wether the graph is normalized or not.
 	 */
-	virtual void finish_bulk_add(bool norm = true, bool check = true) noexcept = 0;
+	virtual void finish_bulk_add(const bool norm = true, const bool check = true) noexcept = 0;
 
 	/**
 	 * @brief Completes the inner structure of the graph after removing edges in bulk.
@@ -177,12 +177,14 @@ public:
 	 * @param norm Normalize the graph.
 	 * @param check Check wether the graph is normalized or not.
 	 */
-	virtual void finish_bulk_remove(bool norm = true, bool check = true) noexcept = 0;
+	virtual void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept = 0;
 
 	/* SETTERS */
 
 	/// Sets whether this graph is normalized or not.
-	void set_normalized(bool v = true) noexcept { m_is_normalized = v; }
+	void set_normalized(const bool v = true) noexcept {
+		m_is_normalized = v;
+	}
 
 	/* GETTERS */
 
@@ -196,10 +198,10 @@ public:
 	[[nodiscard]] virtual std::vector<edge_pair> get_Q() const noexcept = 0;
 
 	/// Returns true if node @e u is in this graph.
-	[[nodiscard]] bool has_node(node u) const noexcept { return u < get_num_nodes(); }
+	[[nodiscard]] bool has_node(const node u) const noexcept { return u < get_num_nodes(); }
 
 	/// Returns true if the undirected edge (@e u, @e v) exists in the graph.
-	[[nodiscard]] virtual bool has_edge(node u, node v) const = 0;
+	[[nodiscard]] virtual bool has_edge(const node u, const node v) const = 0;
 
 	/// Returns the number of ndoes.
 	[[nodiscard]] uint64_t get_num_nodes() const noexcept
@@ -250,7 +252,7 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	virtual void _init(uint64_t n) noexcept {
+	virtual void _init(const uint64_t n) noexcept {
 		m_num_edges = 0;
 		m_is_normalized = true;
 		m_adjacency_list.resize(n);
@@ -303,7 +305,7 @@ protected:
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
-	virtual void actions_after_add_edge(node u, node v) noexcept;
+	virtual void actions_after_add_edge(const node u, const node v) noexcept;
 
 	/**
 	 * @brief Do some extra work after the addition of several edges.
@@ -324,7 +326,7 @@ protected:
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
-	virtual void actions_after_remove_edge(node u, node v) noexcept;
+	virtual void actions_after_remove_edge(const node u, const node v) noexcept;
 
 	/**
 	 * @brief Do some extra work after the removal of several edges.
@@ -344,18 +346,18 @@ protected:
 	 * @brief Do some work before all edges incident to a node is removed.
 	 * @param u Node whose incident edges are to be removed.
 	 */
-	virtual void actions_before_remove_edges_incident_to(node u) noexcept;
+	virtual void actions_before_remove_edges_incident_to(const node u) noexcept;
 
 	/**
 	 * @brief Do some work before the removal of a vertex.
 	 * @param u Node to be removed.
 	 */
-	virtual void actions_after_remove_node(node u) noexcept;
+	virtual void actions_after_remove_node(const node u) noexcept;
 
 	/// Normalize the graph after one (or more) edges have been added
-	void normalize_after_edge_addition(bool norm, bool check) noexcept;
+	void normalize_after_edge_addition(const bool norm, const bool check) noexcept;
 	/// Normalize the graph after one (or more) edges have been removed
-	void normalize_after_edge_removal(bool norm, bool check) noexcept;
+	void normalize_after_edge_removal(const bool norm, const bool check) noexcept;
 };
 
 } // -- namespace graphs

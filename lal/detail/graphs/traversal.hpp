@@ -89,13 +89,13 @@ template <
 class BFS {
 public:
 	/// Single node processing function.
-	typedef std::function<void (const BFS<graph_t>&, node)> BFS_process_one;
+	typedef std::function<void (const BFS<graph_t>&, const node)> BFS_process_one;
 	/// Two nodes processing function.
-	typedef std::function<void (const BFS<graph_t>&, node, node, bool)> BFS_process_two;
+	typedef std::function<void (const BFS<graph_t>&, const node, const node, const bool)> BFS_process_two;
 	/// One node decision function.
-	typedef std::function<bool (const BFS<graph_t>&, node)> BFS_bool_one;
+	typedef std::function<bool (const BFS<graph_t>&, const node)> BFS_bool_one;
 	/// Two nodes decision function.
-	typedef std::function<bool (const BFS<graph_t>&, node, node, bool)> BFS_bool_two;
+	typedef std::function<bool (const BFS<graph_t>&, const node, const node, const bool)> BFS_bool_two;
 
 public:
 
@@ -149,7 +149,7 @@ public:
 	 * @brief Start traversal at a given node.
 	 * @param source Node.
 	 */
-	void start_at(node source) noexcept {
+	void start_at(const node source) noexcept {
 		m_queue.push(source);
 		m_vis[source] = 1;
 		do_traversal();
@@ -170,11 +170,11 @@ public:
 	/* SETTERS */
 
 	/// Set whether the traversal can use reversed edges
-	void set_use_rev_edges(bool use) noexcept { m_use_rev_edges = use; }
+	void set_use_rev_edges(const bool use) noexcept { m_use_rev_edges = use; }
 
 	/// Set the default value of @ref m_terminate.
 	void set_terminate_default() noexcept {
-		m_terminate = [](const BFS<graph_t>&, node) -> bool { return false; };
+		m_terminate = [](const BFS<graph_t>&, const node) -> bool { return false; };
 		m_is_terminate_set = false;
 	}
 	/// Set the function that controls the termination of the loop.
@@ -185,7 +185,7 @@ public:
 
 	/// Set the default value of @ref m_process_current.
 	void set_process_current_default() noexcept {
-		m_process_current = [](const BFS<graph_t>&, node) -> void { };
+		m_process_current = [](const BFS<graph_t>&, const node) -> void { };
 		m_is_process_current_set = false;
 	}
 	/// Set the function that controls the processing of the current node.
@@ -196,7 +196,7 @@ public:
 
 	/// Set the default value of @ref m_process_neighbour.
 	void set_process_neighbour_default() noexcept {
-		m_process_neighbour = [](const BFS<graph_t>&, node, node, bool) -> void { };
+		m_process_neighbour = [](const BFS<graph_t>&, const node, const node, const bool) -> void { };
 		m_is_process_neighbour_set = false;
 	}
 	/// Set the function that controls the processing of the current neighbour.
@@ -207,7 +207,7 @@ public:
 
 	/// Set the default value of @ref m_add_node.
 	void set_node_add_default() noexcept {
-		m_add_node = [](const BFS<graph_t>&, node, node, bool) -> bool { return true; };
+		m_add_node = [](const BFS<graph_t>&, const node, const node, const bool) -> bool { return true; };
 		m_is_add_node_set = false;
 	}
 	/// Set the function that controls when a node is to be added to the queue.
@@ -221,8 +221,9 @@ public:
 	 * for already visited neighbors?
 	 * @param v Either true or false.
 	 */
-	void set_process_visited_neighbors(bool v) noexcept
-	{ m_process_visited_neighbors = v; }
+	void set_process_visited_neighbors(const bool v) noexcept {
+		m_process_visited_neighbors = v;
+	}
 
 	/**
 	 * @brief Sets all nodes to not visited.
@@ -245,7 +246,7 @@ public:
 	 * @param u Node to set as visitied.
 	 * @param vis A 0-1 value.
 	 */
-	void set_visited(node u, char vis) noexcept {
+	void set_visited(const node u, const char vis) noexcept {
 #if defined DEBUG
 		assert(vis == 0 or vis == 1);
 #endif
@@ -255,7 +256,9 @@ public:
 	/* GETTERS */
 
 	/// Returns whether or not node @e u has been visited.
-	[[nodiscard]] bool node_was_visited(node u) const noexcept { return m_vis[u] == 1; }
+	[[nodiscard]] bool node_was_visited(const node u) const noexcept {
+		return m_vis[u] == 1;
+	}
 
 	/// Have all nodes been visited?
 	[[nodiscard]] bool all_visited() const noexcept {
@@ -286,7 +289,8 @@ protected:
 	 * is true then the edge has orientation from @e s to @e t. If @e ltr is
 	 * false, the edge has orientation from @e t to @e s.
 	 */
-	void deal_with_neighbour(node s, node t, bool ltr) noexcept {
+	void deal_with_neighbour(const node s, const node t, const bool ltr) noexcept
+	{
 		// Process the neighbour 't' of 's'.
 		const bool t_vis = node_was_visited(t);
 
@@ -309,7 +313,7 @@ protected:
 	}
 
 	/// Process the neighbors of node @e s
-	void process_neighbors(node s) noexcept {
+	void process_neighbors(const node s) noexcept {
 		if constexpr (not is_graph_directed) {
 			// for undirected graphs
 

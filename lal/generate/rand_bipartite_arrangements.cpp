@@ -68,7 +68,7 @@ const linear_arrangement& rand_bipartite_arrangements::get_arrangement() noexcep
 	return m_arr;
 }
 
-void rand_bipartite_arrangements::init(uint64_t seed) noexcept
+void rand_bipartite_arrangements::init(const uint64_t seed) noexcept
 {
 	if (seed == 0) {
 		std::random_device rd;
@@ -95,7 +95,7 @@ void rand_bipartite_arrangements::init(uint64_t seed) noexcept
 	m_red_or_blue = std::bernoulli_distribution(0.5);
 }
 
-void rand_bipartite_arrangements::init_arrangement(bool red_first) noexcept {
+void rand_bipartite_arrangements::init_arrangement(const bool red_first) noexcept {
 	const auto n = m_coloring.size();
 
 	position left = 0ull;

@@ -56,7 +56,7 @@ namespace graphs {
 
 /* GETTERS */
 
-bool tree::can_add_edge(node u, node v) const noexcept {
+bool tree::can_add_edge(const node u, const node v) const noexcept {
 #if defined DEBUG
 	assert(has_node(u));
 	assert(has_node(v));
@@ -120,7 +120,7 @@ std::vector<std::string> tree::get_tree_type_list() const noexcept {
 
 /* PROTECTED */
 
-void tree::tree_only_actions_after_add_edge(node u, node v) noexcept {
+void tree::tree_only_actions_after_add_edge(const node u, const node v) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_after_add_edge
 		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
@@ -154,7 +154,7 @@ void tree::tree_only_actions_after_remove_edges_bulk_complete() noexcept {
 	empty_union_find();
 }
 
-void tree::tree_only_actions_after_remove_edge(node u, node v) noexcept {
+void tree::tree_only_actions_after_remove_edge(const node u, const node v) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_after_remove_edge
 		(u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]);
@@ -166,7 +166,7 @@ void tree::tree_only_actions_after_remove_edges(const edge_list& e) noexcept {
 		(e, &m_union_find__root_of[0], &m_union_find__root_size[0]);
 }
 
-void tree::tree_only_actions_after_remove_node(node u) noexcept {
+void tree::tree_only_actions_after_remove_node(const node u) noexcept {
 	m_is_tree_type_valid = false;
 
 #if defined DEBUG
@@ -192,7 +192,7 @@ void tree::tree_only_actions_after_remove_node(node u) noexcept {
 	}
 }
 
-void tree::tree_only_actions_before_remove_edges_incident_to(node u) noexcept {
+void tree::tree_only_actions_before_remove_edges_incident_to(const node u) noexcept {
 	m_is_tree_type_valid = false;
 	update_union_find_before_remove_incident_edges_to
 		(u, &m_union_find__root_of[0], &m_union_find__root_size[0]);

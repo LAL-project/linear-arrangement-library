@@ -110,7 +110,7 @@ void set_average_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
-	double *props
+	double * const props
 )
 noexcept
 {
@@ -137,7 +137,7 @@ void set_maximum_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
-	double *props
+	double * const props
 )
 noexcept
 {
@@ -164,7 +164,7 @@ void set_minimum_of(
 	const std::vector<linarr::dependency_flux>& F,
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
-	double *props
+	double * const props
 )
 noexcept
 {
@@ -404,8 +404,7 @@ treebank_file_error treebank_processor::process() noexcept {
 // PRIVATE
 
 template <class out_stream_t>
-void treebank_processor::output_tree_type_header
-(out_stream_t& out_treebank_file)
+void treebank_processor::output_tree_type_header(out_stream_t& out_treebank_file)
 const noexcept
 {
 	out_treebank_file
@@ -419,8 +418,7 @@ const noexcept
 }
 
 template <class out_stream_t>
-void treebank_processor::output_syndepstruct_type_header
-(out_stream_t& out_treebank_file)
+void treebank_processor::output_syndepstruct_type_header(out_stream_t& out_treebank_file)
 const noexcept
 {
 	out_treebank_file
@@ -437,8 +435,7 @@ const noexcept
 
 // output the tree type
 template <class tree_t, class out_stream_t>
-void treebank_processor::output_tree_type_values
-(tree_t& fT, out_stream_t& out_treebank_file)
+void treebank_processor::output_tree_type_values(tree_t& fT, out_stream_t& out_treebank_file)
 const noexcept
 {
 	const auto output_tt =
@@ -459,7 +456,8 @@ const noexcept
 
 template <class tree_t, class out_stream_t>
 void treebank_processor::output_syndepstruct_type_values(
-	const tree_t& rT, uint64_t C,
+	const tree_t& rT,
+	const uint64_t C,
 	out_stream_t& out_treebank_file
 )
 const noexcept
@@ -481,7 +479,12 @@ const noexcept
 
 template <class tree_t, class out_stream_t>
 void treebank_processor::process_tree
-(const tree_t& rT, double *props, char *prop_set, out_stream_t& out_treebank_file)
+(
+	const tree_t& rT,
+	double * const props,
+	char * const prop_set,
+	out_stream_t& out_treebank_file
+)
 noexcept
 {
 	static const linear_arrangement arr;

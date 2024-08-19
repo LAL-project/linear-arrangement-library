@@ -55,7 +55,7 @@ namespace lal {
 namespace generate {
 
 rand_planar_arrangements::rand_planar_arrangements
-(const graphs::free_tree& T, uint64_t seed)
+(const graphs::free_tree& T, const uint64_t seed)
 noexcept
 	: m_T(T),
 	  m_rdata(m_T.get_num_nodes()),

@@ -185,8 +185,10 @@ void calculate_mla
 (
 	graphs::free_tree& t,
 	const node root_or_anchor,
-	position start, position end,
-	linear_arrangement& mla, uint64_t& cost
+	position start,
+	position end,
+	linear_arrangement& mla,
+	uint64_t& cost
 )
 noexcept
 {

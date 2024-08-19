@@ -78,7 +78,7 @@ public:
 	// SETTERS
 
 	/// Should the treebank file or collection be checked for errors prior to processing?
-	void set_check_before_process(bool v) noexcept
+	void set_check_before_process(const bool v) noexcept
 	{ m_check_before_process = v; }
 
 	/// Clear the features in the processor.
@@ -91,7 +91,7 @@ public:
 	 * The default seprator is a tabulator character '\\t'.
 	 * @param c The separator character.
 	 */
-	void set_separator(char c) noexcept { m_separator = c; }
+	void set_separator(const char c) noexcept { m_separator = c; }
 	/**
 	 * @brief Sets the level of verbosity of the process methods.
 	 *
@@ -101,14 +101,14 @@ public:
 	 * - Level 2: outputs error messages.
 	 * @param k Verbosity level.
 	 */
-	void set_verbosity(int k) noexcept { m_be_verbose = k; }
+	void set_verbosity(const int k) noexcept { m_be_verbose = k; }
 	/**
 	 * @brief Output a hedaer for the treebank result file.
 	 *
 	 * Default is true.
 	 * @param h Output header or not.
 	 */
-	void set_output_header(bool h) noexcept { m_output_header = h; }
+	void set_output_header(const bool h) noexcept { m_output_header = h; }
 
 	/**
 	 * @brief Sets a custom name for the column corresponding to a given feature.
