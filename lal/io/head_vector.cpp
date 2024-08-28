@@ -68,8 +68,7 @@ noexcept
 	while (fin >> head) { heads.push_back(head); }
 	fin.close();
 
-	// this moves!
-	return heads;
+	return {std::move(heads)};
 }
 
 std::optional<graphs::free_tree> read_head_vector_free_tree
@@ -81,7 +80,7 @@ noexcept
 	// move, please
 	return {std::move(
 		detail::from_head_vector_to_tree<graphs::free_tree>
-				(*heads, norm, check_norm).first
+			(*heads, norm, check_norm).first
 	)};
 }
 

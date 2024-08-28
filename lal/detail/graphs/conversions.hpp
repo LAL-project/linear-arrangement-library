@@ -323,7 +323,7 @@ template <
 std::conditional_t<
 	is_rooted,
 	graphs::rooted_tree,
-	std::pair<graphs::free_tree,node>
+	std::pair<graphs::free_tree, node>
 >
 from_head_vector_to_tree
 (const head_vector& hv, const bool normalize, const bool check)
