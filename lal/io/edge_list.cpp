@@ -79,7 +79,7 @@ noexcept
 
 	graph_t g(max_vert_idx + 1);
 	g.set_edges(edge_list, norm, check);
-	return g;
+	return {std::move(g)};
 }
 
 std::optional<graphs::undirected_graph> read_edge_list_undirected_graph
