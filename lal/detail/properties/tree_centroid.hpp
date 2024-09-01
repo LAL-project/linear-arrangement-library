@@ -77,10 +77,22 @@ enum class centroid_results {
 	full_centroid_plus_edge_sizes
 };
 
-#define m1(mode) (mode == centroid_results::only_one_centroidal)
-#define m2(mode) (mode == centroid_results::full_centroid)
-#define m3(mode) (mode == centroid_results::full_centroid_plus_subtree_sizes)
-#define m4(mode) (mode == centroid_results::full_centroid_plus_edge_sizes)
+/// Is mode @e m equal to @ref lal::detail::centroid_results::only_one_centroidal.
+inline constexpr bool is_m1(const centroid_results& m) noexcept {
+	return m == centroid_results::only_one_centroidal;
+}
+/// Is mode @e m equal to @ref lal::detail::centroid_results::full_centroid.
+inline constexpr bool is_m2(const centroid_results& m) noexcept {
+	return m == centroid_results::full_centroid;
+}
+/// Is mode @e m equal to @ref lal::detail::centroid_results::full_centroid_plus_subtree_sizes.
+inline constexpr bool is_m3(const centroid_results& m) noexcept {
+	return m == centroid_results::full_centroid_plus_subtree_sizes;
+}
+/// Is mode @e m equal to @ref lal::detail::centroid_results::full_centroid_plus_edge_sizes.
+inline constexpr bool is_m4(const centroid_results& m) noexcept {
+	return m == centroid_results::full_centroid_plus_edge_sizes;
+}
 
 /**
  * @brief Calculates the centroid of a tree
@@ -116,10 +128,10 @@ template <
 [[nodiscard]]
 conditional_list_t<
 	bool_sequence<
-		m1(mode),
-		m2(mode),
-		m3(mode),
-		m4(mode)
+		is_m1(mode),
+		is_m2(mode),
+		is_m3(mode),
+		is_m4(mode)
 	>,
 	type_sequence<
 		node,
@@ -134,18 +146,18 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	const auto size_cc_x = t.get_num_nodes_component(x);
 
 	if (size_cc_x == 1) {
-		if constexpr (m1(mode)) {
+		if constexpr (is_m1(mode)) {
 			return x;
 		}
-		else if constexpr (m2(mode)) {
+		else if constexpr (is_m2(mode)) {
 			return {x,2};
 		}
-		else if constexpr (m3(mode)) {
+		else if constexpr (is_m3(mode)) {
 			array<uint64_t> s(n, 0);
 			s[x] = 1;
 			return {{x,2}, std::move(s)};
 		}
-		else if constexpr (m4(mode)) {
+		else if constexpr (is_m4(mode)) {
 			return {{x,2}, array<edge_size>{}};
 		}
 	}
@@ -161,19 +173,19 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		}();
 
 		if (x > only_neigh) { std::swap(x, only_neigh); }
-		if constexpr (m1(mode)) {
+		if constexpr (is_m1(mode)) {
 			return x;
 		}
-		else if constexpr (m2(mode)) {
+		else if constexpr (is_m2(mode)) {
 			return {x,only_neigh};
 		}
-		else if constexpr (m3(mode)) {
+		else if constexpr (is_m3(mode)) {
 			array<uint64_t> s(n, 0);
 			s[x] = 2;
 			s[only_neigh] = 1;
 			return {{x,only_neigh}, std::move(s)};
 		}
-		else if constexpr (m4(mode)) {
+		else if constexpr (is_m4(mode)) {
 			return {
 				{x,only_neigh},
 				array<edge_size>{ {{x, only_neigh}, 1} }
@@ -194,7 +206,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	// array of pairs of edge and directional size
 	array<edge_size> edge_sizes;
 	std::size_t idx_edge_sizes = 0;
-	if constexpr (m4(mode)) {
+	if constexpr (is_m4(mode)) {
 	edge_sizes.resize(size_cc_x - 1);
 	}
 
@@ -237,7 +249,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			if (c1 >= size_cc_x) {
 				// if the user requested just one centroidal vertex,
 				// stop now, there is no need to go on.
-				if constexpr (m1(mode)) { return u; }
+				if constexpr (is_m1(mode)) { return u; }
 
 				c1 = u;
 			}
@@ -264,7 +276,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 					queue.push(v);
 				}
 
-				if constexpr (m4(mode)) {
+				if constexpr (is_m4(mode)) {
 					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
@@ -279,7 +291,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 					queue.push(v);
 				}
 
-				if constexpr (m4(mode)) {
+				if constexpr (is_m4(mode)) {
 					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
@@ -292,7 +304,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 					queue.push(v);
 				}
 
-				if constexpr (m4(mode)) {
+				if constexpr (is_m4(mode)) {
 					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
@@ -305,34 +317,27 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		}
 		weight[c1] += weight[c2];
 
-		if constexpr (m4(mode)) {
+		if constexpr (is_m4(mode)) {
 			edge_sizes[idx_edge_sizes++] = {{c1,c2}, weight[c2]};
 		}
 	}
 
 #if defined DEBUG
-	if constexpr (m4(mode)) {
+	if constexpr (is_m4(mode)) {
 		assert(idx_edge_sizes == edge_sizes.size());
 	}
 #endif
 
-	if constexpr (m2(mode)) {
+	if constexpr (is_m2(mode)) {
 		return {c1, c2};
 	}
-	else if constexpr (m3(mode)) {
+	else if constexpr (is_m3(mode)) {
 		return {{c1, c2}, std::move(weight)};
 	}
-	else if constexpr (m4(mode)) {
+	else if constexpr (is_m4(mode)) {
 		return {{c1, c2}, std::move(edge_sizes)};
 	}
 }
-
-#undef P
-#undef node_pair
-#undef m4
-#undef m3
-#undef m2
-#undef m1
 
 /**
  * @brief Calculates the centroid and the corresponding rooted adjacency list
