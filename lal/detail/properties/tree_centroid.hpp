@@ -92,18 +92,18 @@ enum class centroid_results {
  * of vertices of the tree.
  *
  * @tparam mode Indicates the value to be returned by this function. If:
- * - mode == @ref centroid_results::only_one_centroidal, the result of the function
- * is a node.
- * - mode == @ref centroid_results::full_centroid, the result of the function
- * is a pair of (possibly) two nodes. The second node may have an invalid value,
- * indicating that the tree has only one centroidal vertex.
- * - mode == @ref centroid_results::full_centroid_plus_subtree_sizes, the result
- * of the function is a pair of (possibly) two nodes and the sizes of all the
- * subtrees with respect to the first centroidal node in the pair.
- * - mode == @ref centroid_results::full_centroid_plus_edge_sizes, the result
- * of the function is a pair of (possibly) two nodes and an array of the form
- * \f$(u,v, s(u,v))\f$ for all directed edges \f$(u,v)\f$ that point away from
- * the first centroidal node in the pair.
+ * - mode == @ref lal::detail::centroid_results::only_one_centroidal, the result
+ * of the function is a node.
+ * - mode == @ref lal::detail::centroid_results::full_centroid, the result of the
+ * function is a pair of (possibly) two nodes. The second node may have an invalid
+ * value, indicating that the tree has only one centroidal vertex.
+ * - mode == @ref lal::detail::centroid_results::full_centroid_plus_subtree_sizes,
+ * the result of the function is a pair of (possibly) two nodes and the sizes of
+ * all the subtrees with respect to the first centroidal node in the pair.
+ * - mode == @ref lal::detail::centroid_results::full_centroid_plus_edge_sizes,
+ * the result of the function is a pair of (possibly) two nodes and an array of
+ * the form \f$(u,v, s(u,v))\f$ for all directed edges \f$(u,v)\f$ that point
+ * away from the first centroidal node in the pair.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @param x Node belonging to a connected component whose centroid we want.
@@ -130,10 +130,10 @@ conditional_list_t<
 >
 find_centroidal_vertex(const tree_t& t, node x) noexcept
 {
-	const auto N = t.get_num_nodes();
-	const auto n = t.get_num_nodes_component(x);
+	const auto n = t.get_num_nodes();
+	const auto size_cc_x = t.get_num_nodes_component(x);
 
-	if (n == 1) {
+	if (size_cc_x == 1) {
 		if constexpr (m1(mode)) {
 			return x;
 		}
@@ -141,7 +141,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return {x,2};
 		}
 		else if constexpr (m3(mode)) {
-			array<uint64_t> s(N, 0);
+			array<uint64_t> s(n, 0);
 			s[x] = 1;
 			return {{x,2}, std::move(s)};
 		}
@@ -149,7 +149,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return {{x,2}, array<edge_size>{}};
 		}
 	}
-	if (n == 2) {
+	if (size_cc_x == 2) {
 		auto only_neigh = [&]() {
 			if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 				return t.get_neighbors(x)[0];
@@ -168,7 +168,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			return {x,only_neigh};
 		}
 		else if constexpr (m3(mode)) {
-			array<uint64_t> s(N, 0);
+			array<uint64_t> s(n, 0);
 			s[x] = 2;
 			s[only_neigh] = 1;
 			return {{x,only_neigh}, std::move(s)};
@@ -181,29 +181,28 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		}
 	}
 
-	const auto ndiv2 = n/2 + n%2;
+	const auto ndiv2 = size_cc_x/2 + size_cc_x%2;
 
 	// the centroidal vertices, initialized to invalid values
-	node c1 = N + 1;
-	node c2 = N + 1;
+	node c1 = n + 1;
+	node c2 = n + 1;
 
 	// weight of every node: needed to detect the centroid.
-	array<uint64_t> weight(N, 1);
+	array<uint64_t> weight(n, 1);
 	// degree of every vertex: needed to find leaves
-	array<uint64_t> degree(N, 0);
+	array<uint64_t> degree(n, 0);
 	// array of pairs of edge and directional size
 	array<edge_size> edge_sizes;
 	std::size_t idx_edge_sizes = 0;
 	if constexpr (m4(mode)) {
-	edge_sizes.resize(n - 1);
+	edge_sizes.resize(size_cc_x - 1);
 	}
 
 	// queue of the traversal
 	queue_array<node> queue;
-	queue.init(n);
+	queue.init(size_cc_x);
 
 	// push leaves of the connected component into the queue.
-	{
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(std::is_base_of_v<graphs::rooted_tree, tree_t>);
 	bfs.set_process_current(
@@ -216,7 +215,6 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	}
 	);
 	bfs.start_at(x);
-	}
 
 	// find centroid.
 	while (queue.size() > 0) {
@@ -224,7 +222,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		const node u = queue.pop();
 
 		if (weight[u] >= ndiv2) {
-			if (c1 >= n) {
+			if (c1 >= size_cc_x) {
 				// if the user requested just one centroidal vertex,
 				// stop now, there is no need to go on.
 				if constexpr (m1(mode)) { return u; }
@@ -245,7 +243,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 
 		// append a new leaf to the queue
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-			for (node v : t.get_neighbors(u)) {
+			for (const node v : t.get_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];
@@ -260,7 +258,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			}
 		}
 		else {
-			for (node v : t.get_in_neighbors(u)) {
+			for (const node v : t.get_in_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];
@@ -273,7 +271,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 					edge_sizes[idx_edge_sizes++] = {{v,u}, weight[u]};
 				}
 			}
-			for (node v : t.get_out_neighbors(u)) {
+			for (const node v : t.get_out_neighbors(u)) {
 				if (degree[v] == 0) { continue; }
 
 				--degree[v];
@@ -289,7 +287,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		}
 	}
 
-	if (c2 < N) {
+	if (c2 < n) {
 		if (c1 > c2) {
 			std::swap(c1, c2);
 		}
