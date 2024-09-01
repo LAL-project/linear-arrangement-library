@@ -67,7 +67,7 @@ public:
 		// for every element in m_data.
 		alloc_data();
 		// array reference
-		const T* list_data = std::data(l);
+		const T * const list_data = std::data(l);
 		for (std::size_t i = 0; i < l.size(); ++i) {
 			// the data has to be be copied, it cannot be moved
 			// unless 'list_data' is const_cast<T *>-ed.
