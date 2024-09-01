@@ -203,18 +203,30 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 	queue.init(size_cc_x);
 
 	// push leaves of the connected component into the queue.
-	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges(std::is_base_of_v<graphs::rooted_tree, tree_t>);
-	bfs.set_process_current(
-	[&](const auto&, node u) {
-		degree[u] = t.get_degree(u);
-		// fill queue
-		if (t.get_degree(u) == 1) {
-			queue.push(u);
+	if (size_cc_x < n/2) {
+		BFS<tree_t> bfs(t);
+		bfs.set_use_rev_edges(std::is_base_of_v<graphs::rooted_tree, tree_t>);
+		bfs.set_process_current(
+		[&](const auto&, node u) {
+			degree[u] = t.get_degree(u);
+			// fill queue
+			if (t.get_degree(u) == 1) {
+				queue.push(u);
+			}
+		}
+		);
+		bfs.start_at(x);
+	}
+	else {
+		for (node u = 0; u < n; ++u) {
+			if (t.get_component_representative(u) == t.get_component_representative(x)) {
+				degree[u] = t.get_degree(u);
+				if (t.get_degree(u) == 1) {
+					queue.push(u);
+				}
+			}
 		}
 	}
-	);
-	bfs.start_at(x);
 
 	// find centroid.
 	while (queue.size() > 0) {
