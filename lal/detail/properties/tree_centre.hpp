@@ -156,10 +156,12 @@ noexcept
 	}
 	);
 
-	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>)
-	{ bfs.set_use_rev_edges(false); }
-	else
-	{ bfs.set_use_rev_edges(true); }
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
+		bfs.set_use_rev_edges(false);
+	}
+	else {
+		bfs.set_use_rev_edges(true);
+	}
 
 	bfs.start_at(X);
 
@@ -235,7 +237,7 @@ noexcept
 	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
 	bfs.set_node_add(
-	[&](const auto&, node, node v, bool) -> bool { return (trimmed_degree[v] == 1); }
+	[&](const auto&, node, node v, bool) -> bool { return trimmed_degree[v] == 1; }
 	);
 
 	// do the bfs from the leaves inwards
@@ -246,7 +248,7 @@ noexcept
 #if defined DEBUG
 		assert(size_trimmed == 1);
 #endif
-		return {single_center, n+1};
+		return {single_center, n + 1};
 	}
 
 	// in case the 'has_single_center' boolean is false
