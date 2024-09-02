@@ -367,22 +367,23 @@ noexcept
 		centroid_subtree_sizes =
 		find_centroidal_vertex<centroid_results::full_centroid_plus_edge_sizes>(t, x);
 
-	auto sizes_edge = std::move(centroid_subtree_sizes.second);
-
 	const uint64_t n = t.get_num_nodes();
 
 	// sort the edges by directional size
 	detail::sorting::counting_sort
 		<edge_size, sorting::non_increasing_t>
 		(
-			sizes_edge.begin(), sizes_edge.end(), n, sizes_edge.size(),
+			centroid_subtree_sizes.second.begin(),
+			centroid_subtree_sizes.second.end(),
+			n,
+			centroid_subtree_sizes.second.size(),
 			[](const edge_size& edge_pair) -> std::size_t
 			{ return edge_pair.size; }
 		);
 
 	// fill (already-rooted) adjacency matrix
 	L.resize(n);
-	for (const auto& [uv, suv] : sizes_edge) {
+	for (const auto& [uv, suv] : centroid_subtree_sizes.second) {
 		const auto [u, v] = uv;
 		L[u].push_back({v, suv});
 	}
