@@ -308,7 +308,7 @@ noexcept
 		assert(i <= Cv.size());
 #endif
 
-		const auto [vi, ni] = *it;
+		const auto& [vi, ni] = *it;
 
 		cost_branch +=
 		embed_branch<make_arrangement>(
@@ -372,7 +372,7 @@ noexcept
 
 	// SMALLEST to LARGEST
 	for (auto it = L[r].rbegin(); it != L[r].rend(); ++it, --i) {
-		const auto [vi, ni] = *it;
+		const auto& [vi, ni] = *it;
 #if defined DEBUG
 		assert(i <= L[r].size());
 #endif
