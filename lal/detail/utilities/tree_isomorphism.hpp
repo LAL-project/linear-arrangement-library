@@ -126,16 +126,15 @@ template <
  * @param keep_name_of An array of strings where the names are stored
  * (as in a dynamic programming algorithm). The size of this array must be at
  * least the number of vertices in the subtree of 't' rooted at 'u'. Actually,
- * less memory suffices, but I don't know how much less: better be safe than
- * sorry.
+ * less memory suffices, but better be safe than sorry.
  */
 inline void assign_name_and_keep
 (
 	const graphs::rooted_tree& t,
 	const node u,
 	std::size_t idx,
-	std::string * const aux_memory_for_names,
-	std::string * const keep_name_of
+	array<std::string>& aux_memory_for_names,
+	array<std::string>& keep_name_of
 )
 noexcept
 {
@@ -156,12 +155,11 @@ noexcept
 	std::sort(&aux_memory_for_names[begin_idx], &aux_memory_for_names[idx]);
 
 	// join the names in a single string to make the name of vertex 'v'
-	std::string name = "1";
+	keep_name_of[u] = "1";
 	for (std::size_t j = begin_idx; j < idx; ++j) {
-		name += aux_memory_for_names[j];
+		keep_name_of[u] += aux_memory_for_names[j];
 	}
-	name += "0";
-	keep_name_of[u] = name;
+	keep_name_of[u] += "0";
 }
 
 /**
@@ -183,7 +181,7 @@ noexcept
 (
 	const graphs::rooted_tree& t,
 	const node u,
-	std::string * const names,
+	array<std::string>& names,
 	std::size_t idx
 )
 noexcept
@@ -211,7 +209,12 @@ noexcept
 	return name;
 }
 
-/// Test whether two rooted trees are isomorphic or not.
+/**
+ * @brief Test whether two rooted trees are isomorphic or not.
+ * @param t1 First rooted tree.
+ * @param t2 Second rooted tree.
+ * @returns True or false.
+ */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
 noexcept
@@ -221,8 +224,8 @@ noexcept
 	if (discard == 1) { return false; }
 
 	array<std::string> names(t1.get_num_nodes());
-	const std::string name_r1 = assign_name(t1, t1.get_root(), names.begin(), 0);
-	const std::string name_r2 = assign_name(t2, t2.get_root(), names.begin(), 0);
+	const std::string name_r1 = assign_name(t1, t1.get_root(), names, 0);
+	const std::string name_r2 = assign_name(t2, t2.get_root(), names, 0);
 	return name_r1 == name_r2;
 }
 
