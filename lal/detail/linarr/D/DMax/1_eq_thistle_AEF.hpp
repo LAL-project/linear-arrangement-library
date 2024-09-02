@@ -244,7 +244,7 @@ noexcept
 	// Sort the vertices by level (first, those with positive level. Then, those
 	// with negative level). Independent tasks.
 	sorting::counting_sort
-	<node, sorting::non_increasing_t>
+	<node, sorting::sort_type::non_increasing>
 	(
 		inv_arr.begin(), inv_arr.begin() + left, 2*n, n,
 		[&](const node u) {
@@ -252,7 +252,7 @@ noexcept
 		}
 	);
 	sorting::counting_sort
-	<node, sorting::non_increasing_t>
+	<node, sorting::sort_type::non_increasing>
 	(
 		inv_arr.begin() + right + 1, inv_arr.end(), 2*n, n,
 		[&](const node u) {
@@ -306,7 +306,7 @@ noexcept
 
 		// sort interval [p,q)
 		sorting::counting_sort
-		<node, sorting::non_decreasing_t>
+		<node, sorting::sort_type::non_decreasing>
 		(
 			inv_arr.begin() + p, inv_arr.begin() + q, 2, q - p,
 			[&](const node u) {

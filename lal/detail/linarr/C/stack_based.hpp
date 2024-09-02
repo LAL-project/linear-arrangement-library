@@ -106,8 +106,8 @@ noexcept
 
 	// sort edges of the graph by non-decreasing edge length
 	// l(e_1) <= l(e_2) <= ... <= l(e_m)
-	detail::sorting::counting_sort
-		<edge, sorting::non_decreasing_t>
+	sorting::counting_sort
+		<edge, sorting::sort_type::non_decreasing>
 		(
 		edges.begin(), edges.end(),
 		n - 1, // length of the longest edge

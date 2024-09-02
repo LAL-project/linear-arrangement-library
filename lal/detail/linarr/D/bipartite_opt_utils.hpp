@@ -69,8 +69,8 @@ namespace bipartite_opt_utils {
  * @tparam make_arrangement Boolean value that indicates whether or not the minimum
  * arrangement should be returned.
  * @tparam sorting_type_t The type of sorting for the vertices. For minimum
- * arrangements, this must be @ref lal::detail::sorting::non_increasing_t. For
- * maximum arrangements, this must be @ref lal::detail::sorting::non_decreasing_t.
+ * arrangements, this must be @ref lal::detail::sorting::sort_type::non_increasing. For
+ * maximum arrangements, this must be @ref lal::detail::sorting::sort_type::non_decreasing.
  * @tparam graph_t Type of graph. Any subclass of @ref lal::graphs::graph.
  * @param g Input (bipartite) graph.
  * @param c Coloring of the input graph.
@@ -80,7 +80,7 @@ namespace bipartite_opt_utils {
  */
 template <
 	bool make_arrangement,
-	class sorting_type_t,
+	sorting::sort_type type,
 	class graph_t,
 	class bipartite_coloring_t
 >
@@ -93,10 +93,6 @@ optimal_bipartite_arrangement_AEF
 (const graph_t& g, const bipartite_coloring_t& c)
 noexcept
 {
-	static_assert(
-		std::is_same_v<sorting_type_t, sorting::non_increasing_t> ||
-		std::is_same_v<sorting_type_t, sorting::non_decreasing_t>
-	);
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
 	const auto n = g.get_num_nodes();
@@ -130,7 +126,7 @@ noexcept
 	const auto sort_nodes =
 	[&](array<node>& nodes, std::size_t s) {
 		sorting::counting_sort
-			<node, sorting_type_t>
+			<node, type>
 			(
 				nodes.begin(), nodes.begin() + s,
 				n - 1,

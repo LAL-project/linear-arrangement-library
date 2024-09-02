@@ -111,7 +111,7 @@ static constexpr char ANCHOR = 1;
  * @pre Parameter @e L is initialized to have size n, the number of vertices of
  * the tree.
  */
-template <typename sort_type>
+template <sorting::sort_type type>
 void make_sorted_adjacency_list_rooted
 (const graphs::rooted_tree& t, std::vector<std::vector<node_size>>& L)
 noexcept
@@ -160,7 +160,7 @@ noexcept
 
 	// sort all tuples in L using the size of the subtree
 	sorting::counting_sort
-		<edge_size, sort_type, true>
+		<edge_size, type, true>
 		(
 			edge_list.begin(), edge_list.end(), n,
 			[](const edge_size& T) -> std::size_t { return T.size; },

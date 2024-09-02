@@ -118,8 +118,8 @@ struct memory {
  * and \cite Cormen2001a.
  *
  * @tparam value_t Iterated type
- * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
- * @ref lal::detail::sorting::non_decreasing_t.
+ * @tparam sort_type One of @ref lal::detail::sorting::sort_type::non_increasing
+ * or @ref lal::detail::sorting::sort_type::non_decreasing.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
  * @tparam value_iterator_t Iterator type. Can be inferred.
@@ -142,19 +142,12 @@ struct memory {
  */
 template <
 	typename value_t,
-	typename sort_type,
+	sort_type type,
 	bool memory_has_frequencies,
 	// Can be inferred \/ ...
 	typename value_iterator_t,
 	typename Callable,
-	std::enable_if_t<
-		is_pointer_iterator_v<value_t, value_iterator_t> and
-		(
-			std::is_same_v<sort_type, non_decreasing_t> or
-			std::is_same_v<sort_type, non_increasing_t>
-		),
-		bool
-	> = true
+	std::enable_if_t< is_pointer_iterator_v<value_t, value_iterator_t>, bool > = true
 >
 void counting_sort(
 	const value_iterator_t begin, const value_iterator_t end,
@@ -171,8 +164,6 @@ noexcept
 			Callable
 		>
 	);
-
-	constexpr bool is_increasing = std::is_same_v<sort_type, non_decreasing_t>;
 
 	if (begin == end) { return; }
 
@@ -206,7 +197,7 @@ noexcept
 	}
 
 	// calculate output
-	if constexpr (is_increasing) {
+	if constexpr (type == sort_type::non_decreasing) {
 		auto it = begin;
 		for (std::size_t k = 0; k < actual_container_size;) {
 			*(it++) = std::move(mem.output[k++]);
@@ -230,8 +221,8 @@ noexcept
  * https://en.wikipedia.org/wiki/Counting_sort
  *
  * @tparam value_t Type of the values sorted.
- * @tparam sort_type One of @ref lal::detail::sorting::non_increasing_t or
- * @ref lal::detail::sorting::non_decreasing_t.
+ * @tparam sort_type One of @ref lal::detail::sorting::sort_type::non_increasing or
+ * @ref lal::detail::sorting::sort_type::non_decreasing.
  * @tparam value_iterator_t Iterator over type 'value_t' type. Can be inferred.
  * @tparam Callable The type of the function passed as parameter. Can be inferred.
  *
@@ -252,18 +243,11 @@ noexcept
  */
 template <
 	typename value_t,
-	typename sort_type,
+	sort_type type,
 	typename value_iterator_t,
 	// Can be inferred \/ ...
 	typename Callable,
-	std::enable_if_t<
-		is_pointer_iterator_v<value_t, value_iterator_t> and
-		(
-			std::is_same_v<sort_type, non_decreasing_t> or
-			std::is_same_v<sort_type, non_increasing_t>
-		),
-		bool
-	> = true
+	std::enable_if_t< is_pointer_iterator_v<value_t, value_iterator_t>, bool > = true
 >
 void counting_sort(
 	const value_iterator_t begin, const value_iterator_t end,
@@ -286,7 +270,7 @@ noexcept
 
 	countingsort::memory<value_t> mem(largest_key+1, upper_bound_size);
 
-	counting_sort<value_t, sort_type, false, value_iterator_t>
+	counting_sort<value_t, type, false, value_iterator_t>
 		(begin, end, largest_key+1, key, mem);
 }
 

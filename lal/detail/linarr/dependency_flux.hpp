@@ -215,7 +215,7 @@ noexcept
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
 		sorting::counting_sort
-		<edge, sorting::non_decreasing_t, false>
+		<edge, sorting::sort_type::non_decreasing, false>
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),

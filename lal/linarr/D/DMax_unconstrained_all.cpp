@@ -99,7 +99,7 @@ noexcept
 	const auto sort_nodes =
 	[&](std::vector<node>& nodes) {
 		detail::sorting::counting_sort
-		<node, detail::sorting::non_decreasing_t>
+		<node, detail::sorting::sort_type::non_decreasing>
 		(
 			nodes.begin(), nodes.end(), n - 1, nodes.size(),
 			[&](const node u) -> std::size_t

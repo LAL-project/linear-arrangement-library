@@ -96,7 +96,7 @@ noexcept
 	}
 
 	sorting::counting_sort
-	<node, sorting::non_decreasing_t>
+	<node, sorting::sort_type::non_decreasing>
 	(
 		remain_verts.begin(), remain_verts.end(),
 		max_deg, num_remain_verts,

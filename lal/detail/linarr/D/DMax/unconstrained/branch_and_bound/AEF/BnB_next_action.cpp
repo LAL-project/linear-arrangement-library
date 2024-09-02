@@ -122,8 +122,8 @@ noexcept
 	m_sorting_memory.reset_count();
 
 	// sort the vector of border vertices
-	detail::sorting::counting_sort
-	<node, detail::sorting::non_increasing_t, false>
+	sorting::counting_sort
+	<node, sorting::sort_type::non_increasing, false>
 	(
 		m_border_nodes.begin_values(),
 		m_border_nodes.begin_values() + idx,

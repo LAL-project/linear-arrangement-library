@@ -243,7 +243,7 @@ noexcept
 		ord[i].v = ui;
 	}
 	sorting::counting_sort
-		<node_size, sorting::non_increasing_t>
+		<node_size, sorting::sort_type::non_increasing>
 		(
 			ord.begin(), ord.end(), M, ord.size(),
 			[](const node_size& p) { return p.size; }

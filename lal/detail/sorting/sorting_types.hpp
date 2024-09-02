@@ -45,10 +45,13 @@ namespace lal {
 namespace detail {
 namespace sorting {
 
-/// Non-decreasing sort type.
-struct non_decreasing_t { };
-/// Non-increasing sort.
-struct non_increasing_t { };
+/// The different types of sorting patterns
+enum class sort_type {
+	/// Non-decreasing sort type.
+	non_decreasing,
+	/// Non-increasing sort.
+	non_increasing
+};
 
 } // -- namespace sorting
 } // -- namespace detail

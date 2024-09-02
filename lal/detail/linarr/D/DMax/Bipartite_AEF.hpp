@@ -80,7 +80,7 @@ AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	return
 		bipartite_opt_utils::optimal_bipartite_arrangement_AEF
-		<make_arrangement, detail::sorting::non_decreasing_t>
+		<make_arrangement, sorting::sort_type::non_decreasing>
 		(g, c);
 }
 

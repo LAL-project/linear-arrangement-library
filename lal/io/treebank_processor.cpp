@@ -743,7 +743,7 @@ noexcept
 	if (m_what_fs[Dmin_Projective_idx] or m_what_fs[DMax_Projective_idx]) {
 		Lpr.resize(n);
 		detail::Dopt_utils::make_sorted_adjacency_list_rooted
-			<detail::sorting::non_increasing_t>
+			<detail::sorting::sort_type::non_increasing>
 			(rT, Lpr);
 	}
 

@@ -141,7 +141,7 @@ noexcept
 	calculate_bidirectional_sizes(t, n, 0, S.begin());
 
 	// sort all tuples in bidir_sizes using the size of the subtree
-	sorting::counting_sort<edge_size, sorting::non_increasing_t>
+	sorting::counting_sort<edge_size, sorting::sort_type::non_increasing>
 		(
 			S.begin(), S.end(), n, S.size(),
 			[](const edge_size& T) -> std::size_t { return std::get<1>(T); }
@@ -187,7 +187,7 @@ noexcept
 
 	// sort all tuples in bidir_idxs using the size of the subtree
 	sorting::counting_sort
-		<edge_size_sigma, sorting::non_increasing_t>
+		<edge_size_sigma, sorting::sort_type::non_increasing>
 		(
 			J.begin(), J.end(), n, J.size(),
 			[](const edge_size_sigma& T) -> std::size_t { return T.size; }
