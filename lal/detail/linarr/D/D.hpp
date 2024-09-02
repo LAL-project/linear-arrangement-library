@@ -110,7 +110,7 @@ noexcept
 		return numeric::rational(D, g.get_num_edges());
 	}
 	else {
-		return detail::to_double(D)/detail::to_double(g.get_num_edges());
+		return to_double(D)/to_double(g.get_num_edges());
 	}
 }
 

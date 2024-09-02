@@ -86,7 +86,8 @@ namespace detail {
 namespace DMax {
 namespace thistle_1 {
 
-namespace detail {
+/// Details of algorithm for 1-Thistle MaxLA
+namespace bits {
 
 /**
  * @brief Next binary combination of 0's and 1's.
@@ -773,7 +774,7 @@ noexcept
 #endif
 }
 
-} // -- namespace detail
+} // -- namespace bits
 
 /**
  * @brief Maximal non-bipartite Arrangement with exactly 1 thistle vertex.
@@ -789,7 +790,7 @@ noexcept
  * vertex.
  */
 template <bool make_arrangement>
-[[nodiscard]] inline detail::result_t<make_arrangement> AEF
+[[nodiscard]] inline bits::result_t<make_arrangement> AEF
 (
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
@@ -816,7 +817,7 @@ noexcept
 	}
 #endif
 
-	detail::result_t<make_arrangement> res;
+	bits::result_t<make_arrangement> res;
 	if constexpr (make_arrangement) {
 		res.first = 0;
 		res.second.resize(1);
@@ -869,7 +870,7 @@ noexcept
 		for (node u : neighs) { is_thistle_neighbor[u] = 1; }
 
 		// Find best orientation for this thistle.
-		detail::choose_orientations_for_thistle_neighbors<make_arrangement>(
+		bits::choose_orientations_for_thistle_neighbors<make_arrangement>(
 			t, thistle, is_thistle_neighbor,
 			arr, inv_arr, level_per_vertex, thistle_side_per_vertex,
 			res

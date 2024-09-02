@@ -101,7 +101,7 @@ noexcept
 		return numeric::rational(rbe, g.get_num_edges());
 	}
 	else {
-		return detail::to_double(rbe)/detail::to_double(g.get_num_edges());
+		return to_double(rbe)/to_double(g.get_num_edges());
 	}
 }
 

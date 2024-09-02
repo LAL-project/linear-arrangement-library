@@ -169,7 +169,7 @@ noexcept
 		// make a directed graph with the values
 		const auto dgraph = from_head_vector_to_graph<graphs::directed_graph>(hv,false,false);
 		{
-		const bool has_cycles = detail::has_undirected_cycles(dgraph);
+		const bool has_cycles = has_undirected_cycles(dgraph);
 		if (has_cycles) {
 			if constexpr (decide) { return true; }
 			else {

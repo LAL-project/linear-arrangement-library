@@ -314,8 +314,7 @@ const noexcept
 	//   level = right - left
 	//         = degree - 2*left
 	const int64_t level_u =
-		detail::to_int64(m_t.get_degree(u))
-		- 2*detail::to_int64(m_node_left_degree[u]);
+		to_int64(m_t.get_degree(u)) - 2*to_int64(m_node_left_degree[u]);
 
 	const node previous_node = m_arr[pos - 1ull];
 	const int64_t previous_level = m_node_level[previous_node];
@@ -334,7 +333,7 @@ const noexcept
 			}
 		}
 		else {
-			const auto dv = detail::to_int64(m_t.get_degree(v));
+			const auto dv = to_int64(m_t.get_degree(v));
 			if (level_u < -dv) {
 				return reason_discard::node_disallows_placement_of_neighbors;
 			}

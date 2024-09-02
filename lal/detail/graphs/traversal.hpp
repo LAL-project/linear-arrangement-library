@@ -74,7 +74,7 @@ namespace detail {
  *
  * An example of usage is as follows:
  @code
- detail::BFS<graphs::undirected_graph> bfs(g); // 'g' is an undirected graph
+ lal::detail::BFS<graphs::undirected_graph> bfs(g); // 'g' is an undirected graph
  bfs.set_terminate( ... ); // assign a function to decide when to terminate the search.
  bfs.set_process_neighbour( ... ); // assign a function to process neighbors
  bfs.start_at(0); // start the traversal now at node 0.

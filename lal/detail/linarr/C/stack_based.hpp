@@ -211,7 +211,7 @@ noexcept
 	}
 
 	// stack of the algorithm
-	detail::AVL<indexed_edge> S;
+	AVL<indexed_edge> S;
 
 	// calculate the number of crossings
 	uint64_t C = 0;

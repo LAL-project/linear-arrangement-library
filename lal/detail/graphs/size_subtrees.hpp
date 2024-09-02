@@ -212,10 +212,10 @@ noexcept
  * Example of usage (mind the vector! its initial size is \f$2*m\f$).
  *
  @code
- const free_tree t = ... ;
- vector<pair<edge,uint64_t>> sizes_edges(2*t.get_num_edges());
+ const lal::graphs::free_tree t = ... ;
+ std::vector<pair<edge,uint64_t>> sizes_edges(2*t.get_num_edges());
  auto it = sizes_edges.begin();
- detail::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
+ lal::detail::calculate_bidirectional_sizes(t, t.get_num_nodes(), 0, it);
  @endcode
  *
  * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.

@@ -216,7 +216,7 @@ noexcept
 (const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
 noexcept
 {
-	const auto discard = detail::fast_non_iso(t1,t2);
+	const auto discard = fast_non_iso(t1,t2);
 	if (discard == 0) { return true; }
 	if (discard == 1) { return false; }
 

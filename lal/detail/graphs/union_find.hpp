@@ -294,7 +294,7 @@ noexcept
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-	[&](const detail::BFS<tree_t>&, const node w) -> void {
+	[&](const auto&, const node w) -> void {
 		root_of[w] = v;
 	}
 	);
@@ -369,9 +369,6 @@ noexcept
  *
  * This function updates the Union-Find data structure of a tree prior to the
  * removal of the edge (u,v).
- *
- * This function is called by the function
- *		lal::detail::update_unionfind_before_remove_edges_incident_to
  *
  * In particular, it updates the information associated to the vertices found
  * in the direction (u,v).

@@ -314,7 +314,7 @@ noexcept
 	// of 'T_u' rooted at vertex 'v'. Now,
 	//     s[v] := the size of the subtree 'T_u[v]'
 	array<uint64_t> s(t.get_num_nodes());
-	detail::get_size_subtrees(t, u, s.begin());
+	get_size_subtrees(t, u, s.begin());
 
 	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
 	const neighbourhood& u_neighs = t.get_neighbors(u);
@@ -365,7 +365,7 @@ noexcept
 	array<node> reachable(t.get_num_nodes_component(one_node));
 	{
 	auto it = reachable.begin();
-	detail::BFS bfs(t);
+	BFS bfs(t);
 	bfs.set_process_current([&](const auto&, node u) { *it++ = u; });
 	bfs.start_at(one_node);
 	}
@@ -395,7 +395,7 @@ noexcept
 	}
 
 	if constexpr (root == Dopt_utils::NO_ANCHOR) {
-		const node u = detail::retrieve_centroid(t, one_node).first;
+		const node u = retrieve_centroid(t, one_node).first;
 
 		const ordering ord = get_ordering(t, u);
 

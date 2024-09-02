@@ -75,7 +75,7 @@ void expand_branchless_path
 (
 	const tree_t& t,
 	const node u, const node v,
-	detail::BFS<tree_t>& bfs,
+	BFS<tree_t>& bfs,
 	std::vector<properties::branchless_path>& res,
 	properties::branchless_path& p
 )
@@ -157,7 +157,7 @@ noexcept
 	// path to be filled
 	properties::branchless_path p;
 
-	detail::BFS bfs(t);
+	BFS bfs(t);
 
 	// detect the last hub
 	bfs.set_process_current(

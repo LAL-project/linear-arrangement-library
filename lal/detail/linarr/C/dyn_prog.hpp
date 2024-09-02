@@ -115,7 +115,7 @@ noexcept
 		// node at position pu + 1
 		const node u = arr[pu + 1ull];
 
-		detail::get_bool_neighbors<graph_t>(g, u, bn);
+		get_bool_neighbors<graph_t>(g, u, bn);
 
 		uint64_t k = g.get_degree(u);
 
