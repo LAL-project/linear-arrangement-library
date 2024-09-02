@@ -73,8 +73,8 @@ noexcept
 		for (node v = u + 1; v < n; ++v) {
 			if (has_orbit[v]) { continue; }
 
-			const std::string name_r1 = detail::assign_name(rts[u], u, names.begin(), 0);
-			const std::string name_r2 = detail::assign_name(rts[v], v, names.begin(), 0);
+			const std::string name_r1 = detail::assign_name(rts[u], u, names, 0);
+			const std::string name_r2 = detail::assign_name(rts[v], v, names, 0);
 			if (name_r1 == name_r2) {
 				orbits.back().push_back(v);
 				has_orbit[v] = 1;
