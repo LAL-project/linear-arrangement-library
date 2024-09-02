@@ -653,6 +653,9 @@ noexcept
 
 #if defined DEBUG
 	assert(t.is_tree());
+	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
+		assert(t.has_root());
+	}
 #endif
 
 	t.finish_bulk_add_complete(normalize, check);
@@ -670,7 +673,7 @@ noexcept
  *	- star tree of n nodes
 	@verbatim
 		0 1 2 2 2 .... 2 2
-		   |------------| > (n-1) two's
+			|------------| > (n-1) two's
 	@endverbatim
  *
  * @tparam tree_t The type of tree.
@@ -703,8 +706,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
- * for further details.
+ * See @ref lal::detail::from_level_sequence_to_tree for further details.
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_small
@@ -723,8 +725,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
- * for further details.
+ * See @ref lal::detail::from_level_sequence_to_tree for further details.
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree_large
@@ -743,8 +744,7 @@ noexcept
 /**
  * @brief Converts the level sequence of a tree into a graph structure.
  *
- * See @ref lal::detail::from_level_sequence_to_tree(const uint64_t*, uint64_t, bool, bool)
- * for further details.
+ * See @ref lal::detail::from_level_sequence_to_tree for further details.
  */
 template <class tree_t>
 [[nodiscard]] tree_t from_level_sequence_to_tree(

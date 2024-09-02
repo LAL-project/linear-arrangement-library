@@ -259,7 +259,6 @@ void all_ulab_free_trees::__reset() noexcept {
 		m_L[i] = i - k + 1;
 	}
 
-	//if (m_n <= 3) { m_first_it = false; }
 	m_first_it = m_n > 3;
 }
 
