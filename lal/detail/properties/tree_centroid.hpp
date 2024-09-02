@@ -411,33 +411,10 @@ template <
 	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
 >
 [[nodiscard]] std::pair<node, node> retrieve_centroid
-(const tree_t& t, const node x)
+(const tree_t& t, const node x = 0)
 noexcept
 {
 	return find_centroidal_vertex<centroid_results::full_centroid>(t, x);
-}
-
-/**
- * @brief Calculate the centroid of the tree @e t.
- *
- * See page @ref LAL_concepts__centre_centroid for a definition of centre and
- * centroid.
- *
- * @tparam tree_t Type of the input tree.
- * @param t Input tree.
- * @returns A tuple of two values: the nodes in the centroid. If the
- * tree has a single centroidal node, only the first node is valid and the second
- * is assigned an invalid vertex index. It is guaranteed that the first vertex
- * has smaller index value than the second.
- */
-template <
-	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
->
-[[nodiscard]] std::pair<node, node> retrieve_centroid(const tree_t& t)
-noexcept
-{
-	return find_centroidal_vertex<centroid_results::full_centroid>(t, 0);
 }
 
 } // -- namespace detail
