@@ -82,7 +82,7 @@ static constexpr side LEFT_SIDE  = 1;
 
 // if s = 0 then (s+1)&0x1 = 1
 // if s = 1 then (s+1)&0x1 = 0
-static constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
+static inline constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
 
 /// The tree is left-anchored
 static constexpr char LEFT_ANCHOR = -1;

@@ -122,8 +122,8 @@ noexcept
 	assert(ini <= fin);
 #endif
 
-	// sizes of the subtrees
-	const auto& children = L[r];
+	// the children and the sizes of the subtrees of 'r'
+	const auto& children_size_of_r = L[r];
 
 	// -- place the children --
 
@@ -157,7 +157,7 @@ noexcept
 	// while placing the children calculate the
 	// length of the edge from 'r' to vertex 'vi'
 	// LARGEST to SMALLEST
-	for (const auto& [vi, ni] : children) {
+	for (const auto& [vi, ni] : children_size_of_r) {
 
 #if defined DEBUG
 		// ensure that the list is sorted non-increasingly
