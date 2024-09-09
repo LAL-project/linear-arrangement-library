@@ -237,19 +237,28 @@ noexcept
 	}
 
 	if (is_linear) { set_type(graphs::tree_type::linear); }
-	if (is_star) { set_type(graphs::tree_type::star); }
-	if (is_quasistar) { set_type(graphs::tree_type::quasistar); }
-	if (is_bistar) { set_type(graphs::tree_type::bistar); }
-	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
-	if (is_spider) { set_type(graphs::tree_type::spider); }
-	if (is_two_linear) { set_type(graphs::tree_type::two_linear); }
+	else { unset_type(graphs::tree_type::linear); }
 
-	if (is_some) {
-		unset_type(graphs::tree_type::unknown);
-	}
-	else {
-		set_type(graphs::tree_type::unknown);
-	}
+	if (is_star) { set_type(graphs::tree_type::star); }
+	else { unset_type(graphs::tree_type::star); }
+
+	if (is_quasistar) { set_type(graphs::tree_type::quasistar); }
+	else { unset_type(graphs::tree_type::quasistar); }
+
+	if (is_bistar) { set_type(graphs::tree_type::bistar); }
+	else { unset_type(graphs::tree_type::bistar); }
+
+	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
+	else { unset_type(graphs::tree_type::caterpillar); }
+
+	if (is_spider) { set_type(graphs::tree_type::spider); }
+	else { unset_type(graphs::tree_type::spider); }
+
+	if (is_two_linear) { set_type(graphs::tree_type::two_linear); }
+	else { unset_type(graphs::tree_type::two_linear); }
+
+	if (is_some) { unset_type(graphs::tree_type::unknown); }
+	else { set_type(graphs::tree_type::unknown); }
 }
 
 } // -- namespace detail
