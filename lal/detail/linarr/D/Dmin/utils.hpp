@@ -300,8 +300,12 @@ noexcept
 
 	cost_branch += under_anchor;
 
-	// SMALLEST to LARGEST
+	// Index of the positions of Cv. The interval it iterates is [Cv.size(), 1]
+	// (and not the usual [Cv.size()-1, 0]) to ensure we are using the right
+	// parities (even/odd).
 	uint64_t i = Cv.size();
+
+	// SMALLEST to LARGEST
 	for (auto it = Cv.rbegin(); it != Cv.rend(); ++it, --i) {
 #if defined DEBUG
 		assert(i <= Cv.size());
@@ -313,19 +317,19 @@ noexcept
 		embed_branch<make_arrangement>(
 			L, vi,
 			make_arrangement ?
-				(i&0x1) == 0 ? base - dir*to_int64(before) : base + dir*to_int64(after)
+				Dopt_utils::is_even(i) ? base - dir*to_int64(before) : base + dir*to_int64(after)
 				: 0
 			,
 			make_arrangement ?
-				(i&0x1) == 0 ? -dir : dir
+				Dopt_utils::is_even(i) ? -dir : dir
 				: 0
 			,
 			rel_pos
 		);
-		cost_branch += ( (i&0x1) == 0 ? before : after );
+		cost_branch += ( Dopt_utils::is_even(i) ? before : after );
 
-		before += ((i&0x1) == 0 ? ni : 0);
-		after += ((i&0x1) == 0 ? 0 : ni);
+		before += (Dopt_utils::is_even(i) ? ni : 0);
+		after += (Dopt_utils::is_even(i) ? 0 : ni);
 
 		cost_branch += 1;
 	}
@@ -380,19 +384,19 @@ noexcept
 		embed_branch<make_arrangement>(
 			L, vi,
 			make_arrangement ?
-				(i&0x1) == 0 ? to_int64(right_sum) : -to_int64(left_sum)
+				Dopt_utils::is_even(i) ? to_int64(right_sum) : -to_int64(left_sum)
 				: 0
 			,
 			make_arrangement ?
-				(i&0x1) == 0 ? to_int64(1) : to_int64(-1)
+				Dopt_utils::is_even(i) ? to_int64(1) : to_int64(-1)
 				: 0
 			,
 			rel_pos
 		);
-		D += ( (i&0x1) == 0 ? right_sum : left_sum );
+		D += ( Dopt_utils::is_even(i) ? right_sum : left_sum );
 
-		right_sum += ((i&0x1) == 0 ? ni : 0);
-		left_sum += ((i&0x1) == 0 ? 0 : ni);
+		right_sum += (Dopt_utils::is_even(i) ? ni : 0);
+		left_sum += (Dopt_utils::is_even(i) ? 0 : ni);
 
 		D += 1;
 	}
