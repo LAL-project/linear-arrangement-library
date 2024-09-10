@@ -73,16 +73,25 @@ typedef unsigned char place;
 /// Useful typedef to denote relative position.
 typedef unsigned char side;
 
+/// A vertex is to be placed to the left of a vertex.
 static constexpr place PLACE_LEFT_OF = 0;
+/// A vertex is to be placed to the right of a vertex.
 static constexpr place PLACE_RIGHT_OF = 1;
+/// There is no vertex to use as reference to determine the side.
 static constexpr place PLACE_NONE_OF = 2;
 
+/// Right side of a vertex.
 static constexpr side RIGHT_SIDE = 0;
+/// Left side of a vertex.
 static constexpr side LEFT_SIDE  = 1;
 
 // if s = 0 then (s+1)&0x1 = 1
 // if s = 1 then (s+1)&0x1 = 0
+/// Other side of a vertex. If @e s is @ref RIGHT_SIDE, returns @ref LEFT_SIDE.
 static inline constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
+
+/// Is an integer number even?
+static inline constexpr bool is_even(uint64_t i) noexcept { return (i&0x1) == 0; }
 
 /// The tree is left-anchored
 static constexpr char LEFT_ANCHOR = -1;
