@@ -169,7 +169,6 @@ noexcept
  * @param t Input free tree.
  * @param thistle Thistle vertex.
  * @param thistle_level Level value for @e thistle.
- * @param is_thistle_neighbor Array to query if a vertex is a neighbor of the thisle.
  * @param thistle_side_per_vertex Side of @e thistle in which each vertex
  * have to be placed at in the first arrangement.
  * @param[out] levels_per_vertex Array containing the level value of each vertex of
@@ -656,20 +655,19 @@ noexcept
  * @brief Tries to make a maximal arrangement with a given thistle vertex of a
  * given level value
  *
- * Parameters @e arr, @e inv_arr, @e levels_per_vertex are temporary memory
+ * Parameters @e arr, @e inv_arr, @e level_per_vertex are temporary memory
  * passed as parameters to avoid constant allocations and deallocations.
  * @tparam make_arrangement Should the arrangement be returned?
  * @param t Input free tree.
  * @param thistle Thistle vertex.
  * @param is_thistle_neighbor Is a given vertex a neighbor of @e thistle?
- * @param color_per_vertex Coloring of the tree.
- * @param oriented_vertices Vertices of the connected components sorted by degree
- * and color.
  * @param arr Linear arrangement (used to evaluate the cost of the distribution).
  * @param inv_arr Inverse linear arrangement (used to evaluate the cost of the
  * distribution).
- * @param levels_per_vertex Array containing the level value of each vertex of
+ * @param level_per_vertex Array containing the level value of each vertex of
  * the tree.
+ * @param thistle_side_per_vertex For each vertex, the side of the thistle at which
+ * they are to be placed.
  * @param[inout] res Contains the best arrangement produced here if it is better
  * than the one it already contains.
  */
