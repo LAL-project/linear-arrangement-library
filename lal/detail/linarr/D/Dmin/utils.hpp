@@ -289,9 +289,8 @@ noexcept
 	uint64_t under_anchor = 0;
 
 	// LARGEST to SMALLEST
+	// (only at even positions of the list, which are indexed at odd values...)
 	for (std::size_t i = 1; i < Cv.size(); i += 2) {
-		//const auto [vi, ni] = Cv[i];
-		//ni := Cv[i].second
 		under_anchor += Cv[i].size;
 	}
 
