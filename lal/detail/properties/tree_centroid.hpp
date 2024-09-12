@@ -140,7 +140,7 @@ conditional_list_t<
 		std::pair<std::pair<node, node>, array<edge_size>>
 	>
 >
-find_centroidal_vertex(const tree_t& t, node x) noexcept
+find_centroidal_vertex(const tree_t& t, const node x) noexcept
 {
 	const auto n = t.get_num_nodes();
 	const auto size_cc_x = t.get_num_nodes_component(x);
@@ -172,23 +172,25 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 			}
 		}();
 
-		if (x > only_neigh) { std::swap(x, only_neigh); }
+		const node u =                   (x < only_neigh ? x : only_neigh);
+		const node v = is_m1(mode) ? 0 : (x < only_neigh ? only_neigh : x);
+
 		if constexpr (is_m1(mode)) {
-			return x;
+			return u;
 		}
 		else if constexpr (is_m2(mode)) {
-			return {x,only_neigh};
+			return {u, v};
 		}
 		else if constexpr (is_m3(mode)) {
 			array<uint64_t> s(n, 0);
-			s[x] = 2;
-			s[only_neigh] = 1;
-			return {{x,only_neigh}, std::move(s)};
+			s[u] = 2;
+			s[v] = 1;
+			return {{u, v}, std::move(s)};
 		}
 		else if constexpr (is_m4(mode)) {
 			return {
-				{x,only_neigh},
-				array<edge_size>{ {{x, only_neigh}, 1} }
+				{u, v},
+				array<edge_size>{ {{u, v}, 1} }
 			};
 		}
 	}
@@ -219,7 +221,7 @@ find_centroidal_vertex(const tree_t& t, node x) noexcept
 		BFS<tree_t> bfs(t);
 		bfs.set_use_rev_edges(std::is_base_of_v<graphs::rooted_tree, tree_t>);
 		bfs.set_process_current(
-		[&](const auto&, node u) {
+		[&](const auto&, const node u) {
 			degree[u] = t.get_degree(u);
 			// fill queue
 			if (t.get_degree(u) == 1) {
