@@ -604,21 +604,21 @@ private:
 	/**
 	 * @brief Directional left degree of each assigned vertex.
 	 *
-	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * This data is only valid for a vertex @e u when @ref is_vertex_assigned
 	 * returns true for @e u.
 	 */
 	array<uint64_t> m_node_left_degree;
 	/**
 	 * @brief Directional right degree of each assigned vertex.
 	 *
-	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * This data is only valid for a vertex @e u when @ref is_vertex_assigned
 	 * returns true for @e u.
 	 */
 	array<uint64_t> m_node_right_degree;
 	/**
 	 * @brief The level value of each assigned vertex.
 	 *
-	 * This data is only valid for a vertex @e u when @ref is_node_assigned
+	 * This data is only valid for a vertex @e u when @ref is_vertex_assigned
 	 * returns true for @e u.
 	 */
 	array<int64_t> m_node_level;
