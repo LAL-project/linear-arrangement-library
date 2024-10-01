@@ -65,7 +65,19 @@ In order to cite the Linear Arrangement Library, please cite all papers presenti
 			pages = {1--16}
 		}
 
-In order to cite the corresponding Zenodo repository, please, refrain from using a non-stable release of LAL (`main` branch) for your research, and use a stable release instead. Contact us or visit the official webpage for help on how to proceed.
+And, please, also cite the Zenodo repository that corresponds to version 24.10.
+
+- Lluís Alemany Puig, Juan Luis Esteban, & Ramon Ferrer-i-Cancho. (2024). LAL-project/linear-arrangement-library: The Linear Arrangement Library 24.10 (v24.10). Zenodo. https://doi.org/10.5281/zenodo.13867226
+
+		@software{LAL2410,
+			author = {{Alemany-Puig}, Llu\'{i}s and Esteban, {Juan Luis} and {Ferrer-i-Cancho}, Ramon},
+			title = {{LAL-project/linear-arrangement-library: The Linear Arrangement Library 24.10}},
+			month = {10},
+			year = 2024,
+			publisher = {Zenodo},
+			version = {v24.10},
+			doi = {10.5281/zenodo.13867226}
+		}
 
 ## Documentation
 
