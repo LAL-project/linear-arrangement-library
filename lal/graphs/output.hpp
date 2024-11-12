@@ -117,7 +117,7 @@ inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g)
 noexcept
 {
 	const auto N = g.get_num_nodes();
-	const std::string pad = (g.has_root() ? " " : "");
+	const std::string_view pad = (g.has_root() ? std::string_view{" "} : std::string_view{""});
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
