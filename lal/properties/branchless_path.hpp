@@ -82,7 +82,7 @@ public:
 	 * been initialized.
 	 * @post Memory for @ref m_vertex_set has been allocated.
 	 */
-	void init(std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept {
 		m_lowest_lexicographic.reset();
 		m_h1 = m_h2 = n + 1;
 		m_vertex_sequence.clear();
@@ -96,7 +96,7 @@ public:
 	 * @param u Node to be added.
 	 * @post @ref m_vertex_set and @ref m_vertex_sequence are updated.
 	 */
-	void add_node(node u) noexcept {
+	void add_node(const node u) noexcept {
 		m_vertex_set[u] = 1;
 		m_vertex_sequence.push_back(u);
 		m_position[u] = m_vertex_sequence.size() - 1;
@@ -105,16 +105,16 @@ public:
 	/* SETTERS */
 
 	/// Sets the first vertex of degree different from 2.
-	void set_h1(node h) noexcept { m_h1 = h; }
+	void set_h1(const node h) noexcept { m_h1 = h; }
 	/// Sets the second vertex of degree different from 2.
-	void set_h2(node h) noexcept { m_h2 = h; }
+	void set_h2(const node h) noexcept { m_h2 = h; }
 	/// Set lowest lexicographic vertex.
-	void set_lowest_lexicographic(node l) noexcept { m_lowest_lexicographic = l; }
+	void set_lowest_lexicographic(const node l) noexcept { m_lowest_lexicographic = l; }
 
 	/* GETTERS */
 
 	/// Access the i-th node in the path.
-	[[nodiscard]] node operator[](std::size_t i) const noexcept {
+	[[nodiscard]] node operator[](const std::size_t i) const noexcept {
 #if defined DEBUG
 		assert(i < m_vertex_sequence.size());
 #endif
@@ -175,9 +175,9 @@ public:
 	[[nodiscard]] std::size_t get_num_edges() const noexcept
 	{ return m_vertex_sequence.size() - 1; }
 	/// Does this path include node @e u?
-	[[nodiscard]] bool has_node(node u) const noexcept { return m_vertex_set[u] == 1; }
+	[[nodiscard]] bool has_node(const node u) const noexcept { return m_vertex_set[u] == 1; }
 	/// Returns the get_position of node @e u in @ref m_vertex_sequence.
-	[[nodiscard]] std::size_t get_position(node u) const noexcept {
+	[[nodiscard]] std::size_t get_position(const node u) const noexcept {
 #if defined DEBUG
 		assert(has_node(u));
 #endif
