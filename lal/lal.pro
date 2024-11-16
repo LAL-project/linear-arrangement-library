@@ -25,12 +25,12 @@ isEmpty(ADDRESS_SANITIZER) {
 
 QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp
 QMAKE_CXXFLAGS +=			\
-    -Wall					\
+	-Wall					\
 	-Wextra					\ # reasonable and standard
 	-Wshadow				\ # warn if a variable declaration shadows one from
-	                        \ # a parent context
+							\ # a parent context
 	-Wnon-virtual-dtor		\ # warn if a class with virtual functions has
-	                        \ # non-virtual destructors
+							\ # non-virtual destructors
 	-Wold-style-cast		\ # warn for c-style casts
 	-Wcast-align			\ # warn for potential performance problem casts
 	-Wunused				\ # warn on anything being unused
@@ -41,11 +41,11 @@ QMAKE_CXXFLAGS +=			\
 	-Wnull-dereference		\ # warn if a null dereference is detected
 	-Wdouble-promotion		\ # warn if float is implicitly promoted to double
 	-Wformat=2				\ # warn on security issues around functions that
-	                        \ # format output
+							\ # format output
 	-Wduplicated-cond		\ # warn if if-then-else chan has duplicated conditions
 	-Wduplicated-branches	\ # warn if if-then-else have duplicated code
 	-Wlogical-op			\ # warn about logical operations being used where
-	                        \ # bitwise were probably prefered
+							\ # bitwise were probably prefered
 	-Wuseless-cast			\ # warn if you perform a cast to the same type
 	-Wrestrict
 
