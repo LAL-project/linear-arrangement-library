@@ -127,7 +127,6 @@ noexcept
 	(
 		m_border_nodes.begin_values(),
 		m_border_nodes.begin_values() + idx,
-		m_n_nodes + 1,
 		[&](node u) { return m_num_assigned_neighbors[u]; },
 		m_sorting_memory
 	);

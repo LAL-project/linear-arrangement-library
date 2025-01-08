@@ -43,7 +43,7 @@
 
 // C++ includes
 #include <functional>
-#include <tuple>
+#include <numeric>
 
 // lal includes
 #include <lal/detail/array.hpp>
@@ -151,7 +151,6 @@ template <
 >
 void counting_sort(
 	const value_iterator_t begin, const value_iterator_t end,
-	const std::size_t largest_key_plus_1,
 	const Callable& key,
 	countingsort::memory<value_t>& mem
 )
@@ -178,11 +177,7 @@ noexcept
 		}
 	}
 
-	std::size_t total = 0;
-	for (std::size_t k = 0; k < largest_key_plus_1; ++k) {
-		std::tie(mem.count[k], total)
-			= std::make_pair(total, mem.count[k] + total);
-	}
+	std::exclusive_scan(mem.count.begin(), mem.count.end(), mem.count.begin(), 0);
 
 	std::size_t actual_container_size = 0;
 	for (auto it = begin; it != end; ) {
@@ -271,7 +266,7 @@ noexcept
 	countingsort::memory<value_t> mem(largest_key+1, upper_bound_size);
 
 	counting_sort<value_t, type, false, value_iterator_t>
-		(begin, end, largest_key+1, key, mem);
+		(begin, end, key, mem);
 }
 
 } // -- namespace sorting

@@ -219,8 +219,6 @@ noexcept
 		(
 			// iterators to the container to be sorted
 			cur_deps.begin(), cur_deps.end(),
-			// largest key possible + 1
-			n,
 			// key
 			[&](const edge_t& e) -> std::size_t
 			{ return max_pos(e.first, e.second); },
