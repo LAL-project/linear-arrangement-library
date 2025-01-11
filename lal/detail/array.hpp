@@ -46,6 +46,7 @@
 #include <cassert>
 #endif
 #include <algorithm>
+#include <iterator>
 
 namespace lal {
 namespace detail {
