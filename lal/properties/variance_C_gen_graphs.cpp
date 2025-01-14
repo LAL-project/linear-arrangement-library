@@ -66,7 +66,7 @@
 		const auto __Ni_i = Ni[__i];				\
 		const auto __Nj_j = Nj[__j];				\
 		if (__Ni_i == __Nj_j) {						\
-			JOB;									\
+			JOB();									\
 			++__i; ++__j;							\
 		}											\
 		else {										\
@@ -249,8 +249,10 @@ noexcept
 					// compute values and store them
 					uint64_t deg_sum = 0;
 					iterate(Nt, Nu,
-						++common_ut;
-						deg_sum += g.get_degree(Nu[__j]);
+						[&]() {
+							++common_ut;
+							deg_sum += g.get_degree(Nu[__j]);
+						}
 					);
 					H.insert
 					({sorted_edge(u,t), useful_info_pairs(common_ut, deg_sum)});
@@ -258,7 +260,9 @@ noexcept
 			}
 			else {
 				iterate(Nu, Nt,
-					++common_ut;
+					[&]() {
+						++common_ut;
+					}
 				);
 			}
 
@@ -282,8 +286,10 @@ noexcept
 					// compute values and store them
 					uint64_t deg_sum = 0;
 					iterate(Ns, Nu,
-						++common_us;
-						deg_sum += g.get_degree(Nu[__j]);
+						[&]() {
+							++common_us;
+							deg_sum += g.get_degree(Nu[__j]);
+						}
 					);
 					H.insert
 					({sorted_edge(u,s), useful_info_pairs(common_us, deg_sum)});
@@ -291,7 +297,9 @@ noexcept
 			}
 			else {
 				iterate(Nu, Ns,
-					++common_us;
+					[&]() {
+						++common_us;
+					}
 				);
 			}
 
@@ -315,8 +323,10 @@ noexcept
 			else {
 				// compute values and store them
 				iterate(Ns, Nt,
-					++common_st;
-					deg_sum_st += g.get_degree(Nt[__j]);
+					[&]() {
+						++common_st;
+						deg_sum_st += g.get_degree(Nt[__j]);
+					}
 				);
 				H.insert
 				({sorted_edge(s,t), useful_info_pairs(common_st, deg_sum_st)});
@@ -324,8 +334,10 @@ noexcept
 		}
 		else {
 			iterate(Ns, Nt,
-				++common_st;
-				deg_sum_st += g.get_degree(Ns[__i]);
+				[&]() {
+					++common_st;
+					deg_sum_st += g.get_degree(Ns[__i]);
+				}
 			);
 		}
 
