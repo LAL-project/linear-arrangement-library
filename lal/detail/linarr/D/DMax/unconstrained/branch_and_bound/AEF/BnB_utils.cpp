@@ -96,10 +96,10 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
+#if defined __LAL_DEBUG_DMax_Unc_BnB
+
 static constexpr uint64_t column_width = 2;
 #define set_col_width std::setw(column_width)
-
-#if defined __LAL_DEBUG_DMax_Unc_BnB
 
 void AEF_BnB::output_edge_list() const noexcept {
 	iterators::E_iterator it(m_t);
