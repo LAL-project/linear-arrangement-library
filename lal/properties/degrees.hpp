@@ -65,16 +65,16 @@ namespace properties {
  *
  * Each degree is raised to a certain power according to the parameter.
  *
+ * @tparam value_t Type of function's result (uint64_t, @ref lal::numeric::integer)
  * @tparam graph_t Type of graph.
- * @tparam return_type Type of function's result (uint64_t, @ref lal::numeric::integer)
  * @param g Input graph
  * @param p Power to which degrees must be raised
  * @param degree_function The function that returns the specific degree
  * (in+out, out, in, or other).
  * @return The sum of degrees raised to the input power @e p.
  */
-template <class graph_t, class return_type>
-[[nodiscard]] return_type sum_powers_degrees
+template <class value_t, class graph_t>
+[[nodiscard]] value_t sum_powers_degrees
 (
 	const graph_t& g,
 	const uint64_t p,
@@ -83,19 +83,19 @@ template <class graph_t, class return_type>
 noexcept
 {
 	static_assert(
-		std::is_same_v<return_type, uint64_t> ||
-		std::is_same_v<return_type, numeric::integer>
+		std::is_same_v<value_t, uint64_t> ||
+		std::is_same_v<value_t, numeric::integer>
 	);
 
 	// sum of powers
-	return_type S(0);
+	value_t S(0);
 	// variable used to calculate powers
-	return_type du(0);
+	value_t du(0);
 
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
 		const uint64_t deg = (g.*degree_function)(u);
 		// calculate the power of the degree 'deg'
-		if constexpr (std::is_same_v<return_type, numeric::integer>) {
+		if constexpr (std::is_same_v<value_t, numeric::integer>) {
 			du.set_number(deg);
 			du.powt(p);
 		}
@@ -131,7 +131,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::undirected_graph, numeric::integer>
+	sum_powers_degrees<numeric::integer>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 /**
@@ -152,7 +152,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::undirected_graph, uint64_t>
+	sum_powers_degrees<uint64_t>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 
@@ -174,7 +174,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, numeric::integer>
+	sum_powers_degrees<numeric::integer>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 /**
@@ -195,7 +195,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, uint64_t>
+	sum_powers_degrees<uint64_t>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 
@@ -217,7 +217,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, numeric::integer>
+	sum_powers_degrees<numeric::integer>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 /**
@@ -238,7 +238,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, uint64_t>
+	sum_powers_degrees<uint64_t>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 
@@ -313,7 +313,7 @@ numeric::integer sum_powers_out_degrees_integer
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, numeric::integer>
+	sum_powers_degrees<numeric::integer>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 /**
@@ -334,7 +334,7 @@ noexcept
 noexcept
 {
 	return
-	sum_powers_degrees<graphs::directed_graph, uint64_t>
+	sum_powers_degrees<uint64_t>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 
@@ -348,16 +348,16 @@ noexcept
  * Calculates the \f$p\f$-th moment of degree about 0, where the degree is given
  * by some function.
  *
+ * @tparam value_t Type of function's result (double, @ref lal::numeric::rational)
  * @tparam graph_t Type of graph
- * @tparam return_type Type of function's result (double, @ref lal::numeric::rational)
  * @param g Input graph
  * @param p Power to which degrees must be raised
  * @param degree_function The function that returns the specific degree (full,
  * out, in, or other).
  * @return The \f$p\f$-th moment of degree about 0.
  */
-template <class graph_t, class return_type>
-[[nodiscard]] return_type moment_degree
+template <class value_t, class graph_t>
+[[nodiscard]] value_t moment_degree
 (
 	const graph_t& g,
 	const uint64_t p,
@@ -366,18 +366,18 @@ template <class graph_t, class return_type>
 noexcept
 {
 	static_assert(
-		std::is_floating_point_v<return_type> ||
-		std::is_same_v<return_type, numeric::rational>
+		std::is_floating_point_v<value_t> ||
+		std::is_same_v<value_t, numeric::rational>
 	);
 
-	if constexpr (std::is_floating_point_v<return_type>) {
+	if constexpr (std::is_floating_point_v<value_t>) {
 		const uint64_t S =
-			sum_powers_degrees<graph_t,uint64_t>(g,p,degree_function);
-		return static_cast<return_type>(S)/static_cast<return_type>(g.get_num_nodes());
+			sum_powers_degrees<uint64_t>(g,p,degree_function);
+		return static_cast<value_t>(S)/static_cast<value_t>(g.get_num_nodes());
 	}
 	else {
 		const numeric::integer S =
-			sum_powers_degrees<graph_t,numeric::integer>(g,p,degree_function);
+			sum_powers_degrees<numeric::integer>(g,p,degree_function);
 		return numeric::rational(S,g.get_num_nodes());
 	}
 }
@@ -404,7 +404,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::undirected_graph, numeric::rational>
+	moment_degree<numeric::rational>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 /**
@@ -421,7 +421,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::undirected_graph, double>
+	moment_degree<double>
 	(g, p, &graphs::undirected_graph::get_degree);
 }
 
@@ -445,7 +445,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, numeric::rational>
+	moment_degree<numeric::rational>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 /**
@@ -462,7 +462,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, double>
+	moment_degree<double>
 	(g, p, &graphs::directed_graph::get_degree);
 }
 
@@ -486,7 +486,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, numeric::rational>
+	moment_degree<numeric::rational>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 /**
@@ -503,7 +503,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, double>
+	moment_degree<double>
 	(g, p, &graphs::directed_graph::get_in_degree);
 }
 
@@ -583,7 +583,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, numeric::rational>
+	moment_degree<numeric::rational>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 /**
@@ -601,7 +601,7 @@ noexcept
 noexcept
 {
 	return
-	moment_degree<graphs::directed_graph, double>
+	moment_degree<double>
 	(g, p, &graphs::directed_graph::get_out_degree);
 }
 
