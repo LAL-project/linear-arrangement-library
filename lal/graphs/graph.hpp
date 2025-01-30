@@ -42,6 +42,9 @@
 #pragma once
 
 // C++ includes
+#if defined DEBUG
+#include <cassert>
+#endif
 #include <vector>
 
 // lal includes
@@ -298,20 +301,43 @@ protected:
 	 * @post The graph is normalized only if it was normalized before the call
 	 * and @e g is also normalized.
 	 */
-	void __disjoint_union(const graph& g) noexcept;
+	void __disjoint_union(const graph& g) noexcept {
+#if defined DEBUG
+		// If I'm directed, g must be directed.
+		// If I'm undirected, g must be undirected.
+		assert(is_directed() ? g.is_directed() : g.is_undirected());
+#endif
+
+		// update number of edges
+		m_num_edges += g.m_num_edges;
+
+		// If one or none of the two graphs involved are normalized,
+		// the result is not normalized.
+		// If both graphs are normalized, the result is normalized.
+		m_is_normalized = m_is_normalized and g.is_normalized();
+	}
 
 	/**
 	 * @brief Do some extra work after the addition of an edge.
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
-	virtual void actions_after_add_edge(const node u, const node v) noexcept;
+	virtual void actions_after_add_edge(
+		[[maybe_unused]] const node u,
+		[[maybe_unused]] const node v
+	)
+	noexcept
+	{
+		++m_num_edges;
+	}
 
 	/**
 	 * @brief Do some extra work after the addition of several edges.
 	 * @param e List of edges.
 	 */
-	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+	virtual void actions_after_add_edges(const edge_list& e) noexcept {
+		m_num_edges += e.size();
+	}
 
 	/**
 	 * @brief Do some extra work after the addition of several edges in bulk.
@@ -319,20 +345,29 @@ protected:
 	 * This method should only be called after several calls to
 	 * @ref undirected_graph::add_edge_bulk or @ref directed_graph::add_edge_bulk.
 	 */
-	virtual void actions_after_add_edges_bulk() noexcept;
+	virtual void actions_after_add_edges_bulk() noexcept { }
 
 	/**
 	 * @brief Do some extra work after the removal of an edge.
 	 * @param u Node of the edge
 	 * @param v Node of the edge
 	 */
-	virtual void actions_after_remove_edge(const node u, const node v) noexcept;
+	virtual void actions_after_remove_edge(
+		[[maybe_unused]] const node u,
+		[[maybe_unused]] const node v
+	)
+	noexcept
+	{
+		--m_num_edges;
+	}
 
 	/**
 	 * @brief Do some extra work after the removal of several edges.
 	 * @param e List of edges.
 	 */
-	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
+	virtual void actions_after_remove_edges(const edge_list& e) noexcept {
+		m_num_edges -= e.size();
+	}
 
 	/**
 	 * @brief Do some extra work after the removal of several edges in bulk.
@@ -340,19 +375,19 @@ protected:
 	 * This method should only be called after several calls to
 	 * @ref undirected_graph::remove_edge_bulk or @ref directed_graph::remove_edge_bulk.
 	 */
-	virtual void actions_after_remove_edges_bulk() noexcept;
+	virtual void actions_after_remove_edges_bulk() noexcept { }
 
 	/**
 	 * @brief Do some work before all edges incident to a node is removed.
 	 * @param u Node whose incident edges are to be removed.
 	 */
-	virtual void actions_before_remove_edges_incident_to(const node u) noexcept;
+	virtual void actions_before_remove_edges_incident_to([[maybe_unused]] const node u) noexcept { }
 
 	/**
 	 * @brief Do some work before the removal of a vertex.
 	 * @param u Node to be removed.
 	 */
-	virtual void actions_after_remove_node(const node u) noexcept;
+	virtual void actions_after_remove_node([[maybe_unused]] const node u) noexcept { }
 
 	/// Normalize the graph after one (or more) edges have been added
 	void normalize_after_edge_addition(const bool norm, const bool check) noexcept;

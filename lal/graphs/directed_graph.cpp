@@ -473,38 +473,6 @@ const noexcept
 
 /* PROTECTED */
 
-void directed_graph::actions_after_add_edge(const node u, const node v) noexcept {
-	graph::actions_after_add_edge(u, v);
-}
-
-void directed_graph::actions_after_add_edges(const edge_list& e) noexcept {
-	graph::actions_after_add_edges(e);
-}
-
-void directed_graph::actions_after_add_edges_bulk() noexcept {
-	graph::actions_after_add_edges_bulk();
-}
-
-void directed_graph::actions_after_remove_edge(const node u, const node v) noexcept {
-	graph::actions_after_remove_edge(u, v);
-}
-
-void directed_graph::actions_after_remove_edges(const edge_list& e) noexcept {
-	graph::actions_after_remove_edges(e);
-}
-
-void directed_graph::actions_after_remove_edges_bulk() noexcept {
-	graph::actions_after_remove_edges_bulk();
-}
-
-void directed_graph::actions_before_remove_edges_incident_to(const node u) noexcept {
-	graph::actions_before_remove_edges_incident_to(u);
-}
-
-void directed_graph::actions_after_remove_node(const node u) noexcept {
-	graph::actions_after_remove_node(u);
-}
-
 /* PRIVATE */
 
 void directed_graph::remove_single_edge

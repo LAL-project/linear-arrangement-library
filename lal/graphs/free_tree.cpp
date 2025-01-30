@@ -292,50 +292,6 @@ const noexcept
 
 /* PROTECTED */
 
-// -----------------------------------------------------------------------------
-
-void free_tree::actions_after_add_edge(const node u, const node v) noexcept {
-	undirected_graph::actions_after_add_edge(u, v);
-	tree_only_actions_after_add_edge(u, v);
-}
-
-void free_tree::actions_after_add_edges(const edge_list& e) noexcept {
-	undirected_graph::actions_after_add_edges(e);
-	tree_only_actions_after_add_edges(e);
-}
-
-void free_tree::actions_after_add_edges_bulk() noexcept {
-	undirected_graph::actions_after_add_edges_bulk();
-	tree_only_actions_after_add_edges_bulk();
-}
-
-void free_tree::actions_after_remove_edge(const node u, const node v) noexcept {
-	undirected_graph::actions_after_remove_edge(u, v);
-	tree_only_actions_after_remove_edge(u, v);
-}
-
-void free_tree::actions_after_remove_edges(const edge_list& e) noexcept {
-	undirected_graph::actions_after_remove_edges(e);
-	tree_only_actions_after_remove_edges(e);
-}
-
-void free_tree::actions_after_remove_edges_bulk() noexcept {
-	undirected_graph::actions_after_remove_edges_bulk();
-	tree_only_actions_after_remove_edges_bulk();
-}
-
-void free_tree::actions_before_remove_edges_incident_to(const node u) noexcept {
-	undirected_graph::actions_before_remove_edges_incident_to(u);
-	tree_only_actions_before_remove_edges_incident_to(u);
-}
-
-void free_tree::actions_after_remove_node(const node u) noexcept {
-	undirected_graph::actions_after_remove_node(u);
-	tree_only_actions_after_remove_node(u);
-}
-
-// -----------------------------------------------------------------------------
-
 void free_tree::update_union_find_after_add_edge
 (
 	const node u,

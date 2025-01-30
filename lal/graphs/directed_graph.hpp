@@ -477,21 +477,37 @@ protected:
 		m_in_adjacency_list.clear();
 	}
 
-	virtual void actions_after_add_edge(const node u, const node v) noexcept;
+	virtual void actions_after_add_edge(const node u, const node v) noexcept {
+		graph::actions_after_add_edge(u, v);
+	}
 
-	virtual void actions_after_add_edges(const edge_list& e) noexcept;
+	virtual void actions_after_add_edges(const edge_list& e) noexcept {
+		graph::actions_after_add_edges(e);
+	}
 
-	virtual void actions_after_add_edges_bulk() noexcept;
+	virtual void actions_after_add_edges_bulk() noexcept {
+		graph::actions_after_add_edges_bulk();
+	}
 
-	virtual void actions_after_remove_edge(const node u, const node v) noexcept;
+	virtual void actions_after_remove_edge(const node u, const node v) noexcept {
+		graph::actions_after_remove_edge(u, v);
+	}
 
-	virtual void actions_after_remove_edges(const edge_list& e) noexcept;
+	virtual void actions_after_remove_edges(const edge_list& e) noexcept {
+		graph::actions_after_remove_edges(e);
+	}
 
-	virtual void actions_after_remove_edges_bulk() noexcept;
+	virtual void actions_after_remove_edges_bulk() noexcept {
+		graph::actions_after_remove_edges_bulk();
+	}
 
-	virtual void actions_before_remove_edges_incident_to(const node u) noexcept;
+	virtual void actions_before_remove_edges_incident_to(const node u) noexcept {
+		graph::actions_before_remove_edges_incident_to(u);
+	}
 
-	virtual void actions_after_remove_node(const node u) noexcept;
+	virtual void actions_after_remove_node(const node u) noexcept {
+		graph::actions_after_remove_node(u);
+	}
 
 	/// Copies all members of this class and the parent class.
 	void copy_full_directed_graph(const directed_graph& d) noexcept {

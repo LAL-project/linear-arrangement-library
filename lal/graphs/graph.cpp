@@ -100,46 +100,6 @@ bool graph::check_normalized() noexcept {
 
 /* PROTECTED */
 
-void graph::__disjoint_union(const graph& g) noexcept {
-#if defined DEBUG
-	// If I'm directed, g must be directed.
-	// If I'm undirected, g must be undirected.
-	assert(is_directed() ? g.is_directed() : g.is_undirected());
-#endif
-
-	// update number of edges
-	m_num_edges += g.m_num_edges;
-
-	// If one or none of the two graphs involved are normalized,
-	// the result is not normalized.
-	// If both graphs are normalized, the result is normalized.
-	m_is_normalized = m_is_normalized and g.is_normalized();
-}
-
-void graph::actions_after_add_edge(const node, const node) noexcept {
-	++m_num_edges;
-}
-
-void graph::actions_after_add_edges(const edge_list& e) noexcept {
-	m_num_edges += e.size();
-}
-
-void graph::actions_after_add_edges_bulk() noexcept { }
-
-void graph::actions_after_remove_edge(const node, const node) noexcept {
-	--m_num_edges;
-}
-
-void graph::actions_after_remove_edges(const edge_list& e) noexcept {
-	m_num_edges -= e.size();
-}
-
-void graph::actions_after_remove_edges_bulk() noexcept { }
-
-void graph::actions_before_remove_edges_incident_to(const node) noexcept { }
-
-void graph::actions_after_remove_node(const node) noexcept { }
-
 void graph::normalize_after_edge_addition(const bool to_norm, const bool check_norm)
 noexcept
 {

@@ -831,21 +831,45 @@ protected:
 		m_are_size_subtrees_valid = false;
 	}
 
-	void actions_after_add_edge(const node u, const node v) noexcept;
+	void actions_after_add_edge(const node u, const node v) noexcept {
+		directed_graph::actions_after_add_edge(u, v);
+		tree_only_actions_after_add_edge(u, v);
+	}
 
-	void actions_after_add_edges(const edge_list& e) noexcept;
+	void actions_after_add_edges(const edge_list& e) noexcept {
+		directed_graph::actions_after_add_edges(e);
+		tree_only_actions_after_add_edges(e);
+	}
 
-	void actions_after_add_edges_bulk() noexcept;
+	void actions_after_add_edges_bulk() noexcept {
+		directed_graph::actions_after_add_edges_bulk();
+		tree_only_actions_after_add_edges_bulk();
+	}
 
-	void actions_after_remove_edge(const node u, const node v) noexcept;
+	void actions_after_remove_edge(const node u, const node v) noexcept {
+		directed_graph::actions_after_remove_edge(u, v);
+		tree_only_actions_after_remove_edge(u, v);
+	}
 
-	void actions_after_remove_edges(const edge_list& e) noexcept;
+	void actions_after_remove_edges(const edge_list& e) noexcept {
+		directed_graph::actions_after_remove_edges(e);
+		tree_only_actions_after_remove_edges(e);
+	}
 
-	void actions_after_remove_edges_bulk() noexcept;
+	void actions_after_remove_edges_bulk() noexcept {
+		directed_graph::actions_after_remove_edges_bulk();
+		tree_only_actions_after_remove_edges_bulk();
+	}
 
-	void actions_before_remove_edges_incident_to(const node u) noexcept;
+	void actions_before_remove_edges_incident_to(const node u) noexcept {
+		directed_graph::actions_before_remove_edges_incident_to(u);
+		tree_only_actions_before_remove_edges_incident_to(u);
+	}
 
-	void actions_after_remove_node(const node u) noexcept;
+	void actions_after_remove_node(const node u) noexcept {
+		directed_graph::actions_after_remove_node(u);
+		tree_only_actions_after_remove_node(u);
+	}
 
 	void update_union_find_after_add_edge
 	(
