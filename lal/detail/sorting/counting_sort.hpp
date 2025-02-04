@@ -239,8 +239,8 @@ noexcept
 template <
 	typename value_t,
 	sort_type type,
-	typename value_iterator_t,
 	// Can be inferred \/ ...
+	typename value_iterator_t,
 	typename Callable,
 	std::enable_if_t< is_pointer_iterator_v<value_t, value_iterator_t>, bool > = true
 >
