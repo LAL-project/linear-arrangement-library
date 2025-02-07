@@ -112,21 +112,16 @@ public:
 
 	/// Move constructor
 	array(array&& d) noexcept {
-		// steal data
 		m_data = d.m_data;
 		m_size = d.m_size;
-		// invalidate data
 		d.m_data = nullptr;
 		d.m_size = 0;
 	}
 	/// Move assignment operator
 	array& operator= (array&& d) noexcept {
-		// free yourself
 		delete[] m_data;
-		// steal from others
 		m_data = d.m_data;
 		m_size = d.m_size;
-		// invalidate data
 		d.m_data = nullptr;
 		d.m_size = 0;
 		return *this;
@@ -175,7 +170,6 @@ public:
 	void clear() noexcept {
 		delete[] m_data;
 		m_size = 0;
-		// this is for those who like calling the destructor...
 		m_data = nullptr;
 	}
 
