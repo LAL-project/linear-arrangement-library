@@ -177,13 +177,24 @@ public:
 	 * @brief Resize the array.
 	 *
 	 * Does nothing if @e new_size is the same as the current size.
+	 * @tparam keep_current_data Resize the array while keeping the existing data.
 	 * @param new_size The new size of the array.
 	 */
+	template <bool keep_current_data = true>
 	void resize(const std::size_t new_size) noexcept {
 		if (new_size != m_size or m_data == nullptr) {
-			delete[] m_data;
-			m_size = new_size;
-			alloc_data();
+			if constexpr (keep_current_data) {
+				array<T> old_data(new_size);
+				for (std::size_t i = 0; i < new_size; ++i) {
+					old_data.m_data[i] = std::move(m_data[i]);
+				}
+				*this = std::move(old_data);
+			}
+			else {
+				delete[] m_data;
+				m_size = new_size;
+				alloc_data();
+			}
 		}
 	}
 
@@ -195,7 +206,7 @@ public:
 	 * @param v Value to initialize the array with.
 	 */
 	void resize(const std::size_t new_size, const T& v) noexcept {
-		resize(new_size);
+		resize<false>(new_size);
 		if (m_size > 0) {
 			fill(v);
 		}
