@@ -185,7 +185,7 @@ public:
 		if (new_size != m_size or m_data == nullptr) {
 			if constexpr (keep_current_data) {
 				array<T> old_data(new_size);
-				for (std::size_t i = 0; i < new_size; ++i) {
+				for (std::size_t i = 0; i < std::min(new_size, m_size); ++i) {
 					old_data.m_data[i] = std::move(m_data[i]);
 				}
 				*this = std::move(old_data);
