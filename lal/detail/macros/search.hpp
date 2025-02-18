@@ -51,19 +51,16 @@ namespace detail {
  * @pre The range [@e begin, @e end) is entirely sorted.
  */
 template <typename iterator_t, typename value_t>
-[[nodiscard]] inline iterator_t find_sorted
-(
+[[nodiscard]] inline iterator_t find_sorted(
 	const iterator_t begin,
 	const iterator_t end,
 	const std::size_t size,
 	const value_t& v,
 	const std::size_t min_size = 64
-)
-noexcept
+) noexcept
 {
-	return size < min_size ?
-		std::find(begin, end, v) :
-		std::lower_bound(begin, end, v);
+	return size < min_size ? std::find(begin, end, v)
+						   : std::lower_bound(begin, end, v);
 }
 
 /**
@@ -80,20 +77,17 @@ noexcept
  * @pre The range [@e begin, @e end) is entirely sorted.
  */
 template <typename iterator_t, typename value_t>
-[[nodiscard]] inline bool exists_sorted
-(
+[[nodiscard]] inline bool exists_sorted(
 	const iterator_t begin,
 	const iterator_t end,
 	const std::size_t size,
 	const value_t& v,
 	const std::size_t min_size = 64
-)
-noexcept
+) noexcept
 {
-	return size < min_size ?
-	   std::find(begin, end, v) != end :
-	   std::binary_search(begin, end, v);
+	return size < min_size ? std::find(begin, end, v) != end
+						   : std::binary_search(begin, end, v);
 }
 
-} // -- namespace lal
-} // -- namespace detail
+} // namespace detail
+} // namespace lal

@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // lal includes
@@ -58,8 +58,8 @@ namespace properties {
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-[[nodiscard]] numeric::integer num_pairs_independent_edges_integer
-(const graphs::undirected_graph& g) noexcept;
+[[nodiscard]] numeric::integer
+num_pairs_independent_edges_integer(const graphs::undirected_graph& g) noexcept;
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
@@ -67,9 +67,8 @@ namespace properties {
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
-[[nodiscard]] inline uint64_t num_pairs_independent_edges
-(const graphs::undirected_graph& g)
-noexcept
+[[nodiscard]] inline uint64_t
+num_pairs_independent_edges(const graphs::undirected_graph& g) noexcept
 {
 	return num_pairs_independent_edges_integer(g).to_uint();
 }
@@ -83,8 +82,8 @@ noexcept
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as an integer of arbitrary precision.
  */
-[[nodiscard]] numeric::integer num_pairs_independent_edges_integer
-(const graphs::directed_graph& g) noexcept;
+[[nodiscard]] numeric::integer
+num_pairs_independent_edges_integer(const graphs::directed_graph& g) noexcept;
 /**
  * @brief Compute the size of \f$Q(G)\f$.
  *
@@ -92,12 +91,11 @@ noexcept
  * @param g Input graph.
  * @returns The size of \f$Q(G)\f$ as a 64-bit integer.
  */
-[[nodiscard]] inline uint64_t num_pairs_independent_edges
-(const graphs::directed_graph& g)
-noexcept
+[[nodiscard]] inline uint64_t
+num_pairs_independent_edges(const graphs::directed_graph& g) noexcept
 {
 	return num_pairs_independent_edges_integer(g).to_uint();
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

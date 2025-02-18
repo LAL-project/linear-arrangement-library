@@ -94,8 +94,10 @@ enum class syntactic_dependency_tree_type {
 };
 
 /// Number of elements within enumeration @ref syntactic_dependency_tree_type.
-inline constexpr std::size_t __syntactic_dependency_tree_size =
-	1 + static_cast<std::size_t>(lal::linarr::syntactic_dependency_tree_type::unknown);
+constexpr inline std::size_t __syntactic_dependency_tree_size =
+	1 + static_cast<std::size_t>(
+			lal::linarr::syntactic_dependency_tree_type::unknown
+		);
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

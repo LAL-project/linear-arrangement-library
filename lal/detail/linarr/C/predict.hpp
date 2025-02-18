@@ -67,32 +67,32 @@ namespace detail {
  * @returns The amount of pairs of edges of lengths @e d1 and @e d2
  * respectively that can cross in a linear arrangement.
  */
-[[nodiscard]]
-inline constexpr
-uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
+[[nodiscard]] inline constexpr uint64_t
+alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept
+{
 	int64_t f = 0;
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
 		// sum(d1 - 1, i, 1, n - d2 - d1)
-		f += (d1 - 1)*(n - d2 - d1);
+		f += (d1 - 1) * (n - d2 - d1);
 		// sum(n - d2 - i, i, n - (d1 + d2) + 1, n - d2 - 1)
-		f += (d1*(d1 - 1))/2;
+		f += (d1 * (d1 - 1)) / 2;
 	}
 	else {
 		// sum(n - i - d2, i, 1, n - d2 - 1)
-		f += ((d2 - n)*(d2 - n + 1))/2;
+		f += ((d2 - n) * (d2 - n + 1)) / 2;
 	}
 
 	// positions s2 < s1
 	if (d1 + d2 <= n) {
-		f += (d1 - 1)*(n - d2 - d1);
+		f += (d1 - 1) * (n - d2 - d1);
 	}
 	if (1 + d2 - d1 >= 1) {
 		if (1 + d2 <= n - d1) {
-			f += (d1*(d1 - 1))/2;
+			f += (d1 * (d1 - 1)) / 2;
 		}
 		else {
-			f += ((n - d2)*(n - d2 - 1))/2;
+			f += ((n - d2) * (n - d2 - 1)) / 2;
 		}
 	}
 
@@ -112,60 +112,60 @@ uint64_t alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
  * @returns The amount of pairs of edges of lengths @e d1 and @e d2
  * respectively that can cross in a linear arrangement.
  */
-[[nodiscard]]
-inline constexpr
-uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
+[[nodiscard]] inline constexpr uint64_t
+beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept
+{
 	int64_t f = 0;
 
 	// positions s1 < s2
 	if (1 <= n - (d1 + d2)) {
 		// sum(n - i - d2 - 1, i, 1, n - d1 - d2)
-		f += (n - d2)*(n - d2) + 3*(d1 + d2 - n) - d1*d1;
+		f += (n - d2) * (n - d2) + 3 * (d1 + d2 - n) - d1 * d1;
 		// sum(n - i - d2, i, n - (d1 + d2) + 1, n - d2 - 1)
-		f += d1*(d1 - 1);
+		f += d1 * (d1 - 1);
 	}
 	else {
 		// sum(n - i - d2, i, 1, n - d2 - 1)
-		f += (d2 - n)*(d2 - n + 1);
+		f += (d2 - n) * (d2 - n + 1);
 	}
 
 	// positions s2 < s1
 	if (d1 < d2) {
 		if (1 + d2 <= n - d1) {
 			// sum(i - 3, i, 1 + d2, n - d1)
-			f += (n - d1)*(n - d1) - 5*(n - d1 - d2) - d2*d2;
+			f += (n - d1) * (n - d1) - 5 * (n - d1 - d2) - d2 * d2;
 		}
 
 		if (d2 <= n - d1) {
 			// sum(i - 2, i, 1 + d2 - d1, d2)
-			f += d1*(2*d2 - d1 - 3);
+			f += d1 * (2 * d2 - d1 - 3);
 		}
 		else {
 			// sum(i - 2, i, 1 + d2 - d1, n - d1)
-			f += (d2 - n)*(2*d1 - d2 - n + 3);
+			f += (d2 - n) * (2 * d1 - d2 - n + 3);
 		}
 	}
 	else {
 		// these sums are the same as in the positive
 		// case above, but simplified assuming d1 = d2.
 
-		if (1 + 2*d1 <= n) {
-			f += n*(n - 3) + d1*(6 - 2*n);
+		if (1 + 2 * d1 <= n) {
+			f += n * (n - 3) + d1 * (6 - 2 * n);
 		}
 
-		if (2*d1 <= n) {
-			f += d1*(d1 - 1);
+		if (2 * d1 <= n) {
+			f += d1 * (d1 - 1);
 		}
 		else {
-			f += (d1 - n)*(d1 - n + 1);
+			f += (d1 - n) * (d1 - n + 1);
 		}
 	}
 
 #if defined DEBUG
 	assert(f >= 0);
-	assert(f%2 == 0);
+	assert(f % 2 == 0);
 #endif
-	return to_uint64(f/2);
+	return to_uint64(f / 2);
 }
 
 /**
@@ -181,9 +181,9 @@ uint64_t beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept {
  * @returns The value of \f$E_2[C]\f$.
  */
 template <typename result_t, class graph_t, class arrangement_t>
-[[nodiscard]] inline result_t predict_C_using_edge_lengths
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] inline result_t predict_C_using_edge_lengths(
+	const graph_t& g, const arrangement_t& arr
+) noexcept
 {
 	result_t Ec2(0);
 	const uint64_t n = g.get_num_nodes();
@@ -201,22 +201,24 @@ noexcept
 		const int64_t len_uv = to_int64(abs_diff(arr[u], arr[v]));
 
 		const auto [al, be] =
-		(len_st <= len_uv ?
-			std::make_pair(alpha(nn, len_st, len_uv), beta(nn, len_st, len_uv))
-			:
-			std::make_pair(alpha(nn, len_uv, len_st), beta(nn, len_uv, len_st))
-		);
+			(len_st <= len_uv
+				 ? std::make_pair(
+					   alpha(nn, len_st, len_uv), beta(nn, len_st, len_uv)
+				   )
+				 : std::make_pair(
+					   alpha(nn, len_uv, len_st), beta(nn, len_uv, len_st)
+				   ));
 
 		if constexpr (std::is_same_v<result_t, numeric::rational>) {
 			Ec2 += numeric::rational(al, be);
 		}
 		else {
-			Ec2 += to_double(al)/to_double(be);
+			Ec2 += to_double(al) / to_double(be);
 		}
 	}
 
 	return Ec2;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

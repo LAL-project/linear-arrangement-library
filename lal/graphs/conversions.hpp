@@ -70,13 +70,9 @@ namespace graphs {
  * it is nor not?
  * @returns Returns a lal::graphs::undirected_graph obtained from the head vector.
  */
-[[nodiscard]] undirected_graph from_head_vector_to_undirected_graph
-(
-	const head_vector& hv,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] undirected_graph from_head_vector_to_undirected_graph(
+	const head_vector& hv, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts a head vector into a directed graph.
@@ -95,13 +91,9 @@ noexcept;
  * it is nor not?
  * @returns Returns a lal::graphs::directed_graph obtained from the head vector.
  */
-[[nodiscard]] directed_graph from_head_vector_to_directed_graph
-(
-	const head_vector& hv,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] directed_graph from_head_vector_to_directed_graph(
+	const head_vector& hv, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts a head vector into a rooted tree.
@@ -116,13 +108,9 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
-[[nodiscard]] std::pair<free_tree,node> from_head_vector_to_free_tree
-(
-	const head_vector& hv,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] std::pair<free_tree, node> from_head_vector_to_free_tree(
+	const head_vector& hv, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts a head vector into a rooted tree.
@@ -137,13 +125,9 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre The head vector must be of a valid rooted tree.
  */
-[[nodiscard]] rooted_tree from_head_vector_to_rooted_tree
-(
-	const head_vector& hv,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] rooted_tree from_head_vector_to_rooted_tree(
+	const head_vector& hv, const bool normalize = true, const bool check = true
+) noexcept;
 
 // -----------------------------------------------------------------------------
 // edge list -> graph
@@ -164,13 +148,9 @@ noexcept;
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-[[nodiscard]] rooted_tree from_edge_list_to_rooted_tree
-(
-	const edge_list& el,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] rooted_tree from_edge_list_to_rooted_tree(
+	const edge_list& el, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts an edge list into a rooted tree.
@@ -188,13 +168,9 @@ noexcept;
  * @pre No edge in the list is repeated.
  * @pre The maximum index in the list must be equal to the number of edges in the list.
  */
-[[nodiscard]] free_tree from_edge_list_to_free_tree
-(
-	const edge_list& el,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] free_tree from_edge_list_to_free_tree(
+	const edge_list& el, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts an edge list into a directed graph.
@@ -211,13 +187,9 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-[[nodiscard]] directed_graph from_edge_list_to_directed_graph
-(
-	const edge_list& el,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] directed_graph from_edge_list_to_directed_graph(
+	const edge_list& el, const bool normalize = true, const bool check = true
+) noexcept;
 
 /**
  * @brief Converts an edge list into an undirected graph.
@@ -234,13 +206,9 @@ noexcept;
  * @returns Returns a lal::graphs::rooted_tree obtained from the head vector.
  * @pre No edge in the list is repeated.
  */
-[[nodiscard]] undirected_graph from_edge_list_to_undirected_graph
-(
-	const edge_list& el,
-	const bool normalize = true,
-	const bool check = true
-)
-noexcept;
+[[nodiscard]] undirected_graph from_edge_list_to_undirected_graph(
+	const edge_list& el, const bool normalize = true, const bool check = true
+) noexcept;
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

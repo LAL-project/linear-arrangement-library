@@ -53,20 +53,23 @@
 namespace lal {
 namespace linarr {
 
-std::vector<dependency_flux>
-dependency_flux_compute(const graphs::free_tree& t, const linear_arrangement& arr)
-noexcept
+std::vector<dependency_flux> dependency_flux_compute(
+	const graphs::free_tree& t, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::dependency_flux_compute<dependency_flux>(t, detail::identity_arr(arr)) :
-			detail::dependency_flux_compute<dependency_flux>(t, detail::nonidentity_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::dependency_flux_compute<dependency_flux>(
+							  t, detail::identity_arr(arr)
+						  )
+						: detail::dependency_flux_compute<dependency_flux>(
+							  t, detail::nonidentity_arr(arr)
+						  )
+	);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

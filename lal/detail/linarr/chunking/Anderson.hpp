@@ -62,16 +62,16 @@ namespace detail {
 template <class arrangement_t>
 class chunks_Anderson : public chunks_generic<arrangement_t> {
 public:
+
 	/**
 	 * @brief Constructor
 	 * @param rt Input rooted tree.
 	 * @param arr Input linear arrangement.
 	 */
 	chunks_Anderson(const graphs::rooted_tree& rt, const arrangement_t& arr)
-	noexcept
+		noexcept
 		: generic(rt, arr)
-	{
-	}
+	{ }
 
 	/**
 	 * @brief Main method of this class
@@ -79,7 +79,8 @@ public:
 	 * Calling this method will chunk the input rooted tree using Anderson
 	 * (et al.)'s definition.
 	 */
-	void chunk_input_tree() noexcept {
+	void chunk_input_tree() noexcept
+	{
 		m_sequence.init(m_n);
 
 		if (m_rt.get_num_nodes() == 1) {
@@ -104,7 +105,8 @@ public:
 private:
 
 	/// Can node @e u be added to the same chunk as @e r.
-	[[nodiscard]] bool can_be_added(const node r, const node u) const noexcept {
+	[[nodiscard]] bool can_be_added(const node r, const node u) const noexcept
+	{
 		return m_rt.get_out_degree(u) == 0 and m_rt.has_edge(r, u);
 	}
 
@@ -113,7 +115,8 @@ private:
 	 * @param r Root of the current subtree.
 	 * @param[inout] chunk_idx Current chunk index.
 	 */
-	void assign_chunk_indices(const node_t r, std::size_t& chunk_idx) noexcept {
+	void assign_chunk_indices(const node_t r, std::size_t& chunk_idx) noexcept
+	{
 		++chunk_idx;
 
 #if defined DEBUG
@@ -167,7 +170,8 @@ private:
 	 *
 	 * Reassigns labels to chunks so that the leftmost chunk is labelled 0.
 	 */
-	void relabel_chunks() noexcept {
+	void relabel_chunks() noexcept
+	{
 		std::size_t chunk_idx = 0;
 		position_t p = 0ull;
 
@@ -192,7 +196,8 @@ private:
 	 * Puts all equally-labelled nodes in the same chunk and computes the parent
 	 * node for each chunk.
 	 */
-	void make_chunks() noexcept {
+	void make_chunks() noexcept
+	{
 		m_sequence.push_chunk();
 
 		position_t p = 0ull;
@@ -223,17 +228,17 @@ private:
 	typedef chunks_generic<arrangement_t> generic;
 
 	// member variables
-	using generic::m_sequence;
-	using generic::m_n;
 	using generic::m_arr;
+	using generic::m_n;
 	using generic::m_rt;
+	using generic::m_sequence;
 
 	// member functions
-	using generic::set_parent_chunk;
-	using generic::set_chunk_index;
-	using generic::node_to_chunk;
 	using generic::last_chunk;
+	using generic::node_to_chunk;
+	using generic::set_chunk_index;
+	using generic::set_parent_chunk;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

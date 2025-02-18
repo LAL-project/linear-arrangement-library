@@ -50,32 +50,31 @@ namespace lal {
 namespace io {
 
 std::vector<head_vector_error>
-check_correctness_head_vector(const head_vector& head_vector)
-noexcept
+check_correctness_head_vector(const head_vector& head_vector) noexcept
 {
 	return detail::find_errors<false>(head_vector);
 }
 
 std::vector<head_vector_error>
-check_correctness_head_vector(const std::string& head_vector_str)
-noexcept
+check_correctness_head_vector(const std::string& head_vector_str) noexcept
 {
 	return detail::find_errors<false>(head_vector_str);
 }
 
 treebank_file_report
-check_correctness_treebank(const std::string& treebank_filename)
-noexcept
+check_correctness_treebank(const std::string& treebank_filename) noexcept
 {
 	return detail::check_correctness_treebank<false>(treebank_filename);
 }
 
-treebank_collection_report check_correctness_treebank_collection
-(const std::string& main_file_name, const std::size_t n_threads)
-noexcept
+treebank_collection_report check_correctness_treebank_collection(
+	const std::string& main_file_name, const std::size_t n_threads
+) noexcept
 {
-	return detail::check_correctness_treebank_collection<false>(main_file_name, n_threads);
+	return detail::check_correctness_treebank_collection<false>(
+		main_file_name, n_threads
+	);
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

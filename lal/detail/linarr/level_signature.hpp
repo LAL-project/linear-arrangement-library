@@ -89,6 +89,7 @@ enum class level_signature_type {
 template <level_signature_type t>
 class level_signature {
 public:
+
 	/// Default constructor.
 	level_signature() noexcept = default;
 	/// Default copy constructor.
@@ -96,25 +97,29 @@ public:
 	/// Default move constructor.
 	level_signature(level_signature&&) noexcept = default;
 	/// Default copy assignment operator.
-	level_signature& operator=(const level_signature&) noexcept = default;
+	level_signature& operator= (const level_signature&) noexcept = default;
 	/// Default move assignment operator.
-	level_signature& operator=(level_signature&&) noexcept = default;
+	level_signature& operator= (level_signature&&) noexcept = default;
 
 	/**
 	 * @brief Constructor with size.
 	 *
 	 * All level values are initialized at 0.
 	 */
-	level_signature(const std::size_t n) noexcept : m_data(n, 0) { }
+	level_signature(const std::size_t n) noexcept
+		: m_data(n, 0)
+	{ }
 
 	/// Initializes this level signature.
-	void init(const std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept
+	{
 		m_data.resize(n, 0);
 	}
 
 	/// Access position 'i'
 	template <typename T>
-	[[nodiscard]] int64_t operator[] (const T i) const noexcept {
+	[[nodiscard]] int64_t operator[] (const T i) const noexcept
+	{
 		if constexpr (t == level_signature_type::per_position) {
 			static_assert(std::is_same_v<T, position_t>);
 		}
@@ -125,7 +130,8 @@ public:
 	}
 	/// Access position 'i'
 	template <typename T>
-	[[nodiscard]] int64_t& operator[] (const T i) noexcept {
+	[[nodiscard]] int64_t& operator[] (const T i) noexcept
+	{
 		if constexpr (t == level_signature_type::per_position) {
 			static_assert(std::is_same_v<T, position_t>);
 		}
@@ -146,10 +152,13 @@ public:
 	 * @pre Both level signatures must be of arrangements of the same tree.
 	 */
 	template <level_signature_type st = t>
-	[[nodiscard]] bool operator== (const level_signature<st>& L) const noexcept {
+	[[nodiscard]] bool operator== (const level_signature<st>& L) const noexcept
+	{
 		static_assert(st == t);
 		for (std::size_t i = 0; i < m_data.size(); ++i) {
-			if (m_data[i] != L.m_data[i]) { return false; }
+			if (m_data[i] != L.m_data[i]) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -164,9 +173,9 @@ public:
 	 */
 	template <
 		level_signature_type st = t,
-		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true
-	>
-	[[nodiscard]] int64_t get_vertex_level(const node u) const noexcept {
+		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true>
+	[[nodiscard]] int64_t get_vertex_level(const node u) const noexcept
+	{
 		return m_data[u];
 	}
 	/**
@@ -179,9 +188,9 @@ public:
 	 */
 	template <
 		level_signature_type st = t,
-		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true
-	>
-	void set_vertex_level(const node u, const int64_t l) noexcept {
+		std::enable_if_t<st == level_signature_type::per_vertex, bool> = true>
+	void set_vertex_level(const node u, const int64_t l) noexcept
+	{
 		m_data[u] = l;
 	}
 
@@ -195,9 +204,9 @@ public:
 	 */
 	template <
 		level_signature_type st = t,
-		std::enable_if_t<st == level_signature_type::per_position, bool> = true
-	>
-	[[nodiscard]] int64_t get_position_level(const position p) const noexcept {
+		std::enable_if_t<st == level_signature_type::per_position, bool> = true>
+	[[nodiscard]] int64_t get_position_level(const position p) const noexcept
+	{
 		return m_data[p];
 	}
 	/**
@@ -210,9 +219,9 @@ public:
 	 */
 	template <
 		level_signature_type st = t,
-		std::enable_if_t<st == level_signature_type::per_position, bool> = true
-	>
-	void set_position_level(const position p, const int64_t l) noexcept {
+		std::enable_if_t<st == level_signature_type::per_position, bool> = true>
+	void set_position_level(const position p, const int64_t l) noexcept
+	{
 		m_data[p] = l;
 	}
 
@@ -222,16 +231,17 @@ public:
 	 * The operation is equivalent to recalculating the level signature for the
 	 * mirrored arrangement.
 	 */
-	void mirror() noexcept {
+	void mirror() noexcept
+	{
 		if constexpr (t == level_signature_type::per_position) {
 			const std::size_t n = m_data.size();
-			for (position p = 0ull; p < n/2; ++p) {
+			for (position p = 0ull; p < n / 2; ++p) {
 				m_data[p] = -m_data[p];
 				m_data[n - 1ull - p] = -m_data[n - 1ull - p];
-				std::swap( m_data[p], m_data[n - 1ull - p] );
+				std::swap(m_data[p], m_data[n - 1ull - p]);
 			}
-			if (n%2 == 1) {
-				m_data[n/2] = -m_data[n/2];
+			if (n % 2 == 1) {
+				m_data[n / 2] = -m_data[n / 2];
 			}
 		}
 		else {
@@ -242,27 +252,30 @@ public:
 	}
 
 private:
+
 	/// The signature of level values.
 	array<int64_t> m_data;
 };
 
 /// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_vertex.
-[[nodiscard]] inline constexpr bool is_per_vertex(const level_signature_type& t)
-noexcept
+[[nodiscard]] inline constexpr bool is_per_vertex(const level_signature_type& t
+) noexcept
 {
 	return t == level_signature_type::per_vertex;
 }
 /// Returns true if the template parameter is @ref lal::detail::level_signature_type::per_position.
-[[nodiscard]] inline constexpr bool is_per_position(const level_signature_type& t)
-noexcept
+[[nodiscard]] inline constexpr bool
+is_per_position(const level_signature_type& t) noexcept
 {
 	return t == level_signature_type::per_position;
 }
 
 /// A useful typedef for level signatures per vertex.
-typedef level_signature<level_signature_type::per_vertex> level_signature_per_vertex;
+typedef level_signature<level_signature_type::per_vertex>
+	level_signature_per_vertex;
 /// A useful typedef for level signatures per position.
-typedef level_signature<level_signature_type::per_position> level_signature_per_position;
+typedef level_signature<level_signature_type::per_position>
+	level_signature_per_position;
 
 /**
  * @brief Returns whether or not the input vertex is a thistle vertex.
@@ -275,23 +288,23 @@ typedef level_signature<level_signature_type::per_position> level_signature_per_
  * @returns Whether or not the input vertex is a thistle.
  */
 template <level_signature_type t, class graph_t>
-[[nodiscard]] bool is_thistle_vertex
-(
+[[nodiscard]] bool is_thistle_vertex(
 	const graph_t& g,
 	const level_signature<t>& levels,
 	const node_t u,
 	const linear_arrangement& arr = {}
-)
-noexcept
+) noexcept
 {
 	int64_t l;
 	if constexpr (t == level_signature_type::per_vertex) {
 		l = levels[u];
 	}
 	else {
-		l = (arr.size() == 0 ? levels[position_t{*u}] : levels[position_t{arr[u]}]);
+		l =
+			(arr.size() == 0 ? levels[position_t{*u}]
+							 : levels[position_t{arr[u]}]);
 	}
-	return static_cast<uint64_t>( std::abs(l) ) != g.get_degree(*u);
+	return static_cast<uint64_t>(std::abs(l)) != g.get_degree(*u);
 }
 
 /**
@@ -304,13 +317,9 @@ noexcept
  * @pre Parameter @e L is initialized at 0.
  */
 template <level_signature_type t, class graph_t>
-void calculate_level_signature
-(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	level_signature<t>& L
-)
-noexcept
+void calculate_level_signature(
+	const graph_t& g, const linear_arrangement& arr, level_signature<t>& L
+) noexcept
 {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
@@ -349,17 +358,21 @@ noexcept
  * @returns The level sequence of an arrangement per vertex.
  */
 template <level_signature_type t, class graph_t>
-[[nodiscard]] level_signature<t> calculate_level_signature
-(const graph_t& g, const linear_arrangement& arr)
-noexcept
+[[nodiscard]] level_signature<t> calculate_level_signature(
+	const graph_t& g, const linear_arrangement& arr
+) noexcept
 {
 	const auto n = g.get_num_nodes();
 	level_signature<t> L(n);
 	if constexpr (t == level_signature_type::per_vertex) {
-		for (node_t u = 0ull; u < n; ++u) { L[u] = 0; }
+		for (node_t u = 0ull; u < n; ++u) {
+			L[u] = 0;
+		}
 	}
 	else {
-		for (position_t p = 0ull; p < n; ++p) { L[p] = 0; }
+		for (position_t p = 0ull; p < n; ++p) {
+			L[p] = 0;
+		}
 	}
 
 	calculate_level_signature(g, arr, L);
@@ -373,13 +386,13 @@ noexcept
  * @returns A mirrored copy of the input level signature.
  */
 template <class level_signature_t>
-[[nodiscard]] level_signature_t mirror_level_signature(const level_signature_t& L)
-noexcept
+[[nodiscard]] level_signature_t
+mirror_level_signature(const level_signature_t& L) noexcept
 {
 	level_signature_t L2 = L;
 	L2.mirror();
 	return L2;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

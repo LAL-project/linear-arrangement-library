@@ -94,8 +94,10 @@ struct memory {
 	 * key over all elements to be sorted. This is typically equal to @e largest_key_plus_1
 	 * but not necessarily.
 	 */
-	memory(const std::size_t largest_key_plus_1, const std::size_t max_size_container)
-	noexcept
+	memory(
+		const std::size_t largest_key_plus_1,
+		const std::size_t max_size_container
+	) noexcept
 		: count(largest_key_plus_1, 0),
 		  output(max_size_container)
 	{ }
@@ -104,10 +106,13 @@ struct memory {
 	~memory() noexcept = default;
 
 	/// Set the @ref count member to 0.
-	void reset_count() noexcept { count.fill(0); }
+	void reset_count() noexcept
+	{
+		count.fill(0);
+	}
 };
 
-} // -- namespace countingsort
+} // namespace countingsort
 
 /**
  * @brief Counting sort algorithm with reusable memory.
@@ -147,28 +152,27 @@ template <
 	// Can be inferred \/ ...
 	typename value_iterator_t,
 	typename Callable,
-	std::enable_if_t< is_pointer_iterator_v<value_t, value_iterator_t>, bool > = true
->
+	std::enable_if_t<is_pointer_iterator_v<value_t, value_iterator_t>, bool> =
+		true>
 void counting_sort(
-	const value_iterator_t begin, const value_iterator_t end,
+	const value_iterator_t begin,
+	const value_iterator_t end,
 	const Callable& key,
 	countingsort::memory<value_t>& mem
-)
-noexcept
+) noexcept
 {
 	// ensure the 'key' function is correct
-	static_assert(
-		std::is_constructible_v<
-			std::function<std::size_t (const value_t&)>,
-			Callable
-		>
-	);
+	static_assert(std::is_constructible_v<
+				  std::function<std::size_t(const value_t&)>,
+				  Callable>);
 
-	if (begin == end) { return; }
+	if (begin == end) {
+		return;
+	}
 
 	if constexpr (not memory_has_frequencies) {
 		// calculate frequency of each element
-		for (auto it = begin; it != end; ) {
+		for (auto it = begin; it != end;) {
 			// get the key of the element into a variable so that
 			// the function is NOT called more than once per iteration
 			const std::size_t elem_key = key(*(it++));
@@ -177,10 +181,12 @@ noexcept
 		}
 	}
 
-	std::exclusive_scan(mem.count.begin(), mem.count.end(), mem.count.begin(), 0);
+	std::exclusive_scan(
+		mem.count.begin(), mem.count.end(), mem.count.begin(), 0
+	);
 
 	std::size_t actual_container_size = 0;
-	for (auto it = begin; it != end; ) {
+	for (auto it = begin; it != end;) {
 		++actual_container_size;
 
 		// get the key of the element into a variable so that
@@ -242,33 +248,31 @@ template <
 	// Can be inferred \/ ...
 	typename value_iterator_t,
 	typename Callable,
-	std::enable_if_t< is_pointer_iterator_v<value_t, value_iterator_t>, bool > = true
->
+	std::enable_if_t<is_pointer_iterator_v<value_t, value_iterator_t>, bool> =
+		true>
 void counting_sort(
-	const value_iterator_t begin, const value_iterator_t end,
+	const value_iterator_t begin,
+	const value_iterator_t end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
 	const Callable& key
-)
-noexcept
+) noexcept
 {
 	// ensure the 'key' function is correct
-	static_assert(
-		std::is_constructible_v<
-			std::function<std::size_t (const value_t&)>,
-			Callable
-		>
-	);
+	static_assert(std::is_constructible_v<
+				  std::function<std::size_t(const value_t&)>,
+				  Callable>);
 
 	// nothing to do if there are no elements to sort
-	if (begin == end) { return; }
+	if (begin == end) {
+		return;
+	}
 
-	countingsort::memory<value_t> mem(largest_key+1, upper_bound_size);
+	countingsort::memory<value_t> mem(largest_key + 1, upper_bound_size);
 
-	counting_sort<value_t, type, false, value_iterator_t>
-		(begin, end, key, mem);
+	counting_sort<value_t, type, false, value_iterator_t>(begin, end, key, mem);
 }
 
-} // -- namespace sorting
-} // -- namespace detail
-} // -- namespace lal
+} // namespace sorting
+} // namespace detail
+} // namespace lal

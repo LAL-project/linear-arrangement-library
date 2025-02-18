@@ -63,9 +63,8 @@ namespace properties {
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a rational value.
  */
-[[nodiscard]] numeric::rational exp_num_crossings_rational
-(const graphs::undirected_graph& g)
-noexcept;
+[[nodiscard]] numeric::rational
+exp_num_crossings_rational(const graphs::undirected_graph& g) noexcept;
 /**
  * @brief Computes the the expected number of crossings in unconstrained arrangements,
  * \f$\mathbb{E}[C]\f$.
@@ -74,9 +73,11 @@ noexcept;
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a floating point value.
  */
-[[nodiscard]] inline double exp_num_crossings(const graphs::undirected_graph& g)
-noexcept
-{ return exp_num_crossings_rational(g).to_double(); }
+[[nodiscard]] inline double exp_num_crossings(const graphs::undirected_graph& g
+) noexcept
+{
+	return exp_num_crossings_rational(g).to_double();
+}
 
 /* ----------------------- */
 /* VARIANCE OF C: V_rla[C] */
@@ -100,8 +101,9 @@ noexcept
  * the variance faster. Note: this might be too memory-consuming.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-[[nodiscard]] numeric::rational var_num_crossings_rational
-(const graphs::undirected_graph& g, const bool reuse = true) noexcept;
+[[nodiscard]] numeric::rational var_num_crossings_rational(
+	const graphs::undirected_graph& g, const bool reuse = true
+) noexcept;
 /**
  * @brief Computes the variance of the number of crossings of a graph in unconstrained
  * arrangements, \f$\mathbb{V}[C]\f$.
@@ -112,10 +114,12 @@ noexcept
  * the variance faster. Note: this might be too memory-consuming.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rationafloating point value.
  */
-[[nodiscard]] inline double var_num_crossings
-(const graphs::undirected_graph& g, const bool reuse = true)
-noexcept
-{ return var_num_crossings_rational(g, reuse).to_double(); }
+[[nodiscard]] inline double var_num_crossings(
+	const graphs::undirected_graph& g, const bool reuse = true
+) noexcept
+{
+	return var_num_crossings_rational(g, reuse).to_double();
+}
 
 // --------------------
 // VARIANCE FOR FORESTS
@@ -133,9 +137,8 @@ noexcept
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  * @pre The input graph @e g is a forest.
  */
-[[nodiscard]] numeric::rational var_num_crossings_forest_rational
-(const graphs::undirected_graph& g)
-noexcept;
+[[nodiscard]] numeric::rational
+var_num_crossings_forest_rational(const graphs::undirected_graph& g) noexcept;
 /**
  * @brief Computes the variance of the number of crossings of a forest in unconstrained
  * arrangements, \f$\mathbb{V}[C]\f$.
@@ -144,9 +147,11 @@ noexcept;
  * @param g Input forest.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a floating point value.
  */
-[[nodiscard]] inline double var_num_crossings_forest(const graphs::undirected_graph& g)
-noexcept
-{ return var_num_crossings_forest_rational(g).to_double(); }
+[[nodiscard]] inline double
+var_num_crossings_forest(const graphs::undirected_graph& g) noexcept
+{
+	return var_num_crossings_forest_rational(g).to_double();
+}
 
 // ------------------
 // VARIANCE FOR TREES
@@ -161,9 +166,8 @@ noexcept
  * @param t Input free tree.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-[[nodiscard]] inline numeric::rational var_num_crossings_tree_rational
-(const graphs::free_tree& t)
-noexcept
+[[nodiscard]] inline numeric::rational
+var_num_crossings_tree_rational(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -178,8 +182,8 @@ noexcept
  * @param t Input free tree.
  * @returns The return value is a floating point value.
  */
-[[nodiscard]] inline double var_num_crossings_tree(const graphs::free_tree& t)
-noexcept
+[[nodiscard]] inline double var_num_crossings_tree(const graphs::free_tree& t
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -199,9 +203,8 @@ noexcept
  * @param t Input rooted tree.
  * @returns The exact value of \f$V_{rla}[C]\f$ as a rational value.
  */
-[[nodiscard]] inline numeric::rational var_num_crossings_tree_rational
-(const graphs::rooted_tree& t)
-noexcept
+[[nodiscard]] inline numeric::rational
+var_num_crossings_tree_rational(const graphs::rooted_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -218,8 +221,8 @@ noexcept
  * @param t Input rooted tree.
  * @returns The return value is a floating point value.
  */
-[[nodiscard]] inline double var_num_crossings_tree(const graphs::rooted_tree& t)
-noexcept
+[[nodiscard]] inline double var_num_crossings_tree(const graphs::rooted_tree& t
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -227,5 +230,5 @@ noexcept
 	return var_num_crossings_forest_rational(t.to_free_tree()).to_double();
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

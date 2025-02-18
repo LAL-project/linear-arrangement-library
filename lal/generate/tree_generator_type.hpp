@@ -78,9 +78,7 @@ struct random_t { };
 /// Shorthand to get one of @ref exhaustive_t or @ref random_t.
 template <bool is_exhaustive>
 struct exhaustive_random_type {
-	typedef
-		std::conditional_t<is_exhaustive, exhaustive_t, random_t>
-		type;
+	typedef std::conditional_t<is_exhaustive, exhaustive_t, random_t> type;
 };
 /// Shorthand of @ref exhaustive_random_type.
 template <bool is_exhaustive>
@@ -109,9 +107,7 @@ struct unlabelled_t { };
 /// Shorthand to get one of @ref labelled_t or @ref unlabelled_t.
 template <bool is_labelled>
 struct labelled_unlabelled_type {
-	typedef
-		std::conditional_t<is_labelled, labelled_t, unlabelled_t>
-		type;
+	typedef std::conditional_t<is_labelled, labelled_t, unlabelled_t> type;
 };
 /// Shorthand of @ref labelled_unlabelled_type.
 template <bool is_labelled>
@@ -133,119 +129,92 @@ static_assert(std::is_same_v<labelled_unlabelled_type_t<false>, unlabelled_t>);
 template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_t
->
+	class tree_t>
 struct tree_generator_type {
-	static_assert(
-		std::is_same_v<exhaustive_random, exhaustive_t> ||
-		std::is_same_v<exhaustive_random, random_t>
-	);
-	static_assert(
-		std::is_same_v<labelled_unlabelled, labelled_t> ||
-		std::is_same_v<labelled_unlabelled, unlabelled_t>
-	);
+	static_assert(std::is_same_v<exhaustive_random, exhaustive_t> || std::is_same_v<exhaustive_random, random_t>);
+	static_assert(std::is_same_v<labelled_unlabelled, labelled_t> || std::is_same_v<labelled_unlabelled, unlabelled_t>);
 
-	typedef
+	typedef std::conditional_t<
+		std::is_same_v<exhaustive_random, exhaustive_t>,
+		// exhaustive types
 		std::conditional_t<
-			std::is_same_v<exhaustive_random, exhaustive_t>,
-			// exhaustive types
+			std::is_same_v<labelled_unlabelled, labelled_t>,
+			// labelled types
 			std::conditional_t<
-				std::is_same_v<labelled_unlabelled, labelled_t>,
-				// labelled types
-				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_t>,
-					all_lab_free_trees,
-					all_lab_rooted_trees
-				>,
-				// unlabelled types
-				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_t>,
-					all_ulab_free_trees,
-					all_ulab_rooted_trees
-				>
-			>,
-			// random types
+				std::is_base_of_v<graphs::free_tree, tree_t>,
+				all_lab_free_trees,
+				all_lab_rooted_trees>,
+			// unlabelled types
 			std::conditional_t<
-				std::is_same_v<labelled_unlabelled, labelled_t>,
-				// labelled types
-				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_t>,
-					rand_lab_free_trees,
-					rand_lab_rooted_trees
-				>,
-				// unlabelled types
-				std::conditional_t<
-					std::is_base_of_v<graphs::free_tree, tree_t>,
-					rand_ulab_free_trees,
-					rand_ulab_rooted_trees
-				>
-			>
-		>
-	type;
+				std::is_base_of_v<graphs::free_tree, tree_t>,
+				all_ulab_free_trees,
+				all_ulab_rooted_trees>>,
+		// random types
+		std::conditional_t<
+			std::is_same_v<labelled_unlabelled, labelled_t>,
+			// labelled types
+			std::conditional_t<
+				std::is_base_of_v<graphs::free_tree, tree_t>,
+				rand_lab_free_trees,
+				rand_lab_rooted_trees>,
+			// unlabelled types
+			std::conditional_t<
+				std::is_base_of_v<graphs::free_tree, tree_t>,
+				rand_ulab_free_trees,
+				rand_ulab_rooted_trees>>>
+		type;
 };
 
 /// Typedef of @ref tree_generator_type
 template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_t
->
-using tree_generator_type_t =
-	typename tree_generator_type<
-		exhaustive_random,
-		labelled_unlabelled,
-		tree_t
-	>::type;
+	class tree_t>
+using tree_generator_type_t = typename tree_generator_type<
+	exhaustive_random,
+	labelled_unlabelled,
+	tree_t>::type;
 
 // some sanity checks
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<exhaustive_t, labelled_t, graphs::free_tree>,
-	all_lab_free_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<exhaustive_t, labelled_t, graphs::rooted_tree>,
-	all_lab_rooted_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<exhaustive_t, unlabelled_t, graphs::free_tree>,
-	all_ulab_free_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t< exhaustive_t, unlabelled_t, graphs::rooted_tree>,
-	all_ulab_rooted_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<random_t, labelled_t, graphs::free_tree>,
-	rand_lab_free_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<random_t, labelled_t, graphs::rooted_tree>,
-	rand_lab_rooted_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<random_t, unlabelled_t, graphs::free_tree>,
-	rand_ulab_free_trees
->
-);
-static_assert(
-std::is_same_v<
-	tree_generator_type_t<random_t, unlabelled_t, graphs::rooted_tree>,
-	rand_ulab_rooted_trees
->
-);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<
+				  exhaustive_t,
+				  labelled_t,
+				  graphs::free_tree>,
+			  all_lab_free_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<
+				  exhaustive_t,
+				  labelled_t,
+				  graphs::rooted_tree>,
+			  all_lab_rooted_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<
+				  exhaustive_t,
+				  unlabelled_t,
+				  graphs::free_tree>,
+			  all_ulab_free_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<
+				  exhaustive_t,
+				  unlabelled_t,
+				  graphs::rooted_tree>,
+			  all_ulab_rooted_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<random_t, labelled_t, graphs::free_tree>,
+			  rand_lab_free_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<random_t, labelled_t, graphs::rooted_tree>,
+			  rand_lab_rooted_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<random_t, unlabelled_t, graphs::free_tree>,
+			  rand_ulab_free_trees>);
+static_assert(std::is_same_v<
+			  tree_generator_type_t<
+				  random_t,
+				  unlabelled_t,
+				  graphs::rooted_tree>,
+			  rand_ulab_rooted_trees>);
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

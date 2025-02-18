@@ -83,15 +83,21 @@ static constexpr place PLACE_NONE_OF = 2;
 /// Right side of a vertex.
 static constexpr side RIGHT_SIDE = 0;
 /// Left side of a vertex.
-static constexpr side LEFT_SIDE  = 1;
+static constexpr side LEFT_SIDE = 1;
 
 // if s = 0 then (s+1)&0x1 = 1
 // if s = 1 then (s+1)&0x1 = 0
 /// Other side of a vertex. If @e s is @ref RIGHT_SIDE, returns @ref LEFT_SIDE.
-static inline constexpr side other_side(side s) noexcept { return ((s + 1)&0x1); }
+static constexpr inline side other_side(side s) noexcept
+{
+	return ((s + 1) & 0x1);
+}
 
 /// Is an integer number even?
-static inline constexpr bool is_even(uint64_t i) noexcept { return (i&0x1) == 0; }
+static constexpr inline bool is_even(uint64_t i) noexcept
+{
+	return (i & 0x1) == 0;
+}
 
 /// The tree is left-anchored
 static constexpr char LEFT_ANCHOR = -1;
@@ -121,9 +127,9 @@ static constexpr char ANCHOR = 1;
  * the tree.
  */
 template <sorting::sort_type type>
-void make_sorted_adjacency_list_rooted
-(const graphs::rooted_tree& t, std::vector<std::vector<node_size>>& L)
-noexcept
+void make_sorted_adjacency_list_rooted(
+	const graphs::rooted_tree& t, std::vector<std::vector<node_size>>& L
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 	const node r = t.get_root();
@@ -134,45 +140,48 @@ noexcept
 	array<edge_size> edge_list(n - 1);
 
 	{
-	const std::size_t k = t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
-	array<uint64_t> size_subtrees(k, 0);
+		const std::size_t k =
+			t.are_size_subtrees_valid() ? 0 : t.get_num_nodes();
+		array<uint64_t> size_subtrees(k, 0);
 
-	sorting::countingsort::memory<edge_size> memcs(n, n);
-	auto it = edge_list.begin();
+		sorting::countingsort::memory<edge_size> memcs(n, n);
+		auto it = edge_list.begin();
 
-	iterators::E_iterator<graphs::rooted_tree> E_it(t);
-	if (t.are_size_subtrees_valid()) {
-		// use the sizes that are already calculated
-		while (not E_it.end()) {
-			const edge e = E_it.get_edge();
-			const node v = e.second;
-			const uint64_t suv = t.get_num_nodes_subtree(v);
-			*it++ = {e, suv};
-			++memcs.count[suv];
+		iterators::E_iterator<graphs::rooted_tree> E_it(t);
+		if (t.are_size_subtrees_valid()) {
+			// use the sizes that are already calculated
+			while (not E_it.end()) {
+				const edge e = E_it.get_edge();
+				const node v = e.second;
+				const uint64_t suv = t.get_num_nodes_subtree(v);
+				*it++ = {e, suv};
+				++memcs.count[suv];
 
-			E_it.next();
+				E_it.next();
+			}
 		}
-	}
-	else {
-		// fill in the size of the subtrees
-		get_size_subtrees(t, r, size_subtrees.begin());
-		while (not E_it.end()) {
-			const edge e = E_it.get_edge();
-			const node v = e.second;
-			const uint64_t suv = size_subtrees[v];
-			*it++ = {e, suv};
-			++memcs.count[suv];
+		else {
+			// fill in the size of the subtrees
+			get_size_subtrees(t, r, size_subtrees.begin());
+			while (not E_it.end()) {
+				const edge e = E_it.get_edge();
+				const node v = e.second;
+				const uint64_t suv = size_subtrees[v];
+				*it++ = {e, suv};
+				++memcs.count[suv];
 
-			E_it.next();
+				E_it.next();
+			}
 		}
-	}
 
-	// sort all tuples in L using the size of the subtree
-	sorting::counting_sort
-		<edge_size, type, true>
-		(
-			edge_list.begin(), edge_list.end(),
-			[](const edge_size& T) -> std::size_t { return T.size; },
+		// sort all tuples in L using the size of the subtree
+		sorting::counting_sort<edge_size, type, true>(
+			edge_list.begin(),
+			edge_list.end(),
+			[](const edge_size& T) -> std::size_t
+			{
+				return T.size;
+			},
 			memcs
 		);
 	}
@@ -183,9 +192,9 @@ noexcept
 	for (const auto& T : edge_list) {
 		const auto [u, v] = T.e;
 		const uint64_t nv = T.size;
-		L[u].push_back({v,nv});
+		L[u].push_back({v, nv});
 #if defined DEBUG
-		assert(t.has_edge(u,v));
+		assert(t.has_edge(u, v));
 #endif
 	}
 
@@ -196,6 +205,6 @@ noexcept
 #endif
 }
 
-} // -- namespcae proj_plan_opt_utils
-} // -- namespace detail
-} // -- namespace lal
+} // namespace Dopt_utils
+} // namespace detail
+} // namespace lal

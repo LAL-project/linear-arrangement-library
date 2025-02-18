@@ -82,14 +82,15 @@ namespace generate {
  */
 class rand_arrangements {
 public:
+
 	/**
 	 * @brief Constructor with graph.
 	 * @param g Input graph. Only its number of vertices is used.
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(const graphs::graph& g, const uint64_t seed = 0) noexcept :
-		rand_arrangements(g.get_num_nodes(), seed)
+	rand_arrangements(const graphs::graph& g, const uint64_t seed = 0) noexcept
+		: rand_arrangements(g.get_num_nodes(), seed)
 	{ }
 
 	/**
@@ -109,9 +110,9 @@ public:
 	 * @param seed Seed of the random number generator. When 0, a random seed
 	 * is used.
 	 */
-	rand_arrangements(const uint64_t n, const uint64_t seed = 0) noexcept :
-		m_n(n),
-		m_arr(linear_arrangement(m_n))
+	rand_arrangements(const uint64_t n, const uint64_t seed = 0) noexcept
+		: m_n(n),
+		  m_arr(linear_arrangement(m_n))
 	{
 		if (seed == 0) {
 			std::random_device rd;
@@ -127,11 +128,13 @@ public:
 	[[nodiscard]] const linear_arrangement& get_arrangement() noexcept;
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	[[nodiscard]] const linear_arrangement& yield_arrangement() noexcept {
+	[[nodiscard]] const linear_arrangement& yield_arrangement() noexcept
+	{
 		return get_arrangement();
 	}
 
 private:
+
 	/// Number of vertices
 	const uint64_t m_n;
 	/// Random number generator
@@ -144,5 +147,5 @@ private:
 	linear_arrangement m_arr;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

@@ -50,7 +50,8 @@
 namespace lal {
 namespace generate {
 
-void all_bipartite_arrangements::next() noexcept {
+void all_bipartite_arrangements::next() noexcept
+{
 	if (m_arr.size() == 1) {
 		m_do_mirror = true;
 		m_reached_end_red = true;
@@ -58,15 +59,15 @@ void all_bipartite_arrangements::next() noexcept {
 
 	if (not m_do_mirror) {
 		// in this part of the enumeration, the left half contains red vertices
-		m_reached_end_red =
-			not
-			std::next_permutation(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red);
+		m_reached_end_red = not std::next_permutation(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red
+		);
 		m_arr.update_direct();
 
 		if (m_reached_end_red) {
-			m_reached_end_blue =
-				not
-				std::next_permutation(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse());
+			m_reached_end_blue = not std::next_permutation(
+				m_arr.begin_inverse() + m_n_red, m_arr.end_inverse()
+			);
 			m_arr.update_direct();
 
 			if (m_reached_end_blue) {
@@ -77,21 +78,22 @@ void all_bipartite_arrangements::next() noexcept {
 	}
 	else {
 		// in this part of the enumeration, the left half contains blue vertices
-		m_reached_end_blue =
-			not
-			std::next_permutation(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue);
+		m_reached_end_blue = not std::next_permutation(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue
+		);
 		m_arr.update_direct();
 
 		if (m_reached_end_blue) {
-			m_reached_end_red =
-				not
-				std::next_permutation(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse());
+			m_reached_end_red = not std::next_permutation(
+				m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()
+			);
 			m_arr.update_direct();
 		}
 	}
 }
 
-void all_bipartite_arrangements::init() noexcept {
+void all_bipartite_arrangements::init() noexcept
+{
 	const auto n = m_coloring.size();
 	m_arr.resize(n);
 
@@ -112,7 +114,8 @@ void all_bipartite_arrangements::init() noexcept {
 	init_arrangement(true);
 }
 
-void all_bipartite_arrangements::init_arrangement(const bool red_first) noexcept {
+void all_bipartite_arrangements::init_arrangement(const bool red_first) noexcept
+{
 	const auto n = m_coloring.size();
 
 	position left = 0ull;
@@ -152,15 +155,23 @@ void all_bipartite_arrangements::init_arrangement(const bool red_first) noexcept
 
 #if defined DEBUG
 	if (red_first) {
-		assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red));
-		assert(std::is_sorted(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse()));
+		assert(std::is_sorted(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red
+		));
+		assert(
+			std::is_sorted(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse())
+		);
 	}
 	else {
-		assert(std::is_sorted(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue));
-		assert(std::is_sorted(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()));
+		assert(std::is_sorted(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue
+		));
+		assert(std::is_sorted(
+			m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse()
+		));
 	}
 #endif
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

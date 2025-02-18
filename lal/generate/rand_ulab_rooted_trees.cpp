@@ -86,14 +86,9 @@ graphs::rooted_tree _rand_ulab_rooted_trees::get_tree() noexcept
 
 /* PROTECTED */
 
-std::pair<uint64_t,uint64_t>
-_rand_ulab_rooted_trees::ranrut
-(
-	const uint64_t n,
-	const uint64_t lr,
-	uint64_t nt
-)
-noexcept
+std::pair<uint64_t, uint64_t> _rand_ulab_rooted_trees::ranrut(
+	const uint64_t n, const uint64_t lr, uint64_t nt
+) noexcept
 {
 	if (n == 0) {
 		// The new tree has no nodes.
@@ -101,7 +96,7 @@ noexcept
 		//    lr: because we haven't generated any new tree (so, no new root),
 		//    nt: because the place where to store the next tree to be generated
 		//        is still 'nt'
-		return {lr,nt};
+		return {lr, nt};
 	}
 	if (n == 1) {
 		// The new tree has a single node, to be stored in 'nt'.
@@ -140,7 +135,7 @@ noexcept
 
 	// -------------------------------------------------------------
 	// Generate T' (a random rooted tree of n - j*d nodes)
-	const auto [root_Tp, store_Tpp] = ranrut(n - j*d, lr,nt);
+	const auto [root_Tp, store_Tpp] = ranrut(n - j * d, lr, nt);
 
 	// -------------------------------------------------------------
 	// Generate T'' (a random rooted tree of d nodes)
@@ -149,7 +144,7 @@ noexcept
 	//	  2. One of the copies has already been made, and is
 	//		 already connected to the root of T'.
 	//	  3. root_Tpp is the position of the root of the first copy of T''.
-	const auto [root_Tpp, nt2] = ranrut(d, root_Tp,store_Tpp);
+	const auto [root_Tpp, nt2] = ranrut(d, root_Tp, store_Tpp);
 
 	// -------------------------------------------------------------
 	// Make j - 1 copies of T'' and connect them to T'.
@@ -169,7 +164,7 @@ noexcept
 			// 'TREE[v - c*d] - root_Tpp' is the increment with
 			// respect to the new root ('nt') so that the
 			// node in 'v' eventually connects with 'nt'.
-			m_head_vector[v] = nt + m_head_vector[v - c*d] - root_Tpp;
+			m_head_vector[v] = nt + m_head_vector[v - c * d] - root_Tpp;
 		}
 		nt += d;
 	}
@@ -184,7 +179,9 @@ noexcept
 	return {root_Tp, nt};
 }
 
-const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n) noexcept {
+const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n
+) noexcept
+{
 	if (m_rn.size() >= n + 1) {
 		// value already computed
 		return m_rn[n];
@@ -205,7 +202,7 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n) noexce
 
 				// --
 				//if (i > 0) { s += m_rn[utils::to_uint64(i)]*td; }
-				s += (i > 0 ? m_rn[detail::to_uint64(i)]*td : 0);
+				s += (i > 0 ? m_rn[detail::to_uint64(i)] * td : 0);
 				// --
 
 				++j;
@@ -215,7 +212,7 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n) noexce
 		m_rn_times_n.push_back(s);
 		s /= k;
 		m_rn_times_n.back() += s;
-		m_rn_times_n_minus_1.push_back( m_rn_times_n.back() - s );
+		m_rn_times_n_minus_1.push_back(m_rn_times_n.back() - s);
 
 		m_rn.push_back(std::move(s));
 
@@ -223,9 +220,9 @@ const numeric::integer& _rand_ulab_rooted_trees::get_rn(const uint64_t n) noexce
 		assert(m_rn_times_n.size() == m_rn.size());
 		assert(m_rn_times_n.size() == m_rn_times_n_minus_1.size());
 		{
-		const std::size_t i = m_rn_times_n.size() - 1;
-		assert(m_rn_times_n[i] == m_rn[i]*i);
-		assert(m_rn_times_n_minus_1[i] == m_rn[i]*(i - 1));
+			const std::size_t i = m_rn_times_n.size() - 1;
+			assert(m_rn_times_n[i] == m_rn[i] * i);
+			assert(m_rn_times_n_minus_1[i] == m_rn[i] * (i - 1));
 		}
 #endif
 
@@ -242,9 +239,8 @@ _rand_ulab_rooted_trees::choose_jd_from_T(const uint64_t n) noexcept
 	// when it reaches a value below or equal to 0
 
 	const double r = m_unif(m_gen);
-	double weight = has_rn(n) ?
-		m_rn_times_n_minus_1[n].to_double()*r :
-		(get_rn(n)*(n - 1)).to_double()*r;
+	double weight = has_rn(n) ? m_rn_times_n_minus_1[n].to_double() * r
+							  : (get_rn(n) * (n - 1)).to_double() * r;
 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
@@ -254,7 +250,7 @@ _rand_ulab_rooted_trees::choose_jd_from_T(const uint64_t n) noexcept
 
 	while (weight > 0) {
 
-		if (n <= j*d) {
+		if (n <= j * d) {
 			// we need to "start a next pair"
 			++d;
 			j = 1;
@@ -262,10 +258,10 @@ _rand_ulab_rooted_trees::choose_jd_from_T(const uint64_t n) noexcept
 		else {
 			// substract weight of current pair
 			if (has_rn(d)) {
-				weight -= (get_rn(n - j*d)*m_rn_times_n[d]).to_double();
+				weight -= (get_rn(n - j * d) * m_rn_times_n[d]).to_double();
 			}
 			else {
-				weight -= (get_rn(n - j*d)*get_rn(d)*d).to_double();
+				weight -= (get_rn(n - j * d) * get_rn(d) * d).to_double();
 			}
 
 			// if 'z' has not reached 0 then generate next pair
@@ -280,5 +276,5 @@ _rand_ulab_rooted_trees::choose_jd_from_T(const uint64_t n) noexcept
 	return {j, d};
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

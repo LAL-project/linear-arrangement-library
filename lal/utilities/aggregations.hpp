@@ -129,15 +129,17 @@ namespace utilities {
  * @returns \f$A_1(Q,R)\f$.
  */
 template <
-	typename result_t, bool second_set_empty,
-	typename iterator_first_t, typename iterator_second_t,
+	typename result_t,
+	bool second_set_empty,
+	typename iterator_first_t,
+	typename iterator_second_t,
 	class metric,
-	class accumulate_Q, class accumulate_R,
-	class make_average_Q, class make_average_R,
-	class make_average
->
-[[nodiscard]] result_t one_level_aggregation
-(
+	class accumulate_Q,
+	class accumulate_R,
+	class make_average_Q,
+	class make_average_R,
+	class make_average>
+[[nodiscard]] result_t one_level_aggregation(
 	iterator_first_t bfirst,
 	const iterator_first_t efirst,
 	iterator_second_t bsecond,
@@ -148,8 +150,7 @@ template <
 	make_average_Q avgQ,
 	make_average_R avgR,
 	make_average avg
-)
-noexcept
+) noexcept
 {
 	if constexpr (second_set_empty) {
 		// no elements from the second set
@@ -168,13 +169,16 @@ noexcept
 	else {
 #if defined DEBUG
 		// ensure same number of elements in both sets
-		assert(std::distance(bfirst, efirst) == std::distance(bsecond, esecond));
+		assert(
+			std::distance(bfirst, efirst) == std::distance(bsecond, esecond)
+		);
 #endif
 
 		auto [total_Q, total_R] = values(*bfirst, *bsecond);
 		std::size_t amount = 1;
 
-		++bfirst; ++bsecond;
+		++bfirst;
+		++bsecond;
 		for (; bfirst != efirst; ++bfirst, ++bsecond, ++amount) {
 			const auto [Qi, Ri] = values(*bfirst, *bsecond);
 			accQ(total_Q, Qi);
@@ -254,13 +258,15 @@ noexcept
  * @returns \f$A_2(Q,R)\f$.
  */
 template <
-	typename result_t, bool second_set_empty,
+	typename result_t,
+	bool second_set_empty,
 	typename iterator_first_t,
 	typename iterator_second_t,
-	class metric, class combine, class accumulate, class make_average
->
-[[nodiscard]] result_t two_level_aggregation
-(
+	class metric,
+	class combine,
+	class accumulate,
+	class make_average>
+[[nodiscard]] result_t two_level_aggregation(
 	iterator_first_t bfirst,
 	const iterator_first_t efirst,
 	iterator_second_t bsecond,
@@ -269,8 +275,7 @@ template <
 	combine comb_values,
 	accumulate acc_values,
 	make_average avg
-)
-noexcept
+) noexcept
 {
 	if constexpr (second_set_empty) {
 		// no elements from the second set
@@ -286,12 +291,15 @@ noexcept
 	else {
 #if defined DEBUG
 		// ensure same of elements in both sets
-		assert(std::distance(bfirst, efirst) == std::distance(bsecond, esecond));
+		assert(
+			std::distance(bfirst, efirst) == std::distance(bsecond, esecond)
+		);
 #endif
 		auto total = comb_values(values(*bfirst, *bsecond));
 		std::size_t amount = 1;
 
-		++bfirst; ++bsecond;
+		++bfirst;
+		++bsecond;
 		for (; bfirst != efirst; ++bfirst, ++bsecond, ++amount) {
 			acc_values(total, comb_values(values(*bfirst, *bsecond)));
 		}
@@ -299,5 +307,5 @@ noexcept
 	}
 }
 
-} // -- namespace utilities
-} // -- namespace lal
+} // namespace utilities
+} // namespace lal

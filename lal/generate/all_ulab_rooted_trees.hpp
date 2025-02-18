@@ -98,17 +98,20 @@ namespace generate {
  */
 class all_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	all_ulab_rooted_trees() noexcept : _tree_generator<graphs::rooted_tree>()
+	all_ulab_rooted_trees() noexcept
+		: _tree_generator<graphs::rooted_tree>()
 	{ }
 
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_rooted_trees(const uint64_t n) noexcept {
+	all_ulab_rooted_trees(const uint64_t n) noexcept
+	{
 		init(n);
 	}
 
@@ -128,9 +131,11 @@ public:
 	~all_ulab_rooted_trees() noexcept = default;
 
 	/// Copy assignment operator.
-	all_ulab_rooted_trees& operator= (const all_ulab_rooted_trees& g) noexcept = default;
+	all_ulab_rooted_trees& operator= (const all_ulab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	all_ulab_rooted_trees& operator= (all_ulab_rooted_trees&& g) noexcept = default;
+	all_ulab_rooted_trees& operator= (all_ulab_rooted_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -138,7 +143,8 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(const uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept
+	{
 		_tree_generator::init(n);
 		// resize the memory
 		m_save.resize(m_n + 1);
@@ -152,7 +158,8 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_save.clear();
 		m_prev.clear();
@@ -162,7 +169,10 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/* MODIFIERS */
 
@@ -180,18 +190,21 @@ public:
 	 *
 	 * Postprocessing actions are not modified.
 	 */
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		__reset();
 		next();
 	}
 
-	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept
+	{
 		const auto t = get_tree();
 		next();
 		return t;
 	}
 
 protected:
+
 	/**
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next(). The tree
@@ -205,6 +218,7 @@ protected:
 	void __reset() noexcept;
 
 private:
+
 	/// Is the current tree the last tree to be generated?
 	bool m_is_last = false;
 	/// Is the current tree the first tree to be generated?
@@ -222,5 +236,5 @@ private:
 	detail::array<node> m_L;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

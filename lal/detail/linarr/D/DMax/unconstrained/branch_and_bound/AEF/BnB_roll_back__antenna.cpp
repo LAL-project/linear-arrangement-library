@@ -65,8 +65,7 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx)
-noexcept
+void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through an antenna...\n";
@@ -103,7 +102,7 @@ noexcept
 	}
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

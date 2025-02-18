@@ -52,10 +52,8 @@ template <bool full_structure, class graph_t>
 [[nodiscard]] std::conditional_t<
 	full_structure,
 	properties::connected_components<graph_t>,
-	std::vector<graph_t>
->
-connected_components(const graph_t& g)
-noexcept
+	std::vector<graph_t>>
+connected_components(const graph_t& g) noexcept
 {
 	const auto n = g.get_num_nodes();
 	BFS bfs(g);
@@ -73,17 +71,20 @@ noexcept
 	}
 
 	bfs.set_process_current(
-	[&](const auto&, node u) {
-		map_nodes_to_current_cc.insert({u, map_nodes_to_current_cc.size()});
-		nodes_current_cc.push_back(u);
-		if constexpr (full_structure) {
-			all_ccs_full.set_node_cc(u, num_ccs);
+		[&](const auto&, node u)
+		{
+			map_nodes_to_current_cc.insert({u, map_nodes_to_current_cc.size()});
+			nodes_current_cc.push_back(u);
+			if constexpr (full_structure) {
+				all_ccs_full.set_node_cc(u, num_ccs);
+			}
 		}
-	}
 	);
 
 	for (node u = 0; u < n; ++u) {
-		if (bfs.node_was_visited(u)) { continue; }
+		if (bfs.node_was_visited(u)) {
+			continue;
+		}
 
 		nodes_current_cc.clear();
 		nodes_current_cc.reserve(n);
@@ -112,7 +113,9 @@ noexcept
 					}
 				}
 			}
-			else if constexpr (std::is_base_of_v<graphs::undirected_graph, graph_t>) {
+			else if constexpr (std::is_base_of_v<
+								   graphs::undirected_graph,
+								   graph_t>) {
 				for (node w : g.get_neighbors(v)) {
 					if (v < w) {
 						cc.add_edge_bulk(
@@ -125,17 +128,19 @@ noexcept
 		}
 
 		if constexpr (full_structure) {
-			all_ccs_full.add_graph( std::move(cc) );
+			all_ccs_full.add_graph(std::move(cc));
 
 			for (node w : nodes_current_cc) {
-				all_ccs_full.set_label_graph_node_to_cc_node
-					(w, map_nodes_to_current_cc[w]);
-				all_ccs_full.set_label_cc_node_to_graph_node
-					(num_ccs, map_nodes_to_current_cc[w], w);
+				all_ccs_full.set_label_graph_node_to_cc_node(
+					w, map_nodes_to_current_cc[w]
+				);
+				all_ccs_full.set_label_cc_node_to_graph_node(
+					num_ccs, map_nodes_to_current_cc[w], w
+				);
 			}
 		}
 		else {
-			all_ccs_simple.push_back( std::move(cc) );
+			all_ccs_simple.push_back(std::move(cc));
 		}
 
 		++num_ccs;
@@ -149,5 +154,5 @@ noexcept
 	}
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

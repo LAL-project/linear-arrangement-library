@@ -69,22 +69,25 @@ namespace detail {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
->
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
 [[nodiscard]] char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
 {
 	// check number of nodes
-	if (t1.get_num_nodes() != t2.get_num_nodes()) { return 1; }
+	if (t1.get_num_nodes() != t2.get_num_nodes()) {
+		return 1;
+	}
 
 	const uint64_t n = t1.get_num_nodes();
 
 	// trees ARE isomorphic
-	if (n <= 2) { return 0; }
+	if (n <= 2) {
+		return 0;
+	}
 
-	uint64_t nL_t1 = 0; // number of leaves of t1
-	uint64_t nL_t2 = 0; // number of leaves of t2
-	uint64_t k2_t1 = 0; // sum of squared degrees of t1
-	uint64_t k2_t2 = 0; // sum of squared degrees of t2
+	uint64_t nL_t1 = 0;		// number of leaves of t1
+	uint64_t nL_t2 = 0;		// number of leaves of t2
+	uint64_t k2_t1 = 0;		// sum of squared degrees of t1
+	uint64_t k2_t2 = 0;		// sum of squared degrees of t2
 	uint64_t maxdeg_t1 = 0; // max degree of t1
 	uint64_t maxdeg_t2 = 0; // max degree of t2
 	for (node u = 0; u < n; ++u) {
@@ -93,18 +96,24 @@ template <
 
 		nL_t1 += t1.get_degree(u) == 1;
 		nL_t2 += t2.get_degree(u) == 1;
-		k2_t1 += ku1*ku1;
-		k2_t2 += ku2*ku2;
+		k2_t1 += ku1 * ku1;
+		k2_t2 += ku2 * ku2;
 		maxdeg_t1 = (maxdeg_t1 < ku1 ? ku1 : maxdeg_t1);
 		maxdeg_t2 = (maxdeg_t2 < ku2 ? ku2 : maxdeg_t2);
 	}
 
 	// check number of leaves
-	if (nL_t1 != nL_t2) { return 1; }
+	if (nL_t1 != nL_t2) {
+		return 1;
+	}
 	// check maximum degree
-	if (maxdeg_t1 != maxdeg_t2) { return 1; }
+	if (maxdeg_t1 != maxdeg_t2) {
+		return 1;
+	}
 	// check sum of squared degrees
-	if (k2_t1 != k2_t2) { return 1; }
+	if (k2_t1 != k2_t2) {
+		return 1;
+	}
 
 	// trees MIGHT BE isomorphic
 	return 2;
@@ -128,15 +137,13 @@ template <
  * least the number of vertices in the subtree of 't' rooted at 'u'. Actually,
  * less memory suffices, but better be safe than sorry.
  */
-inline void assign_name_and_keep
-(
+inline void assign_name_and_keep(
 	const graphs::rooted_tree& t,
 	const node u,
 	std::size_t idx,
 	array<std::string>& aux_memory_for_names,
 	array<std::string>& keep_name_of
-)
-noexcept
+) noexcept
 {
 	if (t.get_out_degree(u) == 0) {
 		keep_name_of[u] = "10";
@@ -147,7 +154,7 @@ noexcept
 	const std::size_t begin_idx = idx;
 	for (node v : t.get_out_neighbors(u)) {
 		// make the name for v
-		assign_name_and_keep(t,v, idx+1, aux_memory_for_names, keep_name_of);
+		assign_name_and_keep(t, v, idx + 1, aux_memory_for_names, keep_name_of);
 
 		aux_memory_for_names[idx] = keep_name_of[v];
 		++idx;
@@ -177,14 +184,12 @@ noexcept
  * name of the second child of 'u'.
  * @returns The code for the subtree rooted at 'u'.
  */
-[[nodiscard]] inline std::string assign_name
-(
+[[nodiscard]] inline std::string assign_name(
 	const graphs::rooted_tree& t,
 	const node u,
 	array<std::string>& names,
 	std::size_t idx
-)
-noexcept
+) noexcept
 {
 	if (t.get_out_degree(u) == 0) {
 		return std::string("10");
@@ -194,7 +199,7 @@ noexcept
 	const std::size_t begin_idx = idx;
 	for (node v : t.get_out_neighbors(u)) {
 		// make the name for v
-		names[idx] = assign_name(t,v, names, idx+1);
+		names[idx] = assign_name(t, v, names, idx + 1);
 		++idx;
 	}
 	std::sort(&names[begin_idx], &names[idx]);
@@ -215,13 +220,17 @@ noexcept
  * @param t2 Second rooted tree.
  * @returns True or false.
  */
-[[nodiscard]] inline bool are_rooted_trees_isomorphic
-(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
-noexcept
+[[nodiscard]] inline bool are_rooted_trees_isomorphic(
+	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+) noexcept
 {
-	const auto discard = fast_non_iso(t1,t2);
-	if (discard == 0) { return true; }
-	if (discard == 1) { return false; }
+	const auto discard = fast_non_iso(t1, t2);
+	if (discard == 0) {
+		return true;
+	}
+	if (discard == 1) {
+		return false;
+	}
 
 	array<std::string> names(t1.get_num_nodes());
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names, 0);
@@ -229,5 +238,5 @@ noexcept
 	return name_r1 == name_r2;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

@@ -66,9 +66,9 @@ namespace detail {
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-[[nodiscard]] bool is_root_covered
-(const graphs::rooted_tree& rt, const arrangement_t& arr)
-noexcept
+[[nodiscard]] bool is_root_covered(
+	const graphs::rooted_tree& rt, const arrangement_t& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(rt.is_rooted_tree());
@@ -79,13 +79,15 @@ noexcept
 
 	iterators::E_iterator e_it(rt);
 	while (not e_it.end()) {
-		const auto [s,t] = e_it.yield_edge_t();
+		const auto [s, t] = e_it.yield_edge_t();
 		const position ps = arr[s];
 		const position pt = arr[t];
 
 		const bool r_covered_st = ps < pr and pr < pt;
 		const bool r_covered_ts = pt < pr and pr < ps;
-		if (r_covered_st or r_covered_ts) { return true; }
+		if (r_covered_st or r_covered_ts) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -107,9 +109,8 @@ noexcept
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
 template <class arrangement_t>
-[[nodiscard]] bool is_projective
-(const graphs::rooted_tree& rt, const arrangement_t& arr)
-noexcept
+[[nodiscard]] bool
+is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr) noexcept
 {
 #if defined DEBUG
 	assert(rt.is_rooted_tree());
@@ -117,7 +118,9 @@ noexcept
 
 	// check for planarity
 	// this function already checks that an arrangement must be valid
-	if (not is_planar(rt, arr)) { return false; }
+	if (not is_planar(rt, arr)) {
+		return false;
+	}
 	return not is_root_covered(rt, arr);
 }
 
@@ -136,9 +139,9 @@ noexcept
  * @pre Input @e arr is an arrangement of a connected bipartite graph.
  */
 template <class arrangement_t>
-[[nodiscard]] bool is_bipartite__connected
-(const properties::bipartite_graph_coloring& c, const arrangement_t& arr)
-noexcept
+[[nodiscard]] bool is_bipartite__connected(
+	const properties::bipartite_graph_coloring& c, const arrangement_t& arr
+) noexcept
 {
 	const auto n = c.size();
 	int num_changes = 0;
@@ -168,29 +171,37 @@ noexcept
  * @returns Whether or not the input arrangement is bipartite.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] bool is_bipartite(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] bool
+is_bipartite(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	typedef properties::bipartite_graph_coloring::color_t color_t;
 	static constexpr color_t blue = properties::bipartite_graph_coloring::blue;
 	static constexpr color_t red = properties::bipartite_graph_coloring::red;
-	static constexpr color_t invalid = properties::bipartite_graph_coloring::invalid_color;
+	static constexpr color_t invalid =
+		properties::bipartite_graph_coloring::invalid_color;
 
 	const auto n = g.get_num_nodes();
 	array<color_t> color_per_vertex(n, invalid);
 
-	const auto color_a_vertex = [&](node u) {
+	const auto color_a_vertex = [&](node u)
+	{
 		color_per_vertex[u] = blue;
 		if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
-			for (node v : g.get_out_neighbors(u)) { color_per_vertex[v] = red; }
-			for (node v : g.get_in_neighbors(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_out_neighbors(u)) {
+				color_per_vertex[v] = red;
+			}
+			for (node v : g.get_in_neighbors(u)) {
+				color_per_vertex[v] = red;
+			}
 		}
 		else {
-			for (node v : g.get_neighbors(u)) { color_per_vertex[v] = red; }
+			for (node v : g.get_neighbors(u)) {
+				color_per_vertex[v] = red;
+			}
 		}
 	};
 
-	color_a_vertex( arr[position_t{0ull}] );
+	color_a_vertex(arr[position_t{0ull}]);
 
 	int num_changes = 0;
 	position_t p = 1ull;
@@ -206,5 +217,5 @@ noexcept
 	return num_changes <= 1;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

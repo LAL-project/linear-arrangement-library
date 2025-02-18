@@ -59,27 +59,37 @@ namespace graphs {
  */
 class free_tree : public undirected_graph, virtual public tree {
 public:
+
 	/// We want the @ref lal::graphs::rooted_tree class to be a friend of this
 	/// so as to do move operations.
 	friend class rooted_tree;
 
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	free_tree() noexcept : tree(), undirected_graph() { }
+	free_tree() noexcept
+		: tree(),
+		  undirected_graph()
+	{ }
 	/**
 	 * @brief Constructor with number of vertices.
 	 * @param n Number of vertices
 	 */
-	free_tree(const uint64_t n) noexcept {
+	free_tree(const uint64_t n) noexcept
+	{
 		free_tree::_init(n);
 	}
 	/**
 	 * @brief Copy constructor.
 	 * @param t Free tree.
 	 */
-	free_tree(const free_tree& t) noexcept : graph(), tree(), undirected_graph() {
+	free_tree(const free_tree& t) noexcept
+		: graph(),
+		  tree(),
+		  undirected_graph()
+	{
 		copy_full_free_tree(t);
 	}
 
@@ -87,7 +97,8 @@ public:
 	 * @brief Move constructor.
 	 * @param t Free tree.
 	 */
-	free_tree(free_tree&& t) noexcept {
+	free_tree(free_tree&& t) noexcept
+	{
 		move_full_free_tree(std::forward<free_tree>(t));
 	}
 
@@ -114,7 +125,8 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param f A lal::graphs::free_tree.
 	 */
-	free_tree& operator= (const free_tree& f) noexcept {
+	free_tree& operator= (const free_tree& f) noexcept
+	{
 		copy_full_free_tree(f);
 		return *this;
 	}
@@ -122,26 +134,24 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param f A lal::graphs::free_tree.
 	 */
-	free_tree& operator= (free_tree&& f) noexcept {
+	free_tree& operator= (free_tree&& f) noexcept
+	{
 		move_full_free_tree(std::forward<free_tree>(f));
 		return *this;
 	}
 
 	/* MODIFIERS */
 
-	free_tree& add_node() noexcept {
+	free_tree& add_node() noexcept
+	{
 		undirected_graph::add_node();
 		tree_only_add_node();
 		return *this;
 	}
 
-	free_tree& remove_node
-	(
-		const node u,
-		const bool norm = true,
-		const bool check_norm = true
-	)
-	noexcept;
+	free_tree& remove_node(
+		const node u, const bool norm = true, const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -164,14 +174,12 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	free_tree& add_edge
-	(
+	free_tree& add_edge(
 		const node s,
 		const node t,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -195,9 +203,12 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
+	void
+	finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_add_complete(
+		const bool norm = true, const bool check = true
+	) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -219,13 +230,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edges.
 	 */
-	free_tree& add_edges
-	(
+	free_tree& add_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Sets the edges to the graph.
@@ -254,13 +263,11 @@ public:
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	free_tree& set_edges
-	(
+	free_tree& set_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -279,14 +286,12 @@ public:
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	free_tree& remove_edge
-	(
+	free_tree& remove_edge(
 		const node s,
 		const node t,
 		const bool norm = false,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Removes an edge from the tree.
@@ -310,9 +315,12 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true)
+		noexcept;
 
-	void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_remove_complete(
+		const bool norm = true, const bool check = true
+	) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -332,13 +340,11 @@ public:
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	free_tree& remove_edges
-	(
+	free_tree& remove_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.
@@ -356,13 +362,9 @@ public:
 	 * after the addition of the edge.
 	 * @post The type of tree (@ref m_is_tree_type_valid) is invalidated.
 	 */
-	free_tree& remove_edges_incident_to
-	(
-		const node u,
-		const bool norm = true,
-		const bool check_norm = true
-	)
-	noexcept;
+	free_tree& remove_edges_incident_to(
+		const node u, const bool norm = true, const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Disjoint union of trees.
@@ -387,7 +389,10 @@ public:
 
 	/* GETTERS */
 
-	bool is_rooted() const noexcept { return false; }
+	bool is_rooted() const noexcept
+	{
+		return false;
+	}
 
 	/**
 	 * @brief Converts a free tree into a head vector.
@@ -398,11 +403,12 @@ public:
 	 * @returns The head vector representation of this tree.
 	 * @pre This tree is a valid free tree (see @ref is_tree).
 	 */
-	[[nodiscard]] head_vector get_head_vector
-	(const node r = 0, const linear_arrangement& arr = {})
-	const noexcept;
+	[[nodiscard]] head_vector get_head_vector(
+		const node r = 0, const linear_arrangement& arr = {}
+	) const noexcept;
 
 protected:
+
 	/**
 	 * @brief Initializes the memory in the graph hierarchy.
 	 *
@@ -411,7 +417,8 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	void _init(const uint64_t n) noexcept {
+	void _init(const uint64_t n) noexcept
+	{
 		tree::tree_only_init(n);
 		undirected_graph::_init(n);
 	}
@@ -421,108 +428,101 @@ protected:
 	 * Clears the memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 */
-	void _clear() noexcept {
+	void _clear() noexcept
+	{
 		undirected_graph::_clear();
 		tree::tree_only_clear();
 	}
 
-	void actions_after_add_edge(const node u, const node v) noexcept {
+	void actions_after_add_edge(const node u, const node v) noexcept
+	{
 		undirected_graph::actions_after_add_edge(u, v);
 		tree_only_actions_after_add_edge(u, v);
 	}
 
-	void actions_after_add_edges(const edge_list& e) noexcept {
+	void actions_after_add_edges(const edge_list& e) noexcept
+	{
 		undirected_graph::actions_after_add_edges(e);
 		tree_only_actions_after_add_edges(e);
 	}
 
-	void actions_after_add_edges_bulk() noexcept {
+	void actions_after_add_edges_bulk() noexcept
+	{
 		undirected_graph::actions_after_add_edges_bulk();
 		tree_only_actions_after_add_edges_bulk();
 	}
 
-	void actions_after_remove_edge(const node u, const node v) noexcept {
+	void actions_after_remove_edge(const node u, const node v) noexcept
+	{
 		undirected_graph::actions_after_remove_edge(u, v);
 		tree_only_actions_after_remove_edge(u, v);
 	}
 
-	void actions_after_remove_edges(const edge_list& e) noexcept {
+	void actions_after_remove_edges(const edge_list& e) noexcept
+	{
 		undirected_graph::actions_after_remove_edges(e);
 		tree_only_actions_after_remove_edges(e);
 	}
 
-	void actions_after_remove_edges_bulk() noexcept {
+	void actions_after_remove_edges_bulk() noexcept
+	{
 		undirected_graph::actions_after_remove_edges_bulk();
 		tree_only_actions_after_remove_edges_bulk();
 	}
 
-	void actions_after_remove_node(const node u) noexcept {
+	void actions_after_remove_node(const node u) noexcept
+	{
 		undirected_graph::actions_after_remove_node(u);
 		tree_only_actions_after_remove_node(u);
 	}
 
-	void actions_before_remove_edges_incident_to(const node u) noexcept {
+	void actions_before_remove_edges_incident_to(const node u) noexcept
+	{
 		undirected_graph::actions_before_remove_edges_incident_to(u);
 		tree_only_actions_before_remove_edges_incident_to(u);
 	}
 
-	void update_union_find_after_add_edge
-	(
+	void update_union_find_after_add_edge(
 		const node u,
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_add_edges
-	(
+	void update_union_find_after_add_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_add_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+	void update_union_find_after_add_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
-	void update_union_find_after_remove_edge
-	(
+	void update_union_find_after_remove_edge(
 		const node u,
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_remove_edges
-	(
+	void update_union_find_after_remove_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_remove_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+	void update_union_find_after_remove_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
 	void update_union_find_before_remove_incident_edges_to(
-		const node u,
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+		const node u, uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
 	/// Copies all members of this class and the parent classes.
-	void copy_full_free_tree(const free_tree& f) noexcept {
+	void copy_full_free_tree(const free_tree& f) noexcept
+	{
 		// copy undirected_graph class
 		copy_full_undirected_graph(f);
 
@@ -532,7 +532,8 @@ protected:
 		// copy this class' members
 	}
 	/// Moves all members of this class and the parent classes.
-	void move_full_free_tree(free_tree&& f) noexcept {
+	void move_full_free_tree(free_tree&& f) noexcept
+	{
 		// move-assign undirected_graph class
 		move_full_undirected_graph(std::forward<free_tree>(f));
 
@@ -543,8 +544,9 @@ protected:
 	}
 
 private:
+
 	using undirected_graph::disjoint_union;
 };
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

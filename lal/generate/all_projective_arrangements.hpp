@@ -101,6 +101,7 @@ namespace generate {
  */
 class all_projective_arrangements {
 public:
+
 	/* CONSTRUCTORS */
 
 	/**
@@ -117,7 +118,8 @@ public:
 	 * @pre The object @e T is a valid tree (see
 	 * @ref graphs::rooted_tree::is_rooted_tree).
 	 */
-	all_projective_arrangements(const graphs::free_tree& T, const node root) noexcept
+	all_projective_arrangements(const graphs::free_tree& T, const node root)
+		noexcept
 		: all_projective_arrangements(graphs::rooted_tree(T, root))
 	{ }
 
@@ -125,12 +127,14 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive projective arrangement generator.
 	 */
-	all_projective_arrangements(const all_projective_arrangements& Gen) noexcept = default;
+	all_projective_arrangements(const all_projective_arrangements& Gen
+	) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive projective arrangement generator.
 	 */
-	all_projective_arrangements(all_projective_arrangements&& Gen) noexcept = default;
+	all_projective_arrangements(all_projective_arrangements&& Gen
+	) noexcept = default;
 
 	/// Default destructor
 	~all_projective_arrangements() noexcept = default;
@@ -142,7 +146,10 @@ public:
 	 * @returns True if there are still more arrangements to generate.
 	 * Returns false if all arrangements have been generated.
 	 */
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; };
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	};
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -169,13 +176,15 @@ public:
 	 * @returns The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		const linear_arrangement arr = get_arrangement();
 		next();
 		return arr;
 	}
 
 private:
+
 	/// Constant reference to rooted tree.
 	const graphs::rooted_tree& m_rT;
 	/// The interval of every node of the tree
@@ -184,11 +193,12 @@ private:
 	bool m_reached_end = false;
 
 private:
+
 	/// Initialize the interval every node of the tree, starting at @e r.
 	void initialize_intervals_tree() noexcept;
 	/// Initialize the interval of node @e u.
 	void initialize_interval_node(const node u) noexcept;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

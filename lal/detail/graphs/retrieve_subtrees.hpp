@@ -70,9 +70,9 @@ namespace detail {
  * AND the boolean parameter sizes are BOTH true.
  */
 template <bool get_subsizes>
-[[nodiscard]] std::pair<std::vector<edge>, uint64_t *> get_edges_subtree
-(const graphs::rooted_tree& T, const node u, const bool relabel)
-noexcept
+[[nodiscard]] std::pair<std::vector<edge>, uint64_t *> get_edges_subtree(
+	const graphs::rooted_tree& T, const node u, const bool relabel
+) noexcept
 {
 #if defined DEBUG
 	assert(T.is_rooted_tree());
@@ -86,7 +86,9 @@ noexcept
 	uint64_t *sizes = nullptr;
 
 	const uint64_t n = T.get_num_nodes();
-	if (n <= 1) { return {std::move(es), sizes}; }
+	if (n <= 1) {
+		return {std::move(es), sizes};
+	}
 
 	// reserve some space for the vector edges
 	// initialize the array of sizes if needed
@@ -103,7 +105,7 @@ noexcept
 		}
 	}
 	else {
-		es.reserve(n/2);
+		es.reserve(n / 2);
 		sizes = nullptr; // reiterate that we shouldn't do this here
 	}
 
@@ -122,50 +124,56 @@ noexcept
 	// retrieve edges and relabel them at the same time
 	if (relabel) {
 		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool left_to_right) -> void {
-			// change the orientation of the edge whenever appropriate
-			// left_to_right: true  ---> "s->t"
-			// left_to_right: false ---> "t->s"
-			if (not left_to_right) { std::swap(s,t); }
-
-			edge e;
-			// relabel first node
-			if (relabelling[s] >= n) {
-				relabelling[s] = next_label;
-				++next_label;
-				if (update_sizes) {
-					sizes[relabelling[s]] = T.get_num_nodes_subtree(s);
+			[&](const auto&, node s, node t, bool left_to_right) -> void
+			{
+				// change the orientation of the edge whenever appropriate
+				// left_to_right: true  ---> "s->t"
+				// left_to_right: false ---> "t->s"
+				if (not left_to_right) {
+					std::swap(s, t);
 				}
-			}
-			e.first = relabelling[s];
 
-			// relabel second node
-			if (relabelling[t] >= n) {
-				relabelling[t] = next_label;
-				++next_label;
-				if (update_sizes) {
-					sizes[relabelling[t]] = T.get_num_nodes_subtree(t);
+				edge e;
+				// relabel first node
+				if (relabelling[s] >= n) {
+					relabelling[s] = next_label;
+					++next_label;
+					if (update_sizes) {
+						sizes[relabelling[s]] = T.get_num_nodes_subtree(s);
+					}
 				}
-			}
-			e.second = relabelling[t];
+				e.first = relabelling[s];
 
-			es.emplace_back(e);
-		}
+				// relabel second node
+				if (relabelling[t] >= n) {
+					relabelling[t] = next_label;
+					++next_label;
+					if (update_sizes) {
+						sizes[relabelling[t]] = T.get_num_nodes_subtree(t);
+					}
+				}
+				e.second = relabelling[t];
+
+				es.emplace_back(e);
+			}
 		);
 	}
 	else {
 		bfs.set_process_neighbour(
-		[&](const auto&, node s, node t, bool left_to_right) -> void {
-			// change the orientation of the edge whenever appropriate
-			// dir: true  ---> "s->t"
-			// dir: false ---> "t->s"
-			if (not left_to_right) { std::swap(s,t); }
-			if (update_sizes) {
-				sizes[s] = T.get_num_nodes_subtree(s);
-				sizes[t] = T.get_num_nodes_subtree(t);
+			[&](const auto&, node s, node t, bool left_to_right) -> void
+			{
+				// change the orientation of the edge whenever appropriate
+				// dir: true  ---> "s->t"
+				// dir: false ---> "t->s"
+				if (not left_to_right) {
+					std::swap(s, t);
+				}
+				if (update_sizes) {
+					sizes[s] = T.get_num_nodes_subtree(s);
+					sizes[t] = T.get_num_nodes_subtree(t);
+				}
+				es.emplace_back(s, t);
 			}
-			es.emplace_back(s,t);
-		}
 		);
 	}
 	bfs.start_at(u);
@@ -173,5 +181,5 @@ noexcept
 	return {std::move(es), sizes};
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

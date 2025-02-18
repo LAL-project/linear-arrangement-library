@@ -72,6 +72,7 @@ namespace graphs {
  */
 class tree : virtual public graph {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
@@ -80,7 +81,9 @@ public:
 	 * @brief Copy constructor.
 	 * @param t Tree.
 	 */
-	tree(const tree& t) noexcept : graph() {
+	tree(const tree& t) noexcept
+		: graph()
+	{
 		tree_only_copy(t);
 	}
 
@@ -88,7 +91,8 @@ public:
 	 * @brief Move constructor.
 	 * @param t Tree.
 	 */
-	tree(tree&& t) noexcept {
+	tree(tree&& t) noexcept
+	{
 		tree_only_move(std::move(t));
 	}
 
@@ -101,7 +105,8 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param t Tree.
 	 */
-	tree& operator= (const tree& t) noexcept {
+	tree& operator= (const tree& t) noexcept
+	{
 		tree_only_copy(t);
 		return *this;
 	}
@@ -109,7 +114,8 @@ public:
 	 * @brief Move assignment operator.
 	 * @param t Tree.
 	 */
-	tree& operator= (tree&& t) noexcept {
+	tree& operator= (tree&& t) noexcept
+	{
 		tree_only_move(std::move(t));
 		return *this;
 	}
@@ -137,7 +143,9 @@ public:
 	 * @pre All edges have been added with method @ref undirected_graph::add_edge_bulk
 	 * or @ref directed_graph::add_edge_bulk.
 	 */
-	virtual void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept = 0;
+	virtual void finish_bulk_add_complete(
+		const bool norm = true, const bool check = true
+	) noexcept = 0;
 
 	/**
 	 * @brief Completes the inner structure of the tree after removing edges in bulk.
@@ -153,7 +161,9 @@ public:
 	 * @pre All edges have been added with method @ref undirected_graph::remove_edge_bulk
 	 * or @ref directed_graph::remove_edge_bulk.
 	 */
-	virtual void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept = 0;
+	virtual void finish_bulk_remove_complete(
+		const bool norm = true, const bool check = true
+	) noexcept = 0;
 
 	/* GETTERS */
 
@@ -174,11 +184,14 @@ public:
 	 * @returns True or false depending on whether this graph fits the defintion
 	 * of tree.
 	 */
-	[[nodiscard]] bool is_tree() const noexcept {
+	[[nodiscard]] bool is_tree() const noexcept
+	{
 		// NOTE: this would not really be true if the addition of edges
 		// was not constrained. Since it is, in a way that no cycles can
 		// be produced, then we only need to check for the number of edges.
-		return (get_num_nodes() == 0 ? true : get_num_edges() == get_num_nodes() - 1);
+		return (
+			get_num_nodes() == 0 ? true : get_num_edges() == get_num_nodes() - 1
+		);
 
 		// NOTE 2: this is only true in a debug compilation of the library
 		// since a release compilation does not actually constrain the addition
@@ -202,7 +215,8 @@ public:
 	 * @returns Whether or not this edge can be added to the tree without
 	 * producing cycles.
 	 */
-	[[nodiscard]] virtual bool can_add_edge(node const s, const node t) const noexcept;
+	[[nodiscard]] virtual bool
+	can_add_edge(const node s, const node t) const noexcept;
 
 	/**
 	 * @brief Can these edges be added?
@@ -217,7 +231,8 @@ public:
 	 * @returns Whether or not these edges can be added to the tree without
 	 * producing cycles.
 	 */
-	[[nodiscard]] virtual bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+	[[nodiscard]] virtual bool can_add_edges(const std::vector<edge>& edges
+	) const noexcept;
 
 	/**
 	 * @brief Representative node of the connected component in which @e u belongs.
@@ -234,7 +249,9 @@ public:
 	 * @param u Input node.
 	 * @returns The representative node of node @e u's component.
 	 */
-	[[nodiscard]] uint64_t get_component_representative(const node u) const noexcept {
+	[[nodiscard]] uint64_t get_component_representative(const node u
+	) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -247,8 +264,11 @@ public:
 	 * @param v Second node.
 	 * @returns True or false.
 	 */
-	[[nodiscard]] bool are_nodes_in_same_component(const node u, const node v) const noexcept {
-		return get_component_representative(u) == get_component_representative(v);
+	[[nodiscard]] bool
+	are_nodes_in_same_component(const node u, const node v) const noexcept
+	{
+		return get_component_representative(u) ==
+			   get_component_representative(v);
 	}
 
 	/**
@@ -263,7 +283,8 @@ public:
 	 * @param u Input node.
 	 * @returns The size of the connected component of @e u.
 	 */
-	[[nodiscard]] uint64_t get_num_nodes_component(const node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_component(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -277,7 +298,8 @@ public:
 	 * @param tt Type of tree (see @ref graphs::tree_type).
 	 * @returns True if this tree is of type @e tt.
 	 */
-	[[nodiscard]] bool is_of_tree_type(const tree_type& tt) const noexcept {
+	[[nodiscard]] bool is_of_tree_type(const tree_type& tt) const noexcept
+	{
 		return m_tree_type[static_cast<std::size_t>(tt)];
 	}
 
@@ -299,7 +321,10 @@ public:
 	 * @returns True or false depending on whether the tree type was calculated
 	 * or not.
 	 */
-	[[nodiscard]] bool is_tree_type_valid() const noexcept { return m_is_tree_type_valid; }
+	[[nodiscard]] bool is_tree_type_valid() const noexcept
+	{
+		return m_is_tree_type_valid;
+	}
 
 	/**
 	 * @brief Returns the list of types as a list of strings.
@@ -308,6 +333,7 @@ public:
 	[[nodiscard]] std::vector<std::string> get_tree_type_list() const noexcept;
 
 protected:
+
 	/// The root of every vertex in the union-find data structure
 	std::vector<node> m_union_find__root_of;
 	/**
@@ -322,7 +348,7 @@ protected:
 	std::vector<uint64_t> m_union_find__root_size;
 
 	/// The type of this tree
-	std::array<bool,__tree_type_size> m_tree_type;
+	std::array<bool, __tree_type_size> m_tree_type;
 	/**
 	 * @brief Is the type of this tree valid?
 	 *
@@ -333,11 +359,13 @@ protected:
 	bool m_is_tree_type_valid = false;
 
 protected:
+
 	/**
 	 * @brief Initializes only the memory of class @ref tree.
 	 * @param n Number of vertices.
 	 */
-	void tree_only_init(const uint64_t n) noexcept {
+	void tree_only_init(const uint64_t n) noexcept
+	{
 		m_union_find__root_of = std::vector<uint64_t>(n);
 		m_union_find__root_size = std::vector<uint64_t>(n);
 		for (node u = 0; u < n; ++u) {
@@ -348,7 +376,8 @@ protected:
 		tree_only_invalidate();
 	}
 	/// Clears the memory used by only class @ref tree.
-	void tree_only_clear() noexcept {
+	void tree_only_clear() noexcept
+	{
 		m_union_find__root_of.clear();
 		m_union_find__root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
@@ -356,7 +385,8 @@ protected:
 	}
 
 	/// Copies only members of class @ref tree.
-	void tree_only_copy(const tree& t) noexcept {
+	void tree_only_copy(const tree& t) noexcept
+	{
 		// copy this class' members
 		m_union_find__root_of = t.m_union_find__root_of;
 		m_union_find__root_size = t.m_union_find__root_size;
@@ -364,7 +394,8 @@ protected:
 		m_tree_type = t.m_tree_type;
 	}
 	/// Moves only members of class @ref tree.
-	void tree_only_move(tree&& t) noexcept {
+	void tree_only_move(tree&& t) noexcept
+	{
 		// move this class' members
 		m_union_find__root_of = std::move(t.m_union_find__root_of);
 		m_union_find__root_size = std::move(t.m_union_find__root_size);
@@ -379,7 +410,8 @@ protected:
 	 *
 	 * Updates all the internal data structures.
 	 */
-	void tree_only_add_node() noexcept {
+	void tree_only_add_node() noexcept
+	{
 		const node new_node = m_union_find__root_of.size();
 		m_union_find__root_of.push_back(new_node);
 		m_union_find__root_size.push_back(1);
@@ -392,7 +424,8 @@ protected:
 	 * Invalidates:
 	 * - @ref m_is_tree_type_valid.
 	 */
-	void tree_only_invalidate() noexcept {
+	void tree_only_invalidate() noexcept
+	{
 		m_is_tree_type_valid = false;
 	}
 
@@ -460,7 +493,8 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_after_remove_edge(const node u, const node v) noexcept;
+	void
+	tree_only_actions_after_remove_edge(const node u, const node v) noexcept;
 
 	/**
 	 * @brief Do some work after the removal of several edges.
@@ -484,7 +518,8 @@ protected:
 	 * @post The tree type is invalidated.
 	 * @post Updated union-find.
 	 */
-	void tree_only_actions_before_remove_edges_incident_to(const node u) noexcept;
+	void tree_only_actions_before_remove_edges_incident_to(const node u
+	) noexcept;
 
 	/**
 	 * @brief Updates the data structures of a tree after the graph structure
@@ -504,7 +539,8 @@ protected:
 
 	/// Fills the Union-Find data structure assuming that the graph
 	/// structure has all of its edges.
-	void fill_union_find() noexcept {
+	void fill_union_find() noexcept
+	{
 		const uint64_t n = get_num_nodes();
 		for (node u = 0; u < n; ++u) {
 			// all vertices point to root zero
@@ -515,7 +551,8 @@ protected:
 	}
 
 	/// Empties the Union-Find data structure assuming that the tree has no edges.
-	void empty_union_find() noexcept {
+	void empty_union_find() noexcept
+	{
 		for (node u = 0; u < get_num_nodes(); ++u) {
 			// all vertices point to root zero
 			m_union_find__root_of[u] = u;
@@ -535,14 +572,12 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_add_edge
-	(
+	virtual void update_union_find_after_add_edge(
 		const node u,
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the addition of a set of edges.
@@ -555,13 +590,11 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_add_edges
-	(
+	virtual void update_union_find_after_add_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the addition of several edges.
@@ -573,12 +606,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_add_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	virtual void update_union_find_after_add_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the removal of several edges.
@@ -590,12 +620,9 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_remove_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	virtual void update_union_find_after_remove_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after an edge removal.
@@ -614,8 +641,7 @@ protected:
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure after the removal of a set of edges.
@@ -628,13 +654,11 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_after_remove_edges
-	(
+	virtual void update_union_find_after_remove_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	) const noexcept = 0;
 
 	/**
 	 * @brief Update the union find data structure before the removal of all
@@ -649,14 +673,10 @@ protected:
 	 * @param root_size Array of @e n elements relating each vertex to the size
 	 * of the connected component it belongs to.
 	 */
-	virtual void update_union_find_before_remove_incident_edges_to
-	(
-		const node u,
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept = 0;
+	virtual void update_union_find_before_remove_incident_edges_to(
+		const node u, uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept = 0;
 };
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

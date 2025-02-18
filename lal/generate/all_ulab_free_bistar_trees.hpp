@@ -97,35 +97,43 @@ namespace generate {
  */
 class all_ulab_free_bistar_trees : public _tree_generator<graphs::free_tree> {
 public:
+
 	/// Empty constructor.
-	all_ulab_free_bistar_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+	all_ulab_free_bistar_trees() noexcept
+		: _tree_generator<graphs::free_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_bistar_trees(const uint64_t n) noexcept {
+	all_ulab_free_bistar_trees(const uint64_t n) noexcept
+	{
 		init(n);
 	}
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Exhaustive unlabelled free tree generator.
 	 */
-	all_ulab_free_bistar_trees(const all_ulab_free_bistar_trees& Gen) noexcept = default;
+	all_ulab_free_bistar_trees(const all_ulab_free_bistar_trees& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
 	 * @param Gen Exhaustive unlabelled free tree generator.
 	 */
-	all_ulab_free_bistar_trees(all_ulab_free_bistar_trees&& Gen) noexcept = default;
+	all_ulab_free_bistar_trees(all_ulab_free_bistar_trees&& Gen
+	) noexcept = default;
 
 	/// Default destructor.
 	~all_ulab_free_bistar_trees() noexcept = default;
 
 	/// Copy assignment operator.
-	all_ulab_free_bistar_trees& operator= (const all_ulab_free_bistar_trees& g) noexcept = default;
+	all_ulab_free_bistar_trees& operator= (const all_ulab_free_bistar_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	all_ulab_free_bistar_trees& operator= (all_ulab_free_bistar_trees&& g) noexcept = default;
+	all_ulab_free_bistar_trees& operator= (all_ulab_free_bistar_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -133,7 +141,8 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(const uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept
+	{
 		_tree_generator::init(n);
 		m_size = 0;
 		reset();
@@ -143,15 +152,17 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 	}
 
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept {
-		return m_n == 0 ? true : m_size >= m_n/2;
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_n == 0 ? true : m_size >= m_n / 2;
 	}
 
 	/* MODIFIERS */
@@ -163,22 +174,26 @@ public:
 	 * method @ref get_tree.
 	 * @pre The generator must have been initialized.
 	 */
-	void next() noexcept {
+	void next() noexcept
+	{
 		++m_size;
 	}
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		m_size = 0;
 	}
 
-	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept
+	{
 		const auto t = get_tree();
 		next();
 		return t;
 	}
 
 protected:
+
 	/**
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next().
@@ -188,9 +203,10 @@ protected:
 	[[nodiscard]] graphs::free_tree __get_tree() noexcept;
 
 private:
+
 	/// The size of the left partition.
 	uint64_t m_size;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

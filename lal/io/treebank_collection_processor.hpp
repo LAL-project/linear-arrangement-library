@@ -108,18 +108,21 @@ namespace io {
  */
 class treebank_collection_processor : public _treebank_processor_base {
 public:
+
 	// SETTERS
 
 	/**
 	 * @brief Join the resulting files into a single file.
 	 * @param v A Boolean value.
 	 */
-	void set_join_files(const bool v) noexcept {
+	void set_join_files(const bool v) noexcept
+	{
 		m_join_files = v;
 	}
 
 	/// Set the number of threads
-	void set_number_threads(const std::size_t n_threads) noexcept {
+	void set_number_threads(const std::size_t n_threads) noexcept
+	{
 #if defined DEBUG
 		assert(n_threads != 0);
 #endif
@@ -133,7 +136,8 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] std::size_t get_num_errors() const noexcept {
+	[[nodiscard]] std::size_t get_num_errors() const noexcept
+	{
 		return m_errors_from_processing.size();
 	}
 
@@ -144,8 +148,8 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const treebank_file_error& get_error_type(const std::size_t i)
-	const noexcept
+	[[nodiscard]] const treebank_file_error& get_error_type(const std::size_t i
+	) const noexcept
 	{
 		return std::get<0>(m_errors_from_processing[i]);
 	}
@@ -158,8 +162,8 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const std::string& get_error_treebank_filename(const std::size_t i)
-	const noexcept
+	[[nodiscard]] const std::string&
+	get_error_treebank_filename(const std::size_t i) const noexcept
 	{
 		return std::get<1>(m_errors_from_processing[i]);
 	}
@@ -172,8 +176,8 @@ public:
 	 * @pre Can only be checked when @ref process returns
 	 * lal::io::treebank_file_error_type::some_treebank_file_failed.
 	 */
-	[[nodiscard]] const std::string& get_error_treebank_name(const std::size_t i)
-	const noexcept
+	[[nodiscard]] const std::string& get_error_treebank_name(const std::size_t i
+	) const noexcept
 	{
 		return std::get<2>(m_errors_from_processing[i]);
 	}
@@ -187,12 +191,14 @@ public:
 	 * be relative to the working directory path.
 	 * @param join_to String
 	 */
-	void set_join_to_file_name(const std::string& join_to) noexcept {
+	void set_join_to_file_name(const std::string& join_to) noexcept
+	{
 		m_join_to_file = join_to;
 	}
 
 	/// Sets the name of the column used to group lines according to the treebank.
-	void set_treebank_column_name(const std::string& name) noexcept {
+	void set_treebank_column_name(const std::string& name) noexcept
+	{
 		m_treebank_column_name = name;
 	}
 
@@ -207,9 +213,9 @@ public:
 	 * - @ref lal::io::treebank_file_error_type::main_file_does_not_exist
 	 * - @ref lal::io::treebank_file_error_type::output_directory_could_not_be_created
 	 */
-	[[nodiscard]] treebank_file_error init
-	(const std::string& main_file, const std::string& output_directory)
-	noexcept;
+	[[nodiscard]] treebank_file_error init(
+		const std::string& main_file, const std::string& output_directory
+	) noexcept;
 
 	/**
 	 * @brief Process the treebank collection.
@@ -240,6 +246,7 @@ public:
 	[[nodiscard]] treebank_file_error process() noexcept;
 
 private:
+
 	/**
 	 * @brief Joins all resulting files into a single file
 	 * @returns An error code, if any.
@@ -247,6 +254,7 @@ private:
 	[[nodiscard]] treebank_file_error join_all_files() const noexcept;
 
 private:
+
 	/// The list of names of the treebanks.
 	std::vector<std::string> m_all_individual_treebank_ids;
 	/// The name of the file that joins all result files.
@@ -272,7 +280,7 @@ private:
 	 * initiated.
 	 */
 	std::vector<std::tuple<treebank_file_error, std::string, std::string>>
-	m_errors_from_processing;
+		m_errors_from_processing;
 
 	/// Output directory.
 	std::string m_out_dir = "none";
@@ -295,20 +303,20 @@ private:
  * @param num_threads The number of threads.
  * @returns A treebank error if any.
  */
-[[nodiscard]] inline treebank_file_error process_treebank_collection
-(
+[[nodiscard]] inline treebank_file_error process_treebank_collection(
 	const std::string& treebank_collection_main_file,
 	const std::string& output_directory,
 	const std::size_t num_threads = 1
-)
-noexcept
+) noexcept
 {
 	treebank_collection_processor tbcolproc;
 	auto err = tbcolproc.init(treebank_collection_main_file, output_directory);
-	if (not err.is_error()) { return err; }
+	if (not err.is_error()) {
+		return err;
+	}
 	tbcolproc.set_number_threads(num_threads);
 	return tbcolproc.process();
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

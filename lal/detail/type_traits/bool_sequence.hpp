@@ -61,14 +61,14 @@ static_assert(bool_sequence<false>::index_true == 1);
 static_assert(bool_sequence<true>::num_true == 1);
 static_assert(bool_sequence<false>::num_true == 0);
 
-static_assert(bool_sequence<false,false>::index_true == 2);
-static_assert(bool_sequence<false,true>::index_true == 1);
-static_assert(bool_sequence<true,false>::index_true == 0);
-static_assert(bool_sequence<true,true>::index_true == 0);
-static_assert(bool_sequence<false,false>::num_true == 0);
-static_assert(bool_sequence<false,true>::num_true == 1);
-static_assert(bool_sequence<true,false>::num_true == 1);
-static_assert(bool_sequence<true,true>::num_true == 2);
+static_assert(bool_sequence<false, false>::index_true == 2);
+static_assert(bool_sequence<false, true>::index_true == 1);
+static_assert(bool_sequence<true, false>::index_true == 0);
+static_assert(bool_sequence<true, true>::index_true == 0);
+static_assert(bool_sequence<false, false>::num_true == 0);
+static_assert(bool_sequence<false, true>::num_true == 1);
+static_assert(bool_sequence<true, false>::num_true == 1);
+static_assert(bool_sequence<true, true>::num_true == 2);
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

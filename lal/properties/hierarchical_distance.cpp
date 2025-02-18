@@ -54,7 +54,8 @@
 namespace lal {
 namespace properties {
 
-uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
+uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept
+{
 	const uint64_t n = t.get_num_nodes();
 
 #if defined DEBUG
@@ -66,10 +67,11 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 
 	detail::BFS<graphs::rooted_tree> bfs(t);
 	bfs.set_process_neighbour(
-	[&](const auto&, const node u, const node v, bool) -> void {
-		distances[v] = distances[u] + 1;
-		sum_distances += distances[v];
-	}
+		[&](const auto&, const node u, const node v, bool) -> void
+		{
+			distances[v] = distances[u] + 1;
+			sum_distances += distances[v];
+		}
 	);
 	bfs.start_at(t.get_root());
 
@@ -77,7 +79,8 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept {
 }
 
 template <typename result>
-result MHD(const graphs::rooted_tree& t) noexcept {
+result MHD(const graphs::rooted_tree& t) noexcept
+{
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 	assert(t.get_num_nodes() > 1);
@@ -88,20 +91,21 @@ result MHD(const graphs::rooted_tree& t) noexcept {
 		return numeric::rational(sum_distances, t.get_num_edges());
 	}
 	else {
-		return detail::to_double(sum_distances)/detail::to_double(t.get_num_edges());
+		return detail::to_double(sum_distances) /
+			   detail::to_double(t.get_num_edges());
 	}
 }
 
-numeric::rational mean_hierarchical_distance_rational
-(const graphs::rooted_tree& tree)
-noexcept
+numeric::rational
+mean_hierarchical_distance_rational(const graphs::rooted_tree& tree) noexcept
 {
 	return MHD<numeric::rational>(tree);
 }
 
-double mean_hierarchical_distance(const graphs::rooted_tree& tree) noexcept {
+double mean_hierarchical_distance(const graphs::rooted_tree& tree) noexcept
+{
 	return MHD<double>(tree);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

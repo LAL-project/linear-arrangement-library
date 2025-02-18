@@ -59,8 +59,7 @@ struct is_pointer_iterator {
 		std::is_pointer_v<Iterator> or
 		std::is_same_v<
 			typename std::iterator_traits<Iterator>::value_type,
-			Iterated_Type
-		>;
+			Iterated_Type>;
 };
 
 /// Shorthand for @ref is_pointer_iterator.
@@ -68,5 +67,5 @@ template <typename Iterated_Type, typename Iterator>
 constexpr bool is_pointer_iterator_v =
 	is_pointer_iterator<Iterated_Type, Iterator>::value;
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

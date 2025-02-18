@@ -55,10 +55,8 @@ namespace DMax {
 namespace unconstrained {
 
 reason_discard AEF_BnB::check_propagation_node_to_node(
-	const node u, const int64_t level_u,
-	const node v, const int64_t level_v
-)
-const noexcept
+	const node u, const int64_t level_u, const node v, const int64_t level_v
+) const noexcept
 {
 	const bool both_negative = level_u < 0 and level_v < 0;
 	const bool both_positive = level_u > 0 and level_v > 0;
@@ -75,9 +73,8 @@ const noexcept
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node__degree_2__bridge__level_0
-(const node u)
-const noexcept
+reason_discard AEF_BnB::discard_node__degree_2__bridge__level_0(const node u
+) const noexcept
 {
 	const auto path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
@@ -88,10 +85,10 @@ const noexcept
 		is_vertex_assigned(m_t.get_neighbors(u)[0]) or
 		is_vertex_assigned(m_t.get_neighbors(u)[1])
 	);
-	assert(not(
-		is_vertex_assigned(m_t.get_neighbors(u)[0]) and
-		is_vertex_assigned(m_t.get_neighbors(u)[1])
-	));
+	assert(
+		not(is_vertex_assigned(m_t.get_neighbors(u)[0]) and
+			is_vertex_assigned(m_t.get_neighbors(u)[1]))
+	);
 
 	assert(not m_paths_in_tree[path_idx].is_antenna(m_t));
 #endif
@@ -115,9 +112,9 @@ const noexcept
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node__degree_2__bridge__level_pm2
-(const node u, const int64_t level_u)
-const noexcept
+reason_discard AEF_BnB::discard_node__degree_2__bridge__level_pm2(
+	const node u, const int64_t level_u
+) const noexcept
 {
 #if defined DEBUG
 	assert(std::abs(level_u) == 2);
@@ -164,7 +161,9 @@ const noexcept
 #endif
 
 	// we cannot decide anything if the lowest has no valid prediction
-	if (not valid_prediction_w) { return reason_discard::none; }
+	if (not valid_prediction_w) {
+		return reason_discard::none;
+	}
 
 #if defined DEBUG
 	assert(m_predicted_LV[w] == 0);
@@ -176,14 +175,18 @@ const noexcept
 		assert(not valid_prediction_wm1);
 #endif
 
-		if (not valid_prediction_wp1) { return reason_discard::none; }
+		if (not valid_prediction_wp1) {
+			return reason_discard::none;
+		}
 
 #if defined DEBUG
 		assert(std::abs(m_predicted_LV[wp1]) == 2);
 #endif
 
 		const int64_t predicted_level_wm1 = m_predicted_LV[wp1] == 2 ? -2 : 2;
-		return check_propagation_node_to_node(u, level_u, wm1, predicted_level_wm1);
+		return check_propagation_node_to_node(
+			u, level_u, wm1, predicted_level_wm1
+		);
 	}
 
 	if (pw < pu) {
@@ -191,22 +194,26 @@ const noexcept
 		assert(not valid_prediction_wp1);
 #endif
 
-		if (not valid_prediction_wm1) { return reason_discard::none; }
+		if (not valid_prediction_wm1) {
+			return reason_discard::none;
+		}
 
 #if defined DEBUG
 		assert(std::abs(m_predicted_LV[wm1]) == 2);
 #endif
 
 		const int64_t predicted_level_wp1 = m_predicted_LV[wm1] == 2 ? -2 : 2;
-		return check_propagation_node_to_node(u, level_u, wp1, predicted_level_wp1);
+		return check_propagation_node_to_node(
+			u, level_u, wp1, predicted_level_wp1
+		);
 	}
 
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node_degree_2
-(const node u, const int64_t level_u)
-const noexcept
+reason_discard AEF_BnB::discard_node_degree_2(
+	const node u, const int64_t level_u
+) const noexcept
 {
 	const std::size_t path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
@@ -219,26 +226,33 @@ const noexcept
 	}
 	else {
 		if (level_u == 2 or level_u == -2) {
-			const reason_discard r = discard_node__degree_2__bridge__level_pm2(u, level_u);
-			if (r != reason_discard::none) { return r; }
+			const reason_discard r =
+				discard_node__degree_2__bridge__level_pm2(u, level_u);
+			if (r != reason_discard::none) {
+				return r;
+			}
 		}
 		else {
 #if defined DEBUG
 			assert(level_u == 0);
 #endif
 			const reason_discard r = discard_node__degree_2__bridge__level_0(u);
-			if (r != reason_discard::none) { return r; }
+			if (r != reason_discard::none) {
+				return r;
+			}
 		}
 	}
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node_degree_3
-(const node u, const int64_t level_u)
-const noexcept
+reason_discard AEF_BnB::discard_node_degree_3(
+	const node u, const int64_t level_u
+) const noexcept
 {
 	for (const node v : m_t.get_neighbors(u)) {
-		if (m_t.get_degree(v) >= 3) { continue; }
+		if (m_t.get_degree(v) >= 3) {
+			continue;
+		}
 
 		const std::size_t path_v_idx = m_node_to_path_idx[v];
 		const auto& path_v = m_paths_in_tree[path_v_idx];
@@ -246,11 +260,8 @@ const noexcept
 
 		if (path_v.is_antenna(m_t)) {
 			if (m_path_info[path_v_idx].num_assigned_nodes == 0) {
-				if ((N == 2 and level_u <= -1) or
-					(N == 3 and level_u <= 0) or
-					(N >= 4 and level_u <= 1)
-				)
-				{
+				if ((N == 2 and level_u <= -1) or (N == 3 and level_u <= 0) or
+					(N >= 4 and level_u <= 1)) {
 					return reason_discard::hub_disallows_placement_of_antennas;
 				}
 			}
@@ -259,19 +270,15 @@ const noexcept
 				assert(has_valid_LV_prediction(v));
 #endif
 
-				if (not is_vertex_assigned(v) and (m_predicted_LV[v] != -2))
-				{
+				if (not is_vertex_assigned(v) and (m_predicted_LV[v] != -2)) {
 					return reason_discard::placement_fails_level_propagation;
 				}
 			}
 		}
 		else {
-			if (not is_vertex_assigned(v) and
-				has_valid_LV_prediction(v) and
+			if (not is_vertex_assigned(v) and has_valid_LV_prediction(v) and
 				v != path_v.get_lowest_lexicographic() and
-				(m_predicted_LV[v] != -2)
-			)
-			{
+				(m_predicted_LV[v] != -2)) {
 				return reason_discard::placement_fails_level_propagation;
 			}
 		}
@@ -279,33 +286,29 @@ const noexcept
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_vertex(const node u, const position_t pos)
-const noexcept
+reason_discard
+AEF_BnB::discard_vertex(const node u, const position_t pos) const noexcept
 {
 #if defined DEBUG
 	assert(pos > 0ull);
 #endif
 
 	{
-	// do not let the arrangement become bipartite
-	const auto color_u = m_vertex_colors[u];
-	const auto new_num_assigned_nodes_blue =
-		m_num_assigned_nodes_blue + (color_u == properties::bipartite_graph_coloring::blue);
-	const auto new_num_assigned_nodes_red =
-		m_num_assigned_nodes_red + (color_u == properties::bipartite_graph_coloring::red);
+		// do not let the arrangement become bipartite
+		const auto color_u = m_vertex_colors[u];
+		const auto new_num_assigned_nodes_blue =
+			m_num_assigned_nodes_blue +
+			(color_u == properties::bipartite_graph_coloring::blue);
+		const auto new_num_assigned_nodes_red =
+			m_num_assigned_nodes_red +
+			(color_u == properties::bipartite_graph_coloring::red);
 
-	if (
-		(new_num_assigned_nodes_blue == m_num_nodes_blue
-		 and
-		 new_num_assigned_nodes_red == 0)
-		or
-		(new_num_assigned_nodes_red == m_num_nodes_red
-		 and
-		 new_num_assigned_nodes_blue == 0)
-	)
-	{
-		return reason_discard::will_produce_bipartite_arrangement;
-	}
+		if ((new_num_assigned_nodes_blue == m_num_nodes_blue and
+			 new_num_assigned_nodes_red == 0) or
+			(new_num_assigned_nodes_red == m_num_nodes_red and
+			 new_num_assigned_nodes_blue == 0)) {
+			return reason_discard::will_produce_bipartite_arrangement;
+		}
 	}
 
 	// Calculate the level of an unassigned node. Since it is unassigned,
@@ -314,7 +317,7 @@ const noexcept
 	//   level = right - left
 	//         = degree - 2*left
 	const int64_t level_u =
-		to_int64(m_t.get_degree(u)) - 2*to_int64(m_node_left_degree[u]);
+		to_int64(m_t.get_degree(u)) - 2 * to_int64(m_node_left_degree[u]);
 
 	const node previous_node = m_arr[pos - 1ull];
 	const int64_t previous_level = m_node_level[previous_node];
@@ -366,18 +369,14 @@ const noexcept
 				// check enough +2 are assigned
 				if ((info.nodes_p2_to_assign.has_value() and
 					 info.nodes_p2_to_assign > info.num_assigned_nodes_p2) or
-					(info.num_assigned_nodes_p2 < info.min_pm_two)
-				)
-				{
+					(info.num_assigned_nodes_p2 < info.min_pm_two)) {
 					return reason_discard::missing_degree2_lp2;
 				}
 
 				// check enough -2 are assigned
 				if ((info.nodes_m2_to_assign.has_value() and
 					 info.nodes_m2_to_assign > info.num_assigned_nodes_m2) or
-					(info.num_assigned_nodes_m2 < info.min_pm_two)
-				)
-				{
+					(info.num_assigned_nodes_m2 < info.min_pm_two)) {
 					return reason_discard::missing_degree2_lm2;
 				}
 			}
@@ -398,7 +397,9 @@ const noexcept
 		// -1, -2, -3, -4, -5, ...
 		const std::size_t path_u_idx = m_node_to_path_idx[u];
 		for (std::size_t i = 0; i < m_paths_in_tree.size(); ++i) {
-			if (i == path_u_idx) { continue; }
+			if (i == path_u_idx) {
+				continue;
+			}
 
 			const properties::branchless_path& p = m_paths_in_tree[i];
 			const path_info& info = m_path_info[i];
@@ -416,9 +417,7 @@ const noexcept
 				// check enough +2 are assigned
 				if ((info.nodes_p2_to_assign.has_value() and
 					 info.nodes_p2_to_assign > info.num_assigned_nodes_p2) or
-					(info.num_assigned_nodes_p2 < info.min_pm_two)
-				)
-				{
+					(info.num_assigned_nodes_p2 < info.min_pm_two)) {
 					return reason_discard::missing_degree2_lp2;
 				}
 			}
@@ -434,7 +433,9 @@ const noexcept
 		// +1, 0, -1, -2, -3, -4, -5, ...
 		const std::size_t path_u_idx = m_node_to_path_idx[u];
 		for (std::size_t i = 0; i < m_paths_in_tree.size(); ++i) {
-			if (i == path_u_idx) { continue; }
+			if (i == path_u_idx) {
+				continue;
+			}
 
 			const properties::branchless_path& p = m_paths_in_tree[i];
 			const path_info& info = m_path_info[i];
@@ -444,9 +445,7 @@ const noexcept
 				// check enough +2 are assigned
 				if ((info.nodes_p2_to_assign.has_value() and
 					 info.nodes_p2_to_assign > info.num_assigned_nodes_p2) or
-					(info.num_assigned_nodes_p2 < info.min_pm_two)
-				)
-				{
+					(info.num_assigned_nodes_p2 < info.min_pm_two)) {
 					return reason_discard::missing_degree2_lp2;
 				}
 			}
@@ -462,18 +461,22 @@ const noexcept
 	if (not has_valid_LV_prediction(u)) {
 		if (m_t.get_degree(u) == 2) {
 			const reason_discard r = discard_node_degree_2(u, level_u);
-			if (r != reason_discard::none) { return r; }
+			if (r != reason_discard::none) {
+				return r;
+			}
 		}
 		else if (m_t.get_degree(u) >= 3) {
 			const reason_discard r = discard_node_degree_3(u, level_u);
-			if (r != reason_discard::none) { return r; }
+			if (r != reason_discard::none) {
+				return r;
+			}
 		}
 	}
 
 	if (previous_level > 0 and level_u <= 0 and pos < m_n_nodes - 1) {
 		// the current level is past the largest cut.
 		const uint64_t largest_cut = m_cut_values[*pos - 1];
-		if (largest_cut < (m_n_nodes - 1)/2) {
+		if (largest_cut < (m_n_nodes - 1) / 2) {
 			return reason_discard::largest_cut_below_minimum;
 		}
 	}
@@ -510,7 +513,9 @@ const noexcept
 		bool all_lower_nodes_assigned = true;
 		for (node w : orbit_u) {
 			// ensure that 'u' and 'w' are siblings
-			if (not m_rt.are_nodes_siblings(u, w)) { continue; }
+			if (not m_rt.are_nodes_siblings(u, w)) {
+				continue;
+			}
 
 			if (w < u and not is_vertex_assigned(w)) {
 				all_lower_nodes_assigned = false;
@@ -520,14 +525,15 @@ const noexcept
 
 		// ignore if some lower-indexed vertex has not yet been assigned
 		if (not all_lower_nodes_assigned) {
-			return reason_discard::roots_of_isomorphic_subtrees_disobey_lexicographic_order;
+			return reason_discard::
+				roots_of_isomorphic_subtrees_disobey_lexicographic_order;
 		}
 	}
 
 	return reason_discard::none;
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

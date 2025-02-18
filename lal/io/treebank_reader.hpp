@@ -88,6 +88,7 @@ namespace io {
  */
 class treebank_reader {
 public:
+
 	// MODIFIERS
 
 	/**
@@ -100,12 +101,16 @@ public:
 	 * @post The amount of trees processed, @ref m_num_trees, is always
 	 * set to 0.
 	 */
-	[[nodiscard]] treebank_file_error init
-	(const std::string& treebank_filename, const std::string& treebank_id = "")
-	noexcept;
+	[[nodiscard]] treebank_file_error init(
+		const std::string& treebank_filename,
+		const std::string& treebank_id = ""
+	) noexcept;
 
 	/// Returns whether there is another tree to be processed.
-	[[nodiscard]] bool end() const noexcept { return m_no_more_trees; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_no_more_trees;
+	}
 
 	/**
 	 * @brief Retrieves the next tree in the file.
@@ -122,22 +127,30 @@ public:
 	 * amount of trees in the treebank.
 	 */
 	[[nodiscard]] std::size_t get_num_trees() const noexcept
-	{ return m_num_trees; }
+	{
+		return m_num_trees;
+	}
 
 	/// Returns the identifier corresponding of the treebank.
 	[[nodiscard]] const std::string& get_treebank_identifier() const noexcept
-	{ return m_treebank_identifier; }
+	{
+		return m_treebank_identifier;
+	}
 
 	/// Returns the name of the treebank file.
 	[[nodiscard]] const std::string& get_treebank_filename() const noexcept
-	{ return m_treebank_file; }
+	{
+		return m_treebank_file;
+	}
 
 	/// Returns the current tree.
 	[[nodiscard]] graphs::rooted_tree get_tree() const noexcept;
 
 	/// Returns the current head vector.
 	[[nodiscard]] head_vector get_head_vector() const noexcept
-	{ return m_current_head_vector; }
+	{
+		return m_current_head_vector;
+	}
 
 	/**
 	 * @brief Can the treebank be read?
@@ -146,7 +159,10 @@ public:
 	 * @ref lal::io::treebank_file_error_type::no_error then this returns false.
 	 * @return Whether the treebank is readable or not.
 	 */
-	[[nodiscard]] bool is_open() const noexcept { return m_treebank.is_open(); }
+	[[nodiscard]] bool is_open() const noexcept
+	{
+		return m_treebank.is_open();
+	}
 
 	/* SETTERS */
 
@@ -154,7 +170,8 @@ public:
 	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalize(const bool v) noexcept {
+	void set_normalize(const bool v) noexcept
+	{
 		m_normalize_tree = v;
 	}
 
@@ -162,7 +179,8 @@ public:
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(const bool v) noexcept {
+	void set_calculate_size_subtrees(const bool v) noexcept
+	{
 		m_calculate_size_subtrees = v;
 	}
 
@@ -172,7 +190,8 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(const bool v) noexcept {
+	void set_calculate_tree_type(const bool v) noexcept
+	{
 		m_calculate_tree_type = v;
 	}
 
@@ -185,9 +204,12 @@ public:
 	 * @param id Identifier string.
 	 */
 	void set_identifier(const std::string& id) noexcept
-	{ m_treebank_identifier = id; }
+	{
+		m_treebank_identifier = id;
+	}
 
 private:
+
 	/// Identifier for the treebank.
 	std::string m_treebank_identifier = "none";
 	/// Treebank's file name (with the full path).
@@ -212,5 +234,5 @@ private:
 	bool m_no_more_trees = false;
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

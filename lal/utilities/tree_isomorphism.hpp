@@ -61,9 +61,9 @@ namespace utilities {
  * @pre Both input trees are valid rooted trees (see
  * @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-[[nodiscard]] bool are_trees_isomorphic
-(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
-noexcept;
+[[nodiscard]] bool are_trees_isomorphic(
+	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+) noexcept;
 
 /**
  * @brief Isomorphism test for unlabelled free trees.
@@ -78,9 +78,9 @@ noexcept;
  * @pre Both input trees are valid free trees (see
  * @ref lal::graphs::free_tree::is_tree).
  */
-[[nodiscard]] bool are_trees_isomorphic
-(const graphs::free_tree& t1, const graphs::free_tree& t2)
-noexcept;
+[[nodiscard]] bool are_trees_isomorphic(
+	const graphs::free_tree& t1, const graphs::free_tree& t2
+) noexcept;
 
-} // -- namespace utilities
-} // -- namespace lal
+} // namespace utilities
+} // namespace lal

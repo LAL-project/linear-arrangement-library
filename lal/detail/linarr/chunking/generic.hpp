@@ -49,7 +49,6 @@
 namespace lal {
 namespace detail {
 
-
 /**
  * @brief Basic algorithms existent in every definition of chunking.
  *
@@ -60,23 +59,25 @@ namespace detail {
 template <class arrangement_t>
 class chunks_generic {
 public:
+
 	/**
 	 * @brief Constructor
 	 * @param rt Input rooted tree.
 	 * @param arr Input linear arrangement.
 	 */
 	chunks_generic(const graphs::rooted_tree& rt, const arrangement_t& arr)
-	noexcept
-		: m_rt(rt), m_arr(arr),
+		noexcept
+		: m_rt(rt),
+		  m_arr(arr),
 		  m_n(rt.get_num_nodes())
-	{
-	}
+	{ }
 
 	/// Destructor
 	virtual ~chunks_generic() noexcept { }
 
 	/// Returns a constant reference to the chunk sequence @ref m_sequence.
-	const linarr::chunk_sequence& get_chunk_sequence() const noexcept {
+	const linarr::chunk_sequence& get_chunk_sequence() const noexcept
+	{
 		return m_sequence;
 	}
 	/*
@@ -86,27 +87,33 @@ public:
 	}
 	*/
 	/// Moves the chunk sequence @ref m_sequence.
-	[[nodiscard]] linarr::chunk_sequence&& retrieve_chunk_sequence() noexcept {
+	[[nodiscard]] linarr::chunk_sequence&& retrieve_chunk_sequence() noexcept
+	{
 		return std::move(m_sequence);
 	}
 
 protected:
+
 	/// Returns a reference to the last chunk in the sentence.
-	[[nodiscard]] linarr::chunk& last_chunk() noexcept {
+	[[nodiscard]] linarr::chunk& last_chunk() noexcept
+	{
 		return m_sequence[m_sequence.size() - 1];
 	}
 
 	/// Returns the chunk index of node @e u.
-	[[nodiscard]] std::size_t node_to_chunk(const node u) const noexcept {
+	[[nodiscard]] std::size_t node_to_chunk(const node u) const noexcept
+	{
 		return m_sequence.get_chunk_index(u);
 	}
 	/// Sets the chunk index of node @e u to index @e i.
-	void set_chunk_index(const node u, const std::size_t i) noexcept {
+	void set_chunk_index(const node u, const std::size_t i) noexcept
+	{
 		m_sequence.set_chunk_index(u, i);
 	}
 
 	/// Set the parent node of a chunks.
-	void set_parent_chunk(linarr::chunk& c) noexcept {
+	void set_parent_chunk(linarr::chunk& c) noexcept
+	{
 #if defined DEBUG
 		bool head_found = false;
 #endif
@@ -139,6 +146,7 @@ protected:
 	}
 
 protected:
+
 	/// Input rooted tree.
 	const graphs::rooted_tree& m_rt;
 	/// Linear arrangement.
@@ -150,5 +158,5 @@ protected:
 	linarr::chunk_sequence m_sequence;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

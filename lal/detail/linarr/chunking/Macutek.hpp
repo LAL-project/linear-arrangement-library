@@ -61,16 +61,16 @@ namespace detail {
 template <class arrangement_t>
 class chunks_Macutek : public chunks_generic<arrangement_t> {
 public:
+
 	/**
 	 * @brief Constructor
 	 * @param rt Input rooted tree.
 	 * @param arr Input linear arrangement.
 	 */
 	chunks_Macutek(const graphs::rooted_tree& rt, const arrangement_t& arr)
-	noexcept
+		noexcept
 		: generic(rt, arr)
-	{
-	}
+	{ }
 
 	/**
 	 * @brief Main method of this class
@@ -78,7 +78,8 @@ public:
 	 * Calling this method will chunk the input rooted tree using Mačutek
 	 * (et al.)'s definition.
 	 */
-	void chunk_input_tree() noexcept {
+	void chunk_input_tree() noexcept
+	{
 		m_sequence.init(m_n);
 
 		position_t p{0ull};
@@ -95,7 +96,7 @@ public:
 				m_rt.has_edge(prev, current) or m_rt.has_edge(current, prev);
 
 			if (are_syntactically_linked) {
-				last_chunk().add_node( current );
+				last_chunk().add_node(current);
 			}
 			else {
 				m_sequence.push_chunk(m_arr[p]);
@@ -108,8 +109,10 @@ public:
 	}
 
 private:
+
 	/// Set the parent node of all chunks.
-	void set_parent_chunks() noexcept {
+	void set_parent_chunks() noexcept
+	{
 		for (std::size_t i = 0; i < m_sequence.size(); ++i) {
 			set_parent_chunk(m_sequence[i]);
 		}
@@ -121,16 +124,15 @@ private:
 	typedef chunks_generic<arrangement_t> generic;
 
 	// member variables
-	using generic::m_sequence;
-	using generic::m_n;
 	using generic::m_arr;
+	using generic::m_n;
 	using generic::m_rt;
+	using generic::m_sequence;
 
 	// member functions
-	using generic::set_parent_chunk;
 	using generic::last_chunk;
-
+	using generic::set_parent_chunk;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

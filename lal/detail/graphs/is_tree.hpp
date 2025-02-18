@@ -57,22 +57,27 @@ namespace detail {
  * @returns True if, and only if, the graph is a tree.
  */
 template <class graph_t>
-[[nodiscard]] bool is_graph_a_tree(const graph_t& g) noexcept {
+[[nodiscard]] bool is_graph_a_tree(const graph_t& g) noexcept
+{
 	const auto n = g.get_num_nodes();
 
 	// simplest case
-	if (n <= 1) { return true; }
+	if (n <= 1) {
+		return true;
+	}
 
 	// check exact amount of edges
-	if (g.get_num_edges() != n - 1) { return false; }
+	if (g.get_num_edges() != n - 1) {
+		return false;
+	}
 
 	// visit all vertices, if all vertices
 	// were visited then the graph is a tree
 	BFS<graph_t> bfs(g);
-	bfs.set_use_rev_edges( BFS<graph_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<graph_t>::is_graph_directed);
 	bfs.start_at(0);
 	return bfs.all_visited();
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

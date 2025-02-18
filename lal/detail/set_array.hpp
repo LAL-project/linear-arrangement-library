@@ -111,10 +111,12 @@ public:
 	 * @param max_index_value Maximum index value in the worst case.
 	 */
 	template <
-		typename vt = value_t, typename it = indexer_t,
-		std::enable_if_t< std::is_same_v<vt, it>, bool > = true
-	>
-	void init(const std::size_t max_num_elems, const std::size_t max_index_value) noexcept
+		typename vt = value_t,
+		typename it = indexer_t,
+		std::enable_if_t<std::is_same_v<vt, it>, bool> = true>
+	void init(
+		const std::size_t max_num_elems, const std::size_t max_index_value
+	) noexcept
 	{
 		m_size = 0;
 		m_values.resize(max_num_elems);
@@ -129,15 +131,14 @@ public:
 	 * @param i Indexer object.
 	 */
 	template <
-		typename vt = value_t, typename it = indexer_t,
-		std::enable_if_t< not std::is_same_v<vt, it>, bool > = true
-	>
+		typename vt = value_t,
+		typename it = indexer_t,
+		std::enable_if_t<not std::is_same_v<vt, it>, bool> = true>
 	void init(
 		const std::size_t max_num_elems,
 		const std::size_t max_index_value,
 		indexer_t&& i
-	)
-	noexcept
+	) noexcept
 	{
 		m_I = std::move(i);
 		m_size = 0;
@@ -151,7 +152,8 @@ public:
 	 * @param i Index value.
 	 * @returns The value at the @e i-th position of @ref m_values.
 	 */
-	[[nodiscard]] const value_t& operator[] (const std::size_t i) const noexcept {
+	[[nodiscard]] const value_t& operator[] (const std::size_t i) const noexcept
+	{
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -159,20 +161,31 @@ public:
 	}
 
 	/// Maximum size of this set.
-	[[nodiscard]] std::size_t capacity() const noexcept { return m_exists.size(); }
+	[[nodiscard]] std::size_t capacity() const noexcept
+	{
+		return m_exists.size();
+	}
 	/// Actual size of this set.
-	[[nodiscard]] std::size_t size() const noexcept { return m_size; }
+	[[nodiscard]] std::size_t size() const noexcept
+	{
+		return m_size;
+	}
 
 	/// Does an element exist?
 	[[nodiscard]] bool exists(const value_t& v) const noexcept
-	{ return m_exists[index(v)] == EXISTS; }
+	{
+		return m_exists[index(v)] == EXISTS;
+	}
 
 	/// Where is an element located?
 	[[nodiscard]] std::size_t position(const value_t& v) const noexcept
-	{ return m_position[index(v)]; }
+	{
+		return m_position[index(v)];
+	}
 
 	/// Add a new element to the set.
-	void add(const value_t& v) noexcept {
+	void add(const value_t& v) noexcept
+	{
 		const std::size_t idx_v = index(v);
 
 		if (not m_exists[idx_v]) {
@@ -188,7 +201,8 @@ public:
 	}
 
 	/// Add a new element to the set.
-	void add(value_t&& v) noexcept {
+	void add(value_t&& v) noexcept
+	{
 		const std::size_t idx_v = index(v);
 
 		if (not m_exists[idx_v]) {
@@ -204,7 +218,8 @@ public:
 	}
 
 	/// Remove an element from the set.
-	void remove(const value_t& v) noexcept {
+	void remove(const value_t& v) noexcept
+	{
 		const std::size_t idx_v = index(v);
 		if (m_exists[idx_v]) {
 
@@ -229,30 +244,56 @@ public:
 	}
 
 	/// Begin iterator to @ref m_values.
-	[[nodiscard]] const value_t* begin_values() const noexcept { return m_values.begin(); }
+	[[nodiscard]] const value_t *begin_values() const noexcept
+	{
+		return m_values.begin();
+	}
 	/// Begin iterator to @ref m_values.
-	[[nodiscard]] value_t* begin_values() noexcept { return m_values.begin(); }
+	[[nodiscard]] value_t *begin_values() noexcept
+	{
+		return m_values.begin();
+	}
 	/// End iterator to @ref m_values.
-	[[nodiscard]] const value_t* end_values() const noexcept { return m_values.end(); }
+	[[nodiscard]] const value_t *end_values() const noexcept
+	{
+		return m_values.end();
+	}
 	/// End iterator to @ref m_values.
-	[[nodiscard]] value_t* end_values() noexcept { return m_values.end(); }
+	[[nodiscard]] value_t *end_values() noexcept
+	{
+		return m_values.end();
+	}
 
 	/// Begin iterator to @ref m_position.
-	[[nodiscard]] const value_t* begin_position() const noexcept { return m_position.begin(); }
+	[[nodiscard]] const value_t *begin_position() const noexcept
+	{
+		return m_position.begin();
+	}
 	/// Begin iterator to @ref m_position.
-	[[nodiscard]] value_t* begin_position() noexcept { return m_position.begin(); }
+	[[nodiscard]] value_t *begin_position() noexcept
+	{
+		return m_position.begin();
+	}
 	/// End iterator to @ref m_position.
-	[[nodiscard]] const value_t* end_position() const noexcept { return m_position.end(); }
+	[[nodiscard]] const value_t *end_position() const noexcept
+	{
+		return m_position.end();
+	}
 	/// End iterator to @ref m_position.
-	[[nodiscard]] value_t* end_position() noexcept { return m_position.end(); }
+	[[nodiscard]] value_t *end_position() noexcept
+	{
+		return m_position.end();
+	}
 
 private:
+
 	/// Does an element exist in the set?
 	static constexpr char EXISTS = 1;
 	/// Does an element not exist in the set?
 	static constexpr char NOT_EXISTS = 0;
 
 private:
+
 	/// The indexer object.
 	indexer_t m_I;
 
@@ -271,8 +312,10 @@ private:
 	array<std::size_t> m_position;
 
 private:
+
 	/// Calculate the index of an element using the indexer object @ref m_I.
-	[[nodiscard]] std::size_t index(const value_t& v) const noexcept {
+	[[nodiscard]] std::size_t index(const value_t& v) const noexcept
+	{
 		if constexpr (not std::is_same_v<value_t, indexer_t>) {
 			return m_I(v);
 		}
@@ -282,6 +325,5 @@ private:
 	}
 };
 
-
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

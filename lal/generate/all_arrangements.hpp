@@ -104,6 +104,7 @@ namespace generate {
  */
 class all_arrangements {
 public:
+
 	/**
 	 * @brief Constructor with graph.
 	 * @param g Input graph. Only its number of vertices is used.
@@ -132,10 +133,15 @@ public:
 	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
 	 */
 	[[nodiscard]] const linear_arrangement& get_arrangement() const noexcept
-	{ return m_arr; }
+	{
+		return m_arr;
+	}
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/**
 	 * @brief Generates the next arrangement.
@@ -146,7 +152,8 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		m_reached_end = false;
 		m_arr.identity();
 	}
@@ -156,7 +163,8 @@ public:
 	 * @return The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();
@@ -164,6 +172,7 @@ public:
 	}
 
 private:
+
 	/// Number of vertices
 	const uint64_t m_n;
 	/**
@@ -176,5 +185,5 @@ private:
 	bool m_reached_end = false;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

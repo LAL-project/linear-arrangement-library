@@ -64,9 +64,9 @@
 namespace lal {
 namespace linarr {
 
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths
-(const graphs::free_tree& t, const algorithms_Dmin& a)
-noexcept
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths(
+	const graphs::free_tree& t, const algorithms_Dmin& a
+) noexcept
 {
 	if (a == algorithms_Dmin::Shiloach) {
 		return detail::Dmin::unconstrained::YossiShiloach<true>(t);
@@ -75,24 +75,23 @@ noexcept
 	return detail::Dmin::unconstrained::FanChung_2<true>(t);
 }
 
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
-(const graphs::free_tree& t, const properties::bipartite_graph_coloring& c)
-noexcept
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite(
+	const graphs::free_tree& t, const properties::bipartite_graph_coloring& c
+) noexcept
 {
-	return detail::Dmin::bipartite::AEF<true>(t,c);
+	return detail::Dmin::bipartite::AEF<true>(t, c);
 }
 
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_bipartite
-(const graphs::free_tree& t)
-noexcept
+std::pair<uint64_t, linear_arrangement>
+min_sum_edge_lengths_bipartite(const graphs::free_tree& t) noexcept
 {
 	const auto c = properties::bipartite_coloring(t);
 	return min_sum_edge_lengths_bipartite(t, c);
 }
 
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar
-(const graphs::free_tree& t, const algorithms_Dmin_planar& a)
-noexcept
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_planar(
+	const graphs::free_tree& t, const algorithms_Dmin_planar& a
+) noexcept
 {
 	if (a == algorithms_Dmin_planar::AlemanyEstebanFerrer) {
 		return detail::Dmin::planar::AEF<true>(t);
@@ -101,9 +100,9 @@ noexcept
 	return detail::Dmin::planar::HS<true>(t);
 }
 
-std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective
-(const graphs::rooted_tree& t, const algorithms_Dmin_projective& a)
-noexcept
+std::pair<uint64_t, linear_arrangement> min_sum_edge_lengths_projective(
+	const graphs::rooted_tree& t, const algorithms_Dmin_projective& a
+) noexcept
 {
 	if (a == algorithms_Dmin_projective::AlemanyEstebanFerrer) {
 		return detail::Dmin::projective::AEF<true>(t);
@@ -112,5 +111,5 @@ noexcept
 	return detail::Dmin::projective::HS<true>(t);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

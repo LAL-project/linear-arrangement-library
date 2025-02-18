@@ -67,10 +67,12 @@ namespace generate {
  */
 class _rand_ulab_rooted_trees {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
-	_rand_ulab_rooted_trees() noexcept {
+	_rand_ulab_rooted_trees() noexcept
+	{
 		// add the initial values to m_rn
 		init_rn();
 	}
@@ -83,8 +85,8 @@ public:
 	 * @param seed The seed used for the random number generator. If the seed is
 	 * 0 then a random seed is generated and used.
 	 */
-	_rand_ulab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
-		_rand_ulab_rooted_trees()
+	_rand_ulab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept
+		: _rand_ulab_rooted_trees()
 	{
 		// add the initial values to m_rn
 		init_rn();
@@ -108,9 +110,11 @@ public:
 	virtual ~_rand_ulab_rooted_trees() = default;
 
 	/// Copy assignment operator.
-	_rand_ulab_rooted_trees& operator= (const _rand_ulab_rooted_trees& g) noexcept = default;
+	_rand_ulab_rooted_trees& operator= (const _rand_ulab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	_rand_ulab_rooted_trees& operator= (_rand_ulab_rooted_trees&& g) noexcept = default;
+	_rand_ulab_rooted_trees& operator= (_rand_ulab_rooted_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -124,12 +128,15 @@ public:
 	 * @param n Number of vertices.
 	 * @param seed Integer value used to seed the random number generator.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		// setup memory
 		m_n = n;
 		m_head_vector.resize(m_n);
 
-		if (m_n <= 1) { return; }
+		if (m_n <= 1) {
+			return;
+		}
 
 		// initialize the random number generators
 		if (seed == 0) {
@@ -164,7 +171,8 @@ public:
 	 * values that it is assigned when creating an object of this class.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		// clear the values in m_rn
 		m_rn.clear();
 		// add the initial values to m_rn
@@ -183,6 +191,7 @@ public:
 	[[nodiscard]] graphs::rooted_tree get_tree() noexcept;
 
 protected:
+
 	/// Number of nodes of the tree.
 	uint64_t m_n;
 
@@ -233,49 +242,24 @@ protected:
 	 * @returns Two indices: the index of the root of the last
 	 * tree generated and where to store the next tree in @ref m_head_vector.
 	 */
-	[[nodiscard]] std::pair<uint64_t,uint64_t> ranrut
-	(
-		const uint64_t n,
-		const uint64_t lr,
-		uint64_t nt
-	)
-	noexcept;
+	[[nodiscard]] std::pair<uint64_t, uint64_t>
+	ranrut(const uint64_t n, const uint64_t lr, uint64_t nt) noexcept;
 
 	/// Initialiases @ref m_rn with values from the OEIS (see \cite OEIS_A000081).
-	void init_rn() noexcept {
+	void init_rn() noexcept
+	{
 		// from the OEIS: https://oeis.org/A000081
-		m_rn =
-		std::vector<numeric::integer>{
-			0ull,
-			1ull,
-			1ull,
-			2ull,
-			4ull,
-			9ull,
-			20ull,
-			48ull,
-			115ull,
-			286ull,
-			719ull,
-			1842ull,
-			4766ull,
-			12486ull,
-			32973ull,
-			87811ull,
-			235381ull,
-			634847ull,
-			1721159ull,
-			4688676ull,
-			12826228ull,
-			35221832ull,
-			97055181ull,
-			268282855ull,
-			743724984ull,
-			2067174645ull,
-			5759636510ull,
-			16083734329ull,
-			45007066269ull,
-			126186554308ull,
+		m_rn = std::vector<numeric::integer>{
+			0ull,			1ull,			1ull,
+			2ull,			4ull,			9ull,
+			20ull,			48ull,			115ull,
+			286ull,			719ull,			1842ull,
+			4766ull,		12486ull,		32973ull,
+			87811ull,		235381ull,		634847ull,
+			1721159ull,		4688676ull,		12826228ull,
+			35221832ull,	97055181ull,	268282855ull,
+			743724984ull,	2067174645ull,	5759636510ull,
+			16083734329ull, 45007066269ull, 126186554308ull,
 			354426847597ull
 		};
 		m_rn_times_n.resize(m_rn.size());
@@ -283,7 +267,7 @@ protected:
 		m_rn_times_n_minus_1.resize(m_rn.size());
 		m_rn_times_n_minus_1[0] = 0;
 		for (uint64_t n = 1; n < m_rn.size(); ++n) {
-			m_rn_times_n[n] = m_rn[n]*n;
+			m_rn_times_n[n] = m_rn[n] * n;
 			m_rn_times_n_minus_1[n] = m_rn_times_n[n] - m_rn[n];
 		}
 	}
@@ -297,7 +281,10 @@ protected:
 	[[nodiscard]] const numeric::integer& get_rn(const uint64_t n) noexcept;
 
 	/// Returns whether or not the value \f$r_n\f$ (@ref m_rn) has been computed.
-	[[nodiscard]] bool has_rn(const uint64_t n) const noexcept { return m_rn.size() >= n + 1; }
+	[[nodiscard]] bool has_rn(const uint64_t n) const noexcept
+	{
+		return m_rn.size() >= n + 1;
+	}
 
 	/**
 	 * @brief Chooses uniformly at random a pair \f$(j,d)\f$, according
@@ -309,7 +296,8 @@ protected:
 	 * @returns A pair of integers \f$(j,d)\f$ such that
 	 * \f$j \ge 1\f$, \f$jd \le n\f$ and \f$j \ge 1\f$, \f$jd \le n\f$.
 	 */
-	[[nodiscard]] std::pair<uint64_t,uint64_t> choose_jd_from_T(const uint64_t n) noexcept;
+	[[nodiscard]] std::pair<uint64_t, uint64_t>
+	choose_jd_from_T(const uint64_t n) noexcept;
 };
 
 /**
@@ -338,6 +326,7 @@ protected:
  */
 class rand_ulab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
@@ -351,13 +340,16 @@ public:
 	 * @param seed The seed used for the random generator. If @e seed is 0 then
 	 * a random seed is used.
 	 */
-	rand_ulab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
-		_tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+	rand_ulab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept
+		: _tree_generator<graphs::rooted_tree>(n),
+		  m_Gen(n, seed)
+	{ }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random unlabelled rooted tree generator.
 	 */
-	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen) noexcept = default;
+	rand_ulab_rooted_trees(const rand_ulab_rooted_trees& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
@@ -369,9 +361,11 @@ public:
 	~rand_ulab_rooted_trees() noexcept = default;
 
 	/// Copy assignment operator.
-	rand_ulab_rooted_trees& operator= (const rand_ulab_rooted_trees& g) noexcept = default;
+	rand_ulab_rooted_trees& operator= (const rand_ulab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	rand_ulab_rooted_trees& operator= (rand_ulab_rooted_trees&& g) noexcept = default;
+	rand_ulab_rooted_trees& operator= (rand_ulab_rooted_trees&& g
+	) noexcept = default;
 
 	/**
 	 * @brief Initialize the generator.
@@ -379,34 +373,42 @@ public:
 	 * @param seed The seed used for the random generator. If @e seed is 0 then
 	 * a random seed is used.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		_tree_generator::init(n);
 		m_Gen.init(n, seed);
 	}
 
 	/// Clear the memory used by the generator.
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_Gen.clear();
 	}
 
-	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept
+	{
 		return get_tree();
 	}
 
 protected:
+
 	/**
 	 * @brief Returns an unlabelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref _rand_ulab_rooted_trees::get_tree for details.
 	 * @returns An unlabelled rooted tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept
+	{
+		return m_Gen.get_tree();
+	}
 
 protected:
+
 	/// See @ref _rand_ulab_rooted_trees for details.
 	_rand_ulab_rooted_trees m_Gen;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

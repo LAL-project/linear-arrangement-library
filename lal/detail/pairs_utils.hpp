@@ -69,5 +69,5 @@ struct edge_size {
 	uint64_t size;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

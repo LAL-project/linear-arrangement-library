@@ -95,20 +95,18 @@ enum result {
  * @returns The farthest vertex from @e start_at
  */
 template <class tree_t>
-[[nodiscard]] node find_farthest_vertex
-(
+[[nodiscard]] node find_farthest_vertex(
 	const tree_t& t,
 	const node start_at,
 	BFS<tree_t>& bfs,
 	array<uint64_t>& num_vertices_in_path,
 	array<uint64_t>& weight
-)
-noexcept
+) noexcept
 {
 	const auto n = t.get_num_nodes();
 
 	bfs.reset();
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 
 	num_vertices_in_path.fill(0);
 	num_vertices_in_path[start_at] = 1;
@@ -117,13 +115,14 @@ noexcept
 	node farthest = n + 1;
 
 	bfs.set_process_neighbour(
-	[&](const auto&, node u, node v, bool) {
-		num_vertices_in_path[v] = num_vertices_in_path[u] + weight[u] + 1;
-		if (max_num_vertices < num_vertices_in_path[v]) {
-			max_num_vertices = num_vertices_in_path[v];
-			farthest = v;
+		[&](const auto&, node u, node v, bool)
+		{
+			num_vertices_in_path[v] = num_vertices_in_path[u] + weight[u] + 1;
+			if (max_num_vertices < num_vertices_in_path[v]) {
+				max_num_vertices = num_vertices_in_path[v];
+				farthest = v;
+			}
 		}
-	}
 	);
 	bfs.start_at(start_at);
 
@@ -147,21 +146,16 @@ noexcept
 template <
 	result ret_type,
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
->
-[[nodiscard]]
-conditional_list_t<
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+[[nodiscard]] conditional_list_t<
 	bool_sequence<
 		ret_type == result::distance,
 		ret_type == result::distance_vertices,
-		ret_type == result::distance_structure
-	>,
+		ret_type == result::distance_structure>,
 	type_sequence<
 		uint64_t,
 		std::tuple<uint64_t, std::vector<char>>,
-		std::tuple<uint64_t, std::vector<node>, std::vector<char>>
-	>
->
+		std::tuple<uint64_t, std::vector<node>, std::vector<char>>>>
 max_subtree(const tree_t& t) noexcept
 {
 	typedef std::vector<node> path;
@@ -169,7 +163,8 @@ max_subtree(const tree_t& t) noexcept
 	const auto n = t.get_num_nodes();
 
 	// the easiest case: we know the tree is a caterpillar
-	if (t.is_tree_type_valid() and t.is_of_tree_type(graphs::tree_type::caterpillar)) {
+	if (t.is_tree_type_valid() and
+		t.is_of_tree_type(graphs::tree_type::caterpillar)) {
 		if constexpr (ret_type == result::distance) {
 			return 0;
 		}
@@ -199,10 +194,10 @@ max_subtree(const tree_t& t) noexcept
 			return 0;
 		}
 		else if constexpr (ret_type == result::distance_vertices) {
-			return {0, {1,1}};
+			return {0, {1, 1}};
 		}
 		else {
-			return {0, {0,1}, {1,1}};
+			return {0, {0, 1}, {1, 1}};
 		}
 	}
 
@@ -227,10 +222,12 @@ max_subtree(const tree_t& t) noexcept
 	// w_star: farthest from v_star
 
 	// traverse the tree and find the first 'farthest' vertex (v_star)
-	const node v_star = find_farthest_vertex(t, 0, bfs, num_vertices_in_path, weight);
+	const node v_star =
+		find_farthest_vertex(t, 0, bfs, num_vertices_in_path, weight);
 
 	// traverse the tree again and find the second 'farthest' vertex (w_star)
-	const node w_star = find_farthest_vertex(t, v_star, bfs, num_vertices_in_path, weight);
+	const node w_star =
+		find_farthest_vertex(t, v_star, bfs, num_vertices_in_path, weight);
 
 	// calculate the caterpillar distance
 	const auto caterpillar_distance = n - num_vertices_in_path[w_star];
@@ -246,7 +243,7 @@ max_subtree(const tree_t& t) noexcept
 	// may be easy to calculate.
 	if (caterpillar_distance == 0) {
 		if constexpr (ret_type == result::distance_vertices) {
-			return {caterpillar_distance, std::vector<char>(n,1)};
+			return {caterpillar_distance, std::vector<char>(n, 1)};
 		}
 
 		// Unfortunately, when (ret_type == max_caterpillar_result::distance_structure)
@@ -274,27 +271,33 @@ max_subtree(const tree_t& t) noexcept
 
 	// set up the BFS
 	bfs.reset();
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 
 	bfs.set_process_current(
-	[&](const auto&, node) {
-		path_to_current = path_queue.pop();
-	});
+		[&](const auto&, node)
+		{
+			path_to_current = path_queue.pop();
+		}
+	);
 
 	bfs.set_terminate(
-	[&](const auto&, node u) {
-		if (u == v_star) {
-			maximum_caterpillar_backbone = std::move(path_to_current);
+		[&](const auto&, node u)
+		{
+			if (u == v_star) {
+				maximum_caterpillar_backbone = std::move(path_to_current);
+			}
+			return u == v_star;
 		}
-		return u == v_star;
-	});
+	);
 
 	bfs.set_process_neighbour(
-	[&](const auto&, node, node v, bool) {
-		auto path_to_v = path_to_current;
-		path_to_v.push_back(v);
-		path_queue.push(std::move(path_to_v));
-	});
+		[&](const auto&, node, node v, bool)
+		{
+			auto path_to_v = path_to_current;
+			path_to_v.push_back(v);
+			path_queue.push(std::move(path_to_v));
+		}
+	);
 
 	// retrieve the backbone
 	bfs.start_at(w_star);
@@ -319,8 +322,7 @@ max_subtree(const tree_t& t) noexcept
 
 	if constexpr (ret_type == result::distance_vertices) {
 		return {
-			caterpillar_distance,
-			std::move(is_node_in_maximum_caterpillar)
+			caterpillar_distance, std::move(is_node_in_maximum_caterpillar)
 		};
 	}
 	else if constexpr (ret_type == result::distance_structure) {
@@ -339,7 +341,7 @@ max_subtree(const tree_t& t) noexcept
 	}
 }
 
-} // -- namespace caterpillar
-} // -- namespace maximum_subtrees
-} // -- namespace detail
-} // -- namespace lal
+} // namespace caterpillar
+} // namespace maximum_subtrees
+} // namespace detail
+} // namespace lal

@@ -70,13 +70,11 @@ namespace linarr {
  * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
 [[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
-syntactic_dependency_tree_classify
-(
+syntactic_dependency_tree_classify(
 	const graphs::rooted_tree& t,
 	const uint64_t C,
 	const linear_arrangement& pi = {}
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Computes the type of syntactic dependency tree.
@@ -92,9 +90,9 @@ noexcept;
  * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
 [[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
-syntactic_dependency_tree_classify
-(const graphs::rooted_tree& t, const linear_arrangement& pi = {})
-noexcept;
+syntactic_dependency_tree_classify(
+	const graphs::rooted_tree& t, const linear_arrangement& pi = {}
+) noexcept;
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

@@ -54,35 +54,31 @@ namespace detail {
 
 /// Converts a value of the enumeration
 /// @ref lal::linarr::syntactic_dependency_tree_type into a string.
-[[nodiscard]] constexpr std::string_view
-syntactic_dependency_tree_to_string
-(const linarr::syntactic_dependency_tree_type& tt)
-noexcept
+[[nodiscard]] constexpr std::string_view syntactic_dependency_tree_to_string(
+	const linarr::syntactic_dependency_tree_type& tt
+) noexcept
 {
 	switch (tt) {
-	case linarr::syntactic_dependency_tree_type::EC1: return "EC1";
+	case linarr::syntactic_dependency_tree_type::EC1:	 return "EC1";
 	case linarr::syntactic_dependency_tree_type::planar: return "planar";
-	case linarr::syntactic_dependency_tree_type::projective: return "projective";
+	case linarr::syntactic_dependency_tree_type::projective:
+		return "projective";
 	case linarr::syntactic_dependency_tree_type::WG1: return "WG1";
-		default: return "unknown_syntactic_dependency_tree";
+	default:										  return "unknown_syntactic_dependency_tree";
 	}
 }
 
 /// The array of all types of syntact dependency structures.
-inline constexpr
-std::array<
+constexpr inline std::array<
 	linarr::syntactic_dependency_tree_type,
-	linarr::__syntactic_dependency_tree_size
->
-array_of_syntactic_dependency_trees =
-	make_array<
+	linarr::__syntactic_dependency_tree_size>
+	array_of_syntactic_dependency_trees = make_array<
 		linarr::syntactic_dependency_tree_type,
 		linarr::syntactic_dependency_tree_type::EC1,
 		linarr::syntactic_dependency_tree_type::planar,
 		linarr::syntactic_dependency_tree_type::projective,
 		linarr::syntactic_dependency_tree_type::WG1,
-		linarr::syntactic_dependency_tree_type::unknown
-	>();
+		linarr::syntactic_dependency_tree_type::unknown>();
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

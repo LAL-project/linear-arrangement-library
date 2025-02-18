@@ -56,16 +56,16 @@ namespace detail {
  * @param visited For each node, has it been visited?
  * @param in_stack For each node, is it in the recursion stack?
  */
-[[nodiscard]] inline bool find_cycle
-(
+[[nodiscard]] inline bool find_cycle(
 	const graphs::directed_graph& g,
 	const node u,
 	char * const __restrict__ visited,
 	char * const __restrict__ in_stack
-)
-noexcept
+) noexcept
 {
-	if (visited[u]) { return false; }
+	if (visited[u]) {
+		return false;
+	}
 	visited[u] = 1;
 
 	in_stack[u] = 1;
@@ -73,7 +73,7 @@ noexcept
 		if (in_stack[v]) {
 			return true;
 		}
-		if (visited[v] == 0 and find_cycle(g,v,visited,in_stack)) {
+		if (visited[v] == 0 and find_cycle(g, v, visited, in_stack)) {
 			return true;
 		}
 	}
@@ -93,8 +93,7 @@ noexcept
 	const graphs::directed_graph& g,
 	char * const __restrict__ vis,
 	char * const __restrict__ in_stack
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	std::fill(&vis[0], &vis[n], 0);
@@ -113,12 +112,11 @@ noexcept
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-[[nodiscard]] inline bool has_directed_cycles
-(const graphs::directed_graph& g)
-noexcept
+[[nodiscard]] inline bool has_directed_cycles(const graphs::directed_graph& g
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	array<char> all_mem(2*n);
+	array<char> all_mem(2 * n);
 	char * const __restrict__ vis = all_mem.begin();
 	char * const __restrict__ in_stack = all_mem.at(n);
 	return has_directed_cycles(g, vis, in_stack);
@@ -134,9 +132,8 @@ noexcept
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-[[nodiscard]] bool has_undirected_cycles
-(const graph_t& g, BFS<graph_t>& bfs)
-noexcept
+[[nodiscard]] bool
+has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept
 {
 	const auto n = g.get_num_nodes();
 
@@ -144,40 +141,44 @@ noexcept
 	// (in the traversal) s was reached from t (NOTE THE DIFFERENT ORDER).
 	// Note that read operations "if (parent[s] != t)" always come after
 	// the first write "parent[t] = s".
-	array<node> parent(n, n+1);
+	array<node> parent(n, n + 1);
 	// a cycle was found
 	bool cycle_found = false;
 
 	// we need to traverse "reversed edges" in directed graphs
-	bfs.set_use_rev_edges( BFS<graph_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<graph_t>::is_graph_directed);
 	// we need this to detect cycles
 	bfs.set_process_visited_neighbors(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-	[&](const BFS<graph_t>&, const node) -> bool { return cycle_found; }
+		[&](const BFS<graph_t>&, const node) -> bool
+		{
+			return cycle_found;
+		}
 	);
 	bfs.set_process_neighbour(
-	[&](const auto& _bfs, node s, node t, bool) -> void {
-		// Since we want to do the traversal on the directed graphs likewise on
-		// the undirected graphs, the direction is ignored. We do not want to
-		// treat the nodes 's' and 't' as in the edge "t->s" but as in the
-		// edge "s->t" so as to mimic an "undirected traversal" on directed
-		// graphs.
+		[&](const auto& _bfs, node s, node t, bool) -> void
+		{
+			// Since we want to do the traversal on the directed graphs likewise on
+			// the undirected graphs, the direction is ignored. We do not want to
+			// treat the nodes 's' and 't' as in the edge "t->s" but as in the
+			// edge "s->t" so as to mimic an "undirected traversal" on directed
+			// graphs.
 
-		if (_bfs.node_was_visited(t)) {
-			// if t was visted before then
-			//     "s -> t" and later "t -> s"
-			// or
-			//     "s -> ..." and later "... -> s"
-			//     where '...' does not contain 't'
-			if (parent[s] != t) {
-				// node 't' was reached from some node
-				// other than 's' in previous iterations
-				cycle_found = true;
+			if (_bfs.node_was_visited(t)) {
+				// if t was visted before then
+				//     "s -> t" and later "t -> s"
+				// or
+				//     "s -> ..." and later "... -> s"
+				//     where '...' does not contain 't'
+				if (parent[s] != t) {
+					// node 't' was reached from some node
+					// other than 's' in previous iterations
+					cycle_found = true;
+				}
 			}
+			parent[t] = s;
 		}
-		parent[t] = s;
-	}
 	);
 
 	// find cycles
@@ -199,14 +200,12 @@ noexcept
  * @returns Whether the graph has cycles or not.
  */
 template <class graph_t>
-[[nodiscard]] bool has_undirected_cycles
-(const graph_t& g)
-noexcept
+[[nodiscard]] bool has_undirected_cycles(const graph_t& g) noexcept
 {
 	// BFS traversal object
 	BFS<graph_t> bfs(g);
 	return has_undirected_cycles(g, bfs);
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

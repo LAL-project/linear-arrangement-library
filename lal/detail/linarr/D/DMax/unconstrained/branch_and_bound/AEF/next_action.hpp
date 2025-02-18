@@ -86,14 +86,12 @@ enum class next_action : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::next_action
 /// to a string.
-[[nodiscard]] inline constexpr std::string_view next_action_type_to_string
-(const next_action at) noexcept
+[[nodiscard]] inline constexpr std::string_view
+next_action_type_to_string(const next_action at) noexcept
 {
 	switch (at) {
-	case next_action::bound:
-		return "Bound computation";
-	case next_action::continue_normally:
-		return "Continue computation";
+	case next_action::bound:			 return "Bound computation";
+	case next_action::continue_normally: return "Continue computation";
 	case next_action::continue_independent_set:
 		return "Continue computation for an independent set";
 	case next_action::continue_independent_set_leaves:
@@ -103,7 +101,7 @@ enum class next_action : int8_t {
 }
 #endif
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

@@ -63,9 +63,9 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-AEF_BnB::exe_result_type
-AEF_BnB::exe(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
-noexcept
+AEF_BnB::exe_result_type AEF_BnB::exe(
+	const uint64_t D_p, const uint64_t D_ps_m, const position pos
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	display_all_info(D_p, D_ps_m, pos);
@@ -73,62 +73,59 @@ noexcept
 
 	// Did the algorithm complete an arrangement?
 	{
-	const auto res = process_end(D_p, pos);
-	if (did_reach_end(res)) {
+		const auto res = process_end(D_p, pos);
+		if (did_reach_end(res)) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		return did_find_max(res);
+			return did_find_max(res);
 #else
-		return;
+			return;
 #endif
-	}
+		}
 	}
 
 	{
-	// what should we do next? ...
-	const auto next = what_to_do_next(D_p, D_ps_m, pos);
+		// what should we do next? ...
+		const auto next = what_to_do_next(D_p, D_ps_m, pos);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab()
-		<< "Decided: "
-		<< '\'' << next_action_type_to_string(next) << '\''
-		<< '\n';
+		std::cout << tab() << "Decided: " << '\''
+				  << next_action_type_to_string(next) << '\'' << '\n';
 #endif
 
-	if (next == next_action::bound) {
+		if (next == next_action::bound) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		// did not reach a maximum
-		return false;
+			// did not reach a maximum
+			return false;
 #else
-		return;
+			return;
 #endif
-	}
+		}
 
-	if (next == next_action::continue_independent_set) {
+		if (next == next_action::continue_independent_set) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		const bool reached_maximum =
+			const bool reached_maximum =
 #endif
-		exe_independent_set(D_p, pos);
+				exe_independent_set(D_p, pos);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		return reached_maximum;
+			return reached_maximum;
 #else
-		return;
+			return;
 #endif
-	}
+		}
 
-	if (next == next_action::continue_independent_set_leaves) {
+		if (next == next_action::continue_independent_set_leaves) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		const bool reached_maximum =
+			const bool reached_maximum =
 #endif
-		exe_independent_set_leaves(D_p, pos);
+				exe_independent_set_leaves(D_p, pos);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		return reached_maximum;
+			return reached_maximum;
 #else
-		return;
+			return;
 #endif
-	}
+		}
 	}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
@@ -137,10 +134,13 @@ noexcept
 
 	// for every remaining vertex u
 	for (node u = 0; u < m_n_nodes; ++u) {
-		if (is_vertex_assigned(u)) { continue; }
+		if (is_vertex_assigned(u)) {
+			continue;
+		}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-		std::cout << tab() << "Trying vertex '" << u << "' at position '" << pos << "'\n";
+		std::cout << tab() << "Trying vertex '" << u << "' at position '" << pos
+				  << "'\n";
 #endif
 
 		// if the filtering says 'do not use this vertex', then move
@@ -149,11 +149,8 @@ noexcept
 
 		if (discard != reason_discard::none) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-			std::cout
-				<< tab()
-				<< "    Vertex was discarded because: '"
-				<< reason_discard_to_string(discard)
-				<< "'\n";
+			std::cout << tab() << "    Vertex was discarded because: '"
+					  << reason_discard_to_string(discard) << "'\n";
 #endif
 			continue;
 		}
@@ -171,11 +168,8 @@ noexcept
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 		if (propagation != propagation_result::success) {
-			std::cout
-				<< tab()
-				<< "Result of propagation: '"
-				<< propagation_result_to_string(propagation)
-				<< "'\n";
+			std::cout << tab() << "Result of propagation: '"
+					  << propagation_result_to_string(propagation) << "'\n";
 		}
 #endif
 
@@ -189,19 +183,15 @@ noexcept
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 			const bool branch_reached_maximum =
 #endif
-			exe(D_p_next, D_ps_m_next, pos + 1);
+				exe(D_p_next, D_ps_m_next, pos + 1);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 			reached_max = reached_max or branch_reached_maximum;
 			pop_tab();
 
-			std::cout
-				<< tab()
-				<< "Branch reached maximum? "
-				<< std::boolalpha << branch_reached_maximum
-				<< '\n';
+			std::cout << tab() << "Branch reached maximum? " << std::boolalpha
+					  << branch_reached_maximum << '\n';
 #endif
-
 		}
 
 		roll_back_constraints(u);
@@ -218,14 +208,16 @@ noexcept
 #endif
 }
 
-void AEF_BnB::exe(node first_node) noexcept {
+void AEF_BnB::exe(node first_node) noexcept
+{
 	m_first_node = first_node;
 
 	m_rt.init_rooted(m_t, m_first_node);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "**************************************************\n";
-	std::cout << "*** Started execution of Branch & Bound at '" << m_first_node << "' ***\n";
+	std::cout << "*** Started execution of Branch & Bound at '" << m_first_node
+			  << "' ***\n";
 	std::cout << "**************************************************\n";
 	std::cout << "Input (free) tree:\n";
 	std::cout << m_t << '\n';
@@ -247,11 +239,8 @@ void AEF_BnB::exe(node first_node) noexcept {
 	const propagation_result res = propagate_constraints(m_first_node);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab()
-		<< "Result of propagation: '"
-		<< propagation_result_to_string(res)
-		<< "'\n";
+	std::cout << tab() << "Result of propagation: '"
+			  << propagation_result_to_string(res) << "'\n";
 #endif
 
 	if (res == propagation_result::success) {
@@ -276,7 +265,7 @@ void AEF_BnB::exe(node first_node) noexcept {
 #endif
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

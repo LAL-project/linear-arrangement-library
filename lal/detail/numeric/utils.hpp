@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
@@ -63,8 +63,8 @@ namespace detail {
  * @param[in] b Base.
  * @param[in] e Exponent.
  */
-inline
-void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept  {
+inline void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept
+{
 	if (mpz_fits_ulong_p(e)) {
 		mpz_pow_ui(r, b, mpz_get_ui(e));
 		return;
@@ -110,12 +110,12 @@ void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept  {
  * @param[out] r The rational to be divided by \f$k\f$. Result is \f$r := r/k\f$.
  * @param[in] k The integer that divides the rational.
  */
-inline
-void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept {
+inline void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept
+{
 	mpz_t b;
 	mpz_init(b);
 
-	mpq_get_den(b, r);	// r = a/b
+	mpq_get_den(b, r); // r = a/b
 
 	mpz_mul(b, b, k); // b <- b*k
 
@@ -132,14 +132,14 @@ void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept {
  * @param[out] num The rational to be divided by \f$k\f$. Result is \f$r_1 := r_1/r_2\f$.
  * @param[in] den The rational that divides the rational.
  */
-inline
-void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
+inline void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept
+{
 	mpz_t a, b, c, d;
 	mpz_inits(a, b, c, d, nullptr);
 
-	mpq_get_num(a, num);	// num = a/b
+	mpq_get_num(a, num); // num = a/b
 	mpq_get_den(b, num);
-	mpq_get_num(c, den);	// den = c/d
+	mpq_get_num(c, den); // den = c/d
 	mpq_get_den(d, den);
 
 	mpz_mul(a, a, d);
@@ -159,8 +159,8 @@ void mpq_divide_mpq(mpq_t& num, const mpq_t& den) noexcept {
  * @param[out] r Rational value. Result is \f$r = r^p\f$.
  * @param[in] p Exponent.
  */
-inline
-void operate_power(mpq_t& r, uint64_t p) noexcept {
+inline void operate_power(mpq_t& r, uint64_t p) noexcept
+{
 	if (p == 0) {
 		mpq_set_si(r, 1, 1);
 		return;
@@ -197,8 +197,8 @@ void operate_power(mpq_t& r, uint64_t p) noexcept {
  * @param[out] r Rational value. Result is \f$r = r^p\f$.
  * @param[in] p Exponent.
  */
-inline
-void operate_power(mpq_t& r, const mpz_t& p) noexcept {
+inline void operate_power(mpq_t& r, const mpz_t& p) noexcept
+{
 	if (mpz_cmp_ui(p, 0) == 0) {
 		mpq_set_si(r, 1, 1);
 		return;
@@ -234,8 +234,8 @@ void operate_power(mpq_t& r, const mpz_t& p) noexcept {
 [[nodiscard]] inline std::size_t mpz_bytes(const mpz_t& v) noexcept
 {
 	const std::size_t alloc = static_cast<std::size_t>(v[0]._mp_alloc);
-	return sizeof(mp_limb_t)*alloc;
+	return sizeof(mp_limb_t) * alloc;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

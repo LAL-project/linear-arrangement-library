@@ -61,7 +61,8 @@ namespace properties {
  * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
-[[nodiscard]] std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept;
+[[nodiscard]] std::pair<node, node> tree_centre(const graphs::rooted_tree& t
+) noexcept;
 
 /**
  * @brief Calculate the centre of a free tree.
@@ -76,7 +77,8 @@ namespace properties {
  * @pre The tree @e t is a valid rooted tree. Method graphs::free_tree::is_tree
  * returns true.
  */
-[[nodiscard]] std::pair<node, node> tree_centre(const graphs::free_tree& t) noexcept;
+[[nodiscard]] std::pair<node, node> tree_centre(const graphs::free_tree& t
+) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

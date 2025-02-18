@@ -74,14 +74,13 @@ template <bool make_arrangement, class graph_t>
 [[nodiscard]] inline std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
-AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept {
+	uint64_t>
+AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept
+{
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
-	return
-		bipartite_opt_utils::optimal_bipartite_arrangement_AEF
-		<make_arrangement, sorting::sort_type::non_decreasing>
-		(g, c);
+	return bipartite_opt_utils::optimal_bipartite_arrangement_AEF<
+		make_arrangement,
+		sorting::sort_type::non_decreasing>(g, c);
 }
 
 /**
@@ -100,15 +99,15 @@ template <bool make_arrangement, class graph_t>
 [[nodiscard]] inline std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
-AEF(const graph_t& g) noexcept {
+	uint64_t>
+AEF(const graph_t& g) noexcept
+{
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 	const auto c = color_vertices_graph(g);
 	return AEF(g, c);
 }
 
-} // -- namespace bipartite
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace bipartite
+} // namespace DMax
+} // namespace detail
+} // namespace lal

@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // C++ includes
@@ -67,6 +67,7 @@ namespace generate {
  */
 class _rand_lab_free_trees {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Default constructor
@@ -80,7 +81,8 @@ public:
 	 * @param n Number of nodes.
 	 * @param seed The seed used for the random generator.
 	 */
-	_rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept {
+	_rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		init(n, seed);
 	}
 
@@ -100,9 +102,11 @@ public:
 	~_rand_lab_free_trees() = default;
 
 	/// Copy assignment operator.
-	_rand_lab_free_trees& operator= (const _rand_lab_free_trees& g) noexcept = default;
+	_rand_lab_free_trees& operator= (const _rand_lab_free_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	_rand_lab_free_trees& operator= (_rand_lab_free_trees&& g) noexcept = default;
+	_rand_lab_free_trees& operator= (_rand_lab_free_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -112,7 +116,8 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		m_n = n;
 		m_Prufer_seq.resize(m_n <= 2 ? 2 : m_n - 2);
 
@@ -130,7 +135,8 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		m_Prufer_seq.clear();
 	}
 
@@ -140,6 +146,7 @@ public:
 	[[nodiscard]] graphs::free_tree get_tree() noexcept;
 
 protected:
+
 	/// Number of nodes of the tree.
 	uint64_t m_n;
 
@@ -177,10 +184,13 @@ protected:
  */
 class rand_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
-	rand_lab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+	rand_lab_free_trees() noexcept
+		: _tree_generator<graphs::free_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
@@ -190,8 +200,10 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
-		_tree_generator<graphs::free_tree>(n), m_Gen(n, seed) { }
+	rand_lab_free_trees(const uint64_t n, const uint64_t seed = 0) noexcept
+		: _tree_generator<graphs::free_tree>(n),
+		  m_Gen(n, seed)
+	{ }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled free tree generator.
@@ -208,7 +220,8 @@ public:
 	~rand_lab_free_trees() = default;
 
 	/// Copy assignment operator.
-	rand_lab_free_trees& operator= (const rand_lab_free_trees& g) noexcept = default;
+	rand_lab_free_trees& operator= (const rand_lab_free_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
 	rand_lab_free_trees& operator= (rand_lab_free_trees&& g) noexcept = default;
 
@@ -218,22 +231,26 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		_tree_generator::init(n);
 		m_Gen.init(n, seed);
 	}
 
 	/// Clear the memory used by the generator.
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_Gen.clear();
 	}
 
-	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept
+	{
 		return get_tree();
 	}
 
 protected:
+
 	/**
 	 * @brief Returns a labelled free tree chosen uniformly at random.
 	 *
@@ -241,12 +258,15 @@ protected:
 	 * @returns A labelled free tree chosen uniformly at random.
 	 */
 	[[nodiscard]] graphs::free_tree __get_tree() noexcept
-	{ return m_Gen.get_tree(); }
+	{
+		return m_Gen.get_tree();
+	}
 
 protected:
+
 	/// See @ref _rand_lab_free_trees.
 	_rand_lab_free_trees m_Gen;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

@@ -48,11 +48,12 @@ namespace lal {
 namespace generate {
 
 /// Returns a linear arrangement constructed uniformly at random.
-const linear_arrangement& rand_arrangements::get_arrangement() noexcept {
+const linear_arrangement& rand_arrangements::get_arrangement() noexcept
+{
 	std::shuffle(m_arr.begin_direct(), m_arr.end_direct(), m_gen);
 	m_arr.update_inverse();
 	return m_arr;
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

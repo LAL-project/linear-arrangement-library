@@ -64,12 +64,10 @@ struct ith_type {
 	template <std::size_t cur_idx, typename t1, typename... ts>
 	struct _ith_type_impl {
 		/// Type at position @e ith_idx of @e Ts.
-		using type =
-			std::conditional_t<
-				ith_idx == cur_idx,
-				t1,
-				typename _ith_type_impl<cur_idx + 1, ts...>::type
-			>;
+		using type = std::conditional_t<
+			ith_idx == cur_idx,
+			t1,
+			typename _ith_type_impl<cur_idx + 1, ts...>::type>;
 	};
 
 	/// Implementation of @ref ith_type. Partial template specialization.
@@ -90,10 +88,12 @@ using ith_type_t = typename ith_type<ith_idx, Ts...>::type;
 static_assert(std::is_same_v<ith_type_t<0, int, float, double>, int>);
 static_assert(std::is_same_v<ith_type_t<1, int, float, double>, float>);
 static_assert(std::is_same_v<ith_type_t<2, int, float, double>, double>);
-static_assert(std::is_same_v<ith_type_t<3, int, float, double>, std::nullptr_t>);
-static_assert(std::is_same_v<ith_type_t<4, int, float, double>, std::nullptr_t>);
-static_assert(std::is_same_v<ith_type_t<5, int, float, double>, std::nullptr_t>);
+static_assert(std::
+				  is_same_v<ith_type_t<3, int, float, double>, std::nullptr_t>);
+static_assert(std::
+				  is_same_v<ith_type_t<4, int, float, double>, std::nullptr_t>);
+static_assert(std::
+				  is_same_v<ith_type_t<5, int, float, double>, std::nullptr_t>);
 
-} // -- namespace detail
-} // -- namespace lal
-
+} // namespace detail
+} // namespace lal

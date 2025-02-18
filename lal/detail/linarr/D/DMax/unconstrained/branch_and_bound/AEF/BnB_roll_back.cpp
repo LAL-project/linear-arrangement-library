@@ -62,13 +62,18 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::roll_back_constraints(const node u) noexcept {
+void AEF_BnB::roll_back_constraints(const node u) noexcept
+{
 #if defined DEBUG
 	assert(is_vertex_assigned(u));
 #endif
 
-	if (not has_valid_LV_prediction(u)) { return; }
-	if (not is_node_a_trigger_of_LV(u)) { return; }
+	if (not has_valid_LV_prediction(u)) {
+		return;
+	}
+	if (not is_node_a_trigger_of_LV(u)) {
+		return;
+	}
 
 	if (m_t.get_degree(u) == 1) {
 		roll_back_LV__antenna(m_node_to_path_idx[u]);
@@ -99,13 +104,16 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept {
 	}
 
 	for (const node v : m_t.get_neighbors(u)) {
-		if (m_t.get_degree(v) >= 3) { continue; }
+		if (m_t.get_degree(v) >= 3) {
+			continue;
+		}
 
 		const std::size_t path_v_idx = m_node_to_path_idx[v];
 		const auto& path_v = m_paths_in_tree[path_v_idx];
 
 		if (path_v.is_antenna(m_t)) {
-			if (m_predicted_LV__origin[v] == LV_propagation_origin::antenna_hub) {
+			if (m_predicted_LV__origin[v] ==
+				LV_propagation_origin::antenna_hub) {
 				roll_back_LV__antenna(path_v_idx);
 			}
 		}
@@ -122,7 +130,7 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept {
 	m_predicted_LV__origin[u] = LV_propagation_origin::none;
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

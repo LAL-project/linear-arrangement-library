@@ -82,16 +82,14 @@ template <
 	bool make_arrangement,
 	sorting::sort_type type,
 	class graph_t,
-	class bipartite_coloring_t
->
+	class bipartite_coloring_t>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
-optimal_bipartite_arrangement_AEF
-(const graph_t& g, const bipartite_coloring_t& c)
-noexcept
+	uint64_t>
+optimal_bipartite_arrangement_AEF(
+	const graph_t& g, const bipartite_coloring_t& c
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
@@ -113,33 +111,33 @@ noexcept
 	std::size_t size_2 = 0;
 
 	{
-	const auto first_color = c[0];
-	for (node u = 0; u < n; ++u) {
-		if (c[u] == first_color) {
-			vertices_color_1[size_1++] = u;
+		const auto first_color = c[0];
+		for (node u = 0; u < n; ++u) {
+			if (c[u] == first_color) {
+				vertices_color_1[size_1++] = u;
+			}
+			else {
+				vertices_color_2[size_2++] = u;
+			}
 		}
-		else {
-			vertices_color_2[size_2++] = u;
-		}
-	}
 
-	const auto sort_nodes =
-	[&](array<node>& nodes, std::size_t s) {
-		sorting::counting_sort
-			<node, type>
-			(
-				nodes.begin(), nodes.begin() + s,
+		const auto sort_nodes = [&](array<node>& nodes, std::size_t s)
+		{
+			sorting::counting_sort<node, type>(
+				nodes.begin(),
+				nodes.begin() + s,
 				n - 1,
 				s,
-				[&](const node u) -> std::size_t {
+				[&](const node u) -> std::size_t
+				{
 					// in directed graphs, this function returns the sum of the
 					// in-degree plus the out-degree of the vertex.
 					return g.get_degree(u);
 				}
 			);
-	};
-	sort_nodes(vertices_color_1, size_1);
-	sort_nodes(vertices_color_2, size_2);
+		};
+		sort_nodes(vertices_color_1, size_1);
+		sort_nodes(vertices_color_2, size_2);
 	}
 
 	uint64_t D = 0;
@@ -156,16 +154,16 @@ noexcept
 			arr.assign(u, p);
 			++p;
 		}
-		D += (n - p)*g.get_degree(u);
+		D += (n - p) * g.get_degree(u);
 	}
 
 	{
-	const node u = vertices_color_1[0];
-	if constexpr (make_arrangement) {
-		arr.assign(vertices_color_1[0], p);
-		++p;
-	}
-	D += (n - p)*g.get_degree(u);
+		const node u = vertices_color_1[0];
+		if constexpr (make_arrangement) {
+			arr.assign(vertices_color_1[0], p);
+			++p;
+		}
+		D += (n - p) * g.get_degree(u);
 	}
 
 	for (std::size_t i = 0; i < size_2; ++i) {
@@ -174,7 +172,7 @@ noexcept
 			arr.assign(u, p);
 			++p;
 		}
-		D -= (n - p)*g.get_degree(u);
+		D -= (n - p) * g.get_degree(u);
 	}
 
 	if constexpr (make_arrangement) {
@@ -185,6 +183,6 @@ noexcept
 	}
 }
 
-} // -- namespcae bipartite_opt_utils
-} // -- namespace detail
-} // -- namespace lal
+} // namespace bipartite_opt_utils
+} // namespace detail
+} // namespace lal

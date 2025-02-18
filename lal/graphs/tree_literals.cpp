@@ -53,21 +53,15 @@
 template <
 	typename tree_t,
 	bool ensure_root_is_returned,
-	bool free_tree_plus_root =
-		ensure_root_is_returned and
-		std::is_same_v<tree_t, lal::graphs::free_tree>
->
-std::conditional_t<
-	free_tree_plus_root,
-	std::pair<tree_t, lal::node>,
-	tree_t
->
+	bool free_tree_plus_root = ensure_root_is_returned and
+							   std::is_same_v<tree_t, lal::graphs::free_tree>>
+std::conditional_t<free_tree_plus_root, std::pair<tree_t, lal::node>, tree_t>
 parse_literal_string(const char *str, const std::size_t) noexcept
 {
 	std::stringstream ss(str);
 
-	const bool is_first_nonspace_character_a_curly_bracket =
-	[&]() {
+	const bool is_first_nonspace_character_a_curly_bracket = [&]()
+	{
 		char first_char;
 		ss >> first_char;
 		return first_char == '{';
@@ -76,33 +70,30 @@ parse_literal_string(const char *str, const std::size_t) noexcept
 
 	if (is_first_nonspace_character_a_curly_bracket) {
 		// The input is an edge list.
-		return lal::detail::from_edge_list_to_tree
-				<tree_t, ensure_root_is_returned>(ss);
+		return lal::detail::
+			from_edge_list_to_tree<tree_t, ensure_root_is_returned>(ss);
 	}
 
 	// The input must be a head vector by
 	// the requirements of this function.
-	return lal::detail::from_head_vector_to_tree
-			<tree_t, ensure_root_is_returned>(ss);
+	return lal::detail::
+		from_head_vector_to_tree<tree_t, ensure_root_is_returned>(ss);
 }
 
 std::pair<lal::graphs::free_tree, lal::node>
-operator""_root_free_tree (const char *str, const std::size_t length)
-noexcept
+operator""_root_free_tree (const char *str, const std::size_t length) noexcept
 {
 	return parse_literal_string<lal::graphs::free_tree, true>(str, length);
 }
 
 lal::graphs::free_tree
-operator""_free_tree (const char *str, const std::size_t length)
-noexcept
+operator""_free_tree (const char *str, const std::size_t length) noexcept
 {
 	return parse_literal_string<lal::graphs::free_tree, false>(str, length);
 }
 
 lal::graphs::rooted_tree
-operator""_rooted_tree (const char *str, const std::size_t length)
-noexcept
+operator""_rooted_tree (const char *str, const std::size_t length) noexcept
 {
 	return parse_literal_string<lal::graphs::rooted_tree, false>(str, length);
 }

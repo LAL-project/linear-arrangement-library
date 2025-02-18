@@ -56,35 +56,34 @@ namespace linarr {
 #define __ident_arr(arr) detail::identity_arr(arr)
 #define __nonident_arr(arr) detail::nonidentity_arr(arr)
 
-numeric::rational head_initial_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
+numeric::rational head_initial_rational(
+	const graphs::directed_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::head_initial<numeric::rational>(g, __ident_arr(arr)) :
-			detail::head_initial<numeric::rational>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0
+			? detail::head_initial<numeric::rational>(g, __ident_arr(arr))
+			: detail::head_initial<numeric::rational>(g, __nonident_arr(arr))
+	);
 }
 
-double head_initial
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
+double head_initial(
+	const graphs::directed_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::head_initial<double>(g, __ident_arr(arr)) :
-			detail::head_initial<double>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::head_initial<double>(g, __ident_arr(arr))
+						: detail::head_initial<double>(g, __nonident_arr(arr))
+	);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

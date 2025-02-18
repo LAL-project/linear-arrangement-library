@@ -66,10 +66,13 @@ namespace generate {
  */
 class _rand_lab_rooted_trees : public _rand_lab_free_trees {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
-	_rand_lab_rooted_trees() noexcept : _rand_lab_free_trees() { }
+	_rand_lab_rooted_trees() noexcept
+		: _rand_lab_free_trees()
+	{ }
 
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
@@ -79,12 +82,14 @@ public:
 	 * @param seed The seed used for the random generator.
 	 */
 	_rand_lab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept
-		: _rand_lab_free_trees(n, seed) { }
+		: _rand_lab_free_trees(n, seed)
+	{ }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
 	 */
-	_rand_lab_rooted_trees(const _rand_lab_rooted_trees& Gen) noexcept = default;
+	_rand_lab_rooted_trees(const _rand_lab_rooted_trees& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Move constructor.
@@ -96,9 +101,11 @@ public:
 	~_rand_lab_rooted_trees() = default;
 
 	/// Copy assignment operator.
-	_rand_lab_rooted_trees& operator= (const _rand_lab_rooted_trees& g) noexcept = default;
+	_rand_lab_rooted_trees& operator= (const _rand_lab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	_rand_lab_rooted_trees& operator= (_rand_lab_rooted_trees&& g) noexcept = default;
+	_rand_lab_rooted_trees& operator= (_rand_lab_rooted_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -108,7 +115,8 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		_rand_lab_free_trees::init(n, seed);
 	}
 
@@ -119,7 +127,8 @@ public:
 	 * @returns A labelled tree generated uniformly at random. The
 	 * tree is rooted at vertex 0.
 	 */
-	[[nodiscard]] graphs::rooted_tree get_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree get_tree() noexcept
+	{
 		const graphs::free_tree t = _rand_lab_free_trees::get_tree();
 		const node r = m_unif(m_gen);
 		return graphs::rooted_tree(t, r);
@@ -152,10 +161,13 @@ public:
  */
 class rand_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor
-	rand_lab_rooted_trees() noexcept : _tree_generator<graphs::rooted_tree>() { }
+	rand_lab_rooted_trees() noexcept
+		: _tree_generator<graphs::rooted_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with size of tree and seed for the random number generator.
@@ -165,8 +177,10 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0 then
 	 * a random seed is generated and used.
 	 */
-	rand_lab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept :
-		_tree_generator<graphs::rooted_tree>(n), m_Gen(n, seed) { }
+	rand_lab_rooted_trees(const uint64_t n, const uint64_t seed = 0) noexcept
+		: _tree_generator<graphs::rooted_tree>(n),
+		  m_Gen(n, seed)
+	{ }
 	/**
 	 * @brief Copy constructor.
 	 * @param Gen Random labelled rooted tree generator.
@@ -183,9 +197,11 @@ public:
 	~rand_lab_rooted_trees() = default;
 
 	/// Copy assignment operator.
-	rand_lab_rooted_trees& operator= (const rand_lab_rooted_trees& g) noexcept = default;
+	rand_lab_rooted_trees& operator= (const rand_lab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	rand_lab_rooted_trees& operator= (rand_lab_rooted_trees&& g) noexcept = default;
+	rand_lab_rooted_trees& operator= (rand_lab_rooted_trees&& g
+	) noexcept = default;
 
 	/**
 	 * @brief Initializes the generator with the number of nodes and a seed.
@@ -193,34 +209,42 @@ public:
 	 * @param seed The seed used for the random generator. If the seed is 0
 	 * then a random seed is generated and used.
 	 */
-	void init(const uint64_t n, const uint64_t seed = 0) noexcept {
+	void init(const uint64_t n, const uint64_t seed = 0) noexcept
+	{
 		_tree_generator::init(n);
 		m_Gen.init(n, seed);
 	}
 
 	/// Clear the memory used by the generator.
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_Gen.clear();
 	}
 
-	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept
+	{
 		return get_tree();
 	}
 
 protected:
+
 	/**
 	 * @brief Returns a labelled rooted tree chosen uniformly at random.
 	 *
 	 * See @ref _rand_lab_rooted_trees::get_tree for details.
 	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept { return m_Gen.get_tree(); }
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept
+	{
+		return m_Gen.get_tree();
+	}
 
 protected:
+
 	/// See @ref _rand_lab_rooted_trees for details.
 	_rand_lab_rooted_trees m_Gen;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

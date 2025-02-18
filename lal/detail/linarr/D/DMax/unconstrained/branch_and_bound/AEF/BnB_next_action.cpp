@@ -65,16 +65,16 @@
  *
  *		n - (p + 1) + 1 = n - p
  */
-#define nodes_in_suffix(n,p) (n - p)
+#define nodes_in_suffix(n, p) (n - p)
 
 namespace lal {
 namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-uint64_t AEF_BnB::upper_bound_generic
-(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos)
-noexcept
+uint64_t AEF_BnB::upper_bound_generic(
+	const uint64_t D_p, const uint64_t D_ps_m, const position_t pos
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Calculate an upper bound\n";
@@ -85,119 +85,118 @@ noexcept
 	// upper bound on E_ps
 	{
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "Upper bound E_ps\n";
-	std::cout << tab() << "    Vertices with some neighbor assigned:\n";
+		std::cout << tab() << "Upper bound E_ps\n";
+		std::cout << tab() << "    Vertices with some neighbor assigned:\n";
 #endif
 
-	const std::size_t idx = m_border_nodes.size();
+		const std::size_t idx = m_border_nodes.size();
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_nodes[i];
-		std::cout
-			<< tab() << "        "
-			<< ui << " -> "
-			<< m_num_assigned_neighbors[ui]
-			<< '\n';
-	}
-#endif
-
-#if defined DEBUG
-	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_nodes[i];
-		assert(m_border_nodes.position(ui) == i);
-		assert(m_num_assigned_neighbors[ui] > 0);
-		assert(not is_vertex_assigned(ui));
-		assert(m_border_nodes.exists(ui));
-	}
-	for (node u = 0; u < m_n_nodes; ++u) {
-		if (not m_border_nodes.exists(u) and not is_vertex_assigned(u)) {
-			assert(m_num_assigned_neighbors[u] == 0);
+		for (std::size_t i = 0; i < idx; ++i) {
+			const auto ui = m_border_nodes[i];
+			std::cout << tab() << "        " << ui << " -> "
+					  << m_num_assigned_neighbors[ui] << '\n';
 		}
-	}
 #endif
-
-	// largest_key: m_n_nodes
-	// upper_bound_size: idx
-	m_sorting_memory.reset_count();
-
-	// sort the vector of border vertices
-	sorting::counting_sort
-	<node, sorting::sort_type::non_increasing, false>
-	(
-		m_border_nodes.begin_values(),
-		m_border_nodes.begin_values() + idx,
-		[&](node u) { return m_num_assigned_neighbors[u]; },
-		m_sorting_memory
-	);
-
-	// fix (as in 'correct', 'repair') the positions of the vertices...
-	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_nodes[i];
-		m_border_nodes.begin_position()[ui] = i;
-	}
 
 #if defined DEBUG
-	for (std::size_t i = 0; i < idx; ++i) {
-		const auto ui = m_border_nodes[i];
-		assert(m_border_nodes.position(ui) == i);
-	}
+		for (std::size_t i = 0; i < idx; ++i) {
+			const auto ui = m_border_nodes[i];
+			assert(m_border_nodes.position(ui) == i);
+			assert(m_num_assigned_neighbors[ui] > 0);
+			assert(not is_vertex_assigned(ui));
+			assert(m_border_nodes.exists(ui));
+		}
+		for (node u = 0; u < m_n_nodes; ++u) {
+			if (not m_border_nodes.exists(u) and not is_vertex_assigned(u)) {
+				assert(m_num_assigned_neighbors[u] == 0);
+			}
+		}
+#endif
+
+		// largest_key: m_n_nodes
+		// upper_bound_size: idx
+		m_sorting_memory.reset_count();
+
+		// sort the vector of border vertices
+		sorting::counting_sort<node, sorting::sort_type::non_increasing, false>(
+			m_border_nodes.begin_values(),
+			m_border_nodes.begin_values() + idx,
+			[&](node u)
+			{
+				return m_num_assigned_neighbors[u];
+			},
+			m_sorting_memory
+		);
+
+		// fix (as in 'correct', 'repair') the positions of the vertices...
+		for (std::size_t i = 0; i < idx; ++i) {
+			const auto ui = m_border_nodes[i];
+			m_border_nodes.begin_position()[ui] = i;
+		}
+
+#if defined DEBUG
+		for (std::size_t i = 0; i < idx; ++i) {
+			const auto ui = m_border_nodes[i];
+			assert(m_border_nodes.position(ui) == i);
+		}
 #endif
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "    Vertices with some neighbor assigned ordered by degree:\n";
-	for (std::size_t i = 0; i < idx; ++i) {
-		const node ui = m_border_nodes[i];
 		std::cout
-			<< tab() << "        "
-			<< ui << " -> "
-			<< m_num_assigned_neighbors[ui]
-			<< '\n';
-	}
+			<< tab()
+			<< "    Vertices with some neighbor assigned ordered by degree:\n";
+		for (std::size_t i = 0; i < idx; ++i) {
+			const node ui = m_border_nodes[i];
+			std::cout << tab() << "        " << ui << " -> "
+					  << m_num_assigned_neighbors[ui] << '\n';
+		}
 #endif
 
-	uint64_t D_upper_E_ps_p = 0;
-	uint64_t current_length = m_n_nodes - (*pos + 1);
-	for (std::size_t i = 0; i < idx; ++i) {
-		const node ui = m_border_nodes[i];
-		const uint64_t k = m_num_assigned_neighbors[ui];
-		D_upper_E_ps_p += current_length*k;
-		--current_length;
-	}
+		uint64_t D_upper_E_ps_p = 0;
+		uint64_t current_length = m_n_nodes - (*pos + 1);
+		for (std::size_t i = 0; i < idx; ++i) {
+			const node ui = m_border_nodes[i];
+			const uint64_t k = m_num_assigned_neighbors[ui];
+			D_upper_E_ps_p += current_length * k;
+			--current_length;
+		}
 
-	const uint64_t second_D_upper_E_ps = D_ps_m + D_upper_E_ps_p;
+		const uint64_t second_D_upper_E_ps = D_ps_m + D_upper_E_ps_p;
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "    D_ps_m=             " << D_ps_m << '\n';
-	std::cout << tab() << "    upper bound D_ps_p= " << D_upper_E_ps_p << '\n';
-	std::cout << tab() << "    upper bound E_ps=   " << second_D_upper_E_ps << '\n';
+		std::cout << tab() << "    D_ps_m=             " << D_ps_m << '\n';
+		std::cout << tab() << "    upper bound D_ps_p= " << D_upper_E_ps_p
+				  << '\n';
+		std::cout << tab() << "    upper bound E_ps=   " << second_D_upper_E_ps
+				  << '\n';
 #endif
 
-	D_upper += second_D_upper_E_ps;
+		D_upper += second_D_upper_E_ps;
 	}
 
 	// upper bound on E_s
 	{
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "Upper bound E_s\n";
+		std::cout << tab() << "Upper bound E_s\n";
 #endif
 
-	const uint64_t n = nodes_in_suffix(m_n_nodes, *pos);
-	const uint64_t m = m_E_s.size();
+		const uint64_t n = nodes_in_suffix(m_n_nodes, *pos);
+		const uint64_t m = m_E_s.size();
 #if defined DEBUG
-	// if we have that m=n then the graph induced by E_s is not a tree,
-	// but this can never happen because the input graph *is* a tree.
-	assert(m < n);
+		// if we have that m=n then the graph induced by E_s is not a tree,
+		// but this can never happen because the input graph *is* a tree.
+		assert(m < n);
 #endif
-	// The upper bound is calculated in the launcher.
-	// The values are stored in this matrix 'm_upper_bound_E_s'
-	// to avoid calculation of the same values over and over
-	// again.
-	const uint64_t D_upper_E_s = (4*n*m + (m%2) - m*m - 4*m)/4;
-	D_upper += D_upper_E_s;
+		// The upper bound is calculated in the launcher.
+		// The values are stored in this matrix 'm_upper_bound_E_s'
+		// to avoid calculation of the same values over and over
+		// again.
+		const uint64_t D_upper_E_s = (4 * n * m + (m % 2) - m * m - 4 * m) / 4;
+		D_upper += D_upper_E_s;
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "    n=               " << n << '\n';
-	std::cout << tab() << "    m=               " << m << '\n';
-	std::cout << tab() << "    upper bound E_s= " << D_upper_E_s << '\n';
+		std::cout << tab() << "    n=               " << n << '\n';
+		std::cout << tab() << "    m=               " << m << '\n';
+		std::cout << tab() << "    upper bound E_s= " << D_upper_E_s << '\n';
 #endif
 	}
 
@@ -210,25 +209,27 @@ noexcept
 	return D_upper + D_p;
 }
 
-next_action AEF_BnB::what_to_do_next
-(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos)
-noexcept
+next_action AEF_BnB::what_to_do_next(
+	const uint64_t D_p, const uint64_t D_ps_m, const position_t pos
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Deciding what to do next...\n";
 #endif
 
 	{
-	// calculate generic upper bound
-	const uint64_t D_upper = upper_bound_generic(D_p, D_ps_m, pos);
+		// calculate generic upper bound
+		const uint64_t D_upper = upper_bound_generic(D_p, D_ps_m, pos);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "D_upper_generic= " << D_upper << '\n';
-	std::cout << tab() << "DMax_current=    " << m_max_arrs.get_max_value()
-			  << '\n';
+		std::cout << tab() << "D_upper_generic= " << D_upper << '\n';
+		std::cout << tab() << "DMax_current=    " << m_max_arrs.get_max_value()
+				  << '\n';
 #endif
 
-	if (D_upper < m_max_arrs.get_max_value()) { return next_action::bound; }
+		if (D_upper < m_max_arrs.get_max_value()) {
+			return next_action::bound;
+		}
 	}
 
 	// the remaining set of (unassigned) vertices is an independent set
@@ -254,16 +255,15 @@ noexcept
 
 		// we might reach the maximum, therefore the show must go on
 		return (
-			all_are_leaves ?
-				next_action::continue_independent_set_leaves :
-				next_action::continue_independent_set
-			);
+			all_are_leaves ? next_action::continue_independent_set_leaves
+						   : next_action::continue_independent_set
+		);
 	}
 
 	return next_action::continue_normally;
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

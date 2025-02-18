@@ -67,8 +67,7 @@ namespace DMax {
 namespace unconstrained {
 
 AEF_BnB::exe_result_type
-AEF_BnB::exe_independent_set(const uint64_t D_p, position pos)
-noexcept
+AEF_BnB::exe_independent_set(const uint64_t D_p, position pos) noexcept
 {
 	// number of remaining vertices
 	const std::size_t num_remain_verts = m_n_nodes - pos;
@@ -78,33 +77,34 @@ noexcept
 #endif
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab()
-		<< "The remaining vertices (" << num_remain_verts << ") "
-		<< "make up an various-degree independent set.\n";
+	std::cout << tab() << "The remaining vertices (" << num_remain_verts << ") "
+			  << "make up an various-degree independent set.\n";
 #endif
 
 	array<node> remain_verts(num_remain_verts);
 	{
-	std::size_t i = 0;
-	uint64_t max_deg = 0;
-	for (node u = 0; u < m_n_nodes; ++u) {
-		if (not is_vertex_assigned(u)) {
-			remain_verts[i++] = u;
-			max_deg = std::max(max_deg, m_t.get_degree(u));
+		std::size_t i = 0;
+		uint64_t max_deg = 0;
+		for (node u = 0; u < m_n_nodes; ++u) {
+			if (not is_vertex_assigned(u)) {
+				remain_verts[i++] = u;
+				max_deg = std::max(max_deg, m_t.get_degree(u));
+			}
 		}
-	}
 
-	sorting::counting_sort
-	<node, sorting::sort_type::non_decreasing>
-	(
-		remain_verts.begin(), remain_verts.end(),
-		max_deg, num_remain_verts,
-		[&](const node u) { return m_t.get_degree(u); }
-	);
+		sorting::counting_sort<node, sorting::sort_type::non_decreasing>(
+			remain_verts.begin(),
+			remain_verts.end(),
+			max_deg,
+			num_remain_verts,
+			[&](const node u)
+			{
+				return m_t.get_degree(u);
+			}
+		);
 
 #if defined DEBUG
-	assert(i == num_remain_verts);
+		assert(i == num_remain_verts);
 #endif
 	}
 
@@ -141,9 +141,8 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-AEF_BnB::exe_result_type AEF_BnB::exe_independent_set_leaves
-(const uint64_t D_p, position pos)
-noexcept
+AEF_BnB::exe_result_type
+AEF_BnB::exe_independent_set_leaves(const uint64_t D_p, position pos) noexcept
 {
 	/*
 	 * The independent set is a set of leaves. If the algorithm has reached this
@@ -165,7 +164,9 @@ noexcept
 
 	uint64_t D = D_p;
 	for (node u = 0; u < m_n_nodes; ++u) {
-		if (is_vertex_assigned(u)) { continue; }
+		if (is_vertex_assigned(u)) {
+			continue;
+		}
 
 #if defined DEBUG
 		assert(m_t.get_degree(u) == 1);
@@ -194,7 +195,7 @@ noexcept
 #endif
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

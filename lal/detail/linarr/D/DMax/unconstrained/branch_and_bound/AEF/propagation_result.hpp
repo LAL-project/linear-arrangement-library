@@ -82,36 +82,38 @@ enum class propagation_result : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::propagation_result
 /// to a long string.
-[[nodiscard]] inline constexpr std::string_view propagation_result_to_string
-(const propagation_result at) noexcept
+[[nodiscard]] inline constexpr std::string_view
+propagation_result_to_string(const propagation_result at) noexcept
 {
 	switch (at) {
-	case propagation_result::success:
-		return "Success";
+	case propagation_result::success: return "Success";
 	case propagation_result::conflict_LV_propagation:
 		return "Propagation of level values conflicted";
 	case propagation_result::conflict_LV_emulated_propagation:
 		return "Emulated propagation of level values conflicted";
-	case propagation_result::__last_item:
-		return "?";
+	case propagation_result::__last_item: return "?";
 	}
 	return "";
 }
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::propagation_result
 /// to an index value.
-[[nodiscard]] inline constexpr std::size_t propagation_result_to_index
-(const propagation_result rd) noexcept
-{ return static_cast<std::size_t>(rd); }
+[[nodiscard]] inline constexpr std::size_t
+propagation_result_to_index(const propagation_result rd) noexcept
+{
+	return static_cast<std::size_t>(rd);
+}
 
 /// Converts an index value to a value of
 /// @ref lal::detail::DMax::unconstrained::propagation_result.
-[[nodiscard]] inline constexpr propagation_result index_to_propagation_result
-(const std::size_t i) noexcept
-{ return static_cast<propagation_result>(i); }
+[[nodiscard]] inline constexpr propagation_result
+index_to_propagation_result(const std::size_t i) noexcept
+{
+	return static_cast<propagation_result>(i);
+}
 #endif
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

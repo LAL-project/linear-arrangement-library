@@ -49,8 +49,8 @@
 namespace lal {
 namespace properties {
 
-std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t)
-noexcept
+std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -64,17 +64,23 @@ noexcept
 	std::vector<std::vector<node>> orbits;
 
 	for (node u = 0; u < n; ++u) {
-		if (has_orbit[u]) { continue; }
+		if (has_orbit[u]) {
+			continue;
+		}
 
 		// open a new orbit
 		orbits.push_back({u});
 		has_orbit[u] = 1;
 
 		for (node v = u + 1; v < n; ++v) {
-			if (has_orbit[v]) { continue; }
+			if (has_orbit[v]) {
+				continue;
+			}
 
-			const std::string name_r1 = detail::assign_name(rts[u], u, names, 0);
-			const std::string name_r2 = detail::assign_name(rts[v], v, names, 0);
+			const std::string name_r1 =
+				detail::assign_name(rts[u], u, names, 0);
+			const std::string name_r2 =
+				detail::assign_name(rts[v], v, names, 0);
 			if (name_r1 == name_r2) {
 				orbits.back().push_back(v);
 				has_orbit[v] = 1;
@@ -85,5 +91,5 @@ noexcept
 	return orbits;
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

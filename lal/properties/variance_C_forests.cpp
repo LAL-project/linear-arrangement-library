@@ -51,14 +51,19 @@ namespace properties {
 // ------------------------------
 // FORESTS
 
-inline void compute_data_forest
-(
-	const graphs::undirected_graph& g, const uint64_t& n, const uint64_t& m,
-	uint64_t& Qs, uint64_t& n_paths_4, uint64_t& n_paths_5, uint64_t& KG,
-	uint64_t& Phi_1, uint64_t& Phi_2,
-	uint64_t& Lambda_1, uint64_t& Lambda_2
-)
-noexcept
+inline void compute_data_forest(
+	const graphs::undirected_graph& g,
+	const uint64_t& n,
+	const uint64_t& m,
+	uint64_t& Qs,
+	uint64_t& n_paths_4,
+	uint64_t& n_paths_5,
+	uint64_t& KG,
+	uint64_t& Phi_1,
+	uint64_t& Phi_2,
+	uint64_t& Lambda_1,
+	uint64_t& Lambda_2
+) noexcept
 {
 	// -----------------------------------------
 	// auxiliary memory and additional variables
@@ -79,62 +84,63 @@ noexcept
 	for (node s = 0; s < n; ++s) {
 		const uint64_t ks = g.get_degree(s);
 		// calculate n*<k^2>, n*<k^3>
-		sum_squared_degrees += ks*ks;
-		sum_cubed_degrees += ks*ks*ks;
+		sum_squared_degrees += ks * ks;
+		sum_cubed_degrees += ks * ks * ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbors(s)) {
 			const uint64_t kt = g.get_degree(t);
 
 			// calculate sum_{st in E} k_s*k_t
-			psi += ks*kt;
+			psi += ks * kt;
 			// calculate for each s in V: sum_{t in Gamma(s)} k_t
 			xi[s] += kt;
 		}
 	}
 #if defined DEBUG
-	assert(psi%2 == 0);
+	assert(psi % 2 == 0);
 #endif
 	psi /= 2;
 
 	// ------------------------
 	// start computing variance
 
-	Qs = (m*(m + 1) - sum_squared_degrees)/2;
-	KG = (m + 1)*sum_squared_degrees - sum_cubed_degrees - 2*psi;
-	Phi_1 = (m + 1)*psi;
+	Qs = (m * (m + 1) - sum_squared_degrees) / 2;
+	KG = (m + 1) * sum_squared_degrees - sum_cubed_degrees - 2 * psi;
+	Phi_1 = (m + 1) * psi;
 	Phi_2 = 0;
 
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
-		const auto [s,t] = e_it.get_edge();
+		const auto [s, t] = e_it.get_edge();
 
 		const uint64_t ks = g.get_degree(s);
 		const uint64_t kt = g.get_degree(t);
 
-		n_paths_4 += (ks - 1)*(kt - 1);
-		n_paths_5 += (kt - 1)*(xi[s] - kt - ks + 1) +
-					 (ks - 1)*(xi[t] - kt - ks + 1);
+		n_paths_4 += (ks - 1) * (kt - 1);
+		n_paths_5 +=
+			(kt - 1) * (xi[s] - kt - ks + 1) + (ks - 1) * (xi[t] - kt - ks + 1);
 
-		Lambda_1 += (ks - 1)*(xi[t] - ks) + (kt - 1)*(xi[s] - kt);
-		Lambda_2 += (ks - 1)*(kt - 1)*(ks + kt);
+		Lambda_1 += (ks - 1) * (xi[t] - ks) + (kt - 1) * (xi[s] - kt);
+		Lambda_2 += (ks - 1) * (kt - 1) * (ks + kt);
 
-		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 += (ks + kt)*(sum_squared_degrees - xi[s] - xi[t] - kt*(kt - 1) - ks*(ks - 1));
+		Phi_1 -= ks * kt * (ks + kt);
+		Phi_2 += (ks + kt) * (sum_squared_degrees - xi[s] - xi[t] -
+							  kt * (kt - 1) - ks * (ks - 1));
 	}
 
 	Lambda_2 += Lambda_1;
 
 #if defined DEBUG
-	assert(n_paths_5%2 == 0);
-	assert(Phi_2%2 == 0);
+	assert(n_paths_5 % 2 == 0);
+	assert(Phi_2 % 2 == 0);
 #endif
 
 	n_paths_5 /= 2;
 	Phi_2 /= 2;
 }
 
-numeric::rational var_num_crossings_forest_rational
-(const graphs::undirected_graph& g) noexcept
+numeric::rational
+var_num_crossings_forest_rational(const graphs::undirected_graph& g) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	const uint64_t m = g.get_num_edges();
@@ -163,26 +169,22 @@ numeric::rational var_num_crossings_forest_rational
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
 	uint64_t Lambda_2 = 0;
 
-	compute_data_forest
-	(
-		g, n, m,
-		Qs, n_paths_4, n_paths_5, KG,
-		Phi_1, Phi_2,
-		Lambda_1, Lambda_2
+	compute_data_forest(
+		g, n, m, Qs, n_paths_4, n_paths_5, KG, Phi_1, Phi_2, Lambda_1, Lambda_2
 	);
 
 	// V[C]
 	numeric::rational V(0);
-	V += numeric::rational(2,45)*(m + 2)*Qs;
-	V -= numeric::rational(1,180)*(2*m + 7)*n_paths_4;
-	V -= numeric::rational(1,180)*n_paths_5;
-	V += numeric::rational(1,90)*KG;
-	V -= numeric::rational(1,60)*Lambda_1;
-	V += numeric::rational(1,180)*Lambda_2;
-	V += numeric::rational(1,180)*Phi_2;
-	V -= numeric::rational(1,90)*Phi_1;
+	V += numeric::rational(2, 45) * (m + 2) * Qs;
+	V -= numeric::rational(1, 180) * (2 * m + 7) * n_paths_4;
+	V -= numeric::rational(1, 180) * n_paths_5;
+	V += numeric::rational(1, 90) * KG;
+	V -= numeric::rational(1, 60) * Lambda_1;
+	V += numeric::rational(1, 180) * Lambda_2;
+	V += numeric::rational(1, 180) * Phi_2;
+	V -= numeric::rational(1, 90) * Phi_1;
 	return V;
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

@@ -68,34 +68,34 @@ namespace detail {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
->
-void get_size_subtrees
-(
-	const tree_t& t,
-	const node u,
-	const node v,
-	uint64_t * const sizes
-)
-noexcept
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+void get_size_subtrees(
+	const tree_t& t, const node u, const node v, uint64_t * const sizes
+) noexcept
 {
 	sizes[v] = 1;
 
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node w : t.get_out_neighbors(v)) {
-			if (w == u) { continue; }
+			if (w == u) {
+				continue;
+			}
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
 		for (const node w : t.get_in_neighbors(v)) {
-			if (w == u) { continue; }
+			if (w == u) {
+				continue;
+			}
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
 	}
 	else {
 		for (const node w : t.get_neighbors(v)) {
-			if (w == u) { continue; }
+			if (w == u) {
+				continue;
+			}
 			get_size_subtrees(t, v, w, sizes);
 			sizes[v] += sizes[w];
 		}
@@ -115,14 +115,10 @@ noexcept
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
->
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
 inline void get_size_subtrees(
-	const tree_t& t,
-	const node r,
-	uint64_t * const sizes
-)
-noexcept
+	const tree_t& t, const node r, uint64_t * const sizes
+) noexcept
 {
 #if defined DEBUG
 	assert(sizes != nullptr);
@@ -158,42 +154,43 @@ template <
 	class tree_t,
 	typename iterator_t,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t>
-		and is_pointer_iterator_v<edge_size, iterator_t>,
-		bool
-	> = true
->
-[[nodiscard]]
-uint64_t calculate_bidirectional_sizes
-(
+		std::is_base_of_v<graphs::tree, tree_t> and
+			is_pointer_iterator_v<edge_size, iterator_t>,
+		bool> = true>
+[[nodiscard]] uint64_t calculate_bidirectional_sizes(
 	const tree_t& t,
 	const uint64_t n,
 	const node u,
 	const node v,
 	iterator_t& it
-)
-noexcept
+) noexcept
 {
 	uint64_t s = 1;
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node w : t.get_out_neighbors(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, it);
+			if (w == u) {
+				continue;
+			}
+			s += calculate_bidirectional_sizes(t, n, v, w, it);
 		}
 		for (const node w : t.get_in_neighbors(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, it);
+			if (w == u) {
+				continue;
+			}
+			s += calculate_bidirectional_sizes(t, n, v, w, it);
 		}
 	}
 	else {
 		for (const node w : t.get_neighbors(v)) {
-			if (w == u) { continue; }
-			s += calculate_bidirectional_sizes(t,n, v, w, it);
+			if (w == u) {
+				continue;
+			}
+			s += calculate_bidirectional_sizes(t, n, v, w, it);
 		}
 	}
 
-	*it++ = {edge(u,v), s};
-	*it++ = {edge(v,u), n - s};
+	*it++ = {edge(u, v), s};
+	*it++ = {edge(v, u), n - s};
 	return s;
 }
 
@@ -234,33 +231,27 @@ template <
 	class tree_t,
 	typename iterator_t,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t>
-		and is_pointer_iterator_v<edge_size, iterator_t>,
-		bool
-	> = true
->
+		std::is_base_of_v<graphs::tree, tree_t> and
+			is_pointer_iterator_v<edge_size, iterator_t>,
+		bool> = true>
 inline void calculate_bidirectional_sizes(
-	const tree_t& t,
-	const uint64_t n,
-	const node x,
-	iterator_t it
-)
-noexcept
+	const tree_t& t, const uint64_t n, const node x, iterator_t it
+) noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::rooted_tree, tree_t>) {
 		for (const node y : t.get_out_neighbors(x)) {
-			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t, n, x, y, it);
 		}
 		for (const node y : t.get_in_neighbors(x)) {
-			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t, n, x, y, it);
 		}
 	}
 	else {
 		for (const node y : t.get_neighbors(x)) {
-			std::ignore = calculate_bidirectional_sizes(t,n, x, y, it);
+			std::ignore = calculate_bidirectional_sizes(t, n, x, y, it);
 		}
 	}
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

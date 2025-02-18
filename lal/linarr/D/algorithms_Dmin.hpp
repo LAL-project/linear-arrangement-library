@@ -56,7 +56,7 @@ namespace linarr {
  * the sum of the length of the edges \f$D\f$.
  */
 enum class algorithms_Dmin {
-    /**
+	/**
 	 * @brief Yossi Shiloach's algorithm.
 	 *
 	 * Shiloach's quadratic algorithm \f$O(n^{2.2})\f$. Said algorithm was
@@ -64,7 +64,7 @@ enum class algorithms_Dmin {
 	 * correction published in \cite Esteban2017a.
 	 */
 	Shiloach,
-    /**
+	/**
 	 * @brief Fan Chung's quadratic algorithm.
      *
 	 * Fan Chung's quadratic algorithm \f$O(n^2)\f$. Said algorithm was published
@@ -74,5 +74,5 @@ enum class algorithms_Dmin {
 	Chung_2
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

@@ -66,22 +66,28 @@ namespace graphs {
  */
 class directed_graph : virtual public graph {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	directed_graph() noexcept : graph() { }
+	directed_graph() noexcept
+		: graph()
+	{ }
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	directed_graph(const uint64_t n) noexcept {
+	directed_graph(const uint64_t n) noexcept
+	{
 		init(n);
 	}
 	/**
 	 * @brief Copy constructor.
 	 * @param g Directed graph.
 	 */
-	directed_graph(const directed_graph& g) noexcept : graph() {
+	directed_graph(const directed_graph& g) noexcept
+		: graph()
+	{
 		copy_full_directed_graph(g);
 	}
 
@@ -89,7 +95,8 @@ public:
 	 * @brief Move constructor.
 	 * @param g Directed graph.
 	 */
-	directed_graph(directed_graph&& g) noexcept {
+	directed_graph(directed_graph&& g) noexcept
+	{
 		move_full_directed_graph(std::forward<directed_graph>(g));
 	}
 
@@ -102,7 +109,8 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param g Directed graph.
 	 */
-	directed_graph& operator= (const directed_graph& g) noexcept {
+	directed_graph& operator= (const directed_graph& g) noexcept
+	{
 		copy_full_directed_graph(g);
 		return *this;
 	}
@@ -110,7 +118,8 @@ public:
 	 * @brief Move assignment operator.
 	 * @param g Directed graph.
 	 */
-	directed_graph& operator= (directed_graph&& g) noexcept {
+	directed_graph& operator= (directed_graph&& g) noexcept
+	{
 		move_full_directed_graph(std::forward<directed_graph>(g));
 		return *this;
 	}
@@ -125,7 +134,8 @@ public:
 	 * @param d The amount of memory to reserve.
 	 * @pre The graph must have been initialized.
 	 */
-	void reserve_in_degree(const node u, const uint64_t d) noexcept {
+	void reserve_in_degree(const node u, const uint64_t d) noexcept
+	{
 #if defined DEBUG
 		assert(u < get_num_nodes());
 #endif
@@ -139,7 +149,8 @@ public:
 	 * @param d The amount of memory to reserve.
 	 * @pre The graph must have been initialized.
 	 */
-	void reserve_out_degree(const node u, const uint64_t d) noexcept {
+	void reserve_out_degree(const node u, const uint64_t d) noexcept
+	{
 #if defined DEBUG
 		assert(u < get_num_nodes());
 #endif
@@ -151,7 +162,8 @@ public:
 	[[nodiscard]] bool check_normalized() noexcept;
 
 	/// Adds a node to the graph.
-	virtual directed_graph& add_node() noexcept {
+	virtual directed_graph& add_node() noexcept
+	{
 		graph::__add_node();
 		m_in_adjacency_list.emplace_back();
 		return *this;
@@ -170,13 +182,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& remove_node
-	(
-		const node u,
-		const bool norm = true,
-		const bool check_norm = true
-	)
-	noexcept;
+	virtual directed_graph& remove_node(
+		const node u, const bool norm = true, const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Adds a directed edge to the graph.
@@ -194,14 +202,12 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& add_edge
-	(
+	virtual directed_graph& add_edge(
 		const node s,
 		const node t,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -216,8 +222,9 @@ public:
 	 * after the addition of the edge.
 	 */
 	directed_graph& add_edge_bulk(const node s, const node t) noexcept;
-	
-	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
+
+	void
+	finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
 	/**
 	 * @brief Adds a list of directed edges to the graph.
@@ -235,13 +242,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& add_edges
-	(
+	virtual directed_graph& add_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Sets the list of edges to the graph.
@@ -268,13 +273,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& set_edges
-	(
+	virtual directed_graph& set_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Removes an edge from the graph.
@@ -288,9 +291,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the removal of the edge.
 	 */
-	virtual directed_graph& remove_edge_bulk(const node s, const node t) noexcept;
+	virtual directed_graph&
+	remove_edge_bulk(const node s, const node t) noexcept;
 
-	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true)
+		noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -308,14 +313,12 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& remove_edge
-	(
+	virtual directed_graph& remove_edge(
 		const node s,
 		const node t,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -333,9 +336,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& remove_edges
-	(const std::vector<edge>& edges, const bool norm = true, const bool check_norm = true)
-	noexcept;
+	virtual directed_graph& remove_edges(
+		const std::vector<edge>& edges,
+		const bool norm = true,
+		const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.
@@ -354,9 +359,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	virtual directed_graph& remove_edges_incident_to
-	(const node u, const bool norm = true, const bool check_norm = true)
-	noexcept;
+	virtual directed_graph& remove_edges_incident_to(
+		const node u, const bool norm = true, const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Disjoint union of graphs.
@@ -387,7 +392,9 @@ public:
 	 * @param u Node
 	 * @returns The list of nodes leaving node @e u.
 	 */
-	[[nodiscard]] const neighbourhood& get_out_neighbors(const node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_out_neighbors(const node u
+	) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -398,7 +405,9 @@ public:
 	 * @param u Node
 	 * @returns The list of nodes entering at node @e u.
 	 */
-	[[nodiscard]] const neighbourhood& get_in_neighbors(const node u) const noexcept {
+	[[nodiscard]] const neighbourhood& get_in_neighbors(const node u
+	) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -414,25 +423,35 @@ public:
 	 * @returns The (in + out) degree of this vertex.
 	 */
 	[[nodiscard]] uint64_t get_degree(const node u) const noexcept
-	{ return get_out_degree(u) + get_in_degree(u); }
+	{
+		return get_out_degree(u) + get_in_degree(u);
+	}
 
 	/// Returns the out-degree of a node.
-	[[nodiscard]] uint64_t get_out_degree(const node u) const noexcept {
+	[[nodiscard]] uint64_t get_out_degree(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_adjacency_list[u].size();
 	}
 	/// Returns the in-degree of a node.
-	[[nodiscard]] uint64_t get_in_degree(const node u) const noexcept {
+	[[nodiscard]] uint64_t get_in_degree(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
 		return m_in_adjacency_list[u].size();
 	}
 
-	[[nodiscard]] bool is_directed() const noexcept { return true; }
-	[[nodiscard]] bool is_undirected() const noexcept { return false; }
+	[[nodiscard]] bool is_directed() const noexcept
+	{
+		return true;
+	}
+	[[nodiscard]] bool is_undirected() const noexcept
+	{
+		return false;
+	}
 
 	/**
 	 * @brief Converts this directed graph into an undirected graph.
@@ -447,18 +466,21 @@ public:
 	 * @param check Chech whether the resulting graph is normalized or not.
 	 * @returns This graph in which the edges are undirected.
 	 */
-	[[nodiscard]] undirected_graph to_undirected
-	(const bool norm = true, const bool check = true)
-	const noexcept;
+	[[nodiscard]] undirected_graph to_undirected(
+		const bool norm = true, const bool check = true
+	) const noexcept;
 
 	/// Returns all the connected components of this graph as individual graphs.
-	[[nodiscard]] std::vector<directed_graph> get_connected_components() const noexcept;
+	[[nodiscard]] std::vector<directed_graph>
+	get_connected_components() const noexcept;
 
 protected:
+
 	/// In-neighbors for every node.
 	std::vector<neighbourhood> m_in_adjacency_list;
 
 protected:
+
 	/**
 	 * @brief Initializes the memory in the graph hierarchy.
 	 *
@@ -467,50 +489,61 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	virtual void _init(const uint64_t n) noexcept {
+	virtual void _init(const uint64_t n) noexcept
+	{
 		graph::_init(n);
 		m_in_adjacency_list.resize(n);
 	}
 	/// Clears the memory of @ref directed_graph and @ref graph classes.
-	virtual void _clear() noexcept {
+	virtual void _clear() noexcept
+	{
 		graph::_clear();
 		m_in_adjacency_list.clear();
 	}
 
-	virtual void actions_after_add_edge(const node u, const node v) noexcept {
+	virtual void actions_after_add_edge(const node u, const node v) noexcept
+	{
 		graph::actions_after_add_edge(u, v);
 	}
 
-	virtual void actions_after_add_edges(const edge_list& e) noexcept {
+	virtual void actions_after_add_edges(const edge_list& e) noexcept
+	{
 		graph::actions_after_add_edges(e);
 	}
 
-	virtual void actions_after_add_edges_bulk() noexcept {
+	virtual void actions_after_add_edges_bulk() noexcept
+	{
 		graph::actions_after_add_edges_bulk();
 	}
 
-	virtual void actions_after_remove_edge(const node u, const node v) noexcept {
+	virtual void actions_after_remove_edge(const node u, const node v) noexcept
+	{
 		graph::actions_after_remove_edge(u, v);
 	}
 
-	virtual void actions_after_remove_edges(const edge_list& e) noexcept {
+	virtual void actions_after_remove_edges(const edge_list& e) noexcept
+	{
 		graph::actions_after_remove_edges(e);
 	}
 
-	virtual void actions_after_remove_edges_bulk() noexcept {
+	virtual void actions_after_remove_edges_bulk() noexcept
+	{
 		graph::actions_after_remove_edges_bulk();
 	}
 
-	virtual void actions_before_remove_edges_incident_to(const node u) noexcept {
+	virtual void actions_before_remove_edges_incident_to(const node u) noexcept
+	{
 		graph::actions_before_remove_edges_incident_to(u);
 	}
 
-	virtual void actions_after_remove_node(const node u) noexcept {
+	virtual void actions_after_remove_node(const node u) noexcept
+	{
 		graph::actions_after_remove_node(u);
 	}
 
 	/// Copies all members of this class and the parent class.
-	void copy_full_directed_graph(const directed_graph& d) noexcept {
+	void copy_full_directed_graph(const directed_graph& d) noexcept
+	{
 		// copy parent class
 		copy_full_graph(d);
 
@@ -518,7 +551,8 @@ protected:
 		m_in_adjacency_list = d.m_in_adjacency_list;
 	}
 	/// Moves all members of this class and the parent class.
-	void move_full_directed_graph(directed_graph&& d) noexcept {
+	void move_full_directed_graph(directed_graph&& d) noexcept
+	{
 		// move-assign parent class
 		move_full_graph(std::forward<directed_graph>(d));
 
@@ -527,6 +561,7 @@ protected:
 	}
 
 private:
+
 	/**
 	 * @brief Removes a single edge.
 	 * @param u First node of edge.
@@ -534,15 +569,10 @@ private:
 	 * @param out_u Out-neighbourhood of node @e u.
 	 * @param in_v In-neighbourhood of node @e v.
 	 */
-	void remove_single_edge
-	(
-		const node u,
-		const node v,
-		neighbourhood& out_u,
-		neighbourhood& in_v
-	)
-	noexcept;
+	void remove_single_edge(
+		const node u, const node v, neighbourhood& out_u, neighbourhood& in_v
+	) noexcept;
 };
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

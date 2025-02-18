@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // lal includes
@@ -98,14 +98,18 @@ namespace generate {
  */
 class all_ulab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
+
 	/// Empty constructor.
-	all_ulab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+	all_ulab_free_trees() noexcept
+		: _tree_generator<graphs::free_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_ulab_free_trees(const uint64_t n) noexcept {
+	all_ulab_free_trees(const uint64_t n) noexcept
+	{
 		init(n);
 	}
 	/**
@@ -124,7 +128,8 @@ public:
 	~all_ulab_free_trees() noexcept = default;
 
 	/// Copy assignment operator.
-	all_ulab_free_trees& operator= (const all_ulab_free_trees& g) noexcept = default;
+	all_ulab_free_trees& operator= (const all_ulab_free_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
 	all_ulab_free_trees& operator= (all_ulab_free_trees&& g) noexcept = default;
 
@@ -134,7 +139,8 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(const uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept
+	{
 		_tree_generator::init(n);
 		m_L.resize(m_n + 1);
 		m_W.resize(m_n + 1);
@@ -145,7 +151,8 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_L.clear();
 		m_W.clear();
@@ -154,7 +161,10 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/* MODIFIERS */
 
@@ -168,18 +178,21 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		__reset();
 		next();
 	}
 
-	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept
+	{
 		const auto t = get_tree();
 		next();
 		return t;
 	}
 
 protected:
+
 	/**
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next().
@@ -192,6 +205,7 @@ protected:
 	void __reset() noexcept;
 
 private:
+
 	/// Canonical level sequence of the tree.
 	detail::array<uint64_t> m_L;
 	/**
@@ -231,5 +245,5 @@ private:
 	bool m_reached_end = false;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

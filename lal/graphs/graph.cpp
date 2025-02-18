@@ -56,29 +56,34 @@ namespace graphs {
 
 /* MODIFIERS */
 
-void graph::init(uint64_t n) noexcept {
+void graph::init(uint64_t n) noexcept
+{
 	_clear();
 	_init(n);
 }
 
-void graph::clear() noexcept {
+void graph::clear() noexcept
+{
 	_clear();
 }
 
-void graph::normalize() noexcept {
+void graph::normalize() noexcept
+{
 	detail::array<char> mem(get_num_nodes(), 0);
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& nu = m_adjacency_list[u];
 
 		if (not std::is_sorted(nu.begin(), nu.end())) {
-			detail::sorting::bit_sort_mem<node>
-			(nu.begin(), nu.end(), nu.size(), mem.begin());
+			detail::sorting::bit_sort_mem<node>(
+				nu.begin(), nu.end(), nu.size(), mem.begin()
+			);
 		}
 	}
 	m_is_normalized = true;
 }
 
-bool graph::check_normalized() noexcept {
+bool graph::check_normalized() noexcept
+{
 	// check that every adjacency list is sorted
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		const neighbourhood& nu = m_adjacency_list[u];
@@ -100,8 +105,9 @@ bool graph::check_normalized() noexcept {
 
 /* PROTECTED */
 
-void graph::normalize_after_edge_addition(const bool to_norm, const bool check_norm)
-noexcept
+void graph::normalize_after_edge_addition(
+	const bool to_norm, const bool check_norm
+) noexcept
 {
 	if (to_norm) {
 		// the graph needs to be normalized from a non-normalized state
@@ -124,8 +130,9 @@ noexcept
 	}
 }
 
-void graph::normalize_after_edge_removal(const bool to_norm, const bool check_norm)
-noexcept
+void graph::normalize_after_edge_removal(
+	const bool to_norm, const bool check_norm
+) noexcept
 {
 	// if (is_normalized()) {
 	//		Removing an edge does not change normalisation
@@ -154,5 +161,5 @@ noexcept
 	}
 }
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

@@ -85,6 +85,7 @@ namespace generate {
  */
 class rand_projective_arrangements {
 public:
+
 	/* CONSTRUCTORS */
 
 	/**
@@ -95,18 +96,22 @@ public:
 	 * @pre The object @e t must be a rooted tree (see
 	 * @ref lal::graphs::rooted_tree::is_rooted_tree).
 	 */
-	rand_projective_arrangements(const graphs::rooted_tree& rT, const uint64_t seed = 0) noexcept;
+	rand_projective_arrangements(
+		const graphs::rooted_tree& rT, const uint64_t seed = 0
+	) noexcept;
 
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(const rand_projective_arrangements& Gen) noexcept = default;
+	rand_projective_arrangements(const rand_projective_arrangements& Gen
+	) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Random projective arrangement generator.
 	 */
-	rand_projective_arrangements(rand_projective_arrangements&& Gen) noexcept = default;
+	rand_projective_arrangements(rand_projective_arrangements&& Gen
+	) noexcept = default;
 
 	/// Default destructor.
 	~rand_projective_arrangements() = default;
@@ -121,11 +126,13 @@ public:
 	[[nodiscard]] linear_arrangement get_arrangement() noexcept;
 
 	/// Returns a random projective arrangement.
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		return get_arrangement();
 	}
 
 private:
+
 	/// The rooted tree of which we are making projective arrangements uniformly at random.
 	const graphs::rooted_tree& m_rT;
 
@@ -141,5 +148,5 @@ private:
 	std::mt19937 m_gen;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

@@ -52,7 +52,7 @@
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/array.hpp>
 
-#define idx(i,j, C) ((i)*(C) + (j))
+#define idx(i, j, C) ((i) * (C) + (j))
 #define DECIDED_C_GT (upper_bound + 1)
 
 namespace lal {
@@ -91,20 +91,18 @@ namespace dyn_prog {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t compute
-(
+[[nodiscard]] uint64_t compute(
 	const graph_t& g,
 	const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ M,
 	uint64_t * const __restrict__ K,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	std::fill(bn, &bn[n], 0);
-	std::fill(K, &K[(n - 3)*(n - 3)], 0);
+	std::fill(K, &K[(n - 3) * (n - 3)], 0);
 
 	const node u0 = arr[position_t{0ull}];
 	const node u1 = arr[position_t{1ull}];
@@ -139,7 +137,7 @@ noexcept
 			// This explains M[pu][*]
 
 			//M[pu][i - 3] = k;
-			M[ idx(*pu, *i - 3, n-3) ] = k;
+			M[idx(*pu, *i - 3, n - 3)] = k;
 
 			// clear boolean neighbors so that at the next
 			// iteration all its values are valid
@@ -150,7 +148,7 @@ noexcept
 	/* fill matrix K */
 
 	// special case for ii = 0 (see next for loop)
-	K[idx(n-4,n-4, n-3)] = M[idx(n-4,n-4, n-3)];
+	K[idx(n - 4, n - 4, n - 3)] = M[idx(n - 4, n - 4, n - 3)];
 
 	// pointer for next row in K
 	uint64_t * __restrict__ next_k_it;
@@ -163,12 +161,12 @@ noexcept
 		const uint64_t i = n - 3 - ii - 1;
 
 		//m_it = &M[i][i];
-		m_it = &M[ idx(i,i, n-3) ];
+		m_it = &M[idx(i, i, n - 3)];
 
 		// place k_it at the beginning of i-th row ("beginning" here means
 		// the first column with non-redundant information: the upper half
 		// of the matrix)
-		k_it = &K[ idx(i,i, n-3) ];
+		k_it = &K[idx(i, i, n - 3)];
 
 		// place next_k_it at the same column as k_it but at the next row
 		next_k_it = k_it + n - 3;
@@ -184,8 +182,9 @@ noexcept
 
 	uint64_t C = 0;
 
-	const auto process_neighbors =
-	[&](const position pu, const node_t v) -> void {
+	const auto process_neighbors = [&](const position pu,
+									   const node_t v) -> void
+	{
 		const position pv = arr[v];
 		// 'u' and 'v' is an edge of the graph.
 		// In case that arr[u] < arr[v], or, equivalently, pu < arr[v],
@@ -199,7 +198,7 @@ noexcept
 		}*/
 		// --
 		if (pu < pv and 2 <= pv and pv < n - 1) {
-			C += K[idx(pu,pv-2, n-3)];
+			C += K[idx(pu, pv - 2, n - 3)];
 		}
 	};
 
@@ -211,14 +210,18 @@ noexcept
 			for (node_t v : Nu) {
 				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
-					if (C > upper_bound) { return DECIDED_C_GT; }
+					if (C > upper_bound) {
+						return DECIDED_C_GT;
+					}
 				}
 			}
 			const neighbourhood& Nu_in = g.get_in_neighbors(u);
 			for (node_t v : Nu_in) {
 				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
-					if (C > upper_bound) { return DECIDED_C_GT; }
+					if (C > upper_bound) {
+						return DECIDED_C_GT;
+					}
 				}
 			}
 		}
@@ -227,7 +230,9 @@ noexcept
 			for (node_t v : Nu) {
 				process_neighbors(pu, v);
 				if constexpr (decide_upper_bound) {
-					if (C > upper_bound) { return DECIDED_C_GT; }
+					if (C > upper_bound) {
+						return DECIDED_C_GT;
+					}
 				}
 			}
 		}
@@ -238,7 +243,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace dyn_prog
+} // namespace dyn_prog
 
 // =============================================================================
 // CALLS TO THE ALGORITHM
@@ -256,9 +261,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_dynamic_programming
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] uint64_t
+n_C_dynamic_programming(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -266,20 +270,22 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
 
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2 * (n - 3) * (n - 3);
 	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3) * (n - 3)];
 
-	return dyn_prog::compute<false>(g, arr, bool_neighs.begin(), M,K, 0);
+	return dyn_prog::compute<false>(g, arr, bool_neighs.begin(), M, K, 0);
 }
 
 // --------------------
@@ -293,23 +299,25 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept
+[[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	/* allocate memory */
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2 * (n - 3) * (n - 3);
 	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3) * (n - 3)];
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
@@ -322,8 +330,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<false>
-			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, 0);
+		cs[i] = dyn_prog::compute<false>(
+			g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M, K, 0
+		);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -349,13 +358,9 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t is_n_C_dynamic_programming_lesseq_than
-(
-	const graph_t& g,
-	const arrangement_t& arr,
-	const uint64_t upper_bound
-)
-noexcept
+[[nodiscard]] uint64_t is_n_C_dynamic_programming_lesseq_than(
+	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -366,15 +371,17 @@ noexcept
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
 
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2 * (n - 3) * (n - 3);
 	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3) * (n - 3)];
 
-	return dyn_prog::compute<true>(g, arr, bool_neighs.begin(), M,K, upper_bound);
+	return dyn_prog::compute<true>(
+		g, arr, bool_neighs.begin(), M, K, upper_bound
+	);
 }
 
 // --------------------
@@ -390,27 +397,27 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	/* allocate memory */
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2 * (n - 3) * (n - 3);
 	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3) * (n - 3)];
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
@@ -423,8 +430,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<true>
-			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bound);
+		cs[i] = dyn_prog::compute<true>(
+			g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M, K, upper_bound
+		);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -445,13 +453,11 @@ noexcept
  * bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
 	// ensure that there are as many linear arrangements as upper bounds
@@ -461,16 +467,18 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	/* allocate memory */
-	const std::size_t n_elems = 2*(n - 3)*(n - 3);
+	const std::size_t n_elems = 2 * (n - 3) * (n - 3);
 	array<uint64_t> all_memory(n_elems);
 
 	// matrix M (without 3 of its columns and rows) ( size (n-3)*(n-3) )
 	uint64_t * const __restrict__ M = &all_memory[0];
 	// matrix K (without 3 of its columns and rows) ( size (n-3)*(n-3) )
-	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3)*(n - 3)];
+	uint64_t * const __restrict__ K = &all_memory[0 + (n - 3) * (n - 3)];
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
@@ -483,8 +491,14 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = dyn_prog::compute<true>
-			(g, nonidentity_arr(arrs[i]), bool_neighs.begin(), M,K, upper_bounds[i]);
+		cs[i] = dyn_prog::compute<true>(
+			g,
+			nonidentity_arr(arrs[i]),
+			bool_neighs.begin(),
+			M,
+			K,
+			upper_bounds[i]
+		);
 
 		// contents of 'bool_neighs' is set to 0 inside the function
 		//bool_neighs.assign(n, false);
@@ -494,23 +508,9 @@ noexcept
 	return cs;
 }
 
-} // -- namespace crossings
-} // -- namespace detail
-} // -- namespace lal
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+} // namespace crossings
+} // namespace detail
+} // namespace lal
 
 /*
 // This is a basic, straightforward and easy-to-understand

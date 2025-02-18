@@ -68,32 +68,28 @@ public:
 	head_vector_error() noexcept = default;
 
 	/// Constructor with error message and error type.
-	head_vector_error
-	(const std::string& msg, const head_vector_error_type& tet)
-	noexcept
-		:
-		m_error_msg(msg),
-		m_error_type(tet)
+	head_vector_error(const std::string& msg, const head_vector_error_type& tet)
+		noexcept
+		: m_error_msg(msg),
+		  m_error_type(tet)
 	{ }
 	/// Constructor with error message and error type.
-	head_vector_error
-	(std::string&& msg, const head_vector_error_type& tet)
-	noexcept
-		:
-		m_error_msg(msg),
-		m_error_type(tet)
+	head_vector_error(std::string&& msg, const head_vector_error_type& tet)
+		noexcept
+		: m_error_msg(msg),
+		  m_error_type(tet)
 	{ }
 
 	/// Copy constructor.
-	head_vector_error(const head_vector_error& te) noexcept :
-		m_error_msg(te.m_error_msg),
-		m_error_type(te.m_error_type)
+	head_vector_error(const head_vector_error& te) noexcept
+		: m_error_msg(te.m_error_msg),
+		  m_error_type(te.m_error_type)
 	{ }
 
 	/// Move constructor.
-	head_vector_error(head_vector_error&& te) noexcept :
-		m_error_msg(std::move(te.m_error_msg)),
-		m_error_type(te.m_error_type)
+	head_vector_error(head_vector_error&& te) noexcept
+		: m_error_msg(std::move(te.m_error_msg)),
+		  m_error_type(te.m_error_type)
 	{ }
 
 	/// Destructor
@@ -102,34 +98,46 @@ public:
 	/* ASSIGNMENT OPERATORS */
 
 	/// Default copy assignment operator.
-	head_vector_error& operator= (const head_vector_error& ) noexcept = default;
+	head_vector_error& operator= (const head_vector_error&) noexcept = default;
 	/// Default move assignment operator.
-	head_vector_error& operator= (head_vector_error&& ) noexcept = default;
+	head_vector_error& operator= (head_vector_error&&) noexcept = default;
 
 	/* COMPARISON OPERATORS */
 
 	/// Compares this head vector error with a head vector error type.
-	[[nodiscard]] bool operator== (const head_vector_error_type& tet) const noexcept
-	{ return m_error_type == tet; }
+	[[nodiscard]] bool operator== (const head_vector_error_type& tet
+	) const noexcept
+	{
+		return m_error_type == tet;
+	}
 	/// Compares this head vector error with a head vector error type.
-	[[nodiscard]] bool operator!= (const head_vector_error_type& tet) const noexcept
-	{ return m_error_type != tet; }
+	[[nodiscard]] bool operator!= (const head_vector_error_type& tet
+	) const noexcept
+	{
+		return m_error_type != tet;
+	}
 
 	/* GETTERS */
 
 	/// Returns the error message.
-	[[nodiscard]] const std::string& get_error_message() const noexcept { return m_error_msg; }
+	[[nodiscard]] const std::string& get_error_message() const noexcept
+	{
+		return m_error_msg;
+	}
 
 	/// Returns the error type.
 	[[nodiscard]] head_vector_error_type get_error_type() const noexcept
-	{ return m_error_type; }
+	{
+		return m_error_type;
+	}
 
 private:
+
 	/// Error message
 	std::string m_error_msg;
 	/// Error type.
 	head_vector_error_type m_error_type;
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

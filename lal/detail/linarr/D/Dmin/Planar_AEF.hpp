@@ -79,8 +79,7 @@ template <bool make_arrangement>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
+	uint64_t>
 AEF(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
@@ -109,9 +108,8 @@ AEF(const graphs::free_tree& t) noexcept
 
 	linear_arrangement arr(make_arrangement ? n : 0);
 	const uint64_t D =
-		Dmin_utils::arrange_projective<make_arrangement>
-		(n, L, c, arr);
-	
+		Dmin_utils::arrange_projective<make_arrangement>(n, L, c, arr);
+
 	if constexpr (make_arrangement) {
 		return {D, std::move(arr)};
 	}
@@ -120,7 +118,7 @@ AEF(const graphs::free_tree& t) noexcept
 	}
 }
 
-} // -- namespace planar
-} // -- namespace Dmin
-} // -- namespace detail
-} // -- namespace lal
+} // namespace planar
+} // namespace Dmin
+} // namespace detail
+} // namespace lal

@@ -52,8 +52,8 @@ namespace linarr {
 #define __ident(arr) detail::identity_arr(arr)
 #define __nonident(arr) detail::nonidentity_arr(arr)
 
-graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq)
-noexcept
+graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq
+) noexcept
 {
 	graphs::rooted_tree t(seq.size());
 
@@ -61,8 +61,9 @@ noexcept
 		const auto& c = seq[chunk_idx];
 
 		if (c.has_parent_node()) {
-			const std::size_t parent_chunk_idx = seq.get_chunk_index(c.get_parent_node());
-			t.add_edge_bulk( parent_chunk_idx, chunk_idx );
+			const std::size_t parent_chunk_idx =
+				seq.get_chunk_index(c.get_parent_node());
+			t.add_edge_bulk(parent_chunk_idx, chunk_idx);
 		}
 		else {
 			t.set_root(chunk_idx);
@@ -104,13 +105,13 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-graphs::rooted_tree chunk_syntactic_dependency_tree
-(const graphs::rooted_tree& rt, const algorithms_chunking& algo)
-noexcept
+graphs::rooted_tree chunk_syntactic_dependency_tree(
+	const graphs::rooted_tree& rt, const algorithms_chunking& algo
+) noexcept
 {
 	linear_arrangement arr;
 	const auto __arr = __ident(arr);
-	
+
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
@@ -134,11 +135,10 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
 	const graphs::rooted_tree& rt,
 	const linear_arrangement& arr,
 	const algorithms_chunking& algo
-)
-noexcept
+) noexcept
 {
 	const auto __arr = __nonident(arr);
-	
+
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
@@ -160,13 +160,13 @@ noexcept
 
 // -----------------------------------------------------------------------------
 
-chunk_sequence chunk_syntactic_dependency_tree_as_sequence
-(const graphs::rooted_tree& rt, const algorithms_chunking& algo)
-noexcept
+chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
+	const graphs::rooted_tree& rt, const algorithms_chunking& algo
+) noexcept
 {
 	linear_arrangement arr;
 	const auto __arr = __ident(arr);
-	
+
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
@@ -190,11 +190,10 @@ chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
 	const graphs::rooted_tree& rt,
 	const linear_arrangement& arr,
 	const algorithms_chunking& algo
-) 
-noexcept
+) noexcept
 {
 	const auto __arr = __nonident(arr);
-	
+
 	if (algo == algorithms_chunking::Anderson) {
 		detail::chunks_Anderson C(rt, __arr);
 		C.chunk_input_tree();
@@ -214,5 +213,5 @@ noexcept
 	return chunk_sequence();
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

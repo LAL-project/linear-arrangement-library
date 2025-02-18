@@ -61,9 +61,9 @@ namespace linarr {
  * @pre The tree @e t is a valid free tree. Method lal::graphs::free_tree::is_tree
  * returns true.
  */
-[[nodiscard]] std::vector<dependency_flux> dependency_flux_compute
-(const graphs::free_tree& t, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] std::vector<dependency_flux> dependency_flux_compute(
+	const graphs::free_tree& t, const linear_arrangement& pi = {}
+) noexcept;
 
 /**
  * @brief Computes the flux of a dependency tree.
@@ -75,9 +75,9 @@ noexcept;
  * @pre The tree @e t is a valid rooted tree. Method lal::graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
-[[nodiscard]] inline std::vector<dependency_flux> dependency_flux_compute
-(const graphs::rooted_tree& t, const linear_arrangement& pi = {})
-noexcept
+[[nodiscard]] inline std::vector<dependency_flux> dependency_flux_compute(
+	const graphs::rooted_tree& t, const linear_arrangement& pi = {}
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -85,5 +85,5 @@ noexcept
 	return dependency_flux_compute(t.to_free_tree(), pi);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

@@ -101,16 +101,20 @@ namespace generate {
  */
 class all_lab_rooted_trees : public _tree_generator<graphs::rooted_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	all_lab_rooted_trees() noexcept : _tree_generator<graphs::rooted_tree>() { }
+	all_lab_rooted_trees() noexcept
+		: _tree_generator<graphs::rooted_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_rooted_trees(uint64_t n) noexcept {
+	all_lab_rooted_trees(uint64_t n) noexcept
+	{
 		init(n);
 	}
 	/**
@@ -129,9 +133,11 @@ public:
 	~all_lab_rooted_trees() = default;
 
 	/// Copy assignment operator.
-	all_lab_rooted_trees& operator= (const all_lab_rooted_trees& g) noexcept = default;
+	all_lab_rooted_trees& operator= (const all_lab_rooted_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
-	all_lab_rooted_trees& operator= (all_lab_rooted_trees&& g) noexcept = default;
+	all_lab_rooted_trees& operator= (all_lab_rooted_trees&& g
+	) noexcept = default;
 
 	/* INITIALIZE */
 
@@ -139,7 +145,8 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(uint64_t n) noexcept {
+	void init(uint64_t n) noexcept
+	{
 		_tree_generator::init(n);
 		m_gen_lab_free_tree.init(m_n);
 		reset();
@@ -149,7 +156,8 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_cur_ftree.clear();
 		m_gen_lab_free_tree.clear();
@@ -158,10 +166,16 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/// Returns the current root.
-	[[nodiscard]] node get_current_root() const noexcept { return m_cur_root; }
+	[[nodiscard]] node get_current_root() const noexcept
+	{
+		return m_cur_root;
+	}
 
 	/* MODIFIERS */
 
@@ -172,7 +186,8 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialized.
 	 */
-	void next() noexcept {
+	void next() noexcept
+	{
 		if (not has_next() or m_reached_end) {
 			m_reached_end = true;
 			return;
@@ -190,31 +205,36 @@ public:
 	}
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		activate_all_postprocessing_actions();
 		__reset();
 		next();
 	}
 
 	/// Returns whether there are more trees to generate.
-	[[nodiscard]] bool has_next() const noexcept {
+	[[nodiscard]] bool has_next() const noexcept
+	{
 		return m_cur_root + 1 < m_n or not m_gen_lab_free_tree.end();
 	}
 
-	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree yield_tree() noexcept
+	{
 		const auto t = get_tree();
 		next();
 		return t;
 	}
 
 protected:
+
 	/**
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next().
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept {
+	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept
+	{
 #if defined DEBUG
 		assert(m_cur_root < m_n);
 #endif
@@ -222,7 +242,8 @@ protected:
 	}
 
 	/// Sets the iterator to its initial state.
-	void __reset() noexcept {
+	void __reset() noexcept
+	{
 		m_reached_end = false;
 		// so that in the next call the root is set to 0
 		m_cur_root = m_n - 1;
@@ -233,6 +254,7 @@ protected:
 	}
 
 private:
+
 	/// Labelled free tree generator.
 	all_lab_free_trees m_gen_lab_free_tree;
 	/// Current labelled free tree.
@@ -243,5 +265,5 @@ private:
 	bool m_reached_end = false;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

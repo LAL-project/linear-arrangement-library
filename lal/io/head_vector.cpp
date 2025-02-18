@@ -53,46 +53,53 @@
 namespace lal {
 namespace io {
 
-static inline
-std::optional<head_vector> read_head_vector
-(const std::string& filename)
-noexcept
+static inline std::optional<head_vector>
+read_head_vector(const std::string& filename) noexcept
 {
-	if (not std::filesystem::exists(filename)) { return {}; }
+	if (not std::filesystem::exists(filename)) {
+		return {};
+	}
 
 	head_vector heads;
 
 	std::ifstream fin;
 	fin.open(filename);
 	node head;
-	while (fin >> head) { heads.push_back(head); }
+	while (fin >> head) {
+		heads.push_back(head);
+	}
 	fin.close();
 
 	return {std::move(heads)};
 }
 
-std::optional<graphs::free_tree> read_head_vector_free_tree
-(const std::string& filename, bool norm, bool check_norm)
-noexcept
+std::optional<graphs::free_tree> read_head_vector_free_tree(
+	const std::string& filename, bool norm, bool check_norm
+) noexcept
 {
 	const auto heads = read_head_vector(filename);
-	if (not heads) { return {}; }
+	if (not heads) {
+		return {};
+	}
 	// move, please
-	return {std::move(
-		detail::from_head_vector_to_tree<graphs::free_tree>
-			(*heads, norm, check_norm).first
-	)};
+	return {std::move(detail::from_head_vector_to_tree<graphs::free_tree>(
+						  *heads, norm, check_norm
+	)
+						  .first)};
 }
 
-std::optional<graphs::rooted_tree> read_head_vector_rooted_tree
-(const std::string& filename, bool norm, bool check_norm)
-noexcept
+std::optional<graphs::rooted_tree> read_head_vector_rooted_tree(
+	const std::string& filename, bool norm, bool check_norm
+) noexcept
 {
 	const auto heads = read_head_vector(filename);
-	if (not heads) { return {}; }
-	return detail::from_head_vector_to_tree<graphs::rooted_tree>
-			(*heads, norm, check_norm);
+	if (not heads) {
+		return {};
+	}
+	return detail::from_head_vector_to_tree<graphs::rooted_tree>(
+		*heads, norm, check_norm
+	);
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

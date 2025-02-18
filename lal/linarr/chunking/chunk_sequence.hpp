@@ -106,6 +106,7 @@ namespace linarr {
  */
 class chunk_sequence {
 public:
+
 	/// Useful typedef for constant iterators.
 	typedef typename std::vector<chunk>::const_iterator const_iterator;
 	/// Useful typedef for non-constant iterators.
@@ -118,7 +119,8 @@ public:
 	 * @param n Size to initialize the sequence with, the number of nodes of the
 	 * tree to be chunked.
 	 */
-	void init(const std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept
+	{
 		m_from_node_to_chunk.resize(n, n + 1);
 	}
 
@@ -127,7 +129,8 @@ public:
 	 * @param i Chunk index.
 	 * @returns A constant reference to the @e i-th chunk.
 	 */
-	[[nodiscard]] const chunk& operator[] (const std::size_t i) const noexcept {
+	[[nodiscard]] const chunk& operator[] (const std::size_t i) const noexcept
+	{
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -139,7 +142,8 @@ public:
 	 * @param i Chunk index.
 	 * @returns A non-constant reference to the @e i-th chunk.
 	 */
-	[[nodiscard]] chunk& operator[] (const std::size_t i) noexcept {
+	[[nodiscard]] chunk& operator[] (const std::size_t i) noexcept
+	{
 #if defined DEBUG
 		assert(i < size());
 #endif
@@ -152,7 +156,8 @@ public:
 	 * @brief Adds a new chunk to the collection.
 	 * @post The new chunk does not have a parent.
 	 */
-	void push_chunk() noexcept {
+	void push_chunk() noexcept
+	{
 		m_chunks.push_back({});
 	}
 
@@ -161,14 +166,16 @@ public:
 	 * @param u Node to be added into the new chunk.
 	 * @post The new chunk does not have a parent.
 	 */
-	void push_chunk(const node u) noexcept {
+	void push_chunk(const node u) noexcept
+	{
 		push_chunk();
 		m_chunks.back().add_node(u);
 	}
 
 	/* SETTERS */
 
-	void set_chunk_index(const node u, const std::size_t i) noexcept {
+	void set_chunk_index(const node u, const std::size_t i) noexcept
+	{
 #if defined DEBUG
 		assert(u < m_from_node_to_chunk.size());
 #endif
@@ -178,12 +185,14 @@ public:
 	/* GETTERS */
 
 	/// Returns the number of chunks.
-	[[nodiscard]] std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept
+	{
 		return m_chunks.size();
 	}
 
 	/// Returns the chunk index of node @e u.
-	[[nodiscard]] std::size_t get_chunk_index(const node u) const noexcept {
+	[[nodiscard]] std::size_t get_chunk_index(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(u < m_from_node_to_chunk.size());
 #endif
@@ -192,17 +201,25 @@ public:
 
 	/// A pointer to the beginning of the chunk sequence.
 	[[nodiscard]] const_iterator begin() const noexcept
-	{ return m_chunks.begin(); }
+	{
+		return m_chunks.begin();
+	}
 	/// A pointer to the beginning of the chunk sequence.
 	[[nodiscard]] iterator begin() noexcept
-	{ return m_chunks.begin(); }
+	{
+		return m_chunks.begin();
+	}
 
 	/// A pointer to the ending of the chunk sequence.
 	[[nodiscard]] const_iterator end() const noexcept
-	{ return m_chunks.end(); }
+	{
+		return m_chunks.end();
+	}
 	/// A pointer to the ending of the chunk sequence.
 	[[nodiscard]] iterator end() noexcept
-	{ return m_chunks.end(); }
+	{
+		return m_chunks.end();
+	}
 
 	/**
 	 * @brief The sequence of chunks.
@@ -211,14 +228,17 @@ public:
 	 * @returns A constant reference to the sequence of chunks.
 	 */
 	[[nodiscard]] const std::vector<chunk>& get_chunks() const noexcept
-	{ return m_chunks; }
+	{
+		return m_chunks;
+	}
 
 private:
+
 	/// The sequence of chunks
 	std::vector<chunk> m_chunks;
 	/// Index of every
 	detail::array<std::size_t> m_from_node_to_chunk;
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

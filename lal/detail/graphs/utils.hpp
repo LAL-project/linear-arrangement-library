@@ -66,26 +66,43 @@ template <
 	class graph_t,
 	typename char_type,
 	std::enable_if_t<
-		std::is_base_of_v<graphs::graph, graph_t>
-		and std::is_integral_v<char_type>,
-	bool> = true
->
+		std::is_base_of_v<graphs::graph, graph_t> and
+			std::is_integral_v<char_type>,
+		bool> = true>
 inline void get_bool_neighbors(
-	const graph_t& g,
-	const node u,
-	char_type * const neighs
-)
-noexcept
+	const graph_t& g, const node u, char_type * const neighs
+) noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
 		const auto& in_u = g.get_in_neighbors(u);
-		std::for_each(in_u.begin(), in_u.end(), [&](node v) { neighs[v] = 1; });
+		std::for_each(
+			in_u.begin(),
+			in_u.end(),
+			[&](node v)
+			{
+				neighs[v] = 1;
+			}
+		);
 		const auto& out_u = g.get_out_neighbors(u);
-		std::for_each(out_u.begin(), out_u.end(), [&](node v) { neighs[v] = 1; });
+		std::for_each(
+			out_u.begin(),
+			out_u.end(),
+			[&](node v)
+			{
+				neighs[v] = 1;
+			}
+		);
 	}
 	else {
 		const auto& neighs_u = g.get_neighbors(u);
-		std::for_each(neighs_u.begin(), neighs_u.end(), [&](node v) { neighs[v] = 1; });
+		std::for_each(
+			neighs_u.begin(),
+			neighs_u.end(),
+			[&](node v)
+			{
+				neighs[v] = 1;
+			}
+		);
 	}
 }
 
@@ -94,14 +111,14 @@ noexcept
  * @param target List into which @e source will be appended to.
  * @param source List to append to @e target.
  */
-inline void append_adjacency_lists
-(std::vector<neighbourhood>& target, const std::vector<neighbourhood>& source)
-noexcept
+inline void append_adjacency_lists(
+	std::vector<neighbourhood>& target, const std::vector<neighbourhood>& source
+) noexcept
 {
 	const uint64_t n_target = target.size();
 	for (std::size_t u = 0; u < source.size(); ++u) {
 		// add new edges by appending all the neighbors of 'u' in 'g'
-		target.push_back( source[u] );
+		target.push_back(source[u]);
 		// relabel the nodes
 		for (node& v : target.back()) {
 			v += n_target;
@@ -109,5 +126,5 @@ noexcept
 	}
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

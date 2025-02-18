@@ -69,18 +69,24 @@ namespace unconstrained {
  */
 class set_maximum_arrangements {
 private:
+
 	/// Typedef to write less
-	static constexpr level_signature_type per_position = level_signature_type::per_position;
+	static constexpr level_signature_type per_position =
+		level_signature_type::per_position;
 
 public:
+
 	/// Constructor bound to a free tree.
-	set_maximum_arrangements(const graphs::free_tree& t) noexcept : m_t(t) { }
+	set_maximum_arrangements(const graphs::free_tree& t) noexcept
+		: m_t(t)
+	{ }
 
 	/// Destructor
 	~set_maximum_arrangements() noexcept { }
 
 	/// Initialize the object.
-	void init() noexcept {
+	void init() noexcept
+	{
 		m_max_value = 0;
 	}
 
@@ -88,21 +94,26 @@ public:
 
 	/// Returns the maximum value found so far.
 	[[nodiscard]] uint64_t get_max_value() const noexcept
-	{ return m_max_value; }
+	{
+		return m_max_value;
+	}
 
 	/// Returns the number of representatives.
 	[[nodiscard]] std::size_t get_num_representatives() const noexcept
-	{ return m_representatives.size(); }
+	{
+		return m_representatives.size();
+	}
 
 	/// Returns the set of representatives.
-	[[nodiscard]] std::vector<linear_arrangement>&& retrieve_all_representatives()
-	noexcept
+	[[nodiscard]] std::vector<linear_arrangement>&&
+	retrieve_all_representatives() noexcept
 	{
 		return std::move(m_representatives);
 	}
 
 	/// Returns the multiplicity of the @e i-th representative.
-	[[nodiscard]] std::size_t get_size_class(const std::size_t i) const noexcept {
+	[[nodiscard]] std::size_t get_size_class(const std::size_t i) const noexcept
+	{
 #if defined DEBUG
 		assert(i < m_amount.size());
 #endif
@@ -110,8 +121,8 @@ public:
 	}
 
 	/// Returns the @e i-th representative.
-	[[nodiscard]] const linear_arrangement& get_representative(const std::size_t i)
-	const noexcept
+	[[nodiscard]] const linear_arrangement&
+	get_representative(const std::size_t i) const noexcept
 	{
 #if defined DEBUG
 		assert(i < m_representatives.size());
@@ -120,9 +131,8 @@ public:
 	}
 
 	/// Returns the level signature of the @e i-th representative.
-	[[nodiscard]] const level_signature_per_position& get_level_signature
-	(const std::size_t i)
-	const noexcept
+	[[nodiscard]] const level_signature_per_position&
+	get_level_signature(const std::size_t i) const noexcept
 	{
 #if defined DEBUG
 		assert(i < m_level_signatures.size());
@@ -140,7 +150,8 @@ public:
 	 * @param value Value of the arrangement.
 	 * @param arr New arrangement.
 	 */
-	void add(const uint64_t value, const linear_arrangement& arr) noexcept {
+	void add(const uint64_t value, const linear_arrangement& arr) noexcept
+	{
 		if (m_max_value < value) {
 			m_max_value = value;
 
@@ -149,7 +160,8 @@ public:
 			m_level_signatures.clear();
 			m_amount.clear();
 
-			level_signature_per_position L = calculate_level_signature<per_position>(m_t, arr);
+			level_signature_per_position L =
+				calculate_level_signature<per_position>(m_t, arr);
 
 			m_representatives.push_back(arr);
 			m_mirrored_level_signatures.push_back(mirror_level_signature(L));
@@ -157,12 +169,14 @@ public:
 			m_amount.push_back(1);
 		}
 		else if (m_max_value == value) {
-			level_signature_per_position L = calculate_level_signature<per_position>(m_t, arr);
+			level_signature_per_position L =
+				calculate_level_signature<per_position>(m_t, arr);
 			const std::size_t idx_repr = find_representative(L);
 
 			if (idx_repr == m_representatives.size()) {
 				m_representatives.push_back(arr);
-				m_mirrored_level_signatures.push_back(mirror_level_signature(L));
+				m_mirrored_level_signatures.push_back(mirror_level_signature(L)
+				);
 				m_level_signatures.push_back(std::move(L));
 				m_amount.push_back(1);
 			}
@@ -178,7 +192,8 @@ public:
 	 * @post The set passed as parameter should be considered moved and thus
 	 * unusable after this call.
 	 */
-	void merge(set_maximum_arrangements&& max_arrs) noexcept {
+	void merge(set_maximum_arrangements&& max_arrs) noexcept
+	{
 		// nothing to do
 		if (m_max_value > max_arrs.m_max_value) {
 			return;
@@ -193,7 +208,8 @@ public:
 
 			m_max_value = max_arrs.m_max_value;
 			m_representatives = std::move(max_arrs.m_representatives);
-			m_mirrored_level_signatures = std::move(max_arrs.m_mirrored_level_signatures);
+			m_mirrored_level_signatures =
+				std::move(max_arrs.m_mirrored_level_signatures);
 			m_level_signatures = std::move(max_arrs.m_level_signatures);
 			m_amount = std::move(max_arrs.m_amount);
 			return;
@@ -202,46 +218,55 @@ public:
 		// actually merge the two sets
 		for (std::size_t i = 0; i < max_arrs.m_representatives.size(); ++i) {
 			// find the representative's index in this set of arrangements
-			const std::size_t idx_repr = find_representative(max_arrs.m_level_signatures[i]);
+			const std::size_t idx_repr =
+				find_representative(max_arrs.m_level_signatures[i]);
 
 			// update collection
 			if (idx_repr < m_representatives.size()) {
 				++m_amount[idx_repr];
 			}
 			else {
-				m_representatives.push_back(std::move(max_arrs.m_representatives[i]));
-				m_mirrored_level_signatures.push_back(std::move(max_arrs.m_mirrored_level_signatures[i]));
-				m_level_signatures.push_back(std::move(max_arrs.m_level_signatures[i]));
+				m_representatives.push_back(
+					std::move(max_arrs.m_representatives[i])
+				);
+				m_mirrored_level_signatures.push_back(
+					std::move(max_arrs.m_mirrored_level_signatures[i])
+				);
+				m_level_signatures.push_back(
+					std::move(max_arrs.m_level_signatures[i])
+				);
 				m_amount.push_back(max_arrs.m_amount[i]);
 			}
 		}
 	}
 
 private:
+
 	/**
 	 * @brief Find the level signature isomorphic to @e L
 	 * @param L Input level signature.
 	 * @returns An index in the range \f$[0,N]\f$, where \f$N\f$ equals the number
 	 * of representatives in this set.
 	 */
-	[[nodiscard]] std::size_t find_representative
-	(const level_signature_per_position& L)
-	const noexcept
+	[[nodiscard]] std::size_t
+	find_representative(const level_signature_per_position& L) const noexcept
 	{
 		// The isomorphism to use is based on 'simple' arrangement isomorphism
 		for (std::size_t i = 0; i < m_representatives.size(); ++i) {
 
-			const bool isomorphic =
-				(m_level_signatures[i] == L) or
-				(m_mirrored_level_signatures[i] == L);
+			const bool isomorphic = (m_level_signatures[i] == L) or
+									(m_mirrored_level_signatures[i] == L);
 
-			if (isomorphic) { return i; }
+			if (isomorphic) {
+				return i;
+			}
 		}
 
 		return m_representatives.size();
 	}
 
 private:
+
 	/// The tree for which the arrangements are stored.
 	const graphs::free_tree& m_t;
 
@@ -257,7 +282,7 @@ private:
 	std::vector<uint64_t> m_amount;
 };
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

@@ -71,15 +71,14 @@ namespace detail {
  * @param p Current branchless path.
  */
 template <class tree_t>
-void expand_branchless_path
-(
+void expand_branchless_path(
 	const tree_t& t,
-	const node u, const node v,
+	const node u,
+	const node v,
 	BFS<tree_t>& bfs,
 	std::vector<properties::branchless_path>& res,
 	properties::branchless_path& p
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -87,7 +86,9 @@ noexcept
 	if (t.get_degree(u) != 2 and t.get_degree(v) != 2) {
 
 		// avoid symmetric paths
-		if (u > v) { return; }
+		if (u > v) {
+			return;
+		}
 
 #if defined DEBUG
 		assert(t.has_edge(u, v) or t.has_edge(v, u));
@@ -108,7 +109,9 @@ noexcept
 	assert(not bfs.node_was_visited(u));
 #endif
 
-	if (bfs.node_was_visited(v)) { return; }
+	if (bfs.node_was_visited(v)) {
+		return;
+	}
 
 	// initialize the path
 	p.init(n);
@@ -146,8 +149,7 @@ noexcept
  */
 template <class tree_t>
 [[nodiscard]] std::vector<properties::branchless_path>
-branchless_paths_compute(const tree_t& t)
-noexcept
+branchless_paths_compute(const tree_t& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -161,23 +163,29 @@ noexcept
 
 	// detect the last hub
 	bfs.set_process_current(
-	[&](const auto&, node u) {
-		p.add_node(u);
-		if (t.get_degree(u) != 2) {
-			// The exploration will stop in the
-			// next call to the 'terminate' function.
-			p.set_h2(u);
+		[&](const auto&, node u)
+		{
+			p.add_node(u);
+			if (t.get_degree(u) != 2) {
+				// The exploration will stop in the
+				// next call to the 'terminate' function.
+				p.set_h2(u);
+			}
 		}
-	}
 	);
 	// stop the traversal as soon as we find a vertex of degree != 2
 	bfs.set_terminate(
-	[&](const auto&, node u) { return t.get_degree(u) != 2; }
+		[&](const auto&, node u)
+		{
+			return t.get_degree(u) != 2;
+		}
 	);
 
 	// find all paths starting at vertices of degree != 2
 	for (node u = 0; u < n; ++u) {
-		if (t.get_degree(u) == 2) { continue; }
+		if (t.get_degree(u) == 2) {
+			continue;
+		}
 
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			for (node v : t.get_neighbors(u)) {
@@ -197,5 +205,5 @@ noexcept
 	return res;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

@@ -54,9 +54,9 @@
 namespace lal {
 namespace generate {
 
-rand_planar_arrangements::rand_planar_arrangements
-(const graphs::free_tree& T, const uint64_t seed)
-noexcept
+rand_planar_arrangements::rand_planar_arrangements(
+	const graphs::free_tree& T, const uint64_t seed
+) noexcept
 	: m_T(T),
 	  m_rdata(m_T.get_num_nodes()),
 	  m_previous_root(m_T.get_num_nodes() + 1)
@@ -78,9 +78,9 @@ noexcept
 	}
 }
 
-rand_planar_arrangements::rand_planar_arrangements
-(const graphs::rooted_tree& T, uint64_t seed)
-noexcept
+rand_planar_arrangements::rand_planar_arrangements(
+	const graphs::rooted_tree& T, uint64_t seed
+) noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
 	  m_rdata(m_T.get_num_nodes()),
@@ -106,7 +106,8 @@ noexcept
 template <bool assign_vertices, class generator_t>
 void make_random_projective(
 	const graphs::free_tree& T,
-	node parent_u, node u,
+	node parent_u,
+	node u,
 	// Its size must be equal to the number of vertices of the tree.
 	detail::array<std::vector<node>>& data,
 	// random number generator
@@ -121,8 +122,13 @@ void make_random_projective(
 	if constexpr (assign_vertices) {
 		inter[0] = u;
 		std::copy_if(
-			neighs_u.begin(), neighs_u.end(), inter.begin() + 1,
-			[&](node v) -> bool { return v != parent_u; }
+			neighs_u.begin(),
+			neighs_u.end(),
+			inter.begin() + 1,
+			[&](node v) -> bool
+			{
+				return v != parent_u;
+			}
 		);
 	}
 
@@ -135,13 +141,13 @@ void make_random_projective(
 	// other vertices. Compute them inductively.
 	for (const node& v : neighs_u) {
 		if (v != parent_u) {
-			make_random_projective<assign_vertices>
-				(T, u, v, data, gen);
+			make_random_projective<assign_vertices>(T, u, v, data, gen);
 		}
 	}
 }
 
-linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
+linear_arrangement rand_planar_arrangements::get_arrangement() noexcept
+{
 	std::uniform_int_distribution<node> U(0, m_T.get_num_nodes() - 1);
 	const node rand_root = U(m_gen);
 
@@ -166,34 +172,26 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 
 		root_interval[0] = rand_root;
 		std::copy(
-			neighs_root.begin(),
-			neighs_root.end(),
-			root_interval.begin() + 1
+			neighs_root.begin(), neighs_root.end(), root_interval.begin() + 1
 		);
 	}
 
 	// Choose random positions for the intervals corresponding
 	// to the trees rooted at 'r's children.
-	std::shuffle(
-		root_interval.begin() + 1,
-		root_interval.end(),
-		m_gen
-	);
+	std::shuffle(root_interval.begin() + 1, root_interval.end(), m_gen);
 
 	// Choose random positions for the intervals corresponding to the
 	// other vertices. Compute them recursively.
 	if (m_previous_root == rand_root) {
 		// do-not-assign-vertices branch, only shuffle
 		for (const node& u : neighs_root) {
-			make_random_projective<false>
-				(m_T, rand_root, u, m_rdata, m_gen);
+			make_random_projective<false>(m_T, rand_root, u, m_rdata, m_gen);
 		}
 	}
 	else {
 		// assign-vertices branch, only shuffle
 		for (const node& u : neighs_root) {
-			make_random_projective<true>
-				(m_T, rand_root, u, m_rdata, m_gen);
+			make_random_projective<true>(m_T, rand_root, u, m_rdata, m_gen);
 		}
 	}
 
@@ -203,5 +201,5 @@ linear_arrangement rand_planar_arrangements::get_arrangement() noexcept {
 	return detail::make_arrangement_permutations(m_T, rand_root, m_rdata);
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

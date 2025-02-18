@@ -68,5 +68,5 @@ branchless_paths_compute(const graphs::free_tree& t) noexcept;
 [[nodiscard]] std::vector<branchless_path>
 branchless_paths_compute(const graphs::rooted_tree& t) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

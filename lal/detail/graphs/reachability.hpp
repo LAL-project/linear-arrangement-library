@@ -56,16 +56,20 @@ namespace detail {
  * @returns True if, and only if, node target is reachable from node source.
  */
 template <class graph_t>
-[[nodiscard]] inline bool is_node_reachable_from
-(const graph_t& g, const node source, const node target)
-noexcept
+[[nodiscard]] inline bool is_node_reachable_from(
+	const graph_t& g, const node source, const node target
+) noexcept
 {
 	BFS<graph_t> bfs(g);
-	bfs.set_terminate
-	([target](const auto&, const node s) -> bool { return (s == target); });
+	bfs.set_terminate(
+		[target](const auto&, const node s) -> bool
+		{
+			return (s == target);
+		}
+	);
 	bfs.start_at(source);
 	return bfs.node_was_visited(target);
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

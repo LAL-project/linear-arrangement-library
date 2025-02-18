@@ -67,29 +67,27 @@ AEF_BnB::AEF_BnB(
 	// orbits
 	const std::vector<std::vector<node>>& orbits,
 	const array<std::size_t>& vertex_to_orbit
-)
-noexcept :
-	m_t(t),
-	m_max_arrs(t),
-	m_n_nodes(t.get_num_nodes()),
-	m_leaves(leaves),
-	// colors of vertices
-	m_vertex_colors(colors),
-	m_num_nodes_blue(num_verts_blue),
-	m_num_nodes_red(num_verts_red),
-	// paths
-	m_paths_in_tree(paths_in_tree),
-	m_node_to_path_idx(node_to_path_idx),
-	m_incident_antennas(incident_antennas),
-	// orbits
-	m_orbits(orbits),
-	m_node_to_orbit(vertex_to_orbit)
-{
-}
+) noexcept
+	: m_t(t),
+	  m_max_arrs(t),
+	  m_n_nodes(t.get_num_nodes()),
+	  m_leaves(leaves),
+	  // colors of vertices
+	  m_vertex_colors(colors),
+	  m_num_nodes_blue(num_verts_blue),
+	  m_num_nodes_red(num_verts_red),
+	  // paths
+	  m_paths_in_tree(paths_in_tree),
+	  m_node_to_path_idx(node_to_path_idx),
+	  m_incident_antennas(incident_antennas),
+	  // orbits
+	  m_orbits(orbits),
+	  m_node_to_orbit(vertex_to_orbit)
+{ }
 
-void AEF_BnB::initialize
-(const std::pair<uint64_t, linear_arrangement>& initial_DMax)
-noexcept
+void AEF_BnB::initialize(
+	const std::pair<uint64_t, linear_arrangement>& initial_DMax
+) noexcept
 {
 	m_arr.resize(m_n_nodes);
 
@@ -115,13 +113,13 @@ noexcept
 
 	m_num_assigned_nodes_blue = 0;
 	m_num_assigned_nodes_red = 0;
-	m_path_info.resize(m_paths_in_tree.size(), {0,0,0,0,0,0,{},{}});
+	m_path_info.resize(m_paths_in_tree.size(), {0, 0, 0, 0, 0, 0, {}, {}});
 	for (std::size_t i = 0; i < m_path_info.size(); ++i) {
 		const auto& path = m_paths_in_tree[i];
 		const uint64_t N_2 = path.get_num_nodes() - 2;
 		if (path.is_antenna(m_t)) {
-			m_path_info[i].min_pm_two = N_2/2;
-			m_path_info[i].max_pm_two = N_2/2 + N_2%2;
+			m_path_info[i].min_pm_two = N_2 / 2;
+			m_path_info[i].max_pm_two = N_2 / 2 + N_2 % 2;
 		}
 		else {
 			if (N_2 == 0) {
@@ -133,8 +131,8 @@ noexcept
 				m_path_info[i].max_pm_two = 1;
 			}
 			else {
-				m_path_info[i].min_pm_two = (N_2 + 1)/2 - 1;
-				m_path_info[i].max_pm_two = (N_2 + 1)/2;
+				m_path_info[i].min_pm_two = (N_2 + 1) / 2 - 1;
+				m_path_info[i].max_pm_two = (N_2 + 1) / 2;
 			}
 		}
 	}
@@ -152,20 +150,22 @@ noexcept
 	I_p.init(m_n_nodes);
 	I_ps.init(m_n_nodes);
 	I_s.init(m_n_nodes);
-	m_E_p.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_p));
-	m_E_ps.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_ps));
-	m_E_s.init(m_n_nodes, m_n_nodes*m_n_nodes, std::move(I_s));
+	m_E_p.init(m_n_nodes, m_n_nodes * m_n_nodes, std::move(I_p));
+	m_E_ps.init(m_n_nodes, m_n_nodes * m_n_nodes, std::move(I_ps));
+	m_E_s.init(m_n_nodes, m_n_nodes * m_n_nodes, std::move(I_s));
 
 	for (node u = 0; u < m_n_nodes; ++u) {
 		// -----------
 		// edges in E_s
 		for (node v : m_t.get_neighbors(u)) {
-			if (u < v) { m_E_s.add( {u,v} ); }
+			if (u < v) {
+				m_E_s.add({u, v});
+			}
 		}
 	}
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

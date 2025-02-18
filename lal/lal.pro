@@ -86,6 +86,9 @@ INCLUDEPATH += ..
 
 # -------------
 # PROJECT FILES
+DISTFILES += \
+	.clang-format
+
 HEADERS += \
 	basic_types.hpp \
 	detail/arrangement_wrapper.hpp \

@@ -56,26 +56,27 @@ namespace detail {
  * for the coloring to be correct.
  */
 template <class graph_t>
-[[nodiscard]] properties::bipartite_graph_coloring color_vertices_graph
-(const graph_t& g)
-noexcept
+[[nodiscard]] properties::bipartite_graph_coloring
+color_vertices_graph(const graph_t& g) noexcept
 {
 	const auto n = g.get_num_nodes();
 	properties::bipartite_graph_coloring colors(n);
 
 	BFS<graph_t> bfs(g);
 
-	bfs.set_use_rev_edges( g.is_directed() );
+	bfs.set_use_rev_edges(g.is_directed());
 
 	bfs.set_process_neighbour(
-	[&](const auto&, node u, node v, bool) {
-		if (colors[u] == properties::bipartite_graph_coloring::blue) {
-			colors[v] = properties::bipartite_graph_coloring::red;
+		[&](const auto&, node u, node v, bool)
+		{
+			if (colors[u] == properties::bipartite_graph_coloring::blue) {
+				colors[v] = properties::bipartite_graph_coloring::red;
+			}
+			else {
+				colors[v] = properties::bipartite_graph_coloring::blue;
+			}
 		}
-		else {
-			colors[v] = properties::bipartite_graph_coloring::blue;
-		}
-	});
+	);
 
 	for (node u = 0; u < n; ++u) {
 		if (not bfs.node_was_visited(u)) {
@@ -86,5 +87,5 @@ noexcept
 	return colors;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

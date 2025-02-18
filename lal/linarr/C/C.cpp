@@ -61,11 +61,8 @@ namespace linarr {
 
 template <class graph_t>
 uint64_t num_crossings(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	const algorithms_C& A
-)
-noexcept
+	const graph_t& g, const linear_arrangement& arr, const algorithms_C& A
+) noexcept
 {
 	if (arr.size() == 0) {
 		switch (A) {
@@ -84,7 +81,9 @@ noexcept
 		case algorithms_C::brute_force:
 			return detail::crossings::n_C_brute_force(g, __nonident(arr));
 		case algorithms_C::dynamic_programming:
-			return detail::crossings::n_C_dynamic_programming(g, __nonident(arr));
+			return detail::crossings::n_C_dynamic_programming(
+				g, __nonident(arr)
+			);
 		case algorithms_C::ladder:
 			return detail::crossings::n_C_ladder(g, __nonident(arr));
 		case algorithms_C::stack_based:
@@ -96,23 +95,17 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return g.get_num_edges()*g.get_num_edges();
+	return g.get_num_edges() * g.get_num_edges();
 }
 
-uint64_t num_crossings(
-	const graphs::directed_graph& g,
-	const algorithms_C& A
-)
-noexcept
+uint64_t
+num_crossings(const graphs::directed_graph& g, const algorithms_C& A) noexcept
 {
 	return num_crossings<graphs::directed_graph>(g, {}, A);
 }
 
-uint64_t num_crossings(
-	const graphs::undirected_graph& g,
-	const algorithms_C& A
-)
-noexcept
+uint64_t
+num_crossings(const graphs::undirected_graph& g, const algorithms_C& A) noexcept
 {
 	return num_crossings<graphs::undirected_graph>(g, {}, A);
 }
@@ -121,8 +114,7 @@ uint64_t num_crossings(
 	const graphs::directed_graph& g,
 	const linear_arrangement& arr,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	return num_crossings<graphs::directed_graph>(g, arr, A);
 }
@@ -143,16 +135,14 @@ std::vector<uint64_t> num_crossings_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
 		return detail::crossings::n_C_brute_force(g, arrs);
 	case algorithms_C::dynamic_programming:
 		return detail::crossings::n_C_dynamic_programming(g, arrs);
-	case algorithms_C::ladder:
-		return detail::crossings::n_C_ladder(g, arrs);
+	case algorithms_C::ladder: return detail::crossings::n_C_ladder(g, arrs);
 	case algorithms_C::stack_based:
 		return detail::crossings::n_C_stack_based(g, arrs);
 	}
@@ -161,15 +151,16 @@ noexcept
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return std::vector<uint64_t>(arrs.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(
+		arrs.size(), g.get_num_edges() * g.get_num_edges()
+	);
 }
 
 std::vector<uint64_t> num_crossings_list(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	return num_crossings_list<graphs::directed_graph>(g, arrs, A);
 }
@@ -178,8 +169,7 @@ std::vector<uint64_t> num_crossings_list(
 	const graphs::undirected_graph& g,
 	const std::vector<linear_arrangement>& arrs,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	return num_crossings_list<graphs::undirected_graph>(g, arrs, A);
 }
@@ -192,31 +182,46 @@ uint64_t is_num_crossings_lesseq_than(
 	const linear_arrangement& arr,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	if (arr.size() == 0) {
 		switch (A) {
 		case algorithms_C::brute_force:
-			return detail::crossings::is_n_C_brute_force_lesseq_than(g, __ident(arr), upper_bound);
+			return detail::crossings::is_n_C_brute_force_lesseq_than(
+				g, __ident(arr), upper_bound
+			);
 		case algorithms_C::dynamic_programming:
-			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, __ident(arr), upper_bound);
+			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
+				g, __ident(arr), upper_bound
+			);
 		case algorithms_C::ladder:
-			return detail::crossings::is_n_C_ladder_lesseq_than(g, __ident(arr), upper_bound);
+			return detail::crossings::is_n_C_ladder_lesseq_than(
+				g, __ident(arr), upper_bound
+			);
 		case algorithms_C::stack_based:
-			return detail::crossings::is_n_C_stack_based_lesseq_than(g, __ident(arr), upper_bound);
+			return detail::crossings::is_n_C_stack_based_lesseq_than(
+				g, __ident(arr), upper_bound
+			);
 		}
 	}
 	else {
 		switch (A) {
 		case algorithms_C::brute_force:
-			return detail::crossings::is_n_C_brute_force_lesseq_than(g, __nonident(arr), upper_bound);
+			return detail::crossings::is_n_C_brute_force_lesseq_than(
+				g, __nonident(arr), upper_bound
+			);
 		case algorithms_C::dynamic_programming:
-			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, __nonident(arr), upper_bound);
+			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
+				g, __nonident(arr), upper_bound
+			);
 		case algorithms_C::ladder:
-			return detail::crossings::is_n_C_ladder_lesseq_than(g, __nonident(arr), upper_bound);
+			return detail::crossings::is_n_C_ladder_lesseq_than(
+				g, __nonident(arr), upper_bound
+			);
 		case algorithms_C::stack_based:
-			return detail::crossings::is_n_C_stack_based_lesseq_than(g, __nonident(arr), upper_bound);
+			return detail::crossings::is_n_C_stack_based_lesseq_than(
+				g, __nonident(arr), upper_bound
+			);
 		}
 	}
 
@@ -231,20 +236,22 @@ uint64_t is_num_crossings_lesseq_than(
 	const graphs::directed_graph& g,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than<graphs::directed_graph>(g, {}, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::directed_graph>(
+		g, {}, upper_bound, A
+	);
 }
 
 uint64_t is_num_crossings_lesseq_than(
 	const graphs::undirected_graph& g,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than<graphs::undirected_graph>(g, {}, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::undirected_graph>(
+		g, {}, upper_bound, A
+	);
 }
 
 uint64_t is_num_crossings_lesseq_than(
@@ -252,10 +259,11 @@ uint64_t is_num_crossings_lesseq_than(
 	const linear_arrangement& arr,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than<graphs::directed_graph>(g, arr, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::directed_graph>(
+		g, arr, upper_bound, A
+	);
 }
 
 uint64_t is_num_crossings_lesseq_than(
@@ -263,10 +271,11 @@ uint64_t is_num_crossings_lesseq_than(
 	const linear_arrangement& arr,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than<graphs::undirected_graph>(g, arr, upper_bound, A);
+	return is_num_crossings_lesseq_than<graphs::undirected_graph>(
+		g, arr, upper_bound, A
+	);
 }
 
 // -----------------------------------------------------------------------------
@@ -277,37 +286,46 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_brute_force_lesseq_than(
+			g, arrs, upper_bound
+		);
 	case algorithms_C::dynamic_programming:
-		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
+			g, arrs, upper_bound
+		);
 	case algorithms_C::ladder:
-		return detail::crossings::is_n_C_ladder_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_ladder_lesseq_than(
+			g, arrs, upper_bound
+		);
 	case algorithms_C::stack_based:
-		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arrs, upper_bound);
+		return detail::crossings::is_n_C_stack_based_lesseq_than(
+			g, arrs, upper_bound
+		);
 	}
 
 #if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return std::vector<uint64_t>(arrs.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(
+		arrs.size(), g.get_num_edges() * g.get_num_edges()
+	);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graphs::directed_graph& g,
 	const std::vector<linear_arrangement>& arrs,
-	 const uint64_t upper_bound,
+	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than_list<graphs::directed_graph>
-			(g, arrs, upper_bound, A);
+	return is_num_crossings_lesseq_than_list<graphs::directed_graph>(
+		g, arrs, upper_bound, A
+	);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
@@ -315,41 +333,49 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>
-			(g, arrs, upper_bound, A);
+	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>(
+		g, arrs, upper_bound, A
+	);
 }
 
 // -----------------------------------------------------------------------------
 
 template <class graph_t>
-std::vector<uint64_t> is_num_crossings_lesseq_than_list
-(
+std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
 	switch (A) {
 	case algorithms_C::brute_force:
-		return detail::crossings::is_n_C_brute_force_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_brute_force_lesseq_than(
+			g, arrs, upper_bounds
+		);
 	case algorithms_C::dynamic_programming:
-		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
+			g, arrs, upper_bounds
+		);
 	case algorithms_C::ladder:
-		return detail::crossings::is_n_C_ladder_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_ladder_lesseq_than(
+			g, arrs, upper_bounds
+		);
 	case algorithms_C::stack_based:
-		return detail::crossings::is_n_C_stack_based_lesseq_than(g, arrs, upper_bounds);
+		return detail::crossings::is_n_C_stack_based_lesseq_than(
+			g, arrs, upper_bounds
+		);
 	}
 
 #if defined DEBUG
 	// wrong value of enumeration
 	assert(false);
 #endif
-	return std::vector<uint64_t>(arrs.size(), g.get_num_edges()*g.get_num_edges());
+	return std::vector<uint64_t>(
+		arrs.size(), g.get_num_edges() * g.get_num_edges()
+	);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
@@ -357,11 +383,11 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than_list<graphs::directed_graph>
-			(G, arrs, upper_bounds, A);
+	return is_num_crossings_lesseq_than_list<graphs::directed_graph>(
+		G, arrs, upper_bounds, A
+	);
 }
 
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
@@ -369,12 +395,12 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds,
 	const algorithms_C& A
-)
-noexcept
+) noexcept
 {
-	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>
-			(G, arrs, upper_bounds, A);
+	return is_num_crossings_lesseq_than_list<graphs::undirected_graph>(
+		G, arrs, upper_bounds, A
+	);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

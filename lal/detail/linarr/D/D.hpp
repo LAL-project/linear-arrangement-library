@@ -62,9 +62,8 @@ namespace detail {
  * @param arr Input linear arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t sum_edge_lengths
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] uint64_t
+sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	// sum of lengths
 	uint64_t l = 0;
@@ -91,14 +90,10 @@ noexcept
  * @param arr Input linear arrangement.
  */
 template <class result_t, class graph_t, class arrangement_t>
-[[nodiscard]] result_t mean_sum_edge_lengths
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] result_t
+mean_sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
 {
-	static_assert(
-		std::is_same_v<result_t, numeric::rational> or
-		std::is_same_v<result_t, double>
-	);
+	static_assert(std::is_same_v<result_t, numeric::rational> or std::is_same_v<result_t, double>);
 
 #if defined DEBUG
 	assert(g.get_num_edges() > 0);
@@ -110,9 +105,9 @@ noexcept
 		return numeric::rational(D, g.get_num_edges());
 	}
 	else {
-		return to_double(D)/to_double(g.get_num_edges());
+		return to_double(D) / to_double(g.get_num_edges());
 	}
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

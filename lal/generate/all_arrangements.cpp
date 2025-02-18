@@ -47,11 +47,12 @@
 namespace lal {
 namespace generate {
 
-void all_arrangements::next() noexcept {
+void all_arrangements::next() noexcept
+{
 	m_reached_end =
 		not std::next_permutation(m_arr.begin_direct(), m_arr.end_direct());
 	m_arr.update_inverse();
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

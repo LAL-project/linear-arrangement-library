@@ -69,9 +69,10 @@ enum class arrangement_type {
 template <arrangement_type type>
 class arrangement_wrapper {
 public:
+
 	/// Constructor with arrangement.
-	arrangement_wrapper(const lal::linear_arrangement& arr) noexcept :
-		m_arr(arr)
+	arrangement_wrapper(const lal::linear_arrangement& arr) noexcept
+		: m_arr(arr)
 	{
 #if defined DEBUG
 		if constexpr (type == arrangement_type::identity) {
@@ -91,11 +92,9 @@ public:
 	 * @param p Either a @ref lal::node_t or a @ref lal::position_t.
 	 */
 	template <typename param_t>
-	[[nodiscard]] uint64_t operator[] (const param_t& p) const noexcept {
-		static_assert(
-			std::is_same_v<param_t,lal::node_t> or
-			std::is_same_v<param_t,lal::position_t>
-		);
+	[[nodiscard]] uint64_t operator[] (const param_t& p) const noexcept
+	{
+		static_assert(std::is_same_v<param_t, lal::node_t> or std::is_same_v<param_t, lal::position_t>);
 
 		if constexpr (type == arrangement_type::identity) {
 			return *p;
@@ -106,7 +105,8 @@ public:
 	}
 
 	/// Returns the size of the arrangement.
-	[[nodiscard]] std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept
+	{
 		if constexpr (type == arrangement_type::identity) {
 			return 0;
 		}
@@ -116,25 +116,24 @@ public:
 	}
 
 private:
+
 	/// Constant reference to actual arrangement.
 	const lal::linear_arrangement& m_arr;
 };
 
 /// Shorthand for an identity arrangement.
-[[nodiscard]] inline arrangement_wrapper<arrangement_type::identity> identity_arr
-(const linear_arrangement& arr)
-noexcept
+[[nodiscard]] inline arrangement_wrapper<arrangement_type::identity>
+identity_arr(const linear_arrangement& arr) noexcept
 {
 	return arrangement_wrapper<arrangement_type::identity>(arr);
 }
 
 /// Shorthand for a nonidentity arrangement.
-[[nodiscard]] inline arrangement_wrapper<arrangement_type::nonidentity> nonidentity_arr
-(const linear_arrangement& arr)
-noexcept
+[[nodiscard]] inline arrangement_wrapper<arrangement_type::nonidentity>
+nonidentity_arr(const linear_arrangement& arr) noexcept
 {
 	return arrangement_wrapper<arrangement_type::nonidentity>(arr);
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

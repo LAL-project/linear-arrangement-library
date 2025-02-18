@@ -100,21 +100,20 @@ template <
 	bool is_directed = std::is_base_of_v<graphs::directed_graph, GRAPH>,
 	std::enable_if_t<
 		std::is_base_of_v<graphs::directed_graph, GRAPH> ||
-		std::is_base_of_v<graphs::undirected_graph, GRAPH>
-		, bool
-	> = true
->
+			std::is_base_of_v<graphs::undirected_graph, GRAPH>,
+		bool> = true>
 class Q_iterator {
 public:
+
 	/* CONSTRUCTORS */
 
 	/**
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	Q_iterator(const GRAPH& g) noexcept :
-		m_G(g),
-		m_n(m_G.get_num_nodes())
+	Q_iterator(const GRAPH& g) noexcept
+		: m_G(g),
+		  m_n(m_G.get_num_nodes())
 	{
 		reset();
 	}
@@ -125,16 +124,26 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/// Returns the current edge pair.
-	[[nodiscard]] const edge_pair& get_edge_pair() const noexcept { return m_cur_pair; }
+	[[nodiscard]] const edge_pair& get_edge_pair() const noexcept
+	{
+		return m_cur_pair;
+	}
 
 	/// Returns the current edge pair.
-	[[nodiscard]] edge_pair_t get_edge_pair_t() const noexcept { return m_cur_pair; }
+	[[nodiscard]] edge_pair_t get_edge_pair_t() const noexcept
+	{
+		return m_cur_pair;
+	}
 
 	/// Returns the current edge pair and advances the iterator
-	[[nodiscard]] edge_pair yield_edge_pair() noexcept {
+	[[nodiscard]] edge_pair yield_edge_pair() noexcept
+	{
 		const auto e = get_edge_pair();
 		next();
 		return e;
@@ -143,7 +152,8 @@ public:
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next pair, if there is any.
-	void next() noexcept {
+	void next() noexcept
+	{
 		if (not m_exists_next) {
 			m_reached_end = true;
 			return;
@@ -152,29 +162,32 @@ public:
 		m_cur_pair = make_current_pair();
 #if defined DEBUG
 		assert(not share_nodes(
-				   m_cur_pair.first.first, m_cur_pair.first.second,
-				   m_cur_pair.second.first, m_cur_pair.second.second));
+			m_cur_pair.first.first,
+			m_cur_pair.first.second,
+			m_cur_pair.second.first,
+			m_cur_pair.second.second
+		));
 #endif
 
 		// find the next edge
-		auto [found, new_cur1, new_cur2] =
-			find_next_pair(
-				m_cur1.first, m_cur1.second,
-				m_cur2.first, m_cur2.second + 1
-			);
+		auto [found, new_cur1, new_cur2] = find_next_pair(
+			m_cur1.first, m_cur1.second, m_cur2.first, m_cur2.second + 1
+		);
 		m_exists_next = found;
 		m_cur1 = new_cur1;
 		m_cur2 = new_cur2;
 	}
 
 	/// Sets the iterator at the beginning of the set of edges.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		__reset();
 		next();
 	}
 
 private:
-	typedef std::pair<node,std::size_t> E_pointer;
+
+	typedef std::pair<node, std::size_t> E_pointer;
 
 private:
 
@@ -196,8 +209,10 @@ private:
 	edge_pair m_cur_pair;
 
 private:
+
 	/// Sets the iterator at the beginning of the set of edges.
-	void __reset() noexcept {
+	void __reset() noexcept
+	{
 		m_exists_next = true;
 		m_reached_end = false;
 
@@ -212,11 +227,9 @@ private:
 		m_cur2.first = 1;
 		m_cur2.second = std::numeric_limits<std::size_t>::max();
 
-		const auto [found, new_cur1, new_cur2] =
-			find_next_pair(
-				m_cur1.first, m_cur1.second,
-				m_cur2.first, m_cur2.second + 1
-			);
+		const auto [found, new_cur1, new_cur2] = find_next_pair(
+			m_cur1.first, m_cur1.second, m_cur2.first, m_cur2.second + 1
+		);
 
 		if (not found) {
 			// if we can't find the next pair, then there is no next...
@@ -227,8 +240,8 @@ private:
 
 #if defined DEBUG
 		assert(not share_nodes_pointer(
-				   new_cur1.first, new_cur1.second,
-				   new_cur2.first, new_cur2.second));
+			new_cur1.first, new_cur1.second, new_cur2.first, new_cur2.second
+		));
 #endif
 
 		// since a pair was found, store it in current
@@ -238,11 +251,9 @@ private:
 
 		// how do we know there is a next edge?
 		// well, look for it!
-		const auto [f2, _, __] =
-			find_next_pair(
-				m_cur1.first, m_cur1.second,
-				m_cur2.first, m_cur2.second + 1
-			);
+		const auto [f2, _, __] = find_next_pair(
+			m_cur1.first, m_cur1.second, m_cur2.first, m_cur2.second + 1
+		);
 
 		m_exists_next = f2;
 
@@ -260,8 +271,9 @@ private:
 	 * These are the edges pointed by attribute @ref m_cur1 and by attribute
 	 * @ref m_cur2.
 	 */
-	[[nodiscard]] edge_pair make_current_pair() const noexcept {
-		node s,t,u,v;
+	[[nodiscard]] edge_pair make_current_pair() const noexcept
+	{
+		node s, t, u, v;
 		s = m_cur1.first;
 		u = m_cur2.first;
 		if constexpr (is_directed) {
@@ -272,7 +284,7 @@ private:
 			t = m_G.get_neighbors(s)[m_cur1.second];
 			v = m_G.get_neighbors(u)[m_cur2.second];
 		}
-		return {{s,t}, {u,v}};
+		return {{s, t}, {u, v}};
 	}
 
 	/**
@@ -287,12 +299,9 @@ private:
 	 * @param pv Pointer to the second node of the second edge.
 	 * @returns Whether or not the edges share nodes.
 	 */
-	[[nodiscard]] bool share_nodes_pointer
-	(
-		const node s, const std::size_t pt,
-		const node u, const std::size_t pv
-	)
-	const noexcept
+	[[nodiscard]] bool share_nodes_pointer(
+		const node s, const std::size_t pt, const node u, const std::size_t pv
+	) const noexcept
 	{
 		node t, v;
 		if constexpr (is_directed) {
@@ -303,7 +312,7 @@ private:
 			t = m_G.get_neighbors(s)[pt];
 			v = m_G.get_neighbors(u)[pv];
 		}
-		return share_nodes(s,t, u,v);
+		return share_nodes(s, t, u, v);
 	}
 
 	/**
@@ -315,30 +324,25 @@ private:
 	 * @returns Whether or not the edges share nodes.
 	 */
 	[[nodiscard]] bool share_nodes(
-		const node s, const node t,
-		const node u, const node v
-	)
-	const noexcept
+		const node s, const node t, const node u, const node v
+	) const noexcept
 	{
 		return s == u or s == v or t == u or t == v;
 	}
 
 	/// Find the next pair in a directed graph.
 	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer>
-	find_next_pair(
-		const node s, const std::size_t pt,
-		const node u, const std::size_t pv
-	)
-	noexcept
+	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer> find_next_pair(
+		const node s, const std::size_t pt, const node u, const std::size_t pv
+	) noexcept
 	{
 		// base case 1: consumed all pairs
 		if (s == m_n) {
-			return {false, {s,pt}, {u,pv}};
+			return {false, {s, pt}, {u, pv}};
 		}
 		// base case 2: consumed neighbors of 's'
 		if (pt >= m_G.get_out_degree(s)) {
-			return find_next_pair(s+1, 0, s+2, 0);
+			return find_next_pair(s + 1, 0, s + 2, 0);
 		}
 		// base case 3: consumed second pointer
 		if (u == m_n) {
@@ -351,29 +355,28 @@ private:
 			return find_next_pair(s, pt, u + 1, 0);
 		}
 
-		if (share_nodes_pointer(s,pt, u,pv)) {
+		if (share_nodes_pointer(s, pt, u, pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
-		return {true, {s,pt}, {u,pv}};
+		return {true, {s, pt}, {u, pv}};
 	}
 
 	/// Find the next pair in an undirected graph.
-	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer>
-	find_next_pair(
-		const node s, const std::size_t pt,
-		const node u, const std::size_t pv
-	)
-	noexcept
+	template <
+		bool isdir = is_directed,
+		std::enable_if_t<not isdir, bool> = true>
+	[[nodiscard]] std::tuple<bool, E_pointer, E_pointer> find_next_pair(
+		const node s, const std::size_t pt, const node u, const std::size_t pv
+	) noexcept
 	{
 		// base case 1: consumed all pairs
 		if (s == m_n) {
-			return {false, {s,pt}, {u,pv}};
+			return {false, {s, pt}, {u, pv}};
 		}
 		// base case 2: consumed neighbors of 's'
 		if (pt >= m_G.get_degree(s)) {
-			return find_next_pair(s+1, 0, s+2, 0);
+			return find_next_pair(s + 1, 0, s + 2, 0);
 		}
 		// base case 3: consumed second pointer
 		if (u == m_n) {
@@ -388,18 +391,17 @@ private:
 
 		const auto& Ns = m_G.get_neighbors(s);
 		if (s > Ns[pt]) {
-			return find_next_pair(s, pt+1, u, 0);
+			return find_next_pair(s, pt + 1, u, 0);
 		}
 
 		const auto& Nu = m_G.get_neighbors(u);
-		if (u > Nu[pv] or share_nodes_pointer(s,pt, u,pv)) {
+		if (u > Nu[pv] or share_nodes_pointer(s, pt, u, pv)) {
 			return find_next_pair(s, pt, u, pv + 1);
 		}
 
-		return {true, {s,pt}, {u,pv}};
+		return {true, {s, pt}, {u, pv}};
 	}
-
 };
 
-} // -- namespace iterators
-} // -- namespace lal
+} // namespace iterators
+} // namespace lal

@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/generate/rand_lab_free_trees.hpp>
 
 // lal includes
@@ -52,19 +52,24 @@ namespace generate {
 
 /* PUBLIC */
 
-graphs::free_tree _rand_lab_free_trees::get_tree() noexcept {
-	if (m_n <= 1) { return graphs::free_tree(m_n); }
+graphs::free_tree _rand_lab_free_trees::get_tree() noexcept
+{
+	if (m_n <= 1) {
+		return graphs::free_tree(m_n);
+	}
 	if (m_n == 2) {
 		graphs::free_tree t(2);
-		t.add_edge(0,1);
+		t.add_edge(0, 1);
 		return t;
 	}
 
 	for (uint64_t i = 0; i < m_n - 2; ++i) {
 		m_Prufer_seq[i] = m_unif(m_gen);
 	}
-	return detail::from_Prufer_sequence_to_ftree(m_Prufer_seq.begin(), m_n, false, false);
+	return detail::from_Prufer_sequence_to_ftree(
+		m_Prufer_seq.begin(), m_n, false, false
+	);
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

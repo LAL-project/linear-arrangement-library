@@ -48,8 +48,8 @@
 namespace lal {
 namespace io {
 
-treebank_file_error treebank_collection_reader::init(const std::string& main_file)
-noexcept
+treebank_file_error
+treebank_collection_reader::init(const std::string& main_file) noexcept
 {
 	// close current dataset (if any)
 	m_list.close();
@@ -59,7 +59,8 @@ noexcept
 	m_main_file = main_file;
 	if (not std::filesystem::exists(m_main_file)) {
 		return treebank_file_error(
-			"Treebank collection main file '" + m_main_file + "' does not exist.",
+			"Treebank collection main file '" + m_main_file +
+				"' does not exist.",
 			treebank_file_error_type::main_file_does_not_exist
 		);
 	}
@@ -68,7 +69,8 @@ noexcept
 	m_list.open(m_main_file);
 	if (not m_list.is_open()) {
 		return treebank_file_error(
-			"Treebank collection main file '" + m_main_file + "' could not be opened.",
+			"Treebank collection main file '" + m_main_file +
+				"' could not be opened.",
 			treebank_file_error_type::main_file_could_not_be_opened
 		);
 	}
@@ -79,7 +81,8 @@ noexcept
 	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
-void treebank_collection_reader::next_treebank() noexcept {
+void treebank_collection_reader::next_treebank() noexcept
+{
 	if (m_no_more_treebanks) {
 		m_reached_end = true;
 		return;
@@ -97,5 +100,5 @@ void treebank_collection_reader::next_treebank() noexcept {
 	step_line();
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

@@ -53,6 +53,6 @@ enum class sort_type {
 	non_increasing
 };
 
-} // -- namespace sorting
-} // -- namespace detail
-} // -- namespace lal
+} // namespace sorting
+} // namespace detail
+} // namespace lal

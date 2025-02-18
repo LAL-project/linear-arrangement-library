@@ -48,15 +48,17 @@
 namespace lal {
 namespace properties {
 
-uint64_t tree_caterpillar_distance(const graphs::free_tree& t) noexcept {
+uint64_t tree_caterpillar_distance(const graphs::free_tree& t) noexcept
+{
 	using namespace detail::maximum_subtrees::caterpillar;
 	return max_subtree<result::distance>(t);
 }
 
-uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t) noexcept {
+uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t) noexcept
+{
 	using namespace detail::maximum_subtrees::caterpillar;
 	return max_subtree<result::distance>(t);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

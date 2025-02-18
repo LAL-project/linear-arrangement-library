@@ -57,7 +57,9 @@ namespace sorting {
 template <typename It>
 void insertion_sort(const It begin, const It end) noexcept
 {
-	if (begin == end) { return; }
+	if (begin == end) {
+		return;
+	}
 	for (It i = begin + 1; i != end; ++i) {
 		It nj = i;
 		It j = i - 1;
@@ -66,10 +68,12 @@ void insertion_sort(const It begin, const It end) noexcept
 			--j;
 			--nj;
 		}
-		if (*j > *nj) { std::swap(*j, *nj); }
+		if (*j > *nj) {
+			std::swap(*j, *nj);
+		}
 	}
 }
 
-} // -- namespace sorting
-} // -- namespace detail
-} // -- namespace lal
+} // namespace sorting
+} // namespace detail
+} // namespace lal

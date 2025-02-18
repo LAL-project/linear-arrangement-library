@@ -82,7 +82,8 @@ public:
 	 * been initialized.
 	 * @post Memory for @ref m_vertex_set has been allocated.
 	 */
-	void init(const std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept
+	{
 		m_lowest_lexicographic.reset();
 		m_h1 = m_h2 = n + 1;
 		m_vertex_sequence.clear();
@@ -96,7 +97,8 @@ public:
 	 * @param u Node to be added.
 	 * @post @ref m_vertex_set and @ref m_vertex_sequence are updated.
 	 */
-	void add_node(const node u) noexcept {
+	void add_node(const node u) noexcept
+	{
 		m_vertex_set[u] = 1;
 		m_vertex_sequence.push_back(u);
 		m_position[u] = m_vertex_sequence.size() - 1;
@@ -105,16 +107,26 @@ public:
 	/* SETTERS */
 
 	/// Sets the first vertex of degree different from 2.
-	void set_h1(const node h) noexcept { m_h1 = h; }
+	void set_h1(const node h) noexcept
+	{
+		m_h1 = h;
+	}
 	/// Sets the second vertex of degree different from 2.
-	void set_h2(const node h) noexcept { m_h2 = h; }
+	void set_h2(const node h) noexcept
+	{
+		m_h2 = h;
+	}
 	/// Set lowest lexicographic vertex.
-	void set_lowest_lexicographic(const node l) noexcept { m_lowest_lexicographic = l; }
+	void set_lowest_lexicographic(const node l) noexcept
+	{
+		m_lowest_lexicographic = l;
+	}
 
 	/* GETTERS */
 
 	/// Access the i-th node in the path.
-	[[nodiscard]] node operator[](const std::size_t i) const noexcept {
+	[[nodiscard]] node operator[] (const std::size_t i) const noexcept
+	{
 #if defined DEBUG
 		assert(i < m_vertex_sequence.size());
 #endif
@@ -122,9 +134,15 @@ public:
 	}
 
 	/// Gets the first vertex of degree different from 2.
-	[[nodiscard]] node get_h1() const noexcept { return m_h1; }
+	[[nodiscard]] node get_h1() const noexcept
+	{
+		return m_h1;
+	}
 	/// Gets the second vertex of degree different from 2.
-	[[nodiscard]] node get_h2() const noexcept { return m_h2; }
+	[[nodiscard]] node get_h2() const noexcept
+	{
+		return m_h2;
+	}
 
 	/**
 	 * @brief Does this path have a lowest lexicographic vertex?
@@ -132,7 +150,8 @@ public:
 	 * This method only returns true when the vertex sequence has 3 or more vertices.
 	 * @returns True if the path has a lowest lexicographic. False, if otherwise.
 	 */
-	[[nodiscard]] bool has_lowest_lexicographic() const noexcept {
+	[[nodiscard]] bool has_lowest_lexicographic() const noexcept
+	{
 		return m_lowest_lexicographic.has_value();
 	}
 	/**
@@ -141,7 +160,8 @@ public:
 	 * @pre This method should only be called when @ref has_lowest_lexicographic
 	 * returns true.
 	 */
-	[[nodiscard]] node get_lowest_lexicographic() const noexcept {
+	[[nodiscard]] node get_lowest_lexicographic() const noexcept
+	{
 #if defined DEBUG
 		assert(has_lowest_lexicographic());
 #endif
@@ -156,7 +176,9 @@ public:
 	 * @returns A vector with all nodes in the path.
 	 */
 	[[nodiscard]] const std::vector<node>& get_vertex_sequence() const noexcept
-	{ return m_vertex_sequence; }
+	{
+		return m_vertex_sequence;
+	}
 
 	/**
 	 * @brief Number of vertices in this path.
@@ -165,7 +187,9 @@ public:
 	 * @returns The number of vertices.
 	 */
 	[[nodiscard]] std::size_t get_num_nodes() const noexcept
-	{ return m_vertex_sequence.size(); }
+	{
+		return m_vertex_sequence.size();
+	}
 	/**
 	 * @brief Number of edges in this path.
 	 *
@@ -173,11 +197,17 @@ public:
 	 * @returns The number of edges.
 	 */
 	[[nodiscard]] std::size_t get_num_edges() const noexcept
-	{ return m_vertex_sequence.size() - 1; }
+	{
+		return m_vertex_sequence.size() - 1;
+	}
 	/// Does this path include node @e u?
-	[[nodiscard]] bool has_node(const node u) const noexcept { return m_vertex_set[u] == 1; }
+	[[nodiscard]] bool has_node(const node u) const noexcept
+	{
+		return m_vertex_set[u] == 1;
+	}
 	/// Returns the get_position of node @e u in @ref m_vertex_sequence.
-	[[nodiscard]] std::size_t get_position(const node u) const noexcept {
+	[[nodiscard]] std::size_t get_position(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 #endif
@@ -194,12 +224,14 @@ public:
 	 * @returns True if @e bp is an antenna. False if it is not.
 	 */
 	template <class graph_t>
-	[[nodiscard]] bool is_antenna(const graph_t& t) const noexcept {
+	[[nodiscard]] bool is_antenna(const graph_t& t) const noexcept
+	{
 		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		return t.get_degree(m_h1) == 1 or t.get_degree(m_h2) == 1;
 	}
 
 private:
+
 	/// A 0-1 array to indicate if a vertex belongs to this path or not.
 	detail::array<char> m_vertex_set;
 	/// The position in @ref m_vertex_sequence of each vertex.
@@ -219,5 +251,5 @@ private:
 	std::optional<node> m_lowest_lexicographic;
 };
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

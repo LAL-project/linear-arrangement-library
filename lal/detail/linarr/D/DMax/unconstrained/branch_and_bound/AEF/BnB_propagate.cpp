@@ -62,15 +62,15 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-propagation_result
-AEF_BnB::propagate_constraints(const node u)
-noexcept
+propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 {
 #if defined DEBUG
 	assert(is_vertex_assigned(u));
 #endif
 
-	if (has_valid_LV_prediction(u)) { return propagation_result::success; }
+	if (has_valid_LV_prediction(u)) {
+		return propagation_result::success;
+	}
 
 	if (m_t.get_degree(u) == 1) {
 		propagate_LV__antenna__from_leaf(u);
@@ -101,7 +101,9 @@ noexcept
 	}
 
 	for (const node v : m_t.get_neighbors(u)) {
-		if (m_t.get_degree(v) >= 3) { continue; }
+		if (m_t.get_degree(v) >= 3) {
+			continue;
+		}
 
 		const std::size_t path_v_idx = m_node_to_path_idx[v];
 		const auto& path_v = m_paths_in_tree[path_v_idx];
@@ -120,7 +122,10 @@ noexcept
 
 #if defined DEBUG
 				assert(has_valid_LV_prediction(v));
-				assert(m_predicted_LV__origin[u] != LV_propagation_origin::antenna_hub);
+				assert(
+					m_predicted_LV__origin[u] !=
+					LV_propagation_origin::antenna_hub
+				);
 #endif
 
 				const int64_t dv = to_int64(m_t.get_degree(v));
@@ -132,7 +137,8 @@ noexcept
 					// conflict, and the placement of 'u' is wrong.
 
 					if (m_predicted_LV[v] != -dv) {
-						return propagation_result::conflict_LV_emulated_propagation;
+						return propagation_result::
+							conflict_LV_emulated_propagation;
 					}
 				}
 				else {
@@ -150,14 +156,16 @@ noexcept
 			assert(u == h1 or u == h2);
 #endif
 			const auto r = propagate_LV__bridge__from_hub(u, path_v_idx);
-			if (r != propagation_result::success) { return r; }
+			if (r != propagation_result::success) {
+				return r;
+			}
 		}
 	}
 
 	return propagation_result::success;
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

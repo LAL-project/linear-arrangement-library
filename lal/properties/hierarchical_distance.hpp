@@ -64,8 +64,8 @@ namespace properties {
  * @pre The tree @e t is a valid rooted tree. Method graphs::rooted_tree::is_rooted_tree
  * returns true.
  */
-[[nodiscard]] uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t)
-noexcept;
+[[nodiscard]] uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t
+) noexcept;
 
 /**
  * @brief Mean Hierarchical Distance (MHD).
@@ -84,9 +84,8 @@ noexcept;
  * returns true.
  * @pre \f$n > 1\f$ (which is the same as \f$m > 0\f$.
  */
-[[nodiscard]] numeric::rational mean_hierarchical_distance_rational
-(const graphs::rooted_tree& t)
-noexcept;
+[[nodiscard]] numeric::rational
+mean_hierarchical_distance_rational(const graphs::rooted_tree& t) noexcept;
 
 /**
  * @brief Mean Hierarchical Distance (MHD).
@@ -99,8 +98,8 @@ noexcept;
  * returns true.
  * @pre \f$n > 1\f$ (which is the same as \f$m > 0\f$.
  */
-[[nodiscard]] double mean_hierarchical_distance(const graphs::rooted_tree& t)
-noexcept;
+[[nodiscard]] double mean_hierarchical_distance(const graphs::rooted_tree& t
+) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

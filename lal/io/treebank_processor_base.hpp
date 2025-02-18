@@ -60,6 +60,7 @@ namespace io {
  */
 class _treebank_processor_base {
 public:
+
 	// MODIFIERS
 
 	/**
@@ -67,23 +68,31 @@ public:
 	 * @param fs Feature to be added.
 	 */
 	void add_feature(const treebank_feature_type& fs) noexcept
-	{ m_what_fs[ static_cast<std::size_t>(fs) ] = true; }
+	{
+		m_what_fs[static_cast<std::size_t>(fs)] = true;
+	}
 	/**
 	 * @brief Removes a feature from the processor.
 	 * @param fs Feature to be removed.
 	 */
 	void remove_feature(const treebank_feature_type& fs) noexcept
-	{ m_what_fs[ static_cast<std::size_t>(fs) ] = false; }
+	{
+		m_what_fs[static_cast<std::size_t>(fs)] = false;
+	}
 
 	// SETTERS
 
 	/// Should the treebank file or collection be checked for errors prior to processing?
 	void set_check_before_process(const bool v) noexcept
-	{ m_check_before_process = v; }
+	{
+		m_check_before_process = v;
+	}
 
 	/// Clear the features in the processor.
 	void clear_features() noexcept
-	{ std::fill(m_what_fs.begin(), m_what_fs.end(), false); }
+	{
+		std::fill(m_what_fs.begin(), m_what_fs.end(), false);
+	}
 
 	/**
 	 * @brief Sets the separator character.
@@ -91,7 +100,10 @@ public:
 	 * The default seprator is a tabulator character '\\t'.
 	 * @param c The separator character.
 	 */
-	void set_separator(const char c) noexcept { m_separator = c; }
+	void set_separator(const char c) noexcept
+	{
+		m_separator = c;
+	}
 	/**
 	 * @brief Sets the level of verbosity of the process methods.
 	 *
@@ -101,14 +113,20 @@ public:
 	 * - Level 2: outputs error messages.
 	 * @param k Verbosity level.
 	 */
-	void set_verbosity(const int k) noexcept { m_be_verbose = k; }
+	void set_verbosity(const int k) noexcept
+	{
+		m_be_verbose = k;
+	}
 	/**
 	 * @brief Output a hedaer for the treebank result file.
 	 *
 	 * Default is true.
 	 * @param h Output header or not.
 	 */
-	void set_output_header(const bool h) noexcept { m_output_header = h; }
+	void set_output_header(const bool h) noexcept
+	{
+		m_output_header = h;
+	}
 
 	/**
 	 * @brief Sets a custom name for the column corresponding to a given feature.
@@ -119,8 +137,9 @@ public:
 	 * @param tf Feature whose column name is to be modified.
 	 * @param name Custom name for the column.
 	 */
-	void set_column_name(const treebank_feature_type& tf, const std::string& name)
-	noexcept
+	void set_column_name(
+		const treebank_feature_type& tf, const std::string& name
+	) noexcept
 	{
 		m_column_names[static_cast<std::size_t>(tf)] = name;
 	}
@@ -132,10 +151,14 @@ public:
 	 * @param fs The feature being queried.
 	 * @returns True or False depending on whether the feature was added or removed.
 	 */
-	[[nodiscard]] bool has_feature(const treebank_feature_type& fs) const noexcept
-	{ return m_what_fs[ static_cast<std::size_t>(fs) ]; }
+	[[nodiscard]] bool has_feature(const treebank_feature_type& fs
+	) const noexcept
+	{
+		return m_what_fs[static_cast<std::size_t>(fs)];
+	}
 
 protected:
+
 	/// String for each column.
 	std::array<std::string, __treebank_feature_size> m_column_names;
 	/// The list of features to be computed.
@@ -157,13 +180,15 @@ protected:
 	int m_be_verbose = 0;
 
 protected:
+
 	/// Initializes column names @ref m_column_names
-	void initialize_column_names() noexcept {
+	void initialize_column_names() noexcept
+	{
 		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
 			m_column_names[i] = treebank_feature_index_to_string(i);
 		}
 	}
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

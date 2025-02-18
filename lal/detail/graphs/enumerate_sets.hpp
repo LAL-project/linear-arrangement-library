@@ -57,7 +57,8 @@ namespace detail {
  * @returns A vector with all @e g's edges.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<edge> set_edges(const graph_t& g) noexcept {
+[[nodiscard]] std::vector<edge> set_edges(const graph_t& g) noexcept
+{
 	std::vector<edge> e(g.get_num_edges());
 	auto vec_it = e.begin();
 	for (iterators::E_iterator<graph_t> e_it(g); not e_it.end(); e_it.next()) {
@@ -73,9 +74,8 @@ template <class graph_t>
  * @returns A vector with all @e g's pairs of independent edges.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<edge_pair> set_pairs_independent_edges
-(const graph_t& g, const uint64_t qs)
-noexcept
+[[nodiscard]] std::vector<edge_pair>
+set_pairs_independent_edges(const graph_t& g, const uint64_t qs) noexcept
 {
 	std::vector<edge_pair> q(qs);
 	auto vec_it = q.begin();
@@ -85,5 +85,5 @@ noexcept
 	return q;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

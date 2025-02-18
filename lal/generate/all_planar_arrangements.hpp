@@ -100,6 +100,7 @@ namespace generate {
  */
 class all_planar_arrangements {
 public:
+
 	/**
 	 * @brief Constructor with constant reference to a free tree.
 	 * @param T Input free tree
@@ -119,7 +120,8 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
 	 */
-	all_planar_arrangements(const all_planar_arrangements& Gen) noexcept = default;
+	all_planar_arrangements(const all_planar_arrangements& Gen
+	) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive planar arrangement generator.
@@ -136,7 +138,10 @@ public:
 	 * @returns True if there are still more arrangements to generate.
 	 * Returns false if all arrangements have been generated.
 	 */
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/**
 	 * @brief Constructs the current arrangement.
@@ -163,13 +168,15 @@ public:
 	 * @return The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		const auto arr = get_arrangement();
 		next();
 		return arr;
 	}
 
 private:
+
 	/**
 	 * @brief A copy of a free tree.
 	 *
@@ -191,11 +198,12 @@ private:
 	bool m_reached_end = false;
 
 private:
+
 	/// Initiales the interval of every node of the tree.
 	void initialize_intervals_tree() noexcept;
 	/// Initialize the interval of node @e v, whose parent vertex is @e parent.
 	void initialize_interval_node(const node v, const node parent) noexcept;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

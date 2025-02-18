@@ -56,18 +56,16 @@ namespace properties {
  * @param g Input undirected graph.
  * @returns An object containing all connected components.
  */
-[[nodiscard]] connected_components<graphs::undirected_graph> connected_components_compute
-(const graphs::undirected_graph& g)
-noexcept;
+[[nodiscard]] connected_components<graphs::undirected_graph>
+connected_components_compute(const graphs::undirected_graph& g) noexcept;
 
 /**
  * @brief Compute the connected components of a directed graph.
  * @param g Input directed graph.
  * @returns An object containing all connected components.
  */
-[[nodiscard]] connected_components<graphs::directed_graph> connected_components_compute
-(const graphs::directed_graph& g)
-noexcept;
+[[nodiscard]] connected_components<graphs::directed_graph>
+connected_components_compute(const graphs::directed_graph& g) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

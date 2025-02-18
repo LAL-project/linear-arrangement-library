@@ -58,18 +58,24 @@ namespace utilities {
 
 #if defined USE_COMPLICATED
 template <typename T>
-void free_memory(T*& m) {
-	if (m != nullptr) { delete[] m; m = nullptr; }
+void free_memory(T *& m)
+{
+	if (m != nullptr) {
+		delete[] m;
+		m = nullptr;
+	}
 }
 
 class test_isomorphism {
 private:
+
 	std::string *_pieces_of_node = nullptr;
 	std::string *_pieces_of_level = nullptr;
 	uint64_t *_distances = nullptr;
 
 private:
-	const rooted_tree& t1, t2;
+
+	const rooted_tree &t1, t2;
 	const uint64_t n;
 
 	std::vector<std::vector<node>> nodes_per_level_t1;
@@ -81,15 +87,19 @@ private:
 	std::string *name_per_node_t2 = nullptr;
 
 public:
+
 	test_isomorphism(const rooted_tree& _t1, const rooted_tree& _t2)
-	: t1(_t1), t2(_t2), n(_t1.get_num_nodes())
+		: t1(_t1),
+		  t2(_t2),
+		  n(_t1.get_num_nodes())
 	{
 		_pieces_of_node = new std::string[n];
 		_pieces_of_level = new std::string[n];
 		_distances = new uint64_t[n];
 	}
 
-	~test_isomorphism() {
+	~test_isomorphism()
+	{
 		free_memory(name_per_level_t1);
 		free_memory(name_per_node_t1);
 		free_memory(name_per_level_t2);
@@ -99,13 +109,15 @@ public:
 		free_memory(_distances);
 	}
 
-	bool are_trees_isomorphic() {
-		make_names_per_level<false>
-		(t1, nodes_per_level_t1, name_per_level_t1, name_per_node_t1);
+	bool are_trees_isomorphic()
+	{
+		make_names_per_level<false>(
+			t1, nodes_per_level_t1, name_per_level_t1, name_per_node_t1
+		);
 
-		return
-		make_names_per_level<true>
-		(t2, nodes_per_level_t2, name_per_level_t2, name_per_node_t2);
+		return make_names_per_level<true>(
+			t2, nodes_per_level_t2, name_per_level_t2, name_per_node_t2
+		);
 	}
 
 	void retrieve_nodes_per_level(
@@ -123,36 +135,36 @@ public:
 		std::fill(&_distances[0], &_distances[n], 0);
 
 		bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) -> void {
-			_distances[v] = _distances[u] + 1;
-			nodes_per_level[_distances[v]].push_back(v);
-			max_level = std::max(max_level, _distances[v]);
-		}
+			[&](const auto&, node u, node v, bool) -> void
+			{
+				_distances[v] = _distances[u] + 1;
+				nodes_per_level[_distances[v]].push_back(v);
+				max_level = std::max(max_level, _distances[v]);
+			}
 		);
 		bfs.start_at(t.get_root());
 
 		nodes_per_level.resize(max_level + 1);
-	#if defined DEBUG
+#if defined DEBUG
 		assert(nodes_per_level.size() == max_level + 1);
-	#endif
+#endif
 	}
 
 	template <bool compare>
 	using Type = typename std::conditional<compare, bool, void>::type;
-	template <bool compare> Type<compare>
-	make_names_per_level
-	(
+	template <bool compare>
+	Type<compare> make_names_per_level(
 		const rooted_tree& t,
 		std::vector<std::vector<node>>& nodes_per_level_t,
-		std::string*& name_per_level_t,
-		std::string*& name_per_node_t
+		std::string *& name_per_level_t,
+		std::string *& name_per_node_t
 	)
 	{
 		retrieve_nodes_per_level(t, nodes_per_level_t);
 		if constexpr (compare) {
-		if (nodes_per_level_t.size() != nodes_per_level_t1.size()) {
-			return false;
-		}
+			if (nodes_per_level_t.size() != nodes_per_level_t1.size()) {
+				return false;
+			}
 		}
 
 		name_per_level_t = new std::string[nodes_per_level_t.size()];
@@ -193,9 +205,9 @@ public:
 			}
 
 			if constexpr (compare) {
-			if (name_per_level_t[l] != name_per_level_t1[l]) {
-				return false;
-			}
+				if (name_per_level_t[l] != name_per_level_t1[l]) {
+					return false;
+				}
 			}
 		}
 
@@ -205,19 +217,24 @@ public:
 	}
 };
 
-bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2) {
-	const int discard = fast_non_iso(t1,t2);
-	if (discard == 0) { return true; }
-	if (discard == 1) { return false; }
+bool are_trees_isomorphic(const rooted_tree& t1, const rooted_tree& t2)
+{
+	const int discard = fast_non_iso(t1, t2);
+	if (discard == 0) {
+		return true;
+	}
+	if (discard == 1) {
+		return false;
+	}
 
 	test_isomorphism ti(t1, t2);
 	return ti.are_trees_isomorphic();
 }
 #endif
 
-bool are_trees_isomorphic
-(const graphs::rooted_tree& t1, const graphs::rooted_tree& t2)
-noexcept
+bool are_trees_isomorphic(
+	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+) noexcept
 {
 #if defined DEBUG
 	assert(t1.has_root());
@@ -226,16 +243,22 @@ noexcept
 	return detail::are_rooted_trees_isomorphic(t1, t2);
 }
 
-bool are_trees_isomorphic
-(const graphs::free_tree& t1, const graphs::free_tree& t2)
-noexcept
+bool are_trees_isomorphic(
+	const graphs::free_tree& t1, const graphs::free_tree& t2
+) noexcept
 {
-	const auto discard = detail::fast_non_iso(t1,t2);
-	if (discard == 0) { return true; }
-	if (discard == 1) { return false; }
+	const auto discard = detail::fast_non_iso(t1, t2);
+	if (discard == 0) {
+		return true;
+	}
+	if (discard == 1) {
+		return false;
+	}
 
 	const uint64_t n = t1.get_num_nodes();
-	if (n == 3) { return true; }
+	if (n == 3) {
+		return true;
+	}
 
 	// find centres of the trees
 	const auto c1 = detail::retrieve_centre(t1, 0);
@@ -244,7 +267,9 @@ noexcept
 	// check centre sizes
 	const uint64_t size1 = (c1.second < n ? 2 : 1);
 	const uint64_t size2 = (c2.second < n ? 2 : 1);
-	if (size1 != size2) { return false; }
+	if (size1 != size2) {
+		return false;
+	}
 
 	const graphs::rooted_tree rt1(t1, c1.first);
 
@@ -256,12 +281,15 @@ noexcept
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const bool iso1 = are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.first));
-	if (iso1) { return true; }
+	const bool iso1 =
+		are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.first));
+	if (iso1) {
+		return true;
+	}
 
 	// try with the second centre of the second tree
 	return are_trees_isomorphic(rt1, graphs::rooted_tree(t2, c2.second));
 }
 
-} // -- namespace utilities
-} // -- namespace lal
+} // namespace utilities
+} // namespace lal

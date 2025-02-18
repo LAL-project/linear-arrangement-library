@@ -79,6 +79,7 @@ public:
 	typedef std::vector<std::pair<uint64_t, head_vector_error>> error_list;
 
 public:
+
 	/// Default constructor.
 	treebank_file_report() noexcept = default;
 	/// Default copy constructor.
@@ -88,20 +89,27 @@ public:
 	treebank_file_report(treebank_file_report&&) noexcept = default;
 
 	/// Constructor with treebank error.
-	treebank_file_report(const treebank_file_error& err) noexcept {
+	treebank_file_report(const treebank_file_error& err) noexcept
+	{
 		m_treebank_error = err;
 	}
 	/// Constructor with a single head vector error.
-	treebank_file_report(treebank_file_error&& err) noexcept {
+	treebank_file_report(treebank_file_error&& err) noexcept
+	{
 		m_treebank_error = std::move(err);
 	}
 
 	/// Constructor with a single head vector error.
-	treebank_file_report(const uint64_t line_number, const head_vector_error& err) noexcept {
+	treebank_file_report(
+		const uint64_t line_number, const head_vector_error& err
+	) noexcept
+	{
 		m_hv_errors.emplace_back(line_number, err);
 	}
 	/// Constructor with a single head vector error.
-	treebank_file_report(const uint64_t line_number, head_vector_error&& err) noexcept {
+	treebank_file_report(const uint64_t line_number, head_vector_error&& err)
+		noexcept
+	{
 		m_hv_errors.emplace_back(line_number, std::move(err));
 	}
 
@@ -111,7 +119,8 @@ public:
 	/* ASSIGNMENT OPERATORS */
 
 	/// Default copy assignment.
-	treebank_file_report& operator= (const treebank_file_report&) noexcept = default;
+	treebank_file_report&
+	operator= (const treebank_file_report&) noexcept = default;
 	/// Default move assignment.
 	treebank_file_report& operator= (treebank_file_report&&) noexcept = default;
 
@@ -122,7 +131,9 @@ public:
 	 * @param line_number Line number of the treebank file where the error is.
 	 * @param err Error to add.
 	 */
-	void add_error(const uint64_t line_number, const head_vector_error& err) noexcept {
+	void
+	add_error(const uint64_t line_number, const head_vector_error& err) noexcept
+	{
 		m_hv_errors.emplace_back(line_number, err);
 	}
 	/**
@@ -130,23 +141,27 @@ public:
 	 * @param line_number Line number of the treebank file where the error is.
 	 * @param err Error to add.
 	 */
-	void add_error(const uint64_t line_number, head_vector_error&& err) noexcept {
+	void add_error(const uint64_t line_number, head_vector_error&& err) noexcept
+	{
 		m_hv_errors.emplace_back(line_number, std::move(err));
 	}
 
 	/// Sets the treebank error @ref m_treebank_error.
-	void set_treebank_error(const treebank_file_error& err) noexcept {
+	void set_treebank_error(const treebank_file_error& err) noexcept
+	{
 		m_treebank_error = err;
 	}
 	/// Sets the treebank error @ref m_treebank_error.
-	void set_treebank_error(treebank_file_error&& err) noexcept {
+	void set_treebank_error(treebank_file_error&& err) noexcept
+	{
 		m_treebank_error = std::move(err);
 	}
 
 	/* GETTERS */
 
 	/// Returns the number of errors in this report.
-	[[nodiscard]] std::size_t get_num_errors() const noexcept {
+	[[nodiscard]] std::size_t get_num_errors() const noexcept
+	{
 		return m_treebank_error.is_error() + m_hv_errors.size();
 	}
 
@@ -156,7 +171,9 @@ public:
 	 * If the list returned is empty, then there were no errors.
 	 */
 	[[nodiscard]] const error_list& get_head_vector_errors() const noexcept
-	{ return m_hv_errors; }
+	{
+		return m_hv_errors;
+	}
 
 	/**
 	 * @brief Returns the only treebank error concerning the file (if any).
@@ -164,9 +181,12 @@ public:
 	 * could not be opened.
 	 */
 	[[nodiscard]] const treebank_file_error& get_treebank_error() const noexcept
-	{ return m_treebank_error; }
+	{
+		return m_treebank_error;
+	}
 
 private:
+
 	/// The error in the head vector and the line number where it happened.
 	error_list m_hv_errors;
 
@@ -174,5 +194,5 @@ private:
 	treebank_file_error m_treebank_error;
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

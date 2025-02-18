@@ -89,6 +89,7 @@ namespace unconstrained {
  */
 class AEF_BnB {
 public:
+
 	/// Value to indicate that a vertex is assigned to the arrangement.
 	static constexpr char VERTEX_ASSIGNED = 1;
 	/// Value to indicate that a vertex is not assigned to the arrangement.
@@ -97,9 +98,9 @@ public:
 	/// Used to determine the result type of certain functions.
 	static constexpr bool debug_BnB =
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	true;
+		true;
 #else
-	false;
+		false;
 #endif
 
 	/**
@@ -108,10 +109,10 @@ public:
 	 * If @ref debug_BnB is true, then the function is to return a Boolean value
 	 * that indicates if it found a maxium arrangement.
 	 */
-	typedef std::conditional_t<debug_BnB, bool, void>
-	exe_result_type;
+	typedef std::conditional_t<debug_BnB, bool, void> exe_result_type;
 
 public:
+
 	/**
 	 * @brief Enumeration used in the function @ref process_end
 	 *
@@ -119,22 +120,27 @@ public:
 	 */
 	enum process_end_result {
 		/// Algorithm did not completely construct the arrangement.
-		did_not_reach_end	= 0b00000000,
+		did_not_reach_end = 0b00000000,
 		/// Algorithm reached the end of the arrangement.
-		reached_end			= 0b00000001,
+		reached_end = 0b00000001,
 		/// Algorithm reached found a new maximum.
-		found_max			= 0b00000010
+		found_max = 0b00000010
 	};
 
 	/// Returns true if @e at does not contain @ref process_end_result::did_not_reach_end.
 	[[nodiscard]] constexpr bool did_reach_end(const int at) const noexcept
-	{ return at & process_end_result::reached_end; }
+	{
+		return at & process_end_result::reached_end;
+	}
 
 	/// Returns true if @e at contains @ref process_end_result::found_max.
 	[[nodiscard]] constexpr bool did_find_max(const int at) const noexcept
-	{ return at & process_end_result::found_max; }
+	{
+		return at & process_end_result::found_max;
+	}
 
 public:
+
 	/// Reference to the input free tree
 	const graphs::free_tree& m_t;
 	/// Temporary memory to store @ref m_t as a rooted tree.
@@ -155,6 +161,7 @@ public:
 	linear_arrangement m_arr;
 
 public:
+
 	/**
 	 * @brief Constructor
 	 * @param t Input tree.
@@ -185,15 +192,13 @@ public:
 		// orbits
 		const std::vector<std::vector<node>>& orbits,
 		const array<std::size_t>& vertex_to_orbit
-	)
-	noexcept;
+	) noexcept;
 	/// Destructor
 	~AEF_BnB() noexcept = default;
 
 	/// Initialize the Branch and Bound algorithm.
-	void initialize
-	(const std::pair<uint64_t, linear_arrangement>& initial_DMax)
-	noexcept;
+	void initialize(const std::pair<uint64_t, linear_arrangement>& initial_DMax
+	) noexcept;
 
 	/// Execute the algorithm starting at the given vertex
 	void exe(node first_node) noexcept;
@@ -210,25 +215,21 @@ protected:
 	 * where both are on the same side of its lowest lexicographic).
 	 */
 	[[nodiscard]] reason_discard check_propagation_node_to_node(
-		const node u, const int64_t level_u,
-		const node v, const int64_t level_v
+		const node u, const int64_t level_u, const node v, const int64_t level_v
 	) const noexcept;
 	/// Can a vertex of a bridge be discarded when it is to be assigned with level 0?
-	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_0
-	(const node u)
-	const noexcept;
+	[[nodiscard]] reason_discard
+	discard_node__degree_2__bridge__level_0(const node u) const noexcept;
 	/// Can a vertex of a bridge be discarded when it is to be assigned with level \f$\pm2\f$?
-	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_pm2
-	(const node u, const int64_t level_u)
-	const noexcept;
+	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_pm2(
+		const node u, const int64_t level_u
+	) const noexcept;
 	/// Can a vertex of degree 2 be discarded?
-	[[nodiscard]] reason_discard discard_node_degree_2
-	(const node u, const int64_t level_u)
-	const noexcept;
+	[[nodiscard]] reason_discard
+	discard_node_degree_2(const node u, const int64_t level_u) const noexcept;
 	/// Can a vertex of degree 3 be discarded?
-	[[nodiscard]] reason_discard discard_node_degree_3
-	(const node u, const int64_t level_u)
-	const noexcept;
+	[[nodiscard]] reason_discard
+	discard_node_degree_3(const node u, const int64_t level_u) const noexcept;
 
 	/**
 	 * @brief Function to discard a vertex as the next vertex to add to the arrangement.
@@ -239,18 +240,20 @@ protected:
 	 * @param pos Position where the vertex is to be placed at.
 	 * @returns Whether or not the vertex is to be discarded at this stage.
 	 */
-	[[nodiscard]] reason_discard discard_vertex(const node u, const position_t pos)
-	const noexcept;
+	[[nodiscard]] reason_discard
+	discard_vertex(const node u, const position_t pos) const noexcept;
 
 	// -- bounds --
 
 	/// Calculate a 'generic' upper bound
-	[[nodiscard]] uint64_t upper_bound_generic
-	(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos) noexcept;
+	[[nodiscard]] uint64_t upper_bound_generic(
+		const uint64_t D_p, const uint64_t D_ps_m, const position_t pos
+	) noexcept;
 
 	/// Decide what to do next according to the value of the upper bound.
-	[[nodiscard]] next_action what_to_do_next
-	(const uint64_t D_p, const uint64_t D_ps_m, const position_t pos) noexcept;
+	[[nodiscard]] next_action what_to_do_next(
+		const uint64_t D_p, const uint64_t D_ps_m, const position_t pos
+	) noexcept;
 
 	// -- state manipulation --
 
@@ -263,9 +266,9 @@ protected:
 	 * @param D_p Sum of edge lengths of edges in the prefix.
 	 * @param D_ps_m Sum of edge lengths of edges partially in the prefix.
 	 */
-	void update_state
-	(const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m)
-	noexcept;
+	void update_state(
+		const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m
+	) noexcept;
 
 	/**
 	 * @brief Update the internal state of the algorithm.
@@ -278,14 +281,11 @@ protected:
 	// -- propagation of constraints -- //
 
 	/// Propagate level values at an antenna, starting at its hub.
-	void propagate_LV__antenna__from_hub
-	(const node h, const node u) noexcept;
+	void propagate_LV__antenna__from_hub(const node h, const node u) noexcept;
 	/// Propagate level values at an antenna, starting at its leaf.
-	void propagate_LV__antenna__from_leaf
-	(const node u) noexcept;
+	void propagate_LV__antenna__from_leaf(const node u) noexcept;
 	/// Propagate level values at an antenna, starting at an internal vertex.
-	void propagate_LV__antenna__from_internal
-	(const node u) noexcept;
+	void propagate_LV__antenna__from_internal(const node u) noexcept;
 
 	/**
 	 * @brief In a bridge, predict the level value of the lowest lexicographic vertex.
@@ -294,87 +294,88 @@ protected:
 	 * lowest lexicographic vertex can be predicted, and assigns one when appropriate.
 	 * This check can fail.
 	 */
-	[[nodiscard]] propagation_result propagate_LV__bridge__check_lowest_can_be_predicted
-	(const std::size_t path_idx, const LV_propagation_origin origin)
-	noexcept;
+	[[nodiscard]] propagation_result
+	propagate_LV__bridge__check_lowest_can_be_predicted(
+		const std::size_t path_idx, const LV_propagation_origin origin
+	) noexcept;
 
 	/// Propagate level values at a bridge, starting at the second hub.
-	void propagate_LV__bridge__from_hub__h2
-	(const std::size_t path_idx) noexcept;
+	void propagate_LV__bridge__from_hub__h2(const std::size_t path_idx
+	) noexcept;
 	/// Propagate level values at a bridge, starting at the first hub.
-	void propagate_LV__bridge__from_hub__h1
-	(const std::size_t path_idx) noexcept;
+	void propagate_LV__bridge__from_hub__h1(const std::size_t path_idx
+	) noexcept;
 	/// Propagate level values at a bridge, starting at a hub @e h.
-	[[nodiscard]] propagation_result propagate_LV__bridge__from_hub
-	(const node h, const std::size_t path_idx) noexcept;
+	[[nodiscard]] propagation_result propagate_LV__bridge__from_hub(
+		const node h, const std::size_t path_idx
+	) noexcept;
 
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$\pm 2\f$ towards the second hub.
-	void propagate_LV__bridge__from_lowest__level_0__towards_h2
-	(const std::size_t path_idx) noexcept;
+	void propagate_LV__bridge__from_lowest__level_0__towards_h2(
+		const std::size_t path_idx
+	) noexcept;
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$\pm 2\f$ towards the first hub.
-	void propagate_LV__bridge__from_lowest__level_0__towards_h1
-	(const std::size_t path_idx) noexcept;
+	void propagate_LV__bridge__from_lowest__level_0__towards_h1(
+		const std::size_t path_idx
+	) noexcept;
 	/// Propagate level values at a bridge starting at the lowest lexicographic.
-	void propagate_LV__bridge__from_lowest__level_0
-	(const node u) noexcept;
+	void propagate_LV__bridge__from_lowest__level_0(const node u) noexcept;
 
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$0\f$.
-	[[nodiscard]] propagation_result propagate_LV__bridge__from_lowest__level_pm2
-	(const node u) noexcept;
+	[[nodiscard]] propagation_result
+	propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept;
 
 	/// Propagate level values at a bridge starting at an internal vertex that is
 	/// not the lowest lexicographic.
-	[[nodiscard]] propagation_result propagate_LV__bridge__from_internal
-	(const node u) noexcept;
+	[[nodiscard]] propagation_result
+	propagate_LV__bridge__from_internal(const node u) noexcept;
 
 	/// Propagate level values starting at vertex @e u.
-	[[nodiscard]] propagation_result propagate_constraints
-	(const node u) noexcept;
+	[[nodiscard]] propagation_result propagate_constraints(const node u
+	) noexcept;
 
 	// -- rollback constraints -- //
 
 	/// Undo the propagation of level values at an antenna.
-	void roll_back_LV__antenna
-	(const node u) noexcept;
+	void roll_back_LV__antenna(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the second hub.
-	void roll_back_LV__bridge__from_hub__h2
-	(const std::size_t path_idx) noexcept;
+	void roll_back_LV__bridge__from_hub__h2(const std::size_t path_idx
+	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the first hub.
-	void roll_back_LV__bridge__from_hub__h1
-	(const std::size_t path_idx) noexcept;
+	void roll_back_LV__bridge__from_hub__h1(const std::size_t path_idx
+	) noexcept;
 	/// Undo the propagation of level values at a bridge.
-	void roll_back_LV__bridge__from_hub
-	(const node h, const std::size_t path_idx) noexcept;
+	void roll_back_LV__bridge__from_hub(
+		const node h, const std::size_t path_idx
+	) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$ towards the second hub.
-	void roll_back_LV__bridge__from_lowest__level_0__towards_h2
-	(const std::size_t path_idx) noexcept;
+	void roll_back_LV__bridge__from_lowest__level_0__towards_h2(
+		const std::size_t path_idx
+	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$ towards the first hub.
-	void roll_back_LV__bridge__from_lowest__level_0__towards_h1
-	(const std::size_t path_idx) noexcept;
+	void roll_back_LV__bridge__from_lowest__level_0__towards_h1(
+		const std::size_t path_idx
+	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$.
-	void roll_back_LV__bridge__from_lowest__level_0
-	(const node u) noexcept;
+	void roll_back_LV__bridge__from_lowest__level_0(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$\pm2\f$.
-	void roll_back_LV__bridge__from_lowest__level_pm2
-	(const node u) noexcept;
+	void roll_back_LV__bridge__from_lowest__level_pm2(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at an internal
 	/// vertex.
-	void roll_back_LV__bridge__from_internal
-	(const node u) noexcept;
+	void roll_back_LV__bridge__from_internal(const node u) noexcept;
 	/// Undo the propagation of level values at a vertex @e u.
-	void roll_back_constraints
-	(const node u) noexcept;
+	void roll_back_constraints(const node u) noexcept;
 
 	/**
 	 * @brief Take action at the end of the recursion.
@@ -387,17 +388,20 @@ protected:
 	 * @returns Whether the recursion actually constructed the arrangement.
 	 * The values returned are a combination of the values in @ref process_end_result.
 	 */
-	[[nodiscard]] int process_end(const uint64_t D, const position pos) noexcept;
+	[[nodiscard]] int
+	process_end(const uint64_t D, const position pos) noexcept;
 
 	// -- others --
 
 	/// Is vertex @e u assigned to the prefix of the arrangement?
-	[[nodiscard]] bool is_vertex_assigned(const node u) const noexcept {
+	[[nodiscard]] bool is_vertex_assigned(const node u) const noexcept
+	{
 		return m_is_node_assigned[u] == VERTEX_ASSIGNED;
 	}
 
 	/// Is vertex @e u a thistle vertex?
-	[[nodiscard]] bool is_vertex_thistle(const node u) const noexcept {
+	[[nodiscard]] bool is_vertex_thistle(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(is_vertex_assigned(u));
 #endif
@@ -405,7 +409,8 @@ protected:
 	}
 
 	/// Return the only parent of the leaf @e u.
-	[[nodiscard]] node leaf_parent(const node u) const noexcept {
+	[[nodiscard]] node leaf_parent(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(m_t.get_degree(u) == 1);
 #endif
@@ -438,8 +443,8 @@ protected:
 	 * @param pos Position where to continue building the arrangement from.
 	 * @returns Whether or not the algorithm found a new maximum arrangement.
 	 */
-	exe_result_type exe_independent_set
-	(const uint64_t D_p, position pos) noexcept;
+	exe_result_type
+	exe_independent_set(const uint64_t D_p, position pos) noexcept;
 
 	/**
 	 * @brief Finish constructing the arrangement.
@@ -450,8 +455,8 @@ protected:
 	 * @param pos Position where to continue building the arrangement from.
 	 * @returns Whether or not the algorithm found a new maximum arrangement.
 	 */
-	exe_result_type exe_independent_set_leaves
-	(const uint64_t D_p, position pos) noexcept;
+	exe_result_type
+	exe_independent_set_leaves(const uint64_t D_p, position pos) noexcept;
 
 	// -------------------------------------------------------------------------
 	// execute Branch and Bound for any tree
@@ -468,11 +473,11 @@ protected:
 	 * of the edge as if it ended at position 'pos'.
 	 * @param pos Position where to place the next vertex.
 	 */
-	exe_result_type exe
-	(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
-	noexcept;
+	exe_result_type
+	exe(const uint64_t D_p, const uint64_t D_ps_m, const position pos) noexcept;
 
 private:
+
 	// -------------------------------------------------------------------------
 	// Tree-related data
 
@@ -583,14 +588,18 @@ private:
 	/// A helper class to be able to store edges in @ref m_E_p, @ref m_E_ps, @ref m_E_s.
 	class indexer_edge {
 	private:
+
 		std::size_t m_capacity;
 
 	public:
-		void init(std::size_t cap) noexcept {
+
+		void init(std::size_t cap) noexcept
+		{
 			m_capacity = cap;
 		}
-		[[nodiscard]] std::size_t operator()(const edge& p) const noexcept {
-			return p.first + p.second*m_capacity;
+		[[nodiscard]] std::size_t operator() (const edge& p) const noexcept
+		{
+			return p.first + p.second * m_capacity;
 		}
 	};
 
@@ -639,11 +648,15 @@ private:
 
 	/// Does vertex @e u have a valid prediction of level value?
 	[[nodiscard]] bool has_valid_LV_prediction(node u) const noexcept
-	{ return m_predicted_LV__origin[u] != LV_propagation_origin::none; }
+	{
+		return m_predicted_LV__origin[u] != LV_propagation_origin::none;
+	}
 
 	/// Did a propagation of level values start at vertex @e u?
 	[[nodiscard]] bool is_node_a_trigger_of_LV(node u) const noexcept
-	{ return m_predicted_LV__origin[u] == LV_propagation_origin::self; }
+	{
+		return m_predicted_LV__origin[u] == LV_propagation_origin::self;
+	}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	// -------------------------------------------------------------------------
@@ -662,19 +675,28 @@ private:
 	void output_border_nodes() const noexcept;
 	void output_predicted_level_values() const noexcept;
 	void output_path_info() const noexcept;
-	void display_all_info
-	(const uint64_t D_p, const uint64_t D_ps_m, const position pos)
-	noexcept;
+	void display_all_info(
+		const uint64_t D_p, const uint64_t D_ps_m, const position pos
+	) noexcept;
 
 	// progress of algorithm
 	std::string m_tabstr;
-	const std::string& tab() const noexcept { return m_tabstr; }
-	void push_tab(const std::string& add = "|   ") noexcept { m_tabstr += add; }
-	void pop_tab() noexcept { m_tabstr = m_tabstr.substr(0, m_tabstr.length() - 4); }
+	const std::string& tab() const noexcept
+	{
+		return m_tabstr;
+	}
+	void push_tab(const std::string& add = "|   ") noexcept
+	{
+		m_tabstr += add;
+	}
+	void pop_tab() noexcept
+	{
+		m_tabstr = m_tabstr.substr(0, m_tabstr.length() - 4);
+	}
 #endif
 };
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

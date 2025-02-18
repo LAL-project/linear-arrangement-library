@@ -49,11 +49,11 @@ namespace properties {
 /* -------------------------- */
 /* EXPECTATION OF C: E_rla[C] */
 
-numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g)
-noexcept
+numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g
+) noexcept
 {
 	return numeric::rational(num_pairs_independent_edges_integer(g), 3);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

@@ -61,24 +61,49 @@ public:
 	// GETTERS
 
 	/// Returns left span of this flux.
-	[[nodiscard]] uint64_t get_left_span() const noexcept { return m_left_span;; }
+	[[nodiscard]] uint64_t get_left_span() const noexcept
+	{
+		return m_left_span;
+		;
+	}
 	/// Returns right span of this flux.
-	[[nodiscard]] uint64_t get_right_span() const noexcept { return m_right_span; }
+	[[nodiscard]] uint64_t get_right_span() const noexcept
+	{
+		return m_right_span;
+	}
 	/// Returns the size of this flux.
-	[[nodiscard]] uint64_t get_size() const noexcept { return m_dependencies.size(); }
+	[[nodiscard]] uint64_t get_size() const noexcept
+	{
+		return m_dependencies.size();
+	}
 	/// Returns weight of this flux.
-	[[nodiscard]] uint64_t get_weight() const noexcept { return m_weight; }
+	[[nodiscard]] uint64_t get_weight() const noexcept
+	{
+		return m_weight;
+	}
 
 	/// Returns a reference to the left span of this flux.
-	[[nodiscard]] uint64_t& get_left_span() noexcept { return m_left_span;; }
+	[[nodiscard]] uint64_t& get_left_span() noexcept
+	{
+		return m_left_span;
+		;
+	}
 	/// Returns a reference to the right span of this flux.
-	[[nodiscard]] uint64_t& get_right_span() noexcept { return m_right_span; }
+	[[nodiscard]] uint64_t& get_right_span() noexcept
+	{
+		return m_right_span;
+	}
 	/// Returns a reference to the weight of this flux.
-	[[nodiscard]] uint64_t& get_weight() noexcept { return m_weight; }
+	[[nodiscard]] uint64_t& get_weight() noexcept
+	{
+		return m_weight;
+	}
 
 	/// Returns the set of dependencies.
 	[[nodiscard]] const std::vector<edge>& get_dependencies() const noexcept
-	{ return m_dependencies; }
+	{
+		return m_dependencies;
+	}
 
 	/**
 	 * @brief Returns the R/L ratio.
@@ -88,7 +113,9 @@ public:
 	 * @returns The R/L ratio of this flux.
 	 */
 	[[nodiscard]] numeric::rational get_RL_ratio_rational() const noexcept
-	{ return numeric::rational(m_right_span, m_left_span); }
+	{
+		return numeric::rational(m_right_span, m_left_span);
+	}
 	/**
 	 * @brief Returns the R/L ratio.
 	 *
@@ -97,7 +124,9 @@ public:
 	 * @returns The R/L ratio of this flux.
 	 */
 	[[nodiscard]] double get_RL_ratio() const noexcept
-	{ return get_RL_ratio_rational().to_double(); }
+	{
+		return get_RL_ratio_rational().to_double();
+	}
 
 	/**
 	 * @brief Returns the W/S ratio.
@@ -107,7 +136,9 @@ public:
 	 * @returns The W/S ratio of this flux.
 	 */
 	[[nodiscard]] numeric::rational get_WS_ratio_rational() const noexcept
-	{ return numeric::rational(m_weight, m_dependencies.size()); }
+	{
+		return numeric::rational(m_weight, m_dependencies.size());
+	}
 	/**
 	 * @brief Returns the W/S ratio.
 	 *
@@ -116,26 +147,42 @@ public:
 	 * @returns The W/S ratio of this flux.
 	 */
 	[[nodiscard]] double get_WS_ratio() const noexcept
-	{ return get_WS_ratio_rational().to_double(); }
+	{
+		return get_WS_ratio_rational().to_double();
+	}
 
 	// SETTERS
 
 	/// Sets the left span.
-	void set_left_span(const uint64_t ls) noexcept { m_left_span = ls; }
+	void set_left_span(const uint64_t ls) noexcept
+	{
+		m_left_span = ls;
+	}
 	/// Sets the right span.
-	void set_right_span(const uint64_t rs) noexcept { m_right_span = rs; }
+	void set_right_span(const uint64_t rs) noexcept
+	{
+		m_right_span = rs;
+	}
 	/// Sets the weight.
-	void set_weight(const uint64_t w) noexcept { m_weight = w; }
+	void set_weight(const uint64_t w) noexcept
+	{
+		m_weight = w;
+	}
 
 	/// Sets the set of dependencies.
 	void set_dependencies(const std::vector<edge>& deps) noexcept
-	{ m_dependencies = deps; }
+	{
+		m_dependencies = deps;
+	}
 
 	/// Sets the set of dependencies.
 	void set_dependencies(std::vector<edge>&& deps) noexcept
-	{ m_dependencies = std::move(deps); }
+	{
+		m_dependencies = std::move(deps);
+	}
 
 private:
+
 	/// Number of words to the left of this flux which are vertices of a
 	/// dependency in the flux.
 	uint64_t m_left_span = 0;
@@ -157,5 +204,5 @@ private:
 	uint64_t m_weight = 0;
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

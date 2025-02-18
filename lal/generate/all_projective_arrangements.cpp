@@ -57,9 +57,9 @@ namespace generate {
 
 /* CONSTRUCTORS */
 
-all_projective_arrangements::all_projective_arrangements
-(const graphs::rooted_tree& rT)
-noexcept
+all_projective_arrangements::all_projective_arrangements(
+	const graphs::rooted_tree& rT
+) noexcept
 	: m_rT(rT),
 	  m_intervals(m_rT.get_num_nodes())
 {
@@ -77,16 +77,19 @@ noexcept
 
 /* GETTERS */
 
-linear_arrangement all_projective_arrangements::get_arrangement() const noexcept {
-	return (m_rT.get_num_nodes() == 1 ?
-		linear_arrangement::identity(1) :
-		detail::make_arrangement_permutations(m_rT, m_intervals)
+linear_arrangement all_projective_arrangements::get_arrangement() const noexcept
+{
+	return (
+		m_rT.get_num_nodes() == 1
+			? linear_arrangement::identity(1)
+			: detail::make_arrangement_permutations(m_rT, m_intervals)
 	);
 }
 
 /* MODIFIERS */
 
-void all_projective_arrangements::next() noexcept {
+void all_projective_arrangements::next() noexcept
+{
 	if (m_rT.get_num_nodes() == 1) {
 		m_reached_end = true;
 		return;
@@ -111,18 +114,22 @@ void all_projective_arrangements::next() noexcept {
 
 /* PRIVATE */
 
-void all_projective_arrangements::reset() noexcept {
+void all_projective_arrangements::reset() noexcept
+{
 	m_reached_end = false;
 	initialize_intervals_tree();
 }
 
-void all_projective_arrangements::initialize_intervals_tree() noexcept {
+void all_projective_arrangements::initialize_intervals_tree() noexcept
+{
 	for (node u = 0; u < m_rT.get_num_nodes(); ++u) {
 		initialize_interval_node(u);
 	}
 }
 
-void all_projective_arrangements::initialize_interval_node(const node u) noexcept {
+void all_projective_arrangements::initialize_interval_node(const node u
+) noexcept
+{
 	const neighbourhood& neighs_u = m_rT.get_out_neighbors(u);
 	auto& interval_u = m_intervals[u];
 
@@ -133,18 +140,16 @@ void all_projective_arrangements::initialize_interval_node(const node u) noexcep
 		std::size_t neighs_it = 0;
 		std::size_t interval_it = 0;
 
-		while (
-			neighs_it < neighs_u.size() and interval_it < interval_u.size() and
-			neighs_u[neighs_it] < u
-		)
-		{
+		while (neighs_it < neighs_u.size() and
+			   interval_it < interval_u.size() and neighs_u[neighs_it] < u) {
 			interval_u[interval_it] = neighs_u[neighs_it];
 			++neighs_it;
 			++interval_it;
 		}
 		interval_u[interval_it] = u;
 		++interval_it;
-		while (neighs_it < neighs_u.size() and interval_it < interval_u.size()) {
+		while (neighs_it < neighs_u.size() and interval_it < interval_u.size()
+		) {
 			interval_u[interval_it] = neighs_u[neighs_it];
 			++neighs_it;
 			++interval_it;
@@ -158,10 +163,11 @@ void all_projective_arrangements::initialize_interval_node(const node u) noexcep
 		interval_u.back() = u;
 
 		// sort using bitsort
-		detail::sorting::bit_sort<node>
-		(interval_u.begin(), interval_u.end(), interval_u.size());
+		detail::sorting::bit_sort<node>(
+			interval_u.begin(), interval_u.end(), interval_u.size()
+		);
 	}
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

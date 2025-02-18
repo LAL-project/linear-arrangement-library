@@ -63,19 +63,22 @@ namespace linarr {
  */
 class chunk {
 public:
+
 	/// Useful typedef for constant iterators.
 	typedef typename std::vector<node>::const_iterator const_iterator;
 	/// Useful typedef for non-constant iterators.
 	typedef typename std::vector<node>::iterator iterator;
 
 public:
+
 	/* MODIFIERS */
 
 	/**
 	 * @brief Adds a new node to this chunk.
 	 * @param u Node to be added.
 	 */
-	void add_node(const node u) noexcept {
+	void add_node(const node u) noexcept
+	{
 		m_nodes.push_back(u);
 	}
 
@@ -85,7 +88,8 @@ public:
 	 * @brief Unsets the parent node of this chunk.
 	 * @post After calling this, method @ref has_parent_node returns false.
 	 */
-	void unset_parent_node() noexcept {
+	void unset_parent_node() noexcept
+	{
 		m_parent = {};
 	}
 
@@ -94,7 +98,8 @@ public:
 	 * @param u Node parent of this chunk.
 	 * @post After calling this, method @ref has_parent_node returns true.
 	 */
-	void set_parent_node(const node u) noexcept {
+	void set_parent_node(const node u) noexcept
+	{
 		m_parent = u;
 	}
 
@@ -102,7 +107,8 @@ public:
 	 * @brief Unsets the root node of this chunk.
 	 * @post After calling this, method @ref has_root_node returns false.
 	 */
-	void unset_root_node() noexcept {
+	void unset_root_node() noexcept
+	{
 		m_root = {};
 	}
 
@@ -111,7 +117,8 @@ public:
 	 * @param u Root parent of this chunk.
 	 * @post After calling this, method @ref has_root_node returns true.
 	 */
-	void set_root_node(const node u) noexcept {
+	void set_root_node(const node u) noexcept
+	{
 		m_root = u;
 	}
 
@@ -119,14 +126,17 @@ public:
 
 	/// Does this chunk have a parent node?
 	[[nodiscard]] bool has_parent_node() const noexcept
-	{ return m_parent.has_value(); }
+	{
+		return m_parent.has_value();
+	}
 
 	/**
 	 * @brief Retrieve the parent node of this chunk.
 	 * @returns The parent node if it exists.
 	 * @pre Method @ref has_parent_node must evaluate to true.
 	 */
-	[[nodiscard]] node get_parent_node() const noexcept {
+	[[nodiscard]] node get_parent_node() const noexcept
+	{
 #if defined DEBUG
 		assert(has_parent_node());
 #endif
@@ -134,14 +144,18 @@ public:
 	}
 
 	/// Does this chunk have a parent node?
-	[[nodiscard]] bool has_root_node() const noexcept { return m_root.has_value(); }
+	[[nodiscard]] bool has_root_node() const noexcept
+	{
+		return m_root.has_value();
+	}
 
 	/**
 	 * @brief Retrieve the root node of this chunk.
 	 * @returns The root node if it exists.
 	 * @pre Method @ref has_root_node must evaluate to true.
 	 */
-	[[nodiscard]] node get_root_node() const noexcept {
+	[[nodiscard]] node get_root_node() const noexcept
+	{
 #if defined DEBUG
 		assert(has_root_node());
 #endif
@@ -150,17 +164,25 @@ public:
 
 	/// A pointer to the beginning of the node sequence.
 	[[nodiscard]] const_iterator begin() const noexcept
-	{ return m_nodes.begin(); }
+	{
+		return m_nodes.begin();
+	}
 	/// A pointer to the beginning of the node sequence.
 	[[nodiscard]] iterator begin() noexcept
-	{ return m_nodes.begin(); }
+	{
+		return m_nodes.begin();
+	}
 
 	/// A pointer to the ending of the node sequence.
 	[[nodiscard]] const_iterator end() const noexcept
-	{ return m_nodes.end(); }
+	{
+		return m_nodes.end();
+	}
 	/// A pointer to the ending of the node sequence.
 	[[nodiscard]] iterator end() noexcept
-	{ return m_nodes.end(); }
+	{
+		return m_nodes.end();
+	}
 
 	/**
 	 * @brief Collection of nodes of this chunk.
@@ -169,9 +191,12 @@ public:
 	 * @returns A constant reference to the collection of nodes.
 	 */
 	[[nodiscard]] const std::vector<node>& get_nodes() const noexcept
-	{ return m_nodes; }
+	{
+		return m_nodes;
+	}
 
 private:
+
 	/// Collection of nodes in this chunk
 	std::vector<node> m_nodes;
 	/// The parent vertex of this chunk
@@ -180,5 +205,5 @@ private:
 	std::optional<node> m_root;
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

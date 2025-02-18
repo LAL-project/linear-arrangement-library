@@ -94,7 +94,9 @@ public:
 	 * @pre The input graph @e g is bipartite.
 	 */
 	template <class graph_t>
-	rand_bipartite_arrangements(const graph_t& g, const uint64_t seed = 0) noexcept {
+	rand_bipartite_arrangements(const graph_t& g, const uint64_t seed = 0)
+		noexcept
+	{
 		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init(seed);
@@ -104,21 +106,23 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	rand_bipartite_arrangements(const rand_bipartite_arrangements& Gen) noexcept = default;
+	rand_bipartite_arrangements(const rand_bipartite_arrangements& Gen
+	) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	rand_bipartite_arrangements(rand_bipartite_arrangements&& Gen) noexcept = default;
+	rand_bipartite_arrangements(rand_bipartite_arrangements&& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Constructor with coloring.
 	 * @param c Input coloring of a bipartite graph.
 	 * @param seed Integer value to seed the random number generator.
 	 */
-	rand_bipartite_arrangements
-	(const properties::bipartite_graph_coloring& c, const uint64_t seed = 0)
-	noexcept
+	rand_bipartite_arrangements(
+		const properties::bipartite_graph_coloring& c, const uint64_t seed = 0
+	) noexcept
 	{
 		m_coloring = c;
 		init(seed);
@@ -128,9 +132,9 @@ public:
 	 * @param c Input coloring of a bipartite graph.
 	 * @param seed Integer value to seed the random number generator.
 	 */
-	rand_bipartite_arrangements
-	(properties::bipartite_graph_coloring&& c, const uint64_t seed = 0)
-	noexcept
+	rand_bipartite_arrangements(
+		properties::bipartite_graph_coloring&& c, const uint64_t seed = 0
+	) noexcept
 	{
 		m_coloring = std::move(c);
 		init(seed);
@@ -140,11 +144,13 @@ public:
 	[[nodiscard]] const linear_arrangement& get_arrangement() noexcept;
 
 	/// Returns a linear arrangement constructed uniformly at random.
-	[[nodiscard]] const linear_arrangement& yield_arrangement() noexcept {
+	[[nodiscard]] const linear_arrangement& yield_arrangement() noexcept
+	{
 		return get_arrangement();
 	}
 
 private:
+
 	/**
 	 * @brief Initializes this class.
 	 *
@@ -164,6 +170,7 @@ private:
 	void init_arrangement(const bool red_first) noexcept;
 
 private:
+
 	/// Number of blue vertices.
 	std::size_t m_n_blue;
 	/// Number of red vertices.
@@ -192,6 +199,7 @@ private:
 	properties::bipartite_graph_coloring::color_t m_what_in_left;
 
 private:
+
 	/// Shortcut to blue color.
 	static constexpr properties::bipartite_graph_coloring::color_t blue =
 		properties::bipartite_graph_coloring::blue;
@@ -200,5 +208,5 @@ private:
 		properties::bipartite_graph_coloring::red;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

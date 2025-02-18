@@ -64,26 +64,36 @@ namespace detail {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
->
-[[nodiscard]] uint64_t tree_diameter(const tree_t& t, const node x) noexcept {
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+[[nodiscard]] uint64_t tree_diameter(const tree_t& t, const node x) noexcept
+{
 	{
-	const auto ccsize = t.get_num_nodes_component(x);
-	if (ccsize == 1) { return 0; }
-	if (ccsize == 2) { return 1; }
-	if (ccsize == 3) { return 2; }
+		const auto ccsize = t.get_num_nodes_component(x);
+		if (ccsize == 1) {
+			return 0;
+		}
+		if (ccsize == 2) {
+			return 1;
+		}
+		if (ccsize == 3) {
+			return 2;
+		}
 	}
 
 	const uint64_t n = t.get_num_nodes();
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 
 	node farthest_from_x;
 
 	// calculate the farthest vertex from a starting 'random' vertex
-	bfs.set_process_neighbour
-	( [&](const auto&, node, node v, bool) { farthest_from_x = v; } );
+	bfs.set_process_neighbour(
+		[&](const auto&, node, node v, bool)
+		{
+			farthest_from_x = v;
+		}
+	);
 	bfs.start_at(x);
 
 	// calculate the longest distance from 'farthest_from_0'
@@ -94,13 +104,16 @@ template <
 	bfs.clear_queue();
 
 	bfs.set_process_neighbour(
-	[&](const auto&, node u, node v, bool) {
-		distance[v] = distance[u] + 1; diameter = std::max(diameter, distance[v]); }
+		[&](const auto&, node u, node v, bool)
+		{
+			distance[v] = distance[u] + 1;
+			diameter = std::max(diameter, distance[v]);
+		}
 	);
 	bfs.start_at(farthest_from_x);
 
 	return diameter;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

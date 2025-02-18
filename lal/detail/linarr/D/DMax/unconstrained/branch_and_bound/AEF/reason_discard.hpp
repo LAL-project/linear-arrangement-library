@@ -162,12 +162,11 @@ enum class reason_discard : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::reason_discard
 /// to a long string.
-[[nodiscard]] inline constexpr std::string_view reason_discard_to_string
-(const reason_discard at) noexcept
+[[nodiscard]] inline constexpr std::string_view
+reason_discard_to_string(const reason_discard at) noexcept
 {
 	switch (at) {
-	case reason_discard::none:
-		return "Success";
+	case reason_discard::none: return "Success";
 	case reason_discard::will_produce_bipartite_arrangement:
 		return "Placing this vertex will produce a bipartite arrangement";
 
@@ -177,9 +176,11 @@ enum class reason_discard : int8_t {
 	case reason_discard::thistle_in_bridge_is_not_the_lowest:
 		return "The vertex is not adequate to be thistle in its bridge";
 	case reason_discard::hub_disallows_placement_of_antennas:
-		return "The level of the hub of an antenna is not Ok for the placement of the antenna";
+		return "The level of the hub of an antenna is not Ok for the placement "
+			   "of the antenna";
 	case reason_discard::placement_fails_level_propagation:
-		return "Placing this vertex will eventually prevent the placement of some other vertex in the same path";
+		return "Placing this vertex will eventually prevent the placement of "
+			   "some other vertex in the same path";
 
 	/* -- level values -- */
 	case reason_discard::placement_is_in_conflict_with_level_prediction:
@@ -188,16 +189,17 @@ enum class reason_discard : int8_t {
 		return "The level signature will not be non-increasing";
 	case reason_discard::missing_entire_path:
 		return "None of the vertices of a path (degree <= 2) has been assigned";
-	case reason_discard::missing_degree1:
-		return "Some leaf will be misplaced";
+	case reason_discard::missing_degree1: return "Some leaf will be misplaced";
 	case reason_discard::missing_degree2_lp2:
 		return "Some degree-2 vertex of a path (of level +2) will be misplaced";
 	case reason_discard::missing_degree2_lm2:
 		return "Some degree-2 vertex of a path (of level -2) will be misplaced";
 	case reason_discard::adjacent_vertices_with_equal_level_value:
-		return "There will be connected vertices (by an edge) with the same level value";
+		return "There will be connected vertices (by an edge) with the same "
+			   "level value";
 	case reason_discard::node_disallows_placement_of_neighbors:
-		return "Placing will eventually lead to breaking two of Nurse's properties";
+		return "Placing will eventually lead to breaking two of Nurse's "
+			   "properties";
 
 	/* -- optimality -- */
 	case reason_discard::largest_cut_below_minimum:
@@ -205,37 +207,40 @@ enum class reason_discard : int8_t {
 
 	/* -- symmetry breaking -- */
 	case reason_discard::nodes_of_equal_level_disobey_lexicographic_order:
-		return "Vertices of equal level value are not arranged in lexicographic order";
+		return "Vertices of equal level value are not arranged in "
+			   "lexicographic order";
 	case reason_discard::node_leaves_disobey_lexicographic_order:
-		return "Leaves attached to the same vertex are not arranged in lexicographic order";
-	case reason_discard::roots_of_isomorphic_subtrees_disobey_lexicographic_order:
-		return "Roots of isomorphic subtrees are not arranged in lexicographic order";
+		return "Leaves attached to the same vertex are not arranged in "
+			   "lexicographic order";
+	case reason_discard::
+		roots_of_isomorphic_subtrees_disobey_lexicographic_order:
+		return "Roots of isomorphic subtrees are not arranged in lexicographic "
+			   "order";
 
 	/* -- */
-	case reason_discard::__last_item:
-		return "?";
+	case reason_discard::__last_item: return "?";
 	}
 	return "";
 }
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::reason_discard
 /// to an index value.
-[[nodiscard]] inline inline constexpr std::size_t reason_discard_to_index
-(const reason_discard rd) noexcept
+[[nodiscard]] inline inline constexpr std::size_t
+reason_discard_to_index(const reason_discard rd) noexcept
 {
 	return static_cast<std::size_t>(rd);
 }
 
 /// Converts an index value to a value of
 /// @ref lal::detail::DMax::unconstrained::reason_discard.
-[[nodiscard]] static inline constexpr reason_discard index_to_reason_discard
-(const std::size_t i) noexcept
+[[nodiscard]] static inline constexpr reason_discard
+index_to_reason_discard(const std::size_t i) noexcept
 {
 	return static_cast<reason_discard>(i);
 }
 #endif
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

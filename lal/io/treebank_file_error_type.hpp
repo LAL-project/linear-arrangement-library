@@ -173,5 +173,5 @@ enum class treebank_file_error_type {
 	malformed_treebank_collection,
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

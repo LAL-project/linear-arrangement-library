@@ -98,16 +98,19 @@ struct edge_size_sigma {
 	std::size_t sigma;
 
 	/// Constructor.
-	edge_size_sigma() noexcept : e{}, size{0}, sigma{0} {}
+	edge_size_sigma() noexcept
+		: e{},
+		  size{0},
+		  sigma{0}
+	{ }
 	/// Constructor.
 	edge_size_sigma(
-		const edge _e,
-		const uint64_t _size,
-		const std::size_t _sigma
-	)
-	noexcept :
-		e{_e}, size{_size}, sigma{_sigma}
-	{}
+		const edge _e, const uint64_t _size, const std::size_t _sigma
+	) noexcept
+		: e{_e},
+		  size{_size},
+		  sigma{_sigma}
+	{ }
 };
 
 /// Useful shorthand for a sorted adjacency list.
@@ -122,9 +125,8 @@ typedef std::vector<std::vector<sorted_adjacency_list_info>>
  * @param t Input free tree.
  * @returns The appropriate sorted adjacency list.
  */
-[[nodiscard]] inline
-sorted_adjacency_list make_sorted_adjacency_list(const graphs::free_tree& t)
-noexcept
+[[nodiscard]] inline sorted_adjacency_list
+make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 {
 	typedef std::pair<edge, uint64_t> edge_size;
 
@@ -136,20 +138,25 @@ noexcept
 	sorted_adjacency_list M(n);
 
 	// bidirectional sizes
-	array<edge_size> S(2*m);
+	array<edge_size> S(2 * m);
 	{
-	calculate_bidirectional_sizes(t, n, 0, S.begin());
+		calculate_bidirectional_sizes(t, n, 0, S.begin());
 
-	// sort all tuples in bidir_sizes using the size of the subtree
-	sorting::counting_sort<edge_size, sorting::sort_type::non_increasing>
-		(
-			S.begin(), S.end(), n, S.size(),
-			[](const edge_size& T) -> std::size_t { return std::get<1>(T); }
+		// sort all tuples in bidir_sizes using the size of the subtree
+		sorting::counting_sort<edge_size, sorting::sort_type::non_increasing>(
+			S.begin(),
+			S.end(),
+			n,
+			S.size(),
+			[](const edge_size& T) -> std::size_t
+			{
+				return std::get<1>(T);
+			}
 		);
 	}
 
 	// put the sorted bidirectional sizes into an adjacency list
-	array<edge_size_sigma> J(2*m);
+	array<edge_size_sigma> J(2 * m);
 	for (std::size_t idx = 0; idx < S.size(); ++idx) {
 		const auto& T = S[idx];
 
@@ -157,25 +164,24 @@ noexcept
 		const uint64_t nv = T.second;
 		const uint64_t sigma_u_v = M[u].size();
 
-		M[u].push_back({
-			// node identifier
-			v,
-			// The size of the subtree T^u_v
-			nv,
-			// index_of_child_within_parents_list:
-			//      The index of 'v' within the list of 'u'
-			sigma_u_v,
-			// index_of_parent_within_childs_list:
-			//      calculated after M is filled
-			0,
-			// The sum of all the sizes including this size
-			nv + (M[u].size() > 0 ? M[u].back().partial_sum : 0)
+		M[u].push_back({// node identifier
+						v,
+						// The size of the subtree T^u_v
+						nv,
+						// index_of_child_within_parents_list:
+						//      The index of 'v' within the list of 'u'
+						sigma_u_v,
+						// index_of_parent_within_childs_list:
+						//      calculated after M is filled
+						0,
+						// The sum of all the sizes including this size
+						nv + (M[u].size() > 0 ? M[u].back().partial_sum : 0)
 		});
 
-		J[idx] = {{v,u}, n - nv, sigma_u_v};
+		J[idx] = {{v, u}, n - nv, sigma_u_v};
 
 #if defined DEBUG
-		assert(t.has_edge(u,v));
+		assert(t.has_edge(u, v));
 #endif
 	}
 
@@ -186,18 +192,22 @@ noexcept
 #endif
 
 	// sort all tuples in bidir_idxs using the size of the subtree
-	sorting::counting_sort
-		<edge_size_sigma, sorting::sort_type::non_increasing>
-		(
-			J.begin(), J.end(), n, J.size(),
-			[](const edge_size_sigma& T) -> std::size_t { return T.size; }
-		);
+	sorting::counting_sort<edge_size_sigma, sorting::sort_type::non_increasing>(
+		J.begin(),
+		J.end(),
+		n,
+		J.size(),
+		[](const edge_size_sigma& T) -> std::size_t
+		{
+			return T.size;
+		}
+	);
 
 	array<std::size_t> I(n, 0);
 	for (const auto& [e, suv, sigma_v_u] : J) {
 		const auto u = e.first;
 
-		M[u][ I[u] ].index_of_parent_within_childs_list = sigma_v_u;
+		M[u][I[u]].index_of_parent_within_childs_list = sigma_v_u;
 		++I[u];
 	}
 
@@ -238,14 +248,11 @@ template <return_type_all_maxs res_type>
 	bool_sequence<
 		res_type == return_type_all_maxs::DMax_value_vertex_and_max_root,
 		res_type == return_type_all_maxs::DMax_value_vertex,
-		res_type == return_type_all_maxs::max_root
-	>,
+		res_type == return_type_all_maxs::max_root>,
 	type_sequence<
 		std::pair<std::vector<uint64_t>, uint64_t>,
 		std::vector<uint64_t>,
-		uint64_t
-	>
->
+		uint64_t>>
 all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 {
 	constexpr bool calculate_max_root =
@@ -259,10 +266,12 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 
 	if (n == 1) {
 		DMax_per_vertex[0] = 0;
-		if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
+		if constexpr (res_type ==
+					  return_type_all_maxs::DMax_value_vertex_and_max_root) {
 			return {std::move(DMax_per_vertex), 0};
 		}
-		else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
+		else if constexpr (res_type ==
+						   return_type_all_maxs::DMax_value_vertex) {
 			return DMax_per_vertex;
 		}
 		else if constexpr (res_type == return_type_all_maxs::max_root) {
@@ -272,10 +281,12 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 	if (n == 2) {
 		DMax_per_vertex[0] = 1;
 		DMax_per_vertex[1] = 1;
-		if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
+		if constexpr (res_type ==
+					  return_type_all_maxs::DMax_value_vertex_and_max_root) {
 			return {std::move(DMax_per_vertex), 0};
 		}
-		else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
+		else if constexpr (res_type ==
+						   return_type_all_maxs::DMax_value_vertex) {
 			return DMax_per_vertex;
 		}
 		else if constexpr (res_type == return_type_all_maxs::max_root) {
@@ -293,9 +304,9 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 
 	// calculate DMax for the starting vertex
 	{
-	graphs::rooted_tree rt(t, starting_vertex);
-	rt.calculate_size_subtrees();
-	DMax_per_vertex[starting_vertex] = projective::AEF<false>(rt);
+		graphs::rooted_tree rt(t, starting_vertex);
+		rt.calculate_size_subtrees();
+		DMax_per_vertex[starting_vertex] = projective::AEF<false>(rt);
 	}
 
 	// the maximum value and the corresponding node
@@ -313,17 +324,19 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 		Q.pop();
 
 		const auto& Mu = M[u];
-		for (const auto& [v, s_u_v, sigma_u_v, sigma_v_u, partial_sum_ui] : Mu) {
-			if (visited[v] == 1) { continue; }
+		for (const auto& [v, s_u_v, sigma_u_v, sigma_v_u, partial_sum_ui] :
+			 Mu) {
+			if (visited[v] == 1) {
+				continue;
+			}
 
 			const uint64_t s_v_u = n - s_u_v;
 			const uint64_t partial_sum_vi = M[v][sigma_v_u].partial_sum;
 
 			DMax_per_vertex[v] =
-				  DMax_per_vertex[u]
-				+ (partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1))*s_v_u)
-				- (partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1))*s_u_v)
-			;
+				DMax_per_vertex[u] +
+				(partial_sum_vi + (t.get_degree(v) - (sigma_v_u + 1)) * s_v_u) -
+				(partial_sum_ui + (t.get_degree(u) - (sigma_u_v + 1)) * s_u_v);
 
 			visited[v] = 1;
 			Q.push(v);
@@ -337,7 +350,8 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 		}
 	}
 
-	if constexpr (res_type == return_type_all_maxs::DMax_value_vertex_and_max_root) {
+	if constexpr (res_type ==
+				  return_type_all_maxs::DMax_value_vertex_and_max_root) {
 		return {std::move(DMax_per_vertex), max_root};
 	}
 	else if constexpr (res_type == return_type_all_maxs::DMax_value_vertex) {
@@ -366,8 +380,7 @@ template <bool make_arrangement>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
+	uint64_t>
 AEF(const graphs::free_tree& t) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
@@ -375,8 +388,9 @@ AEF(const graphs::free_tree& t) noexcept
 	// in case the tree is caterpillar and the arrangement is
 	// not required then simply apply the formula
 	if constexpr (not make_arrangement) {
-		if (t.is_tree_type_valid() and t.is_of_tree_type(graphs::tree_type::caterpillar)) {
-			return (n*(n - 1))/2;
+		if (t.is_tree_type_valid() and
+			t.is_of_tree_type(graphs::tree_type::caterpillar)) {
+			return (n * (n - 1)) / 2;
 		}
 	}
 
@@ -406,7 +420,7 @@ AEF(const graphs::free_tree& t) noexcept
 	return projective::AEF<make_arrangement>(rt);
 }
 
-} // -- namespace planar
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace planar
+} // namespace DMax
+} // namespace detail
+} // namespace lal

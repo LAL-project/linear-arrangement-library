@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 // C++ includes
 #if defined DEBUG
 #include <cassert>
@@ -60,99 +60,103 @@ namespace linarr {
 // -----------------------------------------------------------------------------
 /* D */
 
-uint64_t sum_edge_lengths
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
+uint64_t sum_edge_lengths(
+	const graphs::directed_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::sum_edge_lengths(g, __ident_arr(arr)) :
-			detail::sum_edge_lengths(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::sum_edge_lengths(g, __ident_arr(arr))
+						: detail::sum_edge_lengths(g, __nonident_arr(arr))
+	);
 }
 
-uint64_t sum_edge_lengths
-(const graphs::undirected_graph& g, const linear_arrangement& arr)
-noexcept
+uint64_t sum_edge_lengths(
+	const graphs::undirected_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::sum_edge_lengths(g, __ident_arr(arr)) :
-			detail::sum_edge_lengths(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::sum_edge_lengths(g, __ident_arr(arr))
+						: detail::sum_edge_lengths(g, __nonident_arr(arr))
+	);
 }
 
 // -----------------------------------------------------------------------------
 /* MDD */
 
-numeric::rational mean_dependency_distance_rational
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
+numeric::rational mean_dependency_distance_rational(
+	const graphs::directed_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::mean_sum_edge_lengths<numeric::rational>(g, __ident_arr(arr)) :
-			detail::mean_sum_edge_lengths<numeric::rational>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::mean_sum_edge_lengths<numeric::rational>(
+							  g, __ident_arr(arr)
+						  )
+						: detail::mean_sum_edge_lengths<numeric::rational>(
+							  g, __nonident_arr(arr)
+						  )
+	);
 }
 
-numeric::rational mean_dependency_distance_rational
-(const graphs::undirected_graph& g, const linear_arrangement& arr)
-noexcept
+numeric::rational mean_dependency_distance_rational(
+	const graphs::undirected_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::mean_sum_edge_lengths<numeric::rational>(g, __ident_arr(arr)) :
-			detail::mean_sum_edge_lengths<numeric::rational>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0 ? detail::mean_sum_edge_lengths<numeric::rational>(
+							  g, __ident_arr(arr)
+						  )
+						: detail::mean_sum_edge_lengths<numeric::rational>(
+							  g, __nonident_arr(arr)
+						  )
+	);
 }
 
 // -----------------------------------------------------------------------------
 
-double mean_dependency_distance
-(const graphs::directed_graph& g, const linear_arrangement& arr)
-noexcept
+double mean_dependency_distance(
+	const graphs::directed_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr)) :
-			detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0
+			? detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr))
+			: detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
+	);
 }
-double mean_dependency_distance
-(const graphs::undirected_graph& g, const linear_arrangement& arr)
-noexcept
+double mean_dependency_distance(
+	const graphs::undirected_graph& g, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(arr.size() == 0 or g.get_num_nodes() == arr.size());
 #endif
 
-	return
-		(arr.size() == 0 ?
-			detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr)) :
-			detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
-		);
+	return (
+		arr.size() == 0
+			? detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr))
+			: detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
+	);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

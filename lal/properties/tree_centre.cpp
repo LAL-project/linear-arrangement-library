@@ -51,19 +51,21 @@
 namespace lal {
 namespace properties {
 
-std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept {
+std::pair<node, node> tree_centre(const graphs::rooted_tree& t) noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 	return detail::retrieve_centre(t, 0);
 }
 
-std::pair<node, node> tree_centre(const graphs::free_tree& t) noexcept {
+std::pair<node, node> tree_centre(const graphs::free_tree& t) noexcept
+{
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 	return detail::retrieve_centre(t, 0);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

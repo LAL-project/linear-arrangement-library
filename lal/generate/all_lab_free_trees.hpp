@@ -98,16 +98,20 @@ namespace generate {
  */
 class all_lab_free_trees : public _tree_generator<graphs::free_tree> {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	all_lab_free_trees() noexcept : _tree_generator<graphs::free_tree>() { }
+	all_lab_free_trees() noexcept
+		: _tree_generator<graphs::free_tree>()
+	{ }
 
 	/**
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes.
 	 */
-	all_lab_free_trees(const uint64_t n) noexcept {
+	all_lab_free_trees(const uint64_t n) noexcept
+	{
 		init(n);
 	}
 
@@ -127,7 +131,8 @@ public:
 	~all_lab_free_trees() = default;
 
 	/// Copy assignment operator.
-	all_lab_free_trees& operator= (const all_lab_free_trees& g) noexcept = default;
+	all_lab_free_trees& operator= (const all_lab_free_trees& g
+	) noexcept = default;
 	/// Move assignment operator.
 	all_lab_free_trees& operator= (all_lab_free_trees&& g) noexcept = default;
 
@@ -137,7 +142,8 @@ public:
 	 * @brief Initializes the generator with a given number of vertices.
 	 * @param n Number of vertices.
 	 */
-	void init(const uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept
+	{
 		_tree_generator::init(n);
 		m_Prufer_seq.resize(m_n <= 2 ? 1 : m_n - 2, 0);
 		m_sm.resize(m_n <= 2 ? 1 : m_n - 2, 0);
@@ -148,7 +154,8 @@ public:
 	 * @brief Clears the memory used.
 	 * @post Method @ref init must be called after every call to @ref clear.
 	 */
-	void clear() noexcept {
+	void clear() noexcept
+	{
 		_tree_generator::clear();
 		m_Prufer_seq.clear();
 		m_sm.clear();
@@ -157,7 +164,10 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/* MODIFIERS */
 
@@ -168,7 +178,8 @@ public:
 	 * can be retrieved using method @ref get_tree().
 	 * @pre The generator must have been initialized.
 	 */
-	void next() noexcept {
+	void next() noexcept
+	{
 		if (not has_next() or m_reached_end) {
 			m_reached_end = true;
 			return;
@@ -186,11 +197,10 @@ public:
 		++m_Prufer_seq[m_it];
 
 		m_sm[m_it] =
-		(m_Prufer_seq[m_it] == m_n - 1 ?
-			(m_it == 0) or (m_sm[m_it - 1] and m_Prufer_seq[m_it - 1] == m_n - 1)
-			:
-			m_sm[m_it]
-		);
+			(m_Prufer_seq[m_it] == m_n - 1
+				 ? (m_it == 0) or
+					   (m_sm[m_it - 1] and m_Prufer_seq[m_it - 1] == m_n - 1)
+				 : m_sm[m_it]);
 
 		++m_it;
 		if (m_it < m_Prufer_seq.size()) {
@@ -200,19 +210,22 @@ public:
 	}
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		activate_all_postprocessing_actions();
 		__reset();
 		next();
 	}
 
-	[[nodiscard]] graphs::free_tree yield_tree() noexcept {
+	[[nodiscard]] graphs::free_tree yield_tree() noexcept
+	{
 		const auto t = get_tree();
 		next();
 		return t;
 	}
 
 protected:
+
 	/**
 	 * @brief Constructs the current tree.
 	 * @returns The tree generated with method @ref next().
@@ -222,7 +235,8 @@ protected:
 	graphs::free_tree __get_tree() noexcept;
 
 	/// Sets the generator to its initial state.
-	void __reset() noexcept {
+	void __reset() noexcept
+	{
 		m_reached_end = false;
 
 		if (m_n <= 2) {
@@ -243,11 +257,13 @@ protected:
 	}
 
 	/// Returns whether there are more trees to generate.
-	[[nodiscard]] bool has_next() const noexcept {
+	[[nodiscard]] bool has_next() const noexcept
+	{
 		return m_sm[(m_n <= 2 ? 0 : m_n - 3)] == 0;
 	}
 
 private:
+
 	/// Iterator on the sequence.
 	uint64_t m_it;
 	/// Left-most position with value \f$n-1\f$.
@@ -260,5 +276,5 @@ private:
 	bool m_reached_end = false;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

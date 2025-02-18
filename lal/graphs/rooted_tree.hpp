@@ -108,15 +108,20 @@ namespace graphs {
  */
 class rooted_tree : public directed_graph, virtual public tree {
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	rooted_tree() noexcept : tree(), directed_graph() { }
+	rooted_tree() noexcept
+		: tree(),
+		  directed_graph()
+	{ }
 	/**
 	 * @brief Constructor with number of nodes and root node.
 	 * @param n Number of vertices.
 	 */
-	rooted_tree(const uint64_t n) noexcept {
+	rooted_tree(const uint64_t n) noexcept
+	{
 		rooted_tree::_init(n);
 	}
 
@@ -138,7 +143,11 @@ public:
 	 * @brief Copy constructor.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree(const rooted_tree& r) noexcept : graph(), tree(), directed_graph() {
+	rooted_tree(const rooted_tree& r) noexcept
+		: graph(),
+		  tree(),
+		  directed_graph()
+	{
 		copy_full_rooted_tree(r);
 	}
 
@@ -146,7 +155,8 @@ public:
 	 * @brief Move constructor.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree(rooted_tree&& r) noexcept {
+	rooted_tree(rooted_tree&& r) noexcept
+	{
 		move_full_rooted_tree(std::forward<rooted_tree>(r));
 	}
 
@@ -161,14 +171,12 @@ public:
 	 * is ignored.
 	 * @pre Tree @e t is a valid free tree.
 	 */
-	rooted_tree
-	(
+	rooted_tree(
 		const free_tree& t,
 		const node r,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept
+	) noexcept
 	{
 		init_rooted(t, r, norm, check_norm);
 	}
@@ -185,14 +193,12 @@ public:
 	 * @pre Tree @e t is a valid free tree.
 	 * @post Tree @e t is moved and should not be used.
 	 */
-	rooted_tree
-	(
+	rooted_tree(
 		free_tree&& t,
 		const node r,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept
+	) noexcept
 	{
 		init_rooted(std::forward<free_tree>(t), r, norm, check_norm);
 	}
@@ -206,7 +212,8 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree& operator= (const rooted_tree& r) noexcept {
+	rooted_tree& operator= (const rooted_tree& r) noexcept
+	{
 		copy_full_rooted_tree(r);
 		return *this;
 	}
@@ -214,7 +221,8 @@ public:
 	 * @brief Move assignment operator.
 	 * @param r Rooted tree.
 	 */
-	rooted_tree& operator= (rooted_tree&& r) noexcept {
+	rooted_tree& operator= (rooted_tree&& r) noexcept
+	{
 		move_full_rooted_tree(std::forward<rooted_tree>(r));
 		return *this;
 	}
@@ -240,14 +248,12 @@ public:
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
-	void init_rooted
-	(
+	void init_rooted(
 		const free_tree& t,
 		const node r,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Initializer with tree and root node.
@@ -268,16 +274,15 @@ public:
 	 * @pre Parameter @e t must be a tree (see @ref is_tree).
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
-	void init_rooted
-	(
+	void init_rooted(
 		free_tree&& t,
 		const node r,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
-	rooted_tree& add_node() noexcept {
+	rooted_tree& add_node() noexcept
+	{
 		directed_graph::add_node();
 		tree_only_add_node();
 		m_size_subtrees.push_back(1);
@@ -301,14 +306,12 @@ public:
 	 * after the removal of the node.
 	 * @post If @e u is the root of this tree, then this tree no longer has a root.
 	 */
-	rooted_tree& remove_node
-	(
+	rooted_tree& remove_node(
 		const node u,
 		const bool connect = false,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Adds an edge to the tree.
@@ -331,14 +334,12 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	rooted_tree& add_edge
-	(
+	rooted_tree& add_edge(
 		const node s,
 		const node t,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Adds an edge to the graph.
@@ -362,9 +363,12 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
+	void
+	finish_bulk_add(const bool norm = true, const bool check = true) noexcept;
 
-	void finish_bulk_add_complete(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_add_complete(
+		const bool norm = true, const bool check = true
+	) noexcept;
 
 	/**
 	 * @brief Adds a list of edges to the graph.
@@ -386,13 +390,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edges.
 	 */
-	rooted_tree& add_edges
-	(
+	rooted_tree& add_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Sets the edges to the graph.
@@ -426,13 +428,11 @@ public:
 	 * the previous root it had. Therefore, method @ref has_root returns true.
 	 * @post Method @ref is_rooted_tree returns true.
 	 */
-	rooted_tree& set_edges
-	(
+	rooted_tree& set_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -450,14 +450,12 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	rooted_tree& remove_edge
-	(
+	rooted_tree& remove_edge(
 		const node s,
 		const node t,
 		const bool norm = false,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Removes an edge from the tree.
@@ -481,9 +479,12 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Check whether the tree is normalized or not.
 	 */
-	void finish_bulk_remove(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_remove(const bool norm = true, const bool check = true)
+		noexcept;
 
-	void finish_bulk_remove_complete(const bool norm = true, const bool check = true) noexcept;
+	void finish_bulk_remove_complete(
+		const bool norm = true, const bool check = true
+	) noexcept;
 
 	/**
 	 * @brief Remove an edge from this graph.
@@ -502,13 +503,11 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	rooted_tree& remove_edges
-	(
+	rooted_tree& remove_edges(
 		const std::vector<edge>& edges,
 		const bool norm = true,
 		const bool check_norm = true
-	)
-	noexcept;
+	) noexcept;
 
 	/**
 	 * @brief Remove all edges incident to a given vertex.
@@ -525,13 +524,9 @@ public:
 	 * @post If @e norm is true the graph is guaranteed to be normalized
 	 * after the addition of the edge.
 	 */
-	rooted_tree& remove_edges_incident_to
-	(
-		const node u,
-		const bool norm = true,
-		const bool check_norm = true
-	)
-	noexcept;
+	rooted_tree& remove_edges_incident_to(
+		const node u, const bool norm = true, const bool check_norm = true
+	) noexcept;
 
 	/**
 	 * @brief Disjoint union of trees.
@@ -557,8 +552,9 @@ public:
 	 * two graphs were normalized prior to the union.
 	 * @post The type of tree is invalidated.
 	 */
-	rooted_tree& disjoint_union(const rooted_tree& t, const bool connect_roots = true)
-	noexcept;
+	rooted_tree& disjoint_union(
+		const rooted_tree& t, const bool connect_roots = true
+	) noexcept;
 
 	/**
 	 * @brief Calculates the number of nodes at every rooted subtree.
@@ -583,7 +579,8 @@ public:
 	 * @post The type of rooted tree and the size of the subtrees are
 	 * invalidated.
 	 */
-	void set_root(const node r) noexcept {
+	void set_root(const node r) noexcept
+	{
 		// if the tree is empty simply consider it has a root...
 		// although it really doesn't
 
@@ -608,7 +605,8 @@ public:
 	 * @param r Given node.
 	 * @returns Whether or not the node passed as parameter is a valid root.
 	 */
-	[[nodiscard]] bool is_root_valid(const node r) const noexcept {
+	[[nodiscard]] bool is_root_valid(const node r) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(r));
 #endif
@@ -617,9 +615,13 @@ public:
 
 	[[nodiscard]] bool can_add_edge(const node s, const node t) const noexcept;
 
-	[[nodiscard]] bool can_add_edges(const std::vector<edge>& edges) const noexcept;
+	[[nodiscard]] bool can_add_edges(const std::vector<edge>& edges
+	) const noexcept;
 
-	[[nodiscard]] bool is_rooted() const noexcept { return true; }
+	[[nodiscard]] bool is_rooted() const noexcept
+	{
+		return true;
+	}
 
 	/**
 	 * @brief Is this tree a valid rooted tree?
@@ -631,10 +633,14 @@ public:
 	 *
 	 * @returns Whether this tree is a valid rooted tree or not.
 	 */
-	[[nodiscard]] bool is_rooted_tree() const noexcept { return is_tree() and has_root(); }
+	[[nodiscard]] bool is_rooted_tree() const noexcept
+	{
+		return is_tree() and has_root();
+	}
 
 	/// Return the root of this tree.
-	[[nodiscard]] node get_root() const noexcept {
+	[[nodiscard]] node get_root() const noexcept
+	{
 #if defined DEBUG
 		assert(has_root());
 #endif
@@ -642,7 +648,10 @@ public:
 	}
 	/// Returns whether this rooted tree's root has been set or not
 	/// (see @ref set_root).
-	[[nodiscard]] bool has_root() const noexcept { return m_root.has_value(); }
+	[[nodiscard]] bool has_root() const noexcept
+	{
+		return m_root.has_value();
+	}
 
 	/**
 	 * @brief Get the size of a subtree rooted at a given node.
@@ -650,7 +659,8 @@ public:
 	 * @returns The number of nodes of the subtree rooted at @e u.
 	 * @pre Method @ref are_size_subtrees_valid returns true.
 	 */
-	[[nodiscard]] uint64_t get_num_nodes_subtree(const node u) const noexcept {
+	[[nodiscard]] uint64_t get_num_nodes_subtree(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(has_node(u));
 		assert(are_size_subtrees_valid());
@@ -669,7 +679,9 @@ public:
 	 * or not.
 	 */
 	[[nodiscard]] bool are_size_subtrees_valid() const noexcept
-	{ return m_are_size_subtrees_valid; }
+	{
+		return m_are_size_subtrees_valid;
+	}
 
 	/**
 	 * @brief Retrieve the edges of the subtree rooted at @e u.
@@ -701,8 +713,8 @@ public:
 	 * @post Whenever @e relab is true, the label of the first node of
 	 * the first edge is guaranteed to be node '0'.
 	 */
-	[[nodiscard]] std::vector<edge> get_edges_subtree(const node u, const bool relab = false)
-	const noexcept;
+	[[nodiscard]] std::vector<edge>
+	get_edges_subtree(const node u, const bool relab = false) const noexcept;
 
 	/**
 	 * @brief Retrieve the subtree rooted at node @e u.
@@ -718,9 +730,9 @@ public:
 	 * @param norm Normalize the tree.
 	 * @param check Chech whether the resulting graph is normalized or not.
 	 */
-	[[nodiscard]] free_tree to_free_tree
-	(const bool norm = true, const bool check = true)
-	const noexcept;
+	[[nodiscard]] free_tree to_free_tree(
+		const bool norm = true, const bool check = true
+	) const noexcept;
 
 	/**
 	 * @brief Converts a rooted tree into a head vector.
@@ -731,8 +743,8 @@ public:
 	 * @returns The head vector representation of this tree.
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	[[nodiscard]] head_vector get_head_vector(const linear_arrangement& arr = {})
-	const noexcept;
+	[[nodiscard]] head_vector
+	get_head_vector(const linear_arrangement& arr = {}) const noexcept;
 
 	/**
 	 * @brief Does the subtree rooted at @e r contain node @e u?
@@ -744,7 +756,8 @@ public:
 	 * @pre Node @e u belongs to the tree (see @ref has_node).
 	 * @pre This tree is a valid rooted tree (see @ref is_rooted_tree).
 	 */
-	[[nodiscard]] bool subtree_contains_node(const node r, const node u) const noexcept;
+	[[nodiscard]] bool
+	subtree_contains_node(const node r, const node u) const noexcept;
 
 	/**
 	 * @brief Are two nodes siblings?
@@ -754,7 +767,9 @@ public:
 	 * @param v Another node.
 	 * @returns True if the nodes are siblings. False, if they are not.
 	 */
-	[[nodiscard]] bool are_nodes_siblings(const node u, const node v) const noexcept {
+	[[nodiscard]] bool
+	are_nodes_siblings(const node u, const node v) const noexcept
+	{
 		// if one of the in-degrees is zero, then 'u' and 'v' cannot be siblings
 		if (get_in_degree(u) == 0 or get_in_degree(v) == 0) {
 			return false;
@@ -769,7 +784,8 @@ public:
 	 * @param u Input node.
 	 * @returns If the node has a parent vertex.
 	 */
-	[[nodiscard]] bool node_has_parent(const node u) const noexcept {
+	[[nodiscard]] bool node_has_parent(const node u) const noexcept
+	{
 		return get_in_degree(u) > 0;
 	}
 
@@ -779,7 +795,8 @@ public:
 	 * @returns The parent vertex of a node.
 	 * @pre Method @ref node_has_parent must return true.
 	 */
-	[[nodiscard]] node get_parent_node(const node u) const noexcept {
+	[[nodiscard]] node get_parent_node(const node u) const noexcept
+	{
 #if defined DEBUG
 		assert(node_has_parent(u));
 #endif
@@ -787,6 +804,7 @@ public:
 	}
 
 protected:
+
 	/// Root of the tree.
 	std::optional<node> m_root;
 
@@ -801,6 +819,7 @@ protected:
 	bool m_are_size_subtrees_valid = false;
 
 protected:
+
 	/**
 	 * @brief Initializes the memory in the graph hierarchy.
 	 *
@@ -809,7 +828,8 @@ protected:
 	 * @param n Number of nodes.
 	 * @pre The graph is cleared.
 	 */
-	void _init(const uint64_t n) noexcept {
+	void _init(const uint64_t n) noexcept
+	{
 		tree::tree_only_init(n);
 		directed_graph::_init(n);
 		m_size_subtrees.resize(n);
@@ -824,110 +844,103 @@ protected:
 	 * Clears the memory of @ref lal::graphs::free_tree,
 	 * @ref lal::graphs::undirected_graph and @ref lal::graphs::graph classes.
 	 */
-	void _clear() noexcept {
+	void _clear() noexcept
+	{
 		tree::tree_only_clear();
 		directed_graph::_clear();
 		m_size_subtrees.clear();
 		m_are_size_subtrees_valid = false;
 	}
 
-	void actions_after_add_edge(const node u, const node v) noexcept {
+	void actions_after_add_edge(const node u, const node v) noexcept
+	{
 		directed_graph::actions_after_add_edge(u, v);
 		tree_only_actions_after_add_edge(u, v);
 	}
 
-	void actions_after_add_edges(const edge_list& e) noexcept {
+	void actions_after_add_edges(const edge_list& e) noexcept
+	{
 		directed_graph::actions_after_add_edges(e);
 		tree_only_actions_after_add_edges(e);
 	}
 
-	void actions_after_add_edges_bulk() noexcept {
+	void actions_after_add_edges_bulk() noexcept
+	{
 		directed_graph::actions_after_add_edges_bulk();
 		tree_only_actions_after_add_edges_bulk();
 	}
 
-	void actions_after_remove_edge(const node u, const node v) noexcept {
+	void actions_after_remove_edge(const node u, const node v) noexcept
+	{
 		directed_graph::actions_after_remove_edge(u, v);
 		tree_only_actions_after_remove_edge(u, v);
 	}
 
-	void actions_after_remove_edges(const edge_list& e) noexcept {
+	void actions_after_remove_edges(const edge_list& e) noexcept
+	{
 		directed_graph::actions_after_remove_edges(e);
 		tree_only_actions_after_remove_edges(e);
 	}
 
-	void actions_after_remove_edges_bulk() noexcept {
+	void actions_after_remove_edges_bulk() noexcept
+	{
 		directed_graph::actions_after_remove_edges_bulk();
 		tree_only_actions_after_remove_edges_bulk();
 	}
 
-	void actions_before_remove_edges_incident_to(const node u) noexcept {
+	void actions_before_remove_edges_incident_to(const node u) noexcept
+	{
 		directed_graph::actions_before_remove_edges_incident_to(u);
 		tree_only_actions_before_remove_edges_incident_to(u);
 	}
 
-	void actions_after_remove_node(const node u) noexcept {
+	void actions_after_remove_node(const node u) noexcept
+	{
 		directed_graph::actions_after_remove_node(u);
 		tree_only_actions_after_remove_node(u);
 	}
 
-	void update_union_find_after_add_edge
-	(
+	void update_union_find_after_add_edge(
 		const node u,
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_add_edges
-	(
+	void update_union_find_after_add_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_add_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+	void update_union_find_after_add_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
-	void update_union_find_after_remove_edge
-	(
+	void update_union_find_after_remove_edge(
 		const node u,
 		const node v,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
-	
-	void update_union_find_after_remove_edges
-	(
+	) const noexcept;
+
+	void update_union_find_after_remove_edges(
 		const edge_list& edges,
 		uint64_t * const root_of,
 		uint64_t * const root_size
-	)
-	const noexcept;
+	) const noexcept;
 
-	void update_union_find_after_remove_edges_bulk
-	(
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+	void update_union_find_after_remove_edges_bulk(
+		uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
 	void update_union_find_before_remove_incident_edges_to(
-		const node u,
-		uint64_t * const root_of,
-		uint64_t * const root_size
-	)
-	const noexcept;
+		const node u, uint64_t * const root_of, uint64_t * const root_size
+	) const noexcept;
 
 	/// Copies all members of this class and the parent classes.
-	void copy_full_rooted_tree(const rooted_tree& r) noexcept {
+	void copy_full_rooted_tree(const rooted_tree& r) noexcept
+	{
 		// copy directed_graph class
 		copy_full_directed_graph(r);
 
@@ -940,7 +953,8 @@ protected:
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 	}
 	/// Moves all members of this class and the parent classes.
-	void move_full_rooted_tree(rooted_tree&& r) noexcept {
+	void move_full_rooted_tree(rooted_tree&& r) noexcept
+	{
 		// move-assign directed_graph class
 		move_full_directed_graph(std::forward<rooted_tree>(r));
 
@@ -952,14 +966,16 @@ protected:
 		m_size_subtrees = std::move(r.m_size_subtrees);
 		m_are_size_subtrees_valid = r.m_are_size_subtrees_valid;
 
-		r.m_root.reset(); // old tree cannot have a root anymore.. it's been moved!
+		r.m_root.reset(
+		); // old tree cannot have a root anymore.. it's been moved!
 		r.m_are_size_subtrees_valid = false;
 	}
 
 private:
+
 	using directed_graph::disjoint_union;
 	using directed_graph::remove_node;
 };
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

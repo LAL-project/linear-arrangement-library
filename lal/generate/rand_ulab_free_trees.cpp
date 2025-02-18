@@ -50,7 +50,7 @@
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/graphs/conversions.hpp>
 
-#define get_alpha(m,q) (m_alpha.find({m,q})->second)
+#define get_alpha(m, q) (m_alpha.find({m, q})->second)
 
 namespace lal {
 namespace generate {
@@ -60,16 +60,19 @@ namespace generate {
 
 /* PUBLIC */
 
-graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
-	if (m_n <= 1) { return graphs::free_tree(m_n); }
+graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept
+{
+	if (m_n <= 1) {
+		return graphs::free_tree(m_n);
+	}
 	if (m_n == 2) {
 		graphs::free_tree t(2);
-		t.set_edges({edge(0,1)});
+		t.set_edges({edge(0, 1)});
 		return t;
 	}
 	if (m_n == 3) {
 		graphs::free_tree t(3);
-		t.set_edges({edge(0,1),edge(1,2)});
+		t.set_edges({edge(0, 1), edge(1, 2)});
 		return t;
 	}
 
@@ -77,7 +80,7 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 
 	// calculate the probability of generating a bicentroidal tree
 	numeric::rational bicent_prob = 0;
-	if (m_n%2 == 0) {
+	if (m_n % 2 == 0) {
 		/* The following is a correction of Wilf's algorithm. Instead of
 		 * calculating
 		 *			bicent_prob = {1 + r_(n/2)}{2}/r_n
@@ -93,9 +96,9 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 		 * Giac/Xcas's manual (read the documentation of this class
 		 * for a reference).
 		 */
-		const numeric::integer k = get_rn(m_n/2) + 1;
-		const numeric::integer k_choose_2 = k*(k - 1);
-		bicent_prob = numeric::rational(k_choose_2, get_fn(m_n)*2);
+		const numeric::integer k = get_rn(m_n / 2) + 1;
+		const numeric::integer k_choose_2 = k * (k - 1);
+		bicent_prob = numeric::rational(k_choose_2, get_fn(m_n) * 2);
 	}
 #if defined DEBUG
 	assert(bicent_prob.to_double() <= 1.0);
@@ -123,13 +126,13 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
 	// -----------------------------------
 	// make a forest on (n - 1) nodes
 	const uint64_t m = m_n - 1;
-	const uint64_t q = (m_n - 1)/2;
+	const uint64_t q = (m_n - 1) / 2;
 
 	// parameters:
 	//     m: make a forest of m nodes
 	//     q: needed to choose pairs (j,d)
 	//     1: where to start storing nodes in m_tree
-	std::ignore = forest(m,q, 1);
+	std::ignore = forest(m, q, 1);
 	// -----------------------------------
 
 	graphs::free_tree T(m_n);
@@ -157,13 +160,9 @@ graphs::free_tree _rand_ulab_free_trees::get_tree() noexcept {
  *	number of times.
  *
  */
-uint64_t _rand_ulab_free_trees::forest
-(
-	const uint64_t m,
-	const uint64_t q,
-	uint64_t nt
-)
-noexcept
+uint64_t _rand_ulab_free_trees::forest(
+	const uint64_t m, const uint64_t q, uint64_t nt
+) noexcept
 {
 	if (m == 0) {
 		// Forest of 0 nodes
@@ -188,7 +187,7 @@ noexcept
 
 	// Make a forest F' of trees of m - j*d nodes in
 	// total, so that each tree has at most q nodes
-	nt = forest(m - j*d,q, nt);
+	nt = forest(m - j * d, q, nt);
 
 	// The forest is now in m_tree, and the roots in m_roots.
 	// The root of the last tree generated is stored in nr in m_roots.
@@ -212,23 +211,25 @@ noexcept
 		for (uint64_t v = nt + 1; v < nt + d; ++v) {
 			// for details on why this assignment
 			// see end of method ranrut()
-			m_head_vector[v] = nt + m_head_vector[v - c*d] - root_Tp;
+			m_head_vector[v] = nt + m_head_vector[v - c * d] - root_Tp;
 		}
 		nt += d;
-
 	}
 
 	return nt;
 }
 
-void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept {
+void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept
+{
 	// make sure that the number of nodes is even
 #if defined DEBUG
-	assert(n%2 == 0);
+	assert(n % 2 == 0);
 #endif
 
-	if (n == 0) { return; }
-	const uint64_t h = n/2;
+	if (n == 0) {
+		return;
+	}
+	const uint64_t h = n / 2;
 
 	// for both steps, make one tree ...
 	auto [lr, nt] = ranrut(h, 0, 0);
@@ -246,7 +247,7 @@ void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept {
 	}
 	else {
 		// step B2: generate another tree
-		std::tie(lr,nt) = ranrut(h, lr, nt);
+		std::tie(lr, nt) = ranrut(h, lr, nt);
 	}
 
 	// for the sake of debugging
@@ -255,9 +256,8 @@ void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept {
 #endif
 }
 
-const numeric::integer& _rand_ulab_free_trees::get_alpha_mq
-(const uint64_t m, const uint64_t q)
-noexcept
+const numeric::integer&
+_rand_ulab_free_trees::get_alpha_mq(const uint64_t m, const uint64_t q) noexcept
 {
 
 	/* This algorithm can be compared to the algorithm in
@@ -268,18 +268,18 @@ noexcept
 	 * coincide up to n=400.
 	 */
 
-	if (const auto it = m_alpha.find({m,q}); it != m_alpha.end()) {
+	if (const auto it = m_alpha.find({m, q}); it != m_alpha.end()) {
 		// already computed
 		return it->second;
 	}
 
 	// base cases, read the paper
 	if (m == 0) {
-		const auto it = m_alpha.insert({{m,q}, 1});
+		const auto it = m_alpha.insert({{m, q}, 1});
 		return it.first->second;
 	}
 	if (m <= q) {
-		const auto it = m_alpha.insert({{m,q}, get_rn(m + 1)});
+		const auto it = m_alpha.insert({{m, q}, get_rn(m + 1)});
 		return it.first->second;
 	}
 
@@ -287,20 +287,21 @@ noexcept
 	for (uint64_t j = 1; j <= m; ++j) {
 		// The variable 'sup' is used to avoid obtaining
 		// negative values in the operation 'm - j*d'.
-		const uint64_t sup = std::min( m/j, q );
+		const uint64_t sup = std::min(m / j, q);
 
 		for (uint64_t d = 1; d <= sup; ++d) {
-			const numeric::integer& A1 = get_alpha_mq(m - j*d, q);
+			const numeric::integer& A1 = get_alpha_mq(m - j * d, q);
 			const numeric::integer& A2 = get_alpha_mq(d - 1, q);
-			alpha_mq += A1*A2*d;
+			alpha_mq += A1 * A2 * d;
 		}
 	}
 	alpha_mq /= m;
-	const auto it = m_alpha.insert({{m,q}, std::move(alpha_mq)});
+	const auto it = m_alpha.insert({{m, q}, std::move(alpha_mq)});
 	return it.first->second;
 }
 
-const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept {
+const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept
+{
 	if (m_fn.size() >= n + 1) {
 		// value already computed
 		return m_fn[n];
@@ -315,13 +316,13 @@ const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept
 		// for k=0, f_k=1.
 		f_k = (k == 0);
 		f_k += get_rn(k);
-		f_k += (k%2 == 0 ? numeric::rational(get_rn(k/2), 2) : 0);
+		f_k += (k % 2 == 0 ? numeric::rational(get_rn(k / 2), 2) : 0);
 
 		s = 0;
 		for (uint64_t j = 0; j <= k; ++j) {
-			s += get_rn(j)*get_rn(k - j);
+			s += get_rn(j) * get_rn(k - j);
 		}
-		f_k -= numeric::rational(s,2);
+		f_k -= numeric::rational(s, 2);
 
 		m_fn.emplace_back(f_k.to_integer());
 		//m_fn[k] = std::move(f_i__int);
@@ -332,16 +333,16 @@ const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept
 	return m_fn[n];
 }
 
-std::pair<uint64_t, uint64_t>
-_rand_ulab_free_trees::choose_jd_from_alpha(const uint64_t m, const uint64_t q)
-noexcept
+std::pair<uint64_t, uint64_t> _rand_ulab_free_trees::choose_jd_from_alpha(
+	const uint64_t m, const uint64_t q
+) noexcept
 {
 	// Weight of the pair to choose. It will be decreased at
 	// every iteration and when it reaches a value below 0 we
 	// will have found our pair
 
 	const double r = m_unif(m_gen);
-	double z = (get_alpha_mq(m,q)*m).to_double()*r;
+	double z = (get_alpha_mq(m, q) * m).to_double() * r;
 
 	// Generate all possible pairs. For each pair calculate
 	// the weight and substract it from z. As soon as 'z'
@@ -349,7 +350,7 @@ noexcept
 	uint64_t j = 1;
 	uint64_t d = 1;
 	while (z > 0) {
-		if (m < j*d) {
+		if (m < j * d) {
 			// we need to "start a next pair"
 			++d;
 			if (d > q) {
@@ -362,10 +363,10 @@ noexcept
 		}
 		else {
 			if (has_rn(d)) {
-				z -= (get_alpha_mq(m-j*d, q)*m_rn_times_n[d]).to_double();
+				z -= (get_alpha_mq(m - j * d, q) * m_rn_times_n[d]).to_double();
 			}
 			else {
-				z -= (get_alpha_mq(m-j*d, q)*get_rn(d)*d).to_double();
+				z -= (get_alpha_mq(m - j * d, q) * get_rn(d) * d).to_double();
 			}
 
 			// if 'z' has not reached 0 then generate next pair
@@ -377,5 +378,5 @@ noexcept
 	return {j, d};
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

@@ -61,17 +61,11 @@ namespace detail {
 template <
 	typename tree_t,
 	bool ensure_root_is_returned,
-	bool free_tree_plus_root =
-		ensure_root_is_returned and
-		std::is_same_v<tree_t, graphs::free_tree>
->
-[[nodiscard]]
-std::conditional_t<
-	free_tree_plus_root,
-	std::pair<tree_t, node>,
-	tree_t
->
-from_edge_list_to_tree(std::stringstream& ss) noexcept
+	bool free_tree_plus_root = ensure_root_is_returned and
+							   std::is_same_v<tree_t, graphs::free_tree>>
+[[nodiscard]] std::
+	conditional_t<free_tree_plus_root, std::pair<tree_t, node>, tree_t>
+	from_edge_list_to_tree(std::stringstream& ss) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 
@@ -84,7 +78,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 	// parse the edge list to find the
 	// number of vertices of the tree
 	char curly_bracket;
-	node u,v;
+	node u, v;
 	while (ss >> curly_bracket) {
 		ss >> u >> v >> curly_bracket;
 		max_node_idx = std::max(max_node_idx, u);
@@ -101,7 +95,7 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
 	tree_t t(num_nodes);
 	while (ss >> curly_bracket) {
 		ss >> u >> v >> curly_bracket;
-		t.add_edge_bulk(u,v);
+		t.add_edge_bulk(u, v);
 	}
 	t.finish_bulk_add_complete();
 
@@ -160,9 +154,9 @@ from_edge_list_to_tree(std::stringstream& ss) noexcept
  * @pre No edge in the list is repeated.
  */
 template <class graph_t>
-[[nodiscard]] graph_t from_edge_list_to_graph
-(const edge_list& edge_list, const bool normalize, const bool check)
-noexcept
+[[nodiscard]] graph_t from_edge_list_to_graph(
+	const edge_list& edge_list, const bool normalize, const bool check
+) noexcept
 {
 	uint64_t max_vertex_index = 0;
 	for (const edge& e : edge_list) {
@@ -187,9 +181,9 @@ noexcept
  * @returns A graph.
  */
 template <class graph_t>
-[[nodiscard]] graph_t from_head_vector_to_graph
-(const head_vector& hv, const bool normalize, const bool check)
-noexcept
+[[nodiscard]] graph_t from_head_vector_to_graph(
+	const head_vector& hv, const bool normalize, const bool check
+) noexcept
 {
 	const uint64_t n = hv.size();
 	graph_t g(n);
@@ -221,17 +215,11 @@ noexcept
 template <
 	typename tree_t,
 	bool ensure_root_is_returned,
-	bool free_tree_plus_root =
-		ensure_root_is_returned and
-		std::is_same_v<tree_t, graphs::free_tree>
->
-[[nodiscard]]
-std::conditional_t<
-	free_tree_plus_root,
-	std::pair<tree_t, node>,
-	tree_t
->
-from_head_vector_to_tree(std::stringstream& ss) noexcept
+	bool free_tree_plus_root = ensure_root_is_returned and
+							   std::is_same_v<tree_t, graphs::free_tree>>
+[[nodiscard]] std::
+	conditional_t<free_tree_plus_root, std::pair<tree_t, node>, tree_t>
+	from_head_vector_to_tree(std::stringstream& ss) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 
@@ -239,7 +227,9 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
 
 	// parse the edge list to find the number of vertices of the tree
 	node u;
-	while (ss >> u) { ++num_nodes; }
+	while (ss >> u) {
+		++num_nodes;
+	}
 	ss.clear();
 	ss.seekg(0);
 
@@ -317,17 +307,14 @@ from_head_vector_to_tree(std::stringstream& ss) noexcept
  */
 template <
 	class tree_t,
-	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>
->
-[[nodiscard]]
-std::conditional_t<
+	bool is_rooted = std::is_base_of_v<graphs::rooted_tree, tree_t>>
+[[nodiscard]] std::conditional_t<
 	is_rooted,
 	graphs::rooted_tree,
-	std::pair<graphs::free_tree, node>
->
-from_head_vector_to_tree
-(const head_vector& hv, const bool normalize, const bool check)
-noexcept
+	std::pair<graphs::free_tree, node>>
+from_head_vector_to_tree(
+	const head_vector& hv, const bool normalize, const bool check
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 
@@ -420,9 +407,9 @@ noexcept
  * @returns A head vector encoding the tree.
  */
 template <class arrangement_t>
-[[nodiscard]] head_vector from_tree_to_head_vector
-(const graphs::rooted_tree& t, const arrangement_t& arr)
-noexcept
+[[nodiscard]] head_vector from_tree_to_head_vector(
+	const graphs::rooted_tree& t, const arrangement_t& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_rooted_tree());
@@ -452,15 +439,17 @@ noexcept
  * @returns A head vector
  */
 template <class arrangement_t>
-[[nodiscard]] head_vector from_tree_to_head_vector
-(const graphs::free_tree& t, const arrangement_t& arr, const node r)
-noexcept
+[[nodiscard]] head_vector from_tree_to_head_vector(
+	const graphs::free_tree& t, const arrangement_t& arr, const node r
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
 
-	return from_tree_to_head_vector(graphs::rooted_tree(t,r,false,false), arr);
+	return from_tree_to_head_vector(
+		graphs::rooted_tree(t, r, false, false), arr
+	);
 }
 
 // -----------------------------------------------------------------------------
@@ -492,14 +481,12 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree_small
-(
+[[nodiscard]] tree_t from_level_sequence_to_tree_small(
 	const uint64_t * const L,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 
@@ -528,7 +515,7 @@ noexcept
 		const node r = root_candidates[stack_it];
 
 		// add edge...
-		const auto [u,v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
+		const auto [u, v] = (r == 0 ? edge(r, i - 1) : edge(r - 1, i - 1));
 		t.add_edge_bulk(u, v);
 
 		// the last node added at level L[i] is i.
@@ -578,14 +565,12 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree_large
-(
+[[nodiscard]] tree_t from_level_sequence_to_tree_large(
 	const uint64_t * const L,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
 
@@ -688,19 +673,20 @@ noexcept
  * @pre The second value of a sequence must be a one.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree
-(
+[[nodiscard]] tree_t from_level_sequence_to_tree(
 	const uint64_t * const L,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return n <= 7 ?
-		from_level_sequence_to_tree_small<tree_t>(L, n, normalize, check) :
-		from_level_sequence_to_tree_large<tree_t>(L, n, normalize, check);
+	return n <= 7 ? from_level_sequence_to_tree_small<tree_t>(
+						L, n, normalize, check
+					)
+				  : from_level_sequence_to_tree_large<tree_t>(
+						L, n, normalize, check
+					);
 }
 
 /**
@@ -709,17 +695,17 @@ noexcept
  * See @ref lal::detail::from_level_sequence_to_tree for further details.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree_small
-(
+[[nodiscard]] tree_t from_level_sequence_to_tree_small(
 	const std::vector<uint64_t>& L,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalize, check);
+	return from_level_sequence_to_tree_small<tree_t>(
+		&L[0], n, normalize, check
+	);
 }
 
 /**
@@ -728,17 +714,17 @@ noexcept
  * See @ref lal::detail::from_level_sequence_to_tree for further details.
  */
 template <class tree_t>
-[[nodiscard]] tree_t from_level_sequence_to_tree_large
-(
+[[nodiscard]] tree_t from_level_sequence_to_tree_large(
 	const std::vector<uint64_t>& L,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalize, check);
+	return from_level_sequence_to_tree_large<tree_t>(
+		&L[0], n, normalize, check
+	);
 }
 
 /**
@@ -752,13 +738,15 @@ template <class tree_t>
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::tree, tree_t>);
-	return n <= 7 ?
-		from_level_sequence_to_tree_small<tree_t>(&L[0], n, normalize, check) :
-		from_level_sequence_to_tree_large<tree_t>(&L[0], n, normalize, check);
+	return n <= 7 ? from_level_sequence_to_tree_small<tree_t>(
+						&L[0], n, normalize, check
+					)
+				  : from_level_sequence_to_tree_large<tree_t>(
+						&L[0], n, normalize, check
+					);
 }
 
 // -----------------------------------------------------------------------------
@@ -779,14 +767,13 @@ noexcept
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	// initialisation
 	const uint64_t L = n - 2;
 	array<uint64_t> degree(n, 1);
 	for (uint64_t i = 0; i < L; ++i) {
-		degree[ seq[i] ] += 1;
+		degree[seq[i]] += 1;
 	}
 
 	// the output tree
@@ -842,18 +829,15 @@ noexcept
  * @param check Should it be checked whether the tree is normalized or not?
  * @returns The tree built with @e seq.
  */
-[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree
-(
+[[nodiscard]] inline graphs::free_tree from_Prufer_sequence_to_ftree(
 	const std::vector<uint64_t>& seq,
 	const uint64_t n,
 	const bool normalize,
 	const bool check
-)
-noexcept
+) noexcept
 {
 	return from_Prufer_sequence_to_ftree(&seq[0], n, normalize, check);
 }
 
-
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

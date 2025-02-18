@@ -548,8 +548,7 @@ enum class treebank_feature_type {
  * @ref lal::io::treebank_feature_type, except the last one (which should never be
  * used).
  */
-inline constexpr
-std::size_t __treebank_feature_size =
+constexpr inline std::size_t __treebank_feature_size =
 	static_cast<std::size_t>(treebank_feature_type::__last_value);
 
 /**
@@ -557,75 +556,107 @@ std::size_t __treebank_feature_size =
  * @param tf A treebank feature.
  * @returns A string used to format output files.
  */
-inline constexpr
+constexpr inline
 #if defined __LAL_SWIG_PYTHON
-std::string
+	std::string
 #else
-std::string_view
+	std::string_view
 #endif
-treebank_feature_string(const io::treebank_feature_type& tf)
-noexcept
+	treebank_feature_string(const io::treebank_feature_type& tf) noexcept
 {
 	switch (tf) {
 	case treebank_feature_type::num_nodes: return "n";
-	case treebank_feature_type::second_moment_degree: return "second_moment_degree";
-	case treebank_feature_type::second_moment_degree_out: return "second_moment_degree_out";
-	case treebank_feature_type::third_moment_degree: return "third_moment_degree";
-	case treebank_feature_type::third_moment_degree_out: return "third_moment_degree_out";
-	case treebank_feature_type::sum_squared_degrees: return "sum_squared_degrees";
-	case treebank_feature_type::sum_squared_out_degrees: return "sum_squared_out_degrees";
+	case treebank_feature_type::second_moment_degree:
+		return "second_moment_degree";
+	case treebank_feature_type::second_moment_degree_out:
+		return "second_moment_degree_out";
+	case treebank_feature_type::third_moment_degree:
+		return "third_moment_degree";
+	case treebank_feature_type::third_moment_degree_out:
+		return "third_moment_degree_out";
+	case treebank_feature_type::sum_squared_degrees:
+		return "sum_squared_degrees";
+	case treebank_feature_type::sum_squared_out_degrees:
+		return "sum_squared_out_degrees";
 	case treebank_feature_type::sum_cubed_degrees: return "sum_cubed_degrees";
-	case treebank_feature_type::sum_cubed_out_degrees: return "sum_cubed_out_degrees";
-	case treebank_feature_type::num_pairs_independent_edges: return "num_pairs_independent_edges";
+	case treebank_feature_type::sum_cubed_out_degrees:
+		return "sum_cubed_out_degrees";
+	case treebank_feature_type::num_pairs_independent_edges:
+		return "num_pairs_independent_edges";
 	case treebank_feature_type::head_initial: return "head_initial";
-	case treebank_feature_type::hubiness: return "hubiness";
-	case treebank_feature_type::sum_hierarchical_distances: return "sum_hierarchical_distance";
-	case treebank_feature_type::mean_hierarchical_distance: return "mean_hierarchical_distance";
-	case treebank_feature_type::tree_centre: return "tree_centre";
+	case treebank_feature_type::hubiness:	  return "hubiness";
+	case treebank_feature_type::sum_hierarchical_distances:
+		return "sum_hierarchical_distance";
+	case treebank_feature_type::mean_hierarchical_distance:
+		return "mean_hierarchical_distance";
+	case treebank_feature_type::tree_centre:   return "tree_centre";
 	case treebank_feature_type::tree_centroid: return "tree_centroid";
 	case treebank_feature_type::tree_diameter: return "tree_diameter";
-	case treebank_feature_type::tree_caterpillar_distance: return "caterpillar_distance";
+	case treebank_feature_type::tree_caterpillar_distance:
+		return "caterpillar_distance";
 	case treebank_feature_type::num_crossings: return "num_crossings";
-	case treebank_feature_type::predicted_num_crossings: return "predicted_num_crossings";
+	case treebank_feature_type::predicted_num_crossings:
+		return "predicted_num_crossings";
 	case treebank_feature_type::exp_num_crossings: return "exp_num_crossings";
 	case treebank_feature_type::var_num_crossings: return "var_num_crossings";
-	case treebank_feature_type::z_score_num_crossings: return "z_score_num_crossings";
+	case treebank_feature_type::z_score_num_crossings:
+		return "z_score_num_crossings";
 	case treebank_feature_type::sum_edge_lengths: return "sum_edge_lengths";
-	case treebank_feature_type::exp_sum_edge_lengths: return "exp_sum_edge_lengths";
-	case treebank_feature_type::exp_sum_edge_lengths_bipartite: return "exp_sum_edge_lengths_bipartite";
-	case treebank_feature_type::exp_sum_edge_lengths_projective: return "exp_sum_edge_lengths_projective";
-	case treebank_feature_type::exp_sum_edge_lengths_planar: return "exp_sum_edge_lengths_planar";
-	case treebank_feature_type::var_sum_edge_lengths: return "var_sum_edge_lengths";
-	case treebank_feature_type::z_score_sum_edge_lengths: return "z_score_sum_edge_lengths";
-	case treebank_feature_type::min_sum_edge_lengths: return "min_sum_edge_lengths";
-	case treebank_feature_type::min_sum_edge_lengths_bipartite: return "min_sum_edge_lengths_bipartite";
-	case treebank_feature_type::min_sum_edge_lengths_planar: return "min_sum_edge_lengths_planar";
-	case treebank_feature_type::min_sum_edge_lengths_projective: return "min_sum_edge_lengths_projective";
-	case treebank_feature_type::max_sum_edge_lengths: return "max_sum_edge_lengths";
-	case treebank_feature_type::max_sum_edge_lengths_1_thistle: return "max_sum_edge_lengths_1_thistle";
-	case treebank_feature_type::max_sum_edge_lengths_bipartite: return "max_sum_edge_lengths_bipartite";
-	case treebank_feature_type::max_sum_edge_lengths_planar: return "max_sum_edge_lengths_planar";
-	case treebank_feature_type::max_sum_edge_lengths_projective: return "max_sum_edge_lengths_projective";
-	case treebank_feature_type::mean_dependency_distance: return "mean_dependency_distance";
-	case treebank_feature_type::flux_max_weight: return "flux_max_weight";
-	case treebank_feature_type::flux_mean_weight: return "flux_mean_weight";
-	case treebank_feature_type::flux_min_weight: return "flux_min_weight";
+	case treebank_feature_type::exp_sum_edge_lengths:
+		return "exp_sum_edge_lengths";
+	case treebank_feature_type::exp_sum_edge_lengths_bipartite:
+		return "exp_sum_edge_lengths_bipartite";
+	case treebank_feature_type::exp_sum_edge_lengths_projective:
+		return "exp_sum_edge_lengths_projective";
+	case treebank_feature_type::exp_sum_edge_lengths_planar:
+		return "exp_sum_edge_lengths_planar";
+	case treebank_feature_type::var_sum_edge_lengths:
+		return "var_sum_edge_lengths";
+	case treebank_feature_type::z_score_sum_edge_lengths:
+		return "z_score_sum_edge_lengths";
+	case treebank_feature_type::min_sum_edge_lengths:
+		return "min_sum_edge_lengths";
+	case treebank_feature_type::min_sum_edge_lengths_bipartite:
+		return "min_sum_edge_lengths_bipartite";
+	case treebank_feature_type::min_sum_edge_lengths_planar:
+		return "min_sum_edge_lengths_planar";
+	case treebank_feature_type::min_sum_edge_lengths_projective:
+		return "min_sum_edge_lengths_projective";
+	case treebank_feature_type::max_sum_edge_lengths:
+		return "max_sum_edge_lengths";
+	case treebank_feature_type::max_sum_edge_lengths_1_thistle:
+		return "max_sum_edge_lengths_1_thistle";
+	case treebank_feature_type::max_sum_edge_lengths_bipartite:
+		return "max_sum_edge_lengths_bipartite";
+	case treebank_feature_type::max_sum_edge_lengths_planar:
+		return "max_sum_edge_lengths_planar";
+	case treebank_feature_type::max_sum_edge_lengths_projective:
+		return "max_sum_edge_lengths_projective";
+	case treebank_feature_type::mean_dependency_distance:
+		return "mean_dependency_distance";
+	case treebank_feature_type::flux_max_weight:	return "flux_max_weight";
+	case treebank_feature_type::flux_mean_weight:	return "flux_mean_weight";
+	case treebank_feature_type::flux_min_weight:	return "flux_min_weight";
 	case treebank_feature_type::flux_max_left_span: return "flux_max_left_span";
-	case treebank_feature_type::flux_mean_left_span: return "flux_mean_left_span";
+	case treebank_feature_type::flux_mean_left_span:
+		return "flux_mean_left_span";
 	case treebank_feature_type::flux_min_left_span: return "flux_min_left_span";
-	case treebank_feature_type::flux_max_right_span: return "flux_max_right_span";
-	case treebank_feature_type::flux_mean_right_span: return "flux_mean_right_span";
-	case treebank_feature_type::flux_min_right_span: return "flux_min_right_span";
-	case treebank_feature_type::flux_max_RL_ratio: return "flux_max_RL_ratio";
+	case treebank_feature_type::flux_max_right_span:
+		return "flux_max_right_span";
+	case treebank_feature_type::flux_mean_right_span:
+		return "flux_mean_right_span";
+	case treebank_feature_type::flux_min_right_span:
+		return "flux_min_right_span";
+	case treebank_feature_type::flux_max_RL_ratio:	return "flux_max_RL_ratio";
 	case treebank_feature_type::flux_mean_RL_ratio: return "flux_mean_RL_ratio";
-	case treebank_feature_type::flux_min_RL_ratio: return "flux_min_RL_ratio";
-	case treebank_feature_type::flux_max_WS_ratio: return "flux_max_WS_ratio";
+	case treebank_feature_type::flux_min_RL_ratio:	return "flux_min_RL_ratio";
+	case treebank_feature_type::flux_max_WS_ratio:	return "flux_max_WS_ratio";
 	case treebank_feature_type::flux_mean_WS_ratio: return "flux_mean_WS_ratio";
-	case treebank_feature_type::flux_min_WS_ratio: return "flux_min_WS_ratio";
-	case treebank_feature_type::flux_max_size: return "flux_max_size";
-	case treebank_feature_type::flux_mean_size: return "flux_mean_size";
-	case treebank_feature_type::flux_min_size: return "flux_min_size";
-	case treebank_feature_type::tree_type: return "tree_type";
+	case treebank_feature_type::flux_min_WS_ratio:	return "flux_min_WS_ratio";
+	case treebank_feature_type::flux_max_size:		return "flux_max_size";
+	case treebank_feature_type::flux_mean_size:		return "flux_mean_size";
+	case treebank_feature_type::flux_min_size:		return "flux_min_size";
+	case treebank_feature_type::tree_type:			return "tree_type";
 	case treebank_feature_type::syntactic_dependency_tree_class:
 		return "syntactic_dependency_tree_class";
 	case treebank_feature_type::__last_value: return "__last_value";
@@ -635,30 +666,35 @@ noexcept
 }
 
 /// Returns the index of the input treebank feature
-inline constexpr
-std::size_t treebank_feature_to_index(const io::treebank_feature_type& tf) noexcept {
+constexpr inline std::size_t
+treebank_feature_to_index(const io::treebank_feature_type& tf) noexcept
+{
 	return static_cast<std::size_t>(tf);
 }
 
 /// Returns the treebank feature corresponding to the input index
-inline constexpr
-io::treebank_feature_type index_to_treebank_feature(const std::size_t idx) noexcept {
+constexpr inline io::treebank_feature_type
+index_to_treebank_feature(const std::size_t idx) noexcept
+{
 #if defined DEBUG
-	assert(idx < treebank_feature_to_index(treebank_feature_type::__last_value));
+	assert(
+		idx < treebank_feature_to_index(treebank_feature_type::__last_value)
+	);
 #endif
 	return static_cast<io::treebank_feature_type>(idx);
 }
 
 /// Returns the treebank feature corresponding to the index as a string.
-inline constexpr
+constexpr inline
 #if defined __LAL_SWIG_PYTHON
-std::string
+	std::string
 #else
-std::string_view
+	std::string_view
 #endif
-treebank_feature_index_to_string(const std::size_t idx) noexcept {
+	treebank_feature_index_to_string(const std::size_t idx) noexcept
+{
 	return treebank_feature_string(index_to_treebank_feature(idx));
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

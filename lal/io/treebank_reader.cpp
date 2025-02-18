@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/io/treebank_reader.hpp>
 
 // C++ includes
@@ -52,9 +52,9 @@ namespace io {
 
 // MODIFIERS
 
-treebank_file_error treebank_reader::init
-(const std::string& treebank_filename, const std::string& treebank_id)
-noexcept
+treebank_file_error treebank_reader::init(
+	const std::string& treebank_filename, const std::string& treebank_id
+) noexcept
 {
 	m_treebank.close();
 	m_treebank_file = treebank_filename;
@@ -74,7 +74,8 @@ noexcept
 	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
-void treebank_reader::next_tree() noexcept {
+void treebank_reader::next_tree() noexcept
+{
 	if (m_treebank.eof()) {
 		m_no_more_trees = true;
 		return;
@@ -94,7 +95,8 @@ void treebank_reader::next_tree() noexcept {
 
 		if (m_current_line.length() == 1) {
 			// line is probably empty...
-			const bool is_digit = '0' <= m_current_line[0] and m_current_line[0] <= '9';
+			const bool is_digit =
+				'0' <= m_current_line[0] and m_current_line[0] <= '9';
 			const bool is_eol = m_current_line[0] == '\n';
 			if (not is_digit or is_eol) {
 				// if the only character is not a number or is an empty line
@@ -136,18 +138,20 @@ void treebank_reader::next_tree() noexcept {
 
 // GETTERS
 
-graphs::rooted_tree treebank_reader::get_tree() const noexcept {
-	graphs::rooted_tree t =
-		graphs::from_head_vector_to_rooted_tree(
-			m_current_head_vector,
-			m_normalize_tree,
-			true
-		);
+graphs::rooted_tree treebank_reader::get_tree() const noexcept
+{
+	graphs::rooted_tree t = graphs::from_head_vector_to_rooted_tree(
+		m_current_head_vector, m_normalize_tree, true
+	);
 
-	if (m_calculate_size_subtrees) { t.calculate_size_subtrees(); }
-	if (m_calculate_tree_type) { t.calculate_tree_type(); }
+	if (m_calculate_size_subtrees) {
+		t.calculate_size_subtrees();
+	}
+	if (m_calculate_tree_type) {
+		t.calculate_tree_type();
+	}
 	return t;
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

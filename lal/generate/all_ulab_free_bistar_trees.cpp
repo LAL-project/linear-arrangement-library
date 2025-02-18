@@ -49,16 +49,19 @@ namespace generate {
 
 /* PROTECTED */
 
-graphs::free_tree all_ulab_free_bistar_trees::__get_tree() noexcept {
-	if (m_n <= 1) { return graphs::free_tree(m_n); }
+graphs::free_tree all_ulab_free_bistar_trees::__get_tree() noexcept
+{
+	if (m_n <= 1) {
+		return graphs::free_tree(m_n);
+	}
 	if (m_n == 2) {
 		graphs::free_tree t(2);
-		t.add_edge(0,1);
+		t.add_edge(0, 1);
 		return t;
 	}
 
 	graphs::free_tree t(m_n);
-	t.add_edge_bulk(0,1);
+	t.add_edge_bulk(0, 1);
 	for (node u = 2; u < 2 + m_size; ++u) {
 		t.add_edge_bulk(0, u);
 	}
@@ -69,5 +72,5 @@ graphs::free_tree all_ulab_free_bistar_trees::__get_tree() noexcept {
 	return t;
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

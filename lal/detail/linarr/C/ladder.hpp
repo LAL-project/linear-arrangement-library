@@ -86,15 +86,13 @@ namespace ladder {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t compute
-(
+[[nodiscard]] uint64_t compute(
 	const graph_t& g,
 	const arrangement_t& arr,
 	unsigned char * const __restrict__ bn,
 	uint64_t * const __restrict__ L1,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -121,7 +119,7 @@ noexcept
 				C += S - L1[q];
 				++L1[q];
 			}*/
-			C += bn[v]*(S - L1[pv]);
+			C += bn[v] * (S - L1[pv]);
 			L1[pv] += bn[v];
 			// --
 
@@ -142,7 +140,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace ladder
+} // namespace ladder
 
 // =============================================================================
 // CALLS TO ALGORITHM
@@ -160,9 +158,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_ladder
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] uint64_t
+n_C_ladder(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -170,15 +167,18 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
 	array<uint64_t> L1(n, 0);
 
-	return ladder::compute<false>
-			(g, arr, boolean_neighborhood.begin(), L1.begin(), 0);
+	return ladder::compute<false>(
+		g, arr, boolean_neighborhood.begin(), L1.begin(), 0
+	);
 }
 
 // --------------------
@@ -192,14 +192,16 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_ladder
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept
+[[nodiscard]] std::vector<uint64_t> n_C_ladder(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
@@ -214,8 +216,13 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = ladder::compute<false>
-			(g, nonidentity_arr(arrs[i]), boolean_neighborhood.begin(), L1.begin(), 0);
+		cs[i] = ladder::compute<false>(
+			g,
+			nonidentity_arr(arrs[i]),
+			boolean_neighborhood.begin(),
+			L1.begin(),
+			0
+		);
 
 		boolean_neighborhood.fill(0);
 		L1[n - 1] = 0;
@@ -241,13 +248,9 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t is_n_C_ladder_lesseq_than
-(
-	const graph_t& g,
-	const arrangement_t& arr,
-	const uint64_t upper_bound
-)
-noexcept
+[[nodiscard]] uint64_t is_n_C_ladder_lesseq_than(
+	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -255,16 +258,18 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
 	array<uint64_t> L1(n, 0);
 
-	return
-		ladder::compute<true>
-		(g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound);
+	return ladder::compute<true>(
+		g, arr, boolean_neighborhood.begin(), L1.begin(), upper_bound
+	);
 }
 
 // --------------------
@@ -280,18 +285,18 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
@@ -306,9 +311,13 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = ladder::compute<true>
-			(g, nonidentity_arr(arrs[i]),
-				 boolean_neighborhood.begin(), L1.begin(), upper_bound);
+		cs[i] = ladder::compute<true>(
+			g,
+			nonidentity_arr(arrs[i]),
+			boolean_neighborhood.begin(),
+			L1.begin(),
+			upper_bound
+		);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -331,13 +340,11 @@ noexcept
  * bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
 	// ensure that there are as many linear arrangements as upper bounds
@@ -347,7 +354,9 @@ noexcept
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
@@ -364,9 +373,13 @@ noexcept
 		// compute C
 		boolean_neighborhood.fill(0);
 
-		cs[i] = ladder::compute<true>
-			(g, nonidentity_arr(arrs[i]),
-				 boolean_neighborhood.begin(), L1.begin(), upper_bounds[i]);
+		cs[i] = ladder::compute<true>(
+			g,
+			nonidentity_arr(arrs[i]),
+			boolean_neighborhood.begin(),
+			L1.begin(),
+			upper_bounds[i]
+		);
 
 		for (uint64_t z = 0; z < n; ++z) {
 			L1[z] = 0;
@@ -378,6 +391,6 @@ noexcept
 	return cs;
 }
 
-} // -- namespace crossings
-} // -- namespace detail
-} // -- namespace lal
+} // namespace crossings
+} // namespace detail
+} // namespace lal

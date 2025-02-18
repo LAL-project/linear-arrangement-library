@@ -59,22 +59,29 @@ namespace numeric {
  */
 class integer {
 public:
+
 	friend class rational;
+
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Empty constructor.
-	integer() noexcept { mpz_init(m_val); }
+	integer() noexcept
+	{
+		mpz_init(m_val);
+	}
 
 	/**
 	 * @brief Constructor with mpz_t.
 	 * @post Object @e raw will have to be initialized by the callee.
 	 */
-	integer(mpz_t&& raw) noexcept {
+	integer(mpz_t&& raw) noexcept
+	{
 		// move raw's contents
 		*m_val = *raw;
 		m_initialized = true;
-		
+
 		// invalidate raw's contents
 		raw->_mp_alloc = 0;
 		raw->_mp_size = 0;
@@ -86,25 +93,34 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer(const T i) noexcept {
-		if constexpr (std::is_signed_v<T>) { mpz_init_set_si(m_val, i); }
-		else { mpz_init_set_ui(m_val, i); }
+	integer(const T i) noexcept
+	{
+		if constexpr (std::is_signed_v<T>) {
+			mpz_init_set_si(m_val, i);
+		}
+		else {
+			mpz_init_set_ui(m_val, i);
+		}
 	}
 	/**
 	 * @brief Constructor with string.
 	 * @param s A string.
 	 */
-	integer(const std::string& s) noexcept { mpz_init_set_str(m_val, s.c_str(), 10); }
+	integer(const std::string& s) noexcept
+	{
+		mpz_init_set_str(m_val, s.c_str(), 10);
+	}
 
 	/**
 	 * @brief Move constructor.
 	 * @param i A @ref lal::numeric::integer.
 	 * @post Object @e i is not initialized.
 	 */
-	integer(integer&& i) noexcept {
+	integer(integer&& i) noexcept
+	{
 		// move i's contents
 		*m_val = *i.m_val;
-		
+
 		// invalidate i's contents
 		i.m_val->_mp_alloc = 0;
 		i.m_val->_mp_size = 0;
@@ -116,9 +132,15 @@ public:
 	 * @brief Copy constructor.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	integer(const integer& i) noexcept { mpz_init_set(m_val, i.m_val); }
+	integer(const integer& i) noexcept
+	{
+		mpz_init_set(m_val, i.m_val);
+	}
 	/// Destructor.
-	~integer() noexcept { mpz_clear(m_val); }
+	~integer() noexcept
+	{
+		mpz_clear(m_val);
+	}
 
 	/* SETTERS */
 
@@ -127,10 +149,17 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	void set_number(const T i) noexcept {
-		if (not is_initialized()) { mpz_init(m_val); }
-		if constexpr (std::is_signed_v<T>) { mpz_set_si(m_val, i); }
-		else { mpz_set_ui(m_val, i); }
+	void set_number(const T i) noexcept
+	{
+		if (not is_initialized()) {
+			mpz_init(m_val);
+		}
+		if constexpr (std::is_signed_v<T>) {
+			mpz_set_si(m_val, i);
+		}
+		else {
+			mpz_set_ui(m_val, i);
+		}
 		m_initialized = true;
 	}
 
@@ -138,8 +167,11 @@ public:
 	 * @brief Overwrites the value of this integer with @e i.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	void set_integer(const integer& i) noexcept {
-		if (not is_initialized()) { mpz_init(m_val); }
+	void set_integer(const integer& i) noexcept
+	{
+		if (not is_initialized()) {
+			mpz_init(m_val);
+		}
 		mpz_set(m_val, i.m_val);
 		m_initialized = true;
 	}
@@ -147,8 +179,11 @@ public:
 	 * @brief Overwrites the value of this integer with @e s.
 	 * @param s A string.
 	 */
-	void set_str(const std::string& s) noexcept {
-		if (not is_initialized()) { mpz_init(m_val); }
+	void set_str(const std::string& s) noexcept
+	{
+		if (not is_initialized()) {
+			mpz_init(m_val);
+		}
 		mpz_set_str(m_val, s.c_str(), 10);
 		m_initialized = true;
 	}
@@ -171,7 +206,8 @@ public:
 	 * @brief Copy assignment operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	integer& operator= (const integer& i) noexcept {
+	integer& operator= (const integer& i) noexcept
+	{
 		set_integer(i);
 		return *this;
 	}
@@ -180,13 +216,14 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 * @post Object @e i is not initialized.
 	 */
-	integer& operator= (integer&& i) noexcept {
+	integer& operator= (integer&& i) noexcept
+	{
 		mpz_clear(m_val);
 
 		// move i's contents
 		*m_val = *i.m_val;
 		m_initialized = true;
-		
+
 		// invalidate i's contents
 		i.m_val->_mp_alloc = 0;
 		i.m_val->_mp_size = 0;
@@ -203,9 +240,10 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator== (const T i) const noexcept {
-		return
-		(std::is_signed_v<T> ? mpz_cmp_si(m_val,i) : mpz_cmp_ui(m_val,i)) == 0;
+	[[nodiscard]] bool operator== (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
+									: mpz_cmp_ui(m_val, i)) == 0;
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -215,14 +253,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator== (const T i, const integer& ii) noexcept
-	{ return ii == i; }
+	{
+		return ii == i;
+	}
 #endif
 	/**
 	 * @brief Equality operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator== (const integer& i) const noexcept
-	{ return mpz_cmp(m_val, i.m_val) == 0; }
+	{
+		return mpz_cmp(m_val, i.m_val) == 0;
+	}
 
 	// -- NON-EQUALITY
 
@@ -232,7 +274,9 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] bool operator!= (const T i) const noexcept
-	{ return not (*this == i); }
+	{
+		return not(*this == i);
+	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Non-equality operator.
@@ -241,14 +285,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator!= (const T i, const integer& ii) noexcept
-	{ return ii != i; }
+	{
+		return ii != i;
+	}
 #endif
 	/**
 	 * @brief Non-equality operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator!= (const integer& i) const noexcept
-	{ return not (*this == i); }
+	{
+		return not(*this == i);
+	}
 
 	// -- LESS THAN
 
@@ -257,9 +305,10 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator< (const T i) const noexcept {
-		return
-		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) < 0;
+	[[nodiscard]] bool operator< (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
+									: mpz_cmp_ui(m_val, i)) < 0;
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -269,14 +318,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator< (const T i, const integer& ii) noexcept
-	{ return ii > i; }
+	{
+		return ii > i;
+	}
 #endif
 	/**
 	 * @brief Less than operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator< (const integer& i) const noexcept
-	{ return mpz_cmp(m_val, i.m_val) < 0; }
+	{
+		return mpz_cmp(m_val, i.m_val) < 0;
+	}
 
 	// -- LESS THAN OR EQUAL TO
 
@@ -285,9 +338,10 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator<= (const T i) const noexcept {
-		return
-		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) <= 0;
+	[[nodiscard]] bool operator<= (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
+									: mpz_cmp_ui(m_val, i)) <= 0;
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -297,14 +351,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator<= (const T i, const integer& ii) noexcept
-	{ return ii >= i; }
+	{
+		return ii >= i;
+	}
 #endif
 	/**
 	 * @brief Less than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator<= (const integer& i) const noexcept
-	{ return mpz_cmp(m_val, i.m_val) <= 0; }
+	{
+		return mpz_cmp(m_val, i.m_val) <= 0;
+	}
 
 	// -- GREATER THAN
 
@@ -313,9 +371,10 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator> (const T i) const noexcept {
-		return
-		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) > 0;
+	[[nodiscard]] bool operator> (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
+									: mpz_cmp_ui(m_val, i)) > 0;
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -325,14 +384,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator> (const T i, const integer& ii) noexcept
-	{ return ii < i; }
+	{
+		return ii < i;
+	}
 #endif
 	/**
 	 * @brief Greater than operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator> (const integer& i) const noexcept
-	{ return mpz_cmp(m_val, i.m_val) > 0; }
+	{
+		return mpz_cmp(m_val, i.m_val) > 0;
+	}
 
 	// -- GREATER THAN OR EQUAL TO
 
@@ -341,9 +404,10 @@ public:
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator>= (const T i) const noexcept {
-		return
-		(std::is_signed_v<T> ? mpz_cmp_si(m_val, i) : mpz_cmp_ui(m_val, i)) >= 0;
+	[[nodiscard]] bool operator>= (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
+									: mpz_cmp_ui(m_val, i)) >= 0;
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -353,14 +417,18 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] friend bool operator>= (const T i, const integer& ii) noexcept
-	{ return ii <= i; }
+	{
+		return ii <= i;
+	}
 #endif
 	/**
 	 * @brief Greater than or equal to operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] bool operator>= (const integer& i) const noexcept
-	{ return mpz_cmp(m_val, i.m_val) >= 0; }
+	{
+		return mpz_cmp(m_val, i.m_val) >= 0;
+	}
 
 	/* ARITHMETIC OPERATORS */
 
@@ -372,7 +440,11 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] integer operator+ (const T i) const noexcept
-	{ integer a(*this); a += i; return a; }
+	{
+		integer a(*this);
+		a += i;
+		return a;
+	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
@@ -380,25 +452,39 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator+ (const T i, const integer& ii) noexcept
-	{ return ii + i; }
+	[[nodiscard]] friend integer
+	operator+ (const T i, const integer& ii) noexcept
+	{
+		return ii + i;
+	}
 #endif
 	/**
 	 * @brief Addition operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] integer operator+ (const integer& i) const noexcept
-	{ integer a(*this); a += i;	return a; }
+	{
+		integer a(*this);
+		a += i;
+		return a;
+	}
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator+= (const T i) noexcept {
-		if constexpr (not std::is_signed_v<T>) { mpz_add_ui(m_val, m_val, i); }
+	integer& operator+= (const T i) noexcept
+	{
+		if constexpr (not std::is_signed_v<T>) {
+			mpz_add_ui(m_val, m_val, i);
+		}
 		else {
-			if (i > 0) {mpz_add_ui(m_val, m_val, static_cast<uint64_t>(i));	}
-			else {		mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(-i));}
+			if (i > 0) {
+				mpz_add_ui(m_val, m_val, static_cast<uint64_t>(i));
+			}
+			else {
+				mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(-i));
+			}
 		}
 		return *this;
 	}
@@ -407,20 +493,31 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	integer& operator+= (const integer& i) noexcept
-	{ mpz_add(m_val, m_val, i.m_val); return *this; }
+	{
+		mpz_add(m_val, m_val, i.m_val);
+		return *this;
+	}
 
 	// -- SUBSTRACTION
 
 	/// Minus unary operator. Returns a new object of type 'integer'.
 	[[nodiscard]] integer operator- () const noexcept
-	{ integer a(*this);	mpz_neg(a.m_val, a.m_val); return a; }
+	{
+		integer a(*this);
+		mpz_neg(a.m_val, a.m_val);
+		return a;
+	}
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] integer operator- (const T i) const noexcept
-	{ integer a(*this); a -= i; return a; }
+	{
+		integer a(*this);
+		a -= i;
+		return a;
+	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
@@ -428,25 +525,39 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator- (const T i, const integer& ii) noexcept
-	{ return -ii + i; }
+	[[nodiscard]] friend integer
+	operator- (const T i, const integer& ii) noexcept
+	{
+		return -ii + i;
+	}
 #endif
 	/**
 	 * @brief Substraction operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] integer operator- (const integer& i) const noexcept
-	{ integer a(*this); a -= i;	return a; }
+	{
+		integer a(*this);
+		a -= i;
+		return a;
+	}
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator-= (const T i) noexcept {
-		if constexpr (not std::is_signed_v<T>) { mpz_sub_ui(m_val, m_val, i); }
+	integer& operator-= (const T i) noexcept
+	{
+		if constexpr (not std::is_signed_v<T>) {
+			mpz_sub_ui(m_val, m_val, i);
+		}
 		else {
-			if (i > 0) {mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(i));	}
-			else {		mpz_add_ui(m_val, m_val, static_cast<uint64_t>(-i));}
+			if (i > 0) {
+				mpz_sub_ui(m_val, m_val, static_cast<uint64_t>(i));
+			}
+			else {
+				mpz_add_ui(m_val, m_val, static_cast<uint64_t>(-i));
+			}
 		}
 		return *this;
 	}
@@ -455,7 +566,10 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	integer& operator-= (const integer& i) noexcept
-	{ mpz_sub(m_val, m_val, i.m_val); return *this; }
+	{
+		mpz_sub(m_val, m_val, i.m_val);
+		return *this;
+	}
 
 	// -- MULTIPLICATION
 
@@ -465,7 +579,11 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] integer operator* (const T i) const noexcept
-	{ integer a(*this); a *= i; return a; }
+	{
+		integer a(*this);
+		a *= i;
+		return a;
+	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Product operator.
@@ -473,8 +591,11 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend integer operator* (const T i, const integer& ii) noexcept
-	{ return ii*i; }
+	[[nodiscard]] friend integer
+	operator* (const T i, const integer& ii) noexcept
+	{
+		return ii * i;
+	}
 #endif
 
 	/**
@@ -482,15 +603,24 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] integer operator* (const integer& i) const noexcept
-	{ integer a(*this); a *= i;	return a; }
+	{
+		integer a(*this);
+		a *= i;
+		return a;
+	}
 	/**
 	 * @brief Product operator.
 	 * @param i A signed/unsigned integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator*= (const T i) noexcept {
-		if constexpr (std::is_signed_v<T>) { mpz_mul_si(m_val, m_val, i); }
-		else {								 mpz_mul_ui(m_val, m_val, i); }
+	integer& operator*= (const T i) noexcept
+	{
+		if constexpr (std::is_signed_v<T>) {
+			mpz_mul_si(m_val, m_val, i);
+		}
+		else {
+			mpz_mul_ui(m_val, m_val, i);
+		}
 		return *this;
 	}
 	/**
@@ -498,7 +628,10 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	integer& operator*= (const integer& i) noexcept
-	{ mpz_mul(m_val, m_val, i.m_val);	return *this; }
+	{
+		mpz_mul(m_val, m_val, i.m_val);
+		return *this;
+	}
 
 	// -- DIVISION
 
@@ -508,7 +641,11 @@ public:
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
 	[[nodiscard]] integer operator/ (const T i) const noexcept
-	{ integer a(*this); a /= i;	return a; }
+	{
+		integer a(*this);
+		a /= i;
+		return a;
+	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
 	 * @brief Division operator.
@@ -516,27 +653,35 @@ public:
 	 * @param ii A @ref lal::numeric::integer.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend int64_t operator/ (const T i, const integer& ii) noexcept
-	{ return i/ii.to_int(); }
+	[[nodiscard]] friend int64_t
+	operator/ (const T i, const integer& ii) noexcept
+	{
+		return i / ii.to_int();
+	}
 #endif
 	/**
 	 * @brief Product operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] integer operator/ (const integer& i) const noexcept
-	{ integer a(*this); a /= i;	return a; }
+	{
+		integer a(*this);
+		a /= i;
+		return a;
+	}
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	integer& operator/= (const T i) noexcept {
+	integer& operator/= (const T i) noexcept
+	{
 		if constexpr (not std::is_signed_v<T>) {
 			mpz_fdiv_q_ui(m_val, m_val, i);
 		}
 		else {
-			mpz_fdiv_q_ui(m_val, m_val, static_cast<uint64_t>(i<0 ? -i : i));
-			mpz_mul_si(m_val, m_val, (i<0 ? -1 : 1));
+			mpz_fdiv_q_ui(m_val, m_val, static_cast<uint64_t>(i < 0 ? -i : i));
+			mpz_mul_si(m_val, m_val, (i < 0 ? -1 : 1));
 		}
 		return *this;
 	}
@@ -545,7 +690,10 @@ public:
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	integer& operator/= (const integer& i) noexcept
-	{ mpz_div(m_val, m_val, i.m_val); return *this; }
+	{
+		mpz_div(m_val, m_val, i.m_val);
+		return *this;
+	}
 
 	// -- EXPONENTIATION
 
@@ -554,13 +702,21 @@ public:
 	 * @param i An unsigned integer (basic type).
 	 */
 	[[nodiscard]] integer power(const uint64_t i) const noexcept
-	{ integer r(*this); r.powt(i);	return r; }
+	{
+		integer r(*this);
+		r.powt(i);
+		return r;
+	}
 	/**
 	 * @brief Exponentiation operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
 	[[nodiscard]] integer power(const integer& i) const noexcept
-	{ integer r(*this); r.powt(i);	return r; }
+	{
+		integer r(*this);
+		r.powt(i);
+		return r;
+	}
 
 	/**
 	 * @brief Exponentiation operator.
@@ -569,7 +725,10 @@ public:
 	 * @param i Unsigned integer (basic type) number.
 	 */
 	integer& powt(const uint64_t i) noexcept
-	{ mpz_pow_ui(m_val, m_val, i); return *this; }
+	{
+		mpz_pow_ui(m_val, m_val, i);
+		return *this;
+	}
 	/**
 	 * @brief Exponentiation operator.
 	 *
@@ -584,7 +743,8 @@ public:
 	 * @brief Modulus operator.
 	 * @param i Unsigned integer (basic type) number.
 	 */
-	[[nodiscard]] uint64_t operator% (const uint64_t i) const noexcept {
+	[[nodiscard]] uint64_t operator% (const uint64_t i) const noexcept
+	{
 		mpz_t r;
 		mpz_init(r);
 		const uint64_t m = mpz_mod_ui(r, m_val, i);
@@ -595,7 +755,8 @@ public:
 	 * @brief Modulus operator.
 	 * @param i A @ref lal::numeric::integer
 	 */
-	[[nodiscard]] integer operator% (const integer& i) const noexcept {
+	[[nodiscard]] integer operator% (const integer& i) const noexcept
+	{
 		integer r;
 		mpz_mod(r.m_val, m_val, i.m_val);
 		return r;
@@ -604,26 +765,45 @@ public:
 	/* GETTERS */
 
 	/// Returns whether this object is initialized or not.
-	[[nodiscard]] constexpr bool is_initialized() const noexcept { return m_initialized; }
+	[[nodiscard]] constexpr bool is_initialized() const noexcept
+	{
+		return m_initialized;
+	}
 	/// Returns the sign of this integer.
-	[[nodiscard]] int64_t get_sign() const noexcept { return mpz_sgn(m_val); }
+	[[nodiscard]] int64_t get_sign() const noexcept
+	{
+		return mpz_sgn(m_val);
+	}
 
 	/// Returns the amount of bytes this integer occupies.
 	[[nodiscard]] std::size_t bytes() const noexcept;
 	/// Returns the underlying gmp data structure.
-	[[nodiscard]] const mpz_t& get_raw_value() const noexcept { return m_val; }
+	[[nodiscard]] const mpz_t& get_raw_value() const noexcept
+	{
+		return m_val;
+	}
 
 	/* CONVERTERS */
 
 	/// Converts this integer to a signed 64-bit integer.
-	[[nodiscard]] int64_t to_int() const noexcept { return mpz_get_si(m_val); }
+	[[nodiscard]] int64_t to_int() const noexcept
+	{
+		return mpz_get_si(m_val);
+	}
 	/// Converts this integer to an unsigned 64-bit integer.
-	[[nodiscard]] uint64_t to_uint() const noexcept { return mpz_get_ui(m_val); }
+	[[nodiscard]] uint64_t to_uint() const noexcept
+	{
+		return mpz_get_ui(m_val);
+	}
 	/// Converts this integer to a double-precision floating-point value.
-	[[nodiscard]] double to_double() const noexcept { return mpz_get_d(m_val); }
+	[[nodiscard]] double to_double() const noexcept
+	{
+		return mpz_get_d(m_val);
+	}
 
 	/// Converts this integer to a string.
-	[[nodiscard]] std::string to_string() const noexcept {
+	[[nodiscard]] std::string to_string() const noexcept
+	{
 		std::string k;
 		as_string(k);
 		return k;
@@ -632,7 +812,8 @@ public:
 	 * @brief Converts this integer to a string.
 	 * @param s A reference to a string.
 	 */
-	void as_string(std::string& s) const noexcept {
+	void as_string(std::string& s) const noexcept
+	{
 		char *buf = nullptr;
 		buf = mpz_get_str(buf, 10, m_val);
 		s = std::string(buf);
@@ -652,7 +833,10 @@ public:
 	 *
 	 * @param i A @ref lal::numeric::integer
 	 */
-	void swap(integer& i) noexcept { mpz_swap(m_val, i.m_val); }
+	void swap(integer& i) noexcept
+	{
+		mpz_swap(m_val, i.m_val);
+	}
 
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -660,17 +844,19 @@ public:
 	 * @param i Input lal::numeric::integer.
 	 * @param j Input lal::numeric::integer.
 	 */
-	friend void swap(integer& i, integer& j) noexcept {
+	friend void swap(integer& i, integer& j) noexcept
+	{
 		i.swap(j);
 	}
 #endif
 
 private:
+
 	/// Structure from GMP storing the integer's value.
 	mpz_t m_val;
 	/// Is this integer initialized?
 	bool m_initialized = true;
 };
 
-} // -- namespace numeric
-} // -- namespace lal
+} // namespace numeric
+} // namespace lal

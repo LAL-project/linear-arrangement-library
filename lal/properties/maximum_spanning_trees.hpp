@@ -58,8 +58,8 @@ namespace properties {
  * @param t Input free tree.
  * @returns A positive integer value, the caterpillar distance of the input tree.
  */
-[[nodiscard]] uint64_t tree_caterpillar_distance(const graphs::free_tree& t)
-noexcept;
+[[nodiscard]] uint64_t tree_caterpillar_distance(const graphs::free_tree& t
+) noexcept;
 
 /**
  * @brief Caterpillar distance of a tree.
@@ -71,8 +71,8 @@ noexcept;
  * @param t Input free tree.
  * @returns A positive integer value, the caterpillar distance of the input tree.
  */
-[[nodiscard]] uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t)
-noexcept;
+[[nodiscard]] uint64_t tree_caterpillar_distance(const graphs::rooted_tree& t
+) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

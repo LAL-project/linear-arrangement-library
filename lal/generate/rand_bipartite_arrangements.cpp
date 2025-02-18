@@ -50,18 +50,28 @@
 namespace lal {
 namespace generate {
 
-const linear_arrangement& rand_bipartite_arrangements::get_arrangement() noexcept {
+const linear_arrangement&
+rand_bipartite_arrangements::get_arrangement() noexcept
+{
 
 	const bool use_red = m_red_or_blue(m_gen);
 	init_arrangement(use_red);
 
 	if (use_red) {
-		std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red, m_gen);
-		std::shuffle(m_arr.begin_inverse() + m_n_red, m_arr.end_inverse(), m_gen);
+		std::shuffle(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_red, m_gen
+		);
+		std::shuffle(
+			m_arr.begin_inverse() + m_n_red, m_arr.end_inverse(), m_gen
+		);
 	}
 	else {
-		std::shuffle(m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue, m_gen);
-		std::shuffle(m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse(), m_gen);
+		std::shuffle(
+			m_arr.begin_inverse(), m_arr.begin_inverse() + m_n_blue, m_gen
+		);
+		std::shuffle(
+			m_arr.begin_inverse() + m_n_blue, m_arr.end_inverse(), m_gen
+		);
 	}
 
 	m_arr.update_direct();
@@ -95,7 +105,9 @@ void rand_bipartite_arrangements::init(const uint64_t seed) noexcept
 	m_red_or_blue = std::bernoulli_distribution(0.5);
 }
 
-void rand_bipartite_arrangements::init_arrangement(const bool red_first) noexcept {
+void rand_bipartite_arrangements::init_arrangement(const bool red_first
+) noexcept
+{
 	const auto n = m_coloring.size();
 
 	position left = 0ull;
@@ -122,5 +134,5 @@ void rand_bipartite_arrangements::init_arrangement(const bool red_first) noexcep
 	}
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

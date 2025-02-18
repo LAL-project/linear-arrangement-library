@@ -71,20 +71,15 @@ namespace detail {
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_add_edge
-(
+void update_unionfind_after_add_edge(
 	const tree_t& t,
 	const node u,
 	const node v,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	// 'u' and 'v' are not connected, so they belong to
 	// (different) connected components of the tree.
@@ -108,7 +103,8 @@ noexcept
 		root_size[new_root] = new_size;
 
 		// update roots in the direction of v -> u
-		parent = v; child = u;
+		parent = v;
+		child = u;
 	}
 	else {
 		root_of[root_v] = root_u;
@@ -118,15 +114,19 @@ noexcept
 		root_size[new_root] = new_size;
 
 		// update roots in the direction of u -> v
-		parent = u; child = v;
+		parent = u;
+		child = v;
 	}
 
 	// update roots of the smaller component,
 	// in the direction parent -> child
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-	[&](const BFS<tree_t>&, const node w) -> void { root_of[w] = new_root; }
+		[&](const BFS<tree_t>&, const node w) -> void
+		{
+			root_of[w] = new_root;
+		}
 	);
 	bfs.set_visited(parent, 1); // avoid going backwards
 	bfs.start_at(child);
@@ -143,19 +143,14 @@ noexcept
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_add_edges
-(
+void update_unionfind_after_add_edges(
 	const tree_t& t,
 	const edge_list& edges,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	const auto n = t.get_num_nodes();
 
@@ -165,16 +160,19 @@ noexcept
 	node current_root = n + 1;
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-	[&](const auto&, const node w) {
-		root_of[w] = current_root;
-		++size_current_root;
-	}
+		[&](const auto&, const node w)
+		{
+			root_of[w] = current_root;
+			++size_current_root;
+		}
 	);
 
 	for (const auto& [u, v] : edges) {
-		if (bfs.node_was_visited(u)) { continue; }
+		if (bfs.node_was_visited(u)) {
+			continue;
+		}
 
 		current_root = u;
 		size_current_root = 0;
@@ -194,18 +192,11 @@ noexcept
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_add_rem_edges_bulk
-(
-	const tree_t& t,
-	node * const root_of,
-	uint64_t * const root_size
-)
-noexcept
+void update_unionfind_after_add_rem_edges_bulk(
+	const tree_t& t, node * const root_of, uint64_t * const root_size
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	const auto n = t.get_num_nodes();
 
@@ -215,16 +206,19 @@ noexcept
 	node current_root = n + 1;
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-	[&](const auto&, const node w) {
-		root_of[w] = current_root;
-		++size_current_root;
-	}
+		[&](const auto&, const node w)
+		{
+			root_of[w] = current_root;
+			++size_current_root;
+		}
 	);
 
 	for (node u = 0; u < n; ++u) {
-		if (bfs.node_was_visited(u)) { continue; }
+		if (bfs.node_was_visited(u)) {
+			continue;
+		}
 
 		current_root = u;
 		size_current_root = 0;
@@ -249,20 +243,15 @@ noexcept
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_remove_edge
-(
+void update_unionfind_after_remove_edge(
 	const tree_t& t,
 	const node u,
 	const node v,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-		);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 // 'u' and 'v' are connected
 #if defined DEBUG
@@ -278,12 +267,13 @@ noexcept
 	// Update the root of the vertices reachable from 'u'.
 	//   (also calculate the size of u's component)
 	uint64_t size_cc_u = 0;
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-	[&](const auto&, const node w) -> void {
-		root_of[w] = u;
-		++size_cc_u;
-	}
+		[&](const auto&, const node w) -> void
+		{
+			root_of[w] = u;
+			++size_cc_u;
+		}
 	);
 	bfs.start_at(u);
 	root_of[u] = u;
@@ -294,9 +284,10 @@ noexcept
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-	[&](const auto&, const node w) -> void {
-		root_of[w] = v;
-	}
+		[&](const auto&, const node w) -> void
+		{
+			root_of[w] = v;
+		}
 	);
 	bfs.start_at(v);
 	root_of[v] = v;
@@ -315,19 +306,14 @@ noexcept
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
 template <class tree_t>
-void update_unionfind_after_remove_edges
-(
+void update_unionfind_after_remove_edges(
 	const tree_t& t,
 	[[maybe_unused]] const edge_list& edges,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	const auto n = t.get_num_nodes();
 
@@ -337,12 +323,13 @@ noexcept
 	node current_root = n + 1;
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-	[&](const auto&, const node w) {
-		root_of[w] = current_root;
-		++size_current_cc;
-	}
+		[&](const auto&, const node w)
+		{
+			root_of[w] = current_root;
+			++size_current_cc;
+		}
 	);
 
 	for (const auto& [u, v] : edges) {
@@ -381,26 +368,22 @@ noexcept
  * @param root_size Sizes of each connected component.
  */
 template <class tree_t>
-void update_unionfind_before_remove_edges_incident_to
-(
+void update_unionfind_before_remove_edges_incident_to(
 	BFS<tree_t>& bfs,
 	const node v,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
-	[&](const auto&, const node w) -> void {
-		root_of[w] = v;
-		++size_cc_v;
-	}
+		[&](const auto&, const node w) -> void
+		{
+			root_of[w] = v;
+			++size_cc_v;
+		}
 	);
 	bfs.start_at(v);
 
@@ -425,22 +408,17 @@ noexcept
  * @param root_size Sizes of each connected component.
  */
 template <typename tree_t>
-void update_unionfind_before_remove_edges_incident_to
-(
+void update_unionfind_before_remove_edges_incident_to(
 	const tree_t& t,
 	const node u,
 	node * const root_of,
 	uint64_t * const root_size
-)
-noexcept
+) noexcept
 {
-	static_assert(
-		std::is_base_of_v<graphs::free_tree, tree_t> or
-		std::is_base_of_v<graphs::rooted_tree, tree_t>
-	);
+	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
 
 	BFS<tree_t> bfs(t);
-	bfs.set_use_rev_edges( BFS<tree_t>::is_graph_directed );
+	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	// avoid going 'backwards', we need to go 'onwards'
 	bfs.set_visited(u, 1);
 
@@ -448,22 +426,25 @@ noexcept
 		for (const node v : t.get_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			update_unionfind_before_remove_edges_incident_to
-				(bfs, v, root_of, root_size);
+			update_unionfind_before_remove_edges_incident_to(
+				bfs, v, root_of, root_size
+			);
 		}
 	}
 	else {
 		for (const node v : t.get_in_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			update_unionfind_before_remove_edges_incident_to
-				(bfs, v, root_of, root_size);
+			update_unionfind_before_remove_edges_incident_to(
+				bfs, v, root_of, root_size
+			);
 		}
 		for (const node v : t.get_out_neighbors(u)) {
 			// update size and root of the edges from v onwards
 			// (onwards means "in the direction u -> v"
-			update_unionfind_before_remove_edges_incident_to
-				(bfs, v, root_of, root_size);
+			update_unionfind_before_remove_edges_incident_to(
+				bfs, v, root_of, root_size
+			);
 		}
 	}
 
@@ -471,5 +452,5 @@ noexcept
 	root_size[u] = 1;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

@@ -92,19 +92,19 @@ namespace iterators {
 template <
 	typename graph_t,
 	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
->
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
 class E_iterator {
 public:
+
 	/* CONSTRUCTORS */
 
 	/**
 	 * @brief Constructor
 	 * @param g Constant reference to the graph over which we iterate.
 	 */
-	E_iterator(const graph_t& g) noexcept :
-		m_G(g),
-		m_num_nodes(m_G.get_num_nodes())
+	E_iterator(const graph_t& g) noexcept
+		: m_G(g),
+		  m_num_nodes(m_G.get_num_nodes())
 	{
 		reset();
 	}
@@ -114,23 +114,34 @@ public:
 	/* GETTERS */
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/// Returns the current edge.
-	[[nodiscard]] const edge& get_edge() const noexcept { return m_cur_edge; }
+	[[nodiscard]] const edge& get_edge() const noexcept
+	{
+		return m_cur_edge;
+	}
 
 	/// Returns the current edge.
-	[[nodiscard]] edge_t get_edge_t() const noexcept { return m_cur_edge; }
+	[[nodiscard]] edge_t get_edge_t() const noexcept
+	{
+		return m_cur_edge;
+	}
 
 	/// Returns the current edge and advances the iterator
-	[[nodiscard]] edge yield_edge() noexcept {
+	[[nodiscard]] edge yield_edge() noexcept
+	{
 		const auto e = get_edge();
 		next();
 		return e;
 	}
 
 	/// Returns the current edge and advances the iterator
-	[[nodiscard]] edge_t yield_edge_t() noexcept {
+	[[nodiscard]] edge_t yield_edge_t() noexcept
+	{
 		const auto e = get_edge_t();
 		next();
 		return e;
@@ -139,7 +150,8 @@ public:
 	/* MODIFIERS */
 
 	/// Moves the iterator to the next edge.
-	void next() noexcept {
+	void next() noexcept
+	{
 		if (not m_exists_next) {
 			m_reached_end = true;
 			return;
@@ -152,16 +164,19 @@ public:
 	}
 
 	/// Sets the iterator at the beginning of the set of edges.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		__reset();
 		next();
 	}
 
 private:
+
 	/// Useful typedef.
-	typedef std::pair<node,std::size_t> E_pointer;
+	typedef std::pair<node, std::size_t> E_pointer;
 
 private:
+
 	/// The graph whose edges have to be iterated on.
 	const graph_t& m_G;
 	/// Number of nodes of the graph.
@@ -177,8 +192,10 @@ private:
 	edge m_cur_edge;
 
 private:
+
 	/// Sets the iterator at the beginning of the set of edges.
-	void __reset() noexcept {
+	void __reset() noexcept
+	{
 		m_exists_next = true;
 		m_reached_end = false;
 
@@ -216,7 +233,8 @@ private:
 	}
 
 	/// Returns the edge pointed by @ref m_cur.
-	[[nodiscard]] edge make_current_edge() const noexcept {
+	[[nodiscard]] edge make_current_edge() const noexcept
+	{
 		node s, t;
 		if constexpr (is_directed) {
 			s = m_cur.first;
@@ -226,7 +244,7 @@ private:
 			s = m_cur.first;
 			t = m_G.get_neighbors(s)[m_cur.second];
 		}
-		return {s,t};
+		return {s, t};
 	}
 
 	/**
@@ -236,7 +254,8 @@ private:
 	 * @pre Starts at the values in @ref m_cur.
 	 */
 	template <bool isdir = is_directed, std::enable_if_t<isdir, bool> = true>
-	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept
+	{
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second;
 		bool found = false;
@@ -248,7 +267,9 @@ private:
 		else {
 			pt = 0;
 			++s;
-			while (s < m_num_nodes and m_G.get_out_degree(s) == 0) { ++s; }
+			while (s < m_num_nodes and m_G.get_out_degree(s) == 0) {
+				++s;
+			}
 			found = s < m_num_nodes;
 		}
 		return {found, E_pointer(s, pt)};
@@ -259,15 +280,20 @@ private:
 	 * valid, and pointers to the next edge.
 	 * @pre Starts at the values in @ref m_cur.
 	 */
-	template <bool isdir = is_directed, std::enable_if_t<not isdir, bool> = true>
-	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept {
+	template <
+		bool isdir = is_directed,
+		std::enable_if_t<not isdir, bool> = true>
+	[[nodiscard]] std::pair<bool, E_pointer> find_next_edge() const noexcept
+	{
 		node s = m_cur.first;
 		std::size_t pt = m_cur.second + 1;
 		bool found = false;
 
 		while (s < m_num_nodes and not found) {
 			const auto& Ns = m_G.get_neighbors(s);
-			while (pt < Ns.size() and s > Ns[pt]) { ++pt; }
+			while (pt < Ns.size() and s > Ns[pt]) {
+				++pt;
+			}
 
 			found = pt < Ns.size();
 			if (not found) {
@@ -279,5 +305,5 @@ private:
 	}
 };
 
-} // -- namespace iterators
-} // -- namespace lal
+} // namespace iterators
+} // namespace lal

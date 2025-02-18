@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #include <lal/generate/all_ulab_free_trees.hpp>
 
 // C++ includes
@@ -56,7 +56,8 @@ static constexpr uint64_t inf = std::numeric_limits<uint64_t>::max();
 
 /* MODIFIERS */
 
-void all_ulab_free_trees::next() noexcept {
+void all_ulab_free_trees::next() noexcept
+{
 	if (m_is_last or m_reached_end) {
 		m_reached_end = true;
 		return;
@@ -76,11 +77,9 @@ void all_ulab_free_trees::next() noexcept {
 
 	const bool cond1 =
 		(m_c == m_n + 1) or
-		(m_p == m_h2 and (
-			(m_L[m_h1] == m_L[m_h2] + 1 and m_n - m_h2 > m_r - m_h1)
-			or
-			(m_L[m_h1] == m_L[m_h2] and m_n - m_h2 + 1 < m_r - m_h1)
-		));
+		(m_p == m_h2 and
+		 ((m_L[m_h1] == m_L[m_h2] + 1 and m_n - m_h2 > m_r - m_h1) or
+		  (m_L[m_h1] == m_L[m_h2] and m_n - m_h2 + 1 < m_r - m_h1)));
 
 	const bool fixit = cond1 and (m_L[m_r] > 3);
 
@@ -222,7 +221,8 @@ void all_ulab_free_trees::next() noexcept {
 	m_is_last = (m_q == 0);
 }
 
-void all_ulab_free_trees::__reset() noexcept {
+void all_ulab_free_trees::__reset() noexcept
+{
 	m_is_last = false;
 	m_reached_end = false;
 
@@ -239,21 +239,21 @@ void all_ulab_free_trees::__reset() noexcept {
 		return;
 	}
 
-	const uint64_t k = m_n/2 + 1;
+	const uint64_t k = m_n / 2 + 1;
 	m_p = (m_n == 4 ? 3 : m_n);
 	m_q = m_n - 1;
 	m_h1 = k;
 	m_h2 = m_n;
 	m_r = k;
-	m_c = (m_n%2 == 0 ? m_n + 1 : inf);
+	m_c = (m_n % 2 == 0 ? m_n + 1 : inf);
 
 	// initialize L and W
 	for (uint64_t i = 1; i <= k; ++i) {
 		m_W[i] = i - 1;
 		m_L[i] = i;
 	}
-	m_W[k+1] = 1;
-	m_L[k+1] = 2;
+	m_W[k + 1] = 1;
+	m_L[k + 1] = 2;
 	for (uint64_t i = k + 2; i <= m_n; ++i) {
 		m_W[i] = i - 1;
 		m_L[i] = i - k + 1;
@@ -264,15 +264,20 @@ void all_ulab_free_trees::__reset() noexcept {
 
 /* PROTECTED */
 
-graphs::free_tree all_ulab_free_trees::__get_tree() noexcept {
-	if (m_n <= 1) { return graphs::free_tree(m_n); }
+graphs::free_tree all_ulab_free_trees::__get_tree() noexcept
+{
+	if (m_n <= 1) {
+		return graphs::free_tree(m_n);
+	}
 	if (m_n == 2) {
 		graphs::free_tree t(2);
-		t.add_edge(0,1);
+		t.add_edge(0, 1);
 		return t;
 	}
-	return detail::from_level_sequence_to_tree<graphs::free_tree>(m_L.begin(), m_n, false, false);
+	return detail::from_level_sequence_to_tree<graphs::free_tree>(
+		m_L.begin(), m_n, false, false
+	);
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

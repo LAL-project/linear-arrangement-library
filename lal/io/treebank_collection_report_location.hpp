@@ -65,39 +65,34 @@ struct treebank_collection_report_location {
 	treebank_collection_report_location() noexcept = default;
 
 	/// Constructor with data.
-	treebank_collection_report_location
-	(
+	treebank_collection_report_location(
 		const uint64_t ln,
 		const std::string& tfn,
 		const std::string& tid,
 		const treebank_file_report& rep
-	)
-	noexcept
-		:
-		line_number(ln),
-		treebank_file_name(tfn),
-		treebank_id(tid),
-		report(rep)
+	) noexcept
+		: line_number(ln),
+		  treebank_file_name(tfn),
+		  treebank_id(tid),
+		  report(rep)
 	{ }
 
 	/// Constructor with data.
-	treebank_collection_report_location
-	(
+	treebank_collection_report_location(
 		const uint64_t ln,
 		std::string&& tfn,
 		std::string&& tid,
 		treebank_file_report&& rep
-	)
-	noexcept :
-		line_number(ln),
-		treebank_file_name(std::move(tfn)),
-		treebank_id(std::move(tid)),
-		report(std::move(rep))
+	) noexcept
+		: line_number(ln),
+		  treebank_file_name(std::move(tfn)),
+		  treebank_id(std::move(tid)),
+		  report(std::move(rep))
 	{ }
 
 	/// Default destructor.
 	~treebank_collection_report_location() noexcept = default;
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

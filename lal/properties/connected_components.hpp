@@ -64,6 +64,7 @@ namespace properties {
 template <class graph_t>
 class connected_components {
 public:
+
 	/// Useful typedef for constant iterators.
 	typedef typename std::vector<graph_t>::const_iterator const_iterator;
 	/// Useful typedef for non-constant iterators.
@@ -72,7 +73,8 @@ public:
 public:
 
 	/// Access operator
-	[[nodiscard]] graph_t& operator[] (const std::size_t i) noexcept {
+	[[nodiscard]] graph_t& operator[] (const std::size_t i) noexcept
+	{
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
@@ -80,7 +82,8 @@ public:
 	}
 
 	/// Access operator
-	[[nodiscard]] const graph_t& operator[] (const std::size_t i) const noexcept {
+	[[nodiscard]] const graph_t& operator[] (const std::size_t i) const noexcept
+	{
 #if defined DEBUG
 		assert(i < m_connected_components.size());
 #endif
@@ -94,19 +97,22 @@ public:
 	 * @param n Number of nodes.
 	 * @post @ref m_node_to_cc is initialized.
 	 */
-	void init(const std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept
+	{
 		m_node_to_cc.resize(n, n + 1);
 		m__graph_node__to__cc_node.resize(n, n + 1);
 	}
 
 	/// Add a graph to the list of connected components.
-	void add_graph(graph_t&& g) noexcept {
+	void add_graph(graph_t&& g) noexcept
+	{
 		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(std::forward<graph_t>(g));
 		m__cc_node__to__graph_node.emplace_back(n, n + 1);
 	}
 	/// Add a graph to the list of connected components.
-	void add_graph(const graph_t& g) noexcept {
+	void add_graph(const graph_t& g) noexcept
+	{
 		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(g);
 		m__cc_node__to__graph_node.emplace_back(n, n + 1);
@@ -117,7 +123,8 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @param label The label of the connected component of @e u.
 	 */
-	void set_node_cc(const node u, const std::size_t label) noexcept {
+	void set_node_cc(const node u, const std::size_t label) noexcept
+	{
 		m_node_to_cc[u] = label;
 	}
 
@@ -126,7 +133,9 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @param label The label of the vertex @e u within its connected component.
 	 */
-	void set_label_graph_node_to_cc_node(const node u, const std::size_t label) noexcept {
+	void set_label_graph_node_to_cc_node(const node u, const std::size_t label)
+		noexcept
+	{
 		m__graph_node__to__cc_node[u] = label;
 	}
 	/**
@@ -135,13 +144,9 @@ public:
 	 * @param u Input node (within the connected component).
 	 * @param label The label of @e u in the whole graph.
 	 */
-	void set_label_cc_node_to_graph_node
-	(
-		const std::size_t cc_idx,
-		const node u,
-		const std::size_t label
-	)
-	noexcept
+	void set_label_cc_node_to_graph_node(
+		const std::size_t cc_idx, const node u, const std::size_t label
+	) noexcept
 	{
 		m__cc_node__to__graph_node[cc_idx][u] = label;
 	}
@@ -149,7 +154,8 @@ public:
 	/* GETTERS */
 
 	/// Returns the number of connected components.
-	[[nodiscard]] std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept
+	{
 		return m_connected_components.size();
 	}
 
@@ -159,7 +165,8 @@ public:
 	 * @returns A numeric value from 0 to the number of connected components (see
 	 * @ref size())
 	 */
-	[[nodiscard]] std::size_t get_cc_node(const node u) const noexcept {
+	[[nodiscard]] std::size_t get_cc_node(const node u) const noexcept
+	{
 		return m_node_to_cc[u];
 	}
 
@@ -168,8 +175,8 @@ public:
 	 * @param u Input node (of the original graph).
 	 * @returns The label of the vertex @e u within its connected component.
 	 */
-	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(const node u)
-	const noexcept
+	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(const node u
+	) const noexcept
 	{
 		return m__graph_node__to__cc_node[u];
 	}
@@ -179,28 +186,37 @@ public:
 	 * @param u Input node (within the connected component).
 	 * @returns The label of @e u in the whole graph.
 	 */
-	[[nodiscard]] std::size_t get_label_cc_node_to_graph_node
-	(const std::size_t cc_idx, const node u)
-	const noexcept
+	[[nodiscard]] std::size_t get_label_cc_node_to_graph_node(
+		const std::size_t cc_idx, const node u
+	) const noexcept
 	{
 		return m__cc_node__to__graph_node[cc_idx][u];
 	}
 
 	/// A pointer to the beginning of the sequence of connected components.
 	[[nodiscard]] const_iterator begin() const noexcept
-	{ return m_connected_components.begin(); }
+	{
+		return m_connected_components.begin();
+	}
 	/// A pointer to the beginning of the sequence of connected components.
 	[[nodiscard]] iterator begin() noexcept
-	{ return m_connected_components.begin(); }
+	{
+		return m_connected_components.begin();
+	}
 
 	/// A pointer to the end of the sequence of connected components.
 	[[nodiscard]] const_iterator end() const noexcept
-	{ return m_connected_components.end(); }
+	{
+		return m_connected_components.end();
+	}
 	/// A pointer to the end of the sequence of connected components.
 	[[nodiscard]] iterator end() noexcept
-	{ return m_connected_components.end(); }
+	{
+		return m_connected_components.end();
+	}
 
 private:
+
 	/// The connected components of the graph.
 	std::vector<graph_t> m_connected_components;
 
@@ -215,5 +231,5 @@ private:
 	detail::array<std::size_t> m_node_to_cc;
 };
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

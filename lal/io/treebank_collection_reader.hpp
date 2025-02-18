@@ -102,11 +102,15 @@ public:
 	 * - @ref lal::io::treebank_file_error_type::main_file_does_not_exist
 	 * - @ref lal::io::treebank_file_error_type::main_file_could_not_be_opened
 	 */
-	[[nodiscard]] treebank_file_error init(const std::string& main_file) noexcept;
+	[[nodiscard]] treebank_file_error init(const std::string& main_file
+	) noexcept;
 
 	/// Returns true or false depending on whether there is a next treebank
 	/// to be read.
-	[[nodiscard]] bool end() const noexcept { return m_reached_end; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_reached_end;
+	}
 
 	/**
 	 * @brief Opens the file of the next treebank in the main file.
@@ -117,9 +121,12 @@ public:
 
 	/// Returns a treebank reader class instance for processing a treebank.
 	[[nodiscard]] treebank_reader& get_treebank_reader() noexcept
-	{ return m_treebank_reader; }
+	{
+		return m_treebank_reader;
+	}
 
 private:
+
 	/**
 	 * @brief File containing the list of languages and their treebanks.
 	 *
@@ -145,8 +152,10 @@ private:
 	bool m_no_more_treebanks = false;
 
 private:
+
 	/// Consumes one line of the main file @ref m_main_file.
-	void step_line() noexcept {
+	void step_line() noexcept
+	{
 		if (m_list >> m_cur_treebank_id >> m_cur_treebank_filename) {
 			// do nothing, there are more trees
 		}
@@ -157,5 +166,5 @@ private:
 	}
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

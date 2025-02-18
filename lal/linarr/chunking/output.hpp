@@ -59,7 +59,8 @@ namespace linarr {
  * @param c Input chunk.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept {
+inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept
+{
 	os << "parent: ";
 	if (c.has_parent_node()) {
 		os << c.get_parent_node();
@@ -82,8 +83,8 @@ inline std::ostream& operator<< (std::ostream& os, const chunk& c) noexcept {
  * @param seq Input chunk sequence.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const chunk_sequence& seq)
-noexcept
+inline std::ostream&
+operator<< (std::ostream& os, const chunk_sequence& seq) noexcept
 {
 	for (std::size_t i = 0; i < seq.size(); ++i) {
 		os << i << ": " << seq[i] << '\n';
@@ -91,6 +92,5 @@ noexcept
 	return os;
 }
 
-
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

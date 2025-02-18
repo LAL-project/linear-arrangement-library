@@ -48,7 +48,8 @@ namespace lal {
 namespace detail {
 
 /// A sequence of types.
-template <typename... Ts> struct type_sequence { };
+template <typename... Ts>
+struct type_sequence { };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

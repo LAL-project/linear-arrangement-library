@@ -68,22 +68,26 @@ namespace detail {
 template <typename value_t>
 class queue_array {
 public:
+
 	/// Initializes the queue to hold @e n elements.
-	void init(const std::size_t n) noexcept {
+	void init(const std::size_t n) noexcept
+	{
 		m_queue.resize(n);
 		m_left = 0;
 		m_right = 0;
 	}
 
 	/// Insert a new element to the queue.
-	void push(const value_t& v) noexcept {
+	void push(const value_t& v) noexcept
+	{
 #if defined DEBUG
 		assert(not is_full());
 #endif
 		m_queue[m_right++] = v;
 	}
 	/// Insert a new element to the queue.
-	void push(value_t&& v) noexcept {
+	void push(value_t&& v) noexcept
+	{
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
@@ -95,7 +99,8 @@ public:
 	 * @post The size of the queue is reduced by one.
 	 * @post Pointer @ref m_left is updated.
 	 */
-	[[nodiscard]] value_t&& pop() noexcept {
+	[[nodiscard]] value_t&& pop() noexcept
+	{
 #if defined DEBUG
 		assert(m_left < m_queue.size());
 #endif
@@ -103,7 +108,8 @@ public:
 	}
 
 	/// Returns a reference to the front element.
-	[[nodiscard]] value_t& front() noexcept {
+	[[nodiscard]] value_t& front() noexcept
+	{
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
@@ -111,14 +117,16 @@ public:
 	}
 
 	/// Returns a constant reference to the front element.
-	[[nodiscard]] const value_t& front() const noexcept {
+	[[nodiscard]] const value_t& front() const noexcept
+	{
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
 		return m_queue[m_left];
 	}
 	/// Returns the size of the queue.
-	[[nodiscard]] std::size_t size() const noexcept {
+	[[nodiscard]] std::size_t size() const noexcept
+	{
 		return m_right - m_left;
 	}
 
@@ -128,7 +136,8 @@ public:
 	 * Memory is not reset, freed, or deallocated.
 	 * @post Pointers @ref m_left and @ref m_right are set to 0.
 	 */
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		m_left = m_right = 0;
 	}
 
@@ -139,7 +148,10 @@ public:
 	 * performed. This happens when @ref m_left is equal to the queue size.
 	 * @returns A Boolean value (true or false).
 	 */
-	[[nodiscard]] bool is_exhausted() const noexcept { return m_left == m_queue.size(); }
+	[[nodiscard]] bool is_exhausted() const noexcept
+	{
+		return m_left == m_queue.size();
+	}
 
 	/**
 	 * @brief Is the queue full?
@@ -148,18 +160,34 @@ public:
 	 * happens when @ref m_right is equal to the queue size.
 	 * @returns A Boolean value (true or false).
 	 */
-	[[nodiscard]] bool is_full() const noexcept { return m_right == m_queue.size(); }
+	[[nodiscard]] bool is_full() const noexcept
+	{
+		return m_right == m_queue.size();
+	}
 
 	/// Pointer to begin.
-	[[nodiscard]] value_t *begin() noexcept { return m_queue.begin() + m_left; }
+	[[nodiscard]] value_t *begin() noexcept
+	{
+		return m_queue.begin() + m_left;
+	}
 	/// Constant pointer to begin.
-	[[nodiscard]] const value_t *begin() const noexcept { return m_queue.begin() + m_left; }
+	[[nodiscard]] const value_t *begin() const noexcept
+	{
+		return m_queue.begin() + m_left;
+	}
 	/// Pointer to end.
-	[[nodiscard]] value_t *end() noexcept { return m_queue.begin() + m_right; }
+	[[nodiscard]] value_t *end() noexcept
+	{
+		return m_queue.begin() + m_right;
+	}
 	/// Constant pointer to end.
-	[[nodiscard]] const value_t *end() const noexcept { return m_queue.begin() + m_right; }
+	[[nodiscard]] const value_t *end() const noexcept
+	{
+		return m_queue.begin() + m_right;
+	}
 
 private:
+
 	/// Data (array) of the queue
 	array<value_t> m_queue;
 
@@ -169,5 +197,5 @@ private:
 	std::size_t m_right;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

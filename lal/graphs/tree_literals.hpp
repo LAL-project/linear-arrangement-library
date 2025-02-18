@@ -72,8 +72,7 @@
  * @post The tree is normalized.
  */
 [[nodiscard]] std::pair<lal::graphs::free_tree, lal::node>
-operator""_root_free_tree (const char *str, const std::size_t s)
-noexcept;
+operator""_root_free_tree (const char *str, const std::size_t s) noexcept;
 
 /**
  * @brief User-defined literal to denote free trees.
@@ -98,8 +97,7 @@ noexcept;
  * @post The tree is normalized.
  */
 [[nodiscard]] lal::graphs::free_tree
-operator""_free_tree (const char *str, const std::size_t s)
-noexcept;
+operator""_free_tree (const char *str, const std::size_t s) noexcept;
 
 /**
  * @brief User-defined literal to denote free trees.
@@ -119,5 +117,4 @@ noexcept;
  * @post The tree is normalized.
  */
 [[nodiscard]] lal::graphs::rooted_tree
-operator""_rooted_tree (const char *str, const std::size_t s)
-noexcept;
+operator""_rooted_tree (const char *str, const std::size_t s) noexcept;

@@ -55,4 +55,4 @@ static constexpr std::string_view __lal_major_verno = "99.99";
 /// Patch version number of the library's current state.
 static constexpr std::string_view __lal_patch_verno = "99";
 
-};
+}; // namespace lal

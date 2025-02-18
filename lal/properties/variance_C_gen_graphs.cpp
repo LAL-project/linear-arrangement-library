@@ -51,30 +51,31 @@
 #include <lal/detail/sorting/bit_sort.hpp>
 #include <lal/detail/array.hpp>
 
-#define sorted_edge(u,v) (u < v ? edge(u,v) : edge(v,u))
+#define sorted_edge(u, v) (u < v ? edge(u, v) : edge(v, u))
 #define has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
 
 /* This macro has two local variables: __i, __j
  * The first variable, __i, iterates over Ni.
  * The first variable, __j, iterates over Nj.
  */
-#define iterate(Ni, Nj, JOB)						\
-{													\
-	std::size_t __i = 0;							\
-	std::size_t __j = 0;							\
-	while (__i < Ni.size() and __j < Nj.size())	{	\
-		const auto __Ni_i = Ni[__i];				\
-		const auto __Nj_j = Nj[__j];				\
-		if (__Ni_i == __Nj_j) {						\
-			JOB();									\
-			++__i; ++__j;							\
-		}											\
-		else {										\
-			__i += (__Ni_i < __Nj_j);				\
-			__j += (__Ni_i > __Nj_j);				\
-		}											\
-	}												\
-}
+#define iterate(Ni, Nj, JOB)                                                   \
+	{                                                                          \
+		std::size_t __i = 0;                                                   \
+		std::size_t __j = 0;                                                   \
+		while (__i < Ni.size() and __j < Nj.size()) {                          \
+			const auto __Ni_i = Ni[__i];                                       \
+			const auto __Nj_j = Nj[__j];                                       \
+			if (__Ni_i == __Nj_j) {                                            \
+				JOB();                                                         \
+				++__i;                                                         \
+				++__j;                                                         \
+			}                                                                  \
+			else {                                                             \
+				__i += (__Ni_i < __Nj_j);                                      \
+				__j += (__Ni_i > __Nj_j);                                      \
+			}                                                                  \
+		}                                                                      \
+	}
 
 struct useful_info_pairs {
 	// number of common neighbors
@@ -83,9 +84,9 @@ struct useful_info_pairs {
 	uint64_t sum_deg_common = 0;
 
 	useful_info_pairs(uint64_t _common, uint64_t _sdc)
-		: common(_common), sum_deg_common(_sdc)
-	{
-	}
+		: common(_common),
+		  sum_deg_common(_sdc)
+	{ }
 };
 
 #define USE_HASH
@@ -96,7 +97,8 @@ struct useful_info_pairs {
 #include <unordered_map>
 
 struct hash_edge {
-	std::size_t operator()(const lal::edge& p) const noexcept {
+	std::size_t operator() (const lal::edge& p) const noexcept
+	{
 		// Cantor hash
 		// source: https://cran.r-project.org/web/packages/clustAnalytics/index.html
 		// From the Ph.D. thesis of Martí Renedo Mirambell (Polytechnic University of Catalonia)
@@ -104,7 +106,8 @@ struct hash_edge {
 	}
 };
 
-typedef std::unordered_map<lal::edge, useful_info_pairs, hash_edge> hash_algorithm;
+typedef std::unordered_map<lal::edge, useful_info_pairs, hash_edge>
+	hash_algorithm;
 typedef hash_algorithm::const_iterator CIT;
 
 #endif
@@ -126,8 +129,7 @@ namespace properties {
 // GENERAL GRAPHS
 
 template <bool reuse, bool is_normalized>
-void compute_data_gen_graphs
-(
+void compute_data_gen_graphs(
 	const graphs::undirected_graph& g,
 	const uint64_t& n,
 	const uint64_t& m,
@@ -142,8 +144,7 @@ void compute_data_gen_graphs
 	uint64_t& Phi_2,
 	uint64_t& Lambda_1,
 	uint64_t& Lambda_2
-)
-noexcept
+) noexcept
 {
 	// ----------------------------------------------------------
 	// DATA USED TO DEAL WITH THE NON-NORMALISED CASE
@@ -186,20 +187,20 @@ noexcept
 
 	for (node s = 0; s < n; ++s) {
 		const uint64_t ks = g.get_degree(s);
-		sum_squared_degrees += ks*ks;
-		sum_cubed_degrees += ks*ks*ks;
+		sum_squared_degrees += ks * ks;
+		sum_cubed_degrees += ks * ks * ks;
 
 		xi[s] = 0;
 		for (node t : g.get_neighbors(s)) {
 			const uint64_t kt = g.get_degree(t);
-			psi += ks*kt;
+			psi += ks * kt;
 			xi[s] += kt;
 		}
 	}
 	// note: at this point 'psi' is equal to
 	// 2*sum_{st in E} k_s*k_t
 #if defined DEBUG
-	assert(psi%2 == 0);
+	assert(psi % 2 == 0);
 #endif
 	psi /= 2;
 
@@ -214,15 +215,15 @@ noexcept
 	// ------------------------------------------------
 	// compute the variance
 
-	Qs = (m*(m + 1) - sum_squared_degrees)/2;
-	Kg = (m + 1)*sum_squared_degrees - sum_cubed_degrees - 2*psi;
-	Phi_1 = (m + 1)*psi;
+	Qs = (m * (m + 1) - sum_squared_degrees) / 2;
+	Kg = (m + 1) * sum_squared_degrees - sum_cubed_degrees - 2 * psi;
+	Phi_1 = (m + 1) * psi;
 	Phi_2 = 0;
 
 	uint64_t mu = 0;
 
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
-		const auto [s,t] = e_it.get_edge();
+		const auto [s, t] = e_it.get_edge();
 
 		const uint64_t ks = g.get_degree(s);
 		const neighbourhood& Ns =
@@ -234,7 +235,9 @@ noexcept
 
 		// for each neighbour of 's' different from 't'
 		for (node u : Ns) {
-			if (u == t) { continue; }
+			if (u == t) {
+				continue;
+			}
 
 			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
@@ -242,36 +245,47 @@ noexcept
 
 			uint64_t common_ut = 0;
 			if constexpr (reuse) {
-				if (CIT it_ut; has_key(H, sorted_edge(u,t), it_ut)) {
+				if (CIT it_ut; has_key(H, sorted_edge(u, t), it_ut)) {
 					common_ut = it_ut->second.common;
 				}
 				else {
 					// compute values and store them
 					uint64_t deg_sum = 0;
-					iterate(Nt, Nu,
-						[&]() {
+					iterate(
+						Nt,
+						Nu,
+						[&]()
+						{
 							++common_ut;
 							deg_sum += g.get_degree(Nu[__j]);
 						}
 					);
-					H.insert
-					({sorted_edge(u,t), useful_info_pairs(common_ut, deg_sum)});
+					H.insert(
+						{sorted_edge(u, t),
+						 useful_info_pairs(common_ut, deg_sum)}
+					);
 				}
 			}
 			else {
-				iterate(Nu, Nt,
-					[&]() {
+				iterate(
+					Nu,
+					Nt,
+					[&]()
+					{
 						++common_ut;
 					}
 				);
 			}
 
-			const bool ut_is_edge = g.has_edge(u,t);
-			n_paths_5 += (kt - 1 - ut_is_edge)*(ku - 1 - ut_is_edge) + 1 - common_ut;
+			const bool ut_is_edge = g.has_edge(u, t);
+			n_paths_5 +=
+				(kt - 1 - ut_is_edge) * (ku - 1 - ut_is_edge) + 1 - common_ut;
 		}
 		// for each neighbour of 't' different from 's'
 		for (node u : Nt) {
-			if (u == s) { continue; }
+			if (u == s) {
+				continue;
+			}
 
 			const uint64_t ku = g.get_degree(u);
 			const neighbourhood& Nu =
@@ -279,32 +293,41 @@ noexcept
 
 			uint64_t common_us = 0;
 			if constexpr (reuse) {
-				if (CIT it_su; has_key(H, sorted_edge(u,s), it_su)) {
+				if (CIT it_su; has_key(H, sorted_edge(u, s), it_su)) {
 					common_us = it_su->second.common;
 				}
 				else {
 					// compute values and store them
 					uint64_t deg_sum = 0;
-					iterate(Ns, Nu,
-						[&]() {
+					iterate(
+						Ns,
+						Nu,
+						[&]()
+						{
 							++common_us;
 							deg_sum += g.get_degree(Nu[__j]);
 						}
 					);
-					H.insert
-					({sorted_edge(u,s), useful_info_pairs(common_us, deg_sum)});
+					H.insert(
+						{sorted_edge(u, s),
+						 useful_info_pairs(common_us, deg_sum)}
+					);
 				}
 			}
 			else {
-				iterate(Nu, Ns,
-					[&]() {
+				iterate(
+					Nu,
+					Ns,
+					[&]()
+					{
 						++common_us;
 					}
 				);
 			}
 
-			const bool is_us_edge = g.has_edge(u,s);
-			n_paths_5 += (ks - 1 - is_us_edge)*(ku - 1 - is_us_edge) + 1 - common_us;
+			const bool is_us_edge = g.has_edge(u, s);
+			n_paths_5 +=
+				(ks - 1 - is_us_edge) * (ku - 1 - is_us_edge) + 1 - common_us;
 			n_cycles_4 += common_us;
 		}
 
@@ -313,7 +336,7 @@ noexcept
 		uint64_t common_st = 0;
 		uint64_t deg_sum_st = 0;
 		if constexpr (reuse) {
-			if (CIT it_st; has_key(H, sorted_edge(s,t), it_st)) {
+			if (CIT it_st; has_key(H, sorted_edge(s, t), it_st)) {
 				// if the neighbors were not searched then the variables
 				// 'sum_deg_common_st' and 'common_st' are equal to '0',
 				// so we must initialize them now
@@ -322,44 +345,53 @@ noexcept
 			}
 			else {
 				// compute values and store them
-				iterate(Ns, Nt,
-					[&]() {
+				iterate(
+					Ns,
+					Nt,
+					[&]()
+					{
 						++common_st;
 						deg_sum_st += g.get_degree(Nt[__j]);
 					}
 				);
-				H.insert
-				({sorted_edge(s,t), useful_info_pairs(common_st, deg_sum_st)});
+				H.insert(
+					{sorted_edge(s, t), useful_info_pairs(common_st, deg_sum_st)
+					}
+				);
 			}
 		}
 		else {
-			iterate(Ns, Nt,
-				[&]() {
+			iterate(
+				Ns,
+				Nt,
+				[&]()
+				{
 					++common_st;
 					deg_sum_st += g.get_degree(Ns[__i]);
 				}
 			);
 		}
 
-		paw += deg_sum_st - 2*common_st;
-		pair_C3_L2 += common_st*(m - ks - kt + 3) - deg_sum_st;
+		paw += deg_sum_st - 2 * common_st;
+		pair_C3_L2 += common_st * (m - ks - kt + 3) - deg_sum_st;
 
-		Phi_1 -= ks*kt*(ks + kt);
-		Phi_2 += (ks + kt)*(sum_squared_degrees - (ks*(ks - 1) + kt*(kt - 1)) - xi[s] - xi[t]);
+		Phi_1 -= ks * kt * (ks + kt);
+		Phi_2 += (ks + kt) * (sum_squared_degrees -
+							  (ks * (ks - 1) + kt * (kt - 1)) - xi[s] - xi[t]);
 
 		mu += common_st;
 
-		Lambda_1 += (kt - 1)*(xi[s] - kt) + (ks - 1)*(xi[t] - ks);
-		Lambda_1 -= 2*deg_sum_st;
+		Lambda_1 += (kt - 1) * (xi[s] - kt) + (ks - 1) * (xi[t] - ks);
+		Lambda_1 -= 2 * deg_sum_st;
 
-		Lambda_2 += (ks + kt)*( (ks - 1)*(kt - 1) - common_st );
+		Lambda_2 += (ks + kt) * ((ks - 1) * (kt - 1) - common_st);
 	}
 
 #if defined DEBUG
-	assert(Phi_2%2 == 0);
-	assert(n_cycles_4%4 == 0);
-	assert(n_paths_5%2 == 0);
-	assert(pair_C3_L2%3 == 0);
+	assert(Phi_2 % 2 == 0);
+	assert(n_cycles_4 % 4 == 0);
+	assert(n_paths_5 % 2 == 0);
+	assert(pair_C3_L2 % 3 == 0);
 #endif
 
 	Lambda_2 += Lambda_1;
@@ -384,8 +416,7 @@ numeric::rational var_num_crossings_rational(
 	const numeric::rational& Phi_2_coefficient,
 	const numeric::rational& n_Z_coefficient,
 	const numeric::rational& n_Y_coefficient
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	const uint64_t m = g.get_num_edges();
@@ -422,73 +453,66 @@ noexcept
 	// (a_{su} + a_{tu} + a_{sv} + a_{tv})*(k_s + k_t + k_u + k_v)
 	uint64_t Lambda_2 = 0;
 
-	#define parameters_of_compute_data	\
-		g, n, m,						\
-		q, K,							\
-		n_paths_4, n_cycles_4, n_paw,	\
-		n_paths_5, n_pair_C3_L2,		\
-		Phi_1, Phi_2,					\
-		Lambda_1, Lambda_2
+#define parameters_of_compute_data                                             \
+	g, n, m, q, K, n_paths_4, n_cycles_4, n_paw, n_paths_5, n_pair_C3_L2,      \
+		Phi_1, Phi_2, Lambda_1, Lambda_2
 
 	if (reuse) {
 		if (g.is_normalized()) {
-			compute_data_gen_graphs<true, true>
-				(parameters_of_compute_data);
+			compute_data_gen_graphs<true, true>(parameters_of_compute_data);
 		}
 		else {
-			compute_data_gen_graphs<true, false>
-				(parameters_of_compute_data);
+			compute_data_gen_graphs<true, false>(parameters_of_compute_data);
 		}
 	}
 	else {
 		if (g.is_normalized()) {
-			compute_data_gen_graphs<false, true>
-				(parameters_of_compute_data);
+			compute_data_gen_graphs<false, true>(parameters_of_compute_data);
 		}
 		else {
-			compute_data_gen_graphs<false, false>
-				(parameters_of_compute_data);
+			compute_data_gen_graphs<false, false>(parameters_of_compute_data);
 		}
 	}
 #undef parameters_of_compute_data
 
 	// V[C]
 	numeric::rational V(0);
-	V += q_coefficient*q;
-	V += K_coefficient*K;
-	V += n_paths_4_coefficient*n_paths_4;
-	V -= n_paths_5_coefficient*n_paths_5;
-	V += n_cycles_4_coefficient*n_cycles_4;
-	V += Lambda_1_coefficient*Lambda_1;
-	V -= Lambda_2_coefficient*Lambda_2;
-	V += Phi_1_coefficient*Phi_1;
-	V += Phi_2_coefficient*Phi_2;
-	V += n_Z_coefficient*n_paw;
-	V -= n_Y_coefficient*n_pair_C3_L2;
+	V += q_coefficient * q;
+	V += K_coefficient * K;
+	V += n_paths_4_coefficient * n_paths_4;
+	V -= n_paths_5_coefficient * n_paths_5;
+	V += n_cycles_4_coefficient * n_cycles_4;
+	V += Lambda_1_coefficient * Lambda_1;
+	V -= Lambda_2_coefficient * Lambda_2;
+	V += Phi_1_coefficient * Phi_1;
+	V += Phi_2_coefficient * Phi_2;
+	V += n_Z_coefficient * n_paw;
+	V -= n_Y_coefficient * n_pair_C3_L2;
 	return V;
 }
 
-numeric::rational var_num_crossings_rational
-(const graphs::undirected_graph& g, const bool reuse)
-noexcept
+numeric::rational var_num_crossings_rational(
+	const graphs::undirected_graph& g, const bool reuse
+) noexcept
 {
 	const uint64_t m = g.get_num_edges();
 
 	return var_num_crossings_rational(
-		g, reuse,
-		 numeric::rational(2*m + 4, 45),  // Q coefficient
-		 numeric::rational(1, 90),        // K coefficient
-		-numeric::rational(2*m + 7, 180), // n_paths_4 coefficient
-		 numeric::rational(1, 180),       // n_paths_5 coefficient
-		-numeric::rational(1, 15),        // n_cycles_4 coefficient
-		-numeric::rational(1, 60),        // Lambda_1 coefficient
-		-numeric::rational(1, 180),       // Lambda_2 coefficient
-		-numeric::rational(1, 90),        // Phi_1_coefficient
-		 numeric::rational(1, 180),       // Phi_2_coefficient
-		 numeric::rational(1, 30),        // n_Z_coefficient
-		-numeric::rational(1, 30)         // n_Y_coefficient
+		g,
+		reuse,
+		numeric::rational(2 * m + 4, 45),	// Q coefficient
+		numeric::rational(1, 90),			// K coefficient
+		-numeric::rational(2 * m + 7, 180), // n_paths_4 coefficient
+		numeric::rational(1, 180),			// n_paths_5 coefficient
+		-numeric::rational(1, 15),			// n_cycles_4 coefficient
+		-numeric::rational(1, 60),			// Lambda_1 coefficient
+		-numeric::rational(1, 180),			// Lambda_2 coefficient
+		-numeric::rational(1, 90),			// Phi_1_coefficient
+		numeric::rational(1, 180),			// Phi_2_coefficient
+		numeric::rational(1, 30),			// n_Z_coefficient
+		-numeric::rational(1, 30)			// n_Y_coefficient
 	);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

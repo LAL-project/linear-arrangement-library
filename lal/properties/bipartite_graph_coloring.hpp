@@ -59,6 +59,7 @@ namespace properties {
  */
 class bipartite_graph_coloring {
 public:
+
 	/**
 	 * @brief A useful type for colors
 	 *
@@ -74,22 +75,27 @@ public:
 	static constexpr color_t blue = 1;
 
 public:
+
 	/// Default constructor.
 	bipartite_graph_coloring() noexcept = default;
 	/// Default copy constructor.
-	bipartite_graph_coloring(const bipartite_graph_coloring&) noexcept = default;
+	bipartite_graph_coloring(const bipartite_graph_coloring&) noexcept =
+		default;
 	/// Default move constructor.
 	bipartite_graph_coloring(bipartite_graph_coloring&&) noexcept = default;
 	/// Default copy assignment operator.
-	bipartite_graph_coloring& operator= (const bipartite_graph_coloring&) noexcept = default;
+	bipartite_graph_coloring&
+	operator= (const bipartite_graph_coloring&) noexcept = default;
 	/// Default move assignment operator.
-	bipartite_graph_coloring& operator= (bipartite_graph_coloring&&) noexcept = default;
+	bipartite_graph_coloring&
+	operator= (bipartite_graph_coloring&&) noexcept = default;
 
 	/**
 	 * @brief Constructor with number of vertices.
 	 * @param n The number of vertices of the graph.
 	 */
-	bipartite_graph_coloring(std::size_t n) noexcept {
+	bipartite_graph_coloring(std::size_t n) noexcept
+	{
 		init(n);
 	}
 
@@ -100,34 +106,58 @@ public:
 	 * @brief Initializes this object with @e n vertices.
 	 * @param n The number of vertices of the graph.
 	 */
-	void init(std::size_t n) noexcept {
+	void init(std::size_t n) noexcept
+	{
 		m_coloring.resize(n, invalid_color);
 	}
 
 	/// Returns whether or not the color of vertex @e u is valid.
-	[[nodiscard]] bool is_color_valid(node u) const noexcept {
+	[[nodiscard]] bool is_color_valid(node u) const noexcept
+	{
 		return get_color_of(u) != invalid_color;
 	}
 
 	/// Returns the size of this m_coloring (the number of vertices)
-	[[nodiscard]] std::size_t size() const noexcept { return m_coloring.size(); }
+	[[nodiscard]] std::size_t size() const noexcept
+	{
+		return m_coloring.size();
+	}
 
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t get_color_of(node u) const noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t get_color_of(node u) const noexcept
+	{
+		return m_coloring[u];
+	}
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t& get_color_of(node u) noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t& get_color_of(node u) noexcept
+	{
+		return m_coloring[u];
+	}
 
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t operator[] (node u) const noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t operator[] (node u) const noexcept
+	{
+		return m_coloring[u];
+	}
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t& operator[] (node u) noexcept { return m_coloring[u]; }
+	[[nodiscard]] color_t& operator[] (node u) noexcept
+	{
+		return m_coloring[u];
+	}
 
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t operator[] (node_t u) const noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t operator[] (node_t u) const noexcept
+	{
+		return m_coloring[*u];
+	}
 	/// Returns the color of node @e u
-	[[nodiscard]] color_t& operator[] (node_t u) noexcept { return m_coloring[*u]; }
+	[[nodiscard]] color_t& operator[] (node_t u) noexcept
+	{
+		return m_coloring[*u];
+	}
 
 private:
+
 	/**
 	 * @brief The array that contains the m_coloring.
 	 *
@@ -136,5 +166,5 @@ private:
 	detail::array<color_t> m_coloring;
 };
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

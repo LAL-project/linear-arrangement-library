@@ -62,26 +62,32 @@ namespace graphs {
 
 /* MODIFIERS */
 
-void directed_graph::normalize() noexcept {
+void directed_graph::normalize() noexcept
+{
 	detail::array<char> mem(get_num_nodes(), 0);
 
 	for (node u = 0; u < get_num_nodes(); ++u) {
 		neighbourhood& out_nu = m_adjacency_list[u];
 		if (not std::is_sorted(out_nu.begin(), out_nu.end())) {
-			detail::sorting::bit_sort_mem<node>
-			(out_nu.begin(), out_nu.end(), out_nu.size(), mem.begin());
+			detail::sorting::bit_sort_mem<node>(
+				out_nu.begin(), out_nu.end(), out_nu.size(), mem.begin()
+			);
 		}
 		neighbourhood& in_nu = m_in_adjacency_list[u];
 		if (not std::is_sorted(in_nu.begin(), in_nu.end())) {
-			detail::sorting::bit_sort_mem<node>
-			(in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin());
+			detail::sorting::bit_sort_mem<node>(
+				in_nu.begin(), in_nu.end(), in_nu.size(), mem.begin()
+			);
 		}
 	}
 	m_is_normalized = true;
 }
 
-bool directed_graph::check_normalized() noexcept {
-	if (not graph::check_normalized()) { return false; }
+bool directed_graph::check_normalized() noexcept
+{
+	if (not graph::check_normalized()) {
+		return false;
+	}
 
 	// check that every adjacency list is sorted
 	for (node u = 0; u < get_num_nodes(); ++u) {
@@ -104,13 +110,9 @@ bool directed_graph::check_normalized() noexcept {
 	return true;
 }
 
-directed_graph& directed_graph::remove_node
-(
-	const node u,
-	const bool norm,
-	const bool check_norm
-)
-noexcept
+directed_graph& directed_graph::remove_node(
+	const node u, const bool norm, const bool check_norm
+) noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -124,38 +126,37 @@ noexcept
 
 	// remove the corresponding row in the adjacency matrix
 	{
-	auto it = m_adjacency_list.begin();
-	std::advance(it, u);
-	m_adjacency_list.erase(it);
+		auto it = m_adjacency_list.begin();
+		std::advance(it, u);
+		m_adjacency_list.erase(it);
 	}
 	{
-	auto it = m_in_adjacency_list.begin();
-	std::advance(it, u);
-	m_in_adjacency_list.erase(it);
+		auto it = m_in_adjacency_list.begin();
+		std::advance(it, u);
+		m_in_adjacency_list.erase(it);
 	}
 
 	// now, relabel
 	const auto n = get_num_nodes();
 	for (node v = 0; v < n; ++v) {
-		for (node& w : m_adjacency_list[v]) { w -= (w > u); }
-		for (node& w : m_in_adjacency_list[v]) { w -= (w > u); }
+		for (node& w : m_adjacency_list[v]) {
+			w -= (w > u);
+		}
+		for (node& w : m_in_adjacency_list[v]) {
+			w -= (w > u);
+		}
 	}
 
 	actions_after_remove_node(u);
 	return *this;
 }
 
-directed_graph& directed_graph::add_edge
-(
-	const node u,
-	const node v,
-	const bool to_norm,
-	const bool check_norm
-)
-noexcept
+directed_graph& directed_graph::add_edge(
+	const node u, const node v, const bool to_norm, const bool check_norm
+) noexcept
 {
 #if defined DEBUG
-	assert(not has_edge(u,v));
+	assert(not has_edge(u, v));
 #endif
 
 	neighbourhood& out_u = m_adjacency_list[u];
@@ -169,11 +170,13 @@ noexcept
 		// the graph was normalized
 		if (to_norm) {
 			// keep it normalized
-			detail::sorting::bit_sort<node>
-			(out_u.begin(), out_u.end(), out_u.size());
+			detail::sorting::bit_sort<node>(
+				out_u.begin(), out_u.end(), out_u.size()
+			);
 
-			detail::sorting::bit_sort<node>
-			(in_v.begin(), in_v.end(), in_v.size());
+			detail::sorting::bit_sort<node>(
+				in_v.begin(), in_v.end(), in_v.size()
+			);
 		}
 		else if (check_norm) {
 			// Even though we have not been asked to normalize the
@@ -182,10 +185,12 @@ noexcept
 			// be lucky....
 			const std::size_t out_u_s = out_u.size();
 			const bool out_u_norm =
-				(out_u_s <= 1 ? m_is_normalized : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
+				(out_u_s <= 1 ? m_is_normalized
+							  : out_u[out_u_s - 2] < out_u[out_u_s - 1]);
 			const std::size_t in_v_s = in_v.size();
 			const bool in_v_norm =
-				(in_v_s <= 1 ? m_is_normalized : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
+				(in_v_s <= 1 ? m_is_normalized
+							 : in_v[in_v_s - 2] < in_v[in_v_s - 1]);
 			m_is_normalized = m_is_normalized and out_u_norm and in_v_norm;
 			/*if (su > 1) {
 				m_is_normalized = nu[su - 2] < nu[su - 1];
@@ -203,9 +208,11 @@ noexcept
 	return *this;
 }
 
-directed_graph& directed_graph::add_edge_bulk(const node u, const node v) noexcept {
+directed_graph&
+directed_graph::add_edge_bulk(const node u, const node v) noexcept
+{
 #if defined DEBUG
-	assert(not has_edge(u,v));
+	assert(not has_edge(u, v));
 #endif
 
 	m_adjacency_list[u].push_back(v);
@@ -214,17 +221,20 @@ directed_graph& directed_graph::add_edge_bulk(const node u, const node v) noexce
 	return *this;
 }
 
-void directed_graph::finish_bulk_add(const bool to_norm, const bool check_norm) noexcept {
+void directed_graph::finish_bulk_add(const bool to_norm, const bool check_norm)
+	noexcept
+{
 	actions_after_add_edges_bulk();
 	normalize_after_edge_addition(to_norm, check_norm);
 }
 
-directed_graph& directed_graph::add_edges
-(const std::vector<edge>& edges, const bool to_norm, const bool check_norm) noexcept
+directed_graph& directed_graph::add_edges(
+	const std::vector<edge>& edges, const bool to_norm, const bool check_norm
+) noexcept
 {
-	for (const auto& [u,v] : edges) {
+	for (const auto& [u, v] : edges) {
 #if defined DEBUG
-		assert(not has_edge(u,v));
+		assert(not has_edge(u, v));
 #endif
 
 		m_adjacency_list[u].push_back(v);
@@ -236,17 +246,19 @@ directed_graph& directed_graph::add_edges
 	return *this;
 }
 
-directed_graph& directed_graph::set_edges
-(const std::vector<edge>& edges, const bool to_norm, const bool check_norm) noexcept
+directed_graph& directed_graph::set_edges(
+	const std::vector<edge>& edges, const bool to_norm, const bool check_norm
+) noexcept
 {
 	{
-	const uint64_t n = get_num_nodes();
-	clear(); init(n);
+		const uint64_t n = get_num_nodes();
+		clear();
+		init(n);
 	}
 
-	for (const auto& [u,v] : edges) {
+	for (const auto& [u, v] : edges) {
 #if defined DEBUG
-		assert(not has_edge(u,v));
+		assert(not has_edge(u, v));
 #endif
 		m_adjacency_list[u].push_back(v);
 		m_in_adjacency_list[v].push_back(u);
@@ -258,65 +270,57 @@ directed_graph& directed_graph::set_edges
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edge_bulk(const node u, const node v)
-noexcept
+directed_graph&
+directed_graph::remove_edge_bulk(const node u, const node v) noexcept
 {
 #if defined DEBUG
-	assert(has_edge(u,v));
+	assert(has_edge(u, v));
 #endif
 
 	neighbourhood& out_u = m_adjacency_list[u];
 	neighbourhood& in_v = m_in_adjacency_list[v];
-	remove_single_edge(u,v, out_u, in_v);
+	remove_single_edge(u, v, out_u, in_v);
 
 	--m_num_edges;
 	return *this;
 }
 
-void directed_graph::finish_bulk_remove(const bool to_norm, const bool check_norm)
-noexcept
+void directed_graph::finish_bulk_remove(
+	const bool to_norm, const bool check_norm
+) noexcept
 {
 	actions_after_remove_edges_bulk();
 	normalize_after_edge_addition(to_norm, check_norm);
 }
 
-directed_graph& directed_graph::remove_edge
-(
-	const node u,
-	const node v,
-	const bool norm,
-	const bool check_norm
-)
-noexcept
+directed_graph& directed_graph::remove_edge(
+	const node u, const node v, const bool norm, const bool check_norm
+) noexcept
 {
 #if defined DEBUG
-	assert(has_edge(u,v));
+	assert(has_edge(u, v));
 #endif
 
 	neighbourhood& out_u = m_adjacency_list[u];
 	neighbourhood& in_v = m_in_adjacency_list[v];
-	remove_single_edge(u,v, out_u, in_v);
+	remove_single_edge(u, v, out_u, in_v);
 
 	actions_after_remove_edge(u, v);
 	normalize_after_edge_removal(norm, check_norm);
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edges
-(
-	const std::vector<edge>& edges,
-	const bool norm,
-	const bool check_norm
-)
-noexcept
+directed_graph& directed_graph::remove_edges(
+	const std::vector<edge>& edges, const bool norm, const bool check_norm
+) noexcept
 {
-	for (const auto& [u,v] : edges) {
+	for (const auto& [u, v] : edges) {
 #if defined DEBUG
-		assert(has_edge(u,v));
+		assert(has_edge(u, v));
 #endif
 		neighbourhood& out_u = m_adjacency_list[u];
 		neighbourhood& in_v = m_in_adjacency_list[v];
-		remove_single_edge(u,v, out_u, in_v);
+		remove_single_edge(u, v, out_u, in_v);
 	}
 
 	actions_after_remove_edges(edges);
@@ -324,13 +328,9 @@ noexcept
 	return *this;
 }
 
-directed_graph& directed_graph::remove_edges_incident_to
-(
-	const node u,
-	const bool norm,
-	const bool check_norm
-)
-noexcept
+directed_graph& directed_graph::remove_edges_incident_to(
+	const node u, const bool norm, const bool check_norm
+) noexcept
 {
 #if defined DEBUG
 	assert(has_node(u));
@@ -359,7 +359,8 @@ noexcept
 		for (node v : out_neighs_u) {
 			auto& in_v = m_in_adjacency_list[v];
 
-			const auto it_u = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
+			const auto it_u =
+				detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -373,7 +374,9 @@ noexcept
 		for (node v : in_neighs_u) {
 			auto& out_v = m_adjacency_list[v];
 
-			const auto it_u = detail::find_sorted(out_v.begin(), out_v.end(), out_v.size(), u);
+			const auto it_u = detail::find_sorted(
+				out_v.begin(), out_v.end(), out_v.size(), u
+			);
 #if defined DEBUG
 			// check that the iterator points to the correct value
 			assert(*it_u == u);
@@ -402,7 +405,8 @@ noexcept
 	return *this;
 }
 
-directed_graph& directed_graph::disjoint_union(const directed_graph& g) noexcept {
+directed_graph& directed_graph::disjoint_union(const directed_graph& g) noexcept
+{
 	// this call updates the out-neighbors adjacency list,
 	// as well as the number of edges and the graph's normalisation
 	__disjoint_union(g);
@@ -418,16 +422,19 @@ directed_graph& directed_graph::disjoint_union(const directed_graph& g) noexcept
 
 /* GETTERS */
 
-std::vector<edge_pair> directed_graph::get_Q() const noexcept {
+std::vector<edge_pair> directed_graph::get_Q() const noexcept
+{
 	const auto qs = properties::num_pairs_independent_edges(*this);
 	return detail::set_pairs_independent_edges(*this, qs);
 }
 
-std::vector<edge> directed_graph::get_edges() const noexcept {
+std::vector<edge> directed_graph::get_edges() const noexcept
+{
 	return detail::set_edges(*this);
 }
 
-bool directed_graph::has_edge(const node u, const node v) const noexcept {
+bool directed_graph::has_edge(const node u, const node v) const noexcept
+{
 #if defined DEBUG
 	assert(u != v);
 	assert(has_node(u));
@@ -438,17 +445,21 @@ bool directed_graph::has_edge(const node u, const node v) const noexcept {
 	const neighbourhood& in_v = m_in_adjacency_list[v];
 
 	if (is_normalized()) {
-		return out_u.size() <= in_v.size() ?
-			detail::exists_sorted(out_u.begin(), out_u.end(), out_u.size(), v) :
-			detail::exists_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
+		return out_u.size() <= in_v.size()
+				   ? detail::exists_sorted(
+						 out_u.begin(), out_u.end(), out_u.size(), v
+					 )
+				   : detail::exists_sorted(
+						 in_v.begin(), in_v.end(), in_v.size(), u
+					 );
 	}
-	return out_u.size() <= in_v.size() ?
-		std::find(out_u.begin(), out_u.end(), v) != out_u.end() :
-		std::find(in_v.begin(), in_v.end(), u) != in_v.end();
+	return out_u.size() <= in_v.size()
+			   ? std::find(out_u.begin(), out_u.end(), v) != out_u.end()
+			   : std::find(in_v.begin(), in_v.end(), u) != in_v.end();
 }
 
-undirected_graph directed_graph::to_undirected(const bool norm, const bool check)
-const noexcept
+undirected_graph
+directed_graph::to_undirected(const bool norm, const bool check) const noexcept
 {
 	undirected_graph g(get_num_nodes());
 
@@ -459,14 +470,13 @@ const noexcept
 			g.add_edge_bulk(u, v);
 		}
 	}
-	
+
 	g.finish_bulk_add(norm, check);
 	return g;
 }
 
-
-std::vector<directed_graph> directed_graph::get_connected_components()
-const noexcept
+std::vector<directed_graph>
+directed_graph::get_connected_components() const noexcept
 {
 	return detail::connected_components<false>(*this);
 }
@@ -475,20 +485,16 @@ const noexcept
 
 /* PRIVATE */
 
-void directed_graph::remove_single_edge
-(
-	const node u,
-	const node v,
-	neighbourhood& out_u,
-	neighbourhood& in_v
-)
-noexcept
+void directed_graph::remove_single_edge(
+	const node u, const node v, neighbourhood& out_u, neighbourhood& in_v
+) noexcept
 {
 	neighbourhood::iterator it_out_u, it_in_v;
 
 	// find the nodes in the lists
 	if (is_normalized()) {
-		it_out_u = detail::find_sorted(out_u.begin(), out_u.end(), out_u.size(), v);
+		it_out_u =
+			detail::find_sorted(out_u.begin(), out_u.end(), out_u.size(), v);
 		it_in_v = detail::find_sorted(in_v.begin(), in_v.end(), in_v.size(), u);
 	}
 	else {
@@ -510,5 +516,5 @@ noexcept
 	in_v.erase(it_in_v);
 }
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

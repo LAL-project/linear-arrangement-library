@@ -81,15 +81,14 @@ typedef array<node_size> ordering;
  * @returns Maximum \f$p_\alpha\f$.
  */
 template <char anchored>
-[[nodiscard]] uint64_t calculate_p_alpha
-(const uint64_t n, const ordering& ord, uint64_t& s_0, uint64_t& s_1)
-noexcept
+[[nodiscard]] uint64_t calculate_p_alpha(
+	const uint64_t n, const ordering& ord, uint64_t& s_0, uint64_t& s_1
+) noexcept
 {
 	// anchored is ANCHOR or NO_ANCHOR
 	// left or right anchored is not important for the cost
 	static_assert(
-		anchored == Dopt_utils::NO_ANCHOR or
-		anchored == Dopt_utils::ANCHOR
+		anchored == Dopt_utils::NO_ANCHOR or anchored == Dopt_utils::ANCHOR
 	);
 
 	// number of subtrees
@@ -102,63 +101,71 @@ noexcept
 		// -- not anchored
 
 		// Maximum possible p_alpha
-		max_p = k/2;
-		if (max_p == 0) { return 0; }
+		max_p = k / 2;
+		if (max_p == 0) {
+			return 0;
+		}
 
 		uint64_t sum = 0;
-		for (uint64_t i = 0; i <= 2*max_p; ++i) { sum += ord[i].size; }
+		for (uint64_t i = 0; i <= 2 * max_p; ++i) {
+			sum += ord[i].size;
+		}
 
 		uint64_t n_star = n - sum;
-		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+		uint64_t tricky_formula = (n_0 + 2) / 2 + (n_star + 2) / 2;
 
 		// n_0 >= n_1 >= ... >= n_k
-		uint64_t n_p = ord[2*max_p].size;
+		uint64_t n_p = ord[2 * max_p].size;
 		while (max_p > 0 and n_p <= tricky_formula) {
-			sum -= ord[2*max_p].size + ord[2*max_p - 1].size;
+			sum -= ord[2 * max_p].size + ord[2 * max_p - 1].size;
 
 			--max_p;
 			n_star = n - sum;
-			tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+			tricky_formula = (n_0 + 2) / 2 + (n_star + 2) / 2;
 
 			// --
 			//if (max_p > 0) { n_p = ord[2*max_p].first; }
-			n_p = (max_p > 0 ? ord[2*max_p].size : n_p);
+			n_p = (max_p > 0 ? ord[2 * max_p].size : n_p);
 			// --
 		}
-		s_0 = max_p*(n_star + 1 + n_0);
+		s_0 = max_p * (n_star + 1 + n_0);
 		s_1 = 0;
 		for (uint64_t i = 1; i < max_p; ++i) {
-			s_0 += i*(ord[2*i + 1].size + ord[2*i + 2].size);
+			s_0 += i * (ord[2 * i + 1].size + ord[2 * i + 2].size);
 		}
 	}
 	else {
 		// -- anchored
 
 		// Maximum possible p_alpha
-		max_p = (k + 1)/2;
-		if (max_p == 0) { return 0; }
+		max_p = (k + 1) / 2;
+		if (max_p == 0) {
+			return 0;
+		}
 
 		uint64_t sum = 0;
-		for (uint64_t i = 0; i <= 2*max_p - 1; ++i) { sum += ord[i].size; }
+		for (uint64_t i = 0; i <= 2 * max_p - 1; ++i) {
+			sum += ord[i].size;
+		}
 		uint64_t n_star = n - sum;
-		uint64_t tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
-		uint64_t n_p = ord[2*max_p - 1].size;
+		uint64_t tricky_formula = (n_0 + 2) / 2 + (n_star + 2) / 2;
+		uint64_t n_p = ord[2 * max_p - 1].size;
 		while (max_p > 0 and n_p <= tricky_formula) {
-			sum -= ord[2*max_p - 1].size;
-			sum -= ord[2*max_p - 2].size;
+			sum -= ord[2 * max_p - 1].size;
+			sum -= ord[2 * max_p - 2].size;
 			--max_p;
 			n_star = n - sum;
-			tricky_formula = (n_0 + 2)/2 + (n_star + 2)/2;
+			tricky_formula = (n_0 + 2) / 2 + (n_star + 2) / 2;
 
 			// --
 			//if (max_p > 0) { n_p = ord[2*max_p - 1].first; }
-			n_p = (max_p > 0 ? ord[2*max_p - 1].size : n_p);
+			n_p = (max_p > 0 ? ord[2 * max_p - 1].size : n_p);
 			// --
 		}
 		s_0 = 0;
-		s_1 = max_p*(n_star + 1 + n_0) - 1;
+		s_1 = max_p * (n_star + 1 + n_0) - 1;
 		for (uint64_t i = 1; i < max_p; ++i) {
-			s_1 += i*(ord[2*i].size + ord[2*i + 1].size);
+			s_1 += i * (ord[2 * i].size + ord[2 * i + 1].size);
 		}
 	}
 	return max_p;
@@ -181,20 +188,17 @@ noexcept
  * @param[out] cost The cost of the minimum arrangement.
  */
 template <char alpha, bool make_arrangement>
-void calculate_mla
-(
+void calculate_mla(
 	graphs::free_tree& t,
 	const node root_or_anchor,
 	position start,
 	position end,
 	linear_arrangement& mla,
 	uint64_t& cost
-)
-noexcept
+) noexcept
 {
 	static_assert(
-		alpha == Dopt_utils::NO_ANCHOR or
-		alpha == Dopt_utils::RIGHT_ANCHOR or
+		alpha == Dopt_utils::NO_ANCHOR or alpha == Dopt_utils::RIGHT_ANCHOR or
 		alpha == Dopt_utils::LEFT_ANCHOR
 	);
 
@@ -209,44 +213,48 @@ noexcept
 	if (size_tree == 1) {
 		cost = 0;
 		if constexpr (make_arrangement) {
-		mla.assign(root_or_anchor, start);
+			mla.assign(root_or_anchor, start);
 		}
 		return;
 	}
 
 	// Recursion for COST A
-	const node v_star =
-		alpha == Dopt_utils::NO_ANCHOR ?
-			retrieve_centroid(t, root_or_anchor).first :
-			root_or_anchor;
+	const node v_star = alpha == Dopt_utils::NO_ANCHOR
+							? retrieve_centroid(t, root_or_anchor).first
+							: root_or_anchor;
 
 	// Let 'T_v' to be a tree rooted at vertex 'v'.
 	// Order subtrees of 'T_v' by size.
 	ordering ord(t.get_degree(v_star));
 	{
-	// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
-	// of 'T_v' rooted at vertex 'u'. Now,
-	//     s[u] := the size of the subtree 'T_v[u]'
-	array<uint64_t> s(t.get_num_nodes());
-	get_size_subtrees(t, v_star, s.begin());
+		// Retrieve size of every subtree. Let 'T_v[u]' be the subtree
+		// of 'T_v' rooted at vertex 'u'. Now,
+		//     s[u] := the size of the subtree 'T_v[u]'
+		array<uint64_t> s(t.get_num_nodes());
+		get_size_subtrees(t, v_star, s.begin());
 
-	uint64_t M = 0; // maximum of the sizes (needed for the counting sort algorithm)
-	const neighbourhood& v_star_neighs = t.get_neighbors(v_star);
-	for (std::size_t i = 0; i < v_star_neighs.size(); ++i) {
-		// i-th child of v_star
-		const node ui = v_star_neighs[i];
-		// size of subtree rooted at 'ui'
-		const uint64_t s_ui = s[ui];
+		uint64_t M =
+			0; // maximum of the sizes (needed for the counting sort algorithm)
+		const neighbourhood& v_star_neighs = t.get_neighbors(v_star);
+		for (std::size_t i = 0; i < v_star_neighs.size(); ++i) {
+			// i-th child of v_star
+			const node ui = v_star_neighs[i];
+			// size of subtree rooted at 'ui'
+			const uint64_t s_ui = s[ui];
 
-		ord[i].size = s_ui;
-		M = std::max(M, s_ui);
-		ord[i].v = ui;
-	}
-	sorting::counting_sort
-		<node_size, sorting::sort_type::non_increasing>
-		(
-			ord.begin(), ord.end(), M, ord.size(),
-			[](const node_size& p) { return p.size; }
+			ord[i].size = s_ui;
+			M = std::max(M, s_ui);
+			ord[i].v = ui;
+		}
+		sorting::counting_sort<node_size, sorting::sort_type::non_increasing>(
+			ord.begin(),
+			ord.end(),
+			M,
+			ord.size(),
+			[](const node_size& p)
+			{
+				return p.size;
+			}
 		);
 	}
 
@@ -261,29 +269,36 @@ noexcept
 
 	// t -t0 : t0  if t has a LEFT_ANCHOR
 	if constexpr (alpha == Dopt_utils::LEFT_ANCHOR) {
-		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
-			(t, v_star, start, end - n_0, mla, c2);
+		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>(
+			t, v_star, start, end - n_0, mla, c2
+		);
 
-		calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
-			(t, v_0, end - n_0 + 1, end, mla, c1);
+		calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>(
+			t, v_0, end - n_0 + 1, end, mla, c1
+		);
 	}
 	// t0 : t- t0 if t has NO_ANCHOR or RIGHT_ANCHOR
 	else {
-		calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
-			(t, v_0, start, start + n_0 - 1, mla, c1);
+		calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>(
+			t, v_0, start, start + n_0 - 1, mla, c1
+		);
 
-		constexpr auto new_alpha =
-			alpha == Dopt_utils::NO_ANCHOR ?
-				Dopt_utils::LEFT_ANCHOR :
-				Dopt_utils::NO_ANCHOR;
+		constexpr auto new_alpha = alpha == Dopt_utils::NO_ANCHOR
+									   ? Dopt_utils::LEFT_ANCHOR
+									   : Dopt_utils::NO_ANCHOR;
 
-		calculate_mla<new_alpha, make_arrangement>
-			(t, v_star, start + n_0, end, mla, c2);
+		calculate_mla<new_alpha, make_arrangement>(
+			t, v_star, start + n_0, end, mla, c2
+		);
 	}
 
 	// Cost for recursion A
-	if constexpr (alpha == Dopt_utils::NO_ANCHOR) { cost = c1 + c2 + 1; }
-	else							              { cost = c1 + c2 + size_tree - n_0; }
+	if constexpr (alpha == Dopt_utils::NO_ANCHOR) {
+		cost = c1 + c2 + 1;
+	}
+	else {
+		cost = c1 + c2 + size_tree - n_0;
+	}
 
 	// reconstruct t
 	t.add_edge(v_star, v_0, false, false);
@@ -293,9 +308,9 @@ noexcept
 	// Left or right anchored is not important for the cost.
 	// Note that the result returned is either 0 or 1.
 	constexpr auto anchored =
-		alpha == Dopt_utils::RIGHT_ANCHOR or alpha == Dopt_utils::LEFT_ANCHOR ?
-			Dopt_utils::ANCHOR :
-			Dopt_utils::NO_ANCHOR;
+		alpha == Dopt_utils::RIGHT_ANCHOR or alpha == Dopt_utils::LEFT_ANCHOR
+			? Dopt_utils::ANCHOR
+			: Dopt_utils::NO_ANCHOR;
 
 	uint64_t s_0 = 0;
 	uint64_t s_1 = 0;
@@ -306,35 +321,34 @@ noexcept
 	linear_arrangement mla_B(make_arrangement ? mla : 0);
 
 	if (p_alpha > 0) {
-		std::vector<edge> edges(2*p_alpha - anchored);
+		std::vector<edge> edges(2 * p_alpha - anchored);
 
 		// number of nodes not in the central tree
-		for (uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+		for (uint64_t i = 1; i <= 2 * p_alpha - anchored; ++i) {
 			edges[i - 1] = {v_star, ord[i].v};
 		}
 		t.remove_edges(edges, false, false);
 
 		// t1 : t3 : ... : t* : ... : t4 : t2 if t has NO_ANCHOR or RIGHT_ANCHOR
 		// t2 : t4 : ... : t* : ... : t3 : t1 if t has LEFT_ANCHOR
-		for(uint64_t i = 1; i <= 2*p_alpha - anchored; ++i) {
+		for (uint64_t i = 1; i <= 2 * p_alpha - anchored; ++i) {
 			uint64_t c_aux = 0;
 
 			const node r = ord[i].v;
 			const uint64_t n_i = ord[i].size;
-			if (
-				(alpha == Dopt_utils::LEFT_ANCHOR and i%2 == 0) or
-				(alpha != Dopt_utils::LEFT_ANCHOR and i%2 == 1)
-			)
-			{
-				calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>
-					(t, r, start, start + n_i - 1, mla_B, c_aux);
+			if ((alpha == Dopt_utils::LEFT_ANCHOR and i % 2 == 0) or
+				(alpha != Dopt_utils::LEFT_ANCHOR and i % 2 == 1)) {
+				calculate_mla<Dopt_utils::RIGHT_ANCHOR, make_arrangement>(
+					t, r, start, start + n_i - 1, mla_B, c_aux
+				);
 
 				cost_B += c_aux;
 				start += n_i;
 			}
 			else {
-				calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>
-					(t, r, end - n_i + 1, end, mla_B, c_aux);
+				calculate_mla<Dopt_utils::LEFT_ANCHOR, make_arrangement>(
+					t, r, end - n_i + 1, end, mla_B, c_aux
+				);
 
 				cost_B += c_aux;
 				end -= n_i;
@@ -343,8 +357,9 @@ noexcept
 
 		// t*
 		uint64_t c_aux = 0;
-		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
-			(t, v_star, start, end, mla_B, c_aux);
+		calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>(
+			t, v_star, start, end, mla_B, c_aux
+		);
 
 		cost_B += c_aux;
 
@@ -358,15 +373,14 @@ noexcept
 		else {
 			cost_B += s_1;
 		}
-
 	}
 
 	// We choose B-recursion only if it is better
 	if (p_alpha != 0) {
 		if (cost_B < cost) {
 			if constexpr (make_arrangement) {
-			//mla.swap(mla_B);
-			mla = std::move(mla_B);
+				//mla.swap(mla_B);
+				mla = std::move(mla_B);
 			}
 
 			cost = cost_B;
@@ -374,7 +388,7 @@ noexcept
 	}
 }
 
-} // -- namespace Shiloach
+} // namespace Shiloach
 
 /**
  * @brief Calculates a minimum linear arrangment using Shiloach's algorithm.
@@ -389,10 +403,8 @@ template <bool make_arrangement>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
-YossiShiloach(const graphs::free_tree& t)
-noexcept
+	uint64_t>
+YossiShiloach(const graphs::free_tree& t) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -403,8 +415,9 @@ noexcept
 
 	graphs::free_tree T = t;
 	// Positions 0, 1, ..., t.get_num_nodes() - 1
-	Shiloach::calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>
-		(T, 0, 0, t.get_num_nodes() - 1, arrangement, Dmin);
+	Shiloach::calculate_mla<Dopt_utils::NO_ANCHOR, make_arrangement>(
+		T, 0, 0, t.get_num_nodes() - 1, arrangement, Dmin
+	);
 
 	if constexpr (make_arrangement) {
 		return {Dmin, std::move(arrangement)};
@@ -414,7 +427,7 @@ noexcept
 	}
 }
 
-} // -- namespace unconstrained
-} // -- namespace Dmin
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace Dmin
+} // namespace detail
+} // namespace lal

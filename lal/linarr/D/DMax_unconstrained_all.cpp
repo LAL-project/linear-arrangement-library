@@ -73,15 +73,15 @@ void split_vertices_by_color(
 	const properties::bipartite_graph_coloring& vertex_colors,
 	std::vector<node>& blue_vertices_sorted_by_degree,
 	std::vector<node>& red_vertices_sorted_by_degree
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	for (node u = 0; u < n; ++u) {
-		std::cout << "Node '" << u << "' has color '" << int(vertex_colors[u]) << "'.\n";
+		std::cout << "Node '" << u << "' has color '" << int(vertex_colors[u])
+				  << "'.\n";
 	}
 	std::cout << "-----------------\n";
 #endif
@@ -96,15 +96,19 @@ noexcept
 			red_vertices_sorted_by_degree.push_back(u);
 		}
 	}
-	const auto sort_nodes =
-	[&](std::vector<node>& nodes) {
-		detail::sorting::counting_sort
-		<node, detail::sorting::sort_type::non_decreasing>
-		(
-			nodes.begin(), nodes.end(), n - 1, nodes.size(),
-			[&](const node u) -> std::size_t
-			{ return t.get_degree(u); }
-		);
+	const auto sort_nodes = [&](std::vector<node>& nodes)
+	{
+		detail::sorting::
+			counting_sort<node, detail::sorting::sort_type::non_decreasing>(
+				nodes.begin(),
+				nodes.end(),
+				n - 1,
+				nodes.size(),
+				[&](const node u) -> std::size_t
+				{
+					return t.get_degree(u);
+				}
+			);
 	};
 	sort_nodes(blue_vertices_sorted_by_degree);
 	sort_nodes(red_vertices_sorted_by_degree);
@@ -128,8 +132,7 @@ noexcept
 void retrieve_leave_sets(
 	const graphs::free_tree& t,
 	detail::array<std::vector<node>>& leaves_per_vertex
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 
@@ -138,7 +141,9 @@ noexcept
 		// retrieve leaves of vertex u
 		leaves_per_vertex[u].reserve(t.get_degree(u));
 		for (node v : t.get_neighbors(u)) {
-			if (t.get_degree(v) == 1) { leaves_per_vertex[u].push_back(v); }
+			if (t.get_degree(v) == 1) {
+				leaves_per_vertex[u].push_back(v);
+			}
 		}
 		// sort the leaves by vertex index
 		std::sort(leaves_per_vertex[u].begin(), leaves_per_vertex[u].end());
@@ -150,8 +155,7 @@ void relate_vertices_to_paths(
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
 	detail::array<std::size_t>& internal_path_node_to_path_idx,
 	detail::array<std::vector<node>>& incident_antennas
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
 	internal_path_node_to_path_idx.resize(n, n + 1);
@@ -184,7 +188,7 @@ noexcept
 	for (std::size_t i = 0; i < branchless_paths_in_tree.size(); ++i) {
 		const auto& p = branchless_paths_in_tree[i];
 		for (std::size_t j = 1; j < p.get_num_nodes() - 1; ++j) {
-			internal_path_node_to_path_idx[ p[j] ] = i;
+			internal_path_node_to_path_idx[p[j]] = i;
 		}
 		if (const node h = p.get_h1(); t.get_degree(h) == 1) {
 			internal_path_node_to_path_idx[h] = i;
@@ -194,10 +198,14 @@ noexcept
 		}
 	}
 	for (node u = 0; u < n; ++u) {
-		if (t.get_degree(u) <= 2) { continue; }
+		if (t.get_degree(u) <= 2) {
+			continue;
+		}
 
 		for (node v : t.get_neighbors(u)) {
-			if (t.get_degree(v) > 2) { continue; }
+			if (t.get_degree(v) > 2) {
+				continue;
+			}
 
 			const std::size_t idx_v = internal_path_node_to_path_idx[v];
 			const auto& p = branchless_paths_in_tree[idx_v];
@@ -209,10 +217,8 @@ noexcept
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	for (node u = 0; u < n; ++u) {
-		std::cout
-			<< "Node '" << u << "' belongs to path '"
-			<< internal_path_node_to_path_idx[u]
-			<< "'.\n";
+		std::cout << "Node '" << u << "' belongs to path '"
+				  << internal_path_node_to_path_idx[u] << "'.\n";
 	}
 	std::cout << "-----------------\n";
 #endif
@@ -222,8 +228,7 @@ void relate_vertices_to_orbits(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	detail::array<std::size_t>& vertex_to_orbit
-)
-noexcept
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Computing orbits...\n";
@@ -256,11 +261,10 @@ void calculate_initial_solution(
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
 	const detail::array<std::size_t>& internal_path_node_to_path_idx,
-	
+
 	detail::DMax::unconstrained::set_maximum_arrangements& max_arrs,
 	std::pair<uint64_t, linear_arrangement>& initial_DMax
-)
-noexcept
+) noexcept
 {
 	max_arrs.init();
 
@@ -271,9 +275,9 @@ noexcept
 	std::pair<uint64_t, linear_arrangement> OneThistle_MaxLA = {0, {}};
 
 	if (t.get_num_nodes() >= 3) {
-		OneThistle_MaxLA =
-			detail::DMax::thistle_1::AEF<true>
-			(t, branchless_paths_in_tree, internal_path_node_to_path_idx);
+		OneThistle_MaxLA = detail::DMax::thistle_1::AEF<true>(
+			t, branchless_paths_in_tree, internal_path_node_to_path_idx
+		);
 		max_arrs.add(OneThistle_MaxLA.first, OneThistle_MaxLA.second);
 	}
 
@@ -291,8 +295,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const properties::bipartite_graph_coloring& vertex_colors,
 	const std::vector<properties::branchless_path>& branchless_paths_in_tree,
 	const std::size_t number_of_threads
-)
-noexcept
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	assert(number_of_threads == 1);
@@ -302,14 +305,16 @@ noexcept
 	if (t.get_num_nodes() == 1) {
 		linear_arrangement arr(1);
 		arr.assign(0ull, 0ull);
-		return { 0, {{std::move(arr)}} };
+		return {0, {{std::move(arr)}}};
 	}
 
 	std::vector<node> blue_vertices_sorted_by_degree;
 	std::vector<node> red_vertices_sorted_by_degree;
 	split_vertices_by_color(
-		t, vertex_colors,
-		blue_vertices_sorted_by_degree, red_vertices_sorted_by_degree
+		t,
+		vertex_colors,
+		blue_vertices_sorted_by_degree,
+		red_vertices_sorted_by_degree
 	);
 
 	// leaves_per_vertex[u] := set of vertices of degree 1 adjacent to u
@@ -327,13 +332,16 @@ noexcept
 
 	detail::array<std::size_t> vertex_to_orbit;
 	relate_vertices_to_orbits(t, orbits, vertex_to_orbit);
-	
+
 	detail::DMax::unconstrained::set_maximum_arrangements max_arrs(t);
 	std::pair<uint64_t, linear_arrangement> initial_DMax;
 	calculate_initial_solution(
-		t, vertex_colors,
-		branchless_paths_in_tree, internal_path_node_to_path_idx,
-		max_arrs, initial_DMax
+		t,
+		vertex_colors,
+		branchless_paths_in_tree,
+		internal_path_node_to_path_idx,
+		max_arrs,
+		initial_DMax
 	);
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
@@ -345,27 +353,26 @@ noexcept
 	std::vector<detail::DMax::unconstrained::AEF_BnB> BnB_runners;
 
 	// initialize runners
-	BnB_runners =
-		std::vector<detail::DMax::unconstrained::AEF_BnB>(
-			number_of_threads,
-			detail::DMax::unconstrained::AEF_BnB(
-				t,
-				leaves_per_vertex,
-				// colors of vertices
-				vertex_colors,
-				blue_vertices_sorted_by_degree.size(),
-				red_vertices_sorted_by_degree.size(),
-				// paths
-				branchless_paths_in_tree,
-				internal_path_node_to_path_idx,
-				incident_antennas,
-				// orbits
-				orbits,
-				vertex_to_orbit
-			)
-		);
+	BnB_runners = std::vector<detail::DMax::unconstrained::AEF_BnB>(
+		number_of_threads,
+		detail::DMax::unconstrained::AEF_BnB(
+			t,
+			leaves_per_vertex,
+			// colors of vertices
+			vertex_colors,
+			blue_vertices_sorted_by_degree.size(),
+			red_vertices_sorted_by_degree.size(),
+			// paths
+			branchless_paths_in_tree,
+			internal_path_node_to_path_idx,
+			incident_antennas,
+			// orbits
+			orbits,
+			vertex_to_orbit
+		)
+	);
 
-// ---------------------------------------------------------------------- //
+	// ---------------------------------------------------------------------- //
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Initializing runners...\n";
@@ -381,7 +388,7 @@ noexcept
 		BnB_runners[0].exe(orbit[0]);
 	}
 #else
-	#pragma omp parallel for schedule(dynamic) num_threads(number_of_threads)
+#pragma omp parallel for schedule(dynamic) num_threads(number_of_threads)
 	for (std::size_t i = 0; i < orbits.size(); ++i) {
 		const auto u = orbits[i][0];
 
@@ -407,10 +414,10 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const std::vector<std::vector<node>>& orbits,
 	const std::vector<properties::branchless_path>& bps,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
+	const properties::bipartite_graph_coloring c =
+		detail::color_vertices_graph(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
@@ -419,10 +426,10 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const properties::bipartite_graph_coloring& c,
 	const std::vector<properties::branchless_path>& bps,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
+	const std::vector<std::vector<node>> orbits =
+		properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
@@ -431,10 +438,10 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const std::vector<std::vector<node>>& orbits,
 	const properties::bipartite_graph_coloring& c,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
+	const std::vector<properties::branchless_path> bps =
+		detail::branchless_paths_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
@@ -442,11 +449,12 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& bps,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
+	const properties::bipartite_graph_coloring c =
+		detail::color_vertices_graph(t);
+	const std::vector<std::vector<node>> orbits =
+		properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
@@ -454,11 +462,12 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const properties::bipartite_graph_coloring& c,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
-	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
+	const std::vector<properties::branchless_path> bps =
+		detail::branchless_paths_compute(t);
+	const std::vector<std::vector<node>> orbits =
+		properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
@@ -466,25 +475,27 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const graphs::free_tree& t,
 	const std::vector<std::vector<node>>& orbits,
 	std::size_t nuthreads
-)
-noexcept
+) noexcept
 {
-	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
+	const properties::bipartite_graph_coloring c =
+		detail::color_vertices_graph(t);
+	const std::vector<properties::branchless_path> bps =
+		detail::branchless_paths_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
 std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
-	const graphs::free_tree& t,
-	std::size_t nuthreads
-)
-noexcept
+	const graphs::free_tree& t, std::size_t nuthreads
+) noexcept
 {
-	const properties::bipartite_graph_coloring c = detail::color_vertices_graph(t);
-	const std::vector<properties::branchless_path> bps = detail::branchless_paths_compute(t);
-	const std::vector<std::vector<node>> orbits = properties::vertex_orbits_compute(t);
+	const properties::bipartite_graph_coloring c =
+		detail::color_vertices_graph(t);
+	const std::vector<properties::branchless_path> bps =
+		detail::branchless_paths_compute(t);
+	const std::vector<std::vector<node>> orbits =
+		properties::vertex_orbits_compute(t);
 	return max_sum_edge_lengths_all(t, orbits, c, bps, nuthreads);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

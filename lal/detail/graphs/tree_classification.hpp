@@ -65,11 +65,10 @@ namespace detail {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool> = true
->
-void classify_tree
-(const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types)
-noexcept
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+void classify_tree(
+	const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types
+) noexcept
 {
 #if defined DEBUG
 	assert(t.is_tree());
@@ -79,26 +78,26 @@ noexcept
 
 	bool is_some = false; // the type of the tree is different from 'unknown'
 
-	const auto unset_type =
-	[&](const graphs::tree_type& tt) {
+	const auto unset_type = [&](const graphs::tree_type& tt)
+	{
 		tree_types[static_cast<std::size_t>(tt)] = false;
 	};
-	const auto set_type =
-	[&](const graphs::tree_type& tt) {
+	const auto set_type = [&](const graphs::tree_type& tt)
+	{
 		tree_types[static_cast<std::size_t>(tt)] = true;
 		is_some = true;
 	};
 
 	// only neighbour of a vertex of a tree in its underlying UNDIRECTED structure
-	const auto get_only_neighbour =
-	[&](node u) -> node {
+	const auto get_only_neighbour = [&](node u) -> node
+	{
 		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
 			return t.get_neighbors(u)[0];
 		}
 		else {
-			return (t.get_out_degree(u) == 0 ?
-				t.get_in_neighbors(u)[0] :
-				t.get_out_neighbors(u)[0]
+			return (
+				t.get_out_degree(u) == 0 ? t.get_in_neighbors(u)[0]
+										 : t.get_out_neighbors(u)[0]
 			);
 		}
 	};
@@ -150,7 +149,7 @@ noexcept
 	for (node u = 0; u < n; ++u) {
 		// 'du' is the degree of the vertex in the underlying undirected graph
 		const int64_t du = static_cast<int64_t>(t.get_degree(u));
-		deg_internal[u] += (du > 1)*du;
+		deg_internal[u] += (du > 1) * du;
 
 		n_deg_eq_1 += du == 1;
 		n_deg_eq_2 += du == 2;
@@ -159,7 +158,7 @@ noexcept
 
 		// this reduces the degree of the internal vertices
 		// as many times as leaves are connected to them
-		deg_internal[ get_only_neighbour(u) ] -= (du == 1);
+		deg_internal[get_only_neighbour(u)] -= (du == 1);
 	}
 
 	bool is_linear = false;
@@ -190,12 +189,8 @@ noexcept
 
 	// QUASISTAR
 	if (n - n_deg_ge_2 == n_deg_eq_1 and
-		(
-		(n_deg_eq_2 == 2 and n_deg_ge_3 == 0) or
-		(n_deg_ge_3 == 1 and n_deg_eq_2 == 1)
-		)
-	)
-	{
+		((n_deg_eq_2 == 2 and n_deg_ge_3 == 0) or
+		 (n_deg_ge_3 == 1 and n_deg_eq_2 == 1))) {
 		is_quasistar = true;
 		is_bistar = true;
 		is_caterpillar = true;
@@ -219,7 +214,7 @@ noexcept
 
 	// 2-LINEAR
 	if (n_deg_ge_3 == 2 and n_deg_eq_1 + n_deg_eq_2 == n - 2) {
-		is_two_linear  = true;
+		is_two_linear = true;
 	}
 
 	if (not is_caterpillar) {
@@ -236,30 +231,62 @@ noexcept
 		is_caterpillar = n1 == 2 or n1 == 0;
 	}
 
-	if (is_linear) { set_type(graphs::tree_type::linear); }
-	else { unset_type(graphs::tree_type::linear); }
+	if (is_linear) {
+		set_type(graphs::tree_type::linear);
+	}
+	else {
+		unset_type(graphs::tree_type::linear);
+	}
 
-	if (is_star) { set_type(graphs::tree_type::star); }
-	else { unset_type(graphs::tree_type::star); }
+	if (is_star) {
+		set_type(graphs::tree_type::star);
+	}
+	else {
+		unset_type(graphs::tree_type::star);
+	}
 
-	if (is_quasistar) { set_type(graphs::tree_type::quasistar); }
-	else { unset_type(graphs::tree_type::quasistar); }
+	if (is_quasistar) {
+		set_type(graphs::tree_type::quasistar);
+	}
+	else {
+		unset_type(graphs::tree_type::quasistar);
+	}
 
-	if (is_bistar) { set_type(graphs::tree_type::bistar); }
-	else { unset_type(graphs::tree_type::bistar); }
+	if (is_bistar) {
+		set_type(graphs::tree_type::bistar);
+	}
+	else {
+		unset_type(graphs::tree_type::bistar);
+	}
 
-	if (is_caterpillar) { set_type(graphs::tree_type::caterpillar); }
-	else { unset_type(graphs::tree_type::caterpillar); }
+	if (is_caterpillar) {
+		set_type(graphs::tree_type::caterpillar);
+	}
+	else {
+		unset_type(graphs::tree_type::caterpillar);
+	}
 
-	if (is_spider) { set_type(graphs::tree_type::spider); }
-	else { unset_type(graphs::tree_type::spider); }
+	if (is_spider) {
+		set_type(graphs::tree_type::spider);
+	}
+	else {
+		unset_type(graphs::tree_type::spider);
+	}
 
-	if (is_two_linear) { set_type(graphs::tree_type::two_linear); }
-	else { unset_type(graphs::tree_type::two_linear); }
+	if (is_two_linear) {
+		set_type(graphs::tree_type::two_linear);
+	}
+	else {
+		unset_type(graphs::tree_type::two_linear);
+	}
 
-	if (is_some) { unset_type(graphs::tree_type::unknown); }
-	else { set_type(graphs::tree_type::unknown); }
+	if (is_some) {
+		unset_type(graphs::tree_type::unknown);
+	}
+	else {
+		set_type(graphs::tree_type::unknown);
+	}
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

@@ -56,7 +56,8 @@ namespace generate {
 
 /* MODIFIERS */
 
-void all_ulab_rooted_trees::next() noexcept {
+void all_ulab_rooted_trees::next() noexcept
+{
 	if (m_is_last or m_reached_end) {
 		m_reached_end = true;
 		return;
@@ -94,7 +95,8 @@ void all_ulab_rooted_trees::next() noexcept {
 
 /* PROTECTED */
 
-graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
+graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept
+{
 	if (m_n == 0) {
 		return graphs::rooted_tree(graphs::free_tree(0), 0);
 	}
@@ -103,15 +105,18 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept {
 	}
 	if (m_n == 2) {
 		graphs::rooted_tree rT(2);
-		rT.add_edge(0,1);
+		rT.add_edge(0, 1);
 		rT.set_root(0);
 		return rT;
 	}
 
-	return detail::from_level_sequence_to_tree<graphs::rooted_tree>(m_L.begin(), m_n, false, false);
+	return detail::from_level_sequence_to_tree<graphs::rooted_tree>(
+		m_L.begin(), m_n, false, false
+	);
 }
 
-void all_ulab_rooted_trees::__reset() noexcept {
+void all_ulab_rooted_trees::__reset() noexcept
+{
 	m_is_first = true;
 	m_reached_end = false;
 
@@ -140,5 +145,5 @@ void all_ulab_rooted_trees::__reset() noexcept {
 	}
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

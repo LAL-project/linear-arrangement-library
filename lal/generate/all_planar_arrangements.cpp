@@ -55,7 +55,8 @@
 namespace lal {
 namespace generate {
 
-all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T) noexcept
+all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T
+) noexcept
 	: m_T(T),
 	  m_intervals(m_T.get_num_nodes()),
 	  m_memory_bit_sort(T.get_num_nodes(), 0)
@@ -67,7 +68,8 @@ all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T) noe
 	reset();
 }
 
-all_planar_arrangements::all_planar_arrangements(const graphs::rooted_tree& T) noexcept
+all_planar_arrangements::all_planar_arrangements(const graphs::rooted_tree& T
+) noexcept
 	: m_T_copy(T.to_free_tree()),
 	  m_T(m_T_copy),
 	  m_intervals(m_T.get_num_nodes()),
@@ -80,7 +82,8 @@ all_planar_arrangements::all_planar_arrangements(const graphs::rooted_tree& T) n
 	reset();
 }
 
-void all_planar_arrangements::next() noexcept {
+void all_planar_arrangements::next() noexcept
+{
 	if (m_T.get_num_nodes() == 1) {
 		m_reached_end = true;
 		return;
@@ -95,7 +98,7 @@ void all_planar_arrangements::next() noexcept {
 		if (u == m_root) {
 			// the root's level should be permuted carefully:
 			// the root must stay at the leftmost position
-			has_perm = next_permutation(inter_u.begin()+1, inter_u.end());
+			has_perm = next_permutation(inter_u.begin() + 1, inter_u.end());
 		}
 		else {
 			// permute all the vertices in the interval of the
@@ -121,22 +124,26 @@ void all_planar_arrangements::next() noexcept {
 	}
 }
 
-linear_arrangement all_planar_arrangements::get_arrangement() const noexcept {
-	return (m_T.get_num_nodes() == 1 ?
-		linear_arrangement::identity(1) :
-		detail::make_arrangement_permutations(m_T, m_root, m_intervals)
+linear_arrangement all_planar_arrangements::get_arrangement() const noexcept
+{
+	return (
+		m_T.get_num_nodes() == 1
+			? linear_arrangement::identity(1)
+			: detail::make_arrangement_permutations(m_T, m_root, m_intervals)
 	);
 }
 
 /* PRIVATE */
 
-void all_planar_arrangements::reset() noexcept {
+void all_planar_arrangements::reset() noexcept
+{
 	m_root = 0;
 	m_reached_end = false;
 	initialize_intervals_tree();
 }
 
-void all_planar_arrangements::initialize_intervals_tree() noexcept {
+void all_planar_arrangements::initialize_intervals_tree() noexcept
+{
 	m_intervals[m_root].resize(m_T.get_degree(m_root) + 1);
 	initialize_interval_node(m_root, m_root);
 
@@ -144,17 +151,18 @@ void all_planar_arrangements::initialize_intervals_tree() noexcept {
 	// every vertex with respect to the root.
 	detail::BFS<graphs::free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
-	[&](const auto&, node u, node v, bool) -> void {
-		m_intervals[v].resize(m_T.get_degree(v));
-		initialize_interval_node(v, u);
-	}
+		[&](const auto&, node u, node v, bool) -> void
+		{
+			m_intervals[v].resize(m_T.get_degree(v));
+			initialize_interval_node(v, u);
+		}
 	);
 	bfs.start_at(m_root);
 }
 
-void all_planar_arrangements::initialize_interval_node
-(const node u, const node parent)
-noexcept
+void all_planar_arrangements::initialize_interval_node(
+	const node u, const node parent
+) noexcept
 {
 	const neighbourhood& neighs_u = m_T.get_neighbors(u);
 
@@ -169,8 +177,9 @@ noexcept
 
 		// if the neighbors of node u are not normalized
 		if (not m_T.is_normalized()) {
-			detail::sorting::bit_sort<node>
-			(inter_u.begin() + 1, inter_u.end(), inter_u.size());
+			detail::sorting::bit_sort<node>(
+				inter_u.begin() + 1, inter_u.end(), inter_u.size()
+			);
 		}
 	}
 	else {
@@ -178,16 +187,25 @@ noexcept
 		inter_u[0] = u;
 
 		std::copy_if(
-			neighs_u.begin(), neighs_u.end(), inter_u.begin() + 1,
-			[parent](const node v) -> bool { return v != parent; }
+			neighs_u.begin(),
+			neighs_u.end(),
+			inter_u.begin() + 1,
+			[parent](const node v) -> bool
+			{
+				return v != parent;
+			}
 		);
 
 		// in order to obtain a lexicographically sorted permutation,
 		// we must sort it (vertex 'u' might not be placed properly).
-		detail::sorting::bit_sort_mem<node>
-		(inter_u.begin(), inter_u.end(), inter_u.size(), m_memory_bit_sort.begin());
+		detail::sorting::bit_sort_mem<node>(
+			inter_u.begin(),
+			inter_u.end(),
+			inter_u.size(),
+			m_memory_bit_sort.begin()
+		);
 	}
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

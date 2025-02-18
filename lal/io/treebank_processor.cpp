@@ -100,7 +100,7 @@
 
 #include <lal/detail/macros/basic_convert.hpp>
 
-#define square(x) ((x)*(x))
+#define square(x) ((x) * (x))
 
 namespace lal {
 namespace io {
@@ -111,26 +111,27 @@ void set_average_of(
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double * const props
-)
-noexcept
+) noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
 		return;
 	}
 
-	const double cumul =
-	[&]() -> double {
-		double v =
-		std::accumulate(
-			F.begin(), F.end(),
-			0.0, [&](double x, const linarr::dependency_flux& f) {
-				return x + detail::to_double( (f.*FUNC)() );
+	const double cumul = [&]() -> double
+	{
+		double v = std::accumulate(
+			F.begin(),
+			F.end(),
+			0.0,
+			[&](double x, const linarr::dependency_flux& f)
+			{
+				return x + detail::to_double((f.*FUNC)());
 			}
 		);
 		return v;
 	}();
-	props[idx] = cumul/detail::to_double(F.size());
+	props[idx] = cumul / detail::to_double(F.size());
 }
 template <typename T>
 void set_maximum_of(
@@ -138,21 +139,22 @@ void set_maximum_of(
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double * const props
-)
-noexcept
+) noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
 		return;
 	}
 
-	const double value =
-	[&]() -> double {
+	const double value = [&]() -> double
+	{
 		double v = 0.0;
 		std::for_each(
-			F.begin(), F.end(),
-			[&](const linarr::dependency_flux& f) {
-				v = std::max(v, detail::to_double( (f.*FUNC)() ));
+			F.begin(),
+			F.end(),
+			[&](const linarr::dependency_flux& f)
+			{
+				v = std::max(v, detail::to_double((f.*FUNC)()));
 			}
 		);
 		return v;
@@ -165,21 +167,22 @@ void set_minimum_of(
 	const std::size_t idx,
 	T (linarr::dependency_flux::*FUNC)() const,
 	double * const props
-)
-noexcept
+) noexcept
 {
 	if (F.size() == 0) {
 		props[idx] = nan("");
 		return;
 	}
 
-	const double value =
-	[&]() -> double {
+	const double value = [&]() -> double
+	{
 		double v = 9999999.9;
 		std::for_each(
-			F.begin(), F.end(),
-			[&](const linarr::dependency_flux& f) {
-				v = std::min(v, detail::to_double( (f.*FUNC)() ));
+			F.begin(),
+			F.end(),
+			[&](const linarr::dependency_flux& f)
+			{
+				v = std::min(v, detail::to_double((f.*FUNC)()));
 			}
 		);
 		return v;
@@ -190,13 +193,11 @@ noexcept
 // -----------------------------------------------------------------------------
 // CLASS METHODS
 
-treebank_file_error treebank_processor::init
-(
+treebank_file_error treebank_processor::init(
 	const std::string& treebank_file,
 	const std::string& output_file,
 	const std::string& treebank_id
-)
-noexcept
+) noexcept
 {
 	// keep data
 	m_treebank_filename = treebank_file;
@@ -219,9 +220,11 @@ noexcept
 	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
-treebank_file_error treebank_processor::process() noexcept {
+treebank_file_error treebank_processor::process() noexcept
+{
 	if (m_check_before_process) {
-		const bool err = detail::check_correctness_treebank<true>(m_treebank_filename);
+		const bool err =
+			detail::check_correctness_treebank<true>(m_treebank_filename);
 
 		if (err) {
 			return treebank_file_error(
@@ -232,8 +235,14 @@ treebank_file_error treebank_processor::process() noexcept {
 	}
 
 	// check that there is something to be computed
-	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;}))
-	{
+	if (std::all_of(
+			m_what_fs.begin(),
+			m_what_fs.end(),
+			[](bool x)
+			{
+				return not x;
+			}
+		)) {
 		return treebank_file_error(
 			"No features to be computed. Nothing to do.",
 			treebank_file_error_type::no_features
@@ -254,17 +263,16 @@ treebank_file_error treebank_processor::process() noexcept {
 	// early as we can.
 	treebank_reader tbread;
 	{
-	const auto err = tbread.init(m_treebank_filename, m_treebank_id);
-	if (err.is_error()) {
-		if (m_be_verbose >= 2) {
+		const auto err = tbread.init(m_treebank_filename, m_treebank_id);
+		if (err.is_error()) {
+			if (m_be_verbose >= 2) {
 
-			#pragma omp critical
-			std::cerr
-				<< "Processing treebank '" << m_treebank_filename << "' failed"
-				<< '\n';
+#pragma omp critical
+				std::cerr << "Processing treebank '" << m_treebank_filename
+						  << "' failed" << '\n';
+			}
+			return err;
 		}
-		return err;
-	}
 	}
 
 	// output header to the file
@@ -356,8 +364,7 @@ treebank_file_error treebank_processor::process() noexcept {
 					output_syndepstruct_type_header(out_treebank_file);
 					break;
 
-				case treebank_feature_type::__last_value:
-					break;
+				case treebank_feature_type::__last_value: break;
 				}
 			}
 		}
@@ -375,8 +382,9 @@ treebank_file_error treebank_processor::process() noexcept {
 	while (not tbread.end()) {
 		rT = tbread.get_tree();
 
-		process_tree<graphs::rooted_tree, std::ofstream>
-			(rT, props.begin(), prop_set.begin(), out_treebank_file);
+		process_tree<graphs::rooted_tree, std::ofstream>(
+			rT, props.begin(), prop_set.begin(), out_treebank_file
+		);
 
 		props.fill(0.0);
 		prop_set.fill(0);
@@ -386,16 +394,14 @@ treebank_file_error treebank_processor::process() noexcept {
 
 	const auto end = std::chrono::system_clock::now();
 	// this constructs a duration object using milliseconds
-	const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+	const auto elapsed =
+		std::chrono::duration_cast<std::chrono::seconds>(end - start);
 
 	if (m_be_verbose >= 1) {
-		#pragma omp critical
-		std::cout
-			<< "    processed "
-			<< tbread.get_num_trees()
-			<< " trees in treebank '" << m_treebank_filename << "' in "
-			<< elapsed.count() << " seconds."
-			<< '\n';
+#pragma omp critical
+		std::cout << "    processed " << tbread.get_num_trees()
+				  << " trees in treebank '" << m_treebank_filename << "' in "
+				  << elapsed.count() << " seconds." << '\n';
 	}
 
 	return treebank_file_error("", treebank_file_error_type::no_error);
@@ -404,42 +410,45 @@ treebank_file_error treebank_processor::process() noexcept {
 // PRIVATE
 
 template <class out_stream_t>
-void treebank_processor::output_tree_type_header(out_stream_t& out_treebank_file)
-const noexcept
+void treebank_processor::output_tree_type_header(out_stream_t& out_treebank_file
+) const noexcept
 {
-	out_treebank_file
-		<< detail::tree_type_string(detail::array_of_tree_types[0]);
+	out_treebank_file << detail::tree_type_string(detail::array_of_tree_types[0]
+	);
 
 	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
-		out_treebank_file
-			<< m_separator
-			<< detail::tree_type_string(detail::array_of_tree_types[j]);
+		out_treebank_file << m_separator
+						  << detail::tree_type_string(
+								 detail::array_of_tree_types[j]
+							 );
 	}
 }
 
 template <class out_stream_t>
-void treebank_processor::output_syndepstruct_type_header(out_stream_t& out_treebank_file)
-const noexcept
+void treebank_processor::output_syndepstruct_type_header(
+	out_stream_t& out_treebank_file
+) const noexcept
 {
-	out_treebank_file
-		<< detail::syntactic_dependency_tree_to_string
-			(detail::array_of_syntactic_dependency_trees[0]);
+	out_treebank_file << detail::syntactic_dependency_tree_to_string(
+		detail::array_of_syntactic_dependency_trees[0]
+	);
 
 	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
-		out_treebank_file
-			<< m_separator
-			<< detail::syntactic_dependency_tree_to_string
-				(detail::array_of_syntactic_dependency_trees[j]);
+		out_treebank_file << m_separator
+						  << detail::syntactic_dependency_tree_to_string(
+								 detail::array_of_syntactic_dependency_trees[j]
+							 );
 	}
 }
 
 // output the tree type
 template <class tree_t, class out_stream_t>
-void treebank_processor::output_tree_type_values(tree_t& fT, out_stream_t& out_treebank_file)
-const noexcept
+void treebank_processor::output_tree_type_values(
+	tree_t& fT, out_stream_t& out_treebank_file
+) const noexcept
 {
-	const auto output_tt =
-	[&](const graphs::tree_type& tt) {
+	const auto output_tt = [&](const graphs::tree_type& tt)
+	{
 		out_treebank_file << (fT.is_of_tree_type(tt) ? '1' : '0');
 	};
 
@@ -456,16 +465,14 @@ const noexcept
 
 template <class tree_t, class out_stream_t>
 void treebank_processor::output_syndepstruct_type_values(
-	const tree_t& rT,
-	const uint64_t C,
-	out_stream_t& out_treebank_file
-)
-const noexcept
+	const tree_t& rT, const uint64_t C, out_stream_t& out_treebank_file
+) const noexcept
 {
 	const auto v = linarr::syntactic_dependency_tree_classify(rT, C);
 
 	const auto output_sdst =
-	[&](const linarr::syntactic_dependency_tree_type& sdst) {
+		[&](const linarr::syntactic_dependency_tree_type& sdst)
+	{
 		const std::size_t idx_tt = static_cast<std::size_t>(sdst);
 		out_treebank_file << (v[idx_tt] ? '1' : '0');
 	};
@@ -478,14 +485,12 @@ const noexcept
 }
 
 template <class tree_t, class out_stream_t>
-void treebank_processor::process_tree
-(
+void treebank_processor::process_tree(
 	const tree_t& rT,
 	double * const props,
 	char * const prop_set,
 	out_stream_t& out_treebank_file
-)
-noexcept
+) noexcept
 {
 	static const linear_arrangement arr;
 	static const auto id = detail::identity_arr(arr);
@@ -494,11 +499,8 @@ noexcept
 	const uint64_t n = fT.get_num_nodes();
 
 	properties::bipartite_graph_coloring c;
-	if (m_what_fs[Dmin_Bipartite_idx] or
-		m_what_fs[DMax_Bipartite_idx] or
-		m_what_fs[DMax_Unconstrained_idx]
-	)
-	{
+	if (m_what_fs[Dmin_Bipartite_idx] or m_what_fs[DMax_Bipartite_idx] or
+		m_what_fs[DMax_Unconstrained_idx]) {
 		c = detail::color_vertices_graph(fT);
 	}
 	std::vector<properties::branchless_path> bps;
@@ -511,9 +513,11 @@ noexcept
 	}
 
 	// a suitable algorithm to calculate C depending on the value of 'n'
-	const auto calculate_crossings =
-	[&]() -> uint64_t {
-		if (n < 4) { return 0; }
+	const auto calculate_crossings = [&]() -> uint64_t
+	{
+		if (n < 4) {
+			return 0;
+		}
 
 		if (n <= 8) {
 			return detail::crossings::n_C_ladder(fT, id);
@@ -530,8 +534,8 @@ noexcept
 	// -------------------------------------------------------------------
 	// compute numeric features in a way that does not repeat computations
 
-	const auto set_prop =
-	[&](std::size_t idx, double val) -> void {
+	const auto set_prop = [&](std::size_t idx, double val) -> void
+	{
 		props[idx] = val;
 		prop_set[idx] = 1;
 	};
@@ -558,23 +562,35 @@ noexcept
 
 	// K^2
 	if (m_what_fs[SK2_idx]) {
-		set_prop(SK2_idx, detail::to_double(properties::sum_powers_degrees(fT, 2)));
+		set_prop(
+			SK2_idx, detail::to_double(properties::sum_powers_degrees(fT, 2))
+		);
 	}
 	if (m_what_fs[SK2_out_idx]) {
-		set_prop(SK2_out_idx, detail::to_double(properties::sum_powers_out_degrees(rT, 2)));
+		set_prop(
+			SK2_out_idx,
+			detail::to_double(properties::sum_powers_out_degrees(rT, 2))
+		);
 	}
 	// K^3
 	if (m_what_fs[SK3_idx]) {
-		set_prop(SK3_idx, detail::to_double(properties::sum_powers_degrees(fT, 3)));
+		set_prop(
+			SK3_idx, detail::to_double(properties::sum_powers_degrees(fT, 3))
+		);
 	}
 	if (m_what_fs[SK3_out_idx]) {
-		set_prop(SK3_out_idx, detail::to_double(properties::sum_powers_out_degrees(rT, 3)));
+		set_prop(
+			SK3_out_idx,
+			detail::to_double(properties::sum_powers_out_degrees(rT, 3))
+		);
 	}
 
 	// |Q|
 	if (m_what_fs[num_pairs_independent_edges_idx]) {
-		set_prop(num_pairs_independent_edges_idx,
-				 detail::to_double(properties::num_pairs_independent_edges(fT)));
+		set_prop(
+			num_pairs_independent_edges_idx,
+			detail::to_double(properties::num_pairs_independent_edges(fT))
+		);
 	}
 	// head initial
 	if (m_what_fs[head_initial_idx]) {
@@ -598,8 +614,10 @@ noexcept
 	// SHD
 	if (m_what_fs[sum_hierarchical_distance_idx]) {
 		if (n > 1) {
-			set_prop(sum_hierarchical_distance_idx,
-					 detail::to_double(properties::sum_hierarchical_distances(rT)));
+			set_prop(
+				sum_hierarchical_distance_idx,
+				detail::to_double(properties::sum_hierarchical_distances(rT))
+			);
 		}
 		else {
 			set_prop(mean_hierarchical_distance_idx, nan(""));
@@ -611,12 +629,17 @@ noexcept
 			if (m_what_fs[sum_hierarchical_distance_idx]) {
 				// sum of hierarchical distances was calculated in the previous
 				// 'if' statement: resuse it!
-				set_prop(mean_hierarchical_distance_idx,
-						 props[sum_hierarchical_distance_idx]/(detail::to_double(n) - 1));
+				set_prop(
+					mean_hierarchical_distance_idx,
+					props[sum_hierarchical_distance_idx] /
+						(detail::to_double(n) - 1)
+				);
 			}
 			else {
-				set_prop(mean_hierarchical_distance_idx,
-						 properties::mean_hierarchical_distance(rT));
+				set_prop(
+					mean_hierarchical_distance_idx,
+					properties::mean_hierarchical_distance(rT)
+				);
 			}
 		}
 		else {
@@ -625,12 +648,16 @@ noexcept
 	}
 	// diameter
 	if (m_what_fs[tree_diameter_idx]) {
-		set_prop(tree_diameter_idx, detail::to_double(properties::tree_diameter(rT)));
+		set_prop(
+			tree_diameter_idx, detail::to_double(properties::tree_diameter(rT))
+		);
 	}
 	// caterpillar distance
 	if (m_what_fs[tree_caterpillar_distance_idx]) {
-		set_prop(tree_caterpillar_distance_idx,
-				 detail::to_double(properties::tree_caterpillar_distance(fT)));
+		set_prop(
+			tree_caterpillar_distance_idx,
+			detail::to_double(properties::tree_caterpillar_distance(fT))
+		);
 	}
 
 	// -----------------------------------------------------------------
@@ -640,8 +667,10 @@ noexcept
 		set_prop(C_idx, detail::to_double(calculate_crossings()));
 	}
 	if (m_what_fs[C_predicted_idx]) {
-		set_prop(C_predicted_idx,
-				 detail::predict_C_using_edge_lengths<double>(fT, id));
+		set_prop(
+			C_predicted_idx,
+			detail::predict_C_using_edge_lengths<double>(fT, id)
+		);
 	}
 	if (m_what_fs[C_expected_idx]) {
 		set_prop(C_expected_idx, properties::exp_num_crossings(fT));
@@ -672,7 +701,8 @@ noexcept
 #endif
 		set_prop(
 			C_z_score_idx,
-			(props[C_idx] - props[C_expected_idx])/std::sqrt(props[C_variance_idx])
+			(props[C_idx] - props[C_expected_idx]) /
+				std::sqrt(props[C_variance_idx])
 		);
 	}
 
@@ -685,8 +715,10 @@ noexcept
 
 	if (m_what_fs[mean_dependency_distance_idx]) {
 		if (n > 1) {
-			set_prop(mean_dependency_distance_idx,
-					 detail::mean_sum_edge_lengths<double>(rT, id));
+			set_prop(
+				mean_dependency_distance_idx,
+				detail::mean_sum_edge_lengths<double>(rT, id)
+			);
 		}
 		else {
 			set_prop(mean_dependency_distance_idx, nan(""));
@@ -697,13 +729,21 @@ noexcept
 		set_prop(D_expected_idx, properties::exp_sum_edge_lengths(fT));
 	}
 	if (m_what_fs[D_expected_bipartite_idx]) {
-		set_prop(D_expected_bipartite_idx, properties::exp_sum_edge_lengths_bipartite(fT));
+		set_prop(
+			D_expected_bipartite_idx,
+			properties::exp_sum_edge_lengths_bipartite(fT)
+		);
 	}
 	if (m_what_fs[D_expected_projective_idx]) {
-		set_prop(D_expected_projective_idx, properties::exp_sum_edge_lengths_projective(rT));
+		set_prop(
+			D_expected_projective_idx,
+			properties::exp_sum_edge_lengths_projective(rT)
+		);
 	}
 	if (m_what_fs[D_expected_planar_idx]) {
-		set_prop(D_expected_planar_idx, properties::exp_sum_edge_lengths_planar(fT));
+		set_prop(
+			D_expected_planar_idx, properties::exp_sum_edge_lengths_planar(fT)
+		);
 	}
 	if (m_what_fs[D_variance_idx]) {
 		set_prop(D_variance_idx, properties::var_sum_edge_lengths(fT));
@@ -713,7 +753,9 @@ noexcept
 	if (m_what_fs[D_z_score_idx]) {
 		// we need D
 		if (not m_what_fs[D_idx]) {
-			set_prop(D_idx, detail::to_double(detail::sum_edge_lengths(fT, id)));
+			set_prop(
+				D_idx, detail::to_double(detail::sum_edge_lengths(fT, id))
+			);
 		}
 		// we need E[D]
 		if (not m_what_fs[D_expected_idx]) {
@@ -731,7 +773,8 @@ noexcept
 #endif
 		set_prop(
 			D_z_score_idx,
-			(props[D_idx] - props[D_expected_idx])/std::sqrt(props[D_variance_idx])
+			(props[D_idx] - props[D_expected_idx]) /
+				std::sqrt(props[D_variance_idx])
 		);
 	}
 
@@ -742,25 +785,25 @@ noexcept
 	std::vector<std::vector<detail::node_size>> Lpr;
 	if (m_what_fs[Dmin_Projective_idx] or m_what_fs[DMax_Projective_idx]) {
 		Lpr.resize(n);
-		detail::Dopt_utils::make_sorted_adjacency_list_rooted
-			<detail::sorting::sort_type::non_increasing>
-			(rT, Lpr);
+		detail::Dopt_utils::make_sorted_adjacency_list_rooted<
+			detail::sorting::sort_type::non_increasing>(rT, Lpr);
 	}
 
 	// initialized to 0 so that compiler does not cry.
 	uint64_t Dmin_projective = 0;
 	if (m_what_fs[Dmin_Projective_idx]) {
 		linear_arrangement empty;
-		Dmin_projective =
-			detail::Dmin_utils::arrange_projective<false>
-			(n, Lpr, rT.get_root(), empty);
+		Dmin_projective = detail::Dmin_utils::arrange_projective<false>(
+			n, Lpr, rT.get_root(), empty
+		);
 
 		set_prop(Dmin_Projective_idx, detail::to_double(Dmin_projective));
 	}
 
 	if (m_what_fs[Dmin_Planar_idx]) {
 		std::vector<std::vector<detail::node_size>> L;
-		const auto centroid = detail::centroidal_vertex_plus_adjacency_list(rT, 0, L);
+		const auto centroid =
+			detail::centroidal_vertex_plus_adjacency_list(rT, 0, L);
 
 		const bool centroid_contains_root =
 			(centroid.first == rT.get_root() or
@@ -777,8 +820,9 @@ noexcept
 
 			linear_arrangement empty;
 			const uint64_t Dmin_planar =
-				detail::Dmin_utils::arrange_projective<false>
-				(n, L, centroid.first, empty);
+				detail::Dmin_utils::arrange_projective<false>(
+					n, L, centroid.first, empty
+				);
 
 			set_prop(Dmin_Planar_idx, detail::to_double(Dmin_planar));
 		}
@@ -797,8 +841,9 @@ noexcept
 	if (m_what_fs[DMax_Projective_idx]) {
 		linear_arrangement empty;
 		const uint64_t DMax_projective =
-			detail::DMax_utils::arrange_projective<false>
-			(n, Lpr, rT.get_root(), empty);
+			detail::DMax_utils::arrange_projective<false>(
+				n, Lpr, rT.get_root(), empty
+			);
 		set_prop(DMax_Projective_idx, detail::to_double(DMax_projective));
 	}
 	if (m_what_fs[DMax_Planar_idx]) {
@@ -806,11 +851,13 @@ noexcept
 		set_prop(DMax_Planar_idx, detail::to_double(DMax_planar));
 	}
 	if (m_what_fs[DMax_Bipartite_idx]) {
-		const uint64_t DMax_bipartite = detail::DMax::bipartite::AEF<false>(fT, c);
+		const uint64_t DMax_bipartite =
+			detail::DMax::bipartite::AEF<false>(fT, c);
 		set_prop(DMax_Bipartite_idx, detail::to_double(DMax_bipartite));
 	}
 	if (m_what_fs[DMax_1_thistle_idx]) {
-		const uint64_t DMax_1_thistle = detail::DMax::thistle_1::AEF<false>(fT, bps);
+		const uint64_t DMax_1_thistle =
+			detail::DMax::thistle_1::AEF<false>(fT, bps);
 		set_prop(DMax_1_thistle_idx, detail::to_double(DMax_1_thistle));
 	}
 	if (m_what_fs[DMax_Unconstrained_idx]) {
@@ -823,10 +870,14 @@ noexcept
 	const bool compute_any_of_flux = std::any_of(
 		m_what_fs.begin() + flux_max_weight_idx - 1,
 		m_what_fs.begin() + flux_min_size_idx + 1,
-		[](const bool& b) -> bool { return b; }
+		[](const bool& b) -> bool
+		{
+			return b;
+		}
 	);
 	if (compute_any_of_flux) {
-		const auto F = detail::dependency_flux_compute<linarr::dependency_flux>(fT, id);
+		const auto F =
+			detail::dependency_flux_compute<linarr::dependency_flux>(fT, id);
 		// since these values are cheap to calculate, compute every all of them
 		// and output whatever is needed later
 
@@ -834,7 +885,9 @@ noexcept
 		// compute the means
 		set_average_of(F, flux_mean_weight_idx, DFMEM::get_weight, props);
 		set_average_of(F, flux_mean_left_span_idx, DFMEM::get_left_span, props);
-		set_average_of(F, flux_mean_right_span_idx, DFMEM::get_right_span, props);
+		set_average_of(
+			F, flux_mean_right_span_idx, DFMEM::get_right_span, props
+		);
 		set_average_of(F, flux_mean_RL_ratio_idx, DFMEM::get_RL_ratio, props);
 		set_average_of(F, flux_mean_WS_ratio_idx, DFMEM::get_WS_ratio, props);
 		set_average_of(F, flux_mean_size_idx, DFMEM::get_size, props);
@@ -842,7 +895,9 @@ noexcept
 		// compute the maxs
 		set_maximum_of(F, flux_max_weight_idx, DFMEM::get_weight, props);
 		set_maximum_of(F, flux_max_left_span_idx, DFMEM::get_left_span, props);
-		set_maximum_of(F, flux_max_right_span_idx, DFMEM::get_right_span, props);
+		set_maximum_of(
+			F, flux_max_right_span_idx, DFMEM::get_right_span, props
+		);
 		set_maximum_of(F, flux_max_RL_ratio_idx, DFMEM::get_RL_ratio, props);
 		set_maximum_of(F, flux_max_WS_ratio_idx, DFMEM::get_WS_ratio, props);
 		set_maximum_of(F, flux_max_size_idx, DFMEM::get_size, props);
@@ -850,7 +905,9 @@ noexcept
 		// compute the mins
 		set_minimum_of(F, flux_min_weight_idx, DFMEM::get_weight, props);
 		set_minimum_of(F, flux_min_left_span_idx, DFMEM::get_left_span, props);
-		set_minimum_of(F, flux_min_right_span_idx, DFMEM::get_right_span, props);
+		set_minimum_of(
+			F, flux_min_right_span_idx, DFMEM::get_right_span, props
+		);
 		set_minimum_of(F, flux_min_RL_ratio_idx, DFMEM::get_RL_ratio, props);
 		set_minimum_of(F, flux_min_WS_ratio_idx, DFMEM::get_WS_ratio, props);
 		set_minimum_of(F, flux_min_size_idx, DFMEM::get_size, props);
@@ -858,12 +915,12 @@ noexcept
 	}
 
 	const auto centre_of_tree =
-		(m_what_fs[tree_centre_idx] ?
-			properties::tree_centre(fT) : std::make_pair(n+1,n+1));
+		(m_what_fs[tree_centre_idx] ? properties::tree_centre(fT)
+									: std::make_pair(n + 1, n + 1));
 
 	const auto centroid_of_tree =
-		(m_what_fs[tree_centroid_idx] ?
-			properties::tree_centroid(fT) : std::make_pair(n+1,n+1));
+		(m_what_fs[tree_centroid_idx] ? properties::tree_centroid(fT)
+									  : std::make_pair(n + 1, n + 1));
 
 	// ---------------
 	// output features
@@ -940,15 +997,13 @@ noexcept
 				break;
 
 			case treebank_feature_type::tree_centre:
-				out_treebank_file
-					<< centre_of_tree.first << m_separator
-					<< centre_of_tree.second;
+				out_treebank_file << centre_of_tree.first << m_separator
+								  << centre_of_tree.second;
 				break;
 
 			case treebank_feature_type::tree_centroid:
-				out_treebank_file
-					<< centroid_of_tree.first << m_separator
-					<< centroid_of_tree.second;
+				out_treebank_file << centroid_of_tree.first << m_separator
+								  << centroid_of_tree.second;
 				break;
 
 			case treebank_feature_type::tree_type:
@@ -966,8 +1021,7 @@ noexcept
 				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;
 
-			case treebank_feature_type::__last_value:
-				break;
+			case treebank_feature_type::__last_value: break;
 			}
 		}
 	}
@@ -975,5 +1029,5 @@ noexcept
 	out_treebank_file << '\n';
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

@@ -67,20 +67,14 @@ namespace sorting {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T, typename iterator_t,
+	typename T,
+	typename iterator_t,
 	std::enable_if_t<
 		std::is_integral_v<T> and is_pointer_iterator_v<T, iterator_t>,
-		bool
-	> = true
->
-void bit_sort
-(
-	const iterator_t begin,
-	const iterator_t end,
-	const T& m,
-	char * const seen
-)
-noexcept
+		bool> = true>
+void bit_sort(
+	const iterator_t begin, const iterator_t end, const T& m, char * const seen
+) noexcept
 {
 	// fill bit array
 	for (auto it = begin; it != end; ++it) {
@@ -121,22 +115,18 @@ noexcept
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T, typename It,
+	typename T,
+	typename It,
 	std::enable_if_t<
 		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
-		bool
-	> = true
->
-void bit_sort_mem
-(
-	const It begin,
-	const It end,
-	const std::size_t size,
-	char * const seen
-)
-noexcept
+		bool> = true>
+void bit_sort_mem(
+	const It begin, const It end, const std::size_t size, char * const seen
+) noexcept
 {
-	if (size <= 1) { return; }
+	if (size <= 1) {
+		return;
+	}
 	if (size <= 14) {
 		insertion_sort(begin, end);
 		return;
@@ -146,7 +136,7 @@ noexcept
 		return;
 	}
 
-	bit_sort(begin,end, T{0}, seen);
+	bit_sort(begin, end, T{0}, seen);
 }
 
 /**
@@ -161,21 +151,16 @@ noexcept
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T, typename It,
+	typename T,
+	typename It,
 	std::enable_if_t<
 		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
-		bool
-	> = true
->
-void bit_sort
-(
-	const It begin,
-	const It end,
-	const std::size_t size
-)
-noexcept
+		bool> = true>
+void bit_sort(const It begin, const It end, const std::size_t size) noexcept
 {
-	if (size <= 1) { return; }
+	if (size <= 1) {
+		return;
+	}
 	if (size <= 14) {
 		insertion_sort(begin, end);
 		return;
@@ -186,16 +171,16 @@ noexcept
 	}
 
 	// maximum & minimum elements within array
-	const auto [m_it,M_it] = std::minmax_element(begin, end);
+	const auto [m_it, M_it] = std::minmax_element(begin, end);
 	const auto m = *m_it;
 	const auto M = *M_it;
 
 	// bit array
 	array<char> seen(M - m + 1, 0);
 
-	bit_sort(begin,end, m, seen.begin());
+	bit_sort(begin, end, m, seen.begin());
 }
 
-} // -- namespace sorting
-} // -- namspace utils
-} // -- namespace lal
+} // namespace sorting
+} // namespace detail
+} // namespace lal

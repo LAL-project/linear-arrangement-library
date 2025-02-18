@@ -66,13 +66,11 @@ namespace detail {
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-[[nodiscard]] inline bool is_level_signature_nonincreasing
-(
+[[nodiscard]] inline bool is_level_signature_nonincreasing(
 	const graph_t& g,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 	const auto n = g.get_num_nodes();
 	if constexpr (t == level_signature_type::per_position) {
@@ -111,13 +109,11 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-[[nodiscard]] inline bool no_two_adjacent_vertices_have_same_level
-(
+[[nodiscard]] inline bool no_two_adjacent_vertices_have_same_level(
 	const graph_t& g,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 	if constexpr (t == level_signature_type::per_position) {
 		for (iterators::E_iterator it(g); not it.end(); it.next()) {
@@ -158,18 +154,18 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-[[nodiscard]] inline bool no_vertex_in_antenna_is_thistle
-(
+[[nodiscard]] inline bool no_vertex_in_antenna_is_thistle(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 
 	for (const properties::branchless_path& bp : bps) {
-		if (not bp.is_antenna(g)) { continue; }
+		if (not bp.is_antenna(g)) {
+			continue;
+		}
 
 		const auto& seq = bp.get_vertex_sequence();
 		for (std::size_t i = 1; i < seq.size() - 1; ++i) {
@@ -178,7 +174,9 @@ noexcept
 			assert(g.get_degree(*u) == 2);
 #endif
 
-			if (is_thistle_vertex(g, levels, u, arr)) { return false; }
+			if (is_thistle_vertex(g, levels, u, arr)) {
+				return false;
+			}
 		}
 	}
 	return true;
@@ -202,18 +200,18 @@ noexcept
  * @returns Whether or not the level sequence satisfies the condition.
  */
 template <class graph_t, level_signature_type t>
-[[nodiscard]] inline bool at_most_one_thistle_in_bridges
-(
+[[nodiscard]] inline bool at_most_one_thistle_in_bridges(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,
 	const level_signature<t>& levels,
 	const linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 
 	for (const properties::branchless_path& bp : bps) {
-		if (bp.is_antenna(g)) { continue; }
+		if (bp.is_antenna(g)) {
+			continue;
+		}
 
 		uint64_t num_thistles = 0;
 		const auto& seq = bp.get_vertex_sequence();
@@ -224,7 +222,8 @@ noexcept
 #endif
 
 			num_thistles +=
-				(num_thistles == 2 ? 0ull : is_thistle_vertex(g, levels, u, arr));
+				(num_thistles == 2 ? 0ull : is_thistle_vertex(g, levels, u, arr)
+				);
 		}
 		if (num_thistles > 1) {
 			return false;
@@ -233,5 +232,5 @@ noexcept
 	return true;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

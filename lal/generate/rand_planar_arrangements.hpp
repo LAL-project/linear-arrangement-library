@@ -85,6 +85,7 @@ namespace generate {
  */
 class rand_planar_arrangements {
 public:
+
 	/* CONSTRUCTORS */
 
 	/**
@@ -94,7 +95,9 @@ public:
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
-	rand_planar_arrangements(const graphs::free_tree& T, const uint64_t seed = 0) noexcept;
+	rand_planar_arrangements(
+		const graphs::free_tree& T, const uint64_t seed = 0
+	) noexcept;
 
 	/**
 	 * @brief Constructor with rooted tree.
@@ -105,13 +108,16 @@ public:
 	 * a random seed is generated and used.
 	 * @pre The object @e t must be a tree (see @ref lal::graphs::free_tree::is_tree).
 	 */
-	rand_planar_arrangements(const graphs::rooted_tree& T, const uint64_t seed = 0) noexcept;
+	rand_planar_arrangements(
+		const graphs::rooted_tree& T, const uint64_t seed = 0
+	) noexcept;
 
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Random planar arrangement generator.
 	 */
-	rand_planar_arrangements(const rand_planar_arrangements& Gen) noexcept = default;
+	rand_planar_arrangements(const rand_planar_arrangements& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Default move constructor.
@@ -132,11 +138,13 @@ public:
 	[[nodiscard]] linear_arrangement get_arrangement() noexcept;
 
 	/// Returns a random planar arrangement.
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		return get_arrangement();
 	}
 
 private:
+
 	/**
 	 * @brief A copy of a free tree.
 	 *
@@ -163,5 +171,5 @@ private:
 	std::mt19937 m_gen;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

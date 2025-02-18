@@ -106,48 +106,52 @@ enum class LV_propagation_origin : int8_t {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::LV_propagation_origin
 /// to a long string.
-[[nodiscard]] inline constexpr std::string_view LV_propagation_origin_to_string
-(const LV_propagation_origin at) noexcept
+[[nodiscard]] inline constexpr std::string_view
+LV_propagation_origin_to_string(const LV_propagation_origin at) noexcept
 {
 	switch (at) {
-	case LV_propagation_origin::antenna_leaf: return "Antenna (leaf)";
+	case LV_propagation_origin::antenna_leaf:	  return "Antenna (leaf)";
 	case LV_propagation_origin::antenna_internal: return "Antenna (internal)";
-	case LV_propagation_origin::antenna_hub: return "Antenna (hub)";
-	case LV_propagation_origin::bridge_internal_left: return "Bridge (internal left)";
-	case LV_propagation_origin::bridge_internal_right: return "Bridge (internal right)";
-	case LV_propagation_origin::bridge_lowest_pm2: return "Bridge (lowest -- level +-2)";
-	case LV_propagation_origin::bridge_lowest_0: return "Bridge (lowest -- level 0)";
+	case LV_propagation_origin::antenna_hub:	  return "Antenna (hub)";
+	case LV_propagation_origin::bridge_internal_left:
+		return "Bridge (internal left)";
+	case LV_propagation_origin::bridge_internal_right:
+		return "Bridge (internal right)";
+	case LV_propagation_origin::bridge_lowest_pm2:
+		return "Bridge (lowest -- level +-2)";
+	case LV_propagation_origin::bridge_lowest_0:
+		return "Bridge (lowest -- level 0)";
 	case LV_propagation_origin::bridge_hub_1: return "Bridge (hub 1)";
 	case LV_propagation_origin::bridge_hub_2: return "Bridge (hub 2)";
-	case LV_propagation_origin::self: return "Self";
-	case LV_propagation_origin::none: return "None";
+	case LV_propagation_origin::self:		  return "Self";
+	case LV_propagation_origin::none:		  return "None";
 	}
 	return "";
 }
 
 /// Converts a value of @ref lal::detail::DMax::unconstrained::LV_propagation_origin
 /// to a short string.
-[[nodiscard]] inline constexpr std::string_view LV_propagation_origin_to_short_string
-(const LV_propagation_origin at) noexcept
+[[nodiscard]] inline constexpr std::string_view
+LV_propagation_origin_to_short_string(const LV_propagation_origin at) noexcept
 {
 	switch (at) {
-	case LV_propagation_origin::antenna_leaf: return "al";
-	case LV_propagation_origin::antenna_internal: return "ai";
-	case LV_propagation_origin::antenna_hub: return "ah";
-	case LV_propagation_origin::bridge_internal_left: return "bil";
+	case LV_propagation_origin::antenna_leaf:		   return "al";
+	case LV_propagation_origin::antenna_internal:	   return "ai";
+	case LV_propagation_origin::antenna_hub:		   return "ah";
+	case LV_propagation_origin::bridge_internal_left:  return "bil";
 	case LV_propagation_origin::bridge_internal_right: return "bir";
-	case LV_propagation_origin::bridge_lowest_pm2: return "bl2";
-	case LV_propagation_origin::bridge_lowest_0: return "bl0";
-	case LV_propagation_origin::bridge_hub_1: return "bh1";
-	case LV_propagation_origin::bridge_hub_2: return "bh2";
-	case LV_propagation_origin::self: return "s";
-	case LV_propagation_origin::none: return " ";
+	case LV_propagation_origin::bridge_lowest_pm2:	   return "bl2";
+	case LV_propagation_origin::bridge_lowest_0:	   return "bl0";
+	case LV_propagation_origin::bridge_hub_1:		   return "bh1";
+	case LV_propagation_origin::bridge_hub_2:		   return "bh2";
+	case LV_propagation_origin::self:				   return "s";
+	case LV_propagation_origin::none:				   return " ";
 	}
 	return "?";
 }
 #endif
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

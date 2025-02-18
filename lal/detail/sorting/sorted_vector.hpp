@@ -61,17 +61,24 @@ namespace sorting {
  * @tparam T type of data.
  * @tparam unique Whether or not the elements inserted should be unique.
  */
-template <class T, bool unique, typename allocator_t = std::allocator<T> >
+template <class T, bool unique, typename allocator_t = std::allocator<T>>
 class sorted_vector : public std::vector<T, allocator_t> {
 public:
+
 	using iterator_t = typename std::vector<T, allocator_t>::iterator;
 
 	/// Empty constructor
-	sorted_vector() noexcept : std::vector<T, allocator_t>() { }
+	sorted_vector() noexcept
+		: std::vector<T, allocator_t>()
+	{ }
 	/// Constructor with number of elements
-	sorted_vector(const std::size_t n) noexcept : std::vector<T, allocator_t>(n) { }
+	sorted_vector(const std::size_t n) noexcept
+		: std::vector<T, allocator_t>(n)
+	{ }
 	/// Constructor with number of elements and initial element
-	sorted_vector(const std::size_t n, const T& x) noexcept : std::vector<T, allocator_t>(n, x) { }
+	sorted_vector(const std::size_t n, const T& x) noexcept
+		: std::vector<T, allocator_t>(n, x)
+	{ }
 
 	/// Copy constructor
 	sorted_vector(const sorted_vector& v) noexcept = default;
@@ -79,9 +86,11 @@ public:
 	sorted_vector(sorted_vector&& v) noexcept = default;
 
 	/// Copy-assignment operator
-	[[nodiscard]] sorted_vector& operator= (const sorted_vector& v) noexcept = default;
+	[[nodiscard]] sorted_vector& operator= (const sorted_vector& v
+	) noexcept = default;
 	/// Move-assignment operator
-	[[nodiscard]] sorted_vector& operator= (sorted_vector&& v) noexcept = default;
+	[[nodiscard]] sorted_vector& operator= (sorted_vector&& v
+	) noexcept = default;
 
 	/// Empty destructor
 	~sorted_vector() noexcept = default;
@@ -91,7 +100,8 @@ public:
 	 * @param x Element to be inserted.
 	 * @returns An iterator to the inserted element.
 	 */
-	iterator_t insert_sorted(const T& x) noexcept {
+	iterator_t insert_sorted(const T& x) noexcept
+	{
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, x);
@@ -115,7 +125,8 @@ public:
 	 * @param x Element to be inserted.
 	 * @returns An iterator to the inserted element.
 	 */
-	iterator_t insert_sorted(T&& x) noexcept {
+	iterator_t insert_sorted(T&& x) noexcept
+	{
 		if constexpr (not unique) {
 			const auto it = std::upper_bound(this->begin(), this->end(), x);
 			return this->insert(it, std::forward<T>(x));
@@ -140,7 +151,8 @@ public:
 	 * @param x Element to be removed.
 	 * @returns An iterator to the previous element in the original vector.
 	 */
-	iterator_t remove_sorted(const T& x) noexcept {
+	iterator_t remove_sorted(const T& x) noexcept
+	{
 #if defined DEBUG
 		assert(contains(x));
 #endif
@@ -155,7 +167,8 @@ public:
 	 * @param x The element to look for.
 	 * @returns True or false telling if the element is in the vector or not.
 	 */
-	[[nodiscard]] bool contains(const T& x) const noexcept {
+	[[nodiscard]] bool contains(const T& x) const noexcept
+	{
 		return std::binary_search(this->begin(), this->end(), x);
 	}
 
@@ -165,15 +178,20 @@ public:
 	 * @returns An iterator to the element, or std::vector::end() if it does not
 	 * exist.
 	 */
-	[[nodiscard]] iterator_t find_sorted(const T& x) noexcept {
+	[[nodiscard]] iterator_t find_sorted(const T& x) noexcept
+	{
 		const auto i = std::lower_bound(this->begin(), this->end(), x);
-		if (i == this->end()) { return this->end(); }
+		if (i == this->end()) {
+			return this->end();
+		}
 
-		if (*i == x) { return i; }
+		if (*i == x) {
+			return i;
+		}
 		return this->end();
 	}
 };
 
-} // -- namespace sorting
-} // -- namespace detail
-} // -- namespace lal
+} // namespace sorting
+} // namespace detail
+} // namespace lal

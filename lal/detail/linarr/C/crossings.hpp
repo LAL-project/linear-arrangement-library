@@ -70,9 +70,8 @@ namespace detail {
  * @returns The number of crossings \f$C\f$.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t n_C_brute_force
-(const graph_t& g, const linear_arrangement& arr)
-noexcept;
+[[nodiscard]] uint64_t
+n_C_brute_force(const graph_t& g, const linear_arrangement& arr) noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -88,9 +87,9 @@ noexcept;
  * @pre None of the arrangements is empty.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_brute_force
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept;
+[[nodiscard]] std::vector<uint64_t> n_C_brute_force(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept;
 
 /**
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -108,13 +107,9 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than
-(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	const uint64_t upper_bound
-)
-noexcept;
+[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than(
+	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
+) noexcept;
 
 /**
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -135,13 +130,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Returns whether the number of crossings is less than a given constant.
@@ -163,13 +156,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept;
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -185,9 +176,9 @@ noexcept;
  * @returns The number of crossings \f$C\f$.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t n_C_dynamic_programming
-(const graph_t& g, const linear_arrangement& arr)
-noexcept;
+[[nodiscard]] uint64_t n_C_dynamic_programming(
+	const graph_t& g, const linear_arrangement& arr
+) noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -203,9 +194,9 @@ noexcept;
  * @pre None of the arrangements is empty.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept;
+[[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -226,13 +217,9 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t is_n_C_dynamic_programming_lesseq_than
-(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	const uint64_t upper_bound
-)
-noexcept;
+[[nodiscard]] uint64_t is_n_C_dynamic_programming_lesseq_than(
+	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -254,13 +241,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -282,13 +267,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept;
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -304,9 +287,8 @@ noexcept;
  * @returns The number of crossings \f$C\f$.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t n_C_ladder
-(const graph_t& g, const linear_arrangement& arr)
-noexcept;
+[[nodiscard]] uint64_t
+n_C_ladder(const graph_t& g, const linear_arrangement& arr) noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -322,9 +304,9 @@ noexcept;
  * @pre None of the arrangements is empty.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_ladder
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept;
+[[nodiscard]] std::vector<uint64_t> n_C_ladder(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -342,13 +324,9 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t is_n_C_ladder_lesseq_than
-(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	const uint64_t upper_bound
-)
-noexcept;
+[[nodiscard]] uint64_t is_n_C_ladder_lesseq_than(
+	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -370,13 +348,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -398,13 +374,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept;
+) noexcept;
 
 // -----------------------------------------------------------------------------
 
@@ -420,9 +394,8 @@ noexcept;
  * @returns The number of crossings \f$C\f$.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t n_C_stack_based
-(const graph_t& g, const linear_arrangement& arr)
-noexcept;
+[[nodiscard]] uint64_t
+n_C_stack_based(const graph_t& g, const linear_arrangement& arr) noexcept;
 
 /**
  * @brief Is the number of crossings in the linear arrangement less than a constant?
@@ -438,9 +411,9 @@ noexcept;
  * @pre None of the arrangements is empty.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_stack_based
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept;
+[[nodiscard]] std::vector<uint64_t> n_C_stack_based(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -458,13 +431,9 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] uint64_t is_n_C_stack_based_lesseq_than
-(
-	const graph_t& g,
-	const linear_arrangement& arr,
-	const uint64_t upper_bound
-)
-noexcept;
+[[nodiscard]] uint64_t is_n_C_stack_based_lesseq_than(
+	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -486,13 +455,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Fast calculation of \f$C\f$ if it is less than or equal to an upper bound.
@@ -514,13 +481,11 @@ noexcept;
  * bound if otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept;
+) noexcept;
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

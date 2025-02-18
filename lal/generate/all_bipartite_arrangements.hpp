@@ -128,7 +128,8 @@ public:
 	 * @pre The input graph @e g is bipartite.
 	 */
 	template <class graph_t>
-	all_bipartite_arrangements(const graph_t& g) {
+	all_bipartite_arrangements(const graph_t& g)
+	{
 		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init();
@@ -138,18 +139,22 @@ public:
 	 * @brief Default copy constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	all_bipartite_arrangements(const all_bipartite_arrangements& Gen) noexcept = default;
+	all_bipartite_arrangements(const all_bipartite_arrangements& Gen
+	) noexcept = default;
 	/**
 	 * @brief Default move constructor.
 	 * @param Gen Exhaustive bipartite arrangement generator.
 	 */
-	all_bipartite_arrangements(all_bipartite_arrangements&& Gen) noexcept = default;
+	all_bipartite_arrangements(all_bipartite_arrangements&& Gen
+	) noexcept = default;
 
 	/**
 	 * @brief Constructor with coloring.
 	 * @param c Input coloring of a bipartite graph.
 	 */
-	all_bipartite_arrangements(const properties::bipartite_graph_coloring& c) noexcept {
+	all_bipartite_arrangements(const properties::bipartite_graph_coloring& c
+	) noexcept
+	{
 		m_coloring = c;
 		init();
 	}
@@ -157,7 +162,9 @@ public:
 	 * @brief Constructor with coloring.
 	 * @param c Input coloring of a bipartite graph.
 	 */
-	all_bipartite_arrangements(properties::bipartite_graph_coloring&& c) noexcept {
+	all_bipartite_arrangements(properties::bipartite_graph_coloring&& c
+	) noexcept
+	{
 		m_coloring = std::move(c);
 		init();
 	}
@@ -174,10 +181,15 @@ public:
 	 * @returns A permutation of the vertices (a.k.a. a linear arrangement).
 	 */
 	[[nodiscard]] const linear_arrangement& get_arrangement() const noexcept
-	{ return m_arr; }
+	{
+		return m_arr;
+	}
 
 	/// Returns true if the end of the iteration was reached.
-	[[nodiscard]] bool end() const noexcept { return m_do_mirror and m_reached_end_red; }
+	[[nodiscard]] bool end() const noexcept
+	{
+		return m_do_mirror and m_reached_end_red;
+	}
 
 	/**
 	 * @brief Generates the next arrangement.
@@ -188,7 +200,8 @@ public:
 	void next() noexcept;
 
 	/// Sets the generator to its initial state.
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		m_do_mirror = false;
 		m_reached_end_blue = false;
 		m_reached_end_red = false;
@@ -200,7 +213,8 @@ public:
 	 * @return The current arrangement.
 	 * @post This generator is moved to the next arrangement.
 	 */
-	[[nodiscard]] linear_arrangement yield_arrangement() noexcept {
+	[[nodiscard]] linear_arrangement yield_arrangement() noexcept
+	{
 		// yes, a copy...
 		const linear_arrangement arr = get_arrangement();
 		next();
@@ -208,6 +222,7 @@ public:
 	}
 
 private:
+
 	/**
 	 * @brief Initializes this class.
 	 *
@@ -226,6 +241,7 @@ private:
 	void init_arrangement(const bool red_first) noexcept;
 
 private:
+
 	/// Has the end of the iteration been reached for mirrored arrangements?
 	bool m_do_mirror;
 	/// Has the end of the iteration been reached for blue vertices?
@@ -249,6 +265,7 @@ private:
 	properties::bipartite_graph_coloring m_coloring;
 
 private:
+
 	/// Shortcut to blue color.
 	static constexpr properties::bipartite_graph_coloring::color_t blue =
 		properties::bipartite_graph_coloring::blue;
@@ -257,5 +274,5 @@ private:
 		properties::bipartite_graph_coloring::red;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

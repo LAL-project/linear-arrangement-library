@@ -65,9 +65,11 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept {
+void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
+{
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "Found a trigger leaf for an antenna u= " << u << '\n';
+	std::cout << tab() << "Found a trigger leaf for an antenna u= " << u
+			  << '\n';
 	std::cout << tab() << "    Of level value= " << m_node_level[u] << '\n';
 #endif
 
@@ -94,7 +96,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept {
 		int64_t sign = -sign_u;
 		for (std::size_t i = 1; i < N - 1; ++i) {
 			const node v = path[i];
-			const int64_t prediction = 2*sign;
+			const int64_t prediction = 2 * sign;
 
 #if defined DEBUG
 			assert(m_t.get_degree(v) == 2);
@@ -126,7 +128,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept {
 		int64_t sign = -sign_u;
 		for (std::size_t i = N - 2; i > 0; --i) {
 			const node v = path[i];
-			const int64_t prediction = 2*sign;
+			const int64_t prediction = 2 * sign;
 
 #if defined DEBUG
 			assert(m_t.get_degree(v) == 2);
@@ -160,9 +162,12 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept {
 #endif
 }
 
-void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept {
+void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
+{
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout << tab() << "Found a trigger internal vertex for an antenna u= " << u << '\n';
+	std::cout << tab()
+			  << "Found a trigger internal vertex for an antenna u= " << u
+			  << '\n';
 	std::cout << tab() << "    Of level value= " << m_node_level[u] << '\n';
 #endif
 
@@ -186,10 +191,10 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept {
 
 	int64_t sign;
 	const std::size_t ini = not is_first_leaf;
-	sign = (pu%2 == ini%2 ? sign_u : -sign_u);
+	sign = (pu % 2 == ini % 2 ? sign_u : -sign_u);
 	for (std::size_t i = ini; i < pu; ++i) {
 		const node v = path[i];
-		const int64_t prediction = sign*to_int64(m_t.get_degree(v));
+		const int64_t prediction = sign * to_int64(m_t.get_degree(v));
 
 #if defined DEBUG
 		assert(m_t.get_degree(v) <= 2);
@@ -207,7 +212,7 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept {
 	sign = -sign_u;
 	for (std::size_t i = pu + 1; i < fin; ++i) {
 		const node v = path[i];
-		const int64_t prediction = sign*to_int64(m_t.get_degree(v));
+		const int64_t prediction = sign * to_int64(m_t.get_degree(v));
 
 #if defined DEBUG
 		assert(m_t.get_degree(v) <= 2);
@@ -229,8 +234,8 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept {
 #endif
 }
 
-void AEF_BnB::propagate_LV__antenna__from_hub
-(const node h, const node u) noexcept
+void AEF_BnB::propagate_LV__antenna__from_hub(const node h, const node u)
+	noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Found a trigger hub for an antenna h= " << h << '\n';
@@ -267,7 +272,7 @@ void AEF_BnB::propagate_LV__antenna__from_hub
 		int64_t sign = 1;
 		for (std::size_t i = 2; i < path.get_num_nodes(); ++i) {
 			const node v = path[i];
-			const int64_t prediction = sign*to_int64(m_t.get_degree(v));
+			const int64_t prediction = sign * to_int64(m_t.get_degree(v));
 
 #if defined DEBUG
 			assert(m_t.get_degree(v) <= 2);
@@ -286,10 +291,10 @@ void AEF_BnB::propagate_LV__antenna__from_hub
 		assert(pu == path.get_num_nodes() - 2);
 #endif
 
-		int64_t sign = pu%2 == 0 ? -1 : 1;
+		int64_t sign = pu % 2 == 0 ? -1 : 1;
 		for (std::size_t i = 0; i < path.get_num_nodes() - 2; ++i) {
 			const node v = path[i];
-			const int64_t prediction = sign*to_int64(m_t.get_degree(v));
+			const int64_t prediction = sign * to_int64(m_t.get_degree(v));
 
 #if defined DEBUG
 			assert(m_t.get_degree(v) <= 2);
@@ -312,7 +317,7 @@ void AEF_BnB::propagate_LV__antenna__from_hub
 #endif
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

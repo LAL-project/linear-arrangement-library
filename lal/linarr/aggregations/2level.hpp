@@ -83,9 +83,9 @@ namespace linarr {
  * exact rational value.
  */
 template <class graph_t>
-[[nodiscard]] numeric::rational mean_dependency_distance_2level_rational
-(const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
-noexcept
+[[nodiscard]] numeric::rational mean_dependency_distance_2level_rational(
+	const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {}
+) noexcept
 {
 	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 
@@ -100,37 +100,61 @@ noexcept
 
 	if (P.size() == 0) {
 
-		return utilities::two_level_aggregation<ratio, true>
-		(
-			L.begin(), L.end(), nullptr, nullptr,
+		return utilities::two_level_aggregation<ratio, true>(
+			L.begin(),
+			L.end(),
+			nullptr,
+			nullptr,
 			// values
-			[](const graph_t& G) {
+			[](const graph_t& G)
+			{
 				return mean_dependency_distance_rational(
-					G,
-					linear_arrangement::identity(G.get_num_nodes())
+					G, linear_arrangement::identity(G.get_num_nodes())
 				);
 			},
 			// combine values
-			[](const ratio& MDD) { return MDD; },
+			[](const ratio& MDD)
+			{
+				return MDD;
+			},
 			// accumulate
-			[](ratio& total, const ratio& MDD) { total += MDD; },
+			[](ratio& total, const ratio& MDD)
+			{
+				total += MDD;
+			},
 			// average the values
-			[](const ratio& sum_MDD, std::size_t num_graphs) { return sum_MDD/num_graphs; }
+			[](const ratio& sum_MDD, std::size_t num_graphs)
+			{
+				return sum_MDD / num_graphs;
+			}
 		);
-
 	}
 	else {
-		return utilities::two_level_aggregation<ratio, false>
-		(
-			L.begin(), L.end(), P.begin(), P.end(),
+		return utilities::two_level_aggregation<ratio, false>(
+			L.begin(),
+			L.end(),
+			P.begin(),
+			P.end(),
 			// values
-			[](const graph_t& G, const ARR& arr) { return mean_dependency_distance_rational(G, arr); },
+			[](const graph_t& G, const ARR& arr)
+			{
+				return mean_dependency_distance_rational(G, arr);
+			},
 			// combine values
-			[](const ratio& MDD) { return MDD; },
+			[](const ratio& MDD)
+			{
+				return MDD;
+			},
 			// accumulate
-			[](ratio& sum_MDD, const ratio& MDD) { sum_MDD += MDD; },
+			[](ratio& sum_MDD, const ratio& MDD)
+			{
+				sum_MDD += MDD;
+			},
 			// average the values
-			[](const ratio& sum_MDD, std::size_t num_graphs) { return sum_MDD/num_graphs; }
+			[](const ratio& sum_MDD, std::size_t num_graphs)
+			{
+				return sum_MDD / num_graphs;
+			}
 		);
 	}
 }
@@ -150,12 +174,12 @@ noexcept
  * floating point value.
  */
 template <class graph_t>
-[[nodiscard]] double mean_dependency_distance_2level
-(const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {})
-noexcept
+[[nodiscard]] double mean_dependency_distance_2level(
+	const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {}
+) noexcept
 {
 	return mean_dependency_distance_2level_rational(L, P).to_double();
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

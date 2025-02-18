@@ -51,8 +51,7 @@ namespace detail {
 
 /// Partial template specialization of @ref ith_type for @ref type_sequence.
 template <std::size_t ith_idx, typename... Ts>
-struct ith_type<ith_idx, type_sequence<Ts...>> : ith_type<ith_idx, Ts...>
-{ };
+struct ith_type<ith_idx, type_sequence<Ts...>> : ith_type<ith_idx, Ts...> { };
 
 /**
  * @brief Generalization of std::conditional_list.
@@ -65,46 +64,31 @@ struct ith_type<ith_idx, type_sequence<Ts...>> : ith_type<ith_idx, Ts...>
 template <typename bool_seq, typename type_seq>
 struct conditional_list {
 	/// The type from @e type_seq that is to be used according to @e bool_seq.
-	using type =
-		std::conditional_t<
-			bool_seq::num_true == 0,
-			std::nullptr_t,
-			ith_type_t<bool_seq::index_true, type_seq>
-		>;
+	using type = std::conditional_t<
+		bool_seq::num_true == 0,
+		std::nullptr_t,
+		ith_type_t<bool_seq::index_true, type_seq>>;
 };
 
 /// Shorthand for @ref conditional_list.
 template <typename bool_seq, typename type_seq>
 using conditional_list_t = typename conditional_list<bool_seq, type_seq>::type;
 
+static_assert(std::is_same_v<
+			  conditional_list_t<
+				  bool_sequence<false, false, true, false>,
+				  type_sequence<int, float, double, char>>,
+			  double>);
+static_assert(std::is_same_v<
+			  conditional_list_t<
+				  bool_sequence<false, false, false, false>,
+				  type_sequence<int, float, double, char>>,
+			  std::nullptr_t>);
+static_assert(std::is_same_v<
+			  conditional_list_t<
+				  bool_sequence<false, false, false, true>,
+				  type_sequence<int, float, double, char>>,
+			  char>);
 
-static_assert(
-	std::is_same_v<
-		conditional_list_t<
-			bool_sequence<false, false, true,   false>,
-			type_sequence<int,   float, double, char>
-		>,
-		double
-	>
-);
-static_assert(
-	std::is_same_v<
-		conditional_list_t<
-			bool_sequence<false, false, false,  false>,
-			type_sequence<int,   float, double, char>
-		>,
-		std::nullptr_t
-	>
-);
-static_assert(
-	std::is_same_v<
-		conditional_list_t<
-			bool_sequence<false, false, false,  true>,
-			type_sequence<int,   float, double, char>
-		>,
-		char
-	>
-);
-
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

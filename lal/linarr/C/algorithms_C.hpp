@@ -81,5 +81,5 @@ enum class algorithms_C {
 	stack_based
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

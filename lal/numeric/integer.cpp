@@ -53,7 +53,8 @@ namespace numeric {
 
 // -- EXPONENTIATION
 
-integer& integer::powt(const integer& i) noexcept {
+integer& integer::powt(const integer& i) noexcept
+{
 	detail::mpz_pow_mpz(m_val, m_val, i.m_val);
 	return *this;
 }
@@ -61,7 +62,9 @@ integer& integer::powt(const integer& i) noexcept {
 /* GETTERS */
 
 std::size_t integer::bytes() const noexcept
-{ return detail::mpz_bytes(m_val); }
+{
+	return detail::mpz_bytes(m_val);
+}
 
-} // -- namespace numeric
-} // -- namespace lal
+} // namespace numeric
+} // namespace lal

@@ -55,14 +55,14 @@
 #include <lal/io/treebank_reader.hpp>
 #include <lal/detail/io/check_correctness.hpp>
 
-inline std::string make_result_file_name(const std::string& treebank_name)
-noexcept
+inline std::string make_result_file_name(const std::string& treebank_name
+) noexcept
 {
 	return treebank_name + ".csv";
 }
 
-inline std::string name_of_file_without_path_extension(const std::string& file_name)
-noexcept
+inline std::string
+name_of_file_without_path_extension(const std::string& file_name) noexcept
 {
 	std::filesystem::path p(file_name);
 	p.replace_extension("");
@@ -74,9 +74,9 @@ namespace io {
 
 // CLASS METHODS
 
-treebank_file_error treebank_collection_processor::init
-(const std::string& file, const std::string& odir)
-noexcept
+treebank_file_error treebank_collection_processor::init(
+	const std::string& file, const std::string& odir
+) noexcept
 {
 	// initialize data
 	m_all_individual_treebank_ids.clear();
@@ -92,7 +92,8 @@ noexcept
 	// make sure main file exists
 	if (not std::filesystem::exists(m_main_file)) {
 		return treebank_file_error(
-			"Treebank collection main file '" + m_main_file + "' does not exist.",
+			"Treebank collection main file '" + m_main_file +
+				"' does not exist.",
 			treebank_file_error_type::main_file_does_not_exist
 		);
 	}
@@ -117,20 +118,28 @@ treebank_file_error treebank_collection_processor::process() noexcept
 	m_errors_from_processing.clear();
 
 	if (m_check_before_process) {
-		const bool err =
-			detail::check_correctness_treebank_collection<true>
-			(m_main_file, m_num_threads);
+		const bool err = detail::check_correctness_treebank_collection<true>(
+			m_main_file, m_num_threads
+		);
 
 		if (err) {
 			return treebank_file_error(
-				"The treebank collection '" + m_main_file + "' contains errors.",
+				"The treebank collection '" + m_main_file +
+					"' contains errors.",
 				treebank_file_error_type::malformed_treebank_collection
 			);
 		}
 	}
 
 	// check that there is something to be computed
-	if (std::all_of(m_what_fs.begin(),m_what_fs.end(),[](bool x){return not x;})) {
+	if (std::all_of(
+			m_what_fs.begin(),
+			m_what_fs.end(),
+			[](bool x)
+			{
+				return not x;
+			}
+		)) {
 		return treebank_file_error(
 			"No features to be computed. Nothing to do.",
 			treebank_file_error_type::no_features
@@ -146,94 +155,94 @@ treebank_file_error treebank_collection_processor::process() noexcept
 		);
 	}
 
-	// process dataset using treebank_dataset class
-	#pragma omp parallel num_threads(m_num_threads)
+// process dataset using treebank_dataset class
+#pragma omp parallel num_threads(m_num_threads)
 	{
-	const int tid = omp_get_thread_num();
+		const int tid = omp_get_thread_num();
 
-	if (tid == 0) {
-		std::string treebank_id, treebank_filename;
+		if (tid == 0) {
+			std::string treebank_id, treebank_filename;
 
-		// this is executed only by the main thread
-		while (main_file_reader >> treebank_id >> treebank_filename) {
+			// this is executed only by the main thread
+			while (main_file_reader >> treebank_id >> treebank_filename) {
 
-			// full path to the treebank file
-			std::filesystem::path treebank_file_full_path(m_main_file);
-			treebank_file_full_path.replace_filename(treebank_filename);
+				// full path to the treebank file
+				std::filesystem::path treebank_file_full_path(m_main_file);
+				treebank_file_full_path.replace_filename(treebank_filename);
 
-			// full path to the output file corresponding to this treebank
-			std::filesystem::path output_file_full_path(m_out_dir);
-			output_file_full_path /= make_result_file_name(treebank_id);
+				// full path to the output file corresponding to this treebank
+				std::filesystem::path output_file_full_path(m_out_dir);
+				output_file_full_path /= make_result_file_name(treebank_id);
 
-			// store the name of the treebank so that we can join the files later
-			m_all_individual_treebank_ids.push_back(treebank_id);
+				// store the name of the treebank so that we can join the files later
+				m_all_individual_treebank_ids.push_back(treebank_id);
 
-			// Launch a task consisting of processing a treebank, catching
-			// error, and storing it into 'm_errors_from_processing'.
-			#pragma omp task
-			{
-				// declare and initialize treebank processor
-				treebank_processor tbproc;
-				tbproc.set_check_before_process(false);
-				tbproc.init(
-					treebank_file_full_path.string(),
-					output_file_full_path.string(),
-					treebank_id
-				);
-				tbproc.clear_features();
-				tbproc.set_output_header(m_output_header);
-				tbproc.set_separator(m_separator);
-				tbproc.set_verbosity(m_be_verbose);
-
-				// add features in this treebank collection processor
-				for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
-					if (m_what_fs[i]) {
-						tbproc.add_feature(index_to_treebank_feature(i));
-					}
-					tbproc.set_column_name
-					(index_to_treebank_feature(i), m_column_names[i]);
-				}
-
-				// process the treebank file
-				auto err = tbproc.process();
-				if (not err.is_error()) {
-					#pragma omp critical
-					{
-					m_errors_from_processing.push_back(make_tuple(
-						std::move(err),
+// Launch a task consisting of processing a treebank, catching
+// error, and storing it into 'm_errors_from_processing'.
+#pragma omp task
+				{
+					// declare and initialize treebank processor
+					treebank_processor tbproc;
+					tbproc.set_check_before_process(false);
+					tbproc.init(
 						treebank_file_full_path.string(),
+						output_file_full_path.string(),
 						treebank_id
-					));
+					);
+					tbproc.clear_features();
+					tbproc.set_output_header(m_output_header);
+					tbproc.set_separator(m_separator);
+					tbproc.set_verbosity(m_be_verbose);
+
+					// add features in this treebank collection processor
+					for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+						if (m_what_fs[i]) {
+							tbproc.add_feature(index_to_treebank_feature(i));
+						}
+						tbproc.set_column_name(
+							index_to_treebank_feature(i), m_column_names[i]
+						);
+					}
+
+					// process the treebank file
+					auto err = tbproc.process();
+					if (not err.is_error()) {
+#pragma omp critical
+						{
+							m_errors_from_processing.push_back(make_tuple(
+								std::move(err),
+								treebank_file_full_path.string(),
+								treebank_id
+							));
+						}
 					}
 				}
 			}
 		}
-	}
 	}
 
 	if (m_join_files) {
 		auto err = join_all_files();
 		if (not err.is_error()) {
 			m_errors_from_processing.push_back(make_tuple(
-				std::move(err),
-				m_main_file,
-				"treebank collection main file"
+				std::move(err), m_main_file, "treebank collection main file"
 			));
 		}
 	}
 
-	return
-	(m_errors_from_processing.size() == 0 ?
-		treebank_file_error("", treebank_file_error_type::no_error)
-		:
-		treebank_file_error(
-			"There were errors in processing the treebank collection '" + m_main_file + "'. Check errors from processing.",
-			treebank_file_error_type::some_treebank_file_failed
-		)
+	return (
+		m_errors_from_processing.size() == 0
+			? treebank_file_error("", treebank_file_error_type::no_error)
+			: treebank_file_error(
+				  "There were errors in processing the treebank collection '" +
+					  m_main_file + "'. Check errors from processing.",
+				  treebank_file_error_type::some_treebank_file_failed
+			  )
 	);
 }
 
-treebank_file_error treebank_collection_processor::join_all_files() const noexcept
+treebank_file_error
+treebank_collection_processor::join_all_files() const noexcept
 {
 	// use the filesystem namespace to create the path properly
 	std::filesystem::path p;
@@ -268,16 +277,16 @@ treebank_file_error treebank_collection_processor::join_all_files() const noexce
 		path_to_treebank_result /= make_result_file_name(name_of_treebank);
 
 		if (m_be_verbose >= 1) {
-			std::cout << "    "
-				 << path_to_treebank_result.string()
-				 << '\n';
+			std::cout << "    " << path_to_treebank_result.string() << '\n';
 		}
 
 		std::ifstream fin(path_to_treebank_result);
 		if (not fin.is_open()) {
 			return treebank_file_error(
-				"Treebank result file '" + path_to_treebank_result.string() + "' could not be opened.",
-				treebank_file_error_type::treebank_result_file_could_not_be_opened
+				"Treebank result file '" + path_to_treebank_result.string() +
+					"' could not be opened.",
+				treebank_file_error_type::
+					treebank_result_file_could_not_be_opened
 			);
 		}
 
@@ -291,10 +300,8 @@ treebank_file_error treebank_collection_processor::join_all_files() const noexce
 
 				if (first_time_encounter_header) {
 					if (m_output_header) {
-						output_together
-							<< m_treebank_column_name << m_separator
-							<< line
-							<< '\n';
+						output_together << m_treebank_column_name << m_separator
+										<< line << '\n';
 					}
 					first_time_encounter_header = false;
 				}
@@ -302,19 +309,15 @@ treebank_file_error treebank_collection_processor::join_all_files() const noexce
 				continue;
 			}
 
-			output_together
-				<< name_of_treebank << m_separator << line
-				<< '\n';
+			output_together << name_of_treebank << m_separator << line << '\n';
 		}
 
 		fin.close();
 
 		const bool success = std::filesystem::remove(path_to_treebank_result);
 		if (not success and m_be_verbose >= 2) {
-			std::cerr << "Treebank result file '"
-				 << path_to_treebank_result
-				 << "' could not be removed."
-				 << '\n';
+			std::cerr << "Treebank result file '" << path_to_treebank_result
+					  << "' could not be removed." << '\n';
 		}
 	}
 
@@ -323,5 +326,5 @@ treebank_file_error treebank_collection_processor::join_all_files() const noexce
 	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

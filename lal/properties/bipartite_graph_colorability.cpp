@@ -49,25 +49,26 @@ namespace lal {
 namespace properties {
 
 template <typename graph_t>
-bipartite_graph_coloring _coloring(const graph_t& g) noexcept {
+bipartite_graph_coloring _coloring(const graph_t& g) noexcept
+{
 	return detail::color_vertices_graph(g);
 }
 
-bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g)
-noexcept
+bipartite_graph_coloring bipartite_coloring(const graphs::undirected_graph& g
+) noexcept
 {
 	return _coloring(g);
 }
 
-bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g)
-noexcept
+bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g
+) noexcept
 {
 	return _coloring(g);
 }
 
 template <typename graph_t>
 bool _is_graph_bipartite(const graph_t& g, const bipartite_graph_coloring& c)
-noexcept
+	noexcept
 {
 	iterators::E_iterator it(g);
 	while (not it.end()) {
@@ -79,29 +80,31 @@ noexcept
 	return true;
 }
 
-bool is_graph_bipartite
-(const graphs::undirected_graph& g, const bipartite_graph_coloring& c)
-noexcept
+bool is_graph_bipartite(
+	const graphs::undirected_graph& g, const bipartite_graph_coloring& c
+) noexcept
 {
 	return _is_graph_bipartite(g, c);
 }
 
-bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept {
+bool is_graph_bipartite(const graphs::undirected_graph& g) noexcept
+{
 	const auto c = bipartite_coloring(g);
 	return _is_graph_bipartite(g, c);
 }
 
-bool is_graph_bipartite
-(const graphs::directed_graph& g, const bipartite_graph_coloring& c)
-noexcept
+bool is_graph_bipartite(
+	const graphs::directed_graph& g, const bipartite_graph_coloring& c
+) noexcept
 {
 	return _is_graph_bipartite(g, c);
 }
 
-bool is_graph_bipartite(const graphs::directed_graph& g) noexcept {
+bool is_graph_bipartite(const graphs::directed_graph& g) noexcept
+{
 	const auto c = bipartite_coloring(g);
 	return _is_graph_bipartite(g, c);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

@@ -67,5 +67,5 @@ namespace properties {
  */
 [[nodiscard]] uint64_t tree_diameter(const graphs::rooted_tree& t) noexcept;
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

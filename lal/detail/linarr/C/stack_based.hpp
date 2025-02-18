@@ -53,7 +53,7 @@
 #include <lal/detail/array.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
-#define edge_sorted_by_vertex_index(u,v) (u < v ? edge(u,v) : edge(v,u) )
+#define edge_sorted_by_vertex_index(u, v) (u < v ? edge(u, v) : edge(v, u))
 #define DECIDED_C_GT (upper_bound + 1)
 
 namespace lal {
@@ -89,15 +89,13 @@ typedef std::pair<uint64_t, edge> indexed_edge;
  * @param size_adjN_u Auxiliary memory array of size @e n.
  */
 template <class graph_t, class arrangement_t>
-void fill_adjP_adjN
-(
+void fill_adjP_adjN(
 	const graph_t& g,
 	const arrangement_t& arr,
 	std::vector<neighbourhood>& adjP,
 	std::vector<std::vector<indexed_edge>>& adjN,
 	uint64_t * const size_adjN_u
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -106,30 +104,30 @@ noexcept
 
 	// sort edges of the graph by non-decreasing edge length
 	// l(e_1) <= l(e_2) <= ... <= l(e_m)
-	sorting::counting_sort
-		<edge, sorting::sort_type::non_decreasing>
-		(
-		edges.begin(), edges.end(),
+	sorting::counting_sort<edge, sorting::sort_type::non_decreasing>(
+		edges.begin(),
+		edges.end(),
 		n - 1, // length of the longest edge
 		edges.size(),
-		[&](const edge& e) -> std::size_t {
-
+		[&](const edge& e) -> std::size_t
+		{
 			const node uu = e.first;
 			const node vv = e.second;
 			const auto [u, v] =
-				(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
+				(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu, vv) : edge(vv, uu)
+				);
 
 			++size_adjN_u[u];
 			return abs_diff(arr[node_t{u}], arr[node_t{v}]);
 		}
-		);
+	);
 
 	// initialize adjN
 	for (node u = 0; u < n; ++u) {
 		// divide by two because the 'key' function in the call to
 		// the sorting function is called twice for every edge
 #if defined DEBUG
-		assert((size_adjN_u[u]%2) == 0);
+		assert((size_adjN_u[u] % 2) == 0);
 		// the assertion
 		//     assert(size_adjN_u[u] != 0);
 		// is wrong.
@@ -143,14 +141,15 @@ noexcept
 	for (const auto& [uu, vv] : edges) {
 		// arr[u] < arr[v]
 		const auto [u, v] =
-			(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu,vv) : edge(vv,uu));
+			(arr[node_t{uu}] < arr[node_t{vv}] ? edge(uu, vv) : edge(vv, uu));
 
 		// oriented edge (u,v) "enters" node v
 		adjP[v].push_back(u);
 
 		// Oriented edge (u,v) "leaves" node u
 		--size_adjN_u[u];
-		adjN[u][size_adjN_u[u]] = indexed_edge(0, edge_sorted_by_vertex_index(u,v));
+		adjN[u][size_adjN_u[u]] =
+			indexed_edge(0, edge_sorted_by_vertex_index(u, v));
 	}
 
 #if defined DEBUG
@@ -177,14 +176,12 @@ noexcept
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t compute_C_stack_based
-(
+[[nodiscard]] uint64_t compute_C_stack_based(
 	const graph_t& g,
 	const arrangement_t& arr,
 	uint64_t * const size_adjN_u,
 	uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -205,7 +202,7 @@ noexcept
 		for (auto& v : adjN[u]) {
 			v.first = idx;
 
-			edge_to_idx.insert( make_pair(v.second, idx) );
+			edge_to_idx.insert(make_pair(v.second, idx));
 			++idx;
 		}
 	}
@@ -218,17 +215,20 @@ noexcept
 	for (position_t pu = 0ull; pu < n; ++pu) {
 		const node u = arr[pu];
 		for (node v : adjP[u]) {
-			const edge uv = edge_sorted_by_vertex_index(u,v);
+			const edge uv = edge_sorted_by_vertex_index(u, v);
 
 			// the elements inserted into the tree are unique by construction,
 			// so we can remove elements without using their counter
 			// (remove<false>) and use the number of larger nodes
 			// (on_top.num_nodes_larger) to calculate the number of crossings.
-			const auto on_top = S.remove<false>(indexed_edge(edge_to_idx[uv], uv));
+			const auto on_top =
+				S.remove<false>(indexed_edge(edge_to_idx[uv], uv));
 			C += on_top.num_nodes_larger;
 
 			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
 			}
 		}
 		S.join_sorted_all_greater(std::move(adjN[u]));
@@ -239,7 +239,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace stack_based
+} // namespace stack_based
 
 // =============================================================================
 // CALLS TO ALGORITHM
@@ -257,9 +257,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_stack_based
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] uint64_t
+n_C_stack_based(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -267,14 +266,17 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	array<uint64_t> size_adjN_u(n, 0);
 
-	return stack_based::compute_C_stack_based<false>
-			(g, arr, size_adjN_u.begin(), 0);
+	return stack_based::compute_C_stack_based<false>(
+		g, arr, size_adjN_u.begin(), 0
+	);
 }
 
 // --------------------
@@ -288,14 +290,16 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_stack_based
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept
+[[nodiscard]] std::vector<uint64_t> n_C_stack_based(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
@@ -309,8 +313,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<false>
-			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), 0);
+		cs[i] = stack_based::compute_C_stack_based<false>(
+			g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), 0
+		);
 	}
 
 	return cs;
@@ -333,13 +338,9 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t is_n_C_stack_based_lesseq_than
-(
-	const graph_t& g,
-	const arrangement_t& arr,
-	const uint64_t upper_bound
-)
-noexcept
+[[nodiscard]] uint64_t is_n_C_stack_based_lesseq_than(
+	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -347,14 +348,17 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	array<uint64_t> size_adjN_u(n, 0);
 
-	return stack_based::compute_C_stack_based<true>
-			(g, arr, size_adjN_u.begin(), upper_bound);
+	return stack_based::compute_C_stack_based<true>(
+		g, arr, size_adjN_u.begin(), upper_bound
+	);
 }
 
 // --------------------
@@ -370,18 +374,18 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
@@ -395,8 +399,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<true>
-			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bound);
+		cs[i] = stack_based::compute_C_stack_based<true>(
+			g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bound
+		);
 	}
 
 	return cs;
@@ -413,23 +418,23 @@ noexcept
  * bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
-		// ensure that there are as many linear arrangements as upper bounds
-		assert(arrs.size() == upper_bounds.size());
+	// ensure that there are as many linear arrangements as upper bounds
+	assert(arrs.size() == upper_bounds.size());
 #endif
 
 	const uint64_t n = g.get_num_nodes();
 
 	std::vector<uint64_t> cs(arrs.size(), 0);
-	if (n < 4) { return cs; }
+	if (n < 4) {
+		return cs;
+	}
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
@@ -443,13 +448,14 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = stack_based::compute_C_stack_based<true>
-			(g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bounds[i]);
+		cs[i] = stack_based::compute_C_stack_based<true>(
+			g, nonidentity_arr(arrs[i]), size_adjN_u.begin(), upper_bounds[i]
+		);
 	}
 
 	return cs;
 }
 
-} // -- namespace crossings
-} // -- namespace detail
-} // -- namespace lal
+} // namespace crossings
+} // namespace detail
+} // namespace lal

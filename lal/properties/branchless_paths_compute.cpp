@@ -48,15 +48,17 @@
 namespace lal {
 namespace properties {
 
-std::vector<branchless_path>
-branchless_paths_compute(const graphs::free_tree& t) noexcept {
+std::vector<branchless_path> branchless_paths_compute(const graphs::free_tree& t
+) noexcept
+{
 	return detail::branchless_paths_compute(t);
 }
 
 std::vector<branchless_path>
-branchless_paths_compute(const graphs::rooted_tree& t) noexcept {
+branchless_paths_compute(const graphs::rooted_tree& t) noexcept
+{
 	return detail::branchless_paths_compute(t);
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

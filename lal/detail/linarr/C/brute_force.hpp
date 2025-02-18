@@ -50,7 +50,7 @@
 #include <lal/detail/array.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
 
-#define idx(i,j, C) ((i)*(C) + (j))
+#define idx(i, j, C) ((i) * (C) + (j))
 #define DECIDED_C_GT (upper_bound + 1)
 
 namespace lal {
@@ -79,13 +79,11 @@ namespace brute_force {
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class arrangement_t>
-[[nodiscard]] uint64_t compute
-(
+[[nodiscard]] uint64_t compute(
 	const graphs::undirected_graph& g,
 	const arrangement_t& arr,
 	const uint64_t upper_bound = 0
-)
-noexcept
+) noexcept
 {
 	uint64_t C = 0;
 
@@ -98,7 +96,9 @@ noexcept
 		for (node_t v : Nu) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];
-			if (pu >= pv) { continue; }
+			if (pu >= pv) {
+				continue;
+			}
 
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
@@ -120,11 +120,12 @@ noexcept
 					// Formally: arr[w] < arr[z]
 
 					// Also, by construction: arr[u] < arr[w]
-					C += pw < pz and
-						 pu < pw and pw < pv and pv < pz;
+					C += pw < pz and pu < pw and pw < pv and pv < pz;
 
 					if constexpr (decide_upper_bound) {
-						if (C > upper_bound) { return DECIDED_C_GT; }
+						if (C > upper_bound) {
+							return DECIDED_C_GT;
+						}
 					}
 				}
 			}
@@ -154,16 +155,14 @@ noexcept
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class arrangement_t>
-[[nodiscard]] uint64_t inner_compute
-(
+[[nodiscard]] uint64_t inner_compute(
 	const graphs::directed_graph& g,
 	const position pu,
 	const position pv,
 	const arrangement_t& arr,
 	uint64_t C,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	// 'u' and 'v' is a pair of connected nodes such that 'u'
 	// is "to the left of" 'v' in the linear arrangement 'seq'
@@ -185,11 +184,12 @@ noexcept
 			// Formally: arr[w] < arr[z]
 
 			// Also, by construction: arr[u] < arr[w]
-			C += pw < pz and
-				 pu < pw and pw < pv and pv < pz;
+			C += pw < pz and pu < pw and pw < pv and pv < pz;
 
 			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
 			}
 		}
 		const neighbourhood& Nw_in = g.get_in_neighbors(w);
@@ -202,11 +202,12 @@ noexcept
 			// Formally: arr[w] < arr[z]
 
 			// Also, by construction: arr[u] < arr[w]
-			C += pw < pz and
-				 pu < pw and pw < pv and pv < pz;
+			C += pw < pz and pu < pw and pw < pv and pv < pz;
 
 			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
 			}
 		}
 	}
@@ -231,13 +232,11 @@ noexcept
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
 template <bool decide_upper_bound, class arrangement_t>
-[[nodiscard]] uint64_t compute
-(
+[[nodiscard]] uint64_t compute(
 	const graphs::directed_graph& g,
 	const arrangement_t& arr,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	uint64_t C = 0;
 
@@ -250,30 +249,40 @@ noexcept
 		for (node_t v : Nu_out) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];
-			if (pu >= pv) { continue; }
+			if (pu >= pv) {
+				continue;
+			}
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
-			C = inner_compute<decide_upper_bound>
-					(g, pu,pv, arr, C, upper_bound);
+			C = inner_compute<decide_upper_bound>(
+				g, pu, pv, arr, C, upper_bound
+			);
 
 			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
 			}
 		}
 		const neighbourhood& Nu_in = g.get_in_neighbors(*u);
 		for (node_t v : Nu_in) {
 			// 'pv' is the position of node 'v'
 			const position pv = arr[v];
-			if (pu >= pv) { continue; }
+			if (pu >= pv) {
+				continue;
+			}
 			// 'u' and 'v' is a pair of connected nodes such that 'u'
 			// is "to the left of" 'v' in the linear arrangement 'seq'
 
-			C = inner_compute<decide_upper_bound>
-					(g, pu,pv, arr, C, upper_bound);
+			C = inner_compute<decide_upper_bound>(
+				g, pu, pv, arr, C, upper_bound
+			);
 
 			if constexpr (decide_upper_bound) {
-				if (C > upper_bound) { return DECIDED_C_GT; }
+				if (C > upper_bound) {
+					return DECIDED_C_GT;
+				}
 			}
 		}
 	}
@@ -283,7 +292,7 @@ noexcept
 	return C;
 }
 
-} // -- namespace brute_force
+} // namespace brute_force
 
 // =============================================================================
 // CALLS TO THE ALGORITHM
@@ -301,9 +310,8 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t n_C_brute_force
-(const graph_t& g, const arrangement_t& arr)
-noexcept
+[[nodiscard]] uint64_t
+n_C_brute_force(const graph_t& g, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -311,7 +319,9 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	return brute_force::compute<false>(g, arr, 0);
 }
@@ -327,9 +337,9 @@ noexcept
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> n_C_brute_force
-(const graph_t& g, const std::vector<linear_arrangement>& arrs)
-noexcept
+[[nodiscard]] std::vector<uint64_t> n_C_brute_force(
+	const graph_t& g, const std::vector<linear_arrangement>& arrs
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -372,9 +382,9 @@ noexcept
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
 template <class graph_t, class arrangement_t>
-[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than
-(const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound)
-noexcept
+[[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than(
+	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -382,7 +392,9 @@ noexcept
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
 
-	if (n < 4) { return 0; }
+	if (n < 4) {
+		return 0;
+	}
 
 	return brute_force::compute<true>(g, arr, upper_bound);
 }
@@ -404,8 +416,7 @@ template <class graph_t>
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const uint64_t upper_bound
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 
@@ -423,7 +434,9 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, nonidentity_arr(arrs[i]), upper_bound);
+		cs[i] = brute_force::compute<true>(
+			g, nonidentity_arr(arrs[i]), upper_bound
+		);
 	}
 
 	return cs;
@@ -440,13 +453,11 @@ noexcept
  * bound otherwise.
  */
 template <class graph_t>
-[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than
-(
+[[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
 	const std::vector<uint64_t>& upper_bounds
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
 	// there must be as many arrangements as upper bounds
@@ -468,12 +479,14 @@ noexcept
 #endif
 
 		// compute C
-		cs[i] = brute_force::compute<true>(g, nonidentity_arr(arrs[i]), upper_bounds[i]);
+		cs[i] = brute_force::compute<true>(
+			g, nonidentity_arr(arrs[i]), upper_bounds[i]
+		);
 	}
 
 	return cs;
 }
 
-} // -- namespace crossings
-} // -- namespace detail
-} // -- namespace lal
+} // namespace crossings
+} // namespace detail
+} // namespace lal

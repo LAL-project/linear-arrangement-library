@@ -88,6 +88,5 @@ static_assert(first_true_v<false, false, false> == 3);
 static_assert(first_true_v<false, false, true, false> == 2);
 static_assert(first_true_v<false, false, false, true> == 3);
 
-} // -- namespace detail
-} // -- namespace lal
-
+} // namespace detail
+} // namespace lal

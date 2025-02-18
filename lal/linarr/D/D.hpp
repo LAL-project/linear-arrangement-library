@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 #pragma once
 
 // lal includes
@@ -62,9 +62,9 @@ namespace linarr {
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-[[nodiscard]] uint64_t sum_edge_lengths
-(const graphs::directed_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] uint64_t sum_edge_lengths(
+	const graphs::directed_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 /**
  * @brief Computes the sum of the length of the edges in a linear arrangement.
  *
@@ -77,9 +77,9 @@ noexcept;
  * @param pi Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The sum of edge lengths \f$D\f$.
  */
-[[nodiscard]] uint64_t sum_edge_lengths
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] uint64_t sum_edge_lengths(
+	const graphs::undirected_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 
 /* MDD */
 
@@ -96,9 +96,9 @@ noexcept;
  * @returns Jing's and Liu's \f$MDD\f$.
  * @pre \f$m > 0\f$.
  */
-[[nodiscard]] numeric::rational mean_dependency_distance_rational
-(const graphs::directed_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] numeric::rational mean_dependency_distance_rational(
+	const graphs::directed_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as an exact rational value.
  *
@@ -112,9 +112,9 @@ noexcept;
  * @returns Jing's and Liu's \f$MDD\f$.
  * @pre \f$m > 0\f$.
  */
-[[nodiscard]] numeric::rational mean_dependency_distance_rational
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] numeric::rational mean_dependency_distance_rational(
+	const graphs::undirected_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
@@ -125,9 +125,9 @@ noexcept;
  * @returns The return value is a floating point value.
  * @pre \f$m > 0\f$.
  */
-[[nodiscard]] double mean_dependency_distance
-(const graphs::directed_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] double mean_dependency_distance(
+	const graphs::directed_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 /**
  * @brief Computes the mean dependency distance \f$MDD\f$ as a floating point value.
  *
@@ -137,9 +137,9 @@ noexcept;
  * @returns The return value is a floating point value.
  * @pre \f$m > 0\f$.
  */
-[[nodiscard]] double mean_dependency_distance
-(const graphs::undirected_graph& g, const linear_arrangement& pi = {})
-noexcept;
+[[nodiscard]] double mean_dependency_distance(
+	const graphs::undirected_graph& g, const linear_arrangement& pi = {}
+) noexcept;
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

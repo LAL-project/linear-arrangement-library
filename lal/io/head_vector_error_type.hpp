@@ -72,5 +72,5 @@ enum class head_vector_error_type {
 	self_loop
 };
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

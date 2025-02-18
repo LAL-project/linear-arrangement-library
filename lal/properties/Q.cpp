@@ -38,7 +38,7 @@
  *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
  *
  ********************************************************************/
- 
+
 // C++ includes
 #include <map>
 
@@ -49,32 +49,33 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 
-#define sorted_edge(a,b) (a < b ? edge(a,b) : edge(b,a))
+#define sorted_edge(a, b) (a < b ? edge(a, b) : edge(b, a))
 
-inline constexpr uint64_t sum(uint64_t n, uint64_t t) noexcept {
-	return 2*(t*(t - 1)) + (n*(n - 1))/2 + 2*t*n;
+constexpr inline uint64_t sum(uint64_t n, uint64_t t) noexcept
+{
+	return 2 * (t * (t - 1)) + (n * (n - 1)) / 2 + 2 * t * n;
 }
 
 namespace lal {
 namespace properties {
 
-numeric::integer num_pairs_independent_edges_integer(const graphs::undirected_graph& g)
-noexcept
+numeric::integer
+num_pairs_independent_edges_integer(const graphs::undirected_graph& g) noexcept
 {
 	const uint64_t m = g.get_num_edges();
-	numeric::integer q2 = m*(m + 1);
+	numeric::integer q2 = m * (m + 1);
 
 	// substract sum of squared degrees
 	for (node u = 0; u < g.get_num_nodes(); ++u) {
 		const uint64_t ku = g.get_degree(u);
-		q2 -= detail::to_int64(ku*ku);
+		q2 -= detail::to_int64(ku * ku);
 	}
 
-	return q2/2;
+	return q2 / 2;
 }
 
-numeric::integer num_pairs_independent_edges_integer(const graphs::directed_graph& g)
-noexcept
+numeric::integer
+num_pairs_independent_edges_integer(const graphs::directed_graph& g) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
 	std::map<edge, uint64_t> collapsed_edges;
@@ -83,7 +84,7 @@ noexcept
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [u, v] = e_it.get_edge();
 
-		const edge es = sorted_edge(u,v);
+		const edge es = sorted_edge(u, v);
 		const auto it_es = collapsed_edges.find(es);
 		if (it_es == collapsed_edges.end()) {
 			collapsed_edges.insert(make_pair(es, 1));
@@ -103,13 +104,13 @@ noexcept
 		uint64_t t_u = 0;
 		for (node v : g.get_out_neighbors(u)) {
 			// u -> v
-			const bool edge_vu = g.has_edge(v,u);
+			const bool edge_vu = g.has_edge(v, u);
 			no_u += not edge_vu;
 			t_u += edge_vu;
 		}
 		for (node v : g.get_in_neighbors(u)) {
 			// v -> u
-			const bool edge_uv = g.has_edge(u,v);
+			const bool edge_uv = g.has_edge(u, v);
 			no_u += not edge_uv;
 		}
 		q -= sum(no_u, t_u);
@@ -127,5 +128,5 @@ noexcept
 	return q;
 }
 
-} // -- namespace properties
-} // -- namespace lal
+} // namespace properties
+} // namespace lal

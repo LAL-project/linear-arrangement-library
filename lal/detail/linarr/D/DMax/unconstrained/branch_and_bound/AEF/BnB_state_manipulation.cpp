@@ -65,49 +65,50 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-#define my_abs_diff(a,b) ((a) < (b) ? (b) - (a) : (a) - (b))
-#define edge_sorted_by_index(u,v) (u < v ? edge{u,v} : edge{v,u})
+#define my_abs_diff(a, b) ((a) < (b) ? (b) - (a) : (a) - (b))
+#define edge_sorted_by_index(u, v) (u < v ? edge{u, v} : edge{v, u})
 
-int AEF_BnB::process_end
-(const uint64_t D, const position pos)
-noexcept
+int AEF_BnB::process_end(const uint64_t D, const position pos) noexcept
 {
-	if (pos < m_n_nodes) { return process_end_result::did_not_reach_end; }
+	if (pos < m_n_nodes) {
+		return process_end_result::did_not_reach_end;
+	}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Reached end of the arrangement\n";
 #endif
 
 #if defined DEBUG
-	assert(
-	std::all_of(
-		m_is_node_assigned.begin(), m_is_node_assigned.end(),
-		[](char _p) { return _p == VERTEX_ASSIGNED; }
-	)
-	);
+	assert(std::all_of(
+		m_is_node_assigned.begin(),
+		m_is_node_assigned.end(),
+		[](char _p)
+		{
+			return _p == VERTEX_ASSIGNED;
+		}
+	));
 
 	assert(m_cut_values[m_n_nodes - 1] == 0);
 
 	{
-	uint64_t sum_cuts = 0;
-	uint64_t _D = 0;
-	uint64_t current_cut = 0;
-	for (position_t i = 0ull; i < m_n_nodes; ++i) {
-		current_cut += m_node_right_degree[m_arr[i]];
-		current_cut -= m_node_left_degree[m_arr[i]];
-		_D += current_cut;
-		assert(m_cut_values[*i] == current_cut);
-		sum_cuts += m_cut_values[*i];
-	}
+		uint64_t sum_cuts = 0;
+		uint64_t _D = 0;
+		uint64_t current_cut = 0;
+		for (position_t i = 0ull; i < m_n_nodes; ++i) {
+			current_cut += m_node_right_degree[m_arr[i]];
+			current_cut -= m_node_left_degree[m_arr[i]];
+			_D += current_cut;
+			assert(m_cut_values[*i] == current_cut);
+			sum_cuts += m_cut_values[*i];
+		}
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab() << "sum by cuts= " << _D << '\n'
-		<< tab() << "D_current=   " << D << '\n';
+		std::cout << tab() << "sum by cuts= " << _D << '\n'
+				  << tab() << "D_current=   " << D << '\n';
 #endif
 
-	assert(_D == sum_cuts);
-	assert(_D == D);
+		assert(_D == sum_cuts);
+		assert(_D == D);
 	}
 #endif
 
@@ -120,16 +121,13 @@ noexcept
 	return process_end_result::reached_end;
 }
 
-void AEF_BnB::update_state
-(const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m)
-noexcept
+void AEF_BnB::update_state(
+	const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m
+) noexcept
 {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab()
-		<< "Trying vertex " << u
-		<< " at position " << pos
-		<< '\n';
+	std::cout << tab() << "Trying vertex " << u << " at position " << pos
+			  << '\n';
 #endif
 
 	// add vertex to the arrangement
@@ -137,12 +135,14 @@ noexcept
 	m_arr.assign(u, pos);
 
 	// update count of vertex colors
-	m_num_assigned_nodes_blue += m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
-	m_num_assigned_nodes_red += m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
+	m_num_assigned_nodes_blue +=
+		m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
+	m_num_assigned_nodes_red +=
+		m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
 
 	// iterate over the neighbors of 'u'
 	for (const node v : m_t.get_neighbors(u)) {
-		const edge e = edge_sorted_by_index(u,v);
+		const edge e = edge_sorted_by_index(u, v);
 
 		// keep track of assigned and unassigned
 		// neighbors of the neighbors of 'u'
@@ -150,8 +150,7 @@ noexcept
 		++m_num_assigned_neighbors[v];
 #if defined DEBUG
 		assert(
-			m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v]
-			==
+			m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v] ==
 			m_t.get_degree(v)
 		);
 #endif
@@ -219,10 +218,8 @@ noexcept
 	}
 
 	if (pos > 0ull) {
-		m_cut_values[*pos] =
-			m_cut_values[*pos - 1]
-			+ m_node_right_degree[u]
-			- m_node_left_degree[u];
+		m_cut_values[*pos] = m_cut_values[*pos - 1] + m_node_right_degree[u] -
+							 m_node_left_degree[u];
 	}
 	else {
 		m_cut_values[*pos] = m_t.get_degree(u);
@@ -233,24 +230,17 @@ noexcept
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 		if (is_vertex_assigned(v)) {
-			std::cout << tab()
-					  << "    "
-					  << "degree[" << v << "]: "
-					  << m_t.get_degree(v)
-					  << " (-"
-					  << m_node_left_degree[v]
-					  << ",+"
-					  << m_node_right_degree[v]
-					  << ")"
-					  << (is_vertex_thistle(v) ? "  thistle!" : "")
+			std::cout << tab() << "    "
+					  << "degree[" << v << "]: " << m_t.get_degree(v) << " (-"
+					  << m_node_left_degree[v] << ",+" << m_node_right_degree[v]
+					  << ")" << (is_vertex_thistle(v) ? "  thistle!" : "")
 					  << '\n';
 		}
 #endif
 
 		if (is_vertex_assigned(v)) {
 			assert(
-				m_node_left_degree[v] + m_node_right_degree[v]
-				==
+				m_node_left_degree[v] + m_node_right_degree[v] ==
 				m_t.get_degree(v)
 			);
 		}
@@ -262,20 +252,20 @@ noexcept
 #endif
 }
 
-void AEF_BnB::recover_state(const position_t pos) noexcept {
+void AEF_BnB::recover_state(const position_t pos) noexcept
+{
 	const node u = m_arr[pos];
 
 #if defined __LAL_DEBUG_DMax_Unc_BnB
-	std::cout
-		<< tab()
-		<< "Remove vertex " << u
-		<< " from position " << pos
-		<< '\n';
+	std::cout << tab() << "Remove vertex " << u << " from position " << pos
+			  << '\n';
 #endif
 
 	// update count of vertex colors
-	m_num_assigned_nodes_blue -= m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
-	m_num_assigned_nodes_red -= m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
+	m_num_assigned_nodes_blue -=
+		m_vertex_colors[u] == properties::bipartite_graph_coloring::blue;
+	m_num_assigned_nodes_red -=
+		m_vertex_colors[u] == properties::bipartite_graph_coloring::red;
 
 	// update this vertex's path information
 	if (m_t.get_degree(u) <= 2) {
@@ -297,7 +287,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 	m_node_right_degree[u] = 0;
 
 	for (node v : m_t.get_neighbors(u)) {
-		const edge e = edge_sorted_by_index(u,v);
+		const edge e = edge_sorted_by_index(u, v);
 
 		// keep track of assigned and unassigned
 		// neighbors of the neighbors of 'u'
@@ -305,8 +295,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 		--m_num_assigned_neighbors[v];
 #if defined DEBUG
 		assert(
-			m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v]
-			==
+			m_num_unassigned_neighbors[v] + m_num_assigned_neighbors[v] ==
 			m_t.get_degree(v)
 		);
 #endif
@@ -355,23 +344,16 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 	for (node v = 0; v < m_n_nodes; ++v) {
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 		if (is_vertex_assigned(v)) {
-			std::cout
-				<< tab()
-				<< "    "
-				<< "degree[" << v << "]: "
-				<< m_t.get_degree(v)
-				<< " (-"
-				<< m_node_left_degree[v]
-				<< ",+"
-				<< m_node_right_degree[v]
-				<< ")\n";
+			std::cout << tab() << "    "
+					  << "degree[" << v << "]: " << m_t.get_degree(v) << " (-"
+					  << m_node_left_degree[v] << ",+" << m_node_right_degree[v]
+					  << ")\n";
 		}
 #endif
 
 		if (is_vertex_assigned(v)) {
 			assert(
-				m_node_left_degree[v] + m_node_right_degree[v]
-				==
+				m_node_left_degree[v] + m_node_right_degree[v] ==
 				m_t.get_degree(v)
 			);
 		}
@@ -379,7 +361,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept {
 #endif
 }
 
-} // -- namespace unconstrained
-} // -- namespace DMax
-} // -- namespace detail
-} // -- namespace lal
+} // namespace unconstrained
+} // namespace DMax
+} // namespace detail
+} // namespace lal

@@ -84,18 +84,23 @@ namespace detail {
  */
 template <
 	class graph_t,
-	std::enable_if_t< std::is_base_of_v<graphs::graph, graph_t>, bool > = true
->
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
 class BFS {
 public:
+
 	/// Single node processing function.
-	typedef std::function<void (const BFS<graph_t>&, const node)> BFS_process_one;
+	typedef std::function<void(const BFS<graph_t>&, const node)>
+		BFS_process_one;
 	/// Two nodes processing function.
-	typedef std::function<void (const BFS<graph_t>&, const node, const node, const bool)> BFS_process_two;
+	typedef std::function<
+		void(const BFS<graph_t>&, const node, const node, const bool)>
+		BFS_process_two;
 	/// One node decision function.
-	typedef std::function<bool (const BFS<graph_t>&, const node)> BFS_bool_one;
+	typedef std::function<bool(const BFS<graph_t>&, const node)> BFS_bool_one;
 	/// Two nodes decision function.
-	typedef std::function<bool (const BFS<graph_t>&, const node, const node, const bool)> BFS_bool_two;
+	typedef std::function<
+		bool(const BFS<graph_t>&, const node, const node, const bool)>
+		BFS_bool_two;
 
 public:
 
@@ -110,10 +115,11 @@ public:
 	//   a leading 'm_' like the other private/protected members.
 
 public:
+
 	/// Constructor
-	BFS(const graph_t& g) noexcept :
-		m_G(g),
-		m_vis(m_G.get_num_nodes())
+	BFS(const graph_t& g) noexcept
+		: m_G(g),
+		  m_vis(m_G.get_num_nodes())
 	{
 		reset();
 	}
@@ -132,7 +138,8 @@ public:
 	 * - @ref m_use_rev_edges,
 	 * - @ref m_process_visited_neighbors.
 	 */
-	void reset() noexcept {
+	void reset() noexcept
+	{
 		clear_visited();
 		m_queue.init(m_G.get_num_nodes());
 
@@ -149,7 +156,8 @@ public:
 	 * @brief Start traversal at a given node.
 	 * @param source Node.
 	 */
-	void start_at(const node source) noexcept {
+	void start_at(const node source) noexcept
+	{
 		m_queue.push(source);
 		m_vis[source] = 1;
 		do_traversal();
@@ -159,7 +167,8 @@ public:
 	 * @brief Start the traversal at every given node.
 	 * @param sources List of node.
 	 */
-	void start_at(const std::vector<node>& sources) noexcept {
+	void start_at(const std::vector<node>& sources) noexcept
+	{
 		for (const node& u : sources) {
 			m_queue.push(u);
 			m_vis[u] = 1;
@@ -170,48 +179,71 @@ public:
 	/* SETTERS */
 
 	/// Set whether the traversal can use reversed edges
-	void set_use_rev_edges(const bool use) noexcept { m_use_rev_edges = use; }
+	void set_use_rev_edges(const bool use) noexcept
+	{
+		m_use_rev_edges = use;
+	}
 
 	/// Set the default value of @ref m_terminate.
-	void set_terminate_default() noexcept {
-		m_terminate = [](const BFS<graph_t>&, const node) -> bool { return false; };
+	void set_terminate_default() noexcept
+	{
+		m_terminate = [](const BFS<graph_t>&, const node) -> bool
+		{
+			return false;
+		};
 		m_is_terminate_set = false;
 	}
 	/// Set the function that controls the termination of the loop.
-	void set_terminate(const BFS_bool_one& f) noexcept {
+	void set_terminate(const BFS_bool_one& f) noexcept
+	{
 		m_terminate = f;
 		m_is_terminate_set = true;
 	}
 
 	/// Set the default value of @ref m_process_current.
-	void set_process_current_default() noexcept {
-		m_process_current = [](const BFS<graph_t>&, const node) -> void { };
+	void set_process_current_default() noexcept
+	{
+		m_process_current = [](const BFS<graph_t>&, const node) -> void
+		{
+		};
 		m_is_process_current_set = false;
 	}
 	/// Set the function that controls the processing of the current node.
-	void set_process_current(const BFS_process_one& f) noexcept {
+	void set_process_current(const BFS_process_one& f) noexcept
+	{
 		m_process_current = f;
 		m_is_process_current_set = true;
 	}
 
 	/// Set the default value of @ref m_process_neighbour.
-	void set_process_neighbour_default() noexcept {
-		m_process_neighbour = [](const BFS<graph_t>&, const node, const node, const bool) -> void { };
+	void set_process_neighbour_default() noexcept
+	{
+		m_process_neighbour =
+			[](const BFS<graph_t>&, const node, const node, const bool) -> void
+		{
+		};
 		m_is_process_neighbour_set = false;
 	}
 	/// Set the function that controls the processing of the current neighbour.
-	void set_process_neighbour(const BFS_process_two& f) noexcept {
+	void set_process_neighbour(const BFS_process_two& f) noexcept
+	{
 		m_process_neighbour = f;
 		m_is_process_neighbour_set = true;
 	}
 
 	/// Set the default value of @ref m_add_node.
-	void set_node_add_default() noexcept {
-		m_add_node = [](const BFS<graph_t>&, const node, const node, const bool) -> bool { return true; };
+	void set_node_add_default() noexcept
+	{
+		m_add_node = [](const BFS<graph_t>&, const node, const node, const bool
+					 ) -> bool
+		{
+			return true;
+		};
 		m_is_add_node_set = false;
 	}
 	/// Set the function that controls when a node is to be added to the queue.
-	void set_node_add(const BFS_bool_two& f) noexcept {
+	void set_node_add(const BFS_bool_two& f) noexcept
+	{
 		m_add_node = f;
 		m_is_add_node_set = true;
 	}
@@ -221,7 +253,8 @@ public:
 	 * for already visited neighbors?
 	 * @param v Either true or false.
 	 */
-	void set_process_visited_neighbors(const bool v) noexcept {
+	void set_process_visited_neighbors(const bool v) noexcept
+	{
 		m_process_visited_neighbors = v;
 	}
 
@@ -230,14 +263,18 @@ public:
 	 *
 	 * When using this function, users might also want to call @ref clear_queue.
 	 */
-	void clear_visited() noexcept { m_vis.fill(0); }
+	void clear_visited() noexcept
+	{
+		m_vis.fill(0);
+	}
 
 	/**
 	 * @brief Clear the memory allocated for this structure.
 	 *
 	 * When using this function, users might also want to call @ref clear_visited.
 	 */
-	void clear_queue() noexcept {
+	void clear_queue() noexcept
+	{
 		m_queue.reset();
 	}
 
@@ -246,7 +283,8 @@ public:
 	 * @param u Node to set as visitied.
 	 * @param vis A 0-1 value.
 	 */
-	void set_visited(const node u, const char vis) noexcept {
+	void set_visited(const node u, const char vis) noexcept
+	{
 #if defined DEBUG
 		assert(vis == 0 or vis == 1);
 #endif
@@ -256,22 +294,38 @@ public:
 	/* GETTERS */
 
 	/// Returns whether or not node @e u has been visited.
-	[[nodiscard]] bool node_was_visited(const node u) const noexcept {
+	[[nodiscard]] bool node_was_visited(const node u) const noexcept
+	{
 		return m_vis[u] == 1;
 	}
 
 	/// Have all nodes been visited?
-	[[nodiscard]] bool all_visited() const noexcept {
-		return std::all_of(m_vis.begin(), m_vis.end(), [](auto x){return x == 1;});
+	[[nodiscard]] bool all_visited() const noexcept
+	{
+		return std::all_of(
+			m_vis.begin(),
+			m_vis.end(),
+			[](auto x)
+			{
+				return x == 1;
+			}
+		);
 	}
 
 	/// Returns a constant reference to the graph
-	[[nodiscard]] const graph_t& get_graph() const noexcept { return m_G; }
+	[[nodiscard]] const graph_t& get_graph() const noexcept
+	{
+		return m_G;
+	}
 
 	/// Return visited nodes information
-	[[nodiscard]] const array<char>& get_visited() const noexcept { return m_vis; }
+	[[nodiscard]] const array<char>& get_visited() const noexcept
+	{
+		return m_vis;
+	}
 
 protected:
+
 	/**
 	 * @brief Deal with a neighbour of an input node.
 	 *
@@ -289,7 +343,8 @@ protected:
 	 * is true then the edge has orientation from @e s to @e t. If @e ltr is
 	 * false, the edge has orientation from @e t to @e s.
 	 */
-	void deal_with_neighbour(const node s, const node t, const bool ltr) noexcept
+	void
+	deal_with_neighbour(const node s, const node t, const bool ltr) noexcept
 	{
 		// Process the neighbour 't' of 's'.
 		const bool t_vis = node_was_visited(t);
@@ -313,7 +368,8 @@ protected:
 	}
 
 	/// Process the neighbors of node @e s
-	void process_neighbors(const node s) noexcept {
+	void process_neighbors(const node s) noexcept
+	{
 		if constexpr (not is_graph_directed) {
 			// for undirected graphs
 
@@ -393,7 +449,8 @@ protected:
 	 * the user wants to process "reversed edges", then the neighbourhood
 	 * is not limited to "out-neighbors", but also to "in-neighbors".
 	 */
-	void do_traversal() noexcept {
+	void do_traversal() noexcept
+	{
 		while (m_queue.size() > 0) {
 			const node s = m_queue.pop();
 
@@ -404,7 +461,9 @@ protected:
 
 			// check user-defined early termination condition
 			if (m_is_terminate_set) {
-				if (m_terminate(*this, s)) { break; }
+				if (m_terminate(*this, s)) {
+					break;
+				}
 			}
 
 			process_neighbors(s);
@@ -412,6 +471,7 @@ protected:
 	}
 
 protected:
+
 	/// Constant reference to the graph.
 	const graph_t& m_G;
 
@@ -433,6 +493,7 @@ protected:
 	bool m_use_rev_edges = false;
 
 protected:
+
 	/**
 	 * @brief Early terminating function.
 	 *
@@ -481,5 +542,5 @@ protected:
 	bool m_is_add_node_set;
 };
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

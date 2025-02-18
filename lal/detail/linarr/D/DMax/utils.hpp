@@ -101,15 +101,13 @@ namespace DMax_utils {
  * @pre @e L is sorted decreasingly.
  */
 template <Dopt_utils::place r_place, bool make_arrangement>
-[[nodiscard]] uint64_t arrange
-(
+[[nodiscard]] uint64_t arrange(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	const position ini,
 	const position fin,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
 	assert(ini <= fin);
@@ -144,9 +142,8 @@ noexcept
 	position next_ini = 0, next_fin = 0;
 
 	constexpr Dopt_utils::place next_place =
-		r_place == Dopt_utils::PLACE_LEFT_OF ?
-			Dopt_utils::PLACE_RIGHT_OF :
-			Dopt_utils::PLACE_LEFT_OF;
+		r_place == Dopt_utils::PLACE_LEFT_OF ? Dopt_utils::PLACE_RIGHT_OF
+											 : Dopt_utils::PLACE_LEFT_OF;
 
 	// while placing the children, calculate the
 	// length of the edge from 'r' to vertex 'vi'
@@ -168,7 +165,9 @@ noexcept
 		}
 
 		// recursive call: make the interval of 'vi'
-		D += arrange<next_place, make_arrangement>(L, vi, next_ini, next_fin, arr);
+		D += arrange<next_place, make_arrangement>(
+			L, vi, next_ini, next_fin, arr
+		);
 
 		D += 1 + acc_size;
 		acc_size += ni;
@@ -196,18 +195,18 @@ noexcept
  * @pre @e L is sorted decreasingly.
  */
 template <bool make_arrangement>
-[[nodiscard]] inline uint64_t arrange_projective
-(
+[[nodiscard]] inline uint64_t arrange_projective(
 	const uint64_t n,
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
-	return arrange<Dopt_utils::PLACE_NONE_OF, make_arrangement>(L, r, 0, n-1, arr);
+	return arrange<Dopt_utils::PLACE_NONE_OF, make_arrangement>(
+		L, r, 0, n - 1, arr
+	);
 }
 
-} // -- namespcae DMax_utils
-} // -- namespace detail
-} // -- namespace lal
+} // namespace DMax_utils
+} // namespace detail
+} // namespace lal

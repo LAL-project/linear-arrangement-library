@@ -82,8 +82,7 @@ template <bool make_arrangement>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
 	std::pair<uint64_t, linear_arrangement>,
-	uint64_t
->
+	uint64_t>
 HS(const graphs::rooted_tree& t) noexcept
 {
 #if defined DEBUG
@@ -106,15 +105,12 @@ HS(const graphs::rooted_tree& t) noexcept
 	// LARGEST to SMALLEST
 
 	std::vector<std::vector<node_size>> L(n);
-	Dopt_utils::make_sorted_adjacency_list_rooted
-		<sorting::sort_type::non_increasing>
-		(t, L);
+	Dopt_utils::make_sorted_adjacency_list_rooted<
+		sorting::sort_type::non_increasing>(t, L);
 
 	// construct the optimal projective arrangement
 	linear_arrangement arr(make_arrangement ? n : 0);
-	const uint64_t D =
-		Dmin_utils::embed<make_arrangement>
-		(L, r, arr);
+	const uint64_t D = Dmin_utils::embed<make_arrangement>(L, r, arr);
 
 	if constexpr (make_arrangement) {
 		return {D, std::move(arr)};
@@ -124,7 +120,7 @@ HS(const graphs::rooted_tree& t) noexcept
 	}
 }
 
-} // -- namespace projective
-} // -- namespace Dmin
-} // -- namespace detail
-} // -- namespace lal
+} // namespace projective
+} // namespace Dmin
+} // namespace detail
+} // namespace lal

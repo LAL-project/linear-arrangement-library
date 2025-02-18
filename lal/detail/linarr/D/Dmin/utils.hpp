@@ -107,16 +107,14 @@ namespace Dmin_utils {
  * @pre @e L is sorted decreasingly.
  */
 template <bool make_arrangement>
-[[nodiscard]] uint64_t arrange
-(
+[[nodiscard]] uint64_t arrange(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	const Dopt_utils::place r_place,
 	position ini,
 	position fin,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 #if defined DEBUG
 	assert(ini <= fin);
@@ -128,10 +126,9 @@ noexcept
 	// -- place the children --
 
 	// work out the starting side of the first-largest subtree
-	Dopt_utils::side roots_side =
-		r_place == Dopt_utils::PLACE_RIGHT_OF ?
-			Dopt_utils::RIGHT_SIDE :
-			Dopt_utils::LEFT_SIDE;
+	Dopt_utils::side roots_side = r_place == Dopt_utils::PLACE_RIGHT_OF
+									  ? Dopt_utils::RIGHT_SIDE
+									  : Dopt_utils::LEFT_SIDE;
 
 	// size of the intervals from the root to the left end
 	uint64_t acc_size_left = 0;
@@ -168,17 +165,23 @@ noexcept
 #endif
 
 		// recursive call: make the interval of 'vi'
-		D +=
-		arrange<make_arrangement>(
-			L, vi,
-			(roots_side == Dopt_utils::LEFT_SIDE ? Dopt_utils::PLACE_LEFT_OF : Dopt_utils::PLACE_RIGHT_OF),
-			(make_arrangement ? (roots_side == Dopt_utils::LEFT_SIDE ? ini : fin - ni + 1) : 0),
-			(make_arrangement ? (roots_side == Dopt_utils::LEFT_SIDE ? ini + ni - 1 : fin) : 0),
+		D += arrange<make_arrangement>(
+			L,
+			vi,
+			(roots_side == Dopt_utils::LEFT_SIDE ? Dopt_utils::PLACE_LEFT_OF
+												 : Dopt_utils::PLACE_RIGHT_OF),
+			(make_arrangement
+				 ? (roots_side == Dopt_utils::LEFT_SIDE ? ini : fin - ni + 1)
+				 : 0),
+			(make_arrangement
+				 ? (roots_side == Dopt_utils::LEFT_SIDE ? ini + ni - 1 : fin)
+				 : 0),
 			arr
 		);
 
 		// accumulate size of interval
-		d += ni*(roots_side == Dopt_utils::LEFT_SIDE ? n_intervals_left : n_intervals_right);
+		d += ni * (roots_side == Dopt_utils::LEFT_SIDE ? n_intervals_left
+													   : n_intervals_right);
 		// add length of edge over root 'r'
 		d += 1;
 
@@ -187,13 +190,13 @@ noexcept
 		n_intervals_right += Dopt_utils::other_side(roots_side);
 
 		// accumulate size of subtree rooted at vi
-		acc_size_left += roots_side*ni;
-		acc_size_right += Dopt_utils::other_side(roots_side)*ni;
+		acc_size_left += roots_side * ni;
+		acc_size_right += Dopt_utils::other_side(roots_side) * ni;
 
 		// update limits of the embedding
 		if constexpr (make_arrangement) {
-		ini += roots_side*ni;
-		fin -= Dopt_utils::other_side(roots_side)*ni;
+			ini += roots_side * ni;
+			fin -= Dopt_utils::other_side(roots_side) * ni;
 		}
 
 		// change side
@@ -202,17 +205,18 @@ noexcept
 
 #if defined DEBUG
 	if constexpr (make_arrangement) {
-	assert(ini == fin);
+		assert(ini == fin);
 	}
 #endif
 	if constexpr (make_arrangement) {
-	arr.assign(r, ini);
+		arr.assign(r, ini);
 	}
 
 	// accumulate the length of the edge from 'r' to its parent (if any)
 	D +=
-	(r_place == Dopt_utils::PLACE_NONE_OF ? 0 :
-	 r_place == Dopt_utils::PLACE_LEFT_OF ? acc_size_right : acc_size_left);
+		(r_place == Dopt_utils::PLACE_NONE_OF	? 0
+		 : r_place == Dopt_utils::PLACE_LEFT_OF ? acc_size_right
+												: acc_size_left);
 
 	return D + d;
 }
@@ -232,16 +236,16 @@ noexcept
  * @pre @e L is sorted decreasingly.
  */
 template <bool make_arrangement>
-[[nodiscard]] inline uint64_t arrange_projective
-(
+[[nodiscard]] inline uint64_t arrange_projective(
 	const uint64_t n,
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
-	return arrange<make_arrangement>(L, r, Dopt_utils::PLACE_NONE_OF, 0, n-1, arr);
+	return arrange<make_arrangement>(
+		L, r, Dopt_utils::PLACE_NONE_OF, 0, n - 1, arr
+	);
 }
 
 /* ************************************************************************** */
@@ -250,7 +254,6 @@ noexcept
 /* The following namespace contains functions for the interval-based algorithms
  * to calculate the planar and projective minimum sum of edge lengths.
  */
-
 
 /**
  * @brief Embed a tree's branch.
@@ -271,15 +274,13 @@ noexcept
  * @pre @e L is sorted decreasingly.
  */
 template <bool make_arrangement>
-[[nodiscard]] uint64_t embed_branch
-(
+[[nodiscard]] uint64_t embed_branch(
 	const std::vector<std::vector<node_size>>& L,
 	const node v,
 	int64_t base,
 	const int64_t dir,
 	array<int64_t>& rel_pos
-)
-noexcept
+) noexcept
 {
 	const auto& Cv = L[v];
 	uint64_t cost_branch = 0;
@@ -295,7 +296,7 @@ noexcept
 	}
 
 	if constexpr (make_arrangement) {
-	base += dir*(to_int64(under_anchor) + 1);
+		base += dir * (to_int64(under_anchor) + 1);
 	}
 
 	cost_branch += under_anchor;
@@ -313,20 +314,17 @@ noexcept
 
 		const auto& [vi, ni] = *it;
 
-		cost_branch +=
-		embed_branch<make_arrangement>(
-			L, vi,
-			make_arrangement ?
-				Dopt_utils::is_even(i) ? base - dir*to_int64(before) : base + dir*to_int64(after)
-				: 0
-			,
-			make_arrangement ?
-				Dopt_utils::is_even(i) ? -dir : dir
-				: 0
-			,
+		cost_branch += embed_branch<make_arrangement>(
+			L,
+			vi,
+			make_arrangement ? Dopt_utils::is_even(i)
+								   ? base - dir * to_int64(before)
+								   : base + dir * to_int64(after)
+							 : 0,
+			make_arrangement ? Dopt_utils::is_even(i) ? -dir : dir : 0,
 			rel_pos
 		);
-		cost_branch += ( Dopt_utils::is_even(i) ? before : after );
+		cost_branch += (Dopt_utils::is_even(i) ? before : after);
 
 		before += (Dopt_utils::is_even(i) ? ni : 0);
 		after += (Dopt_utils::is_even(i) ? 0 : ni);
@@ -356,13 +354,11 @@ noexcept
  * @pre @e L is sorted decreasingly.
  */
 template <bool make_arrangement>
-[[nodiscard]] uint64_t embed
-(
+[[nodiscard]] uint64_t embed(
 	const std::vector<std::vector<node_size>>& L,
 	const node r,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 	const uint64_t n = L.size();
 	uint64_t D = 0;
@@ -380,20 +376,18 @@ noexcept
 		assert(i <= L[r].size());
 #endif
 
-		D +=
-		embed_branch<make_arrangement>(
-			L, vi,
-			make_arrangement ?
-				Dopt_utils::is_even(i) ? to_int64(right_sum) : -to_int64(left_sum)
-				: 0
-			,
-			make_arrangement ?
-				Dopt_utils::is_even(i) ? to_int64(1) : to_int64(-1)
-				: 0
-			,
+		D += embed_branch<make_arrangement>(
+			L,
+			vi,
+			make_arrangement ? Dopt_utils::is_even(i) ? to_int64(right_sum)
+													  : -to_int64(left_sum)
+							 : 0,
+			make_arrangement
+				? Dopt_utils::is_even(i) ? to_int64(1) : to_int64(-1)
+				: 0,
 			rel_pos
 		);
-		D += ( Dopt_utils::is_even(i) ? right_sum : left_sum );
+		D += (Dopt_utils::is_even(i) ? right_sum : left_sum);
 
 		right_sum += (Dopt_utils::is_even(i) ? ni : 0);
 		left_sum += (Dopt_utils::is_even(i) ? 0 : ni);
@@ -403,20 +397,20 @@ noexcept
 
 	// the '-1' is used to offset the positions from [1,n] to [0,n-1]
 	if constexpr (make_arrangement) {
-	arr.assign(r, left_sum + 1 - 1);
-	rel_pos[r] = 0;
-	for (node v = 0; v < n; ++v) {
-		const int64_t pos = to_int64(arr[node_t{r}]) + rel_pos[v];
+		arr.assign(r, left_sum + 1 - 1);
+		rel_pos[r] = 0;
+		for (node v = 0; v < n; ++v) {
+			const int64_t pos = to_int64(arr[node_t{r}]) + rel_pos[v];
 #if defined DEBUG
-		assert(pos >= 0);
+			assert(pos >= 0);
 #endif
-		arr.assign(v, to_uint64(pos));
-	}
+			arr.assign(v, to_uint64(pos));
+		}
 	}
 
 	return D;
 }
 
-} // -- namespcae Dmin_utils
-} // -- namespace detail
-} // -- namespace lal
+} // namespace Dmin_utils
+} // namespace detail
+} // namespace lal

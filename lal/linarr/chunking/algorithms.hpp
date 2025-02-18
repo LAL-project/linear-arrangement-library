@@ -78,5 +78,5 @@ enum class algorithms_chunking {
 	Macutek
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

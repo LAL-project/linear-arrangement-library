@@ -59,7 +59,7 @@ typedef std::vector<uint64_t> head_vector;
 /// See @ref LAL_concepts__edge_list page for further details.
 typedef std::vector<edge> edge_list;
 /// Edge pair type.
-typedef std::pair<edge,edge> edge_pair;
+typedef std::pair<edge, edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
 
@@ -77,110 +77,216 @@ struct node_t {
 	node_t() noexcept = default;
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t(const T& _v) noexcept : value(_v) { }
+	node_t(const T& _v) noexcept
+		: value(_v)
+	{ }
 
 	/* ASSIGNMENT OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t& operator= (const T& _v) noexcept { value = _v; return *this; }
+	node_t& operator= (const T& _v) noexcept
+	{
+		value = _v;
+		return *this;
+	}
 
 	/* COMPARISON OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator== (const T& t) const noexcept { return value == t; }
-	bool operator== (const node_t& u) const noexcept { return value == u.value; }
+	bool operator== (const T& t) const noexcept
+	{
+		return value == t;
+	}
+	bool operator== (const node_t& u) const noexcept
+	{
+		return value == u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator== (const T& t, const node_t& u) noexcept { return u.value == t; }
+	friend bool operator== (const T& t, const node_t& u) noexcept
+	{
+		return u.value == t;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator!= (const T& t) const noexcept { return value != t; }
-	bool operator!= (const node_t& u) const noexcept { return value != u.value; }
+	bool operator!= (const T& t) const noexcept
+	{
+		return value != t;
+	}
+	bool operator!= (const node_t& u) const noexcept
+	{
+		return value != u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator!= (const T& t, const node_t& u) noexcept { return u.value != t; }
+	friend bool operator!= (const T& t, const node_t& u) noexcept
+	{
+		return u.value != t;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator< (const T& t) const noexcept { return value < t; }
-	bool operator< (const node_t& u) const noexcept { return value < u.value; }
+	bool operator< (const T& t) const noexcept
+	{
+		return value < t;
+	}
+	bool operator< (const node_t& u) const noexcept
+	{
+		return value < u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator< (const T& t, const node_t& u) noexcept { return t < u.value; }
+	friend bool operator< (const T& t, const node_t& u) noexcept
+	{
+		return t < u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator<= (const T& t) const noexcept { return value <= t; }
-	bool operator<= (const node_t& u) const noexcept { return value <= u.value; }
+	bool operator<= (const T& t) const noexcept
+	{
+		return value <= t;
+	}
+	bool operator<= (const node_t& u) const noexcept
+	{
+		return value <= u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator<= (const T& t, const node_t& u) noexcept { return t <= u.value; }
+	friend bool operator<= (const T& t, const node_t& u) noexcept
+	{
+		return t <= u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator> (const T& t) const noexcept { return value > t; }
-	bool operator> (const node_t& u) const noexcept { return value > u.value; }
+	bool operator> (const T& t) const noexcept
+	{
+		return value > t;
+	}
+	bool operator> (const node_t& u) const noexcept
+	{
+		return value > u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator> (const T& t, const node_t& u) noexcept { return t > u.value; }
+	friend bool operator> (const T& t, const node_t& u) noexcept
+	{
+		return t > u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator>= (const T& t) const noexcept { return value >= t; }
-	bool operator>= (const node_t& u) const noexcept { return value >= u.value; }
+	bool operator>= (const T& t) const noexcept
+	{
+		return value >= t;
+	}
+	bool operator>= (const node_t& u) const noexcept
+	{
+		return value >= u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator>= (const T& t, const node_t& u) noexcept { return t >= u.value; }
+	friend bool operator>= (const T& t, const node_t& u) noexcept
+	{
+		return t >= u.value;
+	}
 
 	/* ARITHMETIC OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t operator+ (const T& t) const noexcept { return node_t{value + t}; }
-	node_t operator+ (const node_t& u) const noexcept { return node_t{value + u.value}; }
+	node_t operator+ (const T& t) const noexcept
+	{
+		return node_t{value + t};
+	}
+	node_t operator+ (const node_t& u) const noexcept
+	{
+		return node_t{value + u.value};
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend node_t operator+ (const T& t, const node_t& u) noexcept { return node_t{u.value + t}; }
+	friend node_t operator+ (const T& t, const node_t& u) noexcept
+	{
+		return node_t{u.value + t};
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t& operator+= (const T& t) noexcept { value += t; return *this; }
-	node_t& operator+= (const node_t& u) noexcept { value += u.value; return *this; }
+	node_t& operator+= (const T& t) noexcept
+	{
+		value += t;
+		return *this;
+	}
+	node_t& operator+= (const node_t& u) noexcept
+	{
+		value += u.value;
+		return *this;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t operator- (const T& t) const noexcept { return node_t{value - t}; }
-	node_t operator- (const node_t& u) const noexcept { return node_t{value - u.value}; }
+	node_t operator- (const T& t) const noexcept
+	{
+		return node_t{value - t};
+	}
+	node_t operator- (const node_t& u) const noexcept
+	{
+		return node_t{value - u.value};
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend node_t operator- (const T& t, const node_t& u) noexcept { return node_t{t - u.value}; }
+	friend node_t operator- (const T& t, const node_t& u) noexcept
+	{
+		return node_t{t - u.value};
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	node_t& operator-= (const T& t) noexcept { value -= t; return *this; }
-	node_t& operator-= (const node_t& u) noexcept { value -= u.value; return *this; }
+	node_t& operator-= (const T& t) noexcept
+	{
+		value -= t;
+		return *this;
+	}
+	node_t& operator-= (const node_t& u) noexcept
+	{
+		value -= u.value;
+		return *this;
+	}
 
-	node_t& operator++() noexcept { ++value; return *this; }
-	node_t& operator--() noexcept { --value; return *this; }
+	node_t& operator++ () noexcept
+	{
+		++value;
+		return *this;
+	}
+	node_t& operator-- () noexcept
+	{
+		--value;
+		return *this;
+	}
 
 	/* INPUT/OUTPUT OPERATORS */
 
 	template <class stream>
-	friend stream& operator>> (stream& s, node_t& p) noexcept {
+	friend stream& operator>> (stream& s, node_t& p) noexcept
+	{
 		s >> p.value;
 		return s;
 	}
 
 	template <class stream>
-	friend stream& operator<< (stream& s, const node_t& p) noexcept {
+	friend stream& operator<< (stream& s, const node_t& p) noexcept
+	{
 		s << p.value;
 		return s;
 	}
 
-	uint64_t operator*() const noexcept { return value; }
+	uint64_t operator* () const noexcept
+	{
+		return value;
+	}
 };
 
-static_assert(    std::is_trivial_v<node_t>);
+static_assert(std::is_trivial_v<node_t>);
 
-static_assert(    std::is_trivially_copyable_v<node_t>);
-static_assert(    std::is_trivially_copy_assignable_v<node_t>);
-static_assert(    std::is_copy_assignable_v<node_t>);
-static_assert(    std::is_trivially_copy_constructible_v<node_t>);
-static_assert(    std::is_copy_constructible_v<node_t>);
-static_assert(    std::is_trivially_move_constructible_v<node_t>);
-static_assert(    std::is_move_constructible_v<node_t>);
-static_assert(    std::is_trivially_destructible_v<node_t>);
-static_assert(    std::is_destructible_v<node_t>);
+static_assert(std::is_trivially_copyable_v<node_t>);
+static_assert(std::is_trivially_copy_assignable_v<node_t>);
+static_assert(std::is_copy_assignable_v<node_t>);
+static_assert(std::is_trivially_copy_constructible_v<node_t>);
+static_assert(std::is_copy_constructible_v<node_t>);
+static_assert(std::is_trivially_move_constructible_v<node_t>);
+static_assert(std::is_move_constructible_v<node_t>);
+static_assert(std::is_trivially_destructible_v<node_t>);
+static_assert(std::is_destructible_v<node_t>);
 
-
-static_assert(    std::is_trivially_constructible_v<node_t, const node_t&>);
-static_assert(    std::is_trivially_constructible_v<node_t, const node_t>);
-static_assert(    std::is_trivially_constructible_v<node_t, node_t>);
-static_assert(    std::is_trivially_constructible_v<node_t>);
+static_assert(std::is_trivially_constructible_v<node_t, const node_t&>);
+static_assert(std::is_trivially_constructible_v<node_t, const node_t>);
+static_assert(std::is_trivially_constructible_v<node_t, node_t>);
+static_assert(std::is_trivially_constructible_v<node_t>);
 static_assert(not std::is_trivially_constructible_v<node_t, node>);
 static_assert(not std::is_trivially_constructible_v<node_t, uint64_t>);
 static_assert(not std::is_trivially_constructible_v<node_t, int64_t>);
@@ -191,25 +297,24 @@ static_assert(not std::is_trivially_constructible_v<node_t, int16_t>);
 static_assert(not std::is_trivially_constructible_v<node_t, uint8_t>);
 static_assert(not std::is_trivially_constructible_v<node_t, int8_t>);
 
-static_assert(    std::is_constructible_v<node_t, const node_t&>); // implied
-static_assert(    std::is_constructible_v<node_t, const node_t>); // implied
-static_assert(    std::is_constructible_v<node_t, node_t>); // implied
-static_assert(    std::is_constructible_v<node_t>); // implied
-static_assert(    std::is_constructible_v<node_t, node_t>);
-static_assert(    std::is_constructible_v<node_t, node>);
-static_assert(    std::is_constructible_v<node_t, uint64_t>);
-static_assert(    std::is_constructible_v<node_t, int64_t>);
-static_assert(    std::is_constructible_v<node_t, uint32_t>);
-static_assert(    std::is_constructible_v<node_t, int32_t>);
-static_assert(    std::is_constructible_v<node_t, uint16_t>);
-static_assert(    std::is_constructible_v<node_t, int16_t>);
-static_assert(    std::is_constructible_v<node_t, uint8_t>);
-static_assert(    std::is_constructible_v<node_t, int8_t>);
+static_assert(std::is_constructible_v<node_t, const node_t&>); // implied
+static_assert(std::is_constructible_v<node_t, const node_t>);  // implied
+static_assert(std::is_constructible_v<node_t, node_t>);		   // implied
+static_assert(std::is_constructible_v<node_t>);				   // implied
+static_assert(std::is_constructible_v<node_t, node_t>);
+static_assert(std::is_constructible_v<node_t, node>);
+static_assert(std::is_constructible_v<node_t, uint64_t>);
+static_assert(std::is_constructible_v<node_t, int64_t>);
+static_assert(std::is_constructible_v<node_t, uint32_t>);
+static_assert(std::is_constructible_v<node_t, int32_t>);
+static_assert(std::is_constructible_v<node_t, uint16_t>);
+static_assert(std::is_constructible_v<node_t, int16_t>);
+static_assert(std::is_constructible_v<node_t, uint8_t>);
+static_assert(std::is_constructible_v<node_t, int8_t>);
 
-
-static_assert(    std::is_trivially_assignable_v<node_t, const node_t&>);
-static_assert(    std::is_trivially_assignable_v<node_t, const node_t>);
-static_assert(    std::is_trivially_assignable_v<node_t, node_t>);
+static_assert(std::is_trivially_assignable_v<node_t, const node_t&>);
+static_assert(std::is_trivially_assignable_v<node_t, const node_t>);
+static_assert(std::is_trivially_assignable_v<node_t, node_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, node>);
 static_assert(not std::is_trivially_assignable_v<node_t, uint64_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, int64_t>);
@@ -220,20 +325,19 @@ static_assert(not std::is_trivially_assignable_v<node_t, int16_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, uint8_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, int8_t>);
 
-static_assert(    std::is_assignable_v<node_t, const node_t&>); // implied
-static_assert(    std::is_assignable_v<node_t, const node_t>); // implied
-static_assert(    std::is_assignable_v<node_t, node_t>); // implied
-static_assert(    std::is_assignable_v<node_t, node_t>);
-static_assert(    std::is_assignable_v<node_t, node>);
-static_assert(    std::is_assignable_v<node_t, uint64_t>);
-static_assert(    std::is_assignable_v<node_t, int64_t>);
-static_assert(    std::is_assignable_v<node_t, uint32_t>);
-static_assert(    std::is_assignable_v<node_t, int32_t>);
-static_assert(    std::is_assignable_v<node_t, uint16_t>);
-static_assert(    std::is_assignable_v<node_t, int16_t>);
-static_assert(    std::is_assignable_v<node_t, uint8_t>);
-static_assert(    std::is_assignable_v<node_t, int8_t>);
-
+static_assert(std::is_assignable_v<node_t, const node_t&>); // implied
+static_assert(std::is_assignable_v<node_t, const node_t>);	// implied
+static_assert(std::is_assignable_v<node_t, node_t>);		// implied
+static_assert(std::is_assignable_v<node_t, node_t>);
+static_assert(std::is_assignable_v<node_t, node>);
+static_assert(std::is_assignable_v<node_t, uint64_t>);
+static_assert(std::is_assignable_v<node_t, int64_t>);
+static_assert(std::is_assignable_v<node_t, uint32_t>);
+static_assert(std::is_assignable_v<node_t, int32_t>);
+static_assert(std::is_assignable_v<node_t, uint16_t>);
+static_assert(std::is_assignable_v<node_t, int16_t>);
+static_assert(std::is_assignable_v<node_t, uint8_t>);
+static_assert(std::is_assignable_v<node_t, int8_t>);
 
 /// Similar to @ref edge.
 typedef std::pair<node_t, node_t> edge_t;
@@ -251,110 +355,216 @@ struct position_t {
 	position_t() = default;
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t(const T& _v) noexcept : value(_v) { }
+	position_t(const T& _v) noexcept
+		: value(_v)
+	{ }
 
 	/* ASSIGNMENT OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t& operator= (const T& _v) noexcept { value = _v; return *this; }
+	position_t& operator= (const T& _v) noexcept
+	{
+		value = _v;
+		return *this;
+	}
 
 	/* COMPARISON OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator== (const T& t) const noexcept { return value == t; }
-	bool operator== (const position_t& u) const noexcept { return value == u.value; }
+	bool operator== (const T& t) const noexcept
+	{
+		return value == t;
+	}
+	bool operator== (const position_t& u) const noexcept
+	{
+		return value == u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator== (const T& t, const position_t& u) noexcept { return u.value == t; }
+	friend bool operator== (const T& t, const position_t& u) noexcept
+	{
+		return u.value == t;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator!= (const T& t) const noexcept { return value != t; }
-	bool operator!= (const position_t& u) const noexcept { return value != u.value; }
+	bool operator!= (const T& t) const noexcept
+	{
+		return value != t;
+	}
+	bool operator!= (const position_t& u) const noexcept
+	{
+		return value != u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator!= (const T& t, const position_t& u) noexcept { return u.value != t; }
+	friend bool operator!= (const T& t, const position_t& u) noexcept
+	{
+		return u.value != t;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator< (const T& t) const noexcept { return value < t; }
-	bool operator< (const position_t& u) const noexcept { return value < u.value; }
+	bool operator< (const T& t) const noexcept
+	{
+		return value < t;
+	}
+	bool operator< (const position_t& u) const noexcept
+	{
+		return value < u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator< (const T& t, const position_t& u) noexcept { return t < u.value; }
+	friend bool operator< (const T& t, const position_t& u) noexcept
+	{
+		return t < u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator<= (const T& t) const noexcept { return value <= t; }
-	bool operator<= (const position_t& u) const noexcept { return value <= u.value; }
+	bool operator<= (const T& t) const noexcept
+	{
+		return value <= t;
+	}
+	bool operator<= (const position_t& u) const noexcept
+	{
+		return value <= u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator<= (const T& t, const position_t& u) noexcept { return t <= u.value; }
+	friend bool operator<= (const T& t, const position_t& u) noexcept
+	{
+		return t <= u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator> (const T& t) const noexcept { return value > t; }
-	bool operator> (const position_t& u) const noexcept { return value > u.value; }
+	bool operator> (const T& t) const noexcept
+	{
+		return value > t;
+	}
+	bool operator> (const position_t& u) const noexcept
+	{
+		return value > u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator> (const T& t, const position_t& u) noexcept { return t > u.value; }
+	friend bool operator> (const T& t, const position_t& u) noexcept
+	{
+		return t > u.value;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator>= (const T& t) const noexcept { return value >= t; }
-	bool operator>= (const position_t& u) const noexcept { return value >= u.value; }
+	bool operator>= (const T& t) const noexcept
+	{
+		return value >= t;
+	}
+	bool operator>= (const position_t& u) const noexcept
+	{
+		return value >= u.value;
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator>= (const T& t, const position_t& u) noexcept { return t >= u.value; }
+	friend bool operator>= (const T& t, const position_t& u) noexcept
+	{
+		return t >= u.value;
+	}
 
 	/* ARITHMETIC OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t operator+ (const T& t) const noexcept { return position_t{value + t}; }
-	position_t operator+ (const position_t& u) const noexcept { return position_t{value + u.value}; }
+	position_t operator+ (const T& t) const noexcept
+	{
+		return position_t{value + t};
+	}
+	position_t operator+ (const position_t& u) const noexcept
+	{
+		return position_t{value + u.value};
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend position_t operator+ (const T& t, const position_t& u) noexcept { return position_t{u.value + t}; }
+	friend position_t operator+ (const T& t, const position_t& u) noexcept
+	{
+		return position_t{u.value + t};
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t& operator+= (const T& t) noexcept { value += t; return *this; }
-	position_t& operator+= (const position_t& u) noexcept { value += u.value; return *this; }
+	position_t& operator+= (const T& t) noexcept
+	{
+		value += t;
+		return *this;
+	}
+	position_t& operator+= (const position_t& u) noexcept
+	{
+		value += u.value;
+		return *this;
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t operator- (const T& t) const noexcept { return position_t{value - t}; }
-	position_t operator- (const position_t& u) const noexcept { return position_t{value - u.value}; }
+	position_t operator- (const T& t) const noexcept
+	{
+		return position_t{value - t};
+	}
+	position_t operator- (const position_t& u) const noexcept
+	{
+		return position_t{value - u.value};
+	}
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend position_t operator- (const T& t, const position_t& u) noexcept { return position_t{t - u.value}; }
+	friend position_t operator- (const T& t, const position_t& u) noexcept
+	{
+		return position_t{t - u.value};
+	}
 
 	template <typename T, __LAL_IS_INTEGRAL>
-	position_t& operator-= (const T& t) noexcept { value -= t; return *this; }
-	position_t& operator-= (const position_t& u) noexcept { value -= u.value; return *this; }
+	position_t& operator-= (const T& t) noexcept
+	{
+		value -= t;
+		return *this;
+	}
+	position_t& operator-= (const position_t& u) noexcept
+	{
+		value -= u.value;
+		return *this;
+	}
 
-	position_t& operator++() noexcept { ++value; return *this; }
-	position_t& operator--() noexcept { --value; return *this; }
+	position_t& operator++ () noexcept
+	{
+		++value;
+		return *this;
+	}
+	position_t& operator-- () noexcept
+	{
+		--value;
+		return *this;
+	}
 
 	/* INPUT/OUTPUT OPERATORS */
 
 	template <class stream>
-	friend stream& operator>> (stream& s, position_t& p) noexcept {
+	friend stream& operator>> (stream& s, position_t& p) noexcept
+	{
 		s >> p.value;
 		return s;
 	}
 
 	template <class stream>
-	friend stream& operator<< (stream& s, const position_t& p) noexcept {
+	friend stream& operator<< (stream& s, const position_t& p) noexcept
+	{
 		s << p.value;
 		return s;
 	}
 
-	uint64_t operator*() const noexcept { return value; }
+	uint64_t operator* () const noexcept
+	{
+		return value;
+	}
 };
 
-static_assert(    std::is_trivial_v<position_t>);
+static_assert(std::is_trivial_v<position_t>);
 
-static_assert(    std::is_trivially_copyable_v<position_t>);
-static_assert(    std::is_trivially_copy_assignable_v<position_t>);
-static_assert(    std::is_copy_assignable_v<position_t>);
-static_assert(    std::is_trivially_copy_constructible_v<position_t>);
-static_assert(    std::is_copy_constructible_v<position_t>);
-static_assert(    std::is_trivially_move_constructible_v<position_t>);
-static_assert(    std::is_move_constructible_v<position_t>);
-static_assert(    std::is_trivially_destructible_v<position_t>);
-static_assert(    std::is_destructible_v<position_t>);
+static_assert(std::is_trivially_copyable_v<position_t>);
+static_assert(std::is_trivially_copy_assignable_v<position_t>);
+static_assert(std::is_copy_assignable_v<position_t>);
+static_assert(std::is_trivially_copy_constructible_v<position_t>);
+static_assert(std::is_copy_constructible_v<position_t>);
+static_assert(std::is_trivially_move_constructible_v<position_t>);
+static_assert(std::is_move_constructible_v<position_t>);
+static_assert(std::is_trivially_destructible_v<position_t>);
+static_assert(std::is_destructible_v<position_t>);
 
-
-static_assert(    std::is_trivially_constructible_v<position_t, const position_t&>);
-static_assert(    std::is_trivially_constructible_v<position_t, const position_t>);
-static_assert(    std::is_trivially_constructible_v<position_t, position_t>);
-static_assert(    std::is_trivially_constructible_v<position_t>);
+static_assert(std::is_trivially_constructible_v<position_t, const position_t&>);
+static_assert(std::is_trivially_constructible_v<position_t, const position_t>);
+static_assert(std::is_trivially_constructible_v<position_t, position_t>);
+static_assert(std::is_trivially_constructible_v<position_t>);
 static_assert(not std::is_trivially_constructible_v<position_t, node>);
 static_assert(not std::is_trivially_constructible_v<position_t, uint64_t>);
 static_assert(not std::is_trivially_constructible_v<position_t, int64_t>);
@@ -365,25 +575,25 @@ static_assert(not std::is_trivially_constructible_v<position_t, int16_t>);
 static_assert(not std::is_trivially_constructible_v<position_t, uint8_t>);
 static_assert(not std::is_trivially_constructible_v<position_t, int8_t>);
 
-static_assert(    std::is_constructible_v<position_t, const position_t&>); // implied
-static_assert(    std::is_constructible_v<position_t, const position_t>); // implied
-static_assert(    std::is_constructible_v<position_t, position_t>); // implied
-static_assert(    std::is_constructible_v<position_t>); // implied
-static_assert(    std::is_constructible_v<position_t, position_t>);
-static_assert(    std::is_constructible_v<position_t, node>);
-static_assert(    std::is_constructible_v<position_t, uint64_t>);
-static_assert(    std::is_constructible_v<position_t, int64_t>);
-static_assert(    std::is_constructible_v<position_t, uint32_t>);
-static_assert(    std::is_constructible_v<position_t, int32_t>);
-static_assert(    std::is_constructible_v<position_t, uint16_t>);
-static_assert(    std::is_constructible_v<position_t, int16_t>);
-static_assert(    std::is_constructible_v<position_t, uint8_t>);
-static_assert(    std::is_constructible_v<position_t, int8_t>);
+static_assert(std::
+				  is_constructible_v<position_t, const position_t&>); // implied
+static_assert(std::is_constructible_v<position_t, const position_t>); // implied
+static_assert(std::is_constructible_v<position_t, position_t>);		  // implied
+static_assert(std::is_constructible_v<position_t>);					  // implied
+static_assert(std::is_constructible_v<position_t, position_t>);
+static_assert(std::is_constructible_v<position_t, node>);
+static_assert(std::is_constructible_v<position_t, uint64_t>);
+static_assert(std::is_constructible_v<position_t, int64_t>);
+static_assert(std::is_constructible_v<position_t, uint32_t>);
+static_assert(std::is_constructible_v<position_t, int32_t>);
+static_assert(std::is_constructible_v<position_t, uint16_t>);
+static_assert(std::is_constructible_v<position_t, int16_t>);
+static_assert(std::is_constructible_v<position_t, uint8_t>);
+static_assert(std::is_constructible_v<position_t, int8_t>);
 
-
-static_assert(    std::is_trivially_assignable_v<position_t, const position_t&>);
-static_assert(    std::is_trivially_assignable_v<position_t, const position_t>);
-static_assert(    std::is_trivially_assignable_v<position_t, position_t>);
+static_assert(std::is_trivially_assignable_v<position_t, const position_t&>);
+static_assert(std::is_trivially_assignable_v<position_t, const position_t>);
+static_assert(std::is_trivially_assignable_v<position_t, position_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, node>);
 static_assert(not std::is_trivially_assignable_v<position_t, uint64_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, int64_t>);
@@ -394,20 +604,20 @@ static_assert(not std::is_trivially_assignable_v<position_t, int16_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, uint8_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, int8_t>);
 
-static_assert(    std::is_assignable_v<position_t, const position_t&>); // implied
-static_assert(    std::is_assignable_v<position_t, const position_t>); // implied
-static_assert(    std::is_assignable_v<position_t, position_t>); // implied
-static_assert(    std::is_assignable_v<position_t, position_t>);
-static_assert(    std::is_assignable_v<position_t, node>);
-static_assert(    std::is_assignable_v<position_t, uint64_t>);
-static_assert(    std::is_assignable_v<position_t, int64_t>);
-static_assert(    std::is_assignable_v<position_t, uint32_t>);
-static_assert(    std::is_assignable_v<position_t, int32_t>);
-static_assert(    std::is_assignable_v<position_t, uint16_t>);
-static_assert(    std::is_assignable_v<position_t, int16_t>);
-static_assert(    std::is_assignable_v<position_t, uint8_t>);
-static_assert(    std::is_assignable_v<position_t, int8_t>);
+static_assert(std::is_assignable_v<position_t, const position_t&>); // implied
+static_assert(std::is_assignable_v<position_t, const position_t>);	// implied
+static_assert(std::is_assignable_v<position_t, position_t>);		// implied
+static_assert(std::is_assignable_v<position_t, position_t>);
+static_assert(std::is_assignable_v<position_t, node>);
+static_assert(std::is_assignable_v<position_t, uint64_t>);
+static_assert(std::is_assignable_v<position_t, int64_t>);
+static_assert(std::is_assignable_v<position_t, uint32_t>);
+static_assert(std::is_assignable_v<position_t, int32_t>);
+static_assert(std::is_assignable_v<position_t, uint16_t>);
+static_assert(std::is_assignable_v<position_t, int16_t>);
+static_assert(std::is_assignable_v<position_t, uint8_t>);
+static_assert(std::is_assignable_v<position_t, int8_t>);
 
 #undef __LAL_IS_INTEGRAL
 
-} // -- namespace lal
+} // namespace lal

@@ -82,5 +82,5 @@ enum class algorithms_Dmin_planar {
 	HochbergStallmann
 };
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

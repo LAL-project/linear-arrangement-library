@@ -75,13 +75,11 @@ namespace io {
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 [[nodiscard]] std::optional<graphs::undirected_graph>
-read_edge_list_undirected_graph
-(
+read_edge_list_undirected_graph(
 	const std::string& filename,
 	const bool norm = true,
 	const bool check_norm = true
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Reads a directed graph in edge list format.
@@ -96,13 +94,11 @@ noexcept;
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
 [[nodiscard]] std::optional<graphs::directed_graph>
-read_edge_list_directed_graph
-(
+read_edge_list_directed_graph(
 	const std::string& filename,
 	const bool norm = true,
 	const bool check_norm = true
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Reads a free tree in edge list format.
@@ -116,14 +112,11 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-[[nodiscard]] std::optional<graphs::free_tree>
-read_edge_list_free_tree
-(
+[[nodiscard]] std::optional<graphs::free_tree> read_edge_list_free_tree(
 	const std::string& filename,
 	const bool norm = true,
 	const bool check_norm = true
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Reads a rooted tree in edge list format.
@@ -137,14 +130,11 @@ noexcept;
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-[[nodiscard]] std::optional<graphs::rooted_tree>
-read_edge_list_rooted_tree
-(
+[[nodiscard]] std::optional<graphs::rooted_tree> read_edge_list_rooted_tree(
 	const std::string& filename,
 	const bool norm = true,
 	const bool check_norm = true
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Reads a graph in edge list format.
@@ -168,15 +158,12 @@ noexcept;
  */
 template <
 	class graph_t,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true
->
-[[nodiscard]] inline std::optional<graph_t> read_edge_list
-(
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
+[[nodiscard]] inline std::optional<graph_t> read_edge_list(
 	const std::string& filename,
 	const bool norm = true,
 	const bool check_norm = true
-)
-noexcept
+) noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::free_tree, graph_t>) {
 		return read_edge_list_free_tree(filename, norm, check_norm);
@@ -192,5 +179,5 @@ noexcept
 	}
 }
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal

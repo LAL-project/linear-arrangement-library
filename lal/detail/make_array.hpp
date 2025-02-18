@@ -58,9 +58,8 @@ namespace detail {
  * @returns An array of the given size where all elements are equal to @e v.
  */
 template <typename T, std::size_t size, T v, std::size_t... I>
-[[nodiscard]] constexpr std::array<T, size> make_array_with_value_impl
-(std::index_sequence<I...>)
-noexcept
+[[nodiscard]] constexpr std::array<T, size>
+make_array_with_value_impl(std::index_sequence<I...>) noexcept
 {
 	std::array<T, size> a;
 	((a[I] = v), ...);
@@ -74,12 +73,12 @@ noexcept
  * @tparam value_to_fill_with The value to fill the array with.
  */
 template <typename T, std::size_t array_size, T value_to_fill_with>
-[[nodiscard]] constexpr std::array<T, array_size> make_array_with_value()
-noexcept
+[[nodiscard]] constexpr std::array<T, array_size>
+make_array_with_value() noexcept
 {
-	return
-	make_array_with_value_impl<T, array_size, value_to_fill_with>
-		(std::make_integer_sequence<std::size_t, array_size>{});
+	return make_array_with_value_impl<T, array_size, value_to_fill_with>(
+		std::make_integer_sequence<std::size_t, array_size>{}
+	);
 }
 
 /**
@@ -88,9 +87,10 @@ noexcept
  * @tparam ARGS List of values to be stored in the array.
  */
 template <typename T, T... ARGS>
-[[nodiscard]] constexpr std::array<T, sizeof...(ARGS)> make_array() noexcept {
+[[nodiscard]] constexpr std::array<T, sizeof...(ARGS)> make_array() noexcept
+{
 	return std::array<T, sizeof...(ARGS)>{ARGS...};
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

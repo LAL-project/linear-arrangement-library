@@ -118,17 +118,20 @@ namespace generate {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
->
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
 class _tree_generator {
 private:
+
 	/// Helpful Boolean value to compact 'if constexpr' expressions.
-	static constexpr bool is_free = std::is_base_of_v<graphs::free_tree, tree_t>;
+	static constexpr bool is_free =
+		std::is_base_of_v<graphs::free_tree, tree_t>;
 
 public:
+
 	using generated_tree_t = tree_t;
 
 public:
+
 	/* CONSTRUCTORS */
 
 	/// Default constructor
@@ -138,7 +141,9 @@ public:
 	 * @brief Constructor with number of nodes.
 	 * @param n Number of nodes
 	 */
-	_tree_generator(const uint64_t n) noexcept : m_n(n) { }
+	_tree_generator(const uint64_t n) noexcept
+		: m_n(n)
+	{ }
 	/**
 	 * @brief Default copy constructor.
 	 * @param Gen Generator of the same type.
@@ -157,7 +162,8 @@ public:
 	/* INITIALIZE */
 
 	/// Initializes the tree generator.
-	void init(const uint64_t n) noexcept {
+	void init(const uint64_t n) noexcept
+	{
 		m_n = n;
 		activate_all_postprocessing_actions();
 	}
@@ -207,7 +213,6 @@ public:
 
 		// only free trees
 		if constexpr (is_free) {
-
 		}
 
 		// only rooted trees
@@ -240,7 +245,8 @@ public:
 	 * The full list of postprocessing actions can be found in the documentation
 	 * of this class.
 	 */
-	void activate_all_postprocessing_actions() noexcept {
+	void activate_all_postprocessing_actions() noexcept
+	{
 		set_normalize_tree(true);
 		set_calculate_size_subtrees(true);
 		set_calculate_tree_type(true);
@@ -252,7 +258,8 @@ public:
 	 * The full list of postprocessing actions can be found in the documentation
 	 * of this class.
 	 */
-	void deactivate_all_postprocessing_actions() noexcept {
+	void deactivate_all_postprocessing_actions() noexcept
+	{
 		set_normalize_tree(false);
 		set_calculate_size_subtrees(false);
 		set_calculate_tree_type(false);
@@ -264,7 +271,8 @@ public:
 	 * @brief Should trees be normalized?
 	 * @param v Boolean value.
 	 */
-	void set_normalize_tree(const bool v) noexcept {
+	void set_normalize_tree(const bool v) noexcept
+	{
 		m_normalize_tree = v;
 	}
 
@@ -272,7 +280,8 @@ public:
 	 * @brief Should the size of the subtrees be calculated?
 	 * @param v Boolean value.
 	 */
-	void set_calculate_size_subtrees(const bool v) noexcept {
+	void set_calculate_size_subtrees(const bool v) noexcept
+	{
 		m_calculate_size_subtrees = v;
 	}
 
@@ -282,11 +291,13 @@ public:
 	 * See @ref lal::graphs::tree_type for details on the classification.
 	 * @param v Boolean value.
 	 */
-	void set_calculate_tree_type(const bool v) noexcept {
+	void set_calculate_tree_type(const bool v) noexcept
+	{
 		m_calculate_tree_type = v;
 	}
 
 protected:
+
 	/**
 	 * @brief Retrieve the generated tree.
 	 *
@@ -296,6 +307,7 @@ protected:
 	[[nodiscard]] virtual tree_t __get_tree() noexcept = 0;
 
 protected:
+
 	/// Number of vertices
 	uint64_t m_n = 0;
 
@@ -307,5 +319,5 @@ protected:
 	bool m_calculate_tree_type = true;
 };
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

@@ -53,9 +53,9 @@
 namespace lal {
 namespace generate {
 
-rand_projective_arrangements::rand_projective_arrangements
-(const graphs::rooted_tree& rT, const uint64_t seed)
-noexcept
+rand_projective_arrangements::rand_projective_arrangements(
+	const graphs::rooted_tree& rT, const uint64_t seed
+) noexcept
 	: m_rT(rT),
 	  m_rdata(m_rT.get_num_nodes())
 {
@@ -84,7 +84,8 @@ noexcept
 	}
 }
 
-linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
+linear_arrangement rand_projective_arrangements::get_arrangement() noexcept
+{
 	if (m_rT.get_num_nodes() == 1) {
 		return linear_arrangement::identity(1);
 	}
@@ -100,5 +101,5 @@ linear_arrangement rand_projective_arrangements::get_arrangement() noexcept {
 	return detail::make_arrangement_permutations(m_rT, m_rdata);
 }
 
-} // -- namespace generate
-} // -- namespace lal
+} // namespace generate
+} // namespace lal

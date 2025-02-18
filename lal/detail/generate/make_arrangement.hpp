@@ -66,8 +66,7 @@ void make_arrangement_permutations(
 	const container& data,
 	position& pos,
 	linear_arrangement& arr
-)
-noexcept
+) noexcept
 {
 	// number of children of 'r' with respect to the tree's root
 	const uint64_t d_out = T.get_out_degree(r);
@@ -97,9 +96,9 @@ noexcept
  * @returns The arrangement constructed with the permutations.
  */
 template <class container>
-[[nodiscard]] linear_arrangement make_arrangement_permutations
-(const graphs::rooted_tree& T, const container& data)
-noexcept
+[[nodiscard]] linear_arrangement make_arrangement_permutations(
+	const graphs::rooted_tree& T, const container& data
+) noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
@@ -123,11 +122,12 @@ noexcept
 template <class container>
 void make_arrangement_permutations(
 	const graphs::free_tree& T,
-	node parent, node u,
+	node parent,
+	node u,
 	const container& data,
-	position& pos, linear_arrangement& arr
-)
-noexcept
+	position& pos,
+	linear_arrangement& arr
+) noexcept
 {
 	// number of children of 'u' with respect to the tree's root
 	const uint64_t d_out = T.get_degree(u) - (u == parent ? 0 : 1);
@@ -158,9 +158,9 @@ noexcept
  * @returns The arrangement constructed with the permutations.
  */
 template <class container>
-[[nodiscard]] linear_arrangement make_arrangement_permutations
-(const graphs::free_tree& T, node root, const container& data)
-noexcept
+[[nodiscard]] linear_arrangement make_arrangement_permutations(
+	const graphs::free_tree& T, node root, const container& data
+) noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
 	position pos = 0;
@@ -168,5 +168,5 @@ noexcept
 	return arr;
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

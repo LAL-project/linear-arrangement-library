@@ -1,0 +1,130 @@
+# clang-style definition for LAL
+# Copyright (C) 2024 - 2025  Lluís Alemany Puig
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# Contact:
+#
+#     Lluís Alemany Puig (lluis.alemany.puig@upc.edu)
+#         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
+#         CQL (Complexity and Quantitative Linguistics Lab)
+#         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
+#         Webpage: https://cqllab.upc.edu/people/lalemany/
+
+Language: Cpp
+
+# File style
+
+SortIncludes: Never
+InsertNewlineAtEOF: true
+ColumnLimit: 80
+ReflowComments: false
+UseTab: Always
+IndentWidth: 4
+TabWidth: 4
+
+# Spaces, new and empty lines
+
+AlignEscapedNewlines: Right
+SpaceBeforeAssignmentOperators: true
+#RemoveEmptyLinesInUnwrappedLines: true # v20
+SpaceBeforeSquareBrackets: false
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyBlock: true
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+  AfterFunctionDefinitionName: false
+  AfterFunctionDeclarationName: false
+  AfterOverloadedOperator: true
+  AfterPlacementOperator: true
+SeparateDefinitionBlocks: Leave
+SpaceAfterTemplateKeyword: true
+SpacesInAngles: Never
+
+# Classes/Structs
+
+PackConstructorInitializers: Never
+EmptyLineAfterAccessModifier: Always
+EmptyLineBeforeAccessModifier: Always
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+SpaceBeforeInheritanceColon: true
+SpaceBeforeCtorInitializerColon: true
+
+# Function style
+
+AllowShortFunctionsOnASingleLine: Empty
+
+# Function parameters
+
+PointerAlignment: Right
+ReferenceAlignment: Left
+SpaceAroundPointerQualifiers: Before
+
+QualifierAlignment: Custom
+QualifierOrder: [static, constexpr, inline, const, friend, type]
+
+BreakAfterAttributes: Never
+
+BinPackParameters: false
+BinPackArguments: false
+AlignAfterOpenBracket: BlockIndent
+
+# Concept declarations
+
+BreakBeforeConceptDeclarations: Always
+
+# Braces
+
+InsertBraces: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: false
+  AfterStruct: false
+  AfterFunction: true
+  AfterNamespace: false
+  SplitEmptyRecord: false
+  SplitEmptyFunction: false
+  BeforeElse: true
+  BeforeLambdaBody: true
+  BeforeWhile: true
+
+# If, while, for, enum
+
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortEnumsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# Switch
+
+AllowShortCaseLabelsOnASingleLine: true
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
+
+# Template declarations
+
+AlwaysBreakTemplateDeclarations: Yes
+
+# Lambdas
+
+AllowShortLambdasOnASingleLine: None
+LambdaBodyIndentation: Signature
+
+# noexcept
+
+AllowBreakBeforeNoexceptSpecifier: Always

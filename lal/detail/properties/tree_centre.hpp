@@ -80,11 +80,9 @@ namespace detail {
  */
 template <
 	class tree_t,
-	std::enable_if_t< std::is_base_of_v<graphs::tree, tree_t>, bool > = true
->
-[[nodiscard]] std::pair<node, node> retrieve_centre
-(const tree_t& t, const node X)
-noexcept
+	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+[[nodiscard]] std::pair<node, node>
+retrieve_centre(const tree_t& t, const node X) noexcept
 {
 	// number of nodes of the whole tree
 	const auto n = t.get_num_nodes();
@@ -92,7 +90,7 @@ noexcept
 	// First simple case:
 	// in case the component of x has only one node (node x)...
 	if (t.get_num_nodes_component(X) == 1) {
-		return {X, n+1};
+		return {X, n + 1};
 	}
 
 	// Second simple case:
@@ -107,9 +105,9 @@ noexcept
 			v2 = t.get_neighbors(X)[0];
 		}
 		else {
-			v2 = (t.get_out_degree(X) == 0 ?
-				t.get_in_neighbors(X)[0] : t.get_out_neighbors(X)[0]
-			);
+			v2 =
+				(t.get_out_degree(X) == 0 ? t.get_in_neighbors(X)[0]
+										  : t.get_out_neighbors(X)[0]);
 		}
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
@@ -140,20 +138,21 @@ noexcept
 	// 2. retrieve connected component's leaves ('tree_leaves')
 	// 3. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
-	[&](const auto&, node u) -> void {
+		[&](const auto&, node u) -> void
+		{
 #if defined DEBUG
-		++__size_trimmed;
+			++__size_trimmed;
 #endif
 
-		// 'trimmed_degree' must be the degree of the vertex
-		// in the underlying undirected graph!
-		trimmed_degree[u] = t.get_degree(u);
+			// 'trimmed_degree' must be the degree of the vertex
+			// in the underlying undirected graph!
+			trimmed_degree[u] = t.get_degree(u);
 
-		if (trimmed_degree[u] == 1) {
-			tree_leaves.push_back(u);
-			++l0;
+			if (trimmed_degree[u] == 1) {
+				tree_leaves.push_back(u);
+				++l0;
+			}
 		}
-	}
 	);
 
 	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
@@ -179,20 +178,21 @@ noexcept
 	// retrieve the centre of the connected component
 
 	bfs.set_terminate(
-	[&](const auto&, node) -> bool {
-		// Meaning of every condition:
-		// --> l0 == 1 or l0 == 2
-		//     The trimmmed tree has 1 or 2 leaves left.
-		// --> l1 == 0
-		//     After trimming once, the trimmed tree can't be trimmed any further.
-		// --> size_trimmed <= 2
-		//     Note that a (trimmed) linear tree (or path graph) has two leaves.
-		//     This means that the conditions so far are true. However, this
-		//     does not mean we have calculated the centre because there still
-		//     is a big amount of leaves to trim. Therefore, we need a trimmed
-		//     tree of at most two nodes to finish.
-		return (l0 == 1 or l0 == 2) and l1 == 0 and size_trimmed <= 2;
-	}
+		[&](const auto&, node) -> bool
+		{
+			// Meaning of every condition:
+			// --> l0 == 1 or l0 == 2
+			//     The trimmmed tree has 1 or 2 leaves left.
+			// --> l1 == 0
+			//     After trimming once, the trimmed tree can't be trimmed any further.
+			// --> size_trimmed <= 2
+			//     Note that a (trimmed) linear tree (or path graph) has two leaves.
+			//     This means that the conditions so far are true. However, this
+			//     does not mean we have calculated the centre because there still
+			//     is a big amount of leaves to trim. Therefore, we need a trimmed
+			//     tree of at most two nodes to finish.
+			return (l0 == 1 or l0 == 2) and l1 == 0 and size_trimmed <= 2;
+		}
 	);
 
 	// does the connected component have unique centre?
@@ -201,43 +201,50 @@ noexcept
 
 	bfs.set_process_visited_neighbors(true);
 	bfs.set_process_neighbour(
-	[&](const auto&, node u, node v, bool) -> void
-	{
-		// ignore the edge if one of its nodes has already been trimmed out.
-		if (trimmed_degree[u] == 0) { return; }
-		if (trimmed_degree[v] == 0) { return; }
+		[&](const auto&, node u, node v, bool) -> void
+		{
+			// ignore the edge if one of its nodes has already been trimmed out.
+			if (trimmed_degree[u] == 0) {
+				return;
+			}
+			if (trimmed_degree[v] == 0) {
+				return;
+			}
 
-		// trim node 's':
-		//  1) its degree is set to null, 2) node 't' loses a neighbour, so
-		//  its degree is reduced by 1. 3) the size of the trimmed tree
-		//  decreases by 1.
-		trimmed_degree[u] = 0;
-		--trimmed_degree[v];
-		--size_trimmed;
+			// trim node 's':
+			//  1) its degree is set to null, 2) node 't' loses a neighbour, so
+			//  its degree is reduced by 1. 3) the size of the trimmed tree
+			//  decreases by 1.
+			trimmed_degree[u] = 0;
+			--trimmed_degree[v];
+			--size_trimmed;
 
-		if (trimmed_degree[v] == 0) {
-			has_single_center = true;
-			single_center = v;
-		}
+			if (trimmed_degree[v] == 0) {
+				has_single_center = true;
+				single_center = v;
+			}
 
-		// leaves left to process in the current trimmed tree
-		--l0;
-		// leaves left to process in the next trimmed tree
-		if (trimmed_degree[v] == 1) {
-			++l1;
-			if (l0 == 0) {
-				// l0 <- l1
-				// l1 <- 0
-				std::swap(l0, l1);
+			// leaves left to process in the current trimmed tree
+			--l0;
+			// leaves left to process in the next trimmed tree
+			if (trimmed_degree[v] == 1) {
+				++l1;
+				if (l0 == 0) {
+					// l0 <- l1
+					// l1 <- 0
+					std::swap(l0, l1);
+				}
 			}
 		}
-	}
 	);
 
 	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
 	bfs.set_node_add(
-	[&](const auto&, node, node v, bool) -> bool { return trimmed_degree[v] == 1; }
+		[&](const auto&, node, node v, bool) -> bool
+		{
+			return trimmed_degree[v] == 1;
+		}
 	);
 
 	// do the bfs from the leaves inwards
@@ -272,12 +279,17 @@ noexcept
 	// tree, but this BFS-traversal might be faster (due to the fewer
 	// amount of vertices in the connected component).
 	bfs.set_process_current(
-	[&](const auto&, node u) -> void {
-		if (trimmed_degree[u] == 1) {
-			if (v1 == n) { v1 = u; }
-			else { v2 = u; }
+		[&](const auto&, node u) -> void
+		{
+			if (trimmed_degree[u] == 1) {
+				if (v1 == n) {
+					v1 = u;
+				}
+				else {
+					v2 = u;
+				}
+			}
 		}
-	}
 	);
 	bfs.start_at(X);
 
@@ -285,5 +297,5 @@ noexcept
 	return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 }
 
-} // -- namespace detail
-} // -- namespace lal
+} // namespace detail
+} // namespace lal

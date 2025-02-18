@@ -60,8 +60,8 @@ namespace graphs {
  * @param g Input graph.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const undirected_graph& g)
-noexcept
+inline std::ostream&
+operator<< (std::ostream& os, const undirected_graph& g) noexcept
 {
 	const auto N = g.get_num_nodes();
 	for (node u = 0; u < N; ++u) {
@@ -82,8 +82,8 @@ noexcept
  * @param g Input graph.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const directed_graph& g)
-noexcept
+inline std::ostream&
+operator<< (std::ostream& os, const directed_graph& g) noexcept
 {
 	const auto N = g.get_num_nodes();
 	os << "out:" << "\n";
@@ -113,11 +113,12 @@ noexcept
  * @param g Input graph.
  * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const rooted_tree& g)
-noexcept
+inline std::ostream&
+operator<< (std::ostream& os, const rooted_tree& g) noexcept
 {
 	const auto N = g.get_num_nodes();
-	const std::string_view pad = (g.has_root() ? std::string_view{" "} : std::string_view{""});
+	const std::string_view pad =
+		(g.has_root() ? std::string_view{" "} : std::string_view{""});
 	os << "out:" << "\n";
 	for (node u = 0; u < N; ++u) {
 		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
@@ -137,5 +138,5 @@ noexcept
 	return os;
 }
 
-} // -- namespace graphs
-} // -- namespace lal
+} // namespace graphs
+} // namespace lal

@@ -67,11 +67,13 @@ namespace linarr {
  * @param arr Input linear arrangement
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-[[nodiscard]] inline bool is_permutation(const linear_arrangement& arr = {})
-noexcept
+[[nodiscard]] inline bool
+is_permutation(const linear_arrangement& arr = {}) noexcept
 {
 	// identity arrangement is always a permutation
-	if (arr.size() == 0) { return true; }
+	if (arr.size() == 0) {
+		return true;
+	}
 	// an arrangement of a single element is a permutation
 	// if its only element is within range
 	if (arr.size() == 1) {
@@ -82,9 +84,13 @@ noexcept
 	for (node_t u = 0ull; u < arr.size(); ++u) {
 		const position p = arr[u];
 		// ensure all elements are within range
-		if (p >= arr.size()) { return false; }
+		if (p >= arr.size()) {
+			return false;
+		}
 		// if a value already exists, this is not a permutation
-		if (d[p] > 0) { return false; }
+		if (d[p] > 0) {
+			return false;
+		}
 		d[p] += 1;
 	}
 	return true;
@@ -101,8 +107,8 @@ noexcept
  * @returns Whether or not the input arrangement is a valid permutation.
  */
 template <class graph_t>
-[[nodiscard]] bool is_arrangement(const graph_t& g, const linear_arrangement& arr)
-noexcept
+[[nodiscard]] bool
+is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 {
 	if constexpr (std::is_base_of_v<graph_t, graphs::tree>) {
 #if defined DEBUG
@@ -111,11 +117,17 @@ noexcept
 	}
 
 	// identity arrangement is always a permutation
-	if (arr.size() == 0) { return true; }
+	if (arr.size() == 0) {
+		return true;
+	}
 	// if sizes differ then the arrangement is not a permutation
-	if (g.get_num_nodes() != arr.size()) { return false; }
+	if (g.get_num_nodes() != arr.size()) {
+		return false;
+	}
 	// ensure that the input arrangement is a permutation
-	if (not is_permutation(arr)) { return false; }
+	if (not is_permutation(arr)) {
+		return false;
+	}
 	// the largest number must be exactly one less than the size
 	const position max_pos =
 		*std::max_element(arr.begin_direct(), arr.end_direct());
@@ -135,13 +147,11 @@ noexcept
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The input graph is bipartite and connected.
  */
-[[nodiscard]] bool is_bipartite
-(
+[[nodiscard]] bool is_bipartite(
 	const graphs::undirected_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr = {}
-)
-noexcept;
+) noexcept;
 /**
  * @brief Is a given arrangement bipartite?
  *
@@ -154,13 +164,11 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The underlying undirected graph is bipartite and connected.
  */
-[[nodiscard]] bool is_bipartite
-(
+[[nodiscard]] bool is_bipartite(
 	const graphs::directed_graph& g,
 	const properties::bipartite_graph_coloring& c,
 	const linear_arrangement& arr = {}
-)
-noexcept;
+) noexcept;
 
 /**
  * @brief Is a given arrangement bipartite?
@@ -173,9 +181,9 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The input graph is bipartite, and needs not be connected.
  */
-[[nodiscard]] bool is_bipartite
-(const graphs::undirected_graph& g, const linear_arrangement& arr = {})
-noexcept;
+[[nodiscard]] bool is_bipartite(
+	const graphs::undirected_graph& g, const linear_arrangement& arr = {}
+) noexcept;
 /**
  * @brief Is a given arrangement bipartite?
  *
@@ -187,9 +195,9 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is bipartite.
  * @pre The underlying undirected graph is bipartite, but needs not be connected.
  */
-[[nodiscard]] bool is_bipartite
-(const graphs::directed_graph& g, const linear_arrangement& arr = {})
-noexcept;
+[[nodiscard]] bool is_bipartite(
+	const graphs::directed_graph& g, const linear_arrangement& arr = {}
+) noexcept;
 
 /**
  * @brief Is a given arrangement planar?
@@ -202,8 +210,8 @@ noexcept;
  * @returns Whether or not the input arrangment of @e g is planar.
  */
 template <class graph_t>
-[[nodiscard]] bool is_planar(const graph_t& g, const linear_arrangement& arr = {})
-noexcept
+[[nodiscard]] bool
+is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept
 {
 #if defined DEBUG
 	assert(is_arrangement(g, arr));
@@ -226,9 +234,9 @@ noexcept
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-[[nodiscard]] bool is_root_covered
-(const graphs::rooted_tree& rt, const linear_arrangement& arr)
-noexcept;
+[[nodiscard]] bool is_root_covered(
+	const graphs::rooted_tree& rt, const linear_arrangement& arr
+) noexcept;
 
 /**
  * @brief Is a given arrangement projective?
@@ -244,9 +252,9 @@ noexcept;
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-[[nodiscard]] inline bool is_projective
-(const graphs::rooted_tree& rt, const linear_arrangement& arr)
-noexcept
+[[nodiscard]] inline bool is_projective(
+	const graphs::rooted_tree& rt, const linear_arrangement& arr
+) noexcept
 {
 #if defined DEBUG
 	assert(rt.is_rooted_tree());
@@ -254,9 +262,11 @@ noexcept
 
 	// check for planarity
 	// this function already checks that an arrangement must be valid
-	if (not is_planar(rt, arr)) { return false; }
+	if (not is_planar(rt, arr)) {
+		return false;
+	}
 	return not is_root_covered(rt, arr);
 }
 
-} // -- namespace linarr
-} // -- namespace lal
+} // namespace linarr
+} // namespace lal

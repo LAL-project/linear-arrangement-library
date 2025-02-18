@@ -60,8 +60,7 @@ namespace io {
  * @returns A list of error messages.
  */
 [[nodiscard]] std::vector<head_vector_error>
-check_correctness_head_vector(const head_vector& head_vector)
-noexcept;
+check_correctness_head_vector(const head_vector& head_vector) noexcept;
 
 /**
  * @brief Checks the correctness of a head vector.
@@ -71,8 +70,7 @@ noexcept;
  * @returns A list of error messages.
  */
 [[nodiscard]] std::vector<head_vector_error>
-check_correctness_head_vector(const std::string& head_vector_str)
-noexcept;
+check_correctness_head_vector(const std::string& head_vector_str) noexcept;
 
 /**
  * @brief Checks the correctness of a treebank collection.
@@ -80,8 +78,7 @@ noexcept;
  * @returns A list of errors.
  */
 [[nodiscard]] treebank_file_report
-check_correctness_treebank(const std::string& treebank_filename)
-noexcept;
+check_correctness_treebank(const std::string& treebank_filename) noexcept;
 
 /**
  * @brief Checks the correctness of a treebank collection.
@@ -89,10 +86,9 @@ noexcept;
  * @param n_threads Number of threads to use.
  * @returns A list of errors.
  */
-[[nodiscard]] treebank_collection_report
-check_correctness_treebank_collection
-(const std::string& main_file_name, const std::size_t n_threads = 1)
-noexcept;
+[[nodiscard]] treebank_collection_report check_correctness_treebank_collection(
+	const std::string& main_file_name, const std::size_t n_threads = 1
+) noexcept;
 
-} // -- namespace io
-} // -- namespace lal
+} // namespace io
+} // namespace lal
