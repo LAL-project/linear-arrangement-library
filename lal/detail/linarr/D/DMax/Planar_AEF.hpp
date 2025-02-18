@@ -264,8 +264,10 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 	// the value of DMax for all vertices
 	std::vector<uint64_t> DMax_per_vertex(n, 0);
 
-	if (n == 1) {
-		DMax_per_vertex[0] = 0;
+	if (n <= 1) {
+		if (n == 1) {
+			DMax_per_vertex[0] = 0;
+		}
 		if constexpr (res_type ==
 					  return_type_all_maxs::DMax_value_vertex_and_max_root) {
 			return {std::move(DMax_per_vertex), 0};

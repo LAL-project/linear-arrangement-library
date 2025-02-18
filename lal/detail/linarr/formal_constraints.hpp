@@ -181,6 +181,10 @@ is_bipartite(const graph_t& g, const arrangement_t& arr) noexcept
 		properties::bipartite_graph_coloring::invalid_color;
 
 	const auto n = g.get_num_nodes();
+	if (n == 0) {
+		return false;
+	}
+
 	array<color_t> color_per_vertex(n, invalid);
 
 	const auto color_a_vertex = [&](node u)
