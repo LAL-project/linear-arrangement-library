@@ -53,9 +53,44 @@ namespace lal {
 namespace graphs {
 
 /**
+ * @brief A singleton class to enrich output of graphs.
+ *
+ * This class is a helper to output graphs with a tabulator string at the beginning
+ * of each line.
+ */
+class formatted_output {
+public:
+
+	/// The tabulator string.
+	std::string tab_string;
+	/// Returns the only instance of this class.
+	static formatted_output& get_instance() noexcept
+	{
+		static formatted_output i;
+		return i;
+	}
+
+private:
+
+	/// Default constructor.
+	formatted_output() noexcept = default;
+
+}; // namespace tab_info
+
+/**
  * @brief Standard output operator for undirected graphs.
  *
- * Usable by @ref lal::graphs::undirected_graph, @ref lal::graphs::free_tree.
+ * Usable by @ref lal::graphs::undirected_graph and @ref lal::graphs::free_tree.
+ *
+ * This operator adds a tabulator string at the beginning of each line. See
+ * @ref lal::graphs::formatted_output, and @ref.
+ *
+ * Example:
+@code
+lal::graphs::undirected_graph g = ...;
+std::cout << "|   "_tab << g << '\n';
+@endcode
+ *
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.
@@ -63,9 +98,10 @@ namespace graphs {
 inline std::ostream&
 operator<< (std::ostream& os, const undirected_graph& g) noexcept
 {
+	formatted_output& f = formatted_output::get_instance();
 	const uint64_t n = g.get_num_nodes();
 	for (node u = 0; u < n; ++u) {
-		os << u << ':';
+		os << f.tab_string << u << ':';
 		for (const node v : g.get_neighbors(u)) {
 			os << " " << v;
 		}
@@ -73,6 +109,7 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 			os << '\n';
 		}
 	}
+	f.tab_string.resize(0);
 	return os;
 }
 
@@ -87,10 +124,11 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 inline std::ostream&
 operator<< (std::ostream& os, const directed_graph& g) noexcept
 {
+	formatted_output& f = formatted_output::get_instance();
 	const uint64_t n = g.get_num_nodes();
-	os << "out:\n";
+	os << f.tab_string << "out:\n";
 	for (node u = 0; u < n; ++u) {
-		os << u << ':';
+		os << f.tab_string << u << ':';
 		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
@@ -98,9 +136,9 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	os << "\nin:\n";
+	os << f.tab_string << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
-		os << u << ':';
+		os << f.tab_string << u << ':';
 		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
@@ -108,6 +146,7 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
+	f.tab_string.resize(0);
 	return os;
 }
 
@@ -122,12 +161,14 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 inline std::ostream&
 operator<< (std::ostream& os, const rooted_tree& g) noexcept
 {
+	formatted_output& f = formatted_output::get_instance();
 	const uint64_t n = g.get_num_nodes();
 	const std::string_view pad =
 		(g.has_root() ? std::string_view{" "} : std::string_view{""});
-	os << "out:\n";
+	os << f.tab_string << "out:\n";
 	for (node u = 0; u < n; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
+		os << f.tab_string << (g.has_root() and u == g.get_root() ? "*" : pad)
+		   << u << ':';
 		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
@@ -135,9 +176,10 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
-	os << "\nin:\n";
+	os << f.tab_string << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
+		os << f.tab_string << (g.has_root() and u == g.get_root() ? "*" : pad)
+		   << u << ':';
 		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
@@ -145,8 +187,69 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
+	f.tab_string.resize(0);
+	return os;
+}
+
+/**
+ * @brief Tabulator for output of graphs.
+ *
+ * This is simply a wrapper over std::string_view. This object, when output-ed
+ * via some std::ostream object, modifies @ref lal::graphs::formatted_output
+ * so that the operator<< for the various lal::graphs::* objects can use it.
+ *
+ * It is best to use the user-defined literal operator defined below to instantiate
+ * this class.
+@code
+lal::graphs::undirected_graph g = ...;
+
+// option 1
+std::cout << lal::graphs::tabulator{"|   "} << g << '\n';
+
+// option 2
+std::cout << "|   "_tab << g << '\n';
+@endcode
+ */
+struct tabulator {
+	/// The string that will become the tabulator string.
+	const std::string_view tabulator_string;
+	tabulator(const std::string_view str) noexcept
+		: tabulator_string(str)
+	{ }
+};
+
+/**
+ * @brief Operator << for @ref lal::graphs::tabulator.
+ *
+ * This simply modifies the tabulator string in the class @ref lal::graphs::formatted_output.
+ * @param os std::ostream C++ object.
+ * @param t Tabulator object.
+ * @returns std::ostream object.
+ */
+inline std::ostream& operator<< (std::ostream& os, const tabulator& t) noexcept
+{
+	formatted_output& ti = formatted_output::get_instance();
+	ti.tab_string = std::string(t.tabulator_string);
 	return os;
 }
 
 } // namespace graphs
 } // namespace lal
+
+/**
+ * @brief Operator to aid in output tabulation of graphs.
+ *
+ * Example usage:
+ * @code
+lal::graphs::undirected_graph g = ...;
+std::cout << "|   "_tab << g << '\n';
+@endcode
+ * @param str The tabulator string. Can be any string.
+ * @param s Size.
+ * @returns An instance of @ref lal::graphs::tabulator.
+ */
+[[nodiscard]] lal::graphs::tabulator
+operator""_gtab (const char *str, const std::size_t s) noexcept
+{
+	return lal::graphs::tabulator{std::string_view{str, s}};
+}
