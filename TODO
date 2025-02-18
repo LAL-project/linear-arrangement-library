@@ -1,4 +1,3 @@
-- Add a .clang-format
 - Update project to C++23 (this implies, at least, rewriting the <, <=, ... operators in
   lal::numeric::integer and lal::numeric::rational)
 - Add a tabulated output for (at least) lal::graphs::*
