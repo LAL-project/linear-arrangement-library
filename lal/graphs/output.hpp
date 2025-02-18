@@ -248,8 +248,8 @@ std::cout << "|   "_tab << g << '\n';
  * @param s Size.
  * @returns An instance of @ref lal::graphs::tabulator.
  */
-[[nodiscard]] lal::graphs::tabulator
-operator""_gtab (const char *str, const std::size_t s) noexcept
+[[nodiscard]] inline lal::graphs::tabulator
+operator""_tab (const char *str, const std::size_t s) noexcept
 {
 	return lal::graphs::tabulator{std::string_view{str, s}};
 }
