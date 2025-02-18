@@ -61,8 +61,8 @@ namespace graphs {
 class formatted_output {
 public:
 
-	/// The tabulator string.
-	std::string tab_string;
+	/// The string that is written at the beginning of every line.
+	std::string tabulator_string;
 	/// Returns the only instance of this class.
 	static formatted_output& get_instance() noexcept
 	{
@@ -74,8 +74,7 @@ private:
 
 	/// Default constructor.
 	formatted_output() noexcept = default;
-
-}; // namespace tab_info
+};
 
 /**
  * @brief Standard output operator for undirected graphs.
@@ -101,7 +100,7 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 	formatted_output& f = formatted_output::get_instance();
 	const uint64_t n = g.get_num_nodes();
 	for (node u = 0; u < n; ++u) {
-		os << f.tab_string << u << ':';
+		os << f.tabulator_string << u << ':';
 		for (const node v : g.get_neighbors(u)) {
 			os << " " << v;
 		}
@@ -109,7 +108,7 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tab_string.resize(0);
+	f.tabulator_string.resize(0);
 	return os;
 }
 
@@ -126,9 +125,9 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 {
 	formatted_output& f = formatted_output::get_instance();
 	const uint64_t n = g.get_num_nodes();
-	os << f.tab_string << "out:\n";
+	os << f.tabulator_string << "out:\n";
 	for (node u = 0; u < n; ++u) {
-		os << f.tab_string << u << ':';
+		os << f.tabulator_string << u << ':';
 		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
@@ -136,9 +135,9 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	os << f.tab_string << "\nin:\n";
+	os << f.tabulator_string << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
-		os << f.tab_string << u << ':';
+		os << f.tabulator_string << u << ':';
 		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
@@ -146,7 +145,7 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tab_string.resize(0);
+	f.tabulator_string.resize(0);
 	return os;
 }
 
@@ -165,10 +164,10 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 	const uint64_t n = g.get_num_nodes();
 	const std::string_view pad =
 		(g.has_root() ? std::string_view{" "} : std::string_view{""});
-	os << f.tab_string << "out:\n";
+	os << f.tabulator_string << "out:\n";
 	for (node u = 0; u < n; ++u) {
-		os << f.tab_string << (g.has_root() and u == g.get_root() ? "*" : pad)
-		   << u << ':';
+		os << f.tabulator_string
+		   << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
 		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
@@ -176,10 +175,10 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
-	os << f.tab_string << "\nin:\n";
+	os << f.tabulator_string << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
-		os << f.tab_string << (g.has_root() and u == g.get_root() ? "*" : pad)
-		   << u << ':';
+		os << f.tabulator_string
+		   << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
 		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
@@ -187,7 +186,7 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tab_string.resize(0);
+	f.tabulator_string.resize(0);
 	return os;
 }
 
@@ -229,7 +228,7 @@ struct tabulator {
 inline std::ostream& operator<< (std::ostream& os, const tabulator& t) noexcept
 {
 	formatted_output& ti = formatted_output::get_instance();
-	ti.tab_string = std::string(t.tabulator_string);
+	ti.tabulator_string = std::string(t.tabulator_string);
 	return os;
 }
 
