@@ -256,7 +256,7 @@ template <bool decide>
 		std::string chunk;
 		while (ss >> chunk) {
 
-			uint64_t value;
+			uint64_t value = 0;
 			const auto result = std::from_chars(
 				&chunk[0], (&chunk[chunk.size() - 1]) + 1, value
 			);
