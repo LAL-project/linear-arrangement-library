@@ -420,7 +420,8 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	[[nodiscard]] friend bool operator!= (int64_t i, const rational& r) noexcept
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] friend bool operator!= (const T i, const rational& r) noexcept
 	{
 		return r != i;
 	}
