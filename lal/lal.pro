@@ -4,7 +4,7 @@ VERSION_MAJOR = 99.99
 VERSION_BUILD = 99
 VERSION = $${VERSION_MAJOR}.$${VERSION_BUILD}
 
-CONFIG += c++17
+CONFIG += c++23
 CONFIG -= app_bundle
 QT -= core gui
 
@@ -23,7 +23,7 @@ isEmpty(ADDRESS_SANITIZER) {
     ADDRESS_SANITIZER = "NO"
 }
 
-QMAKE_CXXFLAGS += -std=c++17 -fPIC -fopenmp
+QMAKE_CXXFLAGS = -std=c++23 -fPIC -fopenmp
 QMAKE_CXXFLAGS +=			\
 	-Wall					\
 	-Wextra					\ # reasonable and standard
