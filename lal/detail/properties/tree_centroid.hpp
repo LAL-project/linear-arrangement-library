@@ -48,7 +48,6 @@
 #include <vector>
 
 // lal includes
-#include <lal/graphs/output.hpp>
 #include <lal/basic_types.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>

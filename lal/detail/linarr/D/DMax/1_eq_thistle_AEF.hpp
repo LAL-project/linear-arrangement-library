@@ -53,10 +53,10 @@
 #include <cstdint>
 #include <vector>
 
+#if defined DEBUG
 #if defined __LAL_DEBUG_DMax_1_thistle
 #include <iostream>
 #endif
-#if defined DEBUG
 #include <cassert>
 #endif
 
@@ -69,9 +69,9 @@
 #include <lal/linarr/D/D.hpp>
 #if defined DEBUG
 #include <lal/linarr/formal_constraints.hpp>
-#endif
 #if defined __LAL_DEBUG_DMax_1_thistle
 #include <lal/graphs/output.hpp>
+#endif
 #endif
 
 #include <lal/detail/graphs/traversal.hpp>

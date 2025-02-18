@@ -53,7 +53,9 @@
 #endif
 
 // lal includes
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
+#endif
 
 // DMax includes
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
@@ -208,7 +210,7 @@ AEF_BnB::exe_result_type AEF_BnB::exe(
 #endif
 }
 
-void AEF_BnB::exe(node first_node) noexcept
+void AEF_BnB::exe(const node first_node) noexcept
 {
 	m_first_node = first_node;
 

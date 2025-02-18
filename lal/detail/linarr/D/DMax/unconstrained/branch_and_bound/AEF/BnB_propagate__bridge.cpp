@@ -48,15 +48,16 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#endif
-
 #if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
+#endif
 #endif
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
+#if defined __LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
+#endif
 
 // DMax includes
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>

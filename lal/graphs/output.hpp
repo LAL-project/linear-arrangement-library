@@ -63,13 +63,15 @@ namespace graphs {
 inline std::ostream&
 operator<< (std::ostream& os, const undirected_graph& g) noexcept
 {
-	const auto N = g.get_num_nodes();
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_neighbors(u)) {
+	const uint64_t n = g.get_num_nodes();
+	for (node u = 0; u < n; ++u) {
+		os << u << ':';
+		for (const node v : g.get_neighbors(u)) {
 			os << " " << v;
 		}
-		os << (u < N - 1 ? "\n" : "");
+		if (u < n - 1) {
+			os << '\n';
+		}
 	}
 	return os;
 }
@@ -85,22 +87,26 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 inline std::ostream&
 operator<< (std::ostream& os, const directed_graph& g) noexcept
 {
-	const auto N = g.get_num_nodes();
-	os << "out:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_out_neighbors(u)) {
+	const uint64_t n = g.get_num_nodes();
+	os << "out:\n";
+	for (node u = 0; u < n; ++u) {
+		os << u << ':';
+		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
-		os << (u < N - 1 ? "\n" : "");
+		if (u < n - 1) {
+			os << '\n';
+		}
 	}
-	os << "\n" << "in:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << u << ":";
-		for (auto v : g.get_in_neighbors(u)) {
+	os << "\nin:\n";
+	for (node u = 0; u < n; ++u) {
+		os << u << ':';
+		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
-		os << (u < N - 1 ? "\n" : "");
+		if (u < n - 1) {
+			os << '\n';
+		}
 	}
 	return os;
 }
@@ -116,24 +122,28 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 inline std::ostream&
 operator<< (std::ostream& os, const rooted_tree& g) noexcept
 {
-	const auto N = g.get_num_nodes();
+	const uint64_t n = g.get_num_nodes();
 	const std::string_view pad =
 		(g.has_root() ? std::string_view{" "} : std::string_view{""});
-	os << "out:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_out_neighbors(u)) {
+	os << "out:\n";
+	for (node u = 0; u < n; ++u) {
+		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
+		for (const node v : g.get_out_neighbors(u)) {
 			os << " " << v;
 		}
-		os << (u < N - 1 ? "\n" : "");
+		if (u < n - 1) {
+			os << '\n';
+		}
 	}
-	os << "\n" << "in:" << "\n";
-	for (node u = 0; u < N; ++u) {
-		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ":";
-		for (auto v : g.get_in_neighbors(u)) {
+	os << "\nin:\n";
+	for (node u = 0; u < n; ++u) {
+		os << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
+		for (const node v : g.get_in_neighbors(u)) {
 			os << " " << v;
 		}
-		os << (u < N - 1 ? "\n" : "");
+		if (u < n - 1) {
+			os << '\n';
+		}
 	}
 	return os;
 }

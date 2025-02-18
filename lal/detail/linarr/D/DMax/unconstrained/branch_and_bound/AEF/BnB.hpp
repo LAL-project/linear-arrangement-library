@@ -201,7 +201,7 @@ public:
 	) noexcept;
 
 	/// Execute the algorithm starting at the given vertex
-	void exe(node first_node) noexcept;
+	void exe(const node first_node) noexcept;
 
 protected:
 
