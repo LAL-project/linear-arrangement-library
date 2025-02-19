@@ -348,8 +348,36 @@ public:
 		return *this;
 	}
 
-	// -- EQUALITY
+	// -- COMPARISON OPERATORS
 
+	/**
+	 * @brief Three-way comparison operator.
+	 * @param i A @ref lal::numeric::rational.
+	 */
+	[[nodiscard]] std::strong_ordering operator<=> (const rational& r
+	) const noexcept
+	{
+		return mpq_cmp(m_val, r.m_val) <=> 0;
+	}
+	/**
+	 * @brief Equality operator.
+	 * @param i A @ref lal::numeric::rational.
+	 */
+	[[nodiscard]] bool operator== (const rational& r) const noexcept
+	{
+		return mpq_equal(m_val, r.m_val) != 0;
+	}
+
+	/**
+	 * @brief Three-way comparison operator.
+	 * @param i An integer (basic type) number.
+	 */
+	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	[[nodiscard]] std::strong_ordering operator<=> (const T i) const noexcept
+	{
+		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
+									: mpq_cmp_ui(m_val, i, 1)) <=> 0;
+	}
 	/**
 	 * @brief Equality operator.
 	 * @param i An integer (basic type) number.
@@ -360,18 +388,17 @@ public:
 		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
 									: mpq_cmp_ui(m_val, i, 1)) == 0;
 	}
-#if !defined __LAL_SWIG_PYTHON
+
 	/**
-	 * @brief Equality operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
+	 * @brief Three-way comparison operator.
+	 * @param i A @ref lal::numeric::integer.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator== (const T i, const rational& r) noexcept
+	[[nodiscard]] std::strong_ordering operator<=> (const integer& i
+	) const noexcept
 	{
-		return r == i;
+		rational r(i);
+		return mpq_cmp(m_val, r.m_val) <=> 0;
 	}
-#endif
 	/**
 	 * @brief Equality operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -380,295 +407,6 @@ public:
 	{
 		rational r(i);
 		return mpq_equal(m_val, r.m_val);
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Equality operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator== (const integer& i, const rational& r) noexcept
-	{
-		return r == i;
-	}
-#endif
-	/**
-	 * @brief Equality operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator== (const rational& r) const noexcept
-	{
-		// this function returns non-zero if parameters are equal!
-		return mpq_equal(m_val, r.m_val);
-	}
-
-	// -- NON-EQUALITY
-
-	/**
-	 * @brief Non-equality operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator!= (const T i) const noexcept
-	{
-		return not(*this == i);
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Non-equality operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator!= (const T i, const rational& r) noexcept
-	{
-		return r != i;
-	}
-#endif
-	/**
-	 * @brief Non-equality operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator!= (const integer& i) const noexcept
-	{
-		return not(*this == i);
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Non-equality operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator!= (const integer& i, const rational& r) noexcept
-	{
-		return r != i;
-	}
-#endif
-	/**
-	 * @brief Non-equality operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator!= (const rational& r) const noexcept
-	{
-		return not(*this == r);
-	}
-
-	// -- LESS THAN
-
-	/**
-	 * @brief Less than operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator< (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
-									: mpq_cmp_ui(m_val, i, 1)) < 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Less than operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator< (const T i, const rational& r) noexcept
-	{
-		return r > i;
-	}
-#endif
-	/**
-	 * @brief Less than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator< (const integer& i) const noexcept
-	{
-		rational r(i);
-		return mpq_cmp(m_val, r.m_val) < 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Less than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator< (const integer& i, const rational& r) noexcept
-	{
-		return r > i;
-	}
-#endif
-	/**
-	 * @brief Less than operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator< (const rational& r) const noexcept
-	{
-		return mpq_cmp(m_val, r.m_val) < 0;
-	}
-
-	// -- LESS THAN OR EQUAL TO
-
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator<= (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
-									: mpq_cmp_ui(m_val, i, 1)) <= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator<= (const T i, const rational& r) noexcept
-	{
-		return r >= i;
-	}
-#endif
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator<= (const integer& i) const noexcept
-	{
-		rational r(i);
-		return mpq_cmp(m_val, r.m_val) <= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator<= (const integer& i, const rational& r) noexcept
-	{
-		return r >= i;
-	}
-#endif
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator<= (const rational& r) const noexcept
-	{
-		return mpq_cmp(m_val, r.m_val) <= 0;
-	}
-
-	// -- GREATER THAN
-
-	/**
-	 * @brief Greater than operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator> (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
-									: mpq_cmp_ui(m_val, i, 1)) > 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator> (const T i, const rational& r) noexcept
-	{
-		return r < i;
-	}
-#endif
-	/**
-	 * @brief Greater than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator> (const integer& i) const noexcept
-	{
-		rational r(i);
-		return mpq_cmp(m_val, r.m_val) > 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator> (const integer& i, const rational& r) noexcept
-	{
-		return r < i;
-	}
-#endif
-	/**
-	 * @brief Greater than operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator> (const rational& r) const noexcept
-	{
-		return mpq_cmp(m_val, r.m_val) > 0;
-	}
-
-	// -- GREATER THAN OR EQUAL TO
-
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator>= (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
-									: mpq_cmp_ui(m_val, i, 1)) >= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator>= (const T i, const rational& r) noexcept
-	{
-		return r <= i;
-	}
-#endif
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator>= (const integer& i) const noexcept
-	{
-		rational r(i);
-		return mpq_cmp(m_val, r.m_val) >= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] friend bool
-	operator>= (const integer& i, const rational& r) noexcept
-	{
-		return r <= i;
-	}
-#endif
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param r A @ref lal::numeric::rational.
-	 */
-	[[nodiscard]] bool operator>= (const rational& r) const noexcept
-	{
-		return mpq_cmp(m_val, r.m_val) >= 0;
 	}
 
 	// -- ADDITION
@@ -986,6 +724,16 @@ public:
 		rational r(*this);
 		r /= i;
 		return r;
+	}
+	/**
+	 * @brief Division operator.
+	 * @param i A @ref lal::numeric::integer.
+	 */
+	[[nodiscard]] friend rational
+	operator/ (const integer& i, const rational& r) noexcept
+	{
+		rational R(i, 1);
+		return R / r;
 	}
 	/**
 	 * @brief Division operator.

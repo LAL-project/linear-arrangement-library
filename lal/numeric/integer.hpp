@@ -233,30 +233,17 @@ public:
 		return *this;
 	}
 
-	// -- EQUALITY
+	// -- COMPARISON OPERATORS
 
 	/**
-	 * @brief Equality operator.
-	 * @param i An integer (basic type) number.
+	 * @brief Three-way comparison operator.
+	 * @param i A @ref lal::numeric::integer.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator== (const T i) const noexcept
+	[[nodiscard]] std::strong_ordering operator<=> (const integer& i
+	) const noexcept
 	{
-		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
-									: mpz_cmp_ui(m_val, i)) == 0;
+		return mpz_cmp(m_val, i.m_val) <=> 0;
 	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Equality operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator== (const T i, const integer& ii) noexcept
-	{
-		return ii == i;
-	}
-#endif
 	/**
 	 * @brief Equality operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -266,168 +253,25 @@ public:
 		return mpz_cmp(m_val, i.m_val) == 0;
 	}
 
-	// -- NON-EQUALITY
-
 	/**
-	 * @brief Non-equality operator.
-	 * @param i An integer (basic type) number.
+	 * @brief Three-way comparison operator.
+	 * @param i A basic integral type.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator!= (const T i) const noexcept
-	{
-		return not(*this == i);
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Non-equality operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator!= (const T i, const integer& ii) noexcept
-	{
-		return ii != i;
-	}
-#endif
-	/**
-	 * @brief Non-equality operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator!= (const integer& i) const noexcept
-	{
-		return not(*this == i);
-	}
-
-	// -- LESS THAN
-
-	/**
-	 * @brief Less than operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator< (const T i) const noexcept
+	[[nodiscard]] std::strong_ordering operator<=> (const T& i) const noexcept
 	{
 		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
-									: mpz_cmp_ui(m_val, i)) < 0;
+									: mpz_cmp_ui(m_val, i)) <=> 0;
 	}
-#if !defined __LAL_SWIG_PYTHON
 	/**
-	 * @brief Less operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
+	 * @brief Equality operator.
+	 * @param i A basic integral type.
 	 */
 	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator< (const T i, const integer& ii) noexcept
-	{
-		return ii > i;
-	}
-#endif
-	/**
-	 * @brief Less than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator< (const integer& i) const noexcept
-	{
-		return mpz_cmp(m_val, i.m_val) < 0;
-	}
-
-	// -- LESS THAN OR EQUAL TO
-
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator<= (const T i) const noexcept
+	[[nodiscard]] bool operator== (const T& i) const noexcept
 	{
 		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
-									: mpz_cmp_ui(m_val, i)) <= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator<= (const T i, const integer& ii) noexcept
-	{
-		return ii >= i;
-	}
-#endif
-	/**
-	 * @brief Less than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator<= (const integer& i) const noexcept
-	{
-		return mpz_cmp(m_val, i.m_val) <= 0;
-	}
-
-	// -- GREATER THAN
-
-	/**
-	 * @brief Greater than operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator> (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
-									: mpz_cmp_ui(m_val, i)) > 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator> (const T i, const integer& ii) noexcept
-	{
-		return ii < i;
-	}
-#endif
-	/**
-	 * @brief Greater than operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator> (const integer& i) const noexcept
-	{
-		return mpz_cmp(m_val, i.m_val) > 0;
-	}
-
-	// -- GREATER THAN OR EQUAL TO
-
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] bool operator>= (const T i) const noexcept
-	{
-		return (std::is_signed_v<T> ? mpz_cmp_si(m_val, i)
-									: mpz_cmp_ui(m_val, i)) >= 0;
-	}
-#if !defined __LAL_SWIG_PYTHON
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i An integer (basic type) number.
-	 * @param ii A @ref lal::numeric::integer.
-	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
-	[[nodiscard]] friend bool operator>= (const T i, const integer& ii) noexcept
-	{
-		return ii <= i;
-	}
-#endif
-	/**
-	 * @brief Greater than or equal to operator.
-	 * @param i A @ref lal::numeric::integer.
-	 */
-	[[nodiscard]] bool operator>= (const integer& i) const noexcept
-	{
-		return mpz_cmp(m_val, i.m_val) >= 0;
+									: mpz_cmp_ui(m_val, i)) == 0;
 	}
 
 	/* ARITHMETIC OPERATORS */
