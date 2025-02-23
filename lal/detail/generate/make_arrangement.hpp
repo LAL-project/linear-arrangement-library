@@ -52,18 +52,18 @@ namespace detail {
 
 /**
  * @brief Make an arrangement using permutations.
- * @tparam container Object containing the permutations.
+ * @tparam container_t Object containing the permutations.
  * @param T Input rooted tree.
  * @param r Root of the current subtree.
  * @param data The permutations used to construct the arrangement.
  * @param[out] pos Current position in the arrangement.
  * @param[out] arr Arrangement constructed.
  */
-template <class container>
+template <class container_t>
 void make_arrangement_permutations(
 	const graphs::rooted_tree& T,
 	const node r,
-	const container& data,
+	const container_t& data,
 	position& pos,
 	linear_arrangement& arr
 ) noexcept
@@ -90,14 +90,14 @@ void make_arrangement_permutations(
 
 /**
  * @brief Make an arrangement using permutations.
- * @tparam container Object containing the permutations.
+ * @tparam container_t Object containing the permutations.
  * @param T Input rooted tree.
  * @param data The permutations to construct the arrangement from.
  * @returns The arrangement constructed with the permutations.
  */
-template <class container>
+template <class container_t>
 [[nodiscard]] linear_arrangement make_arrangement_permutations(
-	const graphs::rooted_tree& T, const container& data
+	const graphs::rooted_tree& T, const container_t& data
 ) noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
@@ -111,7 +111,7 @@ template <class container>
 
 /**
  * @brief Make an arrangement using permutations.
- * @tparam container Object containing the permutations.
+ * @tparam container_t Object containing the permutations.
  * @param T Input rooted tree.
  * @param parent Parent of node @e u.
  * @param u Root of the current subtree.
@@ -119,12 +119,12 @@ template <class container>
  * @param[out] pos Current position in the arrangement.
  * @param[out] arr Arrangement constructed.
  */
-template <class container>
+template <class container_t>
 void make_arrangement_permutations(
 	const graphs::free_tree& T,
 	node parent,
 	node u,
-	const container& data,
+	const container_t& data,
 	position& pos,
 	linear_arrangement& arr
 ) noexcept
@@ -151,15 +151,15 @@ void make_arrangement_permutations(
 
 /**
  * @brief Make an arrangement using permutations.
- * @tparam container Object containing the permutations.
+ * @tparam container_t Object containing the permutations.
  * @param T Input rooted tree.
  * @param root Node used as root.
  * @param data The permutations to construct the arrangement from.
  * @returns The arrangement constructed with the permutations.
  */
-template <class container>
+template <class container_t>
 [[nodiscard]] linear_arrangement make_arrangement_permutations(
-	const graphs::free_tree& T, node root, const container& data
+	const graphs::free_tree& T, node root, const container_t& data
 ) noexcept
 {
 	linear_arrangement arr(T.get_num_nodes());
