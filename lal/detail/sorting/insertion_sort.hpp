@@ -54,15 +54,17 @@ namespace sorting {
  * @param end Iterator at the end of the container.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <typename It>
-void insertion_sort(const It begin, const It end) noexcept
+template <typename iterator_t>
+void insertion_sort(const iterator_t begin, const iterator_t end) noexcept
 {
+	// TODO: do not std::swap elements in order to avoid copies
+	// and improve efficiency
 	if (begin == end) {
 		return;
 	}
-	for (It i = begin + 1; i != end; ++i) {
-		It nj = i;
-		It j = i - 1;
+	for (iterator_t i = begin + 1; i != end; ++i) {
+		iterator_t nj = i;
+		iterator_t j = i - 1;
 		while (*j > *nj and j != begin) {
 			std::swap(*j, *nj);
 			--j;
