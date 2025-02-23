@@ -131,7 +131,7 @@ namespace detail {
  * @param bfs Breadth-First Search object.
  * @returns Whether the graph has cycles or not.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] bool
 has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept
 {
@@ -199,7 +199,7 @@ has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept
  * @param g Input graph.
  * @returns Whether the graph has cycles or not.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] bool has_undirected_cycles(const graph_t& g) noexcept
 {
 	// BFS traversal object

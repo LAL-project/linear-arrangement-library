@@ -430,5 +430,12 @@ protected:
 	normalize_after_edge_removal(const bool norm, const bool check) noexcept;
 };
 
+/**
+ * @brief Is a given type a graph?
+ * @tparam graph_t The type to check.
+ */
+template <class graph_t>
+concept Graph = std::derived_from<graph_t, graph>;
+
 } // namespace graphs
 } // namespace lal

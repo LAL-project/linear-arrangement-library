@@ -82,13 +82,11 @@ namespace linarr {
  * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as an
  * exact rational value.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] numeric::rational mean_dependency_distance_2level_rational(
 	const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {}
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
-
 #if defined DEBUG
 	// the number of graphs and number of linear arrangements
 	// must coincide unless no arrangement was given.
@@ -173,7 +171,7 @@ template <class graph_t>
  * @returns Jing's and Liu's 2-level \f$MDD\f$ for an ensemble of graphs as a
  * floating point value.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] double mean_dependency_distance_2level(
 	const std::vector<graph_t>& L, const std::vector<linear_arrangement>& P = {}
 ) noexcept

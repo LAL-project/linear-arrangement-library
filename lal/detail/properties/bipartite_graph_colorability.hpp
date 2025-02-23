@@ -55,7 +55,7 @@ namespace detail {
  * @pre The input graph must be a bipartite graph (not necessarily connected),
  * for the coloring to be correct.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] properties::bipartite_graph_coloring
 color_vertices_graph(const graph_t& g) noexcept
 {

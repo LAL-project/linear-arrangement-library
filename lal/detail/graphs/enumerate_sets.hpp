@@ -56,7 +56,7 @@ namespace detail {
  * @param g Input graph.
  * @returns A vector with all @e g's edges.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<edge> set_edges(const graph_t& g) noexcept
 {
 	std::vector<edge> e(g.get_num_edges());
@@ -73,7 +73,7 @@ template <class graph_t>
  * @param qs Total amount of pairs of independent edges.
  * @returns A vector with all @e g's pairs of independent edges.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<edge_pair>
 set_pairs_independent_edges(const graph_t& g, const uint64_t qs) noexcept
 {

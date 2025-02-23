@@ -678,5 +678,12 @@ protected:
 	) const noexcept = 0;
 };
 
+/**
+ * @brief Is a given type a tree?
+ * @tparam tree_t The type to check.
+ */
+template <class tree_t>
+concept Tree = std::derived_from<tree_t, tree>;
+
 } // namespace graphs
 } // namespace lal

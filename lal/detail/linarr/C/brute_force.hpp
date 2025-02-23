@@ -309,7 +309,7 @@ template <bool decide_upper_bound, class arrangement_t>
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template <class graph_t, class arrangement_t>
+template <graphs::Graph graph_t, class arrangement_t>
 [[nodiscard]] uint64_t
 n_C_brute_force(const graph_t& g, const arrangement_t& arr) noexcept
 {
@@ -336,7 +336,7 @@ n_C_brute_force(const graph_t& g, const arrangement_t& arr) noexcept
  * @param arrs List of input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> n_C_brute_force(
 	const graph_t& g, const std::vector<linear_arrangement>& arrs
 ) noexcept
@@ -381,7 +381,7 @@ template <class graph_t>
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template <class graph_t, class arrangement_t>
+template <graphs::Graph graph_t, class arrangement_t>
 [[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than(
 	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
 ) noexcept
@@ -411,7 +411,7 @@ template <class graph_t, class arrangement_t>
  * @returns \f$C_{\pi}(G)\f$ on every input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -452,7 +452,7 @@ template <class graph_t>
  * corresponding upper bound. It returns a value one unit larger than the upper
  * bound otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,

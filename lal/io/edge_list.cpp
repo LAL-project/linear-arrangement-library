@@ -54,7 +54,7 @@
 namespace lal {
 namespace io {
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 inline std::optional<graph_t> __read_edge_list(
 	const std::string& filename, const bool norm, const bool check
 ) noexcept

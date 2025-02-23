@@ -106,7 +106,7 @@ is_permutation(const linear_arrangement& arr = {}) noexcept
  * @param arr Input arrangement.
  * @returns Whether or not the input arrangement is a valid permutation.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] bool
 is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
 {
@@ -209,7 +209,7 @@ is_arrangement(const graph_t& g, const linear_arrangement& arr) noexcept
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangment of @e g is planar.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] bool
 is_planar(const graph_t& g, const linear_arrangement& arr = {}) noexcept
 {

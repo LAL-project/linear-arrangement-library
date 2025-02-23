@@ -55,7 +55,7 @@ namespace detail {
  * @e source or not.
  * @returns True if, and only if, node target is reachable from node source.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] inline bool is_node_reachable_from(
 	const graph_t& g, const node source, const node target
 ) noexcept

@@ -62,9 +62,7 @@ namespace detail {
  * @param x Input node.
  * @returns The diameter of the tree.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] uint64_t tree_diameter(const tree_t& t, const node x) noexcept
 {
 	{

@@ -81,7 +81,7 @@ namespace bipartite_opt_utils {
 template <
 	bool make_arrangement,
 	sorting::sort_type type,
-	class graph_t,
+	graphs::Graph graph_t,
 	class bipartite_coloring_t>
 [[nodiscard]] std::conditional_t<
 	make_arrangement,
@@ -91,8 +91,6 @@ optimal_bipartite_arrangement_AEF(
 	const graph_t& g, const bipartite_coloring_t& c
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::graph, graph_t>);
-
 	const auto n = g.get_num_nodes();
 
 	// annoying corner case

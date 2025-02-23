@@ -90,9 +90,8 @@ namespace iterators {
  * @endcode
  */
 template <
-	typename graph_t,
-	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
+	graphs::Graph graph_t,
+	bool is_directed = std::is_base_of_v<graphs::directed_graph, graph_t>>
 class E_iterator {
 public:
 

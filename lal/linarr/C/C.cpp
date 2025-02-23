@@ -59,7 +59,7 @@ namespace linarr {
 #define __ident(arr) detail::identity_arr(arr)
 #define __nonident(arr) detail::nonidentity_arr(arr)
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 uint64_t num_crossings(
 	const graph_t& g, const linear_arrangement& arr, const algorithms_C& A
 ) noexcept
@@ -130,7 +130,7 @@ uint64_t num_crossings(
 
 // -----------------------------------------------------------------------------
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 std::vector<uint64_t> num_crossings_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -176,7 +176,7 @@ std::vector<uint64_t> num_crossings_list(
 
 // -----------------------------------------------------------------------------
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 uint64_t is_num_crossings_lesseq_than(
 	const graph_t& g,
 	const linear_arrangement& arr,
@@ -280,7 +280,7 @@ uint64_t is_num_crossings_lesseq_than(
 
 // -----------------------------------------------------------------------------
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -342,7 +342,7 @@ std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 
 // -----------------------------------------------------------------------------
 
-template <class graph_t>
+template <graphs::Graph graph_t>
 std::vector<uint64_t> is_num_crossings_lesseq_than_list(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,

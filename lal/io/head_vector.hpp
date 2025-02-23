@@ -111,9 +111,7 @@ namespace io {
  * not the graph read is normalized.
  * @returns Nothing in case the file does not exist. A free tree if otherwise.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] inline std::optional<tree_t> read_head_vector(
 	const std::string& filename,
 	const bool norm = true,

@@ -48,7 +48,7 @@
 namespace lal {
 namespace properties {
 
-template <typename graph_t>
+template <graphs::Graph graph_t>
 bipartite_graph_coloring _coloring(const graph_t& g) noexcept
 {
 	return detail::color_vertices_graph(g);
@@ -66,7 +66,7 @@ bipartite_graph_coloring bipartite_coloring(const graphs::directed_graph& g
 	return _coloring(g);
 }
 
-template <typename graph_t>
+template <graphs::Graph graph_t>
 bool _is_graph_bipartite(const graph_t& g, const bipartite_graph_coloring& c)
 	noexcept
 {

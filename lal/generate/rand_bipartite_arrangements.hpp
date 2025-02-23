@@ -93,11 +93,10 @@ public:
 	 * @param seed Integer value to seed the random number generator.
 	 * @pre The input graph @e g is bipartite.
 	 */
-	template <class graph_t>
+	template <graphs::Graph graph_t>
 	rand_bipartite_arrangements(const graph_t& g, const uint64_t seed = 0)
 		noexcept
 	{
-		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init(seed);
 	}

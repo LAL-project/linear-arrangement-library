@@ -442,7 +442,7 @@ void treebank_processor::output_syndepstruct_type_header(
 }
 
 // output the tree type
-template <class tree_t, class out_stream_t>
+template <graphs::Tree tree_t, class out_stream_t>
 void treebank_processor::output_tree_type_values(
 	tree_t& fT, out_stream_t& out_treebank_file
 ) const noexcept
@@ -463,7 +463,7 @@ void treebank_processor::output_tree_type_values(
 	}
 }
 
-template <class tree_t, class out_stream_t>
+template <graphs::Tree tree_t, class out_stream_t>
 void treebank_processor::output_syndepstruct_type_values(
 	const tree_t& rT, const uint64_t C, out_stream_t& out_treebank_file
 ) const noexcept
@@ -484,7 +484,7 @@ void treebank_processor::output_syndepstruct_type_values(
 	}
 }
 
-template <class tree_t, class out_stream_t>
+template <graphs::Tree tree_t, class out_stream_t>
 void treebank_processor::process_tree(
 	const tree_t& rT,
 	double * const props,

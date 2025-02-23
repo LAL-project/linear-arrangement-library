@@ -50,6 +50,7 @@
 // lal includes
 #include <lal/detail/array.hpp>
 #include <lal/basic_types.hpp>
+#include <lal/graphs/graph.hpp>
 
 namespace lal {
 namespace properties {
@@ -61,7 +62,7 @@ namespace properties {
  *
  * @tparam graph_t Type of graph.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 class connected_components {
 public:
 

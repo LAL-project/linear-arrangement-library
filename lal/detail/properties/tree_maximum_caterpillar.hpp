@@ -94,7 +94,7 @@ enum result {
  * @param weight Function memory.
  * @returns The farthest vertex from @e start_at
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 [[nodiscard]] node find_farthest_vertex(
 	const tree_t& t,
 	const node start_at,
@@ -143,10 +143,7 @@ template <class tree_t>
  * caterpillar's backbone, and a vector of char indicating what vertices are in
  * the caterpillar tree,
  */
-template <
-	result ret_type,
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <result ret_type, graphs::Tree tree_t>
 [[nodiscard]] conditional_list_t<
 	bool_sequence<
 		ret_type == result::distance,

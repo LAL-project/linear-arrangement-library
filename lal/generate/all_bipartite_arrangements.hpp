@@ -127,10 +127,9 @@ public:
 	 * @param g Input graph.
 	 * @pre The input graph @e g is bipartite.
 	 */
-	template <class graph_t>
+	template <graphs::Graph graph_t>
 	all_bipartite_arrangements(const graph_t& g)
 	{
-		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		m_coloring = properties::bipartite_coloring(g);
 		init();
 	}

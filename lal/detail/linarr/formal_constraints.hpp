@@ -170,7 +170,7 @@ template <class arrangement_t>
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangement is bipartite.
  */
-template <class graph_t, class arrangement_t>
+template <graphs::Graph graph_t, class arrangement_t>
 [[nodiscard]] bool
 is_bipartite(const graph_t& g, const arrangement_t& arr) noexcept
 {

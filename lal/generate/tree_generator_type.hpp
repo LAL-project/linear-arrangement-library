@@ -129,7 +129,7 @@ static_assert(std::is_same_v<labelled_unlabelled_type_t<false>, unlabelled_t>);
 template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_t>
+	graphs::Tree tree_t>
 struct tree_generator_type {
 	static_assert(std::is_same_v<exhaustive_random, exhaustive_t> || std::is_same_v<exhaustive_random, random_t>);
 	static_assert(std::is_same_v<labelled_unlabelled, labelled_t> || std::is_same_v<labelled_unlabelled, unlabelled_t>);
@@ -169,7 +169,7 @@ struct tree_generator_type {
 template <
 	typename exhaustive_random,
 	typename labelled_unlabelled,
-	class tree_t>
+	graphs::Tree tree_t>
 using tree_generator_type_t = typename tree_generator_type<
 	exhaustive_random,
 	labelled_unlabelled,

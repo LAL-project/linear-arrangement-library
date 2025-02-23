@@ -67,9 +67,7 @@ namespace detail {
  * - maximum vertex degrees do not coincide,
  * @returns 2 if the trees MIGHT BE isomorphic
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
 {
 	// check number of nodes

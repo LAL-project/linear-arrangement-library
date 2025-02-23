@@ -287,7 +287,7 @@ typedef level_signature<level_signature_type::per_position>
  * @param u Vertex to check.
  * @returns Whether or not the input vertex is a thistle.
  */
-template <level_signature_type t, class graph_t>
+template <level_signature_type t, graphs::Graph graph_t>
 [[nodiscard]] bool is_thistle_vertex(
 	const graph_t& g,
 	const level_signature<t>& levels,
@@ -316,7 +316,7 @@ template <level_signature_type t, class graph_t>
  * @param[out] L Level signature of the arrangement of the input graph.
  * @pre Parameter @e L is initialized at 0.
  */
-template <level_signature_type t, class graph_t>
+template <level_signature_type t, graphs::Graph graph_t>
 void calculate_level_signature(
 	const graph_t& g, const linear_arrangement& arr, level_signature<t>& L
 ) noexcept
@@ -357,7 +357,7 @@ void calculate_level_signature(
  * @param arr Input arrangement.
  * @returns The level sequence of an arrangement per vertex.
  */
-template <level_signature_type t, class graph_t>
+template <level_signature_type t, graphs::Graph graph_t>
 [[nodiscard]] level_signature<t> calculate_level_signature(
 	const graph_t& g, const linear_arrangement& arr
 ) noexcept

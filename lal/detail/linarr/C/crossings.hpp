@@ -69,7 +69,7 @@ namespace detail {
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t
 n_C_brute_force(const graph_t& g, const linear_arrangement& arr) noexcept;
 
@@ -86,7 +86,7 @@ n_C_brute_force(const graph_t& g, const linear_arrangement& arr) noexcept;
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> n_C_brute_force(
 	const graph_t& g, const std::vector<linear_arrangement>& arrs
 ) noexcept;
@@ -106,7 +106,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t is_n_C_brute_force_lesseq_than(
 	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
 ) noexcept;
@@ -129,7 +129,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -155,7 +155,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_brute_force_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -175,7 +175,7 @@ template <class graph_t>
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t n_C_dynamic_programming(
 	const graph_t& g, const linear_arrangement& arr
 ) noexcept;
@@ -193,7 +193,7 @@ template <class graph_t>
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> n_C_dynamic_programming(
 	const graph_t& g, const std::vector<linear_arrangement>& arrs
 ) noexcept;
@@ -216,7 +216,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
 ) noexcept;
@@ -240,7 +240,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -266,7 +266,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_dynamic_programming_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -286,7 +286,7 @@ template <class graph_t>
  * @param arr Linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t
 n_C_ladder(const graph_t& g, const linear_arrangement& arr) noexcept;
 
@@ -303,7 +303,7 @@ n_C_ladder(const graph_t& g, const linear_arrangement& arr) noexcept;
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> n_C_ladder(
 	const graph_t& g, const std::vector<linear_arrangement>& arrs
 ) noexcept;
@@ -323,7 +323,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t is_n_C_ladder_lesseq_than(
 	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
 ) noexcept;
@@ -347,7 +347,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -373,7 +373,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_ladder_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -393,7 +393,7 @@ template <class graph_t>
  * @param arr A linear arrangement of the nodes. When omitted, \f$\pi_I\f$ is used.
  * @returns The number of crossings \f$C\f$.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t
 n_C_stack_based(const graph_t& g, const linear_arrangement& arr) noexcept;
 
@@ -410,7 +410,7 @@ n_C_stack_based(const graph_t& g, const linear_arrangement& arr) noexcept;
  * @returns A list \f$L\f$ where \f$L_i = C_{\pi_i}(g)\f$.
  * @pre None of the arrangements is empty.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> n_C_stack_based(
 	const graph_t& g, const std::vector<linear_arrangement>& arrs
 ) noexcept;
@@ -430,7 +430,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] uint64_t is_n_C_stack_based_lesseq_than(
 	const graph_t& g, const linear_arrangement& arr, const uint64_t upper_bound
 ) noexcept;
@@ -454,7 +454,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,
@@ -480,7 +480,7 @@ template <class graph_t>
  * to the upper bound. The function returns a value strictly larger than the upper
  * bound if otherwise.
  */
-template <class graph_t>
+template <graphs::Graph graph_t>
 [[nodiscard]] std::vector<uint64_t> is_n_C_stack_based_lesseq_than(
 	const graph_t& g,
 	const std::vector<linear_arrangement>& arrs,

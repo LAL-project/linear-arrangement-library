@@ -63,10 +63,7 @@ namespace detail {
  * @param neighs 0-1 list of neighbors of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */
-template <
-	class graph_t,
-	numeric::Integral char_t,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
+template <graphs::Graph graph_t, numeric::Integral char_t>
 inline void get_bool_neighbors(
 	const graph_t& g, const node u, char_t * const neighs
 ) noexcept

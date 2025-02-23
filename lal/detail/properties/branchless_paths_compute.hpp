@@ -70,7 +70,7 @@ namespace detail {
  * @param res Vector containing all branchless paths.
  * @param p Current branchless path.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void expand_branchless_path(
 	const tree_t& t,
 	const node u,
@@ -147,7 +147,7 @@ void expand_branchless_path(
  * @param t Input tree.
  * @returns The list of all branchless paths.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 [[nodiscard]] std::vector<properties::branchless_path>
 branchless_paths_compute(const tree_t& t) noexcept
 {

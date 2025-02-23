@@ -156,9 +156,7 @@ read_edge_list_directed_graph(
  * @tparam graph_t A graph type. A class that derives from @ref lal::graphs::graph.
  * @returns Nothing in case the file does not exist. A free graph if otherwise.
  */
-template <
-	class graph_t,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
+template <graphs::Graph graph_t>
 [[nodiscard]] inline std::optional<graph_t> read_edge_list(
 	const std::string& filename,
 	const bool norm = true,

@@ -223,10 +223,9 @@ public:
 	 * @param t The tree of which @e bp is a path.
 	 * @returns True if @e bp is an antenna. False if it is not.
 	 */
-	template <class graph_t>
+	template <graphs::Graph graph_t>
 	[[nodiscard]] bool is_antenna(const graph_t& t) const noexcept
 	{
-		static_assert(std::is_base_of_v<graphs::graph, graph_t>);
 		return t.get_degree(m_h1) == 1 or t.get_degree(m_h2) == 1;
 	}
 

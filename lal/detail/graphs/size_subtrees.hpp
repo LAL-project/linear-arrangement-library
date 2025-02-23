@@ -66,9 +66,7 @@ namespace detail {
  * from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 void get_size_subtrees(
 	const tree_t& t, const node u, const node v, uint64_t * const sizes
 ) noexcept
@@ -113,9 +111,7 @@ void get_size_subtrees(
  * @param sizes The size of the subtree rooted at every reachable node from @e r.
  * @pre Parameter @e sizes has size the number of vertices.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 inline void get_size_subtrees(
 	const tree_t& t, const node r, uint64_t * const sizes
 ) noexcept
@@ -151,12 +147,9 @@ inline void get_size_subtrees(
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
 template <
-	class tree_t,
+	graphs::Tree tree_t,
 	typename iterator_t,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t> and
-			is_pointer_iterator_v<edge_size, iterator_t>,
-		bool> = true>
+	std::enable_if_t<is_pointer_iterator_v<edge_size, iterator_t>, bool> = true>
 [[nodiscard]] uint64_t calculate_bidirectional_sizes(
 	const tree_t& t,
 	const uint64_t n,
@@ -228,12 +221,9 @@ template <
  * component of @e u and @e v.
  */
 template <
-	class tree_t,
+	graphs::Tree tree_t,
 	typename iterator_t,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::tree, tree_t> and
-			is_pointer_iterator_v<edge_size, iterator_t>,
-		bool> = true>
+	std::enable_if_t<is_pointer_iterator_v<edge_size, iterator_t>, bool> = true>
 inline void calculate_bidirectional_sizes(
 	const tree_t& t, const uint64_t n, const node x, iterator_t it
 ) noexcept

@@ -51,7 +51,7 @@
 #include <lal/detail/graphs/conversions.hpp>
 
 template <
-	typename tree_t,
+	lal::graphs::Tree tree_t,
 	bool ensure_root_is_returned,
 	bool free_tree_plus_root = ensure_root_is_returned and
 							   std::is_same_v<tree_t, lal::graphs::free_tree>>

@@ -56,8 +56,8 @@ namespace detail {
  * @param g Input graph.
  * @returns True if, and only if, the graph is a tree.
  */
-template <class graph_t>
-[[nodiscard]] bool is_graph_a_tree(const graph_t& g) noexcept
+template <graphs::Graph graph_t>
+[[nodiscard]] inline bool is_graph_a_tree(const graph_t& g) noexcept
 {
 	const auto n = g.get_num_nodes();
 

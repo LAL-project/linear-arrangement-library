@@ -70,7 +70,7 @@ namespace detail {
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_after_add_edge(
 	const tree_t& t,
 	const node u,
@@ -79,8 +79,6 @@ void update_unionfind_after_add_edge(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	// 'u' and 'v' are not connected, so they belong to
 	// (different) connected components of the tree.
 
@@ -142,7 +140,7 @@ void update_unionfind_after_add_edge(
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_after_add_edges(
 	const tree_t& t,
 	const edge_list& edges,
@@ -150,8 +148,6 @@ void update_unionfind_after_add_edges(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	const auto n = t.get_num_nodes();
 
 	// These two variables are used by the BFS object, but are initialized
@@ -191,13 +187,11 @@ void update_unionfind_after_add_edges(
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_after_add_rem_edges_bulk(
 	const tree_t& t, node * const root_of, uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	const auto n = t.get_num_nodes();
 
 	// These two variables are used by the BFS object, but are initialized
@@ -242,7 +236,7 @@ void update_unionfind_after_add_rem_edges_bulk(
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_after_remove_edge(
 	const tree_t& t,
 	const node u,
@@ -251,8 +245,6 @@ void update_unionfind_after_remove_edge(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 // 'u' and 'v' are connected
 #if defined DEBUG
 	assert(root_of[u] == root_of[v]);
@@ -305,7 +297,7 @@ void update_unionfind_after_remove_edge(
  * @param root_size Sizes of each connected component.
  * @pre The edge \f$\{u,v\}\f$ must exist.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_after_remove_edges(
 	const tree_t& t,
 	[[maybe_unused]] const edge_list& edges,
@@ -313,8 +305,6 @@ void update_unionfind_after_remove_edges(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	const auto n = t.get_num_nodes();
 
 	// These two variables are used by the BFS object, but are initialized
@@ -367,7 +357,7 @@ void update_unionfind_after_remove_edges(
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template <class tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_before_remove_edges_incident_to(
 	BFS<tree_t>& bfs,
 	const node v,
@@ -375,8 +365,6 @@ void update_unionfind_before_remove_edges_incident_to(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
 		[&](const auto&, const node w) -> void
@@ -407,7 +395,7 @@ void update_unionfind_before_remove_edges_incident_to(
  * of the connected component of @e s is @e t
  * @param root_size Sizes of each connected component.
  */
-template <typename tree_t>
+template <graphs::Tree tree_t>
 void update_unionfind_before_remove_edges_incident_to(
 	const tree_t& t,
 	const node u,
@@ -415,8 +403,6 @@ void update_unionfind_before_remove_edges_incident_to(
 	uint64_t * const root_size
 ) noexcept
 {
-	static_assert(std::is_base_of_v<graphs::free_tree, tree_t> or std::is_base_of_v<graphs::rooted_tree, tree_t>);
-
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	// avoid going 'backwards', we need to go 'onwards'

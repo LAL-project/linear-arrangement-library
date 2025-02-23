@@ -78,9 +78,7 @@ namespace detail {
  * invalid vertex index. It is guaranteed that the first vertex has smaller
  * index value than the second.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] std::pair<node, node>
 retrieve_centre(const tree_t& t, const node X) noexcept
 {

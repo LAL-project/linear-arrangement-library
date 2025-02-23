@@ -123,10 +123,7 @@ constexpr inline bool is_m4(const centroid_results& m) noexcept
  * @param t Input tree.
  * @param x Node belonging to a connected component whose centroid we want.
  */
-template <
-	centroid_results mode,
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <centroid_results mode, graphs::Tree tree_t>
 [[nodiscard]] conditional_list_t<
 	bool_sequence<is_m1(mode), is_m2(mode), is_m3(mode), is_m4(mode)>,
 	type_sequence<
@@ -358,9 +355,7 @@ find_centroidal_vertex(const tree_t& t, const node x) noexcept
  * fictional root taken to be a centroidal vertex of the tree) of \f$u\f$ and
  * \f$n_u(v)=|V(T^u_v)|\f$ is the size of the subtree \f$T^u_v\f$ in vertices.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] std::pair<node, node> centroidal_vertex_plus_adjacency_list(
 	const tree_t& t, const node x, std::vector<std::vector<node_size>>& L
 ) noexcept
@@ -410,9 +405,7 @@ template <
  * is assigned an invalid vertex index. It is guaranteed that the first vertex
  * has smaller index value than the second.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 [[nodiscard]] std::pair<node, node>
 retrieve_centroid(const tree_t& t, const node x = 0) noexcept
 {

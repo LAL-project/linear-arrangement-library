@@ -63,9 +63,7 @@ namespace detail {
  * @param[out] tree_types A set of bits (or flags) each indicating whether or not @e t
  * is of a certain tree type.
  */
-template <
-	class tree_t,
-	std::enable_if_t<std::is_base_of_v<graphs::tree, tree_t>, bool> = true>
+template <graphs::Tree tree_t>
 void classify_tree(
 	const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types
 ) noexcept

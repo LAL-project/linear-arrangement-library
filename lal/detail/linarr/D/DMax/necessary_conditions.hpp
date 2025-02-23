@@ -65,7 +65,7 @@ namespace detail {
  * @param levels signature of the arrangement.
  * @returns Whether or not the level sequence satisfies the condition.
  */
-template <class graph_t, level_signature_type t>
+template <graphs::Graph graph_t, level_signature_type t>
 [[nodiscard]] inline bool is_level_signature_nonincreasing(
 	const graph_t& g,
 	const level_signature<t>& levels,
@@ -108,7 +108,7 @@ template <class graph_t, level_signature_type t>
  * @param levels signature of the arrangement.
  * @returns Whether or not the level sequence satisfies the condition.
  */
-template <class graph_t, level_signature_type t>
+template <graphs::Graph graph_t, level_signature_type t>
 [[nodiscard]] inline bool no_two_adjacent_vertices_have_same_level(
 	const graph_t& g,
 	const level_signature<t>& levels,
@@ -153,7 +153,7 @@ template <class graph_t, level_signature_type t>
  * @param bps All Branchless Paths of the tree.
  * @returns Whether or not the level sequence satisfies the condition.
  */
-template <class graph_t, level_signature_type t>
+template <graphs::Graph graph_t, level_signature_type t>
 [[nodiscard]] inline bool no_vertex_in_antenna_is_thistle(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,
@@ -199,7 +199,7 @@ template <class graph_t, level_signature_type t>
  * @param bps All Branchless Paths of the tree.
  * @returns Whether or not the level sequence satisfies the condition.
  */
-template <class graph_t, level_signature_type t>
+template <graphs::Graph graph_t, level_signature_type t>
 [[nodiscard]] inline bool at_most_one_thistle_in_bridges(
 	const graph_t& g,
 	const std::vector<properties::branchless_path>& bps,

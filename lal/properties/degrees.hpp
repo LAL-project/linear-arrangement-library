@@ -73,7 +73,7 @@ namespace properties {
  * (in+out, out, in, or other).
  * @return The sum of degrees raised to the input power @e p.
  */
-template <class value_t, class graph_t>
+template <class value_t, graphs::Graph graph_t>
 [[nodiscard]] value_t sum_powers_degrees(
 	const graph_t& g,
 	const uint64_t p,
@@ -345,7 +345,7 @@ sum_powers_degrees(const graphs::directed_graph& g, const uint64_t p) noexcept
  * out, in, or other).
  * @return The \f$p\f$-th moment of degree about 0.
  */
-template <class value_t, class graph_t>
+template <class value_t, graphs::Graph graph_t>
 [[nodiscard]] value_t moment_degree(
 	const graph_t& g,
 	const uint64_t p,

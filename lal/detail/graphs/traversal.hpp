@@ -82,9 +82,7 @@ namespace detail {
  *
  * @tparam graph_t Type of graph.
  */
-template <
-	class graph_t,
-	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
+template <graphs::Graph graph_t>
 class BFS {
 public:
 
