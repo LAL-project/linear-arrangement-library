@@ -151,10 +151,8 @@ public:
 	 * @returns Whether this and @e L are equal or not.
 	 * @pre Both level signatures must be of arrangements of the same tree.
 	 */
-	template <level_signature_type st = t>
-	[[nodiscard]] bool operator== (const level_signature<st>& L) const noexcept
+	[[nodiscard]] bool operator== (const level_signature<t>& L) const noexcept
 	{
-		static_assert(st == t);
 		for (std::size_t i = 0; i < m_data.size(); ++i) {
 			if (m_data[i] != L.m_data[i]) {
 				return false;
