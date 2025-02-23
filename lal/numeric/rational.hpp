@@ -75,7 +75,7 @@ public:
 	 * @param n Numerator, signed integer (basic type).
 	 * @param d Denominator, unsigned integer (basic type).
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational(const T n, const uint64_t d = 1) noexcept
 	{
 		mpq_init(m_val);
@@ -188,7 +188,7 @@ public:
 	 * @param n Numerator, signed integer (basic type).
 	 * @param d Denominator, unsigned integer (basic type).
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	void set_number(const T n, const uint64_t d = 1) noexcept
 	{
 		if (not is_initialized()) {
@@ -262,7 +262,7 @@ public:
 	 * @brief Assignment operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational& operator= (const T i) noexcept
 	{
 		set_number(i);
@@ -372,7 +372,7 @@ public:
 	 * @brief Three-way comparison operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] std::strong_ordering operator<=> (const T i) const noexcept
 	{
 		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
@@ -382,7 +382,7 @@ public:
 	 * @brief Equality operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] bool operator== (const T i) const noexcept
 	{
 		return (std::is_signed_v<T> ? mpq_cmp_si(m_val, i, 1)
@@ -415,7 +415,7 @@ public:
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] rational operator+ (const T i) const noexcept
 	{
 		rational r(*this);
@@ -428,7 +428,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] friend rational
 	operator+ (const T i, const rational& r) noexcept
 	{
@@ -472,7 +472,7 @@ public:
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational& operator+= (const T i) noexcept
 	{
 		rational r(i);
@@ -512,7 +512,7 @@ public:
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] rational operator- (const T i) const noexcept
 	{
 		rational r(*this);
@@ -525,7 +525,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] friend rational
 	operator- (const T i, const rational& r) noexcept
 	{
@@ -569,7 +569,7 @@ public:
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational& operator-= (const T i) noexcept
 	{
 		rational r(i);
@@ -602,7 +602,7 @@ public:
 	 * @brief Multiplication operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] rational operator* (const T i) const noexcept
 	{
 		rational r(*this);
@@ -615,7 +615,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] friend rational
 	operator* (const T i, const rational& r) noexcept
 	{
@@ -659,7 +659,7 @@ public:
 	 * @brief Multiplication operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational& operator*= (const T i) noexcept
 	{
 		rational r(i);
@@ -692,7 +692,7 @@ public:
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] rational operator/ (const T i) const noexcept
 	{
 		rational r(*this);
@@ -705,7 +705,7 @@ public:
 	 * @param i An integer (basic type) number.
 	 * @param r Rational value.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	[[nodiscard]] friend rational
 	operator/ (const T i, const rational& r) noexcept
 	{
@@ -750,7 +750,7 @@ public:
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
 	 */
-	template <typename T, std::enable_if_t<std::is_integral_v<T>, bool> = true>
+	template <Integral T>
 	rational& operator/= (const T i) noexcept
 	{
 		integer I(i);

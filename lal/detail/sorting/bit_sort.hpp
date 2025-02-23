@@ -45,6 +45,7 @@
 #include <algorithm>
 
 // lal includes
+#include <lal/numeric/concepts.hpp>
 #include <lal/detail/array.hpp>
 #include <lal/detail/sorting/insertion_sort.hpp>
 #include <lal/detail/type_traits/is_pointer_iterator.hpp>
@@ -67,13 +68,14 @@ namespace sorting {
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T,
+	numeric::Integral value_t,
 	typename iterator_t,
-	std::enable_if_t<
-		std::is_integral_v<T> and is_pointer_iterator_v<T, iterator_t>,
-		bool> = true>
+	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
 void bit_sort(
-	const iterator_t begin, const iterator_t end, const T& m, char * const seen
+	const iterator_t begin,
+	const iterator_t end,
+	const value_t& m,
+	char * const seen
 ) noexcept
 {
 	// fill bit array
@@ -84,7 +86,7 @@ void bit_sort(
 	// pointer to see
 	std::size_t seenit = 0;
 	// element to assign to container
-	T i = m;
+	value_t i = m;
 
 	// pointer to container
 	iterator_t it = begin;
@@ -115,13 +117,11 @@ void bit_sort(
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T,
-	typename It,
-	std::enable_if_t<
-		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
-		bool> = true>
+	numeric::Integral value_t,
+	typename iterator_t,
+	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
 void bit_sort_mem(
-	const It begin, const It end, const std::size_t size, char * const seen
+	const iterator_t begin, const iterator_t end, const std::size_t size, char * const seen
 ) noexcept
 {
 	if (size <= 1) {
@@ -136,7 +136,7 @@ void bit_sort_mem(
 		return;
 	}
 
-	bit_sort(begin, end, T{0}, seen);
+	bit_sort(begin, end, value_t{0}, seen);
 }
 
 /**
@@ -151,12 +151,10 @@ void bit_sort_mem(
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
 template <
-	typename T,
-	typename It,
-	std::enable_if_t<
-		std::is_integral_v<T> and is_pointer_iterator_v<T, It>,
-		bool> = true>
-void bit_sort(const It begin, const It end, const std::size_t size) noexcept
+	numeric::Integral value_t,
+	typename iterator_t,
+	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
+void bit_sort(const iterator_t begin, const iterator_t end, const std::size_t size) noexcept
 {
 	if (size <= 1) {
 		return;

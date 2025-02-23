@@ -249,6 +249,7 @@ HEADERS += \
 	linarr/syntactic_dependency_tree/type.hpp \
 	linear_arrangement.hpp \
 	numeric.hpp \
+	numeric/concepts.hpp \
 	numeric/integer.hpp \
 	numeric/integer_output.hpp \
 	numeric/output.hpp \

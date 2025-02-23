@@ -45,6 +45,7 @@
 #include <algorithm>
 
 // lal includes
+#include <lal/numeric/concepts.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 
@@ -64,13 +65,10 @@ namespace detail {
  */
 template <
 	class graph_t,
-	typename char_type,
-	std::enable_if_t<
-		std::is_base_of_v<graphs::graph, graph_t> and
-			std::is_integral_v<char_type>,
-		bool> = true>
+	numeric::Integral char_t,
+	std::enable_if_t<std::is_base_of_v<graphs::graph, graph_t>, bool> = true>
 inline void get_bool_neighbors(
-	const graph_t& g, const node u, char_type * const neighs
+	const graph_t& g, const node u, char_t * const neighs
 ) noexcept
 {
 	if constexpr (std::is_base_of_v<graphs::directed_graph, graph_t>) {
