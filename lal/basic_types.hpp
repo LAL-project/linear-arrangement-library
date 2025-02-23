@@ -121,17 +121,18 @@ struct node_t {
 	/* ARITHMETIC OPERATORS */
 
 	template <typename T>
-	node_t operator+ (const T& t) const noexcept
+	[[nodiscard]] constexpr node_t operator+ (const T& t) const noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return node_t{value + t};
 	}
-	node_t operator+ (const node_t& u) const noexcept
+	[[nodiscard]] constexpr node_t operator+ (const node_t& u) const noexcept
 	{
 		return node_t{value + u.value};
 	}
 	template <typename T>
-	friend node_t operator+ (const T& t, const node_t& u) noexcept
+	[[nodiscard]] constexpr friend node_t
+	operator+ (const T& t, const node_t& u) noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return node_t{u.value + t};
@@ -151,17 +152,18 @@ struct node_t {
 	}
 
 	template <typename T>
-	node_t operator- (const T& t) const noexcept
+	[[nodiscard]] constexpr node_t operator- (const T& t) const noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return node_t{value - t};
 	}
-	node_t operator- (const node_t& u) const noexcept
+	[[nodiscard]] constexpr node_t operator- (const node_t& u) const noexcept
 	{
 		return node_t{value - u.value};
 	}
 	template <typename T>
-	friend node_t operator- (const T& t, const node_t& u) noexcept
+	[[nodiscard]] constexpr friend node_t
+	operator- (const T& t, const node_t& u) noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return node_t{t - u.value};
@@ -207,7 +209,7 @@ struct node_t {
 		return s;
 	}
 
-	uint64_t operator* () const noexcept
+	[[nodiscard]] constexpr uint64_t operator* () const noexcept
 	{
 		return value;
 	}
@@ -392,17 +394,19 @@ struct position_t {
 	/* ARITHMETIC OPERATORS */
 
 	template <typename T>
-	position_t operator+ (const T& t) const noexcept
+	[[nodiscard]] constexpr position_t operator+ (const T& t) const noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return position_t{value + t};
 	}
-	position_t operator+ (const position_t& u) const noexcept
+	[[nodiscard]] constexpr position_t operator+ (const position_t& u
+	) const noexcept
 	{
 		return position_t{value + u.value};
 	}
 	template <typename T>
-	friend position_t operator+ (const T& t, const position_t& u) noexcept
+	[[nodiscard]] constexpr friend position_t
+	operator+ (const T& t, const position_t& u) noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return position_t{u.value + t};
@@ -422,17 +426,19 @@ struct position_t {
 	}
 
 	template <typename T>
-	position_t operator- (const T& t) const noexcept
+	[[nodiscard]] constexpr position_t operator- (const T& t) const noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return position_t{value - t};
 	}
-	position_t operator- (const position_t& u) const noexcept
+	[[nodiscard]] constexpr position_t operator- (const position_t& u
+	) const noexcept
 	{
 		return position_t{value - u.value};
 	}
 	template <typename T>
-	friend position_t operator- (const T& t, const position_t& u) noexcept
+	[[nodiscard]] constexpr friend position_t
+	operator- (const T& t, const position_t& u) noexcept
 	{
 		static_assert(std::is_integral_v<T>);
 		return position_t{t - u.value};
@@ -478,7 +484,7 @@ struct position_t {
 		return s;
 	}
 
-	uint64_t operator* () const noexcept
+	[[nodiscard]] constexpr uint64_t operator* () const noexcept
 	{
 		return value;
 	}
