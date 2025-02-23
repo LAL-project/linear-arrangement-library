@@ -63,18 +63,16 @@ typedef std::pair<edge, edge> edge_pair;
 /// List of nodes.
 typedef std::vector<node> neighbourhood;
 
-// I know this is accessible outside the namespace -- #undef at the end
-#define __LAL_IS_INTEGRAL std::enable_if_t<std::is_integral_v<T>, bool> = true
-
 /// Typesafe @ref node type.
 struct node_t {
 	uint64_t value;
 
 	/* ASSIGNMENT OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	node_t& operator= (const T& _v) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value = _v;
 		return *this;
 	}
@@ -91,51 +89,58 @@ struct node_t {
 		return value == u.value;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
 	) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return value <=> t;
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return value == t;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr friend std::strong_ordering
 	operator<=> (const T& t, const node_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return t <=> u.value;
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr friend bool
 	operator== (const T& t, const node_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return u.value == t;
 	}
 
 	/* ARITHMETIC OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	node_t operator+ (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return node_t{value + t};
 	}
 	node_t operator+ (const node_t& u) const noexcept
 	{
 		return node_t{value + u.value};
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	friend node_t operator+ (const T& t, const node_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return node_t{u.value + t};
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	node_t& operator+= (const T& t) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value += t;
 		return *this;
 	}
@@ -145,24 +150,27 @@ struct node_t {
 		return *this;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	node_t operator- (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return node_t{value - t};
 	}
 	node_t operator- (const node_t& u) const noexcept
 	{
 		return node_t{value - u.value};
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	friend node_t operator- (const T& t, const node_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return node_t{t - u.value};
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	node_t& operator-= (const T& t) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value -= t;
 		return *this;
 	}
@@ -332,9 +340,10 @@ struct position_t {
 
 	/* ASSIGNMENT OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	position_t& operator= (const T& _v) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value = _v;
 		return *this;
 	}
@@ -351,51 +360,58 @@ struct position_t {
 		return value == u.value;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
 	) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return value <=> t;
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return value == t;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr friend std::strong_ordering
 	operator<=> (const T& t, const position_t& p) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return t <=> p.value;
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	[[nodiscard]] constexpr friend bool
 	operator== (const T& t, const position_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return u.value == t;
 	}
 
 	/* ARITHMETIC OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	position_t operator+ (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return position_t{value + t};
 	}
 	position_t operator+ (const position_t& u) const noexcept
 	{
 		return position_t{value + u.value};
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	friend position_t operator+ (const T& t, const position_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return position_t{u.value + t};
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	position_t& operator+= (const T& t) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value += t;
 		return *this;
 	}
@@ -405,24 +421,27 @@ struct position_t {
 		return *this;
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	position_t operator- (const T& t) const noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return position_t{value - t};
 	}
 	position_t operator- (const position_t& u) const noexcept
 	{
 		return position_t{value - u.value};
 	}
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	friend position_t operator- (const T& t, const position_t& u) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		return position_t{t - u.value};
 	}
 
-	template <typename T, __LAL_IS_INTEGRAL>
+	template <typename T>
 	position_t& operator-= (const T& t) noexcept
 	{
+		static_assert(std::is_integral_v<T>);
 		value -= t;
 		return *this;
 	}
@@ -580,7 +599,5 @@ static_assert(0ull >= position_t{0ull});
 static_assert(position_t{0ull} >= 0ull);
 static_assert(not(4ull >= position_t{6ull}));
 static_assert(not(position_t{4ull} >= 6ull));
-
-#undef __LAL_IS_INTEGRAL
 
 } // namespace lal
