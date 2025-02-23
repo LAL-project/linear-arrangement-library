@@ -70,17 +70,6 @@ typedef std::vector<node> neighbourhood;
 struct node_t {
 	uint64_t value;
 
-	/* CONSTRUCTORS */
-	// These are not necessary in C++20 and would turn the struct
-	// trivially constructible for all integral types.
-
-	node_t() noexcept = default;
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	node_t(const T& _v) noexcept
-		: value(_v)
-	{ }
-
 	/* ASSIGNMENT OPERATORS */
 
 	template <typename T, __LAL_IS_INTEGRAL>
@@ -287,20 +276,20 @@ static_assert(std::is_trivially_constructible_v<node_t, const node_t&>);
 static_assert(std::is_trivially_constructible_v<node_t, const node_t>);
 static_assert(std::is_trivially_constructible_v<node_t, node_t>);
 static_assert(std::is_trivially_constructible_v<node_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, node>);
-static_assert(not std::is_trivially_constructible_v<node_t, uint64_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, int64_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, uint32_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, int32_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, uint16_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, int16_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, uint8_t>);
-static_assert(not std::is_trivially_constructible_v<node_t, int8_t>);
+static_assert(std::is_trivially_constructible_v<node_t, node>);
+static_assert(std::is_trivially_constructible_v<node_t, uint64_t>);
+static_assert(std::is_trivially_constructible_v<node_t, int64_t>);
+static_assert(std::is_trivially_constructible_v<node_t, uint32_t>);
+static_assert(std::is_trivially_constructible_v<node_t, int32_t>);
+static_assert(std::is_trivially_constructible_v<node_t, uint16_t>);
+static_assert(std::is_trivially_constructible_v<node_t, int16_t>);
+static_assert(std::is_trivially_constructible_v<node_t, uint8_t>);
+static_assert(std::is_trivially_constructible_v<node_t, int8_t>);
 
-static_assert(std::is_constructible_v<node_t, const node_t&>); // implied
-static_assert(std::is_constructible_v<node_t, const node_t>);  // implied
-static_assert(std::is_constructible_v<node_t, node_t>);		   // implied
-static_assert(std::is_constructible_v<node_t>);				   // implied
+static_assert(std::is_constructible_v<node_t, const node_t&>);
+static_assert(std::is_constructible_v<node_t, const node_t>);
+static_assert(std::is_constructible_v<node_t, node_t>);
+static_assert(std::is_constructible_v<node_t>);
 static_assert(std::is_constructible_v<node_t, node_t>);
 static_assert(std::is_constructible_v<node_t, node>);
 static_assert(std::is_constructible_v<node_t, uint64_t>);
@@ -325,9 +314,9 @@ static_assert(not std::is_trivially_assignable_v<node_t, int16_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, uint8_t>);
 static_assert(not std::is_trivially_assignable_v<node_t, int8_t>);
 
-static_assert(std::is_assignable_v<node_t, const node_t&>); // implied
-static_assert(std::is_assignable_v<node_t, const node_t>);	// implied
-static_assert(std::is_assignable_v<node_t, node_t>);		// implied
+static_assert(std::is_assignable_v<node_t, const node_t&>);
+static_assert(std::is_assignable_v<node_t, const node_t>);
+static_assert(std::is_assignable_v<node_t, node_t>);
 static_assert(std::is_assignable_v<node_t, node_t>);
 static_assert(std::is_assignable_v<node_t, node>);
 static_assert(std::is_assignable_v<node_t, uint64_t>);
@@ -347,17 +336,6 @@ typedef std::pair<edge_t, edge_t> edge_pair_t;
 /// Typesafe @ref position type.
 struct position_t {
 	uint64_t value;
-
-	/* CONSTRUCTORS */
-	// These are not necessary in C++20 and would turn the struct
-	// trivially constructible for all integral types.
-
-	position_t() = default;
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	position_t(const T& _v) noexcept
-		: value(_v)
-	{ }
 
 	/* ASSIGNMENT OPERATORS */
 
@@ -565,21 +543,20 @@ static_assert(std::is_trivially_constructible_v<position_t, const position_t&>);
 static_assert(std::is_trivially_constructible_v<position_t, const position_t>);
 static_assert(std::is_trivially_constructible_v<position_t, position_t>);
 static_assert(std::is_trivially_constructible_v<position_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, node>);
-static_assert(not std::is_trivially_constructible_v<position_t, uint64_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, int64_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, uint32_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, int32_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, uint16_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, int16_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, uint8_t>);
-static_assert(not std::is_trivially_constructible_v<position_t, int8_t>);
+static_assert(std::is_trivially_constructible_v<position_t, node>);
+static_assert(std::is_trivially_constructible_v<position_t, uint64_t>);
+static_assert(std::is_trivially_constructible_v<position_t, int64_t>);
+static_assert(std::is_trivially_constructible_v<position_t, uint32_t>);
+static_assert(std::is_trivially_constructible_v<position_t, int32_t>);
+static_assert(std::is_trivially_constructible_v<position_t, uint16_t>);
+static_assert(std::is_trivially_constructible_v<position_t, int16_t>);
+static_assert(std::is_trivially_constructible_v<position_t, uint8_t>);
+static_assert(std::is_trivially_constructible_v<position_t, int8_t>);
 
-static_assert(std::
-				  is_constructible_v<position_t, const position_t&>); // implied
-static_assert(std::is_constructible_v<position_t, const position_t>); // implied
-static_assert(std::is_constructible_v<position_t, position_t>);		  // implied
-static_assert(std::is_constructible_v<position_t>);					  // implied
+static_assert(std::is_constructible_v<position_t, const position_t&>);
+static_assert(std::is_constructible_v<position_t, const position_t>);
+static_assert(std::is_constructible_v<position_t, position_t>);
+static_assert(std::is_constructible_v<position_t>);
 static_assert(std::is_constructible_v<position_t, position_t>);
 static_assert(std::is_constructible_v<position_t, node>);
 static_assert(std::is_constructible_v<position_t, uint64_t>);
@@ -604,9 +581,9 @@ static_assert(not std::is_trivially_assignable_v<position_t, int16_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, uint8_t>);
 static_assert(not std::is_trivially_assignable_v<position_t, int8_t>);
 
-static_assert(std::is_assignable_v<position_t, const position_t&>); // implied
-static_assert(std::is_assignable_v<position_t, const position_t>);	// implied
-static_assert(std::is_assignable_v<position_t, position_t>);		// implied
+static_assert(std::is_assignable_v<position_t, const position_t&>);
+static_assert(std::is_assignable_v<position_t, const position_t>);
+static_assert(std::is_assignable_v<position_t, position_t>);
 static_assert(std::is_assignable_v<position_t, position_t>);
 static_assert(std::is_assignable_v<position_t, node>);
 static_assert(std::is_assignable_v<position_t, uint64_t>);
