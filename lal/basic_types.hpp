@@ -81,94 +81,39 @@ struct node_t {
 
 	/* COMPARISON OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator== (const T& t) const noexcept
+	[[nodiscard]] constexpr std::strong_ordering operator<=> (const node_t& u
+	) const noexcept
 	{
-		return value == t;
+		return value <=> u.value;
 	}
-	bool operator== (const node_t& u) const noexcept
+	[[nodiscard]] constexpr bool operator== (const node_t& u) const noexcept
 	{
 		return value == u.value;
 	}
+
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator== (const T& t, const node_t& u) noexcept
+	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
+	) const noexcept
+	{
+		return value <=> t;
+	}
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
+	{
+		return value == t;
+	}
+
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr friend std::strong_ordering
+	operator<=> (const T& t, const node_t& u) noexcept
+	{
+		return t <=> u.value;
+	}
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr friend bool
+	operator== (const T& t, const node_t& u) noexcept
 	{
 		return u.value == t;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator!= (const T& t) const noexcept
-	{
-		return value != t;
-	}
-	bool operator!= (const node_t& u) const noexcept
-	{
-		return value != u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator!= (const T& t, const node_t& u) noexcept
-	{
-		return u.value != t;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator< (const T& t) const noexcept
-	{
-		return value < t;
-	}
-	bool operator< (const node_t& u) const noexcept
-	{
-		return value < u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator< (const T& t, const node_t& u) noexcept
-	{
-		return t < u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator<= (const T& t) const noexcept
-	{
-		return value <= t;
-	}
-	bool operator<= (const node_t& u) const noexcept
-	{
-		return value <= u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator<= (const T& t, const node_t& u) noexcept
-	{
-		return t <= u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator> (const T& t) const noexcept
-	{
-		return value > t;
-	}
-	bool operator> (const node_t& u) const noexcept
-	{
-		return value > u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator> (const T& t, const node_t& u) noexcept
-	{
-		return t > u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator>= (const T& t) const noexcept
-	{
-		return value >= t;
-	}
-	bool operator>= (const node_t& u) const noexcept
-	{
-		return value >= u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator>= (const T& t, const node_t& u) noexcept
-	{
-		return t >= u.value;
 	}
 
 	/* ARITHMETIC OPERATORS */
@@ -328,6 +273,54 @@ static_assert(std::is_assignable_v<node_t, int16_t>);
 static_assert(std::is_assignable_v<node_t, uint8_t>);
 static_assert(std::is_assignable_v<node_t, int8_t>);
 
+static_assert(node_t{0ull} == node_t{0ull});
+static_assert(not(node_t{0ull} == node_t{1ull}));
+static_assert(0ull == node_t{0ull});
+static_assert(node_t{0ull} == 0ull);
+static_assert(not(0ull == node_t{1ull}));
+static_assert(not(node_t{0ull} == 1ull));
+
+static_assert(node_t{0ull} != node_t{1ull});
+static_assert(not(node_t{0ull} != node_t{0ull}));
+static_assert(0ull != node_t{1ull});
+static_assert(node_t{0ull} != 1ull);
+static_assert(not(0ull != node_t{0ull}));
+static_assert(not(node_t{0ull} != 0ull));
+
+static_assert(node_t{0ull} < node_t{1ull});
+static_assert(not(node_t{4ull} < node_t{0ull}));
+static_assert(0ull < node_t{1ull});
+static_assert(node_t{0ull} < 1ull);
+static_assert(not(4ull < node_t{0ull}));
+static_assert(not(node_t{4ull} < 0ull));
+
+static_assert(node_t{0ull} <= node_t{1ull});
+static_assert(node_t{0ull} <= node_t{0ull});
+static_assert(not(node_t{4ull} <= node_t{0ull}));
+static_assert(0ull <= node_t{1ull});
+static_assert(node_t{0ull} <= 1ull);
+static_assert(0ull <= node_t{0ull});
+static_assert(node_t{0ull} <= 0ull);
+static_assert(not(4ull <= node_t{0ull}));
+static_assert(not(node_t{4ull} <= 0ull));
+
+static_assert(node_t{1ull} > node_t{0ull});
+static_assert(not(node_t{4ull} > node_t{7ull}));
+static_assert(1ull > node_t{0ull});
+static_assert(node_t{1ull} > 0ull);
+static_assert(not(4ull > node_t{7ull}));
+static_assert(not(node_t{4ull} > 7ull));
+
+static_assert(node_t{1ull} >= node_t{0ull});
+static_assert(node_t{0ull} >= node_t{0ull});
+static_assert(not(node_t{4ull} >= node_t{6ull}));
+static_assert(1ull >= node_t{0ull});
+static_assert(node_t{1ull} >= 0ull);
+static_assert(0ull >= node_t{0ull});
+static_assert(node_t{0ull} >= 0ull);
+static_assert(not(4ull >= node_t{6ull}));
+static_assert(not(node_t{4ull} >= 6ull));
+
 /// Similar to @ref edge.
 typedef std::pair<node_t, node_t> edge_t;
 /// Similar to @ref edge_pair.
@@ -348,94 +341,39 @@ struct position_t {
 
 	/* COMPARISON OPERATORS */
 
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator== (const T& t) const noexcept
+	[[nodiscard]] constexpr std::strong_ordering
+	operator<=> (const position_t& p) const noexcept
 	{
-		return value == t;
+		return value <=> p.value;
 	}
-	bool operator== (const position_t& u) const noexcept
+	[[nodiscard]] constexpr bool operator== (const position_t& u) const noexcept
 	{
 		return value == u.value;
 	}
+
 	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator== (const T& t, const position_t& u) noexcept
+	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
+	) const noexcept
+	{
+		return value <=> t;
+	}
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
+	{
+		return value == t;
+	}
+
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr friend std::strong_ordering
+	operator<=> (const T& t, const position_t& p) noexcept
+	{
+		return t <=> p.value;
+	}
+	template <typename T, __LAL_IS_INTEGRAL>
+	[[nodiscard]] constexpr friend bool
+	operator== (const T& t, const position_t& u) noexcept
 	{
 		return u.value == t;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator!= (const T& t) const noexcept
-	{
-		return value != t;
-	}
-	bool operator!= (const position_t& u) const noexcept
-	{
-		return value != u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator!= (const T& t, const position_t& u) noexcept
-	{
-		return u.value != t;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator< (const T& t) const noexcept
-	{
-		return value < t;
-	}
-	bool operator< (const position_t& u) const noexcept
-	{
-		return value < u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator< (const T& t, const position_t& u) noexcept
-	{
-		return t < u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator<= (const T& t) const noexcept
-	{
-		return value <= t;
-	}
-	bool operator<= (const position_t& u) const noexcept
-	{
-		return value <= u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator<= (const T& t, const position_t& u) noexcept
-	{
-		return t <= u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator> (const T& t) const noexcept
-	{
-		return value > t;
-	}
-	bool operator> (const position_t& u) const noexcept
-	{
-		return value > u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator> (const T& t, const position_t& u) noexcept
-	{
-		return t > u.value;
-	}
-
-	template <typename T, __LAL_IS_INTEGRAL>
-	bool operator>= (const T& t) const noexcept
-	{
-		return value >= t;
-	}
-	bool operator>= (const position_t& u) const noexcept
-	{
-		return value >= u.value;
-	}
-	template <typename T, __LAL_IS_INTEGRAL>
-	friend bool operator>= (const T& t, const position_t& u) noexcept
-	{
-		return t >= u.value;
 	}
 
 	/* ARITHMETIC OPERATORS */
@@ -594,6 +532,54 @@ static_assert(std::is_assignable_v<position_t, uint16_t>);
 static_assert(std::is_assignable_v<position_t, int16_t>);
 static_assert(std::is_assignable_v<position_t, uint8_t>);
 static_assert(std::is_assignable_v<position_t, int8_t>);
+
+static_assert(position_t{0ull} == position_t{0ull});
+static_assert(not(position_t{0ull} == position_t{1ull}));
+static_assert(0ull == position_t{0ull});
+static_assert(position_t{0ull} == 0ull);
+static_assert(not(0ull == position_t{1ull}));
+static_assert(not(position_t{0ull} == 1ull));
+
+static_assert(position_t{0ull} != position_t{1ull});
+static_assert(not(position_t{0ull} != position_t{0ull}));
+static_assert(0ull != position_t{1ull});
+static_assert(position_t{0ull} != 1ull);
+static_assert(not(0ull != position_t{0ull}));
+static_assert(not(position_t{0ull} != 0ull));
+
+static_assert(position_t{0ull} < position_t{1ull});
+static_assert(not(position_t{4ull} < position_t{0ull}));
+static_assert(0ull < position_t{1ull});
+static_assert(position_t{0ull} < 1ull);
+static_assert(not(4ull < position_t{0ull}));
+static_assert(not(position_t{4ull} < 0ull));
+
+static_assert(position_t{0ull} <= position_t{1ull});
+static_assert(position_t{0ull} <= position_t{0ull});
+static_assert(not(position_t{4ull} <= position_t{0ull}));
+static_assert(0ull <= position_t{1ull});
+static_assert(position_t{0ull} <= 1ull);
+static_assert(0ull <= position_t{0ull});
+static_assert(position_t{0ull} <= 0ull);
+static_assert(not(4ull <= position_t{0ull}));
+static_assert(not(position_t{4ull} <= 0ull));
+
+static_assert(position_t{1ull} > position_t{0ull});
+static_assert(not(position_t{4ull} > position_t{7ull}));
+static_assert(1ull > position_t{0ull});
+static_assert(position_t{1ull} > 0ull);
+static_assert(not(4ull > position_t{7ull}));
+static_assert(not(position_t{4ull} > 7ull));
+
+static_assert(position_t{1ull} >= position_t{0ull});
+static_assert(position_t{0ull} >= position_t{0ull});
+static_assert(not(position_t{4ull} >= position_t{6ull}));
+static_assert(1ull >= position_t{0ull});
+static_assert(position_t{1ull} >= 0ull);
+static_assert(0ull >= position_t{0ull});
+static_assert(position_t{0ull} >= 0ull);
+static_assert(not(4ull >= position_t{6ull}));
+static_assert(not(position_t{4ull} >= 6ull));
 
 #undef __LAL_IS_INTEGRAL
 
