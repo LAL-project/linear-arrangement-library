@@ -67,10 +67,7 @@ namespace sorting {
  * @post All the values of @e seen are set to false.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <
-	numeric::Integral value_t,
-	typename iterator_t,
-	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
+template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
 void bit_sort(
 	const iterator_t begin,
 	const iterator_t end,
@@ -116,12 +113,12 @@ void bit_sort(
  * @post All the values of @e seen are set to 0.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <
-	numeric::Integral value_t,
-	typename iterator_t,
-	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
+template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
 void bit_sort_mem(
-	const iterator_t begin, const iterator_t end, const std::size_t size, char * const seen
+	const iterator_t begin,
+	const iterator_t end,
+	const std::size_t size,
+	char * const seen
 ) noexcept
 {
 	if (size <= 1) {
@@ -150,11 +147,10 @@ void bit_sort_mem(
  * @pre All values within [begin, end) must be unique.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <
-	numeric::Integral value_t,
-	typename iterator_t,
-	std::enable_if_t<is_pointer_iterator_v<value_t, iterator_t>, bool> = true>
-void bit_sort(const iterator_t begin, const iterator_t end, const std::size_t size) noexcept
+template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
+void bit_sort(
+	const iterator_t begin, const iterator_t end, const std::size_t size
+) noexcept
 {
 	if (size <= 1) {
 		return;

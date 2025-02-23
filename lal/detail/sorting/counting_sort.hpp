@@ -150,13 +150,11 @@ template <
 	sort_type type,
 	bool memory_has_frequencies,
 	// Can be inferred \/ ...
-	typename value_iterator_t,
-	typename Callable,
-	std::enable_if_t<is_pointer_iterator_v<value_t, value_iterator_t>, bool> =
-		true>
+	PointerOrIterator<value_t> iterator_t,
+	typename Callable>
 void counting_sort(
-	const value_iterator_t begin,
-	const value_iterator_t end,
+	const iterator_t begin,
+	const iterator_t end,
 	const Callable& key,
 	countingsort::memory<value_t>& mem
 ) noexcept
@@ -246,13 +244,11 @@ template <
 	typename value_t,
 	sort_type type,
 	// Can be inferred \/ ...
-	typename value_iterator_t,
-	typename Callable,
-	std::enable_if_t<is_pointer_iterator_v<value_t, value_iterator_t>, bool> =
-		true>
+	PointerOrIterator<value_t> iterator_t,
+	typename Callable>
 void counting_sort(
-	const value_iterator_t begin,
-	const value_iterator_t end,
+	const iterator_t begin,
+	const iterator_t end,
 	const std::size_t largest_key,
 	const std::size_t upper_bound_size,
 	const Callable& key
@@ -270,7 +266,7 @@ void counting_sort(
 
 	countingsort::memory<value_t> mem(largest_key + 1, upper_bound_size);
 
-	counting_sort<value_t, type, false, value_iterator_t>(begin, end, key, mem);
+	counting_sort<value_t, type, false, iterator_t>(begin, end, key, mem);
 }
 
 } // namespace sorting

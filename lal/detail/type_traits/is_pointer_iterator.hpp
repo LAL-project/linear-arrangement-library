@@ -49,23 +49,16 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Decide if a type is a pointer or iterator to another.
- * @tparam Iterated_Type Underlying type.
- * @tparam Iterator Alleged iterator type.
+ * @brief A concept for pointers or iterators
+ * @tparam iterator_t The iterator type.
+ * @tparam value_t The iterated type.
  */
-template <typename value_t, typename iterator_t>
-struct is_pointer_iterator {
-	static constexpr bool value =
-		std::is_pointer_v<iterator_t> or
-		std::is_same_v<
-			typename std::iterator_traits<iterator_t>::value_type,
-			value_t>;
-};
-
-/// Shorthand for @ref is_pointer_iterator.
-template <typename value_t, typename iterator_t>
-constexpr bool is_pointer_iterator_v =
-	is_pointer_iterator<value_t, iterator_t>::value;
+template <typename iterator_t, typename value_t>
+concept PointerOrIterator =
+	std::is_pointer_v<iterator_t> or
+	std::is_same_v<
+		typename std::iterator_traits<iterator_t>::value_type,
+		value_t>;
 
 } // namespace detail
 } // namespace lal

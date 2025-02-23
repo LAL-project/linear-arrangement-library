@@ -134,7 +134,6 @@ inline void get_size_subtrees(
  *
  * Notice that the values are not stored in an actual map (std::map, or similar),
  * but in a vector.
- * @tparam iterated_t The type that stores the sizes.
  * @tparam iterator_t The type of the iterator on a container containing values
  * of type iterated_t.
  * @param t Input tree.
@@ -146,10 +145,7 @@ inline void get_size_subtrees(
  * component of @e u and @e v.
  * @pre Vertices @e u and @e v belong to the same connected component.
  */
-template <
-	graphs::Tree tree_t,
-	typename iterator_t,
-	std::enable_if_t<is_pointer_iterator_v<edge_size, iterator_t>, bool> = true>
+template <graphs::Tree tree_t, PointerOrIterator<edge_size> iterator_t>
 [[nodiscard]] uint64_t calculate_bidirectional_sizes(
 	const tree_t& t,
 	const uint64_t n,
@@ -209,7 +205,6 @@ template <
  @endcode
  *
  * @tparam tree_t Type of the tree. Must be 'rooted_tree' or 'free_tree'.
- * @tparam iterated_t The type that stores the sizes.
  * @tparam iterator_t The type of the iterator on a container containing values
  * of type iterated_t.
  * @param t Input tree
@@ -220,10 +215,7 @@ template <
  * container must have size equal to twice the number of edges in the connected
  * component of @e u and @e v.
  */
-template <
-	graphs::Tree tree_t,
-	typename iterator_t,
-	std::enable_if_t<is_pointer_iterator_v<edge_size, iterator_t>, bool> = true>
+template <graphs::Tree tree_t, PointerOrIterator<edge_size> iterator_t>
 inline void calculate_bidirectional_sizes(
 	const tree_t& t, const uint64_t n, const node x, iterator_t it
 ) noexcept
