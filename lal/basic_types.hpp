@@ -204,15 +204,15 @@ struct node_t {
 
 	/* INPUT/OUTPUT OPERATORS */
 
-	template <class stream>
-	friend stream& operator>> (stream& s, node_t& p) noexcept
+	template <class stream_t>
+	friend stream_t& operator>> (stream_t& s, node_t& p) noexcept
 	{
 		s >> p.value;
 		return s;
 	}
 
-	template <class stream>
-	friend stream& operator<< (stream& s, const node_t& p) noexcept
+	template <class stream_t>
+	friend stream_t& operator<< (stream_t& s, const node_t& p) noexcept
 	{
 		s << p.value;
 		return s;
@@ -488,8 +488,8 @@ struct position_t {
 
 	/* INPUT/OUTPUT OPERATORS */
 
-	template <class stream>
-	friend stream& operator>> (stream& s, position_t& p) noexcept
+	template <class stream_t>
+	friend stream_t& operator>> (stream_t& s, position_t& p) noexcept
 	{
 		s >> p.value;
 		return s;
