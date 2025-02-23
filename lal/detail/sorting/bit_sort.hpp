@@ -45,7 +45,6 @@
 #include <algorithm>
 
 // lal includes
-#include <lal/numeric/concepts.hpp>
 #include <lal/detail/array.hpp>
 #include <lal/detail/sorting/insertion_sort.hpp>
 #include <lal/detail/type_traits/is_pointer_iterator.hpp>
@@ -67,7 +66,7 @@ namespace sorting {
  * @post All the values of @e seen are set to false.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
+template <std::integral value_t, PointerOrIterator<value_t> iterator_t>
 void bit_sort(
 	const iterator_t begin,
 	const iterator_t end,
@@ -113,7 +112,7 @@ void bit_sort(
  * @post All the values of @e seen are set to 0.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
+template <std::integral value_t, PointerOrIterator<value_t> iterator_t>
 void bit_sort_mem(
 	const iterator_t begin,
 	const iterator_t end,
@@ -147,7 +146,7 @@ void bit_sort_mem(
  * @pre All values within [begin, end) must be unique.
  * @post The elements in the range [begin,end) are sorted increasingly.
  */
-template <numeric::Integral value_t, PointerOrIterator<value_t> iterator_t>
+template <std::integral value_t, PointerOrIterator<value_t> iterator_t>
 void bit_sort(
 	const iterator_t begin, const iterator_t end, const std::size_t size
 ) noexcept

@@ -45,9 +45,6 @@
 #include <cstdint>
 #include <vector>
 
-// lal includes
-#include <lal/numeric/concepts.hpp>
-
 namespace lal {
 
 /// Node type. See @ref LAL_concepts__node page for further details.
@@ -72,14 +69,14 @@ struct node_t {
 
 	constexpr node_t() noexcept = default;
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	constexpr node_t(const T& _v) noexcept
 		: value(_v)
 	{ }
 
 	/* ASSIGNMENT OPERATORS */
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	node_t& operator= (const T& _v) noexcept
 	{
 		value = _v;
@@ -98,25 +95,25 @@ struct node_t {
 		return value == u.value;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
 	) const noexcept
 	{
 		return value <=> t;
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
 	{
 		return value == t;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend std::strong_ordering
 	operator<=> (const T& t, const node_t& u) noexcept
 	{
 		return t <=> u.value;
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend bool
 	operator== (const T& t, const node_t& u) noexcept
 	{
@@ -125,7 +122,7 @@ struct node_t {
 
 	/* ARITHMETIC OPERATORS */
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr node_t operator+ (const T& t) const noexcept
 	{
 		return node_t{value + t};
@@ -134,14 +131,14 @@ struct node_t {
 	{
 		return node_t{value + u.value};
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend node_t
 	operator+ (const T& t, const node_t& u) noexcept
 	{
 		return node_t{u.value + t};
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	node_t& operator+= (const T& t) noexcept
 	{
 		value += t;
@@ -153,7 +150,7 @@ struct node_t {
 		return *this;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr node_t operator- (const T& t) const noexcept
 	{
 		return node_t{value - t};
@@ -162,14 +159,14 @@ struct node_t {
 	{
 		return node_t{value - u.value};
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend node_t
 	operator- (const T& t, const node_t& u) noexcept
 	{
 		return node_t{t - u.value};
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	node_t& operator-= (const T& t) noexcept
 	{
 		value -= t;
@@ -341,14 +338,14 @@ struct position_t {
 
 	constexpr position_t() noexcept = default;
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	constexpr position_t(const T& _v) noexcept
 		: value(_v)
 	{ }
 
 	/* ASSIGNMENT OPERATORS */
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	position_t& operator= (const T& _v) noexcept
 	{
 		value = _v;
@@ -367,25 +364,25 @@ struct position_t {
 		return value == u.value;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr std::strong_ordering operator<=> (const T& t
 	) const noexcept
 	{
 		return value <=> t;
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr bool operator== (const T& t) const noexcept
 	{
 		return value == t;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend std::strong_ordering
 	operator<=> (const T& t, const position_t& p) noexcept
 	{
 		return t <=> p.value;
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend bool
 	operator== (const T& t, const position_t& u) noexcept
 	{
@@ -394,7 +391,7 @@ struct position_t {
 
 	/* ARITHMETIC OPERATORS */
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr position_t operator+ (const T& t) const noexcept
 	{
 		return position_t{value + t};
@@ -404,14 +401,14 @@ struct position_t {
 	{
 		return position_t{value + u.value};
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend position_t
 	operator+ (const T& t, const position_t& u) noexcept
 	{
 		return position_t{u.value + t};
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	position_t& operator+= (const T& t) noexcept
 	{
 		value += t;
@@ -423,7 +420,7 @@ struct position_t {
 		return *this;
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr position_t operator- (const T& t) const noexcept
 	{
 		return position_t{value - t};
@@ -433,14 +430,14 @@ struct position_t {
 	{
 		return position_t{value - u.value};
 	}
-	template <numeric::Integral T>
+	template <std::integral T>
 	[[nodiscard]] constexpr friend position_t
 	operator- (const T& t, const position_t& u) noexcept
 	{
 		return position_t{t - u.value};
 	}
 
-	template <numeric::Integral T>
+	template <std::integral T>
 	position_t& operator-= (const T& t) noexcept
 	{
 		value -= t;

@@ -45,7 +45,6 @@
 #include <algorithm>
 
 // lal includes
-#include <lal/numeric/concepts.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 
@@ -63,7 +62,7 @@ namespace detail {
  * @param neighs 0-1 list of neighbors of @e u in @e g.
  * @pre The contents of @e neighs must be all 0 (or false).
  */
-template <graphs::Graph graph_t, numeric::Integral char_t>
+template <graphs::Graph graph_t, std::integral char_t>
 inline void get_bool_neighbors(
 	const graph_t& g, const node u, char_t * const neighs
 ) noexcept
