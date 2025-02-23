@@ -53,19 +53,19 @@ namespace detail {
  * @tparam Iterated_Type Underlying type.
  * @tparam Iterator Alleged iterator type.
  */
-template <typename Iterated_Type, typename Iterator>
+template <typename value_t, typename iterator_t>
 struct is_pointer_iterator {
 	static constexpr bool value =
-		std::is_pointer_v<Iterator> or
+		std::is_pointer_v<iterator_t> or
 		std::is_same_v<
-			typename std::iterator_traits<Iterator>::value_type,
-			Iterated_Type>;
+			typename std::iterator_traits<iterator_t>::value_type,
+			value_t>;
 };
 
 /// Shorthand for @ref is_pointer_iterator.
-template <typename Iterated_Type, typename Iterator>
+template <typename value_t, typename iterator_t>
 constexpr bool is_pointer_iterator_v =
-	is_pointer_iterator<Iterated_Type, Iterator>::value;
+	is_pointer_iterator<value_t, iterator_t>::value;
 
 } // namespace detail
 } // namespace lal

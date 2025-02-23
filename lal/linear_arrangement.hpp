@@ -220,8 +220,9 @@ public:
 	 * @returns A linear arrangement object constructed from @e v.
 	 * @post @ref m_inverse is updated.
 	 */
-	template <typename It>
-	static linear_arrangement from_direct(It begin, It end) noexcept
+	template <typename iterator_t>
+	static linear_arrangement
+	from_direct(const iterator_t begin, const iterator_t end) noexcept
 	{
 		return from_direct(begin, end, std::distance(begin, end));
 	}
@@ -236,9 +237,10 @@ public:
 	 * @returns A linear arrangement object constructed from @e v.
 	 * @post @ref m_inverse is updated.
 	 */
-	template <typename It>
-	static linear_arrangement
-	from_direct(It begin, It end, std::size_t size) noexcept
+	template <typename iterator_t>
+	static linear_arrangement from_direct(
+		const iterator_t begin, const iterator_t end, std::size_t size
+	) noexcept
 	{
 		linear_arrangement arr(size);
 		arr.from_data<true>(begin, end);
@@ -267,8 +269,9 @@ public:
 	 * @returns A linear arrangement object constructed from @e v.
 	 * @post @ref m_direct is updated.
 	 */
-	template <typename It>
-	static linear_arrangement from_inverse(It begin, It end) noexcept
+	template <typename iterator_t>
+	static linear_arrangement
+	from_inverse(const iterator_t begin, const iterator_t end) noexcept
 	{
 		return from_inverse(
 			begin, end, static_cast<std::size_t>(std::distance(begin, end))
@@ -285,9 +288,10 @@ public:
 	 * @returns A linear arrangement object constructed from @e v.
 	 * @post @ref m_direct is updated.
 	 */
-	template <typename It>
-	static linear_arrangement
-	from_inverse(It begin, It end, std::size_t size) noexcept
+	template <typename iterator_t>
+	static linear_arrangement from_inverse(
+		const iterator_t begin, const iterator_t end, std::size_t size
+	) noexcept
 	{
 		linear_arrangement arr(size);
 		arr.from_data<false>(begin, end);
@@ -646,8 +650,8 @@ private:
 	 * @pre Pointers @ref m_direct and @ref m_inverse must have been set
 	 * appropriately.
 	 */
-	template <bool from_direct_arr, typename It>
-	void from_data(const It begin, const It end) noexcept
+	template <bool from_direct_arr, typename iterator_t>
+	void from_data(const iterator_t begin, const iterator_t end) noexcept
 	{
 #if defined DEBUG
 		assert(m_direct != nullptr);
@@ -655,13 +659,13 @@ private:
 #endif
 		std::size_t i = 0;
 		if constexpr (from_direct_arr) {
-			for (It it = begin; it != end; ++it, ++i) {
+			for (iterator_t it = begin; it != end; ++it, ++i) {
 				m_direct[i] = *it;
 				m_inverse[*it] = i;
 			}
 		}
 		else {
-			for (It it = begin; it != end; ++it, ++i) {
+			for (iterator_t it = begin; it != end; ++it, ++i) {
 				m_direct[*it] = i;
 				m_inverse[i] = *it;
 			}
